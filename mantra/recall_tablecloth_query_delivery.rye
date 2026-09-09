@@ -153,23 +153,333 @@ fn scribble_frame() void {
     std.mem.doNotOptimizeAway(&scratch);
 }
 
-fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
-    var cat: ns.BoltCatalog = undefined;
-    try init_host_catalog(&cat);
+// THE POOL RESERVES THE ANSWER'S HOME BEFORE THE REQUEST RUNS. A caller may keep its answer after
+// the request that fetched it has finished, so a ceiling on requests in flight bounds nothing a
+// reader can measure: four requests run one at a time leave four answers alive. This pool counts
+// both lifetimes -- `pool_active_max` requests may be in flight and `pool_answer_max` answers may
+// stand at once -- and a request is admitted only when a free answer slot is ready to receive its
+// reply. Design: active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md
+pub const pool_active_max: u32 = 2;
+pub const pool_answer_max: u32 = 3;
 
-    // Host process: wait for one request, reply, exit.
+comptime {
+    // invariant: the pool holds at least as many answers as requests in flight, so every request
+    // slot stays reachable and a refusal names a full answer pool rather than a ceiling the
+    // request count alone made unreachable
+    assert(pool_answer_max >= pool_active_max);
+}
+
+pub const PoolError = error{
+    RequestSlotsFull,
+    AnswerSlotsFull,
+    SlotNotActive,
+    SlotNotRetained,
+    StaleTicket,
+};
+
+const SlotState = enum { free, active, retained };
+
+// One slot is one answer's whole home: the payload frame the datagram opens into, and the decoded
+// response whose every name is a view into that frame. Keeping the two together is what lets a
+// retained answer outlive the exchange that fetched it, since the bytes it points at are the
+// pool's own rather than a caller frame that has since moved on (REDS %664).
+const AnswerSlot = struct {
+    frame: [@intCast(wf.max_message)]u8 = undefined,
+    response: qw.QueryWireResponse = undefined,
+    state: SlotState = .free,
+    generation: u32 = 0,
+};
+
+// A ticket names one slot AND the filling it was handed. Counts alone cannot tell a second release
+// of an answer already returned from a release of whatever answer stands in that slot now, so the
+// generation advances on every free and a stale ticket refuses rather than reading or freeing a
+// stranger's bytes.
+pub const Ticket = struct { index: u32, generation: u32 };
+
+pub const AnswerPool = struct {
+    slots: [pool_answer_max]AnswerSlot = [_]AnswerSlot{.{}} ** pool_answer_max,
+    active: u32 = 0,
+    retained: u32 = 0,
+
+    fn counts_hold(self: *const AnswerPool) void {
+        // invariant: requests in flight stay inside the request ceiling
+        assert(self.active <= pool_active_max);
+        // invariant: work in flight plus answers kept stays inside the answer pool, which is the
+        // whole reservation this type exists to hold
+        assert(self.active + self.retained <= pool_answer_max);
+    }
+
+    fn slot_for(self: *AnswerPool, ticket: Ticket) PoolError!*AnswerSlot {
+        // invariant: a ticket names a slot this pool holds, so the index stays inside the array
+        assert(ticket.index < pool_answer_max);
+        const slot = &self.slots[ticket.index];
+        if (slot.generation != ticket.generation) return error.StaleTicket;
+        return slot;
+    }
+
+    pub fn admit(self: *AnswerPool) PoolError!Ticket {
+        if (self.active >= pool_active_max) return error.RequestSlotsFull;
+        if (self.active + self.retained >= pool_answer_max) return error.AnswerSlotsFull;
+        var found: ?u32 = null;
+        var i: u32 = 0;
+        while (i < pool_answer_max) : (i += 1) {
+            if (self.slots[i].state == .free) {
+                found = i;
+                break;
+            }
+        }
+        // invariant: the two counters and the slot states describe one set, so a pool that passed
+        // both admission checks holds a free slot for this request
+        assert(found != null);
+        const idx = found.?;
+        self.slots[idx].state = .active;
+        self.active += 1;
+        self.counts_hold();
+        // invariant: the ticket names the slot just claimed, so its holder writes into the bytes
+        // this admission reserved and no other
+        assert(self.slots[idx].state == .active);
+        return .{ .index = idx, .generation = self.slots[idx].generation };
+    }
+
+    pub fn destination(self: *AnswerPool, ticket: Ticket) PoolError!*AnswerSlot {
+        const slot = try self.slot_for(ticket);
+        if (slot.state != .active) return error.SlotNotActive;
+        return slot;
+    }
+
+    pub fn complete(self: *AnswerPool, ticket: Ticket) PoolError!void {
+        const slot = try self.slot_for(ticket);
+        if (slot.state != .active) return error.SlotNotActive;
+        // invariant: a completion moves one request out of flight, so the counter it decrements
+        // stands above zero before the move
+        assert(self.active > 0);
+        slot.state = .retained;
+        self.active -= 1;
+        self.retained += 1;
+        self.counts_hold();
+    }
+
+    pub fn fail(self: *AnswerPool, ticket: Ticket) PoolError!void {
+        const slot = try self.slot_for(ticket);
+        if (slot.state != .active) return error.SlotNotActive;
+        // invariant: a refusal ends a request that was in flight, so the counter stands above zero
+        assert(self.active > 0);
+        slot.state = .free;
+        slot.generation += 1;
+        self.active -= 1;
+        self.counts_hold();
+    }
+
+    pub fn release(self: *AnswerPool, ticket: Ticket) PoolError!void {
+        const slot = try self.slot_for(ticket);
+        if (slot.state != .retained) return error.SlotNotRetained;
+        // invariant: a release returns an answer that was being kept, so the counter stands above
+        // zero and the slot's capacity was charged to this holder
+        assert(self.retained > 0);
+        slot.state = .free;
+        slot.generation += 1;
+        self.retained -= 1;
+        self.counts_hold();
+    }
+
+    pub fn answer(self: *AnswerPool, ticket: Ticket) PoolError!*const qw.QueryWireResponse {
+        const slot = try self.slot_for(ticket);
+        if (slot.state != .retained) return error.SlotNotRetained;
+        // invariant: a kept answer names no more hits than the response record holds, so a reader
+        // walking `hits[0..hit_count]` stays inside the array however long it kept the ticket
+        assert(slot.response.hit_count <= qw.max_wire_hits);
+        return &slot.response;
+    }
+};
+
+// One exchange: spawn a host that answers exactly one datagram, run the query into the caller's own
+// frame and response, and wait for that host to exit. The bytes the answer names are the caller's
+// for as long as the caller keeps them, which is the whole contract `run_client_query` states in
+// its signature.
+fn exchange(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    req: qw.QueryWireRequest,
+    opened: *[@intCast(wf.max_message)]u8,
+    out: *qw.QueryWireResponse,
+) !void {
     const host_argv = try allocator.alloc([]const u8, 2);
     defer allocator.free(host_argv);
     host_argv[0] = self_path;
     host_argv[1] = "host";
-
     var host_child = try std.process.spawn(io, .{ .argv = host_argv });
     var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
     _ = c.nanosleep(&pause, null);
+    try run_client_query(req, opened, out);
+    const term = try host_child.wait(io);
+    const code: u8 = switch (term) {
+        .exited => |value| value,
+        else => 255,
+    };
+    // invariant: the host answered and exited clean, so this reply came from a run that finished
+    // rather than from a datagram some earlier exchange left on the port
+    assert(code == 0);
+    // invariant: the decoded reply names no more hits than the response record holds
+    assert(out.hit_count <= qw.max_wire_hits);
+}
+
+// A refusal is read as hard as a success here: the call must refuse, and it must refuse by the name
+// a caller would act on. A check that only asks whether something failed cannot tell a full answer
+// pool from a stale ticket.
+fn refuses_with(result: anytype, want: anyerror) void {
+    if (result) |_| {
+        // invariant: the call under test refused, so control reaches the error branch below and
+        // never this one
+        assert(false);
+    } else |err| {
+        // invariant: the refusal names the error the caller can act on, rather than any refusal
+        assert(err == want);
+    }
+}
+
+// THE CALLER TRIAL the answer budget asked for, run against the live wire rather than a model.
+// Fill the pool with retained replies one request at a time; prove admission refuses while every
+// request slot stands idle, because answers already handed back are still charged; release one
+// answer, admit into the slot it freed, and run a fourth exchange through those same bytes. Then
+// read the answers that were never released. They are whole, because each holds its own frame --
+// which is the claim, and the reason the pool exists rather than one shared scratch buffer.
+// Fill every answer slot, one request at a time, and hand back the tickets that keep them. Three
+// requests whose answers read differently, so a corrupted keep cannot pass by resembling its
+// neighbour: two hits of one path, then one of another, then one more of the second.
+fn fill_pool(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    pool: *AnswerPool,
+    tickets: *[pool_answer_max]Ticket,
+) !void {
+    const filling = [_]qw.QueryWireRequest{
+        .{ .peer = "peerB", .bolt = "b" },
+        .{ .tilak = "plain-bytes" },
+        .{ .peer = "peerB", .bolt = "c" },
+    };
+    var i: u32 = 0;
+    while (i < pool_answer_max) : (i += 1) {
+        const ticket = try pool.admit();
+        tickets[i] = ticket;
+        const slot = try pool.destination(ticket);
+        try exchange(allocator, io, self_path, filling[i], &slot.frame, &slot.response);
+        try pool.complete(ticket);
+        scribble_frame();
+    }
+    // invariant: every request finished, so nothing is in flight
+    assert(pool.active == 0);
+    // invariant: the pool is full of retained answers, which is the state its caller reads
+    assert(pool.retained == pool_answer_max);
+}
+
+// The request ceiling is the other half of the admission pair, and it needs no network: admit until
+// both request slots are in flight, and read the refusal by name. Then let one request refuse and
+// watch its reservation come back without ever spending an answer -- the design's *finish refusal*
+// edge.
+fn check_request_ceiling() PoolError!void {
+    var busy: AnswerPool = .{};
+    var in_flight: [pool_active_max]Ticket = undefined;
+    var held: u32 = 0;
+    while (held < pool_active_max) : (held += 1) in_flight[held] = try busy.admit();
+    // invariant: both request slots are in flight, which is the state the refusal below reads
+    assert(busy.active == pool_active_max);
+    refuses_with(busy.admit(), error.RequestSlotsFull);
+
+    try busy.fail(in_flight[0]);
+    // invariant: the refusal freed exactly one request slot
+    assert(busy.active == pool_active_max - 1);
+    // invariant: and charged no answer, so a request that fails costs the pool nothing it keeps
+    assert(busy.retained == 0);
+    _ = try busy.admit();
+    refuses_with(busy.fail(in_flight[0]), error.StaleTicket);
+}
+
+// The answers nobody released, read after the bytes beside them were reused. Both halves of the
+// retention claim run here: the text each kept answer spells, and the structural one no coincidence
+// of bytes can satisfy -- a kept name points INSIDE the slot its answer was admitted into. The
+// second half earns its place: two of this catalog's own replies spell one word at one offset, and
+// a text reading alone passed a pen where every exchange shared one frame.
+fn check_kept_whole(
+    pool: *AnswerPool,
+    tickets: *const [pool_answer_max]Ticket,
+    reused: Ticket,
+) PoolError!void {
+    const kept_first = try pool.answer(tickets[0]);
+    // invariant: the first answer still names both revisions its filter matched
+    assert(kept_first.hit_count == 2);
+    // invariant: and still spells its own path, rather than a later reply's
+    assert(std.mem.eql(u8, kept_first.hits[0].path, "notes.txt"));
+    // invariant: with its revisions in catalog order, which a partial overwrite would disturb
+    assert(kept_first.hits[0].revision == 1);
+    // invariant: the second hit is the later revision, so the whole record survived rather than
+    // its first field alone
+    assert(kept_first.hits[1].revision == 2);
+
+    const first_frame = @intFromPtr(&pool.slots[tickets[0].index].frame);
+    const first_path = @intFromPtr(kept_first.hits[0].path.ptr);
+    // invariant: the name begins at or after its own slot's frame
+    assert(first_path >= first_frame);
+    // invariant: and ends inside it, so the whole name is bytes this slot owns
+    assert(first_path + kept_first.hits[0].path.len <= first_frame + @as(usize, @intCast(wf.max_message)));
+
+    const kept_third = try pool.answer(tickets[2]);
+    // invariant: the third answer kept its single hit across the reuse beside it
+    assert(kept_third.hit_count == 1);
+    // invariant: naming the other path, which is what tells it from its neighbours
+    assert(std.mem.eql(u8, kept_third.hits[0].path, "other.txt"));
+    // invariant: at the revision its filter matched
+    assert(kept_third.hits[0].revision == 1);
+
+    const fresh = try pool.answer(reused);
+    // invariant: the reused slot answers its own new question, one hit rather than the released
+    // answer's shape
+    assert(fresh.hit_count == 1);
+    // invariant: and names the path this request asked for, where its former filling named the
+    // other one -- so the slot was written rather than merely re-labelled
+    assert(std.mem.eql(u8, fresh.hits[0].path, "notes.txt"));
+    // invariant: at the revision this request pinned
+    assert(fresh.hits[0].revision == 1);
+}
+
+fn run_pool_trial(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !void {
+    var pool: AnswerPool = .{};
+    var tickets: [pool_answer_max]Ticket = undefined;
+    try fill_pool(allocator, io, self_path, &pool, &tickets);
+    // The claim the model made, now on the wire: no request is running, both request slots are
+    // free, and admission refuses anyway.
+    refuses_with(pool.admit(), error.AnswerSlotsFull);
+
+    try pool.release(tickets[1]);
+    // invariant: the release returned exactly one slot, so one admission fits and no more
+    assert(pool.retained == pool_answer_max - 1);
+
+    const reused = try pool.admit();
+    const reused_slot = try pool.destination(reused);
+    try exchange(allocator, io, self_path, .{ .peer = "peerB", .bolt = "b", .revision = 1 }, &reused_slot.frame, &reused_slot.response);
+    try pool.complete(reused);
+    scribble_frame();
+
+    try check_kept_whole(&pool, &tickets, reused);
+
+    // A released ticket names a slot whose filling has moved on, so it neither reads nor frees the
+    // answer standing there now. Both doors refuse, since a duplicate release is the costlier one.
+    refuses_with(pool.answer(tickets[1]), error.StaleTicket);
+    refuses_with(pool.release(tickets[1]), error.StaleTicket);
+    // A retained answer is not an active request, so the destination door refuses it too.
+    refuses_with(pool.destination(tickets[0]), error.SlotNotActive);
+
+    try check_request_ceiling();
+}
+
+fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
+    var cat: ns.BoltCatalog = undefined;
+    try init_host_catalog(&cat);
 
     var client_opened: [@intCast(wf.max_message)]u8 = undefined;
     var resp: qw.QueryWireResponse = undefined;
-    try run_client_query(.{ .peer = "peerB", .bolt = "b" }, &client_opened, &resp);
+    try exchange(allocator, io, self_path, .{ .peer = "peerB", .bolt = "b" }, &client_opened, &resp);
     // The lifetime check, run before the answer is read: fill a frame the size of the one
     // `run_client_query` just left with a byte the reply never contains. When the response held
     // views into that frame this read came back as 0xAA and the next assert refused; reading the
@@ -180,34 +490,20 @@ fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
     assert(resp.hits[0].revision == 1);
     assert(resp.hits[1].revision == 2);
 
-    const host_term = try host_child.wait(io);
-    const host_code: u8 = switch (host_term) {
-        .exited => |code| code,
-        else => 255,
-    };
-    assert(host_code == 0);
-
     // Second exchange: empty match (honest absence).
-    const host_argv2 = try allocator.alloc([]const u8, 2);
-    defer allocator.free(host_argv2);
-    host_argv2[0] = self_path;
-    host_argv2[1] = "host";
-    var host2 = try std.process.spawn(io, .{ .argv = host_argv2 });
-    _ = c.nanosleep(&pause, null);
-
     var empty: qw.QueryWireResponse = undefined;
-    try run_client_query(.{ .tilak = "no-such-tilak" }, &client_opened, &empty);
+    try exchange(allocator, io, self_path, .{ .tilak = "no-such-tilak" }, &client_opened, &empty);
     assert(empty.hit_count == 0);
 
-    const host2_term = try host2.wait(io);
-    const host2_code: u8 = switch (host2_term) {
-        .exited => |code| code,
-        else => 255,
-    };
-    assert(host2_code == 0);
+    try run_pool_trial(allocator, io, self_path);
 
     print("ns-tcqd: version {s} wire {s}\n", .{ nqw_version, qw.query_wire_version });
-    print("GREEN: Tablecloth query delivery -- hosted filter hits + empty match.\n", .{});
+    print("ns-tcqd: answer pool active_max {d} answer_max {d} -- reserved bytes {d}\n", .{
+        pool_active_max,
+        pool_answer_max,
+        @sizeOf(AnswerPool),
+    });
+    print("GREEN: Tablecloth query delivery -- hosted filter hits, empty match, answer-slot budget.\n", .{});
     return 0;
 }
 

@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260909.170747
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent, BAKERY seat, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status tracked settings file
+evidence .claude/settings.json names model claude-opus-5; configuration does not verify the active runtime
+voice Kyri
+host Linux pier, America/New_York
+title The answer that reserves its room
+prompt Take the next agent-doable lap Lindy-first, crux-first; the card carries DIFFUSER's design naming Bakery as owner of the caller trial for the retained-answer budget
+rota lap 4452, row 2 -- Fire, the row that sees; fire sees what must stop, and reading the ledger through it showed every OPEN row standing as a gate or a shape decision -- 626, 568, 616 each name a ceiling or a wall only Keaton's word may move -- so the honest answer was that this lap had nothing to cut, and it took its lane's booked handoff instead
+think The design at active-designing/20260909-084736 states a count model and asks for a caller trial rather than another model. So the lap began by asking what an answer slot IS in the live module, and the answer was already written in my own elder block: one caller-owned opened buffer, since every name in a decoded response is a view into that buffer.
+think That makes the slot a concrete pair rather than an abstraction -- the frame the datagram opens into, and the response record whose slices point at it. Keeping the two in one struct is what lets a retained answer outlive the exchange that fetched it, which is the whole reason the pool exists rather than one shared scratch buffer.
+think The admission rule follows the design table exactly: a request is admitted when a slot is free for the reply it has not yet fetched, so a caller keeping four answers cannot be served by a pool of three however few requests are in flight. Both halves refuse by their own names, since a full answer pool and a full request set ask a caller for different things.
+think A ticket carries a generation as well as an index, because counts alone cannot tell a duplicate release from a release of whatever answer stands in that slot now. The generation advances on every free, so a ticket handed back refuses rather than reading a stranger's bytes.
+think The elder selftest ran two exchanges through one shared buffer and read each answer before the next call, which was correct as written and is exactly the shape the pool replaces. It now runs through the same exchange helper as the trial, so the module has one door onto the wire.
+think The first control read the retention claim by TEXT and passed the shared-frame break. Two of this catalog's own replies spell notes.txt at the same offset, so a corrupted keep resembled a whole one. The check is structural now -- a kept name begins inside its own slot's frame and ends inside it -- which no coincidence of bytes can satisfy.
+obs The count-level gap the model named is real on the wire. Three retained replies fill the pool, both request slots stand idle, and admit refuses AnswerSlotsFull. Release one, admit into the freed slot, run a fourth exchange through those bytes, and the two answers nobody released read whole.
+obs Six pens prove it from the failing side: one unmutated leg at exit 0, and five breaks each at 134 -- admission on the request count alone, one shared frame across the fill loop, a release that forgets the generation, a release that forgets the count, and a deleted request ceiling whose refusal then wears the wrong name.
+obs The witness that proves all of this stood on NO roster. tools/m/mantra_recall_tablecloth_query_wire.rish has run green by hand since the query wire landed and nothing heard it -- 360's shape, a proof nobody runs, in the very module 664 had just found returning dangling views. It is seated tier lap at 15s measured.
+obs Against myself: the cold roster pass opened before any edit and held still until its verdict, which the elder lap failed to do. It reads 181 guards, 178 green, 2 red, 1 gated. The two reds are sow_allow_reach and the roster's own summary of it; the tree was clean when the pass began, so neither is this round's.
+obs The hot pass caught what the module witness could not: rune_assert_sweep read unnamed_assert 6497 against a ceiling of 6489, and the eight were mine -- the trial's reading asserts, written as a selftest writes them rather than as TAME asks. Naming each one and lifting the kept-answer reads into check_kept_whole brought it to 6487.
+obs The two of slack under that ceiling stays rather than being taken. This lap swept no class; it repaired its own eight, and a ceiling lowered to exactly one module's reading would red the next honest lap on a tree eight ships write to.
+obs What the trial does NOT reach, named rather than left for a reader: every transition here is serial, which is the model's own stated assumption. A borrower reading a slot while another holder releases it would pass all six pens. The byte partition B, C and S still wants a workload before anyone names a number.
+loom witness=mantra_tablecloth_query_wire result=green seconds=15
+loom control=mantra_tablecloth_answer_pool phases=6 clean_exit=0 breaks_refused=5
+loom pool=answer_slots active_max=2 answer_max=3 reserved_bytes=2432
+loom roster=cold_scoped guards=181 green=178 red=2 gated=1 seconds=1835
+loom roster=hot guards=213 green=209 red=2 gated=2 seconds=2120 tree_moved=no
+file mantra/recall_tablecloth_query_delivery.rye AnswerPool, its ticket generation, the exchange helper, and the caller trial the design asked for
+file tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh six pens -- one clean, five breaks each refusing by its own name
+file tools/m/mantra_recall_tablecloth_query_wire.rish the witness drives the control, so the reservation is proven rather than asserted
+file construction/standing-equipment.kyri the witness seated tier lap, so a proof that ran nowhere is heard every lap
+file construction/ITINERARY.md the BAKERY block carries the trial's readings and the two numbers still Keaton's
+recommend keep-going the byte partition is the next half -- B, C and S want a workload before anyone names them, and the pool now gives that workload somewhere to land
+scope one module, one control, one witness, one roster row, the card's own block; no peer file touched
+status GREEN -- module selftest, six control pens, tame_style_check, width-check, rune_assert_sweep, and the module QA card at A; the hot pass reads 209 green with sow_allow_reach and the roster summary of it the only reds, neither this round's

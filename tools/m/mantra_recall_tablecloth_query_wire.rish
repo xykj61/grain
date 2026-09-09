@@ -21,4 +21,14 @@ let delivery_selftest = run ["sh" "-c" "${delivery_bin} selftest 2>&1"]
 assert delivery_selftest.ok else "tablecloth query delivery selftest exited non-zero"
 assert delivery_selftest.out contains "GREEN" else "tablecloth query delivery selftest not GREEN"
 
-say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter)."
+# THE REFUSALS, PROVEN FROM THE FAILING SIDE. The delivery selftest now carries the answer-slot
+# budget: a request reserves the slot its reply will live in, so a caller keeping an answer is
+# charged for the bytes it keeps. A GREEN selftest alone cannot tell that reservation from a
+# ceiling nobody enforces, so the control breaks the module six ways in a pen and watches five of
+# them refuse -- with one unmutated leg, so a refusal stays tellable from a bypass.
+let pool_control = run ["sh" "tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh"]
+assert pool_control.ok else "answer-slot budget control did not reach verdict=ok"
+assert pool_control.out contains "verdict=ok" else "answer-slot budget control verdict missing"
+assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused, so no break below reads honestly"
+
+say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter + answer-slot budget)."
