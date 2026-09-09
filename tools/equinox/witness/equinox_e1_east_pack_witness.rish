@@ -14,13 +14,13 @@
 #   priority_of_slot - priority_of_round -- a round names its own priority (e6)
 #   copy_sameness -- the one real tally_copy cannot drift silently (e6)
 
-say "equinox-e1: Language EN — East equinox, first utilities."
-say "equinox-e1: Style Radiant — welcome and refuse both asserted."
-say "equinox-e1: Lens TAME — bounds named; two assertions per function."
+say "equinox-e1: Language EN -- East equinox, first utilities."
+say "equinox-e1: Style Radiant -- welcome and refuse both asserted."
+say "equinox-e1: Lens TAME -- bounds named; two assertions per function."
 
 let zig = "vendor/zig-toolchain/zig"
 let have_zig = run ["test" "-x" zig]
-assert have_zig.ok else "equinox-e1: toolchain absent — raise rye first"
+assert have_zig.ok else "equinox-e1: toolchain absent -- raise rye first"
 
 let lat = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run lattice/approx_equal_test.rye 2>&1"]
 assert lat.ok else "equinox-e1: lattice approx_equal RED"
@@ -150,7 +150,15 @@ assert ab.out contains "GREEN" else "voice-v11: almanac breach not GREEN"
 let ol = run ["sh" "-c" "rishi/bin/rishi run tools/o/opening_lines_witness.rish 2>&1"]
 assert ol.ok else "voice-v12: opening lines RED"
 assert ol.out contains "GREEN" else "voice-v12: opening lines not GREEN"
-assert ol.out contains "all 25 hosted files" else "voice-v12: the roster lost files"
+# A WITNESS THAT ASSERTS ON A SIBLING SENTENCE IS COUPLED TO ITS REGISTER, and register is
+# what this tree sweeps. This line read `all 25 hosted files` and went RED at `59af39d1f`
+# -- "opening lines reads rooms, not 24 paths" -- which rewrote that witness to discover its
+# rooms rather than carry a list, and changed its closing sentence with it. The sibling was
+# GREEN throughout; only the phrase moved. It failed silently because no rostered guard runs
+# this witness. So the promise is read off a STRUCTURAL key instead: the elder roster still
+# stands at its own size, and every ratchet it carries is under its ceiling.
+assert ol.out contains "elder_roster=24" else "voice-v12: the elder roster lost files"
+assert ol.out contains "ratchets_over_ceiling=0" else "voice-v12: an opening-lines ratchet rose above its ceiling"
 
 # v23: tally/stack graduated on Keaton's word -- its witness rides from day one.
 let ts = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tally/stack_test.rye 2>&1"]
@@ -172,4 +180,4 @@ assert ts.out contains "GREEN" else "voice-v23: tally stack not GREEN"
 
 
 
-say "GREEN: equinox-e1..e6 · voice v0..v12 — proven rather than merely kept, and the crossing complete"
+say "GREEN: equinox-e1..e6 - voice v0..v12 -- proven rather than merely kept, and the crossing complete"

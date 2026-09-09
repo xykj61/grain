@@ -452,8 +452,8 @@ fn run_lap3_selftest(_: std.Io) !u8 {
 
     const report = try sync_revision(&dest, &src, "peerB", "b", 1);
     assert(report.total == 2);
-    assert(report.had_already == 1); // a.txt "alpha" deduped — ref crosses, bytes stay home
-    assert(report.needed == 1); // b.txt "beta" — bytes cross once
+    assert(report.had_already == 1); // a.txt "alpha" deduped -- ref crosses, bytes stay home
+    assert(report.needed == 1); // b.txt "beta" -- bytes cross once
 
     // Referential transparency across peers: the same name recalls the same bytes on both.
     const na = Name{ .peer = "peerB", .bolt = "b", .revision = 1, .path = "a.txt" };

@@ -62,7 +62,7 @@ pub fn no_padding(comptime T: type) bool {
             }
         },
         .@"enum" => |info| {
-            maybe(info.is_exhaustive); // an enum may honestly be either — both lay out the same
+            maybe(info.is_exhaustive); // an enum may honestly be either -- both lay out the same
             return no_padding(info.tag_type);
         },
         .pointer => return false,

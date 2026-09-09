@@ -15,13 +15,18 @@
 # WHAT DOES NOT COUNT:
 #   * a `\\` line, which is Zig multiline STRING content and is program output, not prose;
 #   * a string literal on a code line, for the same reason;
-#   * a trailing comment after code on the same line.
+#   * a trailing comment after code on the same line -- IN THIS READING. It is prose, and it is
+#     counted by the SECOND reading this scan prints, `RYE_TRAILING_COMMENT_ASCII`, seated
+#     `20260908.232949` and argued in full beside `TRAIL_CEILING` below. One character belongs to
+#     one ceiling; what changed is that it now belongs to one rather than to none.
 # The first two are excluded because converting them would change what a program prints -- measured
 # `20260825.011000`: 5,455 non-ASCII characters live in strings across 1,041 authored files, and one
 # blanket `sed` over a single module rewrote nine of them, including a header written into a file.
-# The third is excluded because finding it needs to know whether a `//` sits inside a string, which
-# is parsing rather than scanning. **This therefore UNDERCOUNTS on purpose**: it reads 33,541 total
-# non-ASCII in comment context by a parsing measure, and rather less by this one. An honest smaller
+# The third WAS excluded because finding it needs to know whether a `//` sits inside a string, which
+# is parsing rather than scanning -- a reason about capability rather than about subject, and the
+# capability arrived one lap earlier in the spoken meter beside this one. **This reading still
+# UNDERCOUNTS on purpose**: it reads 33,541 total non-ASCII in comment context by a parsing measure,
+# and rather less by this one. An honest smaller
 # number under a falling ceiling beats a larger one that might be wrong about a string.
 #
 # USAGE
@@ -106,11 +111,110 @@ count_file() {
   ' "$1"
 }
 
+
+# A TRAILING COMMENT IS A COMMENT, and until `20260908.232949` no meter in this tree could see one.
+# The header above excludes it with a reason about capability rather than about subject -- "finding
+# it needs to know whether a `//` sits inside a string, which is parsing rather than scanning" --
+# and that capability now exists here, in the walk below. It was written for
+# `tools/fixtures/r/rye_spoken_ascii_scan.sh` on `20260908.214712`, which tracks parenthesis depth
+# outside string literals over the same 1,730 sources, and which already finds this exact `//` and
+# steps past it because a comment is this meter's room rather than its own.
+#
+# THE GAP IS AN ESCAPE HATCH RATHER THAN A BLIND SPOT, and that is what earns the second reading.
+# Moving an own-line `//` comment onto the end of the preceding code line removes every character
+# it carries from the numerator above, converts nothing, and reads as a sweep. The arc in the
+# ceiling comment records the reverse move happening by accident: `20260828.134500` promoted three
+# em dashes from trailing comments to their own lines and the count ROSE. The same door swings both
+# ways, and one direction lowers a ratchet for free.
+#
+# MEASURED `20260908.232949` over the same 1,730 tracked sources, after this lap swept its own lane
+# (mantra and tally, 8 characters in 5 files) to zero: 1,311 characters across 366 files. Against
+# the 3,772 the reading above counts, roughly one comment character in four stood outside every
+# meter.
+#
+# TWO READINGS RATHER THAN ONE MERGED NUMBER, for two reasons. A single number would need a ceiling
+# of 5,083, which reads as a raise however it is explained, and the ceiling above must stay exactly
+# 3,794 with its arc intact. And two gated numbers close the hatch by themselves: a comment moved
+# from one position to the other lowers one reading and RAISES the other, so the receiving ceiling
+# refuses. Neither number can be improved by moving a character.
+#
+# WHAT COUNTS: a `//` that opens a comment on a line whose first non-blank is NOT `//`, found with
+# the same string, raw-string, and character-literal awareness the spoken meter uses -- so the `//`
+# inside `"https://"` is passed over rather than counted. That case stands in the tree today, at
+# `tools/rye/session_logs_archive.rye:311`, and the control plants it.
+#
+# The ceiling only falls. Lower it whenever a lap converts trailing comments; never raise it.
+#   1319  `20260908.232949`  the reading before this lap swept its own lane
+#   1311  `20260908.232949`  after mantra and tally were converted to zero, first resident
+TRAIL_CEILING=1311
+
+count_trailing() {
+  LC_ALL=C awk '
+    { s = $0
+      len = length(s)
+      i = 1
+      in_str = 0
+      in_raw = 0
+      # An own-line comment belongs to the reading above; counting it here would charge one
+      # character to two ceilings and make each number depend on the other.
+      lead = s
+      sub(/^[ \t]+/, "", lead)
+      if (substr(lead, 1, 2) == "//") next
+      while (i <= len) {
+        c = substr(s, i, 1)
+        if (in_str) {
+          if (c == "\\") { i += 2; continue }
+          if (c == "\"") { in_str = 0; i++; continue }
+          i++
+          continue
+        }
+        # A raw multiline string runs to the end of the line and holds no closing quote.
+        if (in_raw) { i++; continue }
+        if (c == "\\" && substr(s, i + 1, 1) == "\\") { in_raw = 1; i += 2; continue }
+        if (c == "/" && substr(s, i + 1, 1) == "/") {
+          for (k = i; k <= len; k++) if (substr(s, k, 1) ~ /[\300-\377]/) n++
+          break
+        }
+        if (c == "\"") { in_str = 1; i++; continue }
+        # A character literal may hold a quote or a slash, so it is stepped over whole.
+        if (c == "\047") {
+          i++
+          while (i <= len) {
+            ch = substr(s, i, 1)
+            if (ch == "\\") { i += 2; continue }
+            if (ch == "\047") { i++; break }
+            i++
+          }
+          continue
+        }
+        i++
+      }
+    }
+    END { print n + 0 }
+  ' "$1"
+}
+
+# A number that is not a number means the awk never ran -- REDS %513, learned by every sibling here.
+check_number() {
+  case "$1" in
+    '' | *[!0-9]*)
+      echo "instrument=failed"
+      echo "detail=awk_answered_no_number"
+      echo "detail_path=$2"
+      echo "verdict=misread"
+      exit 1
+      ;;
+  esac
+}
+
 total=0
+trail_total=0
 files=0
+trail_files=0
 absent=0
 opened=0
 report=""
+trail_report=""
 for f in $list; do
   # A link and its target are two paths and one set of bytes; the target is read on its own row.
   [ -L "$f" ] && continue
@@ -126,27 +230,40 @@ for f in $list; do
     echo "verdict=misread"
     exit 1
   }
-  case "$n" in
-    '' | *[!0-9]*)
-      echo "instrument=failed"
-      echo "detail=awk_answered_no_number"
-      echo "detail_path=$f"
-      echo "verdict=misread"
-      exit 1
-      ;;
-  esac
+  check_number "$n" "$f"
+  t=$(count_trailing "$f") || {
+    echo "instrument=failed"
+    echo "detail=awk_refused_a_file"
+    echo "detail_path=$f"
+    echo "verdict=misread"
+    exit 1
+  }
+  check_number "$t" "$f"
   if [ "$n" -gt 0 ]; then
     files=$((files + 1))
     total=$((total + n))
     report="$report$n $f
 "
   fi
+  if [ "$t" -gt 0 ]; then
+    trail_files=$((trail_files + 1))
+    trail_total=$((trail_total + t))
+    trail_report="$trail_report$t $f
+"
+  fi
 done
 
 if [ "$mode" = "--list" ]; then
   printf '%s' "$report" | sort -rn | head -40
+  echo "-- trailing --"
+  printf '%s' "$trail_report" | sort -rn | head -40
 fi
 
 if [ "$total" -le "$CEILING" ]; then under=yes; else under=no; fi
+# The key is spelled `trail_ceiling_ok` rather than a second `under_ceiling`, because a reader --
+# and every `case` pattern in the control -- must be able to match one reading without catching the
+# other as a substring.
+if [ "$trail_total" -le "$TRAIL_CEILING" ]; then trail_ok=yes; else trail_ok=no; fi
 echo "instrument=ok"
 echo "RYE_COMMENT_ASCII files=$files chars=$total opened=$opened absent=$absent ceiling=$CEILING under_ceiling=$under"
+echo "RYE_TRAILING_COMMENT_ASCII files=$trail_files chars=$trail_total ceiling=$TRAIL_CEILING trail_ceiling_ok=$trail_ok"
