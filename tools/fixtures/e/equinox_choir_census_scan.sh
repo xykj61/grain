@@ -15,7 +15,12 @@
 # EACH IS PROBED, never merely run, so a HANG is told from a RED: one is a claim about the run and
 # the other about the tree, and a roster row for a hanging witness hangs the fleet.
 set -eu
-red_ceiling=${EQUINOX_CHOIR_RED_CEILING:-30}
+# THE RED CEILING FELL 30 -> 10 on `20260908.234500`, on the lap after it was first counted.
+# Seventeen of the thirty were one absent submodule: 21 census witnesses each carried the SAME hard
+# assert on `gratitude/tigerbeetle/src`, and 17 choirs asserted their content. Teaching both to SKIP
+# turned 17 reds into honest skips without changing what any of them checks on a host that HAS the
+# clone. Green rose 50 -> 70. The class is booked at `20260908.202239`.
+red_ceiling=${EQUINOX_CHOIR_RED_CEILING:-10}
 hung_ceiling=${EQUINOX_CHOIR_HUNG_CEILING:-2}
 bound=${EQUINOX_CHOIR_BOUND:-90}
 dir=${EQUINOX_CHOIR_DIR:-tools/equinox/witness}
