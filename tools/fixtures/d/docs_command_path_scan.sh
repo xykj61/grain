@@ -16,10 +16,36 @@
 # the seam between three guards, and a reader running the command was the only instrument that
 # could reach it.
 #
-# WHAT IS GATED, hard, at zero. A path printed inside a fenced code block of a tracked `.md`
-# that resolves NOWHERE, and whose basename the tracked tree carries at exactly one other path.
-# That pair of facts is what makes it a MOVED file rather than a missing one, so the scan can
-# name the repair rather than only the complaint.
+# WHAT IS GATED, hard, at zero. A path a page tells a reader to RUN that resolves NOWHERE, and
+# whose basename the tracked tree carries at exactly one other path. That pair of facts is what
+# makes it a MOVED file rather than a missing one, so the scan can name the repair rather than
+# only the complaint.
+#
+# A COMMAND WEARS BACKTICKS AS OFTEN AS A FENCE. The first-hour page of the OS user manual hands
+# a newcomer two witnesses inside a table cell -- `Run `tools/kumara_tilak_witness.rish`, ...` --
+# and both had moved with the tools letter fold. A fence-only reader cannot see a table cell, so
+# the VERB is what marks it: an inline code span introduced by run, runs, or running is read as a
+# command, and a bare backtick is read as a name. Measured over the whole tree, that widening
+# finds 37 more printed paths and no new living fault -- narrow enough to be honest, and it is
+# the shape that bit.
+#
+# A MANUAL INSTRUCTS, WHERE A LOG RECORDS. Every page under manual/ and nixos-guide/ carries a
+# one-clock stamp, because the naming law names every file that way -- so a test reading the
+# stamp read the OS user manual as a record of what was once true, and eleven printed commands
+# stood broken there. Those two rooms are read as LIVING whatever their basename says. It is a
+# roster of two rather than a rule, and the reason is a property of the rooms rather than of
+# their names: a manual instructs a reader today, so its stamp is a birth date rather than a
+# claim. A page on a date/ or archive/ shelf stays testimony wherever it sits.
+#
+# A PAGE IS JUDGED BY ITS OWN NAME, NEVER BY THE NAME IT PRINTS. The elder testimony test read
+# the whole row, so a LIVING page printing a path whose basename carried a stamp excused itself
+# with that other file's stamp -- which is how docs-geode/demos/README.md went unread. The test
+# reads the page field alone now.
+#
+# A STALE PATH IS WHAT A RESOLVER TAKES. A page demonstrating dated_path_resolve or
+# tool_path_resolve prints a path the tree deliberately no longer carries, since recovering one
+# is the tool's whole subject. Such a line passes free, so the tree may keep teaching its own
+# repair.
 #
 # WHAT PASSES FREE, by one rule rather than a table. A printed path the tree does not carry at
 # all is a path the READER creates -- `tools/fixtures/my_first_witness.rish` in a tutorial that
@@ -33,8 +59,9 @@
 # makes it resolve; or it resolves from the page's own directory.
 #
 # DATED TESTIMONY IS REPORTED, NEVER GATED. Accrete-never-break: a log from June names
-# `tools/tame_style_check.rish` because that is where the file stood in June. 955 of the 958
-# paths in this class are exactly that, and rewriting them would edit testimony to tidy a meter.
+# `tools/tame_style_check.rish` because that is where the file stood in June. Every path in this
+# class is exactly that, and rewriting them would edit testimony to tidy a meter. Read the count
+# from the scan rather than from this comment -- it moves with every fold.
 #
 # USAGE
 #   sh tools/fixtures/d/docs_command_path_scan.sh
@@ -59,20 +86,35 @@ pages=$(wc -l < "$work/pages" | tr -d ' ')
 # ONE AWK OVER EVERY PAGE (the lesson of REDS %413, one room over): an awk per file across
 # 5,776 pages costs a fork apiece for a pass that reads each of them once either way.
 tr '\n' '\0' < "$work/pages" | LC_ALL=C xargs -0 awk '
-  FNR == 1 { fence = 0; cd = ""; dir = FILENAME; sub(/\/[^\/]*$/, "", dir); if (dir == FILENAME) dir = "." }
-  /^[[:space:]]*```/ { fence = !fence; if (!fence) cd = ""; next }
-  !fence { next }
-  $1 == "cd" { cd = $2; next }
-  {
-    n = split($0, w, /[ \t"'"'"']+/)
+  function emit(text, page, dirv, cdv,    n, w, i, t) {
+    n = split(text, w, /[ \t"'"'"']+/)
     for (i = 1; i <= n; i++) {
       t = w[i]
       sub(/[),;:]+$/, "", t)
       sub(/^\.\//, "", t)
       if (t !~ /^[A-Za-z0-9_.][A-Za-z0-9_.\/-]*\/[A-Za-z0-9_.-]+\.(rye|rish|sh|glow|md|kyri|bron|brix|brush|myc|txt|awk|zig)$/) continue
-      print FILENAME "\t" dir "\t" cd "\t" t
+      print page "\t" dirv "\t" cdv "\t" t
     }
   }
+  FNR == 1 { fence = 0; cd = ""; dir = FILENAME; sub(/\/[^\/]*$/, "", dir); if (dir == FILENAME) dir = "." }
+  /^[[:space:]]*```/ { fence = !fence; if (!fence) cd = ""; next }
+  !fence {
+    line = $0
+    while (match(line, /[Rr]un(ning|s)? +`[^`]+`/)) {
+      s = RSTART; l = RLENGTH
+      seg = substr(line, s, l)
+      if (match(seg, /`[^`]+`/)) emit(substr(seg, RSTART + 1, RLENGTH - 2), FILENAME, dir, "")
+      line = substr(line, s + l)
+    }
+    next
+  }
+  $1 == "cd" { cd = $2; next }
+  # A stale path is what a RESOLVER takes. tools/d/dated_path_resolve.rish and
+  # tools/t/tool_path_resolve.rish exist to recover a reference written at an old path, so a
+  # page demonstrating one prints a path the tree deliberately no longer carries -- the input
+  # IS the point. Reading that as a fault would ask the tree to stop teaching its own repair.
+  /_path_resolve\.rish/ { next }
+  { emit($0, FILENAME, dir, cd) }
 ' > "$work/printed"
 printed=$(wc -l < "$work/printed" | tr -d ' ')
 
@@ -111,7 +153,16 @@ moved=$(wc -l < "$work/moved" | tr -d ' ')
 
 # Dated testimony keeps every word it wrote: a page whose own basename carries a one-clock
 # stamp, and every page on a date/ or archive/ shelf.
-grep -vE '(^|/)(date|archive)/|/[0-9]{8}-[0-9]{6}[_.]' "$work/moved" > "$work/living" || : > "$work/living"
+awk -F'\t' '
+  {
+    shelf   = ($1 ~ /(^|\/)(date|archive)\//)
+    stamped = ($1 ~ /\/[0-9]{8}-[0-9]{6}[_.]/)
+    manual  = ($1 ~ /^(manual|nixos-guide)\//)
+    if (shelf) next
+    if (stamped && !manual) next
+    print
+  }
+' "$work/moved" > "$work/living" || : > "$work/living"
 living=$(wc -l < "$work/living" | tr -d ' ')
 testimony=$((moved - living))
 

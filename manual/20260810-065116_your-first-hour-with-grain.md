@@ -70,7 +70,7 @@ You will see the modules named above as folders -- `kumara`, `scribe`, `vault`, 
 Grain speaks through two tools, and you build them once before anything else. They are **not** in the clone -- neither binary is tracked, because a compiler and a shell are things this tree builds rather than ships, and a 172 MB toolchain does not belong in a git history. Three commands put all three in place, and the first is the only one that reaches the network:
 
 ```bash
-sh tools/fetch-toolchain.sh
+sh tools/f/fetch-toolchain.sh
 cd rye && ./bootstrap.sh && cd ..
 mkdir -p rishi/bin && env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
 ```
@@ -115,7 +115,7 @@ You have now watched a module examine its own work and pass. This is the heartbe
 The selftest is scribe checking itself. A **witness** is Grain checking scribe -- an outside inspector, kept in `tools/`, that runs the module and confirms every promise independently. Running it is the moment the whole discipline clicks into place.
 
 ```bash
-rishi/bin/rishi run tools/scribe_reader_witness.rish
+rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
 
 You should see a line like:
@@ -198,7 +198,7 @@ You have a home now. Here are gentle doors from it, in the order they tend to op
 | [`tutorials/first-witness.md`](tutorials/first-witness.md) | Write a tiny witness of your very own -- the shortest path to making the system prove *your* fact |
 | [`tutorials/run-record-and-failures.md`](tutorials/run-record-and-failures.md) | How a command's result is captured, and how a witness proves a failure on purpose |
 | [`reference/rishi-language.md`](reference/rishi-language.md) | The full, gentle reference for the witness language you have already been reading |
-| Other modules' witnesses in [`../tools/`](../tools/) | Run `tools/kumara_tilak_witness.rish`, `tools/pond_ring_dimeroll_witness.rish`, and their neighbors -- each proves a different module green, the same way scribe just did |
+| Other modules' witnesses in [`../tools/`](../tools/) | Run `tools/k/kumara_tilak_witness.rish`, `tools/p/pond_ring_dimeroll_witness.rish`, and their neighbors -- each proves a different module green, the same way scribe just did |
 | The four rooms of [`the manual`](README.md) | Tutorials to learn by hand, guides for a task in front of you, reference to look one thing up |
 
 Take them one at a time. Grain grows exactly the way you just learned it -- one small proven piece after another -- and so, happily, can you.

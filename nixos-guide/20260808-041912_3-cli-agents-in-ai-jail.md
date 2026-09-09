@@ -15,7 +15,7 @@ Guide 2 left `gh` and Claude Code on the steward's PATH. This note wraps those C
 
 ## Why a separate launcher
 
-The GUI path ([`tools/cursor-jail.sh`](../tools/cursor-jail.sh)) expects an AppImage `AppRun`. The pier's daily hands are **headless CLIs**. [`tools/agent-jail.sh`](../tools/agent-jail.sh) is the bash elder for that road; Rish entries are [`tools/launch-claude.rish`](../tools/launch-claude.rish) and [`tools/launch-cursor-agent.rish`](../tools/launch-cursor-agent.rish).
+The GUI path ([`tools/cu/cursor-jail.sh`](../tools/cu/cursor-jail.sh)) expects an AppImage `AppRun`. The pier's daily hands are **headless CLIs**. [`tools/ag/agent-jail.sh`](../tools/ag/agent-jail.sh) is the bash elder for that road; Rish entries are [`tools/l/launch-claude.rish`](../tools/l/launch-claude.rish) and [`tools/l/launch-cursor-agent.rish`](../tools/l/launch-cursor-agent.rish).
 
 ## Seat ai-jail on NixOS
 
@@ -34,21 +34,21 @@ ai-jail's bwrap recipe also ro-binds `/opt`. Keep an empty directory (living fla
 From `~/grain`:
 
 ```bash
-./tools/agent-jail.sh claude
-./tools/agent-jail.sh cursor-agent
+./tools/ag/agent-jail.sh claude
+./tools/ag/agent-jail.sh cursor-agent
 # Resume a Cursor Agent chat (either flag seat works):
-./tools/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
-./tools/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
-./tools/agent-jail.sh --continue agent
+./tools/ag/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
+./tools/ag/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
+./tools/ag/agent-jail.sh --continue agent
 # or:
-rishi/bin/rishi run tools/launch-claude.rish
-rishi/bin/rishi run tools/launch-cursor-agent.rish
+rishi/bin/rishi run tools/l/launch-claude.rish
+rishi/bin/rishi run tools/l/launch-cursor-agent.rish
 ```
 
 Witness (ordinary host shell, not already jailed):
 
 ```bash
-./tools/agent_jail_witness.sh
+./tools/ag/agent_jail_witness.sh
 ```
 
 ## Project-local auth (survives tmpfs `$HOME`)
@@ -61,7 +61,7 @@ Witness (ordinary host shell, not already jailed):
 | `~/.config/cursor` (OAuth `auth.json`) | `.cursor-agent-state/xdg-config/` |
 | `GH_CONFIG_DIR` | `.gh/` |
 
-**Browser login every launch is not the steady state.** `cursor-agent` keeps the session token in `~/.config/cursor/auth.json`. Under `--private-home` that path is tmpfs unless mapped -- the launcher maps it to `.cursor-agent-state/xdg-config/` and, when that store is empty, seeds once from the host's `~/.config/cursor/` if present. After one successful login (jailed or host-seeded), later `./tools/agent-jail.sh agent` / `--resume=...` starts should stay signed in. Never commit those state dirs.
+**Browser login every launch is not the steady state.** `cursor-agent` keeps the session token in `~/.config/cursor/auth.json`. Under `--private-home` that path is tmpfs unless mapped -- the launcher maps it to `.cursor-agent-state/xdg-config/` and, when that store is empty, seeds once from the host's `~/.config/cursor/` if present. After one successful login (jailed or host-seeded), later `./tools/ag/agent-jail.sh agent` / `--resume=...` starts should stay signed in. Never commit those state dirs.
 
 Jail-local git identity stays under `.ssh/` and `.gnupg-rye/` -- already inside the project mount.
 

@@ -74,7 +74,7 @@ You can watch this hold for yourself. The module builds and proves green while t
 ```bash
 env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye build vault/shard.rye -femit-bin=vault/bin/shard
 vault/bin/shard selftest    # the disaster arithmetic, on a fake key
-rishi/bin/rishi run tools/vault_shard_witness.rish
+rishi/bin/rishi run tools/v/vault_shard_witness.rish
 ```
 
 The green line proves the keeping-arithmetic works -- and proves, just as importantly, that it works **without a real secret anywhere in sight.** That is the pattern to imitate every time your own work meets a key: prove the mechanism on a fake value that is safe to share, and let the real value live only in your own hand.
@@ -138,7 +138,7 @@ Here is the whole setup as a sequence you can follow top to bottom. Each step is
 5. **Generate your signing key** by your own hand, keep the private half outside the tree, and register the public half with your forge.
 6. **Create a scoped, revocable access credential** for pushing -- the narrowest that does the job -- stored in your environment or a gitignored path, never in a tracked file.
 7. **Confirm your secrets are outside the tree.** A quick `git status` should show nothing sensitive staged, and every key path you created should be one the tree ignores. When in doubt, keep it out.
-8. **Prove the whole setup works** by running a witness against the shipped tools -- for example `rishi/bin/rishi run tools/scribe_reader_witness.rish` -- and, if you built `vault` while reading Section 2, its green line too. A green line is the system proving itself on your own metal, inside the safe room you just built.
+8. **Prove the whole setup works** by running a witness against the shipped tools -- for example `rishi/bin/rishi run tools/s/scribe_reader_witness.rish` -- and, if you built `vault` while reading Section 2, its green line too. A green line is the system proving itself on your own metal, inside the safe room you just built.
 
 When those eight steps are done, you have exactly what this page set out to give you: a contained place to work, a clear and absolute discipline that keeps your secrets in your own hands, and the ordinary accounts a contributor needs -- all arranged so that the work lives in the template and everything that is genuinely yours lives in you.
 

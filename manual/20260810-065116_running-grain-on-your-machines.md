@@ -44,7 +44,7 @@ Everything on this page runs from inside that `grain` folder -- the repository r
 The shortest honest proof that Grain works is to run a witness -- once the shell exists. It is **not** in the clone: `rye` and `rishi` are programs this tree builds rather than ships, and `git ls-files rye/bin rishi/bin` returns nothing at all. Three commands put the toolchain, the compiler, and the shell in place, and only the first reaches the network:
 
 ```bash
-sh tools/fetch-toolchain.sh
+sh tools/f/fetch-toolchain.sh
 sh rye/bootstrap.sh
 mkdir -p rishi/bin && env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
 ```
@@ -52,7 +52,7 @@ mkdir -p rishi/bin && env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye bu
 Then the witness:
 
 ```bash
-rishi/bin/rishi run tools/scribe_reader_witness.rish
+rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
 
 A witness is a short script that proves exactly one fact and ends with a line beginning `GREEN:` when the fact holds. When that line prints, Grain has proven itself on *your* metal -- not "should work," but *works, here, now.* Green is the whole contract; there is no third state.
@@ -69,7 +69,7 @@ sh rye/bootstrap.sh
 
 This cold-start step compiles the `rye` command from `rye/src/main.rye` against Grain's own copy of the standard library, and ends by printing `rye`'s version. From there, `rye build` and every witness run as they do anywhere.
 
-**The one-command path.** `sh tools/fetch-toolchain.sh` fetches the pinned Zig 0.16.0 for your platform and refuses to extract a byte unless it matches a checksum kept in this repository. It is the default, and the two routes below are for hosts where it does not suit.
+**The one-command path.** `sh tools/f/fetch-toolchain.sh` fetches the pinned Zig 0.16.0 for your platform and refuses to extract a byte unless it matches a checksum kept in this repository. It is the default, and the two routes below are for hosts where it does not suit.
 
 **The sandbox path** -- for a disposable machine you spin up, use, and discard. When there is no persistent host to protect, you may bring the same Zig 0.16.0 from a package index and point `rye` at it:
 
@@ -136,10 +136,10 @@ An ordinary 64-bit Linux laptop -- any mainstream distribution -- is the smoothe
 ```bash
 git clone https://github.com/grain-os/grain
 cd grain
-sh tools/fetch-toolchain.sh
+sh tools/f/fetch-toolchain.sh
 sh rye/bootstrap.sh
 mkdir -p rishi/bin && env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
-rishi/bin/rishi run tools/scribe_reader_witness.rish
+rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
 
 Nothing is prebuilt for you, and that is deliberate: a compiler and a shell that a tree builds itself are things a reader can audit, and a 172 MB toolchain does not belong in a git history. The build above takes a few minutes once, and every `GREEN:` line after it was produced by binaries you watched appear.

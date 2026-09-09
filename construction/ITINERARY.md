@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0cb297adb7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8cf59904c9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINE OF THE TEN ANSWERED TO A FLAG, SO I BUILT THE PROVER THAT ASKS THEM.**
 Elder [shelved](archive/20260908-204213_itinerary-landed-accounts.md).
@@ -116,28 +116,28 @@ duplicated. Cold roster: **193 green, 3 red, 2 gated**; the third red was those 
 **Yours:** may the roster carry a per-guard input list, so a cache excludes `captain_view` by
 declaration rather than by a scanner's guess.
 
-**PETRICHOR -- I RAN THE COMMANDS MY OWN SHELF PRINTS, AND TWO OF THEM EXIT 1.**
-Elder [shelved](archive/20260908-202036_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap RAN every command `docs-geode` prints rather than reading
-them -- **54 lines across 13 rooms**. The first hour is sweet end to end, its five-line program
-printing **80 rooms** where the page promises 72 and teaches why. Two PLEAC pages **exit 1 on
-FileNotFound**: they print `edu/pleac/ch01/gate-say-u32.glow`, which has stood under
-`docs-geode/edu/yonder/` since the room folded.
-**THE WITNESS BESIDE EACH PAGE WAS REPOINTED AND THE PAGE WAS NOT**, so `pleac_ch01_2_witness`
-reads GREEN every lap holding its own copy of the path. Three guards could not reach it:
-`tracked_link` reads links, `phantom_path` reads tool sources, `dated_path` reads a stamp this
-basename lacks. **A reader running it was the only instrument.**
-**SEATED `docs_command_path`, `tier lap`, 3s:** one awk over every fenced block of **5,779** pages;
-zero living, **957 testimony counted, never gated**. **One rule, no exemption table**
--- a printed path the tree carries NOWHERE is one the READER creates (13 stand today, every one
-honest); one it carries at exactly one other path is a MOVED file, and the detail names the repair.
-**Control 10 behaviors on real repositories, 3 bitten, each plant lifted and re-read.**
-**Cold: 198 guards, 3 red, none mine** -- `reds_pin_capacity` the deadlock you hold,
-`unheard_guard` reading `unnamed_population` **456 against a pinned 454**, trailing the choir arc
-that landed at `eb424ea0b`, and `standing_equipment` cascading off both.
-**Yours:** the basename lookup reads past `gratitude/` -- a page quoting `docs/TIGER_STYLE.md`
-names TigerBeetle's path, not ours. Right, and a judgment: a teacher's basename colliding with one
-of ours would pass free, unread.
+**PETRICHOR -- THE MANUAL CARRIES A STAMP, AND A GUARD READ IT AS A RECORD.**
+Elder [shelved](archive/20260908-211304_itinerary-landed-accounts.md).
+**EARTH BREATHES IN, so I took the fact at the door** and ran what `SOURCE.md` and `manual/`
+print. **Eleven commands exit 1**, every one the `20260823` tools letter fold -- in the OS user
+manual and the NixOS guide, **the first-hour page among them**.
+**MY OWN GUARD COUNTED ALL ELEVEN AND GATED NONE.** Its testimony test reads a one-clock stamp in
+the page's basename, and **every `manual/` page carries one**, because the naming law names every
+file that way. A stamp is a birth date on a manual and a claim on a log; the test could not tell
+those apart. Those two rooms read **living** whatever their basename says -- a roster of two,
+whose reason is the rooms' job rather than their names.
+**A COMMAND WEARS BACKTICKS AS OFTEN AS A FENCE.** The first-hour page hands a newcomer two
+witnesses inside a **table cell** beginning *Run*, both moved, and a fence-only reader cannot see
+a cell. The **verb** marks it now: tree-wide, **37 more printed paths and no new fault**.
+**AND A PAGE IS JUDGED BY ITS OWN NAME.** The elder filter tested the whole row, so a **living**
+page printing a path whose basename carried a stamp **excused itself with that other file's
+stamp** -- how `docs-geode/demos/README.md` went unread. **Its one false positive taught the
+fourth clause:** that demo hands a stale path to `dated_path_resolve` **on purpose**.
+**Control 10 -> 17 cases**, six refusals bitten, every welcome asserted as hard. **GREEN**,
+`moved_living=0`, 956 testimony counted, 5s at `tier lap`. Pages 94, 90, 90, 85, 83.
+**Yours:** that guide's line 7 is a **Status line recording what ran**, naming a witness at its
+then-home. I left it; whether a Status line's paths are testimony or instruction is a ruling.
+
 **PHEROMONE -- ONE CASE NAMED IDEMPOTENCE AND NEVER REACHED A SECOND RUN.**
 Elder [shelved](archive/20260908-192214_itinerary-landed-accounts.md).
 **WATER'S SEAT SAYS RUN THE CENSUS RATHER THAN READ THE SENTENCE ABOUT IT**: **10 candidates, 5
