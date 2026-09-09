@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.233724` | [A message read mid-rebase](20260908/20260908-233724_a-message-read-mid-rebase.kyri) | `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's |
 | `20260908.232329` | [A third column](20260908/20260908-232329_a-third-column.kyri) | hung told from red; 82 choirs made to run; unreached 750 to 643 |
 | `20260908.223755` | [a proof nobody named after it](20260908/20260908-223755_a-proof-nobody-named-after-it.kyri) | The convergence census could only see evidence named after its subject. |
 | `20260908.223011` | [Four kinds of silence](20260908/20260908-223011_four-kinds-of-silence.kyri) | unreached counts neglect and environment together |
