@@ -70,7 +70,7 @@ tier cadence   # a census of dated references across ~19,787 tracked files; its 
 guard docs_command_path
 path tools/d/docs_command_path_witness.rish
 seated 20260908.193508
-tier lap   # one awk over every fenced block of 5,779 tracked pages, measured 3s -- cheap enough to run every lap, and the fault it catches is spent by a reader on their first hour
+tier lap   # one awk over every fenced block and every inline "Run `...`" span of 5,787 tracked pages, measured 5s -- cheap enough to run every lap, and the fault it catches is spent by a reader on their first hour
 
 guard dated_path_repoint
 path tools/d/dated_path_repoint_witness.rish

@@ -20,8 +20,8 @@
 # WHAT IS PROVEN, on metal.
 #   Every path printed inside a fenced code block of a tracked `.md` either resolves for a
 #   reader who clones, or is one the tree does not carry at all.
-#   Ten behaviors on real git repositories in a throwaway pen: three refusals bitten and seven
-#   honest readings left free, every plant lifted afterward and the pen re-read, since a guard
+#   Seventeen cases on real git repositories in a throwaway pen -- six refusals bitten and every
+#   honest reading asserted as hard, every plant lifted afterward and the pen re-read, since a guard
 #   that reds forever proves nothing about the day the fault leaves.
 #
 # WHAT PASSES FREE, by one rule rather than a table. A printed path the tree does not carry AT
@@ -69,6 +69,6 @@ assert control.out contains "case=testimony_counted ok" else "docs-command-path:
 assert control.out contains "case=repair_free ok" else "docs-command-path: the corrected path must walk free, or this is a wall rather than a gate"
 assert control.out contains "case=returns_to_zero ok" else "docs-command-path: the count must return to zero on the day the fault leaves"
 assert control.out contains "control=ok" else "docs-command-path: the control must agree with itself"
-say "RED and GREEN paths proven -- three refusals bitten, seven honest readings left free"
+say "RED and GREEN paths proven -- seventeen cases, six refusals bitten, every welcome asserted as hard"
 
 say "GREEN: docs-command-path -- a path a page tells a reader to run is a path the tree carries."

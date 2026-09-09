@@ -23,6 +23,10 @@
 #                                                8  the same path in PROSE rather than a block
 #                                                9  a basename whose only home is gratitude/,
 #                                                   which is a teacher's own path
+#   4  a moved path in an inline `Run ...` span  10  a bare backtick, which names rather than runs
+#   5  a moved path on a STAMPED manual page     11  a resolver's argument, stale on purpose
+#   6  a living page printing a stamped path,    12  the same stamped page outside a manual room,
+#      judged on its own name                        counted and never gated
 #
 # USAGE
 #   sh tools/fixtures/d/docs_command_path_control.sh
@@ -171,6 +175,79 @@ git add -A >/dev/null; git commit -qm repair
 v=$(verdict)
 [ "$v" = ok ] && note ok repair_free "the corrected path walks free, so the guard is a gate and not a wall" || note bad repair_free "corrected path reads $v"
 [ "$(reading moved_living)" = 0 ] && note ok returns_to_zero "the living count returns to zero when the fault leaves" || note bad returns_to_zero "moved_living reads $(reading moved_living)"
+
+# --- BITTEN 4 / FREE 10: a command wears backticks as often as a fence -------------------
+# The first-hour page handed a newcomer two witnesses inside a table cell that begins "Run",
+# and both had moved. A fence-only reader cannot see a table cell, so the verb is what marks
+# it: `Run `path`` outside a fence is a command, and a bare backtick is only a name.
+rm -f docs-geode/edu/yonder/pleac/ch01/page.md
+cat > docs-geode/tutorials/inline.md <<'EOF'
+# Inline
+
+| Next | Run `edu/pleac/ch01/gate-say-u32.glow` to see it |
+EOF
+git add -A >/dev/null; git commit -qm inline
+[ "$(reading moved_living)" = 1 ] && note ok inline_run_bitten "a moved path inside an inline Run span is bitten" || note bad inline_run_bitten "inline Run reads $(reading moved_living)"
+
+cat > docs-geode/tutorials/inline.md <<'EOF'
+# Inline
+
+The file `edu/pleac/ch01/gate-say-u32.glow` is named here, never run.
+EOF
+git add -A >/dev/null; git commit -qm inline_bare
+[ "$(reading moved_living)" = 0 ] && note ok inline_bare_free "a bare backtick names a file rather than running one, and passes free" || note bad inline_bare_free "bare backtick reads $(reading moved_living)"
+
+# --- FREE 11: a stale path is what a resolver TAKES --------------------------------------
+cat > docs-geode/tutorials/inline.md <<'EOF'
+# Resolver
+
+```sh
+rishi/bin/rishi run tools/d/dated_path_resolve.rish edu/pleac/ch01/gate-say-u32.glow
+```
+EOF
+mkdir -p tools/d; printf '#!/bin/sh\n' > tools/d/dated_path_resolve.rish
+git add -A >/dev/null; git commit -qm resolver
+[ "$(reading moved_living)" = 0 ] && note ok resolver_arg_free "a resolver's argument is a stale path on purpose, and passes free" || note bad resolver_arg_free "resolver argument reads $(reading moved_living)"
+rm -f docs-geode/tutorials/inline.md
+
+# --- BITTEN 5 / FREE 12: a manual instructs, where a log records -------------------------
+# Every page of manual/ carries a one-clock stamp, because the naming law names every file that
+# way -- so the stamp test read the OS user manual as a record of what was once true. Eleven
+# printed commands stood broken there, the first-hour page among them.
+mkdir -p manual
+cat > manual/20260101-010101_first-hour.md <<'EOF'
+# First hour
+
+```sh
+rishi/bin/rishi run tools/g/glow_run.rish edu/pleac/ch01/gate-say-u32.glow 21
+```
+EOF
+git add -A >/dev/null; git commit -qm manual
+[ "$(reading moved_living)" = 1 ] && note ok manual_stamped_bitten "a stamped manual page instructs a reader now, so it is bitten" || note bad manual_stamped_bitten "manual page reads $(reading moved_living)"
+
+mv manual/20260101-010101_first-hour.md docs-geode/tutorials/20260101-010101_elder-note.md
+git add -A >/dev/null; git commit -qm elsewhere
+[ "$(reading moved_living)" = 0 ] && note ok stamped_elsewhere_free "the same stamped page outside a manual room stays counted, never gated" || note bad stamped_elsewhere_free "stamped page elsewhere reads $(reading moved_living)"
+rm -f docs-geode/tutorials/20260101-010101_elder-note.md
+
+# --- BITTEN 6: a page is judged by ITS OWN name, never by the name it prints --------------
+# The elder filter tested the whole row, so a LIVING page printing a path whose basename
+# carried a stamp excused itself with that file's stamp. A page can no longer hide behind the
+# name of the file it prints.
+mkdir -p session-logs/date/20260101
+printf 'log\n' > session-logs/date/20260101/20260101-010101_note.kyri
+cat > docs-geode/tutorials/prints-a-stamp.md <<'EOF'
+# Prints a stamp
+
+```sh
+cat session-logs/20260101-010101_note.kyri
+```
+EOF
+git add -A >/dev/null; git commit -qm own_name
+[ "$(reading moved_living)" = 1 ] && note ok judged_by_own_name "a living page printing a stamped path is bitten on its own name" || note bad judged_by_own_name "page printing a stamped path reads $(reading moved_living)"
+rm -f docs-geode/tutorials/prints-a-stamp.md
+git add -A >/dev/null; git commit -qm lift_own_name
+[ "$(reading moved_living)" = 0 ] && note ok own_name_returns "lifting that plant returns the pen to zero" || note bad own_name_returns "moved_living reads $(reading moved_living)"
 
 echo "control=docs_command_path pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] && echo "control=ok"
