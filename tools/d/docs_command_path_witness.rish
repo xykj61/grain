@@ -1,0 +1,74 @@
+# tools/d/docs_command_path_witness.rish -- a path a page tells a reader to RUN is a path the
+# tree carries.
+#
+# WHY THIS RUNG. Two pages of the shipping shelf print
+#   rishi/bin/rishi run tools/g/glow_run.rish edu/pleac/ch01/gate-say-u32.glow 21
+# and that file has stood at docs-geode/edu/yonder/pleac/ch01/gate-say-u32.glow since the room
+# folded. Copied as printed, the command exits 1 on FileNotFound. Both pages carry a rostered
+# witness that runs every lap and reads GREEN, because tools/p/pleac_ch01_2_witness.rish holds
+# its own copy of the path and was repointed when the room moved. The page was not, and the two
+# have disagreed ever since with every meter in the tree calling it well.
+#
+# WHAT COULD NOT SEE IT, each for a reason worth writing down. tools/t/tracked_link_witness.rish
+# reads Markdown LINKS, and a path typed as a command argument is no link.
+# tools/p/phantom_path_witness.rish reads path literals inside tool SOURCES, and a page is not a
+# tool -- its own header hands a literal resolving nowhere to the dated census.
+# tools/d/dated_path_witness.rish reads references carrying a one-clock stamp, and
+# `gate-say-u32.glow` carries none. The fault sat in the seam between three guards, and a reader
+# running the command was the only instrument that could reach it.
+#
+# WHAT IS PROVEN, on metal.
+#   Every path printed inside a fenced code block of a tracked `.md` either resolves for a
+#   reader who clones, or is one the tree does not carry at all.
+#   Ten behaviors on real git repositories in a throwaway pen: three refusals bitten and seven
+#   honest readings left free, every plant lifted afterward and the pen re-read, since a guard
+#   that reds forever proves nothing about the day the fault leaves.
+#
+# WHAT PASSES FREE, by one rule rather than a table. A printed path the tree does not carry AT
+# ALL is a path the READER creates -- `tools/fixtures/my_first_witness.rish` in a tutorial that
+# asks you to write it, `tools/l/launch-zed.sh` which a host copies from the tracked `.example`
+# beside it, a submodule left uncloned. Thirteen such paths stand on living pages today and
+# every one is honest, so this rung asks the TREE what it carries rather than asking a
+# maintainer to keep an exemption list true. Three ordinary rescues run first: the path resolves
+# from the root, a `cd` earlier in the same block makes it resolve, or the page's own directory
+# does.
+#
+# WHAT IS NOT PROVEN. That the command WORKS -- only that the file it names is one a fresh clone
+# carries. Running a page's commands is what found this, and it stays a reader's job, since a
+# guard that ran them would be running arbitrary programs from prose.
+#
+# DATED TESTIMONY IS COUNTED, NEVER GATED. Accrete-never-break: a log from June names
+# `tools/tame_style_check.rish` because that is where the file stood in June. 957 of the 959
+# paths in this class are exactly that, and rewriting them would edit testimony to tidy a meter.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/docs_command_path_witness.rish
+
+say "docs-command-path: Language EN -- a page that tells a reader to run a command promises the command runs."
+say "docs-command-path: Style Radiant -- the tree states where its files stand, and the tracked index is what states it."
+say "docs-command-path: Lens TAME -- safety first: a printed command is an instruction, and a wrong instruction spends a newcomer's first hour."
+
+let scan = run ["sh" "tools/fixtures/d/docs_command_path_scan.sh"]
+assert scan.ok else "docs-command-path: a living page prints a path the tree carries elsewhere -- read the scan's own detail lines, which name the repair"
+say scan.out
+assert scan.out contains "moved_living=0" else "docs-command-path: every printed path on a living page must resolve for a reader who clones"
+assert scan.out contains "verdict=ok" else "docs-command-path: the scan must balance before it is believed"
+say "field GREEN -- every path a living page prints as a command is one the tree carries"
+
+let control = run ["sh" "tools/fixtures/d/docs_command_path_control.sh"]
+assert control.ok else "docs-command-path: the control must complete"
+say control.out
+assert control.out contains "case=honest_free ok" else "docs-command-path: an honest page in every shape the tree writes must pass free"
+assert control.out contains "case=moved_bitten ok" else "docs-command-path: a moved path printed in a code block must be refused"
+assert control.out contains "case=moved_counted ok" else "docs-command-path: the refusal must name a count, never only a verdict"
+assert control.out contains "case=repair_named ok" else "docs-command-path: the detail must name where the file stands, so the repair has one answer"
+assert control.out contains "case=cd_miss_bitten ok" else "docs-command-path: a cd that fails to rescue must leave the path refused"
+assert control.out contains "case=detail_per_path ok" else "docs-command-path: each refused path must print its own line"
+assert control.out contains "case=testimony_free ok" else "docs-command-path: dated testimony keeps every word it wrote and gates nothing"
+assert control.out contains "case=testimony_counted ok" else "docs-command-path: testimony must be counted rather than silent, so a reader can see the class whole"
+assert control.out contains "case=repair_free ok" else "docs-command-path: the corrected path must walk free, or this is a wall rather than a gate"
+assert control.out contains "case=returns_to_zero ok" else "docs-command-path: the count must return to zero on the day the fault leaves"
+assert control.out contains "control=ok" else "docs-command-path: the control must agree with itself"
+say "RED and GREEN paths proven -- three refusals bitten, seven honest readings left free"
+
+say "GREEN: docs-command-path -- a path a page tells a reader to run is a path the tree carries."

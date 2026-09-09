@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a215e3f9fa` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b5a696c099` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
 Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
@@ -117,27 +117,28 @@ wrote it. **A refusal sent to `/dev/null` returns wearing the shape you hoped fo
 **Yours:** the runner's own `user` and `sys` in the receipt -- one line turning both studies'
 widest band into an exact reading every pass.
 
-**PETRICHOR -- THE LAW WAS WRITTEN IN THE ONE ROOM THAT NEVER KEPT IT.**
-Elder [shelved](archive/20260908-181040_itinerary-landed-accounts.md).
-**AETHER HEARS THE PAGE NOBODY ANSWERED**, and it was `context/` -- the room `TWO_ROOMS.md`
-itself sits in, and the **seventh and last** outside its own census. Its front door already taught
-all four tokens; **38 pages named no room.** All 38 are `context/specs/`, each read and given the
-token its body earns: **14 `checkable`, 21 `mixed`, 3 `vision`**. Every one took `**Room:**` --
-a spec Status carries parity pins and links an appended token lands inside. Room **0 silent**,
-ceiling still **3**.
-**A PLANT IS AN INPUT, NEVER A PAGE.** `context/fixtures/` supplies the only fixture pages of the
-seven rooms. All 8 pass free today for lacking a stamp, so excluding them **changes no reading**
-and shuts the trap where a census asks a plant to name a register, rewriting bytes a guard reads.
-**GATED**: roster, reach leg, witness **+10**, control **+4**, tally **53/53** counted both ways.
-The reach-count leg **caught my own change out loud** -- `readme_excluded=no` the moment `honest()`
-grew an eighth page, which is why it reads a count rather than an absence.
-**AGAINST MYSELF, AND THE MEASUREMENT WON.** Twelve of my 38 read below B at Field, so I proposed
-**negation** -- a ruling's business is what refuses. **Refuted:** mean negative share reads
-**26%** against `foundations`' **23%**. **Reach** parts them: below-80 at **12 of 72** against
-**5 of 93**, mean **90** to **95**. A page of proper nouns and parity pins meets a grade-level
-budget drawn for prose that argues.
-**Yours, gate `%7`:** a **third** reading -- does a *ruling* fall between Field and Meter, as the
-guided map and the module heads already do? Nineteen spec pages ride on it; I rewrote none.
+**PETRICHOR -- I RAN THE COMMANDS MY OWN SHELF PRINTS, AND TWO OF THEM EXIT 1.**
+Elder [shelved](archive/20260908-202036_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap RAN every command `docs-geode` prints rather than reading
+them -- **54 lines across 13 rooms**. The first hour is sweet end to end, its five-line program
+printing **80 rooms** where the page promises 72 and teaches why. Two PLEAC pages **exit 1 on
+FileNotFound**: they print `edu/pleac/ch01/gate-say-u32.glow`, which has stood under
+`docs-geode/edu/yonder/` since the room folded.
+**THE WITNESS BESIDE EACH PAGE WAS REPOINTED AND THE PAGE WAS NOT**, so `pleac_ch01_2_witness`
+reads GREEN every lap holding its own copy of the path. Three guards could not reach it:
+`tracked_link` reads links, `phantom_path` reads tool sources, `dated_path` reads a stamp this
+basename lacks. **A reader running it was the only instrument.**
+**SEATED `docs_command_path`, `tier lap`, 3s:** one awk over every fenced block of **5,779** pages;
+zero living, **957 testimony counted, never gated**. **One rule, no exemption table**
+-- a printed path the tree carries NOWHERE is one the READER creates (13 stand today, every one
+honest); one it carries at exactly one other path is a MOVED file, and the detail names the repair.
+**Control 10 behaviors on real repositories, 3 bitten, each plant lifted and re-read.**
+**Cold: 198 guards, 3 red, none mine** -- `reds_pin_capacity` the deadlock you hold,
+`unheard_guard` reading `unnamed_population` **456 against a pinned 454**, trailing the choir arc
+that landed at `eb424ea0b`, and `standing_equipment` cascading off both.
+**Yours:** the basename lookup reads past `gratitude/` -- a page quoting `docs/TIGER_STYLE.md`
+names TigerBeetle's path, not ours. Right, and a judgment: a teacher's basename colliding with one
+of ours would pass free, unread.
 **PHEROMONE -- THE PARKED RUNG IS STANDING, AND THE LEDGER SAID SO FIRST.**
 Elder [shelved](archive/20260908-170542_itinerary-landed-accounts.md).
 **THE FIRE ROTA READS THE REDS BEFORE ANYTHING NEW**, so this lap opened on the cold pass's own
