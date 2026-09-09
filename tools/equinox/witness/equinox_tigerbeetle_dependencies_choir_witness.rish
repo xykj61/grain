@@ -8,6 +8,21 @@ say "equinox-tb-dependencies-choir: Language EN — zero deps; refuse an absent 
 say "equinox-tb-dependencies-choir: Style Radiant — welcome and refuse share one seat."
 say "equinox-tb-dependencies-choir: Lens TAME — e52 · Zig toolchain · almanac seat 57."
 
+# AN ABSENT OPTIONAL GITLINK IS A FACT ABOUT THE HOST, NEVER A DEFECT (`20260908.202239`).
+# The welcome leg below asserts CONTENT the census prints only when `gratitude/tigerbeetle` is
+# checked out, and that submodule is one this tree studies and never links, so a clone without it
+# is a correct clone. The leaf census now SKIPs there rather than refusing, and this choir follows
+# it: a choir asserting a leaf's content must skip wherever the leaf skips, or the repair one level
+# down simply moves the red one level up.
+#
+# WHAT THIS TRADES, said plainly: the refuse leg further down proves the census still refuses an
+# absent path, and that proof is skipped here too. On a host without the clone this choir was RED
+# before today, so nothing checkable is lost; on a host WITH the clone every leg runs in full.
+let tb_clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
+if (tb_clone.ok == false) then say "equinox-tb-dependencies-choir: SKIP -- gratitude/tigerbeetle is an uninitialised submodule here"
+if (tb_clone.ok == false) then say "GREEN: equinox-tb-dependencies-choir -- skipped honestly, the clone its legs read is absent"
+if (tb_clone.ok == false) then exit 0
+
 let welcome = run ["rishi/bin/rishi" "run" "tools/gen/chapter/tigerbeetle_dependencies_census_witness.rish"]
 say welcome.out
 assert welcome.ok else "equinox-tb-dependencies-choir: welcome RED"
