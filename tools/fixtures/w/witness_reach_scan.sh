@@ -252,6 +252,18 @@ done
 # already records that inferring from the season choir's glob overstated by 111, since the pattern
 # selects 144 equinox witnesses while the choir sings the 33 that chain nobody. A family whose
 # members chain each other wants its chain read rather than its prefix globbed.
+# WHY THE REMAINDER IS NOT MERELY NEGLECT, measured `20260908.211500`. A sample of 40 unreached
+# witnesses ran 35 green and 5 red; a sample of 10 unreached CHOIRS ran 6 green and 4 red, because a
+# choir reds if any member does. Reading those reds, four kinds appear and only the first is a
+# defect: a genuine finding; an ABSENT OPTIONAL DEPENDENCY (an uninitialised `gratitude/tigerbeetle`
+# submodule, an unbuilt `wayland_seed`, a missing `qemu-riscv64`); and a witness that HANGS without
+# its environment rather than failing -- two `glow_*desk*` witnesses ran past 250s and were killed.
+#
+# Each of the last three makes a witness UNROSTABLE, which is very likely why it is unreached: a row
+# would red or hang the fleet on every host lacking the thing. So `unreached` counts neglect AND
+# environment together, and the second is repaired by teaching a witness to SKIP rather than by
+# writing a roster row. The class is booked at `20260908.202239`. **80 of the 750 are themselves
+# choirs**, which is where the leverage is: rostering one carries its whole family.
 CEILING=${WITNESS_REACH_CEILING:-750}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
