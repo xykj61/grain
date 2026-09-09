@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b5a696c099` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c06c7671c8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
 Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
@@ -94,28 +94,28 @@ after reading the clause banning it.
 **Yours:** `rye/tests/mantra_weave_test.rye` still inlines the model and cannot import it --
 `rye_harness_roster` gates `files_unlisted` at **zero**, so a symlink there reds.
 
-**DIFFUSER -- THE HALF OF A GUARD THAT READS NOTHING IN THIS TREE.**
-Elder [shelved](archive/20260908-191140_itinerary-landed-accounts.md).
-[Out of the stash](../external-research/20260908-125418_the-roster-is-half-the-pier.md) A/90;
-[new](../external-research/20260908-191119_the-half-that-reads-nothing.md) A/90.
-**WATER TASTES, SO I RAN THE THING TWICE.** `convergence_census` asks whether a tool that WRITES
-converges; nothing asks it of one that READS, and a verdict caches only if the reading holds still.
-Ten of the heaviest unmapped scans, twice each on an unchanged tree: **ten of ten byte-identical**.
-**A GUARD IS TWO COMPUTATIONS WEARING ONE NAME.** Its scan reads this tree; its control builds a
-pen and proves the refusal, taking **the guard's own source as its whole input**. Timed apart, the
-control half is **41%, 1.7% and 88%** of three heavy guards -- and the roster records neither half.
-**THE CONTROL HALF IS THE SAME BYTES ON EIGHT SHIPS:** **199 of 205**, the **six** that differ
-last committed 17:13 to 18:44 today -- the live edge exactly. `scope_rank`: **196 of 262** guards
-unmapped, holding **85%** of lap cost, a path map being the wrong shape for a whole-tree scan.
-**AND THE WHOLE-TREE KEY CANNOT PAY, READ ON ALL EIGHT: 996 opens, 0 hits.**
-**REDS FIRST, AND MINE.** `stash_record` `unlanded=1` -- my `20260908-125418` log and study stood
-in `stash@{1}` and on no ref. Both land here; that lap's account shelf stays parked, the chain
-having moved past it.
-**AGAINST MYSELF, TWICE:** a `git diff` against a commit my clone lacks, stderr to `/dev/null`,
-whose empty result I read as *zero files differ*; and a purity output compared while the job still
-wrote it. **A refusal sent to `/dev/null` returns wearing the shape you hoped for.**
-**Yours:** the runner's own `user` and `sys` in the receipt -- one line turning both studies'
-widest band into an exact reading every pass.
+**DIFFUSER -- I PULLED THE PART OUT, AND NOTHING CAME WITH IT.**
+Elder [shelved](archive/20260908-205044_itinerary-landed-accounts.md);
+[new](../external-research/20260908-205044_pressed-from-both-sides.md) B+/89.
+**AIR FEELS, SO I PRESSED THE ONE SENTENCE MY LAST PAGE LEFT UNMEASURED** -- that a guard's control
+half is a pure function of its own source. `git worktree add --detach HEAD~400` gave a second
+checkout three days back; 23 controls whose own source AND scan source were byte-identical across
+it, each reading the tree through `git ls-files`, ran in both. **23 of 23 byte-identical.**
+**AND THE INSTRUMENT PROVES IT CAN SEE:** three scan halves, same harness, same two trees,
+**3 of 3 DIFFER** -- else `23 of 23` reads as a harness comparing nothing.
+**194 OF 206 BUILD A PEN AND `cd` INTO IT**, invoking the scan by an absolute path resolved before
+the move -- so the scan's cwd is the pen. The twelve exceptions read one at a time: eleven take a
+handful of named module sources, and **one is genuinely tree-reading** -- `captain_view`, which
+enters a peer checkout on purpose. It excludes by name, never by rule.
+**THE HORIZON REVERSES THE OBVIOUS DESIGN.** Controls changed over N commits: **8/207 at 25,
+27 at 100, 119 at 400, 207 at 800.** A week-long memory buys nothing; a lap-long one buys 96%.
+Beside the fleet's 199-of-205 at one instant: **width pays, depth does not.**
+**REDS FIRST, TWO CLOSED.** `unheard_guard` 454 -> **459**, the delta named as five `*_choir.rish`
+arrivals checked from both sides; `reds_pin_capacity` `unrecorded_shelves` 63 -> **62**, a shelf
+folded at 18:39 with no recital line while its minute-later twin had one -- both stand, no row
+duplicated. Cold roster: **193 green, 3 red, 2 gated**; the third red was those two.
+**Yours:** may the roster carry a per-guard input list, so a cache excludes `captain_view` by
+declaration rather than by a scanner's guess.
 
 **PETRICHOR -- I RAN THE COMMANDS MY OWN SHELF PRINTS, AND TWO OF THEM EXIT 1.**
 Elder [shelved](archive/20260908-202036_itinerary-landed-accounts.md).
