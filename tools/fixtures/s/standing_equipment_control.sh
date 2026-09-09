@@ -551,10 +551,77 @@ out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
         STANDING_LOCK=live.lock.d sh "$runner" --detach 2>&1 ) || true )
 case "$out" in *"run_verdict=run_in_flight"*)
   echo "detach_refuses_live_pass=yes" ;; *) echo "detach_refuses_live_pass=no" ;; esac
-case "$out" in *"transcript=session-output/standing-equipment-cold.txt"*)
-  echo "detach_live_refusal_names_path=yes" ;; *) echo "detach_live_refusal_names_path=no" ;; esac
+# THE PATH A REFUSAL NAMES IS THE OWNER'S, NEVER THE REQUESTER'S (REDS `%666`). This leg read
+# `transcript=session-output/standing-equipment-cold.txt` until `20260909`, and that was the fault
+# written down as a passing check: the path printed was the one THIS launch would have used, which
+# agrees with the owner's only when both ran the same mode. The owner here holds no `transcript`
+# file, which is what a foreground pass leaves, so the refusal must say `none` rather than derive.
+case "$out" in *"owner_transcript=none"*)
+  echo "detach_live_refusal_names_owner=yes" ;; *) echo "detach_live_refusal_names_owner=no" ;; esac
+# And it must print NO `transcript=` line of its own, since a reader copies that word straight into
+# the next command. `owner_transcript=` carries the substring and never starts a line with it.
+case "$out" in *"
+transcript="*|"transcript="*) echo "detach_refusal_prints_only_owner=no" ;;
+  *) echo "detach_refusal_prints_only_owner=yes" ;; esac
 if grep -q 'live_pass_in_flight' "$(detach_transcript cold)"; then
   echo "detach_spares_live_transcript=yes"; else echo "detach_spares_live_transcript=no"; fi
+
+# THE FIRING ITSELF, PLANTED. `%666` was a cold launch refused by an owner running `--scoped`: the
+# two derived paths differ, so the requester was handed an elder file's name and read it as the live
+# pass. The owner's own path goes into the lock it holds, and the refusal must name THAT and never
+# the cold one this launch would have written.
+echo "session-output/standing-equipment-cold-scoped.txt" > "$pen/live.lock.d/transcript"
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$runner" --detach 2>&1 ) || true )
+case "$out" in *"owner_transcript=session-output/standing-equipment-cold-scoped.txt"*)
+  echo "detach_refusal_names_other_mode=yes" ;; *) echo "detach_refusal_names_other_mode=no" ;; esac
+case "$out" in *"standing-equipment-cold.txt"*)
+  echo "detach_refusal_names_requester=yes" ;; *) echo "detach_refusal_names_requester=no" ;; esac
+# TASTED TWICE, which is this tree's own test of an infusion: a refusal that reads differently on
+# its second run is a refusal a reader cannot trust. The live transcript survives both.
+out2=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$runner" --detach 2>&1 ) || true )
+if [ "$out" = "$out2" ]; then echo "detach_refusal_repeats=yes"; else echo "detach_refusal_repeats=no"; fi
+if grep -q 'live_pass_in_flight' "$(detach_transcript cold)"; then
+  echo "detach_repeat_spares_transcript=yes"; else echo "detach_repeat_spares_transcript=no"; fi
+rm -f "$pen/live.lock.d/transcript"
+
+# THE FAULT PROVEN TO BITE, from the failing side. Four legs answering the way this repair wants
+# cannot be told from four legs on a runner that never carried `%666`, so the same plant runs again
+# against a copy whose refusal names the path IT derived -- the elder line, one word changed. The
+# requester's cold path must appear, which is what a reader was handed and read as the live pass.
+sed 's|^          owner_transcript "\$lock"$|          echo "transcript=$transcript"|' \
+  "$runner" > "$pen/run-derive.sh"
+cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh"
+cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh"
+if cmp -s "$runner" "$pen/run-derive.sh"; then
+  echo "derive_runner_built=no"; else echo "derive_runner_built=yes"; fi
+echo "session-output/standing-equipment-cold-scoped.txt" > "$pen/live.lock.d/transcript"
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$pen/run-derive.sh" --detach 2>&1 ) || true )
+case "$out" in *"run_verdict=run_in_flight"*) echo "derive_runner_ran=yes" ;; *) echo "derive_runner_ran=no" ;; esac
+case "$out" in *"transcript=session-output/standing-equipment-cold.txt"*)
+  echo "derive_runner_names_requester=yes" ;; *) echo "derive_runner_names_requester=no" ;; esac
+rm -f "$pen/live.lock.d/transcript"
+
+# THE PLANT PROVEN TO LAND. Every leg above reads a file this control wrote by hand, so all four
+# would pass over a runner that never records its own path -- the shape `%519` names. So a REAL
+# detached launch runs against the pen roster, and the lock it takes must carry its own transcript
+# while it holds it.
+rm -rf "$pen/session-output" "$pen/own.lock.d"
+mkdir -p "$pen/session-output"
+( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+    STANDING_LOCK=own.lock.d sh "$runner" --detach --hot >/dev/null 2>&1 ) || true
+detach_wait "$(detach_transcript hot)" || true
+# READ FROM THE TRANSCRIPT RATHER THAN FROM THE LOCK, and the reason is that the lock leaves with
+# the pass. A stub roster closes in well under a second, so polling the lock directory races the
+# run it is measuring and answers `no` for a pass that did everything right. The runner prints this
+# line by reading the file back, so a transcript carrying it is evidence the write landed.
+if grep -q '^run_transcript=session-output/standing-equipment-hot\.txt$' "$(detach_transcript hot)"; then
+  echo "detach_owner_records_path=yes"; else echo "detach_owner_records_path=no"; fi
+# And the lock leaves with the pass, so no elder path outlives the run that wrote it.
+if [ -e "$pen/own.lock.d" ]; then
+  echo "detach_lock_leaves=no"; else echo "detach_lock_leaves=yes"; fi
 
 # THE OTHER SIDE, and it is the one a careless repair breaks. A lock whose owner has EXITED is
 # reaped by `lock_acquire`, so the launch must walk past it and truncate exactly as before. A pid

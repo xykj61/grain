@@ -138,6 +138,27 @@ detach=no
 # of one path is how two readings of one intent begin.
 lock="${STANDING_LOCK:-construction/standing-equipment-run.lock.d}"
 
+# WHOSE TRANSCRIPT A REFUSAL NAMES (REDS `%666`). A refused launch printed the path THIS invocation
+# would have written, and a reader takes a printed `transcript=` for the live pass's own name -- so
+# a cold launch refused by a `--scoped` owner was handed `standing-equipment-cold.txt`, an ELDER
+# file from some earlier pass, and read yesterday's tree as today's. That is `%620` one door over: a
+# name arrived at by derivation rather than by asking. Only the live owner knows its own path, so it
+# writes that path into the lock it holds and every refusal reads it back.
+#
+# A FOREGROUND PASS WRITES NONE, because it has none -- its output is on the terminal that started
+# it -- and saying so is honest where naming a derived path is not. The same answer covers the one
+# window this reading can be thin in: `lock_acquire` creates the directory and writes `pid`, and the
+# owner writes `transcript` a few lines later, so a refusal landing between the two reads `none` for
+# a pass that does have a transcript. That understates and never misnames, which is the direction
+# this repair exists to choose.
+owner_transcript() {
+  if [ -s "$1/transcript" ]; then
+    printf 'owner_transcript=%s\n' "$(cat "$1/transcript")"
+  else
+    printf 'owner_transcript=none -- that pass writes no transcript; read the terminal that started it\n'
+  fi
+}
+
 for a in "$@"; do
   if [ "$a" = --detach ]; then detach=yes; fi
 done
@@ -262,7 +283,7 @@ if [ "$detach" = yes ]; then
       *)
         if kill -0 "$detach_owner" 2>/dev/null; then
           echo "run_verdict=run_in_flight"
-          echo "transcript=$transcript"
+          owner_transcript "$lock"
           echo "refused: another roster pass holds $lock (pid $detach_owner) -- its transcript is untouched; read that rather than opening a second." >&2
           exit 1
         fi
@@ -276,7 +297,7 @@ if [ "$detach" = yes ]; then
     echo "launch_head $(git rev-parse --short=10 HEAD 2>/dev/null || echo nogit)"
     echo "launch_args $*"
   } > "$transcript"
-  nohup sh "$0" "$@" >> "$transcript" 2>&1 < /dev/null &
+  STANDING_TRANSCRIPT="$transcript" nohup sh "$0" "$@" >> "$transcript" 2>&1 < /dev/null &
   echo "transcript=$transcript"
   echo "pid=$!"
   echo "finished_when=the transcript carries a run_verdict line"
@@ -375,6 +396,17 @@ if [ -d "$(dirname "$lock")" ]; then
     trap 'exit 130' INT
     trap 'exit 143' TERM
     echo "run_lock=held"
+    # The owner's own name for its output, written where a later refusal can read it (REDS `%666`).
+    # `STANDING_TRANSCRIPT` is set by the `--detach` parent above and by nobody else, so a
+    # foreground pass leaves the file absent and `owner_transcript` says so rather than deriving one.
+    if [ -n "${STANDING_TRANSCRIPT:-}" ]; then
+      printf '%s\n' "$STANDING_TRANSCRIPT" > "$lock/transcript"
+      # READ BACK RATHER THAN ECHOED. The line below prints what the FILE now holds, so a transcript
+      # carrying it is evidence the write landed -- where echoing the variable would prove only that
+      # the variable arrived. That distinction is what lets a control prove this half without racing
+      # a pass that closes in under a second.
+      echo "run_transcript=$(cat "$lock/transcript")"
+    fi
   else
     owner=$(cat "$lock/pid" 2>/dev/null || true)
     [ -n "$owner" ] || owner=unknown
@@ -495,6 +527,7 @@ if [ -d "$(dirname "$lock")" ]; then
     fi
     echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader leader_parent=$leader_parent lap=$lap"
     echo "run_verdict=run_in_flight"
+    owner_transcript "$lock"
     echo "refused: another roster pass holds $lock (pid $owner) -- read its output rather than opening a second." >&2
     if [ "$lap" = gone ]; then
       if [ "$parent" = gone ]; then

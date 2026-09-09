@@ -186,7 +186,23 @@ assert control.out contains "detach_refusal_writes_nothing=yes" else "standing-e
 # careless repair breaks: refusing on a dead owner would shut every later lap out of the instrument
 # its own card opens with.
 assert control.out contains "detach_refuses_live_pass=yes" else "standing-equipment: a launch meeting a live pass must refuse, in the foreground, where the hand that typed it stands"
-assert control.out contains "detach_live_refusal_names_path=yes" else "standing-equipment: the refusal must name the transcript the live pass is writing, or the reader is sent looking again"
+# WHOSE PATH THE REFUSAL NAMES (REDS `%666`). The elder leg here asserted that a refusal print
+# `transcript=session-output/standing-equipment-cold.txt` -- the path THIS launch would have
+# written, which agrees with the live pass's only when both ran the same mode. A cold launch
+# refused by a `--scoped` owner was handed an elder file's name and read yesterday's tree as
+# today's, which is `%620` one door over. The owner writes its own path into the lock it holds;
+# a foreground pass writes none and the refusal says so rather than deriving one.
+assert control.out contains "detach_live_refusal_names_owner=yes" else "standing-equipment: a refusal meeting an owner that keeps no transcript must say so, rather than name the path this launch would have written"
+assert control.out contains "detach_refusal_prints_only_owner=yes" else "standing-equipment: a refusal must print no transcript= line of its own -- a reader copies that word into the next command"
+assert control.out contains "detach_refusal_names_other_mode=yes" else "standing-equipment: an owner running another mode must be named by ITS path, which is the whole of %666"
+assert control.out contains "detach_refusal_names_requester=no" else "standing-equipment: the requester's derived path must appear nowhere in a refusal, or the elder fault stands under a new spelling"
+assert control.out contains "detach_refusal_repeats=yes" else "standing-equipment: a refusal read twice must read the same both times, or a reader cannot trust either"
+assert control.out contains "detach_repeat_spares_transcript=yes" else "standing-equipment: a second refused launch must leave the live pass's bytes standing, exactly as the first did"
+assert control.out contains "detach_owner_records_path=yes" else "standing-equipment: a real detached pass must record its own transcript in the lock it holds -- without that write every leg above reads a file the control planted"
+assert control.out contains "detach_lock_leaves=yes" else "standing-equipment: the lock must leave with the pass that took it, so no elder path outlives its run"
+assert control.out contains "derive_runner_built=yes" else "standing-equipment: the deriving runner must actually differ, or the failing side proves nothing"
+assert control.out contains "derive_runner_ran=yes" else "standing-equipment: the deriving runner must start and refuse -- a copy that cannot run reads exactly like a repair that worked"
+assert control.out contains "derive_runner_names_requester=yes" else "standing-equipment: without the repair the refusal must name the requester's own path -- that is the defect, asserted rather than assumed"
 assert control.out contains "detach_spares_live_transcript=yes" else "standing-equipment: a refused launch must leave the live pass's bytes untouched -- emptying them loses the only record of guards already run"
 assert control.out contains "detach_stale_lock_refuses=no" else "standing-equipment: a lock whose owner has exited must not refuse a launch -- lock_acquire reaps it, and refusing here locks every later lap out"
 assert control.out contains "detach_stale_lock_keeps_elder=no" else "standing-equipment: past a stale lock the launch must truncate exactly as before, or the elder-bytes cure is undone by the repair beside it"
