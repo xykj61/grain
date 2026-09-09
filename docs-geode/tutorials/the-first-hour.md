@@ -10,6 +10,16 @@ is a map you will want **after** this hour.*
 **Where this sits:** home is [`../../README.md`](../../README.md) - the whole path from nothing to a
 signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
+**Before the first command, if you want the reasoning.** This hour begins by standing a cloud pier
+and turning it into a machine described by a file. Two pages sit behind that choice, and both are
+optional here -- the steps below work whether or not you read them.
+
+- [**The machine you can write down**](../../foundations/20260909-004934_the-machine-you-can-write-down.md)
+  -- why a computer described in a file is a computer you can have again.
+- [**The pier a newcomer stands up**](../../active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md)
+  -- which host, in which order, and why this road rather than another, with the measurement behind
+  the choice.
+
 > Three names appear in this hour and each has a page for someone meeting it for the first time:
 > [Mantra](../../foundations/20260825-211056_what-mantra-is.md) hands out names that stay true,
 > [Brix infuse](../../foundations/20260823-222019_what-brix-infuse-is.md) declares what a system is made of,

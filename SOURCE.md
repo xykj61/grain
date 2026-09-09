@@ -46,15 +46,31 @@ green line, write five lines of your own. One page, one path.
 
 A first day that ends with Cursor open inside the enclosure -- before any forge keys. Short moves here; depth lives in Part Two (Steps 5, 6, and 9).
 
-### C0 -- Choose a host (if you still need one)
+### C0 -- Stand a cloud pier first (the move that carries every later one)
 
-We recommend hosts in this order:
+*The reasoning behind this ordering: [`foundations/20260909-004934_the-machine-you-can-write-down.md`](foundations/20260909-004934_the-machine-you-can-write-down.md)
+and [`active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md`](active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md).
+The host this guide raises is described by [`nixos/configuration.nix`](nixos/configuration.nix), which ships with this seed.*
 
-1. **NixOS 26.05** -- the best enclosure and reproducible-host story for Grain.  
-2. **Ubuntu 26.04 LTS** -- the path this Framework pier proves day to day.  
-3. **macOS** -- supported with Seatbelt (no AppImage, no `bwrap`); more traps, still workable.
+**Begin here, on a rented machine, rather than on the laptop in front of you.** A cloud pier gives
+you a host you can rebuild from a written file, and every later step in this guide assumes that
+file exists. Standing one takes about twenty minutes and costs the price of a few coffees a month.
 
-Other Linux distros and **Windows** are honest **less preferred** -- not shame, just fewer witnessed paths in this tree. If you are coming from Windows: back up everything you care about; you may need one or two USB flash drives; you will have a way better time on Linux. NixOS will give you the best experience.
+**Rent a Vultr instance running Ubuntu 22.04.** Choose **8 cores or 12 cores** -- both are
+recommended, and the difference is how many agent laps run beside each other later. Ubuntu is a
+springboard here rather than a destination: you will leave it in the very next step, and it is
+chosen because Vultr's own installer offers it and it answers SSH the moment the machine boots.
+
+**Why a rented pier and why declared.** The whole architecture of this project rests on a host you
+can describe in a file and recreate from that file. A laptop configured by hand is a machine only
+its owner can rebuild, and only while they remember what they did. A declared pier is a machine
+anyone can rebuild from the text, including you in a year.
+
+**A local host stays available** for anyone who prefers it: **NixOS 26.05** carries the same
+declared story, **Ubuntu 26.04 LTS** is the road this project's own laptop travels daily, and
+**macOS** works through Seatbelt with more care required. Each of these is a real path; the cloud
+pier is simply the one this guide walks, because it is the one that reaches a declared host with
+the fewest choices along the way.
 
 ### C0b -- Standing a NixOS cloud pier (witnessed `20260903`)
 

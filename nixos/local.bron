@@ -1,0 +1,17 @@
+# nixos/local.bron -- this pier's own values, infused into the template beside it.
+#
+# SINGLE-STRANDED SAMENESS (`.claude/rules/alias-sameness.md`). There is ONE host configuration.
+# `nixos/configuration.nix` is it, written as a template; this file names the handful of values
+# that are ours rather than anyone's. The live machine's config is the template with these infused,
+# which is why it can be DERIVED rather than maintained beside the template as a second copy.
+#
+# WITHHELD from the public seed by `template-manifest.bron` verdict `personal`. An SSH public key
+# is public and still an identifier: the blob is durable and unique, so anyone may match it against
+# a forge account's published keys and link the anonymous seed to its maintainer -- exactly what
+# `git-signing.md` refuses to let a signature do. The template ships; these values stay here.
+#
+# A newcomer writes their own file at this path, with their own keys, and the same infuse produces
+# their host. That is the whole point of shipping the template.
+format nixos-local-v1
+GRAIN_HOST_KEY_1 AAAAC3NzaC1lZDI1NTE5AAAAINxLRFDtsG7DOKgqwzTT5ruhKTiHN+cITAsArWlYHFmG
+GRAIN_HOST_KEY_2 AAAAC3NzaC1lZDI1NTE5AAAAIOtDMOF0YEwmV9a6nR5mt2oYE+em3VdBVeXm3/6OTTcX
