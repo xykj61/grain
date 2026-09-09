@@ -984,6 +984,22 @@ guard glow_gate_answer
 path tools/g/glow_gate_answer_witness.rish
 seated 20260828.114450
 
+# gitlink_dependent -- a guard that reds on a dependency a correct clone may lack can never be
+# rostered, so its refusal is one nobody will ever hear. This tree holds twelve gitlinks in two
+# rooms: `vendor/` is what the tree LINKS and the operator card requires every clone to initialise,
+# and `gratitude/` is a reading library the licenses law says we study and never copy -- so a clone
+# that never checked out `gratitude/tigerbeetle` is a CORRECT clone. REDS %646 found the shape by
+# sampling and left the class as a sample; counted here it is 22 dependents, all one family, against
+# 32 on the required rungs. The GATE is the one row that would red the fleet -- a rostered guard
+# depending on an optional gitlink and naming no `capability` -- held at zero. The population is
+# reported rather than gated, because rostering a study census is a hand's decision with a probe
+# attached. `lap` rather than `cadence`: 11s on this bench, and the fault can be written again by
+# any lap that rosters a witness.
+guard gitlink_dependent
+path tools/g/gitlink_dependent_witness.rish
+tier lap
+seated 20260908.214427
+
 # reds_status_consistency -- construction/REDS.md is the first page a lap reads under reds-first,
 # and the one thing it has to get right is which rows are still open. REDS %313 found `%307` reading
 # open on the pin while `%308` -- folded onto a shelf the same day -- carried the only record of its

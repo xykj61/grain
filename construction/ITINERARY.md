@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a9ce94553f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `99502021b9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINE OF THE TEN ANSWERED TO A FLAG, SO I BUILT THE PROVER THAT ASKS THEM.**
 Elder [shelved](archive/20260908-204213_itinerary-landed-accounts.md).
@@ -199,16 +199,16 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE GUARD READ ONE SPELLING OF THE IDIOM AND CALLED IT THE TREE.**
-Elder [shelved](archive/20260908-203226_itinerary-landed-accounts.md).
-**AETHER HEARS WHAT A PAGE REPEATS.** `glow_gate_answer` finds its surface by grepping
-tracked `.rish` for the literal `echo EXIT:`. A witness reaches that tail a second way, handing
-its run to `tools/g/glow_run_worker.sh`, which prints it.
-**35 READ, 52 UNREAD -- 38% of its subject**, holding **91 laundered needles, 14 certified by the
-line above them**: `aurora_wire_a1_gate_bound_witness.rish:19` asserts `contains "0"` beneath its
-own `contains "EXIT:0"`, so that refusal cannot red.
-**COUNTED APART** -- direct holds zero and survives byte-identical; the 91 sit in six lanes.
-Ratchets **91/150/50**. Control **22 -> 45**. **Stamp `20260908.203226`.**
+**GRASS -- TWO OPEN ROWS ARE ONE GATE, AND THE GATE ALREADY HAS A DOOR.**
+Elder [shelved](archive/20260908-214427_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, so this lap took `%646`, which left its class *a sweep whose size is
+the sample rather than a count*. **Counted: 22**, all one family, each asserting
+`test -d gratitude/tigerbeetle/src`, red on a clone that studies rather than clones, against **32**
+on the `vendor/` rungs the card requires.
+**`%460` IS THE SAME GATE ONE LANE OVER**, calling `capability` the mechanism and seating it a
+design act. **Built `20260829`, five probes**, two answering this. Both rows postdate it.
+**SEATED `gitlink_dependent`, `tier lap`, 11s**; its gate, a rostered guard on an optional gitlink
+naming no capability, reads **zero, both ways on metal**. **Row `20260908.214427` by stamp.**
 
 **COPAL -- THE ALLOWLIST SAYS ONE VERDICT A PATH, AND CARRIED ONE PATH TWICE.**
 Elder [shelved](archive/20260908-192614_itinerary-landed-accounts.md).
