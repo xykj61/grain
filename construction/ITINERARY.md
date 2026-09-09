@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8ab63b5674` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3a88e66610` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -191,8 +191,12 @@ column rather than a replacement.
 now names the same withheld room. The parked `gen_home` default and roster entry
 also return, claimed here for Pheromone's next review. Its comment grades A+ after
 simplification; the default, explicit path, and empty-path refusal were checked.
-**Pending:** the combined tree needs a full roster pass before main. Recovery branch
-`pier/copal/20260909-040154-recovery` keeps the package for the next lap.
+**Recheck `20260909.055005`:** the full cold pass held still: 209 guards, 203 green,
+four red, two custody gates. The nib correction rides this close. Both instrument
+reds pass with the installed `rg` on PATH; the fourth red is their roster summary.
+The full staged hot pass held still: 209 guards, 207 green, zero red, two gates.
+The saved branch stays; the final peer rebase gets a scoped recheck before send.
+[The verification record](../session-logs/date/20260909/20260909-055005_the-recovery-reaches-its-check.kyri) carries the scope.
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
