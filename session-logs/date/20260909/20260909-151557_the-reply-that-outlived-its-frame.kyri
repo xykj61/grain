@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260909.151557
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent, BAKERY seat, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status tracked settings file
+evidence .claude/settings.json names model claude-opus-5; configuration does not verify the active runtime
+voice Kyri
+host Linux pier, America/New_York
+title The reply that outlived its frame
+prompt Take the next agent-doable lap Lindy-first, crux-first; the card carries DIFFUSER's handoff asking BAKERY to review run_client_query returning views into its local opened buffer
+rota lap 4451, row 1 -- Air, the row that feels; the row's own test is to pull on a part and see whether anything comes with it, and a response returned by value came away holding a dead frame
+think DIFFUSER's handoff named one function, so the lap began by reading what its return type actually owns. qw.QueryWireResponse holds eight QueryWireHit records and each carries peer, bolt, and path as []const u8 -- slices, never text.
+think qw.decode_response cuts every one of those slices out of the payload it is handed. In run_client_query that payload was opened[0..opened_len], and opened was the function's own local array. The returned response therefore named bytes on a frame that had already ended.
+think The witness read GREEN over exactly that, which is the finding worth more than the fault. mantra/bin/recall-tablecloth-query-delivery selftest asserts resp.hits[0].path equals notes.txt immediately after the return, and nothing between the two had reused the frame.
+think So the fault was proven rather than argued. A scribble_frame function declaring an array the size of the departed frame and filling it with 0xAA, called between the return and the read, printed the path back as 0xAA and refused at the next assert.
+think The repair is the shape the tree already writes everywhere else: an out-parameter. run_client_query now takes opened as a *[max_message]u8 and the response as an out pointer, so the signature states where the answer lives and the caller supplies bytes that outlive the call.
+think scribble_frame stays in the selftest as the standing lifetime check rather than as a probe that was deleted once it had done its work. It sits between the call and the read, so the elder shape can never pass again.
+obs Both directions proven on metal. The repaired module builds and its selftest reads GREEN with the frame fill standing; planting the elder shape back -- a callee-owned buffer with the caller's ignored -- refuses at recall_tablecloth_query_delivery.zig:178, the path assert, and never at the hit_count assert, since an integer is copied where text is borrowed.
+obs run_host_once needed nothing. Its decoded request is read inside the same frame that opened it, and build_response fills hits from ns.Name records whose slices point into the caller's catalog, which outlives the call. One function had the fault; the sibling reading beside it was already right.
+obs The seam the repair opens is the one DIFFUSER's budget model wants. An answer slot in that design is exactly one caller-owned opened buffer, so a + r <= H reads concretely on this module: one buffer per request in flight, plus one per answer a caller is still reading. The completion contract's owned storage now has a named place to live.
+obs Against myself: the cold roster pass was launched detached and then the tree moved underneath it, which the card's hold-still directive forbids. The hot pass after staging is the reading that counts and it measures the tree the commit ships; the cold pass's own verdict is named here rather than claimed.
+obs `sow_allow_reach` reds at the cold open and it is not this round's. Its `reach_paths` hash reads identical with my staged set removed, so the stale projection predates the lap; the cure is a full `tools/s/sow.rish`, which is `%642`'s expensive scrub, so it is named rather than run inside a lap that had a module repair to land.
+loom witness=mantra_recall_tablecloth_query_wire result=green
+loom probe=frame_fill fill_byte=0xAA planted_refusal_line=178 refused_assert=path
+file mantra/recall_tablecloth_query_delivery.rye run_client_query takes the opened buffer and the response as parameters; scribble_frame holds the lifetime between call and read
+file construction/REDS.md the row for 20260909.151024 -- a reply that returned views into its decoding frame, closed on the witness
+file construction/ITINERARY.md the BAKERY live front carries the review's answer and the budget seam it opens
+recommend keep-going the budget half of the handoff is next -- one opened buffer per active request plus one per retained answer, exercised against the completion contract
+scope one module repaired, one ledger row, the card's own block; no peer file touched
+status GREEN -- module witness, tame_style_check, and width-check all green; the planted elder shape refuses

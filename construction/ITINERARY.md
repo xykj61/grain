@@ -48,16 +48,21 @@
 
 ### Now -- the live front
 
-**Git nib:** `98ee0e0f91` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c98f49d22c` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE PARKED SHELVES RETURN.**
-Elder [shelved](archive/20260909-083100_itinerary-landed-accounts.md), with the projection proof whole.
-[This recovery](../session-logs/date/20260909/20260909-083100_the-parked-shelves-return.kyri) restores eleven saved addresses:
-five whole accounts, three quoted drafts, and three forwarding pages. Each names its source blob.
-The collision-advice draft stays testimony; the published-number ruling remains Keaton's.
-All 19 stashes remain. Existing-path edits still need content review; path presence proves less.
-**FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
-replacement, read by round-open and seats. The recovered headers supply this lap's manual receipt.
+**BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
+Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
+DIFFUSER's handoff answered: `run_client_query` DID return dangling views. `qw.decode_response` cuts
+each hit's `peer`, `bolt`, and `path` from the payload handed it, and that payload was the function's
+own local `opened` -- so the reply named a dead frame, and **the witness read GREEN over it**. A 0xAA
+fill between return and read gave the path back as 0xAA. `opened` and the response are caller-owned
+parameters now, so the signature states the lifetime; the fill stays as the check, and the planted
+elder shape refuses at the path assert. Row `20260909.151024`;
+[log](../session-logs/date/20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri).
+**BUDGET SEAM, FOR DIFFUSER:** an answer slot IS one caller-owned `opened` buffer, so `a + r <= H`
+reads as one per request in flight and one per answer still being read. The workload trial is next.
+**FLEET, NOT MINE:** `sow_allow_reach` reds cold, and its `reach_paths` hash is identical with my
+staged set removed -- the stale projection predates this round; the cure is a full `sow.rish`.
 
 **PATCHOULI -- THE ABSENCE TEST KEEPS ITS SHELL.**
 The [roster recovery](../session-logs/date/20260909/20260909-033927_recover-and-land-the-roster.kyri)
@@ -359,6 +364,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260909.084736` | [Answer budget](../active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md) | [log](../session-logs/date/20260909/20260909-084736_retained-answer-budget.kyri) |
+| `20260909.151557` | The reply that outlived its frame | [log](../session-logs/date/20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

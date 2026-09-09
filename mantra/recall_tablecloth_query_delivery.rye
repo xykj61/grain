@@ -104,20 +104,53 @@ fn run_host_once(cat: *const ns.BoltCatalog) !void {
     try send_wire(client_port, wire_out[0..@intCast(sealed_len)]);
 }
 
-fn run_client_query(req: qw.QueryWireRequest) !qw.QueryWireResponse {
+// THE CALLER OWNS THE ANSWER'S BYTES, NEVER THIS FRAME. `qw.decode_response` fills every hit's
+// `peer`, `bolt`, and `path` with slices INTO the opened payload it was handed, so a response
+// returned by value carries views rather than text. This function once declared `opened` as its
+// own local and returned the response anyway: the witness read GREEN because the dead frame still
+// held the bytes, and a probe that filled the same frame with 0xAA after the return read the path
+// back as 0xAA. So the opened buffer is a parameter -- the signature now says, where a reader can
+// see it, that the answer lives exactly as long as the bytes the caller supplied.
+fn run_client_query(
+    req: qw.QueryWireRequest,
+    opened: *[@intCast(wf.max_message)]u8,
+    out: *qw.QueryWireResponse,
+) !void {
     var payload: [qw.max_wire_payload]u8 = undefined;
     const payload_len = try qw.encode_request(req, &payload);
     var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
     const sealed_len = try wf.seal_message(payload[0..payload_len], &wire_out);
+    // invariant: the sealed request fits the wire the socket send is bounded by, so the datagram
+    // this call puts on the port is one the far side's fixed receive buffer can hold whole
+    assert(sealed_len <= wf.wire_capacity);
     try send_wire(host_port, wire_out[0..@intCast(sealed_len)]);
 
     var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
     const n = try recv_wire(client_port, &wire_in);
-    var opened: [@intCast(wf.max_message)]u8 = undefined;
-    const opened_len = try wf.open_datagram(wire_in[0..n], &opened);
-    var resp: qw.QueryWireResponse = undefined;
-    try qw.decode_response(opened[0..@intCast(opened_len)], &resp);
-    return resp;
+    const opened_len = try wf.open_datagram(wire_in[0..n], opened);
+    // invariant: the opened payload stops inside the caller's buffer, so every slice the decoder
+    // cuts from it points at bytes the caller still owns
+    assert(opened_len <= wf.max_message);
+    try qw.decode_response(opened[0..@intCast(opened_len)], out);
+    // invariant: the decoded reply names no more hits than the response record holds, so a reader
+    // walking `hits[0..hit_count]` stays inside the array
+    assert(out.hit_count <= qw.max_wire_hits);
+}
+
+// A frame-sized scratch filled with a byte no reply carries. Run it between a call and the read of
+// that call's answer, and text still living in the callee's frame comes back as 0xAA. It proves no
+// theorem -- nothing here makes the compiler place this frame where the last one stood -- and it is
+// the cheapest test that catches this class, which is what it did here.
+fn scribble_frame() void {
+    var scratch: [@intCast(wf.max_message)]u8 = undefined;
+    var i: u32 = 0;
+    while (i < scratch.len) : (i += 1) scratch[i] = 0xAA;
+    // invariant: the walk reached the end, so the whole frame carries the fill and no byte of a
+    // departed answer survives inside it by luck
+    assert(i == scratch.len);
+    // invariant: the last byte took the fill, which is the postcondition a reader can check
+    assert(scratch[scratch.len - 1] == 0xAA);
+    std.mem.doNotOptimizeAway(&scratch);
 }
 
 fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8 {
@@ -134,7 +167,14 @@ fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
     var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
     _ = c.nanosleep(&pause, null);
 
-    const resp = try run_client_query(.{ .peer = "peerB", .bolt = "b" });
+    var client_opened: [@intCast(wf.max_message)]u8 = undefined;
+    var resp: qw.QueryWireResponse = undefined;
+    try run_client_query(.{ .peer = "peerB", .bolt = "b" }, &client_opened, &resp);
+    // The lifetime check, run before the answer is read: fill a frame the size of the one
+    // `run_client_query` just left with a byte the reply never contains. When the response held
+    // views into that frame this read came back as 0xAA and the next assert refused; reading the
+    // right path afterwards is what proves the answer sits in the caller's own bytes.
+    scribble_frame();
     assert(resp.hit_count == 2);
     assert(std.mem.eql(u8, resp.hits[0].path, "notes.txt"));
     assert(resp.hits[0].revision == 1);
@@ -155,7 +195,8 @@ fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
     var host2 = try std.process.spawn(io, .{ .argv = host_argv2 });
     _ = c.nanosleep(&pause, null);
 
-    const empty = try run_client_query(.{ .tilak = "no-such-tilak" });
+    var empty: qw.QueryWireResponse = undefined;
+    try run_client_query(.{ .tilak = "no-such-tilak" }, &client_opened, &empty);
     assert(empty.hit_count == 0);
 
     const host2_term = try host2.wait(io);
