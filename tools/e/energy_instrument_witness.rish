@@ -1,0 +1,93 @@
+# tools/e/energy_instrument_witness.rish -- a joule this host will not let us read is not a joule
+# we have.
+#
+# WHY THIS RUNG. This tree carries an energy argument several papers deep -- the joule bound
+# (external-research/20260905-232224_the-bound-that-names-a-joule.md), the wake-and-rate shape, the
+# compute share of a duty-cycled device, three falsifiers run -- and not one figure in that arc was
+# read from a counter. Every energy number so far is a CPU-second proxy or a vendor budget. The
+# question the arc never asked out loud is the cheap one: does the machine we run on expose a joule
+# at all, and may this user read it?
+#
+# The pier answers no, twice over. It is a Microsoft hypervisor guest on an AMD EPYC-Rome part with
+# no powercap tree, no RAPL perf PMU, no /dev/cpu/0/msr, no hwmon, and no battery. What it does
+# expose is the `cpu` PMU with cycles and instructions, at perf_event_paranoid 2 -- so a process may
+# count itself, and joules stay out of reach.
+#
+# EXISTENCE IS NOT READABILITY, and that is the distinction this rung is built around. Since the
+# PLATYPUS disclosure (CVE-2020-8694, 2020) Linux ships intel-rapl `energy_uj` at mode 0400, so a
+# host CAN carry a counter that refuses every unprivileged read. A probe that stats the path would
+# report a joule the caller cannot have, which is worse than reporting none. Every reading here
+# opens the counter and requires digits back.
+#
+# THE SECOND WALL. Sysfs declares an instrument; an open proves one. A kernel can expose
+# `instructions` under the cpu PMU and still refuse perf_event_open, and a guest can pass the event
+# names through without the counters behind them. So tools/fixtures/e/energy_instrument_agree.sh
+# runs tools/rye/perf_self_count.rye whenever the scan says `counters` and requires a count back.
+# On this pier the probe reads about 23.0 million retired instructions over a bounded
+# million-iteration loop -- 23,000,054 read `20260908.234221` -- with no root and no `perf` binary
+# installed. The figure moves by a few tens of thousands between runs, which is the loop's own
+# setup and teardown rather than noise in the counter.
+#
+# WHAT IS PROVEN, on metal. Twenty readings over planted sysfs pens: the three joule families each
+# reached by name, the counters rung reached and its two events both required, the CPU-second floor
+# reached by a host holding nothing, the ladder ordered so joules outrank counters, and six
+# refusals bitten -- a counter that exists and refuses, a counter answering in words rather than
+# digits, a kernel at perf_event_paranoid 3, cycles without instructions, an absent root, and an
+# unknown argument.
+#
+# WHY THE CONTROL CARRIES THE GATE. A host is not a fault: `tier=cpu_seconds` is a true reading and
+# never a red, so the live pass here reports rather than refuses. What the gate holds is the probe's
+# own ability to say `joules` when joules are there -- a guard that cannot red guards nothing, and a
+# probe that cannot say `joules` proves nothing at all by saying `none`.
+#
+# WHAT IS NOT PROVEN. That a readable counter is accurate, that its domain covers the work you care
+# about, or that a joule read on a shared virtual host could be attributed to one tenant. Only which
+# instrument is available, and whether this user may read it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/e/energy_instrument_witness.rish
+
+say "energy-instrument: Language EN -- a counter that refuses to be read is not an instrument."
+say "energy-instrument: Style Gauge, Meter -- the reading names its tier before any figure leans on it."
+say "energy-instrument: Lens TAME -- safety first: an energy claim measured at a tier it never names is a claim nobody can check."
+
+let scan = run ["sh" "tools/fixtures/e/energy_instrument_scan.sh"]
+assert scan.ok else "energy-instrument: the probe must read this host -- see the scan's own lines"
+say scan.out
+assert scan.out contains "verdict=ok" else "energy-instrument: the probe must balance before it is believed"
+assert scan.out contains "tier=" else "energy-instrument: every reading names the best instrument actually available"
+say "host read -- the tier above is what any energy figure taken here was measured at"
+
+let agree = run ["sh" "tools/fixtures/e/energy_instrument_agree.sh"]
+assert agree.ok else "energy-instrument: a tier this host declares must be a tier a process can reach"
+say agree.out
+assert agree.out contains "verdict=ok" else "energy-instrument: the declared tier and the opened counter must agree"
+say "declaration and open agree -- sysfs names an instrument the kernel actually hands over"
+
+let control = run ["sh" "tools/fixtures/e/energy_instrument_control.sh"]
+assert control.ok else "energy-instrument: the control must complete"
+say control.out
+assert control.out contains "bare_falls_to_cpu_seconds=yes" else "energy-instrument: a host with no counter reads CPU seconds"
+assert control.out contains "bare_names_no_source=yes" else "energy-instrument: the floor names its absent source rather than staying silent"
+assert control.out contains "bare_free=yes" else "energy-instrument: a host is not a fault -- the floor passes free"
+assert control.out contains "powercap_reads_joules=yes" else "energy-instrument: a readable powercap domain must read as joules, or every none is unfalsifiable"
+assert control.out contains "powercap_named=yes" else "energy-instrument: the joule must name the family it came from"
+assert control.out contains "powercap_counted=yes" else "energy-instrument: the reading names a count, never only a verdict"
+assert control.out contains "locked_domain_seen=yes" else "energy-instrument: a counter that refuses must still be seen"
+assert control.out contains "locked_not_readable=yes" else "energy-instrument: seeing a counter is not reading one"
+assert control.out contains "locked_counted=yes" else "energy-instrument: a present unreadable counter is counted, so the repair is one permission away"
+assert control.out contains "locked_claims_no_joule=yes" else "energy-instrument: a joule this user cannot read must never raise the tier"
+assert control.out contains "nondigits_refused=yes" else "energy-instrument: a counter answering in words is not a reading"
+assert control.out contains "hwmon_named=yes" else "energy-instrument: the hwmon family must be reachable by name"
+assert control.out contains "supply_named=yes" else "energy-instrument: the power-supply family must be reachable by name"
+assert control.out contains "counters_rung=yes" else "energy-instrument: cycles and instructions are the middle rung"
+assert control.out contains "counters_named=yes" else "energy-instrument: the rung names the events it stands on"
+assert control.out contains "cycles_alone_insufficient=yes" else "energy-instrument: a per-operation reading wants both events"
+assert control.out contains "paranoid3_drops_rung=yes" else "energy-instrument: a kernel forbidding perf_event_open takes the rung away, events and all"
+assert control.out contains "joules_outrank_counters=yes" else "energy-instrument: the ladder is ordered, best instrument first"
+assert control.out contains "absent_root_refused=yes" else "energy-instrument: an unreadable root refuses rather than reporting an empty host"
+assert control.out contains "unknown_argument_refused=yes" else "energy-instrument: an unknown word refuses at exit 2"
+assert control.out contains "control_verdict=ok" else "energy-instrument: the control must agree with itself"
+say "RED and GREEN paths proven -- six refusals bitten, fourteen honest readings left free"
+
+say "GREEN: energy-instrument -- the tier this host measures at is named, and the probe is proven able to name a better one."

@@ -128,7 +128,12 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # reason those stayed unnamed is specific to Rye: `rye_compile_reach` reads a `.rye` path inside a
 # runner as a claim that some build reaches it. A `.rish` path carries no such claim, which is why
 # `tools/p/parity_ch01.rish` is named outright a dozen lines below.
-assert green.out contains "unnamed_population=459" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# 459 -> 460 on `20260909.002917`: one Rye program arrived under `tools/rye/`, a self-scoped
+# instruction-counter probe run by the `energy_instrument` guard's agree step, wearing neither word
+# in its basename. The delta is exactly one and the arrival is exactly one, checked from both sides.
+# Its path stays UNSPELLED here for the reason the two Rye arrivals above stayed unspelled:
+# `rye_compile_reach` reads a `.rye` path inside a runner as a claim that some build reaches it.
+assert green.out contains "unnamed_population=460" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
 assert green.out contains "unnamed_choirs=12" else "unheard-guard: twelve silent choirs wear neither word -- ${green.out}"
 
 # THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first

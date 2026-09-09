@@ -1,0 +1,103 @@
+// tools/rye/perf_self_count.rye -- count this process's own retired instructions, so the counters
+// rung of the energy ladder is proven rather than inferred.
+//
+// WHY. tools/fixtures/e/energy_instrument_scan.sh reads sysfs and reports which instrument a host
+// exposes. Sysfs answers what is DECLARED; only an open answers what is COUNTABLE. This program is
+// the second wall behind that reading: it opens a hardware event for itself, runs a bounded loop of
+// a named size, and prints the count it got back. A pier that cannot read a joule can still read
+// its own work, and this is what proves that sentence on metal.
+//
+// It needs no root, no `perf` binary, and no privileged kernel setting: perf_event_paranoid 2
+// permits a process to count itself. The kernel's refusal is a first-class answer here rather than
+// an error -- a host that forbids the syscall says so, and the witness reads that word.
+//
+// Run from the repository root:
+//   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/perf_self_count.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const linux = std.os.linux;
+
+// A self-count measures this process on whichever cpu it lands on, so the pid is 0 and the cpu -1.
+const self_pid: linux.pid_t = 0;
+const any_cpu: i32 = -1;
+const no_group: linux.fd_t = -1;
+
+// The loop is bounded and named so two runs on one host are comparable, and so the count has a
+// denominator. A million iterations costs well under a second and stays far from any overflow.
+const loop_iterations: u32 = 1_000_000;
+
+const CountError = error{
+    counter_refused,
+    counter_short_read,
+};
+
+/// Open a self-scoped hardware counter for retired instructions, or name why the kernel refused.
+fn open_instruction_counter() CountError!linux.fd_t {
+    var attr = std.mem.zeroes(linux.perf_event_attr);
+    attr.type = .HARDWARE;
+    attr.size = @sizeOf(linux.perf_event_attr);
+    attr.config = @intFromEnum(linux.PERF.COUNT.HW.INSTRUCTIONS);
+    attr.flags.disabled = true;
+    // User-space only: kernel and hypervisor time belong to work this process did not choose.
+    attr.flags.exclude_kernel = true;
+    attr.flags.exclude_hv = true;
+
+    // invariant: the attribute block declares its own size, which is how the kernel versions it.
+    assert(attr.size == @sizeOf(linux.perf_event_attr));
+
+    const rc = linux.perf_event_open(&attr, self_pid, any_cpu, no_group, 0);
+    if (linux.errno(rc) != .SUCCESS) {
+        print("perf_self_count: counter_refused errno={s}\n", .{@tagName(linux.errno(rc))});
+        return CountError.counter_refused;
+    }
+
+    // invariant: a successful open returns a descriptor inside the i32 range a fd_t holds.
+    assert(rc <= @as(usize, @intCast(std.math.maxInt(i32))));
+    return @intCast(rc);
+}
+
+/// Run the bounded loop with the counter enabled and return what it counted.
+fn count_bounded_loop(fd: linux.fd_t) CountError!u64 {
+    // invariant: the descriptor handed in is a real one, never the -1 that means no group.
+    assert(fd >= 0);
+
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.RESET, 0);
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.ENABLE, 0);
+
+    var sum: u64 = 0;
+    var i: u32 = 0;
+    while (i < loop_iterations) : (i += 1) sum +%= i;
+
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.DISABLE, 0);
+
+    var count: u64 = 0;
+    const bytes = std.mem.asBytes(&count);
+    const read_bytes = linux.read(fd, bytes.ptr, bytes.len);
+    if (read_bytes != bytes.len) return CountError.counter_short_read;
+
+    // invariant: a counter that ran over a million iterations reports more work than none.
+    assert(count > 0);
+    // The loop's own sum is consumed so the compiler keeps the work the counter is counting.
+    assert(sum > 0);
+    return count;
+}
+
+pub fn main() !void {
+    const fd = open_instruction_counter() catch {
+        print("perf_self_count: tier=cpu_seconds -- this kernel refuses a self-scoped counter\n", .{});
+        return;
+    };
+    defer _ = linux.close(fd);
+
+    // invariant: a live descriptor is non-negative, so the count below reads a real counter.
+    assert(fd >= 0);
+
+    const count = try count_bounded_loop(fd);
+    // invariant: the loop retires at least one instruction per iteration it ran.
+    assert(count >= loop_iterations);
+    const per_iteration = count / loop_iterations;
+    print("perf_self_count: instructions={d} iterations={d} per_iteration={d} tier=counters\n", .{ count, loop_iterations, per_iteration });
+}

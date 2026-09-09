@@ -1,0 +1,48 @@
+# tools/i/itinerary_account_shelf_witness.rish -- the shelf nothing wrote now has a writer.
+#
+#   rishi/bin/rishi run tools/i/itinerary_account_shelf_witness.rish
+#
+# WHAT THIS GUARDS. Every send folds a ship's live-front account off `construction/ITINERARY.md`
+# onto a shelf one directory deeper, so every relative link in the block must gain a level. The
+# instrument that performs exactly that rewrite has existed since `20260826` and been general since
+# `20260908.104232`, when its own header was widened to spell this very invocation. Measured
+# `20260909`: 208 account shelves stand, all written by hand, and NOTHING under `tools/` writes one.
+#
+# THE FAULT IS NOT AN ABSENT TOOL; IT IS A TOOL NOTHING CALLS. `reds_fold.sh` pipes a REDS row
+# through the filter, and that path has held. The account-shelf path has no writer at all, so the
+# filter's use there depends on a hand recalling a pipe -- and the same day the header was widened,
+# the fault fired again, from more than one ship. A prevention that is reachable and unknown fails
+# the way an absent one does. The tree has ruled on this shape twice, at `%620` and at the row of
+# `20260908.113404`: both end with the tool handing over what the hand kept mistyping.
+#
+# WHY THIS WRITER INVENTS A HEADER WHERE ITS REDS SIBLING REFUSES TO. `reds_fold.sh` refuses
+# `shelf_absent` deliberately -- a REDS shelf's header names which rows moved and what they taught
+# together, which is judgment. An account shelf's header names a seat and a stamp, both of them
+# arguments, and one sentence that is the same every time. Nothing is judged here, so nothing is
+# guessed. Measured across the 208 standing shelves, 34 share a first line and 12 share a body
+# sentence, which is eight hands each writing the same header freshly -- reported rather than
+# gated, since a differently worded header reads perfectly well.
+
+say "itinerary-account-shelf: Language EN -- the shelf that nothing wrote."
+say "itinerary-account-shelf: Style Gauge, Meter -- the re-anchoring is done, never recalled."
+say "itinerary-account-shelf: Lens TAME -- every refusal proven from both sides."
+
+say "itinerary-account-shelf: the control -- the writer on a real fold in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/i/itinerary_account_shelf_control.sh"]
+assert ctl.ok else "itinerary-account-shelf: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=29 fail=0" else "itinerary-account-shelf: the control did not prove twenty-nine behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "itinerary-account-shelf: the filter it delegates to must still stand..."
+# invariant: the rewrite is computed in the filter and never duplicated here, so its absence is a
+# refusal rather than a fallback -- one rule, one home.
+let filt = run ["test" "-f" "tools/fixtures/r/reds_fold_reanchor.sh"]
+assert filt.ok else "itinerary-account-shelf: tools/fixtures/r/reds_fold_reanchor.sh is absent -- the rewrite has no home"
+
+say "itinerary-account-shelf: and the shelves standing in this tree read clean..."
+# invariant: the writer exists to keep this reading at zero, so the guard states the property it
+# serves rather than only proving its own machinery.
+let depth = run ["sh" "-c" "grep -ohE '\\]\\(\\.\\./[a-z-]+/' construction/archive/*itinerary-landed-accounts.md 2>/dev/null | grep -cv '](../archive/' | sed 's/^/pin_depth_links=/'"]
+assert depth.ok else "itinerary-account-shelf: the shelf reading refused --\n${depth.err}"
+assert depth.out contains "pin_depth_links=0" else "itinerary-account-shelf: an account shelf carries a pin-depth link --\n${depth.out}"
+
+say "itinerary-account-shelf: GREEN -- 29 behaviors, the filter in place, the shelves clean."
