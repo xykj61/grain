@@ -102,15 +102,23 @@ leaves to somebody else, so the watch runs beside the ships in the same tmux ses
 any live seat whose `fleet-loop.sh` process is gone.
 
 ```
-sh tools/f/fleet_watch.sh                # watch until you stop it
-sh tools/f/fleet_watch.sh --once         # one pass, then exit
-sh tools/f/fleet_watch.sh --dry-run      # decide and print; send no keystroke
+sh tools/f/fleet_watch.sh                    # watch until you stop it
+sh tools/f/fleet_watch.sh --once             # one pass, then exit
+sh tools/f/fleet_watch.sh --once --dry-run   # one pass, decided out loud, no keystroke
 ```
 
-The dry run answers, on this tree today:
+**The two flags sit on different axes, so they compose.** `--dry-run` bounds what a pass may *do*:
+it decides, prints, and sends no keystroke. `--once` bounds how many passes *run*, and is
+`WATCH_PASSES=1` spelled short. Reach for `--dry-run` by itself and you get the first line below and
+then nothing: the watcher keeps its default `WATCH_PASSES=0` and watches until you stop it, one
+silent pass a minute. The form you want when you are asking *what would this do* is both flags
+together, and it returns in under a second.
+
+The paired form answers, on this tree today:
 
 ```
-fleet-watch 16:02:14: watching session 'pier' -- interval 60s, skip 'incense', arm-max 3, settle 180s (DRY RUN)
+fleet-watch 22:28:05: watching session 'pier' -- interval 60s, skip 'incense', arm-max 3, settle 180s (DRY RUN)
+fleet-watch 22:28:05: watch ended after 1 pass(es)
 ```
 
 **Read that `skip 'incense'` twice, because it is the page's one surprise.** `WATCH_SKIP` defaults
@@ -177,8 +185,12 @@ sh tools/f/fleet_call.sh --pattern standing_equipment --dry-run
 which answers, on this tree today:
 
 ```
-candidates=24 would_send=0 refused_foreign=20 refused_self=3 refused_unknown=1 root=/home/keeper/grain-petrichor verdict=ok
+candidates=20 would_send=1 refused_foreign=14 refused_self=4 refused_unknown=1 over_bound=0 root=/home/keeper/grain-petrichor verdict=ok
 ```
+
+**Read the field names rather than the counts.** Those numbers are one second's reading of what
+happened to be running, so yours will differ every time; what stays true is the shape, and that a
+process in a sibling tree is refused by name rather than signalled in silence.
 
 **Keep the `--dry-run`, because sending is what the helper does by default.** `--signal` names
 which signal rather than whether to send one, so the flagless form is the live one. Reading it the

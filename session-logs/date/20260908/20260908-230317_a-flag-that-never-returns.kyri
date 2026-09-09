@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260908.230317
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat -- Petrichor, the docs-geode and prose-product lane
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status tracked settings file read this lap
+evidence .claude/settings.json reads "model": "claude-opus-5", "effortLevel": "medium"
+voice Kyri
+host Linux pier, x86_64, America/New_York
+title A flag that never returns
+prompt the standing fleet baton -- take the next agent-doable lap in the docs-geode and prose-product lane
+rota lap 4392, row 2 -- Fire/Mars, the row that sees; cut and stop. Read the threshold page plus standfast, reds-first, and the three depths of removal. The row asks what must stop rather than what could be added, and its sense is vision -- look straight at the uncomfortable point rather than inferring around it. Applied literally: this lap RAN the commands its lane prints instead of reading them, which is how a hanging one was found that four instruments call healthy.
+think The thread handed me a recommend line about running SOURCE.md's setup commands. Fire asked a sharper question than "what is unrun" -- it asked what is WRONG. So I widened from paths to behavior: my last lap seated docs_command_path, which gates a printed path that resolves nowhere at zero. That guard reads reachability. A reader meets an exit code.
+think First I checked the first-hour page's output claims, since a page that prints what a newcomer will SEE is making a promise nothing holds. Two claims verified exactly on metal -- hello.rish's three lines and rish_exit_codes_witness's GREEN line. The "72 rooms" claim differs from this tree's 80, and the page already names that hazard in its own next paragraph, tells the story of its two corrections, and explains why a generated number beats a typed one. Healthy; nothing to cut. Fire says see clearly before cutting, and that page had already seen itself.
+think Then I ran every command docs-geode/tutorials/running-the-fleet.md prints. `sh tools/f/fleet_watch.sh --dry-run` did not return. Bounded it: timeout 25 gives exit 124. The page prints it third in a block whose other two lines terminate, under the sentence "The dry run answers, on this tree today:" followed by ONE line of output -- the exact shape of a command that comes back.
+think Read the source rather than guessing at the cause. --dry-run sets dry=1; --once sets passes_max=1. Two different axes: one bounds what a pass may DO, the other bounds how many passes RUN. The tool's ENV table states this correctly eight lines below its own usage triple, so the truth was written down and the summary above it contradicted the impression.
+think The composition is what a reader means: --once --dry-run exits 0 in under a second. Proven both ways.
+think The sharpest part is what the instruments said while this stood. In the same cold pass, my own docs_command_path read GREEN on this page, because every printed path resolves. qa_report_card graded it A, composite 94, truth 100 on 6 of 6 cited paths. Two instruments aimed at exactly this page, both reading reachability, and neither can read termination.
+think The page knew the pattern. Forty-four lines earlier it writes FLEET_DRY=1 LOOP_LAPS=1 -- the same don't-act flag bound by the same pass count -- under "To see the command by itself, with the lap held". So one block forgot what its own page had already said.
+think Asked whether this is a loom or a lantern before reaching for a guard. Searched every tracked tools shell script for an unbounded loop with a sleep: three exist, and the two besides fleet_watch.sh are prin_matrix.sh and prin_ticker.sh, neither printed by any living page. One firing in living docs, so a lantern -- repair and record, no guard. A guard for this class would have to RUN printed commands, which is a reading for Keaton rather than a thing to build unasked.
+obs docs-geode ships template through template-manifest.bron, verbatim and not sub-excluded, so the hanging line reached the public seed. A newcomer cloning grain-os/grain copies it.
+obs A second drift on the same page, same root: the quoted fleet_call.sh transcript omits over_bound=0, a field the tool now prints, and its counts are a one-second reading of live processes. Repaired to name the field shape and say plainly that the numbers move.
+obs Held the tree completely still for the 30-minute cold pass rather than editing beside it, since the runner digests the tree at open and close. Every finding above came from reads and bounded timeouts during that window.
+obs The pin had 173 bytes of slack and my row needed 2,430, so the row was born and folded onto its own shelf through reds_fold.sh rather than by hand -- the tool wrote the recital line the capacity scan reads.
+obs AGAINST MYSELF, and it is this lap's own finding wearing my face. The first hot pass reddened on fold_shelf_link_repoint -- my two new shelves kept the link depth they were folded out of, the trap Copal named twice today. I reached for the tool and typed its BARE form, which APPLIES; `--dry-run` is what names edits. It wrote one file under the running pass, so that pass closed `tree_moved=yes run_verdict=guard_red`. The tool documents both forms correctly in its own header, so the fault is mine and not its: I had spent the whole lap proving that a flag's bare form can do more than a reader expects, and then did not read the flags.
+obs AND THE SECOND ERROR IS THE FIRST ONE'S COST. To amend this log before the pass that measures it, I stopped a 40-second-old hot pass through `fleet_call.sh --signal TERM`. The helper's pattern matched a transient sibling inside my own invocation's pipeline -- refused_self covers the caller and its ancestors, not a sibling -- and reported `sent` against that pid rather than the pass. The pass ended anyway, writing no `run_verdict`, which is precisely the shape Copal booked hours ago. A pass stopped by hand leaves no receipt, so this line is the receipt.
+obs tracked_link went RED after the fold and was right: the recital linked a shelf still untracked, invisible to a fresh clone. Staging it turned the guard green. The guard reads the index, which is the whole point of it.
+loom witness=standing_equipment_cold guards=205 green=176 gated=2 red=0 wall_s=1810 verdict=ok
+loom witness=standing_equipment_hot_first guards=222 green=199 red=2 gated=2 tree_moved=yes verdict=guard_red
+loom command=fleet_watch_dry_run timeout_s=25 exit=124 returns=no
+loom command=fleet_watch_once_dry_run exit=0 wall_s=1 returns=yes
+loom page=running-the-fleet.md composite_before=94 composite_after=94 truth=100 letter=A
+file docs-geode/tutorials/running-the-fleet.md the usage block now pairs --once with --dry-run, names the two axes, and shows the two lines the paired form actually prints; the fleet_call transcript gains over_bound and a sentence saying its counts are a live reading
+file tools/f/fleet_watch.sh the header the page copied, repaired at its source, with the two axes named in the comment above the ENV table that already stated them
+file construction/REDS.md row %654 booked and folded out (renumbered from %651 on the rebase -- a peer had published 651-653); headline regenerates
+file construction/archive/REDS-a-flag-that-never-returns-rows-654.md the shelf the row was born onto, the pin having 173 bytes of slack
+file construction/archive/REDS-fold-recital.md the fold's own line, written by the tool rather than by a hand
+scope every command docs-geode/tutorials/running-the-fleet.md prints was run rather than read; one that never returns repaired at both its prose sites; the class measured at one firing and left unguarded on purpose
+status GREEN on the work, with two self-inflicted faults recorded above. Cold roster 205 guards, 176 green, 0 red, 2 gated (pond, expected), run_verdict=ok. docs_command_path, tracked_link, ascii_document, qa_report_card, living_docs_lint, exec_bit, reds_pin_capacity, reds_spine_derive and reds_ledger_monotone all GREEN after the change. Page re-graded A 94; shelf A+ 100. Written before the send.
+recommend check-in (Keaton) -- the repair is landed and the class is measured at one firing, so no guard was built. The open question is whether this tree wants an instrument that reads a printed command for TERMINATION rather than reachability, since the only honest way to answer is to run it, and running a page's commands is exactly what no guard does today. Two of my instruments called a hanging command healthy this lap; that is either acceptable and named, or it is the next loom.

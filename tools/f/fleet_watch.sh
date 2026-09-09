@@ -18,9 +18,16 @@
 # keyboard. The seat table already binds seat -> tree; tmux already binds name -> index; this file
 # adds no third copy of either (REDS %409's law, one room over).
 #
-#   sh tools/f/fleet_watch.sh                 # watch until stopped
-#   sh tools/f/fleet_watch.sh --once          # one pass, then exit
-#   sh tools/f/fleet_watch.sh --dry-run       # decide and print; send no keystroke
+#   sh tools/f/fleet_watch.sh                   # watch until stopped
+#   sh tools/f/fleet_watch.sh --once            # one pass, then exit
+#   sh tools/f/fleet_watch.sh --once --dry-run  # one pass, decided out loud; no keystroke
+#
+# THE TWO FLAGS SIT ON DIFFERENT AXES. --dry-run bounds what a pass may DO (decide, print, send no
+# keystroke); --once bounds how many passes RUN, and is WATCH_PASSES=1 spelled short. --dry-run
+# alone leaves WATCH_PASSES at its unbounded default, so it prints its opening line and then
+# watches until stopped -- which is not what a reader asking "what would this do" wants. The three
+# lines above once listed --dry-run as a third alternative beside a terminating one, and the
+# tutorial that ships to the public seed copied them verbatim.
 #
 # ENV, all bounded:
 #   WATCH_SESSION   tmux session to read (default: this pane's session, else `pier`)
