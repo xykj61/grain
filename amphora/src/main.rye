@@ -3,7 +3,8 @@
 //! Amphora is preservation in motion. It carries sealed resins across a
 //! crossing -- wire, dock, or pocket -- under the same resins law and Kumara
 //! stamp as the cellar. Seal and stamp live inside pour; chunk lives
-//! inside carry. The shoulder stays clear. Tamper must fail. Round-trip with
+//! inside carry. The shoulder stays clear. Every tamper is caught at a wall.
+//! Round-trip with
 //! pour and carry must close equal.
 //!
 //! This is the seed: one file, three commands, one crossing.
@@ -41,7 +42,7 @@
 //!   StampUnverified - SealUnopened (Q20 carry walls)
 //!   DockUnwritable - ChunkTorn - CrossingUnequal (Q23-Q24 crossing)
 //!   ResinAbsent - CargoUnproven - RestoreUnwritable (Q46 return)
-//!   Module split named, not swept: InvalidVessel vs BadVessel (G10).
+//!   Module split named and kept: InvalidVessel beside BadVessel (G10).
 //!
 //! Architecture (four sections, one file for the seed):
 //!   § Pour    -- parse (Q6) - read (Q7) - seal (Q8) - stamp (Q9) - guard (Q10) - manifest (Q11): pour grown; witnesses wait Q12
@@ -56,8 +57,9 @@
 //! Result on stdout; diagnostics on stderr -- a result no caller can read
 //! is not a result (Amphora's half; family law awaits Keaton's word).
 //!
-//! Class W wire shoulder stays amber-ring1-season (e149 park) -- not renamed here.
-//! Path C: this file does not import amphora/vessel_*.rye.
+//! Class W wire shoulder stays amber-ring1-season (e149 park) -- the name
+//! stands as written.
+//! Path C: this file reaches the vessel modules by subprocess alone.
 //! Q8 seals by writing an unsealed vessel then running amphora/bin/vessel-seal
 //! (subprocess - same AEAD roof - import wall held).
 //! Q9 stamps by running amphora/bin/vessel-core sign after the seal
@@ -66,7 +68,8 @@
 //! it -- an occupant with the same parent re-pours; any other occupant refuses.
 //! Q11 writes readable manifest lines into the head -- every enclosed thing
 //! named with its type-mark and digest (resins law) -- stamp-covered, so the
-//! listing reads without opening and tampers fail Kumara verify (measured);
+//! listing reads while sealed and every tamper is caught by Kumara verify
+//! (measured);
 //! the seal keeps guarding the cargo, and restore's law checks both walls.
 //! With the manifest, pour is grown: the round path exits ok; the stdout
 //! result family still awaits Keaton's word, so success speaks stderr only.
@@ -365,7 +368,11 @@ const SeasonCatalog = struct {
 /// Parse pour operands. Does not open the season or write a vessel.
 /// Path C: no vessel-module import -- only argv shape and named ceilings.
 fn parse_pour_args(args: []const []const u8) CliError!PourArgs {
+    // invariant: main dispatched on args[1], so the program name and a command
+    // word both stand before this parser reads an operand.
     assert(args.len >= 2);
+    // invariant: this parser reads the pour command alone -- a shared parser
+    // answering to two command words would drift the two operand shapes apart.
     assert(std.mem.eql(u8, args[1], "pour"));
     if (args.len < 4) return error.MissingOperand;
     if (args.len > max_words) return error.TooManyWords;
@@ -379,6 +386,8 @@ fn parse_pour_args(args: []const []const u8) CliError!PourArgs {
 }
 
 fn write_hex_lower(bytes: []const u8, out: []u8) void {
+    // invariant: the caller sized the output for two hex characters per byte, so
+    // the loop below writes exactly out.len and reads exactly bytes.len.
     assert(out.len == bytes.len * 2);
     const hex = "0123456789abcdef";
     for (bytes, 0..) |b, i| {
@@ -389,6 +398,8 @@ fn write_hex_lower(bytes: []const u8, out: []u8) void {
 
 /// Parent directory of a path -- `.` when the path has no slash.
 fn path_dirname(path: []const u8) []const u8 {
+    // invariant: an empty path names no parent, so the caller resolved a real path
+    // before asking which directory holds it.
     assert(path.len > 0);
     if (std.mem.lastIndexOfScalar(u8, path, '/')) |i| {
         if (i == 0) return "/";
@@ -399,6 +410,8 @@ fn path_dirname(path: []const u8) []const u8 {
 
 /// `{dirname(vessel)}/resins` -- bodies ride beside the sealed listing.
 fn resins_dir_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
+    // invariant: the resins directory is derived from the vessel's own parent, so
+    // an empty vessel path would place bodies at an address nobody can read back.
     assert(vessel.len > 0);
     const dir = path_dirname(vessel);
     return std.fmt.bufPrint(buf, "{s}/{s}", .{ dir, resins_dir_name }) catch {
@@ -408,6 +421,8 @@ fn resins_dir_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
 
 /// One resin address: `{dirname(vessel)}/resins/{digest_hex}`.
 fn resin_file_path(vessel: []const u8, digest_hex: []const u8, buf: []u8) CliError![]const u8 {
+    // invariant: a resin's address IS its whole digest, so a short hex here would
+    // file a body under a name the restore walk refuses at digest_hex_len.
     assert(digest_hex.len == digest_hex_len);
     const dir = path_dirname(vessel);
     return std.fmt.bufPrint(buf, "{s}/{s}/{s}", .{ dir, resins_dir_name, digest_hex }) catch {
@@ -422,7 +437,11 @@ fn read_season(
     season_path: []const u8,
     catalog: *SeasonCatalog,
 ) CliError!void {
+    // invariant: a season is read from a real path -- the caller's parse refused an
+    // empty operand before this walk opens a directory.
     assert(season_path.len > 0);
+    // invariant: and the path fits the ceiling every path buffer here declares, so
+    // no bufPrint below can overrun on a name this door already welcomed.
     assert(season_path.len <= max_vessel_path_len);
     catalog.file_count = 0;
     catalog.total_bytes = 0;
@@ -469,6 +488,8 @@ fn read_season(
     }
 
     if (catalog.file_count == 0) return error.SeasonEmpty;
+    // invariant: postcondition -- the walk refuses at SeasonOverflow before filling
+    // slot max_season_files, so the catalog it hands back fits its own array.
     assert(catalog.file_count <= max_season_files);
 }
 
@@ -491,6 +512,8 @@ fn sort_season_by_name(catalog: *SeasonCatalog) void {
 
 /// Build Tilak cargo lines from the catalog. Returns plaintext length.
 fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
+    // invariant: an empty catalog builds no cargo, and the caller refused at
+    // SeasonEmpty first -- a zero-line cargo would hash to a parent naming nothing.
     assert(catalog.file_count >= 1);
     var off: u32 = 0;
     var i: u32 = 0;
@@ -503,7 +526,11 @@ fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
         off += @intCast(line.len);
         if (off > max_cargo_bytes) return error.CargoTooLarge;
     }
+    // invariant: postcondition -- at least one line landed, so the parent digest
+    // below covers real cargo rather than an empty slice.
     assert(off > 0);
+    // invariant: and the whole listing stayed under the roof the loop checks each
+    // pass, so the returned length indexes a slice the seal can carry.
     assert(off <= max_cargo_bytes);
     return off;
 }
@@ -512,6 +539,8 @@ fn build_cargo_plain(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
 /// Lives in the head, so the seal covers it (tamper-evident) yet it reads
 /// without opening -- the resins-law listing the sealed-crossing anatomy names.
 fn build_manifest_lines(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
+    // invariant: the manifest is built from the SAME catalog as the cargo, so an
+    // empty one here would mean the cargo door let a zero-file season through.
     assert(catalog.file_count >= 1);
     var off: u32 = 0;
     var i: u32 = 0;
@@ -525,7 +554,11 @@ fn build_manifest_lines(catalog: *const SeasonCatalog, out: []u8) CliError!u32 {
         off += @intCast(line.len);
         if (off > max_manifest_bytes) return error.ManifestOverflow;
     }
+    // invariant: postcondition -- at least one manifest line landed, so the head
+    // carries a listing a dock reader can name the cargo from without opening it.
     assert(off > 0);
+    // invariant: and it stayed under the manifest roof, which is the cargo roof plus
+    // one prefix difference per line (manifest_line_extra).
     assert(off <= max_manifest_bytes);
     return off;
 }
@@ -538,10 +571,20 @@ fn write_unsealed_vessel(
     manifest: []const u8,
     cargo: []const u8,
 ) CliError!void {
+    // invariant: the vessel carries real cargo -- build_cargo_plain returned a
+    // positive length before this write, and an empty vessel has nothing to seal.
     assert(cargo.len > 0);
+    // invariant: under the roof the seal module mirrors, so the sealed head this
+    // writes is one the opener can hold in max_seal_plain_mirror bytes.
     assert(cargo.len <= max_cargo_bytes);
+    // invariant: the listing rode along too, since Q11 puts manifest and cargo in
+    // one head -- one without the other is a vessel that reads or opens, never both.
     assert(manifest.len > 0);
+    // invariant: and the listing fits its own roof, so head plus manifest plus cargo
+    // can be checked against max_vessel_len below rather than overrunning text.
     assert(manifest.len <= max_manifest_bytes);
+    // invariant: the shoulder this writes is the wire spelling the far side reads
+    // back, so a rename of the constant stops the build rather than the crossing.
     assert(std.mem.eql(u8, shoulder_ring1_wire, "amber-ring1-season"));
 
     var text: [max_vessel_len]u8 = undefined;
@@ -606,7 +649,11 @@ fn run_vessel_seal(
     seal_bin: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: a resolved seal binary is a real path -- resolve_seal_bin returned
+    // SealToolAbsent rather than an empty string when it found nothing.
     assert(seal_bin.len > 0);
+    // invariant: and the vessel it seals was written before this call, so the
+    // subprocess is handed a file rather than a name.
     assert(vessel_path.len > 0);
     const argv = [_][]const u8{ seal_bin, "seal", vessel_path };
     const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
@@ -637,7 +684,11 @@ fn resolve_core_bin(
     argv0: []const u8,
     path_buf: []u8,
 ) CliError![]const u8 {
+    // invariant: argv0 is the program's own path, present because main took it from
+    // the argument slice; the sibling lookup below reads its directory.
     assert(argv0.len > 0);
+    // invariant: the caller supplied a buffer to print the sibling path into, so
+    // bufPrint has somewhere to land rather than refusing on a zero-length slice.
     assert(path_buf.len > 0);
     const cwd = Dir.cwd();
     if (init.environ_map.get("AMPHORA_VESSEL_CORE")) |p| {
@@ -671,7 +722,11 @@ fn run_vessel_core_sign(
     core_bin: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: a resolved core binary is a real path -- resolve_core_bin returned
+    // StampToolAbsent rather than an empty string when it found nothing.
     assert(core_bin.len > 0);
+    // invariant: and the vessel it signs is sealed already, since the rite is seal
+    // then stamp and stamp_sig must land outside the sealed head.
     assert(vessel_path.len > 0);
     const argv = [_][]const u8{ core_bin, "sign", vessel_path };
     const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
@@ -686,6 +741,8 @@ fn run_vessel_core_sign(
 
 /// Confirm the stamp landed -- a stamp_sig field must be present after sign.
 fn verify_stamp_field(io: std.Io, vessel_path: []const u8) CliError!void {
+    // invariant: the vessel just signed is named, so this reads back the same file
+    // the subprocess wrote rather than confirming a stamp on nothing.
     assert(vessel_path.len > 0);
     var buf: [max_vessel_len]u8 = undefined;
     const text = Dir.cwd().readFile(io, vessel_path, &buf) catch {
@@ -704,7 +761,11 @@ fn stamp_sealed_vessel(
     argv0: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: argv0 stands, since resolve_core_bin walks its directory for the
+    // sibling binary before falling back to the repository default.
     assert(argv0.len > 0);
+    // invariant: and the vessel is the sealed one -- this door stamps after the
+    // seal, so the signature covers a head that will not change again.
     assert(vessel_path.len > 0);
     var core_path_buf: [max_vessel_path_len]u8 = undefined;
     const core_bin = try resolve_core_bin(init, io, argv0, &core_path_buf);
@@ -715,7 +776,11 @@ fn stamp_sealed_vessel(
 
 /// Parent identity of a pour: SHA3-256 over the sorted cargo plain, lower hex.
 fn parent_of_cargo(cargo: []const u8, parent_hex: *[digest_hex_len]u8) void {
+    // invariant: identity is derived from real cargo; hashing an empty slice would
+    // give every empty pour one parent and make the fork guard blind.
     assert(cargo.len > 0);
+    // invariant: the output holds a full digest in hex, so the caller's parent field
+    // is the width every reader of a vessel's `parent ` line expects.
     assert(parent_hex.len == digest_hex_len);
     var parent_digest: [Sha3_256.digest_length]u8 = undefined;
     Sha3_256.hash(cargo, &parent_digest, .{});
@@ -727,7 +792,11 @@ fn parent_of_cargo(cargo: []const u8, parent_hex: *[digest_hex_len]u8) void {
 /// Any other occupant (different parent, no parent, unreadable) refuses,
 /// so the path's identity stays single across every pour.
 fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const u8) CliError!void {
+    // invariant: the guard reads the path about to be written, so an empty one would
+    // let a pour land without ever asking who occupies it.
     assert(vessel_path.len > 0);
+    // invariant: the identity compared is a full digest, so a short parent here
+    // could match a prefix of an occupant and call a fork a re-pour.
     assert(parent_hex.len == digest_hex_len);
     var buf: [max_vessel_len]u8 = undefined;
     const text = Dir.cwd().readFile(io, vessel_path, &buf) catch |fault| switch (fault) {
@@ -792,6 +861,8 @@ fn pour_fill(
             else => refuse(error.SeasonUnreadable, parsed.season),
         };
     };
+    // invariant: read_season refused at SeasonEmpty above, so every door below --
+    // cargo, manifest, parent -- is handed a season with at least one file in it.
     assert(catalog.file_count >= 1);
     print("amphora: season read files={d} bytes={d}\n", .{ catalog.file_count, catalog.total_bytes });
 
@@ -827,7 +898,11 @@ fn pour_ship(
 ) u8 {
     const allocator = init.arena.allocator();
     const io = init.io;
+    // invariant: the check pass filled real cargo, so the ship pass writes a vessel
+    // rather than sealing an empty head.
     assert(filled.cargo_len > 0);
+    // invariant: and a real listing, since the two are built from one catalog and a
+    // vessel missing either is one no dock reader could name the cargo of.
     assert(filled.manifest_len > 0);
 
     write_unsealed_vessel(
@@ -881,7 +956,11 @@ fn write_season_resins(
     season_path: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: the season is re-walked from the same path the catalog came from,
+    // so every resin written here is a body the sealed listing already names.
     assert(season_path.len > 0);
+    // invariant: and the vessel path stands, since the resins directory is derived
+    // from its parent -- the bodies ride beside the listing that names them.
     assert(vessel_path.len > 0);
     var dir_buf: [max_vessel_path_len]u8 = undefined;
     const rdir = try resins_dir_path(vessel_path, &dir_buf);
@@ -954,7 +1033,11 @@ const CarryArgs = struct {
 
 /// Q19: carry argument parse -- `carry <vessel> <dock>`, bounds named.
 fn parse_carry_args(args: []const []const u8) CliError!CarryArgs {
+    // invariant: main dispatched on args[1], so the program name and a command word
+    // both stand before this parser reads an operand.
     assert(args.len >= 2);
+    // invariant: this parser reads the carry command alone -- carry takes a dock
+    // where pour takes a season, and one parser for both would blur the two.
     assert(std.mem.eql(u8, args[1], "carry"));
     if (args.len < 4) return error.MissingOperand;
     if (args.len > max_words) return error.TooManyWords;
@@ -974,7 +1057,11 @@ fn run_vessel_core_verify(
     core_bin: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: a resolved core binary is a real path -- the wall refuses at
+    // StampToolAbsent rather than running an empty argv[0].
     assert(core_bin.len > 0);
+    // invariant: and the vessel verified is the one about to travel, so the stamp
+    // wall speaks about the bytes the crossing will cut.
     assert(vessel_path.len > 0);
     const argv = [_][]const u8{ core_bin, "verify", vessel_path };
     const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
@@ -994,7 +1081,11 @@ fn run_vessel_seal_open(
     seal_bin: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: a resolved seal binary is a real path, so the open-check below runs
+    // an instrument rather than refusing on an empty name.
     assert(seal_bin.len > 0);
+    // invariant: and the vessel checked is the one about to travel -- the seal wall
+    // opens what the stamp wall just verified.
     assert(vessel_path.len > 0);
     const argv = [_][]const u8{ seal_bin, "open-check", vessel_path };
     const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
@@ -1015,7 +1106,11 @@ fn carry_verify_walls(
     argv0: []const u8,
     vessel_path: []const u8,
 ) CliError!void {
+    // invariant: argv0 stands, since both binaries are resolved from its directory
+    // before either wall runs.
     assert(argv0.len > 0);
+    // invariant: and the vessel is named, so the rite -- stamp, then seal -- speaks
+    // about one file rather than two.
     assert(vessel_path.len > 0);
     var core_path_buf: [max_vessel_path_len]u8 = undefined;
     const core_bin = try resolve_core_bin(init, io, argv0, &core_path_buf);
@@ -1030,6 +1125,8 @@ fn carry_verify_walls(
 /// Read the source vessel's parent field -- the identity that travels.
 /// Light line scan, path C: no vessel module import.
 fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len]u8) CliError!void {
+    // invariant: the parent that travels is read from a named vessel; an empty path
+    // would leave the far-side fork guard with no identity to compare.
     assert(vessel_path.len > 0);
     var buf: [max_vessel_len]u8 = undefined;
     const text = Dir.cwd().readFile(io, vessel_path, &buf) catch {
@@ -1052,7 +1149,11 @@ fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len
 
 /// Build `<dock>/vessel.bron` -- the far-side path the fork law guards.
 fn dock_vessel_path(dock: []const u8, buf: []u8) CliError![]const u8 {
+    // invariant: a dock is a real directory, so the far vessel lands somewhere the
+    // fork law can guard rather than at a bare filename.
     assert(dock.len > 0);
+    // invariant: the caller's buffer holds the widest path this program admits, so
+    // bufPrint refuses only on a genuinely over-long dock rather than on our own.
     assert(buf.len >= max_vessel_path_len);
     return std.fmt.bufPrint(buf, "{s}/{s}", .{ dock, dock_vessel_name }) catch {
         return error.PathTooLong;
@@ -1062,17 +1163,29 @@ fn dock_vessel_path(dock: []const u8, buf: []u8) CliError![]const u8 {
 /// Q22: the chunk plan -- how many kind-0x33 sized pieces this vessel cuts.
 /// Postcondition: 1 <= count <= max_carry_chunks.
 fn plan_chunks(vessel_bytes: u32) u32 {
+    // invariant: a vessel with no bytes cuts no chunks, so the caller read real
+    // vessel text before planning the crossing.
     assert(vessel_bytes > 0);
+    // invariant: and it fits the vessel roof max_carry_chunks was derived from, so
+    // the count below cannot exceed the array of chunk names the dock takes.
     assert(vessel_bytes <= max_vessel_len);
     const count: u32 = (vessel_bytes + max_chunk_datagram - 1) / max_chunk_datagram;
+    // invariant: postcondition -- a non-empty vessel always cuts at least one chunk,
+    // so the assemble pass reads a first piece rather than an empty dock.
     assert(count >= 1);
+    // invariant: and never more than the roof, which is exactly the ceiling division
+    // this line computes -- proven from both sides so a raised bound cannot slip.
     assert(count <= max_carry_chunks);
     return count;
 }
 
 /// One chunk's on-dock name: chunk-NNNN.bron (format vocabulary, park open).
 fn dock_chunk_path(dock: []const u8, index: u32, buf: []u8) CliError![]const u8 {
+    // invariant: a chunk lands at a real dock, so the four-digit name below extends a
+    // directory rather than standing alone.
     assert(dock.len > 0);
+    // invariant: and its index is inside the plan, so the `chunk-NNNN` name stays four
+    // digits wide and the assemble pass reading in order finds every piece.
     assert(index < max_carry_chunks);
     return std.fmt.bufPrint(buf, "{s}/chunk-{d:0>4}.bron", .{ dock, index }) catch {
         return error.PathTooLong;
@@ -1083,7 +1196,11 @@ fn dock_chunk_path(dock: []const u8, index: u32, buf: []u8) CliError![]const u8 
 /// Effects come last in each step: the dock directory is made, then chunks
 /// land in index order, each a plain byte slice of the sealed vessel text.
 fn write_dock_chunks(io: std.Io, dock: []const u8, vessel_text: []const u8, chunk_count: u32) CliError!void {
+    // invariant: there are bytes to cut -- an empty vessel would write a dock full of
+    // empty chunks that assemble back to nothing and still compare equal.
     assert(vessel_text.len > 0);
+    // invariant: the count handed in is the count this vessel plans, so the cutter and
+    // the assembler agree on how many pieces the crossing has before any byte moves.
     assert(chunk_count == plan_chunks(@intCast(vessel_text.len)));
     const cwd = Dir.cwd();
     cwd.createDirPath(io, dock) catch return error.DockUnwritable;
@@ -1092,6 +1209,8 @@ fn write_dock_chunks(io: std.Io, dock: []const u8, vessel_text: []const u8, chun
         const start: u32 = i * max_chunk_datagram;
         const remain: u32 = @intCast(vessel_text.len - start);
         const take: u32 = if (remain < max_chunk_datagram) remain else max_chunk_datagram;
+        // invariant: every chunk carries at least one byte, since remain is positive while
+        // i is under the plan -- a zero-length chunk reads as torn on the far side.
         assert(take >= 1);
         var path_buf: [max_vessel_path_len]u8 = undefined;
         const cpath = try dock_chunk_path(dock, i, &path_buf);
@@ -1104,7 +1223,11 @@ fn write_dock_chunks(io: std.Io, dock: []const u8, vessel_text: []const u8, chun
 /// Q24: reassemble the chunks in order and demand byte-equality with the
 /// source -- a crossing is only believed when the far bytes are the near bytes.
 fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, source_text: []const u8, chunk_count: u32) CliError!void {
+    // invariant: the source text stands, since equality is what the crossing is
+    // believed on and an empty source would make every dock compare equal.
     assert(source_text.len > 0);
+    // invariant: at least one chunk to read back, matching the plan the cutter used --
+    // a zero count would assemble nothing and call it a faithful crossing.
     assert(chunk_count >= 1);
     const cwd = Dir.cwd();
     var joined: [max_vessel_len]u8 = undefined;
@@ -1134,6 +1257,8 @@ fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, so
 /// readably before anyone touches a seal. Byte-equality already implies it;
 /// this door says it aloud, so a dock reader's first promise is checked.
 fn verify_far_manifest(io: std.Io, far_vessel: []const u8) CliError!void {
+    // invariant: the far vessel was written by the assemble pass above, so this reads
+    // back the landed bytes rather than confirming a manifest on nothing.
     assert(far_vessel.len > 0);
     var buf: [max_vessel_len]u8 = undefined;
     const text = Dir.cwd().readFile(io, far_vessel, &buf) catch
@@ -1174,7 +1299,11 @@ fn carry_check(
             else => refuse(error.CommandNotGrown, "carry"),
         };
     };
+    // invariant: the parse door refused an empty operand, so the walls below verify a
+    // named vessel rather than the current directory.
     assert(parsed.vessel.len > 0);
+    // invariant: and a named dock, so the far path is derived from a real directory
+    // before the fork law guards what stands there.
     assert(parsed.dock.len > 0);
 
     carry_verify_walls(init, allocator, init.io, args[0], parsed.vessel) catch |fault| {
@@ -1208,6 +1337,8 @@ fn carry_cross(
     var vbuf: [max_vessel_len]u8 = undefined;
     const vtext = Dir.cwd().readFile(init.io, filled.vessel, &vbuf) catch
         return refuse(error.StampUnverified, filled.vessel);
+    // invariant: the vessel read back has bytes, so the plan below cuts a real
+    // crossing -- plan_chunks refuses a zero length at its own door.
     assert(vtext.len > 0);
     const chunk_count = plan_chunks(@intCast(vtext.len));
     print("amphora: carry plan chunks={d} ceiling={d} bytes={d}\n", .{ chunk_count, max_chunk_datagram, vtext.len });
@@ -1260,7 +1391,11 @@ fn ferry_resins(
     near_vessel: []const u8,
     far_vessel: []const u8,
 ) CliError!void {
+    // invariant: the near vessel names the resins directory the bodies are read from,
+    // so the ferry has a source to walk.
     assert(near_vessel.len > 0);
+    // invariant: and the far vessel names where they land, so the Return on the far
+    // side finds a body for every digest the crossed listing carries.
     assert(far_vessel.len > 0);
     var near_buf: [max_vessel_path_len]u8 = undefined;
     var far_buf: [max_vessel_path_len]u8 = undefined;
@@ -1325,7 +1460,11 @@ fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
 
 /// Build `<vessel>.season` -- the out-home the fork law will guard.
 fn restore_out_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
+    // invariant: the out-home is derived from the vessel's own name, so an empty
+    // vessel would restore a season into a bare suffix nobody can find again.
     assert(vessel.len > 0);
+    // invariant: the caller's buffer holds the widest path this program admits, so a
+    // refusal here names a genuinely over-long vessel rather than our own buffer.
     assert(buf.len >= max_vessel_path_len);
     return std.fmt.bufPrint(buf, "{s}{s}", .{ vessel, restore_out_suffix }) catch {
         return error.PathTooLong;
@@ -1334,7 +1473,11 @@ fn restore_out_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
 
 /// Q35: restore argument parse -- `restore <vessel>`, bounds named.
 fn parse_restore_args(args: []const []const u8) CliError![]const u8 {
+    // invariant: main dispatched on args[1], so the program name and a command word
+    // both stand before this parser reads an operand.
     assert(args.len >= 2);
+    // invariant: this parser reads the restore command alone -- restore takes one
+    // operand where pour and carry take two, and its word count refuses on that.
     assert(std.mem.eql(u8, args[1], "restore"));
     if (args.len < 3) return error.MissingOperand;
     if (args.len > 3) return error.TooManyWords;
@@ -1352,8 +1495,14 @@ fn run_vessel_seal_open_file(
     vessel_path: []const u8,
     plain_out: []const u8,
 ) CliError!void {
+    // invariant: a resolved seal binary is a real path, so the open below runs an
+    // instrument rather than refusing on an empty name.
     assert(seal_bin.len > 0);
+    // invariant: the vessel opened is the one whose walls just verified, so the
+    // plaintext belongs to a stamp this program has already believed.
     assert(vessel_path.len > 0);
+    // invariant: and the plaintext lands at a named path, since the catalog pass
+    // reads it straight back rather than taking it from the subprocess.
     assert(plain_out.len > 0);
     const argv = [_][]const u8{ seal_bin, "open", vessel_path, plain_out };
     const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
@@ -1368,7 +1517,11 @@ fn run_vessel_seal_open_file(
 
 /// Q38: parse cargo lines (`cargo mark digest name`) into a season catalog.
 fn catalog_from_cargo_plain(plain: []const u8, catalog: *SeasonCatalog) CliError!void {
+    // invariant: an opened seal yields real plaintext -- an empty one would build an
+    // empty catalog and refuse at SeasonEmpty for the wrong reason.
     assert(plain.len > 0);
+    // invariant: and it fits the mirror of the seal module's own plaintext roof, so
+    // the catalog walk below indexes bytes this program declared room for.
     assert(plain.len <= max_seal_plain_mirror); // couples: vessel_seal.max_seal_plain
     catalog.file_count = 0;
     catalog.total_bytes = 0;
@@ -1451,6 +1604,8 @@ fn restore_write_prove(
     out_home: []const u8,
     catalog: *const SeasonCatalog,
 ) CliError!void {
+    // invariant: the catalog carries at least one file, since catalog_from_cargo_plain
+    // refuses an empty listing -- a restore writing nothing is not a restore.
     assert(catalog.file_count >= 1);
     const cwd = Dir.cwd();
     cwd.createDirPath(io, out_home) catch return error.RestoreUnwritable;
@@ -1544,6 +1699,8 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
             else => refuse(error.CommandNotGrown, "restore"),
         };
     };
+    // invariant: the parse door refused an empty operand, so every wall below speaks
+    // about a named vessel rather than the current directory.
     assert(vessel.len > 0);
     const allocator = init.arena.allocator();
     const io = init.io;
@@ -1602,12 +1759,25 @@ pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
     const args = try init.minimal.args.toSlice(allocator);
 
+    // invariant: a process always knows its own name, so args[0] is safe to hand to
+    // both binary resolvers below.
     assert(args.len >= 1);
     // Invariants that can fail if bounds move wrongly -- not const == literal.
+    // invariant: the word ceiling admits a command at all -- one word is the program
+    // name alone, so a bound under two would refuse every invocation.
     assert(max_words >= 2);
+    // invariant: one datagram never declares more room than the whole cargo roof, so
+    // the chunk buffer stays the smaller of the two widths this program puts on the
+    // stack.
     assert(max_chunk_datagram <= max_cargo_bytes);
+    // invariant: the path ceiling outruns the word ceiling, so no parser refuses a
+    // lawful path for a reason belonging to the argument count.
     assert(max_vessel_path_len > max_words);
+    // invariant: the season door admits at least one file, since a pour of nothing
+    // would seal an empty head and hash to a parent naming no season.
     assert(max_season_files >= 1);
+    // invariant: the vessel holds its own cargo, so a sealed head can always be
+    // written into the text buffer this program declares.
     assert(max_vessel_len >= max_cargo_bytes);
     // invariant: the head listing holds every cargo line plus its fatter prefix,
     // so the manifest roof covers the cargo roof rather than equalling it.
@@ -1617,10 +1787,20 @@ pub fn main(init: std.process.Init) !u8 {
     assert(max_manifest_name_len >= max_season_name_len);
     // invariant: the whole vessel still holds both listings side by side.
     assert(max_vessel_len >= max_manifest_bytes + max_cargo_bytes);
+    // invariant: the opened-cargo mirror equals the cargo roof exactly, so a plaintext
+    // this side of the seam is one the seal module on the other side can hold.
     assert(max_seal_plain_mirror == max_cargo_bytes);
+    // invariant: the hex width is twice the digest the hash actually produces, so a
+    // change of hash function stops this build rather than truncating an identity.
     assert(digest_hex_len == Sha3_256.digest_length * 2);
+    // invariant: the version is a whole one-clock stamp, so `amphora version` prints a
+    // mark that sorts against every other stamp this tree writes.
     assert(amphora_version.len == stamp_len);
+    // invariant: and its dot sits where the one-clock shape puts it, which is what
+    // makes the date and the time readable apart.
     assert(amphora_version[stamp_dot_index] == '.');
+    // invariant: the shoulder constant still spells the wire word, so a vessel poured
+    // here is one a far dock reading `shoulder ` can name.
     assert(std.mem.eql(u8, shoulder_ring1_wire, "amber-ring1-season"));
 
     if (args.len > max_words) {
@@ -1646,7 +1826,10 @@ pub fn main(init: std.process.Init) !u8 {
 
 /// Print the free version string on stdout -- the seam `say` already uses.
 fn cmd_version(io: std.Io) u8 {
+    // invariant: the version printed is a whole one-clock stamp, so this door and the
+    // bound check in main agree on what a version is.
     assert(amphora_version.len == stamp_len);
+    // invariant: and its dot sits where the one-clock shape puts it.
     assert(amphora_version[stamp_dot_index] == '.');
     var buf: [version_line_max]u8 = undefined;
     const line = std.fmt.bufPrint(&buf, "amphora {s}\n", .{amphora_version}) catch {

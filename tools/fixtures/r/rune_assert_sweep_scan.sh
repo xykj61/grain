@@ -152,7 +152,12 @@ if [ "$rooms_file" = "$default_rooms" ]; then
   # 6,619 of 24,495 module asserts named nothing when this reading was seated `20260908.170042`.
   # A wall at zero would ask for six thousand comments in one lap, and each one has to say a true
   # reason rather than restate the line beneath it, so the ceiling only falls.
-  unnamed_ceiling=6619
+  # 6,619 -> 6,489 on `20260908.205507`: `amphora/src/main.rye` named all 85 of its unnamed asserts,
+  # which is the whole of amphora's remainder -- the room's six library modules were named the lap
+  # before, and the CLI held every one that was left. The file's own reading is the reason to lower
+  # rather than a tree-wide sweep: a ceiling left where a repair found it credits the next lap with
+  # work this one did.
+  unnamed_ceiling=6489
 else
   zero_ceiling=0
   gap_ceiling=0
