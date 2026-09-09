@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.202239` | [Three things wearing one colour](20260908/20260908-202239_three-things-wearing-one-colour.kyri) | a precondition is not a defect |
 | `20260908.194927` | [What generalizing bought](20260908/20260908-194927_what-generalizing-bought.kyri) | a third family for one row; unreached 898 to 818 |
 | `20260908.192258` | [The door that was already built](20260908/20260908-192258_the-door-that-was-already-built.kyri) | unreached falls 1029 to 898 |
 | `20260908.191213` | [What a guard is a function of](20260908/20260908-191213_the-half-that-reads-nothing.kyri) | ten of ten scans byte-stable; 199 of 205 controls fleet-identical |
