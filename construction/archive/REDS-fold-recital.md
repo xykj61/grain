@@ -627,3 +627,15 @@ at a closed fold.*
 *Rebase preserves [REDS-the-walker-keeps-its-body-rows-662.md](REDS-the-walker-keeps-its-body-rows-662.md) as a routing shelf.*
 
 *Recovery `20260909.074555` -- [the parked row 535 address](REDS-a-meter-that-counts-what-a-control-imports-rows-535.md) forwards to its published shelf. The 3,454-byte row is identical; the original draft remains in Grass's stash.*
+
+*Saved address [REDS-an-enumeration-standing-for-a-rule-rows-619.md](REDS-an-enumeration-standing-for-a-rule-rows-619.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
+
+*Saved address [REDS-a-guard-that-named-a-fault-nobody-could-act-on-rows-536.md](REDS-a-guard-that-named-a-fault-nobody-could-act-on-rows-536.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
+
+*Saved address [REDS-a-record-is-not-the-work-rows-509.md](REDS-a-record-is-not-the-work-rows-509.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
+
+*Saved address [REDS-present-is-not-current-rows-508.md](REDS-present-is-not-current-rows-508.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
+
+*Saved address [REDS-present-is-not-current-rows-506.md](REDS-present-is-not-current-rows-506.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
+
+*Saved address [REDS-three-instruments-that-could-not-see-where-they-stood-rows-446-459.md](REDS-three-instruments-that-could-not-see-where-they-stood-rows-446-459.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*

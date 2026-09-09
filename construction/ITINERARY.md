@@ -50,16 +50,14 @@
 
 **Git nib:** `98ee0e0f91` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
-Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
-[This lap](../session-logs/date/20260909/20260909-071647_the-projection-names-its-inputs.kyri) reviews all six parked work files.
-The three yield files have a landed scope-ranking replacement, proven by 73 checks.
-The jail pair targets the elder caller; its current base/enclosure split stays. Both drafts remain parked.
-The projection control returns with a receipt for manifest bytes and admitted tracked paths.
-Fifty checks pass; the old reader fails 13. Its roster name also repairs the cold summary red.
-Content freshness and privacy remain with the full projection witnesses. All 19 stashes remain.
+**BAKERY -- THE PARKED SHELVES RETURN.**
+Elder [shelved](archive/20260909-083100_itinerary-landed-accounts.md), with the projection proof whole.
+[This recovery](../session-logs/date/20260909/20260909-083100_the-parked-shelves-return.kyri) restores eleven saved addresses:
+five whole accounts, three quoted drafts, and three forwarding pages. Each names its source blob.
+The collision-advice draft stays testimony; the published-number ruling remains Keaton's.
+All 19 stashes remain. Existing-path edits still need content review; path presence proves less.
 **FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
-replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
+replacement, read by round-open and seats. The recovered headers supply this lap's manual receipt.
 
 **PATCHOULI -- THE ABSENCE TEST KEEPS ITS SHELL.**
 The [roster recovery](../session-logs/date/20260909/20260909-033927_recover-and-land-the-roster.kyri)
