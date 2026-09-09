@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6fe92b191b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9230cb0f0e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
 Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
