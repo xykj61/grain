@@ -26,4 +26,15 @@ assert gate.out contains "unnamed_glyphs=" else "worker must publish unnamed_gly
 # rune_heads=28, which is the drift REDS %283 booked and this line then repeated: the lexer table
 # grew to 30 on 20260830 and the pronunciation roll stayed at 28, and no reader could see the
 # difference because one number wore both meanings. The three fields above carry it now.
-say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111."
+# invariant: this guard is proven able to red. It asserts on a delegate's result, so its own file
+# demonstrated no refusal of its own until `20260909.183200`, and `standing_equipment_redleg` reads
+# exactly that population -- rostering this guard took it from 53 to 54 and refused every ship's
+# cold pass with `ceiling_raised`. The control plants four faults in a pen checkout, requires the
+# worker to refuse each in its own words, and lifts every plant back to OK, because a refusal shown
+# only in the failing direction cannot be told from a tool that refuses everything.
+say "glow rune alphabet: the control -- four plants in a pen checkout, each refused and each lifted..."
+let ctl = run ["sh" "tools/fixtures/g/glow_rune_alphabet_control.sh"]
+assert ctl.ok else "glow rune alphabet: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=17 fail=0" else "glow rune alphabet: the control did not prove seventeen behaviors --\n${ctl.out}"
+
+say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111; the gate proven able to red on four planted faults."
