@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.060234` | [Restore the card bound](20260909/20260909-060234_restore-the-card-bound.kyri) | final rebase overflow |
 | `20260909.055744` | [Close the recovery](20260909/20260909-055744_close-the-rebased-recovery.kyri) | rebase and pin bound |
 | `20260909.052250` | [Caller search errors](20260909/20260909-052250_the-search-that-swallowed-its-error.kyri) | refusal proven; stashes preserved |
 | `20260909.051312` | [Query and reply bounds](20260909/20260909-051312_query-reply-bounds.kyri) | silo; exact-fit and overflow probes |
