@@ -45,14 +45,14 @@ say "journal-query: Style Gauge, Meter -- one verdict, with the reason it is a v
 say "journal-query: Lens TAME -- bound every claim; the census names its ceiling and refuses past it."
 
 let scan = run ["sh" "tools/fixtures/j/journal_query_census.sh"]
-assert scan.ok else "journal-query: the census refused -- read its own line"
 say scan.out
+assert scan.ok else "journal-query: the census refused -- read its own line"
 
 assert scan.out contains "verdict=sorted_room" else "journal-query: the journal is now asked field predicates -- the index recommendation in external-research/20260907-191657_two-shapes-one-notation.md has gone live; read the field_capable lines, confirm they reach the journal rather than a registry, and take it to the card"
 
 let control = run ["sh" "tools/fixtures/j/journal_query_control.sh"]
-assert control.ok else "journal-query: the control faulted -- a reading is unproven"
 say control.out
+assert control.ok else "journal-query: the control faulted -- a reading is unproven"
 assert control.out contains "control_verdict=ok" else "journal-query: the control must balance before the census is believed"
 assert control.out contains "fail=0" else "journal-query: a planted class went unseen"
 

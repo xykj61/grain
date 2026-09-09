@@ -71,8 +71,8 @@ say "scope-rank: Lens TAME -- bound the window at the edge, and say where each n
 # seconds where 120 takes thirty, for a ranking that orders the same rows. A hand wanting a full
 # day's basis runs the scan directly with `--window 120 --list`.
 let scan = run ["sh" "tools/fixtures/s/standing_equipment_scope_rank.sh" "--window" "40"]
-assert scan.ok else "scope-rank: the scope map must agree with the roster it names"
 say scan.out
+assert scan.ok else "scope-rank: the scope map must agree with the roster it names"
 assert scan.out contains "orphan_map_rows=0" else "scope-rank: a map row naming an unseated guard is dead text that reads like coverage"
 assert scan.out contains "duplicate_map_rows=0" else "scope-rank: the runner's lookup stops at the first row, so a second under one name is dead text"
 assert scan.out contains "rows_missing_control=0" else "scope-rank: a row blind to its own control names less than its guard gates, which skips real work"
@@ -80,8 +80,8 @@ assert scan.out contains "verdict=ok" else "scope-rank: the scan must balance be
 say "field GREEN -- every map row names a guard the roster seats, exactly once"
 
 let control = run ["sh" "tools/fixtures/s/standing_equipment_scope_rank_control.sh"]
-assert control.ok else "scope-rank: the control must complete -- read its own lines"
 say control.out
+assert control.ok else "scope-rank: the control must complete -- read its own lines"
 
 # The matcher, which two programs share.
 assert control.out contains "OK   room_word_reaches_its_room" else "scope-rank: a word ending in / must reach its whole room"

@@ -68,15 +68,15 @@ say "prose-register: Style Gauge -- the door setting, held at a number rather th
 say "prose-register: Lens TAME -- safety first: the front door is what a stranger meets, and it was the least measured page we own."
 
 let scan = run ["sh" "tools/fixtures/p/prose_register_scan.sh"]
-assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
 say scan.out
+assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
 assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
 assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
 say "field GREEN -- the front door reads the way the style says it does"
 
 let control = run ["sh" "tools/fixtures/p/prose_register_control.sh"]
-assert control.ok else "prose-register: the control must complete"
 say control.out
+assert control.ok else "prose-register: the control must complete"
 assert control.out contains "warm_reads_low=yes" else "prose-register: affirmative prose must measure low"
 assert control.out contains "cold_reads_high=yes" else "prose-register: refusal-led prose must measure high"
 assert control.out contains "reading_discriminates=yes" else "prose-register: the reading must tell the two apart, or it measures nothing"

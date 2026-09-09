@@ -5,17 +5,17 @@
 # WHAT IT IS. Kyri has carried session logs since `format session-log-v1`, and a session is one kind of
 # thing worth receipting among many. Kyri 6 generalizes the notation to any subject -- a build, a fetch,
 # a reading, a payment, a lap of an unattended loop -- while keeping the property the notation exists
-# for: a human reads it with no tool, a program parses it with no grammar.
+# for: a human reads it as plain text, and a program parses its key-value lines.
 #
 # WHY 6. The voice this tree writes in is the sixth -- Reya, Reya 2, Rio 3, Quin, Riyo, Kyri. The number
 # counts a lineage that already happened, which is the census reading of `.claude/rules/stamp-and-name.md`:
-# a number that counts is a fact about the past, and only a number that predicts can come out wrong.
+# a number that counts is a fact about the past, and a planned sequence needs a different kind of mark.
 #
 # WHAT IS PROVEN, fifteen claims on metal, seven refusal paths.
 #   the same bytes always name themselves the same way
 #   one byte different is a different name
 #   the rendered receipt opens with its format line and carries every field
-#   an unsigned receipt writes no signer at all, rather than an empty one
+#   an unsigned receipt omits the signer field
 #   a truncated content address is refused -- a short name is a different name
 #   an empty kind is refused: a receipt about nothing
 #   a malformed stamp is refused before a byte is written
@@ -24,14 +24,13 @@
 #   a codec name round-trips, and an unknown one is named rather than guessed
 #   tags and weighted associations render as their own lines
 #   the light terra palette recognizes its words and declines a stranger
-#   every light word and dark twin pair in both directions, with no overlap
+#   every light word and dark twin pair in both directions, with distinct sets
 #   a zero association weight is refused
 #   a sixteenth tag is refused at the palette's declared bound
 #
-# HONEST SCOPE. The module builds, renders, and content-addresses. It signs nothing and verifies nothing:
+# HONEST SCOPE. The module builds, renders, and content-addresses. Signing and verification stay external:
 # `signer` and `sig` are carried as opaque text, and the Kumara key that would fill them is a custody
-# gate a hand opens. It reaches no network and no store; `store` names where a payload lives without
-# going there. Run from the repository root.
+# gate a hand opens. Rendering is local; `store` records the payload's location as text. Run from the repository root.
 
 say "kyri-receipt: Language EN -- a receipt says this happened, here is what, and here is the name of the bytes."
 say "kyri-receipt: Style Gauge -- the shape is one field per line, so a reader needs no tool and a parser needs no grammar."
@@ -43,8 +42,8 @@ let build = run ["sh" "-c" "mkdir -p kyri/bin && env RYE_ZIG=${zig} rye/bin/rye 
 assert build.ok else "kyri-receipt: the module must build"
 
 let out = run ["sh" "-c" "kyri/bin/receipt 2>&1"]
-assert out.ok else "kyri-receipt: the selftest must exit zero"
 say out.out
+assert out.ok else "kyri-receipt: the selftest must exit zero"
 
 assert out.out contains "GREEN: Kyri 6" else "kyri-receipt: the selftest must reach GREEN"
 # The FLOOR, never the count. The module counts its own claims and refuses one that vanished;

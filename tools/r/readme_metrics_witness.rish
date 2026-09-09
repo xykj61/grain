@@ -45,8 +45,8 @@ say "readme-metrics: Style Radiant -- three claims. The block is true against a 
 say "readme-metrics: Lens TAME -- a generated number is only worth more than a typed one while it is regenerated; this is the rung that notices when it is not."
 
 let check = run ["sh" "tools/fixtures/r/readme_metrics_check.sh" "README.md"]
-assert check.ok else "readme-metrics: the README block has drifted from a fresh measurement -- regenerate it with rishi/bin/rishi run tools/r/readme_metrics.rish write"
 say check.out
+assert check.ok else "readme-metrics: the README block has drifted from a fresh measurement -- regenerate it with rishi/bin/rishi run tools/r/readme_metrics.rish write"
 assert check.out contains "drift=0" else "readme-metrics: every row must match the measurement taken this second"
 assert check.out contains "verdict=true" else "readme-metrics: the check must agree with itself before it is believed"
 say "block GREEN -- every row true against a measurement taken this second"
@@ -57,8 +57,8 @@ say "marker GREEN -- the block tells a reader not to edit it by hand"
 
 # The RED path, built rather than trusted.
 let control = run ["sh" "tools/fixtures/r/readme_metrics_control.sh"]
-assert control.ok else "readme-metrics: the drift control must complete"
 say control.out
+assert control.ok else "readme-metrics: the drift control must complete"
 assert control.out contains "planted=yes" else "readme-metrics: the control must actually plant its drift before claiming to catch it"
 assert control.out contains "refused=yes" else "readme-metrics: a drifted block must be refused, or the check guards nothing"
 assert control.out contains "verdict=stale" else "readme-metrics: a drifted block must be refused BY NAME"

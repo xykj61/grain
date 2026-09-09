@@ -1,9 +1,9 @@
 # tools/co/comment_citation_witness.rish -- a path a program cites in a comment still resolves.
 #
-# WHY THIS RUNG. This tree keeps a promise for documents and had never kept it for programs.
+# WHY THIS RUNG. This witness extends the document link promise to program comments.
 # tools/t/tracked_link_witness.rish reads relative links inside `.md` and refuses a broken one; a
 # `.rye` module makes the same promise in its doc comments -- `//! Ground: [`spec`](../x.md)` -- and
-# nothing read those at all.
+# this scan gives those comments their own reading.
 #
 # So when the `tools/` fold of 20260823.144100 carried 1,917 entries into 35 rooms,
 # tools/rye/session_logs_archive.rye moved one directory deeper and its two comment citations kept
@@ -15,7 +15,7 @@
 # WHAT IS CHECKED, and gated at ZERO. Every tracked non-prose file carrying `](`, read through
 # tools/fixtures/q/qa_report_card.sh -- the reading is CITED rather than copied, so what counts as a
 # citation is decided in one place. Measured at seating: 85 programs scanned, 0 broken. The
-# population is small and closed, so a ratchet would be the wrong shape; there is nothing to migrate.
+# population was small and fully repaired at seating, so the gate opens at zero.
 #
 # WHAT THE READING ALREADY KNOWS, each learned from a real case rather than imagined:
 #
@@ -38,7 +38,7 @@
 # extensions the card independently calls prose, which is the invariant the whole skip rests on
 # and the one this guard's own drift broke.
 #
-# WHAT IS NOT CHECKED. Whether the cited document still SAYS what the comment claims. That is
+# THE READER CHECKS whether the cited document still SAYS what the comment claims. That is
 # .claude/rules/docs-implementation-sync.md's job, and only a reader can do it.
 #
 # Style: context/GAUGE_STYLE.md - Rule: .claude/rules/docs-implementation-sync.md
@@ -51,16 +51,16 @@ say "comment-citation: Style Gauge -- one reading, cited from the report card ra
 say "comment-citation: Lens TAME -- references are promises; a path that moved is repointed rather than left to a reader to discover."
 
 let scan = run ["sh" "tools/fixtures/c/comment_citation_scan.sh"]
-assert scan.ok else "comment-citation: a program cites a path that does not resolve -- read its own line"
 say scan.out
+assert scan.ok else "comment-citation: a program cites a path that does not resolve -- read its own line"
 assert scan.out contains "prose_skipped=" else "comment-citation: the population this guard skipped as prose is printed beside the one it read (REDS %397)"
 assert scan.out contains "broken_citations=0" else "comment-citation: this reading is gated at zero, because the population is small and closed"
 assert scan.out contains "verdict=ok" else "comment-citation: the scan must agree with itself before it is believed"
 say "field GREEN -- every path a program cites in a comment resolves on this tree"
 
 let control = run ["sh" "tools/fixtures/c/comment_citation_control.sh"]
-assert control.ok else "comment-citation: the control must complete"
 say control.out
+assert control.ok else "comment-citation: the control must complete"
 assert control.out contains "resolving_citation_free=yes" else "comment-citation: a citation that lands must cost nothing"
 assert control.out contains "broken_citation_bitten=yes" else "comment-citation: a citation that lands nowhere must refuse -- a guard that cannot red guards nothing"
 assert control.out contains "broken_citation_named=yes" else "comment-citation: a broken citation must be named, so it can be repaired"

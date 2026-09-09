@@ -67,8 +67,8 @@ say "plant: Style Gauge, Meter -- each function shown from both sides, the refus
 say "plant: Lens TAME -- safety first: the check that asserts the defect is the load-bearing one."
 
 let control = run ["sh" "tools/fixtures/p/plant_control.sh"]
-assert control.ok else "plant: the control must complete -- read its own lines"
 say control.out
+assert control.ok else "plant: the control must complete -- read its own lines"
 assert control.out contains "faults=0" else "plant: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "plant: the control must balance before it is believed"
 
@@ -108,8 +108,8 @@ assert control.out contains "OK   real_source_stale_plant_refuses" else "plant: 
 say "field GREEN -- a plant that plants nothing says so by name, and the stripped helper proves the saying is load-bearing"
 
 let adoption = run ["sh" "tools/fixtures/p/plant_adoption_scan.sh"]
-assert adoption.ok else "plant: the adoption scan must balance -- read its own lines"
 say adoption.out
+assert adoption.ok else "plant: the adoption scan must balance -- read its own lines"
 
 # A FLOOR THAT ONLY RISES, which is the mirror of this tree's usual ratchet. The population counted
 # here is the good one, so the number moves the other way: raise it whenever a lane adopts, and it

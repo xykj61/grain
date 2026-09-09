@@ -48,8 +48,8 @@ assert list_tools.ok else "crypto-count-guard: could not read the tool declarati
 # this round exists for -- a redirect to a guard the standing roster does not name. An unrun guard guards nothing, so a tool excused
 # from the suite must name a proof a lap actually runs, or the declaration would launder an unproven file into a green count.
 let decl = run ["sh" "tools/fixtures/c/crypto_tool_declaration_scan.sh"]
-assert decl.ok else "crypto-count-guard: the tool-declaration scan must complete -- see stderr"
 say decl.out
+assert decl.ok else "crypto-count-guard: the tool-declaration scan must complete -- see stderr"
 assert decl.out contains "malformed=0" else "crypto-count-guard: a tool declaration row does not carry exactly three fields (module, witness, roster guard)"
 assert decl.out contains "ghost_module=0" else "crypto-count-guard: the tool declaration names a crypto/<name>.rye that does not stand on disk"
 assert decl.out contains "missing_witness=0" else "crypto-count-guard: a declared tool redirects to a proving witness that is not a file"

@@ -50,8 +50,8 @@ say "rishi-run-record: Style Gauge, Meter -- refusal is the subject."
 say "rishi-run-record: Lens TAME -- docs and implementation stay synced: assert it, do not assume it."
 
 let scan = run ["sh" "tools/fixtures/r/rishi_run_record_scan.sh"]
-assert scan.ok else "rishi-run-record: a law page names a run-record field the interpreter refuses -- read the scan's own lines"
 say scan.out
+assert scan.ok else "rishi-run-record: a law page names a run-record field the interpreter refuses -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "rishi-run-record: the scan must balance before it is believed"
 assert scan.out contains "claims_unknown_field=0" else "rishi-run-record: the wall stands at zero, and zero is what the law pages must read"
 assert scan.out contains "metal=present" else "rishi-run-record: this pier has the interpreter, so the metal legs must run rather than be skipped"
@@ -60,8 +60,8 @@ assert scan.out contains "metal_probe_reds=1" else "rishi-run-record: a probe th
 say "field GREEN -- the four fields the source declares are the four the interpreter answers, and no law page names a fifth"
 
 let control = run ["sh" "tools/fixtures/r/rishi_run_record_control.sh"]
-assert control.ok else "rishi-run-record: the control must complete"
 say control.out
+assert control.ok else "rishi-run-record: the control must complete"
 assert control.out contains "clean_claims_zero=yes" else "rishi-run-record: a clean tree must read zero rather than merely pass"
 assert control.out contains "clean_verdict_ok=yes" else "rishi-run-record: a clean tree must name its verdict"
 assert control.out contains "clean_free=yes" else "rishi-run-record: a clean tree must pass free"

@@ -39,8 +39,8 @@ say "opening-lines: Style Gauge, Meter -- the count is the sentence."
 say "opening-lines: Lens TAME -- safety first: a guard reads the population, never a list of it."
 
 let scan = run ["sh" "-c" "rishi/bin/rishi run tools/fixtures/o/opening_lines_scan.rish"]
-assert scan.ok else "opening-lines: the derived reading failed -- run the scan alone and read its lines"
 say scan.out
+assert scan.ok else "opening-lines: the derived reading failed -- run the scan alone and read its lines"
 
 assert scan.out contains "qualified_assert=0 ceiling=0" else "opening-lines RED: a hosted source writes a qualified std.debug.assert("
 assert scan.out contains "elder_missing_assert_bind=0 ceiling=0" else "opening-lines RED: a file the hand list already proved lost its assert bind"
@@ -52,8 +52,8 @@ assert scan.out contains "verdict=read" else "opening-lines: the scan must finis
 say "field GREEN -- 1,073 hosted sources read, no qualified assert, every elder promise kept"
 
 let control = run ["sh" "tools/fixtures/o/opening_lines_control.sh"]
-assert control.ok else "opening-lines: the control must complete"
 say control.out
+assert control.ok else "opening-lines: the control must complete"
 assert control.out contains "clean_counted_hosted=yes" else "opening-lines: a file binding std must be counted as hosted"
 assert control.out contains "clean_reads_zero=yes" else "opening-lines: a clean file must read zero rather than merely pass"
 assert control.out contains "roster_comment_stripped=yes" else "opening-lines: a commented roster line must name no room"

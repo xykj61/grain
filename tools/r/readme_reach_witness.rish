@@ -50,8 +50,8 @@ assert scan.out contains "broken_in_living=0" else "readme-reach: living prose m
 assert scan.out contains "living_files_affected=0" else "readme-reach: no living file may carry one"
 
 let control = run ["sh" "tools/fixtures/r/readme_reach_control.sh"]
-assert control.ok else "readme-reach: the control must complete"
 say control.out
+assert control.ok else "readme-reach: the control must complete"
 assert control.out contains "case=clean_free ok" else "readme-reach: a tree whose links resolve must pass"
 assert control.out contains "case=depth_walked ok" else "readme-reach: the crawl must follow links past one level"
 assert control.out contains "case=living_bitten ok" else "readme-reach: a broken link in a living file must be refused"

@@ -28,8 +28,8 @@ say "ascii-comment: Lens TAME -- safety first: the meters count COMMENTS and nev
 say "ascii-comment: reading one of three -- authored Rye comments."
 
 let control = run ["sh" "tools/fixtures/r/rye_comment_ascii_control.sh"]
-assert control.ok else "ascii-comment: the Rye control must complete"
 say control.out
+assert control.ok else "ascii-comment: the Rye control must complete"
 assert control.out contains "control_verdict=ok" else "ascii-comment: the Rye control must reach its own verdict"
 
 # Prose is counted, in all three comment forms and behind indentation.
@@ -88,8 +88,8 @@ assert control.out contains "own_ceiling_unmoved_by_trailing=yes" else "ascii-co
 assert control.out contains "trail_removed_returns_green=yes" else "ascii-comment: removing the trailing plant must return the reading to green, or the refusal is a latch"
 
 let living = run ["sh" "tools/fixtures/r/rye_comment_ascii_scan.sh"]
-assert living.ok else "ascii-comment: the living Rye scan must complete"
 say living.out
+assert living.ok else "ascii-comment: the living Rye scan must complete"
 assert living.out contains "instrument=ok" else "ascii-comment: the living Rye reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
 assert living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rye comments rose above the ceiling -- convert on touch rather than raising it"
 assert living.out contains "trail_ceiling_ok=yes" else "ascii-comment: non-ASCII in TRAILING Rye comments rose above its own ceiling -- convert on touch rather than raising it"
@@ -97,8 +97,8 @@ assert living.out contains "trail_ceiling_ok=yes" else "ascii-comment: non-ASCII
 say "ascii-comment: reading two of three -- authored Rishi and shell comments."
 
 let shell_control = run ["sh" "tools/fixtures/s/shell_comment_ascii_control.sh"]
-assert shell_control.ok else "ascii-comment: the shell control must complete"
 say shell_control.out
+assert shell_control.ok else "ascii-comment: the shell control must complete"
 assert shell_control.out contains "control_verdict=ok" else "ascii-comment: the shell control must reach its own verdict"
 
 # Prose is counted, in both languages and behind indentation.
@@ -146,8 +146,8 @@ assert shell_control.out contains "absent_is_fatal=no" else "ascii-comment: an a
 # meter that opened nothing also prints; this is the reading that tells the two apart.
 
 let shell_living = run ["sh" "tools/fixtures/s/shell_comment_ascii_scan.sh"]
-assert shell_living.ok else "ascii-comment: the living shell scan must complete"
 say shell_living.out
+assert shell_living.ok else "ascii-comment: the living shell scan must complete"
 assert shell_living.out contains "instrument=ok" else "ascii-comment: the living shell reading must say its instrument ran"
 assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"
 
@@ -178,8 +178,8 @@ say "ascii-comment: reading three of three -- authored Glow comments."
 # anyway, since a language rule that is not measured is a memory.
 
 let glow_control = run ["sh" "tools/fixtures/g/glow_comment_ascii_control.sh"]
-assert glow_control.ok else "ascii-comment: the Glow control must complete"
 say glow_control.out
+assert glow_control.ok else "ascii-comment: the Glow control must complete"
 assert glow_control.out contains "control_verdict=ok" else "ascii-comment: the Glow control must reach its own verdict"
 
 # Prose is counted, plain, indented, and beside real Glow lines.
@@ -221,8 +221,8 @@ assert glow_control.out contains "absent_counted=yes" else "ascii-comment: a pat
 assert glow_control.out contains "absent_is_fatal=no" else "ascii-comment: an absent path must never be fatal"
 
 let glow_living = run ["sh" "tools/fixtures/g/glow_comment_ascii_scan.sh"]
-assert glow_living.ok else "ascii-comment: the living Glow scan must complete"
 say glow_living.out
+assert glow_living.ok else "ascii-comment: the living Glow scan must complete"
 assert glow_living.out contains "instrument=ok" else "ascii-comment: the living Glow reading must say its instrument ran"
 assert glow_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Glow comments rose above the ceiling -- convert on touch rather than raising it"
 

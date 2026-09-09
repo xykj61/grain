@@ -32,8 +32,8 @@ say "width-check: Style Gauge at Meter -- every number below is read by the scan
 say "width-check: Lens TAME -- safety first: usize is a boundary type, not a design type. A line carrying a seam cast passes free, because a seam cast is correct Tiger code rather than debt."
 
 let control = run ["sh" "tools/fixtures/w/width_check_control.sh"]
-assert control.ok else "width-check: the control must complete on its planted repositories"
 say control.out
+assert control.ok else "width-check: the control must complete on its planted repositories"
 assert control.out contains "control_verdict=ok" else "width-check: the control must reach its own verdict"
 assert control.out contains "roster_clean_and_seam_pass=yes" else "width-check: a seam cast must pass free, or the gate refuses correct Tiger code"
 assert control.out contains "roster_authored_usize_refused=yes" else "width-check: authored usize on a rostered module must refuse -- this is the reading that was never taken"

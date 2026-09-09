@@ -1,9 +1,10 @@
 #!/bin/sh
 # tools/fixtures/s/shim_reason_control.sh -- the dropped reason, planted on purpose.
 #
-# WHAT THIS DOES. tools/fixtures/s/shim_reason_scan.sh claims that no pass-through shim on the
-# standing roster drops its target's stderr, and that the residue off the roster stands under a
-# ceiling. This control builds REAL git repositories in a throwaway pen, plants one thing in each,
+# WHAT THIS DOES. tools/fixtures/s/shim_reason_scan.sh holds one law in three shapes: a rostered
+# pass-through shim forwards its target's stderr, a rostered witness forwards its control's, and a
+# rostered binding says what its run wrote BEFORE the assert that would stop the run. Each shape
+# keeps a gate at zero over the roster and a ratchet over the rest. This control builds REAL git repositories in a throwaway pen, plants one thing in each,
 # and watches the scan answer. Every refusal is shown from BOTH sides -- planted, then lifted --
 # since a refusal proven only in the failing direction cannot be told from a scan that reds on
 # everything. Every welcome is asserted as hard as every refusal, because a reading that quietly
@@ -34,6 +35,16 @@
 #   instrument_refusal   -- a `git grep` that could not run must refuse by name, never read as a
 #                           tree with nothing in it (REDS %473). The same pen unmutated reads
 #                           clean, so the refusal belongs to the plant.
+#   order_free           -- a witness saying its run BEFORE judging it: verdict=ok, count zero.
+#   order_bitten         -- the same two lines the other way round, still rostered: refused by name.
+#   order_lifted         -- the same pen with the move undone: green. One move, both sides.
+#   order_ceiling        -- one unrostered late say, free at a ceiling of one and refused at zero.
+#   order_silent         -- a witness that never says the run at all is a different fault and is
+#                           not counted here, since this reading is about ORDER.
+#   order_err            -- a late `say r.err` counts exactly as a late `say r.out` does.
+#   order_other_var      -- a say belonging to a DIFFERENT run must not answer for this one; the
+#                           blind reading is `is there a say below an assert`.
+#   order_mention        -- a path named in a roster comment is still prose, in this shape too.
 #
 # COUNT, NEVER NUMBER. A phase total typed into this header is falsified by the next phase somebody
 # adds, so the control tallies its own `cases=` and `repos=` and prints them at its close.
@@ -105,6 +116,24 @@ carrying_witness() {
     'assert ctl.ok else "pen: the control refused --\\n${ctl.out}\\n${ctl.err}"'
 }
 
+# The THIRD shape, written once so its plant and its repair differ only in the ORDER of two lines.
+# A witness that says its run before judging it hands the reader everything the run wrote; the same
+# two lines the other way round hand the reader nothing, because `assert` stops the run.
+early_say_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let scan = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+    'say scan.out' \
+    'assert scan.ok else "pen: the scan refused"'
+}
+late_say_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let scan = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+    'assert scan.ok else "pen: the scan refused"' \
+    'say scan.out'
+}
+
 seal() { ( cd "$pen/$1" && git add -A && git commit -q -m "pen: seed" ); }
 
 # Count, never number. A total typed into a header is falsified by the next phase somebody adds, so
@@ -116,8 +145,8 @@ r() { readings=$((readings + 1)); echo "$1"; }
 # `set +e` inside both: most phases run a scan that REFUSES, and under `set -e` a command
 # substitution assigned to a variable carries that exit outward and kills the script at its first
 # successful refusal -- which reads exactly like a control that ran out of phases.
-run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
-run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" REASON_CEILING="${3:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
+run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
+run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
 
 # --- clean_free ---------------------------------------------------------------------------
 new_repo clean
@@ -371,6 +400,123 @@ r "$(case "$out" in *"verdict=ok"*) echo "instrument_never_reads_ok=no" ;; *) ec
 # the same pen, unmutated, still reads clean -- so the refusal belongs to the plant.
 out=$(run_scan instrument)
 r "$(case "$out" in *"verdict=ok"*) echo "instrument_pen_innocent=yes" ;; *) echo "instrument_pen_innocent=no" ;; esac)"
+
+
+# --- the third shape: the reason is said, and said too late -------------------------------------
+# `assert` stops the run, so a `say` on the next line never happens when the target refuses. This
+# fired twice on the fleet's own metal in one cold pass on `20260907` -- `index_row_bound` with a
+# real fault and `shipped_binary_claim` with a flake -- and neither evidence page could name its
+# cause. Every pen here carries one forwarding shim, so the first shape stays out of the way and
+# the refusal below can only belong to the third.
+new_repo order
+forwarding_shim  > "$pen/order/tools/x/a.rish"
+early_say_witness > "$pen/order/tools/x/pen_order_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_order_witness.rish\ntier lap\n' > "$pen/order/construction/standing-equipment.kyri"
+seal order
+out=$(run_scan order); code=$(run_code order)
+r "order_free_exit=$code"
+case "$out" in *"verdict=ok"*) r "order_free=yes" ;; *) r "order_free=no" ;; esac
+case "$out" in *"late_say_rostered=0"*) r "order_free_counted=yes" ;; *) r "order_free_counted=no" ;; esac
+late_say_witness > "$pen/order/tools/x/pen_order_witness.rish"
+out=$(run_scan order); code=$(run_code order)
+r "order_bitten_exit=$code"
+case "$out" in *"verdict=rostered_late_say"*) r "order_bitten=yes" ;; *) r "order_bitten=no" ;; esac
+case "$out" in *"late_say_rostered=1"*) r "order_counted=yes" ;; *) r "order_counted=no" ;; esac
+case "$out" in *"late_say: rostered tools/x/pen_order_witness.rish scan"*) r "order_named=yes" ;; *) r "order_named=no" ;; esac
+early_say_witness > "$pen/order/tools/x/pen_order_witness.rish"
+out=$(run_scan order)
+case "$out" in *"verdict=ok"*) r "order_lifted=yes" ;; *) r "order_lifted=no" ;; esac
+
+# --- the third ceiling, both directions on one plant ---------------------------------------------
+new_repo order_ceiling
+forwarding_shim > "$pen/order_ceiling/tools/x/a.rish"
+late_say_witness > "$pen/order_ceiling/tools/x/pen_order_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/order_ceiling/construction/standing-equipment.kyri"
+seal order_ceiling
+out=$(run_scan order_ceiling 99 99 1); code=$(run_code order_ceiling 99 99 1)
+r "order_ceiling_free_exit=$code"
+case "$out" in *"verdict=ok"*) r "order_ceiling_free=yes" ;; *) r "order_ceiling_free=no" ;; esac
+case "$out" in *"late_say_unrostered=1"*) r "order_ceiling_counted=yes" ;; *) r "order_ceiling_counted=no" ;; esac
+out=$(run_scan order_ceiling 99 99 0); code=$(run_code order_ceiling 99 99 0)
+r "order_ceiling_bitten_exit=$code"
+case "$out" in *"verdict=late_say_over_ceiling"*) r "order_ceiling_bitten=yes" ;; *) r "order_ceiling_bitten=no" ;; esac
+
+# --- a witness that never says the run is a different fault --------------------------------------
+# This reading is about ORDER. A witness saying nothing at all has nothing standing in the wrong
+# place, and counting it here would blur two faults into one number that names neither.
+new_repo order_silent
+forwarding_shim > "$pen/order_silent/tools/x/a.rish"
+printf '%s\n' \
+  '# pen witness' \
+  'let scan = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+  'assert scan.ok else "pen: the scan refused"' > "$pen/order_silent/tools/x/pen_order_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_order_witness.rish\ntier lap\n' > "$pen/order_silent/construction/standing-equipment.kyri"
+seal order_silent
+out=$(run_scan order_silent)
+case "$out" in *"late_say_rostered=0"*) r "order_silent_unseen=yes" ;; *) r "order_silent_unseen=no" ;; esac
+case "$out" in *"verdict=ok"*) r "order_silent_free=yes" ;; *) r "order_silent_free=no" ;; esac
+
+# --- a late `say r.err` counts the same way ------------------------------------------------------
+new_repo order_err
+forwarding_shim > "$pen/order_err/tools/x/a.rish"
+printf '%s\n' \
+  '# pen witness' \
+  'let scan = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+  'assert scan.ok else "pen: the scan refused"' \
+  'say scan.err' > "$pen/order_err/tools/x/pen_order_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_order_witness.rish\ntier lap\n' > "$pen/order_err/construction/standing-equipment.kyri"
+seal order_err
+out=$(run_scan order_err)
+case "$out" in *"verdict=rostered_late_say"*) r "order_err_bitten=yes" ;; *) r "order_err_bitten=no" ;; esac
+
+# --- one variable's `say` never answers for another's --------------------------------------------
+# The blindest version of this reading is `is there a say below an assert`, and this is the case
+# that tells the two apart: the say belongs to a different run entirely.
+new_repo order_other_var
+forwarding_shim > "$pen/order_other_var/tools/x/a.rish"
+printf '%s\n' \
+  '# pen witness' \
+  'let other = run ["sh" "-c" "true"]' \
+  'let scan = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+  'say scan.out' \
+  'assert scan.ok else "pen: the scan refused"' \
+  'assert other.ok else "pen: the other run must pass"' \
+  'say other.out' > "$pen/order_other_var/tools/x/pen_order_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_order_witness.rish\ntier lap\n' > "$pen/order_other_var/construction/standing-equipment.kyri"
+seal order_other_var
+out=$(run_scan order_other_var)
+case "$out" in *"late_say_rostered=1"*) r "order_other_var_counted=yes" ;; *) r "order_other_var_counted=no" ;; esac
+case "$out" in *"late_say: rostered tools/x/pen_order_witness.rish other"*) r "order_other_var_named=yes" ;; *) r "order_other_var_named=no" ;; esac
+
+# --- a mention of the shape inside a roster comment is still not a seat ---------------------------
+new_repo order_mention
+forwarding_shim > "$pen/order_mention/tools/x/a.rish"
+late_say_witness > "$pen/order_mention/tools/x/pen_order_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n# the pen witness at path tools/x/pen_order_witness.rish stays unrostered\n' > "$pen/order_mention/construction/standing-equipment.kyri"
+seal order_mention
+out=$(run_scan order_mention)
+case "$out" in *"late_say_rostered=0"*) r "order_mention_not_a_seat=yes" ;; *) r "order_mention_not_a_seat=no" ;; esac
+case "$out" in *"late_say_unrostered=1"*) r "order_mention_falls_to_ratchet=yes" ;; *) r "order_mention_falls_to_ratchet=no" ;; esac
+
+# A syntax error in the ordering parser must stop the census before it reports counts.
+# The same repository with the original parser proves that the plant caused the refusal.
+new_repo order_instrument
+forwarding_shim > "$pen/order_instrument/tools/x/a.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/order_instrument/construction/standing-equipment.kyri"
+seal order_instrument
+sed 's/^function flush(  v) {/function flush(  v {/' "$pen/order_instrument/tools/fixtures/s/shim_reason_scan.sh" > "$pen/order_instrument/bad_scan.sh"
+if cmp -s "$pen/order_instrument/tools/fixtures/s/shim_reason_scan.sh" "$pen/order_instrument/bad_scan.sh"; then
+  r "order_instrument_planted=no"
+else
+  r "order_instrument_planted=yes"
+fi
+out=$( set +e; cd "$pen/order_instrument" || exit 0; sh bad_scan.sh 2>/dev/null; exit 0 )
+code=$( set +e; cd "$pen/order_instrument" || { echo 99; exit 0; }; sh bad_scan.sh >/dev/null 2>&1; echo $?; exit 0 )
+r "order_instrument_exit=$code"
+case "$out" in *"verdict=instrument_refusal"*) r "order_instrument_named=yes" ;; *) r "order_instrument_named=no" ;; esac
+case "$out" in *"late_say_rostered="*) r "order_instrument_count_withheld=no" ;; *) r "order_instrument_count_withheld=yes" ;; esac
+out=$(run_scan order_instrument)
+case "$out" in *"verdict=ok"*) r "order_instrument_lifted=yes" ;; *) r "order_instrument_lifted=no" ;; esac
 
 echo "cases=$readings"
 echo "repos=$repos"

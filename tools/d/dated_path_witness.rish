@@ -232,8 +232,8 @@ say "RED three GREEN -- every home the resolver named exists on disk"
 # ---------------------------------------------------------------------------------------------
 
 let census = run ["sh" scan]
-assert census.ok else "dated-path: the census must complete -- see stderr"
 say census.out
+assert census.ok else "dated-path: the census must complete -- see stderr"
 assert census.out contains "verdict=ok" else "dated-path: the census is trustworthy only when every reference landed in exactly one bucket"
 assert census.out contains "under_ceiling=yes" else "dated-path: LOST references have risen above the ceiling -- a reference now resolves nowhere, or resolves to two places at once, and neither is something the resolver can repair"
 
@@ -305,8 +305,8 @@ say "split GREEN -- the lost set parts promise from mention and living from test
 # writing down if something notices when it lapses, so this checks both tools source
 # tools/fixtures/d/dated_path_exclusions.sh and neither has grown a hand-rolled exclusion back.
 let one_list = run ["sh" "tools/fixtures/d/dated_path_exclusions_control.sh"]
-assert one_list.ok else "dated-path: the single-exclusion-list control must complete"
 say one_list.out
+assert one_list.ok else "dated-path: the single-exclusion-list control must complete"
 assert one_list.out contains "real_tools_accepted=yes" else "dated-path: a hand-rolled exclusion has come back into the census or the repointer -- both must read tools/fixtures/d/dated_path_exclusions.sh and nothing else"
 assert one_list.out contains "private_copy_refused=yes" else "dated-path: the detector must refuse a tool carrying its own private copy, or the rule guards nothing"
 assert one_list.out contains "discovers_a_planting=yes" else "dated-path: a name an instrument plants must be discovered rather than remembered"

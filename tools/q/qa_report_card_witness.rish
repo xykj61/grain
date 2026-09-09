@@ -180,14 +180,14 @@ say "qa-report-card: Style Gauge -- the same measurement read the other way up, 
 say "qa-report-card: Lens TAME -- honesty first: a page whose claims have gone false reads F whatever else it scores."
 
 let scan = run ["sh" "tools/fixtures/q/qa_report_card_scan.sh"]
-assert scan.ok else "qa-report-card: more door documents sit below B on their counted half than the ceiling allows"
 say scan.out
+assert scan.ok else "qa-report-card: more door documents sit below B on their counted half than the ceiling allows"
 assert scan.out contains "verdict=ok" else "qa-report-card: the roster reading must balance before it is believed"
 say "field GREEN -- every front door read as a report card, and the ratchet holds"
 
 let control = run ["sh" "tools/fixtures/q/qa_report_card_control.sh"]
-assert control.ok else "qa-report-card: the control must complete"
 say control.out
+assert control.ok else "qa-report-card: the control must complete"
 assert control.out contains "scale_exact=yes" else "qa-report-card: the scale must read exactly at all nine boundaries, from both sides"
 assert control.out contains "no_minus_grades=yes" else "qa-report-card: this scale carries no minus grades, by Keaton's word"
 assert control.out contains "warm_register_high=yes" else "qa-report-card: affirmative prose must grade high"

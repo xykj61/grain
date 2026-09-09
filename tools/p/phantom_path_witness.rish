@@ -44,15 +44,15 @@ say "phantom-path: Style Radiant -- the tree states which paths its tools read, 
 say "phantom-path: Lens TAME -- safety first: a guard reading a room the repository lacks reports on a tree nobody else has."
 
 let scan = run ["sh" "tools/fixtures/p/phantom_path_scan.sh"]
-assert scan.ok else "phantom-path: a tool reads a path that resolves here and is absent from the repository -- read the scan's own lines"
 say scan.out
+assert scan.ok else "phantom-path: a tool reads a path that resolves here and is absent from the repository -- read the scan's own lines"
 assert scan.out contains "phantom_paths=0" else "phantom-path: every literal a tool reads must be one a fresh clone carries"
 assert scan.out contains "verdict=ok" else "phantom-path: the scan must balance before it is believed"
 say "field GREEN -- every path a tracked tool reads lands inside the tracked tree"
 
 let control = run ["sh" "tools/fixtures/p/phantom_path_control.sh"]
-assert control.ok else "phantom-path: the control must complete"
 say control.out
+assert control.ok else "phantom-path: the control must complete"
 assert control.out contains "case=clean_free ok" else "phantom-path: a tree whose tools read only tracked paths must pass free"
 assert control.out contains "case=phantom_refused ok" else "phantom-path: a tool reading through an untracked symlink must be refused"
 assert control.out contains "case=phantom_counted ok" else "phantom-path: the refusal must name a count, never only a verdict"

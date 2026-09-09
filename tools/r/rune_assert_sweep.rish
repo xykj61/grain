@@ -55,9 +55,9 @@ say "rune-assert-sweep: Style Gauge, Meter -- the count is the sentence."
 say "rune-assert-sweep: Lens TAME -- a guard reads the population, never a list of it."
 
 let result = run ["sh" "tools/fixtures/r/rune_assert_sweep_scan.sh"]
+say result.out
 assert result.ok else "rune-assert-sweep: the scan failed -- read the rooms file it was handed"
 
-say result.out
 
 assert result.out contains "elder_faults=0 ceiling=0" else "rune-assert-sweep RED: a gated core dropped to zero asserts"
 assert result.out contains "elder_roster=12" else "rune-assert-sweep RED: the elder roster lost a file"
@@ -71,8 +71,8 @@ assert result.out contains "verdict=read" else "rune-assert-sweep: the scan must
 # to zero once it is lifted. Both ratchets are shown from the failing side, which the pen's own
 # ceiling of zero is what buys.
 let control = run ["sh" "tools/fixtures/r/rune_assert_control.sh"]
-assert control.ok else "rune-assert-sweep: the control must complete"
 say control.out
+assert control.ok else "rune-assert-sweep: the control must complete"
 assert control.out contains "clean_counted=yes" else "rune-assert-sweep: an authored .rye must be counted"
 assert control.out contains "clean_reads_zero=yes" else "rune-assert-sweep: a file that states its invariant must read zero rather than merely pass"
 assert control.out contains "roster_comment_stripped=yes" else "rune-assert-sweep: a commented roster line must name no room"

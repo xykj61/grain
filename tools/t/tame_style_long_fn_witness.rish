@@ -58,8 +58,8 @@ assert (trim no_loose_start.out) == "0" else "tame-style-long-fn: the loose `fn`
 # invariant: the ledger reads its own subject on THIS tree. A ceiling would refuse other lanes'
 # ordinary work; a floor of one only refuses an instrument that has gone blind.
 let ledger = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_style_long_fn.rish"]
-assert ledger.ok else "tame-style-long-fn: the ledger runner refused"
 say ledger.out
+assert ledger.ok else "tame-style-long-fn: the ledger runner refused"
 assert ledger.out contains "functions_over_70=" else "tame-style-long-fn: the ledger no longer reports its own total, so its reach would be claimed by implication"
 let blind = run ["sh" "-c" "sh tools/fixtures/t/tame_style_long_fn_scan.sh | grep -c 'functions_over_70=0 ' || true"]
 assert (trim blind.out) == "0" else "tame-style-long-fn: the ledger reports zero long functions across the whole roster -- the counter has gone blind, which reads exactly like a healthy tree"

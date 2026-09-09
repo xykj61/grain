@@ -60,8 +60,8 @@ assert named.ok else "dayshelf-merge: merge.dayshelf.name must be set beside the
 say "this clone armed -- .gitattributes names the driver and git config carries its command line"
 
 let control = run ["sh" "tools/fixtures/d/dayshelf_merge_control.sh"]
-assert control.ok else "dayshelf-merge: the control must complete"
 say control.out
+assert control.ok else "dayshelf-merge: the control must complete"
 assert control.out contains "union_misorders=yes" else "dayshelf-merge: the fault must reproduce under merge=union, or the cure guards nothing"
 assert control.out contains "union_puts_older_first=yes" else "dayshelf-merge: the union fault must be named, never only counted"
 assert control.out contains "newer_kept_both=yes" else "dayshelf-merge: a merge must keep both seats' rows"
@@ -93,8 +93,8 @@ assert control.out contains "control_verdict=ok" else "dayshelf-merge: the contr
 # shelf must come back byte for byte -- the same property `index_shelf_repair.sh` proves about its
 # own output, and the reason a merge armed on every pull is safe to leave armed.
 let real = run ["sh" "tools/fixtures/d/dayshelf_real_shelf_scan.sh"]
-assert real.ok else "dayshelf-merge: the real-shelf leg must run -- read its own verdict line"
 say real.out
+assert real.ok else "dayshelf-merge: the real-shelf leg must run -- read its own verdict line"
 assert real.out contains "real_shelf_unchanged=yes" else "dayshelf-merge: a real ordered shelf merged with itself must come back byte for byte"
 assert real.out contains "verdict=ok" else "dayshelf-merge: the real-shelf leg must balance before it is believed"
 

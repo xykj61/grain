@@ -11,22 +11,22 @@
 #
 # The discipline was already written -- "Add a witness or a module and this block goes stale, so it
 # is regenerated in the same commit", at the head of tools/fixtures/r/readme_metrics_scan.sh. A rule
-# living in a comment is a rule no program runs, which is exactly what REDS %150 paid to learn about
+# in a comment needs an executable caller, which is exactly what REDS %150 paid to learn about
 # the standing-equipment roster. tools/hooks/pre-commit is that comment made executable.
 #
 # WHAT IS PROVEN, on metal, on a throwaway repository:
-#   A docs-only commit invokes no generator -- a ten-second render on every commit is a hook the
+#   A docs-only commit leaves the generators idle -- a ten-second render on every commit is a hook the
 #     bench would learn to route around, so resting is a proven behavior rather than a hope.
 #   A witness added with both pages clean refreshes BOTH and stages them into that same commit.
 #   A witness added while a page carries the author's own unstaged edits is REFUSED, with the
 #     refreshed page left in the worktree and nothing of the author's swept into the commit.
-#   Once the page is staged as the refusal asked, the commit proceeds and adds nothing further.
-#   A tree with no rishi on disk commits exactly as before -- the depersonalized seed's case.
+#   Once the page is staged as the refusal asked, the commit proceeds with that staged page.
+#   A tree lacking rishi on disk keeps its existing commit behavior -- the depersonalized seed's case.
 #   A cherry-picked commit runs NO pre-commit, and tools/hooks/post-commit records the debt.
 #   The next ordinary commit, adding no witness of its own, PAYS that debt: both pages refreshed
 #     and staged, and the marker cleared.
-#   An ordinary commit with no debt standing leaves both generators alone -- the second trigger
-#     did not turn rule one into "fire on everything".
+#   An ordinary commit with a clear debt record leaves both generators idle.
+#     The second trigger therefore runs only when its debt marker stands.
 #   A rebased commit records the debt the same way, read by the same question.
 #   A commit REFUSED while a debt stands leaves the debt standing, since a debt is paid by a commit
 #     landing rather than by a pre-commit having merely had its say.
@@ -47,8 +47,8 @@
 # rebase whenever the anointed remote moved, so a round closing that way ships its generated pages
 # stale -- which is what happened on 20260829 and what REDS %337 books.
 #
-# WHAT IS NOT PROVEN. That the fascia grade and the rooms-over-bound count are current -- both can
-# drift from a commit adding no witness and no module, and this rung is silent about both. The
+# SCOPE. The fascia grade and rooms-over-bound count have their own freshness check.
+# Both can change during other work, outside this hook's witness and module triggers. The
 # rostered readme_metrics guard still catches them at a cold start. This closes the fast, frequent
 # half of the drift, and says so rather than implying it closed the whole.
 #
@@ -87,8 +87,8 @@ assert (trim armed.out) == "tools/hooks" else "generated-page-freshness: core.ho
 say "field GREEN -- the hook stands in the tree, executable, and this clone is armed to run it"
 
 let control = run ["sh" "tools/fixtures/g/generated_page_freshness_control.sh"]
-assert control.ok else "generated-page-freshness: the control must complete -- see stderr"
 say control.out
+assert control.ok else "generated-page-freshness: the control must complete -- see stderr"
 assert control.out contains "docs_free=yes" else "generated-page-freshness: a docs-only commit must invoke no generator"
 assert control.out contains "clean_staged=yes" else "generated-page-freshness: a witness added with the pages clean must refresh and stage both in that commit"
 assert control.out contains "dirty_refused=yes" else "generated-page-freshness: a stale page beside unstaged edits must refuse rather than sweep them in"

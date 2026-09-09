@@ -1,46 +1,72 @@
-# tools/s/shim_reason_witness.rish -- a pass-through shim carries the reason, not only the verdict.
+# tools/s/shim_reason_witness.rish -- a guard hands on its target's reason, not only its verdict.
 #
-# WHAT THIS GUARDS. An accrete shim runs a target under `tools/gen/` and exits that target's code,
-# so a caller may name either path and get the same answer. Rishi's `run` captures the target's
-# stderr into `r.err`; a shim that says only `r.out` writes nothing at all to its own stderr. The
-# exit code travels. The sentence does not.
+# THE LAW, IN ONE LINE. Whatever this tree runs on a reader's behalf, it carries that thing's own
+# sentence back to the reader. Rishi's `run` files a target's stdout in `r.out` and its stderr in
+# `r.err`, and only what a caller says reaches anyone. The exit code always travels. The sentence
+# travels when somebody carries it.
+#
+# THREE SHAPES OF THE ONE LAW, each proven in its own pen below.
+#   1  A pass-through SHIM above `tools/gen/` says `r.out`, exits `r.code`, and keeps the reason.
+#   2  A witness over a CONTROL interpolates `${ctl.out}`, where the control names its failing
+#      behavior on stderr so a passing run stays quiet.
+#   3  A witness says the right thing one line too late -- `say scan.out` standing BELOW the assert
+#      that fires, where `assert` stops the run and the say never happens.
 #
 # MEASURED ON A REAL FILE, `20260906`, WITH NO PLANT. `tools/am/amphora_device_wire.rish` drives a
-# virtio lab and this pier holds no qemu, so it refuses honestly every time it runs. Its target,
-# run directly, hands a reader `rishi: assertion failed -- Amphora vessel fetch device wire lab
-# failed` with the line number beside it. The shim, run the same second, exits 1 with ZERO bytes on
-# stderr, and the whole of what a reader receives is `amphora-device-wire: virtio fetch-by-digest
-# lab...` -- a progress line printed before the failure, which reads like success.
-# `tools/fixtures/s/standing_equipment_run.sh` captures a guard with `> out 2>&1`, so the merge is
-# already there and catches nothing: the shim emitted nothing to merge.
+# virtio lab and this pier holds no qemu, so it refuses honestly every time it runs. Run its target
+# directly and a reader receives `rishi: assertion failed -- Amphora vessel fetch device wire lab
+# failed`, line number beside it. Run the shim the same second and stderr holds zero bytes; the
+# whole of what arrives is `amphora-device-wire: virtio fetch-by-digest lab...`, a progress line
+# printed before the failure, which reads like success.
+# `tools/fixtures/s/standing_equipment_run.sh` files a guard with `> out 2>&1`, so the merge stands
+# ready and receives nothing: the shim emitted nothing to merge.
 #
-# WHY A GATE AND A RATCHET. No swallowing shim stands on the standing roster today, so this is a
-# trap rather than a live fault: it springs on the lap that ROSTERS one, and `%360`'s standing
-# pressure is to roster more guards. The amphora lane walked into it on `20260906.063124` -- three
-# shims went onto a lap clock, and the swallow had to be found by planting a break and repaired in
-# the same breath. The gate spares the next lane that discovery. The ratchet is the residue, 43 off
-# the roster, falling on touch.
+# AND THE THIRD SHAPE FIRED TWICE IN ONE MORNING, on the fleet's own metal. The cold pass of
+# `20260907.042817` came back `guards_red=2`, and neither evidence page could name its cause.
+# `index_row_bound` carried a real fault -- one row of the open day shelf standing above a newer
+# one -- and named it the moment its scan ran by hand. `shipped_binary_claim` passed on the next
+# run and on every run after, which is a flake, and a flake is diagnosable only from what it wrote
+# down the first time. Both witnesses printed their target below the assert that fired.
 #
-# THE GATE IS PROVEN ABLE TO BITE, which matters here more than usual: `swallow_rostered` reads
-# ZERO on this field and always has, so nothing in the tree could ever show it working. The control
-# supplies the case the field does not hold -- one swallowing shim named by a `path` row, refused;
-# the same shim with one line added, freed.
+# PROVEN ON METAL, `20260907`, with that morning's own refusal in a pen. A fixture printing
+# `rows=16`, `rows_misordered=1`, `verdict=rows_misordered` and exiting 1, under a witness saying
+# `scan.out` after the assert, produced two lines and both were the witness's own. The same fixture
+# under the same witness with the say moved one line up produced all three readings, then the
+# assertion. One line's position is the whole difference, and the repair is a move: say before you
+# assert.
 #
-# THE ANCHOR. A seat is a `path` row standing alone at column zero, never a path mentioned inside a
-# roster comment. Unanchored, a guard could be counted rostered because somebody wrote about it,
-# and the control plants exactly that sentence.
+# EACH SHAPE KEEPS A GATE AND A RATCHET. The gate holds the rostered population at zero, since the
+# fleet runs those files every lap and files their output as the evidence a hand reads. The ratchet
+# carries the residue off the roster under a ceiling that only falls, so the tree improves on touch
+# and each repair lands with its own number.
 #
-# THE CORPUS ARRIVES THROUGH ONE `git grep`, and its status is classified rather than swallowed --
-# exit 1 is *no match*, 2 or more is *could not run*, and reading them alike would report an empty
-# answer as a clean tree (REDS %473, %484). Three greps over every tracked `.rish` cost 22 seconds
-# on this pier; the pre-filter reads the same counts in 2, and the control proves a broken pattern
-# refuses by name.
+# THE GATES ARE PROVEN ABLE TO BITE, which matters more here than usual: each reads ZERO on this
+# field, so the field alone could never show one working. The control supplies what the field
+# withholds -- one plant per gate, refused by name, then one line moved or added and freed.
 #
-# WHAT IT DOES NOT REACH, named rather than left to be rediscovered. The reading knows a shim by
-# three marks together -- the `run ["rishi/bin/rishi" "run" ...]` call, the `say r.out` forward, and
-# the `exit r.code` tail -- because each alone is ordinary. Two tracked files exit a captured run's
-# code under a different variable name and are invisible to it; neither is a shim, and both are
-# named every pass as `exit_alias_sites` so the floor carries a number (REDS %466).
+# THE ANCHOR. A seat is a `path` row standing alone at column zero, and a path named inside a
+# roster comment stays prose. The control plants exactly that sentence in two of the three shapes,
+# so a guard counts as rostered because the roster seats it rather than because somebody wrote
+# about it.
+#
+# A MENTION IS NEVER AN INSTANCE. A control may describe the shape it uses; a witness may say some
+# OTHER run's stderr, or some other run's stdout, and neither answers for the run under reading.
+# Each shape's reading is bound to one variable's own spellings, and the control plants the
+# confusable case beside the real one.
+#
+# THE CORPUS ARRIVES THROUGH `git grep`, whose status is classified rather than swallowed -- exit 1
+# means no match, 2 or more means could not run, and one fallback reading both alike would report
+# an empty answer as a clean tree (REDS %473, %484). Three greps over every tracked `.rish` cost 22
+# seconds on this pier and the pre-filter reads the same counts in 2; the ordering reading walks
+# every tracked `.rish` in ONE awk invocation keyed on `FILENAME`, 2,293 files in 0.2 seconds where
+# a per-file loop cost 9. This guard stands at `tier lap`, so its own cost is somebody's morning.
+#
+# WHAT IT REACHES, and where it stops. The shim reading knows its subject by three marks together
+# -- the `run ["rishi/bin/rishi" "run" ...]` call, the `say r.out` forward, and the `exit r.code`
+# tail -- since each mark alone is ordinary. Two tracked files exit a captured run's code under
+# another variable name and stand outside it; both are named every pass as `exit_alias_sites`, so
+# the floor carries a number (REDS %466). The ordering reading counts by PATH, so a body reachable
+# through a symlink is read twice and repaired once.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/shim_reason_witness.rish
@@ -55,8 +81,9 @@ say scan.err
 assert scan.ok else "shim-reason: the field reading refused -- read the scan's own lines above, which name every swallowing shim by path"
 assert scan.out contains "swallow_rostered=0" else "shim-reason: a shim the standing roster names must forward `r.err`, since the fleet runs it and files its output as evidence"
 assert scan.out contains "reason_lost_rostered=0" else "shim-reason: a rostered witness whose control names its failing behavior on stderr must interpolate that stderr, or its evidence page reads pass=N fail=1 and nothing a hand can act on"
+assert scan.out contains "late_say_rostered=0" else "shim-reason: a rostered binding must print what its run wrote BEFORE the assert that judges it -- assert stops the run, so a say on the next line never happens when the target refuses"
 assert scan.out contains "verdict=ok" else "shim-reason: the scan must balance before it is believed"
-say "field GREEN -- every rostered pass-through shim carries its target's reason"
+say "field GREEN -- every rostered shim, witness and binding carries its target's reason, and says it before it judges it"
 
 let control = run ["sh" "tools/fixtures/s/shim_reason_control.sh"]
 say control.out
@@ -124,5 +151,32 @@ assert control.out contains "reason_comment_unseen=yes" else "shim-reason: a con
 assert control.out contains "reason_comment_free=yes" else "shim-reason: a commented mention must leave the witness above it free"
 assert control.out contains "reason_other_var_counted=yes" else "shim-reason: that case must be counted as a loss rather than merely left unfree"
 
+assert control.out contains "order_free_exit=0" else "shim-reason: a witness saying its run before judging it must pass free"
+assert control.out contains "order_free=yes" else "shim-reason: that pen must read verdict=ok, or every refusal below is the pen speaking"
+assert control.out contains "order_free_counted=yes" else "shim-reason: and its count must read zero, or the zero on the field means nothing"
+assert control.out contains "order_bitten_exit=1" else "shim-reason: the same two lines the other way round must exit non-zero"
+assert control.out contains "order_bitten=yes" else "shim-reason: a rostered binding printing its run below the assert must refuse -- this is the gate the field cannot supply once it is repaired"
+assert control.out contains "order_counted=yes" else "shim-reason: that refusal must carry a count, never only a verdict"
+assert control.out contains "order_named=yes" else "shim-reason: the refusal must name the binding by path and variable, since a count is not something a hand can open"
+assert control.out contains "order_lifted=yes" else "shim-reason: moving the one line back must free the same pen, or the refusal cannot be told from a scan that reds on everything"
+assert control.out contains "order_ceiling_free_exit=0" else "shim-reason: the third residue standing AT its ceiling must pass"
+assert control.out contains "order_ceiling_free=yes" else "shim-reason: one unrostered late say at a ceiling of one must read ok"
+assert control.out contains "order_ceiling_counted=yes" else "shim-reason: the third ratchet must name its own count beside its ceiling"
+assert control.out contains "order_ceiling_bitten_exit=1" else "shim-reason: the same plant one ceiling lower must exit non-zero"
+assert control.out contains "order_ceiling_bitten=yes" else "shim-reason: a ceiling proven only in the passing direction cannot be told from a bypass"
+assert control.out contains "order_silent_unseen=yes" else "shim-reason: a witness that never says its run has nothing standing in the wrong place -- that is a different fault and belongs to a different number"
+assert control.out contains "order_silent_free=yes" else "shim-reason: and such a witness must pass this reading free"
+assert control.out contains "order_err_bitten=yes" else "shim-reason: a late `say r.err` loses exactly what a late `say r.out` loses"
+assert control.out contains "order_other_var_counted=yes" else "shim-reason: a say belonging to a DIFFERENT run must not answer for this one -- the blind reading is `is there a say below an assert`"
+assert control.out contains "order_other_var_named=yes" else "shim-reason: and the refusal must name which variable is late, since a file may hold both shapes at once"
+assert control.out contains "order_mention_not_a_seat=yes" else "shim-reason: a path named inside a roster comment is prose in this shape too"
+assert control.out contains "order_mention_falls_to_ratchet=yes" else "shim-reason: a mentioned-but-unrostered late say belongs to the ratchet, never the gate"
+
+assert control.out contains "order_instrument_planted=yes" else "shim-reason: the parser fault must change the fixture before it is tested"
+assert control.out contains "order_instrument_exit=2" else "shim-reason: a failed ordering parser must exit as an instrument refusal"
+assert control.out contains "order_instrument_named=yes" else "shim-reason: the parser failure must name its instrument verdict"
+assert control.out contains "order_instrument_count_withheld=yes" else "shim-reason: a failed parser has no ordering count to publish"
+assert control.out contains "order_instrument_lifted=yes" else "shim-reason: the original parser must accept the same repository"
+
 say "RED and GREEN paths proven -- the control's own `cases=` and `repos=` lines above carry the totals, and every refusal is lifted in its own pen"
-say "GREEN: shim-reason -- a shim on the clock hands on its target's reason, and the residue is counted."
+say "GREEN: shim-reason -- every guard on the clock hands on its target's reason, in time to be read, and each residue carries its own number."

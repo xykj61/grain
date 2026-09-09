@@ -26,11 +26,11 @@ say "tool-letter-room: Lens TAME -- a guard that cannot red guards nothing, so t
 
 say "tool-letter-room: the control -- refusals planted in a real git pen and then lifted..."
 let ctl = run ["sh" "tools/fixtures/t/tool_letter_room_control.sh"]
+say ctl.out
 assert ctl.ok else "tool-letter-room: the control refused --\n${ctl.out}\n${ctl.err}"
 # The count is asserted as well as the verdict, so a control quietly losing a leg is caught here
 # rather than passing as a shorter proof of the same name.
 assert ctl.out contains "control_behaviors=25" else "tool-letter-room: the control no longer proves 25 behaviors --\n${ctl.out}"
-say ctl.out
 
 say "tool-letter-room: and the tree itself, read from the index..."
 let scan = run ["sh" "tools/fixtures/t/tool_letter_room_scan.sh"]

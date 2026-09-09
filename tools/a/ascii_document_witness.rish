@@ -21,8 +21,8 @@ say "ascii-document: Lens TAME -- safety first: the converter applies ONLY the f
 say "ascii-document: reading one of two -- the control, on real repositories in a throwaway pen."
 
 let control = run ["sh" "tools/fixtures/a/ascii_document_control.sh"]
-assert control.ok else "ascii-document: the control must complete"
 say control.out
+assert control.ok else "ascii-document: the control must complete"
 assert control.out contains "control_verdict=ok" else "ascii-document: the control must reach its own verdict"
 
 # The enforce roster, from both sides. A refusal proven only in the failing direction cannot be
@@ -90,8 +90,8 @@ assert control.out contains "diverging_passes_elder_sample=yes" else "ascii-docu
 say "ascii-document: reading two of two -- the living tree."
 
 let living = run ["sh" "tools/fixtures/a/ascii_document_scan.sh"]
-assert living.ok else "ascii-document: the living scan must complete"
 say living.out
+assert living.ok else "ascii-document: the living scan must complete"
 assert living.out contains "enforce=honored" else "ascii-document: a rule page carrying non-ASCII is a law arguing with itself -- convert it, and run tools/fixtures/a/ascii_document_convert.sh"
 assert living.out contains "under_ceiling=yes" else "ascii-document: non-ASCII in living documents rose above the ceiling -- convert on touch rather than raising it"
 

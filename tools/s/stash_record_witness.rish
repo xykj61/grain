@@ -84,8 +84,8 @@ assert control.out contains "fail=0" else "stash-record: the control closed with
 
 # invariant: the reading on THIS tree, which is the one the fleet lives in.
 let here = run ["sh" "tools/fixtures/s/stash_record_scan.sh"]
-assert here.ok else "stash-record: the scan refused on this tree"
 say here.out
+assert here.ok else "stash-record: the scan refused on this tree"
 assert here.out contains "unlanded=0" else "stash-record: a session log stands in a round-open stash and nothing else carries it -- run `sh tools/fixtures/s/stash_record_scan.sh list` and read it back"
 assert here.out contains "parked=0" else "stash-record: a record is carried only by a pier/ park branch, which is the second drawer of the same box rather than the channel -- run `sh tools/fixtures/s/stash_record_scan.sh list`"
 assert here.out contains "verdict=ok" else "stash-record: the box holds a record the channel does not"

@@ -56,8 +56,8 @@ say "log-file-claim: Style Gauge, Meter -- the gate is the lap's own set, the di
 say "log-file-claim: Lens TAME -- safety first: the load-bearing leg is the welcome, shown from both sides."
 
 let control = run ["sh" "tools/fixtures/l/log_file_claim_control.sh"]
-assert control.ok else "log-file-claim: the control must complete -- read its own lines"
 say control.out
+assert control.ok else "log-file-claim: the control must complete -- read its own lines"
 assert control.out contains "faults=0" else "log-file-claim: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "log-file-claim: the control must balance before it is believed"
 

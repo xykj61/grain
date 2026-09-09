@@ -27,8 +27,8 @@ say "store-shape: Style Gauge, Meter -- a floor and a zero, each with the reason
 say "store-shape: Lens TAME -- bound every claim; the census names its ceiling and refuses past it."
 
 let scan = run ["sh" "tools/fixtures/s/store_shape_census.sh"]
-assert scan.ok else "store-shape: the census refused -- read its own line"
 say scan.out
+assert scan.ok else "store-shape: the census refused -- read its own line"
 
 assert scan.out contains "verdict=two_shapes" else "store-shape: the two populations have stopped reading as two shapes -- the store finding rests on this line"
 assert scan.out contains "registry_multivalued_rows=0" else "store-shape: a registry row carries a field twice, so a table has become a document"
@@ -41,8 +41,8 @@ assert scan.out contains "journal_widest_field=file" else "store-shape: the wide
 # census where the comparison happens.
 
 let control = run ["sh" "tools/fixtures/s/store_shape_control.sh"]
-assert control.ok else "store-shape: the control faulted -- a reading is unproven"
 say control.out
+assert control.ok else "store-shape: the control faulted -- a reading is unproven"
 assert control.out contains "control_verdict=ok" else "store-shape: the control must balance before the census is believed"
 assert control.out contains "faults=0" else "store-shape: a planted fault went unseen"
 

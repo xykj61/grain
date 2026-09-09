@@ -93,14 +93,14 @@ say "shared-pen: Style Gauge, Meter -- refusal is the subject."
 say "shared-pen: Lens TAME -- safety first: a guard reporting a peer's pen is a guard reporting nothing."
 
 let scan = run ["sh" "tools/fixtures/s/shared_pen_scan.sh"]
-assert scan.ok else "shared-pen: the constant-pen population stands past a ceiling -- read the scan's own lines"
 say scan.out
+assert scan.ok else "shared-pen: the constant-pen population stands past a ceiling -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "shared-pen: the scan must balance before it is believed"
 say "field GREEN -- the constant-pen population and its wiping subset both stand under their ceilings"
 
 let control = run ["sh" "tools/fixtures/s/shared_pen_control.sh"]
-assert control.ok else "shared-pen: the control must complete"
 say control.out
+assert control.ok else "shared-pen: the control must complete"
 assert control.out contains "clean_reads_zero=yes" else "shared-pen: a clean tree must read zero rather than merely pass"
 assert control.out contains "clean_free=yes" else "shared-pen: a clean tree must pass free"
 assert control.out contains "planted_counted=yes" else "shared-pen: a planted constant pen must be counted"

@@ -52,21 +52,21 @@ say "energy-instrument: Style Gauge, Meter -- the reading names its tier before 
 say "energy-instrument: Lens TAME -- safety first: an energy claim measured at a tier it never names is a claim nobody can check."
 
 let scan = run ["sh" "tools/fixtures/e/energy_instrument_scan.sh"]
-assert scan.ok else "energy-instrument: the probe must read this host -- see the scan's own lines"
 say scan.out
+assert scan.ok else "energy-instrument: the probe must read this host -- see the scan's own lines"
 assert scan.out contains "verdict=ok" else "energy-instrument: the probe must balance before it is believed"
 assert scan.out contains "tier=" else "energy-instrument: every reading names the best instrument actually available"
 say "host read -- the tier above is what any energy figure taken here was measured at"
 
 let agree = run ["sh" "tools/fixtures/e/energy_instrument_agree.sh"]
-assert agree.ok else "energy-instrument: a tier this host declares must be a tier a process can reach"
 say agree.out
+assert agree.ok else "energy-instrument: a tier this host declares must be a tier a process can reach"
 assert agree.out contains "verdict=ok" else "energy-instrument: the declared tier and the opened counter must agree"
 say "declaration and open agree -- sysfs names an instrument the kernel actually hands over"
 
 let control = run ["sh" "tools/fixtures/e/energy_instrument_control.sh"]
-assert control.ok else "energy-instrument: the control must complete"
 say control.out
+assert control.ok else "energy-instrument: the control must complete"
 assert control.out contains "bare_falls_to_cpu_seconds=yes" else "energy-instrument: a host with no counter reads CPU seconds"
 assert control.out contains "bare_names_no_source=yes" else "energy-instrument: the floor names its absent source rather than staying silent"
 assert control.out contains "bare_free=yes" else "energy-instrument: a host is not a fault -- the floor passes free"

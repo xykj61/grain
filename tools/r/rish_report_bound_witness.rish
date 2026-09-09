@@ -31,8 +31,8 @@ assert ctl.out contains "pass=15 fail=0" else "rish-report-bound: the control di
 
 say "rish-report-bound: and the living tree, read on metal..."
 let scan = run ["sh" "tools/fixtures/r/rish_report_bound_scan.sh"]
-assert scan.ok else "rish-report-bound: the scan would not run -- read its own lines"
 say scan.out
+assert scan.ok else "rish-report-bound: the scan would not run -- read its own lines"
 
 # invariant: the ratchet is a CEILING, compared with -le inside the scan, so a repair can never
 # red. A floor spelled as an equality refused the rise it existed to reward seven times in one day

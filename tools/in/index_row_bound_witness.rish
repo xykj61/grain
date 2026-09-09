@@ -69,8 +69,8 @@ say "index-row-bound: Style Gauge -- the bound comes from the pin's own arithmet
 say "index-row-bound: Lens TAME -- bound everything, and say where the number came from."
 
 let scan = run ["sh" "tools/fixtures/i/index_row_bound_scan.sh"]
-assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given, points nowhere, or shares its stamp"
 say scan.out
+assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given, points nowhere, or shares its stamp"
 assert scan.out contains "rows_over=0" else "index-row-bound: every living index row must point rather than restate"
 assert scan.out contains "rows_unresolved=0" else "index-row-bound: a row that points nowhere is a way in that is not one"
 assert scan.out contains "rows_duplicate=0" else "index-row-bound: two rows carrying one stamp are one log wearing two rows"
@@ -79,8 +79,8 @@ assert scan.out contains "verdict=ok" else "index-row-bound: the scan must balan
 say "field GREEN -- the pin holds one day of pointers and the open shelf holds rows that point"
 
 let control = run ["sh" "tools/fixtures/i/index_row_bound_control.sh"]
-assert control.ok else "index-row-bound: the control must complete"
 say control.out
+assert control.ok else "index-row-bound: the control must complete"
 assert control.out contains "at_bound_free=yes" else "index-row-bound: a row of exactly 192 bytes must pass free"
 assert control.out contains "at_bound_measured=yes" else "index-row-bound: the scan must measure the planted length exactly"
 assert control.out contains "over_bound_bitten=yes" else "index-row-bound: a row of 193 bytes must red, so no override exists"
@@ -142,8 +142,8 @@ say "the scan's behaviors proven on planted pins and shelves, each reading shown
 # divergent one still refuses and now prints both rows, since a hand asked to choose has to see
 # what it is choosing between.
 let repair = run ["sh" "tools/fixtures/i/index_shelf_repair_control.sh"]
-assert repair.ok else "index-row-bound: the repair control must complete"
 say repair.out
+assert repair.ok else "index-row-bound: the repair control must complete"
 assert repair.out contains "OK   sorted_a_misordered_shelf" else "index-row-bound: a misordered shelf must be sorted"
 assert repair.out contains "OK   newest_now_on_top" else "index-row-bound: the newest row must stand first after a repair"
 assert repair.out contains "OK   sort_is_a_permutation" else "index-row-bound: the repair must add, drop, and alter nothing"

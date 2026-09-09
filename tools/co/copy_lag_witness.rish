@@ -50,15 +50,15 @@ say "copy-lag: Style Gauge, Meter -- a count, its canon, and the price in publis
 say "copy-lag: Lens TAME -- safety first: sameness held by the filesystem is sameness nobody has to remember."
 
 let scan = run ["sh" "tools/fixtures/c/copy_lag_scan.sh"]
-assert scan.ok else "copy-lag: a copy has fallen behind the file its siblings link -- read the scan's own detail lines"
 say scan.out
+assert scan.ok else "copy-lag: a copy has fallen behind the file its siblings link -- read the scan's own detail lines"
 assert scan.out contains "split_canon=0" else "copy-lag: a basename whose symlinks name two files has no one canon"
 assert scan.out contains "verdict=ok" else "copy-lag: the scan must balance before it is believed"
 say "field GREEN -- every copy is either its own module or a named, priced lag under the ceiling"
 
 let control = run ["sh" "tools/fixtures/c/copy_lag_control.sh"]
-assert control.ok else "copy-lag: the control must complete"
 say control.out
+assert control.ok else "copy-lag: the control must complete"
 assert control.out contains "clean_free=yes" else "copy-lag: a canon and its symlinks must pass free"
 assert control.out contains "canon_not_a_copy=yes" else "copy-lag: a canon is never a copy of itself"
 assert control.out contains "population_seen=yes" else "copy-lag: the reading must find the basename it is meant to find"

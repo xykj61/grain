@@ -31,15 +31,15 @@ say "banner-room: Style Radiant -- every shelf-naming banner agrees with its dir
 say "banner-room: Lens TAME -- docs and implementation stay synced; the failure was silent by construction, since only the line saying WHERE was wrong."
 
 let scan = run ["sh" "tools/fixtures/b/banner_room_scan.sh"]
-assert scan.ok else "banner-room: a banner names a shelf the file has left -- repoint it to where the file sits"
 say scan.out
+assert scan.ok else "banner-room: a banner names a shelf the file has left -- repoint it to where the file sits"
 assert scan.out contains "banners_drifted=0" else "banner-room: every shelf-naming banner must name the shelf the file is on"
 assert scan.out contains "verdict=ok" else "banner-room: the scan must balance before it is believed"
 say "field GREEN -- every banner that names a shelf names the one its file sits on"
 
 let control = run ["sh" "tools/fixtures/b/banner_room_control.sh"]
-assert control.ok else "banner-room: the control must complete"
 say control.out
+assert control.ok else "banner-room: the control must complete"
 assert control.out contains "drift_refused=yes" else "banner-room: a banner naming a shelf the file has left must be refused"
 assert control.out contains "agreeing_free=yes" else "banner-room: a banner naming its own shelf must pass"
 assert control.out contains "voice_free=yes" else "banner-room: a Two Rooms register names a voice, never a room, and must pass free"
