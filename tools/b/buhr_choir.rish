@@ -1,0 +1,29 @@
+# tools/b/buhr_choir.rish -- the BUHR family's witnesses, sung as one roster row.
+#
+#   rishi/bin/rishi run tools/b/buhr_choir.rish
+#
+# reach-list: sh tools/fixtures/w/witness_family_scan.sh --dir tools/b --prefix buhr --list
+#
+# 49 witnesses cover Compass Equinox 3, the Realidream surface and the Quin inference vane, and every one of them was reached by no pass.
+# `witness_reach_scan.sh` counted them `unheard`, the shape the row at `20260908.183635` books: a
+# guard's reach is the roster rather than its own quality.
+#
+# The discovery, the bound and the refusals live in `tools/fixtures/w/witness_family_scan.sh`, whose
+# control proves eleven behaviours in a pen. This file is comments and six asserts, which is what
+# generalising that scan bought.
+
+say "buhr-choir: Style Gauge, Meter -- the family is discovered, bounded, and sung."
+say "buhr-choir: Lens TAME -- a corpus of zero is a red rather than a reading."
+
+let ctl = run ["sh" "tools/fixtures/w/witness_family_control.sh"]
+assert ctl.ok else "buhr-choir: the family control refused -- read its own pass/fail lines"
+assert ctl.out contains "fail=0" else "buhr-choir: a planted refusal behaved differently than stated"
+
+let scan = run ["sh" "tools/fixtures/w/witness_family_scan.sh" "--dir" "tools/b" "--prefix" "buhr"]
+say scan.out
+assert scan.ok else "buhr-choir: the family refused -- read its own verdict line above"
+assert scan.out contains "verdict=ok" else "buhr-choir: the BUHR family did not answer ok"
+assert (scan.out contains "members=0") == false else "buhr-choir: a corpus of zero is a red, never a reading"
+assert scan.out contains "reds=0" else "buhr-choir: a BUHR witness answered RED -- its path is printed above"
+
+say "GREEN: buhr-choir -- every BUHR witness discovered, bounded, and sung under one row."
