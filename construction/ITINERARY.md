@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6fe92b191b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9230cb0f0e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
 Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
@@ -200,51 +200,49 @@ column rather than a replacement.
 00:07 -- minutes apart, and its scan honors no `ROTA_DAY` to pin. Cleared by landing today's log.
 **RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.
 
-**COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
-Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
-its own elder handoff: the ASCII ratchet's largest class. **Ran the meter rather than the card** --
-`1,164 of 3,772`, where the card said 1,303 of 4,335, the symlink-skip correction having lowered both.
-**THE SCAN DEFERRED SEVEN CLASSES TOGETHER AND ONLY SIX EARN IT.** Its comment says each carries a
-meaning *a reader should choose the ASCII form for*. Read one at a time they part: section,
-multiplication, superscript each have two or three honest forms; **a minus has exactly one**. So the
-discriminator is the rule's **substitution table**, which had never named U+2212. Named, then swept.
-**BEHAVIOR-FREE BY CONSTRUCTION:** only a line whose first non-blank is `//` moved -- Zig has no block
-comment and a multiline string continues on `\\`, so the line is comment end to end. **762 lines
-changed, 0 outside that shape**, each of the **129 files re-derived from `git show HEAD:<path>`** and
-byte-identical. **3,772 -> 2,608, ceiling 3,794 -> 2,630**, the 22 of slack kept so the next lap is
-credited with none of it. Cold and hot each **205 guards, 203 green, 0 red, 2 gated (%5)**.
-**AGAINST MYSELF:** the elder link inside my new shelf kept the pin's depth -- the same fault my
-elder block recorded, caught by the same guard, repaired by the repointer that computes it, and paid
-for with a second full hot pass. One measurement went to `/tmp` before I moved to `.lap/`.
-**THE REBASE BROUGHT TWO REDS, NEITHER MINE:** a peer's shelf carried the SAME depth fault mine had
-an hour earlier -- one lantern, two hands, one lap -- and the repointer made both repairs. The day
-turned mid-lap, so `log_has_a_row` read `pin_shelf_missing` and the pin opens `20260909`.
-**Yours, nine times larger:** `rish_spoken_ascii` reads **11,113 characters in what guards SAY to a
-person**, its own scan splitting them **10,748 table forms / 365 judgment**. The classification is
-done; the sweep is unrun, and lands in ~1,500 files -- a collision surface rather than a difficulty.
-**Still yours:** whether Meter should SCORE for a program, now a file can name 98 invariants and grade
-exactly as it did at 8. **Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, `%387`.
-**Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
-**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
-without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
-by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
-directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
-**Cold pass `20260908.005417`: 182 guards, 1361s, 3 gated** -- the roster grew 155 -> 182 in two days and its wall time held.
-**`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
-**`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
-**1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
-**Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
-`pond/enclosure_policy.kyri` 8,120/8,192; yours.
-**THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
-card holds what is OPEN and what waits on your word.
-**Gate 3 stands:** `.gnupg-rye/` holds
-`private-keys-v1.d/`, and **per-tree GNUPGHOME is the only shape that works jailed** -- yours.
-**52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
-sites, none -- not POSIX since 2008.** The cure, `tools/fixtures/s/shell_portable.sh`, is sourced by
-**38 files, 1.3%.** Three tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed**
-(probe, fall back, announce). **The reflex LANDED** (`%445`); the tiers stay yonder, yours.
+**COPAL -- THE MANIFEST'S INTENT HALF MOVED AND ITS DRIVER HALF STAYED.**
+**Recovered `20260909.025902`:** the parked log and shelf return whole; the seed link is repaired.
+The cold pass ran 207 guards over a still tree. Two missing-`rg` readings pass with the existing
+Nix-store binary on PATH. DIFFUSER landed the two script modes and watcher comments
+in `9230cb0f0`; that version is kept whole. The retired
+`fleet_drain` run entry is kept in session-output and leaves the current run card.
+**Next recovery:** `stash@{2}`, the unlanded `gen_home` default, roster entry, and README.
+
+Elder [shelved](archive/20260909-013616_itinerary-landed-accounts.md).
+**EARTH BREATHES IN -- the concrete at the door, before the sentence about it.** So this lap read
+`template-manifest.bron` against the tree: **115 tracked roots, 44 module rooms, every one carrying
+a verdict**, and 17 named paths absent -- 12 uninitialised `gratitude/` submodules, 3 debrided rows
+kept as defence in depth, `twilight`, all deliberate.
+**THEN THE RED, and it was one line wide.** `nixos` was RECLASSIFIED personal -> template on your
+word `20260909`, in the manifest's **intent** half; that file's own header says **`allow` alone
+drives the ship**, and no `allow nixos` was written. The room is withheld by the root default,
+while `SOURCE.md` gained a link into it reading *which ships with this seed*.
+`seed_link` **848 -> 849, RED** on my cold open -- the one guard that could see it, seeing it by the
+LINK rather than by the manifest's own disagreement.
+**REPAIRED THE WAY THE SCAN ITSELF PRESCRIBES** -- *name it in prose instead*: the seed reader is
+pointed at `nixos-guide/templates/configuration.nix.example`, which does ship. **849 -> 848,
+`verdict=ok`**, and `.claude/rules/declared-host-config.md` now states the measured fact under its
+own *The seed carries it*.
+**AND ADDING THE LINE TODAY WOULD REFUSE THE PUBLISH, measured rather than reasoned.** Every
+allowed path is scrubbed -- `sow_project.sh` reads `PATHS` from `allow` alone and runs
+`sow_scrub.sed` over all of it -- so I ran the scrub over the room and grepped its OUTPUT.
+`Keaton`, `keaton`, `Livermore`, `xykj61` and the gmail address all fall; **`vultr` survives on two
+lines**, and `sow_leak_scan.sh` greps `-riIlE` with `Vultr` in its IDENT set, so the wall answers
+`IDENT_LEAK` and the publish stops. **The wall holds; the order is what is missing.** **Yours:**
+drop or scrub that provider word, then write `allow nixos` -- an `allow` line moves a privacy
+boundary and the publish is gate `%1`.
+**THE CLASS, MEASURED: nine roots carry a ship-intent verdict and no `allow`.** Five are the
+documented file-by-file hold, `template-manifest.bron` says *(withheld anyway)*, `vendor` is
+submodules -- and **`kyri` and `nixos` carry no note at all**. Nothing reads the two halves against
+each other; that is the loom.
+**THE ROW CANNOT LAND:** the pin holds **173 bytes with all 14 rows OPEN**, so no fold is lawful --
+the standfast of `20260908.235139`, now carrying a second row. Cited by stamp `20260909.013616`.
+**AGAINST MYSELF:** I edited two files while the cold pass ran, so it reads `tree_moved` -- my own
+elder block records that exact fault, one lap old.
+**Carried whole on the [shelf](archive/20260909-013616_itinerary-landed-accounts.md):** the
+`rish_spoken_ascii` sweep (**11,087 chars, 10,722 table forms, 1,512 files**, and **no converter
+exists** -- `tools/fixtures/r/rye_spoken_ascii_convert.sh` is the exemplar); whether Meter should
+SCORE for a program; `%456`; `shell_dialect`; `%360`; `%347`.
 
 **Worth your word, still unanswered, and asked from FOUR blocks of this card until merged here
 `20260906.212057`:** nothing in the ledger shows a red is *being worked*, so two hands spend one

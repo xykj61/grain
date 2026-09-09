@@ -11,11 +11,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.025902` | [The parked repair returns](20260909/20260909-025902_the-parked-link-repair-returns.kyri) | Copal recovery; original log kept |
 | `20260909.025531` | [Codex script modes](20260909/20260909-025531_codex-script-modes.kyri) | modes, recovery, and test PATH |
 | `20260909.022744` | [Incense watcher ready](20260909/20260909-022744_incense-watcher-ready.kyri) | arms after interactive exit |
 | `20260909.022156` | [Codex fleet sailing](20260909/20260909-022156_codex-fleet-sailing.kyri) | seven loops live; incense interactive |
 | `20260909.021739` | [Codex fleet clockin](20260909/20260909-021739_codex-fleet-clockin.kyri) | startup checks and watcher |
 | `20260909.021118` | [Codex fleet resume](20260909/20260909-021118_codex-fleet-resume.kyri) | loop preflight; ships still stopped |
+| `20260909.013900` | [The half that drives and the half that describes](20260909/20260909-013900_the-half-that-drives-and-the-half-that-describes.kyri) | the half nobody executes |
 | `20260909.011722` | [The template that holds nothing to catch](20260909/20260909-011722_the-template-that-holds-nothing.kyri) | a template beats a scrub |
 | `20260909.002917` | [A prevention nothing called](20260909/20260909-002917_a-prevention-nothing-called.kyri) | 208 shelves, no writer; a killed lap out of the stash |
 | `20260909.002116` | [The prover that shared none of its name](20260909/20260909-002116_the-prover-that-shared-none-of-its-name.kyri) | a proof found by name, not by spelling |

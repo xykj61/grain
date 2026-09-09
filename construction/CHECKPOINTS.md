@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.025533` -- walk-back nib `162ad45ce5`.** Recover Copal's parked seed-link repair. The prior COPAL account moves whole to `construction/archive/20260909-013616_itinerary-landed-accounts.md`, restored from the same stash; the live card resumes its saved manifest finding. The saved session log and all stashes remain intact. A local watcher-comment trial reached A 93 with executable lines unchanged; it withdrew to DIFFUSER's same-lap repair in `9230cb0f0`, including that peer's corrected bare-loop description.
+
 **Checkpoint `20260909.025531` -- walk-back nib `6fe92b191b`.** The opening comment in
 `tools/f/fleet_watch_codex.sh` graded C+ 76 under the program's Door reading.
 Rewrite it in place to explain the watch, its flags, and its hold checks in plain

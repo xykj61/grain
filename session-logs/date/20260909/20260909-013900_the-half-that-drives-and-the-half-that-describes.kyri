@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260909.013900
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role copal seat, unattended loop
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260908
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The half that drives and the half that describes
+prompt The autonomous loop's own baton -- take the next agent-doable lap, reds first, Lindy-first crux-first, and grade what you touch.
+think The cold open reddened on seed_link before I had chosen any work, so the work chose itself.
+think The scan named its own cure in its refusal line -- name the withheld room in prose instead -- and taking a tool's own prescribed repair is cheaper than inventing a second one.
+think The interesting question was never the link. It was why a room reclassified on Keaton's word an hour earlier was still withheld, and the answer was one missing line in the file's driver half.
+think I nearly shipped a wrong reason. My first reading said `keaton@dc1` matched no scrub rule; running the scrub over the room showed it becoming `the-maintainer@dc1`, and the one string that actually survives is `vultr`.
+obs A MANIFEST WITH TWO HALVES CAN DISAGREE, AND ONLY ONE HALF IS READ BY THE MACHINE. `template-manifest.bron` carries `allow` lines that drive `tools/fixtures/s/sow_project.sh` and `template|scrub|personal` lines its own header calls intent documentation. The `20260909` reclassification of `nixos` from personal to template landed in the intent half alone, so the room reads as shipping to every human eye and ships nothing.
+obs THE GUARD THAT CAUGHT IT WAS LOOKING SOMEWHERE ELSE. `seed_link` reads whether a shipped document links into a room the seed lacks. It reddened because `SOURCE.md` gained a pointer saying *which ships with this seed*. Nothing in the tree reads the manifest's two halves against each other; that disagreement was invisible until a sentence depended on it.
+obs THE INCENSE LAP'S OWN LOG RECORDS THE MECHANISM OF THE MISS. It tried `allow nixos`, `sow_personal_scan` refused it because `personal nixos` stood, the row was reclassified to `template` to clear the refusal -- and the `allow` line was never written back. A refusal answered by editing the other half is how a decision ends up recorded in the half nobody executes.
+obs MEASURE THE OUTPUT, NEVER THE RULES. Reading `sow_scrub.sed` I concluded `keaton@dc1` survives, since `s/Keaton/` is case-sensitive. Running the scrub proved a lowercase rule exists and the address falls. The one string that survives is `vultr`, matched case-insensitively by `sow_leak_scan.sh`'s `Vultr`, so adding the allow line today would refuse the publish rather than leak. The wall holds; the order is what is missing.
+obs NINE ROOTS CARRY A SHIP-INTENT VERDICT AND NO ALLOW LINE, and most are honest. Five are the documented file-by-file hold, `template-manifest.bron` says withheld anyway, `vendor` is submodules. Only `kyri` and `nixos` carry no note, which is the shape a meter would separate from a habit.
+obs AGAINST MYSELF, THE SAME FAULT MY ELDER BLOCK RECORDS. I edited SOURCE.md and a rule while the cold pass was still running, so its close digest disagrees with its open and it reads tree_moved. One lap old and repeated.
+loom seed_link ratchet_before=849 ratchet_after=848 ceiling=848 verdict=ok
+loom manifest tracked_roots=115 module_rooms=44 without_verdict=0 absent_paths=17 intent_without_allow=9
+loom rish_spoken_ascii files=1512 chars=11087 table_forms=10722 notation=365 opened=2439 converter=absent
+rota lap 4419, row 4 -- Earth, the row that breathes in. What it surfaced: the row asks for the concrete fact at the door before the argument about it, so the lap read the manifest against the tree rather than the sentence about the manifest -- and the fact at the door was one absent line.
+file SOURCE.md the seed reader is pointed at a template that ships, rather than a room that does not
+file .claude/rules/declared-host-config.md its own seed clause now carries the measured state and the order the repair wants
+file construction/ITINERARY.md the COPAL block rewritten to this lap's account, 5,201 bytes to 3,046
+file construction/archive/20260909-013616_itinerary-landed-accounts.md the elder block kept whole, its links re-anchored one level
+scope one red closed at its ratchet, one manifest measured whole, one boundary decision surfaced with its order named
+status GREEN on seed_link (848, verdict=ok), rule_twin, and A grades on both touched pages; the cold roster reads tree_moved by my own hand and the hot pass after staging is the reading that counts
+recommend check in (Keaton) -- `allow nixos` is one line and it moves a privacy boundary; drop the provider word from the two key comments first, then write it, and the room your word already placed in the seed will actually arrive

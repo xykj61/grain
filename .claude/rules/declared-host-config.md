@@ -49,6 +49,27 @@ is described here and copied there.
 tree runs. A guide describing a host whose configuration nobody can read is a guide asking for
 trust; shipping the file asks for nothing.
 
+**Measured `20260909.013400`, the room does not ship yet.** `template-manifest.bron` carries the
+reclassification in its intent half -- `template nixos`, *RECLASSIFIED `20260909` on Keaton's word,
+personal -> template* -- and that file's own header says `allow` alone drives the projection. No
+`allow nixos` line was written, so the room stays withheld by the root default, and `SOURCE.md`
+linking into it reddened `tools/s/seed_link_witness.rish` within the hour, its ratchet rising 848
+to 849. The link was repaired the honest way -- the seed reader is pointed at
+`nixos-guide/templates/configuration.nix.example`, which does ship.
+
+**And writing that line today would refuse the publish, which is the wall doing its job.** Every
+allowed path is scrubbed -- `tools/fixtures/s/sow_project.sh` builds its path list from `allow`
+alone and runs `tools/fixtures/s/sow_scrub.sed` over all of it -- so the question is what survives
+the scrub rather than which intent word the room carries. Run over `nixos/` and grepped for the
+leak scan's own IDENT set, the output is clean of `Keaton`, `keaton`, `Livermore`, `xykj61` and the
+gmail address, and carries **`vultr` on two lines**: the hosting provider named inside an
+authorized-key comment. `tools/fixtures/s/sow_leak_scan.sh` greps `-riIlE` with `Vultr` in that
+set, so it would answer `IDENT_LEAK` and stop the publish.
+
+So the order is what is missing rather than the decision. Drop or scrub that provider word, then
+write `allow nixos` -- **Keaton's word to give**, since an `allow` line moves a privacy boundary and
+the publish is custody gate `%1`.
+
 ## What this leaves alone
 
 **Secrets and per-machine identity stay off the tree.** Keys, tokens, and anything naming one
