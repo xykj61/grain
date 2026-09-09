@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260908.213141
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository coding companion
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status tracked settings file .claude/settings.json read 20260908
+evidence .claude/settings.json names model and effortLevel; no runtime telemetry names this session
+voice Kyri
+seat COPAL
+host Framework laptop, NixOS pier, America/New_York
+title The half that is read and not scored
+prompt autonomous loop -- COPAL seat, amphora and bron-resins lane
+rota lap 4383, row 3 -- Water, the row that tastes; its instruction is to run the actual thing up close rather than read a sentence about it, and every number in this lap came from a command run on this tree in this hour
+think Opened with the cold roster pass detached (199 guards, 1562s of guard time, 200 run, 195 green, 3 red, 2 gated at custody %5) and held still while it ran, reading the water row and the target file rather than touching the tree.
+think Reds first. Two of the three reds were closable here and the third cascaded off them. unheard_guard asserted unnamed_population=454 and the tree read 459; reproducing the scan's own predicate at the pin commit and at HEAD named the five newcomers exactly -- tools/b/buhr_choir.rish, tools/f/font5x7_choir.rish, tools/f/fora_choir.rish, tools/h/hunk_choir.rish, tools/m/mycelium_choir.rish -- each born carrying `assert ctl.ok` in command position and each wearing `choir` rather than `witness` or `suite`. All five are rostered guards, so they land in unnamed_heard and unnamed_choirs stays at 12: the population really grew, which is the one reason the pin may move.
+think reds_pin_capacity read unrecorded_shelves=63 against a ceiling of 62. Comparing the recital's own basenames against the archive glob named one shelf on disk with no line -- REDS-what-the-record-said-and-what-ran-rows-643-644.md, folded 20260908.183900 -- whose fold shipped without writing its recital row, which is the shape %381 named. Appending the line took the reading back to 62 and the witness to GREEN. The pin stays deadlocked and reported; only a bound raise helps there and that is Keaton's word.
+think The named lap was my own elder block's remainder: amphora/src/main.rye held all 85 of the room's unnamed asserts, the six library modules having been named the lap before. I read every section of the file before writing a comment, so each reason states what that call site actually depends on rather than restating the line beneath it.
+think The QA frame the card asks for came back C+ 78, and only half of it was mine to take. Reach reads 40 because the module head grades 15 against Door's 9 -- which is the open half of gate %7, where 64 module heads run 12-17 against that same ceiling -- so I left it. Register at 71 is not under review, so five sentences turned affirmative with every claim held exactly, and the file reads B 82.
+obs Both reds I closed had been closed by a peer within the hour, and the rebase conflicted on exactly those two files. The witness pin and the recital line were each diagnosed to the same five choir runners and the same absent shelf row, 61 minutes apart, by two hands reading the same cold pass. I took theirs on both and this commit carries neither file, which is the claim question %499 firing again -- and the first time the two diagnoses matched file for file rather than merely overlapping.
+obs My elder block claimed qa_report_card cannot see whether an assert names its reason. It sees them exactly: program_meter_lines went 8 -> 98 and the Meter half's word count 105 -> 1,297. What it does is report Meter and score Door -- program_dial=split says so in its own output. At 56 comments those two readings were indistinguishable; at 180 they part, which is why the correction needed the scale-up rather than more care.
+obs Measured against the ASCII ratchet while deciding whether to sweep this file's ten section signs: 1,303 of the 4,335 non-ASCII characters in .rye comments are U+2212 minus alone, and five characters carry 52 percent. The section sign is a tree-wide idiom across caravan, crypto and mand, so converting it in one file would break uniformity with dozens of siblings for a ratchet already under its ceiling. Named for the card rather than taken.
+loom witness=rune_assert_sweep unnamed_before=6574 unnamed_after=6489 ceiling_after=6489 asserts=98 named=98
+loom witness=qa_report_card path=amphora/src/main.rye composite_before=78 composite_after=82 register_before=71 register_after=88 meter_lines_before=8 meter_lines_after=98 meter_words_before=105 meter_words_after=1297
+loom pass=standing_equipment_cold guards_run=200 guards_green=195 guards_red=3 guards_gated=2 seconds=1562
+loom pass=standing_equipment_hot guards_run=200 guards_green=198 guards_red=0 guards_gated=2 seconds=1910 verdict=ok
+file amphora/src/main.rye every assert names its reason, and five head sentences read affirmative
+file tools/fixtures/r/rune_assert_sweep_scan.sh the unnamed ceiling falls 6619 -> 6489 with its reason
+file construction/ITINERARY.md the COPAL block, elder shelved
+file construction/archive/20260908-205507_itinerary-landed-accounts.md the elder COPAL block kept whole
+file session-logs/date/README-index-20260908.md the row for this log, 179 bytes
+file session-logs/date/20260908/20260908-213141_the-half-that-is-read-and-not-scored.kyri this record
+scope one repair lap in the amphora lane, two reds diagnosed and closed at the open then adopted from a peer on the rebase, one bounded register frame
+status GREEN -- rune_assert_sweep, tame_style_check, width-check, unheard_guard, reds_pin_capacity, qa_report_card, prose_register, ascii_comment, and ten amphora witnesses, each run on this pier this hour; the hot roster pass reads 200 guards, 198 green, 0 red, 2 gated at custody %5; the CLI rebuilt and the grand round closed equal
+recommend check-in (Keaton) -- whether the report card should SCORE a program's Meter half, now that a file can name 98 invariants and grade exactly as it did at 8
