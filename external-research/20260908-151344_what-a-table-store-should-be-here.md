@@ -1,5 +1,9 @@
 # What a Table Store Should Be Here
 
+**Status:** Fossil, mixed -- superseded by [The bounds a store actually promises](20260909-035800_the-bounds-a-store-promises.md).
+The elder body stays whole as testimony. The new reading corrects its claims about database
+limits, typing, planner search, index cost, and the proposed reuse of vector records.
+
 **Stamp:** `20260908.151344`
 **Language:** EN
 **Style:** Gauge, Field setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)

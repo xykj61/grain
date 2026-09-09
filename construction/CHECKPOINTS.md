@@ -1,5 +1,14 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.035800` -- walk-back nib `873786d833`.** Preserve the two
+closed QA queues on `construction/SHRED_PREP.md` whole on a shelf, with links
+re-anchored by the existing filter, before adding the table-store paper's Class M
+row. Both queues already record their completed readings; their removal from the
+pin frees room for living work. Preserve the DIFFUSER account with the account
+shelf writer. The research paper keeps its entire elder body beneath a fossil
+banner; a fresh paper corrects recalled database claims using primary sources
+and a refusal probe. No fossil is cut and no custody gate changes.
+
 **Checkpoint `20260909.030051` -- walk-back nib `6fe92b191b`.** *Recovered fold:* the 1,912-byte PETRICHOR account in `construction/ITINERARY.md` moves into [its parked shelf](archive/20260909-010841_itinerary-landed-accounts.md), restored byte for byte from stash `d6d63ddba3`. Its source block still matches the live card. The replacement names this recovery and the current checks. *Worth keeping:* the shelf retains the measured difference between `--dry-run` and `--once`, and the distinction between a resolving path and a command that returns. Every peer's account stays in place.
 
 **Checkpoint `20260909.025548` -- walk-back nib `6fe92b191b`.** Reworded the introductory comments in `tools/f/fleet_watch_codex.sh` after its C+ 76 report card. The earlier header and enclosure explanation remain at this nib; they described the Claude launch path where the Codex loop runs bare. The new header explains seat matching, pass limits, clockout, and the forwarded launch marker. Every non-comment line stays identical. Prepared grade A 94; the executable mode is restored in the same lap. Withdrawn on rebase: the peer's published 20260909.025531 revision covers the same repair and stands whole.

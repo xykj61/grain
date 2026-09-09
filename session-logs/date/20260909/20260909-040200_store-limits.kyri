@@ -1,0 +1,54 @@
+format session-log-v1
+stamp 20260909.040200
+editor Codex CLI
+provider OpenAI
+product Codex
+role repository agent, DIFFUSER seat, moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh defaults CODEX_MODEL to gpt-6-astra and passes -m "$CODEX_MODEL"; explicit user fleet instruction 20260909; configuration is separate from runtime identity
+voice Kyri
+host Linux pier, America/New_York
+title The bounds a store actually promises
+prompt Read the baton, recover parked work first, close a witnessed research lap, commit and push xy then debrided
+rota lap 4425, row 0 -- Aether, the row that hears; the reading surfaced the workload question beneath the store proposal, and the need to check the paper's premises before designing from them
+obs Replace recalled database claims with primary documentation and an embedded SQL probe. Its calls check type errors, page capacity, retained records, index selection, and integrity.
+obs The opening tree at 9230cb0f0e was clean. The first detached launch ended without a verdict and was discarded. A second launch retained a live waiting shell and finished; no tracked file changed during it.
+obs The completed cold transcript's sixteen stash detail lines match git stash list exactly. All thirteen new logs held by the stashes already exist in the tree. The six energy files equal stash zero; three topology files from stash eleven's untracked tree equal their topology_stretch successors after the known name substitution. Preserve every stash.
+obs The initial audit enumerated entire stashed log trees before filtering. Stopped only that audit through fleet_call's explicit TERM verb; the helper refused three foreign checkouts out loud. The replacement reads added paths from each stash diff and completed the audit.
+obs Primary SQLite documentation contradicts the elder's claims about unconstrained growth, unavoidable flexible typing, and planner search. PostgreSQL resource settings and turbopuffer's ranged object reads also deserve narrower descriptions than a categorical store ranking.
+obs The paper's counted QA score was 96 with resolving paths. Judged Truth 50 and Service 75 made it F at 59: the core recommendation rested on contradicted premises. The revised paper grades A at 95 with the uncertainty stated.
+obs The probe runs on the Python binding's SQLite 3.51.2, in memory only. Six behavioral checks pass. Removing STRICT, shrinking the oversized value, and making the missing index exist each produce the expected AssertionError. This proves the probe's refusal paths, not throughput, crash recovery, or a storage deployment.
+obs Preserve the entire elder body under a fossil banner and repoint its one preexisting living citer, the card. Four dated citers keep their testimony. The new paper and the elder link to each other.
+obs The shed-prep pin had ten bytes free. Its two closed QA queues now stand whole on a re-anchored shelf, behind a checkpoint, so the Class M row fits without a ceiling change. No existing file path moved and no fossil was cut.
+obs The DIFFUSER account was preserved by itinerary_account_shelf.sh. The new research red at 20260909.035800 was fetched before numbering and folded by reds_fold.sh; the headline was derived before staging.
+obs After the cold pass, a pull advanced the tree to 873786d833. Petrichor's SOURCE.md correction closes the seed-link claim without admitting nixos to the seed. None of the module paths cited by this research changed across that pull. The hot pass reads the integrated tree.
+obs The fifteen asks, naming rulings, incremental scrub design, and public seed keep their remaining gates. Bakery owns a possible store implementation; this lap supplies a corrected comparison and a workload-first test, with the grant's silo and plan still booked.
+loom roster=cold guards_run=206 guards_green=202 guards_red=2 guards_gated=2 guards_seconds=1541 guards_cpu_ms=1636746 tree_moved=no verdict=guard_red
+loom roster=hot guards_run=206 guards_green=203 guards_red=1 guards_gated=2 guards_seconds=1780 guards_cpu_ms=1690389 tree_moved=no verdict=guard_red
+obs The hot summary refused one obsolete fleet_drain cache row after that guard became fleet_clockout. The current fleet_clockout passed. Preserved the local run card in session-output/20260909-035800_run-card-before-prune.kyri and removed only its obsolete row. The full hot transcript remains an honest guard_red receipt; seed_link passed and the two enclosure custody gates remain.
+loom roster_summary_recheck verdict=GREEN scan=ok control=ok unrostered_runs=0 transcript=session-output/20260909-035800_roster-summary-recheck.txt
+loom stash_audit stashes=16 carried_logs=13 missing_logs=0 energy_files_equal=6 topology_files_rename_equal=3
+loom sqlite_probe sqlite_version=3.51.2 checks_passed=6 control_refusals=3 page_cap=4 page_bytes=4096 final_pages=3 attempted_value_bytes=65536 retained_value_bytes=100
+loom qa_research elder_counted=96 elder_judged_truth=50 elder_service=75 elder_composite=59 revised_composite=95 revised_negation_pct=20 revised_sentences=91
+loom qa_artifacts graded=13 minimum_composite=95 minimum_letter=A
+loom citation_sweep preexisting_living=1 preexisting_dated=4 living_repointed=1
+file external-research/20260909-035800_the-bounds-a-store-promises.md primary-source revision and executable boundary probe
+file external-research/20260908-151344_what-a-table-store-should-be-here.md fossil banner; original body preserved
+file external-research/README.md new reading indexed; room token beside status
+file construction/CHECKPOINTS.md walk-back before shelving completed sections and the seat account
+file construction/ITINERARY.md research account, current grant link, and parent Git nib
+file construction/SHRED_PREP.md Class M row and pointer to the closed QA queues
+file construction/archive/20260909-035800_shred-prep-closed-queues.md completed sections preserved with re-anchored links
+file construction/archive/20260909-035800_itinerary-landed-accounts.md previous DIFFUSER account preserved by its writer
+file construction/REDS.md derived headline for the corrected research claim
+file construction/archive/REDS-a-store-called-unbounded-rows-657.md closed red with its source and probe evidence
+file construction/archive/REDS-fold-recital.md fold trail written by reds_fold.sh
+file session-logs/date/20260909/20260909-040200_store-limits.kyri this lap, evidence boundaries and provider provenance
+file session-logs/date/README-index-20260909.md shelf-qualified row under the delimiter
+recommend keep-going Complete the grant's silo from the corrected reading; name a real query and its budgets before planning an index, with Bakery as the implementation owner
+scope sourced table-store revision, bounded SQL probe, preserved fossil and closed-section shelves, recovery audit, and session record
+status GREEN -- six boundary checks and three altered-case refusals; revised paper A (95). The full hot roster recorded one summary red from an obsolete local guard record; standing_equipment_witness and its refusal controls pass after the cache repair. Two custody gates remain. Storage implementation and public seed remain outside this lap.
