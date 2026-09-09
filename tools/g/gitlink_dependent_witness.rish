@@ -12,13 +12,21 @@
 # sampling 40 of the unreached witnesses -- 35 green, 5 red -- and among the five were preconditions.
 # Its lesson: a hard assert on an optional precondition buys a red nobody hears, because it makes the
 # witness unrostable and an unrostered witness runs nowhere. The row closed one witness as a worked
-# example and left the class as *a sweep whose size is the sample rather than a count*. Counted here:
-# 22 dependents, every one in the tigerbeetle census family, against 32 that depend on a required
-# `vendor/` rung and are covered by the card already.
+# example and left the class as *a sweep whose size is the sample rather than a count*. Counted here
+# on `20260908.214427`: 22 dependents, every one in the tigerbeetle census family, against 32 that
+# depend on a required `vendor/` rung and are covered by the card already.
+#
+# THAT FIGURE IS FREE, and it has already moved. `20260908.224618` drew the sixth probe --
+# `capability tigerbeetle_clone` -- and rostered one of the 22 behind it, so the population reads 21
+# and falls with every further rostering. Read `optional_unrostable` off the scan rather than off
+# this paragraph: a witness header reciting a number its own scan derives is the drift the standing
+# equipment witness confessed to one room over, where a header said `forty-three` while the control
+# ran more.
 #
 # THE CURE ALREADY STANDS, which is the second finding and the larger one. REDS %460, one lane over,
 # named the roster's `capability` field as the mechanism for exactly this and called seating it a
-# design act awaiting a word. That field was built `20260829` and carries five probes today, two of
+# design act awaiting a word. That field was built `20260829` and carried five probes when this was
+# written -- six from `20260908.224618`, the sixth drawn for this very family -- two of
 # which -- `seed_projection` and `day_shelf` -- answer this same question about a different absent
 # thing. So the two open rows are one gate, and the gate has a door.
 #
@@ -59,4 +67,8 @@ let caps = run ["sh" "-c" "grep -c '^capability ' construction/standing-equipmen
 assert caps.ok else "gitlink-dependent: the roster could not be read"
 assert (trim caps.out) != "0" else "gitlink-dependent: the capability field this reading points at is named by no roster row"
 
-say "GREEN: gitlink-dependent -- 22 unrostable dependents counted rather than sampled, zero rostered undeclared, and the capability door proven open."
+# The closing line names the READING rather than a figure. The elder spelled `22`, which was true
+# for six hours and false the moment the first dependent was rostered behind a probe -- and a GREEN
+# line carrying a stale number is worse than one carrying none, since it is read as measurement.
+# The scan's own `optional_unrostable=` line is said above and is the record.
+say "GREEN: gitlink-dependent -- the unrostable population counted rather than sampled (read `optional_unrostable` above), zero rostered undeclared, and the capability door proven open and walked through."

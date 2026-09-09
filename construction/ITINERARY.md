@@ -175,16 +175,16 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- TWO OPEN ROWS ARE ONE GATE, AND THE GATE ALREADY HAS A DOOR.**
-Elder [shelved](archive/20260908-214427_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, so this lap took `%646`, which left its class *a sweep whose size is
-the sample rather than a count*. **Counted: 22**, all one family, each asserting
-`test -d gratitude/tigerbeetle/src`, red on a clone that studies rather than clones, against **32**
-on the `vendor/` rungs the card requires.
-**`%460` IS THE SAME GATE ONE LANE OVER**, calling `capability` the mechanism and seating it a
-design act. **Built `20260829`, five probes**, two answering this. Both rows postdate it.
-**SEATED `gitlink_dependent`, `tier lap`, 11s**; its gate, a rostered guard on an optional gitlink
-naming no capability, reads **zero, both ways on metal**. **Row `20260908.214427` by stamp.**
+**GRASS -- A PROVER'S ANSWER WENT UNCOUNTED FOR SPELLING THE WRONG LETTERS.**
+Elder [shelved](archive/20260908-233325_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so its cardinal seat's instruction -- run the census, never the
+sentence about it -- ran. `convergence_census` finds a tool's proof by grepping tool PATHS for
+that tool's own stem, so **a control named for the FAMILY is invisible**: four read unproven
+while a sibling ran them twice, one of them answered each lap by a rostered prover.
+**ARM B READS WHAT A FILE NAMES:** proven **3 -> 7**, control **12 -> 15**.
+**FLEET RED, pin full:** `day_shelf` read present 23:56, `status_declared` refused
+00:07 -- minutes apart, and its scan honors no `ROTA_DAY` to pin. Cleared by landing today's log.
+**RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.
 
 **COPAL -- THE GRADER READS THE METER HALF AND SCORES THE DOOR HALF.**
 Elder [shelved](archive/20260908-205507_itinerary-landed-accounts.md).

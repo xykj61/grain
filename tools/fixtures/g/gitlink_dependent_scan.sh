@@ -19,9 +19,11 @@
 #
 # THE CURE ALREADY STANDS, WHICH IS THE SECOND FINDING. REDS %460, one lane over, named the roster's
 # `capability` field as the mechanism for exactly this and called seating it a design act. That field
-# was built `20260829` and carries five probes today -- `ipv6`, `jail_nesting`, `trace_instrument`,
-# `seed_projection`, `day_shelf` -- two of which (`seed_projection`, `day_shelf`) answer this very
-# question for a different absent thing. So the two open rows are one gate, and the gate has a door.
+# was built `20260829` and carries six probes from `20260908.224618` -- `ipv6`, `jail_nesting`,
+# `trace_instrument`, `seed_projection`, `day_shelf`, and `tigerbeetle_clone`, the sixth drawn for
+# this very family. Two of the elder five (`seed_projection`, `day_shelf`) already answered this
+# same question for a different absent thing. So the two open rows are one gate, the gate has a
+# door, and from `20260908.224618` the door is walked through.
 #
 #   sh tools/fixtures/g/gitlink_dependent_scan.sh          # measure and gate
 #   sh tools/fixtures/g/gitlink_dependent_scan.sh list     # one line per dependent

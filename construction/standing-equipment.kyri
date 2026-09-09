@@ -1018,7 +1018,8 @@ seated 20260828.114450
 # rooms: `vendor/` is what the tree LINKS and the operator card requires every clone to initialise,
 # and `gratitude/` is a reading library the licenses law says we study and never copy -- so a clone
 # that never checked out `gratitude/tigerbeetle` is a CORRECT clone. REDS %646 found the shape by
-# sampling and left the class as a sample; counted here it is 22 dependents, all one family, against
+# sampling and left the class as a sample; counted `20260908.214427` it was 22 dependents, all one
+# family -- 21 from `20260908.224618`, when the sixth probe was drawn and one was rostered -- against
 # 32 on the required rungs. The GATE is the one row that would red the fleet -- a rostered guard
 # depending on an optional gitlink and naming no `capability` -- held at zero. The population is
 # reported rather than gated, because rostering a study census is a hand's decision with a probe
@@ -1028,6 +1029,26 @@ guard gitlink_dependent
 path tools/g/gitlink_dependent_witness.rish
 tier lap
 seated 20260908.214427
+
+# tigerbeetle_naming_census -- the first of the 22 optional dependents `gitlink_dependent` counted,
+# rostered because the probe it wanted now stands. `capability tigerbeetle_clone` is the sixth arm
+# in the runner, seated 20260908.224618 and spelling the same `test -d gratitude/tigerbeetle/src`
+# the witness's own assert spells; where the held clone is absent -- which is every ship on this
+# pier today, all eight gratitude gitlinks empty -- the row reads its own name in
+# `skipped_capability` rather than reddening for a reading library nobody is obliged to fetch.
+#
+# THIS ONE ROW RATHER THAN THE FAMILY, on purpose. Forty-four witnesses read that clone (20 census
+# leaves and 24 choirs wrapping them 1:1, and NOTHING ELSE IN THE TREE CALLS ANY OF THEM), so
+# rostering the family would put 44 skip lines on every pass of every ship and turn 16 percent of a
+# 275-row roster into a study that skips. That is a hand's decision. This row is what makes the
+# probe load-bearing rather than decoration, and it is the leanest member of the family: pure
+# counting, no almanac append, no nested choir, so it cannot move the tree on a pier that does hold
+# the clone. `lap` rather than `cadence`: it is grep over a checkout that is usually absent.
+guard tigerbeetle_naming_census
+path tools/gen/chapter/tigerbeetle_naming_census_witness.rish
+tier lap
+capability tigerbeetle_clone
+seated 20260908.224618
 
 # reds_status_consistency -- construction/REDS.md is the first page a lap reads under reds-first,
 # and the one thing it has to get right is which rows are still open. REDS %313 found `%307` reading
