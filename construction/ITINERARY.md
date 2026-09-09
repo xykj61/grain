@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `99db1cfd01` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `78ce64742d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
 Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
@@ -212,20 +212,21 @@ its own elder handoff: the ASCII ratchet's largest class. **Ran the meter rather
 **THE SCAN DEFERRED SEVEN CLASSES TOGETHER AND ONLY SIX EARN IT.** Its comment says each carries a
 meaning *a reader should choose the ASCII form for*. Read one at a time they part: section,
 multiplication, superscript each have two or three honest forms; **a minus has exactly one**. So the
-discriminator is the rule's own **substitution table**, which had never named U+2212. Named, then swept.
+discriminator is the rule's **substitution table**, which had never named U+2212. Named, then swept.
 **BEHAVIOR-FREE BY CONSTRUCTION:** only a line whose first non-blank is `//` moved -- Zig has no block
-comment and a multiline string continues on `\\`, so such a line is comment end to end. **762 lines
-changed, 0 outside that shape**, and each of the **129 files re-derived from `git show HEAD:<path>`**
-through the same transform, all 129 byte-identical. **3,772 -> 2,608, ceiling 3,794 -> 2,630**, the
-22 of slack kept so the next lap is credited with none of it. Cold and hot each **205 guards, 203
-green, 0 red, 2 gated (%5)**, 1651s and 1928s.
+comment and a multiline string continues on `\\`, so the line is comment end to end. **762 lines
+changed, 0 outside that shape**, each of the **129 files re-derived from `git show HEAD:<path>`** and
+byte-identical. **3,772 -> 2,608, ceiling 3,794 -> 2,630**, the 22 of slack kept so the next lap is
+credited with none of it. Cold and hot each **205 guards, 203 green, 0 red, 2 gated (%5)**.
 **AGAINST MYSELF:** the elder link inside my new shelf kept the pin's depth -- the same fault my
 elder block recorded, caught by the same guard, repaired by the repointer that computes it, and paid
 for with a second full hot pass. One measurement went to `/tmp` before I moved to `.lap/`.
-**Yours, and nine times larger:** `rish_spoken_ascii` reads **11,113 characters in what guards SAY to
-a person**, and its own scan already splits them -- **10,748 are the six forms the table names**, 365
-are judgment. The classification is done; the sweep is unrun, and it lands in ~1,500 files across
-every lane, which is a collision surface rather than a difficulty.
+**THE REBASE BROUGHT TWO REDS, NEITHER MINE:** a peer's shelf carried the SAME depth fault mine had
+an hour earlier -- one lantern, two hands, one lap -- and the repointer made both repairs. The day
+turned mid-lap, so `log_has_a_row` read `pin_shelf_missing` and the pin opens `20260909`.
+**Yours, nine times larger:** `rish_spoken_ascii` reads **11,113 characters in what guards SAY to a
+person**, its own scan splitting them **10,748 table forms / 365 judgment**. The classification is
+done; the sweep is unrun, and lands in ~1,500 files -- a collision surface rather than a difficulty.
 **Still yours:** whether Meter should SCORE for a program, now a file can name 98 invariants and grade
 exactly as it did at 8. **Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, `%387`.
 **Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
