@@ -597,3 +597,13 @@ at a closed fold.*
 *Row %656 folded to [`REDS-the-template-and-the-admission-rows-656.md`](REDS-the-template-and-the-admission-rows-656.md) on `20260909.030305`, **CLOSED** -- A template classification does not admit a file to the seed.*
 
 *Row %657 folded to [`REDS-a-store-called-unbounded-rows-657.md`](REDS-a-store-called-unbounded-rows-657.md) on `20260909.035800`, **CLOSED** -- Source checks separate access-path choice, capacity, and elapsed time.*
+
+*Row %658 recovered onto [REDS-a-correction-inherits-the-duty-rows-658.md](REDS-a-correction-inherits-the-duty-rows-658.md), **BOOKED**. Its immutable stamp is `20260908.234354`. Earlier shelf addresses remain routing shelves for the parked records.*
+
+*Row %659 recovered onto [REDS-one-literal-two-verdicts-rows-659.md](REDS-one-literal-two-verdicts-rows-659.md), **BOOKED**. Its immutable stamp is `20260909.001908`. Earlier shelf addresses remain routing shelves for the parked records.*
+
+*The recovered records keep these earlier addresses as routing shelves: [REDS-a-correction-inherits-the-duty-rows-654.md](REDS-a-correction-inherits-the-duty-rows-654.md), [REDS-a-correction-inherits-the-duty-rows-655.md](REDS-a-correction-inherits-the-duty-rows-655.md), [REDS-a-correction-inherits-the-duty-rows-656.md](REDS-a-correction-inherits-the-duty-rows-656.md), [REDS-one-literal-two-verdicts-rows-656.md](REDS-one-literal-two-verdicts-rows-656.md), [REDS-one-literal-two-verdicts-rows-657.md](REDS-one-literal-two-verdicts-rows-657.md). They hold links to the recovered rows, preserving the parked logs' addresses.*
+
+*The rebase preserves [REDS-a-correction-inherits-the-duty-rows-657.md](REDS-a-correction-inherits-the-duty-rows-657.md) as a routing shelf for the unshared recovery.*
+
+*The rebase preserves [REDS-one-literal-two-verdicts-rows-658.md](REDS-one-literal-two-verdicts-rows-658.md) as a routing shelf for the unshared recovery.*

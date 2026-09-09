@@ -62,12 +62,17 @@ worker() {
 
 # The stub standing in for one desk's lower-build-run. It records every desk handed to it, and
 # refuses the desks named in its second argument, so a failure is planted by name.
+#
+# The THIRD argument is the stage code the plant refuses with, defaulting to 1 -- unclassified,
+# which is what every elder leg here planted and still plants. run_desk answers 2 declined,
+# 3 lowering failed, 4 build failed, 5 the binary exited nonzero, and a stub is held to the same
+# contract, so the split is proven through the same door a real run walks.
 stub() {
   {
     printf '#!/bin/sh\n'
     printf 'printf "%%s\\n" "$*" >> "%s/calls"\n' "$1"
     printf 'case "${1##*/}" in\n'
-    if [ -n "$2" ]; then printf '%s) exit 1 ;;\n' "$2"; fi
+    if [ -n "$2" ]; then printf '%s) exit %s ;;\n' "$2" "${3:-1}"; fi
     printf '*) exit 0 ;;\n'
     printf 'esac\n'
   } > "$1/stub.sh"
@@ -233,6 +238,63 @@ desk "$d/glow/gen/g/gate-one.glow"
 rm -f "$d/tools/g/glow_run_worker.sh"
 rc=0; ( cd "$d" && sh tools/fixtures/g/glow_desk_run_scan.sh --list ) >/dev/null 2>&1 || rc=$?
 check 2 "$rc" "a missing run worker refuses"
+
+# --- 9. one failure count is five, and each stage is counted under its own name ----------------
+# The elder reading answered `failed=1` for a file glow_run DECLINED, for a lowering that ran and
+# broke, for a build that broke, and for a binary that exited nonzero. Four faults wanting four
+# repairs read identically, which is how three fixtures came to be recorded as refusing "in two
+# distinct ways" when metal answers three across both of glow_run's exit codes.
+d=$(newpen stages)
+desk "$d/glow/gen/g/gate-one.glow"
+desk "$d/glow/gen/g/gate-bad.glow"
+for pair in 'declined 2' 'lower 3' 'build 4' 'run 5' 'unclassified 1'; do
+  stage=${pair% *}; code=${pair#* }
+  stub "$d" "gate-bad.glow" "$code"
+  runscan "$d" "$pen/o" GLOW_DESK_RUN_FAILED_CEILING=1
+  check 1 "$(field "$pen/o" failed)" "stage $stage still counts once in the gated total"
+  check 1 "$(field "$pen/o" "failed_$stage")" "and it is counted under failed_$stage"
+  check 1 "$(grep -c "^  $stage " "$pen/o")" "the detail names the stage beside the desk"
+  # The four it is NOT must all read zero, or a split that always answers one would pass.
+  for other in declined lower build run unclassified; do
+    [ "$other" = "$stage" ] && continue
+    check 0 "$(field "$pen/o" "failed_$other")" "stage $stage leaves failed_$other at zero"
+  done
+done
+# Lifted: every part falls back to zero together, so the split is proven from both sides.
+stub "$d" ""
+runscan "$d" "$pen/o" GLOW_DESK_RUN_FAILED_CEILING=0
+check ok "$(field "$pen/o" verdict)" "lifting every plant returns the pen to ok"
+for other in declined lower build run unclassified; do
+  check 0 "$(field "$pen/o" "failed_$other")" "and failed_$other falls with it"
+done
+
+# --- 10. the parts sum to the gated total, on a pen carrying three faults at once --------------
+# A split whose parts do not close on the total would let a fault vanish between two readings.
+d=$(newpen stagesum)
+desk "$d/glow/gen/g/gate-one.glow"
+desk "$d/glow/gen/g/gate-two.glow"
+desk "$d/glow/gen/g/gate-three.glow"
+{
+  printf '#!/bin/sh\n'
+  printf 'printf "%%s\\n" "$*" >> "%s/calls"\n' "$d"
+  printf 'case "${1##*/}" in\n'
+  printf 'gate-one.glow) exit 2 ;;\n'
+  printf 'gate-two.glow) exit 3 ;;\n'
+  printf 'gate-three.glow) exit 5 ;;\n'
+  printf '*) exit 0 ;;\n'
+  printf 'esac\n'
+} > "$d/stub.sh"
+chmod +x "$d/stub.sh"
+runscan "$d" "$pen/o" GLOW_DESK_RUN_FAILED_CEILING=3
+check 3 "$(field "$pen/o" failed)" "three faults count three in the gated total"
+check 1 "$(field "$pen/o" failed_declined)" "one declined"
+check 1 "$(field "$pen/o" failed_lower)" "one lowering failure"
+check 1 "$(field "$pen/o" failed_run)" "one binary that exited nonzero"
+check 0 "$(field "$pen/o" failed_build)" "and no build failure"
+sum=$(( $(field "$pen/o" failed_declined) + $(field "$pen/o" failed_lower) \
+      + $(field "$pen/o" failed_build) + $(field "$pen/o" failed_run) \
+      + $(field "$pen/o" failed_unclassified) ))
+check "$(field "$pen/o" failed)" "$sum" "the five parts sum to the gated total"
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

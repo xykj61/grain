@@ -104,8 +104,14 @@
 # created today, and a guard that reds on ordinary work is a guard somebody turns off.
 #
 # A FOURTH KIND, FOUND ON METAL AND LEFT TO ITS OWNER. Running all 129 uncovered desks
-# 20260907 turned up three files under glow/gen/s/ that fail with `unsupported Glow head` --
+# 20260907 turned up three files under glow/gen/s/ that glow_run refuses --
 # sample-demo-fact-line-lits.glow, sample-demo-fixture-lits.glow and sample-digraph-table.glow.
+# (This sentence read "that fail with `unsupported Glow head`" until 20260908.234354, and metal
+# says that is true of ONE of the three: sample-digraph-table alone. The other two refuse at
+# `too many Glow lines` and at `multi lower failed (TooManyLines)`, on opposite sides of
+# glow_run's own exit-code line -- 2 declines the file, 1 means a lowering ran and broke.
+# tools/fixtures/g/glow_desk_run_scan.sh now splits its failure count by that code, so the three
+# are counted where they belong rather than recited from one sample.)
 # They are data fixtures rather than desks (sample-digraph-table.glow names its own twin,
 # tools/fixtures/g/glow_digraph_table.txt) and they carry no marker in either the name or the
 # head, so no instrument can tell them from a desk that ought to run. They stay inside `uncovered`

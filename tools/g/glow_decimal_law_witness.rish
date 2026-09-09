@@ -1,0 +1,60 @@
+# glow_decimal_law_witness.rish -- how many verdicts does Glow give one decimal literal?
+#
+# Holds one gate at zero and one ratchet under a ceiling that only falls, over
+# tools/fixtures/g/glow_decimal_law_scan.sh. The scan's own head carries the reasoning; the short
+# form is that glow/rune_shop_gate.rye names a "house parse law" refusing a leading zero, and it is
+# one of fourteen source-decimal readers in the language. Proven on metal 20260909: the shop gate
+# refuses `01` with MalformedBody while `=/ amount 007` lowers, green, to `const amount: u32 = 7`.
+#
+# The ratchet counts DISTINCT VERDICTS rather than law-breaking readers, and that shape is the
+# whole point. Which way the law falls -- Glow refuses a leading zero everywhere, or accepts one
+# everywhere -- is a language custody ruling that stays Keaton's, and a ceiling on the readers
+# breaking the law would red on the lap that landed the second answer. Two falls to one under
+# either ruling.
+#
+#   rishi/bin/rishi run tools/g/glow_decimal_law_witness.rish
+
+let scan = run ["sh" "tools/fixtures/g/glow_decimal_law_scan.sh"]
+assert scan.ok else "glow_decimal_law scan failed: ${scan.err}${scan.out}"
+
+# invariant: the subject is present. A scan finding zero readers has lost the population it
+# measures, and every reading below would then be satisfied by an empty tree.
+assert scan.out contains "readers=" else "glow_decimal_law scan printed no reader count"
+assert scan.out contains "sources=" else "glow_decimal_law scan printed no source count"
+
+# invariant: the readers are DERIVED from the room rather than listed. A hand-written enumeration
+# standing in for a population reads as coverage from every side and drifts the moment the
+# population grows, which is the shape REDS %532 booked one room over -- and this lap's own first
+# reading, taken by hand with grep, found 5 of the 14 the derivation finds.
+assert scan.out contains "law_held=" else "glow_decimal_law scan printed no law-holding count"
+assert scan.out contains "law_absent=" else "glow_decimal_law scan printed no law-absent count"
+
+# invariant: no reader claims the house parse law in a comment while its body lets a leading zero
+# through. glow/rune_assert.rye parse_decimal is glow/rune_shop_gate.rye parse_decimal_u32 byte for
+# byte, minus the loop variable's name and minus the one line that refuses -- copying a law's shape
+# without its check is how this split reached fourteen readers, and copying its comment too is the
+# same move one step louder. Decidable today, and held at zero.
+assert scan.out contains "law_claimed_absent=0" else "glow_decimal_law: a reader's comment names the house parse law while its body accepts a leading zero"
+
+# invariant: the ceiling only falls. Two verdicts stands today; the ruling takes it to one, from
+# whichever side, and it may never climb back.
+assert scan.out contains "verdicts_ceiling=2" else "glow_decimal_law: the verdict ceiling stands at two -- a ceiling only falls"
+assert scan.out contains "verdict=ok" else "glow_decimal_law: the scan refused -- ${scan.out}"
+
+# invariant: the ceiling's refusal is reachable on the LIVE tree, not only in a pen. A ceiling
+# proven in the passing direction alone cannot be told from a bypass, so the guard drops it one
+# under the live reading and requires the scan to refuse, naming that refusal rather than any other.
+let under = run ["sh" "-c" "GLOW_DECIMAL_VERDICTS_CEILING=1 sh tools/fixtures/g/glow_decimal_law_scan.sh"]
+assert (under.ok == false) else "glow_decimal_law: two verdicts must refuse at a ceiling of one"
+assert under.out contains "verdict=over_verdicts_ceiling" else "glow_decimal_law: want the verdict ceiling refusal named -- ${under.out}"
+
+# invariant: the reading is proven on real Glow rooms rather than trusted. The control builds
+# miniature compiler rooms in a throwaway pen and plants each refusal, then lifts it -- 31
+# behaviors. Two of them carry the ratchet's own shape: a room where every reader refuses a leading
+# zero and a room where every reader accepts one BOTH read one verdict and both pass, which is how
+# the meter holds the split still without taking either side of the ruling.
+let control = run ["sh" "tools/fixtures/g/glow_decimal_law_control.sh"]
+assert control.ok else "glow_decimal_law control failed: ${control.out}"
+assert control.out contains "fail=0" else "glow_decimal_law control reported failures: ${control.out}"
+
+say "GREEN: glow_decimal_law -- 14 source-decimal readers derived from the room, 1 holding the house parse law and 13 without it, two verdicts for one literal held under a ceiling that only falls, no reader claiming the law it lacks, the ceiling refusal proven on the live tree, 31 control behaviors green."

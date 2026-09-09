@@ -1,0 +1,57 @@
+format session-log-v1
+stamp 20260909.025755
+editor Codex CLI
+provider OpenAI
+product Codex
+role unattended fleet ship pheromone
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-astra; user fleet instruction
+voice Kyri
+host Linux pier, America/New_York
+title Recovery at the language boundary
+prompt recover this seat's parked work before a new language lap; commit and push both remotes
+rota lap 4422, row 2 -- Fire, the row that sees; the stop, allocation, and removal readings surfaced the need to test a parked change before restoring its claim of compatibility.
+obs The desk-run script now preserves failure stages, and the recovered decimal scan checks function-level law claims. These changes come from parked commits 413a260cc and 9cca2aaef.
+obs Three historical session logs are recovered unchanged. The source changes described by the 012050 log remain parked; its claim that a ten-digit lexer limit preserves all accepted input is false on current sources.
+obs A local probe copied expr, tally_copy, the current lexer, and the parked lexer into session-output. Only import suffixes changed for direct Zig compilation. For 00000000000, expr returned zero, the current lexer accepted, and the parked lexer returned BadToken. This is evidence for holding the syntax change at Keaton's language gate.
+obs Both recovery branches and all fifteen stashes remain intact. Older orphan work remains for a later recovery lap; no parked work was discarded.
+obs The recovered REDS records keep their stamps and take numbers from the fetched spine. Routing shelves preserve the historical file fields rather than rewriting the logs.
+obs Incense's already classified NixOS template lacked an allow entry. The manifest gains that entry, while nixos/local.bron stays sub-excluded. The public seed was not published.
+obs Diffuser landed the script modes and watcher header at 9230cb0f0 before this send. My parallel edits to those files were withdrawn on integration; the upstream version is retained. The shell and Amphora cold reds came from rg absent on PATH; the installed ripgrep is used for subsequent verification.
+loom witness=glow_desk_run desks=347 bare=301 sample=46 failed_declined=2 failed_lower=1 failed_build=0 failed_run=0 control_behaviors=95 result=green
+loom qa=codex_watcher candidate_before=76 candidate_after=97 retained_upstream=93 candidate_withdrawn=yes program_lines_unchanged=yes
+loom recovery records_unlanded_before=3 records_unlanded_after=0 closed_day_rows=163
+loom witness=qa_report_card behaviors=155 result=green
+loom witness=prose_register result=green
+obs All touched artifacts grade B or better; the upstream watcher header takes the place of my candidate. Generated pages were refreshed after staging the recovered witness.
+loom pass=hot guards=207 green=204 red=1 gated=2 guard_seconds=1822 tree_moved=no
+obs The full hot pass had one metadata red: the local run card retained fleet_drain after its rename. The former card is archived in session-output; only that retired entry was removed. A named roster recheck passed with the tracked tree unchanged.
+loom witness=standing_equipment_recheck green=1 red=0 tree_moved=no
+loom pass=cold guards=206 green=198 red=6 gated=2 guard_seconds=1881 tree_moved=no
+loom probe=parked_decimal_bound digits=11 parsed_value=0 current_accepts=1 parked_accepts=0
+loom witness=glow_decimal_law readers=14 law_held=1 law_absent=13 verdicts=2 control_behaviors=31 result=green
+loom witness=shell_portable_control pass=47 skip=0 fail=0
+loom witness=seed_link_probe outside_before=849 outside_after=848 ceiling=848
+loom witness=sow_exclusion_function nixos_selected=6 nixos_excluded=1 local_bron=excluded
+file tools/fixtures/g/glow_desk_run_scan.sh recover execution-stage failure counts
+file tools/fixtures/g/glow_desk_run_control.sh recover 95 behavior checks
+file tools/g/glow_desk_run_witness.rish assert the failure-stage split from the live corpus
+file tools/fixtures/g/glow_decimal_law_scan.sh recover function-level reader and claim checks
+file tools/fixtures/g/glow_decimal_law_control.sh recover and extend to 31 control behaviors
+file tools/g/glow_decimal_law_witness.rish recover the ruling-neutral diagnostic guard
+file construction/standing-equipment.kyri restore the decimal guard to the lap roster
+file template-manifest.bron admit the already classified NixOS template and retain the local exclusion
+file session-logs/README.md derive the recovered closed-day count from its shelf
+file session-logs/CHAPTERS.md align the same closed-day count
+file construction/ITINERARY.md record recovery and the unlanded lexical bound
+file construction/CHECKPOINTS.md preserve the elder card account before condensation
+obs Integration also preserves the peer identity-control recovery at 064d32e38. Shared checkpoint and day-shelf entries are retained, and the Git nib is read from the final parent.
+obs Final review found body-comment law claims collected but never checked. The added control failed two legs before repair; merging and deduplicating body and doc claims makes all 31 pass. Language acceptance is unchanged.
+loom witness=decimal_body_claim before_pass=29 before_fail=2 after_pass=31 after_fail=0
+recommend keep-going Continue the older stash audit; the lexical length and leading-zero ruling stays with Keaton.
+scope recover three records and two diagnostic changes; repair the cold pass's executable and projection readings; preserve parked language changes and every stash
+status SCOPED-GREEN -- glow_desk_run on 347 desks with 95 controls, glow_decimal_law with 31 controls, stash_record, reds_shelf_name, and reds_spine_derive green; full hot content checks passed and its retired-entry metadata red was rechecked green; the final pin, index, generated pages, links, and seed control passed; the decimal body-claim repair passes its focused witness

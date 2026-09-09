@@ -55,7 +55,7 @@ assert all_pass.ok else "glow_desk_run: a runner that passes every desk must rea
 assert all_pass.out contains "failed=0" else "glow_desk_run: want zero failures from a passing runner -- ${all_pass.out}"
 
 # invariant: the reading is proven on real desk rooms rather than trusted. The control builds
-# miniature desk rooms in a throwaway pen and plants each refusal, then lifts it -- 48 behaviors,
+# miniature desk rooms in a throwaway pen and plants each refusal, then lifts it -- 95 behaviors,
 # both sides of both ceilings, both declaration markers separately, the head band's own edge read
 # from both the run-contract and the sample side, a declared sample proven to reach the runner as
 # split words, and --list proven to hand the runner nothing. The per-desk run there is a stub on purpose: the control
@@ -83,10 +83,31 @@ assert scan.out contains "ran=347" else "glow_desk_run: the loop must run every 
 # glow/gen/ are data fixtures rather than desks and carry no marker in either name or head --
 # sample-demo-fact-line-lits, sample-demo-fixture-lits and sample-digraph-table. Giving them one
 # changes what declares a desk's kind, which is a language custody ruling rather than a repair a lap
-# takes (REDS %532). Measured on metal 20260907, the three refuse in two distinct ways: two at
-# TooManyLines and one at unsupported Glow head, where the elder row recorded one refusal for all
-# three.
+# takes (REDS %532).
+#
+# THIS COMMENT READ "the three refuse in two distinct ways: two at TooManyLines and one at
+# unsupported Glow head" until 20260908.234354, and metal answers THREE ways across BOTH of
+# glow_run's exit codes. That elder line was itself a correction to `%532`, which had recorded one
+# refusal for all three -- so a correction that caught one-for-three made the same shape of error at
+# two-for-three, and its grouping crossed the very line glow_run draws:
+#
+#   sample-digraph-table.glow        exit 2  unsupported Glow head    glow_run DECLINES the file
+#   sample-demo-fixture-lits.glow    exit 2  too many Glow lines      glow_run DECLINES the file
+#   sample-demo-fact-line-lits.glow  exit 1  multi lower failed       taken as a desk, then broke
+#
+# The two called one refusal sit on opposite sides of declined-versus-broke, and the one set apart
+# shares a side with one of them. The elder grouping was made by matching the word TooManyLines,
+# which is the one reading glow_desk_run_scan.sh's own door says not to make.
+#
+# So the split is asserted from the scan rather than recited from a sentence: the parts below are
+# derived from glow_run's exit status on every pass, and a fourth fixture landing tomorrow moves
+# the reading that names its own fault.
 assert scan.out contains "failed_ceiling=3" else "glow_desk_run: the ceiling stands where it was measured -- a ceiling only falls"
+assert scan.out contains "failed_declined=2" else "glow_desk_run: two of the three fixtures are DECLINED by glow_run (exit 2) -- ${scan.out}"
+assert scan.out contains "failed_lower=1" else "glow_desk_run: one of the three is taken as a desk and breaks in the lowerer (exit 1) -- ${scan.out}"
+assert scan.out contains "failed_build=0" else "glow_desk_run: no selected desk fails to build -- ${scan.out}"
+assert scan.out contains "failed_run=0" else "glow_desk_run: no built desk exits nonzero -- ${scan.out}"
+assert scan.out contains "failed_unclassified=0" else "glow_desk_run: every failure is named by its stage -- ${scan.out}"
 assert scan.out contains "verdict=ok" else "glow_desk_run: the scan refused -- ${scan.out}"
 
-say "GREEN: glow_desk_run -- 347 runnable desks derived from the room and run, 301 bare and 46 on the sample each declares for itself, 3 unmarked data fixtures at their ceiling, both runner-swap legs proven, 48 control behaviors green."
+say "GREEN: glow_desk_run -- 347 runnable desks derived from the room and run, 301 bare and 46 on the sample each declares for itself, 3 unmarked data fixtures at their ceiling split by stage (2 declined, 1 broken in the lowerer), both runner-swap legs proven, 95 control behaviors green."

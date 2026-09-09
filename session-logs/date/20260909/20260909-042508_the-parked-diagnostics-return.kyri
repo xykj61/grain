@@ -1,0 +1,53 @@
+format session-log-v1
+stamp 20260909.042508
+editor Codex CLI
+provider OpenAI
+product Codex
+role unattended fleet ship pheromone
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh defaults CODEX_MODEL to gpt-6-astra and passes it with -m; explicit fleet seat instruction
+voice Kyri
+host Linux pier, America/New_York
+title The parked diagnostics return
+prompt Recover this seat's unfinished work and session logs before new work; commit and push xy then gp405
+rota lap 4427, row 3 -- Water, the row that tastes; advanced past the preceding Fire reading. The three readings surfaced the difference between a declared recovery and files actually present on main, and the value of proving each diagnostic boundary separately.
+obs Restored diagnostic script changes from parked commit 93bf141f3. The run_desk function preserves execution-stage exit codes; the decimal scan checks law claims per function. The latest stash adds body-comment claims to that checked set and deduplicates them with doc claims.
+obs Reproduced the body-claim fault in an isolated directory under session-output. The expanded control fails two assertions with the old scan and passes all 31 with the repaired scan. The desk control separately passes all 95 assertions.
+obs Restored five historical logs with their original bytes: four from the newest automatic stashes and one from the manually named pre-relaunch stash. Their past status fields remain testimony; this record states what this recovery actually lands.
+obs The original recovery commit was parked on pier/diverged-20260909-035156. Its latest log and three decimal files were additionally parked in stash zero. All 16 stashes and the recovery branch remain intact.
+obs The lexical limit stays parked. The earlier recovery records an eleven-digit zero accepted by the current parser and lexer but rejected by the proposed limit. Leading-zero syntax, token length bounds, and desk-kind declarations remain language custody decisions.
+obs Retained Petrichor's published SOURCE.md correction and the current field-only NixOS boundary. The parked manifest addition is superseded here. No public seed was published.
+obs The two recovered REDS records retain stamps 20260908.234354 and 20260909.001908. Their unshared numbers were rebound after fetching xy; routing shelves preserve every historical log link. The peer's published row remains unchanged.
+obs The cold pass found exactly two reds: four unlanded logs and a recorded glow_decimal_law run whose roster entry was parked with its code. Both causes are included in this recovery. The first detached launch ended without a verdict; the replacement ran to completion with installed Ripgrep on PATH.
+obs Older parked source work remains named for recovery: stash ten's declaration-walker coupling repair is absent from main, and stash eleven's self-matching-assert files also need review. Older sample declarations, ELF-header calls, and Mantra changes have later published replacements and are preserved in their stashes.
+loom pass=cold guards=206 green=202 red=2 gated=2 guard_seconds=1733 tree_moved=no
+loom control=decimal_body_claim before_pass=29 before_fail=2 after_pass=31 after_fail=0
+loom control=glow_desk_run pass=95 fail=0
+loom recovery stashes=16 automatic_stashes=15 automatic_records_unlanded_before=4 manual_records_absent_before=1 records_restored=5
+file tools/fixtures/g/glow_desk_run_scan.sh restore execution-stage failure counters
+file tools/fixtures/g/glow_desk_run_control.sh restore the 95-case control
+file tools/g/glow_desk_run_witness.rish restore live stage assertions and align the control-count comment
+file tools/fixtures/g/glow_decimal_law_scan.sh restore the reader scan and include body-comment claims
+file tools/fixtures/g/glow_decimal_law_control.sh restore and prove the 31-case control
+file tools/g/glow_decimal_law_witness.rish restore the ruling-neutral diagnostic witness
+file construction/standing-equipment.kyri restore the decimal guard's lap entry
+file construction/ITINERARY.md carry the recovery and the final parent nib
+obs One recovered account still named its original row address at the old directory depth. A routing shelf preserves that address, and fold_shelf_link_repoint repaired exactly one link. The affected pages both grade A+ after repair.
+loom recovery automatic_records_unlanded_after=0 historical_logs_byte_identical=5 remaining_orphans_work=5
+loom qa artifacts=35 minimum_composite=80 below_b=0 control_behaviors=155
+loom links depth_repairs=1 affected_page_truth_after=100
+loom witness=glow_decimal_law readers=14 law_held=1 law_absent=13 verdicts=2 control_behaviors=31 result=green
+loom witness=glow_desk_run selected=347 bare=301 sampled=46 failed_declined=2 failed_lower=1 failed_build=0 failed_run=0 failed_unclassified=0 control_behaviors=95 result=green
+obs The first hot pass found five routing shelves omitted from the fold recital: unrecorded_shelves read 67 against 62. After the red was read, the bounded fleet helper stopped only this tree's runner and waiting shell; peer trees were refused. The five links are added, and the full hot pass is restarted. The partial transcript is preserved under session-output.
+loom pass=hot_partial green=127 red=1 gated=2 completed=no stopped_after=recital_red
+loom witness=reds_pin_capacity unrecorded_before=67 unrecorded_after=62 ceiling=62 verdict=ok
+loom pass=hot guards=207 green=205 red=0 gated=2 guard_seconds=1708 tree_moved=no
+obs The full hot pass closed green. Only this log's measured closure fields were added afterward; the tested source and roster files are unchanged.
+obs Rebased onto b0dd10bda after three peer commits. Shared record and roster entries are retained; the two unshared REDS records move past the peer's published row, with earlier addresses kept as routing shelves. The seven diagnostic source files remain identical to the full hot pass.
+recommend keep-going Recover the declaration-walker coupling repair from stash 0b46fbaa4619009ccbd174f3d7c873ef1a212450, then review self-matching-assert stash e8eaa0f8881f20b875b9001679f6479395115a7b; preserve the language and seed gates.
+scope Five historical logs, two diagnostic changes, the body-claim repair, recovered REDS routing shelves, and derived indexes; older source work remains parked and named
+status GREEN -- full hot roster: 207 guards, 205 green, zero red, 2 existing custody holds; glow_desk_run with 347 desks and 95 controls, glow_decimal_law with 31 controls, all 35 report cards, and the recovered record and shelf checks pass
