@@ -145,6 +145,7 @@ pane_at_prompt() {
 gated() {
   # The same wall fleet_rearm.sh prints instead of a paste.
   [ -f "$1/.loop-gates-only" ] && { echo "loop-gates-only"; return 0; }
+  [ -f "$1/.loop-clockout" ] && { echo "loop-clockout"; return 0; }
   [ -f "$1/.loop-drain" ] && { echo "loop-drain"; return 0; }
   [ -f "$1/.mind-state/CUSTODY" ] && { echo "CUSTODY"; return 0; }
   [ -f "$1/.mind-state/TRANSACTION" ] && { echo "TRANSACTION"; return 0; }

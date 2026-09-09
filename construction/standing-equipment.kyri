@@ -1659,14 +1659,14 @@ seated 20260906.090000
 
 # fleet_drain -- two stops with two owners want two files. `.loop-gates-only` is the AGENT's,
 # set during its own lap and cleared at the top of the next so last night's stop never blocks
-# tonight; `.loop-drain` is a HAND's, read before a lap opens AND after one finishes, and removed
+# tonight; `.loop-clockout` is a HAND's, read before a lap opens AND after one finishes, and removed
 # by the hand that set it. Until `20260908.165143` the loop cleared the only sentinel at the top of
 # every iteration, so a stop landing in the twenty-second sleep between laps was erased before
 # anything read it and the loop worked on -- failing silently toward *keep running*, and leaving a
 # kill as the only reliable hand-stop, which cuts a lap mid-send. Nine behaviors on a real loop
 # body in a pen, every sentinel planted and lifted, the two proven distinguishable.
-guard fleet_drain
-path tools/f/fleet_drain_witness.rish
+guard fleet_clockout
+path tools/f/fleet_clockout_witness.rish
 tier lap
 seated 20260908.165143
 

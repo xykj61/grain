@@ -280,8 +280,13 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   # is a HAND's stop, and it may land at any moment, including the 20s sleep below where the
   # next iteration's rm would have erased it silently and kept running. So it is read here
   # too, before a lap opens, and it is cleared by the hand that set it rather than by us.
-  if [ -f .loop-drain ]; then
-    echo "DRAIN: $seat stopping before lap $((laps + 1)) -- .loop-drain stands; remove it to resume"
+  # CLOCKOUT, seated `20260909` on Keaton's word, molted from `drain`: a shift worker finishes the
+  # task in hand and then leaves, which is exactly this. `.loop-drain` is STILL READ, and that is
+  # load-bearing rather than politeness -- seven loops were mid-lap on the elder code when the word
+  # changed, and a rename that stopped answering their file would have left seven ships no hand
+  # could stop. The elder name retires once no loop is running that spelling.
+  if [ -f .loop-clockout ] || [ -f .loop-drain ]; then
+    echo "CLOCKOUT: $seat stopping before lap $((laps + 1)) -- remove .loop-clockout to clock in again"
     break
   fi
   rm -f .loop-gates-only
@@ -353,8 +358,8 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     echo 'GATES-ONLY: loop paused'
     break
   fi
-  if [ -f .loop-drain ]; then
-    echo "DRAIN: $seat stopped after lap $laps -- the lap finished whole; remove .loop-drain to resume"
+  if [ -f .loop-clockout ] || [ -f .loop-drain ]; then
+    echo "CLOCKOUT: $seat stopped after lap $laps -- the lap finished whole; remove .loop-clockout to clock in again"
     break
   fi
   if [ "$max_laps" -gt 0 ] && [ "$laps" -ge "$max_laps" ]; then

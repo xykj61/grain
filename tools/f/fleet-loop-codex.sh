@@ -92,8 +92,9 @@ echo "fleet-loop-codex: seat $seat, bare, ${hours}h deadline, model $CODEX_MODEL
 while [ "$(date +%s)" -lt "$deadline" ]; do
   # A HAND'S STOP IS READ BEFORE A LAP OPENS and is never removed by this loop -- the same law the
   # Claude loop carries. `.loop-gates-only` is the agent's own stop and clears at the top.
-  if [ -f .loop-drain ]; then
-    echo "DRAIN: $seat stopping before lap $((laps + 1)) -- remove .loop-drain to resume"
+  # CLOCKOUT (molted from `drain`, `20260909`). The elder name is still read while loops run it.
+  if [ -f .loop-clockout ] || [ -f .loop-drain ]; then
+    echo "CLOCKOUT: $seat stopping before lap $((laps + 1)) -- remove .loop-clockout to clock in again"
     break
   fi
   rm -f .loop-gates-only
@@ -138,8 +139,8 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   fi
 
   if [ -f .loop-gates-only ]; then echo 'GATES-ONLY: loop paused'; break; fi
-  if [ -f .loop-drain ]; then
-    echo "DRAIN: $seat stopped after lap $laps -- the lap finished whole"
+  if [ -f .loop-clockout ] || [ -f .loop-drain ]; then
+    echo "CLOCKOUT: $seat stopped after lap $laps -- the lap finished whole"
     break
   fi
   if [ "$max_laps" -gt 0 ] && [ "$laps" -ge "$max_laps" ]; then
