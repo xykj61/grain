@@ -1,0 +1,83 @@
+# tools/s/session_roster_agree_witness.rish -- two rosters, one derived number, read off the shelf.
+#
+# WHY THIS RUNG. `session-logs/README.md` and `session-logs/CHAPTERS.md` each carry the same per-day
+# lap count as a literal constant, and only the pin is named by a close duty. So the roster drifted,
+# silently, for eleven days: measured `20260909.010753` against the shelves themselves, SIX closed
+# days read wrong in CHAPTERS and right in the pin -- 20260828 66/67, 20260829 84/86, 20260830 92/73,
+# 20260905 58/61, 20260906 133/134, 20260907 129/131 -- and SIX days carried no row at all, 20260821
+# through 20260826, because one row reading *the days still flat in the room* went stale when a log
+# became born-on-shelf at `20260827.171500` and six later hands appended below it.
+#
+# A hand derived all twelve and typed them in on `20260909` (`40f52a30bf`). This rung is what keeps
+# them true, and the law it enforces is one line old: **count, never number**
+# (`.claude/rules/stamp-and-name.md`). A total carried inside a page stays at whatever it was on the
+# day somebody typed it. Both pins keep their numbers, because a reader wants to see them; what
+# changes is that the two of them are now held to the one reading the shelves give.
+#
+# WHAT IS PROVEN, on metal. Four readings gated at zero over all 48 shelves --
+#   `disagree`  the two rosters spell one day differently;
+#   `stale`     a roster number differs from that shelf's own rows;
+#   `uncounted` a shelf on disk that neither roster's table names;
+#   `phantom`   a roster row naming a shelf file that is absent.
+# One ratchet under a ceiling that only falls -- `one_sided`, a shelf named by one roster's table
+# and not the other's, at **1** for the single member standing today: `20260722-shelf`, which
+# CHAPTERS names in prose, since it is an absorbed overflow shelf rather than a day.
+#
+# WHAT A ROW IS, on either side of the reading. A shelf row opens with a one-clock stamp in
+# backticks -- `| `YYYYMMDD.HHMMSS`` in the table shelves this room writes today, `- `YYYYMMDD.HHMMSS``
+# in the elder list shelves it wrote through `20260722`. Reading both shapes is what lets one scan
+# derive all 48 rather than the newest 46.
+#
+# WHAT PASSES FREE, by named reason. `open_stale` -- a row still spelling `open` for a day already
+# past -- is REPORTED and never gated. That is a duty the next day-close pays, and a gate on it
+# would red every ship in the fleet from midnight until a hand ran the close, which is a gate
+# somebody turns off.
+#
+# THE FAULT THIS SCAN MADE FIRST, kept as a control leg. A day cell is bare digits too, so a reading
+# that takes the FIRST bare cell of a row reads the day as the count -- 91 false `stale` readings on
+# this scan's first run against a living tree that was in fact clean. The count is the LAST bare
+# cell before the shelf link, and leg 6 of the control plants exactly that shape.
+#
+# Pen: tools/fixtures/s/session_roster_agree_control.sh -- 29 behaviors on real roster pages and
+# real shelves in a throwaway pen, every refusal planted and then lifted again.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/stamp-and-name.md - .claude/rules/session-logs.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/session_roster_agree_witness.rish
+
+say "session-roster-agree: Language EN -- count, never number; two rosters answering to one shelf."
+say "session-roster-agree: Style Gauge -- every number here is derived, and the derivation is the guard."
+say "session-roster-agree: Lens TAME -- bound everything, and say where the number came from."
+
+let scan = run ["sh" "tools/fixtures/s/session_roster_agree_scan.sh"]
+assert scan.ok else "session-roster-agree: the scan must complete before its numbers are believed"
+say scan.out
+assert scan.out contains "disagree=0" else "session-roster-agree: two rosters spelling one day differently means one of them is wrong"
+assert scan.out contains "stale=0" else "session-roster-agree: a roster number must equal the rows its own shelf holds"
+assert scan.out contains "uncounted=0" else "session-roster-agree: a shelf neither roster names is a day with no way in"
+assert scan.out contains "phantom=0" else "session-roster-agree: a roster row naming an absent shelf is a promise that resolves nowhere"
+assert scan.out contains "one_sided_ok=yes" else "session-roster-agree: a second one-sided shelf is the elder drift's own shape returning"
+assert scan.out contains "verdict=ok" else "session-roster-agree: the scan must balance before it is believed"
+say "field GREEN -- both living rosters agree with every shelf on disk"
+
+let control = run ["sh" "tools/fixtures/s/session_roster_agree_control.sh"]
+assert control.ok else "session-roster-agree: the control must complete"
+say control.out
+assert control.out contains "control_fail=0" else "session-roster-agree: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "session-roster-agree: the control must agree with itself"
+assert control.out contains "3 free: an elder list shelf counts as 5, never as 0" else "session-roster-agree: both row shapes ever written here must be read"
+assert control.out contains "6 free: the day cell's bare digits are never read as the count" else "session-roster-agree: the count is the last bare cell before the link, never the first"
+assert control.out contains "7 bitten: pin 4 against chapters 3 on one day" else "session-roster-agree: a disagreement must bite"
+assert control.out contains "10 lifted: removing the disagreement returns the reading to ok" else "session-roster-agree: a refusal proven only from one side cannot be told from a bypass"
+assert control.out contains "12 bitten: two rosters wrong the SAME way still agree" else "session-roster-agree: agreement is not truth; the shelf is what settles it"
+assert control.out contains "15 bitten: a shelf on disk that neither roster names" else "session-roster-agree: an uncounted shelf must bite"
+assert control.out contains "18 bitten: two roster rows naming an absent shelf file" else "session-roster-agree: a phantom row must bite"
+assert control.out contains "24 bitten: the ceiling refuses at two" else "session-roster-agree: the one-sided ceiling must refuse from above"
+assert control.out contains "27 free: and never gated -- the day-close pays it" else "session-roster-agree: an open row for a past day is a duty, never a red"
+assert control.out contains "29 bitten: an empty date room refuses at zero" else "session-roster-agree: a corpus of zero is a red, never a reading"
+say "the scan's behaviors proven on planted rosters and planted shelves, each reading shown from both sides"
+
+assert control.out contains "30 bitten: an oversized corpus refuses before counting" else "session-roster-agree: an oversized corpus must refuse instead of hiding shelves"
+assert control.out contains "31 lifted: restoring the bounded corpus returns ok" else "session-roster-agree: removing overflow must lift the refusal"
+say "session-roster-agree GREEN -- two rosters, one derived reading."

@@ -4,6 +4,8 @@
 **Status:** Living pin — one line per closed season  
 **Bound:** under `living_pin_max_bytes`  
 **Seated:** `20260725.040520`  
+**Counts derived:** every `Count` below is held to its own shelf's rows by
+[`../tools/s/session_roster_agree_witness.rish`](../tools/s/session_roster_agree_witness.rish), which reads this roster and `README.md` against the same count.
 **Law:** [`../context/specs/append-only-growth-law.md`](../context/specs/append-only-growth-law.md)
 
 | Chapter | Range | Count | Index |

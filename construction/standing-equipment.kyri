@@ -3750,3 +3750,16 @@ path tools/p/plant_liveness_witness.rish
 tier lap
 capability sed_sandbox
 seated 20260909.025521
+
+# THE TWO ROSTERS OF THE SESSION-LOGS ROOM, held to one derived reading. `session-logs/README.md`
+# and `session-logs/CHAPTERS.md` each spell every day's lap count as a literal constant, and only
+# the pin is named by a close duty -- so the roster drifted for eleven days, six closed days wrong
+# and six days missing a row entirely, all twelve found by a hand on 20260909 rather than by any
+# instrument. This guard derives each count off the shelf's own rows and holds both pages to it.
+# `lap` rather than `cadence`: the pass costs 5s measured 20260909.012700 on this pier, and the
+# surface it reads is written by EVERY lap of every ship, which is the clock a day-close runs on.
+
+guard session_roster_agree
+path tools/s/session_roster_agree_witness.rish
+tier lap
+seated 20260909.012700
