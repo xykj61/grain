@@ -3,7 +3,8 @@
 # WHY THIS RUNG. A crushed index is the page a reader trusts INSTEAD of walking the room. That is
 # what an index is for, and it is also what makes a wrong one expensive: nobody checks a page whose
 # whole job is to spare them the checking. The tree already rendered one index off disk and compared
-# it byte for byte (tools/g/geode_libraries_witness.rish), and that one -- 38 rooms -- reads true.
+# it byte for byte (tools/g/geode_libraries_witness.rish), and that one reads true at whatever count
+# the tree holds, because it never spells the count in prose.
 # Every other index on the shipping shelf was typed, and on `20260906` three were wrong at once:
 #
 #   docs-geode/README.md said "ten rooms filled" while its own table, six inches below, listed
@@ -53,6 +54,14 @@
 #   had moved press/'s Siya announcement and the repoint followed the LINK; the Stamp cell stayed
 #   at the fossil, a month behind. A repoint sweep follows links, and a stamp in a table is not a
 #   link -- which is why no standing meter could see it.
+#   A page spelling the count a GENERATED index derives agrees with it. One index on this shelf is
+#   rendered off the tree -- docs-geode/libraries/README.md -- so its count moves when the tree
+#   does, and on `20260909` the shelf's front door spelled `38 rooms` in the very table row pointing
+#   at a page whose fresh render listed 37. The generator was green throughout: a generator proves
+#   its own page and nothing beside it. A generated index is found by its own header rather than by
+#   a roster kept here, and its noun comes from its own first column, so `| Room |` asks after
+#   `N rooms`. Naming the scale without an integer stays free, which is the honest form the
+#   first-hour tutorial already uses for the witness count.
 #   A page signing `witness:<name> GREEN` names an instrument that exists. Seven living pages sign
 #   themselves; six are backed by a fixture that reads their claims and aborts on the first that
 #   fails. The seventh was the shipping shelf's own front door, signing GREEN from a witness that
@@ -77,7 +86,7 @@
 #   rishi/bin/rishi run tools/cr/crushed_index_witness.rish
 
 say "crushed-index: Language EN -- an index is trusted instead of checked, which is exactly why the room behind it must be read."
-say "crushed-index: Style Radiant -- four claims. Every member has a row, every row opens, every stamp agrees with the file it points at, and every GREEN signature names something that exists."
+say "crushed-index: Style Radiant -- five claims. Every member has a row, every row opens, every stamp agrees with the file it points at, every spelled count of a generated index agrees with the rows that index derives, and every GREEN signature names something that exists."
 say "crushed-index: Lens TAME -- safety first: three indexes on one shelf miscounted their own rooms while every link on all three resolved, so a link check could never have found any of them."
 
 # The counting rule is proven on real git repositories before any page is trusted to it. A rule
@@ -110,6 +119,11 @@ assert control.out contains "adding the deep row clears the count -- read 0" els
 assert control.out contains "a nested README is a door rather than a member -- read 0" else "crushed-index: a door is a door on every floor, or every nested room becomes a false red"
 assert control.out contains "a deep room at the bound walks free -- read 0" else "crushed-index: a room standing exactly at max_deep_members must pass, or the bound refuses ordinary work"
 assert control.out contains "one page past the bound is refused by name -- read 1" else "crushed-index: a deep room over the bound must be refused by name rather than walked in silence"
+assert control.out contains "a generated index is found by its own header -- read 1" else "crushed-index: a page saying it is generated and holding linked rows must be read as a generated index"
+assert control.out contains "a page spelling a count the index disagrees with is counted -- read 1" else "crushed-index: a spelled count disagreeing with the rows a generated index derives must be counted"
+assert control.out contains "making the two agree clears it -- read 0" else "crushed-index: agreeing with the generated page must clear it"
+assert control.out contains "naming the scale without an integer counts zero -- read 0" else "crushed-index: naming the scale without spelling it is the honest form and must stay free"
+assert control.out contains "a count spelled about a typed index counts zero -- read 0" else "crushed-index: nothing derives a typed index's count, so there is no second reading to disagree with it"
 assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
 assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
 
@@ -122,7 +136,8 @@ assert scan.out contains "index_rooms_missing=0" else "crushed-index: every decl
 assert scan.out contains "index_rooms_oversize=0" else "crushed-index: a deep declaration over a room past max_deep_members must split its index or raise the bound with a reason"
 assert scan.out contains "index_doors_missing=0" else "crushed-index: every row on a declared index must open on something"
 assert scan.out contains "row_stamp_disagrees=0" else "crushed-index: a row's stamp must agree with the file it links -- the link resolves either way, so nothing else reads this"
+assert scan.out contains "generated_count_disagrees=0" else "crushed-index: a page spelling a generated index's count must agree with it -- the generator proves its own page and nothing beside it"
 assert scan.out contains "signature_unbacked=0" else "crushed-index: a GREEN signature must name an instrument that exists"
 assert scan.out contains "verdict=ok" else "crushed-index: the scan must reach its own verdict"
 
-say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, and every GREEN signature names something real."
+say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, and every GREEN signature names something real."

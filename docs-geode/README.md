@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260728.031722`
-**Last refreshed:** `20260908.081630` -- the blog row turns living; the room's first piece lands
+**Last refreshed:** `20260909.151033` -- two typed numbers leave the front door: the library row now points at the count its generated page derives, and the room-separation reading names its commands
 **Voice:** Kyri
 **Kind:** crushed index of [`docs-geode/`](./) -- the root prod folder, holding the canonical docs that ship
 **Status:** Living crystal -- read against the rooms on disk each lap by [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish)
@@ -18,7 +18,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **docs-geode** is the root **prod** shelf. It holds the docs that ship.
 
-**Three prose rooms stand in this tree, and which one you want follows from who you are when you arrive.** This shelf serves the reader who **receives** the product: pages crushed from what already stands, so you can read Grain before you run it. [`../manual/`](../manual/README.md) serves the reader who **operates their own machine** -- disk encryption, a VPN, an enclosure, a phone, keys in their own hand. [`../docs/`](../docs/README.md) serves the reader **already mid-ladder**: one compressed operator page per chapter, each declaring its own line ceiling. `counsel/` holds dated counsel and is closed to new pieces. Measured `20260907.160051`, this shelf and the manual share **12** cross-citations against **249** living inbound references, so the two rooms stand apart in fact as well as in intent.
+**Three prose rooms stand in this tree, and which one you want follows from who you are when you arrive.** This shelf serves the reader who **receives** the product: pages crushed from what already stands, so you can read Grain before you run it. [`../manual/`](../manual/README.md) serves the reader who **operates their own machine** -- disk encryption, a VPN, an enclosure, a phone, keys in their own hand. [`../docs/`](../docs/README.md) serves the reader **already mid-ladder**: one compressed operator page per chapter, each declaring its own line ceiling. `counsel/` holds dated counsel and is closed to new pieces. The two rooms stand apart in fact as well as in intent: a handful of living pages cite across them, against the couple of hundred that cite this shelf at all. Nothing holds either reading still, so run it rather than trusting it -- `git grep -l 'manual/' -- docs-geode` beside `git grep -l 'docs-geode/' -- manual` for the crossings, and `git grep -l 'docs-geode/'` for the whole inbound set, each read past `date/`, `archive/`, `yonder/`, and stamped basenames, which are testimony rather than living pages.
 
 New here? Take three doors, in this order. [The First Hour](tutorials/the-first-hour.md) puts a working tree in your hands. [How to read this tree](study/README.md) says which room answers which kind of question. [The library index](libraries/README.md) names every Rye module, room by room. Every other row in the table below opens off one of those three.
 
@@ -29,7 +29,7 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`api/`](api/rishi-language-reference.md) | Professional API surface | **living** -- [the Rishi language reference](api/rishi-language-reference.md): every form the shell understands, each line run before it was written, and the edges |
 | [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living, guarded** -- the shelf's own crosslink map: every page, what it leads to, what leads back. It declares itself a crushed index of *every page under* this shelf, so [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish) walks the whole subtree against it rather than one room deep |
 | [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first; and [reading a name](study/reading-a-name.md), the two marks a name here carries |
-| [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness |
+| [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- every room holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness; the count stands on that page rather than in this row, so it moves when the tree does |
 | [`edu/`](edu/README.md) | Tutorials (shipped; `edu/drafts/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
 | [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
 | [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Bron |
