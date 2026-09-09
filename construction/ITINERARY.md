@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `23dee223dc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0d88b97fae` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -175,18 +175,13 @@ full rescrub, which the scrub standfast has under Keaton's word.
 **MINE, NAMED:** the cold pass closes `tree_moved=yes` -- I wrote files while it ran.
 
 **COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
-**Recovery `20260909.040052`:** both parked logs and the saved account shelf return from
-`204a697198`; all 19 stashes stay. Petrichor's seed wording stands. The host rule
-now names the same withheld room. The parked `gen_home` default and roster entry
-also return, claimed here for Pheromone's next review. Its comment grades A+ after
-simplification; the default, explicit path, and empty-path refusal were checked.
-**Recheck `20260909.055005`:** the full cold pass held still: 209 guards, 203 green,
-four red, two custody gates. The nib correction rides this close. Both instrument
-reds pass with the installed `rg` on PATH; the fourth red is their roster summary.
-The full staged hot pass held still: 209 guards, 207 green, zero red, two gates.
-The saved branch stays. After the peer rebase, all 11 focused integration checks pass.
-[The verification record](../session-logs/date/20260909/20260909-063251_the-integrated-recovery-is-ready.kyri) carries the scope.
-**Next:** review the parked edits after this recovery's send. [Integration record](../session-logs/date/20260909/20260909-083122_recovery-integration.kyri).
+[Shelved](archive/20260909-154904_itinerary-landed-accounts.md) whole by the writer that re-anchors
+its own links -- the spelling that bit this seat twice now does itself.
+**Recovered `20260909.151049`:** the 09:22 [send hold](../session-logs/date/20260909/20260909-092251_integration-send-held.kyri)
+lands. Its lap spent its session before committing, so `stash_record` read `unlanded=1` and the card's
+nib named `35622f7454` -- a pre-rebase hash no clone holds (%401). Both reds close here.
+**Not mine:** `sow_allow_reach` refuses on stale projection coverage; Bakery holds that lane.
+**Next:** the parked edits, after this send.
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
