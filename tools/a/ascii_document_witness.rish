@@ -80,7 +80,12 @@ assert control.out contains "convert_reaches_zero_named=yes" else "ascii-documen
 assert control.out contains "convert_verify_proves=yes" else "ascii-document: the working tree must be the committed bytes put through the table, byte for byte"
 assert control.out contains "convert_verify_catches_a_hand=yes" else "ascii-document: an edit beside the transform must break the proof, or the proof proves nothing"
 assert control.out contains "convert_keeps_the_mode=yes" else "ascii-document: a mode is tracked content, and a rewrite preserves it"
-assert control.out contains "convert_is_idempotent=yes" else "ascii-document: a second pass over a plain file must change nothing"
+assert control.out contains "convert_leaves_plain_alone=yes" else "ascii-document: a file already plain owes the converter no work, and must come back untouched"
+assert control.out contains "convert_is_idempotent=yes" else "ascii-document: a SECOND run over a file the converter already swept must report no change -- infusion(world') -> world'"
+assert control.out contains "convert_second_run_moves_no_bytes=yes" else "ascii-document: a tool may report unchanged and still write, so the bytes are read as well as the report"
+assert control.out contains "diverging_second_run_caught=yes" else "ascii-document: a converter that diverges on its second run must be caught, or the idempotence case cannot fail"
+assert control.out contains "diverging_bytes_move=yes" else "ascii-document: the byte reading must bite on a diverging converter too, not only the report"
+assert control.out contains "diverging_passes_elder_sample=yes" else "ascii-document: the elder already-plain sample walks a diverging converter free -- which is why the case was replaced"
 
 say "ascii-document: reading two of two -- the living tree."
 
@@ -90,4 +95,4 @@ say living.out
 assert living.out contains "enforce=honored" else "ascii-document: a rule page carrying non-ASCII is a law arguing with itself -- convert it, and run tools/fixtures/a/ascii_document_convert.sh"
 assert living.out contains "under_ceiling=yes" else "ascii-document: non-ASCII in living documents rose above the ceiling -- convert on touch rather than raising it"
 
-say "GREEN: ascii-document -- the rule rooms both editors read as law stand at zero characters above 0x7F, every living document in the actively-written rooms stands under a ceiling that only falls, and testimony, closed stacks, vendored sources and planted controls are read past each for its own written reason. Forty readings proven on real repositories in a throwaway pen, every refusal lifted in its own pen, both ceilings proven from both sides, and the sweep that seated the roster proven to have moved no prose by re-deriving each converted page from its committed bytes."
+say "GREEN: ascii-document -- the rule rooms both editors read as law stand at zero characters above 0x7F, every living document in the actively-written rooms stands under a ceiling that only falls, and testimony, closed stacks, vendored sources and planted controls are read past each for its own written reason. Forty-five readings proven on real repositories in a throwaway pen, every refusal lifted in its own pen, both ceilings proven from both sides, and the sweep that seated the roster proven to have moved no prose by re-deriving each converted page from its committed bytes."
