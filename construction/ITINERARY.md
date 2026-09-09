@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `72b75140e2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `98ee0e0f91` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
 Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
@@ -80,6 +80,7 @@ passes ten checks and two altered controls. Copying a response record keeps its 
 an owned encoded copy preserves the answer through scratch reuse.
 **BAKERY:** review `run_client_query` returning views into its local `opened` buffer before
 extending the caller. Then agree workload budgets and exercise the completion contract.
+The [answer-budget model](../active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md) adds a full retained-answer pool to that trial.
 The existing scan remains the baseline; elapsed time and energy remain unmeasured.
 All 13 parked logs are present and all 16 stashes remain. The `tame_reach` distinction stays
 with its guard's owner. Seed and naming rulings keep their gates.
@@ -360,6 +361,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260909.072836` | [Reply retention](../external-research/20260909-072836_a-retained-reply-needs-its-own-bytes.md) | [log](../session-logs/date/20260909/20260909-072836_reply-retention.kyri) |
+| `20260909.084736` | [Answer budget](../active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md) | [log](../session-logs/date/20260909/20260909-084736_retained-answer-budget.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

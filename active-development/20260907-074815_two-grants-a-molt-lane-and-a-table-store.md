@@ -80,3 +80,5 @@ contract, supported by a local receive experiment. The next trial keeps the exis
 checking success, refusal, deadline exhaustion, and slot reuse. A storage build remains conditional.
 
 The [retention experiment](../external-research/20260909-072836_a-retained-reply-needs-its-own-bytes.md) adds a concrete transfer case: copying the response record keeps borrowed text references, while copying its encoded bytes into separate storage preserves the answer through scratch reuse. Bakery can carry this case into the caller trial; its deadline and workload budgets remain to be agreed.
+
+The [answer-reservation model](../active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md) separates active requests from retained answers. Bakery can test a full answer pool while request slots are idle; Patchouli reviews the byte accounting. Its finite model passes, while the service contract remains proposed.
