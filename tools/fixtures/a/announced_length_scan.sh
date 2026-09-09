@@ -12,6 +12,9 @@
 # start at zero -- `NAME0-NAME63`. For each, the highest rung of that prefix actually written
 # anywhere in the tree. Announced against reached.
 #
+# AND IT LEAVES ITS OWN OUTPUT ALONE. A page that runs this scan and quotes what it printed is
+# documenting an announcement rather than making one, the same way a ledger row is.
+#
 # WHAT IT LEAVES ALONE. Dated testimony keeps every number it ever wrote (accrete-never-break), so
 # anything under `date/`, `archive/`, `session-logs/`, or `seed/` is read past. A ladder whose
 # reach meets its announcement is not a forecast that failed; it is reported and never counted.
@@ -37,7 +40,18 @@ for f in $living; do
   # structural rather than a filename: a two-cell table row whose second cell is a rung of the same
   # prefix. To earn it, a page must state the true reach beside the announcement, which is the
   # honest act; a page merely announcing a length cannot qualify.
+  #
+  # AND THIS METER'S OWN OUTPUT IS A RECORD TOO. `docs-geode/demos/README.md` teaches the law by
+  # running this scan and quoting what it printed, so three `met:` lines entered the tree as prose
+  # and the next pass read them as three fresh announcements by the demos page -- a meter reading
+  # its own output back as input. All three said `met`, so nothing went red; the cost would have
+  # arrived later, when a quoting page took the blame for a forecast it merely reprinted. The
+  # exclusion is the SAME rule in a third syntax rather than a new one: both output shapes state
+  # the true reach beside the announcement, which is exactly what the table row earns its pass for.
+  # Syntax-independent on purpose -- a fenced block is where this lands today, and skipping fences
+  # would also excuse a bare announcement that happens to sit inside one.
   LC_ALL=C grep -vE '\| *([A-Za-z]{2,})0-\1[0-9]+ *\| *\1[0-9]+ *\|' "$f" 2>/dev/null \
+    | LC_ALL=C grep -vE 'announces ([A-Za-z]{2,})0-\1[0-9]+(, | and the ladder )reached \1[0-9]+' \
     | LC_ALL=C grep -oE '\b([A-Za-z]{2,})0-\1[0-9]+\b' | sort -u | while read -r ann; do
     prefix=${ann%%0-*}
     top=${ann##*"$prefix"}

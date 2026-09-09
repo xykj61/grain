@@ -30,8 +30,8 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living, guarded** -- the shelf's own crosslink map: every page, what it leads to, what leads back. It declares itself a crushed index of *every page under* this shelf, so [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish) walks the whole subtree against it rather than one room deep |
 | [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first; and [reading a name](study/reading-a-name.md), the two marks a name here carries |
 | [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- every room holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness; the count stands on that page rather than in this row, so it moves when the tree does |
-| [`edu/`](edu/README.md) | Tutorials (shipped; `edu/drafts/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
-| [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
+| [`edu/`](edu/README.md) | Tutorials (shipped; `edu/yonder/` holds drafts) | **living** -- the index of teaching surfaces and which door leads where |
+| [`demos/`](demos/README.md) | Demos | **living** -- five checks you can run, with dated example output; the fifth compares an announced plan with its recorded steps |
 | [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Bron |
 | [`blog/`](blog/README.md) | Blog posts | **living** -- [Eighteen times, two agents did the same job](blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md), the room's first piece, landed against the entry criterion the door names |
 | [`press/`](press/README.md) | Press releases | **living** -- three announcements and one magazine piece, indexed with their honest scope |

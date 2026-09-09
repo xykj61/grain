@@ -19,7 +19,7 @@ have never read a codebase before. That is a fine place to start.
 A tree this size reads beautifully by question, the way a library does, and it reads poorly cover to
 cover for the same reason. So ask your question first and let it choose the room for you.
 
-**"What is this *for*?"** -> [`foundations/`](../../foundations/README.md). The why beneath the craft -- work as offering, custody before capability, why a front door is the most Lindy-exposed thing a project owns. Fifty-odd pages, deliberately small, the most-cited room in the tree.
+**"What is this *for*?"** -> [`foundations/`](../../foundations/README.md). The why beneath the craft -- work as offering, custody before capability, why a front door is the most Lindy-exposed thing a project owns. Each page takes one question and gives you a place to begin.
 
 **"How do I *use* it?"** -> [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md), then [`../api/rishi-language-reference.md`](../api/rishi-language-reference.md), then [`../libraries/README.md`](../libraries/README.md). Path, reference, index -- in that order.
 
@@ -29,7 +29,7 @@ cover for the same reason. So ask your question first and let it choose the room
 
 ## The names themselves
 
-Before any of those rooms answers you, its filenames will. A log here is called
+Before any of those rooms answers you, its filenames will. A dated piece here is called
 `20260905-154954_the-clock-and-the-mark.md`, and a ledger row is called `%438`, and both forms say
 something exact. [**Reading a name**](reading-a-name.md) teaches the two marks in about five
 minutes, and it is the shortest way to feel at home on this shelf.
@@ -39,7 +39,7 @@ minutes, and it is the shortest way to feel at home on this shelf.
 These two are the difference between reading this tree and trusting it, and both take a minute to
 learn.
 
-**Read the witness rather than the claim.** A thing here earns the word working when a program has checked it. `tools/*_witness.rish` holds more than sixteen hundred proofs that run on real hardware, and a green line is a fact a computer spoke first. When a page and a witness disagree, the witness is right and the page is a red.
+**Read the witness rather than the claim.** A thing here earns the word working when a program has checked it. Files whose names end in `_witness.rish` describe those checks. Run the witness for the claim you need, then read its result and any limits it reports. When a page and a witness disagree, the witness is right and the page is a red.
 
 **Read the reds.** [`construction/REDS.md`](../../construction/REDS.md) records what this tree got wrong, in three fields: what went wrong, what caught it, what it taught. It is the fastest way to learn how a project actually thinks, because nobody polishes a mistake. Start at the newest and read backward.
 

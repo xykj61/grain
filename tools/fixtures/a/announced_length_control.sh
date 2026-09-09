@@ -76,7 +76,27 @@ commit; out=$(run)
 ck "dated shelf read past"   "verdict=no_living_forecast" "$out"
 ck "and counted nowhere"     "announcements_checked=0"    "$out"
 
-# 13-14. A tree with nothing to read REFUSES rather than printing a clean zero (REDS %413).
+# 13-14. THIS METER'S OWN OUTPUT IS A RECORD TOO. A page that runs the scan and quotes what it
+# printed had its quotation read back as a fresh announcement BY THE QUOTING PAGE -- the meter
+# reading its own output as input, found when docs-geode/demos/README.md began teaching this law by
+# running it (`20260905`). Both output shapes state the true reach beside the announcement, so both
+# earn exactly the pass the ledger row above earns.
+printf 'A living page with no announcement at all.\n' > "$pen/tree/pin.md"
+printf 'met: constel/LADDER.md announces QUOT0-QUOT31, reached QUOT31\nforecast: pin.md announces QUOT0-QUOT63 and the ladder reached QUOT1\n' > "$pen/tree/quote.md"
+commit; out=$(run)
+ck "quoted meter output is not an announcement" "announcements_checked=0"    "$out"
+ck "so a quoting page reads clean"              "verdict=no_living_forecast" "$out"
+
+# 15-16. AND THE EXCLUSION IS A RECORD RULE RATHER THAN A HOLE. The same prefix announced bare,
+# beside the quotation that mentions it, still bites -- otherwise a page could hide a forecast by
+# quoting the meter once.
+printf 'The QUOT ladder (QUOT0-QUOT63).\nQUOT1 landed.\n' > "$pen/tree/pin.md"
+commit; out=$(run)
+ck "bare announcement beside a quote still bites" "announces QUOT0-QUOT63 and the ladder reached QUOT1" "$out"
+ck "and is counted exactly once"                  "announcements_checked=1" "$out"
+rm -f "$pen/tree/quote.md"
+
+# 17-18. A tree with nothing to read REFUSES rather than printing a clean zero (REDS %413).
 ( cd "$pen/tree" && g rm -q -r --cached . >/dev/null 2>&1 )
 out=$(run); rc=$?
 ck "empty listing refuses" "REFUSED" "$out"

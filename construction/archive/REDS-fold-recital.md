@@ -667,3 +667,7 @@ at a closed fold.*
 *Row %674 folded to [`REDS-the-guard-that-named-its-own-gap-rows-674.md`](REDS-the-guard-that-named-its-own-gap-rows-674.md) on `20260909.215947`, **CLOSED** -- a guard that names its own unproven half is telling a reader where to look.*
 
 *Row %673 folded to [`REDS-a-tree-hash-cannot-see-an-ignored-path-rows-673.md`](REDS-a-tree-hash-cannot-see-an-ignored-path-rows-673.md) on `20260909.220910`, **CLOSED** -- a prover reads what git will stage, so an ignored path is a hole in every convergence claim it settles.*
+
+*Row %675 folded to [`REDS-a-parked-fix-behind-an-existing-path-rows-675.md`](REDS-a-parked-fix-behind-an-existing-path-rows-675.md) on `20260909.173000`, **CLOSED** -- a resolving path measured presence while the edit behind it stayed parked; the recovered control reads 19/0 against the recovered scan and 16/3 against the one in HEAD.*
+
+*Two elder addresses stand as pages there, [rows-660](REDS-a-parked-fix-behind-an-existing-path-rows-660.md) and [rows-664](REDS-a-parked-fix-behind-an-existing-path-rows-664.md); `%667`, `%671` and `%673` were re-seated before publishing. One stamp, `20260909.072646`, held through all five moves.*
