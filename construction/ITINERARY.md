@@ -91,27 +91,28 @@ over-reading **143%** since it waits on children; `glow_desk_reach` 28 against 2
 PASS, much per GUARD, which is what a tier decides.
 **Cold: 203 guards, 1666s, 201 green, 0 red, 2 gated** at `%5`, `tree_moved=no` -- I held still.
 **Yours:** the joule waits on a host with RAPL; `/sys/class/powercap/` is empty on this pier.
-**PETRICHOR -- THE MANUAL CARRIES A STAMP, AND A GUARD READ IT AS A RECORD.**
-Elder [shelved](archive/20260908-211304_itinerary-landed-accounts.md).
-**EARTH BREATHES IN, so I took the fact at the door** and ran what `SOURCE.md` and `manual/`
-print. **Eleven commands exit 1**, every one the `20260823` tools letter fold -- in the OS user
-manual and the NixOS guide, **the first-hour page among them**.
-**MY OWN GUARD COUNTED ALL ELEVEN AND GATED NONE.** Its testimony test reads a one-clock stamp in
-the page's basename, and **every `manual/` page carries one**, because the naming law names every
-file that way. A stamp is a birth date on a manual and a claim on a log; the test could not tell
-those apart. Those two rooms read **living** whatever their basename says -- a roster of two,
-whose reason is the rooms' job rather than their names.
-**A COMMAND WEARS BACKTICKS AS OFTEN AS A FENCE.** The first-hour page hands a newcomer two
-witnesses inside a **table cell** beginning *Run*, both moved, and a fence-only reader cannot see
-a cell. The **verb** marks it now: tree-wide, **37 more printed paths and no new fault**.
-**AND A PAGE IS JUDGED BY ITS OWN NAME.** The elder filter tested the whole row, so a **living**
-page printing a path whose basename carried a stamp **excused itself with that other file's
-stamp** -- how `docs-geode/demos/README.md` went unread. **Its one false positive taught the
-fourth clause:** that demo hands a stale path to `dated_path_resolve` **on purpose**.
-**Control 10 -> 17 cases**, six refusals bitten, every welcome asserted as hard. **GREEN**,
-`moved_living=0`, 956 testimony counted, 5s at `tier lap`. Pages 94, 90, 90, 85, 83.
-**Yours:** that guide's line 7 is a **Status line recording what ran**, naming a witness at its
-then-home. I left it; whether a Status line's paths are testimony or instruction is a ruling.
+**PETRICHOR -- A DOCUMENTED FLAG THAT NEVER RETURNS, ON A PAGE GRADED HEALTHY.**
+Elder [shelved](archive/20260908-230317_itinerary-landed-accounts.md).
+**FIRE SEES, AND ASKS WHAT MUST STOP** -- so this lap RAN every command
+`docs-geode/tutorials/running-the-fleet.md` prints. `sh tools/f/fleet_watch.sh --dry-run`
+**never comes back** (`timeout 25` exits **124**), printed third in a block whose other two lines
+terminate, under *The dry run answers:* and ONE output line -- the shape of one that ends.
+**TWO FLAGS, TWO AXES.** `--dry-run` bounds what a pass may DO; `--once` bounds how many passes
+RUN, and omitting it keeps `WATCH_PASSES=0`. The tool's ENV table said so eight lines under the
+usage triple the page copied. `--once --dry-run` exits **0 in a second**.
+**WHAT MAKES IT A RED:** the same cold pass read **`docs_command_path` GREEN here** -- my own
+guard, seated last lap -- and `qa_report_card` **A 94, truth 100 on 6 of 6 paths**. *A path that
+resolves and a command that returns are two facts; we measure the first.*
+**AND IT SHIPS**: `docs-geode` is `template`, verbatim. **THE PAGE KNEW THIS** -- 44 lines up it
+pairs `FLEET_DRY=1 LOOP_LAPS=1`, the same don't-act flag bound by a pass count.
+**A LANTERN, NOT A LOOM, MEASURED FIRST:** three tracked tool scripts loop unbounded on a sleep,
+the other two printed by no living page -- so no guard. Second drift, same root: `fleet_call`'s
+transcript missed `over_bound`, its counts being a one-second process reading.
+**Row `20260908.225856` BOOKED**, folded to its own shelf by `reds_fold.sh` -- the pin had **173
+bytes** against a 2,430-byte row. `tracked_link` reddened, rightly: an untracked shelf in the
+recital. Cold roster **205 guards, 176 green, 0 red**.
+**Yours:** a guard reading a printed command for TERMINATION must RUN it, which nothing does.
+Two instruments called a hang healthy this lap -- named and accepted, or the next loom?
 
 **PHEROMONE -- A RULING STOOD IN FRONT OF THE READING, AND THE GATE WENT BLIND BEHIND IT.**
 Elder [shelved](archive/20260908-212614_itinerary-landed-accounts.md).

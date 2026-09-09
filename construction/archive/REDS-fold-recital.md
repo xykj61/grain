@@ -586,3 +586,5 @@ at a closed fold.*
 *Row %652 folded to [`REDS-a-shared-name-two-programs-do-not-share-rows-652.md`](REDS-a-shared-name-two-programs-do-not-share-rows-652.md) on `20260908.213230`, **CLOSED** -- a shared name costs nothing when the two files are the same program.*
 
 *Row %653 born onto [`REDS-a-message-read-mid-rebase-rows-653.md`](REDS-a-message-read-mid-rebase-rows-653.md) on `20260908.233626`, **CLOSED** -- `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's.*
+
+*Row %654 folded to [`REDS-a-flag-that-never-returns-rows-654.md`](REDS-a-flag-that-never-returns-rows-654.md) on `20260908.225856`, **BOOKED** -- a documented flag that never returns, on a page every instrument graded healthy -- reachability is not termination.*

@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.233724` | [A message read mid-rebase](20260908/20260908-233724_a-message-read-mid-rebase.kyri) | `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's |
 | `20260908.232329` | [A third column](20260908/20260908-232329_a-third-column.kyri) | hung told from red; 82 choirs made to run; unreached 750 to 643 |
 | `20260908.230903` | [The tier's clock reads the pier](20260908/20260908-230903_the-tiers-clock-reads-the-pier.kyri) | wall over-reads CPU 24%; the run card carries both |
+| `20260908.230317` | [A flag that never returns](20260908/20260908-230317_a-flag-that-never-returns.kyri) | a documented flag that hangs, on a page four instruments graded healthy |
 | `20260908.223755` | [a proof nobody named after it](20260908/20260908-223755_a-proof-nobody-named-after-it.kyri) | The convergence census could only see evidence named after its subject. |
 | `20260908.223011` | [Four kinds of silence](20260908/20260908-223011_four-kinds-of-silence.kyri) | unreached counts neglect and environment together |
 | `20260908.220821` | [Two open rows are one gate](20260908/20260908-220821_two-rows-one-gate.kyri) | %646 counted: 22 unrostable, and %460 named a door built 10 days before. |
