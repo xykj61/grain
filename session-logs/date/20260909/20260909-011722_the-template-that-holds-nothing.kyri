@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260909.011722
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense seat, interactive captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260908
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The template that holds nothing to catch
+prompt Keaton -- a rule for Claude and Codex and a siloed foundation to always update the declarative tree config and copy from the tree rather than writing to /etc directly, until Microkit seL4 on RISC-V; then the first-hour and SOURCE rearranged to stand a Vultr pier first; then template-and-withhold with the personal config redefined as a brix infuse over the template; then latest stable kakoune in tree and live
+think The night began with Codex 401 and ended with three things landed on metal, and every one of them was corrected at least once on the way.
+obs THE TEMPLATE BEAT THE SCRUB, and Keaton named it. My first answer added sed rules to strip ssh keys at publish time. That is a FILTER: it works until a personal value arrives in a shape the pattern misses. A template holds no personal value at any moment, so there is nothing to catch on the way out. One is a wall and the other is a sieve, and only one of them has a bad day.
+obs The manifest guard caught me plainly: `personal nixos` already stood in the file and my `allow nixos` contradicted it, so sow_personal_scan refused. The room was withheld for exactly the reason I was about to publish it -- the config carried this pier's own keys. Reclassified to `template` only once the keys had genuinely left the room.
+obs An SSH PUBLIC KEY IS PUBLIC AND STILL AN IDENTIFIER. The blob is durable and unique, so anyone may match it against a forge account's published keys and link the anonymous seed to its maintainer. That is precisely what the signing law refuses to let a signature do, reached by a shorter road.
+obs The kakoune hash was wrong because I read it with --unpack, which returns the NAR hash of the unpacked tree where fetchurl wants the FILE's. Two objects, two hashes, one wrong flag. The build refused loudly, which is the comment beside that fetcher doing what it claims -- and the correction was confirmed by an INDEPENDENT prefetch rather than pasted from the error line, because taking a `got:` on faith is how a wrong value gets laundered into a config.
+obs My stamps were guesses. 010000 and 011500 are round numbers, and the real births were 004934 and 005121 -- eleven and twenty-four minutes early, so I had stamped both LATER than they happened and out of order against anything written between. The filesystem held the answer the whole time; `stat -c %W` is the one clock read at the moment the file existed.
+obs The direction rule earned itself the same night it was written: reconciling backwards found eleven lines the tree held and the live file lacked, a seated kakoune decision a plain copy would have deleted. Writing the tree first makes the machine a copy, and a copy either matches or trails.
+loom codex_cli before=0.150.1 after=0.153.4 model=gpt-6-astra reachable=yes
+loom kakoune before=2026.04.12 after=2026.05.21 hash_attempts=2 confirmed_independently=yes
+loom register foundation=100 design_page=100 sow_witness=GREEN infuse_check=matches
+rota lap 4459, row 4 -- Earth, the row that breathes in. What it surfaced: the concrete facts at the door were a 401, a hash, and a birth time, and each of the three corrected a claim I had already written down.
+file nixos/configuration.nix the template, plus the kakoune overlay at newest stable
+file nixos/local.bron this pier's two keys, sub_excluded from the seed
+file nixos/infuse.sh the composition, with --check and --install
+file .claude/rules/declared-host-config.md the direction, with its Cursor twin
+file foundations/20260909-004934_the-machine-you-can-write-down.md why a machine is written down, register 100
+file active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md which host and in which order, register 100
+scope one CLI bumped, one editor bumped, one room reclassified by template, one rule and two pages seated
+status GREEN on sow_witness, the infuse check against live, living-docs lint and the pin bounds; kakoune and codex both verified on metal after the rebuild
+recommend check in (Keaton) -- the Codex loop is armed on Astra and the pier is current; sleep well
