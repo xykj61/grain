@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.203236` | [The family not taken](20260908/20260908-203236_the-family-not-taken.kyri) | two families rostered; the largest declined with its reason |
 | `20260908.202239` | [Three things wearing one colour](20260908/20260908-202239_three-things-wearing-one-colour.kyri) | a precondition is not a defect |
+| `20260908.202036` | [The commands a page prints](20260908/20260908-202036_the-commands-a-page-prints.kyri) | two shelf pages exit 1; the seam three guards missed |
 | `20260908.194927` | [What generalizing bought](20260908/20260908-194927_what-generalizing-bought.kyri) | a third family for one row; unreached 898 to 818 |
 | `20260908.194256` | [The census counted a comment](20260908/20260908-194256_the-census-counted-a-comment.kyri) | The proven column read a sentence in the tool's own header; 5 -> 3. |
 | `20260908.192729` | [the allowlist carried one path twice](20260908/20260908-192729_the-allowlist-carried-one-path-twice.kyri) | 1 duplicate of 251 rules; 45 asserts named. |

@@ -16,7 +16,7 @@
 **Run it.**
 
 ```
-rishi/bin/rishi run tools/g/glow_run.rish edu/pleac/ch01/gate-pleac-double-u32.glow 21
+rishi/bin/rishi run tools/g/glow_run.rish docs-geode/edu/yonder/pleac/ch01/gate-pleac-double-u32.glow 21
 rishi/bin/rishi run tools/p/pleac_ch01_witness.rish
 ```
 
