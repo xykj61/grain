@@ -49,7 +49,7 @@
 # so a guard counts as rostered because the roster seats it rather than because somebody wrote
 # about it.
 #
-# A MENTION IS NEVER AN INSTANCE. A control may describe the shape it uses; a witness may say some
+# THE MATCHED FORMS STAY DISTINCT. A control may describe its shape; a witness may say some
 # OTHER run's stderr, or some other run's stdout, and neither answers for the run under reading.
 # Each shape's reading is bound to one variable's own spellings, and the control plants the
 # confusable case beside the real one.
@@ -67,6 +67,8 @@
 # another variable name and stand outside it; both are named every pass as `exit_alias_sites`, so
 # the floor carries a number (REDS %466). The ordering reading counts by PATH, so a body reachable
 # through a symlink is read twice and repaired once.
+# Full-line comments are excluded from the shim and interpolation matches. Inline comments,
+# quoted code, and conditional forwarding remain outside this text reading's proof.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/shim_reason_witness.rish
@@ -190,6 +192,23 @@ assert control.out contains "caller_128_count_withheld=yes" else "shim-reason: p
 assert control.out contains "caller_128_diagnostic=yes" else "shim-reason: the Git diagnostic must reach the reader"
 assert control.out contains "caller_restored_bitten=yes" else "shim-reason: the restored search must find the witness that drops stderr"
 assert control.out contains "caller_repaired_free=yes" else "shim-reason: forwarding stderr must free the same repository"
+
+
+# Full-line comment words do not establish a source match.
+assert control.out contains "comment_shim_exit=1" else "shim-reason: a full-line comment cannot forward a shim result"
+assert control.out contains "comment_shim_counted=yes" else "shim-reason: the swallowing shim must remain counted"
+assert control.out contains "comment_shim_lifted_exit=0" else "shim-reason: real forwarding must free the same shim"
+assert control.out contains "comment_shim_lifted=yes" else "shim-reason: the forwarding count must follow the repair"
+assert control.out contains "comment_marks_exit=0" else "shim-reason: commented run and say forms must leave the real shim free"
+assert control.out contains "comment_marks_unseen=yes" else "shim-reason: only the real shim supplies all three source marks"
+assert control.out contains "comment_marks_restored_exit=1" else "shim-reason: restoring the source forms must expose both swallowers"
+assert control.out contains "comment_marks_restored=yes" else "shim-reason: both restored shims must return to the population"
+assert control.out contains "comment_reason_exit=1" else "shim-reason: a comment mentioning stderr cannot carry the control result"
+assert control.out contains "comment_reason_counted=yes" else "shim-reason: the witness that loses stderr must remain counted"
+assert control.out contains "comment_reason_lifted_exit=0" else "shim-reason: real interpolation must free the same witness"
+assert control.out contains "comment_reason_lifted=yes" else "shim-reason: the loss count must fall with the repair"
+assert control.out contains "comment_out_exit=0" else "shim-reason: a stdout mention in a comment is outside the interpolation population"
+assert control.out contains "comment_out_unseen=yes" else "shim-reason: commented stdout must add no loss to this reading"
 
 say "RED and GREEN paths proven -- the control's own `cases=` and `repos=` lines above carry the totals, and every refusal is lifted in its own pen"
 say "GREEN: shim-reason -- the matched diagnostic forms pass, and the controls prove their refusals."

@@ -561,6 +561,59 @@ carrying_witness > "$pen/caller_instrument/tools/x/pen_witness.rish"
 out=$(run_scan caller_instrument)
 case "$out" in *"verdict=ok"*) r "caller_repaired_free=yes" ;; *) r "caller_repaired_free=no" ;; esac
 
+# Full-line comments cannot forward a result or supply a shim's required marks.
+new_repo comment_shim
+swallowing_shim > "$pen/comment_shim/tools/x/a.rish"
+printf '%s\n' '  # if r.err != "" then say r.err' >> "$pen/comment_shim/tools/x/a.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/comment_shim/construction/standing-equipment.kyri"
+seal comment_shim
+out=$(run_scan comment_shim); code=$(run_code comment_shim)
+r "comment_shim_exit=$code"
+case "$out" in *"swallow_rostered=1"*) r "comment_shim_counted=yes" ;; *) r "comment_shim_counted=no" ;; esac
+forwarding_shim > "$pen/comment_shim/tools/x/a.rish"
+printf '%s\n' '  # if r.err != "" then say r.err' >> "$pen/comment_shim/tools/x/a.rish"
+out=$(run_scan comment_shim); code=$(run_code comment_shim)
+r "comment_shim_lifted_exit=$code"
+case "$out" in *"forwards_reason=1"*) r "comment_shim_lifted=yes" ;; *) r "comment_shim_lifted=no" ;; esac
+
+new_repo comment_marks
+forwarding_shim > "$pen/comment_marks/tools/x/a.rish"
+printf '%s\n' '  # let r = run ["rishi/bin/rishi" "run" "t.rish"]' 'say r.out' 'exit r.code' > "$pen/comment_marks/tools/x/comment_run.rish"
+printf '%s\n' 'let r = run ["rishi/bin/rishi" "run" "t.rish"]' '  # say r.out' 'exit r.code' > "$pen/comment_marks/tools/x/comment_say.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/comment_marks/construction/standing-equipment.kyri"
+seal comment_marks
+out=$(run_scan comment_marks 0); code=$(run_code comment_marks 0)
+r "comment_marks_exit=$code"
+case "$out" in *"shims=1"*) r "comment_marks_unseen=yes" ;; *) r "comment_marks_unseen=no" ;; esac
+swallowing_shim > "$pen/comment_marks/tools/x/comment_run.rish"
+swallowing_shim > "$pen/comment_marks/tools/x/comment_say.rish"
+out=$(run_scan comment_marks 0); code=$(run_code comment_marks 0)
+r "comment_marks_restored_exit=$code"
+case "$out" in *"shims=3"*) r "comment_marks_restored=yes" ;; *) r "comment_marks_restored=no" ;; esac
+
+new_repo comment_reason
+forwarding_shim > "$pen/comment_reason/tools/x/a.rish"
+stderr_control > "$pen/comment_reason/tools/fixtures/p/pen_control.sh"
+losing_witness > "$pen/comment_reason/tools/x/pen_witness.rish"
+printf '%s\n' '  # carry ${ctl.err} to the reader' >> "$pen/comment_reason/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/comment_reason/construction/standing-equipment.kyri"
+seal comment_reason
+out=$(run_scan comment_reason); code=$(run_code comment_reason)
+r "comment_reason_exit=$code"
+case "$out" in *"reason_lost_rostered=1"*) r "comment_reason_counted=yes" ;; *) r "comment_reason_counted=no" ;; esac
+# A hash inside the quoted assertion stays data, with its interpolation intact.
+carrying_witness | sed 's/pen: the control/pen # the control/' > "$pen/comment_reason/tools/x/pen_witness.rish"
+printf '%s\n' '  # carry ${ctl.err} to the reader' >> "$pen/comment_reason/tools/x/pen_witness.rish"
+out=$(run_scan comment_reason); code=$(run_code comment_reason)
+r "comment_reason_lifted_exit=$code"
+case "$out" in *"reason_lost_rostered=0"*) r "comment_reason_lifted=yes" ;; *) r "comment_reason_lifted=no" ;; esac
+
+# A comment mentioning stdout cannot place a caller in the interpolation population.
+printf '%s\n' 'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' 'assert ctl.ok else "pen control refused"' '# ${ctl.out}' > "$pen/comment_reason/tools/x/pen_witness.rish"
+out=$(run_scan comment_reason); code=$(run_code comment_reason)
+r "comment_out_exit=$code"
+case "$out" in *"reason_lost_rostered=0"*) r "comment_out_unseen=yes" ;; *) r "comment_out_unseen=no" ;; esac
+
 echo "cases=$readings"
 echo "repos=$repos"
 echo "control_verdict=ok"

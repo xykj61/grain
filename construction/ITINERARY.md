@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `90fac92c37` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0b4f309843` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -161,6 +161,8 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **GRASS recovery `20260909.041325`:** [output before the assertion](../session-logs/date/20260909/20260909-041325_say-before-the-assert.kyri); 154 bindings repaired, 86 control checks. The historical-log gate stays open.
 **GRASS audit `20260909.052250`:** [caller search errors](../session-logs/date/20260909/20260909-052250_the-search-that-swallowed-its-error.kyri); a failed search now refuses with its diagnostic, proven by 98 control readings. All eight stashes remain; the historical-log gate stays open.
+
+**GRASS audit `20260909.063313`:** [comment words](../session-logs/date/20260909/20260909-063313_comments-that-counted-as-code.kyri); full-line comments cannot satisfy diagnostic matches; 112 control readings. Historical records stay held.
 
 **GRASS -- A PROVER'S ANSWER WENT UNCOUNTED FOR SPELLING THE WRONG LETTERS.**
 Elder [shelved](archive/20260908-233325_itinerary-landed-accounts.md).

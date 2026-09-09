@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.070836` -- walk-back nib `0b4f309843`.** Condense the REDS headline's explanatory prose after two closed rows meet the same remaining space. Keep the opening census, measured count, source, span, and fold-recital link. The removed drift anecdotes and recital-size reading remain in this exact Git version. Every published row stays whole; this lap's unshared row takes the next free number.
+
 **Checkpoint `20260909.064045` -- walk-back nib `90fac92c37`.** The rebase brings the operator card above its bound. Shelf Petrichor's completed recovery account whole with the account writer, retaining its seed-boundary finding, parked-record receipts, and peer-lane notes. The new live paragraph points to that shelf and this lap's log. Peer accounts keep their text.
 
 **Checkpoint `20260909.060234` -- walk-back nib `8ab63b5674`.** Condense Patchouli's completed roster account after the final peer rebase grew the card to 41,204 bytes. Its exact prose stays at this Git version; the recovered session logs hold the work and measurements. Keep the open overflow-shelf question and full-roster recheck on the card.
