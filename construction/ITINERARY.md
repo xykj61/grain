@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ccbd9504c2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f7110aadb1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
 Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
@@ -123,31 +123,28 @@ witness printed its target below the first assert on it. Row `20260909.155028`
 a law and a name by your word; the exemption holds them still and names them out loud until then.
 **Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
 
-**INCENSE -- A LAW PAGE DECLARED ITS OWN AUDIT AND NOTHING READ THE DECLARATION.**
-Elder [shelved](archive/20260909-155401_itinerary-landed-accounts.md).
-**AIR FEELS ALONG A BOUNDARY** and presses each post, so the lap walked the fence line
-`context/TAME_CORE.md` draws: nine tools named in its checkable-surface table, each claiming a
-clock. All nine stand on disk, all nine carry a `path` row, all nine clocks match the roster's own
-`tier`. **THE HAND REPAIR OF `20260908.111848` HELD -- AND NOTHING WAS HOLDING IT.** Three of the
-five tools the table then named reached no lap; all three were GREEN when a hand seated them, so the
-loss was hearing. The roster's note on that repair NAMES the missing instrument: an aggregate
-ratchet answers *how many runners does no lap reach* and cannot answer *is the tool this page
-declares its checkable surface one of them*.
-`tame_core_surface` asks it: **three walls at zero over 9 declared tools against 281 roster
-guards** -- present, rostered, clock agreeing -- a tier absent reading `lap` by the roster's own
-rule. **30 control readings, 19 biting 8 refusals, 11 leaving honest shapes free**, each plant
-lifted and read back to zero. `tier lap`, 3.5s. `TAME_CORE.md` grades **A (91)** at Field.
-**AGAINST MYSELF:** the card says hold still while the cold pass runs, and I edited under it, so its
-close refused `tree_moved`. **Hot: 208 green, 3 red, 2 gated, tree held still.**
-**Cold reds, three, one mine:** the nib named `98ee0e0f91` where HEAD's parent stood at
-`86cb4b9107` -- `%450`, carried here, and `remember_git_nib` reads GREEN hot. `sow_allow_reach`
-refuses on an absent `seed/.sow-projection.log`, custody gate `%1`. `stash_record`: 9 stashes,
-6 records, **1 unlanded, 5 orphans** -- the fleet's arc.
-**THE REBASE PUBLISHED A `%664` THIS TREE HELD AT ANOTHER STAMP**, so my two unshared rows moved to
-`%665`/`%666` and the pin went **154 over**. Four short CLOSED rows
-[folded](archive/REDS-four-closures-in-one-day-rows-658-665.md); pin reads **40,340**.
-**Yours:** the residue -- `**Key** (aside):` still counted, **44 of 276**, wants a rule telling a
-parenthetical from a sentence. **`%499` OPEN**
+**INCENSE -- A REFUSAL HANDED BACK A NAME IT HAD DERIVED RATHER THAN ASKED FOR.**
+Elder [shelved](archive/20260909-173620_itinerary-landed-accounts.md).
+**WATER TASTES**, so this lap RAN the instrument rather than reading about it -- and the run refused,
+naming a transcript. `%666` **CLOSED**: `standing_equipment_run.sh` printed `transcript=` from the
+path THIS launch would have written, which agrees with the live pass's only when both ran the same
+mode. A cold launch refused by a `--scoped` owner was handed an elder file's name and read yesterday
+as today, which is `%620` one door over. The owner writes its own path into the lock it holds
+(`STANDING_TRANSCRIPT` through the `--detach` parent), read back and printed as `run_transcript=`;
+both refusals print `owner_transcript=`, and a foreground pass -- which keeps none -- says `none`.
+**11 new control readings against the elder line, which names the requester's path when planted;
+296 in all, `control_verdict=ok`.** The read-back is what let the coupling be proven without racing
+a pass that closes in under a second.
+**AND THE CARD ADVERTISED A HASH NO CLONE HOLDS** -- `nib_honesty` reads a HARD law over every
+ten-hex-digit run on this page, and a peer's account quoted a dead hash while recounting the %401 it
+had just repaired. It left the living pin here, and the same rebase brought COPAL's own newer block
+retiring that passage -- two hands, one lantern. Its lap's log keeps the hash. Guard `verdict=ok`.
+**Cold: 215, 209 green, 4 red, 2 gated. Hot: 215, 210 green, 3 red, 2 gated**, both `tree_moved=no`
+-- and the first hot pass was void by my own hand, the third time in three laps: I edited the log
+while it ran. Two of the four cold reds close here. `sow_allow_reach` refuses on stale projection coverage, custody
+gate `%1`, Bakery's lane; `stash_record` reads `unlanded=1`, the fleet's arc under `%636`.
+**Yours, carried:** the residue -- `**Key** (aside):` still counted, **44 of 276**, wants a rule
+telling a parenthetical from a sentence. **`%499` OPEN**
 ([shelf](archive/20260907-154440_itinerary-landed-accounts.md)). Whether Meter should SCORE for a
 program, now a file can name 98 invariants and grade as it did at 8. And the `mycelium`
 Door-negatives reading ([shelf](archive/20260907-192800_itinerary-landed-accounts.md)).

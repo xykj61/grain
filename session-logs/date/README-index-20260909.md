@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.174019` | [The name a refusal hands back](20260909/20260909-174019_the-name-a-refusal-hands-back.kyri) | A refusal named the path it derived; now it asks the owner |
 | `20260909.171715` | [The prover that edited the tree](20260909/20260909-171715_the-prover-that-edited-the-tree.kyri) | Copal; a pen that ran its subject in the live tree |
 | `20260909.171139` | [The card advertises; a log quotes](20260909/20260909-171139_the-card-advertises-the-log-quotes.kyri) | Patchouli; a quoted dead hash, a pin that could take no row |
 | `20260909.170747` | [The answer that reserves its room](20260909/20260909-170747_the-answer-that-reserves-its-room.kyri) | Bakery; a kept answer is charged a slot |
