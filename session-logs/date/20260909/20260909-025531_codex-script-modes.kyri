@@ -1,0 +1,47 @@
+format session-log-v1
+stamp 20260909.025531
+editor Codex CLI
+provider OpenAI
+product Codex
+role repository agent, DIFFUSER seat, moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m "$CODEX_MODEL", default gpt-6-astra; explicit user fleet instruction 20260909
+voice Kyri
+host Linux pier, America/New_York
+title Codex script modes and the recovered work
+prompt Follow the fleet baton, recover parked work first, close a witnessed lap and push xy then debrided
+rota lap 4422, row 2 -- Fire, the row that sees; the reading surfaced the need to compare parked code before applying it and to distinguish an unavailable instrument from a defect in its subject
+obs The cold roster ran at 29c7bf503c. Two pulls brought the tree to 6fe92b191b before edits; the hot pass ran there. The draft card initially used the latter hash for both and is corrected before send.
+obs Set the executable mode on the new Codex watcher and control files. Rewrite the watcher's opening comment and correct its inherited jail-branch claim while preserving all executable shell lines.
+obs Incense owns the startup files; named that peer before this local repair. No peer checkout or running process was changed.
+obs The initial detached roster process disappeared without run_verdict. That incomplete reading was discarded. The foreground cold pass finished with tree_moved=no; all 16 stash subjects still match its opening inventory.
+obs All 13 stashed logs are carried outside the stash. The paper and five energy instrument files equal stash@{0} exactly. The contents of the three topology_routed files in stash@{11} equal topology_stretch after the underscore and hyphen name replacements. Preserve all parked copies.
+obs exec_bit_scan found 59 plain shebang files at mode 100644 against ceiling 57, with zero direct invocation failures and zero worktree/index disagreements. Commit 29c7bf503 introduced the two scripts in that mode.
+obs The watcher graded C+ 76 before its comment rewrite. Its draft graded A 93. The control graded A+ 100; its content stands.
+obs Without rg on PATH the portable-helper control passed 45 checks and skipped the two checks in one optional branch. shell_dialect requires all 47. Installed Ripgrep 15.1.0 was found in the Nix store; adding its bin directory to this pass's PATH produced 47 passes, zero skips and zero failures. The complete shell_dialect witness passed. No host configuration was changed.
+obs The Amphora bounds scan likewise found zero declarations without rg and reported agreement with rg. Its cold witness failed on the disagree plant; the complete amphora_bounds_agree witness passed with rg available, including the planted disagreement.
+obs At the cold base, SOURCE.md links nixos/configuration.nix and template-manifest.bron marks nixos as template without allow nixos. tools/fixtures/s/sow_project.sh iterates allow rows.
+inference The current projection will omit the linked configuration. A directory audit belongs before any export-list expansion; no public seed was published in this lap.
+obs The first commit message was refused by the mechanism-sentence hook: it counted one mechanism word where three were required. Reworded the message to name each script file and its direct call behavior; the repair itself stays unchanged.
+loom commit_message first_body_words=85 first_mechanism_words=1 required_mechanism_words=3
+loom roster=cold guards_run=206 guards_green=199 guards_red=5 guards_gated=2 guards_seconds=1885 guards_cpu_ms=1706352 tree_moved=no verdict=guard_red
+loom roster=hot guards_run=206 guards_green=202 guards_red=2 guards_gated=2 guards_seconds=1678 guards_cpu_ms=1681375 tree_moved=no verdict=guard_red
+loom codex_control pass=10 fail=0
+loom stash_audit stashes=16 records=13 unlanded=0 orphans=8 orphan_shelves=5 orphan_work=3 rename_equivalent=3
+loom shell_portable before_pass=45 before_skip=1 after_pass=47 after_skip=0 after_fail=0
+loom qa_watcher before=76 after=93 control=100 other_touched_artifacts=5 other_minimum=100
+loom exec_bit plain_shebang_before=59 plain_shebang_after=57 ceiling=57 directly_invoked_not_exec=0 worktree_index_disagreements=0 control_behaviors=16
+file tools/f/fleet_watch_codex.sh executable mode and plain opening comment; corrected bare-launch description
+file tools/fixtures/f/fleet_codex_control.sh executable mode only
+file construction/CHECKPOINTS.md preserves the walk-back before the comment rewrite and account fold
+file construction/ITINERARY.md current repair, open seed discrepancy, carried recommendation, and parent Git nib
+file construction/archive/20260909-025531_itinerary-landed-accounts.md the previous DIFFUSER account, moved whole by the re-anchoring writer
+file session-logs/date/20260909/20260909-025531_codex-script-modes.kyri this lap's provenance, recovery audit, and verification limits
+file session-logs/date/README-index-20260909.md one shelf-qualified row, under 192 bytes
+recommend keep-going Audit the nixos export intent with the seed owner and make the installed test dependency reachable in future fleet sessions; resume the booked table-store design after agent-closable reds are handled
+scope two script modes, watcher comments, stash recovery audit, local test PATH, account shelf and session record; public seed and custody unchanged
+status GREEN for the mode and comment repair -- exec_bit, shell_dialect, amphora_bounds_agree, topology_stretch, energy_instrument, and ten Codex control cases passed; touched artifacts grade A or A+. Full hot roster remains guard_red on seed_link and its standing_equipment summary, with two custody gates. The seed export review remains open.

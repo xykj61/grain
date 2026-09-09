@@ -1,58 +1,53 @@
 #!/bin/sh
-# fleet_watch_codex.sh -- the captain's watch: a loop that keeps the other loops alive.
+# fleet_watch_codex.sh -- restart a stopped Codex loop when its seat is ready.
 #
-# WHY THIS EXISTS. A fleet loop can die for four reasons -- three instant laps against an
-# unreachable agent, a spent LOOP_HOURS deadline, an interrupt, or a terminal that closed -- and
-# when it does, nothing brings it back. On `20260906` six ships stopped themselves between 07:21
-# and 07:28 against a session limit that reset at 07:30, and the fleet sat dark until a hand woke
-# up and read the panes (REDS %471). The hold seated in fleet-loop-codex.sh answers the limit; this
-# answers everything else, because a loop that has already exited cannot hold.
+# This watch checks the fleet at a set interval. It reads each seat from the roster
+# and finds its tmux window by name. A running loop keeps its seat. A stopped loop
+# may start again once the window holds a shell prompt and its tree is ready.
 #
-# WHAT IT DOES, once per interval: read the tmux windows BY NAME, match each name against the live
-# seats in construction/fleet-roster.kyri, and for any seat whose `fleet-loop-codex.sh <seat>` process is
-# absent, send that seat's own relaunch line into that seat's own window.
+# The watch keeps the stop files in charge. A hand can clock a ship out and trust
+# that it stays stopped. A custody marker holds it for the same reason: the next
+# choice belongs to a hand. Each held seat gets a message that says why.
 #
-# NOTHING IS NUMBERED. Window indices are discovered from `tmux list-windows` on every pass and are
-# never written down here, because a layout written into a script is a layout that will be true
-# until somebody moves a window -- and then the watcher types a ship's relaunch into a stranger's
-# keyboard. The seat table already binds seat -> tree; tmux already binds name -> index; this file
-# adds no third copy of either (REDS %409's law, one room over).
+# Window names are read fresh on each pass, so a changed window order is safe.
+# A duplicate name holds the seat until a hand can choose the right window.
+# Repeated starts that end too soon also hold the seat, with a count in the report.
+# These checks keep the watch from typing into a busy pane or spending a night on
+# a loop that needs help to start.
 #
-#   sh tools/f/fleet_watch_codex.sh                   # watch until stopped
-#   sh tools/f/fleet_watch_codex.sh --once            # one pass, then exit
-#   sh tools/f/fleet_watch_codex.sh --once --dry-run  # one pass, decided out loud; no keystroke
+# Background: six ships stopped between 07:21 and 07:28 on 20260906, before their
+# session limit reset at 07:30 (REDS %471). The loop now holds through that limit.
+# This watch handles a loop that exits: a deadline, interrupt, closed terminal,
+# or failure may leave a seat ready to start again.
 #
-# THE TWO FLAGS SIT ON DIFFERENT AXES. --dry-run bounds what a pass may DO (decide, print, send no
-# keystroke); --once bounds how many passes RUN, and is WATCH_PASSES=1 spelled short. --dry-run
-# alone leaves WATCH_PASSES at its unbounded default, so it prints its opening line and then
-# watches until stopped -- which is not what a reader asking "what would this do" wants. The three
-# lines above once listed --dry-run as a third alternative beside a terminating one, and the
-# tutorial that ships to the public seed copied them verbatim.
+# Usage:
+#   sh tools/f/fleet_watch_codex.sh                  # watch until stopped
+#   sh tools/f/fleet_watch_codex.sh --once           # one pass, then exit
+#   sh tools/f/fleet_watch_codex.sh --once --dry-run # report one pass; send no keys
 #
-# ENV, all bounded:
-#   WATCH_SESSION   tmux session to read (default: this pane's session, else `pier`)
-#   WATCH_INTERVAL  seconds between passes (default 60)
-#   WATCH_SKIP      space-separated seats never armed (default `incense` -- the captain's own bench)
-#   WATCH_ARM_MAX   consecutive fruitless arms before a seat is reported and left alone (default 3)
-#   WATCH_SETTLE    seconds an armed loop must survive to count as taking hold (default 180)
-#   WATCH_PASSES    stop after this many passes (default 0, unbounded; --once sets 1)
-#   WATCH_HOME      the directory a seat's tree sits under (default $HOME) -- the control's pen door
-#   FLEET_BARE      1 to re-arm every seat WITHOUT the jail, matching how the fleet was launched
-#   FLEET_ROSTER    the seat table to read (honored by fleet_roster_scan.sh) -- the control's roster
+# --dry-run chooses what a pass may do; --once chooses how many passes run.
+# Pair them to get a report that returns to the shell. --dry-run alone keeps
+# watching at the chosen interval. The tutorial once showed that form as a
+# command that would return, which is why the usage line now carries both flags.
 #
-# WHAT IT REFUSES, and why each refusal is the safe direction:
-#   - a seat whose loop is ALREADY RUNNING -- one writer per checkout (%291); this is the whole
-#     reason the check is a process lookup rather than a guess from the pane's words.
-#   - a window whose pane does not end at a shell prompt -- somebody or something else has that
-#     keyboard, and typing into it would interleave with their line.
-#   - a seat name that appears on two windows -- ambiguous, and a watcher must never pick.
-#   - a tree carrying .loop-drain -- a HAND asked that seat to finish its lap and stop, and a
-#     watcher that re-armed it would undo the one request the drain exists to make
-#   - a tree carrying .loop-gates-only, .mind-state/CUSTODY or .mind-state/TRANSACTION -- the sam
-#     wall fleet_rearm.sh stands behind: a gated choice belongs to a hand.
-#   - a seat that has burned WATCH_ARM_MAX arms without taking hold -- the loop's own quickfail law
-#     one level up. An arm that dies instantly every time is a fault upstream of the watcher, and
-#     re-arming it forever is the shape this file exists to prevent, not to become.
+# Settings and defaults (seconds for each time value):
+#   WATCH_SESSION   this pane's tmux session, else pier
+#   WATCH_INTERVAL  60 seconds between passes
+#   WATCH_SKIP      incense; an explicit empty value includes every live seat
+#   WATCH_ARM_MAX   3 fruitless starts before holding a seat
+#   WATCH_SETTLE    180 seconds a started loop must last to clear its count
+#   WATCH_PASSES    0 means keep watching; --once chooses 1 pass
+#   WATCH_HOME      $HOME, the parent directory of each seat's tree
+#   FLEET_BARE      1 is passed to each restart; Codex itself always runs bare
+#   FLEET_ROSTER    optional seat table, read by fleet_roster_scan.sh
+#
+# Hold checks:
+#   - a live Claude or Codex loop already owns the seat (%291)
+#   - the pane holds something other than a shell at a complete prompt
+#   - several windows share the seat's name, or its checkout is absent
+#   - .loop-clockout or its elder spelling .loop-drain records a hand's stop
+#   - .loop-gates-only, .mind-state/CUSTODY, or .mind-state/TRANSACTION holds work
+#   - WATCH_ARM_MAX starts have ended inside WATCH_SETTLE
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
@@ -215,12 +210,8 @@ while :; do
     # dirty tree would never reach the loop at all. fleet_round_open.sh is the loop's first act and
     # already fetches, clears an interrupted rebase, stashes a dead lap's leavings, and adopts the
     # anointed order -- strictly more than the pull, and it cannot refuse the launch.
-    # THE ENCLOSURE CHOICE TRAVELS WITH THE WATCH. `fleet-loop-codex.sh` wraps a Linux lap in
-    # agent-jail unless `FLEET_BARE=1`, and Keaton's word `20260906` is that this pier runs
-    # WITHOUT jails. A watcher that re-armed the default would quietly put the fleet back in the
-    # enclosure one ship at a time, which is the worst shape a disagreement can take: nobody typed
-    # it and nothing announced it. So the watch passes its OWN `FLEET_BARE` through, and a hand
-    # launching the watch chooses for every re-arm it will ever make.
+    # Codex runs bare by construction. Keep the watch's FLEET_BARE value in the
+    # restart command as launch context; fleet-loop-codex.sh has no jail branch.
     line="cd $tree && ${bare_prefix}sh tools/f/fleet-loop-codex.sh $seat"
     if [ "$dry" = 1 ]; then
       say "$seat -- WOULD ARM: $line"
