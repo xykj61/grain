@@ -20,6 +20,8 @@ refuses to invent (REDS %381).*
 
 ---
 
+Restored address at `20260909.054226`: [the pairs a ceiling never counted](REDS-the-pairs-a-ceiling-never-counted-rows-452-452.md) forwards the September 6 log to its published row. The parked row body already matches that publication byte for byte; the original stash remains intact.
+
 Recovered parked drafts at `20260909.050017`: [one column, two remedies](REDS-one-column-two-remedies-rows-640.md), [ask before you truncate](REDS-ask-before-you-truncate-rows-641.md), and [one rule, two walks](REDS-one-rule-two-walks-rows-642.md). Each file preserves an unpublished draft in quotation; its old local number remains testimony. This entry records their recovery from Bakery's preserved stash.
 
 

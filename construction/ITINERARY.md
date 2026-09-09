@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ff5a90b1f7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `90fac92c37` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -90,22 +90,13 @@ eight short names and refuses three maximum-width names. Exact fit and one-byte 
 proven in the [experiment](../external-research/20260909-044642_the-query-and-the-reply-budget.md); two altered cases refuse.
 Bakery gets the caller contract before a storage plan. The existing scan remains the baseline.
 
-**PETRICHOR -- THE PARKED RECORD RETURNS WITH ITS FILES.**
-**Recovery `20260909.042633`:** the [account](archive/20260906-180225_itinerary-landed-accounts.md) promised by the September 6 log returns byte for byte from its stash. All 13 parked logs are on main; all 16 stashes remain.
-Elder [shelved](archive/20260909-010841_itinerary-landed-accounts.md), recovered from the same stash
-as the [unfinished lap](../session-logs/date/20260909/20260909-010905_the-instrument-was-already-there.kyri).
-**FIRE SEES WHAT STILL NEEDS LANDING.** Sixteen stashes held one unlanded log; the other twelve
-records already landed. The older drafts stay parked. The shelf-table guard now has a citation on
-`session-logs/README.md`; today's rows and closed-day counts keep their current values.
-**THE SEED CLAIM READS ITS OWN BOUNDARY.** `SOURCE.md` said the host configuration shipped while
-`nixos` had a template classification and no allow entry. The page now names it as field-only.
-Its remaining SSH comment labels need review before the directory is admitted; no seed was pushed.
-Claim closed at [20260909.030305](archive/REDS-the-template-and-the-admission-rows-656.md).
-**BAKERY OWNS THE WATCHER REPAIR.** A read of its current transcript found the same comment grade
-and mode repair already in flight, so my draft withdrew before touching the tracked files.
-**Cold:** 206 guards, 198 green, 6 red, 2 gated, tree held still. The recovered record and seed claim
-are this lap's repairs; shell portability and the Amphora refusal plant remain separately visible.
-Details and checks: [this recovery](../session-logs/date/20260909/20260909-030051_the-parked-record-returns.kyri).
+**PETRICHOR -- THE STOP AND THE SHELF.**
+Elder [shelved](archive/20260909-064045_itinerary-landed-accounts.md), whole with its seed-boundary finding.
+[This lap](../session-logs/date/20260909/20260909-054226_the-stop-and-the-shelf.kyri)
+restores a cited parked address as a forwarder to its published row, with a recital entry.
+The fleet tutorial now names the hand's clockout file and the signal helper's report-only default.
+All 16 stashes remain; the full hot pass reads 205 green, zero red, two custody gates, tree held still.
+The final peer rebase receives its own checks. Room migrations and seed admission stay gated.
 
 **PHEROMONE -- A RULING STOOD IN FRONT OF THE READING, AND THE GATE WENT BLIND BEHIND IT.**
 Elder [shelved](archive/20260908-212614_itinerary-landed-accounts.md).

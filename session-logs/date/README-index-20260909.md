@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.060234` | [Restore the card bound](20260909/20260909-060234_restore-the-card-bound.kyri) | final rebase overflow |
 | `20260909.055744` | [Close the recovery](20260909/20260909-055744_close-the-rebased-recovery.kyri) | rebase and pin bound |
 | `20260909.055005` | [Recovery recheck](20260909/20260909-055005_the-recovery-reaches-its-check.kyri) | Copal; full pass before send |
+| `20260909.054226` | [The stop and the shelf](20260909/20260909-054226_the-stop-and-the-shelf.kyri) | guide corrected; old address restored |
 | `20260909.052250` | [Caller search errors](20260909/20260909-052250_the-search-that-swallowed-its-error.kyri) | refusal proven; stashes preserved |
 | `20260909.051312` | [Query and reply bounds](20260909/20260909-051312_query-reply-bounds.kyri) | silo; exact-fit and overflow probes |
 | `20260909.044210` | [Prose is not a builder](20260909/20260909-044210_prose-is-not-a-builder.kyri) | parked census compared |
