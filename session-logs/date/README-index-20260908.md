@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.202239` | [Three things wearing one colour](20260908/20260908-202239_three-things-wearing-one-colour.kyri) | a precondition is not a defect |
 | `20260908.194927` | [What generalizing bought](20260908/20260908-194927_what-generalizing-bought.kyri) | a third family for one row; unreached 898 to 818 |
+| `20260908.194256` | [The census counted a comment](20260908/20260908-194256_the-census-counted-a-comment.kyri) | The proven column read a sentence in the tool's own header; 5 -> 3. |
 | `20260908.192258` | [The door that was already built](20260908/20260908-192258_the-door-that-was-already-built.kyri) | unreached falls 1029 to 898 |
 | `20260908.191213` | [What a guard is a function of](20260908/20260908-191213_the-half-that-reads-nothing.kyri) | ten of ten scans byte-stable; 199 of 205 controls fleet-identical |
 | `20260908.190256` | [The meter that cannot see a glob](20260908/20260908-190256_the-meter-that-cannot-see-a-glob.kyri) | 45 glyph witnesses made to run |

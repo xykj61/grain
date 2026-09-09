@@ -37,6 +37,24 @@
 # asserts the ELDER predicate disagrees on exactly the two legs the repair moves, because a repair
 # proven only in the passing direction cannot be told from a coincidence.
 #
+# THE OTHER COLUMN WAS NEVER READ AT ALL, AND ITS RULE WAS WRITTEN DOWN CORRECTLY THE WHOLE TIME
+# (`20260908.190452`). Every reading above defends the DENOMINATOR. The `proven` numerator ran on a
+# grep that took every tracked path holding the tool's stem -- the tool itself among them -- and
+# matched the word on any line, comment or not. The census header says the opposite in so many
+# words: *inside a check rather than a comment. Prose about idempotence is a claim; an assertion is
+# a proof.* Two of the five it called proven were certified by one sentence in their own header.
+#
+# The predicate drops the tool from its own sibling set and requires the match on a non-comment
+# line; proven reads **3 of 10** where it read 5, and both departures are that self-certifying pair.
+# Three legs prove it from the passing side and a fourth runs the ELDER numerator over the same
+# plant and asserts it called the self-certifying tool proven.
+#
+# WHAT NEITHER COLUMN REACHES. `tools/c/convergence_prove.sh` classifies by RUNNING and invokes a
+# tool as `sh <tool> <one-path>`. Nine of the ten candidates take no path -- they are whole-tree
+# operators driven by `--apply`, `--check`, or a `dry|apply` mode -- so no prover in this tree can
+# answer for them, and the one that fits reads `verdict=converges` while standing in the unproven
+# column, because no sibling asserts it. This column measures whether somebody WROTE the check.
+#
 # REPORTED, NEVER GATED. A tool that legitimately runs once -- a publisher, a one-shot projection --
 # has nothing to converge, and no reading here can tell it from a tool that never checked.
 
@@ -61,9 +79,21 @@ assert control.ok else "convergence-census: the control refused --\n${control.ou
 assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
 assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
 assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
+assert control.out contains "legs_pass=12" else "convergence-census: a leg went unrun --\n${control.out}"
+
+# invariant: a tool may not certify itself. The plant's only idempotence sentence is a comment in
+# its own header, which is what two tracked tools carried when this column read them proven.
+assert control.out contains "self_certification_refused -- yes" else "convergence-census: a tool proves its own convergence by mentioning it again"
+
+# invariant: prose beside the tool is a claim, and the header says so. Only a non-comment line counts.
+assert control.out contains "prose_sibling_refused -- yes" else "convergence-census: a comment beside the tool counts as a proof again"
+
+# invariant: and the repair still MOVES something -- the elder numerator called the self-certifying
+# plant proven. Without this leg the three above pass for a reason nobody measured.
+assert control.out contains "elder_called_self_certification_proven -- yes" else "convergence-census: the elder numerator no longer admits self-certification, so this repair proves nothing"
 
 say "convergence-census: and the foundation that states the claim still stands..."
 let found = run ["sh" "-c" "test -f foundations/20260823-222019_what-brix-infuse-is.md && echo present || echo absent"]
 assert (trim found.out) == "present" else "convergence-census: the infusion foundation is gone -- this census measures a claim nothing states"
 
-say "GREEN: convergence-census -- candidates counted against the tree's own idempotence claim, with the denominator named as an upper bound rather than defended as a fact.""
+say "GREEN: convergence-census -- candidates counted against the tree's own idempotence claim, the denominator named as an upper bound rather than defended as a fact, and the numerator reading an assertion beside the tool rather than a sentence inside it."
