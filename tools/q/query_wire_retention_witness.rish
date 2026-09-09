@@ -20,9 +20,18 @@
 # the fault back and requiring the planted copy to collapse -- a defense shown only from the passing
 # side cannot be told from a coincidence.
 #
+# THE THIRD SHAPE, AND THE FALSIFIER IT RUNS. The elder paper projected that a VARIABLE-LENGTH
+# retained form -- a header plus only the hits the answer holds, rather than the format's whole
+# [max_wire_hits] array -- would close most of the 7.3x swing between a one-hit and an eight-hit
+# answer, and wrote its falsifier down: a variable form whose one-hit cache still exceeds roughly a
+# quarter of the fixed form's 456 bytes. tools/fixtures/q/query_wire_varlen_sweep.sh runs that
+# falsifier across four answer sizes and prints which way it fell, computing the quarter from the
+# figure the run itself read rather than from a number typed into the script.
+#
 # WHAT IS PROVEN HERE. That this host answers a counter; that decoding on every read costs
 # measurably more than reading a cached field; that the run is stable enough to publish, its spread
-# staying far under its median; and that the harness catches its own elimination fault.
+# staying far under its median; that the harness catches its own elimination fault on all three of
+# its loops; and that the sweep produces a row for every size it was asked for.
 #
 # WHAT IS NOT PROVEN. Any absolute joule figure -- this pier reads tier=counters and no readable
 # energy counter, per tools/e/energy_instrument_witness.rish. Nor that one microarchitecture's
@@ -46,4 +55,9 @@ say control.out
 assert control.ok else "query-wire-retention: the control must pass before any figure is believed"
 assert control.out contains "verdict=" else "query-wire-retention: the control states a verdict in one word"
 
-say "query-wire-retention: GREEN -- the harness reads a counter, the plant collapses, and the exchange is a measured number."
+let sweep = run ["sh" "tools/fixtures/q/query_wire_varlen_sweep.sh"]
+say sweep.out
+assert sweep.ok else "query-wire-retention: the answer-size sweep must run before the exchange rate is called a curve"
+assert sweep.out contains "falsifier=" else "query-wire-retention: the sweep states which way the elder paper's falsifier fell"
+
+say "query-wire-retention: GREEN -- the harness reads a counter, both plants collapse, the sweep answers the elder falsifier, and the exchange is a measured number."

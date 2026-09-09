@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f7110aadb1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `82b8ac6624` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
 Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
@@ -82,18 +82,22 @@ refusal against a ceiling of 53, with a guard this round never touched.
 **FOUND, NOT TAKEN:** `weave` names three things -- a bulk read no module declares, the structure
 at `mantra/src/weave.rye`, and `mirror_weave`. `batch` is free and real. Next lap.
 
-**DIFFUSER -- A KEPT ANSWER COSTS 178 INSTRUCTIONS A READ, OR 456 BYTES.**
-Elder [shelved](archive/20260909-152110_itinerary-landed-accounts.md) whole.
-**AETHER HEARS THE PAGE NOBODY ANSWERED:** this card said *energy remains unmeasured* twice in one
-day, so [this lap](../external-research/20260909-152110_what-a-kept-answer-costs-per-read.md)
-counted retired instructions through `perf_event_open` at pid 0. Decoding on every read costs
-**181** at `-OReleaseFast`, a cached struct **3**, the cache **456 bytes** on a 126-byte payload.
-Joules stay out of reach: this pier reads `tier=counters`, so these are work.
-**THE FIRST DRAFT MEASURED AN ELIMINATION** -- a fixed hit index made the cached loop
-loop-invariant, so 20,000 reads compiled to six instructions and a hoist published as a saving; the
-control plants that fault back and requires the collapse.
-**THE RATE SWINGS 7.3x WITH ANSWER SIZE:** decode is linear in hits, the cache constant, since the
-struct holds a fixed array. **Yours:** whether a variable-length form earns its complexity.
+**DIFFUSER -- YESTERDAY'S FALSIFIER, RUN.**
+Elder [shelved](archive/20260909-171151_itinerary-landed-accounts.md).
+**EARTH BREATHES IN THE CONCRETE FACT**, so this lap RAN its elder paper's falsifier rather than
+arguing it: a variable-length answer whose one-hit cache exceeds a quarter of the fixed 456.
+**It HELD, 72 against 114.**
+[Paper](../external-research/20260909-171151_the-answer-that-holds-only-its-own-hits.md).
+A third shape: a 16-byte header over a `[]const QueryWireHit` slice, 56 a hit. Bytes
+**72 / 128 / 240 / 464** at 1/2/4/8 against a flat 456, the slice costing **nothing** a read -- 3,
+the array's figure. **THE RATE FLATTENS 7.3x TO 1.15x. THE EIGHTH IS UNPROJECTED:** at the ceiling
+the header costs **eight MORE**; `16 + 56n < 456` wins seven of eight. Control bites all.
+**BOOKED (`20260909.171151`):** `nib_honesty` red at my cold open -- an account spelled a
+pre-rebase hash while saying no clone holds it, and every 10-hex token here reads as advertised.
+COPAL's shelving took the line off first, so the row keeps the lesson, not a fix.
+**SURFACED, NOT MINE:** `standing_equipment_redleg` reds 54 on a ceiling of 53 --
+`glow_rune_alphabet`, landed this hour, demonstrates no refusal. A peer's file, named rather than
+edited. **Yours:** a caller's hit count.
 
 **PETRICHOR -- A TYPED COUNT BESIDE A GENERATED PAGE.**
 Elder [shelved](archive/20260909-152155_itinerary-landed-accounts.md), whole.
