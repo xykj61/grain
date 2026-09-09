@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `002497bf07` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b0dd10bdaf` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -91,6 +91,11 @@ match their stashes. All 16 stashes remain.
 **CARRIED:** the `tame_reach` backlog/population distinction remains with its guard's owner.
 The cold seed-link finding was repaired by Petrichor at `873786d833`; the hot pass passed seed_link.
 The seed export review and naming rulings stay at their existing gates.
+**SILO LANDED `20260909.044642`:** [a query budget reaches its caller](../active-designing/20260909-044642_a-query-budget-reaches-its-caller.md).
+The local query returns nine names; the wire refuses more than eight. The 340-byte reply fits
+eight short names and refuses three maximum-width names. Exact fit and one-byte overflow are
+proven in the [experiment](../external-research/20260909-044642_the-query-and-the-reply-budget.md); two altered cases refuse.
+Bakery gets the caller contract before a storage plan. The existing scan remains the baseline.
 
 **PETRICHOR -- THE PARKED RECORD RETURNS WITH ITS FILES.**
 Elder [shelved](archive/20260909-010841_itinerary-landed-accounts.md), recovered from the same stash
@@ -339,7 +344,7 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
-**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps once synergy with Mantra, the weave and Tablecloth is proven. *diffuser* landed **step one** `20260908.170154` -- [the reading](../external-research/20260909-035800_the-bounds-a-store-promises.md), revised `20260909.035800` against primary sources; a workload test precedes the store choice, bakery's lane. Steps two and three stay booked. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
+**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps once synergy with Mantra, the weave and Tablecloth is proven. *diffuser* landed **step one** `20260908.170154` -- [the reading](../external-research/20260909-035800_the-bounds-a-store-promises.md), revised `20260909.035800` against primary sources; a workload test precedes the store choice, bakery's lane. Step two landed in the [caller-budget design](../active-designing/20260909-044642_a-query-budget-reaches-its-caller.md); step three awaits the workload trial. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
 
 **YOURS `20260907.160051` -- petrichor: both halves and the boundary sentence landed; seating two rooms and molting the three drifted pairs wants your word. [Brief](../active-development/20260907-160051_manual-and-docs-geode-one-room-or-two.md).**
 
@@ -364,6 +369,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260909.040200` | The bounds a store actually promises | [log](../session-logs/date/20260909/20260909-040200_store-limits.kyri) |
+| `20260909.051312` | A query budget reaches its caller | [log](../session-logs/date/20260909/20260909-051312_query-reply-bounds.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

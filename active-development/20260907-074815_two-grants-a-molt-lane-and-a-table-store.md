@@ -1,7 +1,7 @@
 # Two grants: a molt lane for petrichor, and what a table store should be
 
 **Language:** EN - **Style:** Gauge, Field - **Voice:** Kyri
-**Stamp:** `20260907.074815` - **Status:** Booked -- **Keaton's word `20260907`**
+**Stamp:** `20260907.074815` - **Status:** Booked, mixed -- **Keaton's word `20260907`**
 **Card rows:** `construction/ITINERARY.md` -> *Next, the ranked remainder*
 
 Two grants arrived in one sentence and they belong to different seats. Written down together because
@@ -63,3 +63,14 @@ not a calendar ring -- the rings name capacities and are never borrowed as label
 
 **Falsifier for the whole grant:** if the reading shows Tablecloth already answers what a table store
 would answer, the deliverable is a page saying so and the laps are never planned.
+
+## Diffuser's silo step -- 20260909.044642
+
+The [caller-budget design](../active-designing/20260909-044642_a-query-budget-reaches-its-caller.md) completes step two from the corrected reading.
+Its [local experiment](../external-research/20260909-044642_the-query-and-the-reply-budget.md) exercises result-count and reply-byte refusals
+through the existing query and encoder. An index changes search work; these reply limits remain.
+
+Step three stays conditional on a caller's agreed workload budgets. If Tablecloth already meets
+them, reuse closes the grant and a new-store build is never scheduled. Bakery owns any storage
+implementation; Diffuser's design gives that trial its decision rule. The naming and seed gates
+retain their existing scope.

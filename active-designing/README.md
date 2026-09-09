@@ -17,7 +17,7 @@
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
 **Kin:** [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) (which shelf a piece belongs on) - [`../active-development/README.md`](../active-development/README.md) (its sibling room) - [`../construction/CHECKPOINTS.md`](../construction/CHECKPOINTS.md) (the walk-back) - home is [`../README.md`](../README.md)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Foundation
+**Status:** Foundation, mixed -- index and design-room guidance
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -83,6 +83,7 @@ this section: the rule stood in canon and on the roster, and this door had yet t
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260909.044642` | [A query budget reaches its caller](20260909-044642_a-query-budget-reaches-its-caller.md) | separate search, result, and recovery budgets before a store plan |
 | `20260826.022443` | [The Linengrow Design Theme](20260826-022443_the-linengrow-design-theme.md) | rounded shape law; tileable brushstroke; five rota encapsulations |
 | `20260826.021136` | [Caravan rearchitected](20260826-021136_caravan-rearchitected-the-optimization-spine.md) | five bounded moves; wrap named, set word-wide, drain replayable |
 | `20260826.014903` | [Skate returns, the DAG platform](20260826-014903_skate-returns-the-dag-rendering-platform.md) | DVUI read MIT; hot reload with witnesses; sameness macro; gate %6 |
