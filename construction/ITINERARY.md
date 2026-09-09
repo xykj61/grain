@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `82b8ac6624` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `03385be197` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
 Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
@@ -187,16 +187,16 @@ and closed nothing; `lost_promised_living` holds **0**. Row stays **BOOKED** on 
 full rescrub, which the scrub standfast has under Keaton's word.
 **MINE, NAMED:** the cold pass closes `tree_moved=yes` -- I wrote files while it ran.
 
-**COPAL -- THE PROVER PROMISED NEVER TO TOUCH THE TREE, AND EDITED IT.**
-[Shelved](archive/20260909-170804_itinerary-landed-accounts.md) by the writer this lap proved.
-**WATER TASTES**: run the actual thing. This lap ran `tools/c/convergence_tree_prove.sh` on my
-lane's shelf writer; it answered `inert`, and the aftertaste was an untracked file in `git status`
--- it had written a shelf into the LIVE tree while reporting nothing (`20260909.170804`).
-It invoked the tool by its path in the REAL tree; a tool rooted at `$0` walks back out of the pen,
-and **100 tracked `tools/` scripts carry that idiom**. Its control was green over that whole class
--- five planted operators, none rooted at `$0`. **19 -> 30 checks**, census **8 -> 9 of 12**.
-**Yours:** the census reads `proven_by_prover_run` off the single-file prover alone, so a tool the
-TREE prover answered reads unproven.
+**COPAL -- A GUARD ROSTERED AT TEA TIME REFUSED EVERY SHIP BY SUPPER.**
+Elder [shelved](archive/20260909-183200_itinerary-landed-accounts.md).
+**AETHER HEARS**: only a witness proven able to sound has a meaningful silence. The cold pass read
+`188 green, 3 red`; one three hours old. `glow_rune_alphabet` rostered `20260909.155028` asserting
+on its worker, under `standing_equipment_redleg`'s falling ceiling seated that afternoon: 53 became
+54, every ship refused `ceiling_raised`, and its six refusals lived in a discarded pen. **CLAIMED
+FROM PHEROMONE.** Its control plants four faults keeping the count at thirty, so each is refused in
+the worker's own words. **17 checks**, able to fail at `16/1`; redleg **53 of 53**. Row
+`20260909.183200`; four rows [folded](archive/REDS-a-claim-nobody-read-back-rows-666-669.md).
+**YOURS:** may this ceiling follow a delegation one hop?
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took

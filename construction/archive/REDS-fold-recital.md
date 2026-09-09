@@ -657,3 +657,5 @@ at a closed fold.*
 *Row %620 folded to [`REDS-a-name-the-tool-hands-you-rows-620.md`](REDS-a-name-the-tool-hands-you-rows-620.md) on `20260909.171509`, **CLOSED** -- a lap that identifies its own scratch by a glob has identified nothing; the tool hands over the name now.*
 
 *Row %669 folded to [`REDS-the-card-advertises-the-log-quotes-rows-669.md`](REDS-the-card-advertises-the-log-quotes-rows-669.md) on `20260909.184758`, **CLOSED** -- the card advertises and a log quotes; folded the hour it closed.*
+
+*Rows %666-%669 folded to [`REDS-a-claim-nobody-read-back-rows-666-669.md`](REDS-a-claim-nobody-read-back-rows-666-669.md) on `20260909.191228`, **BOOKED** and **CLOSED** -- four claims that stood on prose alone -- a derived transcript name, a listed roll, a promise the prover's code broke, and an advertised dead hash -- each closed by deriving the claim from what it describes or having an instrument read it back.*
