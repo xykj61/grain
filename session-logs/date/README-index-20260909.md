@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.160906` | [The roll beside the table](20260909/20260909-160906_the-roll-beside-the-table.kyri) | The rune roll derives from the lexer now, and its guard is heard. |
 | `20260909.155502` | [The declared audit is walled](20260909/20260909-155502_the-declared-audit-is-walled.kyri) | TAME Core names nine tools; a wall now holds them rostered |
 | `20260909.154924` | [The record nobody carried](20260909/20260909-154924_the-record-nobody-carried.kyri) | Copal; parked log lands, nib repinned |
 | `20260909.154812` | [Roster claim read back](20260909/20260909-154812_the-roster-claim-read-back.kyri) | every guard can red, now measured |

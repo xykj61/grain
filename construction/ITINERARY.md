@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3e47fbf25e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c76389e87d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -100,22 +100,23 @@ nothing beside it. Both numbers leave the door, and `crushed_index` grew a fifth
 **Next, and `stash_record` reds until it lands:** `stash@{0}` carries this seat's lap parked at the
 `20260909.092435` open -- two logs, a five-check demos room, `announced_length`, two REDS shelves.
 
-**PHEROMONE -- FIVE RECORDS RECOVERED; THE LEXER BOUND STAYS PARKED.**
-The [elder account](archive/20260908-234354_itinerary-landed-accounts.md) keeps the twin-desk finding.
-**FIRE SEES** the difference between a record and the change it describes. This lap recovers
-five session logs and two diagnostic changes from this seat's parked work: desk failures
-split by execution stage, and a function-level decimal-law scan with a gate on false law claims.
-The existing `glow_literal_law` keeps its minority reading; the recovered scan adds the claim check.
-**THE PARKED BOUND CHANGES ACCEPTED SYNTAX.** Copied current sources parse `00000000000` as zero
-and tokenize it successfully; the parked lexer refuses `BadToken`. The historical log's
-claim that no accepted value changes is corrected here. `glow/tokens.rye` and its book stay as
-landed; the source changes remain in the stash for Keaton's language ruling.
-Earlier recovery evidence: [log](../session-logs/date/20260909/20260909-025755_recovery-at-the-language-boundary.kyri).
-**RECOVERED AGAIN `20260909.042508`:** the parked commit and its later body-claim fix return together. Four automatic-stash logs and one manual-stash log are restored; all 16 stashes remain. The peer's field-only NixOS boundary stands. [This recovery](../session-logs/date/20260909/20260909-042508_the-parked-diagnostics-return.kyri).
-**RECOVERED `20260909.055623`:** the declaration-walker scan now couples the loop body to its captured field name; 79 control checks pass, and the live 70/56 reading holds. [Record](archive/REDS-the-walker-keeps-its-body-rows-660.md). The self-matching-assert stash stays parked: its 34 checks pass, but a real `stat --format=%s` prints only size while its scan claims the filename is echoed. Next: repair that predicate before recovery. All 16 stashes remain.
-**RECOVERY 20260909.072753:** both parked commits return together; [this record](../session-logs/date/20260909/20260909-072753_the-recovery-reaches-main.kyri) tracks integration and the final send. All 16 stashes remain.
+**PHEROMONE -- THE RUNE ROLL WAS LISTED BESIDE THE LEXER TABLE, SO THE GUARD COULD NOT RED.**
+Elder [shelved](archive/20260909-155028_itinerary-landed-accounts.md) whole with the recovery record.
+**AETHER HEARS** what an unheard guard is worth. `tools/g/glow_rune_alphabet_witness.rish` stood
+GREEN, fast, and rostered nowhere since STOA90 -- and the fault it watches had already walked past
+it. Its roll was a hand-written heredoc of 28 rows asking, of each, whether `match_rune2` carries
+that glyph; `?&` and `?|` entered the lexer on `20260830` and never entered the roll, so the two
+numbers stood 30 against 28 and `rune_heads` published only the smaller. Proven in a pen before the
+repair: deleting `?&` from `match_rune2` left the gate GREEN. The roll derives from `match_rune2`
+now, the elder direction is kept beside it, and an unnamed head is bounded BY NAME rather than by
+count -- a swap that keeps the count passed a bare ceiling in the pen. Six legs, every refusal
+planted and lifted; the guard is rostered at `tier lap`, 0.6s -- and rostering it made a SECOND
+unheard fault audible inside the hour, since `shim_reason` reads only rostered bindings and this
+witness printed its target below the first assert on it. Row `20260909.155028`
+[folded](archive/REDS-the-roll-listed-beside-the-table-rows-667.md).
+**Yours:** what this tree calls `?&` and `?|` in the closed pronunciation table. A rune is earned by
+a law and a name by your word; the exemption holds them still and names them out loud until then.
 **Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
-
 
 **INCENSE -- A LAW PAGE DECLARED ITS OWN AUDIT AND NOTHING READ THE DECLARATION.**
 Elder [shelved](archive/20260909-155401_itinerary-landed-accounts.md).
