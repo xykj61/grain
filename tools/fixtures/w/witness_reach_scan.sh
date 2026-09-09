@@ -244,7 +244,15 @@ done
 # unheard, joined as the generic scan's THIRD caller. It cost a file of comments and one roster row,
 # with no scan and no control of its own, which is the return on generalizing the second choir
 # rather than copying the first. Three families and 212 witnesses now run under three rows.
-CEILING=${WITNESS_REACH_CEILING:-818}
+# 818 -> 750 on `20260908.203500`, a fall of 68: FORA's 32 and BUHR's 49 joined as the generic
+# scan's fourth and fifth callers, each family run whole and green before a row was written. Five
+# families and 293 witnesses now run under five rows.
+#
+# `equinox`, at 112, is the largest unreached prefix and is deliberately NOT taken: this header
+# already records that inferring from the season choir's glob overstated by 111, since the pattern
+# selects 144 equinox witnesses while the choir sings the 33 that chain nobody. A family whose
+# members chain each other wants its chain read rather than its prefix globbed.
+CEILING=${WITNESS_REACH_CEILING:-750}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary

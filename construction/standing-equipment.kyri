@@ -1641,6 +1641,27 @@ path tools/m/mycelium_choir.rish
 tier cadence
 seated 20260908.192900
 
+# fora_choir -- 32 witnesses cover the FORA ladder, the Constel test-network names that can never
+# parse as a live `@p`, and none was reached by any pass. Fourth caller of the generic
+# `witness_family_scan.sh`.
+guard fora_choir
+path tools/f/fora_choir.rish
+tier cadence
+seated 20260908.203500
+
+# buhr_choir -- 49 witnesses cover BUHR, Compass Equinox 3's Realidream surface and the Quin
+# inference vane, and none was reached by any pass. Fifth caller of the same scan.
+#
+# THE FAMILY NOT TAKEN, named here so the next lap does not reach for it: `equinox` is the largest
+# unreached prefix at 112, and it is the one family a prefix choir would get WRONG. The reach scan's
+# own header records why -- inferring from the season choir's glob overstated by 111, because the
+# pattern selects 144 equinox witnesses while the choir sings the 33 that chain nobody. A family
+# whose members chain each other wants its chain read, never its prefix globbed.
+guard buhr_choir
+path tools/b/buhr_choir.rish
+tier cadence
+seated 20260908.203500
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
