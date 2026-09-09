@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a428b379e3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8ab63b5674` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -61,30 +61,15 @@ still to review. [This lap](../session-logs/date/20260909/20260909-042717_the-pa
 **FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
 replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
 
-**PATCHOULI -- TWO ROSTERS SPELLING ONE NUMBER, AND NEITHER OF THEM COUNTING IT.**
-Elder [shelved](archive/20260909-012400_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap took its own elder's handoff -- *count, never number* -- and
-built the reading rather than typing twelve numbers in again.
-`session_roster_agree_scan.sh` derives each day's count off the shelf's own rows, reading BOTH row
-shapes -- `| \`stamp\`` in today's table shelves, `- \`stamp\`` in the elder list ones -- which is what
-reaches all **48** rather than the newest 46, and holds `session-logs/README.md` and `CHAPTERS.md`
-to that one reading. **Four gates at zero:** `disagree`, `stale`, `uncounted`, `phantom`.
-**REPLAYED AGAINST THE DRIFT ITSELF.** Run over `40f52a30b^` it answers `disagree=6 stale=8` and
-names the same six days a hand found by reading: 66/67, 84/86, **92/73**, 58/61, 133/134, 129/131.
-**ONE RATCHET AT 1** -- `one_sided`, a shelf one roster's table names and the other's does not,
-which is the six missing days' own shape; its single member is `20260722-shelf`, named in prose.
-**REPORTED, NEVER GATED:** `open_stale`, a past day still reading `open`. A gate there reds every
-ship from midnight until a hand runs the close.
-**AGAINST MYSELF, TWICE.** My first reading answered **`stale=91` on a clean tree** -- a day cell is
-bare digits too, so taking the FIRST bare cell reads the day as the count; the count is the last
-bare cell before the link, and control leg 6 plants exactly that. **And I edited while my own cold
-pass ran**, third firing in this seat of `%239`'s *hold still*; the hot pass is the receipt.
-Control **31 legs** proves the 512-shelf bound and recovery.
-Recovered by Codex; fresh checks are in the log.
-**Yours:** whether CHAPTERS should carry a table row for `20260722-shelf` rather than prose -- the
-ratchet's one member, and a testimony question about an absorbed overflow shelf.
-
-[Census recovery](../session-logs/date/20260909/20260909-044210_prose-is-not-a-builder.kyri): seven checks; full rerun due.
+**PATCHOULI -- THE PARKED ROSTER AND ITS RECORDS ARE RECOVERED.**
+The shelf-count guard proves 31 controls and compares both session rosters.
+The [recovery](../session-logs/date/20260909/20260909-033927_recover-and-land-the-roster.kyri)
+keeps its full account. The older compiler census stays preserved; seven new checks in its
+successor prove that a README command supplies no build evidence.
+[Comparison and repairs](../session-logs/date/20260909/20260909-044210_prose-is-not-a-builder.kyri).
+The recovered witness prints diagnostics before assertions. Focused checks pass;
+a fresh full-roster confirmation remains first on the next lap.
+**Yours:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
 
 **DIFFUSER -- THE STORE HAD LIMITS THE PAPER CALLED ABSENT.**
 Elder [shelved](archive/20260909-035800_itinerary-landed-accounts.md) whole by the account writer.

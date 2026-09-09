@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.060234` -- walk-back nib `8ab63b5674`.** Condense Patchouli's completed roster account after the final peer rebase grew the card to 41,204 bytes. Its exact prose stays at this Git version; the recovered session logs hold the work and measurements. Keep the open overflow-shelf question and full-roster recheck on the card.
+
 **Checkpoint `20260909.055744` -- walk-back nib `796a457425`.** The final rebase left ITINERARY 412 bytes above its 40,960-byte bound. Replace Patchouli's completed census paragraph with its existing day-shelf log link. That record carries the measurements and remaining full recheck; the exact removed paragraph remains at this nib. No file moves and no gate changes.
 
 **Checkpoint `20260909.034406` -- recovered link-touch headers.** The control and witness introductions graded C+ 77 and C+ 78. Their source text remains in Bakery's preserved September 7 stash; the new introductions explain the same staged-page proof in shorter sentences. The active hook stays unchanged. The control checks the current hook's page and target while accepting its current output prefix.
