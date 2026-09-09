@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.234210` | [Seventeen reds were one submodule](20260908/20260908-234210_seventeen-reds-one-submodule.kyri) | red ceiling 30 to 10 |
 | `20260908.233724` | [A message read mid-rebase](20260908/20260908-233724_a-message-read-mid-rebase.kyri) | `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's |
 | `20260908.232329` | [A third column](20260908/20260908-232329_a-third-column.kyri) | hung told from red; 82 choirs made to run; unreached 750 to 643 |
 | `20260908.230903` | [The tier's clock reads the pier](20260908/20260908-230903_the-tiers-clock-reads-the-pier.kyri) | wall over-reads CPU 24%; the run card carries both |
