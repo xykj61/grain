@@ -1,0 +1,62 @@
+# tools/g/gitlink_dependent_witness.rish -- a guard that reds on a dependency a correct clone may
+# lack can never be rostered, so its refusal is one nobody will ever hear.
+#
+#   rishi/bin/rishi run tools/g/gitlink_dependent_witness.rish
+#
+# THE TWO ROOMS. This tree holds twelve gitlinks. `vendor/` holds what the tree LINKS, and the
+# operator card names its four rungs a precondition every clone initialises -- a red from an empty
+# one is an environment fact. `gratitude/` holds a READING LIBRARY the gratitude-licenses law says we
+# study and never copy, so a clone that never initialised `gratitude/tigerbeetle` is a CORRECT clone.
+#
+# WHAT THIS COUNTS, and why it is a count rather than a sample. REDS %646 found the shape by
+# sampling 40 of the unreached witnesses -- 35 green, 5 red -- and among the five were preconditions.
+# Its lesson: a hard assert on an optional precondition buys a red nobody hears, because it makes the
+# witness unrostable and an unrostered witness runs nowhere. The row closed one witness as a worked
+# example and left the class as *a sweep whose size is the sample rather than a count*. Counted here:
+# 22 dependents, every one in the tigerbeetle census family, against 32 that depend on a required
+# `vendor/` rung and are covered by the card already.
+#
+# THE CURE ALREADY STANDS, which is the second finding and the larger one. REDS %460, one lane over,
+# named the roster's `capability` field as the mechanism for exactly this and called seating it a
+# design act awaiting a word. That field was built `20260829` and carries five probes today, two of
+# which -- `seed_projection` and `day_shelf` -- answer this same question about a different absent
+# thing. So the two open rows are one gate, and the gate has a door.
+#
+# THE GATE IS THE ONE ROW THAT WOULD RED THE FLEET: a rostered guard depending on an optional
+# gitlink and naming no capability. Held at zero. The unrostable population is reported rather than
+# gated, because rostering a study census is a hand's decision with a probe attached, and a guard
+# that reds on a decision nobody has made is a guard somebody turns off.
+
+say "gitlink-dependent: Language EN -- what a correct clone may lack, and who reds over it."
+say "gitlink-dependent: Style Gauge, Meter -- one gate at zero, one population reported."
+say "gitlink-dependent: Lens TAME -- every refusal planted and then lifted."
+
+say "gitlink-dependent: the control -- twenty behaviors on real repositories in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/g/gitlink_dependent_control.sh"]
+assert ctl.ok else "gitlink-dependent: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=20 fail=0" else "gitlink-dependent: the control did not prove twenty behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "gitlink-dependent: and this tree's own reading..."
+let scan = run ["sh" "tools/fixtures/g/gitlink_dependent_scan.sh"]
+# invariant: a refusal reports BOTH streams, since this scan writes its reason to stderr and the
+# reds file a reader opens would otherwise carry an empty line where the reason belongs.
+assert scan.ok else "gitlink-dependent: the scan refused --\n${scan.out}\n${scan.err}"
+# invariant: the gate is held at zero -- a rostered guard whose refusal depends on a submodule a
+# correct clone may lack would red every machine in the fleet that studies rather than clones.
+assert scan.out contains "rostered_undeclared=0" else "gitlink-dependent: a rostered guard depends on an optional submodule and names no capability --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "gitlink-dependent: the census refused --\n${scan.out}\n${scan.err}"
+# invariant: both populations are reported, empty or full. A reading that printed only the fault
+# would leave a reader unable to tell a healthy tree from a scan that could not see one.
+assert scan.out contains "optional_unrostable=" else "gitlink-dependent: the unrostable population went unreported"
+assert scan.out contains "required_dependents=" else "gitlink-dependent: the required population went unreported"
+assert scan.out contains "optional_gitlinks=" else "gitlink-dependent: the two rooms were not counted apart"
+
+say "gitlink-dependent: and the capability field the cure rests on is really built..."
+# invariant: the roster honors at least one capability probe. This witness recommends a mechanism to
+# whoever reads the unrostable population, and recommending one the runner does not implement would
+# be prose rather than a door.
+let caps = run ["sh" "-c" "grep -c '^capability ' construction/standing-equipment.kyri || true"]
+assert caps.ok else "gitlink-dependent: the roster could not be read"
+assert (trim caps.out) != "0" else "gitlink-dependent: the capability field this reading points at is named by no roster row"
+
+say "GREEN: gitlink-dependent -- 22 unrostable dependents counted rather than sampled, zero rostered undeclared, and the capability door proven open."

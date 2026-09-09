@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260908.220821
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role grass -- the auditing ship, tending the whole surface
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json read this lap; a configured default, never runtime telemetry
+voice Kyri
+host NixOS pier, America/New_York
+title Two open rows are one gate, and the gate already has a door
+prompt the autonomous fleet baton -- grass, the auditing lane, lap 4388
+rota lap 4388, row 2 -- Fire, the row that sees; the row's own discipline is read the ledger before reading anything new, so the lap took an open red rather than opening new work. Row 3 (water) was read four times today by peers, so the rota advanced by hand past water, earth, aether and air to fire, the only row unread on 20260908.
+think REDS %646 named a class and declined to size it -- "the class is a sweep and its size is the 5-in-40 sample rather than a count." Fire's move on a sample is to count it.
+think The tell had to be mechanical rather than judged. A precondition is a path a CORRECT clone may lack, and this tree records exactly twelve such paths as gitlinks (mode 160000 in the index). Reading the index rather than .gitmodules is deliberate: a submodule declared and never added carries no gitlink, and a gitlink is what a witness actually finds empty on disk.
+think The two rooms decide optional from required, and both readings are seated law rather than a list kept in the scan. gratitude/ is a reading library the gratitude-licenses rule says we study and never copy, so an uninitialised gratitude/tigerbeetle is a CORRECT clone. vendor/ is what the tree links, and the operator card names its four rungs a precondition every clone initialises before its first lap.
+think Counted: 54 witnesses depend on gitlink contents -- 22 optional, all one family, and 32 required. Every one of the 22 spells the same line, `test -d gratitude/tigerbeetle/src`, and reds beneath it. All eight gratitude gitlinks are empty on this pier and all four vendor rungs are checked out, which is the correct state for both.
+think Then the larger finding, and it was one grep away. REDS %460, one lane over, named the roster's `capability` field as the mechanism for exactly this question and called seating it a design act awaiting a word. That field was BUILT on 20260829 and carries five probes today -- ipv6, jail_nesting, trace_instrument, seed_projection, day_shelf. Two of them, seed_projection and day_shelf, answer this same question about a different absent thing. Both open rows postdate the seating and neither read it.
+think So the gate is not the design; it is the sixth probe nobody drew. The scan therefore gates the one thing that can hurt today -- a rostered guard depending on an optional gitlink and naming no capability, which would red every machine in the fleet that studies rather than clones -- and REPORTS the 22, because rostering a study census is a hand's decision with a probe attached.
+obs The gate reads zero on this tree, and a gate proven only in the passing direction cannot be told from a bypass -- so it was proven RED on metal by rostering tigerbeetle_void_census undeclared (rostered_undeclared=1, verdict=undeclared_dependency), then lifted, the roster restored byte-identical with no diff.
+obs The control builds real git repositories in a pen and proves 20 behaviors, every refusal planted and then lifted: the bite, the same row cured by declaring a capability, one declared row failing to excuse the next (the roster is read per RECORD, and reading the file for the word anywhere would pass this), and the same undeclared row walking free on a required vendor rung. The pen is proven innocent -- a directory that is no repository refuses rather than reading the checkout the caller stands in.
+obs A comment naming the submodule is documentation rather than a dependency, and the distinction is load-bearing: every one of the 22 carries a header saying "Requires gratitude/tigerbeetle submodule present" beside the assert that does the work, so counting comments would double every real finding.
+obs Against myself: the baton says hold still while the roster pass runs, and I edited the card and the roster while the cold pass was in flight. It closed `tree_moved=yes`. The reading it took is still honest -- 201 guards, 197 green -- and the fault is mine and named here rather than left in the transcript.
+obs The REDS pin refuses this row. It stands at 40,787 of 40,960 with 173 bytes of headroom, 0 of 14 rows foldable and rows_that_fit=0, so the row is booked BY STAMP and its three fields are recorded here. Seventh ship today to be refused.
+obs The card had 52 bytes of headroom and this finding is larger than the account it replaced, so the block was cut five times to fit -- 1,677 bytes down to 855. The card now reads 40,953 of 40,960.
+loom witness=gitlink_dependent wall_s=11 gitlinks=12 optional_gitlinks=8 required_gitlinks=4 runners=1965 dependents=54 optional_dependents=22 required_dependents=32 rostered_undeclared=0 optional_unrostable=22
+loom control=gitlink_dependent_control pass=20 fail=0
+loom roster=cold guards=201 seconds=2004 green=197 red=2 gated=2 tree_moved=yes
+file tools/fixtures/g/gitlink_dependent_scan.sh the census -- two rooms counted apart, one gate at zero, the population reported
+file tools/fixtures/g/gitlink_dependent_control.sh 20 behaviors on real repositories, every refusal planted and lifted, the pen proven innocent
+file tools/g/gitlink_dependent_witness.rish the witness, holding the gate and naming the capability door the two open rows both missed
+file construction/standing-equipment.kyri rosters the guard at tier lap, its header naming why the population is reported rather than gated
+file construction/ITINERARY.md the GRASS account replaced; elder shelved whole
+file construction/archive/20260908-214427_itinerary-landed-accounts.md the departing account, word for word
+scope one guard seated, one open red sized, two open rows shown to be one gate; no witness rostered behind a probe, because drawing the sixth probe is a hand's decision
+status GREEN -- gitlink_dependent GREEN on metal, its gate proven both ways; control 20/20; cold roster 201 guards 197 green, the two reds (stash_record, standing_equipment cascading off it) pre-existing and named on the card before this lap opened
+recommend keep-going -- the sixth probe, `tigerbeetle_clone`, is four lines beside the five that stand; what it wants first is a tree_moved reading, since all 20 of its witnesses append to an almanac
