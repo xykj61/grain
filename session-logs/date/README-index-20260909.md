@@ -16,8 +16,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.042717` | [The parked package returns](20260909/20260909-042717_the-parked-package-returns.kyri) | five logs and two guard families |
 | `20260909.041325` | [Say before the assert](20260909/20260909-041325_say-before-the-assert.kyri) | parked output-order repair recovered |
 | `20260909.040200` | [Store limits](20260909/20260909-040200_store-limits.kyri) | sourced revision; six boundary checks |
+| `20260909.033927` | [Recover the roster](20260909/20260909-033927_recover-and-land-the-roster.kyri) | parked guard and record |
 | `20260909.030306` | [A parked control recovered](20260909/20260909-030306_the-control-kept-in-a-stash.kyri) | identity checks; records preserved |
 | `20260909.030051` | [Parked record recovered](20260909/20260909-030051_the-parked-record-returns.kyri) | record, shelf, and seed claim |
+| `20260909.030008` | [Recover the roster guard](20260909/20260909-030008_recover-the-roster-guard.kyri) | parked lap restored |
 | `20260909.025738` | [The parked plant](20260909/20260909-025738_plant-recovery.kyri) | four records and a recovered guard |
 | `20260909.025531` | [Codex script modes](20260909/20260909-025531_codex-script-modes.kyri) | modes, recovery, and test PATH |
 | `20260909.022744` | [Incense watcher ready](20260909/20260909-022744_incense-watcher-ready.kyri) | arms after interactive exit |

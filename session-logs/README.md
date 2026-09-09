@@ -9,6 +9,8 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Bound:** under `living_pin_max_bytes[session-logs/README.md]` (57344)
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
+**Counts derived:** every `Rows` figure below is held to its own shelf's rows by
+[`../tools/s/session_roster_agree_witness.rish`](../tools/s/session_roster_agree_witness.rish), which reads this pin and `CHAPTERS.md` against the same count.
 
 Every session in this tree leaves a log, and this page is the way in. It reads **newest first**,
 and one row is one **day**: which shelf holds it, how many laps rest there, and where to open it.

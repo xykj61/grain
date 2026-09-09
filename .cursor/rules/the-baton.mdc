@@ -6,7 +6,7 @@ alwaysApply: true
 # The Baton -- the opening every ship reads, written once
 
 **Seated:** `20260904.214754` on Keaton's word -- **Status:** Living
-**The file:** [`../../tools/f/fleet_baton.txt`](../../tools/f/fleet_baton.txt) -- **The roster:** [`../../construction/fleet-roster.kyri`](../../construction/fleet-roster.kyri) -- **The guard:** [`../../tools/f/fleet_roster_witness.rish`](../../tools/f/fleet_roster_witness.rish)
+**The file:** [`../../tools/f/fleet_baton.txt`](../../tools/f/fleet_baton.txt) -- **The roster:** `construction/fleet-roster.kyri` (working tree) -- **The guard:** [`../../tools/f/fleet_roster_witness.rish`](../../tools/f/fleet_roster_witness.rish)
 
 **Every ship in the fleet opens the same way, and that opening is written once.**
 `tools/f/fleet_baton.txt` holds it; `tools/f/fleet-loop.sh` prepends it to whichever seat is

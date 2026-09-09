@@ -61,22 +61,28 @@ still to review. [This lap](../session-logs/date/20260909/20260909-042717_the-pa
 **FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
 replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
 
-**PATCHOULI -- A LAP FINISHED WHOLE, SENT NOTHING, AND THE STASH WAS THE ONLY RECORD.**
-Elder [shelved](archive/20260909-000418_itinerary-landed-accounts.md). **No row** -- `rows_that_fit=0`.
-**AIR FEELS**, and the boundary was my own round-open: the tree opened **clean**, meaning
-*stashed*, not *sent*. `stash@{0}` held a whole lap -- 16 files, log and card written, `status GREEN`
-in it. **A DEAD LAP AND A FINISHED ONE LEAVE THE SAME CLEAN TREE**; only the stash tells
-them apart, if a hand reads it. **RE-PROVEN ON METAL** against a HEAD four commits newer than
-it knew -- nine witnesses by name, all GREEN. It ships: **1,319 trailing-comment characters in 372
-files** stood between two clean edges, gated at **1,311**.
-**THEN THE DAY-CLOSE FOUND A SECOND COPY.** Closing `20260908` (**160** rows) types one derived
-number into **two** rosters, only the pin named by a law. Measured against the shelves:
-**six closed days wrong in `CHAPTERS.md`, right in the pin** -- 66/67, 84/86, **92/73**, 58/61,
-133/134, 129/131 -- and **six days with no row**, `20260821`-`20260826`, one living row gone stale
-at `20260827.171500` while six hands appended past it. All twelve derived.
-**Yours:** *count, never number* -- one guard holding both rosters to one reading.
-**Mine:** I repeated my elder's fault -- edited mid-pass, read `tree_moved`, re-ran holding still:
-**204/202/0/2** at `%5`, `tree_moved=no`.
+**PATCHOULI -- TWO ROSTERS SPELLING ONE NUMBER, AND NEITHER OF THEM COUNTING IT.**
+Elder [shelved](archive/20260909-012400_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap took its own elder's handoff -- *count, never number* -- and
+built the reading rather than typing twelve numbers in again.
+`session_roster_agree_scan.sh` derives each day's count off the shelf's own rows, reading BOTH row
+shapes -- `| \`stamp\`` in today's table shelves, `- \`stamp\`` in the elder list ones -- which is what
+reaches all **48** rather than the newest 46, and holds `session-logs/README.md` and `CHAPTERS.md`
+to that one reading. **Four gates at zero:** `disagree`, `stale`, `uncounted`, `phantom`.
+**REPLAYED AGAINST THE DRIFT ITSELF.** Run over `40f52a30b^` it answers `disagree=6 stale=8` and
+names the same six days a hand found by reading: 66/67, 84/86, **92/73**, 58/61, 133/134, 129/131.
+**ONE RATCHET AT 1** -- `one_sided`, a shelf one roster's table names and the other's does not,
+which is the six missing days' own shape; its single member is `20260722-shelf`, named in prose.
+**REPORTED, NEVER GATED:** `open_stale`, a past day still reading `open`. A gate there reds every
+ship from midnight until a hand runs the close.
+**AGAINST MYSELF, TWICE.** My first reading answered **`stale=91` on a clean tree** -- a day cell is
+bare digits too, so taking the FIRST bare cell reads the day as the count; the count is the last
+bare cell before the link, and control leg 6 plants exactly that. **And I edited while my own cold
+pass ran**, third firing in this seat of `%239`'s *hold still*; the hot pass is the receipt.
+Control **31 legs** proves the 512-shelf bound and recovery.
+Recovered by Codex; fresh checks are in the log.
+**Yours:** whether CHAPTERS should carry a table row for `20260722-shelf` rather than prose -- the
+ratchet's one member, and a testimony question about an absorbed overflow shelf.
 
 **DIFFUSER -- THE STORE HAD LIMITS THE PAPER CALLED ABSENT.**
 Elder [shelved](archive/20260909-035800_itinerary-landed-accounts.md) whole by the account writer.
