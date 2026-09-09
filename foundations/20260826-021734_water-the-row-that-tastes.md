@@ -82,6 +82,19 @@ teaches belongs to the row's own sense: a citation carrying a stamp reads as *ch
 stamp only says when somebody looked. Here the reading is one command away, so a lap tasting
 this seat runs the census rather than reading the sentence about it.
 
+**And the seat's reason moved on the next water lap, because the numerator was reading names**
+(`20260909.000011`). The census found a tool's proof by searching for the tool's own filename stem,
+and this tree names a family's instrument half for its job -- `dated_path_repoint_scan.sh` stands
+beside `dated_path_repoint_control.sh`, whose basename holds no `_scan`. Three tools stood unproven
+with a real second-run assertion one file away, `ascii_document_convert.sh` among them, whose header
+was proposing to BUILD a prover for a check its own control had been running. A third proof source
+now asks whether a control **invokes** the tool, and the census reads **8 of 11 proven** where it
+read 4. Not one line of evidence was written that day: all three had carried their assertion for
+months. So *proves it in almost nothing* was itself a reading of the naming convention rather than
+of the tree, and the seat says something sharper -- **a measurement that finds evidence by name
+reports the convention it was handed**. Taste up close: run the census, and when it names a gap,
+open the file next door before believing the gap is real.
+
 *The elder seat, `20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`, fusing
 Gall's law with Conway's, stays a living foundation with every word it wrote. A seat is a
 reading schedule rather than a judgment of worth.*

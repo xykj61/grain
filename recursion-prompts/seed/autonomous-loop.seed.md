@@ -149,7 +149,11 @@ writers -- so one candidate transforms a document, and running it twice leaves t
 byte-identical. The count fell fourfold and the reason for the seat held, since the reason was that
 this tree states the claim in a foundation and proves it in almost nothing. **Run the census rather
 than reading this sentence:** a stamp says when somebody looked, never that the reading still
-stands. Fire was left alone on
+stands. **Re-read `20260909.000011`: 11 candidates, 8 proven where the elder numerator read 4** -- three
+tools had carried a second-run assertion in a control named for the FAMILY rather than for the tool,
+and a search on the tool's own stem could not see it. A third proof source now asks whether a
+control invokes the tool. The seat's reason survives in a sharper form: a measurement that finds
+evidence by name reports the naming convention it was handed. Fire was left alone on
 purpose: its three are a designed triad -- the stop, the allocation the stop buys, and the cut that
 follows -- and pulling one leg breaks a set rather than freeing a seat.
 
