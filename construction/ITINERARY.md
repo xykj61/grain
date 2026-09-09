@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3723160411` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a9ce94553f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINE OF THE TEN ANSWERED TO A FLAG, SO I BUILT THE PROVER THAT ASKS THEM.**
 Elder [shelved](archive/20260908-204213_itinerary-landed-accounts.md).
