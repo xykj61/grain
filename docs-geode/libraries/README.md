@@ -23,7 +23,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 111 | 129 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
-| [`comlink/`](../../comlink/README.md) | 73 | 12 |
+| [`comlink/`](../../comlink/README.md) | 74 | 13 |
 | [`constel/`](../../constel/README.md) | 32 | 39 |
 | [`construction/`](../../construction/README.md) | 1 | 59 |
 | [`crypto/`](../../crypto/README.md) | 82 | 121 |

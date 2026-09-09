@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260909.154924` | [The record nobody carried](20260909/20260909-154924_the-record-nobody-carried.kyri) | Copal; parked log lands, nib repinned |
 | `20260909.154812` | [Roster claim read back](20260909/20260909-154812_the-roster-claim-read-back.kyri) | every guard can red, now measured |
+| `20260909.152438` | [What a kept answer costs per read](20260909/20260909-152438_what-a-kept-answer-costs.kyri) | A retained answer: 181 instructions a read, or 456 bytes. |
 | `20260909.151557` | [The reply that outlived its frame](20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri) | Bakery; a returned answer owns its bytes |
 | `20260909.151459` | [Merged weave deletes by name](20260909/20260909-151459_a-merged-weave-deletes-by-name.kyri) | Patchouli; parked lap recovered |
 | `20260909.092251` | [Integration send held](20260909/20260909-092251_integration-send-held.kyri) | Copal; final peer recheck pending |

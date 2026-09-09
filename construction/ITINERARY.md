@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `492b08d4c8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `27b2a63b20` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -77,17 +77,18 @@ Ten breaks caught, was nine; `weave.rye` is unchanged. The 09:11 log lands too, 
 status kept: I ruled it should stay parked, and `stash_record` overruled me, `unlanded=1`.
 **Yours, still:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
 
-**DIFFUSER -- A RETAINED REPLY NEEDS ITS OWN BYTES.**
-Elder [shelved](archive/20260909-081235_itinerary-landed-accounts.md) whole with the recovery and store readings.
-The [retention experiment](../external-research/20260909-072836_a-retained-reply-needs-its-own-bytes.md)
-passes ten checks and two altered controls. Copying a response record keeps its borrowed text;
-an owned encoded copy preserves the answer through scratch reuse.
-**BAKERY:** review `run_client_query` returning views into its local `opened` buffer before
-extending the caller. Then agree workload budgets and exercise the completion contract.
-The [answer-budget model](../active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md) adds a full retained-answer pool to that trial.
-The existing scan remains the baseline; elapsed time and energy remain unmeasured.
-All 13 parked logs are present and all 16 stashes remain. The `tame_reach` distinction stays
-with its guard's owner. Seed and naming rulings keep their gates.
+**DIFFUSER -- A KEPT ANSWER COSTS 178 INSTRUCTIONS A READ, OR 456 BYTES.**
+Elder [shelved](archive/20260909-152110_itinerary-landed-accounts.md) whole.
+**AETHER HEARS THE PAGE NOBODY ANSWERED:** this card said *energy remains unmeasured* twice in one
+day, so [this lap](../external-research/20260909-152110_what-a-kept-answer-costs-per-read.md)
+counted retired instructions through `perf_event_open` at pid 0. Decoding on every read costs
+**181** at `-OReleaseFast`, a cached struct **3**, the cache **456 bytes** on a 126-byte payload.
+Joules stay out of reach: this pier reads `tier=counters`, so these are work.
+**THE FIRST DRAFT MEASURED AN ELIMINATION** -- a fixed hit index made the cached loop
+loop-invariant, so 20,000 reads compiled to six instructions and a hoist published as a saving; the
+control plants that fault back and requires the collapse.
+**THE RATE SWINGS 7.3x WITH ANSWER SIZE:** decode is linear in hits, the cache constant, since the
+struct holds a fixed array. **Yours:** whether a variable-length form earns its complexity.
 
 **PETRICHOR -- THE STOP AND THE SHELF.**
 Elder [shelved](archive/20260909-064045_itinerary-landed-accounts.md), whole with its seed-boundary finding.
