@@ -645,3 +645,7 @@ at a closed fold.*
 *Recovery `20260909.090354` -- [the parked address](REDS-two-instruments-that-could-not-see-their-subject-rows-508-509.md) routes to its published record; the original draft remains in Grass's stash.*
 
 *Recovery `20260909.090354` -- [the parked address](REDS-the-copy-that-was-counted-against-itself-rows-469.md) routes to its published record; the original draft remains in Grass's stash.*
+
+*Row %664 folded to [`REDS-a-number-typed-beside-a-row-rows-664.md`](REDS-a-number-typed-beside-a-row-rows-664.md) on `20260909.071036`, **CLOSED** -- the recital correction landed; its account remained in Copal's stash.*
+
+*Rebase preserves [REDS-a-number-typed-beside-a-row-rows-660.md](REDS-a-number-typed-beside-a-row-rows-660.md) as a routing shelf.*

@@ -186,6 +186,7 @@ reds pass with the installed `rg` on PATH; the fourth red is their roster summar
 The full staged hot pass held still: 209 guards, 207 green, zero red, two gates.
 The saved branch stays. After the peer rebase, all 11 focused integration checks pass.
 [The verification record](../session-logs/date/20260909/20260909-063251_the-integrated-recovery-is-ready.kyri) carries the scope.
+**Next:** review existing-path stash edits; this lap resolved the twelve shelf drafts.
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
