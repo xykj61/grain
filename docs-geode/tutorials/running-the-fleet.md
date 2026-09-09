@@ -3,6 +3,7 @@
 **Language:** EN - **Style:** Gauge, Field setting (see [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Written:** `20260907.160051`
+**Updated:** `20260909.054046` -- the hand's stop file and the signal helper's reporting default
 **Status:** Living - **Room:** checkable -- every command below was run against this tree before it
 was written down, and the two that launch a ship were run in their own dry-run form
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
@@ -141,7 +142,8 @@ the watch the way you launched the ships.
 process table rather than guessed from a pane's words; a window whose pane sits mid-command, since
 somebody else has that keyboard; a seat name worn by two windows, because a watcher leaves an
 ambiguous choice to a hand; a tree carrying `.loop-gates-only`, `.mind-state/CUSTODY`, or
-`.mind-state/TRANSACTION`, since a gated choice belongs to a hand; and a seat that has burned
+`.mind-state/TRANSACTION`, since a gated choice belongs to a hand; a tree carrying `.loop-clockout`,
+since its operator asked it to stop; and a seat that has burned
 `WATCH_ARM_MAX` arms while surviving under `WATCH_SETTLE`, which is the loop's own quickfail law
 one level up.
 
@@ -157,11 +159,16 @@ whole consequence of the section above, and it changes what stopping means.
 
 | To stop | Do this |
 |---|---|
-| One ship, and make it stick | `touch .loop-gates-only` in that ship's tree |
+| One ship, after its current lap finishes | `touch .loop-clockout` in that ship's tree |
+| An agent with only custody gates left | `touch .loop-gates-only` during its lap |
 | One ship, this lap only | `LOOP_LAPS=1` at launch, or let `LOOP_HOURS` expire |
 | The watch itself | interrupt it, or launch it with `WATCH_PASSES=<n>` or `--once` |
 
-`.loop-gates-only` is a **file** rather than a printed word because the transcript echoes the
+**A person's stop is `.loop-clockout`.** The loop checks it before opening a lap and after closing
+one. A running lap finishes its commit and send, then stops; the watch leaves that seat alone.
+The hand that set the file removes it when ready to resume. The loop keeps it until then.
+
+**The agent's gate report is `.loop-gates-only`.** It is a **file** rather than a printed word because the transcript echoes the
 prompt, and the prompt itself carries the letters `GATES-ONLY` -- a grep on the stream would
 false-stop the loop the moment it began. The loop clears the sentinel at the top of each lap and
 reads for it again at the close, so an agent writing it mid-lap stops the loop at that lap's end.
@@ -179,7 +186,7 @@ the rest. `tools/f/fleet_call.sh` resolves every candidate to its working direct
 anything outside this tree out loud:
 
 ```
-sh tools/f/fleet_call.sh --pattern standing_equipment --dry-run
+sh tools/f/fleet_call.sh --pattern standing_equipment
 ```
 
 which answers, on this tree today:
@@ -190,12 +197,12 @@ candidates=20 would_send=1 refused_foreign=14 refused_self=4 refused_unknown=1 o
 
 **Read the field names rather than the counts.** Those numbers are one second's reading of what
 happened to be running, so yours will differ every time; what stays true is the shape, and that a
-process in a sibling tree is refused by name rather than signalled in silence.
+process in a sibling tree is refused by name rather than signaled in silence.
 
-**Keep the `--dry-run`, because sending is what the helper does by default.** `--signal` names
-which signal rather than whether to send one, so the flagless form is the live one. Reading it the
-other way costs a pass: on `20260908` this page's own author asked what was running in this tree,
-left the flag off, and killed the roster measurement the ask was for.
+**A bare call reports and sends no signal.** Add `--signal TERM` to act on the selected processes.
+`--dry-run` forces a preview even when a signal is named, in either flag order. That separation
+was seated after an earlier default sent a signal when a hand meant only to ask what was running.
+For a routine ship stop, use `.loop-clockout` so the lap finishes whole.
 
 ## Where the effort setting lives
 
