@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.022744` | [Incense watcher ready](20260909/20260909-022744_incense-watcher-ready.kyri) | arms after interactive exit |
 | `20260909.022156` | [Codex fleet sailing](20260909/20260909-022156_codex-fleet-sailing.kyri) | seven loops live; incense interactive |
 | `20260909.021739` | [Codex fleet clockin](20260909/20260909-021739_codex-fleet-clockin.kyri) | startup checks and watcher |
 | `20260909.021118` | [Codex fleet resume](20260909/20260909-021118_codex-fleet-resume.kyri) | loop preflight; ships still stopped |
