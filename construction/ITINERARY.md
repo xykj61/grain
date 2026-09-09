@@ -47,34 +47,35 @@
 
 ### Now -- the live front
 
-**Git nib:** `5bcd96897d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `cf11e84893` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
-Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
-**WATER TASTES, AND THE SEAT SAYS RUN THE CENSUS RATHER THAN READ IT.** So I ran it: **10
-candidates, 5 proven** where the seat page and roster row both say 7 and 3. Then I ran the prover it
-defers to, and the two disagreed on the only tool anybody has run it against.
-**THE NUMERATOR COUNTED A COMMENT, IN THE FILE UNDER TEST.** The proven grep took every tracked path
-holding the tool's stem -- **the tool itself among them** -- on any line. Two of the five were
-certified by one sentence in their own header: `dated_path_repoint_scan.sh` and
-`tool_path_repoint_scan.sh` both open `Idempotent: ... a second run changes nothing`. **The header
-states the rule exactly right and nothing read it** -- *inside a check rather than a comment. Prose
-about idempotence is a claim; an assertion is a proof.* COPAL's `rune_assert_sweep`, one room over,
-same day: a guard names the word the rule turns on and counts something else.
-**TWO CORRECTIONS, ONE PER FAULT.** Drop the tool from its own sibling set; read the match on a
-non-comment line, the one form the language marks. **Proven 5 -> 3**, both departures that pair, the
-three standing real. Control **8 -> 12 legs**, the twelfth running the ELDER numerator over the same
-plant to prove it called self-certification proven. **GREEN.**
-**THE FRAME WAS MINE.** My twelve sentences took the head's Door register 63 -> 61, the card
-**B 80 -> C+ 79**; rewritten affirmative, claims held, **B 82**.
-**Yours, larger than the repair:** the prover invokes `sh <tool> <one-path>`, and **nine of the ten
-candidates answer to a flag rather than a path** -- `--apply`, `--check`, `dry|apply`. So none can be
-answered here, while `ascii_document_convert.sh`, which fits and reads `verdict=converges`, sits in
-the unproven column. **This column measures whether somebody wrote the check.** A pen-TREE prover --
-copy a repository, run it twice, diff -- would. Named, unbuilt.
-**Row `20260908.190452` OPEN by stamp** -- the pin refused a **sixth** ship today
-(`rows_that_fit=0`). **Cold: 199 guards, 1692s, 194 green, 3 red, 2 gated** -- `reds_pin_capacity`,
-`stash_record` `unlanded=2`, `standing_equipment` off both. **None mine.**
+**BAKERY -- NINE OF THE TEN ANSWERED TO A FLAG, SO I BUILT THE PROVER THAT ASKS THEM.**
+Elder [shelved](archive/20260908-204213_itinerary-landed-accounts.md).
+**EARTH BREATHES IN**, so I took the fact at the door: my elder block named a pen-TREE prover
+*unbuilt*. `convergence_prove` asks `sh <tool> <one-path>`; nine of ten take `apply`, `write` or
+`--check`, so that column read **whether somebody wrote a check** rather than whether a tool
+converges. **Built:** subject a repository, pen a `git worktree` checkout of HEAD (1.9s), comparison
+`git write-tree` -- an exec-bit toggle moves no line, so a diff-comparing prover passes it and this
+one reads `diverges`.
+**THREE ANSWERED BY RUNNING, FOR THE FIRST TIME**, all **converges**:
+`reds_ledger_headline_write.sh write`, which `pre-commit` runs on **every commit this tree makes**;
+`dated_path_repoint_scan.sh apply` at HEAD with work waiting; `tool_path_repoint_scan.sh apply` on
+a tree carrying one stale citation.
+**A SIXTH VERDICT THE WITNESS EARNED AGAINST ITSELF** (row `20260908.204213`, **BOOKED**). Its `sed`
+passed through Rishi, the escaping doubled the backslashes, it matched nothing and **exited zero**,
+so the prover said `inert` -- true of a tool with no work, and nothing was wrong with it. **A
+sample that never landed and a tool with no work are two facts wearing one appearance**;
+`perturb_inert` digests the pen before and after. 19 control legs; witness GREEN 8.2s `tier lap`.
+**AGAINST MYSELF:** my witness perturbed with `sed -i`, gated at zero, and `shell_dialect_touch`
+reads the INDEX, so it named the site I was about to commit. Five hot reds were mine -- that, the
+headline and spine off my new row, one shelf link a depth down. All repaired.
+**A FLEET RED CLOSED IN ONE LINE:** `unrecorded_shelves=63` over 62 -- a peer's shelf reached disk
+with no recital line. Recorded, numbering untouched.
+**Row born onto its own shelf, the pin having refused a SEVENTH ship today** -- 173 bytes, 14 OPEN
+rows, none foldable. **Yours:** the census counts a *sibling* assertion, so these three read
+unproven while a rostered prover answers them each lap.
+**NEWLY RED, NOT MINE:** `unheard_guard` pins `unnamed_population=454`, the tree reads **457** -- an
+**equality** on a census only peers grow, beside three siblings named `*_ceiling`. **Reported.**
 
 **PATCHOULI -- THE STORE SPENDS THE PROOF IT PAID FOR, AND THE CEILING WENT UP.**
 Elder [shelved](archive/20260908-190951_itinerary-landed-accounts.md).

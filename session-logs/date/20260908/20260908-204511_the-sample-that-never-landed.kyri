@@ -1,0 +1,47 @@
+format session-log-v1
+stamp 20260908.204511
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role core infrastructure -- the Bakery seat
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default only -- .claude/settings.json, read 20260908
+evidence .claude/settings.json; no runtime telemetry exposed to this lap
+voice Kyri
+host Framework laptop, NixOS, America/New_York one clock
+title the prover for the nine that answer to a flag
+prompt autonomous lap -- Bakery seat, core infrastructure, Lindy-first crux-first
+rota lap 4379, row 4 -- Earth, Mercury, the row that breathes in; took the concrete fact at the door rather than the argument about it, which chose running the census over reading it and turned my own elder card line from a claim into a built instrument
+think Read the card whole. The loudest cross-fleet fact was the REDS pin refusing a sixth ship today, so I measured it first: 40,787 of 40,960, 14 OPEN rows, none foldable, rows_that_fit=0.
+think Checked whether reds_fold.sh had ever been taught the BOOKED word door B seated on 20260829. It had -- line 180 matches OPEN, CLOSED and BOOKED and the last marker decides. Measurement beat memory; that was not the gap.
+think Turned to my own named-unbuilt remainder instead: convergence_prove.sh invokes sh <tool> <one-path>, and nine of the ten census candidates are whole-tree operators taking apply, write or --check. So that column measures whether somebody wrote a check, never whether a tool converges.
+think Built the pen-tree prover. The subject is a repository, so the pen is one: git worktree add --detach costs 1.9 seconds and is removed whole. The comparison is git write-tree, a hash over every path, its bytes AND its mode -- so an exec-bit toggle reads diverges where a line diff sees nothing.
+think A committed tree is usually already in the state its operator produces, which is why reds_ledger_headline_write.sh reads inert at HEAD: pre-commit runs it on every commit. --perturb is how a caller hands the pen a tree with work waiting, the direct analogue of the sibling prover's sample file.
+obs The witness caught its own broken sample. Its sed expression passed through Rishi, the escaping doubled the backslashes, the expression matched nothing and exited zero, and the prover answered inert -- a true sentence about a tool with no work, standing over a sample that never landed. Two facts wearing one appearance. Added perturb_inert, which digests the pen before and after rather than reading the exit status.
+obs Three whole-tree operators are answered by running for the first time: the headline writer that runs on every commit converges on a perturbed headline; dated_path_repoint converges at HEAD with real work to do; tool_path_repoint converges on a tree carrying one planted stale citation.
+obs A fleet-wide red closed in one line and it was not mine -- reds_pin_capacity read unrecorded_shelves=63 over a ceiling of 62, a peer's shelf having reached disk 40 minutes earlier with no recital line. Recorded honestly, its contested numbering left exactly as its own header wrote it; verdict returned to ok.
+obs My own row was born onto its own shelf rather than the pin, the pin having refused a seventh ship today at 173 bytes of headroom. That is the practice %335 through %337 already took, and it keeps the spine gapless.
+obs The cold pass closed 199 guards, 1731s, 194 green, 3 red, 2 gated. One red is newly standing and is not mine: unheard_guard asserts contains "unnamed_population=454" while the tree reads 457, an equality on a census only other ships grow, sitting beside three siblings correctly named with a ceiling. Its own scan answers verdict=ok, so only the witness's pin reds. That is %626's shape wearing an assertion instead of a ceiling. Reported rather than moved, since a lap moving a peer's pin for itself is the side door the ledger already names.
+loom witness=convergence_tree_prove wall_s=8.2 control_legs=19 pass=19 fail=0
+loom prover=convergence_tree_prove pen_worktree_s=1.9 write_tree_s=0.2 headline_prove_s=5.2
+loom census=convergence candidates=10 proven=3 answered_by_running=3
+loom cold=standing_equipment guards=199 seconds=1731 green=194 red=3 gated=2
+loom hot=standing_equipment guards=200 seconds=1564 green=195 red=3 gated=2 tree_moved=no
+loom pin=reds bytes=40787 bound=40960 headroom=173 open_rows=14 foldable=0 rows_that_fit=0
+file tools/c/convergence_tree_prove.sh the prover: a repository pen, six verdicts, mode-aware comparison
+file tools/fixtures/c/convergence_tree_prove_control.sh nineteen behaviors, both divergence kinds and both refusal shapes planted then lifted
+file tools/c/convergence_tree_prove_witness.rish GREEN, and it carries the account of its own escaping fault
+file construction/standing-equipment.kyri rosters the guard at tier lap, 8.2s
+file construction/archive/REDS-a-sample-that-never-landed-rows-647.md the row, born onto its shelf because the pin had 173 bytes
+file construction/archive/REDS-fold-recital.md two lines: mine, and the peer shelf that had none
+file construction/ITINERARY.md the new BAKERY block; card at 40,946 of 40,960
+file construction/archive/20260908-204213_itinerary-landed-accounts.md the elder block, folded whole
+file construction/REDS.md the headline repaired to span 647 by the very tool this lap proved converges
+obs Five reds of the first hot pass were mine and all five are repaired: a staged sed -i that shell_dialect gates at zero and shell_dialect_touch caught on the INDEX rather than after landing; reds_ledger_headline and reds_ledger_monotone drifting off the new row; and fold_shelf_link_repoint on one link my account shelf carried down a directory when the elder block folded. The headline repair was made by reds_ledger_headline_write.sh write, which is one of the three tools this lap proved converges.
+scope one keystone -- the pen-tree prover built, proven and rostered -- plus one one-line fleet red closed
+status GREEN -- convergence_tree_prove witness GREEN on metal, control pass=19 fail=0, reds_pin_capacity verdict=ok exit 0; cold pass closed 199 guards 194 green 3 red 2 gated; hot pass closed 200 guards 195 green 3 red 2 gated with tree_moved=no, and the three are unheard_guard, stash_record and standing_equipment cascading off them, none mine
+recommend keep-going -- widening the census predicate to count a rostered central prover is one word from Keaton; the three readings stand measured either way

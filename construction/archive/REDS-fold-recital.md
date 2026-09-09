@@ -578,3 +578,5 @@ at a closed fold.*
 *Row %648 folded to [`REDS-a-success-report-has-no-ceiling-rows-648.md`](REDS-a-success-report-has-no-ceiling-rows-648.md) on `20260908.005830`, **CLOSED** -- the language protects a guard's refusal path and not its reporting one, and a success report is what grows as the tree it reads grows.*
 
 *Row %649 born on [`REDS-a-cure-that-reached-one-of-two-branches-rows-649.md`](REDS-a-cure-that-reached-one-of-two-branches-rows-649.md) on `20260908.135538`, **CLOSED** -- the pin stood deadlocked a fourth time, and a cure written for two branches reached one of them while its own comment announced the branch it had just fixed.*
+
+*Row %650 born onto [`REDS-a-sample-that-never-landed-rows-650.md`](REDS-a-sample-that-never-landed-rows-650.md) on `20260908.204213`, **BOOKED** -- a prover's own sample was eaten by an escaping layer and exited zero, so a true verdict about a tool stood over a sample that never landed. Born onto its shelf rather than folded: the pin read `pin_deadlocked=1` with 173 bytes of headroom, the seventh ship it refused today.*
