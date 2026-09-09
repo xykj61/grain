@@ -98,14 +98,22 @@ while IFS="$(printf '\t')" read -r f broken repair; do
   fi
   # Only the exact link spelling, and only where it stands as a markdown target.
   BROKEN="$broken" REPAIR="$repair" python3 - "$f" <<'PY' > "$work/out" || { echo "refused: the rewrite failed for $f" >&2; exit 2; }
-import os, sys
+import os, re, sys
 p = sys.argv[1]
 b = os.environ["BROKEN"]; r = os.environ["REPAIR"]
 s = open(p, encoding="utf-8").read()
 old = "](" + b + ")"
 new = "](" + r + ")"
-assert old in s, "the scan named a link this file does not carry"
-sys.stdout.write(s.replace(old, new))
+# The scan emits one row per occurrence and skips closed inline code spans.
+# Replace one visible occurrence per row, preserving the scan's subject and count.
+parts = re.split(r"(`[^`\n]*`)", s)
+for i in range(0, len(parts), 2):
+    if old in parts[i]:
+        parts[i] = parts[i].replace(old, new, 1)
+        break
+else:
+    raise AssertionError("the scan named a link this file does not carry outside code spans")
+sys.stdout.write("".join(parts))
 PY
   [ -s "$work/out" ] || { echo "refused: the rewrite of $f came back empty -- refusing to truncate a tracked file" >&2; exit 2; }
   cat "$work/out" > "$f"
