@@ -1,0 +1,101 @@
+format session-log-v1
+stamp 20260908.152731
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role grain-grass, the auditing seat of the eight-ship fleet
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no authoritative identity line
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status supported by named evidence
+evidence .claude/settings.json reads effortLevel medium, and tools/f/fleet-loop.sh execs --effort medium bare; this pier runs bare
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The wall that had never been shown a name
+prompt the standing GRASS lane -- auditing, at lap 4330
+
+rota lap 4330, row 0 -- Aether, the row that hears. Its threshold asks the lap to listen rather
+rota than scan: the claim a page keeps repeating, the question it keeps answering, and the silence
+rota where a claim used to be and a witness now stands. Its dual seat, the grain, carries the ear's
+rota hard rule out loud -- a guard that cannot red guards nothing, so a witness must be proven able
+rota to make a sound before its silence means anything. That sentence chose the lap.
+
+think Listening for a silence, I read the head of construction/standing-equipment.kyri, which
+think quotes that very strand and then says: "every guard here can red." That is a claim about 260
+think rows, and nothing in the tree counts it.
+think Measured by grep over every rostered path: 199 of 260 reach a prove-red mode, a control
+think fixture, or a plant; 61 do not. A grep is a proxy, so I narrowed it honestly -- a code
+think witness that runs a program and asserts on its output is red-capable by construction, where
+think a tree scan compared against a ceiling is not. Of the 61, twelve invoke a tree scan, and two
+think of the twelve have a control.
+think The loudest of the ten is tools/fixtures/s/sow_leak_scan.sh -- the wall between the
+think maintainer's own name and a repository built to carry none. sow runs it every cadence lap;
+think it has answered IDENT_CLEAN every time; nothing had ever planted a name in front of it. Its
+think one demonstrated red was a FALSE one: REDS %244, when a blanket history rewrite turned two of
+think its own entries into the public pseudonym and 22 projected files failed a privacy check about
+think nothing. A guard whose only demonstrated red was wrong is the guard whose green is worth least.
+
+obs Wrote tools/fixtures/s/sow_leak_control.sh: seven gated legs, each running the scan with its
+obs working directory inside a throwaway pen holding a seed/ of its own, so the real seed/ is never
+obs touched and custody gate %1 is nowhere near it. Planted name reads IDENT_LEAK and names its
+obs file; a lowercase spelling is caught, which checks the scan's own -i claim; a bracketed entry
+obs catches its plain spelling, which is %244's repair; a contact identifier is caught; clean prose
+obs and the .sow-withheld.log exclusion walk free.
+obs Shown from the failing side twice, since a refusal proven only in the passing direction cannot
+obs be told from a bypass. Dropping -i from a copy of the scan fails leg 3; removing the bracketed
+obs entry fails leg 4; lifting each plant returns control_verdict=ok. SOW_LEAK_SCAN points the
+obs control at the copy, which is how the plants are shown to land.
+obs Two readings are REPORTED rather than gated, because each describes the instrument truly and a
+obs wall at zero would misdescribe it: a name inside a binary file is invisible to the scan's -I,
+obs and an ABSENT seed/ reads IDENT_CLEAN -- a clean answer about a corpus that is not there. The
+obs second is held by ORDERING rather than by the scan: sow_witness duty 2 projects fresh and
+obs asserts SOW_OK before duty 3 reads anything. That sentence is now written into the witness,
+obs because moving duty 3 ahead of duty 2 would turn it green over an empty directory.
+obs Seated as duty 0 of tools/s/sow_witness.rish, ahead of the four duties that read the seed,
+obs since those four prove a clean seed only if the scan could have said otherwise.
+
+obs THE INSTRUMENT EARNED ITS KEEP INSIDE THE HOUR. A standing seed_link red was waiting on the
+obs cold pass: README.md -> context/BHAKTA_STYLE.md, a front door linking into a room the seed does
+obs not carry. The Bhakta register was seated at 12:09 today and template-manifest.bron never
+obs learned it, while its four siblings -- RADIANT, TWILIGHT, GAUGE, CIVIC -- all ship under the
+obs same scrub verdict. I asked the new control before proposing the line: the page reads
+obs IDENT_LEAK in the field, exactly as RADIANT_STYLE.md does, which carries the name four times in
+obs the field and zero in the seed. The scrub is what handles it, so the line is safe. Seated
+obs allow context/BHAKTA_STYLE.md. This is a claim across lanes -- the register is petrichor's and
+obs incense's room -- named here and on the day shelf for their review.
+
+obs AGAINST MYSELF, THREE TIMES. First, the lap opened onto an orphaned --scoped pass holding the
+obs runner's lock, whose parent had exited; the runner named it and named the repair, and TERM
+obs released it, yet the release is not instant and my immediate relaunch was refused against a pid
+obs already dying. Second, I ran sow_witness by hand beside my own cold pass, so a projection
+obs rebuilt seed/ underneath it -- sow_lock red is mine, and it is REDS %193 exactly. Third and
+obs worst, I read seed_link red in the same window and wrote it off as the same race; re-run over a
+obs complete projection it reds identically, so a real red on the front door was one inference away
+obs from being buried under my own noise. I also edited the tree mid-pass, so the cold close reads
+obs tree_moved; the --hot pass is the gating read.
+
+obs A READER TAKES NO LOCK. %193 serialized the WRITERS of seed/. tools/fixtures/s/seed_link_scan.sh
+obs reads that directory with no lock and no ordering relationship to any projection, and it runs at
+obs tier lap. sow_lock_witness's own head names three readers of the public face -- sow_leak_scan,
+obs sow_witness, publish-seed -- and misses the one with no ordering protection at all. Named for
+obs Keaton rather than taken, since a reader taking the projection lock changes a custody-adjacent
+obs guard.
+
+obs FOR THE FLEET, DESIGN RATHER THAN FAULT. The runner prints "evidence <path>" at the moment of a
+obs red and lands the file at the CLOSE, clearing the elder room first -- deliberately, since a file
+obs written mid-run would move the tree digest it sits beside. So a hand reading a red while the pass
+obs runs finds that path absent, or holding a KILLED pass's copy. Two ships met that today and read
+obs it as a fault.
+
+file tools/fixtures/s/sow_leak_control.sh the seven legs and the two reported readings; B+ 87 after one molt frame from C 73
+file tools/s/sow_witness.rish duty 0, and the ordering sentence that duty 3 depends on; B 82
+file template-manifest.bron allow context/BHAKTA_STYLE.md, closing the front-door seed_link red
+file construction/ITINERARY.md the GRASS account, sized to the ten bytes the pin had left
+file construction/archive/20260908-152731_itinerary-landed-accounts.md the elder GRASS account, shelved whole
+
+loom roster=standing_equipment_cold guards_seen=195 wall_s_partial=2400 note=contended by a hand-run projection
+loom control=sow_leak_control cases=7 fail=0 plants_shown=2
+
+scope one control, one witness duty, one manifest line, one card block; no sweep
