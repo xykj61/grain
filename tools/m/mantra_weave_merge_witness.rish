@@ -45,9 +45,10 @@ assert selftest.out contains "merged with itself is unchanged" else "mantra-merg
 assert selftest.out contains "interleaving union comes out in position order" else "mantra-merge: the leg that reaches the sort is missing"
 assert selftest.out contains "merged, both lines kept" else "mantra-merge: the claim that two branches MERGE is missing -- the identity gap closing is the movement this witness now carries"
 assert selftest.out contains "one site, one identity, two texts refused PositionTextDisagrees" else "mantra-merge: the forged-identity refusal is missing -- it is what the site distinguishes an ordinary branch FROM"
+assert selftest.out contains "a merged weave still deletes by name" else "mantra-merge: the merge-then-delete claim is missing"
 assert selftest.out contains "refused TooManyLines" else "mantra-merge: the bound refusal is missing"
 
-say "mantra-merge: breaking the law nine ways in a pen, so the witness is proven able to red..."
+say "mantra-merge: breaking the law ten ways in a pen, so the witness is proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_weave_merge_control.sh"]
 assert control.ok else "mantra-merge: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-merge: the control must reach its own verdict"
@@ -60,4 +61,6 @@ assert control.out contains "phase=tiebreak" else "mantra-merge: the control mus
 # deleted -- a control that stops planting a law reads exactly like a law that holds.
 assert control.out contains "phase=run_counter" else "mantra-merge: the control must plant @min for the run counter's max -- the run is the field Place.less_than reads first"
 
-say "GREEN: merging two weaves is a join -- one answer in all six orders, two branches kept whole, paragraphs unshuffled, both refusals by name, nine breaks caught."
+assert control.out contains "phase=delete_lookup" else "mantra-merge: the control must test lookup after document ordering"
+
+say "GREEN: merging two weaves is a join -- one answer in all six orders, two branches kept whole, paragraphs unshuffled, both refusals by name, ten breaks caught."

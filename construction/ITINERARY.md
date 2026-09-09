@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0d88b97fae` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `492b08d4c8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -64,17 +64,18 @@ reads as one per request in flight and one per answer still being read. The work
 **FLEET, NOT MINE:** `sow_allow_reach` reds cold, and its `reach_paths` hash is identical with my
 staged set removed -- the stale projection predates this round; the cure is a full `sow.rish`.
 
-**PATCHOULI -- THE ABSENCE TEST KEEPS ITS SHELL.**
-The [roster recovery](../session-logs/date/20260909/20260909-033927_recover-and-land-the-roster.kyri)
-and [compiler comparison](../session-logs/date/20260909/20260909-044210_prose-is-not-a-builder.kyri)
-stand. All 29 stashes remain. Five parked Tally roster versions retain identical code.
-The shell control now gives its absent-rg probe five required tools on an isolated PATH.
-Both host layouts pass 47 checks; bypassing the refusal fails two.
-Amphora's bound witness passes with the installed rg on PATH.
-[This lap](../session-logs/date/20260909/20260909-063839_the-absence-test-keeps-its-shell.kyri) records the full cold findings and staged verification plan.
-**Yours:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
-**Recovery `20260909.075012`:** the parked Tally table check returns beside the named sample.
-All 48 control readings pass; 23 listed rooms have callers. [Record](../session-logs/date/20260909/20260909-075012_the-table-check-returns.kyri).
+**PATCHOULI -- A MERGED WEAVE STILL DELETES BY NAME.**
+Elder [shelved](archive/20260909-151459_itinerary-landed-accounts.md), links re-anchored.
+**AETHER HEARD A LAP THAT NEVER SPOKE.** The `20260909.091106` lap wrote a merge-then-delete case,
+its control plant and its witness phase, then died before the hot pass; its code and its own log
+sat in stash `20260909-092428` while the card read as though this seat closed at 07:50.
+Recovered and proven here: `prove_merged_weave_still_edits` merges two weaves whose document order
+reverses their identity order, deletes one line by `LineId`, and asserts the other two keep odd
+generations. The control plants a `binarySearch` over the backing list in identity order; that
+plant exits 134 with the case and **0 without it**, so the case carries its own refusal.
+Ten breaks caught, was nine; `weave.rye` is unchanged. The 09:11 log lands too, its pending
+status kept: I ruled it should stay parked, and `stash_record` overruled me, `unlanded=1`.
+**Yours, still:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
 
 **DIFFUSER -- A RETAINED REPLY NEEDS ITS OWN BYTES.**
 Elder [shelved](archive/20260909-081235_itinerary-landed-accounts.md) whole with the recovery and store readings.

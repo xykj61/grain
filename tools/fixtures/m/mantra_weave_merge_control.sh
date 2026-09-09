@@ -165,6 +165,11 @@ run_ignored_exit="$(run_pen run_ignored 's/        if (self.run != other.run) re
 # position, so place order and `pos < next_pos` both still hold, and the merge
 # postcondition's run assert is the only reading that can fire.
 run_counter_exit="$(run_pen run_counter 's/            .next_run = @max(self.next_run, other.next_run),/            .next_run = @min(self.next_run, other.next_run),/')"
+# A delete after merge must work in document order. This plant asserts the
+# parked draft's false precondition: each target is findable by binary search
+# over the backing list in identity order. The new case puts those orders apart.
+delete_lookup_exit="$(run_pen delete_lookup '/if (std.sort.binarySearch(LineId, targets, line.id(), search_by_name) == null) continue;/a\
+                assert(std.sort.binarySearch(Line, self.lines.items, line.id(), search_by_id) != null);')"
 shrunk_exit="$(run_pen bound_shrunk "$shrink")"
 removed_exit="$(run_pen bound_removed "$shrink; /if (self.lines.items.len + other.lines.items.len > max_weave_lines) {/,+2d")"
 misnamed_exit="$(run_pen bound_misnamed "$shrink; s/            return WeaveError.TooManyLines;/            return WeaveError.PositionTextDisagrees;/")"
@@ -185,6 +190,8 @@ echo "phase=run_ignored"
 echo "run_ignored_exit=$run_ignored_exit"
 echo "phase=run_counter"
 echo "run_counter_exit=$run_counter_exit"
+echo "phase=delete_lookup"
+echo "delete_lookup_exit=$delete_lookup_exit"
 echo "phase=bound_shrunk"
 echo "bound_shrunk_exit=$shrunk_exit"
 echo "phase=bound_removed"
@@ -196,7 +203,7 @@ verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
 # other reading below is a number and this one is a word.
 for reading in "$clean_exit" "$join_exit" "$order_exit" "$text_exit" "$identity_exit" \
-               "$tiebreak_exit" "$run_ignored_exit" "$run_counter_exit" "$shrunk_exit" "$removed_exit" \
+               "$tiebreak_exit" "$run_ignored_exit" "$run_counter_exit" "$delete_lookup_exit" "$shrunk_exit" "$removed_exit" \
                "$misnamed_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
@@ -204,7 +211,7 @@ if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
   for broken in "$join_exit" "$order_exit" "$text_exit" "$identity_exit" "$tiebreak_exit" \
-                "$run_ignored_exit" "$run_counter_exit" "$removed_exit" "$misnamed_exit"; do
+                "$run_ignored_exit" "$run_counter_exit" "$delete_lookup_exit" "$removed_exit" "$misnamed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi
