@@ -1385,6 +1385,67 @@ fi
 out=$(run_scan seedcap.kyri good-card.kyri)
 case "$out" in *"guards_unknown_capability=0"*) echo "seed_capability_known_to_scan=yes" ;; *) echo "seed_capability_known_to_scan=no" ;; esac
 
+# --- the tigerbeetle_clone probe, planted in both of its answers --------------------------------
+# The sixth capability arm, and the first that asks about a READING LIBRARY. `gratitude/tigerbeetle`
+# is a gitlink the gratitude-licenses rule says we study and never copy, so a correct clone may hold
+# it empty forever -- and twenty-two census witnesses read its `src/` and red beneath it, which is
+# why every one of them stood unrostered rather than turning a study nobody must fetch into every
+# body's red lap.
+#
+# Planted by making and removing the directory, exactly as `seed_projection` is, because the probe
+# performs the same `test -d gratitude/tigerbeetle/src` the guards' own asserts perform, character
+# for character. A probe asking git about the gitlink instead would answer a DIFFERENT question:
+# a submodule declared and never added carries no gitlink, and an initialised gitlink whose
+# directory is empty is exactly what the witnesses find. There is no unknown answer to plant --
+# `test -d` has no tool that can go missing, which is written into the arm rather than faked here.
+cat > "$pen/tbcap.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+
+guard needs_clone
+path tools/real_witness.rish
+tier lap
+capability tigerbeetle_clone
+seated 20260908.000000
+EOF
+
+run_tb_capability() {
+  rm -f "$pen/tb-card.kyri"
+  ( cd "$pen" && STANDING_ROSTER=tbcap.kyri STANDING_CARD=tb-card.kyri \
+      sh "$runner" 2>/dev/null ) || true
+}
+
+# present -- the held clone stands, so the guard runs like any other row
+mkdir -p "$pen/gratitude/tigerbeetle/src"
+out=$(run_tb_capability)
+case "$out" in *"guards_run=2"*) echo "tb_present_runs=yes" ;; *) echo "tb_present_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "tb_present_skips_none=yes" ;; *) echo "tb_present_skips_none=no" ;; esac
+
+# absent -- skipped, named, counted, and the pass still passes. All four, because the point is that
+# a clone which studies rather than fetches stops reading an environment fact as a fault.
+rm -rf "$pen/gratitude"
+out=$(run_tb_capability)
+case "$out" in *"guards_run=1"*) echo "tb_absent_skips=yes" ;; *) echo "tb_absent_skips=no" ;; esac
+case "$out" in *"skipped_capability=1"*) echo "tb_absent_counted=yes" ;; *) echo "tb_absent_counted=no" ;; esac
+case "$out" in *"skipped_capability needs_clone wants=tigerbeetle_clone"*) echo "tb_absent_named=yes" ;; *) echo "tb_absent_named=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "tb_absent_still_passes=yes" ;; *) echo "tb_absent_still_passes=no" ;; esac
+
+# an EMPTY gitlink is absence, which is the whole state this arm exists to read: the directory the
+# submodule hangs from stands, and `src/` does not. A probe testing the parent would read present
+# here and skip nothing, which is the fault this leg is planted to refuse.
+mkdir -p "$pen/gratitude/tigerbeetle"
+out=$(run_tb_capability)
+case "$out" in *"guards_run=1"*) echo "tb_empty_gitlink_absent=yes" ;; *) echo "tb_empty_gitlink_absent=no" ;; esac
+rm -rf "$pen/gratitude"
+
+# and the scan counts the row as gated rather than refusing it, since the runner knows the word
+out=$(run_scan tbcap.kyri good-card.kyri)
+case "$out" in *"guards_unknown_capability=0"*) echo "tb_capability_known_to_scan=yes" ;; *) echo "tb_capability_known_to_scan=no" ;; esac
+case "$out" in *"guards_capability_gated=1"*) echo "tb_capability_gated_counted=yes" ;; *) echo "tb_capability_gated_counted=no" ;; esac
+
 # --- the host tier, which arrived at REDS %295 with no case of its own --------------------------
 # Found while seating the capability field beside it: `host` was proven by neither this control nor
 # the witness, so the axis it copies had no green side and no red one. Its two answers are planted

@@ -768,6 +768,29 @@ capability_state() {
         echo absent
       fi
       ;;
+    tigerbeetle_clone)
+      # Does the held TigerBeetle clone stand in this checkout? `gratitude/tigerbeetle` is a
+      # gitlink into a READING LIBRARY -- the gratitude-licenses rule says we study those and never
+      # copy them -- so a correct clone may hold it empty forever, and all eight gratitude gitlinks
+      # are empty on this pier today. Twenty-two census witnesses read that clone's `src/` and red
+      # beneath it, which is why every one of them stood unrostered: an unconditional row would
+      # turn a study nobody is obliged to fetch into every body's red lap. That is the same reading
+      # the operator card gives an empty `vendor/`, and the same one `seed_projection` gives a
+      # fresh clone two arms above -- an ENVIRONMENT fact rather than a tree red.
+      #
+      # THE PROBE ASKS THE GUARD'S OWN QUESTION, spelling `test -d gratitude/tigerbeetle/src`
+      # because that is the line all twenty-two of them spell, character for character, in the
+      # assert that gates their work. Answering a different question than the guard would -- asking
+      # git about the gitlink, or reading `.gitmodules` -- is how a capability becomes an exemption:
+      # a submodule declared and never added carries no gitlink, and a gitlink whose directory is
+      # empty is exactly what the witnesses find.
+      #
+      # THERE IS NO UNKNOWN HERE, and that is honest rather than a gap: `test -d` has no tool of its
+      # own to go missing, so the question is always answerable. The skip is announced by name on
+      # every pass (`skipped_capability <guard> wants=tigerbeetle_clone here=absent`), which is what
+      # keeps it a cadence rather than a quiet hole.
+      if [ -d gratitude/tigerbeetle/src ]; then echo present; else echo absent; fi
+      ;;
     *) echo unknown ;;
   esac
 }
