@@ -117,7 +117,18 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # 453 -> 454 on `20260908.005732`: a second such program arrived, same shape and same reason -- a
 # hand-run Rye sweep under the tools rooms, no runner building it, its path named in its own
 # research page rather than here for exactly the reason above.
-assert green.out contains "unnamed_population=454" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# 454 -> 459 on `20260908.204406`: five choir runners arrived under the tools rooms in one evening
+# -- `tools/b/buhr_choir.rish`, `tools/f/font5x7_choir.rish`, `tools/f/fora_choir.rish`,
+# `tools/h/hunk_choir.rish`, `tools/m/mycelium_choir.rish` -- each wearing neither word in its
+# basename while carrying `assert` in command position, so all five join this population by the
+# rule above. The delta is exactly five and the arrivals are exactly five, checked from both sides:
+# `git log --since --diff-filter=A -- tools/*` over the window since the elder pin names these five
+# and one Rye program, and that program was already inside the 454 (it is the second arrival the
+# line above records). Their paths ARE spelled here, unlike the two Rye arrivals above, because the
+# reason those stayed unnamed is specific to Rye: `rye_compile_reach` reads a `.rye` path inside a
+# runner as a claim that some build reaches it. A `.rish` path carries no such claim, which is why
+# `tools/p/parity_ch01.rish` is named outright a dozen lines below.
+assert green.out contains "unnamed_population=459" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
 assert green.out contains "unnamed_choirs=12" else "unheard-guard: twelve silent choirs wear neither word -- ${green.out}"
 
 # THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first

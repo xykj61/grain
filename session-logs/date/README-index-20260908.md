@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.205235` | [Pressed from both sides](20260908/20260908-205235_pressed-from-both-sides.kyri) | 23 of 23 controls tree-independent; 3 of 3 scans differ |
 | `20260908.203236` | [The family not taken](20260908/20260908-203236_the-family-not-taken.kyri) | two families rostered; the largest declined with its reason |
 | `20260908.202239` | [Three things wearing one colour](20260908/20260908-202239_three-things-wearing-one-colour.kyri) | a precondition is not a defect |
 | `20260908.202036` | [The commands a page prints](20260908/20260908-202036_the-commands-a-page-prints.kyri) | two shelf pages exit 1; the seam three guards missed |
