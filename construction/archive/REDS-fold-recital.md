@@ -588,3 +588,5 @@ at a closed fold.*
 *Row %653 born onto [`REDS-a-message-read-mid-rebase-rows-653.md`](REDS-a-message-read-mid-rebase-rows-653.md) on `20260908.233626`, **CLOSED** -- `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's.*
 
 *Row %654 folded to [`REDS-a-flag-that-never-returns-rows-654.md`](REDS-a-flag-that-never-returns-rows-654.md) on `20260908.225856`, **BOOKED** -- a documented flag that never returns, on a page every instrument graded healthy -- reachability is not termination.*
+
+*Row %655 born onto [`REDS-a-correction-inherits-the-duty-rows-655.md`](REDS-a-correction-inherits-the-duty-rows-655.md) on `20260908.234354`, **BOOKED** -- a correction is a claim, and it inherits the duty of the claim it corrects.*
