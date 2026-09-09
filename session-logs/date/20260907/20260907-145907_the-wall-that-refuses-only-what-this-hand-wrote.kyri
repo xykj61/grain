@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260907.145907
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat -- BAKERY, core infrastructure
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry read this lap
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, America/New_York
+title The wall that refuses only what this hand wrote
+prompt the fleet baton -- BAKERY's lane, core infrastructure, Lindy-first and crux-first
+rota lap 4188, row 3 -- Water, the row that tastes. Read the threshold, the Gall-Conway fusion, and skimmed the happy zone and growing-a-language. The cardinal question is the one that chose this lap: what smaller thing already works, and can this grow from it? readme_reach already works and already gates this class, so the wall reads ITS findings rather than parsing links again -- which is also what killed my first draft.
+think Opened with fleet_round_open (already on the anointed order) and a cold roster pass. Three guards red, one root: construction/ITINERARY.md linked archive/REDS-a-label-is-not-its-target-rows-571.md where the shelf on disk is rows-570. Repaired first, reds before new work.
+think That is REDS %524's fourth firing. Its own text names the lap and declines it: "a fifth pre-commit rule wants its own lap and inherits %515's reason to go slowly -- eight ships run that file, and a mistake in it is a fleet that cannot commit." That is my lane and my second duty both, so I took it.
+think First draft parsed links itself, off the index, with its own path arithmetic. Swept 300 commits with it: nearly every commit reported broken > 0, which is implausible against a guard that holds the same class at zero. Debugged rather than believed. The findings were placeholder illustrations (date/YYYYMMDD/name, blessed by stamp-and-name) and pages the front door does not reach. Two derivations of one contract disagree -- %566's shape, one day old, caught before it shipped. Thrown away whole.
+think Second draft takes no reading of its own. It runs tools/fixtures/r/readme_reach_scan.sh, takes that scan's own `living:` lines, and keeps the ones whose page `git diff --cached` says this commit staged. The gated class is a strict subset of the roster's by construction, so the wall can never refuse a commit the roster would accept.
+think The safety property is the authorship split, not the speed. Eight ships share one card; a wall reading the whole tree would make one hand's broken link every hand's outage, which is precisely why %524 declined the lap. A break in an unstaged page is counted under `elsewhere` and refuses nothing.
+obs The wall caught its own author inside the lap. Testing the red path I replanted the break with `sed 's|rows-571|rows-570|'`, which also rewrote INCENSE's line 164 where 571 was correct. `ours=2` named both. The derived spine warns about exactly that blind sweep; here it arrived as a measurement rather than as advice.
+obs What it cannot see, said plainly rather than implied: three of %524's four firings are a link that was true when written and that a rebase falsified. git rebase runs no hook (%339) and the target existed at commit time. readme_reach at the roster owns that half. Naming the limit is what keeps the wall from being trusted past its reach.
+obs %519's shape decision turned out already settled -- tools/fixtures/p/plant.sh landed today, rostered and witnessed, 12 of 175 controls sourcing it. The adoption sweep is a check-in its author left for Keaton, so I left it. My control authors every file it breaks, so the plant law has no claim to check there, and I said so in the header rather than importing it for appearance.
+obs The card's booked "26 of 2,030 tools misfiled by letter room" measures 5 today, and the resolver recovers all five by index rather than losing them -- so the stated harm does not reproduce at the stated size. Not repaired this lap; recorded so the next hand starts from the number rather than from the booking.
+obs Holding the tree still for the hot pass is what caught the last fault, and it was mine. The wall rides in a commit hook, and the reading it takes wants python3 -- so on a bench without it the wall would have refused EVERY commit, which is the fleet-that-cannot-commit outcome %524 declined this lap for, arriving through a different door. A missing capability is a bench fact rather than a page fact, so the wall now RESTS at verdict=rested_no_python and exits zero, and readme_reach at the roster keeps that reading where it belongs. Three more cases, proven by handing the wall a reach scan that answers nothing else. I stopped my own hot pass to fix it rather than shipping it and booking it.
+loom guard=link_touch cases=26 pen_seconds=3 scan_seconds=0.4
+loom roster=cold guards_run=173 wall_seconds=1527 green=167 red=3 gated=3 concurrent_ships=3
+loom reach=readme_reach documents=1885 seconds=0.4
+file construction/ITINERARY.md the broken link repaired, the elder account shelved, the new one written
+file construction/REDS.md %524's fourth firing and the authored half taken -- BOOKED, remainder named
+file construction/archive/20260907-141249_itinerary-landed-accounts.md the elder Bakery account, shelved whole
+file tools/fixtures/l/link_touch_scan.sh the wall's reading -- readme_reach's findings, split by authorship
+file tools/fixtures/l/link_touch_control.sh 23 cases in a pen, refusals both ways, real commits through the hook
+file tools/l/link_touch_witness.rish the gate, asserting only what is its own
+file tools/hooks/pre-commit rule six, and the header corrected from four rules to six
+file construction/standing-equipment.kyri link_touch rostered at tier lap with its reason
+recommend check-in (Keaton) -- two. THE HALF I CANNOT REACH: three of %524's four firings arrive by rebase, invisible to any hook; the post-rebase re-verify is the one place they are visible while the package is still local, and it is six ships' send path, so I did not take it. THE PIER'S OWN CAPACITY: three ships ran full cold roster passes concurrently on four cores this hour and mine took 1,527s against a nominal 1,139; `--scoped` exists for this and the cold open does not reach for it.

@@ -768,6 +768,14 @@ capability_state() {
         echo absent
       fi
       ;;
+    sed_sandbox)
+      # Ask the liveness scan for its exact sed capability, so the roster and
+      # the scan choose the same tool. An unreadable probe remains unknown.
+      _sed_cap=$(sh tools/fixtures/p/plant_liveness_scan.sh --capability 2>/dev/null) || {
+        echo unknown; return 0;
+      }
+      case "$_sed_cap" in present|absent) echo "$_sed_cap" ;; *) echo unknown ;; esac
+      ;;
     tigerbeetle_clone)
       # Does the held TigerBeetle clone stand in this checkout? `gratitude/tigerbeetle` is a
       # gitlink into a READING LIBRARY -- the gratitude-licenses rule says we study those and never

@@ -75,9 +75,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.143034` | [one model, declared once](20260908/20260908-143034_one-model-declared-once.kyri) | the CLI port; the record byte-identical. |
 | `20260908.142640` | [the front door in Bhakta](20260908/20260908-142640_the-front-door-in-bhakta.kyri) | README and first hour, 93 and 95. |
 | `20260908.142326` | [a register with no door](20260908/20260908-142326_a-register-with-no-door.kyri) | four citations, all its own. |
+| `20260908.142005` | [ask before you truncate](20260908/20260908-142005_ask-before-you-truncate.kyri) | a launch reads the run lock before it empties a file. |
 | `20260908.141828` | [stricter cannot be contained](20260908/20260908-141828_stricter-cannot-be-contained.kyri) | keep the elders; 205 cite them. |
 | `20260908.141457` | [the law that would have made liars](20260908/20260908-141457_the-law-that-would-have-made-liars.kyri) | 47 pages, one at zero. |
 | `20260908.141037` | [two axes, not three points](20260908/20260908-141037_two-axes-not-three-points.kyri) | the register lattice seated. |
+| `20260908.140245` | [one column two remedies](20260908/20260908-140245_one-column-two-remedies.kyri) | a reported column split. |
 | `20260908.140216` | [the first worked redaction](20260908/20260908-140216_the-first-worked-redaction.kyri) | zero residue, and it ships. |
 | `20260908.140057` | [a cure that reached one branch](20260908/20260908-140057_a-cure-that-reached-one-branch.kyri) | one branch of two got the cure. |
 | `20260908.135927` | [One law, two branches](20260908/20260908-135927_one-law-two-branches.kyri) | a fold reddened a guard whose deep branch knew the law |

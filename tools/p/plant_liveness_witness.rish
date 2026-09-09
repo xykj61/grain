@@ -1,0 +1,74 @@
+# tools/p/plant_liveness_witness.rish -- prove that recognized test mutations change their source.
+#
+# A sed pattern can outlive the source line it names. This witness checks the
+# tracked targets recognized by tools/fixtures/p/plant_liveness_scan.sh. Its
+# control proves a live mutation, a dead one, and the same pattern repaired.
+# It also proves that malformed programs fail and that sed file access and
+# command execution stay disabled. The complete output is compared after sed exits.
+#
+# The scan needs GNU --sandbox support and timeout/gtimeout. It bounds each
+# program with a five-second deadline, one second of kill grace, and a file limit. It names an unavailable
+# capability explicitly. Unresolved targets remain a reported gap in this partial
+# shell reader. The adoption witness beside this one asks who imports plant.sh;
+# this witness asks whether a recognized mutation still changes its tracked source.
+#
+# Run from the repository root with rishi/bin/rishi run and this file's path.
+
+say "plant-liveness: Language EN -- a plant is a claim about a file, and a claim goes stale in silence."
+say "plant-liveness: Style Gauge, Meter -- the gate shown from both sides, the refusal named."
+say "plant-liveness: Lens TAME -- safety first: the leg that plants the defect is the load-bearing one."
+
+let control = run ["sh" "tools/fixtures/p/plant_liveness_control.sh"]
+say control.out
+assert control.ok else "plant-liveness: the control must complete -- read its own lines"
+assert control.out contains "faults=0" else "plant-liveness: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "plant-liveness: the control must balance before it is believed"
+
+# A live plant walks free, counted rather than merely welcomed.
+assert control.out contains "OK   live_verdict" else "plant-liveness: a plant whose line still stands must pass"
+assert control.out contains "OK   live_resolved" else "plant-liveness: a resolvable plant must be counted, or the welcome proves nothing"
+assert control.out contains "OK   live_counted" else "plant-liveness: a live plant must read live"
+
+# The load-bearing leg -- the defect asserted, not only the repair.
+assert control.out contains "OK   dead_verdict" else "plant-liveness: a plant naming a line its source lacks must refuse by name"
+assert control.out contains "OK   dead_counted" else "plant-liveness: the dead plant must be counted, not merely reported"
+assert control.out contains "OK   dead_exit_nonzero" else "plant-liveness: a refusal that exits zero is no refusal"
+assert control.out contains "OK   dead_names_the_file" else "plant-liveness: the refusal must name the control, so a lap knows where to look"
+assert control.out contains "OK   dead_names_the_source" else "plant-liveness: the refusal must name the source whose line moved"
+
+# And the refusal lifts, which is what tells a gate from a wall that refuses everything.
+assert control.out contains "OK   repaired_verdict" else "plant-liveness: repairing the pattern must lift the refusal"
+assert control.out contains "OK   repaired_live" else "plant-liveness: the repaired plant must read live rather than merely stop reading dead"
+
+# The population is bounded honestly at both edges.
+assert control.out contains "OK   penfile_unresolved" else "plant-liveness: a plant into a control's own pen file cannot rot and must read unresolved"
+assert control.out contains "OK   penfile_verdict" else "plant-liveness: an unresolved plant must never refuse the tree"
+assert control.out contains "OK   readonly_resolved" else "plant-liveness: a sed that writes nothing is no plant"
+assert control.out contains "OK   commented_resolved" else "plant-liveness: a sed program inside a comment is documentation"
+assert control.out contains "OK   prefixed_resolved" else "plant-liveness: a target behind a root variable must resolve -- those are the plants likeliest to rot"
+assert control.out contains "OK   empty_controls" else "plant-liveness: a repository with no controls must read zero, proving the pen innocent"
+
+assert control.out contains "OK   deadline_unavailable_verdict" else "plant-liveness: name the missing deadline tool"
+assert control.out contains "OK   loop_verdict" else "plant-liveness: bound a valid looping program"
+assert control.out contains "OK   output_loop_verdict" else "plant-liveness: bound a printing loop"
+assert control.out contains "OK   quiet_flag_kept" else "plant-liveness: preserve sed quiet mode"
+assert control.out contains "OK   extended_flag_kept" else "plant-liveness: preserve extended expressions"
+assert control.out contains "OK   invalid_verdict" else "plant-liveness: malformed sed must fail"
+assert control.out contains "OK   write_writes_nothing" else "plant-liveness: sed file writes stay disabled"
+assert control.out contains "OK   execute_writes_nothing" else "plant-liveness: sed command execution stays disabled"
+assert control.out contains "OK   read_verdict" else "plant-liveness: sed file reads stay disabled"
+assert control.out contains "OK   unavailable_verdict" else "plant-liveness: an absent capability is named"
+assert control.out contains "OK   roster_capability_present" else "plant-liveness: the roster recognizes safe sed"
+assert control.out contains "OK   roster_capability_absent" else "plant-liveness: the roster reports absent safe sed"
+assert control.out contains "OK   roster_capability_unknown" else "plant-liveness: an unreadable probe stays unknown"
+
+say "field GREEN -- the gate bites a dead plant by name, lifts when the pattern is repaired, and leaves an unrottable plant alone"
+
+let liveness = run ["sh" "tools/fixtures/p/plant_liveness_scan.sh"]
+say liveness.out
+assert liveness.ok else "plant-liveness: a plant in this tree names a line its source no longer carries -- read the dead_plant lines above"
+assert liveness.out contains "plants_failed=0" else "plant-liveness: every resolved program must execute successfully"
+assert liveness.out contains "plants_dead=0" else "plant-liveness: every plant aimed at a tracked source must still bite it"
+assert liveness.out contains "verdict=ok" else "plant-liveness: the liveness arithmetic must sum before it is believed"
+
+say "plant-liveness: GREEN -- every plant this tree can resolve still bites the source it names"

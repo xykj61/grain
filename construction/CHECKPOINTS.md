@@ -1,5 +1,9 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.034406` -- recovered link-touch headers.** The control and witness introductions graded C+ 77 and C+ 78. Their source text remains in Bakery's preserved September 7 stash; the new introductions explain the same staged-page proof in shorter sentences. The active hook stays unchanged. The control checks the current hook's page and target while accepting its current output prefix.
+
+**Checkpoint `20260909.025521` -- walk-back nib `6fe92b191b`.** Bakery restores its parked plant-liveness lap. The prior live account stays whole on `construction/archive/20260909-013154_itinerary-landed-accounts.md`; the shorter card makes room for the recovered work. The Codex watcher header graded C+ 76, so its comments now explain the same decisions at A 95 and name the current clockout marker. Its executable lines stay byte-identical. The old wording remains at this nib.
+
 **Checkpoint `20260909.041054` -- walk-back nib `873786d833`.** Recover the parked output-order repair and improve ten witness headers that graded 75-79. The headers explain their existing checks in affirmative prose; the commit-message header also counts its four listed duties correctly. The old wording remains at this nib. Files: `tools/am/amphora_bounds_agree.rish`, `tools/co/comment_citation_witness.rish`, `tools/co/commit_message_guard_witness.rish`, `tools/d/dated_path_repoint_witness.rish`, `tools/g/generated_page_freshness_witness.rish`, `tools/k/kyri_receipt_witness.rish`, `tools/o/one_clock_witness.rish`, `tools/s/skate_macos_choice_witness.rish`, `tools/s/standing_equipment_witness.rish`, `tools/w/witness_own_build_witness.rish`. Their run calls and assertions retain their order and text. The recovered shim-reason header adds its third reading; its elder remains at this nib too.
 
 **Checkpoint `20260909.035800` -- walk-back nib `873786d833`.** Preserve the two

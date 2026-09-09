@@ -1,0 +1,52 @@
+format session-log-v1
+stamp 20260908.142005
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role core infrastructure seat BAKERY
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default read from .claude/settings.json, not runtime telemetry
+evidence .claude/settings.json; this pier launches bare via tools/f/fleet-loop.sh, which execs --effort medium
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4 core, America/New_York
+title Ask before you truncate -- the launch reads the run lock before it empties a file
+prompt the baton; BAKERY seat, core infrastructure, Lindy-first and crux-first
+rota lap 4322, row 2 -- Fire, the row that sees; threshold read first, then reds-first and the three depths of removal. Its own sentence is what this lap did: the lap that sees clearly cuts once, and a fire lap reads the ledger and watches what the witnesses refuse before reading anything new. Reading the transcript rather than trusting it found the fault on this lap's first command, in code three hours old that I had written myself.
+think Opened the lap the way the card asks, with a detached cold roster pass, and read the transcript the tool handed me rather than one I named.
+think The transcript held my launch header, then run_verdict=run_in_flight, then thirteen green guard lines and a SECOND run_verdict=guard_red. Two passes' verdicts under one header.
+think Traced it: --detach derives the path, truncates it, writes the header, and only then starts a child that takes the run lock. The refusal the header's own paragraph rested on is taken by the child, after the parent has already emptied the file.
+think A pass launched by a lap that had since died (pid 3666939, parent=gone, group_leader=gone) still held the lock and was still appending. My truncation removed its first 130 lines, and with them the names of two of the three guards it found red.
+think Recovered those names from construction/standing-equipment-runs.kyri, which is written at the close rather than during the pass: crushed_index and reds_pin_capacity. reds_pin_capacity now reads GREEN alone; crushed_index still reds on press/date having no row.
+think Reproduced the fault on the elder runner from HEAD in a throwaway pen before writing the cure, so the control legs would be proven load-bearing rather than assumed.
+think The cure reads the run lock in the launching shell before a byte moves, by exactly lock_acquire's rule: a gone owner is stale and the child reaps it, an empty or unreadable pid file is a lock caught mid-creation and counts as held.
+think Read rather than taken. Acquiring the lock in the parent to release it a line later would open the very window the read closes.
+think Then followed the recovered names. reds_pin_capacity reads GREEN alone, so it was transient. crushed_index was real and had reddened on every ship since 20260907: press/date has no row on docs-geode/press/README.md.
+think Root: tools/fixtures/c/crushed_index_scan.sh enumerates a declared room's members two ways, and only the deep walk drops date/, archive/ and yonder/. The comment above that branch says it was the one place in the file that disagreed; the else branch four lines down kept the elder rule the whole time.
+think A red costs the receipt, so while crushed_index stood red no tree in the fleet had a basis for --scoped. That is a fleet-wide cost for a two-day-old one-line divergence.
+think Also reproduced the receipt-tier fault in a pen rather than reasoning about it: a --tier cadence pass writes scope full, and a --scoped lap pass then skipped a lap guard that had never run, answering guards_run=0 and run_verdict=ok.
+obs The family's shape is the same in all four firings: the redirect and the guarantee run in different shells. %541 signaled by command line, %549 redirected to a constant /tmp name, %620 globbed a unique one back, and %641 -- this row -- rested a constant name on a refusal a different shell takes.
+obs A repair can inherit the shape of the fault it repairs. The header sentence was true of the pass and false of the file, and nothing in the tree could read the difference.
+obs Measured while reading the roster: the cadence tier has NEVER run on this pier -- 0 of 63. %568 read 0 of 58 a day ago, and the tier grew by five while nothing turned it.
+obs A third fault sits on that repair's path, reproduced in a pen and named on the card rather than booked, since an OPEN row has nowhere to go: the receipt writes scope full for any tier and records tier, which nothing reads back, so the first --tier cadence pass becomes a lawful basis for a --scoped lap pass that skips guards it never ran. A named guard demotes run_scope to named; a tier is a subset the same way and does not.
+obs A comment claiming a disagreement is over is worth exactly what a reader can check. The deep walk's own comment was the reason nobody looked four lines further down.
+obs The REDS pin stands deadlocked at 24 bytes of headroom with 13 rows, every one OPEN and none foldable, so both of this lap's rows were born directly onto single-row shelves as COPAL's was six hours earlier.
+loom control=standing_equipment detach_legs=5 legs_green=5 elder_reproduced=yes
+loom witness=standing_equipment cadence_never_run_here=63 guards_never_run_here=64
+loom control=crushed_index legs_added=4 control_pass=37 control_fail=0 elder_reads=2 leg_wants=1
+loom pin=reds_pin_capacity pin_bytes=40936 pin_headroom=24 pin_rows=13 pin_foldable_rows=0 pin_deadlocked=1
+file tools/fixtures/s/standing_equipment_run.sh the launch reads the run lock before it truncates, and the header paragraph's elder claim is corrected in place
+file tools/fixtures/s/standing_equipment_control.sh five legs over a real lock and a real live process, planted and lifted
+file construction/archive/REDS-ask-before-you-truncate-rows-641.md the row, born on a shelf because the pin has no room for one
+file construction/archive/REDS-fold-recital.md the trail from the folded row back to this lap
+file construction/archive/20260908-141811_itinerary-landed-accounts.md the elder BAKERY block, folded whole
+file tools/fixtures/c/crushed_index_scan.sh the shallow walk drops date, archive and yonder like the deep one, and the deep branch's comment names both places
+file tools/fixtures/c/crushed_index_control.sh a day shelf and an ordinary subdirectory planted in one pen room, both read
+file construction/archive/REDS-one-rule-two-walks-rows-642.md the second row, also born on a shelf
+file construction/ITINERARY.md the new BAKERY block, the cadence measurement, and the latent receipt fault named for whoever turns that clock
+scope the detached launch's truncation as the keystone, and the fleet-wide crushed_index red the recovered names led to; one further fault reproduced and named rather than repaired, since the pin cannot hold an open row
+status GREEN -- standing_equipment_control.sh five new legs green with the elder fault reproduced in a pen; crushed_index_control.sh 37 pass 0 fail, its four new legs biting the elder scan at 2 where they want 1; tools/cr/crushed_index_witness.rish GREEN on this tree; hot roster pass run over the staged set
+recommend check-in (Keaton) -- the REDS pin is deadlocked for every ship: two CLOSED rows were born on shelves this lap because none may land, and an OPEN one has nowhere at all, which is why the receipt-tier fault is named on the card rather than booked
