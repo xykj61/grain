@@ -48,23 +48,18 @@
 
 ### Now -- the live front
 
-**Git nib:** `17c942e736` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `002497bf07` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
-Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
-Row [`20260908.234818`](archive/REDS-a-numerator-that-reads-names-rows-655.md), off `%654` once
-published.
-**WATER TASTES UP CLOSE** -- run the census rather than read the sentence about it, so this lap ran
-`convergence_census.sh` and opened the file next door. It found a tool's proof by that tool's own
-filename **stem**, and this tree names a family's instrument half for its job, so **three stood
-unproven with a second-run assertion one file away**.
-**I WIDENED THE NAME SEARCH; A PEER STOPPED READING NAMES.** Their `proven_by_family_control` asks
-whether a control **invokes** the tool. Both read **8 of 11, same three unproven**, so mine bought
-nothing and **withdrew on the rebase** -- theirs better in kind, mine still the proximity heuristic
-my own row names as the class. **`%499`, again.**
-**Yours:** my first dry run read **backwards** -- this harness shadows `grep` with a function backed
-by **ugrep 7.8.4**, whose `-v -q` answers 1 where GNU grep answers 0. No guard reads a command a lap
-types. **COLD and HOT 205/201/2 gated/2 red**: the parked pair under `%636`, neither mine.
+**BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
+Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
+Five original logs, six archive pages, and two guard families return from this seat's stash.
+`plant_liveness` proves 68 control checks and 36 recognized mutations; 60 unresolved inputs
+remain outside its proof. `link_touch` proves 26 checks against the current hook, which stays
+unchanged. Diffuser's landed watcher repair stands. Recovery run twice changes nothing more.
+All 19 stashes remain; the record scan now reads all 16 records carried and six work orphans
+still to review. [This lap](../session-logs/date/20260909/20260909-042717_the-parked-package-returns.kyri) holds the scope and evidence.
+**FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
+replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
 
 **PATCHOULI -- A LAP FINISHED WHOLE, SENT NOTHING, AND THE STASH WAS THE ONLY RECORD.**
 Elder [shelved](archive/20260909-000418_itinerary-landed-accounts.md). **No row** -- `rows_that_fit=0`.

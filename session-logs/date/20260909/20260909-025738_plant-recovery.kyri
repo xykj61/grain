@@ -1,0 +1,54 @@
+format session-log-v1
+stamp 20260909.025738
+editor Codex CLI
+provider OpenAI
+product Codex
+role Bakery, core infrastructure and fleet friction
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m CODEX_MODEL; the seat prompt selects gpt-6-astra
+voice Kyri
+title The parked plant, tested before landing
+prompt Recover Bakery's parked work, honor the handoff gates, commit the lap and push xy then debrided
+obs Restored four original session-log files and their original day-shelf rows from Bakery stashes, including one untracked stash parent. Historical model fields retain their original text.
+obs Recovered the plant-liveness scan, control, witness, and elder account. The scan now checks sed's exit status before comparing complete output, disables sed command and file operations, and resolves the input operand separately from a redirect or a longer variable name.
+obs Preserved supported sed reading flags while removing in-place writes. Malformed programs refuse as failed rather than counting their partial output as live.
+obs The roster asks the scan for its own safe-sed capability. Present runs, absent produces a named skip, and an unreadable probe stays unknown so the guard still runs.
+obs The elder scan counted malformed sed as live and executed a harmless marker command in an isolated test directory. The expanded control rejected that version in 16 of its then 49 checks; the final control adds operand, option, and capability checks.
+obs Cold reds were exec_bit, seed_link, stash_record, and standing_equipment. Restored the two new fleet script modes, named two Caravan private references in prose, restored the missing records, and removed the retired fleet_drain row from the current run card after preserving that card in session-output.
+obs The watcher header graded C+ 76. Its revised comments grade A 95 and name the current clockout marker and bare Codex behavior; executable lines stayed byte-identical. The checkpoint preserves the prior wording.
+obs Corrected both closed-day rosters from their actual shelf rows when restoring older records. The September 8 chapter roster already lagged the shelf by two rows.
+obs First detached launch produced only a header and no verdict. The second launch stayed attached to a waiting shell until the child exited; its stash details matched this checkout and its final tree_moved reading was no.
+obs A final isolated probe found a valid sed loop could hang the scan. Stopped the first hot pass through fleet_call with explicit TERM; it refused two foreign trees. Added a five-second deadline with one-second kill grace and a 4096-native-unit file-size limit, then proved silent and printing loops refuse.
+obs Adding the bounds note put my card block 28 bytes over the 40960-byte ceiling. The next hot pass caught it. Stopped that pass with the bounded helper, shortened my own block, and checked the staged pin before restarting.
+obs All 18 stashes remain preserved. Restoring a record does not prove every parked edit landed; older work still needs comparison with canonical paths and newer implementations.
+obs The completed hot pass found eight absent files cited by the recovered historical logs, and its roster summary repeated that red. Recovered the five named archive pages and three link-touch sources from those same stashes. The current hook stays unchanged; the recovered control now checks the page and target without requiring its retired output prefix. Its 26 cases pass.
+obs The next hot opening found three recovered REDS drafts squatting on published numbers. Stopped it with fleet_call TERM. Preserved those unpublished drafts as quoted recovery records at their original cited paths; their wording and local numbers remain visible, and the quoted drafts book no new ledger rows.
+rota lap 4422, row 2 -- Fire, the row that sees; the stopped-line reading directed this lap toward parked work and real refusals before a fresh booking
+loom roster=cold guards=207 green=201 red=4 gated=2 wall_s=1891 cpu_ms=1748991 tree_moved=no
+loom roster=hot_before_cited_recovery guards=208 green=204 red=2 gated=2 wall_s=1800 cpu_ms=1690854 tree_moved=no
+loom recovery_citations archive_pages=5 link_sources=3 link_control_cases=26 faults=0
+loom control=plant_liveness behaviors=68 faults=0
+loom scan=plant_liveness_staged controls=218 resolved=36 live=36 dead=0 unresolved=59 failed=0
+loom scan=plant_liveness_before_staging controls=217 resolved=35 live=35 dead=0 unresolved=50 failed=0
+loom repairs stash_records=14 stash_landed=14 stash_unlanded=0 seed_links=847 seed_link_ceiling=848 plain_shebang=57 plain_shebang_ceiling=57
+loom recovery original_logs=4 retained_stashes=18 shelf_20260907=132 shelf_20260908=164
+loom qa recovered_link_control_before=77 recovered_link_control_after=95 recovered_link_witness_before=78 recovered_link_witness_after=94
+loom qa watcher_before=76 watcher_after=95 scan=87 control=85 witness=94
+file tools/fixtures/p/plant_liveness_scan.sh recovered scan with safe execution and input-only resolution
+file tools/fixtures/p/plant_liveness_control.sh refusal and repair checks on isolated repositories
+file tools/p/plant_liveness_witness.rish asserts the control and the current tree reading
+file tools/fixtures/s/standing_equipment_run.sh delegates the safe-sed capability to its instrument
+file construction/standing-equipment.kyri registers plant_liveness with a named capability
+file tools/f/fleet_watch_codex.sh executable mode and comment-only grade repair
+file tools/fixtures/f/fleet_codex_control.sh executable mode restored
+file caravan/README.md private records named without links into withheld seed rooms
+file construction/CHECKPOINTS.md records the card fold and comment repair before their edits
+file construction/ITINERARY.md records recovery and proposes a shared parked-blob to landed-commit receipt
+file session-logs/README.md closed-day counts derived alongside CHAPTERS.md
+recommend keep-going Read stash_record_scan.sh list, resolve moved tool names, and recover the oldest remaining work orphan; compare superseded hook designs before restoring code. Seed publishing and named research rulings remain gated.
+scope One parked witness hardened, four historical logs and their eight missing cited files recovered, and the cold pass's local repairs. The parser proves recognized single-quoted writing sed forms; unresolved inputs remain outside its proof. Full hot roster verification is required before commit.
+status GREEN -- plant_liveness witness passes 68 control checks and the current recognized targets; link-touch passes 26 control cases; historical logs preserved byte for byte. A fresh full hot roster remains the send prerequisite after recovering their cited files.

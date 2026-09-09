@@ -29,8 +29,7 @@ granted, rather than offspring. The arc earned the word: a dependent is weighed 
 resource it currently holds rather than by the ceiling its domain was granted, and its reach can
 travel to it and return from it while it runs. The one place the elder word still stands is
 `std.process.Child`, which is Zig's own name at the seam and stays exactly as Zig wrote it. The
-record of the word that departed waits in
-[`../construction/CHECKPOINTS.md`](../construction/CHECKPOINTS.md).
+private field keeps the naming record in `construction/CHECKPOINTS.md`.
 
 ## The five words a system is written in
 
@@ -148,8 +147,8 @@ the same notation Brix descriptors use, and it declares Caravan's own rings alon
 build stays Brix's work, and Pond's policy layer stays its own.
 
 Extended-run stability -- dozens of supervised cycles, watched for resource growth -- waits for a
-genuine indefinite consumer to make the longer run mean something. The reasoning is at
-[`../counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md).
+genuine indefinite consumer to make the longer run mean something. The private field keeps the
+reasoning in counsel note `20260707.195912`.
 
 ---
 

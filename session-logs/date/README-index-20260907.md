@@ -62,6 +62,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.153124` | [A wall built for a red a peer had already walled](20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) | withdrawn; %573 survived it. |
 | `20260907.151343` | [The repair the scan wrote down](20260907/20260907-151343_the-repair-the-scan-had-already-written-down.kyri) | two correct scans called wrong by a line-at-a-time guard |
 | `20260907.150308` | [The holes you choose](20260907/20260907-150308_the-holes-you-choose.kyri) | free routing survives holes; the geometry beats the count. |
+| `20260907.145907` | [A wall that refuses only what this hand wrote](20260907/20260907-145907_the-wall-that-refuses-only-what-this-hand-wrote.kyri) | %524 rule six: 0.4s, staged only. |
 | `20260907.145721` | [A page that calls itself living](20260907/20260907-145721_a-page-that-calls-itself-living.kyri) | roster 379 -> 520; the threshold page quoted a dropped word. |
 | `20260907.145202` | [Two readings that disagree about prose](20260907/20260907-145202_the-two-readings-that-disagree-about-prose.kyri) | Reach drops what Register counts: 22,041 lines. |
 | `20260907.144352` | [The third comment mark](20260907/20260907-144352_the-third-comment-mark.kyri) | Glow joins the ASCII law; 942 in comments, none in content. |

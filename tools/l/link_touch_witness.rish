@@ -1,0 +1,56 @@
+# tools/l/link_touch_witness.rish -- prove the staged-page link reading.
+#
+# A link names a door the reader expects to open.
+# The scan borrows readme_reach's findings and selects the pages being staged.
+# This witness checks that selection on real Git repositories.
+# Each planted break is paired with a repair. Both outcomes are asserted.
+# A second page proves that the report keeps the rest of the tree visible.
+# Capability cases show how the reader rests and resumes with Python.
+# Real commits exercise the current hook and identify the broken page and target.
+# The full-tree report remains owned by readme_reach.
+# This recovered witness runs by name; the active hook stays as it stands.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/link_touch_witness.rish
+say "link-touch: Language EN -- a link is a promise, checked while the round can still keep it."
+say "link-touch: Style Gauge Meter -- one derivation - one gated class - the refusal named."
+say "link-touch: Lens TAME -- safety first: bound the class to what this commit wrote, and check at the edge."
+
+# Reported, not gated: what the tree reads right now. readme_reach owns that gate, and one fault
+# should red in one place.
+let live = run ["sh" "tools/fixtures/l/link_touch_scan.sh" "worktree"]
+say "report: the whole-tree line below is readme_reach's gate, printed here for the lap's eye"
+say live.out
+assert live.ok else "link-touch: the worktree reading must run"
+
+let unknown = run ["sh" "tools/fixtures/l/link_touch_scan.sh" "sideways"]
+assert (unknown.ok == false) else "link-touch: a mode the scan does not know must refuse"
+assert unknown.out contains "verdict=unknown_mode" else "link-touch: want the unknown-mode refusal"
+
+let pen = run ["sh" "tools/fixtures/l/link_touch_control.sh"]
+say pen.out
+assert pen.ok else "link-touch: the pen must pass"
+assert pen.out contains "fails=0" else "link-touch: every planted case must pass"
+assert pen.out contains "case=own_break_bitten ok" else "link-touch: a break in a staged page must refuse"
+assert pen.out contains "case=own_break_named ok" else "link-touch: the refusal must name the page and the target"
+assert pen.out contains "case=own_break_freed ok" else "link-touch: and free the page once repaired"
+assert pen.out contains "case=peer_break_free ok" else "link-touch: a break in an unstaged page must never refuse this commit"
+assert pen.out contains "case=peer_break_counted ok" else "link-touch: and it must still be counted"
+assert pen.out contains "case=split_by_authorship ok" else "link-touch: two standing breaks must split one ours, one elsewhere"
+assert pen.out contains "case=both_refuse_planted ok" else "link-touch: this reading and readme_reach must refuse one plant together"
+assert pen.out contains "case=both_pass_repaired ok" else "link-touch: and both must pass once it is repaired"
+assert pen.out contains "case=testimony_free ok" else "link-touch: a dated page's stale reference is resolved, never refused"
+assert pen.out contains "case=absent_instrument_refuses ok" else "link-touch: an absent reach scan must refuse rather than read zero"
+assert pen.out contains "case=instrument_returned ok" else "link-touch: and the reading must return when it comes back"
+assert pen.out contains "case=no_python_rests ok" else "link-touch: a bench without python3 must rest, never refuse every commit"
+assert pen.out contains "case=no_python_exit_zero ok" else "link-touch: and the rest must exit zero so the commit proceeds"
+assert pen.out contains "case=python_returned ok" else "link-touch: and the reading must return with the capability"
+assert pen.out contains "case=hook_lawful_commits ok" else "link-touch: the hook must let a page with open doors commit"
+assert pen.out contains "case=hook_refuses_break ok" else "link-touch: the hook itself must refuse a real commit"
+assert pen.out contains "case=hook_says_why ok" else "link-touch: the refusal must say plainly what is wrong"
+assert pen.out contains "case=hook_names_target ok" else "link-touch: the refusal must name the page and the target"
+assert pen.out contains "case=hook_frees_repaired ok" else "link-touch: the hook must let the repaired page through"
+assert pen.out contains "case=hook_free_over_peer_break ok" else "link-touch: a peer's break must never stop this commit"
+assert pen.out contains "control=ok" else "link-touch: want pen control ok"
+
+say "GREEN: link-touch -- refusals both ways - the authorship split proven - the hook driven on real commits - 26 cases in the pen"

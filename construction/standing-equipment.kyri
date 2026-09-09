@@ -3741,3 +3741,12 @@ guard energy_instrument
 path tools/e/energy_instrument_witness.rish
 tier lap
 seated 20260908.234221
+
+# Test mutation liveness is separate from adoption. The scan owns the safe-sed
+# capability probe; hosts lacking it get a named skip. Unresolved inputs remain
+# reported gaps, and failed programs refuse alongside dead mutations.
+guard plant_liveness
+path tools/p/plant_liveness_witness.rish
+tier lap
+capability sed_sandbox
+seated 20260909.025521
