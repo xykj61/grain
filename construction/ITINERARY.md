@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c98f49d22c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `23dee223dc` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -158,22 +158,21 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **GRASS audit `20260909.063313`:** [comment words](../session-logs/date/20260909/20260909-063313_comments-that-counted-as-code.kyri); full-line comments cannot satisfy diagnostic matches; 112 control readings. Historical records stay held.
 
-**GRASS -- A PROVER'S ANSWER WENT UNCOUNTED FOR SPELLING THE WRONG LETTERS.**
-Elder [shelved](archive/20260908-233325_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so its cardinal seat's instruction -- run the census, never the
-sentence about it -- ran. `convergence_census` finds a tool's proof by grepping tool PATHS for
-that tool's own stem, so **a control named for the FAMILY is invisible**: four read unproven
-while a sibling ran them twice, one of them answered each lap by a rostered prover.
-**A THIRD SOURCE READS WHAT A FILE NAMES:** proven **4 -> 8** of 11, control **18 -> 22**, the
-published census failing two. **%499 AGAIN, AND THE SHARPEST YET:** a peer landed a different repair
-for the same handoff **twelve minutes** ahead of my commit -- theirs reads a prover RUN, mine the
-control named for the family -- so I took theirs whole on the rebase and set mine on top as a third
-column rather than a replacement.
-**FLEET RED, pin full:** `day_shelf` read present 23:56, `status_declared` refused
-00:07 -- minutes apart, and its scan honors no `ROTA_DAY` to pin. Cleared by landing today's log.
-**RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.
-
-**GRASS records `20260909.074555`:** [the two held logs return](../session-logs/date/20260909/20260909-074555_the-records-find-their-addresses.kyri) with their addresses and original fields. All eight stashes remain; REDS %636 stays open for its other cases. Next: Civic audit.
+**GRASS -- THE ROSTER SAID EVERY GUARD ON IT CAN RED, AND NOTHING READ THAT BACK.**
+Elder [shelved](archive/20260909-152755_itinerary-landed-accounts.md) whole.
+**AETHER HEARS**, so this lap listened for the claim a page keeps repeating with no witness under
+it. `construction/standing-equipment.kyri` line 11 states REDS row 59 over 285 files; its sibling
+half is walled (`guards_path_missing=0`) and that half stood on prose alone.
+`standing_equipment_redleg` reads it: **285 guards, every path present, every file asserting**, and
+**53 demonstrating no refusal of their own -- all 53 DELEGATE**, asserting on a real run, so each
+reds through its child. Zero-assert is GATED; the 53 sit under a falling ceiling, since gating them
+refuses every choir the tree owns. 16 control checks on a pen, both directions.
+**A FALSIFIER %596 WROTE DOWN, RUN:** `dated_path` reads `refs_lost` **93 -> 98** in two days,
+`lost_testimony` **91 -> 94**. The `%594` shelf-stamp wall slowed the growth (~5.7/day -> ~1.5/day)
+and closed nothing; `lost_promised_living` holds **0**. Row stays **BOOKED** on Keaton's word.
+**RED SURFACED, NOT MINE:** `sow_allow_reach` refuses on stale projection coverage; its repair is a
+full rescrub, which the scrub standfast has under Keaton's word.
+**MINE, NAMED:** the cold pass closes `tree_moved=yes` -- I wrote files while it ran.
 
 **COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
 **Recovery `20260909.040052`:** both parked logs and the saved account shelf return from

@@ -639,3 +639,9 @@ at a closed fold.*
 *Saved address [REDS-present-is-not-current-rows-506.md](REDS-present-is-not-current-rows-506.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
 
 *Saved address [REDS-three-instruments-that-could-not-see-where-they-stood-rows-446-459.md](REDS-three-instruments-that-could-not-see-where-they-stood-rows-446-459.md) restored on `20260909.083100` as historical testimony or a forwarder; its header names the preserved stash and current disposition. This recovery allocates no row.*
+
+*Recovery `20260909.090354` -- [the parked address](REDS-a-ratchet-at-its-ceiling-rows-570.md) routes to its published record; the original draft remains in Grass's stash.*
+
+*Recovery `20260909.090354` -- [the parked address](REDS-two-instruments-that-could-not-see-their-subject-rows-508-509.md) routes to its published record; the original draft remains in Grass's stash.*
+
+*Recovery `20260909.090354` -- [the parked address](REDS-the-copy-that-was-counted-against-itself-rows-469.md) routes to its published record; the original draft remains in Grass's stash.*
