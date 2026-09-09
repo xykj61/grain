@@ -83,6 +83,7 @@ this section: the rule stood in canon and on the roster, and this door had yet t
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260909.062114` | [A request ends before its budget is reused](20260909-062114_a-request-ends-before-its-budget-is-reused.md) | completion, deadline, and memory release before a storage trial |
 | `20260909.044642` | [A query budget reaches its caller](20260909-044642_a-query-budget-reaches-its-caller.md) | separate search, result, and recovery budgets before a store plan |
 | `20260826.022443` | [The Linengrow Design Theme](20260826-022443_the-linengrow-design-theme.md) | rounded shape law; tileable brushstroke; five rota encapsulations |
 | `20260826.021136` | [Caravan rearchitected](20260826-021136_caravan-rearchitected-the-optimization-spine.md) | five bounded moves; wrap named, set word-wide, drain replayable |
