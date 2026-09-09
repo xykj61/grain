@@ -16,7 +16,15 @@
 // the run moves both readings together rather than one of them. Each reports its MEDIAN of an odd
 // number of samples, so the figure published is a sample that actually happened.
 //
-// BOTH LOOPS READ A ROTATING HIT INDEX, and that detail is load-bearing rather than decorative. A
+// A THIRD SHAPE joined the two on `20260909.171151`: KEEP VARIED, where the caller retains only as
+// many hits as the answer holds rather than the format's whole `[max_wire_hits]` array. The elder
+// paper projected that this shape would close most of the 7.3x swing between a one-hit and an
+// eight-hit answer, and wrote down a falsifier: a variable form whose one-hit cache still exceeds a
+// quarter of the fixed form's 456 bytes. This harness runs that falsifier rather than arguing it.
+// Its retained-byte figure names the region a caller would allocate -- `@sizeOf` of the header plus
+// the live hits -- computed the same way the fixed form's 456 is, so the two are comparable.
+//
+// ALL THREE LOOPS READ A ROTATING HIT INDEX, and that detail is load-bearing rather than decorative. A
 // first draft read one fixed hit, which made the cached loop's body loop-invariant: under
 // `-OReleaseFast` the whole twenty-thousand-read loop compiled to six instructions, and the harness
 // reported a saving that was really an elimination. Rotating the index gives each iteration its own
@@ -175,6 +183,46 @@ fn read_from_decoded(cached: *const qw.QueryWireResponse, reads: u32) u64 {
     return sum;
 }
 
+/// The KEEP-VARIED shape: retain a header plus exactly the hits the answer holds.
+///
+/// The fixed `QueryWireResponse` carries `[max_wire_hits]QueryWireHit` whatever the answer holds, so
+/// a one-hit answer pays for eight. This form holds a slice instead, and its retained bytes are the
+/// header plus the live hits. The per-read cost is what the measurement is for: an index through a
+/// slice loads a pointer where an index into an inline array is an offset from a known base, and
+/// whether that costs anything is exactly the question the elder paper could not answer.
+const KeptAnswer = struct {
+    hits: []const qw.QueryWireHit,
+};
+
+/// Bytes a caller retains for the variable form, at a named hit count.
+fn kept_bytes(hits: u32) u32 {
+    // invariant: an answer worth retaining holds at least one hit.
+    assert(hits >= 1);
+    // invariant: the count stays inside the format's own ceiling, so the figure names a real answer.
+    assert(hits <= qw.max_wire_hits);
+
+    const total = @as(u32, @sizeOf(KeptAnswer)) + hits * @as(u32, @sizeOf(qw.QueryWireHit));
+
+    // invariant: the variable form never costs less than its own header.
+    assert(total > @sizeOf(KeptAnswer));
+    return total;
+}
+
+/// The KEEP-VARIED workload: read fields through the retained slice.
+fn read_from_kept(kept: KeptAnswer, reads: u32) u64 {
+    // invariant: the retained answer holds the hits this workload reads.
+    assert(kept.hits.len == measured_hit_count);
+    // invariant: the workload runs a named number of reads rather than an open loop.
+    assert(reads > 0);
+
+    var sum: u64 = 0;
+    var r: u32 = 0;
+    while (r < reads) : (r += 1) {
+        sum +%= consume(kept.hits[r % measured_hit_count]);
+    }
+    return sum;
+}
+
 /// Sort a bounded sample slice ascending, so the middle element is the median.
 fn sort_ascending(values: []u64) void {
     // invariant: a sample set to sort holds at least one reading.
@@ -211,8 +259,20 @@ pub fn main() !void {
     // invariant: the cached answer decoded the same hits the payload carries.
     assert(cached.hit_count == measured_hit_count);
 
+    // The variable form's backing store: a caller would allocate exactly `measured_hit_count` hits,
+    // and this run slices the live prefix out of a bounded array so the harness allocates nothing.
+    // The bytes REPORTED are the region such a caller would hold, never this array's own size.
+    var kept_store: [qw.max_wire_hits]qw.QueryWireHit = undefined;
+    var k: u32 = 0;
+    while (k < measured_hit_count) : (k += 1) kept_store[k] = cached.hits[k];
+    const kept = KeptAnswer{ .hits = kept_store[0..measured_hit_count] };
+
+    // invariant: the retained slice holds every hit the answer carries and no more.
+    assert(kept.hits.len == measured_hit_count);
+
     var encoded_samples: [max_samples]u64 = undefined;
     var decoded_samples: [max_samples]u64 = undefined;
+    var kept_samples: [max_samples]u64 = undefined;
     var checksum: u64 = 0;
 
     _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.ENABLE, 0);
@@ -224,8 +284,11 @@ pub fn main() !void {
         const a1 = try read_counter(fd);
         checksum +%= read_from_decoded(&cached, reads_per_sample);
         const a2 = try read_counter(fd);
+        checksum +%= read_from_kept(kept, reads_per_sample);
+        const a3 = try read_counter(fd);
         encoded_samples[s] = a1 - a0;
         decoded_samples[s] = a2 - a1;
+        kept_samples[s] = a3 - a2;
     }
 
     _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.DISABLE, 0);
@@ -235,19 +298,26 @@ pub fn main() !void {
 
     sort_ascending(encoded_samples[0..sample_count]);
     sort_ascending(decoded_samples[0..sample_count]);
+    sort_ascending(kept_samples[0..sample_count]);
     const mid = sample_count / 2;
     const encoded_median = encoded_samples[mid];
     const decoded_median = decoded_samples[mid];
+    const kept_median = kept_samples[mid];
 
     // invariant: decoding on every read costs at least what reading a cached field costs.
     assert(encoded_median >= decoded_median);
+    // invariant: decoding on every read costs at least what reading a retained slice costs.
+    assert(encoded_median >= kept_median);
 
     const encoded_per_read = encoded_median / reads_per_sample;
     const decoded_per_read = decoded_median / reads_per_sample;
+    const kept_per_read = kept_median / reads_per_sample;
     const saved_per_read = encoded_per_read - decoded_per_read;
     const cache_bytes: u32 = @sizeOf(qw.QueryWireResponse);
+    const kept_cache_bytes: u32 = kept_bytes(measured_hit_count);
 
     print("query_wire_retention_cost: tier=counters mode={s} hits={d} payload_bytes={d} cache_bytes={d}\n", .{ @tagName(builtin.mode), measured_hit_count, payload_len, cache_bytes });
     print("query_wire_retention_cost: samples={d} reads_per_sample={d} encoded_median={d} decoded_median={d}\n", .{ sample_count, reads_per_sample, encoded_median, decoded_median });
     print("query_wire_retention_cost: encoded_per_read={d} decoded_per_read={d} saved_per_read={d} spread_encoded={d} spread_decoded={d}\n", .{ encoded_per_read, decoded_per_read, saved_per_read, encoded_samples[sample_count - 1] - encoded_samples[0], decoded_samples[sample_count - 1] - decoded_samples[0] });
+    print("query_wire_retention_cost: kept_cache_bytes={d} kept_per_read={d} kept_median={d} spread_kept={d} kept_header_bytes={d} hit_bytes={d}\n", .{ kept_cache_bytes, kept_per_read, kept_median, kept_samples[sample_count - 1] - kept_samples[0], @sizeOf(KeptAnswer), @sizeOf(qw.QueryWireHit) });
 }
