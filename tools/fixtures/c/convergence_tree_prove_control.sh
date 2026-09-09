@@ -48,6 +48,27 @@ mkdir -p "$subject/rooms"
   printf 'a DASH here\n' > rooms/one.md
   printf 'and a DASH there\n' > rooms/two.md
   printf 'settled already\n' > rooms/quiet.md
+  # OPERATORS THAT LIVE IN THE TREE THEY EDIT, which is where every real one lives. The five planted
+  # below in `$ops` work on relative paths in whatever directory they are handed; not one resolves
+  # its own root from `$0`, and 100 tracked tools in this tree do. That gap is why the prover ran
+  # its subject against the live tree for a day with this control fully green
+  # (`20260909.170804`): a stand-in that speaks a simpler contract than the answerer proves the
+  # asker against a world that does not exist.
+  mkdir -p tools
+  cat > tools/rooter.sh <<'IN'
+#!/bin/sh
+root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$root"
+sed 's/DASH/--/g' rooms/one.md > rooms/one.tmp && cat rooms/one.tmp > rooms/one.md && rm -f rooms/one.tmp
+IN
+  cat > tools/oncewriter.sh <<'IN'
+#!/bin/sh
+root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$root"
+[ -e rooms/sealed.md ] && { echo "refused: sealed_exists -- a shelf is immutable once written" >&2; exit 2; }
+printf 'sealed\n' > rooms/sealed.md
+IN
+  chmod +x tools/rooter.sh tools/oncewriter.sh
   git add -A
   git commit -qm "pen: the subject tree"
 ) >/dev/null 2>&1
@@ -93,13 +114,25 @@ cat > "$ops/refuser.sh" <<'R'
 echo "refused: on purpose" >&2
 exit 2
 R
-# An operator that works once and then refuses its own output -- the sharpest divergence.
+# An operator that works once and then refuses its own output WITHOUT rewriting it. This was
+# planted as `the sharpest divergence` and it is nothing of the kind: the tree it leaves after the
+# refusal is the tree its first run left, which is what accrete-never-break asks of every write-once
+# writer here. It reads `write_once` from `20260909.170804`, and the case below says so.
 cat > "$ops/sour.sh" <<'S'
 #!/bin/sh
 if grep -q SOURED rooms/two.md; then echo "refused: I will not read my own work" >&2; exit 1; fi
 echo SOURED >> rooms/two.md
 S
-chmod +x "$ops/settle.sh" "$ops/append.sh" "$ops/toggle.sh" "$ops/refuser.sh" "$ops/sour.sh"
+# THE ACTUAL sharpest divergence, which nothing here exercised until now: it changes the tree AGAIN
+# and then refuses. The exit code it shows is the one `sour.sh` shows, so only the tree tells them
+# apart.
+cat > "$ops/spoil.sh" <<'S'
+#!/bin/sh
+printf 'spoil\n' >> rooms/two.md
+n=$(grep -c spoil rooms/two.md)
+if [ "$n" -gt 1 ]; then echo "refused: I spoiled my own work and wrote anyway" >&2; exit 1; fi
+S
+chmod +x "$ops/settle.sh" "$ops/append.sh" "$ops/toggle.sh" "$ops/refuser.sh" "$ops/sour.sh" "$ops/spoil.sh"
 
 run() { ( cd "$subject" && sh "$prove" "$@" 2>&1 ) || true; }
 run_settled() { ( cd "$settled" && sh "$prove" "$@" 2>&1 ) || true; }
@@ -121,7 +154,31 @@ out=$(run "$ops/refuser.sh")
 check "a refusing operator is no pass"    yes "$(has "$out" 'verdict=refused')"
 
 out=$(run "$ops/sour.sh")
-check "refusing its own output is named"  yes "$(has "$out" 'verdict=refused_on_second')"
+check "refusing and changing nothing"     yes "$(has "$out" 'verdict=write_once')"
+check "is not called a divergence"        no  "$(has "$out" 'verdict=refused_on_second')"
+out=$(run "$ops/spoil.sh")
+check "writing again AND refusing is"     yes "$(has "$out" 'verdict=refused_on_second')"
+check "told apart from write_once"        no  "$(has "$out" 'verdict=write_once')"
+
+# THE IN-TREE OPERATOR, the class every real tool belongs to and the one this control lacked.
+out=$(run "$subject/tools/rooter.sh")
+check "an operator rooted at \$0 converges" yes "$(has "$out" 'verdict=converges')"
+check "rather than reading as inert"      no  "$(has "$out" 'verdict=inert')"
+check "and the subject file is untouched" yes "$(has "$(cat "$subject/rooms/one.md")" 'a DASH here')"
+
+out=$(run "$subject/tools/oncewriter.sh")
+check "an in-tree write-once writer"      yes "$(has "$out" 'verdict=write_once')"
+check "and it sealed nothing out here"    no  "$(has "$(ls "$subject/rooms")" 'sealed.md')"
+
+# BOTH DIRECTIONS, and this leg is the whole reason the repair exists. The elder prover is this one
+# with the in-pen invocation removed -- a single assignment -- so the difference measured is the
+# repair itself and nothing beside it. Planted, read, and then the damage undone.
+sed '/RUN_TOOL="\$pen\/\$TOOL_REL"/d' "$prove" > "$pen/elder_prove.sh"
+out=$( ( cd "$subject" && sh "$pen/elder_prove.sh" "$subject/tools/rooter.sh" 2>&1 ) || true)
+check "the elder prover read inert"       yes "$(has "$out" 'verdict=inert')"
+check "while editing the subject tree"    yes "$(has "$(cat "$subject/rooms/one.md")" 'a -- here')"
+( cd "$subject" && git checkout -q -- rooms/one.md )
+check "and the damage is undone"          yes "$(has "$(cat "$subject/rooms/one.md")" 'a DASH here')"
 
 # THE PERTURB PAIR. One operator, one repository, and only the sample between them differs -- which
 # is the only way to show `--perturb` is doing the work rather than the operator or the tree.
@@ -158,7 +215,7 @@ fi
 
 # SAID OUT LOUD, because `check` prints only on failure: a witness asserting on a failure message
 # would be asserting on text that appears only when this control is broken.
-echo "coverage: mode divergence, the perturb pair, a no-op perturbation, and both refusal shapes were each exercised"
+echo "coverage: mode divergence, the perturb pair, a no-op perturbation, both refusal shapes, an in-tree operator rooted at \$0, and the elder prover's own leak were each exercised"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

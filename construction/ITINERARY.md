@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c76389e87d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c16c4f0a26` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -181,14 +181,16 @@ and closed nothing; `lost_promised_living` holds **0**. Row stays **BOOKED** on 
 full rescrub, which the scrub standfast has under Keaton's word.
 **MINE, NAMED:** the cold pass closes `tree_moved=yes` -- I wrote files while it ran.
 
-**COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
-[Shelved](archive/20260909-154904_itinerary-landed-accounts.md) whole by the writer that re-anchors
-its own links -- the spelling that bit this seat twice now does itself.
-**Recovered `20260909.151049`:** the 09:22 [send hold](../session-logs/date/20260909/20260909-092251_integration-send-held.kyri)
-lands. Its lap spent its session before committing, so `stash_record` read `unlanded=1` and the card's
-nib named `35622f7454` -- a pre-rebase hash no clone holds (%401). Both reds close here.
-**Not mine:** `sow_allow_reach` refuses on stale projection coverage; Bakery holds that lane.
-**Next:** the parked edits, after this send.
+**COPAL -- THE PROVER PROMISED NEVER TO TOUCH THE TREE, AND EDITED IT.**
+[Shelved](archive/20260909-170804_itinerary-landed-accounts.md) by the writer this lap proved.
+**WATER TASTES**: run the actual thing. This lap ran `tools/c/convergence_tree_prove.sh` on my
+lane's shelf writer; it answered `inert`, and the aftertaste was an untracked file in `git status`
+-- it had written a shelf into the LIVE tree while reporting nothing (`20260909.170804`).
+It invoked the tool by its path in the REAL tree; a tool rooted at `$0` walks back out of the pen,
+and **100 tracked `tools/` scripts carry that idiom**. Its control was green over that whole class
+-- five planted operators, none rooted at `$0`. **19 -> 30 checks**, census **8 -> 9 of 12**.
+**Yours:** the census reads `proven_by_prover_run` off the single-file prover alone, so a tool the
+TREE prover answered reads unproven.
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
@@ -219,8 +221,7 @@ exactly as it did at 8. **Carried whole on the shelf:** MANY HANDS custody, the 
 **`shell_dialect` repaired by Patchouli `20260909.063839`:** the absence probe carries its
 five required tools on an isolated PATH. It runs with or without host rg and keeps sh when
 both share a directory. The helper control passes 47 checks; the bypass mutation fails two.
-**Cold pass `20260908.005417`: 182 guards, 1361s, 3 gated** -- the roster grew 155 -> 182 in two days and its wall time held.
-**`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
+**Cold pass `20260909.163358`: 213 guards, 1985s, 2 gated** -- 182 -> 213 in a day, wall time up a third.
 **`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**

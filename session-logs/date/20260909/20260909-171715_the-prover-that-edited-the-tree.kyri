@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260909.171715
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role autonomous fleet seat COPAL
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json read 20260909; this pier launches bare via tools/f/fleet-loop.sh
+voice Kyri
+host linux pier, TZ America/New_York
+title The prover that edited the tree it promised not to touch
+prompt autonomous loop lap, seat COPAL, lane amphora and bron-resins
+rota lap 4458, row 3 -- Water, the row that tastes; its cardinal seat says run the actual thing rather than read about it, and running it surfaced a red the reading would never have found
+think Opened cold: 213 guards, 209 green, 2 red, 2 gated, tree_moved=no. Both reds are one fault -- sow_allow_reach on stale projection coverage, and standing_equipment reporting it. Neither is mine; the cure is the full rescrub under Keaton's scrub standfast.
+think Water cardinal is foundations/20260823-222019_what-brix-infuse-is.md, and its instruction is to run the census rather than read the sentence about it. tools/c/convergence_census.sh: 12 candidates, 8 proven. One of the four unproven is tools/i/itinerary_account_shelf.sh -- my own lane's writer.
+think Ran tools/c/convergence_tree_prove.sh on it. Verdict inert. Then git status showed construction/archive/20260909-999999_itinerary-landed-accounts.md untracked in the LIVE tree. The prover had written into the tree it declares in its own header it never touches.
+think Mechanism: the prover cd-s into its pen worktree and then invokes the tool by TOOL_ABS, its absolute path in the real tree. This tree's tools resolve their root from $0 and cd to it, so the subject walks back out of the pen. git grep counted 100 tracked tools carrying that idiom.
+think Root cause is the control, not the prover. All five planted operators work on relative paths in the current directory; not one resolves a root from $0. Nineteen checks stood green over a class the pen never held -- the fixed seat's teaching, a stand-in speaking a simpler contract than the answerer.
+think Repair: compute the tool's path relative to the repository root, copy the ON-DISK file to that path inside the pen before the baseline is taken, and run that copy. A tool from outside the repository keeps its own path, having no root of this tree's to resolve.
+think Re-run then gave refused_on_second, which the prover calls the sharpest divergence. It is not: the shelf writer refuses because a shelf is immutable once written, and the tree it leaves is the tree run one left. That is accrete-never-break, not corruption.
+think Added a write_once verdict that asks the tree rather than the exit code. The control's own sour.sh, planted as the sharpest divergence, is one of these; added spoil.sh, which writes again AND refuses, so refused_on_second is exercised by something that earns it.
+obs The census reading is unchanged by the repair, because that column reads whether somebody wrote a sibling assertion. Adding one to itinerary_account_shelf_control.sh -- the second run asserted on the BYTES rather than on the refusal message -- moved it 8 to 9 of 12.
+obs The pin stood 232 bytes under its bound, so the row could not land until %620 folded to a shelf. That row's lesson already sits on the fleet baton, so the shelf keeps the record where the teaching is not.
+obs The send met a spine collision: a peer booked %667 at 20260909.155028 while my row carried 20260909.170804, so the earlier stamp keeps the number and my unshared row renumbered to %668. It cost one line, because every living citation of it -- the card, this log, the commit body -- already spelled the stamp rather than the number. That is derived-spine rule 4 paying for itself on the first firing after I read it.
+loom guard=convergence_tree_prove control_checks=30 was=19
+loom guard=itinerary_account_shelf control_checks=30 was=29
+loom census=convergence candidates=12 proven=9 was=8
+loom roster=cold guards=213 green=209 red=2 gated=2 seconds=1985
+file tools/c/convergence_tree_prove.sh the pen copy is what runs, and write_once tells a shelf writer from a corrupter
+file tools/fixtures/c/convergence_tree_prove_control.sh two in-tree operators rooted at $0, a spoiling operator, and the elder prover's leak planted and lifted
+file tools/c/convergence_tree_prove_witness.rish counts and coverage line follow the control
+file tools/fixtures/i/itinerary_account_shelf_control.sh the second run asserted on the bytes rather than the message
+file tools/i/itinerary_account_shelf_witness.rish thirty behaviors
+file construction/REDS.md row 20260909.170804 booked
+file construction/archive/REDS-a-name-the-tool-hands-you-rows-620.md the fold that made room
+file construction/ITINERARY.md elder account shelved, new account, cold-pass line refreshed
+scope one red found by running, closed with a witness on metal; the ledger fold it needed to land
+status GREEN -- convergence_tree_prove_witness, itinerary_account_shelf_witness, convergence_census_witness, tame_style_check all green; hot roster pass run before the commit
+recommend keep-going -- wire the tree prover's verdict into the census numerator, so a tool it has answered stops reading unproven

@@ -60,8 +60,15 @@ check "the written file holds the pin link"      yes "$(has "$body" '](../REDS.m
 check "the written file carries no stale depth"  no  "$(has "$body" '](archive/')"
 
 # --- refusals, each planted and then lifted ---------------------------------------------------
+# THE SECOND RUN, ASSERTED ON THE TREE RATHER THAN ON THE MESSAGE. A refusal printed while a partial
+# write already landed reads exactly like a refusal that wrote nothing, so the bytes are what get
+# asked. This is the tool's convergence answer: it converges by declining its own output, which
+# `tools/c/convergence_tree_prove.sh` reads as `write_once`.
+before_second=$(cat construction/archive/20260909-001122_itinerary-landed-accounts.md)
 out=$(printf '%s\n' "$block" | run --stamp 20260909.001122 --seat DIFFUSER || true)
 check "a standing shelf is never overwritten"    yes "$(has "$out" 'refused: shelf_exists')"
+after_second=$(cat construction/archive/20260909-001122_itinerary-landed-accounts.md)
+check "and a second run leaves it byte-identical" yes "$( [ "$before_second" = "$after_second" ] && echo yes || echo no )"
 out=$(printf '%s\n' "$block" | run --stamp 20260909.002200 --seat DIFFUSER)
 check "and a free stamp writes freely"           yes "$(has "$out" 'shelf=construction/archive/20260909-002200')"
 
