@@ -590,3 +590,5 @@ at a closed fold.*
 *Row %654 folded to [`REDS-a-flag-that-never-returns-rows-654.md`](REDS-a-flag-that-never-returns-rows-654.md) on `20260908.225856`, **BOOKED** -- a documented flag that never returns, on a page every instrument graded healthy -- reachability is not termination.*
 
 *Row %655 born onto [`REDS-a-correction-inherits-the-duty-rows-655.md`](REDS-a-correction-inherits-the-duty-rows-655.md) on `20260908.234354`, **BOOKED** -- a correction is a claim, and it inherits the duty of the claim it corrects.*
+
+*Row %656 born onto [`REDS-one-literal-two-verdicts-rows-656.md`](REDS-one-literal-two-verdicts-rows-656.md) on `20260909.001908`, **BOOKED** -- a house parse law declared in one reader of fourteen is a law nobody can rely on.*
