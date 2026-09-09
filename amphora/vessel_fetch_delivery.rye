@@ -291,6 +291,8 @@ fn run_selftest(_: std.Io) !u8 {
     const resp_opened_len = try open_wire(resp_wire[0..@intCast(resp_wire_len)], &resp_opened);
     var decoded_resp: vfw.FetchResponse = undefined;
     try vfw.decode_response(resp_opened[0..@intCast(resp_opened_len)], &decoded_resp);
+    // invariant: the resin survives seal, wire, and open unchanged, so the crossing is proven by the
+    // bytes that arrived rather than by the absence of an error.
     assert(std.mem.eql(u8, decoded_resp.bytes[0..decoded_resp.bytes_len], resins[0].bytes));
 
     // Unwelcome: bad Comlink seal refuses whole.
@@ -527,6 +529,8 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
         .exited => |code| code,
         else => 255,
     };
+    // invariant: both dependents exited zero, so a demo where one half died quietly would otherwise
+    // read green on the survivor's own output alone.
     assert(source_code == 0);
     assert(fetcher_code == 0);
 
@@ -568,6 +572,8 @@ fn run_chunkdemo_source(_: std.Io) !u8 {
 
     var resp: vfw.FetchResponse = undefined;
     try build_response_bytes(digest_hex[0..], bytes[0..], &resp);
+    // invariant: the fixture stands past the single-datagram ceiling, so the chunked send below is
+    // exercised rather than skipped by a resin that happened to fit one frame.
     assert(vfw.resin_needs_chunking(resp.bytes_len));
     try send_resin_response(fd, &resp, &asker);
     print("vfd: chunkdemo source sent {d}-byte resin in chunks\n", .{resp.bytes_len});
@@ -609,6 +615,8 @@ fn run_chunkdemo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
         .exited => |code| code,
         else => 255,
     };
+    // invariant: both dependents exited zero, so a chunked crossing where either half died counts as
+    // a failure rather than being read from one side's output alone.
     assert(source_code == 0);
     assert(fetcher_code == 0);
     print("vfd: chunkdemo GREEN — 400 B resin crossed in multiple sealed datagrams\n", .{});

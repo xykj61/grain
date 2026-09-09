@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260908.153127
+editor Claude Code, CLI on the Dallas pier
+provider Anthropic
+product Claude Code
+role copal seat -- amphora, bron-resins, vessels, sealing, the manifest, the crossing
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default; this pier launches bare at --effort medium
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The front door pointed at a withheld room
+prompt autonomous lap -- baton, card, rota, next agent-doable work in the copal lane
+rota lap 4330, row 0 -- Aether, the row that hears; threshold, compass, Lindy, the grain and the crossing. What it surfaced: the Lindy page's own sentence -- a claim bound to a witness stays checkable, an asserted one decays -- named both of this lap's finds before I met either.
+think Opened cold. The launch REFUSED under run_in_flight: an orphaned pass (pid 1256074, parent 1, started 14:55:20, cwd this tree) already held the lock. Its readings were still this tree at this HEAD, so I let it run rather than signalling it.
+think Reds first. The REDS pin refuses a new row -- pin_headroom=24, 13 rows OPEN, pin_foldable_rows=0, rows_that_fit=0, pin_deadlocked=1 -- so I read the open rows instead. Most are gates on Keaton's word.
+think In my own lane the manifest is the crossing's wall, so I ran tools/fixtures/s/seed_link_scan.sh directly: front_door_links_outside_seed=1, other_living_links_outside_seed=850 against a ceiling of 848, verdict=link_outside_seed. The guard was already red at my open.
+think Enumerated the ratchet by copying the scan into .lap/ and raising its listing bound from 5 to 9999 -- the scan prints only its first five. Three offending links, one root: context/BHAKTA_STYLE.md, seated three hours earlier, absent from the allowlist while README.md, docs-geode/study/README.md and docs-geode/tutorials/the-first-hour.md all link it.
+obs ONE LINE, AND IT WAS PROVEN BEFORE IT WAS WRITTEN. The scan honours SEED_LINK_MANIFEST, so a candidate manifest in .lap/ answered the question without touching a tracked byte: gated 1 -> 0, ratchet 850 -> 848, verdict=ok. Then the line landed beside RADIANT_STYLE.md and TWILIGHT_STYLE.md, which have shipped all along -- a third register of the same class, held out by nothing but its age.
+obs THE WIDENING IS A PRIVACY BOUNDARY, SO IT IS PROVEN RATHER THAN ASSERTED. sow_witness: M1_OK, SOW_OK copied=7953 scrubbed=1328 withheld=135, IDENT_CLEAN, NO_PERSONAL. The page lands at seed/context/BHAKTA_STYLE.md, 5,905 bytes, with zero occurrences of the maintainer's name where the field copy carries one, and all five of its own links resolve inside the seed. sow_allow_reach GREEN, seed_link GREEN with sixteen control behaviors.
+obs MY OWN COLD OPEN REPRODUCED A NEW RED IN THE RUNNER, ON ITS FIRST DAY. --detach truncates its transcript BEFORE the child reads the lock, so my refused launch destroyed the first 24 lines of a LIVE pass and wrote its own run_verdict=run_in_flight at line 25. Both promises in the runner's own comment broke at once: the header that "can never hold an elder pass's bytes" held a live pass's, and "finished when the transcript carries a run_verdict line" fired while the pass ran.
+obs THE COST WAS EXACTLY THE THING I WAS REPAIRING. seed_link runs early, inside the 24 destroyed lines, so the pass's own reading of it never reached me -- I read it from construction/standing-equipment-reds/standing_equipment.txt, which named `red: seed_link red` beside `red_self: standing_equipment red`. The repair is order rather than naming: read the lock, refuse on stdout, write no byte. That file is BAKERY's, and its own pass was running from it, so I left it untouched (%221) and named it on the card.
+obs THE ROTA ROW SAID BOTH FINDS AHEAD OF ME. Aether asks what the work is for and listens for the silence where a claim used to be; the Lindy foundation puts it plainly -- truth that was checked stays checkable, truth merely asserted decays. A link in a front door is a claim a witness reaches within the hour. A promise inside a tool's own comment is a claim nothing reaches at all, and it was false the first time two launches met.
+loom seed_link gated_before=1 gated_after=0 ratchet_before=850 ratchet_after=848 ceiling=848 shipped_docs=2250 links_checked=9511
+loom sow copied=7953 scrubbed=1328 withheld=135 ident=clean personal=none seed_page_bytes=5905 name_hits_field=1 name_hits_seed=0
+loom reds_pin headroom=24 open_rows=13 foldable=0 rows_that_fit=0 deadlocked=1
+loom cold_pass guards_run=196 guards_seconds=1628 green=191 red=2 gated=3 tree_moved=no
+file template-manifest.bron allow context/BHAKTA_STYLE.md -- the one line, beside its two register siblings
+file construction/ITINERARY.md the COPAL block rewritten; elder shelved whole
+file construction/archive/20260908-152905_itinerary-landed-accounts.md the shelved elder block
+file session-logs/date/README-index-20260908.md the shelf row
+scope one Aether lap -- the seed's front door repaired at its root, proven both before and after; one new red named for its own lane
+status GREEN -- seed_link, sow_witness, sow_allow_reach, living_pin_near_bound all green on metal; the runner red named rather than taken
+recommend check-in (Keaton) -- the REDS pin refuses a fourth ship's row, and whether context/REDACT_TECHNIQUE.md ships is a judgment about a worked example that spells an acreage.

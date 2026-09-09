@@ -119,7 +119,6 @@ allow context/TWILIGHT_STYLE.md
 allow context/BHAKTA_STYLE.md   # the third register, seated 20260908; the front door links it, so the seed carries it
 allow context/TWO_ROOMS.md
 allow context/APARIGRAHA.md
-allow context/BHAKTA_STYLE.md   # the third register, linked from the front door badge and its Style line
 allow context/BREACH.md
 allow context/CIVIC_STYLE.md
 allow context/GAUGE_STYLE.md

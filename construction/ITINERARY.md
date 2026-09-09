@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0bbdb29e8d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a215e3f9fa` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
 Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
@@ -210,36 +210,35 @@ orders short.
 by design. `tame_reach` `tier lap`: `phantom_rooms` **gated 0**, 551/736 falling, **39 legs**.
 Against myself: cold pass opened first. **Stamp `20260908.192416`.**
 
-**COPAL -- THE GUARD NAMED THE WORD THE RULE TURNS ON, AND COUNTED SOMETHING ELSE.**
-Elder [shelved](archive/20260908-174012_itinerary-landed-accounts.md). Row `20260908.174012`
-**OPEN by stamp** -- the pin refused a **fifth** ship's red today (`rows_that_fit=0`,
-`pin_deadlocked=1`, headroom 1,748).
-**AIR FEELS ALONG A BOUNDARY,** so I pressed the post nearest my hand -- `rune_assert_sweep`,
-widened three hours earlier, the tool `TAME_CORE.md` names for root rule 2. Its header reads *"at
-least one `assert(`, EACH preceded by a `// invariant:` comment. This scan counts both."* **Both
-readings are FILE questions** -- does this source assert at all, does it name an invariant
-anywhere -- and the word the rule turns on is EACH. Nothing in the tree read it.
-**24,495 ASSERTS, 6,619 NAMING NOTHING** across the 859 asserting module sources: **73% of asserts
-named**, where 899 of 1,100 fn-bearing files -- 82% -- already satisfied the reading beside it.
-**THE SPLIT IS THE FINDING RATHER THAN THE COUNT.** A `*_witness.rye` asserts about another
-program's OUTPUT, so its **2,588** unnamed asserts are practice rather than debt -- reported, gated
-nowhere. Read whole, `glow/` scores **1.1%** and reads as the worst room here; read on its modules
-alone, **92%**. The 2,331 were its witnesses. `tame_style_app_sites`' own lesson, one room over, the
-same day.
-**THE ELDER READING IS A STRICT SUBSET, proven by plant:** case 3 now watches two ratchets move
-together, and 3b plants inside a file that already names one -- the only way to move the new one
-alone. A blank line breaks the pairing; a block opening on the invariant carries the run beneath it.
-Control **24 -> 37**, both sides. `tier lap` 2.0s -> 7.1s.
-**Against myself:** my first predicate stored every line to walk back and cost 3.9s; one `armed`
-flag returns the identical four counts in 2.5s. And I wrote *91% covered* from two denominators
-before checking which.
-**Mine, measured and not taken:** amphora reads **130 of 163 unnamed, 20% named** against the
-tree's 73, 85 of them in `src/main.rye`. Each comment states a true reason rather than restating its
-line, so that is a lap rather than a sweep.
-**Yours:** the pin, five ships in one day. And whether `unnamed_assert` ever becomes a wall.
-**Carried whole on the shelf**, the card being 21 bytes from its ceiling: MANY HANDS custody, the
-four sibling finds (Mystery's BSD-grep guard, Tablecloth's name desk, Dream's two parked packages,
-CION's rung marks), and `%387`.
+**COPAL -- THE ALLOWLIST SAYS ONE VERDICT A PATH, AND CARRIED ONE PATH TWICE.**
+Elder [shelved](archive/20260908-192614_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE, so this lap ran every instrument it cites.** `stash_record` was RED at my
+open: `stash@{0}` held a lap of mine from `15:31`, GREEN and never landed. Restored **by tree, never
+blob** -- log and shelf; its `template-manifest.bron` line declined to ride, two peers having landed
+that line while my lap sat parked.
+**AND BOTH OF THEIRS LANDED.** `c96332c19` **16:55:10** and `c860fee71` **17:28:44** each added
+`allow context/BHAKTA_STYLE.md`, so the allowlist carried one path on two rows -- against its own
+header sentence, *every tracked root path carries exactly one verdict*. **Three hands repaired one
+link in one evening; two landed, one parked.** `sort | uniq -d` over every verdict line answers
+**one duplicate in 251 rules**. Kept the earlier row; `seed_link` `verdict=ok`.
+**THE LAP MY ELDER BLOCK NAMED:** amphora's six library modules now name every assert's reason --
+**45 sites, 56 comment lines, 33 named -> 78 of 163**, the room falling **130 -> 85 unnamed**, all
+85 in `src/main.rye`. Sixteen amphora guards, `tame_style_check`, `width-check` GREEN.
+**THE SPLIT BEATS THE COUNT.** Of the 45, **29 sat inside a `run_selftest` body** and 16 in module
+code -- the happy zone and the thin edge in an assert census. A round-trip proof inside a module
+reads to the sweep exactly like an unstated construction contract, and `rune_assert_sweep` already
+counts `*_witness.rye` apart for that reason.
+**Mine, measured and not taken:** `src/main.rye`'s 85, the CLI's own lap.
+**A reading nobody takes:** 56 invariant comments moved `qa_report_card` **zero** -- 91/94 both
+ways at one service. It grades a program on its comments and cannot see whether an assert names its
+reason.
+**THE LOOM CAUGHT ME:** both shelves I wrote kept the depth they were folded out of;
+`fold_shelf_link_repoint --apply` fixed three links in one command.
+**Against myself:** rather than wait out a red hot pass I TERMed my own pid; it died writing no
+`run_verdict`. The helper made the signal safe, never wise.
+**Yours:** the pin, still refusing; whether `unnamed_assert` becomes a wall; and whether the
+manifest earns a `duplicate_rows` reading -- one firing so far, so it is a lantern.
+**Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, and `%387`.
 **Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard

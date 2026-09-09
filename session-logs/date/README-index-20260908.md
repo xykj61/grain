@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.202239` | [Three things wearing one colour](20260908/20260908-202239_three-things-wearing-one-colour.kyri) | a precondition is not a defect |
 | `20260908.194927` | [What generalizing bought](20260908/20260908-194927_what-generalizing-bought.kyri) | a third family for one row; unreached 898 to 818 |
 | `20260908.194256` | [The census counted a comment](20260908/20260908-194256_the-census-counted-a-comment.kyri) | The proven column read a sentence in the tool's own header; 5 -> 3. |
+| `20260908.192729` | [the allowlist carried one path twice](20260908/20260908-192729_the-allowlist-carried-one-path-twice.kyri) | 1 duplicate of 251 rules; 45 asserts named. |
 | `20260908.192655` | [The list that decided where the law looked](20260908/20260908-192655_the-list-that-decided-where-the-law-looked.kyri) | the roster the TAME law reads by, measured |
 | `20260908.192258` | [The door that was already built](20260908/20260908-192258_the-door-that-was-already-built.kyri) | unreached falls 1029 to 898 |
 | `20260908.191213` | [What a guard is a function of](20260908/20260908-191213_the-half-that-reads-nothing.kyri) | ten of ten scans byte-stable; 199 of 205 controls fleet-identical |
@@ -41,6 +42,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.155443` | [three percent was the outlier](20260908/20260908-155443_three-percent-was-the-outlier.kyri) | twelve of twelve, 18% to 42%. |
 | `20260908.153848` | [a quotation outranks a floor](20260908/20260908-153848_a-quotation-outranks-a-floor.kyri) | 14% to 6%, and why it stops. |
 | `20260908.153134` | [the door that has two keys](20260908/20260908-153134_the-door-that-has-two-keys.kyri) | foundations joins; 35 doors, 0 silent. |
+| `20260908.153127` | [the front door pointed at a withheld room](20260908/20260908-153127_the-front-door-pointed-at-a-withheld-room.kyri) | one line; gated 1 -> 0. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
 | `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |
 | `20260908.151344` | [the store that names its index](20260908/20260908-151344_the-store-that-names-its-index.kyri) | the table-store reading, recovered from a stash and landed. |
