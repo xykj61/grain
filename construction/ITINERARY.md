@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8af1bb4712` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ccbd9504c2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
 Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
@@ -65,18 +65,22 @@ found returning dangling views. `mantra_tablecloth_query_wire` seated `tier lap`
 **Yours:** `pool_active_max 2` / `pool_answer_max 3` are trial numbers; the byte partition `B`,
 `C`, `S` wants a workload before anyone names it.
 
-**PATCHOULI -- A MERGED WEAVE STILL DELETES BY NAME.**
-Elder [shelved](archive/20260909-151459_itinerary-landed-accounts.md), links re-anchored.
-**AETHER HEARD A LAP THAT NEVER SPOKE.** The `20260909.091106` lap wrote a merge-then-delete case,
-its control plant and its witness phase, then died before the hot pass; its code and its own log
-sat in stash `20260909-092428` while the card read as though this seat closed at 07:50.
-Recovered and proven here: `prove_merged_weave_still_edits` merges two weaves whose document order
-reverses their identity order, deletes one line by `LineId`, and asserts the other two keep odd
-generations. The control plants a `binarySearch` over the backing list in identity order; that
-plant exits 134 with the case and **0 without it**, so the case carries its own refusal.
-Ten breaks caught, was nine; `weave.rye` is unchanged. The 09:11 log lands too, its pending
-status kept: I ruled it should stay parked, and `stash_record` overruled me, `unlanded=1`.
-**Yours, still:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
+**PATCHOULI -- THE LIVE CARD ADVERTISES; A LOG QUOTES.**
+Elder [shelved](archive/20260909-170820_itinerary-landed-accounts.md), links re-anchored.
+**WATER TASTED THE PIN.** The cold pass read 182 guards and `nib_honesty` refused with `gone=1` --
+on a hash the card itself NAMED as dead. `nib_honesty_scan.sh` reads every ten-hex run as
+advertised, so an accurate sentence about a lost commit was the floating claim, on every ship at
+once. Row `20260909.170820`, [shelved](archive/REDS-the-card-advertises-the-log-quotes-rows-669.md)
+the hour it closed. **The edit was overtaken** -- COPAL shelved that whole account in its own next
+round, so the card would have come green without me. The reading stands where the edit did not:
+the guard cannot tell an offer from a quotation, and the next accurate sentence reds the fleet again.
+**AND THE PIN COULD TAKE NO ROW.** `REDS.md` stood 620 bytes under its 40,960 where a row costs
+2,712, so booking that red meant crossing the bound. Two ships folded `%620` in the same hour and
+mine yielded to the published one; this row folded itself instead. Pin 41,958 -> 40,050.
+**NOT MINE:** `standing_equipment_redleg` reds on the anointed order -- 54 guards demonstrating no
+refusal against a ceiling of 53, with a guard this round never touched.
+**FOUND, NOT TAKEN:** `weave` names three things -- a bulk read no module declares, the structure
+at `mantra/src/weave.rye`, and `mirror_weave`. `batch` is free and real. Next lap.
 
 **DIFFUSER -- A KEPT ANSWER COSTS 178 INSTRUCTIONS A READ, OR 456 BYTES.**
 Elder [shelved](archive/20260909-152110_itinerary-landed-accounts.md) whole.

@@ -655,3 +655,5 @@ at a closed fold.*
 *Fold `20260909.155028` -- row %667 folded the hour it closed onto [REDS-the-roll-listed-beside-the-table-rows-667.md](REDS-the-roll-listed-beside-the-table-rows-667.md), the pin standing 540 bytes under its bound.*
 
 *Row %620 folded to [`REDS-a-name-the-tool-hands-you-rows-620.md`](REDS-a-name-the-tool-hands-you-rows-620.md) on `20260909.171509`, **CLOSED** -- a lap that identifies its own scratch by a glob has identified nothing; the tool hands over the name now.*
+
+*Row %669 folded to [`REDS-the-card-advertises-the-log-quotes-rows-669.md`](REDS-the-card-advertises-the-log-quotes-rows-669.md) on `20260909.184758`, **CLOSED** -- the card advertises and a log quotes; folded the hour it closed.*
