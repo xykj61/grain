@@ -78,3 +78,5 @@ retain their existing scope.
 The [completion companion](../active-designing/20260909-062114_a-request-ends-before-its-budget-is-reused.md) adds the caller's wait and resource-release
 contract, supported by a local receive experiment. The next trial keeps the existing scan while
 checking success, refusal, deadline exhaustion, and slot reuse. A storage build remains conditional.
+
+The [retention experiment](../external-research/20260909-072836_a-retained-reply-needs-its-own-bytes.md) adds a concrete transfer case: copying the response record keeps borrowed text references, while copying its encoded bytes into separate storage preserves the answer through scratch reuse. Bakery can carry this case into the caller trial; its deadline and workload budgets remain to be agreed.

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.072836` | [Reply retention](20260909/20260909-072836_reply-retention.kyri) | owned bytes survive scratch reuse |
 | `20260909.072753` | [Recovery reaches main](20260909/20260909-072753_the-recovery-reaches-main.kyri) | diagnostics and records |
 | `20260909.071647` | [Projection inputs](20260909/20260909-071647_the-projection-names-its-inputs.kyri) | Bakery; parked coverage proof |
 | `20260909.063313` | [Comments counted as code](20260909/20260909-063313_comments-that-counted-as-code.kyri) | paired diagnostic checks |
