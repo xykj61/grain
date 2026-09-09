@@ -25,8 +25,9 @@
 # because a guard on such a tier would run on no lap at all, in silence.
 #
 # WHAT IT WRITES. construction/standing-equipment-runs.kyri, one
-# `ran <name> <stamp> <verdict> <tier> <seconds>`
-# line per guard. Lines for guards this pass left alone are KEPT, so a default run preserves the
+# `ran <name> <stamp> <verdict> <tier> <seconds> <cpu_ms>`
+# line per guard, the last field CPU-milliseconds and the one before it wall-seconds.
+# Lines for guards this pass left alone are KEPT, so a default run preserves the
 # cadence tier's own history rather than erasing it. The card is untracked by design -- it measures
 # THIS pier's history, and a fresh clone that has run nothing should say so.
 #
@@ -975,6 +976,8 @@ red=0
 gated=0
 gate_names=""
 seconds=0
+cpu_ms=0
+cpu_ms_absent=0
 
 # A RED THAT KEEPS NO WORDS CANNOT BE ROOTED. This loop discarded every guard's output, so a red
 # printed one word -- the guard's name -- and whoever read it later had to reproduce the failure to
@@ -1005,9 +1008,50 @@ red_room="construction/standing-equipment-reds"
 # TWO `date` FORKS PER GUARD, against guards measured in seconds -- a cost worth paying to stop
 # guessing. Seconds rather than anything finer, because this reading exists to size a PASS: a guard
 # that finishes inside a second is one no lap ever needs to think about, and it reads 0 honestly.
+# CPU-MILLISECONDS BESIDE WALL-SECONDS, so a tier reads the same on every host. `times` is a POSIX
+# special builtin: line one is this shell's own user and system time, line two its children's
+# cumulative user and system time, and it forks nothing. It must be REDIRECTED rather than captured
+# -- `$(times)` forks a subshell whose own children account is empty and reads 0m0.000s however much
+# work has been done, proven on metal `20260908.223000`. Descendants count too: two levels of `sh -c`
+# around one loop moved the children line by 1.413 user seconds, which matters because a guard is
+# `rishi run <path>` and rishi's own subprocesses are where the time goes.
+#
+# WHY THE SECOND CLOCK. Wall seconds measure this pier's contention as much as the guard: eight ships
+# against eight cores, load average 7.66/10.72/13.70 read `20260908.223542`. Re-run under `times`,
+# `shared_pen` read 53 wall seconds against 43.8 CPU-seconds and `module_room_reach` 8 against 6.7.
+# CPU-seconds also ADD across guards, ships and days, where wall seconds double-count two ships
+# running at once. Milliseconds rather than seconds, because a guard finishing inside a second is
+# most of the roster and 0 would be the only reading it could ever earn.
+cpu_children_ms() {
+  awk 'FNR == 2 {
+    total = 0
+    for (i = 1; i <= 2; i++) {
+      f = $i
+      sub(/s$/, "", f)
+      p = index(f, "m")
+      if (p == 0) { exit 1 }
+      total += substr(f, 1, p - 1) * 60 + substr(f, p + 1) + 0
+    }
+    printf "%d\n", total * 1000 + 0.5
+    exit 0
+  }' "$1" 2>/dev/null
+}
+
+# A reading that cannot be taken says so rather than saying zero: an unreadable `times`, an empty
+# file, or a counter that went backwards each answer `-`, which every reader treats as absent. Zero
+# is a real cost a stub guard honestly earns, so it may never stand in for a missing instrument.
+cpu_delta_ms() {
+  _a=$(cpu_children_ms "$1")
+  _b=$(cpu_children_ms "$2")
+  case "$_a" in ''|*[!0-9]*) echo '-'; return ;; esac
+  case "$_b" in ''|*[!0-9]*) echo '-'; return ;; esac
+  if [ "$_b" -lt "$_a" ]; then echo '-'; else echo $((_b - _a)); fi
+}
+
 while read -r name path tier gate; do
   [ -n "$name" ] || continue
   guard_open=$(date +%s)
+  times > "$pen/cpu.before"
   if [ "$path" != "-" ] && [ -f "$path" ]; then
     if rishi/bin/rishi run "$path" > "$pen/out.$$" 2>&1; then
       verdict=green
@@ -1040,16 +1084,22 @@ while read -r name path tier gate; do
     verdict=absent
     red=$((red + 1))
   fi
+  times > "$pen/cpu.after"
+  guard_cpu=$(cpu_delta_ms "$pen/cpu.before" "$pen/cpu.after")
   guard_seconds=$(( $(date +%s) - guard_open ))
   seconds=$((seconds + guard_seconds))
-  echo "ran $name $stamp $verdict $tier $guard_seconds" >> "$pen/fresh"
+  case "$guard_cpu" in
+    ''|*[!0-9]*) cpu_ms_absent=$((cpu_ms_absent + 1)) ;;
+    *) cpu_ms=$((cpu_ms + guard_cpu)) ;;
+  esac
+  echo "ran $name $stamp $verdict $tier $guard_seconds $guard_cpu" >> "$pen/fresh"
   # The live view moves with the pass: this guard's elder row leaves and the one it just earned
   # lands, so every guard after it reads what actually happened rather than what happened last time.
   awk -v n="$name" '!($1 == "ran" && $2 == n)' "$pen/live.rows" > "$pen/live.next"
-  echo "ran $name $stamp $verdict $tier $guard_seconds" >> "$pen/live.next"
+  echo "ran $name $stamp $verdict $tier $guard_seconds $guard_cpu" >> "$pen/live.next"
   cat "$pen/live.next" > "$pen/live.rows"
   live_write
-  echo "$name $verdict ${guard_seconds}s"
+  echo "$name $verdict ${guard_seconds}s ${guard_cpu}ms"
   ran=$((ran + 1))
 done < "$pen/todo"
 
@@ -1135,6 +1185,11 @@ echo "tier_run=$want_tier"
 echo "guards_run=$ran"
 # The pass's own cost, so a hand reads what it just spent without opening the card (REDS %388).
 echo "guards_seconds=$seconds"
+# The same pass in the unit that adds across guards, ships and days. A guard whose
+# reading could not be taken is counted apart rather than folded in as a zero, because
+# zero is a cost a fast guard honestly earns.
+echo "guards_cpu_ms=$cpu_ms"
+echo "guards_cpu_absent=$cpu_ms_absent"
 echo "guards_green=$green"
 echo "guards_red=$red"
 # Disclosed on every pass, empty or full, for the reason the enforced rooms are reported at every

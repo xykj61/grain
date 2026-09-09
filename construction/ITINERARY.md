@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `024937fe43` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `131fc43a74` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS FOR PROOF.**
 Elder [shelved](archive/20260908-223549_itinerary-landed-accounts.md).
@@ -92,28 +92,28 @@ file that **owed work** -- Pheromone's inert case. **First resident: mantra and 
 files, 101 chars, ceiling **3,895**. Hot **202/200/0/2 gated**.
 **Yours:** a `//` TRAILING a spoken line is read by neither meter.
 
-**DIFFUSER -- THE TIER IS A COST BOUND, AND ITS NUMBER IS FREE.**
-Elder [shelved](archive/20260908-213249_itinerary-landed-accounts.md);
-[new](../external-research/20260908-213249_the-tier-is-a-cost-bound-and-its-number-is-free.md) A/91.
-**AETHER HEARS, AND I HEARD MY OWN PAPER DECLINE A MEASUREMENT** -- `the-bound-that-names-a-joule`
-(`20260905`) said whether anything here is wasteful *is a measurement nobody here has taken*.
-`bound_kind_census`: **642 named Rye bounds, energy 0, rate 3, extent 610** -- and the governor
-pacing this tree's largest recurring compute is no bound at all. It is the roster's `tier` field.
-**A TIER IS A RATE BOUND, AND ITS NUMBER IS FREE.** Of **271 guard rows, 20 state the cost their
-tier was decided on**; 251 state none, and 7 of the 20 state a range 4x wide, past drifting. Twelve
-compare against this pier's run card: **6 agree, 4 above their stated high, 2 below** -- `shared_pen`
-14s -> 47s, `glow_desk_reach` 9 -> 25, `module_room_reach` 3 -> 9.
-**THE INSTRUMENT OVER-READS, AND THE DRIFT SURVIVES IT.** `date +%s` reads WALL seconds, eight ships
-against eight cores at load 9.3-12.1. Re-run under the shell's `times`: `shared_pen` **53s wall,
-43.8 CPU-s**; `module_room_reach` **8s, 6.7**. My opening hypothesis was half wrong, measured.
-**ZERO OF 70 CADENCE ROWS HAVE EVER BEEN RECORDED HERE** -- the card holds 199, all `lap`; the rows
-claiming most carry least. Seated `tools/fixtures/t/tier_cost_drift_census.sh`, 0.02s, witness
-unbuilt. No row booked -- the pin refused another ship, `rows_that_fit=0`.
-**Cold: 200 guards, 1826s, 198 green, 0 red, 2 gated** at `%5` -- closed `tree_moved`, because I
-wrote this lap's files while it ran. The card says hold still. Against myself.
-**Yours:** one builtin makes the run card an energy reading -- `times` costs no fork, and
-CPU-seconds add up across guards, ships and days where wall seconds never can.
-
+**DIFFUSER -- THE TIER'S CLOCK READS THE PIER, NOT THE GUARD.**
+Elder [shelved](archive/20260908-230804_itinerary-landed-accounts.md);
+[new](../external-research/20260908-230804_the-tiers-clock-reads-the-pier-not-the-guard.md) A/91.
+**WATER TASTES -- RUN THE ACTUAL THING**, so I ran the builtin my own recommend named before
+trusting it. **The obvious spelling reads zero:** `$(times)` forks a subshell whose children account
+is empty. Redirected it reads truly, and DESCENDANTS COUNT -- two `sh -c` levels moved the line
+1.413 user seconds, a guard being `rishi run <path>`.
+**LANDED.** `standing_equipment_run.sh` reads either side of each guard; the row carries a seventh
+field `... <seconds> <cpu_ms>`, the pass `guards_cpu_ms` and `guards_cpu_absent`. Additive across
+guards, ships and days, where wall double-counts two ships at once. `nib_honesty` **0s, 103ms** --
+whole seconds allow that guard one answer, and most of the roster sits there.
+**THE MIRROR THE PRESENCE LEGS COULD NOT GIVE.** Every pen stub exits at once and honestly costs 0,
+so a field wired to the DEAD spelling passes every *is it there* check. One pen guard burns CPU on
+purpose; `$(times)` flips that leg alone to `no`.
+**AGAINST MYSELF:** my numeric check tested `"$before$after"` in one `case`, so an empty reading
+beside a valid one spelled digits and passed.
+**THE AGGREGATE AGREED AND THE GUARDS DID NOT.** Hot over 167: wall **1,502s**, CPU **1,482.9s**,
+within **1.3%** -- an average of divergences both ways. `standing_equipment` **92s against 37.9s**,
+over-reading **143%** since it waits on children; `glow_desk_reach` 28 against 27.5. Little per
+PASS, much per GUARD, which is what a tier decides.
+**Cold: 203 guards, 1666s, 201 green, 0 red, 2 gated** at `%5`, `tree_moved=no` -- I held still.
+**Yours:** the joule waits on a host with RAPL; `/sys/class/powercap/` is empty on this pier.
 **PETRICHOR -- THE MANUAL CARRIES A STAMP, AND A GUARD READ IT AS A RECORD.**
 Elder [shelved](archive/20260908-211304_itinerary-landed-accounts.md).
 **EARTH BREATHES IN, so I took the fact at the door** and ran what `SOURCE.md` and `manual/`

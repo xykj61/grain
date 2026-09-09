@@ -341,6 +341,12 @@ runner="$(pwd)/tools/fixtures/s/standing_equipment_run.sh"
 mkdir -p "$pen/rishi/bin"
 cat > "$pen/rishi/bin/rishi" <<'EOF'
 #!/bin/sh
+# A guard whose path names `busy` burns a measurable slice of CPU, so the CPU field below can be
+# proven LIVE rather than merely present. Every other stub path exits at once, which is what the
+# tier legs above want and what makes zero an honest reading for them.
+case "$*" in
+  *busy*) i=0; while [ $i -lt 400000 ]; do i=$((i + 1)); done ;;
+esac
 exit 0
 EOF
 chmod +x "$pen/rishi/bin/rishi"
@@ -362,12 +368,58 @@ else
 fi
 # The runner's half of REDS %388: the card line it writes carries the guard's elapsed seconds, and
 # the pass reports its own total. A stub guard costs 0, which is a reading rather than an absence.
-if grep -qE "^ran alpha [0-9.]+ green lap [0-9][0-9]*$" "$pen/run-card.kyri"; then
+if grep -qE "^ran alpha [0-9.]+ green lap [0-9][0-9]* [0-9-]+$" "$pen/run-card.kyri"; then
   echo "runner_records_seconds=yes"
 else
   echo "runner_records_seconds=no"
 fi
 case "$out" in *"guards_seconds="*) echo "runner_totals_seconds=yes" ;; *) echo "runner_totals_seconds=no" ;; esac
+
+# CPU-MILLISECONDS BESIDE WALL-SECONDS. Wall time on a shared pier measures the neighbors as much
+# as the guard, so the row carries a second clock the shell already keeps: `times`, whose children
+# line is cumulative user plus system time for every descendant the shell has waited on.
+if grep -qE "^ran alpha [0-9.]+ green lap [0-9][0-9]* [0-9]+$" "$pen/run-card.kyri"; then
+  echo "runner_records_cpu=yes"
+else
+  echo "runner_records_cpu=no"
+fi
+case "$out" in *"guards_cpu_ms="*) echo "runner_totals_cpu=yes" ;; *) echo "runner_totals_cpu=no" ;; esac
+case "$out" in *"guards_cpu_absent=0"*) echo "runner_cpu_all_read=yes" ;; *) echo "runner_cpu_all_read=no" ;; esac
+
+# THE LEG THAT TELLS A LIVE READING FROM A CONSTANT ZERO. Every stub above exits immediately and
+# honestly costs 0 ms, so a field wired to a broken instrument -- `$(times)`, whose subshell reads
+# 0m0.000s however much work has been done -- would pass every leg written so far. This guard burns
+# CPU on purpose, and its recorded field must be greater than zero.
+mkdir -p "$pen/tools"
+cat > "$pen/tools/busy_witness.rish" <<'EOF'
+# a stub the pen's stub interpreter recognises by name and pays for
+EOF
+cat > "$pen/busycpu.kyri" <<'EOF'
+format standing-equipment-v1
+guard busy
+path tools/busy_witness.rish
+tier lap
+seated 20260908.000000
+EOF
+rm -f "$pen/cpu-card.kyri"
+( cd "$pen" && STANDING_ROSTER=busycpu.kyri STANDING_CARD=cpu-card.kyri \
+    sh "$runner" 2>/dev/null ) > "$pen/cpu-out.txt" || true
+busy_cpu=$(awk '$1 == "ran" && $2 == "busy" { print $7 }' "$pen/cpu-card.kyri")
+case "$busy_cpu" in
+  ''|*[!0-9]*) echo "busy_guard_cpu_positive=no" ;;
+  *) if [ "$busy_cpu" -gt 0 ]; then
+       echo "busy_guard_cpu_positive=yes"
+     else
+       echo "busy_guard_cpu_positive=no"
+     fi ;;
+esac
+# And the wall clock reads that same guard at whole seconds, which is why the finer unit was added:
+# a guard costing real CPU can still read 0s, and 0s is what most of the roster reads.
+busy_wall=$(awk '$1 == "ran" && $2 == "busy" { print $6 }' "$pen/cpu-card.kyri")
+case "$busy_wall" in
+  ''|*[!0-9]*) echo "busy_guard_wall_present=no" ;;
+  *) echo "busy_guard_wall_present=yes" ;;
+esac
 
 out=$(run_runner --tier cadence)
 case "$out" in *"guards_run=1"*) echo "tier_selects_one=yes" ;; *) echo "tier_selects_one=no" ;; esac
