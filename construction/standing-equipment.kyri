@@ -2031,6 +2031,16 @@ path tools/m/mantra_diff_witness.rish
 tier lap
 seated 20260906.061556
 
+# THE TABLECLOTH QUERY OVER THE WIRE, AND THE ANSWER IT HANDS BACK. This witness has stood since
+# the query wire landed and was on no roster at all, so nothing heard it -- `%360`'s shape, a
+# proof nobody runs, in a module `%664` had just found returning views into a dead frame. It
+# builds two binaries, runs both selftests, and drives the answer-slot control's six pens: 15s
+# measured `20260909.170000` on this pier, so it is a lap guard rather than a cadence one.
+guard mantra_tablecloth_query_wire
+path tools/m/mantra_recall_tablecloth_query_wire.rish
+tier lap
+seated 20260909.170000
+
 # Mantra's own width reading, beside the tree-wide one at width_check above. It
 # had run green by hand for weeks and stood on no roster, so nothing heard it --
 # which is `%360`'s shape, a proof nobody runs. It reads one room and takes

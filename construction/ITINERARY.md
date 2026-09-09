@@ -48,21 +48,22 @@
 
 ### Now -- the live front
 
-**Git nib:** `c16c4f0a26` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8af1bb4712` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
-Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
-DIFFUSER's handoff answered: `run_client_query` DID return dangling views. `qw.decode_response` cuts
-each hit's `peer`, `bolt`, and `path` from the payload handed it, and that payload was the function's
-own local `opened` -- so the reply named a dead frame, and **the witness read GREEN over it**. A 0xAA
-fill between return and read gave the path back as 0xAA. `opened` and the response are caller-owned
-parameters now, so the signature states the lifetime; the fill stays as the check, and the planted
-elder shape refuses at the path assert. Row `20260909.151024`;
-[log](../session-logs/date/20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri).
-**BUDGET SEAM, FOR DIFFUSER:** an answer slot IS one caller-owned `opened` buffer, so `a + r <= H`
-reads as one per request in flight and one per answer still being read. The workload trial is next.
-**FLEET, NOT MINE:** `sow_allow_reach` reds cold, and its `reach_paths` hash is identical with my
-staged set removed -- the stale projection predates this round; the cure is a full `sow.rish`.
+**BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
+Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
+DIFFUSER's caller trial, on the live wire rather than in a model. `AnswerPool` in
+`mantra/recall_tablecloth_query_delivery.rye` holds `H` slots, each a frame plus its decoded
+response, admitting only when `a + r < H`. Filled with three retained replies, it refuses
+**AnswerSlotsFull while both request slots stand idle** -- the gap the model named. Release one,
+admit into the freed slot, run a fourth exchange through those bytes, and the kept answers read
+whole -- proven **structurally**, since two replies here spell one word at one offset and a text
+check passed the shared-frame break. A ticket carries a generation, so a duplicate release refuses
+`StaleTicket`. Six pens in `tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh`.
+**AND THE WITNESS PROVING IT WAS ON NO ROSTER** -- `%360`'s shape, in the module `%664` had just
+found returning dangling views. `mantra_tablecloth_query_wire` seated `tier lap`, 15s.
+**Yours:** `pool_active_max 2` / `pool_answer_max 3` are trial numbers; the byte partition `B`,
+`C`, `S` wants a workload before anyone names it.
 
 **PATCHOULI -- A MERGED WEAVE STILL DELETES BY NAME.**
 Elder [shelved](archive/20260909-151459_itinerary-landed-accounts.md), links re-anchored.
