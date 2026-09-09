@@ -1,0 +1,74 @@
+# tools/t/tame_core_surface_witness.rish -- the law page's declared audit is an audit that runs.
+#
+# WHY THIS RUNG. `context/TAME_CORE.md` rides in the agent rules so it is present every time
+# family-language code is written, and it closes on a table naming the tools that stand over its
+# reflexes. Beside that table it states, in its own words, that every tool below sits on
+# `construction/standing-equipment.kyri`, so a roster pass runs it whether or not a hand
+# remembers to.
+#
+# On 20260908.111848 that sentence was false for three of the five tools the table then named.
+# All three were GREEN the hour a hand seated them, so the loss was hearing rather than health.
+# The roster's own note on that repair names the instrument that was missing: an aggregate
+# ratchet answers "how many runners does no lap reach", and cannot answer "is the tool this law
+# page declares as its checkable surface one of them". The repair was made by hand and nothing
+# held it -- a fence post firm to the eye and loose to the hand.
+#
+# WHAT IS PROVEN, on metal, all three walls at zero over the nine tools the table names today.
+#   Every declared tool exists on disk.
+#   Every declared tool carries a `path` row in the roster, so a lap runs it.
+#   Every declared Clock matches the roster's own `tier`, a tier absent reading `lap` by the
+#   roster's own rule.
+#   Thirty readings on throwaway pens -- nineteen biting eight distinct refusals, eleven leaving
+#   honest shapes free: the agreeing pair free and reading zero, each of the three
+#   walls refused, counted, and named, the plant lifted and the reading returned to zero, a silent
+#   tier read as lap and refused against a cadence claim, a trailing note on a tier line free, a
+#   commented-out roster row rostering nothing, a table elsewhere on the page unread, an empty
+#   surface refused rather than passing, and each absent input refused by name.
+#
+# WHAT IS NOT PROVEN. That a tool reads what its Reads column claims, that the table names every
+# tool it ought to, or that a rostered guard is green. Only that the page's own declaration and
+# the roster agree -- the claim, pressed where the claim is made.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tame_core_surface_witness.rish
+
+say "tame-core-surface: Language EN -- a page that declares its own audit is a page a lap can check."
+say "tame-core-surface: Style Radiant -- the law names its instruments, and the roster is what runs them."
+say "tame-core-surface: Lens TAME -- docs and implementation stay synced: assert it, do not assume it."
+
+let scan = run ["sh" "tools/fixtures/t/tame_core_surface_scan.sh"]
+say scan.out
+assert scan.ok else "tame-core-surface: a tool the law page declares is not one a lap runs -- read the scan's own lines"
+assert scan.out contains "declared_absent_on_disk=0" else "tame-core-surface: every declared tool must exist on disk"
+assert scan.out contains "declared_unrostered=0" else "tame-core-surface: every declared tool must carry a roster row"
+assert scan.out contains "declared_clock_disagreements=0" else "tame-core-surface: a declared clock must match the roster's own tier"
+assert scan.out contains "verdict=ok" else "tame-core-surface: the scan must balance before it is believed"
+say "field GREEN -- the checkable surface TAME Core declares is the surface a roster pass runs"
+
+let control = run ["sh" "tools/fixtures/t/tame_core_surface_control.sh"]
+say control.out
+assert control.ok else "tame-core-surface: the control must complete"
+assert control.out contains "agree_free=yes" else "tame-core-surface: a page and roster that agree must pass free"
+assert control.out contains "clean_unrostered_zero=yes" else "tame-core-surface: a clean pen must read zero rather than merely pass"
+assert control.out contains "declared_counted_exactly=yes" else "tame-core-surface: the surface count must be of tools, never of table rows"
+assert control.out contains "unrostered_refused=yes" else "tame-core-surface: a declared tool no roster carries must be refused"
+assert control.out contains "unrostered_counted=yes" else "tame-core-surface: the refusal must name a count, never only a verdict"
+assert control.out contains "unrostered_named=yes" else "tame-core-surface: the refusal must name the tool, so the repair is one row away"
+assert control.out contains "unrostered_lifted_zero=yes" else "tame-core-surface: lifting the plant must return the reading to zero"
+assert control.out contains "absent_refused=yes" else "tame-core-surface: a declared tool absent from disk must be refused"
+assert control.out contains "absent_named=yes" else "tame-core-surface: an absent tool must be named"
+assert control.out contains "clock_refused=yes" else "tame-core-surface: a clock disagreeing with its tier must be refused"
+assert control.out contains "clock_named_both=yes" else "tame-core-surface: a clock refusal must print both readings"
+assert control.out contains "tierless_reads_lap_free=yes" else "tame-core-surface: a tier absent means lap, which is the roster's own rule"
+assert control.out contains "tierless_vs_cadence_refused=yes" else "tame-core-surface: that same silence must disagree with a cadence claim"
+assert control.out contains "trailing_comment_free=yes" else "tame-core-surface: a note after a tier is a note, never part of the clock"
+assert control.out contains "commented_row_refused=yes" else "tame-core-surface: a commented-out roster row rosters nothing"
+assert control.out contains "other_table_unread=yes" else "tame-core-surface: a table elsewhere on the page is not the checkable surface"
+assert control.out contains "empty_surface_refused=yes" else "tame-core-surface: a surface naming nothing must refuse rather than read as a pass"
+assert control.out contains "missing_core_refused=yes" else "tame-core-surface: an absent page must refuse rather than read zero"
+assert control.out contains "missing_roster_refused=yes" else "tame-core-surface: an absent roster must refuse rather than read zero"
+assert control.out contains "control_failures=0" else "tame-core-surface: every planted reading must agree"
+assert control.out contains "control_verdict=ok" else "tame-core-surface: the control must agree with itself"
+say "RED and GREEN paths proven -- thirty readings: nineteen biting eight distinct refusals, eleven leaving honest shapes free"
+
+say "GREEN: tame-core-surface -- the audit TAME Core declares is the audit a lap actually runs."
