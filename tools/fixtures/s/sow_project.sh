@@ -73,7 +73,14 @@ IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|debrided|bandun|
 [ -f "$MANIFEST" ] || { echo "sow: $MANIFEST missing" >&2; exit 1; }
 [ -f "$SCRUB" ]    || { echo "sow: $SCRUB missing" >&2; exit 1; }
 
+# The reach reader compares the manifest and tracked path inventory with this receipt.
+# These two inputs decide which rooms can be counted. This is coverage provenance;
+# content freshness and privacy still belong to the whole-projection witnesses.
+. tools/fixtures/s/sow_reach_inputs.sh
+reach_inputs=$(sow_reach_inputs "$MANIFEST")
+
 mkdir -p "$SEED"
+rm -f "$SEED/.sow-projection.log"
 # Clear prior projection content; preserve the seed repo's own .git if present.
 find "$SEED" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + 2>/dev/null || true
 : > "$SEED/.sow-withheld.log"
@@ -98,7 +105,7 @@ SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
 # `vendor` stays: it is unmodified third-party BUILD SOURCE held for compilation, not a thanks
 # record, and shipping it would republish other people's code rather than cite it. `gratitude`
 # is allowed on Keaton's word `20260906` and withheld file by file where a law asks -- a saved
-# third-party article by copyright, every gitlink by licence -- which is the manifest's own
+# third-party article by copyright, every gitlink by license -- which is the manifest's own
 # mechanism doing the work rather than a name in a grep.
 PATHS=$(grep -E '^allow ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'vendor' || true)
 
@@ -163,4 +170,10 @@ done
 COPIED=$(find "$SEED" -type f ! -name '.sow-withheld.log' ! -name '.sow-scrubbed.log' | wc -l | tr -d ' ')
 SCRUBBED=$(grep -c '' "$SEED/.sow-scrubbed.log" 2>/dev/null || echo 0)
 WITHHELD=$(grep -c '' "$SEED/.sow-withheld.log" 2>/dev/null || echo 0)
+# Write the receipt after copying, and refuse if its coverage inputs moved.
+reach_close=$(sow_reach_inputs "$MANIFEST")
+[ "$reach_inputs" = "$reach_close" ] || {
+  echo "sow: coverage inputs changed during projection" >&2; exit 2;
+}
+printf '%s\n' "$reach_inputs" > "$SEED/.sow-projection.log"
 echo "SOW_OK copied=$COPIED scrubbed=$SCRUBBED withheld=$WITHHELD"

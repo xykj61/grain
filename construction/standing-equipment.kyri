@@ -183,6 +183,14 @@ tier lap
 capability seed_projection
 seated 20260906.122632
 
+# The recovered control runs small local projections on every checkout. It proves
+# receipt transitions even where the actual seed projection is absent.
+guard sow_allow_reach_control
+path tools/s/sow_reach_inputs_witness.rish
+tier lap
+seated 20260909.071647
+
+
 # sealed_digest -- a digest this tree records about its own bytes, compared to nothing, is prose. The
 # algorithm split is already right and principled -- SHA3 where the choice is ours, SHA-256 where an
 # outside protocol, vendor, or coreutils-only verifier fixes it -- so the open question was never

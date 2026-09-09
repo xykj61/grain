@@ -599,3 +599,5 @@ at a closed fold.*
 *Row %656 folded to [`REDS-the-template-and-the-admission-rows-656.md`](REDS-the-template-and-the-admission-rows-656.md) on `20260909.030305`, **CLOSED** -- A template classification does not admit a file to the seed.*
 
 *Row %657 folded to [`REDS-a-store-called-unbounded-rows-657.md`](REDS-a-store-called-unbounded-rows-657.md) on `20260909.035800`, **CLOSED** -- Source checks separate access-path choice, capacity, and elapsed time.*
+
+*Row %660 born onto [`REDS-the-projection-must-name-its-inputs-rows-660.md`](REDS-the-projection-must-name-its-inputs-rows-660.md) on `20260909.071647`, **CLOSED** -- the recovered projection control binds coverage inputs and preserves a failed scan's exit status.*

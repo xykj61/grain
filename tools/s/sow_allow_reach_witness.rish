@@ -1,46 +1,17 @@
-# tools/s/sow_allow_reach_witness.rish -- an allowed room that ships nothing is caught.
+# sow_allow_reach_witness.rish -- check allowed rooms in the local seed projection.
+# The scan names rooms that have tracked inputs yet leave no files or withholding
+# record in the projection. Its receipt binds manifest bytes and tracked paths.
+# Stale coverage refuses before any missing room is blamed on the projector.
+# Content freshness and privacy remain separate whole-projection checks.
 #
-#   rishi/bin/rishi run tools/s/sow_allow_reach_witness.rish
-#
-# REDS %485. The seed is an allowlist, and on `20260906` a second filter inside
-# tools/fixtures/s/sow_project.sh -- a hard exclusion by NAME, running after the allowlist --
-# silently discarded an allowed room. The manifest read allow, the projection ran, and sow_witness
-# answered GREEN, because a room that ships no bytes leaks no names. This asks the other direction:
-# did the thing we allowed actually arrive.
+# tools/s/sow_reach_inputs_witness.rish proves the receipt and refusal transitions
+# on small local trees. This witness reads the actual projection when present.
+# The roster names seed_projection as its required capability.
 
-say "sow-allow-reach: Language EN -- an allowlist proven from the shipped side."
-say "sow-allow-reach: Style Gauge, Meter -- the gate, and the loud absence it must not count."
-say "sow-allow-reach: Lens TAME -- the refusal planted on a real projection, then lifted."
-
-# A TREE WITH NO PROJECTION IS NOT A FAULT, and this guard reddened seven ships before that was
-# written down. Only the field projects; every other checkout carries no `seed/` at all, so a
-# rostered lap guard that REFUSES on its absence reds on the ordinary state of most of the fleet --
-# and a guard that reds on the ordinary is a guard somebody turns off. The SCAN still refuses when
-# it is pointed at a missing projection, which is REDS %170's lesson and stays proven below; the
-# GUARD skips, says so, and passes. Found by diffuser, reported on the card `20260906`.
-let projected = run ["sh" "-c" "test -d seed && echo PROJECTION_STANDS || echo NO_PROJECTION"]
-assert projected.ok else "sow-allow-reach: the projection could not be looked for"
-if (projected.out contains "NO_PROJECTION") then say "sow-allow-reach: SKIP -- this tree carries no seed/ projection; only the field projects, and an absent projection is not a fault."
-
-say "sow-allow-reach: the projection must stand before anything is read..."
-let absent = run ["sh" "-c" "SOW_SEED=/tmp/sow-allow-nowhere sh tools/fixtures/s/sow_allow_reach_scan.sh 2>&1 | head -1"]
-# invariant: a scan that reads nothing refuses rather than reporting clean (REDS %170).
-assert absent.out contains "refused: no projection" else "sow-allow-reach: an absent projection read as clean rather than refusing"
-
-say "sow-allow-reach: every allowed, shippable room arrives..."
-let scan = run ["sh" "-c" "test -d seed && sh tools/fixtures/s/sow_allow_reach_scan.sh || echo 'empty=0 withheld_by_design=0 (skipped: no projection on this tree)'"]
-assert scan.ok else "sow-allow-reach: the scan refused --\n${scan.out}"
-assert scan.out contains "empty=0" else "sow-allow-reach: a room is allowed and shippable and did not arrive --\n${scan.out}"
-
-say "sow-allow-reach: and a LOUD absence is not counted as a silent one..."
-# invariant: a file the projector withheld stands in .sow-withheld.log, which is the fail-safe
-# working. Counting that as a fault would make the gate red on correct behaviour, and a gate that
-# reds on correct behaviour is a gate somebody turns off.
-assert scan.out contains "withheld_by_design=" else "sow-allow-reach: the loud absences went unreported"
-
-say "sow-allow-reach: the gate reads from the manifest rather than a list of its own..."
-let derived = run ["sh" "-c" "grep -c MANIFEST tools/fixtures/s/sow_allow_reach_scan.sh || true"]
-assert derived.ok else "sow-allow-reach: the derivation could not be read"
-assert (trim derived.out) != "0" else "sow-allow-reach: the scan spells its own room list rather than reading the manifest -- the second list this red is about"
-
-say "GREEN: sow-allow-reach -- what the manifest allows and the field can ship, the seed carries; and an absence the projector announced is told apart from one nobody did."
+say "sow-allow-reach: read the local projection against its coverage inputs"
+let scan = run ["sh" "tools/fixtures/s/sow_allow_reach_scan.sh"]
+say scan.out
+assert scan.ok else "sow-allow-reach: the scan refused; read its diagnostic"
+assert scan.out contains "empty=0" else "sow-allow-reach: an allowed room has no copied files or withholding record"
+assert scan.out contains "withheld_by_design=" else "sow-allow-reach: withholding must be reported"
+say "GREEN: sow-allow-reach -- coverage inputs match and absent rooms are accounted for"

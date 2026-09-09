@@ -1,0 +1,12 @@
+# sow_reach_inputs_witness.rish -- prove projection coverage with small local trees.
+# The control runs the actual projector and reader, then changes their inputs.
+# It proves stale and missing receipts refuse, current copies pass, and silent
+# omissions remain visible. These checks run even on a tree with no public seed.
+# Source: tools/fixtures/s/sow_allow_reach_control.sh
+
+let control = run ["sh" "tools/fixtures/s/sow_allow_reach_control.sh"]
+say control.out
+assert control.ok else "sow-reach-inputs: a coverage transition failed"
+assert control.out contains "control_fail=0" else "sow-reach-inputs: a control failed"
+assert control.out contains "control_verdict=ok" else "sow-reach-inputs: the control did not finish"
+say "GREEN: sow-reach-inputs -- current, stale, missing, and omitted coverage proven"
