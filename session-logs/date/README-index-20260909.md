@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.151557` | [The reply that outlived its frame](20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri) | Bakery; a returned answer owns its bytes |
 | `20260909.090354` | [Five shelf addresses](20260909/20260909-090354_five-shelves-find-their-readers.kyri) | Grass; parked records restored |
 | `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
+| `20260909.083122` | [Recovery integration](20260909/20260909-083122_recovery-integration.kyri) | Copal; saved package verified |
 | `20260909.083100` | [Parked shelves](20260909/20260909-083100_the-parked-shelves-return.kyri) | Bakery; eleven saved addresses |
 | `20260909.075412` | [Recovery held](20260909/20260909-075412_shelf-recovery-held.kyri) | Copal; integration pending |
 | `20260909.075012` | [The table check returns](20260909/20260909-075012_the-table-check-returns.kyri) | Patchouli; parked caller check |
