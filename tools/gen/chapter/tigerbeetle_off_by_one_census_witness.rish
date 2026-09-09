@@ -9,21 +9,33 @@
 say "tb-off-by-one: Language EN — off-by-one; index, count, and size stay distinct."
 say "tb-off-by-one: Style Radiant — division shows its intent; units stay in the name."
 say "tb-off-by-one: Lens TAME — e49 · clean-room study · almanac seat 55."
-
-let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
-assert clone.ok else "tb-off-by-one: gratitude/tigerbeetle/src ABSENT — host clone first"
+# AN ABSENT OPTIONAL GITLINK IS A FACT ABOUT THE HOST, NEVER A DEFECT (`20260908.195500`).
+# `gratitude/tigerbeetle` is a submodule this tree STUDIES and never links, so a clone that has not
+# initialised it is a correct clone. This witness asserted the checkout, which made it permanently
+# unrostable: a row for it would red the whole fleet on every machine that had not run
+# `git submodule update --init`. That is very likely WHY it was never rostered -- and an unrostered
+# witness is one nothing runs, so the hard assert bought a red nobody would ever hear.
+#
+# THE CENSUS ALREADY ANSWERS IN THREE WAYS and this witness now believes it: exit 2 `verdict=absent`
+# (the clone is not here), exit 1 `verdict=thin` (the clone is here and something it must teach is
+# missing), exit 0 `verdict=ok`. Only `thin` is a defect. The elder witness read `census.ok`, which
+# is false for BOTH 1 and 2, so it could not tell a missing dependency from a real finding.
+#
+# The failure is asserted as a NEGATIVE on `verdict=thin` rather than nested inside a conditional,
+# because `assert X else Y` already owns `else` and cannot sit inside `if ... then`. One assert, and
+# it fires on the one answer that means something is wrong.
 
 let census = run ["sh" "tools/fixtures/t/tigerbeetle_off_by_one_census.sh"]
 say census.out
-assert census.ok else "tb-off-by-one: census failed or thin"
-assert census.out contains "CLONE=present" else "tb-off-by-one: want CLONE=present"
-assert census.out contains "verdict=ok" else "tb-off-by-one: want verdict=ok"
-assert census.out contains "GUIDE_OBO=yes" else "tb-off-by-one: held guide must teach Off-By-One"
-assert census.out contains "GUIDE_TYPES=yes" else "tb-off-by-one: guide must keep index·count·size distinct"
-assert census.out contains "GUIDE_DIV=yes" else "tb-off-by-one: guide must show division intent"
-assert census.out contains "TAME_OBO=yes" else "tb-off-by-one: TAME must teach Off-By-One"
-assert census.out contains "STYLE=yes" else "tb-off-by-one: clone docs must teach the law"
-assert census.out contains "ELDER_CACHE=yes" else "tb-off-by-one: cache-surface elder must be present"
-assert census.out contains "RADIANT=yes" else "tb-off-by-one: Grain Radiant Style must be present"
 
-say "GREEN: tb-off-by-one — guide·types·div·TAME·style·elder-cache·RADIANT ok"
+# invariant: the census reached a verdict at all -- a run that printed none is a broken script
+# rather than an honest answer, and it must never read as a skip.
+assert census.out contains "verdict=" else "tb-off-by-one: the census printed no verdict at all"
+
+# invariant: the clone, where present, still teaches every law this census reads for. `thin` is the
+# only answer that means a defect, and it is the only one that fails here.
+assert (census.out contains "verdict=thin") == false else "tb-off-by-one: the clone is present and the census reads THIN -- a law it must teach is missing"
+
+if (census.out contains "verdict=absent") then say "tb-off-by-one: SKIP -- gratitude/tigerbeetle is an uninitialised submodule here; run git submodule update --init gratitude/tigerbeetle to read the census on this host"
+
+say "GREEN: tb-off-by-one -- the census answered, and answered nothing thin."
