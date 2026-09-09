@@ -51,8 +51,9 @@ say "session-roster-agree: Style Gauge -- every number here is derived, and the 
 say "session-roster-agree: Lens TAME -- bound everything, and say where the number came from."
 
 let scan = run ["sh" "tools/fixtures/s/session_roster_agree_scan.sh"]
-assert scan.ok else "session-roster-agree: the scan must complete before its numbers are believed"
 say scan.out
+say scan.err
+assert scan.ok else "session-roster-agree: the scan must complete before its numbers are believed"
 assert scan.out contains "disagree=0" else "session-roster-agree: two rosters spelling one day differently means one of them is wrong"
 assert scan.out contains "stale=0" else "session-roster-agree: a roster number must equal the rows its own shelf holds"
 assert scan.out contains "uncounted=0" else "session-roster-agree: a shelf neither roster names is a day with no way in"
@@ -62,8 +63,9 @@ assert scan.out contains "verdict=ok" else "session-roster-agree: the scan must 
 say "field GREEN -- both living rosters agree with every shelf on disk"
 
 let control = run ["sh" "tools/fixtures/s/session_roster_agree_control.sh"]
-assert control.ok else "session-roster-agree: the control must complete"
 say control.out
+say control.err
+assert control.ok else "session-roster-agree: the control must complete"
 assert control.out contains "control_fail=0" else "session-roster-agree: every planted behavior must read as written"
 assert control.out contains "control_verdict=ok" else "session-roster-agree: the control must agree with itself"
 assert control.out contains "3 free: an elder list shelf counts as 5, never as 0" else "session-roster-agree: both row shapes ever written here must be read"

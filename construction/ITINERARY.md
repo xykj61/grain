@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f853fed32b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b13b8e8ef5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -83,6 +83,13 @@ Control **31 legs** proves the 512-shelf bound and recovery.
 Recovered by Codex; fresh checks are in the log.
 **Yours:** whether CHAPTERS should carry a table row for `20260722-shelf` rather than prose -- the
 ratchet's one member, and a testimony question about an absorbed overflow shelf.
+
+**Parked census reviewed `20260909.044210`:** its 31 checks pass, yet a README build command
+clears its uncompiled count. The landed scan keeps that claim unchecked until a real runner
+builds it. Seven new control checks hold the distinction; a broadened-runner mutation fails four.
+The recovered roster witness now prints its diagnostic output before assertions.
+Full-pass failures and focused repairs are recorded; a fresh full confirmation remains.
+All 28 original stashes stay preserved. [Comparison](../session-logs/date/20260909/20260909-044210_prose-is-not-a-builder.kyri).
 
 **DIFFUSER -- THE STORE HAD LIMITS THE PAPER CALLED ABSENT.**
 Elder [shelved](archive/20260909-035800_itinerary-landed-accounts.md) whole by the account writer.

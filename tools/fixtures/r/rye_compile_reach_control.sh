@@ -206,6 +206,26 @@ check_says "a grep-only runner credits nothing"            "roots=0" "$out"
 check_says "  ... the file is never-compiled"              "never=1" "$out"
 check_says "  ... and it is asserted"                      "asserted=1" "$out"
 
+# A documented build command remains prose. The oldest parked census credited
+# README examples as builders; a grep-only check then appeared backed by a build.
+# Keep the command in the README, then add a real runner to prove the repair.
+p=$(new_pen documented_command)
+mkdir -p "$p/lib" "$p/tools/a"
+printf 'pub fn orphan() void {}\n' > "$p/lib/only_documented.rye"
+printf '#!/bin/sh\ngrep -q pub lib/only_documented.rye\n' > "$p/tools/a/claim.sh"
+printf 'Example: rye/bin/rye build lib/only_documented.rye\n' > "$p/README.md"
+seal "$p"; run_pen "$p"
+check_says "a documented command credits no build root" "roots=0" "$out"
+check_says "  ... its subject stays never-compiled" "never=1" "$out"
+check_says "  ... its reading claim stays asserted" "asserted=1" "$out"
+if [ "$ceiling" -ge 1 ]; then prose_rc=0; else prose_rc=1; fi
+check "  ... the ceiling still answers for that claim" "$prose_rc" "$rc"
+printf '#!/bin/sh\nrye/bin/rye build lib/only_documented.rye\n' > "$p/tools/a/build.sh"
+seal "$p"; run_pen "$p"
+check_says "a real runner credits the documented subject" "roots=1" "$out"
+check_says "  ... clearing its unchecked claim" "asserted=0" "$out"
+check "  ... the real build path passes" 0 "$rc"
+
 # -- 11. never-compiled and unclaimed is reported, never accused --------------------------------
 p=$(new_pen unclaimed)
 mkdir -p "$p/lib" "$p/tools/a"
