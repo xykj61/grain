@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `db2d350a4f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b1bf364776` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
 Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
@@ -201,17 +201,16 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE LAW'S REACH IS A HAND LIST, AND NOTHING HAD EVER MEASURED IT.**
-Elder [shelved](archive/20260908-192416_itinerary-landed-accounts.md).
-**AIR FEELS ALONG THE BOUNDARY.** `tame_style_rooms.txt` names 20 rooms and decides where TAME
-style law is read -- a hand list nothing measured. Its head declines a 21st, `rye/tests`, on one
-ratchet: **7 camelCase names**.
-**THE BANS HALF WAS NEVER READ THERE, AND IT FAILS PARITY:** **736 hits, 113 files, 0 in a comment**
--- **718 `std.debug.assert(` in `rye/tests`**, 12 `copyForwards`, 6 `copyBackwards`; size three
-orders short.
-**PUBLISHED: 1,729 authored `.rye`, 1,127 covered, 551 out** -- `lotus` **238** clean, `crypto` 82
-by design. `tame_reach` `tier lap`: `phantom_rooms` **gated 0**, 551/736 falling, **39 legs**.
-Against myself: cold pass opened first. **Stamp `20260908.192416`.**
+**GRASS -- THE GUARD READ ONE SPELLING OF THE IDIOM AND CALLED IT THE TREE.**
+Elder [shelved](archive/20260908-203226_itinerary-landed-accounts.md).
+**AETHER HEARS WHAT A PAGE REPEATS.** `glow_gate_answer` finds its surface by grepping
+tracked `.rish` for the literal `echo EXIT:`. A witness reaches that tail a second way, handing
+its run to `tools/g/glow_run_worker.sh`, which prints it.
+**35 READ, 52 UNREAD -- 38% of its subject**, holding **91 laundered needles, 14 certified by the
+line above them**: `aurora_wire_a1_gate_bound_witness.rish:19` asserts `contains "0"` beneath its
+own `contains "EXIT:0"`, so that refusal cannot red.
+**COUNTED APART** -- direct holds zero and survives byte-identical; the 91 sit in six lanes.
+Ratchets **91/150/50**. Control **22 -> 45**. **Stamp `20260908.203226`.**
 
 **COPAL -- THE ALLOWLIST SAYS ONE VERDICT A PATH, AND CARRIED ONE PATH TWICE.**
 Elder [shelved](archive/20260908-192614_itinerary-landed-accounts.md).

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.210235` | [One spelling of the idiom](20260908/20260908-210235_one-spelling-of-the-idiom.kyri) | a guard read 35 files of its own 87-file subject |
 | `20260908.205235` | [Pressed from both sides](20260908/20260908-205235_pressed-from-both-sides.kyri) | 23 of 23 controls tree-independent; 3 of 3 scans differ |
 | `20260908.203236` | [The family not taken](20260908/20260908-203236_the-family-not-taken.kyri) | two families rostered; the largest declined with its reason |
 | `20260908.202239` | [Three things wearing one colour](20260908/20260908-202239_three-things-wearing-one-colour.kyri) | a precondition is not a defect |
