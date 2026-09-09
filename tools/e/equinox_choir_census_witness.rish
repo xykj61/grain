@@ -1,0 +1,45 @@
+# tools/e/equinox_choir_census_witness.rish -- the equinox room's choirs, probed and ratcheted.
+#
+#   rishi/bin/rishi run tools/e/equinox_choir_census_witness.rish
+#
+# reach-list: sh tools/fixtures/w/witness_family_scan.sh --dir tools/equinox/witness --prefix equinox --list
+#
+# 82 choirs stand in `tools/equinox/witness`, and a census on `20260908` read them 50 green, 30 red
+# and 2 hung. Every one of the 50 was reached by NO pass, so a green choir that stopped being green
+# had nothing to say so.
+#
+# A RATCHET RATHER THAN A WALL, on purpose. A wall would refuse the roster on the 30 that were
+# already red before anyone looked, and a guard that reds on ordinary standing state is a guard
+# somebody turns off. The ceilings only fall.
+#
+# THE CHOIRS RATHER THAN THE PREFIX. `witness_reach_scan.sh` records that inferring reach from the
+# equinox glob overstated by 111 -- the pattern selects 144 witnesses while the season choir sings
+# the 33 that chain nobody. A choir already knows its own members, so probing the choirs asks each
+# family its own question instead of guessing one for all of them.
+#
+# EACH IS PROBED rather than merely run, so a HANG is told from a RED. One is a claim about the run
+# and the other about the tree, and two members of this room do hang.
+
+say "equinox-choir-census: Style Gauge, Meter -- three verdicts counted, two ceilings that only fall."
+say "equinox-choir-census: Lens TAME -- a corpus of zero is a red rather than a reading."
+
+let probe = run ["sh" "tools/fixtures/w/witness_probe_control.sh"]
+assert probe.ok else "equinox-choir-census: the probe control refused -- read its own pass/fail lines"
+assert probe.out contains "fail=0" else "equinox-choir-census: a planted probe verdict behaved differently than stated"
+
+let scan = run ["sh" "tools/fixtures/e/equinox_choir_census_scan.sh"]
+say scan.out
+assert scan.ok else "equinox-choir-census: the census refused -- read its own verdict line above"
+
+# invariant: the room was found and answered; an empty corpus or an all-red reading is a broken
+# probe rather than a broken room, and the scan refuses by name on each.
+assert (scan.out contains "verdict=empty_corpus") == false else "equinox-choir-census: no choir found in the room"
+assert (scan.out contains "verdict=no_green") == false else "equinox-choir-census: not one choir read green -- suspect the probe before the room"
+
+# invariant: neither ceiling rose. Both only fall, so a new red or a new hang is heard on the lap it
+# arrives rather than months later.
+assert (scan.out contains "verdict=red_over_ceiling") == false else "equinox-choir-census: a choir went red beyond the ceiling -- its path is printed above"
+assert (scan.out contains "verdict=hung_over_ceiling") == false else "equinox-choir-census: a choir hung beyond the ceiling -- a roster row for it would hang the fleet"
+assert scan.out contains "verdict=ok" else "equinox-choir-census: the census did not answer ok"
+
+say "GREEN: equinox-choir-census -- every choir in the room probed, and neither ceiling rose."

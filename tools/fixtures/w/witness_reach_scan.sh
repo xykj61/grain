@@ -264,7 +264,12 @@ done
 # environment together, and the second is repaired by teaching a witness to SKIP rather than by
 # writing a roster row. The class is booked at `20260908.202239`. **80 of the 750 are themselves
 # choirs**, which is where the leverage is: rostering one carries its whole family.
-CEILING=${WITNESS_REACH_CEILING:-750}
+# 750 -> 643 on `20260908.230500`, a fall of 107 and the largest yet. The equinox room's 82 choirs
+# are probed under one roster row -- the family this header told a previous lap NOT to glob, reached
+# instead through the choirs it already had, since a choir knows its own members where a prefix only
+# guesses. The row is a RATCHET on 30 standing reds and 2 hangs rather than a wall, because a guard
+# that refuses on ordinary standing state is one somebody turns off.
+CEILING=${WITNESS_REACH_CEILING:-643}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
