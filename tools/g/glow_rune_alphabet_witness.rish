@@ -6,11 +6,24 @@
 #   rishi/bin/rishi run tools/g/glow_rune_alphabet_witness.rish
 
 let gate = run ["sh" "tools/g/glow_rune_alphabet_worker.sh"]
+
+# THE TARGET IS PRINTED BEFORE THE FIRST ASSERT ON IT. An assert stops the run, so a say placed
+# below one is a say the reader never receives on the one occasion it was written for -- the
+# refusal. The worker's own lines name the glyph and the file; this witness's sentence names
+# neither. Caught by shim_reason on the lap this guard was rostered, which is the whole argument
+# for rostering it: the fault had stood in the file and no pass could hear it.
+say gate.out
+
 assert gate.ok else "glow rune alphabet G1 gate failed: ${gate.err}${gate.out}"
 assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
 
-# The worker publishes rune_heads=N; it is echoed here so a downstream witness reads a field
-# rather than grepping the sentence below for a bare number (REDS %283).
-say gate.out
+# The worker publishes rune_heads=N, lexer_heads=N and unnamed_heads=N; they are echoed above so a
+# downstream witness reads a field rather than grepping the sentence below for a bare number
+# (REDS %283).
+assert gate.out contains "unnamed_glyphs=" else "worker must publish unnamed_glyphs= so the gap is read as a field"
 
-say "GREEN: Glow rune alphabet G1+G2 — 30 heads · TAME family index · tokens.rye bound; STOA90–91 · bartis STOA100 · barket STOA111."
+# The claim line spells no count. It said "30 heads" while the field beside it published
+# rune_heads=28, which is the drift REDS %283 booked and this line then repeated: the lexer table
+# grew to 30 on 20260830 and the pronunciation roll stayed at 28, and no reader could see the
+# difference because one number wore both meanings. The three fields above carry it now.
+say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111."

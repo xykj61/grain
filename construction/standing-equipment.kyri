@@ -3895,3 +3895,17 @@ guard query_wire_retention
 path tools/q/query_wire_retention_witness.rish
 tier lap
 seated 20260909.152110
+
+# THE GUARD THAT WALLS THE RUNE TABLE, HEARD FOR THE FIRST TIME (`20260909.155028`). It has stood
+# GREEN and rostered nowhere since STOA90, which is the shape the aether page names outright: a
+# witness must be proven able to make a sound before its silence means anything. Unrostered, its
+# silence meant nothing at all -- and the fault it was built to catch had already walked past it,
+# because `?&` and `?|` entered `glow/tokens.rye` `match_rune2` on `20260830` and never entered the
+# pronunciation roll beside it.
+#
+# `tier lap` at 0.6s, which is 0.04 percent of a 1,537s pass. It reads five files and forks no
+# compiler; there is no cadence cheap enough to be worth the drift.
+guard glow_rune_alphabet
+path tools/g/glow_rune_alphabet_witness.rish
+tier lap   # 0.6s; 30 lexer heads derived from match_rune2 against 28 pronunciation rows, two exempt by name
+seated 20260909.155028
