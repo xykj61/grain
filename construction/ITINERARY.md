@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7d2e4d9b70` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e319cbb1f8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -118,6 +118,7 @@ claim that no accepted value changes is corrected here. `glow/tokens.rye` and it
 landed; the source changes remain in the stash for Keaton's language ruling.
 Earlier recovery evidence: [log](../session-logs/date/20260909/20260909-025755_recovery-at-the-language-boundary.kyri).
 **RECOVERED AGAIN `20260909.042508`:** the parked commit and its later body-claim fix return together. Four automatic-stash logs and one manual-stash log are restored; all 16 stashes remain. The peer's field-only NixOS boundary stands. [This recovery](../session-logs/date/20260909/20260909-042508_the-parked-diagnostics-return.kyri).
+**RECOVERED `20260909.055623`:** the declaration-walker scan now couples the loop body to its captured field name; 79 control checks pass, and the live 70/56 reading holds. [Record](archive/REDS-the-walker-keeps-its-body-rows-660.md). The self-matching-assert stash stays parked: its 34 checks pass, but a real `stat --format=%s` prints only size while its scan claims the filename is echoed. Next: repair that predicate before recovery. All 16 stashes remain.
 **Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
 
 

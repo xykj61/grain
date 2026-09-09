@@ -3,7 +3,7 @@
 #
 #   sh tools/fixtures/r/rye_witness_walker_scan.sh [--list walked|unwalked|unreached|pairs]
 #
-# WHY THIS EXISTS. Zig analyses lazily. A witness that imports a module and calls two of its
+# WHY THIS EXISTS. Zig analyzes lazily. A witness that imports a module and calls two of its
 # functions forces exactly those two bodies through semantic analysis and walks past everything
 # else, so a public declaration carrying a flat type error rides through the build untouched and
 # the witness prints GREEN. Measured `20260906` on metal rather than argued: a `pub fn` assigning
@@ -115,6 +115,9 @@ ceiling=56
 max_corpus=4096
 max_witnesses=512
 max_link_hops=8
+# The loop matcher holds one witness text. The largest of 140 tracked witnesses
+# was 65,423 bytes on 20260909; 128 KiB leaves room for another such block.
+max_witness_bytes=131072
 
 list=
 while [ $# -gt 0 ]; do
@@ -214,6 +217,11 @@ resolve() {
 : > "$work/ambiguous.txt"
 while IFS= read -r w; do
   [ -f "$w" ] || continue
+  witness_bytes=$(wc -c < "$w" | tr -d " ")
+  if [ "$witness_bytes" -gt "$max_witness_bytes" ]; then
+    echo "detail: $w has $witness_bytes bytes, over max_witness_bytes $max_witness_bytes"
+    echo "verdict=witness_over_bound"; exit 2
+  fi
   dir=$(dirname "$w")
   # The module this witness's own name promises: `<dir>/<stem>.rye` for `<dir>/<stem>_witness.rye`.
   # Resolved through the link map below like any other target, so a witness beside a symlinked
@@ -233,34 +241,60 @@ while IFS= read -r w; do
     }
   ' "$work/code.txt" | sort -u > "$work/imports.txt"
 
-  # Every identifier this witness actually walks: a decls loop over it AND a field read from it.
-  # Both halves are required. The loop alone names the type; `@field` is what forces each body
-  # through analysis, and a loop whose body does nothing would be a walker in shape only.
-  #
-  # The loop half is read as `@typeInfo(IDENT)` on a line that also says `decls`, rather than as one
-  # pattern spanning both. The text between them is `.@"struct".` -- a quoted field name whose own
-  # letters defeat any character class trying to skip it, which the first draft learned by reading
-  # the tree's only real walker as absent.
+  # Credit the canonical declaration loop only when its body reads the same
+  # module with the captured declaration name. Count expressions and field reads
+  # outside that body remain separate operations (recovery stamp 20260906.204454).
+  # Mask strings, character literals, and comments before finding braces. Keep
+  # the quoted struct identifier, which is part of the supported loop syntax.
+  # This is a source-shape census; the compiler and module witnesses prove behavior.
   awk '
-    /decls/ {
-      s = $0
-      while (match(s, /@typeInfo\([ \t]*[A-Za-z_][A-Za-z0-9_]*[ \t]*\)/)) {
-        t = substr(s, RSTART, RLENGTH)
-        sub(/^@typeInfo\([ \t]*/, "", t); sub(/[ \t]*\)$/, "", t)
-        print "L\t" t
-        s = substr(s, RSTART + RLENGTH)
+    {
+      line = $0
+      if (line ~ /^[ \t]*\\\\/) next
+      for (i = 1; i <= length(line); i++) {
+        c = substr(line, i, 1)
+        if (substr(line, i, 2) == "//") break
+        if (substr(line, i, 9) == "@\"struct\"") {
+          code = code "@\"struct\""; i += 8; continue
+        }
+        if (c == "\"" || c == sprintf("%c", 39)) {
+          quote = c; code = code " "
+          for (i++; i <= length(line); i++) {
+            c = substr(line, i, 1)
+            if (c == "\\") { i++; continue }
+            if (c == quote) break
+          }
+          continue
+        }
+        code = code c
+      }
+      code = code " "
+    }
+    END {
+      # Whitespace after for is optional. Each name is an ordinary identifier;
+      # computed modules and other loop forms remain uncredited for review.
+      header = "(^|[^A-Za-z0-9_])for[ \t\r]*\\([ \t\r]*@typeInfo\\([ \t\r]*[A-Za-z_][A-Za-z0-9_]*[ \t\r]*\\)[ \t\r]*\\.@\"struct\"\\.decls[ \t\r]*\\)[ \t\r]*\\|[ \t\r]*[A-Za-z_][A-Za-z0-9_]*[ \t\r]*\\|[ \t\r]*[{]"
+      rest = code
+      while (match(rest, header)) {
+        head = substr(rest, RSTART, RLENGTH)
+        body = substr(rest, RSTART + RLENGTH)
+        ident = head; sub(/^.*@typeInfo\([ \t\r]*/, "", ident)
+        sub(/[ \t\r]*\).*$/, "", ident)
+        capture = head; sub(/^[^|]*\|[ \t\r]*/, "", capture)
+        sub(/[ \t\r]*\|.*$/, "", capture)
+        field = "^@field\\([ \t\r]*" ident "[ \t\r]*,[ \t\r]*" capture "\\.name[ \t\r]*\\)"
+        depth = 1
+        for (j = 1; j <= length(body) && depth > 0; j++) {
+          c = substr(body, j, 1)
+          if (c == "{") depth++
+          else if (c == "}") depth--
+          else if (c == "@" && substr(body, j) ~ field) print "W\t" ident
+        }
+        # Continue from the end of the header so nested loops can also be read.
+        rest = body
       }
     }
-    /@field\(/ {
-      s = $0
-      while (match(s, /@field\([ \t]*[A-Za-z_][A-Za-z0-9_]*/)) {
-        t = substr(s, RSTART, RLENGTH)
-        sub(/^@field\([ \t]*/, "", t)
-        print "F\t" t
-        s = substr(s, RSTART + RLENGTH)
-      }
-    }
-  ' "$work/code.txt" | sort -u > "$work/walkmarks.txt"
+  ' "$w" | sort -u > "$work/walkmarks.txt"
 
   # Every import resolved and kept only if this tree tracks it. An import naming nothing tracked is
   # a different fault, and `rye_compile_reach_scan.sh` already counts it as `dangling`.
@@ -302,8 +336,7 @@ while IFS= read -r w; do
   # Any identifier bound to the subject counts; a witness may import one module under two names.
   while IFS="$(printf '\t')" read -r ident real; do
     [ "$real" = "$subject" ] || continue
-    if grep -qxF "$(printf 'L\t%s' "$ident")" "$work/walkmarks.txt" \
-       && grep -qxF "$(printf 'F\t%s' "$ident")" "$work/walkmarks.txt"; then
+    if grep -qxF "$(printf 'W\t%s' "$ident")" "$work/walkmarks.txt"; then
       printf '%s\t%s\n' "$w" "$real" >> "$work/walked.txt"
     else
       printf '%s\t%s\n' "$w" "$real" >> "$work/unwalked.txt"

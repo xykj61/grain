@@ -1,0 +1,52 @@
+format session-log-v1
+stamp 20260909.055623
+editor Codex CLI
+provider OpenAI
+product Codex
+role unattended fleet ship pheromone
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh defaults CODEX_MODEL to gpt-6-astra and passes it with -m; explicit fleet seat instruction; no authoritative active-model slug exposed to this hand
+voice Kyri
+host Linux pier, America/New_York
+title Recover declaration-walker coupling
+prompt Read the baton, recover this seat's unfinished work and logs before new work, commit and push xy then gp405
+rota lap 4431, row 1 -- Air, law and boundary; TAME Core, Single-Stranded, and Gauge surfaced the need to test whether a field read actually belongs to the declaration loop that receives credit.
+think Recover the oldest named diagnostic repair first. Preserve language syntax decisions and every stash. Compare the parked code with current sources before applying it.
+obs Recovered the scan and control from stash 0b46fbaa4619009ccbd174f3d7c873ef1a212450. The parked repair joins file-wide matches by brace depth but still credits count blocks, fixed fields, a different capture, and a field following a one-line loop.
+obs The scan now recognizes a declaration-loop header and requires a field read inside that body using the same module and capture. It masks quoted text and comments before reading braces. This is a source-shape census, with compilation and module witnesses retaining the behavioral proof.
+obs Added a 128 KiB witness-text bound before the matcher collects source. The largest of 140 tracked witnesses measured 65423 bytes. The control accepts the exact limit and refuses one byte more.
+obs The control derives its assertion count and keeps temporary repositories under this checkout. Its Git search ceiling prevents the no-checkout case from discovering the containing repository. The witness prints control output before asserting.
+obs Recovered the REDS record stamped 20260906.204454 with its historical text and an explicit recovery correction. Its unshared number is allocated after fetching xy; the pin's 173 free bytes require a direct shelf and recital entry.
+obs Reviewed the next named stash e8eaa0f8881f20b875b9001679f6479395115a7b. Its self-matching-assert control passes 34 checks, yet stat --format=%s prints only 6 for a six-byte file whose name contains aarch64 while the parked scan gates that needle as operand echo. Those three source files remain parked for an option- and channel-aware repair.
+obs All 16 stashes remain. The prior recovery's logs are carried on main. The lexer bound, leading-zero syntax, decimal and aura bounds, and desk-kind declaration remain at Keaton's language gate. The seed gates remain intact.
+obs Two detached launches ended before a verdict. Keeping the launch session open let the third run proceed; the installed Ripgrep directory is supplied on PATH. The tracked tree stayed still through the cold pass. One overbroad archive path query listed the shelf directory; subsequent lookups used named paths and the spine resolver.
+loom control=walker before_checks=79 before_fail=18 after_checks=79 after_fail=0
+loom census=walker subjects=126 walked=70 unwalked=56 unreached=0 ceiling=56 before_after=identical
+loom bound=witness_text largest_bytes=65423 witnesses=140 max_bytes=131072 exact_edge=pass one_over=refused
+loom recovery stashes=16 dropped=0 source_files_recovered=2 witness_files_updated=1
+loom review=self_matching_assert control_pass=34 control_fail=0 stat_output=6 parked_scan_gated=1
+file tools/fixtures/r/rye_witness_walker_scan.sh recover and complete loop-body coupling with a bounded source read
+file tools/fixtures/r/rye_witness_walker_control.sh recover coupling cases and add capture, literal, and byte-bound cases
+file tools/r/rye_witness_walker_witness.rish publish control output before assertions and hold the added boundaries
+file construction/archive/REDS-the-walker-keeps-its-body-rows-660.md recover the parked REDS record and append the current correction
+file construction/archive/REDS-fold-recital.md record the recovered shelf
+file construction/ITINERARY.md carry the recovery, next parked predicate, and parent nib
+obs The preceding recovery commit was still local-only against xy/main at this lap's fetch. This send carries that earlier recovery with this one.
+loom pass=cold guards=208 green=206 red=0 gated=2 guard_seconds=1858 tree_moved=no
+loom witness=rye_witness_walker control_checks=79 control_fail=0 verdict=green
+loom qa artifacts=9 minimum_composite=81 below_b=0
+file construction/REDS.md refresh the measured headline for the recovered row
+loom pass=hot guards=208 green=206 red=0 gated=2 guard_seconds=1874 tree_moved=no
+obs The full hot pass closed green. Only this log's measured closure fields changed afterward; the tested source and roster stayed as measured.
+obs The commit-message hook refused the first body at two mechanism words against a floor of three. The body now names the scan script and control file explicitly. The source and witnesses are unchanged.
+obs Rebased both local recovery commits onto 7d2e4d9b7. The card conflict was its parent nib; the roster conflict joined the peer's session_roster_agree with Pheromone's glow_decimal_law, retaining each once. The three walker source files remain byte-identical to the tested package. The card is 40238 bytes against 40960.
+obs The newer Standing directive permits receipt-based re-verification after rebase. Its scoped runner compares every changed path with the full receipt and always runs guards whose scope is unmapped.
+file README.md refresh the generated witness count after the peer roster addition
+loom rebase=session_roster_agree disagree=0 stale=0 uncounted=0 phantom=0 open_stale=0 one_sided=1 ceiling=1 verdict=ok
+recommend keep-going -- repair the self-matching-assert predicate in stash e8eaa0f8881f20b875b9001679f6479395115a7b before restoring its three files; inspect command options and output channel, beginning with the measured stat --format case. Preserve all stashes and language custody gates.
+scope Declaration-walker diagnostic recovery, its bounded matcher and control, recovered REDS record, and session records; the self-matching-assert source remains parked with a measured counterexample
+status CHECKED -- declaration-walker witness, 79 controls, nine report cards, and pre-rebase full cold and hot rosters pass; receipt-based re-verification remains before push

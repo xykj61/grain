@@ -607,3 +607,5 @@ at a closed fold.*
 *The rebase preserves [REDS-a-correction-inherits-the-duty-rows-657.md](REDS-a-correction-inherits-the-duty-rows-657.md) as a routing shelf for the unshared recovery.*
 
 *The rebase preserves [REDS-one-literal-two-verdicts-rows-658.md](REDS-one-literal-two-verdicts-rows-658.md) as a routing shelf for the unshared recovery.*
+
+*Recovered `20260909.055623` -- row %660, stamp `20260906.204454`, is born on [REDS-the-walker-keeps-its-body-rows-660.md](REDS-the-walker-keeps-its-body-rows-660.md); the pin has 173 bytes free. The parked report stays whole beside its recovery correction.*

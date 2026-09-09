@@ -1,6 +1,6 @@
 # tools/r/rye_witness_walker_witness.rish -- a witness proves what it CALLS, and claims the module.
 #
-# WHY THIS RUNG EXISTS. Zig analyses lazily, so a witness that imports a module and calls two of its
+# WHY THIS RUNG EXISTS. Zig analyzes lazily, so a witness that imports a module and calls two of its
 # functions forces exactly those two bodies through semantic analysis and walks past every other
 # declaration. A public function carrying a flat type error therefore rides through the build while
 # the witness prints GREEN. Measured `20260906` on metal rather than argued: a `pub fn` assigning a
@@ -31,7 +31,7 @@
 
 say "rye-witness-walker: Language EN -- does a witness prove its module, or only the parts it calls?"
 say "rye-witness-walker: Style Gauge, Meter -- one gated reading, two reported, the credit conditional."
-say "rye-witness-walker: Lens TAME -- three named bounds, a refusal by name at each, no override anywhere."
+say "rye-witness-walker: Lens TAME -- four named bounds, a refusal by name at each, no override anywhere."
 
 say "rye-witness-walker: reading every witness, its imports, and which of them it walks..."
 let census = run ["sh" "tools/fixtures/r/rye_witness_walker_scan.sh"]
@@ -53,6 +53,7 @@ assert census.out contains "unreached=" else "rye-witness-walker: the walker's o
 
 say "rye-witness-walker: proving the census on real repositories in a throwaway pen..."
 let control = run ["sh" "tools/fixtures/r/rye_witness_walker_control.sh"]
+say control.out
 assert control.ok else "rye-witness-walker: the control must complete -- a census nobody has watched fail is a census nobody has tested"
 assert control.out contains "control_verdict=ok" else "rye-witness-walker: the control must reach its own verdict -- ${control.out}"
 
@@ -69,6 +70,16 @@ assert control.out contains "ceiling_at_exit=0" else "rye-witness-walker: the ce
 assert control.out contains "comment_walker_walked=0" else "rye-witness-walker: a commented-out walker must not be credited -- a teaching header is where the shape most often appears"
 assert control.out contains "loop_no_field_walked=0" else "rye-witness-walker: a decls loop whose body forces nothing is a walker in shape only"
 assert control.out contains "field_no_loop_walked=0" else "rye-witness-walker: one declaration read is not every declaration read"
+
+# The field read must sit inside the declaration loop and use its captured name.
+assert control.out contains "halves_apart_walked=0" else "rye-witness-walker: separate count and field operations must stay unwalked"
+assert control.out contains "outer_block_walked=0" else "rye-witness-walker: a field after the loop must stay outside its credit"
+assert control.out contains "fixed_field_walked=0" else "rye-witness-walker: a fixed field is not a declaration walk"
+assert control.out contains "renamed_capture_walked=1" else "rye-witness-walker: the loop capture may use a different name"
+
+# The source buffer is bounded before the matcher collects a witness text.
+assert control.out contains "witness_bound_at_exit=0" else "rye-witness-walker: a witness at the byte bound must pass"
+assert control.out contains "witness_bound_over_verdict=witness_over_bound" else "rye-witness-walker: an oversized witness must refuse by name"
 
 # Which module a witness is actually about, decided two ways and refused when it cannot be.
 assert control.out contains "stem_subject_subjects=1" else "rye-witness-walker: a dependency import must not be counted as a second claim"
