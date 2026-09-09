@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/f/fold_shelf_link_repoint_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 20 cases, one pen holding a real git repository.
+# Prints `pass=N fail=N`. Bounded: 25 cases, one pen holding a real git repository.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -93,6 +93,20 @@ printf '# ignored\n[sibling](archive/sibling.md)\n' > construction/archive/ignor
 out=$(run --apply)
 check "an ignored shelf is never offered"   yes "$(has "$out" 'verdict=nothing_to_do')"
 check "and it is left byte-for-byte"        yes "$(has "$(cat construction/archive/ignored-build.md)" '](archive/sibling.md)')"
+
+# Repeated links produce one scan row per occurrence. A quoted spelling is
+# outside the scan's subject even when the same target is a real link below it.
+printf '# repeated\n`[example](archive/sibling.md)`\n[one](archive/sibling.md)\n[two](archive/sibling.md)\n[three](archive/sibling.md)\n' > construction/archive/repeated.md
+printf '# repeated\n`[example](archive/sibling.md)`\n[one](sibling.md)\n[two](sibling.md)\n[three](sibling.md)\n' > "$pen/expected.md"
+repair_status=0
+out=$(run --apply) || repair_status=$?
+check "repeated targets complete" 0 "$repair_status"
+check "repeated targets report success" yes "$(has "$out" 'verdict=ok')"
+check "each reported occurrence is repaired" yes "$(has "$out" 'repairs=3')"
+if cmp -s construction/archive/repeated.md "$pen/expected.md"; then exact=yes; else exact=no; fi
+check "real links change and the code span stays exact" yes "$exact"
+out=$(run --apply)
+check "repeated targets converge on the second run" yes "$(has "$out" 'verdict=nothing_to_do')"
 
 # An unknown argument refuses rather than being read as one of the two it resembles.
 out=$( set +e; run --sideways 2>&1; exit 0 )

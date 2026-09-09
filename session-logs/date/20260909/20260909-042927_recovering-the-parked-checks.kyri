@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260909.042927
+editor Codex CLI
+provider OpenAI
+product Codex
+role Incense -- captain seat, law and iterative review
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-astra; explicit user fleet instruction 20260909
+voice Kyri
+host Linux pier, America/New_York
+title Recovering the parked checks
+prompt Recover Incense's unfinished work and records before new work; finish a tested lap and push xy then gp405.
+rota lap 4427, row 2 -- Fire, the row that sees; threshold, Standfast, reds-first, and the three depths of removal. The reading focused recovery on the actual parked files and kept the full tree still during verification.
+obs Restored a changed-bound test beside the current pin advisory control. The control script imports plant_apply, changes the copied law to smaller and larger bounds, and checks that the advisory follows each one. A copied scanner fixed at the original bound loses that reading.
+obs A separate frozen-reader trial passed all ten original checks and failed the two changed-law checks in the recovered control. The recovered witness refused the original ten-check control, then passed all thirteen checks after recovery.
+obs Inspected all seven stashes and the current Incense transcript. All four distinct parked logs are already carried. The four equinox scans and the latest handoff page match HEAD; the loop has later changes. The older shared-pen, bound-reader, signing-law and shell-portability edits have landed or have later variants. Every stash remains intact.
+obs Two missing shelf paths are restored from a148c34f573abf5f4dc67f70e264f63172ad8ece and a9c8b955f45fba60b0badbc810ba636dc17bb1a7. Later shelves already carry their account text; these originals restore the paths named by the earlier logs. The second is byte-identical; the first differs only by five proven link-depth corrections.
+obs The duplicate REDS shelf remains parked because the published row already has its own shelf. The old doorway reach draft and fleet launcher remain preserved. The reach draft uses the earlier three-room population; the launcher predates the current watcher and clockout behavior.
+obs The live shelf recovery exposed a repointer fault: one replacement changed all three identical targets, so its next queued occurrence refused. The regression also found an inline-code example being changed by the whole-file replacement. The writer now replaces one visible occurrence per scan row and preserves closed inline-code spans.
+obs The repointer control now checks repeated-target completion, verdict, count, exact text with the quoted example preserved, and second-run convergence. The old tool failed four of these checks. The repaired tool and its twenty-five-check witness pass.
+obs Recorded and closed the repointer finding at 20260909.042650. The initial package folded its row, then the final rebase brought an explicit dated-path gate reading. Withdrew that unpublished fold and kept a 154-byte closed row on the live pin; this log carries the full account. The withdrawn shelf remains in this seat's ignored recovery output and original local commit. The pin stays within its existing bound.
+obs Ripgrep was installed outside PATH. Validation prepends its existing Nix store bin directory; host configuration stays as found. The cold transcript's seven stash detail lines match this tree's stash inventory.
+obs No custody action was taken. The naming rulings, seed publish, scrub cache, identity and provisioning gates retain their existing status. No peer checkout or process was changed.
+loom roster=cold guards_run=207 guards_green=205 guards_red=0 guards_gated=2 seconds=1813 cpu_ms=1728048 tree_moved=no verdict=ok
+loom pin_control before_checks=10 after_checks=13 failures=0 frozen_reader_before_failures=0 frozen_reader_after_failures=2
+loom repointer_control before_pass=21 before_fail=4 after_pass=25 after_fail=0
+loom recovery stashes=7 records=4 unlanded_logs=0 original_shelves_restored=2 corrected_link_occurrences=5
+loom qa control=87 pin_witness=84 repointer=85 repointer_witness=85 other_graded_artifacts=100
+file tools/fixtures/l/living_pin_near_bound_control.sh recover the changed-law cases beside the current controls
+file tools/l/living_pin_near_bound_witness.rish require all thirteen checks and name the new behavior
+file tools/f/fold_shelf_link_repoint.sh apply one visible Markdown occurrence per scan row
+file tools/fixtures/f/fold_shelf_link_repoint_control.sh prove repeated targets and inline-code preservation
+file tools/f/fold_shelf_link_repoint_witness.rish require all twenty-five control checks
+file construction/archive/20260906-035731_itinerary-landed-accounts.md restore the original shelf bytes
+file construction/archive/20260907-182522_itinerary-landed-accounts.md restore the original shelf with five link-depth errata
+file construction/REDS.md keep the compact closed row and derive the ledger headline
+file construction/ITINERARY.md carry the parent Git nib with the work
+file session-logs/date/README-index-20260909.md this log's shelf-qualified row
+file session-logs/date/20260909/20260909-042927_recovering-the-parked-checks.kyri this lap's recovery, provenance, checks and limits
+git_nib 002497bf07
+recommend keep-going -- continue the law lane from the current ledger; preserve the remaining parked variants and their custody gates. The full staged hot-pass result belongs in the commit body, after this log is written.
+obs The rebase preserves Diffuser's store reading and the peer's guard-output ordering changes. Only this lap's unshared row number is reassigned after the rebase; the allocator refuses to number a row while a rebase is open.
+scope Recover the pin advisory test and two shelf paths; repair the repointer fault found during that recovery; preserve all seven stashes.
+status GREEN for the recovery and repair -- living_pin_near_bound_witness and fold_shelf_link_repoint_witness pass; cold roster has zero reds and two Pond gates at %5. This verdict is written before the full staged hot pass and send; their final evidence is carried in the commit body.
