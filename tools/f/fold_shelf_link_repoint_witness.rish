@@ -27,10 +27,10 @@ say "fold-shelf-repoint: Language EN -- the fourth firing of one fault, answered
 say "fold-shelf-repoint: Style Gauge, Meter -- the repair is applied, never guessed."
 say "fold-shelf-repoint: Lens TAME -- safety first; every refusal proven from both sides."
 
-say "fold-shelf-repoint: the control -- twenty behaviors on a real fold in a throwaway repository..."
+say "fold-shelf-repoint: the control -- twenty-five behaviors on a real fold in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/f/fold_shelf_link_repoint_control.sh"]
 assert ctl.ok else "fold-shelf-repoint: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=20 fail=0" else "fold-shelf-repoint: the control did not prove twenty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=25 fail=0" else "fold-shelf-repoint: the control did not prove twenty-five behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fold-shelf-repoint: and this tree reads clean, so the tool has nothing to do here..."
 let dry = run ["sh" "tools/f/fold_shelf_link_repoint.sh"]

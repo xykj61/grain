@@ -28,6 +28,7 @@
 set -eu
 
 ROOT=$(pwd)
+. "$ROOT/tools/fixtures/p/plant.sh"
 SCAN_SRC="$ROOT/tools/fixtures/l/living_docs_lint_scan.sh"
 BOUND_SRC="$ROOT/tools/fixtures/l/living_pin_max_bytes.sh"
 LAW_SRC="$ROOT/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
@@ -240,6 +241,36 @@ seated h construction/ITINERARY.md
 page h construction/ITINERARY.md 100
 o=$(run h)
 check union_dedupes yes "$(said "$o" 'weighed=1 paths')"
+
+# The parked control changed the law inside its own pen. Recover that check
+# beside the current size checks: an advisory must follow a changed bound.
+# Two distinct bounds keep a hard-coded answer from satisfying both cases.
+for direction in smaller larger; do
+  case "$direction" in
+    smaller) moved_bound=$((REDS_BOUND / 2)) ;;
+    larger) moved_bound=$((REDS_BOUND * 2)) ;;
+  esac
+  pen moved_law
+  docs_roster moved_law docs/front.md
+  seated moved_law construction/REDS.md
+  law_moved="$PEN/moved_law/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
+  plant_apply "$law_moved" \
+    "s|^living_pin_max_bytes\[construction/REDS.md\][[:space:]]*=[[:space:]]*[0-9]*|living_pin_max_bytes[construction/REDS.md] = $moved_bound|" \
+    changed_pin_bound
+  read_bound=$(sh "$PEN/moved_law/tools/fixtures/l/living_pin_max_bytes.sh" construction/REDS.md)
+  [ "$read_bound" -eq "$moved_bound" ] || { echo "control: changed bound was not read" >&2; exit 2; }
+  moved_size=$(near_of "$read_bound")
+  page moved_law construction/REDS.md "$moved_size"
+  o=$(run moved_law)
+  check "near_follows_${direction}_law" yes "$(said "$o" "$moved_size of $read_bound")"
+done
+
+# Prove the changed-law case distinguishes a reader stuck on today's bound.
+# This mutates only the copied scan; plant_apply proves the replacement landed.
+plant_apply "$PEN/moved_law/tools/fixtures/l/living_docs_lint_scan.sh" \
+  "s|^  page_max=.*|  page_max=$REDS_BOUND|" stale_pin_bound
+o=$(run moved_law)
+check stale_bound_loses_changed_reading no "$(said "$o" "$moved_size of $read_bound")"
 
 echo "control_checks=$n"
 echo "control_failures=$fail"

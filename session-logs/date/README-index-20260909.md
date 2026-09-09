@@ -26,6 +26,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.075412` | [Recovery held](20260909/20260909-075412_shelf-recovery-held.kyri) | Copal; integration pending |
 | `20260909.075012` | [The table check returns](20260909/20260909-075012_the-table-check-returns.kyri) | Patchouli; parked caller check |
 | `20260909.074555` | [Records and addresses](20260909/20260909-074555_the-records-find-their-addresses.kyri) | Grass; two parked logs |
+| `20260909.072922` | [Repairs reach main](20260909/20260909-072922_the-parked-repairs-reach-main.kyri) | Incense recovery; eight stashes kept |
 | `20260909.072836` | [Reply retention](20260909/20260909-072836_reply-retention.kyri) | owned bytes survive scratch reuse |
 | `20260909.072753` | [Recovery reaches main](20260909/20260909-072753_the-recovery-reaches-main.kyri) | diagnostics and records |
 | `20260909.071647` | [Projection inputs](20260909/20260909-071647_the-projection-names-its-inputs.kyri) | Bakery; parked coverage proof |
@@ -37,11 +38,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.060234` | [Restore the card bound](20260909/20260909-060234_restore-the-card-bound.kyri) | final rebase overflow |
 | `20260909.055744` | [Close the recovery](20260909/20260909-055744_close-the-rebased-recovery.kyri) | rebase and pin bound |
 | `20260909.055623` | [Walker coupling recovered](20260909/20260909-055623_walker-coupling.kyri) | bounded loop-body check |
+| `20260909.055614` | [Parked closeout](20260909/20260909-055614_the-closeout-kept-in-the-stash.kyri) | ledger correction and preserved test results |
 | `20260909.055005` | [Recovery recheck](20260909/20260909-055005_the-recovery-reaches-its-check.kyri) | Copal; full pass before send |
 | `20260909.054226` | [The stop and the shelf](20260909/20260909-054226_the-stop-and-the-shelf.kyri) | guide corrected; old address restored |
 | `20260909.052250` | [Caller search errors](20260909/20260909-052250_the-search-that-swallowed-its-error.kyri) | refusal proven; stashes preserved |
 | `20260909.051312` | [Query and reply bounds](20260909/20260909-051312_query-reply-bounds.kyri) | silo; exact-fit and overflow probes |
 | `20260909.044210` | [Prose is not a builder](20260909/20260909-044210_prose-is-not-a-builder.kyri) | parked census compared |
+| `20260909.042927` | [Recovered checks](20260909/20260909-042927_recovering-the-parked-checks.kyri) | parked tests and shelf links |
 | `20260909.042717` | [The parked package returns](20260909/20260909-042717_the-parked-package-returns.kyri) | five logs and two guard families |
 | `20260909.042633` | [A promised shelf restored](20260909/20260909-042633_the-shelf-its-log-promised.kyri) | exact parked account |
 | `20260909.042508` | [Parked diagnostics return](20260909/20260909-042508_the-parked-diagnostics-return.kyri) | five records; diagnostic guards |
