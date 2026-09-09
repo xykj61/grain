@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c06c7671c8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `db2d350a4f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
 Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
