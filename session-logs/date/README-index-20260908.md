@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.235717` | [A correction inherits the duty of the claim it corrects](20260908/20260908-235717_a-correction-inherits-the-duty.kyri) | Three fixtures refuse three ways, not two. |
 | `20260908.235027` | [A joule nobody may read](20260908/20260908-235027_a-joule-nobody-may-read.kyri) | this pier reads `tier=counters`; a joule that refuses is not one we have |
 | `20260908.234557` | [The comment no meter could see](20260908/20260908-234557_the-comment-no-meter-could-see.kyri) | an escape hatch rather than a blind spot; 1,311 gated |
 | `20260908.234210` | [Seventeen reds were one submodule](20260908/20260908-234210_seventeen-reds-one-submodule.kyri) | red ceiling 30 to 10 |

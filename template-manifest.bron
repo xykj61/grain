@@ -98,6 +98,7 @@ allow pleac
 allow manual
 allow docs
 allow docs-geode
+allow nixos
 allow nixos-guide
 allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residuals withheld
 # -- the disciplines (context, granular -- identity/specs/keys withheld) --

@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9230cb0f0e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `064d32e384` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
 Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
@@ -124,25 +124,18 @@ recital. Cold roster **205 guards, 176 green, 0 red**.
 **Yours:** a guard reading a printed command for TERMINATION must RUN it, which nothing does.
 Two instruments called a hang healthy this lap -- named and accepted, or the next loom?
 
-**PHEROMONE -- A RULING STOOD IN FRONT OF THE READING, AND THE GATE WENT BLIND BEHIND IT.**
-Elder [shelved](archive/20260908-212614_itinerary-landed-accounts.md).
-**FIRE SEES**, so this lap read the ratchet two rows declined. `glow_desk_reach` set
-`stem_collision` at a **ceiling of 1**; `%539` and `%613` each read the pair --
-`sample-demo-fact-line-lits.glow`, `glow/gen/s/` and `linengrow/gen/` -- a ruling on **which file
-keeps the name**.
-**NEITHER FILE MAY LEAVE.** `linengrow/glow_seva_b0_line.rye` embeds it as `lit_desk_embed_relpath`
-in the product binary, and **Zig refuses an `@embedFile` escaping the root file's directory**. Both
-are **byte-identical**, diffed by `stoa237_native_embedded_desk_witness`.
-**AND THE CEILING WAS THE BLINDNESS:** a drifted twin read **1**, verdict `ok` -- a gate at the
-height of the one fault the pair has.
-**THE COST IS PAID BY TWO DIFFERENT PROGRAMS, NEVER BY TWO COPIES OF ONE.** One binary, one cache,
-one stem-keyed permission: identical bytes want all three alike, and **`cmp` reads that**.
-Split: `stem_collision` **gated at 0**, `stem_twin` reported: **0 and 1**. Control **86 -> 91**;
-`desk2()` plants the stem both ways, drift reds. Row `20260908.212614` **CLOSED**,
-[folded](archive/REDS-a-shared-name-two-programs-do-not-share-rows-652.md), renumbered **twice**
-while parked -- 647 to 651 to **652**, one line, each citation spelling the stamp.
-**Still yours:** `%532`'s three fourth-kind files carry no marker, so **what declares a desk's kind**
-is that row's only half standing. **And: does Glow accept `007`?**
+**PHEROMONE -- THREE RECORDS RECOVERED; THE LEXER BOUND STAYS PARKED.**
+The [elder account](archive/20260908-234354_itinerary-landed-accounts.md) keeps the twin-desk finding.
+**FIRE SEES** the difference between a record and the change it describes. This lap recovers
+three session logs and two diagnostic changes from this seat's parked work: desk failures
+split by execution stage, and a function-level decimal-law scan with a gate on false law claims.
+The existing `glow_literal_law` keeps its minority reading; the recovered scan adds the claim check.
+**THE PARKED BOUND CHANGES ACCEPTED SYNTAX.** Copied current sources parse `00000000000` as zero
+and tokenize it successfully; the parked lexer refuses `BadToken`. The historical log's
+claim that no accepted value changes is corrected here. `glow/tokens.rye` and its book stay as
+landed; the source changes remain in the stash for Keaton's language ruling.
+Three records and the recovery evidence: [log](../session-logs/date/20260909/20260909-025755_recovery-at-the-language-boundary.kyri).
+**Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**
