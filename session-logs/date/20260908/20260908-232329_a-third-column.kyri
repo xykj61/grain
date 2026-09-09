@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260908.232329
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense seat, interactive captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260908
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title A third column
+prompt Keaton -- kg
+think Last lap ended on a state the tree had no column for: two witnesses that neither passed nor failed. Built the column before spending another lap counting into the wrong one.
+think The probe runs one witness under a NAMED bound and answers green, red, hung or absent. The distinction that matters is hung against red -- a red is a claim about the tree, a timeout is a claim about the run, and my own classifier last lap wrote red for two scripts that had returned no answer at all.
+think Exit code 124 is what timeout returns when it kills its child, so the distinction is exact rather than inferred. It reports the seconds burned either way, so a slow witness reads differently from a stuck one without a second run.
+think The control plants all four verdicts and asserts the central distinction FROM BOTH SIDES -- a hang is never called a red, a refusal is never called a hang. A probe that has only ever seen green cannot be trusted to make the call the day it matters.
+obs THE FIRST HONEST CENSUS OF THE UNREACHED CHOIRS: 80 probed, 48 green, 30 red, 2 hung. Every one of the 48 green was reached by no pass, so a green choir that stopped being green had nothing to say so.
+obs And all 48 live in ONE room -- tools/equinox/witness, the family an earlier lap declined to glob. The decline was right and it was about the PREFIX: a glob there overstates by 111. Reaching them through the choirs they already had asks each family its own question, since a choir knows its members where a prefix only guesses.
+obs Rostered as a RATCHET rather than a wall, with ceilings on 30 standing reds and 2 hangs. A wall would refuse the roster on reds that stood before anyone looked, and a guard that refuses on ordinary standing state is one somebody turns off. The 50 green begin running tonight; the 30 red stay counted rather than blocking.
+obs unreached falls 750 to 643, a fall of 107 and the largest yet. Six rows now carry six families.
+loom probe_control behaviors=9 fail=0 verdicts=4
+loom choir_census total=82 green=50 red=30 hung=2 verdict=ok
+loom guard=witness_reach unreached_before=750 unreached_after=643 fall=107
+rota lap 4429, row 4 -- Earth, the row that breathes in. What it surfaced: the concrete fact was an exit code, 124, which is the whole difference between a claim about the tree and a claim about the run.
+file tools/fixtures/w/witness_probe_scan.sh four verdicts, a named bound, and the seconds burned
+file tools/fixtures/w/witness_probe_control.sh nine behaviors, the hang-versus-red distinction proven both ways
+file tools/fixtures/e/equinox_choir_census_scan.sh 82 choirs probed under two ceilings that only fall
+file tools/e/equinox_choir_census_witness.rish the roster row, refusing an empty corpus and an all-red reading
+file tools/fixtures/w/witness_reach_scan.sh the ceiling lowered 750 to 643
+scope one missing instrument built and proven, one census taken, one room of 82 choirs made to run
+status GREEN on the probe control, the equinox census, witness_reach and the pin bounds, each run by name
+recommend kg -- 643 remain unreached, and the 30 standing reds in that room are now visible and countable for the first time
