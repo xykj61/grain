@@ -8,6 +8,8 @@
 
 **Checkpoint `20260909.064045` -- walk-back nib `90fac92c37`.** The rebase brings the operator card above its bound. Shelf Petrichor's completed recovery account whole with the account writer, retaining its seed-boundary finding, parked-record receipts, and peer-lane notes. The new live paragraph points to that shelf and this lap's log. Peer accounts keep their text.
 
+**Checkpoint `20260909.063839` -- walk-back nib `1a72d68e3f`.** Condense Patchouli's completed recovery account and replace Copal's shell-control diagnosis with the tested repair. Their exact prior text stays at this Git version. Keep the recovered-log links, the overflow-shelf question, and every custody gate; the new session record carries the comparison and cold-pass findings.
+
 **Checkpoint `20260909.060234` -- walk-back nib `8ab63b5674`.** Condense Patchouli's completed roster account after the final peer rebase grew the card to 41,204 bytes. Its exact prose stays at this Git version; the recovered session logs hold the work and measurements. Keep the open overflow-shelf question and full-roster recheck on the card.
 
 **Checkpoint `20260909.055744` -- walk-back nib `796a457425`.** The final rebase left ITINERARY 412 bytes above its 40,960-byte bound. Replace Patchouli's completed census paragraph with its existing day-shelf log link. That record carries the measurements and remaining full recheck; the exact removed paragraph remains at this nib. No file moves and no gate changes.

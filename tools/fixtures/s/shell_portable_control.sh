@@ -2,7 +2,7 @@
 # shell_portable_control.sh -- the newest portable helpers, proven by doing.
 #
 # WHY A CONTROL RATHER THAN A READING. `resolve_path`, `sed_inplace`, and `search_text` exist so a
-# guard reads the same on both piers, and the only honest proof of that is behaviour: resolve a real
+# guard reads the same on both piers, and the only honest proof of that is behavior: resolve a real
 # symlink and compare against the tool this bench does have, edit a real file and read its bytes
 # and its mode back, search a real file with grep on a pier that ships no ripgrep. A count of call
 # sites says a spelling changed; this says the spelling still works.
@@ -81,7 +81,7 @@ sed_inplace 's|a|b|' "$pen/absent.txt" >/dev/null 2>&1 && bad "sed_inplace refus
 
 # --- lock_acquire / lock_release ---------------------------------------------------------------
 # The lock replaces `flock -w`, which macOS does not ship at all (REDS %279), so what has to be
-# proven is behaviour rather than a spelling: one holder at a time, a bounded refusal rather than a
+# proven is behavior rather than a spelling: one holder at a time, a bounded refusal rather than a
 # hang, and the one property a descriptor lock has for free -- release when its owner dies.
 lk="$pen/build.lock.d"
 
@@ -180,37 +180,38 @@ rq_rc=0; ( require_tool ) >/dev/null 2>&1 || rq_rc=$?
 [ "$rq_rc" -eq 2 ] && ok "require_tool with no name is misuse, not absence" \
   || bad "require_tool with no name is misuse, not absence"
 
-# THE REPAIR ITSELF, on the guard that taught the lesson. Run the e122 scan with the ripgrep
-# directory taken off PATH and nothing else changed: before this lap it answered
-# `verdict=misread / control_gate=failed`, accusing a control that had just printed verdict=ok.
+# The absent-tool probe keeps its own five-tool PATH. Dropping a host directory
+# can also drop sh; asking whether rg exists first skips this proof without rg.
+# dirname walks the root, and tr/xargs/printf serve the portable helper's probe.
+# A fixed set keeps both host layouts answering the same two checks.
 e122=tools/fixtures/e/equinox_e122_roots_bench_kinds_scan.sh
-if [ -f "$root/$e122" ] && have_tool rg; then
-  # Drop whichever PATH entries actually hold an executable rg, rather than guessing at a directory
-  # name. The first draft matched `/ripgrep-*/bin` and skipped on this pier, where the Nix store
-  # prefixes that with a hash -- a skip is what a vacuous pass looks like from the outside, which is
-  # the fault this whole file was written to refuse.
-  # `printf '%s\n'` rather than `%s`: `while read` does not deliver a final line with no newline
-  # after it, so `%s` silently dropped the LAST PATH entry. On this pier that entry is
-  # /run/current-system/sw/bin, which holds `sh` -- so the reduced PATH could not start a shell, the
-  # scan printed nothing, and this case read `bad` while the guard it tests was sound. An instrument
-  # that removes its subject must not remove the floor it stands on.
-  norg=$(printf '%s\n' "$PATH" | tr ':' '\n' | while IFS= read -r d; do
-    [ -n "$d" ] || continue
-    [ -x "$d/rg" ] || printf '%s\n' "$d"
-  done | paste -sd: -)
-  if [ -n "$norg" ] && ! ( PATH=$norg; export PATH; command -v rg >/dev/null 2>&1 ); then
-    e122_out=$( cd "$root" && PATH=$norg sh "$e122" 2>/dev/null || true )
-    printf '%s\n' "$e122_out" | grep -q '^instrument=rg$' \
-      && ok "a real guard without its instrument names rg rather than a file" \
-      || bad "a real guard without its instrument names rg rather than a file"
-    printf '%s\n' "$e122_out" | grep -q '^verdict=misread$' \
-      && bad "the elder misread verdict is gone" || ok "the elder misread verdict is gone"
-  else
-    note "e122 without rg (no PATH entry to remove)"
-  fi
+norg="$pen/without-rg"
+mkdir -p "$norg"
+for tool in sh dirname tr xargs printf; do
+  # printf is also a shell builtin; xargs needs its executable peer on PATH.
+  tool_path=""
+  old_ifs=$IFS; IFS=:
+  for tool_dir in $PATH; do
+    [ -n "$tool_dir" ] || tool_dir=.
+    if [ -x "$tool_dir/$tool" ] && [ ! -d "$tool_dir/$tool" ]; then
+      tool_path=$(CDPATH= cd "$tool_dir" && printf '%s/%s' "$(pwd -P)" "$tool")
+      break
+    fi
+  done
+  IFS=$old_ifs
+  [ -n "$tool_path" ] || { echo "verdict=probe_tool_absent tool=$tool"; exit 1; }
+  ln -s "$tool_path" "$norg/$tool"
+done
+e122_rc=0
+e122_out=$(cd "$root" && PATH="$norg" sh "$e122" 2>&1) || e122_rc=$?
+if [ "$e122_rc" -eq 127 ] && printf '%s\n' "$e122_out" | grep -q '^instrument=rg$'; then
+  ok "a real guard without its instrument names rg rather than a file"
 else
-  note "e122 without rg (scan absent, or this bench carries no rg to remove)"
+  bad "a real guard without its instrument names rg rather than a file (rc=$e122_rc)"
 fi
+printf '%s\n' "$e122_out" | grep -q '^verdict=instrument_absent$' \
+  && ok "the absent instrument has its own verdict" \
+  || bad "the absent instrument has its own verdict"
 echo "have_readlink_f=$have_rl"
 echo "pass=$pass"
 echo "skip=$skip"

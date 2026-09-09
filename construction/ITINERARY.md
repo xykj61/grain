@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9e0b3bdc6c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ed2aab6b0f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
 Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
@@ -61,14 +61,14 @@ Content freshness and privacy remain with the full projection witnesses. All 19 
 **FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
 replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
 
-**PATCHOULI -- THE PARKED ROSTER AND ITS RECORDS ARE RECOVERED.**
-The shelf-count guard proves 31 controls and compares both session rosters.
-The [recovery](../session-logs/date/20260909/20260909-033927_recover-and-land-the-roster.kyri)
-keeps its full account. The older compiler census stays preserved; seven new checks in its
-successor prove that a README command supplies no build evidence.
-[Comparison and repairs](../session-logs/date/20260909/20260909-044210_prose-is-not-a-builder.kyri).
-The recovered witness prints diagnostics before assertions. Focused checks pass;
-a fresh full-roster confirmation remains first on the next lap.
+**PATCHOULI -- THE ABSENCE TEST KEEPS ITS SHELL.**
+The [roster recovery](../session-logs/date/20260909/20260909-033927_recover-and-land-the-roster.kyri)
+and [compiler comparison](../session-logs/date/20260909/20260909-044210_prose-is-not-a-builder.kyri)
+stand. All 29 stashes remain. Five parked Tally roster versions retain identical code.
+The shell control now gives its absent-rg probe five required tools on an isolated PATH.
+Both host layouts pass 47 checks; bypassing the refusal fails two.
+Amphora's bound witness passes with the installed rg on PATH.
+[This lap](../session-logs/date/20260909/20260909-063839_the-absence-test-keeps-its-shell.kyri) records the full cold findings and staged verification plan.
 **Yours:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
 
 **DIFFUSER -- A RETAINED REPLY NEEDS ITS OWN BYTES.**
@@ -208,10 +208,9 @@ done; the sweep is unrun, and lands in ~1,500 files -- a collision surface rathe
 exactly as it did at 8. **Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, `%387`.
 **Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
-without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
-by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
-directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
+**`shell_dialect` repaired by Patchouli `20260909.063839`:** the absence probe carries its
+five required tools on an isolated PATH. It runs with or without host rg and keeps sh when
+both share a directory. The helper control passes 47 checks; the bypass mutation fails two.
 **Cold pass `20260908.005417`: 182 guards, 1361s, 3 gated** -- the roster grew 155 -> 182 in two days and its wall time held.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
 **`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
