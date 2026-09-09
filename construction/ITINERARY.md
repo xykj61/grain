@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `bfeba7d8d7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `131fc43a74` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS FOR PROOF.**
 Elder [shelved](archive/20260908-223549_itinerary-landed-accounts.md).
@@ -136,25 +136,24 @@ fourth clause:** that demo hands a stale path to `dated_path_resolve` **on purpo
 **Yours:** that guide's line 7 is a **Status line recording what ran**, naming a witness at its
 then-home. I left it; whether a Status line's paths are testimony or instruction is a ruling.
 
-**PHEROMONE -- A RULING STOOD IN FRONT OF THE READING, AND THE GATE WENT BLIND BEHIND IT.**
-Elder [shelved](archive/20260908-212614_itinerary-landed-accounts.md).
-**FIRE SEES**, so this lap read the ratchet two rows declined. `glow_desk_reach` set
-`stem_collision` at a **ceiling of 1**; `%539` and `%613` each read the pair --
-`sample-demo-fact-line-lits.glow`, `glow/gen/s/` and `linengrow/gen/` -- a ruling on **which file
-keeps the name**.
-**NEITHER FILE MAY LEAVE.** `linengrow/glow_seva_b0_line.rye` embeds it as `lit_desk_embed_relpath`
-in the product binary, and **Zig refuses an `@embedFile` escaping the root file's directory**. Both
-are **byte-identical**, diffed by `stoa237_native_embedded_desk_witness`.
-**AND THE CEILING WAS THE BLINDNESS:** a drifted twin read **1**, verdict `ok` -- a gate at the
-height of the one fault the pair has.
-**THE COST IS PAID BY TWO DIFFERENT PROGRAMS, NEVER BY TWO COPIES OF ONE.** One binary, one cache,
-one stem-keyed permission: identical bytes want all three alike, and **`cmp` reads that**.
-Split: `stem_collision` **gated at 0**, `stem_twin` reported: **0 and 1**. Control **86 -> 91**;
-`desk2()` plants the stem both ways, drift reds. Row `20260908.212614` **CLOSED**,
-[folded](archive/REDS-a-shared-name-two-programs-do-not-share-rows-652.md), renumbered **twice**
-while parked -- 647 to 651 to **652**, one line, each citation spelling the stamp.
-**Still yours:** `%532`'s three fourth-kind files carry no marker, so **what declares a desk's kind**
-is that row's only half standing. **And: does Glow accept `007`?**
+**PHEROMONE -- A CORRECTION CAUGHT ONE-FOR-THREE AND THEN MADE THE SAME ERROR AT TWO.**
+Elder [shelved](archive/20260908-234354_itinerary-landed-accounts.md).
+**WATER TASTES -- run the actual thing**, so I ran the three fixtures `%532` parks. It recorded
+them refusing **one** way; `%564` corrected that to **two**, into a rostered witness's own
+invariant comment. Metal answers **three**, across **both** exit codes: `digraph-table` **2**
+`unsupported Glow head`, `fixture-lits` **2** `too many Glow lines`, `fact-line-lits` **1** `multi
+lower failed`.
+**AND THE GROUPING CROSSES THE LINE.** `glow_run` draws it in its contract -- **2 declines the
+file, 1 means a lowering ran and broke** -- so the two called one refusal sit on opposite sides.
+The elder grouping matched the word `TooManyLines`; the scan's own door says *nothing here reads
+prose out of the compiler*. **The door held the rule and the correction beside it broke it**, and
+`run_desk` spent the contract one line later, folding four stages into one `return 1`.
+**REPAIRED:** the status is kept as a stage code, five parts beside the **unchanged gated
+`failed`**. Control **48 -> 95**: each stage planted and lifted, shown to leave the other four at
+zero, the parts proven to **sum**. Row `20260908.234354` **BOOKED**,
+[born](archive/REDS-a-correction-inherits-the-duty-rows-654.md) folded.
+**IT SIZES `%532`:** two are declined by a stated bound; **one is accepted as a desk outright**,
+and only it is unspoken-for. **Yours:** a desk's kind, and does Glow accept `007`?
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**
