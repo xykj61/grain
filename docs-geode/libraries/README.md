@@ -36,7 +36,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
-| [`linengrow/`](../../linengrow/README.md) | 155 | 81 |
+| [`linengrow/`](../../linengrow/README.md) | 155 | 82 |
 | [`lotus/`](../../lotus/README.md) | 238 | 247 |
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |

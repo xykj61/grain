@@ -582,3 +582,5 @@ at a closed fold.*
 *Row %650 born onto [`REDS-a-sample-that-never-landed-rows-650.md`](REDS-a-sample-that-never-landed-rows-650.md) on `20260908.204213`, **BOOKED** -- a prover's own sample was eaten by an escaping layer and exited zero, so a true verdict about a tool stood over a sample that never landed. Born onto its shelf rather than folded: the pin read `pin_deadlocked=1` with 173 bytes of headroom, the seventh ship it refused today.*
 
 *Row %651 born onto [`REDS-a-proof-nobody-named-after-it-rows-651.md`](REDS-a-proof-nobody-named-after-it-rows-651.md) on `20260908.223549`, **CLOSED** -- the census asking whether a tool's convergence is proven could only see evidence somebody had named after the tool, so a prover running on every lap left its subject in the unproven column. Born onto its shelf rather than folded: `pin_deadlocked=1`, the eighth ship the pin refused today.*
+
+*Row %652 folded to [`REDS-a-shared-name-two-programs-do-not-share-rows-652.md`](REDS-a-shared-name-two-programs-do-not-share-rows-652.md) on `20260908.213230`, **CLOSED** -- a shared name costs nothing when the two files are the same program.*
