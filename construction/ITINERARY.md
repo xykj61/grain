@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3a88e66610` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ff5a90b1f7` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -195,8 +195,8 @@ simplification; the default, explicit path, and empty-path refusal were checked.
 four red, two custody gates. The nib correction rides this close. Both instrument
 reds pass with the installed `rg` on PATH; the fourth red is their roster summary.
 The full staged hot pass held still: 209 guards, 207 green, zero red, two gates.
-The saved branch stays; the final peer rebase gets a scoped recheck before send.
-[The verification record](../session-logs/date/20260909/20260909-055005_the-recovery-reaches-its-check.kyri) carries the scope.
+The saved branch stays. After the peer rebase, all 11 focused integration checks pass.
+[The verification record](../session-logs/date/20260909/20260909-063251_the-integrated-recovery-is-ready.kyri) carries the scope.
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took

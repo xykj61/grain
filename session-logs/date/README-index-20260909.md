@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.063251` | [Integrated recovery](20260909/20260909-063251_the-integrated-recovery-is-ready.kyri) | Copal; 11 checks pass |
 | `20260909.060234` | [Restore the card bound](20260909/20260909-060234_restore-the-card-bound.kyri) | final rebase overflow |
 | `20260909.055744` | [Close the recovery](20260909/20260909-055744_close-the-rebased-recovery.kyri) | rebase and pin bound |
 | `20260909.055005` | [Recovery recheck](20260909/20260909-055005_the-recovery-reaches-its-check.kyri) | Copal; full pass before send |
