@@ -22,6 +22,14 @@
 #                       only, forcing nothing. Not credited.
 #   field_no_loop       a bare `@field(m, "x")` with no decls loop: one declaration, not every one.
 #                       Not credited.
+#   halves_apart        BOTH halves present and not one construct -- a decls-COUNT assert and an
+#                       unrelated `@field` read. Not credited (recovery stamp 20260906.204454), then lifted by
+#                       joining them, so the coupling is shown from both sides.
+#   field_after_close   the field read after the loop's closing brace on the SAME line: outside
+#                       the body, so not credited. The case that separates a character walk
+#                       over brace depth from a line-granular test.
+#   one_line_walker     the whole walker on one line: credited, since depth rises and falls
+#                       within a line exactly as it does across several.
 #   stem_subject        `X_witness.rye` importing `X.rye` and a second module: exactly ONE subject,
 #                       so the dependency is not accused of breaking a promise it never made.
 #   single_fallback     a witness whose stem names nothing, importing exactly one sibling. That one
@@ -65,12 +73,19 @@ done
 scan="$_fd_root/tools/fixtures/r/rye_witness_walker_scan.sh"
 [ -f "$scan" ] || { echo "detail: the scan under test is missing"; echo "control_verdict=no_scan"; exit 2; }
 
-pen=$(mktemp -d) || { echo "detail: mktemp refused a pen"; echo "control_verdict=no_pen"; exit 2; }
+# Keep this run's temporary repositories inside the checkout that owns the control.
+mkdir -p "$_fd_root/session-output" || { echo "control_verdict=no_output_room"; exit 2; }
+pen=$(mktemp -d "$_fd_root/session-output/rye-witness-walker.XXXXXX") || {
+  echo "detail: mktemp refused a pen"; echo "control_verdict=no_pen"; exit 2; }
 # The handler EXITS. A trap that cleans up and returns lets POSIX resume the script where the signal
 # landed, so every phase below would then run against a pen that is gone -- REDS %487.
 trap 'rm -rf "$pen"; exit 130' INT
 trap 'rm -rf "$pen"; exit 143' TERM
 trap 'rm -rf "$pen"' EXIT
+
+# Keep a repository-free case from discovering the checkout above the pen.
+GIT_CEILING_DIRECTORIES=$pen
+export GIT_CEILING_DIRECTORIES
 
 # A pen is a real git repository, because the scan reads `git ls-files` and `git cat-file` rather
 # than the filesystem. A pen built from directories alone would prove nothing about the scan's
@@ -131,8 +146,10 @@ pub fn main() void {
 '
 
 failures=0
+checks=0
 note() { echo "$1"; }
 expect() { # name expected actual
+  checks=$((checks + 1))
   if [ "$2" = "$3" ]; then echo "$1=$3"; else echo "$1=$3 EXPECTED=$2"; failures=$((failures + 1)); fi
 }
 
@@ -338,7 +355,104 @@ expect bad_set_verdict bad_set "$(read_field verdict "$bs_out")"
 r=$(run_pen "$d" --list walked); lw_out=$(printf '%s\n' "$r" | tail -n +2)
 expect list_walked_row 1 "$(printf '%s\n' "$lw_out" | grep -c 'mod/thing_witness.rye')"
 
-echo "behaviors=37"
+# ---- halves_apart: both halves present, and NOT one construct (recovery stamp 20260906.204454) ----------------------
+# The fault this scan shipped with. A decls-COUNT assert and an unrelated `@field` read are two
+# ordinary things for a witness to write, and matching the halves independently across the file
+# credited the pair while nothing walked. Planted, then lifted, so the coupling is shown from both
+# sides -- a refusal proven only in the failing direction cannot be told from a scan that refuses.
+d=$(new_pen halves_apart) || { echo "control_verdict=pen_failed"; exit 2; }
+mkdir -p "$d/mod"
+printf '%s' "$module_body" > "$d/mod/thing.rye"
+printf '%s\ncomptime {\n    if (@typeInfo(m).@"struct".decls.len != 2) @compileError("count moved");\n}\n\npub fn main() void {\n    _ = m.thing(1);\n    _ = @field(m, "max_thing");\n}\n' \
+  "$witness_head" > "$d/mod/thing_witness.rye"
+seal_pen "$d"
+r=$(run_pen "$d"); ha_out=$(printf '%s\n' "$r" | tail -n +2)
+expect halves_apart_walked 0 "$(read_field walked "$ha_out")"
+expect halves_apart_unwalked 1 "$(read_field unwalked "$ha_out")"
+
+# ---- halves_joined: the SAME pen with the two halves made one construct -------------------------
+printf '%s%s%s' "$witness_head" "$walker_block" "$witness_tail" > "$d/mod/thing_witness.rye"
+seal_pen "$d"
+r=$(run_pen "$d"); hj_out=$(printf '%s\n' "$r" | tail -n +2)
+expect halves_joined_walked 1 "$(read_field walked "$hj_out")"
+expect halves_joined_unwalked 0 "$(read_field unwalked "$hj_out")"
+
+# ---- field_after_close: the field read sits after the loop's closing brace, same line ------------
+# Depth is what says INSIDE, so a line-granular test would credit this and a character walk does
+# not. The one case that separates the two implementations.
+d=$(new_pen field_after_close) || { echo "control_verdict=pen_failed"; exit 2; }
+mkdir -p "$d/mod"
+printf '%s' "$module_body" > "$d/mod/thing.rye"
+printf '%s\ncomptime {\n    for (@typeInfo(m).@"struct".decls) |decl| { _ = decl.name; } _ = @field(m, "max_thing");\n}\n%s' \
+  "$witness_head" "$witness_tail" > "$d/mod/thing_witness.rye"
+seal_pen "$d"
+r=$(run_pen "$d"); fac_out=$(printf '%s\n' "$r" | tail -n +2)
+expect field_after_close_walked 0 "$(read_field walked "$fac_out")"
+expect field_after_close_unwalked 1 "$(read_field unwalked "$fac_out")"
+
+# ---- one_line_walker: the whole walker on one line is credited ----------------------------------
+# The same character walk that refuses the three cases above must welcome this one, since depth
+# rises and falls within a line exactly as it does across several.
+d=$(new_pen one_line_walker) || { echo "control_verdict=pen_failed"; exit 2; }
+mkdir -p "$d/mod"
+printf '%s' "$module_body" > "$d/mod/thing.rye"
+printf '%s\ncomptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = &@field(m, decl.name); } }\n%s' \
+  "$witness_head" "$witness_tail" > "$d/mod/thing_witness.rye"
+seal_pen "$d"
+r=$(run_pen "$d"); olw_out=$(printf '%s\n' "$r" | tail -n +2)
+expect one_line_walker_walked 1 "$(read_field walked "$olw_out")"
+expect one_line_walker_unwalked 0 "$(read_field unwalked "$olw_out")"
+
+# Each case asks whether the field read belongs to the declaration loop itself.
+walker_case() {
+  name=$1; want=$2; body=$3
+  d=$(new_pen "$name") || exit 2
+  mkdir -p "$d/mod"
+  printf '%s' "$module_body" > "$d/mod/thing.rye"
+  printf '%s\n%s\n%s' "$witness_head" "$body" "$witness_tail" > "$d/mod/thing_witness.rye"
+  seal_pen "$d"
+  r=$(run_pen "$d"); case_out=$(printf '%s\n' "$r" | tail -n +2)
+  expect "${name}_walked" "$want" "$(read_field walked "$case_out")"
+  expect "${name}_unwalked" "$((1 - want))" "$(read_field unwalked "$case_out")"
+}
+walker_case count_block 0 'comptime { if (@typeInfo(m).@"struct".decls.len > 0) { _ = @field(m, "max_thing"); } }'
+walker_case outer_block 0 'comptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = decl.name; } _ = @field(m, "max_thing"); }'
+walker_case fixed_field 0 'comptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = @field(m, "max_thing"); } }'
+walker_case other_capture 0 'comptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = @field(m, other.name); } }'
+walker_case renamed_capture 1 'comptime { for (@typeInfo(m).@"struct".decls) |member| { _ = &@field(m, member.name); } }'
+walker_case split_header 1 'comptime {
+  for (
+    @typeInfo(m).@"struct".decls
+  ) |decl| {
+    _ = &@field(m, decl.name);
+  }
+}'
+walker_case string_field 0 'comptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = "@field(m, decl.name)"; } }'
+walker_case string_close 1 'comptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = "}"; _ = &@field(m, decl.name); } }'
+walker_case string_open 0 'comptime { for (@typeInfo(m).@"struct".decls) |decl| { _ = "{"; } _ = @field(m, decl.name); }'
+walker_case comment_close 1 'comptime { for (@typeInfo(m).@"struct".decls) |decl| {
+// } @field(m, other.name)
+_ = &@field(m, decl.name);
+} }'
+# Hold the buffer limit at its exact edge, then add one byte and watch it refuse.
+d=$(new_pen witness_bound) || exit 2
+mkdir -p "$d/mod"
+printf '%s' "$module_body" > "$d/mod/thing.rye"
+printf '%s%s%s' "$witness_head" "$walker_block" "$witness_tail" > "$d/mod/thing_witness.rye"
+limit=$(sed -n 's/^max_witness_bytes=//p' "$scan")
+# An elder scan without the bound still receives the current boundary fixture.
+# This makes the same control prove that the old scan fails to enforce the limit.
+if [ -z "$limit" ]; then limit=131072; fi
+used=$(wc -c < "$d/mod/thing_witness.rye" | tr -d ' ')
+awk -v n="$((limit - used))" 'BEGIN { for (i=0; i<n; i++) printf " " }' >> "$d/mod/thing_witness.rye"
+seal_pen "$d"
+r=$(run_pen "$d"); expect witness_bound_at_exit 0 "$(printf '%s\n' "$r" | head -1)"
+printf ' ' >> "$d/mod/thing_witness.rye"
+seal_pen "$d"
+r=$(run_pen "$d"); bound_out=$(printf '%s\n' "$r" | tail -n +2)
+expect witness_bound_over_exit 2 "$(printf '%s\n' "$r" | head -1)"
+expect witness_bound_over_verdict witness_over_bound "$(read_field verdict "$bound_out")"
+echo "behaviors=$checks"
 if [ "$failures" -eq 0 ]; then
   echo "control_verdict=ok"
 else
