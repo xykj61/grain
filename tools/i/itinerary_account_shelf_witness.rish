@@ -30,7 +30,7 @@ say "itinerary-account-shelf: Lens TAME -- every refusal proven from both sides.
 say "itinerary-account-shelf: the control -- the writer on a real fold in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/i/itinerary_account_shelf_control.sh"]
 assert ctl.ok else "itinerary-account-shelf: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=29 fail=0" else "itinerary-account-shelf: the control did not prove twenty-nine behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=30 fail=0" else "itinerary-account-shelf: the control did not prove thirty behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "itinerary-account-shelf: the filter it delegates to must still stand..."
 # invariant: the rewrite is computed in the filter and never duplicated here, so its absence is a
@@ -45,4 +45,4 @@ let depth = run ["sh" "-c" "grep -ohE '\\]\\(\\.\\./[a-z-]+/' construction/archi
 assert depth.ok else "itinerary-account-shelf: the shelf reading refused --\n${depth.err}"
 assert depth.out contains "pin_depth_links=0" else "itinerary-account-shelf: an account shelf carries a pin-depth link --\n${depth.out}"
 
-say "itinerary-account-shelf: GREEN -- 29 behaviors, the filter in place, the shelves clean."
+say "itinerary-account-shelf: GREEN -- 30 behaviors, the filter in place, the shelves clean, the second run asked of the bytes."

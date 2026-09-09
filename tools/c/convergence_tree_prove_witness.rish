@@ -35,18 +35,18 @@
 # one repository reading `inert` and then `converges` with only the perturbation between them.
 
 say "convergence-tree-prove: Language EN -- a prover whose subject is a repository."
-say "convergence-tree-prove: Style Gauge, Meter -- six verdicts, and the honest one is named."
+say "convergence-tree-prove: Style Gauge, Meter -- seven verdicts, and the honest one is named."
 say "convergence-tree-prove: Lens TAME -- safety first: the pen is a throwaway checkout, never the tree."
 
-say "convergence-tree-prove: the control -- nineteen behaviors, including two kinds of divergence..."
+say "convergence-tree-prove: the control -- thirty behaviors, including an operator rooted at its own $0..."
 let ctl = run ["sh" "tools/fixtures/c/convergence_tree_prove_control.sh"]
 assert ctl.ok else "convergence-tree-prove: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=19 fail=0" else "convergence-tree-prove: the control did not prove nineteen behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=30 fail=0" else "convergence-tree-prove: the control did not prove thirty behaviors --\n${ctl.out}\n${ctl.err}"
 
 # invariant: the control exercises a mode-only divergence, both refusal shapes, and the perturb
 # pair -- each of which a passing-direction-only proof would miss. A refusal proven only in the
 # passing direction cannot be told from a bypass.
-assert ctl.out contains "coverage: mode divergence, the perturb pair, a no-op perturbation, and both refusal shapes were each exercised" else "convergence-tree-prove: the control never exercised its own teeth"
+assert ctl.out contains "coverage: mode divergence, the perturb pair, a no-op perturbation, both refusal shapes, an in-tree operator rooted at $0, and the elder prover's own leak were each exercised" else "convergence-tree-prove: the control never exercised its own teeth"
 
 # invariant: the prover answers for the busiest writing this tree does. `reds_ledger_headline_write.sh`
 # runs on every commit through `tools/hooks/pre-commit`, and it is one of the nine no prover could

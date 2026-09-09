@@ -653,3 +653,5 @@ at a closed fold.*
 *Rows %658, %659, %664 and %665 folded to [`REDS-four-closures-in-one-day-rows-658-665.md`](REDS-four-closures-in-one-day-rows-658-665.md) on `20260909.164740`, each **CLOSED** -- four closures of one day, three closed by an instrument that changed the conditions and one by a count that would not balance.*
 
 *Fold `20260909.155028` -- row %667 folded the hour it closed onto [REDS-the-roll-listed-beside-the-table-rows-667.md](REDS-the-roll-listed-beside-the-table-rows-667.md), the pin standing 540 bytes under its bound.*
+
+*Row %620 folded to [`REDS-a-name-the-tool-hands-you-rows-620.md`](REDS-a-name-the-tool-hands-you-rows-620.md) on `20260909.171509`, **CLOSED** -- a lap that identifies its own scratch by a glob has identified nothing; the tool hands over the name now.*
