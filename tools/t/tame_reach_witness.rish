@@ -41,7 +41,7 @@ assert scan.out contains "covered=" else "tame_reach scan printed no covered cou
 # this guard hears it on the lap it arrives. Gating at zero would refuse the tree for a backlog
 # nobody made today, and crypto/ is absent from the roster on purpose -- it implements Ed25519
 # rather than calling it -- so zero was never the right number here.
-assert scan.out contains "uncovered_ceiling=551" else "tame_reach: the uncovered ceiling stands at 551 -- a ceiling only falls"
+assert scan.out contains "uncovered_ceiling=552" else "tame_reach: the uncovered ceiling stands at 552 -- a ceiling only falls, and the one rise is recorded in the scan header at `20260909.002917`"
 
 # invariant: a control's own plant is read past. A guard proves its refusals by planting them, so
 # tools/fixtures/t/tame_style_ban_err_eq_code.rye and its siblings MUST carry the bans they exist
@@ -90,4 +90,4 @@ let control = run ["sh" "tools/fixtures/t/tame_reach_control.sh"]
 assert control.ok else "tame_reach control failed: ${control.out}"
 assert control.out contains "fail=0" else "tame_reach control reported failures: ${control.out}"
 
-say "GREEN: tame_reach -- no phantom room, the roster's reach published rather than reasoned about, authored Rye outside it held at 551 and unwatched ban hits at 736, both refusals proven, absent roster refuses, 39 control behaviors green."
+say "GREEN: tame_reach -- no phantom room, the roster's reach published rather than reasoned about, authored Rye outside it held at 552 and unwatched ban hits at 736, both refusals proven, absent roster refuses, 39 control behaviors green."

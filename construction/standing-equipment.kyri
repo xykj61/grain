@@ -251,6 +251,20 @@ path tools/f/fold_shelf_link_repoint_witness.rish
 tier lap
 seated 20260907.212612
 
+# itinerary_account_shelf -- the shelf nothing wrote now has a writer, so its sibling above is the
+# repair and this is the prevention. Every send folds a ship's live-front account one directory
+# deeper, and every relative link in the block must gain a level. The filter performing exactly that
+# rewrite has been general since `20260908.104232`, when its own header was widened to spell this
+# invocation -- and the fault fired again the same day, from more than one ship. Measured
+# `20260909`: 208 account shelves stand, all hand-written, and NOTHING under `tools/` wrote one.
+# The fault was never an absent tool; it was a tool nothing calls. Its REDS sibling refuses to invent
+# a header because a REDS shelf's header is judgment; an account shelf's header is a seat, a stamp,
+# and one sentence that never varies, so this writer generates it rather than asking for it.
+guard itinerary_account_shelf
+path tools/i/itinerary_account_shelf_witness.rish
+tier lap   # one control in a throwaway pen plus two readings of the standing shelves, measured 1s
+seated 20260909.002517
+
 # loom_trend -- the reader the loom line was promised and never had. `session-logs.md` records a
 # measurement on a `loom` line *so a future Loom-aware reader can trend them across logs*; measured
 # `20260907.222830`, 3,426 measurements stood across 1,577 logs and NOTHING read one. The convention
@@ -3708,3 +3722,22 @@ guard glow_literal_law
 path tools/g/glow_literal_law_witness.rish
 tier lap
 seated 20260908.170542
+
+# energy_instrument -- a joule this host will not let us read is not a joule we have. The tree's
+# energy arc runs several papers deep and not one figure in it was read from a counter; every one is
+# a CPU-second proxy or a vendor budget. This names the tier any energy figure taken here was
+# measured at -- `joules`, `counters`, or `cpu_seconds` -- and it reads by OPENING each counter and
+# requiring digits back, because since PLATYPUS (CVE-2020-8694) Linux ships intel-rapl `energy_uj`
+# at mode 0400, so a path that exists can refuse every unprivileged read. A second fixture asks the
+# question sysfs cannot answer -- whether a declared instrument is one a process actually reaches --
+# by running tools/rye/perf_self_count.rye and requiring a count. A host is not a fault:
+# `tier=cpu_seconds` passes free. What the control gates is the probe's own ability to say `joules`
+# when joules are there, over planted sysfs pens, since a probe that cannot say `joules` proves
+# nothing by saying `none`. `lap` at a measured 1.0s on this pier: a ship moves between machines,
+# and a lap is where a figure gets written down. Authored 20260908.131900 in a lap that never
+# landed; re-proven on metal before this row was written.
+
+guard energy_instrument
+path tools/e/energy_instrument_witness.rish
+tier lap
+seated 20260908.234221

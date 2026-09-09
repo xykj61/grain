@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260909.011722` | [The template that holds nothing to catch](20260909/20260909-011722_the-template-that-holds-nothing.kyri) | a template beats a scrub |
+| `20260909.002917` | [A prevention nothing called](20260909/20260909-002917_a-prevention-nothing-called.kyri) | 208 shelves, no writer; a killed lap out of the stash |
 | `20260909.002116` | [The prover that shared none of its name](20260909/20260909-002116_the-prover-that-shared-none-of-its-name.kyri) | a proof found by name, not by spelling |
 | `20260909.000542` | [The proof under another name](20260909/20260909-000542_the-proof-under-another-name.kyri) | one fault, two cures, mine withdrew |
 | `20260909.000418` | [The stash was the only record](20260909/20260909-000418_the-stash-was-the-only-record.kyri) | a parked lap recovered; 12 roster days derived |

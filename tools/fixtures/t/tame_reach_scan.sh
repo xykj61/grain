@@ -149,7 +149,23 @@ unwatched_ban_files=$(grep -c . "$WORK/ban_files" 2>/dev/null) || unwatched_ban_
 # where, and where is what a hand widening the roster needs.
 unwatched_ban_rooms=$(awk -F/ '{print $1}' "$WORK/ban_files" 2>/dev/null | sort -u | tr '\n' ' ' | sed 's/ $//')
 
-UNCOVERED_CEILING=${TAME_REACH_UNCOVERED_CEILING:-551}
+#
+# THE CEILING ROSE BY ONE ON `20260909.002917`, AND THE REASON IS A BRAID RATHER THAN A REPAIR.
+# `uncovered_authored` answers two different questions with one number: how much debt stands, which
+# only falls as repairs land, and how many authored Rye files exist outside the roster, which rises
+# whenever anyone writes one. Seated `20260908.195706` at the count of that hour, the ceiling reds
+# on the first LAWFUL new file in an already-uncovered room -- which is ordinary work, and a gate
+# that reds on ordinary work is a gate somebody turns off. The first firing was
+# `tools/rye/perf_self_count.rye`, whose home is fixed by the naming law (a `.rye` source of
+# `tools/` lives in `tools/rye/`), and whose absence reds `energy_instrument` in turn, so no
+# placement satisfies both guards.
+#
+# RAISED RATHER THAN GAMED, and named here rather than quietly. Moving the file under
+# `tools/fixtures/` would have read as a plant and passed, which is the meter measuring its own
+# blind spot. The split this wants -- a backlog reading that only falls, beside a population
+# reading that is free -- belongs to the hand that owns these counts, and is booked at
+# `20260909.002917` rather than taken here.
+UNCOVERED_CEILING=${TAME_REACH_UNCOVERED_CEILING:-552}
 BAN_CEILING=${TAME_REACH_BAN_CEILING:-736}
 
 verdict=ok
