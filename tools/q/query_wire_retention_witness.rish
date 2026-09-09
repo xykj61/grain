@@ -1,0 +1,49 @@
+# tools/q/query_wire_retention_witness.rish -- what a kept answer costs, measured rather than argued.
+#
+# WHY THIS RUNG. The retention arc proved that a decoded QueryWireResponse borrows its text from the
+# payload it was decoded from, so a caller who keeps the answer keeps those bytes. That left the
+# design question unmeasured: having kept the bytes, should the caller also keep the DECODED struct,
+# or decode again on every read? One shape spends memory once; the other spends instructions per
+# read. This rung binds the answer to a counter.
+#
+# WHAT THE HARNESS DOES. comlink/query_wire_retention_cost.rye opens a self-scoped retired
+# instruction counter through perf_event_open with pid 0 -- no root, no perf binary -- brackets each
+# workload between two counter reads, alternates the two shapes sample by sample so host drift moves
+# both together, and publishes the median of seventeen samples so the figure is a reading that
+# happened rather than an average of two.
+#
+# WHY A CONTROL CARRIES THE GATE. The cached-read loop is trivially loop-invariant when it reads one
+# fixed hit, and the harness's first draft read exactly that: under -OReleaseFast the whole
+# twenty-thousand-read loop compiled to six instructions and the harness reported a saving that was
+# an elimination. Rotating the hit index gives each iteration its own address to compute.
+# tools/fixtures/q/query_wire_retention_control.sh proves the rotation is load-bearing by planting
+# the fault back and requiring the planted copy to collapse -- a defense shown only from the passing
+# side cannot be told from a coincidence.
+#
+# WHAT IS PROVEN HERE. That this host answers a counter; that decoding on every read costs
+# measurably more than reading a cached field; that the run is stable enough to publish, its spread
+# staying far under its median; and that the harness catches its own elimination fault.
+#
+# WHAT IS NOT PROVEN. Any absolute joule figure -- this pier reads tier=counters and no readable
+# energy counter, per tools/e/energy_instrument_witness.rish. Nor that one microarchitecture's
+# instruction costs another's. The magnitudes below are free figures: run the harness rather than
+# quoting a number from a page.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/q/query_wire_retention_witness.rish
+
+say "query-wire-retention: Language EN -- a retained answer is paid for in bytes or in instructions, and this reads the exchange."
+say "query-wire-retention: Style Gauge, Meter -- every figure names its build mode before anything leans on it."
+say "query-wire-retention: Lens TAME -- performance is measured, never assumed; the control is what makes the measurement believable."
+
+let honest = run ["sh" "-c" "RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye -OReleaseFast 2>&1"]
+say honest.out
+assert honest.ok else "query-wire-retention: the harness must run on this host -- see its own lines"
+assert honest.out contains "tier=" else "query-wire-retention: every reading names the instrument it was taken at"
+
+let control = run ["sh" "tools/fixtures/q/query_wire_retention_control.sh"]
+say control.out
+assert control.ok else "query-wire-retention: the control must pass before any figure is believed"
+assert control.out contains "verdict=" else "query-wire-retention: the control states a verdict in one word"
+
+say "query-wire-retention: GREEN -- the harness reads a counter, the plant collapses, and the exchange is a measured number."

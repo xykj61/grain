@@ -3852,3 +3852,22 @@ guard glow_decimal_law
 path tools/g/glow_decimal_law_witness.rish
 tier lap
 seated 20260909.001908
+
+# query_wire_retention -- what a kept answer costs per read, measured rather than argued. The
+# retention arc proved a decoded QueryWireResponse BORROWS its text from the payload, so a caller
+# who keeps the answer keeps those bytes; it left unmeasured whether that caller should also keep
+# the decoded struct. comlink/query_wire_retention_cost.rye brackets two workloads between reads of
+# a self-scoped retired-instruction counter -- pid 0, no root, no `perf` binary -- alternating them
+# sample by sample so host drift moves both together, and publishes the median of seventeen samples.
+# WHY THE CONTROL CARRIES THE GATE: the cached-read loop is loop-invariant when it reads one fixed
+# hit, and the harness's first draft read exactly that -- under -OReleaseFast twenty thousand reads
+# compiled to six instructions and it published an elimination as a saving. The rotating hit index
+# is the cure, and tools/fixtures/q/query_wire_retention_control.sh proves the cure load-bearing by
+# planting the fault back and requiring the planted copy to collapse. A host refusing the counter
+# says `tier=cpu_seconds` and passes free, since a host is not a fault. `tier lap` at a measured
+# 1.5s on this pier with the builds cached: this is a performance claim, and a ship moves between
+# machines, so the lap is where the figure gets checked against the metal under it.
+guard query_wire_retention
+path tools/q/query_wire_retention_witness.rish
+tier lap
+seated 20260909.152110

@@ -1,0 +1,253 @@
+// comlink/query_wire_retention_cost.rye -- measure what a retained answer costs, in retired
+// instructions and in bytes, for the two shapes a caller may keep it in.
+//
+// WHY. `a retained reply needs its own bytes` proved that a decoded QueryWireResponse borrows its
+// text from the payload it was decoded from, so a caller who keeps the answer keeps those bytes.
+// That left one design question unmeasured: having kept the bytes, should the caller ALSO keep the
+// decoded struct, or decode again on every read? The first spends memory once; the second spends
+// instructions per read. This program measures both sides of that exchange on this host, so the
+// choice is settled by a number rather than by an argument.
+//
+// It counts its own retired instructions through `perf_event_open` with pid 0, needing no root and
+// no `perf` binary -- the shape proven by `tools/rye/perf_self_count.rye`. A kernel that refuses the
+// counter is a first-class answer here: the program says so and exits without claiming a ratio.
+//
+// The two workloads alternate, sample by sample, so a machine that drifts warmer or busier during
+// the run moves both readings together rather than one of them. Each reports its MEDIAN of an odd
+// number of samples, so the figure published is a sample that actually happened.
+//
+// BOTH LOOPS READ A ROTATING HIT INDEX, and that detail is load-bearing rather than decorative. A
+// first draft read one fixed hit, which made the cached loop's body loop-invariant: under
+// `-OReleaseFast` the whole twenty-thousand-read loop compiled to six instructions, and the harness
+// reported a saving that was really an elimination. Rotating the index gives each iteration its own
+// address to compute, so a hoist cannot stand in for a measurement.
+//
+// Run from the repository root:
+//   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye
+//   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye -OReleaseFast
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const qw = @import("recall_tablecloth_query_wire.rye");
+
+const linux = std.os.linux;
+const builtin = @import("builtin");
+
+// A self-count measures this process wherever it is scheduled, so the pid is 0 and the cpu -1.
+const self_pid: linux.pid_t = 0;
+const any_cpu: i32 = -1;
+const no_group: linux.fd_t = -1;
+
+/// An odd sample count, so the median is a reading that happened rather than an average of two.
+const sample_count: u32 = 17;
+
+/// The bound on the sample arrays. Named apart from `sample_count` so raising the run size meets a
+/// ceiling rather than a silent overrun.
+const max_samples: u32 = 64;
+
+/// Reads per sample. Large enough that per-read cost survives the counter's own fixed overhead,
+/// small enough that one full run stays under a second on this host.
+const reads_per_sample: u32 = 20_000;
+
+/// The answer measured: four hits, the shape a small recall query returns. Fixed here so two runs
+/// on one host compare, and so the published byte figures name one concrete answer.
+const measured_hit_count: u32 = 4;
+
+comptime {
+    // invariant: the sample arrays hold every sample the run takes.
+    assert(sample_count <= max_samples);
+    // invariant: an odd count has a single middle element, which is what a median names.
+    assert(sample_count % 2 == 1);
+    // invariant: the measured answer fits the wire format's own hit ceiling.
+    assert(measured_hit_count <= qw.max_wire_hits);
+}
+
+const CostError = error{
+    counter_refused,
+    counter_short_read,
+};
+
+/// Open a self-scoped hardware counter for retired instructions, or name why the kernel refused.
+fn open_instruction_counter() CostError!linux.fd_t {
+    var attr = std.mem.zeroes(linux.perf_event_attr);
+    attr.type = .HARDWARE;
+    attr.size = @sizeOf(linux.perf_event_attr);
+    attr.config = @intFromEnum(linux.PERF.COUNT.HW.INSTRUCTIONS);
+    attr.flags.disabled = true;
+    // User space only: kernel and hypervisor work belongs to neither retention shape.
+    attr.flags.exclude_kernel = true;
+    attr.flags.exclude_hv = true;
+
+    // invariant: the attribute block declares its own size, which is how the kernel versions it.
+    assert(attr.size == @sizeOf(linux.perf_event_attr));
+    // invariant: the counter is opened stopped, so enabling it later brackets the workload alone.
+    assert(attr.flags.disabled);
+
+    const rc = linux.perf_event_open(&attr, self_pid, any_cpu, no_group, 0);
+    if (linux.errno(rc) != .SUCCESS) return CostError.counter_refused;
+
+    // invariant: a successful open returns a descriptor inside the i32 range a fd_t holds.
+    assert(rc <= @as(usize, @intCast(std.math.maxInt(i32))));
+    return @intCast(rc);
+}
+
+/// Read the counter's current value.
+fn read_counter(fd: linux.fd_t) CostError!u64 {
+    // invariant: a real descriptor is handed in, never the -1 that means no group.
+    assert(fd >= 0);
+
+    var count: u64 = 0;
+    const bytes = std.mem.asBytes(&count);
+    const read_bytes = linux.read(fd, bytes.ptr, bytes.len);
+    if (read_bytes != bytes.len) return CostError.counter_short_read;
+
+    // invariant: a counter bracketing real work reports work.
+    assert(count > 0);
+    return count;
+}
+
+/// Build the one answer this run measures, and encode it to wire bytes.
+fn build_measured_payload(out: []u8) CostError!u32 {
+    // invariant: the buffer offered holds a whole payload of this format.
+    assert(out.len >= qw.max_wire_payload);
+
+    var resp: qw.QueryWireResponse = undefined;
+    resp.hit_count = measured_hit_count;
+    var i: u32 = 0;
+    while (i < measured_hit_count) : (i += 1) {
+        resp.hits[i] = .{
+            .peer = "peerB",
+            .bolt = "bolt",
+            .revision = i + 1,
+            .path = "notes/alpha.txt",
+        };
+    }
+
+    const n = qw.encode_response(resp, out) catch return CostError.counter_refused;
+
+    // invariant: the encoding of a four-hit answer occupies wire bytes.
+    assert(n > 0);
+    // invariant: the encoding stops inside the format's own payload ceiling.
+    assert(n <= qw.max_wire_payload);
+    return n;
+}
+
+/// One field read, written once so both shapes are charged for exactly the same consumption.
+fn consume(hit: qw.QueryWireHit) u64 {
+    // invariant: a decoded hit carries a path, which is the field this read touches.
+    assert(hit.path.len > 0);
+    // invariant: a revision counts from one in the answer this run builds.
+    assert(hit.revision >= 1);
+    return @as(u64, hit.revision) +% @as(u64, @intCast(hit.path.len));
+}
+
+/// The KEEP-BYTES shape: hold the payload, decode on every read.
+fn read_from_encoded(payload: []const u8, reads: u32) u64 {
+    // invariant: a payload to decode from carries at least the format's two-byte head.
+    assert(payload.len >= 2);
+    // invariant: the workload runs a named number of reads rather than an open loop.
+    assert(reads > 0);
+
+    var sum: u64 = 0;
+    var r: u32 = 0;
+    while (r < reads) : (r += 1) {
+        var resp: qw.QueryWireResponse = undefined;
+        qw.decode_response(payload, &resp) catch return 0;
+        sum +%= consume(resp.hits[r % measured_hit_count]);
+    }
+    return sum;
+}
+
+/// The KEEP-BOTH shape: hold the payload AND the decoded struct, read fields directly.
+fn read_from_decoded(cached: *const qw.QueryWireResponse, reads: u32) u64 {
+    // invariant: the cached answer holds the hits this workload reads.
+    assert(cached.hit_count == measured_hit_count);
+    // invariant: the workload runs a named number of reads rather than an open loop.
+    assert(reads > 0);
+
+    var sum: u64 = 0;
+    var r: u32 = 0;
+    while (r < reads) : (r += 1) {
+        sum +%= consume(cached.hits[r % measured_hit_count]);
+    }
+    return sum;
+}
+
+/// Sort a bounded sample slice ascending, so the middle element is the median.
+fn sort_ascending(values: []u64) void {
+    // invariant: a sample set to sort holds at least one reading.
+    assert(values.len > 0);
+    // invariant: the set stays inside the array bound this program declares.
+    assert(values.len <= max_samples);
+
+    var i: u32 = 1;
+    while (i < values.len) : (i += 1) {
+        const key = values[i];
+        var j: u32 = i;
+        while (j > 0 and values[j - 1] > key) : (j -= 1) values[j] = values[j - 1];
+        values[j] = key;
+    }
+}
+
+pub fn main() !void {
+    const fd = open_instruction_counter() catch {
+        print("query_wire_retention_cost: tier=cpu_seconds -- this kernel refuses a self-scoped counter\n", .{});
+        return;
+    };
+    defer _ = linux.close(fd);
+
+    // invariant: a live descriptor is non-negative, so every count below reads a real counter.
+    assert(fd >= 0);
+
+    var payload_buf: [qw.max_wire_payload]u8 = undefined;
+    const payload_len = try build_measured_payload(&payload_buf);
+    const payload = payload_buf[0..payload_len];
+
+    var cached: qw.QueryWireResponse = undefined;
+    try qw.decode_response(payload, &cached);
+
+    // invariant: the cached answer decoded the same hits the payload carries.
+    assert(cached.hit_count == measured_hit_count);
+
+    var encoded_samples: [max_samples]u64 = undefined;
+    var decoded_samples: [max_samples]u64 = undefined;
+    var checksum: u64 = 0;
+
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.ENABLE, 0);
+
+    var s: u32 = 0;
+    while (s < sample_count) : (s += 1) {
+        const a0 = try read_counter(fd);
+        checksum +%= read_from_encoded(payload, reads_per_sample);
+        const a1 = try read_counter(fd);
+        checksum +%= read_from_decoded(&cached, reads_per_sample);
+        const a2 = try read_counter(fd);
+        encoded_samples[s] = a1 - a0;
+        decoded_samples[s] = a2 - a1;
+    }
+
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.DISABLE, 0);
+
+    // invariant: the consumed reads left a sum, so neither workload was optimized away.
+    assert(checksum > 0);
+
+    sort_ascending(encoded_samples[0..sample_count]);
+    sort_ascending(decoded_samples[0..sample_count]);
+    const mid = sample_count / 2;
+    const encoded_median = encoded_samples[mid];
+    const decoded_median = decoded_samples[mid];
+
+    // invariant: decoding on every read costs at least what reading a cached field costs.
+    assert(encoded_median >= decoded_median);
+
+    const encoded_per_read = encoded_median / reads_per_sample;
+    const decoded_per_read = decoded_median / reads_per_sample;
+    const saved_per_read = encoded_per_read - decoded_per_read;
+    const cache_bytes: u32 = @sizeOf(qw.QueryWireResponse);
+
+    print("query_wire_retention_cost: tier=counters mode={s} hits={d} payload_bytes={d} cache_bytes={d}\n", .{ @tagName(builtin.mode), measured_hit_count, payload_len, cache_bytes });
+    print("query_wire_retention_cost: samples={d} reads_per_sample={d} encoded_median={d} decoded_median={d}\n", .{ sample_count, reads_per_sample, encoded_median, decoded_median });
+    print("query_wire_retention_cost: encoded_per_read={d} decoded_per_read={d} saved_per_read={d} spread_encoded={d} spread_decoded={d}\n", .{ encoded_per_read, decoded_per_read, saved_per_read, encoded_samples[sample_count - 1] - encoded_samples[0], decoded_samples[sample_count - 1] - decoded_samples[0] });
+}

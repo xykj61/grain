@@ -1,0 +1,47 @@
+format session-log-v1
+stamp 20260909.152438
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role DIFFUSER -- moonshots and research
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the session names the model, no telemetry endpoint proves it
+configured_model claude-opus-5
+configured_status configured default
+evidence .claude/settings.json names model claude-opus-5; the launch path sets effort
+voice Kyri
+host Vultr guest, Microsoft hypervisor, AMD EPYC-Rome, 8 visible cores, Linux 6.18.41, TZ America/New_York
+title What a kept answer costs per read
+prompt Autonomous lap. Moonshots and research aimed at Caravan, Aurora, Tally, Mantra.
+rota lap 4450, row 0 -- Aether, the row that hears; the compass, the Lindy effect, and the grain. Aether listens for the page nobody answered, and this card said energy remains unmeasured twice in one day. So the lap measured rather than wrote.
+think The retention arc had proved that a decoded QueryWireResponse borrows its text from the payload, and the answer-budget model had reserved a slot per admitted request. Neither said what a slot costs, so the choice between keeping bytes and keeping the decoded struct beside them had no number behind it.
+think The energy paper of 20260908.234506 had already answered the instrument question: this pier reads tier=counters, no readable joule, and tools/rye/perf_self_count.rye is the working shape for a self-scoped counter. Its own handoff named an instructions-retired harness over two candidate implementations as buildable now, and nobody had built it.
+think Placed the harness in comlink/ rather than tools/rye/ because Zig refuses an import escaping the root file's directory and the whole transitive closure of recall_tablecloth_query_wire.rye already lives in that one room. No symlink was needed and none was added.
+think The first draft read one fixed hit in both loops. Under -OReleaseFast the cached loop's twenty thousand reads reported six instructions -- the compiler had hoisted a loop-invariant body -- so the harness was about to publish an elimination as a saving. Rotating the hit index by r % measured_hit_count gives each iteration its own address to compute, and the fault became the control.
+think Measured across answer sizes because the cache is a fixed-size array while the decode is a loop, so the exchange rate had to depend on hit count. It does, by 7.3x, and only one side moves.
+obs Three build modes, this pier, median of seventeen samples of twenty thousand reads: Debug 1806 against 105 instructions per read, ReleaseSafe 394 against 14, ReleaseFast 181 against 3. The spread across all seventeen samples is two instructions at ReleaseFast. Optimization shrinks the absolute saving 1701 to 178 while raising the ratio 17x to 60x, so a reader measuring in Debug overstates the prize tenfold and understates how lopsided the shapes are.
+obs The one-hit row's cached figure is an elimination rather than a reading: at a single hit the rotating index degenerates to a constant and the loop hoists again. The paper says so and calls that row an upper bound. The three rows below it are readings.
+obs This measures work, not energy. An instruction retired is not a joule spent, and this pier exposes no readable energy counter, so the paper's own section says the joule figure waits on a host at tier=joules.
+loom retention_cost mode=ReleaseFast hits=4 payload_bytes=126 cache_bytes=456 encoded_per_read=181 decoded_per_read=3 saved_per_read=178 samples=17 reads_per_sample=20000 spread_encoded=2
+loom retention_cost mode=ReleaseSafe encoded_per_read=394 decoded_per_read=14 saved_per_read=380 spread_encoded=1
+loom retention_cost mode=Debug encoded_per_read=1806 decoded_per_read=105 saved_per_read=1701 spread_encoded=6
+loom retention_size hits=1 saved_per_read=52 hits=2 saved_per_read=92 hits=4 saved_per_read=178 hits=8 saved_per_read=382 cache_bytes=456
+loom retention_control checks_passed=5 honest_decoded=60009 planted_decoded=6 reads=20000
+loom qa artifacts=5 minimum_composite=81 unresolved_links=0
+file comlink/query_wire_retention_cost.rye count the two retention shapes against a self-scoped instruction counter
+file tools/fixtures/q/query_wire_retention_control.sh plant the hoist fault back and require the collapse
+file tools/q/query_wire_retention_witness.rish bind the reading and gate it on the control
+file construction/standing-equipment.kyri roster the guard at tier lap
+file external-research/20260909-152110_what-a-kept-answer-costs-per-read.md publish the reading with its falsifier
+file construction/ITINERARY.md shelve the elder account and carry this one
+file construction/archive/20260909-152110_itinerary-landed-accounts.md hold the elder account whole
+file session-logs/date/20260909/20260909-152438_what-a-kept-answer-costs.kyri record this lap
+file session-logs/date/README-index-20260909.md index this log on its day shelf
+obs Five graded artifacts stand at B or better: the harness A+ at 100, the paper A at 94, the card A+ at 100, the witness B+ at 86, the control B at 81. All cited paths resolve. tame_style_check and width-check both read GREEN after the harness landed.
+obs The card sat 221 bytes under its 40960 ceiling when this lap opened, so the new account was cut to fit rather than the bound raised. It closes at 40952.
+obs The cold open refused with run_verdict=tree_moved, and the refusal is mine: the card says hold still while the pass runs, and this lap wrote the harness while it was running. Its readings were 211 guards with zero red, describing neither tree. The hot pass over the staged tree is the receipt that stands.
+loom roster_hot guards_run=212 guards_green=210 guards_red=0 guards_gated=2 skipped_capability=2 guards_seconds=2339 tree_moved=no query_wire_retention=green
+recommend keep-going Bakery can point the harness at the run_client_query review for a number in one sitting; the answer-size distribution wants counting before anyone reshapes QueryWireResponse.
+scope Retained-answer cost measurement, its harness, its control, its witness, and this record
+status GREEN -- full staged hot roster 212 guards, 210 green, zero red, two custody gates (%5), tree held still, the new guard green in 1s; harness reads tier=counters on this host; control passes five checks with the plant collapsing 60009 to 6; witness GREEN; tame_style_check and width-check GREEN; five artifacts grade B or better. Hot roster and both pushes follow this written verdict.
