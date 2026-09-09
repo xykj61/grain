@@ -1706,6 +1706,20 @@ path tools/b/buhr_choir.rish
 tier cadence
 seated 20260908.203500
 
+# equinox_choir_census -- 82 choirs stand in `tools/equinox/witness` and a census on `20260908` read
+# them 50 green, 30 red, 2 hung. All 50 green ones were reached by NO pass, so a green choir that
+# stopped being green had nothing to say so. A RATCHET rather than a wall: a wall would refuse the
+# roster on 30 reds that stood before anyone looked, and a guard that reds on ordinary standing
+# state is one somebody turns off. Both ceilings only fall.
+#
+# Each choir is PROBED rather than run, through `tools/fixtures/w/witness_probe_scan.sh`, so a HANG
+# is told from a RED -- one is a claim about the run, the other about the tree, and two members of
+# this room genuinely hang. `tier cadence`: the census costs about fifteen minutes on this pier.
+guard equinox_choir_census
+path tools/e/equinox_choir_census_witness.rish
+tier cadence
+seated 20260908.230500
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
