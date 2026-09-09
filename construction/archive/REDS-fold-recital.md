@@ -649,3 +649,5 @@ at a closed fold.*
 *Row %664 folded to [`REDS-a-number-typed-beside-a-row-rows-664.md`](REDS-a-number-typed-beside-a-row-rows-664.md) on `20260909.071036`, **CLOSED** -- the recital correction landed; its account remained in Copal's stash.*
 
 *Rebase preserves [REDS-a-number-typed-beside-a-row-rows-660.md](REDS-a-number-typed-beside-a-row-rows-660.md) as a routing shelf.*
+
+*Rows %658, %659, %664 and %665 folded to [`REDS-four-closures-in-one-day-rows-658-665.md`](REDS-four-closures-in-one-day-rows-658-665.md) on `20260909.164740`, each **CLOSED** -- four closures of one day, three closed by an instrument that changed the conditions and one by a count that would not balance.*

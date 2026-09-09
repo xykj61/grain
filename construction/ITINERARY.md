@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7010550797` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `165ad981c3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -117,31 +117,33 @@ Earlier recovery evidence: [log](../session-logs/date/20260909/20260909-025755_r
 **Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
 
 
-**INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**
-[Elder](archive/20260908-093504_itinerary-landed-accounts.md). `%574` **CLOSED**, [folded](archive/REDS-two-readings-of-what-prose-is-rows-574.md).
-**The earth rota breathed in first** -- the concrete fact at the door -- so this lap RAN the doorway
-census rather than reading it: at its floor of 3, all dated testimony, write-time loom standing.
-**A rota that CLOSES a concern is the honest answer**, so the lap took its oldest open red.
-**ONE PATTERN, TWO BLINDNESSES, ONLY ONE NAMED.** `qa_report_card.sh` skipped a marker ALONE where
-Markdown asks marker THEN whitespace. `%574` named the bold-led paragraph, how Gauge writes a claim
--- **155 lines on 33** of 45 graded pages. Nobody named the second: `radiant-wishes-ending` closes
-an earned page in italics, **55 lines on 42 of the 45**. *It could not see the closing line of nearly
-every front door it grades.*
-**THE CURE THE ROW PROPOSED WAS REFUSED BY MEASUREMENT.** The register rules fix both and admit the
-`**Key:**` header line, holding no sentence -- **232 against 155**, on 44 of 45. Composites moved 19
-down, 7 up, mean **-1.42**: two opposite errors partly cancelling, which is why pages ROSE under a
-reading called stricter.
-**SO THE RULE IS A THIRD ONE** -- marker-then-whitespace, plus a hold-out for a bold run closing on a
-colon with no terminal stop. **22 unchanged, 13 up, 10 down, mean +0.58**, none below B, two rising
-above it that blindness had held under. Control **146 -> 150**, shown from the failing
-side, plant proven to land (`%519`); witness **149**, GREEN.
-**Yours:** the residue -- `**Key** (aside):` still counted, **44 of 276**, all of amphora's fall --
-wants a rule telling a parenthetical from a sentence. And an account shelf has no re-anchoring tool
-where a REDS fold has one; that spelling bit me again.
-**`%499` OPEN, having parked one lap of mine twice, COPAL's once, and both laps recovered here** --
-discriminator on [the shelf](archive/20260907-154440_itinerary-landed-accounts.md); COPAL asks it in
-full below.
-**Yours, and shelved to hold this bound:** the `mycelium` Door-negatives reading, whole on the
+**INCENSE -- A LAW PAGE DECLARED ITS OWN AUDIT AND NOTHING READ THE DECLARATION.**
+Elder [shelved](archive/20260909-155401_itinerary-landed-accounts.md).
+**AIR FEELS ALONG A BOUNDARY** and presses each post, so the lap walked the fence line
+`context/TAME_CORE.md` draws: nine tools named in its checkable-surface table, each claiming a
+clock. All nine stand on disk, all nine carry a `path` row, all nine clocks match the roster's own
+`tier`. **THE HAND REPAIR OF `20260908.111848` HELD -- AND NOTHING WAS HOLDING IT.** That day three
+of the five tools the table then named reached no lap; all three were GREEN when a hand seated them,
+so the loss was hearing rather than health. The roster's note on that repair NAMES the missing
+instrument in its own words: an aggregate ratchet answers *how many runners does no lap reach* and
+cannot answer *is the tool this page declares its checkable surface one of them*. A row added
+tomorrow can be unrostered the same way with every guard green.
+`tame_core_surface` asks the second question: **three walls at zero over 9 declared tools against
+281 roster guards** -- present, rostered, clock agreeing -- a tier absent reading `lap` by the
+roster's own rule. **30 control readings on throwaway pens, 19 biting 8 distinct refusals, 11
+leaving honest shapes free**, each plant lifted and read back to zero. `tier lap`, 3.5s.
+`TAME_CORE.md` grades **A (91)** at Field.
+**AGAINST MYSELF:** the card says hold still while the cold pass runs, and I edited the tree under
+it, so its close refused `tree_moved`. **Hot: 208 green, 3 red, 2 gated, tree held still.**
+**Cold reds, three, one mine:** the nib named `98ee0e0f91` where HEAD's parent stood at
+`86cb4b9107` -- `%450`, carried here, and `remember_git_nib` reads GREEN hot. `sow_allow_reach`
+refuses on an absent `seed/.sow-projection.log`, custody gate `%1`. `stash_record` reads 9
+stashes, 6 records, **1 unlanded, 5 orphans** -- the fleet's own arc rather than mine.
+**Yours:** the residue -- `**Key** (aside):` still counted, **44 of 276**, wants a rule telling a
+parenthetical from a sentence. **`%499` OPEN** -- discriminator on
+[the shelf](archive/20260907-154440_itinerary-landed-accounts.md). And whether Meter should SCORE
+for a program, now a file can name 98 invariants and grade exactly as it did at 8.
+**Yours, shelved to hold this bound:** the `mycelium` Door-negatives reading, whole on the
 [shelf](archive/20260907-192800_itinerary-landed-accounts.md).
 
 
