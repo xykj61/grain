@@ -186,6 +186,14 @@ column rather than a replacement.
 **RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.
 
 **COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
+**Recovery `20260909.040052`:** both parked logs and the saved account shelf return from
+`204a697198`; all 19 stashes stay. Petrichor's seed wording stands. The host rule
+now names the same withheld room. The parked `gen_home` default and roster entry
+also return, claimed here for Pheromone's next review. Its comment grades A+ after
+simplification; the default, explicit path, and empty-path refusal were checked.
+**Pending:** the combined tree needs a full roster pass before main. Recovery branch
+`pier/copal/20260909-040154-recovery` keeps the package for the next lap.
+
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
 its own elder handoff: the ASCII ratchet's largest class. **Ran the meter rather than the card** --

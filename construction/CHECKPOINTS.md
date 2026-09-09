@@ -10,6 +10,8 @@
 
 **Checkpoint `20260909.041054` -- walk-back nib `873786d833`.** Recover the parked output-order repair and improve ten witness headers that graded 75-79. The headers explain their existing checks in affirmative prose; the commit-message header also counts its four listed duties correctly. The old wording remains at this nib. Files: `tools/am/amphora_bounds_agree.rish`, `tools/co/comment_citation_witness.rish`, `tools/co/commit_message_guard_witness.rish`, `tools/d/dated_path_repoint_witness.rish`, `tools/g/generated_page_freshness_witness.rish`, `tools/k/kyri_receipt_witness.rish`, `tools/o/one_clock_witness.rish`, `tools/s/skate_macos_choice_witness.rish`, `tools/s/standing_equipment_witness.rish`, `tools/w/witness_own_build_witness.rish`. Their run calls and assertions retain their order and text. The recovered shim-reason header adds its third reading; its elder remains at this nib too.
 
+**Checkpoint `20260909.040052` -- walk-back nib `873786d833`.** Recover Copal's two parked logs and their account shelf from `204a697198`. Keep Petrichor's current seed description. The host-config section resumes the saved withholding finding in current prose. Recover the `gen_home` default and roster entry from stash 2; its C+ opening comment becomes plain Door prose while its checks stay intact. The saved comment and account remain on the parked branch and in all original stashes.
+
 **Checkpoint `20260909.035800` -- walk-back nib `873786d833`.** Preserve the two
 closed QA queues on `construction/SHRED_PREP.md` whole on a shelf, with links
 re-anchored by the existing filter, before adding the table-store paper's Class M

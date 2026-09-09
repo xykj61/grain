@@ -43,11 +43,17 @@ the horizon where this tree stops borrowing a host and becomes one, and the ques
 the host's configuration is answered by the tree being the system. Until that day the borrowed host
 is described here and copied there.
 
-## The seed carries it
+## The seed boundary
 
-`nixos/` ships in the public seed, so the declared pier a newcomer stands up is the same one this
-tree runs. A guide describing a host whose configuration nobody can read is a guide asking for
-trust; shipping the file asks for nothing.
+The working tree keeps its host configuration in `nixos/`. The public seed currently
+withholds that room: `template-manifest.bron` names its template intent, while the
+`allow` rows alone drive the projection and contain no `allow nixos` entry.
+The portable examples live in `nixos-guide/templates/`.
+
+The parked reading at `20260909.013400` found two provider-name comments surviving
+the scrub. The export therefore still needs its privacy review before admission.
+`SOURCE.md` now states the withholding directly. Public publishing remains custody
+gate 1 in `construction/ITINERARY.md`.
 
 ## What this leaves alone
 
