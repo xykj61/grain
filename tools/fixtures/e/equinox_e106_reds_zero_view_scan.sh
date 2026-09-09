@@ -65,13 +65,23 @@ echo "$MONO" | rg -q '^verdict=ok$' || {
   echo "detail=want_monotone"
   exit 1
 }
-echo "$MONO" | rg -q '^rows=33$' || {
+# A FLOOR, NEVER AN EQUALITY (`20260909.001500`, Keaton's word). This read `rows=33` exactly, which
+# was true on the day e106 closed and false on every day since -- the ledger is APPEND-ONLY, so its
+# count only rises and an equality here reds on every ordinary advance. The guard's teeth are kept
+# by asserting the floor: a count that FALLS below 33 means rows have gone, which is precisely what
+# the monotone law exists to catch, and that still refuses here.
+ROWS=$(echo "$MONO" | sed -n 's/^rows=//p' | head -1)
+case "$ROWS" in ''|*[!0-9]*) ROWS=0 ;; esac
+[ "$ROWS" -ge 33 ] || {
   echo "reds_row=failed"
   echo "verdict=misread"
-  echo "detail=want_rows_33"
+  echo "detail=want_rows_at_least_33_read_$ROWS"
   exit 1
 }
-echo "$MONO" | rg -q '^expect_next=34$' || {
+# Same reading one line down: `expect_next` is `rows + 1` on an append-only spine, so it rises too.
+EXPECT=$(echo "$MONO" | sed -n 's/^expect_next=//p' | head -1)
+case "$EXPECT" in ''|*[!0-9]*) EXPECT=0 ;; esac
+[ "$EXPECT" -ge 34 ] || {
   echo "reds_row=failed"
   echo "verdict=misread"
   exit 1
@@ -121,9 +131,17 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i9' || {
+# A FLOOR ON AN ADVANCING REVISION (`20260909.001500`, Keaton's word). This read `metric_rev=i9`
+# exactly. A metric revision ADVANCES as the metric improves -- it reads i10 today -- so an equality
+# here reds on the very improvement it should welcome. The guard's teeth are kept by asserting the
+# floor: a revision BELOW i9 means the metric regressed behind what this equinox proved, and that
+# still refuses.
+REV=$(echo "$FASCIA_OUT" | sed -n 's/.*metric_rev=i\([0-9][0-9]*\).*/\1/p' | head -1)
+case "$REV" in ''|*[!0-9]*) REV=0 ;; esac
+[ "$REV" -ge 9 ] || {
   echo "fascia_keep=failed"
   echo "verdict=misread"
+  echo "detail=want_metric_rev_at_least_i9_read_i$REV"
   exit 1
 }
 echo "$FASCIA_OUT" | rg -q -F 'law=hold_not_exclude' || {

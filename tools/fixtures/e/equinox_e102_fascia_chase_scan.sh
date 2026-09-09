@@ -73,10 +73,15 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q '^metric_rev=i9$' || {
+# A FLOOR ON AN ADVANCING REVISION (`20260909.001500`, Keaton's word). A metric revision advances as
+# the metric improves -- it reads i10 today -- so an equality reds on the very improvement it should
+# welcome. A revision BELOW i9 means a regression behind what this equinox proved, and still refuses.
+REV=$(echo "$FASCIA_OUT" | sed -n 's/.*metric_rev=i\([0-9][0-9]*\).*/\1/p' | head -1)
+case "$REV" in ''|*[!0-9]*) REV=0 ;; esac
+[ "$REV" -ge 9 ] || {
   echo "chase_fascia=failed"
   echo "verdict=misread"
-  echo "detail=want_metric_rev_i9"
+  echo "detail=want_metric_rev_at_least_i9_read_i$REV"
   exit 1
 }
 for signal in superseded ratchet_outstanding target_class_a over70; do
