@@ -45,9 +45,9 @@ say "tame-check: Style Gauge, Meter -- the count is the sentence."
 say "tame-check: Lens TAME -- safety first: a guard reads the population, never a list of it."
 
 let result = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_check_scan.rish"]
+say result.out
 assert result.ok else "tame-check scan script failed"
 
-say result.out
 
 let lines = lines result.out
 let fails = where lines as l: l starts-with "FAIL"
@@ -63,8 +63,8 @@ assert length fails == 0 else "tame-check RED: a named file carries assert or wh
 say "field GREEN -- 1,127 authored sources read, three walls at zero, every elder promise kept"
 
 let control = run ["sh" "tools/fixtures/t/tame_check_control.sh"]
-assert control.ok else "tame-check: the control must complete"
 say control.out
+assert control.ok else "tame-check: the control must complete"
 assert control.out contains "clean_counted=yes" else "tame-check: an authored .rye must be counted"
 assert control.out contains "clean_reads_zero=yes" else "tame-check: a clean file must read zero rather than merely pass"
 assert control.out contains "roster_comment_stripped=yes" else "tame-check: a commented roster line must name no room"

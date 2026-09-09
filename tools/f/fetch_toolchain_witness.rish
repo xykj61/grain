@@ -40,8 +40,8 @@ say "fetch-toolchain: Style Radiant -- three claims. The refusal catches a singl
 say "fetch-toolchain: Lens TAME -- nothing is extracted until the bytes are the bytes we pinned, and the pin lives in this repository rather than beside the download."
 
 let control = run ["sh" "tools/fixtures/f/fetch_toolchain_control.sh"]
-assert control.ok else "fetch-toolchain: the verify control must complete"
 say control.out
+assert control.ok else "fetch-toolchain: the verify control must complete"
 assert control.out contains "matching_accepted=yes" else "fetch-toolchain: bytes that match the pin must be accepted"
 assert control.out contains "corrupted_accepted=no" else "fetch-toolchain: ONE flipped character must be refused -- this is the whole promise"
 assert control.out contains "absent_accepted=no" else "fetch-toolchain: a file that is not there must never verify"

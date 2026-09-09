@@ -234,10 +234,10 @@ say "RED four GREEN -- every home named by a verdict above stands on disk"
 # ---------------------------------------------------------------------------------------------
 
 let shape = run ["sh" scan "tools" "256"]
+say shape.out
 assert shape.ok else "tool-path: the fold-shape scan must run over tools/"
 
 say "the tools room, measured by the scan rather than remembered:"
-say shape.out
 
 assert shape.out contains "flat_shape_gate=ok" else "tool-path: a room still holding flat entries must pass all three flat gates -- under bound, no collision, every basename long enough to slice"
 assert shape.out contains "collisions=0" else "tool-path: no computed letter room may land on a subdirectory already standing"

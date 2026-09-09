@@ -35,8 +35,8 @@ say "shipped-binary: Style Radiant -- the premise is measured, the claim is refu
 say "shipped-binary: Lens TAME -- a guard that cannot notice its own premise expiring is a guard that will one day be wrong with confidence, so the tracked count is read each run."
 
 let scan = run ["sh" "tools/fixtures/s/shipped_binary_claim_scan.sh"]
-assert scan.ok else "shipped-binary: a living page claims the tools arrive with a clone -- read the claim lines above; git tracks none of them"
 say scan.out
+assert scan.ok else "shipped-binary: a living page claims the tools arrive with a clone -- read the claim lines above; git tracks none of them"
 assert scan.out contains "tracked_binaries=0" else "shipped-binary: the premise moved -- binaries are tracked now, so the manual's elder claims would be TRUE and this guard wants rewriting rather than obeying"
 assert scan.out contains "claims_found=0" else "shipped-binary: no living page may assert the tools ship in a clone"
 assert scan.out contains "bare_invocations=0" else "shipped-binary: a runnable block invokes a bare rye or rishi -- neither is on a PATH, so no reader can run it; write rye/bin/rye and rishi/bin/rishi"
@@ -44,8 +44,8 @@ assert scan.out contains "verdict=ok" else "shipped-binary: the scan must balanc
 say "field GREEN -- the premise is measured at zero, and no living page says otherwise"
 
 let control = run ["sh" "tools/fixtures/s/shipped_binary_claim_control.sh"]
-assert control.ok else "shipped-binary: the two-case control must complete"
 say control.out
+assert control.ok else "shipped-binary: the two-case control must complete"
 assert control.out contains "asserted_refused=yes" else "shipped-binary: a page asserting the claim must be refused, or the guard guards nothing"
 assert control.out contains "quoted_and_dated_allowed=yes" else "shipped-binary: a quotation and a dated artifact must be allowed -- a guard that makes the record of a fault unwritable erases its own reason"
 assert control.out contains "control_verdict=ok" else "shipped-binary: the control must agree with itself"

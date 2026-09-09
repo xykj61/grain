@@ -1,17 +1,17 @@
-# tools/w/witness_own_build_witness.rish -- a witness builds what it runs, or it proves nothing on
-# a clone.
+# tools/w/witness_own_build_witness.rish -- a witness builds what it runs on
+# a fresh clone.
 #
-# WHY THIS RUNG. comlink/bin/ is gitignored (.gitignore:185), so a fresh clone carries no Comlink
-# binary at all. Two witnesses named their build in a header COMMENT -- "Build first:  rye build
+# WHY THIS RUNG. comlink/bin/ is gitignored (.gitignore:185), so a fresh clone needs to build its Comlink
+# binaries. Two witnesses named their build in a header COMMENT -- "Build first:  rye build
 # comlink/handshake_turn.rye -femit-bin=comlink/bin/handshake-turn" -- and then ran the path
-# directly with `run ["comlink/bin/handshake-turn" "selftest"]`. A comment builds nothing. On this
+# directly with `run ["comlink/bin/handshake-turn" "selftest"]`. An executable build call makes that instruction take effect. On this
 # pier both read GREEN, because an August lap left binaries behind; on a clone both died on a
-# missing file rather than on a handshake fact, and no clock existed to say so -- all four Comlink
-# witnesses are named by no runner in the tree.
+# missing file rather than on a handshake fact, and all four Comlink
+# witnesses were outside every runner in the tree.
 #
 # Their sibling tools/co/comlink_topology_witness.rish already carried the repair and recorded the
 # discovery in its own comment. One of three was fixed and the other two were left, which is what a
-# repair without a meter looks like a month later. This is the meter.
+# repair awaiting a shared meter looks like a month later. This is the meter.
 #
 # THE READING MOVED 14 TO 4 WITHOUT ONE WITNESS BEING TOUCHED, on `20260829`. Ten of the fourteen
 # pairs were honest all along: five Pond ring witnesses build pond/bin/drawn-terminal by running
@@ -47,8 +47,8 @@
 # still not the promise a witness makes, since every one of these headers tells a reader to run the
 # witness directly.
 #
-# WHAT IS NOT PROVEN. That a build succeeds, that an artifact does anything worth doing, or that a
-# binary reached through `run ["sh" "-c" ...]` is carried. A build two scripts deep is uncounted,
+# SCOPE. Build success and useful behavior need their own tests. A
+# binary reached through `run ["sh" "-c" ...]` stays outside this reading. A build two scripts deep is uncounted,
 # and so is a generic builder that never spells the target it is handed -- both left uncredited
 # rather than guessed at. Only that a witness invoking a path the repository declines to carry also
 # builds it, itself or through one script it runs.
@@ -61,8 +61,8 @@ say "own-build: Style Gauge, Meter -- the reading is a count of promises a fresh
 say "own-build: Lens TAME -- safety first: a comment describing a build is documentation, and the gap is the defect."
 
 let scan = run ["sh" "tools/fixtures/w/witness_own_build_scan.sh"]
-assert scan.ok else "own-build: a witness invokes an artifact it never builds -- read the scan's own lines"
 say scan.out
+assert scan.ok else "own-build: a witness invokes an artifact it never builds -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "own-build: the scan must balance before it is believed"
 assert scan.out contains "unbuilt_pairs=0 " else "own-build: the reading is a wall at zero -- a witness invoking an uncarried path must build it"
 assert scan.out contains "self_built=" else "own-build: the credited pairs must be counted, never assumed"
@@ -70,8 +70,8 @@ assert scan.out contains "delegated_built=" else "own-build: a build one hop awa
 say "field GREEN -- the unbuilt reading stands at zero: every witness builds what it runs"
 
 let control = run ["sh" "tools/fixtures/w/witness_own_build_control.sh"]
-assert control.ok else "own-build: the control must complete"
 say control.out
+assert control.ok else "own-build: the control must complete"
 assert control.out contains "self_built_free=yes" else "own-build: a witness that builds what it runs must pass free"
 assert control.out contains "self_built_credited=yes" else "own-build: the build must be credited, never merely tolerated"
 assert control.out contains "self_built_reads_zero=yes" else "own-build: a clean pen must read zero rather than merely pass"

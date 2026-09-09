@@ -55,8 +55,8 @@ say "render leaves the card byte-identical, proven by digest"
 
 # 3. The whole program, on planted cards in a pen: welcomes and refusals both.
 let control = run ["sh" "tools/fixtures/r/remember_git_nib_write_control.sh"]
-assert control.ok else "remember-git-nib-write: the control must complete"
 say control.out
+assert control.ok else "remember-git-nib-write: the control must complete"
 
 assert control.out contains "PASS: the write succeeds" else "remember-git-nib-write: a stale nib must take the write"
 assert control.out contains "PASS: it names what it wrote" else "remember-git-nib-write: the write must name the nib it wrote"

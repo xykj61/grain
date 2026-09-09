@@ -55,16 +55,16 @@ say "chapter-allocator: Style Gauge, Meter -- refusal is the subject."
 say "chapter-allocator: Lens TAME -- safety first: a program that builds its own arena has left the one bounded region the chapter clears whole."
 
 let scan = run ["sh" "tools/fixtures/c/chapter_allocator_scan.sh"]
-assert scan.ok else "chapter-allocator: authored Rye names a type three law pages forbid -- read the scan's own lines"
 say scan.out
+assert scan.ok else "chapter-allocator: authored Rye names a type three law pages forbid -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "chapter-allocator: the scan must balance before it is believed"
 assert scan.out contains "arena_direct_sites=0" else "chapter-allocator: the wall stands at zero, and zero is what the tree must read"
 assert scan.out contains "garden_alias_sites=0" else "chapter-allocator: garden is Tally's own name, reserved rather than borrowed"
 say "field GREEN -- no authored Rye source constructs the inherited arena or renames it"
 
 let control = run ["sh" "tools/fixtures/c/chapter_allocator_control.sh"]
-assert control.ok else "chapter-allocator: the control must complete"
 say control.out
+assert control.ok else "chapter-allocator: the control must complete"
 assert control.out contains "clean_arena_zero=yes" else "chapter-allocator: a clean tree must read zero rather than merely pass"
 assert control.out contains "clean_alias_zero=yes" else "chapter-allocator: both readings must read zero on a clean tree"
 assert control.out contains "clean_verdict_ok=yes" else "chapter-allocator: a clean tree must name its verdict"

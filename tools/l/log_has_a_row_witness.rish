@@ -53,8 +53,8 @@ say "log-has-a-row: Style Gauge -- the room, the shelf, and the pin describe one
 say "log-has-a-row: Lens TAME -- an empty population is the tell, so the scan floors its own reach."
 
 let scan = run ["sh" "tools/fixtures/l/log_has_a_row_scan.sh"]
-assert scan.ok else "log-has-a-row: a log stands with no row in the index that promises to hold it, or the pin has drifted from the shelves it describes"
 say scan.out
+assert scan.ok else "log-has-a-row: a log stands with no row in the index that promises to hold it, or the pin has drifted from the shelves it describes"
 assert scan.out contains "post_law_logs_without_a_row=0" else "log-has-a-row: every log born on a shelf must carry a row on it"
 assert scan.out contains "flat_logs_without_a_row=0" else "log-has-a-row: every flat log must be named by the pin"
 assert scan.out contains "pin_shelves_missing=0" else "log-has-a-row: every day shelf must carry a row in the living pin"
@@ -63,10 +63,10 @@ assert scan.out contains "verdict=ok" else "log-has-a-row: the scan must balance
 say "field GREEN -- every log has a way in, and the pin describes the shelves it points at"
 
 let control = run ["sh" "tools/fixtures/l/log_has_a_row_control.sh"]
+say control.out
 assert control.ok else "log-has-a-row: the control must complete"
 assert control.out contains "malformed_told_apart=yes" else "log-has-a-row: a pin row the parser cannot read is being reported as an absent row -- two faults under one message"
 assert control.out contains "malformed_names_the_shape=yes" else "log-has-a-row: the malformed-row refusal does not print the row shape it wanted, so a reader must hunt the regex"
-say control.out
 assert control.out contains "row_present_free=yes" else "log-has-a-row: a flat log with its row must pass free"
 assert control.out contains "log_counted=yes" else "log-has-a-row: a flat log must be counted"
 assert control.out contains "no_row_bitten=yes" else "log-has-a-row: a flat log with no row must red"

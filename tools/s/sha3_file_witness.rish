@@ -45,8 +45,8 @@ let empty_expect = "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8
 let abc_expect = "3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532"
 
 let probe = run ["sh" "tools/fixtures/s/sha3_file_control.sh"]
-assert probe.ok else "sha3-file: the control must complete -- see stderr"
 say probe.out
+assert probe.ok else "sha3-file: the control must complete -- see stderr"
 
 assert probe.out contains "empty=${empty_expect}" else "sha3-file: the empty string must hash to its published FIPS 202 SHA3-256 answer"
 assert probe.out contains "abc=${abc_expect}" else "sha3-file: the bytes abc must hash to their published FIPS 202 SHA3-256 answer"

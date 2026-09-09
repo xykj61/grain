@@ -68,8 +68,8 @@ assert result.ok else "two-rooms doorway scan failed"
 say "field GREEN -- every room read, every folded shelf reached, the ratchet under its ceiling"
 
 let control = run ["sh" "tools/fixtures/t/two_rooms_doorway_control.sh"]
-assert control.ok else "two-rooms doorway: the control must complete"
 say control.out
+assert control.ok else "two-rooms doorway: the control must complete"
 assert control.out contains "named_room_free=yes" else "two-rooms doorway: a page naming its room must pass free"
 assert control.out contains "clean_reads_zero=yes" else "two-rooms doorway: a clean tree must read zero rather than merely pass"
 assert control.out contains "no_room_counted=yes" else "two-rooms doorway: a Status naming no room must be counted"

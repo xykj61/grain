@@ -55,16 +55,16 @@ say "harness-roster: Style Gauge, Meter -- the counts come first and the reason 
 say "harness-roster: Lens TAME -- bound everything: the harness names a set, and the set is checked."
 
 let scan = run ["sh" "tools/fixtures/r/rye_harness_roster_scan.sh"]
-assert scan.ok else "harness-roster: a harness names a program that is not there, or leaves one on disk unrun -- read the scan's own lines"
 say scan.out
+assert scan.ok else "harness-roster: a harness names a program that is not there, or leaves one on disk unrun -- read the scan's own lines"
 assert scan.out contains "stems_absent=0" else "harness-roster: every stem must name a program that stands on disk"
 assert scan.out contains "files_unlisted=0" else "harness-roster: every program in a harness's directory must be named by a stem, or nothing runs it"
 assert scan.out contains "verdict=ok" else "harness-roster: the scan must balance before it is believed"
 say "field GREEN -- the set a harness names and the set on disk are one set"
 
 let control = run ["sh" "tools/fixtures/r/rye_harness_roster_control.sh"]
-assert control.ok else "harness-roster: the control must complete"
 say control.out
+assert control.ok else "harness-roster: the control must complete"
 assert control.out contains "1 free" else "harness-roster: an agreeing harness must pass free"
 assert control.out contains "2 free" else "harness-roster: a clean pen must read zero rather than merely pass"
 assert control.out contains "4 free" else "harness-roster: the reading must find the harness it is meant to find"

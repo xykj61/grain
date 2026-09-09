@@ -35,8 +35,8 @@ say "geode-libraries: Lens TAME -- the witness count is taken by reference, and 
 # rather than described. A rule proven only where it passes cannot be told from a rule that counts
 # every file on disk, which is precisely the rule this replaced.
 let control = run ["sh" "tools/fixtures/g/geode_libraries_control.sh"]
-assert control.ok else "geode-libraries: the control must complete"
 say control.out
+assert control.ok else "geode-libraries: the control must complete"
 assert control.out contains "control_verdict=ok" else "geode-libraries: the control must reach its own verdict"
 assert control.out contains "an ignored cache module stays out of the count -- read 1" else "geode-libraries: a module git ignores must stay out of the count"
 assert control.out contains "the same three modules count when nothing ignores them -- read 3" else "geode-libraries: the rule must read the ignore list rather than the path"
@@ -64,8 +64,8 @@ say "marker GREEN -- the page says plainly that it is generated"
 # Every row must point at a README that exists. A row naming a door that is not there is the one
 # failure an index can have that a reader cannot see from the index itself.
 let doors = run ["sh" "-c" "miss=0; for p in $(grep -oE '\\]\\(\\.\\./\\.\\./[a-z-]+/README\\.md\\)' docs-geode/libraries/README.md | sed 's|](../../||; s|)$||'); do [ -f \"$p\" ] || miss=$((miss+1)); done; echo missing=$miss"]
-assert doors.ok else "geode-libraries: the door check must run"
 say doors.out
+assert doors.ok else "geode-libraries: the door check must run"
 assert doors.out contains "missing=0" else "geode-libraries: every room named must have the README the row links to"
 say "doors GREEN -- every row opens on a README that is there"
 

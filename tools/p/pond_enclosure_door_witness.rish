@@ -45,8 +45,8 @@ say "enclosure-door: Style Gauge, Meter -- each note names the path and why it a
 say "enclosure-door: Lens TAME -- safety first: the search path and the env roster are both bounded, both gates are proven from both sides, and the metal leg refuses to be skipped where it could have run."
 
 let control = run ["sh" "tools/fixtures/p/pond_enclosure_door_control.sh"]
-assert control.ok else "enclosure-door: the control must complete -- ${control.out}"
 say control.out
+assert control.ok else "enclosure-door: the control must complete -- ${control.out}"
 assert control.out contains "control_failures=0" else "enclosure-door: every planted behavior must hold"
 assert control.out contains "control_verdict=ok" else "enclosure-door: the control must report ok"
 assert control.out contains "entry_undeclared_refuses=yes" else "enclosure-door: an entry under no declared subtree must refuse"
@@ -69,8 +69,8 @@ assert control.out contains "env_extra_refuses=yes" else "enclosure-door: a decl
 assert control.out contains "env_unstated_passes=yes" else "enclosure-door: a record naming no env makes no claim and must walk free"
 
 let scan = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh"]
-assert scan.ok else "enclosure-door: the derived reading must complete -- ${scan.out}"
 say scan.out
+assert scan.ok else "enclosure-door: the derived reading must complete -- ${scan.out}"
 assert scan.out contains "entry_unreachable=0" else "enclosure-door: the enclosure must be able to start the program it exists to run"
 assert scan.out contains "verdict=ok" else "enclosure-door: the derived reading must read ok"
 assert scan.out contains "probe_read=no" else "enclosure-door: an ordinary run starts no enclosure"
@@ -84,14 +84,14 @@ assert scan.out contains "duties_undeclared=1" else "enclosure-door: one door du
 assert scan.out contains "env_declared=2 env_state=declared env_disagreements=0" else "enclosure-door: the record's two env declarations must say exactly what the exec line spells"
 
 let jail = run ["sh" "-c" "command -v ai-jail >/dev/null 2>&1 && echo JAIL_PRESENT || echo JAIL_ABSENT"]
-assert jail.ok else "enclosure-door: the host reading must complete"
 say jail.out
+assert jail.ok else "enclosure-door: the host reading must complete"
 if (jail.out contains "JAIL_ABSENT") then say "enclosure-door: ai-jail is absent here, so the metal leg is skipped by the host rather than by the guard, and the derived reading above stands alone."
 if (jail.out contains "JAIL_PRESENT") then say "enclosure-door: ai-jail stands here, so the reading below is the kernel's own answer and a skip refuses."
 
 let probe = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh" "--probe"]
-assert probe.ok else "enclosure-door: the probe run must complete -- ${probe.out}"
 say probe.out
+assert probe.ok else "enclosure-door: the probe run must complete -- ${probe.out}"
 assert probe.out contains "door_disagreements=0" else "enclosure-door: the kernel and the record must agree about what the door carries"
 assert probe.out contains "verdict=ok" else "enclosure-door: the probe run must read ok"
 assert probe.out contains "which agrees" else "enclosure-door: the record's `user` declaration must be settled against the kernel rather than reported beside it"

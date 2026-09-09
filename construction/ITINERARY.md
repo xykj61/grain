@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `873786d833` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `17c942e736` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
 Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
@@ -173,6 +173,8 @@ guard said to lock that is `%500` above, and it now reds honestly.
 **`%440` fired ELEVEN times across four laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, by hand. **Yours.**
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
+
+**GRASS recovery `20260909.041325`:** [output before the assertion](../session-logs/date/20260909/20260909-041325_say-before-the-assert.kyri); 154 bindings repaired, 86 control checks. The historical-log gate stays open.
 
 **GRASS -- A PROVER'S ANSWER WENT UNCOUNTED FOR SPELLING THE WRONG LETTERS.**
 Elder [shelved](archive/20260908-233325_itinerary-landed-accounts.md).

@@ -2,8 +2,7 @@
 #
 # Two commit-message rules in .claude/rules/git-signing.md were habits rather than walls, and a
 # renderer can break a habit quietly. GitHub linkifies `#<number>` into the issue or pull request
-# of that number, and `@word` into the user or org of that name -- backticks and good intentions
-# stop neither. The cost was measured before this guard existed: 230 of our own citations across
+# of that number, and `@word` into the user or org of that name -- this behavior also applies inside backticks. The cost was measured before this guard existed: 230 of our own citations across
 # 249 commit messages had been rendering as links to unrelated equinox pull requests, cleared by
 # the debride of `20260820.005542`.
 #
@@ -11,21 +10,21 @@
 # hook directory (tools/i/install_hooks.rish), so the wall travels with the tree rather than living
 # on one machine's untracked .git/hooks.
 #
-# This witness proves three things, and the second is the one a careless guard fails:
+# This witness proves four duties, including both accepted and refused messages:
 #   1. The refusals refuse -- our numbering with a hash, and a bare mention, each caught.
 #   2. The welcomes welcome -- `PR #76`, `issue #12`, Urbit's own `Resolves #34.` that
 #      .claude/rules/commit-messages.md endorses, an email's `@`, git's own comment lines, and a
-#      verbose diff below the scissors. A wall that refuses everything is as useless as none.
+#      verbose diff below the scissors. The accepted cases prove that ordinary messages still pass.
 #   3. The wall is actually armed on this clone, and the refusal teaches the fix rather than
-#      merely saying no.
+#      giving a bare refusal.
 #   4. The public seed arms the same wall. publish-seed.sh re-creates seed/.git on every run,
 #      so the arming lives in the script -- checked by doing it, not by reading it.
 #
 # Kin: tools/fixtures/c/commit_message_guard_scan.sh (the cases), tools/hooks/commit-msg (the wall),
 # tools/i/install_hooks.rish (arming it), .claude/rules/git-signing.md (both rules).
 #
-# This authors no commit -- it feeds planted messages to the shipped hook and compares.
-# Purely local: no key, no signature, no network, no funds, no real device.
+# The test feeds planted messages to the shipped hook and compares the answers.
+# It runs locally over fixture text; creating commits and signing stay outside its scope.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/co/commit_message_guard_witness.rish
@@ -35,8 +34,8 @@ say "commit-guard: Style Radiant -- a guard is worth what its welcomes are worth
 say "commit-guard: Lens TAME -- the shipped hook is fed planted messages, never a copy, so this can never pass by measuring something the tree does not run. Purely local -- no key, no network, no funds, no device."
 
 let scan = run ["sh" "tools/fixtures/c/commit_message_guard_scan.sh"]
-assert scan.ok else "commit-guard: the guard scan failed to run -- ${scan.err}"
 say scan.out
+assert scan.ok else "commit-guard: the guard scan failed to run -- ${scan.err}"
 
 assert scan.out contains "GUARD_HOOK_PRESENT 1" else "commit-guard: tools/hooks/commit-msg is missing or not executable -- git would skip it in silence"
 

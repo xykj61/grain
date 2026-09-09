@@ -25,8 +25,8 @@ say "spoken-ascii: Style Gauge -- every number is measured on this run and print
 say "spoken-ascii: Lens TAME -- safety first: the meter counts what a guard SAYS and refuses to count what it FEEDS ONWARD. A grep pattern hunting an em dash must contain one, so a meter reading patterns as prose would ask the tree's own guards to go blind. Purely local -- no key, no network, no funds, no device."
 
 let control = run ["sh" "tools/fixtures/r/rish_spoken_ascii_control.sh"]
-assert control.ok else "spoken-ascii: the control must complete"
 say control.out
+assert control.ok else "spoken-ascii: the control must complete"
 assert control.out contains "control_verdict=ok" else "spoken-ascii: the control must reach its own verdict"
 
 # Prose is counted, in both of Rishi's ways of speaking, and behind indentation.
@@ -76,8 +76,8 @@ assert control.out contains "absent_counted=yes" else "spoken-ascii: git ls-file
 assert control.out contains "absent_is_fatal=no" else "spoken-ascii: an absent path must never be fatal -- a rebase is exactly when a reading is worth having"
 
 let living = run ["sh" "tools/fixtures/r/rish_spoken_ascii_scan.sh"]
-assert living.ok else "spoken-ascii: the living scan must complete"
 say living.out
+assert living.ok else "spoken-ascii: the living scan must complete"
 assert living.out contains "instrument=ok" else "spoken-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
 assert living.out contains "under_ceiling=yes" else "spoken-ascii: non-ASCII in spoken Rishi lines rose above the ceiling -- convert on touch rather than raising it"
 

@@ -31,8 +31,8 @@ assert scan.out contains "mirrors_drifted=0" else "document-mirror: every declar
 assert scan.out contains "paths_absent=0" else "document-mirror: every declared path must stand in the tree"
 
 let control = run ["sh" "tools/fixtures/d/document_mirror_control.sh"]
-assert control.ok else "document-mirror: the control must complete"
 say control.out
+assert control.ok else "document-mirror: the control must complete"
 assert control.out contains "case=identical_free ok" else "document-mirror: identical homes must pass"
 assert control.out contains "case=drift_bitten ok" else "document-mirror: one byte of drift must be refused"
 assert control.out contains "case=drift_named ok" else "document-mirror: the refusal must name which home drifted"

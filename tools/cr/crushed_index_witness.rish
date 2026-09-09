@@ -84,8 +84,8 @@ say "crushed-index: Lens TAME -- safety first: three indexes on one shelf miscou
 # proven only where it passes cannot be told from a rule that answers zero to everything, which is
 # precisely the fault these readings exist to catch.
 let control = run ["sh" "tools/fixtures/c/crushed_index_control.sh"]
-assert control.ok else "crushed-index: the control must complete"
 say control.out
+assert control.ok else "crushed-index: the control must complete"
 assert control.out contains "control_verdict=ok" else "crushed-index: the control must reach its own verdict"
 assert control.out contains "a pen with nothing planted reads ok" else "crushed-index: the pen must be proven innocent, or every refusal below is scaffolding"
 assert control.out contains "a member with no row is counted -- read 1" else "crushed-index: a member with no row must be counted"

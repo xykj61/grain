@@ -47,8 +47,8 @@ say "rye-bridge-cycle: Style Radiant -- the fault was measured rather than reaso
 say "rye-bridge-cycle: Lens TAME -- safety first: no unbounded recursion, a named error at a named bound, and both the welcome and the refusal proven on a corpus whose answer is known by construction."
 
 let control = run ["sh" "tools/fixtures/r/rye_bridge_cycle_control.sh"]
-assert control.ok else "rye-bridge-cycle: the build bridge did not survive its own corpus -- ${control.err}"
 say control.out
+assert control.ok else "rye-bridge-cycle: the build bridge did not survive its own corpus -- ${control.err}"
 
 assert control.out contains "verdict=ok" else "rye-bridge-cycle: the control must balance before it is believed"
 assert control.out contains "CYCLE_BUILD ok" else "rye-bridge-cycle: two files importing each other must bridge and compile"

@@ -1,19 +1,18 @@
-# tools/s/standing_equipment_witness.rish -- the roster of standing guards is a list, not a sentence.
+# tools/s/standing_equipment_witness.rish -- the standing roster gives each guard a path and a clock.
 #
-# WHY THIS RUNG. The standing-equipment roster lived in one paragraph of construction/ITINERARY.md. A
-# paragraph can be read and it can be believed; it cannot be run, counted, or dated. The tree paid
+# WHY THIS RUNG. The standing-equipment roster lived in one paragraph of construction/ITINERARY.md. The
+# runner needs structured fields to run each guard and record its date. The tree paid
 # for that twice in two consecutive rounds. REDS %147 found eight standing witnesses each holding a
 # count its source had moved past. REDS %149 found the living-pin bound guard unrun for four laps
 # while construction/REDS.md sat 2,050 bytes over the bound that guard exists to hold. Each was caught by a
 # hand that happened to run something, which is the definition of a lantern rather than a loom.
 #
-# The grain already seats the sibling strand: a guard that cannot red guards nothing (REDS row 59).
-# Two rounds have now taught the strand beside it -- a guard that is never run guards nothing
-# either -- so the roster becomes a file a program reads, and the running of it leaves a record.
+# REDS row 59 asks every guard to demonstrate a real refusal. These two rounds also ask
+# that each guard actually run. The roster gives the runner its paths, and each run leaves a record.
 #
 # WHAT IS PROVEN, on metal.
 #   Every `path` in construction/standing-equipment.kyri names a file that exists on disk, so the roster
-#   can never name equipment the tree has moved or renamed away from underneath it.
+#   follows the equipment as the tree changes.
 #   Every `guard` record carries exactly one `path`, so a half-written row is refused rather than
 #   silently skipped by a runner reading the same file.
 #   Every `tier` names a cadence the runner honors -- `lap` or `cadence`, with an absent field
@@ -67,8 +66,8 @@
 # The number is printed because a lap can act on a number it can see; the roster in prose offered
 # no number at all.
 #
-# WHAT IS NOT PROVEN. That the roster is COMPLETE -- a guard nobody adds here is a guard this rung
-# says nothing about. Completeness is a judgment, and this proves the mechanical half beneath it.
+# SCOPE. This checks the entries the roster carries. Choosing a complete set of guards remains
+# a judgment; this witness proves the mechanics beneath that choice.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/standing_equipment_witness.rish
@@ -99,8 +98,8 @@ assert scan.out contains "verdict=ok" else "standing-equipment: the scan must ba
 say "field GREEN -- every rostered guard names a real file, and no recorded run is red"
 
 let control = run ["sh" "tools/fixtures/s/standing_equipment_control.sh"]
-assert control.ok else "standing-equipment: the control must complete"
 say control.out
+assert control.ok else "standing-equipment: the control must complete"
 assert control.out contains "agreeing_free=yes" else "standing-equipment: a whole roster over real paths must pass free"
 assert control.out contains "absent_path_refused=yes" else "standing-equipment: a rostered path absent from disk must be refused"
 assert control.out contains "half_row_refused=yes" else "standing-equipment: a guard record with no path must be refused"

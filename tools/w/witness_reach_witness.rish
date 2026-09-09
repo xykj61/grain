@@ -49,8 +49,8 @@ say "witness-reach: Lens TAME -- safety first: a MENTION is refused and only a C
 # The control first. The call/mention line is this meter's whole difficulty, and the tree cannot
 # show it every shape it must judge, so the shapes are planted in throwaway git repositories.
 let control = run ["sh" "tools/fixtures/w/witness_reach_control.sh"]
-assert control.ok else "witness-reach: the control must complete -- ${control.err}"
 say control.out
+assert control.ok else "witness-reach: the control must complete -- ${control.err}"
 assert control.out contains "control_verdict=ok" else "witness-reach: the control must reach its own verdict -- ${control.out}"
 
 # A call is heard, in every shape this tree writes one.
@@ -132,8 +132,8 @@ assert control.out contains "ok   outside_convention: removing the plants return
 
 # Now the living tree.
 let living = run ["sh" "tools/fixtures/w/witness_reach_scan.sh"]
-assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
 say living.out
+assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
 assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out}"
 assert living.out contains "under_family_ceiling=yes" else "witness-reach: a whole witness family lost its last clock -- give it a roster row rather than raising the family ceiling -- ${living.out}"

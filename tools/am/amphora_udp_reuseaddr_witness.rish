@@ -41,9 +41,9 @@ if living.out contains "kernel_probe=broken" then say "kernel_probe=broken -- th
 say "peer_census=reported_by_scan gated=no"
 
 let pen = run ["sh" control]
+say pen.out
 assert pen.ok else "amphora_udp_reuseaddr: control must pass -- ${pen.out} ${pen.err}"
 assert pen.out contains "control_verdict=ok" else "amphora_udp_reuseaddr: control not ok"
 assert pen.out contains "failed=0" else "amphora_udp_reuseaddr: a control behavior failed"
-say pen.out
 
 say "GREEN: amphora_udp_reuseaddr -- no address reuse in Amphora, four kernel answers held, peer census reported, pen innocent."

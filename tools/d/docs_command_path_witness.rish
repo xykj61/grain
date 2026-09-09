@@ -49,15 +49,15 @@ say "docs-command-path: Style Radiant -- the tree states where its files stand, 
 say "docs-command-path: Lens TAME -- safety first: a printed command is an instruction, and a wrong instruction spends a newcomer's first hour."
 
 let scan = run ["sh" "tools/fixtures/d/docs_command_path_scan.sh"]
-assert scan.ok else "docs-command-path: a living page prints a path the tree carries elsewhere -- read the scan's own detail lines, which name the repair"
 say scan.out
+assert scan.ok else "docs-command-path: a living page prints a path the tree carries elsewhere -- read the scan's own detail lines, which name the repair"
 assert scan.out contains "moved_living=0" else "docs-command-path: every printed path on a living page must resolve for a reader who clones"
 assert scan.out contains "verdict=ok" else "docs-command-path: the scan must balance before it is believed"
 say "field GREEN -- every path a living page prints as a command is one the tree carries"
 
 let control = run ["sh" "tools/fixtures/d/docs_command_path_control.sh"]
-assert control.ok else "docs-command-path: the control must complete"
 say control.out
+assert control.ok else "docs-command-path: the control must complete"
 assert control.out contains "case=honest_free ok" else "docs-command-path: an honest page in every shape the tree writes must pass free"
 assert control.out contains "case=moved_bitten ok" else "docs-command-path: a moved path printed in a code block must be refused"
 assert control.out contains "case=moved_counted ok" else "docs-command-path: the refusal must name a count, never only a verdict"

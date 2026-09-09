@@ -57,8 +57,8 @@ assert result.out contains "disagreement=1" else "glow literal law RED -- the mi
 say "field GREEN -- fourteen readers seen, the minority at its ceiling of one"
 
 let control = run ["sh" "tools/fixtures/g/glow_literal_law_control.sh"]
-assert control.ok else "glow literal law: the control must complete"
 say control.out
+assert control.ok else "glow literal law: the control must complete"
 assert control.out contains "permissive_counted=yes" else "glow literal law: a reader with no refusal must read permissive"
 assert control.out contains "agreed_all_permissive=yes" else "glow literal law: a wholly permissive language must read agreed"
 assert control.out contains "agreed_all_strict=yes" else "glow literal law: a wholly strict language must read agreed too -- both rulings are lawful"

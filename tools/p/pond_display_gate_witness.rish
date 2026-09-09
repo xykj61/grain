@@ -23,8 +23,8 @@ say "display-gate: Style Gauge -- the gate names the absent library, so a reader
 say "display-gate: Lens TAME -- safety first: a gate proven only shut is indistinguishable from a bypass."
 
 let control = run ["sh" "tools/fixtures/p/pond_display_gate_control.sh"]
-assert control.ok else "display-gate: the control must complete"
 say control.out
+assert control.ok else "display-gate: the control must complete"
 assert control.out contains "case=gate_fires ok" else "display-gate: an absent seam must gate at exit 3"
 assert control.out contains "case=gate_names_verdict ok" else "display-gate: the gate must name a verdict, never only refuse"
 assert control.out contains "case=gate_names_libraries ok" else "display-gate: the gate must name WHICH seam is absent"

@@ -1,21 +1,19 @@
 # tools/d/dated_path_repoint_witness.rish -- the repointer's safety rule, proven on metal.
 #
 # WHY THIS RUNG. tools/fixtures/d/dated_path_repoint_scan.sh EDITS FILES, and its whole safety rests
-# on one rule: a file whose own basename carries a one-clock stamp is dated testimony and is never
-# written to. That rule is what keeps a fold from quietly rewriting thousands of session logs and
-# counsel notes -- the very breach of accrete-never-break the mark law exists to avoid. A rule
-# that has never been tested is a rule nobody has kept, so it is tested here on a tree whose right
+# on one rule: a file whose own basename carries a one-clock stamp is dated testimony and keeps its original bytes. That rule is what keeps a fold from quietly rewriting thousands of session logs and
+# counsel notes -- the very breach of accrete-never-break the mark law exists to avoid. The control tests that rule on a tree whose right
 # answers are known before the tool runs.
 #
 # WHAT IS PROVEN. Four files, four known answers, all on metal:
 #   a living file citing a folded path IS repointed;
 #   a DATED-NAMED file citing the very same path is left byte-identical;
-#   a file already citing the folded path is not double-folded;
-#   a file citing a dated path that never folded is left alone.
-# And a second apply changes nothing, so the pass is idempotent rather than merely correct once.
+#   a file already citing the folded path keeps that path;
+#   a file citing a dated path still at its original home is left alone.
+# A second apply leaves the same bytes, proving that the result holds on repeat.
 #
-# WHAT IS NOT PROVEN. This proves the rule the tool follows; it does not prove that repointing was
-# the right call for any particular room. That judgement is the mark law's, and it is a word.
+# SCOPE. The control proves how the tool repoints. Choosing which room to repoint remains
+# a judgment under the mark law.
 #
 # Chapter: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
 # Kin: .claude/rules/stamp-and-name.md - tools/d/dated_path_witness.rish - tools/r/room_bound_witness.rish
@@ -28,8 +26,8 @@ say "repoint: Style Radiant -- one claim, four cases, and idempotence. The rule 
 say "repoint: Lens TAME -- the control's answers are known before the tool runs, so the check does not depend on the thing it is checking."
 
 let control = run ["sh" "tools/fixtures/d/dated_path_repoint_control.sh"]
-assert control.ok else "repoint: the control tree must build and the repointer must run over it"
 say control.out
+assert control.ok else "repoint: the control tree must build and the repointer must run over it"
 assert control.out contains "repointed_living=1" else "repoint: a living file citing a folded path must be repointed"
 assert control.out contains "untouched_testimony=1" else "repoint: a DATED-NAMED file must be left byte-identical -- this is the rule the whole tool rests on"
 assert control.out contains "untouched_already=1" else "repoint: a path already folded must not be folded a second time"

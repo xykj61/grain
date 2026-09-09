@@ -21,6 +21,7 @@ say "tally-caller-map: Lens TAME -- one derived population, bounded, with the na
 
 say "tally-caller-map: reading every tracked symlink that resolves under tally/..."
 let scan = run ["sh" "tools/fixtures/t/tally_caller_map_scan.sh"]
+say scan.out
 if scan.ok == false then say scan.out
 assert scan.ok else "tally caller map refused -- read the verdict line above"
 assert scan.out contains "verdict=ok" else "tally caller map did not reach verdict=ok"
@@ -38,9 +39,9 @@ assert scan.out contains "prose_saga_missing=0" else "saga/README.md no longer p
 
 say "tally-caller-map: proving the refusals in a throwaway pen, twelve ways..."
 let control = run ["sh" "tools/fixtures/t/tally_caller_map_control.sh"]
+say control.out
 if control.ok == false then say control.out
 assert control.ok else "tally caller map control did not complete"
-say control.out
 assert control.out contains "clean_free=yes" else "a canon and its linking room must pass free"
 assert control.out contains "clean_counted=yes" else "the derived population must find the mark it is meant to find"
 assert control.out contains "sample_read=yes" else "the named sample file must be read instead of the built-in list"
@@ -79,5 +80,4 @@ assert control.out contains "loop_reported_not_gated=yes" else "a loop in a room
 assert control.out contains "loop_leaves_marks_intact=yes" else "an unresolvable link must not take the honest marks out of the count with it"
 assert control.out contains "control_verdict=ok" else "the control reached no ok verdict"
 
-say scan.out
 say "GREEN: every tracked mark resolves under tally/, the named sample holds the canon rule, and the prose binding stands."

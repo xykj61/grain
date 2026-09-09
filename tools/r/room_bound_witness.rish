@@ -59,10 +59,10 @@ say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 
 let scan = "tools/fixtures/r/room_bound_scan.sh"
 
 let roster = run ["sh" scan]
+say roster.out
 # The message names BOTH causes, because it fired for the second one on a real clone and sent a
 # reader looking for a room to fold when the room was simply absent (REDS %120).
 assert roster.ok else "room-bound: an ENFORCED room either stands OVER the bound -- fold it to date/YYYYMMDD/ with tools/s/session_logs_archive.rish -- or is MISSING from this tree entirely, which on a fresh clone means it never entered the .gitignore allow-list. Read the roster lines above: verdict=over is the first, verdict=missing is the second."
-say roster.out
 assert roster.out contains "bound=256" else "room-bound: the seated bound is 256 -- a change to it is a seated decision, not a default"
 assert roster.out contains "enforced_over=0" else "room-bound: every enforced room must stand at or under the bound"
 assert roster.out contains "verdict=ok" else "room-bound: the roster must balance before it is believed"
@@ -95,8 +95,8 @@ assert roster.out contains "roster=enforce" else "room-bound: at least one room 
 # The RED path, built rather than trusted. A room of three dated files under a bound of two must
 # be refused, and refused by name, so the gate is known to close.
 let control = run ["sh" "tools/fixtures/r/room_bound_control.sh"]
-assert control.ok else "room-bound: the two-phase control must complete"
 say control.out
+assert control.ok else "room-bound: the two-phase control must complete"
 assert control.out contains "over_named_by_room=yes" else "room-bound: an over-bound room must be refused by name rather than by a bare count"
 assert control.out contains "over_refused=yes" else "room-bound: a room over its bound must exit non-zero"
 # This number is the roster size on purpose. It moved 5 -> 6 when active-development opened, and

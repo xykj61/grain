@@ -28,8 +28,8 @@ say "rye-spoken-ascii: Style Gauge -- every number is measured on this run and p
 say "rye-spoken-ascii: Lens TAME -- safety first: the meter counts what a program SAYS and refuses to count what it FEEDS ONWARD. A raw multiline string is a parser's input and its bytes are behavior; a module testing a decoder must contain the character it decodes. Purely local -- no key, no network, no funds, no device."
 
 let control = run ["sh" "tools/fixtures/r/rye_spoken_ascii_control.sh"]
-assert control.ok else "rye-spoken-ascii: the control must complete"
 say control.out
+assert control.ok else "rye-spoken-ascii: the control must complete"
 assert control.out contains "control_verdict=ok" else "rye-spoken-ascii: the control must reach its own verdict"
 
 # Prose is counted, in every way this tree puts a Rye sentence in front of a reader.
@@ -107,8 +107,8 @@ assert control.out contains "convert_first_pass_moved=yes" else "rye-spoken-asci
 assert control.out contains "convert_is_idempotent=yes" else "rye-spoken-ascii: a second pass over a converted file must change no byte"
 
 let living = run ["sh" "tools/fixtures/r/rye_spoken_ascii_scan.sh"]
-assert living.ok else "rye-spoken-ascii: the living scan must complete"
 say living.out
+assert living.ok else "rye-spoken-ascii: the living scan must complete"
 assert living.out contains "instrument=ok" else "rye-spoken-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
 assert living.out contains "under_ceiling=yes" else "rye-spoken-ascii: non-ASCII in spoken Rye lines rose above the ceiling -- convert on touch rather than raising it"
 
