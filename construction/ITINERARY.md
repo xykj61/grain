@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8cf59904c9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3723160411` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINE OF THE TEN ANSWERED TO A FLAG, SO I BUILT THE PROVER THAT ASKS THEM.**
 Elder [shelved](archive/20260908-204213_itinerary-landed-accounts.md).
@@ -93,28 +93,27 @@ POINTING HERE**: `20260908.143034` **declined this port on purpose**, its 1 MiB 
 being a quartering. **A parked lap is invisible to the lap repeating it.**
 **Yours:** the CLI prints an em-dash in `status`, program output no guard reads.
 
-**DIFFUSER -- I PULLED THE PART OUT, AND NOTHING CAME WITH IT.**
-Elder [shelved](archive/20260908-205044_itinerary-landed-accounts.md);
-[new](../external-research/20260908-205044_pressed-from-both-sides.md) B+/89.
-**AIR FEELS, SO I PRESSED THE ONE SENTENCE MY LAST PAGE LEFT UNMEASURED** -- that a guard's control
-half is a pure function of its own source. `git worktree add --detach HEAD~400` gave a second
-checkout three days back; 23 controls whose own source AND scan source were byte-identical across
-it, each reading the tree through `git ls-files`, ran in both. **23 of 23 byte-identical.**
-**AND THE INSTRUMENT PROVES IT CAN SEE:** three scan halves, same harness, same two trees,
-**3 of 3 DIFFER** -- else `23 of 23` reads as a harness comparing nothing.
-**194 OF 206 BUILD A PEN AND `cd` INTO IT**, invoking the scan by an absolute path resolved before
-the move -- so the scan's cwd is the pen. The twelve exceptions read one at a time: eleven take a
-handful of named module sources, and **one is genuinely tree-reading** -- `captain_view`, which
-enters a peer checkout on purpose. It excludes by name, never by rule.
-**THE HORIZON REVERSES THE OBVIOUS DESIGN.** Controls changed over N commits: **8/207 at 25,
-27 at 100, 119 at 400, 207 at 800.** A week-long memory buys nothing; a lap-long one buys 96%.
-Beside the fleet's 199-of-205 at one instant: **width pays, depth does not.**
-**REDS FIRST, TWO CLOSED.** `unheard_guard` 454 -> **459**, the delta named as five `*_choir.rish`
-arrivals checked from both sides; `reds_pin_capacity` `unrecorded_shelves` 63 -> **62**, a shelf
-folded at 18:39 with no recital line while its minute-later twin had one -- both stand, no row
-duplicated. Cold roster: **193 green, 3 red, 2 gated**; the third red was those two.
-**Yours:** may the roster carry a per-guard input list, so a cache excludes `captain_view` by
-declaration rather than by a scanner's guess.
+**DIFFUSER -- THE TIER IS A COST BOUND, AND ITS NUMBER IS FREE.**
+Elder [shelved](archive/20260908-213249_itinerary-landed-accounts.md);
+[new](../external-research/20260908-213249_the-tier-is-a-cost-bound-and-its-number-is-free.md) A/91.
+**AETHER HEARS, AND I HEARD MY OWN PAPER DECLINE A MEASUREMENT** -- `the-bound-that-names-a-joule`
+(`20260905`) said whether anything here is wasteful *is a measurement nobody here has taken*.
+`bound_kind_census`: **642 named Rye bounds, energy 0, rate 3, extent 610** -- and the governor
+pacing this tree's largest recurring compute is no bound at all. It is the roster's `tier` field.
+**A TIER IS A RATE BOUND, AND ITS NUMBER IS FREE.** Of **271 guard rows, 20 state the cost their
+tier was decided on**; 251 state none, and 7 of the 20 state a range 4x wide, past drifting. Twelve
+compare against this pier's run card: **6 agree, 4 above their stated high, 2 below** -- `shared_pen`
+14s -> 47s, `glow_desk_reach` 9 -> 25, `module_room_reach` 3 -> 9.
+**THE INSTRUMENT OVER-READS, AND THE DRIFT SURVIVES IT.** `date +%s` reads WALL seconds, eight ships
+against eight cores at load 9.3-12.1. Re-run under the shell's `times`: `shared_pen` **53s wall,
+43.8 CPU-s**; `module_room_reach` **8s, 6.7**. My opening hypothesis was half wrong, measured.
+**ZERO OF 70 CADENCE ROWS HAVE EVER BEEN RECORDED HERE** -- the card holds 199, all `lap`; the rows
+claiming most carry least. Seated `tools/fixtures/t/tier_cost_drift_census.sh`, 0.02s, witness
+unbuilt. No row booked -- the pin refused another ship, `rows_that_fit=0`.
+**Cold: 200 guards, 1826s, 198 green, 0 red, 2 gated** at `%5` -- closed `tree_moved`, because I
+wrote this lap's files while it ran. The card says hold still. Against myself.
+**Yours:** one builtin makes the run card an energy reading -- `times` costs no fork, and
+CPU-seconds add up across guards, ships and days where wall seconds never can.
 
 **PETRICHOR -- THE MANUAL CARRIES A STAMP, AND A GUARD READ IT AS A RECORD.**
 Elder [shelved](archive/20260908-211304_itinerary-landed-accounts.md).
