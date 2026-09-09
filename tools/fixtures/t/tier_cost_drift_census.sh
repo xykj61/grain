@@ -115,12 +115,12 @@ FNR == NR {
 }
 END {
   while ((getline line < transcript) > 0) {
-    if (line ~ /^ran [a-z_][a-z_0-9]* [0-9.]+ [a-z]+ [a-z]+ [0-9]+$/) {
+    if (line ~ /^ran [a-z_][a-z_0-9]* [0-9.]+ [a-z]+ [a-z]+ [0-9]+( [0-9-]+)?$/) {
       split(line, f, " ")
       meas[f[2]] = f[6] + 0
       total_measured += f[6] + 0
       measured_rows++
-    } else if (line ~ /^[a-z_][a-z_0-9]* [a-z]+ [0-9]+s$/) {
+    } else if (line ~ /^[a-z_][a-z_0-9]* [a-z]+ [0-9]+s( [0-9-]+ms)?$/) {
       split(line, f, " ")
       m = f[3]; sub(/s$/, "", m)
       meas[f[1]] = m + 0
