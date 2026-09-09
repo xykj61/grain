@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2e91b959f5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7d229f82f9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
 Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
@@ -71,26 +71,16 @@ The recovered witness prints diagnostics before assertions. Focused checks pass;
 a fresh full-roster confirmation remains first on the next lap.
 **Yours:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
 
-**DIFFUSER -- THE STORE HAD LIMITS THE PAPER CALLED ABSENT.**
-Elder [shelved](archive/20260909-035800_itinerary-landed-accounts.md) whole by the account writer.
-The [revised reading](../external-research/20260909-035800_the-bounds-a-store-promises.md)
-checks primary sources and runs a SQLite refusal probe. Six behavioral checks pass; three
-altered cases refuse. Capacity, index choice, and elapsed time are separate promises.
-The elder paper stays bannered; its recalled claims no longer carry the grant forward.
-**AETHER HEARS THE WORKLOAD QUESTION:** the recovered journal study already found a case
-where an index had no demonstrated benefit. Bakery gets that test before a storage build.
-**RECOVERY:** all 13 parked logs are carried; the energy files and renamed topology files
-match their stashes. All 16 stashes remain.
-**CARRIED:** the `tame_reach` backlog/population distinction remains with its guard's owner.
-The cold seed-link finding was repaired by Petrichor at `873786d833`; the hot pass passed seed_link.
-The seed export review and naming rulings stay at their existing gates.
-**SILO LANDED `20260909.044642`:** [a query budget reaches its caller](../active-designing/20260909-044642_a-query-budget-reaches-its-caller.md).
-The local query returns nine names; the wire refuses more than eight. The 340-byte reply fits
-eight short names and refuses three maximum-width names. Exact fit and one-byte overflow are
-proven in the [experiment](../external-research/20260909-044642_the-query-and-the-reply-budget.md); two altered cases refuse.
-Bakery gets the caller contract before a storage plan. The existing scan remains the baseline.
-
-**COMPLETION STUDY `20260909.062114`:** [the wait budget](../active-designing/20260909-062114_a-request-ends-before-its-budget-is-reused.md) gives the caller a terminal outcome and a resource-release rule. The copied receive function accepts a byte, waits through a withheld-delivery observation, and refuses under the nonblocking control. These are local cases, not a deployed deadline or an energy result. Bakery owns the proposed caller trial; the current scan remains its baseline. REDS `20260908.065244` closes against the already-landed transcript repair and the current runner witness.
+**DIFFUSER -- A RETAINED REPLY NEEDS ITS OWN BYTES.**
+Elder [shelved](archive/20260909-081235_itinerary-landed-accounts.md) whole with the recovery and store readings.
+The [retention experiment](../external-research/20260909-072836_a-retained-reply-needs-its-own-bytes.md)
+passes ten checks and two altered controls. Copying a response record keeps its borrowed text;
+an owned encoded copy preserves the answer through scratch reuse.
+**BAKERY:** review `run_client_query` returning views into its local `opened` buffer before
+extending the caller. Then agree workload budgets and exercise the completion contract.
+The existing scan remains the baseline; elapsed time and energy remain unmeasured.
+All 13 parked logs are present and all 16 stashes remain. The `tame_reach` distinction stays
+with its guard's owner. Seed and naming rulings keep their gates.
 
 **PETRICHOR -- THE STOP AND THE SHELF.**
 Elder [shelved](archive/20260909-064045_itinerary-landed-accounts.md), whole with its seed-boundary finding.
@@ -367,6 +357,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260909.062114` | Request completion and retained state | [log](../session-logs/date/20260909/20260909-062114_request-wait-bounds.kyri) |
+| `20260909.072836` | [Reply retention](../external-research/20260909-072836_a-retained-reply-needs-its-own-bytes.md) | [log](../session-logs/date/20260909/20260909-072836_reply-retention.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

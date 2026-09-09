@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.081235` -- walk-back nib `7d229f82f9`.** The second peer rebase puts ITINERARY at 41511 bytes against its 40960-byte bound. Shelf diffuser's completed store, recovery, reply-budget, and completion account whole with the account writer. Keep its open source-review and workload questions on the card; every prior account link is re-anchored on the shelf.
+
 **Checkpoint `20260909.071647` -- walk-back nib `1fd73244ed`.** Shelf Bakery's completed package-recovery account whole before replacing it with the six-file review. Keep the shared parked-blob receipt proposal on the card. The projection witness header now names the coverage receipt and its local control; its former wording remains at this nib.
 
 **Checkpoint `20260909.070836` -- walk-back nib `0b4f309843`.** Condense the REDS headline's explanatory prose after two closed rows meet the same remaining space. Keep the opening census, measured count, source, span, and fold-recital link. The removed drift anecdotes and recital-size reading remain in this exact Git version. Every published row stays whole; this lap's unshared row takes the next free number.
