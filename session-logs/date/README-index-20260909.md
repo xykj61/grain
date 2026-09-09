@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.051312` | [Query and reply bounds](20260909/20260909-051312_query-reply-bounds.kyri) | silo; exact-fit and overflow probes |
 | `20260909.044210` | [Prose is not a builder](20260909/20260909-044210_prose-is-not-a-builder.kyri) | parked census compared |
 | `20260909.042717` | [The parked package returns](20260909/20260909-042717_the-parked-package-returns.kyri) | five logs and two guard families |
+| `20260909.042633` | [A promised shelf restored](20260909/20260909-042633_the-shelf-its-log-promised.kyri) | exact parked account |
 | `20260909.041325` | [Say before the assert](20260909/20260909-041325_say-before-the-assert.kyri) | parked output-order repair recovered |
 | `20260909.040200` | [Store limits](20260909/20260909-040200_store-limits.kyri) | sourced revision; six boundary checks |
 | `20260909.040154` | [Copal recovery](20260909/20260909-040154_the-parked-lap-and-its-next-step.kyri) | gen_home recovery; recheck pending |
