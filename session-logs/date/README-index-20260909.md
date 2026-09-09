@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.090354` | [Five shelf addresses](20260909/20260909-090354_five-shelves-find-their-readers.kyri) | Grass; parked records restored |
 | `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
 | `20260909.083100` | [Parked shelves](20260909/20260909-083100_the-parked-shelves-return.kyri) | Bakery; eleven saved addresses |
+| `20260909.075412` | [Recovery held](20260909/20260909-075412_shelf-recovery-held.kyri) | Copal; integration pending |
 | `20260909.075012` | [The table check returns](20260909/20260909-075012_the-table-check-returns.kyri) | Patchouli; parked caller check |
 | `20260909.074555` | [Records and addresses](20260909/20260909-074555_the-records-find-their-addresses.kyri) | Grass; two parked logs |
 | `20260909.072836` | [Reply retention](20260909/20260909-072836_reply-retention.kyri) | owned bytes survive scratch reuse |
