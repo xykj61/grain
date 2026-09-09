@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/c/convergence_prove_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 12 cases, one pen.
+# Prints `pass=N fail=N`. Bounded: 18 cases, one pen.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -42,7 +42,20 @@ cat > "$pen/refuser.sh" <<'R'
 echo "refused: on purpose" >&2
 exit 2
 R
-chmod +x "$pen/refuser.sh"
+# TWO SECOND-RUN REFUSALS, one holding the file and one writing before it refuses. Until
+# `20260909.163208` both read `refused_on_second -- the sharpest kind of divergence`, and only the
+# second one is that: a tool refusing to overwrite its own immutable output corrupts nothing.
+cat > "$pen/sour.sh" <<'S'
+#!/bin/sh
+if grep -q SOURED "$1"; then echo "refused: I will not read my own work" >&2; exit 1; fi
+echo SOURED >> "$1"
+S
+cat > "$pen/sour_mutating.sh" <<'X'
+#!/bin/sh
+if grep -q SOURED "$1"; then echo "and another" >> "$1"; echo "refused: after I wrote again" >&2; exit 1; fi
+echo SOURED >> "$1"
+X
+chmod +x "$pen/refuser.sh" "$pen/sour.sh" "$pen/sour_mutating.sh"
 
 out=$(sh "$prove" "$pen/good.sh" "$pen/work.md" 2>&1) || true
 check "a converging tool converges"    yes "$(has "$out" 'verdict=converges')"
@@ -58,6 +71,18 @@ check "rather than counted as a pass"  no  "$(has "$out" 'verdict=converges')"
 
 out=$(sh "$prove" "$pen/refuser.sh" "$pen/work.md" 2>&1) || true
 check "a refusing tool is not a pass"  yes "$(has "$out" 'verdict=refused')"
+
+out=$(sh "$prove" "$pen/sour.sh" "$pen/work.md" 2>&1) || true
+check "a refusal holding the file"     yes "$(has "$out" 'verdict=refused_on_second_file_held')"
+check "is not called the sharpest"     no  "$(has "$out" 'verdict=refused_on_second
+')"
+check "and the refusal is shown"       yes "$(has "$out" 'I will not read my own work')"
+check "nor read as a pass"             no  "$(has "$out" 'verdict=converges')"
+
+out=$(sh "$prove" "$pen/sour_mutating.sh" "$pen/work.md" 2>&1) || true
+check "writing then refusing is sharp" yes "$(has "$out" 'verdict=refused_on_second
+')"
+check "and its own line is shown"      yes "$(has "$out" 'and another')"
 
 # THE SUBJECT IS A COPY: the sample on disk must be untouched by any of the runs above.
 check "the sample is never mutated"    yes "$(has "$(cat "$pen/work.md")" 'a DASH here')"
@@ -83,7 +108,7 @@ check "and its sample was not inert"   no  "$(has "$out" 'verdict=inert')"
 # SAID OUT LOUD, because `check` prints only on failure. A witness asserting on a check's message
 # would be asserting on text that appears ONLY when the control is broken -- an assertion that
 # passes when the thing it guards fails. Caught while writing this file's own witness.
-echo "coverage: a tracked tree writer was exercised on a real sample"
+echo "coverage: a tracked tree writer was exercised on a real sample, and both second-run refusals -- one holding the file, one writing before it refused -- were told apart"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

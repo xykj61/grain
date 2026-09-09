@@ -65,9 +65,23 @@ if cmp -s "$pen/original" "$pen/after_one"; then
 fi
 
 if ! sh "$TOOL" "$pen/subject" >"$pen/out2" 2>&1; then
+  # A REFUSAL IS TWO FACTS. The sample is asked whether the refusing run wrote before it refused,
+  # because a tool that refuses AND leaves its subject byte-identical corrupted nothing -- and a
+  # tool whose artifact is immutable by contract refuses on purpose. The whole-tree sibling met
+  # this on a real tool (`20260909.163208`); the shape is the same one file down.
   echo "tool=$TOOL"
+  echo "sample=$SAMPLE"
+  echo "refused_second_run=yes"
+  if cmp -s "$pen/after_one" "$pen/subject"; then
+    echo "verdict=refused_on_second_file_held"
+    echo "detail: the second run refused and left the file byte-identical, so nothing was corrupted -- read the refusal to tell a contract apart from a wedged output"
+    sed 's/^/  /' "$pen/out2" | head -5
+    exit 1
+  fi
   echo "verdict=refused_on_second"
-  echo "detail: the tool ran once and then refused its own output -- the sharpest kind of divergence"
+  echo "detail: the second run refused AND wrote to the file again -- the sharpest kind of divergence"
+  sed 's/^/  /' "$pen/out2" | head -5
+  diff "$pen/after_one" "$pen/subject" | head -8 | sed 's/^/  /'
   exit 1
 fi
 
