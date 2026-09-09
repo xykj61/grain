@@ -150,7 +150,7 @@ note "toplevel_exit=$toplevel_exit"
 # --- 6. a fault inside a STRUCT METHOD, and the depth it proves -------------
 fresh
 plant_apply "$pen/src/store.rye" \
-  's|        const buf = try allocator\.alloc(u8, 1024 \* 1024);|        const planted: u32 = "not a number"; _ = planted; const buf = try allocator.alloc(u8, 1024 * 1024);|' \
+  's|        const limit = std\.Io\.Limit\.limited64(max_blob_bytes + 1);|        const planted: u32 = "not a number"; _ = planted; const limit = std.Io.Limit.limited64(max_blob_bytes + 1);|' \
   method || fails=$((fails + 1))
 method_exit=$(build_walk)
 note "method_exit=$method_exit"
