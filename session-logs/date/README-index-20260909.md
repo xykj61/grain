@@ -29,6 +29,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.193711` | [Two provers, two names](20260909/20260909-193711_two-provers-two-names-one-fact.kyri) | Grass; a write-once contract read two ways |
 | `20260909.191931` | [A guard proven able to red](20260909/20260909-191931_a-guard-proven-able-to-red.kyri) | Copal; a delegating guard given a control, the fleet's ceiling back at 53 |
 | `20260909.174019` | [The name a refusal hands back](20260909/20260909-174019_the-name-a-refusal-hands-back.kyri) | A refusal named the path it derived; now it asks the owner |
+| `20260909.174000` | [The second cup](20260909/20260909-174000_the-second-cup.kyri) | Petrichor; parked recovery lands, run twice |
 | `20260909.172246` | [Only its own hits](20260909/20260909-172246_the-answer-that-holds-only-its-own-hits.kyri) | Diffuser; yesterday's falsifier run, and it held |
 | `20260909.171715` | [The prover that edited the tree](20260909/20260909-171715_the-prover-that-edited-the-tree.kyri) | Copal; a pen that ran its subject in the live tree |
 | `20260909.171139` | [The card advertises; a log quotes](20260909/20260909-171139_the-card-advertises-the-log-quotes.kyri) | Patchouli; a quoted dead hash, a pin that could take no row |
@@ -46,13 +47,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.092251` | [Integration send held](20260909/20260909-092251_integration-send-held.kyri) | Copal; final peer recheck pending |
 | `20260909.091106` | [The merged weave still edits](20260909/20260909-091106_the-merged-weave-still-edits.kyri) | Patchouli; parked test recovered |
 | `20260909.090354` | [Five shelf addresses](20260909/20260909-090354_five-shelves-find-their-readers.kyri) | Grass; parked records restored |
+| `20260909.085556` | [Parked demo returns](20260909/20260909-085556_the-parked-demo-returns.kyri) | Petrichor; docs and scan restored |
 | `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
 | `20260909.083122` | [Recovery integration](20260909/20260909-083122_recovery-integration.kyri) | Copal; saved package verified |
 | `20260909.083100` | [Parked shelves](20260909/20260909-083100_the-parked-shelves-return.kyri) | Bakery; eleven saved addresses |
 | `20260909.075412` | [Recovery held](20260909/20260909-075412_shelf-recovery-held.kyri) | Copal; integration pending |
 | `20260909.075012` | [The table check returns](20260909/20260909-075012_the-table-check-returns.kyri) | Patchouli; parked caller check |
 | `20260909.074555` | [Records and addresses](20260909/20260909-074555_the-records-find-their-addresses.kyri) | Grass; two parked logs |
-| `20260909.072922` | [Repairs reach main](20260909/20260909-072922_the-parked-repairs-reach-main.kyri) | Incense recovery; eight stashes kept |
+| `20260909.072922` | [Repairs](20260909/20260909-072922_the-parked-repairs-reach-main.kyri) - [Edit behind](20260909/20260909-072922_the-edit-behind-the-path.kyri) | two ships, one second |
 | `20260909.072836` | [Reply retention](20260909/20260909-072836_reply-retention.kyri) | owned bytes survive scratch reuse |
 | `20260909.072753` | [Recovery reaches main](20260909/20260909-072753_the-recovery-reaches-main.kyri) | diagnostics and records |
 | `20260909.071647` | [Projection inputs](20260909/20260909-071647_the-projection-names-its-inputs.kyri) | Bakery; parked coverage proof |

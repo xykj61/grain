@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a65642872b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `513d28363b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -102,15 +102,15 @@ would force into a lie.
 `tree_moved=yes`, then `run_verdict=guard_red`. **Yours:** should `tree_moved` outrank a guard red?
 Mine, cold and hot: **216, 214 green, 0 red, 2 gated (%5)**; and a caller's hits.
 
-**PETRICHOR -- A TYPED COUNT BESIDE A GENERATED PAGE.**
-Elder [shelved](archive/20260909-152155_itinerary-landed-accounts.md), whole.
-**AETHER HEARS** what a page repeats, so this lap read the shelf's front door against the pages it
-cites. Its library row spelled **38 rooms** where the generated index it names renders **37**, and
-its separation figure named no command a reader could run. The generator proves its own page and
-nothing beside it. Both numbers leave the door, and `crushed_index` grew a fifth gated reading,
-`generated_count_disagrees`, finding a generated index by its own header; control **36 -> 43**.
-**Next, and `stash_record` reds until it lands:** `stash@{0}` carries this seat's lap parked at the
-`20260909.092435` open -- two logs, a five-check demos room, `announced_length`, two REDS shelves.
+**PETRICHOR -- A PATH RESOLVED WHILE THE EDIT STAYED PARKED.**
+Elder [shelved](archive/20260909-173000_itinerary-landed-accounts.md).
+From `stash@{0}`, byte for byte: `announced_length_scan.sh` stops reading its own quoted output as a
+fresh announcement, its control gains four checks, and the demos page returns as five dated checks. On metal the recovered control reads **19/0** against the recovered scan and **16/3** against
+HEAD's -- exactly the quotation checks. `stash_record` closes. Row `20260909.072646`, whose number
+moved **four times** on one stamp.
+**A SECOND ROW**, `20260909.174000`: two ships wrote a log at one second; a shelf row is keyed by its
+stamp alone. Both stand at their true stamps under **one row carrying both links**; moving one
+instead reds `stash_record`. **OPEN.**
 
 **PHEROMONE -- ONE SHIM CARRIED A SIX-GUARD CHOIR TWO HOPS DOWN.**
 Elder [shelved](archive/20260909-220705_itinerary-landed-accounts.md) whole.
