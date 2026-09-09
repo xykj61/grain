@@ -259,13 +259,20 @@ seated 20260907.222830
 
 # convergence_census -- the tree's own idempotence claim, counted. `what-brix-infuse-is` states
 # `infusion(world') -> world'`, and a tool that fails it corrupts on its SECOND run, which is what an
-# unattended loop performs at three in the morning. Re-run `20260908.025932`: **7 candidates, 3
-# proven**, and the census's own header names three of those seven as libraries or a remote-reading
-# scan rather than writers -- so one candidate transforms a document, and it converges. REPORTED,
-# never gated -- a one-shot publisher has nothing to converge and no reading here tells it from a
-# tool that never checked. The denominator was wrong FOUR times rather than twice: 392 counting pen
-# writes, 1200 when the census read its own bound as a measurement, 30 counting controls, and 7
-# counting non-writers. A count this unstable is why the seat's own page now says to RUN it.
+# unattended loop performs at three in the morning. Re-run `20260908.190452`: **10 candidates, 3
+# proven**, and the census's own header names some of the ten as libraries or a remote-reading scan
+# rather than writers. REPORTED, never gated -- a one-shot publisher has nothing to converge and no
+# reading here tells it from a tool that never checked. The denominator was wrong FIVE times: 392
+# counting pen writes, 1200 when the census read its own bound as a measurement, 30 counting
+# controls, 7 counting non-writers, and 10 admitting the exec-bit write idiom it had been blind to.
+# A count this unstable is why the seat's own page says to RUN it rather than read it.
+#
+# AND THE NUMERATOR WAS WRONG ONCE, in the other direction (`20260908.190452`): it greped every
+# tracked path holding the tool's stem, the tool ITSELF included, on any line comment or not, so a
+# tool writing `Idempotent: a second run changes nothing` in its own header certified itself. Two
+# of the five did exactly that. The census header had stated the rule correctly all along --
+# *inside a check rather than a comment* -- and nothing read it. Proven now reads **3 of 10**, and
+# the control runs the elder numerator over the same plant to prove the repair moved something.
 guard convergence_census
 path tools/c/convergence_census_witness.rish
 tier lap

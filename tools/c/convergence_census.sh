@@ -53,6 +53,30 @@
 # comment. Prose about idempotence is a claim; an assertion is a proof, and this census exists
 # because the tree had 35 times more of the first than the second.
 #
+# THAT SENTENCE STOOD IN WRITING FOR A DAY WHILE THE PREDICATE BENEATH IT READ THE OPPOSITE
+# (`20260908.190452`). The search read every tracked path holding the stem, the tool under test
+# among them, and matched the word on any line a comment included -- so a tool writing
+# `Idempotent: ... a second run changes nothing` in its own header certified itself. Two of the five
+# it called proven did exactly that, `dated_path_repoint_scan.sh` and `tool_path_repoint_scan.sh`,
+# and for both the check that runs them twice is still owed. The rule stood in writing, read by
+# nothing; the fault is the one `rune_assert_sweep` met one room over the same day, where a guard
+# names the word the rule turns on and counts something else.
+#
+# The predicate drops the tool from its own sibling set and reads the match on a non-comment line.
+# Proven falls 5 -> 3, both departures being that pair, and the three that stand are real: two
+# controls asserting `verdict=nothing_to_do` on a second run, and one running an idempotence case.
+#
+# WHAT IS STILL OWED, and it reaches further than this repair. `tools/c/convergence_prove.sh`
+# classifies by RUNNING, which is the reading that settles the question -- and it invokes a tool as
+# `sh <tool> <one-path>`. Nine of the ten candidates answer to a flag rather than a path: they are
+# whole-tree operators driven by `--apply`, `--check`, or a `dry|apply` mode, so answering for them
+# wants a prover this tree has yet to build. The one that does fit, `ascii_document_convert.sh`,
+# reads `verdict=converges` on a triggering sample and stands in the unproven column here, since a
+# sibling assertion is what this column reads. So the column measures whether somebody WROTE the
+# check, rather than whether the tool converges, and a
+# pen-TREE prover -- one that copies a repository, runs the operator twice, and diffs -- is the
+# instrument that would. Named here rather than built, and carried to the card for Keaton.
+#
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
 # it from a tool that simply never checked. The number is the finding; the ceiling is a later word.
@@ -122,9 +146,26 @@ while IFS= read -r f; do
   writers=$((writers + 1))
   base=${f##*/}; stem=${base%.*}
   # Its own siblings: the control and witness that stand beside it by name.
-  if git ls-files 'tools/*' 2>/dev/null | grep -F "$stem" \
-       | xargs -r grep -lEi '(idempotent|second run|run twice|runs twice|again finds nothing)' 2>/dev/null \
-       | head -1 | grep -q .; then
+  #
+  # A TOOL MAY NOT CERTIFY ITSELF, AND PROSE IS NOT A PROOF (`20260908.190452`). This search read
+  # every tracked path holding the stem -- INCLUDING the tool the census was asking about -- and
+  # matched the word anywhere in it, comment lines and all. Two of the five it called proven were
+  # proven by one sentence in their own header: `dated_path_repoint_scan.sh` and
+  # `tool_path_repoint_scan.sh` each open with `Idempotent: ... a second run changes nothing`, and
+  # that comment was the whole of the evidence. The header of this file states the rule correctly --
+  # *inside a check rather than a comment* -- and the predicate beneath it counted exactly the thing
+  # that sentence excludes, in the file under test.
+  #
+  # Two corrections, one per fault. `grep -vxF "$f"` drops the tool from its own sibling set, so a
+  # claim and its proof can no longer be the same line. `grep -vqE` past a leading `#` reads the
+  # match on a non-comment line, which is the checkable proxy for *inside a check*: a shell comment
+  # is the one form the language itself marks, where an assertion wears a hundred spellings across
+  # sh and Rishi. Measured on this tree, proven falls 5 -> 3 and both departures are the
+  # self-certifying pair; the three that stand are real -- two controls asserting
+  # `verdict=nothing_to_do` on a second run, and one naming an idempotence case it then runs.
+  if git ls-files 'tools/*' 2>/dev/null | grep -F "$stem" | grep -vxF "$f" \
+       | xargs -r grep -hEi '(idempotent|second run|run twice|runs twice|again finds nothing)' 2>/dev/null \
+       | grep -vqE '^[[:space:]]*#'; then
     proven=$((proven + 1))
   else
     unproven=$((unproven + 1))

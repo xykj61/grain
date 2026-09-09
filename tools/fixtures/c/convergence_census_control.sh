@@ -15,13 +15,13 @@
 # exactly the writes this tree's own law prescribes, `readme_metrics_splice.sh` and
 # `reds_ledger_headline_write.sh` among them, which `tools/hooks/pre-commit` runs on every commit.
 #
-# THE ELDER PREDICATE RUNS HERE TOO, over the same plants, and the control asserts it disagrees on
-# exactly the two legs the repair moves. A repair shown only in the passing direction reads the same
+# BOTH PREDICATES RUN HERE, over the same plants, and the control asserts each elder disagrees on
+# exactly the legs its repair moves -- the writer predicate on two, the PROVEN predicate on one. A repair shown only in the passing direction reads the same
 # as a coincidence, which is what the four earlier denominators had in common.
 #
 #   sh tools/fixtures/c/convergence_census_control.sh
 #
-# BOUNDS: one pen, eight legs, at most 16 planted tools. The pen is removed on every exit path.
+# BOUNDS: one pen, twelve legs, at most 16 planted tools. The pen is removed on every exit path.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -94,6 +94,42 @@ elder() { # elder <file> -> yes|no
 }
 leg elder_dropped_the_exec_bit_idiom   no  "$(elder tools/x/exec_bit_idiom.sh)"
 leg elder_admitted_the_pen_target      yes "$(elder tools/x/file_source_pen_target.sh)"
+
+# 8. THE PROVEN PREDICATE, from both sides. A tool may not certify itself, and prose is not a
+# proof. Each plant below is a tree writer by leg 2's shape, so the only thing separating them is
+# what stands beside them -- which is exactly what the proven column claims to read.
+cd "$pen/tree"
+# 8a. The self-certifying shape, taken from the tree: the ONLY idempotence sentence is a comment in
+#     the tool's own header. `dated_path_repoint_scan.sh` and `tool_path_repoint_scan.sh` both read
+#     proven on this alone until `20260908.190452`.
+plant tools/x/self_certifying.sh '# Idempotent: a second run changes nothing.
+cat "$tmp" > "$f"'
+# 8b. A sibling that only TALKS about it. Prose is a claim wherever it sits.
+plant tools/x/prose_sibling.sh 'cat "$tmp" > "$f"'
+plant tools/x/prose_sibling_witness.rish '# the repair is idempotent, so a second run finds nothing'
+# 8c. A sibling that ASSERTS it, on a line the language does not mark as a comment.
+plant tools/x/asserted_sibling.sh 'cat "$tmp" > "$f"'
+plant tools/x/asserted_sibling_control.sh 'check "a second run finds nothing" yes "$got"'
+git add -A >/dev/null
+git commit -q -m "pen: planted proven-predicate shapes"
+
+unproven_now=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
+unp() { case " $unproven_now " in *" $1 "*) echo yes ;; *) echo no ;; esac; }
+
+leg self_certification_refused      yes "$(unp self_certifying.sh)"
+leg prose_sibling_refused           yes "$(unp prose_sibling.sh)"
+leg asserted_sibling_counted        no  "$(unp asserted_sibling.sh)"
+
+# 8d. THE ELDER PROVEN PREDICATE over the same plants must ADMIT the self-certifying tool --
+# otherwise these three legs pass for some reason other than the repair, which is how four of this
+# census's five wrong denominators read green.
+elder_proven() { # elder_proven <file> -> yes|no
+  base=${1##*/}; stem=${base%.*}
+  if git ls-files 'tools/*' 2>/dev/null | grep -F "$stem" \
+       | xargs -r grep -lEi '(idempotent|second run|run twice|runs twice|again finds nothing)' 2>/dev/null \
+       | head -1 | grep -q .; then echo yes; else echo no; fi
+}
+leg elder_called_self_certification_proven yes "$(elder_proven tools/x/self_certifying.sh)"
 
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"

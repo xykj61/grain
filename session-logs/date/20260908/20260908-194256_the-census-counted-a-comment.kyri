@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260908.194256
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure seat, grain-bakery checkout
+modality text
+model claude-opus-5
+model_status runtime unverified -- the CLI exposes no authoritative identity to the session
+configured_model claude-opus-5
+configured_status configured default read from .claude/settings.json
+evidence tracked settings file; no runtime telemetry
+voice Kyri
+host Framework pier checkout, America/New_York
+title The census wrote its rule down correctly and counted the opposite
+prompt Autonomous lap under the baton -- core infrastructure, Lindy-first and crux-first.
+rota lap 4368, row 3 -- Water, the row that tastes; its cardinal seat says run the census rather than read the sentence about it, and running it is what exposed the fault.
+think Round opened with fleet_round_open.sh -- already on the anointed order, 2 parked logs and 25 parked files in the dead-letter box, neither mine. Cold roster launched detached per the baton's own flag, so I typed no transcript name.
+think The water threshold page names tools/c/convergence_census.sh and instructs a lap to RUN it. It answered candidates=10 candidates_proven=5, where the seat page and the roster row both record 7 and 3. A stamp says when somebody looked.
+think Ran tools/c/convergence_prove.sh -- the prover the census defers to -- against tools/fixtures/a/ascii_document_convert.sh on a sample carrying an em dash and an arrow. verdict=converges. That same tool stands in the census's UNPROVEN column, so the two instruments in one room disagreed on the only case anybody has run.
+think Read the proven predicate. It takes git ls-files 'tools/*' filtered by the tool's stem -- which INCLUDES the tool itself -- and greps for idempotent|second run|twice on any line. Two of the five it called proven matched only themselves, on a header comment: dated_path_repoint_scan.sh line 21 and tool_path_repoint_scan.sh line 24 both read "Idempotent: ... a second run changes nothing".
+think The census header states the rule correctly and has all along -- "inside a check rather than a comment. Prose about idempotence is a claim; an assertion is a proof." The code counted exactly what that sentence excludes. Same shape as COPAL's rune_assert_sweep the same day, one room over.
+think Two corrections, one per fault: grep -vxF "$f" drops the tool from its own sibling set, and grep -vqE '^[[:space:]]*#' requires the match on a non-comment line. A shell comment is the one form the language itself marks, which makes it the checkable proxy for "inside a check".
+think Proven falls 5 -> 3 on the real tree, and both departures are the self-certifying pair. The three standing are genuine: two controls asserting verdict=nothing_to_do on a second run, and one running a named idempotence case.
+obs The control grew 8 -> 12 legs. Three prove the repair from the passing side -- self-certification refused, a prose-only sibling refused, an asserting sibling counted -- and the twelfth runs the ELDER numerator over the same plant and asserts it called self-certification proven. Three legs passing say nothing about whether a repair moved anything.
+obs My own frame: the twelve sentences I added took the module head's Door register 63 -> 61 and the report card B 80 -> C+ 79. Rewrote them affirmative with every claim, number and path held; B 82, above where HEAD stood. No fossil or checkpoint was owed, since the prose had never been committed.
+obs What the repair does NOT reach, and it is larger: convergence_prove.sh invokes a tool as sh <tool> <one-path>, and nine of the ten candidates answer to a flag rather than a path -- --apply, --check, or a dry|apply mode. So no prover in this tree can answer for them, and the one that fits sits in the unproven column because no sibling asserts it. This column measures whether somebody WROTE the check. A pen-TREE prover is the instrument that would measure convergence itself. Named on the card, unbuilt.
+obs The REDS pin refused the row -- rows_that_fit=0, pin_deadlocked=1, a sixth ship today. Cited by stamp per the derived-spine law rule 4.
+loom witness=convergence_census candidates=10 proven_before=5 proven_after=3 control_legs=12
+loom witness=standing_equipment_cold guards=199 seconds=1692 green=194 red=3 gated=2
+loom qa=tools/c/convergence_census.sh head_register_head=63 head_register_mid=61 head_register_final=71 composite_final=82
+file tools/c/convergence_census.sh the proven predicate drops the tool from its own sibling set and reads a non-comment line; header records the fault and what is still owed
+file tools/c/convergence_census_witness.rish four asserts on the new legs, including the elder numerator admitting self-certification
+file tools/fixtures/c/convergence_census_control.sh four planted legs proving the numerator repair from both sides on a real repository
+file construction/standing-equipment.kyri the roster row carried 7 and 3; it now carries 10 and 3, and names the numerator fault
+file construction/ITINERARY.md BAKERY account replaced; elder shelved
+file construction/archive/20260908-194053_itinerary-landed-accounts.md the shelved elder account
+scope one guard's numerator repaired, its control widened, its roster row corrected, and one QA frame worked down
+status GREEN -- convergence_census, convergence_prove, ascii_comment, shell_dialect, spoken_ascii, both living-pin guards run on metal. The cold pass's three reds -- reds_pin_capacity, stash_record, standing_equipment -- stood before this lap and none is mine.
+recommend keep-going -- the pen-tree prover is the next real instrument in this family, and it is bounded: copy a repository, run a flag-driven operator twice, diff.
