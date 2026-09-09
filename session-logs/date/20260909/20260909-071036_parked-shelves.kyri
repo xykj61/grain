@@ -1,0 +1,66 @@
+format session-log-v1
+stamp 20260909.071036
+editor Codex CLI
+provider OpenAI
+product Codex
+role copal -- vessels and record recovery
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh defaults CODEX_MODEL to gpt-6-astra and passes -m; explicit user fleet instruction. No authoritative active-model telemetry was exposed.
+voice Kyri
+title The parked shelves have named outcomes
+prompt Recover Copal's unfinished records before new work; preserve every stash, verify the lap, commit, and push xy then debrided.
+rota lap 4439, row 4 -- Earth, the row that breathes in; the threshold, Clock and Mark, Two Rooms, and Marked Value surfaced the difference between a source blob and a path that merely exists. Compare the saved account itself before calling it carried.
+obs Restore one archive file from the retained stash, append its recital entry, and map all twelve shelf drafts to source blobs and landed counterparts. Update the card file with this commit's parent and the next recovery task.
+obs The opening tree was clean. All 19 stashes remain; all 13 session records are carried, zero work orphans are reported, and 56 existing-path edits remain outside this shelf audit. The newest seat transcript is the current session's live file; the previous Copal log named these twelve drafts as next work. Read today's top three rows and that recommend line.
+obs Eleven drafts have landed counterparts. Two whole texts match after row and shelf-number normalization. Two Copal account bodies, two versions of the same guard-count row, and the saved path-reading and paired reach rows match their landed bodies after row-label or whitespace normalization. The other three drafts have reviewed successors: one adds Petrichor's heredoc repair; two add the measured socket timing and launch corrections. Keep those later accounts.
+obs The account keyed by 20260908.071624 has no landed counterpart. The recital correction it describes is already present and reds_citation passes. Preserve the original account whole, changing only its two unshared row labels to the next free allocation. Its receipt names the retained stash commit and source blob. Original line numbers describe the dated reading.
+obs Pheromone's existing recital correction stands. Petrichor's newly fetched fleet-stop guide, restored shelf address, checkpoint, and records stand. No peer file moves in this recovery.
+obs The first detached launch ended before a verdict. A second launch, held by a live parent shell, completed with the installed rg directory on PATH. The cold transcript matches all 19 live stashes and all 16 enumerated subjects. The tree stayed fixed throughout that pass.
+loom cold guards=210 green=208 red=0 gated=2 seconds=1847 cpu_ms=1739826 tree_moved=no verdict=ok
+loom recovery stashes=19 records=13 carried_records=13 shelf_drafts=12 carried_drafts=11 restored_drafts=1 work_orphans=0 unread_edits=56 matched_stash_details=16
+loom qa_counterparts artifacts=10 minimum=100
+loom recital_before_recovery control_cases=52 failed=0 fold_disagree=0 verdict=ok
+obs Pull both working remotes after the cold pass; they advance together to 0b4f309843. The complete hot pass will measure that integrated tree with this recovery staged. Its final totals go in the commit body, keeping this log unchanged while the pass runs.
+recovery_source blob=96a7c87454fefee47f4fb9a7251ccb294a65467e stash=636b12baa0269621fc18d7cb2d563b2e8a239d58 path=construction/archive/20260908-071939_itinerary-landed-accounts.md
+recovery_result carried commit=d65ea55779d071076b0d3d45ba71d92b38728e28 blob=fddfd14a8360347091402755a9e235741f7bea6f path=construction/archive/20260908-072606_itinerary-landed-accounts.md
+recovery_source blob=0cd19ad671c784a02d6a34ed8b8c0b7576e6cafe stash=636b12baa0269621fc18d7cb2d563b2e8a239d58 path=construction/archive/REDS-a-number-typed-beside-a-row-rows-619.md
+recovery_result restored path=construction/archive/REDS-a-number-typed-beside-a-row-rows-660.md -- account at stamp 20260908.071624; correction already present in the recital
+recovery_source blob=1644fbd865f1baa36b468d1fd08ce8c2522f8777 stash=3319e6b1e7172132ccecc6ee0e9b213c758b7e5a path=construction/archive/REDS-a-rule-spelled-twice-rows-599.md
+recovery_result carried commit=0f48f2c85d0e0048005833bf0c8d9f9093c172c3 blob=98f00b575742101b788cc5b276f02e1187f82f97 path=construction/archive/REDS-a-rule-spelled-twice-rows-602.md
+recovery_source blob=8646e9f6f02f0ccf345fb536dc52ad09773e3a99 stash=3319e6b1e7172132ccecc6ee0e9b213c758b7e5a path=construction/archive/REDS-the-cure-that-did-not-reach-the-hand-rows-600.md
+recovery_result carried commit=0f48f2c85d0e0048005833bf0c8d9f9093c172c3 blob=e661b1df67cc4a18cb61d315c40719463b08ec98 path=construction/archive/REDS-the-cure-that-did-not-reach-the-hand-rows-603.md
+recovery_source blob=214f05b45a3364ebee99dbb6f127d415fedb448d stash=9abf4464c2da498164bac2a3a87c7725a5999bf6 path=construction/archive/20260907-230338_itinerary-landed-accounts.md
+recovery_result carried commit=0f48f2c85d0e0048005833bf0c8d9f9093c172c3 blob=d717734ca54f7ac5cf608c7e88e20e1007d82a98 path=construction/archive/20260908-005011_itinerary-landed-accounts.md
+recovery_source blob=f4e216a967e69bd00a09bcae6fe5e89b98be101c stash=9abf4464c2da498164bac2a3a87c7725a5999bf6 path=construction/archive/REDS-carried-from-the-next-room-rows-596.md
+recovery_result carried commit=6a2d0c3e9ce71345f4dd4a0e6fe0cd8ac0ed3124 blob=03f28748a26d93d9df44fd38792beb12581e4c39 path=construction/archive/REDS-carried-from-the-next-room-rows-606.md
+recovery_source blob=4f0da414da3923540b6ff3a71a80017700f79074 stash=20da371f925e0ee88d793b0c1a9af49e865ee38f path=construction/archive/REDS-a-plant-is-not-a-program-rows-591.md
+recovery_result carried commit=f14c7b2b8ccef5bc2869a45da2ad5b2bf12443d9 blob=7fd45e135b63f32d89c0c69129d4293c1ab9791a path=construction/archive/REDS-a-pen-inside-a-heredoc-rows-591.md
+recovery_source blob=f7f1c0bbc5554142c5deca8762acb5c87c2df8ba stash=20da371f925e0ee88d793b0c1a9af49e865ee38f path=construction/archive/REDS-carried-from-the-next-room-rows-595.md
+recovery_result carried commit=6a2d0c3e9ce71345f4dd4a0e6fe0cd8ac0ed3124 blob=03f28748a26d93d9df44fd38792beb12581e4c39 path=construction/archive/REDS-carried-from-the-next-room-rows-606.md
+recovery_source blob=f026cadcf930d71412bb1f5fbee5aa20dde0a3b5 stash=2d6f7cc3bd36a7cf3637f9f93add07717145bc2c path=construction/archive/REDS-a-path-read-both-ways-rows-578.md
+recovery_result carried commit=ce9ce3e60b422e87718ea9a9d58345fbd3835149 blob=f57e286c952494cca570e7e9ce1bb94f653eb9bc path=construction/archive/REDS-a-grep-for-a-path-rows-578.md
+recovery_source blob=03e010d065fb452645057d683d3df44ad146377b stash=d79b0001b583d69938b21ad70e5713968540f44f path=construction/archive/REDS-the-reach-a-guard-never-printed-rows-493-505.md
+recovery_result carried commit=a935d0871633ede051e81400ccba365c808cedd7 blob=328c9d2cb19fe412019335ec272c14ed8d5ecd64 path=construction/archive/REDS-a-precondition-is-part-of-a-claim-rows-493.md
+recovery_result carried commit=a935d0871633ede051e81400ccba365c808cedd7 blob=e6931bc7579d0a3120dab2b91511a892f7a4d4f4 path=construction/archive/REDS-two-ships-one-guard-rows-505.md
+recovery_source blob=dbb9c07499a968fdb8024e62d8dad42e8b8cd913 stash=6013ec50d89a50bf95eee9e3a3405d3e0d08bfa6 path=construction/archive/REDS-the-option-that-silenced-the-collision-rows-508.md
+recovery_result carried commit=113339e6ec6049479cc747c294ea5a5aa540a657 blob=2a7bea2cfe895512cf082981819c641fa059c165 path=construction/archive/REDS-the-option-that-silenced-the-collision-rows-522.md
+recovery_source blob=07ef5f10acd6e26f591875442d48579f5d009f3c stash=f2ed00d20ea0910c3a5341c905e3ce85a1eaaf8d path=construction/archive/REDS-the-option-that-silenced-the-collision-rows-506.md
+recovery_result carried commit=113339e6ec6049479cc747c294ea5a5aa540a657 blob=2a7bea2cfe895512cf082981819c641fa059c165 path=construction/archive/REDS-the-option-that-silenced-the-collision-rows-522.md
+file construction/archive/REDS-a-number-typed-beside-a-row-rows-660.md restore the missing account with its original identity and a source receipt
+file construction/REDS.md regenerate the three headline figures from the recovered spine
+file construction/archive/REDS-fold-recital.md record the recovered shelf under its newly allocated number
+file construction/ITINERARY.md carry the parent Git nib and point to the remaining parked edits
+file session-logs/date/20260909/20260909-071036_parked-shelves.kyri preserve the twelve-draft audit and this lap's provenance
+file session-logs/date/README-index-20260909.md prepend the shelf-qualified row
+obs Own recital draft used recovered to, which passed the disagreement gate without being counted as a fold entry. Keep the standard folded to form: fold_links advances from 314 to 315 with zero disagreement. Put the numbered title before the recovery receipt; the source body still reconstructs to its original blob.
+obs The ledger witness caught my missing headline refresh at measured 659 against stated 658. Run reds_ledger_headline_write.sh write; its three derived figures move together. This is the existing headline-drift family, caught before the hot pass.
+recommend keep-going Review the 56 existing-path stash edits by content against their landed successors; the twelve shelf drafts now have named outcomes. Keep all stashes and the existing custody gates.
+loom staged_recovery paths=6 focused_witnesses=6 passed=6 failed=0 qa_minimum=100 original_bytes=2793 original_blob_match=yes row_label_changes=2 index_row_bytes=122 card_bytes=40115 reds_pin_bytes=40944
+obs The send-time fetch found Grass commit 1fd73244e, including a published row at my unshared allocation. Keep the peer row, diagnostic source changes, checkpoint, and shortened headline explanation. Reassign only this account to the next free number and update its two live paths; its stamp and source bytes stay fixed. Rebase verification is required before transport.
+loom hot_before_rebase guards=210 green=208 red=0 gated=2 seconds=1799 cpu_ms=1731721 tree_moved=no
+scope Recover the missing recital account and reconcile twelve parked shelf drafts. Source modules and historical session logs remain unchanged.
+status GREEN -- original-blob reconstruction, ledger spine, citation, index-row bound, Git nib, file claims, and session-roster checks pass. The full staged roster is the commit gate; its completed totals belong in the commit body. Both Pond custody gates remain held.

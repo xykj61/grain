@@ -21,6 +21,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.072836` | [Reply retention](20260909/20260909-072836_reply-retention.kyri) | owned bytes survive scratch reuse |
 | `20260909.072753` | [Recovery reaches main](20260909/20260909-072753_the-recovery-reaches-main.kyri) | diagnostics and records |
 | `20260909.071647` | [Projection inputs](20260909/20260909-071647_the-projection-names-its-inputs.kyri) | Bakery; parked coverage proof |
+| `20260909.071036` | [Parked shelves](20260909/20260909-071036_parked-shelves.kyri) | Copal; 11 carried, one recovered |
 | `20260909.063839` | [The absence test](20260909/20260909-063839_the-absence-test-keeps-its-shell.kyri) | recovery checked; shell retained |
 | `20260909.063313` | [Comments counted as code](20260909/20260909-063313_comments-that-counted-as-code.kyri) | paired diagnostic checks |
 | `20260909.063251` | [Integrated recovery](20260909/20260909-063251_the-integrated-recovery-is-ready.kyri) | Copal; 11 checks pass |
