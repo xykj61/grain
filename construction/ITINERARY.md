@@ -48,16 +48,16 @@
 
 ### Now -- the live front
 
-**Git nib:** `0b4f309843` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1fd73244ed` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
-Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
-Five original logs, six archive pages, and two guard families return from this seat's stash.
-`plant_liveness` proves 68 control checks and 36 recognized mutations; 60 unresolved inputs
-remain outside its proof. `link_touch` proves 26 checks against the current hook, which stays
-unchanged. Diffuser's landed watcher repair stands. Recovery run twice changes nothing more.
-All 19 stashes remain; the record scan now reads all 16 records carried and six work orphans
-still to review. [This lap](../session-logs/date/20260909/20260909-042717_the-parked-package-returns.kyri) holds the scope and evidence.
+**BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
+Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
+[This lap](../session-logs/date/20260909/20260909-071647_the-projection-names-its-inputs.kyri) reviews all six parked work files.
+The three yield files have a landed scope-ranking replacement, proven by 73 checks.
+The jail pair targets the elder caller; its current base/enclosure split stays. Both drafts remain parked.
+The projection control returns with a receipt for manifest bytes and admitted tracked paths.
+Fifty checks pass; the old reader fails 13. Its roster name also repairs the cold summary red.
+Content freshness and privacy remain with the full projection witnesses. All 19 stashes remain.
 **FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
 replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
 

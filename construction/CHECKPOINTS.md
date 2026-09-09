@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.071647` -- walk-back nib `1fd73244ed`.** Shelf Bakery's completed package-recovery account whole before replacing it with the six-file review. Keep the shared parked-blob receipt proposal on the card. The projection witness header now names the coverage receipt and its local control; its former wording remains at this nib.
+
 **Checkpoint `20260909.070836` -- walk-back nib `0b4f309843`.** Condense the REDS headline's explanatory prose after two closed rows meet the same remaining space. Keep the opening census, measured count, source, span, and fold-recital link. The removed drift anecdotes and recital-size reading remain in this exact Git version. Every published row stays whole; this lap's unshared row takes the next free number.
 
 **Checkpoint `20260909.064045` -- walk-back nib `90fac92c37`.** The rebase brings the operator card above its bound. Shelf Petrichor's completed recovery account whole with the account writer, retaining its seed-boundary finding, parked-record receipts, and peer-lane notes. The new live paragraph points to that shelf and this lap's log. Peer accounts keep their text.

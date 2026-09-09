@@ -25,7 +25,7 @@
 # file the projector WITHHELD is absent LOUDLY: it stands in `.sow-withheld.log`, which is the
 # fail-safe working rather than failing. The fault is absent AND unlogged. The first run of this
 # scan found exactly that difference: `context/LEXICON.md` is allowed and never ships, because an
-# identity string survives the scrub and defence in depth drops the copy. Reported here as
+# identity string survives the scrub and defense in depth drops the copy. Reported here as
 # `withheld_by_design`, never gated, and worth a lap of its own -- the seed's readers have no
 # Lexicon and nothing said so.
 #
@@ -41,6 +41,22 @@ SEED=${SOW_SEED:-seed}
 [ -f "$MANIFEST" ] || { echo "refused: no manifest at $MANIFEST"; exit 2; }
 # A scan that reads nothing must refuse rather than report clean (REDS %170).
 [ -d "$SEED" ] || { echo "refused: no projection at $SEED/ -- run tools/s/sow.rish first"; exit 2; }
+
+# A projection answers for the manifest and tracked inventory it was built from.
+# Unrelated content edits leave this coverage question unchanged. A new path or
+# manifest edit needs a fresh projection, including an edit still in the index.
+RECEIPT="$SEED/.sow-projection.log"
+[ -f "$RECEIPT" ] || { echo "refused: no receipt at $RECEIPT"; exit 2; }
+. tools/fixtures/s/sow_reach_inputs.sh
+recorded=$(cat "$RECEIPT")
+[ -n "$recorded" ] || { echo "refused: receipt names no complete coverage inputs"; exit 2; }
+current=$(sow_reach_inputs "$MANIFEST") || {
+  echo "refused: could not read projection coverage inputs"; exit 2;
+}
+if [ "$recorded" != "$current" ]; then
+  echo "refused: projection coverage is stale -- manifest or tracked paths changed; run tools/s/sow.rish"
+  exit 2
+fi
 
 SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
 is_subex() {
@@ -88,7 +104,7 @@ for p in $(grep -E '^allow ' "$MANIFEST" | awk '{print $2}'); do
     done
     if [ "$loud" = yes ]; then
       withheld=$((withheld + 1))
-      echo "withheld: $p -- absent, and the projector logged why (defence in depth)"
+      echo "withheld: $p -- absent, and the projector logged why (defense in depth)"
     else
       empty=$((empty + 1))
       echo "empty: $p -- allowed, shippable, and absent with nothing logged"
