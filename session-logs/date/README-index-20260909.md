@@ -16,7 +16,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.172246` | [Only its own hits](20260909/20260909-172246_the-answer-that-holds-only-its-own-hits.kyri) | Diffuser; yesterday's falsifier run, and it held |
 | `20260909.171715` | [The prover that edited the tree](20260909/20260909-171715_the-prover-that-edited-the-tree.kyri) | Copal; a pen that ran its subject in the live tree |
 | `20260909.171139` | [The card advertises; a log quotes](20260909/20260909-171139_the-card-advertises-the-log-quotes.kyri) | Patchouli; a quoted dead hash, a pin that could take no row |
+| `20260909.170829` | [The lap that left its own record](20260909/20260909-170829_the-lap-that-left-its-own-record.kyri) | Grass; parked record landed, plant floor measured |
 | `20260909.170747` | [The answer that reserves its room](20260909/20260909-170747_the-answer-that-reserves-its-room.kyri) | Bakery; a kept answer is charged a slot |
+| `20260909.164204` | [A contract that refused itself](20260909/20260909-164204_the-contract-that-refused-itself.kyri) | Grass; one verdict over two facts |
 | `20260909.160906` | [The roll beside the table](20260909/20260909-160906_the-roll-beside-the-table.kyri) | The rune roll derives from the lexer now, and its guard is heard. |
 | `20260909.155502` | [The declared audit is walled](20260909/20260909-155502_the-declared-audit-is-walled.kyri) | TAME Core names nine tools; a wall now holds them rostered |
 | `20260909.154924` | [The record nobody carried](20260909/20260909-154924_the-record-nobody-carried.kyri) | Copal; parked log lands, nib repinned |

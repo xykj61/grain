@@ -19,14 +19,14 @@ say "convergence-prove: Language EN -- one instrument for a property twenty-seve
 say "convergence-prove: Style Gauge, Meter -- three verdicts, and the honest one is named."
 say "convergence-prove: Lens TAME -- safety first: the subject is a copy, never the tree."
 
-say "convergence-prove: the control -- twelve behaviors, including a tool built to diverge..."
+say "convergence-prove: the control -- eighteen behaviors, including a tool built to diverge and two second-run refusals..."
 let ctl = run ["sh" "tools/fixtures/c/convergence_prove_control.sh"]
 assert ctl.ok else "convergence-prove: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=12 fail=0" else "convergence-prove: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=18 fail=0" else "convergence-prove: the control did not prove eighteen behaviors --\n${ctl.out}\n${ctl.err}"
 
 # invariant: the control exercises the prover against a TRACKED writer on a real sample, not only
 # against tools it invented, and asserts the reading is `converges` rather than `inert` -- a green
 # built on an inert sample is the lie that verdict exists to prevent.
-assert ctl.out contains "coverage: a tracked tree writer was exercised on a real sample" else "convergence-prove: the control never exercised a tracked writer"
+assert ctl.out contains "coverage: a tracked tree writer was exercised on a real sample, and both second-run refusals -- one holding the file, one writing before it refused -- were told apart" else "convergence-prove: the control never exercised a tracked writer"
 
-say "GREEN: convergence-prove -- a writer run twice on a copy, with divergence caught, refusal named, and an inert sample refused as proof."
+say "GREEN: convergence-prove -- a writer run twice on a copy, with divergence caught, both second-run refusals told apart, and an inert sample refused as proof."

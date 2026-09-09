@@ -166,26 +166,30 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS recovery `20260909.041325`:** [output before the assertion](../session-logs/date/20260909/20260909-041325_say-before-the-assert.kyri); 154 bindings repaired, 86 control checks. The historical-log gate stays open.
-**GRASS audit `20260909.052250`:** [caller search errors](../session-logs/date/20260909/20260909-052250_the-search-that-swallowed-its-error.kyri); a failed search now refuses with its diagnostic, proven by 98 control readings. All eight stashes remain; the historical-log gate stays open.
-
-**GRASS audit `20260909.063313`:** [comment words](../session-logs/date/20260909/20260909-063313_comments-that-counted-as-code.kyri); full-line comments cannot satisfy diagnostic matches; 112 control readings. Historical records stay held.
-
-**GRASS -- THE ROSTER SAID EVERY GUARD ON IT CAN RED, AND NOTHING READ THAT BACK.**
-Elder [shelved](archive/20260909-152755_itinerary-landed-accounts.md) whole.
-**AETHER HEARS**, so this lap listened for the claim a page keeps repeating with no witness under
-it. `construction/standing-equipment.kyri` line 11 states REDS row 59 over 285 files; its sibling
-half is walled (`guards_path_missing=0`) and that half stood on prose alone.
-`standing_equipment_redleg` reads it: **285 guards, every path present, every file asserting**, and
-**53 demonstrating no refusal of their own -- all 53 DELEGATE**, asserting on a real run, so each
-reds through its child. Zero-assert is GATED; the 53 sit under a falling ceiling, since gating them
-refuses every choir the tree owns. 16 control checks on a pen, both directions.
-**A FALSIFIER %596 WROTE DOWN, RUN:** `dated_path` reads `refs_lost` **93 -> 98** in two days,
-`lost_testimony` **91 -> 94**. The `%594` shelf-stamp wall slowed the growth (~5.7/day -> ~1.5/day)
-and closed nothing; `lost_promised_living` holds **0**. Row stays **BOOKED** on Keaton's word.
-**RED SURFACED, NOT MINE:** `sow_allow_reach` refuses on stale projection coverage; its repair is a
-full rescrub, which the scrub standfast has under Keaton's word.
+**GRASS -- A CONTRACT THAT REFUSES TO OVERWRITE ITSELF READ AS THE SHARPEST CORRUPTION.**
+Elder [shelved](archive/20260909-164204_itinerary-landed-accounts.md) whole.
+**WATER TASTES**, so this lap ran the instruments rather than reading their columns.
+`tools/c/convergence_census.sh` lists **4 unproven of 12 candidates**; run through the pen-tree
+prover, two are no writers at all (`verdict=inert`), `readme_metrics_splice.sh` reads
+**`converges`** on a perturbed README, and the fourth taught the finding.
+**BOTH PROVERS CALLED ONE VERDICT OVER TWO FACTS.** `refused_on_second` read *the sharpest kind of
+divergence* over every second run exiting non-zero -- and `tools/i/itinerary_account_shelf.sh`
+refuses `shelf_exists` on its own second run, which is its immutability contract keeping the tree
+**byte-identical**. Shown from the failing side: the elder prover calls that contract the sharpest
+divergence. The tree is asked now -- a refusal holding it reads `refused_on_second_tree_held`
+(`_file_held` one file down), a refusal that wrote again keeps the elder name and prints its paths,
+and neither exits zero, since a wedged output lands here too.
+**AND THE INSTRUMENT WAS READING ITS OWN NOTES:** `state()` runs `git add -A`, so the run
+transcripts inside the pen were part of the tree being measured -- safe only by removal ordering,
+and the first reading to ask the tree while one existed called every refusal a change. They live
+outside the pen now. Controls **19 -> 25** and **12 -> 18**, both witnesses GREEN.
 **MINE, NAMED:** the cold pass closes `tree_moved=yes` -- I wrote files while it ran.
+
+**GRASS `20260909.170829`:** a lap that died between log and commit left its record in the
+round-open stash, `status` EMPTY, kept unedited; `stash_record` closes. Its code half is superseded
+-- Copal named the same two facts `write_once`, a pass, where it named `refused_on_second_tree_held`,
+non-zero. **EARTH BREATHES IN:** two plants spell the constant they aim at, `plant_control.sh:230`
+and `rish_report_bound_control.sh:157` -- name the FORM (%519).
 
 **COPAL -- A GUARD ROSTERED AT TEA TIME REFUSED EVERY SHIP BY SUPPER.**
 Elder [shelved](archive/20260909-183200_itinerary-landed-accounts.md).
