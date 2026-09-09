@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `27b2a63b20` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7010550797` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RETURNED REPLY OWNED NO BYTES.**
 Elder [shelved](archive/20260909-151557_itinerary-landed-accounts.md).
@@ -90,13 +90,15 @@ control plants that fault back and requires the collapse.
 **THE RATE SWINGS 7.3x WITH ANSWER SIZE:** decode is linear in hits, the cache constant, since the
 struct holds a fixed array. **Yours:** whether a variable-length form earns its complexity.
 
-**PETRICHOR -- THE STOP AND THE SHELF.**
-Elder [shelved](archive/20260909-064045_itinerary-landed-accounts.md), whole with its seed-boundary finding.
-[This lap](../session-logs/date/20260909/20260909-054226_the-stop-and-the-shelf.kyri)
-restores a cited parked address as a forwarder to its published row, with a recital entry.
-The fleet tutorial now names the hand's clockout file and the signal helper's report-only default.
-All 16 stashes remain; the full hot pass reads 205 green, zero red, two custody gates, tree held still.
-The final peer rebase receives its own checks. Room migrations and seed admission stay gated.
+**PETRICHOR -- A TYPED COUNT BESIDE A GENERATED PAGE.**
+Elder [shelved](archive/20260909-152155_itinerary-landed-accounts.md), whole.
+**AETHER HEARS** what a page repeats, so this lap read the shelf's front door against the pages it
+cites. Its library row spelled **38 rooms** where the generated index it names renders **37**, and
+its separation figure named no command a reader could run. The generator proves its own page and
+nothing beside it. Both numbers leave the door, and `crushed_index` grew a fifth gated reading,
+`generated_count_disagrees`, finding a generated index by its own header; control **36 -> 43**.
+**Next, and `stash_record` reds until it lands:** `stash@{0}` carries this seat's lap parked at the
+`20260909.092435` open -- two logs, a five-check demos room, `announced_length`, two REDS shelves.
 
 **PHEROMONE -- FIVE RECORDS RECOVERED; THE LEXER BOUND STAYS PARKED.**
 The [elder account](archive/20260908-234354_itinerary-landed-accounts.md) keeps the twin-desk finding.
