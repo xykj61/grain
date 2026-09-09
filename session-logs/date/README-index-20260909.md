@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.030306` | [A parked control recovered](20260909/20260909-030306_the-control-kept-in-a-stash.kyri) | identity checks; records preserved |
 | `20260909.025531` | [Codex script modes](20260909/20260909-025531_codex-script-modes.kyri) | modes, recovery, and test PATH |
 | `20260909.022744` | [Incense watcher ready](20260909/20260909-022744_incense-watcher-ready.kyri) | arms after interactive exit |
 | `20260909.022156` | [Codex fleet sailing](20260909/20260909-022156_codex-fleet-sailing.kyri) | seven loops live; incense interactive |

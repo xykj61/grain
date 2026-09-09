@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260909.025548` -- walk-back nib `6fe92b191b`.** Reworded the introductory comments in `tools/f/fleet_watch_codex.sh` after its C+ 76 report card. The earlier header and enclosure explanation remain at this nib; they described the Claude launch path where the Codex loop runs bare. The new header explains seat matching, pass limits, clockout, and the forwarded launch marker. Every non-comment line stays identical. Prepared grade A 94; the executable mode is restored in the same lap. Withdrawn on rebase: the peer's published 20260909.025531 revision covers the same repair and stands whole.
+
 **Checkpoint `20260909.025531` -- walk-back nib `6fe92b191b`.** The opening comment in
 `tools/f/fleet_watch_codex.sh` graded C+ 76 under the program's Door reading.
 Rewrite it in place to explain the watch, its flags, and its hold checks in plain

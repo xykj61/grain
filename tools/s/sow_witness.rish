@@ -6,12 +6,40 @@
 # (.claude/rules/reds-first.md).
 #
 # Duties:
+#   0. The wall can red -- the identity scan is shown a planted name and answers.
 #   1. M1 -- the manifest classifies every tracked root path, exactly once.
 #   2. Project the seed fresh from the field.
 #   3. IDENT -- no maintainer identity string survives into seed/.
 #   4. NO_PERSONAL -- no `personal` path and no key material appears in seed/.
 #
+# WHY DUTY 0 STANDS AHEAD OF THE OTHERS. Duties 1 through 4 all end in the same shape: a scan
+# runs over the projected seed and this witness asserts its clean word is present. That proves
+# the seed is clean only if the scan could have said otherwise, and until 20260908 nothing in
+# this tree had ever planted a maintainer name in front of tools/fixtures/s/sow_leak_scan.sh
+# and watched it answer. The grain's own strand is the reason it matters here more than
+# anywhere: a guard that cannot red guards nothing, so a witness must be proven able to make
+# a sound before its silence means anything (REDS row 59).
+#
+# This wall in particular has already been proven able to red FALSELY and never to red truly.
+# REDS %244: a blanket history rewrite turned two of the scan's own entries into the public
+# pseudonym, and 22 projected files failed a privacy check that had nothing to do with privacy.
+# A guard whose only demonstrated red is a wrong one is the guard whose green is worth least.
+#
+# The control costs no projection -- it builds isolated pen directories and reads each with the
+# scan's own working-directory-relative `seed`, so the real seed/ is never touched and custody
+# gate %1 is nowhere near it. It reports two further readings it deliberately does NOT gate:
+# a name inside a binary file is invisible to the scan's -I, and an ABSENT seed/ reads clean.
+# The second is covered here by ORDERING rather than by the scan -- duty 2 below projects fresh
+# and asserts SOW_OK before duty 3 reads anything -- which is why the duties run in this order
+# and why moving duty 3 ahead of duty 2 would turn this witness green over nothing at all.
+#
 #   rishi/bin/rishi run tools/s/sow_witness.rish
+
+# Duty 0 -- the wall can red
+let ctl = run ["sh" "tools/fixtures/s/sow_leak_control.sh"]
+say ctl.out
+assert ctl.ok else "the identity-wall control failed to run"
+assert (ctl.out contains "control_verdict=ok") else "the identity scan did not red on a planted maintainer name"
 
 # Duty 1 -- manifest completeness (M1)
 let cover = run ["sh" "tools/fixtures/s/sow_manifest_cover.sh"]
