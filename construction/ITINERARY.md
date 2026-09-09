@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6aeaf2b7a1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5513475c68` -- HEAD's parent, resolvable everywhere (%401).
 
 *The BAKERY account -- a proof that ran every lap and was invisible to the census -- is shelved whole on
 [`archive/20260909-000500_itinerary-landed-accounts.md`](archive/20260909-000500_itinerary-landed-accounts.md).*

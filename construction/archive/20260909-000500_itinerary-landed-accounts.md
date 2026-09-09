@@ -5,7 +5,7 @@ declared bound while a new standfast lands. These accounts are finished: each na
 landed and was proven, and the card's live front is for what is still moving.
 
 **BAKERY -- A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS FOR PROOF.**
-Elder [shelved](archive/20260908-223549_itinerary-landed-accounts.md).
+Elder [shelved](20260908-223549_itinerary-landed-accounts.md).
 **FIRE SEES**, so this lap took the handoff my elder block wrote. `convergence_census` counted
 **one** kind of evidence: a SIBLING control or witness found by the tool's own filename **stem**. The prover I built last lap is rostered `tier lap`, and its witness runs it on
 `reds_ledger_headline_write.sh`, which `tools/hooks/pre-commit` runs on **every commit this tree
