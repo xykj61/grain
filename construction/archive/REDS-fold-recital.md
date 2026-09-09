@@ -590,3 +590,5 @@ at a closed fold.*
 *Row %654 folded to [`REDS-a-flag-that-never-returns-rows-654.md`](REDS-a-flag-that-never-returns-rows-654.md) on `20260908.225856`, **BOOKED** -- a documented flag that never returns, on a page every instrument graded healthy -- reachability is not termination.*
 
 *Row %655 born onto [`REDS-a-numerator-that-reads-names-rows-655.md`](REDS-a-numerator-that-reads-names-rows-655.md) on `20260908.234818`, **CLOSED** -- the same census searched for a tool's proof under the tool's own filename stem, so a control named for the family sat one file away and unread; widening to the family prefix read 7 of 10 proven with no evidence written. Born onto its shelf rather than folded: `pin_deadlocked=1`, 173 bytes of headroom, the ninth ship the pin refused today.*
+
+*Row %656 folded to [`REDS-the-template-and-the-admission-rows-656.md`](REDS-the-template-and-the-admission-rows-656.md) on `20260909.030305`, **CLOSED** -- A template classification does not admit a file to the seed.*

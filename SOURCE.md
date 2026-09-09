@@ -50,7 +50,8 @@ A first day that ends with Cursor open inside the enclosure -- before any forge 
 
 *The reasoning behind this ordering: [`foundations/20260909-004934_the-machine-you-can-write-down.md`](foundations/20260909-004934_the-machine-you-can-write-down.md)
 and [`active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md`](active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md).
-The host this guide raises is described by [`nixos/configuration.nix`](nixos/configuration.nix), which ships with this seed.*
+The working repository describes its host in `nixos/configuration.nix`. The public seed currently
+withholds the `nixos/` directory; admitting its portable template still needs verification.*
 
 **Begin here, on a rented machine, rather than on the laptop in front of you.** A cloud pier gives
 you a host you can rebuild from a written file, and every later step in this guide assumes that

@@ -53,6 +53,10 @@ same breath. So this pin holds no rows of its own -- it holds the way in, and it
 the room. The newest day's shelf is the one to open; it stays open while its day runs and freezes
 when the day closes.
 
+Run `sh tools/fixtures/l/log_has_a_row_scan.sh` to check that every day shelf has a row here,
+each closed count matches its shelf, and the newest shelf reads `open`. The
+[`log_has_a_row` witness](../tools/l/log_has_a_row_witness.rish) tests these three promises every lap.
+
 **Only a closed day carries a count.** The live day reads `open` in both columns, the way
 `CHAPTERS.md` has always written it: an open shelf gains a row every lap, so a number typed
 there is wrong before the ink dries, and the hand that must remember to bump it is the fault
