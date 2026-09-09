@@ -73,6 +73,9 @@ IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|groupproject405|
 [ -f "$MANIFEST" ] || { echo "sow: $MANIFEST missing" >&2; exit 1; }
 [ -f "$SCRUB" ]    || { echo "sow: $SCRUB missing" >&2; exit 1; }
 
+PROJECTED_FROM=$(git rev-parse --verify HEAD)
+PROJECTED_BASIS=$(sh tools/fixtures/s/sow_projection_basis.sh)
+
 mkdir -p "$SEED"
 # Clear prior projection content; preserve the seed repo's own .git if present.
 find "$SEED" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + 2>/dev/null || true
@@ -163,4 +166,13 @@ done
 COPIED=$(find "$SEED" -type f ! -name '.sow-withheld.log' ! -name '.sow-scrubbed.log' | wc -l | tr -d ' ')
 SCRUBBED=$(grep -c '' "$SEED/.sow-scrubbed.log" 2>/dev/null || echo 0)
 WITHHELD=$(grep -c '' "$SEED/.sow-withheld.log" 2>/dev/null || echo 0)
+# Write completion evidence only after all files have been processed and the
+# tracked inputs still match. This local receipt stays outside the public index.
+CLOSE_BASIS=$(sh tools/fixtures/s/sow_projection_basis.sh)
+[ "$PROJECTED_BASIS" = "$CLOSE_BASIS" ] || { echo "sow: tracked inputs changed during projection" >&2; exit 2; }
+{
+  printf 'projected_from %s\n' "$PROJECTED_FROM"
+  printf 'projected_basis %s\n' "$PROJECTED_BASIS"
+  printf 'projected_at %s\n' "$(TZ=America/New_York date +%Y%m%d.%H%M%S)"
+} > "$SEED/.sow-projection.log"
 echo "SOW_OK copied=$COPIED scrubbed=$SCRUBBED withheld=$WITHHELD"

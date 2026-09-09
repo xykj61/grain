@@ -1,46 +1,57 @@
 #!/bin/sh
-# sow_allow_reach_scan.sh -- an allowed room that ships nothing is counted, not trusted.
-#
-# WHY THIS EXISTS (REDS %485). `template-manifest.bron` is an allowlist: the seed ships only what an
-# `allow` line names. On `20260906` a second filter inside `tools/fixtures/s/sow_project.sh` --
-# `grep -vxE 'gratitude|vendor'`, a hard exclusion by NAME, running after the allowlist -- silently
-# discarded an allowed room. The manifest read allow, the projection ran, and `sow_witness` answered
-# GREEN, because a room that ships no bytes leaks no names. `ls seed/gratitude` read 0.
-#
-# So the gate is the OTHER direction from every existing seed guard. `sow_witness` asks *did
-# anything private get out*; `seed_link` asks *does a shipped link land*. Neither can ask *did the
-# thing we allowed actually arrive*, and a publish is exactly as wrong when a room is missing as
-# when a name leaks -- quieter, and therefore worse.
-#
-#   sh tools/fixtures/s/sow_allow_reach_scan.sh
-#
-# Prints `allows=N shipped=N withheld_by_design=N empty=N`, one `empty:` line per silently-missing
-# room and one `withheld:` line per loudly-withheld one. `empty` is the gate; zero is the only
-# passing reading.
-#
-# WHAT IS NOT A FAULT, and why each is excluded rather than waived. A room whose every tracked file
-# sits under a `sub_exclude` ships nothing BY DESIGN -- `linengrow` is the standing example. A path
-# the field does not have cannot ship. A single-file `allow` is checked as a file rather than a
-# directory, since `README.md` is a room of one. And -- the distinction this guard turns on -- a
-# file the projector WITHHELD is absent LOUDLY: it stands in `.sow-withheld.log`, which is the
-# fail-safe working rather than failing. The fault is absent AND unlogged. The first run of this
-# scan found exactly that difference: `context/LEXICON.md` is allowed and never ships, because an
-# identity string survives the scrub and defence in depth drops the copy. Reported here as
-# `withheld_by_design`, never gated, and worth a lap of its own -- the seed's readers have no
-# Lexicon and nothing said so.
-#
-# BOUNDS: the manifest's own allow list (106 lines on 20260906), one `git ls-files` per room.
+# Count allowed rooms in a completed seed projection from these tracked inputs.
+# A receipt binds the copy to its commit, index, and working bytes. Stale copies
+# refuse before any missing room is counted. An announced withholding is reported
+# separately from a room that vanished silently.
+# The scan reports counts; tools/s/sow_allow_reach_witness.rish gates empty at zero.
+# --capability reads only the receipt: absent skips, unknown runs the guard.
 set -eu
 
-root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+root=${SOW_ROOT:-$(CDPATH= cd -- "$here/../../.." && pwd)}
 cd "$root"
 
 MANIFEST=${SOW_MANIFEST:-template-manifest.bron}
 SEED=${SOW_SEED:-seed}
 
-[ -f "$MANIFEST" ] || { echo "refused: no manifest at $MANIFEST"; exit 2; }
+if [ "${1:-}" = --capability ] && [ ! -d "$SEED" ]; then echo absent; exit 0; fi
 # A scan that reads nothing must refuse rather than report clean (REDS %170).
 [ -d "$SEED" ] || { echo "refused: no projection at $SEED/ -- run tools/s/sow.rish first"; exit 2; }
+
+# A completed projection carries its commit and tracked-input digest. Read these
+# before comparing allowed rooms: a stale copy cannot answer for current inputs.
+# The capability form serves the roster from this same check. Missing or stale
+# evidence means absent; an unreadable or malformed receipt means unknown and runs.
+projection_check() {
+  RECEIPT="$SEED/.sow-projection.log"
+  [ -f "$RECEIPT" ] || { echo "refused: no receipt at $RECEIPT"; return 2; }
+  projected_from=$(awk '$1 == "projected_from" { print $2 }' "$RECEIPT") || return 3
+  [ -n "$projected_from" ] || { echo "refused: the receipt at $RECEIPT names no commit"; return 3; }
+  case "$projected_from" in *[!0-9a-f]*) echo "refused: malformed receipt commit"; return 3;; esac
+  case "${#projected_from}" in 40|64) :;; *) echo "refused: malformed receipt commit"; return 3;; esac
+  projected_basis=$(awk '$1 == "projected_basis" { print $2 }' "$RECEIPT") || return 3
+  [ -n "$projected_basis" ] || { echo "refused: receipt names no tracked-input digest"; return 3; }
+  case "$projected_basis" in *[!0-9a-f]*) echo "refused: malformed receipt digest"; return 3;; esac
+  case "${#projected_basis}" in 40|64) :;; *) echo "refused: malformed receipt digest"; return 3;; esac
+  head_now=$(git rev-parse --verify HEAD) || return 3
+  if [ "$projected_from" != "$head_now" ]; then
+    echo "refused: projection is stale -- taken at $projected_from, tree now at $head_now"
+    return 2
+  fi
+  basis_now=$(sh "$here/sow_projection_basis.sh") || return 3
+  if [ "$projected_basis" != "$basis_now" ]; then
+    echo "refused: projection is stale -- tracked inputs changed at commit $head_now"
+    return 2
+  fi
+}
+if [ "${1:-}" = --capability ]; then
+  rc=0
+  projection_check >/dev/null 2>&1 || rc=$?
+  case "$rc" in 0) echo present;; 2) echo absent;; *) echo unknown;; esac
+  exit 0
+fi
+[ -f "$MANIFEST" ] || { echo "refused: no manifest at $MANIFEST"; exit 2; }
+projection_check || exit 2
 
 SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
 is_subex() {

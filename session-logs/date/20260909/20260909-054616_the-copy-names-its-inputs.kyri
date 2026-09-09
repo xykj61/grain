@@ -1,0 +1,57 @@
+format session-log-v1
+stamp 20260909.054616
+editor Codex CLI
+provider OpenAI
+product Codex
+role Bakery, core infrastructure and fleet friction
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m CODEX_MODEL; this seat prompt selects gpt-6-astra
+voice Kyri
+title The copy names its inputs
+prompt Recover Bakery's parked work before new work; honor the handoff gates, commit with a log, and push xy then gp405
+rota lap 4430, row 0 -- Aether, the row that hears; the return habit asked which proof still serves the current caller. A saved control earns recovery by running against that caller, with the older bytes retained.
+obs The scan script now checks a completion receipt before counting allowed rooms. The projector records its commit and a digest of the index and binary diff, checks the digest again after copying, and writes the receipt last. The roster calls the scan's capability argument so both readers use one check.
+obs Recovered and adapted the seed-reach control from stash ce363e5093bad6d9024d25ffd859a69faab68c8a, original blob 8669fb02a5d9f836734734120e84002c074fa28d. Its original 26 checks pass. The expanded control proves staged and unstaged edits, new tracked paths, malformed evidence, unavailable Git, and a source edit during the real projector's copy.
+obs The older receipt draft named HEAD alone. Staged and unstaged changes can share that HEAD, so the completed repair also hashes tracked input state. This is source provenance, not a substitute for the existing seed content witnesses or the public publish gate.
+obs A new unconditional control witness runs in neutral repositories. The live-copy witness retains its projection capability and names the absent or stale scope. Malformed or unreadable evidence answers unknown and runs the guard; its stdout and stderr are printed before asserting.
+obs The first detached cold launch lost its process when the calling shell exited. The next launch kept that shell alive by waiting on the exact PID returned by the runner. Its tool-named transcript matches this checkout, HEAD, and all 19 stashes. No peer process was signaled.
+obs Both remotes were fetched before the recovery; both matched HEAD. No parked bytes were discarded. The incremental scrub design, naming rulings, provisioning, keys, and public seed push keep their existing gates.
+obs Reviewed the two oldest work orphans in stash f3c9af74dfb4a4dc3ba4fb38218b9480982e03c0: agent_jail_control.sh (blob d44d5c81175116278c309a7855c5659ebe3a3fea) and mount_namespace_probe.sh (blob 51cf0cfc7222be81c14e73c2e436a90ee4187236). They target the older witness-owned skip. The live roster owns jail_nesting and has its own planted checks. The older probe's unknown-error distinction is stronger than the current exit-status test, so these two remain parked for adaptation, not declared equivalent or discarded.
+obs Reviewed the yield trio in stash 089f89688cb1c0ee3e10c555a07732aecb9a9c53 third parent. Scan blob 38ca8a67f1e4f36074377eff1deb8d37866b37eb, control blob 684525c61908e969e209318e2b08179a3c3bf12f, witness blob 52384fca154d2aba26a660c26cd88a5e52eb7cee. The live replacement is tools/fixtures/s/standing_equipment_scope_rank.sh, its control, and tools/s/standing_equipment_scope_rank_witness.rish. Commit 643297da32b3b0c6017cc64ad8543bfb6e92a2ce landed the shared matcher; ef9ce7e749dfe9d95aff3b9064daa868f3ff6cea carries the current ranking. The replacement's 73 checks pass. These paths stay parked as the older implementation.
+obs The per-blob inventory above is this lap's record. The shared recovery-receipt reader remains a proposal on the card; this lap installs no fleet policy.
+loom roster=cold guards=208 green=206 red=0 gated=2 wall_s=1853 cpu_ms=1754203 tree_moved=no
+loom stash_record scanned_stashes=17 records=16 unlanded=0 orphans_work=5 unread_edits=77
+obs Staging found an empty index lock from 05:13:45, the interrupted first cold launch. No process held the file and no Git process remained. Removed that specific stale lock, then staged the exact set. The first generated-page run had followed the refused add, so both pages were regenerated after the successful add.
+loom recovery stashes_retained=19 work_orphans_reviewed=6 control_recovered=1 replacement_paths=3 adaptation_paths=2
+loom control=sow_allow_reach original_checks=26 current_checks=44 failures=0 elder_scan_failures=19
+loom integration=standing_equipment expected_assertions=259 missing_assertions=0 receipt_cases=3
+loom control=scope_rank behaviors=73 faults=0
+loom control=sow_lock cases=6 failures=0 environment=neutral_repository
+loom witness=sow_allow_reach current_exit=0 dropped_room_exit=1 malformed_receipt_exit=1 no_projection_exit=0
+loom qa scan=100 control=100 basis=100 projector=83 runner=82 runner_control=81 live_witness=100 roster_witness=83 control_witness=100
+file tools/fixtures/s/sow_projection_basis.sh recover and verify the projection receipt and reach path
+file tools/fixtures/s/sow_allow_reach_scan.sh recover and verify the projection receipt and reach path
+file tools/fixtures/s/sow_allow_reach_control.sh recover and verify the projection receipt and reach path
+file tools/fixtures/s/sow_project.sh recover and verify the projection receipt and reach path
+file tools/fixtures/s/standing_equipment_run.sh recover and verify the projection receipt and reach path
+file tools/fixtures/s/standing_equipment_control.sh recover and verify the projection receipt and reach path
+file tools/s/sow_allow_reach_witness.rish recover and verify the projection receipt and reach path
+file tools/s/sow_allow_reach_control_witness.rish recover and verify the projection receipt and reach path
+file tools/s/standing_equipment_witness.rish recover and verify the projection receipt and reach path
+file construction/standing-equipment.kyri run the neutral control without a live projection
+file construction/ITINERARY.md recovery account, retained work, and parent Git nib
+file session-logs/date/README-index-20260909.md prepend this lap on its own shelf
+obs After staging, regenerated README metrics and the library page. The README counts 1900 witnesses; the library page is byte-identical. The final index holds exactly 14 paths, all belonging to this recovery.
+file README.md regenerate the witness count after staging the new control witness
+loom qa_close roster=89 card=100 log=100 index=100
+loom roster=hot_before_rebase guards=208 green=206 red=0 gated=2 wall_s=1739 cpu_ms=1691300 tree_moved=no
+obs Integrated six peer commits through 7d2e4d9b70. Kept Patchouli's shorter card account and new session-roster guard, Grass's diagnostic-reader repair, and Diffuser's caller-budget reading. The only conflict was on the shared operator card; the day-shelf merge retained every row. The input-receipt source files stayed unchanged.
+obs The full hot pass covered the committed recovery before rebase. Regenerated metrics again for the peer witness, then reverified the integrated tree before sending.
+git_nib 7d2e4d9b70
+recommend keep-going -- adapt the oldest enclosure pair to the current roster caller before new work; preserve its unknown-error distinction and all stashes. The workload test from Diffuser remains the next core-infrastructure grant after recovery.
+scope Recover the seed-reach package and review all six work orphans. The full cold and hot rosters bracket the tracked changes; the hot pass follows staging and generated-page refresh.
+status TESTED -- 44 seed control checks, 259 roster control assertions, 73 ranking checks, and six projection lock checks pass. The live witness welcomes a current neutral copy and refuses a missing room or malformed receipt. All retained work and custody gates are named above.

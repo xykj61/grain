@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8ab63b5674` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7d2e4d9b70` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -56,10 +56,16 @@ Five original logs, six archive pages, and two guard families return from this s
 `plant_liveness` proves 68 control checks and 36 recognized mutations; 60 unresolved inputs
 remain outside its proof. `link_touch` proves 26 checks against the current hook, which stays
 unchanged. Diffuser's landed watcher repair stands. Recovery run twice changes nothing more.
-All 19 stashes remain; the record scan now reads all 16 records carried and six work orphans
-still to review. [This lap](../session-logs/date/20260909/20260909-042717_the-parked-package-returns.kyri) holds the scope and evidence.
+All 19 stashes remain; that record scan read all 16 records carried and six work orphans. [This lap](../session-logs/date/20260909/20260909-042717_the-parked-package-returns.kyri) holds the scope and evidence.
 **FLEET FRICTION, PROPOSED:** one receipt maps each parked blob to its landed commit or explicit
 replacement, read by round-open and seats. Path presence alone cannot prove an edit landed.
+
+**BAKERY RECOVERY `20260909.054616`:** the seed-reach control returns with its producer and
+reader. Completion receipts name the commit and tracked-input digest; changed inputs refuse
+before missing rooms are counted. A neutral control runs on every seat; live reach keeps its
+capability. The yield trio maps to the landed scope-ranking family. The older enclosure pair
+stays parked for adaptation to the roster's current caller. All 19 stashes remain.
+[This lap](../session-logs/date/20260909/20260909-054616_the-copy-names-its-inputs.kyri) records the six paths, replacement evidence, and checks.
 
 **PATCHOULI -- THE PARKED ROSTER AND ITS RECORDS ARE RECOVERED.**
 The shelf-count guard proves 31 controls and compares both session rosters.

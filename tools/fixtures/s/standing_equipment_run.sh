@@ -717,24 +717,10 @@ capability_state() {
       if command -v strace >/dev/null 2>&1; then echo present; else echo absent; fi
       ;;
     seed_projection)
-      # Does a seed projection stand in this checkout? `seed/` is gitignored and built by
-      # `tools/s/sow.rish`, so a fresh clone has none -- and `sow_allow_reach`, which reads the
-      # shipped side, cannot run without one. Its scan refuses rather than reporting clean, which is
-      # correct (REDS %170) and made the guard red on every tree in the fleet that had not projected
-      # (REDS %492). This is the same reading the operator card already gives an empty `vendor/`: an
-      # ENVIRONMENT fact rather than a tree red.
-      #
-      # THE PROBE ASKS THE GUARD'S OWN QUESTION, reading `SOW_SEED` exactly as the scan does, so the
-      # two can never disagree about where the projection is. Answering a different question than
-      # the guard would is how a capability becomes an exemption.
-      #
-      # THERE IS NO UNKNOWN HERE, and that is honest rather than a gap: `test -d` has no tool to go
-      # missing, so the question is always answerable. The one thing absence could hide is a
-      # projection deleted where it should stand -- and `sow.rish` rebuilds it from the field every
-      # publish, so a missing `seed/` names no fault. The skip is announced by name on every pass
-      # (`skipped_capability sow_allow_reach wants=seed_projection here=absent`), which is what keeps
-      # it a cadence rather than a quiet hole.
-      if [ -d "${SOW_SEED:-seed}" ]; then echo present; else echo absent; fi
+      # The scan and roster read the same completion receipt. A missing or stale
+      # copy cannot answer for current inputs; malformed evidence runs the guard
+      # so its refusal remains visible. SOW_ROOT keeps pen runs in their own tree.
+      SOW_ROOT="$PWD" sh "$_run_here/sow_allow_reach_scan.sh" --capability 2>/dev/null || echo unknown
       ;;
     day_shelf)
       # Does the day this pass stands in have a shelf with tracked logs in it? `rota_declared`

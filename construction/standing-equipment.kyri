@@ -177,6 +177,13 @@ seated 20260823.034321
 # every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
 # (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
 # card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
+# The recovered control uses neutral repositories, so every seat can prove the
+# receipt and reach refusals even when its live projection is absent or stale.
+guard sow_allow_reach_control
+path tools/s/sow_allow_reach_control_witness.rish
+tier lap
+seated 20260909.054616
+
 guard sow_allow_reach
 path tools/s/sow_allow_reach_witness.rish
 tier lap

@@ -1,0 +1,12 @@
+# Prove seed reach and completion receipts without a live seed projection.
+# Neutral test repositories let every fleet seat exercise the refusal paths.
+# The live-copy witness has a capability gate; this control runs on every lap.
+
+say "sow-allow-reach-control: test the scan and projector in isolated repositories"
+let control = run ["sh" "tools/fixtures/s/sow_allow_reach_control.sh"]
+say control.out
+say control.err
+assert control.ok else "sow-allow-reach-control: the test script must finish successfully"
+assert control.out contains "control_fail=0" else "sow-allow-reach-control: every receipt and reach check must agree"
+assert control.out contains "control_verdict=ok" else "sow-allow-reach-control: the script must report its final verdict"
+say "GREEN: seed reach and completion receipts proved in neutral repositories"
