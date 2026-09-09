@@ -34,7 +34,7 @@ pub const band_version = "20260814.165106";
 /// cascade; `run` continues from both carried states so a span band-passed piece by piece has no re-transient at a seam;
 /// `reset` returns both states to silence so the next run re-opens both transients deliberately.
 pub const Bandpass = struct {
-    /// The high-pass stage's carried low-pass estimate scaled by low_den at full i64 precision -- the high-pass output is x − lp.
+    /// The high-pass stage's carried low-pass estimate scaled by low_den at full i64 precision -- the high-pass output is x - lp.
     hp_state: i64 = 0,
     /// The low-pass stage's carried estimate scaled by high_den at full i64 precision.
     lp_state: i64 = 0,

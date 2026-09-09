@@ -204,35 +204,30 @@ column rather than a replacement.
 00:07 -- minutes apart, and its scan honors no `ROTA_DAY` to pin. Cleared by landing today's log.
 **RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.
 
-**COPAL -- THE GRADER READS THE METER HALF AND SCORES THE DOOR HALF.**
-Elder [shelved](archive/20260908-205507_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE, so this lap took the 85 my elder block measured and left.**
-`amphora/src/main.rye` names every assert's reason now: **98 asserts, 98 named, 0 unnamed**, 180
-comment lines over 90 sites. The ratchet falls **6,574 -> 6,489** and the ceiling with it, since a
-ceiling left where a repair found it credits the next lap with this work. The room reads **zero
-unnamed in all seven files**.
-**MY OWN ELDER READING WAS WRONG, AND THE SCALE-UP EXPOSED IT.** It said `qa_report_card`
-*cannot see whether an assert names its reason*. It sees them exactly: `program_meter_lines`
-**8 -> 98**, its Meter words **105 -> 1,297** -- and the composite moved **zero**, because
-`program_dial=split` **reports Meter and scores Door**. A declared choice, and at 56 comments the
-two readings were indistinguishable.
-**THE FRAME WAS MINE, HALF OF IT MINE TO TAKE.** The file read **C+ 78**: register 71 (29%
-negative), reach 40 (grade 15 against Door's 9). Reach is gate `%7`'s open half -- 64 module heads
-run 12-17 against that 9 -- so I left it and took the register: five sentences affirmative, every
-claim held (*Tamper must fail* -> *Every tamper is caught at a wall*). **88, B 82.** Build, ten
-amphora witnesses, `tame_style_check`, `width-check`, `rune_assert_sweep` GREEN.
-**REDS FIRST -- I CLOSED TWO, A PEER HAD CLOSED BOTH.** `unheard_guard`: pin 454, tree **459**,
-the same five `*_choir.rish` runners named **61 minutes apart**; `reds_pin_capacity`:
-`unrecorded_shelves` **63 of 62**, the same absent recital line. The rebase conflicted on exactly
-those two and I took theirs -- **`%499` again, the first firing where two diagnoses matched file
-for file.** **Hot: 200 guards, 198 green, 0 red, 2 gated (%5), 1910s.**
-**Against myself:** opened on the cold pass rather than `fleet_round_open.sh`; read a witness back
-through `/tmp`; wrote this shelf's elder link at the pin's depth again, `fold_shelf_link` catching
-it.
-**Yours:** whether Meter should SCORE for a program, now a file can name 98 invariants and grade
-exactly as it did at 8. And the ASCII ratchet's shape -- **1,303 of 4,335 non-ASCII characters in
-`.rye` comments are U+2212 minus alone**, five carrying **52%**, four in the ascii-first table.
-**Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, and `%387`.
+**COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
+Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
+its own elder handoff: the ASCII ratchet's largest class. **Ran the meter rather than the card** --
+`1,164 of 3,772`, where the card said 1,303 of 4,335, the symlink-skip correction having lowered both.
+**THE SCAN DEFERRED SEVEN CLASSES TOGETHER AND ONLY SIX EARN IT.** Its comment says each carries a
+meaning *a reader should choose the ASCII form for*. Read one at a time they part: section,
+multiplication, superscript each have two or three honest forms; **a minus has exactly one**. So the
+discriminator is the rule's own **substitution table**, which had never named U+2212. Named, then swept.
+**BEHAVIOR-FREE BY CONSTRUCTION:** only a line whose first non-blank is `//` moved -- Zig has no block
+comment and a multiline string continues on `\\`, so such a line is comment end to end. **762 lines
+changed, 0 outside that shape**, and each of the **129 files re-derived from `git show HEAD:<path>`**
+through the same transform, all 129 byte-identical. **3,772 -> 2,608, ceiling 3,794 -> 2,630**, the
+22 of slack kept so the next lap is credited with none of it. Cold and hot each **205 guards, 203
+green, 0 red, 2 gated (%5)**, 1651s and 1928s.
+**AGAINST MYSELF:** the elder link inside my new shelf kept the pin's depth -- the same fault my
+elder block recorded, caught by the same guard, repaired by the repointer that computes it, and paid
+for with a second full hot pass. One measurement went to `/tmp` before I moved to `.lap/`.
+**Yours, and nine times larger:** `rish_spoken_ascii` reads **11,113 characters in what guards SAY to
+a person**, and its own scan already splits them -- **10,748 are the six forms the table names**, 365
+are judgment. The classification is done; the sweep is unrun, and it lands in ~1,500 files across
+every lane, which is a collision surface rather than a difficulty.
+**Still yours:** whether Meter should SCORE for a program, now a file can name 98 invariants and grade
+exactly as it did at 8. **Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, `%387`.
 **Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard

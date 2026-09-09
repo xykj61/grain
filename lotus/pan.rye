@@ -2,7 +2,7 @@
 //! rendered ONE master: a mono mix. Yet a keeper hears in stereo, and the first stereo gesture is PAN -- placing each track
 //! somewhere between the left and right speaker. This rung opens the second channel with the simplest honest law: a LINEAR
 //! pan, where a track's level splits between left and right by weights that sum to one. Its defining invariant is that adding
-//! the two channels back reproduces the mono mix EXACTLY, for any pan position -- the property a linear (−6 dB-center) pan law
+//! the two channels back reproduces the mono mix EXACTLY, for any pan position -- the property a linear (-6 dB-center) pan law
 //! owes, as distinct from the equal-power curve a later rung may add.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES10.
@@ -41,7 +41,7 @@ pub const StereoClip = struct {
 };
 
 /// A pan position as a fraction pos/den across the stereo field: pos = 0 is hard left, pos = den is hard right, pos = den/2 is
-/// center. Default center (1/2). The left weight is (den − pos), the right weight is pos, and the two weights sum to den -- the
+/// center. Default center (1/2). The left weight is (den - pos), the right weight is pos, and the two weights sum to den -- the
 /// linear-pan law, whose invariant is that left + right reproduces the mono level exactly.
 pub const Pan = struct {
     pos: u32 = 1,
@@ -123,7 +123,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 fn run_selftest() !u8 {
     const c = try clock.make(1000); // 1 sample per ms — legible on a bench
 
-    // 1. center pan splits a track EQUALLY -- each side carries half the mono level (the honest linear-pan −6 dB center).
+    // 1. center pan splits a track EQUALLY -- each side carries half the mono level (the honest linear-pan -6 dB center).
     {
         var a = timeline.Clip{};
         try timeline.splice(&a, 0, &[_]i16{ 100, 200, 300 });

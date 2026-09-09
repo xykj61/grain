@@ -8,20 +8,20 @@
 //! Design read: active-designing/20260816-*_elligator2-the-hidden-key.md (this round) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Chapter G names reimplementing Monocypher primitives in
 //! Rye with byte-for-byte parity as the crux).
-//! Kin: crypto/fe25519.rye (the base field GF(2^255 − 19) this stands entirely on -- Elligator adds no new field, only a new use of it) -
+//! Kin: crypto/fe25519.rye (the base field GF(2^255 - 19) this stands entirely on -- Elligator adds no new field, only a new use of it) -
 //! crypto/x25519.rye (the key agreement whose public keys this hides and reveals). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity
 //! TARGET, never a copied line -- our own arithmetic, studied clean-room from the public Elligator 2 mathematics and Monocypher's public API
 //! (.claude/rules/gratitude-licenses.md).
 //!
 //! THE CRUX -- Elligator 2 is a pair of maps between field elements and curve points, over the SAME base field the curve already uses. The
 //! DIRECT map takes a representative r (a field element, its top two bits ignored so it is a clean 254-bit value): square it, and fold it
-//! through w = −A / (1 + non_square-r²) with non_square = 2, choosing between two candidate u-coordinates by whether an intermediate value is
-//! a square. The INVERSE map takes a u-coordinate and, when −non_square-u-(u+A) is a square (which happens for about half of all points),
+//! through w = -A / (1 + non_square-r²) with non_square = 2, choosing between two candidate u-coordinates by whether an intermediate value is
+//! a square. The INVERSE map takes a u-coordinate and, when -non_square-u-(u+A) is a square (which happens for about half of all points),
 //! returns the representative r whose direct map is u; when it is not a square, there is no representative and the inverse reports failure.
 //! Both maps rest on one shared operation, invsqrt(x) -- the inverse square root, which in one fixed exponentiation both computes 1/√x and
 //! decides whether x is a square, exactly as Monocypher's own invsqrt does. The three constants Elligator needs are all DERIVED here from the
-//! field, never pasted from Monocypher's own limb basis: A = 486662, A² = A-A, and √(−1) (the one embedded value, the canonical fourth root
-//! of unity whose square is p − 1, verified equal to Monocypher's), with ufactor = −2-√(−1) built from it.
+//! field, never pasted from Monocypher's own limb basis: A = 486662, A² = A-A, and √(-1) (the one embedded value, the canonical fourth root
+//! of unity whose square is p - 1, verified equal to Monocypher's), with ufactor = -2-√(-1) built from it.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A representative is not a secret and not a
 //! signature; this file signs nothing and holds no key. It calls no std.crypto in the primitive itself. Parity is proven at selftest against
@@ -60,7 +60,7 @@ const fe_one: Field = Field{ .l = .{ 1, 0, 0, 0, 0 } };
 /// The field's zero.
 const fe_zero: Field = Field{ .l = .{ 0, 0, 0, 0, 0 } };
 
-/// √(−1) mod p -- the canonical square root of −1 (its square is p − 1), the one embedded constant Elligator needs. These are its 32
+/// √(-1) mod p -- the canonical square root of -1 (its square is p - 1), the one embedded constant Elligator needs. These are its 32
 /// little-endian bytes, the well-known ref10 value 19681161376707505956807079304988542015446066515923890162744021073123829784752; it was
 /// independently verified equal to Monocypher's own sqrtm1 constant (reconstructed from Monocypher's 10-limb basis) so the invsqrt branch
 /// that multiplies by it picks the SAME representative Monocypher would, the property byte-for-byte parity depends on.
@@ -69,7 +69,7 @@ const sqrtm1_bytes = [32]u8{
     0xa7, 0xd7, 0xfb, 0x3d, 0x99, 0x00, 0x4d, 0x2b, 0x0b, 0xdf, 0xc1, 0x4f, 0x80, 0x24, 0x83, 0x2b,
 };
 
-/// Negate a field element: 0 − a, congruent to −a mod p and weakly reduced like any subtraction result.
+/// Negate a field element: 0 - a, congruent to -a mod p and weakly reduced like any subtraction result.
 fn neg(a: Field) Field {
     const r = fe.sub(fe_zero, a);
     // invariant (postcondition): the result is a valid weakly-reduced field element, safe as a later operand.
@@ -117,7 +117,7 @@ fn fe_is_zero(a: Field) bool {
     return fe_eq(a, fe_zero);
 }
 
-/// x^((p−5)/8) = x^(2^252 − 3), the exponent invsqrt is built on, by a fixed square-and-multiply over the exponent's known bit pattern: bit
+/// x^((p-5)/8) = x^(2^252 - 3), the exponent invsqrt is built on, by a fixed square-and-multiply over the exponent's known bit pattern: bit
 /// 251 down to bit 2 are set and bit 0 is set (251 ones), bit 1 alone is clear. The pattern is a compile-time constant, so the ladder is
 /// data-independent -- the same shape for every input. Any correct computation yields the same field value, so this clean loop stands in for
 /// Monocypher's optimized addition chain and must agree with it byte-for-byte.
@@ -140,9 +140,9 @@ const Invsqrt = struct {
     is_square: bool,
 };
 
-/// The inverse square root, computed exactly as Monocypher's invsqrt: raise x to (p−5)/8, form the quartic residue x^((p−1)/4) (a fourth root
-/// of unity: 1, −1, √(−1), or −√(−1)), and read the answer from it. When the quartic is −1 or −√(−1) the result is multiplied by √(−1); the
-/// input is a square exactly when the quartic is 1 or −1 (or x is 0). This single fixed computation both inverts the square root and decides
+/// The inverse square root, computed exactly as Monocypher's invsqrt: raise x to (p-5)/8, form the quartic residue x^((p-1)/4) (a fourth root
+/// of unity: 1, -1, √(-1), or -√(-1)), and read the answer from it. When the quartic is -1 or -√(-1) the result is multiplied by √(-1); the
+/// input is a square exactly when the quartic is 1 or -1 (or x is 0). This single fixed computation both inverts the square root and decides
 /// squareness, which is why both Elligator maps route through it.
 fn invsqrt(x: Field) Invsqrt {
     const t0 = pow_p58(x); // x^((p−5)/8)
@@ -154,7 +154,7 @@ fn invsqrt(x: Field) Invsqrt {
     const m1 = fe_eq(quartic, neg(fe_one)); //  quartic == −1
     const ms = fe_eq(quartic, neg(sqrtm1)); //  quartic == −√(−1)
 
-    // isr = t0-√(−1) when the quartic is −1 or −√(−1); otherwise isr = t0 -- Monocypher's `fe_ccopy(isr, t0, 1 − (m1 | ms))`.
+    // isr = t0-√(-1) when the quartic is -1 or -√(-1); otherwise isr = t0 -- Monocypher's `fe_ccopy(isr, t0, 1 - (m1 | ms))`.
     const isr_times = fe.mul(t0, sqrtm1);
     const use_t0: u1 = if (m1 or ms) 0 else 1;
     const isr = ccopy(isr_times, t0, use_t0);
@@ -211,7 +211,7 @@ pub const RevResult = struct {
 };
 
 /// The Elligator 2 INVERSE map: a Montgomery u-coordinate back to a representative, under a random `tweak` byte. Succeeds only when
-/// −non_square-u-(u+A) is a square -- about half of all points -- in which case it returns the representative whose direct map is u, with the
+/// -non_square-u-(u+A) is a square -- about half of all points -- in which case it returns the representative whose direct map is u, with the
 /// tweak's low bit choosing the v-coordinate sign and its top two bits padding the representative's unused high bits. When the point is not
 /// representable it reports `ok = false`. The one place whose timing depends on the input is exactly this success test, which is why keys are
 /// tried at random rather than fixed.

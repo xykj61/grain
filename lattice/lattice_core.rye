@@ -542,7 +542,7 @@ pub fn square(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise sign -- −1 / 0 / +1; shapes must match.
+/// Elementwise sign -- -1 / 0 / +1; shapes must match.
 pub fn sign(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;
@@ -596,7 +596,7 @@ pub fn rsqrt(src: *const Matrix, out: *Matrix) TensorError!void {
     }
 }
 
-/// Elementwise hardtanh -- clamp(v, −1, 1); shapes must match.
+/// Elementwise hardtanh -- clamp(v, -1, 1); shapes must match.
 pub fn hardtanh(src: *const Matrix, out: *Matrix) TensorError!void {
     if (out.rows != src.rows or out.cols != src.cols) return error.ShapeMismatch;
     var r: u32 = 0;

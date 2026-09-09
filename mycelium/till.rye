@@ -316,7 +316,7 @@ pub fn main() !void {
     if (lost.amount > lost.issued_at) return error.LossNotLawful;
 
     // The loser is a lawful no-op: the resolution succeeds, the treasury folds once
-    // to one honest supply (1000 issued − 100 − 700 drawn = 200), the loss paid nothing.
+    // to one honest supply (1000 issued - 100 - 700 drawn = 200), the loss paid nothing.
     if (t1.state.issued != 1000) return error.Issued;
     if (t1.state.taxed != 800) return error.Taxed;
     if (t1.state.supply() != 200) return error.Supply;

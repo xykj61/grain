@@ -7,9 +7,9 @@
 //!
 //! The crux is that A MODULATED FRACTIONAL DELAY IS READ OFF THE LIVE OUTPUT. This reuses ALES71's triangle_delay_at driver and ALES70's
 //! interpolation read, and reuses ALES66's discipline that THE DELAY LINE IS THE CLIP BUFFER ITSELF. Over one period P (a positive multiple
-//! of four, q = P/4) with phase p = k % P, d_s(k) = centre_scaled + triangle(depth_scaled, P, k); then near = buf[i − d_whole] (a prior
-//! OUTPUT -- feedback -- or dry before the span, silence before the clip), far = buf[i − d_whole − 1], delayed = (near-(glide_scale − frac) +
-//! far-frac)/glide_scale, and y[i] = saturate(x[i] + fb-delayed). Because the delay never dips below one whole sample (centre − depth ≥
+//! of four, q = P/4) with phase p = k % P, d_s(k) = centre_scaled + triangle(depth_scaled, P, k); then near = buf[i - d_whole] (a prior
+//! OUTPUT -- feedback -- or dry before the span, silence before the clip), far = buf[i - d_whole - 1], delayed = (near-(glide_scale - frac) +
+//! far-frac)/glide_scale, and y[i] = saturate(x[i] + fb-delayed). Because the delay never dips below one whole sample (centre - depth ≥
 //! glide_scale, so d_whole ≥ 1), both neighbours sit at indices STRICTLY BEFORE i -- already written this pass (true feedback), or dry before
 //! the span, or silence before the clip. So the read is off the LIVE buffer, not a snapshot: the flanger WANTS to hear its own output, and
 //! reading strictly-earlier indices keeps that safe in place -- the exact inversion of the chorus/vibrato snapshot, and the reason the flanger
@@ -43,13 +43,13 @@ const chorus = @import("chorus.rye");
 pub const flanger_version = "20260814.200314";
 
 /// The flanger's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need
-/// P/4 whole) or wider than max_clip, a swing that would dip below one whole sample (centre − depth < glide_scale) or reach past the widest
+/// P/4 whole) or wider than max_clip, a swing that would dip below one whole sample (centre - depth < glide_scale) or reach past the widest
 /// clip (centre + depth whole > max_clip), a feedback at or above unity (a runaway that would never decay) or with a zero denominator, and a
 /// span outside the samples. Each refused before any write.
 pub const FlangerError = error{
     /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample -- refused, no write.
+    /// A negative depth, or a swing whose bottom (centre - depth) falls under one whole sample -- refused, no write.
     BadDepth,
     /// A swing whose top (centre + depth) whole delay is longer than max_clip samples -- refused, no write.
     BadDelay,
@@ -132,7 +132,7 @@ pub fn flanger(
         // invariant: both neighbours already fit the i16 rail -- each is a written output (saturated) or dry audio, never a wide intermediate.
         assert(near_val >= @as(i64, timeline.sample_min) and near_val <= @as(i64, timeline.sample_max));
         assert(far_val >= @as(i64, timeline.sample_min) and far_val <= @as(i64, timeline.sample_max));
-        // Linear interpolation (ALES70's read): near weighted by (scale − frac), far by frac, divided once. frac = 0 returns near exactly
+        // Linear interpolation (ALES70's read): near weighted by (scale - frac), far by frac, divided once. frac = 0 returns near exactly
         // (a whole-sample delay is an exact integer feedback tap -- the zero-depth echo equality). |near|,|far| <= 32768 and the weights sum
         // to glide_scale, so the product fits i64.
         const delayed: i64 = @divTrunc(near_val * (scale - frac) + far_val * frac, scale);
@@ -195,7 +195,7 @@ fn run_selftest() !u8 {
     //    delay on WHOLE samples at every offset, so each read is an exact integer FEEDBACK tap OFF THE LIVE BUFFER:
     //      k:        0  1  2  3  4  5
     //      delay(k): 2  3  2  1  2  3   (centre, top, centre, bottom, centre, top)
-    //    On an impulse [8000,0,0,0,0,0], y[i] = dry[i] + 1/2-buf[i − delay(i)] reading already-written outputs:
+    //    On an impulse [8000,0,0,0,0,0], y[i] = dry[i] + 1/2-buf[i - delay(i)] reading already-written outputs:
     //      i0 d2: 8000 + 1/2-buf[-2]=0     = 8000
     //      i1 d3: 0    + 1/2-buf[-2]=0     = 0
     //      i2 d2: 0    + 1/2-buf[0]=8000   = 4000

@@ -1,6 +1,6 @@
 //! crypto/mlkem_decaps.rye -- Chapter G (Cryptography): the ML-KEM decapsulation rung, the SIXTH stone of the post-quantum arc and the rung that closes
 //! the KEM round-trip. FIPS 203 K-PKE.Decrypt wrapped by ML-KEM.Decaps (Algorithms 15-18), authored in pure Rye: it parses a decapsulation key dk into
-//! (dk_pke, ek, H(ek), z), decrypts the ciphertext c back to a candidate message m' = ByteEncode_1(Compress_1(v − InvNTT(ŝ ∘ NTT(u)))), re-derives
+//! (dk_pke, ek, H(ek), z), decrypts the ciphertext c back to a candidate message m' = ByteEncode_1(Compress_1(v - InvNTT(ŝ ∘ NTT(u)))), re-derives
 //! (K', r') = G(m' ‖ H(ek)), RE-ENCRYPTS m' under ek with r' via the GREEN encaps rung, and returns K' when the re-encryption reproduces c -- otherwise
 //! the implicit-rejection secret K̄ = J(z ‖ c) = SHAKE256(z ‖ c). The Fujisaki-Okamoto transform's "verify by re-encryption" is exactly what makes
 //! ML-KEM CCA-secure, and this rung proves both branches. It composes only GREEN rungs -- the base ring (crypto/mlkem_ring.rye), the serialization
@@ -82,7 +82,7 @@ pub const DecapsError = error{
 };
 
 /// k_pke_decrypt -- FIPS 203 K-PKE.Decrypt: recover the message m from a ciphertext c under the K-PKE decryption key dk_pke = ByteEncode12(ŝ). Splits c
-/// into the du-compressed u vector and the dv-compressed v polynomial, decompresses both, computes w = v − InvNTT(ŝ ∘ NTT(u)) coefficient-wise mod q,
+/// into the du-compressed u vector and the dv-compressed v polynomial, decompresses both, computes w = v - InvNTT(ŝ ∘ NTT(u)) coefficient-wise mod q,
 /// and returns m = ByteEncode_1(Compress_1(w)) -- 32 bytes. Standard-domain throughout; composes only GREEN rungs.
 pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke: []const u8, c: []const u8, m_out: *[seed_half_bytes]u8) void {
     // invariant (precondition): the parameter set is one ML-KEM names and the buffers hold exactly the FIPS sizes.
@@ -132,8 +132,8 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
         s_hat[i] = .{ .cs = encode.byte_decode(&block, encode.max_d) };
     }
 
-    // w = v − InvNTT(Σ_j ŝ[j] ∘ NTT(u[j])), each coefficient reduced mod q. NTT(u) lifts u into the transform domain; the pointwise sum stays
-    // canonical; InvNTT returns it to standard domain; the subtraction is (v + q − x) mod q on canonical residues.
+    // w = v - InvNTT(Σ_j ŝ[j] ∘ NTT(u[j])), each coefficient reduced mod q. NTT(u) lifts u into the transform domain; the pointwise sum stays
+    // canonical; InvNTT returns it to standard domain; the subtraction is (v + q - x) mod q on canonical residues.
     var acc: ring.Poly = .{ .cs = [_]u32{0} ** n };
     var j: u32 = 0;
     // invariant (bound): exactly k pointwise products accumulated.
@@ -152,7 +152,7 @@ pub fn k_pke_decrypt(comptime k: u32, comptime du: u32, comptime dv: u32, dk_pke
     const su = ring.inv_ntt(&acc);
     var w: ring.Poly = .{ .cs = [_]u32{0} ** n };
     var cw: u32 = 0;
-    // invariant (bound): w = v − su, one canonical subtraction per coefficient.
+    // invariant (bound): w = v - su, one canonical subtraction per coefficient.
     while (cw < n) : (cw += 1) {
         // invariant: the modular arithmetic below adds without reducing first, so a coefficient
         // already at or past q would carry rather than wrap

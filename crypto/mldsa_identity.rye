@@ -69,14 +69,14 @@ pub const Params = struct {
     ctilde: u32,
 };
 
-/// ML-DSA-44 (NIST category 2): k=4 l=4 η=2 γ₁-bits=17 γ₂=(q−1)/88 τ=39 ω=80 ctilde=32. The smallest keys and fastest signatures.
+/// ML-DSA-44 (NIST category 2): k=4 l=4 η=2 γ₁-bits=17 γ₂=(q-1)/88 τ=39 ω=80 ctilde=32. The smallest keys and fastest signatures.
 pub const ml_dsa_44 = Params{ .k = 4, .l = 4, .eta = 2, .gamma1_bits = 17, .gamma2 = signer.gamma2_88, .tau = 39, .omega = 80, .ctilde = 32 };
 
-/// ML-DSA-65 (NIST category 3): k=6 l=5 η=4 γ₁-bits=19 γ₂=(q−1)/32 τ=49 ω=55 ctilde=48. The balanced default -- the set this front door names for an
+/// ML-DSA-65 (NIST category 3): k=6 l=5 η=4 γ₁-bits=19 γ₂=(q-1)/32 τ=49 ω=55 ctilde=48. The balanced default -- the set this front door names for an
 /// identity meant to last decades.
 pub const ml_dsa_65 = Params{ .k = 6, .l = 5, .eta = 4, .gamma1_bits = 19, .gamma2 = signer.gamma2_32, .tau = 49, .omega = 55, .ctilde = 48 };
 
-/// ML-DSA-87 (NIST category 5): k=8 l=7 η=2 γ₁-bits=19 γ₂=(q−1)/32 τ=60 ω=75 ctilde=64. The largest keys, the highest security margin.
+/// ML-DSA-87 (NIST category 5): k=8 l=7 η=2 γ₁-bits=19 γ₂=(q-1)/32 τ=60 ω=75 ctilde=64. The largest keys, the highest security margin.
 pub const ml_dsa_87 = Params{ .k = 8, .l = 7, .eta = 2, .gamma1_bits = 19, .gamma2 = signer.gamma2_32, .tau = 60, .omega = 75, .ctilde = 64 };
 
 /// The default parameter set for a Kumara post-quantum identity: ML-DSA-65, NIST category 3, the balanced durable choice.

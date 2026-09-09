@@ -1,7 +1,7 @@
 //! crypto/poly1305.rye -- Chapter G (Cryptography), the fourth primitive: Poly1305 (RFC 8439) authored in pure Rye. Poly1305 is the
 //! one-time authenticator half of Monocypher's ChaCha20-Poly1305 -- the tag that proves a ciphertext arrived exactly as sent -- so this
 //! primitive is the direct next stone after ChaCha20 toward the Rye-native authenticated-encryption stack the decision wave named. Like
-//! the two hashes and the stream cipher it is pure integer arithmetic: a polynomial evaluated over the prime field 2^130 − 5, carried in
+//! the two hashes and the stream cipher it is pure integer arithmetic: a polynomial evaluated over the prime field 2^130 - 5, carried in
 //! five 26-bit limbs so every multiply of two limbs fits a single 64-bit product (no big-integer library, unlike the curve). It carries
 //! the published RFC 8439 §2.5.2 known-answer, so it is provable against a neutral public reference.
 //!
@@ -13,10 +13,10 @@
 //! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line -- our own arithmetic, studied clean-room from the public
 //! RFC and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX -- Poly1305 evaluates a polynomial in the message blocks with a secret coefficient r, modulo the prime 2^130 − 5, then adds a
+//! THE CRUX -- Poly1305 evaluates a polynomial in the message blocks with a secret coefficient r, modulo the prime 2^130 - 5, then adds a
 //! secret pad s. The accumulator h starts at zero; for each 16-byte block, the block (with a high bit set to mark its length) is added to
-//! h, then h is multiplied by r and reduced mod 2^130 − 5. After the last block, h is fully carried, conditionally reduced once more, and
-//! s is added mod 2^128 to yield the 16-byte tag. The reduction mod 2^130 − 5 is the field's own trick: a carry out of bit 130 folds back
+//! h, then h is multiplied by r and reduced mod 2^130 - 5. After the last block, h is fully carried, conditionally reduced once more, and
+//! s is added mod 2^128 to yield the 16-byte tag. The reduction mod 2^130 - 5 is the field's own trick: a carry out of bit 130 folds back
 //! as ×5 (because 2^130 ≡ 5), which is why the limb products need only add a ×5 fold rather than a general division. The key's r half is
 //! clamped (specific bits cleared, RFC 8439 §2.5) so the 130-bit arithmetic never overflows the limb schedule. Nothing here is a claim
 //! about a device -- it is arithmetic anyone can replay against RFC 8439.
@@ -46,7 +46,7 @@ pub const block_bytes: u32 = 16;
 pub const key_bytes: u32 = 32;
 pub const tag_bytes: u32 = 16;
 
-/// The limb mask -- 2^26 − 1. The 130-bit accumulator and coefficient are each carried in five 26-bit limbs, so a limb-by-limb product of
+/// The limb mask -- 2^26 - 1. The 130-bit accumulator and coefficient are each carried in five 26-bit limbs, so a limb-by-limb product of
 /// two 26-bit values fits a single 64-bit word with room for the running sum. Named so every mask and shift below cites one source.
 const limb_mask: u32 = 0x3ffffff;
 
@@ -61,7 +61,7 @@ pub const Poly1305Error = error{
 };
 
 /// The Poly1305 running state: the clamped coefficient r in five 26-bit limbs, the ×5 folds of r[1..5] precomputed (s_fold, so the
-/// mod-2^130−5 reduction is a multiply-add rather than a division), the accumulator h in five 26-bit limbs, and the pad s in four 32-bit
+/// mod-2^130-5 reduction is a multiply-add rather than a division), the accumulator h in five 26-bit limbs, and the pad s in four 32-bit
 /// words added at the very end. All state is derived from the one-time key; none of it is a long-lived secret. Exposed with its
 /// block-level operators (init - absorb - finalize) so a composer -- the ChaCha20-Poly1305 AEAD -- can feed the MAC block by block over
 /// several already-padded regions without allocating the whole concatenated buffer; the single-shot `mac` below is the same three steps.
@@ -92,7 +92,7 @@ pub fn init(key: *const [key_bytes]u8) State {
     // invariant: every clamped r limb fits 26 bits, so a limb product stays within a 64-bit word.
     assert(st.r[0] <= limb_mask and st.r[1] <= limb_mask and st.r[2] <= limb_mask and st.r[3] <= limb_mask and st.r[4] <= limb_mask);
 
-    // s_fold[i] carries r[i+1] × 5 -- the mod-2^130−5 fold, since 2^130 ≡ 5. Each stays below 5-2^26 < 2^29, well within u32.
+    // s_fold[i] carries r[i+1] × 5 -- the mod-2^130-5 fold, since 2^130 ≡ 5. Each stays below 5-2^26 < 2^29, well within u32.
     st.s_fold[0] = st.r[1] * 5;
     st.s_fold[1] = st.r[2] * 5;
     st.s_fold[2] = st.r[3] * 5;
@@ -108,7 +108,7 @@ pub fn init(key: *const [key_bytes]u8) State {
 }
 
 /// Absorb one 16-byte block into the accumulator: add the block (with a high marker bit for a full block) to h, multiply h by r modulo
-/// 2^130 − 5, and store the reduced limbs back. `full` is true for a whole 16-byte block (the marker bit 2^128 is set) and false for the
+/// 2^130 - 5, and store the reduced limbs back. `full` is true for a whole 16-byte block (the marker bit 2^128 is set) and false for the
 /// final partial block, whose 0x01 marker byte already sits inside the padded buffer. The multiply carries products in 64-bit words --
 /// the arithmetic genuinely needs 64 bits (two 26-bit limbs multiply to ~52 bits, summed across five terms), not a wire width.
 pub fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
@@ -136,7 +136,7 @@ pub fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
     const f3: u64 = st.s_fold[2];
     const f4: u64 = st.s_fold[3];
 
-    // h × r mod 2^130 − 5, folding each over-130 term back as ×5 (the s_fold coefficients). Each d is a sum of five ~52-bit products.
+    // h × r mod 2^130 - 5, folding each over-130 term back as ×5 (the s_fold coefficients). Each d is a sum of five ~52-bit products.
     const d0: u64 = h0 * r0 + h1 * f4 + h2 * f3 + h3 * f2 + h4 * f1;
     const d1: u64 = h0 * r1 + h1 * r0 + h2 * f4 + h3 * f3 + h4 * f2;
     const d2: u64 = h0 * r2 + h1 * r1 + h2 * r0 + h3 * f4 + h4 * f3;
@@ -173,7 +173,7 @@ pub fn absorb(st: *State, blk: *const [block_bytes]u8, full: bool) void {
     st.h[4] = @intCast(h4);
 }
 
-/// Finalize: fully carry the accumulator, conditionally subtract the prime 2^130 − 5 once (so h is the true residue), fold the five
+/// Finalize: fully carry the accumulator, conditionally subtract the prime 2^130 - 5 once (so h is the true residue), fold the five
 /// 26-bit limbs into four 32-bit words, add the pad s mod 2^128, and serialize the 16-byte tag little-endian (RFC 8439 §2.5.1).
 pub fn finalize(st: *State, tag: *[tag_bytes]u8) void {
     var h0 = st.h[0];
@@ -199,7 +199,7 @@ pub fn finalize(st: *State, tag: *[tag_bytes]u8) void {
     h0 &= limb_mask;
     h1 += c;
 
-    // Compute h + 5 (i.e. h − (2^130 − 5) staged as an add), so a borrow out of the top limb tells us whether h < p.
+    // Compute h + 5 (i.e. h - (2^130 - 5) staged as an add), so a borrow out of the top limb tells us whether h < p.
     var g0 = h0 + 5;
     c = g0 >> 26;
     g0 &= limb_mask;
@@ -214,7 +214,7 @@ pub fn finalize(st: *State, tag: *[tag_bytes]u8) void {
     g3 &= limb_mask;
     const g4 = (h4 + c) -% (1 << 26);
 
-    // If the top limb borrowed (h < p), keep h; otherwise (h ≥ p) take g = h − p. Branchless via a mask so the choice is data-independent.
+    // If the top limb borrowed (h < p), keep h; otherwise (h ≥ p) take g = h - p. Branchless via a mask so the choice is data-independent.
     const use_g: u32 = (g4 >> 31) -% 1; // 0x00000000 when h < p, 0xffffffff when h ≥ p
     const keep_h: u32 = ~use_g;
     h0 = (h0 & keep_h) | (g0 & use_g);

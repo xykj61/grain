@@ -3,7 +3,7 @@
 //! The Constel dev-net harness proved a fake constellation, quarantined by a law-safe name, running
 //! the real settlement protocol from genesis. This rung gives the tree's real Mycelium supply
 //! primitive (`mycelium/fold.rye` -- the myc supply as a pure fold over Kumara-signed facts, supply =
-//! Σ issued − Σ taxed, non-negative, an overdraw refusing the whole fold) a network to belong to: the
+//! Σ issued - Σ taxed, non-negative, an overdraw refusing the whole fold) a network to belong to: the
 //! spun-up dev-net.
 //!
 //! The crux, fused: an economic ledger runs from genesis inside the fake net -- its money signed by the
@@ -177,7 +177,7 @@ fn welcome_sovereign_ledger_opens() !void {
     print("constel_net_ledger: a law-safe net opened a ledger whose sovereign is the genesis keeper; fresh supply is 0.\n", .{});
 }
 
-/// The supply folds the real Mycelium law: issue raises it, tax lowers it, the number is issued − taxed.
+/// The supply folds the real Mycelium law: issue raises it, tax lowers it, the number is issued - taxed.
 fn welcome_supply_folds_the_law() !void {
     var ledger = try open_ledger(safe_name, &demo_key, &demo_keeper, demo_galaxy);
     _ = try issue(&ledger, 100);

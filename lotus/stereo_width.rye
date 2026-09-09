@@ -83,7 +83,7 @@ pub fn stereo_width(sc: *pan.StereoClip, width_num: u32, width_den: u32) StereoW
 
 // --- selftest: THE UNITY EDGE -- width == den is the mid/side round-trip, exact on a same-parity master (byte for byte the original); THE MONO
 //     COLLAPSE -- width == 0 makes both channels the shared mid = (l+r)/2, the image fully centred; THE WIDEN LAW -- width == 2-den doubles the side,
-//     so the per-sample channel difference |L−R| grows (a wider image), the result differing from the original; THE CENTRED-INVARIANT LAW -- a
+//     so the per-sample channel difference |L-R| grows (a wider image), the result differing from the original; THE CENTRED-INVARIANT LAW -- a
 //     centred master (l == r) is untouched at any width (a mono signal has no width); THE BALANCE / FAULT LAW -- both channels stay balanced, and a
 //     zero or over-bound width refuses BadWidth with the master untouched ----------
 
@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.left.samples(), sc.right.samples())) return error.CollapseNotCentred;
     }
 
-    // 3. THE WIDEN LAW -- width == 2-den doubles the side, so decode pushes the channels apart: the per-sample difference |L−R| grows against the
+    // 3. THE WIDEN LAW -- width == 2-den doubles the side, so decode pushes the channels apart: the per-sample difference |L-R| grows against the
     //    original, the image widened. side doubles: 400->800, -1200->-2400, 1800->3600, 0->0; decode l=mid+side, r=mid-side.
     {
         var sc = pan.StereoClip{};

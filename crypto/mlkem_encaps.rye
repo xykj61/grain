@@ -175,7 +175,7 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
         }
     }
 
-    // r_hat[j] = NTT(SamplePolyCBD(PRF(r, j), eta1)) -- the encryption randomness, in the NTT domain, nonces 0..k−1.
+    // r_hat[j] = NTT(SamplePolyCBD(PRF(r, j), eta1)) -- the encryption randomness, in the NTT domain, nonces 0..k-1.
     var r_hat: [max_k]ring.Poly = undefined;
     i = 0;
     // invariant (bound): exactly k randomness polynomials.
@@ -184,7 +184,7 @@ pub fn k_pke_encrypt(comptime k: u32, comptime eta1: u32, comptime du: u32, comp
         r_hat[i] = ring.ntt(&r_poly);
     }
 
-    // e1[i] = SamplePolyCBD(PRF(r, k + i), eta2) -- the u blind, standard domain (never NTT), nonces k..2k−1.
+    // e1[i] = SamplePolyCBD(PRF(r, k + i), eta2) -- the u blind, standard domain (never NTT), nonces k..2k-1.
     var e1: [max_k]ring.Poly = undefined;
     i = 0;
     // invariant (bound): exactly k blind polynomials.

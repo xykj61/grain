@@ -206,7 +206,7 @@ pub fn keccak_sponge(rate: u32, delim: u8, msg: []const u8, out: []u8) void {
     while (produced < out_len) {
         var b: u32 = 0;
         while (b < rate and produced < out_len) : (b += 1) {
-            // invariant: rate ≤ state_bytes means b/8 indexes a real lane (b ≤ rate−1 ≤ 167, so lane ≤ 20 < 25).
+            // invariant: rate ≤ state_bytes means b/8 indexes a real lane (b ≤ rate-1 ≤ 167, so lane ≤ 20 < 25).
             const lane = st[b / 8];
             const shift: u6 = @intCast((b % 8) * 8);
             out[produced] = @truncate(lane >> shift);

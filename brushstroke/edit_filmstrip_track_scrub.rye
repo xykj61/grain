@@ -239,7 +239,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.FilmstripTooWide) return error.WrongWide;
     }
 
-    // Stand the cursor in the middle and press: the gesture window centers on it (window_first = position − win_bands/2).
+    // Stand the cursor in the middle and press: the gesture window centers on it (window_first = position - win_bands/2).
     // A drag sweeps band by band within the frozen window -- at each reported point the cursor's step is gesture_first +
     // the band under the finger, and the repainted (frozen) window shows the marker on exactly that band. The window
     // stays fixed through the whole drag (cols and first unchanged), the true test of a gesture window.

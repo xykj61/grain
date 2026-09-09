@@ -13,7 +13,7 @@
 //! comparator (schmitt_step), the SAME step the in-place trigger writes, and reads its flips instead of writing its rails. One comparator implementation, two
 //! readers; the counter can never drift from the trigger it counts.
 //!
-//! The counting convention: for N samples there are at most N−1 crossings. The FIRST fed sample establishes the initial rail and counts as no crossing (no prior
+//! The counting convention: for N samples there are at most N-1 crossings. The FIRST fed sample establishes the initial rail and counts as no crossing (no prior
 //! sample to differ from); every later sample counts one crossing when its output rail differs from the sample before it. The standard zero-crossing-count
 //! definition, stated plainly so the carried and from-silence forms cannot drift.
 //!
@@ -190,7 +190,7 @@ fn run_selftest() !u8 {
     //    is chosen so a flip lands exactly at the seam: the sample before the split ends on one rail and the sample at the split flips the other way, so a
     //    per-piece counter would MISS that seam flip. The carried counter counts it exactly once.
     {
-        // rails at band [−800, 800] from silence: 900->H, −900->L, 900->H, −900->L, 900->H, −900->L, 900->H, −900->L  -> alternating, a flip at every step
+        // rails at band [-800, 800] from silence: 900->H, -900->L, 900->H, -900->L, 900->H, -900->L, 900->H, -900->L  -> alternating, a flip at every step
         const src = [_]i16{ 900, -900, 900, -900, 900, -900, 900, -900 };
         var whole = timeline.Clip{};
         try load_clip(&whole, &src);
@@ -229,17 +229,17 @@ fn run_selftest() !u8 {
         if (cmp == 0) return error.ComparatorAssumptionWrong; // the memoryless comparator DOES chatter where hysteresis counts zero
     }
 
-    // 5. A KNOWN SIGNAL COUNTS ITS KNOWN FLIPS -- band [−1000, 1000], from silence. Read the rails by hand, then check the count.
+    // 5. A KNOWN SIGNAL COUNTS ITS KNOWN FLIPS -- band [-1000, 1000], from silence. Read the rails by hand, then check the count.
     {
         const sig = [_]i16{ 0, 1000, 500, -1000, -500, 2000, 999, -1000 };
-        // rails: 0->hold L; 1000->H (flip); 500->hold H; −1000->L (flip); −500->hold L; 2000->H (flip); 999->hold H; −1000->L (flip) -> 4 crossings
+        // rails: 0->hold L; 1000->H (flip); 500->hold H; -1000->L (flip); -500->hold L; 2000->H (flip); 999->hold H; -1000->L (flip) -> 4 crossings
         var clip = timeline.Clip{};
         try load_clip(&clip, &sig);
         const counted = try count_crossings(&clip, 0, clip.len, -1000, 1000);
         if (counted != 4) return error.KnownCountWrong;
     }
 
-    // 6. SILENCE AND IN-BAND-ONLY COUNT ZERO -- a span that never leaves the band [−1000, 1000] yields no crossings (it never triggers off the low rail).
+    // 6. SILENCE AND IN-BAND-ONLY COUNT ZERO -- a span that never leaves the band [-1000, 1000] yields no crossings (it never triggers off the low rail).
     {
         const inside = [_]i16{ 0, 500, -500, 999, -999, 100, -100 };
         var clip = timeline.Clip{};

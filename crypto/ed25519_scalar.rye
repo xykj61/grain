@@ -75,7 +75,7 @@ fn ge5(a: [5]u64, b: [5]u64) bool {
     return true; // exactly equal
 }
 
-/// The little-endian difference a − b for a ≥ b, across five 64-bit limbs with a borrow. Callers subtract only when ge5 already holds, so no
+/// The little-endian difference a - b for a ≥ b, across five 64-bit limbs with a borrow. Callers subtract only when ge5 already holds, so no
 /// underflow escapes the width.
 fn sub5(a: [5]u64, b: [5]u64) [5]u64 {
     // invariant: subtraction is called only when a ≥ b, so the final borrow is zero (asserted below).

@@ -4,8 +4,8 @@
 //! harmonics plus a DC term, not the pure even of |x|. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries
 //! the half-wave into stereo the plain way: run ALES85's proven mono `halve` on each channel over the SAME span, so one threshold at zero lands on BOTH speakers together.
 //!
-//! The half-wave PARTITIONS where the full-wave (ALES138) COLLAPSED. The full-wave folded +a and −a both onto a, so an out-of-phase master returned IDENTICAL; the half-wave keeps only the positive half, so an
-//! out-of-phase master (right the exact negation of left) returns PARTITIONED -- at each index exactly one channel survives: where left is positive it is kept while right (= −left, negative) goes to silence, and
+//! The half-wave PARTITIONS where the full-wave (ALES138) COLLAPSED. The full-wave folded +a and -a both onto a, so an out-of-phase master returned IDENTICAL; the half-wave keeps only the positive half, so an
+//! out-of-phase master (right the exact negation of left) returns PARTITIONED -- at each index exactly one channel survives: where left is positive it is kept while right (= -left, negative) goes to silence, and
 //! where left is negative it goes to silence while right (positive) is kept. Two facts hold at every index: left[i] - right[i] = 0 (the channels are DISJOINT, never both sounding at once), and left[i] + right[i] =
 //! |left[i]| (the two half-waves PARTITION the antisymmetric pair, their sum reconstructing the full-wave magnitude). That is the honest half-wave story read in the stereo field -- the pair split into complementary
 //! one-sided channels rather than folded to mono. Yet a 1:2 master keeps its ratio on the kept samples (both zero elsewhere), and an identical-channel master stays identical.
@@ -17,7 +17,7 @@
 //!
 //! The crux -- four laws. THE STEREO HALVE LAW: each channel equals ALES85's mono `halve` over the same span byte for byte -- every output max(x, 0), non-negatives passing unchanged and negatives going to silence, no
 //! rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a halve writes values only). THE IMAGE-PARTITION LAW: because max(x, 0) keeps only the positive half,
-//! an out-of-phase master (right = −left) returns PARTITIONED -- left[i] - right[i] = 0 (disjoint) and left[i] + right[i] = |left[i]| (the two half-waves summing to the full-wave magnitude) at every index; yet a 1:2
+//! an out-of-phase master (right = -left) returns PARTITIONED -- left[i] - right[i] = 0 (disjoint) and left[i] + right[i] = |left[i]| (the two half-waves summing to the full-wave magnitude) at every index; yet a 1:2
 //! master keeps its ratio on the kept samples, an identical-channel master stays identical, every output non-negative on both, and the map is idempotent (twice equals once). THE ATOMICITY / DEGENERATE LAW: the lone
 //! refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
@@ -69,7 +69,7 @@ pub fn stereo_halve(sc: *pan.StereoClip, start: u32, count: u32) StereoHalveErro
 }
 
 // --- selftest: THE STEREO HALVE LAW -- each channel equals ALES85's mono halve over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
-//     THE IMAGE-PARTITION LAW -- an OUT-OF-PHASE master (right = −left) returns PARTITIONED (left-right = 0 and left+right = |left| at each index, the two half-waves splitting the pair), yet a 1:2 master keeps its
+//     THE IMAGE-PARTITION LAW -- an OUT-OF-PHASE master (right = -left) returns PARTITIONED (left-right = 0 and left+right = |left| at each index, the two half-waves splitting the pair), yet a 1:2 master keeps its
 //     ratio on the kept samples, an identical-channel master stays identical, every output NON-NEGATIVE on both, the map idempotent; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched and
 //     balanced, count = 0 the identity ----
 
@@ -102,7 +102,7 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: max(−300,0)=0, max(300,0)=300, max(−32768,0)=0 (no rail edge), max(2000,0)=2000 / max(100,0)=100, max(−50,0)=0, max(−32767,0)=0, max(−2500,0)=0.
+        // by hand: max(-300,0)=0, max(300,0)=300, max(-32768,0)=0 (no rail edge), max(2000,0)=2000 / max(100,0)=100, max(-50,0)=0, max(-32767,0)=0, max(-2500,0)=0.
         if (!eq(sc.left.samples(), &[_]i16{ 0, 300, 0, 2000 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 100, 0, 0, 0 })) return error.RightHandWrong;
     }

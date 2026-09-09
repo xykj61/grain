@@ -8,13 +8,13 @@
 //! boosted magnitude m = |boosted| and a ceiling ceil: m ≤ ceil passes clean (a wavefolder IS the hard clip until the signal first touches the
 //! ceiling); above the ceiling the hard clip PINS to ceil, and the wavefolder REFLECTS -- the excess folds back down, reaches SILENCE at 2-ceil,
 //! folds back up to the ceiling at 3-ceil, and so on: a triangle wave in m with period 2-ceil. The fold is one exact integer expression on the
-//! non-negative magnitude, the sign carried: p = m mod (2-ceil); folded = p if p ≤ ceil else 2-ceil − p. Every term is exact over non-negative
+//! non-negative magnitude, the sign carried: p = m mod (2-ceil); folded = p if p ≤ ceil else 2-ceil - p. Every term is exact over non-negative
 //! integers (@mod of a non-negative magnitude by a positive period is the ordinary remainder). The pre-gain is ALES78's verbatim (ALES6's num/den
 //! into i64); only the shape past the ceiling is new.
 //!
-//! The folded magnitude sits in [0, ceil] for every m -- the triangle never rises above its peak -- so the write lands in [−ceil, ceil] ⊆ the i16
+//! The folded magnitude sits in [0, ceil] for every m -- the triangle never rises above its peak -- so the write lands in [-ceil, ceil] ⊆ the i16
 //! rail BEFORE the write, exactly as the hard clip: the saturate that follows is a documented no-op, the shape does the bounding. The map is ODD,
-//! wavefold(−x) = −wavefold(x) (the magnitude is folded, the sign carried through), so a symmetric input yields a symmetric output -- odd
+//! wavefold(-x) = -wavefold(x) (the magnitude is folded, the sign carried through), so a symmetric input yields a symmetric output -- odd
 //! harmonics, richly multiplied. It is MEMORYLESS: every output depends only on its own input, so the in-place read-then-write touches nothing
 //! another step needs.
 //!
@@ -65,8 +65,8 @@ fn fold_magnitude(m: i64, ceil: i64) i64 {
     // invariant: the remainder lands in [0, 2-ceil), so exactly one of the two triangle branches applies below.
     assert(p >= 0 and p < period);
     const folded: i64 = if (p <= ceil) p else period - p;
-    // invariant: a folded value sits in [0, ceil] -- the near branch is p ≤ ceil, the far branch is 2-ceil − p with ceil < p < 2-ceil so
-    // 0 < 2-ceil − p < ceil. The triangle never rises above its peak.
+    // invariant: a folded value sits in [0, ceil] -- the near branch is p ≤ ceil, the far branch is 2-ceil - p with ceil < p < 2-ceil so
+    // 0 < 2-ceil - p < ceil. The triangle never rises above its peak.
     assert(folded >= 0 and folded <= ceil);
     return folded;
 }
@@ -106,7 +106,7 @@ pub fn wavefold(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32
         const mag: i64 = if (boosted < 0) -boosted else boosted;
         const folded_mag: i64 = fold_magnitude(mag, ceiling);
         const folded: i64 = if (boosted < 0) -folded_mag else folded_mag;
-        // invariant: the folded value lands within [−ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION -- the
+        // invariant: the folded value lands within [-ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION -- the
         // triangle does the bounding, and the saturate that follows is a documented no-op over an already-bounded value.
         assert(folded >= -ceiling and folded <= ceiling);
         // invariant: the sign is held -- the magnitude is folded and the boosted sign carried, so an odd waveshaper never flips a sample.
@@ -121,7 +121,7 @@ pub fn wavefold(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32
 // --- selftest: BELOW THE CEILING THE FOLD IS THE HARD CLIP (a gain too low to reach the ceiling reproduces ALES78's hard drive byte-for-byte --
 //     both pass clean, proven against the real hard drive); the SINGLE FOLD reflects (ceil = 1000: 1200->800, 1500->500, 2000->0); the DOUBLE FOLD
 //     continues the triangle (2500->500, 3000->1000); the FOLD REACHES ZERO at even multiples of the ceiling (the null a clip can never make); the
-//     OUTPUT NEVER LEAVES [−ceil, ceil] under a heavy drive, its sign held; the shape is ODD, wavefold(−x) = −wavefold(x); the span discipline
+//     OUTPUT NEVER LEAVES [-ceil, ceil] under a heavy drive, its sign held; the shape is ODD, wavefold(-x) = -wavefold(x); the span discipline
 //     holds; and each fault -- BadGain, BadCeiling, BadRange -- refuses by name, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -153,7 +153,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. THE SINGLE FOLD REFLECTS -- a hand computation. ceil = 1000 (period 2000), gain ×1/1 so the boosted value is the input. 800 passes
-    //    (clean); 1000 passes (at the peak); 1200 -> 2000 − 1200 = 800; 1500 -> 2000 − 1500 = 500; 2000 -> mod 2000 = 0 (the fold touches silence).
+    //    (clean); 1000 passes (at the peak); 1200 -> 2000 - 1200 = 800; 1500 -> 2000 - 1500 = 500; 2000 -> mod 2000 = 0 (the fold touches silence).
     //    Signs carried on the negatives.
     {
         const sig = [_]i16{ 800, -1000, 1200, -1500, 2000, -800 };
@@ -165,7 +165,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. THE DOUBLE FOLD CONTINUES THE TRIANGLE -- past 2-ceil the wave folds back up. ceil = 1000 (period 2000): 2500 -> mod 2000 = 500 (≤ 1000,
-    //    near branch); 3000 -> mod 2000 = 1000 (the second peak); 3500 -> mod 2000 = 1500 (> 1000, far branch) -> 2000 − 1500 = 500; 4000 -> mod 2000
+    //    near branch); 3000 -> mod 2000 = 1000 (the second peak); 3500 -> mod 2000 = 1500 (> 1000, far branch) -> 2000 - 1500 = 500; 4000 -> mod 2000
     //    = 0 (the second null). The triangle is unbroken across folds.
     {
         const sig = [_]i16{ 2500, -3000, 3500, -4000 };
@@ -187,7 +187,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.NullWrong;
     }
 
-    // 5. THE OUTPUT NEVER LEAVES [−ceil, ceil] -- under a heavy ×8 drive every folded output magnitude stays at or below the ceiling, its sign
+    // 5. THE OUTPUT NEVER LEAVES [-ceil, ceil] -- under a heavy ×8 drive every folded output magnitude stays at or below the ceiling, its sign
     //    held. The triangle caps at its peak, so no folded value can cross the rail.
     {
         const sig = [_]i16{ 100, -100, 4000, -4000, 20000, -20000, 5, -5 };
@@ -204,8 +204,8 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 6. THE SHAPE IS ODD -- wavefold(−x) = −wavefold(x). A ± symmetric input maps to a ± symmetric output at any gain and ceiling: out[0] =
-    //    −out[1], out[2] = −out[3], out[4] = −out[5] -- the fold shapes the magnitude and carries the sign, so only odd harmonics arise.
+    // 6. THE SHAPE IS ODD -- wavefold(-x) = -wavefold(x). A ± symmetric input maps to a ± symmetric output at any gain and ceiling: out[0] =
+    //    -out[1], out[2] = -out[3], out[4] = -out[5] -- the fold shapes the magnitude and carries the sign, so only odd harmonics arise.
     {
         const sig = [_]i16{ 700, -700, 3000, -3000, 60, -60 };
         var clip = timeline.Clip{};

@@ -1,7 +1,7 @@
 //! lotus/stereo_bell.rye -- ALES174: a PARAMETRIC BELL (PEAKING EQ) carried into stereo -- ALES48's residual-scaled middle band run on BOTH channels with the SAME two cutoffs and the SAME gain, the fifth rung of the stereo EQ /
 //! filter class and the surgical everyday EQ. The class has its tone control (ALES170), shelf (ALES171), band-pass (ALES172, isolate the middle), and notch (ALES173, drop the middle); the bell TURNS the middle -- boosts or cuts
 //! it by a chosen gain while the edges stay exactly as they were. It is the single most-reached-for tool in a mix: lift a vocal's presence, tame a boxy room mode, dig out a kick's thump. ALES48 built that for a mono Clip on the
-//! tone stack's lesson: the middle is the EXACT residual M = x − L − H, so gaining only the middle can never disturb the edges, and unity gain reconstructs the input by construction. The bell is the whole fixed-EQ family at
+//! tone stack's lesson: the middle is the EXACT residual M = x - L - H, so gaining only the middle can never disturb the edges, and unity gain reconstructs the input by construction. The bell is the whole fixed-EQ family at
 //! three gains -- unity the identity, zero the notch, a larger gain a boost. This rung carries it into stereo the way the EQ class asks -- run ALES48's proven mono `bell` on each channel with the SAME cutoffs and gain, so the turned
 //! band lifts on BOTH speakers together.
 //!
@@ -49,7 +49,7 @@ pub const stereo_bell_version = "20260815.080752";
 /// the bell into stereo adds no new fault: it validates two shared cutoffs, one shared gain, and one span against the shared length, then runs the same mono bell on each channel.
 pub const StereoBellError = bell.BellError;
 
-/// Peak `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME two cutoffs and the SAME gain: keep each channel's low and high bands at unity and scale the mid band -- the exact residual M = x − L − H -- by
+/// Peak `count` sample-PAIRS starting at `start` in BOTH channels of `sc` with the SAME two cutoffs and the SAME gain: keep each channel's low and high bands at unity and scale the mid band -- the exact residual M = x - L - H -- by
 /// gain_num/gain_den, writing the sum saturated once -- ALES48's proven mono bell, run per channel. Unity gain reconstructs the input on both; zero gain is exactly the stereo notch on both; a settled constant survives on both.
 /// Validates the two cutoffs, the gain denominator, and the span ONCE against the shared length before either channel is mutated: refuses BadCoeff, BadGain, and BadRange, both channels untouched. Values only -- never the length;
 /// the two channels leave balanced.

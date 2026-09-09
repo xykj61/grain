@@ -4,9 +4,9 @@
 //! folding the whole negative half of the wave up onto the positive side. A full-wave rectifier turns a symmetric wave into a one-sided, DC-heavy
 //! signal at DOUBLE the frequency -- the diode bridge of a power supply, the octave-up fuzz of a guitar pedal, a signal made entirely of EVEN harmonics
 //! and a DC term, the plainest even generator there is. Where the tube drive (ALES82) coaxes even harmonics from an UNEVEN clip, the rectifier makes
-//! them from the purest even map: |−x| = |x|.
+//! them from the purest even map: |-x| = |x|.
 //!
-//! The crux is that |x| is EXACT for every i16 EXCEPT ONE -- sample_min = −32768, whose true magnitude 32768 overflows the positive rail (sample_max =
+//! The crux is that |x| is EXACT for every i16 EXCEPT ONE -- sample_min = -32768, whose true magnitude 32768 overflows the positive rail (sample_max =
 //! 32767). Rather than wrap (the one place |x| would leave the rail), the rectifier SATURATES that lone sample to sample_max, the same honest ceiling
 //! every Lotus edit owes so loud never wraps to quiet. Stated positively: the rectifier is |x| pinned to the rail, exact everywhere the rail can hold
 //! the magnitude and one unit shy at the single sample it cannot. The map is MEMORYLESS -- every output depends only on its own input, so the in-place
@@ -78,7 +78,7 @@ pub fn rectify(clip: *timeline.Clip, start: u32, count: u32) RectifyError!void {
 
 // --- selftest: NON-NEGATIVES ARE UNCHANGED (|x| = x for x ≥ 0); NEGATIVES FOLD to their magnitude by hand; the RAIL EDGE (|sample_min| = 32768
 //     saturates to sample_max, the one sample |x| cannot hold); every output is NON-NEGATIVE and the map is IDEMPOTENT (|­|x|| = |x|); the map DOUBLES
-//     a symmetric pair onto one side (the even-harmonic signature: +a and −a both map to a); the SPAN discipline holds; and a span past the end
+//     a symmetric pair onto one side (the even-harmonic signature: +a and -a both map to a); the SPAN discipline holds; and a span past the end
 //     refuses BadRange, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -104,7 +104,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. NEGATIVES FOLD TO THEIR MAGNITUDE BY HAND -- each negative sample flips up to +|x|, the negative half of the wave folded onto the positive
-    //    side. −1->1, −100->100, −12345->12345, −32767->32767; the positives among them pass unchanged.
+    //    side. -1->1, -100->100, -12345->12345, -32767->32767; the positives among them pass unchanged.
     {
         const sig = [_]i16{ -1, 100, -100, -12345, 32767, -32767 };
         var clip = timeline.Clip{};
@@ -141,7 +141,7 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 5. THE EVEN-HARMONIC SIGNATURE -- a symmetric pair +a and −a BOTH map to a, folding the two halves of the wave onto one side. That doubling of the
+    // 5. THE EVEN-HARMONIC SIGNATURE -- a symmetric pair +a and -a BOTH map to a, folding the two halves of the wave onto one side. That doubling of the
     //    fundamental into a one-sided, DC-heavy shape is the full-wave rectifier's even-harmonic voice -- the complement of the DRIVE family's odd maps.
     {
         const sig = [_]i16{ 6000, -6000, 300, -300 };

@@ -69,7 +69,7 @@ pub const SampleError = error{
     NttRangeError,
     /// The structurally independent re-derivation disagreed with SampleNTT -- the module wires the SHAKE stream and the 12-bit rejection rule wrong.
     ReDerivationMismatch,
-    /// The bit-complement negation identity SamplePolyCBD(~B) = −SamplePolyCBD(B) failed -- the centered-binomial symmetry was broken.
+    /// The bit-complement negation identity SamplePolyCBD(~B) = -SamplePolyCBD(B) failed -- the centered-binomial symmetry was broken.
     NegationMismatch,
     /// A fixed FIPS 203 known-answer (an all-zeros or all-ones CBD input) did not match -- a wrong bit direction or sum.
     KnownAnswerMismatch,
@@ -137,7 +137,7 @@ pub fn sample_ntt(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
 }
 
 /// sample_cbd -- FIPS 203 Algorithm 8: draw a polynomial from the centered binomial distribution over 64-eta input bytes. For each coefficient it
-/// reads 2-eta bits, sums the first eta into x and the next eta into y, and lands (x − y) mod q -- a small value in [-eta, eta] lifted into [0, q).
+/// reads 2-eta bits, sums the first eta into x and the next eta into y, and lands (x - y) mod q -- a small value in [-eta, eta] lifted into [0, q).
 /// This is the secret-and-error noise ML-KEM keys and ciphertexts carry; the input is itself a SHAKE-derived block the keygen rung will supply.
 pub fn sample_cbd(bytes: []const u8, eta: u32) SampleError!ring.Poly {
     // invariant (precondition): eta is one ML-KEM uses (2 or 3), and the input carries exactly 2-eta bits per coefficient over 256 coefficients.
@@ -156,7 +156,7 @@ pub fn sample_cbd(bytes: []const u8, eta: u32) SampleError!ring.Poly {
             x += bit_at(bytes, base + b);
             y += bit_at(bytes, base + eta + b);
         }
-        // x and y each land in [0, eta]; (x + q − y) mod q lifts (x − y) into the canonical residue [0, q) without unsigned underflow.
+        // x and y each land in [0, eta]; (x + q - y) mod q lifts (x - y) into the canonical residue [0, q) without unsigned underflow.
         const v: u32 = (x + q - y) % q;
         // invariant (postcondition): every coefficient is a canonical residue.
         assert(v < q);
@@ -187,7 +187,7 @@ fn poly_eq(a: *const ring.Poly, b: *const ring.Poly) bool {
     return true;
 }
 
-/// negate_poly -- the coefficient-wise additive inverse mod q, (q − c) mod q, the right-hand side of the CBD bit-complement identity.
+/// negate_poly -- the coefficient-wise additive inverse mod q, (q - c) mod q, the right-hand side of the CBD bit-complement identity.
 fn negate_poly(a: *const ring.Poly) ring.Poly {
     var r: ring.Poly = .{ .cs = [_]u32{0} ** n };
     var j: u32 = 0;
@@ -295,9 +295,9 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. The decisive SamplePolyCBD identity: complementing every input bit negates every coefficient, because (eta − x) − (eta − y) = −(x − y).
-    //    Over a deterministic spread of non-trivial inputs and both eta, SamplePolyCBD(~B) must equal −SamplePolyCBD(B) coefficient for coefficient,
-    //    and the original must land every coefficient in the centered band [-eta, eta] (i.e. [0, eta] ∪ [q−eta, q−1]). A non-trivial draw is required.
+    // 3. The decisive SamplePolyCBD identity: complementing every input bit negates every coefficient, because (eta - x) - (eta - y) = -(x - y).
+    //    Over a deterministic spread of non-trivial inputs and both eta, SamplePolyCBD(~B) must equal -SamplePolyCBD(B) coefficient for coefficient,
+    //    and the original must land every coefficient in the centered band [-eta, eta] (i.e. [0, eta] ∪ [q-eta, q-1]). A non-trivial draw is required.
     {
         var eta: u32 = eta_min;
         while (eta <= eta_max) : (eta += 1) {

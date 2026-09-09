@@ -9,7 +9,7 @@
 //! The crux -- four laws. THE SHIFT LAW: after rotate_left(clip, k), result index j holds original[(j + k) mod len] -- the front k samples move to the tail, exactly, checked
 //! against a hand-rotated vector at several offsets. THE MODULAR LAW: rotating by 0, by len, or by any multiple of len is the identity, and rotate_left(k) equals
 //! rotate_left(k mod len) -- a shift past a full turn is the equivalent short shift. THE COMPOSITION-AND-INVERSE LAW: rotate_left(k1) then rotate_left(k2) equals
-//! rotate_left(k1 + k2), so rotations add; in particular rotate_left(k) then rotate_left(len − k) returns to the byte -- every rotation's inverse is another rotation, so a
+//! rotate_left(k1 + k2), so rotations add; in particular rotate_left(k) then rotate_left(len - k) returns to the byte -- every rotation's inverse is another rotation, so a
 //! keeper who over-rotates rotates the rest of the way back home. THE PERMUTATION LAW: a pure rearrangement -- length unchanged and the multiset of samples unchanged, so
 //! every order-blind metric is invariant; witnessed through ALES13, the peak magnitude before and after a rotate is identical, no value ever changing, only its seat.
 //!

@@ -2,7 +2,7 @@
 //! knobs by scaling ALES40's low band and its exact high-band complement; yet the tone stack a keeper reaches for on a guitar
 //! amp, a mixing desk, or an everyday audio app has THREE knobs -- bass, mid, and treble. The middle band is the one a two-band
 //! shelf cannot touch: the vocal presence, the snare crack, the body of a take. This rung opens it. The one correctness beyond
-//! ALES41 is the MID band as an exact residual -- M = x − L − H, defined so the three bands sum to the input by construction, so
+//! ALES41 is the MID band as an exact residual -- M = x - L - H, defined so the three bands sum to the input by construction, so
 //! unity on all three reconstructs the input byte-for-byte even if a band saturated, and the wide-domain sum clamps ONCE.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES42.
@@ -36,7 +36,7 @@ pub const StackError = tone.ToneError || error{
 
 /// Stack `count` samples starting at `start` in place: split the span into a low band (a one-pole low-pass at the bass
 /// crossover lo_num/lo_den, ALES40), a high band (a one-pole high-pass at the treble crossover hi_num/hi_den, ALES40), and the
-/// mid band as the exact residual M = x − L − H; scale each band by its own gain and write the sum saturated ONCE over the true
+/// mid band as the exact residual M = x - L - H; scale each band by its own gain and write the sum saturated ONCE over the true
 /// wide-domain total. Unity on all three bands (bass = bass_den, mid = mid_den, treble = treble_den) reconstructs the input
 /// byte-for-byte -- the mid is defined as the residual, so L + M + H = x by construction. At direct current L = x and H = 0
 /// exactly (ALES40's proven reach and removal), so M = 0: only bass moves a constant, neither mid nor treble reaches it.

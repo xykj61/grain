@@ -16,7 +16,7 @@
 //! THE CRUX -- cofactorless verification, the exact equation [S]B = R + [k]A (RFC 8032 §5.1.7, the form Zig's verifyStrict checks and the form
 //! sign() always satisfies). Read S from the signature's high 32 bytes and refuse it unless it is already the canonical scalar below L; decode
 //! the public key A into a curve point and refuse a key that names no point; recompute k by reducing SHA-512(R ‖ A ‖ M) modulo L; then form
-//! R' = [S]B − [k]A over the group law and accept only when R' compresses to exactly the signature's R bytes. The base point B is DERIVED, not
+//! R' = [S]B - [k]A over the group law and accept only when R' compresses to exactly the signature's R bytes. The base point B is DERIVED, not
 //! pasted: B is the point whose y is 4/5 with even x, so decoding the canonical encoding of y = 4/5 (sign bit clear) recovers it in our own
 //! arithmetic -- no borrowed base-point literal enters the tree.
 //!
@@ -121,7 +121,7 @@ pub fn verify(sig: *const [64]u8, msg: []const u8, pubkey: *const [32]u8) Verify
     const digest = sha512.hash(prehash[0 .. 64 + mlen]) catch unreachable;
     const k = sc.reduce(&digest);
 
-    // Form R' = [S]B − [k]A and accept only when it compresses to exactly the signature's R bytes.
+    // Form R' = [S]B - [k]A and accept only when it compresses to exactly the signature's R bytes.
     const sb = sm.scalarmul(base_point(), s_bytes);
     const ka = sm.scalarmul(a_point, &k);
     const r_prime = pt.sub(sb, ka);

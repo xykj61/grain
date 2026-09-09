@@ -170,7 +170,7 @@ fn slice_eq(a: []const u8, b: []const u8) bool {
 }
 
 fn run_selftest() !u8 {
-    // Eight deterministic test scalars, each well inside [1, n−1]. Zig's basePoint.mul is the independent oracle: our encodings must equal its
+    // Eight deterministic test scalars, each well inside [1, n-1]. Zig's basePoint.mul is the independent oracle: our encodings must equal its
     // toCompressedSec1 / toUncompressedSec1 byte-for-byte, and our parse must recover its own affine coordinates.
     var seed_byte: u8 = 1;
     while (seed_byte <= 8) : (seed_byte += 1) {

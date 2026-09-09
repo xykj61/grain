@@ -83,7 +83,7 @@ pub fn stereo_low_pass(sc: *pan.StereoClip, start: u32, count: u32, num: i32, de
 }
 
 /// High-pass `count` sample-PAIRS starting at `start` in BOTH channels of `sc` by the SAME coefficient num/den, each channel CONTINUING from its own low-pass `state_left` / `state_right` -- the carried-state complement. The
-/// high-pass output is `x − lp`, and `lp` is a pure function of the carried low-pass state, so lifting both per-channel states to the caller makes the complement continue exactly as `stereo_low_pass_carry` does: a master
+/// high-pass output is `x - lp`, and `lp` is a pure function of the carried low-pass state, so lifting both per-channel states to the caller makes the complement continue exactly as `stereo_low_pass_carry` does: a master
 /// high-passed in two pieces equals the whole high-passed once, no re-transient at the seam. Validates the coefficient and span ONCE against the shared length before either channel is mutated: refuses BadCoeff and BadRange,
 /// both states and both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_high_pass_carry(

@@ -9,8 +9,8 @@
 //! The crux is that A FRACTIONAL DELAY IS THE LINEAR INTERPOLATION OF ITS TWO NEIGHBOURS. The delay is carried in FIXED POINT: a scaled
 //! integer d_s = delay-glide_scale (glide_scale = 256), so the whole delay is d_s/glide_scale and the fractional part is d_s%glide_scale
 //! over glide_scale. At each span sample the scaled delay glides linearly from d0_scaled to d1_scaled; the read is
-//! delayed = (near-(glide_scale − frac) + far-frac)/glide_scale, near = dry[i − d_whole] (the nearer, smaller-delay sample) and far =
-//! dry[i − d_whole − 1] (the further, larger-delay one), and y[i] = saturate(x[i] + level-delayed). Every read is off a FROZEN snapshot of
+//! delayed = (near-(glide_scale - frac) + far-frac)/glide_scale, near = dry[i - d_whole] (the nearer, smaller-delay sample) and far =
+//! dry[i - d_whole - 1] (the further, larger-delay one), and y[i] = saturate(x[i] + level-delayed). Every read is off a FROZEN snapshot of
 //! the dry prefix (the ALES68 idiom, reused), so a moving read never reads a sample it just wrote. Two facts anchor the interpolation: at
 //! frac = 0 the read returns `near` EXACTLY (a whole-sample glide is a moving integer tap, so a fixed whole delay reduces to ALES68's
 //! one-tap multi-tap byte-for-byte), and at frac = glide_scale/2 it returns the EXACT AVERAGE of the two neighbours. dry[j] = 0 for j < 0

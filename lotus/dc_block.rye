@@ -1,4 +1,4 @@
-//! lotus/dc_block.rye -- ALES91: the one-pole IIR DC blocker -- a DRIFTING-offset remover with CARRIED STATE, y[n] = x[n] − x[n−1] + R-y[n−1].
+//! lotus/dc_block.rye -- ALES91: the one-pole IIR DC blocker -- a DRIFTING-offset remover with CARRIED STATE, y[n] = x[n] - x[n-1] + R-y[n-1].
 //! ALES90's dc_remove is the BLOCK-MEAN remover: it looks at a whole span at once, subtracts the one average, and is memoryless -- perfect for the CONSTANT
 //! offset a rectifier introduces over a bounded region. Yet a real offset DRIFTS: a mic warms and its bias creeps, two takes spliced together each ride a
 //! different rail, the DC steps partway through a clip. A block mean cannot follow a moving offset -- it subtracts one number, leaving each region offset by
@@ -11,10 +11,10 @@
 //! continues the first's decay with no fresh transient at the seam -- the click a per-span restart would leave). It is the ALES43 SHAPE the dc_remove doc
 //! booked in as many words.
 //!
-//! The step is y[n] = (x[n] − x[n−1]) + R-y[n−1] with R = num/den a stable pole in [0, 1): the difference x[n] − x[n−1] is the zero AT direct current (a
+//! The step is y[n] = (x[n] - x[n-1]) + R-y[n-1] with R = num/den a stable pole in [0, 1): the difference x[n] - x[n-1] is the zero AT direct current (a
 //! constant in gives zero out at steady state -- DC removed EXACTLY, reached in finite steps because @divTrunc shrinks the feedback to nothing once the tail
-//! is small enough), and R-y[n−1] is the leaky integrator that widens the notch (R near one -> a narrow notch that keeps the bass just above DC; R = 0 -> the
-//! plain first difference, a wide highpass). The pole must be STRICTLY inside the unit circle (num < den): num = den is a pure integrator (y[n] = x[n] − x[0],
+//! is small enough), and R-y[n-1] is the leaky integrator that widens the notch (R near one -> a narrow notch that keeps the bass just above DC; R = 0 -> the
+//! plain first difference, a wide highpass). The pole must be STRICTLY inside the unit circle (num < den): num = den is a pure integrator (y[n] = x[n] - x[0],
 //! marching, never settling), and num > den is unstable -- both refuse BadCoeff. num = 0 is legal here (the first-difference highpass), UNLIKE the ALES40 tone
 //! filter whose coefficient must move forward (num ≥ 1); a DC blocker at R = 0 is a real, useful filter, so its coefficient law is its own.
 //!
@@ -76,7 +76,7 @@ pub fn precheck(clip_len: u32, start: u32, count: u32, num: i32, den: u32) DcBlo
 }
 
 /// Advance the one-pole DC blocker by one sample and return its output. `x_prev` holds the previous input, `y_prev` the previous (saturated) output -- the two
-/// values the recurrence y[n] = (x[n] − x[n−1]) + R-y[n−1] carries. The difference is the zero at direct current; the feedback term R-y[n−1] = num-y_prev/den
+/// values the recurrence y[n] = (x[n] - x[n-1]) + R-y[n-1] carries. The difference is the zero at direct current; the feedback term R-y[n-1] = num-y_prev/den
 /// (truncated toward zero, the suite's honest-lossy rule) is the leaky integrator. Because @divTrunc shrinks the feedback to exactly zero once |y_prev| falls
 /// below den/num, a settled constant reaches output zero EXACTLY in finite steps rather than drifting near it forever. The feedback reads the SATURATED prior
 /// output, so the recurrence stays bounded (|y_prev| ≤ sample_max); every intermediate runs in i64 so nothing overflows before the one clamp.
@@ -86,7 +86,7 @@ fn dc_step(x_prev: *i64, y_prev: *i64, x: i16, num: i32, den: u32) i16 {
     const xd: i64 = @as(i64, x);
     // The zero at direct current: a constant input makes this difference zero, so the steady-state output is zero (DC removed).
     const diff: i64 = xd - x_prev.*;
-    // The leaky integrator R-y[n−1], truncated toward zero -- the term that reaches exactly zero in finite steps and lets the pole sit near one for a narrow
+    // The leaky integrator R-y[n-1], truncated toward zero -- the term that reaches exactly zero in finite steps and lets the pole sit near one for a narrow
     // notch. Bounded: num < den ≤ max_pole_den and |y_prev| ≤ sample_max, so this product is far inside i64.
     const fb: i64 = @divTrunc(@as(i64, num) * y_prev.*, @as(i64, den));
     // The output saturates at the rails (ALES2 reused, never a wrap): a sharp edge (a large difference plus feedback) that runs past i16 pins rather than
@@ -128,9 +128,9 @@ pub fn dc_block(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32
 /// `run` continues from the carried state so a span blocked piece by piece has no re-transient at a seam; `reset` returns the state to silence so the next run
 /// re-opens the from-silence transient deliberately.
 pub const DcBlocker = struct {
-    /// The previous input sample x[n−1] -- a plain i16 value held wide, zero at silence.
+    /// The previous input sample x[n-1] -- a plain i16 value held wide, zero at silence.
     x_prev: i64 = 0,
-    /// The previous (saturated) output y[n−1] -- held wide, zero at silence; the value the leaky integrator feeds back.
+    /// The previous (saturated) output y[n-1] -- held wide, zero at silence; the value the leaky integrator feeds back.
     y_prev: i64 = 0,
     num: i32,
     den: u32,
@@ -218,8 +218,8 @@ fn run_selftest() !u8 {
     }
 
     // 4. IT FOLLOWS A DRIFTING OFFSET A BLOCK MEAN CANNOT -- the reason this rung exists beside ALES90. A DC STEP: a constant +4000 for twenty samples, then a
-    //    constant −2000 for twenty. The IIR blocker drives EACH region toward zero (each tail exactly 0), following the moving offset. ALES90's block mean
-    //    would subtract one average (1000), leaving the first region riding +3000 and the second −3000 -- DC not removed per region.
+    //    constant -2000 for twenty. The IIR blocker drives EACH region toward zero (each tail exactly 0), following the moving offset. ALES90's block mean
+    //    would subtract one average (1000), leaving the first region riding +3000 and the second -3000 -- DC not removed per region.
     {
         var sig: [40]i16 = undefined;
         var k: u32 = 0;
@@ -262,7 +262,7 @@ fn run_selftest() !u8 {
         if (fresh.samples()[0] != 3000) return error.ResetDidNotReopen; // first sample passes the input: the transient re-opened
     }
 
-    // 6. R = 0 IS THE LEGAL FIRST DIFFERENCE -- a DC blocker at num = 0 is y[n] = x[n] − x[n−1], the wide first-difference highpass (legal here, unlike the
+    // 6. R = 0 IS THE LEGAL FIRST DIFFERENCE -- a DC blocker at num = 0 is y[n] = x[n] - x[n-1], the wide first-difference highpass (legal here, unlike the
     //    ALES40 tone filter which demands num ≥ 1). A constant becomes its first sample then exactly zero forever after (each difference is zero).
     {
         const run = [_]i16{ 500, 500, 500, 500, 500 };

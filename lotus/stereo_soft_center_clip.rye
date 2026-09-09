@@ -1,17 +1,17 @@
 //! lotus/stereo_soft_center_clip.rye -- ALES142: the soft center clipper carried into stereo, ONE SHARED CONTINUOUS DEAD ZONE, the phase-holding yet ratio-breaking member of the stereo dead-zone corner. ALES88 named
-//! `soft_center_clip` -- silence the quiet middle AND shift every survivor toward zero by the threshold, y = if |x| ≤ t then 0 else x − sign(x)-t, so the survivor rises CONTINUOUSLY from zero (|x| = t+1 -> ±1, not
+//! `soft_center_clip` -- silence the quiet middle AND shift every survivor toward zero by the threshold, y = if |x| ≤ t then 0 else x - sign(x)-t, so the survivor rises CONTINUOUSLY from zero (|x| = t+1 -> ±1, not
 //! ±(t+1)): the continuous twin of ALES141's hard center clip, which passed the loud UNCHANGED and left a JUMP at the boundary. It is the floor-side twin of the ceiling pair the DRIVE family carries -- ALES132's hard
 //! clip pins abruptly, ALES133's soft drive rounds the corner; ALES141's hard center clip jumps, this soft center clip is continuous. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose
 //! defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the soft center clip into stereo the plain way: run ALES88's proven mono `soft_center_clip` on each channel with the SAME threshold,
 //! so one continuous dead zone lands on BOTH speakers together.
 //!
-//! The soft center clip is ODD (sign(−x)-t flips with the sign), so like ALES141 it HOLDS the inter-channel antisymmetry: an out-of-phase master (right the exact negation of left) comes back STILL out of phase. Yet
+//! The soft center clip is ODD (sign(-x)-t flips with the sign), so like ALES141 it HOLDS the inter-channel antisymmetry: an out-of-phase master (right the exact negation of left) comes back STILL out of phase. Yet
 //! unlike the hard center clip it is a SHIFT, not a mask, and a shift is not scale-invariant, so the soft form BREAKS the inter-channel ratio -- a 1:2 master does NOT stay 1:2, because subtracting the same t from both
-//! channels' survivors pulls the quieter one proportionally harder (2x − t ≠ 2(x − t)). And it is NOT idempotent -- each pass subtracts t again. This is the honest middle of the class: the hard center clip held both
+//! channels' survivors pulls the quieter one proportionally harder (2x - t ≠ 2(x - t)). And it is NOT idempotent -- each pass subtracts t again. This is the honest middle of the class: the hard center clip held both
 //! ratio and antisymmetry and was idempotent; the soft center clip holds only the antisymmetry, stated plainly rather than dressed in a symmetry it lacks. What both members share, carried into stereo, is the SAME dead
-//! zone and the soft/hard bond: on every survivor |soft| = |hard| − t, per channel -- proven here against ALES141's stereo_center_clip.
+//! zone and the soft/hard bond: on every survivor |soft| = |hard| - t, per channel -- proven here against ALES141's stereo_center_clip.
 //!
-//! The rule, stated once: the soft center clip is EXACT for every i16 with NO rail edge and NO saturate -- a positive survivor lands in [1, sample_max], a negative in [sample_min, −1], the dead zone at 0. The magnitude
+//! The rule, stated once: the soft center clip is EXACT for every i16 with NO rail edge and NO saturate -- a positive survivor lands in [1, sample_max], a negative in [sample_min, -1], the dead zone at 0. The magnitude
 //! is taken in i32 inside ALES88 so |sample_min| = 32768 is representable. It carries ONE parameter, the threshold magnitude, and names TWO faults. Refuse BadThreshold (a threshold outside [0, sample_max]) and BadRange
 //! (a span outside the samples) BEFORE either channel is mutated -- each fault depends only on the shared threshold or the shared length, so each check is made ONCE up front, and a refusal never soft-center-clips one
 //! channel and leaves the other whole; otherwise soft_center_clip both channels over [start, start+count) with the same `thresh` via ALES88's `soft_center_clip`. SoftCenterClipError reused whole -- the stereo lift adds
@@ -20,13 +20,13 @@
 //! The crux -- four laws. THE STEREO SOFT CENTER-CLIP LAW: each channel equals ALES88's mono `soft_center_clip` with the same threshold over the same span byte for byte -- the quiet middle silenced, every survivor
 //! shifted toward zero by t, the boundary continuous, no rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a soft center clip writes values only). THE
 //! PER-CHANNEL ODD / SHIFT LAW: the soft center clip is odd, so a shared dead zone HOLDS the inter-channel antisymmetry (an out-of-phase master staying out of phase); yet it is a SHIFT, so it BREAKS the inter-channel
-//! ratio (a 1:2 master not staying 1:2) and is NOT idempotent (twice ≠ once); an identical-channel master stays identical, thresh = 0 the identity, and the soft/hard bond holds per channel (|soft| = |hard| − t on every
+//! ratio (a 1:2 master not staying 1:2) and is NOT idempotent (twice ≠ once); an identical-channel master stays identical, thresh = 0 the identity, and the soft/hard bond holds per channel (|soft| = |hard| - t on every
 //! survivor, against ALES141's stereo_center_clip). THE ATOMICITY / DEGENERATE LAW: any refusal (BadThreshold, BadRange) leaves BOTH channels byte for byte untouched and still balanced; thresh = 0 the identity on both,
 //! count = 0 the identity on both.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES142.
 //! Design read: active-designing/date/20260815/20260815-042641_fill-ales142-lotus-stereo-soft-center-clip.md
-//! Stands on: lotus/soft_center_clip.rye (ALES88) -- the mono soft center clipper run once per channel, y = if |x| ≤ t then 0 else x − sign(x)-t with no rail edge; lotus/stereo_center_clip.rye (ALES141) -- the hard
+//! Stands on: lotus/soft_center_clip.rye (ALES88) -- the mono soft center clipper run once per channel, y = if |x| ≤ t then 0 else x - sign(x)-t with no rail edge; lotus/stereo_center_clip.rye (ALES141) -- the hard
 //! sibling whose dead zone this shares and whose survivors this pulls toward zero by t (the soft/hard bond); lotus/pan.rye (ALES10) -- the StereoClip (two mono Clips, left/right) and its balance invariant;
 //! lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
@@ -52,7 +52,7 @@ pub const stereo_soft_center_clip_version = "20260815.042641";
 pub const StereoSoftCenterClipError = soft_center_clip.SoftCenterClipError;
 
 /// Soft-center-clip `[start, start+count)` in BOTH channels of `sc` with the same `thresh`, the SAME continuous dead zone on each, running ALES88's proven mono `soft_center_clip`. Each sample whose magnitude is at most
-/// `thresh` becomes `0` (the quiet middle silenced), and every louder sample is shifted toward zero by `thresh` -- y = if |x| ≤ thresh then 0 else x − sign(x)-thresh, the survivor rising continuously from zero. Exact
+/// `thresh` becomes `0` (the quiet middle silenced), and every louder sample is shifted toward zero by `thresh` -- y = if |x| ≤ thresh then 0 else x - sign(x)-thresh, the survivor rising continuously from zero. Exact
 /// for every i16 with no rail edge, so no saturate is owed. `thresh = 0` is the identity. Validates both channels once against the shared threshold and length before either is mutated: refuses `BadThreshold` /
 /// `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_soft_center_clip(sc: *pan.StereoClip, start: u32, count: u32, thresh: i32) StereoSoftCenterClipError!void {
@@ -78,7 +78,7 @@ pub fn stereo_soft_center_clip(sc: *pan.StereoClip, start: u32, count: u32, thre
 
 // --- selftest: THE STEREO SOFT CENTER-CLIP LAW -- each channel equals ALES88's mono soft_center_clip with the same threshold over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after,
 //     both holding their starting length; THE PER-CHANNEL ODD / SHIFT LAW -- an OUT-OF-PHASE master coming back STILL out of phase (odd holds the antisymmetry), a 1:2 master NOT staying 1:2 (the shift breaks the
-//     ratio), the map NOT idempotent (twice ≠ once), an identical-channel master staying identical, thresh = 0 the identity, and the soft/hard bond |soft| = |hard| − t on every survivor against ALES141; THE ATOMICITY
+//     ratio), the map NOT idempotent (twice ≠ once), an identical-channel master staying identical, thresh = 0 the identity, and the soft/hard bond |soft| = |hard| - t on every survivor against ALES141; THE ATOMICITY
 //     / DEGENERATE LAW -- each refusal leaves both channels untouched and balanced, thresh = 0 the identity, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -110,7 +110,7 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: left 500->0, 1500->500, 3000->2000, −1500->−500, −3000->−2000; right 100->0, −1200->−200, 2500->1500, −300->0, 5000->4000.
+        // by hand: left 500->0, 1500->500, 3000->2000, -1500->-500, -3000->-2000; right 100->0, -1200->-200, 2500->1500, -300->0, 5000->4000.
         if (!eq(sc.left.samples(), &[_]i16{ 0, 500, 2000, -500, -2000 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 0, -200, 1500, 0, 4000 })) return error.RightHandWrong;
     }
@@ -131,7 +131,7 @@ fn run_selftest() !u8 {
     }
 
     // 3a. THE PER-CHANNEL ODD LAW, the ANTISYMMETRY HOLDS -- an out-of-phase master (right the exact negation of left) soft-center-clipped through the same threshold comes back STILL out of phase, because the soft
-    //     dead-zone map is odd (sign(−x)-t flips with the sign), so soft_center_clip(−x) = −soft_center_clip(x) and right = −left after. The phase is held, like the hard center clip.
+    //     dead-zone map is odd (sign(-x)-t flips with the sign), so soft_center_clip(-x) = -soft_center_clip(x) and right = -left after. The phase is held, like the hard center clip.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 500, -3000, 900, -1200 }, &[_]i16{ -500, 3000, -900, 1200 }); // right = −left
@@ -142,13 +142,13 @@ fn run_selftest() !u8 {
         while (i < 4) : (i += 1) {
             if (@as(i32, r[i]) != -@as(i32, l[i])) return error.AntisymmetryBroke; // right = −left held — the odd law in stereo
         }
-        // by hand: |500|,|900| ≤ 1000 silence; 3000->2000, 1200->200. left {0,−2000,0,−200}, right {0,2000,0,200}.
+        // by hand: |500|,|900| ≤ 1000 silence; 3000->2000, 1200->200. left {0,-2000,0,-200}, right {0,2000,0,200}.
         if (!eq(l, &[_]i16{ 0, -2000, 0, -200 })) return error.LeftPhaseWrong;
         if (!eq(r, &[_]i16{ 0, 2000, 0, 200 })) return error.RightPhaseWrong;
     }
 
     // 3b. THE SHIFT LAW, the RATIO BREAKS -- a 1:2 master (right twice left) does NOT stay 1:2, because the soft center clip is a SHIFT and a shift is not scale-invariant: subtracting the same t from both survivors
-    //     pulls the quieter channel proportionally harder (2x − t ≠ 2(x − t)). This is the honest edge the hard center clip did not have. Under a shift the ratio must break where both survive.
+    //     pulls the quieter channel proportionally harder (2x - t ≠ 2(x - t)). This is the honest edge the hard center clip did not have. Under a shift the ratio must break where both survive.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 2000, 3000 }, &[_]i16{ 4000, 6000 }); // right = 2·left, both survive t = 1000
@@ -174,11 +174,11 @@ fn run_selftest() !u8 {
         try stereo_soft_center_clip(&twice, 0, 3, 1000);
         try stereo_soft_center_clip(&twice, 0, 3, 1000);
         if (eq(once.left.samples(), twice.left.samples()) and eq(once.right.samples(), twice.right.samples())) return error.UnexpectedlyIdempotent;
-        // by hand once: left 5000->4000, −6000->−5000, 4000->3000; twice: 4000->3000, −5000->−4000, 3000->2000.
+        // by hand once: left 5000->4000, -6000->-5000, 4000->3000; twice: 4000->3000, -5000->-4000, 3000->2000.
         if (!eq(twice.left.samples(), &[_]i16{ 3000, -4000, 2000 })) return error.TwiceLeftWrong;
     }
 
-    // 3d. THE SOFT/HARD BOND -- the soft center clip (this rung) and ALES141's hard center clip silence the SAME dead zone, and on every survivor the soft output is exactly t quieter in magnitude: |soft| = |hard| − t,
+    // 3d. THE SOFT/HARD BOND -- the soft center clip (this rung) and ALES141's hard center clip silence the SAME dead zone, and on every survivor the soft output is exactly t quieter in magnitude: |soft| = |hard| - t,
     //     per channel per sample. The family read across the two dead-zone members in stereo.
     {
         const li = [_]i16{ 300, -300, 1200, -1200, 5000, -5000 };

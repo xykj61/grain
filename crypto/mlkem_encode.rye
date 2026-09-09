@@ -196,7 +196,7 @@ fn poly_is_zero(a: *const [n]u32) bool {
     return true;
 }
 
-/// centered_distance -- the FIPS 203 mod±q distance between two residues: the representative of (a − b) in (−q/2, q/2], as a magnitude. The measure
+/// centered_distance -- the FIPS 203 mod±q distance between two residues: the representative of (a - b) in (-q/2, q/2], as a magnitude. The measure
 /// the compression bound is stated in.
 fn centered_distance(a: u32, b: u32) u32 {
     var d: u32 = if (a >= b) a - b else b - a;
@@ -262,7 +262,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 5. The FIPS 203 §4.2.1 compression bound: for every x in [0, q), the centered round-trip error |Decompress_d(Compress_d(x)) − x mod±q| is at
+    // 5. The FIPS 203 §4.2.1 compression bound: for every x in [0, q), the centered round-trip error |Decompress_d(Compress_d(x)) - x mod±q| is at
     //    most round(q/2^(d+1)). This proves the rounding is no worse than the standard permits, across each compression width, over the whole field.
     {
         const widths = [_]u32{ 1, 4, 5, 10, 11 };

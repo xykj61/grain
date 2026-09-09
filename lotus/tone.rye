@@ -104,7 +104,7 @@ pub fn low_pass(clip: *timeline.Clip, start: u32, count: u32, num: i32, den: u32
 }
 
 /// High-pass `count` samples starting at `start` in place, CONTINUING from the caller's low-pass `state` rather than from
-/// silence -- the carried-state complement (ALES45). The high-pass output is `x − lp`, and `lp` is a pure function of the carried
+/// silence -- the carried-state complement (ALES45). The high-pass output is `x - lp`, and `lp` is a pure function of the carried
 /// low-pass state, so lifting that state to the caller makes the complement continue exactly as low_pass_carry does: a span
 /// high-passed in two pieces (the second carrying the first's ending state) equals the whole high-passed once, no re-transient
 /// at the seam. A fresh `state` of 0 is exactly the from-silence high_pass. Refuses BadCoeff on an illegal coefficient and

@@ -93,7 +93,7 @@ pub fn reverb_width(
 }
 
 // --- selftest: THE MONO COLLAPSE (width == 0) -- both channels become the reverberated master's shared mid, identical; THE WIDEN LAW (width ==
-//     2-den) -- the wet's side doubles (byte for byte against the mid/side of the pure reverb) and |L−R| grows per sample; THE UNITY EDGE (width ==
+//     2-den) -- the wet's side doubles (byte for byte against the mid/side of the pure reverb) and |L-R| grows per sample; THE UNITY EDGE (width ==
 //     den) -- within ≤ 1 LSB of the pure stereo_reverb_preset on both channels; THE CENTRED-INVARIANT LAW -- a centred master stays identical
 //     channel-to-channel at any width; THE FAULT LAW -- a bad width refuses BadWidth, a span past the clip DurationTooLong, an out-of-range span
 //     BadRange, each leaving the master dry and untouched ------------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. THE WIDEN LAW -- width == 2-den widens the wet: reverb_width IS reverberate-then-widen, so its result equals ALES211's stereo_width applied
-    //    to a fresh copy of the pure reverb, BYTE FOR BYTE on both channels (the composition proof, no new arithmetic); and the per-sample |L−R|
+    //    to a fresh copy of the pure reverb, BYTE FOR BYTE on both channels (the composition proof, no new arithmetic); and the per-sample |L-R|
     //    grows against the pure wet where the wet was not centred (the named widen behaviour).
     {
         var clip = pan.StereoClip{};

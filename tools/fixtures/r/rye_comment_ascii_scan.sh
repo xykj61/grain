@@ -46,9 +46,16 @@ mode="${1:-count}"
 #    4333  `20260828.134500`  after constel's eight -- three em-dashes this lap had itself
 #                             promoted from trailing comments (uncounted) to their own lines
 #                             (counted), plus five typographic minus signs in arithmetic prose
-# What remains is notation the rule's table does not name -- 1,305 typographic minus, 542 double
-# vertical, 350 section, 341 multiplication, 289 less-or-equal, 291 superscripts, 195 Greek -- each
-# carrying a meaning a reader should choose the ASCII form for, rather than a script guessing it.
+#    2608  `20260908.224742`  after the typographic minus was converted in 129 files -- the one
+#                             residue class with a single lawful ASCII answer, so a script may
+#                             make it where for the rest a reader must choose. The rule's table
+#                             names it from this stamp: U+2212 MINUS SIGN -> `-`. Every one of the
+#                             1,164 sat in arithmetic prose (`2^255 - 19`, `n - (n-1)/3`), and
+#                             every rewritten file was re-derived from its committed bytes to
+#                             prove the sweep moved nothing else.
+# What remains is notation whose ASCII form a reader must choose -- 542 double vertical, 350
+# section, 341 multiplication, 289 less-or-equal, 291 superscripts, 195 Greek -- each carrying a
+# meaning a script would have to guess at.
 #
 # THE UNIT IS A CHARACTER, COUNTED BY ITS UTF-8 LEAD BYTE IN THE C LOCALE. Every non-ASCII
 # character carries exactly one lead byte in `\300-\377`, so counting lead bytes counts
@@ -61,7 +68,7 @@ mode="${1:-count}"
 # `LC_ALL=C` pins both awks to bytes, the lead-byte class turns bytes back into characters, and
 # octal spelling reads identically in both dialects -- the same C-locale move
 # `tools/fixtures/l/living_card_ascii_scan.sh` made when it dropped `grep -P` (REDS %278).
-CEILING=3794
+CEILING=2630
 
 # A SYMLINK IS SKIPPED, and this is a census rather than a roster, so the reading is unambiguous:
 # `git ls-files` lists a link AND its target as two paths, and following both counts the same bytes

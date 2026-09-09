@@ -5,7 +5,7 @@
 //! once. This rung spends that proof: it drives ALES60's deepened floor from the LINKED HELD envelope rather than the plain linked one -- the same stereo expander, now with the patience that keeps it from pumping the image.
 //!
 //! Two proofs fused, held. The DETECTOR is the linked HELD follower (ALES165): one shared envelope steps toward the linked peak max(|left|, |right|), the ONE shared hold countdown pinning that peak across a fall so the two
-//! channels never re-open on different samples. The GAIN is linked (ALES159): where the held envelope falls below the threshold its deficit is widened by the ratio (ALES60's deepened floor, exp = max(0, threshold − deficit-num/den),
+//! channels never re-open on different samples. The GAIN is linked (ALES159): where the held envelope falls below the threshold its deficit is widened by the ratio (ALES60's deepened floor, exp = max(0, threshold - deficit-num/den),
 //! computed on the ENVELOPE not the bare sample) and the single gain exp/e is applied to BOTH raw samples. The gain math is not re-invented (it is ALES60's), and the time base is not re-invented (it is ALES165's linked held
 //! env_step_hold); this rung is exactly their composition over public APIs, adding only the hold knob to the stereo breathing expander. It is the stereo mirror of ALES62's held mono expander.
 //!
@@ -25,7 +25,7 @@
 //! Design read: active-designing/date/20260815/20260815-073427_fill-ales168-lotus-stereo-expand-env-hold.md
 //! Stands on: lotus/stereo_hold_env.rye (ALES165) -- the LINKED HELD follower, its stereo_env_step_hold advancing the one shared envelope with the one shared hold countdown toward the linked peak, reused whole;
 //! lotus/stereo_expand_env.rye (ALES164) -- the un-held linked breathing expander this reduces to at a hold of zero, re-proven beside it as the zero-hold limit; lotus/expand_env_hold.rye (ALES62) -- the mono attack/hold/release
-//! expander, its ExpandEnvHoldError reused whole and its output the left-always-peak comparison; lotus/expand.rye (ALES60) -- the deepened floor exp = max(0, threshold − deficit-num/den); lotus/pan.rye (ALES10) -- the StereoClip;
+//! expander, its ExpandEnvHoldError reused whole and its output the left-always-peak comparison; lotus/expand.rye (ALES60) -- the deepened floor exp = max(0, threshold - deficit-num/den); lotus/pan.rye (ALES10) -- the StereoClip;
 //! lotus/timeline.rye (ALES2) -- the Clip, sample_max, max_clip.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope and one shared u32 hold countdown, siloed to lotus/. One linked-peak comparison and at most one
@@ -57,7 +57,7 @@ pub const StereoExpandEnvHoldError = expand_env_hold.ExpandEnvHoldError;
 /// Expand `count` sample-PAIRS starting at `start` in the stereo master `sc` below the magnitude `threshold` by the ratio `ratio_num/ratio_den`, the ONE downward widening FOLLOWING the LINKED HELD envelope that CONTINUES from the
 /// caller's shared `env` and `hold_left` rather than from silence -- the carried-state form (ALES43's lesson), now carrying BOTH the shared envelope and the shared hold countdown so the hold survives across a call boundary.
 /// Each pair advances ALES165's linked held follower one step toward the linked peak `max(|left|, |right|)` (attack while rising and rearming the shared hold, the peak pinned while the countdown lasts, release once it expires);
-/// where the held envelope sits at or above the threshold the expander is idle and both channels pass byte for byte, and where it falls below, the envelope's deficit is widened by the ratio (`exp = max(0, threshold − deficit-num/den)`,
+/// where the held envelope sits at or above the threshold the expander is idle and both channels pass byte for byte, and where it falls below, the envelope's deficit is widened by the ratio (`exp = max(0, threshold - deficit-num/den)`,
 /// ALES60's deepened floor on the linked held envelope) and the single gain `exp/e` applied to BOTH raw samples -- one detector, one hold, one widening, the image held. Refuses BadThreshold, BadRatio, BadCoeff, BadHold, and
 /// BadRange before any write; on refusal `env`, `hold_left`, and both channels are untouched. Values only -- never the length, and the channels leave balanced.
 pub fn stereo_expand_hold_follow_carry(
@@ -114,7 +114,7 @@ pub fn stereo_expand_hold_follow_carry(
                 // and the next clip would open over it
                 assert(xl == 0 and xr == 0);
             } else {
-                // The expanded envelope target -- ALES60's deepened floor computed on the LINKED HELD envelope, not the bare sample: the deficit thr − e widened by the ratio (num/den >= 1) and floored at zero. thr−e <= 32767.
+                // The expanded envelope target -- ALES60's deepened floor computed on the LINKED HELD envelope, not the bare sample: the deficit thr - e widened by the ratio (num/den >= 1) and floored at zero. thr-e <= 32767.
                 const deficit: i64 = thr - e; // strictly positive here (e < thr)
                 const widened: i64 = @divTrunc(deficit * num, den);
                 const raw_exp: i64 = thr - widened;
@@ -224,7 +224,7 @@ fn run_selftest() !u8 {
         if (eq(sc.right.samples(), mono_r.samples())) return error.IndependentDidNotDiffer;
     }
 
-    // 3. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left) comes back STILL out of phase, both
+    // 3. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = -left) comes back STILL out of phase, both
     //    scaled by the identical time-smoothed-and-held fraction.
     {
         const il = [_]i16{ 900, -700, 5000, -400, 300, -300 };

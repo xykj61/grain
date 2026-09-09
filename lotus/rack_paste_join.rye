@@ -70,7 +70,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 
 fn run_selftest() !u8 {
     // 1. THE CRUX -- a filed span joined at a full-swing sign flip lands a seam sample strictly inside the ±30000 extremes, where a
-    //    butt rack paste would step 60000. Master eight +30000 then eight −30000; file "flip" = four −30000 heads / four +30000
+    //    butt rack paste would step 60000. Master eight +30000 then eight -30000; file "flip" = four -30000 heads / four +30000
     //    tails; join "flip" at the sign flip over lead 4 / trail 4.
     {
         var m = pan.StereoClip{};
@@ -83,7 +83,7 @@ fn run_selftest() !u8 {
         try rack.copy_to(&r, "flip", &src, try selection.make(&src, 0, 8));
 
         try rack_paste_join(&r, "flip", &m, 8, 4, 4);
-        // the new length shares both overlaps: 16 + 8 − 4 − 4 = 16.
+        // the new length shares both overlaps: 16 + 8 - 4 - 4 = 16.
         if (m.left.len != 16 or m.right.len != 16) return error.JoinedLengthWrong;
         if (m.left.len != m.right.len) return error.JoinedNotAligned;
         var i: u32 = 0;

@@ -295,7 +295,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. A KNOWN CAP -- with frame 4, floor 500, max 2: the one jointly-silent run (frames 1-3, 12 samples) keeps its first 2 and cuts 10; frame 4 (quiet left, loud
-    //    right) is KEPT on both. Result = 24 − 10 = 14 samples on each channel.
+    //    right) is KEPT on both. Result = 24 - 10 = 14 samples on each channel.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &left_sig, &right_sig);

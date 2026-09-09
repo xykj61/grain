@@ -6,7 +6,7 @@
 //!
 //! The round's finishing law is the FAMILY WHOLE: carried into stereo, the two half-waves reconstruct the dry master -- stereo_halve on one copy and stereo_halve_neg on another, summed sample for sample on each channel,
 //! give back the original master exactly (max(x, 0) + min(x, 0) = x). On an out-of-phase master (right the exact negation of left) the inverted half-wave returns PARTITIONED like its sibling but on the NON-POSITIVE side:
-//! at each index exactly one channel survives (left[i] - right[i] = 0, the channels DISJOINT), and their sum is the negated magnitude (left[i] + right[i] = −|left[i]|, since min(x, 0) + min(−x, 0) = −|x|). Every output
+//! at each index exactly one channel survives (left[i] - right[i] = 0, the channels DISJOINT), and their sum is the negated magnitude (left[i] + right[i] = -|left[i]|, since min(x, 0) + min(-x, 0) = -|x|). Every output
 //! on both channels is NON-POSITIVE -- the mirror of ALES139's non-negative one-sided signal. Yet a 1:2 master keeps its ratio on the kept samples, and an identical-channel master stays identical.
 //!
 //! The rule, stated once: min(x, 0) is EXACT for EVERY i16 with NO rail edge (a non-positive sample passes unchanged, a positive becomes 0, and sample_min passes THROUGH untouched -- already a legal i16, unlike the
@@ -16,8 +16,8 @@
 //!
 //! The crux -- four laws. THE STEREO INVERTED-HALVE LAW: each channel equals ALES86's mono `halve_neg` over the same span byte for byte -- every output min(x, 0), non-positives passing unchanged and positives going to
 //! silence, no rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a halve_neg writes values only). THE FAMILY-WHOLE / IMAGE-PARTITION LAW: the two stereo
-//! half-waves partition the dry master (stereo_halve + stereo_halve_neg = the original, per channel per sample, max(x, 0) + min(x, 0) = x); an out-of-phase master (right = −left) returns PARTITIONED and NON-POSITIVE
-//! (left[i] - right[i] = 0, disjoint, and left[i] + right[i] = −|left[i]|) at every index; yet a 1:2 master keeps its ratio on the kept samples, an identical-channel master stays identical, every output non-positive on
+//! half-waves partition the dry master (stereo_halve + stereo_halve_neg = the original, per channel per sample, max(x, 0) + min(x, 0) = x); an out-of-phase master (right = -left) returns PARTITIONED and NON-POSITIVE
+//! (left[i] - right[i] = 0, disjoint, and left[i] + right[i] = -|left[i]|) at every index; yet a 1:2 master keeps its ratio on the kept samples, an identical-channel master stays identical, every output non-positive on
 //! both, and the map is idempotent (twice equals once). THE ATOMICITY / DEGENERATE LAW: the lone refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES140.
@@ -70,8 +70,8 @@ pub fn stereo_halve_neg(sc: *pan.StereoClip, start: u32, count: u32) StereoHalve
 }
 
 // --- selftest: THE STEREO INVERTED-HALVE LAW -- each channel equals ALES86's mono halve_neg over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
-//     THE FAMILY-WHOLE / IMAGE-PARTITION LAW -- stereo_halve + stereo_halve_neg reconstructs the dry master per channel per sample (max(x,0) + min(x,0) = x), an OUT-OF-PHASE master (right = −left) returning PARTITIONED
-//     and NON-POSITIVE (left-right = 0 and left+right = −|left| at each index), a 1:2 master keeping its ratio on the kept samples, an identical-channel master staying identical, every output NON-POSITIVE on both, the
+//     THE FAMILY-WHOLE / IMAGE-PARTITION LAW -- stereo_halve + stereo_halve_neg reconstructs the dry master per channel per sample (max(x,0) + min(x,0) = x), an OUT-OF-PHASE master (right = -left) returning PARTITIONED
+//     and NON-POSITIVE (left-right = 0 and left+right = -|left| at each index), a 1:2 master keeping its ratio on the kept samples, an identical-channel master staying identical, every output NON-POSITIVE on both, the
 //     map idempotent; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched and balanced, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -103,7 +103,7 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: min(−300,0)=−300, min(300,0)=0, min(−32768,0)=−32768 (through, no rail edge), min(2000,0)=0 / min(100,0)=0, min(−50,0)=−50, min(32767,0)=0, min(−2500,0)=−2500.
+        // by hand: min(-300,0)=-300, min(300,0)=0, min(-32768,0)=-32768 (through, no rail edge), min(2000,0)=0 / min(100,0)=0, min(-50,0)=-50, min(32767,0)=0, min(-2500,0)=-2500.
         if (!eq(sc.left.samples(), &[_]i16{ -300, 0, timeline.sample_min, 0 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 0, -50, 0, -2500 })) return error.RightHandWrong;
     }
@@ -140,7 +140,7 @@ fn run_selftest() !u8 {
     }
 
     // 3b. THE IMAGE-PARTITION LAW -- an OUT-OF-PHASE master (right the exact negation of left) rectified through the same threshold returns PARTITIONED and NON-POSITIVE: at each index exactly one channel survives
-    //     (left - right = 0, disjoint) and their sum is the negated magnitude (left + right = −|left|, since min(x,0) + min(−x,0) = −|x|). The non-positive mirror of ALES139's non-negative partition.
+    //     (left - right = 0, disjoint) and their sum is the negated magnitude (left + right = -|left|, since min(x,0) + min(-x,0) = -|x|). The non-positive mirror of ALES139's non-negative partition.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 100, -300, 500, -700 }, &[_]i16{ -100, 300, -500, 700 }); // right = −left, out of phase
@@ -154,7 +154,7 @@ fn run_selftest() !u8 {
             if (@as(i32, l[i]) + @as(i32, r[i]) != negmag[i]) return error.NotNegPartition; // sum is −|left|
             if (l[i] > 0 or r[i] > 0) return error.NotNonPositive;
         }
-        // by hand: left keeps its negatives {0,−300,0,−700}, right keeps its own negatives {−100,0,−500,0}.
+        // by hand: left keeps its negatives {0,-300,0,-700}, right keeps its own negatives {-100,0,-500,0}.
         if (!eq(l, &[_]i16{ 0, -300, 0, -700 })) return error.LeftPartitionWrong;
         if (!eq(r, &[_]i16{ -100, 0, -500, 0 })) return error.RightPartitionWrong;
     }

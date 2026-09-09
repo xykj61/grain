@@ -1,9 +1,9 @@
 //! lotus/auto_pan_power.rye -- ALES77: the equal-power auto-pan -- ALES11's equal-power split swept across time, in place of ALES76's linear
 //! weight. ALES76's auto-pan swept ALES10's LINEAR pan across the stereo field, so left + right reproduced the mono level exactly -- the SUM
-//! held constant, at the cost of a −6 dB dip as the voice crosses centre. This rung sweeps ALES11's EQUAL-POWER pan instead: each sample is
+//! held constant, at the cost of a -6 dB dip as the voice crosses centre. This rung sweeps ALES11's EQUAL-POWER pan instead: each sample is
 //! placed on the QUARTER CIRCLE rather than the straight line between the speakers, so the two channels' POWERS -- their squared amplitudes --
-//! stay constant, and the panned voice holds its apparent LOUDNESS as it swings across the field. At centre each side carries 0.707 (−3 dB)
-//! where the linear auto-pan gives 0.5 (−6 dB): the audible difference the equal-power law exists for.
+//! stay constant, and the panned voice holds its apparent LOUDNESS as it swings across the field. At centre each side carries 0.707 (-3 dB)
+//! where the linear auto-pan gives 0.5 (-6 dB): the audible difference the equal-power law exists for.
 //!
 //! The crux is that EQUAL-POWER AUTO-PAN IS ALES11's EQUAL-POWER PAN SWEPT ACROSS TIME -- exactly as ALES76 was ALES10's linear pan swept across
 //! time. Position through the stereo field and position through a triangle period are one parameter; only the LAW reading that position differs.
@@ -21,7 +21,7 @@
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES77.
 //! Design read: active-designing/date/20260814/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
-//! Stands on: lotus/power.rye (ALES11) -- the equal-power split `split(pos, den)` = [isqrt(den-(den−pos)), isqrt(den-pos)], the two amplitude
+//! Stands on: lotus/power.rye (ALES11) -- the equal-power split `split(pos, den)` = [isqrt(den-(den-pos)), isqrt(den-pos)], the two amplitude
 //! weights on the quarter circle, reused verbatim; lotus/auto_pan.rye (ALES76) -- the same triangle-swept-position shape, only the linear split
 //! swapped for the equal-power one; lotus/chorus.rye (ALES71) -- the triangle-LFO driver `triangle_delay_at`, now the pan position; lotus/pan.rye
 //! (ALES10) -- the StereoClip this renders into; lotus/glide.rye (ALES70) -- `glide_scale`, the field unit (256 = hard right); lotus/timeline.rye
@@ -49,7 +49,7 @@ pub const auto_pan_power_version = "20260814.203749";
 
 /// The equal-power auto-pan's faults, one consistent name each -- the SAME field faults ALES76's linear auto-pan refuses, because the position
 /// window is identical (only the split law downstream differs): a period that is not a positive multiple of four (the triangle's quarter anchors
-/// need P/4 whole) or wider than max_clip, a negative depth or a swing whose floor (centre − depth) falls past hard-left (below 0 -- a pan
+/// need P/4 whole) or wider than max_clip, a negative depth or a swing whose floor (centre - depth) falls past hard-left (below 0 -- a pan
 /// position has no sign), and a swing whose top (centre + depth) rises past hard-right (above glide_scale -- the position stays within the field).
 /// Each refused before any write. There is NO BadGain (the field denominator is the fixed glide_scale, never a caller's divide), NO BadDelay,
 /// and NO BadRange on a span -- the whole clip is panned and `out` shares the source's bound, so the render always fits (asserted, never a live
@@ -57,7 +57,7 @@ pub const auto_pan_power_version = "20260814.203749";
 pub const AutoPanPowerError = error{
     /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose floor (centre − depth) falls past hard-left (below 0) -- refused, no write.
+    /// A negative depth, or a swing whose floor (centre - depth) falls past hard-left (below 0) -- refused, no write.
     BadDepth,
     /// A swing whose top (centre + depth) rises past hard-right (above glide_scale) -- refused, no write.
     BadPan,
@@ -100,11 +100,11 @@ pub fn auto_pan_power(
     var i: u32 = 0;
     while (i < src.len) : (i += 1) {
         // ALES71's `triangle_delay_at` is a general scaled triangle -- here it is the PAN POSITION. pos in
-        // [centre − depth, centre + depth] ⊆ [0, glide_scale].
+        // [centre - depth, centre + depth] ⊆ [0, glide_scale].
         const pos: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, i);
         // invariant: the position never leaves the validated field window, so it is a legal pan (0 ≤ pos ≤ den) for the equal-power split.
         assert(pos >= 0 and pos <= scale);
-        // ALES11's equal-power split of the same position: [w_left, w_right] = [isqrt(den-(den − pos)), isqrt(den-pos)], the two amplitude
+        // ALES11's equal-power split of the same position: [w_left, w_right] = [isqrt(den-(den - pos)), isqrt(den-pos)], the two amplitude
         // weights on the quarter circle. Reused verbatim; no pan arithmetic re-derived here.
         const w = power.split(@intCast(pos), den);
         const w_left: i64 = @as(i64, w[0]);
@@ -192,7 +192,7 @@ fn run_selftest() !u8 {
             const sq: u64 = wl * wl + wr * wr;
             const cap: u64 = @as(u64, den) * @as(u64, den);
             if (sq > cap) return error.PowerOverField;
-            // ALES11's two-isqrt truncation bound: den² − (wl²+wr²) ≤ 2(wl+wr)+2.
+            // ALES11's two-isqrt truncation bound: den² - (wl²+wr²) ≤ 2(wl+wr)+2.
             if (cap - sq > 2 * (wl + wr) + 2) return error.PowerBoundBroken;
         }
     }
@@ -216,7 +216,7 @@ fn run_selftest() !u8 {
         if (!eq(out.left.samples(), &want_left)) return error.SweepLeftWrong;
     }
 
-    // 3. THE CENTRE IS −3 dB, NOT −6 dB -- the audible proof the law is angular, not straight. A steady 1000 panned dead centre lands 707 each
+    // 3. THE CENTRE IS -3 dB, NOT -6 dB -- the audible proof the law is angular, not straight. A steady 1000 panned dead centre lands 707 each
     //    side under the equal-power law, where ALES76's linear auto-pan lands 500 (0.5). The equal-power centre is distinctly louder -- this is
     //    the whole reason the rung exists.
     {
@@ -304,7 +304,7 @@ fn run_selftest() !u8 {
         var out = pan.StereoClip{};
         if (auto_pan_power(&src, &out, @divTrunc(scale, 2), -1, 4)) |_| return error.NegDepthSlipped else |e| if (e != error.BadDepth) return error.WrongNegDepth;
         if (!eq(src.samples(), &three)) return error.RefusedNegDepthTouched;
-        // centre ½-scale, depth ¾-scale -> floor = centre − depth < 0 (past hard-left)
+        // centre ½-scale, depth ¾-scale -> floor = centre - depth < 0 (past hard-left)
         if (auto_pan_power(&src, &out, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowFloorSlipped else |e| if (e != error.BadDepth) return error.WrongLowFloor;
         if (!eq(src.samples(), &three)) return error.RefusedLowFloorTouched;
         // centre unity, depth ½-scale off the top: centre + depth > glide_scale (past hard-right)

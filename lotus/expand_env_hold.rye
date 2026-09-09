@@ -113,7 +113,7 @@ pub fn expand_hold_follow_carry(
                 assert(x == 0);
             } else {
                 // The expanded envelope target -- ALES60's deepened floor, computed on the ENVELOPE not the bare sample: the deficit
-                // thr − e widened by the ratio (num/den >= 1) and floored at zero. The widened deficit fits i64 (thr−e <= 32767).
+                // thr - e widened by the ratio (num/den >= 1) and floored at zero. The widened deficit fits i64 (thr-e <= 32767).
                 const deficit: i64 = thr - e; // strictly positive here (e < thr)
                 const widened: i64 = @divTrunc(deficit * num, den);
                 const raw_exp: i64 = thr - widened;

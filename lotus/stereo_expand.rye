@@ -1,16 +1,16 @@
 //! lotus/stereo_expand.rye -- ALES159: the downward expander carried into stereo, the gate's linked DECISION fused with the compressor's linked GAIN -- completing the core stereo dynamics quartet. ALES60 named `expand`:
-//! a sample at or above a magnitude threshold passes byte for byte, a sample below it has its DEFICIT (threshold − m) widened by a ratio and the sample rewritten sign(x)-max(0, threshold − deficit-num/den) -- the
+//! a sample at or above a magnitude threshold passes byte for byte, a sample below it has its DEFICIT (threshold - m) widened by a ratio and the sample rewritten sign(x)-max(0, threshold - deficit-num/den) -- the
 //! compressor mirrored under the threshold, deepening the quiet (the space between phrases opened wider, the room tone under a pause lowered), continuous at the threshold, the gate its hardest limit. That is a mono edit.
 //! Carried into stereo it must fuse the two linking laws this family has proven: it links the DECISION like the gate (ALES156) AND the GAIN like the compressor (ALES157).
 //!
 //! Two truths meet. Its decision must be linked, like the gate: the expander pushes down the quiet, and expanding each channel by whether it alone is below threshold would push the quiet right down while the loud left
 //! plays -- the image tears, exactly the gate's bug. So a pair is expanded ONLY when both channels are below threshold (key = max(|left|, |right|) < threshold). Its gain must be linked, like the compressor: the expander's
-//! gain factor max(0, threshold − deficit-ratio)/magnitude is magnitude-dependent, so expanding each channel by its own deficit gives different gains and shifts the image. So the one gain is computed from the linked key
+//! gain factor max(0, threshold - deficit-ratio)/magnitude is magnitude-dependent, so expanding each channel by its own deficit gives different gains and shifts the image. So the one gain is computed from the linked key
 //! and applied to both.
 //!
 //! The rule, stated once: refuse BadThreshold (a threshold outside [1, sample_max]), BadRatio (a ratio below one or with a zero denominator), and BadRange (a span past the shared length) BEFORE any write. Otherwise walk
 //! the span one sample-PAIR at a time with key = max(|left|, |right|): key >= threshold leaves the pair playing -- both pass byte for byte (continuous at the threshold). key == 0 leaves the pair silent -- both stay zero
-//! (silence stays silence, no divide by zero). 0 < key < threshold expands -- new_key = max(0, threshold − (threshold − key)-num/den), exactly as ALES60 would for the louder channel, then scale BOTH channels by the
+//! (silence stays silence, no divide by zero). 0 < key < threshold expands -- new_key = max(0, threshold - (threshold - key)-num/den), exactly as ALES60 would for the louder channel, then scale BOTH channels by the
 //! single fraction new_key/key: the peak-holding (louder-quiet) channel lands on new_key, the quieter channel scaled by the identical fraction. A ratio large enough drives the whole quiet pair to silence -- the gate
 //! reached from within.
 //!
@@ -48,7 +48,7 @@ pub const StereoExpandError = expand.ExpandError;
 
 /// Expand `count` sample-pairs starting at `start` in the stereo master `sc`, below the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least one), fusing a LINKED DECISION with a LINKED GAIN. For each index
 /// the detector key is `max(|left|, |right|)`: at or above the threshold the pair passes byte for byte (continuous at the threshold); a both-silent pair (key == 0) stays zero; otherwise where the pair is below the
-/// threshold the widened master `new_key = max(0, threshold − (threshold − key)-num/den)` is computed once (exactly ALES60's mono expand of the louder channel) and BOTH channels are scaled by the single fraction
+/// threshold the widened master `new_key = max(0, threshold - (threshold - key)-num/den)` is computed once (exactly ALES60's mono expand of the louder channel) and BOTH channels are scaled by the single fraction
 /// `new_key/key`, so the louder-quiet channel lands on `new_key` and the quieter one is scaled by the identical fraction -- the L:R ratio preserved. After the call every written magnitude is at most its input's (reduction,
 /// never boost) and no sign is changed. Unit ratio is the identity everywhere. Validates threshold, ratio, and span ONCE before any write -- a refusal leaves both channels untouched and balanced. Values only -- never length.
 pub fn stereo_expand(
@@ -151,7 +151,7 @@ fn run_selftest() !u8 {
         try timeline.splice(&mono_l, 0, &ll);
         try expand.expand(&mono_l, 0, 4, 1000, 2, 1);
         if (!eq(sc.left.samples(), mono_l.samples())) return error.PeakLeftNotMono;
-        // by hand: 500->0 (deficit500-2=1000, thr−1000=0), 800->600 (deficit200-2=400, 1000−400=600), 2000 plays->2000, 300->0 (deficit700-2=1400, floored).
+        // by hand: 500->0 (deficit500-2=1000, thr-1000=0), 800->600 (deficit200-2=400, 1000-400=600), 2000 plays->2000, 300->0 (deficit700-2=1400, floored).
         if (!eq(sc.left.samples(), &[_]i16{ 0, -600, 2000, 0 })) return error.PeakLeftHandWrong;
 
         // the right scaled by the SAME fraction: idx0 key500 new_key0 -> 0; idx1 key800 new_key600 -> 400-600/800 = 300; idx2 key2000>=thr -> pass 1500; idx3 key300 new_key0 -> 0.
@@ -165,7 +165,7 @@ fn run_selftest() !u8 {
         if (!eq(mono_r.samples(), &[_]i16{ 0, 0, 1500, 0 })) return error.IndependentExpandWrong;
     }
 
-    // 2. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = −left, both below threshold) comes
+    // 2. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = -left, both below threshold) comes
     //    back STILL out of phase, both scaled by the identical fraction.
     {
         const il = [_]i16{ 900, -700, 5000, -400 }; // index 2 is loud (>= thr) — that pair plays on both
@@ -183,7 +183,7 @@ fn run_selftest() !u8 {
         }
         if (l[2] != 5000 or r[2] != -3000) return error.LoudPairNotIdentity; // the loud pair passed whole
 
-        // out-of-phase quiet pair: right = −left, both below 1000 -> both scaled by the same fraction, antisymmetry kept.
+        // out-of-phase quiet pair: right = -left, both below 1000 -> both scaled by the same fraction, antisymmetry kept.
         var op = pan.StereoClip{};
         try load_stereo(&op, &[_]i16{ 800, -600, 900, -400 }, &[_]i16{ -800, 600, -900, 400 });
         try stereo_expand(&op, 0, 4, 1000, 2, 1);

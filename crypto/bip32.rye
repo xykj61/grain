@@ -143,7 +143,7 @@ fn add_mod_n(a_be: *const [key_bytes]u8, b_be: *const [key_bytes]u8) [key_bytes]
     var carry: u16 = 0;
     var i: u32 = 0;
     while (i < key_bytes) : (i += 1) {
-        // invariant: little-endian byte i comes from big-endian byte 31−i of each input; the column stays inside both widths.
+        // invariant: little-endian byte i comes from big-endian byte 31-i of each input; the column stays inside both widths.
         assert((key_bytes - 1 - i) < key_bytes and i < 64);
         const s: u16 = @as(u16, a_be[key_bytes - 1 - i]) + @as(u16, b_be[key_bytes - 1 - i]) + carry;
         wide[i] = @truncate(s);

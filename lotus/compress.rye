@@ -39,7 +39,7 @@ pub const CompressError = error{
 };
 
 /// Compress `count` samples starting at `start` in place above the magnitude `threshold` by the ratio `ratio_num/ratio_den`
-/// (at least one). A sample within the threshold passes byte-for-byte; above it, the excess m − threshold is divided by the
+/// (at least one). A sample within the threshold passes byte-for-byte; above it, the excess m - threshold is divided by the
 /// ratio and the sample rewritten sign(x)-(threshold + excess-ratio_den/ratio_num). After the call every written magnitude is at
 /// most the input's (the compressor reduces, never boosts) and no sign is changed. Unit ratio is the identity everywhere.
 /// Refuses BadThreshold on a threshold outside [1, sample_max], BadRatio on a ratio below unity or a zero denominator, and

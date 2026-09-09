@@ -77,9 +77,9 @@ pub fn halve(clip: *timeline.Clip, start: u32, count: u32) HalveError!void {
     assert(clip.len <= clip.buf.len);
 }
 
-// --- selftest: NON-NEGATIVES ARE UNCHANGED (max(x,0) = x for x ≥ 0); NEGATIVES FOLD to SILENCE by hand (−x -> 0, not up); NO RAIL EDGE (sample_min -> 0,
+// --- selftest: NON-NEGATIVES ARE UNCHANGED (max(x,0) = x for x ≥ 0); NEGATIVES FOLD to SILENCE by hand (-x -> 0, not up); NO RAIL EDGE (sample_min -> 0,
 //     never a saturate -- the very fact that separates half-wave from full-wave); every output is NON-NEGATIVE and the map is IDEMPOTENT; the half-wave
-//     output is the full-wave output MASKED to the positive half (a symmetric pair +a,−a -> a,0 where full-wave gave a,a); the SPAN discipline holds; and
+//     output is the full-wave output MASKED to the positive half (a symmetric pair +a,-a -> a,0 where full-wave gave a,a); the SPAN discipline holds; and
 //     a span past the end refuses BadRange, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -105,7 +105,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. NEGATIVES FOLD TO SILENCE BY HAND -- each negative sample drops to 0, the negative half of the wave folded AWAY (not up, as the full-wave
-    //    rectifier does). −1->0, −100->0, −12345->0, −32767->0; the positives among them pass unchanged.
+    //    rectifier does). -1->0, -100->0, -12345->0, -32767->0; the positives among them pass unchanged.
     {
         const sig = [_]i16{ -1, 100, -100, -12345, 32767, -32767 };
         var clip = timeline.Clip{};
@@ -143,7 +143,7 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 5. THE HALF-WAVE OUTPUT IS THE FULL-WAVE OUTPUT MASKED TO THE POSITIVE HALF -- for a symmetric pair +a and −a, half-wave keeps +a->a and −a->0,
+    // 5. THE HALF-WAVE OUTPUT IS THE FULL-WAVE OUTPUT MASKED TO THE POSITIVE HALF -- for a symmetric pair +a and -a, half-wave keeps +a->a and -a->0,
     //    where the full-wave rectifier (ALES84) sent BOTH to a. Half-wave keeps the fundamental (the +a survives) and silences the mirror image; that is
     //    the even+odd mix, half the amplitude of the full-wave's pure-even doubling.
     {

@@ -47,7 +47,7 @@ pub const PasteJoinError = error{
 /// Paste the held span into `master` at `at`, crossing BOTH seams of BOTH channels equal-power -- the joined twin of ALES25's butt
 /// `paste`. The clipboard's two held channels (one shared length) are handed to ALES29's `insert_join_stereo` with the same `at`,
 /// `lead`, and `trail`, so the span's leading seam crosses the outgoing tail over `lead` and its trailing seam crosses the following
-/// audio over `trail`, each through ALES12's −3 dB curve, and the new length is `master + held − lead − trail`. Atomic across the two
+/// audio over `trail`, each through ALES12's -3 dB curve, and the new length is `master + held - lead - trail`. Atomic across the two
 /// channels (ALES29's own guarantee); the clipboard is UNCHANGED so a joined paste is still non-consuming and cross-master. Refuses
 /// Empty when nothing is held, and forwards BadRange / ClipFull. So a keeper drops a carried span into the middle of a mix without a
 /// click at either boundary.
@@ -68,7 +68,7 @@ pub fn paste_join(cb: *const clipboard.Clipboard, master: *pan.StereoClip, at: u
 }
 
 // --- selftest: THE CRUX -- a joined paste crosses BOTH seams equal-power where ALES25's butt paste steps; the new length shares both
-//     overlaps (master + held − lead − trail); the clipboard is unchanged (non-consuming) and pastes into a second master (cross-
+//     overlaps (master + held - lead - trail); the clipboard is unchanged (non-consuming) and pastes into a second master (cross-
 //     master); a full overlap onto the very end is a pure leading crossfade; and every edge refuses by name -----------------------
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -80,15 +80,15 @@ fn eq(got: []const i16, want: []const i16) bool {
 
 fn run_selftest() !u8 {
     // 1. THE CRUX -- a held span joined into the middle of a master crosses both seams equal-power, so where a butt paste would step
-    //    the full swing, the joined seam samples sit strictly inside. Master left eight +30000 then eight −30000; hold a span of four
-    //    −30000 heads and four +30000 tails; join at the sign flip over lead 4 / trail 4 (an overlap wide enough to hold an interior
-    //    equal-power sample, den ≥ 2). The butt paste (ALES25) would leave adjacent samples at +30000 and −30000 (a 60000 step); the
+    //    the full swing, the joined seam samples sit strictly inside. Master left eight +30000 then eight -30000; hold a span of four
+    //    -30000 heads and four +30000 tails; join at the sign flip over lead 4 / trail 4 (an overlap wide enough to hold an interior
+    //    equal-power sample, den ≥ 2). The butt paste (ALES25) would leave adjacent samples at +30000 and -30000 (a 60000 step); the
     //    joined paste moves each seam through power.
     {
         var m = pan.StereoClip{};
         try timeline.splice(&m.left, 0, &[_]i16{ 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000 });
         try timeline.splice(&m.right, 0, &[_]i16{ 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000, -30000 });
-        // hold a span whose head disagrees with the outgoing +30000 tail and whose tail disagrees with the incoming −30000 audio.
+        // hold a span whose head disagrees with the outgoing +30000 tail and whose tail disagrees with the incoming -30000 audio.
         var src = pan.StereoClip{};
         try timeline.splice(&src.left, 0, &[_]i16{ -30000, -30000, -30000, -30000, 30000, 30000, 30000, 30000 });
         try timeline.splice(&src.right, 0, &[_]i16{ -30000, -30000, -30000, -30000, 30000, 30000, 30000, 30000 });
@@ -96,7 +96,7 @@ fn run_selftest() !u8 {
         try clipboard.copy_to(&cb, &src, try selection.make(&src, 0, 8));
 
         try paste_join(&cb, &m, 8, 4, 4);
-        // the new length shares both overlaps: 16 + 8 − 4 − 4 = 16.
+        // the new length shares both overlaps: 16 + 8 - 4 - 4 = 16.
         if (m.left.len != 16 or m.right.len != 16) return error.JoinedLengthWrong;
         if (m.left.len != m.right.len) return error.JoinedNotAligned;
         // every seam sample sits strictly inside the ±30000 extremes -- no full-swing step remains where the curves crossed.
@@ -161,7 +161,7 @@ fn run_selftest() !u8 {
         var full = pan.StereoClip{};
         full.left.len = timeline.max_clip - 1;
         full.right.len = timeline.max_clip - 1;
-        // hold a wider span so net growth (held − lead − trail) exceeds the one free sample.
+        // hold a wider span so net growth (held - lead - trail) exceeds the one free sample.
         var wide_src = pan.StereoClip{};
         var wbuf: [8]i16 = [_]i16{0} ** 8;
         try timeline.splice(&wide_src.left, 0, &wbuf);

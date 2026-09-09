@@ -1,4 +1,4 @@
-//! crypto/fe_secp256k1.rye -- Chapter G (Cryptography): the secp256k1 base field GF(2^256 − 2^32 − 977) authored in pure Rye. The whole
+//! crypto/fe_secp256k1.rye -- Chapter G (Cryptography): the secp256k1 base field GF(2^256 - 2^32 - 977) authored in pure Rye. The whole
 //! secp256k1 tower -- the group law, ECDSA verification, and public-key recovery -- stands on this one finite field, exactly as the Ed25519
 //! tower stands on crypto/fe25519.rye. The recent Chapter G arc built the Bitcoin/Ethereum address layer whole (Base58Check, Bech32/Bech32m,
 //! Keccak-256, RIPEMD-160, EIP-55), each rung climbing toward the one place it could not reach: the signature scheme both chains actually
@@ -8,16 +8,16 @@
 //! Chapter: the Six-Chapter double-seat, Chapter G thread (Cryptography - Rye-native, parity-checked, audit-ready).
 //! Design read: active-designing/date/20260816/20260816-020351_fe-secp256k1-the-bitcoin-ethereum-field-crux.md (this round) and
 //! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
-//! Kin: crypto/fe25519.rye (the sibling field -- five 51-bit limbs mod 2^255 − 19; this is eight 32-bit limbs mod 2^256 − 2^32 − 977).
+//! Kin: crypto/fe25519.rye (the sibling field -- five 51-bit limbs mod 2^255 - 19; this is eight 32-bit limbs mod 2^256 - 2^32 - 977).
 //! Monocypher does not implement secp256k1, so the parity target here is by-hand known-answers plus Zig's independent std.crypto -- the same
 //! two-witness discipline the rest of the library keeps (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX -- a field element is a residue mod p = 2^256 − 2^32 − 977, carried in eight 32-bit limbs (radix 2^32), little-endian by limb
+//! THE CRUX -- a field element is a residue mod p = 2^256 - 2^32 - 977, carried in eight 32-bit limbs (radix 2^32), little-endian by limb
 //! weight (limb 0 is least significant). Radix 2^32 is chosen so the reduction boundary 2^256 = 2^(32-8) lands exactly on a limb edge. Since
 //! 2^256 ≡ 2^32 + 977 (mod p), the field's own fold constant is R = 0x1000003D1 (= 2^32 + 977): any product weight at limb 8 or past folds
 //! back, adding 977 to the column eight below and 1 to the column seven below (R = 977 + 1-2^32). Addition and subtraction are limbwise
 //! (subtraction adds a folded 2p first so no limb underflows). Multiplication is the schoolbook product accumulated in fifteen 128-bit
-//! columns, folded ×R, then carried to canonical limbs. Squaring is the product with itself. The inverse is Fermat's a^(p−2) by a fixed
+//! columns, folded ×R, then carried to canonical limbs. Squaring is the product with itself. The inverse is Fermat's a^(p-2) by a fixed
 //! square-and-multiply ladder over the public exponent. Packing performs a final conditional subtract of p, so equal values always serialize
 //! identically. secp256k1 field elements serialize big-endian, the ecosystem convention. Nothing here is a claim about a device; it is
 //! arithmetic anyone can replay.
@@ -25,7 +25,7 @@
 //! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A field element is arithmetic, not a
 //! secret and not a signature: this file signs nothing (ECDSA signing with an identity key stays its own separate, gated round). It calls no
 //! std.crypto in the primitive itself. Parity is proven at selftest against two references runnable now: by-hand known-answers anyone can
-//! check (1-1 = 1, 2-3 = 6, canonical round-trips, a − a = 0, a-a⁻¹ = 1, and the encodings of p and p+5 reducing to 0 and 5), and Zig's own
+//! check (1-1 = 1, 2-3 = 6, canonical round-trips, a - a = 0, a-a⁻¹ = 1, and the encodings of p and p+5 reducing to 0 and 5), and Zig's own
 //! std.crypto.ecc.Secp256k1.Fe as an independent Montgomery-domain implementation, compared byte-for-byte on the canonical big-endian
 //! packing of add, sub, mul, sq, and invert across a deterministic spread of field elements. Because the comparison is on canonical bytes,
 //! the two implementations carry limbs their own way and still must agree exactly. Constant-time timing-safety stays a separate named
@@ -44,10 +44,10 @@ pub const fe_secp256k1_version = "20260816.020351";
 /// 2^256 landing exactly on the top limb edge.
 const limbs_len: u32 = 8;
 
-/// The 32-bit limb mask -- 2^32 − 1. Every canonical limb is masked to this width.
+/// The 32-bit limb mask -- 2^32 - 1. Every canonical limb is masked to this width.
 const mask32: u64 = 0xffffffff;
 
-/// The reduction constant R = 2^32 + 977 = 0x1000003D1. Because p = 2^256 − 2^32 − 977, we have 2^256 ≡ R (mod p); any product weight at
+/// The reduction constant R = 2^32 + 977 = 0x1000003D1. Because p = 2^256 - 2^32 - 977, we have 2^256 ≡ R (mod p); any product weight at
 /// limb 8 or past folds back multiplied by R. R decomposes as 977 in the low limb and 1 in the next, so a fold adds 977-d to the column
 /// eight below and 1-d to the column seven below.
 const reduce_r: u64 = 0x1000003D1;
@@ -61,15 +61,15 @@ pub const FeSecp256k1Error = error{
     LengthMismatch,
 };
 
-/// A field element in GF(2^256 − 2^32 − 977), eight 32-bit limbs, little-endian by limb weight (limb 0 is least significant). Operations
+/// A field element in GF(2^256 - 2^32 - 977), eight 32-bit limbs, little-endian by limb weight (limb 0 is least significant). Operations
 /// return canonical limbs (each below 2^32); `to_bytes` performs the final conditional subtract of p so the residue is the true canonical
 /// representative in [0, p).
 pub const Field = struct {
     l: [8]u64,
 };
 
-/// The prime p in eight 32-bit limbs, little-endian: p = 2^256 − 2^32 − 977, so limb 0 = 2^32 − 977 = 0xFFFFFC2F, limb 1 = 2^32 − 2 =
-/// 0xFFFFFFFE (the borrow of the −2^32 term), and limbs 2..7 = 0xFFFFFFFF.
+/// The prime p in eight 32-bit limbs, little-endian: p = 2^256 - 2^32 - 977, so limb 0 = 2^32 - 977 = 0xFFFFFC2F, limb 1 = 2^32 - 2 =
+/// 0xFFFFFFFE (the borrow of the -2^32 term), and limbs 2..7 = 0xFFFFFFFF.
 const p_limbs = [8]u64{ 0xFFFFFC2F, 0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
 
 /// Unpack 32 big-endian bytes into eight 32-bit limbs. The most significant four bytes become limb 7; the least significant become limb 0.
@@ -183,11 +183,11 @@ pub fn add(a: Field, b: Field) Field {
 }
 
 /// Subtract b from a. Add a folded 4p (a multiple of p large enough that no limb underflows) to a before subtracting b, so the result stays
-/// non-negative and congruent to a − b, then canonicalize.
+/// non-negative and congruent to a - b, then canonicalize.
 pub fn sub(a: Field, b: Field) Field {
     var f: Field = undefined;
-    // 4p per limb, spread so each limb of a + 4p exceeds any canonical b limb. 4p = 2^258 − 2^34 − 3908.
-    // Add it as a borrow-safe pad: limb 0 gets 4-(2^32 − 977), limbs 1 gets 4-(2^32 − 2), limbs 2..7 get 4-(2^32 − 1); the total is 4p.
+    // 4p per limb, spread so each limb of a + 4p exceeds any canonical b limb. 4p = 2^258 - 2^34 - 3908.
+    // Add it as a borrow-safe pad: limb 0 gets 4-(2^32 - 977), limbs 1 gets 4-(2^32 - 2), limbs 2..7 get 4-(2^32 - 1); the total is 4p.
     const pad = [8]u64{
         4 * 0xFFFFFC2F,
         4 * 0xFFFFFFFE,
@@ -207,7 +207,7 @@ pub fn sub(a: Field, b: Field) Field {
 }
 
 /// Multiply two field elements. Schoolbook radix-2^32 product into fifteen 128-bit columns d_0..d_14 (d_k = Σ_{i+j=k} a_i-b_j); columns
-/// k ≥ 8 cross 2^256 and fold back ×R (adding 977-d_k to column k−8 and 1-d_k to column k−7). A carry chain then returns the low eight
+/// k ≥ 8 cross 2^256 and fold back ×R (adding 977-d_k to column k-8 and 1-d_k to column k-7). A carry chain then returns the low eight
 /// columns to canonical 32-bit limbs.
 pub fn mul(a: Field, b: Field) Field {
     var d: [15]u128 = [_]u128{0} ** 15;
@@ -221,7 +221,7 @@ pub fn mul(a: Field, b: Field) Field {
     }
     // Fold the high columns (weight ≥ 2^256) back into the low eight, ×R = 977 + 2^32.
     var k: u32 = 14;
-    // invariant: each folded column k targets columns k−8 and k−7, both below 8, so one high->low pass suffices with no re-fold.
+    // invariant: each folded column k targets columns k-8 and k-7, both below 8, so one high->low pass suffices with no re-fold.
     while (k >= 8) : (k -= 1) {
         d[k - 8] += r_low * d[k];
         d[k - 7] += r_high * d[k];
@@ -254,11 +254,11 @@ pub fn square(a: Field) Field {
     return r;
 }
 
-/// The multiplicative inverse by Fermat's little theorem: a^(p−2). The exponent p − 2 = 2^256 − 2^32 − 979 is public; a fixed
-/// square-and-multiply ladder over its 256 bits computes a^(p−2) for every nonzero a, so a-invert(a) = 1. invert(0) is 0 (0 has no
+/// The multiplicative inverse by Fermat's little theorem: a^(p-2). The exponent p - 2 = 2^256 - 2^32 - 979 is public; a fixed
+/// square-and-multiply ladder over its 256 bits computes a^(p-2) for every nonzero a, so a-invert(a) = 1. invert(0) is 0 (0 has no
 /// inverse); callers never invert zero. Data-independent by construction -- the ladder's shape is fixed by the public exponent.
 pub fn invert(a: Field) Field {
-    // p − 2 = 0xFFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE FFFFFC2D -- a fixed 256-bit constant. We walk it MSB->LSB with
+    // p - 2 = 0xFFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE FFFFFC2D -- a fixed 256-bit constant. We walk it MSB->LSB with
     // the classic binary ladder: square every step, multiply in a on every set bit.
     const exp = [8]u64{ 0xFFFFFC2D, 0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
     const one = from_small(1);
@@ -327,7 +327,7 @@ fn run_selftest() !u8 {
         six_b[31] = 6;
         if (!bytes_eq(&to_bytes(mul(from_small(2), from_small(3))), &six_b)) return error.ProductMismatch;
 
-        // a − a = 0 for a nonzero a.
+        // a - a = 0 for a nonzero a.
         const a = from_bytes(&test_bytes(31));
         var zero_b = [_]u8{0} ** 32;
         if (!bytes_eq(&to_bytes(sub(a, a)), &zero_b)) return error.SubMismatch;
