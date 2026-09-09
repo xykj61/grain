@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
 | `20260909.075012` | [The table check returns](20260909/20260909-075012_the-table-check-returns.kyri) | Patchouli; parked caller check |
 | `20260909.074555` | [Records and addresses](20260909/20260909-074555_the-records-find-their-addresses.kyri) | Grass; two parked logs |
 | `20260909.072836` | [Reply retention](20260909/20260909-072836_reply-retention.kyri) | owned bytes survive scratch reuse |
