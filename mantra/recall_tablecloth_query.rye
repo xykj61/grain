@@ -130,12 +130,12 @@ fn run_selftest(_: std.Io) !u8 {
     const by_query = try cat.recall(names[0], &buf);
     assert(std.mem.eql(u8, buf[0..by_query.len], name_bytes[0..by_name.len]));
 
-    print("ns-tcq: omit revision walks both — GREEN\n", .{});
-    print("ns-tcq: query by tilak alone crosses bolts and revisions — GREEN\n", .{});
-    print("ns-tcq: no match returns empty — GREEN\n", .{});
-    print("ns-tcq: name, mark, and query agree on reachable leaves — GREEN\n", .{});
+    print("ns-tcq: omit revision walks both -- GREEN\n", .{});
+    print("ns-tcq: query by tilak alone crosses bolts and revisions -- GREEN\n", .{});
+    print("ns-tcq: no match returns empty -- GREEN\n", .{});
+    print("ns-tcq: name, mark, and query agree on reachable leaves -- GREEN\n", .{});
     print("ns-tcq: version {s}\n", .{recall_tablecloth_query_version});
-    print("GREEN: Tablecloth query — filter over bounded catalog, every match returned.\n", .{});
+    print("GREEN: Tablecloth query -- filter over bounded catalog, every match returned.\n", .{});
     return 0;
 }
 

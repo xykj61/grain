@@ -60,9 +60,9 @@ fn run_selftest(_: std.Io) !u8 {
 
     const tampered = "kumara witness messagf\n";
     verify(tampered, sig, kp.public_key) catch {
-        print("tally kumara: tampered message refused — GREEN unwelcome path\n", .{});
+        print("tally kumara: tampered message refused -- GREEN unwelcome path\n", .{});
         print("tally kumara: version {s}\n", .{kumara_version});
-        print("GREEN: tally kumara — deterministic keypair, sign, verify.\n", .{});
+        print("GREEN: tally kumara -- deterministic keypair, sign, verify.\n", .{});
         return 0;
     };
     return error.TamperVerified;

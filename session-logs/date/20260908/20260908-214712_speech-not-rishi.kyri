@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260908.214712
+editor Claude Code -- terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role repository agent, seat PATCHOULI
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json read this lap
+voice Kyri
+host x86_64 Linux pier, America/New_York
+title The fourth ASCII subject is speech, and its meter read one language
+prompt Autonomous fleet lap, seat PATCHOULI -- lane mantra/ and tally/.
+rota lap 4389, row 4 -- Earth, the row that breathes in; the concrete fact at the door before it is argued with. Reading it sent me to my own handoff line rather than to a new design: my elder block ended "the CLI prints an em-dash in status, program output no guard reads." That IS a concrete fact at a door, and the row's instruction is to trust the first reading and check it against the witness.
+think My elder handoff named an em-dash in mantra/src/main.rye's status output and called it unread. Earth asks what already stands true, so the first move was to find the instrument rather than to argue about the character.
+think .claude/rules/ascii-first.md names four subjects. Three carry meters. The fourth, seated 20260907.075500 as spoken_ascii, is headed "What a guard says out loud" and its instrument reads tracked .rish alone. The heading is about SPEECH; the scan is about Rishi. The body is honest -- it says "Rishi sources" plainly -- so this is a gap the heading invites rather than a false claim, which is why it is a lap rather than a red.
+think Measured before writing anything: 3,996 non-ASCII characters in 809 of 1,730 tracked .rye sources, against the 3,794 the Rye comment meter counts and holds. 45% of the tree's authored Rye prints a character to a person's terminal that nothing read.
+think A first pattern matched print\( anywhere and found parent_fingerprint(4) in crypto/bip32.rye -- three such lines stand. That is the numerator fault Bakery booked one room over the same day: a guard counting what the rule does not turn on. The scan reads the identifier back whole from the parenthesis.
+think A line-oriented scan would have missed half its own subject. This tree writes a claim line as a chain of string literals joined by ++ across four or five lines: 2,480 characters stand on lines holding the call and 2,235 on its continuations. So the scan tracks parenthesis depth outside string literals, stepping over character literals and raw \\ lines, and stopping at // so a comment stays with its own meter.
+think Four populations had to be told apart inside one file: a print region (prose), a raw const string (a parser's input, and behavior), a comment (the sibling's ceiling), and everything else (a module testing a decoder must contain the character it decodes). Only a depth reader can do it.
+obs The control's first draft carried a leg that could not fail. `LC_ALL=C grep -q '[\300-\377]'` spells a range grep reads as literal characters, so convert_spares_comment answered the same on a clean file and a dirty one -- it reported "no" for the right reason by accident. Replaced with `tr -d '\000-\177' | wc -c`, which reads bytes. That is the same shape Pheromone booked hours earlier: a case asserting a property it could never observe.
+obs The converter's idempotence case starts from a file that OWED WORK on the first pass, proven by comparing bytes across three states. A converter correct only where nothing is owed passes a naive check and re-appends forever after -- Pheromone's inert case, 20260908.
+obs 28 files matched in --check and 25 in --apply, and the three are symlinks: mantra/kumara.rye, mantra/parse_int.rye and mantra/src/parse_int.rye all point into tally/. Converting the target converts the link, so the second read finds nothing owed. The scan skips symlinks for the same reason the Rye comment meter learned at REDS %340.
+obs No REDS row booked: reds_pin_capacity answers rows_that_fit=0 and pin_deadlocked=1, the standing deadlock awaiting Keaton's word. The finding stands on the card and here instead.
+obs The ITINERARY block took six passes to fit. The card stood 60 bytes under its 40,960 bound at HEAD, so a block may only grow by what the elder held; mine landed at exactly 40,960 with all three pin guards green.
+loom guard=rye_spoken_ascii scan_files=1730 chars_before=3996 chars_after=3895 files_before=809 files_after=784 table_forms=3447 notation=448 ceiling=3895
+loom sweep=mantra_tally files_changed=25 chars_removed=101 symlinks_deduped=3 lines_added=97 lines_removed=97
+loom control=rye_spoken_ascii legs=36 affirmative=29 refusals=7
+file tools/fixtures/r/rye_spoken_ascii_scan.sh the meter -- parenthesis depth outside string literals, identifier read back whole, table and notation reported apart
+file tools/fixtures/r/rye_spoken_ascii_convert.sh the sweep -- the same depth machine, written through the original inode so the tracked mode survives
+file tools/fixtures/r/rye_spoken_ascii_control.sh 36 behaviors on real git repositories, every refusal planted and the depth gate proven by removing it
+file tools/r/rye_spoken_ascii_witness.rish the witness -- GREEN, control then living scan
+file construction/standing-equipment.kyri roster row, tier cadence, with the measurement that earned it
+file .claude/rules/ascii-first.md the fourth subject now names its second language, and the trailing-comment residue is named rather than swept
+file .cursor/rules/ascii-first.mdc the twin reads five guards
+file construction/ITINERARY.md live front rewritten; elder shelved to archive/20260908-214712_itinerary-landed-accounts.md
+file mantra/src/main.rye and 24 more -- the lane swept to zero, first resident
+scope one guard seated, one lane swept, one rule and its twin corrected; no design essay, no red booked
+status GREEN -- rye_spoken_ascii witness GREEN with 36 control legs; tame_style_check, width-check, and every mantra/tally lane guard GREEN after the sweep; three living-pin guards GREEN at the bound. Written before the send.
+recommend keep-going -- the trailing-comment residue is the next honest lap in this family: a // comment trailing a spoken line is read by neither meter, and closing it wants the comment sibling widened rather than this numerator grown.

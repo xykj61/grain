@@ -381,8 +381,8 @@ fn run_lap1_selftest(_: std.Io) !u8 {
         return error.DigestMismatch;
     } else |_| {}
 
-    print("nsl1: recall twice yielded identical bytes — referential transparency GREEN\n", .{});
-    print("nsl1: digest mismatch refused whole — GREEN unwelcome path\n", .{});
+    print("nsl1: recall twice yielded identical bytes -- referential transparency GREEN\n", .{});
+    print("nsl1: digest mismatch refused whole -- GREEN unwelcome path\n", .{});
     print("nsl1: version {s}\n", .{ns_version});
     print("GREEN: NS-L1 local referentially-transparent recall.\n", .{});
     return 0;
@@ -434,10 +434,10 @@ fn run_lap2_selftest(_: std.Io) !u8 {
     const not_yet = Name{ .peer = witness_peer, .bolt = witness_bolt, .revision = 3, .path = witness_path };
     assert(cat.resolve_binding(not_yet) == .not_yet);
 
-    print("nsl2: revision 1 unchanged after revision 2 appended — immutability GREEN\n", .{});
-    print("nsl2: duplicate revision refused — GREEN unwelcome path\n", .{});
+    print("nsl2: revision 1 unchanged after revision 2 appended -- immutability GREEN\n", .{});
+    print("nsl2: duplicate revision refused -- GREEN unwelcome path\n", .{});
     print("nsl2: version {s}\n", .{ns_version});
-    print("GREEN: NS-L2 write revision — recall holds for every revision.\n", .{});
+    print("GREEN: NS-L2 write revision -- recall holds for every revision.\n", .{});
     return 0;
 }
 
@@ -497,11 +497,11 @@ fn run_lap3_selftest(_: std.Io) !u8 {
         assert(err == error.RevisionImmutable);
     }
 
-    print("nsl3: bolt synced — had-already {d}, need-resin {d}; recall identical on both peers\n", .{ report.had_already, report.needed });
-    print("nsl3: tampered resin refused whole — GREEN unwelcome path\n", .{});
-    print("nsl3: duplicate revision sync refused — GREEN unwelcome path\n", .{});
+    print("nsl3: bolt synced -- had-already {d}, need-resin {d}; recall identical on both peers\n", .{ report.had_already, report.needed });
+    print("nsl3: tampered resin refused whole -- GREEN unwelcome path\n", .{});
+    print("nsl3: duplicate revision sync refused -- GREEN unwelcome path\n", .{});
     print("nsl3: version {s}\n", .{ns_version});
-    print("GREEN: NS-L3 sync a bolt revision — have-already and need-resin, referential transparency across peers.\n", .{});
+    print("GREEN: NS-L3 sync a bolt revision -- have-already and need-resin, referential transparency across peers.\n", .{});
     return 0;
 }
 

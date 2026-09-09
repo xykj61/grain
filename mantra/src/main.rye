@@ -393,7 +393,7 @@ pub fn main(init: std.process.Init) !u8 {
 
 fn print_usage() void {
     print(
-        \\mantra — the living history of the Rye family
+        \\mantra -- the living history of the Rye family
         \\
         \\usage:
         \\  mantra init           create .mantra/ in the current directory
@@ -415,7 +415,7 @@ fn cmd_init(allocator: std.mem.Allocator, io: std.Io) !u8 {
     _ = &store;
     const maybe_brix = try read_brix(allocator, io, Dir.cwd());
     if (maybe_brix) |s| {
-        print("mantra: initialized .mantra/ — project '{s}' ({d} tracked file(s)).\n", .{
+        print("mantra: initialized .mantra/ -- project '{s}' ({d} tracked file(s)).\n", .{
             s.name, s.files.len,
         });
     } else {
@@ -441,7 +441,7 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
     assert(file_path.len > 0);
     const cwd = Dir.cwd();
     var store = Store.open(io, cwd) catch |err| {
-        print("mantra add: cannot open .mantra/ ({}) — run `mantra init` first\n", .{err});
+        print("mantra add: cannot open .mantra/ ({}) -- run `mantra init` first\n", .{err});
         return 1;
     };
     const file_buf = try allocator.alloc(u8, 4 * 1024 * 1024);
@@ -461,7 +461,7 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
     const commit_blob = try serialize_commit(allocator, .{ .parent = parent_name, .weave_name = weave_name });
     const commit_name = try store.write_blob(allocator, io, commit_blob);
     try store.write_head(io, commit_name);
-    print("mantra: wove '{s}' — +{d} -{d} lines. HEAD → {s}\n", .{
+    print("mantra: wove '{s}' -- +{d} -{d} lines. HEAD -> {s}\n", .{
         file_path, d.inserts.len, d.deletes.len, commit_name[0..12],
     });
     return 0;
@@ -470,7 +470,7 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
 fn cmd_add_all(allocator: std.mem.Allocator, io: std.Io) !u8 {
     const maybe_brix = try read_brix(allocator, io, Dir.cwd());
     if (maybe_brix == null) {
-        print("mantra add: no .brix found — either specify a file or create .brix\n", .{});
+        print("mantra add: no .brix found -- either specify a file or create .brix\n", .{});
         return 1;
     }
     const brix = maybe_brix.?;
@@ -487,12 +487,12 @@ fn cmd_add_all(allocator: std.mem.Allocator, io: std.Io) !u8 {
 fn cmd_log(allocator: std.mem.Allocator, io: std.Io) !u8 {
     const cwd = Dir.cwd();
     var store = Store.open(io, cwd) catch |err| {
-        print("mantra log: cannot open .mantra/ ({}) — run `mantra init` first\n", .{err});
+        print("mantra log: cannot open .mantra/ ({}) -- run `mantra init` first\n", .{err});
         return 1;
     };
     var head: ?[]const u8 = try store.read_head(allocator, io);
     if (head == null) {
-        print("mantra: no commits yet — run `mantra add` to weave the first line.\n", .{});
+        print("mantra: no commits yet -- run `mantra add` to weave the first line.\n", .{});
         return 0;
     }
     const max_log_depth: u32 = 1000; // bounded to prevent runaway chain walks
@@ -513,7 +513,7 @@ fn cmd_log(allocator: std.mem.Allocator, io: std.Io) !u8 {
         head = commit.parent;
         depth += 1;
         if (depth > max_log_depth) {
-            print("  ... (depth limit — stopping)\n", .{});
+            print("  ... (depth limit -- stopping)\n", .{});
             break;
         }
     }
@@ -526,7 +526,7 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
     assert(file_path.len > 0);
     const cwd = Dir.cwd();
     var store = Store.open(io, cwd) catch |err| {
-        print("mantra status: cannot open .mantra/ ({}) — run `mantra init` first\n", .{err});
+        print("mantra status: cannot open .mantra/ ({}) -- run `mantra init` first\n", .{err});
         return 1;
     };
     const file_buf = try allocator.alloc(u8, 4 * 1024 * 1024);
@@ -539,10 +539,10 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
     const new   = try diff_mod.split_lines(allocator, file_content);
     const d     = try diff_mod.diff(allocator, cli_site, old, new);
     if (d.inserts.len == 0 and d.deletes.len == 0) {
-        print("mantra status: '{s}' — clean\n", .{file_path});
+        print("mantra status: '{s}' -- clean\n", .{file_path});
         return 0;
     }
-    print("mantra status: '{s}' — {d} added, {d} removed\n", .{
+    print("mantra status: '{s}' -- {d} added, {d} removed\n", .{
         file_path, d.inserts.len, d.deletes.len,
     });
     for (d.inserts) |line| print("+ {s}\n", .{line});

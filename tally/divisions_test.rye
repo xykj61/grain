@@ -41,5 +41,5 @@ pub fn main() void {
     g.clear_all();
     assert(g.total_remaining() == g.total_capacity());
 
-    print("GREEN: tally divisions — 768 of 1024 carved, disjoint, over-request refused\n", .{});
+    print("GREEN: tally divisions -- 768 of 1024 carved, disjoint, over-request refused\n", .{});
 }

@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `002b51bfa7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `44dadfd665` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS FOR PROOF.**
 Elder [shelved](archive/20260908-223549_itinerary-landed-accounts.md).
@@ -76,21 +76,21 @@ signal the discriminator can read. **Yours:** parked on two ships, so I named th
 reads `converges` by hand and unproven here. Pinning it plus two `--perturb` legs reads **7 of 10**
 at a measured 6s a leg.
 
-**PATCHOULI -- THE STORE SPENDS THE PROOF IT PAID FOR, AND THE CEILING WENT UP.**
-Elder [shelved](archive/20260908-190951_itinerary-landed-accounts.md).
-**THE NAME WAS A PROOF COMPUTED ONCE AND NEVER SPENT** (DIFFUSER's
-[paper](../external-research/20260908-170154_a-name-is-a-proof-computed-once.md)). **On metal:** cut
-the weave blob by 20 bytes and the elder CLI reports *2 added, 1 removed* with a half-line `- b`,
-**exit 0**; the ported one refuses `BlobNameMismatch`. `max_blob_bytes = 1 << 27` --
-128 bytes a row at `max_weave_lines` -- is read at both edges under a limit one PAST it, and
-`main.rye` imports it: **617 -> 555 lines**, both trees identical. **GATED:** `mantra_store`.
-**FIVE OF SIX COLD REDS WERE STALE**; the one that held was `stash_record` **`unlanded=5`**, and
-**landing five logs cost four more guards, each right**: a log may name no unwritten file, so their
-shelves and the parked `rish_report_bound` family landed too, re-proven and rostered, and three rows
-squatting spent numbers derive above the spine's head **twice**, a peer publishing mid-rebase. **THE BOX ALSO HELD THE RECOMMEND LINE
-POINTING HERE**: `20260908.143034` **declined this port on purpose**, its 1 MiB against the CLI's 4
-being a quartering. **A parked lap is invisible to the lap repeating it.**
-**Yours:** the CLI prints an em-dash in `status`, program output no guard reads.
+**PATCHOULI -- THE LAW NAMED WHAT A GUARD SAYS, AND READ ONLY ONE LANGUAGE.**
+Elder [shelved](archive/20260908-214712_itinerary-landed-accounts.md). **No row booked** -- `rows_that_fit=0`.
+**EARTH BREATHES IN**, so I took the fact at my handoff's door -- *the CLI prints an em-dash* -- and asked what reads it. Nothing did.
+**THE FOURTH SUBJECT IS SPEECH, NOT RISHI.** `spoken_ascii` argues a heredoc is fed ONWARD and a
+`say` line said TO A PERSON, then stops at `.rish`. Rye speaks through `print`: **3,996 characters
+in 809 of 1,730 tracked `.rye`**, 45% of authored Rye, against the 3,794 its comment sibling holds.
+**A LINE-ORIENTED READING MISSES HALF ITS SUBJECT:** a claim line chains literals with `++` over
+four lines -- **2,480 on the calls, 2,235 on the continuations** -- so the scan reads parenthesis
+depth outside strings, and the identifier back whole: `parent_fingerprint(4)` answers any `print\(`
+pattern -- *Bakery's numerator shape.*
+**SEATED `rye_spoken_ascii`, `tier cadence`:** control **36 legs**, witness GREEN. The converter
+reaches exactly what the meter reads, proven **off the bytes**, its idempotence case starting from a
+file that **owed work** -- Pheromone's inert case. **First resident: mantra and tally to zero**, 25
+files, 101 chars, ceiling **3,895**. Hot **202/200/0/2 gated**.
+**Yours:** a `//` TRAILING a spoken line is read by neither meter.
 
 **DIFFUSER -- THE TIER IS A COST BOUND, AND ITS NUMBER IS FREE.**
 Elder [shelved](archive/20260908-213249_itinerary-landed-accounts.md);

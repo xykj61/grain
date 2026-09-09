@@ -257,7 +257,7 @@ fn run_fetcher(_: std.Io) !u8 {
     if (imported != staged_expect.leaf_count) return error.ReplayMismatch;
     try snap.assert_catalog_replay(&staged_expect, &dest);
 
-    print("sed: wire snapshot {d} bytes — import and replay GREEN\n", .{snap_len});
+    print("sed: wire snapshot {d} bytes -- import and replay GREEN\n", .{snap_len});
     return 0;
 }
 
@@ -286,13 +286,13 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
     const fc: u8 = switch (ft) { .exited => |code| code, else => 255 };
     if (sc != 0 or fc != 0) return error.DemoFailed;
 
-    print("sed: demo GREEN — horizon snapshot crossed localhost under Comlink seal\n", .{});
+    print("sed: demo GREEN -- horizon snapshot crossed localhost under Comlink seal\n", .{});
     print("sed: version {s} snapshot {s} batch_wire {s}\n", .{
         sed_version,
         snap.snapshot_export_version,
         bw.batch_wire_version,
     });
-    print("GREEN: I2 snapshot export — hosted Comlink crossing.\n", .{});
+    print("GREEN: I2 snapshot export -- hosted Comlink crossing.\n", .{});
     return 0;
 }
 

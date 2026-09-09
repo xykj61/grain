@@ -295,7 +295,7 @@ fn welcome_real(store: *beading.BeadStore, content: []const u8, out: []u8, label
     assert(n == content.len);
     // invariant: the unwound bytes are byte-for-byte the real document
     assert(std.mem.eql(u8, out[0..n], content));
-    print("spool: {s} — {d} B across {d} resins ({d} beads), unwound byte-for-byte\n", .{
+    print("spool: {s} -- {d} B across {d} resins ({d} beads), unwound byte-for-byte\n", .{
         label, n, sp.resin_count, rep.bead_count,
     });
     return rep;
@@ -436,7 +436,7 @@ fn run_spool_selftest() !u8 {
     const held_across_refusal = try refusal_leaves_store_whole(out[0..]);
 
     print("spool: same bytes wound twice share one content address (stable name)\n", .{});
-    print("spool: dedup dividend — a shared leading resin deposited its beads once\n", .{});
+    print("spool: dedup dividend -- a shared leading resin deposited its beads once\n", .{});
     print("spool: a winding past the store bound refused StoreFull; store held {d} of {d} on both sides of the refusal\n", .{
         held_across_refusal, beading.max_store_beads,
     });

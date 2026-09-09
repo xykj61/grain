@@ -81,7 +81,7 @@ fn run_selftest(_: std.Io) !u8 {
 
     print("tally parse_int: strict decimal refuses a leading zero; hex pairs allow one explicitly\n", .{});
     print("tally parse_int: version {s}\n", .{tally_parse_int_version});
-    print("GREEN: tally parse_int — the footgun refused by default, the honest exception named at the call site.\n", .{});
+    print("GREEN: tally parse_int -- the footgun refused by default, the honest exception named at the call site.\n", .{});
     return 0;
 }
 

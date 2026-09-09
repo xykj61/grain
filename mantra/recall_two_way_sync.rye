@@ -80,7 +80,7 @@ fn run_selftest(_: std.Io) !u8 {
     assert(std.mem.eql(u8, buf_r_shared[0..rb1r.len], "shared"));
     assert(std.mem.eql(u8, buf_r_b[0..rb2r.len], "unique-b"));
 
-    print("ns-2way: both peers recall both names — referential transparency GREEN\n", .{});
+    print("ns-2way: both peers recall both names -- referential transparency GREEN\n", .{});
 
     // Re-syncing an already-crossed revision refuses whole per direction.
     if (recall_lap1.sync_revision(&left, &right, "peerB", "b", 1)) |_| {
@@ -88,7 +88,7 @@ fn run_selftest(_: std.Io) !u8 {
     } else |err| {
         assert(err == error.RevisionImmutable);
     }
-    print("ns-2way: duplicate revision sync refused — GREEN unwelcome path\n", .{});
+    print("ns-2way: duplicate revision sync refused -- GREEN unwelcome path\n", .{});
 
     // A new revision on one side crosses once; prior revision leaves stay recallable.
     try right.append_leaf("peerB", "b", 2, "from-b.txt", "unique-b-v2", "plain-text");
@@ -100,7 +100,7 @@ fn run_selftest(_: std.Io) !u8 {
     assert(std.mem.eql(u8, buf_b[0..rrev2.len], "unique-b-v2"));
 
     print("ns-2way: version {s}\n", .{recall_two_way_sync_version});
-    print("GREEN: two-way sync — symmetric syncRevision, in-process.\n", .{});
+    print("GREEN: two-way sync -- symmetric syncRevision, in-process.\n", .{});
     return 0;
 }
 
