@@ -116,6 +116,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.054701` | [the box held a day's instruments](20260907/20260907-054701_the-box-held-a-days-instruments.kyri) | two parked laps recovered; the red at zero. |
 | `20260907.054042` | [the field asked two questions](20260907/20260907-054042_the-field-asked-two-questions.kyri) | 35 Status words name a state, not a room. |
 | `20260907.053708` | [six processes where one would do](20260907/20260907-053708_six-processes-where-one-would-do.kyri) | width_check 75s to 17s. |
+| `20260907.052058` | [Say before you assert](20260907/20260907-052058_say-before-you-assert.kyri) | recovered Grass record |
 | `20260907.050637` | [a pen two runs both claimed](20260907/20260907-050637_a-pen-two-runs-both-claimed.kyri) | a constant pen let one guard poison another. |
 | `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |
 | `20260907.050056` | [the guard that could not see its own shelf](20260907/20260907-050056_the-guard-that-could-not-see-its-own-shelf.kyri) | a scoped pass skipped the shelf's own guard. |

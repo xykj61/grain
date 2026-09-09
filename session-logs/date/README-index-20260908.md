@@ -67,6 +67,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.153134` | [the door that has two keys](20260908/20260908-153134_the-door-that-has-two-keys.kyri) | foundations joins; 35 doors, 0 silent. |
 | `20260908.153127` | [the front door pointed at a withheld room](20260908/20260908-153127_the-front-door-pointed-at-a-withheld-room.kyri) | one line; gated 1 -> 0. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
+| `20260908.152731` | [Identity-control record](20260908/20260908-152731_the-wall-that-had-never-been-shown-a-name.kyri) | recovered Grass record |
 | `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |
 | `20260908.151344` | [the store that names its index](20260908/20260908-151344_the-store-that-names-its-index.kyri) | the table-store reading, recovered from a stash and landed. |
 | `20260908.144500` | [the seed published, and four doors named](20260908/20260908-144500_the-seed-published-and-four-doors-named.kyri) | 8,187 files, clean. |

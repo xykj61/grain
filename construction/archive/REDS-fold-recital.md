@@ -625,3 +625,5 @@ at a closed fold.*
 *Rebase preserves [REDS-one-literal-two-verdicts-rows-661.md](REDS-one-literal-two-verdicts-rows-661.md) as a routing shelf.*
 
 *Rebase preserves [REDS-the-walker-keeps-its-body-rows-662.md](REDS-the-walker-keeps-its-body-rows-662.md) as a routing shelf.*
+
+*Recovery `20260909.074555` -- [the parked row 535 address](REDS-a-meter-that-counts-what-a-control-imports-rows-535.md) forwards to its published shelf. The 3,454-byte row is identical; the original draft remains in Grass's stash.*

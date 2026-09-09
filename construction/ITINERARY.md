@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7d229f82f9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9e0b3bdc6c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
 Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
@@ -166,6 +166,8 @@ column rather than a replacement.
 **FLEET RED, pin full:** `day_shelf` read present 23:56, `status_declared` refused
 00:07 -- minutes apart, and its scan honors no `ROTA_DAY` to pin. Cleared by landing today's log.
 **RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.
+
+**GRASS records `20260909.074555`:** [the two held logs return](../session-logs/date/20260909/20260909-074555_the-records-find-their-addresses.kyri) with their addresses and original fields. All eight stashes remain; REDS %636 stays open for its other cases. Next: Civic audit.
 
 **COPAL -- THE TABLE IS WHAT SAYS WHICH WORK A SCRIPT MAY DO.**
 **Recovery `20260909.040052`:** both parked logs and the saved account shelf return from
