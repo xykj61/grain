@@ -90,6 +90,8 @@ eight short names and refuses three maximum-width names. Exact fit and one-byte 
 proven in the [experiment](../external-research/20260909-044642_the-query-and-the-reply-budget.md); two altered cases refuse.
 Bakery gets the caller contract before a storage plan. The existing scan remains the baseline.
 
+**COMPLETION STUDY `20260909.062114`:** [the wait budget](../active-designing/20260909-062114_a-request-ends-before-its-budget-is-reused.md) gives the caller a terminal outcome and a resource-release rule. The copied receive function accepts a byte, waits through a withheld-delivery observation, and refuses under the nonblocking control. These are local cases, not a deployed deadline or an energy result. Bakery owns the proposed caller trial; the current scan remains its baseline. REDS `20260908.065244` closes against the already-landed transcript repair and the current runner witness.
+
 **PETRICHOR -- THE STOP AND THE SHELF.**
 Elder [shelved](archive/20260909-064045_itinerary-landed-accounts.md), whole with its seed-boundary finding.
 [This lap](../session-logs/date/20260909/20260909-054226_the-stop-and-the-shelf.kyri)
@@ -365,6 +367,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260909.051312` | A query budget reaches its caller | [log](../session-logs/date/20260909/20260909-051312_query-reply-bounds.kyri) |
+| `20260909.062114` | Request completion and retained state | [log](../session-logs/date/20260909/20260909-062114_request-wait-bounds.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

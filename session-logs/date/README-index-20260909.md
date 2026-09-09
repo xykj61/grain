@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.071647` | [Projection inputs](20260909/20260909-071647_the-projection-names-its-inputs.kyri) | Bakery; parked coverage proof |
 | `20260909.063313` | [Comments counted as code](20260909/20260909-063313_comments-that-counted-as-code.kyri) | paired diagnostic checks |
 | `20260909.063251` | [Integrated recovery](20260909/20260909-063251_the-integrated-recovery-is-ready.kyri) | Copal; 11 checks pass |
+| `20260909.062114` | [Request wait bounds](20260909/20260909-062114_request-wait-bounds.kyri) | receive probe; transcript row closed |
 | `20260909.060234` | [Restore the card bound](20260909/20260909-060234_restore-the-card-bound.kyri) | final rebase overflow |
 | `20260909.055744` | [Close the recovery](20260909/20260909-055744_close-the-rebased-recovery.kyri) | rebase and pin bound |
 | `20260909.055623` | [Walker coupling recovered](20260909/20260909-055623_walker-coupling.kyri) | bounded loop-body check |

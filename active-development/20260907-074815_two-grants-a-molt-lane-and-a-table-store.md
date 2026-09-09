@@ -74,3 +74,7 @@ Step three stays conditional on a caller's agreed workload budgets. If Tableclot
 them, reuse closes the grant and a new-store build is never scheduled. Bakery owns any storage
 implementation; Diffuser's design gives that trial its decision rule. The naming and seed gates
 retain their existing scope.
+
+The [completion companion](../active-designing/20260909-062114_a-request-ends-before-its-budget-is-reused.md) adds the caller's wait and resource-release
+contract, supported by a local receive experiment. The next trial keeps the existing scan while
+checking success, refusal, deadline exhaustion, and slot reuse. A storage build remains conditional.
