@@ -19,16 +19,19 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.042717` | [The parked package returns](20260909/20260909-042717_the-parked-package-returns.kyri) | five logs and two guard families |
 | `20260909.041325` | [Say before the assert](20260909/20260909-041325_say-before-the-assert.kyri) | parked output-order repair recovered |
 | `20260909.040200` | [Store limits](20260909/20260909-040200_store-limits.kyri) | sourced revision; six boundary checks |
+| `20260909.040154` | [Copal recovery](20260909/20260909-040154_the-parked-lap-and-its-next-step.kyri) | gen_home recovery; recheck pending |
 | `20260909.033927` | [Recover the roster](20260909/20260909-033927_recover-and-land-the-roster.kyri) | parked guard and record |
 | `20260909.030306` | [A parked control recovered](20260909/20260909-030306_the-control-kept-in-a-stash.kyri) | identity checks; records preserved |
 | `20260909.030051` | [Parked record recovered](20260909/20260909-030051_the-parked-record-returns.kyri) | record, shelf, and seed claim |
 | `20260909.030008` | [Recover the roster guard](20260909/20260909-030008_recover-the-roster-guard.kyri) | parked lap restored |
+| `20260909.025902` | [Parked link recovery](20260909/20260909-025902_the-parked-link-repair-returns.kyri) | saved recovery record |
 | `20260909.025738` | [The parked plant](20260909/20260909-025738_plant-recovery.kyri) | four records and a recovered guard |
 | `20260909.025531` | [Codex script modes](20260909/20260909-025531_codex-script-modes.kyri) | modes, recovery, and test PATH |
 | `20260909.022744` | [Incense watcher ready](20260909/20260909-022744_incense-watcher-ready.kyri) | arms after interactive exit |
 | `20260909.022156` | [Codex fleet sailing](20260909/20260909-022156_codex-fleet-sailing.kyri) | seven loops live; incense interactive |
 | `20260909.021739` | [Codex fleet clockin](20260909/20260909-021739_codex-fleet-clockin.kyri) | startup checks and watcher |
 | `20260909.021118` | [Codex fleet resume](20260909/20260909-021118_codex-fleet-resume.kyri) | loop preflight; ships still stopped |
+| `20260909.013900` | [The manifest halves](20260909/20260909-013900_the-half-that-drives-and-the-half-that-describes.kyri) | parked record recovered |
 | `20260909.013405` | [The plant that stopped biting](20260909/20260909-013405_the-plant-that-stopped-biting.kyri) | every resolvable plant still bites; 36 of 85 |
 | `20260909.011722` | [The template that holds nothing to catch](20260909/20260909-011722_the-template-that-holds-nothing.kyri) | a template beats a scrub |
 | `20260909.010905` | [The instrument was already there](20260909/20260909-010905_the-instrument-was-already-there.kyri) | recovered from its parked lap |

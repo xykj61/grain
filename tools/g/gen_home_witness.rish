@@ -1,20 +1,19 @@
-# tools/g/gen_home_witness.rish -- the O2 instrument: the desks' one true address.
+# Check the home of the generated Glow desks.
 #
-# Breach law (context/BREACH.md): witnessed on both sides of the line, before
-# and after. This witness takes the canonical home as its argument and proves
-# the LETTER-FOLDED shape the room took on 20260828 (REDS %301): zero flat
-# desks, and every desk standing either in the letter room its own basename
-# names -- glow/gen/<first letter>/<name>.glow, the same pure rule
-# tools/t/tool_path_resolve.rish computes -- or under the one whole-kept
-# subroom, hoon-study/, which files by WHAT it studies rather than by letter.
-# Totals are MEASURED and printed rather than pinned, because a count carried
-# in prose drifts the first lap nobody edits both (REDS %93); this witness
-# pinned "317" desks for exactly as long as that was true and not one day less.
+# Each desk belongs in the folder named by its first letter. The hoon-study
+# folder keeps its study files together. This witness checks both placements
+# and reports the current desk count and tool references.
 #
-#   rishi/bin/rishi run tools/g/gen_home_witness.rish glow/gen
+# The default home is glow/gen, so the standing roster can call this witness
+# directly. A caller may also name that path explicitly. The planned move to
+# src/gen still waits for Keaton's word; this check changes no files.
+#
+#   rishi/bin/rishi run tools/g/gen_home_witness.rish [glow/gen]
 
-let home = args[0]
-assert home != "" else "usage: gen_home_witness.rish <canonical-home e.g. glow/gen>"
+let home = "glow/gen"
+if length args != 0 then let home = args[0]
+# invariant: the home names a path -- an empty argument is a caller's slip, never a room.
+assert home != "" else "usage: gen_home_witness.rish [<canonical-home e.g. glow/gen>]"
 
 # invariant: the fold left no flat desk -- a flat .glow at the home is a file
 # the letter rule cannot have placed, so the count gates at zero.

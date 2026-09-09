@@ -969,6 +969,34 @@ path tools/g/glow_desk_run_witness.rish
 tier cadence
 seated 20260907.110022
 
+# gen_home -- the instrument stood green, on no clock, while the door it answers drifted 34 desks.
+#
+# WHAT WENT WRONG. `src/gen/README.md` is the door onto the desks' future home, and it pinned
+# *Three hundred eighteen `.glow` desks stand today* with *eighty-four witnesses* beside it. The
+# witness that measures both readings lives in the same room: `tools/g/gen_home_witness.rish`
+# prints the desk total rather than pinning it, and its own header says why -- *a count carried in
+# prose drifts the first lap nobody edits both (REDS %93); this witness pinned "317" desks for
+# exactly as long as that was true and not one day less.* Run on `20260908.145510` it answered
+# **352 desks and 29 tool files**. The door was wrong by 34 and by 55, and the guard that knew had
+# never been on this roster at all -- it ran when a hand typed its name and at no other time.
+#
+# THE COUNT AT THE DOOR WAS THE SYMPTOM. Nothing this witness gates had failed: zero flat desks,
+# every desk in the letter room its own basename names. What had failed is that nobody heard it.
+# A witness whose totals are measured rather than pinned still teaches nobody while nothing runs
+# it, which is the `unheard guard` shape (%482, %568) in the one room whose whole argument is that
+# a printed number beats a written one.
+#
+# HOW IT REACHES THE ROSTER. The runner invokes every guard as `rishi run <path>` with no
+# arguments, and this witness read `args[0]` outright, so seating it needed one accretion:
+# `home` defaults to `glow/gen` and an explicit argument still wins. Both forms and the empty
+# refusal were proven on metal before the seat.
+#
+# `lap` rather than `cadence`: 254 ms measured, no build, three `find`/`grep` passes over one room.
+guard gen_home
+path tools/g/gen_home_witness.rish
+tier lap
+seated 20260908.145510
+
 # The constellation rehearsal's wire pen, seated 20260828.011621. comlink/rehearsal_wire.rye
 # crosses three real processes over localhost UDP and was reached by no runner, roster, or suite
 # until this guard -- it ran when a hand typed its name and at no other time. It is the pen FORA31,
