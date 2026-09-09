@@ -39,14 +39,14 @@ const chorus = @import("chorus.rye");
 pub const tremolo_version = "20260814.201204";
 
 /// The tremolo's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need P/4
-/// whole) or wider than max_clip, a swing whose floor (centre − depth) falls below silence (a negative gain would be a sign flip, a different
+/// whole) or wider than max_clip, a swing whose floor (centre - depth) falls below silence (a negative gain would be a sign flip, a different
 /// effect), a swing whose top (centre + depth) rises above unity (glide_scale -- the tremolo attenuates, it does not boost), and a span outside
 /// the samples. Each refused before any write. There is NO BadDelay and NO BadLevel -- the tremolo has no delay line and no mix level; the gain
 /// IS the level.
 pub const TremoloError = error{
     /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose floor (centre − depth) falls below silence (a negative gain) -- refused, no write.
+    /// A negative depth, or a swing whose floor (centre - depth) falls below silence (a negative gain) -- refused, no write.
     BadDepth,
     /// A swing whose top (centre + depth) rises above unity (glide_scale) -- the tremolo attenuates, never boosts -- refused, no write.
     BadGain,
@@ -63,7 +63,7 @@ pub const TremoloError = error{
 /// Validate a tremolo's period, swing, and span together, before any sample is touched -- the four faults refused up front so a caller (the
 /// mono `tremolo`, or a stereo lift running the same swing on each channel) can prove atomicity once against the shared length. The period must
 /// be a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than max_clip; the depth non-negative with a
-/// floor (centre − depth) at or above silence; the top (centre + depth) at or below unity (glide_scale -- the tremolo attenuates, never boosts);
+/// floor (centre - depth) at or above silence; the top (centre + depth) at or below unity (glide_scale -- the tremolo attenuates, never boosts);
 /// and the span wholly within the samples. Refuses BadPeriod, BadDepth, BadGain, and BadRange.
 pub fn precheck(clip_len: u32, start: u32, count: u32, centre_scaled: i64, depth_scaled: i64, period: u32) TremoloError!void {
     // invariant: the period is a positive multiple of four (the triangle's quarter anchors need P/4 whole) and no wider than the widest
@@ -97,7 +97,7 @@ pub fn tremolo(
     var k: u32 = 0;
     while (k < count) : (k += 1) {
         const i: u32 = start + k;
-        // ALES71's `triangle_delay_at` is a general scaled triangle -- here it drives the GAIN, not a delay. g in [centre − depth, centre + depth].
+        // ALES71's `triangle_delay_at` is a general scaled triangle -- here it drives the GAIN, not a delay. g in [centre - depth, centre + depth].
         const g: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, k);
         // invariant: the gain never leaves the validated attenuation window, so it stays between silence and unity.
         assert(g >= 0 and g <= scale);
@@ -222,7 +222,7 @@ fn run_selftest() !u8 {
         var clip = timeline.Clip{};
         const three = [_]i16{ 1, 2, 3 };
         try load_clip(&clip, &three);
-        // centre ½-scale, depth ¾-scale -> floor = centre − depth < 0
+        // centre ½-scale, depth ¾-scale -> floor = centre - depth < 0
         if (tremolo(&clip, 0, clip.len, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowFloorSlipped else |e| if (e != error.BadDepth) return error.WrongLowFloor;
         if (!eq(clip.samples(), &three)) return error.RefusedLowFloorMutated;
         // negative depth

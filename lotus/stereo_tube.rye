@@ -7,16 +7,16 @@
 //!
 //! The nonlinear class holds as ALES132 stated it, and the tube adds a second edge. A tube drive is nonlinear, so a shared map does NOT hold the inter-channel ratio (a 1:2 master compresses toward the rail);
 //! and because the map is ALSO not odd, it does NOT hold the inter-channel ANTISYMMETRY either -- an out-of-phase master (right the negation of left) driven through unequal ceilings comes back NOT out of
-//! phase, because the left's positive peak pins to ceil_pos while the right's mirrored negative peak pins to −ceil_neg, and ceil_pos ≠ ceil_neg breaks the mirror. That is not a bug to design around; it is the
+//! phase, because the left's positive peak pins to ceil_pos while the right's mirrored negative peak pins to -ceil_neg, and ceil_pos ≠ ceil_neg breaks the mirror. That is not a bug to design around; it is the
 //! tube's even-harmonic signature read in the stereo field. What the shared map DOES keep, per channel, is the two-sided ceiling and sign discipline (the positive half at most ceil_pos, the negative at least
-//! −ceil_neg, the sign never flipped); an identical-channel master still drives to an identical-channel output; and EQUAL ceilings degenerate both channels to ALES132's stereo hard drive byte for byte.
+//! -ceil_neg, the sign never flipped); an identical-channel master still drives to an identical-channel output; and EQUAL ceilings degenerate both channels to ALES132's stereo hard drive byte for byte.
 //!
 //! The rule, stated once: refuse BadGain (a zero denominator, a below-unity gain, an oversized numerator), BadCeiling (EITHER ceiling outside [1, sample_max]), and BadRange (a span outside the samples) BEFORE
 //! either channel is mutated -- every fault depends only on the shared parameters or the shared length, so each check is made ONCE up front, and a refusal never drives one channel and leaves the other dry;
 //! otherwise tube both channels over [start, start+count) by num/den into (ceil_pos, ceil_neg) via ALES82's `tube`. TubeError reused whole -- the stereo lift adds no new fault and no new primitive.
 //!
 //! The crux -- four laws. THE STEREO TUBE LAW: each channel equals ALES82's mono `tube` with the same (num, den, ceil_pos, ceil_neg) over the same span byte for byte -- the positive half pinned to ceil_pos, the
-//! negative half to −ceil_neg, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a tube writes values only). THE PER-CHANNEL ASYMMETRIC LAW: the
+//! negative half to -ceil_neg, per channel. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a tube writes values only). THE PER-CHANNEL ASYMMETRIC LAW: the
 //! tube is nonlinear AND not odd, so a shared map holds neither the inter-channel ratio (a 1:2 master compressing toward the rail) nor the inter-channel antisymmetry (an out-of-phase master coming back NOT out
 //! of phase, ceil_pos ≠ ceil_neg breaking the mirror); yet the two-sided ceiling and sign hold per channel, an identical-channel master stays identical, and EQUAL ceilings reproduce ALES132's stereo hard
 //! drive -- the family recognition. THE ATOMICITY / DEGENERATE LAW: any refusal (BadGain, BadCeiling on either side, BadRange) leaves BOTH channels byte for byte untouched and still balanced; a unity drive
@@ -129,7 +129,7 @@ fn run_selftest() !u8 {
         if (odd.left.len != 3) return error.OddLength;
     }
 
-    // 3a. THE PER-CHANNEL ASYMMETRIC LAW -- the two-sided ceiling and sign discipline hold per channel: every positive output is at most ceil_pos, every negative at least −ceil_neg, and every sign matches the
+    // 3a. THE PER-CHANNEL ASYMMETRIC LAW -- the two-sided ceiling and sign discipline hold per channel: every positive output is at most ceil_pos, every negative at least -ceil_neg, and every sign matches the
     //     input, on BOTH channels, under a hard boost that drives every sample to a rail. This is the tube's honest promise, asymmetric where the odd class was symmetric.
     {
         var sc = pan.StereoClip{};
@@ -151,7 +151,7 @@ fn run_selftest() !u8 {
     }
 
     // 3b. THE PER-CHANNEL ASYMMETRIC LAW, the ANTISYMMETRY BREAKS -- an out-of-phase master (right the exact negation of left) driven through UNEQUAL ceilings comes back NOT out of phase, because the tube is
-    //     not odd: the left's boosted +2000 pins to +ceil_pos (1500), while the right's boosted −2000 pins to −ceil_neg (−800), and 1500 ≠ 800, so right ≠ −left. Under any ODD sibling (hard clip / soft drive /
+    //     not odd: the left's boosted +2000 pins to +ceil_pos (1500), while the right's boosted -2000 pins to -ceil_neg (-800), and 1500 ≠ 800, so right ≠ -left. Under any ODD sibling (hard clip / soft drive /
     //     fold) the mirror would have held. This is the even-harmonic signature read in the stereo field.
     {
         var sc = pan.StereoClip{};

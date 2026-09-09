@@ -2,7 +2,7 @@
 //! middle (ALES46), the band-reject drops it (ALES47); the bell TURNS it -- boosts or cuts the middle by a chosen gain while the
 //! edges stay exactly as they were. It is the single most-reached-for tool in a mix: lift a vocal's presence, tame a boxy room
 //! mode, dig out a kick's thump. The bell rests on the tone stack's own lesson (ALES42): the middle is the EXACT residual
-//! M = x − L − H, so gaining only the middle can never disturb the edges, and unity gain reconstructs the input by construction.
+//! M = x - L - H, so gaining only the middle can never disturb the edges, and unity gain reconstructs the input by construction.
 //! The bell is the whole fixed-EQ family at three gains: unity gain is the identity, zero gain is ALES47's notch, a larger gain
 //! boosts the middle. The one correctness beyond ALES47 is that the residual makes those three exact -- no new arithmetic on the
 //! audio path, only a scale on the band the notch already rejects.
@@ -40,7 +40,7 @@ pub const BellError = tone.ToneError || error{
 
 /// Peak `count` samples starting at `start` in place: keep the low band (a one-pole low-pass at the low cutoff, ALES40) and the
 /// high band (a one-pole high-pass at the high cutoff, ALES40) at unity, and scale the mid band -- the exact residual
-/// M = x − L − H -- by gain_num/gain_den, writing the sum saturated ONCE over the true wide-domain total. Unity gain
+/// M = x - L - H -- by gain_num/gain_den, writing the sum saturated ONCE over the true wide-domain total. Unity gain
 /// (gain_num = gain_den) reconstructs the input byte-for-byte; zero gain (gain_num = 0) is exactly ALES47's band-reject; at
 /// direct current the mid band is zero, so the bell turns only the middle and never the settled edges. Refuses BadCoeff on an
 /// illegal cutoff (either edge), BadGain on a zero gain denominator, and BadRange on a span outside the samples -- each before any
@@ -125,7 +125,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &zeros)) return error.SilenceWrong;
     }
 
-    // 2. UNITY GAIN IS THE IDENTITY -- gain_num == gain_den writes low + high + (x − low − high) = x byte-for-byte, at any cutoffs.
+    // 2. UNITY GAIN IS THE IDENTITY -- gain_num == gain_den writes low + high + (x - low - high) = x byte-for-byte, at any cutoffs.
     //    The residual construction guarantees a flat bell passes the input through untouched.
     {
         var clip = timeline.Clip{};
@@ -149,7 +149,7 @@ fn run_selftest() !u8 {
     }
 
     // 4. THE EDGES NEVER MOVE -- a constant input settles to itself at any gain, because its middle is zero at direct current
-    //    (M = x − x − 0 = 0), so the bell turns only what lies between the cutoffs. Proven at a large boost AND a full cut.
+    //    (M = x - x - 0 = 0), so the bell turns only what lies between the cutoffs. Proven at a large boost AND a full cut.
     {
         const run = [_]i16{2500} ** 60;
         // a big boost leaves the settled tail exactly the input.

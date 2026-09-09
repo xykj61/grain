@@ -1,7 +1,7 @@
 //! crypto/mldsa_sample.rye -- Chapter G (Cryptography): the ML-DSA sampling rung, the third stone of the post-quantum SIGNATURE ladder. Three
 //! operations turn a short seed into ring elements FIPS 204 needs: RejNTTPoly (Algorithm 30) draws a uniform NTT-domain polynomial by
 //! rejection-sampling a SHAKE128 stream -- the public matrix A is nothing but 256-coefficient uniform draws; RejBoundedPoly (Algorithm 31) draws the
-//! small secret vectors s1, s2 in [−η, η] from a SHAKE256 stream; and SampleInBall (Algorithm 29) draws the challenge polynomial c -- exactly τ
+//! small secret vectors s1, s2 in [-η, η] from a SHAKE256 stream; and SampleInBall (Algorithm 29) draws the challenge polynomial c -- exactly τ
 //! coefficients of ±1, the rest zero -- the sparse "ball" a signature commits to. This module authors all three in pure Rye, standing on the GREEN
 //! base ring (crypto/mldsa_ring.rye) and the GREEN extendable-output function (crypto/shake.rye). It is the signature-side counterpart to
 //! crypto/mlkem_sample.rye: it turns entropy into ring elements, deterministically, the way ML-KEM's SampleNTT/SamplePolyCBD did -- with one new
@@ -17,9 +17,9 @@
 //! THE ORACLE -- sampling is a deterministic function of a proven stream, so no new external dependency is needed here, exactly as ML-KEM's sampler
 //! stood on self-consistency. RejNTTPoly reads the SHAKE128 stream as successive 23-bit little-endian values and keeps those below q; the selftest
 //! re-derives the same draw a SECOND, structurally independent way (a bit-oriented 24-bit reader masked to 23 bits over the same GREEN SHAKE bytes)
-//! and confirms byte-for-byte agreement. RejBoundedPoly proves the centered range [−η, η] on every coefficient at both η, its CoefFromHalfByte
+//! and confirms byte-for-byte agreement. RejBoundedPoly proves the centered range [-η, η] on every coefficient at both η, its CoefFromHalfByte
 //! known-answers, and determinism. And SampleInBall proves the decisive STRUCTURAL invariant a challenge must satisfy: exactly τ nonzero
-//! coefficients, each ±1 (a value in {1, q−1}), the rest zero -- a Hamming weight of exactly τ -- plus determinism, over all three τ.
+//! coefficients, each ±1 (a value in {1, q-1}), the rest zero -- a Hamming weight of exactly τ -- plus determinism, over all three τ.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device. This module holds no key and signs nothing; it samples ring
 //! elements from a seed. It calls no std.crypto directly -- it composes our own GREEN shake.rye. RejNTTPoly's control flow depends only on the PUBLIC
@@ -38,7 +38,7 @@ const shake = @import("shake.rye");
 pub const mldsa_sample_version = "20260816.172505";
 
 /// ML-DSA's prime modulus, borrowed from the base ring so every rung cites one number. q = 8380417. A uniform draw keeps values in [0, q); a bounded
-/// draw lands in the centered band around 0; a ball coefficient is 0, 1, or q−1 (±1).
+/// draw lands in the centered band around 0; a ball coefficient is 0, 1, or q-1 (±1).
 pub const q: u32 = ring.q;
 
 /// The ring degree -- 256 coefficients per polynomial, borrowed from the base ring so every sampler fills exactly one Poly.
@@ -65,7 +65,7 @@ pub const bounded_xof_bytes: u32 = 12 * 136;
 pub const ball_xof_bytes: u32 = 8 * 136;
 
 /// The centered-bound parameters ML-DSA uses for the secret: η is 2 (ML-DSA-65/87) or 4 (ML-DSA-44). Every RejBoundedPoly coefficient lands in
-/// [−η, η] lifted into [0, q).
+/// [-η, η] lifted into [0, q).
 pub const eta_2: u32 = 2;
 pub const eta_4: u32 = 4;
 
@@ -83,7 +83,7 @@ pub const SampleError = error{
     NttRangeError,
     /// The structurally independent re-derivation disagreed with RejNTTPoly -- the module wires the SHAKE stream or the 23-bit rejection rule wrong.
     ReDerivationMismatch,
-    /// A RejBoundedPoly coefficient left the centered range [−η, η] (lifted into [0, q)) -- the small-secret distribution was broken.
+    /// A RejBoundedPoly coefficient left the centered range [-η, η] (lifted into [0, q)) -- the small-secret distribution was broken.
     BoundedRangeError,
     /// A fixed FIPS 204 known-answer (a CoefFromHalfByte mapping, or an all-nonzero-count) did not match -- a wrong reduction or bit direction.
     KnownAnswerMismatch,
@@ -136,9 +136,9 @@ pub fn rej_ntt_poly(rho: *const [32]u8, b0: u8, b1: u8) SampleError!ring.Poly {
     return a;
 }
 
-/// rej_bounded_poly -- FIPS 204 Algorithm 31: draw a polynomial with every coefficient in [−η, η] from a SHAKE256 stream seeded with a 64-byte rho'
+/// rej_bounded_poly -- FIPS 204 Algorithm 31: draw a polynomial with every coefficient in [-η, η] from a SHAKE256 stream seeded with a 64-byte rho'
 /// and a two-byte nonce. Each stream byte gives two nibbles; CoefFromHalfByte keeps a nibble below the η-dependent bound and maps it to a centered
-/// value: for η = 2, reject nibbles above 14 then reduce mod 5 to [0, 4] and take η − that; for η = 4, keep nibbles ≤ 8 and take η − that. This is
+/// value: for η = 2, reject nibbles above 14 then reduce mod 5 to [0, 4] and take η - that; for η = 4, keep nibbles ≤ 8 and take η - that. This is
 /// the small secret s1, s2 a key carries; the coefficient lands lifted into [0, q).
 pub fn rej_bounded_poly(rho_prime: *const [64]u8, nonce: u16, eta: u32) SampleError!ring.Poly {
     // invariant (precondition): eta is one ML-DSA uses (2 or 4).
@@ -188,7 +188,7 @@ fn coef_accept(z: u32, eta: u32) bool {
     return z <= 8;
 }
 
-/// coef_from_half_byte -- the CoefFromHalfByte value map for an accepted nibble: η − (z mod 5) for η = 2, η − z for η = 4, lifted into [0, q).
+/// coef_from_half_byte -- the CoefFromHalfByte value map for an accepted nibble: η - (z mod 5) for η = 2, η - z for η = 4, lifted into [0, q).
 fn coef_from_half_byte(z: u32, eta: u32) u32 {
     // invariant (precondition): an accepted nibble for this eta.
     assert(coef_accept(z, eta));
@@ -200,7 +200,7 @@ fn coef_from_half_byte(z: u32, eta: u32) u32 {
 }
 
 /// sample_in_ball -- FIPS 204 Algorithm 29: draw the challenge c with exactly τ coefficients of ±1 and the rest zero, from a SHAKE256 stream seeded
-/// with the commitment hash. The first 8 stream bytes give τ sign bits; then a Fisher-Yates placement walks i from n−τ to n−1, rejection-sampling a
+/// with the commitment hash. The first 8 stream bytes give τ sign bits; then a Fisher-Yates placement walks i from n-τ to n-1, rejection-sampling a
 /// position byte b ≤ i, moving c[i] <- c[b] and setting c[b] <- ±1 by the next sign bit. The result is the sparse ball a signature proves knowledge against.
 pub fn sample_in_ball(seed: []const u8, tau: u32) SampleError!ring.Poly {
     // invariant (precondition): a valid challenge weight and a nonempty seed.
@@ -235,7 +235,7 @@ pub fn sample_in_ball(seed: []const u8, tau: u32) SampleError!ring.Poly {
             pos += 1;
             if (b <= i) break;
         }
-        // Fisher-Yates: carry the value already at i down to b, then plant ±1 at b by the next sign bit (1 -> +1, 0 -> −1 = q−1).
+        // Fisher-Yates: carry the value already at i down to b, then plant ±1 at b by the next sign bit (1 -> +1, 0 -> -1 = q-1).
         c.cs[i] = c.cs[b];
         const sign_bit: u32 = @as(u32, @intCast(signs & 1));
         signs >>= 1;
@@ -353,9 +353,9 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 2. RejBoundedPoly: the CoefFromHalfByte known-answers pin the value map -- for η = 2, nibble 0 -> η = 2, nibble 5 -> 2 (5 mod 5 = 0), nibble 3 -> −1
-    //    (q−1); for η = 4, nibble 0 -> 4, nibble 8 -> −4 (q−4). Then, over a deterministic spread at both η, every coefficient must land in the centered
-    //    range [−η, η] and the draw must be non-trivial, and a repeat of the same (rho', nonce) must reproduce it exactly (determinism).
+    // 2. RejBoundedPoly: the CoefFromHalfByte known-answers pin the value map -- for η = 2, nibble 0 -> η = 2, nibble 5 -> 2 (5 mod 5 = 0), nibble 3 -> -1
+    //    (q-1); for η = 4, nibble 0 -> 4, nibble 8 -> -4 (q-4). Then, over a deterministic spread at both η, every coefficient must land in the centered
+    //    range [-η, η] and the draw must be non-trivial, and a repeat of the same (rho', nonce) must reproduce it exactly (determinism).
     {
         if (coef_from_half_byte(0, eta_2) != 2) return error.KnownAnswerMismatch;
         if (coef_from_half_byte(5, eta_2) != 2) return error.KnownAnswerMismatch;
@@ -387,7 +387,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. THE decisive SampleInBall invariant: the challenge has EXACTLY τ nonzero coefficients, each ±1 (a value in {1, q−1}), the rest zero -- a
+    // 3. THE decisive SampleInBall invariant: the challenge has EXACTLY τ nonzero coefficients, each ±1 (a value in {1, q-1}), the rest zero -- a
     //    Hamming weight of exactly τ -- and the same seed reproduces it (determinism), across all three τ. A misplaced or mis-signed coefficient, or a
     //    wrong count, fails here.
     {

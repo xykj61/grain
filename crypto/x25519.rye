@@ -16,7 +16,7 @@
 //! projective u-coordinate alone (x2 : z2). The scalar is clamped per RFC 7748 (low three bits cleared, bit 255 cleared, bit 254 set), then a
 //! constant-number-of-steps ladder runs from bit 254 down to bit 0. Each step does one conditional swap (branchless, driven by the scalar
 //! bit through an XOR mask so the memory pattern never depends on the secret) and one "double-and-add" built from field add, subtract,
-//! square, and multiply -- plus a single multiply by the curve constant a24 = 121665 = (486662 − 2)/4. The ladder holds the standard
+//! square, and multiply -- plus a single multiply by the curve constant a24 = 121665 = (486662 - 2)/4. The ladder holds the standard
 //! two-point invariant (x3:z3 stays exactly one step ahead of x2:z2), so after 255 steps x2:z2 is scalar-(u). The affine answer is
 //! x2 - z2⁻¹, packed to 32 canonical little-endian bytes. Every line is field arithmetic anyone can replay; nothing here is a claim about a
 //! device.
@@ -42,7 +42,7 @@ const fe = @import("fe25519.rye");
 
 pub const x25519_version = "20260816.000000";
 
-/// The Curve25519 ladder constant a24 = (A − 2)/4 = (486662 − 2)/4 = 121665. It fits a single 51-bit limb, so the constant field element is
+/// The Curve25519 ladder constant a24 = (A - 2)/4 = (486662 - 2)/4 = 121665. It fits a single 51-bit limb, so the constant field element is
 /// already canonical and safe as a multiply operand.
 const a24_limb: u64 = 121665;
 

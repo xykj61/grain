@@ -14,7 +14,7 @@
 //!
 //! THE CRUX -- a point on edwards25519 is carried in extended twisted-Edwards coordinates (X, Y, Z, T) with x = X/Z, y = Y/Z, and
 //! T = XY/Z, the representation that makes the group law complete and division-free (Hisil-Wong-Carter-Dawson, 2008; RFC 8032 §5.1). The
-//! curve constant is d = −121665/121666 (mod p), derived here in our own field arithmetic rather than copied as a literal, and 2d is the
+//! curve constant is d = -121665/121666 (mod p), derived here in our own field arithmetic rather than copied as a literal, and 2d is the
 //! constant the unified addition needs. Point doubling and point addition are each a fixed sequence of field squarings, multiplies, adds,
 //! and subtracts -- no field element is ever inverted inside the group law; a single inversion appears only when a point is finally
 //! compressed to 32 bytes (Y/Z, with the low bit of X/Z carried in the top bit). Negation flips the sign of X and T; subtraction is
@@ -24,7 +24,7 @@
 //! secret and not a signature: this file signs nothing and holds no key (Ed25519's signing with an identity key stays its own separate,
 //! gated round; even the scalar-multiplication ladder is a later non-gated round). The primitive calls no std.crypto. Parity is proven at
 //! selftest against two references runnable now -- algebraic identities anyone can check (the base point compresses to its published
-//! encoding, the identity compresses to Y = 1, B + B = 2B, and B + (−B) = the identity), and Zig's own
+//! encoding, the identity compresses to Y = 1, B + B = 2B, and B + (-B) = the identity), and Zig's own
 //! std.crypto.ecc.Edwards25519 as an independent implementation, compared byte-for-byte on the compression of dbl, add, sub, and neg
 //! across the base point and several of its multiples. Monocypher-source parity stays the same held-fetch horizon the other primitives
 //! carry; constant-time timing-safety stays a separate named horizon (the group law is data-independent by construction).
@@ -58,7 +58,7 @@ fn fe_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
 }
 
-/// Negate a field element -- 0 − a. Used for the curve constant and for point negation.
+/// Negate a field element -- 0 - a. Used for the curve constant and for point negation.
 fn fe_neg(a: fe.Field) fe.Field {
     return fe.sub(fe_zero(), a);
 }
@@ -69,7 +69,7 @@ fn fe_sq2(a: fe.Field) fe.Field {
     return fe.add(s, s);
 }
 
-/// The curve constant 2d, where d = −121665/121666 (mod p), computed in our own field arithmetic so no borrowed literal enters the tree.
+/// The curve constant 2d, where d = -121665/121666 (mod p), computed in our own field arithmetic so no borrowed literal enters the tree.
 /// invariant on the callers: both small numerators fit one limb, so the constructed elements are canonical before the inverse.
 fn edwards_d2() fe.Field {
     const num = fe.Field{ .l = .{ 121665, 0, 0, 0, 0 } };
@@ -184,7 +184,7 @@ fn run_selftest() !u8 {
         const pb = from_zig(b);
         if (!bytes_eq(&to_bytes(add(pb, pb)), &to_bytes(dbl(pb)))) return error.AddEqualsDoubleMismatch;
 
-        // B + (−B) is the identity.
+        // B + (-B) is the identity.
         if (!bytes_eq(&to_bytes(add(pb, neg(pb))), &id_b)) return error.InverseSumMismatch;
     }
 

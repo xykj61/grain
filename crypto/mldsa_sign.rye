@@ -2,7 +2,7 @@
 //! FIPS 204 ML-DSA.Sign_internal, authored in pure Rye: it decodes a secret key sk = rho ‖ K ‖ tr ‖ BitPack(s1) ‖ BitPack(s2) ‖ BitPack(t0), computes
 //! mu = H(tr ‖ 0x00 ‖ 0x00 ‖ M) and rho'' = H(K ‖ rnd ‖ mu) (rnd = 32 zero bytes for the deterministic variant), and runs the rejection loop: draw the
 //! mask y = ExpandMask(rho'', kappa), form w = NTT⁻¹(Â ∘ NTT(y)), commit to c~ = H(mu ‖ w1Encode(HighBits(w))), draw the sparse challenge
-//! c = SampleInBall(c~), and answer z = y + c-s1. A signature is emitted only when ‖z‖∞ < γ1−β, ‖LowBits(w) − c-s2‖∞ < γ2−β, ‖c-t0‖∞ < γ2, and the
+//! c = SampleInBall(c~), and answer z = y + c-s1. A signature is emitted only when ‖z‖∞ < γ1-β, ‖LowBits(w) - c-s2‖∞ < γ2-β, ‖c-t0‖∞ < γ2, and the
 //! hint weight ≤ ω all hold; otherwise kappa advances by l and the loop tries again. The signature is sigma = c~ ‖ BitPack(z) ‖ HintBitPack(h). It
 //! composes only GREEN rungs -- the base ring (crypto/mldsa_ring.rye), the serialization and rounding (crypto/mldsa_encode.rye), the samplers
 //! (crypto/mldsa_sample.rye), and SHAKE (crypto/shake.rye) -- and holds no key of its own: every seed is a public test vector.
@@ -49,7 +49,7 @@ pub const n: u32 = ring.n;
 pub const max_k: u32 = 8;
 pub const max_l: u32 = 7;
 
-/// The two FIPS 204 low-bit granularities: γ₂ = (q−1)/88 for ML-DSA-44, (q−1)/32 for ML-DSA-65/87. Borrowed from the encode rung's own named constants.
+/// The two FIPS 204 low-bit granularities: γ₂ = (q-1)/88 for ML-DSA-44, (q-1)/32 for ML-DSA-65/87. Borrowed from the encode rung's own named constants.
 pub const gamma2_88: u32 = encode.gamma2_88;
 pub const gamma2_32: u32 = encode.gamma2_32;
 
@@ -97,15 +97,15 @@ fn eta_packed_bytes(eta: u32) u32 {
     return if (eta == 2) 96 else 128;
 }
 
-/// w1_bit_width -- the bits SimpleBitPack lays each HighBits coefficient into: 6 bits at γ₂ = (q−1)/88 (values in [0, 43]), 4 bits at (q−1)/32 (values in
-/// [0, 15]). This is bitlen((q−1)/(2γ₂) − 1), the width w1Encode uses.
+/// w1_bit_width -- the bits SimpleBitPack lays each HighBits coefficient into: 6 bits at γ₂ = (q-1)/88 (values in [0, 43]), 4 bits at (q-1)/32 (values in
+/// [0, 15]). This is bitlen((q-1)/(2γ₂) - 1), the width w1Encode uses.
 fn w1_bit_width(gamma2: u32) u32 {
     // invariant (precondition): a FIPS 204 low-bit granularity.
     assert(gamma2 == gamma2_88 or gamma2 == gamma2_32);
     return if (gamma2 == gamma2_88) 6 else 4;
 }
 
-/// res_from_centered -- lift a centered integer in (−q, q) back to its canonical residue in [0, q). A negative value wraps by one modulus.
+/// res_from_centered -- lift a centered integer in (-q, q) back to its canonical residue in [0, q). A negative value wraps by one modulus.
 fn res_from_centered(c: i32) u32 {
     // invariant (precondition): the value is a small centered integer, never as large as the modulus.
     assert(c > -@as(i32, @intCast(q)) and c < @as(i32, @intCast(q)));
@@ -123,7 +123,7 @@ fn center_small(r: u32) i32 {
     return @as(i32, @intCast(r)) - @as(i32, @intCast(q));
 }
 
-/// norm_exceeds -- does any coefficient's centered infinity norm reach the bound? The centered norm of a residue r is (q−1)/2 − |((q−1)/2) − r|, the same
+/// norm_exceeds -- does any coefficient's centered infinity norm reach the bound? The centered norm of a residue r is (q-1)/2 - |((q-1)/2) - r|, the same
 /// symmetric measure ML-DSA's rejection tests use; the predicate returns true (reject) the instant one coefficient reaches `bound`.
 fn norm_exceeds(cs: *const [n]u32, bound: u32) bool {
     const half: i32 = @as(i32, @intCast((q - 1) / 2));
@@ -132,7 +132,7 @@ fn norm_exceeds(cs: *const [n]u32, bound: u32) bool {
     while (i < n) : (i += 1) {
         const x: i32 = half - @as(i32, @intCast(cs[i]));
         const abs_x: i32 = if (x < 0) -x else x;
-        // invariant: |x| ≤ (q−1)/2 for any residue, so the norm sits in [0, (q−1)/2] and the cast to u32 is safe.
+        // invariant: |x| ≤ (q-1)/2 for any residue, so the norm sits in [0, (q-1)/2] and the cast to u32 is safe.
         assert(abs_x <= half);
         const norm: u32 = @as(u32, @intCast(half - abs_x));
         if (norm >= bound) return true;
@@ -140,8 +140,8 @@ fn norm_exceeds(cs: *const [n]u32, bound: u32) bool {
     return false;
 }
 
-/// make_hint_bit -- the one hint bit for a coefficient: given the accumulated low part z0 = LowBits(w − c-s2 + c-t0) as a residue and the committed high
-/// part r1 = HighBits(w), a hint is needed unless z0 sits inside the centered γ₂ window (with the single boundary case z0 = q − γ₂ excused only when
+/// make_hint_bit -- the one hint bit for a coefficient: given the accumulated low part z0 = LowBits(w - c-s2 + c-t0) as a residue and the committed high
+/// part r1 = HighBits(w), a hint is needed unless z0 sits inside the centered γ₂ window (with the single boundary case z0 = q - γ₂ excused only when
 /// r1 = 0). This is FIPS 204's MakeHint expressed on the accumulated residue, the form ML-DSA's signer carries.
 fn make_hint_bit(z0: u32, r1: u32, gamma2: u32) u32 {
     // invariant (precondition): a canonical residue and a FIPS granularity.
@@ -156,7 +156,7 @@ fn make_hint_bit(z0: u32, r1: u32, gamma2: u32) u32 {
 }
 
 /// expand_mask_poly -- FIPS 204 ExpandMask (Algorithm 34) for one polynomial: SHAKE256 over rho'' ‖ IntegerToBytes(nonce, 2) yields 32-(γ₁-bits + 1)
-/// bytes, which BitUnpack reads back into coefficients in (−γ₁, γ₁]; the residue form is returned for the NTT. Composes the GREEN SHAKE and encode rungs.
+/// bytes, which BitUnpack reads back into coefficients in (-γ₁, γ₁]; the residue form is returned for the NTT. Composes the GREEN SHAKE and encode rungs.
 fn expand_mask_poly(rho_pp: *const [64]u8, nonce: u16, gamma1_bits: u32) SignError!ring.Poly {
     const gamma1: u32 = @as(u32, 1) << @as(u5, @intCast(gamma1_bits));
     var iv: [66]u8 = undefined;
@@ -323,7 +323,7 @@ pub fn sign(
         s2_hat[i] = decode_poly_ntt(sk_bytes[off .. off + eta_bytes], eta, eta);
         off += eta_bytes;
     }
-    // t̂0[i] = NTT(BitUnpack(t0[i], 2¹²−1, 2¹²)) for i in 0..k.
+    // t̂0[i] = NTT(BitUnpack(t0[i], 2¹²-1, 2¹²)) for i in 0..k.
     const t0_a: u32 = (@as(u32, 1) << @as(u5, @intCast(power2_d - 1))) - 1; // 2¹² − 1 = 4095
     const t0_b: u32 = @as(u32, 1) << @as(u5, @intCast(power2_d - 1)); // 2¹² = 4096
     var t0_hat: [max_k]ring.Poly = undefined;
@@ -384,7 +384,7 @@ pub fn sign(
         var y_res: [max_l]ring.Poly = undefined;
         var y_hat: [max_l]ring.Poly = undefined;
         var idx: u32 = 0;
-        // invariant (bound): exactly l mask polynomials drawn, nonces kappa..kappa+l−1.
+        // invariant (bound): exactly l mask polynomials drawn, nonces kappa..kappa+l-1.
         while (idx < l) : (idx += 1) {
             y_res[idx] = try expand_mask_poly(&rho_pp, @as(u16, @intCast(kappa + idx)), gamma1_bits);
             y_hat[idx] = ring.ntt(&y_res[idx]);
@@ -426,7 +426,7 @@ pub fn sign(
         const c_poly = sample.sample_in_ball(c_tilde[0..ctilde], tau) catch return error.SampleFailed;
         const c_hat = ring.ntt(&c_poly);
 
-        // z[i] = y[i] + c-s1[i]; reject if ‖z‖∞ ≥ γ1 − β.
+        // z[i] = y[i] + c-s1[i]; reject if ‖z‖∞ ≥ γ1 - β.
         var z: [max_l][n]u32 = undefined;
         var reject: bool = false;
         i = 0;
@@ -444,7 +444,7 @@ pub fn sign(
         }
         if (reject) continue;
 
-        // r0[i] = LowBits(w) − c-s2[i]; ct0[i] = c-t0[i]; hint[i] = MakeHint(−ct0, r0 + ct0) vs w1. Reject on the r0, ct0, and hint-weight bounds.
+        // r0[i] = LowBits(w) - c-s2[i]; ct0[i] = c-t0[i]; hint[i] = MakeHint(-ct0, r0 + ct0) vs w1. Reject on the r0, ct0, and hint-weight bounds.
         var ct0: [max_k][n]u32 = undefined;
         var w0mcs2: [max_k][n]u32 = undefined;
         i = 0;
@@ -458,7 +458,7 @@ pub fn sign(
                 // invariant: the modular arithmetic below adds without reducing first, so a
                 // coefficient already at or past q would carry rather than wrap
                 assert(w0_res[i][c] < q and cs2.cs[c] < q);
-                // w0_res − cs2 in (−q, q); add q to land in (0, 2q) then a single reduction gives the canonical residue.
+                // w0_res - cs2 in (-q, q); add q to land in (0, 2q) then a single reduction gives the canonical residue.
                 const diff: u32 = w0_res[i][c] + q - cs2.cs[c];
                 w0mcs2[i][c] = diff % q;
                 ct0[i][c] = ct0_row.cs[c];
@@ -468,7 +468,7 @@ pub fn sign(
         }
         if (reject) continue;
 
-        // hint[i][c] = MakeHint(−ct0, (w0 − c-s2) + ct0) committed against w1; reject if the total weight exceeds ω.
+        // hint[i][c] = MakeHint(-ct0, (w0 - c-s2) + ct0) committed against w1; reject if the total weight exceeds ω.
         var hint: [max_k][n]u32 = undefined;
         var weight: u32 = 0;
         i = 0;
@@ -485,7 +485,7 @@ pub fn sign(
         }
         if (weight > omega) continue;
 
-        // ---- accept: sigma = c~ ‖ BitPack(z, γ1−1, γ1) ‖ HintBitPack(hint) ----
+        // ---- accept: sigma = c~ ‖ BitPack(z, γ1-1, γ1) ‖ HintBitPack(hint) ----
         var so: u32 = 0;
         t = 0;
         // invariant (bound): copy the ctilde-byte commitment.

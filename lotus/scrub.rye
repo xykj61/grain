@@ -12,7 +12,7 @@
 //! the Clip and its max_clip bound; lotus/transport.rye (ALES7) -- the single-position head a scrub seats at its window start.
 //!
 //! THE CRUX: a scrub window read at position `p` returns EXACTLY the master's samples [p, p+n) in both channels, where
-//! n = min(win, master.len − p). Two facts make this exact. A scrub is a SEEK-THEN-READ -- the window at `p` is ALES15's
+//! n = min(win, master.len - p). Two facts make this exact. A scrub is a SEEK-THEN-READ -- the window at `p` is ALES15's
 //! read_block off a head seeded at `p`, so its bytes are the master's own [p, p+n) by ALES15's already-proven copy. And
 //! consecutive windows TILE -- windows at 0, L, 2L, ... are disjoint half-open intervals whose union is [0, master.len), so dragging
 //! a scrub of length L across the master in steps of L concatenates back to EACH channel byte-for-byte, with the last window

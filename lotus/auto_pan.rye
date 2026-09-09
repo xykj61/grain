@@ -11,7 +11,7 @@
 //! its own fader (two independent divisions, exact only where the split falls on a whole sample). Auto-pan STRENGTHENS the invariant to hold
 //! exactly at every sample for every signal, by computing the far channel as the RESIDUAL of the near -- the same residual move ALES42's tone
 //! stack used to make its mid band reconstruct exactly: right[i] = saturate(x[i]-pos(i)/glide_scale) is the near division, and
-//! left[i] = saturate(x[i] − right[i]) is the far channel, so left[i] + right[i] == x[i] BYTE-FOR-BYTE, never x − 1.
+//! left[i] = saturate(x[i] - right[i]) is the far channel, so left[i] + right[i] == x[i] BYTE-FOR-BYTE, never x - 1.
 //!
 //! Because the position stays a NON-NEGATIVE attenuation weight (0 ≤ pos ≤ glide_scale), each channel is a fraction of the dry, so
 //! |left|, |right| ≤ |x| and both sit inside the i16 rail: the write's saturate is a proven NO-OP, exactly as the tremolo's was -- auto-pan is
@@ -44,14 +44,14 @@ const pan = @import("pan.rye");
 pub const auto_pan_version = "20260814.202856";
 
 /// The auto-pan's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need P/4
-/// whole) or wider than max_clip, a negative depth or a swing whose floor (centre − depth) falls past hard-left (below 0 -- a pan weight has no
+/// whole) or wider than max_clip, a negative depth or a swing whose floor (centre - depth) falls past hard-left (below 0 -- a pan weight has no
 /// sign), and a swing whose top (centre + depth) rises past hard-right (above glide_scale -- the position stays within the field). Each refused
 /// before any write. There is NO BadGain (the field denominator is the fixed glide_scale, never a caller's divide), NO BadDelay, and NO
 /// BadRange on a span -- the whole clip is panned and `out` shares the source's bound, so the render always fits (asserted, never a live error).
 pub const AutoPanError = error{
     /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose floor (centre − depth) falls past hard-left (below 0) -- refused, no write.
+    /// A negative depth, or a swing whose floor (centre - depth) falls past hard-left (below 0) -- refused, no write.
     BadDepth,
     /// A swing whose top (centre + depth) rises past hard-right (above glide_scale) -- refused, no write.
     BadPan,
@@ -59,7 +59,7 @@ pub const AutoPanError = error{
 
 /// Auto-pan the whole mono `src` clip into `out`, an ALES10 StereoClip: a triangle LFO of `depth_scaled` round `centre_scaled` over `period`
 /// samples drives the PAN POSITION (ALES71's `triangle_delay_at`, read as the right-hand weight in units of glide_scale -- 0 = hard left,
-/// glide_scale = hard right). Each sample is split right[i] = saturate(x[i]-pos(i)/glide_scale) and left[i] = saturate(x[i] − right[i]), the far
+/// glide_scale = hard right). Each sample is split right[i] = saturate(x[i]-pos(i)/glide_scale) and left[i] = saturate(x[i] - right[i]), the far
 /// channel the RESIDUAL of the near, so left[i] + right[i] == x[i] byte-for-byte. The position is a non-negative attenuation weight, so each
 /// channel is a fraction of the dry and the write saturates once yet never clips. The source is READ-ONLY. Refuses BadPeriod, BadDepth, and
 /// BadPan before any write; on refusal `src` and `out` are untouched. Values only -- the two channels take the source's length.
@@ -89,7 +89,7 @@ pub fn auto_pan(
     var i: u32 = 0;
     while (i < src.len) : (i += 1) {
         // ALES71's `triangle_delay_at` is a general scaled triangle -- here it is the PAN POSITION, the right-hand weight. pos in
-        // [centre − depth, centre + depth] ⊆ [0, glide_scale].
+        // [centre - depth, centre + depth] ⊆ [0, glide_scale].
         const pos: i64 = chorus.triangle_delay_at(centre_scaled, depth_scaled, period, i);
         // invariant: the position never leaves the validated field window, so it is a legal weight between hard-left and hard-right.
         assert(pos >= 0 and pos <= scale);
@@ -101,7 +101,7 @@ pub fn auto_pan(
         const right_v: i64 = @divTrunc(dry * pos, scale);
         // invariant: the near channel is an attenuation of an in-range sample, so it already fits the i16 rail.
         assert(right_v >= @as(i64, timeline.sample_min) and right_v <= @as(i64, timeline.sample_max));
-        // The far (left) channel: the RESIDUAL of the near, so left + right == dry exactly. |dry − right_v| ≤ |dry|, of the dry's sign, so it
+        // The far (left) channel: the RESIDUAL of the near, so left + right == dry exactly. |dry - right_v| ≤ |dry|, of the dry's sign, so it
         // too sits in the rail.
         const left_v: i64 = dry - right_v;
         // invariant: the far channel is the dry minus an equal-signed attenuation, so it also fits the i16 rail.
@@ -159,7 +159,7 @@ fn run_selftest() !u8 {
     //      k:        0    1     2    3    4
     //      pos(k):   128  256   128  0    128
     //      right[k]: 500  1000  500  0    500   (1000-pos/256)
-    //      left[k]:  500  0     500  1000 500   (1000 − right)
+    //      left[k]:  500  0     500  1000 500   (1000 - right)
     {
         const sig = [_]i16{ 1000, 1000, 1000, 1000, 1000 };
         var src = timeline.Clip{};
@@ -173,7 +173,7 @@ fn run_selftest() !u8 {
     }
 
     // 3. A DEPTH-0 AUTO-PAN IS A STATIC PAN -- the LFO at rest holds one position. Centre scale/2 splits every sample equally (right =
-    //    floor(x/2), left = x − floor(x/2) = the same on even samples); centre 0 routes the whole clip to the LEFT (right silent); centre
+    //    floor(x/2), left = x - floor(x/2) = the same on even samples); centre 0 routes the whole clip to the LEFT (right silent); centre
     //    scale routes it wholly to the RIGHT (left silent).
     {
         const sig = [_]i16{ 100, 200, 300, 400 };
@@ -254,7 +254,7 @@ fn run_selftest() !u8 {
         var out = pan.StereoClip{};
         if (auto_pan(&src, &out, @divTrunc(scale, 2), -1, 4)) |_| return error.NegDepthSlipped else |e| if (e != error.BadDepth) return error.WrongNegDepth;
         if (!eq(src.samples(), &three)) return error.RefusedNegDepthTouched;
-        // centre ½-scale, depth ¾-scale -> floor = centre − depth < 0 (past hard-left)
+        // centre ½-scale, depth ¾-scale -> floor = centre - depth < 0 (past hard-left)
         if (auto_pan(&src, &out, @divTrunc(scale, 2), @divTrunc(3 * scale, 4), 4)) |_| return error.LowFloorSlipped else |e| if (e != error.BadDepth) return error.WrongLowFloor;
         if (!eq(src.samples(), &three)) return error.RefusedLowFloorTouched;
         // centre ½-scale, depth ¾-scale off the top: centre + depth > glide_scale (past hard-right) -> centre unity, depth ½-scale

@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.234210` | [Seventeen reds were one submodule](20260908/20260908-234210_seventeen-reds-one-submodule.kyri) | red ceiling 30 to 10 |
 | `20260908.233724` | [A message read mid-rebase](20260908/20260908-233724_a-message-read-mid-rebase.kyri) | `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's |
 | `20260908.232329` | [A third column](20260908/20260908-232329_a-third-column.kyri) | hung told from red; 82 choirs made to run; unreached 750 to 643 |
+| `20260908.231838` | [The one form a script may fix](20260908/20260908-231838_the-one-form-a-script-may-fix.kyri) | U+2212 named by the table, 1,164 swept from Rye comments |
 | `20260908.230903` | [The tier's clock reads the pier](20260908/20260908-230903_the-tiers-clock-reads-the-pier.kyri) | wall over-reads CPU 24%; the run card carries both |
 | `20260908.230317` | [A flag that never returns](20260908/20260908-230317_a-flag-that-never-returns.kyri) | a documented flag that hangs, on a page four instruments graded healthy |
 | `20260908.223755` | [a proof nobody named after it](20260908/20260908-223755_a-proof-nobody-named-after-it.kyri) | The convergence census could only see evidence named after its subject. |

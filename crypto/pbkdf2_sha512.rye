@@ -55,7 +55,7 @@ pub const max_salt_bytes: u32 = hmac.max_message_bytes - 4;
 /// 2048, modern password stores hundreds of thousands) so the loop that iterates the PRF cites a maximum rather than trusting a caller.
 pub const max_iterations: u32 = 1 << 24;
 
-/// The largest derived key one call yields. PBKDF2's theoretical ceiling is (2^32 − 1)-hLen; this names a practical bound so the block
+/// The largest derived key one call yields. PBKDF2's theoretical ceiling is (2^32 - 1)-hLen; this names a practical bound so the block
 /// index stays far below 2^32 and the output buffer cites a maximum. Real derived keys -- a 64-byte BIP-39 seed, a 32-byte session key --
 /// sit far below 4096 bytes.
 pub const max_dk_bytes: u32 = 1 << 12;

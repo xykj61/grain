@@ -9,7 +9,7 @@ alwaysApply: true
 
 Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- ITINERARY.md silently triple-encoded into 2,797 runs of mojibake before it was caught (REDS %83).
 
-Substitute: em/en-dash -> `--`/`-`; middot -> `-`/`,`/`;`; curly quotes -> straight `'`/`"`; arrows -> `->`/`<-`/`<->`; ellipsis -> `...`; Greek/subscripts in prose -> spelled (`gamma_2`, `sigma`).
+Substitute: em/en-dash -> `--`/`-`; middot -> `-`/`,`/`;`; curly quotes -> straight `'`/`"`; arrows -> `->`/`<-`/`<->`; ellipsis -> `...`; typographic minus (U+2212) -> `-`; Greek/subscripts in prose -> spelled (`gamma_2`, `sigma`).
 
 **Exception:** an explicitly-named set of work rounds where non-ASCII is the point (a Unicode module's fixtures, an i18n surface, a font codec's glyph tables). Name it in the round; keep it out of the operator card, commit subjects, and general prose.
 

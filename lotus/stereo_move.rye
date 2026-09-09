@@ -127,7 +127,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &r0)) return error.InverseRightWrong;
     }
 
-    // 4a. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a span past the samples and a dest past len − count.
+    // 4a. THE ATOMICITY LAW -- a refusal leaves BOTH channels byte for byte untouched and still balanced, proven for a span past the samples and a dest past len - count.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 1, 2, 3 }, &[_]i16{ 4, 5, 6 });

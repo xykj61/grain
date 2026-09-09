@@ -83,7 +83,7 @@ pub const KeyGenError = error{
 };
 
 /// prf_fill -- FIPS 203's PRF_eta: SHAKE256(sigma ‖ nonce) squeezed to 64-eta bytes, the byte block SamplePolyCBD draws a noise polynomial from. One
-/// nonce byte separates each of the 2k draws (s over nonces 0..k−1, e over nonces k..2k−1), exactly as Zig's Poly.noise appends its nonce suffix.
+/// nonce byte separates each of the 2k draws (s over nonces 0..k-1, e over nonces k..2k-1), exactly as Zig's Poly.noise appends its nonce suffix.
 fn prf_fill(sigma: *const [seed_half_bytes]u8, nonce: u8, out: []u8) KeyGenError!void {
     // invariant (precondition): the output is exactly 64-eta bytes for eta in {2, 3} -- the only widths SamplePolyCBD accepts.
     assert(out.len == 64 * sample.eta_min or out.len == 64 * sample.eta_max);
@@ -139,7 +139,7 @@ pub fn keygen(comptime k: u32, comptime eta1: u32, d: *const [seed_half_bytes]u8
     // ŝ[j] = NTT(SamplePolyCBD(PRF(sigma, j), eta1)) -- the secret vector, in the NTT domain.
     var s_hat: [max_k]ring.Poly = undefined;
     i = 0;
-    // invariant (bound): exactly k secret polynomials, nonces 0..k−1.
+    // invariant (bound): exactly k secret polynomials, nonces 0..k-1.
     while (i < k) : (i += 1) {
         var prf: [64 * 3]u8 = undefined;
         const plen: u32 = 64 * eta1;
@@ -148,7 +148,7 @@ pub fn keygen(comptime k: u32, comptime eta1: u32, d: *const [seed_half_bytes]u8
         s_hat[i] = ring.ntt(&s_poly);
     }
 
-    // ê[i] = NTT(SamplePolyCBD(PRF(sigma, k + i), eta1)) -- the error vector, in the NTT domain, nonces k..2k−1.
+    // ê[i] = NTT(SamplePolyCBD(PRF(sigma, k + i), eta1)) -- the error vector, in the NTT domain, nonces k..2k-1.
     var e_hat: [max_k]ring.Poly = undefined;
     i = 0;
     // invariant (bound): exactly k error polynomials, one per row.

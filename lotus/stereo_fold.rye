@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
     }
 
     // 3b. THE PER-CHANNEL NONLINEAR LAW, the ratio COLLAPSES BY REFLECTION -- a 1:2 master (right twice left) folded through a ceiling does NOT keep its 1:2 ratio, because a fold is nonlinear and reflecting:
-    //     1000 sits below the 1500 ceiling and passes clean, while 2000's excess reflects to 3000 − 2000 = 1000, so both channels land on 1000 -- the ratio collapsed to 1:1, and NEITHER is at the ceiling
+    //     1000 sits below the 1500 ceiling and passes clean, while 2000's excess reflects to 3000 - 2000 = 1000, so both channels land on 1000 -- the ratio collapsed to 1:1, and NEITHER is at the ceiling
     //     (the honest contrast with ALES132's hard drive, which would have PINNED both to the ceiling).
     {
         var sc = pan.StereoClip{};
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         try drive.drive(&pinned.right, 0, 2, 1, 1, 1500);
         // below the ceiling they agree (900 passes both ways).
         if (folded.left.samples()[0] != pinned.left.samples()[0]) return error.BelowCeilDisagree;
-        // above the ceiling they diverge: fold reflects 1600 to 3000 − 1600 = 1400 (below the ceiling), drive pins it to 1500.
+        // above the ceiling they diverge: fold reflects 1600 to 3000 - 1600 = 1400 (below the ceiling), drive pins it to 1500.
         if (folded.left.samples()[1] != 1400) return error.FoldReflectWrong;
         if (pinned.left.samples()[1] != 1500) return error.DrivePinWrong;
         if (folded.left.samples()[1] >= 1500) return error.FoldNotBelowCeil; // reflection lands strictly below the ceiling

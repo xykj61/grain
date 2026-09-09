@@ -1,13 +1,13 @@
 //! lotus/stereo_rectify.rye -- ALES138: the full-wave rectifier carried into stereo, ONE SHARED FOLD AT ZERO, the EVEN corner of the stereo NONLINEAR class. ALES84 named `rectify` -- y = |x|, the plainest even
 //! generator: fold the whole negative half of the wave up onto the positive side, turning a symmetric wave into a one-sided, DC-heavy signal at DOUBLE the frequency (the diode bridge, the octave-up fuzz). Where
 //! ALES132-ALES137 shape or hold a wave through ODD and NOT-ODD maps -- the hard clip, soft clip, wavefold, tube, bit-crush, decimator -- the rectifier is the complement: it takes the ABSOLUTE VALUE, the purest
-//! EVEN map, |−x| = |x|. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the rectifier into stereo
+//! EVEN map, |-x| = |x|. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. This rung carries the rectifier into stereo
 //! the plain way: run ALES84's proven mono `rectify` on each channel over the SAME span, so one fold at zero lands on BOTH speakers together.
 //!
 //! The rectifier is the STRONGEST image-break in the class -- the honest opposite of the decimator (ALES137). The decimator copies an anchor and so PRESERVED the stereo image; crush and tube (ALES135/136)
 //! computed new values and BROKE the antisymmetry; the rectifier, an EVEN map, COLLAPSES it. An out-of-phase master (right the exact negation of left) rectified through the same fold comes back with
-//! right = |−left| = |left| = left: the two channels become IDENTICAL, the stereo image folded down to mono on the magnitude. That is not a bug to design around; it is the full-wave rectifier's whole point read
-//! in the stereo field -- the even map lands +a and −a on the same a, so an antisymmetric stereo pair lands on one signal. Yet the RATIO holds: |2x| = 2|x|, so a 1:2 master keeps its 1:2 ratio (both sides
+//! right = |-left| = |left| = left: the two channels become IDENTICAL, the stereo image folded down to mono on the magnitude. That is not a bug to design around; it is the full-wave rectifier's whole point read
+//! in the stereo field -- the even map lands +a and -a on the same a, so an antisymmetric stereo pair lands on one signal. Yet the RATIO holds: |2x| = 2|x|, so a 1:2 master keeps its 1:2 ratio (both sides
 //! non-negative after), and an identical-channel master stays identical.
 //!
 //! The rule, stated once: the mono rectifier carries NO gain, NO ceiling, and NO resolution -- an absolute value has no parameter that could be illegal -- so this is the PLAINEST lift in the whole class, naming
@@ -16,7 +16,7 @@
 //!
 //! The crux -- four laws. THE STEREO RECTIFY LAW: each channel equals ALES84's mono `rectify` over the same span byte for byte -- every output is |x| pinned to the rail (sample_min's magnitude 32768 saturating to
 //! sample_max, the one place |x| leaves the i16 rail). THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a rectify writes values only). THE IMAGE-COLLAPSE LAW:
-//! because |x| is an EVEN map, an out-of-phase master (right = −left) comes back with IDENTICAL channels (right = |−left| = |left| = left), the antisymmetry collapsed to mono rather than merely broken; yet the
+//! because |x| is an EVEN map, an out-of-phase master (right = -left) comes back with IDENTICAL channels (right = |-left| = |left| = left), the antisymmetry collapsed to mono rather than merely broken; yet the
 //! ratio holds (|2x| = 2|x|, a 1:2 master keeping its ratio), an identical-channel master stays identical, every output on both channels is NON-NEGATIVE, and the map is idempotent (twice equals once). THE
 //! ATOMICITY / DEGENERATE LAW: a refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
@@ -68,7 +68,7 @@ pub fn stereo_rectify(sc: *pan.StereoClip, start: u32, count: u32) StereoRectify
 }
 
 // --- selftest: THE STEREO RECTIFY LAW -- each channel equals ALES84's mono rectify over the same span byte for byte; THE BALANCE / LENGTH LAW -- left.len == right.len after, both holding their starting length;
-//     THE IMAGE-COLLAPSE LAW -- an OUT-OF-PHASE master (right = −left) comes back with IDENTICAL channels (the even map collapses antisymmetry to mono), yet a 1:2 master KEEPS its ratio, an identical-channel
+//     THE IMAGE-COLLAPSE LAW -- an OUT-OF-PHASE master (right = -left) comes back with IDENTICAL channels (the even map collapses antisymmetry to mono), yet a 1:2 master KEEPS its ratio, an identical-channel
 //     master stays identical, every output NON-NEGATIVE on both, the map idempotent; THE ATOMICITY / DEGENERATE LAW -- a refusal leaves both channels untouched and balanced, count = 0 the identity ----
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -100,7 +100,7 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: |−300|=300, |300|=300, |−32768|=32767 (saturated), |−2000|=2000 / |100|=100, |−50|=50, |−32767|=32767, |2500|=2500.
+        // by hand: |-300|=300, |300|=300, |-32768|=32767 (saturated), |-2000|=2000 / |100|=100, |-50|=50, |-32767|=32767, |2500|=2500.
         if (!eq(sc.left.samples(), &[_]i16{ 300, 300, 32767, 2000 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 100, 50, 32767, 2500 })) return error.RightHandWrong;
     }
@@ -114,8 +114,8 @@ fn run_selftest() !u8 {
         if (sc.left.len != 5) return error.LengthChanged;
     }
 
-    // 3a. THE IMAGE-COLLAPSE LAW -- an OUT-OF-PHASE master (right the exact negation of left) rectified through the same fold comes back with IDENTICAL channels, because the even map lands +a and −a on the same a:
-    //     right[i] = |−left[i]| = |left[i]| = left[i] (after both are non-negative). The antisymmetry is not merely broken (crush/tube) but COLLAPSED to mono -- the honest opposite of the decimator, which preserved
+    // 3a. THE IMAGE-COLLAPSE LAW -- an OUT-OF-PHASE master (right the exact negation of left) rectified through the same fold comes back with IDENTICAL channels, because the even map lands +a and -a on the same a:
+    //     right[i] = |-left[i]| = |left[i]| = left[i] (after both are non-negative). The antisymmetry is not merely broken (crush/tube) but COLLAPSED to mono -- the honest opposite of the decimator, which preserved
     //     the image.
     {
         var sc = pan.StereoClip{};

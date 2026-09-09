@@ -63,7 +63,7 @@ pub const TrialBalance = struct {
     }
 };
 
-/// P&L projection -- revenue and expense as positive magnitudes; net = revenue − expense.
+/// P&L projection -- revenue and expense as positive magnitudes; net = revenue - expense.
 pub const IncomeStatement = struct {
     revenue: i64,
     expense: i64,

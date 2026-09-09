@@ -6,8 +6,8 @@
 //!
 //! The decimator is the HONEST REVERSE of the two not-odd members (ALES135 tube, ALES136 crush). Crush and tube compute NEW values, so they broke the inter-channel image; the decimator computes NO new number
 //! at all -- it COPIES an anchor across its run. Both channels share the same run grid (the same start and hold), so at each time index each channel holds ITS OWN anchor, and the stereo image at that index
-//! equals the image that was at the run's anchor. The inter-channel relationship is therefore PRESERVED from the anchor -- an out-of-phase master STAYS out of phase (right = −left holds through, since
-//! right[i] = right[anchor] = −left[anchor] = −left[i]), a 1:2 master keeps its ratio at each held index, an identical-channel master stays identical -- smeared in time, never split across channels. That is the
+//! equals the image that was at the run's anchor. The inter-channel relationship is therefore PRESERVED from the anchor -- an out-of-phase master STAYS out of phase (right = -left holds through, since
+//! right[i] = right[anchor] = -left[anchor] = -left[i]), a 1:2 master keeps its ratio at each held index, an identical-channel master stays identical -- smeared in time, never split across channels. That is the
 //! honest contrast the not-odd members lack, stated positively.
 //!
 //! The rule, stated once: the mono decimator carries NO pre-gain and NO grid -- a pure time map, the crush's twin. Refuse BadHold (a hold outside [1, max_clip]) and BadRange (a span outside the samples) BEFORE
@@ -128,7 +128,7 @@ fn run_selftest() !u8 {
     }
 
     // 3a. THE SHARED-GRID IMAGE LAW, the ANTISYMMETRY HOLDS -- an out-of-phase master (right the exact negation of left) decimated through the same run grid STAYS out of phase, because the decimator copies each
-    //     channel's own anchor at the same time index: right[i] = right[anchor] = −left[anchor] = −left[i]. This is the HONEST REVERSE of ALES135/136 (the not-odd members that broke the antisymmetry) -- the
+    //     channel's own anchor at the same time index: right[i] = right[anchor] = -left[anchor] = -left[i]. This is the HONEST REVERSE of ALES135/136 (the not-odd members that broke the antisymmetry) -- the
     //     decimator computes no new value, so it preserves the image.
     {
         var sc = pan.StereoClip{};

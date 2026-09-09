@@ -35,7 +35,7 @@
 //! and its balance invariant; lotus/timeline.rye (ALES2) -- the Clip, its buf/len/samples, sample_min/max.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL. Two bounded in-process i16 Clips (left, right) on one bench, siloed to lotus/. It changes sample VALUES only through ALES92's own schmitt, each output one of two rails
-//! (−sample_max, sample_max), never a length; the shape is a static two-threshold hysteresis band over instantaneous sample amplitude carrying one bit of rail state per channel, with no time constant and no debounce
+//! (-sample_max, sample_max), never a length; the shape is a static two-threshold hysteresis band over instantaneous sample amplitude carrying one bit of rail state per channel, with no time constant and no debounce
 //! interval (the band is over amplitude, not time -- a timed debounce is a later rung). No saturate is owed -- every output is a legal i16 by construction. No real sample rate, no network, no keys, no funds, no real
 //! device, no real speaker.
 //!
@@ -57,7 +57,7 @@ pub const StereoSchmittError = schmitt.SchmittError;
 
 /// Schmitt-trigger `[start, start+count)` in BOTH channels of `sc` with the same band, each channel FROM SILENCE (its own low rail), running ALES92's proven mono `schmitt`. On each channel, a sample at or above `t_high`
 /// flips the rail high, a sample at or below `t_low` flips it low, and a sample strictly between holds it -- the hysteresis, the band [t_low, t_high] a dead zone the noise cannot rattle. The output is +sample_max on the
-/// high rail and −sample_max on the low, so no saturate is owed. Validates the shared band and length ONCE against ALES92's own `precheck` before either channel is mutated -- because both channels are balanced, one check
+/// high rail and -sample_max on the low, so no saturate is owed. Validates the shared band and length ONCE against ALES92's own `precheck` before either channel is mutated -- because both channels are balanced, one check
 /// covers both -- so a refusal never triggers one channel and leaves the other whole: refuses `BadThreshold` / `BadRange`, both channels untouched. Values only -- never the length; the two channels leave balanced.
 pub fn stereo_schmitt(sc: *pan.StereoClip, start: u32, count: u32, t_low: i32, t_high: i32) StereoSchmittError!void {
     // invariant: the two channels enter balanced -- the defining StereoClip invariant, the ground the edit preserves.
@@ -161,9 +161,9 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand, band [−500,500] from silence (low): left 100 hold L; 700≥500 high M; −200 hold M; 800 hold M; −900≤−500 low L; 300 hold L; 1200 high M; −1300 low L; 50 hold L.
+        // by hand, band [-500,500] from silence (low): left 100 hold L; 700≥500 high M; -200 hold M; 800 hold M; -900≤-500 low L; 300 hold L; 1200 high M; -1300 low L; 50 hold L.
         if (!eq(sc.left.samples(), &[_]i16{ L, M, M, M, L, L, M, L, L })) return error.LeftHandWrong;
-        // right −1500 low L; 900 high M; −300 hold M; 1600 hold M; −100 hold M; 400 hold M; −1700 low L; 200 hold L; 1550 high M.
+        // right -1500 low L; 900 high M; -300 hold M; 1600 hold M; -100 hold M; 400 hold M; -1700 low L; 200 hold L; 1550 high M.
         if (!eq(sc.right.samples(), &[_]i16{ L, M, M, M, M, M, L, L, M })) return error.RightHandWrong;
     }
 
@@ -191,7 +191,7 @@ fn run_selftest() !u8 {
     }
 
     // 3b. THE INDEPENDENT-RAIL LAW, the honest PARTING from the memoryless family -- an out-of-phase master (right the exact negation of left) is NOT held out of phase, because the from-silence convention opens BOTH
-    //     channels on the LOW rail, so the map is not odd about the band. Where the three memoryless clips (ALES141-143) held right = −left, this state-carrying member remembers each channel's own crossing history from the
+    //     channels on the LOW rail, so the map is not odd about the band. Where the three memoryless clips (ALES141-143) held right = -left, this state-carrying member remembers each channel's own crossing history from the
     //     shared low start. Proven positively: identical low starts, so the two channels agree at the first in-band sample rather than negating.
     {
         var sc = pan.StereoClip{};
@@ -199,10 +199,10 @@ fn run_selftest() !u8 {
         try stereo_schmitt(&sc, 0, 3, -1000, 1000);
         const l = sc.left.samples();
         const r = sc.right.samples();
-        // by hand from silence (low): left 0 hold L; 1000≥t_high high M; 500 hold M -> {L,M,M}. right 0 hold L; −1000≤t_low low L (already low); −500 hold L -> {L,L,L}.
+        // by hand from silence (low): left 0 hold L; 1000≥t_high high M; 500 hold M -> {L,M,M}. right 0 hold L; -1000≤t_low low L (already low); -500 hold L -> {L,L,L}.
         if (!eq(l, &[_]i16{ L, M, M })) return error.PartingLeftWrong;
         if (!eq(r, &[_]i16{ L, L, L })) return error.PartingRightWrong;
-        // the antisymmetry the memoryless family held does NOT hold here: at index 0 both channels open on the SAME low rail (right = −left would demand r[0] = −l[0] = M, yet r[0] = L). Stated as the positive fact --
+        // the antisymmetry the memoryless family held does NOT hold here: at index 0 both channels open on the SAME low rail (right = -left would demand r[0] = -l[0] = M, yet r[0] = L). Stated as the positive fact --
         // both channels remember the same low start, the state-carrying signature that parts from the memoryless odd map.
         if (r[0] != l[0]) return error.LowStartNotShared; // both open low, not negated
         if (@as(i32, r[0]) == -@as(i32, l[0])) return error.OddAntisymmetryHeldWrongly; // −l[0] = −L = M ≠ L = r[0]: the odd relation is broken at the shared low start
@@ -222,7 +222,7 @@ fn run_selftest() !u8 {
         if (r[1] != L) return error.RightRailNotHeld; // right holds low
     }
 
-    // 3d. THE ZERO-WIDTH BAND is the plain comparator on both channels -- t_low = t_high = 0 reduces to a memoryless sign comparator away from exact zero, on each speaker (x > 0 -> +max, x < 0 -> −max).
+    // 3d. THE ZERO-WIDTH BAND is the plain comparator on both channels -- t_low = t_high = 0 reduces to a memoryless sign comparator away from exact zero, on each speaker (x > 0 -> +max, x < 0 -> -max).
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 5, -5, 3, -3, 100 }, &[_]i16{ -7, 8, -2, 90, -90 });

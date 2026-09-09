@@ -9,7 +9,7 @@
 //! at every sample is untouched -- even when c(k) turns negative and flips both signs together, the ratio holds. Like the tremolo and unlike a delay-line modulation, every output depends only on ITS OWN input sample, so a stereo ring
 //! modulator writes IN PLACE WITH NO SNAPSHOT -- the thinnest modulation discipline, carried whole.
 //!
-//! The one honest subtlety the tremolo never met carries too: the two's-complement i16 rail is ASYMMETRIC (sample_min = −32768), so a carrier at −unity on a full-negative sample lands +32768, one past sample_max, and ALES75's one
+//! The one honest subtlety the tremolo never met carries too: the two's-complement i16 rail is ASYMMETRIC (sample_min = -32768), so a carrier at -unity on a full-negative sample lands +32768, one past sample_max, and ALES75's one
 //! true saturate clamps that lone corner to 32767 rather than wrapping -- per channel. The carrier's unit magnitude bound holds, so |y| ≤ |x| everywhere but that single corner, on both channels.
 //!
 //! The rule, stated once: refuse BadPeriod (a period not a positive multiple of four, or wider than max_clip), BadDepth (a negative depth), BadCarrier (a swing past unity in EITHER direction), and BadRange (a span past the shared

@@ -13,13 +13,13 @@
 //! GREEN) - crypto/ed25519_scalar.rye (the sibling scalar field mod L). secp256k1 is not in Monocypher, so its source parity is not a rung here;
 //! the reference known-answers plus Zig's independent std.crypto.ecc.Secp256k1.scalar are the two witnesses.
 //!
-//! THE CRUX -- the group order n, in the SEC 2 closed form, is n = 2^256 − δ with δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf. n is BUILT from
+//! THE CRUX -- the group order n, in the SEC 2 closed form, is n = 2^256 - δ with δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf. n is BUILT from
 //! that defining form -- δ's sub-2^128 remainder carried as a u128, the 2^128 bit placed by a limb, subtracted from 2^256 -- never pasted as a limb
 //! pattern, the same discipline ed25519_scalar.rye keeps for L. reduce folds a 64-byte little-endian value modulo n by bytewise Horner from the
 //! most significant byte down, keeping the running residue below n by a run of subtractions proven to number fewer than 256 per byte (with the
 //! residue below n, acc-256 + byte < 256-n). mul is reduce over a wide product: a schoolbook 256×256->512-bit multiply into eight 64-bit limbs,
 //! serialized to 64 little-endian bytes, then folded by the same reduce -- no new modular machinery. invert is a⁻¹ mod n by Fermat's little
-//! theorem, a^(n−2) mod n, via left-to-right binary exponentiation over the 256 bits of the fixed exponent n−2, a named 256-round bound with
+//! theorem, a^(n-2) mod n, via left-to-right binary exponentiation over the 256 bits of the fixed exponent n-2, a named 256-round bound with
 //! every step a mul. is_canonical is the same limbwise comparison reduce runs, without the arithmetic.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. A scalar is an integer, not a secret and not a
@@ -48,7 +48,7 @@ pub const wide_bytes: u32 = 64;
 /// terminate.
 pub const max_reduce_subtractions: u32 = 256;
 
-/// The number of bits the Fermat exponentiation walks -- a full 256-bit exponent n−2. Named so the ladder bound is a stated constant.
+/// The number of bits the Fermat exponentiation walks -- a full 256-bit exponent n-2. Named so the ladder bound is a stated constant.
 pub const exponent_bits: u32 = 256;
 
 /// True when the 320-bit little-endian value a is greater than or equal to b, compared limb by limb from the most significant down.
@@ -61,7 +61,7 @@ fn ge5(a: [5]u64, b: [5]u64) bool {
     return true; // exactly equal
 }
 
-/// The little-endian difference a − b for a ≥ b, across five 64-bit limbs with a borrow. Callers subtract only when ge5 already holds, so no
+/// The little-endian difference a - b for a ≥ b, across five 64-bit limbs with a borrow. Callers subtract only when ge5 already holds, so no
 /// underflow escapes the width.
 fn sub5(a: [5]u64, b: [5]u64) [5]u64 {
     // invariant: subtraction is called only when a ≥ b, so the final borrow is zero (asserted below).
@@ -84,7 +84,7 @@ fn sub5(a: [5]u64, b: [5]u64) [5]u64 {
     return r;
 }
 
-/// The group order n = 2^256 − δ, δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf (secp256k1 / SEC 2), as five little-endian 64-bit limbs (the
+/// The group order n = 2^256 - δ, δ = 2^128 + 0x4551231950b75fc4402da1732fc9bebf (secp256k1 / SEC 2), as five little-endian 64-bit limbs (the
 /// fifth limb is zero -- n is a 256-bit number). δ's sub-2^128 remainder is carried as a u128 and split into the low two limbs; the 2^128 bit is
 /// placed as the third limb; n is then 2^256 minus that δ. Derived from n's defining form in our own arithmetic, never copied as a limb pattern.
 fn order_n() [5]u64 {
@@ -206,11 +206,11 @@ pub fn mul(a: *const [32]u8, b: *const [32]u8) [32]u8 {
     return reduce(&w);
 }
 
-/// The fixed exponent n − 2, as a 32-byte little-endian scalar -- the power Fermat's little theorem raises a to for a⁻¹ mod n. n's low byte is
+/// The fixed exponent n - 2, as a 32-byte little-endian scalar -- the power Fermat's little theorem raises a to for a⁻¹ mod n. n's low byte is
 /// 0x41, so subtracting 2 touches only the least byte with no borrow; the exponent is derived from our own order_n, never pasted.
 fn exponent_n_minus_2() [32]u8 {
     var e = store32(order_n());
-    // invariant: n's least byte is 0x41 (≥ 2), so n − 2 borrows nowhere above the low byte.
+    // invariant: n's least byte is 0x41 (≥ 2), so n - 2 borrows nowhere above the low byte.
     assert(e[0] == 0x41);
     e[0] -= 2;
     return e;
@@ -223,8 +223,8 @@ fn bit_at(s: *const [32]u8, i: u32) u1 {
     return @intCast((s[i >> 3] >> @intCast(i & 7)) & 1);
 }
 
-/// The modular inverse a⁻¹ mod n by Fermat's little theorem: a^(n−2) mod n, computed by left-to-right binary exponentiation over the 256 bits of
-/// n − 2, squaring the accumulator at every bit and multiplying by a where the bit is set. A named 256-round bound; every step is a mul mod n.
+/// The modular inverse a⁻¹ mod n by Fermat's little theorem: a^(n-2) mod n, computed by left-to-right binary exponentiation over the 256 bits of
+/// n - 2, squaring the accumulator at every bit and multiplying by a where the bit is set. A named 256-round bound; every step is a mul mod n.
 /// Correct for any non-zero canonical a; invert(0) returns 0 (0 has no inverse), matching the reference.
 pub fn invert(a: *const [32]u8) [32]u8 {
     // invariant: inversion takes a canonical operand below n.
@@ -248,7 +248,7 @@ pub fn invert(a: *const [32]u8) [32]u8 {
     return r;
 }
 
-/// True when a 32-byte encoding is already the canonical scalar below n. ECDSA refuses an r or s not in [1, n−1]; this is the below-n half of that
+/// True when a 32-byte encoding is already the canonical scalar below n. ECDSA refuses an r or s not in [1, n-1]; this is the below-n half of that
 /// check, the same limbwise comparison reduce runs, without the arithmetic.
 pub fn is_canonical(s: *const [32]u8) bool {
     return !ge5(load32(s), order_n());
@@ -292,7 +292,7 @@ fn scalar_bytes_seed(seed: u8) [32]u8 {
     var i: u32 = 0;
     while (i < scalar_bytes) : (i += 1) s[i] = @truncate(@as(u32, i) *% (@as(u32, seed) | 1) +% @as(u32, seed) +% 5);
     if (seed & 1 == 1) {
-        // Odd seed: all-ones is 2^256 − 1, strictly above n -- non-canonical, whatever a generator would have placed.
+        // Odd seed: all-ones is 2^256 - 1, strictly above n -- non-canonical, whatever a generator would have placed.
         var j: u32 = 0;
         while (j < 32) : (j += 1) s[j] = 0xff;
     } else {

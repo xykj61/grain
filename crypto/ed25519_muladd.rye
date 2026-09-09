@@ -15,7 +15,7 @@
 //! public mathematics of RFC 8032 and Monocypher's public API (.claude/rules/gratitude-licenses.md).
 //!
 //! THE CRUX -- a full-precision multiply, then the GREEN reduce. Two 32-byte scalars a and b are each below 2^256, so their product a-b is below
-//! 2^512, and adding a third scalar c below 2^256 keeps a-b + c below 2^512 − 2^256 < 2^512 (max: (2^256−1)² + (2^256−1) = 2^512 − 2^256). The
+//! 2^512, and adding a third scalar c below 2^256 keeps a-b + c below 2^512 - 2^256 < 2^512 (max: (2^256-1)² + (2^256-1) = 2^512 - 2^256). The
 //! whole sum therefore fits EXACTLY in 64 little-endian bytes with nothing carried past the top -- a proven width, asserted, not hoped. The 512-bit
 //! product is formed by bytewise schoolbook: 32-32 byte-products accumulate into 64 column sums (each sum bounded well below 2^64), the third
 //! scalar folds into the low 32 columns, then one carry-propagation pass settles the columns into bytes. That 64-byte value goes straight into the

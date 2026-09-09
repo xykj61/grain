@@ -13,17 +13,17 @@
 //! own composition, studied clean-room from the public mathematics of twisted Edwards curves and RFC 8032 (.claude/rules/gratitude-licenses.md).
 //!
 //! THE CRUX -- a 32-byte encoding carries the whole y coordinate in its low 255 bits and the sign (low bit) of x in the top bit (RFC 8032
-//! §5.1.2). To recover x from y (RFC 8032 §5.1.3): the curve equation gives x² = (y² − 1)/(d-y² + 1), so with u = y² − 1 and v = d-y² + 1 the
-//! candidate root is x = (u-v)^((p−5)/8)-u, the standard division-free square-root form. Squaring back, v-x² is either u (the root is
-//! right), or −u (multiply x by √−1 = 2^((p−1)/4)), or neither (the encoding names no curve point, and decode refuses). Finally, if the low
-//! bit of x disagrees with the encoded sign, negate x. The curve constant d = −121665/121666 and √−1 are both derived in our own field
+//! §5.1.2). To recover x from y (RFC 8032 §5.1.3): the curve equation gives x² = (y² - 1)/(d-y² + 1), so with u = y² - 1 and v = d-y² + 1 the
+//! candidate root is x = (u-v)^((p-5)/8)-u, the standard division-free square-root form. Squaring back, v-x² is either u (the root is
+//! right), or -u (multiply x by √-1 = 2^((p-1)/4)), or neither (the encoding names no curve point, and decode refuses). Finally, if the low
+//! bit of x disagrees with the encoded sign, negate x. The curve constant d = -121665/121666 and √-1 are both derived in our own field
 //! arithmetic, never copied literals. Nothing here is a claim about a device; it is arithmetic anyone can replay against RFC 8032.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL, no network, no funds, no real device, no identity. Decoding a public encoding into a point is
 //! arithmetic, not a secret and not a signature: this file holds no key and calls no std.crypto in the primitive. The exponentiations here
 //! run a fixed ladder over public data (an encoding is public), so they are data-independent by construction; the whole-signature
 //! constant-time posture stays the same named horizon the Chapter carries. Parity is proven at selftest against two references runnable now --
-//! an algebraic identity anyone can check (√−1 squared is −1) and a round-trip through the GREEN compression (decode then compress returns
+//! an algebraic identity anyone can check (√-1 squared is -1) and a round-trip through the GREEN compression (decode then compress returns
 //! the original encoding) -- and Zig's own std.crypto.ecc.Edwards25519.fromBytes as an independent implementation, matched byte-for-byte on
 //! the recovered coordinates over the base point and its multiples, and matched in accept/reject verdict across a spread of encodings
 //! including ones that name no curve point. Monocypher-source parity stays the same held-fetch horizon the other primitives carry.
@@ -39,7 +39,7 @@ const pt = @import("ed25519_group.rye");
 
 pub const ed25519_decode_version = "20260815.200500";
 
-/// The one way decode can refuse: the 32-byte encoding names no point on edwards25519 (v-x² is neither u nor −u). A named error, surfaced
+/// The one way decode can refuse: the 32-byte encoding names no point on edwards25519 (v-x² is neither u nor -u). A named error, surfaced
 /// before any point is returned, exactly as verify-before-trust wants.
 pub const DecodeError = error{NotOnCurve};
 
@@ -48,7 +48,7 @@ fn fe_one() fe.Field {
     return fe.Field{ .l = .{ 1, 0, 0, 0, 0 } };
 }
 
-/// Negate a field element -- 0 − a.
+/// Negate a field element -- 0 - a.
 fn fe_neg(a: fe.Field) fe.Field {
     return fe.sub(fe.Field{ .l = .{ 0, 0, 0, 0, 0 } }, a);
 }
@@ -67,7 +67,7 @@ fn fe_eq(a: fe.Field, b: fe.Field) bool {
     return fe_is_zero(fe.sub(a, b));
 }
 
-/// The curve constant d = −121665/121666 (mod p), computed in our own field arithmetic so no borrowed literal enters the tree. Decode needs
+/// The curve constant d = -121665/121666 (mod p), computed in our own field arithmetic so no borrowed literal enters the tree. Decode needs
 /// d itself (the group law needed 2d); one small numerator, one small denominator, both canonical before the inverse.
 fn edwards_d() fe.Field {
     const num = fe.Field{ .l = .{ 121665, 0, 0, 0, 0 } };
@@ -78,7 +78,7 @@ fn edwards_d() fe.Field {
 }
 
 /// Raise a field element to a fixed 256-bit little-endian exponent by square-and-multiply, most significant bit first. The two exponents
-/// decode needs -- (p−5)/8 for the square-root candidate and (p−1)/4 for √−1 -- are both public constants of the field, so this ladder is a
+/// decode needs -- (p-5)/8 for the square-root candidate and (p-1)/4 for √-1 -- are both public constants of the field, so this ladder is a
 /// fixed, data-independent sequence.
 fn fe_pow(a: fe.Field, e: *const [32]u8) fe.Field {
     // invariant: the ladder walks a fixed 256 bits -- the bound is a named width, not an open loop.
@@ -95,7 +95,7 @@ fn fe_pow(a: fe.Field, e: *const [32]u8) fe.Field {
     return r;
 }
 
-/// The exponent (p − 5)/8 = 2^252 − 3, little-endian: the square-root candidate exponent. Derived by hand from p = 2^255 − 19 (bit 1 clear,
+/// The exponent (p - 5)/8 = 2^252 - 3, little-endian: the square-root candidate exponent. Derived by hand from p = 2^255 - 19 (bit 1 clear,
 /// every other bit up to 251 set), so no borrowed limb pattern enters the tree.
 fn exp_p58() [32]u8 {
     var e = [_]u8{0xff} ** 32;
@@ -106,7 +106,7 @@ fn exp_p58() [32]u8 {
     return e;
 }
 
-/// The exponent (p − 1)/4 = 2^253 − 5, little-endian: the exponent whose base-2 power is √−1. Derived by hand from p = 2^255 − 19.
+/// The exponent (p - 1)/4 = 2^253 - 5, little-endian: the exponent whose base-2 power is √-1. Derived by hand from p = 2^255 - 19.
 fn exp_p14() [32]u8 {
     var e = [_]u8{0xff} ** 32;
     e[0] = 0xfb; // bit 2 cleared: …11111011
@@ -114,7 +114,7 @@ fn exp_p14() [32]u8 {
     return e;
 }
 
-/// √−1 in the field: 2^((p−1)/4) mod p, the square root of −1 the decode uses to pick the correct root branch. Derived, never a literal.
+/// √-1 in the field: 2^((p-1)/4) mod p, the square root of -1 the decode uses to pick the correct root branch. Derived, never a literal.
 fn sqrt_m1() fe.Field {
     const two = fe.Field{ .l = .{ 2, 0, 0, 0, 0 } };
     return fe_pow(two, &exp_p14());
@@ -122,7 +122,7 @@ fn sqrt_m1() fe.Field {
 
 /// Decompress a 32-byte encoding (RFC 8032 §5.1.3) into a full extended-coordinate point, or refuse NotOnCurve. The one inverse of the group
 /// law's compression: it reads y from the low 255 bits and the sign of x from the top bit, recovers x by the standard division-free square
-/// root, corrects the root branch with √−1, and fixes the sign, returning an affine point (Z = 1, T = x-y).
+/// root, corrects the root branch with √-1, and fixes the sign, returning an affine point (Z = 1, T = x-y).
 pub fn decode(s: *const [32]u8) DecodeError!pt.Point {
     var yb = s.*;
     yb[31] &= 0x7f; // y lives in the low 255 bits
@@ -180,7 +180,7 @@ const ZEd = std.crypto.ecc.Edwards25519;
 const ZFe = std.crypto.ecc.Edwards25519.Fe;
 
 fn run_selftest() !u8 {
-    // 1. Algebraic identity anyone can check: √−1 squared is −1.
+    // 1. Algebraic identity anyone can check: √-1 squared is -1.
     {
         if (!fe_eq(fe.square(sqrt_m1()), fe_neg(fe_one()))) return error.SqrtM1Mismatch;
     }

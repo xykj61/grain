@@ -44,7 +44,7 @@ pub const ExpandError = error{
 
 /// Expand `count` samples starting at `start` in place below the magnitude `threshold` by the ratio `ratio_num/ratio_den` (at least
 /// one). A sample at or above the threshold passes byte-for-byte (the expander touches only what falls below); below it, the
-/// deficit threshold − m is multiplied by the ratio and the sample rewritten sign(x)-max(0, threshold − deficit-ratio_num/ratio_den).
+/// deficit threshold - m is multiplied by the ratio and the sample rewritten sign(x)-max(0, threshold - deficit-ratio_num/ratio_den).
 /// This is the exact mirror of the compressor about the threshold: the compressor divides the excess above, the expander widens the
 /// deficit below. After the call every written magnitude is at most the input's (the expander reduces, never boosts) and no sign is
 /// changed; the write is continuous at the threshold (a threshold sample is the identity). Unit ratio is the identity everywhere.
@@ -101,7 +101,7 @@ pub fn expand(
 // --- selftest: silence stays silence; a signal at or above the threshold passes byte-for-byte (the threshold is the identity, the
 //     expander's signature continuity versus the gate's step); UNIT RATIO is the identity everywhere (even below threshold); a quiet
 //     signal has its floor deepened with the sign held and the magnitude never expanding, each below-threshold sample landing at
-//     max(0, thr − deficit-num/den); a HIGHER RATIO expands at least as hard (monotone), a ratio far past the deficit floors the
+//     max(0, thr - deficit-num/den); a HIGHER RATIO expands at least as hard (monotone), a ratio far past the deficit floors the
 //     quiet to silence (the gate within); and a bad threshold, a sub-unity ratio, a zero ratio denominator, and an out-of-range
 //     span each refuse by name --------------------------------------------------------------------------------------------------
 
@@ -140,7 +140,7 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &loud)) return error.ThresholdNotIdentity;
     }
 
-    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE -- ratio_num == ratio_den writes thr − deficit-1 = m byte-for-byte even for samples
+    // 3. UNIT RATIO IS THE IDENTITY EVERYWHERE -- ratio_num == ratio_den writes thr - deficit-1 = m byte-for-byte even for samples
     //    below the threshold. A 1:1 expander passes the whole signal through, guaranteed by construction.
     {
         const quiet = [_]i16{ 300, -300, 5000, -20, 20, -400 };
@@ -151,7 +151,7 @@ fn run_selftest() !u8 {
     }
 
     // 4. THE SIGN IS HELD AND THE MAGNITUDE NEVER EXPANDS -- a signal below the threshold expands so every output magnitude is at
-    //    most the input's, every sign matches, and each below-threshold sample lands exactly at max(0, thr − deficit-num/den).
+    //    most the input's, every sign matches, and each below-threshold sample lands exactly at max(0, thr - deficit-num/den).
     {
         const mixed = [_]i16{ 800, -800, 5000, -600, 200, -9000 };
         var clip = timeline.Clip{};

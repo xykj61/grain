@@ -14,7 +14,7 @@
 //! and the only values written are 0 and the untouched input. The magnitude is taken in i32 because |sample_min| is 32768, one past the positive rail (the
 //! same care the full-wave rectifier owed). The map is MEMORYLESS -- every output depends only on its own input, so the in-place read-then-write touches
 //! nothing another step needs. It is IDEMPOTENT -- a silenced 0 stays 0 and a passed sample stays passed, so center_clip(center_clip(x)) = center_clip(x).
-//! And it is ODD -- |−x| = |x|, so a symmetric input yields a symmetric output: odd harmonics, the same honesty the hard clip carries.
+//! And it is ODD -- |-x| = |x|, so a symmetric input yields a symmetric output: odd harmonics, the same honesty the hard clip carries.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES87.
 //! Design read: active-designing/date/20260814/20260814-215834_fill-ales87-lotus-center-clipper.md
@@ -89,7 +89,7 @@ pub fn center_clip(clip: *timeline.Clip, start: u32, count: u32, thresh: i32) Ce
 
 // --- selftest: A ZERO THRESHOLD IS THE IDENTITY (the degenerate that proves the map adds nothing without a floor); THE QUIET MIDDLE IS SILENCED and THE
 //     LOUD PASS UNCHANGED read by hand; THE THRESHOLD BOUNDARY IS INCLUSIVE (|x| = t silences, |x| = t+1 passes) on both signs; the map is IDEMPOTENT and
-//     ODD (center_clip(−x) = −center_clip(x)); a RAIL THRESHOLD silences all but the deepest sample (sample_min alone clears sample_max); the span
+//     ODD (center_clip(-x) = -center_clip(x)); a RAIL THRESHOLD silences all but the deepest sample (sample_min alone clears sample_max); the span
 //     discipline holds; and each fault -- BadThreshold (negative, over-rail), BadRange (span past the end) -- refuses by name, the clip untouched ---
 
 fn eq(got: []const i16, want: []const i16) bool {
@@ -137,14 +137,14 @@ fn run_selftest() !u8 {
     }
 
     // 4. THE MAP IS IDEMPOTENT AND ODD -- a second center clip changes nothing (a silenced 0 has |0| ≤ t so it stays 0, a passed sample still clears t so
-    //    it stays); and center_clip(−x) = −center_clip(x), since |−x| = |x|, so a ± symmetric input yields a ± symmetric output (odd harmonics).
+    //    it stays); and center_clip(-x) = -center_clip(x), since |-x| = |x|, so a ± symmetric input yields a ± symmetric output (odd harmonics).
     {
         const sig = [_]i16{ 800, -800, 4000, -4000, 20, -20 }; // symmetric pairs
         var clip = timeline.Clip{};
         try load_clip(&clip, &sig);
         try center_clip(&clip, 0, clip.len, 1000);
         const once = clip.samples();
-        // ODD: out[0] = −out[1], out[2] = −out[3], out[4] = −out[5] (the last pair both silenced, 0 = −0).
+        // ODD: out[0] = -out[1], out[2] = -out[3], out[4] = -out[5] (the last pair both silenced, 0 = -0).
         if (once[0] != -once[1] or once[2] != -once[3] or once[4] != -once[5]) return error.NotOddSymmetric;
         // IDEMPOTENT: a second pass over the already-clipped clip changes nothing.
         var again = timeline.Clip{};
@@ -153,7 +153,7 @@ fn run_selftest() !u8 {
         if (!eq(again.samples(), once)) return error.NotIdempotent;
     }
 
-    // 5. A RAIL THRESHOLD SILENCES ALL BUT THE DEEPEST SAMPLE -- at t = sample_max (32767), every sample is silenced except sample_min (−32768), whose
+    // 5. A RAIL THRESHOLD SILENCES ALL BUT THE DEEPEST SAMPLE -- at t = sample_max (32767), every sample is silenced except sample_min (-32768), whose
     //    magnitude 32768 alone exceeds the floor. The far edge of the family: a center clip at the rail is nearly a mute, saving only the single
     //    deepest sample.
     {

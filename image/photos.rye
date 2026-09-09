@@ -351,7 +351,7 @@ const bilinear_frac: u6 = 8;
 /// The fixed-point unit (2^bilinear_frac) -- one whole source pixel measured in fraction units.
 const bilinear_unit: i64 = 1 << bilinear_frac;
 
-/// Map an output index to its half-pixel-center source coordinate in fixed point: pos = S-((2n+1)-src − dst)/(2-dst),
+/// Map an output index to its half-pixel-center source coordinate in fixed point: pos = S-((2n+1)-src - dst)/(2-dst),
 /// where S = bilinear_unit. Computed in i64 so no product wraps and an edge coordinate may go honestly negative.
 /// At an identity size (src == dst) the coordinate lands exactly on the integer pixel n with zero fraction, which is
 /// what makes a same-size bilinear resize byte-identical.
@@ -454,7 +454,7 @@ pub fn scale_bilinear(
     };
 }
 
-/// Clamp a possibly-off-edge source index into [0, len − 1], so a bilinear edge coordinate samples the nearest real
+/// Clamp a possibly-off-edge source index into [0, len - 1], so a bilinear edge coordinate samples the nearest real
 /// pixel rather than reading out of bounds. len is a positive image dimension.
 fn clamp_index(i: i64, len: u32) i64 {
     // invariant: an image dimension is never zero at a sampling call.
@@ -571,7 +571,7 @@ pub fn saturate(
 /// three exactly-integer stops -- a hue turn by a third is a cyclic permutation of the three color channels, no
 /// trig and no rounding: thirds % 3 == 1 maps (r,g,b) -> (b,r,g) (+120°), thirds % 3 == 2 maps (r,g,b) -> (g,b,r)
 /// (+240°), and a multiple of 3 is the identity. Because it only permutes the color channels, each pixel's max and
-/// min channel are unchanged -- HSV value (= max) and chroma (= max − min) are preserved exactly; only hue turns.
+/// min channel are unchanged -- HSV value (= max) and chroma (= max - min) are preserved exactly; only hue turns.
 /// A gray pixel (r == g == b) is a fixed point at every turn. Any thirds is valid (the modulo is total, as
 /// rotate_quarter's turns are); only a degenerate image refuses (`EmptyImage`).
 pub fn hue_turn(allocator: std.mem.Allocator, pm: *const qoi.Pixmap, thirds: u32) !qoi.Pixmap {

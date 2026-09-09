@@ -13,7 +13,7 @@
 //! The Muster fills that blind spot: a known, bounded, named set of validator public keys -- the roll a
 //! quorum must be drawn from. A Chorus is believed not because `t` different keys signed, but because `t`
 //! of the ENROLLED validators signed, where `t` is the Muster's own BYZANTINE THRESHOLD read from its
-//! size (`n − (n−1)/3` -- the 2f+1 quorum when n = 3f+1, derived never stored, so a tampered roll cannot
+//! size (`n - (n-1)/3` -- the 2f+1 quorum when n = 3f+1, derived never stored, so a tampered roll cannot
 //! lower its own bar). The crux `pass_muster(muster, chorus)` passes exactly when:
 //!   - the Chorus is internally sound on its own terms first (verify_chorus: every voice verifies - all
 //!     agree on one claim - signers distinct);
@@ -96,7 +96,7 @@ pub fn enroll(m: *Muster, pk: []const u8) MusterError!void {
     assert(m.len <= muster_max_members);
 }
 
-/// The Byzantine quorum threshold read from the roll's size: `n − (n−1)/3` -- the 2f+1 quorum when the roll
+/// The Byzantine quorum threshold read from the roll's size: `n - (n-1)/3` -- the 2f+1 quorum when the roll
 /// is a smallest fault-tolerant set (n = 3f+1), and the smallest set that must intersect any other quorum
 /// in at least one honest node for any `n`. Derived here, never stored, so a tampered roll cannot quietly
 /// lower its own bar.

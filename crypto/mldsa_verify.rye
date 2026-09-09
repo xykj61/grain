@@ -2,8 +2,8 @@
 //! the whole post-quantum arc the pivot doc opened. FIPS 204 ML-DSA.Verify_internal, authored in pure Rye: it decodes a public key pk = rho ‖ BitPack(t1),
 //! decodes a signature sigma = c~ ‖ BitPack(z) ‖ HintBitPack(h), and rebuilds the commitment the signer made. It recomputes tr = H(pk), then
 //! mu = H(tr ‖ 0x00 ‖ 0x00 ‖ M), draws the same sparse challenge c = SampleInBall(c~), recomputes the public matrix Â[i][j] = RejNTTPoly(rho, j, i), and
-//! forms the approximate commitment w'_approx = invNTT(Â ∘ NTT(z) − ĉ ∘ NTT(t1-2ᵈ)) = A-z − c-t1-2ᵈ. It recovers the high bits w1' = UseHint(h, w'_approx),
-//! packs them by w1Encode, and accepts iff ‖z‖∞ < γ₁−β AND the recomputed c~' = H(mu ‖ w1Encode(w1')) equals the signature's c~. A malformed hint (positions
+//! forms the approximate commitment w'_approx = invNTT(Â ∘ NTT(z) - ĉ ∘ NTT(t1-2ᵈ)) = A-z - c-t1-2ᵈ. It recovers the high bits w1' = UseHint(h, w'_approx),
+//! packs them by w1Encode, and accepts iff ‖z‖∞ < γ₁-β AND the recomputed c~' = H(mu ‖ w1Encode(w1')) equals the signature's c~. A malformed hint (positions
 //! not strictly increasing, weight past ω, or a nonzero byte past the last boundary) is rejected before any arithmetic. It composes only GREEN rungs -- the
 //! base ring (crypto/mldsa_ring.rye), serialization and rounding (crypto/mldsa_encode.rye), the samplers (crypto/mldsa_sample.rye), and SHAKE
 //! (crypto/shake.rye) -- and holds no key of its own: every seed, message, and signature is a public test vector.
@@ -51,7 +51,7 @@ pub const n: u32 = ring.n;
 pub const max_k: u32 = 8;
 pub const max_l: u32 = 7;
 
-/// The two FIPS 204 low-bit granularities: γ₂ = (q−1)/88 for ML-DSA-44, (q−1)/32 for ML-DSA-65/87. Borrowed from the encode rung's own named constants.
+/// The two FIPS 204 low-bit granularities: γ₂ = (q-1)/88 for ML-DSA-44, (q-1)/32 for ML-DSA-65/87. Borrowed from the encode rung's own named constants.
 pub const gamma2_88: u32 = encode.gamma2_88;
 pub const gamma2_32: u32 = encode.gamma2_32;
 
@@ -94,8 +94,8 @@ pub const VerifyError = error{
     TamperAccepted,
 };
 
-/// w1_bit_width -- the bits SimpleBitPack lays each HighBits coefficient into: 6 bits at γ₂ = (q−1)/88 (values in [0, 43]), 4 bits at (q−1)/32 (values in
-/// [0, 15]). This is bitlen((q−1)/(2γ₂) − 1), the width w1Encode uses -- the same width the signing rung committed under.
+/// w1_bit_width -- the bits SimpleBitPack lays each HighBits coefficient into: 6 bits at γ₂ = (q-1)/88 (values in [0, 43]), 4 bits at (q-1)/32 (values in
+/// [0, 15]). This is bitlen((q-1)/(2γ₂) - 1), the width w1Encode uses -- the same width the signing rung committed under.
 fn w1_bit_width(gamma2: u32) u32 {
     // invariant (precondition): a FIPS 204 low-bit granularity.
     assert(gamma2 == gamma2_88 or gamma2 == gamma2_32);
@@ -103,7 +103,7 @@ fn w1_bit_width(gamma2: u32) u32 {
     return if (gamma2 == gamma2_88) 6 else 4;
 }
 
-/// res_from_centered -- lift a centered integer in (−q, q) back to its canonical residue in [0, q). A negative value wraps by one modulus. The verify side of
+/// res_from_centered -- lift a centered integer in (-q, q) back to its canonical residue in [0, q). A negative value wraps by one modulus. The verify side of
 /// the signing rung's own lift, so z and t1-2ᵈ enter the NTT as residues.
 fn res_from_centered(c: i32) u32 {
     // invariant (precondition): the value is a small centered integer, never as large as the modulus.
@@ -172,7 +172,7 @@ fn hint_bit_unpack(tail: []const u8, k: u32, omega: u32, hint_out: *[max_k][n]u3
 }
 
 /// decode_t1_2d_ntt -- read one packed t1 polynomial (10 bits per coefficient, values in [0, 1023]) from the public key, restore the dropped low bits by
-/// ×2ᵈ (each product ≤ 1023-8192 = q−1, still a canonical residue), and forward-NTT it. The cached t̂1-2ᵈ the verifier multiplies the challenge against.
+/// ×2ᵈ (each product ≤ 1023-8192 = q-1, still a canonical residue), and forward-NTT it. The cached t̂1-2ᵈ the verifier multiplies the challenge against.
 fn decode_t1_2d_ntt(src: []const u8) ring.Poly {
     // invariant (precondition): the source is exactly one packed t1 polynomial.
     assert(src.len == t1_packed_bytes);
@@ -183,14 +183,14 @@ fn decode_t1_2d_ntt(src: []const u8) ring.Poly {
     var i: u32 = 0;
     // invariant (bound): exactly n = 256 coefficients scaled, one per turn.
     while (i < n) : (i += 1) {
-        // invariant: t1 ∈ [0, 1023], so t1-2¹³ ≤ q − 1 stays a canonical residue with no reduction.
+        // invariant: t1 ∈ [0, 1023], so t1-2¹³ ≤ q - 1 stays a canonical residue with no reduction.
         assert(t1[i] < (@as(u32, 1) << @as(u5, @intCast(t1_bits))));
         poly.cs[i] = t1[i] * scale;
     }
     return ring.ntt(&poly);
 }
 
-/// w_approx_row -- one row of w'_approx = A-z − c-t1-2ᵈ, returned to the standard domain: Σ_j Â[i][j] ∘ ẑ[j], minus ĉ ∘ t̂1-2ᵈ[i], each addend a canonical
+/// w_approx_row -- one row of w'_approx = A-z - c-t1-2ᵈ, returned to the standard domain: Σ_j Â[i][j] ∘ ẑ[j], minus ĉ ∘ t̂1-2ᵈ[i], each addend a canonical
 /// residue, then invNTT. The verify-side twin of the signing rung's accum_row, with the challenge-t1 term subtracted.
 fn w_approx_row(a_row: *const [max_l]ring.Poly, z_hat: *const [max_l]ring.Poly, ct1_hat: *const ring.Poly, l: u32) ring.Poly {
     // invariant (precondition): a dimension ML-DSA uses.
@@ -274,8 +274,8 @@ pub fn verify(
     while (t < ctilde) : (t += 1) c_tilde_sig[t] = sig_bytes[t];
     var off: u32 = ctilde;
 
-    // z[i] = BitUnpack(sig, γ₁−1, γ₁), centered in [−(γ₁−1), γ₁]. Keep the signed form for the norm check and the residue form for the NTT. Reject the
-    // instant any coefficient reaches γ₁−β -- the same bound the signer enforced, so a forged over-large z never passes.
+    // z[i] = BitUnpack(sig, γ₁-1, γ₁), centered in [-(γ₁-1), γ₁]. Keep the signed form for the norm check and the residue form for the NTT. Reject the
+    // instant any coefficient reaches γ₁-β -- the same bound the signer enforced, so a forged over-large z never passes.
     var z_hat: [max_l]ring.Poly = undefined;
     i = 0;
     // invariant (bound): exactly l response polynomials decoded, one per turn.
@@ -286,7 +286,7 @@ pub fn verify(
         var c: u32 = 0;
         // invariant (bound): exactly n = 256 coefficients checked and lifted, one per turn.
         while (c < n) : (c += 1) {
-            // ‖z‖∞ < γ₁ − β: any coefficient at or past the bound is an invalid signature.
+            // ‖z‖∞ < γ₁ - β: any coefficient at or past the bound is an invalid signature.
             if (abs_i32(z_signed[c]) >= @as(i32, @intCast(gamma1 - beta))) return false;
             poly.cs[c] = res_from_centered(z_signed[c]);
         }
@@ -333,7 +333,7 @@ pub fn verify(
         }
     }
 
-    // ---- w'_approx = A-z − c-t1-2ᵈ; w1' = UseHint(h, w'_approx); c~' = H(mu ‖ w1Encode(w1')) ----
+    // ---- w'_approx = A-z - c-t1-2ᵈ; w1' = UseHint(h, w'_approx); c~' = H(mu ‖ w1Encode(w1')) ----
     var ct_in: [mu_bytes + max_k * 32 * 6]u8 = undefined;
     t = 0;
     // invariant (bound): copy the 64-byte mu prefix of the recomputed commitment input.
@@ -485,7 +485,7 @@ fn run_selftest() !u8 {
     // Over a deterministic spread of seeds and messages, our pure-Rye ML-DSA.Verify_internal must AGREE with Zig's std.crypto Signature.verify on every
     // verdict at every parameter set: accept the genuine signature the deterministic signer produced, reject every single-byte mutation of the commitment,
     // the response, the hint, the message, and the public key. This is the ML-DSA ladder's closing stone -- the tr and mu hashing, the SampleInBall
-    // challenge, the A-z − c-t1-2ᵈ reconstruction, the UseHint high-bit recovery, and the c~' commitment equality all meet Zig's independent
+    // challenge, the A-z - c-t1-2ᵈ reconstruction, the UseHint high-bit recovery, and the c~' commitment equality all meet Zig's independent
     // implementation at once. A verifier that accepts everything, or one wrong stone, is caught by a disagreeing verdict.
     {
         var seed: u32 = 1;

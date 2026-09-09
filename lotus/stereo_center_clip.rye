@@ -4,8 +4,8 @@
 //! LEFT and RIGHT hold the SAME length. This rung carries the center clip into stereo the plain way: run ALES87's proven mono `center_clip` on each channel with the SAME threshold, so one dead zone lands on BOTH
 //! speakers together.
 //!
-//! Where the crush (ALES136) and the tube (ALES135) are NOT odd and break the inter-channel antisymmetry, the center clipper IS odd -- |−x| = |x|, so center_clip(−x) = −center_clip(x). That is this rung's
-//! distinguishing law in the stereo field: an OUT-OF-PHASE master (right the exact negation of left) center-clipped through the same threshold comes back STILL out of phase (right = −left), because the dead-zone
+//! Where the crush (ALES136) and the tube (ALES135) are NOT odd and break the inter-channel antisymmetry, the center clipper IS odd -- |-x| = |x|, so center_clip(-x) = -center_clip(x). That is this rung's
+//! distinguishing law in the stereo field: an OUT-OF-PHASE master (right the exact negation of left) center-clipped through the same threshold comes back STILL out of phase (right = -left), because the dead-zone
 //! map is symmetric about zero -- the mirror the not-odd siblings broke. A 1:2 master keeps its ratio on the passed samples (both silenced together in the dead zone, both passed together above it), and an
 //! identical-channel master stays identical.
 //!
@@ -17,7 +17,7 @@
 //!
 //! The crux -- four laws. THE STEREO CENTER-CLIP LAW: each channel equals ALES87's mono `center_clip` with the same threshold over the same span byte for byte -- every quiet sample (|x| ≤ t) silenced to 0, every louder
 //! sample passed unchanged, no rail edge. THE BALANCE / LENGTH LAW: left.len == right.len after the edit and both hold their starting length (a center clip writes values only). THE PER-CHANNEL ODD LAW (held in
-//! stereo): the center clipper is odd (|−x| = |x|), so a shared dead zone HOLDS the inter-channel antisymmetry -- an out-of-phase master comes back STILL out of phase (right = −left), the mirror the crush and tube
+//! stereo): the center clipper is odd (|-x| = |x|), so a shared dead zone HOLDS the inter-channel antisymmetry -- an out-of-phase master comes back STILL out of phase (right = -left), the mirror the crush and tube
 //! broke; yet per channel every output is either 0 or exactly its input, the map is idempotent (twice equals once), a 1:2 master keeps its ratio on the passed samples, an identical-channel master stays identical, and
 //! thresh = 0 is the identity. THE ATOMICITY / DEGENERATE LAW: any refusal (BadThreshold, BadRange) leaves BOTH channels byte for byte untouched and still balanced; thresh = 0 the identity on both, count = 0 the
 //! identity on both.
@@ -107,7 +107,7 @@ fn run_selftest() !u8 {
 
         if (!eq(sc.left.samples(), ml.samples())) return error.LeftChannelWrong;
         if (!eq(sc.right.samples(), mr.samples())) return error.RightChannelWrong;
-        // by hand: |500|,|−1000|,|999| ≤ 1000 silence; 1001,−5000 pass / |100|,|−50| silence; 2500,−300? |−300| ≤ 1000 silences; 2500,32767 pass.
+        // by hand: |500|,|-1000|,|999| ≤ 1000 silence; 1001,-5000 pass / |100|,|-50| silence; 2500,-300? |-300| ≤ 1000 silences; 2500,32767 pass.
         if (!eq(sc.left.samples(), &[_]i16{ 0, 0, 0, 1001, -5000 })) return error.LeftHandWrong;
         if (!eq(sc.right.samples(), &[_]i16{ 0, 0, 2500, 0, 32767 })) return error.RightHandWrong;
     }
@@ -128,7 +128,7 @@ fn run_selftest() !u8 {
     }
 
     // 3a. THE PER-CHANNEL ODD LAW, the ANTISYMMETRY HOLDS -- an out-of-phase master (right the exact negation of left) center-clipped through the same threshold comes back STILL out of phase, because the dead-zone
-    //     map is symmetric about zero (|−x| = |x|), so center_clip(−x) = −center_clip(x) and right = −left after. This is the mirror the crush and tube BROKE; the center clip holds it, the odd class made stereo.
+    //     map is symmetric about zero (|-x| = |x|), so center_clip(-x) = -center_clip(x) and right = -left after. This is the mirror the crush and tube BROKE; the center clip holds it, the odd class made stereo.
     {
         var sc = pan.StereoClip{};
         try load_stereo(&sc, &[_]i16{ 500, -3000, 900, -1200 }, &[_]i16{ -500, 3000, -900, 1200 }); // right = −left
@@ -139,7 +139,7 @@ fn run_selftest() !u8 {
         while (i < 4) : (i += 1) {
             if (@as(i32, r[i]) != -@as(i32, l[i])) return error.AntisymmetryBroke; // right = −left held — the odd law in stereo
         }
-        // by hand: |500|,|900| ≤ 1000 silence; 3000,1200 pass. left {0,−3000,0,−1200}, right {0,3000,0,1200}.
+        // by hand: |500|,|900| ≤ 1000 silence; 3000,1200 pass. left {0,-3000,0,-1200}, right {0,3000,0,1200}.
         if (!eq(l, &[_]i16{ 0, -3000, 0, -1200 })) return error.LeftPhaseWrong;
         if (!eq(r, &[_]i16{ 0, 3000, 0, 1200 })) return error.RightPhaseWrong;
     }
@@ -179,7 +179,7 @@ fn run_selftest() !u8 {
         while (i < 4) : (i += 1) {
             if (@as(i32, r[i]) != 2 * @as(i32, l[i])) return error.RatioBroke; // passed: r = 2l; silenced: 0 = 2·0
         }
-        // by hand: |2000|>1000 pass, |−300|≤1000 silence, |5000|>1000 pass, |100|≤1000 silence.
+        // by hand: |2000|>1000 pass, |-300|≤1000 silence, |5000|>1000 pass, |100|≤1000 silence.
         if (!eq(l, &[_]i16{ 2000, 0, 5000, 0 })) return error.RatioLeftWrong;
         if (!eq(r, &[_]i16{ 4000, 0, 10000, 0 })) return error.RatioRightWrong;
     }

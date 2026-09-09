@@ -7,11 +7,11 @@
 //! The crux is that A TRIANGLE LFO DRIVES THE SCALED DELAY ROUND A CENTRE. The interpolation read is ALES70's, verbatim; the only new thing
 //! is how the scaled delay moves. Over one period P (a positive multiple of four, q = P/4) with phase p = k % P, the scaled delay is
 //! d_s(k) = centre_scaled + triangle(depth_scaled, P, k), a symmetric wave with EXACT ANCHORS at the quarter points: 0 at p = 0 and p = 2q
-//! (the centre), +depth at p = q (the top), −depth at p = 3q (the bottom), and honestly `@divTrunc`-quantized between (a scaled delay rarely
-//! lands on a whole triangle step, exactly as the ALES70 ramp is between its endpoints). Then near = dry[i − d_whole], far = dry[i − d_whole
-//! − 1], delayed = (near-(glide_scale − frac) + far-frac)/glide_scale, and y[i] = saturate(x[i] + level-delayed). Every read is off a FROZEN
+//! (the centre), +depth at p = q (the top), -depth at p = 3q (the bottom), and honestly `@divTrunc`-quantized between (a scaled delay rarely
+//! lands on a whole triangle step, exactly as the ALES70 ramp is between its endpoints). Then near = dry[i - d_whole], far = dry[i - d_whole
+//! - 1], delayed = (near-(glide_scale - frac) + far-frac)/glide_scale, and y[i] = saturate(x[i] + level-delayed). Every read is off a FROZEN
 //! snapshot of the dry prefix (the ALES68/ALES70 idiom, reused), so a moving read never reads a sample it just wrote. The delay never dips
-//! below one whole sample (centre − depth ≥ glide_scale) and never reaches past the widest clip ((centre + depth)/glide_scale ≤ max_clip),
+//! below one whole sample (centre - depth ≥ glide_scale) and never reaches past the widest clip ((centre + depth)/glide_scale ≤ max_clip),
 //! both checked before any write. A zero-depth chorus is exactly ALES70's glide at its centre, byte-for-byte (the periodic driver reduces to
 //! the one-way one when it does not move). The wet is mixed at level = num/den (num ≤ den) and the sum saturates once (ALES3's saturation).
 //!
@@ -38,13 +38,13 @@ const glide = @import("glide.rye");
 pub const chorus_version = "20260814.194730";
 
 /// The chorus's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need
-/// P/4 whole), a swing that would dip below one whole sample (centre − depth < glide_scale) or reach past the widest clip
+/// P/4 whole), a swing that would dip below one whole sample (centre - depth < glide_scale) or reach past the widest clip
 /// (centre + depth whole > max_clip), a wet level above unity or with a zero denominator, and a span outside the samples. Each refused
 /// before any write.
 pub const ChorusError = error{
     /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample -- refused, no write.
+    /// A negative depth, or a swing whose bottom (centre - depth) falls under one whole sample -- refused, no write.
     BadDepth,
     /// A swing whose top (centre + depth) whole delay is longer than max_clip samples -- refused, no write.
     BadDelay,
@@ -55,7 +55,7 @@ pub const ChorusError = error{
 };
 
 /// The scaled delay at span offset `k`, driven by a symmetric triangle LFO of `depth_scaled` round `centre_scaled` over `period` samples.
-/// Exact at the quarter anchors -- `centre` at k ≡ 0 and k ≡ period/2, `centre + depth` at k ≡ period/4, `centre − depth` at k ≡ 3-period/4 --
+/// Exact at the quarter anchors -- `centre` at k ≡ 0 and k ≡ period/2, `centre + depth` at k ≡ period/4, `centre - depth` at k ≡ 3-period/4 --
 /// and honestly `@divTrunc`-quantized between. Periodic: offset `period` returns the same value. Pure and public, so the modulation is
 /// testable directly. The caller validates `period` (a positive multiple of four) before calling; the helper asserts it.
 pub fn triangle_delay_at(centre_scaled: i64, depth_scaled: i64, period: u32, k: u32) i64 {
@@ -74,7 +74,7 @@ pub fn triangle_delay_at(centre_scaled: i64, depth_scaled: i64, period: u32, k: 
         -@divTrunc(depth_scaled * (p - 2 * q), q) // centre → bottom
     else
         -@divTrunc(depth_scaled * (4 * q - p), q); // bottom → centre
-    // invariant: the LFO never swings past its depth in either direction, so the delay stays within [centre − depth, centre + depth].
+    // invariant: the LFO never swings past its depth in either direction, so the delay stays within [centre - depth, centre + depth].
     assert(off >= -depth_scaled and off <= depth_scaled);
     return centre_scaled + off;
 }
@@ -157,7 +157,7 @@ pub fn chorus(
         // invariant: both neighbours already fit the i16 rail -- they are dry audio, never a wide intermediate.
         assert(near_val >= @as(i64, timeline.sample_min) and near_val <= @as(i64, timeline.sample_max));
         assert(far_val >= @as(i64, timeline.sample_min) and far_val <= @as(i64, timeline.sample_max));
-        // Linear interpolation (ALES70's read): near weighted by (scale − frac), far by frac, divided once. frac = 0 returns near exactly;
+        // Linear interpolation (ALES70's read): near weighted by (scale - frac), far by frac, divided once. frac = 0 returns near exactly;
         // frac = scale/2 returns the exact average. |near|,|far| <= 32768 and the weights sum to glide_scale, so the product fits i64.
         const delayed: i64 = @divTrunc(near_val * (scale - frac) + far_val * frac, scale);
         // The wet voice at level num/den (num <= den, so |wet| <= |delayed|), then the dry plus wet saturates ONCE over the true sum.
@@ -212,7 +212,7 @@ fn run_selftest() !u8 {
         if (!eq(chorused.samples(), glided.samples())) return error.ZeroDepthNotGlide;
     }
 
-    // 3. THE TRIANGLE HONORS ITS FOUR QUARTER ANCHORS AND REPEATS -- centre at k=0 and k=period/2, +depth at k=period/4, −depth at
+    // 3. THE TRIANGLE HONORS ITS FOUR QUARTER ANCHORS AND REPEATS -- centre at k=0 and k=period/2, +depth at k=period/4, -depth at
     //    k=3-period/4, and the same value one full period later. Proven directly on the pure helper.
     {
         const centre: i64 = 4 * scale;
@@ -234,7 +234,7 @@ fn run_selftest() !u8 {
     //      k: 0  1  2  3  4  5      d_whole via triangle_delay_at(2-s, 1-s, 4, k)/s:
     //      p: 0  1  2  3  0  1
     //      delay(k): centre(2), top(3), centre(2), bottom(1), centre(2), top(3)
-    //    On sig[i] = i-1000 (dry[j]=0 for j<0), y[i] = dry[i] + dry[i − delay(i)]:
+    //    On sig[i] = i-1000 (dry[j]=0 for j<0), y[i] = dry[i] + dry[i - delay(i)]:
     //      i0 d2: 0    + dry[-2]=0        = 0
     //      i1 d3: 1000 + dry[-2]=0        = 1000
     //      i2 d2: 2000 + dry[0]=0         = 2000

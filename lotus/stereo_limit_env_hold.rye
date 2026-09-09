@@ -199,7 +199,7 @@ fn run_selftest() !u8 {
         if (eq(sc.right.samples(), mono_r.samples())) return error.IndependentDidNotDiffer;
     }
 
-    // 3. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = −left) comes back STILL out of phase, both
+    // 3. THE IMAGE LAW -- the shared gain preserves the L:R ratio. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase pair (right = -left) comes back STILL out of phase, both
     //    scaled by the identical time-smoothed-and-held fraction.
     {
         const il = [_]i16{ 900, -700, 15000, -400, 9000, -9000 };

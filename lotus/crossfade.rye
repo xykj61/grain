@@ -28,10 +28,10 @@ const power = @import("power.rye");
 pub const crossfade_version = "20260814.123255";
 
 /// Cross two equal-length overlap windows with the equal-power law: out[i] = saturate(out_clip[i]-wᵒ/den + in_clip[i]-wⁱ/den),
-/// the weights `power.split(i, den)` read at each sample, den = len − 1 (the overlap's interval count). The overlap BEGINS as
+/// the weights `power.split(i, den)` read at each sample, den = len - 1 (the overlap's interval count). The overlap BEGINS as
 /// pure outgoing (i = 0: wᵒ = den, wⁱ = 0) and ENDS as pure incoming (i = den: the mirror), so it splices seamlessly onto the
-/// clip before and after; its CENTER holds equal power (each side ≈ 0.707-den, −3 dB) where a linear crossfade would dip to
-/// 0.5-den (−6 dB). Refuses BadRange on a length mismatch or an overlap shorter than two samples (no interval to cross), before
+/// clip before and after; its CENTER holds equal power (each side ≈ 0.707-den, -3 dB) where a linear crossfade would dip to
+/// 0.5-den (-6 dB). Refuses BadRange on a length mismatch or an overlap shorter than two samples (no interval to cross), before
 /// any write. The sum saturates once to the i16 range (timeline.saturate) exactly as ALES3's mix -- a loud overlap pins, never
 /// wraps. Values only into `out`; the two inputs are never mutated.
 pub fn crossfade(out_clip: *const timeline.Clip, in_clip: *const timeline.Clip, out: *timeline.Clip) timeline.EditError!void {
@@ -85,8 +85,8 @@ fn run_selftest() !u8 {
         if (out.samples()[4] != 200) return error.TailNotPureIn; //   wⁱ=den → b[4]·den/den
     }
 
-    // 2. the CENTER holds equal power -- at den = 100 the center weight is isqrt(5000) = 70 (0.70-den, −3 dB), where a linear
-    //    crossfade would give 50 (0.50-den, −6 dB). A 1000-sample outgoing crossed with silence lands 700 at center, not 500.
+    // 2. the CENTER holds equal power -- at den = 100 the center weight is isqrt(5000) = 70 (0.70-den, -3 dB), where a linear
+    //    crossfade would give 50 (0.50-den, -6 dB). A 1000-sample outgoing crossed with silence lands 700 at center, not 500.
     {
         var a = timeline.Clip{};
         var b = timeline.Clip{};
@@ -112,7 +112,7 @@ fn run_selftest() !u8 {
         var out = timeline.Clip{};
         try crossfade(&a, &b, &out);
         // endpoints are the pure source level (1000); the equal-power sum lifts the middle ABOVE it (0.707+0.707 > 1), never
-        //   below -- the opposite of a linear crossfade's −6 dB sag. Every sample ≥ the endpoint, and the center is the peak.
+        //   below -- the opposite of a linear crossfade's -6 dB sag. Every sample ≥ the endpoint, and the center is the peak.
         var i: u32 = 0;
         while (i < out.len) : (i += 1) {
             if (out.samples()[i] < 1000) return error.SelfCrossDipped;
@@ -145,7 +145,7 @@ fn run_selftest() !u8 {
             if (w[0] > den or w[1] > den) return error.WeightOutOfRange;
             if (pos == 0 and (w[0] != den or w[1] != 0)) return error.SweepHeadWrong;
             if (pos == den and (w[0] != 0 or w[1] != den)) return error.SweepTailWrong;
-            // constant power within the isqrt truncation bound: den² − (wᵒ² + wⁱ²) ≤ 2(wᵒ+wⁱ)+2.
+            // constant power within the isqrt truncation bound: den² - (wᵒ² + wⁱ²) ≤ 2(wᵒ+wⁱ)+2.
             const sq: u64 = @as(u64, w[0]) * w[0] + @as(u64, w[1]) * w[1];
             const d2: u64 = @as(u64, den) * den;
             if (sq > d2) return error.PowerOverUnit;

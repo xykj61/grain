@@ -1,8 +1,8 @@
 //! lotus/power.rye -- ALES11: the equal-power pan law -- the constant it keeps is POWER, not SUM. ALES10 opened the second
 //! channel with a LINEAR pan, weights that sum to `den`, so left + right reproduces the mono mix exactly -- the SUM held
-//! constant, at the cost of a −6 dB center dip (each side gets half). This rung places each track on the QUARTER CIRCLE instead
+//! constant, at the cost of a -6 dB center dip (each side gets half). This rung places each track on the QUARTER CIRCLE instead
 //! of the straight line between the speakers, so the two channels' POWERS -- their squared amplitudes -- sum to a constant. At
-//! center each side carries 0.707 (−3 dB), and a track keeps its apparent loudness wherever it sits in the field.
+//! center each side carries 0.707 (-3 dB), and a track keeps its apparent loudness wherever it sits in the field.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES11.
 //! Design read: active-designing/20260814-fill-ales11-lotus-equal-power.md
@@ -11,11 +11,11 @@
 //! run once with an equal-power-folded effective fader; lotus/track.rye (ALES6) -- the Session the pans align with.
 //!
 //! THE LAW, no trigonometry and no float: "equal power" MEANS the two squared weights sum to den². Build them from that fact --
-//! left_power = den-(den − pos), right_power = den-pos -- so left_power + right_power = den² EXACTLY, for any position. The
+//! left_power = den-(den - pos), right_power = den-pos -- so left_power + right_power = den² EXACTLY, for any position. The
 //! amplitude weights are then isqrt(left_power) and isqrt(right_power): the power split is a straight line (linear in pos), and
 //! taking the square root bends it into the quarter circle the ear wants. The one genuinely new arithmetic in the suite is the
 //! bounded integer square root, proven to its contract r² ≤ x < (r+1)². Constant power survives the truncation with a PROVEN
-//! bound: left² + right² ≤ den², and den² − (left² + right²) ≤ 2-(left + right) + 2.
+//! bound: left² + right² ≤ den², and den² - (left² + right²) ≤ 2-(left + right) + 2.
 //!
 //! HONEST SCOPE -- software only, purely LOCAL. A bounded in-process stereo render over an ALES6 table of i16 PCM Clips on one
 //! bench, siloed to lotus/. No socket, no network, no keys, no funds, no real device, no real speaker. The pan law is a routing
@@ -95,7 +95,7 @@ pub fn isqrt(x: u64) u64 {
 /// The equal-power split for a position: the two amplitude weights [left, right], each the floor square root of a power that is
 /// LINEAR in pos. The power split is exact -- left_power + right_power = den² for any position -- and taking the square root bends
 /// the straight power line into the quarter circle the ear hears as constant loudness. At center each weight is isqrt(den²/2) ≈
-/// 0.707-den (−3 dB), where the linear law gives 0.5-den (−6 dB). Weights never exceed den (isqrt is monotone, den² its cap).
+/// 0.707-den (-3 dB), where the linear law gives 0.5-den (-6 dB). Weights never exceed den (isqrt is monotone, den² its cap).
 fn weights(p: PowerPan) [2]u64 {
     // invariant: the pan is legal (den nonzero, pos within the field, den bounded), so the powers below are bounded.
     assert(p.den >= 1 and p.pos <= p.den and p.den <= max_pan_den);
@@ -176,7 +176,7 @@ pub fn render_stereo(
 }
 
 // --- selftest: the isqrt contract across a sweep; the constant-power law left_power + right_power == den² for any position; a
-//     CENTER pan at 0.707 (−3 dB), distinctly louder than ALES10's linear 0.5 (−6 dB); hard left/right route wholly to one
+//     CENTER pan at 0.707 (-3 dB), distinctly louder than ALES10's linear 0.5 (-6 dB); hard left/right route wholly to one
 //     channel; left² + right² within the proven truncation bound of den² across the sweep (constant POWER, not constant sum);
 //     pan composes with the fader; two tracks panned opposite separate; make refuses BadGain / BadRange; ClipFull forwarded ---
 
@@ -217,14 +217,14 @@ fn run_selftest() !u8 {
             const lp = den * (den - pos);
             const rp = den * pos;
             if (lp + rp != den * den) return error.PowerSumBroken;
-            // and the amplitudes hold constant power within the two-isqrt truncation bound: den² − (wl²+wr²) ≤ 2(wl+wr)+2.
+            // and the amplitudes hold constant power within the two-isqrt truncation bound: den² - (wl²+wr²) ≤ 2(wl+wr)+2.
             const sq = wl * wl + wr * wr;
             if (sq > den * den) return error.PowerOverUnit;
             if (den * den - sq > 2 * (wl + wr) + 2) return error.PowerBoundBroken;
         }
     }
 
-    // 3. a CENTER pan carries 0.707 per side (−3 dB), distinctly louder than ALES10's linear 0.5 (−6 dB) -- the audible proof the
+    // 3. a CENTER pan carries 0.707 per side (-3 dB), distinctly louder than ALES10's linear 0.5 (-6 dB) -- the audible proof the
     //    law is angular, not straight. den = 100, isqrt(5000) = 70, so a 1000-sample track lands 700 each side (linear: 500).
     {
         var a = timeline.Clip{};

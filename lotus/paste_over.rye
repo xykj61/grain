@@ -5,7 +5,7 @@
 //! bar, and the new samples land on top of the old without moving anything after them. Naming it beside splice completes the paste pair: make room for it, or write it over.
 //!
 //! The rule, stated once: paste_over(clip, at, src) writes the `src` samples over the clip starting at `at`, refusing BadRange when the write would run past the current samples
-//! (at > len, or src.len > len − at, checked without underflow) BEFORE any write, reusing ALES2's EditError whole. One in-place pass, no allocation, no second buffer.
+//! (at > len, or src.len > len - at, checked without underflow) BEFORE any write, reusing ALES2's EditError whole. One in-place pass, no allocation, no second buffer.
 //!
 //! The crux -- four laws. THE OVERWRITE LAW: after paste_over the span [at, at+src.len) holds `src` exactly and every sample outside it is byte for byte unchanged, the length
 //! untouched, checked at a mid span, the head, and the tail. THE SPECIALIZATION LAW: paste_over of an all-zero src equals ALES110's silence_span(clip, at, src.len) byte for byte

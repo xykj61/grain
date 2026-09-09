@@ -53,7 +53,7 @@ pub const elligator_key_pair_version = "20260816.160000";
 
 pub const ElligatorKeyPairError = error{
     /// The retry loop ran its full named maximum of tries without finding a representable dirty key. Each try is representable with probability
-    /// ~1/2 and independent, so reaching this bound has probability ~2^(−max_tries) -- astronomically unlikely for any real seed. It is named,
+    /// ~1/2 and independent, so reaching this bound has probability ~2^(-max_tries) -- astronomically unlikely for any real seed. It is named,
     /// bounded, and returned rather than looped forever, honoring the "bound everything, fail with a named error" discipline.
     NotRepresentable,
     /// A hex helper in the selftest received a buffer whose length did not match its declared 32-byte field width -- names only the selftest's
@@ -62,7 +62,7 @@ pub const ElligatorKeyPairError = error{
 };
 
 /// The retry bound. About half of dirty public keys are representable, so the expected number of tries is two and the chance of needing more
-/// than 64 is ~2^(−64) -- indistinguishable from never. Bounding the loop at a named maximum turns a "cannot happen" into a named error rather
+/// than 64 is ~2^(-64) -- indistinguishable from never. Bounding the loop at a named maximum turns a "cannot happen" into a named error rather
 /// than an unbounded wait, exactly as the discipline asks.
 const max_tries: u32 = 64;
 
@@ -137,7 +137,7 @@ pub fn key_pair(seed: *const [32]u8) ElligatorKeyPairError!HiddenKeyPair {
         }
         // Unrepresentable: the high half keeps its fresh ChaCha bytes and becomes the next key -- the do/while's continuation. No byte to touch.
     }
-    // invariant (postcondition): the loop exhausted its bound only if every one of max_tries independent keys was unrepresentable -- a ~2^(−max_tries) event.
+    // invariant (postcondition): the loop exhausted its bound only if every one of max_tries independent keys was unrepresentable -- a ~2^(-max_tries) event.
     assert(tries == max_tries);
     return error.NotRepresentable;
 }

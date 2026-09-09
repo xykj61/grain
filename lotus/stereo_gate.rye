@@ -168,7 +168,7 @@ fn run_selftest() !u8 {
         if (!eq(sc.right.samples(), &[_]i16{ -100, 75, -175, 125 })) return error.BelowBothRightHand;
     }
 
-    // 3. THE IMAGE / SIGN LAW -- an even, sign-preserving attenuation. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = −left, both below threshold)
+    // 3. THE IMAGE / SIGN LAW -- an even, sign-preserving attenuation. Over a mixed master no output magnitude exceeds its input's and no sign flips; and an out-of-phase QUIET pair (right = -left, both below threshold)
     //    comes back STILL out of phase, each channel divided by the same ratio.
     {
         const il = [_]i16{ 900, -700, 5000, -300, 600 }; // index 2 is loud (5000) — that pair passes on both
@@ -187,7 +187,7 @@ fn run_selftest() !u8 {
         // the loud pair (index 2) passed byte for byte on both channels -- the link opened for it.
         if (l[2] != 5000 or r[2] != -4000) return error.LoudPairNotIdentity;
 
-        // out-of-phase quiet pair: right = −left, every |sample| below 1000 -> the gate closes on all, each divided by 4, antisymmetry kept.
+        // out-of-phase quiet pair: right = -left, every |sample| below 1000 -> the gate closes on all, each divided by 4, antisymmetry kept.
         var op = pan.StereoClip{};
         try load_stereo(&op, &[_]i16{ 800, -600, 400, -200 }, &[_]i16{ -800, 600, -400, 200 });
         try stereo_gate(&op, 0, 4, 1000, 4, 1);

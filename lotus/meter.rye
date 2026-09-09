@@ -40,7 +40,7 @@ pub const meter_version = "20260814.164000";
 /// ~23 minutes at 48 kHz -- a generous window for one metered pass; a longer session meters in more than one window.
 pub const max_meter_samples: u32 = 1 << 26;
 
-/// The largest magnitude any i16 sample owns: |−32768| = 32768, one larger than the maximum positive sample (32767). Named so
+/// The largest magnitude any i16 sample owns: |-32768| = 32768, one larger than the maximum positive sample (32767). Named so
 /// the square bound below reads plainly and the meter's one asymmetry is not a hidden number.
 pub const sample_peak_max: u32 = 32768;
 
@@ -49,13 +49,13 @@ pub const MeterError = error{
     MeterFull,
 };
 
-/// The magnitude of one sample, |s|, in [0, sample_peak_max]. Computed through i32 so the i16 minimum (−32768) negates without
+/// The magnitude of one sample, |s|, in [0, sample_peak_max]. Computed through i32 so the i16 minimum (-32768) negates without
 /// overflow -- the mirror of ALES2's saturation, which pins the maximum; here the minimum's magnitude is the largest a sample
 /// owns, one beyond the positive maximum.
 fn sample_abs(s: i16) u32 {
     const w: i32 = @as(i32, s);
     const a: i32 = if (w < 0) -w else w;
-    // invariant: the magnitude of any i16 fits [0, 32768] -- the minimum (−32768) has magnitude 32768, the largest a sample owns.
+    // invariant: the magnitude of any i16 fits [0, 32768] -- the minimum (-32768) has magnitude 32768, the largest a sample owns.
     assert(a >= 0 and a <= @as(i32, sample_peak_max));
     return @intCast(a);
 }
@@ -188,7 +188,7 @@ fn run_selftest() !u8 {
     }
 
     // 2. a full-scale CONSTANT reads its own magnitude as both peak and rms -- the RMS of a DC signal is its level exactly. A
-    //    constant 1000 reads 1000/1000; the i16 minimum −32768 reads 32768/32768, exercising the wide domain's ceiling
+    //    constant 1000 reads 1000/1000; the i16 minimum -32768 reads 32768/32768, exercising the wide domain's ceiling
     //    (32768² = 2³⁰ = isqrt_max), the very reason the root was widened past the pan fold.
     {
         var dc = try clip_of(&[_]i16{ 1000, 1000, 1000, 1000 });

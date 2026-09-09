@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260908.231838
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role copal seat, unattended lap
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260908
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The one form a script may fix
+prompt autonomous loop, copal seat -- amphora and bron-resins lane
+think Reds first: all fourteen OPEN rows read as gates or shape decisions. %626 and %636 want Keaton's word, %519 and %532 name a custody ruling, %456 and %568 name a cost. My lane's closable queue is empty, so the lap took a claim-as-override from my own elder handoff.
+think The card handed forward the ASCII ratchet's shape without taking it: the typographic minus is the largest single class in Rye comments. Ran the meter rather than trusting the figure -- the card said 1,303 of 4,335 and the tree reads 1,164 of 3,772, because the symlink-skip correction had already lowered both.
+think The question worth answering was not how many, but WHICH FORMS A SCRIPT MAY CONVERT AT ALL. The scan's own comment defers all of them together -- each carrying a meaning a reader should choose the ASCII form for. Read one at a time, the classes part: a section mark, a multiplication sign, and a superscript each have two or three honest ASCII forms, and a minus has exactly one.
+think So the rule's table is the discriminator, and it had never named U+2212. Named it, then swept what naming licensed.
+obs THE SWEEP IS BEHAVIOR-FREE BY CONSTRUCTION, and the line is the scan's own. Only a line whose first non-blank characters are `//` was rewritten; Zig has no block comment and a multiline string continues on `\\`, so such a line is comment end to end. Verified after: 762 lines changed, 0 of them outside that shape.
+obs PROVEN BY RE-DERIVATION RATHER THAN BY READING THE DIFF. Each of the 129 files was rebuilt from `git show HEAD:<path>` through the same one-character transform and compared byte for byte with what stands on disk. All 129 match, so nothing but the minus moved anywhere in the tree.
+obs THE CEILING FELL BY EXACTLY WHAT THE SWEEP REMOVED -- 3,794 to 2,630, keeping the 22 of slack it already carried, so the next lap is credited with none of this work.
+obs WHAT THE LAP FOUND AND LEFT is the bigger half, measured: `rish_spoken_ascii` reads 11,113 characters in what guards SAY to a person, and its own scan already splits them -- 10,748 are the six forms the rule's table names, 365 are judgment. That is nine times this sweep, in the one surface a reader actually sees, and its sweep is written but unrun.
+loom rye_comment_ascii before_chars=3772 after_chars=2608 removed=1164 before_files=310 after_files=270 rewritten=129
+loom rye_comment_ascii ceiling_before=3794 ceiling_after=2630 slack=22
+loom minus_by_room lotus=736 crypto=401 mycelium=18 image=3 pond=2 lattice=2 dimeroll=1 brushstroke=1
+loom standing_equipment cold_guards=205 green=203 red=0 gated=2 seconds=1651
+loom standing_equipment hot_guards=205 green=203 red=0 gated=2 seconds=1928
+rota lap 4397, row 2 -- Fire, the row that sees. What it surfaced: fire's dual seat is risk choosing the depth, and the depth here was one character class rather than the whole residue -- the four classes needing a reader were left needing one, and named.
+file tools/fixtures/r/rye_comment_ascii_scan.sh ceiling 3794 to 2630, the arc line recording what the sweep converted and why the rest stays
+file .claude/rules/ascii-first.md the substitution table names U+2212, and one paragraph records which work a table licenses a script to do
+file .cursor/rules/ascii-first.mdc the canonical twin carries the same substitution
+file lotus/fold.rye one of 129 authored sources whose comment arithmetic now reads in plain ASCII
+scope one class swept whole and proven by re-derivation, one law row seated, one ceiling lowered, one larger surface measured and handed forward
+obs AGAINST MYSELF, TWICE. The hot pass reddened three guards on one cause -- the elder link inside my new shelf kept the pin's depth, the fault my own elder block recorded being caught by this same guard. `fold_shelf_link_repoint.sh --apply` made the repair the scan had already computed, and the cost was a second full hot pass rather than a second diagnosis. And I wrote one measurement to `/tmp` before switching to `.lap/`, which is the family the baton names three times.
+status GREEN -- ascii-comment, tame_style_check, width-check, both shelf-link guards re-proven, cold 203 green 0 red 2 gated at %5 in 1651s, hot the same in 1928s
+recommend kg -- the spoken surface is nine times this one and its classification is already done by its own scan, so the next lap is a sweep rather than a study

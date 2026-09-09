@@ -59,12 +59,12 @@ pub const Lowpass = struct {
 };
 
 /// A one-pole high-pass that holds its own state across calls (ALES45) -- the complement of `Lowpass`, the same memory for the
-/// high band. The high-pass output is `x − lp`, and `lp` is driven by the carried low-pass state, so this struct carries exactly
+/// high band. The high-pass output is `x - lp`, and `lp` is driven by the carried low-pass state, so this struct carries exactly
 /// that one i64 state. A fresh Highpass (state = 0) is exactly ALES40's from-silence high_pass; `run` continues from the carried
 /// state so a span high-passed piece by piece has no re-transient at a seam; `reset` returns the state to silence.
 pub const Highpass = struct {
     /// The low-pass estimate scaled by `den` at full i64 precision -- the same carried state a `Lowpass` holds, since the
-    /// high-pass is the complement `x − lp` of that low-pass.
+    /// high-pass is the complement `x - lp` of that low-pass.
     state: i64 = 0,
     num: i32,
     den: u32,

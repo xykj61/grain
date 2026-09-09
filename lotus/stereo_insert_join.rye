@@ -6,7 +6,7 @@
 //! both and the stereo image stays aligned -- exactly the lockstep the graft (ALES24), clipboard (ALES25), and stereo join
 //! (ALES27) already keep for the copy, the paste, and the append-join.
 //!
-//! The crux is atomicity across the two channels: a stereo insert grows both by the same shared count (clip + span − lead −
+//! The crux is atomicity across the two channels: a stereo insert grows both by the same shared count (clip + span - lead -
 //! trail) or touches NEITHER. Because a StereoClip's two channels are always one length (ALES10's invariant) and a stereo span
 //! is one length (both incoming heads equal, refused BadRange otherwise), every one of ALES28's guards depends ONLY on the
 //! shared length and the shared span dimensions -- never on a sample's value. So `insert_join` on the left succeeds if and only
@@ -36,8 +36,8 @@ pub const stereo_insert_join_version = "20260814.143348";
 
 /// Insert a stereo span into a stereo master at offset `at`, crossing BOTH seams of BOTH channels equal-power, in lockstep.
 /// `ins_left` and `ins_right` are the incoming span's two channels (one length); each is two-sided-inserted with ALES28's
-/// `insert_join` at the same `at`, `lead`, and `trail`, so the seam moves through ALES12's −3 dB curve at both edges in both
-/// channels and each channel's new length is `clip + span − lead − trail`. Atomic across the two channels -- a refusal leaves both
+/// `insert_join` at the same `at`, `lead`, and `trail`, so the seam moves through ALES12's -3 dB curve at both edges in both
+/// channels and each channel's new length is `clip + span - lead - trail`. Atomic across the two channels -- a refusal leaves both
 /// untouched and aligned:
 ///   • BadRange when the two incoming channels differ in length (a stereo span is one length), or on any of ALES28's own
 ///     per-seam refusals (a past-the-master `at`, a `lead`/`trail` wider than its neighbour, or an overlap under two);
@@ -58,13 +58,13 @@ pub fn insert_join_stereo(master: *pan.StereoClip, at: u32, ins_left: []const i1
     try insert_join.insert_join(&master.left, at, ins_left, lead, trail);
     try insert_join.insert_join(&master.right, at, ins_right, lead, trail);
 
-    // invariant: both channels grew by the same shared count (span − lead − trail, both overlaps shared) and stay one length --
+    // invariant: both channels grew by the same shared count (span - lead - trail, both overlaps shared) and stay one length --
     // the stereo image is still aligned.
     assert(master.left.len == old_len + n_ins - lead - trail);
     assert(master.left.len == master.right.len);
 }
 
-// --- selftest: the stereo insert grows both channels equally (clip + span − lead − trail), each channel flowing through power
+// --- selftest: the stereo insert grows both channels equally (clip + span - lead - trail), each channel flowing through power
 //     at BOTH its seams; the two channels keep independent audio yet one length; and an unequal span, a past-the-master `at`, a
 //     lead wider than the head, a trail wider than the following audio, and an overflow each refuse by name leaving both
 //     channels untouched and aligned ------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ fn eq(got: []const i16, want: []const i16) bool {
 
 fn run_selftest() !u8 {
     // 1. the stereo insert grows BOTH channels by the shared count and keeps them one length -- a 10-sample master with a
-    //    5-sample span inserted at the middle over lead 2 / trail 2 lands both channels at 10 + 5 − 2 − 2 = 11, still aligned.
+    //    5-sample span inserted at the middle over lead 2 / trail 2 lands both channels at 10 + 5 - 2 - 2 = 11, still aligned.
     {
         var m = pan.StereoClip{};
         try timeline.splice(&m.left, 0, &[_]i16{ 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 });

@@ -1,5 +1,5 @@
 //! lotus/stereo_crossfade.rye -- ALES131: the equal-power crossfade carried into stereo, ONE SHARED LAW. ALES12 named `crossfade` -- cross two equal-length overlap windows with the equal-power weights
-//! `power.split(i, den)` read at each sample, the overlap beginning as pure outgoing, ending as pure incoming, and holding equal power (−3 dB) at the center where a linear cross would sag (−6 dB) -- for
+//! `power.split(i, den)` read at each sample, the overlap beginning as pure outgoing, ending as pure incoming, and holding equal power (-3 dB) at the center where a linear cross would sag (-6 dB) -- for
 //! mono Clips. Yet a Lotus master is a StereoClip (ALES10), two Clips heard together whose defining invariant is that LEFT and RIGHT hold the SAME length. ALES130's fade closed on the recognition that a
 //! stereo fade-out laid under a stereo fade-in IS a stereo crossfade; this rung makes that gesture its own primitive: run ALES12's proven mono `crossfade` on each channel with the SAME equal-power
 //! weights, so two whole masters cross without a dip and without splitting the image. Like the fade's positional ramp, ALES12's weights are POSITIONAL -- identical at each seat regardless of channel -- so
@@ -133,7 +133,7 @@ fn run_selftest() !u8 {
         if (out3.left.len != 3) return error.OddLength;
     }
 
-    // 3a. THE SHARED-WEIGHT IMAGE LAW -- the seam splices seamlessly on BOTH speakers: at den = 100 the center weight is the equal-power −3 dB point (isqrt(5000) = 70), so a 1000-outgoing crossed with a
+    // 3a. THE SHARED-WEIGHT IMAGE LAW -- the seam splices seamlessly on BOTH speakers: at den = 100 the center weight is the equal-power -3 dB point (isqrt(5000) = 70), so a 1000-outgoing crossed with a
     //     silent incoming lands 700 at center on the left while a 2000-outgoing lands 1400 on the right -- the same positional weight applied to each channel's own level, the image held not split.
     {
         var out_m = pan.StereoClip{};

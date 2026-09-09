@@ -10,7 +10,7 @@
 //! sample becomes 0; neither branch can overflow, and sample_min passes THROUGH untouched (it is already a legal i16, unlike the full-wave rectifier
 //! where its magnitude 32768 overflowed the positive rail). The inverted half-wave rectifier needs NO saturate.
 //!
-//! Harmonically it is the same even+odd mix as ALES85, sign-flipped: min(x, 0) = (x − |x|) / 2 carries the fundamental (odd) plus the even harmonics
+//! Harmonically it is the same even+odd mix as ALES85, sign-flipped: min(x, 0) = (x - |x|) / 2 carries the fundamental (odd) plus the even harmonics
 //! minus a DC term (the offset points the other way -- a one-sided signal below zero rather than above). The map is MEMORYLESS -- every output depends
 //! only on its own input, so the in-place read-then-write touches nothing another step needs, and halving a span block by block equals halving it whole.
 //! It is IDEMPOTENT -- a non-positive sample maps to itself, so halve_neg(halve_neg(x)) = halve_neg(x). And its output is always NON-POSITIVE -- the

@@ -11,15 +11,15 @@
 //!
 //! The edges name the knob. `pan == 0` (HARD LEFT) gives weights [den, 0]: the left channel is scaled by den/den (identity) and the right by 0/den
 //! (silence), so the whole wet wash routes to the LEFT and the right goes quiet. `pan == den` (HARD RIGHT) mirrors it -- the wash routes wholly RIGHT.
-//! `pan == den/2` (CENTRE) gives equal weights isqrt(den²/2) ≈ 0.707-den on both sides: the EQUAL-POWER centre holds the wash's loudness (−3 dB per
-//! channel) rather than the linear −6 dB, so a centred wet stays centred and both channels are attenuated equally below the pure wet. Because each
+//! `pan == den/2` (CENTRE) gives equal weights isqrt(den²/2) ≈ 0.707-den on both sides: the EQUAL-POWER centre holds the wash's loudness (-3 dB per
+//! channel) rather than the linear -6 dB, so a centred wet stays centred and both channels are attenuated equally below the pure wet. Because each
 //! weight is a non-negative amplitude no greater than den (ALES11's isqrt is monotone, den² its cap), each channel is a fraction of the wet, so the
 //! gain's saturate is a proven NO-OP -- the pan attenuates, never amplifies.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES213.
 //! Design read: active-designing/date/20260815/20260815-123603_fill-ales213-lotus-reverb-pan.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) -- the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
-//! forwarded whole; lotus/power.rye (ALES11) -- the equal-power split `split(pos, den)` = [isqrt(den-(den−pos)), isqrt(den-pos)], the two amplitude
+//! forwarded whole; lotus/power.rye (ALES11) -- the equal-power split `split(pos, den)` = [isqrt(den-(den-pos)), isqrt(den-pos)], the two amplitude
 //! weights on the quarter circle, reused verbatim; lotus/timeline.rye (ALES2) -- the Clip and its proven `gain` (each wet channel scaled by a
 //! fraction, saturated once); lotus/pan.rye (ALES10) -- the StereoClip, its balance invariant, and the fold bound `max_pan_den`; lotus/clock.rye
 //! (ALES5) -- the validated sample clock the preset speaks its span against.

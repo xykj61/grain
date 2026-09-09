@@ -13,10 +13,10 @@
 //! attenuates (that is the fader's job); a gain below unity is refused BadGain, the tremolo's own boundary read in reverse.
 //!
 //! Unlike the tremolo, the ceiling here is a GENUINE clip, not a no-op: the whole point is that the boosted sample crosses it. Yet the write is
-//! still safe by construction -- the pin lands every output in [−ceil, ceil] ⊆ [sample_min, sample_max] BEFORE the write, so the saturate that
+//! still safe by construction -- the pin lands every output in [-ceil, ceil] ⊆ [sample_min, sample_max] BEFORE the write, so the saturate that
 //! follows is a documented no-op over the already-pinned value (the clip is the pin, not the saturate). Each output depends only on its own input
 //! sample -- the drive is MEMORYLESS, so the in-place read-then-write at one index touches nothing another step needs. The hard clipper is an ODD
-//! function, drive(−x) = −drive(x), so a symmetric input drives to a symmetric output: odd harmonics, the honest character of a symmetric clip.
+//! function, drive(-x) = -drive(x), so a symmetric input drives to a symmetric output: odd harmonics, the honest character of a symmetric clip.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES78.
 //! Design read: active-designing/date/20260814/20260814-204949_fill-ales78-lotus-hard-clip-drive.md
@@ -103,7 +103,7 @@ pub fn drive(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, c
         // ALES49's ceiling law over the BOOSTED sample rather than the dry one: a value past ±ceil is pinned to the ceiling with its sign held;
         // one within passes at its boosted value. This is the genuine clip -- the flat top where the harmonics are born.
         const pinned: i64 = if (boosted > ceiling) ceiling else if (boosted < -ceiling) -ceiling else boosted;
-        // invariant: the pinned value lands within [−ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION --
+        // invariant: the pinned value lands within [-ceil, ceil] ⊆ [sample_min, sample_max], so the write fits the i16 rail BY CONSTRUCTION --
         // the clip is the pin above, and the saturate that follows is a documented no-op over an already-pinned value.
         assert(pinned >= -ceiling and pinned <= ceiling);
         // invariant: the sign is held -- a hard clipper is an odd function, so the driven sample carries the dry's sign (a symmetric input
@@ -118,7 +118,7 @@ pub fn drive(clip: *timeline.Clip, start: u32, count: u32, num: u32, den: u32, c
 
 // --- selftest: A UNITY DRIVE AT THE RAIL IS THE IDENTITY (the degenerate that proves the drive adds nothing without a boost that crosses the
 //     ceiling); THE CEILING IS NEVER CROSSED AND THE SIGN IS HELD under a hard boost (the crux -- the harmonic voice born at the flat top); a
-//     hand-computed drive matches exactly (some samples pass scaled, some pin); the hard clipper is ODD, drive(−x) = −drive(x); an EXTREME drive
+//     hand-computed drive matches exactly (some samples pass scaled, some pin); the hard clipper is ODD, drive(-x) = -drive(x); an EXTREME drive
 //     squares the wave (every non-zero sample pins, zeros stay zero); the span discipline holds (only [start, count) changes); and each fault --
 //     BadGain (zero den, below-unity gain, numerator past the bound), BadCeiling (zero, over-rail), BadRange (span past the end) -- refuses by
 //     name, the clip untouched ---
@@ -136,8 +136,8 @@ fn load_clip(clip: *timeline.Clip, src: []const i16) !void {
 
 fn run_selftest() !u8 {
     // 1. A UNITY DRIVE AT THE RAIL IS THE IDENTITY -- num/den = 1/1 and ceil = sample_max: nothing is boosted past the ceiling, so the clip
-    //    passes byte-for-byte. The signal spans the SYMMETRIC rail [−sample_max, sample_max]: sample_min (−32768) has magnitude 32768 > the
-    //    largest legal ceiling, so a symmetric ceiling pins it to −sample_max by design (exactly as ALES49's limiter) -- the identity is over
+    //    passes byte-for-byte. The signal spans the SYMMETRIC rail [-sample_max, sample_max]: sample_min (-32768) has magnitude 32768 > the
+    //    largest legal ceiling, so a symmetric ceiling pins it to -sample_max by design (exactly as ALES49's limiter) -- the identity is over
     //    the symmetric rail, not the asymmetric corner. The drive adds nothing until the gain forces a sample into the ceiling; this proves it.
     {
         const sig = [_]i16{ 500, -900, 1000, -1000, 32767, -32767, 250, -500 };
@@ -178,8 +178,8 @@ fn run_selftest() !u8 {
         if (!eq(clip.samples(), &want)) return error.HandComputedWrong;
     }
 
-    // 4. THE HARD CLIPPER IS ODD -- drive(−x) = −drive(x). A ± symmetric input drives to a ± symmetric output at any gain and ceiling, so the
-    //    drive generates ODD harmonics and never an even-order asymmetry: out[0] = −out[1], out[2] = −out[3], out[4] = −out[5].
+    // 4. THE HARD CLIPPER IS ODD -- drive(-x) = -drive(x). A ± symmetric input drives to a ± symmetric output at any gain and ceiling, so the
+    //    drive generates ODD harmonics and never an even-order asymmetry: out[0] = -out[1], out[2] = -out[3], out[4] = -out[5].
     {
         const sig = [_]i16{ 800, -800, 4000, -4000, 20, -20 };
         var clip = timeline.Clip{};

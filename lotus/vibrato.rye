@@ -7,13 +7,13 @@
 //! The crux is that THE SAME MODULATED READ, HEARD ALONE, IS THE VIBRATO. This rung invents no new arithmetic -- it reuses ALES71's
 //! `triangle_delay_at` driver and ALES70's fractional interpolation read verbatim, and only changes what reaches the output. Over one period P
 //! (a positive multiple of four, q = P/4) with phase p = k % P, the scaled delay is d_s(k) = centre_scaled + triangle(depth_scaled, P, k);
-//! then near = dry[i − d_whole], far = dry[i − d_whole − 1], delayed = (near-(glide_scale − frac) + far-frac)/glide_scale, and where the
+//! then near = dry[i - d_whole], far = dry[i - d_whole - 1], delayed = (near-(glide_scale - frac) + far-frac)/glide_scale, and where the
 //! chorus writes saturate(x[i] + delayed) the vibrato writes `delayed` ALONE -- the wet voice by itself. So chorus[i] = saturate(dry[i] +
 //! vibrato[i]) at every sample: the two rungs are one delay heard two ways. Because `delayed` is a convex combination of two i16 neighbours
 //! (weights non-negative, summing to glide_scale), it ALREADY fits the i16 rail -- there is no dry sum to overflow; the write goes through the
 //! one true saturate for family uniformity, yet it never actually clips (the vibrato voice can only be as loud as the dry it reads). Every
 //! read is off a FROZEN snapshot of the dry prefix (the ALES68/ALES70/ALES71 idiom, reused), so a moving read never reads a sample it just
-//! wrote. The delay never dips below one whole sample (centre − depth ≥ glide_scale) and never reaches past the widest clip
+//! wrote. The delay never dips below one whole sample (centre - depth ≥ glide_scale) and never reaches past the widest clip
 //! ((centre + depth)/glide_scale ≤ max_clip), both checked before any write. The vibrato is inherently full-wet -- the delayed voice IS the
 //! whole output -- so there is no num/den mix level, and thus no BadLevel fault; the other four carry over from the chorus exactly.
 //!
@@ -41,13 +41,13 @@ const chorus = @import("chorus.rye");
 pub const vibrato_version = "20260814.195637";
 
 /// The vibrato's faults, one consistent name each: a period that is not a positive multiple of four (the triangle's quarter anchors need
-/// P/4 whole) or wider than max_clip, a swing that would dip below one whole sample (centre − depth < glide_scale) or reach past the widest
+/// P/4 whole) or wider than max_clip, a swing that would dip below one whole sample (centre - depth < glide_scale) or reach past the widest
 /// clip (centre + depth whole > max_clip), and a span outside the samples. Each refused before any write. There is NO BadLevel -- the vibrato
 /// is heard wet-only, the delayed voice is the whole output, so it carries no mix level.
 pub const VibratoError = error{
     /// A period that is not a positive multiple of four, or wider than max_clip -- refused, no write.
     BadPeriod,
-    /// A negative depth, or a swing whose bottom (centre − depth) falls under one whole sample -- refused, no write.
+    /// A negative depth, or a swing whose bottom (centre - depth) falls under one whole sample -- refused, no write.
     BadDepth,
     /// A swing whose top (centre + depth) whole delay is longer than max_clip samples -- refused, no write.
     BadDelay,
@@ -126,7 +126,7 @@ pub fn vibrato(
         // invariant: both neighbours already fit the i16 rail -- they are dry audio, never a wide intermediate.
         assert(near_val >= @as(i64, timeline.sample_min) and near_val <= @as(i64, timeline.sample_max));
         assert(far_val >= @as(i64, timeline.sample_min) and far_val <= @as(i64, timeline.sample_max));
-        // Linear interpolation (ALES70's read): near weighted by (scale − frac), far by frac, divided once. frac = 0 returns near exactly;
+        // Linear interpolation (ALES70's read): near weighted by (scale - frac), far by frac, divided once. frac = 0 returns near exactly;
         // frac = scale/2 returns the exact average. |near|,|far| <= 32768 and the weights sum to glide_scale, so the product fits i64.
         const delayed: i64 = @divTrunc(near_val * (scale - frac) + far_val * frac, scale);
         // invariant: the vibrato voice is a convex combination of two in-range dry samples, so it ALREADY fits the i16 rail -- the saturate
@@ -176,10 +176,10 @@ fn run_selftest() !u8 {
     }
 
     // 2. A HAND-COMPUTED WET-ONLY READ -- the chorus's whole-sample-anchored case (centre = 2-scale, depth = 1-scale, period = 4, q = 1), but
-    //    heard wet-only: each output is dry[i − delay(i)] ALONE, no dry added.
+    //    heard wet-only: each output is dry[i - delay(i)] ALONE, no dry added.
     //      k:        0  1  2  3  4  5
     //      delay(k): 2  3  2  1  2  3   (triangle: centre, top, centre, bottom, centre, top)
-    //    On sig[i] = i-1000 (dry[j]=0 for j<0), y[i] = dry[i − delay(i)]:
+    //    On sig[i] = i-1000 (dry[j]=0 for j<0), y[i] = dry[i - delay(i)]:
     //      i0 d2: dry[-2]=0 ; i1 d3: dry[-2]=0 ; i2 d2: dry[0]=0 ; i3 d1: dry[2]=2000 ; i4 d2: dry[2]=2000 ; i5 d3: dry[2]=2000
     {
         const sig = [_]i16{ 0, 1000, 2000, 3000, 4000, 5000 };

@@ -13,8 +13,8 @@
 //! (the sibling signer over the twisted Edwards group). secp256k1 is not in Monocypher, so its source parity is not a rung here; the algebraic
 //! round-trip plus Zig's independent std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 are the two witnesses (.claude/rules/gratitude-licenses.md).
 //!
-//! THE CRUX -- SEC 1 signing with a deterministic nonce, exactly Zig's. Given a private scalar d in [1, n−1] and a message hash z (SHA-256 of
-//! the message, folded mod n): derive a per-message nonce k in [1, n−1] DETERMINISTICALLY from d and the raw message hash (no randomness, so
+//! THE CRUX -- SEC 1 signing with a deterministic nonce, exactly Zig's. Given a private scalar d in [1, n-1] and a message hash z (SHA-256 of
+//! the message, folded mod n): derive a per-message nonce k in [1, n-1] DETERMINISTICALLY from d and the raw message hash (no randomness, so
 //! the same key and message always sign to the same bytes); form R = k-G over the GREEN ladder; take r = affine x of R mod n and refuse r = 0;
 //! compute s = k⁻¹-(z + r-d) mod n and refuse s = 0; emit (r, s) big-endian. The nonce follows Zig's "Deterministic ECDSA with Additional
 //! Randomness" DRBG with null noise -- RFC 6979's HMAC-DRBG with a 32-byte zero noise block between the domain byte and the key, and the raw
@@ -59,7 +59,7 @@ pub const max_nonce_tries: u32 = 256;
 /// The largest message this file will hash and sign, inherited from the SHA-256 message bound beneath it.
 pub const max_sign_message_bytes: u32 = sha.max_message_bytes;
 
-/// The errors signing can name -- a private key outside [1, n−1], the astronomically-unreachable nonce exhaustion, the
+/// The errors signing can name -- a private key outside [1, n-1], the astronomically-unreachable nonce exhaustion, the
 /// probability-zero r = 0 or s = 0, and an oversize message. Named so a caller reads a word, never a bare failure.
 pub const SignError = error{
     InvalidPrivateKey,
@@ -115,7 +115,7 @@ fn reverse32(s: *const [32]u8) [32]u8 {
     return r;
 }
 
-/// True when a 32-byte encoding is all zero -- the below-1 half of the [1, n−1] range gate, and the point-at-infinity test on a packed Z.
+/// True when a 32-byte encoding is all zero -- the below-1 half of the [1, n-1] range gate, and the point-at-infinity test on a packed Z.
 fn is_zero32(s: *const [32]u8) bool {
     var acc: u8 = 0;
     var i: u32 = 0;
@@ -172,7 +172,7 @@ fn prf(msg: []const u8, key: *const [32]u8) [32]u8 {
     return hmac.mac(msg, key[0..]) catch unreachable;
 }
 
-/// Derive the deterministic per-message nonce k, big-endian, in [1, n−1] -- Zig's null-noise "Deterministic ECDSA with Additional Randomness"
+/// Derive the deterministic per-message nonce k, big-endian, in [1, n-1] -- Zig's null-noise "Deterministic ECDSA with Additional Randomness"
 /// DRBG reproduced exactly (RFC 6979 HMAC-DRBG with a 32-byte zero noise block and the raw message hash). The private key and hash both arrive
 /// big-endian; the returned nonce is big-endian, ready to reverse for the ladder.
 fn deterministic_nonce(d_be: *const [32]u8, hash_be: *const [32]u8) SignError![32]u8 {
@@ -205,7 +205,7 @@ fn deterministic_nonce(d_be: *const [32]u8, hash_be: *const [32]u8) SignError![3
         // T = HMAC_K(V) -- for secp256k1 qlen equals hlen, so one HMAC block fills the candidate.
         v = prf(v[0..], &k_hmac);
         const k_le = reverse32(&v);
-        // Accept exactly when the candidate is a canonical nonzero scalar in [1, n−1] -- Zig's fromBytes success condition.
+        // Accept exactly when the candidate is a canonical nonzero scalar in [1, n-1] -- Zig's fromBytes success condition.
         if (sc.is_canonical(&k_le) and !is_zero32(&k_le)) return v;
         // Retry: K = HMAC_K(V || 0x00); V = HMAC_K(V)
         set_v(&m, &v);
@@ -220,7 +220,7 @@ fn deterministic_nonce(d_be: *const [32]u8, hash_be: *const [32]u8) SignError![3
 /// against. d arrives big-endian and must be a canonical nonzero scalar. Composes only the GREEN ladder and group law.
 pub fn derive_public(d_be: *const [32]u8) SignError!struct { qx: [field_bytes]u8, qy: [field_bytes]u8 } {
     const d_le = reverse32(d_be);
-    // invariant: the private key is a canonical scalar strictly inside [1, n−1].
+    // invariant: the private key is a canonical scalar strictly inside [1, n-1].
     if (!sc.is_canonical(&d_le)) return error.InvalidPrivateKey;
     if (is_zero32(&d_le)) return error.InvalidPrivateKey;
     const q = mul_pt.scalarmul(base_point(), &d_le);
@@ -233,7 +233,7 @@ pub fn derive_public(d_be: *const [32]u8) SignError!struct { qx: [field_bytes]u8
 /// Deterministic -- the same d and hash always yield the same bytes. Composes only GREEN rungs and the deterministic-nonce DRBG.
 pub fn sign_prehashed(d_be: *const [32]u8, hash_be: *const [32]u8) SignError!Signature {
     const d_le = reverse32(d_be);
-    // invariant: the signing key is a canonical scalar strictly inside [1, n−1].
+    // invariant: the signing key is a canonical scalar strictly inside [1, n-1].
     if (!sc.is_canonical(&d_le)) return error.InvalidPrivateKey;
     if (is_zero32(&d_le)) return error.InvalidPrivateKey;
 

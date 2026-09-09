@@ -182,7 +182,7 @@ fn run_selftest() !u8 {
         }
     }
 
-    // 3. A KNOWN CAP -- with frame 4, floor 500, max 2: each of the three silent runs (4 samples) keeps its first 2 and cuts 2. Result = 24 − 3-2 = 18 samples: the
+    // 3. A KNOWN CAP -- with frame 4, floor 500, max 2: each of the three silent runs (4 samples) keeps its first 2 and cuts 2. Result = 24 - 3-2 = 18 samples: the
     //    kept head pair, the body, the kept gap pair, the noisy run, and the kept tail pair.
     {
         var clip = timeline.Clip{};
