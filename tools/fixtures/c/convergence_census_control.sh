@@ -131,6 +131,43 @@ elder_proven() { # elder_proven <file> -> yes|no
 }
 leg elder_called_self_certification_proven yes "$(elder_proven tools/x/self_certifying.sh)"
 
+# 9. THE SECOND PROOF SOURCE, from both sides (`20260908.215031`). A tool is also proven when a
+# tracked runner NAMES it on a non-comment line that also names a convergence prover -- somebody
+# ran the question rather than writing a check about it. The plants below name
+# `tools/c/convergence_tree_prove.sh` inside the pen, so this control file carries that string on
+# its own non-comment lines; in the real tree those lines name only `tools/x/` paths, which no
+# candidate wears, so the census reads nothing from them.
+plant tools/x/prover_run_proven.sh 'cat "$tmp" > "$f"'
+plant tools/x/prover_run_caller.rish 'let p = run ["sh" "tools/c/convergence_tree_prove.sh" "tools/x/prover_run_proven.sh" "write"]'
+# 9b. The same naming, on a line the language marks as a comment. A plan is not a run.
+plant tools/x/prover_in_comment.sh 'cat "$tmp" > "$f"'
+plant tools/x/commented_caller.rish '# owed: sh tools/c/convergence_tree_prove.sh tools/x/prover_in_comment.sh write'
+# 9c. And the self-exclusion, which the sibling column already learned: a tool naming the prover
+#     and itself in its own source certifies nothing about itself.
+plant tools/x/prover_self_named.sh 'cat "$tmp" > "$f"
+echo "sh tools/c/convergence_tree_prove.sh tools/x/prover_self_named.sh write"'
+git add -A >/dev/null
+git commit -q -m "pen: planted prover-run shapes"
+
+unproven_now=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
+
+leg prover_run_counted             no  "$(unp prover_run_proven.sh)"
+leg prover_run_in_comment_refused  yes "$(unp prover_in_comment.sh)"
+leg prover_self_naming_refused     yes "$(unp prover_self_named.sh)"
+
+# 9d. AND THE REPAIR MUST MOVE SOMETHING. The elder numerator reads sibling assertions alone, so it
+# calls the prover-run plant unproven -- which is exactly how `reds_ledger_headline_write.sh` stood
+# in that column while `convergence_tree_prove_witness.rish` proved it converges on every lap.
+leg elder_called_prover_run_unproven no "$(elder_proven tools/x/prover_run_proven.sh)"
+
+# 9e. The split is printed, since a tool proven both ways counts once in the total and a reader
+# needs to know which evidence stands behind the number.
+split_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
+case "$split_now" in *proven_by_prover_run=*) split_prover=printed ;; *) split_prover=absent ;; esac
+case "$split_now" in *proven_by_sibling_assertion=*) split_sibling=printed ;; *) split_sibling=absent ;; esac
+leg prover_run_split_printed        printed "$split_prover"
+leg sibling_assertion_split_printed printed "$split_sibling"
+
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"
 cd "$pen/bare"

@@ -276,8 +276,18 @@ seated 20260907.222830
 # tracked path holding the tool's stem, the tool ITSELF included, on any line comment or not, so a
 # tool writing `Idempotent: a second run changes nothing` in its own header certified itself. Two
 # of the five did exactly that. The census header had stated the rule correctly all along --
-# *inside a check rather than a comment* -- and nothing read it. Proven now reads **3 of 10**, and
+# *inside a check rather than a comment* -- and nothing read it. Proven fell to **3 of 10**, and
 # the control runs the elder numerator over the same plant to prove the repair moved something.
+#
+# AND THEN THE NUMERATOR GREW A SECOND SOURCE (`20260908.215031`), because a proof that runs every
+# lap was invisible to it. `convergence_tree_prove_witness.rish`, rostered below, proves
+# `tools/fixtures/r/reds_ledger_headline_write.sh` converges -- the writer `tools/hooks/pre-commit`
+# runs on EVERY commit -- and that tool stood in the unproven column, since only a SIBLING
+# assertion counted. A tool is proven now when a runner that is not the tool names it and a
+# convergence prover on one non-comment line, and the split is printed:
+# `proven_by_sibling_assertion` says a hand wrote a check, `proven_by_prover_run` says somebody ran
+# the question. Proven reads **4 of 10**. Six control legs prove it from both sides, the elder
+# numerator among them.
 guard convergence_census
 path tools/c/convergence_census_witness.rish
 tier lap

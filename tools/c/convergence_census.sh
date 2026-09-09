@@ -75,7 +75,31 @@
 # sibling assertion is what this column reads. So the column measures whether somebody WROTE the
 # check, rather than whether the tool converges, and a
 # pen-TREE prover -- one that copies a repository, runs the operator twice, and diffs -- is the
-# instrument that would. Named here rather than built, and carried to the card for Keaton.
+# instrument that would.
+#
+# THAT INSTRUMENT WAS BUILT THE SAME DAY, AND THIS COLUMN COULD NOT SEE IT (`20260908.215031`).
+# `tools/c/convergence_tree_prove.sh` landed at `0cb297adb7` and is rostered `tier lap`: it takes a
+# `--perturb` command, checks HEAD out into a `git worktree` pen, runs the whole-tree operator
+# twice, and compares with `git write-tree`, so a mode-only change reads `diverges`. Its witness
+# runs it on `tools/fixtures/r/reds_ledger_headline_write.sh` -- which `tools/hooks/pre-commit`
+# runs on EVERY commit this tree makes -- and reads `verdict=converges` on every lap of every ship.
+# And that tool stood in the UNPROVEN column here, because the numerator read a sibling assertion
+# and nothing else. A proof that runs every twenty minutes was invisible to the census that asks
+# whether the proof exists.
+#
+# So a tool is proven two ways from this stamp, and the split is printed rather than folded into
+# one number, because the two are different evidence:
+#
+#   proven_by_sibling_assertion  a control or witness beside the tool ASSERTS the second run's
+#                                result, on a non-comment line, in a file that is not the tool
+#   proven_by_prover_run         a tracked runner names this tool on a non-comment line that also
+#                                names a convergence prover -- somebody RAN the question
+#
+# The second is the stronger evidence, since a sibling assertion says a hand wrote a check and a
+# prover run says the tool converged on metal. Both exclusions carry over unchanged: the tool is
+# dropped from its own set, so a tool naming the prover in its own source certifies nothing, and a
+# comment naming both is prose. `candidates_proven` counts a tool once however many ways it is
+# proven, so the two splits may sum above it and the total is the one to read.
 #
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
@@ -102,8 +126,19 @@ git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/' |
 # A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170).
 [ -s "$work/all.txt" ] || { echo "refused: no tracked tools -- every count below would read zero" >&2; exit 2; }
 
-writers=0; proven=0; unproven=0
+writers=0; proven=0; unproven=0; by_assertion_n=0; by_prover_n=0
 : > "$work/unproven.txt"
+
+# EVERY LINE IN THE TREE THAT RUNS A CONVERGENCE PROVER, gathered once rather than per candidate.
+# Each row is `<file>\t<line body>`, and only non-comment lines survive: a comment naming both a
+# prover and a tool is a plan, and this census has already paid once for reading prose as proof.
+# The file is kept beside the count so the self-exclusion below can drop a tool that names the
+# prover in its own source -- the same rule the sibling search learned at `20260908.190452`.
+git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/' \
+  | xargs -r grep -HE 'convergence_(tree_)?prove\.sh' 2>/dev/null \
+  | awk -F: '{ src = $1; sub(/^[^:]*:/, ""); body = $0; sub(/^[[:space:]]+/, "", body);
+               if (body !~ /^#/) print src "\t" body }' > "$work/prover_lines.txt" || true
+[ -f "$work/prover_lines.txt" ] || : > "$work/prover_lines.txt"
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   # A WRITER HERE MUTATES THE TRACKED TREE, not its own pen. Nearly every tool redirects into a
@@ -163,10 +198,24 @@ while IFS= read -r f; do
   # sh and Rishi. Measured on this tree, proven falls 5 -> 3 and both departures are the
   # self-certifying pair; the three that stand are real -- two controls asserting
   # `verdict=nothing_to_do` on a second run, and one naming an idempotence case it then runs.
+  by_assertion=no
   if git ls-files 'tools/*' 2>/dev/null | grep -F "$stem" | grep -vxF "$f" \
        | xargs -r grep -hEi '(idempotent|second run|run twice|runs twice|again finds nothing)' 2>/dev/null \
        | grep -vqE '^[[:space:]]*#'; then
+    by_assertion=yes
+  fi
+  # THE SECOND PROOF SOURCE: somebody RAN the question. A runner that is not this tool names both a
+  # convergence prover and this tool's path on one non-comment line, which is what
+  # `convergence_tree_prove_witness.rish` does for the headline writer on every lap.
+  by_prover=no
+  if awk -F'\t' -v t="$f" '$1 != t && index($2, t) > 0 { found = 1 }
+                           END { exit (found ? 0 : 1) }' "$work/prover_lines.txt"; then
+    by_prover=yes
+  fi
+  if [ "$by_assertion" = yes ] || [ "$by_prover" = yes ]; then
     proven=$((proven + 1))
+    if [ "$by_assertion" = yes ]; then by_assertion_n=$((by_assertion_n + 1)); fi
+    if [ "$by_prover" = yes ]; then by_prover_n=$((by_prover_n + 1)); fi
   else
     unproven=$((unproven + 1))
     printf '%s\n' "$f" >> "$work/unproven.txt"
@@ -180,4 +229,6 @@ fi
 echo "tools_read=$(grep -c . "$work/all.txt")"
 echo "candidates=$writers"
 echo "candidates_proven=$proven"
+echo "proven_by_sibling_assertion=$by_assertion_n"
+echo "proven_by_prover_run=$by_prover_n"
 echo "candidates_unproven=$unproven"
