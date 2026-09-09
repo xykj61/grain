@@ -52,6 +52,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260909.044642` | [The query and reply budget](20260909-044642_the-query-and-the-reply-budget.md) | local match count and reply bytes; boundary probe |
 | `20260909.035800` | [The bounds a store actually promises](20260909-035800_the-bounds-a-store-promises.md) | primary sources and a local refusal probe correct the store comparison |
 | `20260907.000309` | [What a departure costs a table everybody shares](20260907-000309_what-a-departure-costs-a-shared-table.md) | one departure leaves 99.8% of the shared table right; the repair belongs at six nodes |
 | `20260906.195719` | [What it costs to decide the next hop](20260906-195719_what-it-costs-to-decide-the-next-hop.md) | one 270-byte table routes every node; two address spaces route free; lookahead buys nothing |
