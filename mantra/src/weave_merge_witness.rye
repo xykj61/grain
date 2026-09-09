@@ -9,7 +9,7 @@
 //! and a witness proves that by DOING rather than by argument, merging the same
 //! three states in all six orders and asserting one answer comes back.
 //!
-//! Nine claims, each shown from the side that matters:
+//! Claims, each shown from the side that matters:
 //!   1. Both orders agree field for field -- a.merge(b) equals b.merge(a).
 //!   2. All six orders of three states give one weave.
 //!   3. Associativity holds on its own: a.(b.c) equals (a.b).c.
@@ -29,6 +29,8 @@
 //!      name. With the site in the identity, that is a replayed counter rather
 //!      than an ordinary branch -- so claims 6 and 9 are the two sides of one
 //!      sentence, and neither reads right without the other.
+//!
+//! A merged weave also remains editable when document and identity order differ.
 //!
 //! Part of Mantra -- TAME-first from line one.
 
@@ -480,6 +482,53 @@ fn prove_interleaved_order(garden: std.mem.Allocator) !void {
     print("mantra-merge: an interleaving union comes out in position order -- GREEN welcome path\n", .{});
 }
 
+/// Recover the parked merge-then-delete case. Three lines put document order
+/// apart from identity order, so an edit must find its target by the right name.
+fn prove_merged_weave_still_edits(garden: std.mem.Allocator) !void {
+    const left = try seeded(garden, &[_]weave.Line{
+        .{ .text = "last written", .gen = 1, .pos = 0, .site = site_here, .run = 2 },
+        .{ .text = "first written", .gen = 1, .pos = 2, .site = site_here, .run = 0 },
+    }, 3);
+    const right = try seeded(garden, &[_]weave.Line{
+        .{ .text = "between", .gen = 1, .pos = 1, .site = site_here, .run = 1 },
+    }, 3);
+
+    var joined = try left.merge(garden, &right);
+    // invariant: the union holds all three lines, so what follows tests the
+    // order rather than a line that went missing on the way
+    assert(joined.lines.items.len == 3);
+
+    // invariant: document order reverses identity order in this union, so a
+    // binary search over the backing list cannot safely find a delete target.
+    assert(joined.lines.items[0].pos == 2);
+    assert(joined.lines.items[1].pos == 1);
+    assert(joined.lines.items[2].pos == 0);
+
+    try joined.apply(garden, .{
+        .site = site_here,
+        .inserts = &[_][]const u8{},
+        .deletes = &[_]weave.LineId{.{ .pos = 0, .site = site_here }},
+    });
+
+    var gone: u32 = 0;
+    for (joined.lines.items) |line| {
+        if (line.pos == 0) {
+            // invariant: the named line came out gone, which is the delete
+            // having reached the line it named rather than some other one
+            assert(line.gen % 2 == 0);
+            gone += 1;
+        } else {
+            // invariant: no other line moved, since a delete names one line and
+            // a search landing beside it would take a bystander instead
+            assert(line.gen % 2 == 1);
+        }
+    }
+    // invariant: exactly one line went, so the count says the delete happened
+    // once rather than never or twice
+    assert(gone == 1);
+    print("mantra-merge: a merged weave still deletes by name, where place order and identity order disagree -- GREEN welcome path\n", .{});
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     // One base, three branches of it. State_c inserts while a and b only
     // delete, so the three genuinely differ and none of them collide.
@@ -502,6 +551,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_bound_refused(garden);
     try prove_interleaved_order(garden);
     try prove_forged_identity_refused(garden);
+    try prove_merged_weave_still_edits(garden);
 
     print("mantra-merge: version {s}\n", .{witness_version});
     print("GREEN: merging two weaves is a join -- commutative, associative, idempotent, and refusing by name.\n", .{});

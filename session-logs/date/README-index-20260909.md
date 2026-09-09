@@ -14,7 +14,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.154924` | [The record nobody carried](20260909/20260909-154924_the-record-nobody-carried.kyri) | Copal; parked log lands, nib repinned |
 | `20260909.154812` | [Roster claim read back](20260909/20260909-154812_the-roster-claim-read-back.kyri) | every guard can red, now measured |
 | `20260909.151557` | [The reply that outlived its frame](20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri) | Bakery; a returned answer owns its bytes |
+| `20260909.151459` | [Merged weave deletes by name](20260909/20260909-151459_a-merged-weave-deletes-by-name.kyri) | Patchouli; parked lap recovered |
 | `20260909.092251` | [Integration send held](20260909/20260909-092251_integration-send-held.kyri) | Copal; final peer recheck pending |
+| `20260909.091106` | [The merged weave still edits](20260909/20260909-091106_the-merged-weave-still-edits.kyri) | Patchouli; parked test recovered |
 | `20260909.090354` | [Five shelf addresses](20260909/20260909-090354_five-shelves-find-their-readers.kyri) | Grass; parked records restored |
 | `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
 | `20260909.083122` | [Recovery integration](20260909/20260909-083122_recovery-integration.kyri) | Copal; saved package verified |
