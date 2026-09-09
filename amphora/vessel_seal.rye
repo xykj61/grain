@@ -43,6 +43,8 @@ fn is_lower_hex(c: u8) bool {
 }
 
 fn write_hex(bytes: []const u8, out: []u8) void {
+    // invariant: hex spends two characters on every byte, so the output slice is at least twice the
+    // input or the loop below writes past its end.
     assert(out.len >= bytes.len * 2);
     var i: u32 = 0;
     while (i < bytes.len) : (i += 1) {
@@ -259,6 +261,8 @@ pub fn open_cargo_plain(text: []const u8, plain: []u8) error{InvalidVessel, BadH
 /// plaintext block to a file, so restore reaches it on path C. The
 /// open-check stays the verify-only door; this one yields the bytes.
 fn run_open_file(io: std.Io, path: []const u8, out_path: []const u8) !u8 {
+    // invariant: the caller names both paths, so an empty one would read or overwrite whatever the
+    // working directory happens to hold.
     assert(path.len > 0);
     assert(out_path.len > 0);
     const cwd = std.Io.Dir.cwd();
@@ -269,6 +273,8 @@ fn run_open_file(io: std.Io, path: []const u8, out_path: []const u8) !u8 {
         print("amphora: vessel open refused\n", .{});
         return fault;
     };
+    // invariant: an opened seal yields at least one byte, so a zero-length plaintext would be written
+    // out as an empty cargo block and read back later as a vessel carrying nothing.
     assert(n >= 1);
     try cwd.writeFile(io, .{ .sub_path = out_path, .data = plain[0..n] });
     print("amphora: vessel opened plain_bytes={d}\n", .{n});
@@ -295,6 +301,8 @@ fn run_selftest() !u8 {
 
     var opened: [max_seal_plain]u8 = undefined;
     try decrypt_cargo(cipher[0..plain.len], tag, ad, nonce, &opened);
+    // invariant: the round trip returns the exact plaintext, so a seal decrypting to the right length
+    // and the wrong bytes is caught here rather than trusted on its tag alone.
     assert(std.mem.eql(u8, opened[0..plain.len], plain));
 
     // Class W control: wrong associated data must refuse (counsel e148 park).
@@ -310,6 +318,8 @@ fn run_selftest() !u8 {
     } else |_| {}
 
     const n = nonce_from_stamp_parent("20260710.153745", "8ffb113abd0b51216cc5062d34687fd8a64ae5d2d3c8f91bcb7f019c43c656ff");
+    // invariant: the derived nonce is exactly the width the cipher takes, so a shorter digest would
+    // leave the tail of the nonce holding whatever the stack left there.
     assert(n.len == ChaCha20Poly1305.nonce_length);
 
     print("amphora: seal version {s}\n", .{amphora_seal_version});

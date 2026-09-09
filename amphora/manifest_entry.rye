@@ -61,6 +61,8 @@ fn is_lower_hex(c: u8) bool {
 /// mark is one the engine can name. An unknown mark refuses whole rather than
 /// riding through unread -- there is no partial trust of cargo whose kind has no name.
 pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }!ManifestEntry {
+    // invariant: a line reaching the parser holds bytes and fits the named bound, so the u32
+    // arithmetic below indexes real content and never walks past the slice it was handed.
     assert(line.len >= 1);
     assert(line.len <= max_line_len);
 
@@ -92,6 +94,8 @@ pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }
         .digest_hex = line[@intCast(digest_start)..@intCast(digest_end)],
         .name = line[@intCast(name_start)..@intCast(len)],
     };
+    // invariant: the three fields the entry publishes were each cut from the line above, so every
+    // one carries content and the digest is exactly the width every later reader slices it at.
     assert(entry.mark.len >= 1);
     assert(entry.digest_hex.len == digest_hex_len);
     assert(entry.name.len >= 1);
@@ -114,6 +118,8 @@ pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }
 fn run_selftest(_: std.Io) !u8 {
     const line = mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " session-logs/example.md";
     const entry = try parse_manifest_line(line);
+    // invariant: a line built from the roster's own mark parses back into the same three fields, so
+    // the welcome leg proves acceptance rather than proving only that no error was raised.
     assert(std.mem.eql(u8, entry.mark, mark_plain_bytes));
     assert(entry.digest_hex.len == digest_hex_len);
     assert(std.mem.eql(u8, entry.name, "session-logs/example.md"));
@@ -127,7 +133,11 @@ fn run_selftest(_: std.Io) !u8 {
     // and an inviting-sounding kind the engine never named both refuse.
     const manifest_line = mark_manifest ++ " " ++ ("ab" ** 32) ++ " nested.bron";
     const nested = try parse_manifest_line(manifest_line);
+    // invariant: the manifest root parses beside plain-bytes, so the roster admits both kinds; a
+    // welcome proven for one mark alone would leave a narrowed roster reading green.
     assert(std.mem.eql(u8, nested.mark, mark_manifest));
+    // invariant: each refusal names UnknownMark itself, so a refusal earned some other way -- a bad
+    // length, a malformed digest -- cannot be read as the roster doing its work.
     if (parse_manifest_line("zzz-unknown-stranger " ++ ("ab" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnknownMark);
     if (parse_manifest_line("executable " ++ ("ab" ** 32) ++ " payload.so")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnknownMark);
 

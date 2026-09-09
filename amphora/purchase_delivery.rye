@@ -53,6 +53,8 @@ fn require_lower_hex(value: []const u8, want_len: u32) error{InvalidSlip}!void {
 }
 
 fn write_hex(bytes: []const u8, out: []u8) void {
+    // invariant: hex spends two characters on every byte, so the output slice is at least twice the
+    // input or the loop below writes past its end.
     assert(out.len >= bytes.len * 2);
     var i: u32 = 0;
     while (i < bytes.len) : (i += 1) {
@@ -303,6 +305,9 @@ fn run_selftest(io: std.Io) !u8 {
     const text = try cwd.readFile(io, "tools/fixtures/p/purchase_delivery_lap1.bron", &buf);
     var fields: SlipFields = undefined;
     try parse_slip(text, &fields);
+    // invariant: the slip parses back into the format and shoulder it was written with and both
+    // digests carry their full hex width, so a reader drifting on any one field is caught here
+    // rather than in a delivery nobody can match to its payment.
     assert(std.mem.eql(u8, fields.format, "commerce-delivery-v1"));
     assert(std.mem.eql(u8, fields.shoulder, "purchased-work"));
     assert(fields.vessel_parent.len == digest_hex_len);
