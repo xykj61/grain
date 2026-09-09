@@ -34,6 +34,10 @@ file construction/standing-equipment.kyri seats the guard at tier lap with the n
 file context/TAME_CORE.md records the wall beneath its own table; graded A at Field
 file construction/ITINERARY.md the INCENSE account, the elder shelved, and the Git nib carried forward
 file construction/archive/20260909-155401_itinerary-landed-accounts.md the elder account, moved whole by the shelf writer
+obs The send's rebase onto xy/main brought a published %664 bound to 20260909.151024, where this tree held %664 at 20260909.042650 and %665 at 20260909.073110. By the derived spine a published number never moves and an unshared row renumbers above it, so those two became %665 and %666. Both were already renumbered once this morning against a spine whose max was 663, which is the fourth firing of that shape on this row pair.
+obs That renumber put construction/REDS.md 154 bytes over the 40,960 its header declares with every remaining row OPEN, so no fold had been lawful. Four short CLOSED rows -- %658, %659, %664, %665 -- folded through tools/fixtures/r/reds_fold.sh onto construction/archive/REDS-four-closures-in-one-day-rows-658-665.md, and the pin reads 40,340. reds_ledger_monotone green with 666 rows, no gaps.
+obs Landed 3e47fbf25 on xy then debrided. Two send-time rebases; the second brought only the card's nib line, taken upstream's and reset to HEAD's parent 165ad981c3, which remember_git_nib reads as state parent.
+loom reds=fold rows_moved=4 pin_bytes_before=41114 pin_bytes_after=40340 spine_rows=666
 scope one keystone -- the law page's declared audit walled, plus the nib repair the cold pass named
 status GREEN -- tame_core_surface green on the tree and its control clean; cold pass refuses tree_moved by my own hand, hot pass is the receipt
 recommend keep-going the residue rule telling a parenthetical from a sentence is the next mechanical lap in this lane
