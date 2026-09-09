@@ -7,7 +7,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tally = @import("gardens.rye");
 
-const outer_bytes: u32 = 1024; // the outermost allocation — the whole season's ground
+const outer_bytes: u32 = 1024; // the outermost allocation -- the whole season's ground
 
 pub fn main() void {
     var outer: [outer_bytes]u8 = undefined;

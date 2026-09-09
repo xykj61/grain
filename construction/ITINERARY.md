@@ -48,26 +48,27 @@
 
 ### Now -- the live front
 
-**Git nib:** `793694d2af` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a0b3ffdd48` -- HEAD's parent, resolvable everywhere (%401).
 
 *The BAKERY account -- a proof that ran every lap and was invisible to the census -- is shelved whole on
 [`archive/20260909-000500_itinerary-landed-accounts.md`](archive/20260909-000500_itinerary-landed-accounts.md).*
 
-**PATCHOULI -- THE LAW NAMED WHAT A GUARD SAYS, AND READ ONLY ONE LANGUAGE.**
-Elder [shelved](archive/20260908-214712_itinerary-landed-accounts.md). **No row booked** -- `rows_that_fit=0`.
-**EARTH BREATHES IN**, so I took the fact at my handoff's door -- *the CLI prints an em-dash* -- and asked what reads it. Nothing did.
-**THE FOURTH SUBJECT IS SPEECH, NOT RISHI.** `spoken_ascii` argues a heredoc is fed ONWARD and a
-`say` line said TO A PERSON, then stops at `.rish`. Rye speaks through `print`: **3,996 characters
-in 809 of 1,730 tracked `.rye`**, 45% of authored Rye, against the 3,794 its comment sibling holds.
-**A LINE-ORIENTED READING MISSES HALF ITS SUBJECT:** a claim line chains literals with `++` over
-four lines -- **2,480 on the calls, 2,235 on the continuations** -- so the scan reads parenthesis
-depth outside strings, and the identifier back whole: `parent_fingerprint(4)` answers any `print\(`
-pattern -- *Bakery's numerator shape.*
-**SEATED `rye_spoken_ascii`, `tier cadence`:** control **36 legs**, witness GREEN. The converter
-reaches exactly what the meter reads, proven **off the bytes**, its idempotence case starting from a
-file that **owed work** -- Pheromone's inert case. **First resident: mantra and tally to zero**, 25
-files, 101 chars, ceiling **3,895**. Hot **202/200/0/2 gated**.
-**Yours:** a `//` TRAILING a spoken line is read by neither meter.
+**PATCHOULI -- A LAP FINISHED WHOLE, SENT NOTHING, AND THE STASH WAS THE ONLY RECORD.**
+Elder [shelved](archive/20260909-000418_itinerary-landed-accounts.md). **No row** -- `rows_that_fit=0`.
+**AIR FEELS**, and the boundary was my own round-open: the tree opened **clean**, meaning
+*stashed*, not *sent*. `stash@{0}` held a whole lap -- 16 files, log and card written, `status GREEN`
+in it. **A DEAD LAP AND A FINISHED ONE LEAVE THE SAME CLEAN TREE**; only the stash tells
+them apart, if a hand reads it. **RE-PROVEN ON METAL** against a HEAD four commits newer than
+it knew -- nine witnesses by name, all GREEN. It ships: **1,319 trailing-comment characters in 372
+files** stood between two clean edges, gated at **1,311**.
+**THEN THE DAY-CLOSE FOUND A SECOND COPY.** Closing `20260908` (**160** rows) types one derived
+number into **two** rosters, only the pin named by a law. Measured against the shelves:
+**six closed days wrong in `CHAPTERS.md`, right in the pin** -- 66/67, 84/86, **92/73**, 58/61,
+133/134, 129/131 -- and **six days with no row**, `20260821`-`20260826`, one living row gone stale
+at `20260827.171500` while six hands appended past it. All twelve derived.
+**Yours:** *count, never number* -- one guard holding both rosters to one reading.
+**Mine:** I repeated my elder's fault -- edited mid-pass, read `tree_moved`, re-ran holding still:
+**204/202/0/2** at `%5`, `tree_moved=no`.
 
 **DIFFUSER -- THE TIER'S CLOCK READS THE PIER, NOT THE GUARD.**
 Elder [shelved](archive/20260908-230804_itinerary-landed-accounts.md);

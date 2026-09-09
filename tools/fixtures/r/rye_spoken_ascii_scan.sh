@@ -44,9 +44,12 @@
 #
 # WHAT DOES NOT COUNT, each line drawn where counting would be wrong rather than merely hard:
 #   * a `//` COMMENT, including one trailing a spoken line -- the sibling meter's room. Charging one
-#     character to two ceilings makes each reading depend on the other. A trailing comment on a
-#     print line is counted by NEITHER meter today, since that sibling reads a line whose first
-#     non-blank is `//`; that residue is named here rather than quietly swept into this numerator.
+#     character to two ceilings makes each reading depend on the other. That residue was named here
+#     rather than quietly swept into this numerator, and the sibling CLOSED it on `20260908.232949`:
+#     `tools/fixtures/r/rye_comment_ascii_scan.sh` prints a second reading, with its own ceiling,
+#     over exactly the trailing comments this meter steps past -- 1,311 characters in 366 files, and
+#     an escape hatch rather than a blind spot, since moving an own-line comment onto a code line
+#     dropped its characters out of every numerator and read as a sweep.
 #   * every line outside a print call -- a `const` binding, a struct field, a `std.mem.eql`
 #     comparison. A test asserting that a decoder handles an em dash must CONTAIN one, so counting
 #     those would ask the tree's own modules to stop being able to test what they decode.

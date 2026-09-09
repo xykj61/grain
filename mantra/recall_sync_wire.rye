@@ -149,7 +149,7 @@ pub fn build_response(src: *const ns.BoltCatalog, req: *const SyncRequest, out: 
         tally_copy.copy_disjoint(u8, entry.digest_hex[0..64], leaf.digest_hex[0..64]);
         entry.tilak = leaf.tilak;
         if (digest_held(req, leaf.digest_hex[0..64])) {
-            entry.bytes_len = 0; // have-already lane — ref only
+            entry.bytes_len = 0; // have-already lane -- ref only
         } else {
             entry.bytes_len = @intCast(leaf.bytes.len);
             tally_copy.copy_disjoint(u8, entry.bytes[0..leaf.bytes.len], leaf.bytes);

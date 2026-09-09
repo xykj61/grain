@@ -88,10 +88,43 @@ meter reads and nothing beside it, proven off the bytes rather than off its own 
 seating lap swept `mantra/` and `tally/` to zero -- 25 files, 101 characters -- and set the ceiling
 at what remained.
 
-**The residue, named rather than swept into the numerator:** a `//` comment TRAILING a spoken line
-is counted by neither meter, since the comment meter reads a line whose first non-blank is `//`.
-That is a hole a later lap closes; charging one character to two ceilings would make each reading
-depend on the other, so it is left open in the open.
+**The residue that lap named is closed, and it was an escape hatch rather than a blind spot**
+(seated `20260908.232949`): a `//` comment TRAILING a line of code was counted by neither meter,
+since the comment meter reads only a line whose first non-blank is `//`. Its header excluded the
+case for a reason about **capability** -- *finding it needs to know whether a `//` sits inside a
+string, which is parsing rather than scanning* -- and that capability arrived one lap earlier in
+the spoken meter, which walks parenthesis depth outside string literals over the same sources and
+already steps past this exact `//` as the sibling's room.
+
+**What made it worth a lap is the direction nobody had pressed.** Moving an own-line comment onto
+the end of the preceding code line removes every character it carries from the numerator, converts
+nothing, and reads as a sweep. The comment meter's own ceiling arc records the reverse move
+happening by accident on `20260828.134500`, when three em dashes promoted from trailing comments to
+their own lines made the count RISE. The same door swings both ways, and one direction lowers a
+ratchet for free.
+
+**Measured `20260908.232949`** over the same 1,730 tracked `.rye` sources: **1,319 characters
+across 372 files**, roughly one comment character in four standing outside every meter. First
+resident swept mantra and tally to zero -- 8 characters in 5 files -- and
+`tools/fixtures/r/rye_comment_ascii_scan.sh` now prints a **second reading with its own ceiling at
+1,311**, `trail_ceiling_ok`, spelled so no `case` pattern can catch one reading while matching the
+other. **The elder ceiling stays exactly 3,794 with its arc intact**, because two gated numbers
+close the hatch where one merged number would need a ceiling of 5,083 and read as a raise: a
+comment moved between the positions lowers one reading and raises the other, so neither can be
+improved by moving a character. Ten legs prove it under
+[`../../tools/as/ascii_comment_witness.rish`](../../tools/as/ascii_comment_witness.rish), the
+`https://` case planted from the shape standing at `tools/rye/session_logs_archive.rye:311`, and the
+**pre-repair numerator run over the same move and shown calling it a fall** -- since a repair proven
+only by the new number cannot be told from a number that was always there.
+
+**The question was already asked one meter over.** `tools/fixtures/g/glow_comment_ascii_scan.sh`
+named this blind spot on `20260907.141019`, printed its size as `trailing_unread`, and wrote that
+*both siblings name the same blind spot in prose and neither prints it, so a reader there cannot
+tell an empty blind spot from a large one.* Glow's was genuinely **zero**; Rye's was 1,319. The
+third sibling, `tools/fixtures/s/shell_comment_ascii_scan.sh`, still carries the hole unclosed, and
+its **upper bound is 90 characters across 40 of 3,353** tracked Rishi and shell sources, read the
+same stamp -- an upper bound rather than a count, since a `#` inside a shell string needs the same
+walk to tell from a comment. Small, and open; the shape of the risk differs by language.
 
 ## Why the rule exists
 

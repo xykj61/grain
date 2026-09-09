@@ -334,8 +334,8 @@ fn run_spool_selftest() !u8 {
         fill(a[0..512], 'A'); // resin 0
         fill(a[512..1024], 'B'); // resin 1
         var b: [1024]u8 = undefined;
-        fill(b[0..512], 'A'); // resin 0 — identical to a's resin 0
-        fill(b[512..1024], 'C'); // resin 1 — differs
+        fill(b[0..512], 'A'); // resin 0 -- identical to a's resin 0
+        fill(b[512..1024], 'C'); // resin 1 -- differs
         var sp_a: Spool = .empty();
         var sp_b: Spool = .empty();
         _ = try spool_content(&store_d, a[0..], &sp_a);
