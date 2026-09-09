@@ -518,6 +518,49 @@ case "$out" in *"late_say_rostered="*) r "order_instrument_count_withheld=no" ;;
 out=$(run_scan order_instrument)
 case "$out" in *"verdict=ok"*) r "order_instrument_lifted=yes" ;; *) r "order_instrument_lifted=no" ;; esac
 
+# A failed caller search has no population to publish. Exit 1 remains no match.
+new_repo caller_instrument
+forwarding_shim > "$pen/caller_instrument/tools/x/a.rish"
+stderr_control > "$pen/caller_instrument/tools/fixtures/p/pen_control.sh"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/caller_instrument/construction/standing-equipment.kyri"
+seal caller_instrument
+out=$(run_scan caller_instrument); code=$(run_code caller_instrument)
+r "caller_absent_exit=$code"
+case "$out" in *"verdict=ok"*) r "caller_absent_free=yes" ;; *) r "caller_absent_free=no" ;; esac
+losing_witness > "$pen/caller_instrument/tools/x/pen_witness.rish"
+seal caller_instrument
+mkdir -p "$pen/caller-bin"
+SHIM_TEST_REAL_GIT=$(command -v git)
+export SHIM_TEST_REAL_GIT
+cat > "$pen/caller-bin/git" <<'GIT'
+#!/bin/sh
+if [ "${1:-}" = grep ] && [ "${4:-}" = pen_control.sh ]; then
+  printf '%s\n' 'tools/x/pen_witness.rish'
+  printf '%s\n' 'caller-probe: git search refused' >&2
+  exit "$SHIM_TEST_CALLER_STATUS"
+fi
+exec "$SHIM_TEST_REAL_GIT" "$@"
+GIT
+chmod +x "$pen/caller-bin/git"
+for caller_status in 2 128; do
+  out=$( set +e; cd "$pen/caller_instrument" || exit 0
+    PATH="$pen/caller-bin:$PATH" SHIM_TEST_CALLER_STATUS="$caller_status" sh tools/fixtures/s/shim_reason_scan.sh 2> "$pen/caller-error"
+    echo "probe_exit=$?" )
+  case "$out" in *"probe_exit=2"*) r "caller_${caller_status}_exit=yes" ;; *) r "caller_${caller_status}_exit=no" ;; esac
+  case "$out" in *"verdict=instrument_refusal"*) r "caller_${caller_status}_named=yes" ;; *) r "caller_${caller_status}_named=no" ;; esac
+  case "$out" in *"reason_lost_rostered="*|*"verdict=ok"*) r "caller_${caller_status}_count_withheld=no" ;; *) r "caller_${caller_status}_count_withheld=yes" ;; esac
+  if grep -qF 'caller-probe: git search refused' "$pen/caller-error"; then
+    r "caller_${caller_status}_diagnostic=yes"
+  else
+    r "caller_${caller_status}_diagnostic=no"
+  fi
+done
+out=$(run_scan caller_instrument)
+case "$out" in *"verdict=rostered_reason_lost"*) r "caller_restored_bitten=yes" ;; *) r "caller_restored_bitten=no" ;; esac
+carrying_witness > "$pen/caller_instrument/tools/x/pen_witness.rish"
+out=$(run_scan caller_instrument)
+case "$out" in *"verdict=ok"*) r "caller_repaired_free=yes" ;; *) r "caller_repaired_free=no" ;; esac
+
 echo "cases=$readings"
 echo "repos=$repos"
 echo "control_verdict=ok"

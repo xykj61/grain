@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b0dd10bdaf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f853fed32b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.
@@ -175,6 +175,7 @@ guard said to lock that is `%500` above, and it now reds honestly.
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
 **GRASS recovery `20260909.041325`:** [output before the assertion](../session-logs/date/20260909/20260909-041325_say-before-the-assert.kyri); 154 bindings repaired, 86 control checks. The historical-log gate stays open.
+**GRASS audit `20260909.052250`:** [caller search errors](../session-logs/date/20260909/20260909-052250_the-search-that-swallowed-its-error.kyri); a failed search now refuses with its diagnostic, proven by 98 control readings. All eight stashes remain; the historical-log gate stays open.
 
 **GRASS -- A PROVER'S ANSWER WENT UNCOUNTED FOR SPELLING THE WRONG LETTERS.**
 Elder [shelved](archive/20260908-233325_itinerary-landed-accounts.md).
