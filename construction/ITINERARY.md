@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `064d32e384` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `873786d833` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER AND I DIAGNOSED ONE FAULT AND BUILT TWO CURES; MINE WITHDREW.**
 Elder [shelved](archive/20260909-000500_itinerary-landed-accounts.md) by a peer; mine duplicated it.
@@ -83,23 +83,19 @@ at `20260827.171500` while six hands appended past it. All twelve derived.
 **Mine:** I repeated my elder's fault -- edited mid-pass, read `tree_moved`, re-ran holding still:
 **204/202/0/2** at `%5`, `tree_moved=no`.
 
-**DIFFUSER -- THE NEW CODEX SCRIPTS ARRIVED WITHOUT THEIR EXECUTABLE MODES.**
-Elder [shelved](archive/20260909-025531_itinerary-landed-accounts.md) whole by the account writer.
-The cold pass at `29c7bf503c` read 59 plain shebang files against the fixed ceiling
-of 57. Both additions are Incense's Codex startup files: the watcher and its
-control. Their modes are repaired here; the watcher's comment is clearer and
-its shell commands stay byte-for-byte the same after comments are removed.
-**RECOVERY CHECKED:** 13 parked logs are carried; the energy files match their
-stash, and the three topology orphans match `topology_stretch` after its rename.
-All 16 stashes remain. Detail: [this lap](../session-logs/date/20260909/20260909-025531_codex-script-modes.kyri).
-**HOST READING:** the installed Ripgrep was outside PATH. With it available,
-`shell_dialect` proves all 47 helper checks. The hot pass uses that environment.
-**OPEN, SEED OWNER:** `SOURCE.md` links `nixos/configuration.nix`; the manifest
-marks `nixos` as `template` but carries no `allow nixos`. The projector reads
-`allow` rows. Review that room before expanding the export list; the public seed
-stays at its custody gate. The seed-link scan reads 849 against its ceiling 848.
-**CARRIED:** the prior recommendation to split `tame_reach` backlog from its
-growing population remains with that guard's owner.
+**DIFFUSER -- THE STORE HAD LIMITS THE PAPER CALLED ABSENT.**
+Elder [shelved](archive/20260909-035800_itinerary-landed-accounts.md) whole by the account writer.
+The [revised reading](../external-research/20260909-035800_the-bounds-a-store-promises.md)
+checks primary sources and runs a SQLite refusal probe. Six behavioral checks pass; three
+altered cases refuse. Capacity, index choice, and elapsed time are separate promises.
+The elder paper stays bannered; its recalled claims no longer carry the grant forward.
+**AETHER HEARS THE WORKLOAD QUESTION:** the recovered journal study already found a case
+where an index had no demonstrated benefit. Bakery gets that test before a storage build.
+**RECOVERY:** all 13 parked logs are carried; the energy files and renamed topology files
+match their stashes. All 16 stashes remain.
+**CARRIED:** the `tame_reach` backlog/population distinction remains with its guard's owner.
+The cold seed-link finding was repaired by Petrichor at `873786d833`; the hot pass passed seed_link.
+The seed export review and naming rulings stay at their existing gates.
 
 **PETRICHOR -- THE PARKED RECORD RETURNS WITH ITS FILES.**
 Elder [shelved](archive/20260909-010841_itinerary-landed-accounts.md), recovered from the same stash
@@ -346,7 +342,7 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
-**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps once synergy with Mantra, the weave and Tablecloth is proven. *diffuser* landed **step one** `20260908.170154` -- [the reading](../external-research/20260908-151344_what-a-table-store-should-be-here.md), a keyed store with declared indexes and no planner, bakery's lane; steps two and three stay booked. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
+**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps once synergy with Mantra, the weave and Tablecloth is proven. *diffuser* landed **step one** `20260908.170154` -- [the reading](../external-research/20260909-035800_the-bounds-a-store-promises.md), revised `20260909.035800` against primary sources; a workload test precedes the store choice, bakery's lane. Steps two and three stay booked. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
 
 **YOURS `20260907.160051` -- petrichor: both halves and the boundary sentence landed; seating two rooms and molting the three drifted pairs wants your word. [Brief](../active-development/20260907-160051_manual-and-docs-geode-one-room-or-two.md).**
 
@@ -371,6 +367,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.170154` | A paper already in a stash | [log](../session-logs/date/20260908/20260908-170154_a-paper-already-in-a-stash.kyri) |
+| `20260909.040200` | The bounds a store actually promises | [log](../session-logs/date/20260909/20260909-040200_store-limits.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

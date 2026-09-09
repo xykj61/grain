@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** `20260907.191211` (the room token taught in the ritual a writer actually reads, where the elder refresh had recorded teaching it and left the body silent -- prior `20260907.015907`: the register law named as seated and read on every cadence pass, where this door had called it proposed; the room token taught in the same status line -- elder refresh `20260906.212046`, the two topology papers seated in the list)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Foundation
+**Status:** Foundation, mixed -- index and research-room guidance
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
 **Kin:** [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) (the Field setting a study is written at) - [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) (the clean room a study reads from) - [`../.claude/rules/read-scope.md`](../.claude/rules/read-scope.md) (this room is a closed stack) - home is [`../README.md`](../README.md)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
@@ -52,6 +52,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260909.035800` | [The bounds a store actually promises](20260909-035800_the-bounds-a-store-promises.md) | primary sources and a local refusal probe correct the store comparison |
 | `20260907.000309` | [What a departure costs a table everybody shares](20260907-000309_what-a-departure-costs-a-shared-table.md) | one departure leaves 99.8% of the shared table right; the repair belongs at six nodes |
 | `20260906.195719` | [What it costs to decide the next hop](20260906-195719_what-it-costs-to-decide-the-next-hop.md) | one 270-byte table routes every node; two address spaces route free; lookahead buys nothing |
 | `20260906.152821` | [The floor you can stand on](20260906-152821_the-floor-you-can-stand-on.md) | the abelian floor is 8, twice Moore's 4, and the lever is the generating set |

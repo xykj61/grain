@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.040200` | [Store limits](20260909/20260909-040200_store-limits.kyri) | sourced revision; six boundary checks |
 | `20260909.030306` | [A parked control recovered](20260909/20260909-030306_the-control-kept-in-a-stash.kyri) | identity checks; records preserved |
 | `20260909.030051` | [Parked record recovered](20260909/20260909-030051_the-parked-record-returns.kyri) | record, shelf, and seed claim |
 | `20260909.025531` | [Codex script modes](20260909/20260909-025531_codex-script-modes.kyri) | modes, recovery, and test PATH |
