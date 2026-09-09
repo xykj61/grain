@@ -83,7 +83,7 @@ assert scan.out contains "swallow_rostered=0" else "shim-reason: a shim the stan
 assert scan.out contains "reason_lost_rostered=0" else "shim-reason: a rostered witness whose control names its failing behavior on stderr must interpolate that stderr, or its evidence page reads pass=N fail=1 and nothing a hand can act on"
 assert scan.out contains "late_say_rostered=0" else "shim-reason: a rostered binding must print what its run wrote BEFORE the assert that judges it -- assert stops the run, so a say on the next line never happens when the target refuses"
 assert scan.out contains "verdict=ok" else "shim-reason: the scan must balance before it is believed"
-say "field GREEN -- every rostered shim, witness and binding carries its target's reason, and says it before it judges it"
+say "field GREEN -- the matched shim, control and output-order forms meet their roster gates and residue ceilings"
 
 let control = run ["sh" "tools/fixtures/s/shim_reason_control.sh"]
 say control.out
@@ -178,5 +178,18 @@ assert control.out contains "order_instrument_named=yes" else "shim-reason: the 
 assert control.out contains "order_instrument_count_withheld=yes" else "shim-reason: a failed parser has no ordering count to publish"
 assert control.out contains "order_instrument_lifted=yes" else "shim-reason: the original parser must accept the same repository"
 
+assert control.out contains "caller_absent_exit=0" else "shim-reason: a completed search with no callers must pass"
+assert control.out contains "caller_absent_free=yes" else "shim-reason: exit 1 from git grep means no matches"
+assert control.out contains "caller_2_exit=yes" else "shim-reason: a caller search error must exit 2"
+assert control.out contains "caller_2_named=yes" else "shim-reason: the search failure must name instrument_refusal"
+assert control.out contains "caller_2_count_withheld=yes" else "shim-reason: partial search output cannot support a population count"
+assert control.out contains "caller_2_diagnostic=yes" else "shim-reason: the Git diagnostic must reach the reader"
+assert control.out contains "caller_128_exit=yes" else "shim-reason: a caller search error must exit 2"
+assert control.out contains "caller_128_named=yes" else "shim-reason: the search failure must name instrument_refusal"
+assert control.out contains "caller_128_count_withheld=yes" else "shim-reason: partial search output cannot support a population count"
+assert control.out contains "caller_128_diagnostic=yes" else "shim-reason: the Git diagnostic must reach the reader"
+assert control.out contains "caller_restored_bitten=yes" else "shim-reason: the restored search must find the witness that drops stderr"
+assert control.out contains "caller_repaired_free=yes" else "shim-reason: forwarding stderr must free the same repository"
+
 say "RED and GREEN paths proven -- the control's own `cases=` and `repos=` lines above carry the totals, and every refusal is lifted in its own pen"
-say "GREEN: shim-reason -- every guard on the clock hands on its target's reason, in time to be read, and each residue carries its own number."
+say "GREEN: shim-reason -- the matched diagnostic forms pass, and the controls prove their refusals."

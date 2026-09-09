@@ -251,10 +251,17 @@ while IFS= read -r c; do
   [ -f "$c" ] || continue
   cb=$(basename "$c")
   set +e
-  git grep -lF -- "$cb" -- '*.rish' > "$work/callers" 2>/dev/null
+  git grep -lF -- "$cb" -- '*.rish' > "$work/callers" 2> "$work/caller_error"
   _st=$?
   set -e
-  [ "$_st" -gt 1 ] && continue
+  # Exit 1 means no caller matched. A search error leaves the population unknown.
+  if [ "$_st" -gt 1 ]; then
+    echo "rish_files=$rish_files"
+    echo "verdict=instrument_refusal"
+    echo "refused: git grep exited $_st reading callers of $cb" >&2
+    cat "$work/caller_error" >&2
+    exit 2
+  fi
   [ -f "$work/callers" ] || : > "$work/callers"
   while IFS= read -r w; do
     [ -f "$w" ] || continue
