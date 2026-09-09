@@ -584,3 +584,5 @@ at a closed fold.*
 *Row %651 born onto [`REDS-a-proof-nobody-named-after-it-rows-651.md`](REDS-a-proof-nobody-named-after-it-rows-651.md) on `20260908.223549`, **CLOSED** -- the census asking whether a tool's convergence is proven could only see evidence somebody had named after the tool, so a prover running on every lap left its subject in the unproven column. Born onto its shelf rather than folded: `pin_deadlocked=1`, the eighth ship the pin refused today.*
 
 *Row %652 folded to [`REDS-a-shared-name-two-programs-do-not-share-rows-652.md`](REDS-a-shared-name-two-programs-do-not-share-rows-652.md) on `20260908.213230`, **CLOSED** -- a shared name costs nothing when the two files are the same program.*
+
+*Row %653 born onto [`REDS-a-message-read-mid-rebase-rows-653.md`](REDS-a-message-read-mid-rebase-rows-653.md) on `20260908.233626`, **CLOSED** -- `git log -1` answers about HEAD, and mid-rebase HEAD is a peer's.*
