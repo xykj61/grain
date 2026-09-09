@@ -139,14 +139,26 @@ fi
 [ -f "$work/candidates" ] || : > "$work/candidates"
 sort -u "$work/candidates" -o "$work/candidates"
 
+# Read full-line comments as prose. This text scan still leaves inline comments,
+# quoted examples, and alternate bindings outside its semantic proof.
+source_lines() {
+  if ! awk '!/^[[:space:]]*#/' "$1" > "$work/source"; then
+    echo "verdict=instrument_refusal"
+    echo "refused: could not read source lines from $1" >&2
+    exit 2
+  fi
+}
+
 : > "$work/shims"
 : > "$work/rows"
 while IFS= read -r f; do
   [ -f "$f" ] || continue
-  grep -q 'say r\.out' "$f" || continue
-  grep -q '^exit r\.code$' "$f" || continue
+  source_lines "$f"
+  grep -qF 'run ["rishi/bin/rishi" "run" ' "$work/source" || continue
+  grep -q 'say r\.out' "$work/source" || continue
+  grep -q '^exit r\.code$' "$work/source" || continue
   echo "$f" >> "$work/shims"
-  if grep -q 'r\.err' "$f"; then reason=forwards; else reason=swallows; fi
+  if grep -q 'r\.err' "$work/source"; then reason=forwards; else reason=swallows; fi
   # Anchored to the roster's own grammar -- a `path` row stands alone at column zero. An
   # unanchored match would read a prose mention of a path inside a comment as a seat, which is a
   # door: a guard could be counted rostered because somebody wrote about it.
@@ -267,12 +279,13 @@ while IFS= read -r c; do
     [ -f "$w" ] || continue
     # The variable the control's run is bound to. Only that variable's spellings are read, so a
     # witness forwarding some OTHER run's stderr is never credited for this one.
+    source_lines "$w"
     var=$(awk -v cb="$cb" '
       /^let [a-z_][a-z0-9_]* = run \[/ && index($0, cb) > 0 { print $2; exit }
-    ' "$w")
+    ' "$work/source")
     [ -n "$var" ] || continue
-    if grep -qF "\${${var}.err}" "$w"; then continue; fi
-    grep -qF "\${${var}.out}" "$w" || continue
+    if grep -qF "\${${var}.err}" "$work/source"; then continue; fi
+    grep -qF "\${${var}.out}" "$work/source" || continue
     if grep -qxF "path $w" "$ROSTER"; then seat=rostered; else seat=unrostered; fi
     echo "$seat $w $cb" >> "$work/reason_rows"
   done < "$work/callers"
