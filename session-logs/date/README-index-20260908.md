@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.223755` | [a proof nobody named after it](20260908/20260908-223755_a-proof-nobody-named-after-it.kyri) | The convergence census could only see evidence named after its subject. |
 | `20260908.223011` | [Four kinds of silence](20260908/20260908-223011_four-kinds-of-silence.kyri) | unreached counts neglect and environment together |
 | `20260908.220821` | [Two open rows are one gate](20260908/20260908-220821_two-rows-one-gate.kyri) | %646 counted: 22 unrostable, and %460 named a door built 10 days before. |
 | `20260908.214610` | [The tier is a cost bound](20260908/20260908-214610_the-tier-is-a-cost-bound.kyri) | 20 of 271 rows state their cost; 6 of 12 checkable have moved |

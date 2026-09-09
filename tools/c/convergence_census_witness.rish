@@ -49,11 +49,20 @@
 # Three legs prove it from the passing side and a fourth runs the ELDER numerator over the same
 # plant and asserts it called the self-certifying tool proven.
 #
-# WHAT NEITHER COLUMN REACHES. `tools/c/convergence_prove.sh` classifies by RUNNING and invokes a
-# tool as `sh <tool> <one-path>`. Nine of the ten candidates take no path -- they are whole-tree
-# operators driven by `--apply`, `--check`, or a `dry|apply` mode -- so no prover in this tree can
-# answer for them, and the one that fits reads `verdict=converges` while standing in the unproven
-# column, because no sibling asserts it. This column measures whether somebody WROTE the check.
+# A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS WHETHER PROOF EXISTS
+# (`20260908.215031`). `tools/c/convergence_prove.sh` invokes a tool as `sh <tool> <one-path>` and
+# nine of the ten candidates take a flag instead, so the pen-TREE prover was built for them --
+# `tools/c/convergence_tree_prove.sh`, rostered `tier lap`, checking HEAD out into a `git worktree`
+# pen and comparing with `git write-tree`. Its own witness runs it on
+# `tools/fixtures/r/reds_ledger_headline_write.sh`, which `tools/hooks/pre-commit` runs on EVERY
+# commit this tree makes, and reads `verdict=converges` on every lap of every ship. That tool stood
+# in the UNPROVEN column here, because the numerator read a sibling assertion and nothing else.
+#
+# So the column reads two sources now and prints the split: `proven_by_sibling_assertion`, a hand
+# wrote a check, and `proven_by_prover_run`, somebody ran the question -- the second being the
+# stronger evidence. Both exclusions carry over: the tool is dropped from its own set, and a
+# comment naming a prover and a tool is a plan rather than a run. Proven reads **4 of 10** where it
+# read 3, and the arrival is the headline writer.
 #
 # REPORTED, NEVER GATED. A tool that legitimately runs once -- a publisher, a one-shot projection --
 # has nothing to converge, and no reading here can tell it from a tool that never checked.
@@ -79,7 +88,7 @@ assert control.ok else "convergence-census: the control refused --\n${control.ou
 assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
 assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
 assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
-assert control.out contains "legs_pass=12" else "convergence-census: a leg went unrun --\n${control.out}"
+assert control.out contains "legs_pass=18" else "convergence-census: a leg went unrun --\n${control.out}"
 
 # invariant: a tool may not certify itself. The plant's only idempotence sentence is a comment in
 # its own header, which is what two tracked tools carried when this column read them proven.
@@ -92,8 +101,31 @@ assert control.out contains "prose_sibling_refused -- yes" else "convergence-cen
 # plant proven. Without this leg the three above pass for a reason nobody measured.
 assert control.out contains "elder_called_self_certification_proven -- yes" else "convergence-census: the elder numerator no longer admits self-certification, so this repair proves nothing"
 
+# invariant: a prover that RAN on this tool counts, which is the evidence the elder numerator could
+# not see at all. Without it a guard proving convergence every lap leaves its subject unproven here.
+assert control.out contains "prover_run_counted -- no" else "convergence-census: a tool a prover proved on metal reads unproven again"
+
+# invariant: and a comment naming a prover beside a tool is a plan rather than a run. The sibling
+# column paid for this distinction once; the prover column inherits it rather than relearning it.
+assert control.out contains "prover_run_in_comment_refused -- yes" else "convergence-census: a commented prover invocation counts as a proof"
+
+# invariant: the self-exclusion reaches the new source too -- a tool naming the prover and itself in
+# its own body certifies nothing about itself.
+assert control.out contains "prover_self_naming_refused -- yes" else "convergence-census: a tool proves its own convergence by naming a prover in its own source"
+
+# invariant: and the second source MOVES something -- the elder numerator called the prover-run
+# plant unproven, which is exactly how the headline writer stood in that column.
+assert control.out contains "elder_called_prover_run_unproven -- no" else "convergence-census: the elder numerator already admitted the prover-run plant, so this repair proves nothing"
+
+# invariant: both splits are printed, since a tool proven both ways counts once in the total and a
+# reader deserves to know which evidence stands behind the number.
+assert control.out contains "prover_run_split_printed -- printed" else "convergence-census: the prover-run split went unprinted"
+assert control.out contains "sibling_assertion_split_printed -- printed" else "convergence-census: the sibling-assertion split went unprinted"
+
+assert scan.out contains "proven_by_prover_run=" else "convergence-census: the prover-run column went unreported on this tree"
+
 say "convergence-census: and the foundation that states the claim still stands..."
 let found = run ["sh" "-c" "test -f foundations/20260823-222019_what-brix-infuse-is.md && echo present || echo absent"]
 assert (trim found.out) == "present" else "convergence-census: the infusion foundation is gone -- this census measures a claim nothing states"
 
-say "GREEN: convergence-census -- candidates counted against the tree's own idempotence claim, the denominator named as an upper bound rather than defended as a fact, and the numerator reading an assertion beside the tool rather than a sentence inside it."
+say "GREEN: convergence-census -- candidates counted against the tree's own idempotence claim, the denominator named as an upper bound rather than defended as a fact, and the numerator reading two sources: an assertion beside the tool, and a prover that actually ran on it."
