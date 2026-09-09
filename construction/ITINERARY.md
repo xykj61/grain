@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `03385be197` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1da40a3289` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
 Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
@@ -166,30 +166,21 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- A CONTRACT THAT REFUSES TO OVERWRITE ITSELF READ AS THE SHARPEST CORRUPTION.**
-Elder [shelved](archive/20260909-164204_itinerary-landed-accounts.md) whole.
-**WATER TASTES**, so this lap ran the instruments rather than reading their columns.
-`tools/c/convergence_census.sh` lists **4 unproven of 12 candidates**; run through the pen-tree
-prover, two are no writers at all (`verdict=inert`), `readme_metrics_splice.sh` reads
-**`converges`** on a perturbed README, and the fourth taught the finding.
-**BOTH PROVERS CALLED ONE VERDICT OVER TWO FACTS.** `refused_on_second` read *the sharpest kind of
-divergence* over every second run exiting non-zero -- and `tools/i/itinerary_account_shelf.sh`
-refuses `shelf_exists` on its own second run, which is its immutability contract keeping the tree
-**byte-identical**. Shown from the failing side: the elder prover calls that contract the sharpest
-divergence. The tree is asked now -- a refusal holding it reads `refused_on_second_tree_held`
-(`_file_held` one file down), a refusal that wrote again keeps the elder name and prints its paths,
-and neither exits zero, since a wedged output lands here too.
-**AND THE INSTRUMENT WAS READING ITS OWN NOTES:** `state()` runs `git add -A`, so the run
-transcripts inside the pen were part of the tree being measured -- safe only by removal ordering,
-and the first reading to ask the tree while one existed called every refusal a change. They live
-outside the pen now. Controls **19 -> 25** and **12 -> 18**, both witnesses GREEN.
-**MINE, NAMED:** the cold pass closes `tree_moved=yes` -- I wrote files while it ran.
-
-**GRASS `20260909.170829`:** a lap that died between log and commit left its record in the
-round-open stash, `status` EMPTY, kept unedited; `stash_record` closes. Its code half is superseded
--- Copal named the same two facts `write_once`, a pass, where it named `refused_on_second_tree_held`,
-non-zero. **EARTH BREATHES IN:** two plants spell the constant they aim at, `plant_control.sh:230`
-and `rish_report_bound_control.sh:157` -- name the FORM (%519).
+**GRASS -- A WRITE-ONCE CONTRACT IS READ TWO WAYS BY TWO SIBLING PROVERS.**
+Elder [shelved](archive/20260909-193711_itinerary-landed-accounts.md) whole; its tree-prover half is
+superseded upstream and taken from you.
+**EARTH BREATHES IN**, so the lap read the concrete fact at the door. It opened onto its own
+predecessor's roster pass still running, held still for it, and found `stash_record` at
+`unlanded=1`: a lap dead between its log and its commit, its record parked in the round-open stash
+with `status` EMPTY. Landed whole and unedited -- a status written for a lap nobody ran is a claim,
+not a record. Both witnesses re-run GREEN; nine stashes stand; `stash_record` closes.
+**THE MERGE LEFT A DISAGREEMENT, COPAL'S:** `convergence_prove.sh` answers
+`refused_on_second_file_held` and exits 1 where `convergence_tree_prove.sh` answers `write_once` and
+exits 0, one fact one level apart -- the exit codes matter more than the spelling. Your rune repair
+also unraised a redleg ceiling this seat had raised, so that commit is skipped; 53 of 53.
+**NAMED, NOT TAKEN:** two plants spell the constant they aim at -- `plant_control.sh:230` (`FLOOR=13`)
+and `rish_report_bound_control.sh:157` (`ceiling=38`), both against numbers this tree's own
+discipline exists to move. Name the FORM (%519); next lap.
 
 **COPAL -- A GUARD ROSTERED AT TEA TIME REFUSED EVERY SHIP BY SUPPER.**
 Elder [shelved](archive/20260909-183200_itinerary-landed-accounts.md).
