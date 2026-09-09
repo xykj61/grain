@@ -36,8 +36,9 @@ assert scan.out contains "named_escaped=0" else "a named canon-sample mark resol
 # The prose binding: this guard's own seat, read by no other instrument here.
 assert scan.out contains "prose_tally_missing=0" else "tally/README.md lost its Who calls Tally section"
 assert scan.out contains "prose_saga_missing=0" else "saga/README.md no longer points at the canon caller map"
+assert scan.out contains "stale_named=0" else "a room in the caller table has no tracked link into Tally"
 
-say "tally-caller-map: proving the refusals in a throwaway pen, twelve ways..."
+say "tally-caller-map: proving the caller and table refusals in a throwaway pen..."
 let control = run ["sh" "tools/fixtures/t/tally_caller_map_control.sh"]
 say control.out
 if control.ok == false then say control.out
@@ -78,6 +79,18 @@ assert control.out contains "loop_counted=yes" else "a link loop must be counted
 assert control.out contains "loop_named=yes" else "an unresolvable link must name its path"
 assert control.out contains "loop_reported_not_gated=yes" else "a loop in a room that never calls Tally is another lane's, so it reports rather than gates"
 assert control.out contains "loop_leaves_marks_intact=yes" else "an unresolvable link must not take the honest marks out of the count with it"
+assert control.out contains "table_room_counted=yes" else "the caller table's room must be counted"
+assert control.out contains "table_stale_clear=yes" else "a table naming a real caller room must pass"
+assert control.out contains "stale_table_counted=yes" else "an absent table room must be counted even when its directory is absent"
+assert control.out contains "stale_table_refused=yes" else "a table room without a caller must refuse by name"
+assert control.out contains "stale_table_exits_one=yes" else "a stale table must refuse by exit code"
+assert control.out contains "table_scope_only=yes" else "read unique caller-column rooms, including file paths, without mark paths, prose or later sections"
+assert control.out contains "table_untracked_unread=yes" else "an untracked link cannot satisfy a table's caller claim"
+assert control.out contains "stale_table_lift_green=yes" else "tracking the table room's link must clear the refusal"
+assert control.out contains "table_bound_exact_counted=yes" else "a table at the unique-room ceiling must be read whole"
+assert control.out contains "table_bound_exact_read=yes" else "a table at the ceiling must reach its caller check"
+assert control.out contains "table_bound_refused=yes" else "an overfull table must refuse rather than truncate"
+assert control.out contains "table_bound_exits_two=yes" else "an overfull table must exit two"
 assert control.out contains "control_verdict=ok" else "the control reached no ok verdict"
 
-say "GREEN: every tracked mark resolves under tally/, the named sample holds the canon rule, and the prose binding stands."
+say "GREEN: tracked marks resolve under tally/, the named sample holds, and each table room has a caller."

@@ -27,6 +27,11 @@
 # (a symlink, resolving to a real file under tally/), and the derived 69 are checked beside them.
 # Union, never a trade: nothing the elder held is dropped, and 50 further marks are read.
 #
+# TABLE RECOVERY. The parked caller-map draft also checked each room named in
+# tally/README.md against the derived callers. Keep that check beside the named
+# sample: a table room without a tracked caller is stale_named, while a named
+# link retargeted outside Tally still refuses as named_escaped_canon.
+#
 # WHAT THIS DOES NOT READ, named so the split between guards stays single-stranded:
 #   a COPY standing where siblings link -- tools/fixtures/c/copy_lag_scan.sh owns that, deriving
 #     each canon by resolving its own symlinks, and telling a lagging copy from a lawful sibling
@@ -196,6 +201,7 @@ links=$(git ls-files -s 2>/dev/null | awk '$1=="120000"{ $1=""; $2=""; $3=""; su
 marks=0
 chained=0
 dangling=0
+caller_rooms=""
 # A tracked symlink whose chain loops or runs past max_hops resolves to nothing, and nothing is
 # indistinguishable here from a link pointing somewhere other than tally/ -- so it would leave the
 # population in the silence this file exists to name. It is counted and named across ALL tracked
@@ -226,6 +232,8 @@ for p in $links; do
     dangling=$((dangling + 1))
     continue
   fi
+  caller_rooms="$caller_rooms
+${p%%/*}"
   # A chain is a mark reaching the canon through another room's link. Lawful, and counted so the
   # shape stays visible: six stood on 20260908, all of them parse_int.rye through linengrow's.
   t=$(readlink "$p")
@@ -245,6 +253,44 @@ grep -Fq 'Canon caller map' saga/README.md 2>/dev/null || prose_saga=1
 [ "$prose_tally" -eq 0 ] || echo "detail: tally/README.md has lost its Who calls Tally section"
 [ "$prose_saga" -eq 0 ] || echo "detail: saga/README.md no longer points at the canon caller map"
 
+# Read the caller column in this section. File paths name their first room;
+# repeated cells name one room. The population bound also caps unique table rooms,
+# because more claimed rooms than possible callers cannot form a valid map.
+table_rooms=""
+if [ "$prose_tally" -eq 0 ]; then
+  table_rooms=$(awk -F '[|]' -v limit="$max_marks" '
+    /^## Who calls Tally/ { inside=1; next }
+    inside && /^## / { exit }
+    inside && /^\|/ {
+      line=$2
+      while (match(line, /`[A-Za-z0-9_.\/*-]+`/)) {
+        path=substr(line, RSTART+1, RLENGTH-2)
+        line=substr(line, RSTART+RLENGTH)
+        if (index(path, "/") == 0) continue
+        sub(/\/.*/, "", path)
+        if (path == "" || path == "." || path == ".." || seen[path]) continue
+        seen[path]=1
+        count++
+        if (count > limit) exit 2
+        print path
+      }
+    }
+  ' tally/README.md) || {
+    echo "detail: caller table unreadable or past max_marks $max_marks unique rooms"
+    echo "verdict=table_rooms_unreadable"
+    exit 2
+  }
+fi
+rooms_named=0
+stale_named=0
+for room in $table_rooms; do
+  rooms_named=$((rooms_named + 1))
+  if ! printf '%s\n' "$caller_rooms" | grep -Fxq "$room"; then
+    stale_named=$((stale_named + 1))
+    echo "detail: stale table room $room -- no tracked link into tally/"
+  fi
+done
+
 echo "marks=$marks"
 echo "named=$named"
 echo "named_missing=$named_missing"
@@ -255,6 +301,8 @@ echo "dangling=$dangling"
 echo "unresolvable=$unresolvable"
 echo "prose_tally_missing=$prose_tally"
 echo "prose_saga_missing=$prose_saga"
+echo "rooms_named=$rooms_named"
+echo "stale_named=$stale_named"
 
 # ORDER MATTERS, and the pen taught it (20260908). An empty derived population is the GENERIC
 # reading and the named faults are the specific ones -- and each named fault empties the derived
@@ -286,6 +334,10 @@ fi
 if [ "$marks" -eq 0 ]; then
   echo "verdict=no_marks_found"
   exit 2
+fi
+if [ "$stale_named" -gt 0 ]; then
+  echo "verdict=stale_named"
+  exit 1
 fi
 echo "verdict=ok"
 exit 0
