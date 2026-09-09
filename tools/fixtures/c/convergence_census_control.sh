@@ -21,7 +21,7 @@
 #
 #   sh tools/fixtures/c/convergence_census_control.sh
 #
-# BOUNDS: one pen, twelve legs, at most 16 planted tools. The pen is removed on every exit path.
+# BOUNDS: one pen, twenty-two legs, at most 24 planted tools. The pen is removed on every exit path.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -167,6 +167,45 @@ case "$split_now" in *proven_by_prover_run=*) split_prover=printed ;; *) split_p
 case "$split_now" in *proven_by_sibling_assertion=*) split_sibling=printed ;; *) split_sibling=absent ;; esac
 leg prover_run_split_printed        printed "$split_prover"
 leg sibling_assertion_split_printed printed "$split_sibling"
+
+# 10. THE THIRD PROOF SOURCE, from both sides (`20260909.010000`). Both sources above search by a
+# SPELLING: the first for the tool's own stem inside a sibling's path, the second for a prover's
+# name on a line. A control named for the FAMILY rather than for the file satisfies neither, and
+# three stand in the tree -- `dated_path_repoint_control.sh` runs `dated_path_repoint_scan.sh`
+# twice and asserts `idempotent=yes` while carrying `_scan` nowhere in its own name.
+plant tools/x/family_named.sh 'cat "$tmp" > "$f"'
+plant tools/x/family_control.sh 'out=$(sh tools/x/family_named.sh)
+if [ "$before" = "$after" ]; then echo "idempotent=yes"; else echo "idempotent=no"; fi'
+# 10b. NAMED IN A COMMENT ONLY. This source inherits the non-comment discipline the sibling column
+#      already holds rather than loosening it: a file that mentions the tool in prose and asserts
+#      convergence about something else leaves it unproven, or the repair would trade one
+#      self-certifying shape for another.
+plant tools/x/named_in_comment.sh 'cat "$tmp" > "$f"'
+plant tools/x/mentions_control.sh '# tools/x/named_in_comment.sh is named here and nowhere else
+if [ "$before" = "$after" ]; then echo "idempotent=yes"; else echo "idempotent=no"; fi'
+git add -A >/dev/null
+git commit -q -m "pen: planted family-control shapes"
+
+unproven_now=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
+
+leg family_control_counted          no  "$(unp family_named.sh)"
+leg family_named_in_comment_refused yes "$(unp named_in_comment.sh)"
+
+# 10c. AND THE STEM-ONLY PREDICATE, run over the same plants, must MISS the family-named control.
+# Without this leg the two above pass for any reason at all, which is how four of this census's
+# five wrong denominators read green.
+stem_only_proven() { # stem_only_proven <file> -> yes|no
+  base=${1##*/}; stem=${base%.*}
+  if git ls-files 'tools/*' 2>/dev/null | grep -F "$stem" | grep -vxF "$1" \
+       | xargs -r grep -hEi '(idempotent|second run|run twice|runs twice|again finds nothing)' 2>/dev/null \
+       | grep -vqE '^[[:space:]]*#'; then echo yes; else echo no; fi
+}
+leg stem_only_missed_the_family_control no "$(stem_only_proven tools/x/family_named.sh)"
+
+# 10d. The third split is printed beside the other two.
+split_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
+case "$split_now" in *proven_by_family_control=*) split_family=printed ;; *) split_family=absent ;; esac
+leg family_control_split_printed printed "$split_family"
 
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"
