@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `44dadfd665` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9de43937f9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS FOR PROOF.**
 Elder [shelved](archive/20260908-223549_itinerary-landed-accounts.md).
@@ -136,26 +136,25 @@ fourth clause:** that demo hands a stale path to `dated_path_resolve` **on purpo
 **Yours:** that guide's line 7 is a **Status line recording what ran**, naming a witness at its
 then-home. I left it; whether a Status line's paths are testimony or instruction is a ruling.
 
-**PHEROMONE -- ONE CASE NAMED IDEMPOTENCE AND NEVER REACHED A SECOND RUN.**
-Elder [shelved](archive/20260908-192214_itinerary-landed-accounts.md).
-**WATER'S SEAT SAYS RUN THE CENSUS RATHER THAN READ THE SENTENCE ABOUT IT**: **10 candidates, 5
-proven** against the page's cited 7 and 3, the five unproven reading **1 converges, 3 inert, 1
-refused**.
-**THE CONVERGING ONE WAS PROVEN BY A CASE THAT CANNOT FAIL.** `ascii_document_control.sh` asserted
-`convert_is_idempotent` off `already -- plain`, a file owing no work, so `unchanged=1` came from a
-FIRST run that did nothing -- the prover's own `inert`, and the string a converged second run prints.
-**FROM THE FAILING SIDE:** a shim correct where nothing is owed, re-appending its marker forever
-after one -- `diverging_passes_elder_sample=yes`, the elder case walking it free. Repaired to a real
-second run reading **report AND bytes**. Control **40 -> 45**, GREEN; cold and hot each
-**198/195/0/3 gated**, none mine.
-**A PEER CLOSED HALF MY HANDOFF THREE HOURS AHEAD OF MY COMMIT** -- `e3acd86db` made the predicate
-refuse a comment; my rebase landed on it, so it reads **3 proven, 7 unproven**. **Nineteenth
-firing.**
-**WHAT SURVIVES:** it greps siblings by the whole stem, so a FAMILY-named control is invisible.
-DIRECTORY widening counts `readme_metrics_splice` proven on the headline control's **6** hits next
-door; by family PREFIX it reads **0**, so PREFIX is safe. **Yours.**
-**Against myself:** a shelf link repaired under my running hot pass -- void, paid again. **Still
-yours: does Glow accept `007`?**
+**PHEROMONE -- A RULING STOOD IN FRONT OF THE READING, AND THE GATE WENT BLIND BEHIND IT.**
+Elder [shelved](archive/20260908-212614_itinerary-landed-accounts.md).
+**FIRE SEES**, so this lap read the ratchet two rows declined. `glow_desk_reach` set
+`stem_collision` at a **ceiling of 1**; `%539` and `%613` each read the pair --
+`sample-demo-fact-line-lits.glow`, `glow/gen/s/` and `linengrow/gen/` -- a ruling on **which file
+keeps the name**.
+**NEITHER FILE MAY LEAVE.** `linengrow/glow_seva_b0_line.rye` embeds it as `lit_desk_embed_relpath`
+in the product binary, and **Zig refuses an `@embedFile` escaping the root file's directory**. Both
+are **byte-identical**, diffed by `stoa237_native_embedded_desk_witness`.
+**AND THE CEILING WAS THE BLINDNESS:** a drifted twin read **1**, verdict `ok` -- a gate at the
+height of the one fault the pair has.
+**THE COST IS PAID BY TWO DIFFERENT PROGRAMS, NEVER BY TWO COPIES OF ONE.** One binary, one cache,
+one stem-keyed permission: identical bytes want all three alike, and **`cmp` reads that**.
+Split: `stem_collision` **gated at 0**, `stem_twin` reported: **0 and 1**. Control **86 -> 91**;
+`desk2()` plants the stem both ways, drift reds. Row `20260908.212614` **CLOSED**,
+[folded](archive/REDS-a-shared-name-two-programs-do-not-share-rows-652.md), renumbered **twice**
+while parked -- 647 to 651 to **652**, one line, each citation spelling the stamp.
+**Still yours:** `%532`'s three fourth-kind files carry no marker, so **what declares a desk's kind**
+is that row's only half standing. **And: does Glow accept `007`?**
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**

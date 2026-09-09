@@ -137,18 +137,23 @@ assert scan.out contains "corpus_outside=" else "glow_desk_reach scan printed no
 # invariant: a stem held by two files is bounded. The worker writes glow/bin/<stem>, caches
 # glow/.cache/<stem>.rye, and matches its sample-permission `case` on the stem alone, so two files
 # sharing a stem share one binary, one cache path and one run contract. Held under a ceiling that
-# only falls from `20260908`, rather than merely reported: one of the two elder pairs was a
-# malformed plant under tools/fixtures/g/ that could be run only WITH an argument, on a permission
-# the `case` grants to a real desk of the same name in glow/gen/. Renaming the fixture to
-# gate-count-malformed.glow freed it -- it refuses BARE with the same MalformedBody and borrows
-# nothing. The remaining pair is one of the three fourth-kind files %532 named, whose marker is a
-# language custody ruling, so the ceiling stands at what a lap may not repair.
+# a GATE AT ZERO from `20260908`, because the reading splits. The cost a shared stem carries -- one
+# built binary, one cache path, one sample permission -- is a cost two DIFFERENT programs pay, and
+# two byte-identical files pay none of it. One elder pair was a malformed plant under
+# tools/fixtures/g/ runnable only WITH an argument, on a permission the `case` grants to a real desk
+# of the same name; renaming it to gate-count-malformed.glow freed it. The other, the
+# sample-demo-fact-line-lits pair, is byte-identical because Zig refuses an @embedFile escaping the
+# root file's directory, so linengrow/gen/ must hold its own copy of the desk the product embeds.
+# It reads `stem_twin` and the gate stands at zero, so a differing pair reds on the lap it arrives
+# -- and so does this pair the day it drifts.
 assert scan.out contains "stem_collision=" else "glow_desk_reach scan printed no shared-stem count"
 assert scan.out contains "stem_collision_ceiling=" else "glow_desk_reach scan printed no shared-stem ceiling"
+assert scan.out contains "stem_twin=" else "glow_desk_reach scan printed no byte-identical-twin count"
+assert scan.out contains "stem_collision=0" else "glow_desk_reach: two DIFFERING .glow files share one stem"
 
 # invariant: the reading itself is proven on real desk rooms rather than trusted. The control
 # builds miniature desk rooms in a throwaway pen and plants each refusal, then lifts it --
-# 86 behaviors, both sides of every gate and of all three ceilings, and the two gates proven
+# 91 behaviors, both sides of every gate and of all three ceilings, and the two gates proven
 # independent: a sample-taking desk refuses at its own ceiling while the bare ceiling stands at
 # zero, which is the reading the elder sum could not express. The last of them is the one that
 # earns the prune: a permission whose only file is a build-cache leftover reads phantom, where the
@@ -157,4 +162,4 @@ let control = run ["sh" "tools/fixtures/g/glow_desk_reach_control.sh"]
 assert control.ok else "glow_desk_reach control failed: ${control.out}"
 assert control.out contains "fail=0" else "glow_desk_reach control reported failures: ${control.out}"
 
-say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, no dead permission, covered read from both instruments as a union, zero desks run by nothing -- bare or sample-taking, both gates at zero, the room named apart from the corpus, shared stems held at their own ceiling, both refusals proven, 86 control behaviors green."
+say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, no dead permission, covered read from both instruments as a union, zero desks run by nothing -- bare or sample-taking, both gates at zero, the room named apart from the corpus, shared stems gated at zero with byte-identical twins reported apart, both refusals proven, 91 control behaviors green."

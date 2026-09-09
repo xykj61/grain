@@ -74,6 +74,8 @@ worker() {
 
 # a plain runnable desk
 desk() { printf '::  A desk (pen).\n|^  sample\nsample\n' > "$1"; }
+# a desk whose bytes differ from desk()'s, so a shared stem can be planted BOTH ways
+desk2() { printf '::  Another desk (pen) -- different bytes on purpose.\n|^  sample\nsample\n' > "$1"; }
 # a desk declaring both ways that it must not run
 norun() { printf '::  Refuse desk -- pen negative space.\n::  Parse-only; do not glow_run -- nest refuses.\n|^  sample\nsample\n' > "$1"; }
 
@@ -259,31 +261,42 @@ check 1 "$(field "$pen/o" corpus_outside)" "the outside desk is counted"
 check 2 "$(field "$pen/o" desks)" "the room's own population is untouched"
 check 0 "$(field "$pen/o" uncovered)" "and so are its ratchets -- two populations, two questions"
 
-# --- 12. two files sharing one stem share one run contract, and it is a ceiling now -------------
+# --- 12. a shared stem splits by whether the files DIFFER, and only that half is gated ----------
 # The worker writes glow/bin/<stem>, caches glow/.cache/<stem>.rye, and matches its sample-
 # permission `case` on the stem alone -- so a stem held twice is one binary, one cache path and one
-# permission for two different programs. %539 reported this and gated nothing. One of the two live
-# pairs turned out to need no custody ruling at all: a malformed plant under tools/fixtures/g/ was
-# borrowing a real desk's permission to be run at all, and renaming the FIXTURE freed it. So the
-# reading is a ratchet from 20260908 -- a ceiling that only falls, standing at the one pair a lap
-# may not repair. Both sides proven here: at the ceiling it walks, one past it refuses by name.
-desk "$d6/src/shape/gate-one.glow"
-runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
-check ok "$(field "$pen/o" verdict)" "one shared stem stands at the ceiling of one"
-check 1 "$(field "$pen/o" stem_collision)" "the shared stem is counted"
-check 1 "$(field "$pen/o" stem_collision_ceiling)" "and the ceiling it stands at is printed"
-desk "$d6/src/shape/gate-two.glow"
+# permission. That is a cost only when two DIFFERENT programs answer to the name: two byte-identical
+# files build the same binary, lower to the same cache and want the same arity. %539 reported the
+# reading and gated nothing; %613 freed one pair by renaming a plant; this splits the rest by `cmp`.
+# The live pair is identical BECAUSE one copy is embedded into the product binary and Zig refuses an
+# @embedFile escaping the root file's directory, so the gate stands at zero and the twin is reported.
+# Every side proven here: differing files refuse, identical files walk, and drift turns one into the
+# other.
+desk2 "$d6/src/shape/gate-one.glow"
 ( cd "$d6" && env GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9 \
     sh tools/fixtures/g/glow_desk_reach_scan.sh ) > "$pen/o" 2>&1 && rc=0 || rc=$?
-check over_stem_collision_ceiling "$(field "$pen/o" verdict)" "a second shared stem refuses past the ceiling"
-check 2 "$(field "$pen/o" stem_collision)" "both shared stems are counted"
+check over_stem_collision_ceiling "$(field "$pen/o" verdict)" "two DIFFERING files at one stem refuse"
+check 1 "$(field "$pen/o" stem_collision)" "the shared stem is counted"
+check 0 "$(field "$pen/o" stem_collision_ceiling)" "and the ceiling it passed is zero"
+check 0 "$(field "$pen/o" stem_twin)" "a differing pair is no twin"
 check 1 "$rc" "and the refusal leaves a non-zero exit"
-rm -f "$d6/src/shape/gate-two.glow"
+
+desk "$d6/src/shape/gate-one.glow"
 runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
-check ok "$(field "$pen/o" verdict)" "lifting the second twin returns the pen to green"
+check ok "$(field "$pen/o" verdict)" "the same stem carrying identical bytes walks free"
+check 0 "$(field "$pen/o" stem_collision)" "an identical pair costs no collision"
+check 1 "$(field "$pen/o" stem_twin)" "it is counted as a twin instead"
+
+printf '::  drifted.\n' >> "$d6/src/shape/gate-one.glow"
+( cd "$d6" && env GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9 \
+    sh tools/fixtures/g/glow_desk_reach_scan.sh ) > "$pen/o" 2>&1 && rc=0 || rc=$?
+check over_stem_collision_ceiling "$(field "$pen/o" verdict)" "a twin that DRIFTS becomes a refusal"
+check 0 "$(field "$pen/o" stem_twin)" "and stops being counted as a twin"
+
 rm -f "$d6/src/shape/gate-one.glow"
 runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
+check ok "$(field "$pen/o" verdict)" "lifting the twin returns the pen to green"
 check 0 "$(field "$pen/o" stem_collision)" "removing the twin returns the reading to zero"
+check 0 "$(field "$pen/o" stem_twin)" "and the twin reading with it"
 
 # --- 13. machinery and other trees are pruned, so a leftover cannot revive a dead permission -----
 # The elder spelling pruned .git alone, so a stem whose only file was a build-cache artifact under

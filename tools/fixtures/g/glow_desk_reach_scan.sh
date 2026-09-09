@@ -64,7 +64,8 @@
 #   uncovered_bare  bare-runnable desks NOTHING runs                 -- GATED AT ZERO
 #   corpus_glow     every *.glow in the tree, all rooms
 #   corpus_outside  those standing outside this room
-#   stem_collision  stems two or more *.glow files share       -- RATCHET
+#   stem_collision  stems shared by two or more DIFFERING *.glow files  -- GATED AT ZERO
+#   stem_twin       stems shared by byte-identical files -- reported, never gated
 #
 # THE THIRD ENUMERATION, READ AT LAST, AND WHAT IT SPLIT. The braid above named three hand-written
 # statements about this corpus and this meter read two of them -- name marker against head marker,
@@ -134,11 +135,13 @@
 # moved, so no language custody question was answered here -- a fixture under tools/ took a clearer
 # name, which is what it always wanted.
 #
-# WHY THE CEILING IS 1 AND NOT 0. The remaining pair, sample-demo-fact-line-lits under glow/gen/s/
-# and linengrow/gen/, is one of the three files %532 named as a fourth kind -- data fixtures
-# carrying no marker in either name or head. Giving one a marker, or moving it, decides what
-# declares a desk's kind, which IS the custody ruling %539 named. So the ceiling stands at what a
-# lap may not repair, and a THIRD collision reds on the lap it arrives.
+# WHY THE CEILING IS 0 FROM 20260908. The remaining pair, sample-demo-fact-line-lits under
+# glow/gen/s/ and linengrow/gen/, is BYTE-IDENTICAL, and the two files are identical because one is
+# embedded into the product binary while Zig refuses an @embedFile escaping the root file's
+# directory. Neither file may leave, and neither needs a marker: two copies of one program cost
+# nothing that a shared binary, cache path or permission could charge. It reads `stem_twin` now and
+# the gate stands at zero, so a pair of DIFFERING files reds on the lap it arrives -- and so does
+# this pair, the day it drifts.
 
 # WHAT THIS DOES NOT REACH. Whether a covered desk's assertion is a good one, and whether an
 # uncovered desk would pass if it were run. Of the 139 measured on metal 20260907, 59 ran GREEN
@@ -336,11 +339,42 @@ fi
 corpus_outside=$(wc -l < "$WORK/outside" | tr -d ' ')
 
 # Two desks sharing one stem share one built binary, since tools/g/glow_run_worker.sh writes
-# glow/bin/<stem>, and one sample permission, since its `case` matches the stem alone. Reported
-# rather than gated: both of today's pairs predate the reading, and which file keeps the name is a
-# language custody question rather than a repair a lap takes.
-sed -e 's|.*/||' -e 's|\.glow$||' "$WORK/corpus" | sort | uniq -d > "$WORK/stem_collision"
+# glow/bin/<stem>, and one sample permission, since its `case` matches the stem alone -- a cost two
+# DIFFERENT programs pay and two identical files do not, which is the split taken below.
+sed -e 's|.*/||' -e 's|\.glow$||' "$WORK/corpus" | sort | uniq -d > "$WORK/shared_stems"
+
+# A SHARED STEM SPLITS BY WHETHER THE FILES DIFFER, and only one half costs anything. The cost the
+# reading names -- one binary, one cache path, one sample permission -- is a cost because two
+# DIFFERENT programs answer to one name. Two byte-identical files answer with the same program, so
+# the shared binary holds the same bytes whichever built it, the shared cache holds the same
+# lowering, and the one permission grants the arity both wanted. `cmp` reads that in one command;
+# it needs no marker in either file and no ruling about which keeps the name.
+#
+# The live pair taught the distinction. glow/gen/s/sample-demo-fact-line-lits.glow is embedded into
+# the product binary by linengrow/glow_seva_b0_line.rye, and Zig refuses an @embedFile that escapes
+# the root file's directory, so linengrow/gen/ MUST hold its own copy -- the same directory rule
+# that gathers tools/rye/. tools/s/stoa237_native_embedded_desk_witness.rish already diffs the two
+# and reds when they drift. %539 and %613 both read the pair as a custody ruling about which file
+# keeps the name, and neither file may leave: one is the corpus desk, the other is a required
+# adjacent copy the compiler's own import rule forces.
+: > "$WORK/stem_collision"
+: > "$WORK/stem_twin"
+while IFS= read -r stem; do
+  [ -n "$stem" ] || continue
+  grep -e "/$stem\.glow\$" -e "^$stem\.glow\$" "$WORK/corpus" > "$WORK/stem_paths" || true
+  first=$(head -1 "$WORK/stem_paths")
+  identical=yes
+  while IFS= read -r other; do
+    cmp -s "$first" "$other" || identical=no
+  done < "$WORK/stem_paths"
+  if [ "$identical" = yes ]; then
+    printf '%s\n' "$stem" >> "$WORK/stem_twin"
+  else
+    printf '%s\n' "$stem" >> "$WORK/stem_collision"
+  fi
+done < "$WORK/shared_stems"
 stem_collision=$(wc -l < "$WORK/stem_collision" | tr -d ' ')
+stem_twin=$(wc -l < "$WORK/stem_twin" | tr -d ' ')
 
 # The split, taken over PATHS rather than stems, so nothing here assumes a stem names one file.
 # A desk is `sampled` when the worker's list carries its stem: the witness runs every desk it names
@@ -401,7 +435,7 @@ uncovered_bare=$(wc -l < "$WORK/uncovered_bare" | tr -d ' ')
 UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-0}
 UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-0}
 UNCOVERED_CEILING=$((UNCOVERED_BARE_CEILING + UNCOVERED_SAMPLED_CEILING))
-STEM_COLLISION_CEILING=${GLOW_DESK_STEM_COLLISION_CEILING:-1}
+STEM_COLLISION_CEILING=${GLOW_DESK_STEM_COLLISION_CEILING:-0}
 
 verdict=ok
 if [ "$norun_disagree" -ne 0 ]; then
@@ -431,7 +465,7 @@ if [ "$uncovered_bare" -gt "$UNCOVERED_BARE_CEILING" ]; then
 fi
 if [ "$stem_collision" -gt "$STEM_COLLISION_CEILING" ]; then
   verdict=over_stem_collision_ceiling
-  echo "detail: $stem_collision stems are shared by two or more .glow files, past the ceiling of $STEM_COLLISION_CEILING -- one stem is one built binary, one cache path, and one sample permission --"
+  echo "detail: $stem_collision stems are shared by two or more DIFFERING .glow files, past the ceiling of $STEM_COLLISION_CEILING -- one stem is one built binary, one cache path, and one sample permission --"
   sed 's/^/  /' "$WORK/stem_collision"
 fi
 if [ "$uncovered_sampled" -gt "$UNCOVERED_SAMPLED_CEILING" ]; then
@@ -463,6 +497,7 @@ echo "uncovered_bare_ceiling=$UNCOVERED_BARE_CEILING"
 echo "corpus_glow=$corpus_glow"
 echo "corpus_outside=$corpus_outside"
 echo "stem_collision=$stem_collision"
+echo "stem_twin=$stem_twin"
 echo "stem_collision_ceiling=$STEM_COLLISION_CEILING"
 echo "verdict=$verdict"
 
