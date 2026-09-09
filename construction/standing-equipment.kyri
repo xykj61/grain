@@ -2679,6 +2679,22 @@ path tools/s/standing_equipment_witness.rish
 tier lap
 seated 20260906.060000
 
+# standing_equipment_redleg, seated 20260909.152755. This file's own eleventh line says every guard on
+# this roster can red, and until this row nothing read that sentence back. Its sibling half was
+# already walled -- `standing_equipment` gates `guards_path_missing` at zero and counts the guards
+# that have never run here -- so REDS row 59 stood behind prose while REDS %149's strand stood
+# behind a gate. The rung gates a rostered witness carrying NO assertion at zero, which is the
+# vacuum row 59 was booked for, and reports under a falling ceiling the guards that assert and
+# demonstrate no refusal of their own. All 53 standing at seating DELEGATE -- each asserts on a
+# real run and reds through its child -- so the number is a proxy read for direction rather than a
+# wall, and gating it would refuse every choir this tree owns. `tier lap`: under a second for the
+# roster read, a few more for the control's pen. GREEN on metal before the row was written.
+
+guard standing_equipment_redleg
+path tools/s/standing_equipment_redleg_witness.rish
+tier lap
+seated 20260909.152755
+
 # copy_lag, seated 20260906.070240. Zig admits an import only from the root file's own directory,
 # so one implementation reaches two rooms here by symlink -- 220 of the 414 paths under a shared
 # basename are mode 120000. Where a room keeps a REGULAR file under a name its siblings link, that

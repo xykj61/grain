@@ -1,0 +1,48 @@
+# tools/s/standing_equipment_redleg_witness.rish -- the roster's own claim, read back.
+#
+# WHY THIS RUNG. construction/standing-equipment.kyri states in its eleventh line that "the grain
+# says a guard that cannot red guards nothing (REDS row 59), and every guard here can red." That
+# sentence governs 285 files and stood for months on its own word.
+#
+# Its sibling half already stands behind a gate. tools/s/standing_equipment_witness.rish holds
+# `guards_path_missing` at zero and reports how many rostered guards have run on this pier at all
+# -- the strand that a guard which is never run guards nothing either. That witness names its own
+# scope: it proves the mechanics beneath the roster's choice. So one half of REDS row 59 had a wall
+# and the other had a sentence, which is the shape the grain page itself teaches -- a witness must
+# be proven able to make a sound before its silence means anything.
+#
+# WHAT IS GATED, at zero: a rostered witness whose whole body is printing. Such a file exits clean
+# whatever the tree does, which is the vacuum row 59 was booked for -- five custody bars of the
+# enclosure witness passed for their whole lives with literal quote characters standing where tests
+# belonged.
+#
+# WHAT IS REPORTED under a ceiling that only falls: a rostered witness that asserts and leaves the
+# demonstration of a refusal to something else. All 53 standing at seating DELEGATE, asserting on
+# the result of a real run, so each reds through the child beneath it. That is what a choir is. The
+# reading is a proxy: it answers whether a refusal was demonstrated in the file, and whether that
+# refusal covers the class the guard claims stays a reading a person does. Honest and incomplete is
+# a different thing from wrong.
+#
+# Both directions are proven on a pen the control builds and throws away, every refusal planted and
+# then lifted, and the ceiling shown from both sides.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/standing_equipment_redleg_witness.rish
+
+say "standing-equipment-redleg: Language EN -- the roster says every guard on it can red, and this rung is what reads that sentence back."
+say "standing-equipment-redleg: Style Radiant -- one claim, one meter, and a number a lap can act on."
+say "standing-equipment-redleg: Lens TAME -- safety first: a guard carrying no assertion is gated at zero; a guard that reds through its child is counted and never refused."
+
+let scan = run ["sh" "tools/fixtures/s/standing_equipment_redleg_scan.sh"]
+say scan.out
+assert scan.ok else "standing-equipment-redleg: the scan refused -- read its own lines"
+assert scan.out contains "guards_no_assert=0" else "standing-equipment-redleg: a rostered witness carries no assertion -- it cannot refuse on its own reading"
+assert scan.out contains "ceiling_ok=yes" else "standing-equipment-redleg: a guard arrived demonstrating no refusal -- the ceiling only falls"
+assert scan.out contains "verdict=ok" else "standing-equipment-redleg: the scan must balance before it is believed"
+
+let control = run ["sh" "tools/fixtures/s/standing_equipment_redleg_control.sh"]
+say control.out
+assert control.ok else "standing-equipment-redleg: the control failed -- a meter over refusals must itself be proven able to refuse"
+assert control.out contains "control_verdict=ok" else "standing-equipment-redleg: the control must name its own verdict"
+
+say "GREEN: standing-equipment-redleg -- every rostered guard carries an assertion, and the count demonstrating no refusal of its own holds under a ceiling that only falls."

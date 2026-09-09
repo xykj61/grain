@@ -11,7 +11,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.154812` | [Roster claim read back](20260909/20260909-154812_the-roster-claim-read-back.kyri) | every guard can red, now measured |
 | `20260909.151557` | [The reply that outlived its frame](20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri) | Bakery; a returned answer owns its bytes |
+| `20260909.090354` | [Five shelf addresses](20260909/20260909-090354_five-shelves-find-their-readers.kyri) | Grass; parked records restored |
 | `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
 | `20260909.083100` | [Parked shelves](20260909/20260909-083100_the-parked-shelves-return.kyri) | Bakery; eleven saved addresses |
 | `20260909.075012` | [The table check returns](20260909/20260909-075012_the-table-check-returns.kyri) | Patchouli; parked caller check |
