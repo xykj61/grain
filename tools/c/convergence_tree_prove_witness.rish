@@ -1,0 +1,59 @@
+# tools/c/convergence_tree_prove_witness.rish -- the nine that answered to a flag rather than a path.
+#
+#   rishi/bin/rishi run tools/c/convergence_tree_prove_witness.rish
+#
+# `tools/c/convergence_prove.sh` settles convergence by RUNNING, and it invokes a tool as
+# `sh <tool> <one-path>`. Measured `20260908.190452`, NINE of the ten tools the census finds answer
+# to a flag rather than a path -- `apply`, `write`, `--check` -- because they are whole-tree
+# operators that find their own work. So the census column read whether somebody WROTE an
+# idempotence check, and for nine of ten nobody could have run one. This proves the instrument that
+# can: the subject is a repository, the pen is a `git worktree` checkout of HEAD, and the tree under
+# test is never touched.
+#
+# TWO LEGS PROVE THE TWO CHOICES THAT ARE NEW, rather than only the verdicts.
+#
+# THE MODE LEG. An operator toggling a file's exec bit changes no LINE, so a prover comparing diffs
+# would call it converged. The comparison here is `git write-tree` -- one hash over every path, its
+# bytes and its mode -- so the toggle reads `diverges`. `.claude/rules/exec-bit.md` is thirty-nine
+# lost exec bits' worth of argument that a mode is content the repository tracks.
+#
+# A SIXTH VERDICT THE WITNESS ITSELF EARNED. The first version of the assertion below passed a
+# `sed` expression through Rishi, whose escaping doubled the backslashes, so the expression matched
+# nothing and exited zero. The prover read `inert` and this witness refused -- correctly, and for
+# the wrong reason, since nothing was wrong with the tool. `perturb_inert` now tells a sample that
+# never landed apart from a tool with no work, by asking the tree rather than the exit status.
+#
+# THE PERTURBATION WRITES THROUGH THE ORIGINAL INODE rather than reaching for an in-place flag.
+# GNU and BSD spell `sed -i` differently and `shell_dialect` gates it at zero, so the portable form
+# this tree already prescribes -- write a temporary, `cat` it back -- is what a pen gets too.
+#
+# THE PERTURB LEG, and it is the honest half. For a whole-tree operator the sample IS the tree, and
+# a committed tree usually already holds the state the operator produces -- `reds_ledger_headline_write.sh`
+# runs in `tools/hooks/pre-commit` on every commit, so at HEAD it has nothing left to do and reads
+# `inert`. That reading is true and proves nothing. `--perturb` hands the pen a tree with work
+# waiting, exactly as the sibling prover takes a sample file, and the control shows one operator on
+# one repository reading `inert` and then `converges` with only the perturbation between them.
+
+say "convergence-tree-prove: Language EN -- a prover whose subject is a repository."
+say "convergence-tree-prove: Style Gauge, Meter -- six verdicts, and the honest one is named."
+say "convergence-tree-prove: Lens TAME -- safety first: the pen is a throwaway checkout, never the tree."
+
+say "convergence-tree-prove: the control -- nineteen behaviors, including two kinds of divergence..."
+let ctl = run ["sh" "tools/fixtures/c/convergence_tree_prove_control.sh"]
+assert ctl.ok else "convergence-tree-prove: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=19 fail=0" else "convergence-tree-prove: the control did not prove nineteen behaviors --\n${ctl.out}\n${ctl.err}"
+
+# invariant: the control exercises a mode-only divergence, both refusal shapes, and the perturb
+# pair -- each of which a passing-direction-only proof would miss. A refusal proven only in the
+# passing direction cannot be told from a bypass.
+assert ctl.out contains "coverage: mode divergence, the perturb pair, a no-op perturbation, and both refusal shapes were each exercised" else "convergence-tree-prove: the control never exercised its own teeth"
+
+# invariant: the prover answers for the busiest writing this tree does. `reds_ledger_headline_write.sh`
+# runs on every commit through `tools/hooks/pre-commit`, and it is one of the nine no prover could
+# reach. On a tree whose headline has been perturbed it has real work, and it converges.
+say "convergence-tree-prove: the headline writer that runs on every commit, on a tree with work waiting..."
+let hw = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed 's/^..Rows: [0-9][0-9]*/**Rows: 1/' construction/REDS.md > .perturbed && cat .perturbed > construction/REDS.md && rm -f .perturbed" "tools/fixtures/r/reds_ledger_headline_write.sh" "write"]
+assert hw.ok else "convergence-tree-prove: the headline writer did not converge --\n${hw.out}\n${hw.err}"
+assert hw.out contains "verdict=converges" else "convergence-tree-prove: the headline writer read something other than converges --\n${hw.out}"
+
+say "GREEN: convergence-tree-prove -- a whole-tree operator run twice on a pen checkout, with mode divergence caught, both refusals named, and an unperturbed tree refused as proof."
