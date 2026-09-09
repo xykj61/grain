@@ -91,6 +91,7 @@ proven in the [experiment](../external-research/20260909-044642_the-query-and-th
 Bakery gets the caller contract before a storage plan. The existing scan remains the baseline.
 
 **PETRICHOR -- THE PARKED RECORD RETURNS WITH ITS FILES.**
+**Recovery `20260909.042633`:** the [account](archive/20260906-180225_itinerary-landed-accounts.md) promised by the September 6 log returns byte for byte from its stash. All 13 parked logs are on main; all 16 stashes remain.
 Elder [shelved](archive/20260909-010841_itinerary-landed-accounts.md), recovered from the same stash
 as the [unfinished lap](../session-logs/date/20260909/20260909-010905_the-instrument-was-already-there.kyri).
 **FIRE SEES WHAT STILL NEEDS LANDING.** Sixteen stashes held one unlanded log; the other twelve
