@@ -33,7 +33,11 @@ file tools/m/mantra_tablecloth_hit_census_witness.rish the rung -- the census's 
 file construction/standing-equipment.kyri the witness rostered, so a proof that ran nowhere is heard every lap
 file construction/REDS.md the declared hit ceiling against the wire's byte bound, booked with all three fields
 file external-research/20260909-213140_the-answers-size-belongs-to-the-store.md the paper -- the falsifier run, the enumeration, the red, and the three doors the repair has
+file construction/archive/REDS-a-receipt-keyed-on-an-inventory-rows-675.md the one CLOSED row folded so the pin could hold a live one
+file construction/archive/REDS-fold-recital.md the fold's own trail line, written by the tool rather than by a hand
 file construction/ITINERARY.md the DIFFUSER account, elder shelved whole
-scope one new module, one control, one witness, one roster row, one ledger row, one paper, the card's own block; no peer file touched
+obs The send renumbered this row twice. Booked %673 against a spine read at the open; the first rebase found upstream at 675 and it became %676; the second found a peer's %676 at an earlier stamp and it became %678. Every other file cites the row by STAMP, so both renumbers cost one edit each rather than a sweep -- which is the whole of what rule 4 of the derived spine buys.
+obs The pin could not hold the row at all. `construction/REDS.md` stood at 40,951 bytes of its 40,960 with fourteen of fifteen rows OPEN, so the row was compressed from 1,900 bytes to 793 and `tools/fixtures/r/reds_fold.sh` moved the one CLOSED row -- a peer's, closed an hour earlier -- onto its own shelf. Pin 40,951 -> 39,451.
+scope one new module, one control, one witness, one roster row, one ledger row, one paper, the card's own block, and one CLOSED peer row folded to a shelf whole; no peer's live work touched
 status GREEN -- the census and its control (21 checks, five plants) run green through tools/m/mantra_tablecloth_hit_census_witness.rish; tame_style_check and width-check green; cold 216 rostered / 214 green and hot 217 / 215 green, 0 red, 2 gated (%5) both ways, tree_moved=no; the new guard reads 3.4s in the hot pass; paper graded A, 94
 recommend keep-going the continuation cursor is the next real thing -- the 7 shapes that return every leaf under both store shapes have no other honest reply, and the census names them by mask
