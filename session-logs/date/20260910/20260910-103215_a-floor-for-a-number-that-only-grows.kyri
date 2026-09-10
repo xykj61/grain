@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260910.103215
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, the witness harness and the seams every ship stands on
+modality text
+model claude-opus-5
+model_status active -- the session environment names the running model and its exact id
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json, read 20260910 -- a default, never a runtime reading
+voice Kyri
+host Dallas pier, America/New_York
+title A floor for a number that only grows
+prompt the fleet baton, BAKERY's lane -- core infrastructure, Lindy-first and crux-first
+rota lap 4563, row 3 -- Water, Venus, care and flow; fixed foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md, cardinal foundations/20260823-222019_what-brix-infuse-is.md. Water tastes: read up close and ask whether the flow is sweet or off. The happy zone's teaching is that a test pressing on nothing in particular lets the design tangle, and an equality pinned to a population nobody in this room controls is exactly that -- a leg that reds without pressing on any contract.
+think My own elder log named this standfast in its last obs, and the card carried it as YOURS: unheard_guard pinned unnamed_population=461 while its own scan read verdict=ok. A peer had met the same braid in tame_reach at 20260910.080947 and SPLIT it rather than raising the ceiling again, closing its commit body with the note that unheard_guard carries the same braid one room over and is named on the card rather than rewritten. This lap is that rewrite.
+think The braid, stated in one sentence: unnamed_population counts tracked tools/*.{rish,rye} outside the pens that wear neither `witness` nor `suite` and carry an assert in command position. That number rises whenever any of eight ships writes such a program, which is lawful work in a room this guard does not own.
+think Measured from the file's own history rather than argued: git log -p over the witness prints seven distinct values for that pin -- 451, 452, 453, 454, 459, 460, 461 -- between 20260907.062000 and 20260910.073000, four of them inside three days. Each bump cost a hand a raised number and a paragraph accounting for somebody else's arrival.
+think THE SCAN HAD ALREADY DECIDED THIS ONE LEVEL DOWN, which is what makes the finding sharp rather than a preference. tools/fixtures/u/unheard_guard_scan.sh carries a header section titled WHY unnamed_runners IS REPORTED AND NEVER GATED, whose reasoning is that a ceiling over a number rising on ordinary growth is a wall someone turns off within a week. The witness then gated the same growth by equality one level up.
+think The cure had to keep what the equality was buying by accident. A population that comes back empty prints a small number, passes every ceiling, and reads exactly like a healthy tree -- REDS %416's shape, which this scan's own header cites twice. A FLOOR catches that on purpose, and it refuses nothing a peer writes.
+obs A floor only falls, which is the mirror of a ceiling that only falls. Both move by a deliberate hand in two files -- the scan carries the operative number, the witness the published one -- and neither moves when a stranger commits.
+obs 384 is derived rather than tasted: the population has read 451 to 461 across the four days it has been measured, so the floor sits 77 under the live reading, far wider than the largest single-lap move it has recorded (five, on 20260908.204406) and wide enough that a sweep renaming dozens of runners into the named population passes free.
+obs I considered the tame_reach shape literally -- gate ROOMS rather than files -- and measured it before reaching for it. The 401 unreached unnamed runners stand in 30 tools letter rooms, and almost every letter is already present, so a new-room gate would essentially never bite here. The precedent's SHAPE transfers; its instrument does not, and measuring is what said so.
+obs unnamed_choirs=11 was left alone deliberately, and the reason is that it is a different animal. That count cannot rise past its own ceiling without the ceiling refusing first, so the equality only bites on a FALL -- and a fall leaving a ceiling with slack is exactly when a ratchet wants a hand to tighten it. Narrow scope, one keystone, and the distinction is written into the witness beside it.
+obs The control needed teaching, and how it needed teaching is the honest part. Its run() helper drives every pen, and a pen plants four or five runners where the tree carries hundreds, so the tree's floor refused five legs on the first run. The fifth positional argument defaults the floor to 0 for pens, spelled positionally rather than as an environment prefix for the reason the fourth already carries in that file: VAR=x somefunc leaks into the calling shell in some POSIX shells and not others.
+obs The floor is proven from BOTH sides twice -- on the living tree, reading the count out of the scan's own output so the leg cannot drift from the reading it proves, and on pen eight, where the planted population is read and asked for one more. Three new control legs, each named in the witness as well as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
+obs A CENSUS, REPORTED RATHER THAN BUILT. Across the tree, 114 nonzero exact count-pins read from live-tree scans stand in 54 rostered witnesses. Ranked by distinct historical values, 17 have moved three or more times. Most of the churned ones are control-leg tallies -- legs_pass, control_legs, pass -- which a lap raises in the SAME commit that adds the leg, and that is the sweet case rather than the sour one. The discriminator this lap found is whether the hand that moves the number is the hand that caused the change.
+loom witness=unheard_guard wall_ms=26297 control_legs=55 control_fail=0
+loom scan=unheard_guard_scan wall_ms=1346 unnamed_population=461 unnamed_population_floor=384
+file tools/fixtures/u/unheard_guard_scan.sh the floor constant, its printed key, its refusal, and the derivation written where the ceilings are
+file tools/u/unheard_guard_witness.rish the equality replaced by the floor pin plus a both-sides leg; the seven-value trail condensed under a checkpoint
+file tools/fixtures/u/unheard_guard_control.sh a fifth positional argument for the floor, defaulting to 0 for pens, and three legs proving it in pen eight
+file construction/CHECKPOINTS.md the walk-back nib for the 39-line accounting trail this lap condensed
+file construction/ITINERARY.md the BAKERY account, elder shelved, card at 40,957 of 40,960
+scope one keystone -- the population pin in unheard_guard, plus the census that names its class

@@ -57,6 +57,8 @@
 #   unnamed_population  tracked tools/*.{rish,rye} outside the pens, wearing NEITHER word, and
 #                       carrying an `assert` in command position -- a checkable claim is what
 #                       makes a runner standing equipment whatever its filename says. 451 here.
+#                       Gated from BELOW only, at `unnamed_population_floor` -- it rises on any
+#                       hand's lawful new runner, and a collapse is the fault worth refusing.
 #   unnamed_heard       of those, the ones a roster pass reaches. 43 here.
 #   unnamed_runners     the unreached remainder. 408 here. REPORTED, never gated -- see below.
 #   unnamed_choirs      of the unreached, the ones singing three or more members of the guard
@@ -131,6 +133,27 @@ CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-37}"
 # 12 -> 11 on `20260909.214500`: `glow_choir` gathered a shim whose two-hop chain reaches
 # `tools/gen/chapter/glow_hygiene_pin.rish`, a choir singing six, so it left this population.
 UNNAMED_CHOIR_CEILING="${UNNAMED_CHOIR_CEILING:-11}"
+# THE SECOND READING'S POPULATION FLOOR, and why this strand wants a floor where its siblings
+# want ceilings. `unnamed_population` counts runners that carry a checkable claim while wearing
+# neither `witness` nor `suite`, so it RISES whenever any hand in the fleet writes one -- lawful
+# work, in a room this guard does not own. Its sibling `unnamed_runners` was reported and never
+# gated for exactly that reason, written out a few dozen lines above. The witness nonetheless
+# pinned the population by equality, which re-braided one level up what this script had unbraided:
+# seven bumps between `20260907.062000` and `20260910.073000`, four of them inside three days,
+# every one a stranger's arrival reddening a lap that had touched nothing here.
+#
+# What is worth guarding on a number that only grows lawfully is its FLOOR. A population that
+# collapses is a reading that broke -- REDS %416's shape, where an empty result passes a ceiling
+# and looks exactly like health. The awk passes check their own exit status for the same fault;
+# this is the coarser second net, and unlike them it also catches a collapse that exits 0.
+#
+# 384, and the derivation rather than the taste. The population has read 451 to 461 across the
+# four days it has been measured, so the floor sits 77 under the live reading -- far wider than
+# the largest single-lap move it has recorded (five, on `20260908.204406`) and wide enough that a
+# sweep renaming dozens of runners into the named population passes free. A FLOOR ONLY FALLS, the
+# mirror of its sibling ceilings: it moves when a repair legitimately shrinks the population, by a
+# deliberate hand in two files, and never when a stranger writes a program.
+UNNAMED_POPULATION_FLOOR="${UNNAMED_POPULATION_FLOOR:-384}"
 ROSTER="${UNHEARD_GUARD_ROSTER:-construction/standing-equipment.kyri}"
 mode="${1:-measure}"
 
@@ -404,6 +427,7 @@ echo "unheard_ceiling=$CEILING"
 echo "unheard_choirs=$choirs"
 echo "unheard_choir_ceiling=$CHOIR_CEILING"
 echo "unnamed_population=$unnamed_population"
+echo "unnamed_population_floor=$UNNAMED_POPULATION_FLOOR"
 echo "unnamed_heard=$unnamed_heard"
 echo "unnamed_runners=$unnamed_runners"
 echo "unnamed_choirs=$unnamed_choirs"
@@ -477,6 +501,12 @@ fi
 if [ "$choirs" -gt "$CHOIR_CEILING" ]; then
   echo "verdict=over_choir_ceiling"
   echo "refused: $choirs unheard choirs against a ceiling of $CHOIR_CEILING -- a silent choir takes its whole family with it." >&2
+  exit 1
+fi
+
+if [ "$unnamed_population" -lt "$UNNAMED_POPULATION_FLOOR" ]; then
+  echo "verdict=under_unnamed_population_floor"
+  echo "refused: $unnamed_population runners carry a checkable claim outside the naming convention, under a floor of $UNNAMED_POPULATION_FLOOR. A population this small is a reading that collapsed, not a tree that repaired itself -- read the awk passes above before lowering the floor." >&2
   exit 1
 fi
 

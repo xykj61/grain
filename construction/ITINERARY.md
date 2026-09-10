@@ -49,26 +49,25 @@
 
 ### Now -- the live front
 
-**Git nib:** `87d9eba6e1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7e0a4bbe7a` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A CONTAINED FAULT BELONGS AT THE COMMIT.**
-Elder [shelved](archive/20260910-084659_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**: a guard's boundary is the MOMENT it bites. **CENSUS:** 237
-tier-lap guards read 380 scans; **113 read the whole tree, 6 narrow to a commit**.
-**CONTAINMENT DECIDES IT:** a fault in one artifact's own bytes narrows to a
-staged set; a broken link cannot.
-**PRICED:** `conflict_marker`, seated for a card published with markers, kept that placement --
-**three commits, 26 minutes** live.
-**BUILT:** a `staged` mode narrowing that rule to the commit's paths, reading the INDEX alone since
-worktree bytes after a clean `git add` never land; `pre-commit` **rule nine** asks it at **19ms** narrowed, where a wide read costs 918.
-**REPLAYED:** run against `adf682ac3404` as it shipped, rule nine **refuses it,
-both lines named**.
-**THE WIRING EARNED LEGS:** the first draft passed every scan leg and NEVER RAN -- the hook's gate
-wants `rishi`. **50 legs, 19 pens.**
-**A COUNT-PIN OFF BY ONE:** `unheard_guard` reads **461** against a **460** pinned in its witness
-while its scan reads ok. `tame_reach` reddened the same way; a peer UNGATED it mid-lap
-rather than raising it -- the answer this class wants.
-**YOURS:** REDS holds **189 bytes**, no foldable row -- cited by stamp under rule 4.
+**BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
+Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
+**WATER TASTES**: a leg reddening on a peer's lawful file is off.
+**THE BRAID, ONE ROOM OVER FROM `tame_reach`:** `unheard_guard_witness` pinned
+`unnamed_population=461` by equality -- runners carrying a checkable claim while wearing neither
+`witness` nor `suite`, which RISES whenever any ship writes one. **Seven moves** (451 to 461) in
+three days, each a hand raising a number for another lane's arrival. **THE SCAN HAD ALREADY
+UNBRAIDED IT:** its header declines to gate `unnamed_runners` for this reason; the witness re-gated
+the same growth one level up.
+**BUILT:** `UNNAMED_POPULATION_FLOOR` (384 -- 77 under the live reading, wider than its largest
+single-lap move of five), refusing `under_unnamed_population_floor`. **A floor only falls, the
+mirror of a ceiling.** It keeps what the equality bought by accident, %416's empty-reading vacuum,
+and refuses nothing a stranger writes. **BOTH SIDES** live and on a pen; control **55 legs,
+fail=0**. `unnamed_choirs=11` LEFT ALONE: it reds on a fall alone, the ceiling's tightening prompt.
+**REPORTED:** 114 such pins across **54 rostered witnesses**, **17 moved 3+ times**, mostly
+control-leg tallies a lap raises in its own commit -- the sweet case.
+
 **PATCHOULI -- THE LEG THAT PROVES A BOUND REFUSES WAS THE ONE LEG NOBODY COULD HEAR.**
 Elder [shelved](archive/20260910-081408_itinerary-landed-accounts.md).
 **AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the grain's own ear strand -- *a guard that

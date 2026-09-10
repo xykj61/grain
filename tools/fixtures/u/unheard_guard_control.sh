@@ -46,7 +46,12 @@ newpen() {
 # below reads exactly as it did before this argument existed. Spelled positionally rather than as
 # an environment prefix on the call: `VAR=x somefunc` leaks into the calling shell in some POSIX
 # shells and not others, and a pen that behaves differently per shell proves nothing.
-run() { ( cd "$1" && shift && UNHEARD_GUARD_CEILING="$1" UNHEARD_CHOIR_CEILING="$2" UNNAMED_CHOIR_CEILING="${4:-99}" sh "$scan" "$3" ); }
+#
+# The fifth is the second reading's population FLOOR and defaults to 0, for the same reason the
+# fourth defaults high: a pen plants four or five runners where the living tree carries hundreds,
+# so the tree's floor would refuse every pen here and prove nothing about any of them. A leg that
+# wants the floor sets it explicitly, which pen eight below does from both sides.
+run() { ( cd "$1" && shift && UNHEARD_GUARD_CEILING="$1" UNHEARD_CHOIR_CEILING="$2" UNNAMED_CHOIR_CEILING="${4:-99}" UNNAMED_POPULATION_FLOOR="${5:-0}" sh "$scan" "$3" ); }
 
 echo "unheard_guard_control: proving the reading on real repositories in a throwaway pen."
 
@@ -185,6 +190,14 @@ check ok "$(run "$d" 99 99 measure 1 | sed -n 's/^verdict=//p')" "a second-readi
 if run "$d" 99 99 measure 0 > "$pen/uc.out" 2>/dev/null; then uc_rc=0; else uc_rc=1; fi
 check 1 "$uc_rc" "one under the count refuses"
 check over_unnamed_choir_ceiling "$(field "$pen/uc.out" verdict)" "and refuses under its own name, apart from both elder ceilings"
+
+# THE POPULATION FLOOR FROM BOTH SIDES, ON THE SAME PEN. The floor is the one gate here that
+# refuses from below, so it is planted by reading the pen's own population and asking for one more.
+pen_pop=$(run "$d" 99 99 measure | sed -n 's/^unnamed_population=//p')
+check ok "$(run "$d" 99 99 measure 99 "$pen_pop" | sed -n 's/^verdict=//p')" "a population floor exactly at the count passes"
+if run "$d" 99 99 measure 99 "$((pen_pop + 1))" > "$pen/pf.out" 2>/dev/null; then pf_rc=0; else pf_rc=1; fi
+check 1 "$pf_rc" "one above the count refuses"
+check under_unnamed_population_floor "$(field "$pen/pf.out" verdict)" "and the floor refuses under its own name, apart from every ceiling"
 
 # --- Pen nine: the elder rule's blind spot, given a size ------------------------------------
 # A guard wearing the word, reached only THROUGH a runner that does not. The narrow closure cannot
