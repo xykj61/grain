@@ -32,7 +32,26 @@ new_pen() {
   git -C "$d" config user.email pen@example.invalid
   git -C "$d" config user.name pen
   printf 'echo one\necho two\n' > "$d/tools/fixtures/p/say_two.sh"
+  # A longer report, so a selection can be quoted as one unbroken run or gathered from lines that
+  # stand apart -- the two shapes the scan tells apart.
+  printf 'echo one\necho two\necho three\necho four\n' > "$d/tools/fixtures/p/say_four.sh"
   echo "$d"
+}
+
+# The same page, running the four-line script. $1 pen dir, $2 output-block body, $3 line above.
+page4() {
+  d=$1; body=$2; above=${3:-}
+  {
+    printf '# a page\n\nRun it:\n\n'
+    printf '```sh\n'
+    printf 'sh tools/fixtures/p/say_four.sh\n'
+    printf '```\n\n'
+    [ -n "$above" ] && printf '%s\n\n' "$above"
+    printf '```\n'
+    printf '%s' "$body"
+    printf '```\n'
+  } > "$d/docs-geode/tutorials/page.md"
+  git -C "$d" add -A >/dev/null 2>&1
 }
 
 # $1 pen dir, $2 output-block body, $3 optional line placed just above the output fence
@@ -270,6 +289,106 @@ out=$(run_scan "$d")
 case "$out" in
   *undeclared_after_prose=1*) ok selection_reasonless_declares_nothing ;;
   *) bad selection_reasonless_declares_nothing "a reasonless selection was honored: $out" ;;
+esac
+
+# ---- 9g. a selection quoted as one unbroken run reads contiguous -------------------------------
+# Containment in order says every quoted line printed. It says nothing about what stands between
+# them, so each selection is read a second time for its shape.
+d=$(new_pen sel_run)
+page4 "$d" 'two
+three
+' '<!-- selected: two adjacent lines of a longer report -->'
+out=$(run_scan "$d")
+case "$out" in
+  *selected_contiguous=1*) ok selection_run_contiguous ;;
+  *) bad selection_run_contiguous "an unbroken run was not read as contiguous: $out" ;;
+esac
+case "$out" in
+  *selected_scattered=0*) ok selection_run_not_scattered ;;
+  *) bad selection_run_not_scattered "an unbroken run was counted as a gathering: $out" ;;
+esac
+
+# ---- 9h. a selection gathered from lines that stand apart is counted and its middle named -------
+# The case the shape reading exists for: every quoted line prints, in order, and a line the page
+# never shows stands in the middle of the run.
+d=$(new_pen sel_gap)
+page4 "$d" 'two
+four
+' '<!-- selected: two lines of a longer report -->'
+out=$(run_scan "$d")
+case "$out" in
+  *selected_scattered=1*) ok selection_gathered_counted ;;
+  *) bad selection_gathered_counted "a gathering was not counted: $out" ;;
+esac
+case "$out" in
+  *"stands between the quoted lines: three"*) ok selection_gathered_named ;;
+  *) bad selection_gathered_named "the line standing between the quoted ones was not named: $out" ;;
+esac
+case "$out" in
+  *drift=0*) ok selection_gathered_not_drift ;;
+  *) bad selection_gathered_not_drift "a lawful gathering was called a drift: $out" ;;
+esac
+
+# ---- 9i. the scattered ceiling bites, and passes at exactly its own number ----------------------
+# Proven from both sides against one pen, so a refusal cannot be told apart from a reading that
+# never fires.
+out=$( cd "$d" && TUTORIAL_OUTPUT_SCATTERED_CEILING=0 sh "$SCAN" 2>&1 )
+case "$out" in
+  *a_selection_broke_its_run*) ok scattered_ceiling_bitten ;;
+  *) bad scattered_ceiling_bitten "one gathering past a ceiling of zero went free: $out" ;;
+esac
+case "$out" in
+  *"stands between the quoted lines: three"*) ok scattered_ceiling_names_the_middle ;;
+  *) bad scattered_ceiling_names_the_middle "the refusal did not say what the page passes over: $out" ;;
+esac
+out=$( cd "$d" && TUTORIAL_OUTPUT_SCATTERED_CEILING=1 sh "$SCAN" 2>&1 )
+case "$out" in
+  *every_quoted_block_still_prints*) ok scattered_ceiling_met_free ;;
+  *) bad scattered_ceiling_met_free "a gathering at exactly the ceiling was refused: $out" ;;
+esac
+
+# ---- 9j. a run broken by an inserted line is bitten --------------------------------------------
+# The whole reason the ceiling is a shape rather than a line count. The page is unchanged and its
+# quoted lines all still print, in order; what changed is that the command now prints something
+# between them, and the page teaches a run that no longer exists.
+d=$(new_pen sel_break)
+page4 "$d" 'two
+three
+' '<!-- selected: two adjacent lines of a longer report -->'
+case "$(run_scan "$d")" in
+  *selected_contiguous=1*) : ;;
+  *) bad selection_break_setup "the pen did not start contiguous" ;;
+esac
+printf 'echo one\necho two\necho wedge\necho three\necho four\n' > "$d/tools/fixtures/p/say_four.sh"
+git -C "$d" add -A >/dev/null 2>&1
+out=$( cd "$d" && TUTORIAL_OUTPUT_SCATTERED_CEILING=0 sh "$SCAN" 2>&1 )
+case "$out" in
+  *a_selection_broke_its_run*) ok selection_break_bitten ;;
+  *) bad selection_break_bitten "a run broken by an inserted line went free: $out" ;;
+esac
+case "$out" in
+  *"stands between the quoted lines: wedge"*) ok selection_break_names_the_wedge ;;
+  *) bad selection_break_names_the_wedge "the refusal did not name the inserted line: $out" ;;
+esac
+
+# ---- 9k. a gathering whose output GROWS keeps its shape -----------------------------------------
+# The design leg, and the reason a count of skipped lines would have been the wrong instrument.
+# announced_length_scan prints one more line for every ladder anybody announces, so a ceiling on
+# skipped lines would red on a page nobody touched. A shape reading holds still through that.
+d=$(new_pen sel_grow)
+page4 "$d" 'two
+four
+' '<!-- selected: two lines of a longer report -->'
+printf 'echo one\necho two\necho three\necho grew\necho four\n' > "$d/tools/fixtures/p/say_four.sh"
+git -C "$d" add -A >/dev/null 2>&1
+out=$(run_scan "$d")
+case "$out" in
+  *selected_scattered=1*) ok selection_growth_keeps_shape ;;
+  *) bad selection_growth_keeps_shape "growth between the quoted lines moved the shape count: $out" ;;
+esac
+case "$out" in
+  *every_quoted_block_still_prints*) ok selection_growth_free ;;
+  *) bad selection_growth_free "honest growth between quoted lines was refused: $out" ;;
 esac
 
 # ---- 9f. the gap bound bites, and from both sides ----------------------------------------------

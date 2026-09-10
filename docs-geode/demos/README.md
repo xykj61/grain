@@ -92,9 +92,9 @@ so you can see where a finding belongs.
 sh tools/fixtures/f/fascia_metric_v0.sh
 ```
 
-Two lines from the full output:
+Two adjacent lines from the full output:
 
-<!-- selected: two lines of a longer report, checked by containment in order -->
+<!-- selected: two adjacent lines of a longer report, one unbroken run -->
 ```
 clutter=43
 fascia=57
@@ -111,9 +111,9 @@ A score describes those four readings; a product earns its working claims throug
 sh tools/fixtures/a/announced_length_scan.sh
 ```
 
-Selected lines from the full output:
+One of the six `met:` lines, then the three lines that close the report:
 
-<!-- selected: four lines of a longer report, checked by containment in order -->
+<!-- selected: one met line and the three closing lines, gathered from a longer report -->
 ```
 met: constel/LADDER.md announces FORA0-FORA31, reached FORA31
 announcements_checked=6

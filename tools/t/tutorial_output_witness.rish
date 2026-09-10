@@ -38,6 +38,25 @@
 # produced it teaches the output's shape wrongly even when both lines are present, and the pen
 # proves that leg alone by removing the order strand and watching it go red.
 #
+# AND CONTAINMENT IN ORDER SAYS NOTHING ABOUT WHAT STANDS BETWEEN (20260910). A page may quote four
+# lines that all print, in the order it prints them, and pass over a refusal standing in the middle
+# of the run -- and every reading above calls that clean. So a selection is read a second time for
+# its SHAPE: one unbroken run of the real output, or a gathering of lines that stand apart. The
+# test tries every start position in what ran, so the answer is outright rather than an alignment
+# somebody chose. Measured over the same nine pairs: the fascia pair in the demos room quotes two
+# adjacent lines and reads contiguous; the announced-length pair beside it quotes one `met:` line
+# and three summary lines with FOUR further `met:` lines standing between them, and the scan now
+# names all four.
+#
+# `selected_scattered` is a CEILING rather than a zero, since gathering is what a selection is for.
+# It falls on repair and rises only by a hand adding a declared selection, an edit standing in the
+# same commit as the page. What it refuses in silence is the case it exists for: a selection that
+# reads as one run today with a line wedged into the middle of it tomorrow. A ceiling on the COUNT
+# of skipped lines was declined and the reason is measurable -- `announced_length_scan` prints one
+# more line for every ladder anybody announces, so that ceiling would red on a page nobody touched.
+# The pen proves the distinction from both ends: a wedged line bites, and honest growth between the
+# quoted lines goes free with the shape count unmoved.
+#
 # PROSE WITH NOTHING DECLARING IT is counted as undeclared_after_prose and named, never checked and
 # never gated. That is the honest half: the page may be quoting a subset, reattributing the output
 # to another invocation, or setting two unrelated blocks side by side, and those want three
@@ -59,9 +78,16 @@
 # clones, after a folded room left two pages naming a file at its elder address. This one proves
 # what a command PRINTS. A page can name paths that all resolve and still promise output no command
 # produces -- which is exactly what the first hour did. Two jobs, two names.
-# Pen: tools/fixtures/t/tutorial_output_control.sh -- twenty-nine behaviors on real git
-# repositories in a throwaway pen, every refusal planted and then lifted, the gap bound shown from
-# both sides, and the order strand proven load-bearing by a mutation run that reds one leg alone.
+# Pen: tools/fixtures/t/tutorial_output_control.sh -- forty-three behaviors on real git
+# repositories in a throwaway pen, every refusal planted and then lifted, the gap bound and the
+# scattered ceiling each shown from both sides, the order strand proven load-bearing by a mutation
+# that reds one leg alone, and the shape strand by one that reds seven.
+#
+# This header read "twenty-nine" until 20260910, and the pen emitted THIRTY-ONE the whole time. The
+# number had been taken from the witness's own assertion list rather than from the control's
+# output, so it counted the reader instead of the thing read -- which is the same fault one room
+# over as a page quoting output nobody ran. Both rosters agree at forty-three now, and the count
+# below is read off the control rather than off this file.
 # Run from the repository root.
 
 say "tutorial-output: Language EN -- a quoted output block is a claim about behavior, and a claim nobody checks is a claim that decays."
@@ -73,6 +99,12 @@ say scan.out
 assert scan.ok else "tutorial-output: a page quotes output its command no longer prints -- read the scan's own detail lines"
 assert scan.out contains "verdict=every_quoted_block_still_prints" else "tutorial-output: the scan must reach the clean verdict"
 assert scan.out contains "drift=0" else "tutorial-output: no page may quote output its command does not print"
+assert (scan.out contains "verdict=a_selection_broke_its_run" == false) else "tutorial-output: a selection quoted as one run must still be one run"
+
+# A shape reading that never fires reads exactly like a corpus with no selections in it, so both
+# counts are asserted present rather than only the refusal being absent.
+assert scan.out contains "selected_contiguous=" else "tutorial-output: the shape of every selection must be read, not only its containment"
+assert scan.out contains "selected_scattered=" else "tutorial-output: a gathering must be counted where a reader can see it"
 
 # A meter reading an empty corpus reports clean while proving nothing, so the corpus is measured.
 assert (scan.out contains "pairs=0" == false) else "tutorial-output: a corpus with no pairs would report clean while reading nothing at all"
@@ -106,6 +138,18 @@ assert control.out contains "case=selection_drift_named ok" else "tutorial-outpu
 assert control.out contains "case=selection_order_bitten ok" else "tutorial-output: a selection whose lines all print in the wrong order must be refused -- order is part of the claim"
 assert control.out contains "case=selection_lifted ok" else "tutorial-output: a repaired selection must go free again"
 assert control.out contains "case=selection_reasonless_declares_nothing ok" else "tutorial-output: a selection with no reason must declare nothing"
+assert control.out contains "case=selection_run_contiguous ok" else "tutorial-output: a selection quoted as one unbroken run must read contiguous"
+assert control.out contains "case=selection_run_not_scattered ok" else "tutorial-output: an unbroken run must not be counted as a gathering"
+assert control.out contains "case=selection_gathered_counted ok" else "tutorial-output: a selection gathered from lines that stand apart must be counted"
+assert control.out contains "case=selection_gathered_named ok" else "tutorial-output: the line standing between the quoted ones must be named, or a reader cannot weigh what the page passes over"
+assert control.out contains "case=selection_gathered_not_drift ok" else "tutorial-output: a lawful gathering must never be called a drift"
+assert control.out contains "case=scattered_ceiling_bitten ok" else "tutorial-output: one gathering past the ceiling must refuse"
+assert control.out contains "case=scattered_ceiling_names_the_middle ok" else "tutorial-output: a refusal must say what the page passes over"
+assert control.out contains "case=scattered_ceiling_met_free ok" else "tutorial-output: the scattered ceiling must pass at exactly its own number"
+assert control.out contains "case=selection_break_bitten ok" else "tutorial-output: a run broken by a line wedged into its middle must refuse -- the page teaches a run that no longer exists"
+assert control.out contains "case=selection_break_names_the_wedge ok" else "tutorial-output: a broken run must name the line that broke it"
+assert control.out contains "case=selection_growth_keeps_shape ok" else "tutorial-output: honest growth between quoted lines must leave the shape count where it stood"
+assert control.out contains "case=selection_growth_free ok" else "tutorial-output: a report that prints one more line must never red a page nobody touched"
 assert control.out contains "case=gap_at_bound_free ok" else "tutorial-output: a block exactly at the gap bound must still pair"
 assert control.out contains "case=gap_past_bound_dropped ok" else "tutorial-output: a block past the gap bound must not pair, since a reader has stopped holding the command"
 assert control.out contains "case=lone_command_free ok" else "tutorial-output: a command promising no output must be counted as no claim"
@@ -115,4 +159,4 @@ assert control.out contains "case=list_names_pairs ok" else "tutorial-output: th
 assert control.out contains "control=ok" else "tutorial-output: the control must agree with itself"
 
 say ""
-say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, whole or as a declared selection, with twenty-nine behaviors proven in a pen and every refusal bitten and then lifted."
+say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, whole or as a declared selection whose shape is read as well as its contents, with forty-three behaviors proven in a pen and every refusal bitten and then lifted."

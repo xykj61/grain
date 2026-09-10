@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.011542` | [What stands between the quoted lines](20260910/20260910-011542_what-stands-between-the-quoted-lines.kyri) | A selection's shape is read now, not only its contents. |
 | `20260910.010206` | [A row names a log](20260910/20260910-010206_a-row-names-a-log.kyri) | the shelf row keys on its log, never its second |
 | `20260910.003739` | [the reading that began accusing](20260910/20260910-003739_the-reading-that-began-accusing.kyri) | --detach orphans at birth; live passes read gone |
 | `20260910.003033` | [A count in front of a byte ceiling](20260910/20260910-003033_a-count-in-front-of-a-byte-ceiling.kyri) | 4 of 177 files; two real, two false. |
