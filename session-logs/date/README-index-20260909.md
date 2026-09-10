@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.201455` | [The instrument nobody asked](20260909/20260909-201455_the-instrument-nobody-asked.kyri) | Copal; a cut lap rescued, and a prover handed its second subject |
 | `20260909.201318` | [Overtaken twice](20260909/20260909-201318_overtaken-twice.kyri) | Bakery; two keystones lost to peers, and the reading that survived |
 | `20260909.195052` | [Four hands, two lanterns](20260909/20260909-195052_four-hands-two-lanterns.kyri) | Both my reds were closed by peers mid-rebase; the document plants survived. |
 | `20260909.194947` | [The prover that could not read Rishi](20260909/20260909-194947_the-prover-that-could-not-read-rishi.kyri) | A Rishi tool read as refusing |

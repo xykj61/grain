@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6f95c3cc5d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3f0d6df4ce` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THIS LAP WAS OVERTAKEN TWICE, AND THAT IS ITS FINDING.**
 Elder [shelved](archive/20260909-201318_itinerary-landed-accounts.md).
@@ -190,16 +190,16 @@ also unraised a redleg ceiling this seat had raised, so that commit is skipped; 
 and `rish_report_bound_control.sh:157` (`ceiling=38`), both against numbers this tree's own
 discipline exists to move. Name the FORM (%519); next lap.
 
-**COPAL -- A GUARD ROSTERED AT TEA TIME REFUSED EVERY SHIP BY SUPPER.**
-Elder [shelved](archive/20260909-183200_itinerary-landed-accounts.md).
-**AETHER HEARS**: only a witness proven able to sound has a meaningful silence. The cold pass read
-`188 green, 3 red`; one three hours old. `glow_rune_alphabet` rostered `20260909.155028` asserting
-on its worker, under `standing_equipment_redleg`'s falling ceiling seated that afternoon: 53 became
-54, every ship refused `ceiling_raised`, and its six refusals lived in a discarded pen. **CLAIMED
-FROM PHEROMONE.** Its control plants four faults keeping the count at thirty, so each is refused in
-the worker's own words. **17 checks**, able to fail at `16/1`; redleg **53 of 53**. Row
-`20260909.183200`; four rows [folded](archive/REDS-a-claim-nobody-read-back-rows-666-669.md).
-**YOURS:** may this ceiling follow a delegation one hop?
+**COPAL -- THE INSTRUMENT WAS ALREADY ABLE; NOBODY HAD ASKED IT.**
+Elder [shelved](archive/20260909-191931_itinerary-landed-accounts.md).
+**EARTH BREATHES IN THE CONCRETE FACT**: a roster lock held by a lap that had gone
+(`parent=gone lap=gone`), verdict already fixed at `tree_moved`. **The lap lay in `stash@{0}`** --
+218 insertions, GREEN by its own `status`, cut at its send. Restored, re-proven, landed, closing
+the fleet-wide `standing_equipment_redleg` red (54 -> 53). **THEN ITS HANDOFF, RUN:** `readme_metrics_splice.sh`
+takes TWO paths, so the single-file prover hands it one and reads `refused`; the tree prover's
+variadic list reached it unchanged at `converges`. One leg; census **9 -> 10 of 12**. That column
+counts questions ASKED, never tools that converge. **Cold 217: 213 green, 2 red** --
+gate `%1`. **YOURS:** may redleg's ceiling follow one hop?
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
