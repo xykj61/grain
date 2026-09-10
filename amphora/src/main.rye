@@ -1623,7 +1623,7 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     // stamp, past the seal, past the listing walk, printing `restore files proven count=2`
     // because the content was honest -- and refused only afterward, on the parent compare,
     // with the file already written. Refused here, the catalog never forms and
-    // `restore_write_prove` is never reached, so the refusal arrives before the mutation.
+    // `restore_prove_write` is never reached, so the refusal arrives before the mutation.
     if (me.name_verdict(name) != .contained) return error.CargoUnproven;
     if (catalog.file_count >= max_season_files) return error.SeasonOverflow;
     const slot = &catalog.entries[catalog.file_count];
@@ -1662,26 +1662,78 @@ fn restore_guard_out(io: std.Io, allocator: std.mem.Allocator, vessel: []const u
     if (!std.mem.eql(u8, &season_parent, &parent_hex)) return error.IdentityFork;
 }
 
-/// Q40: write each resin into the out-home and re-prove its riding digest.
-fn restore_write_prove(
+/// Read one resin the catalog names and answer whether its bytes carry the riding digest.
+/// The read is the proof: a resin's address IS its digest, so a body that hashes elsewhere
+/// is a forgery whatever the seal above it says.
+fn resin_body_proven(
     io: std.Io,
     vessel: []const u8,
-    out_home: []const u8,
+    entry: *const SeasonEntry,
+    body: []u8,
+) CliError![]const u8 {
+    // invariant: the caller hands a buffer able to hold a whole season file, since a short
+    // one would read a prefix and prove a digest the file never carried.
+    assert(body.len >= max_season_file_bytes);
+    // invariant: the entry's digest is a full address, checked here rather than trusted,
+    // because resin_file_path builds a filename out of exactly these bytes.
+    assert(entry.digest_hex.len == digest_hex_len);
+    const cwd = Dir.cwd();
+    var rbuf: [max_vessel_path_len]u8 = undefined;
+    const rpath = try resin_file_path(vessel, &entry.digest_hex, &rbuf);
+    const data = cwd.readFile(io, rpath, body) catch return error.ResinAbsent;
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(data, &digest, .{});
+    var hex: [digest_hex_len]u8 = undefined;
+    write_hex_lower(&digest, &hex);
+    if (!std.mem.eql(u8, &hex, &entry.digest_hex)) return error.CargoUnproven;
+    return data;
+}
+
+/// Q40a: prove every resin the catalog names BEFORE the restore writes its first byte.
+/// A forged body refuses here, with no out-home made and nothing on disk -- the same door
+/// the escaping-name rule refuses at, one field over.
+fn restore_prove_resins(
+    io: std.Io,
+    vessel: []const u8,
     catalog: *const SeasonCatalog,
 ) CliError!void {
     // invariant: the catalog carries at least one file, since catalog_from_cargo_plain
     // refuses an empty listing -- a restore writing nothing is not a restore.
     assert(catalog.file_count >= 1);
+    // invariant: the walk stays inside the catalog's own bound, so the loop below reads
+    // only slots read_season or catalog_from_cargo_plain actually filled.
+    assert(catalog.file_count <= max_season_files);
+    var i: u32 = 0;
+    while (i < catalog.file_count) : (i += 1) {
+        var body: [max_season_file_bytes]u8 = undefined;
+        _ = try resin_body_proven(io, vessel, &catalog.entries[i], &body);
+    }
+    print("amphora: restore resins proven count={d}\n", .{catalog.file_count});
+}
+
+/// Q40b: write each proven resin into the out-home, proving each body again as it lands.
+/// The second reading costs one re-read per file -- at most max_season_files bodies, each
+/// bounded by max_season_file_bytes -- and it buys the one thing the pass above cannot:
+/// a resin tampered with BETWEEN the two walks still writes no wrong byte.
+fn restore_prove_write(
+    io: std.Io,
+    vessel: []const u8,
+    out_home: []const u8,
+    catalog: *const SeasonCatalog,
+) CliError!void {
+    // invariant: the catalog carries at least one file -- see restore_prove_resins, which
+    // has already read and proven every one of them by the time this runs.
+    assert(catalog.file_count >= 1);
+    // invariant: the walk stays inside the catalog's own bound.
+    assert(catalog.file_count <= max_season_files);
     const cwd = Dir.cwd();
     cwd.createDirPath(io, out_home) catch return error.RestoreUnwritable;
     var i: u32 = 0;
     while (i < catalog.file_count) : (i += 1) {
         const e = catalog.entries[i];
         const name = e.name[0..e.name_len];
-        var rbuf: [max_vessel_path_len]u8 = undefined;
-        const rpath = try resin_file_path(vessel, &e.digest_hex, &rbuf);
         var body: [max_season_file_bytes]u8 = undefined;
-        const data = cwd.readFile(io, rpath, &body) catch return error.ResinAbsent;
+        const data = try resin_body_proven(io, vessel, &e, &body);
         var dest_buf: [max_vessel_path_len]u8 = undefined;
         const dest = std.fmt.bufPrint(&dest_buf, "{s}/{s}", .{ out_home, name }) catch {
             return error.PathTooLong;
@@ -1694,11 +1746,6 @@ fn restore_write_prove(
         cwd.writeFile(io, .{ .sub_path = dest, .data = data }) catch {
             return error.RestoreUnwritable;
         };
-        var digest: [Sha3_256.digest_length]u8 = undefined;
-        Sha3_256.hash(data, &digest, .{});
-        var hex: [digest_hex_len]u8 = undefined;
-        write_hex_lower(&digest, &hex);
-        if (!std.mem.eql(u8, &hex, &e.digest_hex)) return error.CargoUnproven;
     }
     print("amphora: restore files proven count={d}\n", .{catalog.file_count});
 }
@@ -1801,7 +1848,17 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
             else => refuse(error.StampUnverified, vessel),
         };
     };
-    restore_write_prove(io, vessel, out_home, &catalog) catch |fault| {
+    // Q40a before Q40b: every resin is proven while the out-home still does not exist, so a
+    // forged body refuses with nothing written rather than after its bytes have landed.
+    restore_prove_resins(io, vessel, &catalog) catch |fault| {
+        return switch (fault) {
+            error.ResinAbsent => refuse(error.ResinAbsent, vessel),
+            error.CargoUnproven => refuse(error.CargoUnproven, vessel),
+            error.PathTooLong => refuse(error.PathTooLong, vessel),
+            else => refuse(error.CargoUnproven, vessel),
+        };
+    };
+    restore_prove_write(io, vessel, out_home, &catalog) catch |fault| {
         return switch (fault) {
             error.ResinAbsent => refuse(error.ResinAbsent, vessel),
             error.CargoUnproven => refuse(error.CargoUnproven, out_home),

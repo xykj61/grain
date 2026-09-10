@@ -2827,6 +2827,25 @@ path tools/am/amphora_framed_name_witness.rish
 tier lap
 seated 20260910.064044
 
+# amphora_prove_before_write -- a restore proves every resin while its out-home does not yet
+# exist. The two rows above ask WHERE a cargo name may land and which LINE it is written on;
+# this asks WHEN the proof runs. `restore_write_prove` read each resin, wrote it, and then
+# hashed -- and the hash was taken over the buffer it had just read, so the write sat between a
+# read and its own proof for nothing. Measured on metal `20260910.073234` before a line changed:
+# a four-file season with one resin body overwritten refused with `cargo unproven` and ALL FOUR
+# files standing in the out-home, the forged bytes among them at `nested/leaf.txt`, because that
+# entry sorted last and every earlier write had landed. A hand reading the directory rather than
+# the exit code sees a season that looks whole. `restore_prove_resins` now walks the whole
+# catalog first and `restore_prove_write` proves each body again as it lands, so a resin
+# tampered with BETWEEN the walks still writes no wrong byte. The pen strikes the pre-pass out,
+# watches three honest files land ahead of the refusal, and returns it. `tier lap`: three rye
+# builds plus one in the elder pen.
+
+guard amphora_prove_before_write
+path tools/am/amphora_prove_before_write_witness.rish
+tier lap
+seated 20260910.074214
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert

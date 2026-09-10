@@ -1,0 +1,133 @@
+# tools/am/amphora_prove_before_write_witness.rish -- Q40a: a restore proves every resin before
+# it writes its first byte.
+#
+# The sibling rule `amphora_contained_name` asks WHERE a cargo name may land, and
+# `amphora_framed_name` asks which LINE the name is written on. This asks WHEN the proof runs.
+# A restore reads each resin, writes it, and re-hashes it -- and the hash was taken over the
+# buffer it had just read, so the write sat between the read and its own proof for no reason.
+#
+# Measured on metal `20260910.073234` before a line changed: a four-file season, one resin body
+# overwritten with `FORGED-BYTES-NOT-THE-SEASON`, and `amphora restore` printed `cargo unproven`
+# with ALL FOUR files standing in the out-home -- the forged bytes among them, at
+# `nested/leaf.txt`, because that entry sorted last and every earlier write had already landed.
+# A hand reading the directory rather than the exit code sees a season that looks whole.
+#
+# The legs, in order:
+#   an honest vessel restores whole, and says its resins were proven before its files were
+#   a forged resin refuses with NO out-home at all -- the season door, nothing on disk
+#   the same refusal names `cargo unproven`, so the elder message a reader knows still arrives
+#   an absent resin refuses the same way, before the out-home is made
+#   the wall REMOVED in a pen: the pre-pass struck out, a mutation lands, the refusal trails it
+#   the wall RETURNED: the repaired binary over the same forged season writes nothing
+#
+#   rishi/bin/rishi run tools/am/amphora_prove_before_write_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# The pen carries a kernel-picked name, because eight ships run this roster and the first
+# gesture below is `rm -rf`: two peers sharing one literal home would each red on a fact about
+# the pen rather than about Amphora (the class REDS %512 named).
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pbw.XXXXXX"]
+assert pen.ok else "pbw: pen must open"
+let home = trim pen.out
+
+# Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none of
+# these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+assert build_amphora.ok else "pbw: amphora build failed -- ${build_amphora.err}"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "pbw: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "pbw: vessel-seal build failed -- ${build_seal.err}"
+
+# Each plant pours into its OWN directory, because a vessel's resins live beside it: three
+# vessels in one home would share one resins directory, and forging a body for the second
+# plant would quietly break the first.
+let mk = run ["sh" "-c" "mkdir -p ${home}/h ${home}/f ${home}/a"]
+assert mk.ok else "pbw: the three plant homes must open"
+
+# --- leg 1: the honest season restores whole, and the two proof lines arrive in order ---
+let honest = "${home}/h/honest.bron"
+let pour_honest = run ["amphora/bin/amphora" "pour" season honest]
+assert pour_honest.ok else "pbw: honest pour must pass -- ${pour_honest.err}"
+let restore_honest = run ["amphora/bin/amphora" "restore" honest]
+assert restore_honest.ok else "pbw: honest restore must pass -- ${restore_honest.err}"
+assert restore_honest.err contains "restore resins proven" else "pbw: the honest restore says its resins were proven"
+assert restore_honest.err contains "restore files proven" else "pbw: the honest restore says its files were written"
+let honest_leaf = run ["sh" "-c" "cat ${home}/h/honest.bron.season/nested/leaf.txt"]
+assert honest_leaf.ok else "pbw: the honest restore must land a nested leaf"
+assert honest_leaf.out contains "nested leaf" else "pbw: the leaf carries its own bytes"
+say "leg_honest=whole"
+
+# --- leg 2: a forged resin refuses with nothing on disk ---
+# The SECOND resin by directory order is forged rather than the first, so at least one honest
+# file stands ahead of the forgery in the write walk. That ordering is what made the elder fault
+# visible: an earlier honest write is a mutation, whatever the refusal afterward says.
+let forged = "${home}/f/forged.bron"
+let pour_forged = run ["amphora/bin/amphora" "pour" season forged]
+assert pour_forged.ok else "pbw: forged-plant pour must pass -- ${pour_forged.err}"
+let forge_prep = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > ${home}/f/resins/$f"]
+assert forge_prep.ok else "pbw: the forge plant must prepare"
+let forged_restore = run ["sh" "-c" "amphora/bin/amphora restore ${forged}; true"]
+assert forged_restore.err contains "cargo unproven" else "pbw: a forged resin refuses by name"
+let forged_out = run ["sh" "-c" "test ! -e ${home}/f/forged.bron.season"]
+assert forged_out.ok else "pbw: the refusal must leave NO out-home -- this is the whole rule"
+# Read straight off the captured stream rather than piping it back through a shell: a nested
+# quote around a multi-line interpolation is one more thing that can be wrong, and the value is
+# already here.
+assert (forged_restore.err contains "files proven") == false else "pbw: no file walk runs, so no files-proven line is printed"
+assert (forged_restore.err contains "resins proven") == false else "pbw: the pre-pass refuses partway, so it never claims a whole season"
+say "leg_forged=refused_before_write"
+
+# --- leg 3: an absent resin refuses at the same door, ahead of the out-home ---
+let absent = "${home}/a/absent.bron"
+let pour_absent = run ["amphora/bin/amphora" "pour" season absent]
+assert pour_absent.ok else "pbw: absent-plant pour must pass -- ${pour_absent.err}"
+let drop = run ["sh" "-c" "rm -f ${home}/a/resins/$(ls ${home}/a/resins | sed -n 2p)"]
+assert drop.ok else "pbw: the absent plant must drop one resin"
+let absent_restore = run ["sh" "-c" "amphora/bin/amphora restore ${absent}; true"]
+assert absent_restore.err contains "resin absent" else "pbw: a missing resin refuses by name"
+let absent_out = run ["sh" "-c" "test ! -e ${home}/a/absent.bron.season"]
+assert absent_out.ok else "pbw: the absent refusal must leave no out-home either"
+say "leg_absent=refused_before_write"
+
+# --- the wall removed: a pen copy with the pre-pass call struck out is the ELDER restore ---
+# It keeps the per-file proof, so it refuses on the forged entry -- and by then the honest files
+# ahead of it have already landed. That standing out-home is the fault this rule closes: a
+# refusal arriving after a mutation. Shown here because a refusal proven only from the passing
+# side cannot be told from a door with nothing to refuse.
+let elder_dir = "${home}/elder"
+let elder_copy = run ["sh" "-c" "mkdir -p ${elder_dir}/src ${elder_dir}/bin && cp amphora/manifest_entry.rye amphora/vessel_seal.rye amphora/vessel_core.rye amphora/kumara.rye amphora/tally_copy.rye ${elder_dir}/ && cp amphora/src/main.rye ${elder_dir}/src/ && cp amphora/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
+assert elder_copy.ok else "pbw: the elder pen must copy"
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/restore_prove_resins(io, vessel, &catalog) catch |fault| {/,/^    };$/d' ${elder_dir}/src/main.rye"]
+assert strip.ok else "pbw: the pre-pass must strip cleanly"
+let gone = run ["sh" "-c" "grep -c 'restore_prove_resins(io, vessel, &catalog)' ${elder_dir}/src/main.rye || true"]
+assert (trim gone.out) == "0" else "pbw: the elder pen must lose the pre-pass CALL -- ${gone.out} left"
+let kept = run ["sh" "-c" "grep -c 'restore_prove_write(io, vessel, out_home, &catalog)' ${elder_dir}/src/main.rye || true"]
+assert (trim kept.out) == "1" else "pbw: the elder keeps its write walk, or it proves nothing -- ${kept.out}"
+let elder_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
+assert elder_build.ok else "pbw: elder amphora build failed -- ${elder_build.err}"
+let elder_seal = run ["sh" "-c" "cp amphora/bin/vessel-seal amphora/bin/vessel-core ${elder_dir}/bin/"]
+assert elder_seal.ok else "pbw: the elder pen must carry its sibling tools"
+
+let elder_restore = run ["sh" "-c" "cp ${forged} ${home}/f/elder.bron && ${elder_dir}/bin/amphora restore ${home}/f/elder.bron; true"]
+assert elder_restore.err contains "cargo unproven" else "pbw: the elder refuses too -- the fault was never the verdict"
+let elder_out = run ["sh" "-c" "test -d ${home}/f/elder.bron.season && find ${home}/f/elder.bron.season -type f | wc -l"]
+assert elder_out.ok else "pbw: the wall removed, the out-home must STAND -- otherwise this witness proves nothing"
+let elder_files = trim elder_out.out
+assert elder_files != "0" else "pbw: the wall removed, a file must land before the refusal -- got ${elder_files}"
+say "wall_removed=mutation_before_refusal files=${elder_files}"
+
+# --- the wall returned: the repaired binary, over the very same forged vessel ---
+let returned = run ["sh" "-c" "rm -rf ${home}/f/elder.bron.season && cp ${forged} ${home}/f/again.bron && amphora/bin/amphora restore ${home}/f/again.bron; true"]
+assert returned.err contains "cargo unproven" else "pbw: the repaired restore refuses the same vessel"
+let returned_out = run ["sh" "-c" "test ! -e ${home}/f/again.bron.season"]
+assert returned_out.ok else "pbw: the wall returned, nothing may land"
+say "wall_returned=refused_before_write"
+
+# The pen belongs to this run alone, so this run takes it down.
+let sweep = run ["rm" "-rf" home]
+assert sweep.ok else "pbw: pen must sweep"
+
+say "GREEN: amphora_prove_before_write -- every resin is proven while the out-home does not exist."
