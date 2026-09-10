@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.070830` | [A guard that reports history](20260910/20260910-070830_a-guard-that-reports-history.kyri) | the reading moved to the commit |
 | `20260910.072419` | [The room that arrived unlisted](20260910/20260910-072419_the-room-that-arrived-unlisted.kyri) | nine index rows, one peer's room |
 | `20260910.065118` | [The front doors, read as one class](20260910/20260910-065118_the-front-doors-read-as-one-class.kyri) | 573 characters, 26 doors, one kind |
 | `20260910.064554` | [A cargo name is one record](20260910/20260910-064554_a-cargo-name-is-one-record.kyri) | a name that carries a newline is two records |

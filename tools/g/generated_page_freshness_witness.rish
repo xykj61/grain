@@ -105,6 +105,9 @@ assert control.out contains "debt_kept_on_refusal=yes" else "generated-page-fres
 assert control.out contains "no_rishi_no_debt=yes" else "generated-page-freshness: with no rishi on disk a cherry-pick must record no debt"
 assert control.out contains "link_wall_bitten=yes" else "generated-page-freshness: rule six must refuse a commit carrying a living link that opens nothing"
 assert control.out contains "link_wall_free=yes" else "generated-page-freshness: rule six must wave the same commit through once it carries the file the link names"
+assert control.out contains "empty_wall_bitten=yes" else "generated-page-freshness: rule eight must refuse a commit staging a document that holds nothing"
+assert control.out contains "empty_wall_free=yes" else "generated-page-freshness: rule eight must wave the same commit through once the record is written"
+assert control.out contains "empty_wall_peer_free=yes" else "generated-page-freshness: rule eight must read only the staged set -- an empty document elsewhere refuses no author"
 assert control.out contains "control_verdict=ok" else "generated-page-freshness: the control must agree with itself"
 say "RED and GREEN paths proven -- four refusals, six welcomes, five rests, and three debts recorded"
 

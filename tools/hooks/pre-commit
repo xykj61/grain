@@ -53,8 +53,14 @@
 # cold open at 02:42 -- 43 minutes and one ship later -- after which two hands cured the same two
 # sites in parallel and one cure withdrew whole. A lantern that fires twice becomes a loom.
 #
-# SEVEN RULES. Four carry their own trigger, because the pages go stale for different reasons and a
-# single trigger would either miss one or fire on everything; three rest cheaply on every commit:
+# AN EIGHTH DUTY joined on 20260910: a document this commit carries holds something. The whole
+# empty-document law has stood at `tier lap` since 20260823, and two session logs shipped at zero
+# bytes anyway in the eighteen days after it was seated -- the second one losing its own `loom`
+# lines outright, because a lap's writing session is gone by the time a roster pass half an hour
+# later says the file is hollow. A lantern that fires twice becomes a loom.
+#
+# EIGHT RULES. Four carry their own trigger, because the pages go stale for different reasons and a
+# single trigger would either miss one or fire on everything; four rest cheaply on every commit:
 #
 #   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
 #              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES, OR a debt stands
@@ -81,6 +87,9 @@
 #              Trigger: none of its own; the scan reads the staged set and rests at zero files.
 #              Refuses rather than regenerates. Gates only the five families whose TREE ceiling
 #              stands at zero, read from the elder scan, so no author is refused for a lawful line.
+#   rule eight a document this commit carries holds something -- empty_document_scan.sh staged.
+#              Trigger: none of its own; the scan reads the staged set and rests at zero documents.
+#              Refuses rather than regenerates -- only the author knows what the page was to say.
 #
 # WHAT EACH RULE DOES, in order:
 #   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
@@ -413,6 +422,44 @@ if [ -f tools/fixtures/s/shell_dialect_touch_scan.sh ]; then
       echo "$dialect_report" | head -4 >&2
     fi
     echo "  full reading: $scan_shell tools/fixtures/s/shell_dialect_touch_scan.sh staged" >&2
+    refused=yes
+  fi
+fi
+
+# RULE EIGHT -- a document this commit carries holds something. `empty_document_scan.sh` holds the
+# whole law -- a tracked `.md`, `.bron`, `.kyri` or `.txt` that is zero bytes or whitespace alone --
+# and it has stood at `tier lap` inside a roster pass since 20260823. What it never did was read at
+# COMMIT time, so the reading arrived after the commit had already shipped the hole.
+#
+# THE COST, MEASURED on the tree's own history. Five empty documents exist across every commit this
+# tree has ever made, and TWO of them landed AFTER the guard was seated, both session logs:
+# 20260828.142844 shipped at 15:55 and was filled at 17:26, 91 minutes and a second commit later,
+# once another ship's cold open caught it; 20260910.054448 shipped at 05:59 with a commit body
+# describing two `loom` lines and a search record, and by the time a cold open read it the writing
+# session was gone and those values are lost outright. A lantern that fires twice becomes a loom.
+#
+# WHY THE STAGED READING IS SAFE, and it is the one thing that makes this rule honest. It asks only
+# about the paths THIS commit stages, so an empty document standing anywhere else -- including the
+# one that is standing right now -- refuses no author. That is a placement of an existing reading
+# rather than a new instrument, exactly as rule seven is.
+#
+# NO TRIGGER OF ITS OWN, like rules four, five, six and seven. The reading is one `git diff --cached`
+# and a `git cat-file --batch-check` over what it names, and it rests at `staged_documents=0` on a
+# commit that stages no document at all.
+if [ -f tools/fixtures/e/empty_document_scan.sh ]; then
+  if ! empty_report=$("$scan_shell" tools/fixtures/e/empty_document_scan.sh staged 2>&1); then
+    if echo "$empty_report" | grep -q '^detail=RED_staged_empty_document'; then
+      echo "pre-commit: this commit stages a document that holds nothing. Every guard this tree owns" >&2
+      echo "reads it as correct, because a check phrased as 'nothing here is wrong' is answered" >&2
+      echo "perfectly by nothing. Only the hand that wrote it still knows what it was going to say." >&2
+      echo "$empty_report" | grep -E '^(empty:|detail_path|detail_repair)' >&2
+    else
+      echo "pre-commit: the empty-document wall could not MEASURE the staged set, and a wall that" >&2
+      echo "cannot measure refuses rather than waves through. This is an environment fault, never a" >&2
+      echo "hollow page -- read the scan's own words below and repair the bench or the jail." >&2
+      echo "$empty_report" | head -4 >&2
+    fi
+    echo "  full reading: $scan_shell tools/fixtures/e/empty_document_scan.sh staged" >&2
     refused=yes
   fi
 fi

@@ -23,10 +23,21 @@
 #   No tracked `.md`, `.bron`, `.kyri`, or `.txt` is empty -- zero bytes or whitespace only,
 #   because a file holding one newline says exactly as much as a file holding none. 8,486
 #   documents read in one pass.
-#   Fourteen behaviors on throwaway repositories: the agreeing tree free and reading zero, a
+#   Twenty-two behaviors on throwaway repositories: the agreeing tree free and reading zero, a
 #   zero-byte document refused, counted, and named, whitespace refused, one character free, a
 #   session log and a Kyri record refused, a planted fixture free and uncounted, a `.gitkeep`
-#   free, and an extension this rung does not own left to its own guard.
+#   free, an extension this rung does not own left to its own guard, and eight more for the
+#   staged mode -- the refusal, its named path, the mode said aloud, the same commit free once the
+#   record is written, a hollow document elsewhere refusing no author, the tree reading still
+#   whole, a commit staging no document resting at zero, and an unspelled mode refused.
+#
+# THE STAGED MODE, and why it exists (20260910). This reading has stood at `tier lap` since
+# 20260823, and TWO session logs shipped at zero bytes in the eighteen days after it was seated --
+# 20260828.142844, filled 91 minutes later by a second commit once another ship's cold open caught
+# it, and 20260910.054448, whose writing session was gone before the reading arrived, so its two
+# `loom` lines and its search record are lost. The instrument was never wrong; it simply never ran
+# at the moment a commit creates the fault. `tools/hooks/pre-commit` rule eight asks the same
+# question of the staged set alone, so the hand that wrote the page is still there to answer.
 #
 # WHAT PASSES FREE, by named rule. `tools/fixtures/**` and `context/fixtures/**` are instrument
 # and never field -- a control that plants an empty file to prove a refusal is doing its job, and
@@ -68,7 +79,15 @@ assert control.out contains "fixture_free=yes" else "empty-document: a control p
 assert control.out contains "fixture_not_counted=yes" else "empty-document: instrument must not even be counted"
 assert control.out contains "gitkeep_free=yes" else "empty-document: a placeholder meant to be empty must pass free"
 assert control.out contains "other_extension_free=yes" else "empty-document: an extension this rung does not own belongs to another guard"
+assert control.out contains "staged_refused=yes" else "empty-document: the staged mode must refuse a document a commit stages at zero bytes"
+assert control.out contains "staged_named=yes" else "empty-document: a staged refusal must name the path, so the hand repairs it without a second command"
+assert control.out contains "staged_mode_said=yes" else "empty-document: a reading must say which mode produced it"
+assert control.out contains "staged_written_free=yes" else "empty-document: the same commit passes once the record is written"
+assert control.out contains "staged_peer_free=yes" else "empty-document: a hollow document this commit does not stage must refuse no author"
+assert control.out contains "tree_still_refuses=yes" else "empty-document: the tree reading stays whole -- the staged mode narrows the reach, never the law"
+assert control.out contains "staged_rests_at_zero=yes" else "empty-document: a commit staging no document rests at zero rather than reading the index"
+assert control.out contains "unknown_mode_refused=yes" else "empty-document: an unspelled mode refuses rather than falling back to the whole tree"
 assert control.out contains "control_verdict=ok" else "empty-document: the control must agree with itself"
-say "RED and GREEN paths proven -- five refusals bitten, nine honest readings left free"
+say "RED and GREEN paths proven -- seven refusals bitten, fifteen honest readings left free"
 
 say "GREEN: empty-document -- a tracked document says something, or it is not a document."
