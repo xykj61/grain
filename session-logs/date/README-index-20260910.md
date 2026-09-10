@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.082751` | [The door nobody meets at the wall](20260910/20260910-082751_the-door-nobody-meets-at-the-wall.kyri) | 9 of 16 open rows wait on one hand |
 | `20260910.081435` | [The leg that could not make a sound](20260910/20260910-081435_the-leg-that-could-not-make-a-sound.kyri) | a gate refusing, read off EXIT:0 |
 | `20260910.080947` | [The gate that red on lawful work](20260910/20260910-080947_the-gate-that-red-on-lawful-work.kyri) | a braided ceiling split in two |
+| `20260910.074629` | [The grade that read perfect](20260910/20260910-074629_the-grade-that-read-perfect.kyri) | truth scored 100 while nobody read a claim |
 | `20260910.074438` | [The proof behind the write](20260910/20260910-074438_the-proof-behind-the-write.kyri) | the resin proof moved ahead of the write |
 | `20260910.073920` | [Fourteen posts, one fence](20260910/20260910-073920_fourteen-posts-one-fence.kyri) | one bound, fourteen modules, no comparison |
 | `20260910.073143` | [The seconds this pier actually spends](20260910/20260910-073143_the-seconds-this-pier-actually-spends.kyri) | one roster pass costs 2,286 CPU seconds |

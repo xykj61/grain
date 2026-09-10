@@ -38,8 +38,11 @@
 # to fix -- telling an index to pad itself with prose, telling a page that its blessed placeholder
 # shape was a broken link, and reading a share off one sentence. No page changed a word.
 #
-# THE COMPOSITE arrives once the judged readings are handed in with --service and --truth. Without
-# them the card prints what it counted and says `composite=judged`, which is the honest output.
+# THE COMPOSITE arrives once --service is handed in; --truth is optional and the counted half
+# stands in for it. Without --service the card prints what it counted and says `composite=judged`,
+# which is the honest output. Without --truth the card still closes, and prints `truth_mode=counted`
+# so a reader can tell a verified claim from an unread one -- this paragraph claimed both flags were
+# required until `20260910`, and the code had never asked for --truth.
 #
 # THE SCALE, and why it has no minus grades. Keaton's word, 20260824: a plain school scale, so a
 # writer reads a B and knows what to do.
@@ -964,8 +967,29 @@ echo "truth_source=$truth_source (a program cites in its comments; a prose file 
 echo "service_inputs living_citers=$citers named_by_card=$named_by_card in_seed=$in_seed"
 
 truth=$truth_given
-[ "$truth" -lt 0 ] && truth=$truth_counted
+truth_mode=judged
+[ "$truth" -lt 0 ] && { truth=$truth_counted; truth_mode=counted; }
 echo "truth=$truth"
+
+# WHICH HALF ANSWERED, said out loud. Truth is half counted and half judged: the counted half asks
+# whether every cited path resolves, and the judged half asks whether the claims are still true.
+# With no `--truth` the counted half stands in for both, and `truth=100` then reads as *the claims
+# were verified* when nobody read one.
+#
+# THE SAME BLIND READING SHIPPED TWICE, three months apart, printing the identical pair. On
+# `20260826` a page named itself as its own elder and scored `truth=100`, `A+/98`, its own first
+# sentence false -- the fault `tools/p/provenance_self_reference_witness.rish` was built for, whose
+# header records those two numbers. On `20260910` `docs-geode/README.md` told a reader the doorway
+# guard reads 1,004 pages where the scan answers 1,261, and scored `truth=100`, `A+/98`. A
+# self-link resolves and a stale number is not a path at all, so the counted half was right both
+# times and answered a question nobody had asked.
+#
+# ADDITIVE, and deliberately not a refusal. Service prints `service=judged` and declines to close
+# the card; Truth cannot take that shape today, because a witness, two launchers, and three scans
+# call this card with `--service` alone and every one of them would stop closing. So the reading
+# keeps its name and its scale, and this line stands beside it -- the same move `service_scale`
+# made for REDS %361. Whether the two judged readings should refuse alike is a fleet ruling.
+echo "truth_mode=$truth_mode (counted = the judged half went unread; hand in --truth to close it)"
 
 # The scale, printed where the judgment is made rather than only where the arithmetic is (REDS
 # %361). Additive on purpose: a witness, two launchers, and three scans read this card, so the

@@ -375,6 +375,21 @@ echo "$o" | grep -q 'service=judged' && echo "service_left_judged=yes" || echo "
 echo "$o" | grep -q 'composite=judged' && echo "composite_left_judged=yes" || echo "composite_left_judged=no"
 echo "$o" | grep -q 'service_inputs' && echo "service_inputs_reported=yes" || echo "service_inputs_reported=no"
 
+# 10b -- Truth names which of its two halves answered. The counted half asks whether cited paths
+# resolve; the judged half asks whether the claims are still true. With no --truth the counted half
+# stands in for both, and the same blind `truth=100`/`A+/98` shipped twice -- a page naming itself
+# as its own elder on `20260826`, and a page typing a page count 26 percent low on `20260910`.
+# Proven from both sides: a reading that only ever said `judged` could not be told from a bypass.
+o=$(run warm.md --setting field --service 100)
+[ "$(val "$o" truth_mode)" = "counted" ] && echo "truth_mode_counted_unjudged=yes" || echo "truth_mode_counted_unjudged=no"
+o=$(run warm.md --setting field --service 100 --truth 90)
+[ "$(val "$o" truth_mode)" = "judged" ] && echo "truth_mode_judged_given=yes" || echo "truth_mode_judged_given=no"
+[ "$(val "$o" truth)" = "90" ] && echo "truth_mode_keeps_scale=yes" || echo "truth_mode_keeps_scale=no"
+# and the line is ADDITIVE: handing in no --truth still closes the card, since a witness, two
+# launchers and three scans call with --service alone.
+o=$(run warm.md --setting field --service 100)
+[ "$(val "$o" composite)" != "judged" ] && echo "truth_mode_still_closes=yes" || echo "truth_mode_still_closes=no"
+
 # 11 -- the card refuses rather than reading zero over what it cannot open.
 run absent.md >/dev/null 2>&1 && echo "absent_path_refused=no" || echo "absent_path_refused=yes"
 run warm.md --setting sideways >/dev/null 2>&1 && echo "unknown_setting_refused=no" || echo "unknown_setting_refused=yes"

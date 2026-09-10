@@ -99,6 +99,17 @@ write the number down either way.
   measured is worth less than a blank.
 - **Truth gates the card.** Below 60 the composite reads **F** whatever the rest say, because a page
   whose claims have gone false costs a reader more than an absent page.
+- **Truth names which half answered** (`20260910.073603`). Truth is half counted and half judged:
+  the counted half asks whether every cited path resolves, the judged half whether the claims are
+  still true. Handing in no `--truth` lets the counted half stand in for both, and the card then
+  closes -- unlike Service, which prints `service=judged` and declines. **The same blind reading
+  shipped twice.** On `20260826` a page named itself as its own elder and scored `truth=100`,
+  `A+/98`, its own first sentence false; on `20260910` `docs-geode/README.md` told a reader the
+  doorway guard reads 1,004 pages where the scan answers 1,261, and scored `truth=100`, `A+/98`.
+  A self-link resolves and a stale number is no path at all, so the counted half was right both
+  times and answered a question nobody had asked. The card prints **`truth_mode=counted|judged`**
+  now -- additive rather than a refusal, since a witness, two launchers and three scans call it
+  with `--service` alone. Whether the two judged readings should refuse alike is Keaton's word.
 - **A grade is not a gate.** The witness reports the door roster as a ratchet under a ceiling that
   only falls, rather than refusing the tree. A wall that reds on ordinary work is a wall somebody
   turns off.
