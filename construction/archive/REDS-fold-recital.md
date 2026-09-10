@@ -661,3 +661,5 @@ at a closed fold.*
 *Rows %666-%669 folded to [`REDS-a-claim-nobody-read-back-rows-666-669.md`](REDS-a-claim-nobody-read-back-rows-666-669.md) on `20260909.191228`, **BOOKED** and **CLOSED** -- four claims that stood on prose alone -- a derived transcript name, a listed roll, a promise the prover's code broke, and an advertised dead hash -- each closed by deriving the claim from what it describes or having an instrument read it back.*
 
 *Row %672 folded to [`REDS-the-prover-that-could-not-read-rishi-rows-672.md`](REDS-the-prover-that-could-not-read-rishi-rows-672.md) on `20260909.194641`, **CLOSED** -- a prover that speaks one language reads a second language's syntax error as the subject refusing.*
+
+*Rows %670 and %671 folded to [`REDS-a-guard-that-reports-without-demonstrating-rows-670-671.md`](REDS-a-guard-that-reports-without-demonstrating-rows-670-671.md) on `20260909.202547`, both **CLOSED** -- a guard that publishes a reading a reader can neither check nor act on -- a silence never proven able to sound, and a count that names no member.*

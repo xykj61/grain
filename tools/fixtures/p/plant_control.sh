@@ -202,6 +202,17 @@ echo
 # THE FLOOR IS MOVED WITH `plant_apply`, which is this control's own subject: the helper that
 # refuses to build an unmutated pen is exactly what a leg planting a constant into a copied scan
 # needs, and using it here means a stale plant reads `nothing` rather than passing quietly.
+#
+# AND THE PLANT NAMES THE FORM RATHER THAN THE VALUE -- `FLOOR=[0-9][0-9]*` rather than `FLOOR=13`.
+# %519's family is a plant that goes stale when the line it names moves, and the elder case moved
+# by ACCIDENT: a type changed from `u32` to `LineId` and took a plant with it. A ratchet constant
+# moves by DESIGN. This scan's own header says it in its own words -- "Raise it on a lane's word
+# when a fall is worth locking in; never lower it" -- so every adoption lap that raises the floor
+# would disarm a plant spelling the elder number, and each would cost a hand one re-spelling.
+# Proven on metal `20260909.194013`: with the floor moved 13 -> 14, the value plant answers
+# `plant_matched_nothing` and the form plant lands. The second plant below keeps its literal `1`
+# on purpose -- that number is this control's own, written by the line above it, so it names a
+# constant no discipline moves.
 echo "== 6. the adoption floor welcomes a rise and refuses a fall =="
 FLOORPEN="$PEN/floorpen"
 mkdir -p "$FLOORPEN/rishi/bin" "$FLOORPEN/tools/fixtures/p"
@@ -227,7 +238,7 @@ floor_verdict() {
 
 note "floor_pen_counts_its_own_adopters" "$(floor_read sourcing)" "2"
 
-plant_apply "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh" 's/^FLOOR=13$/FLOOR=1/' floorbelow >/dev/null 2>&1   && floor_planted=landed || floor_planted=nothing
+plant_apply "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh" 's/^FLOOR=[0-9][0-9]*$/FLOOR=1/' floorbelow >/dev/null 2>&1   && floor_planted=landed || floor_planted=nothing
 note "floor_below_the_count_plants" "$floor_planted" "landed"
 note "floor_below_the_count_welcomes_a_rise" "$(floor_verdict)" "ok"
 note "floor_below_the_count_says_so" "$(floor_read adoption_floor_held)" "yes"

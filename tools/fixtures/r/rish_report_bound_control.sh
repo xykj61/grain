@@ -151,10 +151,16 @@ out=$( cd "$pen1" && sh tools/fixtures/r/rish_report_bound_scan.sh )
 echo "$out" | grep -q "^sites=0$" && note ok || note bad "the census read an untracked file -- $(echo "$out" | tr '\n' ' ')"
 rm -f "$pen1/tools/fixtures/r/loose_witness.rish"
 
-# The ceiling, from both sides, by planting the number rather than by spelling it here twice.
+# The ceiling, from both sides, by planting the number rather than by spelling it here twice --
+# and the plant names the FORM, `ceiling=[0-9][0-9]*`, rather than today's value. This scan's own
+# header says "The ceiling only falls", so every repair lap that lowers it disarms a plant
+# spelling the elder number: %519's fault arriving by design rather than by accident. Proven on
+# metal `20260909.194013` with the ceiling moved 38 -> 37 -- the value plant answers
+# `plant_matched_nothing`, the form plant lands. The second plant keeps its literal `1`, which is
+# this control's own number, written by the line above it and moved by nothing.
 counted "$pen1/tools/fixtures/r/guard_witness.rish"
 ( cd "$pen1" && git add -A && git commit -qm u ) >/dev/null 2>&1
-plant_apply "$pen1/tools/fixtures/r/rish_report_bound_scan.sh" 's/^ceiling=38$/ceiling=1/' ceiling_one || note bad "the ceiling plant matched nothing"
+plant_apply "$pen1/tools/fixtures/r/rish_report_bound_scan.sh" 's/^ceiling=[0-9][0-9]*$/ceiling=1/' ceiling_one || note bad "the ceiling plant matched nothing"
 out=$( cd "$pen1" && sh tools/fixtures/r/rish_report_bound_scan.sh ); rc=$?
 { [ "$rc" -eq 0 ] && echo "$out" | grep -q "verdict=under_ceiling"; } && note ok || note bad "one site under a ceiling of one did not pass"
 plant_apply "$pen1/tools/fixtures/r/rish_report_bound_scan.sh" 's/^ceiling=1$/ceiling=0/' ceiling_zero || note bad "the second ceiling plant matched nothing"
