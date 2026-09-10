@@ -21,7 +21,7 @@
 #
 #   sh tools/fixtures/c/convergence_census_control.sh
 #
-# BOUNDS: one pen, twenty-seven legs, at most 26 planted tools. The pen is removed on every exit path.
+# BOUNDS: one pen, fifty-two legs, at most 35 planted tools. The pen is removed on every exit path.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -365,6 +365,69 @@ plant tools/x/balanced.sh 'cat "$f.t" > "$f"'
 git add -A >/dev/null
 git commit -q -m "pen: a balanced writer"
 leg balanced_file_admitted yes "$(seen balanced.sh)"
+
+
+# 14. THE FOURTH STRAND: RISHI WRITES (`20260910.101500`). The census header named this blindness
+# on `20260909.185835` and left it for its own lap -- the population is picked by three SHELL
+# idioms, so a Rishi tool rewriting the tree could never be a candidate. The plants below prove the
+# strand from both sides, and the elder predicate is run over the admitting one, since a strand
+# shown only in the passing direction cannot be told from a coincidence.
+cd "$pen/tree"
+mkdir -p docs
+printf 'a tracked page\n' > docs/page.md
+# 14a. THE SHAPE THE TREE ACTUALLY WRITES, taken from `tools/g/geode_libraries.rish`, which
+#      `tools/hooks/pre-commit` runs on every commit: a redirect to a tracked literal inside
+#      `run ["sh" "-c" ...]`. `sh -c` executes in this tool's own directory, so the write is this
+#      tool's.
+plant tools/x/rish_sh_c_tracked.rish 'let w = run ["sh" "-c" "sh render.sh > docs/page.md"]'
+# 14b. THE SAME REDIRECT HANDED TO ANOTHER TOOL AS A FLAG VALUE is text, not a write. This is
+#      `tools/c/convergence_tree_prove_witness.rish`, whose `--perturb` string names
+#      `construction/REDS.md` and runs against a `git worktree` pen -- the third strand's false
+#      positive arriving in a language a shell lexer cannot read.
+plant tools/x/rish_flag_arg.rish 'let p = run ["sh" "tools/x/prove.sh" "--perturb" "cat t > docs/page.md"]'
+# 14c. A redirect to an untracked literal is a pen and has nothing to converge.
+plant tools/x/rish_sh_c_pen.rish 'let w = run ["sh" "-c" "sh render.sh > tools/.build/scratch.txt"]'
+# 14d. Rishi'"'"'s own write statement, with a tracked literal target.
+plant tools/x/rish_write_file.rish 'write-file "docs/page.md" body'
+# 14e. And with the target bound by a `let`, which is how this tree writes it -- one lookup.
+plant tools/x/rish_write_file_let.rish 'let out = "docs/page.md"
+write-file out body'
+# 14f. An untracked `write-file` target: all three such sites in the tree today are this shape.
+plant tools/x/rish_write_file_pen.rish 'write-file "/tmp/scratch.txt" body'
+# 14g. The comment fence reaches the new strand too, or a header explaining the idiom admits the
+#      tool that explains it -- the fault the write column paid for at `20260909.222142`.
+plant tools/x/rish_comment.rish '# let w = run ["sh" "-c" "sh render.sh > docs/page.md"]
+say "nothing written"'
+# 14h. `>` IS ALSO RISHI'"'"'S COMPARISON OPERATOR, and the slash rule that answers it is a COST
+#      reading rather than a fence -- planted here for the reading, asserted nowhere. Dropping the
+#      rule leaves candidates, members, and both strand splits unchanged on the tree, because the
+#      target tests already refuse `> "5"` and `> "cap"`; what it changes is the run, 189s to 208s,
+#      since every noise span costs a `git ls-files`. A leg here would read green with or without
+#      the rule, which is 13f'"'"'s lesson one strand over: a leg that cannot fail proves nothing.
+plant tools/x/rish_compare.rish 'let w = run ["sh" "-c" "test 5 > 3"]'
+# 14i. AN OPERAND THAT RESOLVES TO NO LITERAL MUST NOT TAKE THE CENSUS DOWN. A `while` loop carries
+#      its last body command's status, so the first draft of `rish_writes` returned 1 whenever its
+#      final iteration found nothing to emit -- and `set -e` killed the whole run at the assignment.
+#      Every leg above was green when that fault stood, because no plant here bound a `write-file`
+#      target to an expression. The tree found it on the first source that did.
+plant tools/x/rish_write_file_expr.rish 'let out = length args
+write-file out body'
+git add -A >/dev/null
+git commit -q -m "pen: planted the Rishi strand"
+
+leg rish_sh_c_tracked_admitted        yes "$(seen rish_sh_c_tracked.rish)"
+leg rish_flag_argument_refused        no  "$(seen rish_flag_arg.rish)"
+leg rish_sh_c_pen_refused             no  "$(seen rish_sh_c_pen.rish)"
+leg rish_write_file_admitted          yes "$(seen rish_write_file.rish)"
+leg rish_write_file_let_admitted      yes "$(seen rish_write_file_let.rish)"
+leg rish_write_file_pen_refused       no  "$(seen rish_write_file_pen.rish)"
+leg rish_comment_write_refused        no  "$(seen rish_comment.rish)"
+# 14i. THE ELDER PREDICATE, over the admitting plant, must MISS it -- the population was
+# shell-shaped and this is the strand that widens it.
+leg elder_missed_the_rish_writer      no  "$(elder tools/x/rish_sh_c_tracked.rish)"
+# 14j. And the run SURVIVES the unresolvable operand -- a census that dies reports nothing, which
+# reads from outside exactly like a tree with no writers in it.
+leg census_survives_unresolvable_operand ok "$(CONV_ROOT="$pen/tree" sh "$census" >/dev/null 2>&1 && echo ok || echo died)"
 
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"

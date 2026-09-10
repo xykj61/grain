@@ -112,8 +112,8 @@
 # comment naming both is prose. `candidates_proven` counts a tool once however many ways it is
 # proven, so the two splits may sum above it and the total is the one to read.
 #
-# AND THE POPULATION IS SHELL-SHAPED BY CONSTRUCTION, measured `20260909.185835` and named here
-# rather than repaired, because the repair is its own lap. The write-detection above greps three
+# AND THE POPULATION WAS SHELL-SHAPED BY CONSTRUCTION, measured `20260909.185835`, named here for
+# a lap of its own, and repaired `20260910.101500` by the fourth strand below. The write-detection above greps three
 # shell idioms -- `sed -i`, `cat >`, `printf >` -- so a Rishi tool writing through `write-file` can
 # never be a candidate however much of the tree it rewrites. On the day both provers learned to run
 # a Rishi subject and `tools/r/readme_metrics.rish` and `tools/g/geode_libraries.rish` were each
@@ -356,6 +356,72 @@ git_admits() {
   done | grep -q yes
 }
 
+
+# THE FOURTH STRAND: RISHI WRITES, BECAUSE A POPULATION PICKED BY ONE LANGUAGE'S SYNTAX IS A
+# READING OF THAT LANGUAGE (`20260910.101500`). The header above named this blindness on
+# `20260909.185835` and left the repair for its own lap; this is that lap, and measuring moved the
+# finding. The paragraph guessed the gap was `write-file`, Rishi's own write statement. Measured
+# over all 2,450 tracked `.rish` sources: **three tools call `write-file` with a literal target and
+# git tracks none of them** -- a `/tmp` diff, a jail config, an untracked fixture. The gap was at a
+# spelling nobody had named: a redirect inside `run ["sh" "-c" ...]`, where the path is a bare
+# literal in a Rishi string, and it has exactly ONE member -- `tools/g/geode_libraries.rish`, which
+# `tools/hooks/pre-commit` runs on EVERY commit this tree makes, and which the header two
+# paragraphs up already names as proven-and-invisible.
+#
+# `"sh" "-c"` IS THE READING, RATHER THAN THE REDIRECT ALONE, and it is this strand's whole fence.
+# `sh -c` executes in this tool's own working directory, so its redirect is this tool's write. A
+# redirect inside any other quoted argument is text handed to another command, which is the
+# distinction `live_lines` draws for shell -- and a shell lexer cannot draw it here, since Rishi is
+# not shell and this census's own header records that walker desyncing on a Rishi `say` line.
+# Measured both ways on this tree: dropping the `"sh" "-c"` fence admits
+# `tools/c/convergence_tree_prove_witness.rish` on the `> construction/REDS.md` inside its
+# `--perturb` string, which runs against a `git worktree` pen -- the same false positive the third
+# strand was built to refuse, arriving in a language the third strand cannot read.
+#
+# A TARGET NEEDS A SLASH, since `>` is also Rishi's comparison operator: without it the strand reads
+# `> "5"`, `> "cap"`, and `> "me.max_mark_len"` as destinations. THAT RULE IS A COST READING RATHER
+# THAN A FENCE, measured rather than assumed: dropping it leaves candidates, members, and both
+# strand splits unchanged, because the target tests already refuse those three -- what it changes is
+# the run, **189s to 208s**, since every noise span costs a `git ls-files`. The control plants the
+# shape and asserts nothing on it, since a leg that cannot fail proves nothing. And the emitted span
+# is normalized to `> "<target>"` so the two strands above extract it unchanged -- one extraction,
+# three shapes.
+#
+# BOUNDS: one lookup per bare `write-file` operand, and the redirect is read per line, so a
+# `run [...]` list broken across lines withholds rather than invents. Both failure directions are a
+# missed candidate, which is the direction this census reports rather than gates.
+MAX_LET_LOOKUPS=1
+rish_writes() {
+  # rish_writes <file> -- normalized `> "<target>"` spans for the two Rishi write shapes.
+  # invariant: comment lines are dropped before any match, so a header sentence explaining an
+  # idiom can never admit the tool that explains it -- the fence the write column paid for at
+  # `20260909.222142`, kept here rather than relearned.
+  rw_f=$1
+  rw_live=$(grep -vE '^[[:space:]]*#' "$rw_f" 2>/dev/null || true)
+  printf '%s\n' "$rw_live" | grep -E '"sh"[[:space:]]+"-c"' 2>/dev/null \
+    | grep -hoE '> *[A-Za-z0-9_.-]+(/[A-Za-z0-9_.-]+)+' 2>/dev/null \
+    | sed 's/^> *//' | while IFS= read -r rw_t; do
+        if [ -n "$rw_t" ]; then printf '> "%s"\n' "$rw_t"; fi
+      done
+  printf '%s\n' "$rw_live" | grep -hoE 'write-file +("[^"]+"|[A-Za-z_][A-Za-z0-9_]*)' 2>/dev/null \
+    | sed 's/^write-file  *//' | while IFS= read -r rw_o; do
+        case "$rw_o" in
+          '"'*) printf '> %s\n' "$rw_o" ;;
+          *)
+            # A bare operand is a Rishi binding; one `let` lookup reaches the literal form, and an
+            # operand bound to an expression resolves to nothing and is withheld.
+            rw_lit=$(grep -hE "^[[:space:]]*let[[:space:]]+$rw_o[[:space:]]*=[[:space:]]*\"" "$rw_f" 2>/dev/null \
+                     | head -"$MAX_LET_LOOKUPS" | sed 's/.*=[[:space:]]*"//; s/".*$//')
+            if [ -n "$rw_lit" ]; then printf '> "%s"\n' "$rw_lit"; fi
+            ;;
+        esac
+      done
+  # invariant: a defined status of its own. A `while` loop returns its last body command's status,
+  # so a final iteration finding nothing to emit made this function return 1 -- and under `set -e`
+  # that killed the census at `rish=$(rish_writes "$f")`. Caught by running it, on the first Rishi
+  # source whose last `write-file` operand resolved to no literal.
+  return 0
+}
 work=$(mktemp -d "${TMPDIR:-/tmp}/conv-census.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 
@@ -417,6 +483,18 @@ while IFS= read -r f; do
   # dropping comments alone took the two busiest writers out with the false one, which is the shape
   # the header calls two faults whose errors cancel.
   writes=$(live_lines "$f" "$MAX_LINES" | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
+  # AND A RISHI SOURCE IS ASKED IN ITS OWN LANGUAGE (`20260910.101500`). The three shapes above are
+  # shell idioms, so a `.rish` tool could stand in this population and never be readable by it. The
+  # spans `rish_writes` emits are normalized to `> "<target>"`, so both strands below extract the
+  # target with the one spelling they already share.
+  case "$f" in
+    *.rish)
+      rish=$(rish_writes "$f")
+      # `if` rather than a `&&` chain: an empty result would exit non-zero as the branch's last
+      # command, and `set -e` would take the census down on every Rishi source that writes nothing.
+      if [ -n "$rish" ]; then writes=$(printf '%s\n%s\n' "$writes" "$rish"); fi
+      ;;
+  esac
   [ -n "$writes" ] || continue
   by_name=no; by_git=no
   target_admits "$writes" && by_name=yes

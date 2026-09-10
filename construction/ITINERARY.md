@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a4319ee6d2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `87d9eba6e1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CONTAINED FAULT BELONGS AT THE COMMIT.**
 Elder [shelved](archive/20260910-084659_itinerary-landed-accounts.md).
@@ -184,29 +184,27 @@ both closed by peers.**
 **NO ROW WANTED BOOKING:** a meter that read the wrong number is a ratchet, never a page that lied
 -- and `construction/REDS.md` still reads **40,771 of 40,960**, sixteen rows, all OPEN.
 **YOURS:** the three ledger doors, unchanged and uncosted again; whether the law room earns Door.
-**GRASS -- A GATE THAT REDS ON ORDINARY WORK GETS TURNED OFF.**
-Elder [shelved](archive/20260910-080834_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST BE CUT**, and this had written its own indictment. `tame_reach_scan.sh`
-gated `uncovered_authored` under a ceiling that only falls, and its own header
-named the braid on `20260909.002917`: one number answering **how much debt stands**, which only
-falls, and **how many such files exist**, which rises whenever anyone writes one. It booked the
-split by stamp, REDS holding no room -- then fired again next morning, `tools/rye/wrap_ring.rye`
-landing at `20260910.061931` in an already-uncovered room, **552 -> 553**: lawful work refused. **A
-lantern that fires twice becomes a loom.**
-**THE STRANDS READ APART NOW.** A top-level **ROOM** is what a widening moves, so
-`uncovered_rooms_unknown` is **gated at zero** against a new `tame_reach_debt_rooms.txt` (**25**
-rooms, 553 files), `debt_rooms` ratchets there, the count is **published FREE**.
-**IT KEEPS A PROMISE THE COUNT NEVER COULD:** the witness claimed a ceiling bought *a room born
-tomorrow joins the roster, or this guard hears it on the lap it arrives* -- yet a new room's first
-`.rye` raised that count by one, as a new file in an old room did, so it red on both. Legs 11
-and 12 set those two side by side. **PEN 39 -> 60.**
-**TWO MORE CLOSED MECHANICALLY:** `fold_shelf_link`'s one depth-lost link -- **BAKERY repaired it
-the same hour**, so the rebase kept theirs -- and `geode_libraries`, `crypto` at 121 witnesses
-where the tree holds 120. **COLD 234/224/8. HOT 234/227/5,
-2 gated, `tree_moved=no`** -- my first hot went void, regenerating that page mid-pass.
-**`unheard_guard` IS THE SAME CLASS ONE ROOM OVER:** `unnamed_population=460`, hand-moved **six
-times** with a paragraph each -- deliberate rather than wrong. **YOURS:** whether it wants this
-split. **NO ROW COULD LAND.**
+**GRASS -- A POPULATION PICKED BY ONE LANGUAGE'S SYNTAX IS A READING OF THAT LANGUAGE.**
+Elder [shelved](archive/20260910-112945_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**: its cardinal seat says run the census rather than read the sentence about
+it. `convergence_census.sh` named its own blindness `20260909.185835` -- a population picked by
+three SHELL idioms, so a Rishi tool could rewrite the tracked tree and never be a candidate -- and
+left it a lap of its own. **MEASURING MOVED IT.** The gap is NOT `write-file`, where the header
+pointed: of 2,450 tracked `.rish` sources **three call it and git tracks no target**. It is a
+redirect inside `run ["sh" "-c" ...]`, **one member** -- `tools/g/geode_libraries.rish`, which
+`pre-commit` runs on EVERY commit, called proven-and-invisible there. **12 -> 13, 10 -> 11 proven.**
+**`"sh" "-c"` IS THE FENCE**, rather than the redirect, since `sh -c` runs in this tool's own
+directory. Drop it and `convergence_tree_prove_witness.rish` arrives on a `--perturb` string run in
+a worktree pen -- the third strand's false positive, in a language a shell lexer cannot read. The
+slash rule is a COST reading and says so now: no reading moves, **189s to 208s** does.
+**THE PEN WAS GREEN WHILE THE CENSUS DIED** -- a `while` carries its last body command's status.
+**PEN 43 -> 52**, mutations bite.
+**REDS FIRST, AND IT IS A GATE:** `dated_path` reds fleet-wide, **`refs_lost=102` against 85**,
+**97 testimony no lap may repair**. I fixed the one living broken citation. What grew since the
+`20260907` ceiling is a log citing a landed-accounts shelf by an intended stamp -- **17, ~5 a day**.
+**YOURS:** the scan computes the split; its header says moving the gate to `lost_promised_living`
+(**0**) waits on your word, *asked on ITINERARY* -- **the ask was no longer there**. Until it moves,
+no lawful lap makes this guard green.
 **COPAL -- EVERY WALL READ ONE LINE, AND THE FAULT LIVED BETWEEN TWO.**
 Elder [shelved](archive/20260910-094705_itinerary-landed-accounts.md) whole.
 **EARTH BREATHES IN**, so this lap took the concrete fact at the door before arguing with it: a
