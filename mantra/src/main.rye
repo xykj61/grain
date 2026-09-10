@@ -6,11 +6,18 @@
 //! gone. Every state is content-named by its SHA3-256 digest; the store never
 //! loses a blob once written.
 //!
-//! This is the seed: one file, three commands, one weave.
+//! This is the seed: one file, six commands, one weave PER TRACKED FILE.
+//! A path is what tells one document from another, so a commit names the
+//! weave of every file it tracks rather than one weave for the directory --
+//! the fault booked `20260910.003046`, where the second file added deleted
+//! the first one's every line.
 //!
 //! Commands:
 //!   mantra init           Create .mantra/ in the current directory.
+//!   mantra brix           Print the .brix course descriptor.
+//!   mantra add            Weave every file the .brix descriptor names.
 //!   mantra add <file>     Weave the file's current content into the history.
+//!   mantra log            Show the commit chain and the files each names.
 //!   mantra status <file>  Show what has changed since the last weave.
 //!   mantra version        Print the Mantra version.
 //!
@@ -22,7 +29,8 @@
 //!   Section Weave   -- the data model, imported from mantra/src/weave.rye
 //!   Section Diff    -- the LCS diff, imported from mantra/src/diff.rye
 //!   Section Store   -- the blob store, imported from mantra/src/store.rye
-//!   Section Main    -- CLI: init / add / status
+//!   Section Commit  -- the chain link, one weave named per tracked path
+//!   Section Main    -- CLI: init / brix / add / log / status / version
 
 const std  = @import("std");
 const assert = std.debug.assert;
@@ -318,38 +326,127 @@ fn read_v1_rows(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .sc
 // Section Commit -- the chain link
 // =========================================================================
 //
-// A commit blob names a weave blob and points to its parent commit.
-// Format:
-//   mantra-commit-v1\n
-//   parent <64-hex|none>\n
-//   weave <64-hex>\n
+// A commit blob names the weave of every tracked file and points to its
+// parent commit. Format, tab-separated on every row:
+//   mantra-commit-v2\n
+//   parent\t<64-hex|none>\n
+//   file\t<path>\t<64-hex>\n      (one row per tracked file)
+//
+// WHY A ROW PER FILE. The elder `mantra-commit-v1` named ONE weave for a
+// whole directory, so `cmd_add` loaded that weave, diffed the next file
+// against it, and applied the difference -- which deletes every line of the
+// file added before it. A two-file project kept only its last file, and the
+// CLI reported `wove 2/2 file(s).` while it happened (`20260910.003046`). A path is
+// what tells one document from another, so the record carries it.
+//
+// WHY TAB RATHER THAN THE ELDER SPACE. A tracked path may contain a space,
+// and v1's parser splits a row at the first one. Tabs separate every v2
+// field, so one rule reads the whole record.
+//
+// ELDER RECORDS KEEP OPENING. A `mantra-commit-v1` blob names one weave and
+// no path, and lifts to a single entry whose path is empty. `weave_for`
+// reads an empty path as *the weave a path inherits until it has its own*,
+// so a store written before this change answers exactly as it did, and the
+// first commit onto it starts that file from the history already there.
 //
 // HEAD always points to the most recent commit blob.
 // Legacy HEAD values (v0: HEAD -> weave blob directly) are handled in
 // load_weave for backwards compatibility.
 
-const CommitRecord = struct {
-    parent:     ?[]const u8, // null for the first commit
+/// The largest number of tracked files one commit may name. A .brix course
+/// is a list a hand maintains, so a thousand stands far past any real one
+/// and still bounds the read of an untrusted blob before a row is kept.
+const max_commit_files: u32 = 1024;
+
+/// One tracked file's weave inside a commit. An empty `path` is the elder
+/// v1 entry -- the weave every path inherits until it has one of its own.
+const FileWeave = struct {
+    path:       []const u8,
     weave_name: []const u8,
 };
 
+const CommitRecord = struct {
+    parent: ?[]const u8, // null for the first commit
+    files:  []const FileWeave,
+
+    /// The weave blob name this commit holds for `path`, or null when the
+    /// commit names neither that path nor an inherited elder weave.
+    fn weave_for(self: CommitRecord, path: []const u8) ?[]const u8 {
+        // invariant: a commit names at most the stated maximum of files
+        assert(self.files.len <= max_commit_files);
+        for (self.files) |fw| {
+            if (std.mem.eql(u8, fw.path, path)) return fw.weave_name;
+        }
+        for (self.files) |fw| {
+            if (fw.path.len == 0) return fw.weave_name;
+        }
+        return null;
+    }
+};
+
+/// The file list a commit for `path` should carry: every entry this commit
+/// already holds, with `path` set to `weave_name` -- replaced where it was
+/// already named, appended where it was not.
+///
+/// The elder empty-path entry is carried forward rather than dropped,
+/// because dropping it would take the inherited history from every OTHER
+/// file of an elder store on the first commit after this change.
+fn commit_files_with(
+    allocator: std.mem.Allocator,
+    prior: []const FileWeave,
+    path: []const u8,
+    weave_name: []const u8,
+) ![]const FileWeave {
+    // invariant: a path names a file, so it is never empty here
+    assert(path.len > 0);
+    // invariant: the prior list already stands within the stated maximum
+    assert(prior.len <= max_commit_files);
+    var out = std.ArrayListUnmanaged(FileWeave).empty;
+    var replaced = false;
+    for (prior) |fw| {
+        if (std.mem.eql(u8, fw.path, path)) {
+            try out.append(allocator, .{ .path = fw.path, .weave_name = weave_name });
+            replaced = true;
+        } else {
+            try out.append(allocator, fw);
+        }
+    }
+    if (!replaced) {
+        if (out.items.len >= max_commit_files) return error.TooManyFiles;
+        try out.append(allocator, .{ .path = path, .weave_name = weave_name });
+    }
+    // invariant: the path this call was given is named exactly once when the call returns
+    assert(out.items.len >= 1);
+    // invariant: the list stays within the stated maximum when the call returns
+    assert(out.items.len <= max_commit_files);
+    return out.toOwnedSlice(allocator);
+}
+
 fn serialize_commit(allocator: std.mem.Allocator, commit: CommitRecord) ![]const u8 {
+    // invariant: a commit names at least one weave, or it records nothing
+    assert(commit.files.len >= 1);
+    // invariant: a commit names at most the stated maximum of files
+    assert(commit.files.len <= max_commit_files);
     var out = std.ArrayListUnmanaged(u8).empty;
-    try out.appendSlice(allocator, "mantra-commit-v1\n");
+    try out.appendSlice(allocator, "mantra-commit-v2\n");
     if (commit.parent) |p| {
         // invariant: a store name is the hex of a digest, exactly two characters per byte, so
         // any other length would address a blob that was never written
         assert(p.len == Sha3.digest_length * 2);
-        const line = try std.fmt.allocPrint(allocator, "parent {s}\n", .{p});
+        const line = try std.fmt.allocPrint(allocator, "parent\t{s}\n", .{p});
         try out.appendSlice(allocator, line);
     } else {
-        try out.appendSlice(allocator, "parent none\n");
+        try out.appendSlice(allocator, "parent\tnone\n");
     }
-    // invariant: a store name is the hex of a digest, exactly two characters per byte, so any
-    // other length would address a blob that was never written
-    assert(commit.weave_name.len == Sha3.digest_length * 2);
-    const line = try std.fmt.allocPrint(allocator, "weave {s}\n", .{commit.weave_name});
-    try out.appendSlice(allocator, line);
+    for (commit.files) |fw| {
+        // invariant: a store name is the hex of a digest, exactly two characters per byte, so any
+        // other length would address a blob that was never written
+        assert(fw.weave_name.len == Sha3.digest_length * 2);
+        // invariant: a tab inside a path would split one row into two fields at read
+        assert(std.mem.indexOfScalar(u8, fw.path, '\t') == null);
+        const line = try std.fmt.allocPrint(allocator, "file\t{s}\t{s}\n", .{ fw.path, fw.weave_name });
+        try out.appendSlice(allocator, line);
+    }
     return out.toOwnedSlice(allocator);
 }
 
@@ -358,7 +455,56 @@ fn deserialize_commit(allocator: std.mem.Allocator, blob: []const u8) !CommitRec
     assert(blob.len > 0);
     var it = std.mem.splitScalar(u8, blob, '\n');
     const header = it.next() orelse return error.InvalidFormat;
-    if (!std.mem.eql(u8, header, "mantra-commit-v1")) return error.InvalidFormat;
+    if (std.mem.eql(u8, header, "mantra-commit-v2")) return read_commit_v2(allocator, &it);
+    if (std.mem.eql(u8, header, "mantra-commit-v1")) return read_commit_v1(allocator, &it);
+    return error.InvalidFormat;
+}
+
+/// Read the rows of a `mantra-commit-v2` blob, header already consumed.
+fn read_commit_v2(
+    allocator: std.mem.Allocator,
+    it: *std.mem.SplitIterator(u8, .scalar),
+) !CommitRecord {
+    var parent_val: ?[]const u8 = null;
+    var files = std.ArrayListUnmanaged(FileWeave).empty;
+    while (it.next()) |raw| {
+        const row = std.mem.trim(u8, raw, "\r");
+        if (row.len == 0) continue;
+        var f = std.mem.splitScalar(u8, row, '\t');
+        const key = f.next() orelse continue;
+        if (std.mem.eql(u8, key, "parent")) {
+            const val = f.next() orelse return error.InvalidFormat;
+            if (std.mem.eql(u8, val, "none")) {
+                parent_val = null;
+            } else {
+                if (val.len != Sha3.digest_length * 2) return error.InvalidFormat;
+                parent_val = try allocator.dupe(u8, val);
+            }
+        } else if (std.mem.eql(u8, key, "file")) {
+            const path = f.next() orelse return error.InvalidFormat;
+            const name = f.next() orelse return error.InvalidFormat;
+            if (name.len != Sha3.digest_length * 2) return error.InvalidFormat;
+            // Bound the read at the edge: a blob naming more files than the
+            // maximum is refused before another row is kept.
+            if (files.items.len >= max_commit_files) return error.TooManyFiles;
+            try files.append(allocator, .{
+                .path       = try allocator.dupe(u8, path),
+                .weave_name = try allocator.dupe(u8, name),
+            });
+        }
+    }
+    if (files.items.len == 0) return error.InvalidFormat;
+    // invariant: the list stays within the stated maximum when the read returns
+    assert(files.items.len <= max_commit_files);
+    return CommitRecord{ .parent = parent_val, .files = try files.toOwnedSlice(allocator) };
+}
+
+/// Read the rows of an elder `mantra-commit-v1` blob, header already
+/// consumed. Its one weave becomes the single empty-path entry.
+fn read_commit_v1(
+    allocator: std.mem.Allocator,
+    it: *std.mem.SplitIterator(u8, .scalar),
+) !CommitRecord {
     var parent_val: ?[]const u8 = null;
     var weave_val:  ?[]const u8 = null;
     while (it.next()) |row| {
@@ -381,7 +527,9 @@ fn deserialize_commit(allocator: std.mem.Allocator, blob: []const u8) !CommitRec
     assert(w.len == Sha3.digest_length * 2);
     // postcondition: parent is null or exactly 64 hex chars
     if (parent_val) |p| assert(p.len == Sha3.digest_length * 2);
-    return CommitRecord{ .parent = parent_val, .weave_name = w };
+    const one = try allocator.alloc(FileWeave, 1);
+    one[0] = .{ .path = "", .weave_name = w };
+    return CommitRecord{ .parent = parent_val, .files = one };
 }
 
 // =========================================================================
@@ -441,14 +589,39 @@ fn read_brix(allocator: std.mem.Allocator, io: std.Io, dir: Dir) !?BrixConfig {
     };
 }
 
-fn load_weave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !Weave {
+/// The commit HEAD names, or null when the store holds none -- and null too
+/// when HEAD points straight at a weave blob, which is the legacy v0 shape
+/// that predates the commit chain.
+fn load_commit(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !?CommitRecord {
+    const head_name = try store.read_head(allocator, io);
+    if (head_name == null) return null;
+    const blob = try store.read_blob(allocator, io, head_name.?);
+    if (!std.mem.startsWith(u8, blob, "mantra-commit-")) return null;
+    return try deserialize_commit(allocator, blob);
+}
+
+/// The weave the store holds for `file_path` -- empty when this file has no
+/// history yet, which is what a first `add` starts from.
+///
+/// The path is what tells one tracked document from another. Reading the
+/// store's whole history as one weave is the fault the red booked `20260910.003046`: a
+/// second file's diff then deletes the first file's every line.
+fn load_weave(
+    allocator: std.mem.Allocator,
+    store: *const Store,
+    io: std.Io,
+    file_path: []const u8,
+) !Weave {
+    // invariant: a path names a file, so it is never empty here
+    assert(file_path.len > 0);
     const head_name = try store.read_head(allocator, io);
     if (head_name == null) return Weave.empty();
     const blob = try store.read_blob(allocator, io, head_name.?);
-    // v1: HEAD -> commit blob -> weave blob. Legacy v0: HEAD -> weave blob.
-    if (std.mem.startsWith(u8, blob, "mantra-commit-v1")) {
+    // v1/v2: HEAD -> commit blob -> weave blob. Legacy v0: HEAD -> weave blob.
+    if (std.mem.startsWith(u8, blob, "mantra-commit-")) {
         const commit = try deserialize_commit(allocator, blob);
-        const weave_blob = try store.read_blob(allocator, io, commit.weave_name);
+        const weave_name = commit.weave_for(file_path) orelse return Weave.empty();
+        const weave_blob = try store.read_blob(allocator, io, weave_name);
         return deserialize_weave(allocator, weave_blob);
     }
     return deserialize_weave(allocator, blob);
@@ -554,14 +727,17 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
     };
     // Record the current HEAD as parent before the new commit.
     const parent_name = try store.read_head(allocator, io);
-    var w             = try load_weave(allocator, &store, io);
+    const prior       = try load_commit(allocator, &store, io);
+    var w             = try load_weave(allocator, &store, io, file_path);
     const old         = try w.current(allocator);
     const new         = try diff_mod.split_lines(allocator, file_content);
     const d           = try diff_mod.diff(allocator, cli_site, old, new);
     try w.apply(allocator, d);
     const weave_blob  = try serialize_weave(allocator, &w);
     const weave_name  = try store.write_blob(allocator, io, weave_blob);
-    const commit_blob = try serialize_commit(allocator, .{ .parent = parent_name, .weave_name = weave_name });
+    const prior_files: []const FileWeave = if (prior) |c| c.files else &.{};
+    const files       = try commit_files_with(allocator, prior_files, file_path, weave_name);
+    const commit_blob = try serialize_commit(allocator, .{ .parent = parent_name, .files = files });
     const commit_name = try store.write_blob(allocator, io, commit_blob);
     try store.write_head(io, commit_name);
     print("mantra: wove '{s}' -- +{d} -{d} lines. HEAD -> {s}\n", .{
@@ -604,15 +780,17 @@ fn cmd_log(allocator: std.mem.Allocator, io: std.Io) !u8 {
         // invariant: depth stays within the stated bound
         assert(depth <= max_log_depth);
         const blob = try store.read_blob(allocator, io, commit_name);
-        if (!std.mem.startsWith(u8, blob, "mantra-commit-v1")) {
+        if (!std.mem.startsWith(u8, blob, "mantra-commit-")) {
             // Legacy v0: HEAD pointed directly to a weave blob.
             print("  {s}  (weave, legacy)\n", .{commit_name[0..12]});
             break;
         }
         const commit = try deserialize_commit(allocator, blob);
-        print("  commit {s}  weave {s}\n", .{
-            commit_name[0..12], commit.weave_name[0..12],
-        });
+        print("  commit {s}  {d} file(s)\n", .{ commit_name[0..12], commit.files.len });
+        for (commit.files) |fw| {
+            const shown = if (fw.path.len == 0) "(elder, unnamed)" else fw.path;
+            print("    {s}  weave {s}\n", .{ shown, fw.weave_name[0..12] });
+        }
         head = commit.parent;
         depth += 1;
         if (depth > max_log_depth) {
@@ -637,7 +815,7 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
         print("mantra status: cannot read '{s}': {}\n", .{ file_path, err });
         return 1;
     };
-    var w       = try load_weave(allocator, &store, io);
+    var w       = try load_weave(allocator, &store, io, file_path);
     const old   = try w.current(allocator);
     const new   = try diff_mod.split_lines(allocator, file_content);
     const d     = try diff_mod.diff(allocator, cli_site, old, new);

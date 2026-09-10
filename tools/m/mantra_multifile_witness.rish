@@ -1,0 +1,82 @@
+# tools/m/mantra_multifile_witness.rish -- a second tracked file keeps the first one's history.
+#
+# WHAT THIS PROVES. `mantra add` with no argument walks the `file` rows of a .brix descriptor and
+# weaves each one, which is the tool's own advertised route for a project of more than one source.
+# This guard drives the built binary down exactly that route and asks the store what it kept.
+#
+# THE RED IT CLOSES (`20260910.003046`). A commit blob named ONE weave for a whole directory, so `cmd_add`
+# loaded that weave, diffed the next file against it, and applied the difference -- which deletes
+# every line of the file added before it. Two files meant the second erased the first, and the CLI
+# printed `wove 2/2 file(s).` while it happened. `mantra status` on the untouched first file then
+# reported every one of its lines added and every one of the LAST file's lines removed.
+#
+# WHY THE READING IS `status` RATHER THAN A BLOB COUNT. A blob count answers how the record is
+# shaped, and a record is free to change shape. What a user is promised is that a file nobody
+# edited reads clean, so the scan asks the tool the user's own question on a file the pen never
+# touched after weaving it.
+#
+# HOW THE RECORD ACCRETES. `mantra-commit-v2` carries one tab-separated `file` row per tracked
+# path. An elder `mantra-commit-v1` blob names one weave and no path, and lifts to a single entry
+# whose path is empty; `weave_for` reads an empty path as the weave a path inherits until it has
+# one of its own. So a store written before this change answers exactly as it did, and the first
+# commit onto it starts that file from the history already there. The frozen store at
+# tools/fixtures/m/mantra_elder_v1_store/ is a real one the elder binary wrote -- blob names are
+# the SHA3-256 digests it computed -- so the compatibility claim rests on testimony rather than on
+# a forgery.
+#
+# WHY TAB RATHER THAN THE ELDER SPACE. A tracked path may contain a space, and v1's parser splits a
+# row at the first one. Every v2 field is tab-separated, so one rule reads the whole record, and
+# the control's `space_rows` phase is what holds that decision in place.
+#
+# WHAT IS NOT PROVEN HERE. The document-order red booked at `20260910.001500` stands untouched: a
+# commit that REPLACES a line rather than appending one still sorts out of the document, because
+# `Place.less_than` reads the run ahead of the position. That is a design seam -- `v1_run` sorts a
+# later hand's block whole ON PURPOSE for merge -- and this guard's pens append rather than
+# replace, so it neither tests nor hides it.
+#
+# Siblings: the record's own bytes at tools/m/mantra_cli_record_witness.rish, the wide record at
+# tools/m/mantra_weave_v2_witness.rish, the lift at tools/m/mantra_weave_v1_lift_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_multifile_witness.rish
+
+say "mantra-multifile: Language EN -- a second tracked file keeps the first one's history."
+say "mantra-multifile: Style Gauge, Meter -- every claim is an answer the built CLI gave in a pen."
+say "mantra-multifile: Lens TAME -- a path is what tells one document from another."
+
+say "mantra-multifile: the CLI still names the per-file record and the elder dispatch..."
+let seat = run ["sh" "-c" "grep -q 'mantra-commit-v2' mantra/src/main.rye && grep -q 'read_commit_v1' mantra/src/main.rye && grep -q 'weave_for' mantra/src/main.rye"]
+assert seat.ok else "mantra-multifile: the per-file header, the elder reader, or the path lookup left main.rye"
+
+say "mantra-multifile: the elder store is still a real v1 commit rather than a forgery..."
+let frozen = run ["sh" "-c" "head -1 tools/fixtures/m/mantra_elder_v1_store/blobs/$(cat tools/fixtures/m/mantra_elder_v1_store/HEAD)"]
+assert frozen.ok else "mantra-multifile: the frozen elder commit blob is gone -- without a real v1 store nothing proves an elder store opens"
+assert frozen.out contains "mantra-commit-v1" else "mantra-multifile: the frozen store no longer holds a v1 commit, so the compatibility claim tests nothing"
+
+say "mantra-multifile: driving the built CLI over two tracked files in a pen..."
+let scan = run ["sh" "tools/fixtures/m/mantra_multifile_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-multifile: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-multifile: the CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "first_clean=yes" else "mantra-multifile: the FIRST file added does not read clean -- a second file erased its history, which is the red of `20260910.003046` standing"
+assert scan.out contains "last_clean=yes" else "mantra-multifile: the LAST file added does not read clean, so the weave it was given is not the one it was written from"
+assert scan.out contains "brix_first_clean=yes" else "mantra-multifile: the .brix add-all route loses the first file, which is the route the tool advertises"
+assert scan.out contains "brix_files=2" else "mantra-multifile: the .brix route did not weave both files, so the reading above passed on a run that never happened"
+assert scan.out contains "commit_header=mantra-commit-v2" else "mantra-multifile: the newest commit is not the per-file record, so a path has nowhere to be named"
+assert scan.out contains "elder_opens=yes" else "mantra-multifile: a store written before this change no longer opens, which is a lost history rather than a failed test"
+assert scan.out contains "verdict=ok" else "mantra-multifile: the scan reached its own red"
+
+say "mantra-multifile: breaking the reader, the writer and the elder dispatch in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_multifile_control.sh"]
+say control.out
+assert control.ok else "mantra-multifile: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-multifile: the control must reach its own verdict"
+assert control.out contains "clean_ok=1" else "mantra-multifile: the unmutated pen must read ok, or every other phase fails for a reason the pen invented"
+assert control.out contains "ignores_path_first_clean=no" else "mantra-multifile: a reader that ignores the path must lose the first file -- otherwise first_clean proves nothing"
+assert control.out contains "drops_prior_first_clean=no" else "mantra-multifile: a writer that drops the prior entries must lose the first file -- the pair tells reader from writer"
+assert control.out contains "no_elder_read_elder_opens=no" else "mantra-multifile: deleting the elder dispatch must close the elder store, or elder_opens is not reading the dispatch"
+assert control.out contains "no_elder_read_first_clean=yes" else "mantra-multifile: deleting the elder dispatch must leave a fresh two-file store clean -- the pair tells the accretion from the repair"
+assert control.out contains "no_elder_fall_elder_opens=no" else "mantra-multifile: deleting the empty-path fallback must close the elder store, or the two halves of elder support are being tested as one"
+assert control.out contains "space_rows_first_clean=no" else "mantra-multifile: a file row written with a space must stop reading back -- this is what holds the tab decision in place"
+
+say "GREEN: a second tracked file keeps the first one's history -- nine readings, six control phases, five breaks caught."
