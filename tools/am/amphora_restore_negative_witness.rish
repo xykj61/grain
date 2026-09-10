@@ -76,9 +76,12 @@ assert (forge.ok == false) else "rneg: forged resin must refuse"
 assert forge.err contains "cargo unproven" else "rneg: forge names cargo unproven"
 say "plant_forged_digest=refused"
 
-# Clear any partial out-home the forge plant may have left mid-write.
-let clear = run ["sh" "-c" "rm -rf ${home}/v.bron.season"]
-assert clear.ok else "rneg: clear partial out-home"
+# The forged refusal leaves NO out-home, the same way the two plants above do. This line was a
+# `rm -rf` of a partial season until `20260910.073234`, because the restore wrote each body and
+# proved it afterward; `restore_prove_resins` now proves every resin while the out-home still
+# does not exist, so the sweep became an assertion.
+let forge_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
+assert forge_out.ok else "rneg: forge refusal must leave no out-home"
 let heal3 = run ["amphora/bin/amphora" "pour" season vessel]
 assert heal3.ok else "rneg: re-pour heal must pass"
 let ok = run ["amphora/bin/amphora" "restore" vessel]
@@ -90,4 +93,4 @@ assert ok.err contains "restore complete" else "rneg: healed restore completes"
 let sweep = run ["rm" "-rf" home]
 assert sweep.ok else "rneg: pen must sweep"
 
-say "GREEN: amphora_restore_negative — tamper · truncate · forged digest, each refused at its wall."
+say "GREEN: amphora_restore_negative -- tamper, truncate, forged digest, each refused at its wall."

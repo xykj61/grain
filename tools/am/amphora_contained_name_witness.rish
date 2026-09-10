@@ -26,7 +26,7 @@
 #   the wall REMOVED in a pen, the escape happening, the wall returned -- so a refusal here
 #     cannot be told from a door that refuses everything
 #   an elder-sealed escaping vessel met by a repaired restore: refused by name at the cargo
-#     reader, with no catalog formed, so `restore_write_prove` is never reached
+#     reader, with no catalog formed, so `restore_prove_write` is never reached
 #
 #   rishi/bin/rishi run tools/am/amphora_contained_name_witness.rish
 
@@ -133,7 +133,7 @@ assert cargo_door.err contains "cargo unproven" else "contained: the cargo reade
 let no_write = run ["sh" "-c" "test ! -e ${home}/escaped.txt"]
 assert no_write.ok else "contained: the refusal must arrive BEFORE the write"
 let no_count = run ["sh" "-c" "printf '%s' \"${cargo_door.err}\" | grep -c 'files proven' || true"]
-assert no_count.out contains "0" else "contained: no catalog forms, so restore_write_prove is never reached"
+assert no_count.out contains "0" else "contained: no catalog forms, so restore_prove_write is never reached"
 
 let sweep = run ["sh" "-c" "rm -rf ${home}"]
 assert sweep.ok else "contained: pen must sweep"

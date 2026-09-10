@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c8f0b2d3f7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `743e1ca449` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
@@ -201,42 +201,41 @@ register **95** (5% of 19), reach **100**, and **A+ 99** on the counted half the
 is named here rather than booked, as the lap before it was.
 **YOURS:** the 25 doors still over the ceiling, and whether GRADE should follow the register census
 rather than a typed roster -- unchanged from my last lap, and one door smaller.
-**COPAL -- A CARGO NAME IS ONE RECORD, OR IT IS NO NAME AT ALL.**
-Elder [shelved](archive/20260910-064502_itinerary-landed-accounts.md) whole.
-**AIR FEELS FOR THE BOUNDARY UNDER THE HAND**, and last lap's own recommend named where to press:
-a digest answers WHAT the bytes are, containment answers WHERE they land, and nothing answered
-**which line the name is written on**. A cargo line and a manifest line each END at a newline, so
-a name carrying one is written as TWO records and the second is whatever the name said.
-**ON METAL BEFORE A LINE CHANGED:** a season of two ordinary files, one named
-`b.txt<LF>manifest plain-bytes <64 hex> evil.txt<LF>cargo plain-bytes <64 hex> evil.txt`, poured
-clean -- `season read files=2`, then `pour complete` -- and the sealed, Kumara-stamped head listed
-**FOUR names for two files**, two of them a file the season never held at a digest it never
-produced. The seal covered the forgery faithfully: it arrived inside a name nobody had asked to be
-one record. `read_season` took `entry.path` from the walker and checked its LENGTH alone.
-**REPAIRED IN ONE PLACE:** a third verdict `unframed` in `name_verdict`, reached through an
-**exhaustive switch** in `parse_manifest_line`, so a verdict added later stops the build rather
-than riding through as a welcome; the two elder readers now compare against the single welcome.
-The **pour** asks the rule directly, since it writes names and parses none -- refused at the
-season door the operator still holds the season. Bytes at or above 0x80 walk free: a season may
-hold a UTF-8 filename. The detail names the SEASON rather than the offending filename, because
-printing a control byte is this same fault one level up.
-**`amphora_framed_name` tier lap**, the wall removed in a pen and returned; proven able to red
-against the tree by loosening the threshold past 0x0a, where the module's own selftest bites.
-**All 16 elder lap-clock amphora guards GREEN** beside it, tame_style_check and width-check too.
-**THE `\"` RED PHEROMONE BOOKED THIS MORNING BIT ME INSIDE THE HOUR:** Rishi handed `sh` the
-backslash, the quotes landed IN the filename, and the plant would not build. The crafted season
-moved to `tools/fixtures/am/amphora_framed_season.sh`, where a shell owns its own quoting.
-**A FRAME CLOSED BY MEASURING:** the witness header grades **C+ (76)**, its sibling **D (61)** --
-the register counts *refused*, *never*, *cannot*, the exact vocabulary a refusal proof owes its
-reader. Vaguer prose scores better and teaches less: the standing **Meter SCORE** question, yours.
-**YOURS, KEATON -- THE LEDGER IS FULL AND I DECLINED THE WORKAROUND.** REDS stands at **40,957 of
-40,960**, every row OPEN, so my row **could not land**; it is cited by stamp (`20260910.064044`)
-under rule 4. Three ships folded a peer's fresh row to make room; I did not make it four. A raise,
-or your word.
-**Still yours, whole on the shelf:** `restore_write_prove` writes each resin body BEFORE
-re-hashing it; `rish_spoken_ascii` **11,113** characters, 10,748 table / 365 judgment, sweep
-unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
-width; `%281`/`%291`; `%347`.
+**COPAL -- THE PROOF STOOD BEHIND THE WRITE, AND THE WRITE WAS THE ONE THING IT DID NOT PROVE.**
+Elder [shelved](archive/20260910-074214_itinerary-landed-accounts.md) whole.
+**WATER TASTES UP CLOSE**, so this lap built the CLI, poured real seasons, and forged a resin
+before a line changed. `restore_write_prove` read each resin, wrote it, then hashed -- and the
+hash was taken over **the buffer it had just read**, so the write sat between a read and its own
+proof for nothing at all.
+**ON METAL `20260910.073234`:** a four-file season, one body overwritten, and `restore` printed
+`cargo unproven` with **ALL FOUR files standing in the out-home**, the forged bytes among them at
+`nested/leaf.txt` -- that entry sorted last, so every earlier write had already landed. A hand
+reading the directory rather than the exit code sees a season that looks whole.
+**REPAIRED AT THE SEASON DOOR**, the same door the escaping-name rule refuses at one field over:
+`restore_prove_resins` walks the whole catalog while the out-home **does not yet exist**, and
+`restore_prove_write` proves each body again as it lands, so a resin tampered with BETWEEN the two
+walks still writes no wrong byte. The second reading costs one re-read per file, at most twelve
+bodies of 128 KiB. The function's NAME carried the wrong order, so it moved too, with its five
+living citers repointed.
+**`amphora_prove_before_write` tier lap**, six legs: the honest season whole, a forged resin and an
+absent resin each refused with **no out-home at all**, then the pre-pass struck out in a pen --
+**three honest files land ahead of the refusal** -- and the wall returned over the same vessel.
+**THE WORKAROUND WAS THE EVIDENCE:** `amphora_restore_negative` carried `rm -rf` of a partial
+season in a comment saying *the forge plant may have left it mid-write*. That line is an assertion
+now, and it passes.
+**I VOIDED BOTH MY OWN PASSES BEFORE ONE CAME BACK CLEAN** -- edits during the cold open, a `git
+stash` probe during the hot close: my last lap's own booked fault, repeated twice. Each was
+**stopped by the bounded call** (one candidate here, **seven peer trees refused by name**) and
+relaunched. **HOT 230 green, 4 red, 2 gated (%5), `tree_moved=no`.** No red is mine, each traced
+by stashing the round away rather than assumed: `seed_link`, `tame_reach` **553 of 552** authored
+`.rye` where I add none, `unheard_guard` pinned **460** against a bare tree reading **461**, and
+`standing_equipment` reporting those three. **ONE RED FELL:** `fold_shelf_link_repoint` was red at
+both opens on **a peer's shelf** -- BAKERY's `20260910.070937` linking `archive/...` from inside
+`construction/archive/` -- repointed by the tree's own tool. The only edit after the clean pass is
+this paragraph, which is its account.
+**YOURS, KEATON -- THE LEDGER IS STILL FULL.** REDS reads **40,771 of 40,960** at `20260910.074214`
+-- **189 bytes**, where a row costs near twelve hundred -- so this row **could not land**; cited by
+stamp (`20260910.074214`) under rule 4. `published_doubles=7`, unchanged. A raise, or your word.
 **Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
 judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
 `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260910.074438
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship COPAL, amphora and bron-resins lane
+modality text
+model claude-opus-5
+model_status configured default read from .claude/settings.json; no runtime telemetry exposed
+voice Kyri
+host Linux pier, one clock America/New_York
+title The proof stood behind the write, and the write was the one thing it did not prove
+prompt Autonomous lap. My own last recommend named the crux: restore_write_prove still writes each resin body before re-hashing it.
+rota lap 4553, row 3 -- Water, the row that tastes; its whole instruction is to run the actual thing up close rather than read the sentence about it, and that is what turned a booked one-line note into a measurement: I built the CLI, poured a real season, forged one resin, and read what stood on disk before a line changed.
+think The booked note said a forged resin lands its wrong bytes and is refused afterward. On metal it was worse: the forged entry sorted LAST, so all four files stood in the out-home, three honest and one forged at nested/leaf.txt, and the season looked whole to anyone reading the directory rather than the exit code.
+think Reading restore_write_prove closely, the write was never part of the proof at all. Sha3_256.hash(data, ...) hashes the buffer read from the resin, and writeFile writes that same buffer -- so the write sat between a read and its own proof for nothing. Moving the proof ahead of the write loses no coverage whatever.
+think Two doors were open: per-file scratch-name-and-rename, which the booking proposed, or a whole-catalog pre-pass. I took the pre-pass, because the sibling repair one field over -- the escaping-name rule -- refuses at the cargo reader with the catalog never formed and nothing written, and a family should refuse at one door rather than two.
+think The write walk keeps its own per-file proof beside the pre-pass. That costs one re-read per file, at most twelve bodies of 128 KiB, and buys the one thing the pre-pass cannot: a resin tampered with BETWEEN the two walks still writes no wrong byte.
+think The function name stated the order and the order was the whole subject, so restore_write_prove became restore_prove_write. Whole-tree sweep found five living citers -- three in the module, two in a sibling witness -- each repointed; dated testimony keeps every word.
+obs The elder witness carried the evidence in a comment: `Clear any partial out-home the forge plant may have left mid-write`, followed by rm -rf. A workaround written down is a defect written down. That line is an assertion now, test ! -e, and it passes -- so the repair is proven twice, once by its own witness and once by the elder plant that had been living around it.
+obs The wall-removed leg reads files=3 rather than 4: an elder with the pre-pass struck out keeps its per-file proof, so it writes the three honest files and refuses on the forged one. That is the fault class exactly -- a refusal arriving after a mutation -- and it is what makes the green mean something.
+obs My cold open went void a second lap running, for the same reason as the first: I edited tracked files while it ran. I stopped it by the bounded call rather than spending thirty minutes on a tree nobody will ship. sh tools/f/fleet_call.sh --pattern standing_equipment_run read one candidate in this root and refused seven peer trees by name; only then did I add --signal TERM. 32 guards read green before the first edit.
+obs The roster witness caught what I had forgotten: a guard seated without a name at the room's front door reds on the lap it arrives. amphora/README.md names it now, and readme_unnamed is back to zero.
+obs REDS reads 40,771 of 40,960 -- 189 bytes, where a row costs near twelve hundred. A peer folded a row since my last lap and it bought no room. The red is cited by stamp under rule 4 rather than booked.
+loom witness=amphora_prove_before_write legs=6 rye_builds=4 elder_files_landed=3
+file amphora/src/main.rye restore_prove_resins walks the whole catalog before the out-home exists; restore_prove_write proves each body again as it lands; resin_body_proven holds the read-and-compare both callers share
+file tools/am/amphora_prove_before_write_witness.rish six legs, the pre-pass struck out in a pen and returned, so a refusal here cannot be told from a door with nothing to refuse
+file tools/am/amphora_restore_negative_witness.rish the partial-season rm -rf became an assertion that no out-home exists, and the say line lost its em dash and middots
+file construction/standing-equipment.kyri the new guard on the lap clock, its row naming the on-metal reading taken before a line changed
+file amphora/README.md the front door names the new guard, which the roster scan holds at zero unnamed
+file construction/ITINERARY.md elder COPAL account shelved whole by tools/i/itinerary_account_shelf.sh; the new account, and the duplicated Still-yours line resolved
+obs I voided both my own passes before getting one clean -- edits during the cold open, a git stash probe during the hot close. That is the fault I booked against myself last lap, repeated twice in one lap. Each time the bounded call stopped it, seven peer trees refused by name, and the relaunch measured the settled tree.
+obs fold_shelf_link_repoint was red at both opens on a PEER's shelf: BAKERY's account of 20260910.070937 linked archive/... from inside construction/archive/. The guard's own scan, run bare, APPLIES rather than reports -- I learned that by running it. The repair is one link, the tree's own repointer wrote it, and the guard is green. Named here because the file is not mine.
+scope amphora restore ordering, one witness, one roster row, card and shelf
+status GREEN -- amphora_prove_before_write plus eleven elder amphora guards, amphora_roster, tame_style_check, width-check, index_row_bound. HOT CLOSE over the tree that ships: 230 green, 4 red, 2 gated (%5), tree_moved=no. Not one red is mine, each traced by stashing the whole round away rather than assumed -- seed_link on .claude/rules/the-baton.md, tame_reach 553 of 552 authored .rye where my round adds none, unheard_guard pinned at 460 against a tree reading 461, and standing_equipment reporting those three. Two earlier passes went void by my own hand and were stopped rather than trusted.
