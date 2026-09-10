@@ -4034,3 +4034,14 @@ guard tutorial_output
 path tools/t/tutorial_output_witness.rish
 tier lap   # 1.0s; 6 pairs read, 4 run, 20 control checks with 5 refusals bitten and lifted
 seated 20260909.235500
+
+# self_matching_assert reads the command FORM and the output channel before gating an operand
+# match. A simple default-stdout run carrying one literal path is gated; options, stderr,
+# compounds, other utilities, and unresolved bindings stay REPORTED, since a label is not a
+# reading -- `stat --format=%s path` prints the size alone and names no operand (`%685`).
+# `lap` rather than `cadence`: the scan is 1.3s over 2,456 runners and the control 16s, and the
+# corpus it reads is every tracked runner, which any lap may add to.
+guard self_matching_assert
+path tools/s/self_matching_assert_witness.rish
+tier lap
+seated 20260910.022156
