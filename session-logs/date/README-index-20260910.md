@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.161758` | [a census counted two reads as plants](20260910/20260910-161758_a-census-counted-two-reads-as-plants.kyri) | `>&2` is not a write; 67 -> 66 |
 | `20260910.160342` | [A ratchet that named its own repair](20260910/20260910-160342_the-ratchet-that-named-its-own-repair.kyri) | 538 per mille back to 534, law ceiling 14 to 9 |
 | `20260910.152944` | [The compressor shelf joins the register meter](20260910/20260910-152944_the-compressor-shelf-joins-the-register-meter.kyri) | docs/ joins at zero over, ceiling held |
 | `20260910.151303` | [A refusal named and unreachable](20260910/20260910-151303_a-refusal-named-and-unreachable.kyri) | a snapshot accepted bytes past its last batch |
