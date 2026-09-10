@@ -255,6 +255,72 @@ EOF
 o=$(read_bins)
 check "11 a symlinked module is counted once" "1" "$(val "$o" contract_asserts)"
 
+# 12 -- the per-FUNCTION reading, which asks a different question from every case above. The unit
+#       the law names is the function ("aim >= two per function"), and the bins are none / one /
+#       two-or-more over the same contract population.
+rm -f "$pen"/m/*.rye
+put l.rye <<'EOF'
+pub fn bare() u32 { return 1; }
+pub fn thin(n: u32) u32 { assert(n > 0); return n; }
+pub fn full(n: u32) u32 {
+    assert(n > 0);
+    assert(n < 9);
+    return n;
+}
+EOF
+o=$(read_bins)
+check "12 three contract functions are counted" "3" "$(val "$o" contract_functions)"
+check "12 the one with no assert bins as none" "1" "$(val "$o" fn_with_no_assert)"
+check "12 the one with a single assert bins as one" "1" "$(val "$o" fn_with_one_assert)"
+check "12 the one with two asserts meets the aim" "1" "$(val "$o" fn_with_two_or_more)"
+
+# 12a -- GRANULARITY, stated by proving it. Both readings count assert LINES rather than assert
+#        CALLS, so two calls on one line read as one. That is deliberate: a second counting rule
+#        would be a second answer to "what is an assert", and the tree writes one per line -- a grep
+#        for two calls on a line reads 2 across 1,964 authored sources. This leg is what keeps the
+#        limit visible if that convention ever changes.
+rm -f "$pen"/m/*.rye
+put l2.rye <<'EOF'
+pub fn crowded(n: u32) u32 { assert(n > 0); assert(n < 9); return n; }
+EOF
+o=$(read_bins)
+check "12a two calls on one line read as one" "1" "$(val "$o" fn_with_one_assert)"
+check "12a and the assert bin reads the same one" "1" "$(val "$o" contract_asserts)"
+
+# 12b -- a function the proof spread reached is not a contract function, so it leaves the per-function
+#        bins entirely. Without this the reading would grade a selftest against a contract aim.
+rm -f "$pen"/m/*.rye
+put m.rye <<'EOF'
+fn helper() void { assert(x == 1); }
+fn run_selftest() void { helper(); }
+pub fn api(n: u32) u32 { assert(n > 0); return n; }
+EOF
+o=$(read_bins)
+check "12b a proof and its helper leave the per-function bins" "1" "$(val "$o" contract_functions)"
+check "12b and the one contract function is the asserting api" "1" "$(val "$o" fn_with_one_assert)"
+
+# 12c -- a witness FILE contributes no contract functions at all, matching the assert bins above.
+rm -f "$pen"/m/*.rye
+put n_witness.rye <<'EOF'
+pub fn claim() void { assert(a == 1); }
+EOF
+o=$(read_bins)
+check "12c a witness file contributes no contract functions" "0" "$(val "$o" contract_functions)"
+
+# 12d -- THE BLIND SPOT IS COUNTED RATHER THAN DESCRIBED. mark_proofs anchors `fn` at column 0, so a
+#        function declared inside a struct body is invisible to the walk. A reader can tell an empty
+#        blind spot from a large one only when its size is printed.
+rm -f "$pen"/m/*.rye
+put o.rye <<'EOF'
+pub const Box = struct {
+    pub fn inner(n: u32) u32 { assert(n > 0); return n; }
+};
+pub fn outer(n: u32) u32 { assert(n > 0); return n; }
+EOF
+o=$(read_bins)
+check "12d a nested fn is counted in the blind spot" "1" "$(val "$o" fn_nested_unread)"
+check "12d and it is absent from the per-function bins" "1" "$(val "$o" contract_functions)"
+
 echo ""
 echo "control_pass=$PASS"
 echo "control_fail=$FAIL"

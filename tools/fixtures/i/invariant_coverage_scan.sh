@@ -70,12 +70,49 @@
 # swallowed by the reachability spread, and a shared helper that must withdraw to contract when a
 # `pub` function calls it too.
 #
+# THE SECOND READING, added 20260910.021027 -- the law's own unit is the FUNCTION, and until this
+# lap nothing in the tree read it. TAME root rule 2 asks for asserts at construction, mutation, and
+# postcondition, and the SLC Definition of Done spells the aim plainly: "aim >= two per function".
+# Every instrument standing over this law reads a coarser unit -- `assert_gap` and `invariant_gap`
+# ask a FILE question (does this source assert at all, does it name a reason), `unnamed_assert` and
+# the bins above ask a per-ASSERT question. So a module with eighty functions and one asserting
+# function reads exactly like a module that asserts throughout, and the fence the law actually draws
+# had never been walked.
+#
+# WHAT IT READS. The same contract population the bins above define -- a function this file's own
+# proof spread did not reach, in a file that is neither a witness nor a selftest -- binned by how
+# many assert calls stand in its body: none, one, two or more. The five exclusions are the per-assert
+# loop's own five, quoted rather than restated, so the two readings cannot come to disagree about
+# what an assert call is. Both count assert LINES rather than assert CALLS, and the tree writes one
+# per line: a grep for two calls on a single line reads 2 across 1,964 authored sources, so the
+# granularity is exact within those two. Control leg 12a holds that limit visible.
+#
+# MEASURED ON THE LAP THAT BUILT IT: 23,319 contract functions, 3,814 meeting the aim -- 16 percent,
+# with 16,214 carrying no assert at all. Read beside `contract_coverage_percent` at 97, which is the
+# same law measured at a coarser unit. Both numbers are honest and they answer different questions:
+# nearly every assert this tree writes names its reason, and roughly one contract function in six
+# asserts at all. Both are FREE figures, held by no gate -- run the scan rather than reading these.
+#
+# WHY IT GATES NOTHING. The law says "aim", and an aim is not a wall. A tiny accessor that returns a
+# field has no invariant worth stating, and a ceiling at 16 percent would red the whole tree on the
+# lap it was written. The reading is a census: it tells a module which of its functions stand
+# unguarded, so a hand touching one can close the nearest gap.
+#
+# THE BLIND SPOT, printed as `fn_nested_unread`. mark_proofs anchors `fn` at column 0, so a function
+# declared inside a struct body is invisible to this walk and its asserts are attributed to the
+# top-level function around it. Two figures, because they count two populations: tree-wide, a plain
+# grep reads 1,839 indented declarations of 34,241, 5.4 percent; over the contract population this
+# scan actually bins, the field reads 1,224. Widening the anchor would move the proof classification
+# the fifteen control legs above were built around, so this lap counts the blind spot rather than
+# reaching into it.
+#
 # THIS SEATS NOTHING ELSE. No ratchet, no ceiling, no roster entry. A measurement taken to answer a
 # question is finished when the question is answered.
 #
 # USAGE
 #   sh tools/fixtures/i/invariant_coverage_scan.sh            # the tree reading
 #   sh tools/fixtures/i/invariant_coverage_scan.sh modules    # one row per module, worst first
+#   sh tools/fixtures/i/invariant_coverage_scan.sh functions  # per-function bins per module
 #
 # Run from the repository root.
 
@@ -210,7 +247,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     for (i = 1; i <= nf; i++) if (ln >= fstart[i] && ln <= fend[i]) return isproof[i]
     return 0
   }
-  function flush(   i, fn, kind, iswit, isself) {
+  function flush(   i, fn, kind, iswit, isself, j, na, nfn, f0, f1, f2, nest) {
     if (name == "") return
     iswit = (name ~ /_witness\.rye$/)
     # A file that calls itself a selftest in its own module doc is one, whatever its functions are
@@ -250,7 +287,36 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
         if (WANT_SITES && !k) printf "%s\t%d\t%s\n", name, i, lines[i] >> SITES
       }
     }
-    printf "%s %d %d %d %d %d %d\n", name, c, cc, s, sc, w, wc
+    # THE SECOND READING, per FUNCTION rather than per assert. The unit the law names is the
+    # function -- aim >= two per function -- where the bins above answer a per-assert question.
+    # A contract function is one the proof spread of this file did not reach, in a file that is
+    # neither a witness nor a selftest, which is exactly the population the seated aim addresses.
+    nfn = f0 = f1 = f2 = nest = 0
+    if (!iswit && !isself) {
+      for (i = 1; i <= nf; i++) {
+        if (isproof[i]) continue
+        na = 0
+        for (j = fstart[i]; j <= fend[i]; j++) {
+          # The SAME five exclusions the per-assert loop applies, so the two readings cannot
+          # disagree about what an assert call is.
+          if (lines[j] !~ /(^|[^A-Za-z0-9_])assert\(/) continue
+          if (lines[j] ~ /^[ \t]*\\\\/) continue
+          if (lines[j] ~ /^[ \t]*(pub[ \t]+)?fn[ \t]+[A-Za-z0-9_]*assert\(/) continue
+          if (lines[j] ~ /"[^"]*assert\(/) continue
+          if (lines[j] ~ /^[ \t]*\/\// ) continue
+          na++
+        }
+        nfn++
+        if (na == 0) f0++; else if (na == 1) f1++; else f2++
+      }
+      # THE BLIND SPOT, counted rather than described. mark_proofs anchors `fn` at column 0, so a
+      # function declared inside a struct body is invisible to the per-function walk and its
+      # asserts are attributed to the top-level function enclosing it. Printing the size is what
+      # lets a reader tell an empty blind spot from a large one.
+      for (i = 1; i <= n_lines; i++)
+        if (lines[i] ~ /^[ \t]+(pub[ \t]+)?(export[ \t]+)?fn[ \t]+[A-Za-z_]/) nest++
+    }
+    printf "%s %d %d %d %d %d %d %d %d %d %d %d\n", name, c, cc, s, sc, w, wc, nfn, f0, f1, f2, nest
     n_lines = 0
   }
   FNR == 1 { flush(); name = FILENAME }
@@ -260,6 +326,14 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
 
 [ "${WANT_SITES:-0}" = 1 ] && [ -f "$work/sites.txt" ] && cat "$work/sites.txt" >&2
 
+if [ "$mode" = functions ]; then
+  # WORST FIRST BY UNGUARDED COUNT, so a hand touching a module sees its own number rather than the
+  # tree total. `nested` is the blind spot for that module alone.
+  printf '%-56s %9s %6s %5s %7s %6s\n' module functions none one two_plus nested
+  awk '$8 > 0 { printf "%-56s %9d %6d %5d %7d %6d\n", $1, $8, $9, $10, $11, $12 }' "$work/rows.txt" | sort -k3 -rn
+  exit 0
+fi
+
 if [ "$mode" = modules ]; then
   printf '%-56s %7s %7s %6s\n' module contract covered gap
   awk '$2 > 0 { printf "%-56s %7d %7d %6d\n", $1, $2, $3, $2 - $3 }' "$work/rows.txt" | sort -k4 -rn
@@ -267,7 +341,7 @@ if [ "$mode" = modules ]; then
 fi
 
 awk -v n="$count" '
-  { c+=$2; cc+=$3; s+=$4; sc+=$5; w+=$6; wc+=$7
+  { c+=$2; cc+=$3; s+=$4; sc+=$5; w+=$6; wc+=$7; nfn+=$8; f0+=$9; f1+=$10; f2+=$11; nest+=$12
     if ($2 > 0) { mods++; gap = $2 - $3; if (gap == 0) clean++; else { gaps[++g] = gap; tg += gap } } }
   END {
     printf "modules=%d\n", n
@@ -275,6 +349,12 @@ awk -v n="$count" '
     printf "contract_with_a_reason=%d\n", cc
     printf "contract_with_no_reason=%d\n", c - cc
     if (c > 0) printf "contract_coverage_percent=%d\n", cc * 100 / c
+    printf "contract_functions=%d\n", nfn
+    printf "fn_with_no_assert=%d\n", f0
+    printf "fn_with_one_assert=%d\n", f1
+    printf "fn_with_two_or_more=%d\n", f2
+    if (nfn > 0) printf "fn_meeting_the_aim_percent=%d\n", f2 * 100 / nfn
+    printf "fn_nested_unread=%d\n", nest
     printf "selftest_asserts=%d selftest_with_a_reason=%d\n", s, sc
     printf "witness_asserts=%d witness_with_a_reason=%d\n", w, wc
     printf "modules_with_a_contract_assert=%d\n", mods
