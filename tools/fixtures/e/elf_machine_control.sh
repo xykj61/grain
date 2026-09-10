@@ -231,5 +231,28 @@ cleg "a fourth live site crosses the ceiling"  over_ceiling "$(printf '%s\n' "$c
 cleg "  ... and exit 1"                        1 "$crc"
 
 
+# 5. THE EXCLUSION IS VISIBLE, and the reading moves with the pen (`20260910.050000`). The census
+#    holds the whole `_control.` population out rather than one named path, which is the shape
+#    `tools/fixtures/p/process_reach_scan.sh` refuses by name in its own head -- so the cost is
+#    printed on every run instead of argued. These legs prove the counters answer, rather than
+#    standing at a constant nobody planted.
+cfield() { printf '%s\n' "$1" | sed -n "s/.*$2=\([0-9][0-9]*\).*/\1/p" | head -1; }
+# The pen stands OVER its ceiling from leg 4, so the census exits 1 here and a bare assignment
+# would end this control under `set -eu`. These legs read the counters, never the verdict.
+cout=$(csites) || true
+cleg "the pen's one control is held out"       1 "$(cfield "$cout" control_excluded)"
+cleg "  ... and its planted site is counted"   1 "$(cfield "$cout" control_sites)"
+cleg "  ... in one file"                       1 "$(cfield "$cout" control_files)"
+
+# A control the walk CAN see through carries no live site, so the counter falls rather than
+# standing still -- which is what tells a live reading from a constant.
+cplant tools/x/planted_control.sh 'cat > w.rish <<'"'"'R'"'"'
+let shape = run ["sh" "-c" "file bin/thing_aarch64"]
+R'
+( cd "$t" && git add -A >/dev/null && git commit -q -m "pen: the control plants by heredoc" )
+cout=$(csites) || true
+cleg "a heredoc plant leaves the count"        0 "$(cfield "$cout" control_sites)"
+cleg "  ... while the file stays excluded"     1 "$(cfield "$cout" control_excluded)"
+
 echo "elf-machine-control: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

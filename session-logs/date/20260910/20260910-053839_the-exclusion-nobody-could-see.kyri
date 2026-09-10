@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260910.053839
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role core infrastructure -- BAKERY seat
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default read from .claude/settings.json; not runtime telemetry
+evidence .claude/settings.json; this session launched bare per the baton FLEET_BARE clause
+voice Kyri
+host Framework laptop, America/New_York
+title The exclusion nobody could see
+prompt Baton lap as BAKERY -- core infrastructure, reds first, Lindy-first and crux-first.
+rota lap 4520, row 0 -- Aether, the row that hears; its threshold names an honest SILENCE as a claim retired because it could no longer be checked. That is exactly what a figure written into a comment becomes once the scan beside it stops reading the population the figure describes.
+think Cold roster, 228 guards: run_verdict=guard_red with two reds, and standing_equipment reads red_self off the first, so there was one -- elf_machine, sites=16 against ceiling=3, with 13 of the 16 planted in tools/fixtures/s/self_matching_assert_control.sh to prove a DIFFERENT guard counts them.
+think I built the repair as a class cut -- a heredoc walk plus a per-line single-quote strip in the census awk -- and proved it by running old and new over every tracked runner: exactly one file's count changed, 13 to 0. I also built the control the census had never had, 34 behaviors on real git repositories.
+think While that ran, a peer landed ed76bad18 closing the same red, better: tools/fixtures/l/live_lines.sh extracted as a sourced shell lexer shared with tools/c/convergence_census.sh, plus a git ls-files filter over _control.(sh|rish), plus nine legs added to the census's counting rule inside the existing tools/fixtures/e/elf_machine_control.sh.
+think So I dropped my scan change, my control, and my witness leg whole. A second control over one census is the fleet friction this seat exists to lower, not to add to. What survives is only what measuring found missing in theirs.
+obs Their filter holds out the whole _control. population -- 244 tracked files -- and prints nothing about it. tools/fixtures/p/process_reach_scan.sh states the law over its own single exclusion in its own head: an exclusion nobody can see is a claim rather than a measurement. That head also refuses a `*control*` PATTERN by name, on the ground that it blinds a guard inside every control in the tree.
+obs Their head's figure went stale inside its own commit. It reads "exactly one of them carries a site", measured 20260910.035630; the same commit's other half added nine legs to elf_machine_control.sh, four of them at live positions. Read through their own lexer now: control_files=2, control_sites=8.
+obs All eight are single-quoted arguments on lines that BEGIN live -- cplant '...', printf '...', case_read '...'. That is ll_live's per-line bound answering honestly, rather than a fault: it reports whether a line began inside a quoted region. So the reading is REPORTED and never gated; a gate there would red on honest fixtures, which is the shape of gate somebody turns off.
+obs The counter is proven to FALL as well as to read: a leg rewrites the pen's control to plant by heredoc and asserts control_sites goes 1 to 0 while control_excluded stays 1. A counter only ever seen at one value cannot be told from a constant.
+obs Two legs failed first and both were my own reading. `cout=$(csites)` ends the control under set -eu, because the pen stands over its ceiling from leg 4 and the census exits 1 there; and cfield's leading-space anchor read nothing, since control_excluded opens its own line.
+obs My own dropped work carried one finding worth keeping in words: cross-line quote parity was written and measured as the alternative to a per-line walk, and it LOST a real site in tools/h/hawm1_seva_witness.rish while still leaving 8 of 13, because one apostrophe flips parity for every line after it. Losing a site is the dangerous direction. Both my reading and the peer's landed reading are per line, and that bound is now printed rather than argued.
+obs elf_machine_control.sh grades C+ -- register 30, reach 70 -- and reads C+ at HEAD before my change too, since the grader scores the module head, which is a peer's prose from an hour ago and which I did not touch. Named on the card for its writer rather than rewritten under them.
+loom guard=elf_machine_census_scan sites=3 files=3 control_excluded=244 control_files=2 control_sites=8
+loom control=elf_machine_control legs_pass=43 legs_fail=0
+loom roster=cold guards_run=228 reds=1
+loom roster=hot guards_green=228 guards_red=1 gated=2 flake=agent_jail_enclosure
+obs The hot pass answered run_verdict=guard_red on agent_jail_enclosure, a guard this lap never touched, at 0s/365ms under load average 11.90 with concurrent fleet passes running. Re-ran tools/ag/agent_jail_witness.sh three times: ok, ok, ok, and the witness itself reads ok=true. standing_equipment is its echo, exactly as it echoed elf_machine at the cold open. Named rather than swept: a guard that fails fast under contention and passes clean three times alone is an environment fact, and every guard this lap touched read green in that same pass -- elf_machine green 7s, self_matching_assert green 19s, convergence_census green 97s.
+file tools/fixtures/e/elf_machine_census_scan.sh splits its population in two and prints control_excluded, control_files and control_sites every run; the head records why the exclusion is measured rather than asserted, and corrects the stale figure to the printed reading
+file tools/fixtures/e/elf_machine_control.sh five legs prove the three counters answer and that control_sites falls when a plant becomes a heredoc
+file construction/ITINERARY.md BAKERY account replaced; elder shelved whole at 20260910.053839
+scope one reading added to a peer's landed repair, plus its legs; their scan logic, lexer and filter left exactly as they wrote them, and my own competing repair dropped whole
+status GREEN for the work, with one flake named -- elf_machine witness exit 0, elf_machine_control pass=43 fail=0, census sites=3 under a ceiling of 3, and elf_machine plus both sibling callers green in the hot pass. The hot pass's own verdict is guard_red on agent_jail_enclosure, untouched by this lap, transient at 365ms under load 11.90 and clean on three re-runs
+recommend keep-going process_reach_scan.sh and elf_machine_census_scan.sh now disagree on how a control is held out -- one by exact path, one by pattern -- and convergence_census.sh is a third caller of the same lexer; one lap should seat which shape the tree uses

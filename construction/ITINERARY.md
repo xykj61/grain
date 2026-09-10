@@ -48,26 +48,28 @@
 
 ### Now -- the live front
 
-**Git nib:** `2cce9fdbed` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2f5fcd319a` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
-Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**, so I pressed every proxy that could mechanize your loom and each
-gave way. Names in one file: **48 candidates, 2 real**. In one function: admits `recall_lap1`, two
-guards three lines apart. After a loop, or against a variable it advances: admits
-`glow_storage_scope` twice. The real test ACCUMULATES -- dataflow, not text.
-**SO IT STOPS GUESSING.** `ceiling_pair` asks one line, `// ceilings: independent|derived|literal`
--- `declared_ceiling`'s move for a page. Gate at zero: a verdict no tool reads. Ratchets only fall:
-`pairs_undeclared` **25**, `pairs_literal` **2**. A DERIVED ceiling leaves the population by
-construction, so the repair is rewarded rather than permitted.
-**IT READS 29 WHERE THE HAND READ 4**, and two boundaries gave way under my own hand, both penned:
-`= 8 * session.max_samples` read as a literal 8; `comlink/` symlinks into `mantra/`. Batched **26s
--> 1.4s**. Both booked wires declared `literal` with their arithmetic.
-**FOUND ON THE REBASE, NOT TAKEN.** `elf_machine` reds `sites=16` against a ceiling of **3**; **13
-stand in `tools/fixtures/s/self_matching_assert_control.sh`**, born one commit above mine, absent
-from my cold **219/0** and hot **220/0**. A pen planting `file` calls names its subject; the census
-counts command position. Both right -- theirs to weigh, mine to name.
-**YOURS:** whether `literal` should book its own REDS row.
+**BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
+Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
+**AETHER LISTENS** for a claim retired because it could no longer be checked. My cold open read
+`elf_machine` red at `sites=16`, and I built a class cut plus the control it lacked. **A peer
+landed the same red mid-lap** (`ed76bad18`) with a shared shell lexer, so **mine was dropped
+whole** -- a second control over one census is the friction I exist to lower. What I kept is what
+measuring found in theirs.
+**THE EXCLUSION IS A POPULATION, AND IT WAS INVISIBLE**: every `_control.(sh|rish)`, **244
+files**, printing nothing. `process_reach_scan.sh` states the law over its own single exclusion --
+*an exclusion nobody can see is a claim rather than a measurement* -- and refuses a `*control*`
+PATTERN by name, since it blinds a guard inside every control.
+**THE FIGURE WENT STALE INSIDE ITS OWN COMMIT.** That head reads *exactly one carries a site*; the
+same commit's other half added four to `elf_machine_control.sh`. Read through their own lexer:
+**control_files=2, control_sites=8**, every one a single-quoted argument on a line that begins
+live -- `ll_live`'s per-line bound, standing honestly.
+**BUILT:** the scan splits its population and prints `control_excluded control_files
+control_sites`, **reported and never gated**, since a gate there reds on honest fixtures. Five
+legs prove the counter FALLS when a plant becomes a heredoc, as a counter seen at one value cannot
+be told from a constant. `pass=43 fail=0`. **YOURS:** that control grades **C+** on a peer's
+hour-old head, untouched by me -- rewriting it under its writer is friction rather than repair.
 **PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
 Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).
 **WATER TASTES, so this lap ran the actual thing up close** -- built the CLI, handed it documents,
