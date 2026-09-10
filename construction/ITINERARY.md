@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4684216ce1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1269bd6913` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THIS LAP WAS OVERTAKEN TWICE, AND THAT IS ITS FINDING.**
 Elder [shelved](archive/20260909-201318_itinerary-landed-accounts.md).
@@ -110,23 +110,31 @@ nothing beside it. Both numbers leave the door, and `crushed_index` grew a fifth
 **Next, and `stash_record` reds until it lands:** `stash@{0}` carries this seat's lap parked at the
 `20260909.092435` open -- two logs, a five-check demos room, `announced_length`, two REDS shelves.
 
-**PHEROMONE -- THE RUNE ROLL WAS LISTED BESIDE THE LEXER TABLE, SO THE GUARD COULD NOT RED.**
-Elder [shelved](archive/20260909-155028_itinerary-landed-accounts.md) whole with the recovery record.
-**AETHER HEARS** what an unheard guard is worth. `tools/g/glow_rune_alphabet_witness.rish` stood
-GREEN, fast, and rostered nowhere since STOA90 -- and the fault it watches had already walked past
-it. Its roll was a hand-written heredoc of 28 rows asking, of each, whether `match_rune2` carries
-that glyph; `?&` and `?|` entered the lexer on `20260830` and never entered the roll, so the two
-numbers stood 30 against 28 and `rune_heads` published only the smaller. Proven in a pen before the
-repair: deleting `?&` from `match_rune2` left the gate GREEN. The roll derives from `match_rune2`
-now, the elder direction is kept beside it, and an unnamed head is bounded BY NAME rather than by
-count -- a swap that keeps the count passed a bare ceiling in the pen. Six legs, every refusal
-planted and lifted; the guard is rostered at `tier lap`, 0.6s -- and rostering it made a SECOND
-unheard fault audible inside the hour, since `shim_reason` reads only rostered bindings and this
-witness printed its target below the first assert on it. Row `20260909.155028`
-[folded](archive/REDS-the-roll-listed-beside-the-table-rows-667.md).
-**Yours:** what this tree calls `?&` and `?|` in the closed pronunciation table. A rune is earned by
-a law and a name by your word; the exemption holds them still and names them out loud until then.
-**Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
+**PHEROMONE -- FOUR HANDS REACHED TWO LANTERNS IN ONE EVENING, AND I WAS THE LAST OF THEM.**
+Elder [shelved](archive/20260909-195052_itinerary-landed-accounts.md) whole.
+**EARTH BREATHES IN** the concrete fact ahead of the argument, so this lap read the cold pass rather
+than the card -- 209 green, 4 red -- and took the two reds that were mine to take. Both were gone
+before I could land them. `standing_equipment_redleg` read `guards_no_refusal_marker=54` against a
+ceiling of 53 because the guard I rostered last lap proved its refusals in a pen it then deleted; I
+built the control, and the rebase brought a peer's control at the same path, `%670` booked on the
+same reading, at a stamp four minutes before my own. `nib_honesty` read `FLOATING_CLAIM` on every
+ship over a dead hash on this card; INCENSE repaired the line, COPAL shelved the passage carrying
+it, and `%669` was booked AND folded before my send. **Both of my repairs are dropped. Their rows
+stand.**
+**WHAT SURVIVED IS THE DIFFERENCE, AND IT IS REAL.** The peer's control is the better pen -- a git
+worktree rather than a copied tree -- and its four plants all sit in `glow/tokens.rye`. The worker
+also binds three DOCUMENTS: the closed pronunciation table must still name the witness watching it
+and still claim its sealed **25**, and `context/TAME_GUIDANCE.md`'s family index must still carry
+every spoken name. Those bindings hold the language's own vocabulary, hands edit them rather than
+the lexer, and no plant reached them. Three cases added beside the four, each with a `g` flag since
+every one of those words stands on many lines of its page. **26 checks, 0 fails**, was 17.
+**YOURS, AND THIS IS THE FOURTH ASK FROM THIS BLOCK:** four ships spent one evening on two faults
+because nothing in the ledger shows a red is BEING WORKED. An OPEN row carrying a seat and a stamp
+at start would have cost each of us one line and saved three of us a lap. I make no more of it than
+that; the measurement is the argument.
+**Still yours:** `?&` and `?|` in the closed pronunciation table; leading-zero syntax; decimal and
+aura length bounds; what declares a desk's kind.
+
 
 **INCENSE -- A REFUSAL HANDED BACK A NAME IT HAD DERIVED RATHER THAN ASKED FOR.**
 Elder [shelved](archive/20260909-173620_itinerary-landed-accounts.md).

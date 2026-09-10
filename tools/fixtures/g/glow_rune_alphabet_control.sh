@@ -94,6 +94,45 @@ case_run "unnamed" 's/"?&"/"+@"/'    "lexer head +@ carries no pronunciation row
 case_run "elder"   's/"+\$"/"?!"/'   "tokens missing +\$"
 case_run "barket"  's/"|\^"/"|~"/'   "barket must tokenize"
 
-echo "coverage: a clean pen, the published fields, and four plants -- count, an unnamed head that keeps the count, a pronunciation row whose head has gone, and the barket head -- each refused and each lifted back to OK"
+# THE WORKER REFUSES OVER DOCUMENTS TOO, and the four plants above reach none of them. Past its
+# roll, the worker binds the closed pronunciation table and the TAME_GUIDANCE pin -- the table must
+# still name the witness that watches it and still claim the **25** it was sealed at, and the family
+# index must still carry every spoken name. Those are the bindings that carry the language's own
+# vocabulary, they are edited by hands rather than by the lexer, and a refusal nobody plants is a
+# refusal nobody has seen. Added `20260909.194500` beside the four above rather than instead of
+# them: a second lap reached this guard the same evening and had these three cases and not the pen,
+# so the pen is the peer's and the documents are the accretion.
+#
+# The plant is by file, since these live outside `glow/tokens.rye`, and each keeps its own pristine
+# copy so a lift restores exactly what the worktree checked out.
+doc_plant() {
+  f="$pen/$1"
+  [ -f "$f" ] || { echo "refused: the pen holds no $1 -- nothing to plant in" >&2; exit 2; }
+  [ -f "$f.pristine" ] || cat "$f" > "$f.pristine"
+  sed "$2" "$f" > "$f.tmp" && cat "$f.tmp" > "$f" && rm -f "$f.tmp"
+}
+doc_lift() { f="$pen/$1"; cat "$f.pristine" > "$f"; }
+
+doc_case() {
+  label=$1; rel=$2; expr=$3; want=$4
+  doc_plant "$rel" "$expr"
+  out=$(run_worker) && refused=no || refused=yes
+  check "$label refuses" yes "$refused"
+  check "$label names its fault" yes "$(has "$out" "$want")"
+  doc_lift "$rel"
+  back=$(run_worker) && back_ok=yes || back_ok=no
+  check "$label lifted reads OK" yes "$back_ok"
+}
+
+table=active-designing/date/20260719/20260719-220814_glow-rune-pronunciation-closed-table.md
+tame=context/TAME_GUIDANCE.md
+
+# A `g` flag on every one, because each of these words stands on many lines of its page and a
+# first-occurrence substitution leaves the grep the worker runs perfectly satisfied.
+doc_case "table_witness" "$table" 's/glow_rune_alphabet_witness\.rish/glow_rune_alphabet_absent.rish/g' "table must name witness"
+doc_case "table_seal"    "$table" 's/\*\*25\*\*/**24**/g'                                              "closed table must still claim"
+doc_case "tame_index"    "$tame"  's/barket/barkat/g'                                                    "TAME family index missing barket"
+
+echo "coverage: a clean pen, the published fields, four plants in the lexer table -- count, an unnamed head that keeps the count, a pronunciation row whose head has gone, and the barket head -- and three in the documents the worker binds: the table's own witness name, its sealed count, and the family index. Each refused and each lifted back to OK"
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

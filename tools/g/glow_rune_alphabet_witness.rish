@@ -29,12 +29,16 @@ assert gate.out contains "unnamed_glyphs=" else "worker must publish unnamed_gly
 # invariant: this guard is proven able to red. It asserts on a delegate's result, so its own file
 # demonstrated no refusal of its own until `20260909.183200`, and `standing_equipment_redleg` reads
 # exactly that population -- rostering this guard took it from 53 to 54 and refused every ship's
-# cold pass with `ceiling_raised`. The control plants four faults in a pen checkout, requires the
+# cold pass with `ceiling_raised`. The control plants seven faults in a pen checkout, requires the
 # worker to refuse each in its own words, and lifts every plant back to OK, because a refusal shown
-# only in the failing direction cannot be told from a tool that refuses everything.
-say "glow rune alphabet: the control -- four plants in a pen checkout, each refused and each lifted..."
+# only in the failing direction cannot be told from a tool that refuses everything. Four plants sit
+# in the lexer table; three more, added `20260909.194500`, sit in the DOCUMENTS this worker binds --
+# the closed pronunciation table's own witness name and sealed count, and the family index in
+# `context/TAME_GUIDANCE.md`. Those bindings carry the language's vocabulary, they are edited by
+# hands rather than by the lexer, and no plant reached them until now.
+say "glow rune alphabet: the control -- seven plants in a pen checkout, four in the lexer table and three in the documents it binds, each refused and each lifted..."
 let ctl = run ["sh" "tools/fixtures/g/glow_rune_alphabet_control.sh"]
 assert ctl.ok else "glow rune alphabet: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=17 fail=0" else "glow rune alphabet: the control did not prove seventeen behaviors --\n${ctl.out}"
+assert ctl.out contains "pass=26 fail=0" else "glow rune alphabet: the control did not prove twenty-six behaviors --\n${ctl.out}"
 
-say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111; the gate proven able to red on four planted faults."
+say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111; the gate proven able to red on seven planted faults, four in the lexer table and three in the documents it binds."
