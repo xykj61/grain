@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.092541` | [Two laps that stood on no ref](20260910/20260910-092541_two-laps-that-stood-on-no-ref.kyri) | this seat's own parked laps landed; unlanded 2 -> 0 |
 | `20260910.085903` | [A process per file](20260910/20260910-085903_a-process-per-file.kyri) | 7,741 processes became 6, and the bill fell 17-fold |
 | `20260910.084659` | [A contained fault belongs at the commit](20260910/20260910-084659_a-contained-fault-belongs-at-the-commit.kyri) | the placement question, asked of the class |
 | `20260910.082751` | [The door nobody meets at the wall](20260910/20260910-082751_the-door-nobody-meets-at-the-wall.kyri) | 9 of 16 open rows wait on one hand |
