@@ -9,7 +9,7 @@
 # thirteen such rows were repaired by hand on 20260906. The roster exists because a claim in prose
 # can be read and trusted and never run; the map was prose of the same kind, one layer down.
 #
-# WHAT IS PROVEN, on metal, by tools/fixtures/s/scope_trace_control.sh -- 31 behaviors on a pen tree
+# WHAT IS PROVEN, on metal, by tools/fixtures/s/scope_trace_control.sh -- 40 behaviors on a pen tree
 # whose read set is stated in full before the tracer runs:
 #
 #   FOUR KINDS OF OPEN, told apart. A covered file. An uncovered file NAMED rather than counted. A
@@ -102,4 +102,4 @@ assert control.out contains "OK   and the real scan still reds" else "scope-trac
 
 assert control.out contains "faults=0" else "scope-trace: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "scope-trace: the control must balance before it is believed"
-say "GREEN: scope-trace -- 31 behaviors on a pen whose read set is known, the silent-zero failure shown before the silence is trusted."
+say "GREEN: scope-trace -- 40 behaviors on a pen whose read set is known, the silent-zero failure shown before the silence is trusted."

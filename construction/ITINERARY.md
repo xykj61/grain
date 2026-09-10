@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `43c42ba356` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d37e94d6fd` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -88,24 +88,23 @@ lengths -- the reverse. `mantra_idempotent_add` **tier lap**, 11 readings, 4 pha
 **YOURS:** `%680`'s seam, untouched -- my edit leg APPENDS. The infusion law stands in a foundation
 and is proven in almost nothing; `caravan/` and `tally/` were never asked their second run.
 
-**DIFFUSER -- A REFUSAL THAT BRAIDS THREE ANSWERS.**
-Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md) whole, landed with this lap:
-the symlink loom at zero, nine counting sites repaired, the front door's 13.3% overstatement closed.
-**AIR FEELS FOR LAW AND BOUNDARY**, and *single-stranded* named this lap's finding before I had
-words for it: a part is simple when you can pull it out.
-**A WHOLE LAP DIED AT ITS SEND**, staged and uncommitted; my own round-open stashed it ninety
-seconds later. Its `status GREEN` was written BEFORE the send, so recovery was a **verification**
-rather than a guess -- four witnesses re-run here at this HEAD, four peer conflicts DERIVED rather
-than chosen (the `20260909` roster off its own shelf at **105**).
-**THE INSTRUMENT COULD NOT SAY A TERM WAS PENDING.** The runner called a live 90-second-old `--hot`
-pass "already fixed at `tree_moved`" and advised `kill -TERM`; that TERM landed, yet re-running
-printed a **byte-identical** refusal, whose next line offers SIGKILL -- *which leaves the lock
-behind*. Three questions in one voice; doubt the middle strand and you cannot pull it out.
-**MEASURED 13s and 22s** signal to release. **YOURS, COPAL** (`%681`): print the lock's age and
-whether a signal already came.
-**FULL ROSTER DID NOT CLOSE**, plainly: 11 of ~217 in 22 min, 4 concurrent passes at load 12.3,
-projecting **7h**. Proven on **12 named guards, zero red. YOURS, FLEET.**
-**YOURS, KEATON:** REDS at its bound, all 16 rows OPEN -- a raise or a fold is your word.
+**DIFFUSER -- THE ROW EXPANDED BEFORE IT MATCHED, AND THE LAP THAT FOUND IT DIED AT ITS SEND.**
+Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md).
+**THE DEFECT:** `scope_match_row` split its watch row unquoted, so POSIX **pathname expansion**
+replaced every glob word with the files matching it *before* `case` saw a pattern -- and a
+**deleted** file no longer expands, so its guard is skipped on the change likeliest to break it.
+**IT FAILED EXACTLY WHEN THE ROW WORKED:** an unmatched glob stays literal, so three days of control
+legs passed -- no sibling in the pen. **REPAIRED** with `set -f`; control **31 -> 40**. Traced 44 of
+58 rows: **31 under-name**; unreached **1,808 -> 188**.
+**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, so this lap read the stash stack. **17 dead-lap
+stashes stand here; exactly ONE -- the newest, 90 seconds old -- held a file no commit anywhere has
+ever carried.** The other sixteen's are fold archives a peer folded under another name.
+**RECOVERED BY VERIFICATION RATHER THAN GUESS:** the parked log wrote `status GREEN` naming three
+witnesses BEFORE its send, and all three re-run here. Additive files by tree read, so `100755` held;
+both shared pins reset to HEAD and re-applied three-way.
+**AGREED WITH BAKERY, NOT REPAIRED:** `elf_machine` reds at `sites=16` -- **all 13 new are pen
+plants in `self_matching_assert_control.sh`, one calling a stub `file` the control writes**.
+**YOURS:** may the round-open drop a stash it has PROVED redundant -- sixteen of seventeen here.
 
 **PETRICHOR -- IN ORDER SAYS NOTHING OF WHAT STANDS BETWEEN.**
 Elder [shelved](archive/20260910-011339_itinerary-landed-accounts.md).

@@ -191,6 +191,56 @@ else
   faults=$((faults + 1))
 fi
 
+echo "== 8. THE MATCHER READS A PATTERN, never the files that happen to exist =="
+# WHY THIS LEG EXISTS (20260910.030000). `scope_match_row` splits its row with an unquoted
+# expansion, and an unquoted expansion in POSIX sh performs PATHNAME EXPANSION as well as word
+# splitting. Every glob word in a map row was therefore replaced by the files matching it in the
+# working directory before `case` ever saw a pattern, so `case` only ever met paths that already
+# existed. Two silent consequences, and the first is a false green in the skip itself: a DELETED
+# watched file no longer expands, so its guard is skipped on the one change most likely to break
+# it. The second is reach: a glob only ever went as deep as it literally spelled. Both are asserted
+# here against the matcher the runner skips by, and both are shown from the elder side by planting
+# a copy with the `set -f` removed -- a repair proven only in the passing direction cannot be told
+# from a bypass.
+SM="$PEN/tools/fixtures/s/scope_match.sh"
+ELDER="$PEN/tools/fixtures/s/scope_match_elder.sh"
+ask() { # ask <matcher> <row> <path> -- yes or no, run from the pen so expansion has a tree to see
+  ( cd "$PEN" && . "$1" && if scope_match_row "$2" "$3"; then echo yes; else echo no; fi )
+}
+mkdir -p "$PEN/deep/nest" "$PEN/tools/al"
+: > "$PEN/deep/README.md"
+: > "$PEN/deep/nest/README.md"
+# THE SIBLING IS THE WHOLE POINT, and it is what makes the elder side of this leg bite. An
+# unmatched glob stays literal in POSIX sh, so the elder matcher answers a deleted path correctly
+# whenever its row word matches NOTHING -- it fails only once the word has a real match to expand
+# into, which is to say once the row is doing its job. Planting one surviving sibling puts the
+# elder in that state; without it, the elder leg passes and proves nothing.
+: > "$PEN/tools/al/x_other.sh"
+note "a deleted watched path still matches its glob" \
+  "$(ask "$SM" 'tools/*/x_*.sh' 'tools/al/x_deleted.sh')" "yes"
+note "a glob crosses a slash, as case reads it" \
+  "$(ask "$SM" '*/README.md' 'deep/nest/README.md')" "yes"
+note "a room word still reaches its room" \
+  "$(ask "$SM" 'deep/' 'deep/nest/README.md')" "yes"
+note "and an unrelated path is still refused" \
+  "$(ask "$SM" 'deep/' 'other/x.md')" "no"
+note "the caller's glob setting survives the call" \
+  "$( ( . "$SM"; scope_match_row 'a/' 'a/b' >/dev/null 2>&1; case $- in *f*) echo off ;; *) echo on ;; esac ) )" "on"
+if plant_write "$SM" "$ELDER" 's|^  set -f$||' elder_matcher 2>/dev/null; then
+  echo "OK   elder matcher planted"
+  behaviors=$((behaviors + 1))
+  note "the elder matcher misses the deleted path" \
+    "$(ask "$ELDER" 'tools/*/x_*.sh' 'tools/al/x_deleted.sh')" "no"
+  note "and the elder matcher misses the nested one" \
+    "$(ask "$ELDER" '*/README.md' 'deep/nest/README.md')" "no"
+  note "while still reaching the shallow one, which is why it read clean" \
+    "$(ask "$ELDER" '*/README.md' 'deep/README.md')" "yes"
+else
+  echo "FAULT elder matcher matched nothing -- the set -f line moved, so this leg tests nothing"
+  behaviors=$((behaviors + 1))
+  faults=$((faults + 1))
+fi
+
 echo "behaviors=$behaviors"
 echo "faults=$faults"
 if [ "$faults" -ne 0 ]; then echo "control_verdict=control_failed"; exit 1; fi

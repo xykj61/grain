@@ -84,7 +84,7 @@ comlink_turn_route tools/co/comlink_turn_route_witness.rish comlink/ [build]
 comlink_handshake_turn tools/co/comlink_handshake_turn_witness.rish comlink/ [build]
 comlink_rehearsal_wire tools/co/comlink_rehearsal_wire_witness.rish comlink/ [build]
 constel_module_roster tools/co/constel_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh constel/
-crypto_count_guard tools/cr/crypto_count_guard_witness.rish crypto/ tools/cr/
+crypto_count_guard tools/cr/crypto_count_guard_witness.rish crypto/ tools/cr/ construction/standing-equipment.kyri tools/fixtures/c/crypto_tool_*
 crypto_module_roster tools/cr/crypto_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh crypto/
 crypto_suite tools/cr/crypto_suite_witness.rish crypto/ tools/cr/ vendor/pqclean/ vendor/monocypher/ [build]
 custody_gate_instruction tools/cu/custody_gate_instruction_witness.rish tools/fixtures/c/custody_gate_instruction_scan.sh recursion-prompts/ tools/l/launch-* tools/fixtures/c/custody_gate_instruction_control.sh
@@ -107,7 +107,7 @@ index_row_bound tools/in/index_row_bound_witness.rish tools/fixtures/i/index_row
 lattice_suite tools/l/lattice_suite_witness.rish lattice/ tools/l/lattice_*_witness.rish [build]
 log_file_claim DISCOVERY
 log_has_a_row tools/l/log_has_a_row_witness.rish tools/fixtures/l/log_has_a_row_scan.sh session-logs/ tools/fixtures/l/log_has_a_row_control.sh
-loop_prompt_parse tools/l/loop_prompt_parse_witness.rish tools/fixtures/l/loop_prompt_parse_scan.sh recursion-prompts/ tools/l/launch-claude-chapter.rish tools/fixtures/l/loop_prompt_parse_control.sh
+loop_prompt_parse tools/l/loop_prompt_parse_witness.rish tools/fixtures/l/loop_prompt_parse_scan.sh recursion-prompts/ tools/l/launch-claude-chapter.rish tools/l/launch-*-chapter.rish construction/fleet-roster.kyri tools/fixtures/f/fleet_roster_scan.sh tools/fixtures/l/loop_prompt_parse_control.sh
 lotus_module_roster tools/l/lotus_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh lotus/
 mycelium_map_roster tools/m/mycelium_map_roster_witness.rish tools/fixtures/m/mycelium_map_roster_scan.sh mycelium/ tools/fixtures/m/mycelium_map_roster_control.sh
 phantom_path DISCOVERY
@@ -116,11 +116,11 @@ pond_enclosure_policy tools/p/pond_enclosure_policy_witness.rish tools/fixtures/
 pond_policy_launcher tools/p/pond_policy_launcher_witness.rish tools/fixtures/p/ pond/enclosure_policy.kyri tools/ag/agent-jail.sh
 pond_enclosure_built tools/p/pond_enclosure_built_witness.rish tools/fixtures/p/ pond/ tools/ag/agent-jail.sh
 pond_enclosure_state tools/p/pond_enclosure_state_witness.rish tools/fixtures/p/pond_enclosure_state_scan.sh tools/ag/agent-jail.sh tools/e/enclosure.conf* tools/fixtures/p/pond_enclosure_state_control.sh
-prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ docs-geode/edu/yonder/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md
+prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ docs-geode/edu/yonder/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md */README.md
 radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_negation_scan.sh .claude/rules/ foundations/ context/RADIANT_STYLE.md context/TWILIGHT_STYLE.md context/KYRI.md tools/fixtures/r/radiant_negation_baseline.txt tools/fixtures/radiant_negation_control/
 scope_trace tools/s/scope_trace_witness.rish tools/fixtures/s/scope_trace.sh tools/fixtures/s/scope_trace_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/p/plant.sh construction/standing-equipment.kyri tools/fixtures/s/standing_equipment_scope_map.sh
 scope_rank tools/s/standing_equipment_scope_rank_witness.rish tools/fixtures/s/standing_equipment_scope_rank.sh tools/fixtures/s/standing_equipment_scope_rank_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/s/standing_equipment_scope_map.sh construction/standing-equipment.kyri
-reds_fold tools/r/reds_fold_witness.rish tools/fixtures/r/reds_fold.sh tools/fixtures/r/reds_fold_control.sh tools/fixtures/r/reds_fold_reanchor.sh construction/
+reds_fold DISCOVERY
 reds_ledger_headline tools/r/reds_ledger_headline_witness.rish construction/REDS.md construction/archive/REDS-* tools/fixtures/r/reds_ledger_headline_control.sh
 reds_ledger_monotone tools/gen/chapter/reds_ledger_monotone_witness.rish tools/fixtures/r/reds_ledger_monotone_scan.sh construction/REDS.md construction/archive/REDS-* tools/fixtures/p/plant.sh
 reds_pin_capacity tools/r/reds_pin_capacity_witness.rish tools/fixtures/r/reds_pin_capacity_scan.sh tools/fixtures/r/reds_pin_capacity_rows.awk tools/fixtures/r/reds_pin_capacity_control.sh tools/fixtures/l/living_pin_max_bytes.sh construction/
@@ -132,7 +132,7 @@ rule_twin tools/r/rule_twin_witness.rish tools/fixtures/r/rule_twin_scan.sh .cla
 rye_bridge_cycle tools/r/rye_bridge_cycle_witness.rish tools/fixtures/r/rye_bridge_cycle_control.sh rye/ [build]
 ryekey tools/r/ryekey_witness.rish tools/fixtures/r/ryekey_control.sh rye/ [build]
 sha3_file tools/s/sha3_file_witness.rish tools/fixtures/s/sha3_file_control.sh crypto/ tools/rye/ [build]
-skate_macos_choice tools/s/skate_macos_choice_witness.rish tools/fixtures/s/skate_macos_choice_scan.sh skate/ tools/fixtures/s/skate_macos_choice_control.sh
+skate_macos_choice tools/s/skate_macos_choice_witness.rish tools/fixtures/s/skate_macos_choice_scan.sh skate/ external-research/ gratitude/ tools/fixtures/s/skate_macos_choice_control.sh
 sow_lock tools/s/sow_lock_witness.rish tools/fixtures/s/sow_lock_control.sh tools/fixtures/s/sow_project.sh
 tally_bud tools/t/tally_bud_witness.rish tally/ [build]
 tally_roster tools/t/tally_roster_witness.rish tools/fixtures/t/tally_roster_scan.sh tally/ tools/t/tally_* tools/fixtures/t/tally_* [build]

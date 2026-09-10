@@ -50,14 +50,30 @@ scope_match_word() {
 # An empty row reaches nothing, which is the honest reading: a guard with no watch words has no
 # claim on any change. The map's ABSENCE rule (a guard with no row at all runs anyway) lives in
 # the caller, because it is a decision about the roster rather than about a string.
+# WHY THE SPLIT RUNS UNDER `set -f`. Splitting a row is an unquoted expansion, and an unquoted
+# expansion in POSIX sh performs PATHNAME EXPANSION as well as word splitting -- so every glob word
+# in a row was replaced by the files matching it in the working directory BEFORE `case` ever saw a
+# pattern. The header above says the semantics come from `case`; measured 20260910.030000 they came
+# from the pathname expander, and `case` only ever met paths that already existed. Two consequences,
+# both silent. A DELETED watched file no longer expands, so its guard is skipped on the one change
+# most likely to break it -- `tools/*/ales_*_witness.rish` against a removed `ales_x_witness.rish`
+# answered NO. And a glob reached only the depth it literally spelled: `*/README.md` matched
+# `caravan/README.md` and missed `context/keys/README.md`, where `case` matches both, because `*`
+# in a `case` pattern crosses `/`. Disabling globbing for the split alone restores the documented
+# reading and moves matching in the SAFE direction only -- a pattern reaches at least every path its
+# expansion used to name, so a guard runs at least as often as before, never less.
 scope_match_row() {
   _sm_row=$1
   _sm_rpath=$2
+  case $- in *f*) _sm_glob=off ;; *) _sm_glob=on ;; esac
+  set -f
   for _sm_w in $_sm_row; do
     if scope_match_word "$_sm_w" "$_sm_rpath"; then
+      [ "$_sm_glob" = on ] && set +f
       return 0
     fi
   done
+  [ "$_sm_glob" = on ] && set +f
   return 1
 }
 
