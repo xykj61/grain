@@ -1,0 +1,113 @@
+# tools/c/ceiling_pair_witness.rish -- a count ceiling standing in front of a byte ceiling says
+# which of the two is the real one.
+#
+#   rishi/bin/rishi run tools/c/ceiling_pair_witness.rish
+#
+# WHY. A module writing items into a fixed buffer can name two maxima: how many items it carries,
+# and how many bytes it has. Only one is the real one, and the encoder decides which -- never the
+# declaration. `mantra/recall_tablecloth_query_wire.rye` declares `max_wire_hits = 8` six lines
+# above `max_wire_payload = 340`, where one hit at maximum name lengths encodes to 119 bytes, so
+# the attainable count is 2. `mantra/recall_sync_wire.rye` declares 8 entries against the same
+# payload where one worst-case entry costs 676 bytes, so its attainable count is zero. Both were
+# found by hand a lap apart, and a lantern that fires twice becomes a loom.
+#
+# The census and the arithmetic are Diffuser's, in
+# external-research/20260910-001454_the-count-in-front-of-the-byte-ceiling.md. This is the standing
+# instrument that reading asked for, and it reaches every tracked Rye source rather than the four
+# modules a hand could walk: 29 distinct sources declare both shapes, where the hand-walked census
+# over four modules found 4.
+#
+# THE CLASS IS QUIET, which is why it wants an instrument. A bound too SMALL refuses honest work
+# and is found within a day. A count too LARGE refuses nothing, passes every test built from short
+# names, and reports its wrong number to every reader who asks.
+#
+# WHAT THIS GUARD DOES NOT DO, and it is the finding worth carrying. It does not judge whether a
+# pair is real. Four lexical discriminators were built and measured against the four cases the
+# paper walked by hand, on 20260910, and every one leaked:
+#
+#   the two names in one file        48 candidates, 2 real -- the paper's own reading
+#   the two names in one function    admits recall_lap1, where two independent guards sit three
+#                                    lines apart inside append_leaf
+#   the byte name checked after a    admits glow_storage_scope, a per-item length check inside a
+#     loop                           loop over entries
+#   the byte name checked against    admits glow_storage_scope again -- a partial name match on a
+#     a variable the loop advances   struct field is enough to fool it
+#
+# The real test is whether the loop ACCUMULATES into the buffer the byte ceiling bounds, and that
+# is dataflow rather than text. A guard that guessed would red on honest work and be turned off,
+# which is a failure this tree has booked repeatedly. So the loom stops guessing and asks the file
+# to answer -- the same move declared_ceiling makes for a page and tutorial_output makes for a
+# command. Where a judgment cannot be mechanized, mechanize the DECLARATION of it.
+#
+# THE DECLARATION, spelled exactly so it stays checkable. One comment line anywhere in the file:
+#
+#   // ceilings: independent -- the two axes never meet, and no arithmetic connects them
+#   // ceilings: derived -- the count is computed from the byte ceiling
+#   // ceilings: literal -- the count stands in front of the byte ceiling, unrepaired
+#
+# THE ONE GATE, at zero: a `// ceilings:` line naming none of the three. A declaration a tool
+# cannot read is indistinguishable from no declaration, and that is how docs/CRYPTO.md drifted past
+# its own ceiling for months while appearing to have promised something.
+#
+# TWO RATCHETS, each under a ceiling that only ever falls. `pairs_undeclared` is the population yet
+# to answer -- every file leaves it on the lap a hand next touches it, and a wall here would refuse
+# every module at once. `pairs_literal` is the real, unrepaired class: it falls as a ceiling is
+# derived and rises when a new literal count is written in front of a byte ceiling, which is
+# exactly the event worth hearing about.
+#
+# A DERIVED CEILING LEAVES THE POPULATION BY CONSTRUCTION, since the pattern requires a bare
+# decimal literal as the whole right-hand side. So the repair is rewarded by the reading rather
+# than merely permitted by it, and caravan/ -- whose rung bounds are chained,
+# `max_finding_bytes = max_referral_bytes + 1` -- is absent from the census for the right reason.
+#
+# TWO BOUNDARIES THE HAND WENT THROUGH while this was built, both fixed and both proven in the pen.
+# `max_bytes: u32 = 8 * session.max_samples;` opens with a digit, so a pattern ending at `[0-9]+`
+# read it as a literal 8 and admitted nine derived ceilings -- the precise shape this guard exists
+# to reward. And comlink/ holds symlinks into mantra/, so the first census counted
+# recall_sync_wire.rye twice and reported six instances where the tree holds four.
+#
+# WHAT IT DOES NOT REACH. Whether a declared verdict is the TRUE one -- that is a judgment, and
+# this is a count. Whether a `literal` pair's declared number is attainable, which is per-format
+# arithmetic. And every language beside Rye.
+#
+# Pen: tools/fixtures/c/ceiling_pair_control.sh -- fourteen behaviors across nineteen assertions on
+# real Rye sources in a throwaway pen, every refusal planted and then lifted, both ratchets shown
+# from both sides. Run from the repository root.
+
+say "ceiling-pair: Language EN -- a count declared in front of a byte ceiling says which of the two the encoder actually keeps."
+say "ceiling-pair: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "ceiling-pair: Lens TAME -- bound everything and say why; the corpus is discovered rather than listed, and the judgment this cannot mechanize is asked for in a form a tool reads."
+
+let scan = run ["sh" "tools/fixtures/c/ceiling_pair_scan.sh" "census"]
+say scan.out
+assert scan.ok else "ceiling-pair: a source declares a verdict no tool can read, or a ratchet rose -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "ceiling-pair: the census must agree with itself"
+assert scan.out contains "pairs_unreadable=0" else "ceiling-pair: a verdict no tool can read is the same as no declaration"
+assert (scan.out contains "pairs_declaring=0" == false) else "ceiling-pair: a reading over no pairs would report clean while measuring nothing"
+assert (scan.out contains "verdict=empty_corpus" == false) else "ceiling-pair: a meter over nothing must say so rather than pass"
+assert (scan.out contains "verdict=unreadable_verdict" == false) else "ceiling-pair: the three verdicts are independent, derived, literal"
+assert (scan.out contains "verdict=literal_pair_spread" == false) else "ceiling-pair: the unrepaired class may shrink and may not spread"
+assert (scan.out contains "verdict=undeclared_spread" == false) else "ceiling-pair: the population yet to answer may shrink and may not spread"
+
+let control = run ["sh" "tools/fixtures/c/ceiling_pair_control.sh"]
+say control.out
+assert control.ok else "ceiling-pair: the control must complete"
+assert control.out contains "control_fail=0" else "ceiling-pair: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "ceiling-pair: the control must agree with itself"
+assert control.out contains "1 free: a file answering independent passes -- ok" else "ceiling-pair: the common honest answer must pass free"
+assert control.out contains "2 free: a file answering derived passes -- ok" else "ceiling-pair: the repair must pass free, or the guard punishes the fix"
+assert control.out contains "3 bitten: a verdict no tool can read refuses -- ok" else "ceiling-pair: an unreadable declaration must bite, or a file can appear to have answered"
+assert control.out contains "3 bitten: the refusal names the file -- ok" else "ceiling-pair: a refusal naming no file leaves the reader to search"
+assert control.out contains "4 free: a byte ceiling alone is not a pair -- ok" else "ceiling-pair: one ceiling is not a pair"
+assert control.out contains "5 free: a count ceiling alone is not a pair -- ok" else "ceiling-pair: one ceiling is not a pair"
+assert control.out contains "6 bitten: an empty corpus reads as empty rather than clean -- ok" else "ceiling-pair: a meter over nothing must say so"
+assert control.out contains "7 free: a derived right-hand side leaves the population -- ok" else "ceiling-pair: a literal is the whole right-hand side, or nine derived ceilings read as literal"
+assert control.out contains "8 bitten: an undeclared pair past the ratchet refuses -- ok" else "ceiling-pair: the undeclared ratchet must bite from above"
+assert control.out contains "9 free: the same pair passes once the ceiling admits it -- ok" else "ceiling-pair: a ratchet must be a ceiling rather than a wall"
+assert control.out contains "10 bitten: a literal pair past its ceiling refuses -- ok" else "ceiling-pair: the unrepaired class must bite from above"
+assert control.out contains "11 free: a literal pair at exactly its ceiling passes free -- ok" else "ceiling-pair: a ceiling must pass free from below, or it is not a ceiling"
+assert control.out contains "12 free: the refusal names the file -- ok" else "ceiling-pair: a refusal naming no file leaves the reader to search"
+assert control.out contains "13 free: an honest file never masks an unreadable one -- ok" else "ceiling-pair: one honest file must never hide a fault beside it"
+assert control.out contains "14 free: a ceilings word inside code is not a declaration -- ok" else "ceiling-pair: the declaration is a comment at line start, never a word in code"
+
+say "ceiling-pair: GREEN -- every pair that has answered is readable, and both ratchets hold."

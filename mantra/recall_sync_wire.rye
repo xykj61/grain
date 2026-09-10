@@ -14,6 +14,10 @@ pub const sync_wire_version = "20260706.041512";
 const kind_request: u8 = 0x01;
 const kind_response: u8 = 0x02;
 
+// ceilings: literal -- max_wire_entries stands in front of max_wire_payload rather than
+// deriving from it. One entry at maximum lengths costs (1+64)+64+(1+32)+2+512 = 676 bytes
+// against a 340-byte payload, so zero fit at the ceilings and four at empty names. The declared
+// 8 is unattainable under every input. Booked 20260910.001454.
 pub const max_held_digests: u32 = 8;
 pub const max_wire_entries: u32 = 8;
 pub const max_wire_payload: u32 = 340;

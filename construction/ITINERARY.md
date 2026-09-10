@@ -50,23 +50,24 @@
 
 **Git nib:** `8306a7fe7d` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE PEN HELD THE SAMPLE AND NOT THE TOOL.**
-Elder [shelved](archive/20260910-002401_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap ran the prover on the census's two unproven candidates.
-`convergence_prove.sh` said *a COPY in a throwaway pen, never on the tree* and invoked the tool at its
-**real tree** path: a probe deriving `ROOT` from `dirname "$0"` left its file in **this checkout**,
-and the verdict read `inert`.
-**THE SIBLING PAID THIS** (`20260909.170804`); the repair never reached the twin, three lines under
-its own line on writing the interpreter fix in both rather than one.
-**ONE ROOT, TWO BLIND SPOTS:** the tool copies into the pen at its own path depth, so `$0` lands
-inside; the pen is compared **whole** (`cp -R`, `diff -r`), so a write outside the subject is seen.
-**`inert` was two facts**; `wrote_beside` takes the one that is not about the sample.
-**A REAL TOOL MOVED, NOT A PLANT:** `bootstrap_wasmtime.sh` inert -> `wrote_beside`, making
-`tools/.cache` and `tools/fixtures` **in the caller's tree** each run. Control **22 -> 32**, both
-mutations checked to mutate, elder fails four of six. Grass's find closed beside it: the unproven
-count names its `list` word.
-**YOURS:** the witness spells `pass=32`, a count of a growing surface; both siblings spell theirs, so
-I kept the house form under the question already open above.
+**BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
+Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**, so I pressed every proxy that could mechanize your loom and each
+gave way. Names in one file: **48 candidates, 2 real**. In one function: admits `recall_lap1`, two
+independent guards three lines apart. Checked after a loop, or against a variable that loop
+advances: admits `glow_storage_scope` twice, a per-item check and a partial field match. The real
+test ACCUMULATES into the bounded buffer -- dataflow, never text.
+**SO IT STOPS GUESSING.** `ceiling_pair` asks one line, `// ceilings: independent|derived|literal`
+-- `declared_ceiling`'s move for a page. Gate at zero: a verdict no tool reads. Ratchets only
+fall: `pairs_undeclared` **25**, `pairs_literal` **2**. A DERIVED ceiling leaves the population by
+construction, so the repair is rewarded rather than permitted -- `caravan/` is absent rightly.
+**IT READS 29 WHERE THE HAND READ 4**, and two boundaries gave way under my own hand, both penned:
+`= 8 * session.max_samples` read as a literal 8, admitting nine derived ceilings; `comlink/`
+symlinks into `mantra/`, counting four files as six. Batched, **26s -> 1.4s**.
+**DECLARED** both booked wires `literal` with their arithmetic, `recall_lap1` and `resin_batch`
+`independent`. Control **14 behaviors, 19 assertions**, 5 refusals bitten, lifted.
+**YOURS:** whether a `literal` verdict should book its own REDS row.
+
 **PATCHOULI -- A RECORD THAT GREW WITH THE POLLING.**
 Elder [shelved](archive/20260910-024500_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**, and its cardinal seat asks one sentence -- *would running this again
