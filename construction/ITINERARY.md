@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `78df527a1e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6bb39d6418` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
 Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
@@ -153,36 +153,6 @@ itself. Its safety lived in my hand rather than the tool; scratch, named, gone w
 **YOURS:** whether a peer pair ever earns an owner, or two equals stay walled forever.
 **NOT MINE:** `tame_reach` 553 of 552, named by three ships before me -- `tools/rye/wrap_ring.rye`
 landed uncovered in `44526f250`.
-**INCENSE -- THE ROOM THAT TEACHES THE REGISTER RAN THE HIGHEST NUMBER IN IT.**
-Elder [shelved](archive/20260910-101138_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**, so this lap walked the law room's fence line by pressing each post.
-Two held: every witness a rule page names exists, 31 of 32 rostered, and every twin is held by
-`rule_twin_witness`.
-**THE THIRD POST WAS FIRM TO THE EYE.** `prose_register_scan.sh` calls
-`radiant_negation_scan.sh` its sibling in its own header -- *one guards the rules, one guards the
-door* -- and the sibling stands, rostered and enforcing over `.claude/rules/*.md`. **It reads a
-DIFFERENT number:** negation WORDS per file against that file's own `20260821` baseline, which is a
-ratchet with no floor. A rule may read 63% negative sentences forever and stay green by never
-getting worse. **In eighteen days of both meters running, no page in the law room was ever compared
-against the ceiling `GAUGE_STYLE.md` writes down.**
-**MEASURED with the scan's own `measure()`, cited rather than copied: 54 pages, 38 clearing the
-eight-sentence floor, 19 ABOVE the Field target of 30%** -- `azimuth-galaxy-proposal-format` 63% of
-11, `comlink-tendency` 58% of 12, `git-signing` 55% of 58, `the-baton` 46% of 86.
-**BUILT:** a `law` tier reading that room with the same `measure()`, naming each page by path and
-share, GATING under a ceiling that only falls -- beside the teaching tier, since these are living
-Tier 3 pages a lane repairs one at a time. **Five pen legs**, the ceiling proven from both sides one
-number apart, a warm rule page proven to stay OFF the listing, and **both scan mutations bite**.
-**Field rather than Door**, and said out loud: Meter seats ledger rows, witness headers and commit
-bodies, so a rule page is documentation addressed to a working agent. A tighter setting is your word.
-**A CEILING FELL AND GAVE BACK NO PAGE:** teaching **5 -> 4**. The scan's own list names five and
-its first row says one sits under the eight-sentence floor, so the reading has answered 4 since the
-day the ceiling was set by counting a prose list rather than by asking the meter.
-**COLD 234 guards, 1 red, 2 gated (%5), `tree_moved=no`; hot 233 green.** The red is `tame_reach` 553 of 552 in
-authored `.rye`, a peer's lane. **`seed_link` and `unheard_guard`, red on my last three laps, are
-both closed by peers.**
-**NO ROW WANTED BOOKING:** a meter that read the wrong number is a ratchet, never a page that lied
--- and `construction/REDS.md` still reads **40,771 of 40,960**, sixteen rows, all OPEN.
-**YOURS:** the three ledger doors, unchanged and uncosted again; whether the law room earns Door.
 **GRASS -- A POPULATION PICKED BY ONE LANGUAGE'S SYNTAX IS A READING OF THAT LANGUAGE.**
 Elder [shelved](archive/20260910-112945_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**: its cardinal seat says run the census rather than read the sentence about
@@ -204,6 +174,40 @@ slash rule is a COST reading and says so now: no reading moves, **189s to 208s**
 **YOURS:** the scan computes the split; its header says moving the gate to `lost_promised_living`
 (**0**) waits on your word, *asked on ITINERARY* -- **the ask was no longer there**. Until it moves,
 no lawful lap makes this guard green.
+**INCENSE -- A SHARE NAMED THE PAGE AND NEVER THE SENTENCES.**
+Elder [shelved](archive/20260910-115821_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, and its cardinal seat asks what a round changed and whether running it
+again would change more. My own last lap left the law room a listing of nineteen pages and their
+shares -- `law: .claude/rules/git-signing.md 55% (32 of 58 sentences)` -- and no way to see WHICH
+thirty-two. That finding is most of what a register sweep costs, so the sweep waits and the ceiling
+holds still.
+**BUILT:** `--explain <path>`, a MODE rather than a second tool. It calls the same `measure()` with
+one flag set, so one word list, one splitter and one four-word floor serve the gate and the listing
+alike, and the two agree by construction. Each row carries the counted sentence and the words that
+counted it.
+**THE SECOND BUFFER IS THE MECHANISM.** The reading buffer is lowercased with links and code spans
+replaced, and `**wrong.**` holds a period the splitter reaches only once the emphasis marks come
+off -- so the file's own bytes split differently by **four to fourteen sentences on nearly every
+page** in the law room and the foundations. A listing built from them prints a WARM sentence as
+negative, which the mutation shows doing exactly that.
+**PROVEN:** nine legs in a pen, **two mutations bite** -- an unsubstituted second buffer misprints
+all three planted rows, one of them naming a WARM sentence, and a dropped bound prints past it in
+silence. The reading itself is untouched:
+the full scan's output is byte-identical before and after.
+**THE PRICE OF THE WHOLE ROOM, which nothing could name until now: 77 sentences.** Nineteen pages
+carry 295 counted negatives, and **eleven of the nineteen need three restatements or fewer** to
+clear the target; `the-baton` wants 14 and `git-signing` 15. A nineteen-page backlog is really an
+afternoon.
+**PAID TWO:** `comlink-tendency` 58% -> **0%** and `azimuth-galaxy-proposal-format` 63% -> **0%**,
+seven counted sentences each, every claim, name, path and stamp held; cards **A+ 100** and **A 90**.
+Ceiling **19 -> 17**.
+**ONE HOLE NAMED RATHER THAN CLOSED:** `prose_register_control.sh` keeps no leg tally, so its
+witness hears a leg only by naming it -- the third room to carry that shape after Patchouli's
+`silent_leg` and the ascii pen. All nine new legs are named; a tally is its own lap.
+**COLD 239/236 green/0 red/3 gated, `tree_moved=no`; HOT 240/237 green/0 red.** `tame_reach`, red
+on my last three laps, is a peer's close.
+**YOURS:** whether a law page whose SUBJECT is refusal -- `placeholder-ship-names` at 50% of 10 --
+belongs at Field at all, or at Meter beside the ledger rows.
 **COPAL -- EVERY WALL READ ONE LINE, AND THE FAULT LIVED BETWEEN TWO.**
 Elder [shelved](archive/20260910-094705_itinerary-landed-accounts.md) whole.
 **EARTH BREATHES IN**, so this lap took the concrete fact at the door before arguing with it: a

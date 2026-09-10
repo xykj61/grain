@@ -290,4 +290,71 @@ echo "$tight" | grep -q '^law: .claude/rules/warm.md ' \
   && echo "law_ceiling_lifts=yes" || echo "law_ceiling_lifts=no"
 rm -rf "$law"
 
+# --explain: the repair-grade reading, proven to agree with the count it explains.
+#
+# WHY THESE LEGS. A listing that names sentences the gate did not count, or misses ones it did,
+# is worse than no listing: a lane sweeps the wrong prose and the share stays where it was. So the
+# legs press on the agreement rather than on the printout -- the row count against the counted
+# negatives, and the alignment of the printed text against the sentence that carried the word.
+ex="$pen/explain"
+mkdir -p "$ex"
+cat > "$ex/page.md" <<'EOF'
+# A page the meter normalises
+
+**Stamp:** `20260910.000000`
+
+This opening sentence is warm and carries the work forward for every reader.
+The elder reading was **wrong.** The guard was blind here, and the meter caught the failure.
+A second warm sentence follows it and says what the tree already holds today.
+Read [the elder note](https://example.com/a.b.c) before the next one, which stays warm.
+This third sentence is broken and the repair was lost before it ever landed.
+EOF
+
+exout=$(sh "$scan" --explain "$ex/page.md" 2>&1)
+rows=$(echo "$exout" | grep -c '^neg ')
+counted=$(echo "$exout" | sed -n 's/^explain_negative=//p')
+
+# The listing exists and names sentences.
+[ "$rows" -gt 0 ] && echo "explain_names_the_sentences=yes" || echo "explain_names_the_sentences=no"
+# One row per counted negative -- the listing agrees with the number the gate reads.
+[ "$rows" = "$counted" ] && echo "explain_agrees_with_the_count=yes" || echo "explain_agrees_with_the_count=no"
+# The word that counted the sentence is named, rather than left to a reader to find.
+echo "$exout" | grep -qE '^neg [0-9]+ \[[^]]*blind[^]]*\] ' && echo "explain_names_the_word=yes" || echo "explain_names_the_word=no"
+# Capitals survive, so the printed sentence is recognisable in the file the lane opens.
+echo "$exout" | grep -q '^neg [0-9]* \[[a-z ]*\] The guard was blind' \
+  && echo "explain_keeps_capitals=yes" || echo "explain_keeps_capitals=no"
+# THE ALIGNMENT LEG, and the reason the second buffer carries the substitutions rather than the
+# file's own bytes. `**wrong.**` holds a period the splitter cannot reach until the emphasis marks
+# come off, so the substituted buffer splits there and the untouched one does not -- every later
+# sentence slides by one, and the last negative prints as its neighbour. Measured across the law
+# room and the foundations, the two spellings disagree on nearly every page this tree writes, by
+# four to fourteen sentences each. It prints as itself.
+echo "$exout" | grep -q '^neg [0-9]* \[[a-z ]*\] This third sentence is broken' \
+  && echo "explain_aligns_after_normalising=yes" || echo "explain_aligns_after_normalising=no"
+# A page the meter reads as warm lists nothing and still answers.
+cat > "$ex/warm.md" <<'EOF'
+# A warm page
+
+Every sentence here leads with what the tree holds today.
+The guard reads each room and reports what it finds.
+A lane sweeps one page and lowers the ceiling in the same commit.
+Warmth is what the register asks for, and this page gives it.
+EOF
+warm=$(sh "$scan" --explain "$ex/warm.md" 2>&1)
+{ echo "$warm" | grep -q '^explain_listed=0$' && echo "$warm" | grep -q '^verdict=ok$'; } \
+  && echo "explain_warm_lists_nothing=yes" || echo "explain_warm_lists_nothing=no"
+# The listing is bounded, and says where it stopped rather than trailing off in silence.
+bounded=$(sh "$scan" --explain "$ex/page.md" 1 2>&1)
+{ [ "$(echo "$bounded" | grep -c '^neg ')" = "1" ] && echo "$bounded" | grep -q '^explain_truncated_at=1$'; } \
+  && echo "explain_bounded=yes" || echo "explain_bounded=no"
+# An absent path refuses rather than reporting an empty page as clean.
+sh "$scan" --explain "$ex/absent.md" >/dev/null 2>&1 \
+  && echo "explain_refuses_an_absent_path=no" || echo "explain_refuses_an_absent_path=yes"
+# THE READING IS UNTOUCHED. measure() with one argument answers exactly what it answers with the
+# flag set, so the mode adds a printout and changes no number the gate reads.
+plain=$(measure "$ex/page.md")
+flagged=$(measure "$ex/page.md" 1 80 | grep -vE '^(neg |explain_)')
+[ "$plain" = "$flagged" ] && echo "explain_reading_unchanged=yes" || echo "explain_reading_unchanged=no"
+rm -rf "$ex"
+
 echo "control_verdict=ok"

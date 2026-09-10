@@ -1,6 +1,6 @@
 # Azimuth-Galaxy-Proposal Format
 
-**Optional -- a drawer courtesy, not the spine** (reframed `20260808.205404` on Keaton's word - `urbit-reframe.md`). This format is available for the **rare** change that genuinely wants a real Azimuth galaxy holder's eye. It is no longer "always on," and it is never the mirror in which the work checks whether it is worthy -- Grain's worth stands on its own users and values. Reach for it only when an outward pitch is truly wanted; most commits carry no Galaxy Pitch block at all.
+**Optional -- a drawer courtesy rather than the spine** (reframed `20260808.205404` on Keaton's word - `urbit-reframe.md`). This format is available for the **rare** change that genuinely wants a real Azimuth galaxy holder's eye. It stands optional now, and Grain's worth rests on its own users and values rather than in this mirror. Reach for it only when an outward pitch is truly wanted; most commits skip the Galaxy Pitch block entirely.
 
 When it *is* used -- for a commit, `CONTRIBUTING.md` change, or `expanding-prompts/` grant proposal substantial enough to pitch outside this fork -- it takes the shape below.
 
@@ -12,7 +12,7 @@ There are 256 Azimuth galaxies. As of this rule's writing, there are fewer than 
 - Stars: `opensea.io/collection/urbit-id-star` -- same contract, `0x33eecbf908478c10614626a9d304bfe18b78dd73`
 - Planets: `opensea.io/collection/urbit-id-planet` -- contract `0x9ef27de616154ff8b38893c59522b69c7ba8a81c`
 
-This fork's own identity carries a real star (`~bandun`) and planet (`~pacpet-solreb`), recorded at [`../../PUBKEYS.md`](../../PUBKEYS.md) -- Kaeden is already one of these real-life owners, not a hypothetical one.
+This fork's own identity carries a real star (`~bandun`) and planet (`~pacpet-solreb`), recorded at [`../../PUBKEYS.md`](../../PUBKEYS.md) -- Kaeden is already one of these real-life owners.
 
 ## What the Format Adds
 
@@ -32,8 +32,8 @@ Scope: <how large a change this is, in Urbit-grants PR-sizing terms>
 
 ## When to Skip It
 
-Ordinary, internal-only commits -- a typo fix, a session log, a small witness -- carry no Galaxy Pitch block at all. This is not a section every commit needs; it is a section every commit *earns the right to include* only when the change is real enough to matter past this fork's own tree.
+Ordinary, internal-only commits -- a typo fix, a session log, a small witness -- skip the Galaxy Pitch block entirely. This is a section a commit *earns the right to include*, and only when the change is real enough to matter past this fork's own tree.
 
 ## Why It Is Shaped This Way
 
-Kaeden holds a real Azimuth star and planet, not a hypothetical one, and this fork's own naming and architecture proposals (the vane-parallel mapping, the Glow-language collision research, the four-kernel-variant naming) are exactly the kind of decision that could someday be worth a real galaxy holder's attention -- Urbit's own governance already runs partly through this ownership structure. Naming the format now, while the stakes are still small, means this fork is ready to pitch outward the day a proposal is actually worth it, rather than needing to invent the shape under pressure later.
+Kaeden holds a real Azimuth star and planet, and this fork's own naming and architecture proposals (the vane-parallel mapping, the Glow-language collision research, the four-kernel-variant naming) are exactly the kind of decision that could someday be worth a real galaxy holder's attention -- Urbit's own governance already runs partly through this ownership structure. Naming the format now, while the stakes are still small, means this fork is ready to pitch outward the day a proposal is actually worth it, rather than needing to invent the shape under pressure later.

@@ -127,7 +127,7 @@ trap 'rm -rf "$work"' EXIT INT TERM
 # With it they read 0% and 18%. Of 892 living documents 676 carry such a block, and the six
 # largest a prose-shaped audit flagged are all metadata with long values.
 measure() {
-  awk '
+  awk -v explain="${2:-0}" -v detail_max="${3:-80}" '
     BEGIN {
       # POSIX boundary classes, since \< is gawk-only and BSD awk matched nothing
       # (the control leg caught the zero-read on the first macOS run, 20260825)
@@ -140,6 +140,22 @@ measure() {
     # this file -- BSD awk read nothing from \< once already, and an interval is the same risk --
     # so the length bound is taken from RLENGTH rather than spelled in the pattern. Forty holds the
     # longest key this tree writes and refuses a sentence that happens to carry a colon.
+    # THE WORDS THAT COUNTED A SENTENCE, named rather than left to a reader to guess.
+    # Bounded at eight per sentence: a printout is an allocation (TAME), and no sentence in this
+    # tree has ever carried eight negations. The advance keeps the trailing boundary character,
+    # because it is the leading boundary of whatever match comes next.
+    function matched(t,   rest, out, w, k) {
+      rest = t; out = ""; k = 0
+      while (k < 8 && match(rest, neg)) {
+        w = substr(rest, RSTART, RLENGTH)
+        gsub(/[^a-z0-9_]/, "", w)
+        out = (out == "" ? w : out " " w)
+        rest = substr(rest, RSTART + RLENGTH - 1)
+        k++
+      }
+      return out
+    }
+    function trim(t) { sub(/^[ \t]+/, "", t); sub(/[ \t]+$/, "", t); return t }
     function frontmatter_key(l) {
       if (l !~ /^[ \t]*\*\*[^*:]*:\*\*/) return 0
       match(l, /^[ \t]*\*\*[^*:]*:\*\*/)
@@ -160,26 +176,83 @@ measure() {
     /^[ \t]*[>#]/ { next }                     # quotes, headings
     /^[ \t]*$/ { next }
     {
-      line = tolower($0)
-      gsub(/\[[^]]*\]\([^)]*\)/, " link ", line)
-      gsub(/`[^`]*`/, " code ", line)
-      gsub(/[*_]/, "", line)
+      # The substitutions run on the ORIGINAL case and the lowercasing follows, so `line` is
+      # byte-for-byte what the elder form produced -- every pattern here holds letters nowhere,
+      # so the regions they match cannot move when the case does. What that buys is `rawbuf`:
+      # the same string with its capitals, split by the same delimiter at the same offsets, so
+      # sentence i of one is sentence i of the other and --explain can print prose a reader
+      # recognises. Splitting the untouched file instead would part company at the first link,
+      # whose URL carries the dots the splitter reads as sentence ends.
+      raw = $0
+      gsub(/\[[^]]*\]\([^)]*\)/, " link ", raw)
+      gsub(/`[^`]*`/, " code ", raw)
+      gsub(/[*_]/, "", raw)
+      line = tolower(raw)
       buf = buf " " line
+      rawbuf = rawbuf " " raw
     }
     END {
       n = split(buf, s, /[.!?]+[ ]/)
-      sent = 0; negsent = 0
+      split(rawbuf, r, /[.!?]+[ ]/)
+      sent = 0; negsent = 0; shown = 0
       for (i = 1; i <= n; i++) {
         w = split(s[i], t, /[ ]+/)
         if (w < 4) continue
         sent++
-        if (s[i] ~ neg) negsent++
+        if (s[i] ~ neg) {
+          negsent++
+          if (explain && shown < detail_max) {
+            shown++
+            printf "neg %d [%s] %s\n", sent, matched(s[i]), trim(r[i])
+          }
+        }
+      }
+      if (explain) {
+        printf "explain_listed=%d\n", shown
+        if (negsent > shown) printf "explain_truncated_at=%d\n", detail_max
       }
       if (sent == 0) { print "0 0 0"; exit }
       printf "%d %d %d\n", sent, negsent, int(negsent * 100 / sent)
     }
   ' "$1"
 }
+
+# --explain <path> [max]: the repair-grade reading, for the hand that has to sweep the page.
+#
+# WHY IT EXISTS. Every tier above names a document and its share -- `law: .claude/rules/git-signing.md
+# 55% (32 of 58 sentences)` -- and stops there. A lane told that thirty-two sentences carry a
+# negative, and never told WHICH thirty-two, reads the page and guesses; the guess is what makes a
+# register sweep expensive enough to defer. This tree has booked the same complaint twice in other
+# rooms, each time as a count naming no site.
+#
+# WHY IT IS A MODE RATHER THAN A TOOL. It calls measure() -- the same regex, the same line filters,
+# the same sentence splitter, the same four-word floor -- with one flag set. A second program
+# reading the same page its own way would be a second reading, free to drift from the gate by a
+# word, and a listing that disagrees with the count it explains is worse than no listing.
+#
+# WHAT IT PRINTS, and the one thing to know about it. Each counted sentence, with the words that
+# counted it, AS THE METER READS IT: links and code spans stand as ` link ` and ` code `, and
+# emphasis marks are gone. Capitals are kept, so the sentence is recognisable in the file, yet it
+# is a normalised reading rather than a literal quote -- match it by its content rather than by
+# pasting it into a search.
+if [ "${1:-}" = "--explain" ]; then
+  target="${2:-}"
+  [ -n "$target" ] || { echo "explain_verdict=no_path_given" >&2; exit 1; }
+  [ -f "$target" ] || { echo "explain_verdict=absent" >&2; exit 1; }
+  detail="${3:-80}"
+  explained=$(measure "$target" 1 "$detail")
+  reading=$(echo "$explained" | grep -vE '^(neg |explain_)')
+  echo "explain_path=$target"
+  echo "explain_sentences=$(echo "$reading" | awk '{print $1}')"
+  echo "explain_negative=$(echo "$reading" | awk '{print $2}')"
+  echo "explain_percent=$(echo "$reading" | awk '{print $3}')"
+  echo "explain_field_target=$FIELD_MAX"
+  echo "explain_door_target=$DOOR_MAX"
+  echo "explain_floor=$REGISTER_MIN_SENTENCES"
+  echo "$explained" | grep -E '^(neg |explain_)' || true
+  echo "verdict=ok"
+  exit 0
+fi
 
 door_over=0
 : > "$work/door.txt"
@@ -241,9 +314,14 @@ done < "$work/teaching.txt"
 # THE SEATING NUMBER IS WHAT THE READING ANSWERS ON THE COMMIT THAT SHIPS IT, rather than what it
 # answered when the tier was written. The measurement above was taken at 18; a peer's lap landed
 # `.claude/rules/quality-assurance.md` at 34% of 67 sentences while this one was being proven, and
-# the rebase brought it in. So the tier is seated at 19, its whole population is printed below, and
-# every number after this one falls.
-law_ceiling=19
+# the rebase brought it in. So the tier was seated at 19, its whole population is printed below, and
+# every number after that one falls.
+#
+# IT FELL 19 -> 17 ON 20260910, the first two pages swept with --explain open beside them. Both were
+# the room's own highest shares: `.claude/rules/comlink-tendency.md` 58% of 12 sentences and
+# `.claude/rules/azimuth-galaxy-proposal-format.md` 63% of 11, seven counted sentences each,
+# restated to lead with what is and every claim, name, path and stamp held. Both read 0% now.
+law_ceiling=17
 law_documents=0
 law_readable=0
 law_over=0

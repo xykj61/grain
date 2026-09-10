@@ -11,7 +11,9 @@ The sibling that has guarded these files since `20260821`,
 [`../../tools/fixtures/r/radiant_negation_scan.sh`](../../tools/fixtures/r/radiant_negation_scan.sh),
 ratchets each page against its own baseline and stays; the two readings are different numbers, and
 this one is the number the law states. A lane sweeping a page takes its name off the printout and
-lowers the ceiling in the same commit.
+lowers the ceiling in the same commit, reading
+`sh tools/fixtures/p/prose_register_scan.sh --explain <path>` first: it names each counted
+sentence and the words that counted it, out of the same `measure()` the gate reads.
 
 Write documentation, analysis, forecasting, ecosystem description, and design essays in **Gauge
 Style** -- writing that carries measurements and stays worth reading. Radiant Style keeps its
