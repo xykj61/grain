@@ -112,9 +112,14 @@ echo "see_shelf_end=ep045"
 echo "see_ep046=absent"
 
 # --- tracked inventory only after control ---
-MD=$(git ls-files '*.md' | wc -l | tr -d ' ')
-RISH=$(git ls-files '*.rish' | wc -l | tr -d ' ')
-RYE=$(git ls-files '*.rye' | wc -l | tr -d ' ')
+# distinct sources, never paths: `git ls-files` lists a symlink beside its target, so a
+# path count counts one file twice. Mode 120000 is a symlink (`git ls-files -s` prints mode
+# first). Loom: tools/fixtures/l/link_counted_scan.sh.
+MD=$(git ls-files -s '*.md' | awk '$1 != "120000"' | wc -l | tr -d ' ')
+RISH=$(git ls-files -s '*.rish' | awk '$1 != "120000"' | wc -l | tr -d ' ')
+# distinct sources, never paths: 230 of 1,964 tracked `.rye` are symlinks onto a module already
+# counted, so mode 120000 is dropped (`git ls-files -s` prints mode first).
+RYE=$(git ls-files -s '*.rye' | awk '$1 != "120000"' | wc -l | tr -d ' ')
 GLOW=$(git ls-files '*.glow' | wc -l | tr -d ' ')
 CACHE=$(git ls-files 'glow/.cache/*' | wc -l | tr -d ' ')
 

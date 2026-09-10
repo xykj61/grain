@@ -88,21 +88,35 @@ echo "bench=honored"
 echo "apply2=honored"
 
 # APPLY 3 -- amphora census 10 tracked - 9 rye
-CELLAR_N=$(git ls-files 'amphora/*' | wc -l | tr -d ' ')
-RYE_N=$(git ls-files 'amphora/*.rye' | wc -l | tr -d ' ')
+# distinct sources, never paths: `git ls-files` lists a symlink beside its target, so a
+# path count counts one file twice. Mode 120000 is a symlink (`git ls-files -s` prints mode
+# first). Loom: tools/fixtures/l/link_counted_scan.sh.
+CELLAR_N=$(git ls-files -s 'amphora/*' | awk '$1 != "120000"' | wc -l | tr -d ' ')
+# distinct sources: 4 of amphora's 11 tracked `.rye` paths are symlinks onto a module already
+# counted, a 36% overstatement, so mode 120000 is dropped.
+RYE_N=$(git ls-files -s 'amphora/*.rye' | awk '$1 != "120000"' | wc -l | tr -d ' ')
 # A FLOOR RATHER THAN A PIN (REDS %235). This rung's honest claim was that IT added no .rye,
 # which is a fact about one lap; the exact count turned it into a claim that the room would
 # never grow again. e143 added amphora/src/main.rye and broke this rung and its sibling on the
 # same commit, and the family's silence is why nobody knew for a month.
-test "$CELLAR_N" -ge 10 || {
+# THE FLOOR MOVED 10 -> 8, AND ONLY THE READING CHANGED -- the same recalibration as the
+# `.rye` floor above, for the same reason: 4 of amphora's 12 tracked paths are symlinks
+# onto a path already counted. Nothing left amphora.
+test "$CELLAR_N" -ge 8 || {
   echo "census=failed"
-  echo "detail=want_amphora_tracked_at_least_10_got_$CELLAR_N"
+  echo "detail=want_amphora_tracked_at_least_8_got_$CELLAR_N"
   echo "verdict=misread"
   exit 1
 }
-test "$RYE_N" -ge 9 || {
+# THE FLOOR MOVED 9 -> 7 ON `20260910.004524`, AND ONLY THE READING CHANGED. The floor was
+# calibrated against a PATH count, and 4 of amphora's 11 tracked `.rye` paths are symlinks
+# onto a module already counted -- so 9 was two links deep into a population of 7 distinct
+# sources. Nothing was removed from amphora; the count above stopped counting one module
+# up to four times. This is the sharpest cost of that class: a threshold set against an
+# inflated number refuses the truth the moment the number is repaired.
+test "$RYE_N" -ge 7 || {
   echo "census=failed"
-  echo "detail=want_amphora_rye_at_least_9_got_$RYE_N"
+  echo "detail=want_amphora_rye_at_least_7_got_$RYE_N"
   echo "verdict=misread"
   exit 1
 }

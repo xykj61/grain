@@ -217,6 +217,22 @@ path tools/u/unshared_citation_witness.rish
 tier lap
 seated 20260906.210117
 
+# link_counted -- a count of tracked paths is not a count of things. `git ls-files` lists a symlink
+# beside its target, and this tree links a module into every room that imports it by bare name,
+# because Zig refuses an import escaping the root file's directory -- so one module stands at up to
+# four tracked paths. Measured `20260910.004524`: 230 of 1,964 `.rye` paths are symlinks (11.7%), 4
+# of amphora's 11 (36%). The bill: README.md published 1964 modules where 1,734 exist, a 13.3%
+# overstatement on the front door in the number a reader divides the witness count by; and two
+# equinox scans asserted floors of 9 and 10 amphora files against populations of 7 and 8, calibrated
+# on the inflated reading, so repairing the count made them refuse the truth. The cure was already
+# written twice with its reason in a comment, in the two Rye ASCII meters -- a lantern that fires
+# twice becomes a loom. Held at ZERO: every instance was repaired on the seating lap, and a glob no
+# symlink answers is read past, so it becomes a finding on the lap a link lands under it.
+guard link_counted
+path tools/l/link_counted_witness.rish
+tier lap
+seated 20260910.004524
+
 # rota_declared -- the council rota's reading, counted rather than assumed. On `20260906` the record
 # answered three ways across 109 logs: 20 carried a `rota` field, 53 named a row in prose alone, 36
 # said nothing -- one observation carrying two claims (whether a rota was read, whether it was

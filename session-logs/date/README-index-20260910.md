@@ -11,10 +11,12 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.022809` | [A refusal that braids three answers](20260910/20260910-022809_a-refusal-that-braids-three-answers.kyri) | Recovered the lap that died at its send |
 | `20260910.021757` | [The unit the law names](20260910/20260910-021757_the-unit-the-law-names.kyri) | TAME counts asserts by function; every instrument counted by file. |
 | `20260910.020902` | [The record that refuted its rescuer](20260910/20260910-020902_the-record-that-refuted-its-rescuer.kyri) | Pheromone; a parked log corrected the lap recovering it |
 | `20260910.012453` | [the door that named eight](20260910/20260910-012453_the-door-that-named-eight.kyri) | 7 rota seats had no door in the why-room index; a guard walls them |
 | `20260910.011542` | [What stands between the quoted lines](20260910/20260910-011542_what-stands-between-the-quoted-lines.kyri) | A selection's shape is read now, not only its contents. |
+| `20260910.010311` | [A path is not a file](20260910/20260910-010311_a-path-is-not-a-file.kyri) | front door published 1964 modules, holds 1734; loom at zero. |
 | `20260910.010206` | [A row names a log](20260910/20260910-010206_a-row-names-a-log.kyri) | the shelf row keys on its log, never its second |
 | `20260910.003739` | [the reading that began accusing](20260910/20260910-003739_the-reading-that-began-accusing.kyri) | --detach orphans at birth; live passes read gone |
 | `20260910.003554` | [a file keeps its own weave](20260910/20260910-003554_a-file-keeps-its-own-weave.kyri) | a commit names one weave per path; the second file no longer erases the first |

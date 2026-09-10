@@ -39,7 +39,16 @@ fascia=$(sh tools/fixtures/f/fascia_metric_v0.sh </dev/null 2>/dev/null | sed -n
 [ -n "${fascia:-}" ] || fascia=unknown
 
 witnesses=$(git ls-files 'tools/*_witness.rish' | wc -l | tr -d ' ')
-modules=$(git ls-files '*.rye' | wc -l | tr -d ' ')
+
+# DISTINCT SOURCES, never paths. `git ls-files` lists a symlink and its target as two entries, and
+# this tree links a module into every room that imports it by bare name -- `comlink/recall_lap1.rye`
+# and `pond/apps/mantra/recall_lap1.rye` are links onto `mantra/recall_lap1.rye`. Measured
+# `20260910.004524`: 230 of 1,964 tracked `.rye` paths are symlinks, so a path count read 1,964
+# where the tree holds 1,734 modules -- a 13.3% overstatement on the front door, in the number a
+# reader divides the witness count by. The two ASCII comment meters over the same population
+# already skip a link for the same reason; this is the third site to learn it.
+# `git ls-files -s` prints "mode SP sha SP stage TAB path", and mode 120000 is a symlink.
+modules=$(git ls-files -s '*.rye' | awk '$1 != "120000"' | wc -l | tr -d ' ')
 rooms_over=$(sh tools/fixtures/r/room_bound_scan.sh </dev/null 2>/dev/null | grep -c 'verdict=over' || true)
 
 echo "fascia=$fascia"
