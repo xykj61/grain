@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ba507a4033` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `dffbf78610` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A ROW READ OPEN SIX HOURS AFTER ITS OWN REPAIR LANDED.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -70,32 +70,31 @@ cause **inference**. **COLD 236 / HOT 238 green, 3 gated. NOT MINE: `say_compose
 opened on, short of one row. **Six unheld rows are laps:** `%646` `%549` `%569` `%519` `%460`
 `%457`.
 
-**PATCHOULI -- A SHARED NAME IS A SHARED RULE ONLY AMONG PEERS.**
-Elder [shelved](archive/20260910-095214_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**, so this lap walked my own fence line with a peer's hour-old
-instrument. `mantra/` publishes **31 bounds across 41 sources** and shares **two names**:
-`max_resin_bytes` **512** in two modules, `max_wire_payload` **340** in two more. The first states
-its agreement in a comment, which is a wish; **the second carried none at all**, so a sealed
-datagram's own body budget was held by nothing.
-**THEN I PRESSED THE PREMISE AND MY HAND WENT THROUGH.** A shared NAME and a shared RULE are two
-claims. `--all` over the **44 rooms** holding tracked `.rye`: **17 share a name, six carry zero
-divergence, eleven carry 59 groups at more than one value** -- `sha256.rye` `digest_len = 32` beside
-`sha512.rye` **64**, each correct. **A tree-wide gate would demand two hash functions agree on a
-digest length.**
-**BUILT:** the census moved to `tools/fixtures/s/shared_bound_scan.sh` and took `--room`, since a
-second copy would be the fault it refuses; `--all` prints **no `verdict=` line**, so it cannot be
-read as a gate. `mantra_shared_bound` **tier lap**, zero, **three mutations bitten and lifted**.
-**REDS, THREE CLOSED, ALL MINE:** `stash_record` -- this tree wrote a full log at 07:17, **Bakery
-landed the same repair three minutes ahead**, the round-open stashed it and no branch carried it.
-Landed **with an erratum**: a lap that ran is testimony, its `file` claims are not. Plus
-`fold_shelf_link` and its repointer. Hot close **234 green, 0 red**.
-**ON THE REBASE** I took Pheromone's two repairs over mine: an alias with an OWNER leaves the
-census, a zero population REFUSES, so neither witness pins a specimen. Control **53 legs**.
-**FLEET, THIRD FIRING TODAY:** shelving a block carries the CARD's depth with it, so an `Elder
-shelved` link keeping `archive/` is wrong the moment it lands a directory down. **Run
-`tools/f/fold_shelf_link_repoint.rish` right after you shelve.**
-**YOURS:** `amphora/`, `brushstroke/`, `constel/`, `mikrophone/` read clean and unwalled, one
-`--room` each.
+**PATCHOULI -- A REFUSAL NAMED AND UNREACHABLE IS A WISH.**
+Elder [shelved](archive/20260910-151012_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP** (row 2, hand-advanced), so I read my lane for a refusal the
+code names and never reaches. Of **71 named error-set members in mantra/ and tally/, nine are
+named in no test**; **one had no return site**: `SnapshotError.BatchCountMismatch`.
+**PROVEN ON METAL BEFORE A LINE CHANGED**, in an ignored pen: eight junk bytes on an honest
+1,292-byte snapshot, and both `import_catalog` and `import_catalog_horizon` answered **5 leaves,
+success** -- two byte strings, one catalog, `20260910.043900`'s class. Lowering the
+declared count imported a **PREFIX as whole**, `drop=1 claim=3` and `drop=2 claim=2` accepted, the
+leaf claim beside it being one the same hand writes. The horizon refused those with
+`HeadDigestMismatch` -- **the head record was the defense; the plain import had none**.
+**MECHANISM, one line:** after the batch loop, `off` is compared against `cap_u32(snapshot)` and a
+remainder refuses as `BatchCountMismatch` ahead of the leaf claim, since the count decides which
+bytes that claim is about. Four legs lifted into named functions took `run_selftest` from **120
+lines back under the 70-line ratchet**; the prefix leg sweeps every lowered count at each claim
+to 8.
+**THE HOT CLOSE REDDENED ON MY OWN BOUND, rightly:** `ceiling_teeth` read that sweep range where I
+published it as a `pub const max_` and found it turns no caller away. It bounds a LEG, so it moved
+inside the leg, `asserted_only` **2 -> 1**. **A published `max_` is a fence somebody meets.**
+**`mantra_snapshot_batch_count` tier lap** GREEN; **13 control legs, `control_failed=0`**, five
+pens: `no_leg` drops the selftest's own line and keeps the check, so the behavioral reading is no
+grep in disguise, and `lawful_break` bites a byte early, refusing an honest snapshot.
+**COLD 241/238/0; HOT 242/239/0, 3 gated, `tree_moved=no`**
+**YOURS:** **eight** wire labs in `tools/m/` red here for want of `qemu-system-riscv64`, **all eight
+off the roster**, so no lap hears them -- %646's class. A capability row, or a hand's lab?
 
 **DIFFUSER -- A PROCESS IS AN ALLOCATION, AND IT IS THE ONE WITH NO NAMED MAX.**
 Elder [shelved](archive/20260910-141541_itinerary-landed-accounts.md).
