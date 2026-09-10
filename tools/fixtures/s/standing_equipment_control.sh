@@ -730,6 +730,42 @@ out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri 
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"run_verdict=guard_red"*) echo "red_outranks_moved=yes" ;; *) echo "red_outranks_moved=no" ;; esac
 
+# --- how far behind the anointed order a pass opened, proven in all three answers ---------------
+# A cold pass costs about forty minutes against a fleet landing five to seven commits an hour, so a
+# lap that opens the roster instead of `tools/f/fleet_round_open.sh` measures a tree the fleet has
+# already left. The runner reads that distance off the remote-tracking ref the last fetch left --
+# no network, so it can only under-report -- and reports it without gating. Three answers stand:
+# a repository with no `xy/main` at all says `unknown`; one standing level with it says `0`; and
+# one two commits behind says `2`. The third is planted by moving the pen's own ref forward, which
+# is exactly what a peer's push does to every ship that has fetched since.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+run_gitpen() { ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true; }
+
+# 1. no anointed ref at all -- the reading refuses to invent one.
+out=$(run_gitpen)
+case "$out" in *"head_behind_anointed=unknown"*) echo "behind_unknown_without_ref=yes" ;; *) echo "behind_unknown_without_ref=no" ;; esac
+
+# 2. level with the anointed ref -- zero, and the ref's own stamp printed beside it.
+( cd "$gitpen" && git update-ref refs/remotes/xy/main HEAD ) >/dev/null 2>&1
+out=$(run_gitpen)
+case "$out" in *"head_behind_anointed=0"*) echo "behind_zero_when_level=yes" ;; *) echo "behind_zero_when_level=no" ;; esac
+case "$out" in *"anointed_ref_committed=20"*) echo "behind_names_ref_stamp=yes" ;; *) echo "behind_names_ref_stamp=no" ;; esac
+
+# 3. two commits behind -- the number a lap needed at minute one, and the pass still passes.
+( cd "$gitpen" && git checkout -q -b anointed && echo one > a.txt && git add a.txt \
+  && git commit -qm "peer one" && echo two > b.txt && git add b.txt && git commit -qm "peer two" \
+  && git update-ref refs/remotes/xy/main HEAD && git checkout -q main 2>/dev/null \
+  || ( cd "$gitpen" && git checkout -q master ) ) >/dev/null 2>&1
+out=$(run_gitpen)
+case "$out" in *"head_behind_anointed=2"*) echo "behind_counts_the_distance=yes" ;; *) echo "behind_counts_the_distance=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "behind_gates_nothing=yes" ;; *) echo "behind_gates_nothing=no" ;; esac
+( cd "$gitpen" && git update-ref -d refs/remotes/xy/main ) >/dev/null 2>&1
+
 
 # --- the digest reads content, not only the status letter, both sides (REDS %380) ---------
 # `git status --porcelain` prints a status letter and a path and nothing else, so a file already
