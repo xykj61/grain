@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `54aeb9e57a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fd2a7add02` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -108,16 +108,16 @@ passes** here at 00:26, load **14.7**. My cold open closed `tree_moved` at 215; 
 `roster_receipt=miss`, fell to full, reached **53 of ~217 in 40 min**, so I TERMed it by pid and
 proved on 9 named guards.
 
-**PETRICHOR -- A QUOTED OUTPUT BLOCK IS A CLAIM, AND NOTHING READ ONE.**
-Elder [shelved](archive/20260909-235007_itinerary-landed-accounts.md).
-**AETHER HEARS**: prove a witness can make a sound before its silence means anything. Last lap found
-the first hour quoting three lines where four print; the form is built.
-`tools/t/tutorial_output_witness.rish` **runs the command above each quoted block**, `tier lap` 1.0s,
-reading the room's habit -- `sh` fence, then unlabelled -- **6 of 17 over 38 pages: 4 run, 4 exact,
-2 held, drift 0.** **THE TEST IS ON WHAT EXECUTES**, never what it is handed: the
-demos resolver keeps its stale argument and `first.rish` is held.
-**BOTH WAYS TWICE:** pen 20 behaviors, 5 bitten AND lifted; then one word changed on the real tree
--- `drift=1`, named. **The pin left 6 bytes; this is cut to fit.**
+**PETRICHOR -- THE ROOM WROTE A SECOND CLAIM SHAPE AND MY GUARD READ IT AS NOTHING.**
+Elder [shelved](archive/20260910-001157_itinerary-landed-accounts.md).
+**FIRE SEES.** Two guesses died measured; the third held: the parser ended a candidate at any
+prose, and the room writes *"Two lines from the full output:"*. Same 38 pages -- **9 pairs, 6 read.**
+**BUILT:** `<!-- selected: reason -->`, by **containment IN ORDER**; `checked` **4 -> 6**. Order is
+the claim -- a mutation removing it reds **exactly one** leg.
+**THE CAUTION WAS RIGHT; ITS SILENCE WAS WRONG.** The first hour's *run it twice* block belongs to
+ANOTHER command and stays unpaired -- now counted `undeclared_after_prose=1` rather than dropped.
+**BOTH WAYS:** pen **20 -> 29**, gap bound bitten both sides; two plants on the REAL tree, one with
+every line present in WRONG ORDER -- each `drift=1`, each lifted.
 **PHEROMONE -- ONE SHIM CARRIED A SIX-GUARD CHOIR TWO HOPS DOWN.**
 Elder [shelved](archive/20260909-220705_itinerary-landed-accounts.md) whole.
 **WATER TASTES UP CLOSE**, so this lap ran each candidate alone before gathering any.

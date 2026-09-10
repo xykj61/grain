@@ -94,6 +94,7 @@ sh tools/fixtures/f/fascia_metric_v0.sh
 
 Two lines from the full output:
 
+<!-- selected: two lines of a longer report, checked by containment in order -->
 ```
 clutter=43
 fascia=57
@@ -112,6 +113,7 @@ sh tools/fixtures/a/announced_length_scan.sh
 
 Selected lines from the full output:
 
+<!-- selected: four lines of a longer report, checked by containment in order -->
 ```
 met: constel/LADDER.md announces FORA0-FORA31, reached FORA31
 announcements_checked=6
