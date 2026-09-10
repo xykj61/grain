@@ -142,17 +142,28 @@ fi
 # single log). Which text is true is a judgment about the ledger, so this still refuses -- and it
 # now PRINTS both rows, because a hand asked to choose has to see what it is choosing between.
 #
-# The stamp is read by offset rather than by splitting on a backtick: the shape check above has
-# already proven every row opens `| ` + backtick + a 15-character stamp, so substr($0,4,15) is the
-# stamp exactly, and the reading needs no second opinion about what a stamp is.
+# THE KEY IS THE LOG A ROW NAMES, never the second it was written in (REDS %676, answered
+# `20260910`). Two ships write inside one second roughly every eleven days at this fleet's rate,
+# and the naming law resolves that with distinct sprigs -- so two such rows are two records, and
+# keying on the stamp made a lawful day refuse here while the scan one file over refused it too.
+# A row's first link is that key; a row carrying none names no log and keys on its own bytes.
+# The reading the scan makes and the reading this tool makes must be one reading, or a hand is sent
+# to a repair that disagrees with the guard that summoned it.
+key_of() {                    # key_of <row>
+  _k=$(printf '%s\n' "$1" | sed -n 's/.*](\([^)#]*\)[)#].*/\1/p' | head -1)
+  [ -n "$_k" ] && printf '%s' "$_k" || printf 'row:%s' "$1"
+}
 dup_identical=0
 dup_divergent=0
-for _s in $(awk '{ print substr($0,4,15) }' "$pen/block" | LC_ALL=C sort | uniq -d); do
-  _n=$(awk -v s="$_s" 'substr($0,4,15) == s' "$pen/block" | LC_ALL=C sort -u | wc -l | tr -d ' ')
+: > "$pen/keys"
+while IFS= read -r _row; do printf '%s\n' "$(key_of "$_row")"; done < "$pen/block" > "$pen/keys"
+for _k in $(LC_ALL=C sort "$pen/keys" | uniq -d); do
+  _rows=$(paste -d'\t' "$pen/keys" "$pen/block" | awk -F'\t' -v k="$_k" '$1 == k { print $2 }')
+  _n=$(printf '%s\n' "$_rows" | LC_ALL=C sort -u | wc -l | tr -d ' ')
   if [ "$_n" -gt 1 ]; then
     dup_divergent=$((dup_divergent + 1))
-    echo "divergent: $_s carries $_n different rows"
-    awk -v s="$_s" 'substr($0,4,15) == s' "$pen/block" | LC_ALL=C sort -u | sed 's/^/  /'
+    echo "divergent: $_k carries $_n different rows"
+    printf '%s\n' "$_rows" | LC_ALL=C sort -u | sed 's/^/  /'
   else
     dup_identical=$((dup_identical + 1))
   fi
@@ -162,7 +173,7 @@ echo "rows_duplicate_divergent=$dup_divergent"
 if [ "$dup_divergent" -gt 0 ]; then
   echo "rows_duplicate=$((dup_identical + dup_divergent))"
   echo "repair=none"
-  echo "refused: $dup_divergent stamp(s) carry different rows -- which text is true is a hand's" >&2
+  echo "refused: $dup_divergent log(s) carry different rows -- which text is true is a hand's" >&2
   echo "verdict=duplicate_stamps"
   exit 1
 fi

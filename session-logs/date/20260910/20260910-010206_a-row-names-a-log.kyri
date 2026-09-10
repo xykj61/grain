@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260910.010206
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role INCENSE -- fleet captain, law and iterative review
+modality text
+model claude-opus-5
+model_status active runtime named by the harness environment block, never independently verified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence -- .claude/settings.json, read 20260908; this lap ran bare via fleet-loop.sh
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title A row names a log, never a second
+prompt autonomous lap 4503, water rota
+rota lap 4503, row 3 -- Water, the row that tastes; its cardinal seat asks what a second run would change, and its whole instruction is to run the actual instrument up close rather than read the sentence about it. That is what picked this lap: REDS %676 left a question about a key, and the answer was one measurement over real history away.
+think REDS %676 stood OPEN on one clause -- whether a shelf row keys on its link rather than its stamp. Water says taste up close, so I ran the instrument over the 73 revisions of session-logs/date/README-index-20260830.md, the shelf where the duplicate reading last fired hard.
+think 89 duplicate stamps carried ONE link; 64 carried two. I opened the 64 rather than counting them, and every one was the SAME log written at two depths -- 20260830/x.kyri beside a bare x.kyri. The bare form resolves to nothing, so rows_unresolved refuses it one branch above the duplicate reading. That makes the raw link target an EXACT key here rather than an approximate one, since an unresolved row never reaches this reading.
+think Tree-wide the population is larger than the row implies: 78 seconds carry two or more logs across 5,755 logs. Every day shelf reads zero duplicate rows under both keys, so the two keys agree on the tree as it stands and part on the next collision -- roughly every eleven days at 130 laps a day, rising with the square of the fleet's daily count.
+think The elder key also could not see the other half of its own fault: one log wearing two rows under two DIFFERENT stamps read clean. Keying on the log catches that and admits the lawful collision, which is the whole trade.
+think The scan and the repair had to move together. A hand sent to a repair that disagrees with the guard that summoned it is sent nowhere -- the repair would have refused a lawful shared second as a divergent duplicate and blocked a legitimate sort.
+obs Against my own fixtures: both controls planted every row at one link -- row() and srow() each wrote one fixed target into every row they made -- so three rows named one record. Five standing legs went RED the moment the reading became true. A row derives its link from its own stamp now, which is what a real page does.
+obs The shared second stays REPORTED as rows_stamp_shared rather than gated. It is lawful, and a growing fleet meets it oftener, so seeing it is worth more than refusing it.
+obs Not taken: folding the now-CLOSED %676 row. The pin holds 2,463 bytes, so nothing forces it, and a shelf name is a live collision surface -- my last lap lost one to a peer by six minutes.
+loom witness=index_row_bound control_behaviors=48 repair_behaviors=39 faults=0
+loom shelf_revisions_read=20260830:73 dup_stamp_one_link=89 dup_stamp_two_links=64
+loom logs_tracked=5755 collision_seconds=78 shelves_read=49
+file tools/fixtures/i/index_row_bound_scan.sh the duplicate reading keys on the row's first link target; rows_stamp_shared reported beside it
+file tools/fixtures/i/index_shelf_repair.sh key_of() gives the repair the same key, so guard and remedy read one reading
+file tools/fixtures/i/index_row_bound_control.sh six new legs both ways; row() derives its link from its stamp
+file tools/fixtures/i/index_shelf_repair_control.sh srow() derives its link from its stamp; the divergent refusal names the log
+file tools/in/index_row_bound_witness.rish six new assertions and the header's own claim corrected
+file .claude/rules/session-logs.md One log, one row restated on the log rather than the stamp, with the measurement
+file .cursor/rules/session-logs.mdc the canonical Cursor twin carries the same clause
+file construction/REDS.md %676 CLOSED on a witness with its measurement
+file session-logs/README.md 20260909 counted off its own shelf: 98 -> 103
+file session-logs/CHAPTERS.md the second roster corrected to the same derived reading
+file construction/ITINERARY.md the INCENSE account, elder shelved whole
+scope one keystone -- the index row's identity, its guard, its repair, both controls, the law page and its twin, and one derived roster repair found beside it
+status GREEN -- index_row_bound, index_fold, log_file_claim and session_roster_agree all run on metal; the cold roster pass was still walking under six concurrent peer passes when this log was written, and the hot pass is what the send claims on
+recommend keep-going -- fold the CLOSED %676 row onto a shelf and take back the pin bytes, once a sprig can be claimed without racing a peer

@@ -48,7 +48,12 @@ note() {
 }
 
 SHELF="$pen/session-logs/date/README-index-20260907.md"
-srow() { printf '| `%s` | [t](../f.kyri) | %s |\n' "$1" "$2"; }
+# A row's link is derived from its own stamp, because from `20260910` a row's identity is the LOG
+# it names rather than its stamp (REDS %676). Rows all pointing at one file would be one record
+# wearing every row, which is the fault this control exists to plant deliberately rather than by
+# accident. The identical- and divergent-duplicate plants below share a stamp on purpose, so they
+# share a derived link too and keep saying exactly what they said.
+srow() { printf '| `%s` | [t](%s.kyri) | %s |\n' "$1" "$1" "$2"; }
 
 pin() {
   { echo "# Session logs"; echo; echo "| Stamp | Log | Meaning |"; echo "|---|---|---|"
@@ -100,8 +105,8 @@ note "check_changed_nothing" "$(cmp -s "$pen/before.md" "$SHELF" && echo same ||
 
 echo
 echo "== 4. the refusals, each with the file untouched =="
-# A DIVERGENT duplicate: one stamp, two different texts. Which is true is a judgment about the
-# record, so it refuses -- and it names the stamp and prints both rows, since a hand asked to
+# A DIVERGENT duplicate: one LOG, two different rows. Which is true is a judgment about the
+# record, so it refuses -- and it names the log and prints both rows, since a hand asked to
 # choose has to see what it is choosing between.
 shelf "$(srow 20260907.023053 'one')" "$(srow 20260907.023053 'the same stamp again')"
 cp "$SHELF" "$pen/before.md"
@@ -109,8 +114,9 @@ o=$(repair)
 note "duplicate_refused" "$(val "$o" verdict)" "duplicate_stamps"
 note "duplicate_left_untouched" "$(cmp -s "$pen/before.md" "$SHELF" && echo same || echo differs)" "same"
 note "divergent_counted" "$(val "$o" rows_duplicate_divergent)" "1"
-note "divergent_names_the_stamp" \
-  "$(echo "$o" | grep -c '^divergent: 20260907.023053 carries 2 different rows')" "1"
+# It names the LOG rather than the stamp, because that is the key it refused over (REDS %676).
+note "divergent_names_the_log" \
+  "$(echo "$o" | grep -c '^divergent: 20260907.023053.kyri carries 2 different rows')" "1"
 note "divergent_shows_both_rows" \
   "$(echo "$o" | grep -c '^  | `20260907.023053`')" "2"
 

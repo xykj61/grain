@@ -26,7 +26,7 @@
 #
 # WHAT IS PROVEN, on metal. Four readings over the living pin AND the open shelf:
 #   every row at or under 192 bytes; every row's link resolving against the page's own directory;
-#   no two rows sharing a stamp, since a duplicate is one log wearing two rows; and the rows
+#   no two rows naming one LOG, since a duplicate is one log wearing two rows; and the rows
 #   descending, since a page titled newest-first keeps that promise in its own document order.
 #   Forty behaviors on planted pins and planted shelves in a throwaway pen: the bound free at
 #   exactly 192 and bitten at exactly 193, short rows free, one long row among three found and
@@ -39,6 +39,10 @@
 #   so a control can plant against it, a descending shelf free and counted at zero, a single rise
 #   bitten and counted and its seam named from both sides, a tie left to the duplicate reading so
 #   one fault is never counted twice, and a CLOSED shelf out of order left free and uncounted.
+#   Six more from `20260910` (REDS %676): two logs written inside one second keeping a row each and
+#   the shared second reported rather than refused, one log wearing two rows under two stamps
+#   bitten where the elder stamp key read it clean, and a row naming no log keyed on its own bytes
+#   from both sides.
 #
 # THE FOURTH READING, and why it took a third firing to be built (REDS %440, then %445's lap). A
 # rebase auto-merged two shelf rows landing four minutes apart -- cleanly, no marker, nothing to
@@ -73,7 +77,7 @@ say scan.out
 assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given, points nowhere, or shares its stamp"
 assert scan.out contains "rows_over=0" else "index-row-bound: every living index row must point rather than restate"
 assert scan.out contains "rows_unresolved=0" else "index-row-bound: a row that points nowhere is a way in that is not one"
-assert scan.out contains "rows_duplicate=0" else "index-row-bound: two rows carrying one stamp are one log wearing two rows"
+assert scan.out contains "rows_duplicate=0" else "index-row-bound: two rows naming one log are one log wearing two rows"
 assert scan.out contains "rows_misordered=0" else "index-row-bound: a page promising newest first must descend in its own document order"
 assert scan.out contains "verdict=ok" else "index-row-bound: the scan must balance before it is believed"
 say "field GREEN -- the pin holds one day of pointers and the open shelf holds rows that point"
@@ -102,9 +106,22 @@ assert control.out contains "unresolved_bitten=yes" else "index-row-bound: a row
 assert control.out contains "unresolved_counted=yes" else "index-row-bound: the count must name how many rows point nowhere"
 assert control.out contains "unresolved_named=yes" else "index-row-bound: an unresolved row must name its target, so it can be repointed"
 assert control.out contains "resolved_free=yes" else "index-row-bound: a row read from its own page's directory must resolve free"
-assert control.out contains "duplicate_bitten=yes" else "index-row-bound: two rows carrying one stamp must red"
-assert control.out contains "duplicate_counted=yes" else "index-row-bound: the count must name how many stamps stand twice"
+assert control.out contains "duplicate_bitten=yes" else "index-row-bound: two rows naming one log must red"
+assert control.out contains "duplicate_counted=yes" else "index-row-bound: the count must name how many logs stand twice"
 assert control.out contains "distinct_stamps_free=yes" else "index-row-bound: two rows carrying different stamps must pass free"
+
+# THE KEY IS THE LOG, never the second it was written in (REDS %676, answered `20260910`). Two
+# ships wrote a log at `20260909.072922`, the naming law resolved it with distinct sprigs, and this
+# reading refused the shelf -- so the repair merged two records into one row and the page stopped
+# pointing one row at one log. Measured over the 73 revisions of the `20260830` shelf where this
+# reading last fired hard: 89 duplicate stamps carried ONE link, and every one of the other 64 was
+# the same log written at two depths, which `rows_unresolved` refuses one branch above this one.
+assert control.out contains "one_second_two_logs_free=yes" else "index-row-bound: two logs written inside one second are two records and must both keep a row"
+assert control.out contains "one_second_not_duplicate=yes" else "index-row-bound: a shared second must not be counted as a duplicate"
+assert control.out contains "shared_stamp_reported=yes" else "index-row-bound: a shared second is lawful and must stay visible, since a growing fleet meets it oftener"
+assert control.out contains "two_stamps_one_log_bitten=yes" else "index-row-bound: one log wearing two rows under two stamps is the fault the elder key could not see"
+assert control.out contains "linkless_identical_bitten=yes" else "index-row-bound: a row naming no log keys on its own bytes"
+assert control.out contains "linkless_distinct_free=yes" else "index-row-bound: two different rows naming no log are two rows"
 assert control.out contains "through_not_open=yes" else "index-row-bound: a through- gathering names no day and is never the open shelf"
 assert control.out contains "through_free=yes" else "index-row-bound: a through- gathering keeps every byte it wrote"
 assert control.out contains "no_shelf_none=yes" else "index-row-bound: a room with no shelf yet must read none"
@@ -163,7 +180,7 @@ assert repair.out contains "OK   mode_kept_through_the_write" else "index-row-bo
 assert repair.out contains "OK   lossy_sort_refused" else "index-row-bound: a sort that drops a line must be caught before anything is written"
 assert repair.out contains "OK   lossy_sort_wrote_nothing" else "index-row-bound: a caught repair must write nothing at all"
 assert repair.out contains "OK   divergent_counted" else "index-row-bound: a duplicate whose rows differ must be counted as the divergent class"
-assert repair.out contains "OK   divergent_names_the_stamp" else "index-row-bound: a refusal must name the stamp it refuses over"
+assert repair.out contains "OK   divergent_names_the_log" else "index-row-bound: a refusal must name the log it refuses over"
 assert repair.out contains "OK   divergent_shows_both_rows" else "index-row-bound: a hand asked to choose must be shown both rows"
 assert repair.out contains "OK   check_names_dedupe" else "index-row-bound: --check must name a dedupe it would perform"
 assert repair.out contains "OK   check_dedupe_changed_nothing" else "index-row-bound: --check must change nothing"
