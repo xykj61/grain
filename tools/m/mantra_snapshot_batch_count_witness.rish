@@ -1,0 +1,79 @@
+# tools/m/mantra_snapshot_batch_count_witness.rish -- what follows the last batch?
+#
+# WHAT THIS PROVES. A catalog snapshot written by `mantra/snapshot_export.rye`
+# carries its own header: a kind byte, a version field, a leaf claim, and a BATCH
+# COUNT. `import_catalog` walks exactly that many batches and stops there. It
+# stopped without comparing the offset it reached against the length of the blob
+# it held. The module's error set has named that refusal since the file was
+# written -- `BatchCountMismatch` -- and every line of the module left it
+# unreturned. A refusal named and unreachable is a wish; this guard stands the
+# check where the name always pointed.
+#
+# THE COST, on metal `20260910.140122`, read in a pen BEFORE a line changed.
+# Eight bytes of junk were appended to an honest 1,292-byte snapshot. Both
+# `import_catalog` and `import_catalog_horizon` answered **5 leaves, success**,
+# so two different byte strings imported as one catalog -- the class the store's
+# own trailing-newline red booked one room over (`20260910.043900`). Lowering the
+# declared batch count then imported a PREFIX as whole: `drop=1 claim=3` and
+# `drop=2 claim=2` were each accepted, since the leaf claim beside the batch count
+# is a field the same hand writes. The horizon path answered both prefixes with
+# `HeadDigestMismatch`, which names where the defense had been standing all along
+# -- in the head record, and in the plain import nowhere.
+#
+# WHAT THE REPAIR IS, in one line of the module: after the batch loop, `off` is
+# compared against the blob's own length, and a remainder refuses by name ahead
+# of the leaf claim. The order says why: the batch count decides which bytes the
+# leaf claim is even about.
+#
+# WHAT IT LEAVES OPEN, named rather than dressed up. A forger who lowers the
+# batch count AND cuts the dropped bytes away hands over a shorter blob that is
+# internally consistent. The leaf claim and the head record answer that one, and
+# the head record already did. A refusal here also leaves the destination catalog
+# holding the batches that applied, exactly as `LeafCountMismatch` beside it does.
+# Whether a refused import should empty its destination is one question for both
+# refusals, and it waits for its own lap.
+#
+# Siblings: the snapshot replay at tools/m/mantra_snapshot_replay.rish, the
+# horizon at tools/m/mantra_snapshot_horizon.rish, the record ceiling at
+# tools/m/mantra_record_ceiling_witness.rish, the document roundtrip at
+# tools/m/mantra_document_roundtrip_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_snapshot_batch_count_witness.rish
+
+say "mantra-snapshot-batch-count: Language EN -- a snapshot is a claim about its own whole length."
+say "mantra-snapshot-batch-count: Style Gauge, Meter -- every claim is an answer a built binary gave in a pen."
+say "mantra-snapshot-batch-count: Lens TAME -- a refusal is named where it is returned, at the edge."
+
+say "mantra-snapshot-batch-count: the module still names the refusal this guard is about..."
+let seat = run ["sh" "-c" "grep -q 'BatchCountMismatch' mantra/snapshot_export.rye && grep -q 'pub fn import_catalog' mantra/snapshot_export.rye"]
+assert seat.ok else "mantra-snapshot-batch-count: the named refusal or the import left the module, so this guard reads a shape that is gone"
+
+say "mantra-snapshot-batch-count: building the module and reading the selftest it prints..."
+let scan = run ["sh" "tools/fixtures/m/mantra_snapshot_batch_count_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-snapshot-batch-count: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-snapshot-batch-count: the module did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "named_error_declared=yes" else "mantra-snapshot-batch-count: BatchCountMismatch left the error set, so the refusal has no name to arrive under"
+assert scan.out contains "edge_check_present=yes" else "mantra-snapshot-batch-count: the offset is no longer compared against the blob length, which is the whole mechanism"
+assert scan.out contains "honest_import=yes" else "mantra-snapshot-batch-count: an ordinary snapshot stopped replaying, so the refusal reached past the blobs it was for"
+assert scan.out contains "tail_refused=yes" else "mantra-snapshot-batch-count: bytes past the last declared batch were accepted, which is the red of `20260910.140122` standing"
+assert scan.out contains "prefix_refused=yes" else "mantra-snapshot-batch-count: some leaf claim imported a prefix as whole, so the sweep found a door the check does not close"
+assert scan.out contains "selftest_exit=0" else "mantra-snapshot-batch-count: the selftest left a non-zero exit, so one of its own legs refused"
+assert scan.out contains "verdict=ok" else "mantra-snapshot-batch-count: the scan reached its own red"
+
+say "mantra-snapshot-batch-count: breaking the repair four ways in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_snapshot_batch_count_control.sh"]
+say control.out
+assert control.ok else "mantra-snapshot-batch-count: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-snapshot-batch-count: the control must reach its own verdict"
+assert control.out contains "control_failed=0" else "mantra-snapshot-batch-count: a control leg answered other than its header says it must, and a leg nobody hears is a leg that proves nothing"
+assert control.out contains "clean_ok=1" else "mantra-snapshot-batch-count: the unmutated pen must read ok, or every other phase fails for a reason the pen invented"
+assert control.out contains "no_edge_tail_refused=no" else "mantra-snapshot-batch-count: deleting the edge refusal must bring the padded snapshot back, or `tail_refused` is not reading the repair"
+assert control.out contains "no_edge_prefix_refused=no" else "mantra-snapshot-batch-count: deleting the edge refusal must bring the prefix import back too, since both stand on the same one line"
+assert control.out contains "no_leg_tail_refused=no" else "mantra-snapshot-batch-count: the behavioral reading must fall when the selftest's own line goes, or it is a source grep wearing a behavior's name"
+assert control.out contains "no_leg_edge_check_present=yes" else "mantra-snapshot-batch-count: that same phase must keep the source reading, which is what tells the two readings apart"
+assert control.out contains "wrong_name_tail_refused=no" else "mantra-snapshot-batch-count: a refusal under the wrong name must fail the leg -- a caller cannot tell a padded snapshot from a miscounted one"
+assert control.out contains "lawful_break_honest_import=no" else "mantra-snapshot-batch-count: a comparison biting one byte early must refuse an honest snapshot, which is the direction a repair fails in"
+
+say "GREEN: mantra-snapshot-batch-count -- a snapshot carrying bytes past its last declared batch is refused by name."

@@ -516,6 +516,21 @@ pub fn export_catalog_horizon(
 }
 
 /// Import a snapshot into `dest`, replacing nothing -- appends via each batch apply.
+///
+/// The header declares a leaf claim and a batch count, and this reader walks
+/// exactly the batches it was told about. What follows them is refused: the
+/// offset the walk stopped at is compared against the length of the blob, so a
+/// snapshot carrying bytes past its last declared batch reds as
+/// `SnapshotError.BatchCountMismatch` rather than importing as though it were
+/// whole. Read the refusal's own account at
+/// `tools/m/mantra_snapshot_batch_count_witness.rish`.
+///
+/// Precondition:  `snapshot` is exactly the bytes `export_catalog` returned --
+///   the length it answered with, rather than the buffer it wrote into.
+/// Postcondition: the leaf count `dest` reached equals the header's claim.
+/// Refuses:       `BatchCountMismatch` for a remainder past the batches,
+///   `LeafCountMismatch` for a leaf claim the batches do not meet, `Truncated`
+///   and `BadKind` for a header or a batch that does not read.
 pub fn import_catalog(
     dest: *ns.BoltCatalog,
     snapshot: []const u8,
@@ -546,6 +561,12 @@ pub fn import_catalog(
         off += batch_len;
     }
 
+    // invariant: the reader consumed exactly the bytes the snapshot carries. A blob
+    // holding more after its last declared batch is refused by the name this module's
+    // error set has held since it was written, rather than imported as though it were
+    // whole -- the structural claim is read before the leaf claim below, because the
+    // count of batches is what decides which bytes the leaf claim is even about
+    if (off != cap_u32(snapshot)) return error.BatchCountMismatch;
     if (dest.leaf_count != claimed_leaves) return error.LeafCountMismatch;
     return dest.leaf_count;
 }
@@ -584,6 +605,133 @@ pub fn assert_catalog_replay(expect: *const ns.BoltCatalog, got: *const ns.BoltC
     }
 }
 
+/// Unwelcome: one tampered byte inside a batch refuses the whole import.
+///
+/// Precondition:  `snap` is an honest snapshot of at least four bytes.
+/// Postcondition: the destination catalog is left empty.
+fn refuse_tampered_batch(signer: kumara.KeyPair, snap: []const u8) !void {
+    // invariant: the byte this leg reaches for stands inside the snapshot it was handed
+    assert(snap.len > 3);
+    var bad: [max_snapshot_bytes]u8 = undefined;
+    tally_copy.copy_disjoint(u8, bad[0..snap.len], snap);
+    bad[3] = if (bad[3] == 'z') 'y' else bad[3] + 1;
+    var dest_bad: ns.BoltCatalog = .empty();
+    if (import_catalog_horizon(&dest_bad, bad[0..snap.len], signer.public_key)) |_| {
+        return error.Truncated;
+    } else |_| {}
+    // invariant: a refused import leaves nothing of itself behind on the horizon path
+    assert(dest_bad.leaf_count == 0);
+}
+
+/// Unwelcome: a head record whose digest claim was edited refuses after the
+/// batches have already applied.
+///
+/// Precondition:  `src` holds at least one leaf to stage a horizon catalog from.
+/// Postcondition: the destination catalog is left empty.
+fn refuse_head_claim(signer: kumara.KeyPair, src: *const ns.BoltCatalog) !void {
+    // invariant: a catalog with no leaves stages no head record, so this leg would
+    // press nothing at all
+    assert(src.leaf_count >= 1);
+    var bad_staged: ns.BoltCatalog = .empty();
+    try stage_horizon_catalog(src, signer, 1, snapshot_export_version, "witnesses=181", &bad_staged);
+    var j: u32 = 0;
+    while (j < bad_staged.leaf_count) : (j += 1) {
+        const leaf = &bad_staged.leaves[j];
+        if (!std.mem.eql(u8, leaf.path[0..leaf.path_len], head_record_path)) continue;
+        const content = leaf.bytes[0..leaf.bytes_len];
+        const prefix = "head-digest-sha3-512:";
+        if (std.mem.indexOf(u8, content, prefix)) |pos| {
+            const hex_start = pos + prefix.len;
+            if (hex_start < content.len) {
+                leaf.bytes[hex_start] = if (leaf.bytes[hex_start] == 'a') 'b' else 'a';
+                rebind_leaf_digest(leaf);
+            }
+        }
+        break;
+    }
+    var bad_snap: [max_snapshot_bytes]u8 = undefined;
+    const bad_len = try export_catalog(&bad_staged, signer, &bad_snap);
+    var dest_bad: ns.BoltCatalog = .empty();
+    if (import_catalog_horizon(&dest_bad, bad_snap[0..bad_len], signer.public_key)) |_| {
+        return error.Truncated;
+    } else |_| {}
+    // invariant: the head claim is read after the batches apply, and a refusal there
+    // still hands back an empty catalog rather than a half-imported one
+    assert(dest_bad.leaf_count == 0);
+}
+
+/// Unwelcome: bytes standing past the last declared batch refuse by name.
+///
+/// A snapshot is a claim about its own whole length, so a reader that stops at
+/// the batch it was told about and never asks what follows accepts two different
+/// byte strings as one catalog.
+///
+/// Precondition:  `snap` is an honest snapshot with room for eight more bytes.
+/// Postcondition: the import refused, and it refused as `BatchCountMismatch`.
+fn refuse_padded_snapshot(signer: kumara.KeyPair, snap: []const u8) !void {
+    const tail_bytes: u32 = 8;
+    // invariant: the padded copy stands inside the buffer this leg writes it into
+    assert(snap.len + tail_bytes <= max_snapshot_bytes);
+    var bad: [max_snapshot_bytes]u8 = undefined;
+    tally_copy.copy_disjoint(u8, bad[0..snap.len], snap);
+    var t: u32 = 0;
+    while (t < tail_bytes) : (t += 1) bad[snap.len + t] = 0x7a;
+    var dest_bad: ns.BoltCatalog = .empty();
+    const answer = import_catalog(&dest_bad, bad[0 .. snap.len + tail_bytes], signer.public_key);
+    if (answer) |_| {
+        return error.BatchCountMismatch;
+    } else |err| {
+        // invariant: the refusal names the batch count rather than any other fault,
+        // so a caller can tell a padded snapshot from a corrupt one
+        assert(err == error.BatchCountMismatch);
+    }
+}
+
+/// Unwelcome: no leaf claim makes a PREFIX of a snapshot import as though it
+/// were whole.
+///
+/// Lowering the declared batch count leaves the dropped batches standing as
+/// trailing bytes, and the leaf claim beside it is a field the same hand writes
+/// -- so the whole family is swept here rather than one plant of it.
+///
+/// Precondition:  `snap` is an honest snapshot carrying at least two batches.
+/// Postcondition: every lowered count, at every leaf claim up to
+///   `max_prefix_claim`, was refused.
+fn refuse_prefix_snapshot(signer: kumara.KeyPair, snap: []const u8) !void {
+    // How high this sweep lifts a forged leaf claim. The claim is one `u32` a
+    // forger writes freely, so no sweep reads all of it; what this leg needs is a
+    // range covering every count its own three-leaf catalog can honestly produce,
+    // plus room above. Eight stands well past the five leaves the staged horizon
+    // catalog holds, and the sweep costs eight imports per dropped batch, which is
+    // why it is small. It lives here rather than beside the module's ceilings
+    // because it bounds a LEG rather than a caller -- `ceiling_teeth` reads a
+    // published `max_` as a fence somebody meets, and this one turns nobody away.
+    const max_prefix_claim: u32 = 8;
+    const version_len: u32 = @intCast(snapshot_export_version.len);
+    const leaves_off: u32 = 1 + 2 + version_len;
+    const count_off: u32 = leaves_off + 4;
+    // invariant: both header fields this leg rewrites stand inside the snapshot
+    assert(snap.len > count_off + 4);
+    var bad: [max_snapshot_bytes]u8 = undefined;
+    tally_copy.copy_disjoint(u8, bad[0..snap.len], snap);
+    const declared = std.mem.readInt(u32, bad[count_off..][0..4], .little);
+    // invariant: the honest snapshot carries more than one batch, or there is no
+    // prefix to forge and this leg presses nothing at all
+    assert(declared >= 2);
+    var drop: u32 = 1;
+    while (drop < declared) : (drop += 1) {
+        std.mem.writeInt(u32, bad[count_off..][0..4], declared - drop, .little);
+        var claim: u32 = 0;
+        while (claim <= max_prefix_claim) : (claim += 1) {
+            std.mem.writeInt(u32, bad[leaves_off..][0..4], claim, .little);
+            var dest_bad: ns.BoltCatalog = .empty();
+            if (import_catalog(&dest_bad, bad[0..snap.len], signer.public_key)) |_| {
+                return error.BatchCountMismatch;
+            } else |_| {}
+        }
+    }
+}
+
 fn run_selftest(_: std.Io) !u8 {
     const signer_seed = [_]u8{0x61} ** kumara.seed_length;
     const signer = kumara.keypair_from_seed(&signer_seed);
@@ -604,51 +752,18 @@ fn run_selftest(_: std.Io) !u8 {
     assert(imported == staged_expect.leaf_count);
     try assert_catalog_replay(&staged_expect, &dest);
 
-    // Unwelcome: tampered batch byte refuses whole import.
-    {
-        var bad: [max_snapshot_bytes]u8 = undefined;
-        tally_copy.copy_disjoint(u8, bad[0..snap_len], snap[0..snap_len]);
-        bad[3] = if (bad[3] == 'z') 'y' else bad[3] + 1;
-        var dest_bad: ns.BoltCatalog = .empty();
-        if (import_catalog_horizon(&dest_bad, bad[0..snap_len], signer.public_key)) |_| {
-            return error.Truncated;
-        } else |_| {}
-        assert(dest_bad.leaf_count == 0);
-    }
-
-    // Unwelcome: head digest claim mismatch refuses after batches apply.
-    {
-        var bad_staged: ns.BoltCatalog = .empty();
-        try stage_horizon_catalog(&src, signer, 1, snapshot_export_version, "witnesses=181", &bad_staged);
-        var j: u32 = 0;
-        while (j < bad_staged.leaf_count) : (j += 1) {
-            const leaf = &bad_staged.leaves[j];
-            if (!std.mem.eql(u8, leaf.path[0..leaf.path_len], head_record_path)) continue;
-            const content = leaf.bytes[0..leaf.bytes_len];
-            const prefix = "head-digest-sha3-512:";
-            if (std.mem.indexOf(u8, content, prefix)) |pos| {
-                const hex_start = pos + prefix.len;
-                if (hex_start < content.len) {
-                    leaf.bytes[hex_start] = if (leaf.bytes[hex_start] == 'a') 'b' else 'a';
-                    rebind_leaf_digest(leaf);
-                }
-            }
-            break;
-        }
-        var bad_snap: [max_snapshot_bytes]u8 = undefined;
-        const bad_len = try export_catalog(&bad_staged, signer, &bad_snap);
-        var dest_bad: ns.BoltCatalog = .empty();
-        if (import_catalog_horizon(&dest_bad, bad_snap[0..bad_len], signer.public_key)) |_| {
-            return error.Truncated;
-        } else |_| {}
-        assert(dest_bad.leaf_count == 0);
-    }
+    try refuse_tampered_batch(signer, snap[0..snap_len]);
+    try refuse_head_claim(signer, &src);
+    try refuse_padded_snapshot(signer, snap[0..snap_len]);
+    try refuse_prefix_snapshot(signer, snap[0..snap_len]);
 
     print("snapshot: horizon export -- {d} leaves with catalog/ trust/ head record\n", .{staged_expect.leaf_count});
     print("snapshot: SHA3-512 HEAD verified on import GREEN\n", .{});
     print("snapshot: continuity fact present -- export kind GREEN\n", .{});
     print("snapshot: import replay -- recall identical on every leaf GREEN\n", .{});
     print("snapshot: tampered batch and head refused whole GREEN\n", .{});
+    print("snapshot: bytes past the last declared batch refused as BatchCountMismatch GREEN\n", .{});
+    print("snapshot: no leaf claim imports a prefix as whole GREEN\n", .{});
     print("snapshot: version {s} batch {s}\n", .{ snapshot_export_version, rb.batch_version });
     print("GREEN: I2 snapshot export -- horizon bundles replay on host.\n", .{});
     return 0;

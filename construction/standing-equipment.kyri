@@ -2183,6 +2183,23 @@ path tools/m/mantra_record_ceiling_witness.rish
 tier lap
 seated 20260910.034822
 
+# mantra_snapshot_batch_count -- what follows the last declared batch? A catalog snapshot's header
+# carries a leaf claim and a BATCH COUNT, and `import_catalog` in `snapshot_export.rye` walked
+# exactly that many batches and never compared the offset it stopped at against the length of the
+# blob. `SnapshotError.BatchCountMismatch` had named that refusal since the file was written and
+# no line ever returned it -- a refusal named and unreachable. Measured on metal `20260910.140122`
+# in a pen before a line changed: eight bytes of junk appended to an honest 1,292-byte snapshot,
+# and both `import_catalog` and `import_catalog_horizon` answered 5 leaves and success, so two
+# byte strings imported as one catalog. Lowering the declared count then imported a PREFIX as
+# whole -- `drop=1 claim=3` and `drop=2 claim=2` accepted -- since the leaf claim is a field the
+# same hand writes; the horizon path refused those with HeadDigestMismatch, which is where the
+# defense had actually been standing. The repair is one comparison at the edge, ahead of the leaf
+# claim, and the selftest sweeps every lowered count at every claim up to `max_prefix_claim`.
+guard mantra_snapshot_batch_count
+path tools/m/mantra_snapshot_batch_count_witness.rish
+tier lap
+seated 20260910.140122
+
 # mantra_document_roundtrip -- does the store return the bytes it was handed? `split_lines` in
 # `diff.rye` drops the empty token a text ending in `\n` produces, and a text ending without one
 # produces no such token at all, so `x\ny` and `x\ny\n` split to the same two lines. `cmd_add`
