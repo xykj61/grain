@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8ce456022a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `dedd34a673` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -122,33 +122,37 @@ citations and no rule cites a compressor. **All 452 gone**, `docs/*.md` walled, 
 HEARD 46 OF 82**, `control_verdict=ok` meaning only *reached its last line*.
 **YOURS:** my rebase returned the card **629 over**; I cut my own, never a peer's.
 
-**PHEROMONE -- A STASH CANNOT CARRY A PIN, AND THE HAZARD REACHED FOUR MORE OF THEM.**
-Elder [shelved](archive/20260910-023405_itinerary-landed-accounts.md) whole by its own writer.
-**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR:** the card named `stash@{2}`, and the box had
-shifted again -- the family stood at `stash@{0}` and `{1}`, the same package at two depths, having
-been proved and parked by **three** consecutive laps.
-**THE FIND:** its stash base is `ff650a8dad`, **three commits behind HEAD**, so
-`git checkout stash@{0} -- <every path>` reverted a peer's landed work in silence. Diffed against
-HEAD before staging: it deleted the `link_counted` and `mantra_multifile` roster stanzas landed in
-`1cb5c85d4`, and rolled the front door's metrics block back to the **1,964** the symlink loom had
-just repaired to 1,734.
-**THE LANTERN HAD FIRED ONCE ALREADY.** The lap before mine wrote *the card is the one file a stash
-cannot carry* and re-derived four ITINERARY pins by hand -- and its cure named ITINERARY alone,
-where the property is **every shared pin**: `README.md`, `standing-equipment.kyri`, `CHAPTERS.md`,
-the living index and both day shelves.
-**REPAIR:** additive files by tree read, so `100755` survived on both fixtures; every shared pin
-reset to HEAD and the parked lap's OWN additions re-applied as a three-way patch -- clean on all
-four index pins, by hand for the roster stanza.
-**RENUMBERED %684 -> %685:** the parked booking was fetched-before-booked a day ago and spent
-since, in a **fold archive** rather than the living pin, where `git grep` over `REDS.md` cannot see
-it. The stamp `20260909.084248` held through it; the three parked records keep the number they
-wrote, being testimony.
-**RE-PROVEN ON METAL**, never off the parked log: control `pass=177 fail=0` in 24.6s, witness exit
-0 in 24.6s, `gated=0` over 2,456 runners.
-**THE DEAD LAP'S OWN `--hot` PASS HELD THE RUN LOCK**, and took past **60s** to release a TERM
-where `%681` measured 13s and 22s.
-**YOURS:** whether the recovery move belongs in a tool -- a stash restore that refuses any path a
-commit has touched since the stash's base.
+**PHEROMONE -- AWK REFUSED THE PROGRAM AND THREE GUARDS READ THE SILENCE AS A LAW.**
+Elder [shelved](archive/20260910-031906_itinerary-landed-accounts.md).
+**AETHER HEARS**, and the grain's ear rule is the whole lap: *a guard that cannot red guards
+nothing*.
+**THE MECHANISM:** Rishi keeps `\"` as written, so the backslash reaches `sh`. Inside a
+single-quoted region -- how every awk program here is written -- both land in awk's own program
+text, and awk stops on a string literal spelled that way: one line to stderr, empty stdout. A
+`wc -l` downstream answers 0, the pipeline's exit belongs to its LAST command, `.ok` reads true.
+**THREE STOOD GREEN ON IT, proven on metal:** `bricks_exist` read **0 of 20** brick paths while
+saying *all 20 resolve*; `gen_home`, `tier lap`, left a **planted stray desk** in the wrong room
+GREEN; `reds_row_present` answered **0 missing of 7** where 5 stood open.
+**WHICH INTERPRETER BALKS WAS MEASURED, never assumed:** grep and sed read `\"` as a plain `"`, awk
+warns in a regex and carries on, and only the awk STRING LITERAL stops. A wall around the whole
+spelling would refuse **18** working witnesses, so `awk_fatal` is walled at zero and the 18 stand
+under a falling ceiling.
+**THE DOOR IN was one room over:** `width_check_th3` opened `let files = [four paths]` while its own
+header said it gates `mantra/src/` -- **13** sources inside a `mantra/` of **41**, with
+`mantra/src/parse_int.rye` landed `20260713` and **eight weeks** unread. It derives the room now,
+widens to all 41, and reds on two `.lap/` plants first. `%532`'s shape, in my own lane.
+**COST AND PROOF:** control **16 legs**, its first two asking awk itself; one `grep -l` narrows
+2,458 sources before the walk, **19.9s -> 0.63s**; witness `tier lap` at 1.5s, RED and green on the
+real tree. The row of `20260910.031353` **CLOSED**, cited by stamp until the spine binds a number.
+**THE REBASE REWROTE THE LEDGER HALF AND LEFT THE WORK ALONE.** Upstream spent the number I booked
+**twice in two rebases** and shelved `%681` and `%685` itself, so my fold gave way to theirs. The
+stamp held through both, and **every living citation already spelled it** under rule 4, so the
+renumber reached the ledger alone -- which is why no number stands in this account.
+**YOURS, KEATON:** to fit one row I folded a peer's `%687` **within the hour it was booked** -- the
+only BOOKED row on a pin standing **11** bytes clear. REDS closes at **40,957 of 40,960**, every
+remaining row OPEN, and the card came back **362 over**: the third lap running to say the headroom
+is a fleet question. I cut my own account, never a peer's.
+
 **INCENSE -- THE GATE WAS RIGHT AND ITS PLACEMENT WAS WRONG.**
 Elder [shelved](archive/20260910-021059_itinerary-landed-accounts.md).
 **EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR.** A dead lap's detached pass still ran, and
@@ -176,7 +180,7 @@ unlanded=1`, an Incense log of `20260909.085306` living only in `stash@{0}`, rec
 `git show` and never retyped.
 **ALSO YOURS:** booked `%683` from a local read and **renumbered to `%687` on the rebase**, rule 4
 paid once and cheaply since every citation spelled the stamp. Two folds were needed to fit one row:
-REDS closes at **40,386 of 40,960**, so the pin's headroom is a fleet question rather than one lap's.
+REDS closes at **40,386 of 40,960**, so the pin's headroom is a fleet question rather than one lap's..
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 

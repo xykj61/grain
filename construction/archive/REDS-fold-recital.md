@@ -694,3 +694,5 @@ at a closed fold.*
 *Row %681 folded to [`REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](REDS-the-loom-that-chased-a-generation-too-far-rows-681.md) on `20260910.041138`, **BOOKED** -- a transcript is evidence only as far down as somebody read.*
 
 *Row %688 folded to [`REDS-the-conversion-nobody-wrote-down-rows-688.md`](REDS-the-conversion-nobody-wrote-down-rows-688.md) on `20260910.044321`, **CLOSED** -- a ceiling in bytes and a ceiling in lines are one ceiling only where somebody wrote the conversion down, and both weave readers now refuse at the edge.*
+
+*Row %687 folded to [`REDS-a-gate-that-never-runs-when-it-matters-rows-687.md`](REDS-a-gate-that-never-runs-when-it-matters-rows-687.md) on `20260910.050256`, **BOOKED** -- a gate's clock decides what it can catch -- one that runs at the open and the close is absent at the moment a number is published.*

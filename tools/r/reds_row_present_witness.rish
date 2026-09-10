@@ -39,7 +39,7 @@ assert spine.out contains "gaps_or_dupes=0" else "reds-row-present: want a gaple
 # end of the ledger -- 411 invocations, each re-reading the whole spine, 177 of the roster's
 # 1,510 seconds. `--all` answers from the same sed expressions over the same spine file set, so
 # the authority is unchanged and the loop is gone.
-let agree = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); miss=$(sh tools/fixtures/r/reds_row_present.sh --all | awk -v n=\"$n\" '{seen[$1]=1} END{m=0; for(i=1;i<=n;i++) if(!(i in seen)) m++; print m}'); echo rows=$n missing=$miss; test $miss -eq 0"]
+let agree = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); miss=$(sh tools/fixtures/r/reds_row_present.sh --all | awk -v n=$n '{seen[$1]=1} END{m=0; for(i=1;i<=n;i++) if(!(i in seen)) m++; print m}'); echo rows=$n missing=$miss; test $miss -eq 0"]
 
 # ...AND THE SINGLE-ROW PATH STAYS PROVEN, because that is the path seventeen scans call. A
 # completeness leg that only ever runs `--all` would leave the contract those scans depend on

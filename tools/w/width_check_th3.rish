@@ -1,22 +1,72 @@
-# width_check_th3.rish -- TH-3 witness: Mantra module zero authored usize.
+# width_check_th3.rish -- TH-3 witness: the Mantra room carries zero authored usize.
 #
-# Gates mantra/src/* only -- global width-check stays RED until Rishi and
-# Comlink migrate; width-check remains outside parity until corpus is clean.
+# Gates the whole `mantra/` room -- the tree-wide width-check stays RED until Rishi and
+# Comlink migrate, so this is Mantra's own wall beside it.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/w/width_check_th3.rish
+#
+# THE POPULATION IS DERIVED FROM THE ROOM, never named beside it (repaired `20260910.025942`,
+# booked at `20260910.031353`). The elder form opened `let files = [four paths]` while
+# `mantra/src/` held
+# thirteen tracked sources and `mantra/` held forty-one, so thirty-seven sources stood outside
+# a reading whose own header said it gates the room -- `mantra/src/parse_int.rye` among them,
+# landed 20260713 and unread for eight weeks. Its verdict was true the whole time and its reach
+# was four files, which is the exact shape REDS %532 booked one room over: a hand-written
+# enumeration standing in for a population reads as coverage from every side. Deriving also
+# widened the wall src/ -> the whole room, which costs nothing because the whole room already
+# reads zero -- measured 20260910.025942, 41 tracked sources, 0 carrying an authored usize.
+#
+# THE READING IS LINE-ORIENTED, one `grep` over the whole list rather than one per file. It
+# prints `path:line:text`, drops the comment lines, drops the two seam forms, and takes the path
+# column. That shape assumes no source path carries a `:`; none in this room does, and a path
+# that did would land in the offender list rather than escape it, so the assumption fails safe.
+#
+# A comment-only line is prose ABOUT the seam, never a declaration at it. The Mantra modules
+# that keep a `usize` seam say so in a `//` line beside every cast -- which the elder grep
+# counted as the very thing those lines exist to explain, so the witness reddened on its own
+# modules being honest (found 20260907.144347, unrostered and red at HEAD). Comment-only lines
+# are dropped first; a declaration carrying a trailing comment still reads, since only the
+# leading `//` forms are cut.
+#
+# THE READING IS PROVEN ABLE TO RED, in this file, on every run -- the grain's own strand, that
+# a guard which cannot red guards nothing (REDS row 59). One planted source carrying an authored
+# usize must be named, and one carrying only a commented seam must go free; both plants live
+# under `.lap/`, which is gitignored and per ship, so no peer's tree is touched.
 
-let files = ["mantra/src/diff.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye"]
+# The one reading, taken over whatever list of sources it is handed.
+fn offend lister: run ["sh" "-c" "${lister} | xargs grep -nH 'usize' | grep -v ':[0-9][0-9]*:[[:space:]]*//' | grep -v '@intCast' | grep -v '@as(usize' | cut -d: -f1 | sort -u"]
 
-# A comment-only line is prose ABOUT the seam, never a declaration at it. The three
-# Mantra modules that keep a `usize` seam say so in a `//` line beside every cast --
-# which the elder grep counted as the very thing those lines exist to explain, so the
-# witness reddened on its own modules being honest (found 20260907.144347, unrostered
-# and red at HEAD). Comment-only lines are dropped first; a declaration carrying a
-# trailing comment still reads, since only the leading `//` forms are cut.
-let results = map files as path: { file: path, scan: run ["sh" "-c" "grep -v '^[[:space:]]*//' ${path} 2>/dev/null | grep 'usize' | grep -v '@intCast' | grep -v '@as(usize' | wc -l"] }
+let room = "git ls-files 'mantra/**.rye'"
 
-let violations = where results as r: trim r.scan.out != "0"
-assert length violations == 0 else "Mantra must carry zero authored usize after TH-3"
+let census = run ["sh" "-c" "${room} | wc -l"]
+let population = trim census.out
 
-say "GREEN: TH-3 — Mantra reads zero authored usize; seam policy in TAME_GUIDANCE."
+# FIVE OF THE ROOM'S SOURCES ARE SYMLINKS presenting another room's file at a Mantra path --
+# `mantra/parse_int.rye` and `mantra/src/parse_int.rye` are both `tally/parse_int.rye`. They are
+# read, because a path the room offers is a path the room answers for, and the count says so
+# rather than letting one number stand for two different things (the loom the front door paid
+# on `20260910.010311`).
+let linkage = run ["sh" "-c" "git ls-files -s 'mantra/**.rye' | grep -c '^120000'"]
+let symlinked = trim linkage.out
+assert population != "0" else "the Mantra room names no .rye source -- a corpus of zero is a red, never a clean reading (REDS %170)"
+
+# Prove the reading bites before trusting its silence.
+let plant = run ["sh" "-c" "mkdir -p .lap && echo 'const n: usize = 0;' > .lap/th3-plant.rye && echo '// a usize seam lives here' > .lap/th3-clean.rye"]
+assert plant.ok else "the prove-red plants could not be written under .lap/"
+
+let bitten = trim (offend "echo .lap/th3-plant.rye").out
+assert bitten == ".lap/th3-plant.rye" else "the reading passed over a planted authored usize -- it cannot red, so its silence means nothing"
+
+let freed = trim (offend "echo .lap/th3-clean.rye").out
+assert freed == "" else "the reading counted a comment-only seam line -- the very prose it exists to let stand"
+
+let swept = run ["sh" "-c" "rm -f .lap/th3-plant.rye .lap/th3-clean.rye"]
+assert swept.ok else "the prove-red plants could not be swept from .lap/"
+
+let bad = trim (offend room).out
+if bad != "" then say "RED: authored usize in the Mantra room --"
+if bad != "" then say bad
+assert bad == "" else "Mantra must carry zero authored usize after TH-3"
+
+say "GREEN: TH-3 -- ${population} tracked Mantra sources read, ${symlinked} of them symlinks presenting another room's file, zero authored usize, and the reading proved it can red before its silence was trusted; seam policy in TAME_GUIDANCE."

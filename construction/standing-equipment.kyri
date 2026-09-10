@@ -856,6 +856,34 @@ path tools/r/reds_row_present_witness.rish
 seated 20260825.213128
 tier lap       # the ledger a lap books rows into
 
+# rishi_quoted_program -- Rishi leaves `\"` in a string literal alone, so the backslash reaches
+# `sh`; inside a single-quoted region -- how every awk program in this tree is written -- both
+# characters land in the program text and awk REFUSES a string literal spelled that way. It
+# writes a syntax error to stderr and prints nothing, a `wc -l` downstream answers 0, and the
+# pipeline's exit status is the last command's, so `.ok` reads true. A guard above it reads a
+# silence it never earned. Three stood on exactly that (the row of `20260910.031353`), and one
+# of them is `reds_row_present` directly above: its gap arithmetic answered 0 missing of 7 where
+# 5 were missing, so "every spine row found" was a sentence no run had checked. `gen_home` was
+# rostered `tier lap` and left a planted stray desk GREEN on metal; `bricks_exist` read 0 of 20
+# brick paths while saying all 20 resolve. All three repaired by handing the literal in with
+# `awk -v k=file` rather than spelling it inside the program.
+#
+# WHICH INTERPRETER REFUSES WAS MEASURED, never assumed: grep and sed read `\"` as a plain `"`
+# and match correctly, and awk warns inside a regex and works. Only the awk STRING LITERAL is
+# fatal, so `awk_fatal` is walled at zero and the 18 tolerated grep/sed/printf sites stand under
+# a ceiling that only falls. A wall drawn around the whole spelling would have refused eighteen
+# living witnesses that work.
+#
+# One `grep -l` narrows 2,458 sources to the handful that could carry the spelling before any
+# per-file walk -- 19.9s -> 0.63s for identical counts, Diffuser's tax one room over. The
+# control proves 16 behaviors in a pen, every refusal planted then lifted, and its first two
+# legs ask AWK ITSELF whether the plant breaks and the repair reads, so the fault is proven real
+# rather than pattern-matched. 1.5s including the control.
+guard rishi_quoted_program
+path tools/r/rishi_quoted_program_witness.rish
+seated 20260910.031353
+tier lap       # 1.5s; it walls the class that made three green guards vacuous
+
 guard shell_dialect
 path tools/s/shell_dialect_witness.rish
 seated 20260826.001630
@@ -2179,6 +2207,19 @@ seated 20260909.170000
 # had run green by hand for weeks and stood on no roster, so nothing heard it --
 # which is `%360`'s shape, a proof nobody runs. It reads one room and takes
 # under a second, so it is a lap guard rather than a cadence one.
+#
+# IT READS THE ROOM FROM `20260910.025942`, and until then it read four files. The elder body
+# opened `let files = ["mantra/src/diff.rye" ... ]` -- four paths -- while `mantra/src/` held
+# thirteen tracked sources and `mantra/` held forty-one. `mantra/src/parse_int.rye` landed
+# `20260713` and stood eight weeks outside a reading whose own header said it gates the room.
+# The verdict was true the whole time and the reach was four files, which is REDS %532's shape
+# one room over: a hand-written enumeration standing in for a population reads as coverage from
+# every side. The list is derived from `git ls-files` now, the wall widened src/ -> the whole
+# room (which costs nothing, since all 41 already read zero), the count of symlinked sources is
+# printed so one number cannot stand for two things, and the reading PROVES IT CAN RED on two
+# plants under `.lap/` before its silence is trusted -- the grain's own strand (REDS row 59).
+# Proven on metal both ways: a usize appended to `mantra/parse_int.rye`, a file the elder list
+# never named, reds it.
 guard width_check_th3
 path tools/w/width_check_th3.rish
 tier lap

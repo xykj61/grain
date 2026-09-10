@@ -23,7 +23,7 @@ assert (trim flat.out) == "0" else "expected zero flat desks at ${home}; the let
 
 # invariant: every folded desk sits in the letter room its basename names.
 # hoon-study/ is the one named exception, kept whole on purpose.
-let strays = run ["sh" "-c" "find ${home} -mindepth 2 -name '*.glow' | awk -F/ '$3 != \"hoon-study\" && $3 != substr($NF,1,1) { print }' | wc -l | tr -d ' '"]
+let strays = run ["sh" "-c" "find ${home} -mindepth 2 -name '*.glow' | awk -F/ -v keep=hoon-study '$3 != keep && $3 != substr($NF,1,1) { print }' | wc -l | tr -d ' '"]
 assert strays.ok else "letter-rule scan failed"
 assert (trim strays.out) == "0" else "a desk stands in a room its own first letter does not name"
 
