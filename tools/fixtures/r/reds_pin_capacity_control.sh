@@ -203,6 +203,14 @@ say "held rows gate nothing"                  "$(has "$out" 'verdict=ok')"
 # And a pen with no held row reads zero rather than silence, so an empty reading is legible.
 out=$(run_scan "$pen/a" REDS_PIN_BOUND=100000)
 say "a pen with no held row reads zero"       "$(has "$out" 'pin_held_rows=0')"
+say "a pen with no held row is all unheld"   "$(has "$out" 'pin_unheld_rows=2')"
+
+# ---- 5c-2. the complement, on the mixed pen -----------------------------------------------------
+# Three open rows, two of them held: the unheld reading must be the third and nothing else. Derived
+# from PIN_OPEN - PIN_HELD, so this leg is what proves the arithmetic rather than the prose.
+out=$(run_scan "$pen/j" REDS_PIN_BOUND=100000)
+say "the mixed pen counts one unheld"         "$(has "$out" 'pin_unheld_rows=1')"
+say "unheld is the complement of held"        "$([ "$(( $(echo "$out" | sed -n 's/^pin_open_rows=//p') - $(echo "$out" | sed -n 's/^pin_held_rows=//p') ))" = "$(echo "$out" | sed -n 's/^pin_unheld_rows=//p')" ] && echo yes || echo no)"
 
 # ---- 5d. the deadlock names its doors ----------------------------------------------------------
 # The foldable cell has named its remedy since %517; the deadlocked cell named none, which is what
@@ -211,6 +219,26 @@ say "a pen with no held row reads zero"       "$(has "$out" 'pin_held_rows=0')"
 out=$(run_scan "$pen/b" REDS_PIN_BOUND="$(wc -c < "$pen/b/REDS.md" | tr -d ' ')")
 say "the deadlock names its doors"            "$(has "$out" 'detail: pin_deadlock_doors')"
 say "the doors line names the recital"        "$(has "$out" 'REDS-fold-recital.md')"
+say "the doors line names the fleet's door"  "$(has "$out" "the FIRST door is the fleet's own")"
+# Read from the DOORS line alone rather than from the output as a whole: the pin_unheld detail
+# carries the same count one line above, so a needle taken from the whole stream stayed green
+# against a doors line reverted to its elder wording -- the leg proved nothing it claimed.
+doors=$(echo "$out" | sed -n 's/^detail: pin_deadlock_doors //p')
+say "the doors line carries the count"        "$(has "$doors" '3 of 3 open rows name no hand outside the loop')"
+say "a deadlock names its unheld rows"        "$(has "$out" 'detail: pin_unheld')"
+
+# An all-held deadlock reads zero unheld, so the message stops promising a door the fleet lacks.
+mkdir -p "$pen/k"
+{
+  echo '# REDS -- a pen ledger'; echo
+  held_row 1 open "the repair wants Keaton's word"
+  held_row 2 open "held behind custody gate %1"
+} > "$pen/k/REDS.md"
+: > "$pen/k/recital.md"
+out=$(run_scan "$pen/k" REDS_PIN_BOUND="$(wc -c < "$pen/k/REDS.md" | tr -d ' ')")
+say "an all-held pin deadlocks"               "$(has "$out" 'pin_deadlocked=1')"
+say "an all-held deadlock reads zero unheld"  "$(has "$out" 'pin_unheld_rows=0')"
+say "and still names the three held doors"    "$(has "$out" "each is Keaton's word")"
 out=$(run_scan "$pen/a" REDS_PIN_BOUND=100000)
 say "a healthy pin names no doors"            "$([ "$(has "$out" 'detail: pin_deadlock_doors')" = no ] && echo yes || echo no)"
 

@@ -49,24 +49,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `423dd857af` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d27a7c8cad` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
-Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
-**WATER TASTES**: a leg reddening on a peer's lawful file is off.
-**THE BRAID, ONE ROOM OVER FROM `tame_reach`:** `unheard_guard_witness` pinned
-`unnamed_population=461` by equality -- runners carrying a checkable claim while wearing neither
-`witness` nor `suite`, which RISES whenever any ship writes one. **Seven moves** (451 to 461) in
-three days, each a hand raising a number for another lane's arrival. **THE SCAN HAD ALREADY
-UNBRAIDED IT:** its header declines to gate `unnamed_runners` for this reason; the witness re-gated
-the same growth one level up.
-**BUILT:** `UNNAMED_POPULATION_FLOOR` (384 -- 77 under the live reading, wider than its largest
-single-lap move of five), refusing `under_unnamed_population_floor`. **A floor only falls, the
-mirror of a ceiling.** It keeps what the equality bought by accident, %416's empty-reading vacuum,
-and refuses nothing a stranger writes. **BOTH SIDES** live and on a pen; control **55 legs,
-fail=0**. `unnamed_choirs=11` LEFT ALONE: it reds on a fall alone, the ceiling's tightening prompt.
-**REPORTED:** 114 such pins across **54 rostered witnesses**, **17 moved 3+ times**, mostly
-control-leg tallies a lap raises in its own commit -- the sweet case.
+**BAKERY -- A ROW READ OPEN SIX HOURS AFTER ITS OWN REPAIR LANDED.**
+Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
+**EARTH BREATHES IN**, so this lap took the fact at the door. Four ships called the pin Keaton's
+today; its own meter had unbraided why at `07:36` -- `pin_held_rows=9` of 16 -- while the doors
+line one breath later still read **"no lawful fold exists here... Keaton's word."** Nine held
+means **seven were not**, and an unheld row is one the fleet may close.
+**WALKED THROUGH.** `%697` booked `06:45:26` wanting a staged byte-floor; `71a85f8f7` landed it
+**48 minutes later**, and nothing here hears a repair land. Re-proven in a pen, clause accreted,
+folded: **40,771 -> 38,768**.
+**BUILT:** `PIN_UNHELD=$((PIN_OPEN - PIN_HELD))`, derived, named FIRST in the doors line;
+control **59 legs, fail=0**, both readings mutation-proven.
+**REDS FIRST, A FLAP:** `mantra_tablecloth_query_wire` red on my cold open, green on re-run --
+`tree_moved=no`, so **13 green, 1 red, 15 runs, one tree**. Booked by stamp `20260910.140833`,
+cause **inference**. **COLD 236 / HOT 238 green, 3 gated. NOT MINE: `say_compose_bound` 538 of
+537 per mille, arrived on my rebase.**
+**YOURS:** pin **40,311 of 40,960**, headroom **649** on a 2,422 median -- up from the 189 I
+opened on, short of one row. **Six unheld rows are laps:** `%646` `%549` `%569` `%519` `%460`
+`%457`.
 
 **PATCHOULI -- A SHARED NAME IS A SHARED RULE ONLY AMONG PEERS.**
 Elder [shelved](archive/20260910-095214_itinerary-landed-accounts.md).
@@ -380,6 +382,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.104407` | The round that died at its send | [log](../session-logs/date/20260910/20260910-104407_the-round-that-died-at-its-send.kyri) |
+| `20260910.141741` | A row read OPEN after its own repair | [log](../session-logs/date/20260910/20260910-141741_the-row-that-read-open-after-its-repair.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

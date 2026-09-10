@@ -49,7 +49,7 @@
 #
 # WHAT IS REPORTED, never gated: pin_bytes, pin_bound, pin_headroom, pin_rows, pin_open_rows,
 # pin_fold_refused_rows, pin_foldable_rows, median_row_bytes, rows_that_fit, pin_deadlocked,
-# pin_held_rows.
+# pin_held_rows, pin_unheld_rows.
 #
 # WHY pin_held_rows, added `20260910.073602`. Door B landed on `20260829` as the one door that
 # reaches the cause -- BOOKED split from OPEN, eight booked rows drained, the pin fell 24,828 to
@@ -60,6 +60,26 @@
 # find reds at fleet rate; a row waiting on one person leaves at one person\'s rate. That is a
 # refill mechanism rather than a busy week, and it is reported here so the next reading of the
 # deadlock meets the cause rather than the symptom.
+#
+# WHY pin_unheld_rows AND THE DOORS LINE MOVED, added `20260910.140033`. The reading above landed
+# at 07:36 and the doors line beneath it was left saying "no lawful fold exists here. The three
+# doors of %338 stand and each is Keaton's word." Those two lines print in one breath and they
+# disagree: 9 of 16 rows named a hand outside the loop, so SEVEN did not, and a row nobody outside
+# the loop holds is a row the fleet itself may close. Four ships read the elder line that morning
+# and each carried "yours, Keaton" onto `construction/ITINERARY.md` -- a wall where a door stood.
+#
+# The complement is derived rather than counted again, and it is a PROXY twice over: `held()` reads
+# a row's prose for Keaton, a custody gate, or a numbered gate, and an unheld row may still be live
+# work nobody can finish today. So it is printed row by row and gated at nothing. What it does
+# promise is exact: closing ONE open row -- proving its repair on metal and accreting that row's
+# last bold marker to BOOKED -- moves pin_foldable_rows off zero, and by this scan's own table
+# that is the deadlock broken.
+#
+# Walked through on the lap that wrote this. `%697` had been booked at `20260910.064526` asking for
+# a byte-floor on a staged `.kyri`; `71a85f8f7` landed exactly that at `07:14:21`, forty-eight
+# minutes later, and the row stood OPEN for six hours because nothing in the ledger hears a repair
+# land. Its clause accreted, the row folded, and the pin fell 40,771 -> 38,768 bytes with no word
+# from anyone.
 #
 # WHY CAPACITY IS MOSTLY REPORTED AND NOT GATED. A full pin wants a person: raising a page's bound
 # is Keaton's word, seated that way once already for `session-logs/README.md`. A gate here would red
@@ -150,6 +170,12 @@ ROWREAD=tools/fixtures/r/reds_pin_capacity_rows.awk
 [ -f "$ROWREAD" ] || { echo "verdict=misuse detail=no_row_reader reader=$ROWREAD" >&2; exit 2; }
 
 eval "$(awk -f "$ROWREAD" -v mode=pin "$PIN")"
+
+# The complement of PIN_HELD, derived here rather than counted a second time -- two readers
+# spelling one rule are two readers that can come to disagree. An OPEN row naming no hand outside
+# the loop is one the fleet itself may close, which is the door the deadlock message had no way to
+# name: it printed pin_held_rows=9 beside "each is Keaton's word" and the two disagreed.
+PIN_UNHELD=$((PIN_OPEN - PIN_HELD))
 PIN_FOLDABLE=$((PIN_ROWS - PIN_REFUSED))
 
 if [ "$MEDIAN" -gt 0 ] && [ "$HEADROOM" -gt 0 ]; then
@@ -216,7 +242,8 @@ if [ "$DEADLOCKED" -eq 1 ]; then
   # named none, so a lap that met the wall had to re-derive its options -- and on 20260910 five did,
   # in one morning, each asking for a bound raise and one leaving its red cited in the card and in
   # no row at all. A meter that detects a wall and goes quiet about the doors is half a meter.
-  echo "detail: pin_deadlock_doors -- no lawful fold exists here. The three doors of %338 stand and each is Keaton's word: raise this page's bound, split OPEN by WHO HOLDS the row, or sanction the single-row shelf birth in reds_fold.sh's contract. Born-on-a-shelf is recorded PRACTICE rather than law -- see construction/archive/REDS-fold-recital.md -- and its cost is a live red where a lap reading the pin will not see it, which shelf_open_rows counts."
+  echo "detail: pin_unheld -- $PIN_UNHELD of $PIN_OPEN open rows name no hand outside the loop; each is the fleet's own to close, and one closed row makes reds_fold.sh lawful here"
+  echo "detail: pin_deadlock_doors -- no fold is lawful while every open row reads OPEN, and the FIRST door is the fleet's own: $PIN_UNHELD of $PIN_OPEN open rows name no hand outside the loop, so a lap that proves one repair on metal and accretes that row's last bold marker to BOOKED makes a fold lawful in the same lap. Where every open row is held, the three doors of %338 stand and each is Keaton's word: raise this page's bound, split OPEN by WHO HOLDS the row, or sanction the single-row shelf birth in reds_fold.sh's contract. Born-on-a-shelf is recorded PRACTICE rather than law -- see construction/archive/REDS-fold-recital.md -- and its cost is a live red where a lap reading the pin will not see it, which shelf_open_rows counts."
 fi
 
 echo "pin_bytes=$PIN_BYTES"
@@ -225,6 +252,7 @@ echo "pin_headroom=$HEADROOM"
 echo "pin_rows=$PIN_ROWS"
 echo "pin_open_rows=$PIN_OPEN"
 echo "pin_held_rows=$PIN_HELD"
+echo "pin_unheld_rows=$PIN_UNHELD"
 echo "pin_fold_refused_rows=$PIN_REFUSED"
 echo "pin_foldable_rows=$PIN_FOLDABLE"
 echo "median_row_bytes=$MEDIAN"
