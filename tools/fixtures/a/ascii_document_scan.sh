@@ -85,7 +85,12 @@ mode="${1:-census}"
 #                            1,434 converted by the table, 1 by the row this lap added below, and 3
 #                            read by hand. The reading fell 2773 -> 1336; the ceiling keeps the same
 #                            7 of slack and takes none of the 1,437.
-CEILING="${ASCII_DOC_CEILING:-1343}"
+#   1307  `20260910.054344`  `bat/README.md`, a front door outside every roster, held 36 -- 21
+#                            middots and 15 em dashes, every one a form the table spells. The page
+#                            was walled by nothing: no rule room cites it and it stands outside
+#                            `docs/`. The reading fell 1336 -> 1300; the ceiling keeps the same
+#                            7 of slack and takes none of the 36.
+CEILING="${ASCII_DOC_CEILING:-1307}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.

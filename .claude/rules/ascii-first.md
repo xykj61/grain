@@ -108,6 +108,17 @@ carry it now, and three legs in the pen prove it from both sides -- `minus_count
 earns its place only beside the first. Removing either row reds two legs; the pen stands at **85**.
 **A law and its instrument agreeing is a thing to measure rather than assume**, and this one had
 disagreed by exactly one row for the whole life of the document meter.
+**A front door outside every roster carried 36 more** (`20260910.054344`). `bat/README.md` sat in
+the ratchet alone -- unwalled, since no rule room cites it and it stands outside `docs/` -- holding
+21 middots and 15 em dashes across its head, its table and its body. All 36 are gone, every one a
+form the table above spells; the ratchet fell **1,336 to 1,300** and the ceiling **1,343 to 1,307**,
+keeping the same seven of slack. The page joined the `DOOR` roster of
+[`../../tools/fixtures/p/prose_register_scan.sh`](../../tools/fixtures/p/prose_register_scan.sh) in
+the same commit, which is the register wall rather than this one -- **a page can be walled for its
+characters, for its negatives, or for neither, and those three memberships are decided in three
+different files.** The lap that swept it also fixed the one em dash in
+[`../../tools/b/bat_fleet_witness.rish`](../../tools/b/bat_fleet_witness.rish)'s own `say` line, so
+the spoken meter's ceiling fell **11,154 to 11,153** beside it.
 
 **The wall names who is HELD; the seed names whose citations are CANON.** One roster served both
 jobs while it held only law rooms, and widening it made the difference matter: seeded from `docs/`,

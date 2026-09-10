@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260910.063900` | [The page that was still mine](20260910/20260910-063900_the-page-that-was-still-mine.kyri) | the wrap is the bound, proven on metal |
 | `20260910.063433` | [Eight cycled, and one never answered](20260910/20260910-063433_eight-cycled-and-one-never-answered.kyri) | residue seen and named |
+| `20260910.063000` | [the check nobody wrote](20260910/20260910-063000_the-check-nobody-wrote.kyri) | A front door named a check its witness never ran |
 | `20260910.062400` | [Three tracks, and a token that was not legal](20260910/20260910-062400_three-tracks-and-a-token-that-was-not-legal.kyri) | eight lessons; two agents |
 | `20260910.060709` | [The page that held half the ratchet](20260910/20260910-060709_the-page-that-held-half-the-ratchet.kyri) | 1,437 of 2,773 in one page |
 | `20260910.060234` | [The fleet is faster than my cold pass](20260910/20260910-060234_the-fleet-is-faster-than-my-pass.kyri) | A lap rebuilt a landed repair; the distance is measured now |

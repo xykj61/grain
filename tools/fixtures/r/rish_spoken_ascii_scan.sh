@@ -59,7 +59,7 @@ mode="${1:-count}"
 # The ceiling only falls. Lower it whenever a lap converts spoken lines; never raise it.
 # The arc, each figure measured rather than recalled:
 #   11154  `20260907.075500`  across 1,516 files, the reading on the lap this meter was seated
-CEILING=11154
+CEILING=11153
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).
