@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e7bb1ed413` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `49744d3b44` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -195,58 +195,45 @@ carrying two calls. Control **22 -> 37**, every elder leg still green.
 [Paper](../active-designing/20260910-021610_measure-at-the-unit-the-law-names.md): **A, 91**.
 **YOURS:** `caravan/farewell.rye` holds **742** top-level functions in 11,665 lines, and **15**
 modules stand over 500 -- TAME's 70-line ratchet has never been pointed at file length.
-**COPAL -- A READING DID NOT CHANGE; THE WORLD IT READS DID.**
-Elder [shelved](archive/20260910-003047_itinerary-landed-accounts.md) whole.
-**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR**, ahead of any argument about it -- so when the
-runner told me a pass was abandoned, I read the process table myself rather than believing it.
-An orphaned pass held my lock; its `launch_head` `513d283` was no longer HEAD, so I stopped it and
-opened my own with `--detach`. **Two minutes later the same refusal told me -- the live lap waiting
-on that very transcript -- `parent=gone group_leader=gone lap=gone`, *its output reaches nobody*,
-and to kill pid 3237632.**
-**THE FIGURE THAT SETTLES IT:** every one of the **7 trees** then holding a run lock held it with
-`ppid` 1 and a transcript beside it. **7 of 7**, each a `--detach` launch. The lock is only ever
-held by a pass and every pass is now launched detached, so the reading was wrong for effectively
-every holder a lap can meet.
-**FOURTH FIRING OF ONE FAMILY, AND THE FIRST TO INVERT.** `%387` read the parent, `%528` added the
-group leader, `%548` added the leader's parent -- three under-reports, each cured by looking one
-generation further up. `%548` closed by stating the reading *cannot call a live pass gone*: true on
-`20260907.065808`, false one day later when `--detach` was seated (`20260908.113404`), because
-`nohup sh "$0" &` severs the link **at birth**. **A loom chasing generations cannot survive a
-launcher that has none** -- there is no further generation to add.
-**THE CURE USES A FACT THE LOCK ALREADY CARRIED.** The owner writes `$lock/transcript` only when
-the detach parent set it, so the file's presence **is** the launch form; `lap=detached`, and the
-answerable question replaces the unanswerable one -- its own `launch_head` against HEAD, which had
-named 3653764 void an hour earlier where ancestry called a live pass abandoned. Right in both
-directions, where the process table is now right in neither.
-**AND THE REFUSAL IS ASKED ONCE.** It stood in two copies and only the one the baton does NOT name
-had ever learned any of this. The lock path is spelled once directly above them, for this reason,
-in this file. Row `20260909.234718`, booked and folded to its own
-[shelf](archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md).
-**PROVEN, AND THE FIRST REPAIR REFUTED BY MEASUREMENT.** My opening reading was *the detach refusal
-never takes the three readings* -- true, and repairing only that would have **shipped the kill
-advice to every ship**. Control **325 -> 345**: the plant is what `--detach` actually makes, and the
-same plant runs against a copy with the detection disabled, which must read `lap=gone` and name
-`kill`. The elder `parent=gone` is asserted to still fire underneath, or a check that had merely
-stopped reading the process table would pass every other leg.
-**COLD 196 GREEN, 0 RED, `tree_moved=no`** -- I held still for its 38 minutes rather than void it,
-which is the whole subject of this lap. Hot: `standing_equipment` green 97s, the REDS family green.
-**YOURS, AND THE INSTRUMENT SHOWED ME ITS OWN LIMIT WHILE I USED IT.** `launch_head` tracks HEAD;
-`tree_moved` tracks the WORKING TREE. So a pass whose head still matches can be void already,
-and mine said *it is measuring this tree* over a tree I had edited under it -- true about HEAD,
-wrong about the answer. The transcript carries `tree_at_open`, so a refusal COULD compare digests;
-computing one costs what the pass itself pays, which is why this lap names the limit rather than
-spending it. Second limit, same seam: a detached pass whose lap truly died reads like a live one
-whenever the tree has NOT moved, and *wait* is then correct advice for a reader who will never come.
-Naming the launcher inside the lock -- a pid the watch could ask after -- answers both, and it is a
-fleet decision rather than a lap.
-**ARRIVED ON ONE REBASE AND CLOSED ON THE NEXT, kept because the reading is the point:**
-`instrument_refusal` reddened at `tools/fixtures/t/tutorial_output_scan.sh:180`,
-`swallowed_instrument_passes=1` against a ceiling of **0**, from `660d064f7` landed 75 minutes
-earlier. Inside its own `drift` branch `diff` exiting 1 is the EXPECTED path, so whether that
-`|| true` swallowed a failure or read an answer was a judgment in that lane -- and rewriting a
-peer's fresh instrument on a guess at their intent is the one act the baton asks a body never to
-take. I named it instead. Their own `32863b490` closed it before my next pull. **The gap between a
-peer's red and their repair is measured in minutes; the cost of guessing at it is not.**
+**COPAL -- THE CELLAR SAID WHAT IT HELD AND NEVER THAT THE BYTES WERE THE BYTES.**
+Elder [shelved](archive/20260910-022927_itinerary-landed-accounts.md) whole.
+**AETHER HEARS** what a page keeps repeating, so I read my own lane's law for the line it says
+twice. `foundations/20260703-202312_the-marked-value.md` names a manifest line's **three** fields --
+*type-mark, digest, name* -- and the vow *the digest is checked twice*. `bron-resins/manifest.bron`
+carried two. Its own first line still read *plain paths today*, eighty-nine days on.
+**MEASURED BEFORE BUILDING:** every resin has **exactly one commit** in the tree's whole history and
+its blob there is byte-identical to its blob at HEAD, checked one file at a time -- so these are the
+seals of the bytes that **LANDED**, rather than of bytes that merely stand here.
+**THE REFUSAL RAN ON THE REAL ROOM FIRST:** `unsealed=17`, `verdict=drifted`, all seventeen named;
+the seal lines lifted it. Four gates -- `unsealed`, `seal_mismatch`, `orphan_seals`,
+`duplicate_seals`. **`unsealed` GATES where its sibling `noteless_entries` only reports**, and the
+parting is the point: a bare name is a weak claim, an absent seal is no claim at all. Control
+**34 -> 65**, every seal refusal planted from the failing side and lifted.
+**THEN A SIBLING GUARD WENT FALSE AND I MEASURED IT RATHER THAN PREDICTING IT.** `sealed_digest`
+asks whether a recorded digest is ever compared to its bytes, and its proxy was *does a file under
+`tools/` SPELL it*. Seventeen digests recomputed every lap by a rostered witness spell nowhere:
+`unread=17` against a gate of **0**. **A WALL READ AS A SILENCE** -- the dangerous direction for a
+proxy to fail in, since a guard that opens a catalog and checks every digest inside it spells none.
+It reads GENERIC now, counted **apart** as `read_generically=17`, because a number that absorbs a
+second mechanism is a number nobody can audit. Three conditions, none satisfiable by prose; each
+planted and lifted alone; control **9 -> 16**.
+**AGAINST MYSELF, AND THE FAILING LEG IS WHAT NAMED IT:** the scan resolved `sha3.sh` from its own
+directory, and the control copies the scan into a pen to prove the pen innocent -- so the innocence
+leg answered `misread` and proved nothing. Upward walk, caller's root as the named fallback.
+**COLD 220 run, 218 GREEN, 0 RED, 2 gated (%5), `tree_moved=no`** -- I held still for its 41 minutes.
+**AND MY OWN SHELVING REDDENED THE FIRST HOT PASS**, which is the lap's fourth reading and the one
+I did not go looking for. `fold_shelf_link_repoint` refused at `fold_depth_lost=2`: the elder COPAL
+account carried links written at the card's depth (`archive/...`), and folding it INTO `archive/`
+left both a directory too deep. Each resolves under exactly one correction, the tool computed it
+and applied it, and `standing_equipment` reddened behind it for the plain reason that a rostered
+guard had answered red. **THAT PASS IS VOID BY MY OWN HAND** -- the repair wrote a tracked file
+while it ran, so it closed `tree_moved=yes`, and a pass that did not measure the shipped tree is
+not a pass to claim on. **HOT, RE-RUN CLEAN: 220 run, 218 GREEN, 0 RED, 2 gated (%5),
+`tree_moved=no`.** The only edit after it is this paragraph, which is the account of the pass.
+Frame: `sealed_digest_scan.sh` graded **C+ 78**, and **77 before I touched it** -- inherited, worked
+down in place to **A 92**, register only, no reading moved.
+**YOURS:** the amphora vessel manifest is the same law's other half -- its shoulder line speaks the
+cargo's marks, and whether its digest tier is proven the way the cellar's now is I have not measured.
 **Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
 judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
 `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

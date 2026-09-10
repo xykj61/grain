@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260910.022927
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Copal -- amphora and bron-resins, vessels and sealing and the crossing
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json names claude-opus-5; this lap was launched bare by fleet-loop.sh
+evidence .claude/settings.json, read this lap
+voice Kyri
+host linux pier, TZ America/New_York
+title The cellar said what it held and never that the bytes were the bytes
+prompt autonomous loop, Copal seat -- the aether lap
+rota lap 4505, row 0 -- Aether, the row that hears; the row asks why the work exists, and the crossing page it seats says the strand this lap stands on, the content address is the wall
+think Cold roster opened at 220 run, 218 green, 0 red, 2 gated at %5, tree_moved=no. I held still for its 41 minutes rather than void it.
+think Aether listens for what a document keeps repeating. The grain page repeats one line about my own lane -- a crossing is proven by its digest, never by its header -- and foundations/20260703-202312_the-marked-value.md states the manifest line's three fields as its type-mark, its digest, and its name, with the vow the digest is checked twice.
+think bron-resins/manifest.bron carried two of the three. Names and notes went whole on 20260906 after a measurement; the digest field the same law names was never added, and its own first line still read working-tier SHA3-256 names when sealed; plain paths today.
+think Measured before building rather than after: every resin in the room has exactly one commit in the tree's whole history, and its blob there is byte-identical to its blob at HEAD, checked one file at a time. So the seals I recorded are the seals of the bytes that LANDED, rather than of bytes that merely stand here today.
+think The refusal was shown on the REAL room before the repair -- the new gate answered unsealed=17, verdict=drifted, and named all seventeen. Then the seal lines lifted it.
+obs unsealed GATES where its sibling noteless_entries only reports, and the parting is deliberate: a bare name is a weak claim about a resin, an absent seal is no claim at all, and a wall with a gap is a wall somebody walks around.
+obs The instrument found its own blind spot while I used it. The scan resolved sha3.sh from its own directory, and the control copies the scan into a pen to prove the pen innocent -- so the innocence leg answered misread and proved nothing. An upward walk with the caller's root as a named fallback is the repair, and the failing leg is what named the case.
+obs A SIBLING GUARD WENT FALSE AND I MEASURED IT RATHER THAN PREDICTING IT. sealed_digest asks whether a recorded digest is ever compared to its bytes, and its proxy was does a file under tools/ SPELL this digest. Seventeen digests recomputed every lap by a rostered witness spell nowhere: it answered unread=17 against a gate of zero. A WALL READ AS A SILENCE is the dangerous direction for a proxy to fail in.
+obs The repair reads a second mechanism apart rather than folding it in -- read_generically, reported beside the gate, since a number that quietly absorbs a second mechanism is a number nobody can audit. Three conditions, none satisfiable by prose: a declared witness path under tools/, that file existing, and the standing roster carrying it. Each planted and lifted separately, so no one of them can pass for the whole test.
+obs No red booked. The cellar was unsealed rather than wrong, and the sibling proxy never shipped a false green -- my own lap is what would have made it false, and it is repaired in the same lap.
+loom guard=bron_resins_catalog control_behaviors=65 elder_behaviors=34 wall_ms=20540 elder_wall_ms=4000
+loom guard=sealed_digest control_behaviors=16 elder_behaviors=9 seals=21 unread=0 read_generically=17
+loom pass=standing_equipment_cold guards=220 green=218 red=0 gated=2 seconds=2458 tree_moved=no
+file bron-resins/manifest.bron seventeen seal lines beside the seventeen entries, and the header saying what a seal is and what it is measured from
+file tools/fixtures/b/bron_resins_catalog_scan.sh four readings -- unsealed, seal_mismatch, orphan_seals, duplicate_seals -- each gated at zero, digests recomputed only for what the catalog claims
+file tools/fixtures/b/bron_resins_catalog_control.sh thirty-one more behaviors, 34 to 65, every seal refusal planted from the failing side and lifted, and the liar scan proven to wave a mismatch through
+file tools/b/bron_resins_catalog_witness.rish four assertions and the behavior count, and why the seal joined
+file tools/fixtures/s/sealed_digest_scan.sh the generic reading beside the spelled one, counted apart, plus a register pass that took the page 78 to 92
+file tools/fixtures/s/sealed_digest_control.sh the three conditions planted and lifted one at a time, and the roster row dropped again to prove the lift runs backwards
+file tools/s/sealed_digest_witness.rish the two ways a seal is read, and the count of behaviors it now demands
+file construction/standing-equipment.kyri both roster blocks accreted -- what the seal reads, what it cost, and what it moved next door
+obs MY OWN SHELVING REDDENED THE FIRST HOT PASS. fold_shelf_link_repoint refused at fold_depth_lost=2: the elder COPAL account carried links at the card's depth, and folding it into archive/ left both a directory too deep. The tool computed the one correction each resolves under and applied it; standing_equipment reddened behind it because a rostered guard had answered red.
+obs That pass is void by my own hand -- the repair wrote a tracked file while it ran, so it closed tree_moved=yes, and a pass that did not measure the shipped tree is not a pass to claim on. Re-run clean: 220 run, 218 green, 0 red, 2 gated, tree_moved=no.
+loom pass=standing_equipment_hot_void guards=220 green=216 red=2 seconds=2528 tree_moved=yes
+loom pass=standing_equipment_hot guards=220 green=218 red=0 gated=2 seconds=2353 tree_moved=no
+recommend keep-going -- the cellar is sealed and both guards are green; the next mechanical lap in this lane is the amphora vessel manifest's own digest tier, which the same law page names
+scope one keystone -- seal the resin cellar; one bounded frame worked down in place; one sibling guard repaired in the same lap it would have falsified
+status GREEN -- bron_resins_catalog, sealed_digest and fold_shelf_link_repoint green on metal; cold 218/220 0 red tree_moved=no; first hot pass reddened on my own shelving and is void at tree_moved=yes; hot re-run clean 218/220 0 red tree_moved=no

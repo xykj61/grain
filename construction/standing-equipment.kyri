@@ -201,6 +201,16 @@ seated 20260909.071647
 # outside protocol, vendor, or coreutils-only verifier fixes it -- so the open question was never
 # WHICH hash but whether any seal is read. Holds unread at zero, reads past dated testimony, a bare
 # fingerprint, and an outsider's quoted published value.
+#
+# A SECOND WAY OF BEING READ, `20260910.014500`. The proxy was *some file under `tools/` SPELLS
+# this digest*, which is how a one-off pin is checked and was the whole reading while every seal in
+# the tree was a one-off pin. The resin cellar then sealed seventeen files, each recomputed every
+# lap by a rostered witness, and a guard that opens a catalog and checks every digest in it spells
+# none of them -- so this census answered `unread=17` and its own gate would have reddened on a
+# wall. A wall read as a silence is the dangerous direction for a proxy to fail in. It now also
+# reads GENERIC: a document declaring a `witness ` path under `tools/` that EXISTS and is ROSTERED
+# here, reported apart as `read_generically` so neither number absorbs the other. Three conditions,
+# none satisfiable by prose, each planted and lifted separately; control 9 -> 16 behaviors.
 guard sealed_digest
 path tools/s/sealed_digest_witness.rish
 tier lap
@@ -3547,9 +3557,45 @@ seated 20260906.225150
 # summary. The one `.md` file in a room whose `law` line says Bron only is named in the catalog
 # rather than swept, because a catalog states its exception instead of hiding it.
 #
-# `tier lap`, 4s measured `20260907.000030` against a full lap pass of 983. The control proves 34
-# behaviors on throwaway cellars: every refusal shown from the failing side and then LIFTED, the
-# reported reading proven not to gate, the detail listing's bound proven by planting 75 resins
+# SEALED `20260910.014500`, and the elder reading above had two of a manifest line's three fields.
+# `foundations/20260703-202312_the-marked-value.md` states all three -- *its type-mark, its digest
+# at the tiers the resins law fixes, and its name* -- and the vow beneath them, *the digest is
+# checked twice*. The catalog carried the name and the note. A resin edited in place would have
+# passed `uncatalogued`, `orphan_entries` and `duplicate_entries` in silence, which is the room's
+# own lesson standing one field over: a catalog covering part of its subject reads exactly like a
+# whole one. The strand is the grain's own -- **the content address is the wall**.
+#
+# Each resin now carries `seal <basename> <sha3-256>`, computed by `tools/fixtures/s/sha3.sh` over
+# `crypto/sha3_digest.rye`, authored Keccak, so a reader in another decade checks one with the tree
+# and no external binary. FOUR MORE GATES, separate because they fail separately: `unsealed` a
+# resin no seal addresses, `seal_mismatch` bytes that moved under their digest, `orphan_seals` a
+# seal naming a departed file, `duplicate_seals` a catalog stating one fact twice. `unsealed` GATES
+# where the sibling `noteless_entries` only reports, and the parting is deliberate: a bare name is
+# a weak claim, while an absent seal is no claim at all.
+#
+# WHAT THE SEVENTEEN DIGESTS ARE, measured rather than assumed. Every resin in the room has exactly
+# one commit in the tree's whole history, and its blob there is byte-identical to its blob at HEAD,
+# checked one file at a time. So each seal is the seal of the bytes that LANDED.
+#
+# THE REFUSAL WAS SHOWN ON THE REAL ROOM FIRST: run against the unsealed cellar the gate answered
+# `unsealed=17`, `verdict=drifted`, naming all seventeen, and the seal lines lifted it.
+#
+# AND IT MOVED A SIBLING GUARD, which is the part worth reading. `sealed_digest` asks whether a
+# recorded digest is ever compared against its bytes, and its proxy was *does a file under `tools/`
+# SPELL this digest*. Seventeen digests recomputed every lap by a rostered witness spell nowhere,
+# so that census read `unread=17` and its own gate would have reddened -- a WALL READ AS A SILENCE,
+# the dangerous direction for a proxy to fail in. It reads a second mechanism now: a document that
+# declares a `witness ` path under `tools/` which EXISTS and is ROSTERED here is read generically,
+# counted apart as `read_generically` so no number quietly absorbs the other. Three conditions,
+# none satisfiable by prose, each planted and lifted separately in that guard's own control
+# (9 -> 16 behaviors), so no single one can pass for the whole test.
+#
+# `tier lap`, 4s measured `20260907.000030` against a full lap pass of 983; 20s measured
+# `20260910.014500`, the seals and the control's own cellars being what it now buys. The control
+# proves 65 behaviors on throwaway cellars (34 before the seal): every refusal shown from the
+# failing side and then LIFTED, the
+# reported reading proven not to gate, a malformed seal proven to fall into `unsealed` rather than
+# to pass as a claim, the detail listing's bound proven by planting 75 resins
 # against a ceiling of 64, and the pen proven innocent against a scan patched to always answer ok --
 # with that patch's own landing proven by `cmp -s` and by refusing an EMPTY copy, which the control
 # caught in itself (an unreadable source leaves a copy that differs from the original and reads as a

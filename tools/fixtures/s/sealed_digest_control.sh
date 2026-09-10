@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/s/sealed_digest_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 9 cases, one pen, one throwaway git repository.
+# Prints `pass=N fail=N`. Bounded: 16 cases, one pen, one throwaway git repository.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -64,6 +64,43 @@ printf 'The elder thing.rye SHA-256 is `%s`.\n' "$D3" > context/date/20260101/20
 git add -A >/dev/null; git commit -qm dated
 out=$(ask)
 check "dated testimony is read past"        yes "$(has "$out" 'unread=0')"
+
+# THE GENERIC READING, proven from the failing side first and lifted one condition at a time, so
+# no single condition can be the whole test by accident.
+D4=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+mkdir -p construction
+printf 'format catalog-v1\nseal thing.rye %s\n' "$D4" > context/catalog.bron
+git add -A >/dev/null; git commit -qm catalog
+out=$(ask)
+check "a catalog seal with no reader is unread" yes "$(has "$out" 'unread=1')"
+
+# 1. a witness line naming a file that does not exist proves nothing
+printf 'witness tools/s/absent_witness.rish -- reads every seal\n' >> context/catalog.bron
+git add -A >/dev/null; git commit -qm declared
+out=$(ask)
+check "a witness that is not there is not a reader" yes "$(has "$out" 'unread=1')"
+
+# 2. the file exists, and the roster has never heard of it
+printf '#!/bin/sh\n# opens the catalog and recomputes\n' > tools/s/absent_witness.rish
+git add -A >/dev/null; git commit -qm present
+out=$(ask)
+check "an unrostered witness is not a reader"   yes "$(has "$out" 'unread=1')"
+
+# 3. rostered: the declaration becomes a promise something runs
+printf 'guard catalog\npath tools/s/absent_witness.rish\ntier lap\n' > construction/standing-equipment.kyri
+git add -A >/dev/null; git commit -qm rostered
+out=$(ask)
+check "a rostered witness reads it generically" yes "$(has "$out" 'unread=0')"
+check "and the generic reading is counted"      yes "$(has "$out" 'read_generically=1')"
+
+# and the lift runs backwards too: drop the roster row and the seal goes unread again
+printf 'guard other\npath tools/s/other.rish\ntier lap\n' > construction/standing-equipment.kyri
+git add -A >/dev/null; git commit -qm unrostered
+out=$(ask)
+check "dropping the roster row restores unread" yes "$(has "$out" 'unread=1')"
+check "and the generic count falls with it"     yes "$(has "$out" 'read_generically=0')"
+rm -rf construction context/catalog.bron tools/s/absent_witness.rish
+git add -A >/dev/null; git commit -qm cleanup
 
 # A corpus of zero refuses rather than reporting clean (REDS %170).
 rm -rf context tools

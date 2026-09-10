@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.025124` | [The second run](20260910/20260910-025124_the-second-run-that-changed-the-store.kyri) | `mantra add` on an unedited file wrote a commit anyway |
 | `20260910.024707` | [A stash cannot carry a pin](20260910/20260910-024707_a-stash-cannot-carry-a-pin.kyri) | Pheromone; a stash restore reverted a peer |
 | `20260910.023458` | [The row that proved itself twice](20260910/20260910-023458_the-row-that-proved-itself-twice.kyri) | Pheromone; a thrice-parked proof lands |
+| `20260910.022927` | [the cellar that said what it held](20260910/20260910-022927_the-cellar-that-said-what-it-held.kyri) | 17 resins sealed SHA3-256; a proxy read a wall as silence |
 | `20260910.022809` | [A refusal that braids three answers](20260910/20260910-022809_a-refusal-that-braids-three-answers.kyri) | Recovered the lap that died at its send |
 | `20260910.022718` | [A lap that ends before its commit](20260910/20260910-022718_a-lap-that-ends-before-its-commit.kyri) | Pheromone; the parked record of the lap that proved it |
 | `20260910.021757` | [The unit the law names](20260910/20260910-021757_the-unit-the-law-names.kyri) | TAME counts asserts by function; every instrument counted by file. |

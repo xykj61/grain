@@ -23,12 +23,35 @@
 #   orphan_entries     an entry naming a file the room lacks         GATED at zero
 #   duplicate_entries  two entries naming one resin                  GATED at zero
 #   noteless_entries   an entry carrying a name and no note          reported
+#   sealed             `seal <name> <hex>` lines the reader can parse
+#   unsealed           a resin no seal line addresses                GATED at zero
+#   seal_mismatch      a resin whose bytes differ from its seal      GATED at zero
+#   orphan_seals       a seal naming a file the room lacks           GATED at zero
+#   duplicate_seals    two seals for one resin                       GATED at zero
 #
-# The three gates stay three readings because they fail in three directions. An uncatalogued resin
+# The gates stay separate readings because they fail in separate directions. An uncatalogued resin
 # is a silence. A line naming a departed file is a promise the room can no longer keep. Two lines
 # for one resin is a catalog disagreeing with itself. Noteless entries are REPORTED instead: a bare
 # name is a weak line and still a true one, and a gate that reds on an honest half-measure is one
 # somebody turns off.
+#
+# THE SEAL, ADDED `20260910.014500`, is the field the entry line never carried. A name and a note
+# say WHAT the cellar holds; only a digest says the bytes are the bytes. The same law page the
+# entry line keeps -- `foundations/20260703-202312_the-marked-value.md` -- states a manifest line's
+# three fields as *its type-mark, its digest at the tiers the resins law fixes, and its name*, and
+# the vow beneath them as *the digest is checked twice*. The cellar carried two of the three fields
+# for eighty-nine days, and a resin edited in place would have passed every reading above in
+# silence -- the room's own lesson, that a catalog covering a fifth of its subject reads exactly
+# like a whole one, standing one field over.
+#
+# `unsealed` is GATED rather than reported for that reason, and the choice is the one place this
+# scan parts from its own noteless precedent: a bare name is a weak claim about a resin, while an
+# absent seal is no claim at all, and a wall with a gap in it is a wall somebody walks around.
+#
+# SHA3-256, computed by `tools/fixtures/s/sha3.sh` over `crypto/sha3_digest.rye` -- this tree's own
+# Keccak, authored clean-room from FIPS 202 -- so a reader in another decade checks a seal with the
+# tree and needs no external binary. The catalog seals every resin and never itself, because a file
+# cannot carry its own digest; the catalog's own bytes are held by the history each seal rides in.
 #
 # IT READS THE FILESYSTEM rather than the index, for two plain reasons. `.gitignore:111` carries
 # `!/bron-resins/`, so the room is allow-listed out of the root deny and a `find` read names the
@@ -44,6 +67,29 @@ set -eu
 
 ROOM=${1:-bron-resins}
 CATALOG="$ROOM/manifest.bron"
+
+# THE DIGEST TOOL, found by an upward walk from this script rather than by fixed depth arithmetic,
+# which is the lesson `tools/fixtures/s/sha3.sh` already carries: the letter fold moved these
+# scripts one directory deeper and a counted `../..` is what broke. Bounded at 8 steps, loud past
+# the bound.
+#
+# THE CALLER'S ROOT IS THE FALLBACK, and it is here for one named case: the control copies this
+# scan into a throwaway pen to prove the pen innocent, and a copy outside the tree has no ancestor
+# holding the tool. Without the fallback the innocence leg answers `misread` and proves nothing,
+# which is how it was found.
+SHA3=""
+_seal_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+_seal_steps=0
+while [ "$_seal_steps" -le 8 ]; do
+  if [ -f "$_seal_dir/tools/fixtures/s/sha3.sh" ]; then
+    SHA3="$_seal_dir/tools/fixtures/s/sha3.sh"
+    break
+  fi
+  [ "$_seal_dir" = "/" ] && break
+  _seal_dir=$(dirname "$_seal_dir")
+  _seal_steps=$((_seal_steps + 1))
+done
+[ -n "$SHA3" ] || SHA3="$(pwd)/tools/fixtures/s/sha3.sh"
 
 # Bound: the detail listing stops here and says so. A cellar past this is a room that wants a fold
 # rather than a longer printout, and an unbounded print is an unbounded allocation (TAME).
@@ -99,6 +145,58 @@ echo "orphan_entries=$orphan_entries"
 echo "duplicate_entries=$duplicate_entries"
 echo "noteless_entries=$noteless_entries"
 
+# A well-formed seal line reads `seal <basename> <64 lowercase hex>`. A malformed one matches
+# neither pattern below, so its resin falls into `unsealed` and the gate bites. That is the safe
+# direction: a seal the reader cannot parse is a seal the room does not have.
+sed -n 's/^seal  *\([^ ][^ ]*\)  *[0-9a-f]\{64\} *$/\1/p' "$CATALOG" | LC_ALL=C sort > "$TMP/sealed"
+sed -n 's/^seal  *\([^ ][^ ]*\)  *\([0-9a-f]\{64\}\) *$/\1 \2/p' "$CATALOG" | LC_ALL=C sort > "$TMP/seal_pairs"
+
+LC_ALL=C sort -u "$TMP/sealed" > "$TMP/sealed_uniq"
+LC_ALL=C comm -23 "$TMP/resins" "$TMP/sealed_uniq" > "$TMP/unsealed"
+LC_ALL=C comm -13 "$TMP/resins" "$TMP/sealed_uniq" > "$TMP/orphan_seals"
+LC_ALL=C uniq -d "$TMP/sealed" > "$TMP/duplicate_seals"
+
+sealed=$(wc -l < "$TMP/sealed" | tr -d ' ')
+unsealed=$(wc -l < "$TMP/unsealed" | tr -d ' ')
+orphan_seals=$(wc -l < "$TMP/orphan_seals" | tr -d ' ')
+duplicate_seals=$(wc -l < "$TMP/duplicate_seals" | tr -d ' ')
+
+# Only what the catalog claims is recomputed, so a room of unsealed files costs no digests at all.
+# The tool is probed once before any answer it gives is trusted, and a tool that cannot speak
+# answers `misread` rather than `seal_mismatch`: a hash this pier could not compute and a resin
+# whose bytes moved are two different facts, and only the second belongs to the cellar.
+seal_mismatch=0
+: > "$TMP/mismatch"
+if [ -s "$TMP/seal_pairs" ]; then
+  if ! probe=$(sh "$SHA3" 256 "$CATALOG" 2>/dev/null) ||
+     ! printf '%s' "$probe" | grep -qE '^[0-9a-f]{64}$'; then
+    echo "verdict=misread"
+    echo "detail=digest_tool_unavailable"
+    echo "detail_digest_tool=$SHA3"
+    exit 2
+  fi
+  while read -r seal_name seal_dig; do
+    [ -n "$seal_name" ] || continue
+    # an orphan seal is already counted; there are no bytes here to disagree with
+    [ -f "$ROOM/$seal_name" ] || continue
+    if ! actual=$(sh "$SHA3" 256 "$ROOM/$seal_name" 2>/dev/null) ||
+       ! printf '%s' "$actual" | grep -qE '^[0-9a-f]{64}$'; then
+      echo "verdict=misread"
+      echo "detail=digest_failed"
+      echo "detail_digest_failed=$seal_name"
+      exit 2
+    fi
+    [ "$actual" = "$seal_dig" ] || echo "$seal_name" >> "$TMP/mismatch"
+  done < "$TMP/seal_pairs"
+  seal_mismatch=$(wc -l < "$TMP/mismatch" | tr -d ' ')
+fi
+
+echo "sealed=$sealed"
+echo "unsealed=$unsealed"
+echo "orphan_seals=$orphan_seals"
+echo "duplicate_seals=$duplicate_seals"
+echo "seal_mismatch=$seal_mismatch"
+
 # Name every one of them. A count nobody can act on is the dated-path census's own complaint --
 # it prints no list, so nobody can name the reference it is refusing over.
 name_them() { # name_them <key> <file>
@@ -116,8 +214,14 @@ name_them uncatalogued "$TMP/uncatalogued"
 name_them orphan "$TMP/orphans"
 name_them duplicate "$TMP/duplicates"
 name_them noteless "$TMP/noteless"
+name_them unsealed "$TMP/unsealed"
+name_them orphan_seal "$TMP/orphan_seals"
+name_them duplicate_seal "$TMP/duplicate_seals"
+name_them mismatch "$TMP/mismatch"
 
-if [ "$uncatalogued" -eq 0 ] && [ "$orphan_entries" -eq 0 ] && [ "$duplicate_entries" -eq 0 ]; then
+if [ "$uncatalogued" -eq 0 ] && [ "$orphan_entries" -eq 0 ] && [ "$duplicate_entries" -eq 0 ] &&
+   [ "$unsealed" -eq 0 ] && [ "$orphan_seals" -eq 0 ] && [ "$duplicate_seals" -eq 0 ] &&
+   [ "$seal_mismatch" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
 fi
