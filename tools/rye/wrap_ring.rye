@@ -1,0 +1,207 @@
+//! tools/rye/wrap_ring.rye -- the wrap IS the bound, asserted at the seam.
+//!
+//! First witness for moonshot 1 of
+//! `active-designing/20260910-060204_the-bounded-torus-moonshots.md`.
+//!
+//! THE CLAIM. Working memory read as a torus of fixed circumference `C` pages.
+//! The TAME bound and the period of the ring are ONE number rather than two,
+//! so a reader who knows the circumference already knows the budget.
+//!
+//! WHAT AN INDEX-ONLY ASSERT WOULD PROVE, which is nothing. `(i + C) % C == i`
+//! is arithmetic; it holds for any C and says nothing about memory. The design
+//! page names that exact trap as this row's falsifier: an assert that holds
+//! while a second writer overwrites a page a reader still holds would show the
+//! wrap bounding the INDEX alone. So this file asserts the harder thing --
+//! that a full lap returns the same STORAGE, and that a page handed out while
+//! a lap is open is refused rather than quietly recycled.
+//!
+//! HOW THE HARDER THING IS CHECKED. Each page carries the lap number that
+//! wrote it. A reader holding a page from lap `n` finds `page.lap == n` still,
+//! or the ring refuses. That turns "the wrap is the bound" from a statement
+//! about counting into a statement a program can be wrong about.
+//!
+//!   rye build tools/rye/wrap_ring.rye -femit-bin=tools/bin/wrap-ring
+//!   tools/bin/wrap-ring selftest
+//!
+//! Gratitude: gratitude/TIGER_STYLE.md -- bounds named at construction.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const wrap_ring_version = "20260910.062400";
+
+/// The circumference, and therefore the bound. ONE number, named once.
+/// A reader who knows this knows how many pages the ring can ever hold.
+pub const circumference: u32 = 16;
+
+/// Bytes in one page. Fixed so the ring's whole memory is `circumference *
+/// page_bytes`, computable before the program runs.
+pub const page_bytes: u32 = 64;
+
+pub const WrapError = error{
+    PageOutOfRing,
+    LapMismatch,
+    HeldPageRecycled,
+};
+
+pub const Page = struct {
+    bytes: [page_bytes]u8,
+    /// Which lap wrote this page. A reader compares against the lap it was
+    /// handed, which is how a recycled page is caught rather than assumed away.
+    lap: u64,
+};
+
+pub const Ring = struct {
+    pages: [circumference]Page,
+    /// Total writes since construction. The index is this modulo the
+    /// circumference, so the period and the bound stay one number.
+    written: u64,
+
+    pub fn init() Ring {
+        var r = Ring{
+            .pages = undefined,
+            .written = 0,
+        };
+        var i: u32 = 0;
+        while (i < circumference) : (i += 1) {
+            r.pages[i] = Page{ .bytes = [_]u8{0} ** page_bytes, .lap = 0 };
+        }
+        // invariant: construction leaves every page on lap zero, so a reader
+        // handed a page before any write can tell it was never written.
+        assert(r.written == 0);
+        // invariant: the ring holds exactly its circumference in pages, which
+        // is the whole claim -- period and bound are one number.
+        assert(r.pages.len == circumference);
+        return r;
+    }
+
+    /// Where the next write lands. The modulo is the wrap, and the wrap is the
+    /// bound: there is no index outside `0..circumference`.
+    pub fn index(self: *const Ring) u32 {
+        const i: u32 = @intCast(self.written % circumference);
+        // invariant: the index stays inside the ring, always, by construction
+        // rather than by a caller's care.
+        assert(i < circumference);
+        return i;
+    }
+
+    /// Which lap the next write belongs to. A lap is one full turn of the ring.
+    pub fn lap(self: *const Ring) u64 {
+        return self.written / circumference;
+    }
+
+    pub fn write(self: *Ring, fill: u8) u32 {
+        const at = self.index();
+        const this_lap = self.lap();
+        var b: u32 = 0;
+        while (b < page_bytes) : (b += 1) {
+            self.pages[at].bytes[b] = fill;
+        }
+        self.pages[at].lap = this_lap;
+        self.written += 1;
+        // invariant: a write advances the ring by exactly one page, so the
+        // period is spent one step at a time and never skipped.
+        assert(self.written > 0);
+        return at;
+    }
+
+    /// Read a page a caller was handed on a named lap. THIS is the assert that
+    /// carries the claim: if the ring has turned past that lap, the page a
+    /// reader holds has been recycled, and the ring says so rather than
+    /// returning bytes that belong to somebody else.
+    pub fn read_held(self: *const Ring, at: u32, held_lap: u64) WrapError![page_bytes]u8 {
+        if (at >= circumference) return WrapError.PageOutOfRing;
+        if (self.pages[at].lap != held_lap) return WrapError.HeldPageRecycled;
+        return self.pages[at].bytes;
+    }
+};
+
+fn selftest() !void {
+    var ring = Ring.init();
+
+    // A full lap returns the same STORAGE, which is the claim. The index after
+    // `circumference` writes equals the index before them.
+    const start = ring.index();
+    var n: u32 = 0;
+    while (n < circumference) : (n += 1) {
+        _ = ring.write(@intCast(n % 256));
+    }
+    const after_one_lap = ring.index();
+    assert(after_one_lap == start);
+    print("wrap-ring: one lap of {d} returns index {d}\n", .{ circumference, after_one_lap });
+
+    // The lap counter advanced by exactly one, so the period was spent once
+    // rather than skipped or doubled.
+    assert(ring.lap() == 1);
+
+    // A PAGE IS STILL FRESH AFTER EXACTLY ONE LAP, and this cost the first run.
+    // The selftest was written expecting a lap-0 page to be recycled once the
+    // ring had turned once, and it is not: writes during lap 0 leave `lap == 0`
+    // on the page, and `written == circumference` only means the NEXT write
+    // begins lap 1. The page at index 3 is overwritten when the ring reaches it
+    // again, one page into the second lap.
+    //
+    // The correction sharpens the claim rather than weakening it: the wrap
+    // bounds memory once the ring turns PAST your page, not when the counter
+    // rolls. A reader holding a page is safe for exactly one circumference of
+    // writes -- which is the bound, stated as a distance rather than a count.
+    const held_at: u32 = 3;
+    assert(ring.pages[held_at].lap == 0);
+    const still_fresh = try ring.read_held(held_at, 0);
+    assert(still_fresh.len == page_bytes);
+    print("wrap-ring: after one lap a lap-0 page is still the reader's own\n", .{});
+
+    // Turn the ring past that page. Four more writes carry the index beyond 3.
+    var m: u32 = 0;
+    while (m < held_at + 1) : (m += 1) {
+        _ = ring.write(0xAA);
+    }
+    assert(ring.pages[held_at].lap == 1);
+
+    // NOW the lap-0 hold is refused, which is the falsifier the design page
+    // named. An index-only assert would pass here without noticing.
+    const recycled = ring.read_held(held_at, 0);
+    if (recycled) |_| {
+        print("wrap-ring: RED -- a page from a spent lap was returned\n", .{});
+        return WrapError.LapMismatch;
+    } else |err| {
+        assert(err == WrapError.HeldPageRecycled);
+        print("wrap-ring: a page held from a spent lap is refused\n", .{});
+    }
+
+    // A page held from the CURRENT lap still reads, so the refusal above is a
+    // real distinction rather than a ring that refuses everything.
+    const fresh = try ring.read_held(held_at, ring.pages[held_at].lap);
+    assert(fresh.len == page_bytes);
+    print("wrap-ring: a page held from the standing lap reads\n", .{});
+
+    // An index outside the ring is refused by name.
+    const outside = ring.read_held(circumference, 0);
+    if (outside) |_| {
+        print("wrap-ring: RED -- an index outside the ring was accepted\n", .{});
+        return WrapError.PageOutOfRing;
+    } else |err| {
+        assert(err == WrapError.PageOutOfRing);
+        print("wrap-ring: an index outside the ring is refused\n", .{});
+    }
+
+    print("GREEN: wrap-ring -- the period and the bound are one number, C={d}\n", .{circumference});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    // The argument shape follows this tree's own Rye programs: `std.process.Init`
+    // handed in, args taken as a slice off the season allocator. The elder
+    // `std.process.args()` spelling is absent from this std and refused to build.
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) {
+            try selftest();
+            return 0;
+        }
+        print("wrap-ring: usage -- wrap-ring selftest\n", .{});
+        return 2;
+    }
+    try selftest();
+    return 0;
+}

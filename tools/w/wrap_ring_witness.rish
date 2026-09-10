@@ -1,0 +1,57 @@
+# tools/w/wrap_ring_witness.rish -- the wrap IS the bound, proven on metal.
+#
+#   rishi/bin/rishi run tools/w/wrap_ring_witness.rish
+#
+# First witness for moonshot 1 of
+# `active-designing/20260910-060204_the-bounded-torus-moonshots.md`: working memory read as a torus
+# of fixed circumference C, where the TAME bound and the ring's period are ONE number.
+#
+# WHY THIS IS MORE THAN ARITHMETIC. `(i + C) % C == i` holds for every C and says nothing about
+# memory. The design page named that exact trap as this row's falsifier -- an assert that passes
+# while a second writer overwrites a page a reader still holds would show the wrap bounding the
+# INDEX alone. So the program carries a lap number on every page, and a reader holding a page from a
+# spent lap is REFUSED rather than handed somebody else's bytes.
+#
+# THE FIRST RUN FAILED, AND THE PROGRAM WAS RIGHT. The selftest expected a lap-0 page to be recycled
+# after one full lap. It is not: writes during lap 0 leave `lap == 0` on the page, and a full
+# circumference of writes only means the NEXT write begins lap 1. The page is overwritten when the
+# ring reaches it AGAIN. The correction sharpened the claim -- a reader holding a page is safe for
+# exactly one circumference of writes, which is the bound stated as a distance rather than a count.
+
+say "wrap-ring: Style Gauge, Meter -- one number carries the period and the bound."
+say "wrap-ring: Lens TAME -- the circumference is named at construction, and the seam asserts it."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "wrap-ring: building from source, so the binary matches the file this witness reads..."
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/wrap_ring.rye -femit-bin=tools/bin/wrap-ring"]
+assert build.ok else "wrap-ring: the build refused -- read the compiler's own words"
+
+# THE CLAIM LINES ARRIVE ON STDERR, measured rather than assumed. `std.debug.print` -- the spelling
+# this tree's opening triad seats in every hosted Rye file -- writes to stderr, so `out.out` is
+# empty and every assert below would refuse against it. Read on `20260910`: stdout 0 bytes, stderr
+# 321. A witness that read the wrong stream would fail a healthy program and look like a real red.
+let out = run ["sh" "-c" "tools/bin/wrap-ring selftest 2>&1"]
+say out.out
+assert out.ok else "wrap-ring: the selftest refused -- read its lines above"
+
+# invariant: a full lap returns the same index, which is the period spent exactly once.
+assert out.out contains "one lap of 16 returns index 0" else "wrap-ring: a full lap failed to return its starting index"
+
+# invariant: a page is STILL the reader's own after one lap. This leg exists because the first run
+# assumed otherwise, and a witness that only checked the refusal would have hidden that.
+assert out.out contains "still the reader's own" else "wrap-ring: a page fresh within its lap was reported recycled"
+
+# invariant: once the ring turns PAST the page, the held lap is refused. This is the claim that
+# separates a memory bound from an arithmetic one.
+assert out.out contains "held from a spent lap is refused" else "wrap-ring: a recycled page was returned to its elder holder"
+
+# invariant: the refusal above is a distinction rather than a ring that refuses everything.
+assert out.out contains "held from the standing lap reads" else "wrap-ring: a current page was refused, so the ring refuses indiscriminately"
+
+# invariant: an index outside the circumference is refused by name.
+assert out.out contains "outside the ring is refused" else "wrap-ring: an index past the circumference was accepted"
+
+assert out.out contains "GREEN: wrap-ring" else "wrap-ring: the selftest reached no green line"
+
+say "GREEN: wrap-ring -- a reader's page is safe for exactly one circumference, and the ring says so."
