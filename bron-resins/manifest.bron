@@ -1,9 +1,11 @@
-# bron-resins catalog -- working-tier SHA3-256 names when sealed; plain paths today
+# bron-resins catalog -- every resin named, and every resin's bytes sealed SHA3-256.
 #
 # THE PROMISE THIS FILE KEEPS. `foundations/20260703-202312_the-marked-value.md` states the
 # cellar's own clause: *every resin records the marks of what it seals, so a reader in another
-# decade knows what the cellar held without opening it.* One `entry` line per resin is how that
-# promise is kept at plain-path tier, and the `note` below is the habit that keeps it current.
+# decade knows what the cellar held without opening it.* One `entry` line per resin says what the
+# cellar holds, and one `seal` line says its bytes are the bytes. The same page names all three
+# fields a manifest line carries -- *its type-mark, its digest at the tiers the resins law fixes,
+# and its name* -- and the vow beneath them: *the digest is checked twice*.
 #
 # REFRESHED `20260906.233111`, after a measurement. The habit was kept for the first three files
 # of the first morning and dropped: the room held 17 resins and this catalog named 3, and nothing
@@ -12,12 +14,24 @@
 # each resin's OWN first header line rather than from a summary, and the catalog now has a reader:
 # `tools/b/bron_resins_catalog_witness.rish` holds uncatalogued, orphaned, and duplicated lines at
 # zero on every lap, so this file can never quietly go stale again.
+#
+# SEALED `20260910.014500`, which is the field that refresh still lacked. Names and notes had grown
+# whole while the digest the law names stayed absent, so a resin edited in place would have passed
+# every reading above in silence. Each `seal` line records SHA3-256 computed by
+# `crypto/sha3_digest.rye` over authored Keccak, so checking one needs this tree and no external
+# binary. The catalog seals every resin and never itself -- a file cannot carry its own digest, and
+# the catalog's own bytes ride in the git history each seal travels in.
+#
+# WHAT THE SEVENTEEN DIGESTS ARE, measured rather than assumed. Every resin in this room has
+# exactly one commit in the tree's whole history, and its blob at that commit is byte-identical to
+# its blob at HEAD -- checked one file at a time, all seventeen equal. So each seal below is the
+# seal of the bytes that LANDED, rather than of bytes that merely stand here today.
 format bron-resins-v1
 stamp 20260712.115753
 refreshed 20260906.233111
 purpose chat-printout essay resins as Bron values at the seam
 law Bron carries immutable values; Brix composes wholes; this folder holds Bron only
-witness tools/b/bron_resins_catalog_witness.rish -- uncatalogued, orphan, and duplicate lines at zero
+witness tools/b/bron_resins_catalog_witness.rish -- uncatalogued, orphan, duplicate, unsealed, and mismatched lines at zero
 entry 20260712-115753_morning-fold-thoughts.bron fuller morning summary and Rio essay as chat-printout-v1
 entry 20260712-120007_claude-combined-morning.bron Claude handoff combining essay plus session-log Bron migration
 entry 20260712-121719_claude-nib-seated.bron Claude handoff -- tip renamed to nib
@@ -35,5 +49,25 @@ entry 20260712-215100_claude-monocypher-pin.bron Monocypher pin rests
 entry 20260712-220000_claude-signed-kumara-green.bron signed-Kumara GREEN
 entry 20260712-220600_claude-day-close-resting.bron day closed, signed-Kumara resting
 entry 20260725-224249_quin-handoff_fresh-session-bootstrap.md Quin fresh-session bootstrap -- Markdown in a Bron room, kept as it landed
+
+seal 20260712-115753_morning-fold-thoughts.bron e1b48bab165b83ad20295295325ef238d70f1236619f073cbf96973a202ede1c
+seal 20260712-120007_claude-combined-morning.bron 1d05670625c0bacf8ff0b369aade5c37b4f88cca80e001d6c6a2d1562f4d5697
+seal 20260712-121719_claude-nib-seated.bron 3755bebb1c57469887f1c0db1ab3cea5a8f61c605781636e978a78b5c972ed69
+seal 20260712-123700_claude-guidance-onpath-kvm.bron 56bb701d9ecdd9989860b1af3005eecb808c49edaf1c2a96528384a439f147b7
+seal 20260712-143946_claude-afternoon-onpath-parity.bron 586d465324db62f18483a109c66da4e5c918fd14f98fe49009e20ffac1f65e49
+seal 20260712-200445_claude-evening-g1-toolchain.bron a9457d8fd12547dfa6ed155cb2020d8dbbaa1aa1e935939e2911d2dafede5dc4
+seal 20260712-204010_claude-g1-serial-green.bron fbfa75e10c2b94427826561fb32fe380f219b6a2defdd7e72b5de20ea608c79f
+seal 20260712-210000_claude-g1-close-pond-sixbar.bron 547f59e9bc588225c8cd8facb0dad9543cdf1f983226f837d1da9d6b34729cb0
+seal 20260712-211700_claude-exit-n-second-walk.bron 3bb37912b9b5328bb9c4413e2deca0d80b531a2a9ddc3e654bdb61e8a586c06a
+seal 20260712-212200_claude-scorecard-witness-walk.bron 24884bb17cd13dbe0af072d87c8ecbb31d09dc9dd04beb3882284edb8abf5262
+seal 20260712-212900_claude-freeze-worthy-affirm.bron eb252de92aa60ed23b492e389037dfd64a4112eda1b16f1c790d3dc069a542f4
+seal 20260712-213800_claude-freeze-affirmed-master-seal.bron 7c0c7e1c55810edb1255e675db4b87de31e989b6ff8d2ca25ff0d4eefb0d3acf
+seal 20260712-214500_claude-latch-monocypher.bron 591478fcaa5ee5be330c04bc1ed8681cb7f5275c33d2bffe15882b92609a1fec
+seal 20260712-215100_claude-monocypher-pin.bron db34dced4848212a43e4eaa716aa95e771075a2c8705cc5b67999edcc9423532
+seal 20260712-220000_claude-signed-kumara-green.bron 77cc2d81310f0b13f36f7a6642760c161a3d0129f533a98bf4f27ae6a7411de4
+seal 20260712-220600_claude-day-close-resting.bron 117a90c681445e7dea598c60520bde051628677d8bde30bad8fde6396710d421
+seal 20260725-224249_quin-handoff_fresh-session-bootstrap.md 2db0c8be53aee89ee168d794c485eff0c86d4a207336bfe742bf1e0f902c7fd8
+
 note folder born on Kaeden word for raw chat printout in .bron; commit with the resin
 note the one .md entry is named rather than swept -- the law line says Bron only, the room has held that file since 20260725, and a catalog states its exception instead of hiding it
+note a seal is the bytes; an entry is the meaning -- two lines rather than one field, because a note carries spaces and a digest appended after free-form prose is a digest nothing can parse

@@ -14,15 +14,23 @@
 #
 # So the open question was never WHICH hash. It is whether a recorded digest is ever compared
 # against the bytes it claims to describe, and this guard holds that at zero.
+#
+# A SEAL IS READ TWO WAYS from `20260910.014500`, and the second arrived because the first was
+# wrong about seventeen digests. `unread` counts a seal no file under `tools/` SPELLS and no
+# rostered witness recomputes; `read_generically` counts the second kind and is reported beside the
+# gate rather than folded into it. The resin cellar sealed its seventeen files that lap and the
+# spelled test called every one of them unread -- a wall read as a silence, which is the dangerous
+# direction for a proxy to fail in, since a guard that opens a catalog and checks every digest in
+# it never spells one.
 
 say "sealed-digest: Language EN -- a seal nothing reads is prose."
 say "sealed-digest: Style Gauge, Meter -- one gate, and the three things it reads past."
 say "sealed-digest: Lens TAME -- every refusal planted in a pen and then lifted."
 
-say "sealed-digest: the control -- nine behaviors on planted documents in a throwaway repository..."
+say "sealed-digest: the control -- sixteen behaviors on planted documents in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/s/sealed_digest_control.sh"]
 assert ctl.ok else "sealed-digest: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=9 fail=0" else "sealed-digest: the control did not prove nine behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=16 fail=0" else "sealed-digest: the control did not prove sixteen behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "sealed-digest: every seal of this tree's own bytes is read by a guard..."
 let scan = run ["sh" "tools/fixtures/s/sealed_digest_scan.sh"]
