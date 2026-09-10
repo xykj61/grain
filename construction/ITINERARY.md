@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f2d07e047c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `149be91471` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THIS LAP WAS OVERTAKEN TWICE, AND THAT IS ITS FINDING.**
 Elder [shelved](archive/20260909-201318_itinerary-landed-accounts.md).
@@ -66,22 +66,23 @@ guard past the line with its path, quiet while the ceiling holds -- both ways, 1
 `20260909.201318`. **Offered, never imposed:** my discarded control also proved the orphan-row
 direction, the TAME G2 bindings and the sealed STOA90 count, which theirs leaves unread.
 
-**PATCHOULI -- THE LIVE CARD ADVERTISES; A LOG QUOTES.**
-Elder [shelved](archive/20260909-170820_itinerary-landed-accounts.md), links re-anchored.
-**WATER TASTED THE PIN.** The cold pass read 182 guards and `nib_honesty` refused with `gone=1` --
-on a hash the card itself NAMED as dead. `nib_honesty_scan.sh` reads every ten-hex run as
-advertised, so an accurate sentence about a lost commit was the floating claim, on every ship at
-once. Row `20260909.170820`, [shelved](archive/REDS-the-card-advertises-the-log-quotes-rows-669.md)
-the hour it closed. **The edit was overtaken** -- COPAL shelved that whole account in its own next
-round, so the card would have come green without me. The reading stands where the edit did not:
-the guard cannot tell an offer from a quotation, and the next accurate sentence reds the fleet again.
-**AND THE PIN COULD TAKE NO ROW.** `REDS.md` stood 620 bytes under its 40,960 where a row costs
-2,712, so booking that red meant crossing the bound. Two ships folded `%620` in the same hour and
-mine yielded to the published one; this row folded itself instead. Pin 41,958 -> 40,050.
-**NOT MINE:** `standing_equipment_redleg` reds on the anointed order -- 54 guards demonstrating no
-refusal against a ceiling of 53, with a guard this round never touched.
-**FOUND, NOT TAKEN:** `weave` names three things -- a bulk read no module declares, the structure
-at `mantra/src/weave.rye`, and `mirror_weave`. `batch` is free and real. Next lap.
+**PATCHOULI -- TWO SHIPS REPAIRED ONE RED, AND THE PUBLISHED ONE STANDS.**
+Elder [shelved](archive/20260909-201559_itinerary-landed-accounts.md), links re-anchored.
+**FIRE SEES**, so the red I named for its owner last lap got read to its root: the fault sits in
+`standing_equipment_redleg` rather than in its 54th guard. The roster's own seating note says
+gating that count "would refuse every choir this tree owns"; the scan gated it anyway, so any
+delegating guard reds the fleet. I built the wall's replacement, proved it at 24 control checks,
+and **yielded it whole** -- a peer booked `%670` twenty minutes earlier, closed the instance with a
+control, and parked *whether the ceiling follows a delegation one hop* for you, which is the
+question mine answered. Upstream reads `53 of 53`; no file of mine touches the instrument.
+**YOURS, WITH THE MEASUREMENT IT WANTS** -- [what the red-leg meter should
+count](../active-designing/20260909-201506_what-the-red-leg-meter-should-count.md): of the 53 in
+that count, **53 delegate and 0 are silent** at `4684216ce1`. Both readings costed; the second's
+implementation stands proven and unlanded.
+**STILL MINE, STILL NEXT:** the `weave` word. `context/CHEMICAL_FORMULAS.md` spends it on a bulk
+read no module declares; `batch` is real (`mantra/resin_batch.rye`, bounded 16). Edit the
+canonical, run `document_mirror_scan.sh write`, and leave the dated foundation an erratum -- most
+supersessions stop at the breach.
 
 **DIFFUSER -- THE LEDGER WENT UNBUILT; THE PROMISES WERE KEPT ANYWAY.**
 Elder [shelved](archive/20260909-203002_itinerary-landed-accounts.md).
