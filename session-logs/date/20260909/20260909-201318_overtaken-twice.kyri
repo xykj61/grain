@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260909.201318
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent, BAKERY seat, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status tracked settings file
+evidence .claude/settings.json names model claude-opus-5; configuration does not verify the active runtime
+voice Kyri
+host Linux pier, America/New_York
+title Overtaken twice, and the reading that survived
+prompt Take the next agent-doable lap Lindy-first, crux-first
+rota lap 4466, row 1 -- Air, the row that feels; walk the fence line and press each post. Single-Stranded gave the shape of the first post I pressed: one `transcript=` line answering two questions is a braid rather than a strand. Pressing on found a second loose post, a ceiling seated with no slack over a population that grows by correct work -- and pressing a third time found the one nobody had touched, a ratchet that publishes a number and names no member.
+think The card carried REDS %666 OPEN and in my lane: the detached refusal printed the path THIS launch would have opened rather than the file the live owner was writing. I designed one record inside the lock directory read by both refusal sites, drafted the patches into gitignored scratch, and held still while the cold pass ran, exactly as the card asks.
+think That hold is thirty-five minutes on this pier. INCENSE published the same repair at 18:50 while I held -- same environment variable, same lock record, same two-reader shape, same dropped requested path. I read their diff against mine, found nothing mine added, and dropped it.
+think The cold pass closed with three reds, and one was closable: standing_equipment_redleg read 54 guards demonstrating no refusal against a ceiling of 53. Four guards were rostered after that ceiling was seated; three carry a refusal marker and glow_rune_alphabet did not. Two peers had already surfaced it on the card, each naming it and each rightly declining to edit a peer's file, so I took it under claim-as-override.
+think That control took the lap's second hour. Sixteen legs, every plant lifted, the worker copied INTO the pen so its $0 root resolved there rather than walking back out into the live tree. I committed at 19:29. PHEROMONE landed their own control for the same guard at 19:31, from their own stashed lap, in their own lane.
+think So I reset to the anointed order and adopted theirs whole. Re-litigating an owner's landed work in their own file is the one move this tree tells a claiming seat not to make, and their gate reads GREEN with the redleg count back at 53.
+think What survived is smaller and reaches further, and it is the reading that would have spared all three surfacings: the ratchet published a count and named its members only under an undocumented list argument. Three ships read 54 against 53 and could act on none of it, because acting means knowing which.
+obs The naming is gated on the raise rather than printed always. A green pass would print fifty-three names nobody asked for, and a reading that fires on every lap is a wall a reader stops seeing. The control proves both directions -- a raised ceiling names the guard that raised it, a held ceiling stays quiet -- which took it from 16 checks to 18.
+obs It reads the roster's TAIL, bounded by MAX_REPORT, because a fresh arrival sits at the end of the roster and the interesting members are the ones past the line rather than the whole class.
+obs Against myself, twice. My first control header graded C at 74 -- 53 percent negative sentences, grade 14 against 9 -- and the frame was worked down to A at 93 before the sweep resumed. And ten `sed -i` calls in that control were refused by the commit hook as non-portable; sed_inplace from shell_portable.sh is the spelling both GNU and BSD run.
+obs The finding this lap actually delivers is the collision itself. The card counted seventeen firings of the claim question this morning; this lap made it nineteen and twenty, two hours apart, on two different rows, from two different seats. Both were certain rather than unlucky: a lap that may not edit for thirty-five minutes cannot cheaply re-read the ledger, and nothing in the ledger says a row is being worked.
+obs What I keep, and it is worth naming: my discarded control proved the elder direction, the TAME G2 bindings and the sealed STOA90 count, which the landed one leaves unread. Offered on the card rather than imposed on a peer's file.
+loom roster=cold guards=217 green=212 red=3 gated=2 seconds=2098 tree_moved=no
+loom roster=hot guards=217 green=213 red=2 gated=2 seconds=2339 tree_moved=no
+loom control=standing_equipment_redleg checks=18 failures=0
+loom discarded=glow_rune_alphabet_control legs=16 plants_lifted=yes superseded_by=3f2d8c6ca
+file tools/fixtures/s/standing_equipment_redleg_scan.sh a raised ceiling names the guards that raised it, quiet while it holds
+file tools/fixtures/s/standing_equipment_redleg_control.sh two legs for that reading, both directions
+file construction/REDS.md row %671, the ratchet that reported a count and named no member
+file construction/ITINERARY.md the BAKERY block, both collisions measured, and the nib
+recommend check-in (Keaton) -- the claim question fired twice in one lap, both times certain rather than unlucky; whether an OPEN row carries a seat and a stamp at start is yours, and this lap is the sharpest evidence the ledger has
+scope one scan reading, its two control legs, one ledger row, the card's own block; a peer's landed control adopted whole and nothing of theirs touched
+status GREEN -- standing_equipment_redleg at 18 checks, the five ledger guards, pin capacity and headline, and the hot pass at 213 green with sow_allow_reach and the roster summary of it the only reds, neither this round's
