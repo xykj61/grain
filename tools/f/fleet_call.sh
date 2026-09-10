@@ -50,6 +50,8 @@ set -eu
 
 max_candidates=256   # bound: a pier running eight ships shows tens of matches, never hundreds
 max_ancestry=64      # bound: deeper than any real process chain on this pier
+tab=$(printf '\t')   # a literal tab, so the whitespace test below reads both spellings
+
 
 root=""
 pattern=""
@@ -79,6 +81,13 @@ while [ $# -gt 0 ]; do
 done
 
 [ -n "$pattern" ] || [ -n "$pids" ] || { printf 'fleet-call: name a --pattern or a --pid\n' >&2; usage; }
+# invariant: a pattern names ONE command word, so whitespace in it can never match and a zero would
+# read as absence rather than as impossibility.
+case "$pattern" in
+  *[![:space:]]*[[:space:]]*|*[[:space:]]*)
+    printf 'fleet-call: --pattern names one command word and carries no whitespace; a multi-word pattern matches nothing here -- use --pid, or pattern the program name alone\n' >&2
+    usage ;;
+esac
 
 # invariant: --dry-run holds the reading whatever order the flags arrived in, so a hand that asks
 # for a preview after naming a signal gets the preview.
@@ -134,21 +143,100 @@ under_root() {
 
 # -- gather candidates ---------------------------------------------------------------------------
 pen=${TMPDIR:-/tmp}/fleet-call-$$
-trap 'rm -f "$pen"' EXIT INT TERM
+argpen="$pen.args"
+trap 'rm -f "$pen" "$argpen"' EXIT INT TERM
 : > "$pen"
 
+# A MATCH MUST LAND ON A COMMAND WORD RATHER THAN INSIDE PROSE. This tree's baton is prepended to
+# every seat prompt and reaches each agent as ONE argument -- 11,558 bytes on this pier, measured
+# `20260909.223500` -- and it NAMES this helper and the tools it searches for, three times over. So
+# a substring test against the flattened command line matched all eight peer agents while exactly
+# one process was the tool: `candidates=19` against a true 7, a 2.6x over-read on the very reading
+# this helper exists to give. The wall held -- every one refused by cwd or ancestry -- and the
+# READING is what was wrong, which is the worse half: a lap published a fleet-wide claim from it,
+# and no refusal line said otherwise.
+#
+# THE DISCRIMINATOR IS SHAPE RATHER THAN LENGTH. A command word carries no whitespace: a program
+# name, a path, a flag. A prompt is prose, and every piece of it holding the pattern carries spaces.
+# A length bound was measured and declined -- the longest legitimate argument on this pier is 2,100
+# bytes (a witness's inline awk program) against the baton's 11,558, so a threshold exists, and it
+# is a number that drifts with whatever inline program grows next. Shape drifts with nothing.
+#
+# AND THE PATTERN ITSELF NAMES A COMMAND WORD, so a multi-word pattern can match nothing here by
+# construction -- `--pattern 'runner.sh --hot'` is refused rather than silently empty, since a
+# reading of zero that means "impossible" and one that means "nobody is running it" are two facts a
+# hand acts on differently. Learned first-resident within the hour, reaching for exactly that form.
+#
+# WHAT THIS NARROWS, AND WHAT IT LEAVES. A prompt that put a bare path alone on its own line would
+# read as a command word again, so this narrows the class rather than closing it -- measured against
+# the live baton, four patterns this tree searches for yield zero whitespace-free pieces while the
+# real invocation yields one. A genuine `sh -c '<script naming the tool>'` is refused, which is the
+# safe direction this file already chose for cwd: a false refusal costs one line, a false send costs
+# a peer's pass, and `--pid` is that case's door.
+#
+# ONE READING, WITH A NAMED DEGRADATION, DECIDED BY THE HOST AND NOT BY ONE PROCESS. Argument
+# boundaries come from `$proc_root/<pid>/cmdline`, which a Mac does not have; there the flattened
+# line is all there is, so the elder substring test stands and `reading=flattened` says so -- an
+# honest "this host cannot tell prose from a command word" rather than a silent second rule. The
+# capability is read ONCE, before the loop, because a per-candidate fallback made a single process
+# that exited between the listing and the read report the whole reading as degraded -- caught
+# first-resident on this Linux pier. A vanished process is skipped BY NAME instead, which is the
+# same distinction `instrument_refusal` asks for one line down: gone and innocent are two facts.
+if [ -d "$proc_root" ] && [ -r "$proc_root" ]; then reading=exact; else reading=flattened; fi
 if [ -n "$pattern" ]; then
-  # No grep child: a grep holding the pattern would itself become a candidate, which is the
-  # self-match fault one process further out.
+  # No grep child, and no matcher child of any kind: a process holding the pattern in its own
+  # command line becomes a candidate, which is the self-match fault one process further out. The
+  # whitespace test below is `case` in this shell for exactly that reason.
   ps -eo pid=,args= 2>/dev/null | while read -r cpid cargs; do
-    case "$cargs" in *"$pattern"*) printf '%s\n' "$cpid" ;; esac
+    case "$cpid" in ''|*[!0-9]*) continue ;; esac
+    # The flattened line carries every piece's own bytes, so a piece can never match where this
+    # does not -- which makes it a sound prefilter and keeps the split off 200 innocent processes.
+    case "$cargs" in *"$pattern"*) : ;; *) continue ;; esac
+    if [ "$reading" = exact ]; then
+      # The process exited between the `ps` listing and this line, so there is nothing to reach.
+      [ -r "$proc_root/$cpid/cmdline" ] || continue
+      # `tr` splits on the NUL argv separator, and a prose argument's own newlines split with it.
+      # That only makes the pieces smaller, so a prose piece stays prose and the test still holds.
+      #
+      # A FAILED READ IS ITS OWN OUTCOME rather than a fallback value. `|| printf ''` would hand the
+      # test an empty string, which reads exactly like a command line holding no match -- and the
+      # two are different facts: one process exited between the listing and this line, the other is
+      # running and innocent. So the read is asserted, and a vanished process is skipped by name.
+      if ! tr '\0' '\n' < "$proc_root/$cpid/cmdline" > "$argpen" 2>/dev/null; then
+        continue
+      fi
+      hit=none
+      while IFS= read -r piece; do
+        case "$piece" in *"$pattern"*) : ;; *) continue ;; esac
+        case "$piece" in
+          *' '*|*"$tab"*) hit=prose ;;
+          *) hit=word; break ;;
+        esac
+      done < "$argpen"
+      case "$hit" in
+        word) printf '%s\n' "$cpid" ;;
+        prose) printf 'prose %s\n' "$cpid" ;;
+      esac
+    else
+      case "$cargs" in *"$pattern"*) printf 'flat %s\n' "$cpid" ;; esac
+    fi
   done >> "$pen" || true
 fi
+
 for p in $pids; do printf '%s\n' "$p" >> "$pen"; done
 
 sent=0; refused_foreign=0; refused_self=0; refused_unknown=0; candidates=0; over=0
 
-while read -r cpid; do
+refused_prose=0
+while read -r tag cpid; do
+  # A bare number is a command-word match; `prose` and `flat` are the gather's own verdicts.
+  case "$tag" in
+    prose) refused_prose=$((refused_prose + 1))
+           printf 'call pid=%s verdict=refused_prose -- the pattern matched only inside prose (a prompt), never a command word; use --pid to reach it\n' "$cpid"
+           continue ;;
+    flat)  : ;;
+    *)     cpid=$tag ;;
+  esac
   [ -n "$cpid" ] || continue
   candidates=$((candidates + 1))
   if [ "$candidates" -gt "$max_candidates" ]; then over=$((over + 1)); continue; fi
@@ -181,5 +269,5 @@ done < "$pen"
 # to end, one field over -- a line that says a signal went where none did.
 verb=sent
 [ "$dry" = yes ] && verb=would_send
-printf 'candidates=%s %s=%s refused_foreign=%s refused_self=%s refused_unknown=%s over_bound=%s root=%s verdict=ok\n' \
-  "$candidates" "$verb" "$sent" "$refused_foreign" "$refused_self" "$refused_unknown" "$over" "$root"
+printf 'candidates=%s %s=%s refused_foreign=%s refused_self=%s refused_unknown=%s refused_prose=%s over_bound=%s reading=%s root=%s verdict=ok\n' \
+  "$candidates" "$verb" "$sent" "$refused_foreign" "$refused_self" "$refused_unknown" "$refused_prose" "$over" "$reading" "$root"

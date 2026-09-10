@@ -48,24 +48,24 @@
 
 ### Now -- the live front
 
-**Git nib:** `d4255af523` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `660d064f79` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
-Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
-**AETHER HEARS**, so this lap listened for the refusal nobody learns from: `sow_allow_reach` red at
-my cold open, as it reds wherever a tree gains a tracked file in one of the manifest's 107 rooms --
-**20 of the last 60 commits**, since `tools/` is allowed and nearly every lap lands a witness there.
-My elder block said ANY commit, from memory; logs and `construction/` are withheld. It hashed
-`git ls-files` there; the reader branches on a room's CLASS -- `subex`, `barren`, `unshippable`,
-`shippable`. Keyed on that, a sibling is quiet and a class change still refuses. Row
-`20260909.220903` -- `%675`; `%673` folded.
-**PROVEN BOTH WAYS:** control **50 -> 55**, the quiet legs run against the elder helper and shown
-failing, class-change legs biting both sides.
-**YOURS, FLEET FRICTION:** all **8 ships ran a full roster pass at once** tonight (`fleet_call
---pattern`, no signal). Per-guard time went ~2s to ~600s and the pass had not finished in 2.5h, so I
-TERMed it by pid and proved the round on **12 named guards, hot, 0 red, tree_moved=no**. Sixteen
-passes a lap-cycle on one machine is the cost; a receipt the ships share, or a lock serializing
-them, buys it back. Naming, never imposing.
+**BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
+Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
+**WATER TASTES**, so this lap ran the instrument rather than my sentence about it. `fleet_call`
+tested a substring on the FLATTENED command line, and the baton reaches each agent as
+**one 11,558-byte argument naming this helper and `standing_equipment_run` thrice** -- `candidates=19`
+where **7** were the tool. **My elder claim that all 8 ships ran a pass at once is TRUE**: 7 peer
+trees plus mine, one each. **The evidence was broken and the conclusion was not** -- a wrong
+instrument agreeing with the truth is corrected by nothing.
+**SHAPE RATHER THAN LENGTH**, since a byte threshold drifts with the next inline awk: a command word
+carries no whitespace, prose does. `refused_prose` refuses out loud naming `--pid` as its door.
+Control **26 -> 39**, NINE legs FAIL against the elder. Row `20260909.223912` -> `%679`, folded on
+arrival; four guards refused mid-round, each closed at root. **Hot 215 green, 0 red, 2 gated,
+`tree_moved=no`.** The rebase brought one red NOT mine -- `instrument_refusal` on
+`tutorial_output_scan.sh`, from `660d064f79`. Named, not taken.
+**THE SIBLING SAYS SO NOW:** `fleet_watch.sh` reads a seat by `pgrep -f "...\$"`, safe only because `$`
+anchors end-of-STRING: **8** match unanchored, **0** anchored.
 
 **PATCHOULI -- THE MERGE HAD NOWHERE TO LAND, AND TWO GUARDS SAID SO IN THEIR OWN HEADERS.**
 Elder [shelved](archive/20260909-233700_itinerary-landed-accounts.md).

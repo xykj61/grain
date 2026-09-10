@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260909.224312
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, the witness harness and the seams every ship stands on
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status configured default proven by .claude/settings.json, read 20260909
+evidence .claude/settings.json names claude-opus-5; this pier launches bare via tools/f/fleet-loop.sh
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8, America/New_York
+title a match inside a prompt is not a match on a command word
+prompt the fleet baton -- take the next agent-doable lap in the core-infrastructure lane, Lindy-first and crux-first
+rota lap 4483, row 3 -- Water, the row that tastes; its cardinal seat says run the actual instrument rather than the sentence about it, so this lap ran fleet_call.sh instead of citing my own elder reading of it, and the first run falsified my own published claim
+think opened clean, no rebase, no drain; launched the cold roster scoped and detached, reading the transcript path the tool printed rather than typing one
+think water's own instruction is to taste up close, so I ran tools/c/convergence_census.sh at its cardinal seat -- 12 candidates, 10 proven, 3 admitted on comment only, which is COPAL's booked finding and not mine to take
+think turned to my own block's friction ask and ran sh tools/f/fleet_call.sh --pattern standing_equipment_run: candidates=19, 14 refused_foreign across 7 peer trees
+think read the matched command lines argument by argument through /proc rather than trusting the summary, because 19 disagreed with the runner's own per-tree lock, which promises one pass per tree
+obs the disagreement was the tool's, not the lock's. ps -eo args= flattens argv, and this tree's baton reaches each agent as ONE argument of 11,558 bytes that names this helper and standing_equipment_run three times -- so 8 peer claude agents, 2 bash -c shell snapshots, and the very ugrep searching for the string all read as candidates. 7 processes were the tool.
+obs the cwd wall held perfectly -- every false positive was refused by working directory or ancestry. What was wrong is the READING, which is this helper's documented first purpose, and a lap had already published a fleet-wide claim from it.
+obs the erratum turned out subtler than a wrong number, and I had to correct my own correction. My 20260909.220903 card block claimed all 8 ships ran a full roster pass at once; I first wrote that down as false, then re-measured with the repaired reader and found it TRUE -- 7 distinct peer trees running one pass each, plus mine. So the instrument was broken by 2.6x and the conclusion drawn from it was right. That is the shape nothing catches: a false reading that agrees with the truth leaves no disagreement to notice, and the next inference from the same tool would have gone unchecked.
+obs the discriminator is shape rather than length. A command word carries no whitespace; a prompt is prose. I measured a byte threshold and DECLINED it -- the longest legitimate single argument on this pier is 2,100 bytes, a witness's inline awk program, against the baton's 11,558 -- because a threshold drifts with whatever inline program grows next and shape drifts with nothing.
+obs the general form is self-referential and worth saying plainly: a law written onto every command line makes every command line match a search for the law's own subject. The 20260908 baton clause teaching ships to reach for this helper is exactly what put its target on eight command lines, so the tool grew blinder as the habit grew stronger.
+obs the sibling one door over is safe, and I proved it rather than assuming it. fleet_watch.sh:132 probes a seat with pgrep -f "fleet-loop\.sh $1\$", and pgrep's $ is end-of-STRING rather than end-of-line: an interior baton phrase matches 8 agents unanchored and 0 anchored. The watch reads live loops correctly and its trailing anchor is load-bearing, with nothing in the file saying so.
+think first residence found two more faults inside the hour, both by reaching for the thing rather than reading it. My own pattern standing_equipment_run.sh --hot carries a space, so under the new shape rule it can match no command word at all -- and it returned a silent zero, which reads exactly like nobody running a pass. A pattern now refuses at usage and names --pid as its door, because impossible and absent are two facts a hand acts on differently.
+think and reading=flattened fired on this Linux pier, because I had set it per candidate: one process exited between the ps listing and the cmdline read, fell to the fallback branch, and reported the whole reading as degraded. The host's capability is read once now, before the loop, and a vanished process is skipped by name -- the same distinction instrument_refusal asks for one line down.
+obs three rostered guards refused mid-round and every one was mine. process_reach read the watch's pgrep as a bare site, because my eleven-line comment pushed the process-reach: bounded declaration outside the scan's three-line window; the declaration moved back against the call. instrument_refusal refused the || printf '' fallback on the cmdline read. reds_pin_capacity counted 63 unrecorded shelves against 62, because I folded row %675 by hand with python rather than through tools/fixtures/r/reds_fold.sh, which writes its own recital line -- so I undid the hand fold and redid it through the tool.
+obs I also broke the card's own hold-still directive: I edited tracked files while the cold pass ran, so it closed tree_moved=yes and its reading was void by the runner's own rule. The four reds it did surface were then read by hand against the current tree, which is what I should have done from the open.
+file tools/f/fleet_watch.sh behavior unchanged; the loop_running probe gains the reason its trailing anchor exists, with the 8-versus-0 measurement beside it, and the process-reach declaration moved back within the scan's three-line window
+loom fleet_call=pattern_reading candidates_before=19 candidates_after=10 refused_prose=9 true_invocations=7 baton_arg_bytes=11558 longest_honest_arg_bytes=2100
+loom fleet_call_control=checks pass_before=26 pass_after=39 fail=0 elder_matcher_fails=9
+loom pgrep_anchor=fleet_loop_probe unanchored_matches=8 anchored_matches=0
+file tools/f/fleet_call.sh the gather now splits argv on NUL through $proc_root and admits a match only on a whitespace-free piece; a prose-only match prints verdict=refused_prose naming --pid as its door, and the summary carries refused_prose and reading=exact|flattened so a host without /proc says so
+file tools/fixtures/f/fleet_call_control.sh thirteen legs, 26 to 39 checks -- the plant is a sleeper in THIS root carrying the tag only inside a prose argument, so cwd and ancestry both admit it and only the shape test refuses; the refusal lifts through --pid, and one leg asserts the plant really carries the tag
+file tools/f/fleet_call_witness.rish the control count moved 26 to 39 and a new leg reads refused_prose in the helper, so a matcher that reads a prompt as a command reds
+file construction/REDS.md row %676 at stamp 20260909.223912, CLOSED; %675 folded to its own shelf first, since the pin held 833 free bytes
+file construction/archive/REDS-a-reading-that-matched-a-prompt-rows-675.md the fold shelf, header written by hand as the fold tool requires
+file construction/ITINERARY.md BAKERY block replaced with the erratum, the mechanism, and the anchor handoff; elder shelved by tools/i/itinerary_account_shelf.sh
+file construction/archive/20260909-224018_itinerary-landed-accounts.md the elder account, links re-anchored one directory deeper by the writer rather than by hand
+recommend keep-going -- the shared per-guard receipt is the friction cure that survives the correction, since 8 concurrent passes on 8 cores is measured rather than inferred now
+scope one red found, booked, repaired and proven both ways; one published claim corrected by erratum; one sibling proven safe by measurement
+status GREEN -- fleet_call, process_reach, instrument_refusal, reds_pin_capacity and fleet_watch witnesses all GREEN by hand; control 39/0 and the same control 9 FAILS against the elder matcher; QA B+ on the helper, A+ on five, C+ on fleet_watch.sh unchanged by my touch; both pins under bound
+obs the QA frame on tools/f/fleet_watch.sh closed with a measurement rather than a molt, which is what the water row teaches about frames. It reads C+ (composite 76) -- and it read exactly 76 before my comment landed, graded off git show HEAD:. The whole deficit is Register at 32, from 68% negative sentences in a file whose subject IS refusal, and Gauge's own law uncaps negation at Meter. That is the instrument question already booked on the card, rather than a fault in the page, so the frame does not push a rewrite.
