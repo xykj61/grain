@@ -59,7 +59,10 @@ echo "exit=$after"
 
 # 124 is what `timeout` returns when it kills the child. A witness that never answered tells us
 # nothing about cycling, so it is its own verdict rather than folded into pass or fail.
-if [ "$code" -eq 124 ]; then echo "verdict=hung"; exit 1; fi
+# A TIMEOUT IS A CLAIM ABOUT THE BOUND TOO (`20260910`). This printed `hung`, and
+# `glow_desk_run_witness` earned that word here at 280s before measuring 455 seconds and exit 0.
+# `over_bound` says what is actually known, and `bound=` and `seconds=` are printed above it.
+if [ "$code" -eq 124 ]; then echo "verdict=over_bound"; exit 1; fi
 
 if [ "$before" = "$after" ]; then
   echo "residue_paths=0"

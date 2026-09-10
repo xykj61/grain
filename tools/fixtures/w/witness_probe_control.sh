@@ -31,18 +31,18 @@ v() { sh "$scan" "$1" --bound "${2:-5}" 2>&1 || true; }
 
 v "$pen/passes_witness.rish" | grep -q 'verdict=green' && ok "a passing witness reads green" || bad "green missed"
 v "$pen/fails_witness.rish"  | grep -q 'verdict=red'   && ok "a refusing witness reads red"  || bad "red missed"
-v "$pen/hangs_witness.rish"  | grep -q 'verdict=hung'  && ok "a witness past its bound reads hung" || bad "hung missed"
+v "$pen/hangs_witness.rish"  | grep -q 'verdict=over_bound'  && ok "a witness past its bound reads over_bound" || bad "over_bound missed"
 
 # THE DISTINCTION THIS FILE EXISTS FOR, asserted from the other side too: a hang must never be
 # reported as a red, since one is a claim about the run and the other about the tree.
-v "$pen/hangs_witness.rish" | grep -q 'verdict=red' && bad "a hang was reported as a red" || ok "a hang is never called a red"
-v "$pen/fails_witness.rish" | grep -q 'verdict=hung' && bad "a refusal was reported as a hang" || ok "a refusal is never called a hang"
+v "$pen/hangs_witness.rish" | grep -q 'verdict=red' && bad "an over-bound run was reported as a red" || ok "an over-bound run is never called a red"
+v "$pen/fails_witness.rish" | grep -q 'verdict=over_bound' && bad "a refusal was reported as over_bound" || ok "a refusal is never called an over-bound run"
 
 v "$pen/absent_witness.rish" | grep -q 'verdict=absent' && ok "a missing file reads absent" || bad "absent missed"
 
 # A hung run must still report the seconds it burned, so a reader can tell a slow witness from a
 # stuck one without running it again.
-v "$pen/hangs_witness.rish" | grep -q 'seconds=' && ok "a hung run reports the seconds it burned" || bad "no seconds on a hang"
+v "$pen/hangs_witness.rish" | grep -q 'seconds=' && ok "an over-bound run reports the seconds it burned" || bad "no seconds on an over-bound run"
 
 # The bound is honoured rather than ignored: a longer bound lets the same witness finish.
 sh "$scan" "$pen/hangs_witness.rish" --bound 40 2>&1 | grep -q 'verdict=green' \
@@ -50,6 +50,6 @@ sh "$scan" "$pen/hangs_witness.rish" --bound 40 2>&1 | grep -q 'verdict=green' \
 
 sh "$scan" 2>&1 | grep -q 'verdict=no_path' && ok "no path refuses rather than defaulting" || bad "no path defaulted"
 
-echo "coverage: 9 behaviors, all four verdicts planted, the hang-versus-red distinction proven both ways"
+echo "coverage: 9 behaviors, all four verdicts planted, the over-bound-versus-red distinction proven both ways"
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

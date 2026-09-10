@@ -36,7 +36,7 @@ set -eu
 # headroom with all seven of its rows OPEN, so no fold is lawful and a row cannot land. That pin
 # bound is itself awaiting his word, recorded on the card.
 red_ceiling=${EQUINOX_CHOIR_RED_CEILING:-10}
-hung_ceiling=${EQUINOX_CHOIR_HUNG_CEILING:-2}
+over_bound_ceiling=${EQUINOX_CHOIR_HUNG_CEILING:-2}
 bound=${EQUINOX_CHOIR_BOUND:-90}
 dir=${EQUINOX_CHOIR_DIR:-tools/equinox/witness}
 
@@ -46,23 +46,23 @@ echo "members=$n"
 echo "bound=$bound"
 if [ "$n" -eq 0 ]; then echo "verdict=empty_corpus"; exit 1; fi
 
-green=0; red=0; hung=0
+green=0; red=0; over_bound=0
 for f in $list; do
   v=$(sh tools/fixtures/w/witness_probe_scan.sh "$f" --bound "$bound" 2>/dev/null | grep '^verdict=' | cut -d= -f2)
   case "$v" in
     green) green=$((green+1)) ;;
-    hung)  hung=$((hung+1)); echo "hung: $f" ;;
+    hung)  over_bound=$((hung+1)); echo "hung: $f" ;;
     *)     red=$((red+1)); echo "red: $f" ;;
   esac
 done
 echo "green=$green"
 echo "red=$red"
 echo "red_ceiling=$red_ceiling"
-echo "hung=$hung"
-echo "hung_ceiling=$hung_ceiling"
+echo "over_bound=$hung"
+echo "over_bound_ceiling=$over_bound_ceiling"
 
 # A corpus that answers nothing green is a broken probe rather than a broken room.
 if [ "$green" -eq 0 ]; then echo "verdict=no_green"; exit 1; fi
 if [ "$red" -gt "$red_ceiling" ]; then echo "verdict=red_over_ceiling"; exit 1; fi
-if [ "$hung" -gt "$hung_ceiling" ]; then echo "verdict=hung_over_ceiling"; exit 1; fi
+if [ "$hung" -gt "$over_bound_ceiling" ]; then echo "verdict=over_bound_over_ceiling"; exit 1; fi
 echo "verdict=ok"
