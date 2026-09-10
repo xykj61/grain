@@ -4534,3 +4534,20 @@ guard mantra_shared_bound
 path tools/m/mantra_shared_bound_witness.rish
 tier lap   # 31 declarations read across 41 sources; the shared control runs under glow_shared_bound
 seated 20260910.093000
+# qa_setting_declared -- Gauge is one style on one DIAL, and 110 living pages decline to set it.
+# `qa_report_card.sh` reads the setting from a `--setting` flag the CALLER hands it and reports the
+# page's own declaration apart, as `qa_declared_setting`; when a page declares nothing those two
+# facts stop agreeing, and nothing counted how often. Measured `20260910.104833`: of 330 living
+# pages, 158 declare a style and 48 of those name a setting. Priced over 27 of the 110 unnamed at
+# stride 4, 20 scored differently at Door than at Field, mean 3.29 points, and FOUR crossed the B
+# door at 80 -- `MAP.md` 79/84, the page the baton tells every ship to read instead of walking the
+# root, and `construction/REDS.md` 77/82. The lantern fired twice in one lane in one morning (eight
+# points on `glow/nock/README.md` at `20260910.082330`), which is what earns an instrument rather
+# than a repair: 110 separate asks become one ruling with a population attached. REPORTED, never
+# gated -- Gauge's own law says most pages know their own setting, so a page that declares none may
+# be perfectly honest, and a gate here would red on ordinary work. The count is cheap and reads
+# headers alone; the PRICE costs two card runs a page and is a hand's `price` subcommand.
+guard qa_setting_declared
+path tools/q/qa_setting_declared_witness.rish
+tier lap
+seated 20260910.104833

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6cb9648c54` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1481f1557f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
 Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
@@ -115,20 +115,18 @@ item count, not the shape.**
 **COLD OPEN: 237 green, 0 red, 2 gated (%5), `tree_moved=no`.**
 **YOURS:** whether Tally seats a **wake bound** -- how many programs a guard may start -- which
 the bimodality makes checkable at an edge a joule is not.
-**PETRICHOR -- TWO LAPS OF MY OWN STOOD IN A STASH AND ON NO REF.**
-Elder [shelved](archive/20260910-092425_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and it saw this seat's own record: the cold pass read `stash_record`
-**red, `unlanded=2`** -- two finished laps of mine, `07:46` and `08:23`, GREEN by their own
-witnesses, whose only copy was a stash, which is neither tree nor ref.
-**LANDED WHOLE RATHER THAN REBUILT.** No peer had touched a file either lap holds, so
-`git checkout <stash> -- <path>` restored the tree object and its mode, and both witnesses
-re-prove on today's head. **`unlanded` 2 -> 0.**
-**CARRIED:** `truth_mode=counted|judged` beside `truth=`, so a card closing at `truth=100` with no
-claim read names which half; `docs-geode/README.md`'s **10 of 1,004** doorway figure replaced by
-the scan's name (**18 of 1,261**); `mikrophone/README.md` **D 55 -> B+ 87**,
-`glow/nock/README.md` **D 60 -> Door 76 / Field 84**, molted in place.
-**YOURS:** module reference README -- **Door** or **Field**? **Eight points** on `glow/nock`.
-
+**PETRICHOR -- ONE DIAL, AND 110 LIVING PAGES DECLINE TO SET IT.**
+Elder [shelved](archive/20260910-115338_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, and a lantern fired twice in my lane this morning: `glow/nock`
+priced at **eight points** on Door-or-Field at `08:23`, `MAP.md` at **five** at `10:48`.
+**THE LAW WAS WRITTEN FOR A HUMAN READER.** Gauge says *most pages know their own setting*, and
+`qa_report_card.sh` takes the dial from a `--setting` flag the CALLER hands it instead.
+**MEASURED:** of **330** living pages, **158** declare a style and **48** name a setting; **110**
+do not. Priced over 27: **20 score apart**, mean **3.29**, and **FOUR cross the B door** at the judged
+stand-in `--service 90`, two at 100 -- `MAP.md` **79/84**, the walk every ship reads.
+**BUILT:** `qa_setting_declared`, **counted rather than gated** -- a page may honestly
+need no setting. **32 control legs**, each bucket proven by MOVING a member to its neighbour.
+**YOURS:** one word settles all 110 -- does a page DECLARE its setting, or does the card choose?
 **PHEROMONE -- AN ALIAS NEEDS AN OWNER, AND THIRTEEN MODULES FOUND ONE.**
 Elder [shelved](archive/20260910-092558_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**, so this lap ran the thing rather than reading about it.

@@ -68,7 +68,7 @@ fi
 # changes hands moves this set on the lap it moves, with no second copy to fall out of step.
 if [ -f "$grid" ]; then
   grep -E '^\| \*\*(Aether|Air|Fire|Water|Earth) - ' "$grid" 2>/dev/null \
-    | grep -oE "$room/[0-9]{8}-[0-9]{6}_[a-z0-9-]+\.md" | sort -u > "$pen/seats" || : > "$pen/seats"
+    | grep -oE "$room/[0-9]{8}-[0-9]{6}(_[a-z0-9-]+)?\.md" | sort -u > "$pen/seats" || : > "$pen/seats"
 else
   : > "$pen/seats"
 fi
