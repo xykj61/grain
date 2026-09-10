@@ -42,9 +42,12 @@ SEED=${SOW_SEED:-seed}
 # A scan that reads nothing must refuse rather than report clean (REDS %170).
 [ -d "$SEED" ] || { echo "refused: no projection at $SEED/ -- run tools/s/sow.rish first"; exit 2; }
 
-# A projection answers for the manifest and tracked inventory it was built from.
-# Unrelated content edits leave this coverage question unchanged. A new path or
-# manifest edit needs a fresh projection, including an edit still in the index.
+# A projection answers for the manifest and the coverage CLASS of each allowed
+# room it was built from -- `subex`, `barren`, `unshippable`, `shippable`. Content
+# edits and a file landing beside its siblings leave this question unchanged; a
+# manifest edit, a new allowed room, or a room changing class needs a fresh
+# projection, including a change still in the index. See sow_reach_inputs.sh for
+# why the key is a class rather than an inventory.
 RECEIPT="$SEED/.sow-projection.log"
 [ -f "$RECEIPT" ] || { echo "refused: no receipt at $RECEIPT"; exit 2; }
 . tools/fixtures/s/sow_reach_inputs.sh

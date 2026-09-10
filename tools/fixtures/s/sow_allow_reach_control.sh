@@ -5,7 +5,8 @@
 #
 # Recover the parked projection checks against the current reader. Each pen holds
 # a real Git index and a small projection. The receipt binds coverage inputs:
-# manifest bytes and tracked paths. It makes no promise about content freshness.
+# manifest bytes and the coverage STATE of each allowed room. It makes no promise
+# about content freshness.
 # Bounds: six small repositories, no network and no public seed writes.
 set -eu
 
@@ -118,16 +119,43 @@ check "late_room/lifted/rc"     "$(run_rc "$b")" "0"
 check "late_room/lifted/empty"  "$(printf '%s\n' "$out" | sed -n 's/^empty=//p')" "0"
 check "late_room/lifted/allows" "$(printf '%s\n' "$out" | sed -n 's/^allows=//p')" "3"
 
-# A staged path changes the inventory before a commit. A manifest edit can also
-# change the answer before staging. Both refuse before naming a missing room.
+# A file landing BESIDE its siblings leaves the coverage question answered: the
+# room was already shippable and is still shippable, so the receipt holds and the
+# next ship reads no refusal. This is the leg the elder inventory key failed --
+# every commit adding a tracked file under an allowed room stalled the fleet.
 printf 'new file\n' > "$b/late/three.md"
 (cd "$b" && git add late/three.md)
 out=$(run_scan "$b")
-check "staged_path/rc" "$(run_rc "$b")" "2"
-check "staged_path/no_accusation" "$(printf '%s\n' "$out" | grep -c '^empty:' || true)" "0"
-cp "$b/late/three.md" "$b/seed/late/three.md"
+check "sibling_add/rc" "$(run_rc "$b")" "0"
+check "sibling_add/no_accusation" "$(printf '%s\n' "$out" | grep -c '^empty:' || true)" "0"
+(cd "$b" && git commit -q -m 'pen: a sibling landed')
+check "sibling_commit/rc" "$(run_rc "$b")" "0"
+
+# And the class change it must still catch, from both sides. A room allowed while
+# the field carries nothing reads `barren`; the first tracked file under it makes
+# it `shippable`, which is a real coverage change and refuses until re-projected.
+(
+  cd "$b"
+  mkdir -p future
+  printf 'allow future\n' >> template-manifest.bron
+  git add template-manifest.bron
+)
 stamp_receipt "$b"
-check "staged_path/lifted" "$(run_rc "$b")" "0"
+check "barren_room/quiet" "$(run_rc "$b")" "0"
+printf 'the room stops being barren\n' > "$b/future/one.md"
+(cd "$b" && git add future/one.md)
+out=$(run_scan "$b")
+check "barren_to_shippable/rc" "$(run_rc "$b")" "2"
+check "barren_to_shippable/named" "$(printf '%s\n' "$out" | grep -c 'manifest or tracked paths changed' || true)" "1"
+check "barren_to_shippable/no_accusation" "$(printf '%s\n' "$out" | grep -c '^empty:' || true)" "0"
+(
+  cd "$b"
+  mkdir -p seed/future
+  cp future/one.md seed/future/one.md
+)
+stamp_receipt "$b"
+check "barren_to_shippable/lifted" "$(run_rc "$b")" "0"
+
 printf '# coverage note\n' >> "$b/template-manifest.bron"
 check "unstaged_manifest/rc" "$(run_rc "$b")" "2"
 stamp_receipt "$b"
