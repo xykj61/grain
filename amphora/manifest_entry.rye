@@ -44,6 +44,50 @@ pub fn mark_verdict(mark: []const u8) MarkVerdict {
     return .unknown;
 }
 
+/// What the engine can say about a NAME on sight. `contained` is a plain relative
+/// path that can only ever land inside the home a restore was pointed at;
+/// `escaping` is one that names a place outside it, or names no place at all.
+///
+/// The rule exists because a cargo line proves its bytes and never proved its
+/// PLACE. Measured on metal `20260910`: a vessel whose cargo named
+/// `../escaped.txt` passed the Kumara stamp, the AEAD seal, the listing-agrees
+/// walk, and printed `restore files proven count=2` -- the digest matched,
+/// because the content was honest and only the destination was not -- and
+/// `restore` wrote the file one directory ABOVE its out-home before refusing on
+/// the parent compare. A refusal that arrives after the write is not a wall.
+pub const NameVerdict = enum { contained, escaping };
+
+/// Read a name's verdict off its face. A contained name is a relative path whose
+/// every segment carries content and is neither `.` nor `..`: no leading `/`, no
+/// empty segment (which is what `//` and a trailing `/` are), and no segment that
+/// walks upward. A season is read by a directory walk, so a pour can never MAKE an
+/// escaping name -- this door exists for the names that arrive from outside, which
+/// is every name a restore reads back out of a sealed vessel.
+///
+/// Postcondition: every name receives exactly one verdict, stated positively --
+/// there is no partial containment.
+pub fn name_verdict(name: []const u8) NameVerdict {
+    // invariant: a name reaching here carries bytes -- the parser refuses an empty
+    // field before asking where it points.
+    if (name.len == 0) return .escaping;
+    // invariant: and it fits the roster's own name roof, so the walk below is
+    // bounded by a named constant rather than by whatever arrived.
+    if (name.len > max_name_len) return .escaping;
+    var start: u32 = 0;
+    const len: u32 = @intCast(name.len);
+    while (start <= len) {
+        var end: u32 = start;
+        while (end < len and name[@intCast(end)] != '/') : (end += 1) {}
+        const seg = name[@intCast(start)..@intCast(end)];
+        if (seg.len == 0) return .escaping;
+        if (std.mem.eql(u8, seg, ".")) return .escaping;
+        if (std.mem.eql(u8, seg, "..")) return .escaping;
+        if (end >= len) break;
+        start = end + 1;
+    }
+    return .contained;
+}
+
 pub const ManifestEntry = struct {
     mark: []const u8,
     digest_hex: []const u8,
@@ -60,7 +104,7 @@ fn is_lower_hex(c: u8) bool {
 /// Postcondition: all three fields are nonempty, the digest is well-formed, and the
 /// mark is one the engine can name. An unknown mark refuses whole rather than
 /// riding through unread -- there is no partial trust of cargo whose kind has no name.
-pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }!ManifestEntry {
+pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark, EscapingName }!ManifestEntry {
     // invariant: a line reaching the parser holds bytes and fits the named bound, so the u32
     // arithmetic below indexes real content and never walks past the slice it was handed.
     assert(line.len >= 1);
@@ -112,6 +156,13 @@ pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }
     if (mark_verdict(entry.mark) == .unknown) return error.UnknownMark;
     // invariant: past this line the mark is a root the engine names.
     assert(mark_verdict(entry.mark) == .known);
+    // The containment rule, kept beside the wreck rule for the same reason: a name
+    // that walks upward is refused once here rather than seven times at the readers.
+    // A digest answers WHAT the bytes are; this answers WHERE they may land, and the
+    // vessel carried the second claim unchecked until `20260910`.
+    if (name_verdict(entry.name) == .escaping) return error.EscapingName;
+    // invariant: past this line the name lands inside whatever home a restore names.
+    assert(name_verdict(entry.name) == .contained);
     return entry;
 }
 
@@ -141,8 +192,22 @@ fn run_selftest(_: std.Io) !u8 {
     if (parse_manifest_line("zzz-unknown-stranger " ++ ("ab" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnknownMark);
     if (parse_manifest_line("executable " ++ ("ab" ** 32) ++ " payload.so")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnknownMark);
 
+    // Both directions of the containment rule. A nested relative name walks free,
+    // because a season is read by a directory walk and `sub/a.txt` is what that walk
+    // hands back; every shape that could land outside the home refuses by its own name.
+    const nested_ok = try parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " sub/deeper/a.txt");
+    // invariant: the welcome is asserted as hard as the refusals, so a rule refusing
+    // every name would be told apart from one refusing the escaping names alone.
+    assert(std.mem.eql(u8, nested_ok.name, "sub/deeper/a.txt"));
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " ../escaped.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " sub/../../escaped.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " /etc/passwd")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " sub//a.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " ./a.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " sub/")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+
     print("amphora: version {s}\n", .{amphora_manifest_entry_version});
-    print("GREEN: Amphora manifest entry -- parse, name the mark, and refuse whole.\n", .{});
+    print("GREEN: Amphora manifest entry -- parse, name the mark, hold the name inside, and refuse whole.\n", .{});
     return 0;
 }
 

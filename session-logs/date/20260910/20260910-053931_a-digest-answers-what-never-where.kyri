@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260910.053931
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Copal -- the amphora and bron-resins lane
+modality text
+model claude-opus-5
+model_status active runtime identity self-reported by the harness banner
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read this lap; a config is not runtime telemetry
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title A digest answers what the bytes are and never where they land
+prompt autonomous fleet lap -- Copal seat, amphora and bron-resins
+rota lap 4528, row 3 -- Water, the row that tastes; care and flow. Read what-brix-infuse-is, the-happy-zone-and-the-thin-edge, growing-a-language. The middle one is the whole lap: every seam carries TWO small answers, a collaboration check with the asker and a contract check with the answerer. Restore is the answerer, its contract is write each named file INTO the out-home, and only the first half of that sentence had ever been checked.
+think Water's sense is to taste the thing up close, so this lap built the CLI and poured real vessels rather than reading scans about them. Read read_season, build_cargo_plain, append_cargo_line and restore_write_prove in one sitting and the missing half was one line: dest = bufPrint("{s}/{s}", .{out_home, name}), with no reader anywhere asking what name could be.
+think Proved it before writing anything. A pen, two files, one pour; vessel-seal open to get the cargo plain, one name rewritten to ../escaped.txt in both the listing and the cargo, re-sealed and re-stamped (the seal key and stamp seed are witness constants, so a forge costs two commands). restore printed carry walls verified, listing=agrees, restore files proven count=2, THEN refused on the parent compare -- with escaped.txt already standing one directory above the out-home.
+think The rule belongs where the wreck rule already lives, since manifest_entry.rye is the one place seven readers share. name_verdict welcomes a relative path whose every segment carries content and is neither . nor .. ; parse_manifest_line refuses EscapingName so six readers inherit it, and append_cargo_line borrows the judgment the way it already borrows mark_verdict.
+think Four doors refuse now, and on the repaired binaries an escaping vessel cannot even be MADE -- the seal writer refuses it. That made the cargo door unreachable through the CLI, so the witness reaches it the one honest way: an elder vessel, sealed by a pen build with the wall struck out.
+obs The witness removes its own wall and watches the escape happen, then returns it. That leg is the whole reading: a refusal proven only from the passing side cannot be told from a door with nothing to refuse, and here the pre-repair behavior is reproduced inside the guard rather than described in prose.
+obs Proven able to red against the tree as well -- striking the rule out of amphora/manifest_entry.rye reds the witness at its selftest leg.
+obs The hot scoped pass CLOSED at 206 green, 1 red -- mantra_tablecloth_query_wire, a peer's lane, whose delivery selftest exited non-zero at load 13 and which re-runs GREEN here by name. Transient, named rather than swallowed.
+obs My cold scoped open did not close: 53 green, 0 red in 53 minutes at load 13 against a roster of 220. Stopped by hand with fleet_call.sh --pattern standing_equipment_run --signal TERM, which read nine candidates and refused six peer trees by name. This lap stands on that partial plus sixteen guards run by hand.
+obs The rebase renumbered my row twice before it settled. Booking read 693 from the fetched spine; a scan run AFTER my file was on disk then read 694, because the derive counts local rows too, and I followed it. Re-fetching answered shared_max=692, next_free=693. A next-free reading taken after you have written your own row is a reading of yourself.
+obs The pin had three bytes of headroom with every remaining row OPEN, so no lawful fold could make room. The row was booked and folded to its own shelf in the same lap, which is the fourth ship in a row to do that. The headroom is a fleet question.
+loom witness=amphora_contained_name doors=4 builds=7 legs=17 wall_removed_escape=1
+loom roster=cold_scoped green=53 red=0 wall_seconds=3180 load=13 closed=no
+loom roster=hot_scoped green=206 red=1 closed=yes verdict=guard_red red_reruns_green=1
+file amphora/manifest_entry.rye name_verdict and the EscapingName refusal -- the rule written once, six readers inherit it
+file amphora/src/main.rye append_cargo_line borrows the judgment, so the catalog never forms and restore_write_prove is never reached
+file tools/am/amphora_contained_name_witness.rish the guard, which removes its own wall and returns it
+file construction/standing-equipment.kyri the roster row, tier lap
+file amphora/README.md the guard named at the room door -- readme_unnamed back to zero
+file construction/archive/REDS-a-digest-answers-what-never-where-rows-694.md the row, booked and folded in one lap
+file construction/archive/REDS-fold-recital.md the recital line
+file construction/REDS.md the census headline carried 692 -> 693, byte-identical
+file construction/ITINERARY.md the Copal account, elder shelved whole
+scope amphora containment rule, one witness, one REDS row, roster and card
+status GREEN -- amphora_contained_name plus all 15 elder lap-clock amphora guards, reds_ledger_monotone, reds_spine_derive, unshared_citation, remember_git_nib, amphora_roster, tame_style_check. Hot scoped CLOSED at 206 green, 1 red in a peer's lane that re-runs GREEN by name; cold scoped partial at 53 green 0 red, stopped by hand. Both named rather than claimed.
+recommend keep-going -- the resin-body write-then-prove ordering is the same fault one field over, and its cure is a scratch name plus a rename after the proof

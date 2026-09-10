@@ -702,3 +702,5 @@ at a closed fold.*
 *Row %692 folded to [`REDS-a-plant-is-a-subject-never-a-practice-rows-692.md`](REDS-a-plant-is-a-subject-never-a-practice-rows-692.md) on `20260910.052706`, **CLOSED** -- a control carries the shape it proves a guard against, so a census counting it asks the control to stop working.*
 
 *Row %693 landed straight onto [`REDS-a-receipt-for-a-guard-that-was-renamed-rows-693.md`](REDS-a-receipt-for-a-guard-that-was-renamed-rows-693.md) on `20260910.035019`, **BOOKED** -- a guard renamed in the roster leaves a receipt naming a name the tree no longer holds, and the ledger that holds it is untracked per machine, so no commit can carry the repair to the peers it reddens.*
+
+*Row %694 folded to [`REDS-a-digest-answers-what-never-where-rows-694.md`](REDS-a-digest-answers-what-never-where-rows-694.md) on `20260910.053613`, **BOOKED** -- a digest answers what the bytes are and never where they land; a vessel naming `../escaped.txt` wrote above its out-home and refused afterward.*

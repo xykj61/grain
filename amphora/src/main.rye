@@ -1594,6 +1594,15 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     const digest = after_mark[0..digest_hex_len];
     const name = after_mark[digest_hex_len + 1 ..];
     if (name.len == 0 or name.len > max_season_name_len) return error.CargoUnproven;
+    // The containment rule, borrowed from the contract's own roster exactly the way the
+    // wreck rule above is, and for the same reason: this door writes what it reads. A
+    // digest proves WHAT the bytes are and never WHERE they land, so a cargo line naming
+    // `../escaped.txt` restored one directory above its out-home on `20260910` -- past the
+    // stamp, past the seal, past the listing walk, printing `restore files proven count=2`
+    // because the content was honest -- and refused only afterward, on the parent compare,
+    // with the file already written. Refused here, the catalog never forms and
+    // `restore_write_prove` is never reached, so the refusal arrives before the mutation.
+    if (me.name_verdict(name) == .escaping) return error.CargoUnproven;
     if (catalog.file_count >= max_season_files) return error.SeasonOverflow;
     const slot = &catalog.entries[catalog.file_count];
     slot.name_len = @intCast(name.len);
