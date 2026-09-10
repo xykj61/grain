@@ -665,3 +665,5 @@ at a closed fold.*
 *Rows %670 and %671 folded to [`REDS-a-guard-that-reports-without-demonstrating-rows-670-671.md`](REDS-a-guard-that-reports-without-demonstrating-rows-670-671.md) on `20260909.202547`, both **CLOSED** -- a guard that publishes a reading a reader can neither check nor act on -- a silence never proven able to sound, and a count that names no member.*
 
 *Row %674 folded to [`REDS-the-guard-that-named-its-own-gap-rows-674.md`](REDS-the-guard-that-named-its-own-gap-rows-674.md) on `20260909.215947`, **CLOSED** -- a guard that names its own unproven half is telling a reader where to look.*
+
+*Row %673 folded to [`REDS-a-tree-hash-cannot-see-an-ignored-path-rows-673.md`](REDS-a-tree-hash-cannot-see-an-ignored-path-rows-673.md) on `20260909.220910`, **CLOSED** -- a prover reads what git will stage, so an ignored path is a hole in every convergence claim it settles.*

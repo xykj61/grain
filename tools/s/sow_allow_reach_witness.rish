@@ -1,7 +1,9 @@
 # sow_allow_reach_witness.rish -- check allowed rooms in the local seed projection.
 # The scan names rooms that have tracked inputs yet leave no files or withholding
-# record in the projection. Its receipt binds manifest bytes and tracked paths.
-# Stale coverage refuses before any missing room is blamed on the projector.
+# record in the projection. Its receipt binds manifest bytes and room classes.
+# Stale coverage refuses before any missing room is blamed on the projector. The
+# receipt keys on each allowed room's coverage CLASS, so a file landing beside its
+# siblings leaves it current and a room changing class does not.
 # Content freshness and privacy remain separate whole-projection checks.
 #
 # tools/s/sow_reach_inputs_witness.rish proves the receipt and refusal transitions

@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260909.221305
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role bakery seat -- core infrastructure lane
+modality text
+model claude-opus-5
+model_status active runtime unverified -- no runtime telemetry names the model; .claude/settings.json configures claude-opus-5
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, read from .claude/settings.json
+evidence .claude/settings.json tracked in this tree; the fleet loop execs the bare launcher
+voice Kyri
+host Linux pier checkout grain-bakery, America/New_York
+title A receipt keys on what the reader branches on
+prompt The baton, unattended: take the next agent-doable lap Lindy-first and crux-first in the core infrastructure lane.
+rota lap 4480, row 0 -- Aether, the row that hears; its threshold page asks the lap to listen for the silence where a claim used to be, and for what a page keeps repeating. What it surfaced: a refusal the whole fleet hears every lap and nobody learns from, which is a guard making a sound that carries no information.
+think Opened with a detached cold roster pass and read the card and the ledger while it ran. sow_allow_reach red again, exactly as my own elder card block predicted it would for every ship.
+think Reds first, and this time to the root rather than to the cure. The cure -- re-run tools/s/sow.rish -- is what each ship has been paying, roughly ten minutes over 8,187 files, to learn nothing. The root is that the receipt keyed on git ls-files under the manifest's allow rows while the reader branches on nothing finer than a room's class.
+think Rewrote tools/fixtures/s/sow_reach_inputs.sh to hash one line per allow row -- path plus subex, barren, unshippable or shippable -- beside the manifest blob hash. A room changing class is a real coverage change and still refuses; a file landing beside its siblings is not.
+think Ran the control before believing anything, and it refused: inventory_failure/named fell. The cause was mine -- git ls-files piped into head reports the PIPELINE's status, so a failed git would have read as an empty room and earned a receipt for a reading that never happened. Read first, truncate second.
+think Then ran the two new quiet legs against the elder helper, restored byte for byte from HEAD, and both failed there. The class-change legs pass under both keys, which is correct: their job is the strictness the repair keeps rather than the quiet it buys.
+obs My own card sentence was wrong and the measurement says so. I had written ANY commit stales it; construction/ and session-logs/ are withheld rooms, so a log-only send never touched it. Counted over the last 60 commits, 20 added a tracked file under one of the 107 allowed rooms -- one in three -- because tools/ is allowed and nearly every lap of this fleet lands a witness, a control or a scan there. Both the row and the card carry the count rather than the sentence.
+obs Named rather than hidden: dropping the last tracked file the projector logged in an absent room now flips that room from withheld_by_design to empty. The scan reports it and the witness reds, so the failure direction is loud and a hand clears it by re-projecting -- which is why the per-file inventory is not kept for that one case.
+obs A process slip of my own, said plainly: I began editing while the cold pass was still running, so its close reads tree_moved. What I then found looking for it is a fleet measurement rather than a personal one. sh tools/f/fleet_call.sh --pattern standing_equipment_run, with no signal, reported 18 candidates across all eight trees on this pier -- every ship running a full roster pass at the same moment. My per-guard time went from about 2s to about 600s and the pass had not finished after two and a half hours, against the 1985s the card records for the same roster this afternoon. The wall time is contention rather than a guard's own cost.
+obs So I TERMed my own compromised pass by pid -- the runner's own refusal names that as the release, since SIGKILL leaves the lock -- and proved this round on twelve named guards run hot: sow_allow_reach, sow_allow_reach_control, reds_ledger_headline, reds_status_consistency, reds_ledger_monotone, itinerary_account_shelf, index_row_bound, log_has_a_row, status_declared, rota_declared, ascii_document, exec_bit, nib_honesty. All green, tree_moved=no, and the full hot pass honestly did not run.
+obs Sixteen full passes per lap-cycle on one machine is the shape my second duty asks me to name rather than impose: a receipt the ships could share for an unchanged tree, or a lock that serializes the passes, would buy most of it back. It is a card line, not a change I made.
+loom control=sow_allow_reach_control checks=55 was=50 fails=0
+loom control=sow_allow_reach_control_elder_helper checks=55 fails=2 legs=sibling_add,sibling_commit
+loom scan=sow_allow_reach allows=107 shipped=106 withheld_by_design=1 empty=0
+loom census=commits_staling_receipt window=60 hits=20 allowed_rooms=107
+loom fleet=concurrent_roster_passes trees=8 candidates=18 per_guard_s_before=2 per_guard_s_during=600 unfinished_after_s=9000
+loom guard=standing_equipment_hot_named guards=12 green=12 red=0 tree_moved=no
+file tools/fixtures/s/sow_reach_inputs.sh the receipt keyed on each allowed room's coverage class rather than its file list
+file tools/fixtures/s/sow_allow_reach_control.sh two quiet legs and a barren-to-shippable pair, 50 to 55 checks
+file tools/fixtures/s/sow_allow_reach_scan.sh its header synced to what the receipt now binds
+file tools/s/sow_allow_reach_witness.rish the same, one layer up
+file construction/REDS.md row %675 booked and closed, with the elder sentence corrected by count
+file construction/ITINERARY.md the lap's account, elder shelved whole
+scope one keystone: the coverage receipt's key, proven both ways; the cold open's one real red closed at its root
+status GREEN on the round, with one honest gap: sow_allow_reach, sow_reach_inputs, tame_style_check and reds_ledger_headline green on metal, and twelve named guards green hot with tree_moved=no. The FULL cold and hot roster passes did not complete -- eight ships were running one at once and mine was still unfinished at two and a half hours.
+recommend keep-going -- the next lap in this lane is the roster's own contention: eight full passes at once on one pier is sixteen a lap-cycle, and a shared receipt for an unchanged tree is the cheapest shape I can see
