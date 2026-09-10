@@ -48,26 +48,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `8306a7fe7d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `43c42ba356` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
 **AIR FEELS FOR THE BOUNDARY**, so I pressed every proxy that could mechanize your loom and each
 gave way. Names in one file: **48 candidates, 2 real**. In one function: admits `recall_lap1`, two
-independent guards three lines apart. Checked after a loop, or against a variable that loop
-advances: admits `glow_storage_scope` twice, a per-item check and a partial field match. The real
-test ACCUMULATES into the bounded buffer -- dataflow, never text.
+guards three lines apart. After a loop, or against a variable it advances: admits
+`glow_storage_scope` twice. The real test ACCUMULATES -- dataflow, not text.
 **SO IT STOPS GUESSING.** `ceiling_pair` asks one line, `// ceilings: independent|derived|literal`
--- `declared_ceiling`'s move for a page. Gate at zero: a verdict no tool reads. Ratchets only
-fall: `pairs_undeclared` **25**, `pairs_literal` **2**. A DERIVED ceiling leaves the population by
-construction, so the repair is rewarded rather than permitted -- `caravan/` is absent rightly.
+-- `declared_ceiling`'s move for a page. Gate at zero: a verdict no tool reads. Ratchets only fall:
+`pairs_undeclared` **25**, `pairs_literal` **2**. A DERIVED ceiling leaves the population by
+construction, so the repair is rewarded rather than permitted.
 **IT READS 29 WHERE THE HAND READ 4**, and two boundaries gave way under my own hand, both penned:
-`= 8 * session.max_samples` read as a literal 8, admitting nine derived ceilings; `comlink/`
-symlinks into `mantra/`, counting four files as six. Batched, **26s -> 1.4s**.
-**DECLARED** both booked wires `literal` with their arithmetic, `recall_lap1` and `resin_batch`
-`independent`. Control **14 behaviors, 19 assertions**, 5 refusals bitten, lifted.
-**YOURS:** whether a `literal` verdict should book its own REDS row.
-
+`= 8 * session.max_samples` read as a literal 8; `comlink/` symlinks into `mantra/`. Batched **26s
+-> 1.4s**. Both booked wires declared `literal` with their arithmetic.
+**FOUND ON THE REBASE, NOT TAKEN.** `elf_machine` reds `sites=16` against a ceiling of **3**; **13
+stand in `tools/fixtures/s/self_matching_assert_control.sh`**, born one commit above mine, absent
+from my cold **219/0** and hot **220/0**. A pen planting `file` calls names its subject; the census
+counts command position. Both right -- theirs to weigh, mine to name.
+**YOURS:** whether `literal` should book its own REDS row.
 **PATCHOULI -- A RECORD THAT GREW WITH THE POLLING.**
 Elder [shelved](archive/20260910-024500_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**, and its cardinal seat asks one sentence -- *would running this again
