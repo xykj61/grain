@@ -1,0 +1,48 @@
+# Read Rishi legs whose evidence the test harness supplies rather than the desk under test.
+#
+# tools/g/glow_run_worker.sh echoes a trailer line of its own after every desk run, EXIT:$?, and a
+# witness reads the desk's answer out of that same stream. A substring assertion whose needle also
+# stands inside the trailer therefore passes however the desk answered. The commonest form is a
+# gate's REFUSING side -- assert over.out contains "0" reads true off EXIT:0 alone -- so the one
+# leg proving a bound still refuses is the one leg that cannot make a sound.
+#
+# Proven on metal 20260910: a copy of src/gate/gate-mantra-gen-floor-u32.glow answering 7 where its
+# own stated invariant says 0 printed 7 then EXIT:0; the elder assertion passed and the exact list
+# assertion refused. Eleven mantra and tally legs carried the elder form and now carry the list
+# read, each witness re-run GREEN. The lane is gated at zero; every other room ratchets.
+#
+# Kin: tools/s/self_matching_assert_witness.rish reads the other borrowed-evidence source, a needle
+# the command operand handed the tool. Its own min_needle of 3 passes over the one-character needle
+# that carries almost all of this family, so neither guard can see the other's subject.
+#
+# Run: rishi/bin/rishi run tools/s/silent_leg_witness.rish
+
+say "silent-leg: a leg that cannot red proves nothing about the desk beneath it."
+
+let census = run ["sh" "tools/fixtures/s/silent_leg_scan.sh"]
+say census.out
+say census.err
+assert census.ok else "silent-leg: the scan refused"
+assert census.out contains "verdict=ok" else "silent-leg: scan verdict"
+assert census.out contains "lane_silent=0" else "silent-leg: a mantra or tally leg reads its needle off the trailer"
+assert census.out contains "lane_ceiling=0" else "silent-leg: the lane ceiling left the scan"
+assert census.out contains "trailer=EXIT:0" else "silent-leg: the scan stopped naming the trailer it reads"
+assert census.out contains "runners=" else "silent-leg: corpus count"
+assert census.out contains "silent=" else "silent-leg: family count"
+assert census.out contains "ceiling=" else "silent-leg: tree ceiling"
+
+let control = run ["sh" "tools/fixtures/s/silent_leg_control.sh"]
+say control.out
+say control.err
+assert control.ok else "silent-leg: the control refused"
+assert control.out contains "control_verdict=ok" else "silent-leg: control verdict"
+assert control.out contains "legs_fail=0" else "silent-leg: a control leg failed"
+assert control.out contains "ok   a lane leg refuses" else "silent-leg: the lane gate is unproven"
+assert control.out contains "ok   the same pen with the plant lifted walks free" else "silent-leg: the lane gate is unproven from the free side"
+assert control.out contains "ok   one leg past the tree ceiling refuses" else "silent-leg: the tree ceiling is unproven"
+assert control.out contains "ok   standing exactly at the tree ceiling walks free" else "silent-leg: the tree ceiling is unproven from the free side"
+assert control.out contains "ok   the worker echoes its trailer on both arms" else "silent-leg: claim one unread"
+assert control.out contains "ok   the substring read passes a wrong answer; the list read refuses it" else "silent-leg: claim two unread"
+assert control.out contains "ok   the exit read and an answer outside the trailer stay free" else "silent-leg: the honest exit read is not held free"
+
+say "GREEN: silent-leg -- the mantra and tally lanes stand at zero; the rest ratchets."

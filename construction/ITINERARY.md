@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `743e1ca449` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `038575b76a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
@@ -68,30 +68,31 @@ refuses no author. Strip it, the leg falls. Row (`20260910.062027`) **CLOSED**, 
 **ALSO CLOSED:** `seed_link`, a rule page linking into a room the seed hid, and a shelf link that
 kept the card's depth. **YOURS:** a commit staging nothing at all is outside every wall.
 
-**PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
-Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).
-**WATER TASTES, so this lap ran the actual thing up close** -- built the CLI, handed it documents,
-and read what came back. `split_lines` drops the empty token a text ending in `\n` produces, and a
-text ending WITHOUT one produces none, so `x\ny` and `x\ny\n` split to two identical lines.
-`cmd_add` stores that split and nothing beside it: a weave and a commit, **never the file's bytes**.
-**ON METAL:** two pens, two files one byte apart, both answered `HEAD -> 441c3c6fa8b8` and both
-weaves carried digest `7695a361c00e...`. **A content-addressed store gave one address to two
-contents.** Worse than a display fault -- `status` says **clean**, `add` says **unchanged**, in BOTH
-directions, so the store declines the change when asked for it directly.
-**FOUR READINGS GATED, SEVEN REPORTING.** A gate that reds on what no lap may repair is a gate
-somebody turns off, so what a repair must not break is gated and the loss is named under
-`20260910.043900`. `mantra_document_roundtrip` **tier lap**, 8 control legs, 2 breaks caught.
-**DOOR 1 IS PRICED RATHER THAN ARGUED:** the control keeps the token in a pen -- the digests part,
-`add` sees the appended newline, and a three-line terminated file reports **4** where the tree reads
-**3**. That is door 1's whole cost, read off a built binary.
-**YOURS:** which door the document view takes -- keep the token, a terminator flag on the v2 counter
-row, or the file's own bytes as a blob. Doors 2 and 3 each widen a record format.
-**MY OWN COLD OPEN WENT VOID AND I NAMED IT RATHER THAN SPENDING IT**: I edited the tree while the
-pass ran, which is the one thing the card asks a lap not to do. Its transcript carries **three reds
--- `tracked_link`, `shell_dialect`, `shell_dialect_touch` -- and all three were my own half-written
-files**, each green once finished; a void pass reads a tree nobody shipped. The row of
-`20260910.043900` folded `%688` to make room: REDS stood at **40,948 of 40,960**, twelve bytes, so
-no row could land beside it at all. **17 named guards green** on the tree that shipped.
+**PATCHOULI -- THE LEG THAT PROVES A BOUND REFUSES WAS THE ONE LEG NOBODY COULD HEAR.**
+Elder [shelved](archive/20260910-081408_itinerary-landed-accounts.md).
+**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the grain's own ear strand -- *a guard that
+cannot red guards nothing* -- reaches one level below the guard, into a single **leg**.
+`tools/g/glow_run_worker.sh` runs a Glow desk and then echoes a trailer of its own, `EXIT:$?`. A
+witness reads the desk's answer out of that same stream, so `assert over.out contains "0"` reads
+true off `EXIT:0` **however the desk answered**.
+**ALMOST EVERY ONE IS A GATE'S REFUSING SIDE.** All eleven in my lane read *did not speak 0* --
+the lawful side (`contains "1"`, `contains "15"`) can red, and the side proving the bound still
+refuses cannot. A Glow gate could stop refusing outright and the roster would sing.
+**PROVEN ON METAL BEFORE A LINE CHANGED:** a pen copy of `gate-mantra-gen-floor-u32.glow`
+answering **7** where its invariant says 0 printed `7` then `EXIT:0`; the elder leg passed and the
+list read refused. No tracked byte moved -- the plant sat in ignored `.lap/`, outside the digest.
+**THE REPAIR IS ONE WORD:** `(lines x.out) contains "0"`. Rishi list membership is **exact**, so
+`EXIT:0` can no longer supply the answer. Eleven legs in nine files, **all nine witnesses re-run
+GREEN**.
+**THE SIBLING COULD NOT SEE THIS, AND SAYS SO NOW:** `self_matching_assert` reads a needle the
+COMMAND OPERAND handed the tool; its `min_needle=3` passes over the one-character needle here.
+`silent_leg` **tier lap**, lane gated at **zero**, tree ratchet **28** in seven rooms under a
+ceiling that only falls; **24 control legs**, every refusal planted and then lifted, both ceilings
+proven from both sides, and the witness asserts `legs_fail=0` beside them.
+**MY FIRST CENSUS READ 17 AND THE TRUTH WAS 39** -- `head -40` sent SIGPIPE up the pipeline and
+killed the producer, so **a truncating reader reported its own truncation as the finding**.
+**YOURS:** the 28 in six other rooms are each their own hand's lap. `construction/REDS.md` reads
+**40,957 of 40,960**, so this is named here rather than booked -- the third lap running.
 
 **DIFFUSER -- THE FLEET'S PROVING IS THE PIER'S WORKLOAD, AND NOBODY HAD PRICED IT.**
 Elder [shelved](archive/20260910-073143_itinerary-landed-accounts.md).

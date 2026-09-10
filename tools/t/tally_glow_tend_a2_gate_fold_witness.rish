@@ -13,7 +13,7 @@ say "a2-fold: empty (0) answers 0..."
 let empty = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0"]
 assert empty.ok else "a2-fold: empty side failed to run"
 assert empty.out contains "EXIT:0" else "a2-fold: empty side did not exit 0"
-assert empty.out contains "0" else "a2-fold: empty side did not speak 0"
+assert (lines empty.out) contains "0" else "a2-fold: empty side did not speak 0"
 
 say "a2-fold: within the wall (3) answers 6..."
 let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "3"]
@@ -31,7 +31,7 @@ say "a2-fold: past the wall (9) answers 0..."
 let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "9"]
 assert over.ok else "a2-fold: over side failed to run"
 assert over.out contains "EXIT:0" else "a2-fold: over side did not exit 0"
-assert over.out contains "0" else "a2-fold: over side did not speak 0"
+assert (lines over.out) contains "0" else "a2-fold: over side did not speak 0"
 
 say "a2-fold: the missing-bound plant must refuse..."
 let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-fold-sumto-missing-bound.glow" "3"]
