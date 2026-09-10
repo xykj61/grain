@@ -59,6 +59,10 @@ done. Measured `20260906.143614` -- 81 of 84 stamped here, and 0 of 28 stamped t
 
 **Foundation briefs** -- the why beneath the daily work, on our own roots:
 
+- `20260909-211955_a-meter-reports-what-it-keys-on.md` -- an instrument answers the question its
+  **key** asks rather than the one its name asks; four keys this tree watched drift -- a name, a
+  literal number, a hand-written list, a whole population -- each with the command that reads it
+  today; **seated** `20260909.211955`.
 - `20260725-034254_always-in-it-responsive-rhythm.md` -- chapters ongoing - attention over calendar - undivided over unbounded; being gathers, doing forms; counsel practice; answers OPEN_QUESTIONS #5; **seated** `20260725.034807`.
 - `20260724-220625_five-pillars-direction.md` -- five direction pillars siloed (non-harming - devotion - meditation - sound - scripture); teachers named only in the gratitude close; **seated** `20260724.220625`.
 - `20260724-200912_nothing-to-give-custody-first-principle.md` -- **build nothing that destroys**; minimize - encrypt-with-external-key - delete-by-key; safe-by-default configuration; Seva (preference) / **Mand** (policy) settings split; **landed** `20260724.201334` - Mand name `20260724.202412` (Mona prior under erratum) - living pointer to redaction stance `20260725.001538`.
