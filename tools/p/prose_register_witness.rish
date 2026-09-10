@@ -83,6 +83,32 @@
 # reading has answered 4 since the day the ceiling was seated at 5 by counting the prose list
 # rather than by asking the meter.
 #
+# A SHARE NAMES A PAGE; --explain NAMES THE SENTENCES, from 20260910. Every tier here printed a
+# document and its share and stopped -- `law: .claude/rules/git-signing.md 55% (32 of 58 sentences)`
+# -- so a lane told that thirty-two sentences carry a negative had to find them by reading, and the
+# finding is most of what a register sweep costs. `sh tools/fixtures/p/prose_register_scan.sh
+# --explain <path>` prints each counted sentence with the words that counted it. It is a MODE rather
+# than a second tool, calling the same measure() with one flag set, so the listing agrees with the
+# gate's number by construction rather than by care.
+#
+# Nine behaviors prove it in a pen: the rows exist, one row per counted negative, the word named,
+# capitals kept, the row aligned to the sentence that carried the word, a warm page listing nothing,
+# the listing bounded and saying where it stopped, an absent path refused, and measure() answering
+# the same three numbers with the flag as without it. Two mutations bite -- dropping the
+# substitutions from the second buffer misprints two rows of five, and dropping the bound prints
+# past it in silence.
+#
+# THE SECOND BUFFER IS WHY THE ROWS READ TRUE. The reading buffer is lowercased with links and code
+# spans replaced, and `**wrong.**` holds a period the splitter reaches only once the emphasis marks
+# come off. So the file's own bytes split differently from the buffer the meter counts -- by four to
+# fourteen sentences on nearly every page in the law room and the foundations -- and a listing built
+# from them would name a warm sentence as negative. The mode carries a parallel buffer with the same
+# substitutions and its capitals kept, split by the same delimiter at the same offsets.
+#
+# THE CEILING FELL 19 -> 17 the day the mode landed, on the two pages it was pointed at first:
+# comlink-tendency 58% of 12 sentences and azimuth-galaxy-proposal-format 63% of 11, both to 0%,
+# seven counted sentences each restated and every claim, name, path and stamp held.
+#
 # WHAT IS NOT PROVEN. That the prose is GOOD. This counts negation density, one honest proxy among
 # several. A page can pass this meter and still fail a reader, so the second number to read is
 # always the prose itself.
@@ -101,7 +127,7 @@ say scan.out
 assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
 assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
 assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
-assert scan.out contains "law_ceiling=19" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
+assert scan.out contains "law_ceiling=17" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
 say "field GREEN -- the front door reads the way the style says it does, and the law room now reads its own number"
 
 let control = run ["sh" "tools/fixtures/p/prose_register_control.sh"]
@@ -130,6 +156,15 @@ assert control.out contains "law_spares_the_warm_page=yes" else "prose-register:
 assert control.out contains "law_floor_holds=yes" else "prose-register: a rule page under the eight-sentence floor must be unread rather than counted"
 assert control.out contains "law_ceiling_refuses=yes" else "prose-register: one law page over the ceiling must refuse, or the tier gates nothing"
 assert control.out contains "law_ceiling_lifts=yes" else "prose-register: the same bytes one ceiling number apart must walk free, or the refusal cannot be told from a scan that refuses everything"
+assert control.out contains "explain_names_the_sentences=yes" else "prose-register: --explain must name the sentences a share counts, or a lane sweeping the page is guessing"
+assert control.out contains "explain_agrees_with_the_count=yes" else "prose-register: one listed row per counted negative -- a listing that disagrees with its own gate is worse than none"
+assert control.out contains "explain_names_the_word=yes" else "prose-register: the row must name the word that counted the sentence"
+assert control.out contains "explain_keeps_capitals=yes" else "prose-register: the printed sentence must keep its capitals, or a lane cannot find it in the file"
+assert control.out contains "explain_aligns_after_normalising=yes" else "prose-register: the printed sentence must be the sentence that carried the word, past emphasis marks and links"
+assert control.out contains "explain_warm_lists_nothing=yes" else "prose-register: a warm page must list nothing and still answer"
+assert control.out contains "explain_bounded=yes" else "prose-register: the listing is an allocation -- bound it, and say where it stopped"
+assert control.out contains "explain_refuses_an_absent_path=yes" else "prose-register: an absent path must refuse rather than read as a clean page"
+assert control.out contains "explain_reading_unchanged=yes" else "prose-register: --explain must add a printout and move no number the gate reads"
 assert control.out contains "control_verdict=ok" else "prose-register: the control must agree with itself"
 say "the reading discriminates -- warm prose low, refusal-led prose high, and the edges read correctly"
 

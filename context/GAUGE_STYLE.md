@@ -370,6 +370,18 @@ the ceiling falls with it. **Field rather than Door**, because Meter seats ledge
 headers and commit bodies, and a rule page is documentation addressed to a working agent. Whether
 the law room earns a tighter setting is Keaton's word.
 
+**A share names a page; `--explain` names the sentences.** A lane told that thirty-two of
+`git-signing.md`'s fifty-eight sentences carry a negative still has to find them, and the finding is
+most of what a sweep costs. `sh tools/fixtures/p/prose_register_scan.sh --explain <path>` prints
+each counted sentence beside the words that counted it, out of the same `measure()` the gate reads
+-- one word list, one splitter, one four-word floor -- so the listing agrees with the share by
+construction. It prints prose as the meter reads it: links and code spans stand as ` link ` and
+` code `, emphasis marks come off, and capitals stay, so match a row by its content rather than by
+pasting it into a search. Two of the four pages named above went that way the day the mode landed:
+`comlink-tendency` 58% to 0% and `azimuth-galaxy-proposal-format` 63% to 0%, seven counted
+sentences each restated to lead with what is, every claim, name, path and stamp held. The law
+ceiling fell 19 to 17 in the same commit.
+
 ---
 
 ## Quality assurance -- the report card
