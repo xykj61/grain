@@ -2011,6 +2011,18 @@ path tools/m/mantra_weave_v2_witness.rish
 tier lap
 seated 20260909.233534
 
+# mantra_cli_record -- the record the CLI actually writes, which its sibling above named as the
+# thing it did NOT prove. Every other guard in the weave family reads a function inside
+# mantra/src/weave.rye; none read a byte the CLI wrote, and the module could build a wide record
+# while mantra/src/main.rye kept serializing the elder one. This guard drives the built binary in a
+# pen and reads the blobs off disk, including a real elder store frozen at
+# tools/fixtures/m/mantra_elder_v1_store/ -- blobs whose names are the SHA3-256 digests the elder
+# binary computed, so the compatibility claim is tested against a store rather than a forgery.
+guard mantra_cli_record
+path tools/m/mantra_cli_record_witness.rish
+tier lap
+seated 20260910.001500
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight
