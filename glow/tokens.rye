@@ -19,10 +19,10 @@
 //! STOA94: same-desk named-cast mold-body span via `named_cast_parts`.
 //! STOA95: mold-only `+$` dispatch peek via `looks_like_shape_only`.
 //! STOA97: `rune_shape.parse_source` consumes this stream -> ShapeSpec.
-//! STOA176: `named_cast_parts` line budget 4-12 (field_count+3 ≤ freeze).
+//! STOA176: `named_cast_parts` line budget 4-12 (field_count+3 <= freeze).
 //! STOA180: `@t` cord aura lex (bound in nest_type).
 //! STOA183: `@ux` hex aura lex (bound in nest_type).
-//! STOA216: single-quoted cord literal `'...'` (interior ≤ max_cord_lit_bytes).
+//! STOA216: single-quoted cord literal `'...'` (interior <= max_cord_lit_bytes).
 //! STOA217: `@ux` + hex digits -> hex_lit (bare `@ux` stays aura).
 //!
 //!   +$  xact-mold
@@ -42,7 +42,7 @@ pub const max_name_len: u32 = 64;
 pub const max_src_len: u32 = 64 * 1024;
 /// STOA216: cord literal interior ceiling -- matches nest_type.aura_t_max_bytes (1024).
 pub const max_cord_lit_bytes: u32 = 1024;
-/// STOA217: hex literal digit ceiling -- matches nest_type.aura_ux_max_bytes × 2 (64).
+/// STOA217: hex literal digit ceiling -- matches nest_type.aura_ux_max_bytes x 2 (64).
 pub const max_hex_lit_digits: u32 = 64;
 
 pub const TokenError = error{
@@ -443,7 +443,7 @@ pub const NamedCastParts = struct {
     cast_mold: Token = .{},
 };
 
-/// 4-12 Glow lines (STOA176: capacity freeze ≤9 `$:` faces -> field_count+3):
+/// 4-12 Glow lines (STOA176: capacity freeze <=9 `$:` faces -> field_count+3):
 /// head `+$`, last line `^- <mold-name>`, no cast-line junk.
 /// Returns null when the shape fails -- peek and lower share this gate.
 pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
@@ -537,7 +537,7 @@ pub fn looks_like_cross_desk(src: []const u8) bool {
 }
 
 /// True when the token stream is a mold-only `+$` ... `==` desk (STOA95 peek).
-/// 3-11 Glow lines (STOA168: capacity freeze ≤9 `$:` faces -> field_count+2), head `+$`,
+/// 3-11 Glow lines (STOA168: capacity freeze <=9 `$:` faces -> field_count+2), head `+$`,
 /// last line is not `^-` (named-cast wins first in glow_run).
 pub fn looks_like_shape_only(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;

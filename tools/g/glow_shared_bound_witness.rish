@@ -1,0 +1,42 @@
+# tools/g/glow_shared_bound_witness.rish -- one bound, one value, however many modules publish it.
+#
+#   rishi/bin/rishi run tools/g/glow_shared_bound_witness.rish
+#
+# The Glow front end publishes 195 numeric bounds across its modules, and seven of those names are
+# declared in more than one module. `max_name_len` stands fourteen times -- in `tokens.rye`,
+# `rune_shape.rye`, `expr.rye` and eleven rune modules -- each spelling 64 on its own line, and
+# nothing compared them. Three of the agreements were stated in a `///` comment, which is a wish
+# rather than a wall: raise one copy and the lexer accepts a name the shape parser refuses, while
+# both files still read correct alone.
+#
+# Every shared name agrees today, so this wall stands under a standing agreement rather than over a
+# break. That is the point -- the first drift reds on the lap it arrives, where a comment would have
+# let it ship.
+
+say "glow-shared-bound: Language EN -- the fence posts two modules share, compared rather than trusted."
+say "glow-shared-bound: Style Gauge, Meter -- each leg names what it plants and what must refuse."
+say "glow-shared-bound: Lens TAME -- bound everything, and say why the bound is that number."
+
+say "glow-shared-bound: the control -- thirty behaviors on real git repositories in a pen..."
+let ctl = run ["sh" "tools/fixtures/g/glow_shared_bound_control.sh"]
+assert ctl.ok else "glow-shared-bound: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "legs_pass=30" else "glow-shared-bound: the control did not prove thirty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "legs_fail=0" else "glow-shared-bound: a control leg failed --\n${ctl.out}\n${ctl.err}"
+
+say "glow-shared-bound: and the living tree, read on metal..."
+let scan = run ["sh" "tools/fixtures/g/glow_shared_bound_scan.sh"]
+assert scan.ok else "glow-shared-bound: the scan would not run -- read its own lines\n${scan.out}\n${scan.err}"
+
+# invariant: the gate is the scan's own verdict rather than a number copied here. An expected value
+# pinned in a second place is a stale pin waiting for a tree that moved (REDS %341's class).
+assert scan.out contains "verdict=ok" else "glow-shared-bound: two modules publish one bound at two values -- run with --names, then make them agree or rename one\n${scan.out}"
+
+say "glow-shared-bound: and the census reads a real population, so a green means something..."
+# invariant: a scan whose pattern stopped matching would report zero shared names and zero
+# divergences, which is indistinguishable from a clean tree. Asserting that the reading is
+# non-trivial is what tells a wall from a silence -- the same fault the ASCII pen met at zero.
+let named = run ["sh" "tools/fixtures/g/glow_shared_bound_scan.sh" "--names"]
+assert named.ok else "glow-shared-bound: the named reading would not run\n${named.out}\n${named.err}"
+assert named.out contains "name agreed max_name_len" else "glow-shared-bound: the census no longer sees the name fourteen modules share -- the pattern has stopped matching\n${named.out}"
+
+say "GREEN: glow-shared-bound -- every bound two Glow modules publish carries one value."

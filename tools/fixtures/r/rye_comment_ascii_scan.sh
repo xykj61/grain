@@ -68,7 +68,7 @@ mode="${1:-count}"
 # `LC_ALL=C` pins both awks to bytes, the lead-byte class turns bytes back into characters, and
 # octal spelling reads identically in both dialects -- the same C-locale move
 # `tools/fixtures/l/living_card_ascii_scan.sh` made when it dropped `grep -P` (REDS %278).
-CEILING=2630
+CEILING=2625
 
 # A SYMLINK IS SKIPPED, and this is a census rather than a roster, so the reading is unambiguous:
 # `git ls-files` lists a link AND its target as two paths, and following both counts the same bytes
