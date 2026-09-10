@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6062de5e9a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `98066a90c3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -144,36 +144,36 @@ time and `witness_reach_scan`'s own header already calls it **yours**.
 aura length bounds; what declares a desk's kind.
 
 
-**INCENSE -- THE WALL WAS A GLOB, AND THE LAW IS A GRAPH.**
-Elder [shelved](archive/20260909-221428_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY UNDER THE HAND**, so this lap pressed fences rather than opening work.
-First press held: all **30 witnesses the rule rooms name** exist and are rostered, 24 lap, 6 cadence.
-**THE SECOND PRESS WENT THROUGH.** `ascii_document` walls `.claude/rules/*.md` by directory glob
-while the law is a graph, so a page a rule tells a reader to **read first** was walled by nothing --
-its own header named this open and left it. A hand swept five such pages `20260908`; what held them
-after was **7 characters of ratchet slack**, so one em dash in `RADIANT_STYLE.md` reddened nothing
-and eight reddened a total naming no page.
-**WIDENED TO THE LAW'S OWN CITATIONS**, links and backticks both, filtered to living tracked pages:
-**110 globbed + 33 derived = 143 at zero.** Derived rather than typed, for the reason the globs are
-globs. Derivation can drop a page by an edit made elsewhere, so both memberships **print**.
-**AGAINST MYSELF, TWICE IN ONE LAP.** My roster parse read `reds_citation` UNFOUND -- it flushes on a
-blank line and that record is followed by comments. Then a hand grep called all 33 clean; the widened
-scan refused two living pins, `session-logs/CHAPTERS.md` 50 and `SHRED_PREP.md` 49. The grep spelled
-`[\300-\377]` inside single quotes, where it is digits and a backslash -- **this meter's own subject,
-turned back on the hand measuring it.** Both swept, proven by re-derivation. Ratchet 3,324 -> 3,225;
-ceiling 3,331 -> **3,232**, keeping the 7 it stood on and taking none of the 99. Control 44 -> **63**.
-**YOURS:** `.cursor/rules/ascii-first.mdc` carries different text for this passage -- one of the 38
-two-way drifted pairs at gate %194, so I left it. **The sibling meters carry the same shape:**
-`rye_spoken_ascii` and `spoken_ascii` each wall a room and name canon they do not reach.
-**AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
-([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). The four Mantra gates build GREEN,
-**unheard rather than rotted**, now `tier cadence` 92s; Aurora's three and Caravan's one stay
-unheard. **Yours:** `src/gate/README.md` graded Truth **100 on twelve resolving paths** over seven
-unrun proofs.
-**The identity gap** -- two branches inserting collide at one small integer and merge refuses them
-`PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
-guard said to lock that is `%500` above, and it now reds honestly.
-**`%440` fired ELEVEN times across four laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, by hand. **Yours.**
+**INCENSE -- THE LEDGER STOOD NINE BYTES FROM FULL, AND ONE ROW HELD THE FLEET.**
+Elder [shelved](archive/20260909-232356_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP.** Lap 4491 reads row 1, read by my own last lap tonight, so I advanced
+by hand to fire and looked at the stopped line: `construction/REDS.md` at **40,951 of 40,960**,
+`rows_that_fit=0`, `pin_foldable_rows=1`. **No ship could book a red at all**, which retires
+reds-first for eight hands at once.
+**THE ROW THAT NEEDED A HAND RATHER THAN A WORD.** `%616` stood OPEN on a remainder my own previous
+lap had landed twenty minutes earlier -- `ascii_document`'s ENFORCE set widened from two directory
+globs to the citations inside them. Re-measured before I touched the row: **`enforce_files=143`,
+110 globbed plus 33 derived, `enforce_chars=0`** -- the remainder exactly. A closing clause
+accreted, then folded.
+**AND A PEER FOLDED THE OTHER ONE SIX MINUTES BEHIND ME, INTO THE SAME SHELF NAME.** I took `%675`
+at `20260909.232356`; Bakery took it at `.232953`, and we chose the same sprig. Theirs published
+first, so the rebase resolved to theirs whole and mine was dropped -- `%291` in a room nobody had
+named it in. Pin now **36,024**, headroom **4,936**, `rows_that_fit` **2**.
+**THE MEASURE, AND IT IS YOURS.** Door B (`%338`) split OPEN by whether the instances stand
+repaired, and stopped one question short: **who the row waits on**. Of the rows now OPEN,
+**3 name a holder and the rest end on a bare marker** -- so a lap reading the pin cannot tell a row
+awaiting your word from one awaiting a lap. `%616` is that cost priced small: twenty minutes,
+because a hand happened to look on the night the pin ran out. **A fourth status word is yours.**
+**THE SIBLING RED IS A GATE I ADVANCED RATHER THAN OPENED.** `stash_record` reds at `unlanded=1` --
+`stash@{0}`, this tree's parked lap of `20260909.092442`, holding a log nothing else carries.
+`%636` says the gate cannot tell a lap wanting recovery from one already superseded. **Measured,
+and this one is both:** its three `standing_equipment` files applied over HEAD would remove **69, 17
+and 156 lines** later laps landed, so the CODE is superseded and restoring it deletes live work; the
+**record** is the only part nothing carries. **A stash whose diff against HEAD deletes tracked lines
+is superseded on its code**, and landing that record alone is a lap. **Yours.**
+**Carried, still yours:** `src/gate/README.md` graded Truth **100 on twelve resolving paths** over
+seven unrun proofs; the identity gap wants a wider `Line`, and the guard said to lock it is `%500`;
+`%440` fired **eleven times across four laps**, one dedupe-and-sort by hand each.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 

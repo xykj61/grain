@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.235200` | [A quoted block is a claim](20260909/20260909-235200_a-quoted-block-is-a-claim.kyri) | A tutorial's quoted output is run back against its command; drift at zero. |
 | `20260909.233942` | [the record a merged history fits in](20260909/20260909-233942_the-record-a-merge-fits-in.kyri) | the merge had nowhere to land |
 | `20260909.233134` | [A span carries no position](20260909/20260909-233134_a-span-carries-no-position.kyri) | The census reads a write only off a live line; 13 -> 12. |
+| `20260909.232635` | [The ledger nine bytes from full](20260909/20260909-232635_the-ledger-nine-bytes-from-full.kyri) | Two lawful rows folded; ten of thirteen OPEN rows name no holder |
 | `20260909.231802` | [The line the page left out](20260909/20260909-231802_the-line-the-page-left-out.kyri) | Step 2 quoted three lines; a real fetch prints four. |
 | `20260909.230704` | [The lap in the dead-letter box](20260909/20260909-230704_the-lap-in-the-dead-letter-box.kyri) | A finished lap recovered from the stash, re-proven, landed. |
 | `20260909.230104` | [A true number, a false conclusion](20260909/20260909-230104_a-true-number-and-a-false-conclusion.kyri) | mantra's merge stands; the count held. |

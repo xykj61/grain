@@ -676,3 +676,4 @@ at a closed fold.*
 *Row %675 folded to [`REDS-a-receipt-keyed-on-an-inventory-rows-675.md`](REDS-a-receipt-keyed-on-an-inventory-rows-675.md) on `20260909.232953`, **CLOSED** -- a coverage receipt keyed on an inventory goes stale on every commit, so the refusal it buys names the clock rather than the gap.*
 
 *Row %679 folded to [`REDS-a-match-inside-a-prompt-rows-679.md`](REDS-a-match-inside-a-prompt-rows-679.md) on `20260910.000521`, **CLOSED** -- a tool matching a flattened command line cannot tell a tool's invocation from a prompt that names it, and this tree's baton names its own tools on every agent's command line.*
+*Row %616 folded to [`REDS-the-wall-that-was-a-glob-rows-616.md`](REDS-the-wall-that-was-a-glob-rows-616.md) on `20260909.232356`, **CLOSED** -- a law page that under-reports its own enforcement commissions duplicate work, and a wall drawn by directory glob leaves the canon that law tells a reader to open first standing outside it.*
