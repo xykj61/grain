@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `660d064f79` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4ed9df2afe` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -67,25 +67,25 @@ arrival; four guards refused mid-round, each closed at root. **Hot 215 green, 0 
 **THE SIBLING SAYS SO NOW:** `fleet_watch.sh` reads a seat by `pgrep -f "...\$"`, safe only because `$`
 anchors end-of-STRING: **8** match unanchored, **0** anchored.
 
-**PATCHOULI -- THE MERGE HAD NOWHERE TO LAND, AND TWO GUARDS SAID SO IN THEIR OWN HEADERS.**
+**PATCHOULI -- THE MERGE HAS SOMEWHERE TO LAND, AND THE STORE CANNOT RETURN WHAT IT WAS GIVEN.**
 Elder [shelved](archive/20260909-233700_itinerary-landed-accounts.md).
-**AETHER HEARS.** `to_v1`'s header names two histories three fields cannot hold, the first **a
-second site -- exactly and only what `merge` produces.** So Mantra could merge and had nowhere to
-put it: `main.rye` writes the elder record every commit, refusing `V1SiteNotConstant`.
-**BUILT:** `V2Row`, `V2Record`, `to_v2`, `from_v2` -- five fields, round-tripping **identity on the
-WEAVE** where `to_v1` promised only the document. `to_v2` refuses **nothing**, and that absence is
-the finding. `mantra_weave_v2` **tier lap** 20.9s; 11 claims GREEN, control **16 phases / 14
-breaks**, each refusal shown deleted AND misnamed.
-**AGAINST MY OWN FIRST DRAFT:** it argued the counters **cannot** be derived. They can -- `merge`
-maxes two counters while dropping no line, so the higher side also brings the line below it. Claim 3
-**measures** that; claim 4 holds a record above it. Carried anyway, since the declared invariant is
-`pos < next_pos`, **a bound rather than an equality.**
-**REPAIRED:** the lift guard spelled `declared=7`, a count of a growing surface, and reddened on
-ordinary work; `head_stale=0` above it **implies it both ways**.
-**NOT TAKEN:** the CLI still writes v1 -- the format has **no writer**. Its own round.
-**YOURS:** REDS stands **40,951 of 40,960** with rows OPEN, so **no ship can book a red**; this
-finding sits here because the ledger cannot take it. This card had **2 bytes** free, so the account
-is condensed. Raise both, or rule which remainders are BOOKED.
+**AIR FEELS**, so this lap pressed on its own boundary. Last lap built `V2Record` and named what it
+did NOT prove: the CLI wrote v1, so the wide record had no writer. **BUILT:** `main.rye` `serialize_weave` writes `mantra-weave-v2` -- a counters line, five fields a
+row -- and `deserialize_weave` dispatches on the header into `read_v2_record` or `read_v1_rows`, so
+**a store born before this lap keeps opening and its next commit lands v2 beside the elder blob.**
+Proven on a REAL elder store frozen at `tools/fixtures/m/mantra_elder_v1_store/`, blob names the
+digests the elder binary computed. `mantra_cli_record` **tier lap**, nine readings, control
+**7 phases / 6 breaks**.
+**THEN THE HAND WENT THROUGH.** Store `a b c`, replace the middle line, `add`, `status` on the
+untouched file: **1 added, 1 removed, same text both lines** -- a diff describing a MOVE. The
+replacement lands in run 1 and `Place.less_than` reads the run first, so it sorts out of the
+document. **A binary built from the commit BEFORE mine answers identically.** Booked
+(`20260910.001500`).
+**AGAINST MY OWN READING:** `bad_header_refused` was the STORE refusing -- a name is a proof spent
+before a header. Two control phases tell the layers apart now.
+**NOT TAKEN:** the ordering. `v1_run` sorts a later hand's block whole ON PURPOSE for merge, so
+document and merge order want different readings of one triple -- **your word.**
+**YOURS:** REDS sits at its ceiling; this row fit by tightening, never raising.
 
 **DIFFUSER -- THE NUMBER TWO PAPERS WANTED FROM A CALLER BELONGS TO THE STORE.**
 Elder [shelved](archive/20260909-215716_itinerary-landed-accounts.md).

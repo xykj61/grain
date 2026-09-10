@@ -47,11 +47,18 @@ const mantra_version = "20260619.213800";
 //
 // The identity is a pair -- the position one counter handed a line, and the
 // site of the hand that was counting -- and this CLI is one hand, so every
-// line it writes stands at `v1_site`. That is what lets it keep writing the
-// same `mantra-weave-v1` record it always wrote: the two fields the record
-// does not carry are constant across everything this CLI produces rather than
-// missing from it. `Weave.to_v1` refuses by name if that ever stops being
-// true, and `Weave.from_v1` lifts a record back.
+// line it writes today stands at `v1_site`. That kept the elder three-field
+// record honest for as long as one hand was all there was: the two fields it
+// does not carry were constant across everything this CLI produced rather than
+// missing from it.
+//
+// IT STOPPED BEING ALL THERE IS the moment `merge` landed, since a merge is
+// the arrival of a second site by definition, and `Weave.to_v1` refuses
+// `V1SiteNotConstant` rather than folding two lines into one row. So from
+// `20260909` this CLI WRITES `mantra-weave-v2` and reads both records, which
+// is what gives a merged history somewhere to land. `Weave.to_v2` and
+// `Weave.from_v2` carry the five fields and the two counters; `from_v1` still
+// lifts every elder blob already on disk.
 const weave = @import("weave.rye");
 
 const Line = weave.Line;
@@ -59,6 +66,8 @@ const Diff = weave.Diff;
 const Weave = weave.Weave;
 const LineId = weave.LineId;
 const V1Row = weave.V1Row;
+const V2Row = weave.V2Row;
+const V2Record = weave.V2Record;
 
 // =========================================================================
 // Section Diff -- pure diff computation, imported rather than declared
@@ -140,34 +149,66 @@ const Store = store_mod.Store;
 // Section Weave serialization
 // =========================================================================
 //
-// Format: a text blob.
+// TWO RECORDS ARE READ AND ONE IS WRITTEN, and the header line is what tells
+// them apart. `deserialize_weave` dispatches on line 0, so a store written
+// before `20260909` keeps opening; `serialize_weave` writes the wide record
+// from here forward, because the elder one refuses `V1SiteNotConstant` the
+// moment two hands meet in a history and `merge` is exactly what makes them
+// meet. A module that can merge and cannot save the result has not finished
+// being one.
+//
+// Elder record -- read, never written from here forward:
 //   Line 0:  "mantra-weave-v1\n"
 //   Lines 1+: "{gen}\t{pos}\t{text}\n"
 //
-// The seed format uses tab as the field separator. Line text must not contain
-// tabs or embedded newlines -- asserted at serialization. A future pass will
-// lift this with a length-prefix encoding.
+// Wide record -- written, and read:
+//   Line 0:  "mantra-weave-v2\n"
+//   Line 1:  "{next_pos}\t{next_run}\n"
+//   Lines 2+: "{gen}\t{pos}\t{site}\t{run}\t{text}\n"
+//
+// THE COUNTERS GET A LINE OF THEIR OWN because `V2Record` carries them as
+// fields rather than deriving them from the rows, and the reason is written at
+// that declaration: the weave declares `pos < next_pos` and `run < next_run`,
+// which are upper bounds rather than equalities. A reader deriving them off the
+// last row would bind every future reading to an equality this module never
+// promised. Two numbers cost one line and buy that independence.
+//
+// Both records use tab as the field separator, and line text must not contain
+// tabs or embedded newlines -- asserted at serialization in both writers. The
+// constraint stays one constraint on purpose: `to_v1` and `to_v2` write from
+// one line store, and narrowing it per record would make a line writable into
+// one and refused by the other. A future pass will lift it with a
+// length-prefix encoding.
 
-/// Write a weave as a `mantra-weave-v1` record.
+/// Write a weave as a `mantra-weave-v2` record.
 ///
-/// The rows come from `Weave.to_v1`, which reads the two questions the format
-/// cannot answer BEFORE a row is allocated: whether every line stands at one
-/// site, and whether the positions rise. A history two hands have written is
-/// wider than three fields, and `V1SiteNotConstant` says so rather than
-/// folding two lines into one row. This function then does the one thing left
-/// -- turn rows into bytes.
+/// The rows and the two counters come from `Weave.to_v2`, which asks nothing of
+/// the weave the weave does not already promise -- so this writer, unlike the
+/// elder one below it, refuses nothing. That absence is the whole change. The
+/// elder writer read two questions before allocating a row, and the first of
+/// them (`V1SiteNotConstant`) is a refusal a merged history triggers by
+/// construction, since a merge is exactly the arrival of a second site. This
+/// function turns a record into bytes and stops there.
+///
+/// Precondition:  no line's text carries a tab or a newline, the two separators
+///   this serialization uses.
+/// Postcondition: the blob holds one row per weave line, under a header naming
+///   the record and a line naming both counters.
 fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
-    const rows = try w.to_v1(allocator);
+    const record = try w.to_v2(allocator);
     var out = std.ArrayListUnmanaged(u8).empty;
-    try out.appendSlice(allocator, "mantra-weave-v1\n");
-    for (rows) |row| {
+    try out.appendSlice(allocator, "mantra-weave-v2\n");
+    var counter_buf: [64]u8 = undefined;
+    const counters = try std.fmt.bufPrint(&counter_buf, "{d}\t{d}\n", .{ record.next_pos, record.next_run });
+    try out.appendSlice(allocator, counters);
+    for (record.rows) |row| {
         // invariant: a line carries no tab and no newline, since both are the field and record
         // separators this serialization uses -- one inside a line would split it into two on
         // the way back
         assert(std.mem.indexOfScalar(u8, row.text, '\t') == null);
         assert(std.mem.indexOfScalar(u8, row.text, '\n') == null);
         var field_buf: [64]u8 = undefined;
-        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t", .{ row.gen, row.pos });
+        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t{d}\t{d}\t", .{ row.gen, row.pos, row.site, row.run });
         try out.appendSlice(allocator, prefix);
         try out.appendSlice(allocator, row.text);
         try out.append(allocator, '\n');
@@ -175,23 +216,85 @@ fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
     // invariant: one record row per weave line, since the record is the whole history
     // rather than the present view -- a shorter record would drop a line the store has
     // already promised to keep
-    assert(rows.len == w.lines.items.len);
+    assert(record.rows.len == w.lines.items.len);
     return out.toOwnedSlice(allocator);
 }
 
-/// Read a `mantra-weave-v1` record back as a weave.
+/// Read a weave record back, whichever of the two records it is.
 ///
-/// The parsing stops at rows; `Weave.from_v1` lifts them, and the two things
-/// this reader used to take on trust are refused there by name. A record whose
-/// positions do not rise reds as `V1PositionsDoNotRise` rather than lifting as
-/// a weave whose document order was already broken, and a generation of zero
-/// reds as `V1GenerationBelowOne` rather than tripping an assert -- which is
-/// the right register for a blob read off disk, where a caller's promise is
-/// not what stands behind the bytes.
+/// The header line decides, and it is read before a row is allocated. A store
+/// written before `20260909` holds `mantra-weave-v1` blobs and keeps opening
+/// through `read_v1_rows`; every blob written from here forward is
+/// `mantra-weave-v2`. Neither reader trusts its bytes: both hand their rows to
+/// a lift that refuses a broken record by name, because a blob off disk is the
+/// one input this file gets that no caller vouched for.
 fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
     var it = std.mem.splitScalar(u8, blob, '\n');
     const header = it.next() orelse return error.InvalidFormat;
-    if (!std.mem.eql(u8, header, "mantra-weave-v1")) return error.InvalidFormat;
+    if (std.mem.eql(u8, header, "mantra-weave-v2")) return read_v2_record(allocator, &it);
+    if (std.mem.eql(u8, header, "mantra-weave-v1")) return read_v1_rows(allocator, &it);
+    return error.InvalidFormat;
+}
+
+/// Read the rows of a `mantra-weave-v2` record, the header already taken.
+///
+/// The counters line comes first, since `from_v2` reads every row against both
+/// counters and a record whose counters are missing is a record whose rows
+/// cannot be checked at all.
+///
+/// Precondition:  the iterator stands just past the header line.
+/// Postcondition: the weave holds one line per row, with both counters exactly
+///   as the record carried them.
+fn read_v2_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .scalar)) !Weave {
+    const counter_line = it.next() orelse return error.InvalidFormat;
+    var counter_fields = std.mem.splitScalar(u8, counter_line, '\t');
+    const next_pos_str = counter_fields.next() orelse return error.InvalidFormat;
+    const next_run_str = counter_fields.next() orelse return error.InvalidFormat;
+    const next_pos = try tally_parse_int.parse_int(u32, next_pos_str, .{});
+    const next_run = try tally_parse_int.parse_int(u32, next_run_str, .{});
+
+    var rows = std.ArrayListUnmanaged(V2Row).empty;
+    while (it.next()) |row| {
+        if (row.len == 0) continue;
+        var fields = std.mem.splitScalar(u8, row, '\t');
+        const gen_str  = fields.next() orelse return error.InvalidFormat;
+        const pos_str  = fields.next() orelse return error.InvalidFormat;
+        const site_str = fields.next() orelse return error.InvalidFormat;
+        const run_str  = fields.next() orelse return error.InvalidFormat;
+        const text_str = fields.rest();
+        const gen  = try tally_parse_int.parse_int(u32, gen_str, .{});
+        const pos  = try tally_parse_int.parse_int(u32, pos_str, .{});
+        const site = try tally_parse_int.parse_int(u32, site_str, .{});
+        const run  = try tally_parse_int.parse_int(u32, run_str, .{});
+        const text = try allocator.dupe(u8, text_str);
+        try rows.append(allocator, V2Row{ .text = text, .gen = gen, .pos = pos, .site = site, .run = run });
+    }
+    // invariant: the record holds no more rows than a weave may hold, which is the same
+    // ceiling `from_v2` reads at its own edge -- said here too, since a blob read off disk
+    // is the one input this file gets that no caller vouched for
+    assert(rows.items.len <= weave.max_weave_lines);
+    return weave.Weave.from_v2(allocator, V2Record{
+        .rows = rows.items,
+        .next_pos = next_pos,
+        .next_run = next_run,
+    });
+}
+
+/// Read the rows of an elder `mantra-weave-v1` record, the header already taken.
+///
+/// Nothing writes this record from `20260909` forward; every store written
+/// before it holds one, so this reader stays. The parsing stops at rows;
+/// `Weave.from_v1` lifts them, and the two things this reader used to take on
+/// trust are refused there by name. A record whose positions do not rise reds
+/// as `V1PositionsDoNotRise` rather than lifting as a weave whose document
+/// order was already broken, and a generation of zero reds as
+/// `V1GenerationBelowOne` rather than tripping an assert -- which is the right
+/// register for a blob read off disk, where a caller's promise is not what
+/// stands behind the bytes.
+///
+/// Precondition:  the iterator stands just past the header line.
+/// Postcondition: the weave holds one line per row, standing at one site.
+fn read_v1_rows(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .scalar)) !Weave {
     var rows = std.ArrayListUnmanaged(V1Row).empty;
     while (it.next()) |row| {
         if (row.len == 0) continue;

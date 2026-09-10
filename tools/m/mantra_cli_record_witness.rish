@@ -1,0 +1,91 @@
+# tools/m/mantra_cli_record_witness.rish -- the record the CLI actually writes.
+#
+# WHAT THIS PROVES, and which gap it closes. Its sibling at
+# tools/m/mantra_weave_v2_witness.rish closed on `20260909` with a paragraph naming what it did
+# NOT prove: that mantra/src/main.rye writes the wide record. It did not. The module could build a
+# `mantra-weave-v2` record and the CLI kept serializing the elder three-field one on every commit,
+# so a merged history had a format and no writer -- `Weave.to_v1` refuses `V1SiteNotConstant` the
+# moment two hands meet in a history, and a merge is exactly the arrival of a second hand. This
+# guard is that lap's proof, and it reads bytes off disk rather than a function's return.
+#
+# WHY A BINARY RATHER THAN A CALL. `serialize_weave` and `deserialize_weave` are private to
+# main.rye, and the claim is about what lands in a store. A writer emitting the wrong header and a
+# reader dispatching correctly would both pass a unit reading and both lose a user's history.
+#
+# THE ELDER STORE IS A REAL ONE. tools/fixtures/m/mantra_elder_v1_store/ holds a store the elder
+# binary wrote -- blobs whose names are the SHA3-256 digests it computed -- frozen as testimony.
+# It can never drift, since nothing in the tree writes that record from here forward, and a forged
+# store would have proven only that a forgery reads.
+#
+# WHAT THE ROUND-TRIP CLAIMS, and it is narrower than it looks. The store keeps opening across the
+# change: a v1 blob reads, a commit onto it writes v2 beside the elder blob, and the chain reads
+# through both. Claiming more would be claiming the CLI's document view is right, and it is not --
+# see the refusal named below.
+#
+# WHAT A TAMPERED BLOB MEETS, measured rather than assumed. A first draft of the scan called this
+# reading `bad_header_refused` and took it as proof that the header dispatch refuses an unknown
+# record. Two control phases say otherwise: with the store's `BlobNameMismatch` deleted the blob is
+# STILL refused, and only with both that and the header dispatch gone does it travel. The refusal
+# is two deep -- a name is a proof and the store spends it first -- so the reading names the
+# tampering rather than the header.
+#
+# WHAT IS NOT PROVEN HERE, and it is a red rather than a horizon. The CLI's document view goes
+# wrong after a second commit that REPLACES a line rather than appending one. `mantra add` on
+# `a\nB\nc` over a stored `a\nb\nc`, then `mantra status` on the untouched file, reports one line
+# added and one removed -- the same text on both lines, which is a line-based diff describing a
+# MOVE. The replacement lands in run 1, and `Place.less_than` reads the run ahead of the position,
+# so it sorts after every run-0 line and leaves the document. The elder binary does this exactly
+# as the new one does, byte for byte, so this round is parity and the red is older than it.
+# Booked at `20260910.001500`; the ordering is a design seam rather than a mechanical fix, since
+# `v1_run` sorts a later hand's block whole ON PURPOSE for merge.
+#
+# Siblings: the wide record at tools/m/mantra_weave_v2_witness.rish, the lift at
+# tools/m/mantra_weave_v1_lift_witness.rish, the elder write at
+# tools/m/mantra_weave_v1_write_witness.rish, the merge and annotate guards beside them.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_cli_record_witness.rish
+
+say "mantra-cli-record: Language EN -- the record the CLI actually writes."
+say "mantra-cli-record: Style Gauge, Meter -- every claim is a byte read back off disk."
+say "mantra-cli-record: Lens TAME -- the elder store keeps opening, or the change loses a history."
+
+say "mantra-cli-record: the frozen elder store still holds the record it was written in..."
+let frozen = run ["sh" "-c" "head -1 tools/fixtures/m/mantra_elder_v1_store/blobs/f98e19a7de3fdc42fee37c86465d022f1736c1ccf19c5b67d3285dfe183d9e03"]
+assert frozen.ok else "mantra-cli-record: the frozen elder weave blob is gone -- without a real v1 store nothing proves an elder store opens"
+assert frozen.out contains "mantra-weave-v1" else "mantra-cli-record: the frozen store no longer holds a v1 record, so the compatibility claim tests nothing"
+
+say "mantra-cli-record: the CLI still names both records and dispatches on the header..."
+let seat = run ["sh" "-c" "grep -q 'mantra-weave-v2' mantra/src/main.rye && grep -q 'read_v1_rows' mantra/src/main.rye && grep -q 'read_v2_record' mantra/src/main.rye"]
+assert seat.ok else "mantra-cli-record: the wide header or one of the two readers left main.rye"
+
+say "mantra-cli-record: driving the built CLI in a pen and reading the blobs..."
+let scan = run ["sh" "tools/fixtures/m/mantra_cli_record_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-cli-record: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-cli-record: the CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "fresh_header=mantra-weave-v2" else "mantra-cli-record: a new store's weave blob is not the wide record -- a merged history still has nowhere to land"
+assert scan.out contains "counter_fields=2" else "mantra-cli-record: the counters line does not carry both counters, so from_v2 cannot check a row against either"
+assert scan.out contains "row_fields=5" else "mantra-cli-record: a record row does not carry five fields -- the site and the run are what a merge creates"
+assert scan.out contains "elder_opens=yes" else "mantra-cli-record: a store written before 20260909 no longer opens, which is a lost history rather than a failed test"
+assert scan.out contains "elder_status='doc.txt' -- clean" else "mantra-cli-record: the elder store's untouched file does not read clean, so the lift moved the document"
+assert scan.out contains "mixed_header=mantra-weave-v2" else "mantra-cli-record: a commit onto an elder store did not write the wide record"
+assert scan.out contains "mixed_opens=yes" else "mantra-cli-record: the chain does not read through both records, so a store cannot cross the change"
+assert scan.out contains "tampered_blob_refused=yes" else "mantra-cli-record: a blob edited under someone else's name travelled on"
+assert scan.out contains "verdict=ok" else "mantra-cli-record: the scan reached its own red"
+
+say "mantra-cli-record: breaking the writer and the two readers in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_cli_record_control.sh"]
+say control.out
+assert control.ok else "mantra-cli-record: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-cli-record: the control must reach its own verdict"
+assert control.out contains "clean_ok=1" else "mantra-cli-record: the unmutated pen must read ok, or every other phase fails for a reason the pen invented"
+assert control.out contains "writes_v1_header=mantra-weave-v1" else "mantra-cli-record: writing the elder header must move fresh_header -- otherwise that reading proves nothing"
+assert control.out contains "drops_v1_read_elder_opens=no" else "mantra-cli-record: deleting the elder dispatch must close the elder store, or elder_opens is not reading the dispatch"
+assert control.out contains "drops_v2_read_elder_opens=yes" else "mantra-cli-record: deleting the wide dispatch must leave the elder store opening -- the pair is what tells the two halves apart"
+assert control.out contains "drops_v2_read_mixed_opens=no" else "mantra-cli-record: deleting the wide dispatch must close the mixed chain"
+assert control.out contains "no_digest_tamper_refused=yes" else "mantra-cli-record: with the store's proof deleted the header must still refuse -- this is the leg that proves the refusal is two deep"
+assert control.out contains "no_digest_no_header_tamper_refused=no" else "mantra-cli-record: with both layers deleted the tampered blob must travel, or the reading names neither of them"
+assert control.out contains "split_counters_mixed_opens=no" else "mantra-cli-record: a counters line missing its separator must close the record -- this is what a deriving reader would not notice"
+
+say "GREEN: the CLI writes the wide record and every elder store still opens -- nine readings, seven control phases, six breaks caught."
