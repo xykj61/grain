@@ -474,6 +474,45 @@ assert control.out contains "live_group_plant=ok" else "standing-equipment: the 
 assert control.out contains "live_group_reads_alive=yes" else "standing-equipment: a holder whose group leader is alive must read group_leader=alive -- a reading that always says gone is stuck on"
 assert control.out contains "live_leader_parent_reads_gone=no" else "standing-equipment: a live holder whose group leader was started by something still running must NOT read leader_parent=gone -- the third reading proven only where it fires cannot be told from one stuck on"
 assert control.out contains "live_lap_reads_alive=yes" else "standing-equipment: a holder with a live parent and a live group leader must read lap=alive"
+
+# THE FOURTH FIRING OF THIS FAMILY, and the first in which it accuses rather than excuses. The three
+# readings above each ask whether some ancestor of the pass is still alive, and `--detach` -- seated
+# on the baton `20260908.113404`, after all three were written -- runs `nohup sh "$0" "$@" &` from a
+# parent that exits at once. A detached pass is therefore reparented to init WITHIN MILLISECONDS OF
+# LAUNCH, by construction, while the lap that launched it waits on the transcript. Measured on this
+# pier `20260909.234718`: a two-minute-old pass the measuring lap had itself launched read
+# `lap=gone` with the advice to kill it, and 7 of 17 passes across eight trees read the same. A
+# reading does not have to change to go wrong; the world it reads can. So the launch form is read
+# off a fact the lock already carries -- the owner writes `transcript` only when the detach parent
+# set it -- and a detached pass is NAMED rather than accused.
+assert control.out contains "detached_plant=ok" else "standing-equipment: the pen could not build a live pass reparented to init with a transcript beside it, so the detached reading is unproven here -- a HOST fact rather than a runner defect, and it wants reading before it is treated as a red"
+assert control.out contains "detached_reads_detached=yes" else "standing-equipment: a pass whose lock carries a transcript was launched detached, and must read lap=detached rather than borrowing an ancestry answer that describes the flag"
+assert control.out contains "detached_accused_of_gone=no" else "standing-equipment: a live detached pass must never read lap=gone -- that word carries kill advice, and the lap it would be handed to is the one waiting on the transcript"
+assert control.out contains "live_detached_told_to_kill=no" else "standing-equipment: a detached pass still measuring this tree must never be named for kill -- the fault this repair closes is exactly that sentence reaching a live lap"
+assert control.out contains "detached_names_live_head=yes" else "standing-equipment: when a detached pass's launch_head still names HEAD it is measuring this tree, and the refusal owes the reader that rather than a silence"
+assert control.out contains "detached_still_refuses=yes" else "standing-equipment: naming a pass detached changes the diagnosis, never the refusal -- one writer per checkout still holds"
+# The other side of the same reading, and the one that makes it useful rather than merely safe: a
+# detached pass whose head has moved has a verdict already fixed at tree_moved, so more of a loaded
+# machine spent on it buys nothing. This is what named pid 3653764 void on the seating lap.
+assert control.out contains "detached_moved_named=yes" else "standing-equipment: a detached pass whose launch_head is no longer HEAD must be named as such -- its verdict cannot be spent, and that is the fact a hand needs"
+assert control.out contains "detached_moved_names_repair=yes" else "standing-equipment: only once a detached pass is proven void may the refusal name kill -TERM, and then it must"
+assert control.out contains "detached_moved_still_detached=yes" else "standing-equipment: the head reading decides the advice, never the launch form -- a moved head is still a detached pass"
+assert control.out contains "detached_bare_says_so=yes" else "standing-equipment: a transcript naming no launch_head must be reported as unreadable rather than guessed either way"
+assert control.out contains "detached_bare_told_to_kill=no" else "standing-equipment: absence of a launch_head is not evidence of a dead lap, and must never reach kill advice"
+# THE LOAD-BEARING PAIR, asserting the DEFECT rather than the repair. Legs answering the way this
+# repair wants cannot be told from legs on a runner that never carried it, so the same plant runs
+# against a copy whose detection is disabled -- the state every ship ran until this stamp.
+assert control.out contains "accuse_runner_built=yes" else "standing-equipment: the failing-side copy is identical to the runner, so the two legs below prove nothing"
+assert control.out contains "elder_accuses_live_detached=yes" else "standing-equipment: with the launch-form detection disabled the live detached pass must read lap=gone -- that is the fault, and a repair whose absence changes nothing was never load-bearing"
+assert control.out contains "elder_tells_lap_to_kill=yes" else "standing-equipment: the elder runner must be shown telling a live lap to kill its own instrument, or the cost of this red is asserted rather than proven"
+assert control.out contains "detached_parent_still_reads_gone=yes" else "standing-equipment: the elder parent reading must STILL answer gone on this plant -- naming the launch form changes which word the advice turns on, never what the process table says, and a check that had simply stopped reading it could not be told apart"
+assert control.out contains "detached_left_running=yes" else "standing-equipment: a refused pass must never stop a detached holder (REDS %291)"
+assert control.out contains "detached_keeps_its_lock=yes" else "standing-equipment: a refused pass must leave a detached holder's lock exactly where it found it"
+# AND THE READING MUST REACH THE REFUSAL THE BATON NAMES. One refusal stood in two copies, and only
+# the copy a lap is NOT told to use had ever learned any of this -- so a `--detach` launch refused by
+# a live owner was told to read a transcript, with no word on whether a reader was left.
+assert control.out contains "detach_refusal_takes_reading=yes" else "standing-equipment: the --detach refusal must print the same reading as the locked one, since --detach is the form the baton tells every ship to use"
+assert control.out contains "detach_refusal_names_detached=yes" else "standing-equipment: the --detach refusal must name a detached owner as detached, or the blind copy is the one every lap still meets"
 assert control.out contains "live_lap_names_no_repair=yes" else "standing-equipment: a live lap must earn no kill -TERM advice -- printing one beside a running pass invites the cross-hand act REDS %291 forbids"
 assert control.out contains "dead_owner_reaped=yes" else "standing-equipment: a lock whose owner has died must be reaped rather than waited out"
 assert control.out contains "no_lock_room_says_so=yes" else "standing-equipment: a pen with no room to lock in must say so rather than skip in silence"

@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260910.003739
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet seat COPAL
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260908; not runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, eight-ship fleet, America/New_York
+title A reading did not change; the world it reads did
+prompt autonomous lap -- baton, card, rota row 4 (earth), lane amphora and bron-resins
+rota lap 4494, row 4 -- Earth, the row that breathes in; read as its own sense, the concrete fact taken in at the door before any argument. It is what made me read the process table myself instead of believing the runner, and the fact I took in refuted my own first repair.
+think Cold open refused: a roster pass held the lock, pid 3653764, 30 minutes in. The reflog showed it was the PREVIOUS lap's, launched at head 513d283, and that lap had since committed twice and rebased -- so its verdict was already fixed at tree_moved and it was burning a loaded machine for nothing. Stopped it with tools/f/fleet_call.sh, which refused 13 peer processes by name and named exactly one as mine. Its EXIT trap released the lock cleanly, which also proved the runner's own repair advice accurate.
+think First reading of the defect: the --detach refusal tests kill -0 alone and prints none of the three orphan readings the locked path takes. True, and the file states the law it breaks 130 lines above -- the lock path is spelled once for both callers because a second spelling of one intent is how two readings of it begin.
+think Then I measured the pier before repairing, and the measurement refuted the repair. My OWN cold pass, two minutes old, with my lap alive and waiting on its transcript, read parent=gone group_leader=gone lap=gone, its output reaches nobody, and stop it with kill -TERM. Because --detach runs nohup sh "$0" & from a parent that exits at once, every detached pass is reparented to init at launch, by construction.
+think Reading the lock directories directly: all 7 trees holding a run lock held it with ppid 1 and a transcript file. 7 of 7. The lock is only ever held by a pass and every pass is launched detached, so the reading was wrong for effectively every holder a lap can meet. Repairing only the blind refusal would have shipped that kill advice to every ship.
+think The family shelf named it a loom: %387 parent, %528 group leader, %548 leader parent -- three under-reports, each cured by one more generation. %548 closed by stating the reading cannot call a live pass gone; true 20260907.065808, false one day later when --detach was seated. A loom chasing generations cannot survive a launcher that severs the link at birth.
+think The cure uses a fact the lock already carries: the owner writes $lock/transcript only when the detach parent set it, so presence IS the launch form -- no new marker. lap=detached, then the answerable question, launch_head against HEAD. That reading had named 3653764 void an hour earlier where ancestry called a live pass abandoned.
+obs Held still for the cold pass's full 38 minutes rather than editing under it -- 196 green, 0 red, tree_moved=no. Editing would have voided it AND risked corrupting the run, since sh reads a script incrementally. That patience is the lap's own subject: the pass I cleaned up at the open was wasted exactly this way.
+obs Built and syntax-checked the whole repair in .lap/ while the pass ran. That room is gitignored and outside the runner's tree digest, so the tree read unmoved throughout -- git status 0 for the entire wait.
+obs Two of my own faults caught by running rather than reading: the comment region I moved began one line early and dragged an executable owner= line to file scope, which set -u caught; and three legs read stdout where the detail lines go to stderr, which run_locked discards. Both found by running the control, not by review.
+obs A leg that cannot fail is a tautology -- my first failing-side plant used a pid with live ancestry, so it never reproduced the fault. The faithful plant is what --detach actually makes: a live process reparented to init whose lock ALSO carries a transcript.
+loom cold_pass guards_run=197 green=196 red=0 gated=1 seconds=2293 cpu_ms=2096933 tree_moved=no
+loom hot standing_equipment=green wall_s=97 cpu_ms=41638
+loom control readings=345 was=325 verdict=ok
+loom pier orphan_reading trees_holding_lock=7 ppid1_with_transcript=7
+file tools/fixtures/s/standing_equipment_run.sh owner_lap_read and owner_lap_detail beside owner_transcript, called from both refusals; a detached pass reads lap=detached and is given launch_head against HEAD
+file tools/fixtures/s/standing_equipment_control.sh nineteen readings on the plant --detach actually makes, including the elder parent reading still firing and the same plant against a detection-disabled copy
+file tools/s/standing_equipment_witness.rish nineteen assertions, two of them asserting the defect rather than the repair
+file construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md row %681 booked and folded in one lap, the pin having 1,509 bytes against a row of three thousand
+file construction/ITINERARY.md COPAL block replaced; elder shelved whole with its trailing line repaired
+scope one keystone -- the liveness reading, its two callers, its control and witness, and the ledger row
+status GREEN -- cold open 196 green 0 red tree_moved=no; standing_equipment green 100s with the witness's nineteen new assertions; the REDS, log-index and roster families green on the committed tree. Three reds met and cleared: a 679/680 gap and an unresolved upstream index row, both cured by the rebase, and instrument_refusal from a peer's commit, named rather than rewritten and closed by their own next one.
+recommend check-in (Keaton) -- lap=detached says ancestry cannot answer, so a detached pass whose lap truly died reads like a live one whenever the tree has NOT moved. Naming the launcher inside the lock is the next generation and it is a fleet decision, not a lap.
