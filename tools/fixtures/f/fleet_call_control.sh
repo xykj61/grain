@@ -8,7 +8,7 @@
 #
 #   sh tools/fixtures/f/fleet_call_control.sh
 #
-# Prints `pass=N fail=N` and exits non-zero on any failure. Bounded: 22 cases, one pen, 6 sleepers.
+# Prints `pass=N fail=N` and exits non-zero on any failure. Bounded: 40 cases, one pen, 9 sleepers.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd -P)
@@ -154,6 +154,67 @@ check "dry-run wins before signal"  yes "$(alive "$f")"
 out=$(sh "$call" --pattern "$tag" --root "$mine" --signal KILL 2>&1)
 sleep 1
 check "naming a signal acts"        no  "$(alive "$f")"
+
+# -- 21-27: A MATCH INSIDE PROSE IS NOT A MATCH ON A COMMAND WORD ---------------------------------
+# invariant: this is the `20260909.223500` fault proven from the failing side. This tree's baton
+# reaches every agent as one 11,558-byte argument that NAMES the tools a hand searches for, so a
+# substring test on the flattened command line read eight peer agents as candidates while one
+# process was the tool. The plant is a process carrying the tag ONLY inside a prose argument, in
+# THIS root, so nothing but the prose test can save it -- cwd and ancestry both admit it.
+printf 'sleep 120\n' > "$pen/prose.sh"
+prose_sleeper() {
+  ( cd "$1" && exec sh "$pen/prose.sh" "a prompt that names $tag inside a sentence" ) >/dev/null 2>&1 &
+  p=$!
+  born="$born $p"
+  printf '%s\n' "$p"
+}
+g=$(prose_sleeper "$mine")
+sleep 1
+# The plant is only a plant if the pattern really is on that command line -- a leg proving a refusal
+# over a process the matcher never saw would pass for the wrong reason.
+check "prose plant carries the tag" yes "$(has "$(ps -o args= -p "$g" 2>/dev/null || printf '')" "$tag")"
+out=$(sh "$call" --pattern "$tag" --root "$mine" --signal KILL 2>&1)
+sleep 1
+check "prose-only match refused"    yes "$(has "$out" "pid=$g verdict=refused_prose")"
+check "prose match survives KILL"   yes "$(alive "$g")"
+check "prose refusal is counted"    yes "$(has "$out" "refused_prose=1")"
+check "the reading names itself"    yes "$(has "$out" "reading=exact")"
+# invariant: the refusal LIFTS through the door the refusal line names. A wall with no door is a
+# process a hand can never reach, which is the fault this file's cwd wall already avoids.
+h=$(sleeper "$mine")
+sleep 1
+out=$(sh "$call" --pattern "$tag" --root "$mine" 2>&1)
+check "a command word still reads"  yes "$(has "$out" "pid=$h cwd=$mine verdict=dry")"
+out=$(sh "$call" --pid "$g" --root "$mine" --signal KILL 2>&1)
+sleep 1
+check "--pid reaches past prose"    no  "$(alive "$g")"
+
+# -- 28-33: the pattern is one command word, and the degradation is named rather than silent -------
+# invariant: a pattern carrying whitespace can match no command word by construction, so a zero
+# would mean "impossible" while reading exactly like "nobody is running it". It refuses with the
+# usage exit instead. Caught first-resident within the hour the shape rule landed.
+rc=0
+sh "$call" --pattern "$tag --hot" --root "$mine" >/dev/null 2>&1 || rc=$?
+check "multi-word pattern refuses"  2 "$rc"
+out=$(sh "$call" --pattern "$tag --hot" --root "$mine" 2>&1 || true)
+check "and says which door to use"  yes "$(has "$out" "use --pid")"
+# invariant: the reading is decided by the HOST once, never by one candidate. A process that exits
+# between the listing and the cmdline read must not report the whole reading as degraded -- that
+# fired on a live Linux pier before this was pulled out of the loop.
+i=$(prose_sleeper "$mine")
+sleep 1
+out=$(sh "$call" --pattern "$tag" --root "$mine" 2>&1)
+check "a /proc host reads exact"    yes "$(has "$out" "reading=exact")"
+check "and one prose match is seen" yes "$(has "$out" "refused_prose=1")"
+# invariant: with no /proc there are no argument boundaries, so the elder substring test stands AND
+# SAYS SO. A host that cannot tell prose from a command word ADMITS the prose match, which is the
+# honest cost, named in the summary rather than hidden. The leg reads the admission rather than a
+# send, because `cwd_of` resolves through the same `$proc_root`: overriding it removes the working
+# directory too, so this candidate lands on `refused_unknown` here where a real Mac would reach lsof.
+# That coupling is the reason the check is written this way, rather than a weaker assertion.
+out=$(FLEET_CALL_PROC="$pen/no-proc-here" sh "$call" --pattern "$tag" --root "$mine" 2>&1)
+check "no /proc reads flattened"    yes "$(has "$out" "reading=flattened")"
+check "and admits what exact refused" yes "$(has "$out" "pid=$i")"
 
 printf 'pass=%s fail=%s\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

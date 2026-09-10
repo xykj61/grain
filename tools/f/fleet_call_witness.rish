@@ -12,10 +12,10 @@ say "fleet-call: Language EN -- a signal that names whose process it reached."
 say "fleet-call: Style Gauge, Meter -- each leg names what it plants and what must refuse."
 say "fleet-call: Lens TAME -- every refusal planted and then lifted, so a wall is not a habit."
 
-say "fleet-call: the control -- twenty-two behaviors on real processes in a throwaway pen..."
+say "fleet-call: the control -- thirty-nine behaviors on real processes in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/f/fleet_call_control.sh"]
 assert ctl.ok else "fleet-call: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=26 fail=0" else "fleet-call: the control did not prove twenty-six behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=39 fail=0" else "fleet-call: the control did not prove thirty-nine behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fleet-call: the helper reaches for no name-matching killer of its own..."
 # invariant: pkill and killall match a program NAME, which is the fault under repair. A helper that
@@ -23,6 +23,16 @@ say "fleet-call: the helper reaches for no name-matching killer of its own..."
 let namekill = run ["sh" "-c" "grep -v '^ *#' tools/f/fleet_call.sh | grep -c 'pkill \\|killall ' || true"]
 assert namekill.ok else "fleet-call: the name-killer read could not run"
 assert (trim namekill.out) == "0" else "fleet-call: the helper matches a program by name -- resolve a working directory instead"
+
+say "fleet-call: a match lands on a command word rather than inside a prompt..."
+# invariant: this tree's baton reaches every agent as one 11,558-byte argument NAMING the tools a
+# hand searches for, so a substring test on the flattened command line read eight peer agents as
+# candidates while one process was the tool -- and the elder matcher KILLED a planted process whose
+# only tie to the pattern was a sentence mentioning it. The discriminator is shape rather than a byte
+# threshold, because a threshold drifts with whatever inline program grows next.
+let prose = run ["sh" "-c" "grep -c 'refused_prose' tools/f/fleet_call.sh || true"]
+assert prose.ok else "fleet-call: the prose refusal could not be read"
+assert (trim prose.out) != "0" else "fleet-call: a match inside a prompt is still read as a command -- refuse it out loud as refused_prose"
 
 say "fleet-call: and the root is resolved physically before anything is compared..."
 # invariant: a symlinked checkout reads local in a path string and sits in a sibling on disk. The

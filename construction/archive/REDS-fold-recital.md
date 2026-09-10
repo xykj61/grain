@@ -674,3 +674,5 @@ at a closed fold.*
 *Row %677 folded to [`REDS-a-capability-that-asked-one-of-four-rows-677.md`](REDS-a-capability-that-asked-one-of-four-rows-677.md) on `20260909.221534`, **CLOSED** -- a capability probe asking a cheaper question than its guard is an exemption wearing a cadence's clothes, and the guard's own header had already said so.*
 
 *Row %675 folded to [`REDS-a-receipt-keyed-on-an-inventory-rows-675.md`](REDS-a-receipt-keyed-on-an-inventory-rows-675.md) on `20260909.232953`, **CLOSED** -- a coverage receipt keyed on an inventory goes stale on every commit, so the refusal it buys names the clock rather than the gap.*
+
+*Row %679 folded to [`REDS-a-match-inside-a-prompt-rows-679.md`](REDS-a-match-inside-a-prompt-rows-679.md) on `20260910.000521`, **CLOSED** -- a tool matching a flattened command line cannot tell a tool's invocation from a prompt that names it, and this tree's baton names its own tools on every agent's command line.*

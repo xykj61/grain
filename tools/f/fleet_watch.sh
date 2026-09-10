@@ -127,6 +127,17 @@ state_set() {
 loop_running() {
   # invariant: a seat is healthy when its own loop process exists -- read from the process table,
   # never inferred from the pane's words, because a pane can print anything and a process cannot.
+  #
+  # THE TRAILING `\$` IS LOAD-BEARING, and it is what keeps this probe honest on a pier whose baton
+  # NAMES `fleet-loop.sh`. Every agent's command line carries the baton as one argument of ~11.5KB,
+  # so an unanchored pattern would read a prompt as a running loop and the watch would refuse to
+  # re-arm a seat whose loop is actually dead -- the exact darkness it exists to end. It holds
+  # because `pgrep`'s `$` anchors end-of-STRING rather than end-of-line, so an interior baton phrase
+  # never reaches it: measured `20260909.223912`, an interior phrase matched 8 agents unanchored and
+  # 0 anchored. The sibling reading in `tools/f/fleet_call.sh` had no anchor to lean on and over-read
+  # 19 candidates against 7, so this one is correct for a reason a hand tidying the regex would
+  # otherwise have to rediscover.
+  #
   # process-reach: bounded -- a seat name, which construction/fleet-roster.kyri makes unique
   # across the whole fleet, so this pattern names one ship's loop and can match no peer's.
   pgrep -f "fleet-loop\.sh $1\$" >/dev/null 2>&1
