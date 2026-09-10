@@ -71,9 +71,28 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 #
 # `tools/c/convergence_census.sh` skips controls by the same name for the sibling reason -- a
 # control writes into its own pen and has nothing to converge -- so the convention is one this tree
-# already leans on. Measured `20260910.035630` on this tree: 239 tracked `*_control.sh` and one
-# `*_control.rish`, and exactly one of them carries a site.
-git ls-files '*.rish' '*.sh' 'tools/hooks/*' | grep -vE '_control\.(sh|rish)$' | sort -u > "$pen/sources"
+# already leans on.
+#
+# AND THE EXCLUSION IS COUNTED AND PRINTED (`20260910.050000`), because this is a whole POPULATION
+# held out rather than one named path, and `tools/fixtures/p/process_reach_scan.sh` already states
+# the law over its own single exclusion: an exclusion nobody can see is a claim rather than a
+# measurement. That guard's head also refuses a `*control*` PATTERN by name, on the ground that it
+# blinds a guard inside every control in the tree -- which is the cost this scan accepts, so it
+# prints what it costs on every run: `control_excluded`, `control_files`, `control_sites`.
+#
+# Why a figure in prose could not have carried it. This head read *exactly one of them carries a
+# site* when the exclusion landed, and the same commit's other half added nine legs to
+# `tools/fixtures/e/elf_machine_control.sh` -- four of them at live positions -- so the figure was
+# two before the commit finished. Nothing held it still. RUN the scan: `control_excluded=244
+# control_files=2 control_sites=8` at `20260910.050000`, and the reading moves when a control does.
+#
+# REPORTED, never gated. `ll_live` answers per LINE -- whether the line BEGAN inside a quoted
+# region -- so a plant written as a single-quoted argument on one line reads live, and all eight of
+# today's sites are exactly that: `cplant ... '...'`, `printf '...'`, `case_read ... '...'`. A gate
+# here would red on honest fixtures, which is the shape of gate somebody turns off.
+git ls-files '*.rish' '*.sh' 'tools/hooks/*' | sort -u > "$pen/all_sources"
+grep -vE '_control\.(sh|rish)$' "$pen/all_sources" > "$pen/sources"
+grep -E '_control\.(sh|rish)$' "$pen/all_sources" > "$pen/controls" || true
 
 # ONE AWK PASS over every source rather than a sed and a grep per file. The elder per-file loop
 # spawned two processes for each of ~2,900 tracked runners and cost 17 of this guard's 18 seconds;
@@ -115,13 +134,34 @@ xargs_lines_batched 400 "$pen/sources" awk -f "$pen/census.awk" >> "$pen/hits"
 sites=$(awk -F'\t' '{ n += $1 } END { print n + 0 }' "$pen/hits")
 files=$(grep -c '' "$pen/hits" || true)
 
+# THE EXCLUSION IS COUNTED AND PRINTED, because an exclusion nobody can see is a claim rather than
+# a measurement -- `tools/fixtures/p/process_reach_scan.sh` states that law over its own exclusion
+# one room over, and it is owed here twice over, since this exclusion covers the whole `_control.`
+# population rather than one named path.
+#
+# Read through the SAME lexer, so this counts what a control does at a live position rather than
+# what it plants. It is REPORTED and never gated: `ll_live` answers per LINE -- whether the line
+# BEGAN inside a quoted region -- so a plant written as a single-quoted argument on one line reads
+# live and lands here honestly. All of today's do.
+: > "$pen/control_hits"
+if [ -s "$pen/controls" ]; then
+  xargs_lines_batched 400 "$pen/controls" awk -f "$pen/census.awk" >> "$pen/control_hits"
+fi
+control_sites=$(awk -F'\t' '{ n += $1 } END { print n + 0 }' "$pen/control_hits")
+control_files=$(grep -c '' "$pen/control_hits" || true)
+control_excluded=$(grep -c '' "$pen/controls" || true)
+
 if [ "$mode" = --list ]; then
   sort -rn "$pen/hits" | while IFS="$(printf '\t')" read -r n f; do
     echo "site count=$n path=$f"
   done
+  sort -rn "$pen/control_hits" | while IFS="$(printf '\t')" read -r n f; do
+    echo "control site count=$n path=$f"
+  done
 fi
 
 echo "sites=$sites files=$files ceiling=$ceiling"
+echo "control_excluded=$control_excluded control_files=$control_files control_sites=$control_sites"
 
 if [ "$sites" -gt "$ceiling" ]; then
   echo "detail: a guard proves an architecture by reading file's prose; read the ELF header instead -- tools/fixtures/e/elf_machine_scan.sh"
