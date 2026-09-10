@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `038575b76a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `970c9fcb1d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
@@ -151,35 +151,36 @@ naming WHICH site moved**.
 **YOURS:** `tokens.rye` imports nothing and `rune_shape.rye` already imports it, so ONE module
 could own `max_name_len` and thirteen alias it, no cycle possible -- twelve imports, peer-colliding
 rather than this lap's keystone.
-**INCENSE -- A PLANT IS A SUBJECT, NEVER A PRACTICE.**
-Elder [shelved](archive/20260910-045332_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**: the cold open read `elf_machine` red, `standing_equipment`
-`roster_broken` behind it, all **226** guards refused.
-**ONE ROOT.** `elf_machine_census_scan.sh` counts runners still proving an architecture by reading
-`file`'s prose, ceiling **3**, and read **16**. Thirteen landed in one commit inside
-`self_matching_assert_control.sh`, whose job is proving a guard against that shape -- nine in
-heredocs it writes to a pen, four in `printf`. **A control doing its job read as thirteen
-regressions**, unlowerable: the plants ARE the proof.
-**THE LANTERN FIRED TWICE, SO IT IS A LOOM.** `convergence_census` closed this from the other side
-five days ago -- a write inside a `--tree-filter` string admitting a tool that writes nothing. Its
-shell-lexer walk is `tools/fixtures/l/live_lines.sh` now, read by both; the move proven faithful by
-its own numbers, `candidates=12 proven=10` before and after, control `legs_pass=43`.
-**TWO CLAUSES, MEASURED ALONE**, this denominator having been wrong six times: live-line **16 -> 7**,
-skip-controls **7 -> 3**. **HONESTLY: outside controls the live-line strand removes NOTHING today**,
-both landing on the same three sites -- the name clause carries the repair, the position clause is
-the wall for the next plant. **THAT RULE HAD NO CONTROL AT ALL:** nine legs now, refusals shown from
-the ELDER side, ceiling proven at three sites and four, **pass=38 fail=0**. **A RED INSIDE THE
-REPAIR:** sourcing the library from `$root` reddened every leg of the convergence control, since
-`CONV_ROOT` points it at a PEN. **A tool's own home is not the tree it reads.**
-Row `20260910.045332` **CLOSED** onto its own
-[shelf](archive/REDS-a-plant-is-a-subject-never-a-practice-rows-692.md). **RULE 4, PAID THREE TIMES IN ONE HOUR:**
-booked `%689`, renumbered `%690`, `%691`, `%692` -- three peers booking ahead at earlier stamps, one
-line each, every citation having spelled the stamp. And I folded `%687` to a shelf a peer folded it to
-under another name the same hour: mine dropped, theirs kept.
-**YOURS, KEATON:** REDS closes at **40,957 of 40,960 -- THREE bytes** -- and only because every row
-this lap touched was foldable. `published_doubles=7`, `%681` unfoldable. A raise, or your word.
-**`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
-
+**INCENSE -- THE LEDGER DEADLOCKED AGAIN, AND THE METER NAMED NO DOOR.**
+Elder [shelved](archive/20260910-082230_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap ran the instrument rather than reading the sentence about
+it. Five ships met the full pin in one morning and each re-derived the same options: three folded a
+peer's fresh row, one folded its own, one declined the move by name and called it a workaround.
+**ONE RED WENT UNBOOKED** -- `20260910.064044`, the amphora framed-name finding, stands cited in
+this card and in `construction/standing-equipment.kyri` and in **no ledger row**, and the block
+carrying it shelves.
+**THE POPULATION IS WHAT CHANGED.** Door B landed `20260829` as the door reaching the cause, and
+the pin fell 24,828 to 5,388 bytes. It reads **40,771 of 40,960, 16 rows, all OPEN, none foldable**
+twelve days later -- and **9 of the 16 name Keaton, a custody gate, or a numbered gate**, 7 of them
+`Keaton's word` outright. **Door B split a live defect from a booked remainder and never split who
+can CLOSE a live one.** Eight ships find reds at fleet rate; a row waiting on one person leaves at
+one person's rate. That is a refill mechanism rather than a busy week.
+**AND HALF A METER:** the foldable cell has printed the command to type since `%517`; the
+deadlocked cell printed the diagnosis and stopped, so five hands re-derived one essay's doors.
+**LANDED:** `reds_pin_capacity_rows.awk` gains `held()`, the scan prints **`pin_held_rows`** with
+one checkable `detail: pin_held %N` per row, and the deadlocked cell prints
+**`detail: pin_deadlock_doors`** -- the three doors, whose word each is, and the born-on-a-shelf
+practice with its cost and its recital. **Reported, never gated:** a gate on rows only one person
+may close would red hardest on the laps that found them. **Nine legs, 50 cases, 0 failed**, both
+mutations biting; `reds_pin_capacity_witness` GREEN.
+**REDS FIRST PAID FIRST:** `fold_shelf_link` and `fold_shelf_link_repoint` read red on one link --
+a hand-written shelf keeping the card's own `archive/` depth. Repointed; both GREEN.
+**MY ROW IS BORN ON A SHELF** (`20260910.082230`, **BOOKED**), as %335-%341 were, since no lawful
+fold exists. That birth is recorded PRACTICE and not law: `%338`'s door C was costed and declined.
+**YOURS, KEATON -- ONE WORD, NOT FIVE ASKS.** The three doors stand exactly as costed and only one
+removes the cause: raise this page's bound, **split OPEN by who holds the row**, or sanction the
+single-row shelf birth. Until then every ship pays a lap re-deriving them.
+**Still yours:** `%460`; `%456`; Meter SCORE for a program; 25 front doors over the ceiling.
 **GRASS -- THE FRONT DOOR PROMISED A CHECK NOBODY WROTE.**
 Elder [shelved](archive/20260910-062516_itinerary-landed-accounts.md).
 **AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the grain's own ear strand -- *a guard that

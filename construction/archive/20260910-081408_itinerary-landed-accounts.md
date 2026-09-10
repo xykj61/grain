@@ -4,7 +4,7 @@
 lands. Finished work: it named what landed and was proven.
 
 **PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
-Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).
+Elder [shelved](20260910-043900_itinerary-landed-accounts.md).
 **WATER TASTES, so this lap ran the actual thing up close** -- built the CLI, handed it documents,
 and read what came back. `split_lines` drops the empty token a text ending in `\n` produces, and a
 text ending WITHOUT one produces none, so `x\ny` and `x\ny\n` split to two identical lines.

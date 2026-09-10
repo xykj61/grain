@@ -48,7 +48,18 @@
 #                       the reading rather than a flaw in it.
 #
 # WHAT IS REPORTED, never gated: pin_bytes, pin_bound, pin_headroom, pin_rows, pin_open_rows,
-# pin_fold_refused_rows, pin_foldable_rows, median_row_bytes, rows_that_fit, pin_deadlocked.
+# pin_fold_refused_rows, pin_foldable_rows, median_row_bytes, rows_that_fit, pin_deadlocked,
+# pin_held_rows.
+#
+# WHY pin_held_rows, added `20260910.073602`. Door B landed on `20260829` as the one door that
+# reaches the cause -- BOOKED split from OPEN, eight booked rows drained, the pin fell 24,828 to
+# 5,388 bytes. Twelve days later the pin stands at 40,771 of 40,960 with **16 OPEN rows and none
+# foldable**, so the deadlock came back. The population is what changed: door B split a live defect
+# from a booked remainder, and never split who can CLOSE a live one. **9 of the 16 name Keaton, a
+# custody gate, or a numbered gate**, and 7 of those name `Keaton\'s word` outright. Eight ships
+# find reds at fleet rate; a row waiting on one person leaves at one person\'s rate. That is a
+# refill mechanism rather than a busy week, and it is reported here so the next reading of the
+# deadlock meets the cause rather than the symptom.
 #
 # WHY CAPACITY IS MOSTLY REPORTED AND NOT GATED. A full pin wants a person: raising a page's bound
 # is Keaton's word, seated that way once already for `session-logs/README.md`. A gate here would red
@@ -166,6 +177,14 @@ for f in $ARCHIVE_GLOB; do
   done
 done
 
+# --- who holds an open row -------------------------------------------------------------------
+# A PROXY, printed row by row so a reader checks it rather than trusting it: an OPEN row whose own
+# text names Keaton, a custody gate, or a numbered gate. Reported and never gated -- a gate on rows
+# only one person may close would red hardest on the laps that found them.
+for row in $(awk -f "$ROWREAD" -v mode=held_rows "$PIN"); do
+  echo "detail: pin_held %$row -- an open row whose own text names a hand outside the loop"
+done
+
 # --- the recital's trail ------------------------------------------------------------------------
 UNRECORDED=0
 PHANTOM=0
@@ -193,6 +212,11 @@ fi
 
 if [ "$DEADLOCKED" -eq 1 ]; then
   echo "detail: pin_deadlocked -- $ROWS_THAT_FIT rows fit in ${HEADROOM}B of headroom and $PIN_FOLDABLE of $PIN_ROWS rows are foldable; a new red has nowhere in the pin to go"
+  # The foldable case names the command to type (over_bound_foldable, below). The deadlocked case
+  # named none, so a lap that met the wall had to re-derive its options -- and on 20260910 five did,
+  # in one morning, each asking for a bound raise and one leaving its red cited in the card and in
+  # no row at all. A meter that detects a wall and goes quiet about the doors is half a meter.
+  echo "detail: pin_deadlock_doors -- no lawful fold exists here. The three doors of %338 stand and each is Keaton's word: raise this page's bound, split OPEN by WHO HOLDS the row, or sanction the single-row shelf birth in reds_fold.sh's contract. Born-on-a-shelf is recorded PRACTICE rather than law -- see construction/archive/REDS-fold-recital.md -- and its cost is a live red where a lap reading the pin will not see it, which shelf_open_rows counts."
 fi
 
 echo "pin_bytes=$PIN_BYTES"
@@ -200,6 +224,7 @@ echo "pin_bound=$BOUND"
 echo "pin_headroom=$HEADROOM"
 echo "pin_rows=$PIN_ROWS"
 echo "pin_open_rows=$PIN_OPEN"
+echo "pin_held_rows=$PIN_HELD"
 echo "pin_fold_refused_rows=$PIN_REFUSED"
 echo "pin_foldable_rows=$PIN_FOLDABLE"
 echo "median_row_bytes=$MEDIAN"

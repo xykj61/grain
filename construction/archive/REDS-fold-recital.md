@@ -710,3 +710,5 @@ at a closed fold.*
 
 *Row %695 folded to [`REDS-a-cold-pass-is-slower-than-the-fleet-rows-695.md`](REDS-a-cold-pass-is-slower-than-the-fleet-rows-695.md) on `20260910.070000`, **CLOSED** -- a cold pass is forty minutes long, and the fleet is faster than that.*
 *Row %698 folded to [`REDS-a-guard-that-reports-history-rows-698.md`](REDS-a-guard-that-reports-history-rows-698.md) on `20260910.070454`, **CLOSED** -- a guard placed where it cannot run at the moment of the fault reports history rather than preventing it.*
+
+*Row %699 written straight onto [`REDS-the-door-nobody-meets-at-the-wall-rows-699.md`](REDS-the-door-nobody-meets-at-the-wall-rows-699.md) on `20260910.082230`, **BOOKED** -- the pin deadlocked again twelve days after door B, refilled by rows only Keaton may close, and the meter that detects the wall named no door; the capacity scan now reads `pin_held_rows` and prints the three doors. Born on its shelf as %335 through %341 were, the pin standing 189 bytes under its bound with all 16 rows OPEN and none foldable -- which is the row's own subject.*
