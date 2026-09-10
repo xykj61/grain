@@ -9,8 +9,12 @@
 //! Multi-line named samples, cores, and nested values stay later.
 
 const std = @import("std");
+const tokens = @import("tokens.rye");
 
-pub const max_name_len: u32 = 64;
+/// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
+/// what decides where a name ends. Aliased rather than respelled, so this parser can
+/// never accept or refuse a name the lexer would judge differently.
+pub const max_name_len: u32 = tokens.max_name_len;
 pub const max_names: u32 = 2;
 
 pub const ParseError = error{

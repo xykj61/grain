@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260910.101138` | [The room that teaches the register](20260910/20260910-101138_the-room-that-teaches-the-register.kyri) | 54 law pages, 18 over the ceiling |
+| `20260910.092703` | [An alias needs an owner](20260910/20260910-092703_an-alias-needs-an-owner.kyri) | fourteen spellings of 64 became one |
 | `20260910.092541` | [Two laps that stood on no ref](20260910/20260910-092541_two-laps-that-stood-on-no-ref.kyri) | this seat's own parked laps landed; unlanded 2 -> 0 |
 | `20260910.085903` | [A process per file](20260910/20260910-085903_a-process-per-file.kyri) | 7,741 processes became 6, and the bill fell 17-fold |
 | `20260910.084659` | [A contained fault belongs at the commit](20260910/20260910-084659_a-contained-fault-belongs-at-the-commit.kyri) | the placement question, asked of the class |

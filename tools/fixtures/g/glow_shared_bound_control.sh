@@ -161,6 +161,19 @@ rm -f glow/many.rye
 run_scan >/dev/null 2>&1
 check empty_room_refuses 2 "$?"
 
+# -- leg 16: a tracked room publishing NO bound refuses rather than reading zero as clean -----------
+# invariant: zero declarations and a clean tree print the same three counters, so the instrument
+# refuses instead of reporting. This is the leg the witness's specimen-named canary used to stand in
+# for, and it belongs here, where a plant can be lifted.
+printf '// prose only, and no published bound in sight\n' > glow/quiet.rye
+stage
+run_scan >/dev/null 2>&1
+check no_decls_refuses 2 "$?"
+printf 'pub const max_name_len: u32 = 64;\n' >> glow/quiet.rye
+stage
+run_scan >/dev/null 2>&1
+check no_decls_lifted 0 "$?"
+
 printf 'legs_pass=%s\n' "$pass"
 printf 'legs_fail=%s\n' "$fail"
 [ "$fail" -eq 0 ] || exit 1

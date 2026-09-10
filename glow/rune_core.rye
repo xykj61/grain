@@ -16,8 +16,12 @@ const lower_multi = @import("lower_multi.rye");
 const tally_copy = @import("tally_copy.rye");
 const rf = @import("rune_face.rye");
 const expr = @import("expr.rye");
+const tokens = @import("tokens.rye");
 
-pub const max_name_len: u32 = 64;
+/// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
+/// what decides where a name ends. Aliased rather than respelled, so this parser can
+/// never accept or refuse a name the lexer would judge differently.
+pub const max_name_len: u32 = tokens.max_name_len;
 pub const max_arms: u32 = 3;
 
 pub const ParseError = error{
@@ -236,10 +240,10 @@ pub fn parse_source(src: []const u8) ParseError!CoreSpec {
             // The face is read from the returned spec, which lives in THIS frame. Reading it
             // from a slice the callee returned would read that callee's dead stack.
             const payload_face = rf.face_slice(&payload.face_spec);
-            // invariant: the face fits this file's slot. `rune_face` bounds it by its OWN
-            // `max_name_len`, which happens to be 64 here too -- so the copy is safe by a
-            // number agreeing across two modules rather than by anything this file states.
-            // Said out loud, a raise over there reds here instead of writing past the slot.
+            // invariant: the face fits this file's slot. `rune_face.max_name_len` and this
+            // file's are ONE declaration now -- both alias `tokens.max_name_len` -- so the
+            // copy is safe by construction rather than by two numbers happening to agree.
+            // Raising the lexer's ceiling widens both slots in the same edit.
             assert(payload_face.len <= max_name_len);
             tally_copy.copy_disjoint(u8, spec.payload_face[0..payload_face.len], payload_face);
             spec.payload_len = payload_face.len;

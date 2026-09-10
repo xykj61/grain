@@ -2,25 +2,30 @@
 #
 #   rishi/bin/rishi run tools/g/glow_shared_bound_witness.rish
 #
-# The Glow front end publishes 195 numeric bounds across its modules, and seven of those names are
-# declared in more than one module. `max_name_len` stands fourteen times -- in `tokens.rye`,
-# `rune_shape.rye`, `expr.rye` and eleven rune modules -- each spelling 64 on its own line, and
-# nothing compared them. Three of the agreements were stated in a `///` comment, which is a wish
-# rather than a wall: raise one copy and the lexer accepts a name the shape parser refuses, while
-# both files still read correct alone.
+# The Glow front end publishes numeric bounds across its modules, and several of those names are
+# declared in more than one module. `max_name_len` once stood fourteen times -- in `tokens.rye`,
+# `rune_shape.rye`, `expr.rye` and eleven rune modules -- each spelling 64 on its own line, and one
+# module was free to raise its copy alone. Three of the agreements lived in a `///` comment, which
+# is a wish where this is a wall: raise one copy and the lexer accepts a name the shape parser
+# refuses, while both files still read correct alone.
 #
-# Every shared name agrees today, so this wall stands under a standing agreement rather than over a
-# break. That is the point -- the first drift reds on the lap it arrives, where a comment would have
-# let it ship.
+# That name has an owner now (`20260910.083221`): the lexer declares it, thirteen modules alias it,
+# and it carries one value by construction, so it has left this census. Six names remain shared, and
+# each is a pair of PEERS -- two rune modules bounding the same kind of thing -- where the name has
+# no owner and an alias would invent an arbitrary dependency between equals. For those six, this
+# wall is the mechanism.
+#
+# Every shared name agrees today, so it stands under a standing agreement rather than over a break.
+# That is the point -- the first drift reds on the lap it arrives, where a comment would let it ship.
 
 say "glow-shared-bound: Language EN -- the fence posts two modules share, compared rather than trusted."
 say "glow-shared-bound: Style Gauge, Meter -- each leg names what it plants and what must refuse."
 say "glow-shared-bound: Lens TAME -- bound everything, and say why the bound is that number."
 
-say "glow-shared-bound: the control -- thirty behaviors on real git repositories in a pen..."
+say "glow-shared-bound: the control -- thirty-two behaviors on real git repositories in a pen..."
 let ctl = run ["sh" "tools/fixtures/g/glow_shared_bound_control.sh"]
 assert ctl.ok else "glow-shared-bound: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "legs_pass=30" else "glow-shared-bound: the control did not prove thirty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "legs_pass=32" else "glow-shared-bound: the control did not prove thirty-two behaviors --\n${ctl.out}\n${ctl.err}"
 assert ctl.out contains "legs_fail=0" else "glow-shared-bound: a control leg failed --\n${ctl.out}\n${ctl.err}"
 
 say "glow-shared-bound: and the living tree, read on metal..."
@@ -33,10 +38,13 @@ assert scan.out contains "verdict=ok" else "glow-shared-bound: two modules publi
 
 say "glow-shared-bound: and the census reads a real population, so a green means something..."
 # invariant: a scan whose pattern stopped matching would report zero shared names and zero
-# divergences, which is indistinguishable from a clean tree. Asserting that the reading is
-# non-trivial is what tells a wall from a silence -- the same fault the ASCII pen met at zero.
+# divergences, which is indistinguishable from a clean tree. The scan itself refuses a population of
+# zero declarations now, proven from both sides in the control, so this leg asks only that some name
+# is still shared -- structural, rather than naming one specimen. Naming a specimen is what this
+# witness did until `20260910.083221`, and it went stale the same day `max_name_len` found an owner:
+# an expected value pinned in a second place, which is the fault the line above warns about.
 let named = run ["sh" "tools/fixtures/g/glow_shared_bound_scan.sh" "--names"]
 assert named.ok else "glow-shared-bound: the named reading would not run\n${named.out}\n${named.err}"
-assert named.out contains "name agreed max_name_len" else "glow-shared-bound: the census no longer sees the name fourteen modules share -- the pattern has stopped matching\n${named.out}"
+assert named.out contains "name agreed " else "glow-shared-bound: no Glow bound is published by two modules any more -- every shared name has found an owner, and this wall has nothing left to compare\n${named.out}"
 
 say "GREEN: glow-shared-bound -- every bound two Glow modules publish carries one value."

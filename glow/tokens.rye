@@ -36,7 +36,11 @@ const assert = std.debug.assert;
 
 /// Desk token budget -- one fixed array; overflow is TooManyTokens.
 pub const max_tokens: u32 = 64;
-/// Ident / tag name ceiling (matches rune_shape.max_name_len).
+/// Ident / tag name ceiling -- Glow's ONE name length, owned here because the lexer is what
+/// decides where a name ends. Every rune module and `expr.rye` aliases this rather than
+/// spelling 64 again, so a name this lexer accepts can never be one a parser refuses. 64 fits
+/// every ident the desk corpus carries and keeps a fixed name slot small enough to sit in a
+/// struct beside its siblings.
 pub const max_name_len: u32 = 64;
 /// Hosted desk read ceiling (glow_run limited(64 * 1024)).
 pub const max_src_len: u32 = 64 * 1024;

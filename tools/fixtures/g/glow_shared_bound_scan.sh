@@ -3,13 +3,20 @@
 #
 #   sh tools/fixtures/g/glow_shared_bound_scan.sh [--names]
 #
-# WHY THIS GUARD EXISTS. The Glow front end publishes 195 numeric bounds across its modules, and
-# seven of those names are declared in more than one module. `max_name_len` stands fourteen times,
-# once each in `tokens.rye`, `rune_shape.rye`, `expr.rye` and eleven rune modules, every one of them
-# spelling 64 independently. Nothing compares them. Three of the agreements are stated in a `///`
-# comment -- `tokens.rye` says its ident ceiling "matches rune_shape.max_name_len" -- and a comment
+# WHY THIS GUARD EXISTS. The Glow front end publishes numeric bounds across its modules, and several
+# of those names are declared in more than one module. `max_name_len` stood fourteen times, once
+# each in `tokens.rye`, `rune_shape.rye`, `expr.rye` and eleven rune modules, every one of them
+# spelling 64 independently. Nothing compared them. Three of the agreements were stated in a `///`
+# comment -- `tokens.rye` said its ident ceiling "matches rune_shape.max_name_len" -- and a comment
 # is a wish rather than a wall: the day one module raises its own copy, the lexer accepts a name the
 # shape parser refuses, or the reverse, and both files read correct alone.
+#
+# THAT NAME HAS AN OWNER NOW (`20260910.083221`), so it has left this census. The lexer declares it
+# and thirteen modules write `pub const max_name_len: u32 = tokens.max_name_len;`, which this scan
+# never reads, because an alias carries no number to disagree about. What remains shared is six
+# names, every one a pair of PEERS -- `max_test_len` in two rune modules, `max_subject_len` in two
+# more -- where no module owns the name and an alias would invent an arbitrary dependency between
+# equals. An alias needs an owner; where there is none, this wall is the mechanism.
 #
 # The fault this refuses is the one a repeated rule always carries. A rule written fourteen times is
 # a rule fourteen files may quietly come to disagree about, and a lexer and a parser disagreeing
@@ -87,6 +94,14 @@ ndecls=$(grep -c . "$pen/decls" 2>/dev/null || true)
 [ -n "$ndecls" ] || ndecls=0
 [ "$ndecls" -le "$max_decls" ] || {
   echo "glow_shared_bound: REFUSED -- $ndecls declarations over the bound of $max_decls" >&2; exit 2; }
+
+# invariant: a room of tracked sources publishes at least one bound. Reading zero means the pattern
+# has stopped matching -- a renamed keyword, a reformatted declaration -- and a pattern that matches
+# nothing reports zero shared names and zero divergences, which is exactly what a clean tree reports.
+# Refusing here is what tells a wall from a silence; the witness used to name one specimen instead,
+# which pinned the tree's own shape in a second place and went stale the day a name found an owner.
+[ "$ndecls" -gt 0 ] || {
+  echo "glow_shared_bound: REFUSED -- $nfiles tracked sources publish no numeric bound at all; the pattern has stopped matching" >&2; exit 2; }
 
 shared=0
 divergent=0
