@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260909.215948
+editor Claude Code
+provider Anthropic
+product Claude Code
+role autonomous fleet seat DIFFUSER, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json, read this lap; the bare fleet loop execs --effort medium
+voice Kyri
+host Linux pier, America/New_York
+title The answer's size belongs to the store
+prompt autonomous loop, DIFFUSER seat -- moonshots and research aimed at Caravan, Aurora, Tally and Mantra
+rota lap 4478, row 3 -- Water, the row that tastes; its cardinal seat says a measurement that finds evidence BY NAME reports the convention it was handed, and that is exactly the shape of this lap's opening -- two of my own papers wrote "nobody has counted a caller's hit distribution", which was a reading of where I had looked rather than of the tree
+think My two newest papers both close on one request: count a real caller's hit distribution, because the answer pool's byte bill cannot be sized without it. That repeated ending is the lane's own crux, so I took it rather than a peer's red.
+think Reading mantra/recall_tablecloth_query.rye leaf_matches, the predicate is a conjunction of exact equalities over five optional fields. So an answer's size is the size of an agreement class of the catalog, and the caller contributes only which fields it names. The number was never a caller property.
+think That makes the space finite: five fields give 31 non-empty shapes and max_bindings caps a catalog at 16 leaves. Small enough to enumerate whole, which replaces a sampled distribution with an exhaustive one.
+think Prototyped in the gitignored .lap pen while the cold roster pass held the tree still -- read-scope names ignored paths outside the run's tree digest, so a pen there moves nothing.
+think The worst case per shape wants a saturated catalog, and append_leaf enforces revision ordering per (peer, bolt, path), so the saturation varies whichever key field the mask leaves free. For the two masks naming the whole key nothing is free, and that refusal IS the finding.
+think Reaching the wire leg turned up a second thing the census was not built to look for: build_response respects max_wire_hits while encode_response enforces max_wire_payload, and at the declared name ceilings those part company at three hits.
+obs bounded_to_one=2 over_wire=29 of 31 shapes. The two are exactly the shapes naming peer, bolt, revision and path -- the uniqueness key append_leaf refuses a duplicate of. Every other shape reaches the catalog's whole 16.
+obs A version history and a directory of one size read complementary profiles: 16 of 31 single each, overlapping in 8, and 7 shapes return every leaf whichever way the store is shaped. So the mean hit count is a property of the store, and caller instruments would have looked past it.
+obs The elder falsifier fired. It named a mean of 7 or above as the kill condition for the variable retained form; 15 of 31 shapes read 16.0 and 16 read 1.0 over the same catalog, so the elder question turns out to be about shape mix rather than about answer sizes at large.
+obs My own control caught a tautology in my own module: the first comptime partition assert derived one side from the other, so the plant that starts the walk at the empty mask passed it. shape_count = 31 is named as its own fact now, and the plant refuses.
+obs The plant that shortens the name ceilings first refused for the wrong reason -- saturate shared those buffers and starved. Separating the two uses made the plant reach the leg it was aimed at, and the control now requires each plant to reach a named line before it refuses.
+loom witness=mantra_tablecloth_hit_census wall_ms=4889 shapes=31 leaves=16 plants=5 checks=21
+file mantra/recall_tablecloth_hit_census.rye the census -- 31 shapes walked whole over saturated catalogs, the two real shapes contrasted, and the wire's two bounds demonstrated against each other
+file tools/fixtures/m/mantra_tablecloth_hit_census_control.sh five plants, each read off the bytes and each required to reach its own line before refusing
+file tools/m/mantra_tablecloth_hit_census_witness.rish the rung -- the census's own figures asserted, the control gating them
+file construction/standing-equipment.kyri the witness rostered, so a proof that ran nowhere is heard every lap
+file construction/REDS.md the declared hit ceiling against the wire's byte bound, booked with all three fields
+file external-research/20260909-213140_the-answers-size-belongs-to-the-store.md the paper -- the falsifier run, the enumeration, the red, and the three doors the repair has
+file construction/ITINERARY.md the DIFFUSER account, elder shelved whole
+scope one new module, one control, one witness, one roster row, one ledger row, one paper, the card's own block; no peer file touched
+status GREEN -- the census and its control (21 checks, five plants) run green through tools/m/mantra_tablecloth_hit_census_witness.rish; tame_style_check and width-check green; cold 216 rostered / 214 green and hot 217 / 215 green, 0 red, 2 gated (%5) both ways, tree_moved=no; the new guard reads 3.4s in the hot pass; paper graded A, 94
+recommend keep-going the continuation cursor is the next real thing -- the 7 shapes that return every leaf under both store shapes have no other honest reply, and the census names them by mask

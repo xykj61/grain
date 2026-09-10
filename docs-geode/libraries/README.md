@@ -25,7 +25,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 74 | 13 |
 | [`constel/`](../../constel/README.md) | 32 | 39 |
-| [`construction/`](../../construction/README.md) | 1 | 60 |
+| [`construction/`](../../construction/README.md) | 1 | 61 |
 | [`crypto/`](../../crypto/README.md) | 82 | 121 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
@@ -41,7 +41,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
-| [`mantra/`](../../mantra/README.md) | 34 | 36 |
+| [`mantra/`](../../mantra/README.md) | 35 | 37 |
 | [`manual/`](../../manual/README.md) | 1 | 11 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |

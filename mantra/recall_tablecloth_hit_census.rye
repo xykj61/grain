@@ -1,0 +1,379 @@
+//! mantra/recall_tablecloth_hit_census.rye -- how many hits a Tablecloth query can return,
+//! enumerated exhaustively rather than sampled from a caller.
+//!
+//! WHAT THIS IS FOR. Two retention papers ended on the same missing number: nobody had counted a
+//! real caller's hit distribution, and the answer pool's byte bill cannot be sized without it. This
+//! program answers the question a different way. A Tablecloth query is a conjunction of exact
+//! equalities over five optional fields, so a query built from a leaf returns exactly the leaves
+//! agreeing with that leaf on the named fields -- the size of an agreement class. There are five
+//! fields, so there are thirty-one non-empty query shapes, and a catalog holds at most
+//! `max_bindings` leaves. Both numbers are small, so the space is walked whole instead of guessed
+//! at, and the worst case is proven rather than projected.
+//!
+//! WHAT IT READS. Three things, each on this metal:
+//!
+//!   1. THE WORST CASE, per query shape. For each of the thirty-one shapes it builds a lawful
+//!      saturated catalog on which every leaf agrees, then counts. Two shapes bound the answer to
+//!      one hit and twenty-nine do not, and the two are exactly the shapes that name the whole
+//!      uniqueness key -- `append_leaf` refuses a duplicate `(peer, bolt, revision, path)`, so that
+//!      key is the only thing in the store forcing an answer to be single.
+//!   2. TWO REAL SHAPES, contrasted. A version history (one path, sixteen revisions) and a
+//!      directory (sixteen paths, one revision) hold the same leaf count under the same bound, and
+//!      their hit profiles are complements: revision discriminates in the first, path in the
+//!      second. So the mean hit count is a property of the STORE'S shape, and no amount of caller
+//!      instrumentation would have found it.
+//!   3. THE COUNT THAT IS NOT A COUNT. `max_wire_hits` is declared as a hit ceiling while the wire's
+//!      real bound is `max_wire_payload` bytes. At maximum name lengths one hit encodes to 119
+//!      bytes, so `build_response` builds three hits inside the declared ceiling and
+//!      `encode_response` refuses them on the next call. This program demonstrates that pair rather
+//!      than describing it.
+//!
+//! WHAT IT DOES NOT READ. Which query shapes a caller actually sends -- that is a habit rather than
+//! a bound, and this tree's own callers are few enough to read by eye. Nor any energy figure: no
+//! readable counter answers here (`tools/e/energy_instrument_witness.rish`).
+//!
+//! Run from the repository root:
+//!   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mantra/recall_tablecloth_hit_census.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ns = @import("recall_lap1.rye");
+const tcq = @import("recall_tablecloth_query.rye");
+const qw = @import("recall_tablecloth_query_wire.rye");
+
+pub const hit_census_version = "20260909.213236";
+
+/// One bit per query field. The five bits are the query language: a mask is a query shape.
+pub const field_peer: u32 = 1 << 0;
+pub const field_bolt: u32 = 1 << 1;
+pub const field_revision: u32 = 1 << 2;
+pub const field_tilak: u32 = 1 << 3;
+pub const field_path: u32 = 1 << 4;
+
+/// The five bits admit thirty-two masks; mask zero names no field and matches every leaf, so the
+/// walk starts at one. Bounded here rather than derived at each loop, so a sixth field meets a
+/// named ceiling instead of a silently short walk.
+pub const first_mask: u32 = 1;
+pub const mask_limit: u32 = 32;
+
+/// The uniqueness key `append_leaf` enforces. A query naming all four returns at most one hit, for
+/// every catalog that module can build, and that is the ONLY structural bound on an answer's size.
+pub const key_mask: u32 = field_peer | field_bolt | field_revision | field_path;
+
+/// Five optional fields have thirty-one non-empty subsets, and a subset is a query shape. Named
+/// as its own fact rather than derived from the walk's ends, so a walk that drifted -- taking in
+/// the empty mask, say, which names no field and returns the whole catalog -- meets a refusal
+/// instead of quietly redefining what it covered.
+pub const shape_count: u32 = 31;
+
+/// How many of the thirty-one shapes the key bounds: the key itself, and the key plus tilak.
+pub const bounded_shapes_expected: u32 = 2;
+pub const unbounded_shapes_expected: u32 = shape_count - bounded_shapes_expected;
+
+/// Name lengths at their declared ceilings, used to read the wire's byte bound rather than its
+/// hit bound. These are `recall_lap1`'s own limits, named here so the demonstration moves when
+/// they move -- and used by the wire leg ALONE, so shrinking them reaches that leg rather than
+/// starving a buffer three functions earlier.
+const worst_peer_len: u32 = 16;
+const worst_bolt_len: u32 = 32;
+
+/// Room for the short generated names a saturated catalog varies -- `p15`, `b15`. Held apart from
+/// the ceilings above so the two uses cannot starve each other.
+const saturate_name_max: u32 = 8;
+
+comptime {
+    // invariant: every field bit lies inside the mask space the walk covers.
+    assert(field_path < mask_limit);
+    // invariant: the key names four of the five fields, so one shape extends it and two are bounded.
+    assert(key_mask < mask_limit);
+    // invariant: the wire carries fewer hits than a catalog can hold, which is what makes the
+    // saturated readings below reach a refusal at all.
+    assert(qw.max_wire_hits < ns.max_bindings);
+    // invariant: the non-empty subsets of five fields number thirty-one, one per mask above zero.
+    assert(shape_count == mask_limit - 1);
+    // invariant: the walk covers exactly those shapes, so it takes in no empty query.
+    assert(mask_limit - first_mask == shape_count);
+}
+
+pub const CensusError = error{
+    MaskOutOfRange,
+    ShapeUnreachable,
+} || tcq.QueryError || ns.RecallError || qw.WireError || error{NoSpaceLeft};
+
+/// What one query shape reads over one catalog.
+pub const MaskReading = struct {
+    max_hits: u32,
+    sum_hits: u32,
+    leaves: u32,
+    wire_refusals: u32,
+};
+
+fn query_of(leaf: *const ns.LeafBinding, mask: u32) tcq.TableclothQuery {
+    // invariant: the mask names at least one field, so the query is a filter rather than a scan.
+    assert(mask >= first_mask);
+    // invariant: the mask lies inside the five-field space.
+    assert(mask < mask_limit);
+    var q: tcq.TableclothQuery = .{};
+    if (mask & field_peer != 0) q.peer = leaf.peer[0..leaf.peer_len];
+    if (mask & field_bolt != 0) q.bolt = leaf.bolt[0..leaf.bolt_len];
+    if (mask & field_revision != 0) q.revision = leaf.revision;
+    if (mask & field_tilak != 0) q.tilak = leaf.tilak[0..leaf.tilak_len];
+    if (mask & field_path != 0) q.path_hint = leaf.path[0..leaf.path_len];
+    return q;
+}
+
+fn wire_request_of(leaf: *const ns.LeafBinding, mask: u32) qw.QueryWireRequest {
+    // invariant: the mask names at least one field, matching the query it mirrors.
+    assert(mask >= first_mask);
+    // invariant: the mask lies inside the five-field space.
+    assert(mask < mask_limit);
+    var r: qw.QueryWireRequest = .{};
+    if (mask & field_peer != 0) r.peer = leaf.peer[0..leaf.peer_len];
+    if (mask & field_bolt != 0) r.bolt = leaf.bolt[0..leaf.bolt_len];
+    if (mask & field_revision != 0) r.revision = leaf.revision;
+    if (mask & field_tilak != 0) r.tilak = leaf.tilak[0..leaf.tilak_len];
+    if (mask & field_path != 0) r.path_hint = leaf.path[0..leaf.path_len];
+    return r;
+}
+
+/// Count one query shape over one catalog, drawing each query from a leaf the catalog holds -- so
+/// every query asked has at least one true answer, and a zero would be a fault rather than a taste.
+pub fn read_mask(catalog: *const ns.BoltCatalog, mask: u32) CensusError!MaskReading {
+    // invariant: the mask names a query rather than a scan.
+    if (mask < first_mask or mask >= mask_limit) return error.MaskOutOfRange;
+    // invariant: the catalog holds at most the leaves its own bound allows.
+    assert(catalog.leaf_count <= ns.max_bindings);
+    var names: [ns.max_bindings]ns.Name = undefined;
+    var reading: MaskReading = .{
+        .max_hits = 0,
+        .sum_hits = 0,
+        .leaves = catalog.leaf_count,
+        .wire_refusals = 0,
+    };
+    var j: u32 = 0;
+    while (j < catalog.leaf_count) : (j += 1) {
+        const leaf = &catalog.leaves[j];
+        const hits = try tcq.query_tablecloth(catalog, query_of(leaf, mask), &names);
+        // invariant: a query drawn from a held leaf finds that leaf, so every answer is non-empty.
+        assert(hits >= 1);
+        if (hits > reading.max_hits) reading.max_hits = hits;
+        reading.sum_hits += hits;
+        var resp: qw.QueryWireResponse = undefined;
+        if (qw.build_response(catalog, wire_request_of(leaf, mask), &resp)) |_| {} else |_| {
+            reading.wire_refusals += 1;
+        }
+    }
+    // invariant: the largest answer is no larger than the sum of all answers.
+    assert(reading.max_hits <= reading.sum_hits);
+    // invariant: every refusal counted came from a leaf the walk visited.
+    assert(reading.wire_refusals <= reading.leaves);
+    return reading;
+}
+
+/// Which field a saturated catalog varies so that its leaves stay lawful while agreeing on `mask`.
+/// A field the mask does not name is free to vary; when the mask names the whole key, nothing is
+/// free and the revision is varied instead, which is what makes that shape read one hit.
+fn varied_field(mask: u32) u32 {
+    // invariant: the mask names a query rather than a scan.
+    assert(mask >= first_mask);
+    // invariant: the mask lies inside the five-field space.
+    assert(mask < mask_limit);
+    if (mask & field_revision == 0) return field_revision;
+    if (mask & field_path == 0) return field_path;
+    if (mask & field_bolt == 0) return field_bolt;
+    if (mask & field_peer == 0) return field_peer;
+    return field_revision;
+}
+
+/// Fill a catalog to its bound with leaves agreeing on every field `mask` names. This is the worst
+/// case for that shape: no lawful catalog of this bound can give it a larger answer.
+fn saturate(cat: *ns.BoltCatalog, mask: u32) CensusError!void {
+    // invariant: saturation starts from empty ground, so the fill is the whole catalog.
+    assert(cat.leaf_count == 0);
+    // invariant: the mask names a query rather than a scan.
+    assert(mask >= first_mask);
+    const varied = varied_field(mask);
+    var i: u32 = 0;
+    while (i < ns.max_bindings) : (i += 1) {
+        var peer_buf: [saturate_name_max]u8 = undefined;
+        var bolt_buf: [saturate_name_max]u8 = undefined;
+        var path_buf: [ns.max_path]u8 = undefined;
+        const peer = if (varied == field_peer) try std.fmt.bufPrint(&peer_buf, "p{d}", .{i}) else "p0";
+        const bolt = if (varied == field_bolt) try std.fmt.bufPrint(&bolt_buf, "b{d}", .{i}) else "b0";
+        const path = if (varied == field_path) try std.fmt.bufPrint(&path_buf, "f{d}.txt", .{i}) else "f0.txt";
+        const revision: u32 = if (varied == field_revision) i + 1 else 1;
+        try cat.append_leaf(peer, bolt, revision, path, "body", "plain-text");
+    }
+    // invariant: the catalog stands full, so the reading taken from it is the worst case.
+    assert(cat.leaf_count == ns.max_bindings);
+}
+
+fn mask_letters(mask: u32, out: *[5]u8) []const u8 {
+    // invariant: the mask names a query rather than a scan.
+    assert(mask >= first_mask);
+    // invariant: the mask lies inside the five-field space.
+    assert(mask < mask_limit);
+    out[0] = if (mask & field_peer != 0) 'p' else '-';
+    out[1] = if (mask & field_bolt != 0) 'b' else '-';
+    out[2] = if (mask & field_revision != 0) 'r' else '-';
+    out[3] = if (mask & field_tilak != 0) 't' else '-';
+    out[4] = if (mask & field_path != 0) 'h' else '-';
+    return out[0..5];
+}
+
+fn mean_tenths(reading: MaskReading) u32 {
+    // invariant: a mean is read from a catalog that holds something.
+    assert(reading.leaves >= 1);
+    // invariant: the sum covers every leaf, so the mean is at least one hit.
+    assert(reading.sum_hits >= reading.leaves);
+    return (reading.sum_hits * 10) / reading.leaves;
+}
+
+/// The worst case for every query shape, with the two the key bounds counted apart from the rest.
+fn run_worst_case() CensusError!void {
+    var bounded: u32 = 0;
+    var over_wire: u32 = 0;
+    var mask: u32 = first_mask;
+    while (mask < mask_limit) : (mask += 1) {
+        var cat: ns.BoltCatalog = .empty();
+        try saturate(&cat, mask);
+        const reading = try read_mask(&cat, mask);
+        var letters: [5]u8 = undefined;
+        const tenths = mean_tenths(reading);
+        if (reading.max_hits == 1) bounded += 1;
+        if (reading.max_hits > qw.max_wire_hits) over_wire += 1;
+        print("worst mask={d:0>2} {s} max_hits={d:0>2} mean={d}.{d} wire_refused={d}/{d}\n", .{
+            mask,        mask_letters(mask, &letters),
+            reading.max_hits, tenths / 10,
+            tenths % 10, reading.wire_refusals,
+            reading.leaves,
+        });
+    }
+    print("worst bounded_to_one={d} over_wire={d} shapes={d}\n", .{
+        bounded, over_wire, shape_count,
+    });
+    // invariant: exactly the shapes naming the whole uniqueness key bound an answer to one hit.
+    assert(bounded == bounded_shapes_expected);
+    // invariant: every other shape reaches past what the wire can carry.
+    assert(over_wire == unbounded_shapes_expected);
+}
+
+/// Two catalogs of one size whose hit profiles are complements.
+fn run_shapes() CensusError!void {
+    var history: ns.BoltCatalog = .empty();
+    var directory: ns.BoltCatalog = .empty();
+    var i: u32 = 0;
+    while (i < ns.max_bindings) : (i += 1) {
+        var path_buf: [ns.max_path]u8 = undefined;
+        try history.append_leaf("p0", "b0", i + 1, "f0.txt", "body", "plain-text");
+        const path = try std.fmt.bufPrint(&path_buf, "f{d}.txt", .{i});
+        try directory.append_leaf("p0", "b0", 1, path, "body", "plain-text");
+    }
+    // invariant: both shapes stand at the same bound, so only their shape differs.
+    assert(history.leaf_count == directory.leaf_count);
+    // invariant: both stand full, so each reading is that shape's whole story.
+    assert(history.leaf_count == ns.max_bindings);
+
+    var history_single: u32 = 0;
+    var directory_single: u32 = 0;
+    var both_single: u32 = 0;
+    var neither_single: u32 = 0;
+    var mask: u32 = first_mask;
+    while (mask < mask_limit) : (mask += 1) {
+        const h = try read_mask(&history, mask);
+        const d = try read_mask(&directory, mask);
+        var letters: [5]u8 = undefined;
+        const names = mask_letters(mask, &letters);
+        if (h.max_hits == 1) history_single += 1;
+        if (d.max_hits == 1) directory_single += 1;
+        if (h.max_hits == 1 and d.max_hits == 1) both_single += 1;
+        if (h.max_hits > 1 and d.max_hits > 1) neither_single += 1;
+        print("shape mask={d:0>2} {s} history_max={d:0>2} directory_max={d:0>2}\n", .{
+            mask, names, h.max_hits, d.max_hits,
+        });
+        // invariant: revision alone tells a version history's leaves apart.
+        if (mask & field_revision != 0) assert(h.max_hits == 1);
+        // invariant: path alone tells a directory's leaves apart.
+        if (mask & field_path != 0) assert(d.max_hits == 1);
+    }
+    print("shape history_single={d} directory_single={d} of {d}\n", .{
+        history_single, directory_single, shape_count,
+    });
+    print("shape both_single={d} neither_single={d}\n", .{ both_single, neither_single });
+    // invariant: the two shapes bound the same number of query shapes to one hit.
+    assert(history_single == directory_single);
+    // invariant: they bound DIFFERENT shapes, so the profiles are complements rather than copies.
+    assert(both_single < history_single);
+    // invariant: some shapes return the whole catalog whichever way the store is shaped, which is
+    // what makes a continuation the wire's only honest answer for them.
+    assert(neither_single >= 1);
+}
+
+/// The declared hit ceiling against the real byte ceiling. `build_response` honors the first and
+/// `encode_response` enforces the second, so a caller obeying the count still meets a refusal.
+fn run_wire_disagreement() CensusError!void {
+    var peer_buf: [worst_peer_len]u8 = undefined;
+    var bolt_buf: [worst_bolt_len]u8 = undefined;
+    var path_buf: [ns.max_path]u8 = undefined;
+    for (&peer_buf) |*b| b.* = 'p';
+    for (&bolt_buf) |*b| b.* = 'b';
+    const peer: []const u8 = &peer_buf;
+    const bolt: []const u8 = &bolt_buf;
+    // invariant: the names stand at their declared ceilings, which is where the byte bound bites.
+    assert(peer.len == worst_peer_len);
+    // invariant: the bolt name likewise, so one hit costs what the format allows it to cost.
+    assert(bolt.len == worst_bolt_len);
+
+    var cat: ns.BoltCatalog = .empty();
+    var i: u32 = 0;
+    while (i < 3) : (i += 1) {
+        for (&path_buf) |*b| b.* = 'a' + @as(u8, @intCast(i));
+        try cat.append_leaf(peer, bolt, 1, &path_buf, "body", "plain-text");
+    }
+    var out: [qw.max_wire_payload]u8 = undefined;
+    var built: qw.QueryWireResponse = undefined;
+    try qw.build_response(&cat, .{ .peer = peer, .bolt = bolt, .revision = 1 }, &built);
+    print("wire built_hits={d} declared_ceiling={d}\n", .{ built.hit_count, qw.max_wire_hits });
+    // invariant: the build stayed inside the ceiling it declares, so the caller kept the contract.
+    assert(built.hit_count <= qw.max_wire_hits);
+    // invariant: three hits is what a lawful catalog of this shape returns.
+    assert(built.hit_count == 3);
+
+    var single = built;
+    single.hit_count = 1;
+    const one_len = try qw.encode_response(single, &out);
+    print("wire one_hit_bytes={d} payload={d}\n", .{ one_len, qw.max_wire_payload });
+    // invariant: one hit at these lengths fits, so the refusal below is about the second and third.
+    assert(one_len < qw.max_wire_payload);
+
+    if (qw.encode_response(built, &out)) |len| {
+        print("wire encode_bytes={d} verdict=fits\n", .{len});
+        return error.ShapeUnreachable;
+    } else |_| {
+        print("wire encode verdict=refused declared_hits_left={d}\n", .{qw.max_wire_hits - built.hit_count});
+    }
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    print("hit-census: max_bindings={d} max_wire_hits={d} max_wire_payload={d}\n", .{
+        ns.max_bindings, qw.max_wire_hits, qw.max_wire_payload,
+    });
+    try run_worst_case();
+    try run_shapes();
+    try run_wire_disagreement();
+    print("hit-census: the answer's size is the catalog's agreement class -- GREEN\n", .{});
+    print("hit-census: two shapes of one size read complementary profiles -- GREEN\n", .{});
+    print("hit-census: the declared hit ceiling is not the wire's bound -- GREEN\n", .{});
+    print("hit-census: version {s}\n", .{hit_census_version});
+    print("GREEN: Tablecloth hit census -- thirty-one shapes walked whole, worst case proven.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}

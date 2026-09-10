@@ -3923,3 +3923,25 @@ guard glow_rune_alphabet
 path tools/g/glow_rune_alphabet_witness.rish
 tier lap   # 0.6s; 30 lexer heads derived from match_rune2 against 28 pronunciation rows, two exempt by name
 seated 20260909.155028
+
+# mantra_tablecloth_hit_census -- how large an answer can be, enumerated rather than sampled. Two
+# retention papers ended on one request, count a real caller's hit distribution, and the number does
+# not live in a caller: a Tablecloth query is a conjunction of exact equalities, so an answer is an
+# agreement class of the CATALOG. Five fields make 31 query shapes and `max_bindings` caps a catalog
+# at 16 leaves, so mantra/recall_tablecloth_hit_census.rye walks the space whole -- a saturated
+# catalog per shape, the worst case proven rather than projected. It reads 2 of 31 shapes bounded to
+# one hit, exactly those naming the uniqueness key `append_leaf` enforces, and 29 reaching past the
+# wire's 8. WHAT IT FOUND ON THE WAY: `max_wire_hits` declares a ceiling in HITS where the wire's
+# bound is 340 BYTES, so `build_response` builds three hits inside the declared eight and
+# `encode_response` refuses them on the next call (REDS, stamp `20260909.213236`). WHY THE CONTROL
+# CARRIES THE GATE:
+# every finding is an assert inside the program, and an assert never made false reads like a comment
+# -- tools/fixtures/m/mantra_tablecloth_hit_census_control.sh plants five, each read off the bytes
+# and each required to reach its own named line before it refuses. Its own first draft carried a
+# tautological comptime assert, and the plant that starts the walk at the empty mask is what found
+# it. `tier lap` at a measured 4.9s on this pier with the builds cached: it forks a compiler, and a
+# ship moves between machines, so the lap is where the figure meets the metal under it.
+guard mantra_tablecloth_hit_census
+path tools/m/mantra_tablecloth_hit_census_witness.rish
+tier lap   # 4.9s; 31 shapes over saturated catalogs, five plants, 21 control checks
+seated 20260909.215647

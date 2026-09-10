@@ -1,0 +1,56 @@
+# tools/m/mantra_tablecloth_hit_census_witness.rish -- the size of a query's answer, counted whole
+# rather than sampled.
+#
+# WHY THIS RUNG. Two retention papers ended on the same missing number: nobody had counted a real
+# caller's hit distribution, so the answer pool's byte bill could not be sized. That request was
+# aimed at a caller, and the number does not live there. A Tablecloth query is a conjunction of
+# exact equalities over five optional fields, so a query drawn from a leaf returns exactly the
+# leaves agreeing with it on the named fields -- an agreement class of the CATALOG. Five fields make
+# thirty-one query shapes and `max_bindings` caps a catalog at sixteen leaves, so the whole space is
+# small enough to enumerate. This rung enumerates it.
+#
+# WHAT THE HARNESS PROVES. mantra/recall_tablecloth_hit_census.rye builds, for each of the
+# thirty-one shapes, a lawful catalog saturated so every leaf agrees on that shape's fields -- the
+# worst case no larger catalog of this bound can exceed -- and counts. It then reads two catalogs of
+# ONE size whose profiles are complements, a version history and a directory, and finally
+# demonstrates a disagreement inside the wire format itself.
+#
+# WHAT IT FOUND. `max_wire_hits` is declared as a count of hits while the wire's real bound is
+# `max_wire_payload` bytes. At the declared name ceilings one hit encodes to 121 bytes, so
+# `build_response` builds three hits well inside the ceiling of eight and `encode_response` refuses
+# them on the very next call. A caller that honors the published count still meets a refusal it
+# cannot predict from the count. Booked in construction/REDS.md at stamp 20260909.213236.
+#
+# WHY A CONTROL CARRIES THE GATE. Every finding above is an assert inside the program, and an assert
+# that has never been made false is indistinguishable from a comment.
+# tools/fixtures/m/mantra_tablecloth_hit_census_control.sh makes each one false in a pen and requires
+# the planted copy to refuse -- five plants, each read off the bytes before it is run. The third
+# plant is the honest boundary of the wire finding: shorten the names and the two bounds agree
+# again, so the disagreement is a property of the declared ceilings rather than of the format alone.
+#
+# WHAT IS NOT PROVEN HERE. Which query shapes a caller actually sends. That is a habit rather than a
+# bound, and a habit is read by looking at callers. Nor any energy figure -- no readable counter
+# answers on this pier (tools/e/energy_instrument_witness.rish).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_tablecloth_hit_census_witness.rish
+
+say "hit-census: Language EN -- the size of an answer is a statistic of the store, and this counts it."
+say "hit-census: Style Gauge, Meter -- every figure names the bound it was read against."
+say "hit-census: Lens TAME -- bound everything; the space here is finite, so it is walked whole rather than sampled."
+
+let census = run ["sh" "-c" "RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mantra/recall_tablecloth_hit_census.rye 2>&1"]
+say census.out
+assert census.ok else "hit-census: the census must run and hold every one of its own invariants"
+assert census.out contains "worst bounded_to_one=2" else "hit-census: exactly two of the thirty-one shapes name the whole uniqueness key"
+assert census.out contains "over_wire=29" else "hit-census: every other shape reaches past what the wire can carry"
+assert census.out contains "shape history_single=16 directory_single=16" else "hit-census: two catalogs of one size read complementary profiles"
+assert census.out contains "shape both_single=8 neither_single=7" else "hit-census: seven shapes return the whole catalog whichever way the store is shaped"
+assert census.out contains "wire encode verdict=refused" else "hit-census: the wire refuses an answer built inside its own declared ceiling"
+
+let control = run ["sh" "tools/fixtures/m/mantra_tablecloth_hit_census_control.sh"]
+say control.out
+assert control.ok else "hit-census: the control must pass before any figure is believed"
+assert control.out contains "verdict=ok" else "hit-census: the control states a verdict in one word"
+
+say "hit-census: GREEN -- thirty-one shapes walked whole, five plants bitten, and the declared hit ceiling proven not to be the wire's bound."
