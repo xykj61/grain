@@ -44,7 +44,8 @@ table() {
     's/\o342\o207\o222/=>/g' \
     's/\o342\o211\o240/!=/g' \
     's/\o342\o211\o244/<=/g' \
-    's/\o342\o211\o245/>=/g'
+    's/\o342\o211\o245/>=/g' \
+    's/\o342\o210\o222/-/g'
 }
 
 TABLEFILE=$(mktemp "${TMPDIR:-/tmp}/ascii-conv.XXXXXX")

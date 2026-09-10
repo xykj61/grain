@@ -88,6 +88,27 @@ hand, a section sign becoming the word and a multiplication sign becoming `x` in
 resolution. `docs/*.md` joined the wall, the ratchet fell **3,225 to 2,773** and the ceiling
 **3,232 to 2,780**, keeping the same seven of slack and taking none of the 452.
 
+**Then one page held more than the whole rest of the tree** (`20260910.042550`).
+`rye-learning-process/GLOW_ALMANAC.md` carried **1,437 characters, 52 percent of the remaining
+2,773**, and **1,350 of those were a single form** -- the middle dot separator the table above has
+spelled since this rule was seated, standing in the almanac's own header separators. **All 1,437
+are gone:** 1,435 converted by the table and proven by re-deriving the page from its committed
+bytes, and **three read by hand** -- a multiplication sign in *four chapters x sixteen entries*, and
+two half-episode numbers, `ep031.5` and `ep037.5`, whose ASCII form the tree had already written
+twice in its own waymarks. The ratchet fell **2,773 to 1,336** and the ceiling **2,780 to 1,343**,
+keeping the same seven of slack.
+
+**The one character a hand had to read twice was one the table already named.** The rule's table
+has spelled the **typographic minus** since seating, the Rye comment sweep converted 1,164 of them
+on `20260908.224742` on exactly that authority -- and neither `ascii_document_scan.sh` nor
+`ascii_document_convert.sh` carried the row. The scan called it **unnamed**, meaning *a reader must
+choose*, about a form the law spells one way; the converter could not reach it at all. Both tables
+carry it now, and three legs in the pen prove it from both sides -- `minus_counts_named`,
+`convert_applies_minus`, `minus_reaches_zero_named`, the last of which reads yes either way and so
+earns its place only beside the first. Removing either row reds two legs; the pen stands at **85**.
+**A law and its instrument agreeing is a thing to measure rather than assume**, and this one had
+disagreed by exactly one row for the whole life of the document meter.
+
 **The wall names who is HELD; the seed names whose citations are CANON.** One roster served both
 jobs while it held only law rooms, and widening it made the difference matter: seeded from `docs/`,
 every page a compressor links would have become canon. A rule room tells a reader which page to

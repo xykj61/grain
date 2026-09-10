@@ -31,6 +31,7 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 EM=$(printf '\342\200\224')      # em dash -- on the rule's table
 DOT=$(printf '\302\267')         # middle dot -- on the table, and two bytes rather than three
 SEC=$(printf '\302\247')         # section sign -- NOT on the table, so a reader chooses
+MINUS=$(printf '\342\210\222')  # typographic minus -- on the table, and the last row to reach the tools
 CHK=$(printf '\342\234\246')     # four-pointed star -- not on the table either
 
 # A repository with the two rule rooms, the walled teaching room, and an ordinary one. Every pen
@@ -401,6 +402,22 @@ holds convert_applies_em_dash "$body" 'named -- and'
 holds convert_applies_middle_dot "$body" 'dot -'
 case "$body" in *"$SEC"*) say convert_leaves_unnamed yes ;; *) say convert_leaves_unnamed no ;; esac
 holds convert_reaches_zero_named "$(run_scan "$d")" 'ratchet_named=0'
+
+# The typographic minus, which the rule's table has named since `20260816` and which neither the
+# scan's named set nor the converter's table carried until `20260910.042550`. Arithmetic prose is
+# where it lives -- `2^255 - 19`, a fall of `(-15)` -- and a form the law spells one way is a form a
+# program converts, so the scan must call it NAMED and the converter must reach it. BOTH legs, since
+# a table row present in one instrument and absent from the other is exactly the disagreement that
+# let one character sit in a document telling a reader to choose. The third leg reads yes either
+# way -- with the scan row absent, `ratchet_named=0` holds trivially -- so it proves nothing alone
+# and everything beside the first: named before the sweep, zero after it.
+d=$(build convert_minus)
+printf 'a fall of (%s15) here\n' "$MINUS" > "$d/guide/GUIDE.md"
+seal "$d"
+holds minus_counts_named "$(run_scan "$d")" 'ratchet_named=1'
+( cd "$d" && sh "$conv" guide/GUIDE.md ) >/dev/null 2>&1
+holds convert_applies_minus "$(cat "$d/guide/GUIDE.md")" 'a fall of (-15) here'
+holds minus_reaches_zero_named "$(run_scan "$d")" 'ratchet_named=0'
 
 # The verify leg re-derives the transform from the committed bytes, so the proof is a computation
 # rather than a careful reading of a diff.
