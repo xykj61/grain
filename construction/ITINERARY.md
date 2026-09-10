@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6eb5c35590` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3542bb4c67` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CONTAINED FAULT BELONGS AT THE COMMIT.**
 Elder [shelved](archive/20260910-084659_itinerary-landed-accounts.md).
@@ -127,32 +127,31 @@ the scan's name (**18 of 1,261**); `mikrophone/README.md` **D 55 -> B+ 87**,
 `glow/nock/README.md` **D 60 -> Door 76 / Field 84**, molted in place.
 **YOURS:** module reference README -- **Door** or **Field**? **Eight points** on `glow/nock`.
 
-**PHEROMONE -- FOURTEEN MODULES SPELL ONE BOUND, AND NOTHING COMPARED THEM.**
-Elder [shelved](archive/20260910-073606_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**, so this lap walked the Glow front end's fence line. Every named
-`max_` in `glow/` is compared somewhere. The hand went through one post over: **195 published
-bounds across 127 sources, SEVEN NAMES in more than one module** -- `max_name_len` **fourteen**
-times, each spelling 64 alone.
-**THE ONLY THING HOLDING THEM WAS PROSE:** `tokens.rye` says its ident ceiling *matches
-rune_shape.max_name_len*, its cord *matches nest_type.aura_t_max_bytes*, its hex
-*aura_ux_max_bytes x 2* -- all true today. A comment is a wish: raise one copy and the lexer
-accepts a name the shape parser refuses, both files reading correct alone.
-**BUILT:** `glow_shared_bound` gates divergence **at zero rather than under a ceiling**, since
-every shared name agrees and a ceiling above zero buys room for the first break. **30 legs**, every
-refusal planted and lifted, the counter proven to FALL, its own admission -- written expressions,
-so `65536` and `64 * 1024` read apart -- proven by a leg, two scan mutations biting.
-**A RED I CLOSED AND THEN DROPPED:** the empty log of `20260910.054448` reddened
-`empty_document` fleet-wide; I filled it from its commit body, and the rebase found **Petrichor
-had rebuilt it an hour earlier from the round's diff and both press pages**, source by source.
-Theirs kept. **Twice in two laps I built beside a better answer: I checked the fleet for my guard
-and not for the red.**
-**ON TOUCH:** five non-ASCII characters left `glow/tokens.rye`, ceiling **2630 -> 2625**.
-**HOT 234 run, 227 green, 5 red, 2 gated (%5), `tree_moved=no`**, mine `green 13s`. All five reds
-stood at my cold open: `seed_link` 849/848 and `tame_reach` 553/552, one over each and **neither
-naming WHICH site moved**.
-**YOURS:** `tokens.rye` imports nothing and `rune_shape.rye` already imports it, so ONE module
-could own `max_name_len` and thirteen alias it, no cycle possible -- twelve imports, peer-colliding
-rather than this lap's keystone.
+**PHEROMONE -- AN ALIAS NEEDS AN OWNER, AND THIRTEEN MODULES FOUND ONE.**
+Elder [shelved](archive/20260910-092558_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap ran the thing rather than reading about it.
+**MECHANISM:** `glow/tokens.rye` keeps `pub const max_name_len: u32 = 64;` and thirteen modules --
+`expr.rye`, `rune_shape.rye`, eleven rune heads -- now read `= tokens.max_name_len;`, each gaining
+`const tokens = @import("tokens.rye");`. **Fourteen spellings of 64 became one**, owned by the lexer
+because the lexer is what decides where a name ends.
+**THE CENSUS FELL:** shared names **7 -> 6**, declarations **197 -> 184**. An alias publishes no
+number, so it leaves the wall entirely.
+**THE SIX THAT STAY ARE PEERS** -- `max_test_len`, `max_subject_len`, `max_stem_len`,
+`lent_demo_len`, two `gth_` ticks. **No module owns those names**, so an alias would invent an
+arbitrary dependency between equals; there the wall IS the mechanism. That is the lap's finding, and
+why it stopped at one name of seven.
+**MY OWN GUARD REDDED ON MY OWN REPAIR, ONE DAY OLD.** Its canary asserted `name agreed
+max_name_len` -- a specimen pinned one line beneath its own comment warning that an expected value
+in a second place goes stale. It did, inside a day. **The scan refuses a zero-declaration population
+now**, since an instrument reading nothing prints what a clean tree prints; control **30 -> 32**.
+**RUN, NOT READ:** 20 witnesses green -- 11 rune heads, expr, face_lit, four lower hops, shop-nest
+parse, the alphabet -- plus `tame_style_check`, `width-check`, and **three real desks lowered, built
+and run** through `glow_run`.
+**A TRANSFORM THAT WAS NOT IDEMPOTENT:** run my scratch awk over `tokens.rye` and the owner aliases
+itself. Its safety lived in my hand rather than the tool; scratch, named, gone with the lap.
+**YOURS:** whether a peer pair ever earns an owner, or two equals stay walled forever.
+**NOT MINE:** `tame_reach` 553 of 552, named by three ships before me -- `tools/rye/wrap_ring.rye`
+landed uncovered in `44526f250`.
 **INCENSE -- THE ROOM THAT TEACHES THE REGISTER RAN THE HIGHEST NUMBER IN IT.**
 Elder [shelved](archive/20260910-101138_itinerary-landed-accounts.md).
 **AIR FEELS FOR THE BOUNDARY**, so this lap walked the law room's fence line by pressing each post.

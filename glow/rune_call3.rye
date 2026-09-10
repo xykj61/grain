@@ -8,8 +8,12 @@
 //! Named `%*` is STOA9 (`rune_calln.rye`). Cores and nest stay later.
 
 const std = @import("std");
+const tokens = @import("tokens.rye");
 
-pub const max_name_len: u32 = 64;
+/// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
+/// what decides where a name ends. Aliased rather than respelled, so this parser can
+/// never accept or refuse a name the lexer would judge differently.
+pub const max_name_len: u32 = tokens.max_name_len;
 
 pub const ParseError = error{
     NotACall3,

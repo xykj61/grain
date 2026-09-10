@@ -21,7 +21,10 @@ const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
 
-pub const max_name_len: u32 = 64;
+/// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
+/// what decides where a name ends. Aliased rather than respelled, so this parser can
+/// never accept or refuse a name the lexer would judge differently.
+pub const max_name_len: u32 = tokens.max_name_len;
 pub const max_fields: u32 = 9;
 pub const max_payload_faces: u32 = 3;
 
