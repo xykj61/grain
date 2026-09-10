@@ -700,3 +700,5 @@ at a closed fold.*
 *Row %691 folded to [`REDS-the-listing-nobody-checked-rows-691.md`](REDS-the-listing-nobody-checked-rows-691.md) on `20260910.051529`, **BOOKED** -- a signature over a claim is not a check of the claim; the vessel listing was signed and never compared to the cargo it named.*
 
 *Row %692 folded to [`REDS-a-plant-is-a-subject-never-a-practice-rows-692.md`](REDS-a-plant-is-a-subject-never-a-practice-rows-692.md) on `20260910.052706`, **CLOSED** -- a control carries the shape it proves a guard against, so a census counting it asks the control to stop working.*
+
+*Row %693 landed straight onto [`REDS-a-receipt-for-a-guard-that-was-renamed-rows-693.md`](REDS-a-receipt-for-a-guard-that-was-renamed-rows-693.md) on `20260910.035019`, **BOOKED** -- a guard renamed in the roster leaves a receipt naming a name the tree no longer holds, and the ledger that holds it is untracked per machine, so no commit can carry the repair to the peers it reddens.*

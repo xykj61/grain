@@ -1787,7 +1787,10 @@ path tools/f/fleet_watch_witness.rish
 tier lap
 seated 20260906.090000
 
-# fleet_drain -- two stops with two owners want two files. `.loop-gates-only` is the AGENT's,
+# fleet_clockout -- two stops with two owners want two files. The guard was seated as `fleet_drain`
+# and molted to `fleet_clockout` on `20260909.013844`; this header carried the elder word for a day,
+# and a receipt written before the molt then read `unrostered` and reddened `standing_equipment` on
+# every ship until each hand pruned its own untracked runs ledger. `.loop-gates-only` is the AGENT's,
 # set during its own lap and cleared at the top of the next so last night's stop never blocks
 # tonight; `.loop-clockout` is a HAND's, read before a lap opens AND after one finishes, and removed
 # by the hand that set it. Until `20260908.165143` the loop cleared the only sentinel at the top of
