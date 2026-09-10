@@ -59,7 +59,16 @@ done
 # trace of a whole-tree reader returns one line per open, and `living_card_ascii` opens 15,011
 # files, so the ceiling is set above the largest reader this tree holds and refuses past it rather
 # than filling a pen.
-max_paths=65536
+#
+# RAISED 65536 -> 262144 on 20260910.030000, following that same sentence rather than changing it.
+# The elder number was chosen three days earlier against a largest-reader reading of 15,011, and the
+# tree crossed it: a census of the mapped roster met the refusal on THREE live guards --
+# `index_row_bound` at 79,888 lines, `pond_policy_launcher` at 83,728, and `scope_rank`. The reason
+# to bound is unchanged and the ceiling is a count of a growing surface, so it is set at 4x the
+# largest reader measured here rather than just above it, and a lap that meets the refusal again
+# should re-measure rather than assume this line is current. A refused trace costs a reading; a pen
+# filled without a bound costs the disk, which is why the refusal stays.
+max_paths=262144
 max_timeout=3600
 min_timeout=1
 
