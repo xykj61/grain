@@ -173,7 +173,7 @@ written down is reviewable where an idle night is not.
 ## The council rota
 
 **Each lap deep-reads ONE ROW of the 5 x 3 council grid** in
-[`../../recursion-prompts/seed/autonomous-loop.seed.md`](../../recursion-prompts/seed/autonomous-loop.seed.md)
+`recursion-prompts/seed/autonomous-loop.seed.md`
 section 1 -- lap `N` reads row `N mod 5`, where `N` is `git rev-list --count HEAD`, **advancing by
 hand past a row already read that day**. Three documents a lap, so the canon returns roughly daily.
 

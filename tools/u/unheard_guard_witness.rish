@@ -136,7 +136,16 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # in its basename. The delta is exactly one and the arrival is exactly one, checked from both sides.
 # Its path stays UNSPELLED here for the reason the two Rye arrivals above stayed unspelled:
 # `rye_compile_reach` reads a `.rye` path inside a runner as a claim that some build reaches it.
-assert green.out contains "unnamed_population=460" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# 460 -> 461 on `20260910.073000`: one Rye program arrived under `tools/rye/`, a bounded-ring
+# probe standing as the first witness for the bounded-torus moonshot, run by the `wrap_ring`
+# guard, wearing neither word in its basename. The delta is exactly one and the arrival is
+# exactly one, checked from both sides: `git diff --diff-filter=A` over `tools/*.rish` and
+# `tools/*.rye` since the elder pin names two such programs, and the earlier of them is the
+# one the line above already records. The one deletion in that window wore `witness` in its
+# basename and so never belonged to this population. Its path stays UNSPELLED here for the
+# reason the three Rye arrivals above stayed unspelled: `rye_compile_reach` reads a `.rye`
+# path inside a runner as a claim that some build reaches it.
+assert green.out contains "unnamed_population=461" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
 # 12 -> 11 on `20260909.214500`, and the fall came from two hops rather than from a rename.
 # `tools/g/glow_choir_witness.rish` gathered six Glow witnesses that no runner named, one of
 # them `tools/g/glow_connector_seam_witness.rish` -- an accrete shim whose whole body runs
