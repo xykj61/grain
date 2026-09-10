@@ -12,9 +12,9 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ## What this is
 
-The Mikrophone is the Grainphone/Mantrapod hybrid meant to hold in a hand -- a field recorder, a civic microphone, a voice terminal -- and its founding promise is one line above the venture pitch: ***What forgets, protects.*** A keeper's capture lives in working memory while the power is on and dissolves when the device is set down; nothing waits in the dark to be mined, and what a keeper wishes to carry out, they keep on purpose, committing it deliberately across a single wire.
+The Mikrophone is the Grainphone/Mantrapod hybrid meant to hold in a hand -- a field recorder, a civic microphone, a voice terminal. Its founding promise is one line above the venture pitch: ***What forgets, protects.*** A keeper's capture lives in working memory while the power is on, and dissolves when the device is set down. What waits in the dark afterward is a keeper's own deliberate keep, carried out on purpose across a single wire.
 
-That promise is not a slogan to paint on a box -- it is a **firmware invariant**, and this journey proves it pure in Rye on the bench, long before a board exists, so every surface built on it inherits a session that leaks nothing it was never told to keep. No disk, no network, no key signs, no funds -- real hardware (buying a board, a real record button, a real cable) stays **custody gate %2**; serving a recording over a real transport stays the **Comlink-served gate** (Chapter 1, Journey 2). Everything below is agent-doable, local, and witnessed on metal.
+That promise is a **firmware invariant** rather than a slogan to paint on a box. This journey proves it pure in Rye on the bench, long before a board exists. Every surface built on it inherits a session that holds exactly what it was told to keep. The whole journey runs in memory on this bench alone -- disk, network, key signing, and funds all stay outside it. Real hardware -- buying a board, a real record button, a real cable -- stays **custody gate %2**. Serving a recording over a real transport stays the **Comlink-served gate** (Chapter 1, Journey 2). Everything below is agent-doable, local, and witnessed on metal.
 
 **Prove the whole journey in one command:**
 
@@ -51,7 +51,7 @@ It runs every rung's witness in order and asserts each GREEN.
 
 ## The one promise underneath
 
-Every rung above stands on the same discipline: **hold only what a keeper meant to hold, and prove that what forgets is truly gone.** A capture is bounded; a commit is the one deliberate act; a redaction and a power-down both zero their bytes with no residue a later read could recover; a frame is verified before it is trusted; a store refuses by name at its bound rather than growing without one. The Mikrophone is a device you can hold, whose forgetting you can read all the way down -- proven on the bench before a single trace is cut in metal.
+Every rung above stands on the same discipline: **hold only what a keeper meant to hold, and prove that what forgets is truly gone.** A capture is bounded. A commit is the one deliberate act. A redaction and a power-down both zero their bytes, leaving a later read only what a keeper kept. A frame is verified before it is trusted. A store refuses by name at its bound rather than growing past it. The Mikrophone is a device you can hold, whose forgetting you can read all the way down. It is proven on the bench before a single trace is cut in metal.
 
 ---
 

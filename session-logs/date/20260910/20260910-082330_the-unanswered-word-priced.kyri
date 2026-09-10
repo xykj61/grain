@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260910.082330
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship, seat Petrichor
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json, a tracked configured default rather than runtime telemetry
+voice Kyri
+host Linux pier, America/New_York
+title The unanswered word, priced on one page
+prompt The baton -- take the next agent-doable lap in the docs-geode and prose-product lane, Lindy-first crux-first.
+rota lap 4556, row 1 -- Air, the row that feels; the threshold page states the test I ran, that a boundary is proven by pressing on it, and the register ceiling on front doors is a boundary the wall reaches on 16 of 84 readable pages.
+think Opened with tools/f/fleet_round_open.sh -- already on the anointed order, head level with xy at a74c712240.
+think A stale detached roster pass from a dead lap held construction/standing-equipment-run.lock.d at pid 4115571, launch_head d0226ae665, four commits behind. Read it with sh tools/f/fleet_call.sh --pattern standing_equipment_run, which resolved every candidate through /proc/<pid>/cwd and refused six peer trees by name; sent TERM to that one pid alone with --pid, and relaunched.
+think Crux chosen by measurement rather than by feel: sh tools/fixtures/p/prose_register_scan.sh listed 24 unrostered front doors over the 20 percent Door ceiling. Eight stood over 30 percent, which is over the Field ceiling too, so those are over their ceiling whichever word Keaton says about module reference READMEs -- work that does not depend on the answer I asked for last lap.
+think Graded the eight. mikrophone/README.md read D 55 and glow/nock/README.md D 60, the two worst; both are living paths with inbound references, so both molt in place under a checkpoint rather than leaving a fossil.
+think mikrophone/README.md: four negative sentences of ten, and a reading grade of 18 driven by sentence lengths of 38, 47, 51, 41 and 49 words. Restated each negation as its affirmative equivalent and split at existing semicolons and dashes. Register 40 percent of 10 sentences to 4 percent of 21; reach grade 18 to 9; composite D 55 to B+ 87. Added its path to the DOOR roster in tools/fixtures/p/prose_register_scan.sh, which is how the scan's own header says a room joins.
+think glow/nock/README.md: seven negatives of 22, grade 16, with one 99-word sentence formed where a paragraph ending in a colon joined the paragraph after a table. Ended those two paragraphs with periods, split five more sentences, and restated six negations. Register 31 percent of 22 to 6 percent of 32; grade 16 to 12.
+obs The page then read C+ 76 at Door and B 84 at Field -- the same bytes, eight points apart. That is the exact question I put on the card last lap, now carrying a price: whether a module reference README is Door or Field is worth eight points on this one page, and its own Status line reads Checkable. Left it repaired and unrostered until the word comes; it drops off the candidate list either way, since the candidate list reads pages over the ceiling.
+obs CLAIM_PRESERVE_FILES=... sh tools/fixtures/c/claim_preserve_scan.sh reported four FAILs across the pair, every one on the modality axis: never 6 to 5 and 2 to 1, all 1 to 2, every 6 to 7. Removing a negation is what a register molt does, so the modality counter reads the sanctioned repair as drift. Each of the four was read by hand and holds its claim -- leaks nothing it was never told to keep became holds exactly what it was told to keep, and never its execution floor became RISC-V through Zig is its execution floor. Named on the card rather than booked, since construction/REDS.md closes at 10 bytes free with every row OPEN.
+obs My own cold pass went void and the fault was mine: I edited three files while it ran, which is the one thing the card asks a lap not to do, so its open and close digests differ and its verdict is tree_moved. The hot pass after git add is this lap's pass of record. Patchouli booked this same shape at 20260910.043900 and I repeated it.
+obs The card stood at 40,950 of 40,960 -- ten bytes -- so the new block needed room. Shelved my elder block whole with tools/i/itinerary_account_shelf.sh, and removed a duplicated Still yours paragraph that a rebase had left: the second copy was a strict subset of the first, carrying no claim the first lacked.
+loom register_scan door_documents=16 door_over_ceiling=0 front_doors=120 front_doors_readable=84 front_doors_unrostered_over=22
+loom qa_report_card mikrophone_door_before=55 mikrophone_door_after=87 nock_door_before=60 nock_door_after=76 nock_field_after=84
+file mikrophone/README.md register molt in place -- D 55 to B+ 87, every claim held, rostered into DOOR
+file glow/nock/README.md register molt in place -- D 60 to Door 76 / Field 84, repaired and unrostered pending the word
+file tools/fixtures/p/prose_register_scan.sh mikrophone/README.md added to the DOOR roster, the way the header says a room joins
+file construction/CHECKPOINTS.md walk-back nib a74c712240 for both in-place molts, with the four modality flags named
+file construction/ITINERARY.md new PETRICHOR block, elder shelved, duplicated paragraph removed, Git nib set to HEAD's parent
+file construction/archive/20260910-081438_itinerary-landed-accounts.md the elder block, links re-anchored one level down
+scope docs-geode and prose product -- two front doors below B repaired, one rostered, the Door/Field question priced
+status GREEN -- prose_register_scan verdict=ok with door_over_ceiling=0; qa_report_card read on both pages before and after; the cold pass is void by my own edit and the hot pass is named in the reply
+recommend check-in (Keaton) -- one word settles a class: is a module reference README Door or Field? glow/nock now prices it at eight points, and 22 front doors wait behind it.
