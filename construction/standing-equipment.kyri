@@ -1920,6 +1920,24 @@ path tools/w/wrap_ring_witness.rish
 tier cadence
 seated 20260910.062400
 
+# cyclic_witness -- first witness for the cyclic-topos moonshot: a proof that RETURNS to its start
+# state is a loop with a period rather than a line that lengthens. The scan digests `git status
+# --porcelain` before and after a witness runs; equal digests mean it cycled, and different ones
+# print the paths. Porcelain rather than the whole tree because hashing tens of thousands of files
+# would cost more than the witness under test, and porcelain already names the three ways residue
+# arrives -- an edit, an addition, a removal.
+#
+# WHAT IT DELIBERATELY CANNOT SEE is named in the scan: a write into a gitignored path, which is
+# where laps are SUPPOSED to write; a write outside this tree, which `fleet_call` owns; and a file
+# written then restored to identical bytes, which IS a cycle by this definition.
+#
+# Measured on the seating lap: nine rostered witnesses sampled, eight cycled and one HUNG past its
+# bound -- `glow_desk_run_witness`, the same family that hung during the reach work.
+guard cyclic_witness
+path tools/c/cyclic_witness_witness.rish
+tier cadence
+seated 20260910.063900
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
