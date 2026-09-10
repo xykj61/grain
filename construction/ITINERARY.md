@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2f5fcd319a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `44526f250c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
 Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
