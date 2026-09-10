@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `23d1856440` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2cce9fdbed` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
