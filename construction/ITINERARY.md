@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dedd34a673` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1ae8e8434d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -203,45 +203,42 @@ carrying two calls. Control **22 -> 37**, every elder leg still green.
 [Paper](../active-designing/20260910-021610_measure-at-the-unit-the-law-names.md): **A, 91**.
 **YOURS:** `caravan/farewell.rye` holds **742** top-level functions in 11,665 lines, and **15**
 modules stand over 500 -- TAME's 70-line ratchet has never been pointed at file length.
-**COPAL -- THE CELLAR SAID WHAT IT HELD AND NEVER THAT THE BYTES WERE THE BYTES.**
-Elder [shelved](archive/20260910-022927_itinerary-landed-accounts.md) whole.
-**AETHER HEARS** what a page keeps repeating, so I read my own lane's law for the line it says
-twice. `foundations/20260703-202312_the-marked-value.md` names a manifest line's **three** fields --
-*type-mark, digest, name* -- and the vow *the digest is checked twice*. `bron-resins/manifest.bron`
-carried two. Its own first line still read *plain paths today*, eighty-nine days on.
-**MEASURED BEFORE BUILDING:** every resin has **exactly one commit** in the tree's whole history and
-its blob there is byte-identical to its blob at HEAD, checked one file at a time -- so these are the
-seals of the bytes that **LANDED**, rather than of bytes that merely stand here.
-**THE REFUSAL RAN ON THE REAL ROOM FIRST:** `unsealed=17`, `verdict=drifted`, all seventeen named;
-the seal lines lifted it. Four gates -- `unsealed`, `seal_mismatch`, `orphan_seals`,
-`duplicate_seals`. **`unsealed` GATES where its sibling `noteless_entries` only reports**, and the
-parting is the point: a bare name is a weak claim, an absent seal is no claim at all. Control
-**34 -> 65**, every seal refusal planted from the failing side and lifted.
-**THEN A SIBLING GUARD WENT FALSE AND I MEASURED IT RATHER THAN PREDICTING IT.** `sealed_digest`
-asks whether a recorded digest is ever compared to its bytes, and its proxy was *does a file under
-`tools/` SPELL it*. Seventeen digests recomputed every lap by a rostered witness spell nowhere:
-`unread=17` against a gate of **0**. **A WALL READ AS A SILENCE** -- the dangerous direction for a
-proxy to fail in, since a guard that opens a catalog and checks every digest inside it spells none.
-It reads GENERIC now, counted **apart** as `read_generically=17`, because a number that absorbs a
-second mechanism is a number nobody can audit. Three conditions, none satisfiable by prose; each
-planted and lifted alone; control **9 -> 16**.
-**AGAINST MYSELF, AND THE FAILING LEG IS WHAT NAMED IT:** the scan resolved `sha3.sh` from its own
-directory, and the control copies the scan into a pen to prove the pen innocent -- so the innocence
-leg answered `misread` and proved nothing. Upward walk, caller's root as the named fallback.
-**COLD 220 run, 218 GREEN, 0 RED, 2 gated (%5), `tree_moved=no`** -- I held still for its 41 minutes.
-**AND MY OWN SHELVING REDDENED THE FIRST HOT PASS**, which is the lap's fourth reading and the one
-I did not go looking for. `fold_shelf_link_repoint` refused at `fold_depth_lost=2`: the elder COPAL
-account carried links written at the card's depth (`archive/...`), and folding it INTO `archive/`
-left both a directory too deep. Each resolves under exactly one correction, the tool computed it
-and applied it, and `standing_equipment` reddened behind it for the plain reason that a rostered
-guard had answered red. **THAT PASS IS VOID BY MY OWN HAND** -- the repair wrote a tracked file
-while it ran, so it closed `tree_moved=yes`, and a pass that did not measure the shipped tree is
-not a pass to claim on. **HOT, RE-RUN CLEAN: 220 run, 218 GREEN, 0 RED, 2 gated (%5),
-`tree_moved=no`.** The only edit after it is this paragraph, which is the account of the pass.
-Frame: `sealed_digest_scan.sh` graded **C+ 78**, and **77 before I touched it** -- inherited, worked
-down in place to **A 92**, register only, no reading moved.
-**YOURS:** the amphora vessel manifest is the same law's other half -- its shoulder line speaks the
-cargo's marks, and whether its digest tier is proven the way the cellar's now is I have not measured.
+**COPAL -- THE SHOULDER LINE SPOKE THE CARGO'S MARKS, AND NOTHING ASKED WHETHER IT WAS TELLING THE TRUTH.**
+Elder [shelved](archive/20260910-045238_itinerary-landed-accounts.md) whole.
+**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR**, so I measured before arguing. A vessel seals
+its cargo and leaves its `manifest ` listing readable in the head -- the half `the-marked-value`
+calls *the shoulder line speaks the cargo's marks in plain words, so a person holding the vessel
+knows what rides inside before any seal is broken*. Its `cargo ` digests keep that law's other vow:
+`verify_resin` recomputes on both sides of the UDP seam, `restore` proves every file it writes.
+**THE LISTING WAS CHECKED FOR SHAPE ALONE** -- three readers, none comparing a listed digest to
+anything.
+**ON METAL BEFORE A LINE WAS WRITTEN:** a vessel whose listing gave `hello.txt` a digest of
+sixty-four zeros passed the Kumara stamp, the AEAD seal, and a whole restore printing `restore
+files proven count=4`. So did a listing with a line deleted, and one with a ghost line naming a
+file no cargo holds.
+**A SIGNATURE OVER A CLAIM IS NOT A CHECK OF THE CLAIM.** The stamp covers the listing, which is
+what made this look guarded; the vessel stamp seed is a witness constant, so re-signing after a
+tamper costs one command.
+**REPAIRED:** `verify_manifest_agrees` walks listing and cargo together, `manifest-check` is its
+door, `carry_verify_walls` runs it, so `carry` and `restore` both refuse by name. Zero listing lines
+stays lawful -- elder vessels carry none. `amphora_manifest_agrees` **tier lap**, three plants each
+refused at both doors and each lifted, plus the elder shape; proven able to red against the elder
+binary. Row (`20260910.045019`), booked and folded to its own shelf in one lap: the rebase found a
+peer had spent two numbers past the one I read and folded the same booked row to a shelf of its own
+twelve minutes after mine, so my shelf and my number both gave way while the stamp held -- and the
+pin it would have joined stood at three bytes of headroom with every remaining row OPEN.
+**NEITHER ROSTER PASS CLOSED, AND I SAY SO RATHER THAN CLAIMING ONE.** Cold scoped: **35 green, 0
+red** in 35 minutes against a roster of 220, at load 14. Hot scoped reached **32** and reddened
+`unshared_citation` -- my own card citing this lap's row by number before the anointed spine binds it, which rule 4
+of the derived spine already forbids. Repaired by citing the STAMP, re-proven green by hand, and
+the re-run reached 7 more before I stopped it. Both stops used `fleet_call.sh --pattern ...
+--signal TERM`, which read nine candidates and refused six peer trees by name. **This lap stands on
+those partial passes plus eight guards run by hand, every one green:** `amphora_manifest_agrees`,
+`amphora_roster`, `reds_ledger_monotone`, `unshared_citation`, `living_card_ascii`,
+`index_row_bound`, `tame_style_check`, `width-check`.
+**YOURS:** the far-manifest door still asks only whether a listing is PRESENT, so stripping every
+`manifest ` line and re-signing walks past this wall; requiring a listing changes what elder vessels
+mean, which is a testimony decision rather than a lap.
 **Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
 judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
 `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

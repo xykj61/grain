@@ -1,0 +1,15 @@
+# REDS %691 -- the listing nobody checked
+
+*Folded from the living pin [`../REDS.md`](../REDS.md) on the lap that booked it. The pin stood at
+40,957 bytes of the 40,960 its own header declares -- three bytes of headroom, with every remaining
+row **OPEN** and none foldable by law. A row booked and closed inside one lap folds rather than
+pushing the pin past its bound, which is the move `%681` made two shelves over and `%548` before it.*
+
+*The clause worth carrying forward: a signature over a claim is not a check of the claim. An Amphora
+vessel's Kumara stamp covers its readable listing, which is what made an unchecked listing look
+guarded -- the stamp proves the head is the head somebody signed, and says nothing about whether the
+head tells the truth about the sealed block beneath it. Before adding a signature to a claim, ask
+what would still be unproven once it verifies.*
+
+
+**REDS %691 (`20260910.045019`) -- the vessel's readable listing claimed a digest, and no reader ever compared it to the cargo.** *What went wrong:* an Amphora vessel seals its cargo and leaves its `manifest ` listing readable in the head, so a dock reader names what rides inside **before any seal is broken** -- the promise `foundations/20260703-202312_the-marked-value.md` states in those words, beside the vow that *the digest is checked twice*. The `cargo ` digests keep that vow -- `vessel_fetch_wire.verify_resin` recomputes on both sides of the UDP seam and `restore` proves every file it writes. The `manifest ` lines were checked for SHAPE alone by three readers -- `write_canonical`, `parse_vessel`, `verify_far_manifest` -- none of which compared a listed digest to anything. *What caught it:* the earth rota, reading the concrete fact at the door. **Measured on metal before a line was written:** a vessel whose listing gave `hello.txt` a digest of sixty-four zeros passed the Kumara stamp, the AEAD seal, and a whole restore printing `restore files proven count=4`. So did a listing with a line deleted, and one carrying a ghost line naming a file no cargo holds. *What it taught:* **a signature over a claim is not a check of the claim.** The stamp covers the listing, which is what made this look guarded -- it proves the head is the head somebody signed, never that the head tells the truth about the block beneath it. The vessel stamp seed is a witness constant in the tree, so re-signing after a tamper costs one command. *Repaired:* `vessel_seal.verify_manifest_agrees` walks listing and cargo together and refuses `ManifestDisagrees` on any field, surplus or shortfall; `vessel-seal manifest-check` is its door and `main.carry_verify_walls` runs it, so `carry` and `restore` both refuse by name. Zero listing lines stays lawful and answers `no listing to check` -- vessels poured before the Q11 listing carry none and their bytes are frozen. `amphora_manifest_agrees` **tier lap**: three plants, each refused at both doors and each lifted with the welcome shown returning, plus the elder shape. **BOOKED**
