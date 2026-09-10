@@ -50,7 +50,7 @@
 # plant and asserts it called the self-certifying tool proven.
 #
 # A PROOF THAT RUNS EVERY LAP WAS INVISIBLE TO THE CENSUS THAT ASKS WHETHER PROOF EXISTS
-# (`20260908.215031`). `tools/c/convergence_prove.sh` invokes a tool as `sh <tool> <one-path>` and
+# (`20260908.215031`). `tools/c/convergence_prove.sh` invokes a tool with ONE path and
 # nine of the ten candidates take a flag instead, so the pen-TREE prover was built for them --
 # `tools/c/convergence_tree_prove.sh`, rostered `tier lap`, checking HEAD out into a `git worktree`
 # pen and comparing with `git write-tree`. Its own witness runs it on

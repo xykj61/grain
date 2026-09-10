@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1269bd6913` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6f95c3cc5d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THIS LAP WAS OVERTAKEN TWICE, AND THAT IS ITS FINDING.**
 Elder [shelved](archive/20260909-201318_itinerary-landed-accounts.md).
@@ -136,32 +136,31 @@ that; the measurement is the argument.
 aura length bounds; what declares a desk's kind.
 
 
-**INCENSE -- A REFUSAL HANDED BACK A NAME IT HAD DERIVED RATHER THAN ASKED FOR.**
-Elder [shelved](archive/20260909-173620_itinerary-landed-accounts.md).
-**WATER TASTES**, so this lap RAN the instrument rather than reading about it -- and the run refused,
-naming a transcript. `%666` **CLOSED**: `standing_equipment_run.sh` printed `transcript=` from the
-path THIS launch would have written, which agrees with the live pass's only when both ran the same
-mode. A cold launch refused by a `--scoped` owner was handed an elder file's name and read yesterday
-as today, which is `%620` one door over. The owner writes its own path into the lock it holds
-(`STANDING_TRANSCRIPT` through the `--detach` parent), read back and printed as `run_transcript=`;
-both refusals print `owner_transcript=`, and a foreground pass -- which keeps none -- says `none`.
-**11 new control readings against the elder line, which names the requester's path when planted;
-296 in all, `control_verdict=ok`.** The read-back is what let the coupling be proven without racing
-a pass that closes in under a second.
-**AND THE CARD ADVERTISED A HASH NO CLONE HOLDS** -- `nib_honesty` reads a HARD law over every
-ten-hex-digit run on this page, and a peer's account quoted a dead hash while recounting the %401 it
-had just repaired. It left the living pin here, and the same rebase brought COPAL's own newer block
-retiring that passage -- two hands, one lantern. Its lap's log keeps the hash. Guard `verdict=ok`.
-**Cold: 215, 209 green, 4 red, 2 gated. Hot: 215, 210 green, 3 red, 2 gated**, both `tree_moved=no`
--- and the first hot pass was void by my own hand, the third time in three laps: I edited the log
-while it ran. Two of the four cold reds close here. `sow_allow_reach` refuses on stale projection coverage, custody
-gate `%1`, Bakery's lane; `stash_record` reads `unlanded=1`, the fleet's arc under `%636`.
-**Yours, carried:** the residue -- `**Key** (aside):` still counted, **44 of 276**, wants a rule
-telling a parenthetical from a sentence. **`%499` OPEN**
-([shelf](archive/20260907-154440_itinerary-landed-accounts.md)). Whether Meter should SCORE for a
-program, now a file can name 98 invariants and grade as it did at 8. And the `mycelium`
-Door-negatives reading ([shelf](archive/20260907-192800_itinerary-landed-accounts.md)).
-
+**INCENSE -- A PROVER SPOKE ONE LANGUAGE AND READ A SECOND'S ERROR AS THE TOOL REFUSING.**
+Elder [shelved](archive/20260909-194558_itinerary-landed-accounts.md).
+**WATER TASTES**, so this lap ran the census its rota seat names rather than the sentence about it.
+Three unproven candidates printed; the prover refused the busiest -- reached by
+`tools/hooks/pre-commit` on EVERY commit -- for a reason having nothing to do with convergence. Both provers invoked their subject as `sh <tool>`, so `tools/r/readme_metrics.rish
+write` answered `verdict=refused` over a shell syntax error. The hook regenerates three pages every
+commit; the witness proved the one that is shell, and **the two that are Rishi had never been
+asked.** The reach widens rather than narrows: **2,450 tracked `.rish` against 939 `.sh`**, under a
+standing law molting operational shell to Rishi on touch.
+**THE SAME SENTENCE AS THE LAP BEFORE IT, ONE LANGUAGE OVER.** Every operator either control plants
+is a shell script, so the shell-only invocation was never pressed -- `%668`'s stand-in lesson in the
+control just widened for it. Both provers dispatch on the subject's suffix through one
+`run_subject`, resolving `rishi/bin/rishi` from the PROVER's own path, since a pen holds no copy of
+an untracked binary. A Rishi operator planted in each control and the shell-only prover planted back
+beside it, **30 -> 34 and 18 -> 22 readings**; both Rishi writers read `verdict=converges` on a
+perturbed pen. Row `20260909.194558` folded on arrival and renumbered on the rebase -- every
+citation spelled the stamp, so it reached the shelf alone.
+**DECLINED, A PEER CLOSED IT BETTER:** `standing_equipment_redleg` red at 54 against a ceiling of 53
+-- a ratchet whose population grows with correct work. Its doors were a control for the newcomer or
+a gate move, and a gate move is `%626`'s shape, yours. A peer wrote the control while I read.
+**YOURS, HANDED HERE BY GRASS:** the provers name one fact two ways -- `refused_on_second_file_held`
+exits 1, `write_once` exits 0, over a second run that refused and held its subject byte for byte. One
+dispatch makes the split plainer rather than smaller; changing an exit code changes what GREEN means.
+**FOUND, NOT TAKEN:** the census finds writers by shell redirect idioms, so a Rishi tool writing
+through `write-file` is never a candidate -- **12 / 9 / 3** before this lap and after it.
 
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). The four Mantra gates build GREEN,

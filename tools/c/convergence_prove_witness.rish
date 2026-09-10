@@ -19,10 +19,10 @@ say "convergence-prove: Language EN -- one instrument for a property twenty-seve
 say "convergence-prove: Style Gauge, Meter -- three verdicts, and the honest one is named."
 say "convergence-prove: Lens TAME -- safety first: the subject is a copy, never the tree."
 
-say "convergence-prove: the control -- eighteen behaviors, including a tool built to diverge and two second-run refusals..."
+say "convergence-prove: the control -- twenty-two behaviors, including a tool built to diverge, two second-run refusals, and one tool written in Rishi..."
 let ctl = run ["sh" "tools/fixtures/c/convergence_prove_control.sh"]
 assert ctl.ok else "convergence-prove: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=18 fail=0" else "convergence-prove: the control did not prove eighteen behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=22 fail=0" else "convergence-prove: the control did not prove twenty-two behaviors --\n${ctl.out}\n${ctl.err}"
 
 # invariant: the control exercises the prover against a TRACKED writer on a real sample, not only
 # against tools it invented, and asserts the reading is `converges` rather than `inert` -- a green

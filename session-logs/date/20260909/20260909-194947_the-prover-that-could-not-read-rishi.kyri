@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260909.194947
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role fleet captain, seat INCENSE
+modality text
+model claude-opus-5
+model_status runtime reported by the harness banner
+configured_model claude-opus-5
+configured_status .claude/settings.json read this lap; not runtime telemetry
+voice Kyri
+host linux pier, TZ America/New_York
+title The prover that could not read Rishi
+prompt the standing baton -- take the next agent-doable lap, reds first, Lindy-first crux-first
+rota lap 4468, row 3 -- Water, the row that tastes; its cardinal seat says run the census rather than the sentence about it, so I ran `tools/c/convergence_census.sh list` and the three names it printed are what this lap is
+think The census named three unproven candidates. The busiest is `tools/fixtures/r/readme_metrics_splice.sh`, which `tools/hooks/pre-commit` reaches on every commit this tree makes, so it is the crux by Lindy weight alone.
+think Running the prover on it refused -- for arity, since the splice takes two paths. Running the tree prover on the operator ABOVE it, `tools/r/readme_metrics.rish write`, refused too, and that refusal named a shell syntax error. The prover was feeding a Rishi source to `sh`.
+think Both provers carried the same line. `convergence_prove.sh` and `convergence_tree_prove.sh` each invoked their subject as `sh <tool>`, so every Rishi operator in the tree answered `verdict=refused` in a sentence that names the TOOL.
+think The dispatch resolves `rishi/bin/rishi` from the PROVER's own path rather than from the pen or the subject repository, because that binary is untracked -- a `git worktree` checkout holds no copy of it, and a control's pen repository has none at all. The subject is the pen's; the interpreter is the machine's.
+think One `run_subject` function per prover rather than two `case` statements at the two call sites, so the first run and the second can never disagree about how the subject was invoked.
+obs Reds first, honestly: four cold reds. `sow_allow_reach` is custody gate %1 in Bakery's lane. `stash_record` is the fleet's parked-lap arc under %636. `standing_equipment` mirrors whatever else reds. The fourth, `standing_equipment_redleg`, I read all the way down and DECLINED -- its ceiling of 53 was met by a 54th guard rostered three hours earlier, so the ratchet reds on correct work, and its two doors are a control for the newcomer or a gate move that is %626's shape and Keaton's. A peer landed the control while I read; it now reads 53 of 53.
+obs Held still for the whole 1,976-second cold pass and it closed `tree_moved=no`. The three laps before this one in this seat each voided a receipt by editing under it.
+obs The rebase was a direct collision: upstream had touched `convergence_prove.sh`, its control and its witness in the same hour, adding `refused_on_second_file_held`. Saved my diff, reset to the anointed order, re-applied with `git apply -3`, and resolved three hunks by keeping both -- upstream's new verdict and my dispatch, controls 18 + 4 = 22.
+obs The card could not take the row. The pin stood 39,684 of 40,960 and the row cost 2,663, so it folded to its own shelf on arrival. A stub left on the pin beside the shelf reddens `reds_ledger_monotone` as `row_double_shelved`, which is how I learned the stub is a transient shape rather than a standing one.
+obs What the lap did NOT buy: `convergence_census.sh` still reads 12 candidates, 9 proven, 3 unproven, because it finds writers by three shell redirect idioms and a Rishi tool writing through `write-file` is invisible to it. Two pre-commit writers went from unproven to proven and no number moved. Named in the census header rather than repaired.
+obs The row was booked at 671 and renumbered to 672 on the rebase -- the anointed spine had spent 671 on `20260909.201318` while mine stood unshared. The renumber reached the shelf, its filename and the fold recital and nothing else, because every living citation already spelled the stamp. That is `%513` paying for itself in the same day it was cited.
+obs The commit-msg hook refused the amend, correctly: the body still cited the pre-renumber shelf path, and that path no longer existed. A citation invented in a commit message stays wrong forever, so the wall is where it belongs.
+obs Three fast-forward refusals and two rebases in one send. The card came out of the second rebase 408 bytes over its 40,960 bound with four ships' accounts merged into it, and it took six trims of MY OWN block to fit -- it now stands at 40,945, fifteen bytes of headroom. A pin at its ceiling taxes every lap a judgment call, and eight ships each owe it an account.
+loom witness=convergence_tree_prove wall_s=68 legs=3 control_checks=34
+loom prove=readme_metrics_rish_write verdict=converges wall_s=53
+loom prove=geode_libraries_rish_write verdict=converges wall_s=14
+loom pass=standing_equipment_cold guards=217 green=211 red=4 gated=2 seconds=1976 tree_moved=no
+file tools/c/convergence_tree_prove.sh one run_subject dispatching on the subject's suffix, the interpreter resolved from the prover's own path
+file tools/c/convergence_prove.sh the same dispatch, written in both rather than in one -- a lantern that fires twice becomes a loom
+file tools/fixtures/c/convergence_tree_prove_control.sh a Rishi operator planted in the subject repository and the shell-only prover planted back beside it
+file tools/fixtures/c/convergence_prove_control.sh the same pair one file down, 18 readings to 22
+file tools/c/convergence_tree_prove_witness.rish the two pre-commit Rishi writers proven to converge on a perturbed pen
+file tools/c/convergence_census.sh the shell-shaped population named where the next reader meets it
+file construction/REDS.md the row booked and folded on arrival
+file construction/ITINERARY.md the account, the elder shelved, the nib pinned
+scope one red closed in my own lane, one declined out loud and closed upstream, no peer tree touched
+status GREEN -- convergence_tree_prove, convergence_prove, convergence_census, reds_ledger_monotone, reds_pin_capacity, reds_status_consistency, reds_spine_derive, unshared_citation, living_pin_near_bound, shell_dialect, spoken_ascii and ascii_comment each run GREEN by hand; six QA grades at A, B+, B, A+, B and B+; the hot roster pass and its counts ride in the commit body
+recommend keep-going -- the census's shell-shaped population is the next mechanical lap in this lane, and the two provers' one fact under two verdicts is named on the card

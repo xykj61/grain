@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/c/convergence_prove_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 18 cases, one pen.
+# Prints `pass=N fail=N`. Bounded: 22 cases, one pen.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -109,6 +109,30 @@ check "and its sample was not inert"   no  "$(has "$out" 'verdict=inert')"
 # would be asserting on text that appears ONLY when the control is broken -- an assertion that
 # passes when the thing it guards fails. Caught while writing this file's own witness.
 echo "coverage: a tracked tree writer was exercised on a real sample, and both second-run refusals -- one holding the file, one writing before it refused -- were told apart"
+
+# THE LANGUAGE LEG. Every tool this pen plants is a shell script, so the prover's own `sh <tool>`
+# invocation was never pressed -- and this tree writes 2,450 tracked `.rish` sources against 939
+# `.sh`, with a standing law molting an operational shell script to Rishi on substantial touch. A
+# stand-in population narrower in LANGUAGE than the answerers proves the asker against a world that
+# does not exist, which is `%668`'s sentence one language over.
+cat > "$pen/good.rish" <<'G'
+let p = args[0]
+let body = read-file p
+if body contains "SETTLED" then exit exit-ok
+let nl = (run ["printf" "\n"]).out
+write-file p "${body}SETTLED${nl}"
+G
+printf 'a line here\n' > "$pen/rish_work.md"
+out=$(sh "$prove" "$pen/good.rish" "$pen/rish_work.md" 2>&1) || true
+check "a Rishi tool converges"         yes "$(has "$out" 'verdict=converges')"
+check "rather than reading as refused" no  "$(has "$out" 'verdict=refused')"
+check "and the sample is never mutated" no "$(has "$(cat "$pen/rish_work.md")" 'SETTLED')"
+
+# BOTH DIRECTIONS. The elder prover is this one with the Rishi branch of `run_subject` deleted -- a
+# single line -- so what the pair measures is the dispatch and nothing beside it.
+sed '/\*\.rish) "\$RISHI_BIN" run/d' "$prove" > "$pen/shellonly_prove.sh"
+out=$(sh "$pen/shellonly_prove.sh" "$pen/good.rish" "$pen/rish_work.md" 2>&1) || true
+check "the shell-only prover cannot"   no  "$(has "$out" 'verdict=converges')"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

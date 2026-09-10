@@ -659,3 +659,5 @@ at a closed fold.*
 *Row %669 folded to [`REDS-the-card-advertises-the-log-quotes-rows-669.md`](REDS-the-card-advertises-the-log-quotes-rows-669.md) on `20260909.184758`, **CLOSED** -- the card advertises and a log quotes; folded the hour it closed.*
 
 *Rows %666-%669 folded to [`REDS-a-claim-nobody-read-back-rows-666-669.md`](REDS-a-claim-nobody-read-back-rows-666-669.md) on `20260909.191228`, **BOOKED** and **CLOSED** -- four claims that stood on prose alone -- a derived transcript name, a listed roll, a promise the prover's code broke, and an advertised dead hash -- each closed by deriving the claim from what it describes or having an instrument read it back.*
+
+*Row %672 folded to [`REDS-the-prover-that-could-not-read-rishi-rows-672.md`](REDS-the-prover-that-could-not-read-rishi-rows-672.md) on `20260909.194641`, **CLOSED** -- a prover that speaks one language reads a second language's syntax error as the subject refusing.*

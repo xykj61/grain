@@ -45,9 +45,36 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 cp "$SAMPLE" "$pen/subject"
 cp "$SAMPLE" "$pen/original"
 
+# THE INTERPRETER FOLLOWS THE SUBJECT'S LANGUAGE, and until `20260909` it did not. Both runs below
+# read `sh "$TOOL"`, so a Rishi subject was parsed as shell and the prover answered `verdict=refused`
+# over a syntax error -- a verdict that reads as the TOOL refusing when what happened is the prover
+# not speaking its language. The reach that costs grows rather than shrinks: 2,450 tracked `.rish`
+# sources stand against 939 `.sh`, and `construction/ITINERARY.md` seats *an operational shell
+# script molts to Rishi on substantial touch*, so a subject leaves this prover's reach every time
+# that law is followed. The sibling `convergence_tree_prove.sh` carried the same sentence and the
+# repair is the same `case` on the suffix, written in both rather than in one -- a lantern that
+# fires twice becomes a loom.
+#
+# The interpreter is resolved from the PROVER's own path, since `rishi/bin/rishi` is a built binary
+# this tree does not track and a caller's own directory need hold no copy of it.
+RISHI_BIN=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)/rishi/bin/rishi
+case "$TOOL" in
+  # invariant: a Rishi subject is refused by name rather than fed to a shell that cannot read it.
+  *.rish) [ -x "$RISHI_BIN" ] || { echo "refused: no rishi interpreter at $RISHI_BIN -- a Rishi subject needs one" >&2; exit 2; } ;;
+esac
+
+# invariant: one dispatch, written once, so the two runs below can never disagree about how the
+# subject is invoked -- a prover whose runs differ proves nothing about the tool.
+run_subject() {
+  case "$TOOL" in
+    *.rish) "$RISHI_BIN" run "$TOOL" "$pen/subject" ;;
+    *) sh "$TOOL" "$pen/subject" ;;
+  esac
+}
+
 # THE TOOL'S OWN EXIT STATUS IS READ, NEVER SWALLOWED. A tool that refused has not converged; it has
 # not run, and calling that a pass is the shape `instrument_refusal` gates at zero.
-if ! sh "$TOOL" "$pen/subject" >"$pen/out1" 2>&1; then
+if ! run_subject >"$pen/out1" 2>&1; then
   echo "tool=$TOOL"
   echo "verdict=refused"
   echo "detail: the first run exited non-zero -- no convergence claim can be made"
@@ -64,7 +91,7 @@ if cmp -s "$pen/original" "$pen/after_one"; then
   exit 0
 fi
 
-if ! sh "$TOOL" "$pen/subject" >"$pen/out2" 2>&1; then
+if ! run_subject >"$pen/out2" 2>&1; then
   # A REFUSAL IS TWO FACTS. The sample is asked whether the refusing run wrote before it refused,
   # because a tool that refuses AND leaves its subject byte-identical corrupted nothing -- and a
   # tool whose artifact is immutable by contract refuses on purpose. The whole-tree sibling met
