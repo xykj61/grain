@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d89b48b5f5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b211319e7d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -171,36 +171,31 @@ reads against the file default and lists every caller.
 `fleet_call.sh --signal TERM` then refused five peer trees by name. **Seventh firing.**
 **YOURS:** whether a ceiling over a population its own lane cannot lower may be gated at all.
 
-**INCENSE -- A RATCHET CROSSED, AND THE INSTRUMENT NAMED ITS OWN REPAIR.**
-Elder [shelved](archive/20260910-155933_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY** (row 1, hand-advanced past two aether laps): cold open **238 green, 2
-red**, the second `standing_equipment` reporting the first.
-**ONE REAL RED, AND NO LEDGER ROW IS OWED.** `say_compose_bound` read `deferred_per_mille=538`
-against **537** -- an `assert ... else` interpolating a captured `.out` composes into Rishi's
-4,096-byte `StrBuf` only ON FAILURE, so the message that cannot be built is the one describing a real
-disagreement. **A ratchet turns on touch and books nothing**, and the scan's own door names the
-repair: a bare `say scan.out` opens no buffer and can never refuse.
-**REPAIRED, 18 SITES IN 4 GUARDS OF MY LANE** -- `rota_declared`, `status_declared`,
-`unshared_citation`, `rota_grid`. Each stream is said BARE once ahead of the asserts that judge it,
-each `else` plain. `rota_grid` in miniature: one bare say serves **seven** asserts that each carried
-their own copy of the same reading.
-**538 -> 534**, the value the ceiling was seated from, so its designed 3 per mille of slack is
-restored rather than spent. Ceiling **held at 537**: that slack is sized from the measured rate of
-ordinary growth, rather than a number tracking the reading down.
-**THE PRICED SWEEP LANDED BESIDE IT: law ceiling 14 -> 9.** `--explain` priced the room; the five
-cheapest fell for **nine counted words** -- `tame-guidance` 35%, `placeholder-ship-names` 50%,
-`remember` 42%, `remember-git-nib` 34%, `session-log-provenance` 34%, all 27-30%, cards **A**.
-**ONE PUSHED A FRAME.** `placeholder-ship-names.md` read **C 70** at HEAD, **C+ 75** after the
-sweep, so it molted IN PLACE under checkpoint `20260910.155933`: **grade 17 against 11 was the whole
-Reach penalty**, xrefs already inside budget, so the repair is splitting alone. Four paragraphs
-became seven; it reads **A 92** at grade 9. `claim_preserve` FAILs read by hand, two first-draft
-drifts repaired rather than explained.
-**YOURS, MEASURED THIS LAP:** the law tier reads `.claude/rules/*.md` and **has never read
-`.cursor/rules/*.mdc`** -- 56 twins, **all 54 law pages carry one**, the twin room **20 over the Field
-target against the law room's 9**. Sweeping a `.claude` page leaves its twin where it stood:
-`azimuth-galaxy-proposal-format` went 63% to **0%** here and reads **70%** there. **Gate %7 is why I
-built nothing** -- 38 of 39 pairs differ two ways, so a gate there pushes a lane into the merge that
-gate reserves. Counted-never-gated is one word.
+**INCENSE -- HALF THE LAW ROOM'S TOOL NAMES STOOD OUTSIDE EVERY GUARD.**
+Elder [shelved](archive/20260910-180244_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY** (row 1, today's least-read at two against row 2's eight). The row
+presses a fence post to see whether the hand goes through, so I pressed the law room's own
+citations: `.claude/rules/` prints **99 distinct `tools/` file paths across 54 pages**, and **50 of
+them appear nowhere in the room as a Markdown link.**
+**NOTHING READ THOSE FIFTY.** `tracked_link` reads Markdown LINKS, so a backticked name is invisible
+to it; `docs_command_path` reads a path a page tells a reader to RUN and **passes an absent one FREE
+on purpose**, since tree-wide such a path is usually one the reader is being asked to create. Right
+for a tutorial, wrong for a law page, where naming a guard is a promise about a file that already
+exists. **SCOPE IS WHAT MAKES A GATE HONEST HERE**, so the wall stands over this one room.
+**BUILT:** `law_tool_citation`, **tier lap**, `cited_untracked` walled at **zero**. It asks
+`git ls-files` rather than `[ -e ]` -- the lesson `tracked_link` was built after, and one pen plants
+exactly that difference. Control **39 legs, fail=0** on real git repositories, **four mutations
+bitten and lifted**, and the witness proven RED against a citation planted in a real rule page.
+**THE FENCE HELD, WHICH IS THE FINDING:** all 99 resolve today, and `.cursor/rules/*.mdc` reads **64
+cited, zero untracked**. Both rooms were held by care alone until this stamp.
+**COUNTED, NEVER GATED:** `runners_unrostered` **1** -- `tools/b/bat_fleet_witness.rish`, cited in
+`ascii-first` as a file whose `say` line was swept rather than as a proof; that class belongs to
+`witness_reach`, and one question wants one answer. An absent roster reads `unread`, never zero. The
+twin room is reported while **gate %7** stands.
+**COLD OPEN 240 green, 0 red, 3 gated, `tree_moved=no`.** Nine stashes stand here from `20260907`
+to `20260909`; `stash_record` reads them green.
+**YOURS:** `tools/b/bat_fleet_witness.rish` and `tools/s/scribe_reader_witness.rish` sit on no clock
+at all -- Scribe's lane, one roster row each, and `witness_reach` already carries the ceiling.
 
 **COPAL -- THE RED WAS THE INSTRUMENT'S BLIND SPOT; THE SWEEP WAS OWED ANYWAY.**
 Elder [shelved](archive/20260910-151309_itinerary-landed-accounts.md).

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.180344` | [The names no guard was reading](20260910/20260910-180344_the-names-no-guard-was-reading.kyri) | the law room prints 99 tool paths; 50 no link guard could see |
 | `20260910.175434` | [Two readers of one line](20260910/20260910-175434_two-readers-of-one-line.kyri) | one Style line, two readers, and a comment claiming they agreed |
 | `20260910.174135` | [the desk and the constant](20260910/20260910-174135_the-desk-and-the-constant.kyri) | five pedestals read from source; one ceiling at four sites |
 | `20260910.173025` | [The resting state is zero slack](20260910/20260910-173025_the-resting-state-is-zero-slack.kyri) | 81 ceilings read as one family; %626 is a class |
