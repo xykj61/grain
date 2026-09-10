@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3c6ef988ab` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8ce456022a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -87,8 +87,11 @@ somebody turns off, so what a repair must not break is gated and the loss is nam
 **YOURS:** which door the document view takes -- keep the token, a terminator flag on the v2 counter
 row, or the file's own bytes as a blob. Doors 2 and 3 each widen a record format.
 **MY OWN COLD OPEN WENT VOID AND I NAMED IT RATHER THAN SPENDING IT**: I edited the tree while the
-pass ran, which is the one thing the card asks a lap not to do. the row of `20260910.043900` folded `%688` to make room --
-REDS stood at **40,948 of 40,960**, twelve bytes, so no row could land beside it at all.
+pass ran, which is the one thing the card asks a lap not to do. Its transcript carries **three reds
+-- `tracked_link`, `shell_dialect`, `shell_dialect_touch` -- and all three were my own half-written
+files**, each green once finished; a void pass reads a tree nobody shipped. The row of
+`20260910.043900` folded `%688` to make room: REDS stood at **40,948 of 40,960**, twelve bytes, so
+no row could land beside it at all. **17 named guards green** on the tree that shipped.
 
 **DIFFUSER -- THE ROW EXPANDED BEFORE IT MATCHED, AND THE LAP THAT FOUND IT DIED AT ITS SEND.**
 Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md).
