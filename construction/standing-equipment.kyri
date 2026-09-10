@@ -1894,14 +1894,14 @@ tier cadence
 seated 20260908.203500
 
 # equinox_choir_census -- 82 choirs stand in `tools/equinox/witness` and a census on `20260908` read
-# them 50 green, 30 red, 2 hung. All 50 green ones were reached by NO pass, so a green choir that
+# them 50 green, 30 red, 2 over bound. All 50 green ones were reached by NO pass, so a green choir that
 # stopped being green had nothing to say so. A RATCHET rather than a wall: a wall would refuse the
 # roster on 30 reds that stood before anyone looked, and a guard that reds on ordinary standing
 # state is one somebody turns off. Both ceilings only fall.
 #
-# Each choir is PROBED rather than run, through `tools/fixtures/w/witness_probe_scan.sh`, so a HANG
+# Each choir is PROBED rather than run, through `tools/fixtures/w/witness_probe_scan.sh`, so an OVER-BOUND run
 # is told from a RED -- one is a claim about the run, the other about the tree, and two members of
-# this room genuinely hang. `tier cadence`: the census costs about fifteen minutes on this pier.
+# this room run past the bound this census sets. `tier cadence`: the census costs about fifteen minutes on this pier.
 guard equinox_choir_census
 path tools/e/equinox_choir_census_witness.rish
 tier cadence
@@ -1931,8 +1931,9 @@ seated 20260910.062400
 # where laps are SUPPOSED to write; a write outside this tree, which `fleet_call` owns; and a file
 # written then restored to identical bytes, which IS a cycle by this definition.
 #
-# Measured on the seating lap: nine rostered witnesses sampled, eight cycled and one HUNG past its
-# bound -- `glow_desk_run_witness`, the same family that hung during the reach work.
+# Measured on the seating lap: nine rostered witnesses sampled, eight cycled and one ran PAST THE BOUND
+# THIS LAP CHOSE -- `glow_desk_run_witness`, later measured at 455 seconds and exit 0. It builds Glow
+# desks with a real toolchain and passes; the reading was a fact about a 280-second bound.
 guard cyclic_witness
 path tools/c/cyclic_witness_witness.rish
 tier cadence

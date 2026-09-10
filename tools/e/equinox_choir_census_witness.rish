@@ -39,7 +39,7 @@ assert (scan.out contains "verdict=no_green") == false else "equinox-choir-censu
 # invariant: neither ceiling rose. Both only fall, so a new red or a new hang is heard on the lap it
 # arrives rather than months later.
 assert (scan.out contains "verdict=red_over_ceiling") == false else "equinox-choir-census: a choir went red beyond the ceiling -- its path is printed above"
-assert (scan.out contains "verdict=hung_over_ceiling") == false else "equinox-choir-census: a choir hung beyond the ceiling -- a roster row for it would hang the fleet"
+assert (scan.out contains "verdict=over_bound_over_ceiling") == false else "equinox-choir-census: a choir hung beyond the ceiling -- a roster row for it would hang the fleet"
 assert scan.out contains "verdict=ok" else "equinox-choir-census: the census did not answer ok"
 
 say "GREEN: equinox-choir-census -- every choir in the room probed, and neither ceiling rose."
