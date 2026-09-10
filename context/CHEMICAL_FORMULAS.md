@@ -24,7 +24,7 @@ Read the arrow as *becomes*, and read `+` as *together with*.
 ```
 name + bytes            ->  binding                 Mantra: a name is bound, once
 binding + name          ->  bytes                   the same bytes, every time
-weave(name_1..name_n)   ->  bytes_1..bytes_n        a bounded bulk read, order preserved
+batch(bolt, revision) + held  ->  manifest + bytes   at most 16 leaves, order preserved
 
 bytes                   ->  resin                   Tablecloth: SHA3-512, written in hex
 resin + store           ->  bytes                   a read: those bytes, or nothing
@@ -33,6 +33,17 @@ bytes + store           ->  resin + store'          a write: the store grows, an
 
 **Conserved:** the pairing. Nothing in the notation re-binds a name, because nothing in the module
 does either.
+
+**The bound is 16**, named `max_batch_entries` in `mantra/resin_batch.rye` and held there by the
+module's own refusal: `build_batch` returns `error.TooManyEntries` at the door. `held` is the set of
+digests the receiver already carries. Each entry it holds crosses as a manifest row alone, and the
+bytes stay home. Every digest rides in the signed manifest, so each payload proves itself -- the
+pairing survives a bulk read exactly as it survives a single one.
+
+**This line said `weave` until `20260909`.** In this tree `weave` names the living line history at
+`mantra/src/weave.rye`, where a text stream keeps every line it ever held and two branches merge by
+construction. The formula spent that word on a bulk read, where the modules declare `batch`. A
+formula earns its place by being checkable against the code, so this one moved to match it.
 
 ## Declaring and sealing
 
@@ -118,6 +129,15 @@ and the formula is where that shows.
 **These are notation rather than proof.** A formula records an intention precisely; a witness on
 metal is what makes it true. Where an operation here is proven, the proof is named in the module's
 own page. Where it is intended, the page says so.
+
+**Two guards read this page, and a wrong formula travels past both.**
+`tools/fixtures/d/document_mirror_scan.sh` proves the canonical and its mirror byte-identical and
+every link resolvable, so a false line reaches both homes intact and green.
+`tools/fixtures/q/qa_report_card.sh` scores Truth by whether cited paths resolve, and a formula
+naming an operation cites a module rather than a path. `weave` stood here seventeen days under both
+of them, scoring 100 on Truth the morning it was corrected. **A formula stays true because a reader
+checks it against the module.** So each line names the module that owns it, and the bound beside
+`batch` names the constant and the file you open to read it.
 
 ---
 
