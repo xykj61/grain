@@ -16,7 +16,7 @@ say "a2-n-sum: empty triple (0 0 0) answers 0..."
 let t0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "0" "0" "0"]
 assert t0.ok else "a2-n-sum: empty triple failed to run"
 assert t0.out contains "EXIT:0" else "a2-n-sum: empty triple did not exit 0"
-assert t0.out contains "0" else "a2-n-sum: empty triple did not speak 0"
+assert (lines t0.out) contains "0" else "a2-n-sum: empty triple did not speak 0"
 
 say "a2-n-sum: within triple (1 2 3) answers 6..."
 let t1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "1" "2" "3"]
@@ -28,7 +28,7 @@ say "a2-n-sum: empty quad (0 0 0 0) answers 0..."
 let q0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" quad "0" "0" "0" "0"]
 assert q0.ok else "a2-n-sum: empty quad failed to run"
 assert q0.out contains "EXIT:0" else "a2-n-sum: empty quad did not exit 0"
-assert q0.out contains "0" else "a2-n-sum: empty quad did not speak 0"
+assert (lines q0.out) contains "0" else "a2-n-sum: empty quad did not speak 0"
 
 say "a2-n-sum: within quad (1 1 1 1) answers 4..."
 let q1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" quad "1" "1" "1" "1"]

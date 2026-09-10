@@ -13,7 +13,7 @@ say "a2-pair: empty pair (0 0) answers 0..."
 let empty = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0" "0"]
 assert empty.ok else "a2-pair: empty failed to run"
 assert empty.out contains "EXIT:0" else "a2-pair: empty did not exit 0"
-assert empty.out contains "0" else "a2-pair: empty did not speak 0"
+assert (lines empty.out) contains "0" else "a2-pair: empty did not speak 0"
 
 say "a2-pair: within (3 5) answers 8..."
 let ok = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "3" "5"]

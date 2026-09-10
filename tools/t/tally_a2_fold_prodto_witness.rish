@@ -34,7 +34,7 @@ assert eight.out contains "40320" else "a2-prodto: 8 did not fold to 40320"
 say "a2-prodto: past the wall answers 0..."
 let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "9"]
 assert over.ok else "a2-prodto: past-wall failed to run"
-assert over.out contains "0" else "a2-prodto: 9 did not speak 0"
+assert (lines over.out) contains "0" else "a2-prodto: 9 did not speak 0"
 
 say "a2-prodto: a bound past twelve is refused BY NAME, never wrapped..."
 let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-fold-prodto-bound-13.glow" "3"]

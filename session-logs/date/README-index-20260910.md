@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.081435` | [The leg that could not make a sound](20260910/20260910-081435_the-leg-that-could-not-make-a-sound.kyri) | a gate refusing, read off EXIT:0 |
 | `20260910.074438` | [The proof behind the write](20260910/20260910-074438_the-proof-behind-the-write.kyri) | the resin proof moved ahead of the write |
 | `20260910.073920` | [Fourteen posts, one fence](20260910/20260910-073920_fourteen-posts-one-fence.kyri) | one bound, fourteen modules, no comparison |
 | `20260910.073143` | [The seconds this pier actually spends](20260910/20260910-073143_the-seconds-this-pier-actually-spends.kyri) | one roster pass costs 2,286 CPU seconds |

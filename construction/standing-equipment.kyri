@@ -4325,6 +4325,22 @@ path tools/s/self_matching_assert_witness.rish
 tier lap
 seated 20260910.022156
 
+# silent_leg reads the OTHER borrowed-evidence source, one room over from its sibling above:
+# `tools/g/glow_run_worker.sh` echoes a trailer of its own, `EXIT:$?`, and a witness reads the
+# desk's answer out of that same stream -- so `assert over.out contains "0"` reads true off
+# `EXIT:0` however the desk answered. That is almost always the leg proving a bound REFUSES, so
+# the refusing side of a Glow gate was the one side no witness could hear. Proven on metal
+# `20260910`: a gen-floor desk answering 7 where its invariant says 0 kept the elder leg green.
+# Eleven mantra and tally legs carry the exact list read now and the lane is gated at zero; 28
+# stand in seven other rooms under a ceiling that only falls, each its own room's hand to repair.
+# The sibling cannot see this family -- its `min_needle` of 3 passes over the one-character needle
+# that carries almost all of it. `lap` rather than `cadence`: the scan is ~2s over 2,470 runners
+# and the control ~4s, and the corpus is every tracked runner, which any lap may add to.
+guard silent_leg
+path tools/s/silent_leg_witness.rish
+tier lap
+seated 20260910.081300
+
 # THE COUNT IN FRONT OF THE BYTE CEILING. A module writing items into a fixed buffer can name two
 # maxima -- how many items it carries, and how many bytes it has -- and only one of them is real.
 # The encoder decides which, never the declaration. `mantra/recall_tablecloth_query_wire.rye`
