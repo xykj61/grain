@@ -79,7 +79,13 @@ mode="${1:-census}"
 #                            of its 15 pages, 450 of them forms the rule's own table spells and 2
 #                            read by hand. The reading fell 3225 -> 2773; the ceiling keeps the same
 #                            7 of slack and takes none of the 452.
-CEILING="${ASCII_DOC_CEILING:-2780}"
+#   1343  `20260910.042550`  one page held 1,437 of the 2,773 -- 52 percent of the whole remaining
+#                            ratchet in `rye-learning-process/GLOW_ALMANAC.md`, and 1,350 of those
+#                            were a single form: the middle dot the rule's table has always spelled.
+#                            1,434 converted by the table, 1 by the row this lap added below, and 3
+#                            read by hand. The reading fell 2773 -> 1336; the ceiling keeps the same
+#                            7 of slack and takes none of the 1,437.
+CEILING="${ASCII_DOC_CEILING:-1343}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.
@@ -214,6 +220,7 @@ count_file() {
       t["\342\211\240"] = 1   # not equal
       t["\342\211\244"] = 1   # less-than or equal
       t["\342\211\245"] = 1   # greater-than or equal
+      t["\342\210\222"] = 1   # typographic minus -- one ASCII spelling, and the rule names it
       two["\302\267"] = 1     # middle dot, a two-byte sequence
     }
     {
