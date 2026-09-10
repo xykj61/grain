@@ -4620,3 +4620,23 @@ guard tilak_root_count
 path tools/t/tilak_root_count_witness.rish
 tier lap
 seated 20260910.152558
+
+# ratchet_slack -- a ceiling nothing compares is decoration, and the family's resting state is zero
+# slack. Every ratchet in this tree writes the same rule in its own header, `the ceiling only
+# falls`, and followed exactly that rule parks the ceiling at whatever the reading was the day
+# somebody last lowered it. Measured `20260910.172957`, the first reading anybody had taken of the
+# family as a family: 81 ceilings across 55 scans, 35 at ZERO SLACK, 21 walls already at zero, 13
+# carrying slack, and THREE over -- `mantra_weave_model`, whose own witness passes a higher ceiling;
+# `dated_path` at 105 against 85, which is REDS %626 at `tier cadence` where no lap hears it; and
+# `say_compose_bound` at 538 per mille against 537, `tier lap`, red across the fleet today. The last
+# two are one shape, so %626 is a class rather than an instance. This guard holds the CHEAP half, which is structural: every
+# declared ceiling is compared inside its own scan, and the pairing table naming each ceiling's
+# reading names only ceilings the tree still declares. The slack itself is `--live`, three minutes
+# because it runs every scan, so it is hand-run and prints no verdict line at all -- a census a
+# roster could seat would cost every lap three minutes to learn what one reading a day teaches.
+# `lap` rather than `cadence`: the static half is 6s and the control 3s, and the corpus is every
+# fixture scan, which any lap may add to.
+guard ratchet_slack
+path tools/r/ratchet_slack_witness.rish
+tier lap
+seated 20260910.172957

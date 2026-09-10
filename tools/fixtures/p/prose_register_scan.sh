@@ -56,7 +56,7 @@
 
 set -u
 
-DOOR="README.md bat/README.md docs/README.md encoding/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md amphora/README.md mikrophone/README.md"
+DOOR="README.md bat/README.md docs/README.md encoding/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md amphora/README.md mikrophone/README.md tally/README.md mantra/README.md comlink/README.md"
 DOOR_MAX=20
 FIELD_MAX=30
 # A share needs a denominator big enough to mean something. Below this many sentences the reading is

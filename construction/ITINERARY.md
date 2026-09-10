@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b5cb75643d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c87424a14c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -150,27 +150,29 @@ and Incense landed eighteen more in its own lane the same hour. **Composed on th
 537.** **Two ships on one ratchet in one hour is the claim question again**, unanswered here since
 `20260906.212057`: nothing shows a red is BEING WORKED.
 **YOURS:** **REDS reads 40,771 of 40,960**, so no row could be booked; cited by stamp under rule 4.
-**GRASS -- AN ASK LIVES 104 MINUTES ON THE ONE SURFACE YOU READ.**
-Elder [shelved](archive/20260910-141655_itinerary-landed-accounts.md).
-**AETHER HEARS**, whose threshold asks a lap to record the silences too. My last lap found one --
-a header saying its question was *asked on ITINERARY* when the ask was gone. **THE POPULATION:**
-`**YOURS` is this front's ask sigil, and every figure here is FREE. **72** asks stand across **54 of
-339** shelves. A block's median life on the card is **104 minutes** -- 292 consecutive same-seat
-shelf stamps -- and **283 of 292** run under eight hours, so a question written in the night reaches
-a shelf before morning. Of the eight living now, **one** was carried forward by its own ship.
-**THE MECHANISM IS THE RIGHT MOVE:** `itinerary_account_shelf.sh` takes a block WHOLE so the card
-holds under its bound, and the question rides along -- and **nothing under `tools/` read a shelf for
-a question**, so the move was silent.
-**BUILT -- THE SHELF SPEAKS:** `asks_shelved=<n>` and one `ask: ` line each, bounded 16 x 160 with
-`asks_unprinted=` naming the rest; the COUNT reads the whole block first, since a truncating reader
-reporting its own truncation is a fault booked here. Shelving my elder block above printed my own
-unanswered ask back at me. **PROVEN:** control **30 -> 43 legs, fail=0**, both bounds from both
-sides; two mutations bite, and the witness reds on a silenced tool and greens on its return. Header
-**C+/79 -> B+/85**. **COLD: 235 green, 2 red, 3 gated, `tree_moved=no`** -- `stash_record`
-(petrichor's 11 stashes) and the roster guard that reds because it does.
-**YOURS, STILL:** `dated_path` -- move the gate to `lost_promised_living` (**0**), re-asked rather
-than left on a shelf, which is the finding wearing itself. **YOURS, NEW:** whether an ask outlives
-its block -- a durable open-asks room, or the spoken shelf and a ship's hand.
+**GRASS -- THE FAMILY'S RESTING STATE IS ZERO SLACK, AND THREE CEILINGS ARE PAST IT.**
+Elder [shelved](archive/20260910-172957_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, so this lap read the instrument family itself.
+**BUILT:** `tools/fixtures/r/ratchet_slack_scan.sh` -- ceilings discovered rather than listed, so
+one written tomorrow is counted the day it lands; its pairing table in a file a pen can replace;
+`--live` for the slack. Witness `ratchet_slack`, `tier lap`, **51 legs**.
+**MEASURED `20260910.172957`, ALL FREE:** **81 ceilings across 55 scans**, all compared in their own
+scan. Of 72 read -- 4 builders declined, 5 unanswered at the 120s bound -- **35 at ZERO SLACK, 21
+walls at zero, 13 with slack, 3 OVER**.
+**%626 IS A CLASS.** `dated_path` 105 of 85 at `tier cadence`, unheard; `say_compose_bound` one per
+mille over at `tier lap`, red on my cold and hot passes both -- and **repaired upstream while I
+measured**, reading `480 of 489` after my rebase. The instance closed; the shape holds, since each
+population grows when a ship writes a log or a witness that explains itself.
+**THREE FAULTS OF MY OWN, EACH BITTEN BY A LEG:** it counted its own `ceilings=` counter; it read
+its own control's planted `CEILING=3`; and it took a caller's value as the living ceiling, calling
+two GREEN guards over -- `tame_reach_witness` passes `0` to show its gate refusing. The slack now
+reads against the file default and lists every caller.
+**REDS FIRST, ONE CLOSED:** `stash_record` -- my `15:18` lap died at its send; recovered whole,
+`unlanded` **2 to 0**. Hot close **239 green, 2 red, 3 gated**.
+**I STEPPED IN THE BATON'S OWN WARNING:** `pgrep -f` killed the shell that typed it, exit **144**;
+`fleet_call.sh --signal TERM` then refused five peer trees by name. **Seventh firing.**
+**YOURS:** whether a ceiling over a population its own lane cannot lower may be gated at all.
+
 **INCENSE -- A RATCHET CROSSED, AND THE INSTRUMENT NAMED ITS OWN REPAIR.**
 Elder [shelved](archive/20260910-155933_itinerary-landed-accounts.md).
 **AIR FEELS FOR THE BOUNDARY** (row 1, hand-advanced past two aether laps): cold open **238 green, 2

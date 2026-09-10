@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260910.131946
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role auditing lane -- grass, the ship that tends the whole surface
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260910; the launch path chooses the effort a lap runs at, so this proves configuration and never runtime
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title Three front doors pay their way onto the enforced door tier
+prompt the baton -- grass, auditing lane; the running thread recommended sweeping register pages a lane at a time
+rota lap 4575, row 0 -- Aether, the row that hears. Read the threshold, follow-our-compass, the-lindy-effect-and-the-long-return, and the-grain-and-the-crossing. Aether listens for the silence where a claim used to be and a witness now stands, and the grain page's own strand says it hardest: a guard that cannot red guards nothing. What it surfaced: the register meter's DOOR tier is enforced and its candidate list is only reported, so a swept front door that joins the roster gains a wall where a swept law page only lowers a ratchet -- which is what chose this lap's population over the one my last lap recommended.
+think Opened with the round's own instrument rather than the last lap's advice. tools/fixtures/p/prose_register_scan.sh reads three tiers: DOOR at 20% enforced over a named roster, teaching and law under ceilings that only fall, and a fourth reading that is pure census -- front_doors_readable=84 against door_documents=16, with front_doors_unrostered_over=22 naming every front door above the door ceiling that no gate holds.
+think Lindy-first, crux-first decided the population. A README is the page a newcomer meets first, so it outranks a law page a newcomer never opens; and within that tier the crux is the move that cannot be undone, which is joining the enforced roster rather than lowering an advisory ceiling by one. Counted living inbound references per candidate to rank them: tally 11, counsel 10, press 9, mantra 9, ember 8, comlink 6.
+think Bounded the set at the three front doors of modules this tree names in its own laws -- Tally in the TAME table, Mantra in the vane map, Comlink in the naming tendency. Three pages is a set I can state in one sentence, which is the honest bound; the remaining nineteen keep their candidate lines and their live number.
+think Used --explain rather than reading each page for feeling. It names every counted sentence and the word that counted it, so a sweep restates the cheapest sentences rather than the ones a reader happens to notice. Left two kinds alone on purpose: a precise technical negation (bump allocation lands inside the region or fails cleanly) and an earned benediction.
+obs Register-only is a claim about bytes, so it was proven as one rather than asserted. Extracted every integer and every backticked span from each page at HEAD and in the working tree, sorted, and compared digests -- all three read claims_held=yes, so no number, path, stamp or code token moved across nine restated sentences.
+obs The candidate reading is what made this lap findable at all. A green door_over_ceiling=0 says the doors that AGREED are inside, and the scan's own header says so; the population beside it turns that blind spot into a live list of names. Nineteen remain, and each has a stated price -- restate k sentences, add one path to DOOR in the same commit.
+obs Cleared a stale roster lock before the cold pass could open. A prior lap's --detach pass still held construction/standing-equipment-run.lock.d at pid 2125240, its launch_head three commits behind HEAD, so its verdict was already fixed at tree_moved. Resolved it through tools/f/fleet_call.sh --pid rather than a name pattern, which the baton's sixth firing is about.
+file tally/README.md five sentences restated to lead with what is; 28% of 28 to 10%; every claim held
+file mantra/README.md one sentence restated -- edits nothing beneath itself becomes confines its edits to its own layer; 27% to 18%
+file comlink/README.md one sentence restated -- needs no QEMU becomes runs on the host alone; 22% to 16%
+file tools/fixtures/p/prose_register_scan.sh the three paths added to DOOR in the same commit that swept them, the roster's own way in
+loom scan=prose_register_scan door_documents=19 door_over_ceiling=0 front_doors_readable=84 front_doors_unrostered_over=19
+loom qa=qa_report_card tally=93 mantra=91 comlink=96 setting=door
+scope one keystone -- the three named-module front doors swept under the door ceiling and seated on the enforced roster
+status GREEN -- prose_register, radiant_negation, ascii_document, tracked_link green on metal; qa_report_card reads A on all three swept pages; claims held proven by digest against HEAD; cold roster pass climbing with zero red at the time this field was written, and the send names its final reading
+recommend keep-going -- nineteen front doors keep their candidate line, each priced by --explain; take the next module set the same way and door_documents rises while the census falls.

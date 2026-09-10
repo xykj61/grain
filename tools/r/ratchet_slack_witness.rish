@@ -1,0 +1,69 @@
+# A ceiling that is declared, printed, and never compared is decoration.
+#
+# This tree holds a family of ratchets. A guard counts a population it wants smaller, names a
+# ceiling, and refuses once the count rises past it. Every one of them writes the same rule in its
+# own header: the ceiling only falls. Follow that rule exactly and it parks the ceiling at whatever
+# the reading was the day somebody last lowered it -- at ZERO SLACK, where the next arrival reds.
+#
+# Zero slack is right where the population grows by defects, since there the next arrival IS the
+# defect. It is a trap where the population grows by ordinary work, because the guard then reds on a
+# lap that did everything correctly, and a guard like that is one somebody turns off. REDS %626 is
+# that trap sprung once: `dated_path` gates a count that rises whenever a ship writes a session log
+# naming a path, and falls for nobody, since accrete-never-break keeps a dated citer as it stands.
+#
+# A ceiling written `${VAR:-0}` carries more than one value: the default a pen meets, and whatever a
+# caller passes. Only some passes are the living reading, since a witness also passes a strict value
+# to show its own gate refusing -- `tame_reach_witness` passes zero for exactly that. So the census
+# reads the slack against the file default and lists every caller's value beside it. A control is
+# read as a plant rather than as a caller.
+#
+# This witness holds the cheap half, which is structural and runs in seconds: every ceiling this
+# tree declares in a scan is compared inside that same scan, and the pairing table names only
+# ceilings the tree still declares. The slack itself is `--live`, which runs every scan and takes
+# about eighteen minutes, so it stays hand-run and prints no verdict line at all.
+#
+# Kin: `.claude/rules/reds-first.md` names the ratchet apart from the red; the family this reads is
+# every `tools/fixtures/*_scan.sh` that declares a ceiling.
+#
+# Read the slack rather than trusting a number written here:
+#   sh tools/fixtures/r/ratchet_slack_scan.sh --live
+#
+# Run: rishi/bin/rishi run tools/r/ratchet_slack_witness.rish
+
+say "ratchet-slack: a ceiling nothing compares is decoration, and a ceiling at zero slack reds on whatever arrives next."
+
+let census = run ["sh" "tools/fixtures/r/ratchet_slack_scan.sh"]
+say census.out
+say census.err
+assert census.ok else "ratchet-slack: the census refused"
+assert census.out contains "verdict=ok" else "ratchet-slack: a ceiling stands uncompared, or the pairing table names one this tree no longer declares"
+assert census.out contains "ceilings_uncompared=0" else "ratchet-slack: a declared ceiling is compared nowhere in its own scan"
+assert census.out contains "stale_pairs=0" else "ratchet-slack: the pairing table has gone stale against the tree"
+assert census.out contains "ceilings=" else "ratchet-slack: the census stopped naming its population"
+assert census.out contains "scans=" else "ratchet-slack: the census stopped naming the scans it read"
+
+let control = run ["sh" "tools/fixtures/r/ratchet_slack_control.sh"]
+say control.out
+say control.err
+assert control.ok else "ratchet-slack: the control refused"
+assert control.out contains "control_verdict=ok" else "ratchet-slack: control verdict"
+assert control.out contains "control_failed=0" else "ratchet-slack: a control leg failed"
+assert control.out contains "ok   self_excluded" else "ratchet-slack: the census reading its own counters is unproven"
+assert control.out contains "ok   loose_verdict" else "ratchet-slack: an uncompared ceiling is unproven from the refusing side"
+assert control.out contains "ok   lifted_verdict" else "ratchet-slack: an uncompared ceiling is unproven from the free side"
+assert control.out contains "ok   stale_named" else "ratchet-slack: a stale pairing row is unproven"
+assert control.out contains "ok   tight_zero_slack" else "ratchet-slack: zero slack is unproven apart from slack"
+assert control.out contains "ok   wall_counted" else "ratchet-slack: a wall at zero is unproven apart from zero slack"
+assert control.out contains "ok   over_counted" else "ratchet-slack: a reading above its ceiling is unproven"
+assert control.out contains "ok   unread_counted" else "ratchet-slack: an unpaired ceiling is unproven as unread rather than dropped"
+assert control.out contains "ok   live_no_verdict" else "ratchet-slack: the live half is unproven to be a census rather than a gate"
+assert control.out contains "ok   slow_unanswered" else "ratchet-slack: a scan that did not answer is unproven to be named apart from an unpaired ceiling"
+assert control.out contains "ok   caller_listed" else "ratchet-slack: an overridable ceiling naming its callers is unproven"
+assert control.out contains "ok   caller_slack_from_file" else "ratchet-slack: the slack read against the file default is unproven"
+assert control.out contains "ok   over_with_caller_counted" else "ratchet-slack: an over reading a caller could explain is unproven to be counted apart"
+assert control.out contains "ok   plant_not_caller" else "ratchet-slack: a control's plant read as a caller is unproven"
+assert control.out contains "ok   two_callers_listed" else "ratchet-slack: two callers are unproven to be listed rather than chosen between"
+assert control.out contains "ok   anchor_second" else "ratchet-slack: a line-anchored reading key is unproven"
+assert control.out contains "ok   no_table_verdict" else "ratchet-slack: an absent pairing table is unproven to refuse"
+
+say "GREEN: ratchet-slack -- every ceiling this tree declares is compared in its own scan, and the pairing table stands true against the tree."
