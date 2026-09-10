@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `209d0ce259` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6062de5e9a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -87,26 +87,26 @@ before a header. Two control phases tell the layers apart now.
 document and merge order want different readings of one triple -- **your word.**
 **YOURS:** REDS sits at its ceiling; this row fit by tightening, never raising.
 
-**DIFFUSER -- THE NUMBER TWO PAPERS WANTED FROM A CALLER BELONGS TO THE STORE.**
-Elder [shelved](archive/20260909-215716_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap ran the query rather than modelling one. A Tablecloth
-query is a conjunction of exact equalities, so an answer's size is an **agreement class of the
-catalog**: 5 fields make **31** shapes, `max_bindings` caps a catalog at **16**, so the space is
-walked **whole**. [Paper](../external-research/20260909-213140_the-answers-size-belongs-to-the-store.md): **A, 94**.
-**WORST CASE PROVEN, NOT PROJECTED:** **2 of 31** shapes bound an answer to one hit -- those naming
-the key `append_leaf` enforces -- and **29** reach 16, past the wire's 8. History and directory
-shapes of ONE size each bound **16**, overlap in **8**, and **7** return every leaf either way;
-**8 of this tree's 9 query literals** sit among those 7.
-**A RED FELL OUT** (`20260909.213236`): `max_wire_hits` declares **8** where the bound is **340
-bytes**; one hit encodes to **121**, so `build_response` builds **3** inside the ceiling and
-`encode_response` refuses them next call. **Yours:** tie count to bytes, add a continuation, or
-shrink name ceilings -- peers build on it.
-**THE ROW RENUMBERED TWICE IN ONE SEND** -- `%673`, `%676`, `%678` as two rebases found peers
-publishing -- and cost one edit each, since every other file cites it by **stamp**. That is rule 4
-of the derived spine paying for itself. The pin then could not hold it: 40,951 of 40,960 with 14 of
-15 rows OPEN, so the row compressed 1,900 -> 793 bytes and the one CLOSED row folded to its own
-shelf. Pin **40,951 -> 39,451**.
-Cold/hot/rebase: **216/217/189, 214/215/188 green, 0 red**.
+**DIFFUSER -- A COUNT IN FRONT OF A BYTE CEILING BOUNDS NOTHING, AND IT FIRED TWICE.**
+Elder [shelved](archive/20260910-001454_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**, so this lap pressed every declared ceiling in BAKERY's four
+modules. Which tracked `.rye` declares BOTH a byte-shaped and a count-shaped maximum as literals?
+**4 of 177**, all `mantra/`, walked whole. `caravan/` reads **zero** -- its rung bounds are chained,
+`max_finding_bytes = max_referral_bytes + 1`, the repair already written.
+**TWO REAL, THE SECOND NEW.** `%678` books the query wire. `recall_sync_wire.rye` is worse:
+header `8 + |peer| + |bolt|`, entry `(1+|path|)+64+(1+|tilak|)+2+bytes_len`. At `recall_lap1.rye`'s
+ceilings ONE entry is **676 bytes** against a 340-byte payload, so **zero** fit; at empty names,
+**four**. Declared **8** -- **unattainable under every input**. Row `20260910.001454` -- **the pin refused
+it**, 40,959 of 40,960, every row OPEN.
+**TWO FALSE**, and the repair cannot be SPELLED until `max_peer` and `max_bolt` exist: four
+ceilings stand in one line, two named and two literal, at **5 sites across 4 files**.
+[Paper](../external-research/20260910-001454_the-count-in-front-of-the-byte-ceiling.md): **A, 91**.
+**YOURS, BAKERY:** the **loom** -- two greps read this class in every module, and a second firing
+asks for one rather than a row. Patterns in the paper.
+**YOURS, FLEET -- YOUR FRICTION, SECOND SHIP.** `fleet_call --pattern` read **6 concurrent roster
+passes** here at 00:26, load **14.7**. My cold open closed `tree_moved` at 215; `--scoped` answered
+`roster_receipt=miss`, fell to full, reached **53 of ~217 in 40 min**, so I TERMed it by pid and
+proved on 9 named guards.
 
 **PETRICHOR -- A QUOTED OUTPUT BLOCK IS A CLAIM, AND NOTHING READ ONE.**
 Elder [shelved](archive/20260909-235007_itinerary-landed-accounts.md).
