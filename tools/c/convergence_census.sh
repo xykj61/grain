@@ -174,10 +174,34 @@
 # `git write-tree`, so it reads what git tracks by diffing a real repository rather than by
 # guessing at a name.
 #
-# UNTIL THAT LAP, THE READING IS PRINTED WITH ITS MEMBERS NAMED. `admitted_on_comment_only` counts
-# the candidates whose admission rests on a comment, and `list` mode prints each one. A ratchet that
-# publishes a count and names no member is a finding no ship can act on (REDS %671), and this census
-# had a whole paragraph of alarm where a counted column belonged.
+# THE SIXTH CURE MOVED BOTH STRANDS AT ONCE, AND IT IS THE FIRST WITH GIT IN IT
+# (`20260909.222142`). The four cures above each moved ONE strand and measured the pair, which is
+# why none converged: the comment fence and the target guess were cancelling each other's errors.
+# Moving both together needs a target test that answers for `$LEDGER` and `$shelf` WITHOUT admitting
+# `$SCRATCH`, and no list of names can do that -- which is what the four laps proved by hand. Git
+# can, because the question was never what a variable is called; it is whether the path it holds is
+# one the repository tracks. `resolve_target` walks at most three in-file assignments to a literal
+# and `git_admits` hands that literal to `git ls-files`.
+#
+# Measured on this tree the same stamp: **12 -> 13 candidates**, and the membership is what moved.
+# `dated_path_exclusions.sh` LEAVES -- a shared list library whose only matching write is a sentence
+# describing the repointer's, so it never wrote anything. `reds_fold.sh` and `bootstrap_wasmtime.sh`
+# ARRIVE, both real writers of tracked paths (`construction/REDS.md`, which this card's own fold
+# rule mandates, and a tracked `.sha256` fixture), and both stand unproven. And
+# `reds_ledger_headline_write.sh` and `index_shelf_repair.sh` STAY, now admitted on their real live
+# writes rather than on prose. `admitted_by_git_only` reads 4, `admitted_by_name_only` 8, and one
+# candidate answers to both -- neither strand subsumes the other, so the reading is their union.
+#
+# `admitted_on_comment_only` RETIRES rather than standing at a permanent zero. It measured a fence
+# that is now closed, and a column that can only ever read zero is a tautology wearing a
+# measurement's clothes. What it found is kept above, where a reader meets it as a finding.
+#
+# WHAT STILL STANDS, named rather than hidden: `upstream_shape_scan.sh` is admitted by the name
+# strand on a `"$f"` written inside a `git filter-branch --tree-filter` string, in a `mktemp -d`
+# pen -- a pen write wearing an enumerated destination's clothes. The git strand cannot refuse it,
+# since `$f` resolves to no literal at all, and reading it wants seeing inside a quoted argument.
+# That is the same capability `rye_spoken_ascii_scan.sh` already walks, and it is the next post on
+# this fence rather than this lap's.
 #
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
@@ -214,6 +238,75 @@ target_admits() {
     | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/'
 }
 
+# THE SECOND STRAND: RESOLVE THE TARGET TO A LITERAL, THEN ASK GIT (`20260909.222142`).
+#
+# `target_admits` above answers by NAME -- a list of loop-variable spellings and a list of room
+# prefixes -- and a name is a guess about a destination. Four laps refined that guess and each read
+# worse, because a target written `$LEDGER` or `$shelf` is a real tracked-tree write whose name is
+# on no list, while a target written `$SCRATCH` is a pen whose name could have been anything.
+#
+# What separates the two is what the path IS, and exactly one thing in this tree knows: git.
+# `resolve_target` walks the variable back through at most 3 in-file assignments to a literal --
+# following `${OVERRIDE:-default}`, since a tool's tracked destination usually sits in an override
+# hook's default -- and `git_admits` hands that literal to `git ls-files`. A fully literal target
+# must itself be tracked; a target still carrying a `$` is tested on its longest literal prefix, so
+# `session-logs/date/README-index-$open_shelf.md` is admitted on the room git tracks and
+# `$(mktemp -d)/over.txt` is refused for having no literal prefix at all.
+#
+# THE TWO STRANDS ARE A UNION AND NEITHER SUBSUMES THE OTHER. The name strand sees an enumerated
+# destination -- `"$f"` inside a loop over paths the caller supplied -- where no literal exists to
+# resolve. The git strand sees a named destination the list never held. Measured on this tree at
+# `20260909.222142`: the name strand alone reads 12, the git strand alone reads 5, and their union
+# reads 13.
+MAX_HOPS=3
+resolve_target() {
+  # resolve_target <file> <target> -- at most MAX_HOPS in-file assignments, then whatever is left.
+  # invariant: bounded, so a pair of variables defined in terms of each other cannot spin here.
+  rt_src=$1; rt_t=$2; rt_hop=0
+  while [ "$rt_hop" -lt "$MAX_HOPS" ]; do
+    case "$rt_t" in *'$'*) : ;; *) break ;; esac
+    rt_v=$(printf '%s' "$rt_t" | sed -n 's/^\${\{0,1\}\([A-Za-z_][A-Za-z0-9_]*\).*/\1/p')
+    [ -n "$rt_v" ] || break
+    rt_rhs=$(grep -hE "^[[:space:]]*(readonly[[:space:]]+)?$rt_v=" "$rt_src" 2>/dev/null | head -1 \
+             | sed "s/^[[:space:]]*//; s/^readonly[[:space:]]*//; s/^$rt_v=//")
+    # `${ANY:-default}` and `${ANY:=default}` carry the literal in the default, and the name inside
+    # the braces is usually a DIFFERENT variable -- an override hook, as in
+    # `SHELF_ROOM=${INDEX_ROW_SHELF_ROOM:-session-logs/date}`. Reading only the assigned name's own
+    # braces would miss every one of them.
+    case "$rt_rhs" in
+      '${'*:[-=]*) rt_rhs=$(printf '%s' "$rt_rhs" | sed 's/^\${[A-Za-z_][A-Za-z0-9_]*:[-=]//; s/}.*$//') ;;
+    esac
+    rt_rhs=$(printf '%s' "$rt_rhs" | sed "s/^[\"']//; s/[\"'].*$//")
+    [ -n "$rt_rhs" ] || break
+    rt_rest=$(printf '%s' "$rt_t" | sed -n 's/^\${\{0,1\}[A-Za-z_][A-Za-z0-9_]*}\{0,1\}//p')
+    rt_new="$rt_rhs$rt_rest"
+    [ "$rt_new" != "$rt_t" ] || break
+    rt_t=$rt_new; rt_hop=$((rt_hop + 1))
+  done
+  printf '%s\n' "$rt_t"
+}
+git_admits() {
+  # git_admits <file> <matched-writes> -- true when one match's target resolves to a path git tracks.
+  printf '%s\n' "$2" | sed 's/.*"\([^"]*\)"$/\1/' | sort -u | while IFS= read -r ga_tgt; do
+    [ -n "$ga_tgt" ] || continue
+    ga_lit=$(resolve_target "$1" "$ga_tgt")
+    case "$ga_lit" in
+      *'$'*)
+        ga_pre=${ga_lit%%\$*}
+        case "$ga_pre" in */*) : ;; *) continue ;; esac
+        ga_dir=${ga_pre%/*}
+        [ -n "$ga_dir" ] || continue
+        [ -n "$(git ls-files -- "$ga_dir" 2>/dev/null | head -1)" ] || continue
+        ;;
+      *)
+        git ls-files --error-unmatch -- "$ga_lit" >/dev/null 2>&1 || continue
+        ;;
+    esac
+    echo yes
+    break
+  done | grep -q yes
+}
+
 work=$(mktemp -d "${TMPDIR:-/tmp}/conv-census.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 
@@ -222,9 +315,10 @@ git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/' |
 [ -s "$work/all.txt" ] || { echo "refused: no tracked tools -- every count below would read zero" >&2; exit 2; }
 
 writers=0; proven=0; unproven=0; by_assertion_n=0; by_prover_n=0; by_family_n=0
-comment_only=0
+git_only=0; name_only=0
 : > "$work/unproven.txt"
-: > "$work/comment_only.txt"
+: > "$work/git_only.txt"
+: > "$work/name_only.txt"
 
 # EVERY LINE IN THE TREE THAT RUNS A CONVERGENCE PROVER, gathered once rather than per candidate.
 # Each row is `<file>\t<line body>`, and only non-comment lines survive: a comment naming both a
@@ -262,9 +356,23 @@ while IFS= read -r f; do
   #
   # Both shapes end with their target as the last quoted run in the match -- `> *"[^"]+"` for a
   # redirect, and the path argument for `sed -[i]` -- so one extraction serves both.
-  writes=$(grep -hoE "$WRITE_SHAPES" "$f" 2>/dev/null || true)
+  #
+  # AND THE WRITE IS READ OFF LIVE LINES, NEVER OFF A COMMENT (`20260909.222142`). Both proof
+  # columns learned to read past a leading `#` and this column never did, so a header sentence
+  # explaining a write idiom admitted the tool that explained it. The reading that measured the
+  # cost -- `admitted_on_comment_only`, 3 of 12 -- is retired by this line, since a comment can no
+  # longer admit anything. What it counted is preserved as the finding it was: of the three,
+  # `dated_path_exclusions.sh` writes nothing at all and LEAVES, while `reds_ledger_headline_write.sh`
+  # and `index_shelf_repair.sh` are real writers who STAY, now admitted on their live `$LEDGER` and
+  # `$shelf` writes by the git strand below. That is why this could only move together with it:
+  # dropping comments alone took the two busiest writers out with the false one, which is the shape
+  # the header calls two faults whose errors cancel.
+  writes=$(grep -vE '^[[:space:]]*#' "$f" 2>/dev/null | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
   [ -n "$writes" ] || continue
-  target_admits "$writes" || continue
+  by_name=no; by_git=no
+  target_admits "$writes" && by_name=yes
+  git_admits "$f" "$writes" && by_git=yes
+  [ "$by_name" = yes ] || [ "$by_git" = yes ] || continue
   # A CONTROL WRITES INTO ITS OWN PEN AND HAS NOTHING TO CONVERGE, and counting them was this
   # census's third wrong denominator (`20260908.005904`). 23 of the 27 it first called unproven were
   # `*_control.sh` files whose writes target a throwaway directory they created and delete. The
@@ -274,15 +382,16 @@ while IFS= read -r f; do
   # finding and is a description of the naming convention instead.
   case "$f" in *_control.sh) continue ;; esac
   writers=$((writers + 1))
-  # DOES THIS ADMISSION REST ON A COMMENT? Read the same shapes again with comment lines dropped.
-  # A candidate that only survives the first reading was admitted by prose describing a write, and
-  # the header above measures what that costs: 2 of the 3 such candidates are real writers whose
-  # real target the filter refuses, so the comment is standing in for a miss rather than inventing
-  # a writer. Reported, never gated -- the population is unchanged by this reading.
-  live_writes=$(grep -vE '^[[:space:]]*#' "$f" 2>/dev/null | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
-  if [ -z "$live_writes" ] || ! target_admits "$live_writes"; then
-    comment_only=$((comment_only + 1))
-    printf '%s\n' "$f" >> "$work/comment_only.txt"
+  # WHICH STRAND ADMITTED IT, printed with its members, because the two are different evidence and
+  # a reader deciding whether to trust the population needs to know which answered. `by_git_only`
+  # is the reading that says what git bought: a destination the name list could never have held.
+  if [ "$by_git" = yes ] && [ "$by_name" = no ]; then
+    git_only=$((git_only + 1))
+    printf '%s\n' "$f" >> "$work/git_only.txt"
+  fi
+  if [ "$by_name" = yes ] && [ "$by_git" = no ]; then
+    name_only=$((name_only + 1))
+    printf '%s\n' "$f" >> "$work/name_only.txt"
   fi
   base=${f##*/}; stem=${base%.*}
   # Its own siblings: the control and witness that stand beside it by name.
@@ -360,7 +469,8 @@ done < "$work/all.txt"
 
 if [ "$MODE" = list ]; then
   head -"$MAX_REPORT" "$work/unproven.txt" | sed 's/^/unproven: /'
-  head -"$MAX_REPORT" "$work/comment_only.txt" | sed 's/^/comment_only: /'
+  head -"$MAX_REPORT" "$work/git_only.txt" | sed 's/^/git_only: /'
+  head -"$MAX_REPORT" "$work/name_only.txt" | sed 's/^/name_only: /'
 fi
 
 echo "tools_read=$(grep -c . "$work/all.txt")"
@@ -370,4 +480,5 @@ echo "proven_by_sibling_assertion=$by_assertion_n"
 echo "proven_by_prover_run=$by_prover_n"
 echo "proven_by_family_control=$by_family_n"
 echo "candidates_unproven=$unproven"
-echo "admitted_on_comment_only=$comment_only"
+echo "admitted_by_git_only=$git_only"
+echo "admitted_by_name_only=$name_only"

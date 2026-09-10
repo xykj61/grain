@@ -88,7 +88,7 @@ assert control.ok else "convergence-census: the control refused --\n${control.ou
 assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
 assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
 assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
-assert control.out contains "legs_pass=27" else "convergence-census: a leg went unrun --\n${control.out}"
+assert control.out contains "legs_pass=34" else "convergence-census: a leg went unrun --\n${control.out}"
 
 # invariant: a tool may not certify itself. The plant's only idempotence sentence is a comment in
 # its own header, which is what two tracked tools carried when this column read them proven.
@@ -137,17 +137,31 @@ assert control.out contains "prover_run_split_printed -- printed" else "converge
 assert control.out contains "sibling_assertion_split_printed -- printed" else "convergence-census: the sibling-assertion split went unprinted"
 
 # invariant: THE COMMENT READING is proven from both sides. The two proof columns read past a
-# leading comment mark and the write column never did, so a file whose only admitting write sits in
-# a sentence ABOUT writing is counted as a writer -- 3 of 12 candidates on this tree, two of them
-# real writers whose real target the filter refuses. The reading is printed with its members named
-# rather than acted on, because all four cures measured read worse than the fault; the census
-# header records every one. A count naming no member is a finding no ship can act on (REDS %671).
-assert control.out contains "comment_only_named -- yes" else "convergence-census: a candidate admitted by a write inside a comment goes unnamed again"
-assert control.out contains "live_write_not_named -- no" else "convergence-census: a candidate admitted on a live line is named as comment-only, so the reading no longer separates prose from a write"
-assert control.out contains "comment_admitted_still_counted -- yes" else "convergence-census: the comment reading moved the population, where it is meant to diagnose it"
-assert control.out contains "comment_reading_printed -- printed" else "convergence-census: the comment reading went unprinted"
-assert control.out contains "elder_could_not_tell_prose_from_a_write -- yes" else "convergence-census: the elder write predicate now separates prose from a write on its own, so this reading proves nothing"
-assert scan.out contains "admitted_on_comment_only=" else "convergence-census: the comment reading went unreported"
+# leading comment mark and the write column never did, so a file whose only admitting write sat in
+# a sentence ABOUT writing was counted as a writer -- 3 of 12 candidates on this tree. That column
+# reads live lines from `20260909.222142`, and it could only move together with the git strand
+# below: dropping comments alone was measured at 12 -> 9 and took the two busiest writers out with
+# the false one, which is the shape the census header calls two faults whose errors cancel.
+assert control.out contains "comment_alone_refused -- no" else "convergence-census: a write inside a comment admits a tool again"
+assert control.out contains "live_write_admitted -- yes" else "convergence-census: a write on a live line no longer admits, so the column refuses the thing it exists to count"
+assert control.out contains "elder_could_not_tell_prose_from_a_write -- yes" else "convergence-census: the elder write predicate now separates prose from a write on its own, so this repair proves nothing"
+assert control.out contains "comment_reading_retired -- retired" else "convergence-census: the elder comment column still prints, and a column that can only read zero is a tautology wearing a measurement's clothes"
+
+# THE GIT STRAND. `target_admits` answers by NAME, and four laps of refining that guess each read
+# worse. `git_admits` resolves the target through at most three in-file assignments and hands the
+# literal to `git ls-files`, so the tree answers which destination is tracked. The two are a UNION
+# and neither subsumes the other: the name strand sees an enumerated `"$f"` with no literal to
+# resolve, and the git strand sees a named `$LEDGER` the list never held.
+assert control.out contains "git_named_destination_admitted -- yes" else "convergence-census: a write to a variable resolving to a tracked path goes unseen again"
+assert control.out contains "git_pen_destination_refused -- no" else "convergence-census: a write to a mktemp pen is admitted, which is the fourth wrong denominator returning"
+assert control.out contains "git_override_hook_admitted -- yes" else "convergence-census: a destination sitting in an override hook's default goes unresolved"
+assert control.out contains "git_untracked_literal_refused -- no" else "convergence-census: an untracked literal inside a tracked room is admitted, so the reading is a dirname test rather than a question about the file"
+assert control.out contains "git_hop_bound_refuses_past_three -- no" else "convergence-census: the resolution bound went unenforced"
+assert control.out contains "name_strand_could_not_see_it -- no" else "convergence-census: the name strand now sees the git strand's plant, so the union proves nothing"
+assert control.out contains "git_split_printed -- printed" else "convergence-census: the strand split went unprinted"
+assert control.out contains "git_only_names_its_member -- named" else "convergence-census: the git-only reading names no member, and a count naming no member is a finding no ship can act on (REDS %671)"
+assert scan.out contains "admitted_by_git_only=" else "convergence-census: the git-only reading went unreported on this tree"
+assert scan.out contains "admitted_by_name_only=" else "convergence-census: the name-only reading went unreported on this tree"
 assert control.out contains "family_control_split_printed -- printed" else "convergence-census: the family-control split went unprinted"
 
 assert scan.out contains "proven_by_prover_run=" else "convergence-census: the prover-run column went unreported on this tree"

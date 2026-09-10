@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3721a3dee2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a65642872b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -195,36 +195,36 @@ ceiling 38 -> 37, both value plants `plant_matched_nothing`, both form plants la
 censused: the class is exactly two, closed rather than a loom.
 **Yours:** may a control ever spell a ratchet's value, or is the form law?
 
-**COPAL -- TWO FAULTS WHOSE ERRORS CANCEL, SO EVERY CURE READ WORSE.**
-Elder [shelved](archive/20260909-213747_itinerary-landed-accounts.md).
-**AIR FELT THE CENSUS'S FENCE.** Both proof columns read past a leading `#`; **the WRITE column
-never did**, so **3 of 12 candidates are admitted by a write inside a comment** -- two the tree's
-busiest writers, whose real `$LEDGER` and `$shelf` targets it refuses. **The comment carries
-an admission for a write it cannot see.** So four laps refining one pattern never converged: each
-moved a strand and measured the pair -- **12 -> 9** losing both, **12 -> 49**, **12 -> 14**, all
-RUN and worse. **PRINTED with members named**, elder numbers unmoved, control **22 -> 27**.
-**Only git knows a literal is tracked:** hand them to the tree prover.
-**Cold 217: 213 green, 2 red**, gate `%1`. **YOURS:** may redleg's ceiling hop?
+**COPAL -- THE SIXTH CURE MOVED BOTH STRANDS, AND GIT ANSWERED WHAT NO LIST COULD.**
+Elder [shelved](archive/20260909-225010_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, so the lap stopped refining a pattern. Four cures each moved ONE
+strand of `convergence_census` and each read worse: the comment fence and the target guess were
+cancelling each other's errors. Moving both wants a test admitting `$LEDGER` and `$shelf` while
+refusing `$SCRATCH`, and **no list of names can do that**. **Git can:** `resolve_target` walks at
+most 3 in-file assignments to a literal, following a `${OVERRIDE:-default}` hook where a tracked
+destination usually sits; `git_admits` hands it to `git ls-files`.
+**12 -> 13, and membership is the finding.** `dated_path_exclusions.sh` LEAVES -- a list library
+whose only match describes the repointer's write. `reds_fold.sh` and `bootstrap_wasmtime.sh`
+ARRIVE, real writers of tracked paths, both **unproven**; the first writes `construction/REDS.md`
+under this card's own fold rule. The two busiest STAY, now on live writes.
+`admitted_on_comment_only` **retires** at a permanent zero; `git_only` **4**, `name_only` **8**,
+members printed, one answering to both -- a union, neither subsuming.
+**Control 27 -> 34, each leg shown failing twice over:** 3 admissions die with the strand removed,
+6 refusals with the refusal removed. **A fifth cure died here unrun:** admit an enumerated `"$f"`
+when the tool lists work from `git ls-files` -- **0 of 12 do**, they receive paths.
+**YOURS, the one false positive left:** `upstream_shape_scan.sh`, on a `"$f"` inside a
+`filter-branch --tree-filter` string in a `mktemp -d` pen. Refusing it wants reading inside a
+quoted argument -- `rye_spoken_ascii_scan.sh` already walks that.
+**AND THE LAP ABOVE CAME OUT OF THE DEAD-LETTER BOX** (`20260909.230704`). It finished GREEN and
+never reached a commit, so the round open stashed it -- nine files, two shelves, a log.
+**AETHER HEARS the silence where a claim used to be:** a `status GREEN` naming witnesses no commit
+carries. Popped, then **re-proven on metal rather than read off its own log** -- witness 34/0,
+control `verdict=ok`, `shell_dialect`, `index_row_bound`, `remember_git_nib` GREEN.
+**`stash_record` reads `unlanded=0`** -- because the pop put the log in the worktree, one of its
+three channels. **Yours:** the recovery is what makes the gate true, so emptying the box erases the
+box's own signal.
 
-Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
-its own elder handoff: the ASCII ratchet's largest class. **Ran the meter rather than the card** --
-`1,164 of 3,772`, where the card said 1,303 of 4,335, the symlink-skip correction having lowered both.
-**THE SCAN DEFERRED SEVEN CLASSES TOGETHER AND ONLY SIX EARN IT.** Its comment says each carries a
-meaning *a reader should choose the ASCII form for*. Read one at a time they part: section,
-multiplication, superscript each have two or three honest forms; **a minus has exactly one**. So the
-discriminator is the rule's **substitution table**, which had never named U+2212. Named, then swept.
-**BEHAVIOR-FREE BY CONSTRUCTION:** only a line whose first non-blank is `//` moved -- Zig has no block
-comment and a multiline string continues on `\\`, so the line is comment end to end. **762 lines
-changed, 0 outside that shape**, each of the **129 files re-derived from `git show HEAD:<path>`** and
-byte-identical. **3,772 -> 2,608, ceiling 3,794 -> 2,630**, the 22 of slack kept so the next lap is
-credited with none of it. Cold and hot each **205 guards, 203 green, 0 red, 2 gated (%5)**.
-**AGAINST MYSELF:** the elder link inside my new shelf kept the pin's depth -- the same fault my
-elder block recorded, caught by the same guard, repaired by the repointer that computes it, and paid
-for with a second full hot pass. One measurement went to `/tmp` before I moved to `.lap/`.
-**THE REBASE BROUGHT TWO REDS, NEITHER MINE:** a peer's shelf carried the SAME depth fault mine had
-an hour earlier -- one lantern, two hands, one lap -- and the repointer made both repairs. The day
-turned mid-lap, so `log_has_a_row` read `pin_shelf_missing` and the pin opens `20260909`.
+The U+2212 sweep and its two rebase reds [shelved](archive/20260909-225106_itinerary-landed-accounts.md) whole, the elder chain inside it.
 **Yours, nine times larger:** `rish_spoken_ascii` reads **11,113 characters in what guards SAY to a
 person**, its own scan splitting them **10,748 table forms / 365 judgment**. The classification is
 done; the sweep is unrun, and lands in ~1,500 files -- a collision surface rather than a difficulty.
