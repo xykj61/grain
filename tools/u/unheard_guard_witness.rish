@@ -76,7 +76,10 @@ assert green.out contains "unheard_choir_ceiling=37" else "unheard-guard: the ch
 # THE SECOND READING'S CEILING, pinned the same way and for the same reason. Published at exactly
 # the count measured on the round that widened the population -- 12 on 20260906 at 2a3313c06b --
 # so the widening reddened no ship and the thirteenth silent choir reds on the lap it arrives.
-assert green.out contains "unnamed_choir_ceiling=12" else "unheard-guard: the second reading's ceiling stands where it was measured"
+# 12 -> 11 on `20260909.214500`, lowered to meet the reading below it: the count fell to 11 when
+# `glow_choir` reached `tools/gen/chapter/glow_hygiene_pin.rish` two hops down, and a ceiling
+# carrying slack over a count that has fallen lets the next silent choir arrive unheard.
+assert green.out contains "unnamed_choir_ceiling=11" else "unheard-guard: the second reading's ceiling stands where it was measured"
 
 # THE VACUUMS, closed before the count is believed. A reading that reaches no guards prints zero
 # unheard, and a zero nobody planted looks exactly like a heard tree (REDS %240). Both vacuums are
@@ -134,7 +137,15 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # Its path stays UNSPELLED here for the reason the two Rye arrivals above stayed unspelled:
 # `rye_compile_reach` reads a `.rye` path inside a runner as a claim that some build reaches it.
 assert green.out contains "unnamed_population=460" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
-assert green.out contains "unnamed_choirs=12" else "unheard-guard: twelve silent choirs wear neither word -- ${green.out}"
+# 12 -> 11 on `20260909.214500`, and the fall came from two hops rather than from a rename.
+# `tools/g/glow_choir_witness.rish` gathered six Glow witnesses that no runner named, one of
+# them `tools/g/glow_connector_seam_witness.rish` -- an accrete shim whose whole body runs
+# `tools/gen/chapter/glow_connector_seam_witness.rish`, which in turn names
+# `tools/gen/chapter/glow_hygiene_pin.rish`, a choir singing six. So one roster-reached shim
+# carried a six-guard choir into the heard set two hops down, which is the leverage the reach
+# header claims and this is a measured instance of it. Checked from both sides: the choir list
+# read at the elder tree and at this one differs by exactly that one path, and the delta is one.
+assert green.out contains "unnamed_choirs=11" else "unheard-guard: eleven silent choirs wear neither word -- ${green.out}"
 
 # THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first
 # line, builds and runs 116 Rye programs, sings 281 guards, and stands on no roster. It was

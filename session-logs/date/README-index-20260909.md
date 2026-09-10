@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260909.221305` | [A receipt keys on what the reader branches on](20260909/20260909-221305_a-receipt-keys-on-what-the-reader-branches-on.kyri) | Bakery; coverage keyed on room class |
+| `20260909.220705` | [The shim that carried a choir](20260909/20260909-220705_the-shim-that-carried-a-choir.kyri) | Pheromone; six unheard Glow witnesses gathered |
 | `20260909.214114` | [Two faults whose errors cancel](20260909/20260909-214114_two-faults-that-cancel.kyri) | The census admitted 3 of 12 on a comment; every cure read worse. |
 | `20260909.210714` | [The world a comparison can see](20260909/20260909-210714_the-world-a-comparison-can-see.kyri) | Bakery; a prover blind to every path git ignores, proven both ways |
 | `20260909.205933` | [The guard that named its own gap](20260909/20260909-205933_the-guard-that-named-its-own-gap.kyri) | Incense; the compass rose opens at the map |

@@ -128,7 +128,9 @@ CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-37}"
 # the population, so no ship reds on the widening and the thirteenth silent choir reds on the lap
 # it arrives. 12 measured 20260906 at 2a3313c06b -- `parity_ch01.rish` singing 281 guards and
 # `parity_ch02.rish` 128 are the two largest, and neither is reachable from the roster today.
-UNNAMED_CHOIR_CEILING="${UNNAMED_CHOIR_CEILING:-12}"
+# 12 -> 11 on `20260909.214500`: `glow_choir` gathered a shim whose two-hop chain reaches
+# `tools/gen/chapter/glow_hygiene_pin.rish`, a choir singing six, so it left this population.
+UNNAMED_CHOIR_CEILING="${UNNAMED_CHOIR_CEILING:-11}"
 ROSTER="${UNHEARD_GUARD_ROSTER:-construction/standing-equipment.kyri}"
 mode="${1:-measure}"
 

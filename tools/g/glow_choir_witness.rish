@@ -22,6 +22,28 @@
 # COST, MEASURED 20260828 ON THIS PIER. 2m01s for all 26: the members are grep-shaped and cheap, save
 # active-designing/docs/glow/glow_book_anchor_witness.rish at 25s. That is a cadence clock rather
 # than a lap one -- the roster's own rule, cost decides the tier.
+#
+# THE SECOND SURVEY, 20260909, AND WHY THE POPULATION REFILLED. `sh
+# tools/fixtures/w/witness_reach_scan.sh --list` reads the `unheard` band -- a tracked
+# `*_witness.rish` no runner on disk names in command position -- and it answered eight Glow-family
+# files, none of them among the 26 above. Run one at a time before any was gathered, all eight
+# stood GREEN. Six join the choir here: glow_connector_seam (1s), glow_jamcue_vectors (0s),
+# glow_repl (78s), glow_skate_gates (61s), nock_glow_mirror (17s) and stoa71_glow_import_seam (6s),
+# so the choir's members go 26 -> 32 and its cost 2m01s -> 4m47s measured on this pier, still choir
+# money on the cadence clock.
+#
+# TWO OF THE EIGHT ARE HELD, AND THE HOLD IS THE POINT. glow_mobile_target and glow_riscv_target
+# each read GREEN in 0s on this host by SKIPPING: `qemu-aarch64 is absent`, `qemu-riscv64 is
+# absent`. Whether that is an honest green or a green that means nothing is REDS `%460`, OPEN and
+# Keaton's word, with `%446` reading the other way. Gathering them would publish a fleet-wide
+# green for a leg no ship on this pier runs, which is the proxy shape REDS `%532` booked one room
+# over. They wait for the ruling rather than for a lap.
+#
+# WHAT THIS DOES NOT REACH, MEASURED THE SAME HOUR. 57 further Glow witnesses read `unclocked`
+# rather than `unheard`: `tools/p/parity_ch01.rish` names every one of them, and no roster row
+# reaches parity_ch01. A second choir over that list would be a second loom watching one lantern,
+# which this file's own paragraph above forbids. The answer there is a tier for the parity runner,
+# it costs build time, and witness_reach_scan.sh's own header already names it as Keaton's word.
 
 say "glow-choir: Language EN -- the Glow witnesses no other runner named."
 say "glow-choir: Style Gauge, Meter -- a RED names the member that broke."
@@ -79,111 +101,147 @@ let p25 = run ["sh" "-c" "test -f tools/t/tally_glow_tend_limb5_witness.rish"]
 assert p25.ok else "glow-choir: member missing on disk -- tools/t/tally_glow_tend_limb5_witness.rish"
 let p26 = run ["sh" "-c" "test -f tools/t/tally_glow_tend_limb6_witness.rish"]
 assert p26.ok else "glow-choir: member missing on disk -- tools/t/tally_glow_tend_limb6_witness.rish"
+let p27 = run ["sh" "-c" "test -f tools/g/glow_connector_seam_witness.rish"]
+assert p27.ok else "glow-choir: member missing on disk -- tools/g/glow_connector_seam_witness.rish"
+let p28 = run ["sh" "-c" "test -f tools/g/glow_jamcue_vectors_witness.rish"]
+assert p28.ok else "glow-choir: member missing on disk -- tools/g/glow_jamcue_vectors_witness.rish"
+let p29 = run ["sh" "-c" "test -f tools/g/glow_repl_witness.rish"]
+assert p29.ok else "glow-choir: member missing on disk -- tools/g/glow_repl_witness.rish"
+let p30 = run ["sh" "-c" "test -f tools/g/glow_skate_gates_witness.rish"]
+assert p30.ok else "glow-choir: member missing on disk -- tools/g/glow_skate_gates_witness.rish"
+let p31 = run ["sh" "-c" "test -f tools/n/nock_glow_mirror_witness.rish"]
+assert p31.ok else "glow-choir: member missing on disk -- tools/n/nock_glow_mirror_witness.rish"
+let p32 = run ["sh" "-c" "test -f tools/s/stoa71_glow_import_seam_witness.rish"]
+assert p32.ok else "glow-choir: member missing on disk -- tools/s/stoa71_glow_import_seam_witness.rish"
 
 say "glow-choir: all 26 members present on disk; singing..."
 
 let r1 = run ["rishi/bin/rishi" "run" "active-designing/docs/glow/glow_book_anchor_witness.rish"]
 assert r1.ok else "glow-choir: glow_book_anchor RED"
-say "glow-choir: 1/26 glow_book_anchor GREEN"
+say "glow-choir: 1/32 glow_book_anchor GREEN"
 
 let r2 = run ["rishi/bin/rishi" "run" "tools/au/aurora_glow_tend_limb1_witness.rish"]
 assert r2.ok else "glow-choir: aurora_glow_tend_limb1 RED"
-say "glow-choir: 2/26 aurora_glow_tend_limb1 GREEN"
+say "glow-choir: 2/32 aurora_glow_tend_limb1 GREEN"
 
 let r3 = run ["rishi/bin/rishi" "run" "tools/au/aurora_glow_tend_limb2_witness.rish"]
 assert r3.ok else "glow-choir: aurora_glow_tend_limb2 RED"
-say "glow-choir: 3/26 aurora_glow_tend_limb2 GREEN"
+say "glow-choir: 3/32 aurora_glow_tend_limb2 GREEN"
 
 let r4 = run ["rishi/bin/rishi" "run" "tools/au/aurora_glow_tend_limb3_witness.rish"]
 assert r4.ok else "glow-choir: aurora_glow_tend_limb3 RED"
-say "glow-choir: 4/26 aurora_glow_tend_limb3 GREEN"
+say "glow-choir: 4/32 aurora_glow_tend_limb3 GREEN"
 
 let r5 = run ["rishi/bin/rishi" "run" "tools/au/aurora_glow_tend_limb4_witness.rish"]
 assert r5.ok else "glow-choir: aurora_glow_tend_limb4 RED"
-say "glow-choir: 5/26 aurora_glow_tend_limb4 GREEN"
+say "glow-choir: 5/32 aurora_glow_tend_limb4 GREEN"
 
 let r6 = run ["rishi/bin/rishi" "run" "tools/g/glow_face_lit_witness.rish"]
 assert r6.ok else "glow-choir: glow_face_lit RED"
-say "glow-choir: 6/26 glow_face_lit GREEN"
+say "glow-choir: 6/32 glow_face_lit GREEN"
 
 let r7 = run ["rishi/bin/rishi" "run" "tools/g/glow_g5_nock_family_notes_witness.rish"]
 assert r7.ok else "glow-choir: glow_g5_nock_family_notes RED"
-say "glow-choir: 7/26 glow_g5_nock_family_notes GREEN"
+say "glow-choir: 7/32 glow_g5_nock_family_notes GREEN"
 
 let r8 = run ["rishi/bin/rishi" "run" "tools/g/glow_lower_compose_jam_cue_witness.rish"]
 assert r8.ok else "glow-choir: glow_lower_compose_jam_cue RED"
-say "glow-choir: 8/26 glow_lower_compose_jam_cue GREEN"
+say "glow-choir: 8/32 glow_lower_compose_jam_cue GREEN"
 
 let r9 = run ["rishi/bin/rishi" "run" "tools/g/glow_lower_compose_lib_witness.rish"]
 assert r9.ok else "glow-choir: glow_lower_compose_lib RED"
-say "glow-choir: 9/26 glow_lower_compose_lib GREEN"
+say "glow-choir: 9/32 glow_lower_compose_lib GREEN"
 
 let r10 = run ["rishi/bin/rishi" "run" "tools/g/glow_lower_face_lit_witness.rish"]
 assert r10.ok else "glow-choir: glow_lower_face_lit RED"
-say "glow-choir: 10/26 glow_lower_face_lit GREEN"
+say "glow-choir: 10/32 glow_lower_face_lit GREEN"
 
 let r11 = run ["rishi/bin/rishi" "run" "tools/g/glow_lower_named_cast_witness.rish"]
 assert r11.ok else "glow-choir: glow_lower_named_cast RED"
-say "glow-choir: 11/26 glow_lower_named_cast GREEN"
+say "glow-choir: 11/32 glow_lower_named_cast GREEN"
 
 let r12 = run ["rishi/bin/rishi" "run" "tools/g/glow_lower_shape_witness.rish"]
 assert r12.ok else "glow-choir: glow_lower_shape RED"
-say "glow-choir: 12/26 glow_lower_shape GREEN"
+say "glow-choir: 12/32 glow_lower_shape GREEN"
 
 let r13 = run ["rishi/bin/rishi" "run" "tools/g/glow_rune_shape_witness.rish"]
 assert r13.ok else "glow-choir: glow_rune_shape RED"
-say "glow-choir: 13/26 glow_rune_shape GREEN"
+say "glow-choir: 13/32 glow_rune_shape GREEN"
 
 let r14 = run ["rishi/bin/rishi" "run" "tools/g/glow_sample_argv_witness.rish"]
 assert r14.ok else "glow-choir: glow_sample_argv RED"
-say "glow-choir: 14/26 glow_sample_argv GREEN"
+say "glow-choir: 14/32 glow_sample_argv GREEN"
 
 let r15 = run ["rishi/bin/rishi" "run" "tools/g/glow_seva_b0_append_witness.rish"]
 assert r15.ok else "glow-choir: glow_seva_b0_append RED"
-say "glow-choir: 15/26 glow_seva_b0_append GREEN"
+say "glow-choir: 15/32 glow_seva_b0_append GREEN"
 
 let r16 = run ["rishi/bin/rishi" "run" "tools/g/glow_seva_b0_typed_append_witness.rish"]
 assert r16.ok else "glow-choir: glow_seva_b0_typed_append RED"
-say "glow-choir: 16/26 glow_seva_b0_typed_append GREEN"
+say "glow-choir: 16/32 glow_seva_b0_typed_append GREEN"
 
 let r17 = run ["rishi/bin/rishi" "run" "tools/m/mantra_glow_tend_limb1_witness.rish"]
 assert r17.ok else "glow-choir: mantra_glow_tend_limb1 RED"
-say "glow-choir: 17/26 mantra_glow_tend_limb1 GREEN"
+say "glow-choir: 17/32 mantra_glow_tend_limb1 GREEN"
 
 let r18 = run ["rishi/bin/rishi" "run" "tools/m/mantra_glow_tend_limb2_witness.rish"]
 assert r18.ok else "glow-choir: mantra_glow_tend_limb2 RED"
-say "glow-choir: 18/26 mantra_glow_tend_limb2 GREEN"
+say "glow-choir: 18/32 mantra_glow_tend_limb2 GREEN"
 
 let r19 = run ["rishi/bin/rishi" "run" "tools/m/mantra_glow_tend_limb3_witness.rish"]
 assert r19.ok else "glow-choir: mantra_glow_tend_limb3 RED"
-say "glow-choir: 19/26 mantra_glow_tend_limb3 GREEN"
+say "glow-choir: 19/32 mantra_glow_tend_limb3 GREEN"
 
 let r20 = run ["rishi/bin/rishi" "run" "tools/m/mantra_glow_tend_limb4_witness.rish"]
 assert r20.ok else "glow-choir: mantra_glow_tend_limb4 RED"
-say "glow-choir: 20/26 mantra_glow_tend_limb4 GREEN"
+say "glow-choir: 20/32 mantra_glow_tend_limb4 GREEN"
 
 let r21 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_limb1_witness.rish"]
 assert r21.ok else "glow-choir: tally_glow_tend_limb1 RED"
-say "glow-choir: 21/26 tally_glow_tend_limb1 GREEN"
+say "glow-choir: 21/32 tally_glow_tend_limb1 GREEN"
 
 let r22 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_limb2_witness.rish"]
 assert r22.ok else "glow-choir: tally_glow_tend_limb2 RED"
-say "glow-choir: 22/26 tally_glow_tend_limb2 GREEN"
+say "glow-choir: 22/32 tally_glow_tend_limb2 GREEN"
 
 let r23 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_limb3_witness.rish"]
 assert r23.ok else "glow-choir: tally_glow_tend_limb3 RED"
-say "glow-choir: 23/26 tally_glow_tend_limb3 GREEN"
+say "glow-choir: 23/32 tally_glow_tend_limb3 GREEN"
 
 let r24 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_limb4_witness.rish"]
 assert r24.ok else "glow-choir: tally_glow_tend_limb4 RED"
-say "glow-choir: 24/26 tally_glow_tend_limb4 GREEN"
+say "glow-choir: 24/32 tally_glow_tend_limb4 GREEN"
 
 let r25 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_limb5_witness.rish"]
 assert r25.ok else "glow-choir: tally_glow_tend_limb5 RED"
-say "glow-choir: 25/26 tally_glow_tend_limb5 GREEN"
+say "glow-choir: 25/32 tally_glow_tend_limb5 GREEN"
 
 let r26 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_limb6_witness.rish"]
 assert r26.ok else "glow-choir: tally_glow_tend_limb6 RED"
-say "glow-choir: 26/26 tally_glow_tend_limb6 GREEN"
+say "glow-choir: 26/32 tally_glow_tend_limb6 GREEN"
 
-say "GREEN: glow-choir -- 26 Glow witnesses that no runner reached now answer on the cadence clock."
+let r27 = run ["rishi/bin/rishi" "run" "tools/g/glow_connector_seam_witness.rish"]
+assert r27.ok else "glow-choir: glow_connector_seam RED"
+say "glow-choir: 27/32 glow_connector_seam GREEN"
+
+let r28 = run ["rishi/bin/rishi" "run" "tools/g/glow_jamcue_vectors_witness.rish"]
+assert r28.ok else "glow-choir: glow_jamcue_vectors RED"
+say "glow-choir: 28/32 glow_jamcue_vectors GREEN"
+
+let r29 = run ["rishi/bin/rishi" "run" "tools/g/glow_repl_witness.rish"]
+assert r29.ok else "glow-choir: glow_repl RED"
+say "glow-choir: 29/32 glow_repl GREEN"
+
+let r30 = run ["rishi/bin/rishi" "run" "tools/g/glow_skate_gates_witness.rish"]
+assert r30.ok else "glow-choir: glow_skate_gates RED"
+say "glow-choir: 30/32 glow_skate_gates GREEN"
+
+let r31 = run ["rishi/bin/rishi" "run" "tools/n/nock_glow_mirror_witness.rish"]
+assert r31.ok else "glow-choir: nock_glow_mirror RED"
+say "glow-choir: 31/32 nock_glow_mirror GREEN"
+
+let r32 = run ["rishi/bin/rishi" "run" "tools/s/stoa71_glow_import_seam_witness.rish"]
+assert r32.ok else "glow-choir: stoa71_glow_import_seam RED"
+say "glow-choir: 32/32 stoa71_glow_import_seam GREEN"
+
+say "GREEN: glow-choir -- 32 Glow witnesses that no runner reached now answer on the cadence clock."

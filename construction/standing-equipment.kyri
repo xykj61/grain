@@ -1212,6 +1212,10 @@ seated 20260828.202621
 # to active-designing/yonder/, and nothing was there to say so. `cadence` rather than `lap`: the
 # choir costs 2m01s measured on this pier, which is choir money, and the Glow ladder's last
 # advancing commit was 2026-08-04, so a slower clock matches how fast the family moves.
+# 26 -> 32 members on 20260909: a second reading of the same `unheard` band answered eight more
+# Glow-family files, six of which joined after each ran GREEN alone. Cost 2m01s -> 4m47s, still the
+# cadence clock. The two held back are the cross-target pair, green in 0s by skipping an absent
+# qemu -- REDS `%460`, Keaton's word.
 
 guard glow_choir
 path tools/g/glow_choir_witness.rish

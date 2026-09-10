@@ -269,7 +269,12 @@ done
 # instead through the choirs it already had, since a choir knows its own members where a prefix only
 # guesses. The row is a RATCHET on 30 standing reds and 2 hangs rather than a wall, because a guard
 # that refuses on ordinary standing state is one somebody turns off.
-CEILING=${WITNESS_REACH_CEILING:-643}
+# 643 -> 636 on `20260909.213000`: the `--list` band answered eight Glow-family files no runner
+# named, all eight GREEN when run one at a time, and six joined `tools/g/glow_choir_witness.rish`.
+# The two held back are the cross-target pair, whose 0s green means `qemu absent` -- REDS `%460`,
+# Keaton's word. `wholly_unreached` fell 175 -> 173 in the same move; its own ceiling keeps the
+# slack it already carried.
+CEILING=${WITNESS_REACH_CEILING:-636}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
