@@ -1,0 +1,147 @@
+# tools/am/amphora_ferried_body_proven_witness.rish -- a body proves its address before it crosses.
+#
+# `resins/` is content-addressed: a resin's FILENAME is the SHA3-256 of its own bytes. That one
+# equality is what makes the directory an address book rather than a pile of files named in hex.
+# The restore reader proves it twice -- once before writing, once as each body lands
+# (`amphora_prove_before_write`). The ferry carries those same bodies to the far side of a
+# crossing, and it proved that equality nowhere. It read the filename's LENGTH alone.
+#
+# WHAT THE TREE DID, measured on metal `20260910.114040` in a pen, before a line changed. One
+# resin body was overwritten with bytes hashing to `42cd36cf...`, its filename still reading
+# `7cab931a...`. The ferry carried it whole: `resins ferried count=4`, then `carry complete`, exit
+# **0**. The forged body then stood in the far home under a name that lied about it, where the far
+# Return reads it as the file the listing names. Every digest in the vessel was honest, and one
+# body behind them was not.
+#
+# THE REPAIR PUBLISHES THE READING ONCE -- `body_addresses` in `amphora/src/main.rye` -- and both
+# readers borrow it, the way they already borrow the wreck rule. The comparison had been written
+# once and skipped once, which is the whole shape of the fault. The ferry now proves in two walks
+# like the restore reader beside it: every body before the first byte crosses, and each again as
+# it lands, so a resin tampered with BETWEEN the walks writes nothing either.
+#
+# THE FIRST REPAIR PROVED AS IT WROTE, and two honest bodies reached the far side ahead of the
+# forgery's refusal. A refusal that arrives after the write is a report, which is the lesson
+# `amphora_prove_before_write` seated one reader over.
+#
+# WHAT THIS PROVES. The honest vessel crosses and names both proof lines. A forged body refuses at
+# `cargo unproven` with no far resins directory made at all, the forgery placed SECOND in
+# directory order so an honest body stands ahead of it in the walk. The inner wall earns a leg of
+# its own through `AMPHORA_CARRY_SKIP_PROVE`, since the two walls stand in series and the outer
+# answers first. Each wall was removed in turn and its named leg watched to fall. Then the plant
+# lifted, with every welcome shown returning -- a refusal proven from the failing side alone reads
+# the same as a wall that refuses everything.
+#
+#   rishi/bin/rishi run tools/am/amphora_ferried_body_proven_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# The pen carries a kernel-picked name, because eight ships run this roster and the last gesture
+# below is `rm -rf`: two peers sharing one literal home would each red on a fact about the pen
+# rather than about Amphora (the class REDS %512 named).
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_ferry_body.XXXXXX"]
+assert pen.ok else "ferry-body: pen must open"
+let home = trim pen.out
+
+# Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none of
+# these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+assert build_amphora.ok else "ferry-body: amphora build failed -- ${build_amphora.err}"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "ferry-body: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "ferry-body: vessel-seal build failed -- ${build_seal.err}"
+
+# Each plant pours into its OWN directory, because a vessel's resins live beside it: two vessels
+# in one home would share one resins directory, and forging a body for the plant would quietly
+# break the honest leg beside it.
+let mk = run ["sh" "-c" "mkdir -p ${home}/h ${home}/f"]
+assert mk.ok else "ferry-body: the two plant homes must open"
+
+# --- leg 1: the honest vessel crosses whole, and both proof lines arrive ---
+let honest = "${home}/h/honest.bron"
+let pour_honest = run ["amphora/bin/amphora" "pour" season honest]
+assert pour_honest.ok else "ferry-body: honest pour must pass -- ${pour_honest.err}"
+let mkdock = run ["sh" "-c" "mkdir -p ${home}/h/dock"]
+assert mkdock.ok else "ferry-body: honest dock must open"
+let carry_honest = run ["amphora/bin/amphora" "carry" honest "${home}/h/dock"]
+assert carry_honest.ok else "ferry-body: the honest vessel must carry -- ${carry_honest.err}"
+assert carry_honest.err contains "ferry resins proven" else "ferry-body: the honest carry says its bodies were proven before crossing"
+assert carry_honest.err contains "resins ferried" else "ferry-body: the honest carry says its bodies landed"
+assert carry_honest.err contains "carry complete" else "ferry-body: the honest carry names its close"
+
+# The far side really received bodies, so the leg above is a crossing rather than two print lines.
+let far_bodies = run ["sh" "-c" "ls ${home}/h/dock/resins | wc -l"]
+assert far_bodies.ok else "ferry-body: the far resins must be listable"
+assert (trim far_bodies.out) == "4" else "ferry-body: the honest crossing lands all four bodies"
+say "leg_honest=crossed"
+
+# --- leg 2: a forged body refuses, and the far home receives nothing at all ---
+# The SECOND resin by directory order is forged rather than the first, so at least one honest
+# body stands AHEAD of the forgery in the walk. That ordering is what tells a wall from a report:
+# a ferry proving as it writes would already have landed the honest body before refusing.
+let forged = "${home}/f/forged.bron"
+let pour_forged = run ["amphora/bin/amphora" "pour" season forged]
+assert pour_forged.ok else "ferry-body: forged-plant pour must pass -- ${pour_forged.err}"
+let forge_prep = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test x$f != x; printf 'FORGED-BODY-NOT-THIS-ADDRESS\n' > ${home}/f/resins/$f"]
+assert forge_prep.ok else "ferry-body: the forge plant must prepare"
+let mkdock2 = run ["sh" "-c" "mkdir -p ${home}/f/dock"]
+assert mkdock2.ok else "ferry-body: forged dock must open"
+let carry_forged = run ["amphora/bin/amphora" "carry" forged "${home}/f/dock"]
+assert (carry_forged.ok == false) else "ferry-body: a body that does not hash to its address must refuse the crossing"
+assert carry_forged.err contains "cargo unproven" else "ferry-body: the forged body refuses by name"
+
+# THE WHOLE POINT OF THE ROUND: the refusal arrives before the mutation. The far resins directory
+# is not merely empty -- it was never made, so nothing of the crossing touched the far side.
+let far_absent = run ["sh" "-c" "test ! -e ${home}/f/dock/resins"]
+assert far_absent.ok else "ferry-body: the refusal must arrive with NO far resins directory made"
+let no_complete = run ["sh" "-c" "printf '%s' '${carry_forged.err}' | grep -c 'carry complete' || true"]
+assert (trim no_complete.out) == "0" else "ferry-body: a refused crossing never prints complete"
+say "leg_forged=refused_before_write"
+
+# --- THE INNER WALL, GIVEN A LEG OF ITS OWN ---
+# The two walls stand in series and the prove-before-write pass refuses FIRST, so every leg above
+# proves the OUTER wall alone: remove the writing walk's own check and this witness stays green.
+# That is the fault this round exists to close, one level down, so the inner wall gets a leg
+# rather than a paragraph. `AMPHORA_CARRY_SKIP_PROVE` declines the first pass -- it forges
+# nothing, and production carries never set it -- leaving the wall inside the writing walk to
+# answer for the crossing. What the second reading buys is a resin tampered with BETWEEN the two
+# walks, which no honest input can stage; declining the first pass is the same bypass the elder
+# vessel gives the restore reader one clause over.
+let mkdock_inner = run ["sh" "-c" "mkdir -p ${home}/f/dock_inner"]
+assert mkdock_inner.ok else "ferry-body: inner-wall dock must open"
+let re_forge = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); printf 'FORGED-BODY-NOT-THIS-ADDRESS\n' > ${home}/f/resins/$f"]
+assert re_forge.ok else "ferry-body: the inner-wall plant must prepare"
+let inner = run ["sh" "-c" "env AMPHORA_CARRY_SKIP_PROVE=1 amphora/bin/amphora carry ${forged} ${home}/f/dock_inner 2>&1"]
+assert (inner.ok == false) else "ferry-body: with the first pass declined, the writing walk must refuse alone"
+assert inner.out contains "cargo unproven" else "ferry-body: the inner wall refuses by the same name"
+let no_prove_line = run ["sh" "-c" "printf '%s' '${inner.out}' | grep -c 'ferry resins proven' || true"]
+assert (trim no_prove_line.out) == "0" else "ferry-body: the declined pass must not claim it proved anything"
+# The inner wall is a wall for the bodies AFTER it and a report for the ones before -- which is
+# precisely why the outer pass exists, and this asserts the difference rather than hiding it.
+let inner_partial = run ["sh" "-c" "test -e ${home}/f/dock_inner/resins"]
+assert inner_partial.ok else "ferry-body: the inner wall alone writes before it refuses -- the outer pass is what prevents that"
+let inner_no_forgery = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test ! -e ${home}/f/dock_inner/resins/$f"]
+assert inner_no_forgery.ok else "ferry-body: the inner wall still keeps the forged body off the far side"
+say "leg_inner=refused_alone"
+
+# --- LIFT the plant, and show the welcome returning ---
+# The honest body is recovered from a fresh pour of the same season, which is exactly what makes
+# it honest: the same bytes hash to the same address every time.
+let fresh = run ["sh" "-c" "mkdir -p ${home}/r && amphora/bin/amphora pour ${season} ${home}/r/fresh.bron > /dev/null 2>&1"]
+assert fresh.ok else "ferry-body: the recovery pour must pass"
+let lift = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); cp ${home}/r/resins/$f ${home}/f/resins/$f"]
+assert lift.ok else "ferry-body: the lift must land the honest body back"
+let mkdock3 = run ["sh" "-c" "mkdir -p ${home}/f/dock2"]
+assert mkdock3.ok else "ferry-body: third dock must open"
+let carry_after = run ["amphora/bin/amphora" "carry" forged "${home}/f/dock2"]
+assert carry_after.ok else "ferry-body: the crossing welcome must return once the forgery is lifted -- ${carry_after.err}"
+assert carry_after.err contains "ferry resins proven" else "ferry-body: the returned welcome proves its bodies too"
+assert carry_after.err contains "carry complete" else "ferry-body: the returned welcome names its close"
+say "leg_lifted=welcome_returned"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "ferry-body: pen must sweep"
+
+say "amphora: a body proves its address before it crosses -- honest crossed, forged refused with nothing on the far side, welcome returned"
+say "GREEN: amphora_ferried_body_proven"

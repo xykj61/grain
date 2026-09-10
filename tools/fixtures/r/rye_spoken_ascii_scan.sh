@@ -75,7 +75,12 @@ mode="${1:-count}"
 # The ceiling only falls. Lower it whenever a lap converts spoken lines; never raise it.
 # The arc, each figure measured rather than recalled:
 #   3895  `20260908.214712`  the reading on the lap this meter was seated, mantra and tally swept to zero
-CEILING=3895
+#   3869  `20260910.114040`  amphora's refusal diagnostics swept -- 26 em dashes in `refuse`,
+#                            the one form the table names, converted while the module was open for
+#                            the ferry repair. The vessel HEAD's own em dash stays: those bytes are
+#                            a data format rather than a spoken line, and moving them would move
+#                            every poured vessel.
+CEILING=3869
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340). The Rye comment meter paid

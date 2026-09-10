@@ -2895,6 +2895,44 @@ path tools/am/amphora_named_once_witness.rish
 tier lap
 seated 20260910.094705
 
+# amphora_ferried_body_proven -- a body proves its address before it crosses. `resins/` is
+# content-addressed: a resin's FILENAME is the SHA3-256 of its own bytes, and that equality is the
+# whole of what makes the directory an address book rather than a pile of files named in hex. The
+# restore reader proved it TWICE -- once before writing and once as each body lands
+# (`amphora_prove_before_write`). The ferry, which carries those same bodies across a crossing,
+# proved it NOT ONCE: it checked only that the filename was digest-LENGTH.
+#
+# WHAT WAS WRONG. Measured on metal `20260910.114040` in a pen before a line changed: one resin
+# overwritten with bytes hashing to `42cd36cf...` while its filename still read `7cab931a...` was
+# ferried whole. `carry` printed `resins ferried count=4` and `carry complete`, exit **0**, and the
+# forged body stood in the far home under a name that lied about it -- where the far Return reads
+# it as the file the listing names. Every digest in the vessel was honest; one body behind them
+# was not.
+#
+# WHY NO GUARD SAW IT. Eleven amphora witnesses plant tampers, and every one plants at a wall that
+# EXISTS. `amphora_prove_before_write` proves the restore path's two readings exactly, and the
+# ferry is a different reader of the same directory -- so the family's coverage was a statement
+# about doors rather than about the bodies passing through them. The comparison had been written
+# once and skipped once, which is why the repair PUBLISHES it: `body_addresses` in
+# `amphora/src/main.rye`, borrowed by both readers the way they already borrow the wreck rule.
+#
+# THE FERRY NOW PROVES IN TWO WALKS, like the restore reader beside it: every body before the
+# first byte crosses, and each again as it lands, so a resin tampered with BETWEEN the walks writes
+# nothing either. The first repair proved as it wrote, and two honest bodies landed before the
+# forgery refused -- a refusal after the write is a report, which is the lesson
+# `amphora_prove_before_write` seated one reader over.
+#
+# BOTH WALLS CARRY THEIR OWN LEG, and the second one needed a seam to get it. The walls stand in
+# series and the outer refuses first, so every honest input proves the outer alone -- removing the
+# inner check left the witness GREEN, measured. `AMPHORA_CARRY_SKIP_PROVE` declines the first pass
+# so the writing walk answers alone; it forges nothing and production carries never set it, the
+# same shape `AMPHORA_CARRY_TRUST_DOCK` already holds in this file. Each wall was then removed in
+# turn and its named leg watched to fall, and the welcome shown returning.
+guard amphora_ferried_body_proven
+path tools/am/amphora_ferried_body_proven_witness.rish
+tier lap
+seated 20260910.114040
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert
