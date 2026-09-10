@@ -9,6 +9,10 @@ movement stands already built at `mantra/src/weave.rye`. The essay's crux is unc
 [the erratum at the foot](#erratum-20260905225236----the-scope-that-changed-between-rows) before
 taking the arc. REDS `%441`.*
 
+*Erratum `20260909.225510` -- the arc's third and fourth movements, merge and the showing, stand
+built and rostered; the essay's row-six count is unchanged and still right, while the conclusion it
+carried is not. Read [the second erratum at the foot](#erratum-20260909225510----the-number-held-and-the-conclusion-turned-over).*
+
 ## The measurement, before the argument
 
 Measured `20260905` on this pier, by `find`, `grep -c`, and `git ls-files`:
@@ -205,3 +209,72 @@ Measured on the lap this erratum was written: **44 rooms, 14 carrying a hidden s
 below a top level, and 8 rooms where a flat glob reports zero Rye while the room holds some** --
 `rye/` with 117 and `tools/` with 131 among them. Held by
 [`tools/m/module_room_reach_witness.rish`](../tools/m/module_room_reach_witness.rish).
+
+---
+
+## Erratum `20260909.225510` -- the number held and the conclusion turned over
+
+**What changed in the module.** `mantra/src/weave.rye` declares `pub fn merge` at line 1029 and
+`pub fn annotate` at line 1245, returning `[]const Note` over the `Reading` enum at line 280. Two
+witnesses drive them -- `tools/m/mantra_weave_merge_witness.rish` and
+`tools/m/mantra_weave_annotate_witness.rish` -- and both read GREEN on metal on this lap, the first
+proving the join answers the same weave **in all six orders**, the second proving the annotation
+over five readings and a mirror. Both are rostered on `construction/standing-equipment.kyri` as
+`mantra_weave_merge` and `mantra_weave_annotate`.
+
+**So four readings above are stale, and each was true when written.**
+
+| Reading, as published | Today |
+|---|---|
+| *the merge of two weaves and its commutativity proof do not exist* | `merge` stands, commutativity proven in six orders |
+| *The showing -- no annotation of what each side did* | `annotate`, `Note`, and `Reading` stand |
+| *the word merge appears in `mantra/src/weave.rye` exactly once* | **78** occurrences |
+| *entries on `construction/standing-equipment.kyri`* -- **0** | **30** guards carry `mantra` in their name |
+
+**The reading worth keeping is the one that did NOT move.** Row six of the opening table says
+`mantra/*.rye` files mentioning conflict, merge, three-way, or diff3: **0**. Re-run this lap, that
+glob still answers **0**, and it is still exactly right. The same question asked of `mantra/src/*.rye`
+answers **6 of 12**. Every file that carries the work sits one level below the glob that was cited to
+prove the work absent.
+
+So the essay's conclusion inverted while its number held still. Nothing here was mismeasured, and no
+row needs correcting -- what needs correcting is the sentence that read a count as a verdict.
+**A true number can carry a false conclusion across a scope it never claimed**, and the elder erratum
+one section up named that trap for the table without reaching the argument the table was serving.
+
+**The check that would have caught it is a run rather than a read**, and it already exists:
+
+```
+sh tools/fixtures/m/module_room_reach_scan.sh list
+```
+
+Measured this lap: `mantra/` holds **27** flat Rye files and **12** more in `mantra/src/`, which is
+the hidden shelf this command reports and a flat glob cannot.
+
+**The meter this suggested was measured, and declined.** If a page can name a module symbol and go
+false, the obvious repair is a guard that checks every such claim against the module. Measured this
+lap over the 387 living undated tracked Markdown pages:
+
+| Extraction rule | Claims found | Reported missing | Verified real |
+|---|---|---|---|
+| any backticked symbol beside any backticked `.rye` path on a line | 296 lines, 1,014 pairs | **722** | -- (cross-product noise) |
+| exactly one symbol and one path on the line | 31 | 6 | **0** -- all six read by hand |
+| joined by an explicit phrase (`sym` in `path`, `path`'s `sym`) | 3 | **0** | -- |
+
+The six the middle rule flagged are adjacent sentences with no claim between them: `skate/README.md`
+reads *"`brushstroke/image_skate.rye` produces from the image module. `LotusMeterReading` admits..."*,
+and `construction/EQUINOX_SEAT_MAP.md` names a bound in one file and the witness enforcing it in
+another, which is true prose. **A guard on the loose rule reds on true sentences; a guard on the tight
+rule watches three claims.** Neither pays its roster time, and the roster is shared by eight ships.
+So the meter stays unbuilt, with its numbers here rather than its idea, and the next hand starts from
+the measurement.
+
+**This erratum is the whole record, because the ledger could not take it.** The row was booked at
+`20260909.225510`, its headline repaired, and the rebase onto the anointed remote took both back
+out: upstream published `%676` against a different stamp and closed `construction/REDS.md` at
+**40,951 bytes of 40,960**. Nine bytes free, nine rows OPEN, and `reds_fold` refuses `row_open` --
+so no ship can book a red at all until the pin gets a word. The finding is here instead.
+
+**What stands unchanged.** The essay's crux -- that Mantra was named for the weave and built as a
+catalogue -- is what sent the work here, and the work arrived. The seam and the reading movements
+stand as written.
