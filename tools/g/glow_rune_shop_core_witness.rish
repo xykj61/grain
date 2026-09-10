@@ -27,7 +27,11 @@ assert build.ok else "rune_shop_core_witness build failed: ${build.err}${build.o
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "rune_shop_core_witness exited non-zero: ${selftest.out}"
-assert selftest.out contains "GREEN" else "rune_shop_core_witness not GREEN"
+# Every leg line below ends in `-- GREEN`, so a bare `contains "GREEN"` matched the FIRST leg and
+# read a run abandoned at leg two as a finished one -- the summary line could be deleted whole and
+# this guard still passed. The summary's own words are what only a complete run prints, and the
+# `summary_renamed` plant in this guard's control is what proves the sharpened leg sounds.
+assert selftest.out contains "GREEN: looks_like_shop_core separates" else "missing the summary claim -- a leg line's GREEN is not a finished run"
 assert selftest.out contains "core-double is a core and not the shop's" else "missing the core-double decline"
 assert selftest.out contains "core-two is a core and not the shop's" else "missing the core-two decline"
 assert selftest.out contains "core-three is a core and not the shop's" else "missing the core-three decline"
@@ -47,3 +51,19 @@ assert selftest.out contains "an armless core stays the shop's and refuses Empty
 assert selftest.out contains "an unclosed core refuses MalformedCore" else "missing the unclosed MalformedCore leg"
 
 say "GREEN: the `|%` road is picked by whether EVERY arm carries a body -- 17 legs, declines and claims alike."
+
+# CONTROL LEG -- everything below this marker is stripped from the pen copy by the control itself,
+# since a runner that made a pen of its own inside a pen would not terminate. The seventeen legs
+# above are what the pen proves; this leg is what proves them able to sound.
+say "glow-shop-core: the control -- five plants in a pen checkout, three the selftest catches and two only these legs can."
+let ctl = run ["sh" "tools/fixtures/g/glow_rune_shop_core_control.sh"]
+assert ctl.ok else "glow-shop-core: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=18 fail=0" else "glow-shop-core: the control did not prove eighteen behaviors --\n${ctl.out}"
+
+# The seventeen-leg claim above is printed BEFORE this leg runs, so a run abandoned during the
+# control's twenty-two seconds leaves a transcript ending on the announcement -- the same shape the
+# sharpened summary leg repaired one level down, read at this file's own top level. The sibling
+# house form (`tools/g/glow_desk_reach_witness.rish`) closes on a claim naming the control, and this
+# is that form. The pen's runner is cut at the marker above, so its last word stays the seventeen-leg
+# claim and the pen's baseline reads it unchanged.
+say "GREEN: glow-shop-core -- the seventeen legs above and the control's eighteen behaviors, both green."

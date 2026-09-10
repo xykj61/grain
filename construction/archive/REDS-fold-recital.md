@@ -681,3 +681,5 @@ at a closed fold.*
 *Row %681 folded to [`REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](REDS-the-loom-that-chased-a-generation-too-far-rows-681.md) on `20260910.003047`, **CLOSED** -- the fourth firing of the liveness family, and the first in which a sound reading began accusing a live lap -- because the launcher changed underneath it.*
 
 *Row %682 folded to [`REDS-the-frame-that-died-holding-a-name-rows-682.md`](REDS-the-frame-that-died-holding-a-name-rows-682.md) on `20260910.002413`, **CLOSED** -- a value that outlives its frame answers every derived question correctly and only the bytes wrong.*
+
+*Row %683 landed straight onto [`REDS-the-word-every-leg-prints-rows-683.md`](REDS-the-word-every-leg-prints-rows-683.md) on `20260910.020512`, **CLOSED** -- a substring test over an output whose every line carries the same word asserts on the word rather than on the claim, so the summary it was written to read could be deleted whole.*

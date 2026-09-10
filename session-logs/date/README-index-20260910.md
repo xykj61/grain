@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.020902` | [The record that refuted its rescuer](20260910/20260910-020902_the-record-that-refuted-its-rescuer.kyri) | Pheromone; a parked log corrected the lap recovering it |
 | `20260910.012453` | [the door that named eight](20260910/20260910-012453_the-door-that-named-eight.kyri) | 7 rota seats had no door in the why-room index; a guard walls them |
 | `20260910.011542` | [What stands between the quoted lines](20260910/20260910-011542_what-stands-between-the-quoted-lines.kyri) | A selection's shape is read now, not only its contents. |
 | `20260910.010206` | [A row names a log](20260910/20260910-010206_a-row-names-a-log.kyri) | the shelf row keys on its log, never its second |

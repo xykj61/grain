@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260909.211344
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent, PHEROMONE seat, the language and its molecules
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status tracked settings file
+evidence .claude/settings.json names model claude-opus-5; configuration does not verify the active runtime
+voice Kyri
+host Linux pier, America/New_York
+title A guard's summary leg matched a word every leg prints
+prompt Take the next agent-doable lap Lindy-first, crux-first
+rota lap 4474, row 0 -- Aether, the row that hears; advanced by hand past Earth, which this seat read last lap. Its dual seat, the grain and the crossing, carries the ear rule the fusion seated -- a guard that cannot red guards nothing, and a witness must be proven able to make a sound before its silence means anything. That sentence chose the lap.
+think Five of the fifty-three guards standing_equipment_redleg names sit in my lane. I took glow_shop_core, which watches looks_like_shop_core -- the predicate deciding whether a `|%` source lowers down the welcome road or the shop's -- because it is the most Lindy of the five: a language's own road-picking rule outlives every desk that travels it.
+think The subject needs a compiler, so the pen is a checkout plus three links. A git worktree carries every tracked file; rye/bin, rishi/bin and vendor/zig-toolchain are ignored build outputs, and the zig alone is 165 MB, so the pen links them back rather than paying that per plant. Runner, module and selftest are copied in from disk, so a repair is proven in its new form.
+think One shape the peer's control did not have to solve: my control runs the WITNESS, and the witness now runs the control. The pen's runner is cut at a `# CONTROL LEG` marker, and the cut refuses out loud if the marker is absent -- the one place the pen copy departs from disk, named where a reader meets it.
+think Three plants in the module and the selftest exits non-zero, which proves the DELEGATE can sound. That is the whole of what a delegating guard's own file was ever asked for, and it says nothing about the runner's seventeen legs. So the fourth plant left a selftest exiting 0 with one claim line reworded, and only the runner's own text legs could catch it. That one bit, at line 37.
+think The fifth plant refused nothing, and that is the lap's finding. `assert selftest.out contains "GREEN"` reads a delegate whose every leg line ends `-- GREEN`, so it matched the first leg; the closing summary could be renamed or deleted whole and the guard still read green. A leg that cannot fail is a leg that was never there.
+obs The same shape stands one file over, written down and left as prose. glow_vane_pair_mirrors_witness.rish records in its own `20260828` header that `contains` is a substring test and the worker's own EXIT:0 tail contains a 0, which is how an elder blindness survived. Two firings in one family, and no reading was ever made of it -- a lantern that fires twice.
+obs The class is named rather than claimed: 1,375 `contains "GREEN"` sites across 819 tracked .rish files, 35 in rostered guards. A site is vacuous only where the delegate prints GREEN beside its summary, and that discriminator wants each delegate RUN rather than grepped, so the count is a population and not a defect count. A meter, if Keaton wants one.
+obs I left the redleg ceiling at 53 with the reading at 52. Lowering with no slack is the ratchet's own habit and it re-arms exactly the fleet-wide refusal `%670` measured yesterday, on a question Keaton has open. Named on the card rather than taken.
+obs The control is proven able to fail three ways rather than one: 18 checks against the repaired runner, 16 with two failures against the elder summary leg, and pass=17 fail=1 under a mutated expectation. A refusal shown only in the failing direction cannot be told from a tool that refuses everything, so every plant is lifted and read back.
+obs Against myself: the first draft's baseline leg asserted on a decline line the runner never prints, because the runner CAPTURES the selftest's output rather than echoing it -- the same reading limit the two text plants exploit, met from the wrong side. Caught by running the draft, at 15 of 18.
+loom roster=cold guards=216 green=212 red=2 gated=2 seconds=2220 tree_moved=no
+loom control=glow_rune_shop_core checks=18 failures=0 seconds=21.5 plants=5
+loom control=glow_rune_shop_core elder_reading=16 elder_failures=2 mutated=17/1
+loom witness=glow_shop_core wall_s=17.2 legs=17 control_leg=1
+file tools/fixtures/g/glow_rune_shop_core_control.sh the core-road guard proven able to red, five plants in a worktree pen
+file tools/g/glow_rune_shop_core_witness.rish the summary leg reads the summary's own words, and the control leg beneath the marker
+file construction/REDS.md row %683, a substring assert over an output whose every line carries the same word
+file construction/ITINERARY.md the PHEROMONE block, the population named, and the nib
+obs RECOVERED AND ADJUSTED, 20260910.020512: this lap never reached a commit -- the round open stashed it at 20260909-212709 and the next Pheromone lap read it back out of the box. The file line above was rewritten to name what actually shipped: the row was booked %673 from a local read and derives to %683 against the anointed spine, since a peer published %673 for a different row while this work sat parked; and the row landed straight onto its own shelf rather than the pin, which stands at 39,994 of 40,960 with fourteen of sixteen rows OPEN. The work was re-proven on metal rather than read off this log -- control 18/0, witness exit 0. This log's own obs on the redleg ceiling corrected the recovering lap, which had already lowered it to 52 before reading here; it stands at 53.
+recommend keep-going -- the four remaining unmarked guards in this lane are the same shape and the pen is now written; the meter over the 35 rostered `contains "GREEN"` sites wants Keaton's word first
+scope one control fixture, one guard leg sharpened, one ledger row, the card's own block; the redleg ceiling deliberately untouched
+status GREEN -- the guard runs 17.2s with its control leg, the control 18 checks and proven able to fail two ways, redleg 52 of 53; the cold pass read 216 guards, 212 green, with stash_record and the roster's own summary of it the only reds, neither this round's
