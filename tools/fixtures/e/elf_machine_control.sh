@@ -147,5 +147,89 @@ run_scan "$pen/aarch64" "$pen/nothing-here"
 check      "one absent member refuses a batch" absent "$out"
 check_says "  ... while still reading the good one" "machine=AArch64" "$out"
 
+
+# -- THE CENSUS'S COUNTING RULE, proven from both sides on a real repository ---------------------
+#
+# WHY IT IS HERE. The sibling census counts the sites that still prove an architecture by reading
+# `file`'s prose, and until `20260910.035630` nothing checked what it counts. It read every line of
+# every tracked runner, so the thirteen plants inside `tools/fixtures/s/self_matching_assert_control.sh`
+# -- the literal REDS %460 shape that control exists to prove a guard against -- counted as thirteen
+# live sites the hour that control landed. The census went 3 -> 16 against a ceiling of 3, refused,
+# and `standing_equipment` refused the whole roster behind it.
+#
+# Both clauses of the repair are shown from the failing side as well as the passing one, and the
+# ELDER reading is run over the same plants and asserted to DISAGREE -- a repair proven only in the
+# passing direction cannot be told from a coincidence.
+#
+# A REAL REPOSITORY, because the census draws its population with `git ls-files`, and at the depth
+# the census's own root walk expects: it climbs from its own directory to the first ancestor holding
+# `rishi/bin` and `tools/fixtures`.
+cpen="$(mktemp -d)"
+trap 'rm -rf "$pen" "$cpen"' EXIT INT TERM
+here="$(cd "$(dirname "$0")" && pwd)"
+root="$(cd "$here/../../.." && pwd)"
+t="$cpen/tree"
+mkdir -p "$t/rishi/bin" "$t/tools/fixtures/e" "$t/tools/fixtures/s" "$t/tools/fixtures/l" "$t/tools/x"
+cp "$here/elf_machine_census_scan.sh" "$t/tools/fixtures/e/"
+cp "$root/tools/fixtures/s/shell_portable.sh" "$t/tools/fixtures/s/"
+cp "$root/tools/fixtures/l/live_lines.sh" "$t/tools/fixtures/l/"
+: > "$t/rishi/bin/.keep"
+( cd "$t" && git init -q . && git config user.email pen@example.invalid && git config user.name pen )
+
+cplant() { mkdir -p "$(dirname -- "$t/$1")"; printf '%s\n' "$2" > "$t/$1"; }
+
+# 1. A LIVE SITE -- the shape the census exists to count, on a line nothing encloses.
+cplant tools/x/live_site.rish 'let shape = run ["sh" "-c" "file bin/thing_aarch64"]'
+# 2. THE SAME TEXT INSIDE A HEREDOC this file writes into a pen. It is a Rishi program handed to
+#    another interpreter, so it is data rather than a call.
+cplant tools/x/heredoc_plant.sh 'cat > "$p/w.rish" <<'"'"'R'"'"'
+let shape = run ["sh" "-c" "file bin/thing_aarch64"]
+R'
+# 3. THE SAME TEXT INSIDE A CONTROL, in the printf form the live-line walk cannot see: the line is
+#    live at its start and the site sits inside a single-quoted argument on it.
+cplant tools/x/planted_control.sh "printf 'let shape = run [\"sh\" \"-c\" \"file bin/thing_aarch64\"]\\n'"
+( cd "$t" && git add -A >/dev/null && git commit -q -m "pen: planted sites" )
+
+csites() { ( cd "$t" && sh tools/fixtures/e/elf_machine_census_scan.sh --list 2>&1 ); }
+cnamed() { csites | sed -n "s|^site count=[0-9]* path=.*/\\($1\\)\$|yes|p" | head -1; }
+cnamed_or_no() { _r=$(cnamed "$1"); [ -n "$_r" ] && echo yes || echo no; }
+
+cleg() { # cleg <name> <want> <got>
+  if [ "$2" = "$3" ]; then echo "PASS: $1 ($3)"; pass=$((pass + 1))
+  else echo "FAIL: $1 -- wanted $2, read $3"; fail=$((fail + 1)); fi
+}
+
+cleg "a live site is counted"                  yes "$(cnamed_or_no 'live_site\.rish')"
+cleg "a heredoc plant is not a call"           no  "$(cnamed_or_no 'heredoc_plant\.sh')"
+cleg "a control's plant is not the practice"   no  "$(cnamed_or_no 'planted_control\.sh')"
+
+# THE ELDER READING, spelled here as it stood: every line of every tracked runner, controls
+# included. It must COUNT both plants, or the two legs above pass on the elder predicate alone.
+elder() { # elder <basename-regex>
+  ( cd "$t" && git ls-files '*.rish' '*.sh' | while IFS= read -r ef; do
+      awk '{ l = $0; sub(/#.*/, "", l)
+             if (l ~ /(^|[;&|(]|"-c" ")[ \t]*file[ \t]+[^=|)]/) c++ }
+           END { if (c > 0) print FILENAME }' "$ef"
+    done ) | grep -qE "/$1\$" && echo yes || echo no
+}
+cleg "the elder counted the heredoc plant"     yes "$(elder 'heredoc_plant\.sh')"
+cleg "the elder counted the control's plant"   yes "$(elder 'planted_control\.sh')"
+
+# 4. THE CEILING BITES, shown from both sides, since a ceiling proven only under it is a ceiling
+#    nobody has seen refuse. The census's own ceiling is 3.
+cplant tools/x/live_two.rish 'let a = run ["sh" "-c" "file bin/two"]'
+cplant tools/x/live_three.rish 'let a = run ["sh" "-c" "file bin/three"]'
+( cd "$t" && git add -A >/dev/null && git commit -q -m "pen: three live sites" )
+cout=$(csites) && crc=0 || crc=$?
+cleg "three live sites stand at the ceiling"   under_ceiling "$(printf '%s\n' "$cout" | sed -n 's/^verdict=//p')"
+cleg "  ... and exit 0"                        0 "$crc"
+
+cplant tools/x/live_four.rish 'let a = run ["sh" "-c" "file bin/four"]'
+( cd "$t" && git add -A >/dev/null && git commit -q -m "pen: a fourth live site" )
+cout=$(csites) && crc=0 || crc=$?
+cleg "a fourth live site crosses the ceiling"  over_ceiling "$(printf '%s\n' "$cout" | sed -n 's/^verdict=//p')"
+cleg "  ... and exit 1"                        1 "$crc"
+
+
 echo "elf-machine-control: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

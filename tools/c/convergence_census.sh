@@ -218,6 +218,11 @@
 # room to grow, and the count is printed so the day it becomes a ceiling is visible.
 set -eu
 
+# THE TOOL'S OWN HOME, apart from the tree it READS. `CONV_ROOT` points the census at another
+# repository -- which is how `tools/fixtures/c/convergence_census_control.sh` proves this
+# predicate on planted pens -- so a library sourced from `$root` would be looked for inside the
+# pen and the census would die under `set -eu` on every control leg.
+self_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 root=${CONV_ROOT:-$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)}
 cd "$root"
 
@@ -261,59 +266,13 @@ MAX_SIBLINGS=200
 # ever WITHHOLD lines from the write reading -- so the failure direction is a missed candidate
 # rather than a false one, and the census reports rather than gates.
 MAX_LINES=20000
-live_lines() {
-  # live_lines <file> -- the lines a write may be read from. Bounded at MAX_LINES; the widest
-  # tracked tool today is under 3,000 lines, so the bound has never bitten.
-  # invariant: every emitted line began outside every quoted region, so a matched write is one this
-  # tool performs rather than text it hands to another command.
-  awk -v max="$MAX_LINES" '
-    BEGIN { st = "OUT"; hd = ""; hdstrip = 0 }
-    NR > max { exit }
-    {
-      if (st == "OUT" && $0 !~ /^[[:space:]]*#/) print
-      if (st == "HD") {
-        t = $0
-        if (hdstrip) sub(/^[ \t]+/, "", t)
-        if (t == hd) { st = "OUT"; hd = "" }
-        next
-      }
-      s = $0; len = length(s); i = 1
-      while (i <= len) {
-        c = substr(s, i, 1)
-        if (st == "SQ") { if (c == "'\''") st = "OUT"; i++; continue }
-        if (st == "DQ") {
-          if (c == "\\") { i += 2; continue }
-          if (c == "\"") st = "OUT"
-          i++; continue
-        }
-        if (c == "\\") { i += 2; continue }
-        if (c == "'\''") { st = "SQ"; i++; continue }
-        if (c == "\"") { st = "DQ"; i++; continue }
-        if (c == "#") {
-          p = (i == 1) ? " " : substr(s, i - 1, 1)
-          if (p == " " || p == "\t" || p == ";" || p == "(" || p == "&" || p == "|") break
-          i++; continue
-        }
-        if (substr(s, i, 2) == "<<") {
-          rest = substr(s, i + 2)
-          hdstrip = 0
-          if (substr(rest, 1, 1) == "-") { hdstrip = 1; rest = substr(rest, 2) }
-          if (substr(rest, 1, 1) == "<") { i += 3; continue }
-          sub(/^[ \t]*/, "", rest)
-          q = substr(rest, 1, 1)
-          if (q == "'\''" || q == "\"") {
-            d = rest; sub(/^./, "", d); idx = index(d, q)
-            if (idx > 0) { hd = substr(d, 1, idx - 1); st = "HD" }
-          } else if (match(rest, /^[A-Za-z_][A-Za-z0-9_]*/)) {
-            hd = substr(rest, 1, RLENGTH); st = "HD"
-          }
-          break
-        }
-        i++
-      }
-    }
-  ' "$1" 2>/dev/null
-}
+# THE WALKER MOVED TO A LIBRARY (`20260910.035630`), because the lantern fired a second time in
+# another room: `tools/fixtures/e/elf_machine_census_scan.sh` counted thirteen `file` calls that
+# stood inside the heredoc PLANTS of a control, by the same span-carries-no-position fault this
+# strand was built to close. `tools/fixtures/l/live_lines.sh` holds the reading now, and this
+# census reads it rather than keeping a second copy -- one reading, one home, so a repair to the
+# lexer reaches both callers. The function name, its bound, and its answer are unchanged.
+. "$self_dir/../fixtures/l/live_lines.sh"
 
 # THE WRITE SHAPES, AND THE TARGET TEST, EACH WRITTEN ONCE. Two readings ask the same question of
 # the same file -- every line, and non-comment lines only -- so one spelling serves both and they
@@ -457,7 +416,7 @@ while IFS= read -r f; do
   # `$shelf` writes by the git strand below. That is why this could only move together with it:
   # dropping comments alone took the two busiest writers out with the false one, which is the shape
   # the header calls two faults whose errors cancel.
-  writes=$(live_lines "$f" | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
+  writes=$(live_lines "$f" "$MAX_LINES" | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
   [ -n "$writes" ] || continue
   by_name=no; by_git=no
   target_admits "$writes" && by_name=yes
