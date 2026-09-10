@@ -53,8 +53,8 @@ a legal exposure, a medical fact, a security finding written plainly, a piece of
 words a G register would soften into dishonesty, and honesty outranks brightness every time
 ([Gauge](gauge-style.md): *honesty first, brevity second, delight third*). So the register adapts on
 his word for a named round, in Radiant or Twilight as the piece asks, and returns to G at its close.
-**Nothing here licenses coarseness as a style.** The opt-in buys precision about a hard subject,
-never a change of manners.
+**Nothing here licenses coarseness as a style.** The opt-in buys precision about a hard subject, and
+manners stay exactly as they are.
 
 ## What this does not retire
 

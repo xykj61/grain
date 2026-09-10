@@ -321,7 +321,13 @@ done < "$work/teaching.txt"
 # the room's own highest shares: `.claude/rules/comlink-tendency.md` 58% of 12 sentences and
 # `.claude/rules/azimuth-galaxy-proposal-format.md` 63% of 11, seven counted sentences each,
 # restated to lead with what is and every claim, name, path and stamp held. Both read 0% now.
-law_ceiling=17
+#
+# IT FELL 17 -> 14 THE SAME DAY, on the three pages the listing priced at ONE restatement each:
+# `.claude/rules/molt.md` 35% of 14 sentences, `.claude/rules/vocabulary-aroma.md` 32% of 25, and
+# `.claude/rules/exec-bit.md` 31% of 32. Each gave up one counted word -- a `without` for a `while`,
+# a `never` for a plain clause, a `loses` for a `drops` -- and all three read 28%. That is what
+# `--explain` bought: the cheapest page in the room is now a reading rather than a guess.
+law_ceiling=14
 law_documents=0
 law_readable=0
 law_over=0
