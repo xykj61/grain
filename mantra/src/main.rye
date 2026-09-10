@@ -384,6 +384,36 @@ const CommitRecord = struct {
     }
 };
 
+/// Does this file list name exactly what the prior commit named -- path for
+/// path, weave for weave, in the same order?
+///
+/// WHY THE ANSWER EXISTS. A second `add` over a file nobody edited produces a
+/// weave whose bytes are the bytes already on disk, so its content-addressed
+/// name is the prior name and the whole list comes back unchanged. A commit
+/// written from that list records that somebody ran the command rather than
+/// that anything changed, and `add` is meant to be idempotent: running it twice
+/// leaves the world the first run left.
+///
+/// WHY ORDER IS PART OF THE ANSWER. `commit_files_with` builds its list by
+/// walking the prior one and replacing in place, so an unchanged add returns
+/// the prior order exactly. Comparing in order is therefore the reading the
+/// caller wants: two lists agreeing as sets while differing in order were built
+/// by something else, and calling those the same would skip a commit that
+/// records a real change.
+fn files_agree(prior: []const FileWeave, next: []const FileWeave) bool {
+    // invariant: the prior list stands within the stated maximum, so the walk
+    // below is bounded by a named constant rather than by whatever reached here
+    assert(prior.len <= max_commit_files);
+    // invariant: the new list stands within the same maximum, for the same reason
+    assert(next.len <= max_commit_files);
+    if (prior.len != next.len) return false;
+    for (prior, next) |held, fresh| {
+        if (!std.mem.eql(u8, held.path, fresh.path)) return false;
+        if (!std.mem.eql(u8, held.weave_name, fresh.weave_name)) return false;
+    }
+    return true;
+}
+
 /// The file list a commit for `path` should carry: every entry this commit
 /// already holds, with `path` set to `weave_name` -- replaced where it was
 /// already named, appended where it was not.
@@ -737,6 +767,22 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
     const weave_name  = try store.write_blob(allocator, io, weave_blob);
     const prior_files: []const FileWeave = if (prior) |c| c.files else &.{};
     const files       = try commit_files_with(allocator, prior_files, file_path, weave_name);
+    // A second `add` over a file nobody edited names exactly the weaves HEAD
+    // already names, so a commit here would record the command rather than a
+    // change. Leaving HEAD where it stands is what makes `add` idempotent, and
+    // it is the difference between a store that grows with the work and one
+    // that grows with the polling: `cmd_log` walks at most `max_log_depth`
+    // commits, so a watcher calling `add` on a timer pushes the real first
+    // commit past the end of the log inside a day. Booked `20260910.024500`.
+    if (files_agree(prior_files, files)) {
+        // invariant: a list agreeing with the prior one holds at least one
+        // entry, so a commit stood at HEAD and its name is here to print
+        assert(prior_files.len >= 1);
+        print("mantra: '{s}' unchanged -- nothing to weave. HEAD stays {s}\n", .{
+            file_path, parent_name.?[0..12],
+        });
+        return 0;
+    }
     const commit_blob = try serialize_commit(allocator, .{ .parent = parent_name, .files = files });
     const commit_name = try store.write_blob(allocator, io, commit_blob);
     try store.write_head(io, commit_name);
