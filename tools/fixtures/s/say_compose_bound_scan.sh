@@ -143,10 +143,26 @@ while IFS= read -r f; do
   awk -v path="$f" '
     /^[[:space:]]*#/ { next }
     {
-      captured = ($0 ~ /\$\{[A-Za-z_][A-Za-z_0-9]*\.(out|err)\}/)
-      if (captured && $0 ~ /^[[:space:]]*say[[:space:]]+"/) { print "eager\t" path ":" FNR "\t" $0; next }
-      if (captured && $0 ~ /^[[:space:]]*assert[[:space:]]/)  { print "deferred\t" path ":" FNR "\t" $0; next }
-      if ($0 ~ /^[[:space:]]*say[[:space:]]+[A-Za-z_][A-Za-z_0-9]*\.(out|err)[[:space:]]*$/) { print "safe\t" path ":" FNR "\t" $0 }
+      # A guarded action is the same action. `if x.ok == false then say x.err` composes
+      # exactly what a bare `say x.err` composes -- nothing -- and `if c then say "${x.out}"`
+      # composes exactly what the unguarded line would. Reading only from the start of a
+      # line therefore counted neither, so 21 hazardous `then`-tails stood invisible while
+      # 155 safe ones counted nowhere at all and quietly shrank the shares denominator
+      # (measured `20260910.145500`). The action is classified; the condition is read
+      # separately, because a condition interpolating a capture composes on EVERY run and
+      # is an eager site whatever follows `then`. That case reads zero today, and it is
+      # checked rather than assumed, so it cannot arrive through the door this widening opens.
+      action = $0
+      cond = ""
+      if (match(action, /^[[:space:]]*if[[:space:]].*[[:space:]]then[[:space:]]+/)) {
+        cond = substr(action, 1, RSTART + RLENGTH - 1)
+        action = substr(action, RSTART + RLENGTH)
+      }
+      if (cond ~ /\$\{[A-Za-z_][A-Za-z_0-9]*\.(out|err)\}/) { print "eager\t" path ":" FNR "\t" $0; next }
+      captured = (action ~ /\$\{[A-Za-z_][A-Za-z_0-9]*\.(out|err)\}/)
+      if (captured && action ~ /^[[:space:]]*say[[:space:]]+"/) { print "eager\t" path ":" FNR "\t" $0; next }
+      if (captured && action ~ /^[[:space:]]*assert[[:space:]]/)  { print "deferred\t" path ":" FNR "\t" $0; next }
+      if (action ~ /^[[:space:]]*say[[:space:]]+[A-Za-z_][A-Za-z_0-9]*\.(out|err)[[:space:]]*$/) { print "safe\t" path ":" FNR "\t" $0 }
     }
   ' "$f" >> "$WORK/all"
 done < "$WORK/files"
@@ -177,13 +193,41 @@ safe=$(grep -c . "$WORK/safe" || true)
 # Per mille rather than percent, in integers, because a shell has no floats and a percent rounds
 # 3,262 sites into steps of 33 -- coarse enough to hide a whole lap's worth of drift.
 #
-# THE SLACK IS NAMED AND SMALL. Measured `20260908.030000`: eager 153, deferred 534 per mille of the
+# THE SLACK IS NAMED AND SMALL. Read `20260910.145500`: eager 142, deferred 486 per mille of 3,662
+# shaped sites, with the ceilings two and three above, exactly the slack the first draft chose.
+# The eager ceiling was written 144 against that reading and set to 145 before it was ever pushed:
+# a peer landed on this same guard within the hour and carried eager to 143, which would have left
+# one per mille of slack across eight writers. A ceiling only falls, so the number to be careful
+# about is the one you choose while it is still unshared -- the derived spine's own rule about an
+# unshared row, met here in a ratchet.
+# The elder reading this paragraph was written against: eager 153, deferred 534 per mille of the
 # 3,262 sites carrying any of the three shapes. The ceilings sit two and three per mille above, which
 # is room for the two or three sites an ordinary lap adds and no room at all for twenty -- a lap
 # landing twenty deferred sites at once reads 690 and refuses. Slack chosen from the measured rate
 # of ordinary growth rather than from comfort, and it only falls.
-EAGER_PER_MILLE_CEILING=${SAY_COMPOSE_EAGER_CEILING:-155}
-DEFERRED_PER_MILLE_CEILING=${SAY_COMPOSE_DEFERRED_CEILING:-537}
+#
+# BOTH CEILINGS FELL ON `20260910.145500`, AND THE READING MOVED FOR TWO REASONS THAT MUST BE
+# TOLD APART. The classifier learned to read past a one-line `if COND then` (see the widening
+# above), which found 21 hazardous guarded tails it had never counted and 155 safe ones it had
+# counted nowhere at all. And `tools/am/`, the amphora lane, repaired its whole share of the
+# debt: 93 deferred sites and one eager, to zero, every witness re-run GREEN and the refusal path
+# proven by breaking a build in a pen.
+#
+# THE ORDER OF THOSE TWO IS THE FINDING. Run the widened classifier against the tree as it stood
+# BEFORE that sweep -- measured in a worktree pen, not computed -- and it reads deferred 512,
+# `verdict=ok`. The red that stopped this pier's roster that morning was the blind spot rather
+# than a habit that had worsened: 155 sites already spelling the repair were invisible, so the
+# denominator sat 258 low and the deferred share read 26 per mille high. The sites the sweep
+# removed were real hazards and are gone; the ratchet that named them was reading a deflated
+# safe population. Both are true, and a reader owed only the first would draw the wrong lesson.
+#
+# The widening also unbraids the two shares. Before it, repairing a deferred site the guarded way
+# took that site out of the population entirely, so the denominator shrank and the EAGER share
+# rose -- a lane doing exactly the right thing pushed a peer's reading toward its ceiling, and
+# 165 more such repairs would have reddened it. A guarded repair now lands in `safe`, where the
+# denominator holds still and only the numerator moves.
+EAGER_PER_MILLE_CEILING=${SAY_COMPOSE_EAGER_CEILING:-145}
+DEFERRED_PER_MILLE_CEILING=${SAY_COMPOSE_DEFERRED_CEILING:-489}
 
 # The denominator is every site carrying any of the three shapes, so it moves with the tree exactly
 # as the numerators do. A tree with none of them answers zero rather than dividing by nothing.

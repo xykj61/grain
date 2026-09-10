@@ -40,6 +40,11 @@ let control = run ["sh" "tools/fixtures/s/say_compose_bound_control.sh"]
 assert control.ok else "say-compose-bound: the control is RED -- read its own lines by running it"
 assert control.out contains "control_verdict=ok" else "say-compose-bound: the control did not reach control_verdict=ok"
 assert control.out contains "cases_red=0" else "say-compose-bound: the control reported a red case"
+# `cases_red=0` hears a leg that FAILED; a leg that never ran is silent, and the guarded-action
+# legs are the newest and so the likeliest to be dropped by an edit to the control. Named here,
+# so the widening that reads past a one-line `if COND then` cannot quietly stop being proven.
+assert control.out contains "a guarded bare say is counted safe" else "say-compose-bound: the control no longer proves that a guarded repair counts safe -- without it the denominator can shrink under a lane doing the right thing"
+assert control.out contains "a capture inside the condition is counted eager" else "say-compose-bound: the control no longer proves that a condition composing a capture is read apart from its action"
 
 # 2. Then this tree. The reading is printed WHOLE and with a bare `say`, which is the shape this
 #    guard exists to ask for -- a guard that asked for a habit it did not keep would be teaching

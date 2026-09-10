@@ -251,6 +251,61 @@ else
 fi
 
 echo
+echo "== 12. a guarded action is the same action, both ways =="
+# A one-line `if COND then ACTION` carries the same composition the unguarded ACTION carries,
+# so reading from the start of a line alone counted neither the hazard nor the repair. Measured
+# on the living tree `20260910.145500` before this widening: 21 hazardous `then`-tails stood
+# uncounted, and 155 safe ones counted nowhere at all -- which deflated `safe`, shrank the
+# shares denominator, and inflated both hazard shares against a tree that had done nothing wrong.
+newpen
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'if r.ok == false then say "guarded -- ${r.out}"'
+} > g1.rish
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'if r.ok == false then assert r.ok else "guarded -- ${r.err}"'
+} > g2.rish
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'if r.ok == false then say r.err'
+} > g3.rish
+commit_pen
+out=$(run_scan 999 999)
+check_field "a guarded eager say is counted eager" eager 1 "$out"
+check_field "a guarded assert else is counted deferred" deferred 1 "$out"
+check_field "a guarded bare say is counted safe" safe 1 "$out"
+
+# The condition is read apart from the action, because a condition interpolating a capture
+# composes on EVERY run whatever follows `then`. That shape reads zero on the living tree, so it
+# is planted here rather than trusted -- a widening that swallowed its own condition would open
+# exactly the hole it was written to close.
+newpen
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'let s = run ["sh" "-c" "echo ho"]'
+  echo 'if s.out contains "${r.out}" then say s.out'
+} > cond.rish
+commit_pen
+out=$(run_scan 999 999)
+check_field "a capture inside the condition is counted eager" eager 1 "$out"
+check_field "and it is not read as the safe say that follows it" safe 0 "$out"
+
+# Lifted: the same pen with the guards removed reads the same three kinds, so the widening
+# added a reading rather than a second alphabet.
+newpen
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'say "plain -- ${r.out}"'
+} > p1.rish
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'assert r.ok else "plain -- ${r.err}"'
+} > p2.rish
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'say r.err'
+} > p3.rish
+commit_pen
+out=$(run_scan 999 999)
+check_field "unguarded, the same three read the same three kinds" eager 1 "$out"
+check_field "unguarded deferred is unchanged by the widening" deferred 1 "$out"
+check_field "unguarded safe is unchanged by the widening" safe 1 "$out"
+
+echo
 echo "cases_ok=$pass cases_red=$fail"
 if [ "$fail" -ne 0 ]; then echo "control_verdict=red"; exit 1; fi
 echo "control_verdict=ok"

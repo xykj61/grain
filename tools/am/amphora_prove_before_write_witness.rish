@@ -35,11 +35,14 @@ let home = trim pen.out
 # these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
 let zig = "vendor/zig-toolchain/zig"
 let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
-assert build_amphora.ok else "pbw: amphora build failed -- ${build_amphora.err}"
+if build_amphora.ok == false then say build_amphora.err
+assert build_amphora.ok else "pbw: amphora build failed -- read the line above"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
-assert build_core.ok else "pbw: vessel-core build failed -- ${build_core.err}"
+if build_core.ok == false then say build_core.err
+assert build_core.ok else "pbw: vessel-core build failed -- read the line above"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
-assert build_seal.ok else "pbw: vessel-seal build failed -- ${build_seal.err}"
+if build_seal.ok == false then say build_seal.err
+assert build_seal.ok else "pbw: vessel-seal build failed -- read the line above"
 
 # Each plant pours into its OWN directory, because a vessel's resins live beside it: three
 # vessels in one home would share one resins directory, and forging a body for the second
@@ -50,9 +53,11 @@ assert mk.ok else "pbw: the three plant homes must open"
 # --- leg 1: the honest season restores whole, and the two proof lines arrive in order ---
 let honest = "${home}/h/honest.bron"
 let pour_honest = run ["amphora/bin/amphora" "pour" season honest]
-assert pour_honest.ok else "pbw: honest pour must pass -- ${pour_honest.err}"
+if pour_honest.ok == false then say pour_honest.err
+assert pour_honest.ok else "pbw: honest pour must pass -- read the line above"
 let restore_honest = run ["amphora/bin/amphora" "restore" honest]
-assert restore_honest.ok else "pbw: honest restore must pass -- ${restore_honest.err}"
+if restore_honest.ok == false then say restore_honest.err
+assert restore_honest.ok else "pbw: honest restore must pass -- read the line above"
 assert restore_honest.err contains "restore resins proven" else "pbw: the honest restore says its resins were proven"
 assert restore_honest.err contains "restore files proven" else "pbw: the honest restore says its files were written"
 let honest_leaf = run ["sh" "-c" "cat ${home}/h/honest.bron.season/nested/leaf.txt"]
@@ -66,7 +71,8 @@ say "leg_honest=whole"
 # visible: an earlier honest write is a mutation, whatever the refusal afterward says.
 let forged = "${home}/f/forged.bron"
 let pour_forged = run ["amphora/bin/amphora" "pour" season forged]
-assert pour_forged.ok else "pbw: forged-plant pour must pass -- ${pour_forged.err}"
+if pour_forged.ok == false then say pour_forged.err
+assert pour_forged.ok else "pbw: forged-plant pour must pass -- read the line above"
 let forge_prep = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > ${home}/f/resins/$f"]
 assert forge_prep.ok else "pbw: the forge plant must prepare"
 let forged_restore = run ["sh" "-c" "amphora/bin/amphora restore ${forged}; true"]
@@ -83,7 +89,8 @@ say "leg_forged=refused_before_write"
 # --- leg 3: an absent resin refuses at the same door, ahead of the out-home ---
 let absent = "${home}/a/absent.bron"
 let pour_absent = run ["amphora/bin/amphora" "pour" season absent]
-assert pour_absent.ok else "pbw: absent-plant pour must pass -- ${pour_absent.err}"
+if pour_absent.ok == false then say pour_absent.err
+assert pour_absent.ok else "pbw: absent-plant pour must pass -- read the line above"
 let drop = run ["sh" "-c" "rm -f ${home}/a/resins/$(ls ${home}/a/resins | sed -n 2p)"]
 assert drop.ok else "pbw: the absent plant must drop one resin"
 let absent_restore = run ["sh" "-c" "amphora/bin/amphora restore ${absent}; true"]
@@ -103,11 +110,14 @@ assert elder_copy.ok else "pbw: the elder pen must copy"
 let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/restore_prove_resins(io, vessel, &catalog) catch |fault| {/,/^    };$/d' ${elder_dir}/src/main.rye"]
 assert strip.ok else "pbw: the pre-pass must strip cleanly"
 let gone = run ["sh" "-c" "grep -c 'restore_prove_resins(io, vessel, &catalog)' ${elder_dir}/src/main.rye || true"]
-assert (trim gone.out) == "0" else "pbw: the elder pen must lose the pre-pass CALL -- ${gone.out} left"
+say gone.out
+assert (trim gone.out) == "0" else "pbw: the elder pen must lose the pre-pass CALL -- read the reading above"
 let kept = run ["sh" "-c" "grep -c 'restore_prove_write(io, vessel, out_home, &catalog)' ${elder_dir}/src/main.rye || true"]
-assert (trim kept.out) == "1" else "pbw: the elder keeps its write walk, or it proves nothing -- ${kept.out}"
+say kept.out
+assert (trim kept.out) == "1" else "pbw: the elder keeps its write walk, or it proves nothing -- read the reading above"
 let elder_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
-assert elder_build.ok else "pbw: elder amphora build failed -- ${elder_build.err}"
+if elder_build.ok == false then say elder_build.err
+assert elder_build.ok else "pbw: elder amphora build failed -- read the line above"
 let elder_seal = run ["sh" "-c" "cp amphora/bin/vessel-seal amphora/bin/vessel-core ${elder_dir}/bin/"]
 assert elder_seal.ok else "pbw: the elder pen must carry its sibling tools"
 

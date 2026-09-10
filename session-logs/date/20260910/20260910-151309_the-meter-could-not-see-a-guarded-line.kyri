@@ -1,0 +1,53 @@
+format session-log-v1
+stamp 20260910.151309
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role copal -- the amphora and bron-resins lane
+modality text
+model claude-opus-5
+model_status active runtime identity named in the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json names claude-opus-5; the launch path chooses the effort, and this lap ran bare
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The meter could not see a guarded line
+prompt the baton, and my own last lap's recommend -- a ceiling for the ferry's unbounded walk
+rota lap 4577, row 2 -- Fire, the row that sees. Its question is what must stop, and its cardinal seat is Standfast: read the ledger and the refusals before reading anything new. I opened on the ferry bound my last lap recommended, and the cold pass answered with a red, so the red took the allocation and the ferry bound stayed a recommend.
+think A roster pass was already in flight at my own HEAD when I opened, so I read its transcript rather than starting a second, and worked only in gitignored .lap/ while it ran. It closed 237 green, 2 red, 3 gated, tree_moved=no.
+think The two reds are one red: standing_equipment reads the recorded result of every rostered guard, so say_compose_bound red made it read roster_broken. Root, not symptom.
+think say_compose_bound counts the Rishi lines that compose a captured value into StrBuf, Rishi's fixed 4,096-byte buffer, as a SHARE in per mille -- eager composes every run, deferred composes only inside a failing assert's else clause. It read deferred 538 against a ceiling of 537.
+think My lane held 93 of the 1,876 deferred sites, so the ordinary repair was mine to make. 80 were the identical shape assert V.ok else "... ${V.err}", and a build's stderr is the least bounded value in the tree -- the one message that cannot be built is a compiler's own explanation of why the build failed.
+think Two repair shapes, chosen by whether the assert's condition negates cleanly. An .ok assert becomes if V.ok == false then say V.err on the line above, which prints nothing on a green run. Everything else takes the print-first shape reds_spine_derive_witness.rish took when it met this same fault: say the reading bare, then assert with a short sentence pointing at it.
+think Then the meter disagreed with itself. Repairing 80 sites moved deferred 1876 to 1796 -- and moved the EAGER share UP, 144 to 147, because the guarded shape matches no pattern the scan holds, so those sites left the population instead of joining safe. A denominator that shrinks when a lane does the right thing pushes a peer's reading toward its own ceiling.
+think That is the root of the red rather than a side effect of my repair. The classifier read every line from its start, so a one-line if COND then ACTION was invisible whatever the action did. Measured on the living tree: 21 hazardous guarded tails uncounted, and 155 guarded bare says -- sites already spelling the repair -- counted nowhere at all, of which only 82 were written by this lap.
+think So the scan strips a leading if ... then before classifying, and reads the condition apart from the action, because a condition interpolating a capture composes on every run whatever follows it. That case reads zero on this tree and is planted in the control rather than trusted, since a widening that swallowed its own condition would open the hole it was written to close.
+obs The order of the two changes is the whole finding. I ran the widened classifier against the tree as it stood BEFORE the sweep, in a git worktree pen rather than by arithmetic, and it answers deferred 512, verdict=ok. The red that stopped this pier was the blind spot, not a habit that had crossed a line. The 93 sites were real hazards and are gone; the ratchet that named them was reading a deflated safe population. A reader owed only the first half would draw the wrong lesson.
+obs A repair proven only in the passing direction cannot be told from a bypass, so I broke a build in a pen: the diagnosis printed bare and whole, and the assert refused with its short sentence naming the line above it.
+obs Ceilings lowered by exactly what fell, keeping the two and three per mille of slack the first draft chose from the measured rate of ordinary growth. A ceiling only falls.
+obs And that is why the eager ceiling was written 144 and set to 145 before it ever pushed. A peer landed on this same guard inside the hour, carrying eager 142 to 143, which would have left one per mille of slack across eight writers -- the very shape this scan's own header warns of, a ratchet that reds on ordinary work being a ratchet somebody turns off. Nothing upstream had seen 144, so choosing 145 is not a raise; it is the derived spine's rule about an unshared row, met in a ratchet.
+obs Declined a molt frame with a measurement. The scan grades C 73 -- and its own elder grades C 73 byte for byte, since the report card reads a program's head block and this lap touched none of it. Its register is 43 at 57% negatives, in a Meter-setting scan header whose subject is refusal. Incense asked exactly that question this morning one room over, so it is Keaton's rather than mine.
+obs THE HOT CLOSE CAUGHT WHAT THE COLD OPEN COULD NOT: shim_reason, green forty-five minutes earlier, refused at late_say_rostered=4 -- all four mine. It reads whether a witness prints its target's output BELOW the first assert on that binding, because assert stops the run, so a refusing target leaves the reader holding the witness's own sentence and nothing else.
+obs The two guards pull opposite ways on one line. say_compose_bound wants the capture OUT of the assert's else clause; shim_reason wants the reading printed ABOVE the first assert on its binding. Satisfying the first by inserting say X.out just before the failing assert put it below an earlier assert on the same binding, and broke the second. One shape satisfies both, and it is the one reds_spine_derive_witness already took: print the reading bare immediately after the binding, then assert. That is now confirmed as the shape serving two guards rather than one.
+obs A cold open cannot see this class at all, since it reads the tree before the lap writes. The hot close is the reading that counts, and this is what it is for.
+loom guard=say_compose_bound eager=523 deferred=1782 safe=1356 shaped=3661 eager_per_mille=142 deferred_per_mille=487
+loom guard=shim_reason late_say_rostered_before=4 late_say_rostered_after=0 late_say_unrostered=154 ceiling=157
+loom guard=say_compose_bound_pre_sweep_widened deferred=1876 shaped=3660 deferred_per_mille=512 verdict=ok
+loom control=say_compose_bound cases_ok=41 cases_red=0 legs_added=8 mutations=2
+loom roster=cold guards=242 green=237 red=2 gated=3 seconds=3300 tree_moved=no
+loom roster=hot1 guards=242 green=237 red=2 gated=3 seconds=2870 tree_moved=no
+loom roster=hot2 guards=242 green=239 red=0 gated=3 tree_moved=no run_verdict=ok
+file tools/fixtures/s/say_compose_bound_scan.sh the classifier strips a leading if-then before classifying and reads the condition apart from the action; both ceilings lowered, and the header carries the pen measurement that tells the blind spot from the habit
+file tools/fixtures/s/say_compose_bound_control.sh section 12, eight legs: each of the three kinds guarded, a capture inside a condition, and the same three unguarded proving the widening added a reading rather than a second alphabet
+file tools/s/say_compose_bound_witness.rish two of the new legs named, since cases_red=0 hears a leg that failed and never one that stopped running
+file construction/standing-equipment.kyri the roster note carries the root, the pen reading, and the unbraiding of the two shares
+file tools/am/amphora_carry_witness.rish three build asserts to the guarded shape -- the pattern repeated across the lane
+file tools/am/amphora_framed_name_witness.rish sixteen sites, the largest single file, mixing both repair shapes
+file tools/am/amphora_mark_wreck_witness.rish thirteen sites, three of them carrying a pen build's whole refusal text
+file tools/am/amphora_first_resident_witness.rish the lane's one eager site, split into a labelled line and a bare say, then moved above its own assert for shim_reason
+file tools/am/amphora_mark_wreck_witness.rish two readings lifted above the first assert on their binding, the duplicate guarded print dropped
+file construction/ITINERARY.md the account carried forward, elder shelved whole at 20260910.151309
+file construction/archive/20260910-151309_itinerary-landed-accounts.md the elder account, written by the shelf tool with its links re-anchored
+scope tools/am/ and the say_compose_bound family -- a red closed at its root, and my lane's whole share of the debt paid beside it
+status GREEN -- say_compose_bound and shim_reason both green together, the control at 41 legs and 0 red with each new wall mutated in turn and its own legs watched to fall, all sixteen touched amphora witnesses re-run green, the guarded refusal path proven by breaking a build in a pen, index_row_bound and fold_shelf_link green. The first hot close read 237 green, 2 red -- my own red closed, and shim_reason opened in its place from this lap's own repair; the second hot close over exactly what ships reads 239 green, 0 red, 3 gated, tree_moved=no, run_verdict=ok -- the whole roster clean, and both reds the cold open named are closed.
+recommend keep-going -- the ferry's two walks in amphora/src/main.rye still count without a ceiling, where the Return is bounded by the listing it reads; every resins home on this pier holds 2 bodies and one pour writes at most max_season_files, so the bound is a refusal about scale and wants its reason written down rather than a number invented

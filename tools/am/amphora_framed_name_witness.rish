@@ -57,20 +57,25 @@ let home = trim pen.out
 # them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
 let zig = "vendor/zig-toolchain/zig"
 let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
-assert build_amphora.ok else "framed: amphora build failed -- ${build_amphora.err}"
+if build_amphora.ok == false then say build_amphora.err
+assert build_amphora.ok else "framed: amphora build failed -- read the line above"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
-assert build_core.ok else "framed: vessel-core build failed -- ${build_core.err}"
+if build_core.ok == false then say build_core.err
+assert build_core.ok else "framed: vessel-core build failed -- read the line above"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
-assert build_seal.ok else "framed: vessel-seal build failed -- ${build_seal.err}"
+if build_seal.ok == false then say build_seal.err
+assert build_seal.ok else "framed: vessel-seal build failed -- read the line above"
 let build_entry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
-assert build_entry.ok else "framed: manifest-entry build failed -- ${build_entry.err}"
+if build_entry.ok == false then say build_entry.err
+assert build_entry.ok else "framed: manifest-entry build failed -- read the line above"
 
 # --- the rule itself, both directions, where it lives ---
 # A name carrying a space walks free -- the format admits it, since the name is the last field and
 # runs to the end of the line -- and four control bytes refuse by their own error name. A rule
 # proven only on the refusing side cannot be told from one that refuses every unusual byte.
 let selftest = run ["amphora/bin/manifest-entry" "selftest"]
-assert selftest.ok else "framed: the name rule must prove both directions -- ${selftest.err}"
+if selftest.ok == false then say selftest.err
+assert selftest.ok else "framed: the name rule must prove both directions -- read the line above"
 assert selftest.err contains "keep it one record" else "framed: the selftest names the framing rule"
 
 # --- the welcome, asserted as hard as every refusal below ---
@@ -85,16 +90,20 @@ assert restore.err contains "restore same-parent ok" else "framed: the ordinary 
 # not hold, at a digest it never produced. The plant lives in a fixture because the name needs
 # shell quoting, and a Rishi string hands a backslash to `sh` as written.
 let craft = run ["sh" "tools/fixtures/am/amphora_framed_season.sh" "${home}/season"]
-assert craft.ok else "framed: the crafted season must prepare -- ${craft.err}"
-assert craft.out contains "crafted_name_bytes=192" else "framed: the plant must carry its whole crafted name -- ${craft.out}"
+say craft.out
+if craft.ok == false then say craft.err
+assert craft.ok else "framed: the crafted season must prepare -- read the reading above"
+assert craft.out contains "crafted_name_bytes=192" else "framed: the plant must carry its whole crafted name -- read the reading above"
 let two_files = run ["sh" "-c" "find ${home}/season -type f -exec echo x ';' | wc -l | tr -d ' '"]
-assert (trim two_files.out) == "2" else "framed: the crafted season holds exactly two files -- ${two_files.out}"
+say two_files.out
+assert (trim two_files.out) == "2" else "framed: the crafted season holds exactly two files -- read the reading above"
 
 # --- the pour door: refused by its own name, with nothing written ---
 let mkout = run ["sh" "-c" "mkdir -p ${home}/out"]
 assert mkout.ok else "framed: the crafted pour needs a home of its own, so the honest pour's resins cannot stand in for its own"
 let door = run ["sh" "-c" "amphora/bin/amphora pour ${home}/season ${home}/out/craft.bron; true"]
-assert door.err contains "season name is not one record" else "framed: the pour door must refuse by its own name -- ${door.err}"
+say door.err
+assert door.err contains "season name is not one record" else "framed: the pour door must refuse by its own name -- read the reading above"
 let no_vessel = run ["sh" "-c" "test ! -e ${home}/out/craft.bron"]
 assert no_vessel.ok else "framed: the refusal must arrive BEFORE any vessel is written"
 let no_resins = run ["sh" "-c" "test ! -d ${home}/out/resins"]
@@ -110,21 +119,28 @@ assert elder_copy.ok else "framed: the elder pen must copy"
 let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/if (c < 0x20 or c == 0x7f) return .unframed;/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/const c = name/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/if (me.name_verdict(entry.path) != .contained) return error.SeasonNameUnframed;/d' ${elder_dir}/src/main.rye && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
 assert strip.ok else "framed: the wall must strip cleanly"
 let gone = run ["sh" "-c" "cat ${elder_dir}/manifest_entry.rye ${elder_dir}/src/main.rye | grep -c 'return .unframed;\\|SeasonNameUnframed;' || true"]
-assert (trim gone.out) == "0" else "framed: the elder pen must lose every USE of the rule -- ${gone.out} left"
+say gone.out
+assert (trim gone.out) == "0" else "framed: the elder pen must lose every USE of the rule -- read the reading above"
 let eb1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
-assert eb1.ok else "framed: elder amphora build failed -- ${eb1.err}"
+if eb1.ok == false then say eb1.err
+assert eb1.ok else "framed: elder amphora build failed -- read the line above"
 
 let eb2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_seal.rye -femit-bin=${elder_dir}/bin/vessel-seal"]
-assert eb2.ok else "framed: elder vessel-seal build failed -- ${eb2.err}"
+if eb2.ok == false then say eb2.err
+assert eb2.ok else "framed: elder vessel-seal build failed -- read the line above"
 let eb3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_core.rye -femit-bin=${elder_dir}/bin/vessel-core"]
-assert eb3.ok else "framed: elder vessel-core build failed -- ${eb3.err}"
+if eb3.ok == false then say eb3.err
+assert eb3.ok else "framed: elder vessel-core build failed -- read the line above"
 
 let elder_pour = run ["sh" "-c" "${elder_dir}/bin/amphora pour ${home}/season ${home}/out/elder.bron; true"]
-assert elder_pour.err contains "pour complete" else "framed: the wall removed, the crafted season must pour clean -- otherwise this witness proves nothing -- ${elder_pour.err}"
+say elder_pour.err
+assert elder_pour.err contains "pour complete" else "framed: the wall removed, the crafted season must pour clean -- otherwise this witness proves nothing -- read the reading above"
 let listed = run ["sh" "-c" "grep -c '^manifest ' ${home}/out/elder.bron | tr -d ' '"]
-assert (trim listed.out) == "4" else "framed: the elder head must list more names than the season holds -- listed ${listed.out} for two files"
+say listed.out
+assert (trim listed.out) == "4" else "framed: the elder head must list more names than the season holds, for two files -- read the reading above"
 let forged_name = run ["sh" "-c" "grep -c '^manifest plain-bytes .* evil.txt$' ${home}/out/elder.bron | tr -d ' '"]
-assert (trim forged_name.out) == "2" else "framed: the elder head must list a name the season never held -- found ${forged_name.out}"
+say forged_name.out
+assert (trim forged_name.out) == "2" else "framed: the elder head must list a name the season never held -- read the reading above"
 let stamped = run ["sh" "-c" "grep -c '^stamp_sig ' ${home}/out/elder.bron | tr -d ' '"]
 assert (trim stamped.out) == "1" else "framed: the forged listing must ride under a real Kumara stamp, or the harm is overstated"
 

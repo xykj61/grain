@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3125d30512` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c13997e0e3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -202,48 +202,44 @@ target against the law room's 9**. Sweeping a `.claude` page leaves its twin whe
 built nothing** -- 38 of 39 pairs differ two ways, so a gate there pushes a lane into the merge that
 gate reserves. Counted-never-gated is one word.
 
-**COPAL -- THE COMPARISON WAS WRITTEN ONCE AND SKIPPED ONCE.**
-Elder [shelved](archive/20260910-115439_itinerary-landed-accounts.md) whole.
-**AETHER HEARS THE PAGE NOBODY ANSWERED**, and my own card named it: `resin_body_proven` stood as
-the proof the ferry never called. `resins/` is content-addressed -- a body's FILENAME is the SHA3-256
-of its own bytes -- and `ferry_resins` read that filename's LENGTH alone.
-**ON METAL `20260910.114040`, in a pen, before a line changed:** one body overwritten to hash
-`42cd36cf...` while its name still read `7cab931a...` was carried whole -- `resins ferried count=4`,
-`carry complete`, exit **0** -- and then stood in the far home under a name that lied about it,
-where the far Return reads it as the file the listing names. Every digest was honest; one body
-was not.
-**BUILT:** `body_addresses` published once in `amphora/src/main.rye`, borrowed by both readers the
-way they already borrow the wreck rule.
-**THE FIRST REPAIR WAS A REPORT, NOT A WALL.** Proving as it wrote let two honest bodies reach the
-far side ahead of the forgery's refusal -- the lesson `amphora_prove_before_write` seated one reader
-over. The ferry proves in **two walks** now, so a refusal makes no far resins directory at all, and
-a resin tampered with BETWEEN the walks writes nothing either.
-**THE INNER WALL HAD NO LEG, MEASURED RATHER THAN ASSUMED:** removing the writing walk's own check
-left the witness GREEN -- the two walls stand in series and the outer answers first. Shipping it so
-would have repeated the fault this lap closed. `AMPHORA_CARRY_SKIP_PROVE` declines
-the first pass so the second answers alone -- it forges nothing, the shape
-`AMPHORA_CARRY_TRUST_DOCK` already holds here. Each wall removed in turn, its named leg watched to
-fall, welcome shown returning.
-**`amphora_ferried_body_proven` tier lap**, 4 legs both ways; roster **22 guards, 20 lap**,
-`readme_unnamed` 0.
-**SWEPT ON TOUCH:** 30 em dashes out of `src/main.rye` -- 26 spoken diagnostics, 4 trailing comments
--- ceilings lowered by exactly what fell, **3895 -> 3869** and **1311 -> 1307**. The vessel HEAD's
-own em dash STAYS: those bytes are a data format rather than a spoken line, and moving them moves
-every poured vessel.
-**MY COLD OPEN WENT VOID BY MY OWN MID-RUN WRITES** -- I edited a tracked file while it read, the
-third such firing on this card today counting Diffuser's two. The hot pass is the reading that
-counts.
-**RECOVERED `20260910.130000`** from `stash@{0}`, parent = HEAD, applied whole; 15 amphora
-witnesses and four gates re-proven GREEN. **Second dead send in two laps -- and the runs ledger
-named WHICH round:** `ran amphora_ferried_body_proven ... absent`, a guard the roster held at that
-pass's launch and lacked at its close, so `standing_equipment` read `roster_broken` and pointed at
-the stash, where `stash_record` says only that SOME round is.
-**YOURS, KEATON -- THE LEDGER IS STILL FULL.** REDS reads **40,771 of 40,960**, so this row **could
-not land**; cited by stamp (`20260910.115439`) under rule 4. A raise, or your word.
-
-**Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
-judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
-`glow/rune_shape.rye` width; `%281`/`%291`; `%347`.
+**COPAL -- THE RED WAS THE INSTRUMENT'S BLIND SPOT; THE SWEEP WAS OWED ANYWAY.**
+Elder [shelved](archive/20260910-151309_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, and the cold open stopped this pier: `say_compose_bound` red at
+**deferred 538 against 537**, `standing_equipment` reddening beside it for that one reason.
+**MECHANISM:** the classifier in `tools/fixtures/s/say_compose_bound_scan.sh` read each line from
+its start, so a one-line `if COND then ACTION` was invisible whatever the action did. It strips a
+leading `if ... then ` now and reads the CONDITION apart from the action, since a condition
+interpolating a capture composes every run whatever follows. **UNSEEN: 21** hazardous guarded tails,
+every sample a build's stderr, and **155** guarded bare says already spelling the repair.
+**SO THE DENOMINATOR SAT 258 LOW.** Run the widened classifier over the tree as it stood BEFORE
+any repair -- a worktree pen, measured rather than computed -- and it answers **512, `verdict=ok`**:
+the blind spot rather than a habit that had worsened.
+**THE TWO SHARES WERE BRAIDED:** a guarded repair LEFT the population, shrinking the denominator
+and raising the EAGER share -- a lane doing right pushed a peer toward its ceiling, **165 repairs**
+from reddening it. It lands in `safe` now, so only the numerator moves.
+**PAID MY SHARE ANYWAY:** `tools/am/` **93 deferred and one eager to zero**; **sixteen witnesses
+re-run GREEN**, the refusal proven by breaking a build in a pen.
+**CEILINGS FELL** 155 -> **145** and 537 -> **489**. The first was written 144 and set to 145
+BEFORE it ever pushed: a peer landed on this guard inside the hour and carried eager to 143,
+leaving one per mille across eight writers. **A ceiling only falls, so the number to be careful
+about is the one chosen while it is still unshared** -- the derived spine's rule, met in a ratchet.
+**Control 29 -> 41 legs**, each new wall removed in turn and its legs watched to fall while the
+unguarded stayed green. Two are **named in the witness**: `cases_red=0` hears a leg that failed and
+never one that stopped running.
+**THE HOT CLOSE CAUGHT WHAT A COLD OPEN CANNOT:** `shim_reason`, green forty-five minutes earlier,
+refused at **`late_say_rostered=4`**, all four mine. **THE TWO GUARDS PULL OPPOSITE WAYS ON ONE
+LINE** -- one wants the capture OUT of an assert's else, the other the reading ABOVE the first
+assert on its binding, since assert stops the run. Printing before the FAILING assert put it below
+an EARLIER one. **One shape serves both**, `reds_spine_derive_witness`'s own: print bare right
+after the binding, then assert. Back to **zero**.
+**GRADED, DECLINED:** the scan reads **C 73**, its elder **C 73** byte for byte -- the card grades
+a program's head block, untouched here. Register 43 at 57% negatives in a Meter header whose
+subject IS refusal: **Incense's question today**, yours.
+**YOURS, KEATON:** REDS reads **40,311 of 40,960**, **649 free**, where a row of this class runs to
+thousands -- so this one is cited by stamp (`20260910.151309`) and rests in its log.
+**Still yours, on the shelf:** `rish_spoken_ascii` **11,113**, 10,748 table / 365 judgment, sweep
+unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
+width; `%281`/`%291`; `%347`.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **Gate 3 stands:** `.gnupg-rye/` holds
