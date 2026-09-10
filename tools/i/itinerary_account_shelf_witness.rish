@@ -22,6 +22,16 @@
 # guessed. Measured across the 208 standing shelves, 34 share a first line and 12 share a body
 # sentence, which is eight hands each writing the same header freshly -- reported rather than
 # gated, since a differently worded header reads perfectly well.
+#
+# AND THE QUESTIONS THAT RIDE ALONG. A ship writes its ask for Keaton inside the account block --
+# `**YOURS:** whether Tally seats a wake bound` -- and this writer moves the block whole, so the
+# question leaves the live card by the same act that keeps the card under its bound. Measured
+# `20260910`: **72** such asks stand across **54 of the 339** shelves, an account block's median
+# life on the card is **104 minutes** with **283 of 292** lives under eight hours, and a grep for
+# `**YOURS` under `tools/` returns one line of unrelated prose -- so nothing here reads a shelf for
+# a question. From this stamp the writer prints every ask it shelves. The standing population is
+# REPORTED below and gated at nothing, because answering an ask is Keaton's word and a guard that
+# reddened on an unanswered question would red on ordinary work.
 
 say "itinerary-account-shelf: Language EN -- the shelf that nothing wrote."
 say "itinerary-account-shelf: Style Gauge, Meter -- the re-anchoring is done, never recalled."
@@ -30,7 +40,7 @@ say "itinerary-account-shelf: Lens TAME -- every refusal proven from both sides.
 say "itinerary-account-shelf: the control -- the writer on a real fold in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/i/itinerary_account_shelf_control.sh"]
 assert ctl.ok else "itinerary-account-shelf: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=30 fail=0" else "itinerary-account-shelf: the control did not prove thirty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=43 fail=0" else "itinerary-account-shelf: the control did not prove forty-three behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "itinerary-account-shelf: the filter it delegates to must still stand..."
 # invariant: the rewrite is computed in the filter and never duplicated here, so its absence is a
@@ -45,4 +55,11 @@ let depth = run ["sh" "-c" "grep -ohE '\\]\\(\\.\\./[a-z-]+/' construction/archi
 assert depth.ok else "itinerary-account-shelf: the shelf reading refused --\n${depth.err}"
 assert depth.out contains "pin_depth_links=0" else "itinerary-account-shelf: an account shelf carries a pin-depth link --\n${depth.out}"
 
-say "itinerary-account-shelf: GREEN -- 30 behaviors, the filter in place, the shelves clean, the second run asked of the bytes."
+say "itinerary-account-shelf: and the questions already shelved, counted so the number is readable..."
+# invariant: reported and never gated -- the count rises whenever a ship asks something, which is
+# ordinary work, and only Keaton's word lowers it.
+let asks = run ["sh" "-c" "grep -hoE '[*][*]YOURS' construction/archive/*itinerary-landed-accounts.md 2>/dev/null | wc -l | tr -d ' ' | sed 's/^/asks_shelved_standing=/'"]
+assert asks.ok else "itinerary-account-shelf: the ask reading refused --\n${asks.err}"
+say "itinerary-account-shelf: ${asks.out}"
+
+say "itinerary-account-shelf: GREEN -- 43 behaviors, the filter in place, the shelves clean, the second run asked of the bytes, and every ask the writer shelves now said out loud."

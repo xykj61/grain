@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9008bc9e8e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `423dd857af` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
 Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
@@ -150,27 +150,27 @@ the fall takes no slack; **rish 11153 -> 11152**, 80 below on others' slack and 
 **YOURS:** four language reds each end on a seam -- `%680` document-view ordering, `%689` and `%678`
 a record-format door, `%532` what declares a desk's kind. **REDS holds 189 bytes**, so this lap's own
 row could not be booked; cited by stamp (`20260910.121514`) under rule 4.
-**GRASS -- A POPULATION PICKED BY ONE LANGUAGE'S SYNTAX IS A READING OF THAT LANGUAGE.**
-Elder [shelved](archive/20260910-112945_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**: its cardinal seat says run the census rather than read the sentence about
-it. `convergence_census.sh` named its own blindness `20260909.185835` -- a population picked by
-three SHELL idioms, so a Rishi tool could rewrite the tracked tree and never be a candidate -- and
-left it a lap of its own. **MEASURING MOVED IT.** The gap is NOT `write-file`, where the header
-pointed: of 2,450 tracked `.rish` sources **three call it and git tracks no target**. It is a
-redirect inside `run ["sh" "-c" ...]`, **one member** -- `tools/g/geode_libraries.rish`, which
-`pre-commit` runs on EVERY commit, called proven-and-invisible there. **12 -> 13, 10 -> 11 proven.**
-**`"sh" "-c"` IS THE FENCE**, rather than the redirect, since `sh -c` runs in this tool's own
-directory. Drop it and `convergence_tree_prove_witness.rish` arrives on a `--perturb` string run in
-a worktree pen -- the third strand's false positive, in a language a shell lexer cannot read. The
-slash rule is a COST reading and says so now: no reading moves, **189s to 208s** does.
-**THE PEN WAS GREEN WHILE THE CENSUS DIED** -- a `while` carries its last body command's status.
-**PEN 43 -> 52**, mutations bite.
-**REDS FIRST, AND IT IS A GATE:** `dated_path` reds fleet-wide, **`refs_lost=102` against 85**,
-**97 testimony no lap may repair**. I fixed the one living broken citation. What grew since the
-`20260907` ceiling is a log citing a landed-accounts shelf by an intended stamp -- **17, ~5 a day**.
-**YOURS:** the scan computes the split; its header says moving the gate to `lost_promised_living`
-(**0**) waits on your word, *asked on ITINERARY* -- **the ask was no longer there**. Until it moves,
-no lawful lap makes this guard green.
+**GRASS -- AN ASK LIVES 104 MINUTES ON THE ONE SURFACE YOU READ.**
+Elder [shelved](archive/20260910-141655_itinerary-landed-accounts.md).
+**AETHER HEARS**, whose threshold asks a lap to record the silences too. My last lap found one --
+a header saying its question was *asked on ITINERARY* when the ask was gone. **THE POPULATION:**
+`**YOURS` is this front's ask sigil, and every figure here is FREE. **72** asks stand across **54 of
+339** shelves. A block's median life on the card is **104 minutes** -- 292 consecutive same-seat
+shelf stamps -- and **283 of 292** run under eight hours, so a question written in the night reaches
+a shelf before morning. Of the eight living now, **one** was carried forward by its own ship.
+**THE MECHANISM IS THE RIGHT MOVE:** `itinerary_account_shelf.sh` takes a block WHOLE so the card
+holds under its bound, and the question rides along -- and **nothing under `tools/` read a shelf for
+a question**, so the move was silent.
+**BUILT -- THE SHELF SPEAKS:** `asks_shelved=<n>` and one `ask: ` line each, bounded 16 x 160 with
+`asks_unprinted=` naming the rest; the COUNT reads the whole block first, since a truncating reader
+reporting its own truncation is a fault booked here. Shelving my elder block above printed my own
+unanswered ask back at me. **PROVEN:** control **30 -> 43 legs, fail=0**, both bounds from both
+sides; two mutations bite, and the witness reds on a silenced tool and greens on its return. Header
+**C+/79 -> B+/85**. **COLD: 235 green, 2 red, 3 gated, `tree_moved=no`** -- `stash_record`
+(petrichor's 11 stashes) and the roster guard that reds because it does.
+**YOURS, STILL:** `dated_path` -- move the gate to `lost_promised_living` (**0**), re-asked rather
+than left on a shelf, which is the finding wearing itself. **YOURS, NEW:** whether an ask outlives
+its block -- a durable open-asks room, or the spoken shelf and a ship's hand.
 **INCENSE -- A CONTROL THAT REACHED ITS LAST LINE SAID NOTHING ABOUT ITS LEGS.**
 Elder [shelved](archive/20260910-140304_itinerary-landed-accounts.md).
 **AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the page was my own: my last lap named a hole
