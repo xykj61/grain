@@ -54,7 +54,7 @@
 # Purely local: no key, no signature, no network, no funds, no real device.
 
 say "unheard-guard: Language EN -- a guard that is never run guards nothing."
-say "unheard-guard: Style Gauge Meter -- the reading is counted, its ceiling only falls, and every refusal is proven from both sides."
+say "unheard-guard: Style Gauge Meter -- the reading is counted, its ceilings only fall, its population floor only falls beside them, and every refusal is proven from both sides."
 say "unheard-guard: Lens TAME -- safety first; a generous reading under-reports and can never invent a red."
 
 # ONE RUN, BOTH READINGS. `choirs` mode prints every line `measure` does and the choir lines after
@@ -106,46 +106,33 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # population came back empty would print unnamed_choirs=0, pass its ceiling, and look exactly like
 # a tree with nothing hidden -- REDS %416's shape, and the reason both new awk passes check their
 # own exit status. These two legs close the same door from the reading's side.
-# 451 -> 452 on `20260907.062000`: `tools/l/living_docs_lint.rish` took its first `assert` when
-# duty 1 gained a control, so a runner wearing neither word began carrying a checkable claim and
-# joined this population by the rule above. It is ROSTERED, so it lands in unnamed_heard rather
-# than among the runners -- the pin moves because the population really grew, which is the one
-# reason it may move.
-# 452 -> 453 on `20260907.225617`: a tracked Rye program arrived under the tools rooms, wearing
-# neither word and carrying `assert(` in command position, so it joins this population by the rule
-# above -- the pin moves because the population really grew. Its path is deliberately NOT spelled
-# here: `rye_compile_reach` reads a Rye path inside any runner as a claim that some build reaches
-# that file, and nothing in the tree builds this one, so naming it in a `.rish` would make this
-# note itself the accusation. The program is named in the research page that publishes its numbers.
-# 453 -> 454 on `20260908.005732`: a second such program arrived, same shape and same reason -- a
-# hand-run Rye sweep under the tools rooms, no runner building it, its path named in its own
-# research page rather than here for exactly the reason above.
-# 454 -> 459 on `20260908.204406`: five choir runners arrived under the tools rooms in one evening
-# -- `tools/b/buhr_choir.rish`, `tools/f/font5x7_choir.rish`, `tools/f/fora_choir.rish`,
-# `tools/h/hunk_choir.rish`, `tools/m/mycelium_choir.rish` -- each wearing neither word in its
-# basename while carrying `assert` in command position, so all five join this population by the
-# rule above. The delta is exactly five and the arrivals are exactly five, checked from both sides:
-# `git log --since --diff-filter=A -- tools/*` over the window since the elder pin names these five
-# and one Rye program, and that program was already inside the 454 (it is the second arrival the
-# line above records). Their paths ARE spelled here, unlike the two Rye arrivals above, because the
-# reason those stayed unnamed is specific to Rye: `rye_compile_reach` reads a `.rye` path inside a
-# runner as a claim that some build reaches it. A `.rish` path carries no such claim, which is why
-# `tools/p/parity_ch01.rish` is named outright a dozen lines below.
-# 459 -> 460 on `20260909.002917`: one Rye program arrived under `tools/rye/`, a self-scoped
-# instruction-counter probe run by the `energy_instrument` guard's agree step, wearing neither word
-# in its basename. The delta is exactly one and the arrival is exactly one, checked from both sides.
-# Its path stays UNSPELLED here for the reason the two Rye arrivals above stayed unspelled:
-# `rye_compile_reach` reads a `.rye` path inside a runner as a claim that some build reaches it.
-# 460 -> 461 on `20260910.073000`: one Rye program arrived under `tools/rye/`, a bounded-ring
-# probe standing as the first witness for the bounded-torus moonshot, run by the `wrap_ring`
-# guard, wearing neither word in its basename. The delta is exactly one and the arrival is
-# exactly one, checked from both sides: `git diff --diff-filter=A` over `tools/*.rish` and
-# `tools/*.rye` since the elder pin names two such programs, and the earlier of them is the
-# one the line above already records. The one deletion in that window wore `witness` in its
-# basename and so never belonged to this population. Its path stays UNSPELLED here for the
-# reason the three Rye arrivals above stayed unspelled: `rye_compile_reach` reads a `.rye`
-# path inside a runner as a claim that some build reaches it.
-assert green.out contains "unnamed_population=461" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# THE SECOND READING'S POPULATION, HELD BY A FLOOR RATHER THAN PINNED BY EQUALITY. This leg read
+# `assert green.out contains "unnamed_population=461"` until `20260910.101919`, and that equality
+# reddened on lawful work in another hand's room: `unnamed_population` counts runners carrying a
+# checkable claim while wearing neither `witness` nor `suite`, so any ship writing one moved it.
+# It moved seven times -- 451, 452, 453, 454, 459, 460, 461 -- between `20260907.062000` and
+# `20260910.073000`, four of those inside three days, each answered by a hand raising a number and
+# writing a paragraph accounting for an arrival it had nothing to do with. The elder trail stands
+# in git history and its walk-back nib is recorded in `construction/CHECKPOINTS.md`.
+#
+# THE BRAID, AND WHERE IT WAS ALREADY UNBRAIDED. The scan's own header declines to gate
+# `unnamed_runners` for exactly this reason -- a ceiling over a number that rises on ordinary
+# growth is a wall someone turns off within a week -- and then this line gated the same growth one
+# level up by equality. `tools/t/tame_reach_witness.rish` met the same braid on `20260910.080947`
+# and split it rather than raising its ceiling again; this is that repair one room over.
+#
+# WHAT THE EQUALITY WAS ALSO BUYING, kept. A population that comes back empty passes a ceiling and
+# reads exactly like a healthy tree (REDS %416), and the equality caught that by accident. A FLOOR
+# catches it on purpose, refuses nothing a stranger writes, and moves only when a repair genuinely
+# shrinks the population -- the mirror of a ceiling that only falls. The scan carries the operative
+# number and this line carries the published one, so the two disagree the moment either moves alone.
+assert green.out contains "unnamed_population_floor=384" else "unheard-guard: the second reading's floor stands where it was measured -- a floor only falls"
+
+# THE FLOOR FROM BOTH SIDES, ON THE LIVING TREE, read out of the scan's own output rather than
+# spelled here, so the leg cannot drift away from the reading it proves.
+let pop_under = run ["sh" "-c" "n=$(sh tools/fixtures/u/unheard_guard_scan.sh | sed -n 's/^unnamed_population=//p'); UNNAMED_POPULATION_FLOOR=$((n+1)) sh tools/fixtures/u/unheard_guard_scan.sh"]
+assert (pop_under.ok == false) else "unheard-guard: a population floor one above the live count must refuse"
+assert pop_under.out contains "verdict=under_unnamed_population_floor" else "unheard-guard: want the floor refusal named apart from every ceiling -- ${pop_under.out}"
 # 12 -> 11 on `20260909.214500`, and the fall came from two hops rather than from a rename.
 # `tools/g/glow_choir_witness.rish` gathered six Glow witnesses that no runner named, one of
 # them `tools/g/glow_connector_seam_witness.rish` -- an accrete shim whose whole body runs
@@ -184,5 +171,10 @@ assert control.out contains "ok   and the elder reading is unmoved by everything
 assert control.out contains "ok   a guard reached only through an unnamed runner is counted in the elder rule's blind spot" else "unheard-guard: the reach-gap leg is missing"
 assert control.out contains "ok   the excluded witness naming a silent choir does not make it heard" else "unheard-guard: the self-exclusion leg is missing"
 assert control.out contains "ok   the SAME pen with the accuser renamed reads the choir heard -- the exclusion is what did the work" else "unheard-guard: the self-exclusion failing-side leg is missing"
+# THE FLOOR'S OWN PEN LEGS, named here as well as counted, for the reason every leg above is:
+# a control that quietly dropped them would still read fail=0.
+assert control.out contains "ok   a population floor exactly at the count passes" else "unheard-guard: the floor's passing-side leg is missing"
+assert control.out contains "ok   one above the count refuses" else "unheard-guard: the floor's refusing-side leg is missing"
+assert control.out contains "ok   and the floor refuses under its own name, apart from every ceiling" else "unheard-guard: the floor's named-verdict leg is missing"
 
-say "GREEN: unheard-guard -- the roster's reach is measured, the unheard remainder stands under a ceiling that only falls, the runners wearing neither word are counted rather than absent, all three ceilings refuse one under the live reading, and every welcome is proven on a pen."
+say "GREEN: unheard-guard -- the roster's reach is measured, the unheard remainder stands under a ceiling that only falls, the runners wearing neither word are counted rather than absent, all three ceilings refuse one under the live reading, the population floor refuses one above it, and every welcome is proven on a pen."
