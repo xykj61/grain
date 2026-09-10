@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260910.063900` | [The page that was still mine](20260910/20260910-063900_the-page-that-was-still-mine.kyri) | the wrap is the bound, proven on metal |
+| `20260910.063433` | [Eight cycled, and one never answered](20260910/20260910-063433_eight-cycled-and-one-never-answered.kyri) | residue seen and named |
 | `20260910.062400` | [Three tracks, and a token that was not legal](20260910/20260910-062400_three-tracks-and-a-token-that-was-not-legal.kyri) | eight lessons; two agents |
 | `20260910.060709` | [The page that held half the ratchet](20260910/20260910-060709_the-page-that-held-half-the-ratchet.kyri) | 1,437 of 2,773 in one page |
 | `20260910.054448` | [The two names the geometry owed](20260910/20260910-054448_the-two-names-the-geometry-owed.kyri) | a claim checked before it shipped |
