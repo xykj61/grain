@@ -311,6 +311,57 @@ note "deadline_unavailable_verdict" "$(read_field verdict "$out")" "unavailable_
 note "deadline_unavailable_exit" "$rc" "2"
 
 
+# --- A DESCRIPTOR DUPLICATION IS NOT A WRITE ----------------------------------------------------
+# `>&2` holds the same `>` a file redirect does, so a diagnostic READ printed to stderr once read
+# as a writing plant and stood inside `plants_unresolved` -- the exact inflation the scan's own
+# comment declares avoided (REDS %519). Both sides are shown, and then the strip is REMOVED from a
+# copy of the scan and the stderr line asserted to count again, because a filter that had merely
+# started saying "not a plant" about everything would pass the first leg and disarm the second.
+echo
+echo "== a sed reading to stderr is not a plant; a sed writing a file still is =="
+# `$d` is the PATH-stubbed pen the capability legs below still read, so this block borrows the
+# variable and hands it back. A phase that quietly keeps it faults a leg fifty lines away.
+_d_held=$d
+d=$(make_pen stderr_read)
+cat > "$d/tools/fixtures/x/thing_control.sh" <<'EOF'
+#!/bin/sh
+sed -n '1,20p' "mod/edge.rye" >&2 || true
+EOF
+commit_pen "$d"
+out=$( cd "$d" && sh "$SCAN" 2>&1 ) || true
+note "stderr_read_not_a_plant" "$(read_field plants_unresolved "$out")" "0"
+note "stderr_read_not_resolved" "$(read_field plants_resolved "$out")" "0"
+
+d=$(make_pen stderr_beside_write)
+cat > "$d/tools/fixtures/x/thing_control.sh" <<'EOF'
+#!/bin/sh
+src="mod/edge.rye"
+sed -n '1,20p' "$src" >&2 || true
+sed 's/var deletes: u32 = 0;/var deletes: LineId = 0;/' "$src" > "$1/broken.rye"
+EOF
+commit_pen "$d"
+out=$( cd "$d" && sh "$SCAN" 2>&1 ) || true
+note "write_beside_stderr_still_seen" "$(read_field plants_live "$out")" "1"
+note "write_beside_stderr_verdict"    "$(read_field verdict "$out")"     "ok"
+
+# The strip removed: the stderr line must count again, or the filter is not what moved the number.
+sed "s|sed 's/>&\[0-9-\]//g'|cat|" "$SCAN" > "$PEN/scan_nostrip.sh"
+if cmp -s "$PEN/scan_nostrip.sh" "$SCAN"; then
+  note "nostrip_plant_matched" "plant_matched_nothing" "applied"
+else
+  note "nostrip_plant_matched" "applied" "applied"
+  d=$(make_pen stderr_nostrip)
+  cat > "$d/tools/fixtures/x/thing_control.sh" <<'EOF'
+#!/bin/sh
+sed -n '1,20p' "mod/edge.rye" >&2 || true
+EOF
+  commit_pen "$d"
+  out=$( cd "$d" && sh "$PEN/scan_nostrip.sh" 2>&1 ) || true
+  note "nostrip_counts_stderr_again" "$(read_field plants_unresolved "$out")" "1"
+fi
+
+d=$_d_held
+
 # Read the runner's actual capability function and prove it delegates to the same
 # scan. This keeps a capability name from drifting from the program it protects.
 sed -n '/^capability_state() {/,/^}/p' "$_fd_root/tools/fixtures/s/standing_equipment_run.sh" > "$PEN/capability.sh"

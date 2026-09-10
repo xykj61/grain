@@ -40,6 +40,8 @@ for candidate in timeout gtimeout; do
     break
   fi
 done
+want_list=no
+[ "${1:-}" = --list ] && { want_list=yes; shift; }
 if [ "${1:-}" = --capability ]; then
   if [ -n "$sandbox_sed" ] && [ -n "$deadline_tool" ]; then echo present; else echo absent; fi
   exit 0
@@ -87,7 +89,13 @@ for f in $(git ls-files 'tools/fixtures/*_control.sh'); do
     case "$body" in
       \#*|[[:space:]]*\#*) continue ;;
     esac
-    case "$body" in
+    # A DESCRIPTOR DUPLICATION IS NOT A WRITE. `>&2` and `>&1` carry the same `>` character a file
+    # redirect does, so testing the raw line for `>` reads `sed -n '1,20p' "$log" >&2` -- a
+    # diagnostic READ printed to stderr -- as a writing plant. Two such lines stood inside
+    # `plants_unresolved` while the comment above declared exactly this inflation avoided
+    # (REDS %519). Strip the duplications first, then ask whether a file redirect remains.
+    written=$(printf '%s\n' "$body" | sed 's/>&[0-9-]//g')
+    case "$written" in
       "sed -i"*|*" sed -i"*) : ;;
       "sed "*">"*|*" sed "*">"*) : ;;
       *) continue ;;
@@ -175,6 +183,24 @@ echo "plants_live=$live"
 echo "plants_dead=$dead"
 echo "plants_unresolved=$unresolved"
 echo "plants_failed=$failed"
+
+# `--list` names the lines behind the counts, and it can never move a verdict: it prints from the
+# same tally the counts are grepped from, above every exit path, and adds no `verdict=` line of its
+# own. A census that reports a number nobody can locate asks each lane to rediscover the population
+# before it can work one row down -- which is why `plants_unresolved` stood at 67 for three days
+# with no way to read which 67 (REDS %519).
+if [ "$want_list" = yes ]; then
+  echo "-- plants, by reading --"
+  while read -r mark where what; do
+    case "$mark" in
+      L) echo "live       $where -- $what" ;;
+      D) echo "dead       $where -- $what" ;;
+      F) echo "failed     $where -- $what" ;;
+      U) echo "unresolved $where" ;;
+    esac
+  done < "$tally"
+  echo "-- end --"
+fi
 
 if [ "$dead" -gt 0 ]; then
   grep '^D ' "$tally" | while read -r _ where what; do
