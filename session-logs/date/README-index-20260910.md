@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.065118` | [The front doors, read as one class](20260910/20260910-065118_the-front-doors-read-as-one-class.kyri) | 573 characters, 26 doors, one kind |
 | `20260910.063900` | [The page that was still mine](20260910/20260910-063900_the-page-that-was-still-mine.kyri) | the wrap is the bound, proven on metal |
 | `20260910.063433` | [Eight cycled, and one never answered](20260910/20260910-063433_eight-cycled-and-one-never-answered.kyri) | residue seen and named |
 | `20260910.063000` | [the check nobody wrote](20260910/20260910-063000_the-check-nobody-wrote.kyri) | A front door named a check its witness never ran |

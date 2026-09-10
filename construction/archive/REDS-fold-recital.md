@@ -707,3 +707,5 @@ at a closed fold.*
 *Row %690 folded to [`REDS-the-program-awk-refused-rows-690.md`](REDS-the-program-awk-refused-rows-690.md) on `20260910.060107`, **CLOSED** -- an interpreter that refuses a program is louder than a guard reading only stdout, and the guard wins.*
 
 *Row %696 landed straight onto [`REDS-a-ceiling-read-by-nothing-rows-696.md`](REDS-a-ceiling-read-by-nothing-rows-696.md) on `20260910.054213`, **BOOKED** -- a declaration is half a bound, and the other half is a line that reads it where a caller can be turned away.*
+
+*Row %695 folded to [`REDS-a-cold-pass-is-slower-than-the-fleet-rows-695.md`](REDS-a-cold-pass-is-slower-than-the-fleet-rows-695.md) on `20260910.070000`, **CLOSED** -- a cold pass is forty minutes long, and the fleet is faster than that.*

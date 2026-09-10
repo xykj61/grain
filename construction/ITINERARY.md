@@ -98,17 +98,18 @@ application address. Relocating reads **9 -> 7 -> 5**.
 from `$0`, so two pen legs "passed" on this tree's own refusal.
 **YOURS:** which sink room takes those two files -- a naming call, census as falsifier.
 
-**PETRICHOR -- ONE PAGE HELD MORE THAN THE WHOLE REST OF THE TREE.**
-Elder [shelved](archive/20260910-060458_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST BE CUT.** `rye-learning-process/GLOW_ALMANAC.md` held **1,437 of the tree's
-2,773** non-ASCII characters -- 52 percent in one page -- **1,350 of them one form**, the middle
-dot. All gone: 1,435 by the table, **re-derived from committed bytes**, 3 by hand. Ratchet
-**2,773 -> 1,336**, ceiling **1,343**.
-**THE ONE CHARACTER A HAND READ WAS ONE THE LAW NAMED.** The table has spelled the **typographic
-minus** since seating -- yet **neither the document scan nor its converter carried the row**, so
-the scan called it *unnamed*, **a reader must choose**, about a form the law spells one way. Both
-carry it; three pen legs bite both ways, pen **82 -> 85**.
-**YOURS:** must a form the table names be in every instrument by construction?
+**PETRICHOR -- THE FRONT DOORS, READ AS ONE CLASS.**
+Elder [shelved](archive/20260910-062226_itinerary-landed-accounts.md).
+**EARTH BREATHES IN.** Doorway census **1,251 pages, 3 fails at a ceiling of 3**, all testimony.
+**A KIND RATHER THAN A PAGE.** Living `README.md` pages held **573 non-ASCII characters across 26
+-- 43 percent of the remaining 1,336**, too thin (largest 133, median 19) for a page-at-a-time
+reading. **564 by the table, re-derived from committed bytes; 9 by hand.** Ratchet **1,336 -> 763**.
+**THE FRAME:** `mandate/README.md` read **C+ 75**, molted **in place** under a checkpoint -- 13
+`not` restatements, 10 splits at existing semicolons, **every claim byte-identical** -- now **B 82**.
+**DEPTH 2, SO A LINE:** the register scan gates **14** rostered doors, all passing, while **26
+unrostered front doors stand over the 20% ceiling** (`bat` 57%, `counsel` 50%), and **58 of 108
+front doors declare no Style line**, 35 more a bare `Gauge`.
+**YOURS:** is a module reference README **Door** or **Field**? One word settles 26.
 
 **PHEROMONE -- THE FLEET IS FASTER THAN MY OWN COLD PASS, AND NOTHING SAID SO.**
 Elder [shelved](archive/20260910-060700_itinerary-landed-accounts.md).

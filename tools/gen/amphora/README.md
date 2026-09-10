@@ -1,12 +1,12 @@
-# tools/gen/amphora — Amphora family home (Generator Chapter s7)
+# tools/gen/amphora -- Amphora family home (Generator Chapter s7)
 
 **Where this sits:** home is [`../../../README.md`](../../../README.md) - a first hour in your hands is
 [`../../../docs-geode/tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../../SOURCE.md`](../../../SOURCE.md)
 
-**Stamp:** `20260728.192321` · **Round:** s7 · **Voice:** Quin
+**Stamp:** `20260728.192321` - **Round:** s7 - **Voice:** Quin
 
-Eight Amphora Rishi scripts live here. Fascia metric folds laps 1–3 from this home.
+Eight Amphora Rishi scripts live here. Fascia metric folds laps 1-3 from this home.
 Old `tools/amphora_*.rish` paths are accrete shims.
 
 | Script | Role |
@@ -26,5 +26,5 @@ Run from repo root:
 rishi/bin/rishi run tools/gen/amphora/amphora_lap1.rish
 ```
 
-Sibling homes: `tools/gen/chapter/` · `tools/gen/fund/`. Glow desks stay at their present address until O3.
+Sibling homes: `tools/gen/chapter/` - `tools/gen/fund/`. Glow desks stay at their present address until O3.
 

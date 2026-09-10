@@ -1,4 +1,4 @@
-# shape — Structures
+# shape -- Structures
 
 **Language:** EN  
 **Last updated:** `20260831.045858` (the spool's name bound -- a length read at two call sites, and the placard's sixth line read for the first time in this room)  
@@ -13,7 +13,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 
 | Pedestal | Role | Witness |
 | --- | --- | --- |
-| [`shape-surface-count.glow`](shape-surface-count.glow) | First resident · one-field `@u32` count | `tools/gen/chapter/src_first_resident_witness.rish` |
+| [`shape-surface-count.glow`](shape-surface-count.glow) | First resident - one-field `@u32` count | `tools/gen/chapter/src_first_resident_witness.rish` |
 | [`shape-frame-max-lines.glow`](shape-frame-max-lines.glow) | Frame Tally ceiling (max_lines = 8) | same |
 | [`shape-frame-seed-line-count.glow`](shape-frame-seed-line-count.glow) | Seed Frame example lines (3) | same |
 | [`shape-brush-skate-cols.glow`](shape-brush-skate-cols.glow) | Thin Skate proof grid width (cols = 40) | same |
@@ -42,7 +42,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-mantra-diff-field-count.glow`](shape-mantra-diff-field-count.glow) | Mantra Diff two fields (Tend M3) | `tools/m/mantra_glow_tend_limb3_witness.rish` |
 | [`shape-mantra-store-dir-count.glow`](shape-mantra-store-dir-count.glow) | Mantra Store three dirs (Tend M4) | `tools/m/mantra_glow_tend_limb4_witness.rish` |
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/ca/caravan_glow_tend_limb4_witness.rish` |
-| [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1 · three walls inline) | `tools/co/comlink_r1_dual_stack_witness.rish` (leg A pure · leg B metal) |
+| [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1 - three walls inline) | `tools/co/comlink_r1_dual_stack_witness.rish` (leg A pure - leg B metal) |
 | [`shape-tablecloth-catalog-capacity.glow`](shape-tablecloth-catalog-capacity.glow) | Tablecloth `max_artifacts=32` -- the vane's first Glow desk of any kind | `tools/t/tablecloth_glow_tend_witness.rish` (scan compares, control proves both ways) |
 | [`shape-tablecloth-content-budget.glow`](shape-tablecloth-content-budget.glow) | Tablecloth `max_content_bytes=512` -- a derived bound, read out of the room that decides it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; the derivation is its own reading) |
 | [`shape-tablecloth-error-paths.glow`](shape-tablecloth-error-paths.glow) | Tablecloth's nine `ClothError` refusals -- a set's size, with the set listed so a rename cannot pass under it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; names compared as sorted sets) |
@@ -68,7 +68,7 @@ rishi/bin/rishi run tools/co/comlink_carriage_witness.rish
 rishi/bin/rishi run tools/co/comlink_nesting_witness.rish
 ```
 
-Tend pedestal tier COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated · Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md).
+Tend pedestal tier COMPLETE -- Aurora A1-A4 - Mantra M1-M4 - Tally/Caravan as seated - Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md).
 
 
 ---

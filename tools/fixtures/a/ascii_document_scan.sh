@@ -90,7 +90,14 @@ mode="${1:-census}"
 #                            was walled by nothing: no rule room cites it and it stands outside
 #                            `docs/`. The reading fell 1336 -> 1300; the ceiling keeps the same
 #                            7 of slack and takes none of the 36.
-CEILING="${ASCII_DOC_CEILING:-1307}"
+#    770  `20260910.061813`  the front doors, read as one class rather than one page at a time: 573
+#                            characters across 26 living `README.md` pages -- 43 percent of the
+#                            remaining 1,336, on the pages a newcomer meets first. 564 converted by
+#                            the table and re-derived from committed bytes, 9 read by hand, every
+#                            one taking a spelling the tree had already written elsewhere. The
+#                            reading fell 1336 -> 763; the ceiling keeps the same 7 of slack and
+#                            takes none of the 573.
+CEILING="${ASCII_DOC_CEILING:-770}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.
