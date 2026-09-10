@@ -1,0 +1,61 @@
+# tools/f/foundations_reach_witness.rish -- a foundation the front door names is a foundation a reader can reach.
+#
+# WHY THIS RUNG. The sibling guard `foundations_link_witness.rish` proves every link a reader
+# clicks OUT of the why-room lands. Nothing asked the other direction: whether a reader walking IN
+# through `foundations/README.md` can reach the page at all.
+#
+# The two readings come apart, and this room is where they come apart hardest. Every foundation is
+# stamp-named by convention, so a page the index omits has no second door -- no descriptive
+# filename a grep would guess, no listing a newcomer walks. It is present on disk and absent from
+# the tree, which is the quietest way a document stops being read.
+#
+# Measured `20260910.004858`, the aether lap that built this: 34 of 85 foundations stood outside
+# the room's own index, and SEVEN of them were seats of the council rota -- documents every ship in
+# the fleet deep-reads on a five-lap cycle. Air's fixed seat, both of Earth's, two of Water's, two
+# of Fire's. The room was speaking fifteen documents a day through the rota while its own front
+# door named eight of them, and every meter over this room was green, because each was reading the
+# links that leave rather than the door that opens.
+#
+# WHAT IS PROVEN, on metal.
+#   `rota_absent=0` -- every rota seat living in this room is named by the index. The seat set is
+#   DERIVED from the grid in `recursion-prompts/seed/autonomous-loop.seed.md` rather than typed in
+#   the scan, so a seat that changes hands is walled on the lap it moves and no second list can
+#   fall out of step with the first.
+#   `absent` -- every other omission, under a ceiling that only falls. A ratchet rather than a
+#   wall, since indexing twenty-seven pages is a curation lap rather than a mechanical one, and a
+#   gate that reds on ordinary work is a gate someone turns off.
+#   A grid that answers nothing REFUSES, rather than reading an empty seat set as full reach --
+#   the same discipline the derived spine keeps for a remote it cannot ask.
+#
+# WHAT IS NOT PROVEN. Whether an index row says anything true about the page it names, whether the
+# page is any good, and whether the reader who arrives understands it. This proves the door opens.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/foundations_reach_witness.rish
+
+say "foundations-reach: Language EN -- a page present on disk and absent from the index is present in the room and absent from the tree."
+say "foundations-reach: Style Radiant -- the seat set is derived from the grid that owns it, the wall is proven from both sides, and the ratchet says what it leaves open."
+say "foundations-reach: Lens TAME -- the sibling guard read every link that leaves this room and stayed green while seven daily-read seats had no door in."
+
+let scan = run ["sh" "tools/fixtures/f/foundations_reach_scan.sh"]
+say scan.out
+assert scan.ok else "foundations-reach: the why-room index must name every rota seat living in it, and stay under the absent ceiling"
+assert scan.out contains "rota_absent=0" else "foundations-reach: a document the council deep-reads daily must have a door in the room's own front page"
+assert scan.out contains "absent_ceiling_ok=yes" else "foundations-reach: the absent ratchet must stay under a ceiling that only falls"
+assert scan.out contains "verdict=ok" else "foundations-reach: the scan must balance before it is believed"
+say "field GREEN -- every rota seat in the why-room is reachable from its own front door"
+
+let control = run ["sh" "tools/fixtures/f/foundations_reach_control.sh"]
+say control.out
+assert control.ok else "foundations-reach: the control must complete"
+assert control.out contains "rota_absent_refused=yes" else "foundations-reach: an absent rota seat must be refused and named"
+assert control.out contains "rota_present_accepted=yes" else "foundations-reach: a named seat must walk free, or the refusal cannot be told from a bypass"
+assert control.out contains "outside_seat_not_counted=yes" else "foundations-reach: a seat living in another room is no claim on this index"
+assert control.out contains "ceiling_at_bound_accepted=yes" else "foundations-reach: a room standing exactly at the ceiling must walk free"
+assert control.out contains "ceiling_refused=yes" else "foundations-reach: one page past the ceiling must refuse"
+assert control.out contains "no_seats_derived_refused=yes" else "foundations-reach: a grid that answers nothing must refuse rather than read every page as reachable"
+assert control.out contains "no_index_refused=yes" else "foundations-reach: an absent index must refuse rather than read an empty room as whole"
+assert control.out contains "control_verdict=ok" else "foundations-reach: the control must agree with itself"
+say "RED and GREEN paths proven -- seven legs on real directories, every refusal planted and then lifted"
+
+say "GREEN: foundations-reach -- the why-room's front door reaches every seat the fleet reads, and the rest stand counted under a falling ceiling."

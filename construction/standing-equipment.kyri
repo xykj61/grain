@@ -100,6 +100,11 @@ guard foundations_link
 path tools/f/foundations_link_witness.rish
 seated 20260821.230319
 
+guard foundations_reach
+path tools/f/foundations_reach_witness.rish
+tier lap
+seated 20260910.004858
+
 guard generated_page_freshness
 path tools/g/generated_page_freshness_witness.rish
 seated 20260823.000512

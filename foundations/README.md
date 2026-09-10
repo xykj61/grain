@@ -19,6 +19,23 @@ is what tells a foundation apart from the durable guidance in [`../context/`](..
 a stamped brief says why the work means something, and a living-named constant says how the work is
 done. Measured `20260906.143614` -- 81 of 84 stamped here, and 0 of 28 stamped there.
 
+**The council rota reads fifteen of these, three a lap.** The grid in
+[`../recursion-prompts/seed/autonomous-loop.seed.md`](../recursion-prompts/seed/autonomous-loop.seed.md)
+crosses five elements with three modalities, and every ship deep-reads one row per lap, so each
+seat returns to living awareness within a working day. Twelve of the fifteen seats live in this
+room; three live in [`../context/`](../context/README.md), where durable guidance is kept. The
+table below is the door to all of them -- **added `20260910.004858`, when a meter found seven of
+the twelve standing outside this index** and reachable only by a reader who already knew the
+stamp. Held at zero by [`../tools/f/foundations_reach_witness.rish`](../tools/f/foundations_reach_witness.rish).
+
+| Row and sense | Threshold | Cardinal -- opens | Fixed -- holds | Dual -- adapts |
+|---|---|---|---|---|
+| **Aether** hears -- why the work exists | [hears](20260826-021731_aether-the-row-that-hears.md) | [Follow our compass](20260826-024943_follow-our-compass.md) | [The Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md) | [The grain and the crossing](20260826-024942_the-grain-and-the-crossing.md) |
+| **Air** feels -- law and boundary | [feels](20260826-021732_air-the-row-that-feels.md) | [`../context/TAME_CORE.md`](../context/TAME_CORE.md) | [Single-stranded](20260823-204456_single-stranded.md) | [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) |
+| **Fire** sees -- cut and stop | [sees](20260826-021733_fire-the-row-that-sees.md) | [Standfast, the stopped line](20260816-214652_standfast-the-stopped-line.md) | [Reds first and the allocation](20260729-224828_reds-first-and-the-allocation.md) | [The three depths of removal](20260818-081438_the-three-depths-of-removal.md) |
+| **Water** tastes -- care and flow | [tastes](20260826-021734_water-the-row-that-tastes.md) | [What Brix infuse is](20260823-222019_what-brix-infuse-is.md) | [The happy zone and the thin edge](20260826-194850_the-happy-zone-and-the-thin-edge.md) | [Growing a language](20260618-184912_growing-a-language.md) |
+| **Earth** breathes in -- the concrete | [breathes in](20260826-021735_earth-the-row-that-breathes-in.md) | [The clock and the mark](20260905-154954_the-clock-and-the-mark.md) | [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) | [The marked value](20260703-202312_the-marked-value.md) |
+
 **Newest foundation briefs**
 
 | Stamp | Note | Meaning |
