@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0a85cf5691` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8306a7fe7d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PEN HELD THE SAMPLE AND NOT THE TOOL.**
 Elder [shelved](archive/20260910-002401_itinerary-landed-accounts.md).
