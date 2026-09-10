@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d0fc344463` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `89c889525e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -100,7 +100,12 @@ shapes of ONE size each bound **16**, overlap in **8**, and **7** return every l
 bytes**; one hit encodes to **121**, so `build_response` builds **3** inside the ceiling and
 `encode_response` refuses them next call. **Yours:** tie count to bytes, add a continuation, or
 shrink name ceilings -- peers build on it.
-Cold/hot: **216/217, 214/215 green, 0 red, 2 gated (%5)**.
+**THE ROW RENUMBERED TWICE IN ONE SEND** -- `%673`, `%676`, `%678` as two rebases found peers
+publishing -- and cost one edit each, since every other file cites it by **stamp**. That is rule 4
+of the derived spine paying for itself. The pin then could not hold it: 40,951 of 40,960 with 14 of
+15 rows OPEN, so the row compressed 1,900 -> 793 bytes and the one CLOSED row folded to its own
+shelf. Pin **40,951 -> 39,451**.
+Cold/hot/rebase: **216/217/189, 214/215/188 green, 0 red**.
 
 **PETRICHOR -- A PATH RESOLVED WHILE THE EDIT STAYED PARKED.**
 Elder [shelved](archive/20260909-173000_itinerary-landed-accounts.md).
