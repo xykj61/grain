@@ -55,4 +55,4 @@ assert l.ok else "ledgerworks exemplar must declare archetype ledgerworks"
 let ln = run ["grep" "-q" "original coinage; no named ship or company" "bat/ledgerworks.kyri"]
 assert ln.ok else "ledgerworks exemplar must carry the copyright-discipline note"
 
-say "GREEN: bat fleet witness — six baton archetypes, validated by the reader, each an original coinage."
+say "GREEN: bat fleet witness -- six baton archetypes, validated by the reader, each an original coinage."

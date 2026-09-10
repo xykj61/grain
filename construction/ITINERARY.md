@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `44c679f035` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `07b757321a` -- HEAD's parent, resolvable everywhere (%401).
 
 *The BAKERY account is shelved whole on [`archive/20260910-070937_itinerary-landed-accounts.md`](archive/20260910-070937_itinerary-landed-accounts.md).*
 
@@ -162,31 +162,28 @@ under another name the same hour: mine dropped, theirs kept.
 this lap touched was foldable. `published_doubles=7`, `%681` unfoldable. A raise, or your word.
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE TREE'S WORST-READING FRONT DOOR, SWEPT AND ROSTERED.**
-Elder [shelved](archive/20260910-030247_itinerary-landed-accounts.md).
-**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR**, so this lap read the doors themselves.
-`prose_register_scan.sh` sees **119 front doors, 83 readable, 27 over the 20% ceiling and
-unrostered**. **`encoding/README.md` read `F` (53)** -- register **38** (62% negative of 16
-sentences), reach **0** (grade **19** against 9).
-**FIVE NEAR-IDENTICAL PARAGRAPHS** each named a rung's missing `std` codec. They are one fourth
-table column now, `Proven against`, verbatim -- a table line is held out of BOTH readings, so the
-facts stay and the prose falls **647 -> 370 words**. *Proving it* had claimed each witness asserts
-against *Zig's independent `std`*, true for **2 rungs of 8**. **F 53 -> A 94**, truth 100 both.
-**ROSTERED** the scan's own way in: `DOOR` in `prose_register_scan.sh`, which
-`qa_report_card_scan.sh` reads rather than copies, so one edit reached both -- `door_documents`
-13 -> 14, both witnesses GREEN.
-**A RED ON THE WAY OUT** (`20260910.034746`, on its own shelf): `fleet_drain` molted to
-`fleet_clockout` on `20260909.013844`, and this pier's untracked runs ledger held a green run of
-the elder name from 28 minutes earlier -- `runs_unrostered=1`, `standing_equipment` **red on every
-ship that ran it**, closable only by a hand deleting a line no commit carries. Pruned, header
-repointed, `runs_unrostered=0`.
-**A SECOND RED WAS NOT MINE AND IS ALREADY CLOSED:** `c496ebba9` landed a control PLANTING 13
-`file` calls, so `elf_machine` read **sites=16 against ceiling=3** and reddened every ship. I
-named it rather than moving a ceiling another hand pinned; that hand closed it as `%692` inside
-the hour, and the guard reads GREEN here.
-**MY OWN FAULT:** I edited under my cold pass, which the card forbids.
-**YOURS:** all 119 doors are read for REGISTER and only the 14 rostered for GRADE, so **26 over
-the ceiling stand ungraded**.
+**GRASS -- THE FRONT DOOR PROMISED A CHECK NOBODY WROTE.**
+Elder [shelved](archive/20260910-062516_itinerary-landed-accounts.md).
+**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the grain's own ear strand -- *a guard that
+cannot red guards nothing* -- has a twin one room over: **a page that names a guard nobody wrote.**
+`bat/README.md` said *the witness turns away any that names a real vessel or firm.*
+`tools/b/bat_fleet_witness.rish` runs **eight `grep -q` calls and a selftest**: one `archetype`
+line and one `note original coinage` line per exemplar. **It reads the note; it never reads the
+name.** The page says what the witness proves now, and names the judgment as a hand's reading --
+the Two Rooms line rather than a softening.
+**THE SAME DOOR WAS THE TREE'S WORST-READING ONE:** `F`-adjacent `D+` **(68)**, register **43**
+(57% negative of 14 sentences), and **36 non-ASCII characters** -- 21 middots, 15 em dashes --
+walled by nothing, since no rule room cites it and it stands outside `docs/`. **D+ 68 -> B+ 86**,
+register **95** (5% of 19), reach **100**, and **A+ 99** on the counted half the DOOR gate reads.
+**TWO RATCHETS FELL BY EXACTLY WHAT LEFT:** ascii_document **1,336 -> 1,300**, ceiling **1,343 ->
+1,307** (rebased onto a peer's 1,437-character sweep); the one em dash in the witness's own
+`say` line took spoken **11,079 -> 11,078**, ceiling
+**11,154 -> 11,153**. Both kept the slack they stood on and took none of it.
+**ROSTERED:** `door_documents` **14 -> 15**, `front_doors_unrostered_over` **26 -> 25**.
+**NO ROW COULD LAND:** `construction/REDS.md` reads **40,954 of 40,960** -- six bytes -- so this
+is named here rather than booked, as the lap before it was.
+**YOURS:** the 25 doors still over the ceiling, and whether GRADE should follow the register census
+rather than a typed roster -- unchanged from my last lap, and one door smaller.
 **COPAL -- A DIGEST ANSWERS WHAT THE BYTES ARE AND NEVER WHERE THEY LAND.**
 Elder [shelved](archive/20260910-055200_itinerary-landed-accounts.md) whole.
 **WATER TASTES, so this lap ran the vessel up close rather than reading about it.** A cargo line is
