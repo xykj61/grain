@@ -1,0 +1,141 @@
+# tools/am/amphora_framed_name_witness.rish -- a cargo name is one record, or it is no name at
+# all.
+#
+# `amphora_contained_name` closed the question a digest cannot answer: a digest says WHAT the
+# bytes are, so `../escaped.txt` is refused at four doors for saying where they land. This asks
+# the question one field further in, about the line the name is written on. A cargo line and a
+# manifest line each end at a newline, so a name carrying one is written as TWO records, and the
+# second is whatever the name said.
+#
+# Measured on metal `20260910` before a line changed. A season holding two ordinary files, one of
+# them named
+#
+#   b.txt<LF>manifest plain-bytes <64 hex> evil.txt<LF>cargo plain-bytes <64 hex> evil.txt
+#
+# poured clean -- `amphora: season read files=2`, then `amphora: pour complete` -- and the sealed,
+# Kumara-stamped head listed FOUR names for those two files, two of them `evil.txt` at a digest
+# the season never produced. The seal and the signature covered the forgery faithfully, since the
+# forgery arrived inside a name nobody had asked to be a single record.
+#
+# The rule lives once, in `amphora/manifest_entry.rye` beside the containment rule it stands next
+# to. `name_verdict` answers `unframed` for a name carrying any control byte, and
+# `parse_manifest_line` turns that into `UnframedName` through an exhaustive switch, so a verdict
+# added later stops the build rather than riding through as a welcome. Bytes at or above 0x80 walk
+# free on purpose: a season may hold a UTF-8 filename, and refusing one claims more than this
+# fault earns.
+#
+# The pour asks the rule directly, since the pour writes names and parses none. Refused at the
+# season door the operator still holds the season; met at a far-side restore the same fault
+# arrives with the vessel sealed, stamped, and the season long gone.
+#
+# Proven here, each refusal shown from the failing side and then LIFTED:
+#   the rule itself, both directions, in the module's own selftest on metal
+#   an ordinary season poured and restored whole, so the door welcomes as hard as it refuses
+#   the crafted season refused by its own name at the pour door, the vessel and the resins
+#     both still absent -- the refusal arriving ahead of the mutation
+#   the wall REMOVED in a pen: the same season pours clean, and the sealed head lists four
+#     names for two files, under a real Kumara stamp
+#   the wall RETURNED: the repaired binary refuses that same season again
+#
+# One tightening here rides on construction rather than on a plant of its own. The restore-side
+# reader in `append_cargo_line` moved from comparing against one refused verdict to comparing
+# against the single welcome, and an unframed name reaches that door in no sealed vessel, because
+# the split IS the fault. It is named here as failure-closed by shape rather than as measured.
+#
+#   rishi/bin/rishi run tools/am/amphora_framed_name_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_framed.XXXXXX"]
+assert pen.ok else "framed: pen must open"
+let home = trim pen.out
+
+# The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
+# them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+assert build_amphora.ok else "framed: amphora build failed -- ${build_amphora.err}"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "framed: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "framed: vessel-seal build failed -- ${build_seal.err}"
+let build_entry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
+assert build_entry.ok else "framed: manifest-entry build failed -- ${build_entry.err}"
+
+# --- the rule itself, both directions, where it lives ---
+# A name carrying a space walks free -- the format admits it, since the name is the last field and
+# runs to the end of the line -- and four control bytes refuse by their own error name. A rule
+# proven only on the refusing side cannot be told from one that refuses every unusual byte.
+let selftest = run ["amphora/bin/manifest-entry" "selftest"]
+assert selftest.ok else "framed: the name rule must prove both directions -- ${selftest.err}"
+assert selftest.err contains "keep it one record" else "framed: the selftest names the framing rule"
+
+# --- the welcome, asserted as hard as every refusal below ---
+let pour = run ["amphora/bin/amphora" "pour" season "${home}/ok.bron"]
+assert pour.ok else "framed: an ordinary season must pour"
+let restore = run ["amphora/bin/amphora" "restore" "${home}/ok.bron"]
+assert restore.ok else "framed: an ordinary season must restore whole"
+assert restore.err contains "restore same-parent ok" else "framed: the ordinary restore re-pours to its own parent"
+
+# --- the crafted season. One ordinary file beside one whose NAME carries two newlines and, after
+# each, a complete record of its own: a manifest line and a cargo line for a file the season does
+# not hold, at a digest it never produced. The plant lives in a fixture because the name needs
+# shell quoting, and a Rishi string hands a backslash to `sh` as written.
+let craft = run ["sh" "tools/fixtures/am/amphora_framed_season.sh" "${home}/season"]
+assert craft.ok else "framed: the crafted season must prepare -- ${craft.err}"
+assert craft.out contains "crafted_name_bytes=192" else "framed: the plant must carry its whole crafted name -- ${craft.out}"
+let two_files = run ["sh" "-c" "find ${home}/season -type f -exec echo x ';' | wc -l | tr -d ' '"]
+assert (trim two_files.out) == "2" else "framed: the crafted season holds exactly two files -- ${two_files.out}"
+
+# --- the pour door: refused by its own name, with nothing written ---
+let mkout = run ["sh" "-c" "mkdir -p ${home}/out"]
+assert mkout.ok else "framed: the crafted pour needs a home of its own, so the honest pour's resins cannot stand in for its own"
+let door = run ["sh" "-c" "amphora/bin/amphora pour ${home}/season ${home}/out/craft.bron; true"]
+assert door.err contains "season name is not one record" else "framed: the pour door must refuse by its own name -- ${door.err}"
+let no_vessel = run ["sh" "-c" "test ! -e ${home}/out/craft.bron"]
+assert no_vessel.ok else "framed: the refusal must arrive BEFORE any vessel is written"
+let no_resins = run ["sh" "-c" "test ! -d ${home}/out/resins"]
+assert no_resins.ok else "framed: the refusal must arrive BEFORE any resin is written"
+
+# --- the wall removed. A pen copy of the room with the framing walk struck out is the ELDER
+# Amphora, which poured this season clean. This is the reading taken before the repair,
+# reproduced inside the guard, so a green here cannot be told from a door that never had
+# anything to refuse.
+let elder_dir = "${home}/elder"
+let elder_copy = run ["sh" "-c" "mkdir -p ${elder_dir}/src ${elder_dir}/bin && cp amphora/manifest_entry.rye amphora/vessel_seal.rye amphora/vessel_core.rye amphora/kumara.rye amphora/tally_copy.rye ${elder_dir}/ && cp amphora/src/main.rye ${elder_dir}/src/ && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
+assert elder_copy.ok else "framed: the elder pen must copy"
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/if (c < 0x20 or c == 0x7f) return .unframed;/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/const c = name/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/if (me.name_verdict(entry.path) != .contained) return error.SeasonNameUnframed;/d' ${elder_dir}/src/main.rye && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
+assert strip.ok else "framed: the wall must strip cleanly"
+let gone = run ["sh" "-c" "cat ${elder_dir}/manifest_entry.rye ${elder_dir}/src/main.rye | grep -c 'return .unframed;\\|SeasonNameUnframed;' || true"]
+assert (trim gone.out) == "0" else "framed: the elder pen must lose every USE of the rule -- ${gone.out} left"
+let eb1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
+assert eb1.ok else "framed: elder amphora build failed -- ${eb1.err}"
+
+let eb2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_seal.rye -femit-bin=${elder_dir}/bin/vessel-seal"]
+assert eb2.ok else "framed: elder vessel-seal build failed -- ${eb2.err}"
+let eb3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_core.rye -femit-bin=${elder_dir}/bin/vessel-core"]
+assert eb3.ok else "framed: elder vessel-core build failed -- ${eb3.err}"
+
+let elder_pour = run ["sh" "-c" "${elder_dir}/bin/amphora pour ${home}/season ${home}/out/elder.bron; true"]
+assert elder_pour.err contains "pour complete" else "framed: the wall removed, the crafted season must pour clean -- otherwise this witness proves nothing -- ${elder_pour.err}"
+let listed = run ["sh" "-c" "grep -c '^manifest ' ${home}/out/elder.bron | tr -d ' '"]
+assert (trim listed.out) == "4" else "framed: the elder head must list more names than the season holds -- listed ${listed.out} for two files"
+let forged_name = run ["sh" "-c" "grep -c '^manifest plain-bytes .* evil.txt$' ${home}/out/elder.bron | tr -d ' '"]
+assert (trim forged_name.out) == "2" else "framed: the elder head must list a name the season never held -- found ${forged_name.out}"
+let stamped = run ["sh" "-c" "grep -c '^stamp_sig ' ${home}/out/elder.bron | tr -d ' '"]
+assert (trim stamped.out) == "1" else "framed: the forged listing must ride under a real Kumara stamp, or the harm is overstated"
+
+# --- the wall returned: the repaired binary meets the same season and refuses it again ---
+let returned = run ["sh" "-c" "amphora/bin/amphora pour ${home}/season ${home}/out/again.bron; true"]
+assert returned.err contains "season name is not one record" else "framed: the wall must return"
+let still_none = run ["sh" "-c" "test ! -e ${home}/out/again.bron"]
+assert still_none.ok else "framed: the returned wall must still write nothing"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "framed: pen must sweep"
+
+say "rule=both-directions door=pour wall_removed=listed_4_names_for_2_files wall_returned=refused_before_write"
+say "GREEN: amphora_framed_name -- a cargo name is one record, or it is no name at all."

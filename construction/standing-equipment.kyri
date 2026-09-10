@@ -2808,6 +2808,25 @@ path tools/am/amphora_contained_name_witness.rish
 tier lap
 seated 20260910.061500
 
+# amphora_framed_name -- a cargo name is one RECORD. `amphora_contained_name` one row up closed
+# what a digest cannot answer: where the bytes land. This closes the question one field further
+# in, about the line the name is written on. A cargo line and a manifest line each end at a
+# newline, so a name carrying one is written as two records and the second is whatever the name
+# said. Measured on metal `20260910` before a line changed: a season of two ordinary files, one
+# named `b.txt<LF>manifest plain-bytes <64 hex> evil.txt<LF>cargo plain-bytes <64 hex> evil.txt`,
+# poured clean and the sealed, Kumara-stamped head listed FOUR names for those two files, two of
+# them a file the season never held at a digest it never produced. The pour printed `pour
+# complete`. The rule joins `name_verdict` as a third verdict, `unframed`, reached through an
+# exhaustive switch so a verdict added later stops the build rather than riding through; the POUR
+# asks it directly, because the pour writes names and parses none. Bytes at or above 0x80 walk
+# free -- a season may hold a UTF-8 filename. The pen removes the wall, watches the forged listing
+# appear under a real stamp, and returns it. `tier lap`: four rye builds plus three in the pen.
+
+guard amphora_framed_name
+path tools/am/amphora_framed_name_witness.rish
+tier lap
+seated 20260910.064044
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert

@@ -285,6 +285,7 @@ const CliError = error{
     SeasonAbsent,
     SeasonEmpty,
     SeasonOverflow,
+    SeasonNameUnframed,
     SeasonUnreadable,
     CargoTooLarge,
     VesselUnwritable,
@@ -319,6 +320,7 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.ResultUnwritable => print("amphora: result unwritable — '{s}'\n", .{detail}),
         error.SeasonAbsent => print("amphora: season absent — '{s}'\n", .{detail}),
         error.SeasonEmpty => print("amphora: season empty — '{s}'\n", .{detail}),
+        error.SeasonNameUnframed => print("amphora: season name is not one record -- '{s}'\n", .{detail}),
         error.SeasonOverflow => print("amphora: season overflow — '{s}'\n", .{detail}),
         error.SeasonUnreadable => print("amphora: season unreadable — '{s}'\n", .{detail}),
         error.CargoTooLarge => print("amphora: cargo too large — '{s}'\n", .{detail}),
@@ -468,6 +470,14 @@ fn read_season(
         if (catalog.file_count >= max_season_files) return error.SeasonOverflow;
         if (entry.path.len == 0) return error.SeasonUnreadable;
         if (entry.path.len > max_season_name_len) return error.SeasonOverflow;
+        // The framing rule at the door that WRITES names. Every other reader of a cargo
+        // name inherits it from `parse_manifest_line`; the pour parses nothing, so it asks
+        // the contract itself. A season file whose name carries a newline is written as two
+        // records -- proven on metal `20260910`, where such a name poured clean and the
+        // sealed, stamped head listed three names for a season holding two files. Refused
+        // here the operator still has the season in front of them, where the same fault met
+        // at a far-side restore arrives with the vessel sealed and the season long gone.
+        if (me.name_verdict(entry.path) != .contained) return error.SeasonNameUnframed;
 
         const data = entry.dir.readFile(io, entry.basename, &file_buf) catch {
             return error.SeasonUnreadable;
@@ -862,6 +872,12 @@ fn pour_fill(
             error.SeasonAbsent => refuse(error.SeasonAbsent, parsed.season),
             error.SeasonEmpty => refuse(error.SeasonEmpty, parsed.season),
             error.SeasonOverflow => refuse(error.SeasonOverflow, parsed.season),
+            // Named apart from SeasonUnreadable on purpose: an `else` at a refusal seam
+            // makes a new wall answer by an old wall's name, and this room's promise is
+            // that every wall names itself. The detail names the SEASON rather than the
+            // offending filename -- printing a name that carries a control byte would
+            // inject that byte into our own output, which is this very fault one level up.
+            error.SeasonNameUnframed => refuse(error.SeasonNameUnframed, parsed.season),
             else => refuse(error.SeasonUnreadable, parsed.season),
         };
     };
@@ -945,6 +961,12 @@ fn pour_ship(
             error.SeasonAbsent => refuse(error.SeasonAbsent, filled.season),
             error.SeasonEmpty => refuse(error.SeasonEmpty, filled.season),
             error.SeasonOverflow => refuse(error.SeasonOverflow, filled.season),
+            // Named apart from SeasonUnreadable on purpose: an `else` at a refusal seam
+            // makes a new wall answer by an old wall's name, and this room's promise is
+            // that every wall names itself. The detail names the SEASON rather than the
+            // offending filename -- printing a name that carries a control byte would
+            // inject that byte into our own output, which is this very fault one level up.
+            error.SeasonNameUnframed => refuse(error.SeasonNameUnframed, filled.season),
             else => refuse(error.SeasonUnreadable, filled.season),
         };
     };
@@ -1602,7 +1624,7 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     // because the content was honest -- and refused only afterward, on the parent compare,
     // with the file already written. Refused here, the catalog never forms and
     // `restore_write_prove` is never reached, so the refusal arrives before the mutation.
-    if (me.name_verdict(name) == .escaping) return error.CargoUnproven;
+    if (me.name_verdict(name) != .contained) return error.CargoUnproven;
     if (catalog.file_count >= max_season_files) return error.SeasonOverflow;
     const slot = &catalog.entries[catalog.file_count];
     slot.name_len = @intCast(name.len);
@@ -1773,6 +1795,7 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
             error.SeasonEmpty => refuse(error.SeasonEmpty, out_home),
             error.SeasonOverflow => refuse(error.SeasonOverflow, out_home),
             error.SeasonUnreadable => refuse(error.SeasonUnreadable, out_home),
+            error.SeasonNameUnframed => refuse(error.SeasonNameUnframed, out_home),
             error.CargoTooLarge => refuse(error.CargoTooLarge, out_home),
             error.PathTooLong => refuse(error.PathTooLong, out_home),
             else => refuse(error.StampUnverified, vessel),

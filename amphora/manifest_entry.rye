@@ -46,7 +46,9 @@ pub fn mark_verdict(mark: []const u8) MarkVerdict {
 
 /// What the engine can say about a NAME on sight. `contained` is a plain relative
 /// path that can only ever land inside the home a restore was pointed at;
-/// `escaping` is one that names a place outside it, or names no place at all.
+/// `escaping` is one that names a place outside it, or names no place at all;
+/// `unframed` is one that cannot be written as a single record at all, because it
+/// carries a byte the vessel's own line format reserves.
 ///
 /// The rule exists because a cargo line proves its bytes and never proved its
 /// PLACE. Measured on metal `20260910`: a vessel whose cargo named
@@ -55,7 +57,7 @@ pub fn mark_verdict(mark: []const u8) MarkVerdict {
 /// because the content was honest and only the destination was not -- and
 /// `restore` wrote the file one directory ABOVE its out-home before refusing on
 /// the parent compare. A refusal that arrives after the write is not a wall.
-pub const NameVerdict = enum { contained, escaping };
+pub const NameVerdict = enum { contained, escaping, unframed };
 
 /// Read a name's verdict off its face. A contained name is a relative path whose
 /// every segment carries content and is neither `.` nor `..`: no leading `/`, no
@@ -73,6 +75,26 @@ pub fn name_verdict(name: []const u8) NameVerdict {
     // invariant: and it fits the roster's own name roof, so the walk below is
     // bounded by a named constant rather than by whatever arrived.
     if (name.len > max_name_len) return .escaping;
+    // The framing rule. A cargo line and a manifest line each END at a newline, so a name
+    // carrying one is written as TWO records and the second is whatever the name said.
+    // Measured on metal `20260910` before a line changed: a season file named
+    // `b.txt<LF>manifest plain-bytes <64 hex> evil.txt<LF>cargo plain-bytes <64 hex> evil.txt`
+    // poured clean -- `season read files=2`, then `pour complete` -- and the sealed,
+    // Kumara-stamped head listed THREE names for a season holding two files, two of them
+    // `evil.txt` at a digest the season never produced. The signature covered the forgery,
+    // because the forgery arrived as part of a name nobody had asked to be one record.
+    //
+    // The class is control bytes rather than the newline alone. `vessel_seal.trim_line`
+    // strips a trailing carriage return, so `a.txt\r` and `a.txt` are two files under one
+    // listed name; and a NUL ends a path at every C seam a restore hands one to. Bytes at
+    // or above 0x80 walk free on purpose -- a season may hold a UTF-8 filename, and
+    // refusing one would be a wider claim than this fault earns.
+    var ci: u32 = 0;
+    const nlen: u32 = @intCast(name.len);
+    while (ci < nlen) : (ci += 1) {
+        const c = name[@intCast(ci)];
+        if (c < 0x20 or c == 0x7f) return .unframed;
+    }
     var start: u32 = 0;
     const len: u32 = @intCast(name.len);
     while (start <= len) {
@@ -104,7 +126,7 @@ fn is_lower_hex(c: u8) bool {
 /// Postcondition: all three fields are nonempty, the digest is well-formed, and the
 /// mark is one the engine can name. An unknown mark refuses whole rather than
 /// riding through unread -- there is no partial trust of cargo whose kind has no name.
-pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark, EscapingName }!ManifestEntry {
+pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark, EscapingName, UnframedName }!ManifestEntry {
     // invariant: a line reaching the parser holds bytes and fits the named bound, so the u32
     // arithmetic below indexes real content and never walks past the slice it was handed.
     assert(line.len >= 1);
@@ -160,8 +182,15 @@ pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark, 
     // that walks upward is refused once here rather than seven times at the readers.
     // A digest answers WHAT the bytes are; this answers WHERE they may land, and the
     // vessel carried the second claim unchecked until `20260910`.
-    if (name_verdict(entry.name) == .escaping) return error.EscapingName;
-    // invariant: past this line the name lands inside whatever home a restore names.
+    // An exhaustive switch rather than a compare against one verdict: a verdict added
+    // later stops the build here rather than riding through as a welcome.
+    switch (name_verdict(entry.name)) {
+        .contained => {},
+        .escaping => return error.EscapingName,
+        .unframed => return error.UnframedName,
+    }
+    // invariant: past this line the name lands inside whatever home a restore names, and
+    // it is one record, so re-reading what this parser wrote gives back this same name.
     assert(name_verdict(entry.name) == .contained);
     return entry;
 }
@@ -206,8 +235,25 @@ fn run_selftest(_: std.Io) !u8 {
     if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " ./a.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
     if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " sub/")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
 
+    // Both directions of the framing rule. A name carrying a control byte cannot be written
+    // as one record, so it refuses by its own error name rather than by the containment one --
+    // two faults with two cures, told apart at the door. The welcome beside them is the
+    // ordinary name that carries a space, which the format DOES admit: the name is the last
+    // field and runs to the end of the line, so a space round-trips and a newline cannot.
+    const spaced = try parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " a file with spaces.txt");
+    // invariant: the welcome is asserted as hard as the refusals, so a rule refusing every
+    // unusual byte would be told apart from one refusing the bytes that break a record.
+    assert(std.mem.eql(u8, spaced.name, "a file with spaces.txt"));
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " a.txt\nevil.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnframedName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " a.txt\revil.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnframedName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " a.txt\x00evil.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnframedName);
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " a.txt\tevil.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnframedName);
+    // invariant: the two rules stay apart -- an upward walk still answers EscapingName, so
+    // widening the framing rule did not quietly swallow the containment one.
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " ../still-escaping.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+
     print("amphora: version {s}\n", .{amphora_manifest_entry_version});
-    print("GREEN: Amphora manifest entry -- parse, name the mark, hold the name inside, and refuse whole.\n", .{});
+    print("GREEN: Amphora manifest entry -- parse, name the mark, hold the name inside, keep it one record, and refuse whole.\n", .{});
     return 0;
 }
 
