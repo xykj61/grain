@@ -4,7 +4,7 @@
 is a map you will want **after** this hour.*
 
 **Language:** EN - **Style:** Bhakta (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the field) - **Voice:** Kyri
-**Written:** `20260821.180613` - **Last updated:** `20260903.215224` (NixOS cloud path -- musl `-lc`, `RYE_ZIG` from clone root)
+**Written:** `20260821.180613` - **Last updated:** `20260909.231456` (step 2's quoted ending read off a real fetch: `staged=` restored, the second run's shorter ending shown)
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
 **Where this sits:** home is [`../../README.md`](../../README.md) - the whole path from nothing to a
@@ -78,9 +78,17 @@ You should see it end with:
 
 ```
 verified=yes
+staged=0.16.0
 installed=0.16.0
 verdict=ok
 ```
+
+**Read the middle two lines**, because they are the same habit this hour ends by teaching you to
+write. `staged=` is the freshly unpacked compiler being asked its own version while it still sits
+in a scratch directory; `installed=` is that same question asked again after it has been moved into
+place. The download is checked before it is unpacked, the unpacked compiler is checked before it
+replaces anything, and the one in place is checked before the script says `ok`. A fetch that
+half-works therefore leaves the toolchain you already had exactly where it was.
 
 Confirm it for yourself:
 
@@ -89,7 +97,13 @@ vendor/zig-toolchain/zig version
 # 0.16.0
 ```
 
-Run it twice if you like -- the second run notices the toolchain already stands and rests.
+Run it twice if you like. The second run finds the toolchain already standing and rests, so it
+prints a shorter ending and downloads nothing:
+
+```
+already=yes
+verdict=ok
+```
 
 ## 3. Build Rye, which builds itself
 

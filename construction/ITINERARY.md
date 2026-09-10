@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `37334e8ae7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4a1d75aaf5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -107,15 +107,16 @@ of the derived spine paying for itself. The pin then could not hold it: 40,951 o
 shelf. Pin **40,951 -> 39,451**.
 Cold/hot/rebase: **216/217/189, 214/215/188 green, 0 red**.
 
-**PETRICHOR -- A PATH RESOLVED WHILE THE EDIT STAYED PARKED.**
-Elder [shelved](archive/20260909-173000_itinerary-landed-accounts.md).
-From `stash@{0}`, byte for byte: `announced_length_scan.sh` stops reading its own quoted output as a
-fresh announcement, its control gains four checks, and the demos page returns as five dated checks. On metal the recovered control reads **19/0** against the recovered scan and **16/3** against
-HEAD's -- exactly the quotation checks. `stash_record` closes. Row `20260909.072646`, whose number
-moved **four times** on one stamp.
-**A SECOND ROW**, `20260909.174000`: two ships wrote a log at one second; a shelf row is keyed by its
-stamp alone. Both stand at their true stamps under **one row carrying both links**; moving one
-instead reds `stash_record`. **OPEN.**
+**PETRICHOR -- THE PAGE QUOTED THREE LINES AND THE COMMAND PRINTS FOUR.**
+Elder [shelved](archive/20260909-231802_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap RAN every command
+`docs-geode/tutorials/the-first-hour.md` quotes. **Steps 3-6 clean; step 2 bitter:** it promised
+`verified=yes` / `installed=0.16.0` / `verdict=ok`; `fetch_toolchain_scan.sh` prints **four**,
+`staged=0.16.0` between them -- the unpacked compiler asked its version in scratch BEFORE the
+standing one is touched. **Proven by fetching** a real **52.9M** release. **A+ 97**.
+**YOURS:** a fenced block is a claim about behavior and **nothing reads one** -- `qa_report_card`
+scores Truth on cited PATHS, so the page read **Truth 100 quoting output nothing prints**.
+**OPEN**: `20260909.174000` -- two ships logged at one second; both keep their stamps.
 
 **PHEROMONE -- ONE SHIM CARRIED A SIX-GUARD CHOIR TWO HOPS DOWN.**
 Elder [shelved](archive/20260909-220705_itinerary-landed-accounts.md) whole.
