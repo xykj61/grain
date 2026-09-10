@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260910.175434
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- petrichor, the docs-geode and prose-product lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json reads model claude-opus-5; this ship launches via tools/f/fleet-loop.sh, which execs bare rather than through the enclosure
+voice Kyri
+host Vultr Dallas pier, AMD, NixOS, America/New_York
+title Two readers of one line, and one of them announced they agreed
+prompt the autonomous loop -- take the next agent-doable lap in the prose-product lane, Lindy-first and crux-first
+rota lap 4584, row 2 -- Fire, the row that sees; advanced by hand past rows 0, 1, 3 and 4, each read by other ships today. Fire asks what must stop and what must be cut, so the lap read the REDS ledger and the two instruments in its own lane before writing a line, and what it found was a claim of agreement between two readers that had never held.
+think The lap opened on a measured question left by my own last two laps -- 110 of 330 living pages declare a Gauge style and name no setting -- and I drafted a whole new census, tools/fixtures/p/prose_setting_scan.sh, with a control of seventeen legs and three mutations bitten. Then I ran the cold roster pass to the end and read its guard list, and tools/q/qa_setting_declared_witness.rish was standing in it, green, landed this morning by my own earlier lap. The draft was a second copy of an instrument that already existed, which is the exact fault this tree refuses, so it stayed in .lap/ and never shipped.
+think What was genuinely unheld was a disagreement between the two readers of one line. tools/fixtures/q/qa_report_card.sh matched `^[ \t]*\*\*Style:\*\*` -- the key at the start of a line -- and tools/fixtures/q/qa_setting_declared_scan.sh read the block above a page's first `---` rule, looking for the key anywhere in it. The census's own comment said it read the line "the same way the card reads it." Measured over its own 330-page population, the card missed 65 pages writing the key inline after another key, and the census missed 5 pages declaring below their first horizontal rule.
+think Both misreadings point the same way, which is why neither had ever surfaced: a missed declaration is indistinguishable from a page that never wrote one, so the two instruments agreed on `absent` for different reasons and produced no contradiction anywhere. docs/README.md declares `Gauge, Door setting` in plain words and the card answered `absent`; README.md, the tree's own front door, carries its front matter beneath a logo block, a title, a tagline and four licence badges, and the census read it as declaring nothing.
+think The repair publishes the rule once. declared_style_line_of() and QA_HEAD_LINES=40 now stand in the card, and the census lifts the function out of that file at run time with sed, the way the card already lifts measure() and REGISTER_MIN_SENTENCES from the register scan. A declaration is a **Style:** key standing anywhere in the head, and the 40-line bound is what keeps body prose out now that the first rule no longer does -- context/RADIANT_STYLE.md discusses the words at line 57 and context/TRYA.md at line 31, and neither writes the bold key at all.
+think The citation had one fault the pen caught before the tree did: the scan resolved the card under $QA_SETTING_ROOT, which the control points at a pen holding planted pages, so every leg answered card_absent. The card is part of the instrument rather than the population, so it resolves beside the script's own $0 now.
+obs The census's four counts all rose, and every one because a page was being read as silent while it spoke: style_declared 158 to 164, setting_named 48 to 50, setting_unnamed 110 to 114, no_style_line 172 to 166. Two of those newly-seen pages name a setting outright, so the tree's count of pages that know their own dial was understated as well.
+obs Three legs prove the citation is live rather than decorative, and only one of the three could not be faked by a quiet second copy: an absent card refuses, a card that stops publishing the function refuses, and a card publishing a BLIND reader is BELIEVED -- the scan then reads every page as declaring nothing, which a copy would never do.
+obs The setting match carries a limit worth naming rather than hiding: it asks whether the declaration line carries the word door, field or meter, so a line whose trailing prose uses one as ordinary English reads as naming a setting. Two pages do today -- a Style line ending "it stays in the field" means the maintainer's working tree. Two of fifty is the error, and a stricter pattern would drop real declarations to catch it, because those fifty pages spell their setting fourteen different ways.
+obs The reading this turned up and did not close: the DOOR roster holds sixteen pages at the strictest ceiling this tree has, nine of them name no setting at their own door, and zero declare a contradictory one. Whether the register meter should derive its tiers from a page's own declaration -- the road the ASCII wall took on 20260909 -- is Keaton's word, and it is recorded in the paper rather than left on the card, since an ask on the card lives about 104 minutes.
+obs My cold pass read the tree before the round open; it answered 243 run, 238 green, 2 red, 3 gated, tree_moved=no. The two reds are not mine: say_compose_bound at 538 per mille against a 537 ceiling, which is Bakery's share-pin finding, and standing_equipment answering red_self beside it. The round open then adopted the anointed order and moved the tree to c13997e0e3, so the hot pass at the close is the reading that counts.
+obs The living pin sat 3 bytes under its bound at HEAD, so this lap's block was written short and rewritten four times to land at 40,952 of 40,960. Two of my own sentences in the new paper were restated to bring it from 32% to 25% negative, which is under the Field target rather than at it.
+obs Hot close over the staged tree: 245 run, 242 green, 0 red, 3 gated, tree_moved=no, run_verdict=ok. The two reds my cold open carried were both gone by the close, repaired by the lane that owns them rather than by me.
+loom witness=qa_setting_declared_witness control_legs=38 control_failed=0
+loom witness=qa_report_card_witness control_behaviors=162 was=159
+loom scan=qa_setting_declared pages=330 style_declared=164 setting_named=50 setting_unnamed=114 no_style_line=166
+loom roster=standing_equipment_cold guards_run=243 green=238 red=2 gated=3 seconds=3961
+loom roster=standing_equipment_hot guards_run=245 green=242 red=0 gated=3 seconds=4384
+file tools/fixtures/q/qa_report_card.sh -- publishes declared_style_line_of() and QA_HEAD_LINES=40 as the one reader of a page's Style line, and reads it in place of the elder anchored grep
+file tools/fixtures/q/qa_setting_declared_scan.sh -- lifts that function out of the card at run time, resolves the card beside its own $0, refuses when the reader is absent, and names the two false positives the setting match cannot tell apart
+file tools/fixtures/q/qa_setting_declared_control.sh -- six new legs: the below-rule shape, the inline key, the head bound, and the three citation legs, 38 in all
+file tools/q/qa_setting_declared_witness.rish -- records the two readers and the repair in its header, asserts 38 legs, and stops spelling a free figure in its say line
+file tools/fixtures/q/qa_report_card_control.sh -- three legs for the card's own reading: inline, below-rule, past the head bound
+file tools/q/qa_report_card_witness.rish -- asserts those three by name, so a leg added tomorrow is heard
+file active-designing/20260910-175434_two-readers-of-one-line.md -- the account, and the DOOR-roster reading with the derivation named as vision, B+ 88
+file construction/ITINERARY.md -- elder block shelved, the new block written short under the bound, prior-lap row and Git nib carried
+file construction/archive/20260910-175434_itinerary-landed-accounts.md -- the elder block, its one ask printed as it left the card
+scope the two readers of a page's Style line -- one rule published, one cited, six control legs, three card legs, one paper
+status GREEN -- qa_setting_declared_witness GREEN at 38 legs, qa_report_card_witness GREEN at 162 behaviors, fold_shelf_link GREEN, cards A 90 and B+ 88, hot close 242 green 0 red 3 gated tree_moved=no
+recommend check-in (Claude) -- one word settles the room the last three of my laps have circled: whether the register meter derives its tiers from a page's own declared setting, which needs one spelling agreed on before a tool can read fourteen

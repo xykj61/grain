@@ -223,5 +223,61 @@ out=$(QA_SETTING_ROOT="$emptypen" sh "$SCAN" 2>&1 || true)
 check "a tree with no documents refuses" "$(printf '%s\n' "$out" | grep -c 'no_tracked_documents')" 1
 rm -rf "$emptypen"
 
+# --- the declaration rule, repaired 20260910: WHERE a page writes the key ------------------------
+# Two shapes stood outside the elder readings, and each was missed by a different instrument. A
+# page may open with a logo block, a title and badges above its first `---` rule and write its
+# front matter BELOW it -- README.md does -- which the block rule read as declaring nothing. And a
+# page may write the key INLINE after another -- docs/README.md does -- which the card's anchored
+# `^**Style:**` read as absent. Both are declarations, and both are proven here.
+plant below_rule.md '# Badged
+
+<p align="center">a badge block</p>
+
+---
+
+**Language:** EN - **Voice:** Kyri
+**Style:** Gauge, Door setting'
+plant inline_key.md '# Inline
+
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Field setting'
+git add -A && git commit -qm shapes
+out=$(run_scan)
+check "a declaration below the first rule is read"   "$(field "$out" style_declared)" 8
+check "an inline key is a declaration too"           "$(field "$out" setting_named)"  5
+
+# The head bound is what keeps body prose out, now that the first `---` no longer does. A page
+# discussing the word forty lines down declares nothing.
+{
+  printf '# Deep\n\n'
+  i=0; while [ "$i" -lt 45 ]; do printf 'filler line %s\n' "$i"; i=$((i + 1)); done
+  printf '**Style:** Gauge, Door setting\n'
+} > deep.md
+git add -A && git commit -qm deep
+out=$(run_scan)
+check "a style key past the head bound declares nothing" "$(field "$out" no_style_line)" 2
+
+# --- the reader is CITED from the card, never copied ---------------------------------------------
+# Three legs, because a citation has three failure modes and only one of them is the good one. An
+# absent card refuses; a card that no longer publishes the function refuses; and a card publishing
+# a DIFFERENT function changes this scan's answer, which is what proves the citation is live rather
+# than decorative.
+inst=$(mktemp -d "${TMPDIR:-/tmp}/qa-setting-inst.XXXXXX")
+cp "$SCAN" "$inst/qa_setting_declared_scan.sh"
+out=$(QA_SETTING_ROOT="$pen" sh "$inst/qa_setting_declared_scan.sh" 2>&1 || true)
+check "an absent card refuses" "$(printf '%s\n' "$out" | grep -c 'card_absent')" 1
+printf '#!/bin/sh\n# a card with no reader\n' > "$inst/qa_report_card.sh"
+out=$(QA_SETTING_ROOT="$pen" sh "$inst/qa_setting_declared_scan.sh" 2>&1 || true)
+check "a card without the reader refuses" "$(printf '%s\n' "$out" | grep -c 'card_no_longer_publishes_declared_style_line_of')" 1
+{
+  printf '#!/bin/sh\n'
+  printf 'QA_HEAD_LINES=40\n'
+  printf 'declared_style_line_of() {\n'
+  printf '  :\n'
+  printf '}\n'
+} > "$inst/qa_report_card.sh"
+out=$(QA_SETTING_ROOT="$pen" sh "$inst/qa_setting_declared_scan.sh" 2>&1 || true)
+check "a card publishing a blind reader is believed" "$(field "$out" no_style_line)" "$(field "$out" pages)"
+rm -rf "$inst"
+
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

@@ -12,10 +12,12 @@
 # written for a HUMAN reader, who can open a page and tell. The card is a MACHINE reader and cannot,
 # so an undeclared page hands its grade to whoever typed the command.
 #
-# MEASURED `20260910.104833` BY THIS SCAN, and every figure below is FREE -- nothing holds it
-# still -- so RUN the scan rather than reading them. Of **330** living pages, **158 declare a
-# style** and **48 of those name a setting**; **110 leave it unnamed**, and 172 carry no `**Style:**`
-# line at all. Priced over 27 of the 110 at stride 4: **20 scored differently** at Door than at
+# MEASURED `20260910.163831` BY THIS SCAN, and every figure below is FREE -- nothing holds it
+# still -- so RUN the scan rather than reading them. Of **330** living pages, **164 declare a
+# style** and **50 of those name a setting**; **114 leave it unnamed**, and 166 carry no `**Style:**`
+# line at all. The elder reading of `20260910.104833` answered 158 / 48 / 110 / 172, and the
+# difference is the repair recorded below the population rule: six pages were being read as silent
+# while they spoke. Priced over 27 of the 110 at stride 4: **20 scored differently** at Door than at
 # Field, mean spread **3.29 points**, and **4 crossed the B door at 80** at the judged stand-in
 # `--service 90`. Two of those four are
 # pages the whole fleet reads -- `MAP.md` at **79 Door, 84 Field**, which the baton instructs every
@@ -119,11 +121,62 @@ while IFS= read -r f; do
   printf '%s\n' "$f" >> "$work/living.txt"
 done < "$work/all.txt"
 
-# invariant: the header is the block above the first `---` rule, read the same way the card reads
-# it, so a body merely discussing a setting declares nothing.
-header() {
-  awk 'NR <= 40 { if ($0 ~ /^---[ \t]*$/) exit; print }' "$1"
-}
+# invariant: a declaration is a `**Style:**` key standing anywhere in the page's HEAD, and the
+# reader that decides it is CITED out of tools/fixtures/q/qa_report_card.sh rather than written
+# again here -- the same way this scan's population rule is transcribed from the ascii room, and
+# the same way the card itself lifts `measure()` from the register scan (REDS %201). A second copy
+# of a one-line rule is how two readers come to disagree, which is exactly what happened.
+#
+# WHAT WENT WRONG, and it took both instruments to see it. This scan read the block above a page's
+# first `---` rule and its own comment claimed that was "the same way the card reads it." The card
+# matched `^[ \t]*\*\*Style:\*\*` over the whole file. Neither claim held: measured
+# `20260910.163831` over this scan's own 330-page population, the elder block rule missed **five**
+# pages declaring their style BELOW their first horizontal rule -- README.md, the tree's own front
+# door, whose head opens with a centred logo block, a title, a tagline and four licence badges and
+# carries `**Style:** Bhakta with Gauge and Twilight` at line 23; SKILL.md and
+# classical-vedic-astrology/studies/README.md, both of which NAME a setting; plus cellar/README.md
+# and context/TAME_GUIDANCE.md. The card's anchor missed **65** pages writing the key INLINE after
+# another -- `**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting`, which is how
+# docs/README.md declares Door and how the card read it as absent.
+#
+# THE REPAIR MOVED THIS SCAN'S FOUR COUNTS, and every one of them rose because a page was being
+# read as silent while it spoke: style_declared **158 -> 164**, setting_named **48 -> 50**,
+# setting_unnamed **110 -> 114**, no_style_line **172 -> 166**. Both understatements were of the
+# same kind, which is why neither showed up as a contradiction anywhere: a missed declaration
+# looks exactly like a page that never wrote one.
+#
+# WHAT THE SETTING MATCH CANNOT TELL APART, named rather than left for a reader to trip on. The
+# reading asks whether the declaration LINE carries the word door, field or meter, so a line whose
+# trailing prose happens to use one of those words as ordinary English reads as naming a setting.
+# Measured `20260910.175434`: **two** pages do -- `docs-geode/tutorials/the-first-hour.md` and its
+# sibling, whose Style line ends *"named rather than linked -- it stays in the field"*, meaning the
+# maintainer's working tree rather than Gauge's Field. Two of fifty is the size of the error, and
+# the cure is worse than the fault: the fifty declaring pages spell their setting **14** different
+# ways -- `Gauge Field`, `Gauge, Door setting`, `Gauge at the Door, in the Twilight register` --
+# so a stricter pattern would drop real declarations to catch two false ones. One spelling, agreed
+# on, would let this reading tighten; that is the standing ask rather than a lap's decision.
+#
+# LOSING THE CITED FUNCTION MAKES THIS SCAN REFUSE rather than fall back on a copy, since a
+# fallback is a second rule wearing a safety net.
+# THE CARD IS RESOLVED BESIDE THIS SCRIPT rather than under the tree being read. `QA_SETTING_ROOT`
+# points this scan at another tree -- which is how the pen reads planted pages -- and the reader it
+# cites is part of the INSTRUMENT rather than part of the population. Resolving it under the root
+# made the pen answer `card_absent` for every leg, which is the fault a control exists to catch.
+card_reader="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/qa_report_card.sh"
+if [ ! -f "$card_reader" ]; then
+  echo "instrument=failed"
+  echo "detail=card_absent"
+  echo "verdict=misread"
+  exit 1
+fi
+sed -n '/^QA_HEAD_LINES=/p;/^declared_style_line_of() {/,/^}/p' "$card_reader" > "$work/declared.sh"
+if [ ! -s "$work/declared.sh" ] || ! grep -q '^declared_style_line_of() {' "$work/declared.sh"; then
+  echo "instrument=failed"
+  echo "detail=card_no_longer_publishes_declared_style_line_of"
+  echo "verdict=misread"
+  exit 1
+fi
+. "$work/declared.sh"
 
 pages=0
 style_declared=0
@@ -134,7 +187,7 @@ no_style_line=0
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   pages=$((pages + 1))
-  h=$(header "$f")
+  h=$(declared_style_line_of "$f")
   case "$h" in
     *'**Style:**'*) style_declared=$((style_declared + 1)) ;;
     *) no_style_line=$((no_style_line + 1)); continue ;;

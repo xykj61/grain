@@ -17,20 +17,36 @@
 # `20260910.082330`, five on `MAP.md` here -- which is what earns an instrument rather than a
 # repair, and turns 110 separate asks into one priced ruling.
 #
+# TWO READERS OF ONE LINE, AND EACH MISSED A DIFFERENT HALF (repaired `20260910.163831`). This
+# census read the block above a page's first `---` rule and its own comment claimed that was "the
+# same way the card reads it." The card matched `^[ \t]*\*\*Style:\*\*` over the whole file.
+# Neither claim held. The block rule missed **five** pages declaring BELOW their first rule --
+# README.md, the tree's own front door, whose head opens with a logo block, a title, a tagline and
+# four licence badges and carries its Style line at line 23. The anchor missed **65** pages writing
+# the key INLINE after another, which is how `docs/README.md` declares Door and how the card
+# answered `absent` for it. Both misreadings were of one kind, so neither could ever surface as a
+# disagreement: a missed declaration looks exactly like a page that never wrote one.
+#
+# THE RULE IS PUBLISHED ONCE NOW, as `declared_style_line_of()` in the card, and this census lifts
+# it out of that file at run time the way the card already lifts `measure()` from the register scan
+# (REDS %201). Three legs prove the citation is live rather than decorative -- an absent card
+# refuses, a card that stops publishing the function refuses, and a card publishing a BLIND reader
+# is believed, which is the only one of the three a copy could not fake.
+#
 # REPORTED, NEVER GATED. Gauge's own law says most pages know their own setting, so a page that
 # declares none may be perfectly honest; a gate here would red on ordinary work, and a gate that
 # reds on ordinary work is a gate somebody turns off. What the tree lacked was the number.
 
-say "qa-setting-declared: Language EN -- one dial, and 110 pages that decline to set it."
+say "qa-setting-declared: Language EN -- one dial, and the pages that decline to set it -- run the scan for the count."
 say "qa-setting-declared: Style Gauge, Meter -- a census that reports rather than refuses."
 say "qa-setting-declared: Lens TAME -- each bucket proven by moving a member into its neighbour."
 
-say "qa-setting-declared: the control -- 32 behaviors on planted pages in a throwaway repository..."
+say "qa-setting-declared: the control -- 38 behaviors on planted pages in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/q/qa_setting_declared_control.sh"]
 # invariant: a refusal reports BOTH streams -- `run` returns `out` and `err` apart, and a control
 # writing its reason to stderr would otherwise leave an empty reason in the roster's red file.
 assert ctl.ok else "qa-setting-declared: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=32 fail=0" else "qa-setting-declared: the control did not prove 32 behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=38 fail=0" else "qa-setting-declared: the control did not prove 38 behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "qa-setting-declared: and the living tree answers every bucket..."
 let scan = run ["sh" "tools/fixtures/q/qa_setting_declared_scan.sh"]
