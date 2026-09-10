@@ -2102,6 +2102,23 @@ path tools/m/mantra_record_ceiling_witness.rish
 tier lap
 seated 20260910.034822
 
+# mantra_document_roundtrip -- does the store return the bytes it was handed? `split_lines` in
+# `diff.rye` drops the empty token a text ending in `\n` produces, and a text ending without one
+# produces no such token at all, so `x\ny` and `x\ny\n` split to the same two lines. `cmd_add`
+# stores that split and nothing else -- a weave and a commit, never the file's own bytes. Measured
+# `20260910.043900`: two pens, two files one byte apart, both answered `HEAD -> 441c3c6fa8b8` and
+# both weaves carried the digest `7695a361c00e...`, so a content-addressed store gave one address
+# to two contents. `status` calls the changed file clean and `add` answers `unchanged`, in both
+# directions. Four readings are GATED -- an ordinary edit is still woven and still reported, and
+# each file still reads back clean against its own weave -- and seven REPORT the loss, because the
+# repair is a seam with three doors and a gate that reds on what no lap may fix gets turned off.
+# The control prices door 1 in a pen: keeping the token parts the digests, makes `add` see the
+# appended newline, and costs one line per terminated file (4 where the tree reads 3).
+guard mantra_document_roundtrip
+path tools/m/mantra_document_roundtrip_witness.rish
+tier lap
+seated 20260910.043900
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight
