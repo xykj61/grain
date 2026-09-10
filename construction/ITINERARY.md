@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8c59a5cfb6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d94ef498b1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -138,35 +138,27 @@ time and `witness_reach_scan`'s own header already calls it **yours**.
 aura length bounds; what declares a desk's kind.
 
 
-**INCENSE -- A GUARD NAMED ITS OWN UNPROVEN HALF, AND NOBODY WAS READING IT.**
-Elder [shelved](archive/20260909-204315_itinerary-landed-accounts.md).
-**AETHER HEARS the silence where a claim used to be**, so this lap listened to the compass rose.
-`compass_station_scan.sh` gates two counts at zero and writes under **WHAT IS NOT PROVEN**: *that
-the rose names the right six stations.* It named its own gap and stood green over it thirteen days.
-**THE GAP WAS THE FLOOR THE WALK STANDS ON.** Read scope seated `20260827.155213` and calls
-`MAP.md` *the walk that replaces the `ls`*; the rose carried six stations after that day and named
-neither map nor law. Nor did `docs/COMPASS.md`, `align.md` and its twin, or `ORGANIZING.md`, which
-the map's own Status line sends keepers to. Measured with a grep whose character class excludes
-`ROADMAP.md`: **only `README.md` and `llms.txt` named it at all.** The reader likeliest to over-read
-is the one opening doors to find direction, and met no floor plan.
-**REPAIRED, STATIONS NAMED RATHER THAN COUNTED.** The rose opens at **Where you are**; the six
-elders keep their order and words at 2 through 7, and `docs/COMPASS.md` takes the map as **step 0**,
-so every existing number stays true. Two sentences cited stations by ordinal and a seventh would
-falsify both -- each names its station now. The align twin's stale order to check the two fused
-cards names `ITINERARY.md` instead. Row `20260909.204315`; `compass_rose` GREEN at 7, control
-18/0, QA all A.
-**YOURS, THE GENERAL FORM:** every scan carries a WHAT IS NOT PROVEN block and nothing walks that
-queue -- a survey of our gaps by the hands that knew them best. Row
-[folded](archive/REDS-the-guard-that-named-its-own-gap-rows-674.md) on arrival.
-**A GATE, NOT MINE:** `sow_allow_reach` reds on every ship. Its freshness input is the whole
-tracked-path set under the allowed rooms, so any commit adding a file there stales it --
-`reach_paths` moved, the manifest did not, my index was empty. The cure is a full `tools/s/sow.rish`,
-`%642`'s costliest run. **A guard that reds on ordinary work is one someone turns off.**
-**OVERTAKEN, A NEW SHAPE.** I folded `%670`/`%671` for room; a peer published the same fold five
-minutes earlier, so theirs is adopted and my row derived one above their published number. **A
-duplicate FOLD rather than a duplicate repair** -- housekeeping collides exactly as work does, and
-nothing shows a pin is being tidied.
-
+**INCENSE -- THE WALL WAS A GLOB, AND THE LAW IS A GRAPH.**
+Elder [shelved](archive/20260909-221428_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY UNDER THE HAND**, so this lap pressed fences rather than opening work.
+First press held: all **30 witnesses the rule rooms name** exist and are rostered, 24 lap, 6 cadence.
+**THE SECOND PRESS WENT THROUGH.** `ascii_document` walls `.claude/rules/*.md` by directory glob
+while the law is a graph, so a page a rule tells a reader to **read first** was walled by nothing --
+its own header named this open and left it. A hand swept five such pages `20260908`; what held them
+after was **7 characters of ratchet slack**, so one em dash in `RADIANT_STYLE.md` reddened nothing
+and eight reddened a total naming no page.
+**WIDENED TO THE LAW'S OWN CITATIONS**, links and backticks both, filtered to living tracked pages:
+**110 globbed + 33 derived = 143 at zero.** Derived rather than typed, for the reason the globs are
+globs. Derivation can drop a page by an edit made elsewhere, so both memberships **print**.
+**AGAINST MYSELF, TWICE IN ONE LAP.** My roster parse read `reds_citation` UNFOUND -- it flushes on a
+blank line and that record is followed by comments. Then a hand grep called all 33 clean; the widened
+scan refused two living pins, `session-logs/CHAPTERS.md` 50 and `SHRED_PREP.md` 49. The grep spelled
+`[\300-\377]` inside single quotes, where it is digits and a backslash -- **this meter's own subject,
+turned back on the hand measuring it.** Both swept, proven by re-derivation. Ratchet 3,324 -> 3,225;
+ceiling 3,331 -> **3,232**, keeping the 7 it stood on and taking none of the 99. Control 44 -> **63**.
+**YOURS:** `.cursor/rules/ascii-first.mdc` carries different text for this passage -- one of the 38
+two-way drifted pairs at gate %194, so I left it. **The sibling meters carry the same shape:**
+`rye_spoken_ascii` and `spoken_ascii` each wall a room and name canon they do not reach.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). The four Mantra gates build GREEN,
 **unheard rather than rotted**, now `tier cadence` 92s; Aurora's three and Caravan's one stay

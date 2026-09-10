@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.230704` | [The lap in the dead-letter box](20260909/20260909-230704_the-lap-in-the-dead-letter-box.kyri) | A finished lap recovered from the stash, re-proven, landed. |
 | `20260909.230104` | [A true number, a false conclusion](20260909/20260909-230104_a-true-number-and-a-false-conclusion.kyri) | mantra's merge stands; the count held. |
 | `20260909.225159` | [Git answered what no list could](20260909/20260909-225159_git-answered-what-no-list-could.kyri) | The census asks git which literal is tracked; 12 -> 13. |
+| `20260909.221428` | [The wall and the graph](20260909/20260909-221428_the-wall-and-the-graph.kyri) | Incense; the ASCII wall follows the law's citations, not a directory glob |
 | `20260909.221305` | [A receipt keys on what the reader branches on](20260909/20260909-221305_a-receipt-keys-on-what-the-reader-branches-on.kyri) | Bakery; coverage keyed on room class |
 | `20260909.220705` | [The shim that carried a choir](20260909/20260909-220705_the-shim-that-carried-a-choir.kyri) | Pheromone; six unheard Glow witnesses gathered |
 | `20260909.220211` | [The probe that asked one of four](20260909/20260909-220211_the-probe-that-asked-one-of-four.kyri) | Grass; a capability asked one of its guard's four questions |
