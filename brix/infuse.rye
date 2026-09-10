@@ -188,11 +188,11 @@ fn prove_infuse() !void {
 
 fn run_selftest() !u8 {
     try prove_infuse();
-    print("brix infuse: a flat-Bron per-key override — the override's value(s) replace the base's for a key, base-only keys pass through in place, override-only keys append in override order.\n", .{});
-    print("brix infuse: zero-copy — parsed keys and values slice the source buffers; only the merged descriptor is written fresh, bounded by max_out.\n", .{});
+    print("brix infuse: a flat-Bron per-key override -- the override's value(s) replace the base's for a key, base-only keys pass through in place, override-only keys append in override order.\n", .{});
+    print("brix infuse: zero-copy -- parsed keys and values slice the source buffers; only the merged descriptor is written fresh, bounded by max_out.\n", .{});
     print("brix infuse: a scalar is overridden, a base-only key survives, a repeated list is replaced, an empty override is identity, and a too-small output is refused.\n", .{});
     print("brix infuse: version {s}\n", .{infuse_version});
-    print("GREEN: brix infuse — deep merge/override for Brix descriptors: per-key override over flat Bron, zero-copy, bounded, witnessed.\n", .{});
+    print("GREEN: brix infuse -- deep merge/override for Brix descriptors: per-key override over flat Bron, zero-copy, bounded, witnessed.\n", .{});
     return 0;
 }
 

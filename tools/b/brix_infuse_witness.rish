@@ -20,4 +20,4 @@ assert (st.err contains "per-key override") else "brix infuse missing the per-ke
 assert (st.err contains "zero-copy") else "brix infuse missing the zero-copy claim"
 assert (st.err contains "too-small output is refused") else "brix infuse missing the bounded-output refusal"
 
-say "GREEN: brix infuse — deep merge/override for Brix descriptors: per-key override over flat Bron, zero-copy, bounded, witnessed."
+say "GREEN: brix infuse -- deep merge/override for Brix descriptors: per-key override over flat Bron, zero-copy, bounded, witnessed."

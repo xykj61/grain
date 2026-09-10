@@ -55,7 +55,14 @@ assert scan.out contains "uncovered_rooms_unknown=0" else "tame_reach: a room ho
 # invariant: the rooms already carrying that debt only fall. A room leaves when its Rye joins the
 # style roster; a room joins only by raising this ceiling with the reason written down, which is
 # what makes taking on unread ground a deliberate act rather than a side effect.
-assert scan.out contains "debt_room_ceiling=25" else "tame_reach: the debt-room ceiling stands at 25 -- a ceiling only falls"
+# The pin fell 25 -> 24 on `20260910.123000`, when `brix` joined the style roster and left the debt
+# list. Note the shape this line has: the ceiling is spelled in the scan AND pinned here, so lowering
+# it takes two edits and a lap that makes one reds. That is deliberate -- a ceiling must not be able
+# to fall by accident -- and it is also the count-pin shape this tree booked twice on `20260910`
+# alone, in `unheard_guard` and `tame_reach`'s own retired file count. It earns the second spelling
+# only because a ceiling is a DECISION rather than a measurement; the numbers that merely get
+# measured are read from the scan and never pinned.
+assert scan.out contains "debt_room_ceiling=24" else "tame_reach: the debt-room ceiling stands at 24 -- a ceiling only falls"
 
 # invariant: the file count is published and held by nothing. It rises whenever anyone writes a
 # lawful .rye in an already-uncovered room, so gating it refused ordinary work -- twice, on
@@ -121,4 +128,11 @@ let control = run ["sh" "tools/fixtures/t/tame_reach_control.sh"]
 assert control.ok else "tame_reach control failed: ${control.out}"
 assert control.out contains "fail=0" else "tame_reach control reported failures: ${control.out}"
 
-say "GREEN: tame_reach -- no phantom room, no unknown debt room, the debt rooms held at 25 and unwatched ban hits at 736, the file count published and free, every refusal proven, both absent lists refuse, 60 control behaviors green."
+# The close names what it PROVED rather than respelling the numbers it proved it against. This line
+# spelled "the debt rooms held at 25" until `20260910.123000`, which made it the THIRD place one
+# ceiling was written down -- the scan's own variable, the pin above, and here. Lowering the ceiling
+# reds the first two when they disagree and says nothing about the third, so a lap that moved the
+# ceiling correctly could still ship a green witness announcing the elder number to whoever read the
+# roster pass. One number, one owner; a reader wanting the figure reads the scan, which is where it
+# is measured.
+say "GREEN: tame_reach -- no phantom room, no unknown debt room, the debt-room and ban-hit ceilings each held where the scan states them, the file count published and free, every refusal proven, both absent lists refuse, 60 control behaviors green."

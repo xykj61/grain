@@ -76,3 +76,75 @@ lattice
 ember
 lantern
 scribble
+
+# A TWENTY-FIRST ROOM, ADDED `20260910.123000`, AND THE METHOD THIS FILE ASKED FOR, RUN ONCE.
+# The header above names the price of a widening -- "a widening has to RE-DERIVE each ceiling with
+# the reason recorded, exactly as the memcpy line did when it went from 1 to 137. That is one
+# deliberate lap by the hand that owns these counts." That method had never been run. `lotus` at 240
+# files and `rye/tests` at 736 ban hits are both blocked on its SIZE rather than on the decision,
+# and neither can be the first to try it.
+#
+# `brix` can. It holds exactly ONE tracked authored `.rye` -- `brix/infuse.rye`, 201 lines, the
+# per-key override that Brix descriptors are composed by -- so the method runs end to end for the
+# price of one file, and the hands who own the big rooms inherit a worked example rather than a
+# paragraph.
+#
+# WHY THE ROOM BELONGS, which the header asks before the counts: Brix is one of the four languages
+# TAME Guidance governs by name (`.rye`, `.rish`, `.brix`, `.bron`), and `brix/infuse.rye` is the
+# Rye that implements the composition language's own merge. A room whose whole content is an
+# authored implementation of a governed language is exactly what these reflexes are for. It is not
+# the `crypto/` case: this calls the primitives rather than implementing them.
+#
+# EVERY READING RE-DERIVED ON THE WIDENING LAP, before and after, each measured rather than argued.
+# Eight readers reach this file, so eight were read:
+#
+#   tame_style_scan_bans      GREEN  -> GREEN   all ten bans read zero in the file
+#   tame_style_scan_advise    memcpy 135, camelCase 0, parseInt 46, Ed25519 1, zero-assert 59,
+#                             functions_over_70 686 -- every one UNCHANGED; roster_files 1131 -> 1132.
+#                             Re-read after this lap's rebase onto six peer commits,
+#                             `functions_over_70` answers 687: a peer's `amphora/` work added one, in
+#                             a room that was already on the roster. The DELTA this widening owns is
+#                             still zero, and the absolute figure is FREE -- which is the argument two
+#                             paragraphs down, demonstrated live inside the same lap that wrote it.
+#                             Read the delta here; run the scan for the level.
+#   tame_reach                debt_rooms 25 -> 24, ceiling 25 -> 24; uncovered_authored 553 -> 552;
+#                             population 1735 unchanged, covered 1131 -> 1132
+#   opening_lines             qualified_assert 0, qualified_print 0, missing_assert_bind 66,
+#                             missing_print_bind 118 -- UNCHANGED; the file opens with the full triad
+#   rune_assert_sweep         zero_assert 99, invariant_gap 98, unnamed_assert 6487 -- UNCHANGED;
+#                             one assert, named by its own `// invariant:` line directly above
+#   tame_check                qualified_assert 0, self_this 0, tabs 0, trailing_authored 1 -- UNCHANGED
+#   tame_style_long_fn        longest function is 58 lines (`infuse`), so the over-70 roster is untouched
+#   tame_style_app_sites      this one is a HELPER taking a pattern rather than a standalone scan, so
+#                             it was not run as such; its subject -- the memcpy, parseInt and Ed25519
+#                             application counts -- is the advise line above, and each reads unchanged
+#
+# SO THE WIDENING IS FREE IN SEVEN READINGS AND LOWERS THE EIGHTH. That is the outcome a widening
+# wants and the reason this room was chosen to prove the method: nothing had to be repaired first,
+# nothing had to be exempted by name, and no ceiling rose. `unnamed_assert` and `trailing_authored`
+# both stood AT their ceilings with zero slack, so a file carrying one stray trailing space or one
+# unnamed assert would have reddened the lap -- which is why each was read before the line below was
+# written rather than after.
+#
+#
+# THE TWO SIZING FIGURES ABOVE ARE FREE, AND BOTH HAD MOVED BY THE TIME THIS LAP READ THEM
+# (`20260910.123000`). `lotus` reads **240** authored `.rye` where the `20260908` note says 238, and
+# `rye/tests` holds **711** `std.debug.assert(` where that note says 718. Nothing holds either still:
+# they are counts of a growing surface, so a stamp on them says when somebody looked and never that
+# the reading stands -- which is the fifth thing `context/GAUGE_STYLE.md` asks a figure to name. The
+# elder numbers are kept above as the testimony of the lap that measured them, and the two sentences
+# naming the size of the NEXT widening carry the re-read figures. RUN these rather than reading any
+# of them:
+#
+#   git ls-files lotus | grep -c '\.rye$'
+#   git ls-files 'rye/tests/*.rye' | xargs grep -cF 'std.debug.assert(' | awk -F: '{s+=$2} END{print s}'
+#
+# `736` and `1,127` are different animals and are cited as such: both are WALLED, the first by
+# `ban_ceiling` in tools/fixtures/t/tame_reach_scan.sh and the second by that scan's `covered`
+# reading, so a guard reds the lap either moves. A figure a guard holds may be spelled; a free one
+# names its command.
+# WHAT THIS DOES NOT SAY. That the next room is this cheap. `lotus` carries 240 files and `rye/tests`
+# turns the bans half RED until 736 sites are answered; both are still their own lap by their own
+# hand. What they inherit is the sequence: read the eight, record the eight, move the room, lower
+# what falls.
+brix
