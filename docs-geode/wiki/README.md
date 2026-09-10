@@ -31,6 +31,14 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [tutorials / **Shopping**](../tutorials/SHOPPING.md) | the first hour, Gauge Style, TAME Guidance | the root README, `tutorials/`, the first hour |
 | [tutorials / **Running the fleet**](../tutorials/running-the-fleet.md) | the fleet roster, the baton, the live card, the first hour | `tutorials/`, the shelf front door |
 | [blog / **Eighteen times, two agents did the same job**](../blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md) | the root README, the first hour, SOURCE.md | `blog/`, this page |
+| [lessons / **Lesson 1 -- The house from above**](../lessons/20260910-060225_lesson-1-the-house-from-above.md) | the two addresses a reader arrives at, and which one they are standing in | `lessons/`, the shelf front door |
+| [lessons / **Lesson 2 -- The front door**](../lessons/20260910-060225_lesson-2-the-front-door.md) | what a file is, what an extension says, and how to read a README | `lessons/`, the shelf front door |
+| [lessons / **Lesson 3 -- The why**](../lessons/20260910-060225_lesson-3-the-why.md) | bhakti and bhakta, given once and in plain words -- the register this shelf writes in | `lessons/`, the shelf front door |
+| [lessons / **Lesson 4 -- Joy has a rank**](../lessons/20260910-060225_lesson-4-joy-has-a-rank.md) | TAME's order read as a sentence about people: safety, performance, then joy | `lessons/`, the shelf front door |
+| [lessons / **Lesson 5 -- The order itself**](../lessons/20260910-060225_lesson-5-the-order-itself.md) | what safety means here -- three promises a program keeps at once | `lessons/`, the shelf front door |
+| [lessons / **Lesson 6 -- Two pockets, honestly priced**](../lessons/20260910-060225_lesson-6-two-pockets.md) | SLC, and Jason Cohen's essay kept in `gratitude/` | `lessons/`, the shelf front door |
+| [lessons / **Lesson 7 -- Dawn, kernels, and a pocket that wakes**](../lessons/20260910-060225_lesson-7-dawn-and-kernels.md) | Aurora, the first light a machine wakes into, before a shell or an app store | `lessons/`, the shelf front door |
+| [lessons / **Lesson 8 -- The painted face**](../lessons/20260910-060225_lesson-8-the-painted-face.md) | a shell you already know, then the word for it -- shown before it is named | `lessons/`, the shelf front door |
 
 ## Why the "reached from" column matters
 
