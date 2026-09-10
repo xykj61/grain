@@ -88,7 +88,7 @@ assert control.ok else "convergence-census: the control refused --\n${control.ou
 assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
 assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
 assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
-assert control.out contains "legs_pass=34" else "convergence-census: a leg went unrun --\n${control.out}"
+assert control.out contains "legs_pass=43" else "convergence-census: a leg went unrun --\n${control.out}"
 
 # invariant: a tool may not certify itself. The plant's only idempotence sentence is a comment in
 # its own header, which is what two tracked tools carried when this column read them proven.
@@ -162,6 +162,23 @@ assert control.out contains "git_split_printed -- printed" else "convergence-cen
 assert control.out contains "git_only_names_its_member -- named" else "convergence-census: the git-only reading names no member, and a count naming no member is a finding no ship can act on (REDS %671)"
 assert scan.out contains "admitted_by_git_only=" else "convergence-census: the git-only reading went unreported on this tree"
 assert scan.out contains "admitted_by_name_only=" else "convergence-census: the name-only reading went unreported on this tree"
+# THE ENCLOSURE STRAND (`20260909.233000`). Both strands above read a matched SPAN, and a span
+# carries no position, so neither can tell a write this tool performs from text it hands to another
+# command. `upstream_shape_scan.sh` stood a member on a `"$f"` inside a single-quoted
+# `--tree-filter` string run against filter-branch's own pen. `live_lines` walks the source as a
+# shell lexer -- single quotes, double quotes with backslash escapes, unquoted comments, and
+# heredocs including `<<-` and the quoted-delimiter form -- and reads a write only off a line
+# standing outside every quoted region. Candidates 13 -> 12 on this tree, the single departure
+# being that file.
+assert control.out contains "quoted_argument_write_refused -- no" else "convergence-census: a write inside another command's quoted argument admits the tool again"
+assert control.out contains "heredoc_body_write_refused -- no" else "convergence-census: a write inside a heredoc body admits the tool again"
+assert control.out contains "heredoc_dash_write_refused -- no" else "convergence-census: the tab-stripping heredoc form goes untracked, so its body reads as live code"
+assert control.out contains "live_write_still_admitted -- yes" else "convergence-census: a write on a live line no longer admits, so the enclosure fence refuses by text rather than by position"
+assert control.out contains "write_after_close_admitted -- yes" else "convergence-census: the walk never leaves a quoted region, so every line after one is withheld and an empty census reads as a clean tree"
+assert control.out contains "dquoted_region_closes -- yes" else "convergence-census: a multi-line double-quoted argument never closes, withholding every line after it"
+assert control.out contains "balanced_file_admitted -- yes" else "convergence-census: a balanced source is withheld, so the lexer drifts rather than tracks"
+assert control.out contains "elder_admitted_the_quoted_argument -- yes" else "convergence-census: the elder predicate now refuses a quoted-argument write on its own, so this strand proves nothing"
+assert control.out contains "elder_admitted_the_heredoc_body -- yes" else "convergence-census: the elder predicate now refuses a heredoc-body write on its own, so this strand proves nothing"
 assert control.out contains "family_control_split_printed -- printed" else "convergence-census: the family-control split went unprinted"
 
 assert scan.out contains "proven_by_prover_run=" else "convergence-census: the prover-run column went unreported on this tree"

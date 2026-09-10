@@ -302,6 +302,70 @@ git_named=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^git
 case " $git_named " in *" git_named.sh "*) member=named ;; *) member=absent ;; esac
 leg git_only_names_its_member named "$member"
 
+# 13. THE ENCLOSURE STRAND (`20260909.233000`). Both strands above read a matched SPAN, and a span
+# carries no position, so neither can tell a write this tool performs from text it hands to another
+# command. `live_lines` walks the file as a shell lexer and emits only the lines standing outside
+# every quoted region and heredoc body.
+cd "$pen/tree"
+# 13a. THE TREE'S OWN FALSE POSITIVE, planted in its real shape: the write sits inside a
+#      single-quoted `--tree-filter` argument spanning several lines, against filter-branch's own
+#      pen. This is `upstream_shape_scan.sh:150`, the standing member the census header named as
+#      the next post on this fence.
+plant tools/x/quoted_arg.sh 'git filter-branch -f --tree-filter '"'"'
+  for f in *.txt; do
+    cat "$f.t" > "$f"
+  done'"'"' -- --all'
+# 13b. THE SAME WRITE ON A LIVE LINE MUST STAY. A fence that refuses by the text rather than by the
+#      position would take every real writer out with the false one.
+plant tools/x/live_write.sh 'cat "$f.t" > "$f"'
+# 13c. A heredoc body is data fed to another interpreter, so a write inside one is not this tool's.
+plant tools/x/heredoc_body.sh 'sh <<EOF
+cat "$f.t" > "$f"
+EOF'
+# 13d. The `<<-` form with a quoted delimiter, whose terminator is found only after leading tabs are
+#      stripped and whose body takes no expansion. Both spellings this tree writes.
+plant tools/x/heredoc_dash.sh 'sh <<-'"'"'END'"'"'
+	cat "$f.t" > "$f"
+	END'
+# 13e. THE WALKER RETURNS. A write standing AFTER a quoted region closes is live, so a lexer that
+#      never came back would silently empty the census -- a failure that reads as a clean tree.
+plant tools/x/after_close.sh 'awk '"'"'
+  BEGIN { print "a program with a quote'"'"'"'"'"'"'"'"'s worth of text" }
+'"'"' /dev/null
+cat "$f.t" > "$f"'
+# 13f. A DOUBLE-QUOTED REGION SPANNING LINES, GUARDED IN THE ADMIT DIRECTION. A write INSIDE one
+#      cannot be planted honestly: the write shapes need an unescaped quote around the target, and a
+#      quote inside a double-quoted region must be escaped, so such a leg would read green whether
+#      or not the strand existed -- which is what running it without the strand showed. What the
+#      double-quote walk can genuinely fail at is CLOSING, so the plant plants a multi-line
+#      double-quoted argument and a live write after it. A walk that never leaves the region
+#      withholds every later line, which empties the census while looking like a clean tree.
+plant tools/x/dquote_arg.sh 'ssh host "
+  a line inside a double-quoted argument
+"
+cat "$f.t" > "$f"'
+git add -A >/dev/null
+git commit -q -m "pen: planted the enclosure strand"
+
+leg quoted_argument_write_refused  no  "$(seen quoted_arg.sh)"
+leg live_write_still_admitted      yes "$(seen live_write.sh)"
+leg heredoc_body_write_refused     no  "$(seen heredoc_body.sh)"
+leg heredoc_dash_write_refused     no  "$(seen heredoc_dash.sh)"
+leg write_after_close_admitted     yes "$(seen after_close.sh)"
+leg dquoted_region_closes    yes "$(seen dquote_arg.sh)"
+# 13g. THE ELDER PREDICATE, run over the same plants, must ADMIT what the strand refuses -- or the
+# repair moved nothing and these legs pass on the elder reading alone. The elder here is the name
+# strand, which is what admitted `upstream_shape_scan.sh` on the tree.
+leg elder_admitted_the_quoted_argument yes "$(elder tools/x/quoted_arg.sh)"
+leg elder_admitted_the_heredoc_body    yes "$(elder tools/x/heredoc_body.sh)"
+# 13h. AND THE WALK IS PROVEN BY ITS OWN EXIT STATE, which is what tells tracking from drift: a
+# well-formed script ends outside every quote. A lexer that desynced would withhold every line after
+# the drift, and 13e is the only leg that could ever notice.
+plant tools/x/balanced.sh 'cat "$f.t" > "$f"'
+git add -A >/dev/null
+git commit -q -m "pen: a balanced writer"
+leg balanced_file_admitted yes "$(seen balanced.sh)"
+
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"
 cd "$pen/bare"

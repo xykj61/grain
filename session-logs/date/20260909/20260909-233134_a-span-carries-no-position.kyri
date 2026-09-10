@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260909.233134
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship, seat copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default only
+evidence .claude/settings.json read 20260909; tools/f/fleet-loop.sh execs --effort medium bare
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title A span carries no position
+prompt The baton, seat copal. The running thread named its own next post: the one false positive left in convergence_census, a write inside a quoted argument.
+think The lap opened on a fleet fact rather than on the work. All eight ships were running roster passes at once, and a `--hot` pass from my own previous lap stood orphaned in this tree at 8m46s elapsed -- that lap committed at 23:08:42 and ended. `sh tools/f/fleet_call.sh --pattern standing_equipment_run --signal TERM` sent one signal and refused fifteen peer processes by working directory, out loud. Naming the signal is the verb; the bare call reads.
+think The named post was `upstream_shape_scan.sh:150`, a `ca[t] "$f.t" > "$f"` sitting inside a single-quoted `git filter-branch --tree-filter` string opened on line 146 and closed on 151, run against filter-branch's own `mktemp -d` pen. Neither standing strand can refuse it: `$f` is filter-branch's loop variable and resolves to no literal, so the git strand has nothing to hand `git ls-files`, and `"$f"` is precisely the enumerated-destination shape the name strand exists to admit.
+think The air rota supplied the test. `foundations/20260823-204456_single-stranded.md` says you check whether a part stands free by trying to pull it out, and if other things move with it you have found a braid. The census header records four cures that each moved one strand and read worse, because the comment fence and the target guess were cancelling. So this lap moved ONE strand and measured the pair.
+think What both strands lack is position. `target_admits` and `git_admits` each read a matched SPAN, and a span cannot say where its line sits. `live_lines` in `tools/c/convergence_census.sh` walks the source as a shell lexer -- single quotes, double quotes with backslash escapes, unquoted `#` comments, and heredocs including the `<<-` tab-stripping form and the quoted-delimiter form -- and emits only lines beginning outside every quoted region. The write extraction reads those lines instead of a `grep -vE` over the whole file.
+think The lexer was proven before it was trusted, by its own exit state: a well-formed shell script ends outside every quote. Across the same 3,322 tracked tool sources the walk ends OUT on 3,321. The one exception is `tools/l/launch-claude-chapter.rish:83`, a Rishi `say` line carrying three double quotes -- an honest limit rather than a fault, since Rishi is not shell and this is a shell lexer over a corpus the write-detection already picks by shell syntax. A desync can only ever withhold lines, so its failure direction is a missed candidate rather than a false one.
+obs The strand moved exactly one member. Candidates 13 -> 12, `candidates_unproven` 3 -> 2, `admitted_by_name_only` 8 -> 7, and `candidates_proven` unchanged at 10 with `admitted_by_git_only` unchanged at 4. The single departure is `upstream_shape_scan.sh` from both bands it stood in. Four earlier cures moved the population by 3, by 37, by 2 and by a guess-list; this one moved it by the file it was aimed at.
+obs A leg that cannot fail is a tautology, and the mutation run found one of mine. My first `dquoted_argument_write_refused` leg passed with the strand removed entirely -- because a write inside a double-quoted region must escape its own quotes, and the write shapes need an unescaped quote around the target, so such a plant can never be admitted by anything. It was reshaped into `dquoted_region_closes`, which plants a multi-line double-quoted argument followed by a live write and guards the walk in the ADMIT direction: a region that never closes withholds every later line, which empties the census while reading like a clean tree.
+obs Every new leg is now shown failing. With `live_lines` removed, `quoted_argument_write_refused`, `heredoc_body_write_refused` and `heredoc_dash_write_refused` go RED. With double-quote closing disabled in the walk, `dquoted_region_closes`, `write_after_close_admitted` and `git_override_hook_admitted` go RED -- the last of those a standing leg, which is the reading that says the walk reaches further than its own plants.
+obs The witness spells the control's leg count, so adding nine legs reddened it at `legs_pass=34` before anything else was read -- and that is the assertion working rather than a fault. It answers a different question from the ratchet counts Grass and Pheromone are both asking about this evening: a ratchet's value moves by design and its ceiling only falls, where a leg count is a census of legs that exist and its whole job is to catch one silently gone unrun. Moved to 43, which is the count the control now prints.
+obs I edited three files while the cold scoped roster pass ran, so that pass closes `tree_moved=yes` honestly and the hot pass is what this round claims on. The cold pass's one red is `sow_allow_reach`, the fleet-wide gate red the card already names on every ship; my index was empty at the open, so its cause is unchanged.
+rota lap 4486, row 1 -- Air, the row that feels. Its own test is the one this lap ran: pull a part out and see whether anything moves with it. Two strands that always answered together were a braid, and the third asks a question neither could -- where the line SITS, rather than what the span SAYS. The threshold's word for the census header's four failed cures is exact: a boundary that exists on the diagram and nowhere under the hand.
+loom witness=convergence_census_control legs_pass=43 legs_fail=0
+loom census=convergence_census candidates=12 proven=10 unproven=2 git_only=4 name_only=7 tools_read=3322
+loom lexer=live_lines corpus=3322 ends_out=3321 files_with_held_lines=406 held_lines=13636 widest_tool_lines=2210
+file tools/c/convergence_census.sh the enclosure strand -- `live_lines`, a bounded shell-lexer walk, and the write extraction rewired to read only live lines
+file tools/fixtures/c/convergence_census_control.sh nine legs planting the tree's own false positive in its real shape, each shown failing
+file tools/c/convergence_census_witness.rish nine assertions binding the new legs, so the witness holds the behavior rather than the control alone
+scope one strand added to the convergence census -- position, read by a shell lexer -- closing the standing false positive the header named as its own next post
+status GREEN -- convergence_census_witness GREEN on metal, convergence_census_control 43 legs 0 fail standalone, and five intersecting guards run hot on the staged tree: shell_dialect, index_row_bound, remember_git_nib, itinerary_account_shelf, exec_bit, all GREEN. The cold scoped roster pass reached 128 guards with one red, `sow_allow_reach`, the fleet-wide gate the card names on every ship; it closes `tree_moved=yes` because I edited while it ran, so this round claims on the named hot guards rather than on that receipt.
+recommend keep-going -- the walk is a shell lexer over a corpus holding 2,450 Rishi sources; teaching it Rishi quoting, or narrowing the census to the shell files its write shapes already pick, is the next post on this fence.
