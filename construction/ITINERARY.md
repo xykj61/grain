@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `08bec838eb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3721a3dee2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -67,23 +67,24 @@ TERMed it by pid and proved the round on **12 named guards, hot, 0 red, tree_mov
 passes a lap-cycle on one machine is the cost; a receipt the ships share, or a lock serializing
 them, buys it back. Naming, never imposing.
 
-**PATCHOULI -- TWO SHIPS REPAIRED ONE RED, AND THE PUBLISHED ONE STANDS.**
-Elder [shelved](archive/20260909-201559_itinerary-landed-accounts.md), links re-anchored.
-**FIRE SEES**, so the red I named for its owner last lap got read to its root: the fault sits in
-`standing_equipment_redleg` rather than in its 54th guard. The roster's own seating note says
-gating that count "would refuse every choir this tree owns"; the scan gated it anyway, so any
-delegating guard reds the fleet. I built the wall's replacement, proved it at 24 control checks,
-and **yielded it whole** -- a peer booked `%670` twenty minutes earlier, closed the instance with a
-control, and parked *whether the ceiling follows a delegation one hop* for you, which is the
-question mine answered. Upstream reads `53 of 53`; no file of mine touches the instrument.
-**YOURS, WITH THE MEASUREMENT IT WANTS** -- [what the red-leg meter should
-count](../active-designing/20260909-201506_what-the-red-leg-meter-should-count.md): of the 53 in
-that count, **53 delegate and 0 are silent** at `4684216ce1`. Both readings costed; the second's
-implementation stands proven and unlanded.
-**STILL MINE, STILL NEXT:** the `weave` word. `context/CHEMICAL_FORMULAS.md` spends it on a bulk
-read no module declares; `batch` is real (`mantra/resin_batch.rye`, bounded 16). Edit the
-canonical, run `document_mirror_scan.sh write`, and leave the dated foundation an erratum -- most
-supersessions stop at the breach.
+**PATCHOULI -- THE WRONG WORD SCORED 100 ON TRUTH.**
+Elder [shelved](archive/20260909-213834_itinerary-landed-accounts.md), links re-anchored.
+**EARTH BREATHES IN** the concrete fact ahead of the argument, so the `weave` line got read to its
+declaration. `context/CHEMICAL_FORMULAS.md:27` now reads
+`batch(bolt, revision) + held -> manifest + bytes`, bounded **16** at `max_batch_entries` and walled
+by `build_batch`'s own `error.TooManyEntries`; mirror `biochemistry/README.md` byte-identical,
+`document_mirror_scan` reads `ok`. The freed word is redirected to the weave it does name,
+`mantra/src/weave.rye`. Grade held **A, 95**; register 78 -> 81.
+**THE ERRATUM HAS NO TARGET, AND THAT IS THE REPORT.** `bounded bulk read` stood in three files --
+canonical, mirror, one log -- and **no dated foundation sits behind the page**, so the breach was
+the whole cut.
+**PAST THE BREACH:** why a false formula lived seventeen days green. **Two guards read that page and
+both are blind to it by construction** -- `document_mirror_scan` proves the homes byte-identical, so
+it carried `weave` to both intact; `qa_report_card` scores Truth by path resolution, and a formula
+cites a module rather than a path, so the page read **Truth 100 the morning it was wrong**. Both are
+named in the page's own *The limit*.
+**YOURS:** should a formula naming a module symbol be checkable against that module? The meter is
+buildable in my lane and unbuilt.
 
 **DIFFUSER -- THE LEDGER WENT UNBUILT; THE PROMISES WERE KEPT ANYWAY.**
 Elder [shelved](archive/20260909-203002_itinerary-landed-accounts.md).
