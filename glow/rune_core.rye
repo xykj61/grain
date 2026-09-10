@@ -11,7 +11,9 @@
 //! Other auras and variance stay later.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const lower_multi = @import("lower_multi.rye");
+const tally_copy = @import("tally_copy.rye");
 const rf = @import("rune_face.rye");
 const expr = @import("expr.rye");
 
@@ -51,18 +53,33 @@ pub const CoreSpec = struct {
 };
 
 pub fn arm_at(spec: *const CoreSpec, i: usize) []const u8 {
+    // invariant: the caller reads an arm the parse actually seated, since slots past `count`
+    // hold the zeroed default and would answer an empty name as though it were a real one
+    assert(i < spec.count);
+    // invariant: the name fits the slot it was copied into, which parse_ident bounds
+    assert(spec.lens[i] <= max_name_len);
     return spec.arms[i][0..spec.lens[i]];
 }
 
 pub fn arm_has_body(spec: *const CoreSpec, i: usize) bool {
+    // invariant: the caller asks about a seated arm; an unseated slot answers false either way,
+    // so the wrong index would read as a closed arm rather than as the mistake it is
+    assert(i < spec.count);
     return spec.has_body[i];
 }
 
 pub fn arm_body_at(spec: *const CoreSpec, i: usize) *const expr.Expr {
+    // invariant: the caller reads a seated arm
+    assert(i < spec.count);
+    // invariant: the arm actually carries a body, since an unseated slot holds the default
+    // literal expression and would lower as a valid zero
+    assert(spec.has_body[i]);
     return &spec.bodies[i];
 }
 
 pub fn payload_face_at(spec: *const CoreSpec) []const u8 {
+    // invariant: the payload face fits the slot it was copied into
+    assert(spec.payload_len <= max_name_len);
     return spec.payload_face[0..spec.payload_len];
 }
 
@@ -170,7 +187,10 @@ fn parse_trailing_u32(rest: []const u8) ParseError!u32 {
     return v;
 }
 
-fn parse_payload_line(line: []const u8) ParseError!struct { face: []const u8, value: u32, typed: bool } {
+/// Parses one `=/` payload line. Returns the `FaceSpec` BY VALUE rather than a slice into it:
+/// `rf.face_slice` borrows from the spec it is handed, so returning that slice would hand the
+/// caller a view of this function's own dead frame. Read the face from the returned value.
+fn parse_payload_line(line: []const u8) ParseError!struct { face_spec: rf.FaceSpec, value: u32, typed: bool } {
     const face_spec = rf.parse(line) catch return error.MalformedPayload;
     const face = rf.face_slice(&face_spec);
     if (face.len == 0) return error.MalformedPayload;
@@ -187,7 +207,9 @@ fn parse_payload_line(line: []const u8) ParseError!struct { face: []const u8, va
         clause_end += 1;
     const after_clause = std.mem.trimStart(u8, after_head[clause_end..], " \t");
     const value = try parse_trailing_u32(after_clause);
-    return .{ .face = face, .value = value, .typed = typed };
+    // invariant: the face fits the slot the caller will copy it into
+    assert(face.len <= max_name_len);
+    return .{ .face_spec = face_spec, .value = value, .typed = typed };
 }
 
 /// Parses a thin core desk: `|%`, optional one `=/` payload, up to three `++` arms, `--`.
@@ -211,8 +233,16 @@ pub fn parse_source(src: []const u8) ParseError!CoreSpec {
             if (saw_arm) return error.PayloadAfterArm;
             if (has_payload(&spec)) return error.TooManyPayloads;
             const payload = try parse_payload_line(line);
-            @memcpy(spec.payload_face[0..payload.face.len], payload.face);
-            spec.payload_len = payload.face.len;
+            // The face is read from the returned spec, which lives in THIS frame. Reading it
+            // from a slice the callee returned would read that callee's dead stack.
+            const payload_face = rf.face_slice(&payload.face_spec);
+            // invariant: the face fits this file's slot. `rune_face` bounds it by its OWN
+            // `max_name_len`, which happens to be 64 here too -- so the copy is safe by a
+            // number agreeing across two modules rather than by anything this file states.
+            // Said out loud, a raise over there reds here instead of writing past the slot.
+            assert(payload_face.len <= max_name_len);
+            tally_copy.copy_disjoint(u8, spec.payload_face[0..payload_face.len], payload_face);
+            spec.payload_len = payload_face.len;
             spec.payload_value = payload.value;
             spec.payload_typed = payload.typed;
             continue;
@@ -220,7 +250,11 @@ pub fn parse_source(src: []const u8) ParseError!CoreSpec {
         if (line.len >= 2 and line[0] == '+' and line[1] == '+') {
             if (spec.count >= max_arms) return error.TooManyArms;
             const arm = try parse_arm_line(line);
-            @memcpy(spec.arms[spec.count][0..arm.name.len], arm.name);
+            // invariant: the arm name fits its slot -- parse_ident refuses anything longer
+            assert(arm.name.len <= max_name_len);
+            // invariant: the write lands in a slot the bound above still owns
+            assert(spec.count < max_arms);
+            tally_copy.copy_disjoint(u8, spec.arms[spec.count][0..arm.name.len], arm.name);
             spec.lens[spec.count] = arm.name.len;
             if (arm.body) |body| {
                 spec.bodies[spec.count] = body;
@@ -233,6 +267,10 @@ pub fn parse_source(src: []const u8) ParseError!CoreSpec {
         return error.NotACore;
     }
     if (spec.count == 0) return error.MissingArm;
+    // invariant: a parsed core carries at least one arm, which is the promise every caller loops on
+    assert(spec.count >= 1);
+    // invariant: and never more than the roster the slots hold
+    assert(spec.count <= max_arms);
 
     var a: usize = 0;
     while (a < spec.count) : (a += 1) {

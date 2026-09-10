@@ -69,7 +69,7 @@ Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is
 
 **Ratchets print, never fail** -- migrate on touch in every file you edit:
 
-- `@memcpy(` application sites -> `copy_disjoint`. The one intentional `@memcpy` inside `copy_disjoint` is the only one the rule permits; the count standing is **137**, read `20260908` after the ratchet's roster widened from fifteen rooms to the twenty its sibling half already read (`tools/fixtures/t/tame_style_rooms.txt`). This line has said `1` since `20260707`, when the ratchet reached one on the population it could see, and that was a reading of the population rather than of the tree -- `glow/` alone carries 129 of them.
+- `@memcpy(` application sites -> `copy_disjoint`. The one intentional `@memcpy` inside `copy_disjoint` is the only one the rule permits; the count standing is **135**, read `20260909` after two sites in `glow/rune_core.rye` migrated on touch -- and it is a FREE figure, held by no gate, so run `rishi/bin/rishi run tools/t/tame_style_check.rish` rather than reading this number. It read 137 on `20260908` after the ratchet's roster widened from fifteen rooms to the twenty its sibling half already read (`tools/fixtures/t/tame_style_rooms.txt`). This line has said `1` since `20260707`, when the ratchet reached one on the population it could see, and that was a reading of the population rather than of the tree -- `glow/` alone carries 129 of them.
 - camelCase `fn` -> `snake_case` for all functions in the touched file; grep inbound references
 - functions past 70 lines -> split at natural seams; run module witnesses
 - zero `assert(` in core modules -> import assert; contract postconditions; see honest exempt list in scan script
