@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.062400` | [Three tracks, and a token that was not legal](20260910/20260910-062400_three-tracks-and-a-token-that-was-not-legal.kyri) | eight lessons; two agents |
 | `20260910.060709` | [The page that held half the ratchet](20260910/20260910-060709_the-page-that-held-half-the-ratchet.kyri) | 1,437 of 2,773 in one page |
 | `20260910.060234` | [The fleet is faster than my cold pass](20260910/20260910-060234_the-fleet-is-faster-than-my-pass.kyri) | A lap rebuilt a landed repair; the distance is measured now |
+| `20260910.054448` | [A ceiling read by nothing](20260910/20260910-054448_the-fence-post-that-was-a-wish.kyri) | A declared max that bounds nothing, and the loom the fourth firing owed. |
 | `20260910.054448` | [The two names the geometry owed](20260910/20260910-054448_the-two-names-the-geometry-owed.kyri) | a claim checked before it shipped |
 | `20260910.053931` | [A digest answers what, never where](20260910/20260910-053931_a-digest-answers-what-never-where.kyri) | Amphora proved every cargo digest and never its place. |
 | `20260910.053839` | [The exclusion nobody could see](20260910/20260910-053839_the-exclusion-nobody-could-see.kyri) | 244 control files held out, printing nothing |

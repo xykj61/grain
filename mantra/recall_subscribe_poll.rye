@@ -25,6 +25,10 @@ pub const default_poll_interval_ns: u64 = 1_000_000_000;
 /// Short interval for witnesses that prove the clock fires without slowing parity.
 pub const witness_poll_interval_ns: u64 = 50_000_000;
 
+/// The largest host-mirror configuration one cycle walks. Read at the edge of both
+/// poll functions below, before the walk and before the `@intCast` that narrows the
+/// caller's length -- it stood declared here and read by nothing at all until
+/// `20260910`, four lines above the very struct it was drawn for.
 pub const max_mirror_pairs: u32 = 4;
 
 pub const PeerBoltPair = struct {
@@ -60,6 +64,9 @@ pub fn poll_one_cycle(
     source: *const recall_lap1.BoltCatalog,
     pairs: []const PeerBoltPair,
 ) recall_lap1.RecallError!PollCycleReport {
+    // invariant: a cycle walks at most the pairs this module declares it will hold, so the
+    // loop's maximum is the named one rather than whatever length a caller arrived with
+    if (pairs.len > max_mirror_pairs) return error.Overflow;
     var report: PollCycleReport = .{ .revisions_synced = 0, .empty_asks = 0 };
     var i: u32 = 0;
     while (i < pairs.len) : (i += 1) {
@@ -68,6 +75,9 @@ pub fn poll_one_cycle(
         report.revisions_synced += step.revisions_synced;
         report.empty_asks += step.empty_asks;
     }
+    // invariant: the walk stopped at the pair count it was handed, which the edge above
+    // bounded, so the report speaks for every pair and for no more than the ceiling
+    assert(i == pairs.len);
     return report;
 }
 
@@ -79,6 +89,9 @@ pub fn poll_cycles(
     max_cycles: u32,
     interval_ns: u64,
 ) recall_lap1.RecallError!PollReport {
+    // invariant: the same edge, read before `@intCast` narrows the caller's length -- a
+    // usize the caller chose is cast to u32 on the next line, and this is what bounds it
+    if (pairs.len > max_mirror_pairs) return error.Overflow;
     var report: PollReport = .{
         .cycles_run = 0,
         .pairs_per_cycle = @intCast(pairs.len),
@@ -95,6 +108,9 @@ pub fn poll_cycles(
             sleep_interval_ns(interval_ns);
         }
     }
+    // invariant: the report never claims more pairs per cycle than the ceiling admits,
+    // which is the number a reader of `max_mirror_pairs` is entitled to
+    assert(report.pairs_per_cycle <= max_mirror_pairs);
     return report;
 }
 

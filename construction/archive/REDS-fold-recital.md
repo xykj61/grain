@@ -705,3 +705,5 @@ at a closed fold.*
 
 *Row %694 folded to [`REDS-a-digest-answers-what-never-where-rows-694.md`](REDS-a-digest-answers-what-never-where-rows-694.md) on `20260910.053613`, **BOOKED** -- a digest answers what the bytes are and never where they land; a vessel naming `../escaped.txt` wrote above its out-home and refused afterward.*
 *Row %690 folded to [`REDS-the-program-awk-refused-rows-690.md`](REDS-the-program-awk-refused-rows-690.md) on `20260910.060107`, **CLOSED** -- an interpreter that refuses a program is louder than a guard reading only stdout, and the guard wins.*
+
+*Row %696 landed straight onto [`REDS-a-ceiling-read-by-nothing-rows-696.md`](REDS-a-ceiling-read-by-nothing-rows-696.md) on `20260910.054213`, **BOOKED** -- a declaration is half a bound, and the other half is a line that reads it where a caller can be turned away.*

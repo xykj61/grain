@@ -14,11 +14,17 @@
 //! not silent. A clear returns the cursor to zero; the season ends and a new
 //! one may begin over the same backing store.
 //!
+//! An admission past an edge fails with GardensError -- NameEmpty, NameTooLong,
+//! Full, DuplicateName -- read before the entry is written. `add` declared
+//! itself fallible from `20260620` and returned no error at all until
+//! `20260910`, so every `try` at a call site was dead syntax and all three
+//! edges stood on asserts a release build removes.
+//!
 //! Invariants, held at every mutation:
 //!   region.pos <= region.buf.len    (the edge)
 //!   name.len > 0                    (every garden has a name)
-//!   name.len <= max_name_len        (names fit in the declared limit)
-//!   no two gardens share a name     (asserted at add)
+//!   name.len <= max_name_len        (refused at add, by name)
+//!   no two gardens share a name     (refused at add, by name)
 //!
 //! Build and prove:
 //!   RYE_ZIG=$PWD/vendor/zig-toolchain/zig \
@@ -58,10 +64,28 @@ pub const max_name_len: u32 = 32;
 /// Maximum number of named gardens in one Gardens instance.
 pub const max_gardens: u32 = 8;
 
-/// A single named entry in a Gardens.
+/// A single named entry in a Gardens. The name is a VIEW of the caller's bytes
+/// rather than a copy, so it lives exactly as long as they do -- which is why
+/// `max_name_len` is refused at admission rather than held by a buffer. A comment
+/// here claimed the copy for three months and no field ever made one.
 const NamedRegion = struct {
     name: []const u8,
     region: Region,
+};
+
+/// What a Gardens refuses, by name. Each is read at the edge -- before an entry
+/// is written -- rather than asserted after it, because an assert states a fact
+/// the caller cannot act on and a release build removes it entirely.
+pub const GardensError = error{
+    /// A garden with no name could never be found again by `get`.
+    NameEmpty,
+    /// The name is longer than `max_name_len`, the limit this module publishes.
+    NameTooLong,
+    /// The collection already holds `max_gardens` entries and has no slot.
+    Full,
+    /// Another garden already answers to this name, so `get` would return the
+    /// first and leave this one unreachable for the life of the collection.
+    DuplicateName,
 };
 
 /// A named collection of Regions. The caller owns all backing memory;
@@ -84,21 +108,36 @@ pub const Gardens = struct {
         };
     }
 
-    /// Register a named Region over `buf`. The name must be non-empty,
-    /// within max_name_len, and not already present.
-    pub fn add(self: *Gardens, name: []const u8, buf: []u8) !void {
-        // invariant: the name is copied into a fixed buffer of max_name_len and the collection
-        // has room, so a garden is never added under a truncated name or into a slot that does
-        // not exist
-        assert(name.len > 0);
-        assert(name.len <= max_name_len);
-        assert(self.count < max_gardens);
+    /// The three edges every admission crosses, weighed in one place so `add` and
+    /// `add_division` can never come to disagree about them. Called before anything
+    /// is mutated: `add_division` carves memory out of its parent, and a refusal
+    /// after that carve would spend the parent's bytes on a garden nobody holds.
+    fn admits(self: *const Gardens, name: []const u8) GardensError!void {
+        // invariant: the collection sits inside its own ceiling before an admission is
+        // weighed, so a Gardens that had already overrun could never be handed one more
+        assert(self.count <= max_gardens);
+        if (name.len == 0) return GardensError.NameEmpty;
+        if (name.len > max_name_len) return GardensError.NameTooLong;
+        if (self.count >= max_gardens) return GardensError.Full;
         const n: usize = @intCast(self.count);
         for (self.entries[0..n]) |e| {
-            // invariant: no two gardens share a name, since get would return the first and the
-            // second would be unreachable for the life of the collection
-            assert(!std.mem.eql(u8, e.name, name));
+            if (std.mem.eql(u8, e.name, name)) return GardensError.DuplicateName;
         }
+        // invariant: every refusal above declined to fire, so the name fits the limit this
+        // module publishes and a caller reading `max_name_len` reads the number actually kept
+        assert(name.len <= max_name_len);
+    }
+
+    /// Register a named Region over `buf`. The name must be non-empty, within
+    /// max_name_len, and not already present -- each refused by name rather than
+    /// asserted, so a caller past an edge is turned away instead of aborted.
+    pub fn add(self: *Gardens, name: []const u8, buf: []u8) GardensError!void {
+        try self.admits(name);
+        // invariant: the admission passed, so there is a slot for this garden and it is
+        // not one the collection already answers for
+        assert(self.count < max_gardens);
+        assert(name.len > 0);
+        const n: usize = @intCast(self.count);
         self.entries[n] = .{ .name = name, .region = Region.init(buf) };
         self.count += 1;
         // invariant: the add has landed when this runs, so it states the collection stayed
@@ -110,6 +149,10 @@ pub const Gardens = struct {
     /// motion, so no caller ever does the offset arithmetic that overlapping
     /// gardens come from.
     pub fn add_division(self: *Gardens, name: []const u8, parent: *Region, n: u32) !void {
+        // The admission is weighed BEFORE the parent is carved. `divide` moves the parent's
+        // cursor, so a refusal after it would leave those bytes spent on a garden the
+        // collection never holds -- an edge crossed by a caller who was turned away.
+        try self.admits(name);
         // invariant: a division is always named and there is room for it, so it can be found
         // again and has a slot to live in
         assert(name.len > 0);
@@ -264,6 +307,67 @@ pub fn main() void {
     const d = blob_r.alloc(512) catch unreachable;
     assert(d.len == 512);
     assert(d.ptr == @as([*]u8, @ptrCast(&blob_buf[0])));
+
+    // --- Every refusal, shown from the failing side ----------------------
+    // A named error nobody has produced is a hope, so each of the four is asked for
+    // here and read back by name.
+    {
+        var spare: [16]u8 = undefined;
+        const names = [_][]const u8{ "a", "b", "c", "d", "e", "f", "g", "h" };
+        // invariant: the roster fills the collection exactly, so the ninth add below is
+        // the first one past the ceiling rather than merely a late one
+        assert(names.len == max_gardens);
+        var full = Gardens.init();
+        for (names) |nm| full.add(nm, spare[0..]) catch unreachable;
+        // invariant: the roster admitted every one of its names, so the collection stands
+        // exactly at its ceiling and the add below is the first one past it
+        assert(full.count == max_gardens);
+        {
+            const over = full.add("i", spare[0..]);
+            // invariant: a garden past the ceiling is refused by name rather than aborted, so
+            // a caller at the edge is handed something it can act on
+            if (over) |_| unreachable else |err| assert(err == GardensError.Full);
+        }
+        {
+            const dup = g.add("blob", &blob_buf);
+            // invariant: a repeated name is refused, since get would answer with the first and
+            // leave this garden unreachable for the life of the collection
+            if (dup) |_| unreachable else |err| assert(err == GardensError.DuplicateName);
+        }
+        {
+            const long = [_]u8{'x'} ** (max_name_len + 1);
+            const too_long = g.add(long[0..], &blob_buf);
+            // invariant: one byte past max_name_len is refused, so the limit this module
+            // publishes is the limit it actually keeps
+            if (too_long) |_| unreachable else |err| assert(err == GardensError.NameTooLong);
+        }
+        {
+            const nameless = g.add("", &blob_buf);
+            // invariant: a nameless garden is refused, since get could never find it again
+            if (nameless) |_| unreachable else |err| assert(err == GardensError.NameEmpty);
+        }
+        // invariant: four refusals left the collection exactly as they found it, since a
+        // refusal that had written an entry would be an admission wearing an error's name
+        assert(g.count == 3);
+    }
+
+    // --- A refused division leaves the parent whole ----------------------
+    // The ordering property, read rather than argued: the admission is weighed before
+    // `divide` moves the parent's cursor.
+    {
+        var parent_buf: [256]u8 = undefined;
+        var parent = Region.init(parent_buf[0..]);
+        var gd = Gardens.init();
+        gd.add_division("child", &parent, 64) catch unreachable;
+        const before = parent.remaining();
+        const again = gd.add_division("child", &parent, 64);
+        // invariant: the second division is refused on its name, which is the refusal the
+        // ordering below is measured against
+        if (again) |_| unreachable else |err| assert(err == GardensError.DuplicateName);
+        // invariant: the refusal came ahead of the carve, so a garden the collection never
+        // holds cost the parent nothing at all
+        assert(parent.remaining() == before);
+    }
 
     // --- Invariants hold across all entries at rest ----------------------
     for (g.entries[0..@intCast(g.count)]) |e| {

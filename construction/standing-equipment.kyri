@@ -4338,3 +4338,19 @@ guard room_braid
 path tools/r/room_braid_witness.rish
 tier lap
 seated 20260910.050619
+
+# ceiling_teeth -- a declared ceiling is read where it can refuse. Its sibling above asks whether
+# two ceilings in one file agree; this asks whether ONE ceiling is read anywhere a caller can be
+# turned away. Six classes, decided by reading the file rather than judging it: refused,
+# structural, cut, derived, asserted_only, unread. ONE GATE at zero -- `unread`, a constant its
+# own file declares and nothing in any tracked `.rye` ever reads, which needs no judgment and is
+# how `max_mirror_pairs = 4` stood four lines above the struct it was drawn for while
+# `poll_one_cycle` walked `pairs.len` with no ceiling and cast it to u32 unchecked. ONE RATCHET
+# that only falls: `asserted_only`, where a repair lands, so a wall there would refuse the fix in
+# the same breath as the fault. The other four report. Rooms are arguments, seated at mantra and
+# tally -- the lane a hand walked constant by constant -- and another lane adopts by naming itself
+# here. `tier lap` at a measured 1.4s: 31 ceilings read, 13 control behaviors in a real git pen.
+guard ceiling_teeth
+path tools/c/ceiling_teeth_witness.rish
+tier lap   # 1.4s; 31 ceilings read, 17 assertions over 13 behaviors, every refusal planted and lifted
+seated 20260910.054031
