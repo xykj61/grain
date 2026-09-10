@@ -4568,3 +4568,35 @@ guard qa_setting_declared
 path tools/q/qa_setting_declared_witness.rish
 tier lap
 seated 20260910.104833
+# tilak_root_count -- the marked value says the engine hardcodes exactly TWO type-marks, and until
+# `20260910` nothing in the tree compared that claim to the engine. It is written down three times:
+# `foundations/20260703-202312_the-marked-value.md` argues it, `amphora/manifest_entry.rye` restates
+# it in a doc comment above `mark_plain_bytes` and `mark_manifest`, and
+# `src/shape/tilak-root-count.glow` displays it as `example    2`. The pedestal's own leg inside
+# `src_first_resident_witness` greps that pedestal for `plain-bytes`, `manifest` and `%tile` --
+# three strings the file already holds -- and opens the engine never, so a third root wired into
+# `mark_verdict` passed every guard standing. Measured the same lap: of the 17 pedestals that leg
+# holds, THREE are genuinely tied to their Rye source (the `ParseError`, `BrushSurface` and
+# `BrushFrame` desks, a repair REDS %358 bought), one is tied to a `.brush` fixture, and THIRTEEN
+# are checked against literals typed into the witness beside them. This row moves one of the
+# thirteen; the other twelve are named on the card rather than swept, since each wants its own
+# reading of its own source.
+#
+# Five readings, each able to fail while the other four agree: the desk against its own list, the
+# count against the marks `mark_verdict` answers on, the count against the roots the engine
+# publishes, the desk's NAMES against the arms' names resolved to values, and the arms against the
+# published constants. That fifth was argued away in the scan's header as one that could never fire
+# alone, and the pen found the case the argument missed -- a bare-literal arm whose constant is
+# later renamed, where every other reading agrees while the engine answers on a mark it no longer
+# publishes. 21 control cases, 5 welcomes and 16 refusals, each planted and then lifted; the
+# granted growth (a third root in engine, verdict, and pedestal) walks free, because the scan
+# carries no number of its own and the pair is Keaton's word to widen.
+#
+# `lap` because the whole witness is a pure text reading plus a pen, 3.0s measured on this pier
+# `20260910.152558`. It drives no toolchain: `src_first_resident` already lowers and builds this
+# pedestal through Glow and Zig, and repeating that would buy a second copy of one fact at the
+# price of a toolchain launch.
+guard tilak_root_count
+path tools/t/tilak_root_count_witness.rish
+tier lap
+seated 20260910.152558

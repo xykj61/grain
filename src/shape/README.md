@@ -1,7 +1,7 @@
 # shape -- Structures
 
 **Language:** EN  
-**Last updated:** `20260831.045858` (the spool's name bound -- a length read at two call sites, and the placard's sixth line read for the first time in this room)  
+**Last updated:** `20260910.152558` (the tilak pedestal tied to the engine it describes -- the first of this room's thirteen literal-checked desks to be compared against its own source)  
 **Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth + Spool Cloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -25,11 +25,11 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-brush-frame-field-count.glow`](shape-brush-frame-field-count.glow) | `BrushFrame` fields (fields = 3) | same |
 | [`shape-brush-pin-key-count.glow`](shape-brush-pin-key-count.glow) | Required `.brush` pins (keys = 4) | same |
 | [`shape-pool-agent-slot.glow`](shape-pool-agent-slot.glow) | Pool agent slots (slots = 1) | same |
-| [`tilak-root-count.glow`](tilak-root-count.glow) | Hardcoded engine roots (roots = 2) | same |
-| [`shape-manifest-field-count.glow`](shape-manifest-field-count.glow) | Amphora manifest entry fields (fields = 3) | same |
-| [`shape-tube-manifest-field-count.glow`](shape-tube-manifest-field-count.glow) | TUBE app-manifest fields (fields = 4) | same |
-| [`shape-grant-family-count.glow`](shape-grant-family-count.glow) | Glow grant families (families = 3) | same |
-| [`shape-mand-ring-count.glow`](shape-mand-ring-count.glow) | Mand witnessed rings (rings = 3) | same |
+| [`tilak-root-count.glow`](tilak-root-count.glow) | Hardcoded engine roots (roots = 2) -- the pair `amphora/manifest_entry.rye` publishes, listed by name | `tools/t/tilak_root_count_witness.rish` (scan compares desk to engine, 21 control cases both ways); placard and Glow run by `tools/gen/chapter/src_first_resident_witness.rish` |
+| [`shape-manifest-field-count.glow`](shape-manifest-field-count.glow) | Amphora manifest entry fields (fields = 3) | `tools/gen/chapter/src_first_resident_witness.rish` |
+| [`shape-tube-manifest-field-count.glow`](shape-tube-manifest-field-count.glow) | TUBE app-manifest fields (fields = 4) | `tools/gen/chapter/src_first_resident_witness.rish` |
+| [`shape-grant-family-count.glow`](shape-grant-family-count.glow) | Glow grant families (families = 3) | `tools/gen/chapter/src_first_resident_witness.rish` |
+| [`shape-mand-ring-count.glow`](shape-mand-ring-count.glow) | Mand witnessed rings (rings = 3) | `tools/gen/chapter/src_first_resident_witness.rish` |
 | [`shape-caravan-max-name-len.glow`](shape-caravan-max-name-len.glow) | Caravan `max_name_len=48` (Tend C3) | `tools/ca/caravan_glow_tend_limb3_witness.rish` |
 | [`shape-tally-parse-int-laws.glow`](shape-tally-parse-int-laws.glow) | Tally `parse_int` two refuse laws (Tend T4) | `tools/t/tally_glow_tend_limb4_witness.rish` |
 | [`shape-tally-stack-laws.glow`](shape-tally-stack-laws.glow) | Tally stack three laws (Tend T6) | `tools/t/tally_glow_tend_limb6_witness.rish` |
@@ -98,4 +98,7 @@ a seam, seated in [`../../context/LEXICON.md`](../../context/LEXICON.md) and des
 content-addresses them, and two roots stand hardcoded -- **plain-bytes** and **manifest**. A short
 atom form, `%tile`, is proposed and **held for Keaton's word**; the long word serves everywhere
 until then, and no pedestal here seats it. `tilak-root-count.glow` keeps its name: it is a shape by
-its own `+$` declaration, and the room it now stands in says so.
+its own `+$` declaration, and the room it now stands in says so. From `20260910` the desk lists
+those two roots by name in a delimited region and cites the engine that publishes them, so
+`tools/t/tilak_root_count_witness.rish` can compare the two rooms rather than grep this file for
+words it already contains.

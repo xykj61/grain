@@ -1,0 +1,98 @@
+# tools/t/tilak_root_count_witness.rish -- the tilak root-count pedestal, and the engine it
+# describes, held to one number.
+#
+#   rishi/bin/rishi run tools/t/tilak_root_count_witness.rish
+#
+# WHY THIS RUNG. `foundations/20260703-202312_the-marked-value.md` states the tree's own claim about
+# types that travel: every value crossing a seam wears a mark naming its type, and the engine
+# hardcodes exactly TWO marks -- the plain-bytes mark and the manifest mark -- so the circle of
+# who-validates-the-validators breaks somewhere a reader can point at. Everything above those two
+# roots is defined in the tree and arrives through `mark_verdict`, never by widening the pair.
+#
+# That claim is written down three times, and until this rung nothing compared any two of them.
+# The foundation argues it. `amphora/manifest_entry.rye` restates it in a doc comment above
+# `mark_plain_bytes` and `mark_manifest`. `src/shape/tilak-root-count.glow` displays it in the shape
+# museum as `example    2`, and its `invariant` line spells the pair by name.
+#
+# Measured 20260910, on the rota lap that reads the marked value: the pedestal's own leg inside
+# tools/gen/chapter/src_first_resident_witness.rish greps that pedestal for `plain-bytes`,
+# `manifest` and `%tile` -- three strings the file already contains -- and opens the engine never.
+# The number 2 was compared to nothing anywhere in the tree, so a third root wired into
+# `mark_verdict` would have passed every guard standing.
+#
+# THE PEDESTAL IS THE THIRTEENTH OF THIRTEEN IN THAT SHAPE, and the count is measured rather than
+# guessed: of the 17 pedestals that leg holds, three are genuinely tied to their Rye source -- the
+# `ParseError`, `BrushSurface` and `BrushFrame` desks each read `brushstroke/brush_parse.rye` and
+# assert agreement, a repair REDS %358 bought -- one more is tied to a `.brush` fixture, and the
+# remaining thirteen are checked against literals typed into the witness beside them. This rung
+# moves one of the thirteen. The other twelve are named on `construction/ITINERARY.md` rather than
+# swept here, because each wants its own reading of its own source and a sweep of twelve at once is
+# how a repair becomes its own red.
+#
+# WHAT IS PROVEN, on metal.
+#   The pedestal's placard reads in the order src/shape/PLACARD.md seats: name, shape, invariant,
+#   example, readers, nib.
+#   The pedestal names the Rye file its roots come from, so a reader meeting the desk can reach the
+#   engine in one step. It named no file at all until this rung.
+#   The number the pedestal shows equals how many roots it lists, so the count is a reading of its
+#   own list rather than a claim standing beside it.
+#   The number equals how many marks `mark_verdict` answers `.known` on, and how many roots the
+#   engine publishes as `pub const mark_*`. Those two fire apart: a root published and never wired
+#   moves the second and leaves the first, and the engine then names a mark it refuses.
+#   The roots the pedestal lists, sorted, equal the marks the verdict answers on, resolved through
+#   the published constants to their VALUES -- so a rename cannot pass under a count that has not
+#   moved. A mark's value is what a vessel writes on its shoulder line, which makes this the
+#   wire-visible half of the reading.
+#   The marks the verdict answers on equal the roots the engine publishes, so a literal copied out
+#   of a constant cannot outlive the constant it copied.
+#   Every reading refuses from the other side: sixteen plantings in a throwaway pen, each caught by
+#   the reading it was planted against, and five honest trees walking free -- among them a THIRD
+#   root granted honestly in all three places, which walks free because the scan carries no number
+#   of its own. The pair may grow on Keaton's word; a guard that reds on granted growth is a guard
+#   somebody turns off.
+#
+# WHERE A ROSTER DOES LIVE, said plainly, because the sentence above is true of the scan and not of
+# this file. This witness PINS the pair by name -- `manifest plain-bytes` -- so granting a third
+# root reds here even where the scan welcomes it. That is a pin rather than a comparison, and it is
+# deliberate: the two roots are the marked value's own foundational decision, held for Keaton, and
+# widening them is worth a hand's eye. The cost is one line edited here on a granted change, and
+# the reason is written down so the next hand meets a review gate rather than a mystery.
+#
+# WHAT IS NOT PROVEN. Whether two is the right number of roots, which is the marked value's own
+# design question. Whether the pedestal lowers and runs, which
+# tools/gen/chapter/src_first_resident_witness.rish already drives the Zig toolchain for -- repeating
+# it here would buy a second copy of one fact at the price of a toolchain launch, and the process
+# bill is the roster's largest single cost. And whether an unknown mark is actually refused at the
+# seams, which tools/am/amphora_mark_wreck_witness.rish proves on real bytes.
+
+say "tilak-roots: Language EN -- the marked value says the engine hardcodes two roots, and this proves the museum and the engine name the same two."
+say "tilak-roots: Style Gauge -- the desk's number is compared to the source rather than remembered."
+say "tilak-roots: Lens TAME -- bound everything and say why: the pair is the bound, and the foundation says why it is two."
+
+say "tilak-roots: the pedestal against the engine..."
+let scan = run ["sh" "tools/fixtures/t/tilak_root_count_scan.sh"]
+say scan.out
+assert scan.ok else "tilak-roots: the pedestal and the engine disagree -- read the verdict line"
+assert scan.out contains "verdict=agree" else "tilak-roots: the pedestal and the engine must name one pair"
+assert scan.out contains "desk_placard_order=name shape invariant example readers nib" else "tilak-roots: the placard's six lines keep their seated order"
+assert scan.out contains "desk_citation=yes" else "tilak-roots: the pedestal names the Rye file its roots come from"
+say "field GREEN -- the desk stands on what the engine publishes and answers"
+
+say "tilak-roots: the pair itself -- a review gate, not a comparison (see the header)..."
+assert scan.out contains "desk_roots=manifest plain-bytes" else "tilak-roots: the two roots are PINNED here; if the pair grew on Keaton's word, move this line and its twins"
+assert scan.out contains "rye_known_roots=manifest plain-bytes" else "tilak-roots: the marks the verdict answers on are pinned beside the desk's, so both move together or neither does"
+assert scan.out contains "rye_const_roots=manifest plain-bytes" else "tilak-roots: the roots the engine publishes are pinned beside the two above, so a widening moves all three lines"
+assert scan.out contains "desk_example=2" else "tilak-roots: the marked value's own decision is two roots; a third is Keaton's word, not a lap's"
+say "pins GREEN -- plain-bytes and manifest stand where the foundation put them"
+
+say "tilak-roots: the control, both ways..."
+let control = run ["sh" "tools/fixtures/t/tilak_root_count_control.sh"]
+say control.out
+assert control.ok else "tilak-roots: the control must complete"
+assert control.out contains "welcomes=5" else "tilak-roots: an honest tree, a granted third root, a rename carried into both rooms, a literal still holding its value, and prose beyond the region must all walk free"
+assert control.out contains "refusals=16" else "tilak-roots: every reading must refuse from its own side"
+assert control.out contains "wrong=0" else "tilak-roots: no case may land on the side it was not planted for"
+assert control.out contains "control_verdict=ok" else "tilak-roots: the control must agree with itself"
+say "RED and GREEN paths proven -- sixteen plantings refused, five honest trees welcomed"
+
+say "GREEN: tilak-roots -- the shape museum and the engine name one pair, and a third root reaches neither in silence."
