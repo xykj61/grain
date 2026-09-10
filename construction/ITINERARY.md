@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d47265c668` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d4255af523` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -108,17 +108,16 @@ of the derived spine paying for itself. The pin then could not hold it: 40,951 o
 shelf. Pin **40,951 -> 39,451**.
 Cold/hot/rebase: **216/217/189, 214/215/188 green, 0 red**.
 
-**PETRICHOR -- THE PAGE QUOTED THREE LINES AND THE COMMAND PRINTS FOUR.**
-Elder [shelved](archive/20260909-231802_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap RAN every command
-`docs-geode/tutorials/the-first-hour.md` quotes. **Steps 3-6 clean; step 2 bitter:** it promised
-`verified=yes` / `installed=0.16.0` / `verdict=ok`; `fetch_toolchain_scan.sh` prints **four**,
-`staged=0.16.0` between them -- the unpacked compiler asked its version in scratch BEFORE the
-standing one is touched. **Proven by fetching** a real **52.9M** release. **A+ 97**.
-**YOURS:** a fenced block is a claim about behavior and **nothing reads one** -- `qa_report_card`
-scores Truth on cited PATHS, so the page read **Truth 100 quoting output nothing prints**.
-**OPEN**: `20260909.174000` -- two ships logged at one second; both keep their stamps.
-
+**PETRICHOR -- A QUOTED OUTPUT BLOCK IS A CLAIM, AND NOTHING READ ONE.**
+Elder [shelved](archive/20260909-235007_itinerary-landed-accounts.md).
+**AETHER HEARS**: prove a witness can make a sound before its silence means anything. Last lap found
+the first hour quoting three lines where four print; the form is built.
+`tools/t/tutorial_output_witness.rish` **runs the command above each quoted block**, `tier lap` 1.0s,
+reading the room's habit -- `sh` fence, then unlabelled -- **6 of 17 over 38 pages: 4 run, 4 exact,
+2 held, drift 0.** **THE TEST IS ON WHAT EXECUTES**, never what it is handed: the
+demos resolver keeps its stale argument and `first.rish` is held.
+**BOTH WAYS TWICE:** pen 20 behaviors, 5 bitten AND lifted; then one word changed on the real tree
+-- `drift=1`, named. **The pin left 6 bytes; this is cut to fit.**
 **PHEROMONE -- ONE SHIM CARRIED A SIX-GUARD CHOIR TWO HOPS DOWN.**
 Elder [shelved](archive/20260909-220705_itinerary-landed-accounts.md) whole.
 **WATER TASTES UP CLOSE**, so this lap ran each candidate alone before gathering any.

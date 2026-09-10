@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.235200` | [A quoted block is a claim](20260909/20260909-235200_a-quoted-block-is-a-claim.kyri) | A tutorial's quoted output is run back against its command; drift at zero. |
 | `20260909.233942` | [the record a merged history fits in](20260909/20260909-233942_the-record-a-merge-fits-in.kyri) | the merge had nowhere to land |
 | `20260909.233134` | [A span carries no position](20260909/20260909-233134_a-span-carries-no-position.kyri) | The census reads a write only off a live line; 13 -> 12. |
 | `20260909.231802` | [The line the page left out](20260909/20260909-231802_the-line-the-page-left-out.kyri) | Step 2 quoted three lines; a real fetch prints four. |
