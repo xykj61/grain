@@ -221,6 +221,18 @@ assert control.out contains "moved_tree_refuses=yes" else "standing-equipment: a
 assert control.out contains "moved_tree_keeps_lines=yes" else "standing-equipment: a moved tree must still print every guard line it learned"
 assert control.out contains "red_outranks_moved=yes" else "standing-equipment: a guard red is the louder finding and keeps the verdict"
 
+# HOW FAR BEHIND THE ANOINTED ORDER A PASS OPENED (`20260910.060000`). A cold pass costs about forty
+# minutes and the fleet lands five to seven commits an hour, so a lap that opens the roster instead
+# of the round-open measures a tree the fleet has already left -- and one lap spent itself
+# rebuilding a repair that had landed in a commit it opened three behind. The distance is read off
+# the last fetch's remote-tracking ref, so it costs no network and can only under-report, and it
+# gates nothing, because a ship may work behind on purpose.
+assert control.out contains "behind_unknown_without_ref=yes" else "standing-equipment: with no anointed ref the distance must read unknown rather than an invented number"
+assert control.out contains "behind_zero_when_level=yes" else "standing-equipment: a tree level with the anointed ref must read zero"
+assert control.out contains "behind_names_ref_stamp=yes" else "standing-equipment: zero means either current or nobody fetched, so the anointed ref's own commit stamp rides beside the distance"
+assert control.out contains "behind_counts_the_distance=yes" else "standing-equipment: a tree two commits behind the anointed ref must say two"
+assert control.out contains "behind_gates_nothing=yes" else "standing-equipment: the distance is reported and never gated -- a gate on ordinary work is a gate somebody turns off"
+
 # The digest reads CONTENT, not only the status letter (REDS %380). Porcelain names a path and a
 # status letter and nothing else, so a file already dirty reads the same however often its bytes
 # change. Each refusal below is proven with the file dirty BEFORE the pass opens, so only the bytes

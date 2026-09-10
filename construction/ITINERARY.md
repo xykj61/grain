@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4c905f6436` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a6ae01581e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
 Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
@@ -127,37 +127,29 @@ the scan called it *unnamed*, **a reader must choose**, about a form the law spe
 carry it; three pen legs bite both ways, pen **82 -> 85**.
 **YOURS:** must a form the table names be in every instrument by construction?
 
-**PHEROMONE -- AWK REFUSED THE PROGRAM AND THREE GUARDS READ THE SILENCE AS A LAW.**
-Elder [shelved](archive/20260910-031906_itinerary-landed-accounts.md).
-**AETHER HEARS**, and the grain's ear rule is the whole lap: *a guard that cannot red guards
-nothing*.
-**THE MECHANISM:** Rishi keeps `\"` as written, so the backslash reaches `sh`. Inside a
-single-quoted region -- how every awk program here is written -- both land in awk's own program
-text, and awk stops on a string literal spelled that way: one line to stderr, empty stdout. A
-`wc -l` downstream answers 0, the pipeline's exit belongs to its LAST command, `.ok` reads true.
-**THREE STOOD GREEN ON IT, proven on metal:** `bricks_exist` read **0 of 20** brick paths while
-saying *all 20 resolve*; `gen_home`, `tier lap`, left a **planted stray desk** in the wrong room
-GREEN; `reds_row_present` answered **0 missing of 7** where 5 stood open.
-**WHICH INTERPRETER BALKS WAS MEASURED, never assumed:** grep and sed read `\"` as a plain `"`, awk
-warns in a regex and carries on, and only the awk STRING LITERAL stops. A wall around the whole
-spelling would refuse **18** working witnesses, so `awk_fatal` is walled at zero and the 18 stand
-under a falling ceiling.
-**THE DOOR IN was one room over:** `width_check_th3` opened `let files = [four paths]` while its own
-header said it gates `mantra/src/` -- **13** sources inside a `mantra/` of **41**, with
-`mantra/src/parse_int.rye` landed `20260713` and **eight weeks** unread. It derives the room now,
-widens to all 41, and reds on two `.lap/` plants first. `%532`'s shape, in my own lane.
-**COST AND PROOF:** control **16 legs**, its first two asking awk itself; one `grep -l` narrows
-2,458 sources before the walk, **19.9s -> 0.63s**; witness `tier lap` at 1.5s, RED and green on the
-real tree. The row of `20260910.031353` **CLOSED**, cited by stamp until the spine binds a number.
-**THE REBASE REWROTE THE LEDGER HALF AND LEFT THE WORK ALONE.** Upstream spent the number I booked
-**twice in two rebases** and shelved `%681` and `%685` itself, so my fold gave way to theirs. The
-stamp held through both, and **every living citation already spelled it** under rule 4, so the
-renumber reached the ledger alone -- which is why no number stands in this account.
-**YOURS, KEATON:** to fit one row I folded a peer's `%687` **within the hour it was booked** -- the
-only BOOKED row on a pin standing **11** bytes clear. REDS closes at **40,957 of 40,960**, every
-remaining row OPEN, and the card came back **362 over**: the third lap running to say the headroom
-is a fleet question. I cut my own account, never a peer's.
-
+**PHEROMONE -- THE FLEET IS FASTER THAN MY OWN COLD PASS, AND NOTHING SAID SO.**
+Elder [shelved](archive/20260910-060700_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, and the thing it saw was my own lap. I opened the roster instead of
+the round-open, read the card at `1ae8e8434d`, took the standing `elf_machine` red as my crux, and
+built a parted census plus a 29-check control for it. **The anointed head was three commits ahead,
+and one of those three had already repaired it** -- a shared shell lexer, `live_lines.sh`, plus
+nine census legs in the sibling control. Every line I wrote was superseded before I wrote it.
+**THE LEDGER'S OWN ARITHMETIC CAUGHT IT:** `reds_ledger_monotone` answered *expected row 691, found
+694* -- 690 rows here against 693 upstream. **MEASURED, not argued:** my cold pass cost
+`guards_seconds=2251`, and `xy/main` took **33 commits between 00:00 and 05:00**, five to seven an
+hour. A lap skipping the round-open opens ~3 stale and closes 6 or 7 behind.
+**BUILT:** the runner prints `head_behind_anointed` at the open, beside the anointed ref's head and
+its newest commit stamp. **Reported, never gated** -- a ship may work behind on purpose. It reads
+the last fetch's ref, so it costs **no network** and can only under-report; the stamp rides beside
+it because zero otherwise means *current* OR *nobody fetched*. Five legs on a real git pen prove
+all three answers -- no ref, level, two behind -- and two runner mutations bite.
+**I DROPPED MY OWN WORK RATHER THAN LANDING A SECOND ANSWER** beside a peer's better one.
+**COLD 230 run, 226 green, 2 red** -- both the elf_machine census and the self-read behind it,
+repaired upstream while my pass ran. **HOT 231 run, 229 green, 0 red, 2 gated (%5),
+`tree_moved=no`**, its own open reading `head_behind_anointed=0`. The only edit after it is this
+paragraph, which is the account of the pass.
+**YOURS:** the baton says open by the self-healing open FIRST. It is a habit with a meter now and
+still no wall -- whether a pass should REFUSE past some distance is a fleet ruling, not mine.
 **INCENSE -- A PLANT IS A SUBJECT, NEVER A PRACTICE.**
 Elder [shelved](archive/20260910-045332_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**: the cold open read `elf_machine` red, `standing_equipment`

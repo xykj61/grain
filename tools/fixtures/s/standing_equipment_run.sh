@@ -61,6 +61,13 @@
 # lap open at all and passes free. One flag and one structural distinction, rather than a roster of
 # exemptions: a second exemption would be the hiding place this refusal exists to close.
 #
+# WHAT IT REPORTS AT THE OPEN. `head_behind_anointed`, beside the anointed ref's own head and its
+# newest commit stamp -- how far behind `xy/main` this pass began, read from the last fetch's ref
+# and therefore free of network. It gates nothing and can only under-report. It is here because a
+# pass costs forty minutes against a fleet landing six commits an hour, so a lap that opens the
+# roster instead of `tools/f/fleet_round_open.sh` measures a tree the fleet has already left. The
+# clause beside the reading itself carries the measurement.
+#
 # WHAT IT REPORTS WHEN IT FINISHES. `tree_at_open`, `tree_at_close`, and `tree_moved` -- a twelve-
 # character digest of the tree's SHAPE and its CONTENT, taken before the first guard and again
 # after the last. The shape is `git rev-parse HEAD` plus `git status --porcelain`; the content is
@@ -677,6 +684,31 @@ tree_digest() {
 }
 tree_open=$(tree_digest)
 echo "tree_at_open=$tree_open"
+
+# HOW FAR BEHIND THE ANOINTED ORDER THIS PASS OPENED (`20260910.060000`). A cold pass costs about
+# forty minutes -- 2,251 guard-seconds measured `20260910.051007` -- and the fleet lands five to
+# seven commits an hour, so a lap that opens the roster instead of `tools/f/fleet_round_open.sh`
+# is reading a tree the fleet has already left, and is further behind at its close than at its
+# open. That is not a hypothetical: the pass of `20260910.051007` opened three commits behind, and
+# one of those three carried the very repair the lap that followed then spent itself rebuilding.
+#
+# The reading is REPORTED and gates nothing, for two reasons. A ship may work behind the anointed
+# order on purpose, and a gate on ordinary work is a gate somebody turns off. And this reading
+# costs no network: it compares HEAD against the remote-tracking ref the last fetch left, so it
+# can only UNDER-report -- a lap that never fetched sees a stale ref and a small number, never an
+# invented one. Because zero therefore means either *current* or *nobody has fetched*, the
+# anointed ref's own newest commit stamp is printed beside the distance. A stamp hours old on a
+# fleet committing six an hour is what tells those two apart, and it is read through git rather
+# than through `date -r`, which is not POSIX.
+anointed_behind=unknown
+anointed_ref_head=unknown
+anointed_ref_committed=unknown
+if git rev-parse --verify --quiet xy/main >/dev/null 2>&1; then
+  anointed_behind=$(git rev-list --count HEAD..xy/main 2>/dev/null || echo unknown)
+  anointed_ref_head=$(git rev-parse --short=10 xy/main 2>/dev/null || echo unknown)
+  anointed_ref_committed=$(git log -1 --format=%cd --date=format:%Y%m%d.%H%M%S xy/main 2>/dev/null || echo unknown)
+fi
+echo "head_behind_anointed=$anointed_behind anointed_ref_head=$anointed_ref_head anointed_ref_committed=$anointed_ref_committed"
 
 # THE HIT-RATE METER (the fusion build's Move 2 gate, measurement only -- design
 # active-designing/20260825-173153_reprove-only-what-moved.md; the FAST/COLD ruling stays
