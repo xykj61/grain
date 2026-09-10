@@ -23,6 +23,9 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 pub const batch_version = "20260706.042612";
 const batch_kind: u8 = 0x03;
 
+// ceilings: independent -- max_batch_bytes sizes a stack scratch buffer inside
+// run_batch_selftest and bounds no format; build_batch takes the caller's out slice and
+// declares no ceiling of its own. So the two names never meet in one encoder.
 pub const max_batch_entries: u32 = 16;
 pub const max_batch_bytes: u32 = 4096;
 

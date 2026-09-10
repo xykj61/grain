@@ -14,6 +14,9 @@ const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 
 const ns_version = "20260706.033400";
 
+// ceilings: independent -- max_bindings bounds how many leaves a catalog holds and
+// max_resin_bytes bounds one resin's own bytes. The two axes never meet, and append_leaf
+// checks each separately rather than trading one against the other.
 pub const max_bindings: u32 = 16;
 pub const max_resin_bytes: u32 = 512;
 pub const max_path: u32 = 64;

@@ -4073,3 +4073,41 @@ guard self_matching_assert
 path tools/s/self_matching_assert_witness.rish
 tier lap
 seated 20260910.022156
+
+# THE COUNT IN FRONT OF THE BYTE CEILING. A module writing items into a fixed buffer can name two
+# maxima -- how many items it carries, and how many bytes it has -- and only one of them is real.
+# The encoder decides which, never the declaration. `mantra/recall_tablecloth_query_wire.rye`
+# declares `max_wire_hits = 8` six lines above `max_wire_payload = 340`, where one hit at maximum
+# name lengths encodes to 119 bytes, so the attainable count is 2. Its sibling
+# `recall_sync_wire.rye` declares 8 entries against the same payload where one worst-case entry
+# costs 676 bytes -- attainable count zero, under every input. Both were found by hand a lap apart
+# (20260909.213236, 20260910.001454), and a lantern that fires twice becomes a loom. Census and
+# arithmetic: external-research/20260910-001454_the-count-in-front-of-the-byte-ceiling.md.
+#
+# THE CLASS IS QUIET, which is why it wants an instrument rather than another hand. A bound too
+# SMALL refuses honest work and is found within a day. A count too LARGE refuses nothing, passes
+# every test built from short names, and reports its wrong number to every reader who asks.
+#
+# IT REACHES THE TREE where the hand reached four modules: 29 distinct tracked sources declare both
+# shapes, against the 4 the hand-walked census over mantra, caravan, tally and aurora could see.
+#
+# AND IT DOES NOT JUDGE, which is the finding this guard was built out of. Four lexical
+# discriminators were measured against the four cases the paper walked, and every one leaked --
+# names in one file (48 candidates, 2 real), names in one function (admits `recall_lap1`, two
+# independent guards three lines apart), the byte name checked after a loop (admits
+# `glow_storage_scope`, a per-item check inside a loop), and the byte name checked against a
+# variable the loop advances (admits it again, on a partial field-name match). The real test is
+# whether the loop ACCUMULATES into the bounded buffer, which is dataflow rather than text. A guard
+# that guessed would red on honest work and be turned off. So it asks the file to answer instead --
+# one `// ceilings: independent|derived|literal` line -- which is the move `declared_ceiling` makes
+# for a page and `tutorial_output` for a command: where a judgment cannot be mechanized, mechanize
+# the DECLARATION of it. ONE GATE at zero, a verdict no tool can read. TWO RATCHETS that only fall:
+# `pairs_undeclared` 25, which every file leaves on the lap a hand touches it, and `pairs_literal`
+# 2, the real unrepaired class. A DERIVED ceiling leaves the population by construction, so the
+# repair is rewarded by the reading rather than merely permitted -- which is why `caravan/`, whose
+# rung bounds are chained, is absent for the right reason. `tier lap` at a measured 3.4s: two
+# batched greps over 1,964 sources, then 29 files read again.
+guard ceiling_pair
+path tools/c/ceiling_pair_witness.rish
+tier lap   # 3.4s; 29 pairs read, 14 control behaviors with 5 refusals bitten and lifted
+seated 20260910.020000

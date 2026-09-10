@@ -21,6 +21,11 @@ const flag_revision: u8 = 1 << 2;
 const flag_tilak: u8 = 1 << 3;
 const flag_path: u8 = 1 << 4;
 
+// ceilings: literal -- max_wire_hits stands in front of max_wire_payload rather than deriving
+// from it. One hit at maximum name lengths encodes to (1+16)+(1+32)+4+(1+64) = 119 bytes, so
+// floor((340-2)/119) = 2 always fit and 3 can overflow. A caller reading 8 is told a number the
+// encoder does not keep. Booked 20260909.213236; the repair is to derive this from
+// max_wire_payload, which needs max_peer and max_bolt named first.
 pub const max_wire_hits: u32 = 8;
 pub const max_wire_payload: u32 = 340;
 comptime {
