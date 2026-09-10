@@ -157,7 +157,7 @@ if [ "$rooms_file" = "$default_rooms" ]; then
   # before, and the CLI held every one that was left. The file's own reading is the reason to lower
   # rather than a tree-wide sweep: a ceiling left where a repair found it credits the next lap with
   # work this one did.
-  unnamed_ceiling=6489
+  unnamed_ceiling=6487
 else
   zero_ceiling=0
   gap_ceiling=0

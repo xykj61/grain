@@ -2028,6 +2028,18 @@ path tools/m/mantra_cli_record_witness.rish
 tier lap
 seated 20260910.001500
 
+# mantra_multifile -- a second tracked file keeps the first one's history. A commit blob named ONE
+# weave for a whole directory, so `cmd_add` diffed the next file against the file before it and
+# applied the difference, deleting every line of the earlier one -- while the CLI printed
+# `wove 2/2 file(s).` The .brix add-all route is the tool's own advertised way to track a project
+# of more than one source, and it fired hardest there. This guard drives the built binary down
+# exactly that route and asks the tool the user's question -- does an untouched file read clean --
+# rather than counting blobs, since a record is free to change shape and a promise is not.
+guard mantra_multifile
+path tools/m/mantra_multifile_witness.rish
+tier lap
+seated 20260910.003046
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight
