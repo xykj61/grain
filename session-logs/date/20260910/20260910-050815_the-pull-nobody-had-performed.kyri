@@ -23,6 +23,7 @@ think Three of the single-edge exits are one file reached three times (comlink/w
 obs Relocating those two files takes the braid 9 -> 7 -> 5 rooms on the measured graph, freeing amphora, mantra, kumara, settlement. Computed, not built.
 obs The control's first run exposed a real defect in the scan: root resolved from $0, so every pen leg read the real tree and two legs passed by matching this tree's own refusal.
 obs tally is the foundation's claim made literal -- in-degree 23, out-degree 0. Three true sinks: brix, scribble, tally.
+obs I signalled a spent hot roster pass with fleet_call --signal TERM after moving a file mid-run fixed its verdict at tree_moved. It trapped the signal, ran on twenty more minutes, then died leaving NO run_verdict line -- so the transcript read neither finished nor failed, and the lock outlived its owner. The relaunch cost forty minutes. The baton's clause reaches loops; a roster pass cuts the same way, and the cheaper move was to let a spent pass close on its own.
 loom witness=room_braid seconds=10 links=230 cross=226 edges_live=68 edges_dead=20 rooms=29 braid_max=9
 loom roster=cold guards_run=227 guards_green=223 guards_red=2 guards_seconds=2318 tree_moved=no
 file tools/fixtures/r/room_braid_census_scan.sh the census -- resolves symlinks to room edges, discounts unimported links, closes the graph in one awk relaxation
