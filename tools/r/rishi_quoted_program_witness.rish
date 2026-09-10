@@ -1,0 +1,35 @@
+# rishi_quoted_program_witness.rish -- every awk program a Rishi witness hands to the shell is one
+# awk will actually read.
+#
+#   rishi/bin/rishi run tools/r/rishi_quoted_program_witness.rish
+#
+# THE MECHANISM. Rishi keeps `\"` exactly as written in a string literal, so the backslash arrives
+# at `sh` intact. Inside a single-quoted region -- how every awk program in this tree is written --
+# both characters travel on into awk's own program text, and awk treats a string literal spelled
+# that way as a syntax fault: one line to stderr, an empty stdout. A `wc -l` downstream answers 0,
+# the pipeline's exit status belongs to its last command, and `.ok` reads true. So the guard above
+# it hears silence and calls it a law.
+#
+# Three guards stood green on exactly that silence, found `20260910.031353` -- the row this
+# guard closes:
+# `tools/b/bricks_exist_witness.rish` read 0 of 20 brick paths while saying "all 20 resolve";
+# `tools/g/gen_home_witness.rish`, rostered `tier lap`, left a planted stray desk GREEN on metal;
+# and `tools/r/reds_row_present_witness.rish` answered 0 missing of 7 where 5 stood open. All
+# three hand the literal in with `awk -v k=file` now, and this guard is what keeps the fourth
+# audible on the lap it arrives.
+let control = run ["sh" "-c" "sh tools/fixtures/r/rishi_quoted_program_control.sh 2>&1"]
+say control.out
+assert control.ok else "the quoted-program control refused -- a reading whose plants do not bite proves nothing"
+assert control.out contains "fail=0" else "the quoted-program control reported a failing leg"
+
+# The scan is run ONCE and its counts read from that one reading -- three separate invocations
+# would each walk the tree and could each answer differently if a peer landed between them.
+let scan = run ["sh" "-c" "sh tools/fixtures/r/rishi_quoted_program_scan.sh 2>&1"]
+say scan.out
+assert scan.ok else "the quoted-program scan refused"
+
+assert scan.out contains "awk_fatal=0" else "an awk program in a Rishi run string carries a backslash-quote -- awk will refuse it and the witness above it cannot hear that"
+
+assert scan.out contains "verdict=ok" else "the quoted-program scan refused -- read its counts above"
+
+say "GREEN: rishi-quoted-program -- zero awk programs carry a backslash-quote, the tolerated grep and sed sites stand under their ceiling, and sixteen control legs proved the reading bites and lets the honest forms through."
