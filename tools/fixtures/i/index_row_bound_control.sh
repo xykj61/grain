@@ -28,9 +28,13 @@ cp "$scan_abs" "$pen/tools/fixtures/i/"
 
 pad() { i=0; s=""; while [ "$i" -lt "$1" ]; do s="${s}x"; i=$((i + 1)); done; printf '%s' "$s"; }
 
-# A row of an exact byte length, so a boundary is planted rather than approximated.
+# A row of an exact byte length, so a boundary is planted rather than approximated. Its link is
+# derived from its own stamp and the file made beside the pin, because from `20260910` the duplicate
+# reading keys on the LOG a row names (REDS %676) -- three rows sharing one link would be three rows
+# naming one record, which is the fault rather than the fixture.
 row() {                       # row <stamp> <total-bytes>
-  head="| \`$1\` | [t](f.kyri) | "
+  : > "$pen/session-logs/f-$1.kyri"
+  head="| \`$1\` | [t](f-$1.kyri) | "
   tail=" |"
   n=$(( $2 - ${#head} - ${#tail} - 1 ))
   [ "$n" -lt 1 ] && n=1
@@ -94,7 +98,11 @@ noshelf() { rm -f "$pen"/session-logs/date/README-index-*.md; }
 linkrow() { printf '| `%s` | [t](%s) | m |\n' "$1" "$2"; }
 
 mkdir -p "$pen/session-logs/date/20260830"
+# Three logs, so a plant meaning THREE ROWS can point at three records. From `20260910` a row's
+# identity is the log it names, so reusing one target would plant the duplicate fault by accident.
 : > "$pen/session-logs/date/20260830/a.kyri"
+: > "$pen/session-logs/date/20260830/b.kyri"
+: > "$pen/session-logs/date/20260830/c.kyri"
 
 # 6a -- a CLOSED shelf keeps every byte it wrote, however long, and points wherever it pointed.
 pin "$(row 20260824.100000 120)"
@@ -132,17 +140,42 @@ o=$(run)
 # by which it is, so it is worth naming here whichever class the shelf holds.
 echo "$o" | grep -q '^advice=sh tools/fixtures/i/index_shelf_repair.sh$' \
   && echo "duplicate_advises=yes" || echo "duplicate_advises=no"
-shelf 20260830 "$(linkrow 20260830.100001 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
+shelf 20260830 "$(linkrow 20260830.100001 20260830/b.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
 o=$(run); [ "$(val "$o" verdict)" = ok ] && echo "distinct_stamps_free=yes" || echo "distinct_stamps_free=no"
+
+# 6d2 -- TWO LOGS INSIDE ONE SECOND ARE TWO RECORDS (REDS %676, answered 20260910). The naming law
+# resolves a shared second with distinct sprigs, so the shelf carries two rows and the reading must
+# admit them. Under the elder stamp key this exact page refused, and the repair merged two logs into
+# one row -- which is a shelf that no longer points one row at one record.
+shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/b.kyri)"
+o=$(run)
+[ "$(val "$o" verdict)" = ok ] && echo "one_second_two_logs_free=yes" || echo "one_second_two_logs_free=no"
+[ "$(val "$o" rows_duplicate)" = 0 ] && echo "one_second_not_duplicate=yes" || echo "one_second_not_duplicate=no"
+# ... and the collision stays VISIBLE rather than silent, since a growing fleet meets it oftener.
+[ "$(val "$o" rows_stamp_shared)" = 1 ] && echo "shared_stamp_reported=yes" || echo "shared_stamp_reported=no"
+
+# 6d3 -- ONE LOG WEARING TWO ROWS UNDER TWO STAMPS is what the elder key could not see at all: the
+# stamps differ, so it read clean, while the page names one record twice.
+shelf 20260830 "$(linkrow 20260830.100001 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
+o=$(run)
+[ "$(val "$o" verdict)" = rows_duplicate ] && echo "two_stamps_one_log_bitten=yes" || echo "two_stamps_one_log_bitten=no"
+
+# 6d4 -- a row carrying no link at all names no log, so it keys on its own bytes.
+shelf 20260830 "| \`20260830.100000\` | t | m |" "| \`20260830.100000\` | t | m |"
+o=$(run)
+[ "$(val "$o" verdict)" = rows_duplicate ] && echo "linkless_identical_bitten=yes" || echo "linkless_identical_bitten=no"
+shelf 20260830 "| \`20260830.100001\` | t | one |" "| \`20260830.100000\` | t | two |"
+o=$(run)
+[ "$(val "$o" verdict)" = ok ] && echo "linkless_distinct_free=yes" || echo "linkless_distinct_free=no"
 
 # 6g -- the rows descend, which is the promise the page makes in its own title. A rebase that
 # auto-merges two rows CLEANLY -- no marker, nothing to resolve -- can still seat the older above
 # the newer, and every other reading here stays green while it does (REDS %440).
-shelf 20260830 "$(linkrow 20260830.100002 20260830/a.kyri)" "$(linkrow 20260830.100001 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
+shelf 20260830 "$(linkrow 20260830.100002 20260830/c.kyri)" "$(linkrow 20260830.100001 20260830/b.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
 o=$(run)
 [ "$(val "$o" verdict)" = ok ] && echo "descending_free=yes" || echo "descending_free=no"
 [ "$(val "$o" rows_misordered)" = 0 ] && echo "descending_counted_zero=yes" || echo "descending_counted_zero=no"
-shelf 20260830 "$(linkrow 20260830.100002 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.100001 20260830/a.kyri)"
+shelf 20260830 "$(linkrow 20260830.100002 20260830/c.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.100001 20260830/b.kyri)"
 o=$(run)
 [ "$(val "$o" verdict)" = rows_misordered ] && echo "misordered_bitten=yes" || echo "misordered_bitten=no"
 [ "$(val "$o" rows_misordered)" = 1 ] && echo "misordered_counted=yes" || echo "misordered_counted=no"
@@ -162,7 +195,7 @@ o=$(run)
 # A CLOSED shelf out of order keeps every byte it wrote, and needed no exemption of its own: it
 # never enters the read set, so the order gate inherits accrete-never-break from where it stands.
 shelf 20260101 "$(row 20260101.010100 120)" "$(row 20260101.010102 120)" "$(row 20260101.010101 120)"
-shelf 20260830 "$(linkrow 20260830.100001 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
+shelf 20260830 "$(linkrow 20260830.100001 20260830/b.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
 o=$(run)
 [ "$(val "$o" verdict)" = ok ] && echo "closed_shelf_order_free=yes" || echo "closed_shelf_order_free=no"
 [ "$(val "$o" rows_misordered)" = 0 ] && echo "closed_shelf_order_uncounted=yes" || echo "closed_shelf_order_uncounted=no"

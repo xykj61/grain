@@ -37,9 +37,11 @@
 #   Every row stays at or under 192 bytes.
 #   Every row's link resolves to a file the tree carries, read relative to the page's own directory.
 #     A row that points nowhere fails "an index row points" more completely than a long row does.
-#   No two rows share a stamp. A duplicate is one log wearing two rows, and a rebase that re-applies
+#   No two rows name one log. A duplicate is one log wearing two rows, and a rebase that re-applies
 #     an updated row without lifting the stale one leaves both -- which is how two rows came to name
-#     REDS %364-368 after the ledger had moved to %365-369.
+#     REDS %364-368 after the ledger had moved to %365-369. The key is the LOG the row points at,
+#     never the stamp: two ships write inside one second roughly every eleven days at this fleet's
+#     rate, and those are two records rather than one (REDS %676).
 #   The rows descend. A page that promises NEWEST FIRST keeps that promise in its own document
 #     order, and a rebase that auto-merges two rows cleanly can still seat the older above the
 #     newer (REDS %440, %445's sibling). This is the same rebase, one fault over: the duplicate
@@ -84,6 +86,7 @@ trap 'rm -rf "$work"' EXIT INT TERM
 : > "$work/over.txt"
 : > "$work/links.txt"
 : > "$work/stamps.txt"
+: > "$work/keys.txt"
 total=0
 over=0
 longest=0
@@ -91,26 +94,32 @@ for pin in $PINS; do
   [ -f "$root/$pin" ] || { echo "verdict=pin_missing $pin"; exit 1; }
   # A row is a table line whose first cell opens with a backticked one-clock stamp. A delimiter
   # row, a header row, and a prose line carrying pipes all name no stamp and are read past.
-  awk -v pin="$pin" -v max="$ROW_MAX" -v stampf="$work/stamps.txt" -v linkf="$work/links.txt" '
+  awk -v pin="$pin" -v max="$ROW_MAX" -v stampf="$work/stamps.txt" -v linkf="$work/links.txt" \
+      -v keyf="$work/keys.txt" '
     /^\|[ \t]*`[0-9]{8}\.[0-9]{6}`/ {
       n = length($0) + 1
       total++
       if (n > max) { over++; printf "over\t%d\t%s\t%s\n", n, pin, substr($0, 1, 90) }
       if (n > longest) longest = n
-      # The stamp is the row identity, so two rows carrying one stamp are one log wearing two rows.
+      # The stamp orders the row. It does not identify it -- see the duplicate reading below.
       if (match($0, /`[0-9]{8}\.[0-9]{6}`/)) {
         printf "%s\t%s\n", pin, substr($0, RSTART + 1, RLENGTH - 2) >> stampf
       }
       # The row link is what "points" means, so it is read and later resolved on the filesystem.
+      first = ""
       line = $0
       while (match(line, /\]\([^)]+\)/)) {
         target = substr(line, RSTART + 2, RLENGTH - 3)
         sub(/#.*$/, "", target)
         if (target != "" && target !~ /^(https?:|mailto:|\/)/) {
           printf "%s\t%s\n", pin, target >> linkf
+          if (first == "") first = target
         }
         line = substr(line, RSTART + RLENGTH)
       }
+      # THE ROW IDENTITY IS THE LOG IT NAMES. A row carrying no link at all names no log, so it
+      # keys on its own bytes -- two such rows are the same row only when they are the same text.
+      printf "%s\t%s\n", pin, (first == "" ? "row:" $0 : first) >> keyf
     }
     END { printf "tally\t%d\t%d\t%d\n", total, over, longest }
   ' "$root/$pin" >> "$work/rows.txt"
@@ -132,9 +141,30 @@ while IFS="$(printf '\t')" read -r page target; do
 done < "$work/links.txt"
 unresolved=$(wc -l < "$work/unresolved.txt" | tr -d ' ')
 
+# THE DUPLICATE READING KEYS ON THE LOG A ROW NAMES, never on the second it was written in
+# (REDS %676, answered `20260910`). One log wearing two rows is the fault a rebase leaves, and both
+# of its rows point at one file. Two logs written inside one second are two records, and the naming
+# law already resolves them by sprig -- so refusing them made a lawful day illegal, and the repair
+# jammed two logs into one row and lost the one-to-one between a row and the record it points at.
+#
+# MEASURED BEFORE THE KEY MOVED, over the 73 revisions of `session-logs/date/README-index-20260830.md`
+# where this reading last fired hard: 89 duplicate stamps carried ONE link and 64 carried two. Every
+# one of the 64 was the SAME log written at two depths -- `20260830/x.kyri` beside a bare `x.kyri` --
+# which is the depth fault, and the bare form resolves to nothing, so `rows_unresolved` refuses it
+# one branch above this one. So the raw link target is an exact key here rather than an approximate
+# one: an unresolved row never reaches this reading.
+#
+# Across the tree at `20260910.004817`: 78 seconds carry two or more logs, and every day shelf reads
+# zero duplicate rows under BOTH keys. The two keys agree on the tree as it stands and part on the
+# next collision, which is roughly every eleven days at 130 laps and rises with the square of the
+# fleet's daily count.
 : > "$work/dupes.txt"
-sort "$work/stamps.txt" | uniq -d > "$work/dupes.txt" || :
+sort "$work/keys.txt" | uniq -d > "$work/dupes.txt" || :
 dupes=$(wc -l < "$work/dupes.txt" | tr -d ' ')
+
+# THE STAMP COLLISION STAYS VISIBLE, and stays ungated. Two logs in one second is lawful and worth
+# seeing, since it is the shape a growing fleet meets more often every ship it adds.
+shared=$(sort "$work/stamps.txt" | uniq -d | wc -l | tr -d ' ')
 
 # A shelf reads NEWEST FIRST, and a merge that reports no conflict has still made a decision. Two
 # rows landing minutes apart auto-merge cleanly -- no marker, nothing to resolve -- and seat the
@@ -177,7 +207,7 @@ head -5 "$work/unresolved.txt" | while IFS="$(printf '\t')" read -r p t; do
   printf 'unresolved: %s -> %s\n' "$p" "$t"
 done
 head -5 "$work/dupes.txt" | while IFS="$(printf '\t')" read -r p s; do
-  printf 'duplicate: %s carries %s twice\n' "$p" "$s"
+  printf 'duplicate: %s names %s twice\n' "$p" "$s"
 done
 # The seam is named from both sides, so a hand knows which pair to swap rather than which page to
 # re-read.
@@ -191,6 +221,7 @@ echo "rows=$total"
 echo "rows_over=$over"
 echo "rows_unresolved=$unresolved"
 echo "rows_duplicate=$dupes"
+echo "rows_stamp_shared=$shared"
 echo "rows_misordered=$misordered"
 echo "row_max=$ROW_MAX"
 echo "longest_row=$longest"
