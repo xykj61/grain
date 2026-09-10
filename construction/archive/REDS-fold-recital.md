@@ -672,3 +672,5 @@ at a closed fold.*
 
 *Two elder addresses stand as pages there, [rows-660](REDS-a-parked-fix-behind-an-existing-path-rows-660.md) and [rows-664](REDS-a-parked-fix-behind-an-existing-path-rows-664.md); `%667`, `%671` and `%673` were re-seated before publishing. One stamp, `20260909.072646`, held through all five moves.*
 *Row %677 folded to [`REDS-a-capability-that-asked-one-of-four-rows-677.md`](REDS-a-capability-that-asked-one-of-four-rows-677.md) on `20260909.221534`, **CLOSED** -- a capability probe asking a cheaper question than its guard is an exemption wearing a cadence's clothes, and the guard's own header had already said so.*
+
+*Row %675 folded to [`REDS-a-receipt-keyed-on-an-inventory-rows-675.md`](REDS-a-receipt-keyed-on-an-inventory-rows-675.md) on `20260909.232953`, **CLOSED** -- a coverage receipt keyed on an inventory goes stale on every commit, so the refusal it buys names the clock rather than the gap.*

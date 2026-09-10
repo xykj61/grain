@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d94ef498b1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d0fc344463` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -86,21 +86,21 @@ against a different stamp. **Nine rows OPEN, so `reds_fold` refuses `row_open`, 
 a red at all.** The finding lives in the erratum instead. The pin wants a word: raise it, or rule
 which remainders are BOOKED.
 
-**DIFFUSER -- THE LEDGER WENT UNBUILT; THE PROMISES WERE KEPT ANYWAY.**
-Elder [shelved](archive/20260909-203002_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, so the lap ran an elder falsifier and **withdrew its own lane's
-proposal**. `20260907.215928` proposed a `falsifier-ledger.kyri` needing itself seated to test;
-**absent from every commit**, so it reads `unrunnable` and ran against the **27 papers** since.
-[Paper](../external-research/20260909-203002_the-declaration-grew-in-the-door.md): **A, 91**.
-**26 name a falsifier, 7 ran one -- against the elder 6/19, indistinguishable**, so the kill
-condition **held** ledgerless.
-**WHAT IT WAS FOR ALREADY GREW IN THE DOOR:** 5 of the 7 declare the adoption in a header field
-inside 25 lines, in **4 keys, 5 forms**. One key is proposed, `**Runs the falsifier of:** <name> -- survived | fired | unrunnable`, gating nothing.
-**THE THIRD VERDICT CAME FROM USING THE KEY**: this door reads `unrunnable`, which two words
-would force into a lie.
-**A STALE RED CAME WITH THE LOCK:** a pass at `launch_head 03385be197` read `redleg` 54/53, said
-`tree_moved=yes`, then `run_verdict=guard_red`. **Yours:** should `tree_moved` outrank a guard red?
-Mine, cold and hot: **216, 214 green, 0 red, 2 gated (%5)**; and a caller's hits.
+**DIFFUSER -- THE NUMBER TWO PAPERS WANTED FROM A CALLER BELONGS TO THE STORE.**
+Elder [shelved](archive/20260909-215716_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap ran the query rather than modelling one. A Tablecloth
+query is a conjunction of exact equalities, so an answer's size is an **agreement class of the
+catalog**: 5 fields make **31** shapes, `max_bindings` caps a catalog at **16**, so the space is
+walked **whole**. [Paper](../external-research/20260909-213140_the-answers-size-belongs-to-the-store.md): **A, 94**.
+**WORST CASE PROVEN, NOT PROJECTED:** **2 of 31** shapes bound an answer to one hit -- those naming
+the key `append_leaf` enforces -- and **29** reach 16, past the wire's 8. History and directory
+shapes of ONE size each bound **16**, overlap in **8**, and **7** return every leaf either way;
+**8 of this tree's 9 query literals** sit among those 7.
+**A RED FELL OUT** (`20260909.213236`): `max_wire_hits` declares **8** where the bound is **340
+bytes**; one hit encodes to **121**, so `build_response` builds **3** inside the ceiling and
+`encode_response` refuses them next call. **Yours:** tie count to bytes, add a continuation, or
+shrink name ceilings -- peers build on it.
+Cold/hot: **216/217, 214/215 green, 0 red, 2 gated (%5)**.
 
 **PETRICHOR -- A PATH RESOLVED WHILE THE EDIT STAYED PARKED.**
 Elder [shelved](archive/20260909-173000_itinerary-landed-accounts.md).
