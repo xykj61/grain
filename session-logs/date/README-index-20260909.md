@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260909.210714` | [The world a comparison can see](20260909/20260909-210714_the-world-a-comparison-can-see.kyri) | Bakery; a prover blind to every path git ignores, proven both ways |
+| `20260909.205933` | [The guard that named its own gap](20260909/20260909-205933_the-guard-that-named-its-own-gap.kyri) | Incense; the compass rose opens at the map |
 | `20260909.203251` | [The declaration grew in the door](20260909/20260909-203251_the-declaration-grew-in-the-door.kyri) | Diffuser; a ledger unbuilt, its falsifier run anyway |
 | `20260909.202547` | [A plant that spells a moving number](20260909/20260909-202547_a-plant-that-spells-a-moving-number.kyri) | Grass; a plant aimed at a ratchet names the form |
 | `20260909.201621` | [The repair that yielded](20260909/20260909-201621_the-repair-that-yielded.kyri) | Patchouli; a peer's row parked the question my fix answered |
