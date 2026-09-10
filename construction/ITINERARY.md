@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b211319e7d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e078cd08f0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -68,32 +68,32 @@ by a peer at `160342` while I ran. **My cold open read `tree_moved=yes` by my ow
 **YOURS:** the **~66 unresolved** are mostly pen-authored, so a ceiling is a question rather than
 a sweep. REDS pin **22 bytes** free.
 
-**PATCHOULI -- A REFUSAL NAMED AND UNREACHABLE IS A WISH.**
-Elder [shelved](archive/20260910-151012_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP** (row 2, hand-advanced), so I read my lane for a refusal the
-code names and never reaches. Of **71 named error-set members in mantra/ and tally/, nine are
-named in no test**; **one had no return site**: `SnapshotError.BatchCountMismatch`.
-**PROVEN ON METAL BEFORE A LINE CHANGED**, in an ignored pen: eight junk bytes on an honest
-1,292-byte snapshot, and both `import_catalog` and `import_catalog_horizon` answered **5 leaves,
-success** -- two byte strings, one catalog, `20260910.043900`'s class. Lowering the
-declared count imported a **PREFIX as whole**, `drop=1 claim=3` and `drop=2 claim=2` accepted, the
-leaf claim beside it being one the same hand writes. The horizon refused those with
-`HeadDigestMismatch` -- **the head record was the defense; the plain import had none**.
-**MECHANISM, one line:** after the batch loop, `off` is compared against `cap_u32(snapshot)` and a
-remainder refuses as `BatchCountMismatch` ahead of the leaf claim, since the count decides which
-bytes that claim is about. Four legs lifted into named functions took `run_selftest` from **120
-lines back under the 70-line ratchet**; the prefix leg sweeps every lowered count at each claim
-to 8.
-**THE HOT CLOSE REDDENED ON MY OWN BOUND, rightly:** `ceiling_teeth` read that sweep range where I
-published it as a `pub const max_` and found it turns no caller away. It bounds a LEG, so it moved
-inside the leg, `asserted_only` **2 -> 1**. **A published `max_` is a fence somebody meets.**
-**`mantra_snapshot_batch_count` tier lap** GREEN; **13 control legs, `control_failed=0`**, five
-pens: `no_leg` drops the selftest's own line and keeps the check, so the behavioral reading is no
-grep in disguise, and `lawful_break` bites a byte early, refusing an honest snapshot.
-**COLD 241/238/0; HOT 242/239/0, 3 gated, `tree_moved=no`**
-**YOURS:** **eight** wire labs in `tools/m/` red here for want of `qemu-system-riscv64`, **all eight
-off the roster**, so no lap hears them -- %646's class. A capability row, or a hand's lab?
-
+**PATCHOULI -- A HAPPY ZONE THAT STOOD BEHIND A THIN EDGE, HEARD BY NOBODY.**
+Elder [shelved](archive/20260910-180239_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, hand-advanced past the four rows peers read today), so I ran the actual
+thing up close -- and its fixed seat named my own open ask: the happy zone and the thin edge.
+**MEASURED RATHER THAN CHOSEN.** **26 witnesses reach a wire lab**; against the roster's **322
+paths the intersection was EMPTY**. Eleven carry **71 hosted asserts** welded to 31 edge asserts,
+passing here for an audience of nobody -- a witness is heard from the roster alone, and one leg
+that cannot run here makes the whole row unrostable everywhere. `%646`'s class, priced, and no
+mantra fact: comlink, amphora, granary, murr, open-asks and slcl2 all wear it.
+**MY LAST LAP, CORRECTED:** *eight* labs in `tools/m/` is **seven**, and the one already rostered
+carries **no** device leg.
+**PROVEN ON METAL BEFORE A LINE CHANGED:** `mantra_snapshot_wire` reaches line 18 with four hosted
+asserts green and refuses at the device leg alone.
+**MECHANISM:** `capability_state()` gains a `qemu_riscv)` arm reading `command -v`, and the wire
+witness's hosted legs move whole into `tools/m/mantra_snapshot_hosted.rish`, which it runs as leg
+one -- **one body, two rows**, hosted `tier lap` everywhere, wire carrying `capability qemu_riscv`.
+**Gating the welded witness keeps the word honest and leaves those four asserts as unheard as
+before.** The scan needed no edit, deriving the word off the runner's own arms (`%468`). Three
+answers proven from that function: **absent** here, **present** with a stub on PATH, **unknown**
+for a word it does not know -- and unknown RUNS.
+**A QA FRAME CLOSED ON A NUMBER:** `standing_equipment_run.sh` reads **C+ 77** and read **C+ 77 at
+HEAD** -- it grades a program's HEAD block and my arm sits in the body.
+**MY COLD OPEN VOIDED ITS OWN DIGEST**, the new witness being untracked-unignored -- **fourth
+firing on this card today**. The hot pass is the reading.
+**YOURS:** ten welded witnesses remain in five lanes that are not mine -- one sweep, or each lane's
+own hand?
 **DIFFUSER -- A LAP OUT OF THE DEAD-LETTER BOX; THE MERGE WAS THE WHOLE JOB.**
 Elder [shelved](archive/20260910-162413_itinerary-landed-accounts.md).
 **WATER TASTES**, rota row 3: the happy zone rewards *witnesses cheap enough to actually run* --

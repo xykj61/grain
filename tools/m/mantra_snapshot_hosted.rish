@@ -1,0 +1,35 @@
+# mantra_snapshot_hosted.rish -- I2 snapshot export, the HOSTED half, standing alone.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_snapshot_hosted.rish
+#
+# WHY THIS FILE EXISTS. Its sibling tools/m/mantra_snapshot_wire.rish proved two
+# different things in one run: these hosted legs, which want a Zig toolchain and
+# stop there, and one device leg that spawns qemu-system-riscv64. A witness is heard
+# from construction/standing-equipment.kyri alone, and REDS %646 seats the rule that
+# a rostable witness is one whose every leg runs wherever the fleet stands -- so
+# welding the two put these hosted asserts out at a thin edge, where each lap read
+# past them. Measured 20260910: 26 witnesses in this tree reach a wire lab, 0 of 26
+# stand on the roster, and 11 of those carry 71 hosted asserts that pass on this
+# bench for an audience of nobody.
+#
+# This is the happy zone and the thin edge drawn as a file boundary rather than as
+# advice (foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md): the pure
+# heart gathers where every check is fast and isolated, and the world's own leg stays
+# out at the edge where only the world can tell the truth. The wire witness keeps its
+# name and its whole promise, running this file as its first leg, so one body proves
+# the hosted half and the two stay in agreement by construction.
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/snapshot-export-delivery"
+
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "snapshot hosted delivery build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+say selftest.out
+assert selftest.ok else "snapshot hosted selftest exited non-zero"
+assert selftest.out contains "GREEN" else "snapshot hosted selftest not GREEN"
+assert selftest.out contains "import and replay GREEN" else "snapshot hosted import replay missing"
+
+say "GREEN: I2 snapshot export hosted witness passed -- build, selftest, import and replay."
