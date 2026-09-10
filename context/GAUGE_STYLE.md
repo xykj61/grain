@@ -355,6 +355,21 @@ syllable count sees neither.
 Held by [`../tools/p/prose_register_witness.rish`](../tools/p/prose_register_witness.rish), which
 gates the Door tier and reports the rest.
 
+**The law room joined that reading on `20260910`, and it is the room that runs highest.**
+`.claude/rules/*.md` is the prose every ship loads ahead of its first token, and a sibling meter
+has guarded it since `20260821` -- `tools/fixtures/r/radiant_negation_scan.sh`, which counts
+negation *words* per file against that file's own baseline. A baseline compares a page to its own
+past, so it holds a page still wherever it happens to stand: a rule could read 63% negative
+sentences for a year and stay green by never getting worse. Measured on the seating lap by the
+share this guide states: **54 pages, 38 clearing the eight-sentence floor, 18 of the 38 above the
+Field target of 30%**, 19 once a peer's lap landed one more the same hour --
+`azimuth-galaxy-proposal-format` 63% of 11 sentences,
+`comlink-tendency` 58% of 12, `git-signing` 55% of 58, `the-baton` 46% of 86. Run
+`sh tools/fixtures/p/prose_register_scan.sh` for the reading; the number falls as lanes sweep, and
+the ceiling falls with it. **Field rather than Door**, because Meter seats ledger rows, witness
+headers and commit bodies, and a rule page is documentation addressed to a working agent. Whether
+the law room earns a tighter setting is Keaton's word.
+
 ---
 
 ## Quality assurance -- the report card

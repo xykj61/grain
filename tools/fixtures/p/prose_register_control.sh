@@ -213,4 +213,81 @@ echo "$un" | grep -q '^candidate: room/README.md ' \
   && echo "census_roster_gates_the_same_page=yes" || echo "census_roster_gates_the_same_page=no"
 rm -rf "$census"
 
+# 17-20. THE LAW TIER, proven in a pen rather than by watching the live count. `.claude/rules/*.md`
+#     is the prose every ship loads before its first token, and until 20260910 no reading compared
+#     it against the ceiling context/GAUGE_STYLE.md states. The tier is a ratchet that GATES, so
+#     both sides are shown: one page over the target refuses at a ceiling of zero and walks free at
+#     a ceiling of one, one roster number apart, and a page under the eight-sentence floor stays
+#     unread rather than counted. The pen carries its own DOOR roster, since the live roster's
+#     fifteen paths are absent there and would refuse for a reason this leg is not about.
+law=$(mktemp -d "${TMPDIR:-/tmp}/prose_register_law.XXXXXX")
+mkdir -p "$law/.claude/rules"
+cat > "$law/README.md" <<'EOF'
+# The pen front door
+
+This page leads with what is, and it names the work it holds in plain words.
+Every room here keeps its own catalog, and the catalog names each file it holds.
+A reader arriving today finds the same order a reader finds in a decade.
+The witnesses run on metal, and each one prints the reading it took.
+The bounds are named at construction, and the edge checks them once.
+Each claim carries the measurement that earned it, in the same sentence.
+The style is Gauge, and the door setting holds at twenty percent.
+A lane joins this roster by sweeping its page and adding its path.
+EOF
+cat > "$law/.claude/rules/warm.md" <<'EOF'
+# A warm rule
+
+Every allocation names its maximum at construction, and the edge checks it once.
+A witness prints the reading it took, so a claim arrives with its own evidence.
+The stamp orders a mark and the name means it, which is all a mark needs.
+Prefer the affirmative restatement, and let each sentence land before the next.
+A lane repairs the page it touches, and the ceiling falls in the same commit.
+Dated testimony keeps every word it wrote, and the living page sweeps on touch.
+The rule governs what is written from here forward, and says so at its door.
+One clock stamps every mark, and a later stamp is a later version.
+EOF
+cat > "$law/.claude/rules/cold.md" <<'EOF'
+# A cold rule
+
+Nothing here is trusted, and no claim may be believed without a witness.
+A guard that cannot red guards nothing, and this one never refused at all.
+The elder shape failed, and the repair was lost before it ever landed.
+No page may lie about what it cannot prove, and none of them resolves.
+The bound is missing, so an allocation here is unbounded and wrong.
+A stale claim is worse than a missing one, and nothing catches it.
+Never write the banned word, and never route around a broken reference.
+No lane may sweep this room, and no meter has ever read it.
+EOF
+cat > "$law/.claude/rules/short.md" <<'EOF'
+# A short rule
+
+Nothing here is measured, and no guard reads it at all.
+EOF
+( cd "$law" && git init -q . && git add -A ) >/dev/null 2>&1
+sed 's|^DOOR=".*"|DOOR="README.md"|' "$scan" > "$law/base.sh"
+sed 's|^law_ceiling=.*|law_ceiling=0|' "$law/base.sh" > "$law/scan_tight.sh"
+sed 's|^law_ceiling=.*|law_ceiling=1|' "$law/base.sh" > "$law/scan_loose.sh"
+tight=$(cd "$law" && sh scan_tight.sh 2>/dev/null)
+loose=$(cd "$law" && sh scan_loose.sh 2>/dev/null)
+
+# The plant plants something: the cold page IS named, by path and by share.
+echo "$tight" | grep -q '^law: .claude/rules/cold.md ' \
+  && echo "law_names_the_page=yes" || echo "law_names_the_page=no"
+# The warm page written the same day in the same room stays off the listing, so the reading
+# discriminates inside the tier rather than counting every rule page it finds.
+echo "$tight" | grep -q '^law: .claude/rules/warm.md ' \
+  && echo "law_spares_the_warm_page=no" || echo "law_spares_the_warm_page=yes"
+# Under the eight-sentence floor a page is unread rather than counted -- three rule pages in the
+# room, two of them long enough to read a share from honestly.
+{ echo "$tight" | grep -q '^law_documents=3$' && echo "$tight" | grep -q '^law_readable=2$'; } \
+  && echo "law_floor_holds=yes" || echo "law_floor_holds=no"
+# One over the ceiling refuses.
+{ echo "$tight" | grep -q '^law_over_field_target=1$' && echo "$tight" | grep -q '^verdict=register_drift$'; } \
+  && echo "law_ceiling_refuses=yes" || echo "law_ceiling_refuses=no"
+# The same bytes one ceiling number apart walk free, so the refusal is told from a scan that
+# refuses everything.
+{ echo "$loose" | grep -q '^law_over_field_target=1$' && echo "$loose" | grep -q '^verdict=ok$'; } \
+  && echo "law_ceiling_lifts=yes" || echo "law_ceiling_lifts=no"
+rm -rf "$law"
+
 echo "control_verdict=ok"

@@ -91,7 +91,13 @@ FRONT_DETAIL_MAX=40
 #
 # None of the five got worse. Each page has read over the Field target the whole time; the elder
 # meter was reading a part of it, and the sentence counts beside each are how much of a part.
-ceiling=5
+#
+# THE CEILING FELL 5 TO 4 ON 20260910, and the byte it gave back was never a page. The list above
+# names five and its own first row says docs-geode/wiki/README.md sits under the eight-sentence
+# floor, so the reading has never counted it and the tier has read 4 since the day it was seated.
+# The ceiling was set by counting the prose list rather than by asking the meter, which bought one
+# slot for a page no lane could ever sweep off it. Four is what the reading answers.
+ceiling=4
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -205,6 +211,55 @@ while IFS= read -r f; do
   fi
 done < "$work/teaching.txt"
 
+
+# THE LAW TIER: `.claude/rules/*.md`, the prose every ship loads ahead of its first token.
+#
+# WHY IT ARRIVES HERE, when this scan's own header hands that room to a sibling. The sibling
+# stands: tools/fixtures/r/radiant_negation_scan.sh is rostered and enforcing over exactly these
+# files. It reads a DIFFERENT number -- negation WORDS per file against that file's own
+# 20260821 baseline -- so it is a ratchet with no floor. A law page may sit at 63% negative
+# sentences forever and stay green, provided it never reads worse than the day it was measured.
+# No page in this room had ever been compared against the ceiling context/GAUGE_STYLE.md writes
+# down, which is the one number the law itself states.
+#
+# Measured 20260910 by the reading below: 54 pages, 38 clearing the eight-sentence floor, and
+# 18 of the 38 above the Field target of 30% -- azimuth-galaxy-proposal-format at 63%,
+# comlink-tendency 58%, git-signing 55% of 58 sentences, the-baton 46% of 86. The room that
+# teaches the register runs the most negative prose this meter reads. That is the same shape the
+# scan was seated for one room over -- a warm label over a cold page -- and the sibling could not
+# see it, because a baseline compares a page to its own past rather than to the law.
+#
+# FIELD RATHER THAN DOOR, named plainly because the choice is arguable. Gauge seats Meter for
+# ledger rows, witness headers, and commit bodies; a rule page is none of the three, and reads as
+# documentation addressed to a working agent, which is Field. Whether the law room should be held
+# tighter is Keaton's word, and holding it to Field costs that word nothing.
+#
+# A RATCHET UNDER A CEILING THAT ONLY FALLS, gating beside the teaching tier for the same reason:
+# these pages are living Tier 3 prose that a lane repairs by rewriting, one page at a time. A
+# sweep takes a name off the printout and lowers the ceiling in the same commit.
+#
+# THE SEATING NUMBER IS WHAT THE READING ANSWERS ON THE COMMIT THAT SHIPS IT, rather than what it
+# answered when the tier was written. The measurement above was taken at 18; a peer's lap landed
+# `.claude/rules/quality-assurance.md` at 34% of 67 sentences while this one was being proven, and
+# the rebase brought it in. So the tier is seated at 19, its whole population is printed below, and
+# every number after this one falls.
+law_ceiling=19
+law_documents=0
+law_readable=0
+law_over=0
+: > "$work/law_over.txt"
+git ls-files '.claude/rules/*.md' 2>/dev/null \
+  | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' > "$work/law.txt"
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  law_documents=$((law_documents + 1))
+  set -- $(measure "$f")
+  [ "$1" -ge "$REGISTER_MIN_SENTENCES" ] || continue
+  law_readable=$((law_readable + 1))
+  [ "$3" -gt "$FIELD_MAX" ] || continue
+  law_over=$((law_over + 1))
+  printf 'law: %s %s%% (%s of %s sentences)\n' "$f" "$3" "$2" "$1" >> "$work/law_over.txt"
+done < "$work/law.txt"
 # THE UNROSTERED FRONT DOORS. Every tracked README.md is a front door by construction -- it is the
 # page a reader meets when they open the room. A dated basename is testimony and is read past, by
 # the same rule the teaching tier uses. The floor is REGISTER_MIN_SENTENCES, cited rather than
@@ -243,6 +298,13 @@ echo "teaching_documents=$(wc -l < "$work/teaching.txt" | tr -d ' ')"
 echo "teaching_over_field_target=$teaching_over"
 echo "teaching_ceiling=$ceiling"
 [ "$teaching_over" -eq 0 ] || sort -t% -k1 "$work/teaching_over.txt" | head -8
+echo "law_documents=$law_documents"
+echo "law_readable=$law_readable"
+echo "law_over_field_target=$law_over"
+echo "law_ceiling=$law_ceiling"
+# FRONT_DETAIL_MAX bounds every listing this scan prints, rather than the front doors alone: a
+# printout is an allocation whichever tier fills it (TAME).
+[ "$law_over" -eq 0 ] || sort -t% -k1 -rn "$work/law_over.txt" | head -"$FRONT_DETAIL_MAX"
 echo "front_doors=$front_doors"
 echo "front_doors_readable=$front_readable"
 echo "front_doors_unrostered_over=$front_unrostered_over"
@@ -255,10 +317,10 @@ if [ "$front_unrostered_over" -gt 0 ]; then
   fi
 fi
 
-if [ "$door_over" -eq 0 ] && [ "$teaching_over" -le "$ceiling" ]; then
+if [ "$door_over" -eq 0 ] && [ "$teaching_over" -le "$ceiling" ] && [ "$law_over" -le "$law_ceiling" ]; then
   echo "verdict=ok"
   exit 0
 fi
 echo "verdict=register_drift"
-echo "refused: a door document reads more negatively than the style it claims -- read the lines above" >&2
+echo "refused: a door, teaching, or law document reads more negatively than the style it claims -- read the lines above" >&2
 exit 1
