@@ -1,0 +1,35 @@
+# Read Rishi assertions for needles supplied by a command operand.
+# The scan gates simple default stdout forms with one literal path. Options,
+# stderr, and other utilities stay reported so their output can be reviewed.
+# A text match identifies self-supplied evidence within this narrow command set;
+# it does not prove program scope, command success, or the intent of an assertion.
+# The control checks real tracked files and demonstrates the default output of
+# the available default utilities. Its file-format shim proves only the modeled format.
+# Run: rishi/bin/rishi run tools/s/self_matching_assert_witness.rish
+
+say "self-matching-assert: read the command form and output channel."
+let census = run ["sh" "tools/fixtures/s/self_matching_assert_scan.sh"]
+say census.out
+say census.err
+assert census.ok else "self-matching-assert: scan refused"
+assert census.out contains "verdict=ok" else "self-matching-assert: scan verdict"
+assert census.out contains "gated=0" else "self-matching-assert: operand evidence"
+assert census.out contains "runners=" else "self-matching-assert: corpus count"
+assert census.out contains "asserts=" else "self-matching-assert: assertion count"
+assert census.out contains "reported=" else "self-matching-assert: review count"
+assert census.out contains "unresolved=" else "self-matching-assert: unresolved count"
+
+let control = run ["sh" "tools/fixtures/s/self_matching_assert_control.sh"]
+say control.out
+say control.err
+assert control.ok else "self-matching-assert: control refused"
+assert control.out contains "control_verdict=ok" else "self-matching-assert: control verdict"
+assert control.out contains "fail=0" else "self-matching-assert: control failures"
+assert control.out contains "ok   stat_format stays reported" else "self-matching-assert: stat option boundary"
+assert control.out contains "probe_stat_format=" else "self-matching-assert: stat capability reading"
+assert control.out contains "mechanism_probes=accounted" else "self-matching-assert: output probe accounting"
+assert control.out contains "ok   absent optional utilities keep the control runnable" else "self-matching-assert: optional utility boundary"
+assert control.out contains "ok   stderr_default stays reported" else "self-matching-assert: channel boundary"
+assert control.out contains "ok   comment-only assert count" else "self-matching-assert: executable source boundary"
+assert control.out contains "ok   rebound result drops old command" else "self-matching-assert: binding boundary"
+say "GREEN: self-matching-assert -- command forms checked; other matches stay reported."
