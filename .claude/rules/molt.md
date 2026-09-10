@@ -28,6 +28,6 @@ The vocabulary this rides on is already seated in `context/LEXICON.md`:
 
 ## Why the word exists
 
-A tree that grows in the open keeps re-seating its best writing at fresh stamps, and the old copies pile up honestly on disk. "molt" is one syllable for the whole tending gesture -- grow the new skin, mark the old one for shedding -- so a routine sweep readies both the living edge and the shred-prep list without ever reaching for the knife.
+A tree that grows in the open keeps re-seating its best writing at fresh stamps, and the old copies pile up honestly on disk. "molt" is one syllable for the whole tending gesture -- grow the new skin, mark the old one for shedding -- so a routine sweep readies both the living edge and the shred-prep list while the knife stays in the drawer.
 
 Canonical Cursor twin: `.cursor/rules/molt.mdc`.

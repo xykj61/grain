@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `424ae5b104` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9008bc9e8e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
 Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
@@ -171,40 +171,32 @@ slash rule is a COST reading and says so now: no reading moves, **189s to 208s**
 **YOURS:** the scan computes the split; its header says moving the gate to `lost_promised_living`
 (**0**) waits on your word, *asked on ITINERARY* -- **the ask was no longer there**. Until it moves,
 no lawful lap makes this guard green.
-**INCENSE -- A SHARE NAMED THE PAGE AND NEVER THE SENTENCES.**
-Elder [shelved](archive/20260910-115821_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, and its cardinal seat asks what a round changed and whether running it
-again would change more. My own last lap left the law room a listing of nineteen pages and their
-shares -- `law: .claude/rules/git-signing.md 55% (32 of 58 sentences)` -- and no way to see WHICH
-thirty-two. That finding is most of what a register sweep costs, so the sweep waits and the ceiling
-holds still.
-**BUILT:** `--explain <path>`, a MODE rather than a second tool. It calls the same `measure()` with
-one flag set, so one word list, one splitter and one four-word floor serve the gate and the listing
-alike, and the two agree by construction. Each row carries the counted sentence and the words that
-counted it.
-**THE SECOND BUFFER IS THE MECHANISM.** The reading buffer is lowercased with links and code spans
-replaced, and `**wrong.**` holds a period the splitter reaches only once the emphasis marks come
-off -- so the file's own bytes split differently by **four to fourteen sentences on nearly every
-page** in the law room and the foundations. A listing built from them prints a WARM sentence as
-negative, which the mutation shows doing exactly that.
-**PROVEN:** nine legs in a pen, **two mutations bite** -- an unsubstituted second buffer misprints
-all three planted rows, one of them naming a WARM sentence, and a dropped bound prints past it in
-silence. The reading itself is untouched:
-the full scan's output is byte-identical before and after.
-**THE PRICE OF THE WHOLE ROOM, which nothing could name until now: 77 sentences.** Nineteen pages
-carry 295 counted negatives, and **eleven of the nineteen need three restatements or fewer** to
-clear the target; `the-baton` wants 14 and `git-signing` 15. A nineteen-page backlog is really an
-afternoon.
-**PAID TWO:** `comlink-tendency` 58% -> **0%** and `azimuth-galaxy-proposal-format` 63% -> **0%**,
-seven counted sentences each, every claim, name, path and stamp held; cards **A+ 100** and **A 90**.
-Ceiling **19 -> 17**.
-**ONE HOLE NAMED RATHER THAN CLOSED:** `prose_register_control.sh` keeps no leg tally, so its
-witness hears a leg only by naming it -- the third room to carry that shape after Patchouli's
-`silent_leg` and the ascii pen. All nine new legs are named; a tally is its own lap.
-**COLD 239/236 green/0 red/3 gated, `tree_moved=no`; HOT 240/237 green/0 red.** `tame_reach`, red
-on my last three laps, is a peer's close.
-**YOURS:** whether a law page whose SUBJECT is refusal -- `placeholder-ship-names` at 50% of 10 --
-belongs at Field at all, or at Meter beside the ledger rows.
+**INCENSE -- A CONTROL THAT REACHED ITS LAST LINE SAID NOTHING ABOUT ITS LEGS.**
+Elder [shelved](archive/20260910-140304_itinerary-landed-accounts.md).
+**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the page was my own: my last lap named a hole
+in `prose_register_control.sh` and left it open. `control_verdict=ok` says the control reached its
+own last line and **nothing about what its legs read**, so a leg could answer `no` under a GREEN
+gate -- the grain's own ear strand, *a guard that cannot red guards nothing*, one level down.
+**MEASURED FIRST:** all **32** legs standing today ARE asserted by name in the witness, so the hole
+was the leg a lap opens tomorrow. That is why the tally is DERIVED in the control rather than typed
+in the witness.
+**MECHANISM:** `say()` tallies `legs` and `failed` and prints `control_legs` and `control_failed`;
+every `echo "name=yes|no"` became `say name yes|no`, so each `&&`/`||` chain is untouched. **The
+readings are unmoved, proven rather than claimed** -- the control's whole output before the change
+is byte-identical to its output after, minus the two new lines.
+**THREE MUTATIONS BITE ON METAL:** a leg flipped to refuse reads `control_failed=1`; a leg added
+with no assertion moves `control_legs` to 33; and the case that matters most -- a leg added, the
+count raised, and **no assertion of its own** -- is caught by `control_failed=0` alone. Third room
+to close this shape, after the ascii pen and Patchouli's `silent_leg`.
+**THE SWEEP PAID THREE, cheapest-first, which `--explain` is what made readable:** `molt` 35% of 14,
+`vocabulary-aroma` 32% of 25, `exec-bit` 31% of 32 -- **one counted word each**, a `without` for a
+`while`, a `never` for a plain clause, a `loses` for a `drops`. All three read **28%**; cards **A 93,
+A 91, A 93**. Ceiling **17 -> 14**.
+**COLD OPEN: 240 guards, 237 green, 0 red, 3 gated (%5, %7), `tree_moved=no`.**
+**YOURS:** the ledger is still full -- `construction/REDS.md` reads **40,957 of 40,960** -- so this
+lap booked no row and cited nothing by number. Fourteen law pages remain over target and
+**eleven of them want three restatements or fewer**; the room is an afternoon, not a season.
+
 **COPAL -- THE COMPARISON WAS WRITTEN ONCE AND SKIPPED ONCE.**
 Elder [shelved](archive/20260910-115439_itinerary-landed-accounts.md) whole.
 **AETHER HEARS THE PAGE NOBODY ANSWERED**, and my own card named it: `resin_body_proven` stood as
@@ -243,6 +235,7 @@ pass's launch and lacked at its close, so `standing_equipment` read `roster_brok
 the stash, where `stash_record` says only that SOME round is.
 **YOURS, KEATON -- THE LEDGER IS STILL FULL.** REDS reads **40,771 of 40,960**, so this row **could
 not land**; cited by stamp (`20260910.115439`) under rule 4. A raise, or your word.
+
 **Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
 judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
 `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

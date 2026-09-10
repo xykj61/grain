@@ -107,7 +107,22 @@
 #
 # THE CEILING FELL 19 -> 17 the day the mode landed, on the two pages it was pointed at first:
 # comlink-tendency 58% of 12 sentences and azimuth-galaxy-proposal-format 63% of 11, both to 0%,
-# seven counted sentences each restated and every claim, name, path and stamp held.
+# seven counted sentences each restated and every claim, name, path and stamp held. It fell 17 -> 14
+# the same day on the three pages the listing priced at ONE restatement each -- molt 35% of 14,
+# vocabulary-aroma 32% of 25, exec-bit 31% of 32, all three reading 28% after one counted word
+# apiece went. Reading the room cheapest-first is what the mode made possible.
+#
+# EVERY LEG OF THE PEN IS HEARD, and until `20260910.125644` only the named ones were. The control
+# ended on `control_verdict=ok`, which says it reached its own last line and nothing about what its
+# legs read, so a leg could answer `no` under a GREEN gate. Measured on the seating lap: all 32 legs
+# standing that day were in fact asserted by name below, so the hole was the leg a lap opens
+# tomorrow. `say()` in the control tallies `control_legs` and `control_failed`, derived from the
+# legs themselves rather than typed here, and both are asserted -- the floor beneath the named
+# assertions, each of which still carries the sentence a reader repairs by. Two mutations bite: one
+# leg flipped to refuse reads `control_failed=1`, and a leg added with no assertion of its own moves
+# `control_legs` to 33. The readings are untouched, proven rather than claimed -- the control's whole
+# output before the change is byte-identical to its output after, minus the two new lines. This is
+# the third room to close the shape, after the ascii pen and Patchouli's `silent_leg`.
 #
 # WHAT IS NOT PROVEN. That the prose is GOOD. This counts negation density, one honest proxy among
 # several. A page can pass this meter and still fail a reader, so the second number to read is
@@ -127,7 +142,7 @@ say scan.out
 assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
 assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
 assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
-assert scan.out contains "law_ceiling=17" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
+assert scan.out contains "law_ceiling=14" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
 say "field GREEN -- the front door reads the way the style says it does, and the law room now reads its own number"
 
 let control = run ["sh" "tools/fixtures/p/prose_register_control.sh"]
@@ -166,6 +181,8 @@ assert control.out contains "explain_bounded=yes" else "prose-register: the list
 assert control.out contains "explain_refuses_an_absent_path=yes" else "prose-register: an absent path must refuse rather than read as a clean page"
 assert control.out contains "explain_reading_unchanged=yes" else "prose-register: --explain must add a printout and move no number the gate reads"
 assert control.out contains "control_verdict=ok" else "prose-register: the control must agree with itself"
+assert control.out contains "control_failed=0" else "prose-register: a leg of the pen read no -- run sh tools/fixtures/p/prose_register_control.sh and read the =no lines"
+assert control.out contains "control_legs=32" else "prose-register: the pen's leg count moved -- raise it when a leg lands, and never lower it to make a deletion quiet"
 say "the reading discriminates -- warm prose low, refusal-led prose high, and the edges read correctly"
 
 say "GREEN: prose-register -- prose that measures, measured."

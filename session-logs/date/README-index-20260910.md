@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.140304` | [A control that reached its last line](20260910/20260910-140304_the-legs-nobody-counted.kyri) | the register pen's legs, counted at last |
 | `20260910.125501` | [The runs ledger named which round](20260910/20260910-125501_the-runs-ledger-named-which-round.kyri) | a dead send found by name; the ferry now proves each body |
 | `20260910.121514` | [The widening that cost one file](20260910/20260910-121514_the-widening-that-cost-one-file.kyri) | brix joins the TAME style roster |
 | `20260910.115926` | [A share named the page and never the sentences](20260910/20260910-115926_a-share-named-the-page.kyri) | the whole law room priced at 77 sentences |

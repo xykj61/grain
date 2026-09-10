@@ -27,6 +27,20 @@ sed -n '/^measure() {/,/^}/p' "$scan" > "$pen/measure.sh"
 pct_of() { set -- $(measure "$1"); echo "$3"; }
 sent_of() { set -- $(measure "$1"); echo "$1"; }
 
+# EVERY LEG IS TALLIED, because a reading nobody names is a reading nobody hears.
+# `control_verdict=ok` says only that this control reached its own last line, so a leg the
+# witness never names could read `no` under a GREEN gate. Measured `20260910.125644`: all 32
+# legs standing today ARE named there, so the hole is the one a lap opens tomorrow -- which is
+# exactly how the ascii pen and Patchouli's `silent_leg` found theirs. The tally is derived
+# here rather than typed in the witness, so a leg added tomorrow is heard the day it lands.
+legs=0
+failed=0
+say() { # say <name> <yes|no> [detail]
+  legs=$((legs + 1))
+  [ "$2" = yes ] || failed=$((failed + 1))
+  echo "$1=$2${3-}"
+}
+
 # 1. Warm prose reads low.
 cat > "$pen/warm.md" <<'EOF'
 Grain gives you a computer that answers to you. Your words stay on your machine.
@@ -35,7 +49,7 @@ before it starts, and it can show you it stayed inside. A witness prints green w
 promise holds. Every name we choose stays clear on the first day and the ten thousandth.
 EOF
 w=$(pct_of "$pen/warm.md")
-[ "$w" -le 20 ] && echo "warm_reads_low=yes" || echo "warm_reads_low=no ($w%)"
+[ "$w" -le 20 ] && say warm_reads_low yes || say warm_reads_low no " ($w%)"
 
 # 2. Refusal-led prose reads high.
 cat > "$pen/cold.md" <<'EOF'
@@ -45,8 +59,8 @@ A stale claim is worse than a missing one, and a broken reference never resolves
 Nothing grows until something breaks, and no page may lie about what it cannot prove.
 EOF
 c=$(pct_of "$pen/cold.md")
-[ "$c" -ge 60 ] && echo "cold_reads_high=yes" || echo "cold_reads_high=no ($c%)"
-[ "$c" -gt "$w" ] && echo "reading_discriminates=yes" || echo "reading_discriminates=no"
+[ "$c" -ge 60 ] && say cold_reads_high yes || say cold_reads_high no " ($c%)"
+[ "$c" -gt "$w" ] && say reading_discriminates yes || say reading_discriminates no
 
 # 3. A fenced code block is code rather than prose, and must not colour the reading.
 cat > "$pen/fenced.md" <<'EOF'
@@ -60,7 +74,7 @@ if (!ok) return error.NotFound; // never, no, cannot, failed, broken, wrong
 A witness prints green when a promise holds, and the tree keeps its own books.
 EOF
 f=$(pct_of "$pen/fenced.md")
-[ "$f" -le 20 ] && echo "fence_excluded=yes" || echo "fence_excluded=no ($f%)"
+[ "$f" -le 20 ] && say fence_excluded yes || say fence_excluded no " ($f%)"
 
 # 4. Tables and headings carry labels rather than sentences, and are read past.
 cat > "$pen/table.md" <<'EOF'
@@ -75,15 +89,15 @@ Grain gives you a computer that answers to you. Every bound is named before it i
 A witness prints green when a promise holds, and the tree keeps its own books today.
 EOF
 t=$(pct_of "$pen/table.md")
-[ "$t" -le 20 ] && echo "table_excluded=yes" || echo "table_excluded=no ($t%)"
+[ "$t" -le 20 ] && say table_excluded yes || say table_excluded no " ($t%)"
 
 # 5. A fragment shorter than four words is no sentence.
 printf 'Yes. No. Fine. Grain gives you a computer that answers to you today and tomorrow.\n' > "$pen/frag.md"
-[ "$(sent_of "$pen/frag.md")" -eq 1 ] && echo "fragments_skipped=yes" || echo "fragments_skipped=no"
+[ "$(sent_of "$pen/frag.md")" -eq 1 ] && say fragments_skipped yes || say fragments_skipped no
 
 # 6. An empty page reads zero rather than dividing by zero.
 : > "$pen/empty.md"
-[ "$(pct_of "$pen/empty.md")" -eq 0 ] && echo "empty_safe=yes" || echo "empty_safe=no"
+[ "$(pct_of "$pen/empty.md")" -eq 0 ] && say empty_safe yes || say empty_safe no
 
 # 8. A paragraph that opens with a bold span is prose, and is read (REDS %451). This is the whole
 #    of the repair: the elder `*` branch dropped every one of these, so a page could be graded on
@@ -98,8 +112,8 @@ cat > "$pen/boldlead.md" <<'EOF'
 **What it taught:** a stale claim is worse than a missing one, and no page may lie about it.
 EOF
 b=$(pct_of "$pen/boldlead.md")
-[ "$(sent_of "$pen/boldlead.md")" -ge 3 ] && echo "bold_lead_is_read=yes" || echo "bold_lead_is_read=no"
-[ "$b" -ge 60 ] && echo "bold_lead_reads_high=yes" || echo "bold_lead_reads_high=no ($b%)"
+[ "$(sent_of "$pen/boldlead.md")" -ge 3 ] && say bold_lead_is_read yes || say bold_lead_is_read no
+[ "$b" -ge 60 ] && say bold_lead_reads_high yes || say bold_lead_reads_high no " ($b%)"
 
 # 9. A real bullet is still read past -- the marker THEN whitespace, which is what CommonMark says.
 cat > "$pen/bullets.md" <<'EOF'
@@ -112,7 +126,7 @@ Grain gives you a computer that answers to you. Every bound is named before it i
 A witness prints green when a promise holds, and the tree keeps its own books today.
 EOF
 u=$(pct_of "$pen/bullets.md")
-[ "$u" -le 20 ] && echo "bullets_excluded=yes" || echo "bullets_excluded=no ($u%)"
+[ "$u" -le 20 ] && say bullets_excluded yes || say bullets_excluded no " ($u%)"
 
 # 10. Front matter is dropped ON PURPOSE, where it used to fall to the bullet branch by accident.
 #     The wrapped value on the continuation line rides with it, which is what finally drops the
@@ -129,7 +143,7 @@ Grain gives you a computer that answers to you. Every bound is named before it i
 A witness prints green when a promise holds, and the tree keeps its own books today.
 EOF
 m=$(pct_of "$pen/front.md")
-[ "$m" -le 20 ] && echo "front_matter_excluded=yes" || echo "front_matter_excluded=no ($m%)"
+[ "$m" -le 20 ] && say front_matter_excluded yes || say front_matter_excluded no " ($m%)"
 
 # 11. THE REFUSAL SIDE OF THE SAME RULE, and the reason it needs both position and shape. A body
 #     paragraph opening with a bold key is the SAME SHAPE as front matter, so a rule keyed on shape
@@ -145,7 +159,7 @@ cat > "$pen/afterfront.md" <<'EOF'
 **What it taught:** a stale claim is worse than a missing one, and no page may lie about it.
 EOF
 a=$(pct_of "$pen/afterfront.md")
-[ "$a" -ge 60 ] && echo "body_after_front_matter_is_read=yes" || echo "body_after_front_matter_is_read=no ($a%)"
+[ "$a" -ge 60 ] && say body_after_front_matter_is_read yes || say body_after_front_matter_is_read no " ($a%)"
 
 # 12. A page whose body opens with a bold span and carries NO front matter keeps that body. The
 #     head rule requires the short-key shape, so an opening sentence in bold is a sentence.
@@ -155,12 +169,12 @@ cat > "$pen/nofront.md" <<'EOF'
 **The working style of this tree** is one nobody measured, and the reading was broken.
 Nothing here was trusted, and the stale claim never refused a single wrong input at all.
 EOF
-[ "$(sent_of "$pen/nofront.md")" -ge 2 ] && echo "bold_opening_without_key_is_read=yes" || echo "bold_opening_without_key_is_read=no"
+[ "$(sent_of "$pen/nofront.md")" -ge 2 ] && say bold_opening_without_key_is_read yes || say bold_opening_without_key_is_read no
 
 # 13. The real door roster passes, and the scan agrees with itself.
 out=$(sh "$scan" 2>/dev/null)
-echo "$out" | grep -q 'door_over_ceiling=0' && echo "live_door_clean=yes" || echo "live_door_clean=no"
-echo "$out" | grep -q 'verdict=ok' && echo "live_verdict_ok=yes" || echo "live_verdict_ok=no"
+echo "$out" | grep -q 'door_over_ceiling=0' && say live_door_clean yes || say live_door_clean no
+echo "$out" | grep -q 'verdict=ok' && say live_verdict_ok yes || say live_verdict_ok no
 
 # 14-16. THE UNROSTERED CENSUS, proven by planting rather than by watching the live tree. The
 #     reading names every tracked README.md that clears the eight-sentence floor, stands above the
@@ -202,15 +216,15 @@ ro=$(cd "$census" && sh scan_rostered.sh 2>/dev/null)
 
 # The plant plants something: the page IS named, by path and by share.
 echo "$un" | grep -q '^candidate: room/README.md ' \
-  && echo "census_names_the_page=yes" || echo "census_names_the_page=no"
+  && say census_names_the_page yes || say census_names_the_page no
 # And naming it changes no verdict -- one candidate standing, and the scan still balances.
 { echo "$un" | grep -q '^front_doors_unrostered_over=1$' && echo "$un" | grep -q '^verdict=ok$'; } \
-  && echo "census_reported_not_gated=yes" || echo "census_reported_not_gated=no"
+  && say census_reported_not_gated yes || say census_reported_not_gated no
 # The load-bearing other side: the SAME bytes on the roster refuse. One roster line apart, so the
 # reading is told from the gate rather than assumed to differ from it.
 { echo "$ro" | grep -q '^door_over_ceiling=1$' && echo "$ro" | grep -q '^verdict=register_drift$' \
   && echo "$ro" | grep -q '^front_doors_unrostered_over=0$'; } \
-  && echo "census_roster_gates_the_same_page=yes" || echo "census_roster_gates_the_same_page=no"
+  && say census_roster_gates_the_same_page yes || say census_roster_gates_the_same_page no
 rm -rf "$census"
 
 # 17-20. THE LAW TIER, proven in a pen rather than by watching the live count. `.claude/rules/*.md`
@@ -272,22 +286,22 @@ loose=$(cd "$law" && sh scan_loose.sh 2>/dev/null)
 
 # The plant plants something: the cold page IS named, by path and by share.
 echo "$tight" | grep -q '^law: .claude/rules/cold.md ' \
-  && echo "law_names_the_page=yes" || echo "law_names_the_page=no"
+  && say law_names_the_page yes || say law_names_the_page no
 # The warm page written the same day in the same room stays off the listing, so the reading
 # discriminates inside the tier rather than counting every rule page it finds.
 echo "$tight" | grep -q '^law: .claude/rules/warm.md ' \
-  && echo "law_spares_the_warm_page=no" || echo "law_spares_the_warm_page=yes"
+  && say law_spares_the_warm_page no || say law_spares_the_warm_page yes
 # Under the eight-sentence floor a page is unread rather than counted -- three rule pages in the
 # room, two of them long enough to read a share from honestly.
 { echo "$tight" | grep -q '^law_documents=3$' && echo "$tight" | grep -q '^law_readable=2$'; } \
-  && echo "law_floor_holds=yes" || echo "law_floor_holds=no"
+  && say law_floor_holds yes || say law_floor_holds no
 # One over the ceiling refuses.
 { echo "$tight" | grep -q '^law_over_field_target=1$' && echo "$tight" | grep -q '^verdict=register_drift$'; } \
-  && echo "law_ceiling_refuses=yes" || echo "law_ceiling_refuses=no"
+  && say law_ceiling_refuses yes || say law_ceiling_refuses no
 # The same bytes one ceiling number apart walk free, so the refusal is told from a scan that
 # refuses everything.
 { echo "$loose" | grep -q '^law_over_field_target=1$' && echo "$loose" | grep -q '^verdict=ok$'; } \
-  && echo "law_ceiling_lifts=yes" || echo "law_ceiling_lifts=no"
+  && say law_ceiling_lifts yes || say law_ceiling_lifts no
 rm -rf "$law"
 
 # --explain: the repair-grade reading, proven to agree with the count it explains.
@@ -315,14 +329,14 @@ rows=$(echo "$exout" | grep -c '^neg ')
 counted=$(echo "$exout" | sed -n 's/^explain_negative=//p')
 
 # The listing exists and names sentences.
-[ "$rows" -gt 0 ] && echo "explain_names_the_sentences=yes" || echo "explain_names_the_sentences=no"
+[ "$rows" -gt 0 ] && say explain_names_the_sentences yes || say explain_names_the_sentences no
 # One row per counted negative -- the listing agrees with the number the gate reads.
-[ "$rows" = "$counted" ] && echo "explain_agrees_with_the_count=yes" || echo "explain_agrees_with_the_count=no"
+[ "$rows" = "$counted" ] && say explain_agrees_with_the_count yes || say explain_agrees_with_the_count no
 # The word that counted the sentence is named, rather than left to a reader to find.
-echo "$exout" | grep -qE '^neg [0-9]+ \[[^]]*blind[^]]*\] ' && echo "explain_names_the_word=yes" || echo "explain_names_the_word=no"
+echo "$exout" | grep -qE '^neg [0-9]+ \[[^]]*blind[^]]*\] ' && say explain_names_the_word yes || say explain_names_the_word no
 # Capitals survive, so the printed sentence is recognisable in the file the lane opens.
 echo "$exout" | grep -q '^neg [0-9]* \[[a-z ]*\] The guard was blind' \
-  && echo "explain_keeps_capitals=yes" || echo "explain_keeps_capitals=no"
+  && say explain_keeps_capitals yes || say explain_keeps_capitals no
 # THE ALIGNMENT LEG, and the reason the second buffer carries the substitutions rather than the
 # file's own bytes. `**wrong.**` holds a period the splitter cannot reach until the emphasis marks
 # come off, so the substituted buffer splits there and the untouched one does not -- every later
@@ -330,7 +344,7 @@ echo "$exout" | grep -q '^neg [0-9]* \[[a-z ]*\] The guard was blind' \
 # room and the foundations, the two spellings disagree on nearly every page this tree writes, by
 # four to fourteen sentences each. It prints as itself.
 echo "$exout" | grep -q '^neg [0-9]* \[[a-z ]*\] This third sentence is broken' \
-  && echo "explain_aligns_after_normalising=yes" || echo "explain_aligns_after_normalising=no"
+  && say explain_aligns_after_normalising yes || say explain_aligns_after_normalising no
 # A page the meter reads as warm lists nothing and still answers.
 cat > "$ex/warm.md" <<'EOF'
 # A warm page
@@ -342,19 +356,23 @@ Warmth is what the register asks for, and this page gives it.
 EOF
 warm=$(sh "$scan" --explain "$ex/warm.md" 2>&1)
 { echo "$warm" | grep -q '^explain_listed=0$' && echo "$warm" | grep -q '^verdict=ok$'; } \
-  && echo "explain_warm_lists_nothing=yes" || echo "explain_warm_lists_nothing=no"
+  && say explain_warm_lists_nothing yes || say explain_warm_lists_nothing no
 # The listing is bounded, and says where it stopped rather than trailing off in silence.
 bounded=$(sh "$scan" --explain "$ex/page.md" 1 2>&1)
 { [ "$(echo "$bounded" | grep -c '^neg ')" = "1" ] && echo "$bounded" | grep -q '^explain_truncated_at=1$'; } \
-  && echo "explain_bounded=yes" || echo "explain_bounded=no"
+  && say explain_bounded yes || say explain_bounded no
 # An absent path refuses rather than reporting an empty page as clean.
 sh "$scan" --explain "$ex/absent.md" >/dev/null 2>&1 \
-  && echo "explain_refuses_an_absent_path=no" || echo "explain_refuses_an_absent_path=yes"
+  && say explain_refuses_an_absent_path no || say explain_refuses_an_absent_path yes
 # THE READING IS UNTOUCHED. measure() with one argument answers exactly what it answers with the
 # flag set, so the mode adds a printout and changes no number the gate reads.
 plain=$(measure "$ex/page.md")
 flagged=$(measure "$ex/page.md" 1 80 | grep -vE '^(neg |explain_)')
-[ "$plain" = "$flagged" ] && echo "explain_reading_unchanged=yes" || echo "explain_reading_unchanged=no"
+[ "$plain" = "$flagged" ] && say explain_reading_unchanged yes || say explain_reading_unchanged no
 rm -rf "$ex"
+
+# These two say what the legs read, beneath every named assertion in the witness.
+echo "control_legs=$legs"
+echo "control_failed=$failed"
 
 echo "control_verdict=ok"
