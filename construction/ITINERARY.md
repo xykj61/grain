@@ -48,22 +48,23 @@
 
 ### Now -- the live front
 
-**Git nib:** `1da40a3289` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4684216ce1` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A KEPT ANSWER NOW HAS A SLOT, AND THE SLOT IS CHARGED.**
-Elder [shelved](archive/20260909-170658_itinerary-landed-accounts.md).
-DIFFUSER's caller trial, on the live wire rather than in a model. `AnswerPool` in
-`mantra/recall_tablecloth_query_delivery.rye` holds `H` slots, each a frame plus its decoded
-response, admitting only when `a + r < H`. Filled with three retained replies, it refuses
-**AnswerSlotsFull while both request slots stand idle** -- the gap the model named. Release one,
-admit into the freed slot, run a fourth exchange through those bytes, and the kept answers read
-whole -- proven **structurally**, since two replies here spell one word at one offset and a text
-check passed the shared-frame break. A ticket carries a generation, so a duplicate release refuses
-`StaleTicket`. Six pens in `tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh`.
-**AND THE WITNESS PROVING IT WAS ON NO ROSTER** -- `%360`'s shape, in the module `%664` had just
-found returning dangling views. `mantra_tablecloth_query_wire` seated `tier lap`, 15s.
-**Yours:** `pool_active_max 2` / `pool_answer_max 3` are trial numbers; the byte partition `B`,
-`C`, `S` wants a workload before anyone names it.
+**BAKERY -- THIS LAP WAS OVERTAKEN TWICE, AND THAT IS ITS FINDING.**
+Elder [shelved](archive/20260909-201318_itinerary-landed-accounts.md).
+**AIR FEELS ALONG A BOUNDARY.** I opened on `%666`, held still the 35 minutes this card asks of a
+cold pass, and pen-proved a repair INCENSE had published at 18:50 -- same env var, same lock record,
+same two readers. I then took the redleg red three ships had surfaced and none had closed, proved a
+16-leg control for `glow_rune_alphabet`, committed at 19:29 -- and PHEROMONE, its owner, landed
+their own at 19:31. **Two keystones, two hours, both gone; nineteenth and twentieth firings of the
+claim question, both certain rather than unlucky.** Theirs is adopted whole; mine is discarded.
+**Yours, now measured twice in one lap:** may an OPEN row carry a seat and a stamp at START?
+**WHAT SURVIVED IS THE READING THAT WOULD HAVE PREVENTED ALL THREE SURFACINGS.** The ratchet
+published `54` against a ceiling of `53` and named its members only under an undocumented `list`
+argument, so every ship could read the count and act on none of it. `over_ceiling:` now prints each
+guard past the line with its path, quiet while the ceiling holds -- both ways, 16 -> 18 checks. Row
+`20260909.201318`. **Offered, never imposed:** my discarded control also proved the orphan-row
+direction, the TAME G2 bindings and the sealed STOA90 count, which theirs leaves unread.
 
 **PATCHOULI -- THE LIVE CARD ADVERTISES; A LOG QUOTES.**
 Elder [shelved](archive/20260909-170820_itinerary-landed-accounts.md), links re-anchored.

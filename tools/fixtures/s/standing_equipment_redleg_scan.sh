@@ -105,6 +105,26 @@ fi
 ceiling_ok=yes
 [ "$no_marker" -le "$CEILING" ] || ceiling_ok=no
 
+# A RAISED CEILING NAMES THE GUARDS THAT RAISED IT. The count alone tells a lap that something
+# arrived and nothing about what, so the lap that meets the red has to read this script's source to
+# discover that `list` is an argument at all. Measured `20260909`: this ceiling was raised by one
+# guard at 15:50 and three ships surfaced the red over the next two hours, each naming the count
+# and none able to act on it, because acting means knowing WHICH. The tree already writes this
+# sentence one family over -- the costliest-guard reading names its members for exactly this reason
+# -- and the repairable question is which, never how many.
+#
+# ONLY WHEN THE CEILING IS RAISED, and bounded like every other list here. A green pass prints
+# fifty-three names nobody asked for; a red pass prints the arrivals, and the newest rows sit at the
+# roster's end, so the tail is where a fresh arrival is.
+if [ "$ceiling_ok" = no ]; then
+  over=$((no_marker - CEILING))
+  [ "$over" -le "$MAX_REPORT" ] || over=$MAX_REPORT
+  grep '^no-marker' "$work/report.txt" | tail -"$over" \
+    | while IFS="$(printf '\t')" read -r kind name path; do
+        printf 'over_ceiling: %s (%s) -- rostered with no refusal of its own\n' "$name" "$path"
+      done
+fi
+
 verdict=ok
 [ "$no_assert" -eq 0 ] || verdict=vacuous_guard
 [ "$ceiling_ok" = yes ] || verdict=ceiling_raised

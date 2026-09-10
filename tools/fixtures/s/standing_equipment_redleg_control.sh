@@ -85,6 +85,13 @@ echo "$out" | grep -q 'verdict=ok' && ok "at the ceiling the verdict stands" || 
 out=$(run_scan 0 || true)
 echo "$out" | grep -q 'ceiling_ok=no' && ok "one past the ceiling refuses" || bad "one past the ceiling refuses"
 echo "$out" | grep -q 'verdict=ceiling_raised' && ok "one past the ceiling names the raise" || bad "one past the ceiling names the raise"
+# A RAISED CEILING NAMES WHAT RAISED IT. Three ships surfaced this ceiling's own raise on
+# `20260909` and none could act on it, because a count says something arrived and never what. The
+# free side matters as much: a pass that HOLDS must stay quiet, or the reading becomes a wall of
+# names on every green lap and a reader stops looking at it.
+echo "$out" | grep -q 'over_ceiling: choir ' && ok "a raised ceiling names the guard that raised it" || bad "a raised ceiling names the guard that raised it"
+out=$(run_scan 1 || true)
+echo "$out" | grep -q 'over_ceiling:' && bad "a held ceiling stays quiet" || ok "a held ceiling stays quiet"
 
 # --- an absent path is counted rather than crashed over ---
 write_roster toothed ghost
