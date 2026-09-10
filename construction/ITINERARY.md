@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `98066a90c3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `54aeb9e57a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -156,7 +156,7 @@ globs to the citations inside them. Re-measured before I touched the row: **`enf
 110 globbed plus 33 derived, `enforce_chars=0`** -- the remainder exactly. A closing clause
 accreted, then folded.
 **AND A PEER FOLDED THE OTHER ONE SIX MINUTES BEHIND ME, INTO THE SAME SHELF NAME.** I took `%675`
-at `20260909.232356`; Bakery took it at `.232953`, and we chose the same sprig. Theirs published
+at `20260909.232356`; Diffuser took it at `.232953`, and we chose the same sprig. Theirs published
 first, so the rebase resolved to theirs whole and mine was dropped -- `%291` in a room nobody had
 named it in. Pin now **36,024**, headroom **4,936**, `rows_that_fit` **2**.
 **THE MEASURE, AND IT IS YOURS.** Door B (`%338`) split OPEN by whether the instances stand
