@@ -89,6 +89,26 @@ mkdir -p "$settled/rooms"
   git commit -qm "pen: a tree with nothing left to settle"
 ) >/dev/null 2>&1
 
+# A THIRD SUBJECT, WHICH IGNORES ITS OWN ROOT. This tree's `.gitignore` denies the whole repository
+# root with `/*` and allows the project's directories back one at a time, because the checkout sits
+# inside a sandboxed home holding the editor, credentials and personal files. The shape is copied
+# here rather than described, since the fault it produces is invisible to any pen that has no
+# `.gitignore`: `git add -A` stages nothing ignored, so `git write-tree` -- the prover's whole
+# comparison -- cannot see a write at the root at all.
+ignoring="$pen/ignoring"
+mkdir -p "$ignoring/rooms"
+(
+  cd "$ignoring"
+  git init -q .
+  git config user.email pen@example.invalid
+  git config user.name "Pen Hand"
+  git config commit.gpgsign false
+  printf '/*\n!/.gitignore\n!/rooms\n!/tools\n' > .gitignore
+  printf 'settled already\n' > rooms/quiet.md
+  git add -A
+  git commit -qm "pen: a tree that ignores its own root"
+) >/dev/null 2>&1
+
 ops="$pen/ops"; mkdir -p "$ops"
 
 # A CONVERGING operator: it walks the tree and settles a marker whose settled form matches nothing.
@@ -132,10 +152,20 @@ printf 'spoil\n' >> rooms/two.md
 n=$(grep -c spoil rooms/two.md)
 if [ "$n" -gt 1 ]; then echo "refused: I spoiled my own work and wrote anyway" >&2; exit 1; fi
 S
-chmod +x "$ops/settle.sh" "$ops/append.sh" "$ops/toggle.sh" "$ops/refuser.sh" "$ops/sour.sh" "$ops/spoil.sh"
+# AN OPERATOR WHOSE EVERY WRITE LANDS AT THE ROOT. It appends on every run, so it diverges wherever
+# the comparison can see it -- and where the root is ignored the same operator wrote its whole
+# output somewhere `write-tree` never looks. One operator, two repositories, and only the
+# `.gitignore` between them: that pairing is what makes the reading about the instrument rather
+# than about the tool.
+cat > "$ops/scratch_appender.sh" <<'N'
+#!/bin/sh
+printf 'x\n' >> notes.txt
+N
+chmod +x "$ops/settle.sh" "$ops/append.sh" "$ops/toggle.sh" "$ops/refuser.sh" "$ops/sour.sh" "$ops/spoil.sh" "$ops/scratch_appender.sh"
 
 run() { ( cd "$subject" && sh "$prove" "$@" 2>&1 ) || true; }
 run_settled() { ( cd "$settled" && sh "$prove" "$@" 2>&1 ) || true; }
+run_ignoring() { ( cd "$ignoring" && sh "$prove" "$@" 2>&1 ) || true; }
 
 out=$(run "$ops/settle.sh")
 check "a converging operator converges"   yes "$(has "$out" 'verdict=converges')"
@@ -224,6 +254,31 @@ out=$(run_settled --perturb 'sed -n 1p rooms/quiet.md >/dev/null' "$ops/settle.s
 check "a no-op perturbation is named"     yes "$(has "$out" 'verdict=perturb_inert')"
 check "rather than blamed on the tool"    no  "$(has "$out" 'verdict=inert')"
 
+# THE IGNORED-PATH PAIR, and it is the same braid one layer down. `git write-tree` is the whole
+# comparison, and it stages nothing `.gitignore` denies -- so a write at an ignored path moves the
+# disk and moves no hash. Both directions, one operator, and only the `.gitignore` between them.
+out=$(run "$ops/scratch_appender.sh")
+check "a root write git can see"          yes "$(has "$out" 'verdict=diverges')"
+out=$(run_ignoring "$ops/scratch_appender.sh")
+check "the same write, root ignored"      yes "$(has "$out" 'verdict=unseen')"
+check "rather than read as inert"         no  "$(has "$out" 'verdict=inert')"
+check "and the unseen path is named"      yes "$(has "$out" 'notes.txt')"
+
+# THE PERTURBATION'S HALF. A sample written to an ignored path landed on disk and reached no
+# subject, and the elder reading called that "the sample never landed" -- a true-sounding sentence
+# about a file sitting right there. Met by a hand before it was met here: proving the front door's
+# metrics splice took two tries, the first writing its block file to the pen root.
+out=$(run_ignoring --perturb 'printf x > side.txt' "$ops/settle.sh")
+check "an ignored perturbation is named"  yes "$(has "$out" 'verdict=perturb_unseen')"
+check "rather than called never-landed"   no  "$(has "$out" 'verdict=perturb_inert')"
+# THE INDENTED FORM, never the bare name: `perturb=printf x > side.txt` recites the command, so a
+# check for the bare word passes whatever verdict fired. Caught by running this control against a
+# prover with the repair removed and watching this one leg stay green while its four siblings fell.
+check "and the unseen path is listed"     yes "$(has "$out" '
+  side.txt')"
+out=$(run_ignoring --perturb 'printf "a DASH again\n" >> rooms/quiet.md' "$ops/settle.sh")
+check "a visible perturbation still works" yes "$(has "$out" 'verdict=converges')"
+
 # THE TREE UNDER TEST IS NEVER TOUCHED -- eleven runs above, and its own files still read as committed.
 check "the subject tree is untouched"     yes "$(has "$(cat "$subject/rooms/one.md")" 'a DASH here')"
 check "and no pen worktree is left"       ""  "$( ( cd "$subject" && git worktree list --porcelain | sed -n 's/^worktree //p' | grep -v "^$subject$" ) || true)"
@@ -241,7 +296,7 @@ fi
 
 # SAID OUT LOUD, because `check` prints only on failure: a witness asserting on a failure message
 # would be asserting on text that appears only when this control is broken.
-echo "coverage: mode divergence, the perturb pair, a no-op perturbation, both refusal shapes, an in-tree operator rooted at \$0, a Rishi operator against a shell-only prover, and the elder prover's own leak were each exercised"
+echo "coverage: mode divergence, the perturb pair, a no-op perturbation, an ignored-root write and an ignored-root perturbation shown from both sides, both refusal shapes, an in-tree operator rooted at \$0, a Rishi operator against a shell-only prover, and the elder prover's own leak were each exercised"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

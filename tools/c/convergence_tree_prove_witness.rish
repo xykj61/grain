@@ -12,6 +12,13 @@
 #
 # TWO LEGS PROVE THE TWO CHOICES THAT ARE NEW, rather than only the verdicts.
 #
+# THE IGNORED-PATH LEG (`20260909.201720`). The comparison is `git write-tree`, which stages nothing
+# `.gitignore` denies -- and this tree denies its whole repository root, so a write there moved the
+# disk and moved no hash. An operator appending to an ignored `notes.txt` on every run read `inert`,
+# and a perturbation writing an ignored root file read `perturb_inert`, whose own words are "the
+# sample never landed". `unseen` and `perturb_unseen` refuse instead, and the control shows one
+# operator across two pen repositories differing only in their `.gitignore`.
+#
 # THE MODE LEG. An operator toggling a file's exec bit changes no LINE, so a prover comparing diffs
 # would call it converged. The comparison here is `git write-tree` -- one hash over every path, its
 # bytes and its mode -- so the toggle reads `diverges`. `.claude/rules/exec-bit.md` is thirty-nine
@@ -61,18 +68,18 @@
 # one repository reading `inert` and then `converges` with only the perturbation between them.
 
 say "convergence-tree-prove: Language EN -- a prover whose subject is a repository."
-say "convergence-tree-prove: Style Gauge, Meter -- seven verdicts, and the honest one is named."
+say "convergence-tree-prove: Style Gauge, Meter -- nine verdicts, and the two that refuse to guess are named."
 say "convergence-tree-prove: Lens TAME -- safety first: the pen is a throwaway checkout, never the tree."
 
-say "convergence-tree-prove: the control -- thirty-four behaviors, including an operator rooted at its own $0 and one written in Rishi..."
+say "convergence-tree-prove: the control -- forty-two behaviors, including an operator whose whole output git ignores..."
 let ctl = run ["sh" "tools/fixtures/c/convergence_tree_prove_control.sh"]
 assert ctl.ok else "convergence-tree-prove: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=34 fail=0" else "convergence-tree-prove: the control did not prove thirty-four behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=42 fail=0" else "convergence-tree-prove: the control did not prove forty-two behaviors --\n${ctl.out}\n${ctl.err}"
 
 # invariant: the control exercises a mode-only divergence, both refusal shapes, and the perturb
 # pair -- each of which a passing-direction-only proof would miss. A refusal proven only in the
 # passing direction cannot be told from a bypass.
-assert ctl.out contains "coverage: mode divergence, the perturb pair, a no-op perturbation, both refusal shapes, an in-tree operator rooted at $0, a Rishi operator against a shell-only prover, and the elder prover's own leak were each exercised" else "convergence-tree-prove: the control never exercised its own teeth"
+assert ctl.out contains "coverage: mode divergence, the perturb pair, a no-op perturbation, an ignored-root write and an ignored-root perturbation shown from both sides, both refusal shapes, an in-tree operator rooted at $0, a Rishi operator against a shell-only prover, and the elder prover's own leak were each exercised" else "convergence-tree-prove: the control never exercised its own teeth"
 
 # invariant: the prover answers for the busiest writing this tree does. `reds_ledger_headline_write.sh`
 # runs on every commit through `tools/hooks/pre-commit`, and it is one of the nine no prover could
@@ -106,4 +113,4 @@ let sp = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed -n '/^<!
 assert sp.ok else "convergence-tree-prove: the metrics splice did not converge --\n${sp.out}\n${sp.err}"
 assert sp.out contains "verdict=converges" else "convergence-tree-prove: the metrics splice read something other than converges --\n${sp.out}"
 
-say "GREEN: convergence-tree-prove -- four subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, and all three pages the pre-commit hook regenerates proven to converge."
+say "GREEN: convergence-tree-prove -- four subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, a write git ignores refused rather than read as inert, and all three pages the pre-commit hook regenerates proven to converge."

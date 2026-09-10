@@ -30,11 +30,18 @@
 # waiting: one shell command, run once inside the pen before the first run, exactly as the sibling
 # takes one sample file.
 #
-# SIX VERDICTS:
+# NINE VERDICTS (this line read SIX over a list of seven until `20260909.201720`, when the two
+# below joined it):
 #   converges         -- the second run left the tree byte-identical to what the first run left.
 #   diverges          -- the second run changed the tree again. A red, and the paths are printed.
 #   inert             -- the first run changed nothing, so nothing was exercised and the reading
 #                        proves nothing. Reported, never counted as a pass.
+#   unseen            -- the first run wrote ONLY paths `.gitignore` denies, so `git write-tree` is
+#                        blind to its whole output. A refusal rather than a report: `inert` is a
+#                        claim about the subject, and this instrument never looked where it wrote.
+#   perturb_unseen    -- the PERTURBATION wrote only ignored paths. It landed on disk; the tree hash
+#                        cannot see it, so the subject was never asked. Told apart from
+#                        `perturb_inert` for the same reason that one was told apart from `inert`.
 #   perturb_inert     -- the PERTURBATION changed nothing, so the sample never landed. Told apart
 #                        from `inert` because they are two different facts and only one of them is
 #                        about the tool. This verdict was earned rather than designed: the first
@@ -95,7 +102,7 @@ esac
 # repository, so a pen nested inside it would be part of its own subject.
 pen=$(mktemp -d "${TMPDIR:-/tmp}/conv-tree.XXXXXX")
 rmdir "$pen"
-cleanup() { git -C "$ROOT" worktree remove --force "$pen" >/dev/null 2>&1 || rm -rf "$pen"; }
+cleanup() { git -C "$ROOT" worktree remove --force "$pen" >/dev/null 2>&1 || rm -rf "$pen"; rm -rf "${scratch:-}"; }
 trap cleanup EXIT INT TERM
 
 git -C "$ROOT" worktree add --detach "$pen" HEAD >/dev/null 2>&1 \
@@ -147,7 +154,31 @@ run_subject() {
 
 state() { git -C "$pen" add -A >/dev/null 2>&1; git -C "$pen" write-tree; }
 
+# A TREE HASH CANNOT SEE A PATH GIT IGNORES, AND THE TWO INERT VERDICTS ARE WHERE THAT COSTS
+# (`20260909.201720`). `git add -A` stages what is not ignored, so `write-tree` is blind to every
+# ignored path -- and this tree's own `.gitignore` denies the whole repository root (`/*`, then
+# allow-backs, because the repository sits inside a sandboxed home), so a file written at the root
+# moves the disk and moves no hash. Proven in a pen before the repair, both halves: an operator
+# rewriting an ignored `notes.txt` with a fresh timestamp on EVERY run -- a tool that diverges every
+# time it is called -- read `inert`, and a perturbation writing an ignored root file read
+# `perturb_inert`, whose own words are "the sample never landed". Both sentences were false, and
+# the second was met by a hand: proving the front door's metrics splice took two tries, the first
+# writing its block file to the pen root.
+#
+# The listing is asked only where the hash has just said nothing moved, so the ordinary path pays
+# for none of it; measured 0.15s over this tree's 16,000 tracked files. The prover's own `.run*.out`
+# and `.perturb.out` are dropped by name, since they are this instrument's scratch rather than the
+# subject's writes -- each is removed before its reading, and a guard that depends on that ordering
+# is a guard one edit away from lying.
+ignored_state() {
+  git -C "$pen" status --porcelain --ignored=matching 2>/dev/null \
+    | sed -n 's/^!! //p' | grep -vE '^\.(run1|run2|perturb)\.out$' | sort
+}
+
+scratch=$(mktemp -d "${TMPDIR:-/tmp}/conv-tree-ig.XXXXXX")
+
 baseline=$(state)
+ignored_state > "$scratch/ig_baseline"
 
 if [ -n "$PERTURB" ]; then
   ( cd "$pen" && sh -c "$PERTURB" ) >"$pen/.perturb.out" 2>&1 \
@@ -159,12 +190,20 @@ if [ -n "$PERTURB" ]; then
   if [ "$(state)" = "$baseline" ]; then
     echo "tool=$TOOL"
     echo "perturb=$PERTURB"
-    echo "verdict=perturb_inert"
-    echo "detail: the perturbation exited zero and changed nothing -- the sample never landed, so the tool was never asked"
+    ignored_state > "$scratch/ig_now"
+    if cmp -s "$scratch/ig_baseline" "$scratch/ig_now"; then
+      echo "verdict=perturb_inert"
+      echo "detail: the perturbation exited zero and changed nothing -- the sample never landed, so the tool was never asked"
+    else
+      echo "verdict=perturb_unseen"
+      echo "detail: the perturbation wrote only paths git ignores, so the tree hash cannot see it -- the sample landed on disk and never reached the subject"
+      comm -13 "$scratch/ig_baseline" "$scratch/ig_now" | head -12 | sed 's/^/  /'
+    fi
     exit 1
   fi
 fi
 before=$(state)
+ignored_state > "$scratch/ig_before"
 
 if ! run_subject "$@" >"$pen/.run1.out" 2>&1; then
   echo "tool=$TOOL"
@@ -181,6 +220,18 @@ echo "args=$*"
 [ -n "$PERTURB" ] && echo "perturb=$PERTURB"
 
 if [ "$before" = "$after_one" ]; then
+  ignored_state > "$scratch/ig_after_one"
+  # THE TOOL'S HALF OF THE SAME BLINDNESS, and it is the sharper one. A perturbation nobody sees is
+  # a sample that never landed; a WRITE nobody sees is a tool whose whole output is invisible to the
+  # comparison that judges it. `unseen` refuses rather than reporting, because `inert` says the tree
+  # exercised no path and that would be a claim about the subject made by an instrument that never
+  # looked at where the subject wrote.
+  if ! cmp -s "$scratch/ig_before" "$scratch/ig_after_one"; then
+    echo "verdict=unseen"
+    echo "detail: the first run wrote only paths git ignores, so the comparison is blind to its whole output -- no convergence claim can be made"
+    comm -13 "$scratch/ig_before" "$scratch/ig_after_one" | head -12 | sed 's/^/  /'
+    exit 1
+  fi
   echo "verdict=inert"
   echo "detail: the first run changed nothing, so this tree exercises no path -- the reading proves nothing"
   exit 0
