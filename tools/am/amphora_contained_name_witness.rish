@@ -101,9 +101,9 @@ assert after_plants.ok else "contained: the welcome must stand once the plants a
 let elder_dir = "${home}/elder"
 let elder_copy = run ["sh" "-c" "mkdir -p ${elder_dir}/src ${elder_dir}/bin && cp amphora/manifest_entry.rye ${elder_dir}/ && cp amphora/vessel_seal.rye amphora/vessel_core.rye ${elder_dir}/ && cp amphora/src/main.rye ${elder_dir}/src/ && cp amphora/kumara.rye amphora/tally_copy.rye ${elder_dir}/ && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
 assert elder_copy.ok else "contained: the elder pen must copy"
-let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/if (name_verdict(entry.name) == .escaping) return error.EscapingName;/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/assert(name_verdict(entry.name) == .contained);/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/if (me.name_verdict(name) == .escaping) return error.CargoUnproven;/d' ${elder_dir}/src/main.rye && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/switch (name_verdict(entry.name)) {/,/^    }$/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/assert(name_verdict(entry.name) == .contained);/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/if (me.name_verdict(name) != .contained) return error.CargoUnproven;/d' ${elder_dir}/src/main.rye && sed_inplace '/if (me.name_verdict(entry.path) != .contained) return error.SeasonNameUnframed;/d' ${elder_dir}/src/main.rye && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
 assert strip.ok else "contained: the wall must strip cleanly"
-let gone = run ["sh" "-c" "cat ${elder_dir}/manifest_entry.rye ${elder_dir}/src/main.rye | grep -c 'name_verdict(entry.name)\|me.name_verdict(name)' || true"]
+let gone = run ["sh" "-c" "cat ${elder_dir}/manifest_entry.rye ${elder_dir}/src/main.rye | grep -c 'name_verdict(entry.name)\|me.name_verdict(' || true"]
 assert (trim gone.out) == "0" else "contained: the elder pen must lose every USE of the rule -- ${gone.out} left"
 let eb1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
 assert eb1.ok else "contained: elder amphora build failed -- ${eb1.err}"

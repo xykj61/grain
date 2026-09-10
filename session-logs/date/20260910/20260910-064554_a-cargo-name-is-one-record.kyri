@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260910.064554
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Copal -- unattended Earth ship, lane amphora/ and bron-resins/
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json proves the clone default; it does not prove this lap ran it
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8/180, America/New_York
+title A cargo name is one record, or it is no name at all
+prompt the baton -- take the next agent-doable lap in the Copal lane, Lindy-first crux-first
+think Last lap's own recommend named the press point: a digest answers WHAT the bytes are, containment answers WHERE they land, and nothing answered WHICH LINE the name is written on.
+think The rota row is air, which asks where each thing ends and tests a boundary by pressing on it. A record's boundary is its newline, and a name may contain one, so the hand passes straight through.
+think Proved it on metal before changing a line. A season of two ordinary files, one named b.txt<LF>manifest plain-bytes <64 hex> evil.txt<LF>cargo plain-bytes <64 hex> evil.txt, poured clean and the sealed Kumara-stamped head listed FOUR names for those two files, two of them a file the season never held at a digest it never produced.
+think The first crafted name split the listing and cargo differently, so restore refused on listing-agrees. The second was crafted to inject a matching pair, and it too refused at restore -- yet the forged listing rode under a real signature either way, and the listing is the vessel's public face.
+think The repair belongs where the containment rule already lives: a third verdict unframed in name_verdict, refusing any byte below 0x20 or 0x7f. Bytes at or above 0x80 walk free on purpose, since a season may hold a UTF-8 filename and refusing one claims more than this fault earns.
+think parse_manifest_line reads the verdict through an exhaustive switch rather than a compare against one value, so a verdict added later stops the build instead of riding through as a welcome. The two elder readers now compare against the single welcome for the same reason.
+think The pour parses nothing, so it asks the contract directly at read_season. Routed the new error at all three read_season catch sites by name -- the else arm there would have made a new wall answer by SeasonUnreadable's name, which this room's own front door promises against.
+obs The refusal detail names the SEASON rather than the offending filename. Printing a name that carries a control byte injects that byte into our own output, which is this exact fault one level up.
+obs Pheromone booked the Rishi backslash red at 20260910.031353 and it bit me inside the hour: my witness passed \" to sh, the quotes landed IN the filename, and the plant would not build. The crafted season moved to a fixture where a shell owns its own quoting.
+obs The witness header grades C+ (76) and its sibling D (61). The register reading counts refused, never, cannot -- the exact vocabulary a refusal proof owes a reader -- so the frame closes by measurement rather than by a rewrite that would score better and teach less.
+obs I moved the tree under my own hot pass to run the tame_reach probe -- a stash push and pop, which unstaged every modification and needed a second git add. The reading survived, tree_moved=no, because the restore was byte-identical; the card asks a lap not to do it and I did.
+obs REDS stands at 40,957 of 40,960 with every row OPEN, so my row could not land. Three ships have folded a peer's fresh row to make room; I declined to make it four, and cite the red by stamp under rule 4 instead.
+rota lap 4541, row 1 -- Air, the row that feels; the row asks where each thing ends and a name that carries a newline ends in two places, which is the whole lap.
+loom witness=amphora_framed_name legs=17 elder_builds=3 crafted_name_bytes=192 elder_listed_names=4 season_files=2
+file amphora/manifest_entry.rye the unframed verdict, the control-byte walk, the exhaustive switch, and five selftest legs proving both directions
+file amphora/src/main.rye the pour door at read_season, the SeasonNameUnframed error routed by name at three catch sites, and the restore reader compared against the welcome
+file tools/am/amphora_framed_name_witness.rish the guard, which removes its own wall in a pen and returns it
+file tools/fixtures/am/amphora_framed_season.sh the crafted season, in a file where a shell owns its own quoting
+file tools/am/amphora_contained_name_witness.rish its strip patterns repointed at the switch, so the sibling still loses every use of the rule
+file construction/standing-equipment.kyri the roster row, tier lap
+file amphora/README.md the guard named at the room door -- readme_unnamed back to zero
+file construction/ITINERARY.md the Copal account, elder shelved whole
+file construction/archive/20260910-064502_itinerary-landed-accounts.md the elder account, moved whole by the shelf writer
+scope amphora framing rule, one witness, one fixture, roster and card
+status GREEN -- amphora_framed_name plus all 16 elder lap-clock amphora guards, amphora_roster, tame_style_check, width-check. Hot scoped CLOSED over the tree that ships: 203 green, 5 red, tree_moved=no. Not one red is mine, each traced rather than assumed -- empty_document names a peer's zero-byte log 20260910-054448; crushed_index names eight lesson pages of 20260910.060225 with no wiki row; seed_link's ratchet rose on rule pages I never opened; tame_reach reads 553 of 552 with my whole round STASHED AWAY, so it predates the lap; and unheard_guard's pinned 460 became 461 when tools/rye/wrap_ring.rye landed in 44526f250, two commits before I opened. Cold open partial: 33 guards, 31 green, stopped by the bounded call before the first edit, six peer trees refused by name.
+recommend keep-going -- restore_write_prove still writes each resin body before re-hashing it, and its cure is the same shape as this one: draw the boundary before the mutation, with a scratch name and a rename after the proof

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `68af09f69c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b37d7b2b5c` -- HEAD's parent, resolvable everywhere (%401).
 
 *The BAKERY account is shelved whole on [`archive/20260910-070937_itinerary-landed-accounts.md`](archive/20260910-070937_itinerary-landed-accounts.md).*
 
@@ -185,41 +185,42 @@ register **95** (5% of 19), reach **100**, and **A+ 99** on the counted half the
 is named here rather than booked, as the lap before it was.
 **YOURS:** the 25 doors still over the ceiling, and whether GRADE should follow the register census
 rather than a typed roster -- unchanged from my last lap, and one door smaller.
-**COPAL -- A DIGEST ANSWERS WHAT THE BYTES ARE AND NEVER WHERE THEY LAND.**
-Elder [shelved](archive/20260910-055200_itinerary-landed-accounts.md) whole.
-**WATER TASTES, so this lap ran the vessel up close rather than reading about it.** A cargo line is
-`cargo <mark> <digest> <name>`, and `restore_write_prove` builds its destination as
-`bufPrint("{s}/{s}", .{out_home, name})`. The digest check that reads like proof -- read the resin,
-write it, re-hash it, compare -- answers **what the bytes are**. Nothing anywhere asked where the
-named file would land.
-**ON METAL BEFORE A LINE CHANGED:** a vessel whose cargo named a path beginning `../` passed the
-Kumara stamp, the AEAD seal, and the listing-agrees walk I seated four hours earlier -- correctly,
-since listing and cargo told the same lie -- and printed `restore files proven count=2`, the content
-being honest and only the destination not. The file landed ONE DIRECTORY ABOVE its out-home and
-`restore` refused afterward on the parent compare. **A refusal after the write is not a wall.**
-**REPAIRED IN ONE PLACE:** `name_verdict` in `amphora/manifest_entry.rye`, beside the wreck rule it
-reads like -- a relative path whose every segment carries content and is neither `.` nor `..`.
-`parse_manifest_line` refuses `EscapingName`, so **six** readers inherit it with no line of their
-own; `append_cargo_line`, the seventh, borrows the judgment as it already borrows `mark_verdict`.
-**Four doors** speak now -- seal writer, stamp writer, listing check, cargo reader -- and refused at
-the cargo reader the catalog never forms, so `restore_write_prove` is never reached.
-**THE WITNESS REMOVES ITS OWN WALL:** a pen copy with the two refusals struck out is built into an
-elder Amphora that seals the escaping name and puts the file above the out-home -- the pre-repair
-reading reproduced inside the guard, so a green here cannot be told from a door with nothing to
-refuse. Then the repaired binary over that elder seal tool refuses by name with nothing written.
-`amphora_contained_name` **tier lap**, proven able to red against the tree itself; all 15 elder
-lap-clock amphora guards GREEN beside it. Row (`20260910.053613`) booked and folded in one lap --
-the pin had **three bytes** of headroom, every remaining row OPEN, so no lawful fold made room; the
-rebase then found a peer had spent my number and the stamp carried the renumber for free.
-**THE HOT PASS CLOSED AND CARRIES ONE RED THAT IS NOT MINE:** **206 green, 1 red** --
-`mantra_tablecloth_query_wire`, whose delivery selftest exited non-zero at load 13 and **re-runs
-GREEN here by name**: transient, Patchouli's lane, named rather than swallowed. My cold open did NOT
-close -- 53 green, 0 red in 53 minutes, stopped with `fleet_call.sh --signal TERM`, six peers
-refused by name.
-**YOURS:** two shapes stand outside the repair. A filename carrying a **newline** splits a cargo
-line in two and no door refuses one. And `restore_write_prove` still writes each resin body BEFORE
-re-hashing it, so a forged body lands its wrong bytes and is refused after -- this row's ordering
-fault one field over, whose cure is a scratch name and a rename after the proof.
+**COPAL -- A CARGO NAME IS ONE RECORD, OR IT IS NO NAME AT ALL.**
+Elder [shelved](archive/20260910-064502_itinerary-landed-accounts.md) whole.
+**AIR FEELS FOR THE BOUNDARY UNDER THE HAND**, and last lap's own recommend named where to press:
+a digest answers WHAT the bytes are, containment answers WHERE they land, and nothing answered
+**which line the name is written on**. A cargo line and a manifest line each END at a newline, so
+a name carrying one is written as TWO records and the second is whatever the name said.
+**ON METAL BEFORE A LINE CHANGED:** a season of two ordinary files, one named
+`b.txt<LF>manifest plain-bytes <64 hex> evil.txt<LF>cargo plain-bytes <64 hex> evil.txt`, poured
+clean -- `season read files=2`, then `pour complete` -- and the sealed, Kumara-stamped head listed
+**FOUR names for two files**, two of them a file the season never held at a digest it never
+produced. The seal covered the forgery faithfully: it arrived inside a name nobody had asked to be
+one record. `read_season` took `entry.path` from the walker and checked its LENGTH alone.
+**REPAIRED IN ONE PLACE:** a third verdict `unframed` in `name_verdict`, reached through an
+**exhaustive switch** in `parse_manifest_line`, so a verdict added later stops the build rather
+than riding through as a welcome; the two elder readers now compare against the single welcome.
+The **pour** asks the rule directly, since it writes names and parses none -- refused at the
+season door the operator still holds the season. Bytes at or above 0x80 walk free: a season may
+hold a UTF-8 filename. The detail names the SEASON rather than the offending filename, because
+printing a control byte is this same fault one level up.
+**`amphora_framed_name` tier lap**, the wall removed in a pen and returned; proven able to red
+against the tree by loosening the threshold past 0x0a, where the module's own selftest bites.
+**All 16 elder lap-clock amphora guards GREEN** beside it, tame_style_check and width-check too.
+**THE `\"` RED PHEROMONE BOOKED THIS MORNING BIT ME INSIDE THE HOUR:** Rishi handed `sh` the
+backslash, the quotes landed IN the filename, and the plant would not build. The crafted season
+moved to `tools/fixtures/am/amphora_framed_season.sh`, where a shell owns its own quoting.
+**A FRAME CLOSED BY MEASURING:** the witness header grades **C+ (76)**, its sibling **D (61)** --
+the register counts *refused*, *never*, *cannot*, the exact vocabulary a refusal proof owes its
+reader. Vaguer prose scores better and teaches less: the standing **Meter SCORE** question, yours.
+**YOURS, KEATON -- THE LEDGER IS FULL AND I DECLINED THE WORKAROUND.** REDS stands at **40,957 of
+40,960**, every row OPEN, so my row **could not land**; it is cited by stamp (`20260910.064044`)
+under rule 4. Three ships folded a peer's fresh row to make room; I did not make it four. A raise,
+or your word.
+**Still yours, whole on the shelf:** `restore_write_prove` writes each resin body BEFORE
+re-hashing it; `rish_spoken_ascii` **11,113** characters, 10,748 table / 365 judgment, sweep
+unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
+width; `%281`/`%291`; `%347`.
 **Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
 judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
 `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.
