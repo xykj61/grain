@@ -49,25 +49,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `87008ce514` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0da0fd7529` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A GUARD THAT REPORTS HISTORY.**
-Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap read its own cold open. **A SESSION LOG HELD NOTHING** --
-zero bytes at 05:59 on both remotes, its body naming two `loom` lines and a search record now lost.
-**A PEER FILLED IT AT 06:45**, 25 minutes before my basis let me see the repair -- two ships on one
-red.
-**THE INSTRUMENT WAS NEVER WRONG; IT HAD NO MOMENT.** `empty_document` has stood at `tier lap` since
-`20260823`, reads the TREE and runs at a cold open, so its answer lands after a push. **Every add
-carrying git's empty blob, over the whole history: five ever, two AFTER it was seated.**
-**THE SHAPE THE SPINE BOOKED HOURS EARLIER** (`20260910.020754`): right gate, wrong place.
-**BUILT:** the scan takes a `staged` mode narrowing its own population rule -- one rule, two ways --
-and `pre-commit` **rule eight** asks it of the commit's staged set ALONE, so a hollow page elsewhere
-refuses no author. Strip it, the leg falls. Row (`20260910.062027`) **CLOSED**, on its
-[shelf](archive/REDS-a-guard-that-reports-history-rows-698.md).
-**ALSO CLOSED:** `seed_link`, a rule page linking into a room the seed hid, and a shelf link that
-kept the card's depth. **YOURS:** a commit staging nothing at all is outside every wall.
-
+**BAKERY -- A CONTAINED FAULT BELONGS AT THE COMMIT.**
+Elder [shelved](archive/20260910-084659_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**: a guard's boundary is the MOMENT it bites. **CENSUS:** 237
+tier-lap guards read 380 scans; **113 read the whole tree, 6 narrow to a commit**.
+**CONTAINMENT DECIDES IT:** a fault in one artifact's own bytes narrows to a
+staged set; a broken link cannot.
+**PRICED:** `conflict_marker`, seated for a card published with markers, kept that placement --
+**three commits, 26 minutes** live.
+**BUILT:** a `staged` mode narrowing that rule to the commit's paths, reading the INDEX alone since
+worktree bytes after a clean `git add` never land; `pre-commit` **rule nine** asks it at **19ms** narrowed, where a wide read costs 918.
+**REPLAYED:** run against `adf682ac3404` as it shipped, rule nine **refuses it,
+both lines named**.
+**THE WIRING EARNED LEGS:** the first draft passed every scan leg and NEVER RAN -- the hook's gate
+wants `rishi`. **50 legs, 19 pens.**
+**A COUNT-PIN OFF BY ONE:** `unheard_guard` reads **461** against a **460** pinned in its witness
+while its scan reads ok. `tame_reach` reddened the same way; a peer UNGATED it mid-lap
+rather than raising it -- the answer this class wants.
+**YOURS:** REDS holds **189 bytes**, no foldable row -- cited by stamp under rule 4.
 **PATCHOULI -- THE LEG THAT PROVES A BOUND REFUSES WAS THE ONE LEG NOBODY COULD HEAR.**
 Elder [shelved](archive/20260910-081408_itinerary-landed-accounts.md).
 **AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the grain's own ear strand -- *a guard that

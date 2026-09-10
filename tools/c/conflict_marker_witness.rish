@@ -91,5 +91,29 @@ assert control.out contains "instrument_refusal_bitten=yes" else "conflict-marke
 assert control.out contains "instrument_never_reads_ok=yes" else "conflict-marker: a broken instrument must never read as a clean tree"
 assert control.out contains "instrument_pen_innocent=yes" else "conflict-marker: the same pen unmutated must read clean, so the refusal belongs to its plant"
 
-say "RED and GREEN paths proven -- 31 readings over 12 planted states in 12 real repositories, every refusal lifted in its own pen"
+# THE STAGED READING, and the WIRING under it. The rule moved to the commit on 20260910: the same
+# pattern, narrowed to the paths a commit carries, asked by tools/hooks/pre-commit rule nine. The
+# last two are a second claim -- that the hook actually runs it -- and they earned their place on
+# the first draft, which passed every leg above and never ran.
+assert control.out contains "staged_marker_bitten=yes" else "conflict-marker: a marker in a STAGED file must refuse, or the reading still lands after the push"
+assert control.out contains "staged_detail_named=yes" else "conflict-marker: the staged refusal must name its contract line, since the hook tells it from an instrument that could not measure by that line alone"
+assert control.out contains "staged_population_named=yes" else "conflict-marker: the staged reading must name how many paths it read, or a reading of nothing looks like a clean commit (REDS %463)"
+assert control.out contains "staged_lifted_free=yes" else "conflict-marker: resolving the marker must free the same pen -- both sides, one move"
+assert control.out contains "staged_elsewhere_free=yes" else "conflict-marker: a marker in a file this commit does not stage must refuse no author"
+assert control.out contains "staged_elsewhere_census_bitten=yes" else "conflict-marker: the census must still refuse what the staged reading passes, or the narrowing is a hole rather than a mode"
+assert control.out contains "staged_worktree_free=yes" else "conflict-marker: a marker in the working tree of a file staged clean ships no bytes and must pass"
+assert control.out contains "staged_worktree_census_bitten=yes" else "conflict-marker: the census reads both sides and must still refuse that pen"
+assert control.out contains "staged_nothing_named=yes" else "conflict-marker: a commit staging nothing must say so by naming the population"
+assert control.out contains "staged_nothing_free=yes" else "conflict-marker: a commit staging nothing has no bytes to answer for"
+assert control.out contains "staged_narrow_taken=yes" else "conflict-marker: a small staged set must take the narrowed query, or the measurement that bought it means nothing"
+assert control.out contains "staged_wide_taken=yes" else "conflict-marker: over the pathspec bound the reading must go wide, which is the path that keeps ARG_MAX out of the answer"
+assert control.out contains "staged_paths_agree=yes" else "conflict-marker: the narrowed and wide readings must name the SAME hits, or the fast path is a different guard wearing one name"
+assert control.out contains "staged_narrow_bitten=yes" else "conflict-marker: the narrowed reading must still refuse a staged marker"
+assert control.out contains "staged_wide_bitten=yes" else "conflict-marker: the wide reading must still refuse a staged marker"
+assert control.out contains "unknown_mode_exit=2" else "conflict-marker: a mode this scan does not have must refuse at 2, never be answered as a census"
+assert control.out contains "unknown_mode_refused=yes" else "conflict-marker: an unknown mode must refuse by name"
+assert control.out contains "hook_refuses_staged_marker=yes" else "conflict-marker: the REAL pre-commit hook, armed in a pen, must refuse a commit staging a marker -- the instrument and its wiring are two claims"
+assert control.out contains "hook_welcomes_resolved=yes" else "conflict-marker: the same hook must make the same commit once resolved, or the wall is a wall against everything"
+
+say "RED and GREEN paths proven -- 50 readings over 19 planted states in 19 real repositories, every refusal lifted in its own pen"
 say "GREEN: conflict-marker -- no tracked file carries the punctuation of an unfinished merge."

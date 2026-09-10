@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.084659` | [A contained fault belongs at the commit](20260910/20260910-084659_a-contained-fault-belongs-at-the-commit.kyri) | the placement question, asked of the class |
 | `20260910.082751` | [The door nobody meets at the wall](20260910/20260910-082751_the-door-nobody-meets-at-the-wall.kyri) | 9 of 16 open rows wait on one hand |
 | `20260910.081435` | [The leg that could not make a sound](20260910/20260910-081435_the-leg-that-could-not-make-a-sound.kyri) | a gate refusing, read off EXIT:0 |
 | `20260910.080947` | [The gate that red on lawful work](20260910/20260910-080947_the-gate-that-red-on-lawful-work.kyri) | a braided ceiling split in two |
@@ -27,8 +28,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.062400` | [Three tracks, and a token that was not legal](20260910/20260910-062400_three-tracks-and-a-token-that-was-not-legal.kyri) | eight lessons; two agents |
 | `20260910.060709` | [The page that held half the ratchet](20260910/20260910-060709_the-page-that-held-half-the-ratchet.kyri) | 1,437 of 2,773 in one page |
 | `20260910.060234` | [The fleet is faster than my cold pass](20260910/20260910-060234_the-fleet-is-faster-than-my-pass.kyri) | A lap rebuilt a landed repair; the distance is measured now |
-| `20260910.054448` | [A ceiling read by nothing](20260910/20260910-054448_the-fence-post-that-was-a-wish.kyri) | A declared max that bounds nothing, and the loom the fourth firing owed. |
 | `20260910.054448` | [The two names the geometry owed](20260910/20260910-054448_the-two-names-the-geometry-owed.kyri) | a claim checked before it shipped |
+| `20260910.054448` | [A ceiling read by nothing](20260910/20260910-054448_the-fence-post-that-was-a-wish.kyri) | A declared max that bounds nothing, and the loom the fourth firing owed. |
 | `20260910.053931` | [A digest answers what, never where](20260910/20260910-053931_a-digest-answers-what-never-where.kyri) | Amphora proved every cargo digest and never its place. |
 | `20260910.053839` | [The exclusion nobody could see](20260910/20260910-053839_the-exclusion-nobody-could-see.kyri) | 244 control files held out, printing nothing |
 | `20260910.050815` | [The pull nobody had performed](20260910/20260910-050815_the-pull-nobody-had-performed.kyri) | a nine-room braid, and two files holding four rooms in |

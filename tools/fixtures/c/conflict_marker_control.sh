@@ -32,6 +32,29 @@
 #   vendor_free          -- a marker under vendor/ is not counted; that source is held unmodified.
 #   unmerged_counted_once-- a real merge conflict is reported as ONE marked file, not three.
 #
+# THE STAGED PHASES, added 20260910 when the reading moved to the commit. `staged` mode narrows the
+# same rule to the paths a commit carries, so `tools/hooks/pre-commit` can refuse the marker at the
+# moment it is made rather than at the next lap's open -- the placement fault the elder repair kept.
+#   staged_marker_bitten -- a marker in a STAGED file refuses, and names the contract line the hook
+#                           reads to tell this refusal from an instrument that could not measure.
+#   staged_lifted_free   -- the SAME pen, resolved and staged again: green. Both sides, one move.
+#   staged_elsewhere_free-- a marker committed in a file this commit does NOT stage passes. An
+#                           author is refused for their own bytes and never for somebody else's.
+#   staged_worktree_free -- a marker in the WORKING TREE of a file staged clean passes, since those
+#                           bytes will not land -- and the SAME pen read as a census still refuses,
+#                           which is what proves the narrowing is the mode rather than a hole.
+#   staged_nothing_free  -- a commit staging no file at all reads staged_files=0 and passes.
+#   staged_paths_agree   -- the narrowed query and the wide-then-filter reading name the SAME hits
+#                           on one pen. Two code paths owe a leg showing they agree, or the fast
+#                           one is a different guard wearing the same name.
+#   unknown_mode_refused -- a mode this scan does not have refuses, rather than being answered as a
+#                           census. A wrong answer at exit 0 is the shape a guard can least afford.
+#   hook_refuses / hook_welcomes -- the REAL tools/hooks/pre-commit, armed in a pen on
+#                           core.hooksPath, refuses a commit staging a marker and makes the same
+#                           commit once resolved. The instrument and its WIRING are two claims, and
+#                           this pair proves the second: the first draft of rule nine passed every
+#                           scan leg and never ran, because the hook's own front gate wants rishi.
+#
 # MEASURED: 23 readings over 10 planted states in 9 real repositories. Exit codes are printed here
 # and asserted by tools/c/conflict_marker_witness.rish, so the numbers live in one place.
 #
@@ -204,5 +227,99 @@ case "$out" in *"verdict=ok"*) echo "instrument_never_reads_ok=no" ;; *) echo "i
 # the same pen, unmutated, still reads clean -- so the refusal belongs to the plant.
 out=$(run_scan instrument)
 case "$out" in *"verdict=ok"*) echo "instrument_pen_innocent=yes" ;; *) echo "instrument_pen_innocent=no" ;; esac
+
+
+# --- staged_marker_bitten / staged_lifted_free ------------------------------------------
+# The narrowed reading, planted and then lifted in one pen.
+new_repo staged_bite
+( cd "$pen/staged_bite" && plant_marker > card.md && git add card.md )
+out=$( set +e; cd "$pen/staged_bite" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+case "$out" in *"verdict=conflict_marker"*) echo "staged_marker_bitten=yes" ;; *) echo "staged_marker_bitten=no" ;; esac
+case "$out" in *"detail=RED_staged_conflict_marker"*) echo "staged_detail_named=yes" ;; *) echo "staged_detail_named=no" ;; esac
+case "$out" in *"staged_files=1"*) echo "staged_population_named=yes" ;; *) echo "staged_population_named=no" ;; esac
+( cd "$pen/staged_bite" && printf 'before\nours\nafter\n' > card.md && git add card.md )
+out=$( set +e; cd "$pen/staged_bite" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+case "$out" in *"verdict=ok"*) echo "staged_lifted_free=yes" ;; *) echo "staged_lifted_free=no" ;; esac
+
+# --- staged_elsewhere_free --------------------------------------------------------------
+# A marker already committed in a file this commit does not touch. The census refuses it and the
+# staged reading does not, which is the whole point of the narrowing: an author answers for the
+# bytes they are shipping.
+new_repo staged_elsewhere
+( cd "$pen/staged_elsewhere" && plant_marker > old.md && git add old.md && git commit -q -m "pen: an elder marker" \
+  && printf 'clean\n' > new.md && git add new.md )
+out=$( set +e; cd "$pen/staged_elsewhere" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+case "$out" in *"verdict=ok"*) echo "staged_elsewhere_free=yes" ;; *) echo "staged_elsewhere_free=no" ;; esac
+out=$(run_scan staged_elsewhere)
+case "$out" in *"verdict=conflict_marker"*) echo "staged_elsewhere_census_bitten=yes" ;; *) echo "staged_elsewhere_census_bitten=no" ;; esac
+
+# --- staged_worktree_free ---------------------------------------------------------------
+# The index is what a commit ships. A file staged clean and then edited in the worktree carries a
+# marker no clone will receive, so the staged reading passes it -- and the census, which reads both
+# sides, still refuses. The pair proves the narrowing is the MODE rather than a hole in the pattern.
+new_repo staged_worktree
+( cd "$pen/staged_worktree" && printf 'clean\n' > card.md && git add card.md && plant_marker > card.md )
+out=$( set +e; cd "$pen/staged_worktree" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+case "$out" in *"verdict=ok"*) echo "staged_worktree_free=yes" ;; *) echo "staged_worktree_free=no" ;; esac
+out=$(run_scan staged_worktree)
+case "$out" in *"verdict=conflict_marker"*) echo "staged_worktree_census_bitten=yes" ;; *) echo "staged_worktree_census_bitten=no" ;; esac
+
+# --- staged_nothing_free ----------------------------------------------------------------
+# A commit that stages nothing has no bytes to answer for, and the reading says so by naming the
+# population rather than by falling silent (REDS %463, one guard over).
+new_repo staged_nothing
+out=$( set +e; cd "$pen/staged_nothing" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+case "$out" in *"staged_files=0"*) echo "staged_nothing_named=yes" ;; *) echo "staged_nothing_named=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "staged_nothing_free=yes" ;; *) echo "staged_nothing_free=no" ;; esac
+
+# --- staged_paths_agree ----------------------------------------------------------------
+# TWO CODE PATHS OWE A LEG SHOWING THEY AGREE. Under the bound the query itself is narrowed by
+# pathspec; over it the reading goes wide and filters afterward. The two must answer identically on
+# the same pen, or the fast path is a different guard wearing the same name.
+new_repo staged_agree
+( cd "$pen/staged_agree" && plant_marker > card.md && printf 'clean\n' > other.md && git add card.md other.md )
+narrow=$( set +e; cd "$pen/staged_agree" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+wide=$( set +e; cd "$pen/staged_agree" || exit 0; CONFLICT_MARKER_MAX_PATHSPECS=0 sh ./tools/fixtures/c/conflict_marker_scan.sh staged 2>/dev/null; exit 0 )
+case "$narrow" in *"staged_narrowed=yes"*) echo "staged_narrow_taken=yes" ;; *) echo "staged_narrow_taken=no" ;; esac
+case "$wide" in *"staged_narrowed=no"*) echo "staged_wide_taken=yes" ;; *) echo "staged_wide_taken=no" ;; esac
+n_hits=$(printf '%s\n' "$narrow" | grep '^marked: ' | sort)
+w_hits=$(printf '%s\n' "$wide"   | grep '^marked: ' | sort)
+[ "$n_hits" = "$w_hits" ] && echo "staged_paths_agree=yes" || echo "staged_paths_agree=no"
+case "$narrow" in *"verdict=conflict_marker"*) echo "staged_narrow_bitten=yes" ;; *) echo "staged_narrow_bitten=no" ;; esac
+case "$wide" in *"verdict=conflict_marker"*) echo "staged_wide_bitten=yes" ;; *) echo "staged_wide_bitten=no" ;; esac
+
+# --- unknown_mode_refused ---------------------------------------------------------------
+# The elder spelling read `list` and treated every other word as a census, so a caller asking for a
+# mode this scan does not have was answered as though it had asked for the one it does.
+new_repo unknown_mode
+code=$( set +e; cd "$pen/unknown_mode" || { echo 99; exit 0; }; sh ./tools/fixtures/c/conflict_marker_scan.sh wibble >/dev/null 2>&1; echo $?; exit 0 )
+[ "$code" = 2 ] && echo "unknown_mode_exit=2" || echo "unknown_mode_exit=$code"
+out=$( set +e; cd "$pen/unknown_mode" || exit 0; sh ./tools/fixtures/c/conflict_marker_scan.sh wibble 2>/dev/null; exit 0 )
+case "$out" in *"verdict=unknown_mode"*) echo "unknown_mode_refused=yes" ;; *) echo "unknown_mode_refused=no" ;; esac
+
+# --- hook_refuses / hook_welcomes -------------------------------------------------------
+# THE WIRING, which is a second claim and wants its own pen. Every rule in tools/hooks/pre-commit
+# stands behind an `[ -f ... ]` test, so a pen carrying only this scan exercises rule nine alone --
+# and behind the hook's own front gate, which wants an executable rishi/bin/rishi. That gate is why
+# this phase exists: the first draft of rule nine passed every scan leg above and never ran.
+hook="$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)/tools/hooks/pre-commit"
+if [ -f "$hook" ]; then
+  new_repo hookwire
+  mkdir -p "$pen/hookwire/tools/hooks" "$pen/hookwire/rishi/bin"
+  cp "$hook" "$pen/hookwire/tools/hooks/pre-commit"
+  chmod +x "$pen/hookwire/tools/hooks/pre-commit"
+  printf '#!/bin/sh\nexit 0\n' > "$pen/hookwire/rishi/bin/rishi"
+  chmod +x "$pen/hookwire/rishi/bin/rishi"
+  ( cd "$pen/hookwire" && git config core.hooksPath tools/hooks )
+  ( cd "$pen/hookwire" && plant_marker > card.md && git add card.md )
+  code=$( set +e; cd "$pen/hookwire" || { echo 99; exit 0; }; git commit -q -m "pen: a marked card" >/dev/null 2>&1; echo $?; exit 0 )
+  [ "$code" = 0 ] && echo "hook_refuses_staged_marker=no" || echo "hook_refuses_staged_marker=yes"
+  ( cd "$pen/hookwire" && printf 'before\nours\nafter\n' > card.md && git add card.md )
+  code=$( set +e; cd "$pen/hookwire" || { echo 99; exit 0; }; git commit -q -m "pen: resolved" >/dev/null 2>&1; echo $?; exit 0 )
+  [ "$code" = 0 ] && echo "hook_welcomes_resolved=yes" || echo "hook_welcomes_resolved=no"
+else
+  echo "hook_refuses_staged_marker=no_hook"
+  echo "hook_welcomes_resolved=no_hook"
+fi
 
 echo "control_verdict=ok"
