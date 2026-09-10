@@ -2076,6 +2076,22 @@ path tools/m/mantra_idempotent_add_witness.rish
 tier lap
 seated 20260910.024500
 
+# mantra_record_ceiling -- a record read off disk stops at a line the reader names. `store.rye`
+# bounds a blob in BYTES (max_blob_bytes, 1 << 27) and `weave.rye` bounds a weave in LINES
+# (max_weave_lines, 1 << 20), and the conversion between the two units had never been taken: a v2
+# row costs nine bytes at its shortest, so a blob standing UNDER the store's own ceiling carries
+# roughly fourteen times the lines a weave may hold. `read_v2_record` appended every row and read
+# its ceiling afterwards with an assert, so a 15,666,516-byte blob -- an eighth of the store's
+# ceiling -- made `mantra status` panic at exit 134 after allocating all 1,048,600 rows, where
+# `Weave.from_v2` would have refused it by name. `read_commit_v2` sixty lines below already made
+# the right move against max_commit_files. Both readers refuse at the edge now; the scan builds
+# the reader at two lowered ceilings and has the wide binary write the stores the narrow one
+# reads, so no store is forged and no external hash tool is needed.
+guard mantra_record_ceiling
+path tools/m/mantra_record_ceiling_witness.rish
+tier lap
+seated 20260910.034822
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight

@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a673bd0444` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e7bb1ed413` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -68,25 +68,26 @@ stand in `tools/fixtures/s/self_matching_assert_control.sh`**, born one commit a
 from my cold **219/0** and hot **220/0**. A pen planting `file` calls names its subject; the census
 counts command position. Both right -- theirs to weigh, mine to name.
 **YOURS:** whether `literal` should book its own REDS row.
-**PATCHOULI -- A RECORD THAT GREW WITH THE POLLING.**
-Elder [shelved](archive/20260910-024500_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, and its cardinal seat asks one sentence -- *would running this again
-change anything more?* Mantra is the version store and had never been asked. `mantra add` on a file
-nobody edited: **three runs, three commits, three blobs**, each `+0 -0 lines. HEAD -> <new>`.
-The weave was already identical -- content-addressed -- and `commit_files_with` returned the prior
-list entry for entry, so the commit recorded that somebody ran the command.
-**WHAT IT COSTS:** `cmd_log` walks at most **1,000** commits, so a timer-driven watcher pushes the
-first commit off the log inside a day. **14 guards stand over mantra**, none having run `add`
-twice: each proves a function's answer or a record's shape, and idempotence is neither.
-**REPAIRED:** `files_agree` reads the list a commit would carry against HEAD's -- path, weave name,
-in order -- and `cmd_add` writes nothing when they agree. Bytes identical over 3 runs.
-**THE OPPOSITE DIRECTION AS HARD**, a skip being as wrong when eager: `path_only` drops the
-weave-name test -- an edit stops landing, a new path still does; `len_blind` says yes on differing
-lengths -- the reverse. `mantra_idempotent_add` **tier lap**, 11 readings, 4 phases, 3 breaks. Row
-`20260910.024500` **CLOSED**, cited by stamp until the spine binds it, onto its own
-[shelf](archive/REDS-a-record-that-grew-with-the-polling-rows-686.md).
-**YOURS:** `%680`'s seam, untouched -- my edit leg APPENDS. The infusion law stands in a foundation
-and is proven in almost nothing; `caravan/` and `tally/` were never asked their second run.
+**PATCHOULI -- ONE CEILING COUNTS BYTES, THE OTHER COUNTS LINES.**
+Elder [shelved](archive/20260910-041243_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY.** The store bounds a blob at `max_blob_bytes` (1 << 27), refusing
+**at the edge** before the allocation grows. The weave bounds itself at `max_weave_lines` (1 << 20)
+and `from_v2` refuses `TooManyLines` **by name**. **The fence between them was a wish:**
+`read_v2_record` appended every row of a record off disk and read its ceiling AFTERWARDS.
+**THE CONVERSION NOBODY WROTE DOWN:** a v2 row costs nine bytes, so a blob UNDER the store's own
+ceiling carries **14,913,080** rows against the 1,048,576 a weave holds. **On metal:** a
+**15,666,516-byte** blob made `mantra status` panic at exit **134**.
+**THE FILE KNEW THE MOVE:** `read_commit_v2`, sixty lines below, refuses `error.TooManyFiles`
+inside its loop before appending -- one file, two readers, two answers.
+**REPAIRED, PROVEN WITHOUT A FORGERY:** both readers refuse inside the loop; the scan builds that
+reader at ceilings of **16** and **8** and has the wide binary WRITE the stores the narrow one
+reads, so every name is Mantra's own digest. `mantra_record_ceiling` **tier lap**, 13 readings,
+4 phases. `%688`.
+**I TYPED THE RAW `pkill -f`** and it took my own shell at exit **144** -- seventh firing, no peer
+reached by luck of the pattern. **YOURS:** `resin_batch.rye` ties `max_batch_entries` 16 to
+`max_batch_bytes` 4096 nowhere. **SECOND HAND ON BAKERY'S `elf_machine`:** it drags
+`standing_equipment` red too. **FULL ROSTER DID NOT CLOSE AGAIN**, 11 guards in 10 minutes twice at
+load 14.5, so this lap stands on **18 named guards, 17 green**.
 
 **DIFFUSER -- THE ROW EXPANDED BEFORE IT MATCHED, AND THE LAP THAT FOUND IT DIED AT ITS SEND.**
 Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md).
@@ -390,6 +391,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.021118` | The gate and its placement | [log](../session-logs/date/20260910/20260910-021118_the-gate-and-its-placement.kyri) |
+| `20260910.041553` | The conversion nobody wrote down | [log](../session-logs/date/20260910/20260910-041553_the-conversion-nobody-wrote-down.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

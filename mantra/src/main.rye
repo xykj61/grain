@@ -253,6 +253,8 @@ fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
 /// Precondition:  the iterator stands just past the header line.
 /// Postcondition: the weave holds one line per row, with both counters exactly
 ///   as the record carried them.
+/// Refuses:       `WeaveError.TooManyLines`, at the row that would pass
+///   `max_weave_lines`, so the allocation is bounded rather than checked after.
 fn read_v2_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .scalar)) !Weave {
     const counter_line = it.next() orelse return error.InvalidFormat;
     var counter_fields = std.mem.splitScalar(u8, counter_line, '\t');
@@ -264,6 +266,13 @@ fn read_v2_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .
     var rows = std.ArrayListUnmanaged(V2Row).empty;
     while (it.next()) |row| {
         if (row.len == 0) continue;
+        // invariant: the row that would pass the ceiling is refused before it is parsed,
+        // so a record off disk allocates at most `max_weave_lines` rows and their text --
+        // the same move `read_commit_v2` makes against `max_commit_files` sixty lines
+        // below. The store's ceiling is in BYTES and this one is in LINES, and the
+        // conversion is what was missing: a blob standing under `max_blob_bytes` carries
+        // roughly fourteen times `max_weave_lines` rows at nine bytes a row.
+        if (rows.items.len >= weave.max_weave_lines) return weave.WeaveError.TooManyLines;
         var fields = std.mem.splitScalar(u8, row, '\t');
         const gen_str  = fields.next() orelse return error.InvalidFormat;
         const pos_str  = fields.next() orelse return error.InvalidFormat;
@@ -277,9 +286,10 @@ fn read_v2_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .
         const text = try allocator.dupe(u8, text_str);
         try rows.append(allocator, V2Row{ .text = text, .gen = gen, .pos = pos, .site = site, .run = run });
     }
-    // invariant: the record holds no more rows than a weave may hold, which is the same
-    // ceiling `from_v2` reads at its own edge -- said here too, since a blob read off disk
-    // is the one input this file gets that no caller vouched for
+    // invariant: the loop above refused the row that would have passed the ceiling, so
+    // this holds by construction rather than by hope -- it stood here alone until
+    // `20260910`, after the whole record had already been allocated, and an assert on
+    // bytes read off disk panics where `from_v2` would have refused by name
     assert(rows.items.len <= weave.max_weave_lines);
     return weave.Weave.from_v2(allocator, V2Record{
         .rows = rows.items,
@@ -302,10 +312,15 @@ fn read_v2_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .
 ///
 /// Precondition:  the iterator stands just past the header line.
 /// Postcondition: the weave holds one line per row, standing at one site.
+/// Refuses:       `WeaveError.TooManyLines`, at the same edge the v2 reader takes.
 fn read_v1_rows(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .scalar)) !Weave {
     var rows = std.ArrayListUnmanaged(V1Row).empty;
     while (it.next()) |row| {
         if (row.len == 0) continue;
+        // invariant: the same edge refusal the v2 reader above makes, for the same reason --
+        // an elder store is the one input here that no caller vouched for, and its row count
+        // is bounded by nothing the store checked
+        if (rows.items.len >= weave.max_weave_lines) return weave.WeaveError.TooManyLines;
         var fields = std.mem.splitScalar(u8, row, '\t');
         const gen_str  = fields.next() orelse return error.InvalidFormat;
         const pos_str  = fields.next() orelse return error.InvalidFormat;
@@ -315,9 +330,9 @@ fn read_v1_rows(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .sc
         const text = try allocator.dupe(u8, text_str);
         try rows.append(allocator, V1Row{ .text = text, .gen = gen, .pos = pos });
     }
-    // invariant: the record holds no more rows than a weave may hold, which is the same
-    // ceiling `from_v1` reads at its own edge -- said here too, since a blob read off disk
-    // is the one input this file gets that no caller vouched for
+    // invariant: the loop above refused the row that would have passed the ceiling, so
+    // this holds by construction -- `from_v1` still reads it at its own edge, and both
+    // readings stand because a caller other than this one may reach that lift
     assert(rows.items.len <= weave.max_weave_lines);
     return weave.Weave.from_v1(allocator, rows.items);
 }

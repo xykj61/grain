@@ -690,3 +690,5 @@ at a closed fold.*
 *Row %676 folded to [`REDS-a-row-keys-on-the-log-it-names-rows-676.md`](REDS-a-row-keys-on-the-log-it-names-rows-676.md) on `20260910.020722`, **CLOSED** -- a ledger row's identity is the record it points at, never the second it was written in -- the naming law's own sprig tiebreak cannot reach a cell that holds a stamp alone.*
 
 *Row %685 folded to [`REDS-read-the-form-and-the-channel-rows-685.md`](REDS-read-the-form-and-the-channel-rows-685.md) on `20260910.034851`, **CLOSED** -- a command is read by its form and its channel -- one literal operand, no options, stdout -- rather than by the name of the utility invoking it.*
+
+*Row %681 folded to [`REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](REDS-the-loom-that-chased-a-generation-too-far-rows-681.md) on `20260910.041138`, **BOOKED** -- a transcript is evidence only as far down as somebody read.*
