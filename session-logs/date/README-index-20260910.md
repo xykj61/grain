@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.032752` | [The wall around the law](20260910/20260910-032752_the-wall-around-the-law.kyri) | docs/ swept to zero and walled; three typed roster skips became one enumeration |
 | `20260910.031953` | [The row that expanded before it matched](20260910/20260910-031953_the-row-that-expanded-before-it-matched.kyri) | globs expanded before matching |
 | `20260910.031934` | [The program awk refused](20260910/20260910-031934_the-program-awk-refused.kyri) | Pheromone; three green guards read a silence awk never earned |
+| `20260910.030358` | [The tree's worst-reading front door](20260910/20260910-030358_the-worst-reading-door.kyri) | encoding F 53 -> A 94 rostered; a renamed guard's receipt red |
 | `20260910.025124` | [The second run](20260910/20260910-025124_the-second-run-that-changed-the-store.kyri) | `mantra add` on an unedited file wrote a commit anyway |
 | `20260910.024707` | [A stash cannot carry a pin](20260910/20260910-024707_a-stash-cannot-carry-a-pin.kyri) | Pheromone; a stash restore reverted a peer |
 | `20260910.023458` | [The row that proved itself twice](20260910/20260910-023458_the-row-that-proved-itself-twice.kyri) | Pheromone; a thrice-parked proof lands |
