@@ -4640,3 +4640,36 @@ guard ratchet_slack
 path tools/r/ratchet_slack_witness.rish
 tier lap
 seated 20260910.172957
+# shape_constant_pedestal -- the shape museum displays a number on each pedestal, and until
+# `20260910` twelve of those numbers were held by a literal typed into the witness beside them:
+# `grep -q 'example    16384' <desk>` proves the desk still says 16384 and asks the engine nothing.
+# Change the constant in Rye and the pedestal stays green over a bound the engine stopped keeping.
+# This row takes the five whose number is a published constant of one module,
+# `brushstroke/brush_parse.rye`, and reads each one out of the source: `max_frame_lines`,
+# `brush_skate_cols`, `brush_skate_rows`, `max_brush_bytes`, `max_pin_bytes`.
+#
+# TWO OF THE FIVE ARE NOT LITERALS, which is why the reading resolves rather than greps.
+# `brush_skate_rows` is an alias to `max_frame_lines`, so its desk shows the frame ceiling under a
+# second name; `max_brush_bytes` is `16 * 1024`, so 16384 stands nowhere a grep could find it. A
+# form the reading has never met is NAMED as unresolved and reds, never counted as zero.
+#
+# The lap's own finding: the frame ceiling is written FOUR times -- published once as
+# `max_frame_lines`, again as a private `const max_lines: u32 = 8` in `brushstroke/seed.rye` and
+# once more in `brushstroke/wayland_seed.rye` (which also reaches for the published constant at
+# three other sites, both spellings in one file), and displayed a fourth time on the desk. Each
+# private copy asserts against its own number, so lowering the published ceiling leaves both
+# modules letting eight lines through in silence. The scan gathers every site and refuses when they
+# part; a site publishing NO ceiling is dropped rather than counted, since deleting a private copy
+# in favour of the published constant is the repair this reading wants. The desk was repaired in
+# the same lap to name `max_frame_lines`, which it never did.
+#
+# 18 control cases, 4 welcomes and 14 refusals, each planted and then lifted, mutation-proven. A
+# bound doubled in both rooms walks free: the scan carries no number of its own.
+#
+# `lap` because the whole witness is a pure text reading plus a pen, 9.1s measured on this pier
+# `20260910.173003`. It drives no toolchain: `src_first_resident` already lowers and builds these
+# five pedestals through Glow and Zig.
+guard shape_constant_pedestal
+path tools/s/shape_constant_pedestal_witness.rish
+tier lap
+seated 20260910.173003

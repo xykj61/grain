@@ -6,8 +6,12 @@
 ::  nib        surface-p15-v0
 ::
 ::  Surface Chapter p15 -- second pedestal in src/sur (structure museum).
-::  Names the Frame max_lines bound shared by brushstroke/seed.rye and
-::  brushstroke/wayland_seed.rye. Does not invent a second Frame type.
+::  The published ceiling is brushstroke/brush_parse.rye max_frame_lines, and
+::  the same eight is written again as a private max_lines in
+::  brushstroke/seed.rye and brushstroke/wayland_seed.rye, each asserting
+::  against its own copy. Four sites, one number, held together by
+::  tools/s/shape_constant_pedestal_witness.rish rather than by care.
+::  Does not invent a second Frame type.
 +$  frame-max-lines-shape
   $:  max=@u32
   ==

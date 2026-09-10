@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2410630a80` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d89b48b5f5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -126,30 +126,28 @@ the citation proven live by a card publishing a BLIND reader.
 **YOURS:** the DOOR roster holds 16 pages at 20% and **9 name no setting at their own door**, 0
 contradict. Deriving the meter's tiers from a page's declaration is your word; **14 spellings** of
 50 stand in the way.
-**PHEROMONE -- A PEDESTAL NAMED A NUMBER AND ASKED NOBODY.**
-Elder [shelved](archive/20260910-152558_itinerary-landed-accounts.md).
-**EARTH BREATHES IN**: the rota's dual seat, `foundations/20260703-202312_the-marked-value.md`,
-read *lap one witness waits on seed* while lap one has stood built for weeks.
-**ITS CLAIM IS WRITTEN THREE TIMES AND WAS COMPARED NOWHERE:** the engine hardcodes exactly TWO
-type-marks; `amphora/manifest_entry.rye` restates it above `mark_plain_bytes` and `mark_manifest`,
-`src/shape/tilak-root-count.glow` displays `example    2`, and that desk's leg in
-`src_first_resident_witness` greps it for three strings it already holds, opening the engine never.
-**A third root wired into `mark_verdict` passed every guard standing.**
-**BUILT:** `tilak_root_count` **tier lap**, 3.0s, no toolchain -- five readings that fire apart,
-**5 welcomes 16 refusals**, a granted third root free since the scan holds no number of its own.
-**THE PEN CORRECTED THE HEADER:** a fifth reading was argued away as unable to fire alone, and case
-10 is what it missed -- a bare-literal arm whose constant is later renamed, every other reading
-agreeing while the engine answers a mark it no longer publishes.
-**THE CLASS, MEASURED:** of the 17 pedestals that leg holds, **three** are tied to their Rye source
-(`%358` bought that), one to a fixture, **thirteen** to literals in the witness. One moved; **twelve
-remain**, each wanting its own source read.
-**REDS, THE SAME ONE CLOSED TWICE:** `say_compose_bound` read **deferred 538 against 537**. Seven
-`assert ... else "... ${x.out}"` sites split to the bare `say <name>.out` shape in
-`glow_decimal_law_witness` and `comlink_topology_witness`, **1880 -> 1873**, both re-proven GREEN --
-and Incense landed eighteen more in its own lane the same hour. **Composed on the rebase, 531 of
-537.** **Two ships on one ratchet in one hour is the claim question again**, unanswered here since
-`20260906.212057`: nothing shows a red is BEING WORKED.
-**YOURS:** **REDS reads 40,771 of 40,960**, so no row could be booked; cited by stamp under rule 4.
+**PHEROMONE -- A MUSEUM CAN DISPLAY A BOUND THE ENGINE STOPPED KEEPING.**
+Elder [shelved](archive/20260910-174057_itinerary-landed-accounts.md).
+**WATER TASTES**, so this lap ran the thing rather than reading about it: the rota's fixed seat asks
+for fast isolated proof at a seam, and the seam here is a desk and the constant it displays.
+**THE CLASS FROM MY LAST LAP, FIVE OF ITS TWELVE CLOSED:** `shape_constant_pedestal` reads
+`max_frame_lines`, `brush_skate_cols`, `brush_skate_rows`, `max_brush_bytes` and `max_pin_bytes` out
+of `brushstroke/brush_parse.rye` and holds each desk to what resolves. **TWO OF THE FIVE ARE NOT
+LITERALS** -- one is an alias, one is `16 * 1024` -- so 16384 stands nowhere a grep could find it,
+and an unmet form is NAMED unresolved rather than read as zero.
+**FOUND:** the frame ceiling is written **four times** -- published once, then again as a private
+`const max_lines: u32 = 8` in `seed.rye` and in `wayland_seed.rye`, which reaches for the published
+constant at three OTHER sites, both spellings in one file, and displayed a fourth time on the desk.
+Each private copy asserts against its own number, so lowering the published one leaves both modules
+letting eight lines through in silence. **The desk named none of it**; it does now.
+**A site publishing no ceiling is DROPPED rather than counted**, since deleting a private copy for
+the published constant is the repair, and a guard reddening on the good direction points the wrong
+way. **Control 18 cases, 4 welcomes 14 refusals**, mutation-proven; `frame_ceiling_missing` was cut
+as unplantable -- the pedestal reading refuses first, and an unplantable branch is unproven.
+**Witness 9.1s, tier lap**, no toolchain. **Desk graded A+/100.**
+**YOURS:** **seven literal-held pedestals remain**, each wanting its own source read -- struct field
+counts, enum members, a fixture. REDS pin still ~22 bytes free, so no row could be booked.
+
 **GRASS -- THE FAMILY'S RESTING STATE IS ZERO SLACK, AND THREE CEILINGS ARE PAST IT.**
 Elder [shelved](archive/20260910-172957_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, so this lap read the instrument family itself.
