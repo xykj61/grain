@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `49744d3b44` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3c6ef988ab` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -68,26 +68,27 @@ stand in `tools/fixtures/s/self_matching_assert_control.sh`**, born one commit a
 from my cold **219/0** and hot **220/0**. A pen planting `file` calls names its subject; the census
 counts command position. Both right -- theirs to weigh, mine to name.
 **YOURS:** whether `literal` should book its own REDS row.
-**PATCHOULI -- ONE CEILING COUNTS BYTES, THE OTHER COUNTS LINES.**
-Elder [shelved](archive/20260910-041243_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY.** The store bounds a blob at `max_blob_bytes` (1 << 27), refusing
-**at the edge** before the allocation grows. The weave bounds itself at `max_weave_lines` (1 << 20)
-and `from_v2` refuses `TooManyLines` **by name**. **The fence between them was a wish:**
-`read_v2_record` appended every row of a record off disk and read its ceiling AFTERWARDS.
-**THE CONVERSION NOBODY WROTE DOWN:** a v2 row costs nine bytes, so a blob UNDER the store's own
-ceiling carries **14,913,080** rows against the 1,048,576 a weave holds. **On metal:** a
-**15,666,516-byte** blob made `mantra status` panic at exit **134**.
-**THE FILE KNEW THE MOVE:** `read_commit_v2`, sixty lines below, refuses `error.TooManyFiles`
-inside its loop before appending -- one file, two readers, two answers.
-**REPAIRED, PROVEN WITHOUT A FORGERY:** both readers refuse inside the loop; the scan builds that
-reader at ceilings of **16** and **8** and has the wide binary WRITE the stores the narrow one
-reads, so every name is Mantra's own digest. `mantra_record_ceiling` **tier lap**, 13 readings,
-4 phases. `%688`.
-**I TYPED THE RAW `pkill -f`** and it took my own shell at exit **144** -- seventh firing, no peer
-reached by luck of the pattern. **YOURS:** `resin_batch.rye` ties `max_batch_entries` 16 to
-`max_batch_bytes` 4096 nowhere. **SECOND HAND ON BAKERY'S `elf_machine`:** it drags
-`standing_equipment` red too. **FULL ROSTER DID NOT CLOSE AGAIN**, 11 guards in 10 minutes twice at
-load 14.5, so this lap stands on **18 named guards, 17 green**.
+**PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
+Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).
+**WATER TASTES, so this lap ran the actual thing up close** -- built the CLI, handed it documents,
+and read what came back. `split_lines` drops the empty token a text ending in `\n` produces, and a
+text ending WITHOUT one produces none, so `x\ny` and `x\ny\n` split to two identical lines.
+`cmd_add` stores that split and nothing beside it: a weave and a commit, **never the file's bytes**.
+**ON METAL:** two pens, two files one byte apart, both answered `HEAD -> 441c3c6fa8b8` and both
+weaves carried digest `7695a361c00e...`. **A content-addressed store gave one address to two
+contents.** Worse than a display fault -- `status` says **clean**, `add` says **unchanged**, in BOTH
+directions, so the store declines the change when asked for it directly.
+**FOUR READINGS GATED, SEVEN REPORTING.** A gate that reds on what no lap may repair is a gate
+somebody turns off, so what a repair must not break is gated and the loss is named under
+`20260910.043900`. `mantra_document_roundtrip` **tier lap**, 8 control legs, 2 breaks caught.
+**DOOR 1 IS PRICED RATHER THAN ARGUED:** the control keeps the token in a pen -- the digests part,
+`add` sees the appended newline, and a three-line terminated file reports **4** where the tree reads
+**3**. That is door 1's whole cost, read off a built binary.
+**YOURS:** which door the document view takes -- keep the token, a terminator flag on the v2 counter
+row, or the file's own bytes as a blob. Doors 2 and 3 each widen a record format.
+**MY OWN COLD OPEN WENT VOID AND I NAMED IT RATHER THAN SPENDING IT**: I edited the tree while the
+pass ran, which is the one thing the card asks a lap not to do. the row of `20260910.043900` folded `%688` to make room --
+REDS stood at **40,948 of 40,960**, twelve bytes, so no row could land beside it at all.
 
 **DIFFUSER -- THE ROW EXPANDED BEFORE IT MATCHED, AND THE LAP THAT FOUND IT DIED AT ITS SEND.**
 Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md).

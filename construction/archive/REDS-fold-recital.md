@@ -692,3 +692,5 @@ at a closed fold.*
 *Row %685 folded to [`REDS-read-the-form-and-the-channel-rows-685.md`](REDS-read-the-form-and-the-channel-rows-685.md) on `20260910.034851`, **CLOSED** -- a command is read by its form and its channel -- one literal operand, no options, stdout -- rather than by the name of the utility invoking it.*
 
 *Row %681 folded to [`REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](REDS-the-loom-that-chased-a-generation-too-far-rows-681.md) on `20260910.041138`, **BOOKED** -- a transcript is evidence only as far down as somebody read.*
+
+*Row %688 folded to [`REDS-the-conversion-nobody-wrote-down-rows-688.md`](REDS-the-conversion-nobody-wrote-down-rows-688.md) on `20260910.044321`, **CLOSED** -- a ceiling in bytes and a ceiling in lines are one ceiling only where somebody wrote the conversion down, and both weave readers now refuse at the edge.*

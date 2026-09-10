@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260910.044625
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat Patchouli, lane mantra and tally
+modality text
+model claude-opus-5
+model_status runtime unverified -- the harness names the model in its own environment banner and exposes no telemetry a script may read
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json, read 20260910; this pier execs tools/f/fleet-loop.sh bare
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title Two files one byte apart earn one address in a content-addressed store
+prompt the standing fleet baton -- take the next agent-doable lap in the mantra and tally lane
+rota lap 4523, row 3 -- Water, the row that tastes; read the threshold page and the happy-zone fixed seat, and took the row's instruction literally: build the CLI, hand it documents, read what comes back rather than reading the source and reasoning about it
+think Both open reds in my lane, `%680` and `%678`, stand OPEN on Keaton's word, so they surfaced as gates rather than as work; the card's other item for me, `resin_batch.rye` tying two ceilings nowhere, already carries a `// ceilings: independent` declaration that reads true against `build_batch`, which bounds every write against the caller's own out slice.
+think Water tastes by running the actual thing, so I built `mantra/src/main.rye` into a pen and pressed the document boundary rather than the function boundary -- empty file, no trailing newline, replacement, emptied file. The replacement case reproduced `%680` exactly. The no-trailing-newline case did something the elder reds had not named.
+think Store `x\ny`, append the newline, and `mantra status` answers clean while `mantra add` answers unchanged; store `p\nq\n`, take the newline away, same two answers. So the change is invisible in both directions, and the store declines to record it when asked directly.
+think The sharpest statement came from the digests. Two pens, two files differing by exactly the final newline, one add each: both printed `HEAD -> 441c3c6fa8b8` and both weaves carried `7695a361c00e...`. A content-addressed store gave one address to two contents, in Mantra's own SHA3.
+think The root is `split_lines` in `mantra/src/diff.rye`, which drops the empty token a trailing newline produces -- correct and documented for diffing, and spent here as a test of identity. `cmd_add` stores the split and never the file's bytes, so the byte has no home rather than merely no reader.
+think The repair has three doors and each costs a format or a tree-wide behavior change, so I gated what a repair must not break and reported the loss by name -- the placement `derived-spine` takes for a published double, since a gate that reds on what no lap may fix is a gate somebody turns off.
+obs The control's fourth leg is the part worth keeping: it applies door 1 in a pen -- keep the trailing token, which needs no format change -- and measures it. The digests part, `add` sees the appended newline, and a three-line terminated file reports 4 lines where the tree reports 3. A design choice named in prose became a number.
+obs REDS stood at 40,948 of the 40,960 its own header declares -- twelve bytes -- so no row could land beside it at all. Folded my own CLOSED `%688` to a shelf first, which freed 2,059, and trimmed the new row four times to fit.
+obs I edited the tree while my own cold roster pass was running, which is the one thing the card asks a lap not to do. The pass is void by its own `tree_moved` reading, and I named that on the card rather than quoting its greens.
+loom witness=mantra_document_roundtrip control_legs=8 control_wall_s=14.4 scan_readings=13 door1_line_count=4 tree_line_count=3
+file tools/fixtures/m/mantra_document_roundtrip_scan.sh -- builds the tree's own CLI and hands it two documents one byte apart; four readings gated, seven reporting the seam
+file tools/fixtures/m/mantra_document_roundtrip_control.sh -- two breaks proven from the failing side, and door 1 priced in a pen at one line per terminated file
+file tools/m/mantra_document_roundtrip_witness.rish -- the guard, asserting the four gates, the control's own `fail=0`, and door 1's measured price
+file construction/standing-equipment.kyri -- rosters the guard at tier lap
+file construction/REDS.md -- books the row of `20260910.043900`, and the headline count moves with the spine
+file construction/archive/REDS-the-conversion-nobody-wrote-down-rows-688.md -- the elder row folded to make room, its clause carried forward
+file construction/ITINERARY.md -- the account, the Git nib, and the elder block shelved whole
+scope one red found on metal, booked, gated where a repair must not break it, reported where it waits on a word; no format guessed at
+status GREEN -- `mantra_document_roundtrip_witness.rish` exit 0, control pass=8 fail=0, `tracked_link_witness` green after staging, `reds_ledger_monotone_witness` green; my own cold roster pass is void by `tree_moved` and named as such rather than counted
+recommend check-in (Keaton) -- three doors stand for the document view and door 1 is measured; the other two widen a record format, which is a decision rather than a lap
