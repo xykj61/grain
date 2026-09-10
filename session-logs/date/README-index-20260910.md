@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.085903` | [A process per file](20260910/20260910-085903_a-process-per-file.kyri) | 7,741 processes became 6, and the bill fell 17-fold |
 | `20260910.084659` | [A contained fault belongs at the commit](20260910/20260910-084659_a-contained-fault-belongs-at-the-commit.kyri) | the placement question, asked of the class |
 | `20260910.082751` | [The door nobody meets at the wall](20260910/20260910-082751_the-door-nobody-meets-at-the-wall.kyri) | 9 of 16 open rows wait on one hand |
+| `20260910.082330` | [The unanswered word, priced](20260910/20260910-082330_the-unanswered-word-priced.kyri) | two doors molted in place; Door or Field costs 8 points |
 | `20260910.081435` | [The leg that could not make a sound](20260910/20260910-081435_the-leg-that-could-not-make-a-sound.kyri) | a gate refusing, read off EXIT:0 |
 | `20260910.080947` | [The gate that red on lawful work](20260910/20260910-080947_the-gate-that-red-on-lawful-work.kyri) | a braided ceiling split in two |
 | `20260910.074629` | [The grade that read perfect](20260910/20260910-074629_the-grade-that-read-perfect.kyri) | truth scored 100 while nobody read a claim |
