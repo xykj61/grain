@@ -17,7 +17,12 @@
 # reader cannot act on is the fault this tree calls a guard that guards nothing.
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/topology.rye -femit-bin=comlink/bin/topology"]
-assert build.ok else "comlink topology: build failed -- ${build.err}"
+# The captured stream is written out bare rather than interpolated into the refusal. An
+# interpolated `.err` composes through Rishi's fixed StrBuf, so a compiler that says a great deal
+# would break the very message explaining the break -- the deferred hazard
+# tools/fixtures/s/say_compose_bound_scan.sh counts. A bare `say` never opens that buffer.
+say build.err
+assert build.ok else "comlink topology: build failed -- read the compiler output printed above"
 
 let st = run ["comlink/bin/topology" "selftest"]
 assert st.ok else "comlink topology selftest must exit 0"
@@ -58,7 +63,8 @@ assert (st.err contains "one step gets strictly closer") else "greedy progress f
 # innocent with an unbroken copy, and -- its sharpest phase -- proves a broken copy sails
 # through once the legs are cut, while the binary still prints the claim.
 let control = run ["sh" "tools/fixtures/t/topology_point_metric_control.sh"]
-assert control.ok else "topology point-metric control must prove all six phases -- ${control.out}"
+say control.out
+assert control.ok else "topology point-metric control must prove all six phases -- read its output printed above"
 assert (control.out contains "verdict=proven") else "the control must print its own verdict"
 assert (control.out contains "legs_removed_exit 0 ok") else "the phase that proves the legs earn their keep must pass, or the proof is decoration"
 

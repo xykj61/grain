@@ -15,7 +15,13 @@
 #   rishi/bin/rishi run tools/g/glow_decimal_law_witness.rish
 
 let scan = run ["sh" "tools/fixtures/g/glow_decimal_law_scan.sh"]
-assert scan.ok else "glow_decimal_law scan failed: ${scan.err}${scan.out}"
+# The reading is written out bare rather than interpolated into a refusal message. An
+# interpolated `.out` composes through Rishi's fixed StrBuf, so the one message that cannot be
+# built is the one describing a real disagreement -- the deferred hazard
+# tools/fixtures/s/say_compose_bound_scan.sh counts. A bare `say` never opens that buffer.
+say scan.out
+say scan.err
+assert scan.ok else "glow_decimal_law scan failed -- read the scan output printed above"
 
 # invariant: the subject is present. A scan finding zero readers has lost the population it
 # measures, and every reading below would then be satisfied by an empty tree.
@@ -39,14 +45,15 @@ assert scan.out contains "law_claimed_absent=0" else "glow_decimal_law: a reader
 # invariant: the ceiling only falls. Two verdicts stands today; the ruling takes it to one, from
 # whichever side, and it may never climb back.
 assert scan.out contains "verdicts_ceiling=2" else "glow_decimal_law: the verdict ceiling stands at two -- a ceiling only falls"
-assert scan.out contains "verdict=ok" else "glow_decimal_law: the scan refused -- ${scan.out}"
+assert scan.out contains "verdict=ok" else "glow_decimal_law: the scan refused -- read its verdict line printed above"
 
 # invariant: the ceiling's refusal is reachable on the LIVE tree, not only in a pen. A ceiling
 # proven in the passing direction alone cannot be told from a bypass, so the guard drops it one
 # under the live reading and requires the scan to refuse, naming that refusal rather than any other.
 let under = run ["sh" "-c" "GLOW_DECIMAL_VERDICTS_CEILING=1 sh tools/fixtures/g/glow_decimal_law_scan.sh"]
+say under.out
 assert (under.ok == false) else "glow_decimal_law: two verdicts must refuse at a ceiling of one"
-assert under.out contains "verdict=over_verdicts_ceiling" else "glow_decimal_law: want the verdict ceiling refusal named -- ${under.out}"
+assert under.out contains "verdict=over_verdicts_ceiling" else "glow_decimal_law: want the verdict ceiling refusal named -- read the reading printed above"
 
 # invariant: the reading is proven on real Glow rooms rather than trusted. The control builds
 # miniature compiler rooms in a throwaway pen and plants each refusal, then lifts it -- 31
@@ -54,7 +61,8 @@ assert under.out contains "verdict=over_verdicts_ceiling" else "glow_decimal_law
 # zero and a room where every reader accepts one BOTH read one verdict and both pass, which is how
 # the meter holds the split still without taking either side of the ruling.
 let control = run ["sh" "tools/fixtures/g/glow_decimal_law_control.sh"]
-assert control.ok else "glow_decimal_law control failed: ${control.out}"
-assert control.out contains "fail=0" else "glow_decimal_law control reported failures: ${control.out}"
+say control.out
+assert control.ok else "glow_decimal_law control failed -- read its output printed above"
+assert control.out contains "fail=0" else "glow_decimal_law control reported failures -- read its output printed above"
 
 say "GREEN: glow_decimal_law -- 14 source-decimal readers derived from the room, 1 holding the house parse law and 13 without it, two verdicts for one literal held under a ceiling that only falls, no reader claiming the law it lacks, the ceiling refusal proven on the live tree, 31 control behaviors green."

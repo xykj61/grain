@@ -8,6 +8,19 @@
 ::  Surface Chapter p11 -- first resident in src/til.
 ::  Names the two Tilak roots from the marked-value brief; does not seat %tile
 ::  (held for Keaton). Thin +$ / $: one-field shape so the room opens honestly.
+::
+::  the roots the engine hardcodes, as amphora/manifest_entry.rye publishes them:
+::    plain-bytes
+::    manifest
+::  that is the whole pair.
+::
+::  Why this desk names them rather than only counting them. A count agrees while the
+::  pair underneath it has changed: rename one root and two is still two. So the guard
+::  beside this desk reads both sides as SETS -- the roots written above and the marks
+::  mark_verdict answers `.known` on -- and compares them sorted, then compares the count
+::  to the desk's own list, to how many roots the engine publishes, and to how many it
+::  answers on. The count is the fact a reader takes in at the door; the names are the
+::  fact that keeps it honest.
 +$  tilak-root-count-shape
   $:  roots=@u32
   ==

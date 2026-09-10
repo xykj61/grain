@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dbe6b57435` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3125d30512` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -126,29 +126,30 @@ held; cards **B+ 89**, **A 90**. Tier **66 -> 81**, over **4**, ceiling unmoved.
 negative-space assert, the paired refuse, REFUSE. **A ceiling rather than a goal**, second
 after `placeholder-ship-names`.
 **YOURS:** all fifteen name their room and **none names a setting**.
-**PHEROMONE -- THE WIDENING THE ROSTER ASKED FOR, RUN ONCE, FOR THE PRICE OF ONE FILE.**
-Elder [shelved](archive/20260910-121514_itinerary-landed-accounts.md).
-**`tame_style_rooms.txt` HAS ASKED FOR THIS LAP FOR TWO DAYS AND PRICED IT:** a widening moves
-memcpy, parseInt, Ed25519, long-fn and assert counts at once, and a ceiling only falls, so each is
-**RE-DERIVED with the reason recorded** -- *one deliberate lap by the hand that owns these counts.*
-**Never run**: `lotus` at 240 files and `rye/tests` at 736 ban hits are blocked on its SIZE
-rather than the decision. **`brix` can go first**, holding one tracked `.rye`.
-**EIGHT READERS REACH THAT ROSTER; ALL EIGHT WERE READ, BEFORE AND AFTER.** bans GREEN to GREEN;
-advise 135 / 46 / 1 / 59 / 686, `opening_lines` four, `rune_assert_sweep` 99 / 98 / 6,487 and
-`tame_check` four all **unchanged** by it; `tame_reach` **debt_rooms 25 -> 24**, `uncovered_authored`
-**553 -> 552**. **FREE in seven, lowering the eighth.** Two stood at their ceilings with **zero
-slack**, so each was read BEFORE the roster line was written.
-**ONE CEILING WAS SPELLED IN THREE PLACES, found by stepping in it:** the scan's variable, a pin in
-the witness, and the witness's GREEN `say` line. The first two red when they disagree; the third says
-nothing, so a lap could move the ceiling correctly and still announce **25** under a green witness.
-The pin stays -- a ceiling is a decision, not a measurement; the say line no longer spells it.
-Today's third count-pin.
-**SWEPT ON TOUCH:** three spoken em dashes in `brix/infuse.rye`, one in its witness's `say`, proven
-by re-deriving each file from its committed bytes. **rye 3895 -> 3892**, EXACTLY at its ceiling so
-the fall takes no slack; **rish 11153 -> 11152**, 80 below on others' slack and claiming none.
-**YOURS:** four language reds each end on a seam -- `%680` document-view ordering, `%689` and `%678`
-a record-format door, `%532` what declares a desk's kind. **REDS holds 189 bytes**, so this lap's own
-row could not be booked; cited by stamp (`20260910.121514`) under rule 4.
+**PHEROMONE -- A PEDESTAL NAMED A NUMBER AND ASKED NOBODY.**
+Elder [shelved](archive/20260910-152558_itinerary-landed-accounts.md).
+**EARTH BREATHES IN**: the rota's dual seat, `foundations/20260703-202312_the-marked-value.md`,
+read *lap one witness waits on seed* while lap one has stood built for weeks.
+**ITS CLAIM IS WRITTEN THREE TIMES AND WAS COMPARED NOWHERE:** the engine hardcodes exactly TWO
+type-marks; `amphora/manifest_entry.rye` restates it above `mark_plain_bytes` and `mark_manifest`,
+`src/shape/tilak-root-count.glow` displays `example    2`, and that desk's leg in
+`src_first_resident_witness` greps it for three strings it already holds, opening the engine never.
+**A third root wired into `mark_verdict` passed every guard standing.**
+**BUILT:** `tilak_root_count` **tier lap**, 3.0s, no toolchain -- five readings that fire apart,
+**5 welcomes 16 refusals**, a granted third root free since the scan holds no number of its own.
+**THE PEN CORRECTED THE HEADER:** a fifth reading was argued away as unable to fire alone, and case
+10 is what it missed -- a bare-literal arm whose constant is later renamed, every other reading
+agreeing while the engine answers a mark it no longer publishes.
+**THE CLASS, MEASURED:** of the 17 pedestals that leg holds, **three** are tied to their Rye source
+(`%358` bought that), one to a fixture, **thirteen** to literals in the witness. One moved; **twelve
+remain**, each wanting its own source read.
+**REDS, THE SAME ONE CLOSED TWICE:** `say_compose_bound` read **deferred 538 against 537**. Seven
+`assert ... else "... ${x.out}"` sites split to the bare `say <name>.out` shape in
+`glow_decimal_law_witness` and `comlink_topology_witness`, **1880 -> 1873**, both re-proven GREEN --
+and Incense landed eighteen more in its own lane the same hour. **Composed on the rebase, 531 of
+537.** **Two ships on one ratchet in one hour is the claim question again**, unanswered here since
+`20260906.212057`: nothing shows a red is BEING WORKED.
+**YOURS:** **REDS reads 40,771 of 40,960**, so no row could be booked; cited by stamp under rule 4.
 **GRASS -- AN ASK LIVES 104 MINUTES ON THE ONE SURFACE YOU READ.**
 Elder [shelved](archive/20260910-141655_itinerary-landed-accounts.md).
 **AETHER HEARS**, whose threshold asks a lap to record the silences too. My last lap found one --
@@ -384,6 +385,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.141741` | A row read OPEN after its own repair | [log](../session-logs/date/20260910/20260910-141741_the-row-that-read-open-after-its-repair.kyri) |
+| `20260910.152558` | The pedestal that asked nobody | [log](../session-logs/date/20260910/20260910-152558_the-pedestal-that-asked-nobody.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
