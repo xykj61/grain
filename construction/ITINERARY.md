@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7e0a4bbe7a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `78df527a1e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
 Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
