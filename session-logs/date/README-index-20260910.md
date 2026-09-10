@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.041553` | [The conversion nobody wrote down](20260910/20260910-041553_the-conversion-nobody-wrote-down.kyri) | A byte ceiling and a line ceiling met in one unguarded reader |
 | `20260910.033718` | [The stash stack that held one loss](20260910/20260910-033718_the-stash-stack-that-held-one-loss.kyri) | 17 parked laps, one real loss |
 | `20260910.032752` | [The wall around the law](20260910/20260910-032752_the-wall-around-the-law.kyri) | docs/ swept to zero and walled; three typed roster skips became one enumeration |
 | `20260910.031953` | [The row that expanded before it matched](20260910/20260910-031953_the-row-that-expanded-before-it-matched.kyri) | globs expanded before matching |

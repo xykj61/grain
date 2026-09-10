@@ -1,0 +1,88 @@
+# tools/m/mantra_record_ceiling_witness.rish -- where a record read off disk stops.
+#
+# WHAT THIS PROVES. `mantra/src/store.rye` bounds a blob in BYTES and
+# `mantra/src/weave.rye` bounds a weave in LINES, and the conversion between the
+# two units had never been taken. A blob standing UNDER the store's own ceiling
+# carries roughly fourteen times the lines a weave may hold, because a v2 row
+# costs nine bytes at its shortest. `read_v2_record` appended every row of such a
+# record and read its ceiling afterwards, with an assert.
+#
+# THE COST, on metal `20260910.034822`: a 15,666,516-byte store blob -- an eighth
+# of the store's own ceiling -- made `mantra status` panic with `reached
+# unreachable code` at exit 134, after allocating all 1,048,600 of its rows.
+# `Weave.from_v2` already refuses that record by name with
+# `WeaveError.TooManyLines`; the assert fired first, so the named refusal never
+# arrived. In a build without safety checks the assert is a no-op and `from_v2`
+# refuses correctly -- yet the memory is spent either way, which is why the
+# repair is an edge refusal rather than a stronger assert.
+#
+# THE LAW WAS IN THE FILE'S OWN HAND. `read_commit_v2`, sixty lines below the
+# reader this repairs, already refuses `error.TooManyFiles` inside its loop
+# before appending. Two readers of one file, two ceilings, and only one of them
+# checked at the edge. `mantra/src/store.rye`'s own head note states the
+# principle plainly: a ceiling read at the edge refuses before an allocation
+# grows, where a digest refuses after.
+#
+# HOW THE READING IS TAKEN. A record at the tree's real ceiling is 15 MB and
+# takes minutes to read, which would price this guard out of a lap tier. The scan
+# builds the SAME reader at two lowered ceilings -- wide at 16 lines, narrow at 8
+# -- and has the wide binary WRITE the stores the narrow one reads, so every
+# blob name is a digest Mantra computed itself and no store is forged. The tree's
+# real arithmetic is printed beside it, read off the two sources.
+#
+# WHAT IS NOT DRIVEN, named rather than dressed up: nothing has written a
+# `mantra-weave-v1` record since `20260909`, so the elder reader's edge refusal is
+# read at its SOURCE rather than exercised. `v1_unguarded` in the control moves
+# that one reading and no other, which is the honest shape of a source claim.
+#
+# Siblings: the record the CLI writes at tools/m/mantra_cli_record_witness.rish,
+# the wide record at tools/m/mantra_weave_v2_witness.rish, the idempotent add at
+# tools/m/mantra_idempotent_add_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_record_ceiling_witness.rish
+
+say "mantra-record-ceiling: Language EN -- a record read off disk stops at a line the reader names."
+say "mantra-record-ceiling: Style Gauge, Meter -- every claim is an answer the built CLI gave in a pen."
+say "mantra-record-ceiling: Lens TAME -- bound everything, and check the bound at the edge."
+
+say "mantra-record-ceiling: both ceilings still stand where this guard reads them..."
+let seat = run ["sh" "-c" "grep -q 'pub const max_blob_bytes' mantra/src/store.rye && grep -q 'pub const max_weave_lines' mantra/src/weave.rye && grep -q 'TooManyLines' mantra/src/weave.rye"]
+assert seat.ok else "mantra-record-ceiling: one of the two ceilings or the named error left its module, so this guard reads a shape that is gone"
+
+say "mantra-record-ceiling: the file's own elder answer is still beside the readers, which is what the repair copies..."
+let elder = run ["sh" "-c" "grep -q 'if (files.items.len >= max_commit_files) return error.TooManyFiles;' mantra/src/main.rye"]
+assert elder.ok else "mantra-record-ceiling: read_commit_v2 stopped refusing at its edge -- the pattern this repair borrowed is no longer in the file"
+
+say "mantra-record-ceiling: building the reader at two ceilings and reading stores the wide one wrote..."
+let scan = run ["sh" "tools/fixtures/m/mantra_record_ceiling_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-record-ceiling: the scan must complete"
+assert scan.out contains "built_wide=yes" else "mantra-record-ceiling: the wide CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "built_narrow=yes" else "mantra-record-ceiling: the narrow CLI did not compile, so nothing read a record past its ceiling"
+assert scan.out contains "ceiling_gap=yes" else "mantra-record-ceiling: the byte ceiling no longer admits more rows than the line ceiling, so the reason this guard exists has changed and its header is stale"
+assert scan.out contains "at_ceiling_reads=yes" else "mantra-record-ceiling: a record standing exactly at the ceiling was refused -- the fence bites one row early and lawful stores are lost"
+assert scan.out contains "overlong_refused=yes" else "mantra-record-ceiling: a record one line past the ceiling was accepted, which is the bound not holding at all"
+assert scan.out contains "refusal_named=yes" else "mantra-record-ceiling: the refusal did not name TooManyLines, so a caller cannot tell this refusal from any other"
+assert scan.out contains "no_panic=yes" else "mantra-record-ceiling: the reader panicked on bytes read off disk, which is the red of `20260910.034822` standing"
+assert scan.out contains "overlong_exit=1" else "mantra-record-ceiling: the refusal did not leave exit 1 -- 134 is the panic this repair replaced"
+assert scan.out contains "v1_reader_guarded=yes" else "mantra-record-ceiling: read_v1_rows lost its edge refusal, so an elder store is the unbounded half again"
+assert scan.out contains "lawful_roundtrip=yes" else "mantra-record-ceiling: an ordinary store stopped opening, so the repair reached past the records it was for"
+assert scan.out contains "verdict=ok" else "mantra-record-ceiling: the scan reached its own red"
+
+say "mantra-record-ceiling: breaking the edge refusal in three directions in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_record_ceiling_control.sh"]
+say control.out
+assert control.ok else "mantra-record-ceiling: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-record-ceiling: the control must reach its own verdict"
+assert control.out contains "clean_ok=1" else "mantra-record-ceiling: the unmutated pen must read ok, or every other phase fails for a reason the pen invented"
+assert control.out contains "no_edge_v2_no_panic=no" else "mantra-record-ceiling: deleting the edge refusal must bring the panic back -- otherwise no_panic is not reading the repair"
+assert control.out contains "no_edge_v2_refusal_named=no" else "mantra-record-ceiling: that same break must lose the named refusal, which is the half a stronger assert would not have fixed"
+assert control.out contains "no_edge_v2_overlong_refused=yes" else "mantra-record-ceiling: the record must still be refused with the edge gone -- a panic IS a refusal, and reading otherwise would let a crash pass as a bound"
+assert control.out contains "eager_at_ceiling_reads=no" else "mantra-record-ceiling: a refusal biting one row early must lose the at-ceiling store, or nothing holds the off-by-one in the safe direction"
+assert control.out contains "eager_overlong_refused=yes" else "mantra-record-ceiling: that same break must still refuse the over-long store, which is the pair telling an early fence from a missing one"
+assert control.out contains "eager_no_panic=yes" else "mantra-record-ceiling: an early fence must not panic, or the eager phase is moving the same reading the first break moves"
+assert control.out contains "v1_unguarded_v1_reader_guarded=no" else "mantra-record-ceiling: deleting the elder reader's refusal must move its source reading -- otherwise that reading proves nothing"
+assert control.out contains "v1_unguarded_overlong_refused=yes" else "mantra-record-ceiling: the v1 break must leave the driven readings alone, since nothing writes a v1 record to drive"
+
+say "GREEN: a record past the weave ceiling is refused by name at the edge, one standing at it still reads -- thirteen readings, four control phases, three breaks caught."
