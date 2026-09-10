@@ -1,0 +1,92 @@
+# ratchet_slack_pairs.txt -- which reading each ceiling is measured against.
+#
+# One row per ceiling: <scan basename>|<ceiling key>|<reading key>. This is the one thing
+# tools/fixtures/r/ratchet_slack_scan.sh cannot derive, because each scan names its own reading:
+# `absent` beside `absent_ceiling`, `plain_shebang_ratchet` beside `plain_shebang_ceiling`, and a
+# bare `chars` beside a bare `ceiling` in the four ASCII meters. A ceiling with no row here prints
+# `reading=unread` and is counted; a row naming a ceiling this tree no longer declares prints
+# `stale_pair` and refuses. A reading key may carry a line anchor, `ANCHOR@key`, where a scan
+# prints one key name on two lines -- `rye_comment_ascii` says `chars=` for own-line comments and
+# again for trailing ones, under two ceilings. Blank lines and `#` lines are read past.
+#
+copy_lag|behind_ceiling|behind
+dated_path|LOST_CEILING|refs_lost
+declared_model|ceiling|drift_candidates
+elf_machine_census|ceiling|sites
+exec_bit|ceiling|plain_shebang_ratchet
+fascia_home_link|CEILING|no_path_home
+foundations_reach|absent_ceiling|absent
+glow_comment_ascii|CEILING|chars
+glow_gate_answer|answer_blind_ceiling|answer_blind_runs
+glow_gate_answer|never_refused_ceiling|never_refused_files
+glow_gate_answer|delegated_laundered_ceiling|delegated_laundered_needles
+glow_gate_answer|delegated_blind_ceiling|delegated_blind_runs
+glow_gate_answer|delegated_never_refused_ceiling|delegated_never_refused_files
+index_fold|RATCHET_CEILING|stale_rows_ratchet
+instrument_absence|CEILING|blind_captures_open
+living_docs_roster|OVER_BOUND_CEILING|over_bound
+pond_enclosure_door|path_undeclared_ceiling|path_undeclared
+pond_enclosure_ephemeral|survives_outside_pier_ceiling|survives_outside_pier
+process_reach|ceiling|bare_sites
+prose_register|ceiling|teaching_over_field_target
+prose_register|law_ceiling|law_over_field_target
+qa_report_card|ceiling|card_below_b
+reds_ledger_monotone|duplicate_headlines_ceiling|duplicate_headlines
+reds_ledger_monotone|rows_double_shelved_ceiling|rows_double_shelved
+rish_report_bound|ceiling|sites
+rish_spoken_ascii|CEILING|chars
+rye_comment_ascii|CEILING|chars
+rye_comment_ascii|TRAIL_CEILING|RYE_TRAILING_COMMENT_ASCII@chars
+rye_compile_reach|ceiling|asserted
+rye_harness_roster|unresolved_ceiling|unresolved
+rye_spoken_ascii|CEILING|chars
+rye_witness_walker|ceiling|unwalked
+seed_link|ceiling|other_living_links_outside_seed
+self_matching_assert|ceiling|gated
+shell_comment_ascii|CEILING|chars
+silent_leg|ceiling|silent
+silent_leg|lane_ceiling|lane_silent
+socket_dialect|option_files_ceiling|option_files
+socket_dialect|option_lines_ceiling|option_lines
+socket_dialect|linux_layout_files_ceiling|linux_layout_files
+width_check|corpus_files_ceiling|corpus_flagged_files
+width_check|corpus_lines_ceiling|corpus_flagged_lines
+witness_own_build|CEILING|unbuilt_pairs
+caravan_ladder_carry|CEILING|carried
+caravan_ladder_copy|CEILING|copied_lines
+caravan_ladder_print|CEILING|carried
+caravan_ladder_spine|CEILING|carried
+equinox_choir_census|red_ceiling|red
+equinox_choir_census|over_bound_ceiling|over_bound
+glow_decimal_law|VERDICTS_CEILING|verdicts
+glow_desk_reach|UNCOVERED_BARE_CEILING|uncovered_bare
+glow_desk_reach|UNCOVERED_SAMPLED_CEILING|uncovered_sampled
+glow_desk_reach|STEM_COLLISION_CEILING|stem_collision
+glow_desk_run|FAILED_CEILING|failed
+glow_desk_run|SAMPLE_UNDECLARED_CEILING|sample_undeclared
+instrument_refusal|CEILING|swallowed_instrument_passes
+instrument_refusal|FALLBACK_CEILING|fallback_instrument_passes
+log_has_a_row|elder_ceiling|elder
+mantra_weave_model|ceiling|disagreements
+mechanism_sentence|CEILING|thin
+reds_pin_capacity|UNRECORDED_SHELVES_CEILING|unrecorded_shelves
+reds_pin_capacity|SHELF_OPEN_ROWS_CEILING|shelf_open_rows
+room_braid_census|ceiling|braid_max
+say_compose_bound|EAGER_PER_MILLE_CEILING|eager_per_mille
+say_compose_bound|DEFERRED_PER_MILLE_CEILING|deferred_per_mille
+session_roster_agree|ONE_SIDED_CEILING|one_sided
+shared_pen|files_ceiling|constant_pen_files
+shared_pen|wipe_ceiling|wiping_files
+shell_dialect|DATE_CEILING|gated_date_sites
+shell_dialect|GREP_P_CEILING|gated_grep_p_sites
+shell_dialect|STAT_C_CEILING|gated_stat_c_sites
+shell_dialect|SED_I_CEILING|gated_sed_i_sites
+shell_dialect|READLINK_F_CEILING|gated_readlink_f_sites
+standing_equipment_redleg|CEILING|guards_no_refusal_marker
+tame_reach|DEBT_ROOM_CEILING|debt_rooms
+tame_reach|BAN_CEILING|unwatched_ban_hits
+tool_letter_room|ceiling|misfiled
+tutorial_output|HELD_CEILING|held
+tutorial_output|SCATTERED_CEILING|selected_scattered
+witness_reach|CEILING|unreached
+witness_reach|FAMILY_CEILING|wholly_unreached

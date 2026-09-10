@@ -10,7 +10,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Tally is where bounds live.** A garden is a region of memory with a stated start, length, and end -- bump allocation lands inside it or fails cleanly, and clearing it releases everything at once. Every hosted seed and tool in this tree reaches for a Tally garden rather than `std.heap.ArenaAllocator` directly, so the one owned name carries the one law: bounded, named, and cleared whole.
 
-Beside the allocator itself, Tally holds a second kind of thing: small, universal marks that any module can import without taking on a real dependency -- a copy that proves its own preconditions, a comptime check that proves a type's layout, a mark for a condition that may honestly go either way. None of these are Tally-specific in what they guard; they live here because Tally is the tree's home for exactly this size and shape of thing.
+Beside the allocator itself, Tally holds a second kind of thing: small, universal marks that any module can import without taking on a real dependency -- a copy that proves its own preconditions, a comptime check that proves a type's layout, a mark for a condition that may honestly go either way. Each of these guards something universal rather than something Tally-specific; they live here because Tally is the tree's home for exactly this size and shape of thing.
 
 ## The Garden
 
@@ -36,7 +36,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 
 ## Who calls Tally
 
-**Canon seam map** (Tensegral r11). Callers reach marks through their own symlinks or imports -- not copies. Tally itself imports **`std` only**. Witness: [`../tools/t/tally_caller_map_witness.rish`](../tools/t/tally_caller_map_witness.rish). Saga shelf points here rather than keeping a second table.
+**Canon seam map** (Tensegral r11). Callers reach marks through their own symlinks or imports, keeping one canon file rather than a copy per room. Tally itself imports **`std` only**. Witness: [`../tools/t/tally_caller_map_witness.rish`](../tools/t/tally_caller_map_witness.rish). Saga shelf points here rather than keeping a second table.
 
 | Consumer family | Typical marks (symlink / import) |
 |-----------------|----------------------------------|
@@ -46,7 +46,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 | `mycelium/` - `image/` - `lotus/` - `mandate/` - `dimeroll/` - `kumara/` - `settlement/` - `vault/` | `kumara` - `tally_copy` - `parse_int`, as each room needs |
 | `tools/rye/kumara.rye` - `docs-geode/edu/yonder/tower/tally_stack.rye` | the Kumara seed path, and the learning floor's `stack` |
 
-Other season shelves cite this section; they do not duplicate the rows.
+Other season shelves cite this section rather than duplicating the rows.
 
 **The table is a family map; the witness reads every mark.** The rows above name consumer
 *families*, so the count they imply stands apart from the count on disk. The witness derives its
@@ -68,13 +68,13 @@ links can only ever surface links: `tools/fixtures/c/copy_lag_scan.sh` owns that
 `tools/fixtures/c/copy_sameness_scan.sh` owns `tally_copy.rye` against the canon's bytes.
 
 Each room in the table's caller column also carries a tracked link into Tally. The scan checks
-that promise against its caller census and reports `stale_named` when a listed room
-has none. File paths name their first room; prose links and later sections stay
+that promise against its caller census and reports `stale_named` for a listed room
+still awaiting its link. File paths name their first room; prose links and later sections stay
 outside this table reading. The compiler checks whether the linked marks are imported.
 
 ## Elder call sites migrate on touch
 
-`copyForwards`/`copyBackwards` and bare `@memcpy` are banned in new code; `tools/t/tame_style_check.rish` counts what remains and only ever watches the count fall. Nothing here is a sweep -- each mark earns its home the day a real caller needs it, and `maybe` and `no_padding` both arrived exactly that way: proposed in full, unseated, until the tree had something genuine to use them on.
+`copyForwards`/`copyBackwards` and bare `@memcpy` are banned in new code; `tools/t/tame_style_check.rish` counts what remains and only ever watches the count fall. Every mark here earns its home the day a real caller needs it rather than arriving in a sweep, and `maybe` and `no_padding` both arrived exactly that way: proposed in full, unseated, until the tree had something genuine to use them on.
 
 ---
 
