@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.054448` | [The two names the geometry owed](20260910/20260910-054448_the-two-names-the-geometry-owed.kyri) | a claim checked before it shipped |
 | `20260910.045710` | [a plant is a subject, never a practice](20260910/20260910-045710_a-plant-is-a-subject.kyri) | a control landed the shape a census counts. |
 | `20260910.045309` | [The listing nobody checked](20260910/20260910-045309_the-listing-nobody-checked.kyri) | A vessel's readable manifest claimed digests no reader compared to the cargo |
 | `20260910.044625` | [Two files one byte apart, one address](20260910/20260910-044625_two-files-one-byte-apart-one-address.kyri) | The store loses a document's final newline. |
