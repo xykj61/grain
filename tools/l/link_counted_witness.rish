@@ -1,0 +1,46 @@
+# tools/l/link_counted_witness.rish -- a count of tracked paths is not a count of things.
+#
+#   rishi/bin/rishi run tools/l/link_counted_witness.rish
+#
+# `git ls-files` lists a symlink beside its target, and this tree links a module into every room
+# that imports it by bare name, because Zig refuses an import escaping the root file's directory.
+# So one module can stand at four tracked paths, and a path count counts it four times.
+#
+# MEASURED `20260910.004524`: 230 of 1,964 tracked `.rye` paths are symlinks (11.7%), and 4 of
+# amphora's 11 (36%). The bill, before this guard existed: `README.md` published 1964 Rye modules
+# where 1,734 exist -- a 13.3% overstatement on the front door, in the number a reader divides the
+# witness count by -- and two equinox scans asserted floors of 9 and 10 amphora files against
+# populations of 7 and 8, calibrated on the inflated reading, so repairing the count made the guard
+# refuse the truth.
+#
+# WHY A GUARD RATHER THAN A HABIT. The cure was already written twice, each time with its reason in
+# a comment: `rye_comment_ascii_scan.sh` and `rye_spoken_ascii_scan.sh` both skip a link and say
+# why. A lantern that fires twice becomes a loom (`.claude/rules/reds-first.md`).
+
+say "link-counted: Language EN -- a path is a name for a file, never a file."
+say "link-counted: Style Gauge, Meter -- one reading, asked of git per glob."
+say "link-counted: Lens TAME -- every refusal planted in a real repository and then lifted."
+
+say "link-counted: the control -- fifteen behaviors on real git repositories in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/l/link_counted_control.sh"]
+assert ctl.ok else "link-counted: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=15 fail=0" else "link-counted: the control did not prove fifteen behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "link-counted: no tracked runner counts paths through a glob a symlink answers..."
+let scan = run ["sh" "tools/fixtures/l/link_counted_scan.sh"]
+assert scan.ok else "link-counted: the scan refused --\n${scan.out}\n${scan.err}"
+# invariant: the class is held at ZERO rather than ratcheted, because the cure is one line of an
+# idiom the tree already uses and every instance found on the seating lap was repaired in the
+# same commit -- a ceiling above zero would be slack nobody asked for.
+assert scan.out contains "link_counted_sites=0" else "link-counted: a runner counts tracked paths through a glob a symlink answers -- take `git ls-files -s` and drop mode 120000; run `sh tools/fixtures/l/link_counted_scan.sh list` --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "link-counted: the scan did not balance --\n${scan.out}"
+
+say "link-counted: and the reading is asked of git rather than spelled here..."
+let asked = run ["sh" "-c" "grep -c 'ls-files -s' tools/fixtures/l/link_counted_scan.sh"]
+assert asked.ok else "link-counted: the derivation could not be read"
+# invariant: which globs a symlink answers is read from the index on every run. A list of linked
+# globs written into the scan would be a second copy of the tree's own shape, stale the first lap
+# a link lands or leaves.
+assert (trim asked.out) != "0" else "link-counted: the scan spells its own population rather than asking git"
+
+say "GREEN: link-counted -- every published count of tracked files counts things rather than paths, proven on real repositories from both sides."

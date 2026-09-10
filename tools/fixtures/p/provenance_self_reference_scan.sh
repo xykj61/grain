@@ -57,7 +57,10 @@ FNR==1 {
 }' > "$work/hits" 2>/dev/null || {
   echo "provenance_self_reference: REFUSED -- the document pass would not run" >&2; exit 2; }
 
-scanned=$(git ls-files '*.md' | wc -l | tr -d ' ')
+# distinct sources, never paths: `git ls-files` lists a symlink beside its target, so a
+# path count counts one file twice. Mode 120000 is a symlink (`git ls-files -s` prints mode
+# first). Loom: tools/fixtures/l/link_counted_scan.sh.
+scanned=$(git ls-files -s '*.md' | awk '$1 != "120000"' | wc -l | tr -d ' ')
 [ "$scanned" -gt 0 ] || {
   echo "provenance_self_reference: REFUSED -- zero tracked documents read" >&2; exit 2; }
 

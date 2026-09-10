@@ -142,7 +142,10 @@ echo "saga_shelf_end=ep045"
 echo "saga_ep046=absent"
 
 # --- inventory behind control ---
-MD=$(git ls-files '*.md' | wc -l | tr -d ' ')
+# distinct sources, never paths: `git ls-files` lists a symlink beside its target, so a
+# path count counts one file twice. Mode 120000 is a symlink (`git ls-files -s` prints mode
+# first). Loom: tools/fixtures/l/link_counted_scan.sh.
+MD=$(git ls-files -s '*.md' | awk '$1 != "120000"' | wc -l | tr -d ' ')
 CACHE=$(git ls-files 'glow/.cache/*' | wc -l | tr -d ' ')
 echo "inv_md=$MD"
 echo "inv_glow_cache_tracked=$CACHE"
