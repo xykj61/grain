@@ -376,6 +376,9 @@ assert control.out contains "declared_setting_disagreement_named=yes" else "qa-r
 assert control.out contains "bare_style_reads_unnamed=yes" else "qa-report-card: a style declared with no setting is a silence rather than a disagreement"
 assert control.out contains "absent_style_reads_absent=yes" else "qa-report-card: a page with no Style line must read absent rather than guessing one"
 assert control.out contains "declared_setting_never_scores=yes" else "qa-report-card: three plants differing only in their head lines must grade identically -- a reported reading that moved a grade is a scored one wearing another name"
+assert control.out contains "inline_declaration_read=yes" else "qa-report-card: a Style key written inline after another key is a declaration -- 65 living pages write it that way"
+assert control.out contains "below_rule_declaration_read=yes" else "qa-report-card: a page declaring below its first horizontal rule declares -- README.md does"
+assert control.out contains "deep_declaration_read_past=yes" else "qa-report-card: a Style key past the head bound is body prose rather than a declaration"
 assert control.out contains "elder_card_was_blind_to_the_declaration=yes" else "qa-report-card: force the declaration read to answer absent and the door-declaring page must lose the reading -- the repair shown from the failing side"
 
 let proven = where (lines control.out) as l: l contains "=yes"

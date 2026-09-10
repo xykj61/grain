@@ -156,8 +156,34 @@ done
 # happened to be editing. Both are Keaton's word rather than a lap's. What a lap can do is stop the
 # silence being invisible: the card now prints what the page declares, where the effective setting
 # came from, and whether the two agree.
+#
+# THE READER IS PUBLISHED HERE AND CITED ELSEWHERE (repaired `20260910.163831`). Two instruments
+# read this one line and each missed a different half of the tree. This card matched
+# `^[ \t]*\*\*Style:\*\*`, so it read past every page writing the key INLINE after another --
+# `**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting` is how `docs/README.md`
+# declares Door, and this card answered `absent` for it, along with 64 more.
+# `tools/fixtures/q/qa_setting_declared_scan.sh` read the block above the page's first `---` rule
+# instead, which caught every inline key and missed the five pages declaring BELOW that rule --
+# `README.md` among them, whose head opens with a logo block, a title, a tagline and four badges.
+# The scan's own comment claimed it read this line the same way the card does, which is the shape
+# a lantern takes before it becomes a loom: two readers, one subject, one of them announcing an
+# agreement neither had.
+#
+# So the rule is written ONCE, here, and the scan lifts this function out of this file at run
+# time the way it already lifts `measure()` and the sentence floor (REDS %201). A declaration is
+# a `**Style:**` key standing anywhere in the page's HEAD, and the head is bounded at
+# QA_HEAD_LINES=40 lines, which is what keeps body prose about the word out: `context/
+# RADIANT_STYLE.md` discusses `Style: Radiant` at line 57 and `context/TRYA.md` at line 31, and
+# neither writes the bold key at all. A continuation line is read by neither, so a setting named
+# only on the second line of a wrapped declaration counts as unnamed in both -- named here rather
+# than left for a reader to trip on.
+QA_HEAD_LINES=40
+declared_style_line_of() {
+  awk -v n="$QA_HEAD_LINES" 'NR <= n && /\*\*Style:\*\*/ { print; exit }' "$1"
+}
+
 declared_setting=absent
-declared_style_line=$(grep -m1 -iE '^[ \t]*\*\*Style:\*\*' "$root/$path" 2>/dev/null || :)
+declared_style_line=$(declared_style_line_of "$root/$path" 2>/dev/null || :)
 if [ -n "$declared_style_line" ]; then
   case "$declared_style_line" in
     *[Dd]oor*)  declared_setting=door ;;

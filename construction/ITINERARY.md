@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c87424a14c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2410630a80` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -112,20 +112,20 @@ legs still able to bite.
 roster; the paper's **8.68x** is three interleaved pairs and stands.
 **YOURS:** the paper's falsifier -- scan-to-control wall split over ten guards. Above 70% scan
 puts the fleet ceiling near 3x; above 70% control retires the plan. Still open: `max_wakes`.
-**PETRICHOR -- THE ROOM MAP.MD SENDS A NEWCOMER TO WAS HELD BY NO REGISTER METER.**
-Elder [shelved](archive/20260910-142031_itinerary-landed-accounts.md).
-**EARTH BREATHES IN**, advanced by hand past a row four ships read today. The doorway census this
-card twice called a regrowing wound reads **3 of 3**, all testimony -- **alarm closed.**
-**THE GAP SAT ONE ROOM OVER:** `DOOR` named `docs/README.md` alone and the teaching glob reached
-`docs-geode/` and `manual/` past the other fourteen -- the room ASCII walled this morning.
-**Measured** by the scan's own `measure()`: 11 of 15 clear the floor, **two stand above Field, and
-both are pages whose SUBJECT is refusal.**
-**PAID IN RATHER THAN RAISED:** **52 -> 29** and **31 -> 27**, six sentences restated, every claim
-held; cards **B+ 89**, **A 90**. Tier **66 -> 81**, over **4**, ceiling unmoved.
-**THE RESIDUE IS THE FINDING:** the five still counted are the page itself -- ABSENT, the
-negative-space assert, the paired refuse, REFUSE. **A ceiling rather than a goal**, second
-after `placeholder-ship-names`.
-**YOURS:** all fifteen name their room and **none names a setting**.
+**PETRICHOR -- TWO READERS OF ONE LINE, AND ONE OF THEM ANNOUNCED THEY AGREED.**
+Elder [shelved](archive/20260910-175434_itinerary-landed-accounts.md); the pin sat 3 bytes under
+bound at my open, so this is written short.
+**FIRE SEES.** `qa_report_card.sh` matched `^**Style:**` and read past **65** pages writing the key
+INLINE -- `docs/README.md` declares Door, the card said `absent`; the census read above the first
+`---` and missed **5** declaring below it, `README.md` among them, its comment claiming it read the
+line as the card does. By stamp (`20260910.163831`), REDS full.
+**MECHANISM:** `declared_style_line_of()` published once in the card at `QA_HEAD_LINES=40`, LIFTED
+by the census beside `measure()`. **158/48/110/172 -> 164/50/114/166**; pens **38** and **162** legs;
+the citation proven live by a card publishing a BLIND reader.
+[Paper](../active-designing/20260910-175434_two-readers-of-one-line.md), B+ 88.
+**YOURS:** the DOOR roster holds 16 pages at 20% and **9 name no setting at their own door**, 0
+contradict. Deriving the meter's tiers from a page's declaration is your word; **14 spellings** of
+50 stand in the way.
 **PHEROMONE -- A PEDESTAL NAMED A NUMBER AND ASKED NOBODY.**
 Elder [shelved](archive/20260910-152558_itinerary-landed-accounts.md).
 **EARTH BREATHES IN**: the rota's dual seat, `foundations/20260703-202312_the-marked-value.md`,
@@ -383,6 +383,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.152558` | The pedestal that asked nobody | [log](../session-logs/date/20260910/20260910-152558_the-pedestal-that-asked-nobody.kyri) |
+| `20260910.175434` | Two readers of one line | [log](../session-logs/date/20260910/20260910-175434_two-readers-of-one-line.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

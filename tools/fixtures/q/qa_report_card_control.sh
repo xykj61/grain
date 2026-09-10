@@ -1161,6 +1161,40 @@ r1=$(val "$named" register); r2=$(val "$bare" register); r3=$(val "$none" regist
 [ -n "$c1" ] && [ "$c1" = "$c2" ] && [ "$c2" = "$c3" ] && [ "$r1" = "$r2" ] && [ "$r2" = "$r3" ] \
   && echo "declared_setting_never_scores=yes" || echo "declared_setting_never_scores=no ($c1/$c2/$c3)"
 
+# WHERE A PAGE WRITES THE KEY (repaired `20260910.163831`). This card matched the key only at the
+# START of a line, so it read past every page writing it INLINE after another -- and that is how
+# `docs/README.md` declares Door: `**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door
+# setting`. Sixty-five living pages write it that way and the card answered `absent` for all of
+# them. The sibling census read the block above the first `---` rule instead and missed the five
+# pages declaring BELOW it, `README.md` among them. One rule is published here now and cited
+# there, and both shapes are proven.
+printf '# Inline\n\n**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting\n\n%s\n' \
+  'Grain gives you a computer that answers to you. Every promise here is one a program has already checked. The system names each bound before it starts. A witness prints green when a claim holds.' \
+  > "$pen/declares_inline.md"
+inline=$(run declares_inline.md --setting door --service 75)
+[ "$(val "$inline" qa_declared_setting)" = door ] \
+  && [ "$(val "$inline" qa_setting_agrees)" = yes ] \
+  && echo "inline_declaration_read=yes" || echo "inline_declaration_read=no ($(val "$inline" qa_declared_setting))"
+
+# A page may open with a badge block above its first horizontal rule and write its front matter
+# below it. The rule is a typographic choice rather than a boundary of meaning.
+printf '# Badged\n\n<p align="center">a badge block</p>\n\n---\n\n**Style:** Gauge, Door setting\n\n%s\n' \
+  'Grain gives you a computer that answers to you. Every promise here is one a program has already checked. The system names each bound before it starts. A witness prints green when a claim holds.' \
+  > "$pen/declares_below_rule.md"
+below=$(run declares_below_rule.md --setting door --service 75)
+[ "$(val "$below" qa_declared_setting)" = door ] \
+  && echo "below_rule_declaration_read=yes" || echo "below_rule_declaration_read=no ($(val "$below" qa_declared_setting))"
+
+# And the head bound is what keeps a body out, now that the first rule no longer does.
+{
+  printf '# Deep\n\n'
+  i=0; while [ "$i" -lt 45 ]; do printf 'filler line %s\n' "$i"; i=$((i + 1)); done
+  printf '**Style:** Gauge, Door setting\n'
+} > "$pen/declares_deep.md"
+deep=$(run declares_deep.md --setting door --service 75)
+[ "$(val "$deep" qa_declared_setting)" = absent ] \
+  && echo "deep_declaration_read_past=yes" || echo "deep_declaration_read_past=no ($(val "$deep" qa_declared_setting))"
+
 # THE LEG THAT TELLS A REPAIR FROM A DECORATION, built the way the grade-floor leg above is: carry
 # the elder blindness back into a copy of the card by forcing the declaration read to answer
 # `absent` for every page, and watch the door-declaring plant lose the reading it just gained.
