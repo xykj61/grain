@@ -273,6 +273,8 @@ MAX_LINES=20000
 # census reads it rather than keeping a second copy -- one reading, one home, so a repair to the
 # lexer reaches both callers. The function name, its bound, and its answer are unchanged.
 . "$self_dir/../fixtures/l/live_lines.sh"
+# The walker source, built once and read by both the resident pass below and `live_lines` itself.
+LL_AWK_SRC=$(live_lines_awk)
 
 # THE WRITE SHAPES, AND THE TARGET TEST, EACH WRITTEN ONCE. Two readings ask the same question of
 # the same file -- every line, and non-comment lines only -- so one spelling serves both and they
@@ -308,37 +310,84 @@ target_admits() {
 # `20260909.222142`: the name strand alone reads 12, the git strand alone reads 5, and their union
 # reads 13.
 MAX_HOPS=3
-resolve_target() {
-  # resolve_target <file> <target> -- at most MAX_HOPS in-file assignments, then whatever is left.
-  # invariant: bounded, so a pair of variables defined in terms of each other cannot spin here.
-  rt_src=$1; rt_t=$2; rt_hop=0
-  while [ "$rt_hop" -lt "$MAX_HOPS" ]; do
-    case "$rt_t" in *'$'*) : ;; *) break ;; esac
-    rt_v=$(printf '%s' "$rt_t" | sed -n 's/^\${\{0,1\}\([A-Za-z_][A-Za-z0-9_]*\).*/\1/p')
-    [ -n "$rt_v" ] || break
-    rt_rhs=$(grep -hE "^[[:space:]]*(readonly[[:space:]]+)?$rt_v=" "$rt_src" 2>/dev/null | head -1 \
-             | sed "s/^[[:space:]]*//; s/^readonly[[:space:]]*//; s/^$rt_v=//")
-    # `${ANY:-default}` and `${ANY:=default}` carry the literal in the default, and the name inside
-    # the braces is usually a DIFFERENT variable -- an override hook, as in
-    # `SHELF_ROOM=${INDEX_ROW_SHELF_ROOM:-session-logs/date}`. Reading only the assigned name's own
-    # braces would miss every one of them.
-    case "$rt_rhs" in
-      '${'*:[-=]*) rt_rhs=$(printf '%s' "$rt_rhs" | sed 's/^\${[A-Za-z_][A-Za-z0-9_]*:[-=]//; s/}.*$//') ;;
-    esac
-    rt_rhs=$(printf '%s' "$rt_rhs" | sed "s/^[\"']//; s/[\"'].*$//")
-    [ -n "$rt_rhs" ] || break
-    rt_rest=$(printf '%s' "$rt_t" | sed -n 's/^\${\{0,1\}[A-Za-z_][A-Za-z0-9_]*}\{0,1\}//p')
-    rt_new="$rt_rhs$rt_rest"
-    [ "$rt_new" != "$rt_t" ] || break
-    rt_t=$rt_new; rt_hop=$((rt_hop + 1))
-  done
-  printf '%s\n' "$rt_t"
+# THE RESOLUTION MOVED INTO ONE PASS, AND THE RULE KEPT ONE HOME (`20260910.124500`).
+# `resolve_target` was a shell function walking at most MAX_HOPS in-file assignments, and each hop
+# spent about five `sed`, one `grep` and one `head` -- so resolving this population's targets cost
+# **7,411 `sed` plus 1,502 `head`**, 74% of the census's remaining 12,013 execve. The same hop loop
+# written once in awk, handed every file and every target together, answers in **143 ms against
+# 68,502 ms**, and the two readings are identical on all 1,158 (file, target) pairs -- diffed row for
+# row against the shell function before it was replaced.
+#
+# ONE IMPLEMENTATION, NOT TWO. This file's own header already warns that two readings of one
+# question drift apart, so the shell walker is GONE rather than kept beside the awk as a slow
+# oracle. The proof that they agreed is the diff above, recorded here and in the control; a second
+# living copy would be the braid `foundations/20260823-204456_single-stranded.md` names.
+#
+# invariant: bounded at MAX_HOPS, so a pair of variables defined in terms of each other cannot spin.
+resolve_pass() {
+  # resolve_pass <writes-map> <file-list> -- emit `<file>\t<target>\t<literal>` for every target.
+  # The target is the last quoted run of the write match, which both write shapes share.
+  awk -v MAX_HOPS="$MAX_HOPS" -F'\t' '
+    NR == FNR {
+      m = $2
+      if (match(m, /"[^"]*"$/)) t = substr(m, RSTART + 1, RLENGTH - 2)
+      else t = m
+      if (t != "" && !((($1) SUBSEP t) in seen)) { seen[($1) SUBSEP t] = 1; tg[++nt] = ($1) SUBSEP t }
+      next
+    }
+    {
+      line = $0
+      if (match(line, /^[[:space:]]*(readonly[[:space:]]+)?[A-Za-z_][A-Za-z0-9_]*=/)) {
+        a = substr(line, RSTART, RLENGTH)
+        sub(/^[[:space:]]*/, "", a); sub(/^readonly[[:space:]]+/, "", a)
+        v = a; sub(/=$/, "", v)
+        if (!((FILENAME SUBSEP v) in asg)) {
+          rhs = line
+          sub(/^[[:space:]]*/, "", rhs); sub(/^readonly[[:space:]]+/, "", rhs)
+          sub("^" v "=", "", rhs)
+          asg[FILENAME SUBSEP v] = rhs
+        }
+      }
+    }
+    END {
+      for (i = 1; i <= nt; i++) {
+        split(tg[i], k, SUBSEP)
+        printf "%s\t%s\t%s\n", k[1], k[2], rt(k[1], k[2])
+      }
+    }
+    function rt(src, t,   hop, v, rhs, rest, nw) {
+      for (hop = 0; hop < MAX_HOPS; hop++) {
+        if (index(t, "$") == 0) break
+        if (!match(t, /^\$\{?[A-Za-z_][A-Za-z0-9_]*/)) break
+        v = substr(t, RSTART, RLENGTH); sub(/^\$\{?/, "", v)
+        if (!((src SUBSEP v) in asg)) break
+        rhs = asg[src SUBSEP v]
+        if (rhs ~ /^\$\{[A-Za-z_][A-Za-z0-9_]*:[-=]/) {
+          sub(/^\$\{[A-Za-z_][A-Za-z0-9_]*:[-=]/, "", rhs)
+          sub(/\}.*$/, "", rhs)
+        }
+        sub(/^["\047]/, "", rhs)
+        sub(/["\047].*$/, "", rhs)
+        if (rhs == "") break
+        rest = t
+        if (!match(rest, /^\$\{?[A-Za-z_][A-Za-z0-9_]*\}?/)) break
+        rest = substr(rest, RSTART + RLENGTH)
+        nw = rhs rest
+        if (nw == t) break
+        t = nw
+      }
+      return t
+    }
+  ' "$1" $(cat "$2")
 }
 git_admits() {
-  # git_admits <file> <matched-writes> -- true when one match's target resolves to a path git tracks.
-  printf '%s\n' "$2" | sed 's/.*"\([^"]*\)"$/\1/' | sort -u | while IFS= read -r ga_tgt; do
-    [ -n "$ga_tgt" ] || continue
-    ga_lit=$(resolve_target "$1" "$ga_tgt")
+  # git_admits <file> -- true when one of this file's write targets resolves to a path git tracks.
+  # Reads the resolved literals out of the one-pass table on an EXACT first field. Two targets may
+  # resolve to one literal, and deduplicating after resolution is safe here because this is an
+  # any-match test rather than a count.
+  awk -F'\t' -v want="$1" '$1 == want { print $3 }' "$work/targets.txt" 2>/dev/null \
+    | sort -u | while IFS= read -r ga_lit; do
+    [ -n "$ga_lit" ] || continue
     case "$ga_lit" in
       *'$'*)
         ga_pre=${ga_lit%%\$*}
@@ -445,6 +494,71 @@ git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/' \
   | awk -F: '{ src = $1; sub(/^[^:]*:/, ""); body = $0; sub(/^[[:space:]]+/, "", body);
                if (body !~ /^#/) print src "\t" body }' > "$work/prover_lines.txt" || true
 [ -f "$work/prover_lines.txt" ] || : > "$work/prover_lines.txt"
+
+# EVERY WRITE IN THE TREE, READ IN ONE PASS RATHER THAN ONE PASS PER TOOL (`20260910.124500`).
+# `live_lines "$f" | grep -hoE "$WRITE_SHAPES"` per tool spawned four processes for each of 3,391
+# tracked tools -- an `awk`, the `cat` inside it regenerating the walker, a `grep`, and a `head` --
+# where one `awk` reading every file answers the same question. The walker library was built for
+# this: `live_lines_awk` exists so a caller can embed the source in a multi-file pass, resetting
+# state on `FNR == 1`, and this census was its only caller still reading one file at a time.
+#
+# Measured on this tree: **59,296 ms -> 6,427 ms for this strand, and the two readings are
+# byte-identical** -- 1,562 rows over 237 files, diffed row for row against the per-file reading
+# before this replaced it. `match()` is leftmost-longest exactly as `grep -o` is, so the extraction
+# loop below emits the same non-overlapping matches in the same order.
+#
+# The 237 is the reading that reshapes the rest of this loop: only 237 of 3,391 tools write into the
+# tree at all, so every expensive column downstream was being reached for by a loop 3,391 long.
+#
+# invariant: a file absent from this map carries no live write, so the loop may skip it whole.
+awk -v max="$MAX_LINES" -v shapes="$WRITE_SHAPES" "$LL_AWK_SRC"'
+  FNR == 1 { ll_reset() }
+  FNR > max { nextfile }
+  {
+    if (!ll_live($0)) next
+    s = $0
+    while (match(s, shapes)) {
+      print FILENAME "\t" substr(s, RSTART, RLENGTH)
+      s = substr(s, RSTART + RLENGTH)
+    }
+  }
+' $(cat "$work/all.txt") > "$work/writes.txt" 2>/dev/null || true
+[ -f "$work/writes.txt" ] || : > "$work/writes.txt"
+# AND THE FOURTH STRAND JOINS THE MAP, PRE-FILTERED RATHER THAN CALLED PER FILE (`20260910.153001`).
+# `rish_writes` above is a shell function reading one file, and the population it may draw from is
+# 2,450 tracked `.rish` sources -- calling it once each would re-open the per-item bill this pass
+# exists to close. It emits only from a line carrying `"sh" "-c"` or `write-file`, so a `grep -l`
+# for those two spellings is a SUPERSET of the files that can emit, and the function then runs on
+# that handful unchanged. Unchanged matters: the strand's control legs were written against this
+# function, and a second reading of one question is what this file's own header refuses.
+# invariant: a `.rish` source absent from the pre-filter carries neither spelling on any line, so
+# `rish_writes` would emit nothing for it.
+grep -E '\.rish$' "$work/all.txt" > "$work/rish_all.txt" || : > "$work/rish_all.txt"
+if [ -s "$work/rish_all.txt" ]; then
+  xargs -r grep -lE '"sh"[[:space:]]+"-c"|write-file[[:space:]]' < "$work/rish_all.txt" \
+    > "$work/rish_cand.txt" 2>/dev/null || : > "$work/rish_cand.txt"
+fi
+[ -f "$work/rish_cand.txt" ] || : > "$work/rish_cand.txt"
+while IFS= read -r rf; do
+  [ -f "$rf" ] || continue
+  rish_writes "$rf" | while IFS= read -r rspan; do
+    if [ -n "$rspan" ]; then printf '%s\t%s\n' "$rf" "$rspan"; fi
+  done
+done < "$work/rish_cand.txt" >> "$work/writes.txt"
+
+
+# THE LOOP IS AS LONG AS THE POPULATION IT ACTS ON (`20260910.124500`). Its first act was always
+# `[ -n "$writes" ] || continue`, so 3,154 of the 3,391 iterations existed to read a file and skip
+# it. Iterating the map's own distinct paths is exactly equivalent -- a path absent from the map
+# carries no live write, which is what the map is -- and it is 237 iterations rather than 3,391.
+# `tools_read` is counted off `all.txt` below and is unaffected.
+# invariant: every path here is a tracked tool that carries at least one live write.
+cut -f1 "$work/writes.txt" | sort -u > "$work/write_files.txt"
+
+# Every write target in the population, resolved once.
+resolve_pass "$work/writes.txt" "$work/write_files.txt" > "$work/targets.txt" 2>/dev/null || true
+[ -f "$work/targets.txt" ] || : > "$work/targets.txt"
+
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   # A WRITER HERE MUTATES THE TRACKED TREE, not its own pen. Nearly every tool redirects into a
@@ -482,23 +596,14 @@ while IFS= read -r f; do
   # `$shelf` writes by the git strand below. That is why this could only move together with it:
   # dropping comments alone took the two busiest writers out with the false one, which is the shape
   # the header calls two faults whose errors cancel.
-  writes=$(live_lines "$f" "$MAX_LINES" | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
-  # AND A RISHI SOURCE IS ASKED IN ITS OWN LANGUAGE (`20260910.101500`). The three shapes above are
-  # shell idioms, so a `.rish` tool could stand in this population and never be readable by it. The
-  # spans `rish_writes` emits are normalized to `> "<target>"`, so both strands below extract the
-  # target with the one spelling they already share.
-  case "$f" in
-    *.rish)
-      rish=$(rish_writes "$f")
-      # `if` rather than a `&&` chain: an empty result would exit non-zero as the branch's last
-      # command, and `set -e` would take the census down on every Rishi source that writes nothing.
-      if [ -n "$rish" ]; then writes=$(printf '%s\n%s\n' "$writes" "$rish"); fi
-      ;;
-  esac
+  # Read out of the one-pass map above, on an EXACT first field. An unanchored `grep` would let a
+  # path standing as a substring of a longer path borrow its rows, which is the same
+  # span-carries-no-position fault the walker beside it exists to close.
+  writes=$(awk -F'\t' -v want="$f" '$1 == want { print $2 }' "$work/writes.txt" 2>/dev/null || true)
   [ -n "$writes" ] || continue
   by_name=no; by_git=no
   target_admits "$writes" && by_name=yes
-  git_admits "$f" "$writes" && by_git=yes
+  git_admits "$f" && by_git=yes
   [ "$by_name" = yes ] || [ "$by_git" = yes ] || continue
   # A CONTROL WRITES INTO ITS OWN PEN AND HAS NOTHING TO CONVERGE, and counting them was this
   # census's third wrong denominator (`20260908.005904`). 23 of the 27 it first called unproven were
@@ -592,7 +697,7 @@ while IFS= read -r f; do
     unproven=$((unproven + 1))
     printf '%s\n' "$f" >> "$work/unproven.txt"
   fi
-done < "$work/all.txt"
+done < "$work/write_files.txt"
 
 if [ "$MODE" = list ]; then
   head -"$MAX_REPORT" "$work/unproven.txt" | sed 's/^/unproven: /'

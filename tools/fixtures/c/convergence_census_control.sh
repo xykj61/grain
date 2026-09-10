@@ -223,6 +223,15 @@ cat "$tmp" > "$LEDGER_UNREAD"'
 #      so the only thing separating this plant from 11a is where the admitting write sits.
 plant tools/x/live_admitted.sh '# It writes THROUGH the original inode (`cat "$tmp" > "$f"`), so the mode survives.
 cat "$tmp" > "$f"'
+# 11d. TWO WRITES ON ONE LINE, the pen one FIRST (`20260910.132258`). The write reading became one
+#      resident awk pass over every tool, and awk's `match()` returns one match where `grep -o`
+#      returns all of them -- so the pass carries a loop taking every non-overlapping match on the
+#      line. Nothing in this tree exercises that loop: mutating it to emit only the first match left
+#      all 11 counts and all 22 list rows unchanged, and left this control at `legs_fail=0`. A path
+#      that no reading depends on and no leg covers is a path that will be wrong quietly, so the
+#      shape is planted rather than trusted. The pen write comes first on purpose: read only the
+#      first match and the file is refused, read them all and its `"$f"` admits it.
+plant tools/x/two_writes_one_line.sh 'cat "$src" > "$work/a.txt"; cat "$src" > "$f"'
 git add -A >/dev/null
 git commit -q -m "pen: planted the live-line reading"
 
@@ -234,6 +243,7 @@ seen() { # seen <basename> -- does the census count this file as a candidate at 
 
 leg comment_alone_refused    no  "$(seen comment_admitted.sh)"
 leg live_write_admitted      yes "$(seen live_admitted.sh)"
+leg second_write_on_a_line_read yes "$(seen two_writes_one_line.sh)"
 # 11c. THE ELDER WRITE PREDICATE, run over the same plant, must ADMIT it -- it read every line and
 # could not tell prose from a write. Without this leg the two above pass for any reason at all,
 # which is how four of this census's five wrong denominators read green.

@@ -108,7 +108,14 @@ assert control.ok else "convergence-census: the control refused --\n${control.ou
 assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
 assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
 assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
-assert control.out contains "legs_pass=52" else "convergence-census: a leg went unrun --\n${control.out}"
+# The leg count is PINNED so a leg that silently goes unrun is caught. It moved 52 -> 53 on
+# `20260910.153001`, when the write reading became one resident awk pass and
+# `second_write_on_a_line_read` was added: awk's `match()` returns one match where `grep -o` returns
+# all of them, and the loop taking the rest was exercised by nothing in this tree -- mutated to read
+# only the first match, the census held all 11 counts and all 22 list rows and this control held
+# `legs_fail=0`. Raising the pin is the second half of adding the leg, and the pin is what refused
+# the lap that added only the first.
+assert control.out contains "legs_pass=53" else "convergence-census: a leg went unrun --\n${control.out}"
 
 # invariant: a tool may not certify itself. The plant's only idempotence sentence is a comment in
 # its own header, which is what two tracked tools carried when this column read them proven.

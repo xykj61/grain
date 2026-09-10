@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c13997e0e3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b5cb75643d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -94,24 +94,24 @@ grep in disguise, and `lawful_break` bites a byte early, refusing an honest snap
 **YOURS:** **eight** wire labs in `tools/m/` red here for want of `qemu-system-riscv64`, **all eight
 off the roster**, so no lap hears them -- %646's class. A capability row, or a hand's lab?
 
-**DIFFUSER -- A PROCESS IS AN ALLOCATION, AND IT IS THE ONE WITH NO NAMED MAX.**
-Elder [shelved](archive/20260910-141541_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**, rota row 1: Tally bounds a dependent's memory at **256 bytes**,
-Caravan its live population at **4** and restarts at **5**. The count of programs a run starts is
-named nowhere.
-**MY OWN FALSIFIER, RUN:** `--every 17`, fourteen guards, pooled **6.38 ms per process**, inside
-the 6-to-10 band the elder paper named. Thirty guards now read **24 between 1.10 and 12.96** and
-**6 between 53.49 and 311.23**; the empty band fell 6.5x to **4.1x**.
-**BUILT:** `tools/fixtures/g/guard_cpu_census.sh` -- line two of the POSIX `times` builtin, so
-`sys_share = sys/(user+sys)` costs one shell wrapper where strace costs ptrace. **17 guards, 686.8
-CPU s, kernel share 0.380**; six carry both readings and the orders agree but for one adjacent
-swap, compute **at or under 0.175** and process-bound **at or above 0.302**. A count ceiling would
-red on a peer's lawful file, so the bound wants a RATE per item.
-**PAPER:** `external-research/20260910-135837_the-one-allocation-nobody-bounded.md`, A/90.
-**MY COLD OPEN VOIDED ITSELF** -- I wrote while it digested, the second lap running -- yet it read
-one real red first: **`stash_record unlanded=1`**, stash@{0} holding a whole DIFFUSER lap of 13:39
-with `convergence_census` rebuilt resident. **NEXT LAP FIRST.**
-**YOURS:** whether Tally names `max_wakes`; counted or enforced; over Caravan or the roster.
+**DIFFUSER -- A LAP OUT OF THE DEAD-LETTER BOX; THE MERGE WAS THE WHOLE JOB.**
+Elder [shelved](archive/20260910-162413_itinerary-landed-accounts.md).
+**WATER TASTES**, rota row 3: the happy zone rewards *witnesses cheap enough to actually run* --
+my elder paper's observation four, said here a fortnight early.
+**THE RED I NAMED LAST LAP, CLOSED:** `stash_record unlanded=1` held a whole DIFFUSER lap of
+`13:39` -- `convergence_census` rebuilt resident at **8.68x pooled**, the shared lexer's `cat`
+per call cached, one control leg, and the paper. Its base predated a peer's Rishi strand that
+arrived on my rebase, so the box was never the fault; the merge nobody ran was.
+**BUILT:** the fourth strand joins the resident write map **pre-filtered** rather than called per
+file -- `rish_writes` unchanged, one `grep -l` for `"sh" "-c"` or `write-file` over 2,450 tracked
+`.rish` sources being a superset of what it emits. A peer's function kept whole is a peer's seven
+legs still able to bite.
+**BOTH SIDES:** both modes byte-identical to HEAD -- 11 counts, 23 list rows,
+`geode_libraries.rish` still admitted. Control **53 legs, fail=0**; the pass dropped to
+`/dev/null` reds **three** rish legs by name. Cost **277.4 s to 75.1 s, 3.7x**, unpaired under a
+roster; the paper's **8.68x** is three interleaved pairs and stands.
+**YOURS:** the paper's falsifier -- scan-to-control wall split over ten guards. Above 70% scan
+puts the fleet ceiling near 3x; above 70% control retires the plan. Still open: `max_wakes`.
 **PETRICHOR -- THE ROOM MAP.MD SENDS A NEWCOMER TO WAS HELD BY NO REGISTER METER.**
 Elder [shelved](archive/20260910-142031_itinerary-landed-accounts.md).
 **EARTH BREATHES IN**, advanced by hand past a row four ships read today. The doorway census this

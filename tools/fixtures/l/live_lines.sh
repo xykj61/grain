@@ -92,7 +92,17 @@ live_lines() {
   # live_lines <file> [max-lines] -- the live lines of one file, bounded.
   # invariant: every emitted line began outside every quoted region, so a matched idiom is one this
   # file performs rather than text it hands to another command.
-  awk -v max="${2:-20000}" "$(live_lines_awk)"'
+  #
+  # THE WALKER SOURCE IS BUILT ONCE PER SHELL, NOT ONCE PER FILE (`20260910.124500`). `live_lines_awk`
+  # is a `cat` heredoc, so `"$(live_lines_awk)"` written inline here forked a `cat` on every call to
+  # regenerate a program that never varies. Counted under `strace --seccomp-bpf -e trace=execve` over
+  # `tools/c/convergence_census.sh`, which calls this function once per tracked tool: **3,391 `cat`
+  # processes beside 3,391 `awk`, one static string emitted 3,391 times**, 15.5% of that guard's
+  # 21,944 execve. Caching it in `LL_AWK_SRC` is the whole repair, and it reaches every caller of
+  # this library rather than one.
+  # invariant: the cached source equals what `live_lines_awk` emits, since it is assigned from it.
+  [ -n "${LL_AWK_SRC:-}" ] || LL_AWK_SRC=$(live_lines_awk)
+  awk -v max="${2:-20000}" "$LL_AWK_SRC"'
     BEGIN { ll_reset() }
     NR > max { exit }
     { if (ll_live($0)) print }
