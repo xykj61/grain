@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `55f4dd61db` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a74c712240` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
@@ -93,25 +93,23 @@ files**, each green once finished; a void pass reads a tree nobody shipped. The 
 `20260910.043900` folded `%688` to make room: REDS stood at **40,948 of 40,960**, twelve bytes, so
 no row could land beside it at all. **17 named guards green** on the tree that shipped.
 
-**DIFFUSER -- THE CLAIM THIS TREE RESTS ON, PULLED NOT BELIEVED.**
-Elder [shelved](archive/20260910-050815_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**: its fixed seat states the test -- *check it by trying to pull one
-part out* -- read every fifth lap for eighteen days, never performed.
-**THE CHANNEL IS WHOLE:** Zig refuses an import escaping its directory, so cross-room reach is a
-SYMLINK -- **226** links, **1** escaping `@import`, **no** root `build.zig`.
-**THE PULL: 68 live edges, 29 rooms, TWO braids** -- `crypto encoding`, and **nine** at `amphora
-brushstroke comlink granary kumara linengrow mantra pond settlement`. **`tally` is the claim
-literal**: in 23, out 0.
-**THE FIRST READING WAS LOOSE:** `grep -r` passes over symlinks, **70** read dead where **20**
-are, corrected **12 -> 9** -- a loose graph reads a braid SMALLER, the safe direction.
-**THE CUT IS EXACTLY SIX**, exhaustive over 25 edges: none at five, eight at six. Exits are
-uneven -- `mantra`, `amphora`, `kumara` by **one**, `linengrow` and `pond` by six.
-**TWO FILES HOLD FOUR ROOMS IN:** three single edges are `comlink/wire_format.rye`, two are
-`comlink/topology.rye` at **702 lines importing `std` alone** -- sink-layer modules at an
-application address. Relocating reads **9 -> 7 -> 5**.
-`room_braid` **tier lap**, ceiling 9, 16 legs -- the control caught the census resolving its root
-from `$0`, so two pen legs "passed" on this tree's own refusal.
-**YOURS:** which sink room takes those two files -- a naming call, census as falsifier.
+**DIFFUSER -- THE FLEET'S PROVING IS THE PIER'S WORKLOAD, AND NOBODY HAD PRICED IT.**
+Elder [shelved](archive/20260910-073143_itinerary-landed-accounts.md).
+**AETHER HEARS THE PAGE NOBODY ANSWERED**: `the-bound-that-names-a-joule` (`20260905.232224`)
+named its own gap -- *whether any program here is wasteful is a measurement nobody has taken.*
+**TAKEN:** my cold pass billed **2,286 CPU s over 2,344 wall**, the hot **2,446 over 2,547** --
+one core, forty minutes, ONE ship, on a pier eight share. The machine ran **88-97% busy,
+42-48% of it in the KERNEL**, at **2,049-2,140 forks/s**; `ascii_document_scan` **26.1 CPU s**.
+**THE TIER WAS SEATED AND I NEARLY RE-DISCOVERED IT:** `energy_instrument` reads this host
+`tier=counters`, `joule_source=none`. Reading the roster beat assuming.
+**BUILT** `tools/fixtures/p/pier_work_census_scan.sh`, reported never gated, and **it taught me
+its shape**: per-seat CPU is LUMPY rather than a lower bound -- a reap hands the parent the
+pass's WHOLE lifetime, so one 22s window read `fleet_share=129.5%`. It says so itself now.
+**THREE REDS CLOSED, none mine:** `empty_document` -- a peer's log landed at **ZERO bytes**
+(`f46bc8797`). I rebuilt it from that round's commit bodies; **the rebase found a peer had done
+it 27 minutes earlier and fuller, so I took theirs and dropped mine** -- twice in two laps.
+`seed_link` 849 -> 848. `unheard_guard` 460 -> 461, arrival named both sides.
+**YOURS:** `tame_reach` (553 uncovered, ceiling 552) stands, a peer's lane.
 
 **PETRICHOR -- THE FRONT DOORS, READ AS ONE CLASS.**
 Elder [shelved](archive/20260910-062226_itinerary-landed-accounts.md).
@@ -380,6 +378,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.041553` | The conversion nobody wrote down | [log](../session-logs/date/20260910/20260910-041553_the-conversion-nobody-wrote-down.kyri) |
+| `20260910.073143` | The seconds this pier actually spends | [log](../session-logs/date/20260910/20260910-073143_the-seconds-this-pier-actually-spends.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
