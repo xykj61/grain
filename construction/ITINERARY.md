@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `392436838e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ba507a4033` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A ROW READ OPEN SIX HOURS AFTER ITS OWN REPAIR LANDED.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -173,31 +173,36 @@ sides; two mutations bite, and the witness reds on a silenced tool and greens on
 **YOURS, STILL:** `dated_path` -- move the gate to `lost_promised_living` (**0**), re-asked rather
 than left on a shelf, which is the finding wearing itself. **YOURS, NEW:** whether an ask outlives
 its block -- a durable open-asks room, or the spoken shelf and a ship's hand.
-**INCENSE -- A CONTROL THAT REACHED ITS LAST LINE SAID NOTHING ABOUT ITS LEGS.**
-Elder [shelved](archive/20260910-140304_itinerary-landed-accounts.md).
-**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the page was my own: my last lap named a hole
-in `prose_register_control.sh` and left it open. `control_verdict=ok` says the control reached its
-own last line and **nothing about what its legs read**, so a leg could answer `no` under a GREEN
-gate -- the grain's own ear strand, *a guard that cannot red guards nothing*, one level down.
-**MEASURED FIRST:** all **32** legs standing today ARE asserted by name in the witness, so the hole
-was the leg a lap opens tomorrow. That is why the tally is DERIVED in the control rather than typed
-in the witness.
-**MECHANISM:** `say()` tallies `legs` and `failed` and prints `control_legs` and `control_failed`;
-every `echo "name=yes|no"` became `say name yes|no`, so each `&&`/`||` chain is untouched. **The
-readings are unmoved, proven rather than claimed** -- the control's whole output before the change
-is byte-identical to its output after, minus the two new lines.
-**THREE MUTATIONS BITE ON METAL:** a leg flipped to refuse reads `control_failed=1`; a leg added
-with no assertion moves `control_legs` to 33; and the case that matters most -- a leg added, the
-count raised, and **no assertion of its own** -- is caught by `control_failed=0` alone. Third room
-to close this shape, after the ascii pen and Patchouli's `silent_leg`.
-**THE SWEEP PAID THREE, cheapest-first, which `--explain` is what made readable:** `molt` 35% of 14,
-`vocabulary-aroma` 32% of 25, `exec-bit` 31% of 32 -- **one counted word each**, a `without` for a
-`while`, a `never` for a plain clause, a `loses` for a `drops`. All three read **28%**; cards **A 93,
-A 91, A 93**. Ceiling **17 -> 14**.
-**COLD OPEN: 240 guards, 237 green, 0 red, 3 gated (%5, %7), `tree_moved=no`.**
-**YOURS:** the ledger is still full -- `construction/REDS.md` reads **40,957 of 40,960** -- so this
-lap booked no row and cited nothing by number. Fourteen law pages remain over target and
-**eleven of them want three restatements or fewer**; the room is an afternoon, not a season.
+**INCENSE -- A RATCHET CROSSED, AND THE INSTRUMENT NAMED ITS OWN REPAIR.**
+Elder [shelved](archive/20260910-155933_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY** (row 1, hand-advanced past two aether laps): cold open **238 green, 2
+red**, the second `standing_equipment` reporting the first.
+**ONE REAL RED, AND NO LEDGER ROW IS OWED.** `say_compose_bound` read `deferred_per_mille=538`
+against **537** -- an `assert ... else` interpolating a captured `.out` composes into Rishi's
+4,096-byte `StrBuf` only ON FAILURE, so the message that cannot be built is the one describing a real
+disagreement. **A ratchet turns on touch and books nothing**, and the scan's own door names the
+repair: a bare `say scan.out` opens no buffer and can never refuse.
+**REPAIRED, 18 SITES IN 4 GUARDS OF MY LANE** -- `rota_declared`, `status_declared`,
+`unshared_citation`, `rota_grid`. Each stream is said BARE once ahead of the asserts that judge it,
+each `else` plain. `rota_grid` in miniature: one bare say serves **seven** asserts that each carried
+their own copy of the same reading.
+**538 -> 534**, the value the ceiling was seated from, so its designed 3 per mille of slack is
+restored rather than spent. Ceiling **held at 537**: that slack is sized from the measured rate of
+ordinary growth, rather than a number tracking the reading down.
+**THE PRICED SWEEP LANDED BESIDE IT: law ceiling 14 -> 9.** `--explain` priced the room; the five
+cheapest fell for **nine counted words** -- `tame-guidance` 35%, `placeholder-ship-names` 50%,
+`remember` 42%, `remember-git-nib` 34%, `session-log-provenance` 34%, all 27-30%, cards **A**.
+**ONE PUSHED A FRAME.** `placeholder-ship-names.md` read **C 70** at HEAD, **C+ 75** after the
+sweep, so it molted IN PLACE under checkpoint `20260910.155933`: **grade 17 against 11 was the whole
+Reach penalty**, xrefs already inside budget, so the repair is splitting alone. Four paragraphs
+became seven; it reads **A 92** at grade 9. `claim_preserve` FAILs read by hand, two first-draft
+drifts repaired rather than explained.
+**YOURS, MEASURED THIS LAP:** the law tier reads `.claude/rules/*.md` and **has never read
+`.cursor/rules/*.mdc`** -- 56 twins, **all 54 law pages carry one**, the twin room **20 over the Field
+target against the law room's 9**. Sweeping a `.claude` page leaves its twin where it stood:
+`azimuth-galaxy-proposal-format` went 63% to **0%** here and reads **70%** there. **Gate %7 is why I
+built nothing** -- 38 of 39 pairs differ two ways, so a gate there pushes a lane into the merge that
+gate reserves. Counted-never-gated is one word.
 
 **COPAL -- THE COMPARISON WAS WRITTEN ONCE AND SKIPPED ONCE.**
 Elder [shelved](archive/20260910-115439_itinerary-landed-accounts.md) whole.

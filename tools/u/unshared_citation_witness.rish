@@ -19,16 +19,23 @@ say "unshared-citation: Lens TAME -- every refusal planted in a pen and then lif
 
 say "unshared-citation: the control -- ten behaviors against a stub spine in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/u/unshared_citation_control.sh"]
-assert ctl.ok else "unshared-citation: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=10 fail=0" else "unshared-citation: the control did not prove ten behaviors --\n${ctl.out}\n${ctl.err}"
+# invariant: both streams are written out BARE, ahead of the asserts that judge them. A bare `say`
+# opens no `StrBuf`, so the report cannot refuse however large the output grows; an `else` clause
+# interpolating the same value composes only on FAILURE, which is the one moment it is owed
+# (`tools/s/say_compose_bound_witness.rish`).
+say ctl.out
+say ctl.err
+assert ctl.ok else "unshared-citation: the control refused -- its two streams stand above"
+assert ctl.out contains "pass=10 fail=0" else "unshared-citation: the control did not prove ten behaviors -- its two streams stand above"
 
 say "unshared-citation: no living surface cites a number the spine has not bound..."
 let scan = run ["sh" "tools/fixtures/u/unshared_citation_scan.sh"]
-assert scan.ok else "unshared-citation: the scan refused --\n${scan.out}"
+say scan.out
+assert scan.ok else "unshared-citation: the scan refused -- its reading stands above"
 # invariant: a citation of an unshared number is a sweep this lap has chosen and the stamp would
 # have avoided -- the ledger assigns numbers, testimony records them, and living prose cites only
 # what the anointed spine already bound.
-assert scan.out contains "unshared_citations=0" else "unshared-citation: a living file cites a row number the anointed spine has not allocated -- cite the stamp until it is shared --\n${scan.out}"
+assert scan.out contains "unshared_citations=0" else "unshared-citation: a living file cites a row number the anointed spine has not allocated -- cite the stamp until it is shared; the reading stands above"
 
 say "unshared-citation: and the boundary is read rather than spelled..."
 let derived = run ["sh" "-c" "grep -c 'reds_spine_derive_scan.sh' tools/fixtures/u/unshared_citation_scan.sh"]

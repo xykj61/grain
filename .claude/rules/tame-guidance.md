@@ -69,7 +69,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 
 ## The priority order
 
-Safety first -- structural, not by convention. Performance second -- measure before optimizing. Joy third -- clarity, named things, the habit of saying why.
+Safety first -- structural rather than by convention. Performance second -- measure before optimizing. Joy third -- clarity, named things, the habit of saying why.
 
 When these pull against each other, safety wins. When safety and performance are equal, joy earns the vote.
 

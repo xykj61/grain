@@ -353,12 +353,22 @@ done < "$work/teaching.txt"
 # `.claude/rules/azimuth-galaxy-proposal-format.md` 63% of 11, seven counted sentences each,
 # restated to lead with what is and every claim, name, path and stamp held. Both read 0% now.
 #
+# IT FELL 14 -> 9 ON 20260910.150347, on the five pages `--explain` priced at one or two counted
+# sentences each: `.claude/rules/tame-guidance.md` 35% of 20 sentences,
+# `.claude/rules/placeholder-ship-names.md` 50% of 10, `.claude/rules/remember.md` 42% of 14,
+# `.claude/rules/remember-git-nib.md` 34% of 29, and `.claude/rules/session-log-provenance.md` 34%
+# of 32. Nine counted words left, each for a form this tree already writes -- `rather than` for a
+# bare `not`, `with the chapter already in hand` for `without rediscovering` -- and every claim,
+# path, stamp and proper noun held. All five read 27-30% now. The listing was the whole of the
+# choosing: pricing every page in the room by its own explain reading names the cheapest five, and
+# five pages fell for nine words.
+#
 # IT FELL 17 -> 14 THE SAME DAY, on the three pages the listing priced at ONE restatement each:
 # `.claude/rules/molt.md` 35% of 14 sentences, `.claude/rules/vocabulary-aroma.md` 32% of 25, and
 # `.claude/rules/exec-bit.md` 31% of 32. Each gave up one counted word -- a `without` for a `while`,
 # a `never` for a plain clause, a `loses` for a `drops` -- and all three read 28%. That is what
 # `--explain` bought: the cheapest page in the room is now a reading rather than a guess.
-law_ceiling=14
+law_ceiling=9
 law_documents=0
 law_readable=0
 law_over=0

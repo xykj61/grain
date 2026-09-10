@@ -1,12 +1,12 @@
 # "remember" -- the standing card for hands, pier, and waymarks
 
-When Keaton says **"remember"** (or **"remember for us"**), restates the living operator card so the next hand -- phone, outer host terminal, or a fresh agent turn -- can continue without rediscovering the chapter. Where **"align"** reconciles plan with reality and **"kg"** means keep going on the next mechanical lap, **remember** is the *carry card*: what to run outside the jail, what to tap on the phone, and which waymarks name the ladders in play.
+When Keaton says **"remember"** (or **"remember for us"**), restates the living operator card so the next hand -- phone, outer host terminal, or a fresh agent turn -- can continue with the chapter already in hand. Where **"align"** reconciles plan with reality and **"kg"** means keep going on the next mechanical lap, **remember** is the *carry card*: what to run outside the jail, what to tap on the phone, and which waymarks name the ladders in play.
 
 ## What "remember" does, in order
 
 1. **Read the living card** -- `construction/ITINERARY.md`. If the card is stale against the current product nib / suite nib / install path, refresh it in the same turn (accrete-never-break: date the refresh; do not delete prior facts that still help).
 2. **Restate seated waymarks** -- from `.claude/rules/waymark-ladders.md` / Lexicon: **HAWM** - **TUBE** - **ZETA** - **JABS** - **LULU** - **STOA** (and any newer seated draw). Never invent a bare-letter ladder.
-3. **Restate outer-terminal instructions** -- host shell only when the jail cannot see USB (`/dev/bus/usb` absent). Typical: `adb devices` -> `install -r` the packed APK -> `force-stop` -> `am start` NativeActivity. Quote the paths from the living card, not from memory of an older pack.
+3. **Restate outer-terminal instructions** -- host shell only when the jail cannot see USB (`/dev/bus/usb` absent). Typical: `adb devices` -> `install -r` the packed APK -> `force-stop` -> `am start` NativeActivity. Quote the paths from the living card rather than from memory of an older pack.
 4. **Restate phone look** -- what eyes should confirm on GrapheneOS / Pixel for the current product nib (mode keys, chat strip, close-hint row, etc.).
 5. **Name open doors plainly** -- which next steps are **kg** (mechanical) vs **check-in** (seam / crypto / new ladder / JABS3).
 6. **Leave a record** -- a remember pass that refreshes the card writes a session log; when Keaton says **send**, ship it with the work.

@@ -7,7 +7,7 @@ When a send updates `construction/ITINERARY.md` **Git nib**, that update lands *
 - A follow-up commit whose subject is only `construction: pin ITINERARY git nib` (or `construction: pin ITINERARY...`).
 - Two-commit send pairs (work - then pin) for scroll noise.
 
-**A follow-up that carries real content is not a pin-only commit.** Rule 5 asks such a commit to
+**A follow-up that carries real content counts as a work commit rather than a pin-only one.** Rule 5 asks such a commit to
 move the pin *as well*; what stays refused is a commit whose whole content is the pin.
 
 ## How
@@ -16,7 +16,7 @@ move the pin *as well*; what stays refused is a commit whose whole content is th
 2. After that signed commit -- and after the final rebase, when the send takes one -- amend **at most once** so **Git nib** names `git rev-parse --short=10 HEAD~1`: **HEAD's parent**, a commit the round was built on and therefore one every clone already resolves. Writing pre-amend HEAD names the sibling state -- an object no other clone holds -- which stood as a fleet-wide double-red on five bodies out of six, every lap (REDS %401).  
 3. **Stop.** Further amends chasing a perfect fixed-point hash are out of scope -- the card may lag HEAD by one amend; `prin scope` is living HEAD.
 4. A pin-only follow-up stays off the remote.
-5. **A follow-up carries the nib forward too** (REDS %450, `20260906`). When a send lands a commit on top of the work commit -- a session log recording facts that did not exist until the send was over -- that commit stages `construction/ITINERARY.md` with **Git nib** rewritten to `git rev-parse --short=10 HEAD`, read **before** the follow-up is committed. That HEAD becomes the follow-up's parent, so the card lands in the same `parent` state rule 2 aims for. **No amend is needed here, unlike rule 2**: the final rebase is already behind the send, so the parent is known before the commit is made rather than after it.
+5. **A follow-up carries the nib forward too** (REDS %450, `20260906`). When a send lands a commit on top of the work commit -- a session log recording facts that did not exist until the send was over -- that commit stages `construction/ITINERARY.md` with **Git nib** rewritten to `git rev-parse --short=10 HEAD`, read **before** the follow-up is committed. That HEAD becomes the follow-up's parent, so the card lands in the same `parent` state rule 2 aims for. **Rule 2's amend is spared here**: the final rebase is already behind the send, so the parent is known before the commit is made rather than after it.
 
 ## An amend asks whether a rebase is standing (`20260906.230614`)
 

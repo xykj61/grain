@@ -23,17 +23,25 @@ say "rota-declared: Lens TAME -- each bucket proven by moving a member into its 
 
 say "rota-declared: the control -- eighteen behaviors on planted logs in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/r/rota_declared_control.sh"]
-assert ctl.ok else "rota-declared: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=18 fail=0" else "rota-declared: the control did not prove eighteen behaviors --\n${ctl.out}\n${ctl.err}"
+# invariant: both streams are written out BARE, before the asserts that judge them. A bare `say`
+# writes a captured value straight out and opens no `StrBuf`, so the report cannot refuse however
+# large the control's output grows (`tools/s/say_compose_bound_witness.rish`); an `else` clause
+# interpolating the same value composes only on FAILURE, which is the one moment the explanation is
+# owed.
+say ctl.out
+say ctl.err
+assert ctl.ok else "rota-declared: the control refused -- its two streams stand above"
+assert ctl.out contains "pass=18 fail=0" else "rota-declared: the control did not prove eighteen behaviors -- its two streams stand above"
 
 say "rota-declared: the open day's shelf answers all three counts..."
 let scan = run ["sh" "tools/fixtures/r/rota_declared_scan.sh"]
 # invariant: a refusal reports BOTH streams. `run` returns `out` and `err` separately, probed on
-# metal `20260907`, and this scan writes its reason to stderr -- so reporting `${scan.out}` alone
-# wrote an EMPTY reason into `construction/standing-equipment-reds/rota_declared.txt`, the one file
-# a reader opens to learn why a guard stopped. The control leg above was repaired the same day; this
-# one was the half left behind.
-assert scan.ok else "rota-declared: the scan refused --\n${scan.out}\n${scan.err}"
+# metal `20260907`, and this scan writes its reason to stderr -- so reporting stdout alone wrote an
+# EMPTY reason into `construction/standing-equipment-reds/rota_declared.txt`, the one file a reader
+# opens to learn why a guard stopped. Both are said bare, for the composing reason above.
+say scan.out
+say scan.err
+assert scan.ok else "rota-declared: the scan refused -- its two streams stand above"
 # invariant: the census reports every bucket, empty or full. A reading that printed only the fault
 # would leave a reader unable to tell a healthy day from a day the scan could not see.
 assert scan.out contains "rota_field=" else "rota-declared: the declared count went unreported"
