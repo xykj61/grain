@@ -175,17 +175,124 @@ case "$( cd "$d" && TUTORIAL_OUTPUT_HELD_CEILING=2 sh "$SCAN" 2>&1 )" in
   *) bad ceiling_met_free "two held pairs were refused at a ceiling of two" ;;
 esac
 
-# ---- 9. prose between the blocks is not a pair -------------------------------------------------
+# ---- 9. prose between the blocks is a candidate nobody checks ----------------------------------
 # A sentence between a command and a block means the page is saying something the parser cannot
-# read, and guessing there would invent claims the writer never made.
+# read, and guessing there would invent claims the writer never made. So the pair is still NOT
+# checked -- what changed 20260910 is that it is now counted and named rather than dropped in
+# silence, because a block nothing reads and a block nothing MAY read read alike from outside.
 d=$(new_pen prose)
 {
   printf '# a page\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n\nAnd here is a listing:\n\n```\nnothing to do with it\n```\n'
 } > "$d/docs-geode/tutorials/page.md"
 git -C "$d" add -A >/dev/null 2>&1
+out=$(run_scan "$d")
+case "$out" in
+  *undeclared_after_prose=1*) ok prose_between_named ;;
+  *) bad prose_between_named "prose between the blocks was dropped in silence: $out" ;;
+esac
+case "$out" in
+  *checked=0*) ok prose_between_unchecked ;;
+  *) bad prose_between_unchecked "an undeclared block behind prose was checked anyway: $out" ;;
+esac
+case "$out" in
+  *every_quoted_block_still_prints*) ok prose_between_ungated ;;
+  *) bad prose_between_ungated "an undeclared block behind prose gated the tree: $out" ;;
+esac
+
+# ---- 9a. a declared selection is checked by containment and goes free --------------------------
+# The demos room quotes two lines of a longer report. Equality is the wrong test there; every
+# quoted line appearing in what ran, in order, is the right one.
+d=$(new_pen sel_free)
+page "$d" 'two
+' 'Just the second line:
+
+<!-- selected: one line of a longer report -->'
+out=$(run_scan "$d")
+case "$out" in
+  *selected=1*) ok selection_counted ;;
+  *) bad selection_counted "a declared selection was not counted: $out" ;;
+esac
+case "$out" in
+  *every_quoted_block_still_prints*) ok selection_free ;;
+  *) bad selection_free "a true selection of the output was refused: $out" ;;
+esac
+
+# ---- 9b. a selection quoting a line that never prints is bitten --------------------------------
+d=$(new_pen sel_bite)
+page "$d" 'three
+' 'Just one line:
+
+<!-- selected: one line of a longer report -->'
+out=$(run_scan "$d")
+case "$out" in
+  *a_quoted_block_no_longer_matches*) ok selection_drift_bitten ;;
+  *) bad selection_drift_bitten "a selection quoting a line no command prints went free: $out" ;;
+esac
+case "$out" in
+  *"never printed: three"*) ok selection_drift_named ;;
+  *) bad selection_drift_named "the drifted selection did not name the missing line: $out" ;;
+esac
+
+# ---- 9c. a selection with every line present and the ORDER wrong is bitten ---------------------
+# The sharpest leg here, and the one that proves order is genuinely enforced rather than
+# incidentally satisfied: both lines print, and the page prints them the other way round. A page
+# that lists a verdict above the count that produced it teaches the output's shape wrongly.
+d=$(new_pen sel_order)
+page "$d" 'two
+one
+' '<!-- selected: both lines, in the wrong order -->'
+out=$(run_scan "$d")
+case "$out" in
+  *a_quoted_block_no_longer_matches*) ok selection_order_bitten ;;
+  *) bad selection_order_bitten "a selection with its lines out of order went free: $out" ;;
+esac
+
+# ---- 9d. lifting the selection plant returns it to green --------------------------------------
+# A refusal that survives its own repair is a refusal nobody can act on.
+d=$(new_pen sel_lift)
+page "$d" 'one
+two
+' '<!-- selected: both lines, in the order they print -->'
 case "$(run_scan "$d")" in
-  *pairs=0*) ok prose_between_not_a_pair ;;
-  *) bad prose_between_not_a_pair "prose between the blocks was read as a claim" ;;
+  *every_quoted_block_still_prints*) ok selection_lifted ;;
+  *) bad selection_lifted "the repaired selection stayed refused" ;;
+esac
+
+# ---- 9e. a selected comment with no reason declares nothing ------------------------------------
+# The same discipline case 5 holds for volatile: the tree says why beside every exemption, so an
+# empty one buys nothing and the pair falls back to undeclared.
+d=$(new_pen sel_empty)
+page "$d" 'two
+' 'Just one line:
+
+<!-- selected: -->'
+out=$(run_scan "$d")
+case "$out" in
+  *undeclared_after_prose=1*) ok selection_reasonless_declares_nothing ;;
+  *) bad selection_reasonless_declares_nothing "a reasonless selection was honored: $out" ;;
+esac
+
+# ---- 9f. the gap bound bites, and from both sides ----------------------------------------------
+# An output fence far below its command answers a question the reader has stopped holding. Proven
+# at the bound and one past it, so the number is a wall rather than a decoration.
+gap_page() {
+  d=$1; n=$2
+  {
+    printf '# a page\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n'
+    i=0; while [ "$i" -lt "$n" ]; do printf '\n'; i=$((i + 1)); done
+    printf '```\none\ntwo\n```\n'
+  } > "$d/docs-geode/tutorials/page.md"
+  git -C "$d" add -A >/dev/null 2>&1
+}
+d=$(new_pen gap_at); gap_page "$d" 12
+case "$(run_scan "$d")" in
+  *pairs=1*) ok gap_at_bound_free ;;
+  *) bad gap_at_bound_free "a block exactly at the gap bound was dropped" ;;
+esac
+d=$(new_pen gap_past); gap_page "$d" 13
+case "$(run_scan "$d")" in
+  *pairs=0*) ok gap_past_bound_dropped ;;
+  *) bad gap_past_bound_dropped "a block past the gap bound was paired anyway" ;;
 esac
 
 # ---- 10. a command fence with no output fence promises nothing ---------------------------------

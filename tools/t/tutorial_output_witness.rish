@@ -25,6 +25,30 @@
 # <!-- volatile: why it moves -->. It reports and never gates. A reasonless declaration buys
 # nothing, which the pen proves.
 #
+# THE ROOM WRITES A SECOND CLAIM SHAPE, and this read it as nothing for one day (20260910). A page
+# may quote SOME of a longer report -- "Two lines from the full output:" -- and that sentence sits
+# between the command and the block, which the parser used to treat as the end of the candidate.
+# Measured over the same 38 pages: nine pairs, and the guard saw six. A selection declares itself
+# the same way a volatile block does, with a reason:
+#
+#     <!-- selected: two lines of a longer report -->
+#
+# and is checked by CONTAINMENT IN ORDER -- every quoted line appears in what ran, in the order the
+# page prints them. Order is part of the claim: a page listing a verdict above the count that
+# produced it teaches the output's shape wrongly even when both lines are present, and the pen
+# proves that leg alone by removing the order strand and watching it go red.
+#
+# PROSE WITH NOTHING DECLARING IT is counted as undeclared_after_prose and named, never checked and
+# never gated. That is the honest half: the page may be quoting a subset, reattributing the output
+# to another invocation, or setting two unrelated blocks side by side, and those want three
+# different tests. The first hour holds a real one -- its "run it twice" block belongs to a
+# DIFFERENT command, so pairing it would invent a claim the writer never made. What changed is that
+# the tree can now see it, since a block nothing reads and a block nothing MAY read read alike from
+# outside and only one of them is a gap.
+#
+# HOW FAR A BLOCK MAY SIT from its command is bounded at twelve lines, about a screen of prose, and
+# the pen proves the bound from both sides.
+#
 # WHAT IT DOES NOT REACH. Stdout alone -- two interleaved streams give an order that depends on
 # buffering rather than on the program. Only the pairs the docs-geode room already writes. And it
 # proves what a command PRINTS, never that the command is the right one to teach.
@@ -35,8 +59,9 @@
 # clones, after a folded room left two pages naming a file at its elder address. This one proves
 # what a command PRINTS. A page can name paths that all resolve and still promise output no command
 # produces -- which is exactly what the first hour did. Two jobs, two names.
-# Pen: tools/fixtures/t/tutorial_output_control.sh -- twenty behaviors on real git repositories in
-# a throwaway pen, five refusals bitten and lifted again, fifteen honest readings left free.
+# Pen: tools/fixtures/t/tutorial_output_control.sh -- twenty-nine behaviors on real git
+# repositories in a throwaway pen, every refusal planted and then lifted, the gap bound shown from
+# both sides, and the order strand proven load-bearing by a mutation run that reds one leg alone.
 # Run from the repository root.
 
 say "tutorial-output: Language EN -- a quoted output block is a claim about behavior, and a claim nobody checks is a claim that decays."
@@ -71,7 +96,18 @@ assert control.out contains "case=redirect_not_run ok" else "tutorial-output: a 
 assert control.out contains "case=untracked_held ok" else "tutorial-output: a script the reader writes must be held rather than called a drift"
 assert control.out contains "case=ceiling_bitten ok" else "tutorial-output: the held ceiling must refuse one pair past it"
 assert control.out contains "case=ceiling_met_free ok" else "tutorial-output: the held ceiling must pass at exactly its own number"
-assert control.out contains "case=prose_between_not_a_pair ok" else "tutorial-output: prose between the blocks must end the candidate"
+assert control.out contains "case=prose_between_named ok" else "tutorial-output: prose between the blocks must be counted and named rather than dropped in silence"
+assert control.out contains "case=prose_between_unchecked ok" else "tutorial-output: an undeclared block behind prose must not be checked, since the prose may reattribute it"
+assert control.out contains "case=prose_between_ungated ok" else "tutorial-output: an undeclared block behind prose must report rather than gate"
+assert control.out contains "case=selection_counted ok" else "tutorial-output: a declared selection must be counted selected"
+assert control.out contains "case=selection_free ok" else "tutorial-output: a true selection of a longer report must pass"
+assert control.out contains "case=selection_drift_bitten ok" else "tutorial-output: a selection quoting a line no command prints must be refused"
+assert control.out contains "case=selection_drift_named ok" else "tutorial-output: a refused selection must name the line that never printed"
+assert control.out contains "case=selection_order_bitten ok" else "tutorial-output: a selection whose lines all print in the wrong order must be refused -- order is part of the claim"
+assert control.out contains "case=selection_lifted ok" else "tutorial-output: a repaired selection must go free again"
+assert control.out contains "case=selection_reasonless_declares_nothing ok" else "tutorial-output: a selection with no reason must declare nothing"
+assert control.out contains "case=gap_at_bound_free ok" else "tutorial-output: a block exactly at the gap bound must still pair"
+assert control.out contains "case=gap_past_bound_dropped ok" else "tutorial-output: a block past the gap bound must not pair, since a reader has stopped holding the command"
 assert control.out contains "case=lone_command_free ok" else "tutorial-output: a command promising no output must be counted as no claim"
 assert control.out contains "case=empty_corpus_refused ok" else "tutorial-output: a corpus with no pairs must refuse rather than read clean"
 assert control.out contains "case=no_tree_told_apart ok" else "tutorial-output: a directory with no git tree must read distinctly"
@@ -79,4 +115,4 @@ assert control.out contains "case=list_names_pairs ok" else "tutorial-output: th
 assert control.out contains "control=ok" else "tutorial-output: the control must agree with itself"
 
 say ""
-say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, with five refusals planted and bitten in a pen and fifteen honest readings left free."
+say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, whole or as a declared selection, with twenty-nine behaviors proven in a pen and every refusal bitten and then lifted."

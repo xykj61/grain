@@ -14,6 +14,27 @@
 # the 38 tracked docs-geode pages at seating, 17 fences open `sh` and 6 of them carry an output
 # fence, so the shape is the room's habit rather than a shape invented here.
 #
+# THE ROOM WRITES A SECOND SHAPE, and this read it as nothing for a day (20260910). A page may
+# quote SOME of a longer report, and it says so in a sentence sitting between the two blocks --
+# "Two lines from the full output:". The elder parser ended the candidate at that sentence, so the
+# same 38 pages hold NINE pairs where six were being read. A selection declares itself the way a
+# volatile block does, with a reason, and is checked by CONTAINMENT IN ORDER: every quoted line
+# appears in what ran, in the order the page prints them.
+#
+#     <!-- selected: two lines of a longer report -->
+#
+# Order is part of the claim rather than a convenience. A page listing a verdict above the count
+# that produced it teaches the output's shape wrongly even when both lines are present, and the pen
+# proves that strand alone -- remove it and exactly one leg reds.
+#
+# PROSE WITH NOTHING DECLARING IT is counted as `undeclared_after_prose` and named, never checked
+# and never gated, because the sentence between the blocks is load-bearing and says which of three
+# different things the second block is: a subset of this output, the output of ANOTHER invocation,
+# or an unrelated listing. Those want three different tests, and guessing among them would invent
+# claims the writer never made. The first hour holds a real reattribution -- its "run it twice"
+# block belongs to a different command -- so the caution is right and only its silence was wrong.
+# A block nothing reads and a block nothing MAY read read alike from outside; one is a gap.
+#
 # WHAT IS GATED, hard, at zero: `drift` -- a pair whose command ran and printed something other
 # than what the page quotes. That is the fault this exists to catch.
 #
@@ -65,6 +86,11 @@ verb=${1:-report}
 # directory and writes a file, and step 6 of the first hour, whose script the reader writes.
 HELD_CEILING=${TUTORIAL_OUTPUT_HELD_CEILING:-2}
 
+# How far an output fence may sit from the command it belongs to. Twelve lines is about a screen
+# of prose: past that a reader has stopped holding the command in their eye, so a block that far
+# down is making its own claim rather than answering the one above.
+MAX_GAP_LINES=${TUTORIAL_OUTPUT_MAX_GAP_LINES:-12}
+
 work=$(mktemp -d) || exit 1
 trap 'rm -rf "$work"' EXIT
 
@@ -83,32 +109,42 @@ pages=$(wc -l < "$work/pages.txt" | tr -d ' ')
 echo "pages_considered=$pages"
 
 # ---- parse: pull every (command, output) pair into the pen ------------------------------------
-# invariant: a pair is a `sh` fence, its close, blank lines only, then an unlabelled fence. Any
-# other line between them ends the candidate, because prose between the two blocks means the page
-# is saying something the parser cannot read.
+# invariant: a pair is a `sh` fence, its close, then within MAX_GAP_LINES an unlabelled fence.
+# Blank lines and declaration comments always carry across the gap. PROSE carries across it only
+# when the page declares what the prose is doing, because prose between the two blocks is
+# load-bearing and says which of three different things the second block is -- see the header.
 : > "$work/index.txt"
 n=0
 while IFS= read -r page; do
   [ -f "$page" ] || continue
-  n=$(awk -v pen="$work" -v page="$page" -v start="$n" '
-    BEGIN { n = start; state = 0; vol = "" }
+  n=$(awk -v pen="$work" -v page="$page" -v start="$n" -v maxgap="$MAX_GAP_LINES" '
+    BEGIN { n = start; state = 0; vol = ""; sel = ""; prose = 0; gap = 0 }
     state == 0 && $0 == "```sh" { state = 1; cmd = ""; cmdline = NR; next }
-    state == 1 && $0 == "```"   { state = 2; vol = ""; next }
+    state == 1 && $0 == "```"   { state = 2; vol = ""; sel = ""; prose = 0; gap = 0; next }
     state == 1                  { cmd = cmd $0 "\n"; next }
-    state == 2 && $0 == ""      { next }
+    state == 2 && $0 == ""      { gap++; if (gap > maxgap) state = 0; next }
     state == 2 && $0 ~ /^<!-- volatile:.*-->$/ {
       v = $0
       sub(/^<!-- volatile:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
       if (v != "") vol = v
+      gap++; if (gap > maxgap) state = 0
+      next
+    }
+    state == 2 && $0 ~ /^<!-- selected:.*-->$/ {
+      v = $0
+      sub(/^<!-- selected:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
+      if (v != "") sel = v
+      gap++; if (gap > maxgap) state = 0
       next
     }
     state == 2 && $0 == "```"   { state = 3; out = ""; next }
-    state == 2                  { state = 0; next }
+    state == 2 && $0 ~ /^```/   { state = 0; next }
+    state == 2                  { prose++; gap++; if (gap > maxgap) state = 0; next }
     state == 3 && $0 == "```"   {
       n++
       printf "%s", cmd > (pen "/pair." n ".cmd")
       printf "%s", out > (pen "/pair." n ".out")
-      printf "%s\t%s\t%s\n", page, cmdline, vol >> (pen "/index.txt")
+      printf "%s\t%s\t%s\t%s\t%s\n", page, cmdline, vol, sel, prose >> (pen "/index.txt")
       state = 0; next
     }
     state == 3                  { out = out $0 "\n"; next }
@@ -120,7 +156,7 @@ pairs=$n
 echo "pairs=$pairs"
 
 # ---- classify and run --------------------------------------------------------------------------
-checked=0; exact=0; drift=0; volatile=0; held=0
+checked=0; exact=0; drift=0; volatile=0; held=0; selected=0; undeclared=0
 : > "$work/lines.txt"
 
 i=0
@@ -130,6 +166,21 @@ while [ "$i" -lt "$pairs" ]; do
   page=$(printf '%s' "$meta" | cut -f1)
   line=$(printf '%s' "$meta" | cut -f2)
   vol=$(printf '%s' "$meta" | cut -f3)
+  sel=$(printf '%s' "$meta" | cut -f4)
+  prose=$(printf '%s' "$meta" | cut -f5)
+
+  # Prose between the blocks, with nothing declaring what it does. The page may be reattributing
+  # the output to another invocation, quoting a subset, or setting two unrelated blocks side by
+  # side, and those want three different tests. Reported and named rather than checked or held,
+  # so the population is visible: a block nothing reads and a block nothing MAY read read alike
+  # from outside, and only one of them is a gap.
+  if [ "${prose:-0}" -gt 0 ] && [ -z "$sel" ] && [ -z "$vol" ]; then
+    undeclared=$((undeclared + 1))
+    printf '%s:%s\tundeclared_after_prose\t%s\n' "$page" "$line" \
+      "$prose line(s) of prose sit between the command and the block; declare selected or volatile to have it read" \
+      >> "$work/lines.txt"
+    continue
+  fi
 
   # Is every command line on the safe roster?
   safe=yes
@@ -166,6 +217,40 @@ while [ "$i" -lt "$pairs" ]; do
   done < "$work/pair.$i.cmd"
 
   checked=$((checked + 1))
+
+  # A declared selection quotes SOME of the output, so equality is the wrong test and containment
+  # is the right one: every quoted line must appear in what ran, in the order the page prints
+  # them. Order matters -- a page that lists a verdict above the count that produced it is
+  # teaching the output's shape wrongly even when both lines are present.
+  if [ -n "$sel" ]; then
+    selected=$((selected + 1))
+    if awk '
+      NR == FNR { want[++w] = $0; next }
+      k < w && $0 == want[k + 1] { k++ }
+      END { exit(k == w ? 0 : 1) }
+    ' "$work/pair.$i.out" "$work/pair.$i.got"; then
+      exact=$((exact + 1))
+      printf '%s:%s\texact\tselected: %s\n' "$page" "$line" "$sel" >> "$work/lines.txt"
+    else
+      drift=$((drift + 1))
+      printf '%s:%s\tdrift\t%s\n' "$page" "$line" \
+        "declared a selection of $(wc -l < "$work/pair.$i.out" | tr -d ' ') lines; not all of them printed, in order" \
+        >> "$work/lines.txt"
+      # This awk PRODUCES OUTPUT rather than answering by its exit, so any non-zero is a failure
+      # and saying so beats printing a detail block nobody can tell from an empty one.
+      if awk '
+        NR == FNR { seen[$0] = 1; next }
+        !($0 in seen) { print "-- never printed: " $0 }
+      ' "$work/pair.$i.got" "$work/pair.$i.out" > "$work/detail.txt"; then
+        sed "s|^|detail: $page:$line |" "$work/detail.txt" >> "$work/diffs.txt"
+      else
+        echo "detail: $page:$line -- the line-comparison pass could not run; its reason is above" \
+          >> "$work/diffs.txt"
+      fi
+    fi
+    continue
+  fi
+
   if cmp -s "$work/pair.$i.got" "$work/pair.$i.out"; then
     exact=$((exact + 1))
     printf '%s:%s\texact\t\n' "$page" "$line" >> "$work/lines.txt"
@@ -177,8 +262,16 @@ while [ "$i" -lt "$pairs" ]; do
     printf '%s:%s\tdrift\t%s\n' "$page" "$line" \
       "quoted $(wc -l < "$work/pair.$i.out" | tr -d ' ') lines, printed $(wc -l < "$work/pair.$i.got" | tr -d ' ')" \
       >> "$work/lines.txt"
-    diff "$work/pair.$i.out" "$work/pair.$i.got" 2>/dev/null \
-      | sed "s|^|detail: $page:$line |" >> "$work/diffs.txt" || true
+    # diff answers by exiting: 0 the same, 1 they differ -- which is why we are here -- and 2 or
+    # more is trouble. Tolerating 1 is reading the instrument; tolerating 2 would discard it.
+    diff "$work/pair.$i.out" "$work/pair.$i.got" > "$work/detail.txt" 2>/dev/null
+    diff_status=$?
+    if [ "$diff_status" -le 1 ]; then
+      sed "s|^|detail: $page:$line |" "$work/detail.txt" >> "$work/diffs.txt"
+    else
+      echo "detail: $page:$line -- diff could not compare the two blocks (exit $diff_status)" \
+        >> "$work/diffs.txt"
+    fi
   fi
 done
 
@@ -189,10 +282,12 @@ fi
 
 echo "checked=$checked"
 echo "exact=$exact"
+echo "selected=$selected"
 echo "volatile=$volatile"
 echo "drift=$drift"
 echo "held=$held"
 echo "held_ceiling=$HELD_CEILING"
+echo "undeclared_after_prose=$undeclared"
 
 if [ "$pairs" -eq 0 ]; then
   echo "verdict=no_pairs_read"
