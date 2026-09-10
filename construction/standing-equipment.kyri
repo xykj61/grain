@@ -1989,6 +1989,28 @@ path tools/m/mantra_weave_v1_write_witness.rish
 tier lap
 seated 20260908.123338
 
+# The record a merged history fits in. The two guards above named this gap in their own headers
+# and neither could close it: `to_v1` refuses a second site by name, and a second site is exactly
+# and only what `merge` produces -- so Mantra could merge two histories and had nowhere to put
+# the result, since `mantra/src/main.rye` writes the elder record on every commit. `Weave.to_v2`
+# and `Weave.from_v2` are the five-field record, and the round trip is identity on the WEAVE
+# rather than only on the document: the runs come back as they went. THE COUNTERS ARE CARRIED
+# AND DID NOT HAVE TO BE, which this round measured rather than argued -- a first draft asserted
+# they cannot be derived, and they can, since `merge` maxes two counters while dropping no line,
+# so the side holding the higher counter also contributes the line below it. Claim 3 measures
+# that equality on a lifted, an edited and a merged weave; the record carries the two numbers
+# anyway because the weave's DECLARED invariant is an upper bound rather than an equality, and
+# claim 4 holds a record standing above the accident. Four refusals, three of which an elder
+# record could not get wrong. WHAT IS NOT PROVEN: that the CLI writes this record -- it still
+# serializes v1, so the format has no writer yet, which is the next lap and its own round for the
+# reason the lift and the write were two. `tier lap` beside its sibling at 14.4s: the control
+# builds sixteen pens for 20.9s measured under a contended pier, the same order rather than a
+# new one.
+guard mantra_weave_v2
+path tools/m/mantra_weave_v2_witness.rish
+tier lap
+seated 20260909.233534
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight
