@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260910.125501` | [The runs ledger named which round](20260910/20260910-125501_the-runs-ledger-named-which-round.kyri) | a dead send found by name; the ferry now proves each body |
 | `20260910.115926` | [A share named the page and never the sentences](20260910/20260910-115926_a-share-named-the-page.kyri) | the whole law room priced at 77 sentences |
+| `20260910.115459` | [One dial, and 110 pages that decline to set it](20260910/20260910-115459_one-dial-and-the-pages-that-decline-to-set-it.kyri) | 110 of 330 name no setting; 4 cross B |
 | `20260910.113923` | [Two rankings, and this tree was reading the wrong one](20260910/20260910-113923_two-rankings.kyri) | the roster is bimodal, and its head sits on the wrong side |
 | `20260910.113253` | [A population picked by one syntax](20260910/20260910-113253_a-population-picked-by-one-syntax.kyri) | a census blind to the tree it measures |
 | `20260910.104407` | [The round that died at its send](20260910/20260910-104407_the-round-that-died-at-its-send.kyri) | a stashed round landed; the ferry never hashed |
