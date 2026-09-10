@@ -70,7 +70,12 @@
 #
 # The complement is derived rather than counted again, and it is a PROXY twice over: `held()` reads
 # a row's prose for Keaton, a custody gate, or a numbered gate, and an unheld row may still be live
-# work nobody can finish today. So it is printed row by row and gated at nothing. What it does
+# work nobody can finish today. So it is printed row by row and gated at nothing -- which this
+# header claimed for six hours before it was true (`20260910.181200`). The count printed; the rows
+# did not, and the one sentence naming their number sat inside the DEADLOCK branch, so it went
+# quiet exactly when the pin was healthy enough to act on cheaply. `pin_unheld_row` names each one
+# now, unconditionally, beside `pin_held`; `pin_unheld_named` counts what was named, so the
+# enumeration and the derived `PIN_UNHELD` are two readings a pen holds to each other. What it does
 # promise is exact: closing ONE open row -- proving its repair on metal and accreting that row's
 # last bold marker to BOOKED -- moves pin_foldable_rows off zero, and by this scan's own table
 # that is the deadlock broken.
@@ -211,6 +216,20 @@ for row in $(awk -f "$ROWREAD" -v mode=held_rows "$PIN"); do
   echo "detail: pin_held %$row -- an open row whose own text names a hand outside the loop"
 done
 
+# THE COMPLEMENT, NAMED RATHER THAN MERELY COUNTED (`20260910.181200`). The WHY block above has
+# claimed since `20260910.140033` that the unheld reading is "printed row by row"; it was printed
+# as a count, and its one sentence naming no row rode inside the DEADLOCK branch, so it vanished
+# exactly when the pin was healthy enough for a lap to act on it cheaply. A number tells a lap that
+# a door exists; a list tells it which door. `PIN_UNHELD` stays derived as `PIN_OPEN - PIN_HELD`,
+# so this enumeration is a SECOND reader of one truth and `pin_unheld_named` is printed beside it
+# -- two readings that must agree, checked in the pen rather than assumed, which is the shape the
+# elder disagreement between `pin_held_rows` and the doors line already cost one morning.
+PIN_UNHELD_NAMED=0
+for row in $(awk -f "$ROWREAD" -v mode=unheld_rows "$PIN"); do
+  echo "detail: pin_unheld_row %$row -- an open row naming no hand outside the loop; the fleet's own to close, and closing one makes reds_fold.sh lawful here"
+  PIN_UNHELD_NAMED=$((PIN_UNHELD_NAMED + 1))
+done
+
 # --- the recital's trail ------------------------------------------------------------------------
 UNRECORDED=0
 PHANTOM=0
@@ -253,6 +272,7 @@ echo "pin_rows=$PIN_ROWS"
 echo "pin_open_rows=$PIN_OPEN"
 echo "pin_held_rows=$PIN_HELD"
 echo "pin_unheld_rows=$PIN_UNHELD"
+echo "pin_unheld_named=$PIN_UNHELD_NAMED"
 echo "pin_fold_refused_rows=$PIN_REFUSED"
 echo "pin_foldable_rows=$PIN_FOLDABLE"
 echo "median_row_bytes=$MEDIAN"

@@ -27,6 +27,7 @@
 #   awk -f reds_pin_capacity_rows.awk -v mode=pin       FILE   # shell assignments for eval
 #   awk -f reds_pin_capacity_rows.awk -v mode=open_rows FILE   # one row number per line
 #   awk -f reds_pin_capacity_rows.awk -v mode=held_rows FILE   # one held OPEN row number per line
+#   awk -f reds_pin_capacity_rows.awk -v mode=unheld_rows FILE # one unheld OPEN row number per line
 
 function last_marker(s,   pos, rest, hit, len, found, word) {
   found = "unmarked"
@@ -73,6 +74,8 @@ function row_number(s,   r) {
     if (held($0)) {
       helds++
       if (mode == "held_rows") print row_number($0)
+    } else {
+      if (mode == "unheld_rows") print row_number($0)
     }
   }
 }
