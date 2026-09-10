@@ -1,0 +1,82 @@
+# tools/t/tutorial_output_witness.rish -- a tutorial's quoted output is run back against the
+# command above it.
+#
+#   rishi/bin/rishi run tools/t/tutorial_output_witness.rish
+#
+# WHY. A tutorial's whole promise is here is what you will see, and nothing in this tree read one.
+# qa_report_card scores Truth by whether cited PATHS resolve; document_mirror_scan proves two homes
+# hold identical bytes; a fenced output block holds neither a path nor a mirror. So
+# docs-geode/tutorials/the-first-hour.md quoted a three-line ending for its toolchain fetch where
+# the command prints four, and the page read Truth 100 the whole time it was wrong
+# (20260909.174000). The repair that lap was one page; this is the general form.
+#
+# WHAT IS GATED, hard, at zero: drift -- a pair whose command ran and printed something other than
+# what the page quotes.
+#
+# WHAT RUNS. Only a fence whose every line is one plain invocation of rishi/bin/rishi or sh naming
+# a TRACKED script, with no redirect, pipe, semicolon, ampersand, backtick, dollar or glob. The
+# test is on what EXECUTES rather than on what it is handed, so the resolver in the demos page
+# keeps its deliberately stale argument and the pair still checks.
+#
+# WHAT IS HELD, named rather than run: a fence that makes a directory, writes a file, or names a
+# script the reader is about to write. Held is a ratchet under a ceiling that only falls.
+#
+# A BLOCK THAT HONESTLY MOVES DECLARES ITSELF, with a reason, on the line above its fence:
+# <!-- volatile: why it moves -->. It reports and never gates. A reasonless declaration buys
+# nothing, which the pen proves.
+#
+# WHAT IT DOES NOT REACH. Stdout alone -- two interleaved streams give an order that depends on
+# buffering rather than on the program. Only the pairs the docs-geode room already writes. And it
+# proves what a command PRINTS, never that the command is the right one to teach.
+#
+#
+# NOT tools/d/docs_command_path_witness.rish, which stands beside it in the same room and does a
+# different job: that one proves every path printed inside a fenced block RESOLVES for a reader who
+# clones, after a folded room left two pages naming a file at its elder address. This one proves
+# what a command PRINTS. A page can name paths that all resolve and still promise output no command
+# produces -- which is exactly what the first hour did. Two jobs, two names.
+# Pen: tools/fixtures/t/tutorial_output_control.sh -- twenty behaviors on real git repositories in
+# a throwaway pen, five refusals bitten and lifted again, fifteen honest readings left free.
+# Run from the repository root.
+
+say "tutorial-output: Language EN -- a quoted output block is a claim about behavior, and a claim nobody checks is a claim that decays."
+say "tutorial-output: Style Gauge, Meter -- the reading runs the commands, so anyone may check the number by running them too."
+say "tutorial-output: Lens Aether -- a guard that cannot red guards nothing, so every refusal here is planted in a pen and watched to bite."
+
+let scan = run ["sh" "tools/fixtures/t/tutorial_output_scan.sh"]
+say scan.out
+assert scan.ok else "tutorial-output: a page quotes output its command no longer prints -- read the scan's own detail lines"
+assert scan.out contains "verdict=every_quoted_block_still_prints" else "tutorial-output: the scan must reach the clean verdict"
+assert scan.out contains "drift=0" else "tutorial-output: no page may quote output its command does not print"
+
+# A meter reading an empty corpus reports clean while proving nothing, so the corpus is measured.
+assert (scan.out contains "pairs=0" == false) else "tutorial-output: a corpus with no pairs would report clean while reading nothing at all"
+assert (scan.out contains "checked=0" == false) else "tutorial-output: every pair held and none run is a guard that ran no command"
+
+let control = run ["sh" "tools/fixtures/t/tutorial_output_control.sh"]
+say control.out
+assert control.ok else "tutorial-output: the control must complete"
+assert control.out contains "case=match_free ok" else "tutorial-output: a page quoting exactly what its command prints must pass"
+assert control.out contains "case=match_counted_exact ok" else "tutorial-output: a matching pair must be counted exact, which is what proves the command ran"
+assert control.out contains "case=drift_bitten ok" else "tutorial-output: a quoted line the command never prints must be refused"
+assert control.out contains "case=drift_named ok" else "tutorial-output: a refusal must name the page it refused"
+assert control.out contains "case=drift_measured ok" else "tutorial-output: a refusal must say how far apart the quote and the output are"
+assert control.out contains "case=drift_lifted ok" else "tutorial-output: a refusal that survives its own repair is one nobody can act on"
+assert control.out contains "case=volatile_free ok" else "tutorial-output: a declared moving block must report rather than gate"
+assert control.out contains "case=volatile_counted ok" else "tutorial-output: a declared pair must be counted volatile"
+assert control.out contains "case=volatile_not_drift ok" else "tutorial-output: a declared pair must leave the drift count alone"
+assert control.out contains "case=reasonless_bitten ok" else "tutorial-output: a declaration with no reason must excuse nothing"
+assert control.out contains "case=redirect_held ok" else "tutorial-output: a fence that writes a file must be held"
+assert control.out contains "case=redirect_not_run ok" else "tutorial-output: a fence outside the roster must run nothing"
+assert control.out contains "case=untracked_held ok" else "tutorial-output: a script the reader writes must be held rather than called a drift"
+assert control.out contains "case=ceiling_bitten ok" else "tutorial-output: the held ceiling must refuse one pair past it"
+assert control.out contains "case=ceiling_met_free ok" else "tutorial-output: the held ceiling must pass at exactly its own number"
+assert control.out contains "case=prose_between_not_a_pair ok" else "tutorial-output: prose between the blocks must end the candidate"
+assert control.out contains "case=lone_command_free ok" else "tutorial-output: a command promising no output must be counted as no claim"
+assert control.out contains "case=empty_corpus_refused ok" else "tutorial-output: a corpus with no pairs must refuse rather than read clean"
+assert control.out contains "case=no_tree_told_apart ok" else "tutorial-output: a directory with no git tree must read distinctly"
+assert control.out contains "case=list_names_pairs ok" else "tutorial-output: the list verb must name every pair with its verdict"
+assert control.out contains "control=ok" else "tutorial-output: the control must agree with itself"
+
+say ""
+say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, with five refusals planted and bitten in a pen and fifteen honest readings left free."

@@ -3967,3 +3967,25 @@ guard mantra_tablecloth_hit_census
 path tools/m/mantra_tablecloth_hit_census_witness.rish
 tier lap   # 4.9s; 31 shapes over saturated catalogs, five plants, 21 control checks
 seated 20260909.215647
+
+# A TUTORIAL'S QUOTED OUTPUT IS A CLAIM ABOUT BEHAVIOR, and until this row nothing in the tree read
+# one. `qa_report_card` scores Truth by whether cited PATHS resolve, `document_mirror_scan` proves
+# two homes hold identical bytes, and a fenced output block holds neither a path nor a mirror -- so
+# docs-geode/tutorials/the-first-hour.md quoted a three-line ending for its toolchain fetch where
+# the command prints four, and the page read Truth 100 the whole time it was wrong
+# (20260909.174000). This runs the command above each quoted block and compares. It reads the
+# convention the docs-geode room already writes -- an `sh` fence, then an unlabelled fence -- which
+# is 6 of the 17 `sh` fences across its 38 tracked pages. WHAT RUNS is narrow on purpose: one plain
+# invocation of `rishi/bin/rishi` or `sh` naming a TRACKED script, no redirect, pipe, semicolon,
+# ampersand, backtick, dollar or glob. The test is on what EXECUTES rather than on what it is
+# handed, so the demos page keeps its deliberately stale resolver argument and still checks. A fence
+# that makes a directory or names a script the reader writes is HELD, a ratchet at 2. A block that
+# honestly moves declares itself -- `<!-- volatile: why -->` above its fence -- reports, and never
+# gates; a reasonless declaration excuses nothing. NOT `docs_command_path`, one row up, which proves
+# a printed path RESOLVES: a page can name paths that all resolve and still promise output no
+# command produces. `tier lap` at a measured 1.0s: it runs four short commands, and the fault it
+# catches is spent by a reader on their first hour.
+guard tutorial_output
+path tools/t/tutorial_output_witness.rish
+tier lap   # 1.0s; 6 pairs read, 4 run, 20 control checks with 5 refusals bitten and lifted
+seated 20260909.235500
