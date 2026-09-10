@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.054448` | [The two names the geometry owed](20260910/20260910-054448_the-two-names-the-geometry-owed.kyri) | a claim checked before it shipped |
 | `20260910.053931` | [A digest answers what, never where](20260910/20260910-053931_a-digest-answers-what-never-where.kyri) | Amphora proved every cargo digest and never its place. |
 | `20260910.053839` | [The exclusion nobody could see](20260910/20260910-053839_the-exclusion-nobody-could-see.kyri) | 244 control files held out, printing nothing |
+| `20260910.050815` | [The pull nobody had performed](20260910/20260910-050815_the-pull-nobody-had-performed.kyri) | a nine-room braid, and two files holding four rooms in |
 | `20260910.045710` | [a plant is a subject, never a practice](20260910/20260910-045710_a-plant-is-a-subject.kyri) | a control landed the shape a census counts. |
 | `20260910.045309` | [The listing nobody checked](20260910/20260910-045309_the-listing-nobody-checked.kyri) | A vessel's readable manifest claimed digests no reader compared to the cargo |
 | `20260910.044625` | [Two files one byte apart, one address](20260910/20260910-044625_two-files-one-byte-apart-one-address.kyri) | The store loses a document's final newline. |

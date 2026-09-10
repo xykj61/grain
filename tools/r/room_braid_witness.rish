@@ -1,0 +1,44 @@
+# tools/r/room_braid_witness.rish -- the single-stranded claim, pulled on rather than believed.
+#
+#   rishi/bin/rishi run tools/r/room_braid_witness.rish
+#
+# WHY THIS RUNG. `foundations/20260823-204456_single-stranded.md` makes this tree's central
+# architectural claim -- each module is about one thing, and "you can check it by trying to pull
+# one part out" -- and the air row's threshold page repeats the test as its own sense: pull gently,
+# and if other things move with it the strand was a braid. The claim stood in a foundation for
+# eighteen days, was read on every air lap of that span, and NOTHING in the tree had ever performed
+# the pull. A claim proven in almost nothing is the water row's shape one room over, and this is
+# the air half of it.
+#
+# WHAT IS PROVEN, all of it on metal.
+#
+#   Sixteen behaviors on real git repositories in a throwaway pen, by the control: an acyclic
+#   three-room chain read as free, one link closing it read as a braid of three, that link lifted
+#   returning the reading to free, an unimported link counted dead and closing no cycle, a link
+#   imported only by ANOTHER link counted live, a same-room link counted as no edge at all, and an
+#   empty corpus refusing rather than reading a clean zero. Every welcome is asserted as hard as
+#   every refusal, because a refusal proven only in the passing direction cannot be told from an
+#   instrument that always refuses -- which is not hypothetical here. The census's first draft
+#   resolved its root from its own `$0` and so read the real tree from inside the pen; two legs
+#   "passed" by matching this tree's own refusal, and only the failing direction exposed it.
+#
+#   The tree holds the shape. `braid_max` -- the largest set of rooms that cannot be lifted out
+#   separately -- under a ceiling that only falls.
+#
+# WHY A CEILING RATHER THAN A GATE AT ZERO. Nine rooms stand in one component today, and asking
+# the tree for zero would red every lap over a shape no single lap can repair. A ceiling refuses
+# the ARRIVAL of a tenth room, which is the class a lap can actually cause, and rewards the repair
+# by falling. Lower it when one lands.
+
+let braid = run ["sh" "tools/fixtures/r/room_braid_census_scan.sh"]
+assert braid.ok else "room-braid: a room joined the braid -- read the census's own component lines"
+assert braid.out contains "ceiling=9" else "room-braid: the ceiling moved -- a raise is a deliberate hand, and this one is meant only to fall"
+assert braid.out contains "verdict=under_ceiling" else "room-braid: the census refused"
+say "GREEN: room-braid -- the tree holds under its ceiling, and the pull is a measurement."
+
+let control = run ["sh" "tools/fixtures/r/room_braid_control.sh"]
+assert control.ok else "room-braid: the control refused -- the census no longer answers a corpus whose answer is known"
+assert control.out contains "fail=0" else "room-braid: a control leg failed"
+assert control.out contains "an empty corpus refuses" else "room-braid: the empty-corpus leg is absent"
+assert control.out contains "lifting the link returns it to acyclic" else "room-braid: the lift leg is absent"
+say "GREEN: room-braid -- sixteen behaviors on planted trees, every refusal shown from both sides."
