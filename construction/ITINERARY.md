@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `513d28363b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `478677e1b0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
