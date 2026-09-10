@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `07b757321a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `68af09f69c` -- HEAD's parent, resolvable everywhere (%401).
 
 *The BAKERY account is shelved whole on [`archive/20260910-070937_itinerary-landed-accounts.md`](archive/20260910-070937_itinerary-landed-accounts.md).*
 

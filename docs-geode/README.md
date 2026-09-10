@@ -34,7 +34,8 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`demos/`](demos/README.md) | Demos | **living** -- five checks you can run, with dated example output; the fifth compares an announced plan with its recorded steps |
 | [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Bron |
 | [`blog/`](blog/README.md) | Blog posts | **living** -- [Eighteen times, two agents did the same job](blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md), the room's first piece, landed against the entry criterion the door names |
-| [`press/`](press/README.md) | Press releases | **living** -- three announcements and one magazine piece, indexed with their honest scope |
+| [`lessons/`](lessons/README.md) | Eight walks for a reader meeting computing itself | **living** -- [the house from above](lessons/20260910-060225_lesson-1-the-house-from-above.md) through [the painted face](lessons/20260910-060225_lesson-8-the-painted-face.md), written in [Bhakta](../context/BHAKTA_STYLE.md): no assumed background, first principles in order, one honest sentence about why it matters |
+| [`press/`](press/README.md) | Press releases | **living** -- three announcements, one magazine piece, one public projection and one paired telling, indexed with their honest scope |
 | [`etc/`](etc/README.md) | Further shipping genres as seated | **open, empty on purpose** -- a waiting area, rather than a destination |
 | [`sangha/`](sangha/README.md) | Sangha patterns (page-zero, three patterns) | **living** |
 | [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), [Glow recursion](tutorials/recursion-in-glow.md), [Shopping](tutorials/SHOPPING.md), and [Running the fleet](tutorials/running-the-fleet.md) |
