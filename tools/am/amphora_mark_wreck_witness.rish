@@ -44,32 +44,40 @@ let planted = "${pen}/planted.bron"
 # refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
 let build_entry = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
-assert build_entry.ok else "mark_wreck: manifest_entry build failed -- ${build_entry.err}"
+if build_entry.ok == false then say build_entry.err
+assert build_entry.ok else "mark_wreck: manifest_entry build failed -- read the line above"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
-assert build_core.ok else "mark_wreck: vessel-core build failed -- ${build_core.err}"
+if build_core.ok == false then say build_core.err
+assert build_core.ok else "mark_wreck: vessel-core build failed -- read the line above"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
-assert build_seal.ok else "mark_wreck: vessel-seal build failed -- ${build_seal.err}"
+if build_seal.ok == false then say build_seal.err
+assert build_seal.ok else "mark_wreck: vessel-seal build failed -- read the line above"
 let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
-assert build_amphora.ok else "mark_wreck: amphora build failed -- ${build_amphora.err}"
+if build_amphora.ok == false then say build_amphora.err
+assert build_amphora.ok else "mark_wreck: amphora build failed -- read the line above"
 
 # The receipt seam reads the mark through the same parser rather than a second hand-rolled
 # tokenizer, so it is built here too -- it needs libc for its sockets, as its own three
 # rostered witnesses already spell.
 let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=amphora/bin/vessel-fetch-delivery"]
-assert build_delivery.ok else "mark_wreck: vessel_fetch_delivery no longer compiles -- ${build_delivery.err}"
+if build_delivery.ok == false then say build_delivery.err
+assert build_delivery.ok else "mark_wreck: vessel_fetch_delivery no longer compiles -- read the line above"
 
 # --- the module's own both-ways selftest, which carries the two roots and two strangers ---
 # `std.debug.print` writes to stderr, so the claim is read through a merging shell -- the
 # same spelling the three elder amphora witnesses already use.
 let selftest = run ["sh" "-c" "amphora/bin/manifest-entry selftest 2>&1"]
-assert selftest.ok else "mark_wreck: manifest_entry selftest exited non-zero -- ${selftest.out}"
-assert selftest.out contains "GREEN" else "mark_wreck: manifest_entry not GREEN -- ${selftest.out}"
+say selftest.out
+assert selftest.ok else "mark_wreck: manifest_entry selftest exited non-zero -- read the reading above"
+assert selftest.out contains "GREEN" else "mark_wreck: manifest_entry not GREEN -- read the reading above"
 
 # --- welcome: an honest vessel pours and verifies ---
 let pour = run ["amphora/bin/amphora" "pour" season vessel]
-assert pour.ok else "mark_wreck: honest pour must pass -- ${pour.err}"
+if pour.ok == false then say pour.err
+assert pour.ok else "mark_wreck: honest pour must pass -- read the line above"
 let verify = run ["amphora/bin/vessel-core" "verify" vessel]
-assert verify.ok else "mark_wreck: honest vessel must verify -- ${verify.err}"
+if verify.ok == false then say verify.err
+assert verify.ok else "mark_wreck: honest vessel must verify -- read the line above"
 
 # The poured vessel must actually carry the root this witness plants over, or the plant
 # below would be a no-op that passes for the wrong reason.
@@ -88,7 +96,8 @@ assert refused.code != 0 else "mark_wreck: a vessel carrying an unnamed kind was
 # The reason, not merely the refusal. A sealed vessel edited anywhere fails its Kumara
 # signature, so this names the frame: parse_manifest_line must be what turned it away.
 let reason = run ["sh" "-c" "amphora/bin/vessel-core verify ${planted} 2>&1 | head -3"]
-assert reason.out contains "parse_manifest_line" else "mark_wreck: refused, yet NOT at the mark -- ${reason.out}"
+say reason.out
+assert reason.out contains "parse_manifest_line" else "mark_wreck: refused, yet NOT at the mark -- read the reading above"
 
 # --- lifting the plant returns the reading to green, so the refusal is the mark's own ---
 let lifted = run ["amphora/bin/vessel-core" "verify" vessel]
@@ -121,11 +130,13 @@ say "amphora_mark_wreck: honest vessel verifies; an unnamed kind refuses at pars
 let pen_a = "${pen}/a"
 let pen_b = "${pen}/b"
 let make_pens = run ["sh" "-c" "mkdir -p ${pen_a} ${pen_b} && cp amphora/src/main.rye ${pen_a}/main.rye && cp amphora/src/main.rye ${pen_b}/main.rye && ln -s $(pwd)/amphora/manifest_entry.rye ${pen_a}/manifest_entry.rye && ln -s $(pwd)/amphora/manifest_entry.rye ${pen_b}/manifest_entry.rye"]
-assert make_pens.ok else "mark_wreck: the source pens must be made -- ${make_pens.err}"
+if make_pens.ok == false then say make_pens.err
+assert make_pens.ok else "mark_wreck: the source pens must be made -- read the line above"
 
 # The honest copy builds, so the plant below is read as the plant's own doing.
 let pen_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_a}/main.rye -femit-bin=${pen}/amphora-pen 2>&1"]
-assert pen_build.ok else "mark_wreck: the unplanted source copy must build -- ${pen_build.out}"
+if pen_build.ok == false then say pen_build.out
+assert pen_build.ok else "mark_wreck: the unplanted source copy must build -- read the line above"
 
 # One: the mirrored root is compiler-held. Diverge the literal this door WRITES from the
 # contract's own, and the comptime block must stop the build. A literal copied by hand that
@@ -133,10 +144,11 @@ assert pen_build.ok else "mark_wreck: the unplanted source copy must build -- ${
 let plant_root = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace 's/^const mark_plain_bytes = \"plain-bytes\";/const mark_plain_bytes = \"plain-bytes-x\";/' ${pen_a}/main.rye && grep -q 'plain-bytes-x' ${pen_a}/main.rye"]
 assert plant_root.ok else "mark_wreck: the divergent-root plant did not take -- the declaration moved"
 let refused_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_a}/main.rye -femit-bin=${pen}/amphora-pen-planted 2>&1"]
-assert refused_build.code != 0 else "mark_wreck: a written root diverging from the contract STILL BUILT"
 # The reason, not merely the refusal -- the same discipline the frame leg above keeps. A build
 # can fail for a hundred reasons a sed introduces; only one of them is this guard's subject.
-assert refused_build.out contains "mark_plain_bytes, me.mark_plain_bytes" else "mark_wreck: the pen build refused, yet NOT at the comptime tie -- ${refused_build.out}"
+say refused_build.out
+assert refused_build.code != 0 else "mark_wreck: a written root diverging from the contract STILL BUILT"
+assert refused_build.out contains "mark_plain_bytes, me.mark_plain_bytes" else "mark_wreck: the pen build refused, yet NOT at the comptime tie -- read the reading above"
 
 # Two: the reader names the contract's roster rather than a second one of its own.
 let routes = run ["sh" "-c" "grep -q 'me.mark_verdict(mark) == .unknown' amphora/src/main.rye"]

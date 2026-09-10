@@ -4233,6 +4233,26 @@ seated 20260907.221800
 #
 # `lap` rather than `cadence`: one awk pass over 2,415 tracked scripts costs 5.7s measured
 # 20260908, and the shape it counts can be written again in any lap that adds a witness.
+#
+# IT REDDENED THIS PIER ON 20260910 AT deferred=538 AGAINST 537, AND THE ROOT WAS THE READING.
+# The classifier read from the start of a line, so a one-line `if COND then ACTION` was invisible
+# whatever the action did: 21 hazardous guarded tails went uncounted, and 155 guarded bare says --
+# sites already spelling the repair -- counted nowhere at all. That deflated `safe`, left the
+# shared denominator 258 low, and carried the deferred share 26 per mille above where the tree
+# actually stood. Run the widened classifier against the pre-sweep tree in a worktree pen and it
+# answers 512, `verdict=ok`. The classifier reads past a `then` now, and reads the CONDITION
+# apart from the action, because a condition interpolating a capture composes on every run
+# whatever follows -- that case reads zero on this tree and is planted rather than trusted.
+#
+# The widening also unbraids the two shares from each other. Repairing a deferred site the
+# guarded way used to remove it from the population, shrinking the denominator and raising the
+# EAGER share -- so a lane doing exactly the right thing pushed a peer's reading toward its
+# ceiling, 165 repairs from reddening it. A guarded repair lands in `safe` now, and only the
+# numerator moves. `tools/am/` then paid its whole share: 93 deferred sites and one eager to
+# zero, sixteen witnesses re-run GREEN, the new refusal path proven by breaking a build in a pen.
+# Ceilings fell 155 -> 144 and 537 -> 489, keeping the two and three per mille of slack the first
+# draft chose. Control 29 -> 41 legs, each of the two new walls removed in turn and its own legs
+# watched to fall.
 
 guard say_compose_bound
 path tools/s/say_compose_bound_witness.rish

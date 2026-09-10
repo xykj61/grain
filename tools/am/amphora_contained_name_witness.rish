@@ -44,19 +44,24 @@ let vessel = "${home}/v.bron"
 # them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
 let zig = "vendor/zig-toolchain/zig"
 let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
-assert build_amphora.ok else "contained: amphora build failed -- ${build_amphora.err}"
+if build_amphora.ok == false then say build_amphora.err
+assert build_amphora.ok else "contained: amphora build failed -- read the line above"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
-assert build_core.ok else "contained: vessel-core build failed -- ${build_core.err}"
+if build_core.ok == false then say build_core.err
+assert build_core.ok else "contained: vessel-core build failed -- read the line above"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
-assert build_seal.ok else "contained: vessel-seal build failed -- ${build_seal.err}"
+if build_seal.ok == false then say build_seal.err
+assert build_seal.ok else "contained: vessel-seal build failed -- read the line above"
 let build_entry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
-assert build_entry.ok else "contained: manifest-entry build failed -- ${build_entry.err}"
+if build_entry.ok == false then say build_entry.err
+assert build_entry.ok else "contained: manifest-entry build failed -- read the line above"
 
 # --- the rule itself, both directions, where it lives ---
 # `sub/deeper/a.txt` walks free and six escaping shapes refuse by their own error name. A rule
 # proven only on the refusing side cannot be told from one that refuses every name.
 let selftest = run ["amphora/bin/manifest-entry" "selftest"]
-assert selftest.ok else "contained: the name rule must prove both directions -- ${selftest.err}"
+if selftest.ok == false then say selftest.err
+assert selftest.ok else "contained: the name rule must prove both directions -- read the line above"
 assert selftest.err contains "hold the name inside" else "contained: selftest names the rule"
 
 # --- the welcome, asserted as hard as every refusal below ---
@@ -104,18 +109,23 @@ assert elder_copy.ok else "contained: the elder pen must copy"
 let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/switch (name_verdict(entry.name)) {/,/^    }$/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/assert(name_verdict(entry.name) == .contained);/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/if (me.name_verdict(name) != .contained) return error.CargoUnproven;/d' ${elder_dir}/src/main.rye && sed_inplace '/if (me.name_verdict(entry.path) != .contained) return error.SeasonNameUnframed;/d' ${elder_dir}/src/main.rye && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
 assert strip.ok else "contained: the wall must strip cleanly"
 let gone = run ["sh" "-c" "cat ${elder_dir}/manifest_entry.rye ${elder_dir}/src/main.rye | grep -c 'name_verdict(entry.name)\|me.name_verdict(' || true"]
-assert (trim gone.out) == "0" else "contained: the elder pen must lose every USE of the rule -- ${gone.out} left"
+say gone.out
+assert (trim gone.out) == "0" else "contained: the elder pen must lose every USE of the rule -- read the reading above"
 let eb1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
-assert eb1.ok else "contained: elder amphora build failed -- ${eb1.err}"
+if eb1.ok == false then say eb1.err
+assert eb1.ok else "contained: elder amphora build failed -- read the line above"
 let eb2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_seal.rye -femit-bin=${elder_dir}/bin/vessel-seal"]
-assert eb2.ok else "contained: elder vessel-seal build failed -- ${eb2.err}"
+if eb2.ok == false then say eb2.err
+assert eb2.ok else "contained: elder vessel-seal build failed -- read the line above"
 let eb3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_core.rye -femit-bin=${elder_dir}/bin/vessel-core"]
-assert eb3.ok else "contained: elder vessel-core build failed -- ${eb3.err}"
+if eb3.ok == false then say eb3.err
+assert eb3.ok else "contained: elder vessel-core build failed -- read the line above"
 
 # The elder seals and stamps what every repaired door refused, then restores it -- and the file
 # lands ABOVE the out-home while the command still prints its files-proven line.
 let elder_forge = run ["sh" "-c" "cp ${home}/forged.bron ${home}/elder.bron && ${elder_dir}/bin/vessel-seal seal ${home}/elder.bron && ${elder_dir}/bin/vessel-core sign ${home}/elder.bron"]
-assert elder_forge.ok else "contained: the elder must seal and stamp the escaping vessel -- ${elder_forge.err}"
+if elder_forge.ok == false then say elder_forge.err
+assert elder_forge.ok else "contained: the elder must seal and stamp the escaping vessel -- read the line above"
 let elder_restore = run ["sh" "-c" "cp ${home}/elder.bron ${home}/eread.bron && cp -r ${home}/resins ${home}/resins.keep >/dev/null 2>&1; ${elder_dir}/bin/amphora restore ${home}/eread.bron; true"]
 assert elder_restore.err contains "restore files proven" else "contained: the elder prints its files-proven line over an escaping name"
 let escaped = run ["sh" "-c" "test -e ${home}/escaped.txt"]

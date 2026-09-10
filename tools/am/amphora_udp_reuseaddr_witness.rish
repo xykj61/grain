@@ -21,7 +21,9 @@ let scan = "tools/fixtures/a/amphora_udp_reuseaddr_scan.sh"
 let control = "tools/fixtures/a/amphora_udp_reuseaddr_control.sh"
 
 let living = run ["sh" scan]
-assert living.ok else "amphora_udp_reuseaddr: living amphora must carry no address reuse -- ${living.out} ${living.err}"
+if living.ok == false then say living.out
+if living.ok == false then say living.err
+assert living.ok else "amphora_udp_reuseaddr: living amphora must carry no address reuse -- read the lines above"
 assert living.out contains "source_reuseaddr_sites=0" else "amphora_udp_reuseaddr: a setsockopt site stands"
 assert living.out contains "verdict=ok" else "amphora_udp_reuseaddr: living scan not ok"
 say "living=clean"
@@ -42,7 +44,9 @@ say "peer_census=reported_by_scan gated=no"
 
 let pen = run ["sh" control]
 say pen.out
-assert pen.ok else "amphora_udp_reuseaddr: control must pass -- ${pen.out} ${pen.err}"
+if pen.ok == false then say pen.out
+if pen.ok == false then say pen.err
+assert pen.ok else "amphora_udp_reuseaddr: control must pass -- read the lines above"
 assert pen.out contains "control_verdict=ok" else "amphora_udp_reuseaddr: control not ok"
 assert pen.out contains "failed=0" else "amphora_udp_reuseaddr: a control behavior failed"
 

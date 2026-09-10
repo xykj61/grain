@@ -29,11 +29,14 @@ let dock = "${home}/dock"
 # The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
 let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
-assert build_amphora.ok else "amphora_carry: amphora build failed -- ${build_amphora.err}"
+if build_amphora.ok == false then say build_amphora.err
+assert build_amphora.ok else "amphora_carry: amphora build failed -- read the line above"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
-assert build_core.ok else "amphora_carry: vessel-core build failed -- ${build_core.err}"
+if build_core.ok == false then say build_core.err
+assert build_core.ok else "amphora_carry: vessel-core build failed -- read the line above"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
-assert build_seal.ok else "amphora_carry: vessel-seal build failed -- ${build_seal.err}"
+if build_seal.ok == false then say build_seal.err
+assert build_seal.ok else "amphora_carry: vessel-seal build failed -- read the line above"
 
 let pour = run ["amphora/bin/amphora" "pour" season vessel]
 assert pour.ok else "amphora_carry: pour must exit ok"
