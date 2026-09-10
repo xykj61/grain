@@ -15,9 +15,13 @@
 # that sentence stood here for a day while the opposite was true (`20260909.170804`). The prover
 # `cd`-ed into the pen and then invoked the tool by its path in the REAL tree; a tool resolving its
 # own root from `$0`, which 100 tracked tools here do, walked back out and edited the live tree. It
-# read `inert` while writing `construction/archive/20260909-999999_itinerary-landed-accounts.md`
-# into the working tree of the ship that ran it. The tool is copied into the pen and run there now,
-# so `$0` resolves inside the pen and the claim above is one the code keeps.
+# read `inert` while writing a landed-accounts shelf, under a fabricated `999999` stamp, into
+# `construction/archive/` in the working tree of the ship that ran it. That file is named here
+# without its path on purpose: it was removed the same hour, so a full basename would read as a
+# citation and resolve nowhere -- the shape `.claude/rules/stamp-and-name.md` refuses under
+# *illustrate with placeholders, cite only what exists*, and `dated_path`'s lost census counted it.
+# The tool is copied into the pen and run there now, so `$0` resolves inside the pen and the claim
+# above is one the code keeps.
 #
 #   sh tools/c/convergence_tree_prove.sh [--perturb <command>] <tool> [<arg>...]
 #
