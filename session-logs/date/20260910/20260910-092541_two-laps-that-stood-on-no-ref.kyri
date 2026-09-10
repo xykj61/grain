@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260910.092541
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship petrichor
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no authoritative identity line
+configured_model claude-opus-5
+configured_status .claude/settings.json names the configured default; a default, never runtime telemetry
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title Two laps that stood on no ref
+prompt Fleet baton -- petrichor seat, docs-geode and the prose product, Lindy-first crux-first.
+rota lap 4557, row 2 -- Fire, the row that sees; read the threshold plus standfast and reds-first. Fire asks what must stop, and what it saw was this seat's own unsent record rather than anything I was about to build.
+think Opened the roster cold and scoped. A stale --hot pass from a dead lap held the lock at pid 3057181; resolved it through /proc/<pid>/cwd to this tree, its launch_head a74c712240 already superseded so its verdict was fixed at tree_moved, and released it with one TERM to that pid alone.
+think The pass cost 3,175 wall seconds over 214 guards -- 209 green, 4 red, 1 gated. Reds: tame_reach (a peer's lane, standing on the card), index_row_bound, stash_record, standing_equipment.
+think fleet_round_open adopted the anointed order at 970c9fcb1d. index_row_bound had already been repaired by a peer in those 47 minutes -- rows_misordered 1 to 0 -- which is the fleet working, not me.
+think stash_record read unlanded=2 and its list named the two: session-logs/date/20260910/20260910-074629 and 20260910-082330. Both are THIS seat's laps, written at 07:46 and 08:23, each GREEN by its own witness, each stashed by a round-open and never sent. A stash is neither tree nor ref, so nothing outside this checkout could see either.
+think Before touching a byte I asked whether the work was still true. git diff <stash base> HEAD over every path in both stashes answered SAFE on all ten -- no peer had moved one since. That is what made restoration lawful rather than a rebuild, and it is the check I would want any lap to run first.
+think git checkout <stash> -- <path> reads the TREE object, so the mode travels with the bytes; git show <ref>:<path> would have landed every file at 100644, which is the exec-bit law's own worked example.
+obs Both witnesses re-prove on today's head rather than on their own: qa_report_card 159 behaviors, prose_register verdict=ok with door_over_ceiling=0. A recovered lap that only ever passed on its own base is a claim about a tree nobody has.
+obs The first lap's repair is the one worth naming twice: qa_report_card scored docs-geode/README.md truth=100 and A+ 98 while its doorway figure was a quarter wrong, because the counted half asks whether cited PATHS resolve and a stale number is no path. truth_mode= now says which half answered.
+obs I did not take the crux I had chosen. tutorial_output_scan reads one undeclared pair in docs-geode/tutorials/the-first-hour.md -- the run-it-twice block belongs to sh tools/f/fetch-toolchain.sh, which the page teaches nine lines above -- and a from: declaration checked against a command the page ALREADY runs would make it readable. Measured while reading: that command costs 71 ms and no network when the toolchain stands. Left as the next lap's door rather than opened beside a recovery.
+obs REDS is at 173 bytes of headroom with every row OPEN, so nothing new could be booked. The stash class already has its row, %636, and this lap closed its instance rather than the question.
+loom scan=standing_equipment_run mode=cold_scoped guards_run=214 guards_seconds=3175 guards_cpu_ms=2933693 green=209 red=4 gated=1
+loom scan=stash_record unlanded_before=2 unlanded_after=0 records=17 orphans=11
+loom witness=qa_report_card behaviors=159 witness=prose_register door_over_ceiling=0
+loom scan=tutorial_output pages=47 pairs=9 checked=6 undeclared_after_prose=1 held=2
+file tools/fixtures/q/qa_report_card.sh truth_mode=counted|judged beside truth=, restored whole from the 07:46 stash
+file docs-geode/README.md the stale 10 of 1,004 doorway figure gives way to the scan's own name
+file mikrophone/README.md D 55 to B+ 87, molted in place, now on the gated DOOR roster
+file glow/nock/README.md D 60 to Door 76 / Field 84, repaired and unrostered until the word
+file construction/ITINERARY.md the PETRICHOR account, elder shelved by tools/i/itinerary_account_shelf.sh; card reads 40,959 of 40,960
+scope one standing red closed by landing this seat's own two parked laps, whole, re-proven on today's head
+status GREEN -- qa_report_card_witness 159 behaviors, prose_register_witness verdict=ok, stash_record unlanded 2 to 0; cold pass named above with its four reds and their owners; hot pass on the staged tree
+recommend check-in (Keaton) -- module reference README, Door or Field: one word settles 22 front doors, and glow/nock now prices it at eight points on one file.
