@@ -17,8 +17,16 @@
 #                   (door B) means the defect's instances stand repaired and the remainder is a
 #                   ratchet, a seat, or a booked lap -- not open, not closed.
 #
+#   held()          of an OPEN row, does its own text name a hand outside the loop -- Keaton, a
+#                   custody gate, or a numbered gate? This is a PROXY and it is printed row by row
+#                   so a reader checks it rather than trusting it. It exists because door B
+#                   (20260829) split a live defect from a booked remainder and never split who can
+#                   CLOSE a live one: eight ships find reds at fleet rate, and a row waiting on one
+#                   person leaves at one person's rate, so the pin fills with rows no lap may close.
+#
 #   awk -f reds_pin_capacity_rows.awk -v mode=pin       FILE   # shell assignments for eval
 #   awk -f reds_pin_capacity_rows.awk -v mode=open_rows FILE   # one row number per line
+#   awk -f reds_pin_capacity_rows.awk -v mode=held_rows FILE   # one held OPEN row number per line
 
 function last_marker(s,   pos, rest, hit, len, found, word) {
   found = "unmarked"
@@ -44,6 +52,10 @@ function fold_refused(s,   m) {
   return (s ~ /(^|[^A-Za-z])OPEN([^A-Za-z]|$)/)
 }
 
+function held(s) {
+  return (s ~ /Keaton|custody|gate %[0-9]/)
+}
+
 function row_number(s,   r) {
   r = s
   sub(/^\*\*REDS [%#]/, "", r)
@@ -58,6 +70,10 @@ function row_number(s,   r) {
   if (last_marker($0) == "open") {
     opens++
     if (mode == "open_rows") print row_number($0)
+    if (held($0)) {
+      helds++
+      if (mode == "held_rows") print row_number($0)
+    }
   }
 }
 
@@ -69,5 +85,5 @@ END {
     for (j = i + 1; j <= rows; j++)
       if (len[j] < len[i]) { t = len[i]; len[i] = len[j]; len[j] = t }
   med = (rows > 0) ? len[int(rows / 2) + 1] : 0
-  printf "PIN_ROWS=%d\nPIN_OPEN=%d\nPIN_REFUSED=%d\nMEDIAN=%d\n", rows + 0, opens + 0, refused + 0, med + 0
+  printf "PIN_ROWS=%d\nPIN_OPEN=%d\nPIN_HELD=%d\nPIN_REFUSED=%d\nMEDIAN=%d\n", rows + 0, opens + 0, helds + 0, refused + 0, med + 0
 }

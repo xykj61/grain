@@ -177,6 +177,43 @@ say "over bound + none foldable walks free"   "$(has "$out" 'verdict=ok')"
 say "and is still named a deadlock"           "$(has "$out" 'pin_deadlocked=1')"
 say "over bound + none foldable exits 0"      "$([ "$(run_status "$pen/i" REDS_PIN_BOUND=$((size - 10)))" = 0 ] && echo yes || echo no)"
 
+# ---- 5c. who holds an open row (added 20260910) -------------------------------------------------
+# The reading is a proxy over a row's own text, so it is proven from both sides on planted rows: a
+# row naming Keaton counts, a row naming a custody gate counts, an ordinary open row does not, and
+# a CLOSED row naming Keaton counts for nothing at all, since a closed row holds nobody up.
+held_row() { # held_row <n> <open|closed> <phrase>
+  printf '**REDS %%%s (`20260829.000000`) -- a planted row.** *What went wrong:* xxx *Standing:* %s. This row reads **%s**.\n' \
+    "$1" "$3" "$([ "$2" = open ] && echo OPEN || echo CLOSED)"
+}
+mkdir -p "$pen/j"; : > "$pen/j/recital.md"
+{ echo '# REDS -- a pen ledger'; echo
+  held_row 1 open "the repair wants Keaton's word"
+  held_row 2 open "held behind custody gate %1"
+  held_row 3 open "the sweep is a lap's own"
+  held_row 4 closed "this one wanted Keaton's word once"
+} > "$pen/j/REDS.md"
+out=$(run_scan "$pen/j" REDS_PIN_BOUND=100000)
+say "four rows, three open"                   "$(has "$out" 'pin_open_rows=3')"
+say "two of the three read held"              "$(has "$out" 'pin_held_rows=2')"
+say "the Keaton row is named"                 "$(has "$out" 'detail: pin_held %1')"
+say "the custody row is named"                "$(has "$out" 'detail: pin_held %2')"
+say "an ordinary open row is not held"        "$([ "$(has "$out" 'detail: pin_held %3')" = no ] && echo yes || echo no)"
+say "a closed row is never held"              "$([ "$(has "$out" 'detail: pin_held %4')" = no ] && echo yes || echo no)"
+say "held rows gate nothing"                  "$(has "$out" 'verdict=ok')"
+# And a pen with no held row reads zero rather than silence, so an empty reading is legible.
+out=$(run_scan "$pen/a" REDS_PIN_BOUND=100000)
+say "a pen with no held row reads zero"       "$(has "$out" 'pin_held_rows=0')"
+
+# ---- 5d. the deadlock names its doors ----------------------------------------------------------
+# The foldable cell has named its remedy since %517; the deadlocked cell named none, which is what
+# sent five ships in one morning to re-derive the same three options. Proven from both sides: the
+# doors line rides with the deadlock and stays away from every other state.
+out=$(run_scan "$pen/b" REDS_PIN_BOUND="$(wc -c < "$pen/b/REDS.md" | tr -d ' ')")
+say "the deadlock names its doors"            "$(has "$out" 'detail: pin_deadlock_doors')"
+say "the doors line names the recital"        "$(has "$out" 'REDS-fold-recital.md')"
+out=$(run_scan "$pen/a" REDS_PIN_BOUND=100000)
+say "a healthy pin names no doors"            "$([ "$(has "$out" 'detail: pin_deadlock_doors')" = no ] && echo yes || echo no)"
+
 # ---- 6. misuse refuses rather than guessing ----------------------------------------------------
 if ( cd "$ROOT" && env REDS_PIN="$pen/absent/REDS.md" sh "$SCAN" >/dev/null 2>&1 ); then code=0; else code=$?; fi
 say "an absent pin exits 2"                   "$([ "$code" = 2 ] && echo yes || echo no)"
