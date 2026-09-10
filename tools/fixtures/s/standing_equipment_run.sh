@@ -159,6 +159,199 @@ owner_transcript() {
   fi
 }
 
+# WHETHER THE LAP THAT TOOK THIS LOCK IS STILL HERE -- ASKED ONCE, FOR BOTH REFUSALS
+# (`20260909.234718`). Two sites refuse a launch because another pass holds the lock: the
+# `--detach` parent below, before it forks, and the pass itself where the lock is taken. Every
+# reading here lived inside the second, so the form THE BATON NAMES was told to *read that
+# transcript* and never told whether a reader was left. The lock path is spelled once above both
+# for exactly this reason, one screen up -- a second spelling of one intent is how two readings of
+# it begin -- and the refusal itself had been written twice.
+#
+# AND THE ANCESTRY READINGS CANNOT SEE THE LAUNCH FORM THE FLEET NOW USES. `--detach` runs
+# `nohup sh "$0" "$@" &` from a parent that exits at once, so a detached pass is reparented to init
+# WITHIN MILLISECONDS OF LAUNCH, by construction, while the lap that launched it waits on the
+# transcript. `parent=gone` and `group_leader=gone` are then facts about the FLAG rather than about
+# the lap. Measured on this pier `20260909.234718`: a two-minute-old pass this very lap had
+# launched read `lap=gone` with the advice to kill it, and every one of the 7 trees then holding a
+# run lock held it with `ppid` 1 and a transcript beside it -- 7 of 7, each a `--detach` launch.
+# The lock is only ever held by a pass, and every pass is now launched detached, so this is the
+# reading effectively every holder gets. The note below states the direction of error as *it never accuses a live lap of being
+# gone*; that held when it was written and stopped holding when `--detach` was seated
+# (`20260908.113404`). A reading does not have to change to go wrong -- the world it reads can.
+#
+# THIS IS THE FOURTH FIRING OF ONE FAMILY, and the first to invert. `%387` read the parent, `%528`
+# added the group leader, `%548` added the leader's parent; each asked *is my immediate answer
+# alive* and the fleet kept moving which process that was. A loom chasing generations cannot
+# survive a launcher that severs the link at birth, because there is no further generation to add.
+#
+# SO THE ANSWERABLE QUESTION IS ASKED INSTEAD, off a fact the lock ALREADY carries. The owner
+# writes `$lock/transcript` only when `STANDING_TRANSCRIPT` is set, and one line in this file sets
+# it, so the file's PRESENCE is the launch form and no new marker is needed. For such a pass what a
+# hand needs is not who started it but whether its verdict can still be spent -- its own
+# `launch_head` against HEAD now, which named pid 3653764 void this lap (`513d283` against
+# `4a1d75aa`) where ancestry called a live pass abandoned. Right in both directions, where the
+# process table is now right in neither.
+#
+  # WHOSE LAP IS THAT PASS STILL RUNNING FOR? The refusal above tells a hand to read the holder's
+  # output instead, and that advice quietly assumes somebody is left to read it. Twice in two laps
+  # on 20260831 nobody was: a lap died with its pass still running, the pass reparented to init,
+  # and the NEXT round's opening stash (%321) moved the tree the orphan had digested at its open,
+  # so its verdict was already fixed at `tree_moved` while it went on holding this lock for
+  # another forty minutes. Both mechanisms are right alone. Together they lock the new lap out of
+  # the instrument its own card tells it to open with, and the refusal's advice points at a reader
+  # who has gone.
+  #
+  # SO THE READING IS TAKEN AND REPORTED, AND NOTHING IS REAPED. `lock_acquire` already reaps an
+  # owner that has EXITED; an orphan has not exited, and it is still a live writer appending to
+  # the one run card, so killing it from here would be one pass ending another's -- exactly the
+  # cross-hand act REDS %291 asks a body never to take. This line names the condition and the
+  # repair; a hand acts.
+  #
+  # `ps -o ppid=` rather than /proc, because macOS ships no /proc and this reading is worth
+  # nothing on the one platform it cannot run. WHAT IT MEASURES IS THE PARENT, and the honest
+  # sentence is *the process that started it has exited* rather than *it is abandoned*: a pass
+  # launched deliberately by init would read the same, and a host running a subreaper reparents
+  # an orphan to the reaper rather than to 1, which reads `alive`. The reading therefore
+  # UNDER-reports -- it never accuses a live lap of being gone, and that is the direction to be
+  # wrong in.
+  # AND THE PARENT READING MISSES THE SHAPE THIS FLEET ACTUALLY MAKES, which is why a second
+  # reading stands beside it. A lap that launches its hot pass detached -- `( sh runner --hot
+  # > out 2>&1; echo EXIT=$? >> out ) &` -- forks a subshell to carry that compound command, and
+  # the runner's parent is that subshell rather than the lap. When the lap ends, the SUBSHELL is
+  # what reparents to init; the runner's own ppid still names it and it is still alive, so the
+  # reading above answers `alive` for a lap that has gone. The orphaning happened one generation
+  # further up than the check can see. No subreaper is needed for this -- the lap's own `&` is
+  # enough -- and it is how this pass came to hold the lock at `20260906.231137` while the seat
+  # that opened next was refused with no repair named at all.
+  #
+  # SO THE SECOND READING ASKS FOR THE LAUNCHER RATHER THAN THE PARENT: does the process group
+  # leader still exist? A process group is the lap's whole spawned family, and its leader is
+  # whoever started that family -- measured on this pier, `sh tools/f/fleet-loop.sh <seat>` for a
+  # live pass, and a pid that no longer exists for the orphan above. `&` in a non-interactive
+  # shell starts no new group, so a detached pass keeps its lap's group and the leader's absence
+  # is the lap's absence.
+  #
+  # NEITHER READING CONTAINS THE OTHER, so both are taken and either one answers. A direct
+  # orphan -- parent exits, child adopted by init -- keeps a live group leader and is caught by
+  # the parent reading alone. A detached pass keeps a live parent and is caught by the group
+  # reading alone. Reporting both keeps each visible where it fires, and `lap` is the one word
+  # the advice below turns on.
+  #
+  # AND A GROUP LEADER CAN BE ALIVE AND ORPHANED AT ONCE, which is the shape neither reading
+  # above reaches. A lap that launches its pass through the harness's own detached form --
+  # `sh -c '... runner --hot --scoped > /tmp/hot.txt ...'` started in the background -- gets a
+  # NEW SESSION for that command, so the `sh -c` becomes the leader of its own group rather than
+  # sharing the lap's. While the lap runs, that leader's parent is the lap's shell; when the lap
+  # ends, the LEADER is what reparents to init and goes on running. The owner's parent is then
+  # the leader (alive, not 1) and the leader itself exists, so `parent=alive`, `group_leader=alive`,
+  # `lap=alive` -- for a lap that has been gone for minutes. Measured on this tree
+  # `20260907.065148`: owner 3457737, parent and group leader both 3457725, whose own ppid was 1.
+  #
+  # SO THE THIRD READING ASKS THE LEADER THE FIRST QUESTION: has the process that started the
+  # family exited? The leader is the root of the pass's own family by construction, so a leader
+  # adopted by init means nobody is waiting on this pass and its output reaches nobody -- the
+  # same sentence the two readings above already turn on, asked one generation further up. It is
+  # one extra `ps`, never a walk: the ancestry above the leader belongs to the lap, not the pass.
+  #
+  # WHY THIS CANNOT CALL A LIVE PASS GONE, measured rather than assumed. A pass launched in the
+  # foreground from a lap's own shell has that shell as its group leader -- the shell takes its
+  # own group -- and the shell's parent is the agent process, alive. Only a detached pass makes
+  # the `sh -c` the leader, and only a dead lap makes that leader's parent init. Both halves have
+  # to hold before this reading fires.
+  #
+  # THE DIRECTION OF ERROR IS UNCHANGED. All three readings only ever ADD a reason to say `gone`,
+  # each sound on its own, and each fails silent when `ps` cannot answer. Being wrong here still
+  # costs one advisory sentence: nothing is reaped, an orphan is a live writer, and one pass
+  # ending another's is the cross-hand act REDS %291 asks a body never to take.
+owner_lap_read() {
+  # $1 the owner's pid, $2 the lock directory it holds. It SETS rather than prints, because the
+  # two callers interleave their own verdict, transcript and `refused:` lines between the reading
+  # and its detail -- and only the detach parent can honestly promise it truncated nothing.
+  owner=$1
+  detached=no
+  # An explicit `if` rather than a trailing `[ ... ] && detached=yes`: this file runs under
+  # `set -eu`, and an AND-OR list whose test fails is the one shape whose -e exemption reads
+  # differently between shells. The runner behaves the same in every one it is launched from.
+  if [ -s "$2/transcript" ]; then detached=yes; fi
+  parent=unknown
+  group_leader=unknown
+  leader_parent=unknown
+  case "$owner" in
+    ''|*[!0-9]*) : ;;
+    *)
+      owner_parent=$(ps -o ppid= -p "$owner" 2>/dev/null | tr -d ' ')
+      case "$owner_parent" in
+        '') : ;;
+        1) parent=gone ;;
+        *) parent=alive ;;
+      esac
+      # `ps -o pgid=` rather than /proc, for the same reason the parent reading gives, and `ps`
+      # rather than `kill -0` to test the leader: `kill -0` on another user's process answers
+      # EPERM rather than ESRCH and would read a stranger's live leader as gone.
+      owner_group=$(ps -o pgid= -p "$owner" 2>/dev/null | tr -d ' ')
+      case "$owner_group" in
+        ''|*[!0-9]*) : ;;
+        *)
+          if [ -n "$(ps -o pid= -p "$owner_group" 2>/dev/null | tr -d ' ')" ]; then
+            group_leader=alive
+            # The third reading, and it only means anything while the leader is alive -- a leader
+            # that has gone is already answered above.
+            leader_ppid=$(ps -o ppid= -p "$owner_group" 2>/dev/null | tr -d ' ')
+            case "$leader_ppid" in
+              '') : ;;
+              1) leader_parent=gone ;;
+              *) leader_parent=alive ;;
+            esac
+          else
+            group_leader=gone
+          fi
+          ;;
+      esac
+      ;;
+  esac
+  # One word for the advice to turn on, so a third reading joins here rather than at every site.
+  # A DETACHED PASS IS NAMED RATHER THAN ACCUSED. `--detach` reparents its child to init at launch,
+  # so the three readings above describe the flag rather than the lap and must not reach the word.
+  if [ "$detached" = yes ]; then
+    lap=detached
+  elif [ "$parent" = gone ] || [ "$group_leader" = gone ] || [ "$leader_parent" = gone ]; then
+    lap=gone
+  elif [ "$parent" = alive ] || [ "$group_leader" = alive ]; then
+    lap=alive
+  else
+    lap=unknown
+  fi
+}
+
+owner_lap_detail() {
+  # $1 the owner's pid, $2 its lock directory. Printed after the caller's own `refused:` line.
+  if [ "$detached" = yes ]; then
+    echo "detail: that pass was launched with --detach, whose parent exits at once, so the process table cannot say whether its lap is still here." >&2
+    lap_head=$(sed -n 's/^launch_head //p' "$(cat "$2/transcript" 2>/dev/null)" 2>/dev/null | head -n 1 || true)
+    head_now=$(git rev-parse --short=10 HEAD 2>/dev/null || echo nogit)
+    if [ -z "$lap_head" ]; then
+      echo "detail: its transcript names no launch_head, so read that file before assuming either way." >&2
+    elif [ "$lap_head" = "$head_now" ]; then
+      echo "detail: its launch_head $lap_head is still HEAD, so it is measuring this tree -- wait for its run_verdict line rather than opening a second." >&2
+    else
+      echo "detail: its launch_head $lap_head is no longer HEAD ($head_now), so its verdict is already fixed at tree_moved and more of this machine spent on it buys nothing." >&2
+      echo "detail: stop it with \`kill -TERM $1\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
+    fi
+    return 0
+  fi
+  if [ "$lap" = gone ]; then
+    if [ "$parent" = gone ]; then
+      echo "detail: that pass's parent has exited, so its output reaches nobody and its lock outlives the lap that took it." >&2
+    elif [ "$group_leader" = gone ]; then
+      echo "detail: that pass's process group leader has exited -- the lap launched it detached, so its own parent is a subshell that is still alive while the lap is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
+    else
+      echo "detail: that pass's process group leader is running and has itself been adopted by init -- the lap launched it into its own session, so parent and leader both read alive while the lap that started the family is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
+    fi
+    echo "detail: stop it with \`kill -TERM $owner\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
+  fi
+}
+
+
 for a in "$@"; do
   if [ "$a" = --detach ]; then detach=yes; fi
 done
@@ -282,9 +475,12 @@ if [ "$detach" = yes ]; then
       ''|*[!0-9]*) : ;;
       *)
         if kill -0 "$detach_owner" 2>/dev/null; then
+          owner_lap_read "$detach_owner" "$lock"
+          echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader leader_parent=$leader_parent lap=$lap"
           echo "run_verdict=run_in_flight"
           owner_transcript "$lock"
           echo "refused: another roster pass holds $lock (pid $detach_owner) -- its transcript is untouched; read that rather than opening a second." >&2
+          owner_lap_detail "$detach_owner" "$lock"
           exit 1
         fi
         ;;
@@ -410,135 +606,12 @@ if [ -d "$(dirname "$lock")" ]; then
   else
     owner=$(cat "$lock/pid" 2>/dev/null || true)
     [ -n "$owner" ] || owner=unknown
-    # WHOSE LAP IS THAT PASS STILL RUNNING FOR? The refusal above tells a hand to read the holder's
-    # output instead, and that advice quietly assumes somebody is left to read it. Twice in two laps
-    # on 20260831 nobody was: a lap died with its pass still running, the pass reparented to init,
-    # and the NEXT round's opening stash (%321) moved the tree the orphan had digested at its open,
-    # so its verdict was already fixed at `tree_moved` while it went on holding this lock for
-    # another forty minutes. Both mechanisms are right alone. Together they lock the new lap out of
-    # the instrument its own card tells it to open with, and the refusal's advice points at a reader
-    # who has gone.
-    #
-    # SO THE READING IS TAKEN AND REPORTED, AND NOTHING IS REAPED. `lock_acquire` already reaps an
-    # owner that has EXITED; an orphan has not exited, and it is still a live writer appending to
-    # the one run card, so killing it from here would be one pass ending another's -- exactly the
-    # cross-hand act REDS %291 asks a body never to take. This line names the condition and the
-    # repair; a hand acts.
-    #
-    # `ps -o ppid=` rather than /proc, because macOS ships no /proc and this reading is worth
-    # nothing on the one platform it cannot run. WHAT IT MEASURES IS THE PARENT, and the honest
-    # sentence is *the process that started it has exited* rather than *it is abandoned*: a pass
-    # launched deliberately by init would read the same, and a host running a subreaper reparents
-    # an orphan to the reaper rather than to 1, which reads `alive`. The reading therefore
-    # UNDER-reports -- it never accuses a live lap of being gone, and that is the direction to be
-    # wrong in.
-    # AND THE PARENT READING MISSES THE SHAPE THIS FLEET ACTUALLY MAKES, which is why a second
-    # reading stands beside it. A lap that launches its hot pass detached -- `( sh runner --hot
-    # > out 2>&1; echo EXIT=$? >> out ) &` -- forks a subshell to carry that compound command, and
-    # the runner's parent is that subshell rather than the lap. When the lap ends, the SUBSHELL is
-    # what reparents to init; the runner's own ppid still names it and it is still alive, so the
-    # reading above answers `alive` for a lap that has gone. The orphaning happened one generation
-    # further up than the check can see. No subreaper is needed for this -- the lap's own `&` is
-    # enough -- and it is how this pass came to hold the lock at `20260906.231137` while the seat
-    # that opened next was refused with no repair named at all.
-    #
-    # SO THE SECOND READING ASKS FOR THE LAUNCHER RATHER THAN THE PARENT: does the process group
-    # leader still exist? A process group is the lap's whole spawned family, and its leader is
-    # whoever started that family -- measured on this pier, `sh tools/f/fleet-loop.sh <seat>` for a
-    # live pass, and a pid that no longer exists for the orphan above. `&` in a non-interactive
-    # shell starts no new group, so a detached pass keeps its lap's group and the leader's absence
-    # is the lap's absence.
-    #
-    # NEITHER READING CONTAINS THE OTHER, so both are taken and either one answers. A direct
-    # orphan -- parent exits, child adopted by init -- keeps a live group leader and is caught by
-    # the parent reading alone. A detached pass keeps a live parent and is caught by the group
-    # reading alone. Reporting both keeps each visible where it fires, and `lap` is the one word
-    # the advice below turns on.
-    #
-    # AND A GROUP LEADER CAN BE ALIVE AND ORPHANED AT ONCE, which is the shape neither reading
-    # above reaches. A lap that launches its pass through the harness's own detached form --
-    # `sh -c '... runner --hot --scoped > /tmp/hot.txt ...'` started in the background -- gets a
-    # NEW SESSION for that command, so the `sh -c` becomes the leader of its own group rather than
-    # sharing the lap's. While the lap runs, that leader's parent is the lap's shell; when the lap
-    # ends, the LEADER is what reparents to init and goes on running. The owner's parent is then
-    # the leader (alive, not 1) and the leader itself exists, so `parent=alive`, `group_leader=alive`,
-    # `lap=alive` -- for a lap that has been gone for minutes. Measured on this tree
-    # `20260907.065148`: owner 3457737, parent and group leader both 3457725, whose own ppid was 1.
-    #
-    # SO THE THIRD READING ASKS THE LEADER THE FIRST QUESTION: has the process that started the
-    # family exited? The leader is the root of the pass's own family by construction, so a leader
-    # adopted by init means nobody is waiting on this pass and its output reaches nobody -- the
-    # same sentence the two readings above already turn on, asked one generation further up. It is
-    # one extra `ps`, never a walk: the ancestry above the leader belongs to the lap, not the pass.
-    #
-    # WHY THIS CANNOT CALL A LIVE PASS GONE, measured rather than assumed. A pass launched in the
-    # foreground from a lap's own shell has that shell as its group leader -- the shell takes its
-    # own group -- and the shell's parent is the agent process, alive. Only a detached pass makes
-    # the `sh -c` the leader, and only a dead lap makes that leader's parent init. Both halves have
-    # to hold before this reading fires.
-    #
-    # THE DIRECTION OF ERROR IS UNCHANGED. All three readings only ever ADD a reason to say `gone`,
-    # each sound on its own, and each fails silent when `ps` cannot answer. Being wrong here still
-    # costs one advisory sentence: nothing is reaped, an orphan is a live writer, and one pass
-    # ending another's is the cross-hand act REDS %291 asks a body never to take.
-    parent=unknown
-    group_leader=unknown
-    leader_parent=unknown
-    case "$owner" in
-      ''|*[!0-9]*) : ;;
-      *)
-        owner_parent=$(ps -o ppid= -p "$owner" 2>/dev/null | tr -d ' ')
-        case "$owner_parent" in
-          '') : ;;
-          1) parent=gone ;;
-          *) parent=alive ;;
-        esac
-        # `ps -o pgid=` rather than /proc, for the same reason the parent reading gives, and `ps`
-        # rather than `kill -0` to test the leader: `kill -0` on another user's process answers
-        # EPERM rather than ESRCH and would read a stranger's live leader as gone.
-        owner_group=$(ps -o pgid= -p "$owner" 2>/dev/null | tr -d ' ')
-        case "$owner_group" in
-          ''|*[!0-9]*) : ;;
-          *)
-            if [ -n "$(ps -o pid= -p "$owner_group" 2>/dev/null | tr -d ' ')" ]; then
-              group_leader=alive
-              # The third reading, and it only means anything while the leader is alive -- a leader
-              # that has gone is already answered above.
-              leader_ppid=$(ps -o ppid= -p "$owner_group" 2>/dev/null | tr -d ' ')
-              case "$leader_ppid" in
-                '') : ;;
-                1) leader_parent=gone ;;
-                *) leader_parent=alive ;;
-              esac
-            else
-              group_leader=gone
-            fi
-            ;;
-        esac
-        ;;
-    esac
-    # One word for the advice to turn on, so a third reading joins here rather than at every site.
-    if [ "$parent" = gone ] || [ "$group_leader" = gone ] || [ "$leader_parent" = gone ]; then
-      lap=gone
-    elif [ "$parent" = alive ] || [ "$group_leader" = alive ]; then
-      lap=alive
-    else
-      lap=unknown
-    fi
+    owner_lap_read "$owner" "$lock"
     echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader leader_parent=$leader_parent lap=$lap"
     echo "run_verdict=run_in_flight"
     owner_transcript "$lock"
     echo "refused: another roster pass holds $lock (pid $owner) -- read its output rather than opening a second." >&2
-    if [ "$lap" = gone ]; then
-      if [ "$parent" = gone ]; then
-        echo "detail: that pass's parent has exited, so its output reaches nobody and its lock outlives the lap that took it." >&2
-      elif [ "$group_leader" = gone ]; then
-        echo "detail: that pass's process group leader has exited -- the lap launched it detached, so its own parent is a subshell that is still alive while the lap is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
-      else
-        echo "detail: that pass's process group leader is running and has itself been adopted by init -- the lap launched it into its own session, so parent and leader both read alive while the lap that started the family is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
-      fi
-      echo "detail: stop it with \`kill -TERM $owner\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
-    fi
+    owner_lap_detail "$owner" "$lock"
     exit 1
   fi
 else

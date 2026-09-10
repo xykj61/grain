@@ -2066,6 +2066,120 @@ out=$(run_locked no/such/room/lock.d room-card.kyri)
 case "$out" in *"run_lock=skipped_no_room"*) echo "no_lock_room_says_so=yes" ;; *) echo "no_lock_room_says_so=no" ;; esac
 case "$out" in *"guards_run=1"*) echo "no_lock_room_still_runs=yes" ;; *) echo "no_lock_room_still_runs=no" ;; esac
 
+
+# --- a DETACHED pass is named rather than accused (`20260909.234718`) --------------------------
+# THE FAULT THESE CLOSE, and it is the fourth firing of the family above. `--detach` runs
+# `nohup sh "$0" "$@" &` from a parent that exits at once, so EVERY detached pass is reparented to
+# init within milliseconds of launch -- by construction, with its lap alive and waiting on the
+# transcript. All three ancestry readings then answer `gone`, and the advice that word carries is
+# `kill`. Measured on this pier that stamp: a two-minute-old pass the measuring lap had itself
+# launched read `lap=gone`, and 7 of 17 passes across eight trees read the same. `%548` closed by
+# stating the reading `cannot call a live pass gone`; that was true when written and false one day
+# later, when the flag was seated.
+#
+# THE PLANT IS THE ONE `--detach` ACTUALLY MAKES: a live process reparented to init, whose lock
+# ALSO carries a `transcript` file -- written by the detach parent and by nobody else, so its
+# presence is the launch form. An orphan without one is the elder shape and keeps every elder
+# reading, which the legs above already hold. Verified before it is trusted, exactly as the orphan
+# plant above is, because a host running a subreaper reparents elsewhere and the plant would not
+# take.
+#
+# THE HEAD THE PEN READS IS `nogit`, since `pen` is a `mktemp -d` with no repository in it. That is
+# precisely what the runner reads there, so comparing against it exercises the same equality a real
+# hash would; the moved leg plants a literal that can never equal it.
+pen_head=$( ( cd "$lockpen" && git rev-parse --short=10 HEAD 2>/dev/null ) || echo nogit )
+[ -n "$pen_head" ] || pen_head=nogit
+sh -c 'sleep 45 & printf "%s\n" "$!" > "$0"' "$lockpen/detached.pid"
+detpid=$(cat "$lockpen/detached.pid" 2>/dev/null || true)
+detppid=$(ps -o ppid= -p "$detpid" 2>/dev/null | tr -d ' ')
+plant_detached() {
+  rm -rf "$lockpen/detached.lock.d"
+  mkdir -p "$lockpen/detached.lock.d"
+  printf '%s\n' "$detpid" > "$lockpen/detached.lock.d/pid"
+  printf '%s' "$1" > "$lockpen/detached-run.txt"
+  echo "detached-run.txt" > "$lockpen/detached.lock.d/transcript"
+}
+if [ "$detppid" = 1 ]; then
+  echo "detached_plant=ok"
+
+  # 1 -- a live detached pass whose launch_head still names this tree: named, and left alone.
+  plant_detached "launch_head $pen_head
+"
+  det_out=$(run_locked detached.lock.d detached-card.kyri 2>&1)
+  # THE DETAIL GOES TO STDERR, which `run_locked` sends to /dev/null -- the same split the orphan
+  # legs above already read, captured the same way, since the sentences are the whole repair.
+  det_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=detached-err.kyri \
+      STANDING_LOCK=detached.lock.d sh "$runner" ) 2>&1 >/dev/null || true )
+  case "$det_out" in *"lap=detached"*) echo "detached_reads_detached=yes" ;; *) echo "detached_reads_detached=no" ;; esac
+  case "$det_out" in *"lap=gone"*) echo "detached_accused_of_gone=yes" ;; *) echo "detached_accused_of_gone=no" ;; esac
+  case "$det_err" in *"kill -TERM"*) echo "live_detached_told_to_kill=yes" ;; *) echo "live_detached_told_to_kill=no" ;; esac
+  case "$det_err" in *"is still HEAD"*) echo "detached_names_live_head=yes" ;; *) echo "detached_names_live_head=no" ;; esac
+  case "$det_out" in *"run_verdict=run_in_flight"*) echo "detached_still_refuses=yes" ;; *) echo "detached_still_refuses=no" ;; esac
+  # THE ELDER READINGS MUST STILL FIRE UNDERNEATH, or a widened check could not be told from one
+  # that had simply stopped reading the process table at all.
+  case "$det_out" in *"parent=gone"*) echo "detached_parent_still_reads_gone=yes" ;; *) echo "detached_parent_still_reads_gone=no" ;; esac
+
+  # 2 -- a detached pass whose launch_head has moved: its verdict is already void, so the repair IS named.
+  plant_detached "launch_head deadbeef00
+"
+  moved_out=$(run_locked detached.lock.d detached-moved.kyri 2>&1)
+  moved_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=detached-moved-err.kyri \
+      STANDING_LOCK=detached.lock.d sh "$runner" ) 2>&1 >/dev/null || true )
+  case "$moved_err" in *"no longer HEAD"*) echo "detached_moved_named=yes" ;; *) echo "detached_moved_named=no" ;; esac
+  case "$moved_err" in *"kill -TERM"*) echo "detached_moved_names_repair=yes" ;; *) echo "detached_moved_names_repair=no" ;; esac
+  case "$moved_out" in *"lap=detached"*) echo "detached_moved_still_detached=yes" ;; *) echo "detached_moved_still_detached=no" ;; esac
+
+  # 3 -- a transcript naming no launch_head answers neither way rather than guessing.
+  plant_detached "launch_args --scoped
+"
+  bare_out=$(run_locked detached.lock.d detached-bare.kyri 2>&1)
+  bare_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=detached-bare-err.kyri \
+      STANDING_LOCK=detached.lock.d sh "$runner" ) 2>&1 >/dev/null || true )
+  case "$bare_err" in *"names no launch_head"*) echo "detached_bare_says_so=yes" ;; *) echo "detached_bare_says_so=no" ;; esac
+  case "$bare_err" in *"kill -TERM"*) echo "detached_bare_told_to_kill=yes" ;; *) echo "detached_bare_told_to_kill=no" ;; esac
+
+  # 4 -- THE FAULT PROVEN TO BITE, from the failing side, on the SAME plant. Legs answering the way
+  # this repair wants cannot be told from legs on a runner that never carried it. Disabling the
+  # DETECTION rather than the `lap=detached` line is deliberate: deleting the assignment would leave
+  # `if ... then` standing on `elif` and the copy would refuse to parse, which is a broken script
+  # rather than the elder behavior.
+  sed 's|if \[ -s "$2/transcript" \]; then detached=yes; fi|detached=no|' "$runner" > "$pen/run-accuse.sh"
+  cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh" 2>/dev/null || true
+  cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh" 2>/dev/null || true
+  if cmp -s "$runner" "$pen/run-accuse.sh"; then echo "accuse_runner_built=no"; else echo "accuse_runner_built=yes"; fi
+  plant_detached "launch_head $pen_head
+"
+  accuse_out=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=accuse-card.kyri \
+      STANDING_LOCK=detached.lock.d sh "$pen/run-accuse.sh" 2>&1 ) || true )
+  accuse_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=accuse-err.kyri \
+      STANDING_LOCK=detached.lock.d sh "$pen/run-accuse.sh" ) 2>&1 >/dev/null || true )
+  case "$accuse_out" in *"lap=gone"*) echo "elder_accuses_live_detached=yes" ;; *) echo "elder_accuses_live_detached=no" ;; esac
+  case "$accuse_err" in *"kill -TERM"*) echo "elder_tells_lap_to_kill=yes" ;; *) echo "elder_tells_lap_to_kill=no" ;; esac
+
+  # AND NOTHING IS REAPED HERE EITHER (REDS %291) -- naming a pass changes the diagnosis, never the act.
+  if kill -0 "$detpid" 2>/dev/null; then echo "detached_left_running=yes"; else echo "detached_left_running=no"; fi
+  if [ -d "$lockpen/detached.lock.d" ]; then echo "detached_keeps_its_lock=yes"; else echo "detached_keeps_its_lock=no"; fi
+else
+  echo "detached_plant=unavailable"
+fi
+kill "$detpid" 2>/dev/null || true
+
+# 5 -- and the reading reaches the refusal the BATON names, which had carried none of it. One
+# refusal stood in two copies, and only the copy a lap is NOT told to use had ever learned any of
+# this -- so a `--detach` launch refused by a live owner was told to read a transcript, with no word
+# on whether a reader was left. A live pid suffices here: the leg asks whether the reading is taken
+# at all, which is what that site was missing.
+rm -rf "$pen/session-output"; mkdir -p "$pen/session-output"
+printf 'launch_head deadbeef00\n' > "$pen/detach-owner.txt"
+rm -rf "$pen/live.lock.d"; mkdir -p "$pen/live.lock.d"
+echo "$$" > "$pen/live.lock.d/pid"
+echo "detach-owner.txt" > "$pen/live.lock.d/transcript"
+dl_out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$runner" --detach 2>&1 ) || true )
+case "$dl_out" in *"run_lock=in_flight"*) echo "detach_refusal_takes_reading=yes" ;; *) echo "detach_refusal_takes_reading=no" ;; esac
+case "$dl_out" in *"lap=detached"*) echo "detach_refusal_names_detached=yes" ;; *) echo "detach_refusal_names_detached=no" ;; esac
+rm -rf "$pen/live.lock.d"
+
 # --- the custody gate, proven from both sides (REDS %374, Keaton's word `20260904`) ------------
 #
 # A red at a card-named custody gate is a PARKED reading rather than a broken one, so a full pass

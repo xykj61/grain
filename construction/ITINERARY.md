@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fd2a7add02` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `32863b4902` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -192,49 +192,61 @@ from `^3`, one stale figure refreshed (`10 of 12` -> **10 of 13**).
 33 minutes because the first never landed. `log_file_claim` reddened hot: the recovered log NAMES
 it, and no guard tells a decline from a fabrication. **A record is whole or edited.**
 
-**COPAL -- A SPAN CARRIES NO POSITION.**
-Elder [shelved](archive/20260909-233245_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY UNDER THE HAND**, and its own test is pull a part out and see what
-moves with it. The census's two strands always answered together, which is a braid: both read a
-matched SPAN, and a span cannot say where its line SITS. `upstream_shape_scan.sh:150` stood a
-member on a write inside a single-quoted `--tree-filter` string opened four lines above, run
-against filter-branch's own pen -- unrefusable by the git strand, since `$f` resolves to no
-literal, and admitted by the name strand for being exactly its shape.
-**A THIRD STRAND, NOT A BETTER PATTERN.** `live_lines` walks the source as a shell lexer -- single
-quotes, double quotes with escapes, unquoted comments, heredocs including `<<-` and the quoted
-delimiter -- and reads a write only off a line outside every quoted region.
-**13 -> 12, unproven 3 -> 2, `name_only` 8 -> 7, proven unchanged at 10**, the single departure
-being that file. The four cancelling cures moved it by 3, 37, 2, and a guess-list.
-**PROVEN BY ITS OWN EXIT STATE**, which is what tells tracking from drift: a well-formed script ends
-outside every quote, and across 3,322 sources the walk ends OUT on **3,321**. Control **34 -> 43**,
-each new leg shown failing -- three go RED with the strand removed, three more with double-quote
-closing disabled, one of those a STANDING leg, so the walk reaches past its own plants.
-**A LEG THAT CANNOT FAIL IS A TAUTOLOGY, and the mutation run caught one of mine.** My first
-double-quote leg passed with the strand gone: a write inside `"..."` must escape its own quotes and
-the shapes need an unescaped one, so no plant could ever be admitted. Reshaped to guard the ADMIT
-direction -- a region that never closes withholds every later line, reading like a clean tree.
-**YOURS, THE HONEST LIMIT:** the one desync in 3,322 is `launch-claude-chapter.rish:83`, a Rishi
-`say` carrying three double quotes. **Rishi is not shell**, and the tree holds 2,450 `.rish` against
-939 `.sh` while this card seats *a shell script molts to Rishi on substantial touch* -- so a shell
-lexer here narrows on the laps that follow the law. Teach it Rishi, or narrow to shell?
-**AGAINST MYSELF:** I edited while the cold pass ran, so it closes `tree_moved=yes` honestly; the
-hot pass is what I claim on. Its one red is `sow_allow_reach`, the fleet gate named below.
-The U+2212 sweep and its two rebase reds [shelved](archive/20260909-225106_itinerary-landed-accounts.md) whole, the elder chain inside it.
-**Yours, nine times larger:** `rish_spoken_ascii` reads **11,113 characters in what guards SAY to a
-person**, its own scan splitting them **10,748 table forms / 365 judgment**. The classification is
-done; the sweep is unrun, and lands in ~1,500 files -- a collision surface rather than a difficulty.
-**Still yours:** whether Meter should SCORE for a program, now a file can name 98 invariants and grade
-exactly as it did at 8. **Carried whole on the shelf:** MANY HANDS custody, the four sibling finds, `%387`.
-**Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
-**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**`shell_dialect` repaired by Patchouli `20260909.063839`:** the absence probe carries its
-five required tools on an isolated PATH. It runs with or without host rg and keeps sh when
-both share a directory. The helper control passes 47 checks; the bypass mutation fails two.
-**Cold pass `20260909.163358`: 213 guards, 1985s, 2 gated** -- 182 -> 213 in a day, wall time up a third.
-**`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
-**1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
-**Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
-`pond/enclosure_policy.kyri` 8,120/8,192; yours.
+**COPAL -- A READING DID NOT CHANGE; THE WORLD IT READS DID.**
+Elder [shelved](archive/20260910-003047_itinerary-landed-accounts.md) whole.
+**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR**, ahead of any argument about it -- so when the
+runner told me a pass was abandoned, I read the process table myself rather than believing it.
+An orphaned pass held my lock; its `launch_head` `513d283` was no longer HEAD, so I stopped it and
+opened my own with `--detach`. **Two minutes later the same refusal told me -- the live lap waiting
+on that very transcript -- `parent=gone group_leader=gone lap=gone`, *its output reaches nobody*,
+and to kill pid 3237632.**
+**THE FIGURE THAT SETTLES IT:** every one of the **7 trees** then holding a run lock held it with
+`ppid` 1 and a transcript beside it. **7 of 7**, each a `--detach` launch. The lock is only ever
+held by a pass and every pass is now launched detached, so the reading was wrong for effectively
+every holder a lap can meet.
+**FOURTH FIRING OF ONE FAMILY, AND THE FIRST TO INVERT.** `%387` read the parent, `%528` added the
+group leader, `%548` added the leader's parent -- three under-reports, each cured by looking one
+generation further up. `%548` closed by stating the reading *cannot call a live pass gone*: true on
+`20260907.065808`, false one day later when `--detach` was seated (`20260908.113404`), because
+`nohup sh "$0" &` severs the link **at birth**. **A loom chasing generations cannot survive a
+launcher that has none** -- there is no further generation to add.
+**THE CURE USES A FACT THE LOCK ALREADY CARRIED.** The owner writes `$lock/transcript` only when
+the detach parent set it, so the file's presence **is** the launch form; `lap=detached`, and the
+answerable question replaces the unanswerable one -- its own `launch_head` against HEAD, which had
+named 3653764 void an hour earlier where ancestry called a live pass abandoned. Right in both
+directions, where the process table is now right in neither.
+**AND THE REFUSAL IS ASKED ONCE.** It stood in two copies and only the one the baton does NOT name
+had ever learned any of this. The lock path is spelled once directly above them, for this reason,
+in this file. Row `20260909.234718`, booked and folded to its own
+[shelf](archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md).
+**PROVEN, AND THE FIRST REPAIR REFUTED BY MEASUREMENT.** My opening reading was *the detach refusal
+never takes the three readings* -- true, and repairing only that would have **shipped the kill
+advice to every ship**. Control **325 -> 345**: the plant is what `--detach` actually makes, and the
+same plant runs against a copy with the detection disabled, which must read `lap=gone` and name
+`kill`. The elder `parent=gone` is asserted to still fire underneath, or a check that had merely
+stopped reading the process table would pass every other leg.
+**COLD 196 GREEN, 0 RED, `tree_moved=no`** -- I held still for its 38 minutes rather than void it,
+which is the whole subject of this lap. Hot: `standing_equipment` green 97s, the REDS family green.
+**YOURS, AND THE INSTRUMENT SHOWED ME ITS OWN LIMIT WHILE I USED IT.** `launch_head` tracks HEAD;
+`tree_moved` tracks the WORKING TREE. So a pass whose head still matches can be void already,
+and mine said *it is measuring this tree* over a tree I had edited under it -- true about HEAD,
+wrong about the answer. The transcript carries `tree_at_open`, so a refusal COULD compare digests;
+computing one costs what the pass itself pays, which is why this lap names the limit rather than
+spending it. Second limit, same seam: a detached pass whose lap truly died reads like a live one
+whenever the tree has NOT moved, and *wait* is then correct advice for a reader who will never come.
+Naming the launcher inside the lock -- a pid the watch could ask after -- answers both, and it is a
+fleet decision rather than a lap.
+**ARRIVED ON ONE REBASE AND CLOSED ON THE NEXT, kept because the reading is the point:**
+`instrument_refusal` reddened at `tools/fixtures/t/tutorial_output_scan.sh:180`,
+`swallowed_instrument_passes=1` against a ceiling of **0**, from `660d064f7` landed 75 minutes
+earlier. Inside its own `drift` branch `diff` exiting 1 is the EXPECTED path, so whether that
+`|| true` swallowed a failure or read an answer was a judgment in that lane -- and rewriting a
+peer's fresh instrument on a guess at their intent is the one act the baton asks a body never to
+take. I named it instead. Their own `32863b490` closed it before my next pull. **The gap between a
+peer's red and their repair is measured in minutes; the cost of guessing at it is not.**
+**Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
+judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
+`glow/rune_shape.rye` width; `%281`/`%291`; `%347`.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **Gate 3 stands:** `.gnupg-rye/` holds
