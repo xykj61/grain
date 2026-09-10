@@ -80,7 +80,13 @@ mode="${1:-count}"
 #                            the ferry repair. The vessel HEAD's own em dash stays: those bytes are
 #                            a data format rather than a spoken line, and moving them would move
 #                            every poured vessel.
-CEILING=3869
+#   3866  `20260910.123000`  brix/infuse.rye swept to zero -- three em dashes in its three `print`
+#                            claim lines, converted by the converter beside this file and proven by
+#                            re-deriving the file from its committed bytes. Measured against 3895,
+#                            this lap's fall was to 3892 and took no slack, because the reading stood
+#                            EXACTLY at the ceiling. It landed beside the amphora sweep above, so the
+#                            two falls compose rather than contend: 26 characters and 3, one ceiling.
+CEILING=3866
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340). The Rye comment meter paid

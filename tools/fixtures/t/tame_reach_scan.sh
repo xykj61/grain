@@ -200,7 +200,10 @@ unwatched_ban_rooms=$(awk -F/ '{print $1}' "$WORK/ban_files" 2>/dev/null | sort 
 # within a row's length of its bound. The second firing, `tools/rye/wrap_ring.rye` on
 # `20260910.061931`, is what took it: the ceiling and its variable are retired here, replaced by
 # the room pair above.
-DEBT_ROOM_CEILING=${TAME_REACH_DEBT_ROOM_CEILING:-25}
+# THE DEBT-ROOM CEILING ONLY FALLS, and it fell once: 25 -> 24 on `20260910.123000`, when `brix`
+# joined the style roster and left the debt list. A room leaves by its Rye coming under the law,
+# which is the one lawful exit, so the ceiling follows it down in the same commit.
+DEBT_ROOM_CEILING=${TAME_REACH_DEBT_ROOM_CEILING:-24}
 BAN_CEILING=${TAME_REACH_BAN_CEILING:-736}
 
 verdict=ok

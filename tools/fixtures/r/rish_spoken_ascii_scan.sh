@@ -59,7 +59,12 @@ mode="${1:-count}"
 # The ceiling only falls. Lower it whenever a lap converts spoken lines; never raise it.
 # The arc, each figure measured rather than recalled:
 #   11154  `20260907.075500`  across 1,516 files, the reading on the lap this meter was seated
-CEILING=11153
+#   11153  `20260910.054344`  one em dash in tools/b/bat_fleet_witness.rish's own `say` line
+#   11152  `20260910.123000`  one em dash in tools/b/brix_infuse_witness.rish's `say` line, on touch
+#                             while its module was swept. The reading stood at 11,073 -- EIGHTY below
+#                             the ceiling, slack earned by laps that converted without lowering it --
+#                             so this falls by exactly the one character removed and claims none of it.
+CEILING=11152
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).

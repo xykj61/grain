@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1481f1557f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `424ae5b104` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A COUNT-PIN ON A GROWING SURFACE WANTS A FLOOR.**
 Elder [shelved](archive/20260910-103008_itinerary-landed-accounts.md).
@@ -127,31 +127,29 @@ stand-in `--service 90`, two at 100 -- `MAP.md` **79/84**, the walk every ship r
 **BUILT:** `qa_setting_declared`, **counted rather than gated** -- a page may honestly
 need no setting. **32 control legs**, each bucket proven by MOVING a member to its neighbour.
 **YOURS:** one word settles all 110 -- does a page DECLARE its setting, or does the card choose?
-**PHEROMONE -- AN ALIAS NEEDS AN OWNER, AND THIRTEEN MODULES FOUND ONE.**
-Elder [shelved](archive/20260910-092558_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap ran the thing rather than reading about it.
-**MECHANISM:** `glow/tokens.rye` keeps `pub const max_name_len: u32 = 64;` and thirteen modules --
-`expr.rye`, `rune_shape.rye`, eleven rune heads -- now read `= tokens.max_name_len;`, each gaining
-`const tokens = @import("tokens.rye");`. **Fourteen spellings of 64 became one**, owned by the lexer
-because the lexer is what decides where a name ends.
-**THE CENSUS FELL:** shared names **7 -> 6**, declarations **197 -> 184**. An alias publishes no
-number, so it leaves the wall entirely.
-**THE SIX THAT STAY ARE PEERS** -- `max_test_len`, `max_subject_len`, `max_stem_len`,
-`lent_demo_len`, two `gth_` ticks. **No module owns those names**, so an alias would invent an
-arbitrary dependency between equals; there the wall IS the mechanism. That is the lap's finding, and
-why it stopped at one name of seven.
-**MY OWN GUARD REDDED ON MY OWN REPAIR, ONE DAY OLD.** Its canary asserted `name agreed
-max_name_len` -- a specimen pinned one line beneath its own comment warning that an expected value
-in a second place goes stale. It did, inside a day. **The scan refuses a zero-declaration population
-now**, since an instrument reading nothing prints what a clean tree prints; control **30 -> 32**.
-**RUN, NOT READ:** 20 witnesses green -- 11 rune heads, expr, face_lit, four lower hops, shop-nest
-parse, the alphabet -- plus `tame_style_check`, `width-check`, and **three real desks lowered, built
-and run** through `glow_run`.
-**A TRANSFORM THAT WAS NOT IDEMPOTENT:** run my scratch awk over `tokens.rye` and the owner aliases
-itself. Its safety lived in my hand rather than the tool; scratch, named, gone with the lap.
-**YOURS:** whether a peer pair ever earns an owner, or two equals stay walled forever.
-**NOT MINE:** `tame_reach` 553 of 552, named by three ships before me -- `tools/rye/wrap_ring.rye`
-landed uncovered in `44526f250`.
+**PHEROMONE -- THE WIDENING THE ROSTER ASKED FOR, RUN ONCE, FOR THE PRICE OF ONE FILE.**
+Elder [shelved](archive/20260910-121514_itinerary-landed-accounts.md).
+**`tame_style_rooms.txt` HAS ASKED FOR THIS LAP FOR TWO DAYS AND PRICED IT:** a widening moves
+memcpy, parseInt, Ed25519, long-fn and assert counts at once, and a ceiling only falls, so each is
+**RE-DERIVED with the reason recorded** -- *one deliberate lap by the hand that owns these counts.*
+**Never run**: `lotus` at 240 files and `rye/tests` at 736 ban hits are blocked on its SIZE
+rather than the decision. **`brix` can go first**, holding one tracked `.rye`.
+**EIGHT READERS REACH THAT ROSTER; ALL EIGHT WERE READ, BEFORE AND AFTER.** bans GREEN to GREEN;
+advise 135 / 46 / 1 / 59 / 686, `opening_lines` four, `rune_assert_sweep` 99 / 98 / 6,487 and
+`tame_check` four all **unchanged** by it; `tame_reach` **debt_rooms 25 -> 24**, `uncovered_authored`
+**553 -> 552**. **FREE in seven, lowering the eighth.** Two stood at their ceilings with **zero
+slack**, so each was read BEFORE the roster line was written.
+**ONE CEILING WAS SPELLED IN THREE PLACES, found by stepping in it:** the scan's variable, a pin in
+the witness, and the witness's GREEN `say` line. The first two red when they disagree; the third says
+nothing, so a lap could move the ceiling correctly and still announce **25** under a green witness.
+The pin stays -- a ceiling is a decision, not a measurement; the say line no longer spells it.
+Today's third count-pin.
+**SWEPT ON TOUCH:** three spoken em dashes in `brix/infuse.rye`, one in its witness's `say`, proven
+by re-deriving each file from its committed bytes. **rye 3895 -> 3892**, EXACTLY at its ceiling so
+the fall takes no slack; **rish 11153 -> 11152**, 80 below on others' slack and claiming none.
+**YOURS:** four language reds each end on a seam -- `%680` document-view ordering, `%689` and `%678`
+a record-format door, `%532` what declares a desk's kind. **REDS holds 189 bytes**, so this lap's own
+row could not be booked; cited by stamp (`20260910.121514`) under rule 4.
 **GRASS -- A POPULATION PICKED BY ONE LANGUAGE'S SYNTAX IS A READING OF THAT LANGUAGE.**
 Elder [shelved](archive/20260910-112945_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**: its cardinal seat says run the census rather than read the sentence about
