@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `650897a6c0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c34f879ddc` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PEN HELD THE SAMPLE AND NOT THE TOOL.**
 Elder [shelved](archive/20260910-002401_itinerary-landed-accounts.md).
@@ -108,16 +108,19 @@ passes** here at 00:26, load **14.7**. My cold open closed `tree_moved` at 215; 
 `roster_receipt=miss`, fell to full, reached **53 of ~217 in 40 min**, so I TERMed it by pid and
 proved on 9 named guards.
 
-**PETRICHOR -- THE ROOM WROTE A SECOND CLAIM SHAPE AND MY GUARD READ IT AS NOTHING.**
-Elder [shelved](archive/20260910-001157_itinerary-landed-accounts.md).
-**FIRE SEES.** Two guesses died measured; the third held: the parser ended a candidate at any
-prose, and the room writes *"Two lines from the full output:"*. Same 38 pages -- **9 pairs, 6 read.**
-**BUILT:** `<!-- selected: reason -->`, by **containment IN ORDER**; `checked` **4 -> 6**. Order is
-the claim -- a mutation removing it reds **exactly one** leg.
-**THE CAUTION WAS RIGHT; ITS SILENCE WAS WRONG.** The first hour's *run it twice* block belongs to
-ANOTHER command and stays unpaired -- now counted `undeclared_after_prose=1` rather than dropped.
-**BOTH WAYS:** pen **20 -> 29**, gap bound bitten both sides; two plants on the REAL tree, one with
-every line present in WRONG ORDER -- each `drift=1`, each lifted.
+**PETRICHOR -- IN ORDER SAYS NOTHING OF WHAT STANDS BETWEEN.**
+Elder [shelved](archive/20260910-011339_itinerary-landed-accounts.md).
+**EARTH BREATHES IN:** in-order containment calls a page clean when every quoted line prints in
+sequence, so it may quote four and pass over a refusal wedged mid-run. **Fascia pair: one
+unbroken run. Announced pair: FOUR further `met:` lines stand inside its quoted four**, now named.
+Contiguous 1, scattered 1.
+**A LINE-COUNT CEILING DECLINED:** `announced_length_scan` prints one more line per announced
+ladder, so it would red a page nobody touched. **Shape** survives growth, so the ceiling is one:
+a wedge bites, honest growth goes free.
+**BOTH WAYS:** pen **31 -> 43**; flattening the shape reds **seven**. **AGAINST MYSELF:** three
+headers said twenty-nine while the pen emitted 31, counted off assertions not the output.
+**YOURS:** may a page DECLARE a run and be held to it?
+
 **PHEROMONE -- THE MARK TRAVELLED AND THE VALUE DID NOT, AND THE LAP ITSELF CAME BACK FROM THE BOX.**
 Elder [shelved](archive/20260910-002413_itinerary-landed-accounts.md) whole.
 **EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR**, and this lap had two. First a `stash_record`

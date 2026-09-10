@@ -27,6 +27,24 @@
 # that produced it teaches the output's shape wrongly even when both lines are present, and the pen
 # proves that strand alone -- remove it and exactly one leg reds.
 #
+# CONTAINMENT IN ORDER SAYS NOTHING ABOUT WHAT STANDS BETWEEN. A page may quote four lines that all
+# print, in the order it prints them, and pass over a refusal standing in the middle of the run --
+# and every reading above would call that clean. So each selection is read a second time for its
+# SHAPE: one unbroken run of the real output, or a gathering of lines that stand apart. The test
+# tries every start position in what ran, so the answer is outright and no alignment has to be
+# chosen between. `selected_contiguous` and `selected_scattered` carry the two counts, and the
+# lines standing inside a gathering are named, six of them, so a reader can weigh what the page
+# passes over.
+#
+# `selected_scattered` is a ceiling rather than a zero, because gathering is what a selection is
+# FOR -- the demos room's announced-length pair quotes one `met:` line and the three summary lines
+# beneath four further `met:` lines, and that is an honest thing for a page to do. It falls on
+# repair and rises only when a hand adds a new declared selection, an edit standing in the same
+# commit as the page. What it refuses in silence is the case the ceiling exists for: a selection
+# reading as one run today with a line inserted into the middle of it tomorrow. A count of the
+# skipped LINES would have been the wrong instrument, since `announced_length_scan` prints one more
+# line for every ladder anybody announces, so that ceiling would red on a page nobody touched.
+#
 # PROSE WITH NOTHING DECLARING IT is counted as `undeclared_after_prose` and named, never checked
 # and never gated, because the sentence between the blocks is load-bearing and says which of three
 # different things the second block is: a subset of this output, the output of ANOTHER invocation,
@@ -90,6 +108,17 @@ HELD_CEILING=${TUTORIAL_OUTPUT_HELD_CEILING:-2}
 # of prose: past that a reader has stopped holding the command in their eye, so a block that far
 # down is making its own claim rather than answering the one above.
 MAX_GAP_LINES=${TUTORIAL_OUTPUT_MAX_GAP_LINES:-12}
+
+# How many declared selections may be gathered from lines that stand apart rather than quoted as
+# one unbroken run. One at seating 20260910: the announced-length pair in the demos room quotes a
+# single `met:` line and then the three summary lines, with four further `met:` lines between them.
+# The fascia pair beside it quotes two adjacent lines and reads contiguous.
+#
+# It falls on repair -- a page that quotes a whole run instead of a gathering lowers it -- and it
+# rises only when a hand adds a new declared selection, which is an edit standing in the same
+# commit as the page. What it refuses in silence is the case worth refusing: a selection that reads
+# as one run today and has a line inserted into the middle of it tomorrow.
+SCATTERED_CEILING=${TUTORIAL_OUTPUT_SCATTERED_CEILING:-1}
 
 work=$(mktemp -d) || exit 1
 trap 'rm -rf "$work"' EXIT
@@ -157,6 +186,7 @@ echo "pairs=$pairs"
 
 # ---- classify and run --------------------------------------------------------------------------
 checked=0; exact=0; drift=0; volatile=0; held=0; selected=0; undeclared=0
+contiguous=0; scattered=0
 : > "$work/lines.txt"
 
 i=0
@@ -230,7 +260,56 @@ while [ "$i" -lt "$pairs" ]; do
       END { exit(k == w ? 0 : 1) }
     ' "$work/pair.$i.out" "$work/pair.$i.got"; then
       exact=$((exact + 1))
-      printf '%s:%s\texact\tselected: %s\n' "$page" "$line" "$sel" >> "$work/lines.txt"
+
+      # SHAPE. Containment in order says every quoted line printed; it says nothing about what
+      # stands BETWEEN them. A page may quote four lines that all print, in the order it prints
+      # them, and pass over a refusal standing in the middle of the run. So each selection is read
+      # a second time for its shape: is the quoted block one unbroken run of the real output, or
+      # is it gathered from lines that stand apart? The test tries every start position in what
+      # ran, which answers the question outright and leaves no alignment to choose between.
+      if awk '
+        NR == FNR { want[++w] = $0; next }
+        { got[++g] = $0 }
+        END {
+          for (s = 1; s + w - 1 <= g; s++) {
+            hit = 1
+            for (j = 1; j <= w; j++) if (got[s + j - 1] != want[j]) { hit = 0; break }
+            if (hit) exit 0
+          }
+          exit 1
+        }
+      ' "$work/pair.$i.out" "$work/pair.$i.got"; then
+        contiguous=$((contiguous + 1))
+        printf '%s:%s\texact\tselected (one unbroken run): %s\n' "$page" "$line" "$sel" \
+          >> "$work/lines.txt"
+      else
+        scattered=$((scattered + 1))
+        printf '%s:%s\texact\tselected (gathered from lines that stand apart): %s\n' \
+          "$page" "$line" "$sel" >> "$work/lines.txt"
+        # What stands between them, named so a reader can weigh it. The positions come from the
+        # first alignment reading left to right, which is one alignment among the several a
+        # repeated line could allow -- so this block informs and the shape reading above gates.
+        # Six is enough to show a reader what kind of line they are passing over.
+        awk '
+          NR == FNR { want[++w] = $0; next }
+          { got[++g] = $0 }
+          END {
+            k = 0
+            for (i = 1; i <= g && k < w; i++) if (got[i] == want[k + 1]) pos[++k] = i
+            if (k < w) exit 0
+            n = 0
+            for (i = pos[1]; i <= pos[w]; i++) {
+              q = 0
+              for (j = 1; j <= w; j++) if (pos[j] == i) { q = 1; break }
+              if (q) continue
+              n++
+              if (n <= 6) print "-- stands between the quoted lines: " got[i]
+            }
+            if (n > 6) print "-- and " (n - 6) " further line(s) between them"
+          }
+        ' "$work/pair.$i.out" "$work/pair.$i.got" > "$work/shape.txt"
+        sed "s|^|shape: $page:$line |" "$work/shape.txt" >> "$work/shapes.txt"
+      fi
     else
       drift=$((drift + 1))
       printf '%s:%s\tdrift\t%s\n' "$page" "$line" \
@@ -283,6 +362,9 @@ fi
 echo "checked=$checked"
 echo "exact=$exact"
 echo "selected=$selected"
+echo "selected_contiguous=$contiguous"
+echo "selected_scattered=$scattered"
+echo "scattered_ceiling=$SCATTERED_CEILING"
 echo "volatile=$volatile"
 echo "drift=$drift"
 echo "held=$held"
@@ -306,6 +388,14 @@ if [ "$held" -gt "$HELD_CEILING" ]; then
   echo "verdict=held_above_ceiling"
   exit 5
 fi
+
+if [ "$scattered" -gt "$SCATTERED_CEILING" ]; then
+  [ -f "$work/shapes.txt" ] && cat "$work/shapes.txt"
+  echo "verdict=a_selection_broke_its_run"
+  exit 6
+fi
+
+[ -f "$work/shapes.txt" ] && cat "$work/shapes.txt"
 
 echo "verdict=every_quoted_block_still_prints"
 exit 0
