@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260910.033718` | [The stash stack that held one loss](20260910/20260910-033718_the-stash-stack-that-held-one-loss.kyri) | 17 parked laps, one real loss |
+| `20260910.032752` | [The wall around the law](20260910/20260910-032752_the-wall-around-the-law.kyri) | docs/ swept to zero and walled; three typed roster skips became one enumeration |
 | `20260910.031953` | [The row that expanded before it matched](20260910/20260910-031953_the-row-that-expanded-before-it-matched.kyri) | globs expanded before matching |
 | `20260910.025124` | [The second run](20260910/20260910-025124_the-second-run-that-changed-the-store.kyri) | `mantra add` on an unedited file wrote a commit anyway |
 | `20260910.024707` | [A stash cannot carry a pin](20260910/20260910-024707_a-stash-cannot-carry-a-pin.kyri) | Pheromone; a stash restore reverted a peer |

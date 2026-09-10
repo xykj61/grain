@@ -75,11 +75,22 @@ mode="${1:-census}"
 #                            reading fell 3324 -> 3225; the ceiling keeps the 7 of slack it already
 #                            stood on and takes none of the 99, so this lap is credited with
 #                            nothing it did not repair.
-CEILING="${ASCII_DOC_CEILING:-3232}"
+#   2780  `20260910.043000`  the compressor shelf joined the wall below -- 452 characters across 12
+#                            of its 15 pages, 450 of them forms the rule's own table spells and 2
+#                            read by hand. The reading fell 3225 -> 2773; the ceiling keeps the same
+#                            7 of slack and takes none of the 452.
+CEILING="${ASCII_DOC_CEILING:-2780}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.
-ENFORCE_GLOBS="${ASCII_DOC_ENFORCE_GLOBS:-.claude/rules/*.md .cursor/rules/*.mdc}"
+#
+# THE WALL AND THE SEED ARE TWO ROSTERS, and they were one until `20260910.043000`. The wall names
+# who is HELD at zero. The seed names whose citations are CANON, which is a claim about law: a rule
+# room tells a reader which page to read first, and that page is held to the rule. A teaching room's
+# links are links. So `docs/` -- the compressor shelf a newcomer is sent to by `MAP.md` -- joins the
+# wall on its own account and seeds nothing, and the derived roster keeps meaning what it said.
+ENFORCE_GLOBS="${ASCII_DOC_ENFORCE_GLOBS:-.claude/rules/*.md .cursor/rules/*.mdc docs/*.md}"
+DERIVE_GLOBS="${ASCII_DOC_DERIVE_GLOBS:-.claude/rules/*.md .cursor/rules/*.mdc}"
 
 # A GUARD THAT CANNOT RUN ITS INSTRUMENT MUST SAY SO. An empty answer from a failed `git ls-files`
 # is byte-identical to an empty answer from a clean tree, and the second is what everyone hopes to
@@ -110,6 +121,70 @@ if [ ! -s "$LISTFILE" ]; then
   echo "verdict=misread"
   exit 1
 fi
+
+# --- THE WALLED SET, enumerated ONCE ------------------------------------------------------------
+#
+# THREE READERS ASK WHETHER A PAGE IS WALLED, and until `20260910.043000` each answered by TYPING
+# the roster again: the enforce loop expanded the globs, the derived roster skipped
+# `.claude/rules/*|.cursor/rules/*`, and the ratchet skipped `.claude/rules/*.md|.cursor/rules/*.mdc`.
+# Three spellings of one fact, correct only while the roster never changed -- and this roster's own
+# arc is to widen. Measured on the lap that widened it: adding one glob made `docs/ZETA.md` appear
+# in BOTH rosters, so its 43 characters were counted twice and `enforce_files` read one page too
+# many. A ratchet skip left behind the same way would price a character twice in the other
+# direction, letting a ceiling fall for a repair the gate had already required.
+#
+# THE SET IS BUILT FROM THE TRACKED LISTING, never from pathname expansion, and each of the three
+# reasons was paid for by a sibling reading of this same family:
+#
+#   A `case` pattern's `*` crosses a slash where pathname expansion's does not, so
+#   `case "$f" in docs/*.md)` calls `docs/redacted/a-note.md` walled while `for f in docs/*.md`
+#   never reaches it -- a page dropped from the ratchet and held by nothing. So a glob is split at
+#   its last slash and the two halves are asked separately: the directory by equality, the basename
+#   by pattern. `*` then cannot cross a slash, because no slash is left for it to cross.
+#
+#   `for f in $g` SPLITS ON SPACES. This tree carries a tracked document whose path holds one, and
+#   the pen has proven that shape since the ratchet was seated -- read as two words, one skipped and
+#   one counted absent. Reading the listing a line at a time is the same repair the ratchet already
+#   made.
+#
+#   TRACKED IS THE TEST, as it is for the derived roster: only a page this repository carries can be
+#   held to anything, and an untracked draft left in a walled room is nobody's fault yet.
+#
+# AND A WALLED ROOM MAY HOLD TESTIMONY. Accrete-never-break outranks the wall: a dated basename and
+# a closed-stack shelf are read past here exactly as the ratchet and the derived roster read them
+# past, so no gate can ever price a repair the one-clock law forbids. This mattered the day `docs/`
+# joined, since a compressor shelf may hold a dated page where a rule room never does.
+walled_list=$(mktemp "${TMPDIR:-/tmp}/ascii-doc-walled.XXXXXX") || {
+  echo "instrument=failed"
+  echo "detail=mktemp_refused"
+  echo "verdict=misread"
+  exit 1
+}
+trap 'rm -f "$LISTFILE" "$walled_list"' EXIT INT TERM
+set -f                                   # the globs are patterns to compare, never paths to expand
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  case "$f" in '"'*) continue ;; esac     # a git-quoted path; the ratchet counts and names these
+  case "$f" in
+    gratitude/*|vendor/*|seed/*) continue ;;
+    */fixtures/*|fixtures/*|*/fixture/*) continue ;;
+    date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;
+  esac
+  b=${f##*/}
+  case "$b" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
+  esac
+  fdir=${f%/*}; [ "$fdir" = "$f" ] && fdir=.
+  for g in $ENFORCE_GLOBS; do
+    gdir=${g%/*}; [ "$gdir" = "$g" ] && gdir=.
+    [ "$fdir" = "$gdir" ] || continue
+    case "$b" in ${g##*/}) echo "$f"; break ;; esac
+  done
+done < "$LISTFILE" | sort -u > "$walled_list"
+set +f
+
+# Answer the one question all three readers ask, from the one enumeration above.
+walled() { grep -qxF "$1" "$walled_list"; }
 
 # Count non-ASCII characters in one file, split named/unnamed, printed as "total named unnamed".
 # ABSENT IS SKIPPED AND COUNTED, never fatal: `git ls-files` reads the INDEX, and a rename staged
@@ -197,12 +272,16 @@ derived_list=$(mktemp "${TMPDIR:-/tmp}/ascii-doc-derived.XXXXXX") || {
   echo "verdict=misread"
   exit 1
 }
-trap 'rm -f "$LISTFILE" "$derived_list"' EXIT INT TERM
+trap 'rm -f "$LISTFILE" "$walled_list" "$derived_list"' EXIT INT TERM
 {
-  for g in $ENFORCE_GLOBS; do
+  for g in $DERIVE_GLOBS; do
     for f in $g; do
       [ -f "$f" ] || continue
-      # link form: ](path.md) or ](path.mdc), with any anchor and any ../ prefix removed
+      # link form: a Markdown link whose target ends in the md or mdc extension, with any anchor
+      # and any leading relative prefix removed. Spelled in words rather than shown, because an
+      # illustration built to LOOK like a path reads as a citation to every reader and every tool
+      # -- the habit `.claude/rules/stamp-and-name.md` names, and this line was costing the file
+      # two unresolved references in its own quality reading.
       grep -oE '\]\([^)]+\.(md|mdc)\)' "$f" 2>/dev/null | sed 's/^](//; s/)$//; s/#.*//'
       # backtick form, which is how the law names canon most of the time
       grep -oE '`[A-Za-z0-9_./-]+\.(md|mdc)`' "$f" 2>/dev/null | tr -d '`'
@@ -210,10 +289,10 @@ trap 'rm -f "$LISTFILE" "$derived_list"' EXIT INT TERM
   done
 } | sed 's|^\(\.\./\)*||; s|^\./||' | sort -u | while IFS= read -r c; do
   [ -n "$c" ] || continue
-  # Already walled by a glob, third-party, projected, planted, or closed-stack testimony: each is
-  # read past for the same reason the ratchet reads it past, so the two rosters cannot disagree.
+  # Third-party, projected, planted, or closed-stack testimony: each is read past for the same
+  # reason the ratchet reads it past, so the two rosters cannot disagree. A page already walled by
+  # a glob is dropped below, by the one enumeration rather than by a second spelling of the roster.
   case "$c" in
-    .claude/rules/*|.cursor/rules/*) continue ;;
     gratitude/*|vendor/*|seed/*) continue ;;
     */fixtures/*|fixtures/*|*/fixture/*) continue ;;
     date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;
@@ -227,38 +306,38 @@ trap 'rm -f "$LISTFILE" "$derived_list"' EXIT INT TERM
   # and only a page this repository actually carries can be held to anything.
   grep -qxF "$c" "$LISTFILE" || continue
   [ -f "$c" ] || continue
+  walled "$c" && continue
   echo "$c"
 done | sort -u > "$derived_list"
 enforce_derived=$(wc -l < "$derived_list" | tr -d ' ')
 
-# --- ENFORCE: the rule rooms and the canon they name, at zero ---
+# --- ENFORCE: the walled rooms and the canon the law names, at zero ---
 enforce_files=0
 enforce_globbed=0
 enforce_dirty=0
 enforce_chars=0
 enforce_report=""
-for g in $ENFORCE_GLOBS; do
-  for f in $g; do
-    [ -f "$f" ] || continue
-    enforce_files=$((enforce_files + 1))
-    enforce_globbed=$((enforce_globbed + 1))
-    reading=$(count_file "$f") || {
-      echo "instrument=failed"
-      echo "detail=awk_refused_a_file"
-      echo "detail_path=$f"
-      echo "verdict=misread"
-      exit 1
-    }
-    set -- $reading
-    n=${1:-0}
-    if [ "$n" -gt 0 ]; then
-      enforce_dirty=$((enforce_dirty + 1))
-      enforce_chars=$((enforce_chars + n))
-      enforce_report="$enforce_report$n $f
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  [ -f "$f" ] || continue
+  enforce_files=$((enforce_files + 1))
+  enforce_globbed=$((enforce_globbed + 1))
+  reading=$(count_file "$f") || {
+    echo "instrument=failed"
+    echo "detail=awk_refused_a_file"
+    echo "detail_path=$f"
+    echo "verdict=misread"
+    exit 1
+  }
+  set -- $reading
+  n=${1:-0}
+  if [ "$n" -gt 0 ]; then
+    enforce_dirty=$((enforce_dirty + 1))
+    enforce_chars=$((enforce_chars + n))
+    enforce_report="$enforce_report$n $f
 "
-    fi
-  done
-done
+  fi
+done < "$walled_list"
 
 # The derived canon reads through the same counter and the same report, so one page cannot be
 # dirty in one roster and clean in the other.
@@ -299,8 +378,8 @@ while IFS= read -r f; do
   case "$f" in
     '"'*) ratchet_quoted=$((ratchet_quoted + 1)); continue ;;
   esac
+  walled "$f" && continue
   case "$f" in
-    .claude/rules/*.md|.cursor/rules/*.mdc) continue ;;
     gratitude/*|vendor/*|seed/*) continue ;;
     */fixtures/*|fixtures/*|*/fixture/*) continue ;;
     date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;

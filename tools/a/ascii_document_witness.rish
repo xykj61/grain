@@ -35,6 +35,48 @@ assert control.out contains "enforce_lift_returns_green=yes" else "ascii-documen
 assert control.out contains "enforce_reaches_cursor=yes" else "ascii-document: the Cursor twin is read as law too, so it is measured too"
 assert control.out contains "enforce_is_a_glob_not_a_list=yes" else "ascii-document: a rule page born tomorrow must be governed the day it lands"
 
+# EVERY LEG IS HEARD, whether or not it is named below. `control_verdict=ok` says the control
+# reached its last line and has never said more; on the lap this was added the pen emitted 82
+# readings and this witness named 46, so all sixteen legs proving the derived canon could have read
+# `no` under a GREEN gate. The named asserts below stay, because each carries the sentence a reader
+# repairs by -- this pair is the floor beneath them, and it hears a leg written tomorrow.
+assert control.out contains "control_failed=0" else "ascii-document: a leg of the pen read no -- run sh tools/fixtures/a/ascii_document_control.sh and read the =no lines"
+assert control.out contains "control_legs=82" else "ascii-document: the pen's leg count moved -- raise it when a leg lands, and never lower it to make a deletion quiet"
+
+# The derived canon: a page the law NAMES is walled like the law, and each side is shown.
+assert control.out contains "derived_backtick_is_enforced=yes" else "ascii-document: the law names its canon in a backtick more often than in a link"
+assert control.out contains "derived_backtick_refuses=yes" else "ascii-document: a cited page carrying a named character must refuse like the rule that cites it"
+assert control.out contains "derived_backtick_lift_green=yes" else "ascii-document: lifting the plant must return the reading to green"
+assert control.out contains "derived_link_refuses=yes" else "ascii-document: a Markdown link with a ../ prefix is the other shape the law writes"
+assert control.out contains "uncited_not_enforced=yes" else "ascii-document: a page no rule names stays priced by a ceiling rather than refused by a gate"
+assert control.out contains "uncited_is_ratcheted=yes" else "ascii-document: and it must actually be counted there, or the wall has quietly swallowed the ratchet"
+assert control.out contains "cited_left_the_ratchet=yes" else "ascii-document: a cited page is priced once -- counted twice, a ceiling could fall for a repair the gate already required"
+assert control.out contains "cited_untracked_read_past=yes" else "ascii-document: the law cites examples and other trees; only a tracked page can be held to anything"
+assert control.out contains "cited_testimony_read_past=yes" else "ascii-document: accrete-never-break outranks the wall -- a rule citing dated testimony leaves it alone"
+assert control.out contains "cited_archive_read_past=yes" else "ascii-document: an archived shelf is immutable, so gating one would price a repair the law forbids"
+assert control.out contains "cited_sibling_uncounted=yes" else "ascii-document: a rule citing a sibling adds nobody -- it is already walled"
+assert control.out contains "derived_membership_reported=yes" else "ascii-document: a page can leave this wall by an edit made elsewhere, so the membership is printed"
+assert control.out contains "derived_drop_is_visible=yes" else "ascii-document: and the drop must be legible in the census, or nobody sees it"
+
+# The wall and the seed are two rosters. The wall names who is HELD; the seed names whose citations
+# are CANON. They were one roster while it held only law rooms, and they came apart the day the
+# compressor shelf joined -- a teaching room's links are links.
+assert control.out contains "walled_room_refuses=yes" else "ascii-document: a teaching room on the wall is held on its own account, with no rule naming it"
+assert control.out contains "walled_room_named=yes" else "ascii-document: a refusal must name the page, or nobody can repair it"
+assert control.out contains "walled_room_lift_returns_green=yes" else "ascii-document: lifting the plant must return the reading to green, or the wall is a latch"
+assert control.out contains "walled_cited_counted_once=yes" else "ascii-document: a walled page the law also cites is ONE page -- the elder skip named the two law rooms, so a third glob paid twice"
+assert control.out contains "walled_cited_chars_once=yes" else "ascii-document: and its characters are counted once, or the census reports a wall larger than it is"
+assert control.out contains "walled_cited_not_derived=yes" else "ascii-document: a page already walled adds nothing to the derived count"
+assert control.out contains "teaching_citation_not_canon=yes" else "ascii-document: a teaching room's links are links -- widening the wall must not widen what counts as canon"
+assert control.out contains "teaching_citation_ratcheted=yes" else "ascii-document: and the page it names stays priced by the ceiling"
+assert control.out contains "walled_subdir_not_held=yes" else "ascii-document: docs/*.md reaches one level -- a case pattern's star crosses a slash where the enumeration's does not"
+assert control.out contains "walled_subdir_stays_ratcheted=yes" else "ascii-document: a page dropped from the ratchet for a wall that never enumerated it is held by nothing"
+assert control.out contains "walled_testimony_read_past=yes" else "ascii-document: a walled room may hold a dated page, and testimony is never rewritten to retrofit a later law"
+assert control.out contains "spaced_walled_is_held=yes" else "ascii-document: a walled room may hold a spaced path, and a set built by pathname expansion loses it in silence"
+assert control.out contains "spaced_walled_named=yes" else "ascii-document: a spaced path must be named in the refusal like any other"
+assert control.out contains "seed_reads_law_rooms=yes" else "ascii-document: the seed reads the law rooms, which is what makes a citation canon"
+assert control.out contains "seed_can_be_emptied=yes" else "ascii-document: the seed is its own roster and can be read alone"
+
 # The ratchet ceiling, from both sides.
 assert control.out contains "ceiling_at_bound_free=yes" else "ascii-document: a reading exactly at the ceiling must pass"
 assert control.out contains "ceiling_over_refuses=yes" else "ascii-document: one character past the ceiling must refuse, or the ceiling is decoration"
@@ -95,4 +137,4 @@ assert living.ok else "ascii-document: the living scan must complete"
 assert living.out contains "enforce=honored" else "ascii-document: a rule page carrying non-ASCII is a law arguing with itself -- convert it, and run tools/fixtures/a/ascii_document_convert.sh"
 assert living.out contains "under_ceiling=yes" else "ascii-document: non-ASCII in living documents rose above the ceiling -- convert on touch rather than raising it"
 
-say "GREEN: ascii-document -- the rule rooms both editors read as law stand at zero characters above 0x7F, and so does every living page those rooms NAME as canon -- the wall follows the law's own citations rather than a directory glob, so a page a rule tells a reader to read first is held to that rule. Every other living document in the actively-written rooms stands under a ceiling that only falls, and testimony, closed stacks, vendored sources and planted controls are read past each for its own written reason. Sixty-three readings proven on real repositories in a throwaway pen, every refusal lifted in its own pen, both ceilings proven from both sides, and the sweep that seated the roster proven to have moved no prose by re-deriving each converted page from its committed bytes."
+say "GREEN: ascii-document -- the rule rooms both editors read as law stand at zero characters above 0x7F, and so do the compressor pages of docs/ and every living page those rule rooms NAME as canon. The wall names who is HELD, and it reaches past the law into the shipping shelf a newcomer is sent to; the seed names whose citations are CANON, and it stays the law's, because a rule room tells a reader which page to read first where a teaching room's links are links. Every other living document in the actively-written rooms stands under a ceiling that only falls, and testimony, closed stacks, vendored sources and planted controls are read past each for its own written reason. Eighty-two readings proven on real repositories in a throwaway pen, every one of them heard by this gate rather than only the forty-six it names, every refusal lifted in its own pen, both ceilings proven from both sides, and the sweep that seated the roster proven to have moved no prose by re-deriving each converted page from its committed bytes."
