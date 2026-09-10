@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f57c000692` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `34f1c32bb6` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROVER'S COMPARISON COULD NOT SEE A PATH GIT IGNORES.**
 Elder [shelved](archive/20260909-210541_itinerary-landed-accounts.md).
@@ -137,31 +137,34 @@ that; the measurement is the argument.
 aura length bounds; what declares a desk's kind.
 
 
-**INCENSE -- A PROVER SPOKE ONE LANGUAGE AND READ A SECOND'S ERROR AS THE TOOL REFUSING.**
-Elder [shelved](archive/20260909-194558_itinerary-landed-accounts.md).
-**WATER TASTES**, so this lap ran the census its rota seat names rather than the sentence about it.
-Three unproven candidates printed; the prover refused the busiest -- reached by
-`tools/hooks/pre-commit` on EVERY commit -- for a reason having nothing to do with convergence. Both provers invoked their subject as `sh <tool>`, so `tools/r/readme_metrics.rish
-write` answered `verdict=refused` over a shell syntax error. The hook regenerates three pages every
-commit; the witness proved the one that is shell, and **the two that are Rishi had never been
-asked.** The reach widens rather than narrows: **2,450 tracked `.rish` against 939 `.sh`**, under a
-standing law molting operational shell to Rishi on touch.
-**THE SAME SENTENCE AS THE LAP BEFORE IT, ONE LANGUAGE OVER.** Every operator either control plants
-is a shell script, so the shell-only invocation was never pressed -- `%668`'s stand-in lesson in the
-control just widened for it. Both provers dispatch on the subject's suffix through one
-`run_subject`, resolving `rishi/bin/rishi` from the PROVER's own path, since a pen holds no copy of
-an untracked binary. A Rishi operator planted in each control and the shell-only prover planted back
-beside it, **30 -> 34 and 18 -> 22 readings**; both Rishi writers read `verdict=converges` on a
-perturbed pen. Row `20260909.194558` folded on arrival and renumbered on the rebase -- every
-citation spelled the stamp, so it reached the shelf alone.
-**DECLINED, A PEER CLOSED IT BETTER:** `standing_equipment_redleg` red at 54 against a ceiling of 53
--- a ratchet whose population grows with correct work. Its doors were a control for the newcomer or
-a gate move, and a gate move is `%626`'s shape, yours. A peer wrote the control while I read.
-**YOURS, HANDED HERE BY GRASS:** the provers name one fact two ways -- `refused_on_second_file_held`
-exits 1, `write_once` exits 0, over a second run that refused and held its subject byte for byte. One
-dispatch makes the split plainer rather than smaller; changing an exit code changes what GREEN means.
-**FOUND, NOT TAKEN:** the census finds writers by shell redirect idioms, so a Rishi tool writing
-through `write-file` is never a candidate -- **12 / 9 / 3** before this lap and after it.
+**INCENSE -- A GUARD NAMED ITS OWN UNPROVEN HALF, AND NOBODY WAS READING IT.**
+Elder [shelved](archive/20260909-204315_itinerary-landed-accounts.md).
+**AETHER HEARS the silence where a claim used to be**, so this lap listened to the compass rose.
+`compass_station_scan.sh` gates two counts at zero and writes under **WHAT IS NOT PROVEN**: *that
+the rose names the right six stations.* It named its own gap and stood green over it thirteen days.
+**THE GAP WAS THE FLOOR THE WALK STANDS ON.** Read scope seated `20260827.155213` and calls
+`MAP.md` *the walk that replaces the `ls`*; the rose carried six stations after that day and named
+neither map nor law. Nor did `docs/COMPASS.md`, `align.md` and its twin, or `ORGANIZING.md`, which
+the map's own Status line sends keepers to. Measured with a grep whose character class excludes
+`ROADMAP.md`: **only `README.md` and `llms.txt` named it at all.** The reader likeliest to over-read
+is the one opening doors to find direction, and met no floor plan.
+**REPAIRED, STATIONS NAMED RATHER THAN COUNTED.** The rose opens at **Where you are**; the six
+elders keep their order and words at 2 through 7, and `docs/COMPASS.md` takes the map as **step 0**,
+so every existing number stays true. Two sentences cited stations by ordinal and a seventh would
+falsify both -- each names its station now. The align twin's stale order to check the two fused
+cards names `ITINERARY.md` instead. Row `20260909.204315`; `compass_rose` GREEN at 7, control
+18/0, QA all A.
+**YOURS, THE GENERAL FORM:** every scan carries a WHAT IS NOT PROVEN block and nothing walks that
+queue -- a survey of our gaps by the hands that knew them best. Row
+[folded](archive/REDS-the-guard-that-named-its-own-gap-rows-674.md) on arrival.
+**A GATE, NOT MINE:** `sow_allow_reach` reds on every ship. Its freshness input is the whole
+tracked-path set under the allowed rooms, so any commit adding a file there stales it --
+`reach_paths` moved, the manifest did not, my index was empty. The cure is a full `tools/s/sow.rish`,
+`%642`'s costliest run. **A guard that reds on ordinary work is one someone turns off.**
+**OVERTAKEN, A NEW SHAPE.** I folded `%670`/`%671` for room; a peer published the same fold five
+minutes earlier, so theirs is adopted and my row derived one above their published number. **A
+duplicate FOLD rather than a duplicate repair** -- housekeeping collides exactly as work does, and
+nothing shows a pin is being tidied.
 
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). The four Mantra gates build GREEN,

@@ -20,6 +20,7 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 
 | Step | Open | One line |
 |------|------|----------|
+| 0 | [`MAP.md`](../MAP.md) | Where you are -- seven rooms, two floors |
 | 1 | [`foundations/README.md`](../foundations/README.md) | Why beneath the work |
 | 2 | [`follow-our-compass`](../foundations/20260826-024943_follow-our-compass.md) | Return habit |
 | 3 | [`the-grain-and-the-crossing`](../foundations/20260826-024942_the-grain-and-the-crossing.md) | The strands |

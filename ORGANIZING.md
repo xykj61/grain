@@ -7,7 +7,7 @@
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 
-*The root gathering of sources now lives at [`bibliography.md`](bibliography.md). The baton museum and its design-shapes sibling wing live under [`context/baton-museum/`](context/baton-museum/) and [`context/design-shapes/`](context/design-shapes/).*
+*The room-by-room walk of the root lives at [`MAP.md`](MAP.md) -- that page says where things **are**, this one says where new writing **belongs**, and the compass rose in [`foundations/20260826-024943_follow-our-compass.md`](foundations/20260826-024943_follow-our-compass.md) opens at the map for exactly that reason. The root gathering of sources now lives at [`bibliography.md`](bibliography.md). The baton museum and its design-shapes sibling wing live under [`context/baton-museum/`](context/baton-museum/) and [`context/design-shapes/`](context/design-shapes/).*
 
 ---
 
@@ -33,7 +33,7 @@ Read the sections below whenever you wonder where a new file belongs. When a cha
 
 **`linengrow/`** -- the civic-application track: Linengrow's README, business model, and venture pitch, sharing the one spine with the operating system. It graduates to its own repository once its first lap runs.
 
-**`construction/`** -- the workbench (named `work-in-progress/` until `20260815`, then `crux/` until `20260823.082418`). The living roadmap (`ROADMAP.md`), the granular plan (`TASKS.md`), open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
+**`construction/`** -- the workbench (named `work-in-progress/` until `20260815`, then `crux/` until `20260823.082418`). The living operator card (`ITINERARY.md`), which absorbed the elder roadmap and task cards `20260823.103804` and left both as pointer stubs, open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
 
 **`active-designing/`** -- design in motion. Our own module names, RISC-V-first, siloed from gratitude sources. Dated briefs; living README index. **Raw layer** for the docs compression shelf -- dated notes stay here; they are not yondered when `docs/` compresses them. High-level seats and naming rounds live here; **lap claims** (what just went green) land forward-only in **`waymarks/`** from `20260724.143155`.
 

@@ -663,3 +663,5 @@ at a closed fold.*
 *Row %672 folded to [`REDS-the-prover-that-could-not-read-rishi-rows-672.md`](REDS-the-prover-that-could-not-read-rishi-rows-672.md) on `20260909.194641`, **CLOSED** -- a prover that speaks one language reads a second language's syntax error as the subject refusing.*
 
 *Rows %670 and %671 folded to [`REDS-a-guard-that-reports-without-demonstrating-rows-670-671.md`](REDS-a-guard-that-reports-without-demonstrating-rows-670-671.md) on `20260909.202547`, both **CLOSED** -- a guard that publishes a reading a reader can neither check nor act on -- a silence never proven able to sound, and a count that names no member.*
+
+*Row %674 folded to [`REDS-the-guard-that-named-its-own-gap-rows-674.md`](REDS-the-guard-that-named-its-own-gap-rows-674.md) on `20260909.215947`, **CLOSED** -- a guard that names its own unproven half is telling a reader where to look.*

@@ -15,6 +15,7 @@ Radiant pass `20260725.035453`
 Radiant pass `20260727.213740` -- Voice/Radiant named on the day-one rose (`docs/COMPASS.md`); claims unchanged
 AHOY1 weave `20260811.214423` -- kin block added; the return read now orders by **Lindy-first, crux-first**; claims unchanged
 Strand-count erratum `20260907.062544` -- four sentences carried the elder total of ten; the grain has held thirteen since the fusion of `20260802`, and a pointer now names the strands rather than counting them
+Map station added `20260909.204315` -- the walk now opens at [`MAP.md`](../MAP.md); the six elder stations keep their order and their words, and the two sentences citing them by number now name them instead
 
 ---
 
@@ -23,7 +24,7 @@ Strand-count erratum `20260907.062544` -- four sentences carried the elder total
 | Word | Job |
 |------|-----|
 | **Grain** | The **standing strands** -- primitives, TAME order, bounds, silo, witnesses, sameness, and the rest indexed in the grain brief. A pattern *fits the grain* when every sentence leans on a named strand. |
-| **Compass** | The **return habit** -- when direction frays, read foundations -> grain index -> active-designing newest-first -> `construction/ITINERARY.md` now -> run the witness before claiming green. |
+| **Compass** | The **return habit** -- when direction frays, read the map -> foundations -> grain index -> active-designing newest-first -> `construction/ITINERARY.md` now -> run the witness before claiming green. |
 
 **Grain** answers *does this cut clean?* **Compass** answers *where do I look to remember what we already decided?*
 
@@ -33,20 +34,38 @@ We do **not** need to rename the **grain strands** to "compass points." The stra
 
 When refreshing before a lap or a roadmap edit, walk this rose **oldest conviction to newest lap**:
 
-1. **Foundations** -- [`foundations/README.md`](README.md): why beneath the work; happy zone; sameness; wire serves the fold.
-2. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): the strands + crossing test.
-3. **Two rooms** -- [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
-4. **Active-designing ladder** -- [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
-5. **Now** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Now -- the live front*: what is open, what waits on a word.
-6. **Order** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *The Compass Chapter* and *Next -- the ranked remainder*: why and season, Lindy-first and crux-first.
+1. **Where you are** -- [`MAP.md`](../MAP.md): the seven rooms of the root, and the two floors that say which of them a lap walks by default.
+2. **Foundations** -- [`foundations/README.md`](README.md): why beneath the work; happy zone; sameness; wire serves the fold.
+3. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): the strands + crossing test.
+4. **Two rooms** -- [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
+5. **Active-designing ladder** -- [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
+6. **Now** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Now -- the live front*: what is open, what waits on a word.
+7. **Order** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *The Compass Chapter* and *Next -- the ranked remainder*: why and season, Lindy-first and crux-first.
 
-**Stations five and six are one card, and the fusion is why.** `construction/TASKS.md` and
+**The Now and Order stations are one card, and the fusion is why.** `construction/TASKS.md` and
 `construction/ROADMAP.md` carried the now and the order until `20260823.103804`, when three cards
 fused into [`construction/ITINERARY.md`](../construction/ITINERARY.md) (commit `98a8ee481`). Both
 paths remain on disk as **pointer stubs**, each declaring `Status: Pointer` on its own face, because
 roughly thirty `equinox_e*` fixtures and this document's own guard read them and a guard reading a
 file that is gone reports green while measuring nothing. So the *paths* are alive and the *stations*
 moved, and a reader sent to them arrives at a redirect rather than at the now.
+
+**The map opens the walk, because the walk itself is now bounded.** Read scope seated
+`20260827.155213`: a lap walks the **open shelves** by default and enters a **closed stack** only
+holding a named path, and [`../.claude/rules/read-scope.md`](../.claude/rules/read-scope.md) names
+[`MAP.md`](../MAP.md) as *the walk that replaces the `ls`*. The rose was drawn before that law and
+carried six stations after it, so the reader most likely to over-read -- the one who has lost
+direction and is opening doors to find it -- met no floor plan on the way back. Measured
+`20260909.204315` with `git grep -E '(^|[^A-Z/])MAP\.md'`, which excludes `ROADMAP.md`: of the
+tree's orientation pages only [`../README.md`](../README.md) and [`../llms.txt`](../llms.txt) named
+the map at all. Neither rose did, nor [`../ORGANIZING.md`](../ORGANIZING.md), which the map's own
+Status line sends keepers to. The map links out and almost nothing links back, which is how a page
+goes quiet without going wrong.
+
+**A station is named rather than numbered.** Two sentences cited these stations by their ordinal --
+one here, one in [`README.md`](README.md) -- and prepending a seventh would have falsified both.
+Marking by name is the standing law ([`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md)),
+and the numbers stay in the list, where they order a walk rather than travel as citations.
 
 If the card disagrees with a seated brief, **the brief and green witnesses win**; hygiene fixes the plan.
 
