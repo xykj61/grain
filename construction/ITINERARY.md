@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3e383939ba` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `08bec838eb` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -111,28 +111,28 @@ nothing beside it. Both numbers leave the door, and `crushed_index` grew a fifth
 **Next, and `stash_record` reds until it lands:** `stash@{0}` carries this seat's lap parked at the
 `20260909.092435` open -- two logs, a five-check demos room, `announced_length`, two REDS shelves.
 
-**PHEROMONE -- FOUR HANDS REACHED TWO LANTERNS IN ONE EVENING, AND I WAS THE LAST OF THEM.**
-Elder [shelved](archive/20260909-195052_itinerary-landed-accounts.md) whole.
-**EARTH BREATHES IN** the concrete fact ahead of the argument, so this lap read the cold pass rather
-than the card -- 209 green, 4 red -- and took the two reds that were mine to take. Both were gone
-before I could land them. `standing_equipment_redleg` read `guards_no_refusal_marker=54` against a
-ceiling of 53 because the guard I rostered last lap proved its refusals in a pen it then deleted; I
-built the control, and the rebase brought a peer's control at the same path, `%670` booked on the
-same reading, at a stamp four minutes before my own. `nib_honesty` read `FLOATING_CLAIM` on every
-ship over a dead hash on this card; INCENSE repaired the line, COPAL shelved the passage carrying
-it, and `%669` was booked AND folded before my send. **Both of my repairs are dropped. Their rows
-stand.**
-**WHAT SURVIVED IS THE DIFFERENCE, AND IT IS REAL.** The peer's control is the better pen -- a git
-worktree rather than a copied tree -- and its four plants all sit in `glow/tokens.rye`. The worker
-also binds three DOCUMENTS: the closed pronunciation table must still name the witness watching it
-and still claim its sealed **25**, and `context/TAME_GUIDANCE.md`'s family index must still carry
-every spoken name. Those bindings hold the language's own vocabulary, hands edit them rather than
-the lexer, and no plant reached them. Three cases added beside the four, each with a `g` flag since
-every one of those words stands on many lines of its page. **26 checks, 0 fails**, was 17.
-**YOURS, AND THIS IS THE FOURTH ASK FROM THIS BLOCK:** four ships spent one evening on two faults
-because nothing in the ledger shows a red is BEING WORKED. An OPEN row carrying a seat and a stamp
-at start would have cost each of us one line and saved three of us a lap. I make no more of it than
-that; the measurement is the argument.
+**PHEROMONE -- ONE SHIM CARRIED A SIX-GUARD CHOIR TWO HOPS DOWN.**
+Elder [shelved](archive/20260909-220705_itinerary-landed-accounts.md) whole.
+**WATER TASTES UP CLOSE**, so this lap ran each candidate alone before gathering any.
+`witness_reach_scan.sh --list` -- the `unheard` band, a witness no runner names in command position
+-- answered **eight Glow files**, none among the 26 `glow_choir` gathered on `20260828`. The
+population **refilled in twelve days**. All eight GREEN run singly; **six joined**, members 26 ->
+32, cost 2m01s -> **4m47s** measured, still cadence. `unreached` **643 -> 636**, ceiling with it.
+**TWO HELD BACK, AND THE HOLD IS THE POINT:** `glow_mobile_target` and `glow_riscv_target` read
+GREEN in **0s** by SKIPPING an absent qemu. Whether that green means anything is `%460`, **yours**.
+**THE FALL REACHED FURTHER THAN THE SIX.** `unheard_guard` then reddened at a number it SPELLS,
+with its reading moved the right way: `unnamed_choirs` **12 -> 11**. `glow_connector_seam_witness`
+is an accrete shim whose body runs the `gen/chapter` twin, which names `glow_hygiene_pin.rish`, a
+choir singing six -- so one gathered shim carried six more guards into the heard set. Both pins
+lowered, delta checked from both sides by stashing this lap and re-running.
+**THIS IS GRASS'S QUESTION OF THE SAME EVENING, ONE ROOM OVER**, and here it is a WITNESS rather
+than a control spelling the value. **Yours, and the two now agree on the shape:** may a guard ever
+spell a ratchet's value, or is the form the law?
+**AGAINST MYSELF:** I edited while the cold pass ran, so it closed `tree_moved=yes` honestly; the
+hot pass is what I claim on.
+**FOUND, NOT TAKEN:** **57** further Glow witnesses read `unclocked` -- `tools/p/parity_ch01.rish`
+names every one and no row reaches it. A second choir there is a second loom; the tier costs build
+time and `witness_reach_scan`'s own header already calls it **yours**.
 **Still yours:** `?&` and `?|` in the closed pronunciation table; leading-zero syntax; decimal and
 aura length bounds; what declares a desk's kind.
 
