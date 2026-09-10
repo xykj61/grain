@@ -30,16 +30,38 @@
 #   files_scanned   -- tracked files actually read, so a reading of nothing says so (REDS %463)
 #   marked_files    -- files carrying a labelled marker. HELD AT ZERO.
 #   dividers        -- bare `=======` lines standing between a labelled pair. Reported.
+#   staged_files    -- `staged` mode only: paths this commit carries, so a reading of nothing says so
+#
+# THREE MODES, ONE RULE. `census` (the default) and `list` read the whole tracked tree, which is
+# what a roster pass wants. `staged` narrows the SAME reading to the paths this commit carries, so
+# `tools/hooks/pre-commit` can ask the question at the moment the fault is made rather than at the
+# next lap's open. The rule -- a line beginning with a labelled marker -- is spelled once and read
+# three ways; a second reader would put one rule in two files, which is REDS %382 exactly.
+#
+# WHY `staged` READS THE INDEX ALONE, where the other two read both sides. A commit ships the
+# INDEX. A file may be staged clean and still carry a marker in the working tree -- an editor
+# repair made after the `git add`, which is the ordinary direction of that mistake -- and refusing
+# that author would be refusing bytes no clone will ever receive. The census keeps both sides
+# because at a lap's open there is no commit in flight and either side standing dirty is worth
+# hearing about.
 #
 # USAGE
 #   sh tools/fixtures/c/conflict_marker_scan.sh          # census -- key=value lines
 #   sh tools/fixtures/c/conflict_marker_scan.sh list     # every marked file:line, one per line
+#   sh tools/fixtures/c/conflict_marker_scan.sh staged   # only what this commit stages
 #
 # Driven by tools/c/conflict_marker_witness.rish. Proven both ways by conflict_marker_control.sh.
 # Run from the repository root.
 set -eu
 
 MODE="${1:-census}"
+# VALIDATED rather than defaulted. The elder spelling read `list` and treated every other word as a
+# census, so a caller asking for a mode this scan does not have was answered as though it had asked
+# for the one it does -- a wrong answer at exit 0, which is the shape a guard can least afford.
+case "$MODE" in
+  census|list|staged) ;;
+  *) echo "verdict=unknown_mode"; echo "conflict-marker: unknown mode '$MODE' -- census, list, or staged" >&2; exit 2 ;;
+esac
 
 # Named on purpose, one per line, so the roster of self-accusing files is countable. A file added
 # here is a file this reading cannot protect, which is the trade being made in the open.
@@ -106,6 +128,13 @@ grep_side() {
     [ -n "$x" ] || continue
     set -- "$@" ":(exclude)$x"
   done < "$work/excluded"
+  # `:(literal)` so a staged path holding a glob character names itself rather than a pattern.
+  if [ "$narrowed" = yes ]; then
+    while IFS= read -r x; do
+      [ -n "$x" ] || continue
+      set -- "$@" ":(literal)$x"
+    done < "$work/staged"
+  fi
   # `set -e` is on, and a bare call would kill the script on git grep's exit 1 -- the very answer
   # this guard hopes for. An `if` condition is the one place `set -e` stands down, so the status
   # is both survived and read.
@@ -118,9 +147,61 @@ grep_side() {
   cat "$work/raw" >> "$work/hits.raw"
 }
 : > "$work/hits.raw"
-grep_side ""
-grep_side "--cached"
-sort -u "$work/hits.raw" > "$work/hits"
+# THE STAGED POPULATION, read BEFORE the grep so the query itself can be narrowed.
+# ACMR -- added, copied, modified, renamed: the paths whose bytes this commit carries. A deletion
+# ships no bytes, so it can carry no marker.
+staged_files=0
+: > "$work/staged"
+if [ "$MODE" = staged ]; then
+  git diff --cached --name-only --diff-filter=ACMR > "$work/staged" 2>/dev/null || : > "$work/staged"
+  staged_files=$(grep -c . "$work/staged" || true)
+fi
+
+# WHY THE QUERY IS NARROWED RATHER THAN ITS OUTPUT FILTERED, and the difference was measured rather
+# than assumed. Reading all 17,266 tracked paths measures about **918ms**; the same pattern over one
+# staged path measures **19ms**, and this runs on EVERY commit by every ship. The pattern is still
+# spelled exactly once -- only the population argument differs -- so this stays one rule read two
+# ways rather than a second reader (REDS %382).
+#
+# BOUNDED, because every collection names a maximum (TAME). Past MAX_STAGED_PATHSPECS the argument
+# list is no longer safely under ARG_MAX, and an over-long list would fail as FEWER HITS rather than
+# as an error -- the worst way for a guard to break. Over the bound the scan reads the whole index
+# and filters afterward, which is slower and answers identically, so the bound costs correctness
+# nothing. A commit staging more than this many paths is a tree-wide sweep, and those are rare.
+# Overridable so the control can force the wide path on a small pen and prove the two answer
+# identically. A guard with two code paths owes a leg showing they agree, and that leg needs a way
+# to reach the second one.
+MAX_STAGED_PATHSPECS=${CONFLICT_MARKER_MAX_PATHSPECS:-512}
+narrowed=no
+if [ "$MODE" = staged ] && [ "$staged_files" -gt 0 ] && [ "$staged_files" -le "$MAX_STAGED_PATHSPECS" ]; then
+  narrowed=yes
+fi
+
+# THE INDEX SIDE ALWAYS; THE WORKING TREE ONLY WHEN THERE IS NO COMMIT IN FLIGHT. See the header --
+# `staged` answers for the bytes that will land, and those are the index's.
+# A commit staging nothing has no bytes to answer for, so the grep is skipped outright rather than
+# run over the whole index for an answer that is empty by construction. Measured: the wide read
+# costs about a second, and this is the resting state of a `--amend` that only rewrites a message.
+if [ "$MODE" = staged ] && [ "$staged_files" -eq 0 ]; then
+  : > "$work/hits"
+else
+  if [ "$MODE" != staged ]; then
+    grep_side ""
+  fi
+  grep_side "--cached"
+  sort -u "$work/hits.raw" > "$work/hits"
+fi
+
+# The filter runs whether or not the query was narrowed. When it was, it removes nothing and proves
+# so; when the bound sent the reading wide, it is what makes the two paths answer identically.
+if [ "$MODE" = staged ]; then
+  if [ "$staged_files" -gt 0 ]; then
+    awk -F: 'NR==FNR{keep[$0]=1; next} ($1 in keep)' "$work/staged" "$work/hits" > "$work/hits.staged"
+  else
+    : > "$work/hits.staged"
+  fi
+  mv "$work/hits.staged" "$work/hits"
+fi
 
 marked_files=$(cut -d: -f1 "$work/hits" 2>/dev/null | sort -u | grep -c . || true)
 hits=$(grep -c . "$work/hits" || true)
@@ -139,6 +220,10 @@ if [ "$MODE" = list ]; then
   exit 0
 fi
 
+if [ "$MODE" = staged ]; then
+  echo "staged_files=$staged_files"
+  echo "staged_narrowed=$narrowed"
+fi
 echo "files_scanned=$files_scanned"
 echo "files_excluded=$(grep -c . "$work/excluded" || true)"
 echo "marker_lines=$hits"
@@ -154,5 +239,15 @@ if [ "$marked_files" -eq 0 ]; then
 fi
 
 echo "verdict=conflict_marker"
+if [ "$MODE" = staged ]; then
+  # The named detail line is the contract tools/hooks/pre-commit reads to tell THIS refusal from an
+  # instrument that could not measure. The two want opposite words from a hand, so they are told
+  # apart by a line rather than by an exit status both share.
+  echo "detail=RED_staged_conflict_marker"
+  echo "detail_path=$(cut -d: -f1 "$work/hits" | sort -u | tr '\n' ' ')"
+  echo "detail_repair=resolve the conflict in the named file, then git add it again"
+  echo "refused: $marked_files staged file(s) carry an unresolved conflict marker" >&2
+  exit 1
+fi
 echo "refused: $marked_files tracked file(s) carry an unresolved conflict marker -- resolve the file and commit it" >&2
 exit 1

@@ -88,6 +88,7 @@
 #              Refuses rather than regenerates. Gates only the five families whose TREE ceiling
 #              stands at zero, read from the elder scan, so no author is refused for a lawful line.
 #   rule eight a document this commit carries holds something -- empty_document_scan.sh staged.
+#   rule nine  no file this commit carries holds a conflict marker -- conflict_marker_scan.sh staged.
 #              Trigger: none of its own; the scan reads the staged set and rests at zero documents.
 #              Refuses rather than regenerates -- only the author knows what the page was to say.
 #
@@ -460,6 +461,50 @@ if [ -f tools/fixtures/e/empty_document_scan.sh ]; then
       echo "$empty_report" | head -4 >&2
     fi
     echo "  full reading: $scan_shell tools/fixtures/e/empty_document_scan.sh staged" >&2
+    refused=yes
+  fi
+fi
+
+
+# RULE NINE -- no file this commit carries holds an unresolved conflict marker.
+# `conflict_marker_scan.sh` holds the whole law -- a line beginning `<<<<<<< `, `||||||| ` or
+# `>>>>>>> `, the three LABELLED markers -- and it has stood at `tier lap` since 20260906.105500.
+# What it never did was read at COMMIT time, so its answer arrived at the next lap's open, which is
+# after the push.
+#
+# THE COST, MEASURED on this tree's own history rather than argued. `construction/ITINERARY.md`
+# carried two markers around its Landed row through THREE commits -- adf682ac3404 at 09:50:57,
+# 151c129e8397 at 10:04:39, c027ae5d2bf2 at 10:17:03 on 20260906 -- 26 minutes published on the
+# anointed remote. Every ship in the fleet reads that card WHOLE at the open of every lap, and the
+# Standing block inside it is what steers an unattended round. The guard built in answer to that
+# red kept the same placement the red was made in.
+#
+# THE SAME MOVE AS RULE EIGHT, one guard over, and the pair is the finding: a fault CONTAINED in one
+# artifact's own bytes, walled at zero, read from the whole tree, answers after the push. A
+# relational fault -- a link whose target another commit deleted -- cannot narrow this way and is
+# correctly read at the tree. Containment is what decides the moment.
+#
+# WHY THE STAGED READING IS SAFE. It asks only about paths THIS commit stages, so a marker standing
+# anywhere else refuses no author; and it reads the INDEX alone, so a marker a hand left in the
+# working tree after staging a clean copy refuses nobody either, since those bytes will not land.
+# A placement of an existing reading rather than a new instrument, exactly as rules seven and eight.
+#
+# ONE FRICTION, NAMED. The scan excludes its three teaching files BY NAME (REDS %484), so a page
+# that must SHOW a marker at column zero is refused here until it joins that list in the same
+# commit. That is the same trade the census already makes, moved to where an author meets it.
+if [ -f tools/fixtures/c/conflict_marker_scan.sh ]; then
+  if ! marker_report=$("$scan_shell" tools/fixtures/c/conflict_marker_scan.sh staged 2>&1); then
+    if echo "$marker_report" | grep -q '^detail=RED_staged_conflict_marker'; then
+      echo "pre-commit: this commit stages a file carrying an unresolved conflict marker. git wrote" >&2
+      echo "those bytes and a hand never came back for them -- and once pushed, every ship reads" >&2
+      echo "them as content. The card stood published this way for 26 minutes on 20260906." >&2
+      echo "$marker_report" | grep -E '^(marked: |detail_path|detail_repair)' >&2
+    else
+      echo "pre-commit: the conflict-marker wall could not MEASURE the staged set, and a wall that" >&2
+      echo "cannot measure refuses rather than waves through. Read the scan's own words below." >&2
+      echo "$marker_report" | head -4 >&2
+    fi
+    echo "  full reading: $scan_shell tools/fixtures/c/conflict_marker_scan.sh staged" >&2
     refused=yes
   fi
 fi
