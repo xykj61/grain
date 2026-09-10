@@ -35,7 +35,9 @@
 # each is repaired on touch rather than swept.
 #   qualified_print 5 files -- `std.debug.print(` at a call site; `rye/src/main.rye` holds 13 of the
 #   19 sites.
-#   missing_assert_bind 67 -- a hosted file that never binds bare `assert`.
+#   missing_assert_bind 66 -- a hosted file that never binds bare `assert`. Read 67 at the
+#   widening; fell to 66 on `20260909` when `glow/rune_core.rye` bound the triad and asserted its
+#   accessor preconditions, which is how the ratchet is meant to move.
 #   missing_print_bind 118 -- a hosted file that never binds bare `print`. TAME asks for this one
 #   as-you-touch and gates it nowhere, so a ratchet is the honest instrument.
 #
@@ -67,7 +69,7 @@ say "rooms_file=${rooms_file}"
 say "hosted=${hosted_count}"
 say "qualified_assert=${qualified_assert} ceiling=0"
 say "qualified_print=${qualified_print} ceiling=5"
-say "missing_assert_bind=${missing_assert_bind} ceiling=67"
+say "missing_assert_bind=${missing_assert_bind} ceiling=66"
 say "missing_print_bind=${missing_print_bind} ceiling=118"
 
 # THE ELDER TWENTY-FOUR, still walled by name. These are the files the hand list held, and every one
@@ -97,7 +99,7 @@ if rooms_file == default_rooms then say "elder_qualified_print=${length elder_ba
 
 # THE CEILINGS ARE COMPARED HERE rather than in the witness, so a reader of the scan's own output
 # can see whether a ratchet has moved without holding the witness open beside it. Each only falls.
-let over = run ["sh" "-c" "echo $(( (${qualified_print} > 5) + (${missing_assert_bind} > 67) + (${missing_print_bind} > 118) ))"]
+let over = run ["sh" "-c" "echo $(( (${qualified_print} > 5) + (${missing_assert_bind} > 66) + (${missing_print_bind} > 118) ))"]
 assert over.ok else "opening-lines scan: the ceiling comparison failed"
 say "ratchets_over_ceiling=${trim over.out}"
 say "verdict=read"

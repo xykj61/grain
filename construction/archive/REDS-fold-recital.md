@@ -679,3 +679,5 @@ at a closed fold.*
 *Row %616 folded to [`REDS-the-wall-that-was-a-glob-rows-616.md`](REDS-the-wall-that-was-a-glob-rows-616.md) on `20260909.232356`, **CLOSED** -- a law page that under-reports its own enforcement commissions duplicate work, and a wall drawn by directory glob leaves the canon that law tells a reader to open first standing outside it.*
 
 *Row %681 folded to [`REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](REDS-the-loom-that-chased-a-generation-too-far-rows-681.md) on `20260910.003047`, **CLOSED** -- the fourth firing of the liveness family, and the first in which a sound reading began accusing a live lap -- because the launcher changed underneath it.*
+
+*Row %682 folded to [`REDS-the-frame-that-died-holding-a-name-rows-682.md`](REDS-the-frame-that-died-holding-a-name-rows-682.md) on `20260910.002413`, **CLOSED** -- a value that outlives its frame answers every derived question correctly and only the bytes wrong.*
