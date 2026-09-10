@@ -21,7 +21,7 @@
 #
 #   sh tools/fixtures/c/convergence_census_control.sh
 #
-# BOUNDS: one pen, twenty-two legs, at most 24 planted tools. The pen is removed on every exit path.
+# BOUNDS: one pen, twenty-seven legs, at most 26 planted tools. The pen is removed on every exit path.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -206,6 +206,52 @@ leg stem_only_missed_the_family_control no "$(stem_only_proven tools/x/family_na
 split_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
 case "$split_now" in *proven_by_family_control=*) split_family=printed ;; *) split_family=absent ;; esac
 leg family_control_split_printed printed "$split_family"
+
+# 11. THE COMMENT READING, from both sides (`20260909.210000`). The two proof columns read past a
+# leading `#` and the WRITE column never did, so a file whose only admitting write sits in a
+# sentence ABOUT writing is counted as a writer. On the tree that is 3 of 12 candidates, and two of
+# the three are real writers whose real targets the filter refuses -- so the comment carries an
+# admission the target test missed. The census reports the count rather than changing the
+# population, because every cure measured so far read worse than the fault; the header records all
+# four.
+cd "$pen/tree"
+# 11a. Admitted by a comment alone: the write the target test accepts is inside a `#` line, and the
+#      only live write targets a pen. This is `reds_ledger_headline_write.sh`'s exact shape, whose
+#      header explains the exec-bit idiom in prose and writes `$LEDGER` on line 114.
+plant tools/x/comment_admitted.sh '# It writes THROUGH the original inode (`cat "$tmp" > "$f"`), so the mode survives.
+cat "$tmp" > "$LEDGER_UNREAD"'
+# 11b. Admitted on a live line, with the same sentence standing beside it. The prose is identical,
+#      so the only thing separating this plant from 11a is where the admitting write sits.
+plant tools/x/live_admitted.sh '# It writes THROUGH the original inode (`cat "$tmp" > "$f"`), so the mode survives.
+cat "$tmp" > "$f"'
+git add -A >/dev/null
+git commit -q -m "pen: planted the comment reading"
+
+comment_names=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^comment_only: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
+com() { case " $comment_names " in *" $1 "*) echo yes ;; *) echo no ;; esac; }
+all_names=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
+anyc() { case " $all_names " in *" $1 "*) echo yes ;; *) echo no ;; esac; }
+
+leg comment_only_named            yes "$(com comment_admitted.sh)"
+leg live_write_not_named          no  "$(com live_admitted.sh)"
+# 11c. AND THE READING CHANGES NO NUMBER. A candidate admitted by a comment stays a candidate, so
+#      the count above is a diagnosis rather than a population move -- which is the whole reason it
+#      is safe to print today while the cure waits for the prover.
+leg comment_admitted_still_counted yes "$(anyc comment_admitted.sh)"
+# 11d. The reading is PRINTED, and printed with a number a reader can compare.
+reading_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
+case "$reading_now" in *admitted_on_comment_only=*) reading=printed ;; *) reading=absent ;; esac
+leg comment_reading_printed printed "$reading"
+# 11e. THE ELDER WRITE PREDICATE, run over the same two plants, must call them IDENTICAL -- because
+# it reads every line and cannot tell prose from a write. Without this leg the four above pass for
+# any reason at all, which is how four of this census's five wrong denominators read green.
+elder_sees_comment() { # elder_sees_comment <file> -> yes|no
+  if grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$1" 2>/dev/null \
+    | sed 's/.*"\([^"]*\)"$/\1/' \
+    | grep -vE '^\$(work|pen|tmp|TMP|out|d)\b' \
+    | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/'; then echo yes; else echo no; fi
+}
+leg elder_could_not_tell_prose_from_a_write yes "$(elder_sees_comment tools/x/comment_admitted.sh)"
 
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"
