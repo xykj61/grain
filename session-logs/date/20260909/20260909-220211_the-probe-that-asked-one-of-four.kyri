@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260909.220211
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat GRASS, auditing lane
+modality text
+model claude-opus-5
+model_status configured default read from .claude/settings.json; no runtime telemetry exposed
+configured_model claude-opus-5
+configured_status evidence .claude/settings.json, read 20260909
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The probe that asked one of four
+prompt the standing GRASS seat prompt -- audit the whole surface, reds first
+rota lap 4478, row 3 -- Water, the row that tastes; every seat read up close rather than cited. Its cardinal instruction (run the actual thing, and run it twice) is what turned a counted red into an opened one, and its own recorded lesson -- a measurement finding evidence by NAME reports the convention it was handed -- is what stopped me taking the second finding.
+think Opened cold. A roster pass already held the lock in this tree (pid 690318, cwd resolved to this root), so I held still 35 minutes rather than starting a second, and read the rota while it ran.
+think The pass landed 217 run, 212 green, 3 red, 2 gated. Two reds were peers' (stash_record is PETRICHOR's open; standing_equipment reads its own roster's red). sow_allow_reach was unbooked and mine.
+think Its evidence read `projection coverage is stale -- manifest or tracked paths changed`. seed/ is gitignored, so nothing in the tree was wrong -- the class the loop seed already names for an empty vendor/: an environment fact, never a tree red.
+think The roster ALREADY gates that guard behind `capability seed_projection`. So the question became why the capability did not fire, and the arm read `[ -d "${SOW_SEED:-seed}" ]` where its scan refuses four ways: no directory, no receipt, an empty receipt, a receipt whose coverage inputs moved.
+think Measured the fourth rather than assuming it. sow_reach_inputs.sh hashes template-manifest.bron together with `git ls-files` over every allow room; `tools` is an allowed room; 12 of the last 40 commits changed a tracked path under one. So a receipt goes stale within about three commits on an eight-ship pier.
+think Ran the repaired probe through the selection path with a two-guard roster before believing it: `skipped_capability sow_allow_reach wants=seed_projection here=absent`, guards_run=0, run_verdict=ok.
+think The second finding I did NOT take. convergence_census.sh prints candidates_unproven=2 and names them only under a `list` word absent from its own output; both read `inert`, and `inert` conflates a property of the tool with a property of the sample. The obvious cure -- a sourced file is a library -- measured 15 sourced files of which 8 are ALSO run, so it would have been that family's sixth wrong pattern. Named on the card instead.
+obs The arm's own header already said `answering a different question than the guard would is how a capability becomes an exemption`, and the day_shelf arm two below was widened for this identical shape with the lesson written into its comment. One function, the rule stated twice, applied to one arm. That is the unheard-guard shape wearing a comment's clothes.
+obs The control's elder `present` leg planted a bare directory, because the elder probe was a bare test. A plant can only be as wide as the predicate it was written beside, so widening the predicate meant widening the pen into a real repository with a manifest, an allowed room, and a receipt.
+obs Two legs I inherited asserted run_verdict=ok in a git pen where the roster's stub guard reds either way. Rather than assert something about the stub I moved the absent block back to the elder non-git pen, where its four readings were proven, and replaced my own with the claim that is actually true anywhere: a skip adds no red.
+loom witness=standing_equipment_control legs_seed=9 wall_ms=210000
+loom pass=standing_equipment_cold guards_run=217 green=212 red=3 gated=2 wall_s=2100
+loom census=convergence candidates=12 proven=10 unproven=2 tools_read=3322
+file tools/fixtures/s/standing_equipment_run.sh the seed_projection arm asks all four of its guard's questions, sourcing the scan's own coverage function rather than restating it
+file tools/fixtures/s/standing_equipment_control.sh nine seed readings -- bare directory, empty receipt, fresh, stale, re-projected, env-followed -- each refusal planted then lifted, with the elder predicate run over the stale plant
+file construction/REDS.md books the row at 20260909.215853, pin 40,768 of 40,960
+file construction/ITINERARY.md the GRASS account, elder shelved whole; the census finding named rather than taken
+scope one red closed with a witness on metal; one finding named and left for Keaton's word
+status GREEN -- standing_equipment_control verdict=ok with all nine new seed readings green and 3 fewer `=no` than the elder control; the repaired probe proven through the runner's own selection path
+recommend keep-going -- the `inert` conflation in convergence_prove.sh is the next real seat, and it wants a discriminator measured rather than guessed
