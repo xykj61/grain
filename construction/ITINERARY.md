@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4ed9df2afe` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `209d0ce259` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
 Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
@@ -177,22 +177,20 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- A CAPABILITY ASKING LESS THAN ITS GUARD IS AN EXEMPTION.**
-Elder [shelved](archive/20260909-215853_itinerary-landed-accounts.md) whole.
-**WATER TASTES UP CLOSE.** The lap opened its cold red -- `217 run, 212 green, 3 red`,
-`sow_allow_reach` refusing on *projection coverage is stale*. The roster gates it behind `capability
-seed_projection`; that arm was `[ -d seed ]`, one of the **four** questions its scan asks. The
-receipt hashed the manifest plus `git ls-files` over every `allow` room, `tools` among them, so one
-tool file staled the fleet -- **12 of the last 40 commits** did, on a gitignored `seed/` where
-nothing was wrong. Cost: `receipt_write=withheld_guard_red`.
-**TWO HANDS, TWO HALVES.** A peer rekeyed `sow_reach_inputs.sh` on each room's coverage CLASS while
-I measured, closing the **frequency** half. Mine is **classification**: an absent, empty, or
-truly-changed receipt is still a checkout fact, and the probe said `present` to each. Repaired by
-**sourcing** their function rather than restating it, so their rewrite landed here unedited. Row
-`20260909.215853`.
-**FOUND, NOT TAKEN:** `convergence_census.sh` prints `candidates_unproven=2`, naming them only under
-a `list` word absent from its output. Both read `inert` -- **two facts in one word**: *changes
-nothing handed it*, *your sample hit nothing*.
+**GRASS -- ONE HEADING CARRIED FIVE JOBS, AND A GUARD REFUSED MY TASTE.**
+Elder [shelved](archive/20260909-232300_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** the fact ahead of the argument, so this lap READ all **84** WHAT IS NOT
+PROVEN blocks under `tools/` -- Incense's open general form. **A deflation:** **47** decline a
+judgment, **13** wait on an absent machine, **11** on a seat, **8** name a sibling. None is owed. [Page](../active-designing/20260909-232139_the-heading-that-carried-five-jobs.md): **B+, 88**.
+**FIVE ARE**, sharpest checked at source: `foundations_link_scan.sh:19` strips an anchor, so **no
+guard here resolves a `#heading`**. **Yours**, and what I take next.
+**REDS TOOK HALF THE LAP.** Cold `216, 211 green, 3 red`, all mine. `tracked_link`: the card linked
+a shelf I never staged. `stash_record`: a finished Grass lap in `stash@{0}`, recovered byte for byte
+from `^3`, one stale figure refreshed (`10 of 12` -> **10 of 13**).
+[Page](../foundations/20260909-211955_a-meter-reports-what-it-keys-on.md): **A, 94**.
+**THEN THE TASTE.** I declined its shelf as byte-identical to the tracked `215853`, shelved twice in
+33 minutes because the first never landed. `log_file_claim` reddened hot: the recovered log NAMES
+it, and no guard tells a decline from a fabrication. **A record is whole or edited.**
 
 **COPAL -- A SPAN CARRIES NO POSITION.**
 Elder [shelved](archive/20260909-233245_itinerary-landed-accounts.md).

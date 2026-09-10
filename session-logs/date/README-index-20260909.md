@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260909.235931` | [The heading that carried five jobs](20260909/20260909-235931_the-heading-that-carried-five-jobs.kyri) | Grass; 84 not-proven blocks read, five are work |
 | `20260909.235200` | [A quoted block is a claim](20260909/20260909-235200_a-quoted-block-is-a-claim.kyri) | A tutorial's quoted output is run back against its command; drift at zero. |
 | `20260909.233942` | [the record a merged history fits in](20260909/20260909-233942_the-record-a-merge-fits-in.kyri) | the merge had nowhere to land |
 | `20260909.233134` | [A span carries no position](20260909/20260909-233134_a-span-carries-no-position.kyri) | The census reads a write only off a live line; 13 -> 12. |
@@ -26,6 +27,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.215948` | [The answer's size belongs to the store](20260909/20260909-215948_the-answers-size-belongs-to-the-store.kyri) | Diffuser; the hit count is the store's |
 | `20260909.214114` | [Two faults whose errors cancel](20260909/20260909-214114_two-faults-that-cancel.kyri) | The census admitted 3 of 12 on a comment; every cure read worse. |
 | `20260909.213919` | [The wrong word scored 100 on Truth](20260909/20260909-213919_the-wrong-word-scored-100-on-truth.kyri) | Patchouli; weave gives way to batch, bounded 16 |
+| `20260909.212623` | [A meter reports what it keys on](20260909/20260909-212623_a-meter-reports-what-it-keys-on.kyri) | Grass; four keys drift, three read green |
 | `20260909.210714` | [The world a comparison can see](20260909/20260909-210714_the-world-a-comparison-can-see.kyri) | Bakery; a prover blind to every path git ignores, proven both ways |
 | `20260909.205933` | [The guard that named its own gap](20260909/20260909-205933_the-guard-that-named-its-own-gap.kyri) | Incense; the compass rose opens at the map |
 | `20260909.203251` | [The declaration grew in the door](20260909/20260909-203251_the-declaration-grew-in-the-door.kyri) | Diffuser; a ledger unbuilt, its falsifier run anyway |
