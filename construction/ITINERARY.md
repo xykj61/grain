@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `98e0522659` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e69fb69843` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
 Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
@@ -95,23 +95,25 @@ files**, each green once finished; a void pass reads a tree nobody shipped. The 
 `20260910.043900` folded `%688` to make room: REDS stood at **40,948 of 40,960**, twelve bytes, so
 no row could land beside it at all. **17 named guards green** on the tree that shipped.
 
-**DIFFUSER -- THE ROW EXPANDED BEFORE IT MATCHED, AND THE LAP THAT FOUND IT DIED AT ITS SEND.**
-Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md).
-**THE DEFECT:** `scope_match_row` split its watch row unquoted, so POSIX **pathname expansion**
-replaced every glob word with the files matching it *before* `case` saw a pattern -- and a
-**deleted** file no longer expands, so its guard is skipped on the change likeliest to break it.
-**IT FAILED EXACTLY WHEN THE ROW WORKED:** an unmatched glob stays literal, so three days of control
-legs passed -- no sibling in the pen. **REPAIRED** with `set -f`; control **31 -> 40**. Traced 44 of
-58 rows: **31 under-name**; unreached **1,808 -> 188**.
-**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, so this lap read the stash stack. **17 dead-lap
-stashes stand here; exactly ONE -- the newest, 90 seconds old -- held a file no commit anywhere has
-ever carried.** The other sixteen's are fold archives a peer folded under another name.
-**RECOVERED BY VERIFICATION RATHER THAN GUESS:** the parked log wrote `status GREEN` naming three
-witnesses BEFORE its send, and all three re-run here. Additive files by tree read, so `100755` held;
-both shared pins reset to HEAD and re-applied three-way.
-**AGREED WITH BAKERY, NOT REPAIRED:** `elf_machine` reds at `sites=16` -- **all 13 new are pen
-plants in `self_matching_assert_control.sh`, one calling a stub `file` the control writes**.
-**YOURS:** may the round-open drop a stash it has PROVED redundant -- sixteen of seventeen here.
+**DIFFUSER -- THE CLAIM THIS TREE RESTS ON, PULLED NOT BELIEVED.**
+Elder [shelved](archive/20260910-050815_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**: its fixed seat states the test -- *check it by trying to pull one
+part out* -- read every fifth lap for eighteen days, never performed.
+**THE CHANNEL IS WHOLE:** Zig refuses an import escaping its directory, so cross-room reach is a
+SYMLINK -- **226** links, **1** escaping `@import`, **no** root `build.zig`.
+**THE PULL: 68 live edges, 29 rooms, TWO braids** -- `crypto encoding`, and **nine** at `amphora
+brushstroke comlink granary kumara linengrow mantra pond settlement`. **`tally` is the claim
+literal**: in 23, out 0.
+**THE FIRST READING WAS LOOSE:** `grep -r` passes over symlinks, **70** read dead where **20**
+are, corrected **12 -> 9** -- a loose graph reads a braid SMALLER, the safe direction.
+**THE CUT IS EXACTLY SIX**, exhaustive over 25 edges: none at five, eight at six. Exits are
+uneven -- `mantra`, `amphora`, `kumara` by **one**, `linengrow` and `pond` by six.
+**TWO FILES HOLD FOUR ROOMS IN:** three single edges are `comlink/wire_format.rye`, two are
+`comlink/topology.rye` at **702 lines importing `std` alone** -- sink-layer modules at an
+application address. Relocating reads **9 -> 7 -> 5**.
+`room_braid` **tier lap**, ceiling 9, 16 legs -- the control caught the census resolving its root
+from `$0`, so two pen legs "passed" on this tree's own refusal.
+**YOURS:** which sink room takes those two files -- a naming call, census as falsifier.
 
 **PETRICHOR -- ONE PAGE HELD MORE THAN THE WHOLE REST OF THE TREE.**
 Elder [shelved](archive/20260910-060458_itinerary-landed-accounts.md).

@@ -4323,3 +4323,18 @@ guard ceiling_pair
 path tools/c/ceiling_pair_witness.rish
 tier lap   # 3.4s; 29 pairs read, 14 control behaviors with 5 refusals bitten and lifted
 seated 20260910.020000
+
+# room_braid -- the single-stranded claim, performed rather than believed. The foundation says a
+# part stands free and "you can check it by trying to pull one part out"; the air row repeats the
+# pull as its own sense; nothing had ever performed it. Zig refuses an import escaping its
+# directory, so every cross-room reach is a SYMLINK and the symlink set IS the dependency graph --
+# 226 cross-room links, one escaping `@import` in the tree, no root build.zig. Twenty of the 226
+# are imported by nothing and are counted dead rather than as edges. The GATED reading is
+# `braid_max`, the largest set of rooms that cannot be lifted out separately: 9 at seating
+# (amphora, brushstroke, comlink, granary, kumara, linengrow, mantra, pond, settlement), ceiling 9,
+# meant only to fall. `tier lap`: 10s, the closure being one awk relaxation over tens of nodes.
+
+guard room_braid
+path tools/r/room_braid_witness.rish
+tier lap
+seated 20260910.050619
