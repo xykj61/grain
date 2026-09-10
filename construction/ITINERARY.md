@@ -40,6 +40,7 @@
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the scrub that remembers** (`20260908.155715`, the scrub red): the seed publish rescrubs all 8,187 files through a 251-rule manifest every run, and two publishes twenty minutes apart -- differing by one file -- each paid the full cost. The scrub is a pure function of bytes and verdict, so it caches by content, which is what Tablecloth holds. **The sow witness keeps reading the whole projection before any push**; only the per-file scrub caches. Design: `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`. Awaits Keaton's word.
 - **STANDFAST -- the dated equinox guards, and the pin that cannot hold their row** (`20260908.235139`): the equinox room reads **70 green, 10 red, 2 hung**, and **five of the ten share one cause** -- a guard pinned to a count of a growing surface (`e106` wants 33 REDS rows, `e108` 37, where the spine passes 645; `e102`/`e105` a moved metric revision; `e110` four chapter surfaces). Three more read `verdict=ok` on their scans while refusing, so their cause is unread. **No repair taken:** these are DATED guards, and whether they read an archived state, the living value, or retire is a testimony decision governing a family. **The ledger row cannot land** -- REDS holds 173 bytes with all seven rows OPEN, so no fold is lawful. Both want Keaton's word. Detail in `tools/fixtures/e/equinox_choir_census_scan.sh`.
+- **INCENSE -- WORK IN PROGRESS, `20260910.070937`.** Landed: eight Bhakta lessons in `docs-geode/lessons/` (95-97); two vortex press pages carrying the **Buckmaster and Alpoge** priority record at the door; twelve single-stranded moonshots; the tally-infuse spell; and the first two moonshot witnesses, `wrap_ring` and `cyclic_witness`. **OPEN:** (1) equinox choir census **70 green, 12 red** against a ceiling of **10**, deliberately not raised; (2) the REDS pin holds ~8 bytes with every row OPEN, so **no new red can be booked** until the bound rises on your word; (3) five dated equinox guards pin counts of a growing surface; (4) ten moonshots remain, ranked on their own page. **Corrected:** `glow_desk_run` is NOT hung -- 455s, exit 0 -- and the verdict word is `over_bound`, since a timeout is a claim about the bound as much as the run.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** (`cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (gate %6); the **WADE journey** double-seat (plan in `expanding-prompts/`).
 - **Seated names and breaches** rest on the [third shelf](archive/20260831-023122_itinerary-settled-decisions.md), each walk-back in [`CHECKPOINTS.md`](CHECKPOINTS.md). Live clause: the debride grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; a deep debride takes Keaton's word naming its target.
@@ -50,52 +51,32 @@
 
 **Git nib:** `44c679f035` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
-Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
-**AETHER LISTENS** for a claim retired because it could no longer be checked. My cold open read
-`elf_machine` red at `sites=16`, and I built a class cut plus the control it lacked. **A peer
-landed the same red mid-lap** (`ed76bad18`) with a shared shell lexer, so **mine was dropped
-whole** -- a second control over one census is the friction I exist to lower. What I kept is what
-measuring found in theirs.
-**THE EXCLUSION IS A POPULATION, AND IT WAS INVISIBLE**: every `_control.(sh|rish)`, **244
-files**, printing nothing. `process_reach_scan.sh` states the law over its own single exclusion --
-*an exclusion nobody can see is a claim rather than a measurement* -- and refuses a `*control*`
-PATTERN by name, since it blinds a guard inside every control.
-**THE FIGURE WENT STALE INSIDE ITS OWN COMMIT.** That head reads *exactly one carries a site*; the
-same commit's other half added four to `elf_machine_control.sh`. Read through their own lexer:
-**control_files=2, control_sites=8**, every one a single-quoted argument on a line that begins
-live -- `ll_live`'s per-line bound, standing honestly.
-**BUILT:** the scan splits its population and prints `control_excluded control_files
-control_sites`, **reported and never gated**, since a gate there reds on honest fixtures. Five
-legs prove the counter FALLS when a plant becomes a heredoc, as a counter seen at one value cannot
-be told from a constant. `pass=43 fail=0`. **YOURS:** that control grades **C+** on a peer's
-hour-old head, untouched by me -- rewriting it under its writer is friction rather than repair.
-**PATCHOULI -- A CEILING DECLARED FOUR LINES ABOVE THE STRUCT IT WAS DRAWN FOR, AND READ BY NOTHING.**
-Elder [shelved](archive/20260910-054336_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY**, so this lap pressed each fence post rather than reading its sign.
-`mantra/recall_subscribe_poll.rye` declared `max_mirror_pairs = 4` four lines above the
-`PeerBoltPair` it bounds; `poll_one_cycle` walked `pairs.len` with **no ceiling**, and `poll_cycles`
-cast that length to `u32` unchecked. `tally/gardens.rye` held the milder form: `add` declared itself
-`!void` in `20260620` and returned no error at all, so every `try` was dead syntax and three edges
-stood on asserts a release build removes -- under an `// invariant:` claiming a *copy into a fixed
-buffer of max_name_len*, where the field is a slice.
-**THE HAND WENT THROUGH IN TWO LANES.** 532 `pub const max_*` names across 1,964 tracked sources;
-exactly **two** read by nothing anywhere -- `max_mirror_pairs` and `lotus/mix.rye`'s `max_mix`.
-Fourth firing in four days of a declaration standing ahead of its enforcement (`%678`, `%688`,
-`%689`); the limit case, enforcement nowhere.
-**THE LOOM THE FOURTH FIRING OWED.** `ceiling_teeth` sorts each ceiling into the strongest thing
-its own file does with it -- **refused - structural - cut - derived - asserted-only - unread** --
-gating only `unread`, which needs no judgment; `asserted_only` ratchets, since a repair lands there.
-mantra and tally read **31 declaring: 25/3/1/1/1/0**, from 22/4/1/1/2/1.
-**REPAIRED AND PROVEN:** both poll functions refuse `error.Overflow` at the edge; `Gardens`
-publishes four named refusals weighed in one `admits`, called **before `divide` carves the parent**
--- and `main` reads the parent's bytes back after a refused division. 17 assertions, 13 behaviors,
-a git pen, the repair proven to LEAVE the population rather than stay in it.
-**MY ROW WAS BORN ON A SHELF, TWICE OVER.** I folded `%687` and then `%690` for pin room, and BOTH
-collided with a peer folding the same row in the same hour. So `%696` landed straight onto its own
-shelf, the move `%693` made three hours earlier: a BOOKED row may fold, so a BOOKED row may be born
-there. Hot close **232 guards, `tree_moved=no`, no reds**.
-**YOURS:** whether the other lanes adopt `ceiling_teeth` by naming themselves in its roster row.
+*The BAKERY account is shelved whole on [`archive/20260910-070937_itinerary-landed-accounts.md`](archive/20260910-070937_itinerary-landed-accounts.md).*
+
+**PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
+Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).
+**WATER TASTES, so this lap ran the actual thing up close** -- built the CLI, handed it documents,
+and read what came back. `split_lines` drops the empty token a text ending in `\n` produces, and a
+text ending WITHOUT one produces none, so `x\ny` and `x\ny\n` split to two identical lines.
+`cmd_add` stores that split and nothing beside it: a weave and a commit, **never the file's bytes**.
+**ON METAL:** two pens, two files one byte apart, both answered `HEAD -> 441c3c6fa8b8` and both
+weaves carried digest `7695a361c00e...`. **A content-addressed store gave one address to two
+contents.** Worse than a display fault -- `status` says **clean**, `add` says **unchanged**, in BOTH
+directions, so the store declines the change when asked for it directly.
+**FOUR READINGS GATED, SEVEN REPORTING.** A gate that reds on what no lap may repair is a gate
+somebody turns off, so what a repair must not break is gated and the loss is named under
+`20260910.043900`. `mantra_document_roundtrip` **tier lap**, 8 control legs, 2 breaks caught.
+**DOOR 1 IS PRICED RATHER THAN ARGUED:** the control keeps the token in a pen -- the digests part,
+`add` sees the appended newline, and a three-line terminated file reports **4** where the tree reads
+**3**. That is door 1's whole cost, read off a built binary.
+**YOURS:** which door the document view takes -- keep the token, a terminator flag on the v2 counter
+row, or the file's own bytes as a blob. Doors 2 and 3 each widen a record format.
+**MY OWN COLD OPEN WENT VOID AND I NAMED IT RATHER THAN SPENDING IT**: I edited the tree while the
+pass ran, which is the one thing the card asks a lap not to do. Its transcript carries **three reds
+-- `tracked_link`, `shell_dialect`, `shell_dialect_touch` -- and all three were my own half-written
+files**, each green once finished; a void pass reads a tree nobody shipped. The row of
+`20260910.043900` folded `%688` to make room: REDS stood at **40,948 of 40,960**, twelve bytes, so
+no row could land beside it at all. **17 named guards green** on the tree that shipped.
 
 **DIFFUSER -- THE CLAIM THIS TREE RESTS ON, PULLED NOT BELIEVED.**
 Elder [shelved](archive/20260910-050815_itinerary-landed-accounts.md).
