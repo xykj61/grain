@@ -21,7 +21,7 @@
 #                       perturbation that exits zero and changes nothing, which must read
 #                       `perturb_inert` rather than blame the tool for a sample that never landed.
 #
-# Prints `pass=N fail=N`. Bounded: 19 cases, one pen, two subject repositories.
+# Prints `pass=N fail=N`. Bounded: 34 cases, one pen, two subject repositories.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -180,6 +180,32 @@ check "while editing the subject tree"    yes "$(has "$(cat "$subject/rooms/one.
 ( cd "$subject" && git checkout -q -- rooms/one.md )
 check "and the damage is undone"          yes "$(has "$(cat "$subject/rooms/one.md")" 'a DASH here')"
 
+# THE LANGUAGE LEG, and it is the same sentence the `$0` leg above was written for, one language
+# over. Every stand-in this pen plants is a shell script, so the prover's own `sh <tool>` invocation
+# was never pressed -- and this tree writes 2,407 tracked `.rish` sources against 913 `.sh`, with a
+# standing law molting an operational shell script to Rishi on substantial touch. Handed a Rishi
+# operator the elder prover answered `refused`, over a shell syntax error, in a verdict that reads
+# as the TOOL refusing. A stand-in population narrower than the answerers is the fault %668 booked;
+# a stand-in population narrower in LANGUAGE is that fault wearing a second face.
+cat > "$subject/tools/settler.rish" <<'IN'
+let body = read-file "rooms/two.md"
+if body contains "SETTLED" then exit exit-ok
+let nl = (run ["printf" "\n"]).out
+write-file "rooms/two.md" "${body}SETTLED${nl}"
+IN
+( cd "$subject" && git add -A && git commit -qm "pen: a Rishi operator" ) >/dev/null 2>&1
+
+out=$(run "$subject/tools/settler.rish")
+check "a Rishi operator converges"        yes "$(has "$out" 'verdict=converges')"
+check "rather than reading as refused"    no  "$(has "$out" 'verdict=refused')"
+check "and the subject tree is untouched" no  "$(has "$(cat "$subject/rooms/two.md")" 'SETTLED')"
+
+# BOTH DIRECTIONS. The elder prover is this one with the Rishi branch of `run_subject` deleted -- a
+# single line -- so what the pair measures is the dispatch and nothing beside it.
+sed '/\*\.rish) ( cd "\$pen" \&\& "\$RISHI_BIN"/d' "$prove" > "$pen/shellonly_prove.sh"
+out=$( ( cd "$subject" && sh "$pen/shellonly_prove.sh" "$subject/tools/settler.rish" 2>&1 ) || true)
+check "the shell-only prover cannot"      no  "$(has "$out" 'verdict=converges')"
+
 # THE PERTURB PAIR. One operator, one repository, and only the sample between them differs -- which
 # is the only way to show `--perturb` is doing the work rather than the operator or the tree.
 out=$(run_settled "$ops/settle.sh")
@@ -215,7 +241,7 @@ fi
 
 # SAID OUT LOUD, because `check` prints only on failure: a witness asserting on a failure message
 # would be asserting on text that appears only when this control is broken.
-echo "coverage: mode divergence, the perturb pair, a no-op perturbation, both refusal shapes, an in-tree operator rooted at \$0, and the elder prover's own leak were each exercised"
+echo "coverage: mode divergence, the perturb pair, a no-op perturbation, both refusal shapes, an in-tree operator rooted at \$0, a Rishi operator against a shell-only prover, and the elder prover's own leak were each exercised"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

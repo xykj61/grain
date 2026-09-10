@@ -68,7 +68,7 @@
 #
 # WHAT IS STILL OWED, and it reaches further than this repair. `tools/c/convergence_prove.sh`
 # classifies by RUNNING, which is the reading that settles the question -- and it invokes a tool as
-# `sh <tool> <one-path>`. Nine of the ten candidates answer to a flag rather than a path: they are
+# `<tool> <one-path>`. Nine of the ten candidates answer to a flag rather than a path: they are
 # whole-tree operators driven by `--apply`, `--check`, or a `dry|apply` mode, so answering for them
 # wants a prover this tree has yet to build. The one that does fit, `ascii_document_convert.sh`,
 # reads `verdict=converges` on a triggering sample and stands in the unproven column here, since a
@@ -111,6 +111,19 @@
 # dropped from its own set, so a tool naming the prover in its own source certifies nothing, and a
 # comment naming both is prose. `candidates_proven` counts a tool once however many ways it is
 # proven, so the two splits may sum above it and the total is the one to read.
+#
+# AND THE POPULATION IS SHELL-SHAPED BY CONSTRUCTION, measured `20260909.185835` and named here
+# rather than repaired, because the repair is its own lap. The write-detection above greps three
+# shell idioms -- `sed -i`, `cat >`, `printf >` -- so a Rishi tool writing through `write-file` can
+# never be a candidate however much of the tree it rewrites. On the day both provers learned to run
+# a Rishi subject and `tools/r/readme_metrics.rish` and `tools/g/geode_libraries.rish` were each
+# proven `verdict=converges` on a perturbed pen, this census read exactly what it read before: 12
+# candidates, 9 proven, 3 unproven. Two of the three pages `tools/hooks/pre-commit` regenerates on
+# EVERY commit had gone from unproven to proven and no number here moved, because neither was ever
+# in the denominator. The tree holds 2,450 tracked `.rish` sources against 939 `.sh`, and
+# `construction/ITINERARY.md` seats *an operational shell script molts to Rishi on substantial
+# touch*, so this blindness widens on exactly the laps that follow the law. A reading whose
+# population is picked by one language's syntax is a reading of that language.
 #
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell

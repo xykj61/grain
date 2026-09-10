@@ -326,7 +326,7 @@ tier lap
 seated 20260908.005205
 
 # convergence_tree_prove -- the nine of ten candidates that answer to a flag rather than a path.
-# `convergence_prove` invokes a tool as `sh <tool> <one-path>`, and nine of the ten the census finds
+# `convergence_prove` invokes a tool with ONE path, and nine of the ten the census finds
 # are whole-tree operators driven by `apply`, `write`, or `--check`, so no prover could reach them
 # and the column read whether somebody wrote a check rather than whether the tool converges. Here
 # the subject is a repository: the pen is a `git worktree` checkout of HEAD, the comparison is

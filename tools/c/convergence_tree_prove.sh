@@ -3,7 +3,7 @@
 # whether the second run changes anything.
 #
 # WHY A SECOND PROVER. `tools/c/convergence_prove.sh` settles the question by RUNNING, and it
-# invokes a tool as `sh <tool> <one-path>`. Measured `20260908.190452`, nine of the ten tools
+# invokes a tool with ONE path. Measured `20260908.190452`, nine of the ten tools
 # `tools/c/convergence_census.sh` finds answer to a FLAG rather than a path -- `apply`, `write`,
 # `--check`, a `dry|apply` mode -- because they are whole-tree operators that find their own work.
 # So the census column reads whether somebody WROTE an idempotence check, and for nine of ten
@@ -113,6 +113,38 @@ if [ -n "$TOOL_REL" ]; then
   RUN_TOOL="$pen/$TOOL_REL"
 fi
 
+# THE INTERPRETER FOLLOWS THE SUBJECT'S LANGUAGE, and until `20260909` it did not. Both runs below
+# read `sh "$RUN_TOOL"`, so a Rishi operator was parsed as shell: handed
+# `tools/r/readme_metrics.rish write`, the prover answered `verdict=refused -- the first run exited
+# non-zero` over a shell syntax error, which reads as the TOOL refusing when what happened is the
+# prover not speaking its language. The reach this costs grows rather than shrinks: this tree holds
+# 2,407 tracked `.rish` sources against 913 `.sh`, and `construction/ITINERARY.md` seats
+# *an operational shell script molts to Rishi on substantial touch*, so every time that law is
+# followed a subject leaves this prover's reach. Two of the three pages `tools/hooks/pre-commit`
+# regenerates on EVERY commit -- `tools/r/readme_metrics.rish` and `tools/g/geode_libraries.rish` --
+# are Rishi, and neither had ever been asked whether it converges.
+#
+# THE INTERPRETER IS RESOLVED FROM THE PROVER'S OWN PATH, never from the pen or the subject
+# repository, because `rishi/bin/rishi` is a built binary this tree does not track: a `git worktree`
+# pen holds no copy of it, and a pen repository a control builds has no Rishi anywhere. The subject
+# is the pen's, so `$0` resolves inside the pen; the interpreter is the machine's.
+RISHI_BIN=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)/rishi/bin/rishi
+case "$TOOL" in
+  *.rish)
+    # invariant: a Rishi subject is refused by name rather than fed to a shell that cannot read it.
+    [ -x "$RISHI_BIN" ] || { echo "refused: no rishi interpreter at $RISHI_BIN -- a Rishi subject needs one" >&2; exit 2; }
+    ;;
+esac
+
+# invariant: one dispatch, written once, so the two runs below can never disagree about how the
+# subject is invoked -- a prover whose runs differ proves nothing about the tool.
+run_subject() {
+  case "$TOOL" in
+    *.rish) ( cd "$pen" && "$RISHI_BIN" run "$RUN_TOOL" "$@" ) ;;
+    *) ( cd "$pen" && sh "$RUN_TOOL" "$@" ) ;;
+  esac
+}
+
 state() { git -C "$pen" add -A >/dev/null 2>&1; git -C "$pen" write-tree; }
 
 baseline=$(state)
@@ -134,7 +166,7 @@ if [ -n "$PERTURB" ]; then
 fi
 before=$(state)
 
-if ! ( cd "$pen" && sh "$RUN_TOOL" "$@" ) >"$pen/.run1.out" 2>&1; then
+if ! run_subject "$@" >"$pen/.run1.out" 2>&1; then
   echo "tool=$TOOL"
   echo "verdict=refused"
   echo "detail: the first run exited non-zero -- no convergence claim can be made"
@@ -154,7 +186,7 @@ if [ "$before" = "$after_one" ]; then
   exit 0
 fi
 
-if ! ( cd "$pen" && sh "$RUN_TOOL" "$@" ) >"$pen/.run2.out" 2>&1; then
+if ! run_subject "$@" >"$pen/.run2.out" 2>&1; then
   second_said=$(sed 's/^/  /' "$pen/.run2.out" | head -5)
   rm -f "$pen/.run2.out"
   # A REFUSAL IS NOT YET A VERDICT -- ASK THE TREE. A tool that refuses its own output and leaves the
