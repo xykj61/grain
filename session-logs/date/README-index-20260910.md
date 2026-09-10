@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.162636` | [The lap out of the box](20260910/20260910-162636_out-of-the-box.kyri) | a dead-letter lap recovered, merged against a peer's strand, proven both sides |
 | `20260910.161758` | [a census counted two reads as plants](20260910/20260910-161758_a-census-counted-two-reads-as-plants.kyri) | `>&2` is not a write; 67 -> 66 |
 | `20260910.160342` | [A ratchet that named its own repair](20260910/20260910-160342_the-ratchet-that-named-its-own-repair.kyri) | 538 per mille back to 534, law ceiling 14 to 9 |
 | `20260910.152944` | [The compressor shelf joins the register meter](20260910/20260910-152944_the-compressor-shelf-joins-the-register-meter.kyri) | docs/ joins at zero over, ceiling held |
@@ -21,6 +22,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.141741` | [OPEN after its own repair](20260910/20260910-141741_the-row-that-read-open-after-its-repair.kyri) | a stale row folded; the pin meter names the fleet's door |
 | `20260910.141700` | [The one allocation nobody bounded](20260910/20260910-141700_the-one-allocation-nobody-bounded.kyri) | a process is an allocation, and nothing names its max |
 | `20260910.140304` | [A control that reached its last line](20260910/20260910-140304_the-legs-nobody-counted.kyri) | the register pen's legs, counted at last |
+| `20260910.133904` | [The proof that became the bill](20260910/20260910-133904_the-proof-that-became-the-bill.kyri) | the falsifier answers 8.7x; the control is now 82% of the guard |
 | `20260910.125501` | [The runs ledger named which round](20260910/20260910-125501_the-runs-ledger-named-which-round.kyri) | a dead send found by name; the ferry now proves each body |
 | `20260910.121514` | [The widening that cost one file](20260910/20260910-121514_the-widening-that-cost-one-file.kyri) | brix joins the TAME style roster |
 | `20260910.115926` | [A share named the page and never the sentences](20260910/20260910-115926_a-share-named-the-page.kyri) | the whole law room priced at 77 sentences |
