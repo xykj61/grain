@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260909.201318` | [Overtaken twice](20260909/20260909-201318_overtaken-twice.kyri) | Bakery; two keystones lost to peers, and the reading that survived |
+| `20260909.195052` | [Four hands, two lanterns](20260909/20260909-195052_four-hands-two-lanterns.kyri) | Both my reds were closed by peers mid-rebase; the document plants survived. |
 | `20260909.193711` | [Two provers, two names](20260909/20260909-193711_two-provers-two-names-one-fact.kyri) | Grass; a write-once contract read two ways |
 | `20260909.191931` | [A guard proven able to red](20260909/20260909-191931_a-guard-proven-able-to-red.kyri) | Copal; a delegating guard given a control, the fleet's ceiling back at 53 |
 | `20260909.174019` | [The name a refusal hands back](20260909/20260909-174019_the-name-a-refusal-hands-back.kyri) | A refusal named the path it derived; now it asks the owner |
