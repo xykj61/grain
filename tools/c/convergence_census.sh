@@ -196,12 +196,16 @@
 # that is now closed, and a column that can only ever read zero is a tautology wearing a
 # measurement's clothes. What it found is kept above, where a reader meets it as a finding.
 #
-# WHAT STILL STANDS, named rather than hidden: `upstream_shape_scan.sh` is admitted by the name
-# strand on a `"$f"` written inside a `git filter-branch --tree-filter` string, in a `mktemp -d`
-# pen -- a pen write wearing an enumerated destination's clothes. The git strand cannot refuse it,
-# since `$f` resolves to no literal at all, and reading it wants seeing inside a quoted argument.
-# That is the same capability `rye_spoken_ascii_scan.sh` already walks, and it is the next post on
-# this fence rather than this lap's.
+# THAT FENCE POST WAS PAID (`20260909.233000`), and it took a THIRD strand rather than a better
+# pattern. `upstream_shape_scan.sh` was admitted by the name strand on a `"$f"` written inside a
+# `git filter-branch --tree-filter` string, in a `mktemp -d` pen -- a pen write wearing an
+# enumerated destination's clothes. Neither strand could refuse it, because both read a matched
+# SPAN and a span carries no position: `$f` there is filter-branch's own loop variable and resolves
+# to no literal, while `"$f"` is exactly the shape the name list exists to admit. `live_lines`
+# below walks the file as a shell lexer and reads a write only off a line standing outside every
+# quoted region. Measured on this tree: **13 -> 12 candidates**, unproven 3 -> 2, `name_only`
+# 8 -> 7, `candidates_proven` unchanged at 10, and the single departure is that file -- one strand
+# moved, one member out, which is what the four cancelling cures above never managed.
 #
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
@@ -224,6 +228,92 @@ MAX_REPORT=200
 # below stays finite however widely a path is cited. The widest name in this tree today is written
 # by 3 other tools, so the bound has never bitten.
 MAX_SIBLINGS=200
+
+# THE THIRD STRAND: A WRITE INSIDE SOMEBODY ELSE'S QUOTED ARGUMENT IS NOT THIS TOOL'S WRITE
+# (`20260909.233000`). Both strands above read a MATCHED SPAN off a line, and neither asks where
+# that line SITS. A shell script may carry a hundred lines inside one quoted argument -- an embedded
+# `awk` program, a `git filter-branch --tree-filter` body, a heredoc fed to another interpreter --
+# and text inside such an argument is data this tool hands to another command rather than a write
+# this tool performs.
+#
+# `upstream_shape_scan.sh` was the standing false positive the header named as the next post: its
+# only admitting write is `ca[t] "$f.t" > "$f"` on line 150, inside a single-quoted
+# `--tree-filter` string opened on line 146, run by `git filter-branch` against its own
+# `mktemp -d` pen. The git strand cannot refuse it, since `$f` there is filter-branch's loop
+# variable and resolves to no literal at all; the name strand admits it precisely because `"$f"` is
+# the enumerated-destination shape. Neither can see the enclosure, because a span carries no
+# position.
+#
+# `live_lines` walks the file as a shell lexer -- single quotes, double quotes with backslash
+# escapes, unquoted `#` comments, and heredocs including the `<<-` and quoted-delimiter forms --
+# and emits only the lines a write may honestly be read from: outside every quoted region, and not
+# a whole-line comment. Measured on this tree the same stamp: **406 of 3,322 tracked tool sources
+# carry at least one held line**, most of them embedded `awk` programs, and exactly **one**
+# candidate's admission rested on one.
+#
+# PROVEN BY ITS OWN EXIT STATE, which is the check that says the lexer tracks rather than drifts: a
+# well-formed shell script ends outside every quote, so the walker's final state is the reading.
+# Across the same 3,322 sources it ends OUT on **3,321**. The one exception is
+# `tools/l/launch-claude-chapter.rish:83`, a Rishi `say` line carrying three double quotes, and it
+# is an honest limit rather than a lexer fault: **Rishi is not shell**, and this walker is a shell
+# lexer applied to a corpus the write-detection above already picks by shell syntax. A `.rish`
+# source whose quoting differs desyncs the walk from that line to the file's end, which can only
+# ever WITHHOLD lines from the write reading -- so the failure direction is a missed candidate
+# rather than a false one, and the census reports rather than gates.
+MAX_LINES=20000
+live_lines() {
+  # live_lines <file> -- the lines a write may be read from. Bounded at MAX_LINES; the widest
+  # tracked tool today is under 3,000 lines, so the bound has never bitten.
+  # invariant: every emitted line began outside every quoted region, so a matched write is one this
+  # tool performs rather than text it hands to another command.
+  awk -v max="$MAX_LINES" '
+    BEGIN { st = "OUT"; hd = ""; hdstrip = 0 }
+    NR > max { exit }
+    {
+      if (st == "OUT" && $0 !~ /^[[:space:]]*#/) print
+      if (st == "HD") {
+        t = $0
+        if (hdstrip) sub(/^[ \t]+/, "", t)
+        if (t == hd) { st = "OUT"; hd = "" }
+        next
+      }
+      s = $0; len = length(s); i = 1
+      while (i <= len) {
+        c = substr(s, i, 1)
+        if (st == "SQ") { if (c == "'\''") st = "OUT"; i++; continue }
+        if (st == "DQ") {
+          if (c == "\\") { i += 2; continue }
+          if (c == "\"") st = "OUT"
+          i++; continue
+        }
+        if (c == "\\") { i += 2; continue }
+        if (c == "'\''") { st = "SQ"; i++; continue }
+        if (c == "\"") { st = "DQ"; i++; continue }
+        if (c == "#") {
+          p = (i == 1) ? " " : substr(s, i - 1, 1)
+          if (p == " " || p == "\t" || p == ";" || p == "(" || p == "&" || p == "|") break
+          i++; continue
+        }
+        if (substr(s, i, 2) == "<<") {
+          rest = substr(s, i + 2)
+          hdstrip = 0
+          if (substr(rest, 1, 1) == "-") { hdstrip = 1; rest = substr(rest, 2) }
+          if (substr(rest, 1, 1) == "<") { i += 3; continue }
+          sub(/^[ \t]*/, "", rest)
+          q = substr(rest, 1, 1)
+          if (q == "'\''" || q == "\"") {
+            d = rest; sub(/^./, "", d); idx = index(d, q)
+            if (idx > 0) { hd = substr(d, 1, idx - 1); st = "HD" }
+          } else if (match(rest, /^[A-Za-z_][A-Za-z0-9_]*/)) {
+            hd = substr(rest, 1, RLENGTH); st = "HD"
+          }
+          break
+        }
+        i++
+      }
+    }
+  ' "$1" 2>/dev/null
+}
 
 # THE WRITE SHAPES, AND THE TARGET TEST, EACH WRITTEN ONCE. Two readings ask the same question of
 # the same file -- every line, and non-comment lines only -- so one spelling serves both and they
@@ -367,7 +457,7 @@ while IFS= read -r f; do
   # `$shelf` writes by the git strand below. That is why this could only move together with it:
   # dropping comments alone took the two busiest writers out with the false one, which is the shape
   # the header calls two faults whose errors cancel.
-  writes=$(grep -vE '^[[:space:]]*#' "$f" 2>/dev/null | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
+  writes=$(live_lines "$f" | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
   [ -n "$writes" ] || continue
   by_name=no; by_git=no
   target_admits "$writes" && by_name=yes
