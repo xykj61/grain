@@ -1,4 +1,4 @@
-# STOA 100s — claim index
+# STOA 100s -- claim index
 
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -8,4 +8,4 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 | Waymark | Claim | Path |
 |---------|-------|------|
-| _(empty — first new 100s claim lands here)_ | | |
+| _(empty -- first new 100s claim lands here)_ | | |

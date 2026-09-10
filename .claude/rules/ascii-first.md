@@ -98,6 +98,19 @@ two half-episode numbers, `ep031.5` and `ep037.5`, whose ASCII form the tree had
 twice in its own waymarks. The ratchet fell **2,773 to 1,336** and the ceiling **2,780 to 1,343**,
 keeping the same seven of slack.
 
+**Then the class was read instead of the page** (`20260910.061813`). Every sweep before this one
+took the biggest single file; this one took the biggest single **kind**. Living `README.md` pages --
+the front doors, the page a newcomer meets first -- carried **573 characters across 26 of them, 43
+percent of the remaining 1,336**, spread thin enough that no page-at-a-time reading would ever have
+reached them: the largest held 133 and the median 19. **All 573 are gone:** 564 converted by the
+table and proven by re-deriving each page from its committed bytes, and **nine read by hand**, every
+one taking a spelling the tree had already written elsewhere -- `3x39` from the very filename the
+sentence links, `(2^8/2^16/2^32)` from `kumara/tilak.rye:23`, the module source that page describes,
+and `a^254` from the form `crypto/` writes throughout. The ratchet fell **1,336 to 763** and the
+ceiling **1,343 to 770**, keeping the same seven of slack. **The lesson is which axis to read
+along:** a ratchet sorted by file names the loudest page, and a ratchet sorted by KIND names the
+readers being served badly.
+
 **The one character a hand had to read twice was one the table already named.** The rule's table
 has spelled the **typographic minus** since seating, the Rye comment sweep converted 1,164 of them
 on `20260908.224742` on exactly that authority -- and neither `ascii_document_scan.sh` nor
