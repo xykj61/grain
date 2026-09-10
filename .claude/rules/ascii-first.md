@@ -39,8 +39,9 @@ since. Run the scan rather than trusting either; every one is named here so you 
 
 **Documents** -- the subject this rule names FIRST, and the last to earn a meter over its whole
 subject (seated `20260906.133344`): `tools/a/ascii_document_witness.rish` over
-`tools/fixtures/a/ascii_document_scan.sh`. It gates `.claude/rules/*.md` and `.cursor/rules/*.mdc`
-at zero -- **104 pages, 0 characters** -- and holds every other living tracked `.md` and `.mdc`
+`tools/fixtures/a/ascii_document_scan.sh`. It gates `.claude/rules/*.md`, `.cursor/rules/*.mdc`,
+and -- from `20260910.043000` -- `docs/*.md` at zero, reading **104 pages, 0 characters** on the
+lap it was seated, and holds every other living tracked `.md` and `.mdc`
 under a ceiling that only falls: **3,331 of 3,331** across 72 of 334 pages, read `20260908.052550`.
 Dated basenames, the `date/`, `archive/` and `yonder/` shelves, `gratitude/`, `vendor/`, `seed/`,
 and every `fixtures/` path are read past, each for its own named reason -- the planted mojibake
@@ -60,7 +61,7 @@ in `RADIANT_STYLE.md` read one at a time into the tree's own **Prefer** and **Ra
 directories.** `ascii_document_scan.sh` derives its enforced set from the rule rooms' own links and
 backticked paths, keeps every living tracked page it finds, and reads past what the ratchet reads
 past -- dated testimony, closed stacks, vendored sources, fixtures, and a citation this tree does
-not carry. It stands at **110 globbed plus 33 derived, 143 pages, zero characters**.
+not carry. It stood at **110 globbed plus 33 derived, 143 pages, zero characters**; with the compressor shelf below it reads **125 globbed plus 33 derived, 158 pages, zero characters**.
 
 **Derived rather than typed, for the reason the globs are globs:** a page the law begins citing
 tomorrow is walled the day it lands, where a name list waits for somebody to remember it. The one
@@ -76,6 +77,40 @@ could not locate. The widening also refused two pins the elder reading called cl
 the table above spells -- both swept and proven by re-derivation from their committed bytes. The
 ratchet fell **3,324 to 3,225** as those characters left it, and the ceiling fell **3,331 to 3,232**,
 keeping the seven of slack it already stood on and taking none of the ninety-nine.
+
+**Then the wall reached past the law, and the two rosters came apart** (`20260910.043000`). The
+compressor shelf of [`docs/`](../../docs/README.md) is the room `MAP.md` sends a newcomer to, and it
+carried **452 characters across 12 of its 15 pages** -- 14 percent of the whole tree's remaining
+ratchet in one small teaching room, held by nothing, since no rule page cites a compressor and the
+derivation therefore could never reach it. All 452 are gone: **450** were forms the table above
+spells, converted and proven by re-derivation from their committed bytes, and **two** were read by
+hand, a section sign becoming the word and a multiplication sign becoming `x` in a screen
+resolution. `docs/*.md` joined the wall, the ratchet fell **3,225 to 2,773** and the ceiling
+**3,232 to 2,780**, keeping the same seven of slack and taking none of the 452.
+
+**The wall names who is HELD; the seed names whose citations are CANON.** One roster served both
+jobs while it held only law rooms, and widening it made the difference matter: seeded from `docs/`,
+every page a compressor links would have become canon. A rule room tells a reader which page to
+read **first**, and that is a claim about law; a teaching room's links are links. So the scan
+carries `ENFORCE_GLOBS` and `DERIVE_GLOBS` apart, and the derived roster still reads the two rule
+rooms alone.
+
+**Widening also found the fault that only widening could find.** Three readers asked whether a page
+was walled -- the enforce loop, the derived roster, the ratchet -- and each answered by **typing the
+roster again**. So the first widened run counted `docs/ZETA.md` in both rosters and priced its 43
+characters **twice**. The set is enumerated once now, from the tracked listing, and all three ask it
+the same question. Two further hazards rode in the elder spelling, each proven in the pen by
+mutation: `for f in docs/*.md` **splits a path on a space**, so a spaced page inside a walled room
+falls out of the wall in silence; and a `case` pattern's `*` **crosses a slash** where pathname
+expansion's does not, so `docs/redacted/a-note.md` would leave the ratchet for a wall that never
+enumerated it. **A walled room also reads dated testimony past** -- accrete-never-break outranks the
+wall, and a teaching shelf may hold a dated page where a rule room never does.
+
+**And the pen was speaking to a gate that heard 46 of its 82 readings.** `control_verdict=ok` says
+only that the control reached its last line, so every one of the sixteen legs proving the derived
+canon -- written the day before, and the whole substance of that widening -- could have read `no`
+under a GREEN witness. The control tallies its own legs now and the witness asserts
+`control_failed=0` beside the named readings, so a leg written tomorrow is heard the day it lands.
 
 **Code comments**, in every comment syntax this tree authors: `tools/as/ascii_comment_witness.rish` holds three meters under ceilings that only fall -- `tools/fixtures/r/rye_comment_ascii_scan.sh` for `//`, `///`, and `//!` in Rye, `tools/fixtures/s/shell_comment_ascii_scan.sh` for `#` in Rishi and shell, and `tools/fixtures/g/glow_comment_ascii_scan.sh` for `::` in Glow. Each refuses to count **program content**, which is the distinction that makes a sweep safe: a Rye `\\` multiline string and a shell heredoc body are what a program prints or feeds onward, so converting them would change behavior rather than register. Glow needs no such exclusion, and the reason is the language's own: `glow/tokens.rye:239` refuses a newline inside a cord literal, so no Glow literal reaches a second line to open one with `::`. All three are proven on planted repositories, and every ceiling is proven from both sides -- one character past it refuses, and removing the plant returns the reading to green -- since a refusal proven only in the passing direction cannot be told from a bypass.
 

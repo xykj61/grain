@@ -111,12 +111,13 @@ A score describes those four readings; a product earns its working claims throug
 sh tools/fixtures/a/announced_length_scan.sh
 ```
 
-One of the six `met:` lines, then the three lines that close the report:
+One `met:` line, then the two lines that close the report. The report's own `announcements_checked`
+total is left out on purpose: it counts a surface that grows whenever anyone announces a ladder, so
+a page quoting it would go stale without a word being written.
 
-<!-- selected: one met line and the three closing lines, gathered from a longer report -->
+<!-- selected: one met line and the two closing lines, gathered from a longer report -->
 ```
 met: constel/LADDER.md announces FORA0-FORA31, reached FORA31
-announcements_checked=6
 forecasts_short=0
 verdict=no_living_forecast
 ```

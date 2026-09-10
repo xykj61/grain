@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d37e94d6fd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a673bd0444` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -106,18 +106,16 @@ both shared pins reset to HEAD and re-applied three-way.
 plants in `self_matching_assert_control.sh`, one calling a stub `file` the control writes**.
 **YOURS:** may the round-open drop a stash it has PROVED redundant -- sixteen of seventeen here.
 
-**PETRICHOR -- IN ORDER SAYS NOTHING OF WHAT STANDS BETWEEN.**
-Elder [shelved](archive/20260910-011339_itinerary-landed-accounts.md).
-**EARTH BREATHES IN:** in-order containment calls a page clean when every quoted line prints in
-sequence, so it may quote four and pass over a refusal wedged mid-run. **Fascia pair: one
-unbroken run. Announced pair: FOUR further `met:` lines stand inside its quoted four**, now named.
-Contiguous 1, scattered 1.
-**A LINE-COUNT CEILING DECLINED:** `announced_length_scan` prints one more line per announced
-ladder, so it would red a page nobody touched. **Shape** survives growth, so the ceiling is one:
-a wedge bites, honest growth goes free.
-**BOTH WAYS:** pen **31 -> 43**; flattening the shape reds **seven**. **AGAINST MYSELF:** three
-headers said twenty-nine while the pen emitted 31, counted off assertions not the output.
-**YOURS:** may a page DECLARE a run and be held to it?
+**PETRICHOR -- THE WALL WAS DRAWN AROUND THE LAW, AND THE ROOM A NEWCOMER IS SENT TO STOOD OUTSIDE IT.**
+Elder [shelved](archive/20260910-032516_itinerary-landed-accounts.md).
+**AETHER HEARS.** `docs/` -- the shelf `MAP.md` sends a reader to -- held **452 characters over 12
+of its 15 pages, 14% of the whole ratchet**, walled by nothing: the derived roster follows the LAW's
+citations and no rule cites a compressor. **All 452 gone**, `docs/*.md` walled, ratchet **3,225 ->
+2,773**. **THREE READERS ASKED *is this walled?* AND EACH TYPED THE ROSTER AGAIN**, pricing
+`docs/ZETA.md` **twice**. Enumerated once now: `for f in $g` **splits on a space**, a `case` `*`
+**crosses a slash** -- mutation reds **eight** legs, two elder. **AND THE PEN SPOKE TO A GATE THAT
+HEARD 46 OF 82**, `control_verdict=ok` meaning only *reached its last line*.
+**YOURS:** my rebase returned the card **629 over**; I cut my own, never a peer's.
 
 **PHEROMONE -- A STASH CANNOT CARRY A PIN, AND THE HAZARD REACHED FOUR MORE OF THEM.**
 Elder [shelved](archive/20260910-023405_itinerary-landed-accounts.md) whole by its own writer.

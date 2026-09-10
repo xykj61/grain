@@ -33,19 +33,25 @@ DOT=$(printf '\302\267')         # middle dot -- on the table, and two bytes rat
 SEC=$(printf '\302\247')         # section sign -- NOT on the table, so a reader chooses
 CHK=$(printf '\342\234\246')     # four-pointed star -- not on the table either
 
-# A repository with a rule room, a Cursor room, and a documents room. Every pen starts clean.
+# A repository with the two rule rooms, the walled teaching room, and an ordinary one. Every pen
+# starts clean.
+#
+# `guide/` IS THE ORDINARY ROOM AND `docs/` THE WALLED ONE, which is what the tree itself reads: the
+# compressor shelf joined the wall on `20260910.043000`. A pen calling `docs/` ordinary would prove
+# the ratchet's legs against a page the gate now holds, so every leg below names the room it means.
 build() {
   d=$pen/$1
-  mkdir -p "$d/.claude/rules" "$d/.cursor/rules" "$d/docs"
+  mkdir -p "$d/.claude/rules" "$d/.cursor/rules" "$d/docs" "$d/guide"
   ( cd "$d" \
     && git init -q . \
     && git config user.email pen@example.invalid \
     && git config user.name Pen \
     && printf '# a rule, plainly written\n' > .claude/rules/one.md \
     && printf '# the twin, plainly written\n' > .cursor/rules/one.mdc \
-    && printf '# a document, plainly written\n' > docs/GUIDE.md \
+    && printf '# a compressor, plainly written\n' > docs/COMPRESS.md \
+    && printf '# a document, plainly written\n' > guide/GUIDE.md \
     && git add -A \
-    && git commit -qm 'pen: one rule, one twin, one document' ) >/dev/null 2>&1
+    && git commit -qm 'pen: two rules, one compressor, one document' ) >/dev/null 2>&1
   echo "$d"
 }
 
@@ -55,7 +61,21 @@ seal() { ( cd "$1" && git add -A && git commit -qm 'pen: the plant' ) >/dev/null
 run_scan() { ( cd "$1" && shift && sh "$scan" "$@" 2>/dev/null; ) }
 run_scan_env() { d=$1; shift; ( cd "$d" && env "$@" sh "$scan" 2>/dev/null; ) }
 
-say() { echo "$1=$2"; }
+# EVERY LEG IS TALLIED, because a reading nobody names is a reading nobody hears. Measured
+# `20260910.043000`: this pen emitted 46 readings the witness asserted and 21 it did not, and
+# `control_verdict=ok` says only that the control reached its own last line. So all sixteen legs
+# proving the derived canon -- seated a day earlier, and the whole substance of that widening --
+# could each have read `no` under a GREEN gate. The tally is derived here rather than typed there,
+# for the same reason the walled set is: a leg added tomorrow is heard the day it lands, where a
+# list of assert lines waits for somebody to remember it. The named asserts stay, since each
+# carries the sentence a reader repairs by; this is the floor beneath them.
+legs=0
+failed=0
+say() {
+  legs=$((legs + 1))
+  [ "$2" = yes ] || failed=$((failed + 1))
+  echo "$1=$2"
+}
 holds() { # holds <name> <output> <pattern>
   case "$2" in *"$3"*) say "$1" yes ;; *) say "$1" no ;; esac
 }
@@ -99,30 +119,30 @@ holds enforce_is_a_glob_not_a_list "$(run_scan "$d")" 'detail_path=.claude/rules
 
 # A page the rule room names in a BACKTICK -- how the law writes canon most of the time.
 d=$(build cited_backtick)
-printf '# a rule\n\nRead `docs/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
-printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+printf '# a rule\n\nRead `guide/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
 out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
-holds derived_backtick_refuses "$out" 'detail_path=docs/GUIDE.md'
+holds derived_backtick_refuses "$out" 'detail_path=guide/GUIDE.md'
 holds derived_backtick_is_enforced "$out" 'enforce=failed'
 holds derived_backtick_counted "$out" 'enforce_derived=1'
 # lift the plant in the same pen: the refusal must let go, or it is a latch
-printf '# a document -- written carefully\n' > "$d/docs/GUIDE.md"
+printf '# a document -- written carefully\n' > "$d/guide/GUIDE.md"
 seal "$d"
 holds derived_backtick_lift_green "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'enforce=honored'
 
 # The same page, cited as a MARKDOWN LINK with a `../../` prefix, which is the other shape.
 d=$(build cited_link)
-printf '# a rule\n\nSee [the guide](../../docs/GUIDE.md).\n' > "$d/.claude/rules/one.md"
-printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+printf '# a rule\n\nSee [the guide](../../guide/GUIDE.md).\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
-holds derived_link_refuses "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'detail_path=docs/GUIDE.md'
+holds derived_link_refuses "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'detail_path=guide/GUIDE.md'
 
 # THE OTHER SIDE, and the one that keeps the widening honest: a page NO rule names stays in the
 # ratchet, where a ceiling prices it rather than a gate refusing it.
 d=$(build uncited_stays_ratchet)
 printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
-printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
 out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
 holds uncited_not_enforced "$out" 'enforce=honored'
@@ -132,17 +152,17 @@ holds uncited_is_ratcheted "$out" 'ratchet_dirty_files=1'
 # A CITED PAGE IS PRICED ONCE. Counted in both rosters it would pay twice, and a ceiling could
 # then fall for a repair the gate had already required.
 d=$(build cited_counted_once)
-printf '# a rule\n\nRead `docs/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
-printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+printf '# a rule\n\nRead `guide/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
 holds cited_left_the_ratchet "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'ratchet_dirty_files=0'
 
 # The law cites paths this repository does not carry -- examples, fossils, other trees. Only a
 # TRACKED page can be held to anything, so an untracked citation is read past rather than guessed.
 d=$(build cited_untracked)
-printf '# a rule\n\nRead `docs/ABSENT.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a rule\n\nRead `guide/ABSENT.md` first.\n' > "$d/.claude/rules/one.md"
 seal "$d"
-printf '# never committed %s\n' "$EM" > "$d/docs/ABSENT.md"
+printf '# never committed %s\n' "$EM" > "$d/guide/ABSENT.md"
 out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
 holds cited_untracked_read_past "$out" 'enforce=honored'
 holds cited_untracked_uncounted "$out" 'enforce_derived=0'
@@ -150,7 +170,7 @@ holds cited_untracked_uncounted "$out" 'enforce_derived=0'
 # A rule citing DATED testimony leaves it alone: accrete-never-break outranks the wall, and the
 # ratchet reads the same basename past for the same reason.
 d=$(build cited_testimony)
-mkdir -p "$d/docs"
+mkdir -p "$d/guide"
 printf '# a rule\n\nSee `docs/20260906-131411_a-note.md`.\n' > "$d/.claude/rules/one.md"
 printf 'testimony %s kept\n' "$EM" > "$d/docs/20260906-131411_a-note.md"
 seal "$d"
@@ -179,25 +199,102 @@ holds cited_sibling_uncounted "$(run_scan "$d")" 'enforce_derived=0'
 # can leave this wall by an edit made somewhere else, and a number nobody prints is a drop nobody
 # sees.
 d=$(build derived_membership_printed)
-printf '# a rule\n\nRead `docs/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a rule\n\nRead `guide/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
 seal "$d"
 out=$(run_scan "$d")
 holds derived_membership_reported "$out" 'enforce_derived=1'
-holds globbed_membership_reported "$out" 'enforce_globbed=2'
+holds globbed_membership_reported "$out" 'enforce_globbed=3'
 # and the drop is legible: the rule stops citing, the count falls
 printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
 seal "$d"
 holds derived_drop_is_visible "$(run_scan "$d")" 'enforce_derived=0'
 
+# --- 1c. the wall and the seed are two rosters ------------------------------------------------
+#
+# The wall names who is HELD at zero; the seed names whose citations are CANON. One roster served
+# both jobs while it held only law rooms, and the day a teaching room joined, the two came apart:
+# every page `docs/` links would have become canon, and a page in both rosters was counted twice.
+
+# A teaching room is held on its own account, with no rule naming it.
+d=$(build walled_room_held)
+printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
+printf '# a compressor %s written carelessly\n' "$EM" > "$d/docs/COMPRESS.md"
+seal "$d"
+out=$(run_scan "$d")
+holds walled_room_refuses "$out" 'enforce=failed'
+holds walled_room_named "$out" 'detail_path=docs/COMPRESS.md'
+holds walled_room_uncited "$out" 'enforce_derived=0'
+# lift the plant in the same pen: the refusal must let go, or it is a latch rather than a reading
+printf '# a compressor -- written carefully\n' > "$d/docs/COMPRESS.md"
+seal "$d"
+holds walled_room_lift_returns_green "$(run_scan "$d")" 'enforce=honored'
+
+# A WALLED PAGE THE LAW ALSO CITES IS COUNTED ONCE. This is the reading the widening broke: the
+# derived roster skipped the two law rooms by NAME, so a third glob's pages arrived in both rosters
+# and paid twice -- one page reported as two, its characters doubled.
+d=$(build walled_and_cited)
+printf '# a rule\n\nRead `docs/COMPRESS.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a compressor %s written carelessly\n' "$EM" > "$d/docs/COMPRESS.md"
+seal "$d"
+out=$(run_scan "$d")
+holds walled_cited_counted_once "$out" 'enforce_dirty_files=1'
+holds walled_cited_chars_once "$out" 'enforce_chars=1'
+holds walled_cited_not_derived "$out" 'enforce_derived=0'
+holds walled_cited_files_once "$out" 'enforce_files=3'
+
+# THE OTHER HALF OF THE SPLIT: a teaching room's links are links. A page `docs/` names is NOT canon,
+# so it stays in the ratchet where a ceiling prices it.
+d=$(build teaching_links_are_links)
+printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
+printf '# a compressor\n\nRead `guide/GUIDE.md` first.\n' > "$d/docs/COMPRESS.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/guide/GUIDE.md"
+seal "$d"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
+holds teaching_citation_not_canon "$out" 'enforce_derived=0'
+holds teaching_citation_ratcheted "$out" 'ratchet_dirty_files=1'
+
+# A SUBDIRECTORY OF A WALLED ROOM IS NOT WALLED, because `docs/*.md` reaches one level. A membership
+# test written as a `case` pattern says otherwise -- its `*` crosses a slash -- and the page would
+# leave the ratchet for a wall that never enumerated it.
+d=$(build walled_subdirectory)
+mkdir -p "$d/docs/redacted"
+printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
+printf 'nested %s here\n' "$EM" > "$d/docs/redacted/a-note.md"
+seal "$d"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
+holds walled_subdir_not_held "$out" 'enforce=honored'
+holds walled_subdir_stays_ratcheted "$out" 'ratchet_dirty_files=1'
+
+# DATED TESTIMONY INSIDE A WALLED ROOM IS READ PAST. Accrete-never-break outranks the wall, and a
+# teaching shelf may hold a dated page where a rule room never does.
+d=$(build walled_testimony)
+printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
+printf 'testimony %s kept\n' "$EM" > "$d/docs/20260906-131411_a-note.md"
+seal "$d"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=0)
+holds walled_testimony_read_past "$out" 'verdict=ok'
+holds walled_testimony_not_held "$out" 'enforce=honored'
+
+# THE SEED IS ITS OWN ROSTER AND CAN BE READ ALONE, so a widening of the wall never silently widens
+# what counts as canon.
+d=$(build seed_is_separate)
+printf '# a rule\n\nRead `guide/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+seal "$d"
+holds seed_reads_law_rooms "$(run_scan "$d")" 'enforce_derived=1'
+# The glob is QUOTED: this control runs from the repository root, where an unquoted
+# `.cursor/rules/*.mdc` expands against the real tree and the pen would answer zero for a reason
+# that has nothing to do with the seed.
+holds seed_can_be_emptied "$(run_scan_env "$d" 'ASCII_DOC_DERIVE_GLOBS=.cursor/rules/*.mdc')" 'enforce_derived=0'
+
 # --- 2. the ratchet ceiling, from both sides -------------------------------------------------
 
 d=$(build at_ceiling)
-printf 'one %s here\n' "$EM" > "$d/docs/GUIDE.md"
+printf 'one %s here\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
 holds ceiling_at_bound_free "$(run_scan_env "$d" ASCII_DOC_CEILING=1)" 'verdict=ok'
 holds ceiling_over_refuses "$(run_scan_env "$d" ASCII_DOC_CEILING=0)" 'detail=ratchet_rose_above_ceiling'
 # removing the plant returns the reading to green under the tighter ceiling
-printf 'one -- here\n' > "$d/docs/GUIDE.md"
+printf 'one -- here\n' > "$d/guide/GUIDE.md"
 seal "$d"
 holds ceiling_removed_returns_green "$(run_scan_env "$d" ASCII_DOC_CEILING=0)" 'verdict=ok'
 
@@ -222,14 +319,14 @@ skips seed_read_past                   seed/plain.md
 
 # And a living document in an ordinary room IS counted, or every reading above proves nothing.
 d=$(build living_counted)
-printf 'living %s counted\n' "$EM" > "$d/docs/GUIDE.md"
+printf 'living %s counted\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
 holds living_document_counted "$(run_scan_env "$d" ASCII_DOC_CEILING=0)" 'detail=ratchet_rose_above_ceiling'
 
 # --- 4. the named / unnamed split, and the unit ----------------------------------------------
 
 d=$(build split)
-printf 'named %s and unnamed %s\n' "$EM" "$SEC" > "$d/docs/GUIDE.md"
+printf 'named %s and unnamed %s\n' "$EM" "$SEC" > "$d/guide/GUIDE.md"
 seal "$d"
 out=$(run_scan "$d")
 holds named_counted "$out" 'ratchet_named=1'
@@ -239,20 +336,20 @@ holds unnamed_counted "$out" 'ratchet_unnamed=1'
 # this twice: an awk that iterates bytes read 3 where one that reads characters read 1, and one
 # tree carried two readings of itself.
 d=$(build unit)
-printf '%s%s%s\n' "$EM" "$EM" "$EM" > "$d/docs/GUIDE.md"
+printf '%s%s%s\n' "$EM" "$EM" "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
 holds one_char_is_one "$(run_scan "$d")" 'ratchet_named=3'
 
 # --- 5. the instrument says so when it cannot read --------------------------------------------
 
 d=$(build unreadable)
-printf 'a document %s here\n' "$EM" > "$d/docs/GUIDE.md"
+printf 'a document %s here\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
-chmod 000 "$d/docs/GUIDE.md"
+chmod 000 "$d/guide/GUIDE.md"
 out=$(run_scan "$d")
-chmod 644 "$d/docs/GUIDE.md"
+chmod 644 "$d/guide/GUIDE.md"
 holds unreadable_file_refuses "$out" 'instrument=failed'
-holds unreadable_file_named "$out" 'detail_path=docs/GUIDE.md'
+holds unreadable_file_named "$out" 'detail_path=guide/GUIDE.md'
 
 # Outside a git work tree there is no index to read, and silence must not read as cleanliness.
 plain=$pen/not_a_repo
@@ -263,7 +360,7 @@ holds outside_a_repo_refuses "$(cd "$plain" && sh "$scan" 2>/dev/null)" 'instrum
 # A sibling scan died `fatal: cannot open file` on exactly this during a rebase, which is the one
 # moment a reading is worth having.
 d=$(build absent)
-rm -f "$d/docs/GUIDE.md"
+rm -f "$d/guide/GUIDE.md"
 out=$(run_scan "$d")
 holds absent_path_skipped "$out" 'ratchet_absent=1'
 holds absent_path_not_fatal "$out" 'verdict=ok'
@@ -271,11 +368,22 @@ holds absent_path_not_fatal "$out" 'verdict=ok'
 # A tracked path carrying a space is one path. This tree holds one, and a `for f in $LIST` would
 # read it as two -- skipping one and counting the other absent.
 d=$(build spaced)
-printf 'spaced %s here\n' "$EM" > "$d/docs/a guide (1).md"
+printf 'spaced %s here\n' "$EM" > "$d/guide/a guide (1).md"
 seal "$d"
 out=$(run_scan "$d")
 holds spaced_path_read_whole "$out" 'ratchet_absent=0'
 holds spaced_path_counted "$out" 'ratchet_named=1'
+
+# The same path inside a WALLED room, which is the shape the widening made reachable. A wall built
+# by pathname expansion reads this as two words, finds neither tracked, and lets the page fall out
+# of the wall in silence -- held by nothing while the census reports a room at zero.
+d=$(build spaced_walled)
+printf 'spaced %s here\n' "$EM" > "$d/docs/a guide (1).md"
+seal "$d"
+out=$(run_scan "$d")
+holds spaced_walled_is_held "$out" 'enforce=failed'
+holds spaced_walled_named "$out" 'detail_path=docs/a guide (1).md'
+holds spaced_walled_left_the_ratchet "$out" 'ratchet_named=0'
 
 # An untracked document is not this tree's to measure yet. The scan reads the INDEX.
 d=$(build untracked)
@@ -285,10 +393,10 @@ holds untracked_not_counted "$(run_scan "$d")" 'ratchet_named=0'
 # --- 6. the converter: the table, the remainder, the mode, and the proof ----------------------
 
 d=$(build convert)
-printf 'named %s and unnamed %s and dot %s\n' "$EM" "$SEC" "$DOT" > "$d/docs/GUIDE.md"
+printf 'named %s and unnamed %s and dot %s\n' "$EM" "$SEC" "$DOT" > "$d/guide/GUIDE.md"
 seal "$d"
-( cd "$d" && sh "$conv" docs/GUIDE.md ) >/dev/null 2>&1
-body=$(cat "$d/docs/GUIDE.md")
+( cd "$d" && sh "$conv" guide/GUIDE.md ) >/dev/null 2>&1
+body=$(cat "$d/guide/GUIDE.md")
 holds convert_applies_em_dash "$body" 'named -- and'
 holds convert_applies_middle_dot "$body" 'dot -'
 case "$body" in *"$SEC"*) say convert_leaves_unnamed yes ;; *) say convert_leaves_unnamed no ;; esac
@@ -296,23 +404,23 @@ holds convert_reaches_zero_named "$(run_scan "$d")" 'ratchet_named=0'
 
 # The verify leg re-derives the transform from the committed bytes, so the proof is a computation
 # rather than a careful reading of a diff.
-holds convert_verify_proves "$( cd "$d" && sh "$conv" --verify HEAD docs/GUIDE.md 2>/dev/null )" 'verify=honored'
-printf 'a hand also edited this line\n' >> "$d/docs/GUIDE.md"
-holds convert_verify_catches_a_hand "$( cd "$d" && sh "$conv" --verify HEAD docs/GUIDE.md 2>/dev/null )" 'verify=failed'
+holds convert_verify_proves "$( cd "$d" && sh "$conv" --verify HEAD guide/GUIDE.md 2>/dev/null )" 'verify=honored'
+printf 'a hand also edited this line\n' >> "$d/guide/GUIDE.md"
+holds convert_verify_catches_a_hand "$( cd "$d" && sh "$conv" --verify HEAD guide/GUIDE.md 2>/dev/null )" 'verify=failed'
 
 # A mode is tracked content, and a rewrite preserves it (`.claude/rules/exec-bit.md`).
 d=$(build mode)
-printf 'named %s here\n' "$EM" > "$d/docs/GUIDE.md"
-chmod 755 "$d/docs/GUIDE.md"
+printf 'named %s here\n' "$EM" > "$d/guide/GUIDE.md"
+chmod 755 "$d/guide/GUIDE.md"
 seal "$d"
-( cd "$d" && sh "$conv" docs/GUIDE.md ) >/dev/null 2>&1
-if [ -x "$d/docs/GUIDE.md" ]; then say convert_keeps_the_mode yes; else say convert_keeps_the_mode no; fi
+( cd "$d" && sh "$conv" guide/GUIDE.md ) >/dev/null 2>&1
+if [ -x "$d/guide/GUIDE.md" ]; then say convert_keeps_the_mode yes; else say convert_keeps_the_mode no; fi
 
 # A file already plain is left alone -- the converter does no work where none is owed.
 d=$(build plain)
-printf 'already -- plain\n' > "$d/docs/GUIDE.md"
+printf 'already -- plain\n' > "$d/guide/GUIDE.md"
 seal "$d"
-holds convert_leaves_plain_alone "$( cd "$d" && sh "$conv" docs/GUIDE.md 2>/dev/null )" 'unchanged=1'
+holds convert_leaves_plain_alone "$( cd "$d" && sh "$conv" guide/GUIDE.md 2>/dev/null )" 'unchanged=1'
 
 # IDEMPOTENCE IS A SECOND RUN, AND THE ELDER CASE HERE NEVER REACHED ONE. It handed the converter a
 # file that was ALREADY plain and read `unchanged=1` off a FIRST run that did nothing --
@@ -326,12 +434,12 @@ holds convert_leaves_plain_alone "$( cd "$d" && sh "$conv" docs/GUIDE.md 2>/dev/
 # The claim is `foundations/20260823-222019_what-brix-infuse-is.md`: infusion(world') -> world'.
 # BOTH THE REPORT AND THE BYTES ARE READ, because a tool may print `unchanged=1` and still write.
 d=$(build idempotent)
-printf 'named %s here\n' "$EM" > "$d/docs/GUIDE.md"
+printf 'named %s here\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
-( cd "$d" && sh "$conv" docs/GUIDE.md ) >/dev/null 2>&1
-settled=$(cat "$d/docs/GUIDE.md")
-holds convert_is_idempotent "$( cd "$d" && sh "$conv" docs/GUIDE.md 2>/dev/null )" 'unchanged=1'
-if [ "$settled" = "$(cat "$d/docs/GUIDE.md")" ]; then say convert_second_run_moves_no_bytes yes; else say convert_second_run_moves_no_bytes no; fi
+( cd "$d" && sh "$conv" guide/GUIDE.md ) >/dev/null 2>&1
+settled=$(cat "$d/guide/GUIDE.md")
+holds convert_is_idempotent "$( cd "$d" && sh "$conv" guide/GUIDE.md 2>/dev/null )" 'unchanged=1'
+if [ "$settled" = "$(cat "$d/guide/GUIDE.md")" ]; then say convert_second_run_moves_no_bytes yes; else say convert_second_run_moves_no_bytes no; fi
 
 # AND THE CASE ABOVE IS PROVEN FROM THE FAILING SIDE, because a property asserted only where it
 # holds cannot be told from a case that cannot fail -- which is exactly what the elder case was.
@@ -352,22 +460,26 @@ if ! cmp -s "$f" "$tmp" || grep -q 'swept' "$f"; then printf '<!-- swept -->\n' 
 cat "$tmp" > "$f"; rm -f "$tmp"
 [ "$before" = "$(cat "$f")" ] && echo unchanged=1 || echo unchanged=0
 SHIM
-printf 'named %s here\n' "$EM" > "$d/docs/GUIDE.md"
+printf 'named %s here\n' "$EM" > "$d/guide/GUIDE.md"
 seal "$d"
-( cd "$d" && sh diverging_conv.sh docs/GUIDE.md ) >/dev/null 2>&1
-settled=$(cat "$d/docs/GUIDE.md")
-holds diverging_second_run_caught "$( cd "$d" && sh diverging_conv.sh docs/GUIDE.md 2>/dev/null )" 'unchanged=0'
-if [ "$settled" = "$(cat "$d/docs/GUIDE.md")" ]; then say diverging_bytes_move no; else say diverging_bytes_move yes; fi
+( cd "$d" && sh diverging_conv.sh guide/GUIDE.md ) >/dev/null 2>&1
+settled=$(cat "$d/guide/GUIDE.md")
+holds diverging_second_run_caught "$( cd "$d" && sh diverging_conv.sh guide/GUIDE.md 2>/dev/null )" 'unchanged=0'
+if [ "$settled" = "$(cat "$d/guide/GUIDE.md")" ]; then say diverging_bytes_move no; else say diverging_bytes_move yes; fi
 # The same stand-in, handed the ELDER case's already-plain sample, walks free -- which is the whole
 # reason the elder case proved nothing.
-printf 'already -- plain\n' > "$d/docs/GUIDE.md"
-holds diverging_passes_elder_sample "$( cd "$d" && sh diverging_conv.sh docs/GUIDE.md 2>/dev/null )" 'unchanged=1'
+printf 'already -- plain\n' > "$d/guide/GUIDE.md"
+holds diverging_passes_elder_sample "$( cd "$d" && sh diverging_conv.sh guide/GUIDE.md 2>/dev/null )" 'unchanged=1'
 
 # A star this table does not name survives the converter, exactly like the section sign.
 d=$(build star)
-printf 'a star %s stays\n' "$CHK" > "$d/docs/GUIDE.md"
+printf 'a star %s stays\n' "$CHK" > "$d/guide/GUIDE.md"
 seal "$d"
-( cd "$d" && sh "$conv" docs/GUIDE.md ) >/dev/null 2>&1
-case "$(cat "$d/docs/GUIDE.md")" in *"$CHK"*) say convert_leaves_the_star yes ;; *) say convert_leaves_the_star no ;; esac
+( cd "$d" && sh "$conv" guide/GUIDE.md ) >/dev/null 2>&1
+case "$(cat "$d/guide/GUIDE.md")" in *"$CHK"*) say convert_leaves_the_star yes ;; *) say convert_leaves_the_star no ;; esac
 
+# `control_verdict=ok` says the control reached its last line, and it has never said more than that.
+# These two say what the legs read.
+echo "control_legs=$legs"
+echo "control_failed=$failed"
 echo "control_verdict=ok"

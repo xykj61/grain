@@ -1,29 +1,29 @@
-# Witness patterns — index, not canon
+# Witness patterns -- index, not canon
 
-**Status:** Checkable — witness habit index (self-deleting if canon)
+**Status:** Checkable -- witness habit index (self-deleting if canon)
 **Depth:** thin
 **Ceiling:** <=120 lines
 **Last updated:** 2026-07-12
 **Fate:** The day this page starts mirroring [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) or [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md), it folds in as a supplement and **deletes itself** (blurman guard).
-**Compresses:** [`20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) · witness headers across `tools/`
+**Compresses:** [`20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - witness headers across `tools/`
 
 ---
 
 ## How to use this page
 
-These are **named habits** in our witness collection — pointers and examples only. Philosophy and checkable rules live in TAME:
+These are **named habits** in our witness collection -- pointers and examples only. Philosophy and checkable rules live in TAME:
 
 | Canon | Path |
 |-------|------|
-| Operational supplement | [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) — Rishi supplement · **What We Check, and When** |
-| Voiced why | [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md) — golden rule · positive and negative space |
+| Operational supplement | [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) -- Rishi supplement - **What We Check, and When** |
+| Voiced why | [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md) -- golden rule - positive and negative space |
 | META two-bank habit | [`VENDORING.md`](VENDORING.md) |
 
 ---
 
 ## Refuse-until-candidate
 
-**Shape:** candidate artifact or season door **absent** → witness prints measured truth → **claims nothing** → exit zero when honest.
+**Shape:** candidate artifact or season door **absent** -> witness prints measured truth -> **claims nothing** -> exit zero when honest.
 
 | Example | Witness |
 |---------|---------|
@@ -37,7 +37,7 @@ These are **named habits** in our witness collection — pointers and examples o
 
 ## HOLD flips
 
-**Shape:** multi-stage fetch witnesses name each assert **GREEN** or **HOLD** in META and say-lines. **HOLD** = honest not-yet; flip to **GREEN** when the lap lands — never delete the stage, only upgrade the word.
+**Shape:** multi-stage fetch witnesses name each assert **GREEN** or **HOLD** in META and say-lines. **HOLD** = honest not-yet; flip to **GREEN** when the lap lands -- never delete the stage, only upgrade the word.
 
 | Stage | Example lap |
 |-------|-------------|
@@ -47,7 +47,7 @@ These are **named habits** in our witness collection — pointers and examples o
 
 Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) (guest/fixture started HOLD; GREEN after open).
 
-**Customs HOLD** (different sense — policy verdict, not witness staging): `tools/p/pond_customs.rish` expects `HOLD ok` beside ADMIT and REFUSE — Tilak mark at receipt.
+**Customs HOLD** (different sense -- policy verdict, not witness staging): `tools/p/pond_customs.rish` expects `HOLD ok` beside ADMIT and REFUSE -- Tilak mark at receipt.
 
 ---
 
@@ -57,10 +57,10 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 
 | Canon | Where |
 |-------|-------|
-| Golden rule | [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md) — assert positive space **and** reject negative space |
-| Rishi `assert` at boundaries | [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) → Rishi Supplement |
-| Gap row honest | `tools/p/pond_enclosure_scorecard.rish` — `gap_bus == "open"` on incumbent |
-| Red-avoid | `tools/p/proven_seat_signed_kumara_fetch.rish` — `crypto_eddsa_` absent |
+| Golden rule | [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md) -- assert positive space **and** reject negative space |
+| Rishi `assert` at boundaries | [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) -> Rishi Supplement |
+| Gap row honest | `tools/p/pond_enclosure_scorecard.rish` -- `gap_bus == "open"` on incumbent |
+| Red-avoid | `tools/p/proven_seat_signed_kumara_fetch.rish` -- `crypto_eddsa_` absent |
 
 ---
 
@@ -70,9 +70,9 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 
 | Pair | Witnesses |
 |------|-----------|
-| KVM lane off / on | `tools/l/lane_kvm_refuse.rish` · `tools/l/lane_kvm_onpath_host.rish` |
-| signed-Kumara verify + refuse | `tools/p/proven_seat_signed_kumara.rish` (≥2 `crypto_ed25519_check` in guest) |
-| Enclosure refuse / permit | [`ENCLOSURE.md`](ENCLOSURE.md) · [`PROVEN_SEAT.md`](PROVEN_SEAT.md) |
+| KVM lane off / on | `tools/l/lane_kvm_refuse.rish` - `tools/l/lane_kvm_onpath_host.rish` |
+| signed-Kumara verify + refuse | `tools/p/proven_seat_signed_kumara.rish` (>=2 `crypto_ed25519_check` in guest) |
+| Enclosure refuse / permit | [`ENCLOSURE.md`](ENCLOSURE.md) - [`PROVEN_SEAT.md`](PROVEN_SEAT.md) |
 
 **Law:** one green without its pair is an incomplete lap.
 
@@ -80,7 +80,7 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 
 ## META shelves
 
-**Shape:** on GREEN, witness writes `tools/.cache/<lap>/*-meta.txt` — pin fields, gap flags, grade words — for human audit beside the assert.
+**Shape:** on GREEN, witness writes `tools/.cache/<lap>/*-meta.txt` -- pin fields, gap flags, grade words -- for human audit beside the assert.
 
 | META file | Written by |
 |-----------|------------|
@@ -89,13 +89,13 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 | `scorecard-meta.txt` | `tools/p/pond_enclosure_scorecard.rish` |
 | `col2-probes-meta.txt` | `tools/p/pond_enclosure_col2_probes.rish` |
 
-Two banks must agree: witness assert + META shelf — [`VENDORING.md`](VENDORING.md).
+Two banks must agree: witness assert + META shelf -- [`VENDORING.md`](VENDORING.md).
 
 ---
 
 ## argv-direct discipline (witness builds)
 
-Assert `run` `.ok` / `status` first; read GREEN from the stream the tool speaks (`.out` for `say`, `.err` for `std.debug.print`). Affirmed `144519` — session logs · RTAC; not duplicated here.
+Assert `run` `.ok` / `status` first; read GREEN from the stream the tool speaks (`.out` for `say`, `.err` for `std.debug.print`). Affirmed `144519` -- session logs - RTAC; not duplicated here.
 
 ---
 

@@ -2,17 +2,17 @@
 
 **Language:** EN  
 **Seated:** `20260724.144740`  
-**Reframed:** `20260724.193912` — outward publish declined; parity framing retired  
-**Status:** Checkable in-tree · demo face only  
+**Reframed:** `20260724.193912` -- outward publish declined; parity framing retired  
+**Status:** Checkable in-tree - demo face only  
 **Witness:** `rishi/bin/rishi run tools/g/glow_jamcue_vectors_witness.rish`  
 **Fixture:** [`../tools/fixtures/g/glow_jamcue_vectors.txt`](../tools/fixtures/g/glow_jamcue_vectors.txt)  
-**Canon:** `glow/expr.rye` — `jam_demo_*` · `jam_expect` · `cue_expect`
+**Canon:** `glow/expr.rye` -- `jam_demo_*` - `jam_expect` - `cue_expect`
 
 ---
 
 ## What this is
 
-Glow’s thin `(jam a b)` packs two `@u32` demo atoms as `(hi << 16) | lo`. `(cue …)` reads the low 16 bits of that pack — or the mix result when the subject nests mix. This is a **Hoon-parallel face**, a demo of the shape rather than Vere’s jam/cue bit layout.
+Glow's thin `(jam a b)` packs two `@u32` demo atoms as `(hi << 16) | lo`. `(cue ...)` reads the low 16 bits of that pack -- or the mix result when the subject nests mix. This is a **Hoon-parallel face**, a demo of the shape rather than Vere's jam/cue bit layout.
 
 ## Vectors
 
@@ -27,7 +27,7 @@ Demo atoms: left `5`, right `3`; `mix = 5 ^ 3 = 6`.
 
 ## Strategy
 
-The outward gift — real mat/rub-layout jam and cue in Glow — waits for a future season. These in-tree vectors pin the thin cell-pack demo face, and only that.
+The outward gift -- real mat/rub-layout jam and cue in Glow -- waits for a future season. These in-tree vectors pin the thin cell-pack demo face, and only that.
 
 ---
 
