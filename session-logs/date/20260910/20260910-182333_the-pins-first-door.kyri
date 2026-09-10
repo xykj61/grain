@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260910.182333
+editor Claude Code
+provider Anthropic
+product Claude Code
+role core infrastructure -- the BAKERY seat
+modality text
+model claude-opus-5
+model_status runtime unverified -- the launcher reports no authoritative identity
+configured_model claude-opus-5
+configured_status configured only -- .claude/settings.json, read 20260910
+evidence .claude/settings.json names model and effort; it proves configuration, never a running session
+voice Kyri
+host linux pier, America/New_York
+title The pin's first door, walked
+prompt the standing baton -- take the next agent-doable lap, Lindy-first and crux-first, in the core-infrastructure lane
+rota lap 4587, row 3 -- Water, the row that tastes; advanced by hand past row 2, which my own previous lap read. Taste only works up close, so the row's instruction is to run the actual thing rather than read the sentence about it. That is what turned a ledger row I could have argued about into four readings taken on live state, and it is also what found the second fault: the scan's header said its unheld reading was "printed row by row" and the code printed a count.
+think Reds first, and the fleet could book none. `reds_pin_capacity_scan.sh` read `pin_headroom=22`, `pin_open_rows=16`, `pin_foldable_rows=0`, `pin_deadlocked=1` -- no lawful fold, no room for a row. My own previous lap built that instrument, and its `pin_deadlock_doors` line named the first door as the fleet's own rather than Keaton's: 7 of 16 open rows name no hand outside the loop, and closing one makes `reds_fold.sh` lawful in the same lap.
+think Picked `%457` of the seven. Its repair, `tools/fixtures/p/path_absence_scan.sh`, landed `20260906` and was proven then; the row stayed OPEN on its remainder, that nothing makes a lap consult it before concluding a file is gone.
+think Re-proved the repair on metal rather than citing its elder proof, and the tree handed me a live case: `git fetch xy` read `commits_behind=1` mid-lap. Four readings on that live divergence -- a path both sides hold, a second path both sides hold, a fabricated name reading `verdict=absent`, and `tools/t/tilak_root_count_witness.rish`, a witness the anointed spine carried and this checkout did not, reading `verdict=behind` by name.
+think The remainder is a habit, and a lap's own grep sits in no file. That is the same structural wall `%512` met for a tracked-source scan, `%549` for a shell redirect and `%569` for a signal: no instrument this tree can own reads a command typed at a session prompt. The tree's settled answer for that class is the baton.
+think Measured the reach before writing the clause: `path_absence_scan.sh` stood on ZERO living directive surfaces four days after landing -- `tools/f/fleet_baton.txt` 0, `construction/ITINERARY.md` 0, `.claude/rules/` and `.cursor/rules/` 0, `recursion-prompts/` 0, `expanding-prompts/` 0, `construction/standing-equipment.kyri` 0. `%568`'s lesson in a second room: a repair nothing points at is a repair nobody reaches for.
+think Then read the scan's own header and found it claiming what the code did not do. `pin_unheld_rows` was printed as a count, its one naming sentence rode inside the DEADLOCK branch, and the header written six hours earlier said "printed row by row." A count says a door exists; a list says which door -- and the naming vanished exactly when the pin was healthy enough for a lap to act on cheaply.
+obs A number that names no row cannot be acted on, and a number the header claims is a list is worse than either, because a reader stops looking. The repair is four lines of awk and a loop; what made it findable was reading the file the row was about instead of the sentence about it.
+obs Two readers of one truth, held to each other rather than assumed: `PIN_UNHELD` stays derived as `PIN_OPEN - PIN_HELD`, `pin_unheld_named` counts the enumeration, and a control leg asserts they agree. The elder disagreement between `pin_held_rows` and the doors line already cost one morning and four ships.
+obs Mutation-proven both ways before I believed the legs: dropping the awk's `else` branch reds three legs, and printing every open row unconditionally reds three others. A refusal proven only in the passing direction cannot be told from a bypass.
+obs What I did not take: the cadence clock. `cadence_never_run_here=74` on this pier, up from 58 when `%568` booked it three days ago, and 0 of 74 hold a receipt. A drip at a bounded rate is buildable and the reds it would surface have nowhere in the pin to go until the bound moves, so turning it on is a cost decision that stays Keaton's.
+loom witness=standing_equipment_run_cold guards=245 green=242 red=0 gated=3 wall_s=3223 cpu_ms=3051536 tree_moved=no
+loom scan=reds_pin_capacity pin_bytes_before=40938 pin_bytes_after=38485 headroom_before=22 headroom_after=2475 deadlocked_before=1 deadlocked_after=0 rows_that_fit=1
+loom control=reds_pin_capacity legs=65 failed=0 mutation_runs=2 mutation_failed_legs=3
+file tools/f/fleet_baton.txt the ABSENCE block, seated where habits are set because no instrument reaches a lap's own grep
+file .claude/rules/the-baton.md the section recording that seat, plus the table row and one tense repair on a dated eleven-section reading
+file .cursor/rules/the-baton.mdc the canonical Cursor twin, mirrored in the same commit
+file construction/REDS.md row %457 accreted to BOOKED with the re-proof named, then folded out
+file construction/archive/REDS-absence-is-the-one-reading-rows-457.md the shelf that received it
+file construction/archive/REDS-fold-recital.md the fold's own trail row, written by the tool
+file tools/fixtures/r/reds_pin_capacity_rows.awk the unheld_rows mode, the complement of held_rows
+file tools/fixtures/r/reds_pin_capacity_scan.sh pin_unheld_row named unconditionally, pin_unheld_named beside the derived count, header corrected
+file tools/fixtures/r/reds_pin_capacity_control.sh six legs proving the naming, and one needle tightened so it reads the doors line alone
+file construction/ITINERARY.md the live front, elder shelved, the cadence ask carried forward
+file construction/archive/20260910-181200_itinerary-landed-accounts.md the elder account, written by the shelf tool
+scope one red closed and folded, one habit seated on the baton, one instrument's header made true, one pin unblocked for eight ships
+status GREEN -- cold roster 245 run, 242 green, 0 red, 3 gated at named custody gates, tree_moved=no; reds_pin_capacity witness and its 65-leg control green with both mutations proven; reds_ledger_monotone, reds_citation, unshared_citation, ascii_document, prose_register, living_docs_lint, itinerary_account_shelf, living_pin_near_bound all green on metal. rule_twin reads cohort drift 38 over a ceiling of 35 -- pre-existing, gated at %7, unchanged by this lap and re-measured at 38 after it. QA: the-baton.md B+/85, the shelf A+/100, the scan's comments B+/85.
+recommend keep-going -- five unheld rows remain named on every run (%700 %646 %569 %549 %519 %460) and the same move closes each: re-prove the repair on metal, accrete BOOKED, fold. The card itself now sits 2 bytes under its own bound, which is the REDS pin's shape one page over and wants your word rather than another lap of trimming.

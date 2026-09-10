@@ -21,6 +21,7 @@ that reaches the agent without the baton are each counted at zero.
 |---|---|
 | **VOICE** | [`kyri`](kyri.md) - [`gauge-style`](gauge-style.md) - [`radiant-style`](radiant-style.md) - [`twilight-style`](twilight-style.md) - [`vocabulary-aroma`](vocabulary-aroma.md) *(the G-friendly default)* |
 | **CARD** | [`ascii-first`](ascii-first.md) - [`stamp-and-name`](stamp-and-name.md) - [`quality-assurance`](quality-assurance.md) - [`reds-first`](reds-first.md) - [`read-scope`](read-scope.md) |
+| **ABSENCE** | **this rule** -- the instrument is [`../../tools/fixtures/p/path_absence_scan.sh`](../../tools/fixtures/p/path_absence_scan.sh); it had no directive surface at all |
 | **DOOR** | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) - [`design-rooms`](design-rooms.md) *(the other law wearing the word)* |
 | **ROTA** | **this rule** -- it had none |
 | **THREAD** | [`session-logs`](session-logs.md) |
@@ -33,10 +34,37 @@ that reaches the agent without the baton are each counted at zero.
 | **CUSTODY** | the ITINERARY gate list - [`git-signing`](git-signing.md) *(the seed)* - **GATES-ONLY seated here** |
 | **CLOSE** | [`collaboration`](collaboration.md) |
 
-**Four of the eleven had no rule at all**, measured `20260904.214754` by grepping `.claude/rules/` for each:
+**Four of the eleven sections standing then had no rule at all**, measured `20260904.214754` by grepping `.claude/rules/` for each:
 `%291` appeared once, in passing, inside an unrelated rule; *claim-as-override*, the *council rota*,
 and *GATES-ONLY* appeared nowhere. All four were load-bearing behaviors every ship performed every
 lap, carried only in a seat prompt and a design essay. They are seated below.
+
+## Absence is the one reading a seat may not take from local bytes alone (REDS %457)
+
+**A whole-tree grep at a stale HEAD is the strongest evidence a lap can gather about a tree nobody
+else is standing in.** A seat was handed `tools/fixtures/f/fleet_login_scan.sh` to run, reported
+that no file and no reference to that name stood anywhere in the tree, tracked or untracked, and
+reasoned onward to a conclusion about which meters the fleet owns. Every word was true of the bytes
+it could see. The file had landed three commits earlier and that checkout had not fetched.
+
+**On a fleet this is the ordinary case rather than the edge.** Eight ships push to one remote, the
+round-open pulls at lap START, and a grep happens mid-lap -- so a checkout is behind within minutes
+of opening. Read on the lap that seated this clause, mid-round: `commits_behind=1`.
+
+The instrument is [`../../tools/fixtures/p/path_absence_scan.sh`](../../tools/fixtures/p/path_absence_scan.sh),
+which fetches the anointed remote before it answers, prints `commits_behind`, and reports `here=`
+and `upstream=` per path. `verdict=absent` wants **both** to say no; a path upstream holds and this
+tree lacks reads `verdict=behind` and says so by name. Re-proven on metal `20260910` against live
+divergence rather than a pen -- a path both sides hold, a fabricated name reading `absent`, and
+`tools/t/tilak_root_count_witness.rish`, a witness upstream carried and this checkout did not,
+reading `behind`.
+
+**It is on the baton because the remainder is a habit, and a lap's own grep sits in no file.** That
+is the same structural wall `%512` met for a tracked-source scan, `%549` for a shell redirect and
+`%569` for a signal: no instrument this tree can own reaches a command typed at a session prompt.
+Measured four days after the repair landed, the scan stood on **zero** living directive surfaces --
+`tools/f/fleet_baton.txt`, `construction/ITINERARY.md`, every rule room, both prompt rooms, and the
+standing roster. So it is set where habits are set.
 
 ## One writer per checkout (REDS `%291`)
 

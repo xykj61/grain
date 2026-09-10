@@ -212,6 +212,23 @@ out=$(run_scan "$pen/j" REDS_PIN_BOUND=100000)
 say "the mixed pen counts one unheld"         "$(has "$out" 'pin_unheld_rows=1')"
 say "unheld is the complement of held"        "$([ "$(( $(echo "$out" | sed -n 's/^pin_open_rows=//p') - $(echo "$out" | sed -n 's/^pin_held_rows=//p') ))" = "$(echo "$out" | sed -n 's/^pin_unheld_rows=//p')" ] && echo yes || echo no)"
 
+# ---- 5c-3. the complement NAMED, not merely counted ---------------------------------------------
+# The scan's own header claimed the unheld reading was "printed row by row" from `20260910.140033`
+# and printed a count until `20260910.181200`. These legs are what makes the sentence checkable:
+# the third row is the unheld one, the two held rows never appear under this key, a CLOSED row
+# holds nobody up and so is neither, and the enumeration agrees with the derived count. The last
+# leg is the load-bearing one -- `PIN_UNHELD` is arithmetic over `held()` and `pin_unheld_named`
+# counts a second walk of the same predicate, so two readers of one truth are held to each other
+# here rather than left to drift apart in the tree.
+say "the unheld row is named"                 "$(has "$out" 'detail: pin_unheld_row %3')"
+say "a Keaton row is never named unheld"      "$([ "$(has "$out" 'detail: pin_unheld_row %1')" = no ] && echo yes || echo no)"
+say "a custody row is never named unheld"     "$([ "$(has "$out" 'detail: pin_unheld_row %2')" = no ] && echo yes || echo no)"
+say "a closed row is neither held nor unheld" "$([ "$(has "$out" 'detail: pin_unheld_row %4')" = no ] && echo yes || echo no)"
+say "the naming agrees with the count"        "$([ "$(echo "$out" | sed -n 's/^pin_unheld_named=//p')" = "$(echo "$out" | sed -n 's/^pin_unheld_rows=//p')" ] && echo yes || echo no)"
+# And a healthy pin names them too: the elder sentence rode inside the deadlock branch, so it went
+# quiet on exactly the trees where a lap could act on it cheapest. This pen is far under its bound.
+say "a healthy pin still names its unheld"    "$([ "$(has "$out" 'pin_deadlocked=0')" = yes ] && has "$out" 'detail: pin_unheld_row %3' || echo no)"
+
 # ---- 5d. the deadlock names its doors ----------------------------------------------------------
 # The foldable cell has named its remedy since %517; the deadlocked cell named none, which is what
 # sent five ships in one morning to re-derive the same three options. Proven from both sides: the
@@ -225,7 +242,7 @@ say "the doors line names the fleet's door"  "$(has "$out" "the FIRST door is th
 # against a doors line reverted to its elder wording -- the leg proved nothing it claimed.
 doors=$(echo "$out" | sed -n 's/^detail: pin_deadlock_doors //p')
 say "the doors line carries the count"        "$(has "$doors" '3 of 3 open rows name no hand outside the loop')"
-say "a deadlock names its unheld rows"        "$(has "$out" 'detail: pin_unheld')"
+say "a deadlock names its unheld rows"        "$(has "$out" 'detail: pin_unheld -- ')"
 
 # An all-held deadlock reads zero unheld, so the message stops promising a door the fleet lacks.
 mkdir -p "$pen/k"

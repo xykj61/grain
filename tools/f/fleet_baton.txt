@@ -14,6 +14,19 @@ while it runs; a lap ends at the commit, never at git add; grade what you touch,
 stands; reds first; read scope. MAP.md is the walk -- never ls the root, never walk tools/ whole,
 resolve by name.
 
+ABSENCE. Never conclude a file is gone from local bytes alone. Eight ships push to one remote and
+the round-open pulls at lap START, so a checkout is behind within minutes of opening -- read on this
+lap, mid-round, `commits_behind=1`. A whole-tree grep is the strongest evidence a seat can gather,
+and at a stale HEAD it is strong evidence about a tree nobody else is standing in, which is exactly
+what makes the wrong answer so convincing (%457: a seat reported a scan absent, reasoned onward, and
+the file had landed three commits earlier). The instrument is already built and costs one line:
+sh tools/fixtures/p/path_absence_scan.sh <path> [<path> ...] -- it fetches the anointed remote
+first, prints commits_behind, and answers `here=` and `upstream=` per path. `verdict=absent` wants
+BOTH to say no; a path upstream holds and this tree lacks reads `verdict=behind` and says so by
+name. It is on the baton because it stood on NO living directive surface for four days -- zero
+mentions across this file, the card, every rule room, both prompt rooms and the roster -- which is
+`%568`'s lesson in a second room: a repair nothing points at is a repair nobody reaches for.
+
 DOOR. A page you write into external-research/, active-designing/ or docs/ names its ROOM at the
 door -- checkable, vision, mixed, or research for understanding -- in its **Status:** or **Room:**
 line (context/TWO_ROOMS.md). Proposed, Living, Landed and Design answer a DIFFERENT question, so

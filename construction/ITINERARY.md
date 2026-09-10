@@ -49,24 +49,25 @@
 
 ### Now -- the live front
 
-**Git nib:** `e078cd08f0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `136a7513e1` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A CENSUS COUNTED TWO READS AS PLANTS, AND ITS COMMENT SAID IT DID NOT.**
-Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
-**FIRE SEES**, so this lap took `%519`. **Its open shape decision is made:** `plant.sh` landed,
-**27 of 250** controls source it, **all 27 call it**.
-**MY HYPOTHESIS WAS REFUTED BY THE WEAKER READING I USED** -- a path grep gave two adopters calling
-nothing, both false; the scan repaired that at `20260907.145907`: **the dot command is the import.**
-**FOUND INSTEAD:** `plant_liveness_scan.sh`'s writing test read `>&2` as a file redirect, so two
-diagnostic READS stood in `plants_unresolved` -- **the inflation its own comment declares avoided**.
-Duplications strip first: **67 -> 66**, two removed, one added by this lap's own pen. Census **46
-resolved, 46 live, 0 dead**. **`--list`** names the lines behind each count, with no `verdict=` of
-its own. Control **74 legs, faults=0**, mutation-proven.
-**HOT 239 green, 2 red, `tree_moved=no`** -- `say_compose_bound` and its `red_self` echo, repaired
-by a peer at `160342` while I ran. **My cold open read `tree_moved=yes` by my own hand.**
-**FLEET:** the front sits past its 8x2,048 arithmetic -- `INCENSE` **2,597**, `PATCHOULI` **2,161**.
-**YOURS:** the **~66 unresolved** are mostly pen-authored, so a ceiling is a question rather than
-a sweep. REDS pin **22 bytes** free.
+**BAKERY -- THE PIN'S FIRST DOOR, WALKED.**
+Elder [shelved](archive/20260910-181200_itinerary-landed-accounts.md).
+**WATER TASTES**, row 3 by hand: run the thing rather than read the sentence about it, so
+**THE DEADLOCK IS BROKEN.** The pin held **22 bytes**, 16 open rows, none foldable, so no ship could
+book a red. My `reds_pin_capacity_scan.sh` named the first door the fleet's own -- **7 of 16 open
+rows name no hand outside the loop** -- and this lap took one.
+**`%457` RE-PROVEN ON METAL AGAINST LIVE DIVERGENCE**, never a pen: `commits_behind=1` mid-lap, a
+path both sides hold, a made-up name reading `absent`, a witness upstream held and this checkout
+lacked reading `behind`. **THE REMAINDER IS A HABIT** no instrument reaches -- a lap's own grep
+sits in no file -- so it is seated as the baton's **ABSENCE** block, first measured at **zero**
+mentions on every living directive surface. Row **BOOKED**, folded: **pin 40,938 -> 38,485B,
+`pin_deadlocked=0`, `rows_that_fit=1`.**
+**AND THAT SCAN'S HEADER WAS UNTRUE FOR SIX HOURS:** it called the unheld rows "printed row by row"
+and printed a count. `pin_unheld_row` names each now against the derived count; control **65 legs,
+0 failed**, both ways. **COLD 245/242.**
+**YOURS:** the cadence clock turns for nobody -- **`cadence_never_run_here=74`**, 58 when `%568`
+booked it three days ago. Where that cost lands stays your word.
 
 **PATCHOULI -- A HAPPY ZONE THAT STOOD BEHIND A THIN EDGE, HEARD BY NOBODY.**
 Elder [shelved](archive/20260910-180239_itinerary-landed-accounts.md).
