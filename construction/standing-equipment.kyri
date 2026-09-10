@@ -2722,6 +2722,37 @@ path tools/am/amphora_roster_witness.rish
 tier lap
 seated 20260907.223214
 
+# amphora_manifest_agrees -- the readable listing checked against the cargo it names. Amphora's
+# `cargo ` digests were already checked twice, exactly as `the-marked-value` asks: the fetch wire
+# recomputes on both sides of the UDP seam, and restore proves every file it writes. The
+# `manifest ` listing -- the half a dock reader reads WITHOUT opening the seal, and the one that
+# foundation calls "the shoulder line speaks the cargo's marks in plain words" -- was checked for
+# SHAPE alone: a known mark, a well-formed digest, a nonempty name. Three readers of those lines
+# stood in the tree and not one compared a listed digest to anything.
+#
+# MEASURED ON METAL `20260910` before a line was written. A vessel whose listing gave `hello.txt` a
+# digest of sixty-four zeros passed the Kumara stamp, passed the AEAD seal, and passed a whole
+# restore printing `restore files proven count=4`. So did a vessel with one listing line deleted,
+# and one carrying a ghost line naming a file no cargo holds. The stamp covers the listing, which
+# is what made this look guarded: it proves the head is the head somebody signed, never that the
+# head tells the truth about the block beneath it -- and the vessel stamp seed is a witness
+# constant in the tree, so re-signing after a tamper costs one command.
+#
+# WHAT IT GATES: `vessel-seal manifest-check` refuses `ManifestDisagrees` when a listing line and
+# its cargo twin differ in any of the three fields, when the listing names more than the cargo, or
+# when it names fewer. `carry_verify_walls` runs it, so `carry` and `restore` both refuse and the
+# CLI names the wall. ZERO listing lines is lawful and answers `no listing to check`: vessels
+# poured before the Q11 listing carry none and their bytes are frozen, so a head making no claim is
+# no disagreement -- whether a listing is REQUIRED stays the far-manifest door's question.
+#
+# PROVEN ABLE TO RED, which a witness owes before its green means anything: build the elder
+# `vessel_seal.rye` and it answers `manifest-check` by falling through to its selftest and exiting
+# 0, so every refusal leg here fires. Measured that way `20260910` rather than argued.
+guard amphora_manifest_agrees
+path tools/am/amphora_manifest_agrees_witness.rish
+tier lap
+seated 20260910.052000
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert

@@ -257,6 +257,97 @@ pub fn open_cargo_plain(text: []const u8, plain: []u8) error{InvalidVessel, BadH
     return cipher_len;
 }
 
+/// Most listing lines one head may speak -- the same roof the cargo block holds,
+/// because the listing and the cargo are built from ONE catalog and a head that
+/// could name more than the seal can carry would describe a vessel nobody can pour.
+pub const max_manifest_lines: u32 = max_cargo;
+
+/// Read the next line carrying `prefix`, returning the body past it, or null at the end.
+/// Postcondition: a returned slice begins where the prefix ended, so the caller hands
+/// `parse_manifest_line` a triple rather than a triple wearing its kind word.
+fn next_prefixed(it: *std.mem.SplitIterator(u8, .scalar), prefix: []const u8) ?[]const u8 {
+    // invariant: a kind word has bytes, so the slice below advances past something.
+    assert(prefix.len >= 1);
+    while (it.next()) |raw| {
+        const line = trim_line(raw);
+        if (!std.mem.startsWith(u8, line, prefix)) continue;
+        return line[prefix.len..];
+    }
+    return null;
+}
+
+/// Two entries name the same thing when all three fields agree -- mark, digest, name.
+/// Postcondition: agreement is whole or absent; there is no partial match, which is the
+/// wreck rule the entry contract already states one module over.
+fn entries_agree(listed: me.ManifestEntry, carried: me.ManifestEntry) bool {
+    // invariant: both sides came through parse_manifest_line, so each digest is the
+    // contract's own width and the comparison below reads two equal-length fields.
+    assert(listed.digest_hex.len == me.digest_hex_len);
+    assert(carried.digest_hex.len == me.digest_hex_len);
+    if (!std.mem.eql(u8, listed.mark, carried.mark)) return false;
+    if (!std.mem.eql(u8, listed.digest_hex, carried.digest_hex)) return false;
+    return std.mem.eql(u8, listed.name, carried.name);
+}
+
+/// The listing checked against the cargo it names -- `foundations/20260703-202312_the-marked-value.md`
+/// asks that a digest be checked twice, and the readable head is the half nobody was checking.
+/// A `manifest ` line exists so a dock reader can name the cargo WITHOUT opening the seal, so a
+/// listing that disagrees with the cargo lies to exactly the reader it was written for. Measured
+/// `20260910` on metal: a vessel whose listing gave `hello.txt` a digest of all zeros passed the
+/// stamp, the seal, and a whole restore printing `restore files proven count=4`.
+///
+/// Returns the number of listing lines proven. **Zero is lawful and means no claim was made**:
+/// elder vessels predate the Q11 listing and their bytes are frozen, so a head carrying no
+/// `manifest ` line has nothing to disagree with. Whether a listing is REQUIRED is the far-manifest
+/// door's question, one module over; this door answers only whether the listing present is true.
+pub fn verify_manifest_agrees(text: []const u8) error{ InvalidVessel, BadHex, Overflow, OpenFailed, ManifestDisagrees }!u32 {
+    // invariant: a vessel reaching here holds bytes, so the two walks below read real lines.
+    assert(text.len >= 1);
+    var plain: [max_seal_plain]u8 = undefined;
+    var cargo_text: []const u8 = text;
+    if (has_seal_fields(text)) {
+        const plain_len = try open_cargo_plain(text, &plain);
+        cargo_text = plain[0..plain_len];
+    }
+    // invariant: sealed or plain, the cargo side names a block to walk.
+    assert(cargo_text.len >= 1);
+
+    var listed_lines = std.mem.splitScalar(u8, text, '\n');
+    var carried_lines = std.mem.splitScalar(u8, cargo_text, '\n');
+    var proven: u32 = 0;
+    while (true) {
+        const listed_body = next_prefixed(&listed_lines, "manifest ");
+        const carried_body = next_prefixed(&carried_lines, "cargo ");
+        if (listed_body == null and carried_body == null) break;
+        if (proven == 0 and listed_body == null) return 0;
+        if (listed_body == null or carried_body == null) return error.ManifestDisagrees;
+        if (proven >= max_manifest_lines) return error.Overflow;
+        const listed = me.parse_manifest_line(listed_body.?) catch return error.InvalidVessel;
+        const carried = me.parse_manifest_line(carried_body.?) catch return error.InvalidVessel;
+        if (!entries_agree(listed, carried)) return error.ManifestDisagrees;
+        proven += 1;
+    }
+    // invariant: postcondition -- every line counted was compared field for field, so a
+    // returned count is a count of proofs rather than of lines seen.
+    assert(proven <= max_manifest_lines);
+    return proven;
+}
+
+fn run_manifest_check(io: std.Io, path: []const u8) !u8 {
+    const cwd = std.Io.Dir.cwd();
+    var buf: [max_vessel_len]u8 = undefined;
+    const text = try cwd.readFile(io, path, &buf);
+    const proven = try verify_manifest_agrees(text);
+    if (proven == 0) {
+        print("amphora: vessel carries no listing to check\n", .{});
+        print("GREEN: Amphora vessel -- no listing, so no claim to check.\n", .{});
+        return 0;
+    }
+    print("amphora: vessel listing agrees count={d}\n", .{proven});
+    print("GREEN: Amphora vessel -- listing matches its cargo.\n", .{});
+    return 0;
+}
+
 /// Q37: the spoken open door -- decrypt the sealed cargo and write the
 /// plaintext block to a file, so restore reaches it on path C. The
 /// open-check stays the verify-only door; this one yields the bytes.
@@ -335,6 +426,9 @@ pub fn main(init: std.process.Init) !u8 {
     }
     if (args.len >= 4 and std.mem.eql(u8, args[1], "open")) {
         return run_open_file(init.io, args[2], args[3]);
+    }
+    if (args.len >= 3 and std.mem.eql(u8, args[1], "manifest-check")) {
+        return run_manifest_check(init.io, args[2]);
     }
     if (args.len >= 3 and std.mem.eql(u8, args[1], "open-check")) {
         return run_open_check(init.io, args[2]);

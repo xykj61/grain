@@ -302,6 +302,7 @@ const CliError = error{
     ResinAbsent,
     CargoUnproven,
     RestoreUnwritable,
+    ManifestDisagrees,
 };
 
 /// One door for every CLI fault -- switch on the name, never compare.
@@ -336,6 +337,9 @@ fn refuse(fault: CliError, detail: []const u8) u8 {
         error.ResinAbsent => print("amphora: resin absent — '{s}'\n", .{detail}),
         error.CargoUnproven => print("amphora: cargo unproven — '{s}'\n", .{detail}),
         error.RestoreUnwritable => print("amphora: restore unwritable — '{s}'\n", .{detail}),
+        // Plain `--` rather than the em dash its siblings print: ASCII-first is law and the
+        // spoken-ASCII ceiling only falls, so a new refusal line joins at zero rather than at one.
+        error.ManifestDisagrees => print("amphora: listing disagrees -- '{s}'\n", .{detail}),
     }
     return exit_misread;
 }
@@ -1098,6 +1102,33 @@ fn run_vessel_seal_open(
     if (code != 0) return error.SealUnopened;
 }
 
+/// Q49: the listing wall -- the readable head's `manifest ` lines checked against the
+/// cargo they name, via the seal binary that can open the block they describe. The elder
+/// far-manifest door asks only whether a listing is PRESENT; this asks whether it is true.
+/// A vessel whose listing gave one file a digest of all zeros passed every other wall and
+/// a whole restore on `20260910`, which is why this wall stands beside them.
+fn run_vessel_seal_manifest_check(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    seal_bin: []const u8,
+    vessel_path: []const u8,
+) CliError!void {
+    // invariant: a resolved seal binary is a real path, so the check below runs an
+    // instrument rather than refusing on an empty name.
+    assert(seal_bin.len > 0);
+    // invariant: and the vessel checked is the one the two elder walls just passed.
+    assert(vessel_path.len > 0);
+    const argv = [_][]const u8{ seal_bin, "manifest-check", vessel_path };
+    const result = std.process.run(allocator, io, .{ .argv = &argv }) catch {
+        return error.ManifestDisagrees;
+    };
+    const code: u8 = switch (result.term) {
+        .exited => |c| c,
+        else => return error.ManifestDisagrees,
+    };
+    if (code != 0) return error.ManifestDisagrees;
+}
+
 /// Q20: both walls verify before the first byte travels -- stamp, then seal.
 fn carry_verify_walls(
     init: std.process.Init,
@@ -1119,7 +1150,8 @@ fn carry_verify_walls(
     const seal_bin = resolve_seal_bin(init, io, argv0, &seal_path_buf) catch
         return error.SealUnopened;
     try run_vessel_seal_open(allocator, io, seal_bin, vessel_path);
-    print("amphora: carry walls verified rite=stamp-then-seal\n", .{});
+    try run_vessel_seal_manifest_check(allocator, io, seal_bin, vessel_path);
+    print("amphora: carry walls verified rite=stamp-then-seal listing=agrees\n", .{});
 }
 
 /// Read the source vessel's parent field -- the identity that travels.
@@ -1310,6 +1342,7 @@ fn carry_check(
         return switch (fault) {
             error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
             error.SealUnopened => refuse(error.SealUnopened, parsed.vessel),
+            error.ManifestDisagrees => refuse(error.ManifestDisagrees, parsed.vessel),
             else => refuse(error.StampUnverified, parsed.vessel),
         };
     };
@@ -1367,6 +1400,7 @@ fn carry_cross(
     carry_verify_walls(init, allocator, init.io, args[0], filled.far_vessel) catch |fault| {
         return switch (fault) {
             error.SealUnopened => refuse(error.SealUnopened, filled.far_vessel),
+            error.ManifestDisagrees => refuse(error.ManifestDisagrees, filled.far_vessel),
             else => refuse(error.StampUnverified, filled.far_vessel),
         };
     };
@@ -1709,6 +1743,7 @@ fn cmd_restore(init: std.process.Init, args: []const []const u8) u8 {
         return switch (fault) {
             error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
             error.SealUnopened => refuse(error.SealUnopened, vessel),
+            error.ManifestDisagrees => refuse(error.ManifestDisagrees, vessel),
             else => refuse(error.StampUnverified, vessel),
         };
     };
