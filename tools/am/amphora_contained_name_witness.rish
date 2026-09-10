@@ -1,0 +1,142 @@
+# tools/am/amphora_contained_name_witness.rish -- a cargo name lands inside the home it was
+# restored into, or it does not land at all.
+#
+# `foundations/20260703-202312_the-marked-value.md` asks that a value be checked twice. Amphora
+# checked its cargo digests twice over and its cargo NAMES not at all: a digest answers WHAT the
+# bytes are, and nothing answered WHERE they may be written. Measured on metal `20260910` before a
+# line was changed -- a vessel whose cargo named `../escaped.txt` passed the Kumara stamp, passed
+# the AEAD seal, passed the listing-agrees walk seated the same day, and printed
+#
+#   amphora: restore files proven count=2
+#
+# because the CONTENT was honest and only the destination was not. The file landed one directory
+# ABOVE its out-home, and `restore` refused afterward on the parent compare, with the write already
+# done. A refusal that arrives after the write is not a wall.
+#
+# The rule lives once, in `amphora/manifest_entry.rye` beside the wreck rule it reads like:
+# `name_verdict` welcomes a relative path whose every segment carries content and is neither `.`
+# nor `..`, and refuses everything else. Four doors inherit it -- the seal writer, the stamp
+# writer, the listing check, and the cargo reader restore walks -- so the earliest one a vessel
+# meets is the one that speaks.
+#
+# Proven here, each refusal shown from the failing side and then LIFTED:
+#   the honest vessel welcomed at every door and restored whole
+#   the rule itself, both directions, in the module's own selftest on metal
+#   an escaping name refused by the seal writer, the stamp writer, and the listing check
+#   the wall REMOVED in a pen, the escape happening, the wall returned -- so a refusal here
+#     cannot be told from a door that refuses everything
+#   an elder-sealed escaping vessel met by a repaired restore: refused by name at the cargo
+#     reader, with no catalog formed, so `restore_write_prove` is never reached
+#
+#   rishi/bin/rishi run tools/am/amphora_contained_name_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_contained.XXXXXX"]
+assert pen.ok else "contained: pen must open"
+let home = trim pen.out
+let vessel = "${home}/v.bron"
+
+# The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
+# them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+assert build_amphora.ok else "contained: amphora build failed -- ${build_amphora.err}"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "contained: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "contained: vessel-seal build failed -- ${build_seal.err}"
+let build_entry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
+assert build_entry.ok else "contained: manifest-entry build failed -- ${build_entry.err}"
+
+# --- the rule itself, both directions, where it lives ---
+# `sub/deeper/a.txt` walks free and six escaping shapes refuse by their own error name. A rule
+# proven only on the refusing side cannot be told from one that refuses every name.
+let selftest = run ["amphora/bin/manifest-entry" "selftest"]
+assert selftest.ok else "contained: the name rule must prove both directions -- ${selftest.err}"
+assert selftest.err contains "hold the name inside" else "contained: selftest names the rule"
+
+# --- the welcome, asserted as hard as every refusal below ---
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "contained: seed pour must pass"
+let honest_check = run ["amphora/bin/vessel-seal" "manifest-check" vessel]
+assert honest_check.ok else "contained: an honest vessel must welcome at the listing door"
+let ok_copy = run ["sh" "-c" "cp ${vessel} ${home}/ok.bron"]
+assert ok_copy.ok else "contained: honest restore copy must land"
+let honest_restore = run ["amphora/bin/amphora" "restore" "${home}/ok.bron"]
+assert honest_restore.ok else "contained: an honest vessel must restore whole"
+assert honest_restore.err contains "restore same-parent ok" else "contained: the honest restore re-pours to its own parent"
+
+# The opened cargo block is the raw material for every plant below -- the names a restore reads.
+let open_plain = run ["amphora/bin/vessel-seal" "open" vessel "${home}/plain.txt"]
+assert open_plain.ok else "contained: the honest seal must open"
+
+# --- plant 1: the seal writer. A forged unsealed vessel whose listing and cargo both name a path
+# one directory up, handed to `seal`. The seal door reads every cargo line through the contract.
+let forge = run ["sh" "-c" "{ sed -n '1,5p' ${vessel}; grep '^manifest ' ${vessel} | sed 's| hello.txt$| ../escaped.txt|'; sed 's| hello.txt$| ../escaped.txt|' ${home}/plain.txt; } > ${home}/forged.bron"]
+assert forge.ok else "contained: the forged vessel must prepare"
+let seal_door = run ["amphora/bin/vessel-seal" "seal" "${home}/forged.bron"]
+assert (seal_door.ok == false) else "contained: the seal writer must refuse an escaping name"
+
+# --- plant 2 and 3: the stamp writer and the listing check, on a SEALED vessel whose listing
+# alone was rewritten. Neither needs the seal re-made, so both doors speak for themselves.
+let listing_plant = run ["sh" "-c" "cp ${vessel} ${home}/listed.bron && . tools/fixtures/s/shell_portable.sh && sed_inplace 's| hello.txt$| ../escaped.txt|' ${home}/listed.bron"]
+assert listing_plant.ok else "contained: the listing plant must prepare"
+let stamp_door = run ["amphora/bin/vessel-core" "sign" "${home}/listed.bron"]
+assert (stamp_door.ok == false) else "contained: the stamp writer must refuse an escaping name"
+let listing_door = run ["amphora/bin/vessel-seal" "manifest-check" "${home}/listed.bron"]
+assert (listing_door.ok == false) else "contained: the listing check must refuse an escaping name"
+
+# LIFT all three plants: the honest vessel is untouched, so the welcome returning is read off it.
+let after_plants = run ["amphora/bin/vessel-seal" "manifest-check" vessel]
+assert after_plants.ok else "contained: the welcome must stand once the plants are set aside"
+
+# --- the wall removed, and returned. A pen copy of the room with the two containment refusals
+# struck out is the ELDER Amphora: it seals an escaping name, stamps it, and restores it one
+# directory above the out-home. This is the reading that was taken before the repair, reproduced
+# here so a green witness cannot be told from a door that never had anything to refuse.
+let elder_dir = "${home}/elder"
+let elder_copy = run ["sh" "-c" "mkdir -p ${elder_dir}/src ${elder_dir}/bin && cp amphora/manifest_entry.rye ${elder_dir}/ && cp amphora/vessel_seal.rye amphora/vessel_core.rye ${elder_dir}/ && cp amphora/src/main.rye ${elder_dir}/src/ && cp amphora/kumara.rye amphora/tally_copy.rye ${elder_dir}/ && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
+assert elder_copy.ok else "contained: the elder pen must copy"
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace '/if (name_verdict(entry.name) == .escaping) return error.EscapingName;/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/assert(name_verdict(entry.name) == .contained);/d' ${elder_dir}/manifest_entry.rye && sed_inplace '/if (me.name_verdict(name) == .escaping) return error.CargoUnproven;/d' ${elder_dir}/src/main.rye && cp ${elder_dir}/manifest_entry.rye ${elder_dir}/src/manifest_entry.rye"]
+assert strip.ok else "contained: the wall must strip cleanly"
+let gone = run ["sh" "-c" "cat ${elder_dir}/manifest_entry.rye ${elder_dir}/src/main.rye | grep -c 'name_verdict(entry.name)\|me.name_verdict(name)' || true"]
+assert (trim gone.out) == "0" else "contained: the elder pen must lose every USE of the rule -- ${gone.out} left"
+let eb1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
+assert eb1.ok else "contained: elder amphora build failed -- ${eb1.err}"
+let eb2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_seal.rye -femit-bin=${elder_dir}/bin/vessel-seal"]
+assert eb2.ok else "contained: elder vessel-seal build failed -- ${eb2.err}"
+let eb3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vessel_core.rye -femit-bin=${elder_dir}/bin/vessel-core"]
+assert eb3.ok else "contained: elder vessel-core build failed -- ${eb3.err}"
+
+# The elder seals and stamps what every repaired door refused, then restores it -- and the file
+# lands ABOVE the out-home while the command still prints its files-proven line.
+let elder_forge = run ["sh" "-c" "cp ${home}/forged.bron ${home}/elder.bron && ${elder_dir}/bin/vessel-seal seal ${home}/elder.bron && ${elder_dir}/bin/vessel-core sign ${home}/elder.bron"]
+assert elder_forge.ok else "contained: the elder must seal and stamp the escaping vessel -- ${elder_forge.err}"
+let elder_restore = run ["sh" "-c" "cp ${home}/elder.bron ${home}/eread.bron && cp -r ${home}/resins ${home}/resins.keep >/dev/null 2>&1; ${elder_dir}/bin/amphora restore ${home}/eread.bron; true"]
+assert elder_restore.err contains "restore files proven" else "contained: the elder prints its files-proven line over an escaping name"
+let escaped = run ["sh" "-c" "test -e ${home}/escaped.txt"]
+assert escaped.ok else "contained: the wall removed, the file must land above the out-home -- otherwise this witness proves nothing"
+let sweep_escape = run ["sh" "-c" "rm -f ${home}/escaped.txt && rm -rf ${home}/eread.bron.season"]
+assert sweep_escape.ok else "contained: the escape must sweep"
+
+# --- the wall returned: the repaired restore, over an ELDER seal tool, meets the escaping name at
+# the cargo reader. This is the one door the repaired binaries cannot reach on their own, because
+# every earlier door refuses first -- so it is reached the only honest way, by an elder vessel.
+let mixed = run ["sh" "-c" "mkdir -p ${home}/mixed && cp amphora/bin/amphora ${home}/mixed/ && cp ${elder_dir}/bin/vessel-seal ${elder_dir}/bin/vessel-core ${home}/mixed/"]
+assert mixed.ok else "contained: the mixed pen must assemble"
+let cargo_door = run ["sh" "-c" "cp ${home}/elder.bron ${home}/mread.bron && ${home}/mixed/amphora restore ${home}/mread.bron; true"]
+assert cargo_door.err contains "cargo unproven" else "contained: the cargo reader must refuse an escaping name by its own door"
+let no_write = run ["sh" "-c" "test ! -e ${home}/escaped.txt"]
+assert no_write.ok else "contained: the refusal must arrive BEFORE the write"
+let no_count = run ["sh" "-c" "printf '%s' \"${cargo_door.err}\" | grep -c 'files proven' || true"]
+assert no_count.out contains "0" else "contained: no catalog forms, so restore_write_prove is never reached"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "contained: pen must sweep"
+
+say "rule=both-directions doors=seal+stamp+listing+cargo wall_removed=escaped wall_returned=refused_before_write"
+say "GREEN: amphora_contained_name -- a cargo name lands inside its home, or it does not land."

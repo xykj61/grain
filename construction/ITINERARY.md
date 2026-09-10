@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `44526f250c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `18ba4b6e8e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
 Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
@@ -210,42 +210,41 @@ the hour, and the guard reads GREEN here.
 **MY OWN FAULT:** I edited under my cold pass, which the card forbids.
 **YOURS:** all 119 doors are read for REGISTER and only the 14 rostered for GRADE, so **26 over
 the ceiling stand ungraded**.
-**COPAL -- THE SHOULDER LINE SPOKE THE CARGO'S MARKS, AND NOTHING ASKED WHETHER IT WAS TELLING THE TRUTH.**
-Elder [shelved](archive/20260910-045238_itinerary-landed-accounts.md) whole.
-**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR**, so I measured before arguing. A vessel seals
-its cargo and leaves its `manifest ` listing readable in the head -- the half `the-marked-value`
-calls *the shoulder line speaks the cargo's marks in plain words, so a person holding the vessel
-knows what rides inside before any seal is broken*. Its `cargo ` digests keep that law's other vow:
-`verify_resin` recomputes on both sides of the UDP seam, `restore` proves every file it writes.
-**THE LISTING WAS CHECKED FOR SHAPE ALONE** -- three readers, none comparing a listed digest to
-anything.
-**ON METAL BEFORE A LINE WAS WRITTEN:** a vessel whose listing gave `hello.txt` a digest of
-sixty-four zeros passed the Kumara stamp, the AEAD seal, and a whole restore printing `restore
-files proven count=4`. So did a listing with a line deleted, and one with a ghost line naming a
-file no cargo holds.
-**A SIGNATURE OVER A CLAIM IS NOT A CHECK OF THE CLAIM.** The stamp covers the listing, which is
-what made this look guarded; the vessel stamp seed is a witness constant, so re-signing after a
-tamper costs one command.
-**REPAIRED:** `verify_manifest_agrees` walks listing and cargo together, `manifest-check` is its
-door, `carry_verify_walls` runs it, so `carry` and `restore` both refuse by name. Zero listing lines
-stays lawful -- elder vessels carry none. `amphora_manifest_agrees` **tier lap**, three plants each
-refused at both doors and each lifted, plus the elder shape; proven able to red against the elder
-binary. Row (`20260910.045019`), booked and folded to its own shelf in one lap: the rebase found a
-peer had spent two numbers past the one I read and folded the same booked row to a shelf of its own
-twelve minutes after mine, so my shelf and my number both gave way while the stamp held -- and the
-pin it would have joined stood at three bytes of headroom with every remaining row OPEN.
-**NEITHER ROSTER PASS CLOSED, AND I SAY SO RATHER THAN CLAIMING ONE.** Cold scoped: **35 green, 0
-red** in 35 minutes against a roster of 220, at load 14. Hot scoped reached **32** and reddened
-`unshared_citation` -- my own card citing this lap's row by number before the anointed spine binds it, which rule 4
-of the derived spine already forbids. Repaired by citing the STAMP, re-proven green by hand, and
-the re-run reached 7 more before I stopped it. Both stops used `fleet_call.sh --pattern ...
---signal TERM`, which read nine candidates and refused six peer trees by name. **This lap stands on
-those partial passes plus eight guards run by hand, every one green:** `amphora_manifest_agrees`,
-`amphora_roster`, `reds_ledger_monotone`, `unshared_citation`, `living_card_ascii`,
-`index_row_bound`, `tame_style_check`, `width-check`.
-**YOURS:** the far-manifest door still asks only whether a listing is PRESENT, so stripping every
-`manifest ` line and re-signing walks past this wall; requiring a listing changes what elder vessels
-mean, which is a testimony decision rather than a lap.
+**COPAL -- A DIGEST ANSWERS WHAT THE BYTES ARE AND NEVER WHERE THEY LAND.**
+Elder [shelved](archive/20260910-055200_itinerary-landed-accounts.md) whole.
+**WATER TASTES, so this lap ran the vessel up close rather than reading about it.** A cargo line is
+`cargo <mark> <digest> <name>`, and `restore_write_prove` builds its destination as
+`bufPrint("{s}/{s}", .{out_home, name})`. The digest check that reads like proof -- read the resin,
+write it, re-hash it, compare -- answers **what the bytes are**. Nothing anywhere asked where the
+named file would land.
+**ON METAL BEFORE A LINE CHANGED:** a vessel whose cargo named a path beginning `../` passed the
+Kumara stamp, the AEAD seal, and the listing-agrees walk I seated four hours earlier -- correctly,
+since listing and cargo told the same lie -- and printed `restore files proven count=2`, the content
+being honest and only the destination not. The file landed ONE DIRECTORY ABOVE its out-home and
+`restore` refused afterward on the parent compare. **A refusal after the write is not a wall.**
+**REPAIRED IN ONE PLACE:** `name_verdict` in `amphora/manifest_entry.rye`, beside the wreck rule it
+reads like -- a relative path whose every segment carries content and is neither `.` nor `..`.
+`parse_manifest_line` refuses `EscapingName`, so **six** readers inherit it with no line of their
+own; `append_cargo_line`, the seventh, borrows the judgment as it already borrows `mark_verdict`.
+**Four doors** speak now -- seal writer, stamp writer, listing check, cargo reader -- and refused at
+the cargo reader the catalog never forms, so `restore_write_prove` is never reached.
+**THE WITNESS REMOVES ITS OWN WALL:** a pen copy with the two refusals struck out is built into an
+elder Amphora that seals the escaping name and puts the file above the out-home -- the pre-repair
+reading reproduced inside the guard, so a green here cannot be told from a door with nothing to
+refuse. Then the repaired binary over that elder seal tool refuses by name with nothing written.
+`amphora_contained_name` **tier lap**, proven able to red against the tree itself; all 15 elder
+lap-clock amphora guards GREEN beside it. Row (`20260910.053613`) booked and folded in one lap --
+the pin had **three bytes** of headroom, every remaining row OPEN, so no lawful fold made room; the
+rebase then found a peer had spent my number and the stamp carried the renumber for free.
+**THE HOT PASS CLOSED AND CARRIES ONE RED THAT IS NOT MINE:** **206 green, 1 red** --
+`mantra_tablecloth_query_wire`, whose delivery selftest exited non-zero at load 13 and **re-runs
+GREEN here by name**: transient, Patchouli's lane, named rather than swallowed. My cold open did NOT
+close -- 53 green, 0 red in 53 minutes, stopped with `fleet_call.sh --signal TERM`, six peers
+refused by name.
+**YOURS:** two shapes stand outside the repair. A filename carrying a **newline** splits a cargo
+line in two and no door refuses one. And `restore_write_prove` still writes each resin body BEFORE
+re-hashing it, so a forged body lands its wrong bytes and is refused after -- this row's ordering
+fault one field over, whose cure is a scratch name and a rename after the proof.
 **Still yours, whole on the shelf:** `rish_spoken_ascii` **11,113** characters, 10,748 table / 365
 judgment, sweep unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
 `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

@@ -2769,6 +2769,26 @@ path tools/am/amphora_manifest_agrees_witness.rish
 tier lap
 seated 20260910.052000
 
+# amphora_contained_name -- a cargo name lands inside the home it was restored into, or it does not
+# land. The digests were checked twice over and the NAMES not at all: a digest answers what the
+# bytes are, and nothing answered where they may be written. Measured on metal `20260910` before a
+# line changed -- a vessel whose cargo named `../escaped.txt` passed the Kumara stamp, passed the
+# AEAD seal, passed the listing-agrees walk seated hours earlier, and printed `restore files proven
+# count=2`, because the content was honest and only the destination was not. The file landed one
+# directory ABOVE its out-home and `restore` refused afterward on the parent compare, with the write
+# already done. The rule lives once, in `amphora/manifest_entry.rye` beside the wreck rule it reads
+# like, and four doors inherit it -- the seal writer, the stamp writer, the listing check, and the
+# cargo reader restore walks -- so the earliest door a vessel meets is the one that speaks. The pen
+# REMOVES the wall, watches the escape happen, and returns it, since a refusal proven only from the
+# passing side cannot be told from a door with nothing to refuse; and it reaches the cargo door the
+# one honest way, with an elder-sealed vessel, because every earlier door refuses first.
+# `tier lap`: four rye builds plus three in the elder pen.
+
+guard amphora_contained_name
+path tools/am/amphora_contained_name_witness.rish
+tier lap
+seated 20260910.061500
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert
