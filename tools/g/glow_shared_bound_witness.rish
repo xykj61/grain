@@ -17,24 +17,43 @@
 #
 # Every shared name agrees today, so it stands under a standing agreement rather than over a break.
 # That is the point -- the first drift reds on the lap it arrives, where a comment would let it ship.
+#
+# Every shared name agrees today, so this wall stands under a standing agreement rather than over a
+# break. That is the point -- the first drift reds on the lap it arrives, where a comment would have
+# let it ship.
+#
+# THE INSTRUMENT IS SHARED, AND THE ROOM IS A PARAMETER (`20260910.093000`). The census moved to
+# `tools/fixtures/s/shared_bound_scan.sh` and takes `--room`, because `mantra/` carries the same
+# shape -- `max_resin_bytes` at 512 in two modules, `max_wire_payload` at 340 in two more -- and a
+# second copy of this reading would be the very fault it refuses. The room is named explicitly here
+# rather than left to the default, so nothing this witness asserts rides on which room the scan
+# happens to open with. Its 53-leg control runs under THIS guard alone; `mantra_shared_bound` names
+# that rather than running it again, since one control proving one instrument twice in one pass buys
+# nothing.
+#
+# THE WALL IS PER ROOM, and the measurement says why. `--all` over the 44 top-level rooms holding
+# tracked `.rye` reads 17 sharing a name, six with zero divergence, and eleven carrying 59 groups at
+# more than one value -- `crypto/sha256.rye` at `digest_len = 32` beside `crypto/sha512.rye` at 64,
+# each correct. A room of siblings implementing one interface shares names it must NOT share values
+# for, so a tree-wide gate would demand that two hash functions agree on a digest length.
 
 say "glow-shared-bound: Language EN -- the fence posts two modules share, compared rather than trusted."
 say "glow-shared-bound: Style Gauge, Meter -- each leg names what it plants and what must refuse."
 say "glow-shared-bound: Lens TAME -- bound everything, and say why the bound is that number."
 
-say "glow-shared-bound: the control -- thirty-two behaviors on real git repositories in a pen..."
-let ctl = run ["sh" "tools/fixtures/g/glow_shared_bound_control.sh"]
+say "glow-shared-bound: the control -- fifty-three behaviors on real git repositories in a pen..."
+let ctl = run ["sh" "tools/fixtures/s/shared_bound_control.sh"]
 assert ctl.ok else "glow-shared-bound: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "legs_pass=32" else "glow-shared-bound: the control did not prove thirty-two behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "legs_pass=53" else "glow-shared-bound: the control did not prove fifty-three behaviors --\n${ctl.out}\n${ctl.err}"
 assert ctl.out contains "legs_fail=0" else "glow-shared-bound: a control leg failed --\n${ctl.out}\n${ctl.err}"
 
 say "glow-shared-bound: and the living tree, read on metal..."
-let scan = run ["sh" "tools/fixtures/g/glow_shared_bound_scan.sh"]
+let scan = run ["sh" "tools/fixtures/s/shared_bound_scan.sh" "--room" "glow"]
 assert scan.ok else "glow-shared-bound: the scan would not run -- read its own lines\n${scan.out}\n${scan.err}"
 
 # invariant: the gate is the scan's own verdict rather than a number copied here. An expected value
 # pinned in a second place is a stale pin waiting for a tree that moved (REDS %341's class).
-assert scan.out contains "verdict=ok" else "glow-shared-bound: two modules publish one bound at two values -- run with --names, then make them agree or rename one\n${scan.out}"
+assert (lines scan.out) contains "verdict=ok" else "glow-shared-bound: two modules publish one bound at two values -- run with --names, then make them agree or rename one\n${scan.out}"
 
 say "glow-shared-bound: and the census reads a real population, so a green means something..."
 # invariant: a scan whose pattern stopped matching would report zero shared names and zero
@@ -43,7 +62,7 @@ say "glow-shared-bound: and the census reads a real population, so a green means
 # is still shared -- structural, rather than naming one specimen. Naming a specimen is what this
 # witness did until `20260910.083221`, and it went stale the same day `max_name_len` found an owner:
 # an expected value pinned in a second place, which is the fault the line above warns about.
-let named = run ["sh" "tools/fixtures/g/glow_shared_bound_scan.sh" "--names"]
+let named = run ["sh" "tools/fixtures/s/shared_bound_scan.sh" "--room" "glow" "--names"]
 assert named.ok else "glow-shared-bound: the named reading would not run\n${named.out}\n${named.err}"
 assert named.out contains "name agreed " else "glow-shared-bound: no Glow bound is published by two modules any more -- every shared name has found an owner, and this wall has nothing left to compare\n${named.out}"
 

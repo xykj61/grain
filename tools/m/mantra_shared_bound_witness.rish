@@ -1,0 +1,63 @@
+# tools/m/mantra_shared_bound_witness.rish -- one bound, one value, across the version store.
+#
+#   rishi/bin/rishi run tools/m/mantra_shared_bound_witness.rish
+#
+# `mantra/` publishes 31 numeric bounds across 41 tracked sources, and two of those names stand in
+# more than one module. `max_resin_bytes` is 512 in `mantra/beading.rye` and `mantra/recall_lap1.rye`
+# -- one resin's byte ceiling, which the beader divides and the catalog stores, so a resin one
+# module accepts is a resin the other must be able to hold. `max_wire_payload` is 340 in
+# `mantra/recall_sync_wire.rye` and `mantra/recall_tablecloth_query_wire.rye` -- the sealed
+# datagram's own body budget, one physical fact spelled twice.
+#
+# Nothing compared either. `beading.rye` states its agreement in a comment, which is a wish rather
+# than a wall: raise one copy and the beader accepts a resin the catalog refuses, both files reading
+# correct alone. `max_wire_payload` carried no comment at all, so its agreement was held by nothing
+# whatsoever -- and a wire budget that two encoders disagree about is a frame one of them cannot
+# parse.
+#
+# Both agree today, so this wall stands under a standing agreement rather than over a break. That is
+# the point: the first drift reds on the lap it arrives, where a comment would have let it ship.
+#
+# WHY A ROOM'S OWN WITNESS RATHER THAN A TREE-WIDE ONE. The census reads a shared NAME and calls it
+# a shared RULE, and those two part outside a room whose modules are peers. Measured
+# `20260910.093000` by `sh tools/fixtures/s/shared_bound_scan.sh --all`: 17 of 44 rooms share a
+# name, six carry zero divergence, and eleven carry 59 groups standing at more than one value --
+# `crypto/sha256.rye` at `digest_len = 32` beside `crypto/sha512.rye` at 64, each correct. A
+# tree-wide gate would demand that two hash functions agree on a digest length, so the roster is
+# per room, on the room's own evidence.
+
+say "mantra-shared-bound: Language EN -- the fence posts two modules of the store share, compared rather than trusted."
+say "mantra-shared-bound: Style Gauge, Meter -- each leg names what it reads and what must refuse."
+say "mantra-shared-bound: Lens TAME -- bound everything, and say why the bound is that number."
+
+# The instrument's own control -- `tools/fixtures/s/shared_bound_control.sh`, 53 behaviors on real
+# git repositories in a throwaway pen -- runs once per roster pass, under
+# `tools/g/glow_shared_bound_witness.rish`. It is named here rather than run again, because one
+# control proving one instrument twice in one pass buys nothing and costs a pen.
+
+say "mantra-shared-bound: and the living room, read on metal..."
+let scan = run ["sh" "tools/fixtures/s/shared_bound_scan.sh" "--room" "mantra"]
+assert scan.ok else "mantra-shared-bound: the scan would not run -- read its own lines\n${scan.out}\n${scan.err}"
+
+# invariant: the reading is the room this witness names. A witness asserting a verdict without
+# asserting WHICH room answered would pass on the scan's default, which is another room entirely.
+assert (lines scan.out) contains "room_read=mantra" else "mantra-shared-bound: the scan answered for another room\n${scan.out}"
+
+# invariant: the gate is the scan's own verdict rather than a number copied here. An expected value
+# pinned in a second place is a stale pin waiting for a tree that moved (REDS %341's class).
+assert (lines scan.out) contains "verdict=ok" else "mantra-shared-bound: two modules of the store publish one bound at two values -- run with --names, then make them agree or rename one\n${scan.out}"
+
+say "mantra-shared-bound: and the census reads a real population, so a green means something..."
+# invariant: a scan whose pattern stopped matching would report zero shared names and zero
+# divergences, which is indistinguishable from a clean room. The scan itself refuses a population of
+# zero declarations, proven from both sides in the control, so this leg asks only that SOME name is
+# still shared -- structural, rather than naming one specimen. Naming a specimen is what the sibling
+# guard did for one day, and it went stale the moment `max_name_len` found an owner and left the
+# census: an expected value pinned in a second place, which is the fault the line above warns about.
+# The day `max_resin_bytes` and `max_wire_payload` both find owners, this guard has nothing left to
+# compare and says so rather than passing in silence.
+let named = run ["sh" "tools/fixtures/s/shared_bound_scan.sh" "--room" "mantra" "--names"]
+assert named.ok else "mantra-shared-bound: the named reading would not run\n${named.out}\n${named.err}"
+assert named.out contains "name agreed " else "mantra-shared-bound: no Mantra bound is published by two modules any more -- every shared name has found an owner, and this wall has nothing left to compare\n${named.out}"
+
+say "GREEN: mantra-shared-bound -- every bound two Mantra modules publish carries one value."

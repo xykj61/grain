@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.104407` | [The round that died at its send](20260910/20260910-104407_the-round-that-died-at-its-send.kyri) | a stashed round landed; the ferry never hashed |
 | `20260910.103215` | [A floor for a number that only grows](20260910/20260910-103215_a-floor-for-a-number-that-only-grows.kyri) | an equality that red on a peer's lawful file |
 | `20260910.101138` | [The room that teaches the register](20260910/20260910-101138_the-room-that-teaches-the-register.kyri) | 54 law pages, 18 over the ceiling |
+| `20260910.095251` | [A name two modules share](20260910/20260910-095251_a-name-two-modules-share.kyri) | a shared name is a shared rule only among peers |
 | `20260910.094705` | [Every wall read one line](20260910/20260910-094705_every-wall-read-one-line.kyri) | a listing named one place twice, past every wall |
 | `20260910.092703` | [An alias needs an owner](20260910/20260910-092703_an-alias-needs-an-owner.kyri) | fourteen spellings of 64 became one |
 | `20260910.092541` | [Two laps that stood on no ref](20260910/20260910-092541_two-laps-that-stood-on-no-ref.kyri) | this seat's own parked laps landed; unlanded 2 -> 0 |
@@ -31,6 +32,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.073920` | [Fourteen posts, one fence](20260910/20260910-073920_fourteen-posts-one-fence.kyri) | one bound, fourteen modules, no comparison |
 | `20260910.073143` | [The seconds this pier actually spends](20260910/20260910-073143_the-seconds-this-pier-actually-spends.kyri) | one roster pass costs 2,286 CPU seconds |
 | `20260910.072419` | [The room that arrived unlisted](20260910/20260910-072419_the-room-that-arrived-unlisted.kyri) | nine index rows, one peer's room |
+| `20260910.071748` | [The hollow page heard an hour late](20260910/20260910-071748_the-hollow-page-heard-an-hour-late.kyri) | a lap lost by three minutes, landed with its errata |
 | `20260910.070830` | [A guard that reports history](20260910/20260910-070830_a-guard-that-reports-history.kyri) | the reading moved to the commit |
 | `20260910.065118` | [The front doors, read as one class](20260910/20260910-065118_the-front-doors-read-as-one-class.kyri) | 573 characters, 26 doors, one kind |
 | `20260910.064554` | [A cargo name is one record](20260910/20260910-064554_a-cargo-name-is-one-record.kyri) | a name that carries a newline is two records |
