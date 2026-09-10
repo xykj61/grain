@@ -4459,19 +4459,40 @@ path tools/c/ceiling_teeth_witness.rish
 tier lap   # 1.4s; 31 ceilings read, 17 assertions over 13 behaviors, every refusal planted and lifted
 seated 20260910.054031
 
-# glow_shared_bound -- one bound, one value, however many Glow modules publish it. The front end
-# publishes 195 numeric bounds across its 127 sources, and seven of those NAMES stand in more than
-# one module. `max_name_len` stands FOURTEEN times -- tokens.rye, rune_shape.rye, expr.rye and
-# eleven rune modules -- each spelling 64 on its own line, compared by nothing. Three of the
-# agreements were stated in a `///` comment (`tokens.rye` says its ident ceiling "matches
-# rune_shape.max_name_len"), and a comment is a wish rather than a wall: raise one copy and the
-# lexer accepts a name the shape parser refuses, while both files still read correct alone. Every
-# shared name AGREES today, so the gate is zero rather than a ceiling -- there is no residue to
-# ratchet down, and a ceiling above zero would buy room for the first break. Sibling to
-# `ceiling_pair`, which reads two bounds standing in ONE file where this reads one bound across
-# MANY: that one is depth, this one is breadth. `tier lap`: 13s, one grep over 127 sources plus a
-# 30-leg control on real git repositories.
+# glow_shared_bound -- one bound, one value, however many Glow modules publish it. `max_name_len`
+# stood FOURTEEN times -- tokens.rye, rune_shape.rye, expr.rye and eleven rune modules -- each
+# spelling 64 on its own line, compared by nothing, and three of the agreements were stated in a
+# `///` comment, which is a wish rather than a wall. That name found an OWNER on `20260910.083221`:
+# the lexer declares it and thirteen modules alias it, so it carries one value by construction and
+# has left this census. The front end now publishes 184 numeric bounds across its 134 sources and
+# shares SIX names, every one a pair of PEERS where no module owns the rule and an alias would
+# invent an arbitrary dependency between equals. There the comparison is the owner. Every shared
+# name AGREES, so the gate is zero rather than a ceiling -- no residue to ratchet down, and a
+# ceiling above zero would buy room for the first break. Sibling to `ceiling_pair`, which reads two
+# bounds standing in ONE file where this reads one bound across MANY: that one is depth, this one
+# is breadth. The instrument moved to `tools/fixtures/s/shared_bound_scan.sh` on `20260910.093000`
+# and took a `--room` parameter, since `mantra/` carries the same shape and a second copy of the
+# reading would be the fault it refuses; this guard names its room explicitly and owns the shared
+# 53-leg control. `tier lap`: 13s, one grep over 134 sources plus that control on real git
+# repositories.
 guard glow_shared_bound
 path tools/g/glow_shared_bound_witness.rish
-tier lap   # 13s; 195 declarations read, 30 control behaviors with 2 scan mutations bitten
+tier lap   # 13s; 184 declarations read, 53 control behaviors with 5 scan mutations bitten
 seated 20260910.073606
+
+# mantra_shared_bound -- one bound, one value, across the version store. `mantra/` publishes 31
+# numeric bounds across its 41 tracked sources, and TWO of those names stand in more than one
+# module. `max_resin_bytes` is 512 in `beading.rye` and `recall_lap1.rye` -- one resin's byte
+# ceiling, which the beader divides and the catalog stores, so a resin one module accepts is a
+# resin the other must be able to hold. `max_wire_payload` is 340 in `recall_sync_wire.rye` and
+# `recall_tablecloth_query_wire.rye` -- the sealed datagram's own body budget, one physical fact
+# spelled twice. `beading.rye` states its agreement in a comment, which is a wish rather than a
+# wall; `max_wire_payload` carried no comment at all, so its agreement was held by nothing. Both
+# agree today, so the gate is zero rather than a ceiling. Shares one instrument with
+# `glow_shared_bound` -- `tools/fixtures/s/shared_bound_scan.sh --room mantra` -- whose 53-leg
+# control runs once per pass under that guard rather than twice. `tier lap`: one grep over 41
+# sources, no control of its own.
+guard mantra_shared_bound
+path tools/m/mantra_shared_bound_witness.rish
+tier lap   # 31 declarations read across 41 sources; the shared control runs under glow_shared_bound
+seated 20260910.093000

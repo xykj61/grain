@@ -1,7 +1,7 @@
 #!/bin/sh
-# glow_shared_bound_control.sh -- prove the shared-bound census refuses and welcomes on real trees.
+# shared_bound_control.sh -- prove the shared-bound census refuses and welcomes on real trees.
 #
-#   sh tools/fixtures/g/glow_shared_bound_control.sh
+#   sh tools/fixtures/s/shared_bound_control.sh
 #
 # Every leg builds a real git repository in a throwaway pen holding the scan at its own relative
 # path, because the scan resolves its root from its own location and would otherwise read the tree
@@ -10,11 +10,11 @@
 set -u
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd -P) || exit 1
-scan_src="$root/tools/fixtures/g/glow_shared_bound_scan.sh"
+scan_src="$root/tools/fixtures/s/shared_bound_scan.sh"
 [ -f "$scan_src" ] || {
-  echo "glow_shared_bound_control: REFUSED -- the scan is absent at $scan_src" >&2; exit 2; }
+  echo "shared_bound_control: REFUSED -- the scan is absent at $scan_src" >&2; exit 2; }
 
-pen=$(mktemp -d) || { echo "glow_shared_bound_control: REFUSED -- no pen" >&2; exit 2; }
+pen=$(mktemp -d) || { echo "shared_bound_control: REFUSED -- no pen" >&2; exit 2; }
 trap 'rm -rf "$pen"' EXIT INT TERM
 
 pass=0
@@ -27,14 +27,14 @@ check() {
 field() { printf '%s\n' "$2" | sed -n "s|^$1=||p"; }
 
 # -- the pen: the scan three directories down, exactly as it sits in the tree ---------------------
-mkdir -p "$pen/tools/fixtures/g" "$pen/glow"
-cp "$scan_src" "$pen/tools/fixtures/g/glow_shared_bound_scan.sh"
+mkdir -p "$pen/tools/fixtures/s" "$pen/glow"
+cp "$scan_src" "$pen/tools/fixtures/s/shared_bound_scan.sh"
 cd "$pen" || exit 2
 git init -q .
 git config user.email pen@example.invalid
 git config user.name pen
 
-run_scan() { sh tools/fixtures/g/glow_shared_bound_scan.sh "$@" 2>&1; }
+run_scan() { sh tools/fixtures/s/shared_bound_scan.sh "$@" 2>&1; }
 stage() { git add -A >/dev/null 2>&1; }
 
 # -- leg 1: two modules publishing one name at one value read as an agreement --------------------
@@ -173,6 +173,85 @@ printf 'pub const max_name_len: u32 = 64;\n' >> glow/quiet.rye
 stage
 run_scan >/dev/null 2>&1
 check no_decls_lifted 0 "$?"
+# -- leg 17: the room is a parameter, and the named room is the room that answers -------------------
+# invariant: the elder legs above pass no --room and therefore read the default, so the default is
+# asserted here rather than assumed. A default that drifted would move every leg above it silently.
+# leg 15 left glow with no tracked source, so the room is restored before the default is read.
+printf 'pub const max_name_len: u32 = 64;\n' > glow/a.rye
+printf 'pub const max_name_len: u32 = 64;\n' > glow/b.rye
+mkdir -p mantra
+printf 'pub const max_resin_bytes: u32 = 512;\n' > mantra/a.rye
+printf 'pub const max_resin_bytes: u32 = 512;\n' > mantra/b.rye
+stage
+check default_room glow "$(field room_read "$(run_scan)")"
+out=$(run_scan --room mantra)
+check named_room mantra "$(field room_read "$out")"
+check named_room_shared 1 "$(field shared_names "$out")"
+check named_room_verdict ok "$(field verdict "$out")"
+
+# -- leg 18: a divergence in one room leaves another room green ------------------------------------
+# invariant: the wall is per room, so a break in mantra must not red glow and the reverse. This is
+# the whole reason the roster carries a witness per room rather than one sweep.
+printf 'pub const max_resin_bytes: u32 = 1024;\n' > mantra/b.rye
+stage
+check split_mantra divergent "$(field verdict "$(run_scan --room mantra)")"
+check split_glow ok "$(field verdict "$(run_scan --room glow)")"
+printf 'pub const max_resin_bytes: u32 = 512;\n' > mantra/b.rye
+stage
+
+# -- leg 19: the room glob crosses a slash, so a nested source is read with the flat ones -----------
+# invariant: a room is the unit rather than a directory. mantra/src/ holds the weave and the store,
+# and a reading blind to them would call the room clean while its deepest bounds drifted.
+mkdir -p mantra/src
+printf 'pub const max_resin_bytes: u32 = 999;\n' > mantra/src/deep.rye
+stage
+check nested_seen divergent "$(field verdict "$(run_scan --room mantra)")"
+printf 'pub const max_resin_bytes: u32 = 512;\n' > mantra/src/deep.rye
+stage
+check nested_lifted ok "$(field verdict "$(run_scan --room mantra)")"
+
+# -- leg 20: a room the tree has never tracked refuses rather than reading zero as clean ------------
+run_scan --room nosuchroom >/dev/null 2>&1
+check absent_room_refuses 2 "$?"
+
+# -- leg 21: an unknown argument refuses, and --room with no value refuses --------------------------
+# invariant: a flag misspelled at a call site must never be read past in silence, because a scan
+# that ignores an argument answers for a room nobody asked about.
+run_scan --bogus >/dev/null 2>&1
+check unknown_arg_refuses 2 "$?"
+run_scan --room >/dev/null 2>&1
+check room_without_value_refuses 2 "$?"
+
+# -- leg 22: --all censuses every room and prints NO verdict ----------------------------------------
+# invariant: a census is a reading rather than a gate, and `verdict=` is the word a witness reaches
+# for. Withholding it is what keeps a reported number from being mistaken for a walled one.
+printf 'pub const max_resin_bytes: u32 = 1024;\n' > mantra/b.rye
+stage
+out=$(run_scan --all)
+check all_no_verdict "" "$(field verdict "$out")"
+check all_rooms_sharing 2 "$(field rooms_sharing "$out")"
+check all_holds 1 "$(field rooms_premise_holds "$out")"
+check all_fails 1 "$(field rooms_premise_fails "$out")"
+check all_names_room yes "$(case "$out" in *"room mantra shared_names=1 divergent_names=1"*) echo yes ;; *) echo no ;; esac)"
+printf 'pub const max_resin_bytes: u32 = 512;\n' > mantra/b.rye
+stage
+out=$(run_scan --all)
+check all_holds_lifted 2 "$(field rooms_premise_holds "$out")"
+check all_fails_lifted 0 "$(field rooms_premise_fails "$out")"
+
+# -- leg 23: a room sharing no name is absent from the census's own room lines ----------------------
+# invariant: rooms_sharing counts rooms that share a name, so a room publishing one bound apiece is
+# read and then passed over. A census printing every room would bury the seventeen that matter.
+mkdir -p tally
+printf 'pub const max_pen: u32 = 8;\n' > tally/only.rye
+stage
+out=$(run_scan --all)
+check quiet_room_read 3 "$(field rooms_read "$out")"
+check quiet_room_sharing 2 "$(field rooms_sharing "$out")"
+check quiet_room_absent no "$(case "$out" in *"room tally "*) echo yes ;; *) echo no ;; esac)"
+git rm -q --cached tally/only.rye
+rm -rf tally mantra
+stage
 
 printf 'legs_pass=%s\n' "$pass"
 printf 'legs_fail=%s\n' "$fail"
