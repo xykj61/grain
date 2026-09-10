@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `71a85f8f76` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `55f4dd61db` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
