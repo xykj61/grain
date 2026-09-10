@@ -19,10 +19,12 @@
 #
 # WHAT IT READS.
 #
-#   ENFORCE   `.claude/rules/*.md` and `.cursor/rules/*.mdc`. Zero characters above 0x7F, hard.
-#             These are read as law by whichever editor is driving, so a rule page is the one
-#             document whose own bytes are an argument about the rule. Swept to zero on the lap
-#             this meter was seated, which is what earns the roster its gate.
+#   ENFORCE   `.claude/rules/*.md` and `.cursor/rules/*.mdc`, PLUS every living tracked page those
+#             rooms name as canon. Zero characters above 0x7F, hard. The rule pages are read as law
+#             by whichever editor is driving, so a rule page is the one document whose own bytes
+#             are an argument about the rule -- and a page the law tells a reader to read first is
+#             load-bearing in exactly the same way. Reported as `enforce_globbed` and
+#             `enforce_derived` so a page leaving the wall is visible; see THE DERIVED CANON below.
 #   RATCHET   every other LIVING tracked `.md` and `.mdc`, under a ceiling that only ever falls.
 #
 # WHAT THE RATCHET LEAVES OUT, and the reason for each, since a meter that cannot say why it
@@ -68,7 +70,12 @@ mode="${1:-census}"
 # The ceiling only falls. Lower it whenever a lap converts a document; never raise it.
 #   3956  `20260906.131411`  across 92 of 347 living pages, the reading this meter was seated on
 #   3331  `20260908.052550`  after the five pages the ENFORCE rooms NAME as their canon were swept
-CEILING="${ASCII_DOC_CEILING:-3331}"
+#   3232  `20260909.220333`  the law-cited canon left the ratchet for the gate below -- 99
+#                            characters across two living pins, swept rather than carried. The
+#                            reading fell 3324 -> 3225; the ceiling keeps the 7 of slack it already
+#                            stood on and takes none of the 99, so this lap is credited with
+#                            nothing it did not repair.
+CEILING="${ASCII_DOC_CEILING:-3232}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.
@@ -149,8 +156,84 @@ count_file() {
   ' "$1"
 }
 
-# --- ENFORCE: the rule rooms, at zero ---
+# --- THE DERIVED CANON: the pages the law itself names ------------------------------------------
+#
+# THE WALL IS A GLOB AND THE LAW IS A GRAPH, which is the same fault this meter was built to
+# catch, one room further out. A rule page is walled because an editor reads it as law; the page
+# that rule tells a reader to READ FIRST was walled by nothing. Measured `20260908.052550`:
+# `tame-guidance.md` stood at zero while `context/TAME_CORE.md`, the page it names as its
+# compressed core, held 51 characters, and `CLAUDE.md` -- the root file that loads every rule --
+# held 38. A hand swept five such pages to zero that lap and left the roster at two globs, so
+# what held them there afterward was ratchet slack: 7 characters on `20260909.220333`, which is
+# to say one em dash in `context/RADIANT_STYLE.md` reddened nothing and eight of them reddened a
+# total naming no page.
+#
+# SO THE WALL FOLLOWS THE LAW'S OWN CITATIONS. A living page that a rule room names as canon is
+# held to the rule. Derived rather than listed, for the reason the globs are globs: a page the law
+# begins citing tomorrow is walled the day it lands, where a typed list waits for somebody to
+# remember it. Both citation shapes are read, because the law writes canon both ways -- a Markdown
+# link, and far more often a backticked path.
+#
+# WHAT IT COST TO WIDEN, and the reading that was wrong first. A hand grep answered that all 33
+# derived pages already stood at zero, which would have made the widening free. The widened scan
+# then refused two of them -- `session-logs/CHAPTERS.md` at 50 characters and
+# `construction/SHRED_PREP.md` at 49, both living pins the law names by path, both holding em
+# dashes and middle dots the rule's own table spells. The hand grep had spelled its octal class
+# inside single quotes, where `[\300-\377]` is a literal set of digits and a backslash rather than
+# the high-byte range, so it answered a clean zero for every file it read. That is this meter's own
+# subject turned back on the hand measuring it, twice in one lap, and it is why the number above
+# comes from the instrument. Both pages were swept by
+# `tools/fixtures/a/ascii_document_convert.sh` and proven by re-derivation from their committed
+# bytes before this roster was seated.
+#
+# THE ONE THING DERIVATION CAN DO THAT A GLOB CANNOT is drop a page silently -- a rule that stops
+# citing `context/RADIANT_STYLE.md` lets it fall out of the wall by an edit made somewhere else.
+# That is why the membership count is PRINTED beside the globbed one rather than folded into a
+# single total: a wall that shrinks should be legible in the census, and no reader can see a
+# number that was never reported.
+derived_list=$(mktemp "${TMPDIR:-/tmp}/ascii-doc-derived.XXXXXX") || {
+  echo "instrument=failed"
+  echo "detail=mktemp_refused"
+  echo "verdict=misread"
+  exit 1
+}
+trap 'rm -f "$LISTFILE" "$derived_list"' EXIT INT TERM
+{
+  for g in $ENFORCE_GLOBS; do
+    for f in $g; do
+      [ -f "$f" ] || continue
+      # link form: ](path.md) or ](path.mdc), with any anchor and any ../ prefix removed
+      grep -oE '\]\([^)]+\.(md|mdc)\)' "$f" 2>/dev/null | sed 's/^](//; s/)$//; s/#.*//'
+      # backtick form, which is how the law names canon most of the time
+      grep -oE '`[A-Za-z0-9_./-]+\.(md|mdc)`' "$f" 2>/dev/null | tr -d '`'
+    done
+  done
+} | sed 's|^\(\.\./\)*||; s|^\./||' | sort -u | while IFS= read -r c; do
+  [ -n "$c" ] || continue
+  # Already walled by a glob, third-party, projected, planted, or closed-stack testimony: each is
+  # read past for the same reason the ratchet reads it past, so the two rosters cannot disagree.
+  case "$c" in
+    .claude/rules/*|.cursor/rules/*) continue ;;
+    gratitude/*|vendor/*|seed/*) continue ;;
+    */fixtures/*|fixtures/*|*/fixture/*) continue ;;
+    date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;
+  esac
+  b=${c##*/}
+  case "$b" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
+  esac
+  # TRACKED IS THE TEST, and it is answered from the listing already in hand rather than by a
+  # `git ls-files` per candidate: the law cites example paths, fossils, and pages of other trees,
+  # and only a page this repository actually carries can be held to anything.
+  grep -qxF "$c" "$LISTFILE" || continue
+  [ -f "$c" ] || continue
+  echo "$c"
+done | sort -u > "$derived_list"
+enforce_derived=$(wc -l < "$derived_list" | tr -d ' ')
+
+# --- ENFORCE: the rule rooms and the canon they name, at zero ---
 enforce_files=0
+enforce_globbed=0
 enforce_dirty=0
 enforce_chars=0
 enforce_report=""
@@ -158,6 +241,7 @@ for g in $ENFORCE_GLOBS; do
   for f in $g; do
     [ -f "$f" ] || continue
     enforce_files=$((enforce_files + 1))
+    enforce_globbed=$((enforce_globbed + 1))
     reading=$(count_file "$f") || {
       echo "instrument=failed"
       echo "detail=awk_refused_a_file"
@@ -175,6 +259,29 @@ for g in $ENFORCE_GLOBS; do
     fi
   done
 done
+
+# The derived canon reads through the same counter and the same report, so one page cannot be
+# dirty in one roster and clean in the other.
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  [ -f "$f" ] || continue
+  enforce_files=$((enforce_files + 1))
+  reading=$(count_file "$f") || {
+    echo "instrument=failed"
+    echo "detail=awk_refused_a_file"
+    echo "detail_path=$f"
+    echo "verdict=misread"
+    exit 1
+  }
+  set -- $reading
+  n=${1:-0}
+  if [ "$n" -gt 0 ]; then
+    enforce_dirty=$((enforce_dirty + 1))
+    enforce_chars=$((enforce_chars + n))
+    enforce_report="$enforce_report$n $f
+"
+  fi
+done < "$derived_list"
 
 # --- RATCHET: every other living document in the actively-written rooms ---
 ratchet_files=0
@@ -209,6 +316,9 @@ while IFS= read -r f; do
   case "$b" in
     [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
   esac
+  # A page the law names is counted by the ENFORCE roster above. Counting it here as well would
+  # price one character twice and let a ceiling fall for a repair the gate already required.
+  grep -qxF "$f" "$derived_list" && continue
   if [ ! -f "$f" ]; then
     ratchet_absent=$((ratchet_absent + 1))
     continue
@@ -243,6 +353,8 @@ fi
 if [ "$ratchet_total" -le "$CEILING" ]; then under=yes; else under=no; fi
 
 echo "enforce_files=$enforce_files"
+echo "enforce_globbed=$enforce_globbed"
+echo "enforce_derived=$enforce_derived"
 echo "enforce_dirty_files=$enforce_dirty"
 echo "enforce_chars=$enforce_chars"
 echo "ratchet_files=$ratchet_files"

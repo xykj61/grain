@@ -1,7 +1,7 @@
-# Session-logs — seasons roster
+# Session-logs -- seasons roster
 
 **Language:** EN  
-**Status:** Living pin — one line per closed season  
+**Status:** Living pin -- one line per closed season  
 **Bound:** under `living_pin_max_bytes`  
 **Seated:** `20260725.040520`  
 **Counts derived:** every `Count` below is held to its own shelf's rows by
@@ -58,7 +58,7 @@ pin and with the files on disk. The row a hand must type twice is the row that d
 (`stamp-and-name`: **count, never number**); a guard holding the two rosters to one reading is the
 next lap rather than this one.
 
-Prior overflow shelf (absorbed into 20260722 index): [`date/README-index-20260722-shelf.md`](date/README-index-20260722-shelf.md) — kept for accrete-never-break.
+Prior overflow shelf (absorbed into 20260722 index): [`date/README-index-20260722-shelf.md`](date/README-index-20260722-shelf.md) -- kept for accrete-never-break.
 
 **Fold trigger, seated `20260824.052329`:** a day's rows fold the moment that day's logs have,
 so the index describes exactly the set the room holds flat. One tool does both --
@@ -67,12 +67,12 @@ so the index describes exactly the set the room holds flat. One tool does both -
 zero stale rows. The byte bound then follows for free: fold the room to today and the pin holds
 one day of rows. Growth law: [`../context/specs/append-only-growth-law.md`](../context/specs/append-only-growth-law.md).
 
-**Waypoint:** Equinox relay e223–e294 rests at `20260804.230650` / pier fuse `20260804.231208` — grain **arc**, by Keaton's word ("fuse kg with arc") · arcs: equality closed · Nock crossed once · Pond census · walls charted · rune ladder STOA338–346 · guides 0–2 · maps woven · summary: [`../counsel/date/20260804/20260804-230650_the-equinox-season-summary.md`](../counsel/date/20260804/20260804-230650_the-equinox-season-summary.md)
-**Ratified:** grain **arc** spoken directly — Keaton, `20260804.231107` / pier fuse `20260804.231449` ("fuse kg with arc"); the delegated lean and the owner's word agree · innermost open season **CLOSED**.
-**Waypoint:** Fascia Equinox (nest-12, f-rounds) rests at `20260804.232258` / pier fuse `20260804.232721` — exit bar **fascia ≥ 90** was MET at entry 69 before the pause; handback consumed; closed heading home, first rung of the walk. Progress kept: f3 complete · exit bar MET · `return_voice_j4_d10` CONSUMED.
-**Waypoint:** Voice Chapter (nest-11, undeca) rests at `20260804.233134` — Journey 4 doors 8–15 GREEN · Build queue CLOSED · tend three DONE · almanac 16/16 · handback `return_equinox_e7` CONSUMED; closed heading home, second rung. Progress pointers kept.
-**Waypoint:** Nona (nest-9, n-rounds) rests at `20260804.234508` / pier fuse `20260804.235036` — n3 complete · n4 next stands as its bookmark · handback `return_surface_p41` consumed; closed heading home by Keaton's named word; cadence: **one rung per fuse**.
-**Waypoint (the homeward sweep):** at `20260804.233206` / pier fuse `20260804.234505`, by Keaton's order (*fuse kg Nona* · lose-no-pointer sweep), the remaining paused rungs rest deepest-outward — Voice already RESTED (11 · J4 · almanac 16/16) · **Nona** (9 · n3/n4) · Oven (8 · o3/o4) · Surface (7 · p58/p59 · live-five) · Generator (6 · s8/s9) · MUR (3 · u91/u92) · Inner Scope (i6/i7) · Constellation (m8/m9) — every row keeps its PAUSED facts verbatim beside RESTED; each reopens only by fresh charter. Geode prep untouched; 6a Wheel-frame parked; Keeh quint already CLOSED (k6/k7 bookmarks belong to Identity Remake, still PAUSED — flagged, not swept blind). · **Note `20260804.235036`:** pier fused this sweep before counsel retired v88; rows stand (accrete); cadence law from here is one named rung per fuse.
+**Waypoint:** Equinox relay e223-e294 rests at `20260804.230650` / pier fuse `20260804.231208` -- grain **arc**, by Keaton's word ("fuse kg with arc") - arcs: equality closed - Nock crossed once - Pond census - walls charted - rune ladder STOA338-346 - guides 0-2 - maps woven - summary: [`../counsel/date/20260804/20260804-230650_the-equinox-season-summary.md`](../counsel/date/20260804/20260804-230650_the-equinox-season-summary.md)
+**Ratified:** grain **arc** spoken directly -- Keaton, `20260804.231107` / pier fuse `20260804.231449` ("fuse kg with arc"); the delegated lean and the owner's word agree - innermost open season **CLOSED**.
+**Waypoint:** Fascia Equinox (nest-12, f-rounds) rests at `20260804.232258` / pier fuse `20260804.232721` -- exit bar **fascia >= 90** was MET at entry 69 before the pause; handback consumed; closed heading home, first rung of the walk. Progress kept: f3 complete - exit bar MET - `return_voice_j4_d10` CONSUMED.
+**Waypoint:** Voice Chapter (nest-11, undeca) rests at `20260804.233134` -- Journey 4 doors 8-15 GREEN - Build queue CLOSED - tend three DONE - almanac 16/16 - handback `return_equinox_e7` CONSUMED; closed heading home, second rung. Progress pointers kept.
+**Waypoint:** Nona (nest-9, n-rounds) rests at `20260804.234508` / pier fuse `20260804.235036` -- n3 complete - n4 next stands as its bookmark - handback `return_surface_p41` consumed; closed heading home by Keaton's named word; cadence: **one rung per fuse**.
+**Waypoint (the homeward sweep):** at `20260804.233206` / pier fuse `20260804.234505`, by Keaton's order (*fuse kg Nona* - lose-no-pointer sweep), the remaining paused rungs rest deepest-outward -- Voice already RESTED (11 - J4 - almanac 16/16) - **Nona** (9 - n3/n4) - Oven (8 - o3/o4) - Surface (7 - p58/p59 - live-five) - Generator (6 - s8/s9) - MUR (3 - u91/u92) - Inner Scope (i6/i7) - Constellation (m8/m9) -- every row keeps its PAUSED facts verbatim beside RESTED; each reopens only by fresh charter. Geode prep untouched; 6a Wheel-frame parked; Keeh quint already CLOSED (k6/k7 bookmarks belong to Identity Remake, still PAUSED -- flagged, not swept blind). - **Note `20260804.235036`:** pier fused this sweep before counsel retired v88; rows stand (accrete); cadence law from here is one named rung per fuse.
 | 20260827 | `20260827` | 45 | [`date/README-index-20260827.md`](date/README-index-20260827.md) |
 | 20260828 | `20260828` | 67 | [`date/README-index-20260828.md`](date/README-index-20260828.md) |
 | 20260829 | `20260829` | 86 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |

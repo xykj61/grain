@@ -90,6 +90,105 @@ printf '# a rule born today %s\n' "$EM" > "$d/.claude/rules/two.md"
 seal "$d"
 holds enforce_is_a_glob_not_a_list "$(run_scan "$d")" 'detail_path=.claude/rules/two.md'
 
+# --- 1b. the derived canon: a page the law NAMES is walled like the law ----------------------
+#
+# The wall was two directory globs while the law is a graph, so a rule page stood at zero while
+# the page it told a reader to read first stood in the ratchet behind seven characters of slack.
+# Every leg here is shown from both sides, because a wall proven only where it bites cannot be
+# told from a wall that bites everything.
+
+# A page the rule room names in a BACKTICK -- how the law writes canon most of the time.
+d=$(build cited_backtick)
+printf '# a rule\n\nRead `docs/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+seal "$d"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
+holds derived_backtick_refuses "$out" 'detail_path=docs/GUIDE.md'
+holds derived_backtick_is_enforced "$out" 'enforce=failed'
+holds derived_backtick_counted "$out" 'enforce_derived=1'
+# lift the plant in the same pen: the refusal must let go, or it is a latch
+printf '# a document -- written carefully\n' > "$d/docs/GUIDE.md"
+seal "$d"
+holds derived_backtick_lift_green "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'enforce=honored'
+
+# The same page, cited as a MARKDOWN LINK with a `../../` prefix, which is the other shape.
+d=$(build cited_link)
+printf '# a rule\n\nSee [the guide](../../docs/GUIDE.md).\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+seal "$d"
+holds derived_link_refuses "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'detail_path=docs/GUIDE.md'
+
+# THE OTHER SIDE, and the one that keeps the widening honest: a page NO rule names stays in the
+# ratchet, where a ceiling prices it rather than a gate refusing it.
+d=$(build uncited_stays_ratchet)
+printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+seal "$d"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
+holds uncited_not_enforced "$out" 'enforce=honored'
+holds uncited_derived_empty "$out" 'enforce_derived=0'
+holds uncited_is_ratcheted "$out" 'ratchet_dirty_files=1'
+
+# A CITED PAGE IS PRICED ONCE. Counted in both rosters it would pay twice, and a ceiling could
+# then fall for a repair the gate had already required.
+d=$(build cited_counted_once)
+printf '# a rule\n\nRead `docs/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+printf '# a document %s written carelessly\n' "$EM" > "$d/docs/GUIDE.md"
+seal "$d"
+holds cited_left_the_ratchet "$(run_scan_env "$d" ASCII_DOC_CEILING=99)" 'ratchet_dirty_files=0'
+
+# The law cites paths this repository does not carry -- examples, fossils, other trees. Only a
+# TRACKED page can be held to anything, so an untracked citation is read past rather than guessed.
+d=$(build cited_untracked)
+printf '# a rule\n\nRead `docs/ABSENT.md` first.\n' > "$d/.claude/rules/one.md"
+seal "$d"
+printf '# never committed %s\n' "$EM" > "$d/docs/ABSENT.md"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=99)
+holds cited_untracked_read_past "$out" 'enforce=honored'
+holds cited_untracked_uncounted "$out" 'enforce_derived=0'
+
+# A rule citing DATED testimony leaves it alone: accrete-never-break outranks the wall, and the
+# ratchet reads the same basename past for the same reason.
+d=$(build cited_testimony)
+mkdir -p "$d/docs"
+printf '# a rule\n\nSee `docs/20260906-131411_a-note.md`.\n' > "$d/.claude/rules/one.md"
+printf 'testimony %s kept\n' "$EM" > "$d/docs/20260906-131411_a-note.md"
+seal "$d"
+out=$(run_scan_env "$d" ASCII_DOC_CEILING=0)
+holds cited_testimony_read_past "$out" 'verdict=ok'
+holds cited_testimony_uncounted "$out" 'enforce_derived=0'
+
+# A rule naming a page in a CLOSED STACK leaves it alone too -- an archived shelf is immutable, so
+# gating one would price a repair the law forbids.
+d=$(build cited_archive)
+mkdir -p "$d/docs/archive"
+printf '# a rule\n\nSee `docs/archive/plain.md`.\n' > "$d/.claude/rules/one.md"
+printf 'shelved %s kept\n' "$EM" > "$d/docs/archive/plain.md"
+seal "$d"
+holds cited_archive_read_past "$(run_scan_env "$d" ASCII_DOC_CEILING=0)" 'verdict=ok'
+
+# A rule citing ITSELF or a sibling adds nothing: those pages are already walled by the glob, and
+# counting them twice would make `enforce_derived` a number nobody could read.
+d=$(build cited_sibling)
+printf '# a rule\n\nSee `.claude/rules/two.md`.\n' > "$d/.claude/rules/one.md"
+printf '# the sibling, plainly written\n' > "$d/.claude/rules/two.md"
+seal "$d"
+holds cited_sibling_uncounted "$(run_scan "$d")" 'enforce_derived=0'
+
+# THE MEMBERSHIP IS REPORTED, which is the one thing derivation owes that a glob does not: a page
+# can leave this wall by an edit made somewhere else, and a number nobody prints is a drop nobody
+# sees.
+d=$(build derived_membership_printed)
+printf '# a rule\n\nRead `docs/GUIDE.md` first.\n' > "$d/.claude/rules/one.md"
+seal "$d"
+out=$(run_scan "$d")
+holds derived_membership_reported "$out" 'enforce_derived=1'
+holds globbed_membership_reported "$out" 'enforce_globbed=2'
+# and the drop is legible: the rule stops citing, the count falls
+printf '# a rule, naming nothing\n' > "$d/.claude/rules/one.md"
+seal "$d"
+holds derived_drop_is_visible "$(run_scan "$d")" 'enforce_derived=0'
+
 # --- 2. the ratchet ceiling, from both sides -------------------------------------------------
 
 d=$(build at_ceiling)

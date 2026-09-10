@@ -56,8 +56,26 @@ Measured `20260908.052550`: of the 13 living `context/` pages the rule rooms cit
 walled at zero while the page it tells a reader to **read first** carried 51. All five stand at zero
 from this stamp: the mechanical part proven by re-derivation, and the fifteen check and cross marks
 in `RADIANT_STYLE.md` read one at a time into the tree's own **Prefer** and **Rather than** words.
-What stays open is the roster itself -- widening ENFORCE from two globs to the canon those globs
-NAME changes what a gate refuses, so it is named here rather than taken.
+**The roster was widened `20260909.220333`, and the wall now follows the citations rather than the
+directories.** `ascii_document_scan.sh` derives its enforced set from the rule rooms' own links and
+backticked paths, keeps every living tracked page it finds, and reads past what the ratchet reads
+past -- dated testimony, closed stacks, vendored sources, fixtures, and a citation this tree does
+not carry. It stands at **110 globbed plus 33 derived, 143 pages, zero characters**.
+
+**Derived rather than typed, for the reason the globs are globs:** a page the law begins citing
+tomorrow is walled the day it lands, where a name list waits for somebody to remember it. The one
+thing derivation can do that a glob cannot is let a page fall out of the wall by an edit made
+somewhere else, so the two memberships are **printed separately** -- `enforce_globbed` and
+`enforce_derived` -- and a drop is legible in the census rather than silent.
+
+**What the five hand-swept pages had holding them, between the two stamps: seven characters of
+ratchet slack.** They were repaired on `20260908` and then priced by a total naming no page, so one
+em dash in `context/RADIANT_STYLE.md` reddened nothing and eight of them reddened something a reader
+could not locate. The widening also refused two pins the elder reading called clean --
+`session-logs/CHAPTERS.md` at 50 characters and `construction/SHRED_PREP.md` at 49, every one a form
+the table above spells -- both swept and proven by re-derivation from their committed bytes. The
+ratchet fell **3,324 to 3,225** as those characters left it, and the ceiling fell **3,331 to 3,232**,
+keeping the seven of slack it already stood on and taking none of the ninety-nine.
 
 **Code comments**, in every comment syntax this tree authors: `tools/as/ascii_comment_witness.rish` holds three meters under ceilings that only fall -- `tools/fixtures/r/rye_comment_ascii_scan.sh` for `//`, `///`, and `//!` in Rye, `tools/fixtures/s/shell_comment_ascii_scan.sh` for `#` in Rishi and shell, and `tools/fixtures/g/glow_comment_ascii_scan.sh` for `::` in Glow. Each refuses to count **program content**, which is the distinction that makes a sweep safe: a Rye `\\` multiline string and a shell heredoc body are what a program prints or feeds onward, so converting them would change behavior rather than register. Glow needs no such exclusion, and the reason is the language's own: `glow/tokens.rye:239` refuses a newline inside a cord literal, so no Glow literal reaches a second line to open one with `::`. All three are proven on planted repositories, and every ceiling is proven from both sides -- one character past it refuses, and removing the plant returns the reading to green -- since a refusal proven only in the passing direction cannot be told from a bypass.
 

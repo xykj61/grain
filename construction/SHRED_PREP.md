@@ -1,14 +1,14 @@
-# SHRED_PREP — planning list toward first shred proof
+# SHRED_PREP -- planning list toward first shred proof
 
 **Language:** EN  
-**Status:** Living pin — **shred RED** · Amphora cut not opened · cellar kept · Amber name superseded (e148) · list only  
+**Status:** Living pin -- **shred RED** - Amphora cut not opened - cellar kept - Amber name superseded (e148) - list only  
 **Voice:** Kyri  
-****Last refreshed:** `20260801.033044` · e148 Cellar supersede · e138 keep-Amber withdrawn · Class O word-scope held  
-**Seat:** Surface p36 Oven · Equinox e148 · e128 word-scope · elder [`../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md)
+****Last refreshed:** `20260801.033044` - e148 Cellar supersede - e138 keep-Amber withdrawn - Class O word-scope held  
+**Seat:** Surface p36 Oven - Equinox e148 - e128 word-scope - elder [`../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md)
 
-*Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut. Overwrite-in-place of a living name (e148) is not a shred — git history and cold storage keep the elder commits.*
+*Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut. Overwrite-in-place of a living name (e148) is not a shred -- git history and cold storage keep the elder commits.*
 
-### Cellar (e148) — settled: Amber superseded in place; living code names **Cellar** (module + witness green); `cellar/` kept whole (was `amber/`); elders e138/e137 withdrawn; redact/shred **refused** — custody first.
+### Cellar (e148) -- settled: Amber superseded in place; living code names **Cellar** (module + witness green); `cellar/` kept whole (was `amber/`); elders e138/e137 withdrawn; redact/shred **refused** -- custody first.
 
 ---
 
@@ -16,28 +16,28 @@
 
 | Class | Meaning | Cut ready? |
 | --- | --- | --- |
-| **A** | Fund-lineage elder anchors (MUR u89–u91) · held disclosed on fascia i8 | Content yes · cut no · hold not exclude |
-| **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only · shred RED |
-| **O** | Unreachable testimony — no file in the tree names it (basename floor) | Word-scope on **class/rooms** · cut still RED |
-| **M** | **Mitra shed prep** — a fossil with a living mutant seated, its living citers repointed, and a banner on its face. Prepared like a friend rather than cut like a weed: the elder stays readable and every reference still lands. | Prep complete · cut still RED |
-| **W** | **Walked, cited, kept** — a named set examined against the shed conditions on a stamp and held, so a later pass reads the row rather than re-walking | Cut refused, with the measurement recorded |
+| **A** | Fund-lineage elder anchors (MUR u89-u91) - held disclosed on fascia i8 | Content yes - cut no - hold not exclude |
+| **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only - shred RED |
+| **O** | Unreachable testimony -- no file in the tree names it (basename floor) | Word-scope on **class/rooms** - cut still RED |
+| **M** | **Mitra shed prep** -- a fossil with a living mutant seated, its living citers repointed, and a banner on its face. Prepared like a friend rather than cut like a weed: the elder stays readable and every reference still lands. | Prep complete - cut still RED |
+| **W** | **Walked, cited, kept** -- a named set examined against the shed conditions on a stamp and held, so a later pass reads the row rather than re-walking | Cut refused, with the measurement recorded |
 
-Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/s/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms — not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
+Class **O** (`20260731.124815` - room home `20260731.135609` - **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil -- simply never pointed at. Instrument: `tools/fixtures/s/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms -- not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
 
-### Class O — word-scope (e128)
+### Class O -- word-scope (e128)
 
 | Opening word (any one) | Effect when spoken |
 | --- | --- |
-| `Class O yes` · `shred Class O` | authorize all Class O rooms (planted controls keep) |
+| `Class O yes` - `shred Class O` | authorize all Class O rooms (planted controls keep) |
 | `shed <room>` | authorize that room only |
 | circled `shred yes` covering Class O rooms | authorize the named Class O cut |
 
-Approvals · kg · best path seat this framing; they do **not** open the cut.
+Approvals - kg - best path seat this framing; they do **not** open the cut.
 
-### Class O — rooms (fresh cut · Bench Framework · Q50 `20260801.135914`)
+### Class O -- rooms (fresh cut - Bench Framework - Q50 `20260801.135914`)
 
-Floor: **orphaned=921** · `fascia_health_now=41` · `fascia_health_if_orphans_shed=51` · `fascia_health=40` · shred **RED**.  
-Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26** orphans this re-measure.
+Floor: **orphaned=921** - `fascia_health_now=41` - `fascia_health_if_orphans_shed=51` - `fascia_health=40` - shred **RED**.  
+Prior pin (counsel e184): orphans **895** - health_now **41** -- delta **+26** orphans this re-measure.
 
 | room | orphans | reachable? | Keaton's word |
 | --- | ---: | --- | --- |
@@ -50,11 +50,11 @@ Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26**
 | external-research | 2 | orphan floor | await opening word |
 | foundations | 2 | orphan floor | await opening word |
 | classical-vedic-astrology | 1 | orphan floor | await opening word |
-| tools | 1 | planted orphan control | **keeps** — never shed |
+| tools | 1 | planted orphan control | **keeps** -- never shed |
 
 | path | room | last stamp | reachable? | Keaton's word |
 | --- | --- | --- | --- | --- |
-| *(none named — class/rooms word-scope)* | — | — | orphan floor | await opening word |
+| *(none named -- class/rooms word-scope)* | -- | -- | orphan floor | await opening word |
 
 ---
 
@@ -174,11 +174,11 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 ## Hard lines
 
-- No live shred · no `prin rish breach yes now` from this pin.  
+- No live shred - no `prin rish breach yes now` from this pin.  
 - Fossils HOLD until circled Amphora proof.  
-- Class A stays under MUR shred readiness — do not mix into Class H cuts.  
+- Class A stays under MUR shred readiness -- do not mix into Class H cuts.  
 - Outside one-hops are **named**, not auto-walked into the whole pier.  
-- Class O word-scope is class/rooms, not per-path — and still needs an opening word before any cut.  
+- Class O word-scope is class/rooms, not per-path -- and still needs an opening word before any cut.  
 - Planted orphan controls keep.
 
 ---
