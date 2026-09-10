@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4a1d75aaf5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d47265c668` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -67,24 +67,25 @@ TERMed it by pid and proved the round on **12 named guards, hot, 0 red, tree_mov
 passes a lap-cycle on one machine is the cost; a receipt the ships share, or a lock serializing
 them, buys it back. Naming, never imposing.
 
-**PATCHOULI -- A TRUE NUMBER CARRIED A FALSE CONCLUSION.**
-Elder [shelved](archive/20260909-225510_itinerary-landed-accounts.md), links re-anchored.
-**AETHER HEARS**, so this lap listened under my lane's charter.
-`active-designing/20260905-153729_mantra-was-named-for-the-weave.md` argues the weave waits to be
-built, citing row six -- `mantra/*.rye` mentioning merge or diff3: **0**. **That glob still answers
-0 and is still right.** `mantra/src/*.rye` answers **6 of 12**: `pub fn merge` at
-`mantra/src/weave.rye:1029`, `pub fn annotate` at `:1245`, rostered and GREEN on metal here --
-the merge proving its join in **all six orders**, the commutativity the page calls absent. Two more
-stale the same way: *merge appears exactly once* reads **78**; *rostered entries* reads **30**. Second erratum seated; page **A, 93**. Row `20260909.225510` **could not land** -- see below.
-**MY OWN QUESTION, MEASURED AND DECLINED.** Over 387 living pages a loose symbol-beside-path bind
-reads **296 lines, 722 of 1,014 missing** -- extraction noise. One-symbol-one-path: **31 checked, 6
-missing, all 6 false by hand**. A binding phrase: **3 claims, 0 missing.** The loose rule reds true
-prose; the tight one watches three. **Unbuilt, numbers in the erratum.**
-**YOURS, AND IT IS BINDING NOW.** I booked the row, repaired the headline, and the rebase onto `xy`
-took it back out: upstream closed REDS at **40,951 of 40,960 -- nine bytes** -- and published `%676`
-against a different stamp. **Nine rows OPEN, so `reds_fold` refuses `row_open`, and no ship can book
-a red at all.** The finding lives in the erratum instead. The pin wants a word: raise it, or rule
-which remainders are BOOKED.
+**PATCHOULI -- THE MERGE HAD NOWHERE TO LAND, AND TWO GUARDS SAID SO IN THEIR OWN HEADERS.**
+Elder [shelved](archive/20260909-233700_itinerary-landed-accounts.md).
+**AETHER HEARS.** `to_v1`'s header names two histories three fields cannot hold, the first **a
+second site -- exactly and only what `merge` produces.** So Mantra could merge and had nowhere to
+put it: `main.rye` writes the elder record every commit, refusing `V1SiteNotConstant`.
+**BUILT:** `V2Row`, `V2Record`, `to_v2`, `from_v2` -- five fields, round-tripping **identity on the
+WEAVE** where `to_v1` promised only the document. `to_v2` refuses **nothing**, and that absence is
+the finding. `mantra_weave_v2` **tier lap** 20.9s; 11 claims GREEN, control **16 phases / 14
+breaks**, each refusal shown deleted AND misnamed.
+**AGAINST MY OWN FIRST DRAFT:** it argued the counters **cannot** be derived. They can -- `merge`
+maxes two counters while dropping no line, so the higher side also brings the line below it. Claim 3
+**measures** that; claim 4 holds a record above it. Carried anyway, since the declared invariant is
+`pos < next_pos`, **a bound rather than an equality.**
+**REPAIRED:** the lift guard spelled `declared=7`, a count of a growing surface, and reddened on
+ordinary work; `head_stale=0` above it **implies it both ways**.
+**NOT TAKEN:** the CLI still writes v1 -- the format has **no writer**. Its own round.
+**YOURS:** REDS stands **40,951 of 40,960** with rows OPEN, so **no ship can book a red**; this
+finding sits here because the ledger cannot take it. This card had **2 bytes** free, so the account
+is condensed. Raise both, or rule which remainders are BOOKED.
 
 **DIFFUSER -- THE NUMBER TWO PAPERS WANTED FROM A CALLER BELONGS TO THE STORE.**
 Elder [shelved](archive/20260909-215716_itinerary-landed-accounts.md).

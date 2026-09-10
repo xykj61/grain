@@ -1,0 +1,99 @@
+# tools/m/mantra_weave_v2_witness.rish -- the record a merged history fits in.
+#
+# WHAT THIS PROVES, and which gap it closes. The two guards either side of it named this one
+# in their own headers rather than leaving it to be found. `from_v1` proved an elder
+# `mantra-weave-v1` record READS the same after the module widened; `to_v1` proved such a weave
+# WRITES back, and named the two histories three fields cannot hold. The first of those is a
+# second site -- which is exactly and only what `merge` produces. So Mantra could merge two
+# histories and had nowhere to put the result: `mantra/src/main.rye` writes the elder record on
+# every commit, and a merged weave handed to it comes back `V1SiteNotConstant`. A weave that can
+# merge and cannot be saved has not finished being one. `Weave.to_v2` and `Weave.from_v2` are
+# the record that holds five fields, and this guard is the proof.
+#
+# WHAT THE WIDE RECORD CLAIMS, and it is stronger than the elder record's. The round trip is
+# identity on the WEAVE rather than on the document: text, generation, position, site and run
+# come back per line, and both counters with them. `to_v1` could promise only the document,
+# since the runs collapsed on the way through.
+#
+# THE COUNTERS ARE CARRIED, AND THEY DID NOT HAVE TO BE -- the finding this round measured
+# rather than argued. A first draft of the format asserted that a merged weave's counters
+# cannot be derived from its rows. They can: `apply` advances `next_pos` once per line placed
+# and `next_run` once per edit that placed one, and `merge` takes the maximum of two sides
+# while dropping no line, so the side holding the higher counter also contributes the line just
+# below it. Claim 3 measures that equality across a lifted weave, an edited weave and a merged
+# weave alike. The record carries the two numbers anyway, because the weave's DECLARED
+# invariant is `pos < next_pos` -- an upper bound rather than an equality -- and a reader that
+# derived would bind every future record to the tighter reading. Claim 4 holds a record standing
+# above the accident, and the control's `pos_derived` and `run_derived` phases are what a
+# deriving reader breaks.
+#
+# WHERE THE WIDE RECORD RUNS OUT, which a guard owes as much as the half that works. Four
+# shapes a record read off disk can wear that no weave means, each refused by name at the edge
+# before a line is allocated. Three could not arise in an elder record at all: a repeated
+# identity was ruled out for free by rising positions under one constant site, and place order
+# was position order until a second site could hold a line.
+#
+# WHAT IS NOT PROVEN HERE. That `mantra/src/main.rye` writes this record. It does not yet -- the
+# CLI still serializes `mantra-weave-v1` on every commit, so a merged weave has a format and no
+# writer. That is the next lap, and it is its own round because changing what the CLI writes
+# changes bytes already on disk, which is why the lift and the write were two rounds as well.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_v2_witness.rye,
+# because Zig refuses an import that escapes the root file's directory.
+#
+# Module: mantra/src/weave.rye. Siblings: the lift guard at
+# tools/m/mantra_weave_v1_lift_witness.rish, the elder write at
+# tools/m/mantra_weave_v1_write_witness.rish, the merge and annotate guards beside them, and
+# the model reading at tools/m/mantra_weave_model_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_v2_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_v2_witness"
+
+say "mantra-v2: Language EN -- the record a merged history fits in."
+say "mantra-v2: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-v2: Lens TAME -- four named refusals, all read at the edge before a line."
+
+say "mantra-v2: the module still declares the wide record and every refusal it adds..."
+let seat = run ["sh" "-c" "grep -q 'pub fn to_v2' mantra/src/weave.rye && grep -q 'pub fn from_v2' mantra/src/weave.rye && grep -q 'pub const V2Row' mantra/src/weave.rye && grep -q 'pub const V2Record' mantra/src/weave.rye"]
+assert seat.ok else "mantra-v2: to_v2, from_v2, V2Row or V2Record left weave.rye"
+let errs = run ["sh" "-c" "grep -q 'V2GenerationBelowOne' mantra/src/weave.rye && grep -q 'V2PlaceOrderNotRising' mantra/src/weave.rye && grep -q 'V2IdentityRepeated' mantra/src/weave.rye && grep -q 'V2CounterBelowLine' mantra/src/weave.rye"]
+assert errs.ok else "mantra-v2: one of the four named refusals left weave.rye -- a record read off disk would then be trusted where it used to be checked"
+
+say "mantra-v2: the module head still names every operation the module publishes..."
+let head = run ["sh" "tools/fixtures/m/mantra_weave_head_scan.sh" "mantra/src/weave.rye"]
+say head.out
+assert head.ok else "mantra-v2: the module head and the module disagree -- read the head_missing and head_stale lines above"
+assert head.out contains "container_seen=1" else "mantra-v2: the Weave container was not found, so the operation reading is a reading of nothing"
+assert head.out contains "head_missing=0" else "mantra-v2: an operation of Weave stands unnamed in the module head"
+assert head.out contains "head_stale=0" else "mantra-v2: the module head names an operation the module no longer publishes"
+
+say "mantra-v2: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_v2_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-v2: weave v2 witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-v2: weave v2 witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-v2: weave v2 witness not GREEN"
+assert selftest.out contains "round-trips on the weave" else "mantra-v2: the load-bearing claim -- weave identity rather than document identity -- is missing"
+assert selftest.out contains "refuses that same weave V1SiteNotConstant" else "mantra-v2: the claim that the elder record refuses this history is missing, so the gap this closes is unshown"
+assert selftest.out contains "deriving them would work today" else "mantra-v2: the measurement behind the carried counters is missing -- without it the design reads as an assertion"
+assert selftest.out contains "round-trips unmoved" else "mantra-v2: the claim that the format rests on the declared bound rather than the accident is missing"
+assert selftest.out contains "empty record and reads back empty" else "mantra-v2: the empty claim is missing"
+assert selftest.out contains "even generation, out and back" else "mantra-v2: the history claim is missing -- a record that dropped its tombstones would be a snapshot"
+assert selftest.out contains "refused V2GenerationBelowOne" else "mantra-v2: the reserved-generation refusal is missing"
+assert selftest.out contains "refused V2PlaceOrderNotRising" else "mantra-v2: the place-order refusal is missing"
+assert selftest.out contains "refused V2IdentityRepeated" else "mantra-v2: the repeated-identity refusal is missing -- the one the elder record never needed"
+assert selftest.out contains "refused V2CounterBelowLine" else "mantra-v2: the counter-bound refusal is missing"
+assert selftest.out contains "text for text" else "mantra-v2: the document claim is missing"
+
+say "mantra-v2: breaking the record in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_v2_control.sh"]
+assert control.ok else "mantra-v2: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-v2: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-v2: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "head_clean_exit=0" else "mantra-v2: the head scan's own innocence leg must pass"
+
+say "GREEN: a merged history writes a record and reads back whole -- eleven claims, four refusals by name, fourteen breaks caught."

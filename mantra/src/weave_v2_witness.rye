@@ -1,0 +1,426 @@
+//! mantra/src/weave_v2_witness.rye -- the record a merged history fits in.
+//!
+//!   rye build mantra/src/weave_v2_witness.rye -femit-bin=mantra/bin/weave_v2_witness
+//!   mantra/bin/weave_v2_witness
+//!
+//! The claim under test is `Weave.to_v2` and `Weave.from_v2` in
+//! `mantra/src/weave.rye`, and the gap they close was named by the two guards
+//! either side of them rather than found here. `from_v1` proved an elder
+//! `mantra-weave-v1` record reads the same after the module widened; `to_v1`
+//! proved such a weave writes back -- and named, in its own header, the two
+//! histories the elder record cannot hold. The first of those is a second site,
+//! which is exactly and only what `merge` produces. So the module could merge
+//! two histories and had nowhere to put the result: `mantra/src/main.rye` writes
+//! the elder record on every commit, and a merged weave handed to it comes back
+//! `V1SiteNotConstant`. A weave that can merge and cannot be saved has not
+//! finished being one.
+//!
+//! WHAT THE WIDE RECORD CLAIMS, and it is stronger than the elder record's. The
+//! round trip is identity on the WEAVE rather than on the document: five fields
+//! per line come back as they went, and both counters with them. `to_v1` could
+//! promise only the document, since the runs collapsed on the way through.
+//!
+//! THE COUNTERS ARE CARRIED, AND THEY DID NOT HAVE TO BE. Claim 3 measures the
+//! thing a first draft of this format asserted the other way: every weave this
+//! module builds stands at exactly one above its highest position and one above
+//! its highest run, merged weaves included, so a record deriving its counters
+//! would be correct today. The record carries them because the weave's declared
+//! invariant is an upper bound rather than an equality, and claim 4 shows the
+//! format holding a weave that stands above the accident -- which a deriving
+//! reader would silently pull back down.
+//!
+//! WHERE THE WIDE RECORD RUNS OUT, which a witness owes as much as the half that
+//! works. Four things a record read off disk can say that no weave means, and
+//! each is refused by name at the edge before a line is allocated. Three of the
+//! four could not arise in an elder record at all: a repeated identity was ruled
+//! out for free by rising positions under one constant site, and place order was
+//! position order until a second site could hold a line.
+//!
+//! The claims, listed rather than counted:
+//!   1. A merged two-site weave round-trips identically ON THE WEAVE -- text,
+//!      generation, position, site and run per line, and both counters.
+//!   2. That same weave is refused by the elder record, by name, so the wide
+//!      record is what the merge was waiting for.
+//!   3. Both counters stand at exactly one above the highest line held, in a
+//!      lifted weave, an edited weave and a merged weave alike.
+//!   4. A record whose counters stand ABOVE that equality round-trips unmoved,
+//!      so the format rests on the declared bound rather than on the accident.
+//!   5. An empty weave writes an empty record, which reads back empty.
+//!   6. A deleted line is carried with its even generation, so the record holds
+//!      the history rather than only the document.
+//!   7. A row at generation zero is REFUSED by name.
+//!   8. Rows out of place order are REFUSED by name.
+//!   9. Two rows sharing one identity, each rising strictly in place order, are
+//!      REFUSED by name -- the refusal the elder record never needed.
+//!  10. A counter standing at or below a line the record holds is REFUSED by
+//!      name.
+//!  11. The document survives the round trip: `current` reads text for text.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+
+const witness_version = "20260909.232846";
+
+/// The site a second hand merges in from. Any number but `v1_site` would do;
+/// naming it is what lets the claims below build a two-hand history by writing
+/// a field rather than by contriving one.
+const site_other: u32 = 1;
+
+/// The largest number of rows a hand-written record holds here. Named because
+/// every record below is meant to be read: a proof whose input outgrows a
+/// reader stops proving anything that reader can check.
+const max_planted_rows: u32 = 8;
+
+// Every declaration of the module under test, forced through semantic analysis
+// at comptime. Zig analyses lazily, so a `pub fn` carrying a flat type error in
+// a function no claim below calls would ride through the build untouched and
+// this witness would print GREEN over it (REDS %470).
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+}
+
+/// A small record the way `main.rye` writes one: three lines appended in order,
+/// the middle one since deleted, positions off a counter that only rises.
+fn planted_record() [3]weave.V1Row {
+    return .{
+        .{ .text = "the first line", .gen = 1, .pos = 0 },
+        .{ .text = "the line since removed", .gen = 2, .pos = 1 },
+        .{ .text = "the third line", .gen = 1, .pos = 2 },
+    };
+}
+
+/// Two hands' history in one weave: an elder record lifted, then edited by the
+/// hand that wrote it and by a second hand on its own branch, and the two
+/// branches merged. This is the shape the elder record cannot hold, built once
+/// because six claims below need it.
+fn merged_weave(garden: std.mem.Allocator) !weave.Weave {
+    const rows = planted_record();
+    // invariant: a record stays small enough to read, since this witness argues
+    // a law by showing every row it writes
+    assert(rows.len <= max_planted_rows);
+
+    var mine = try weave.Weave.from_v1(garden, &rows);
+    const mine_added = [_][]const u8{"a line the first hand added"};
+    try mine.apply(garden, .{
+        .site = weave.v1_site,
+        .inserts = &mine_added,
+        .deletes = &[_]weave.LineId{},
+    });
+
+    var theirs = try weave.Weave.from_v1(garden, &rows);
+    const their_added = [_][]const u8{"a line the second hand added"};
+    try theirs.apply(garden, .{
+        .site = site_other,
+        .inserts = &their_added,
+        .deletes = &[_]weave.LineId{},
+    });
+
+    const joined = try mine.merge(garden, &theirs);
+    // invariant: the two branches share the lifted three and each added one, so
+    // the union is five -- asked here so a claim below reads a merge rather than
+    // a weave that quietly stayed one-handed
+    assert(joined.lines.items.len == 5);
+    return joined;
+}
+
+/// The highest position and the highest run any line of a weave carries.
+///
+/// Named because claim 3 asks the same question of three weaves, and a reading
+/// spelled three times is a reading three call sites may come to disagree about.
+fn highest(w: *const weave.Weave) struct { pos: u32, run: u32 } {
+    // invariant: the caller hands a weave holding at least one line, since the
+    // highest of nothing is not a number this returns
+    assert(w.lines.items.len > 0);
+    var top_pos: u32 = 0;
+    var top_run: u32 = 0;
+    for (w.lines.items) |line| {
+        if (line.pos > top_pos) top_pos = line.pos;
+        if (line.run > top_run) top_run = line.run;
+    }
+    // invariant: both readings stand under the weave's own counters, which is the
+    // pair of invariants the weave declares -- read here before they are compared
+    assert(top_pos < w.next_pos);
+    assert(top_run < w.next_run);
+    return .{ .pos = top_pos, .run = top_run };
+}
+
+fn prove_a_merged_weave_round_trips(garden: std.mem.Allocator) !void {
+    const joined = try merged_weave(garden);
+    const record = try joined.to_v2(garden);
+    const back = try weave.Weave.from_v2(garden, record);
+
+    // invariant: the weave comes back the length it went in, asked before the
+    // fields so a dropped line is named as one
+    assert(back.lines.items.len == joined.lines.items.len);
+    for (back.lines.items, 0..) |line, i| {
+        const was = joined.lines.items[i];
+        // invariant: all five fields arrive unchanged, which is what makes this
+        // round trip identity on the WEAVE where the elder record's was identity
+        // on the document alone
+        assert(std.mem.eql(u8, line.text, was.text));
+        assert(line.gen == was.gen);
+        assert(line.pos == was.pos);
+        assert(line.site == was.site);
+        assert(line.run == was.run);
+    }
+    // invariant: both counters come back exactly, so the next edit on the
+    // restored weave takes the number the original would have handed it
+    assert(back.next_pos == joined.next_pos);
+    assert(back.next_run == joined.next_run);
+
+    var sites_seen: u32 = 0;
+    for (back.lines.items) |line| {
+        if (line.site == site_other) sites_seen += 1;
+    }
+    // invariant: the restored weave really is two-handed, so this claim reads a
+    // merge rather than a history one hand could have written
+    assert(sites_seen == 1);
+
+    print("mantra-v2: a merged two-site weave round-trips on the weave -- {d} lines, five fields each, both counters\n", .{back.lines.items.len});
+}
+
+fn prove_the_elder_record_refuses_it(garden: std.mem.Allocator) !void {
+    const joined = try merged_weave(garden);
+    const outcome = joined.to_v1(garden);
+    // invariant: the elder record has no field to tell two hands apart, so the
+    // history the claim above saved is exactly the one it refuses
+    assert(outcome == weave.WeaveError.V1SiteNotConstant);
+
+    print("mantra-v2: the elder record refuses that same weave V1SiteNotConstant\n", .{});
+}
+
+fn prove_the_counters_sit_one_above_the_top(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    const lifted = try weave.Weave.from_v1(garden, &rows);
+    const lifted_top = highest(&lifted);
+    // invariant: a lift stands one above its highest position and one above its
+    // constant run, which is the reading `from_v1` itself relies on
+    assert(lifted.next_pos == lifted_top.pos + 1);
+    assert(lifted.next_run == lifted_top.run + 1);
+
+    var edited = try weave.Weave.from_v1(garden, &rows);
+    const added = [_][]const u8{ "one more line", "and another beside it" };
+    try edited.apply(garden, .{
+        .site = weave.v1_site,
+        .inserts = &added,
+        .deletes = &[_]weave.LineId{},
+    });
+    const edited_top = highest(&edited);
+    // invariant: an apply advances the position counter once per line and the run
+    // counter once for the edit, so both still stand one above the top
+    assert(edited.next_pos == edited_top.pos + 1);
+    assert(edited.next_run == edited_top.run + 1);
+
+    const joined = try merged_weave(garden);
+    const joined_top = highest(&joined);
+    // invariant: a merge takes the maximum of two counters and drops no line, so
+    // the side holding the higher counter also contributes the line below it --
+    // which is why the equality survives a merge, and why deriving the counters
+    // from the rows would be correct today
+    assert(joined.next_pos == joined_top.pos + 1);
+    assert(joined.next_run == joined_top.run + 1);
+
+    print("mantra-v2: both counters stand one above the top line -- lifted, edited and merged alike, so deriving them would work today\n", .{});
+}
+
+fn prove_a_counter_above_the_equality_survives(garden: std.mem.Allocator) !void {
+    // A record standing further above its lines than any operation leaves it.
+    // The weave's declared invariant is `pos < next_pos`, an upper bound rather
+    // than an equality, and this is a record honoring the bound and not the
+    // accident -- what a deriving reader would quietly pull back down.
+    const rows = [_]weave.V2Row{
+        .{ .text = "a line one hand placed", .gen = 1, .pos = 0, .site = 0, .run = 0 },
+        .{ .text = "a line the other placed", .gen = 1, .pos = 0, .site = site_other, .run = 1 },
+    };
+    // invariant: a record stays small enough to read, since this witness argues
+    // a law by showing every row it writes
+    assert(rows.len <= max_planted_rows);
+    const roomy = weave.V2Record{ .rows = &rows, .next_pos = 9, .next_run = 7 };
+
+    const back = try weave.Weave.from_v2(garden, roomy);
+    // invariant: the counters arrive as written rather than as computed, so the
+    // next edit takes a number neither branch could already have spent
+    assert(back.next_pos == 9);
+    assert(back.next_run == 7);
+
+    const rewritten = try back.to_v2(garden);
+    // invariant: writing it out again returns the same two numbers, so the format
+    // holds the bound across a full turn rather than only on the way in
+    assert(rewritten.next_pos == 9);
+    assert(rewritten.next_run == 7);
+    assert(rewritten.rows.len == rows.len);
+
+    print("mantra-v2: a record standing above the equality round-trips unmoved -- next_pos 9, next_run 7 over two lines\n", .{});
+}
+
+fn prove_an_empty_weave_round_trips(garden: std.mem.Allocator) !void {
+    const nothing = weave.Weave.empty();
+    const record = try nothing.to_v2(garden);
+    // invariant: an empty weave writes no rows and both counters at zero, which is
+    // the state `empty` declares
+    assert(record.rows.len == 0);
+    assert(record.next_pos == 0);
+    assert(record.next_run == 0);
+
+    const back = try weave.Weave.from_v2(garden, record);
+    // invariant: it reads back empty, so the format's floor case is a weave rather
+    // than an error
+    assert(back.lines.items.len == 0);
+    assert(back.next_pos == 0);
+    assert(back.next_run == 0);
+
+    print("mantra-v2: an empty weave writes an empty record and reads back empty\n", .{});
+}
+
+fn prove_a_deletion_is_carried(garden: std.mem.Allocator) !void {
+    const joined = try merged_weave(garden);
+    const record = try joined.to_v2(garden);
+
+    var even_seen: u32 = 0;
+    for (record.rows) |row| {
+        if (row.gen % 2 == 0) even_seen += 1;
+    }
+    // invariant: the planted record carries one deleted line, and the record holds
+    // its even generation -- so what is written is the history rather than the
+    // document the history currently reads as
+    assert(even_seen == 1);
+
+    const back = try weave.Weave.from_v2(garden, record);
+    var even_back: u32 = 0;
+    for (back.lines.items) |line| {
+        if (line.gen % 2 == 0) even_back += 1;
+    }
+    // invariant: the tombstone survives the read, since parity IS the tombstone
+    assert(even_back == 1);
+
+    print("mantra-v2: a deleted line is carried with its even generation, out and back\n", .{});
+}
+
+fn prove_generation_zero_refused(garden: std.mem.Allocator) !void {
+    const rows = [_]weave.V2Row{
+        .{ .text = "a line claiming to predate the weave", .gen = 0, .pos = 0, .site = 0, .run = 0 },
+    };
+    const record = weave.V2Record{ .rows = &rows, .next_pos = 1, .next_run = 1 };
+    const outcome = weave.Weave.from_v2(garden, record);
+    // invariant: zero is reserved -- it is what an unseen position reads as -- so
+    // a row claiming it is refused rather than restored as a line older than its
+    // own weave
+    assert(outcome == weave.WeaveError.V2GenerationBelowOne);
+
+    print("mantra-v2: a row at generation zero refused V2GenerationBelowOne\n", .{});
+}
+
+fn prove_rows_out_of_place_order_refused(garden: std.mem.Allocator) !void {
+    const rows = [_]weave.V2Row{
+        .{ .text = "the later edit, written first", .gen = 1, .pos = 1, .site = 0, .run = 1 },
+        .{ .text = "the earlier edit, written second", .gen = 1, .pos = 0, .site = 0, .run = 0 },
+    };
+    const record = weave.V2Record{ .rows = &rows, .next_pos = 2, .next_run = 2 };
+    const outcome = weave.Weave.from_v2(garden, record);
+    // invariant: `current` reads document order straight off the backing list, so
+    // a record out of place order would be restored as a weave whose document was
+    // already wrong -- refused at the edge instead
+    assert(outcome == weave.WeaveError.V2PlaceOrderNotRising);
+
+    print("mantra-v2: rows out of place order refused V2PlaceOrderNotRising\n", .{});
+}
+
+fn prove_a_repeated_identity_refused(garden: std.mem.Allocator) !void {
+    // Both rows carry the identity (pos 0, site 0) and the pair still RISES in
+    // place order, because place reads the run first. This is the refusal the
+    // elder record never needed: its positions rise under one constant site, so
+    // a rising record could not repeat a name.
+    const rows = [_]weave.V2Row{
+        .{ .text = "the line the name belongs to", .gen = 1, .pos = 0, .site = 0, .run = 0 },
+        .{ .text = "a second line wearing that name", .gen = 1, .pos = 0, .site = 0, .run = 1 },
+    };
+    // invariant: the two rows really do rise in place order, so this claim tests
+    // the identity reading rather than tripping the ordering refusal above it
+    assert(rows[0].place().less_than(rows[1].place()));
+    // invariant: and they really do share one identity, so the refusal below is
+    // the one this claim names
+    assert(rows[0].id().eq(rows[1].id()));
+
+    const record = weave.V2Record{ .rows = &rows, .next_pos = 1, .next_run = 2 };
+    const outcome = weave.Weave.from_v2(garden, record);
+    // invariant: an identity names a line for all time, so a record holding one
+    // twice would make a later merge keep one line and drop the other
+    assert(outcome == weave.WeaveError.V2IdentityRepeated);
+
+    print("mantra-v2: two rising rows sharing one identity refused V2IdentityRepeated\n", .{});
+}
+
+fn prove_a_counter_below_a_line_refused(garden: std.mem.Allocator) !void {
+    const by_position = [_]weave.V2Row{
+        .{ .text = "a line standing at its weave's own counter", .gen = 1, .pos = 3, .site = 0, .run = 0 },
+    };
+    const short_pos = weave.V2Record{ .rows = &by_position, .next_pos = 3, .next_run = 1 };
+    const pos_outcome = weave.Weave.from_v2(garden, short_pos);
+    // invariant: a line at the position counter would let the next edit hand out
+    // a position this line already answers to -- a second line born with a name
+    // that is taken
+    assert(pos_outcome == weave.WeaveError.V2CounterBelowLine);
+
+    const by_run = [_]weave.V2Row{
+        .{ .text = "a line standing at its weave's run counter", .gen = 1, .pos = 0, .site = 0, .run = 2 },
+    };
+    const short_run = weave.V2Record{ .rows = &by_run, .next_pos = 1, .next_run = 2 };
+    const run_outcome = weave.Weave.from_v2(garden, short_run);
+    // invariant: the run counter carries the same bound, and it is read separately
+    // because a record may honor one counter and break the other
+    assert(run_outcome == weave.WeaveError.V2CounterBelowLine);
+
+    print("mantra-v2: a counter at or below a line it holds refused V2CounterBelowLine -- both counters, read apart\n", .{});
+}
+
+fn prove_the_document_survives(garden: std.mem.Allocator) !void {
+    const joined = try merged_weave(garden);
+    const before = try joined.current(garden);
+
+    const record = try joined.to_v2(garden);
+    const back = try weave.Weave.from_v2(garden, record);
+    const after = try back.current(garden);
+
+    // invariant: the document comes back the length it went in, asked before the
+    // text so a dropped line is named as one
+    assert(after.len == before.len);
+    for (after, 0..) |line, i| {
+        // invariant: the present document reads text for text, which is the claim
+        // a reader of the file cares about beneath the claim about the weave
+        assert(std.mem.eql(u8, line.text, before[i].text));
+    }
+    // invariant: the merge left one line deleted out of five, so the document a
+    // reader sees is four -- said here so this claim reads a real history
+    assert(after.len == 4);
+
+    print("mantra-v2: the document survives the round trip -- {d} present lines, text for text\n", .{after.len});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    try prove_a_merged_weave_round_trips(garden);
+    try prove_the_elder_record_refuses_it(garden);
+    try prove_the_counters_sit_one_above_the_top(garden);
+    try prove_a_counter_above_the_equality_survives(garden);
+    try prove_an_empty_weave_round_trips(garden);
+    try prove_a_deletion_is_carried(garden);
+    try prove_generation_zero_refused(garden);
+    try prove_rows_out_of_place_order_refused(garden);
+    try prove_a_repeated_identity_refused(garden);
+    try prove_a_counter_below_a_line_refused(garden);
+    try prove_the_document_survives(garden);
+
+    print("mantra-v2: version {s}\n", .{witness_version});
+    print("GREEN: a merged history writes a record and reads back whole -- eleven claims, four refusals by name.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}
