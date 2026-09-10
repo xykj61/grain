@@ -3,7 +3,7 @@
 **Status:** Checkable -- witness habit index (self-deleting if canon)
 **Depth:** thin
 **Ceiling:** <=120 lines
-**Last updated:** 2026-07-12
+**Last updated:** `20260910.142031` -- four incidental negatives restated so the room could join the register meter's teaching tier; the five that stay are the page's own subject
 **Fate:** The day this page starts mirroring [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) or [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md), it folds in as a supplement and **deletes itself** (blurman guard).
 **Compresses:** [`20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - witness headers across `tools/`
 
@@ -31,13 +31,13 @@ These are **named habits** in our witness collection -- pointers and examples on
 | G1 crossing spike | `tools/p/proven_seat_g1_crossing_probe.rish` |
 | Chapter closed (exit bron absent) | `tools/p/pond_exit_bron_master_seal.sh --season-closed` |
 
-**Law:** landing probes opens no season. Chapter opens only on a named word against a card signed whole. Raw: [`212412`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
+**Law:** a chapter opens on one thing alone -- a named word against a card signed whole. Landing probes prepare that word and leave the season closed. Raw: [`212412`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 
 ---
 
 ## HOLD flips
 
-**Shape:** multi-stage fetch witnesses name each assert **GREEN** or **HOLD** in META and say-lines. **HOLD** = honest not-yet; flip to **GREEN** when the lap lands -- never delete the stage, only upgrade the word.
+**Shape:** multi-stage fetch witnesses name each assert **GREEN** or **HOLD** in META and say-lines. **HOLD** names an honest pending stage; flip it to **GREEN** when the lap lands, keeping the stage and upgrading only the word.
 
 | Stage | Example lap |
 |-------|-------------|
@@ -74,7 +74,7 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 | signed-Kumara verify + refuse | `tools/p/proven_seat_signed_kumara.rish` (>=2 `crypto_ed25519_check` in guest) |
 | Enclosure refuse / permit | [`ENCLOSURE.md`](ENCLOSURE.md) - [`PROVEN_SEAT.md`](PROVEN_SEAT.md) |
 
-**Law:** one green without its pair is an incomplete lap.
+**Law:** a lap completes when the pair stands green together.
 
 ---
 
@@ -95,7 +95,7 @@ Two banks must agree: witness assert + META shelf -- [`VENDORING.md`](VENDORING.
 
 ## argv-direct discipline (witness builds)
 
-Assert `run` `.ok` / `status` first; read GREEN from the stream the tool speaks (`.out` for `say`, `.err` for `std.debug.print`). Affirmed `144519` -- session logs - RTAC; not duplicated here.
+Assert `run` `.ok` / `status` first; read GREEN from the stream the tool speaks (`.out` for `say`, `.err` for `std.debug.print`). Affirmed `144519` -- session logs and RTAC hold the record.
 
 ---
 

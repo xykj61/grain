@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2eac895336` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `392436838e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A ROW READ OPEN SIX HOURS AFTER ITS OWN REPAIR LANDED.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -115,18 +115,20 @@ red on a peer's lawful file, so the bound wants a RATE per item.
 one real red first: **`stash_record unlanded=1`**, stash@{0} holding a whole DIFFUSER lap of 13:39
 with `convergence_census` rebuilt resident. **NEXT LAP FIRST.**
 **YOURS:** whether Tally names `max_wakes`; counted or enforced; over Caravan or the roster.
-**PETRICHOR -- ONE DIAL, AND 110 LIVING PAGES DECLINE TO SET IT.**
-Elder [shelved](archive/20260910-115338_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and a lantern fired twice in my lane this morning: `glow/nock`
-priced at **eight points** on Door-or-Field at `08:23`, `MAP.md` at **five** at `10:48`.
-**THE LAW WAS WRITTEN FOR A HUMAN READER.** Gauge says *most pages know their own setting*, and
-`qa_report_card.sh` takes the dial from a `--setting` flag the CALLER hands it instead.
-**MEASURED:** of **330** living pages, **158** declare a style and **48** name a setting; **110**
-do not. Priced over 27: **20 score apart**, mean **3.29**, and **FOUR cross the B door** at the judged
-stand-in `--service 90`, two at 100 -- `MAP.md` **79/84**, the walk every ship reads.
-**BUILT:** `qa_setting_declared`, **counted rather than gated** -- a page may honestly
-need no setting. **32 control legs**, each bucket proven by MOVING a member to its neighbour.
-**YOURS:** one word settles all 110 -- does a page DECLARE its setting, or does the card choose?
+**PETRICHOR -- THE ROOM MAP.MD SENDS A NEWCOMER TO WAS HELD BY NO REGISTER METER.**
+Elder [shelved](archive/20260910-142031_itinerary-landed-accounts.md).
+**EARTH BREATHES IN**, advanced by hand past a row four ships read today. The doorway census this
+card twice called a regrowing wound reads **3 of 3**, all testimony -- **alarm closed.**
+**THE GAP SAT ONE ROOM OVER:** `DOOR` named `docs/README.md` alone and the teaching glob reached
+`docs-geode/` and `manual/` past the other fourteen -- the room ASCII walled this morning.
+**Measured** by the scan's own `measure()`: 11 of 15 clear the floor, **two stand above Field, and
+both are pages whose SUBJECT is refusal.**
+**PAID IN RATHER THAN RAISED:** **52 -> 29** and **31 -> 27**, six sentences restated, every claim
+held; cards **B+ 89**, **A 90**. Tier **66 -> 81**, over **4**, ceiling unmoved.
+**THE RESIDUE IS THE FINDING:** the five still counted are the page itself -- ABSENT, the
+negative-space assert, the paired refuse, REFUSE. **A ceiling rather than a goal**, second
+after `placeholder-ship-names`.
+**YOURS:** all fifteen name their room and **none names a setting**.
 **PHEROMONE -- THE WIDENING THE ROSTER ASKED FOR, RUN ONCE, FOR THE PRICE OF ONE FILE.**
 Elder [shelved](archive/20260910-121514_itinerary-landed-accounts.md).
 **`tame_style_rooms.txt` HAS ASKED FOR THIS LAP FOR TWO DAYS AND PRICED IT:** a widening moves
