@@ -1,0 +1,87 @@
+# tools/s/shape_constant_pedestal_witness.rish -- the museum pedestals that display a number, and
+# the Rye constants that number is, held to one reading.
+#
+#   rishi/bin/rishi run tools/s/shape_constant_pedestal_witness.rish
+#
+# WHY THIS RUNG. `src/shape/` is a structure museum: each pedestal is a Glow desk whose placard
+# names a shape and displays one `example` value. Seventeen of them stand under one leg in
+# tools/gen/chapter/src_first_resident_witness.rish. Measured 20260910: three read their number out
+# of the Rye source and assert agreement -- a repair REDS %358 bought -- one reads a fixture, one
+# was tied to its engine on the lap before this one, and twelve are still checked against a literal
+# typed into the witness beside them: `grep -q 'example    8' <desk>` proves the desk still says
+# eight and asks the engine nothing. Change the constant in Rye and every one of those twelve stays
+# green over a museum displaying a figure the engine stopped keeping.
+#
+# THIS RUNG TAKES FIVE OF THE TWELVE -- the class whose number is a published constant of one
+# module, `brushstroke/brush_parse.rye`. The remaining seven come from struct field counts, enum
+# members and fixture lines, and each wants its own reading of its own source.
+#
+# TWO OF THE FIVE ARE NOT LITERALS, which is why a source read beats a wider grep here rather than
+# merely reading better. `brush_skate_rows` is an alias -- `= max_frame_lines` -- so its desk shows
+# the frame ceiling under a second name, and lowering the ceiling moves a pedestal whose own line
+# never mentions it. `max_brush_bytes` is `16 * 1024`, so the desk's 16384 stands nowhere a grep
+# could find it. A reading understanding decimal alone would call both unresolved and pass; here an
+# unresolved form is named and refuses.
+#
+# WHAT THE LAP FOUND, and what it repaired. The frame ceiling is written FOUR times. Eight is
+# published once as `brush_parse.rye:max_frame_lines`, written again as a private
+# `const max_lines: u32 = 8` in `brushstroke/seed.rye` and once more in
+# `brushstroke/wayland_seed.rye` -- which also reaches for the published constant at three other
+# sites, so one file holds both spellings side by side -- and displayed a fourth time on the desk.
+# Each private copy asserts against its own number, so lowering the published ceiling leaves both
+# modules letting eight lines through in silence. They agree today and nothing held them there.
+# The desk named none of it: its body cited the two seed modules and never the constant, so a
+# reader at the pedestal could not reach the published source in one step. Both are repaired --
+# the desk names `max_frame_lines`, and the scan gathers every site and refuses when they part.
+#
+# WHAT IS PROVEN, on metal.
+#   Each of the five placards reads in the order src/shape/PLACARD.md seats.
+#   Each desk NAMES the constant it displays, so the pairing this scan makes is checkable at the
+#   pedestal rather than private to the scan.
+#   Each constant resolves in the Rye module -- published, and in a form the reading understands:
+#   a decimal literal, one alias hop, or a product of two literals.
+#   Each desk's `example` equals the resolved value.
+#   The frame ceiling is one number at every site that publishes one, and a site publishing none is
+#   dropped from the comparison rather than counted -- deleting a private copy in favour of the
+#   published constant is the repair, and a guard reddening on it points the wrong way.
+#   Every reading refuses from its own side: fourteen plantings in a throwaway pen, each caught by
+#   the reading it was planted against, and four honest trees walking free -- among them a bound
+#   doubled in both rooms, which walks free because this scan carries no number of its own.
+#
+# WHAT IS NOT PROVEN. Whether these are the right sizes, which is Brushstroke's own design
+# question. Whether the pedestals lower and run, which
+# tools/gen/chapter/src_first_resident_witness.rish already drives the Zig toolchain for; repeating
+# it would buy a second copy of one fact at the price of a toolchain launch, and the process bill
+# is the roster's largest single cost. And the other seven literal-held pedestals, named on
+# construction/ITINERARY.md rather than swept here, because a sweep of seven at once is how a
+# repair becomes its own red.
+
+say "shape-constants: Language EN -- the museum displays numbers, and this proves each one is the constant it claims."
+say "shape-constants: Style Gauge -- every figure is read from its source rather than remembered."
+say "shape-constants: Lens TAME -- bound everything and say why: these five ARE the bounds, and the desks say why."
+
+say "shape-constants: the five pedestals against brush_parse.rye..."
+let scan = run ["sh" "tools/fixtures/s/shape_constant_pedestal_scan.sh"]
+say scan.out
+assert scan.ok else "shape-constants: a pedestal and its constant disagree -- read the verdict line"
+assert scan.out contains "verdict=agree" else "shape-constants: every desk must show the value its constant resolves to"
+assert scan.out contains "pedestals=5" else "shape-constants: five pedestals are read; a sixth pair is welcome and moves this line with it"
+assert scan.out contains "ceiling_values=8" else "shape-constants: the frame ceiling is one number at every site that publishes one"
+say "field GREEN -- five desks stand on what the module publishes"
+
+say "shape-constants: the ceiling's four sites, named..."
+assert scan.out contains "ceiling_sites=brush_parse.rye:8 seed.rye:8 wayland_seed.rye:8" else "shape-constants: the three modules holding a frame ceiling are pinned here, so dropping or adding one meets a hand"
+assert scan.out contains "frame_max_lines_names=yes" else "shape-constants: the frame desk names max_frame_lines, so a reader reaches the published source in one step"
+say "sites GREEN -- one published ceiling, two private copies, one desk, one number"
+
+say "shape-constants: the control, both ways..."
+let control = run ["sh" "tools/fixtures/s/shape_constant_pedestal_control.sh"]
+say control.out
+assert control.ok else "shape-constants: the control must complete"
+assert control.out contains "welcomes=4" else "shape-constants: an honest tree, a bound moved in both rooms, a ceiling moved at all four sites, and a private copy dropped for the published constant must all walk free"
+assert control.out contains "refusals=14" else "shape-constants: every reading must refuse from its own side"
+assert control.out contains "wrong=0" else "shape-constants: no case may land on the side it was not planted for"
+assert control.out contains "control_verdict=ok" else "shape-constants: the control must agree with itself"
+say "RED and GREEN paths proven -- fourteen plantings refused, four honest trees welcomed"
+
+say "GREEN: shape-constants -- the museum shows what the engine publishes, and a bound cannot move under a desk in silence."
