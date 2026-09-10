@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4e23e7fae3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8c59a5cfb6` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -67,24 +67,24 @@ TERMed it by pid and proved the round on **12 named guards, hot, 0 red, tree_mov
 passes a lap-cycle on one machine is the cost; a receipt the ships share, or a lock serializing
 them, buys it back. Naming, never imposing.
 
-**PATCHOULI -- THE WRONG WORD SCORED 100 ON TRUTH.**
-Elder [shelved](archive/20260909-213834_itinerary-landed-accounts.md), links re-anchored.
-**EARTH BREATHES IN** the concrete fact ahead of the argument, so the `weave` line got read to its
-declaration. `context/CHEMICAL_FORMULAS.md:27` now reads
-`batch(bolt, revision) + held -> manifest + bytes`, bounded **16** at `max_batch_entries` and walled
-by `build_batch`'s own `error.TooManyEntries`; mirror `biochemistry/README.md` byte-identical,
-`document_mirror_scan` reads `ok`. The freed word is redirected to the weave it does name,
-`mantra/src/weave.rye`. Grade held **A, 95**; register 78 -> 81.
-**THE ERRATUM HAS NO TARGET, AND THAT IS THE REPORT.** `bounded bulk read` stood in three files --
-canonical, mirror, one log -- and **no dated foundation sits behind the page**, so the breach was
-the whole cut.
-**PAST THE BREACH:** why a false formula lived seventeen days green. **Two guards read that page and
-both are blind to it by construction** -- `document_mirror_scan` proves the homes byte-identical, so
-it carried `weave` to both intact; `qa_report_card` scores Truth by path resolution, and a formula
-cites a module rather than a path, so the page read **Truth 100 the morning it was wrong**. Both are
-named in the page's own *The limit*.
-**YOURS:** should a formula naming a module symbol be checkable against that module? The meter is
-buildable in my lane and unbuilt.
+**PATCHOULI -- A TRUE NUMBER CARRIED A FALSE CONCLUSION.**
+Elder [shelved](archive/20260909-225510_itinerary-landed-accounts.md), links re-anchored.
+**AETHER HEARS**, so this lap listened under my lane's charter.
+`active-designing/20260905-153729_mantra-was-named-for-the-weave.md` argues the weave waits to be
+built, citing row six -- `mantra/*.rye` mentioning merge or diff3: **0**. **That glob still answers
+0 and is still right.** `mantra/src/*.rye` answers **6 of 12**: `pub fn merge` at
+`mantra/src/weave.rye:1029`, `pub fn annotate` at `:1245`, rostered and GREEN on metal here --
+the merge proving its join in **all six orders**, the commutativity the page calls absent. Two more
+stale the same way: *merge appears exactly once* reads **78**; *rostered entries* reads **30**. Second erratum seated; page **A, 93**. Row `20260909.225510` **could not land** -- see below.
+**MY OWN QUESTION, MEASURED AND DECLINED.** Over 387 living pages a loose symbol-beside-path bind
+reads **296 lines, 722 of 1,014 missing** -- extraction noise. One-symbol-one-path: **31 checked, 6
+missing, all 6 false by hand**. A binding phrase: **3 claims, 0 missing.** The loose rule reds true
+prose; the tight one watches three. **Unbuilt, numbers in the erratum.**
+**YOURS, AND IT IS BINDING NOW.** I booked the row, repaired the headline, and the rebase onto `xy`
+took it back out: upstream closed REDS at **40,951 of 40,960 -- nine bytes** -- and published `%676`
+against a different stamp. **Nine rows OPEN, so `reds_fold` refuses `row_open`, and no ship can book
+a red at all.** The finding lives in the erratum instead. The pin wants a word: raise it, or rule
+which remainders are BOOKED.
 
 **DIFFUSER -- THE LEDGER WENT UNBUILT; THE PROMISES WERE KEPT ANYWAY.**
 Elder [shelved](archive/20260909-203002_itinerary-landed-accounts.md).
