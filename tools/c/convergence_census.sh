@@ -142,6 +142,43 @@
 # prover's argument list is variadic, so it reached the splice with no change to the instrument at
 # all. The instrument was already able; the gap was subjects rather than spelling.
 #
+# A QUARTER OF THE NUMERATOR RESTS ON PROSE, AND FOUR CURES EACH MADE IT WORSE
+# (`20260909.210000`). The two proof columns above each learned to read past a leading `#` -- the
+# sibling column at `20260908.190452`, the prover column with it -- and the WRITE column never did.
+# Measured on this tree: 3 of the 12 candidates are admitted by a write that sits inside a comment,
+# and two of the three are the busiest writers the tree has. `reds_ledger_headline_write.sh` carries
+# `ca[t] "$tmp" > "$f"` in a header sentence explaining the exec-bit idiom, and its real write is
+# `ca[t] "$tmp" > "$LEDGER"` on line 114; `index_shelf_repair.sh` stands the same way with `$shelf`.
+# `$LEDGER` and `$shelf` both fail the target filter's variable-name list, so the comment is
+# carrying the admission for a write the filter cannot see.
+#
+# TWO FAULTS WHOSE ERRORS CANCEL, which is why four laps of refining this one pattern never
+# converged: each moved one strand and measured the pair. All four cures were run on this tree
+# before this paragraph was written, and every one read worse than the fault:
+#
+#   comments dropped alone          12 -> 9 candidates, and the two busiest writers LEAVE,
+#                                   `reds_ledger_headline_write.sh` among them -- the one tool
+#                                   `convergence_tree_prove_witness.rish` proves on every lap
+#   variable targets admitted       12 -> 49, the fourth wrong denominator returning, because this
+#     unless a named pen            tree writes scratch under a hundred local names
+#   a bounded 3-hop resolution      12 -> 14: `reds_fold.sh` arrives, a real writer this card
+#     of the target variable        mandates, beside three pen writers (`$SCRATCH`, the seed
+#                                   projector, the roster runner's own receipt)
+#   the room-literal list widened   a guess-list goes stale the day a room is born
+#
+# So the population is NOT repairable by refining the pattern. What separates a tracked-tree write
+# from a pen write is what the path IS, and git answers that for a literal and nothing answers it
+# for a variable -- which this census's own law already says: a static pattern finds candidates,
+# only the prover classifies. The cure is to hand each candidate to
+# `tools/c/convergence_tree_prove.sh`, which runs the operator in a worktree pen and compares
+# `git write-tree`, so it reads what git tracks by diffing a real repository rather than by
+# guessing at a name.
+#
+# UNTIL THAT LAP, THE READING IS PRINTED WITH ITS MEMBERS NAMED. `admitted_on_comment_only` counts
+# the candidates whose admission rests on a comment, and `list` mode prints each one. A ratchet that
+# publishes a count and names no member is a finding no ship can act on (REDS %671), and this census
+# had a whole paragraph of alarm where a counted column belonged.
+#
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
 # it from a tool that simply never checked. The number is the finding; the ceiling is a later word.
@@ -164,6 +201,19 @@ MAX_REPORT=200
 # by 3 other tools, so the bound has never bitten.
 MAX_SIBLINGS=200
 
+# THE WRITE SHAPES, AND THE TARGET TEST, EACH WRITTEN ONCE. Two readings ask the same question of
+# the same file -- every line, and non-comment lines only -- so one spelling serves both and they
+# cannot drift apart. `sed -[i]` keeps its character class for the reason the header gives: a scan
+# that SEARCHES for the idiom would otherwise count as a site that uses it.
+WRITE_SHAPES='(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")'
+target_admits() {
+  # target_admits <matched-writes> -- true when one match's TARGET is a tree path rather than a pen.
+  # The target is the last quoted run of the match, which both shapes share.
+  printf '%s\n' "$1" | sed 's/.*"\([^"]*\)"$/\1/' \
+    | grep -vE '^\$(work|pen|tmp|TMP|out|d)\b' \
+    | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/'
+}
+
 work=$(mktemp -d "${TMPDIR:-/tmp}/conv-census.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 
@@ -172,7 +222,9 @@ git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/' |
 [ -s "$work/all.txt" ] || { echo "refused: no tracked tools -- every count below would read zero" >&2; exit 2; }
 
 writers=0; proven=0; unproven=0; by_assertion_n=0; by_prover_n=0; by_family_n=0
+comment_only=0
 : > "$work/unproven.txt"
+: > "$work/comment_only.txt"
 
 # EVERY LINE IN THE TREE THAT RUNS A CONVERGENCE PROVER, gathered once rather than per candidate.
 # Each row is `<file>\t<line body>`, and only non-comment lines survive: a comment naming both a
@@ -210,11 +262,9 @@ while IFS= read -r f; do
   #
   # Both shapes end with their target as the last quoted run in the match -- `> *"[^"]+"` for a
   # redirect, and the path argument for `sed -[i]` -- so one extraction serves both.
-  writes=$(grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$f" 2>/dev/null || true)
+  writes=$(grep -hoE "$WRITE_SHAPES" "$f" 2>/dev/null || true)
   [ -n "$writes" ] || continue
-  printf '%s\n' "$writes" | sed 's/.*"\([^"]*\)"$/\1/' \
-    | grep -vE '^\$(work|pen|tmp|TMP|out|d)\b' \
-    | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/' || continue
+  target_admits "$writes" || continue
   # A CONTROL WRITES INTO ITS OWN PEN AND HAS NOTHING TO CONVERGE, and counting them was this
   # census's third wrong denominator (`20260908.005904`). 23 of the 27 it first called unproven were
   # `*_control.sh` files whose writes target a throwaway directory they created and delete. The
@@ -224,6 +274,16 @@ while IFS= read -r f; do
   # finding and is a description of the naming convention instead.
   case "$f" in *_control.sh) continue ;; esac
   writers=$((writers + 1))
+  # DOES THIS ADMISSION REST ON A COMMENT? Read the same shapes again with comment lines dropped.
+  # A candidate that only survives the first reading was admitted by prose describing a write, and
+  # the header above measures what that costs: 2 of the 3 such candidates are real writers whose
+  # real target the filter refuses, so the comment is standing in for a miss rather than inventing
+  # a writer. Reported, never gated -- the population is unchanged by this reading.
+  live_writes=$(grep -vE '^[[:space:]]*#' "$f" 2>/dev/null | grep -hoE "$WRITE_SHAPES" 2>/dev/null || true)
+  if [ -z "$live_writes" ] || ! target_admits "$live_writes"; then
+    comment_only=$((comment_only + 1))
+    printf '%s\n' "$f" >> "$work/comment_only.txt"
+  fi
   base=${f##*/}; stem=${base%.*}
   # Its own siblings: the control and witness that stand beside it by name.
   #
@@ -300,6 +360,7 @@ done < "$work/all.txt"
 
 if [ "$MODE" = list ]; then
   head -"$MAX_REPORT" "$work/unproven.txt" | sed 's/^/unproven: /'
+  head -"$MAX_REPORT" "$work/comment_only.txt" | sed 's/^/comment_only: /'
 fi
 
 echo "tools_read=$(grep -c . "$work/all.txt")"
@@ -309,3 +370,4 @@ echo "proven_by_sibling_assertion=$by_assertion_n"
 echo "proven_by_prover_run=$by_prover_n"
 echo "proven_by_family_control=$by_family_n"
 echo "candidates_unproven=$unproven"
+echo "admitted_on_comment_only=$comment_only"

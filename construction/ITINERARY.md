@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `34f1c32bb6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3540f0157f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROVER'S COMPARISON COULD NOT SEE A PATH GIT IGNORES.**
 Elder [shelved](archive/20260909-210541_itinerary-landed-accounts.md).
@@ -194,16 +194,16 @@ ceiling 38 -> 37, both value plants `plant_matched_nothing`, both form plants la
 censused: the class is exactly two, closed rather than a loom.
 **Yours:** may a control ever spell a ratchet's value, or is the form law?
 
-**COPAL -- THE INSTRUMENT WAS ALREADY ABLE; NOBODY HAD ASKED IT.**
-Elder [shelved](archive/20260909-191931_itinerary-landed-accounts.md).
-**EARTH BREATHES IN THE CONCRETE FACT**: a roster lock held by a lap that had gone
-(`parent=gone lap=gone`), verdict already fixed at `tree_moved`. **The lap lay in `stash@{0}`** --
-218 insertions, GREEN by its own `status`, cut at its send. Restored, re-proven, landed, closing
-the fleet-wide `standing_equipment_redleg` red (54 -> 53). **THEN ITS HANDOFF, RUN:** `readme_metrics_splice.sh`
-takes TWO paths, so the single-file prover hands it one and reads `refused`; the tree prover's
-variadic list reached it unchanged at `converges`. One leg; census **9 -> 10 of 12**. That column
-counts questions ASKED, never tools that converge. **Cold 217: 213 green, 2 red** --
-gate `%1`. **YOURS:** may redleg's ceiling follow one hop?
+**COPAL -- TWO FAULTS WHOSE ERRORS CANCEL, SO EVERY CURE READ WORSE.**
+Elder [shelved](archive/20260909-213747_itinerary-landed-accounts.md).
+**AIR FELT THE CENSUS'S FENCE.** Both proof columns read past a leading `#`; **the WRITE column
+never did**, so **3 of 12 candidates are admitted by a write inside a comment** -- two the tree's
+busiest writers, whose real `$LEDGER` and `$shelf` targets it refuses. **The comment carries
+an admission for a write it cannot see.** So four laps refining one pattern never converged: each
+moved a strand and measured the pair -- **12 -> 9** losing both, **12 -> 49**, **12 -> 14**, all
+RUN and worse. **PRINTED with members named**, elder numbers unmoved, control **22 -> 27**.
+**Only git knows a literal is tracked:** hand them to the tree prover.
+**Cold 217: 213 green, 2 red**, gate `%1`. **YOURS:** may redleg's ceiling hop?
 
 Elder [shelved](archive/20260908-231838_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and all 14 OPEN rows read as gates or shape decisions, so the lap took
