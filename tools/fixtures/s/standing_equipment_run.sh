@@ -854,6 +854,30 @@ capability_state() {
       # capability stops being a cadence and becomes an exemption.
       if command -v strace >/dev/null 2>&1; then echo present; else echo absent; fi
       ;;
+    qemu_riscv)
+      # Can this host spawn a RISC-V guest? Fifteen wire labs under tools/co/ orchestrate
+      # `qemu-system-riscv64 -machine virt`, and the witnesses that reach them refuse at that leg
+      # on any bench without it. Measured 20260910: 26 witnesses in this tree reach a wire lab and
+      # 0 of 26 stand on this roster, which is REDS %646's class -- a guard whose red nobody hears,
+      # because a leg that cannot run here made the whole row unrostable everywhere.
+      #
+      # This is CAPABILITY rather than PLACE, the same reading `trace_instrument` takes one arm up:
+      # a Linux bench carrying qemu keeps a promise a Linux bench without it breaks, so `host linux`
+      # would encode something untrue about every bench that lacks the emulator.
+      #
+      # THERE IS NO UNKNOWN HERE, for the reason the strace arm gives: `command -v` carries no tool
+      # of its own to go missing, so the question stays answerable -- present or absent, and never a
+      # third state. The probe asks for the binary alone. Spawning a guest to prove one boots would
+      # be answering the guard's own question rather than the host's, which is how a capability
+      # stops being a cadence and becomes an exemption.
+      #
+      # AND THE ROSTER HOLDS BOTH HALVES SEPARATELY. A wire witness's hosted legs belong in their
+      # own row, rostered `tier lap` and heard on every bench, with this word gating the device leg
+      # alone -- the happy zone and the thin edge drawn as two rows
+      # (foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md). Gating a welded witness
+      # would keep this word honest and leave 71 hosted asserts read by nobody.
+      if command -v qemu-system-riscv64 >/dev/null 2>&1; then echo present; else echo absent; fi
+      ;;
     seed_projection)
       # Does a seed projection THE GUARD CAN READ stand in this checkout? `seed/` is gitignored and
       # built by `tools/s/sow.rish`, so a fresh clone has none -- and `sow_allow_reach`, which reads

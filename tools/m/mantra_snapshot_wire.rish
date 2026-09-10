@@ -2,20 +2,31 @@
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_snapshot_wire.rish
+#
+# TWO ROWS, ONE PROMISE (20260910). The hosted half moved to its own file,
+# tools/m/mantra_snapshot_hosted.rish, which this witness runs as its first leg --
+# one body, so the two stay in agreement by construction. This file keeps its name
+# and its whole promise: hosted AND device, GREEN only when both answer.
+#
+# Why the split: the device leg spawns qemu-system-riscv64, so on a bench without
+# the emulator every run of this witness refused at that leg, and REDS %646 seats
+# what follows -- a rostable witness is one whose every leg runs wherever the fleet
+# stands, so a welded witness stays off construction/standing-equipment.kyri and its
+# hosted asserts go unheard. The hosted row now runs on every lap of every bench,
+# and this row carries `capability qemu_riscv`, so a bench with the emulator runs it
+# whole and a bench without it reads `skipped_capability mantra_snapshot_wire
+# wants=qemu_riscv here=absent` -- named on every pass rather than silent.
+#
+# The happy zone and the thin edge as a file boundary:
+# foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md.
 
-let zig = "vendor/zig-toolchain/zig"
-let bin = "mantra/bin/snapshot-export-delivery"
-
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
-assert build.ok else "snapshot wire delivery build failed"
-
-let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "snapshot wire selftest exited non-zero"
-assert selftest.out contains "GREEN" else "snapshot wire selftest not GREEN"
-assert selftest.out contains "import and replay GREEN" else "snapshot wire import replay missing"
+let hosted = run ["rishi/bin/rishi" "run" "tools/m/mantra_snapshot_hosted.rish"]
+say hosted.out
+assert hosted.ok else "snapshot hosted witness refused -- run it alone to read its own leg"
 
 let device = run ["sh" "comlink/run_snapshot_export_wire_lab.sh"]
-assert device.ok else "snapshot device wire lab failed"
+say device.out
+assert device.ok else "snapshot device wire lab refused"
 assert device.out contains "GREEN" else "snapshot device wire lab not GREEN"
 
 say "GREEN: I2 snapshot export hosted + device Comlink crossing witness passed."

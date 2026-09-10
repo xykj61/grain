@@ -2297,6 +2297,41 @@ path tools/m/mantra_recall_tablecloth_query_wire.rish
 tier lap
 seated 20260909.170000
 
+# THE HAPPY ZONE THAT STOOD BEHIND A THIN EDGE. Measured `20260910.171423`: 26 witnesses in this
+# tree reach a wire lab under `comlink/run_*_wire_lab.sh`, and **0 of 26** stood on this roster.
+# The cause is one shape repeated -- each welds hosted legs, which want a Zig toolchain and stop
+# there, to one device leg spawning `qemu-system-riscv64`. `%646` seats what follows: a leg that
+# cannot run here makes the whole row unrostable everywhere, so the hosted asserts go unheard.
+# Eleven of the 26 carry **71 such asserts**, every one passing on this bench for an audience of
+# nobody.
+#
+# `mantra_snapshot_wire` is the worked example, split into the two rows below rather than gated as
+# one. Gating the welded witness would keep the capability word honest and leave its four hosted
+# asserts exactly as unheard as before; splitting hands them a bench they run on. That is the happy
+# zone and the thin edge drawn as two roster rows
+# (`foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`). The remaining ten welded
+# witnesses are a sweep, named on the card rather than swept here.
+#
+# The hosted row: build, selftest, import and replay. **2s** measured `20260910.171423` on this
+# pier, cold and warm alike -- the Zig build cache holds -- so it is a lap guard. Its sibling below runs this same file as its first leg, so one body proves
+# the hosted half and the two can never come to disagree.
+guard mantra_snapshot_hosted
+path tools/m/mantra_snapshot_hosted.rish
+tier lap
+seated 20260910.171423
+
+# The wire row: the hosted leg above, then the device crossing under Comlink seal. `capability
+# qemu_riscv` is the tier for what a host CAN DO, seated in `capability_state()` beside `ipv6`,
+# `jail_nesting` and `trace_instrument`. A bench carrying the emulator runs this row whole; a bench
+# without it reads `skipped_capability mantra_snapshot_wire wants=qemu_riscv here=absent` on every
+# pass, which is a guard named rather than a guard lost. This pier lacks the emulator today, so the
+# row's own value here is the naming.
+guard mantra_snapshot_wire
+path tools/m/mantra_snapshot_wire.rish
+tier lap
+capability qemu_riscv
+seated 20260910.171423
+
 # Mantra's own width reading, beside the tree-wide one at width_check above. It
 # had run green by hand for weeks and stood on no roster, so nothing heard it --
 # which is `%360`'s shape, a proof nobody runs. It reads one room and takes
