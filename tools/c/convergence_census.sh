@@ -570,5 +570,11 @@ echo "proven_by_sibling_assertion=$by_assertion_n"
 echo "proven_by_prover_run=$by_prover_n"
 echo "proven_by_family_control=$by_family_n"
 echo "candidates_unproven=$unproven"
+# A COUNT NOBODY CAN FOLLOW IS A COUNT NOBODY ACTS ON. The names sit behind `sh
+# tools/c/convergence_census.sh list`, and until `20260910` the count mode never said so -- a reader
+# was told two candidates stand unproven and given no way to learn which two.
+if [ "$MODE" != list ] && [ "$unproven" -gt 0 ]; then
+  echo "unproven_names=run 'sh tools/c/convergence_census.sh list' to see them"
+fi
 echo "admitted_by_git_only=$git_only"
 echo "admitted_by_name_only=$name_only"

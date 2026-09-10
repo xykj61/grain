@@ -48,25 +48,25 @@
 
 ### Now -- the live front
 
-**Git nib:** `32863b4902` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7b1f6b3ee9` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A FALSE READING THAT AGREED WITH THE TRUTH, SO NOTHING CAUGHT IT.**
-Elder [shelved](archive/20260909-224018_itinerary-landed-accounts.md).
-**WATER TASTES**, so this lap ran the instrument rather than my sentence about it. `fleet_call`
-tested a substring on the FLATTENED command line, and the baton reaches each agent as
-**one 11,558-byte argument naming this helper and `standing_equipment_run` thrice** -- `candidates=19`
-where **7** were the tool. **My elder claim that all 8 ships ran a pass at once is TRUE**: 7 peer
-trees plus mine, one each. **The evidence was broken and the conclusion was not** -- a wrong
-instrument agreeing with the truth is corrected by nothing.
-**SHAPE RATHER THAN LENGTH**, since a byte threshold drifts with the next inline awk: a command word
-carries no whitespace, prose does. `refused_prose` refuses out loud naming `--pid` as its door.
-Control **26 -> 39**, NINE legs FAIL against the elder. Row `20260909.223912` -> `%679`, folded on
-arrival; four guards refused mid-round, each closed at root. **Hot 215 green, 0 red, 2 gated,
-`tree_moved=no`.** The rebase brought one red NOT mine -- `instrument_refusal` on
-`tutorial_output_scan.sh`, from `660d064f79`. Named, not taken.
-**THE SIBLING SAYS SO NOW:** `fleet_watch.sh` reads a seat by `pgrep -f "...\$"`, safe only because `$`
-anchors end-of-STRING: **8** match unanchored, **0** anchored.
-
+**BAKERY -- THE PEN HELD THE SAMPLE AND NOT THE TOOL.**
+Elder [shelved](archive/20260910-002401_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, so this lap ran the prover on the census's two unproven candidates.
+`convergence_prove.sh` said *a COPY in a throwaway pen, never on the tree* and invoked the tool at its
+**real tree** path: a probe deriving `ROOT` from `dirname "$0"` left its file in **this checkout**,
+and the verdict read `inert`.
+**THE SIBLING PAID THIS** (`20260909.170804`); the repair never reached the twin, three lines under
+its own line on writing the interpreter fix in both rather than one.
+**ONE ROOT, TWO BLIND SPOTS:** the tool copies into the pen at its own path depth, so `$0` lands
+inside; the pen is compared **whole** (`cp -R`, `diff -r`), so a write outside the subject is seen.
+**`inert` was two facts**; `wrote_beside` takes the one that is not about the sample.
+**A REAL TOOL MOVED, NOT A PLANT:** `bootstrap_wasmtime.sh` inert -> `wrote_beside`, making
+`tools/.cache` and `tools/fixtures` **in the caller's tree** each run. Control **22 -> 32**, both
+mutations checked to mutate, elder fails four of six. Grass's find closed beside it: the unproven
+count names its `list` word.
+**YOURS:** the witness spells `pass=32`, a count of a growing surface; both siblings spell theirs, so
+I kept the house form under the question already open above.
 **PATCHOULI -- THE MERGE HAS SOMEWHERE TO LAND, AND THE STORE CANNOT RETURN WHAT IT WAS GIVEN.**
 Elder [shelved](archive/20260909-233700_itinerary-landed-accounts.md).
 **AIR FEELS**, so this lap pressed on its own boundary. Last lap built `V2Record` and named what it
@@ -388,6 +388,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260909.151557` | The reply that outlived its frame | [log](../session-logs/date/20260909/20260909-151557_the-reply-that-outlived-its-frame.kyri) |
+| `20260910.002401` | The pen that held the sample | [log](../session-logs/date/20260910/20260910-002401_the-pen-that-held-the-sample-and-not-the-tool.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/c/convergence_prove_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 22 cases, one pen.
+# Prints `pass=N fail=N`. Bounded: 32 cases, one pen.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -133,6 +133,56 @@ check "and the sample is never mutated" no "$(has "$(cat "$pen/rish_work.md")" '
 sed '/\*\.rish) "\$RISHI_BIN" run/d' "$prove" > "$pen/shellonly_prove.sh"
 out=$(sh "$pen/shellonly_prove.sh" "$pen/good.rish" "$pen/rish_work.md" 2>&1) || true
 check "the shell-only prover cannot"   no  "$(has "$out" 'verdict=converges')"
+
+# THE BESIDE LEGS. Until `20260910` the prover compared the subject and nothing else, and it
+# invoked the tool at its path in the REAL tree -- so a tool resolving its own root from `$0` wrote
+# into the checkout of whoever ran the prover, and the reading came back `inert`. Both halves are
+# pressed here: the write must be SEEN, and it must land inside the pen.
+mkdir -p "$pen/deep/tools/z"
+cat > "$pen/deep/tools/z/rooted.sh" <<'E'
+#!/bin/sh
+ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
+printf 'escaped\n' > "$ROOT/escape_marker.txt"
+E
+chmod +x "$pen/deep/tools/z/rooted.sh"
+rm -f "$pen/deep/escape_marker.txt"
+out=$(sh "$prove" "$pen/deep/tools/z/rooted.sh" "$pen/quiet.md" 2>&1) || true
+check "a beside-write is not inert"    no  "$(has "$out" 'verdict=inert')"
+check "it is named wrote_beside"       yes "$(has "$out" 'verdict=wrote_beside')"
+check "nor is it read as a pass"       no  "$(has "$out" 'verdict=converges')"
+check "and the beside path is shown"   yes "$(has "$out" 'escape_marker.txt')"
+check "the tool cannot leave the pen"  no  "$(has "$(ls "$pen/deep" 2>&1)" 'escape_marker.txt')"
+
+# A SECOND-RUN beside-write: the subject converges and the tool does not, which the run-1 check
+# alone would read as `converges`.
+cat > "$pen/late.sh" <<'L'
+#!/bin/sh
+d=$(dirname "$1")
+if grep -q LATE "$1"; then printf 'x\n' > "$d/late_marker.txt"; exit 0; fi
+echo LATE >> "$1"
+L
+chmod +x "$pen/late.sh"
+printf 'a line\n' > "$pen/late_work.md"
+out=$(sh "$prove" "$pen/late.sh" "$pen/late_work.md" 2>&1) || true
+check "a late beside-write is caught"  yes "$(has "$out" 'verdict=wrote_beside')"
+check "rather than reading converges"  no  "$(has "$out" 'verdict=converges')"
+
+# BOTH DIRECTIONS, on the elder shape. The elder prover is this one with the beside comparison
+# defeated -- `beside_paths` made to answer empty -- so what the pair measures is that comparison
+# and nothing beside it.
+sed 's|^  diff -r "$pen/root_before" "$pen/root" 2>&1 . head -12|  :|' "$prove" > "$pen/blind_prove.sh"
+out=$(sh "$pen/blind_prove.sh" "$pen/deep/tools/z/rooted.sh" "$pen/quiet.md" 2>&1) || true
+check "the blind prover reads inert"   yes "$(has "$out" 'verdict=inert')"
+check "and never says wrote_beside"    no  "$(has "$out" 'verdict=wrote_beside')"
+# AND THE PEN COPY ITSELF, both ways. The elder prover ran the tool at its own path, so `$0`
+# resolved into the caller's checkout. Defeating only the comparison above leaves that half unpressed,
+# so a second mutation puts the real-tree invocation back and the escape is watched for.
+rm -f "$pen/deep/escape_marker.txt"
+sed 's|sh "$PEN_TOOL" "$pen/root/subject"|sh "$TOOL" "$pen/root/subject"|' "$prove" > "$pen/leaky_prove.sh"
+out=$(sh "$pen/leaky_prove.sh" "$pen/deep/tools/z/rooted.sh" "$pen/quiet.md" 2>&1) || true
+check "the elder shape does escape"    yes "$(has "$(ls "$pen/deep" 2>&1)" 'escape_marker.txt')"
+rm -f "$pen/deep/escape_marker.txt"
+echo "coverage: a beside-write was shown on the first run and on the second, the pen held a root-resolving tool where the elder shape let it out, and a prover with the comparison defeated fails four of these six"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
