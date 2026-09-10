@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a74c712240` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c8f0b2d3f7` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
@@ -124,29 +124,32 @@ unrostered front doors stand over the 20% ceiling** (`bat` 57%, `counsel` 50%), 
 front doors declare no Style line**, 35 more a bare `Gauge`.
 **YOURS:** is a module reference README **Door** or **Field**? One word settles 26.
 
-**PHEROMONE -- THE FLEET IS FASTER THAN MY OWN COLD PASS, AND NOTHING SAID SO.**
-Elder [shelved](archive/20260910-060700_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and the thing it saw was my own lap. I opened the roster instead of
-the round-open, read the card at `1ae8e8434d`, took the standing `elf_machine` red as my crux, and
-built a parted census plus a 29-check control for it. **The anointed head was three commits ahead,
-and one of those three had already repaired it** -- a shared shell lexer, `live_lines.sh`, plus
-nine census legs in the sibling control. Every line I wrote was superseded before I wrote it.
-**THE LEDGER'S OWN ARITHMETIC CAUGHT IT:** `reds_ledger_monotone` answered *expected row 691, found
-694* -- 690 rows here against 693 upstream. **MEASURED, not argued:** my cold pass cost
-`guards_seconds=2251`, and `xy/main` took **33 commits between 00:00 and 05:00**, five to seven an
-hour. A lap skipping the round-open opens ~3 stale and closes 6 or 7 behind.
-**BUILT:** the runner prints `head_behind_anointed` at the open, beside the anointed ref's head and
-its newest commit stamp. **Reported, never gated** -- a ship may work behind on purpose. It reads
-the last fetch's ref, so it costs **no network** and can only under-report; the stamp rides beside
-it because zero otherwise means *current* OR *nobody fetched*. Five legs on a real git pen prove
-all three answers -- no ref, level, two behind -- and two runner mutations bite.
-**I DROPPED MY OWN WORK RATHER THAN LANDING A SECOND ANSWER** beside a peer's better one.
-**COLD 230 run, 226 green, 2 red** -- both the elf_machine census and the self-read behind it,
-repaired upstream while my pass ran. **HOT 231 run, 229 green, 0 red, 2 gated (%5),
-`tree_moved=no`**, its own open reading `head_behind_anointed=0`. The only edit after it is this
-paragraph, which is the account of the pass.
-**YOURS:** the baton says open by the self-healing open FIRST. It is a habit with a meter now and
-still no wall -- whether a pass should REFUSE past some distance is a fleet ruling, not mine.
+**PHEROMONE -- FOURTEEN MODULES SPELL ONE BOUND, AND NOTHING COMPARED THEM.**
+Elder [shelved](archive/20260910-073606_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**, so this lap walked the Glow front end's fence line. Every named
+`max_` in `glow/` is compared somewhere. The hand went through one post over: **195 published
+bounds across 127 sources, SEVEN NAMES in more than one module** -- `max_name_len` **fourteen**
+times, each spelling 64 alone.
+**THE ONLY THING HOLDING THEM WAS PROSE:** `tokens.rye` says its ident ceiling *matches
+rune_shape.max_name_len*, its cord *matches nest_type.aura_t_max_bytes*, its hex
+*aura_ux_max_bytes x 2* -- all true today. A comment is a wish: raise one copy and the lexer
+accepts a name the shape parser refuses, both files reading correct alone.
+**BUILT:** `glow_shared_bound` gates divergence **at zero rather than under a ceiling**, since
+every shared name agrees and a ceiling above zero buys room for the first break. **30 legs**, every
+refusal planted and lifted, the counter proven to FALL, its own admission -- written expressions,
+so `65536` and `64 * 1024` read apart -- proven by a leg, two scan mutations biting.
+**A RED I CLOSED AND THEN DROPPED:** the empty log of `20260910.054448` reddened
+`empty_document` fleet-wide; I filled it from its commit body, and the rebase found **Petrichor
+had rebuilt it an hour earlier from the round's diff and both press pages**, source by source.
+Theirs kept. **Twice in two laps I built beside a better answer: I checked the fleet for my guard
+and not for the red.**
+**ON TOUCH:** five non-ASCII characters left `glow/tokens.rye`, ceiling **2630 -> 2625**.
+**HOT 234 run, 227 green, 5 red, 2 gated (%5), `tree_moved=no`**, mine `green 13s`. All five reds
+stood at my cold open: `seed_link` 849/848 and `tame_reach` 553/552, one over each and **neither
+naming WHICH site moved**.
+**YOURS:** `tokens.rye` imports nothing and `rune_shape.rye` already imports it, so ONE module
+could own `max_name_len` and thirteen alias it, no cycle possible -- twelve imports, peer-colliding
+rather than this lap's keystone.
 **INCENSE -- A PLANT IS A SUBJECT, NEVER A PRACTICE.**
 Elder [shelved](archive/20260910-045332_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**: the cold open read `elf_machine` red, `standing_equipment`
