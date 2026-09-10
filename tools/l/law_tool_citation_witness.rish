@@ -1,0 +1,89 @@
+# tools/l/law_tool_citation_witness.rish -- a tool path the law room prints is a path the
+# repository carries.
+#
+#   rishi/bin/rishi run tools/l/law_tool_citation_witness.rish
+#
+# WHY THIS RUNG. `.claude/rules/` is the room every ship reads at its cold open, and its pages
+# name their instruments constantly. Measured `20260910.170340`: 54 tracked pages print 99
+# distinct `tools/` file paths, and 50 of those appear nowhere in the room as a Markdown link.
+#
+# Nothing read those fifty. `tools/t/tracked_link_witness.rish` reads Markdown LINKS, so a
+# backticked name is invisible to it. `tools/d/docs_command_path_witness.rish` reads a path a
+# page tells a reader to RUN, and its own header says it passes an absent path FREE on purpose:
+# tree-wide, a printed path the tree does not carry is usually a path the reader is being asked
+# to create. That reasoning is right for a tutorial and wrong for a law page, where naming a
+# guard is a promise about a file that already exists -- and the scope is what makes the gate
+# honest, since inside this one room the class carries no ambiguity.
+#
+# This is the air rota's own walk, one room wider than `tools/t/tame_core_surface_witness.rish`,
+# which pressed the same question at a single page on `20260909.152920`. That guard asks whether
+# TAME Core's declared surface runs; this one asks whether the law room's printed paths exist.
+#
+# WHAT IS PROVEN, on metal. Every `tools/` file path printed in a tracked `.claude/rules/*.md`
+# page is a path `git ls-files` carries -- a wall at zero. The reading asks the REPOSITORY rather
+# than the filesystem, because a file present on one machine and absent from every clone is the
+# shape `tools/t/tracked_link_scan.sh` was built after.
+#
+# WHAT IS REPORTED, never gated, each for its own reason.
+#   `cited_bare` -- the share no link guard can see. It is the reason the gate exists, and it
+#   moves with ordinary editing.
+#   `runners_unrostered` -- a cited witness with no roster row. The GATE for that class is
+#   `tools/w/witness_reach_witness.rish`, which traces reachability tree-wide; a second gate here
+#   would be one question with two answers. Today's one is `tools/b/bat_fleet_witness.rish`,
+#   named in `.claude/rules/ascii-first.md` as a file whose own `say` line was swept.
+#   An absent roster reads `unread` rather than zero, since an instrument that cannot answer must
+#   not answer cleanly.
+#   The `.cursor/rules/*.mdc` twin room, read the same way. Its own guard `rule_twin` stands
+#   behind custody gate %7, and a second gate over that room would push a lane into the merge
+#   that gate reserves.
+#
+# WHAT IS NOT PROVEN. That a named tool does what the page says it does, that the page names the
+# tool it ought to, or that a rostered guard is green. Three other questions, three other
+# instruments.
+
+say "law-tool-citation: Language EN -- a law page names a file, and the file is one every clone carries."
+say "law-tool-citation: Style Radiant -- the room states its instruments, and the repository is what holds them."
+say "law-tool-citation: Lens TAME -- docs and implementation stay synced: assert it, do not assume it."
+
+let scan = run ["sh" "tools/fixtures/l/law_tool_citation_scan.sh"]
+say scan.out
+assert scan.ok else "law-tool-citation: a law page names a tool path the repository does not carry -- read the scan's own lines"
+assert scan.out contains "cited_untracked=0" else "law-tool-citation: every cited tool path must be one the repository carries"
+assert scan.out contains "verdict=ok" else "law-tool-citation: the scan must balance before it is believed"
+say "field GREEN -- every tool path the law room prints is a path a fresh clone receives"
+
+let control = run ["sh" "tools/fixtures/l/law_tool_citation_control.sh"]
+say control.out
+assert control.ok else "law-tool-citation: the control must complete"
+assert control.out contains "clean_free=yes" else "law-tool-citation: a room whose citations all resolve must pass free"
+assert control.out contains "clean_untracked_zero=yes" else "law-tool-citation: a clean pen must read zero rather than merely pass"
+assert control.out contains "clean_counted_exactly=yes" else "law-tool-citation: the count must be of distinct paths"
+assert control.out contains "ghost_refused=yes" else "law-tool-citation: a named tool the repository lacks must be refused"
+assert control.out contains "ghost_counted=yes" else "law-tool-citation: the refusal must carry a count, never only a verdict"
+assert control.out contains "ghost_named=yes" else "law-tool-citation: the refusal must name the path, so the repair is one edit away"
+assert control.out contains "ghost_lifted_zero=yes" else "law-tool-citation: lifting the plant must return the reading to zero"
+assert control.out contains "ondisk_refused=yes" else "law-tool-citation: a file on disk and outside the repository must still refuse"
+assert control.out contains "ondisk_tracked_zero=yes" else "law-tool-citation: committing that same file must return the reading to zero"
+assert control.out contains "bare_counted=yes" else "law-tool-citation: a backticked path must count as bare"
+assert control.out contains "linked_reads_zero_bare=yes" else "law-tool-citation: a linked path must not"
+assert control.out contains "roomname_read_past=yes" else "law-tool-citation: a room name and a gitignored build path promise no file"
+assert control.out contains "roomname_counted_one=yes" else "law-tool-citation: reading past must leave the real citation counted"
+assert control.out contains "sentence_end_counted=yes" else "law-tool-citation: a path ending a sentence keeps its extension"
+assert control.out contains "hook_counted=yes" else "law-tool-citation: an extensionless hook under tools/hooks is a file"
+assert control.out contains "hook_absent_named=yes" else "law-tool-citation: an absent hook must be named"
+assert control.out contains "hook_present_free=yes" else "law-tool-citation: a hook the repository carries must pass free"
+assert control.out contains "unrostered_free=yes" else "law-tool-citation: an unrostered runner is reported here, never gated here"
+assert control.out contains "unrostered_counted=yes" else "law-tool-citation: it must still be counted"
+assert control.out contains "unrostered_named=yes" else "law-tool-citation: and named"
+assert control.out contains "unrostered_lifted_zero=yes" else "law-tool-citation: rostering it must return the reading to zero"
+assert control.out contains "noroster_unread=yes" else "law-tool-citation: an absent roster must read unread rather than zero"
+assert control.out contains "twin_free=yes" else "law-tool-citation: the twin room is reported while gate %7 stands"
+assert control.out contains "twin_counted=yes" else "law-tool-citation: and its reading must still be honest"
+assert control.out contains "silent_refused=yes" else "law-tool-citation: a room naming no tool must refuse rather than read clean"
+assert control.out contains "empty_room_refused=yes" else "law-tool-citation: an absent room must refuse rather than read zero"
+assert control.out contains "norepo_refused=yes" else "law-tool-citation: outside a repository the scan must refuse"
+assert control.out contains "control_failures=0" else "law-tool-citation: every planted reading must agree"
+assert control.out contains "control_verdict=ok" else "law-tool-citation: the control must agree with itself"
+say "RED and GREEN paths proven -- thirty-nine readings on real git pens, every plant counted while it stood and read back to zero once lifted"
+
+say "GREEN: law-tool-citation -- the law room's printed tool paths are paths the repository carries."

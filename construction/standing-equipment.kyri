@@ -700,6 +700,30 @@ path tools/r/rule_twin_witness.rish
 gate %7
 seated 20260824.112806
 
+# law_tool_citation -- the room every ship reads at its cold open names its instruments in prose,
+# and half of those names were outside every guard. Measured 20260910.170340 on the air rota, the
+# row that feels along a boundary: `.claude/rules/` prints 99 distinct `tools/` file paths across
+# 54 pages, and 50 of them appear nowhere in the room as a Markdown link. `tracked_link` reads
+# links, so a backticked name is invisible to it; `docs_command_path` reads a path a page tells a
+# reader to RUN and passes an absent one FREE on purpose, because tree-wide such a path is usually
+# one the reader is being asked to create. That reasoning is right for a tutorial and wrong for a
+# law page, where naming a guard is a promise about a file that already exists -- so the SCOPE is
+# what makes a gate honest here, and the wall stands at zero over this one room.
+#
+# It asks the REPOSITORY rather than the filesystem, which is the lesson tracked_link was built
+# after: a file present on one machine and absent from every clone reads fine to `[ -e ]`.
+#
+# Two readings are printed and gated nowhere. `cited_bare` is the reason the gate exists rather
+# than a fault. `runners_unrostered` belongs to `witness_reach`, which traces reachability
+# tree-wide; one is standing today, `tools/b/bat_fleet_witness.rish`, cited as a swept file rather
+# than as a proof. An absent roster reads `unread`, never zero. The `.cursor/rules/*.mdc` twin room
+# is read the same way and reported, since `rule_twin` above stands behind gate %7 and a second
+# gate there would push a lane into the merge that gate reserves.
+guard law_tool_citation
+path tools/l/law_tool_citation_witness.rish
+seated 20260910.180224
+tier lap   # 5.1s (2.0s scan, 3.2s control); 99 cited paths over 54 law pages, 39 readings on real git pens
+
 # ascii_document -- the ASCII-first law names THREE subjects and only two were measured over their
 # whole subject. Comments have two meters over every tracked source; commit messages have none and
 # want none (0 of the last 400 bodies carry a byte above 0x7F, measured 20260906.131411); documents,
