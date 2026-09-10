@@ -153,7 +153,10 @@ count_file() {
 # The ceiling only falls. Lower it whenever a lap converts trailing comments; never raise it.
 #   1319  `20260908.232949`  the reading before this lap swept its own lane
 #   1311  `20260908.232949`  after mantra and tally were converted to zero, first resident
-TRAIL_CEILING=1311
+#   1307  `20260910.114040`  amphora's four trailing em dashes converted while `src/main.rye` was
+#                            open for the ferry repair -- the module's own-line comments fell zero,
+#                            so only this reading moved
+TRAIL_CEILING=1307
 
 count_trailing() {
   LC_ALL=C awk '

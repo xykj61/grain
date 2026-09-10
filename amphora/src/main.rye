@@ -310,35 +310,35 @@ const CliError = error{
 fn refuse(fault: CliError, detail: []const u8) u8 {
     switch (fault) {
         error.UnknownCommand => {
-            print("amphora: unknown command — '{s}'\n\n", .{detail});
+            print("amphora: unknown command -- '{s}'\n\n", .{detail});
             print_usage();
         },
         error.TooManyWords => print("amphora: too many words\n", .{}),
-        error.MissingOperand => print("amphora: missing operand — '{s}'\n", .{detail}),
-        error.PathTooLong => print("amphora: path too long — '{s}'\n", .{detail}),
-        error.CommandNotGrown => print("amphora: command waits its quest — '{s}'\n", .{detail}),
-        error.ResultUnwritable => print("amphora: result unwritable — '{s}'\n", .{detail}),
-        error.SeasonAbsent => print("amphora: season absent — '{s}'\n", .{detail}),
-        error.SeasonEmpty => print("amphora: season empty — '{s}'\n", .{detail}),
+        error.MissingOperand => print("amphora: missing operand -- '{s}'\n", .{detail}),
+        error.PathTooLong => print("amphora: path too long -- '{s}'\n", .{detail}),
+        error.CommandNotGrown => print("amphora: command waits its quest -- '{s}'\n", .{detail}),
+        error.ResultUnwritable => print("amphora: result unwritable -- '{s}'\n", .{detail}),
+        error.SeasonAbsent => print("amphora: season absent -- '{s}'\n", .{detail}),
+        error.SeasonEmpty => print("amphora: season empty -- '{s}'\n", .{detail}),
         error.SeasonNameUnframed => print("amphora: season name is not one record -- '{s}'\n", .{detail}),
-        error.SeasonOverflow => print("amphora: season overflow — '{s}'\n", .{detail}),
-        error.SeasonUnreadable => print("amphora: season unreadable — '{s}'\n", .{detail}),
-        error.CargoTooLarge => print("amphora: cargo too large — '{s}'\n", .{detail}),
-        error.VesselUnwritable => print("amphora: vessel unwritable — '{s}'\n", .{detail}),
-        error.SealToolAbsent => print("amphora: seal tool absent — '{s}'\n", .{detail}),
-        error.SealFailed => print("amphora: seal failed — '{s}'\n", .{detail}),
-        error.StampToolAbsent => print("amphora: stamp tool absent — '{s}'\n", .{detail}),
-        error.StampFailed => print("amphora: stamp failed — '{s}'\n", .{detail}),
-        error.IdentityFork => print("amphora: identity fork — '{s}'\n", .{detail}),
-        error.ManifestOverflow => print("amphora: manifest overflow — '{s}'\n", .{detail}),
-        error.StampUnverified => print("amphora: stamp unverified — '{s}'\n", .{detail}),
-        error.SealUnopened => print("amphora: seal unopened — '{s}'\n", .{detail}),
-        error.DockUnwritable => print("amphora: dock unwritable — '{s}'\n", .{detail}),
-        error.ChunkTorn => print("amphora: chunk torn — '{s}'\n", .{detail}),
-        error.CrossingUnequal => print("amphora: crossing unequal — '{s}'\n", .{detail}),
-        error.ResinAbsent => print("amphora: resin absent — '{s}'\n", .{detail}),
-        error.CargoUnproven => print("amphora: cargo unproven — '{s}'\n", .{detail}),
-        error.RestoreUnwritable => print("amphora: restore unwritable — '{s}'\n", .{detail}),
+        error.SeasonOverflow => print("amphora: season overflow -- '{s}'\n", .{detail}),
+        error.SeasonUnreadable => print("amphora: season unreadable -- '{s}'\n", .{detail}),
+        error.CargoTooLarge => print("amphora: cargo too large -- '{s}'\n", .{detail}),
+        error.VesselUnwritable => print("amphora: vessel unwritable -- '{s}'\n", .{detail}),
+        error.SealToolAbsent => print("amphora: seal tool absent -- '{s}'\n", .{detail}),
+        error.SealFailed => print("amphora: seal failed -- '{s}'\n", .{detail}),
+        error.StampToolAbsent => print("amphora: stamp tool absent -- '{s}'\n", .{detail}),
+        error.StampFailed => print("amphora: stamp failed -- '{s}'\n", .{detail}),
+        error.IdentityFork => print("amphora: identity fork -- '{s}'\n", .{detail}),
+        error.ManifestOverflow => print("amphora: manifest overflow -- '{s}'\n", .{detail}),
+        error.StampUnverified => print("amphora: stamp unverified -- '{s}'\n", .{detail}),
+        error.SealUnopened => print("amphora: seal unopened -- '{s}'\n", .{detail}),
+        error.DockUnwritable => print("amphora: dock unwritable -- '{s}'\n", .{detail}),
+        error.ChunkTorn => print("amphora: chunk torn -- '{s}'\n", .{detail}),
+        error.CrossingUnequal => print("amphora: crossing unequal -- '{s}'\n", .{detail}),
+        error.ResinAbsent => print("amphora: resin absent -- '{s}'\n", .{detail}),
+        error.CargoUnproven => print("amphora: cargo unproven -- '{s}'\n", .{detail}),
+        error.RestoreUnwritable => print("amphora: restore unwritable -- '{s}'\n", .{detail}),
         // Plain `--` rather than the em dash its siblings print: ASCII-first is law and the
         // spoken-ASCII ceiling only falls, so a new refusal line joins at zero rather than at one.
         error.ManifestDisagrees => print("amphora: listing disagrees -- '{s}'\n", .{detail}),
@@ -814,7 +814,7 @@ fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const 
     assert(parent_hex.len == digest_hex_len);
     var buf: [max_vessel_len]u8 = undefined;
     const text = Dir.cwd().readFile(io, vessel_path, &buf) catch |fault| switch (fault) {
-        error.FileNotFound => return, // first pour — nothing to fork
+        error.FileNotFound => return, // first pour -- nothing to fork
         else => return error.IdentityFork, // occupant unreadable: continuity unconfirmed
     };
     var lines = std.mem.splitScalar(u8, text, '\n');
@@ -822,11 +822,11 @@ fn guard_identity_fork(io: std.Io, vessel_path: []const u8, parent_hex: []const 
         if (!std.mem.startsWith(u8, raw, "parent ")) continue;
         const value = raw["parent ".len..];
         if (std.mem.eql(u8, value, parent_hex)) {
-            return; // same identity — the re-pour is the same pour
+            return; // same identity -- the re-pour is the same pour
         }
         return error.IdentityFork;
     }
-    return error.IdentityFork; // occupant carries no parent — continuity unconfirmed
+    return error.IdentityFork; // occupant carries no parent -- continuity unconfirmed
 }
 
 /// Filled front half of a pour -- names into argv, lengths into caller buffers.
@@ -1429,10 +1429,19 @@ fn carry_cross(
     verify_far_manifest(init.io, filled.far_vessel) catch
         return refuse(error.CrossingUnequal, filled.far_vessel);
     print("amphora: far manifest readable\n", .{});
-    ferry_resins(init.io, allocator, filled.vessel, filled.far_vessel) catch |fault| {
+    // Witness seam: with AMPHORA_CARRY_SKIP_PROVE set, the ferry declines its
+    // prove-before-write pass so the wall inside the writing walk stands ALONE and
+    // earns a leg of its own. The two walls stand in series and the outer refuses
+    // first, so every honest input proves the outer one only -- this is how the
+    // inner wall becomes testable, exactly as AMPHORA_CARRY_TRUST_DOCK makes a
+    // planted dock tamper testable. It only DECLINES a check; it forges nothing,
+    // and production carries never set it.
+    const skip_prove = init.environ_map.get("AMPHORA_CARRY_SKIP_PROVE") != null;
+    ferry_resins(init.io, allocator, filled.vessel, filled.far_vessel, skip_prove) catch |fault| {
         return switch (fault) {
             error.PathTooLong => refuse(error.PathTooLong, filled.dock),
             error.ResinAbsent => refuse(error.ResinAbsent, filled.vessel),
+            error.CargoUnproven => refuse(error.CargoUnproven, filled.vessel),
             else => refuse(error.DockUnwritable, filled.dock),
         };
     };
@@ -1440,12 +1449,56 @@ fn carry_cross(
     return exit_ok;
 }
 
-/// Ferry `{near}/resins/*` to `{far}/resins/*` so the Return has bodies.
+/// Prove every near resin against the filename addressing it BEFORE the ferry writes its
+/// first byte -- the crossing's own half of Q40a. A forged body refuses here with no far
+/// resins directory made and nothing on the far side, so the refusal is a wall rather than
+/// a report arriving after the bytes have already crossed.
+fn ferry_prove_resins(
+    io: std.Io,
+    allocator: std.mem.Allocator,
+    near_dir: []const u8,
+) CliError!u32 {
+    // invariant: the near resins directory is named, since an empty path would walk the
+    // process's own working directory and prove whatever it happened to find there.
+    assert(near_dir.len > 0);
+    const cwd = Dir.cwd();
+    const src = cwd.openDir(io, near_dir, .{ .iterate = true }) catch {
+        return error.ResinAbsent;
+    };
+    defer src.close(io);
+    var walker = src.walk(allocator) catch return error.ResinAbsent;
+    defer walker.deinit();
+    var file_buf: [max_season_file_bytes]u8 = undefined;
+    var n: u32 = 0;
+    while (true) {
+        const maybe = walker.next(io) catch return error.ResinAbsent;
+        const entry = maybe orelse break;
+        if (entry.kind != .file) continue;
+        if (entry.path.len != digest_hex_len) return error.ResinAbsent;
+        const data = entry.dir.readFile(io, entry.basename, &file_buf) catch {
+            return error.ResinAbsent;
+        };
+        if (!body_addresses(data, entry.path)) return error.CargoUnproven;
+        n += 1;
+    }
+    if (n == 0) return error.ResinAbsent;
+    // invariant: the count returned is a real reading of bodies proven, so the writing
+    // walk can compare its own count against it and refuse a home that moved between them.
+    assert(n >= 1);
+    print("amphora: ferry resins proven count={d}\n", .{n});
+    return n;
+}
+
+/// Ferry `{near}/resins/*` to `{far}/resins/*` so the Return has bodies -- every body
+/// proven against the filename addressing it twice: once before any byte crosses, and
+/// again as it lands. The second reading costs one re-read per body and buys the one
+/// thing the first cannot -- a resin tampered with BETWEEN the two walks writes nothing.
 fn ferry_resins(
     io: std.Io,
     allocator: std.mem.Allocator,
     near_vessel: []const u8,
     far_vessel: []const u8,
+    skip_prove: bool,
 ) CliError!void {
     // invariant: the near vessel names the resins directory the bodies are read from,
     // so the ferry has a source to walk.
@@ -1457,6 +1510,9 @@ fn ferry_resins(
     var far_buf: [max_vessel_path_len]u8 = undefined;
     const near_dir = try resins_dir_path(near_vessel, &near_buf);
     const far_dir = try resins_dir_path(far_vessel, &far_buf);
+    // The witness seam declines the first pass rather than weakening the second, so a
+    // skipped prove leaves the writing walk's own wall to answer for the crossing.
+    const proven: u32 = if (skip_prove) 0 else try ferry_prove_resins(io, allocator, near_dir);
     const cwd = Dir.cwd();
     const src = cwd.openDir(io, near_dir, .{ .iterate = true }) catch {
         return error.ResinAbsent;
@@ -1476,6 +1532,10 @@ fn ferry_resins(
         const data = entry.dir.readFile(io, entry.basename, &file_buf) catch {
             return error.ResinAbsent;
         };
+        // invariant: the body hashes to the name addressing it, proven here rather than
+        // trusted -- without this the far Return reads a forged body as the file the
+        // listing names, and the crossing prints complete over it.
+        if (!body_addresses(data, entry.path)) return error.CargoUnproven;
         var out_buf: [max_vessel_path_len]u8 = undefined;
         const dest = std.fmt.bufPrint(&out_buf, "{s}/{s}", .{ far_dir, entry.path }) catch {
             return error.PathTooLong;
@@ -1485,7 +1545,7 @@ fn ferry_resins(
         };
         n += 1;
     }
-    if (n == 0) return error.ResinAbsent;
+    if (!skip_prove and n != proven) return error.CrossingUnequal;
     print("amphora: resins ferried count={d}\n", .{n});
 }
 
@@ -1666,7 +1726,7 @@ fn restore_guard_out(io: std.Io, allocator: std.mem.Allocator, vessel: []const u
     read_vessel_parent(io, vessel, &parent_hex) catch return error.StampUnverified;
     const cwd = Dir.cwd();
     const probe = cwd.openDir(io, out_home, .{}) catch {
-        return; // first restore — no out-home yet
+        return; // first restore -- no out-home yet
     };
     probe.close(io);
     var catalog: SeasonCatalog = undefined;
@@ -1677,6 +1737,26 @@ fn restore_guard_out(io: std.Io, allocator: std.mem.Allocator, vessel: []const u
     var season_parent: [digest_hex_len]u8 = undefined;
     parent_of_cargo(cargo[0..cargo_len], &season_parent);
     if (!std.mem.eql(u8, &season_parent, &parent_hex)) return error.IdentityFork;
+}
+
+/// One reading, borrowed by every reader that carries a resin: do these bytes hash to
+/// the digest addressing them? A resin's filename IS its address, so this comparison is
+/// the whole of what makes `resins/` content-addressed rather than merely named in hex.
+/// Published once because it was written once and skipped once -- the restore path
+/// proved each body twice while the ferry proved none, and a forged body crossed
+/// (`20260910.114040`, on metal, exit 0).
+fn body_addresses(data: []const u8, address_hex: []const u8) bool {
+    // invariant: the address is a whole digest, since a short one would compare a prefix
+    // and welcome every body sharing its opening characters.
+    assert(address_hex.len == digest_hex_len);
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(data, &digest, .{});
+    var hex: [digest_hex_len]u8 = undefined;
+    write_hex_lower(&digest, &hex);
+    // invariant: the hex just written is exactly as wide as the address it answers for,
+    // so the compare below reads two whole names rather than one against a slice.
+    assert(hex.len == address_hex.len);
+    return std.mem.eql(u8, &hex, address_hex);
 }
 
 /// Read one resin the catalog names and answer whether its bytes carry the riding digest.
@@ -1698,11 +1778,7 @@ fn resin_body_proven(
     var rbuf: [max_vessel_path_len]u8 = undefined;
     const rpath = try resin_file_path(vessel, &entry.digest_hex, &rbuf);
     const data = cwd.readFile(io, rpath, body) catch return error.ResinAbsent;
-    var digest: [Sha3_256.digest_length]u8 = undefined;
-    Sha3_256.hash(data, &digest, .{});
-    var hex: [digest_hex_len]u8 = undefined;
-    write_hex_lower(&digest, &hex);
-    if (!std.mem.eql(u8, &hex, &entry.digest_hex)) return error.CargoUnproven;
+    if (!body_addresses(data, &entry.digest_hex)) return error.CargoUnproven;
     return data;
 }
 
@@ -1985,7 +2061,7 @@ fn cmd_version(io: std.Io) u8 {
 
 fn print_usage() void {
     print(
-        \\amphora — vessel software for a sealed crossing
+        \\amphora -- vessel software for a sealed crossing
         \\
         \\usage:
         \\  amphora pour <season> <vessel>   fill, seal, then stamp
