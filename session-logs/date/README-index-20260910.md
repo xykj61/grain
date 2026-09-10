@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.025124` | [The second run](20260910/20260910-025124_the-second-run-that-changed-the-store.kyri) | `mantra add` on an unedited file wrote a commit anyway |
 | `20260910.024707` | [A stash cannot carry a pin](20260910/20260910-024707_a-stash-cannot-carry-a-pin.kyri) | Pheromone; a stash restore reverted a peer |
 | `20260910.023458` | [The row that proved itself twice](20260910/20260910-023458_the-row-that-proved-itself-twice.kyri) | Pheromone; a thrice-parked proof lands |
 | `20260910.022809` | [A refusal that braids three answers](20260910/20260910-022809_a-refusal-that-braids-three-answers.kyri) | Recovered the lap that died at its send |

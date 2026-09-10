@@ -2056,6 +2056,19 @@ path tools/m/mantra_multifile_witness.rish
 tier lap
 seated 20260910.003046
 
+# mantra_idempotent_add -- a second `mantra add` over a file nobody edited changes nothing. The
+# weave is content-addressed and `commit_files_with` returned the prior list entry for entry, yet
+# `cmd_add` wrote a commit blob and moved HEAD on every run, so the record grew with the polling
+# rather than with the work; `mantra log` walks at most 1,000 commits, so a watcher calling `add`
+# on a timer pushes the real first commit past the end of the log inside a day. `files_agree`
+# compares the two lists and `cmd_add` returns without writing when they agree. The scan hashes
+# every byte under `.mantra/` after three runs, and reads the opposite direction too -- a real edit
+# and a new path must still land -- because a skip is as wrong when it fires too eagerly.
+guard mantra_idempotent_add
+path tools/m/mantra_idempotent_add_witness.rish
+tier lap
+seated 20260910.024500
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight

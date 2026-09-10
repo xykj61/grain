@@ -1,0 +1,82 @@
+# tools/m/mantra_idempotent_add_witness.rish -- a second `mantra add` changes nothing.
+#
+# WHAT THIS PROVES. `foundations/20260823-222019_what-brix-infuse-is.md` states the tree's own claim
+# about how change behaves: `infusion(world') -> world'`, so running a change twice does what
+# running it once did. This guard drives the built Mantra CLI over one file three times with no edit
+# between the runs and hashes every byte under `.mantra/` after each one.
+#
+# THE RED IT CLOSES (`20260910.024500`). `cmd_add` wrote a commit blob and moved HEAD on every run.
+# The weave is content-addressed, so the weave blob was already identical and `commit_files_with`
+# returned the prior list entry for entry -- the new commit recorded that somebody ran the command
+# rather than that anything changed. `mantra log` walks at most `max_log_depth` (1,000) commits, so
+# a watcher calling `add` on a timer pushes the real first commit past the end of the log inside a
+# day, and the history a user came for is the part that leaves.
+#
+# THE MECHANISM. `files_agree` in mantra/src/main.rye compares the list a commit would carry against
+# the list HEAD already carries -- path for path, weave name for weave name, in order -- and
+# `cmd_add` returns without writing when they agree. Order is part of the answer because
+# `commit_files_with` builds its list by walking the prior one and replacing in place, so an
+# unchanged add returns the prior order exactly.
+#
+# THE OPPOSITE DIRECTION IS PROVEN TOO, and it is the half a lazy guard forgets: a skip that fires
+# too eagerly stops recording real work. `edit_commits` and `second_file_commits` press exactly
+# there, and the control's `path_only` and `len_blind` phases move one apiece -- a comparison that
+# lost the weave name and one that lost the length are two faults with two cures.
+#
+# WHY THE READING IS THE STORE'S BYTES. A commit count answers how the record is shaped, and a shape
+# is free to change. The infusion claim is about the WORLD, so the scan folds every file under
+# `.mantra/` -- name and content together, since a run that wrote a new blob and left the old ones
+# alone would otherwise read as stable -- into one digest and compares the three.
+#
+# WHAT IS NOT PROVEN HERE. The document-order red booked at `20260910.001500` stands untouched: a
+# commit that REPLACES a line rather than appending one still sorts out of the document, because
+# `Place.less_than` reads the run ahead of the position. That is a design seam awaiting Keaton's
+# word, so this guard's edit leg APPENDS, and it neither tests that seam nor hides it.
+#
+# Siblings: the per-file record at tools/m/mantra_multifile_witness.rish, the record's own bytes at
+# tools/m/mantra_cli_record_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_idempotent_add_witness.rish
+
+say "mantra-idempotent-add: Language EN -- running `mantra add` twice leaves what running it once left."
+say "mantra-idempotent-add: Style Gauge, Meter -- every claim is an answer the built CLI gave in a pen."
+say "mantra-idempotent-add: Lens TAME -- a record grows with the work rather than with the polling."
+
+say "mantra-idempotent-add: the CLI still names the comparison this guard reads..."
+let seat = run ["sh" "-c" "grep -q 'fn files_agree' mantra/src/main.rye && grep -q 'files_agree(prior_files, files)' mantra/src/main.rye"]
+assert seat.ok else "mantra-idempotent-add: files_agree or its call site left main.rye, so the skip this guard proves is no longer there to prove"
+
+say "mantra-idempotent-add: the log walk is still bounded, which is what makes a growing chain cost something..."
+let bounded = run ["sh" "-c" "grep -q 'max_log_depth' mantra/src/main.rye"]
+assert bounded.ok else "mantra-idempotent-add: max_log_depth left main.rye -- the reason a no-op commit costs history is the bound on the walk"
+
+say "mantra-idempotent-add: adding one file three times in a pen, hashing the store after each run..."
+let scan = run ["sh" "tools/fixtures/m/mantra_idempotent_add_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-idempotent-add: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-idempotent-add: the CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "store_stable=yes" else "mantra-idempotent-add: the second add changed the store, which is the red of `20260910.024500` standing"
+assert scan.out contains "store_stable_third=yes" else "mantra-idempotent-add: the third add changed the store, so the second reading was a pair rather than a fixed point"
+assert scan.out contains "head_stable=yes" else "mantra-idempotent-add: HEAD moved over three runs that recorded nothing"
+assert scan.out contains "commits_after_three=1" else "mantra-idempotent-add: three adds over one unedited file left more than one commit in the chain"
+assert scan.out contains "edit_commits=yes" else "mantra-idempotent-add: a real edit stopped being recorded, so the skip fires too eagerly and the cure is worse than the red"
+assert scan.out contains "edit_status_clean=yes" else "mantra-idempotent-add: the edited file does not read clean, so what was recorded is not what was written"
+assert scan.out contains "second_file_commits=yes" else "mantra-idempotent-add: adding a NEW path stopped being recorded, which is the same skip failing on a different shape"
+assert scan.out contains "brix_stable=yes" else "mantra-idempotent-add: the .brix add-all route still grows the store on a run that changed nothing"
+assert scan.out contains "verdict=ok" else "mantra-idempotent-add: the scan reached its own red"
+
+say "mantra-idempotent-add: breaking the skip in three directions in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_idempotent_add_control.sh"]
+say control.out
+assert control.ok else "mantra-idempotent-add: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-idempotent-add: the control must reach its own verdict"
+assert control.out contains "clean_ok=1" else "mantra-idempotent-add: the unmutated pen must read ok, or every other phase fails for a reason the pen invented"
+assert control.out contains "no_skip_store_stable=no" else "mantra-idempotent-add: removing the skip must move the store again -- otherwise store_stable is not reading the skip"
+assert control.out contains "no_skip_commits=3" else "mantra-idempotent-add: removing the skip must leave three commits, or the commit reading is not counting what the skip prevents"
+assert control.out contains "path_only_edit_commits=no" else "mantra-idempotent-add: a comparison that ignores the weave name must swallow a real edit -- this is what holds the weave half of files_agree in place"
+assert control.out contains "path_only_second_file_commits=yes" else "mantra-idempotent-add: that same break must still record a NEW path, or the two breaks below are being read as one"
+assert control.out contains "len_blind_second_file_commits=no" else "mantra-idempotent-add: a comparison that ignores the list length must swallow a new file -- this is what holds the length half in place"
+assert control.out contains "len_blind_edit_commits=yes" else "mantra-idempotent-add: that same break must still record an edit, which is the pair telling a lost weave name from a lost length"
+
+say "GREEN: a second `mantra add` changes nothing, and a real edit still lands -- eleven readings, four control phases, three breaks caught."

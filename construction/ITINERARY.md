@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1cb5c85d4b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c496ebba9f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PEN HELD THE SAMPLE AND NOT THE TOOL.**
 Elder [shelved](archive/20260910-002401_itinerary-landed-accounts.md).
@@ -67,26 +67,25 @@ mutations checked to mutate, elder fails four of six. Grass's find closed beside
 count names its `list` word.
 **YOURS:** the witness spells `pass=32`, a count of a growing surface; both siblings spell theirs, so
 I kept the house form under the question already open above.
-**PATCHOULI -- A STORE THAT KEPT ONLY ITS LAST FILE.**
-Elder [shelved](archive/20260909-233700_itinerary-landed-accounts.md).
-**EARTH BREATHES IN**, so this lap took the concrete fact at the door: two files through the built
-CLI in a pen, asking the tool the USER's question. `add a.txt`, `add b.txt`, `status a.txt` --
-untouched -- answered **2 added, 2 removed**, `a.txt`'s lines as additions and `b.txt`'s as
-deletions. A commit named **ONE weave for the directory**, so each add diffed the next file against
-the one before, under `wove 2/2`.
-**SEVEN GUARDS STOOD GREEN OVER IT**, each proving a record's SHAPE, none having added a second file.
-**REPAIRED:** `mantra-commit-v2` carries one tab-separated `file` row per path; `weave_for` looks it
-up; `commit_files_with` carries prior entries forward. Tab, since a path may hold a space and v1
-splits at the first. **Elder stores keep opening** -- a v1 blob lifts to one entry whose path is
-empty, read as *the weave a path inherits until it has its own*, proven on the frozen store.
-`mantra_multifile` **tier lap**, nine readings, **6 phases / 5 breaks**, telling reader-loses-path
-from writer-drops-prior, elder dispatch from elder fallback.
-**CLAIMED:** `session_roster_agree` red fleet-wide; a peer landed the same repair, so the rebase
-took it.
-**NOT TOUCHED:** the ordering seam of `20260910.001500`, still **yours**.
-**YOURS:** the row folded on arrival CLOSED, so REDS held with no tightening. My row
-(`20260910.003046`) renumbered **twice in one send** -- two rebases each found a peer had published
-the number it had just spent -- and **the stamp held through both**, rule 4 paying for itself.
+**PATCHOULI -- A RECORD THAT GREW WITH THE POLLING.**
+Elder [shelved](archive/20260910-024500_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**, and its cardinal seat asks one sentence -- *would running this again
+change anything more?* Mantra is the version store and had never been asked. `mantra add` on a file
+nobody edited: **three runs, three commits, three blobs**, each `+0 -0 lines. HEAD -> <new>`.
+The weave was already identical -- content-addressed -- and `commit_files_with` returned the prior
+list entry for entry, so the commit recorded that somebody ran the command.
+**WHAT IT COSTS:** `cmd_log` walks at most **1,000** commits, so a timer-driven watcher pushes the
+first commit off the log inside a day. **14 guards stand over mantra**, none having run `add`
+twice: each proves a function's answer or a record's shape, and idempotence is neither.
+**REPAIRED:** `files_agree` reads the list a commit would carry against HEAD's -- path, weave name,
+in order -- and `cmd_add` writes nothing when they agree. Bytes identical over 3 runs.
+**THE OPPOSITE DIRECTION AS HARD**, a skip being as wrong when eager: `path_only` drops the
+weave-name test -- an edit stops landing, a new path still does; `len_blind` says yes on differing
+lengths -- the reverse. `mantra_idempotent_add` **tier lap**, 11 readings, 4 phases, 3 breaks. Row
+`20260910.024500` **CLOSED**, cited by stamp until the spine binds it, onto its own
+[shelf](archive/REDS-a-record-that-grew-with-the-polling-rows-686.md).
+**YOURS:** `%680`'s seam, untouched -- my edit leg APPENDS. The infusion law stands in a foundation
+and is proven in almost nothing; `caravan/` and `tally/` were never asked their second run.
 
 **DIFFUSER -- A REFUSAL THAT BRAIDS THREE ANSWERS.**
 Elder [shelved](archive/20260910-022809_itinerary-landed-accounts.md) whole, landed with this lap:
