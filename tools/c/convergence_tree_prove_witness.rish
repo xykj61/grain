@@ -1,4 +1,4 @@
-# tools/c/convergence_tree_prove_witness.rish -- the nine that answered to a flag rather than a path.
+# tools/c/convergence_tree_prove_witness.rish -- the writers no single-file prover could reach.
 #
 #   rishi/bin/rishi run tools/c/convergence_tree_prove_witness.rish
 #
@@ -26,6 +26,32 @@
 # THE PERTURBATION WRITES THROUGH THE ORIGINAL INODE rather than reaching for an in-place flag.
 # GNU and BSD spell `sed -i` differently and `shell_dialect` gates it at zero, so the portable form
 # this tree already prescribes -- write a temporary, `cat` it back -- is what a pen gets too.
+#
+# A SECOND SUBJECT, AND A SHAPE NEITHER PROVER'S USAGE NAMED (`20260909.201050`). The paragraph
+# above counts the nine that answer to a FLAG, and `tools/fixtures/r/readme_metrics_splice.sh`
+# answers to neither a flag nor a single path: it takes TWO -- the target file and the file holding
+# the rendered block. So the sibling prover cannot reach it either. `tools/c/convergence_prove.sh`
+# invokes a tool as `sh <tool> <one-path>`, and handed one argument the splice exits at its own
+# `${2:?}` guard. Measured on metal:
+# `sh tools/c/convergence_prove.sh tools/fixtures/r/readme_metrics_splice.sh README.md` answers
+# `verdict=refused -- the first run exited non-zero`, naming the missing block file. The variadic
+# argument list here reached it with no change to this prover at all, which is the honest finding:
+# the instrument was already able, and nobody had asked it. `tools/hooks/pre-commit` runs that
+# splice on every commit this tree makes, so it is the second-busiest writing in the tree after the
+# headline writer below.
+#
+# THE PERTURBATION IS ANCHORED ON THE MARKER, NEVER ON A ROW OF THE BLOCK. The block's rows are
+# generated metrics and their wording is free to change with the tree, where the begin marker is
+# the one thing the splice's own contract requires to exist -- it refuses outright without it. So
+# the sample drops the line AFTER the marker rather than a named row, and it lands whatever the
+# block currently says. A sample that stopped landing would read `perturb_inert` rather than
+# blaming the tool, which is the whole reason that verdict exists.
+#
+# AND THE BLOCK FILE KEEPS THE MARKERS, which is a property of the sample rather than of the tool.
+# The splice replaces marker to marker INCLUSIVE, so a block captured without them destroys both,
+# the second run refuses `no begin marker in README.md`, and the prover reads `write_once` -- a
+# true verdict about a sample that asked the wrong question. The `sed -n` range below captures the
+# markers with the body.
 #
 # THE PERTURB LEG, and it is the honest half. For a whole-tree operator the sample IS the tree, and
 # a committed tree usually already holds the state the operator produces -- `reds_ledger_headline_write.sh`
@@ -72,4 +98,12 @@ let gl = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed 's/^# Th
 assert gl.ok else "convergence-tree-prove: the library index writer did not converge --\n${gl.out}\n${gl.err}"
 assert gl.out contains "verdict=converges" else "convergence-tree-prove: the library index writer read something other than converges --\n${gl.out}"
 
-say "GREEN: convergence-tree-prove -- a whole-tree operator run twice on a pen checkout, in shell and in Rishi alike, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, and all three pages the pre-commit hook regenerates proven to converge."
+# invariant: the prover answers for a two-path writer neither prover's usage names, and the tree
+# it leaves after one run is the tree it leaves after two. `tools/hooks/pre-commit` runs this
+# splice on every commit.
+say "convergence-tree-prove: the README metrics splice, which takes two paths and no flag..."
+let sp = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed -n '/^<!-- metrics:begin/,/^<!-- metrics:end -->/p' README.md > .metrics-block && sed '/^<!-- metrics:begin/{n;d;}' README.md > .p && cat .p > README.md && rm -f .p" "tools/fixtures/r/readme_metrics_splice.sh" "README.md" ".metrics-block"]
+assert sp.ok else "convergence-tree-prove: the metrics splice did not converge --\n${sp.out}\n${sp.err}"
+assert sp.out contains "verdict=converges" else "convergence-tree-prove: the metrics splice read something other than converges --\n${sp.out}"
+
+say "GREEN: convergence-tree-prove -- four subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, and all three pages the pre-commit hook regenerates proven to converge."

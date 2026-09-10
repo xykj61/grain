@@ -125,6 +125,23 @@
 # touch*, so this blindness widens on exactly the laps that follow the law. A reading whose
 # population is picked by one language's syntax is a reading of that language.
 #
+# AND THE SECOND SOURCE MEASURES WHETHER SOMEBODY ASKED, WHICH IS A DIFFERENT FACT FROM WHETHER
+# THE TOOL CONVERGES (`20260909.201050`). This header stood for a day saying the tree prover was
+# invisible here; the repair made it visible and exactly ONE tool had ever been handed to it, so
+# `proven_by_prover_run` read 1 -- a column reporting how many questions had been asked rather than
+# how many tools converge. Asking a second cost one leg on
+# `tools/c/convergence_tree_prove_witness.rish` and no change to any tool:
+# `tools/fixtures/r/readme_metrics_splice.sh`, which `tools/hooks/pre-commit` runs on every commit
+# this tree makes, reads `verdict=converges` on a pen whose metrics block has a line missing.
+# Proven 9 -> 10 of 12, `proven_by_prover_run` 1 -> 2.
+#
+# WHY NO PROVER HAD REACHED IT, and it is a THIRD shape beside the flag and the single path. The
+# splice takes TWO paths -- the target file and the file holding the rendered block -- so the
+# sibling prover, which invokes `sh <tool> <one-path>`, hands it one argument and the splice exits
+# at its own `${2:?}` guard. Measured on metal: that prover answers `verdict=refused`. The tree
+# prover's argument list is variadic, so it reached the splice with no change to the instrument at
+# all. The instrument was already able; the gap was subjects rather than spelling.
+#
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
 # it from a tool that simply never checked. The number is the finding; the ceiling is a later word.
