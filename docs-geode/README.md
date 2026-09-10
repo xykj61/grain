@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260728.031722`
-**Last refreshed:** `20260909.151033` -- two typed numbers leave the front door: the library row now points at the count its generated page derives, and the room-separation reading names its commands
+**Last refreshed:** `20260910.073603` -- the doorway sentence's two typed numbers leave, the second such pair in as many days: `20260909.151033` freed the library row and the room-separation reading, and this pass freed a page count the shelf's own eight new lessons had already outgrown
 **Voice:** Kyri
 **Kind:** crushed index of [`docs-geode/`](./) -- the root prod folder, holding the canonical docs that ship
 **Status:** Living crystal -- read against the rooms on disk each lap by [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish)
@@ -58,10 +58,24 @@ grandfathered.
 
 [`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish) reads that token and names
 every page whose door has yet to carry one. This shelf joined its roster on `20260908`, having
-stood outside it since the shelf was opened: it supplies **10** of the **1,004** pages the guard
-reads and **0** of the 3 it names, which is what made the joining free. A room brought under a
-guard while it is clean stays clean; the same room brought under it later is a repair somebody has
-to schedule.
+stood outside it since the shelf was opened, supplying none of the pages the guard names. A room
+brought under a guard while it is clean stays clean; the same room brought under it later is a
+repair somebody has to schedule.
+
+**That sentence carried two typed numbers, and this shelf outgrew them in two days.** It read *10
+of the 1,004 pages the guard reads* when it was written on `20260908`; the same scan answers **18
+of 1,261** today, because the eight `lessons/` pages landed on `20260910` and every one of them
+carries a stamp the guard counts. Both figures are **free** -- nothing holds either still, and each
+rises whenever anyone writes a stamped page anywhere in the tree. So run the reading rather than
+trusting a line:
+
+```
+sh tools/fixtures/t/two_rooms_doorway_scan.sh | tail -2
+```
+
+The claim that earned the sentence keeps its place, because it is the one a room can hold: this
+shelf names **none** of the pages the guard fails. Run the same scan and grep for `docs-geode` to
+check it.
 
 ## Laws
 
