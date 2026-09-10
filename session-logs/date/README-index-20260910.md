@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.113923` | [Two rankings, and this tree was reading the wrong one](20260910/20260910-113923_two-rankings.kyri) | the roster is bimodal, and its head sits on the wrong side |
 | `20260910.104407` | [The round that died at its send](20260910/20260910-104407_the-round-that-died-at-its-send.kyri) | a stashed round landed; the ferry never hashed |
 | `20260910.101138` | [The room that teaches the register](20260910/20260910-101138_the-room-that-teaches-the-register.kyri) | 54 law pages, 18 over the ceiling |
 | `20260910.094705` | [Every wall read one line](20260910/20260910-094705_every-wall-read-one-line.kyri) | a listing named one place twice, past every wall |

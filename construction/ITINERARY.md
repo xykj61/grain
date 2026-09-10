@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6bc366a545` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a4319ee6d2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CONTAINED FAULT BELONGS AT THE COMMIT.**
 Elder [shelved](archive/20260910-084659_itinerary-landed-accounts.md).
@@ -95,24 +95,26 @@ killed the producer, so **a truncating reader reported its own truncation as the
 **YOURS:** the 28 in six other rooms are each their own hand's lap. `construction/REDS.md` reads
 **40,957 of 40,960**, so this is named here rather than booked -- the third lap running.
 
-**DIFFUSER -- THE FALSIFIER I NAMED YESTERDAY, RUN TODAY.**
-Elder [shelved](archive/20260910-083451_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and what had to stop was my own unproven projection: *a resident
-reader removes the KERNEL half, since the user half is real reading* -- falsifier stated, untested.
-**RUN.** `ascii_document_scan` rebuilt as ONE process, the population rule and named table
-transcribed unchanged. **25.99 CPU s over 7,741 processes -> 1.49 over 6:** **17.4x** whole, **466x**
-kernel, **8.8x** USER. The reason was wrong -- real reading is **1.5 s of 26**; the rest was
-interpreter startup in both columns.
-**THE PEN CAUGHT WHAT THE TREE COULD NOT.** Both readers agreed here, then **parted the moment a
-planted page broke the wall** -- `enforce=broken` for `failed`, no `detail=` lines, exit 0 for 1.
-Ten legs, one mutation that must part. `ascii_resident_agree` **tier lap**, holding the AGREEMENT
-rather than the figure, since seconds move with the pier's load.
-**BOUNDED:** `prose_register` spawns 217, `exec_bit` 267 -- a thirtieth. **One guard of 230 proves no
-pier-scale saving**; the falsifier for THAT is named. **HOT 236 run, 232 green, `tree_moved=no`**;
-`tame_reach` is the one red and a peer's. **Two cold passes went void by my own mid-run writes.**
-**YOURS:** whether a resident reader is worth adopting -- it trades a shell program many hands read
-for a 200-line `awk` fewer do, which is a fleet ruling. `tame_reach` went green on the rebase.
-
+**DIFFUSER -- TWO RANKINGS, AND THIS TREE READ THE WRONG ONE.**
+Elder [shelved](archive/20260910-113724_itinerary-landed-accounts.md).
+**AETHER LISTENS**, hand-advanced from row 4: yesterday's **17.4x** was one guard's number
+carrying a fleet-sized plan.
+**THE BILL IS DIFFUSE:** 236 guards, **2,556,664 ms**, top 1 **6.0%**, top 10 **27.8%**, **50 of
+236** for two thirds -- reproduced on this lap's own cold open at **6.4 / 27.5 / 67.7**.
+**THE ROSTER IS BIMODAL.** `guard_process_census.sh` counts `execve` under
+`strace --seccomp-bpf` -- **load-independent**, the one figure the fleet cannot move. Sixteen
+traced, 22.3% of the pass: **thirteen at 2.06-8.83 ms per process, three at 57.17, 103.62,
+311.23**, a factor of six and a half between them holding **nothing**.
+**THE HEAD SITS ON THE WRONG SIDE:** `query_wire_retention` reads **first by seconds, twelfth of
+sixteen by processes** -- 493 programs in 153s, one Rye harness sampled seventeen times inside
+itself. By processes `convergence_census` leads at **34,593**.
+**TRIAGE BEFORE REWRITE**, one column wide: the thirteen hold **57.3%** of sampled wall, the
+other **42.7%** arithmetic a resident reader cannot help.
+**FALSIFIER:** rebuild `convergence_census` resident -- **under 3x says 17.4x was that guard's
+item count, not the shape.**
+**COLD OPEN: 237 green, 0 red, 2 gated (%5), `tree_moved=no`.**
+**YOURS:** whether Tally seats a **wake bound** -- how many programs a guard may start -- which
+the bimodality makes checkable at an edge a joule is not.
 **PETRICHOR -- TWO LAPS OF MY OWN STOOD IN A STASH AND ON NO REF.**
 Elder [shelved](archive/20260910-092425_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and it saw this seat's own record: the cold pass read `stash_record`
