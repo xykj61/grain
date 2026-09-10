@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260910.094705
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent -- COPAL seat, amphora/ and bron-resins/
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260908; this lap launched bare by fleet-loop.sh
+evidence .claude/settings.json -- tools/f/fleet-loop.sh execs --effort medium bare
+voice Kyri
+host Linux pier, America/New_York, grain-copal checkout
+title Every wall read one line, and the fault lived between two
+prompt the autonomous loop's own baton -- COPAL seat, lane amphora/ and bron-resins/
+rota lap 4559, row 4 -- Earth, the row that breathes in; its DUAL seat is the marked value, whose own text says the amphora's shoulder line names what rides inside, so the lap read the vessel's three fields at the door rather than arguing about them
+think Opened cold with standing_equipment_run.sh --detach and held the tree still for its whole 47 minutes; every write until it closed went to amphora/bin/ and .lap/, both gitignored, so tree_at_open equalled tree_at_close.
+think Read the earth row's three documents. The dual seat, foundations/20260703-202312_the-marked-value.md, states that every manifest entry carries three fields -- type-mark, digest, name. Two of the three had walls: mark_verdict for the mark, resin_body_proven for the digest. The name had name_verdict, which reads one name's FACE, and nothing anywhere asked whether two lines named one place.
+think Every wall in the vessel family reads exactly one cargo line. A duplicate is a relation BETWEEN lines, so no per-line rule can see it. Measured rather than argued: built the CLI, poured a two-file season, opened the seal, rewrote the second cargo line's name to the first's, resealed and restamped.
+obs On metal 20260910.090000, before a line changed: the forged vessel answered `listing agrees count=2` at the readable door, carried across a dock whole, and restored through `restore resins proven count=2` and `restore files proven count=2` before refusing on the parent compare -- with the out-home standing, holding one file named a.txt whose bytes were b.txt's. Every digest was honest; only the mapping was not.
+obs Three doors welcomed it and the fourth refused after the mutation. That is the shape my own last lap closed one clause over at 20260910.073234: a refusal that arrives after the write is not a wall. The escaping-name rule had been the same reading one field earlier.
+obs The rule is published once and borrowed twice, the way the wreck rule and the containment rule already are. A judgment written per caller is a judgment two files may come to disagree about, which manifest_entry.rye's own comment says about the seven readers of parse_manifest_line.
+obs The two walls stand in SERIES, and the witness says so rather than implying one path proves both. The listing door refuses first, so the listed plant proves the outer wall alone. The elder vessel shape -- a head with no manifest line, which verify_manifest_agrees answers as no claim rather than as a disagreement -- gives the restore reader its own leg, and it refuses at cargo unproven before restore resins proven is reached. Both walls were removed in turn and the named leg watched to fall.
+obs The fetch reader is untouched on purpose: vessel_fetch_delivery.parse_cargo_lines collects digests alone and never reads a name, so a repeated name cannot reach it. Stated rather than assumed -- read at 20260910.
+obs The ledger is still full. REDS reads 40,771 of 40,960, 189 bytes, where a row costs near twelve hundred, so this defect is cited by its stamp under the derived-spine law's rule 4 rather than booked.
+loom witness=standing_equipment_cold guards_run=237 guards_green=233 guards_red=2 guards_gated=2 wall_s=2580 cpu_ms=2483547 tree_moved=no
+loom witness=amphora_named_once legs=12 wall_ms=2900 walls_proven=2 both_directions=yes
+file amphora/manifest_entry.rye the contract gains NameRoster, roster_admit and the three-way NameAdmit verdict, plus three selftest legs proving fresh, repeated and overflowing in both directions
+file amphora/src/main.rye catalog_from_cargo_plain opens one roster for the whole walk and append_cargo_line offers each name to it, refusing a repeat with CargoUnproven before the catalog forms
+file amphora/vessel_seal.rye verify_manifest_agrees offers each listed name to the same roster and refuses a repeat by its own name, NameRepeated, since a disagreement and a repeat are two faults wanting two cures
+file tools/fixtures/am/amphora_repeated_name_vessel.sh the plant -- opens the honest vessel's seal, rewrites the second cargo line's name to the first's, reseals and restamps; --no-listing writes the elder shape
+file tools/am/amphora_named_once_witness.rish twelve legs -- three welcomes, three refusals, the inner wall's own leg through the elder vessel, the out-home proven absent, and the plant lifted with every welcome returning
+file construction/standing-equipment.kyri seats amphora_named_once at tier lap with the measurement and the series reading
+file amphora/README.md names the new guard at the door, holding readme_unnamed at zero
+file construction/ITINERARY.md the COPAL account, elder shelved whole
+scope amphora/ vessel walls -- one rule, two readers, one witness
+status GREEN -- amphora_named_once and the eleven family guards green, tame_style_check and width-check green, amphora/README.md A 95 and manifest_entry.rye A+ 100; the cold open's one red is tame_reach 553 of 552, a peer's lane
+recommend keep-going -- the same reading is owed to the fetch wire's own listing if it ever grows one, and the vessel head still carries a non-ASCII em dash in its format line

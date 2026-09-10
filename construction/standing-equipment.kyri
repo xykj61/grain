@@ -2864,6 +2864,37 @@ path tools/am/amphora_prove_before_write_witness.rish
 tier lap
 seated 20260910.074214
 
+# amphora_named_once -- a listing names each place once. Every wall the vessel family carries reads
+# ONE cargo line at a time: `mark_verdict` against the engine's two roots, `name_verdict` against
+# the containment and framing rules, and each resin body against the digest that addresses it. A
+# listing naming `a.txt` on two lines, each carrying an honest digest for a DIFFERENT body, passes
+# every one of them, because the fault is the relation between the lines rather than anything on
+# either line.
+#
+# Measured on metal `20260910.090000` in a pen, before a line changed: such a vessel answered
+# `listing agrees count=2` at the readable door, crossed a dock whole (`carry complete chunks=3`),
+# and restored through `restore resins proven count=2` and `restore files proven count=2` before
+# refusing on the parent compare -- with the out-home already standing, holding ONE file named
+# `a.txt` whose bytes belonged to the other. Every digest was honest; only the mapping was not.
+# Three doors welcomed it and the fourth refused after the mutation, which is the shape
+# `20260910.073234` closed one clause over: a refusal after the write is not a wall.
+#
+# The rule is a bounded roster published once in `amphora/manifest_entry.rye` -- `NameRoster`,
+# `roster_admit`, and the three-way `NameAdmit` verdict -- and borrowed by both readers, the way
+# they already borrow the wreck rule and the containment rule. A judgment written twice is a
+# judgment two files may come to disagree about.
+#
+# THE TWO WALLS STAND IN SERIES, and the witness says so rather than implying both are proven by
+# one path: the listing door refuses first, so the listed plant proves the outer wall alone. The
+# ELDER vessel shape -- a head carrying no `manifest ` line, which `verify_manifest_agrees`
+# answers as no claim -- gives the restore reader's own wall a leg of its own, refusing at
+# `cargo unproven` before `restore resins proven` is reached. Both were proven to bite by removing
+# each wall in turn and watching the named leg fall.
+guard amphora_named_once
+path tools/am/amphora_named_once_witness.rish
+tier lap
+seated 20260910.094705
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert

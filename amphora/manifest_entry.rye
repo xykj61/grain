@@ -110,6 +110,65 @@ pub fn name_verdict(name: []const u8) NameVerdict {
     return .contained;
 }
 
+/// The most places one listing may name, mirrored from the seal module's own cargo roof so a
+/// roster built here holds whatever either reader hands it.
+/// couples: vessel_seal.max_cargo
+pub const max_listed_names: u32 = 16;
+
+/// What a roster can say about the next name a listing offers. `fresh` is a place named for the
+/// first time; `repeated` is a place this same listing already named; `overflowing` is a listing
+/// naming more places than any vessel may carry. Three answers rather than one boolean, because a
+/// repeat and an overflow are two faults wanting two cures.
+pub const NameAdmit = enum { fresh, repeated, overflowing };
+
+/// The places a listing has named so far. A cargo line is judged on its face by `mark_verdict`
+/// and `name_verdict`; naming one place twice is a fault BETWEEN lines, so the rule needs one
+/// small memory rather than a wider parser.
+pub const NameRoster = struct {
+    names: [max_listed_names][max_name_len]u8 = undefined,
+    lens: [max_listed_names]u32 = [_]u32{0} ** max_listed_names,
+    count: u32 = 0,
+};
+
+/// Offer the roster the next name a listing carries, and read back its verdict.
+///
+/// Measured on metal `20260910` before this door existed: a vessel naming `a.txt` on two cargo
+/// lines, each carrying an honest digest for a different body, answered `listing agrees count=2`,
+/// crossed a dock whole, and restored through `restore files proven count=2` before refusing on
+/// the parent compare -- leaving an out-home holding ONE file named `a.txt` whose bytes belonged
+/// to the other. Every digest was honest; only the mapping was not.
+///
+/// Postcondition: every name receives exactly one verdict, and a `fresh` one stands in the roster
+/// afterward -- so offering the same name twice can only answer `repeated` the second time.
+pub fn roster_admit(roster: *NameRoster, name: []const u8) NameAdmit {
+    // invariant: a name reaching here carries bytes, since name_verdict refuses an empty one
+    // before anyone asks whether it has been seen.
+    assert(name.len >= 1);
+    // invariant: and it fits the contract's own name roof, so the copy below stays inside a slot.
+    assert(name.len <= max_name_len);
+    // invariant: the roster holds no more than its own roof, so the walk reads filled slots alone.
+    assert(roster.count <= max_listed_names);
+    var i: u32 = 0;
+    // The walk is bounded by the roster's roof, so a whole listing costs at most
+    // max_listed_names * max_listed_names comparisons -- 256 at today's roof of 16, which is
+    // cheaper than the one resin read each line already earns.
+    while (i < roster.count) : (i += 1) {
+        const seen = roster.names[i][0..roster.lens[i]];
+        if (std.mem.eql(u8, seen, name)) return .repeated;
+    }
+    if (roster.count >= max_listed_names) return .overflowing;
+    var ci: u32 = 0;
+    const nlen: u32 = @intCast(name.len);
+    while (ci < nlen) : (ci += 1) {
+        roster.names[roster.count][@intCast(ci)] = name[@intCast(ci)];
+    }
+    roster.lens[roster.count] = nlen;
+    roster.count += 1;
+    // invariant: the fresh name now stands in the roster, so the next offer of it answers repeated.
+    assert(roster.count >= 1);
+    return .fresh;
+}
+
 pub const ManifestEntry = struct {
     mark: []const u8,
     digest_hex: []const u8,
@@ -251,6 +310,36 @@ fn run_selftest(_: std.Io) !u8 {
     // invariant: the two rules stay apart -- an upward walk still answers EscapingName, so
     // widening the framing rule did not quietly swallow the containment one.
     if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " ../still-escaping.txt")) |_| return error.UnwelcomePassed else |err| assert(err == error.EscapingName);
+
+    // Both directions of the named-once rule. A roster admits each place once; the second offer
+    // of the same place answers repeated, and a listing past the roof answers overflowing --
+    // three answers kept apart, since a repeat and an overflow want two different cures.
+    var roster = NameRoster{};
+    // invariant: a fresh roster names nothing, so the first admit below tests an empty walk.
+    assert(roster.count == 0);
+    assert(roster_admit(&roster, "a.txt") == .fresh);
+    assert(roster_admit(&roster, "b.txt") == .fresh);
+    assert(roster_admit(&roster, "sub/a.txt") == .fresh);
+    // invariant: three distinct places stand, so the repeat below is refused by the rule rather
+    // than by an empty roster that refuses everything.
+    assert(roster.count == 3);
+    assert(roster_admit(&roster, "a.txt") == .repeated);
+    assert(roster_admit(&roster, "sub/a.txt") == .repeated);
+    // A repeat leaves the roster where it stood -- a refused name is not admitted.
+    assert(roster.count == 3);
+    var full = NameRoster{};
+    var fi: u32 = 0;
+    while (fi < max_listed_names) : (fi += 1) {
+        var slot_name: [8]u8 = undefined;
+        const made = std.fmt.bufPrint(&slot_name, "f{d}.txt", .{fi}) catch unreachable;
+        // invariant: every generated name is distinct, so the roster fills to its roof by fresh
+        // places rather than by repeats -- a repeat would leave a slot open and never overflow.
+        assert(roster_admit(&full, made) == .fresh);
+    }
+    // invariant: the roster stands exactly at its roof, so the next offer tests the roof rather
+    // than a roster that happened to be short.
+    assert(full.count == max_listed_names);
+    assert(roster_admit(&full, "one-too-many.txt") == .overflowing);
 
     print("amphora: version {s}\n", .{amphora_manifest_entry_version});
     print("GREEN: Amphora manifest entry -- parse, name the mark, hold the name inside, keep it one record, and refuse whole.\n", .{});

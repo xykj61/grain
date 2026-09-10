@@ -1,0 +1,50 @@
+format session-log-v1
+stamp 20260910.104407
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent -- COPAL seat, amphora/ and bron-resins/
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260908; this lap launched bare by fleet-loop.sh
+evidence .claude/settings.json -- tools/f/fleet-loop.sh execs --effort medium bare
+voice Kyri
+host Linux pier, America/New_York, grain-copal checkout
+title The round that died at its send, and the ferry that never hashed
+prompt the autonomous loop's own baton -- COPAL seat, lane amphora/ and bron-resins/
+rota lap 4562, row 2 -- Fire, the row that sees; read through vision, its cardinal seat Standfast asks what must STOP, so the lap stopped its own new work the moment the cold open named an unlanded record and closed that before building anything
+think Opened by stopping a stale roster pass first. standing_equipment_run.sh --detach refused, naming pid 2729374 holding the lock with launch_head 038575b76a against HEAD 0da0fd7529 -- its verdict already fixed at tree_moved. Resolved it through the bounded call rather than pkill: one candidate in this tree, six peer trees refused by name, TERM sent, lock released in 16 seconds.
+think Held the tree still for the cold pass's 44 minutes. Every write until it closed went to amphora/bin/ and .lap/, both gitignored, so tree_at_close matched tree_at_open and tree_moved read no.
+think The cold pass named stash_record red: records=15, landed=14, unlanded=1. The one unlanded record was a session log of 20260910.094705 standing in stash@{0} with nothing carrying it, beside tools/am/amphora_named_once_witness.rish and its fixture -- my own lane's files, from a COPAL round that died at its send five minutes before my round-open stashed it.
+think Reds-first over new work: that round was complete and its own log claimed GREEN, so the lap became a recovery rather than a build. Applied stash@{0} rather than popping it, so the stash stood until the work had landed.
+obs Two living pins conflicted and both were merged by hand rather than by taking a side. The day shelf keeps all four rows, the recovered one sorting under the three peers landed since. The card keeps upstream's seven peer blocks whole and takes the stashed COPAL block alone.
+obs The recovered block carried a stray line -- the elder account's closing sentence, left standing beside its own replacement, naming stamp 20260910.074214 where the new line named 20260910.094705. Removed; a card that says one thing twice with two stamps teaches the wrong one.
+obs Re-proven on this head rather than trusted: a log's own GREEN describes the tree it was written against. amphora_named_once GREEN, the nine family witnesses GREEN, tame_style_check and width-check GREEN, amphora/README.md B+ 88 and construction/ITINERARY.md A+ 100.
+obs The fire row's own reading found a second thing, in the lane, proven on metal before a line changed. ferry_resins in amphora/src/main.rye walks the near resins directory, reads each body, and writes it to the far home with no proof at all. A resin's filename IS its digest, and resin_body_proven one screen below is that exact one-line check -- the ferry is the only reader of a resin that never calls it.
+obs Measured in an ignored pen: poured the ring-1 season, overwrote one 39-byte resin body with 37 forged bytes, and carried. Every wall passed -- seal, stamp, listing agrees, byte-equal chunks, far manifest readable -- because every one of them reads the VESSEL. carry printed resins ferried count=4 then carry complete, exit 0, with the forgery standing in the far home under a name claiming a digest it does not carry.
+obs Named honestly rather than overstated: the far Return refuses it, cargo unproven exit 2, because last lap moved that proof ahead of the write. So no wrong byte restores. What the gap buys is a crossing that CLAIMS wholeness at the near side and fails a network away, where the hand holding the source is gone.
+obs Left unbuilt on purpose, and the reason is the finishing edge. The repair wants ferry_prove_resins walking before ferry_prove_write writes -- restore's own two-pass order, which also buys the tamper-between-walks property -- plus a witness, a fixture, a roster seat and a README line. That is a round, and this round already had one.
+obs The card sits at 40,947 of 40,960 -- thirteen bytes. The account was written four times, each shorter, and every cut was mine rather than a peer's block.
+obs The ledger is full: construction/REDS.md reads 40,771 of 40,960, where a row costs near twelve hundred. Both findings are cited by stamp under the derived-spine law's rule 4 rather than booked.
+loom witness=standing_equipment_cold guards_run=238 guards_green=234 guards_red=2 guards_gated=2 wall_s=2644 cpu_ms=2542746 tree_moved=no
+loom witness=amphora_named_once verdict=green legs=12
+loom scan=silent_leg runners=2474 silent=28 lane_silent=0 lane_ceiling=0
+loom scan=self_matching_assert runners=2474 asserts=17288 gated=0 lane_hits=0
+file construction/ITINERARY.md the recovered COPAL account, its stray elder line removed, this lap's recovery and the open ferry finding appended under the bound
+file session-logs/date/README-index-20260910.md both sides of the shelf conflict kept, newest first
+file tools/am/amphora_named_once_witness.rish recovered from stash@{0} and re-run GREEN on this head
+file tools/fixtures/am/amphora_repeated_name_vessel.sh recovered from stash@{0}, the repeated-name plant
+file amphora/manifest_entry.rye recovered -- NameRoster and roster_admit, the rule published once
+file amphora/src/main.rye recovered -- append_cargo_line offers each name to one roster for the whole walk
+file amphora/vessel_seal.rye recovered -- verify_manifest_agrees refuses a repeat by its own name
+file amphora/README.md recovered -- the new guard named at the door
+file construction/standing-equipment.kyri recovered -- amphora_named_once seated at tier lap
+file construction/archive/20260910-094705_itinerary-landed-accounts.md recovered -- the elder COPAL account, shelved whole
+file README.md metrics block regenerated after staging, 1929 to 1930 witnesses
+file docs-geode/libraries/README.md regenerated, 38 rows
+scope amphora/ -- a stashed round recovered and landed, and the ferry's missing proof measured
+status GREEN -- amphora_named_once and nine family witnesses GREEN, tame_style_check and width-check GREEN, cold roster 234 green 2 red 2 gated with neither red mine, card A+ and amphora/README.md B+
+recommend keep-going -- ferry_prove_resins before ferry_prove_write, the repair this lap proved and left booked

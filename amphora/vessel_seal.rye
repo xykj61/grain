@@ -300,7 +300,7 @@ fn entries_agree(listed: me.ManifestEntry, carried: me.ManifestEntry) bool {
 /// elder vessels predate the Q11 listing and their bytes are frozen, so a head carrying no
 /// `manifest ` line has nothing to disagree with. Whether a listing is REQUIRED is the far-manifest
 /// door's question, one module over; this door answers only whether the listing present is true.
-pub fn verify_manifest_agrees(text: []const u8) error{ InvalidVessel, BadHex, Overflow, OpenFailed, ManifestDisagrees }!u32 {
+pub fn verify_manifest_agrees(text: []const u8) error{ InvalidVessel, BadHex, Overflow, OpenFailed, ManifestDisagrees, NameRepeated }!u32 {
     // invariant: a vessel reaching here holds bytes, so the two walks below read real lines.
     assert(text.len >= 1);
     var plain: [max_seal_plain]u8 = undefined;
@@ -314,6 +314,11 @@ pub fn verify_manifest_agrees(text: []const u8) error{ InvalidVessel, BadHex, Ov
 
     var listed_lines = std.mem.splitScalar(u8, text, '\n');
     var carried_lines = std.mem.splitScalar(u8, cargo_text, '\n');
+    // One memory for the whole walk, so the named-once rule can see a relation between lines that
+    // no per-line rule reaches. It is the contract's own roster rather than a second one written
+    // here, for the reason the wreck rule gives one module over: a judgment written twice is a
+    // judgment two files may come to disagree about.
+    var roster = me.NameRoster{};
     var proven: u32 = 0;
     while (true) {
         const listed_body = next_prefixed(&listed_lines, "manifest ");
@@ -325,6 +330,15 @@ pub fn verify_manifest_agrees(text: []const u8) error{ InvalidVessel, BadHex, Ov
         const listed = me.parse_manifest_line(listed_body.?) catch return error.InvalidVessel;
         const carried = me.parse_manifest_line(carried_body.?) catch return error.InvalidVessel;
         if (!entries_agree(listed, carried)) return error.ManifestDisagrees;
+        // The listing may agree with the cargo line for line and still name one place twice, so
+        // this refusal wears its own name: a disagreement and a repeat are two faults wanting two
+        // cures. Measured on metal `20260910` at this very door: a vessel naming `a.txt` on two
+        // lines answered `listing agrees count=2`, then crossed a dock whole.
+        switch (me.roster_admit(&roster, listed.name)) {
+            .fresh => {},
+            .repeated => return error.NameRepeated,
+            .overflowing => return error.Overflow,
+        }
         proven += 1;
     }
     // invariant: postcondition -- every line counted was compared field for field, so a
