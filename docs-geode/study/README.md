@@ -1,5 +1,8 @@
 # Study -- how to read this tree
 
+*New to computing itself? Eight reading walks start at [`../lessons/README.md`](../lessons/README.md),
+written for someone who has never written a line of code and trusted with the whole truth anyway.*
+
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
