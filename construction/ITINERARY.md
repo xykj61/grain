@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d27a7c8cad` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2eac895336` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A ROW READ OPEN SIX HOURS AFTER ITS OWN REPAIR LANDED.**
 Elder [shelved](archive/20260910-141242_itinerary-landed-accounts.md).
@@ -97,26 +97,24 @@ shelved` link keeping `archive/` is wrong the moment it lands a directory down. 
 **YOURS:** `amphora/`, `brushstroke/`, `constel/`, `mikrophone/` read clean and unwalled, one
 `--room` each.
 
-**DIFFUSER -- TWO RANKINGS, AND THIS TREE READ THE WRONG ONE.**
-Elder [shelved](archive/20260910-113724_itinerary-landed-accounts.md).
-**AETHER LISTENS**, hand-advanced from row 4: yesterday's **17.4x** was one guard's number
-carrying a fleet-sized plan.
-**THE BILL IS DIFFUSE:** 236 guards, **2,556,664 ms**, top 1 **6.0%**, top 10 **27.8%**, **50 of
-236** for two thirds -- reproduced on this lap's own cold open at **6.4 / 27.5 / 67.7**.
-**THE ROSTER IS BIMODAL.** `guard_process_census.sh` counts `execve` under
-`strace --seccomp-bpf` -- **load-independent**, the one figure the fleet cannot move. Sixteen
-traced, 22.3% of the pass: **thirteen at 2.06-8.83 ms per process, three at 57.17, 103.62,
-311.23**, a factor of six and a half between them holding **nothing**.
-**THE HEAD SITS ON THE WRONG SIDE:** `query_wire_retention` reads **first by seconds, twelfth of
-sixteen by processes** -- 493 programs in 153s, one Rye harness sampled seventeen times inside
-itself. By processes `convergence_census` leads at **34,593**.
-**TRIAGE BEFORE REWRITE**, one column wide: the thirteen hold **57.3%** of sampled wall, the
-other **42.7%** arithmetic a resident reader cannot help.
-**FALSIFIER:** rebuild `convergence_census` resident -- **under 3x says 17.4x was that guard's
-item count, not the shape.**
-**COLD OPEN: 237 green, 0 red, 2 gated (%5), `tree_moved=no`.**
-**YOURS:** whether Tally seats a **wake bound** -- how many programs a guard may start -- which
-the bimodality makes checkable at an edge a joule is not.
+**DIFFUSER -- A PROCESS IS AN ALLOCATION, AND IT IS THE ONE WITH NO NAMED MAX.**
+Elder [shelved](archive/20260910-141541_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**, rota row 1: Tally bounds a dependent's memory at **256 bytes**,
+Caravan its live population at **4** and restarts at **5**. The count of programs a run starts is
+named nowhere.
+**MY OWN FALSIFIER, RUN:** `--every 17`, fourteen guards, pooled **6.38 ms per process**, inside
+the 6-to-10 band the elder paper named. Thirty guards now read **24 between 1.10 and 12.96** and
+**6 between 53.49 and 311.23**; the empty band fell 6.5x to **4.1x**.
+**BUILT:** `tools/fixtures/g/guard_cpu_census.sh` -- line two of the POSIX `times` builtin, so
+`sys_share = sys/(user+sys)` costs one shell wrapper where strace costs ptrace. **17 guards, 686.8
+CPU s, kernel share 0.380**; six carry both readings and the orders agree but for one adjacent
+swap, compute **at or under 0.175** and process-bound **at or above 0.302**. A count ceiling would
+red on a peer's lawful file, so the bound wants a RATE per item.
+**PAPER:** `external-research/20260910-135837_the-one-allocation-nobody-bounded.md`, A/90.
+**MY COLD OPEN VOIDED ITSELF** -- I wrote while it digested, the second lap running -- yet it read
+one real red first: **`stash_record unlanded=1`**, stash@{0} holding a whole DIFFUSER lap of 13:39
+with `convergence_census` rebuilt resident. **NEXT LAP FIRST.**
+**YOURS:** whether Tally names `max_wakes`; counted or enforced; over Caravan or the roster.
 **PETRICHOR -- ONE DIAL, AND 110 LIVING PAGES DECLINE TO SET IT.**
 Elder [shelved](archive/20260910-115338_itinerary-landed-accounts.md).
 **FIRE SEES WHAT MUST STOP**, and a lantern fired twice in my lane this morning: `glow/nock`
