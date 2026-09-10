@@ -1,0 +1,136 @@
+#!/bin/sh
+# pre-push -- refuse to publish a REDS number this tree binds to two stamps.
+#
+# WHY THIS HOOK EXISTS. `.claude/rules/derived-spine.md` names a class it calls a PUBLISHED DOUBLE:
+# one `%N` bound on the anointed spine to two different stamps. Rule 3 says a published number never
+# moves, and it holds for each row separately, so once both are upstream no lap may repair either --
+# the resolution is Keaton's word, booked `20260907.014654`. The law says the pair stands "exactly
+# once". Measured `20260910.015328` by `sh tools/fixtures/r/reds_spine_derive_scan.sh`, it stands
+# SEVEN times: %530, %592, %642, %664, %669, %675, %681. Six of the seven arrived in the three days
+# after the law was written, at roughly two a day and rising with the fleet's daily commit count.
+#
+# THE GATE THAT WOULD CATCH IT ALREADY EXISTS AND IS CORRECT. `reds_spine_derive_scan.sh` exits 1 on
+# `rebindings` (a number the anointed spine binds to one stamp and this tree binds to another) and on
+# `double_booked` (two stamps in this tree wearing one number). Publishing either is exactly how a
+# published double is made. The scan runs on every ship on every lap, at the cold open and again at
+# the hot close -- and both of those moments come BEFORE the send's final rebase, which is the one
+# step that can bring a peer's row into this tree. Nothing in the tree runs the reading between that
+# rebase and the push. There is no send script; the send is typed from `tools/f/fleet_baton.txt`.
+#
+# MEASURED ON THE HISTORY RATHER THAN ARGUED. %681's second commit, `7b1f6b3ee`, carries the number
+# twice at once: bound to `20260910.001157` in `construction/REDS.md` and to `20260909.234718` on
+# `construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`. Upstream held
+# it once. That is `double_booked=1` and an exit of 1, at the moment of the push, on a real commit
+# that shipped. The same shape stands under %669, where two ships folded one number to two shelves
+# three minutes apart.
+#
+# SO THIS IS A PLACEMENT RATHER THAN A NEW INSTRUMENT. The hook runs the scan the roster already
+# runs, at the one moment nothing else does: git's `pre-push` fires after the working tree is
+# settled and before a single object leaves for the remote. A push is the act that publishes, and a
+# published double is the one fault this tree cannot take back.
+#
+# IT REACHES THE WHOLE FLEET WITH NO PER-SHIP ARMING. `tools/i/install_hooks.rish` points
+# `core.hooksPath` at this tracked directory, and all eight ships on this pier read it there,
+# measured `20260910.015328` with `git config --get core.hooksPath` in each checkout: 8 of 8.
+#
+# WHAT IT REFUSES:
+#
+#   the two gates   -- the scan exits 1. The push would bind one number to two stamps upstream.
+#                      The repair is this tree's own unshared row, renumbered to
+#                      `sh tools/fixtures/r/reds_spine_derive_scan.sh --next`.
+#   a broken read   -- the scan exits 2, or is missing. An instrument that cannot answer is not an
+#                      answer of "fine". A push is retried in seconds; a published double is
+#                      forever. REDS %681 booked the opposite habit -- a swallowed instrument pass
+#                      read as a pass -- and this refuses rather than repeating it.
+#
+# WHAT IT NEVER REFUSES, each because refusing would be wrong rather than merely costly:
+#
+#   published_doubles -- the seven already upstream. No lap may repair one, and a gate that reds on
+#                        what nobody can touch is a gate somebody turns off. The scan already
+#                        exempts them from its own verdict; this hook adds no opinion.
+#   a delete-only push -- nothing is published, so nothing can double.
+#   a push carrying no ledger change -- proven from the push's own range rather than assumed. Of the
+#                        last 100 commits on this branch, 40 touch a ledger surface (measured
+#                        `20260910.015328`), so the ordinary lap pays nothing at all.
+#
+# COST WHEN IT DOES RUN: one scan, no network. It reads `xy/main` as the local ref already stands,
+# which is the state the send just rebased onto, so a peer landing after that rebase is caught by
+# git's own fast-forward refusal and the hook simply runs again on the retry.
+#
+# NO BYPASS. `--no-verify` is already forbidden by `.claude/rules/git-signing.md`, and a wall with a
+# door beside it is a habit again.
+#
+# Proven by tools/fixtures/p/pre_push_spine_control.sh on real repositories in a throwaway pen,
+# refusals and welcomes both, and gated by tools/p/pre_push_spine_witness.rish.
+set -eu
+
+# A push names a handful of refs. 256 is far above any send this tree makes and far below a number
+# that would mean something other than a push -- every collection names a maximum (TAME).
+MAX_REFS=256
+
+SCAN=tools/fixtures/r/reds_spine_derive_scan.sh
+
+# The ledger surfaces a `%N` binding can live on: the living pin, and the fold shelves the monotone
+# scan discovers by this same glob. A push touching neither cannot change what this tree binds.
+PIN=construction/REDS.md
+SHELF_GLOB='construction/archive/REDS-*rows-*.md'
+
+zero=0000000000000000000000000000000000000000
+
+# Read the ref updates git hands us on stdin. Reading them all matters: git writes the whole list,
+# and a hook that stops early leaves a pipe for git to notice.
+refs=0
+carries=no
+while read -r local_ref local_sha remote_ref remote_sha; do
+  refs=$((refs + 1))
+  if [ "$refs" -gt "$MAX_REFS" ]; then
+    echo "pre-push: REFUSED -- more than $MAX_REFS refs in one push, which is not a shape this tree makes." >&2
+    exit 1
+  fi
+  # A delete publishes nothing.
+  [ "$local_sha" != "$zero" ] || continue
+  if [ "$remote_sha" = "$zero" ]; then
+    # A ref the remote has never seen. Its range is the whole branch, so read nothing and answer
+    # conservatively -- an unknown range is a range that may carry the ledger.
+    carries=yes
+    continue
+  fi
+  if [ "$carries" = no ] \
+     && [ -n "$(git diff --name-only "$remote_sha" "$local_sha" -- "$PIN" "$SHELF_GLOB" 2>/dev/null)" ]; then
+    carries=yes
+  fi
+done
+
+[ "$refs" -gt 0 ] || exit 0
+[ "$carries" = yes ] || exit 0
+
+if [ ! -f "$SCAN" ]; then
+  echo "pre-push: REFUSED -- $SCAN is missing, so no reading can be given about the ledger this" >&2
+  echo "  push carries. Restore it, or this wall is a claim rather than a check." >&2
+  exit 1
+fi
+
+set +e
+out=$(sh "$SCAN" 2>&1)
+code=$?
+set -e
+
+if [ "$code" -eq 0 ]; then
+  exit 0
+fi
+
+if [ "$code" -ge 2 ]; then
+  echo "pre-push: REFUSED -- the spine reading itself refused (exit $code), so nothing is known about" >&2
+  echo "  the ledger this push carries. An instrument that cannot answer is not an answer of fine." >&2
+  echo "$out" | sed 's/^/  /' >&2
+  echo "  Read it whole with: sh $SCAN" >&2
+  exit 1
+fi
+
+echo "pre-push: REFUSED -- this push would bind one REDS number to two stamps on the anointed spine." >&2
+echo "$out" | grep -E '^detail: (rebinding|double_booked|squatting)|^(rebindings|double_booked|next_free|verdict)=' >&2
+echo "  Rule 3 of .claude/rules/derived-spine.md: a number the anointed spine has published never" >&2
+echo "  moves. The row to renumber is THIS tree's own unshared one, and its number is:" >&2
+echo "    sh $SCAN --next" >&2
+echo "  Sweep the citations in the same commit, then push again. Never --no-verify." >&2
+exit 1

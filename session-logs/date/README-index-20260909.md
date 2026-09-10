@@ -63,6 +63,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260909.091106` | [The merged weave still edits](20260909/20260909-091106_the-merged-weave-still-edits.kyri) | Patchouli; parked test recovered |
 | `20260909.090354` | [Five shelf addresses](20260909/20260909-090354_five-shelves-find-their-readers.kyri) | Grass; parked records restored |
 | `20260909.085556` | [Parked demo returns](20260909/20260909-085556_the-parked-demo-returns.kyri) | Petrichor; docs and scan restored |
+| `20260909.085306` | [The refusal names its owner](20260909/20260909-085306_the-refusal-names-its-owner.kyri) | Incense; the lock records its own runner |
 | `20260909.084736` | [Answer budget](20260909/20260909-084736_retained-answer-budget.kyri) | reserve kept answers |
 | `20260909.084248` | [The command form carries the proof](20260909/20260909-084248_the-command-form-carries-the-proof.kyri) | Pheromone; a label is not a reading |
 | `20260909.083122` | [Recovery integration](20260909/20260909-083122_recovery-integration.kyri) | Copal; saved package verified |

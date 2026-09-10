@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.022809` | [A refusal that braids three answers](20260910/20260910-022809_a-refusal-that-braids-three-answers.kyri) | Recovered the lap that died at its send |
 | `20260910.022718` | [A lap that ends before its commit](20260910/20260910-022718_a-lap-that-ends-before-its-commit.kyri) | Pheromone; the parked record of the lap that proved it |
 | `20260910.021757` | [The unit the law names](20260910/20260910-021757_the-unit-the-law-names.kyri) | TAME counts asserts by function; every instrument counted by file. |
+| `20260910.021118` | [The gate and its placement](20260910/20260910-021118_the-gate-and-its-placement.kyri) | seven published doubles, not one; the wall moves to the push |
 | `20260910.020902` | [The record that refuted its rescuer](20260910/20260910-020902_the-record-that-refuted-its-rescuer.kyri) | Pheromone; a parked log corrected the lap recovering it |
 | `20260910.012453` | [the door that named eight](20260910/20260910-012453_the-door-that-named-eight.kyri) | 7 rota seats had no door in the why-room index; a guard walls them |
 | `20260910.011542` | [What stands between the quoted lines](20260910/20260910-011542_what-stands-between-the-quoted-lines.kyri) | A selection's shape is read now, not only its contents. |

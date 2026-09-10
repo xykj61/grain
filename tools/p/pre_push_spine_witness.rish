@@ -1,0 +1,83 @@
+# tools/p/pre_push_spine_witness.rish -- the ledger's own gate, placed at the moment of publication.
+#
+#   rishi/bin/rishi run tools/p/pre_push_spine_witness.rish
+#
+# WHAT THIS GUARDS. `.claude/rules/derived-spine.md` names a PUBLISHED DOUBLE: one `%N` bound on the
+# anointed spine to two stamps. Rule 3 holds for each row separately, so once both are upstream no
+# lap may repair either and the resolution is Keaton's word. The law says the pair stands "exactly
+# once"; measured `20260910.015328` it stands SEVEN times, six of them arriving in the three days
+# after the law was written.
+#
+# WHAT NO STANDING GUARD COULD SEE. `reds_spine_derive_scan.sh` already exits 1 on the two readings
+# that PRECEDE a published double -- `rebindings` and `double_booked` -- and it is correct. It runs
+# on every ship at the cold open and again at the hot close, and BOTH come before the send's final
+# rebase, which is the one step that brings a peer's row into this tree. Nothing ran the reading
+# between that rebase and the push. Measured on the history rather than argued: commit `7b1f6b3ee`
+# carries %681 bound to `20260910.001157` in the pin and to `20260909.234718` on a fold shelf, which
+# is `double_booked=1` at the moment of a push that shipped.
+#
+# So `tools/hooks/pre-push` is a PLACEMENT rather than a new instrument: the scan the roster already
+# runs, at the one moment nothing else does. It reaches every ship with no per-ship arming, since
+# `tools/i/install_hooks.rish` points `core.hooksPath` at the tracked hooks directory.
+#
+# WHY `tier lap`. The pen builds real repositories and runs real pushes -- about eight seconds,
+# measured `20260910`. The fault it catches is written by ordinary work: two ships booking one
+# next-free number inside the same hour is the fleet's normal weather, and it is unrepairable once
+# published.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked files and a pen.
+
+say "pre-push-spine: Language EN -- a number this tree binds twice never leaves for the remote."
+say "pre-push-spine: Style Gauge, Meter -- the refusal is the subject."
+say "pre-push-spine: Lens TAME -- safety first: the pen proves both directions, since the field reads clean."
+
+# 1 -- the pen. Every refusal is planted and then lifted, and each welcome is asserted as hard as
+# each refusal, because a hook that always exits 0 passes every clean case a control thinks to write.
+let control = run ["sh" "tools/fixtures/p/pre_push_spine_control.sh"]
+say control.out
+say control.err
+assert control.ok else "pre-push-spine: a control case read the wrong way -- read the pen's own lines"
+assert control.out contains "control_verdict=ok" else "pre-push-spine: the pen must balance before the field is believed"
+
+# 2 -- the four cases the wall's whole claim rests on, asserted by name rather than left to the
+# aggregate. Two are refusals, two are welcomes, and dropping either pair would leave a hook that
+# looks armed and is not.
+assert control.out contains "PASS: a double-booked number is refused, and the remote is untouched" else "pre-push-spine: the doubled number must not reach the remote"
+assert control.out contains "PASS: a rebinding of a published number is refused, and the remote is untouched" else "pre-push-spine: a rebinding must not reach the remote"
+assert control.out contains "PASS: a published double already upstream is welcomed, never refused" else "pre-push-spine: a gate that reds on what nobody may repair is a gate somebody turns off"
+assert control.out contains "PASS: the renumbered row publishes -- the gate lifts" else "pre-push-spine: the gate must lift when the plant is lifted"
+
+# 3 -- and the instrument's own silence is a refusal rather than a pass. REDS %681 booked the
+# opposite habit in this tree three hours before this guard was written.
+assert control.out contains "PASS: a missing scan refuses a ledger-carrying push, naming what is absent" else "pre-push-spine: an absent instrument must refuse"
+assert control.out contains "PASS: a scan that exits 2 refuses the push and says the reading refused" else "pre-push-spine: an instrument that refuses is not an instrument that agrees"
+
+# 4 -- the reach, asserted rather than assumed. A reading of nothing cannot be told from a healthy
+# one (REDS %463), so the case count is read back.
+assert control.out contains "cases_ok=12" else "pre-push-spine: the pen must run every case it declares"
+assert control.out contains "cases_red=0" else "pre-push-spine: no case may read red"
+
+# 5 -- the field: the arming. A hook this tree ships and no clone reaches is a claim rather than a
+# wall, and the arming is the half that actually failed the fleet.
+let armed = run ["git" "config" "--get" "core.hooksPath"]
+say "pre-push-spine: core.hooksPath ${armed.out}"
+assert armed.ok else "pre-push-spine: core.hooksPath is unset -- run rishi/bin/rishi run tools/i/install_hooks.rish"
+assert (trim armed.out) == "tools/hooks" else "pre-push-spine: core.hooksPath must name tools/hooks, not ${armed.out}"
+
+# 6 -- and the file itself: present, and executable in the INDEX rather than only in this working
+# tree, since a blob carries no mode and a fresh clone inherits what the tree object says
+# (`.claude/rules/exec-bit.md`).
+let mode = run ["git" "ls-files" "-s" "tools/hooks/pre-push"]
+# The label and the reading stand on separate `say` lines, because a composed message carries a
+# 4096-byte ceiling and a bare one does not -- `rish_report_bound` caught this very line on the lap
+# that wrote it, at 39 sites against a ceiling of 38.
+say "pre-push-spine: the hook's mode in the index --"
+say mode.out
+assert mode.ok else "pre-push-spine: tools/hooks/pre-push is not tracked"
+assert mode.out contains "100755" else "pre-push-spine: the hook must be 100755 in the index, or a fresh clone cannot run it"
+
+# 7 -- the scan the hook names is the scan the roster runs. One spelling, two callers.
+let scan = run ["test" "-f" "tools/fixtures/r/reds_spine_derive_scan.sh"]
+assert scan.ok else "pre-push-spine: the hook names a scan this tree does not carry"
+
+say "GREEN: pre-push-spine -- the two readings that precede a published double are asked at the one moment that publishes."

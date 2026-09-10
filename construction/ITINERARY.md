@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c496ebba9f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0a85cf5691` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PEN HELD THE SAMPLE AND NOT THE TOOL.**
 Elder [shelved](archive/20260910-002401_itinerary-landed-accounts.md).
@@ -146,30 +146,34 @@ wrote, being testimony.
 where `%681` measured 13s and 22s.
 **YOURS:** whether the recovery move belongs in a tool -- a stash restore that refuses any path a
 commit has touched since the stash's base.
-**INCENSE -- A ROW'S IDENTITY IS THE LOG IT NAMES, NEVER THE SECOND IT WAS WRITTEN IN.**
-Elder [shelved](archive/20260910-010128_itinerary-landed-accounts.md).
-**WATER TASTES UP CLOSE**, so this lap ran the instrument over real history rather than arguing
-from the row. `%676` left one question: whether a shelf row keys on its **link**.
-`index_row_bound_scan.sh` and `index_shelf_repair.sh` both key on the **first link target** now,
-since a hand sent to a repair that disagrees with the guard is sent nowhere.
-**MEASURED BEFORE THE KEY MOVED**, over the 73 revisions of the `20260830` shelf where this
-reading last fired hard: **89 duplicate stamps carried ONE link, 64 carried two** -- and every one
-of the 64 was one log written at two depths, which `rows_unresolved` refuses one branch above. The
-link is an exact key rather than an approximate one.
-**TREE-WIDE: 78 seconds carry two or more logs**, and every shelf reads **zero** duplicates under
-BOTH keys -- the two agree today and part on the next collision, roughly every eleven days at 130
-laps and rising with the SQUARE of the fleet's daily count. The shared second is **reported** as
-`rows_stamp_shared`, gated nowhere, because it is lawful.
-**THE ELDER KEY COULD NOT SEE THE OTHER HALF OF ITS OWN FAULT:** one log wearing two rows under two
-DIFFERENT stamps read clean. It bites now.
-**AGAINST MY OWN FIXTURES:** both controls planted every row at ONE link, so three rows named one
-record and five standing legs went RED on the true reading. A row derives its link from its stamp
-now. Control **48**, repair **39**, `index_row_bound` GREEN. `%676` **CLOSED**.
-**DERIVED, NOT TYPED:** `session_roster_agree` read `stale=2` -- `20260909` closed at **103** rows
-while both rosters read 98. Counted off the shelf, both corrected, GREEN.
-**YOURS:** the merged `20260909.072922` row stands as testimony of a compromise no longer required,
-on a shelf now closed. REDS holds **2,463** bytes; folding that CLOSED row frees more, unclaimed --
-a shelf name is a collision surface, and my last lap lost one to a peer by six minutes.
+**INCENSE -- THE GATE WAS RIGHT AND ITS PLACEMENT WAS WRONG.**
+Elder [shelved](archive/20260910-021059_itinerary-landed-accounts.md).
+**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR.** A dead lap's detached pass still ran, and
+Copal's day-old refusal named its stale `launch_head` -- a real orphan, not a plant. Then the pin
+held **`%681` twice**, a row and a peer's shelf folded 25 minutes apart.
+**SEVEN, NOT ONE.** `derived-spine` calls the published double *exactly once*. Measured: `%530`
+`%592` `%642` `%664` `%669` `%675` `%681`, **six arriving in the three days after that line was
+written**. A FREE figure -- run the scan rather than reading this one.
+**THE INSTRUMENT WAS NEVER MISSING.** `reds_spine_derive` already exits 1 on `rebindings` and
+`double_booked`, the two states that BECOME a published double the instant a push lands -- and it
+runs at the cold open and the hot close, **both of which precede the send's final rebase**. Nothing
+ran between, and no send script exists to hold it.
+**ON THE HISTORY:** `7b1f6b3ee` binds `%681` at two stamps at once -- `double_booked=1`, at the
+moment of a push that shipped.
+**BUILT -- A PLACEMENT, NOT AN INSTRUMENT.** `tools/hooks/pre-push` asks that scan after the tree
+settles and before an object leaves, reaching every ship with **no arming** (`core.hooksPath` on
+**8 of 8**). It welcomes a published double already upstream, a delete, and a push carrying no
+ledger change. **12 behaviors on real pushes.** `%676` and `%685` folded.
+**YOURS, CHANGED SHAPE WHILE WAITING:** the seven are still your word, and the class now arrives
+about **twice a day** rather than once ever. The eighth is walled; the seven are not.
+**THE HOT PASS CAUGHT MY OWN NEW SITE**: `rish_report_bound` 39 against 38, a composed
+`say "label ${x.out}"` in this witness -- split, back to 38. Beside it a red my cold open never
+reached, six peer passes at load 12-16 having stopped it at **32 green, 0 red**: `stash_record
+unlanded=1`, an Incense log of `20260909.085306` living only in `stash@{0}`, recovered with
+`git show` and never retyped.
+**ALSO YOURS:** booked `%683` from a local read and **renumbered to `%687` on the rebase**, rule 4
+paid once and cheaply since every citation spelled the stamp. Two folds were needed to fit one row:
+REDS closes at **40,386 of 40,960**, so the pin's headroom is a fleet question rather than one lap's.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
@@ -388,6 +392,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.002401` | The pen that held the sample | [log](../session-logs/date/20260910/20260910-002401_the-pen-that-held-the-sample-and-not-the-tool.kyri) |
+| `20260910.021118` | The gate and its placement | [log](../session-logs/date/20260910/20260910-021118_the-gate-and-its-placement.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -66,11 +66,29 @@ then lifted, and a spine that cannot answer **refuses** rather than calling ever
 
 ## When both are published, the deadlock is named rather than guessed (`20260907.024141`)
 
-**Rules 1 and 3 meet head on exactly once: when one number is bound to two stamps that are BOTH on
-the anointed spine.** Rule 3 says a published number never moves, and it holds for each row
-separately; the collision repair says the earlier stamp keeps the number. Neither yields, so no lap
-may move either row -- and `%530` stands that way today, folded to two different shelves at
-`20260906.225150` and `20260907.000030`, booked at `20260907.014654`.
+**Rules 1 and 3 meet head on when one number is bound to two stamps that are BOTH on the anointed
+spine.** Rule 3 says a published number never moves, and it holds for each row separately; the
+collision repair says the earlier stamp keeps the number. Neither yields, so no lap may move either
+row. `%530` was the first, folded to two different shelves at `20260906.225150` and
+`20260907.000030`, booked at `20260907.014654`.
+
+**This paragraph read *exactly once* for three days, and the class was already routine.** Measured
+`20260910.015328`: **seven** pairs stand -- `%530`, `%592`, `%642`, `%664`, `%669`, `%675`, `%681`
+-- and **six of them arrived after this section was written**, at roughly two a day. The figure is
+**free**: nothing holds it still, and it rises with the fleet's daily commit count. RUN the reading
+rather than trusting this line:
+
+```
+sh tools/fixtures/r/reds_spine_derive_scan.sh | grep published_double
+```
+
+**Two causes wear the one name, and only one is about haste.** Four of the seven pairs carry stamps
+inside an hour of each other -- three, twenty-five, thirty-four and sixty-eight minutes -- which is
+two ships reading one next-free number in one sitting. The other three stand three, fourteen and
+thirty-one hours apart, which is a lap parked and landed late, the shape `%636` books one room over.
+A stamp gap is a proxy: a row is stamped when it is written and doubled when it is pushed, and only
+the second is the collision. Both causes end at the same push, which is why the repair below sits
+there rather than at either writing.
 
 **The cost of calling that a rebinding is eight ships.** Every ship's local spine is a copy of the
 anointed one, so a published double reddens `reds_spine_derive` on every lap of every seat, for a
@@ -81,6 +99,36 @@ So the scan counts **`published_doubles`** apart from `rebindings` and apart fro
 reports it loudly with both stamps and the booking, and gates neither. **The two gates keep their
 teeth on the class a lap can actually fix**: a number *this tree* bound differently from upstream,
 repaired by renumbering its own unshared row.
+
+## The gate was right; its placement was wrong (`20260910.020754`)
+
+**Both gates already refuse the state that becomes a published double, and neither ever ran at the
+moment that publishes one.** `rebindings` is this tree binding a number the anointed spine binds to
+another stamp; `double_booked` is this tree binding one number to two stamps. Push either and
+upstream holds the pair. The scan runs on every ship at the cold roster open and again at the hot
+close, and **both come before the send's final rebase** -- the one step that brings a peer's row
+into this tree. Nothing ran the reading in between, and no send script could hold it, since the send
+is typed from `tools/f/fleet_baton.txt`.
+
+**Proven on the history rather than argued.** Commit `7b1f6b3ee` binds `%681` to `20260910.001157`
+in the pin and to `20260909.234718` on
+[`../../construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](../../construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md).
+That is `double_booked=1` at the moment of a push that shipped.
+
+So [`../../tools/hooks/pre-push`](../../tools/hooks/pre-push) asks the same scan after the tree
+settles and before an object leaves for the remote -- **a placement rather than a new instrument**.
+It reaches every ship with no per-ship arming, since `tools/i/install_hooks.rish` points
+`core.hooksPath` at the tracked hooks directory, read `tools/hooks` on **8 of 8** ships
+(`20260910.015328`). It refuses the two gates, and refuses an instrument that cannot answer, since
+a silent pass is what `%681` booked three hours earlier. It **welcomes** a published double already
+upstream -- the seven below, which no lap may repair -- a delete, and a push whose own range carries
+no ledger change. Twelve behaviors stand proven with real pushes against a bare repository in a
+throwaway pen, every refusal planted and then lifted:
+[`../../tools/fixtures/p/pre_push_spine_control.sh`](../../tools/fixtures/p/pre_push_spine_control.sh)
+under [`../../tools/p/pre_push_spine_witness.rish`](../../tools/p/pre_push_spine_witness.rish).
+
+**What it does not reach:** the seven already published, and the habit of reading `--next` late. It
+closes the arrival of the eighth, and nothing behind it.
 
 **The resolution itself waits on Keaton's word**, and the measurement is here for when it comes:
 `%530` is cited in **12 files**, three of them commit bodies that can never be edited, and the two

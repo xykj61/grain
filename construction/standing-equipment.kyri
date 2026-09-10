@@ -3225,6 +3225,21 @@ guard reds_shelf_name
 path tools/r/reds_shelf_name_witness.rish
 tier lap
 seated 20260907.151832
+
+# pre_push_spine -- the derived spine's own two gates, asked at the moment that publishes.
+# `reds_spine_derive` exits 1 on `rebindings` and on `double_booked`, and both are exactly the
+# state that becomes a PUBLISHED DOUBLE the instant a push lands. It runs at the cold open and at
+# the hot close, and both come BEFORE the send's final rebase -- the one step that brings a peer's
+# row into this tree. Nothing ran the reading between that rebase and the push, and seven published
+# doubles stand upstream, six of them arriving in the three days after the law declared the class
+# stood "exactly once". `tools/hooks/pre-push` is the placement; this proves it in a pen of real
+# repositories with real pushes, and proves the ARMING too, since a hook the tree ships and no
+# clone reaches is a claim rather than a wall. `tier lap` -- eight seconds, and the fault it
+# catches is written by two ships booking one next-free number inside the same hour.
+guard pre_push_spine
+path tools/p/pre_push_spine_witness.rish
+tier lap
+seated 20260910.015328
 # topology_attained -- what diameter a builder can actually STAND on, at 720 points.
 # Its sibling `topology_floor` binds the MOORE floor, a lower bound over all graphs that almost
 # nothing attains. This one binds what is REACHABLE: a second floor for abelian Cayley graphs

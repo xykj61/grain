@@ -686,3 +686,7 @@ at a closed fold.*
 *Row %686 landed straight onto [`REDS-a-record-that-grew-with-the-polling-rows-686.md`](REDS-a-record-that-grew-with-the-polling-rows-686.md) on `20260910.024500`, **CLOSED** -- `mantra add` over a file nobody edited wrote a commit and moved HEAD anyway, so a store whose log walks at most 1,000 commits lost its own first commit to a watcher inside a day.*
 
 *Row %684 folded to [`REDS-a-store-that-kept-only-its-last-file-rows-684.md`](REDS-a-store-that-kept-only-its-last-file-rows-684.md) on `20260910.003046`, **CLOSED** -- a commit named one weave for a whole directory, so the second file added deleted the first one's every line while the CLI reported both woven. Booked as `%681` from a local read and renumbered twice as two rebases found peers publishing; the stamp held through both.*
+
+*Row %676 folded to [`REDS-a-row-keys-on-the-log-it-names-rows-676.md`](REDS-a-row-keys-on-the-log-it-names-rows-676.md) on `20260910.020722`, **CLOSED** -- a ledger row's identity is the record it points at, never the second it was written in -- the naming law's own sprig tiebreak cannot reach a cell that holds a stamp alone.*
+
+*Row %685 folded to [`REDS-read-the-form-and-the-channel-rows-685.md`](REDS-read-the-form-and-the-channel-rows-685.md) on `20260910.034851`, **CLOSED** -- a command is read by its form and its channel -- one literal operand, no options, stdout -- rather than by the name of the utility invoking it.*
