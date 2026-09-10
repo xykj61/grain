@@ -1154,13 +1154,20 @@ out=$(run_scan capable.kyri good-card.kyri)
 case "$out" in *"guards_capability_gated=1"*) echo "capability_gated_counted=yes" ;; *) echo "capability_gated_counted=no" ;; esac
 case "$out" in *"guards_unknown_capability=0"*) echo "known_capability_free=yes" ;; *) echo "known_capability_free=no" ;; esac
 
-# --- the seed_projection probe, planted in both of its answers (REDS %492) ----------------------
+# --- the seed_projection probe, planted in all four of its refusals (REDS %492, widened here) ----
 # The second capability arm this tree probes, and the first that asks a CHECKOUT question rather
 # than a host one: does a seed projection stand where `sow_allow_reach` reads the shipped side.
-# Planted by making and removing the directory, since the probe performs the same `test -d` the
-# guard's own scan performs -- a probe that asks a different question than its guard is how a
-# capability becomes an exemption. There is no unknown answer to plant: `test -d` has no tool that
-# can go missing, which is written into the arm rather than faked here.
+#
+# THE ELDER PLANT WAS A BARE DIRECTORY, because the elder probe was a bare `test -d`. Both were one
+# question where the guard asks four: `tools/fixtures/s/sow_allow_reach_scan.sh` refuses with no
+# directory, with no receipt at `$SEED/.sow-projection.log`, with a receipt naming no inputs, and
+# with a receipt whose coverage inputs have MOVED. The fourth is the one that fires -- the receipt
+# hashes the manifest together with `git ls-files` over every `allow` room, `tools` is one of them,
+# and 12 of the 40 commits before `20260909.215500` changed a tracked path under one. So the guard
+# read `red` across an eight-ship pier for an environment fact, and the receipt was withheld.
+#
+# Each refusal is planted and then LIFTED, since a probe shown only in the refusing direction cannot
+# be told from one that refuses everything.
 cat > "$pen/seedcap.kyri" <<'EOF'
 format standing-equipment-v1
 guard alpha
@@ -1175,34 +1182,90 @@ capability seed_projection
 seated 20260906.140000
 EOF
 
-run_seed_capability() {
-  rm -f "$pen/seed-card.kyri"
-  ( cd "$pen" && STANDING_ROSTER=seedcap.kyri STANDING_CARD=seed-card.kyri \
+# A REAL FIELD, since the coverage reading calls `git ls-files` and `git hash-object` and a probe
+# proven outside a repository would be proven against its own `unknown` arm rather than its answer.
+reach="$(pwd)/tools/fixtures/s/sow_reach_inputs.sh"
+seedpen="$pen/seedtree"
+mkdir -p "$seedpen/tools" "$seedpen/seed"
+cp "$pen/seedcap.kyri" "$seedpen/seedcap.kyri"
+cp "$pen/tools/real_witness.rish" "$seedpen/tools/real_witness.rish"
+( cd "$seedpen" \
+    && git init -q . && git config user.email a@b.c && git config user.name t \
+    && printf 'allow tools\n' > template-manifest.bron \
+    && git add -A >/dev/null && git commit -q -m "pen: a field with one allowed room" ) >/dev/null 2>&1
+project() { ( cd "$seedpen" && . "$reach" && sow_reach_inputs template-manifest.bron ) ; }
+
+run_seed_in() { # run_seed_in <cwd> [env-assignment...]
+  _cwd=$1; shift
+  rm -f "$_cwd/seed-card.kyri"
+  ( cd "$_cwd" && env "$@" STANDING_ROSTER=seedcap.kyri STANDING_CARD=seed-card.kyri \
       sh "$runner" 2>/dev/null ) || true
 }
+ran_both() { case "$1" in *"guards_run=2"*) echo yes ;; *) echo no ;; esac; }
+skipped_one() { case "$1" in *"skipped_capability=1"*) echo yes ;; *) echo no ;; esac; }
 
-# present -- a projection stands, so the guard runs like any other row
-mkdir -p "$pen/seed"
-out=$(run_seed_capability)
-case "$out" in *"guards_run=2"*) echo "seed_present_runs=yes" ;; *) echo "seed_present_runs=no" ;; esac
-case "$out" in *"skipped_capability=0"*) echo "seed_present_skips_none=yes" ;; *) echo "seed_present_skips_none=no" ;; esac
+# 1. A BARE DIRECTORY, which is what the elder plant and the elder probe both stopped at.
+out=$(run_seed_in "$seedpen")
+echo "seed_bare_directory_refused=$(skipped_one "$out")"
 
-# absent -- skipped, named, counted, and the pass still passes. All four, because the whole point is
-# that a fresh clone with no projection stops paying a full cold pass for an environment fact.
-rmdir "$pen/seed"
-out=$(run_seed_capability)
+# 2. A RECEIPT NAMING NOTHING. An empty file is a projection that answers no coverage question.
+: > "$seedpen/seed/.sow-projection.log"
+out=$(run_seed_in "$seedpen")
+echo "seed_empty_receipt_refused=$(skipped_one "$out")"
+
+# 3. A FRESH RECEIPT -- the lift. The guard runs like any other row and nothing is skipped.
+project > "$seedpen/seed/.sow-projection.log"
+out=$(run_seed_in "$seedpen")
+fresh_red=$(printf '%s\n' "$out" | sed -n 's/^guards_red=//p')
+echo "seed_fresh_runs=$(ran_both "$out")"
+# invariant: the witness has asserted this name since REDS %492 and it means the same thing --
+# a checkout whose projection the guard can read runs the guard.
+echo "seed_present_runs=$(ran_both "$out")"
+echo "seed_present_skips_none=$(case "$out" in *"skipped_capability=0"*) echo yes ;; *) echo no ;; esac)"
+case "$out" in *"skipped_capability=0"*) echo "seed_fresh_skips_none=yes" ;; *) echo "seed_fresh_skips_none=no" ;; esac
+
+# 4. THE STALE RECEIPT, and the whole reason this arm was widened. One new tracked path under the
+#    one allowed room -- the ordinary shape of a lap that lands a tool -- moves the inventory hash
+#    the receipt is pinned to, and the projection can no longer answer for the field it names.
+( cd "$seedpen" && printf '# a tool that landed after the projection\n' > tools/later.rish \
+    && git add -A >/dev/null && git commit -q -m "pen: a lap lands a tool" ) >/dev/null 2>&1
+out=$(run_seed_in "$seedpen")
+echo "seed_stale_receipt_refused=$(skipped_one "$out")"
+case "$out" in *"skipped_capability needs_seed wants=seed_projection"*) echo "seed_stale_named=yes" ;; *) echo "seed_stale_named=no" ;; esac
+# A SKIP ADDS NO RED, which is the claim rather than the pen's own verdict: the pen's `alpha` row
+# points at a stub, so a git pen reds it either way, and asserting `run_verdict=ok` here would be
+# asserting something about the stub.
+stale_red=$(printf '%s\n' "$out" | sed -n 's/^guards_red=//p')
+case "${fresh_red:-9}:${stale_red:-9}" in 2:1) echo "seed_stale_adds_no_red=yes" ;; *) echo "seed_stale_adds_no_red=no (fresh=${fresh_red:-?} stale=${stale_red:-?})" ;; esac
+
+# 5. THE ELDER PROBE OVER THE SAME STALE PLANT, which must call it present -- otherwise the four
+#    legs above pass for some reason other than this repair, which is the shape four of this
+#    family's wrong readings had in common.
+if [ -d "$seedpen/seed" ]; then elder_seed=present; else elder_seed=absent; fi
+echo "elder_probe_called_the_stale_one_present=$elder_seed"
+
+# 6. RE-PROJECTED, and the guard comes back. A capability that never lifts is an exemption.
+project > "$seedpen/seed/.sow-projection.log"
+out=$(run_seed_in "$seedpen")
+echo "seed_reprojected_runs_again=$(ran_both "$out")"
+
+# 7. ABSENT -- skipped, named, counted, and the pass still passes. All four, because the whole point
+#    is that a fresh clone with no projection stops paying a full cold pass for an environment fact.
+mkdir -p "$pen/seed" && rmdir "$pen/seed"
+out=$(run_seed_in "$pen")
 case "$out" in *"guards_run=1"*) echo "seed_absent_skips=yes" ;; *) echo "seed_absent_skips=no" ;; esac
 case "$out" in *"skipped_capability=1"*) echo "seed_absent_counted=yes" ;; *) echo "seed_absent_counted=no" ;; esac
 case "$out" in *"skipped_capability needs_seed wants=seed_projection"*) echo "seed_absent_named=yes" ;; *) echo "seed_absent_named=no" ;; esac
 case "$out" in *"run_verdict=ok"*) echo "seed_absent_still_passes=yes" ;; *) echo "seed_absent_still_passes=no" ;; esac
 
-# the probe reads SOW_SEED exactly as the guard's own scan does, so the two cannot disagree about
-# where the projection is. Planted somewhere else entirely, with nothing at the default path.
-mkdir -p "$pen/elsewhere"
-out=$( ( cd "$pen" && SOW_SEED=elsewhere STANDING_ROSTER=seedcap.kyri STANDING_CARD=seed-card2.kyri \
-        sh "$runner" 2>/dev/null ) || true )
+# 8. The probe reads SOW_SEED exactly as the guard's own scan does, so the two cannot disagree about
+#    where the projection is. Planted somewhere else entirely, FRESH, with nothing at the default
+#    path -- a bare directory there would now prove the widening rather than the environment read.
+mkdir -p "$seedpen/elsewhere"
+project > "$seedpen/elsewhere/.sow-projection.log"
+out=$(run_seed_in "$seedpen" SOW_SEED=elsewhere)
 case "$out" in *"guards_run=2"*) echo "seed_env_followed=yes" ;; *) echo "seed_env_followed=no" ;; esac
-rmdir "$pen/elsewhere"
+rm -rf "$seedpen/elsewhere"
 
 # --- the jail_nesting probe, planted in all three answers (REDS %516) ---------------------------
 # The third capability arm, and the first that asks a KERNEL question: can this bench build a second

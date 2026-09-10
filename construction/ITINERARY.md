@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `478677e1b0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4e23e7fae3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A RECEIPT KEYED ON EVERY FILE STALED ON A THIRD OF COMMITS.**
 Elder [shelved](archive/20260909-220903_itinerary-landed-accounts.md).
@@ -179,21 +179,22 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- A PLANT THAT SPELLS A MOVING NUMBER HAS AN EXPIRY DATE.**
-Elder [shelved](archive/20260909-202547_itinerary-landed-accounts.md) whole.
-**FIRE SEES WHAT MUST STOP.** 217 guards, 213 green -- and `standing_equipment`'s `roster_broken`
-named a guard the pass never runs: `dated_path`, `tier cadence`, red since `20260908.082548`. Ran it
-alone: `refs_lost=99` on a ceiling of 85, repairable cell EMPTY at `lost_promised_living=0`.
-Split dumped by hand: 77 files, 42 logs, six living citers all MENTIONS.
-**`%626` ALREADY HOLDS IT**, so the lap sharpened the line rather
-than booking it twice: **12 of the 14 it is exceeded by sit inside testimony stamped AFTER
-the ceiling was set.** It rose by writing rather than breaking. **Yours** -- the gate move is your
-word. Two CLOSED rows folded for room; REDS 41,369 -> 37,833.
-**AND THE NAMED HANDOFF CLOSED.** `plant_control.sh:230` spelled `FLOOR=13`, `rish_report_bound_control.sh:157` `ceiling=38`. `%519`'s elder moved by ACCIDENT; a ratchet moves
-by DESIGN, and each scan's header says so. Proven in a pen first -- floor 13 -> 14,
-ceiling 38 -> 37, both value plants `plant_matched_nothing`, both form plants land. All 228 controls
-censused: the class is exactly two, closed rather than a loom.
-**Yours:** may a control ever spell a ratchet's value, or is the form law?
+**GRASS -- A CAPABILITY ASKING LESS THAN ITS GUARD IS AN EXEMPTION.**
+Elder [shelved](archive/20260909-215853_itinerary-landed-accounts.md) whole.
+**WATER TASTES UP CLOSE.** The lap opened its cold red -- `217 run, 212 green, 3 red`,
+`sow_allow_reach` refusing on *projection coverage is stale*. The roster gates it behind `capability
+seed_projection`; that arm was `[ -d seed ]`, one of the **four** questions its scan asks. The
+receipt hashed the manifest plus `git ls-files` over every `allow` room, `tools` among them, so one
+tool file staled the fleet -- **12 of the last 40 commits** did, on a gitignored `seed/` where
+nothing was wrong. Cost: `receipt_write=withheld_guard_red`.
+**TWO HANDS, TWO HALVES.** A peer rekeyed `sow_reach_inputs.sh` on each room's coverage CLASS while
+I measured, closing the **frequency** half. Mine is **classification**: an absent, empty, or
+truly-changed receipt is still a checkout fact, and the probe said `present` to each. Repaired by
+**sourcing** their function rather than restating it, so their rewrite landed here unedited. Row
+`20260909.215853`.
+**FOUND, NOT TAKEN:** `convergence_census.sh` prints `candidates_unproven=2`, naming them only under
+a `list` word absent from its output. Both read `inert` -- **two facts in one word**: *changes
+nothing handed it*, *your sample hit nothing*.
 
 **COPAL -- THE SIXTH CURE MOVED BOTH STRANDS, AND GIT ANSWERED WHAT NO LIST COULD.**
 Elder [shelved](archive/20260909-225010_itinerary-landed-accounts.md).

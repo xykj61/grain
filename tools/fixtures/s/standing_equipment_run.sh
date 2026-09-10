@@ -750,24 +750,45 @@ capability_state() {
       if command -v strace >/dev/null 2>&1; then echo present; else echo absent; fi
       ;;
     seed_projection)
-      # Does a seed projection stand in this checkout? `seed/` is gitignored and built by
-      # `tools/s/sow.rish`, so a fresh clone has none -- and `sow_allow_reach`, which reads the
-      # shipped side, cannot run without one. Its scan refuses rather than reporting clean, which is
-      # correct (REDS %170) and made the guard red on every tree in the fleet that had not projected
-      # (REDS %492). This is the same reading the operator card already gives an empty `vendor/`: an
-      # ENVIRONMENT fact rather than a tree red.
+      # Does a seed projection THE GUARD CAN READ stand in this checkout? `seed/` is gitignored and
+      # built by `tools/s/sow.rish`, so a fresh clone has none -- and `sow_allow_reach`, which reads
+      # the shipped side, cannot run without one. Its scan refuses rather than reporting clean, which
+      # is correct (REDS %170) and made the guard red on every tree in the fleet that had not
+      # projected (REDS %492). This is the same reading the operator card already gives an empty
+      # `vendor/`: an ENVIRONMENT fact rather than a tree red.
       #
-      # THE PROBE ASKS THE GUARD'S OWN QUESTION, reading `SOW_SEED` exactly as the scan does, so the
-      # two can never disagree about where the projection is. Answering a different question than
-      # the guard would is how a capability becomes an exemption.
+      # THE PROBE ASKS THE GUARD'S OWN QUESTION, reading `SOW_SEED` and `SOW_MANIFEST` exactly as the
+      # scan does, so the two can never disagree about where the projection is or what it covers.
+      # Answering a different question than the guard would is how a capability becomes an exemption.
       #
-      # THERE IS NO UNKNOWN HERE, and that is honest rather than a gap: `test -d` has no tool to go
-      # missing, so the question is always answerable. The one thing absence could hide is a
-      # projection deleted where it should stand -- and `sow.rish` rebuilds it from the field every
-      # publish, so a missing `seed/` names no fault. The skip is announced by name on every pass
-      # (`skipped_capability sow_allow_reach wants=seed_projection here=absent`), which is what keeps
-      # it a cadence rather than a quiet hole.
-      if [ -d "${SOW_SEED:-seed}" ]; then echo present; else echo absent; fi
+      # AND IT ASKS ALL FOUR OF THEM, from `20260909.215500`. The elder arm was `test -d` alone,
+      # while `tools/fixtures/s/sow_allow_reach_scan.sh` refuses four ways: no directory, no receipt
+      # at `$SEED/.sow-projection.log`, a receipt naming no inputs, and a receipt whose coverage
+      # inputs have MOVED. Three were invisible here, and the fourth is the one that fires. The
+      # receipt hashes `template-manifest.bron` together with `git ls-files` over every `allow` room,
+      # so any commit that adds, deletes, or renames a tracked path under one of those rooms staled
+      # every ship's receipt at once -- measured `20260909`, **12 of the last 40 commits** did, and
+      # `tools/` is an allowed room, so a lap that lands one tool file stales the fleet. The guard
+      # then read `red` on an eight-ship pier for a fact that was never a tree fault, the receipt was
+      # withheld, and every ship paid a full cold pass. That is precisely the `day_shelf` arm's own
+      # lesson two arms below -- *the scan refuses twice, and a probe answering only the first would
+      # read `present` ... which is a probe and its guard disagreeing* -- written there and left
+      # unapplied here.
+      #
+      # UNKNOWN IS REAL HERE, unlike the elder `test -d`: the coverage reading calls `git`, which is
+      # a tool that can go missing, and an unknown answer RUNS the guard rather than hiding it.
+      _seed=${SOW_SEED:-seed}
+      _manifest=${SOW_MANIFEST:-template-manifest.bron}
+      [ -d "$_seed" ] || { echo absent; return 0; }
+      [ -f "$_seed/.sow-projection.log" ] || { echo absent; return 0; }
+      _recorded=$(cat "$_seed/.sow-projection.log" 2>/dev/null || true)
+      [ -n "$_recorded" ] || { echo absent; return 0; }
+      [ -f "$_manifest" ] || { echo absent; return 0; }
+      # invariant: the coverage reading is the scan's own function, sourced rather than restated, so
+      # the two can never drift apart -- a lantern that fires twice becomes a loom.
+      . "$_run_here/sow_reach_inputs.sh" 2>/dev/null || { echo unknown; return 0; }
+      _current=$(sow_reach_inputs "$_manifest" 2>/dev/null) || { echo unknown; return 0; }
+      if [ "$_recorded" = "$_current" ]; then echo present; else echo absent; fi
       ;;
     day_shelf)
       # Does the day this pass stands in have a shelf with tracked logs in it? `rota_declared`
