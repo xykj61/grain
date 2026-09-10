@@ -1,0 +1,64 @@
+# tools/c/cyclic_witness_witness.rish -- a proof that returns to its start state.
+#
+#   rishi/bin/rishi run tools/c/cyclic_witness_witness.rish
+#
+# First witness for moonshot 3 of
+# `active-designing/20260910-060204_the-bounded-torus-moonshots.md`: a proof that returns to its
+# start state is a loop with a declared period, and its log stays that size forever.
+#
+# WHAT IT MEASURES. `tools/fixtures/c/cyclic_witness_scan.sh` digests `git status --porcelain`
+# before and after a witness runs. Equal digests mean the witness returned the tree to where it
+# found it -- it CYCLES. Different digests mean residue, and the paths are printed.
+#
+# WHY THE PORCELAIN RATHER THAN THE WHOLE TREE. Hashing tens of thousands of files would cost more
+# than the witness under test. Porcelain already names every path differing from the index plus
+# every untracked file, which is the three ways residue arrives -- an edit, an addition, a removal
+# -- for the price of one git call.
+#
+# THE FALSIFIER THE DESIGN PAGE NAMED, and the reason this file exists: a witness that PASSES while
+# its exit digest differs from its entry digest leaves residue, and the cycle claim would then be
+# covering the report rather than the state. That case is proven below by planting exactly it.
+#
+# MEASURED ON THE SEATING LAP (`20260910`): nine rostered witnesses sampled, eight cycled and one
+# HUNG past its bound -- `glow_desk_run_witness`, the same family that hung during the reach work.
+# A hang is its own verdict here rather than a pass or a fail, because a witness that never answered
+# says nothing about cycling either way.
+
+say "cyclic-witness: Style Gauge, Meter -- entry digest, exit digest, and the paths between them."
+say "cyclic-witness: Lens TAME -- a witness that returns its state has a period rather than a length."
+
+# --- The instrument cycles on a witness known to be quiet ---------------------
+say "cyclic-witness: a quiet witness returns the tree it found..."
+let quiet = run ["sh" "tools/fixtures/c/cyclic_witness_scan.sh" "tools/f/fleet_clockout_witness.rish" "--bound" "280"]
+say quiet.out
+assert quiet.ok else "cyclic-witness: the scan refused on a witness expected to cycle"
+assert quiet.out contains "verdict=cycles" else "cyclic-witness: a quiet witness failed to cycle"
+assert quiet.out contains "residue_paths=0" else "cyclic-witness: a cycling witness reported residue paths"
+
+# invariant: an entry and an exit digest are both printed, so a reader can compare them by eye
+# rather than trusting the verdict word alone.
+assert quiet.out contains "entry=" else "cyclic-witness: no entry digest was printed"
+assert quiet.out contains "exit=" else "cyclic-witness: no exit digest was printed"
+
+# --- THE FALSIFIER, planted and then lifted, in the control -------------------
+# The plant is a witness file whose body carries quotes inside quotes. Generating that from inside a
+# Rishi string was tried first and refused with `UndefinedName` -- the nested-quoting seam this tree
+# has met before. Shell owns quoting; this file owns assertions.
+say "cyclic-witness: the control -- nine behaviors, residue shown from both sides..."
+let ctl = run ["sh" "tools/fixtures/c/cyclic_witness_control.sh"]
+say ctl.out
+assert ctl.ok else "cyclic-witness: the control refused -- read its own pass/fail lines"
+assert ctl.out contains "fail=0" else "cyclic-witness: a planted behavior differed from what was stated"
+
+# invariant: the control proved it lifted its own plant. A control that leaves residue makes the
+# next lap's reading wrong, which is the very fault this instrument exists to find.
+assert ctl.out contains "leaves the tree as it found it" else "cyclic-witness: the control did not prove its own cleanup"
+
+# --- Refusals the scan owes ---------------------------------------------------
+let nopath = run ["sh" "-c" "sh tools/fixtures/c/cyclic_witness_scan.sh 2>&1 || true"]
+assert nopath.out contains "verdict=no_path" else "cyclic-witness: a missing path defaulted rather than refusing"
+
+let absent = run ["sh" "-c" "sh tools/fixtures/c/cyclic_witness_scan.sh tools/w/there_is_no_such_witness.rish 2>&1 || true"]
+assert absent.out contains "verdict=absent" else "cyclic-witness: an absent witness was not named absent"
+
+say "GREEN: cyclic-witness -- a returning witness is a cycle, and residue is seen and named."
