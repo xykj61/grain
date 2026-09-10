@@ -698,3 +698,5 @@ at a closed fold.*
 *Row %687 folded to [`REDS-a-gate-that-never-runs-when-it-matters-rows-687.md`](REDS-a-gate-that-never-runs-when-it-matters-rows-687.md) on `20260910.050256`, **BOOKED** -- a gate's clock decides what it can catch -- one that runs at the open and the close is absent at the moment a number is published.*
 
 *Row %691 folded to [`REDS-the-listing-nobody-checked-rows-691.md`](REDS-the-listing-nobody-checked-rows-691.md) on `20260910.051529`, **BOOKED** -- a signature over a claim is not a check of the claim; the vessel listing was signed and never compared to the cargo it named.*
+
+*Row %692 folded to [`REDS-a-plant-is-a-subject-never-a-practice-rows-692.md`](REDS-a-plant-is-a-subject-never-a-practice-rows-692.md) on `20260910.052706`, **CLOSED** -- a control carries the shape it proves a guard against, so a census counting it asks the control to stop working.*

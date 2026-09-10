@@ -23,6 +23,20 @@
 # and answered `verdict=over_ceiling`, exit 1. After it, `sites=3 files=3`, `verdict=under_ceiling`,
 # exit 0. A refusal proven only in the passing direction cannot be told from a bypass, so the
 # refusing direction is the one recorded here.
+#
+# AND IT ROSE TO 16 WITHOUT A GUARD BEING WRITTEN (`20260910.035630`). One commit landed
+# `tools/fixtures/s/self_matching_assert_control.sh`, whose plants spell the very shape this
+# census counts, and the reading went 3 -> 16 in an hour. `elf_machine` refused, and
+# `standing_equipment` refused the whole 226-guard roster behind it -- a ceiling meant only to fall
+# stopping the fleet over a control doing its job. Two clauses answer it, and each was measured
+# alone rather than as a pair, since a census whose denominator has been wrong six times owes that:
+#
+#   a site is read off a LIVE line       16 -> 7, the nine plants inside heredoc bodies leaving
+#   a control is not the tree's practice  7 -> 3, the four inside printf formats and a case argument
+#
+# Measured the same stamp: outside controls the live-line strand removes NOTHING today -- both
+# readings land on the same three sites, so the control clause is what carries this repair and the
+# position clause is what will catch the next plant written somewhere a name list cannot see.
 set -eu
 
 # The depth-proof root walk every fixtures guard carries: climb to the first ancestor holding the
@@ -47,19 +61,53 @@ mode=${1:-}
 pen=$(mktemp -d) || exit 1
 trap 'rm -rf "$pen"' EXIT INT TERM
 
-git ls-files '*.rish' '*.sh' 'tools/hooks/*' | sort -u > "$pen/sources"
+# A CONTROL'S SITES ARE PLANTS OF THE SHAPE UNDER TEST, NEVER THE TREE'S PRACTICE
+# (`20260910.035630`). `tools/fixtures/s/self_matching_assert_control.sh` landed thirteen
+# `run ["sh" "-c" "file ..."]` lines in one commit -- nine inside heredoc bodies it writes into a
+# pen, four inside `printf` format strings and a case argument -- because the shape it proves a
+# guard against IS the REDS %460 shape this census counts. A guard cannot be proven without
+# carrying its own subject, so no hand can remove those lines, and a census that counts them reads
+# 16 against a ceiling of 3 and refuses the whole standing roster behind it.
+#
+# `tools/c/convergence_census.sh` skips controls by the same name for the sibling reason -- a
+# control writes into its own pen and has nothing to converge -- so the convention is one this tree
+# already leans on. Measured `20260910.035630` on this tree: 239 tracked `*_control.sh` and one
+# `*_control.rish`, and exactly one of them carries a site.
+git ls-files '*.rish' '*.sh' 'tools/hooks/*' | grep -vE '_control\.(sh|rish)$' | sort -u > "$pen/sources"
 
 # ONE AWK PASS over every source rather than a sed and a grep per file. The elder per-file loop
 # spawned two processes for each of ~2,900 tracked runners and cost 17 of this guard's 18 seconds;
 # one pass costs under a second, which is what buys it a lap tier rather than a cadence one.
-cat > "$pen/census.awk" <<'AWK'
+#
+# AND A SITE IS READ OFF A LIVE LINE (`20260910.035630`). This pass read every line, and a line
+# carries no position, so the thirteen `run ["sh" "-c" "file ..."]` lines standing inside the
+# heredoc PLANTS of `tools/fixtures/s/self_matching_assert_control.sh` counted as thirteen live
+# sites -- a census standing at 3 of a ceiling of 3 read 16 the hour that control landed, and
+# `standing_equipment` refused the whole roster behind it. A plant is a Rishi program the control
+# writes into its own pen and hands to the guard under test; it is the control's SUBJECT rather
+# than the tree's practice, and no hand can remove it without removing the proof.
+#
+# `tools/fixtures/l/live_lines.sh` walks a source as a shell lexer and answers whether a line began
+# outside every quoted region. It was written for `tools/c/convergence_census.sh`, where the same
+# fault ran the other way -- a WRITE inside a `--tree-filter` string admitting a tool that writes
+# nothing -- and it is a library rather than a habit because this is its second room.
+#
+# The one honest limit rides along: Rishi is not shell, so a `.rish` source whose quoting differs
+# desyncs the walk to the file's end. That can only WITHHOLD lines, so this census loses a site
+# rather than inventing one, and the ceiling it guards only falls.
+. "$_fd_root/tools/fixtures/l/live_lines.sh"
+
+{ live_lines_awk; cat <<'AWK'
+FNR == 1 { ll_reset() }
 {
+  if (!ll_live($0)) next                    # text handed to another interpreter is not a call
   line = $0
   sub(/#.*/, "", line)                      # a sentence naming the utility is not a call
   if (line ~ /(^|[;&|(]|"-c" ")[ \t]*file[ \t]+[^=|)]/) count[FILENAME]++
 }
 END { for (f in count) printf "%d\t%s\n", count[f], f }
 AWK
+} > "$pen/census.awk"
 
 : > "$pen/hits"
 xargs_lines_batched 400 "$pen/sources" awk -f "$pen/census.awk" >> "$pen/hits"

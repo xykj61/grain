@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1ae8e8434d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a09ab632aa` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NO PROXY DECIDES THIS, SO THE LOOM ASKS THE FILE.**
 Elder [shelved](archive/20260910-014602_itinerary-landed-accounts.md).
@@ -153,35 +153,33 @@ only BOOKED row on a pin standing **11** bytes clear. REDS closes at **40,957 of
 remaining row OPEN, and the card came back **362 over**: the third lap running to say the headroom
 is a fleet question. I cut my own account, never a peer's.
 
-**INCENSE -- THE GATE WAS RIGHT AND ITS PLACEMENT WAS WRONG.**
-Elder [shelved](archive/20260910-021059_itinerary-landed-accounts.md).
-**EARTH BREATHES IN THE CONCRETE FACT AT THE DOOR.** A dead lap's detached pass still ran, and
-Copal's day-old refusal named its stale `launch_head` -- a real orphan, not a plant. Then the pin
-held **`%681` twice**, a row and a peer's shelf folded 25 minutes apart.
-**SEVEN, NOT ONE.** `derived-spine` calls the published double *exactly once*. Measured: `%530`
-`%592` `%642` `%664` `%669` `%675` `%681`, **six arriving in the three days after that line was
-written**. A FREE figure -- run the scan rather than reading this one.
-**THE INSTRUMENT WAS NEVER MISSING.** `reds_spine_derive` already exits 1 on `rebindings` and
-`double_booked`, the two states that BECOME a published double the instant a push lands -- and it
-runs at the cold open and the hot close, **both of which precede the send's final rebase**. Nothing
-ran between, and no send script exists to hold it.
-**ON THE HISTORY:** `7b1f6b3ee` binds `%681` at two stamps at once -- `double_booked=1`, at the
-moment of a push that shipped.
-**BUILT -- A PLACEMENT, NOT AN INSTRUMENT.** `tools/hooks/pre-push` asks that scan after the tree
-settles and before an object leaves, reaching every ship with **no arming** (`core.hooksPath` on
-**8 of 8**). It welcomes a published double already upstream, a delete, and a push carrying no
-ledger change. **12 behaviors on real pushes.** `%676` and `%685` folded.
-**YOURS, CHANGED SHAPE WHILE WAITING:** the seven are still your word, and the class now arrives
-about **twice a day** rather than once ever. The eighth is walled; the seven are not.
-**THE HOT PASS CAUGHT MY OWN NEW SITE**: `rish_report_bound` 39 against 38, a composed
-`say "label ${x.out}"` in this witness -- split, back to 38. Beside it a red my cold open never
-reached, six peer passes at load 12-16 having stopped it at **32 green, 0 red**: `stash_record
-unlanded=1`, an Incense log of `20260909.085306` living only in `stash@{0}`, recovered with
-`git show` and never retyped.
-**ALSO YOURS:** booked `%683` from a local read and **renumbered to `%687` on the rebase**, rule 4
-paid once and cheaply since every citation spelled the stamp. Two folds were needed to fit one row:
-REDS closes at **40,386 of 40,960**, so the pin's headroom is a fleet question rather than one lap's..
-
+**INCENSE -- A PLANT IS A SUBJECT, NEVER A PRACTICE.**
+Elder [shelved](archive/20260910-045332_itinerary-landed-accounts.md).
+**WATER TASTES UP CLOSE**: the cold open read `elf_machine` red, `standing_equipment`
+`roster_broken` behind it, all **226** guards refused.
+**ONE ROOT.** `elf_machine_census_scan.sh` counts runners still proving an architecture by reading
+`file`'s prose, ceiling **3**, and read **16**. Thirteen landed in one commit inside
+`self_matching_assert_control.sh`, whose job is proving a guard against that shape -- nine in
+heredocs it writes to a pen, four in `printf`. **A control doing its job read as thirteen
+regressions**, unlowerable: the plants ARE the proof.
+**THE LANTERN FIRED TWICE, SO IT IS A LOOM.** `convergence_census` closed this from the other side
+five days ago -- a write inside a `--tree-filter` string admitting a tool that writes nothing. Its
+shell-lexer walk is `tools/fixtures/l/live_lines.sh` now, read by both; the move proven faithful by
+its own numbers, `candidates=12 proven=10` before and after, control `legs_pass=43`.
+**TWO CLAUSES, MEASURED ALONE**, this denominator having been wrong six times: live-line **16 -> 7**,
+skip-controls **7 -> 3**. **HONESTLY: outside controls the live-line strand removes NOTHING today**,
+both landing on the same three sites -- the name clause carries the repair, the position clause is
+the wall for the next plant. **THAT RULE HAD NO CONTROL AT ALL:** nine legs now, refusals shown from
+the ELDER side, ceiling proven at three sites and four, **pass=38 fail=0**. **A RED INSIDE THE
+REPAIR:** sourcing the library from `$root` reddened every leg of the convergence control, since
+`CONV_ROOT` points it at a PEN. **A tool's own home is not the tree it reads.**
+Row `20260910.045332` **CLOSED** onto its own
+[shelf](archive/REDS-a-plant-is-a-subject-never-a-practice-rows-692.md). **RULE 4, PAID THREE TIMES IN ONE HOUR:**
+booked `%689`, renumbered `%690`, `%691`, `%692` -- three peers booking ahead at earlier stamps, one
+line each, every citation having spelled the stamp. And I folded `%687` to a shelf a peer folded it to
+under another name the same hour: mine dropped, theirs kept.
+**YOURS, KEATON:** REDS closes at **40,957 of 40,960 -- THREE bytes** -- and only because every row
+this lap touched was foldable. `published_doubles=7`, `%681` unfoldable. A raise, or your word.
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
 **GRASS -- THE LAW COUNTS BY FUNCTION AND EVERY INSTRUMENT COUNTED BY FILE.**
