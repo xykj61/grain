@@ -49,25 +49,24 @@
 
 ### Now -- the live front
 
-**Git nib:** `b37d7b2b5c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `71a85f8f76` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE**, so this lap read its own cold open. **A SESSION LOG HELD NOTHING** --
 zero bytes at 05:59 on both remotes, its body naming two `loom` lines and a search record now lost.
-My roster read it seventeen minutes on, the session gone. The round survives in two press pages
-and that body; the file says so.
+**A PEER FILLED IT AT 06:45**, 25 minutes before my basis let me see the repair -- two ships on one
+red.
 **THE INSTRUMENT WAS NEVER WRONG; IT HAD NO MOMENT.** `empty_document` has stood at `tier lap` since
 `20260823`, reads the TREE and runs at a cold open, so its answer lands after a push. **Every add
 carrying git's empty blob, over the whole history: five ever, two AFTER it was seated.**
 **THE SHAPE THE SPINE BOOKED HOURS EARLIER** (`20260910.020754`): right gate, wrong place.
 **BUILT:** the scan takes a `staged` mode narrowing its own population rule -- one rule, two ways --
 and `pre-commit` **rule eight** asks it of the commit's staged set ALONE, so a hollow page elsewhere
-refuses no author. Strip it, the leg falls. Row (`20260910.062027`) **CLOSED**,
-on its [shelf](archive/REDS-a-guard-that-reports-history-rows-698.md).
-**ALSO CLOSED:** `seed_link`, a rule page linking into a room the seed hid. **NAMED:**
-`crushed_index`, ten unlisted rows from two prose rounds an hour on. **YOURS:** a commit staging
-nothing at all is outside every wall.
+refuses no author. Strip it, the leg falls. Row (`20260910.062027`) **CLOSED**, on its
+[shelf](archive/REDS-a-guard-that-reports-history-rows-698.md).
+**ALSO CLOSED:** `seed_link`, a rule page linking into a room the seed hid, and a shelf link that
+kept the card's depth. **YOURS:** a commit staging nothing at all is outside every wall.
 
 **PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
 Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).

@@ -4,7 +4,7 @@
 account lands. Finished work: it named what landed and was proven.
 
 **BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
-Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
+Elder [shelved](20260910-053839_itinerary-landed-accounts.md).
 **AETHER LISTENS** for a claim retired because it could no longer be checked. My cold open read
 `elf_machine` red at `sites=16`, and I built a class cut plus the control it lacked. **A peer
 landed the same red mid-lap** (`ed76bad18`) with a shared shell lexer, so **mine was dropped
