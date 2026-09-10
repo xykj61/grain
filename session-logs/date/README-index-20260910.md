@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.160342` | [A ratchet that named its own repair](20260910/20260910-160342_the-ratchet-that-named-its-own-repair.kyri) | 538 per mille back to 534, law ceiling 14 to 9 |
 | `20260910.152944` | [The compressor shelf joins the register meter](20260910/20260910-152944_the-compressor-shelf-joins-the-register-meter.kyri) | docs/ joins at zero over, ceiling held |
 | `20260910.141834` | [An ask lives 104 minutes](20260910/20260910-141834_an-ask-lives-104-minutes.kyri) | the account shelf now speaks every question it carries off the card |
 | `20260910.141741` | [OPEN after its own repair](20260910/20260910-141741_the-row-that-read-open-after-its-repair.kyri) | a stale row folded; the pin meter names the fleet's door |

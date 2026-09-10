@@ -108,6 +108,9 @@
 # THE CEILING FELL 19 -> 17 the day the mode landed, on the two pages it was pointed at first:
 # comlink-tendency 58% of 12 sentences and azimuth-galaxy-proposal-format 63% of 11, both to 0%,
 # seven counted sentences each restated and every claim, name, path and stamp held. It fell 17 -> 14
+# 14 -> 9 on 20260910.150347, the five pages the listing priced at one or two counted sentences
+# each -- tame-guidance, placeholder-ship-names, remember, remember-git-nib, session-log-provenance,
+# nine counted words between them and every claim, path and stamp held. It fell 17 -> 14
 # the same day on the three pages the listing priced at ONE restatement each -- molt 35% of 14,
 # vocabulary-aroma 32% of 25, exec-bit 31% of 32, all three reading 28% after one counted word
 # apiece went. Reading the room cheapest-first is what the mode made possible.
@@ -142,7 +145,7 @@ say scan.out
 assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
 assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
 assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
-assert scan.out contains "law_ceiling=14" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
+assert scan.out contains "law_ceiling=9" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
 say "field GREEN -- the front door reads the way the style says it does, and the law room now reads its own number"
 
 let control = run ["sh" "tools/fixtures/p/prose_register_control.sh"]

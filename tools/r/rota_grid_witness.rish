@@ -39,16 +39,25 @@ say "rota-grid: Lens TAME -- bounds named at 5 rows and 3 seats, and every refus
 
 say "rota-grid: the control -- twenty-five behaviors on a grid built for the purpose, in a pen..."
 let ctl = run ["sh" "tools/fixtures/r/rota_grid_control.sh"]
-assert ctl.ok else "rota-grid: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=25 fail=0" else "rota-grid: the control did not prove twenty-five behaviors --\n${ctl.out}\n${ctl.err}"
+# invariant: both streams are written out BARE, ahead of the asserts that judge them. A bare `say`
+# opens no `StrBuf`, so the report cannot refuse however large the output grows; an `else` clause
+# interpolating the same value composes only on FAILURE, which is the one moment it is owed
+# (`tools/s/say_compose_bound_witness.rish`).
+say ctl.out
+say ctl.err
+assert ctl.ok else "rota-grid: the control refused -- its two streams stand above"
+assert ctl.out contains "pass=25 fail=0" else "rota-grid: the control did not prove twenty-five behaviors -- its two streams stand above"
 
 say "rota-grid: and the living grid answers..."
 let scan = run ["sh" "tools/fixtures/r/rota_grid_scan.sh"]
 # invariant: a refusal reports BOTH streams. `run` returns `out` and `err` separately, and this
-# scan writes every refusal to stderr -- so `${scan.out}` alone leaves the roster's evidence page
-# saying a guard stopped without saying why. Measured `20260907`: of 75 rostered witnesses that
-# assert on a scan's `ok`, 14 report stdout alone and 3 report both.
-assert scan.ok else "rota-grid: the scan refused --\n${scan.out}\n${scan.err}"
+# scan writes every refusal to stderr -- so stdout alone leaves the roster's evidence page saying a
+# guard stopped without saying why. Measured `20260907`: of 75 rostered witnesses that assert on a
+# scan's `ok`, 14 report stdout alone and 3 report both. Both are said bare, once, and the seven
+# asserts below then carry plain messages rather than seven copies of the same reading.
+say scan.out
+say scan.err
+assert scan.ok else "rota-grid: the scan refused -- its two streams stand above"
 
 # invariant: the shape is reported before any fault count, so a reader can tell a healthy grid from
 # a grid the parser could not see. A scan that printed only faults would read zero on both.
@@ -57,21 +66,21 @@ assert scan.out contains "cells=15" else "rota-grid: the grid no longer parses f
 
 # invariant: every path the grid names exists. A lap sent to a moved file reads nothing and its log
 # records the row all the same, so absence here is silent by construction.
-assert scan.out contains "unresolved=0" else "rota-grid: the grid names a document that is not on disk --\n${scan.out}"
+assert scan.out contains "unresolved=0" else "rota-grid: the grid names a document that is not on disk -- the reading stands above"
 
 # invariant: every threshold page carries its three modality headings. The heading is the door a lap
 # walks through first; without it there is nothing to check the seat against.
-assert scan.out contains "sections_missing=0" else "rota-grid: a threshold page lost a modality section --\n${scan.out}"
+assert scan.out contains "sections_missing=0" else "rota-grid: a threshold page lost a modality section -- the reading stands above"
 
 # invariant: each modality section names its own cell's seat. This is the drift that opened the row:
 # a seat may change hands in the grid and leave the door pointing at the seat it replaced.
-assert scan.out contains "seat_undeclared=0" else "rota-grid: a threshold page routes its reader to a seat the grid retired --\n${scan.out}"
+assert scan.out contains "seat_undeclared=0" else "rota-grid: a threshold page routes its reader to a seat the grid retired -- the reading stands above"
 
 # invariant: each threshold's own `**Kin:**` line names all three of its live seats. This is the
 # fourth site, and the only one both real seat changes drifted at -- compared by basename, since a
 # Kin entry is relative to `foundations/` while the grid names a repo-root path.
-assert scan.out contains "kin_seat_absent=0" else "rota-grid: a threshold's Kin line stopped naming a seat the grid gives it --\n${scan.out}"
+assert scan.out contains "kin_seat_absent=0" else "rota-grid: a threshold's Kin line stopped naming a seat the grid gives it -- the reading stands above"
 
-assert scan.out contains "verdict=ok" else "rota-grid: the grid reads drifted --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "rota-grid: the grid reads drifted -- the reading stands above"
 
 say "GREEN: rota-grid -- twenty paths named, twenty on disk, and every door and kin list opens onto the seat the grid seats."
