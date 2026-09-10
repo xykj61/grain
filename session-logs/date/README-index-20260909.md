@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260909.203251` | [The declaration grew in the door](20260909/20260909-203251_the-declaration-grew-in-the-door.kyri) | Diffuser; a ledger unbuilt, its falsifier run anyway |
 | `20260909.202547` | [A plant that spells a moving number](20260909/20260909-202547_a-plant-that-spells-a-moving-number.kyri) | Grass; a plant aimed at a ratchet names the form |
+| `20260909.201621` | [The repair that yielded](20260909/20260909-201621_the-repair-that-yielded.kyri) | Patchouli; a peer's row parked the question my fix answered |
 | `20260909.201455` | [The instrument nobody asked](20260909/20260909-201455_the-instrument-nobody-asked.kyri) | Copal; a cut lap rescued, and a prover handed its second subject |
 | `20260909.201318` | [Overtaken twice](20260909/20260909-201318_overtaken-twice.kyri) | Bakery; two keystones lost to peers, and the reading that survived |
 | `20260909.195052` | [Four hands, two lanterns](20260909/20260909-195052_four-hands-two-lanterns.kyri) | Both my reds were closed by peers mid-rebase; the document plants survived. |
