@@ -25,4 +25,14 @@ assert max_g.ok else "max_gardens must remain the seated bound 8"
 let max_n = run ["sh" "-c" "grep -E '^pub const max_name_len: u32 = 32;$' tally/gardens.rye"]
 assert max_n.ok else "max_name_len must remain the seated bound 32"
 
-say "GREEN: tally gardens — facts held; max_gardens=8 · max_name_len=32 pinned."
+# The two bounds above are numbers; these are the refusals that keep them. `add` declared
+# itself fallible from 20260620 and returned no error at all until 20260910, so both ceilings
+# and the no-duplicate rule stood on asserts a release build removes. The module's own main
+# asks for each from the failing side; this pins that the names stay named.
+let refusals = run ["sh" "-c" "grep -c -E '^    (NameEmpty|NameTooLong|Full|DuplicateName),$' tally/gardens.rye"]
+assert refusals.out contains "4" else "GardensError must keep its four named refusals -- NameEmpty, NameTooLong, Full, DuplicateName"
+
+let admits = run ["sh" "-c" "grep -c -F 'try self.admits' tally/gardens.rye"]
+assert admits.out contains "2" else "both add and add_division weigh the admission, and add_division does it before divide carves the parent"
+
+say "GREEN: tally gardens -- facts held; max_gardens=8 and max_name_len=32 pinned, each refused by name."

@@ -1,0 +1,78 @@
+# tools/c/ceiling_teeth_witness.rish -- a declared ceiling is read where it can refuse.
+#
+#   rishi/bin/rishi run tools/c/ceiling_teeth_witness.rish
+#
+# WHY. A module names a maximum so the thing it bounds can never grow past it. The declaration is
+# half of that promise; the other half is a line that READS the constant somewhere a caller can be
+# turned away. Three reds fired in one room in four days, each a ceiling whose declaration stood
+# further forward than its enforcement -- %678, a count declared in hits and enforced in bytes;
+# %688, a store's ceiling in bytes against a weave's in lines with the conversion nowhere; and the
+# row of 20260910.043900, a document identified by its lines so the byte it ends with had no home.
+# A lantern that fires twice becomes a loom.
+#
+# THE ONE GATE, at zero: a ceiling nothing reads. On the seating lap
+# mantra/recall_subscribe_poll.rye declared max_mirror_pairs = 4 directly above the PeerBoltPair
+# struct it was drawn for, and poll_one_cycle walked pairs.len with no ceiling anywhere, then cast
+# that length to u32 unchecked. Declared and read by nothing in any tracked .rye -- which reads to
+# a person exactly like a ceiling that holds, and is the whole shape of this class.
+#
+# ONE RATCHET, under a ceiling that only falls: asserted_only, where the strongest reading a file
+# gives its own ceiling is an assert. An assert is a postcondition and a fine thing to keep; what
+# it cannot do is turn a caller away, and a release build removes it. It ratchets rather than walls
+# because a repair lands there, and a wall would refuse honest work in the same breath as a fault.
+#
+# WHY ONE GATE AND FIVE REPORTS. unread is decidable with no judgment: the constant appears once in
+# its own file and nowhere else in the tree. Every other class asks what a line is FOR, and this
+# scan answers that lexically, which is a proxy. Precedent one room over, and it is why this guard
+# reaches for the narrow gate: tools/fixtures/c/ceiling_pair_scan.sh measured four lexical
+# discriminators for its own class on 20260910 and every one leaked, so it stopped guessing and
+# asked the file to declare itself.
+#
+# THE ROOMS ARE ARGUMENTS, defaulting to mantra and tally -- the lane a hand has walked constant by
+# constant. Another lane adopts by naming itself in the roster row and reading what it inherits.
+#
+# WHAT IT DOES NOT REACH. Whether a refusal's threshold is the RIGHT number, which is the pair
+# scan's subject and, past it, arithmetic. Whether a cut truncates something a caller needed whole.
+# A ceiling declared const rather than pub const, since a private bound is the module's own
+# business. And every language beside Rye.
+#
+# Pen: tools/fixtures/c/ceiling_teeth_control.sh -- seventeen assertions across thirteen behaviors
+# on real Rye sources in a real git repository, every refusal planted and then lifted, the ratchet
+# shown from both sides, and the repair proven to leave the population rather than stay in it.
+
+say "ceiling-teeth: Language EN -- a ceiling is declared in one line and kept in another, and this reads the second."
+say "ceiling-teeth: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "ceiling-teeth: Lens TAME -- bound everything, check at the edge, fail with a named error; the corpus is discovered from the rooms rather than listed."
+
+let scan = run ["sh" "tools/fixtures/c/ceiling_teeth_scan.sh" "mantra" "tally"]
+say scan.out
+assert scan.ok else "ceiling-teeth: a ceiling is read by nothing, or the assert-only population spread -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "ceiling-teeth: the census must agree with itself"
+assert scan.out contains "unread=0" else "ceiling-teeth: a ceiling nobody reads bounds nothing at all"
+assert scan.out contains "asserted_only_ceiling=1" else "ceiling-teeth: the ratchet ceiling moved -- a raise is a deliberate hand, and this one is meant only to fall"
+assert (scan.out contains "verdict=empty_corpus" == false) else "ceiling-teeth: a meter over no ceilings must say so rather than pass"
+assert (scan.out contains "verdict=unread_ceiling" == false) else "ceiling-teeth: the one gate stands at zero"
+assert (scan.out contains "verdict=asserted_spread" == false) else "ceiling-teeth: the assert-only population may shrink and may not spread"
+assert (scan.out contains "ceilings_declaring=0" == false) else "ceiling-teeth: a reading over no ceilings would report clean while measuring nothing"
+
+let control = run ["sh" "tools/fixtures/c/ceiling_teeth_control.sh"]
+say control.out
+assert control.ok else "ceiling-teeth: the control must complete"
+assert control.out contains "control_fail=0" else "ceiling-teeth: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "ceiling-teeth: the control must agree with itself"
+assert control.out contains "1 free: a ceiling refused by name reads as refused -- ok" else "ceiling-teeth: the honest form must pass free"
+assert control.out contains "2 free: a ceiling sizing an array reads as structural -- ok" else "ceiling-teeth: a bound the compiler holds is a bound"
+assert control.out contains "3 free: a clamped value reads as cut -- ok" else "ceiling-teeth: a value clamped to its ceiling is bounded by construction"
+assert control.out contains "4 free: a ceiling a second constant derives from reads as derived -- ok" else "ceiling-teeth: a derived ceiling carries its teeth where it is derived"
+assert control.out contains "5 bitten: an assert-only population past its ceiling refuses -- ok" else "ceiling-teeth: the ratchet must bite from above"
+assert control.out contains "6 free: the same population at exactly its ceiling passes free -- ok" else "ceiling-teeth: a ratchet must be a ceiling rather than a wall"
+assert control.out contains "7 bitten: a ceiling nothing reads refuses -- ok" else "ceiling-teeth: the one gate must bite, or a declared ceiling can bound nothing in silence"
+assert control.out contains "7 bitten: the refusal names the file and the constant -- ok" else "ceiling-teeth: a refusal naming neither leaves the reader to search"
+assert control.out contains "8 free: the same ceiling given a named refusal leaves the population -- ok" else "ceiling-teeth: the repair must be rewarded rather than merely permitted"
+assert control.out contains "9 free: a ceiling read by a sibling file is not unread -- ok" else "ceiling-teeth: a ceiling a caller reads is read"
+assert control.out contains "10 free: a private const is not a declared ceiling -- ok" else "ceiling-teeth: a private bound is the module's own business"
+assert control.out contains "11 free: a witness source is read past -- ok" else "ceiling-teeth: a witness bounds its own fixtures"
+assert control.out contains "12 bitten: a reading over no ceilings says so rather than passing -- ok" else "ceiling-teeth: a meter over nothing must say so"
+assert control.out contains "13 free: an honest file never masks an unread ceiling beside it -- ok" else "ceiling-teeth: one honest file must never hide a fault beside it"
+
+say "ceiling-teeth: GREEN -- every declared ceiling in mantra and tally is read where it can refuse, and the assert-only population holds."

@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a6ae01581e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `44c679f035` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE EXCLUSION NOBODY COULD SEE.**
 Elder [shelved](archive/20260910-053839_itinerary-landed-accounts.md).
@@ -70,30 +70,32 @@ control_sites`, **reported and never gated**, since a gate there reds on honest 
 legs prove the counter FALLS when a plant becomes a heredoc, as a counter seen at one value cannot
 be told from a constant. `pass=43 fail=0`. **YOURS:** that control grades **C+** on a peer's
 hour-old head, untouched by me -- rewriting it under its writer is friction rather than repair.
-**PATCHOULI -- TWO FILES ONE BYTE APART EARN ONE ADDRESS.**
-Elder [shelved](archive/20260910-043900_itinerary-landed-accounts.md).
-**WATER TASTES, so this lap ran the actual thing up close** -- built the CLI, handed it documents,
-and read what came back. `split_lines` drops the empty token a text ending in `\n` produces, and a
-text ending WITHOUT one produces none, so `x\ny` and `x\ny\n` split to two identical lines.
-`cmd_add` stores that split and nothing beside it: a weave and a commit, **never the file's bytes**.
-**ON METAL:** two pens, two files one byte apart, both answered `HEAD -> 441c3c6fa8b8` and both
-weaves carried digest `7695a361c00e...`. **A content-addressed store gave one address to two
-contents.** Worse than a display fault -- `status` says **clean**, `add` says **unchanged**, in BOTH
-directions, so the store declines the change when asked for it directly.
-**FOUR READINGS GATED, SEVEN REPORTING.** A gate that reds on what no lap may repair is a gate
-somebody turns off, so what a repair must not break is gated and the loss is named under
-`20260910.043900`. `mantra_document_roundtrip` **tier lap**, 8 control legs, 2 breaks caught.
-**DOOR 1 IS PRICED RATHER THAN ARGUED:** the control keeps the token in a pen -- the digests part,
-`add` sees the appended newline, and a three-line terminated file reports **4** where the tree reads
-**3**. That is door 1's whole cost, read off a built binary.
-**YOURS:** which door the document view takes -- keep the token, a terminator flag on the v2 counter
-row, or the file's own bytes as a blob. Doors 2 and 3 each widen a record format.
-**MY OWN COLD OPEN WENT VOID AND I NAMED IT RATHER THAN SPENDING IT**: I edited the tree while the
-pass ran, which is the one thing the card asks a lap not to do. Its transcript carries **three reds
--- `tracked_link`, `shell_dialect`, `shell_dialect_touch` -- and all three were my own half-written
-files**, each green once finished; a void pass reads a tree nobody shipped. The row of
-`20260910.043900` folded `%688` to make room: REDS stood at **40,948 of 40,960**, twelve bytes, so
-no row could land beside it at all. **17 named guards green** on the tree that shipped.
+**PATCHOULI -- A CEILING DECLARED FOUR LINES ABOVE THE STRUCT IT WAS DRAWN FOR, AND READ BY NOTHING.**
+Elder [shelved](archive/20260910-054336_itinerary-landed-accounts.md).
+**AIR FEELS FOR THE BOUNDARY**, so this lap pressed each fence post rather than reading its sign.
+`mantra/recall_subscribe_poll.rye` declared `max_mirror_pairs = 4` four lines above the
+`PeerBoltPair` it bounds; `poll_one_cycle` walked `pairs.len` with **no ceiling**, and `poll_cycles`
+cast that length to `u32` unchecked. `tally/gardens.rye` held the milder form: `add` declared itself
+`!void` in `20260620` and returned no error at all, so every `try` was dead syntax and three edges
+stood on asserts a release build removes -- under an `// invariant:` claiming a *copy into a fixed
+buffer of max_name_len*, where the field is a slice.
+**THE HAND WENT THROUGH IN TWO LANES.** 532 `pub const max_*` names across 1,964 tracked sources;
+exactly **two** read by nothing anywhere -- `max_mirror_pairs` and `lotus/mix.rye`'s `max_mix`.
+Fourth firing in four days of a declaration standing ahead of its enforcement (`%678`, `%688`,
+`%689`); the limit case, enforcement nowhere.
+**THE LOOM THE FOURTH FIRING OWED.** `ceiling_teeth` sorts each ceiling into the strongest thing
+its own file does with it -- **refused - structural - cut - derived - asserted-only - unread** --
+gating only `unread`, which needs no judgment; `asserted_only` ratchets, since a repair lands there.
+mantra and tally read **31 declaring: 25/3/1/1/1/0**, from 22/4/1/1/2/1.
+**REPAIRED AND PROVEN:** both poll functions refuse `error.Overflow` at the edge; `Gardens`
+publishes four named refusals weighed in one `admits`, called **before `divide` carves the parent**
+-- and `main` reads the parent's bytes back after a refused division. 17 assertions, 13 behaviors,
+a git pen, the repair proven to LEAVE the population rather than stay in it.
+**MY ROW WAS BORN ON A SHELF, TWICE OVER.** I folded `%687` and then `%690` for pin room, and BOTH
+collided with a peer folding the same row in the same hour. So `%696` landed straight onto its own
+shelf, the move `%693` made three hours earlier: a BOOKED row may fold, so a BOOKED row may be born
+there. Hot close **232 guards, `tree_moved=no`, no reds**.
+**YOURS:** whether the other lanes adopt `ceiling_teeth` by naming themselves in its roster row.
 
 **DIFFUSER -- THE CLAIM THIS TREE RESTS ON, PULLED NOT BELIEVED.**
 Elder [shelved](archive/20260910-050815_itinerary-landed-accounts.md).
