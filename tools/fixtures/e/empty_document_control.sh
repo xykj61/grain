@@ -84,4 +84,47 @@ verdict_of "$d" | grep -q 'verdict=ok' && echo "gitkeep_free=yes" || echo "gitke
 d=$(build other_ext data/view.tsv '')
 verdict_of "$d" | grep -q 'verdict=ok' && echo "other_extension_free=yes" || echo "other_extension_free=no"
 
+# 9. THE STAGED MODE, which is the same rule read at the moment a commit creates the fault. Every
+#    case above reads the whole index; these four read only what a commit stages, and the third is
+#    the property that makes the mode safe to gate on -- an empty document standing elsewhere in
+#    the tree refuses no author.
+d=$(build staged_pen notes/real.md '# real
+This document holds a sentence.
+')
+( cd "$d" && mkdir -p staged && : > staged/hollow.kyri && git add staged/hollow.kyri ) >/dev/null 2>&1
+out=$( cd "$d" && sh "$scan" staged 2>/dev/null )
+echo "$out" | grep -q 'verdict=empty_document' && echo "staged_refused=yes" || echo "staged_refused=no"
+echo "$out" | grep -q 'detail=RED_staged_empty_document' && echo "staged_named=yes" || echo "staged_named=no"
+echo "$out" | grep -q 'mode=staged' && echo "staged_mode_said=yes" || echo "staged_mode_said=no"
+
+# The same pen, with the record written rather than hollow: the mode waves it through. A refusal
+# proven only in the failing direction cannot be told from a mode that refuses everything.
+( cd "$d" && printf 'format session-log-v1\n' > staged/hollow.kyri && git add staged/hollow.kyri ) >/dev/null 2>&1
+( cd "$d" && sh "$scan" staged 2>/dev/null ) | grep -q 'verdict=ok' \
+  && echo "staged_written_free=yes" || echo "staged_written_free=no"
+
+# And with a hollow document COMMITTED and nothing of it staged, the staged mode passes free while
+# the tree mode still refuses. One rule, two reaches, and neither one softened.
+d=$(build staged_peer notes/real.md '# real
+A sentence.
+')
+( cd "$d" && : > left-behind.kyri && git add left-behind.kyri \
+  && git commit -qm 'a hollow page arrives' ) >/dev/null 2>&1
+( cd "$d" && printf 'mine, and it speaks\n' > mine.md && git add mine.md ) >/dev/null 2>&1
+( cd "$d" && sh "$scan" staged 2>/dev/null ) | grep -q 'verdict=ok' \
+  && echo "staged_peer_free=yes" || echo "staged_peer_free=no"
+( cd "$d" && sh "$scan" tree 2>/dev/null ) | grep -q 'verdict=empty_document' \
+  && echo "tree_still_refuses=yes" || echo "tree_still_refuses=no"
+
+# A commit staging no document at all rests at zero rather than reading the whole index.
+d=$(build staged_quiet notes/real.md '# real
+A sentence.
+')
+out=$( cd "$d" && sh "$scan" staged 2>/dev/null )
+echo "$out" | grep -q 'staged_documents=0' && echo "staged_rests_at_zero=yes" || echo "staged_rests_at_zero=no"
+
+# An unknown mode refuses rather than falling back to the whole tree, since a mode nobody spelled
+# correctly would otherwise read as the default and gate far more than the caller asked for.
+( cd "$d" && sh "$scan" wibble >/dev/null 2>&1 ) && echo "unknown_mode_refused=no" || echo "unknown_mode_refused=yes"
+
 echo "control_verdict=ok"

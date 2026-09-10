@@ -112,7 +112,7 @@ is typed from `tools/f/fleet_baton.txt`.
 
 **Proven on the history rather than argued.** Commit `7b1f6b3ee` binds `%681` to `20260910.001157`
 in the pin and to `20260909.234718` on
-[`../../construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md`](../../construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md).
+`construction/archive/REDS-the-loom-that-chased-a-generation-too-far-rows-681.md` (named here rather than linked, since this law ships in the seed while that room stays in the field).
 That is `double_booked=1` at the moment of a push that shipped.
 
 So [`../../tools/hooks/pre-push`](../../tools/hooks/pre-push) asks the same scan after the tree

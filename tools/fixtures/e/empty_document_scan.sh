@@ -32,12 +32,43 @@
 # holding one honest sentence passes here, and rightly: the fix for a thin document is a reader,
 # not a byte count.
 #
-# USAGE
-#   sh tools/fixtures/e/empty_document_scan.sh
+# TWO MODES, ONE RULE. `tree` (the default) reads every tracked document in the index; `staged`
+# reads only the documents THIS COMMIT stages, so a wall can ask the question while the hand that
+# wrote the file is still here. The population rule above is written once and both modes share it,
+# because two readers spelling one rule are two readers that can come to disagree.
 #
-# Driven by tools/e/empty_document_witness.rish. Run from the repository root.
+# WHY THE STAGED MODE EXISTS, measured. This guard has stood since 20260823, and in the 18 days
+# after it was seated TWO session logs shipped at zero bytes anyway -- 20260828.142844, filled 91
+# minutes later by a second commit once another ship's cold open caught it, and 20260910.054448,
+# whose writing session was gone by the time the reading arrived, so its two `loom` lines and its
+# search record are lost outright. Five empty documents stand in this tree's whole history and the
+# guard's own header records the other three. The reading was never wrong; it simply never ran at
+# the moment a commit creates the fault, which is a placement rather than an instrument.
+#
+# THE STAGED MODE READS THE INDEX, never the worktree, because the index is what ships. A file
+# written after `git add` is not in this commit, and a file emptied after `git add` still carries
+# its earlier bytes in the blob -- `git ls-files -s` answers for the bytes that will land.
+#
+# IT GATES THE COMMIT'S OWN SET AND NOTHING BESIDE IT. An empty document standing elsewhere in the
+# tree is the roster's business; refusing an author for a file somebody else wrote is how a wall
+# becomes a wall somebody turns off. That property is proven from both sides in the control.
+#
+# USAGE
+#   sh tools/fixtures/e/empty_document_scan.sh            # every tracked document
+#   sh tools/fixtures/e/empty_document_scan.sh staged     # only what this commit stages
+#
+# Driven by tools/e/empty_document_witness.rish and tools/hooks/pre-commit. Run from the
+# repository root.
 
 set -u
+
+MODE=tree
+if [ "$#" -gt 0 ]; then
+  case $1 in
+    tree|staged) MODE=$1 ;;
+    *) echo "empty-document: unknown mode '$1' -- tree or staged" >&2; exit 2 ;;
+  esac
+fi
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -62,6 +93,16 @@ awk -F'\t' '
     print sha "\t" path
   }' "$work/index.tsv" > "$work/candidates.tsv"
 
+# In staged mode, narrow the candidates to the paths this commit actually carries. The filter runs
+# AFTER the population rule rather than instead of it, so every exemption above still holds and a
+# staged fixture stays instrument exactly as a committed one does.
+if [ "$MODE" = staged ]; then
+  git diff --cached --name-only --diff-filter=ACMR > "$work/staged.txt" 2>/dev/null || : > "$work/staged.txt"
+  awk -F'\t' 'NR == FNR { want[$0] = 1; next } ($2 in want)' \
+      "$work/staged.txt" "$work/candidates.tsv" > "$work/narrowed.tsv"
+  mv "$work/narrowed.tsv" "$work/candidates.tsv"
+fi
+
 docs=$(wc -l < "$work/candidates.tsv" | tr -d ' ')
 
 # Sizes for every candidate in ONE `git cat-file --batch-check`, rather than one process per file:
@@ -82,7 +123,12 @@ if [ -s "$work/small.txt" ]; then
 fi
 empty=$(wc -l < "$work/empty.txt" | tr -d ' ')
 
-echo "tracked_documents=$docs"
+echo "mode=$MODE"
+if [ "$MODE" = staged ]; then
+  echo "staged_documents=$docs"
+else
+  echo "tracked_documents=$docs"
+fi
 echo "empty_documents=$empty"
 
 [ "$empty" -eq 0 ] || sed 's/^/empty: /' "$work/empty.txt"
@@ -92,5 +138,10 @@ if [ "$empty" -eq 0 ]; then
   exit 0
 fi
 echo "verdict=empty_document"
+if [ "$MODE" = staged ]; then
+  echo "detail=RED_staged_empty_document"
+  echo "detail_path=$(head -1 "$work/empty.txt")"
+  echo "detail_repair=write the record, or unstage the path with git restore --staged"
+fi
 echo "refused: a tracked document above holds nothing -- fill it or remove it" >&2
 exit 1

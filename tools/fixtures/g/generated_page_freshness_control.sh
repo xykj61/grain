@@ -24,6 +24,9 @@
 #   no rishi on disk, a cherry-pick                       -> post-commit rests, no debt recorded
 #   a living link naming a file the commit lacks          -> REFUSED by rule six, off the INDEX
 #   the same link once that file is staged                -> the wall waves the commit through
+#   a session log staged at zero bytes                    -> REFUSED by rule eight, off the INDEX
+#   the same log once the record is written               -> the wall waves the commit through
+#   an empty document this commit does NOT stage          -> refuses no author, so the wall stays on
 #
 # Two pages rather than one, because the tree holds two. They are README.md and the crushed library
 # index docs-geode/libraries/README.md. Both count witnesses. The roster caught the second one
@@ -42,6 +45,7 @@
 #           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes, pick_owed=yes,
 #           debt_paid=yes, quiet_no_debt=yes, rebase_owed=yes, debt_kept_on_refusal=yes,
 #           no_rishi_no_debt=yes, link_wall_bitten=yes, link_wall_free=yes,
+#           empty_wall_bitten=yes, empty_wall_free=yes, empty_wall_peer_free=yes,
 #           ledger_pick_stale=yes, ledger_debt_paid=yes.
 #
 # THE SEQUENCER CASES, six added 20260829 (REDS %337) and two more on 20260908, whose row is cited
@@ -309,6 +313,45 @@ git commit -qm "the link now opens" >/dev/null 2>&1 || link_free_code=$?
 link_wall_free=$([ "$link_free_code" -eq 0 ] && echo yes || echo no)
 rm -f .generator-ran
 
+# 17/18 -- RULE EIGHT, the empty-document wall (20260910), proven from both sides. The pen carries
+#          no empty_document_scan.sh until now, so the rule has rested through every case above.
+#          The planted file is a session log at zero bytes, which is the shape that actually
+#          shipped twice: 20260828.142844 and 20260910.054448, the second losing its own record.
+mkdir -p tools/fixtures/e session-logs/date/20260910
+cp "$root/tools/fixtures/e/empty_document_scan.sh" tools/fixtures/e/empty_document_scan.sh
+chmod +x tools/fixtures/e/empty_document_scan.sh
+: > session-logs/date/20260910/20260910-054448_a-record-that-never-landed.kyri
+git add -A
+empty_code=0
+git commit -qm "a session log that holds nothing" >/dev/null 2>&1 || empty_code=$?
+empty_wall_bitten=$([ "$empty_code" -ne 0 ] && echo yes || echo no)
+
+# And with the record actually written, the same wall waves it through. A refusal proven only in
+# the failing direction cannot be told from a wall that refuses everything.
+printf 'format session-log-v1\nstamp 20260910.054448\n' \
+  > session-logs/date/20260910/20260910-054448_a-record-that-never-landed.kyri
+git add -A
+empty_free_code=0
+git commit -qm "the record now says something" >/dev/null 2>&1 || empty_free_code=$?
+empty_wall_free=$([ "$empty_free_code" -eq 0 ] && echo yes || echo no)
+
+# 19 -- THE PROPERTY THAT MAKES THE WALL HONEST: an empty document standing in the tree that this
+#       commit does not stage refuses no author. Without it the rule would hold the whole fleet
+#       still for a hole one hand made, which is how a wall becomes a wall somebody turns off.
+#       The elder file is committed with --no-verify, which is exactly how it arrives in life: by
+#       a path git skips this hook for, or from a peer's push.
+: > a-peer-left-this.kyri
+git add a-peer-left-this.kyri
+git commit -qm "a hollow page arrives by a path this hook never saw" --no-verify >/dev/null 2>&1
+printf 'my own work, and it says something\n' > MINE.md
+git add MINE.md
+peer_code=0
+git commit -qm "my own commit, beside somebody else's hole" >/dev/null 2>&1 || peer_code=$?
+empty_wall_peer_free=$([ "$peer_code" -eq 0 ] && echo yes || echo no)
+git rm -q a-peer-left-this.kyri
+git commit -qm "lift the planted hole so later cases read clean" --no-verify >/dev/null 2>&1
+rm -f .generator-ran
+
 # 5 -- no rishi on disk: the hook rests and the commit proceeds, which is the seed's case.
 rm -rf rishi
 printf '# a third witness\n' > tools/third_witness.rish
@@ -347,6 +390,9 @@ echo "debt_kept_on_refusal=$debt_kept_on_refusal"
 echo "no_rishi_no_debt=$no_rishi_no_debt"
 echo "link_wall_bitten=$link_wall_bitten"
 echo "link_wall_free=$link_wall_free"
+echo "empty_wall_bitten=$empty_wall_bitten"
+echo "empty_wall_free=$empty_wall_free"
+echo "empty_wall_peer_free=$empty_wall_peer_free"
 
 if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = yes ] \
   && [ "$fresh_quiet" = yes ] && [ "$ledger_free" = yes ] && [ "$ledger_staged" = yes ] \
@@ -355,7 +401,9 @@ if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = y
   && [ "$rebase_owed" = yes ] && [ "$debt_kept_on_refusal" = yes ] \
   && [ "$ledger_pick_stale" = yes ] && [ "$ledger_debt_paid" = yes ] \
   && [ "$no_rishi_no_debt" = yes ] \
-  && [ "$link_wall_bitten" = yes ] && [ "$link_wall_free" = yes ]; then
+  && [ "$link_wall_bitten" = yes ] && [ "$link_wall_free" = yes ] \
+  && [ "$empty_wall_bitten" = yes ] && [ "$empty_wall_free" = yes ] \
+  && [ "$empty_wall_peer_free" = yes ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"

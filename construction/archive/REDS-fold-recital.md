@@ -709,3 +709,4 @@ at a closed fold.*
 *Row %696 landed straight onto [`REDS-a-ceiling-read-by-nothing-rows-696.md`](REDS-a-ceiling-read-by-nothing-rows-696.md) on `20260910.054213`, **BOOKED** -- a declaration is half a bound, and the other half is a line that reads it where a caller can be turned away.*
 
 *Row %695 folded to [`REDS-a-cold-pass-is-slower-than-the-fleet-rows-695.md`](REDS-a-cold-pass-is-slower-than-the-fleet-rows-695.md) on `20260910.070000`, **CLOSED** -- a cold pass is forty minutes long, and the fleet is faster than that.*
+*Row %698 folded to [`REDS-a-guard-that-reports-history-rows-698.md`](REDS-a-guard-that-reports-history-rows-698.md) on `20260910.070454`, **CLOSED** -- a guard placed where it cannot run at the moment of the fault reports history rather than preventing it.*

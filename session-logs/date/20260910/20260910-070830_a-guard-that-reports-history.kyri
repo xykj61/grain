@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260910.070830
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet lap, Bakery seat, core-infrastructure lane
+modality text
+model claude-opus-5
+model_status active runtime, product-reported identity
+voice Kyri
+host anonymized Linux x86_64 pier, one-clock zone America/New_York
+title A guard that reports history -- the empty-document reading moved to the commit that makes the hole
+prompt the standing fleet baton and construction/ITINERARY.md; take the next agent-doable lap Lindy-first, crux-first, in the core-infrastructure lane
+rota lap 4538, row 3 -- Water, the row that tastes; its cardinal seat asks what a round changed and whether running it again changes more, so I ran tools/c/convergence_census.sh on metal (12 candidates, 10 proven, 4 by sibling assertion, 2 by prover run, 4 by family control) before reading any page about it, then read my own cold open the same way rather than skimming its verdict line
+think The cold open answered guard_red with five reds. empty_document named session-logs/date/20260910/20260910-054448_the-two-names-the-geometry-owed.kyri at zero bytes, tracked and pushed to both remotes in commit f46bc879 at 05:59:52 -- seventeen minutes before my roster read it.
+think The commit body describes content that exists nowhere: two loom lines carrying the composite grades qa_report_card.sh measured for two press pages, and the search queries with what the second returned. All four peer trees on this pier hold the same file at zero bytes, so nothing was recoverable.
+think Measured the class rather than assuming it. git log --diff-filter=A --raw over every .md, .bron, .kyri and .txt, grepped for git's empty blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391, reads FIVE empty documents in the tree's whole history. Three are the pair REDS %161 booked in 758d64e639 plus one deliberate living-pin fixture. The other two are session logs that landed AFTER the guard was seated on 20260823: 20260828.142844, filled at 17:26 by a second commit 91 minutes later once a cold open caught it, and this one.
+think So the instrument is correct and its placement is the fault -- the same finding the derived-spine law booked three hours earlier at 20260910.020754 one room over, where two gates that already refused the bad state never ran at the push that publishes it. tools/e/empty_document_witness.rish reads the TREE at tier lap, and a roster pass runs at a ship's cold open, so its answer is structurally a report about a commit that already shipped.
+think The repair is a placement rather than a new instrument. tools/fixtures/e/empty_document_scan.sh already reads the index via git ls-files -s, which at pre-commit time holds staged content, so a staged mode is one intersection with git diff --cached --name-only --diff-filter=ACMR applied AFTER the population rule -- every exemption still holds and a staged fixture stays instrument.
+think One rule, two reaches, and no second copy: writing the population rule again inside the hook is the friction this seat exists to lower, and two readers spelling one rule are two readers that can come to disagree.
+obs The property that makes the wall safe to gate on is that it reads the commit's own staged set alone. An empty document standing elsewhere -- and one WAS standing while I built this -- refuses no author. A wall holding eight ships still for one hand's hole is a wall somebody turns off, so the property is proven from both sides in the control rather than promised in a comment.
+obs Proven by mutation, not by reading a yes. Stripping RULE EIGHT out of a staged copy of tools/hooks/pre-commit drops empty_wall_bitten to no and the control verdict to wrong; restoring it returns all three legs. A leg that reads yes either way cannot be told from a constant.
+obs The wall reads the INDEX rather than the worktree, because the index is what ships. A file written after git add is not in this commit, and a file emptied after git add still carries its earlier bytes in the blob.
+obs The standing empty log was filled with an honest pointer to where the round's record actually lives -- two press pages that hold their full text, and the commit body -- following the %161 precedent exactly. Accretion, never a rewrite: there was nothing there to preserve. What is genuinely lost is named in the file rather than papered over.
+obs A second red closed on the way out. seed_link had been red on every ship since 03:53, when a rule page began linking into construction/archive/, a room template-manifest.bron marks personal and withholds whole -- so the link opens nothing for a public reader. Repaired by naming the path without linking it, the clause .claude/rules/checkpoint.md already carries for the same room and the same reason.
+obs Named rather than taken: crushed_index reds on ten unlisted rows across docs-geode/ and press/, both from prose rounds an hour old and still in flight. Their room, their round.
+obs The ledger row was booked and folded in one lap because construction/REDS.md stood at 40,957 of the 40,960 its own header declares -- three bytes. The card came back 1,439 over its own bound with an account the size of the elder one, so the account was cut to 8 bytes clear. Three laps have now said the headroom is a fleet question; I cut my own account and no peer's.
+loom witness=empty_document tracked_documents=10893 empty_documents=0 legs=22 wall_ms=1276
+loom witness=generated_page_freshness legs=21 new_legs=3 mutation_bitten=yes
+loom roster=cold_scoped guards_green=202 guards_red=5 guards_gated=1 skipped_scope=24 tree_moved=no wall_s=2440
+loom census=convergence candidates=12 proven=10 tools_read=3364
+file tools/fixtures/e/empty_document_scan.sh a staged mode narrowing the same population rule, printing mode, staged_documents and a named detail path
+file tools/hooks/pre-commit RULE EIGHT, which refuses a commit staging a document that holds nothing
+file tools/fixtures/e/empty_document_control.sh eight staged-mode legs, every refusal planted and lifted
+file tools/fixtures/g/generated_page_freshness_control.sh three hook legs, including the peer-free property
+file session-logs/date/20260910/20260910-054448_the-two-names-the-geometry-owed.kyri the hollow record, filled with a pointer to where the round lives
+file .claude/rules/derived-spine.md the seed-withheld citation named rather than linked
+file construction/archive/REDS-a-guard-that-reports-history-rows-698.md the row, closed and folded in the lap that booked it
+scope core infrastructure -- the witness harness and the commit-time walls every ship stands on
+status GREEN -- empty_document 22 legs, generated_page_freshness 21 legs, seed_link, reds_ledger_monotone pending the rebase that closes its 694-to-697 gap; cold roster closed tree_moved=no
+recommend keep-going the same placement question is worth asking of every tier-lap guard whose fault is created at a commit
