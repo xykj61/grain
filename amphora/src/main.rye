@@ -1581,18 +1581,22 @@ fn catalog_from_cargo_plain(plain: []const u8, catalog: *SeasonCatalog) CliError
     assert(plain.len <= max_seal_plain_mirror); // couples: vessel_seal.max_seal_plain
     catalog.file_count = 0;
     catalog.total_bytes = 0;
+    // The named-once rule needs one memory across the whole walk, so the roster opens here and
+    // every line is offered to the same one. Built per call rather than per line, since a roster
+    // rebuilt each line would remember nothing and welcome every repeat.
+    var roster = me.NameRoster{};
     var start: u32 = 0;
     while (start < plain.len) {
         var end = start;
         while (end < plain.len and plain[end] != '\n') : (end += 1) {}
         const line = plain[start..end];
-        if (line.len > 0) try append_cargo_line(line, catalog);
+        if (line.len > 0) try append_cargo_line(line, catalog, &roster);
         start = if (end < plain.len) end + 1 else end;
     }
     if (catalog.file_count == 0) return error.SeasonEmpty;
 }
 
-fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
+fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog, roster: *me.NameRoster) CliError!void {
     const prefix = "cargo ";
     if (!std.mem.startsWith(u8, line, prefix)) return error.CargoUnproven;
     const rest = line[prefix.len..];
@@ -1625,6 +1629,19 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     // with the file already written. Refused here, the catalog never forms and
     // `restore_prove_write` is never reached, so the refusal arrives before the mutation.
     if (me.name_verdict(name) != .contained) return error.CargoUnproven;
+    // The named-once rule, borrowed from the contract's own roster the way the two rules above
+    // are. `name_verdict` reads one name's face; whether this listing has already named that
+    // place is a relation BETWEEN lines, which no per-line rule can see. Measured on metal
+    // `20260910`: a vessel naming `a.txt` on two cargo lines, each carrying an honest digest for
+    // a different body, passed the mark rule, the containment rule, and every digest -- and
+    // restore wrote both bodies to one path before refusing on the parent compare, leaving
+    // `a.txt` holding the other file's bytes. Refused here, the catalog never forms, so
+    // restore_prove_write is never reached and no byte lands.
+    switch (me.roster_admit(roster, name)) {
+        .fresh => {},
+        .repeated => return error.CargoUnproven,
+        .overflowing => return error.SeasonOverflow,
+    }
     if (catalog.file_count >= max_season_files) return error.SeasonOverflow;
     const slot = &catalog.entries[catalog.file_count];
     slot.name_len = @intCast(name.len);
