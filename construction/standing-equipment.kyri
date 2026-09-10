@@ -1907,6 +1907,19 @@ path tools/e/equinox_choir_census_witness.rish
 tier cadence
 seated 20260908.230500
 
+# wrap_ring -- first witness for the bounded-torus moonshot: working memory as a ring of fixed
+# circumference C, where the TAME bound and the period are ONE number. It exists because an
+# index-only assert proves nothing -- `(i + C) % C == i` holds for every C and says nothing about
+# memory -- so every page carries the lap that wrote it and a reader holding a spent lap is refused.
+# Two faults were found by running it rather than by reading it: the selftest first expected a page
+# to be recycled after ONE lap, when a page is overwritten only when the ring reaches it again; and
+# the witness first read stdout, where `std.debug.print` writes to stderr, so a healthy program read
+# as a red. `tier cadence`: it compiles a Rye binary, which is choir money rather than lap money.
+guard wrap_ring
+path tools/w/wrap_ring_witness.rish
+tier cadence
+seated 20260910.062400
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
