@@ -1,0 +1,54 @@
+# tools/fixtures/t/tame_reach_debt_rooms.txt -- the rooms that already hold authored Rye the TAME
+# style law never reads. Read by tools/fixtures/t/tame_reach_scan.sh.
+#
+# WHY THIS FILE EXISTS. `uncovered_authored` -- authored .rye standing outside every room of
+# tools/fixtures/t/tame_style_rooms.txt -- was gated under a ceiling that only falls, and it
+# answered two questions with one number: how much debt stands, which falls only as repairs land,
+# and how many authored Rye files exist outside the roster, which rises whenever anyone writes one.
+# The scan's own header named that braid on `20260909.002917` and booked the split. It reds on the
+# first LAWFUL new file in an already-uncovered room, which is ordinary work, and a gate that reds
+# on ordinary work is a gate somebody turns off.
+#
+# It fired twice. `tools/rye/perf_self_count.rye` on `20260909.002917`, answered by raising the
+# ceiling 551 -> 552; `tools/rye/wrap_ring.rye` on `20260910.061931`, a moonshot witness landing in
+# the same already-uncovered room. A lantern that fires twice becomes a loom.
+#
+# WHAT THIS LIST IS. Every top-level room holding uncovered authored Rye when the split was seated,
+# `20260910.081500`, one room per line. The scan gates `uncovered_rooms_unknown` at ZERO against
+# it, so a wholly new room of unread authored Rye reds on the lap it arrives -- which is the
+# promise the elder witness claimed and the file count never delivered, since a new room's first
+# file read exactly like a new file in an old one. `debt_rooms` is the length of this list, held
+# under a ceiling that only falls, so a room leaves when its Rye joins the style roster and a room
+# joins only by an argued, recorded raise.
+#
+# WHAT IT DOES NOT SAY. Whether a room BELONGS on the style roster. `crypto/` is absent from that
+# roster on purpose -- it implements Ed25519 rather than calling it -- and stands here as an
+# honest reading of where the law does not reach, never as an accusation.
+#
+# The file count `uncovered_authored` is still printed, and it is FREE: nothing holds it, it rises
+# with ordinary work, and a reader sizing a widening wants it. Run the scan for the current figure.
+active-designing
+basin
+brix
+classical-vedic-astrology
+construction
+context
+crypto
+dimeroll
+docs-geode
+encoding
+granary
+kumara
+kyri
+lotus
+mand
+mandate
+mandi
+manual
+pleac
+rye
+scribe
+settlement
+sundial
+tools
+vault

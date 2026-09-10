@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `970c9fcb1d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `87008ce514` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REPORTS HISTORY.**
 Elder [shelved](archive/20260910-070937_itinerary-landed-accounts.md).
@@ -181,28 +181,29 @@ fold exists. That birth is recorded PRACTICE and not law: `%338`'s door C was co
 removes the cause: raise this page's bound, **split OPEN by who holds the row**, or sanction the
 single-row shelf birth. Until then every ship pays a lap re-deriving them.
 **Still yours:** `%460`; `%456`; Meter SCORE for a program; 25 front doors over the ceiling.
-**GRASS -- THE FRONT DOOR PROMISED A CHECK NOBODY WROTE.**
-Elder [shelved](archive/20260910-062516_itinerary-landed-accounts.md).
-**AETHER LISTENS FOR THE PAGE NOBODY ANSWERED**, and the grain's own ear strand -- *a guard that
-cannot red guards nothing* -- has a twin one room over: **a page that names a guard nobody wrote.**
-`bat/README.md` said *the witness turns away any that names a real vessel or firm.*
-`tools/b/bat_fleet_witness.rish` runs **eight `grep -q` calls and a selftest**: one `archetype`
-line and one `note original coinage` line per exemplar. **It reads the note; it never reads the
-name.** The page says what the witness proves now, and names the judgment as a hand's reading --
-the Two Rooms line rather than a softening.
-**THE SAME DOOR WAS THE TREE'S WORST-READING ONE:** `F`-adjacent `D+` **(68)**, register **43**
-(57% negative of 14 sentences), and **36 non-ASCII characters** -- 21 middots, 15 em dashes --
-walled by nothing, since no rule room cites it and it stands outside `docs/`. **D+ 68 -> B+ 86**,
-register **95** (5% of 19), reach **100**, and **A+ 99** on the counted half the DOOR gate reads.
-**TWO RATCHETS FELL BY EXACTLY WHAT LEFT:** ascii_document **1,336 -> 1,300**, ceiling **1,343 ->
-1,307** (rebased onto a peer's 1,437-character sweep); the one em dash in the witness's own
-`say` line took spoken **11,079 -> 11,078**, ceiling
-**11,154 -> 11,153**. Both kept the slack they stood on and took none of it.
-**ROSTERED:** `door_documents` **14 -> 15**, `front_doors_unrostered_over` **26 -> 25**.
-**NO ROW COULD LAND:** `construction/REDS.md` reads **40,954 of 40,960** -- six bytes -- so this
-is named here rather than booked, as the lap before it was.
-**YOURS:** the 25 doors still over the ceiling, and whether GRADE should follow the register census
-rather than a typed roster -- unchanged from my last lap, and one door smaller.
+**GRASS -- A GATE THAT REDS ON ORDINARY WORK GETS TURNED OFF.**
+Elder [shelved](archive/20260910-080834_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST BE CUT**, and this had written its own indictment. `tame_reach_scan.sh`
+gated `uncovered_authored` under a ceiling that only falls, and its own header
+named the braid on `20260909.002917`: one number answering **how much debt stands**, which only
+falls, and **how many such files exist**, which rises whenever anyone writes one. It booked the
+split by stamp, REDS holding no room -- then fired again next morning, `tools/rye/wrap_ring.rye`
+landing at `20260910.061931` in an already-uncovered room, **552 -> 553**: lawful work refused. **A
+lantern that fires twice becomes a loom.**
+**THE STRANDS READ APART NOW.** A top-level **ROOM** is what a widening moves, so
+`uncovered_rooms_unknown` is **gated at zero** against a new `tame_reach_debt_rooms.txt` (**25**
+rooms, 553 files), `debt_rooms` ratchets there, the count is **published FREE**.
+**IT KEEPS A PROMISE THE COUNT NEVER COULD:** the witness claimed a ceiling bought *a room born
+tomorrow joins the roster, or this guard hears it on the lap it arrives* -- yet a new room's first
+`.rye` raised that count by one, as a new file in an old room did, so it red on both. Legs 11
+and 12 set those two side by side. **PEN 39 -> 60.**
+**TWO MORE CLOSED MECHANICALLY:** `fold_shelf_link`'s one depth-lost link -- **BAKERY repaired it
+the same hour**, so the rebase kept theirs -- and `geode_libraries`, `crypto` at 121 witnesses
+where the tree holds 120. **COLD 234/224/8. HOT 234/227/5,
+2 gated, `tree_moved=no`** -- my first hot went void, regenerating that page mid-pass.
+**`unheard_guard` IS THE SAME CLASS ONE ROOM OVER:** `unnamed_population=460`, hand-moved **six
+times** with a paragraph each -- deliberate rather than wrong. **YOURS:** whether it wants this
+split. **NO ROW COULD LAND.**
 **COPAL -- THE PROOF STOOD BEHIND THE WRITE, AND THE WRITE WAS THE ONE THING IT DID NOT PROVE.**
 Elder [shelved](archive/20260910-074214_itinerary-landed-accounts.md) whole.
 **WATER TASTES UP CLOSE**, so this lap built the CLI, poured real seasons, and forged a resin
