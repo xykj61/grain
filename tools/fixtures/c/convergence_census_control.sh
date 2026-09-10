@@ -207,17 +207,16 @@ split_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
 case "$split_now" in *proven_by_family_control=*) split_family=printed ;; *) split_family=absent ;; esac
 leg family_control_split_printed printed "$split_family"
 
-# 11. THE COMMENT READING, from both sides (`20260909.210000`). The two proof columns read past a
-# leading `#` and the WRITE column never did, so a file whose only admitting write sits in a
-# sentence ABOUT writing is counted as a writer. On the tree that is 3 of 12 candidates, and two of
-# the three are real writers whose real targets the filter refuses -- so the comment carries an
-# admission the target test missed. The census reports the count rather than changing the
-# population, because every cure measured so far read worse than the fault; the header records all
-# four.
+# 11. THE WRITE COLUMN READS LIVE LINES, from both sides (`20260909.222142`). Until this stamp the
+# column read every line, so a header sentence explaining a write idiom admitted the tool that
+# explained it -- 3 of 12 candidates on the tree, measured and printed for a day as
+# `admitted_on_comment_only`. Dropping comments ALONE was measured and read worse (12 -> 9, the two
+# busiest writers leaving with the false one), so this section only holds together with section 12:
+# the git strand is what keeps the real writers whose targets the name list never held.
 cd "$pen/tree"
 # 11a. Admitted by a comment alone: the write the target test accepts is inside a `#` line, and the
-#      only live write targets a pen. This is `reds_ledger_headline_write.sh`'s exact shape, whose
-#      header explains the exec-bit idiom in prose and writes `$LEDGER` on line 114.
+#      only live write targets a variable that resolves nowhere. This is the exact shape
+#      `reds_ledger_headline_write.sh`'s header carried while explaining the exec-bit idiom.
 plant tools/x/comment_admitted.sh '# It writes THROUGH the original inode (`cat "$tmp" > "$f"`), so the mode survives.
 cat "$tmp" > "$LEDGER_UNREAD"'
 # 11b. Admitted on a live line, with the same sentence standing beside it. The prose is identical,
@@ -225,26 +224,19 @@ cat "$tmp" > "$LEDGER_UNREAD"'
 plant tools/x/live_admitted.sh '# It writes THROUGH the original inode (`cat "$tmp" > "$f"`), so the mode survives.
 cat "$tmp" > "$f"'
 git add -A >/dev/null
-git commit -q -m "pen: planted the comment reading"
+git commit -q -m "pen: planted the live-line reading"
 
-comment_names=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^comment_only: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
-com() { case " $comment_names " in *" $1 "*) echo yes ;; *) echo no ;; esac; }
-all_names=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
-anyc() { case " $all_names " in *" $1 "*) echo yes ;; *) echo no ;; esac; }
+seen() { # seen <basename> -- does the census count this file as a candidate at all?
+  CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null \
+    | sed -n 's/^\(unproven\|git_only\|name_only\): //p' | sed 's|.*/||' | sort -u \
+    | grep -qx "$1" && echo yes || echo no
+}
 
-leg comment_only_named            yes "$(com comment_admitted.sh)"
-leg live_write_not_named          no  "$(com live_admitted.sh)"
-# 11c. AND THE READING CHANGES NO NUMBER. A candidate admitted by a comment stays a candidate, so
-#      the count above is a diagnosis rather than a population move -- which is the whole reason it
-#      is safe to print today while the cure waits for the prover.
-leg comment_admitted_still_counted yes "$(anyc comment_admitted.sh)"
-# 11d. The reading is PRINTED, and printed with a number a reader can compare.
-reading_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
-case "$reading_now" in *admitted_on_comment_only=*) reading=printed ;; *) reading=absent ;; esac
-leg comment_reading_printed printed "$reading"
-# 11e. THE ELDER WRITE PREDICATE, run over the same two plants, must call them IDENTICAL -- because
-# it reads every line and cannot tell prose from a write. Without this leg the four above pass for
-# any reason at all, which is how four of this census's five wrong denominators read green.
+leg comment_alone_refused    no  "$(seen comment_admitted.sh)"
+leg live_write_admitted      yes "$(seen live_admitted.sh)"
+# 11c. THE ELDER WRITE PREDICATE, run over the same plant, must ADMIT it -- it read every line and
+# could not tell prose from a write. Without this leg the two above pass for any reason at all,
+# which is how four of this census's five wrong denominators read green.
 elder_sees_comment() { # elder_sees_comment <file> -> yes|no
   if grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$1" 2>/dev/null \
     | sed 's/.*"\([^"]*\)"$/\1/' \
@@ -252,6 +244,63 @@ elder_sees_comment() { # elder_sees_comment <file> -> yes|no
     | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/'; then echo yes; else echo no; fi
 }
 leg elder_could_not_tell_prose_from_a_write yes "$(elder_sees_comment tools/x/comment_admitted.sh)"
+# 11d. The elder reading RETIRES rather than lingering at a permanent zero. A column that can never
+# be anything but zero is a tautology wearing a measurement's clothes.
+reading_now=$(CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null)
+case "$reading_now" in *admitted_on_comment_only=*) reading=present ;; *) reading=retired ;; esac
+leg comment_reading_retired retired "$reading"
+
+# 12. THE GIT STRAND, from both sides. `target_admits` answers by NAME -- a list of loop-variable
+# spellings and a list of room prefixes -- and four laps of refining that guess each read worse.
+# `git_admits` resolves the target through at most three in-file assignments and hands the literal
+# to `git ls-files`, so the TREE answers which destination is tracked.
+cd "$pen/tree"
+# 12a. A named destination the list never held: `$LEDGER` is on no variable list and `pen/ledger.md`
+#      is on no room list, and git tracks the file. This is `reds_ledger_headline_write.sh`'s and
+#      `reds_fold.sh`'s shape, both real writers of `construction/REDS.md`.
+plant pen/ledger.md 'a tracked page'
+plant tools/x/git_named.sh 'LEDGER=pen/ledger.md
+cat "$scratch" > "$LEDGER"'
+# 12b. The same shape whose variable resolves to a pen. Nothing here is tracked, so git refuses --
+#      where the elder 3-hop cure measured at `20260909.210000` admitted three such writers by name.
+plant tools/x/git_pen.sh 'SCRATCH=$(mktemp -d)/out.txt
+cat "$src" > "$SCRATCH"'
+# 12c. The override hook: a tool's tracked destination usually sits in a `${OVERRIDE:-default}`
+#      default whose braces name a DIFFERENT variable, and the remaining `$` leaves the target
+#      partly literal. `index_shelf_repair.sh` stands exactly this way, and reading only the
+#      assigned name's own braces would miss every one of them.
+plant pen/room/README-index-20260909.md 'a shelf'
+plant tools/x/git_hook.sh 'ROOM=${OVERRIDE_ROOM:-pen/room}
+shelf="$ROOM/README-index-$day.md"
+cat "$new" > "$shelf"'
+# 12d. A fully literal target git does NOT track. The tool writes a scratch file that happens to sit
+#      inside a tracked room, and a dirname test would admit it; only asking about the file refuses.
+plant tools/x/git_untracked.sh 'cat "$src" > "pen/_scratch_never_tracked.md"'
+# 12e. The hop bound, shown by exceeding it: four assignments deep, the literal is out of reach and
+#      the tool is refused. A bound proven only by staying under it is a bound nobody has tested.
+plant tools/x/git_deep.sh 'A=pen/ledger.md
+B=$A
+C=$B
+D=$C
+cat "$src" > "$D"'
+git add -A >/dev/null
+git commit -q -m "pen: planted the git strand"
+
+leg git_named_destination_admitted   yes "$(seen git_named.sh)"
+leg git_pen_destination_refused      no  "$(seen git_pen.sh)"
+leg git_override_hook_admitted       yes "$(seen git_hook.sh)"
+leg git_untracked_literal_refused    no  "$(seen git_untracked.sh)"
+leg git_hop_bound_refuses_past_three no  "$(seen git_deep.sh)"
+# 12f. THE NAME PREDICATE, run over 12a's plant, must say NO -- or the git strand bought nothing and
+# these legs would pass on the elder reading alone.
+leg name_strand_could_not_see_it no "$(elder_sees_comment tools/x/git_named.sh)"
+# 12g. The split is printed with its members, so a reader can tell which strand answered. A ratchet
+# that publishes a count and names no member is a finding no ship can act on (REDS %671).
+case "$reading_now" in *admitted_by_git_only=*) gsplit=printed ;; *) gsplit=absent ;; esac
+leg git_split_printed printed "$gsplit"
+git_named=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^git_only: //p' | sed 's|.*/||' | sort -u | tr '\n' ' ')
+case " $git_named " in *" git_named.sh "*) member=named ;; *) member=absent ;; esac
+leg git_only_names_its_member named "$member"
 
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"
