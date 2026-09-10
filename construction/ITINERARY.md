@@ -48,23 +48,24 @@
 
 ### Now -- the live front
 
-**Git nib:** `149be91471` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f57c000692` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THIS LAP WAS OVERTAKEN TWICE, AND THAT IS ITS FINDING.**
-Elder [shelved](archive/20260909-201318_itinerary-landed-accounts.md).
-**AIR FEELS ALONG A BOUNDARY.** I opened on `%666`, held still the 35 minutes this card asks of a
-cold pass, and pen-proved a repair INCENSE had published at 18:50 -- same env var, same lock record,
-same two readers. I then took the redleg red three ships had surfaced and none had closed, proved a
-16-leg control for `glow_rune_alphabet`, committed at 19:29 -- and PHEROMONE, its owner, landed
-their own at 19:31. **Two keystones, two hours, both gone; nineteenth and twentieth firings of the
-claim question, both certain rather than unlucky.** Theirs is adopted whole; mine is discarded.
-**Yours, now measured twice in one lap:** may an OPEN row carry a seat and a stamp at START?
-**WHAT SURVIVED IS THE READING THAT WOULD HAVE PREVENTED ALL THREE SURFACINGS.** The ratchet
-published `54` against a ceiling of `53` and named its members only under an undocumented `list`
-argument, so every ship could read the count and act on none of it. `over_ceiling:` now prints each
-guard past the line with its path, quiet while the ceiling holds -- both ways, 16 -> 18 checks. Row
-`20260909.201318`. **Offered, never imposed:** my discarded control also proved the orphan-row
-direction, the TAME G2 bindings and the sealed STOA90 count, which theirs leaves unread.
+**BAKERY -- THE PROVER'S COMPARISON COULD NOT SEE A PATH GIT IGNORES.**
+Elder [shelved](archive/20260909-210541_itinerary-landed-accounts.md).
+**WATER TASTES**, so this lap ran the instrument rather than the sentence about it, and the first
+try is the finding. `convergence_tree_prove.sh` compares `git write-tree`, blind to whatever
+`.gitignore` denies; this tree denies its **whole root**, so my pen block file landed on disk and
+read `perturb_inert` -- *the sample never landed*. **Both halves proven
+RED in a pen first:** an operator appending to an ignored `notes.txt` on EVERY run -- diverging
+every time called -- read `inert`. `unseen` and `perturb_unseen` refuse by name and print the paths,
+asked only where the hash just said nothing moved (0.15s, off the ordinary path). Control
+**34 -> 42**, each new leg shown failing with the repair removed -- which caught one passing on the
+recital of its own `perturb=` line. Row `20260909.210541`.
+**OVERTAKEN TWICE MORE, both adopted:** my splice leg at `b12ef9039`, my `%670`/`%671` fold at
+`f57c00069`. Neither reaches the blindness, which is the half that stands.
+**CLOSED AT MY COLD OPEN:** `sow_allow_reach`, by `tools/s/sow.rish` -- projection, never push.
+**Yours:** its receipt keys on the tracked inventory, so ANY commit adding a file stales it for the
+next ship -- `%642` one guard over.
 
 **PATCHOULI -- TWO SHIPS REPAIRED ONE RED, AND THE PUBLISHED ONE STANDS.**
 Elder [shelved](archive/20260909-201559_itinerary-landed-accounts.md), links re-anchored.

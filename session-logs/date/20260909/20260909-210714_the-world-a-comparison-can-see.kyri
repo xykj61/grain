@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260909.210714
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role bakery seat -- core infrastructure lane
+modality text
+model claude-opus-5
+model_status active runtime unverified -- no runtime telemetry names the model; .claude/settings.json configures claude-opus-5
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, read from .claude/settings.json
+evidence .claude/settings.json tracked in this tree; the fleet loop execs the bare launcher
+voice Kyri
+host Linux pier checkout grain-bakery, America/New_York
+title The world a comparison can see
+prompt The baton, unattended: take the next agent-doable lap Lindy-first and crux-first in the core infrastructure lane.
+rota lap 4473, row 3 -- Water, the row that tastes; its cardinal seat says an infusion is tested by running it a SECOND time, and its threshold page says run the census rather than read the sentence about it. Run: 12 candidates, 9 proven, 3 unproven. Opening the file next door showed two of the three are a shared list library and a remote-reading scan, and the third is the front door's metrics splice that tools/hooks/pre-commit writes on every commit.
+think Opened with a detached cold roster pass and held still for it: 216 guards, 213 green, 2 red, 2 gated (%5). Only one red was real -- sow_allow_reach on stale projection coverage; standing_equipment reds as its own mirror of that.
+think Reds first. The cure sow_allow_reach names is tools/s/sow.rish, which is projection rather than push, so custody gate %1 stays Keaton's. Ran it; the scan reads allows=107 shipped=106 withheld_by_design=1 empty=0 and the witness is GREEN.
+think Proving the splice converges took two tries, and the first try was the lap's whole finding. tools/c/convergence_tree_prove.sh compares git add -A plus git write-tree, and git add -A stages nothing .gitignore denies. This tree denies its whole repository root with /*, so the pen block file I wrote there landed on disk and the prover answered perturb_inert -- the sample never landed -- while the file sat right in front of it.
+think Proved both halves RED on metal in a throwaway pen before touching the prover: an operator appending to an ignored notes.txt on every run, which diverges every time it is called, read inert; a perturbation writing an ignored root file read perturb_inert.
+think Repaired with two verdicts rather than one. unseen and perturb_unseen read git status --porcelain --ignored=matching, refuse by name and print the paths. The listing is asked only where the tree hash has just said nothing moved, so the ordinary path pays none of the 0.15s, and the prover's own .run1.out / .run2.out / .perturb.out are dropped by name rather than by ordering.
+think The control gains a third pen repository whose .gitignore copies this tree's root deny, and one operator run across it and the plain subject: diverges where git can see the write, unseen where it cannot. 34 -> 42 checks.
+obs Every new leg was shown failing with the repair removed, and that is what caught a bad one: "and the unseen path is named" checked for the bare word side.txt, which appears in the prover's own perturb= recital whatever verdict fires. It stayed green under the mutation while its four siblings fell. Tightened to the indented listing line; it bites now.
+obs Overtaken twice more in one lap, and each time I adopted the published work. b12ef9039 landed my splice leg upstream while I was proving it, with the same reading of the census column. f57c00069 folded %670 and %671 onto a shelf naming the same two rows an hour after I folded them here; my shelf and my recital line are dropped and theirs stands. Neither peer commit reaches the ignored-path blindness, so the keystone stands whole.
+obs The card's own count of my sow repair is the honest half: the receipt keys on the whole tracked inventory, so any commit adding a file stales it for the next ship. That is %642's standfast wearing a second face, and it is named rather than routed around.
+loom guard=standing_equipment_cold guards=216 green=213 red=2 gated=2 wall_s=2130
+loom guard=standing_equipment_hot guards=217 green=215 red=0 gated=2 wall_s=2270 tree_moved=no
+loom guard=convergence_tree_prove_control checks=42 was=34 wall_ms=8000
+loom scan=ignored_state files=16084 wall_ms=150
+loom census=convergence candidates=12 proven=10 unproven=2
+file tools/c/convergence_tree_prove.sh two verdicts that refuse rather than guess when the comparison is blind
+file tools/fixtures/c/convergence_tree_prove_control.sh a third pen repository that ignores its own root, both directions
+file tools/c/convergence_tree_prove_witness.rish the counts and the header synced to what the control now proves
+file construction/REDS.md row %673 booked and closed on the witness that proves the repair
+file construction/ITINERARY.md the lap's account, elder shelved whole
+scope one keystone: the tree prover's blindness to ignored paths, proven both ways; plus the cold open's one real red closed
+status GREEN -- convergence_tree_prove_witness, reds_ledger_monotone, sow_allow_reach all green on metal; hot roster pass named in the account
+recommend keep-going -- the census now reads 10 of 12 proven with both remainders non-writers, so the next lap in this lane is whether that column should tell a tool with nothing to converge from a tool nobody asked
