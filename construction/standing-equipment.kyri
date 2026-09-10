@@ -721,6 +721,24 @@ path tools/a/ascii_document_witness.rish
 tier lap
 seated 20260906.133344
 
+# ascii_resident_agree -- the tree's most expensive scan, priced by building the cheap one beside it.
+# `external-research/20260910-072912_the-seconds-this-pier-actually-spends.md` projected that a
+# resident reader -- one process that opens the tree once and answers many questions -- would remove
+# the kernel half of this pier's assurance bill, and named its own falsifier: reimplement one
+# representative guard as a single process and compare CPU seconds. Run `20260910.083451`, the shell
+# scan cost 25.99 CPU seconds over 7,741 processes and the one-process probe cost 1.49 over 6 -- a
+# factor of 17.4 whole, 466 in the kernel, and 8.8 in USER time, which is the half the projection had
+# called real reading. THIS GUARD HOLDS THE AGREEMENT RATHER THAN THE FIGURE: the seconds are free and
+# move with the pier's load, while the claim that the two readers answer one question is checkable and
+# is the only thing that makes the figure mean anything. The two agreed on the living tree at the
+# first run and PARTED the moment a planted page broke the wall -- `enforce=broken` against
+# `enforce=failed`, no detail lines, exit 0 against exit 1 -- so the pen carries the refusals.
+# `tier lap`: 10 pens plus one reading of this tree, about 8s.
+guard ascii_resident_agree
+path tools/a/ascii_resident_agree_witness.rish
+tier lap
+seated 20260910.083451
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812

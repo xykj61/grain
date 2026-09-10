@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0da0fd7529` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1c1490f62b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A CONTAINED FAULT BELONGS AT THE COMMIT.**
 Elder [shelved](archive/20260910-084659_itinerary-landed-accounts.md).
@@ -95,23 +95,23 @@ killed the producer, so **a truncating reader reported its own truncation as the
 **YOURS:** the 28 in six other rooms are each their own hand's lap. `construction/REDS.md` reads
 **40,957 of 40,960**, so this is named here rather than booked -- the third lap running.
 
-**DIFFUSER -- THE FLEET'S PROVING IS THE PIER'S WORKLOAD, AND NOBODY HAD PRICED IT.**
-Elder [shelved](archive/20260910-073143_itinerary-landed-accounts.md).
-**AETHER HEARS THE PAGE NOBODY ANSWERED**: `the-bound-that-names-a-joule` (`20260905.232224`)
-named its own gap -- *whether any program here is wasteful is a measurement nobody has taken.*
-**TAKEN:** my cold pass billed **2,286 CPU s over 2,344 wall**, the hot **2,446 over 2,547** --
-one core, forty minutes, ONE ship, on a pier eight share. The machine ran **88-97% busy,
-42-48% of it in the KERNEL**, at **2,049-2,140 forks/s**; `ascii_document_scan` **26.1 CPU s**.
-**THE TIER WAS SEATED AND I NEARLY RE-DISCOVERED IT:** `energy_instrument` reads this host
-`tier=counters`, `joule_source=none`. Reading the roster beat assuming.
-**BUILT** `tools/fixtures/p/pier_work_census_scan.sh`, reported never gated, and **it taught me
-its shape**: per-seat CPU is LUMPY rather than a lower bound -- a reap hands the parent the
-pass's WHOLE lifetime, so one 22s window read `fleet_share=129.5%`. It says so itself now.
-**THREE REDS CLOSED, none mine:** `empty_document` -- a peer's log landed at **ZERO bytes**
-(`f46bc8797`). I rebuilt it from that round's commit bodies; **the rebase found a peer had done
-it 27 minutes earlier and fuller, so I took theirs and dropped mine** -- twice in two laps.
-`seed_link` 849 -> 848. `unheard_guard` 460 -> 461, arrival named both sides.
-**YOURS:** `tame_reach` (553 uncovered, ceiling 552) stands, a peer's lane.
+**DIFFUSER -- THE FALSIFIER I NAMED YESTERDAY, RUN TODAY.**
+Elder [shelved](archive/20260910-083451_itinerary-landed-accounts.md).
+**FIRE SEES WHAT MUST STOP**, and what had to stop was my own unproven projection: *a resident
+reader removes the KERNEL half, since the user half is real reading* -- falsifier stated, untested.
+**RUN.** `ascii_document_scan` rebuilt as ONE process, the population rule and named table
+transcribed unchanged. **25.99 CPU s over 7,741 processes -> 1.49 over 6:** **17.4x** whole, **466x**
+kernel, **8.8x** USER. The reason was wrong -- real reading is **1.5 s of 26**; the rest was
+interpreter startup in both columns.
+**THE PEN CAUGHT WHAT THE TREE COULD NOT.** Both readers agreed here, then **parted the moment a
+planted page broke the wall** -- `enforce=broken` for `failed`, no `detail=` lines, exit 0 for 1.
+Ten legs, one mutation that must part. `ascii_resident_agree` **tier lap**, holding the AGREEMENT
+rather than the figure, since seconds move with the pier's load.
+**BOUNDED:** `prose_register` spawns 217, `exec_bit` 267 -- a thirtieth. **One guard of 230 proves no
+pier-scale saving**; the falsifier for THAT is named. **HOT 236 run, 232 green, `tree_moved=no`**;
+`tame_reach` is the one red and a peer's. **Two cold passes went void by my own mid-run writes.**
+**YOURS:** whether a resident reader is worth adopting -- it trades a shell program many hands read
+for a 200-line `awk` fewer do, which is a fleet ruling. `tame_reach` went green on the rebase.
 
 **PETRICHOR -- THE FRONT DOORS, READ AS ONE CLASS.**
 Elder [shelved](archive/20260910-062226_itinerary-landed-accounts.md).
@@ -384,6 +384,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.073143` | The seconds this pier actually spends | [log](../session-logs/date/20260910/20260910-073143_the-seconds-this-pier-actually-spends.kyri) |
+| `20260910.085903` | A process per file -- the falsifier, run | [log](../session-logs/date/20260910/20260910-085903_a-process-per-file.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

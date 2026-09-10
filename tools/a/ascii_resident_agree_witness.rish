@@ -1,0 +1,57 @@
+# ascii_resident_agree_witness.rish -- the resident reader answers what the shell reader answers.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/a/ascii_resident_agree_witness.rish
+#
+# WHAT IT BINDS. `external-research/20260910-081500_a-process-per-file.md` prices this tree's most
+# expensive scan two ways and reports a factor. That number means something only while the two
+# readers answer the same question, so this witness holds the agreement rather than the figure.
+# The figure itself is free -- it moves with the pier's load -- and a guard gating a free figure
+# reds on whatever the fleet happened to be doing.
+#
+# WHAT THE PROBE IS. `tools/fixtures/a/ascii_document_resident_probe.sh` is
+# `tools/fixtures/a/ascii_document_scan.sh` with every per-file process removed: one `awk` builds
+# both rosters, opens each counted file with `getline`, and prints the same census. The population
+# rule, the skip rules, the high-byte class, and the named table are transcribed without change.
+# A probe that is cheaper because it does less measures nothing.
+
+say "ascii-resident: Language EN -- two readers, one question; the cheap one is only interesting while it answers the same thing."
+say "ascii-resident: Style Gauge, Meter -- every reading below is the control's own output."
+say "ascii-resident: Lens TAME -- safety first: the probe reports and gates nothing, and the guard on the roster stays the shell scan. Purely local -- no key, no network, no funds, no device."
+
+say "ascii-resident: reading one of two -- the control, on real repositories in a throwaway pen."
+
+let control = run ["sh" "tools/fixtures/a/ascii_resident_agree_control.sh"]
+say control.out
+assert control.ok else "ascii-resident: the control must complete"
+assert control.out contains "control_verdict=ok" else "ascii-resident: the control must reach its own verdict"
+assert control.out contains "legs_fail=0" else "ascii-resident: a leg of the pen parted -- run sh tools/fixtures/a/ascii_resident_agree_control.sh and read the agree=no lines"
+assert control.out contains "legs_pass=10" else "ascii-resident: the pen's leg count moved -- raise it when a leg lands, and never lower it to make a deletion quiet"
+
+# THE REFUSAL PATH IS THE HALF A CLEAN TREE CANNOT PROVE. Both readers agreed to the character on
+# the living tree at the first run and parted the moment a planted page broke the wall: the probe
+# answered `enforce=broken` where the scan answers `enforce=failed`, printed no `detail=` lines,
+# and exited 0.
+assert control.out contains "leg=enforced_dirty agree=yes exit=1" else "ascii-resident: a walled page carrying a character must refuse the same way in both readers"
+assert control.out contains "leg=over_ceiling agree=yes exit=1" else "ascii-resident: a ratchet over its ceiling must refuse the same way in both readers"
+assert control.out contains "leg=enforced_order agree=yes exit=1" else "ascii-resident: the detail lines are ordered worst first, and a repairing reader depends on that order"
+
+# The welcomes, asserted as hard as the refusals. A reader that refuses everything agrees with a
+# refusal and teaches nothing.
+assert control.out contains "leg=clean_tree agree=yes exit=0" else "ascii-resident: a clean tree must pass in both readers"
+assert control.out contains "leg=testimony_read_past agree=yes exit=0" else "ascii-resident: dated testimony and closed stacks are read past by both, or the two rosters disagree"
+assert control.out contains "leg=derived_canon agree=yes exit=1" else "ascii-resident: a page the law names in a backtick is walled in both readers"
+assert control.out contains "leg=spaced_path agree=yes exit=0" else "ascii-resident: this tree carries a tracked path holding a space, and both readers must survive it"
+
+# THE MUTATION LEG IS WHAT MAKES THE NINE ABOVE MEAN ANYTHING. A probe with the middle-dot row
+# struck out must PART from the scan; if it still agrees, the control is comparing nothing.
+assert control.out contains "leg=mutation_bites agree=no_as_required" else "ascii-resident: a probe that stopped counting a named form still agreed -- the control proves nothing"
+
+say "ascii-resident: reading two of two -- the two readers over this tree, right now."
+
+let scan = run ["sh" "tools/fixtures/a/ascii_document_scan.sh"]
+let probe = run ["sh" "tools/fixtures/a/ascii_document_resident_probe.sh"]
+say probe.out
+assert scan.out == probe.out else "ascii-resident: the two readers parted on the living tree -- run sh tools/fixtures/a/ascii_document_resident_probe.sh --agree"
+
+say "ascii-resident: GREEN -- ten planted legs agree, one mutation parts, and both readers read this tree alike."
