@@ -15,6 +15,10 @@
 # alongside, refusing rather than sweeping in an author's unstaged edits. Proven both ways by
 # tools/g/generated_page_freshness_witness.rish.
 #
+# And tools/hooks/pre-push, which asks the derived spine's own two readings at the one moment that
+# publishes a REDS number -- after the send's final rebase, which is the step that brings a peer's
+# row into this tree, and before a single object leaves for the remote (`.claude/rules/derived-spine.md`).
+#
 # And tools/hooks/post-commit, its sibling, which reads the commits pre-commit never sees. Git runs
 # pre-commit for `git commit` and `git commit --amend` and for no other path, so a commit made by
 # `git rebase` or `git cherry-pick` -- the ordinary close of a round whose remote moved -- lands
@@ -67,6 +71,14 @@ assert post_present.ok else "install-hooks: ${post} is missing -- nothing to arm
 let post_runnable = run ["sh" "-c" "test -x ${post}"]
 assert post_runnable.ok else "install-hooks: ${post} is not executable -- git would skip it silently"
 
+let push = "tools/hooks/pre-push"
+
+let push_present = run ["sh" "-c" "test -f ${push}"]
+assert push_present.ok else "install-hooks: ${push} is missing -- nothing to arm"
+
+let push_runnable = run ["sh" "-c" "test -x ${push}"]
+assert push_runnable.ok else "install-hooks: ${push} is not executable -- git would skip it silently"
+
 let merge_driver = "tools/d/dayshelf_merge.sh"
 
 let merge_present = run ["sh" "-c" "test -f ${merge_driver}"]
@@ -89,4 +101,4 @@ let readback = run ["git" "config" "--get" "core.hooksPath"]
 assert readback.ok else "install-hooks: core.hooksPath did not read back -- ${readback.err}"
 assert (trim readback.out) == "tools/hooks" else "install-hooks: core.hooksPath reads ${readback.out} rather than tools/hooks"
 
-say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall, the front-door pre-commit, its post-commit sibling, and the dayshelf merge driver are armed on this clone."
+say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall, the front-door pre-commit, its post-commit sibling, the pre-push spine wall, and the dayshelf merge driver are armed on this clone."

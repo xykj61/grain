@@ -1,0 +1,51 @@
+format session-log-v1
+stamp 20260910.021118
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role captain, seat INCENSE, tree grain-incense
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, evidence .claude/settings.json read 20260908; this lap launched by tools/f/fleet-loop.sh
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The gate was right and its placement was wrong
+prompt autonomous lap -- law lane, reds first, the living pins
+rota lap 4508, row 4 -- Earth, the row that breathes in; advanced by hand past row 3, which my own previous lap read. The row's rule is that the concrete fact at the door outranks the plausible story, and this lap had one: the pin held %681 twice.
+think Opened on a detached roster pass a dead lap had left running. Its own refusal named the reason to stop it -- launch_head 650897a6c0 is no longer HEAD c34f879ddc, so its verdict was already fixed at tree_moved. That refusal is Copal's repair from one lap earlier, first-resident on a real orphan rather than a plant.
+think Reds-first read the pin and found %681 wearing two bindings: a row stamped 20260910.001157 in construction/REDS.md, and a shelf REDS-the-loom-that-chased-a-generation-too-far-rows-681.md stamped 20260909.234718. The scan calls that a published_double.
+think Measured rather than assumed: seven published doubles stand, not the one .claude/rules/derived-spine.md declares. Six arrived in the three days after that section was written. The figure is free -- nothing holds it still and it rises with the fleet's daily commit count.
+think The instrument is not missing. reds_spine_derive_scan.sh exits 1 on rebindings and on double_booked, which are exactly the two states that become a published double the instant a push lands. It runs at the cold open and at the hot close, and both come before the send's final rebase -- the one step that brings a peer's row into this tree. Nothing runs it in between, and there is no send script to hold that gap.
+think Proven on history rather than argued. git show 7b1f6b3ee:construction/REDS.md carries %681 at one stamp and the shelf at that commit carries it at another, so double_booked would have read 1 at the moment of a push that shipped. The same shape stands under %669, where two ships folded one number to two shelves three minutes apart.
+think So the repair is a placement rather than a new instrument. tools/hooks/pre-push runs the same scan after the tree settles and before an object leaves for the remote, and reaches every ship with no arming, since core.hooksPath reads tools/hooks on 8 of 8 checkouts on this pier.
+obs Two causes wear one name. Four of the seven pairs are stamped inside an hour of each other -- 3, 25, 34, 68 minutes -- which is two ships reading one next-free number in one sitting. Three stand 3, 14 and 31 hours apart, which is a lap parked and landed late. Both end at the same push, which is why the wall sits there rather than at either writing.
+obs The hook refuses the two gates and refuses an instrument that cannot answer, since a silent pass is exactly what %681 booked three hours earlier. It welcomes a published double already upstream -- no lap may repair one -- a delete, and a push whose own range carries no ledger change; 40 of the last 100 commits touch a ledger surface, so the ordinary lap pays nothing.
+obs The control runs real pushes against a bare repository in a pen and proves the ARMING, not only the file: a hook the tree ships and no clone reaches is a claim rather than a wall, and the arming is the half that actually failed the fleet.
+obs Honest about the open: a full cold roster pass was unattainable tonight. Six peer passes ran concurrently at load 12 to 16, and mine reached 32 guards, all green, no red, before I stopped it to write. The hot pass measures the tree this commit ships.
+obs The pin cost is real and named rather than hidden. Folding CLOSED %676 freed 1,789 bytes and the row spends 2,180, so a second CLOSED row, %685, folded to fit it -- REDS closes at 40,386 of 40,960. The ceiling three ships met tonight is still the fleet's live friction.
+obs The hot pass read two reds and one was mine, caught on the lap that wrote it: `rish_report_bound` at 39 sites against a ceiling of 38, because this witness composed `say "label ${mode.out}"` -- a message carrying a 4096-byte ceiling where a bare `say` carries none. Split into a label line and a bare reading, the repair the scan itself names. Back to 38.
+obs The other red was standing before I opened, and my truncated cold pass is why I met it late: `stash_record` read `unlanded=1` -- a finished Incense lap of `20260909.085306` whose session log stood in `stash@{0}` and nowhere else. Recovered byte for byte with `git show`, never retyped, and its row seated on the closed `20260909` shelf in stamp order. Its five source files stay parked, since `standing_equipment_run.sh` has moved a long way since.
+obs Landing that row moved the day's count, and both rosters were derived off the shelf rather than typed: `20260909` reads **105**, corrected in `session-logs/README.md` and `CHAPTERS.md` together.
+loom witness=pre_push_spine_witness cases=12 red=0 wall_s=8
+loom scan=reds_spine_derive published_doubles=7 rebindings=0 double_booked=0 next_free=687 wall_s=21
+loom roster=cold_partial guards_green=32 guards_red=0 load_avg=12.0
+loom roster=hot_full guards_green=219 guards_red=0 guards_gated=2 tree_moved=no
+file tools/hooks/pre-push the wall, placed where a push publishes rather than where a lap opens
+file tools/fixtures/p/pre_push_spine_control.sh twelve behaviors, real pushes, every refusal planted then lifted
+file tools/p/pre_push_spine_witness.rish the gate, and the arming asserted beside the file
+file tools/i/install_hooks.rish arms and asserts the new hook beside its three siblings
+file construction/standing-equipment.kyri pre_push_spine seated at tier lap
+file construction/REDS.md row %687 booked -- %683 from a local read, renumbered on the rebase that found a peer's %683 folded; CLOSED %676 and %685 folded off the pin
+file construction/archive/REDS-a-row-keys-on-the-log-it-names-rows-676.md the shelf that took it
+file construction/archive/REDS-read-the-form-and-the-channel-rows-685.md the second fold, to fit the row under the bound
+file .claude/rules/derived-spine.md exactly once corrected to a measured seven, and the placement clause seated
+file construction/ITINERARY.md the live front, elder account shelved whole
+file session-logs/date/20260909/20260909-085306_the-refusal-names-its-owner.kyri recovered whole from stash@{0}, unedited
+file session-logs/README.md the 20260909 count derived off its shelf
+file session-logs/CHAPTERS.md the same count, in the roster that had drifted from it before
+scope one red booked and closed by a wall, one CLOSED row folded, one law page repaired against measurement, one unlanded record recovered
+status GREEN -- closing hot roster run_verdict=ok, 219 green, 0 red, 2 gated, tree_moved=no. An earlier hot pass read 2 red and both are closed in this commit: rish_report_bound back under its ceiling at 38, stash_record unlanded=0. pre_push_spine 12 of 12; reds_spine_derive verdict=ok; QA A/B+/A/B on the four artifacts touched. The cold open is honestly partial at 32 green, 0 red.
+recommend check-in (Keaton) -- the row renumbered %683 to %687 on the rebase, exactly as rule 4 predicts, and the seven published doubles still wait on your word, and the class now arrives about twice a day rather than once ever; the eighth is walled from tonight.
