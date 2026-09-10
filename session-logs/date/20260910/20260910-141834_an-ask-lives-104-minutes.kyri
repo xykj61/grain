@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260910.141834
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role grass -- the auditing seat, whole-surface
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read this lap; the fleet loop execs --effort medium bare
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title An ask lives 104 minutes on the one surface Keaton reads
+prompt the baton -- grass, auditing lane, lap 4575
+rota lap 4575, row 0 -- Aether, the row that hears; its threshold asks a lap to record the silences as well as the sounds, which is what sent this lap looking for the question nobody answered
+think My own last lap found a scan header saying its question was asked on ITINERARY when the ask was no longer there. That was one lantern. This lap asked how large the class is.
+think A ship writes its question for Keaton inside its account block on the live card. tools/i/itinerary_account_shelf.sh moves that block WHOLE onto a shelf so the card holds under its bound -- correct, and the question rides along.
+think Measured the population from the shelves themselves: 72 **YOURS asks across 54 of 339 account shelves, and a grep for **YOURS under tools/ returns one line of unrelated prose, so nothing in the tree reads a shelf for a question.
+think Measured the lifetime from consecutive same-seat shelf stamps: 292 lives, median 104.4 minutes, p25 69.5, p75 159.1, and 283 of 292 under eight hours. A question written in the night reaches a shelf before morning.
+think Of the eight asks living on the card, exactly one was carried forward by the ship that wrote it -- checked by matching each living ask's own text against the shelves.
+think The repair a lap may make without Keaton's word is to give the move a voice: the writer prints asks_shelved=<n> and one ask: line per question. It edits nothing, judges nothing, and refuses nothing new, because answering an ask is his word.
+think The count reads the whole block before the listing truncates, since a truncating reader reporting its own truncation as the finding is a fault this tree booked at head -40 on my own lap two days ago.
+obs First resident on live state: shelving my own elder GRASS block through the changed writer printed my own unanswered dated_path ask back at me.
+obs Both mutations bite -- a count taken from the bounded listing misses a seventeenth ask (43 to 41), and a silent dry run loses three legs (43 to 35). The witness itself reds on a silenced tool and greens on its return, proven on metal in both directions.
+obs Grading the touched header raised it from C+/79 to B+/85, which closed the molt frame the reading pushed. The witness reads B/80.
+obs The standing population is reported by the witness and gated at nothing. A guard that reddened on an unanswered question would red on ordinary work, which is a guard someone turns off.
+loom witness=itinerary_account_shelf control_legs=43 fail=0 asks_shelved_standing=72
+loom census=account_shelf_life lives=292 median_min=104.4 p25_min=69.5 p75_min=159.1 under_8h=283
+loom roster=cold guards_run=240 green=235 red=2 gated=3 seconds=3592
+file tools/i/itinerary_account_shelf.sh the writer speaks every ask it shelves -- say_asks, MAX_ASKS_PRINTED, ASK_PRINT_BYTES
+file tools/fixtures/i/itinerary_account_shelf_control.sh thirteen new legs, both bounds shown from both sides
+file tools/i/itinerary_account_shelf_witness.rish the standing population reported, and the control's count moved 30 to 43
+file construction/ITINERARY.md the GRASS account, its elder shelved through the tool it changed
+file construction/archive/20260910-141655_itinerary-landed-accounts.md the elder account, written by the writer rather than by a hand
+scope one keystone -- the account shelf given a voice, and the ask population priced
+status GREEN -- itinerary_account_shelf_witness GREEN, control 43 fail=0, cold roster 235 green with two reds named and neither mine
+recommend check in (Keaton) -- whether an ask outlives its block wants a room, and a room is his word; the voice needed none and is landed

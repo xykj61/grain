@@ -37,6 +37,27 @@
 #
 # WHAT IT PRINTS. `shelf=<path>` and `card_link=archive/<basename>` -- the second being exactly the
 # spelling the live card needs, so the link the card carries is also handed over rather than typed.
+# Beside them `asks_shelved=<n>`, and one `ask: ` line per question the block carries, so the fold
+# speaks the questions it takes off the card.
+#
+# THE ASKS LEAVING THE CARD, SAID OUT LOUD. A ship writes its question for Keaton inside its own
+# account block -- `**YOURS:** whether Tally seats a wake bound` -- and this writer moves the block
+# whole, so the question leaves the one surface he reads by the same act that holds the card under
+# its bound. Measured `20260910` on this tree: **72** `**YOURS` asks stand across **54 of the 339**
+# account shelves; of the eight asks living on the card, **one** was ever carried forward by the
+# ship that wrote it; and an account block's median life on the card is **104 minutes**, read from
+# consecutive same-seat shelf stamps, with **283 of 292** lives under eight hours -- so a question
+# written in the night reaches a shelf before morning. Every one of those figures is FREE, held by
+# no gate, and a grep for `**YOURS` under `tools/` returns one line of unrelated prose, so nothing
+# in this tree reads a shelf for a question. The move was therefore silent. It speaks here: each
+# ask prints as it goes, and the hand folding the card sees what is leaving it.
+#
+# WHAT THAT READING IS. `**YOURS` is the live front's own ask sigil, so the count reads that token
+# rather than meaning -- a question written in plain prose passes free, and a reader stays the
+# standard. The listing is bounded at MAX_ASKS_PRINTED lines of ASK_PRINT_BYTES each, and a block
+# carrying more names the remainder in `asks_unprinted=`. The COUNT reads the whole block before
+# any truncation, since a truncating reader reporting its own truncation as the finding is a fault
+# this tree has already booked.
 #
 # WHERE THIS STOPS, and the line is the same one that let it write a header. It never edits
 # `construction/ITINERARY.md`. Splicing the card means deciding where a ship's block begins and ends,
@@ -52,6 +73,8 @@ root=${ITINERARY_SHELF_ROOT:-$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)}
 cd "$root"
 
 MAX_BLOCK_BYTES=8192
+MAX_ASKS_PRINTED=16
+ASK_PRINT_BYTES=160
 
 STAMP=
 SEAT=
@@ -108,6 +131,24 @@ fi
 
 anchored=$(printf '%s\n' "$block" | sh "$reanchor")
 
+# say_asks -- name every question the block is carrying off the live card.
+# invariant: the count reads the whole block and only the listing is bounded, so a held-back line
+# can never understate the population it is listing.
+# invariant: this reports and never refuses -- answering an ask is Keaton's word, and a writer that
+# declined to shelf a block holding a question would refuse ordinary work.
+say_asks() {
+  asks=$(printf '%s\n' "$block" | grep -cE '\*\*YOURS' || true)
+  echo "asks_shelved=$asks"
+  [ "$asks" -gt 0 ] || return 0
+  printf '%s\n' "$block" | grep -E '\*\*YOURS' | sed -n "1,${MAX_ASKS_PRINTED}p" \
+    | cut -c1-"$ASK_PRINT_BYTES" | sed 's/^/ask: /'
+  if [ "$asks" -gt "$MAX_ASKS_PRINTED" ]; then
+    echo "asks_unprinted=$((asks - MAX_ASKS_PRINTED))"
+  fi
+  return 0
+}
+
+
 shelf=$(
   printf '# ITINERARY -- landed accounts, shelved `%s`\n\n' "$STAMP"
   printf '**Language:** EN\n'
@@ -126,6 +167,7 @@ shelf=$(
 if [ "$DRY" = yes ]; then
   printf '%s\n' "$shelf"
   echo "dry_run=yes shelf=$target card_link=archive/$base"
+  say_asks
   exit 0
 fi
 
@@ -136,3 +178,4 @@ rm -f "$tmp"
 
 echo "shelf=$target"
 echo "card_link=archive/$base"
+say_asks

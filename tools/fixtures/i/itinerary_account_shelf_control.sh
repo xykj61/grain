@@ -51,6 +51,38 @@ check "the header names the seat"                yes "$(has "$out" 'The DIFFUSER
 check "the header names the stamp"              yes "$(has "$out" 'shelved `20260909.001122`')"
 check "the header declares its room"             yes "$(has "$out" '**Room:** Checkable')"
 
+# --- the asks leaving the card, said out loud -------------------------------------------------
+# A ship's question for Keaton rides inside its account block, and this writer moves the block
+# whole. The count is asserted over the whole block and the listing separately at its bound, so a
+# held-back line can never be mistaken for a smaller population.
+askblock='**GRASS -- AN ACCOUNT.**
+**YOURS:** whether the shelf should speak.
+**YOURS, KEATON -- A SECOND QUESTION.** and its tail.'
+out=$(printf '%s\n' "$askblock" | run --stamp 20260909.010000 --seat GRASS --dry-run)
+check "a dry run counts the asks it would shelve" yes "$(has "$out" 'asks_shelved=2')"
+check "and prints the first one whole"           yes "$(has "$out" 'ask: **YOURS:** whether the shelf should speak.')"
+check "and the second, sigil and all"            yes "$(has "$out" 'ask: **YOURS, KEATON -- A SECOND QUESTION.**')"
+out=$(printf '%s\n' "$askblock" | run --stamp 20260909.010000 --seat GRASS)
+check "a real write counts them too"             yes "$(has "$out" 'asks_shelved=2')"
+check "and the shelf still lands"                yes "$(has "$out" 'shelf=construction/archive/20260909-010000')"
+out=$(printf '%s\n' "$block" | run --stamp 20260909.011000 --seat DIFFUSER)
+check "a block asking nothing reads zero"        yes "$(has "$out" 'asks_shelved=0')"
+check "and prints no ask line at all"            no  "$(has "$out" 'ask: ')"
+
+sixteen=$(i=1; while [ $i -le 16 ]; do echo "**YOURS:** question $i."; i=$((i+1)); done)
+out=$(printf '%s\n' "$sixteen" | run --stamp 20260909.012000 --seat GRASS --dry-run)
+check "sixteen asks print whole"                 16  "$(printf '%s\n' "$out" | grep -c '^ask: ')"
+check "and name no remainder"                    no  "$(has "$out" 'asks_unprinted=')"
+out=$(printf '%s\n**YOURS:** question 17.\n' "$sixteen" | run --stamp 20260909.012000 --seat GRASS --dry-run)
+check "a seventeenth is counted whole"           yes "$(has "$out" 'asks_shelved=17')"
+check "the listing stops at its bound"           16  "$(printf '%s\n' "$out" | grep -c '^ask: ')"
+check "and the one held back is named"           yes "$(has "$out" 'asks_unprinted=1')"
+
+long=$(dd if=/dev/zero bs=1 count=400 2>/dev/null | tr '\0' 'q')
+out=$(printf '**YOURS:** %s\n' "$long" | run --stamp 20260909.012500 --seat GRASS --dry-run)
+askline=$(printf '%s\n' "$out" | grep '^ask: ' | head -1)
+check "a long ask prints at the byte bound"      165 "${#askline}"
+
 # --- the write ------------------------------------------------------------------------------
 out=$(printf '%s\n' "$block" | run --stamp 20260909.001122 --seat DIFFUSER)
 check "a write reports its shelf"                yes "$(has "$out" 'shelf=construction/archive/20260909-001122_itinerary-landed-accounts.md')"

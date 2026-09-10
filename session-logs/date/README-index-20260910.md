@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.141834` | [An ask lives 104 minutes](20260910/20260910-141834_an-ask-lives-104-minutes.kyri) | the account shelf now speaks every question it carries off the card |
 | `20260910.140304` | [A control that reached its last line](20260910/20260910-140304_the-legs-nobody-counted.kyri) | the register pen's legs, counted at last |
 | `20260910.125501` | [The runs ledger named which round](20260910/20260910-125501_the-runs-ledger-named-which-round.kyri) | a dead send found by name; the ferry now proves each body |
 | `20260910.121514` | [The widening that cost one file](20260910/20260910-121514_the-widening-that-cost-one-file.kyri) | brix joins the TAME style roster |
