@@ -5,7 +5,7 @@
 **Status:** Checkable -- enclosure and Pond supersede guide
 **Depth:** guide
 **Ceiling:** <=300 lines
-**Last updated:** `20260904`
+**Last updated:** `20260910.142031` -- two sentences restated to lead with what is, every claim and path held, so the compressor shelf joins the register meter at zero over target
 **Compresses:** [`counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) - [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md) - [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) - [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md) - [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md) - [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) - [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
 
 ---
@@ -57,7 +57,7 @@ Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless ex
 
 Proven-seat metal detail: [`PROVEN_SEAT.md`](PROVEN_SEAT.md).
 
-**Route two (parked):** nest `bwrap` + `--dev-bind /dev/kvm` for proven-seat only. **Graduation trigger:** open when G1's QEMU cadence makes the hand one-shot the bottleneck (lane's second consumer), or at the autonomous-pipeline word -- whichever first. Do not patch teacher ai-jail.
+**Route two (parked):** nest `bwrap` + `--dev-bind /dev/kvm` for proven-seat only. **Graduation trigger:** open when G1's QEMU cadence makes the hand one-shot the bottleneck (lane's second consumer), or at the autonomous-pipeline word -- whichever first. Teacher ai-jail stays as it stands.
 
 ---
 
@@ -151,7 +151,7 @@ Full card: [`20260712-210800` exit criteria](../active-designing/date/20260712/2
 | **Soaking** | Named build word - frozen candidate - N in progress |
 | **Open** | Exit bron contentful + master `.asc` - `--require` GREEN |
 
-**Affirmation path (remaining):** Kaeden's **named supersede build word** -> freeze release candidate -> record `soak_start_nib` -> soak under N -> write exit bron -> master-sign on host (cold key only). Ceremony command lives in exit card witness -- run from card, not from this page.
+**Affirmation path (remaining):** Kaeden's **named supersede build word** -> freeze release candidate -> record `soak_start_nib` -> soak under N -> write exit bron -> master-sign on host (cold key only). Ceremony command lives in the exit card witness -- run it from the card.
 
 Freeze affirmed: [`213600`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md).
 

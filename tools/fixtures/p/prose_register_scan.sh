@@ -35,7 +35,7 @@
 # already names: count them rather than quoting a number.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The teaching tier --
-# docs-geode/, manual/, docs-geode/edu/yonder/, and the root guides a newcomer opens -- counted as documents sitting
+# docs-geode/, docs/, manual/, docs-geode/edu/yonder/, and the root guides a newcomer opens -- counted as documents sitting
 # above the Field target of 30%. Repair is a rewrite per document rather than a substitution, so
 # these fall on touch. Measured at seating, the beginner tutorial itself read 59%.
 #
@@ -98,6 +98,37 @@ FRONT_DETAIL_MAX=40
 # The ceiling was set by counting the prose list rather than by asking the meter, which bought one
 # slot for a page no lane could ever sweep off it. Four is what the reading answers.
 ceiling=4
+
+# THE COMPRESSOR SHELF JOINED THE TEACHING TIER ON 20260910, and it arrived by the road the ASCII
+# wall took through the same room that morning. docs/ is where MAP.md sends a newcomer after the
+# front door, and no register meter had ever read it: the DOOR roster names docs/README.md alone,
+# and the teaching glob reached docs-geode/ and manual/ straight past the rest. A room held by
+# nothing is a room that drifts in the one place everybody looks.
+#
+# MEASURED BEFORE THE CHANGE, over the 11 of 15 pages clearing the eight-sentence floor: exactly
+# two stood above the Field target, and both were pages whose SUBJECT is refusal --
+# docs/WITNESS_PATTERNS.md at 52% of 17 sentences and docs/ENCLOSURE.md at 31% of 47. The room paid
+# its way in rather than buying a raise: WITNESS_PATTERNS reads 29% and ENCLOSURE 27% from this
+# commit, four sentences restated in the first and two in the second, every claim, path, stamp and
+# verdict word held. The ceiling stays 4, and docs/ joins clean. A room brought under a guard while
+# it is clean stays clean; the same room brought under it later is a repair somebody has to
+# schedule -- docs-geode/README.md wrote that sentence about itself two days earlier.
+#
+# WHAT THE SWEEP LEFT STANDING is the reading worth carrying forward. WITNESS_PATTERNS keeps five
+# counted sentences and every one of them is what the page is about: a candidate artifact ABSENT,
+# the negative-space assert, the paired-refuse law, and the policy verdict REFUSE itself. The four
+# that left were incidental -- `not duplicated here`, `never delete the stage`, `one green without
+# its pair`, `landing probes opens no season`. docs/CRYPTO.md sits at exactly 30 and stays there,
+# and its negatives are the claims a crypto page exists to make: no libc, no real identity key, no
+# network, no funds. A target is a ceiling rather than a goal, and a page about refusal spends more
+# of it honestly.
+#
+# WHAT THIS READING DOES NOT SETTLE, named rather than left for a reader to trip on. Three pages
+# now sit on the DOOR roster AND inside the teaching glob -- docs/README.md, docs-geode/demos and
+# docs-geode/tutorials/the-first-hour.md -- so a page over 30% would count once under each. The two
+# tiers hold different ceilings and keep separate counters, so nothing is priced twice inside one
+# total; the shape is named here because the ASCII wall met the same double membership in the same
+# room on 20260910 and it was a fault there, where one number carried both memberships.
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -269,7 +300,7 @@ for f in $DOOR; do
 done
 
 # The teaching tier: what a newcomer opens after the front door.
-git ls-files 'docs-geode/*.md' 'manual/*.md' 'docs-geode/edu/yonder/*.md' CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md 2>/dev/null \
+git ls-files 'docs-geode/*.md' 'docs/*.md' 'manual/*.md' 'docs-geode/edu/yonder/*.md' CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md 2>/dev/null \
   | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' > "$work/teaching.txt"
 
 teaching_over=0
