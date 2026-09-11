@@ -235,7 +235,6 @@ let census = run ["sh" scan]
 say census.out
 assert census.ok else "dated-path: the census must complete -- see stderr"
 assert census.out contains "verdict=ok" else "dated-path: the census is trustworthy only when every reference landed in exactly one bucket"
-assert census.out contains "under_ceiling=yes" else "dated-path: LOST references have risen above the ceiling -- a reference now resolves nowhere, or resolves to two places at once, and neither is something the resolver can repair"
 
 # The scan's own RED path, proven by construction rather than by trust. A throwaway corpus is
 # built whose right answer is known before the walker runs: two dated references cited from one
@@ -299,6 +298,18 @@ assert control.out contains "lost_promised_living=2" else "dated-path: the repai
 # false reading was the entire repairable count, 1 against 0.
 say "split GREEN -- the lost set parts promise from mention and living from testimony, a link label is told from its target, and the repairable cell is counted rather than assumed"
 
+# THE CITING CORPUS IS THE TRACKED TREE, proven on a real `.lap/` scratch room in the pen and from
+# both sides. The walker is `grep -r .`, so every untracked room walked in with the field until
+# `20260911` -- and `.lap/` is gitignored, one per checkout, holding what a lap drafted an hour ago
+# (`.claude/rules/read-scope.md`). On this pier `.lap/mine/convergence_tree_prove.sh` supplied one
+# `gone` reading to a gate held at a ceiling, so eight checkouts answered this meter differently
+# for a reason none of them could see. The three legs below are the walk reaching the file, the
+# count with it untracked, and the count after `git add` on that one file and nothing else.
+assert control.out contains "scratch_walk_sees=1" else "dated-path: the pen's walk must actually reach the scratch file, or the filter below proves nothing"
+assert control.out contains "scratch_untracked=1" else "dated-path: an untracked scratch file must stand outside the citing corpus -- a meter reading one ship's scratch is measuring the bench"
+assert control.out contains "scratch_tracked=2" else "dated-path: staging that same file must bring it back, since `git ls-files` reads the index and the hot roster pass runs after `git add`"
+say "corpus GREEN -- the walk reaches an untracked scratch file, the census declines it, and staging the same file returns it"
+
 # ONE LIST, read by both tools. They kept private copies for a day, diverged twice, and the second
 # divergence let the repointer rewrite the stale fixture three asserts above -- leaving the rung
 # that proves the fold rule works proving nothing (REDS %121). A rule like that is only worth
@@ -328,5 +339,20 @@ assert one_list.out contains "roster_reads_itself=no" else "dated-path: the rost
 assert one_list.out contains "discovery_leaves_scratch=no" else "dated-path: discovery must leave no scratch file in the tree it read"
 assert one_list.out contains "control_verdict=ok" else "dated-path: the single-list control must agree with itself"
 say "one list GREEN -- census and repointer read the same exclusions, a private copy is refused, a planted name is discovered rather than remembered, and a name a comment merely writes about is read past"
+
+# THE FIELD GATE SPEAKS LAST, so a red field never silences the instrument that read it. This
+# assert stood directly under the census, ABOVE every control leg -- and an assert ends the run, so
+# for as long as the lost count sat over its ceiling not one of this witness's controls ran: the
+# throwaway corpus, the worktree exclusion, the declared-absence bounds, the promise-and-living
+# split, the single exclusion list, and the scratch-room legs added `20260911`. A field reading and
+# an instrument reading are two questions, and the one a hand can act on is whether the instrument
+# still works. Moved `20260911` -- same gate, same refusal, read after everything that proves the
+# reading is honest. Same shape as `shim_reason`'s `late_say`, one room over.
+#
+# WHAT IT STILL REFUSES, unchanged: a reference that resolves nowhere, or resolves to two places at
+# once, and neither is something the resolver can repair. `lost_promised_living` is the repairable
+# cell and the gate's standing question; moving the gate to that reading is Keaton's word, asked on
+# `construction/ITINERARY.md` and never taken by a lap for itself.
+assert census.out contains "under_ceiling=yes" else "dated-path: LOST references have risen above the ceiling -- a reference now resolves nowhere, or resolves to two places at once, and neither is something the resolver can repair"
 
 say "GREEN: dated-path -- seven verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the lost-reference census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."

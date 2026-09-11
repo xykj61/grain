@@ -49,28 +49,28 @@
 
 ### Now -- the live front
 
-**Git nib:** `1cce134c51` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `66d4c18ce9` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
-Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4614): the concrete fact at the door.
-**READ THE FACE:** duty 5 printed `HEAD_OK ... -22941s`. Behind passes, so the verdict is right --
-yet a head **six hours stale** asked which population made it.
-**MEASURED:** `one_clock_mono_scan.sh` built its population from a **flat glob**, and a log is
-**born on its day shelf** since `20260827.171500`, so `session-logs/*` flat holds **zero**. It read
-**247 of 7,344** dated artifacts, **3.4%**; its sed anchored on the sprig besides, hiding **237**
-sprigless files (`%175`).
-**PROVEN, ONE FILE TWO PATHS:** a log stamped **four hours ahead** on its day shelf reads
-`HEAD_OK`, exit 0; **moved flat**, `HEAD_BAD`, exit 1 -- the path that hid it is the path the law
-requires. It survived because both duty-5 fixtures pass stamps through
-`ONE_CLOCK_HEAD_STAMPS`, **bypassing the population walk**: predicate proven, reach never.
-**THE LOOM HAD THE SAME HOLE:** `dated_spelling` matches **ERE**, `sed` is **BRE**, so every
-*extracting* site went free -- duties 5 and 4, caravan's prose meter.
-**STANDING:** `find` over folded shelves and `[_.]`; **5.475s -> 0.192s at 30x the population**;
-duty 6 is the reach, 7 legs, 2 mutations bitten; the loom reaches both dialects, 3 cases.
-Row `20260911.020039`, born on its shelf -- the pin had 481 bytes, the row wanted 2,929.
-**REDS FIRST, TWO CLOSED:** `20260910` read **104** in both rosters; its shelf holds **107**.
-**YOURS:** nothing. **NAMED:** `session_roster_agree` builds a stale-row report it never prints.
+**BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
+Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
+**REDS FIRST, ONE CLOSED:** `shim_reason` refused at `late_say_rostered=1`. `say scan.out` stood at
+line 88 of `gitlink_dependent_witness.rish`, **below** its binding's first assert at 64 -- an assert
+ends the run, so a refusing scan gave the reader the witness's own sentence and nothing else. Moved
+above it. **1 -> 0.**
+**SAME SENTENCE ONE ROOM OVER:** `dated_path`'s `under_ceiling` assert sat above **every control
+leg**, so while the field stood over its ceiling **not one control ran**. The gate speaks last now,
+same refusal -- and its first run caught a real collision with my own change.
+**TWO DEFECTS MEASURED:** its walker is `grep -r .`, so what it read was the **filesystem** while
+its oracle was `git ls-files`. `.lap/` is gitignored and **one per checkout**, and one scratch file
+there fed a `gone` reading to a gate at its ceiling -- eight ships answering a meter differently for
+a reason none can see. Both read one list now. Second: a witness citing a paper at a stamp that
+names no file. **107 -> 105, living 7 -> 5.**
+**STANDING, YOURS:** `dated_path` stays red, **105 against 85** -- **100 testimony**
+accrete-never-break forbids repairing, and `lost_promised_living` reads **0**. Moving the gate there
+is asked in its own scan, never by a lap.
+**THIRD:** `session_roster_agree` named no day on the only mode its witness runs. It prints the
+gated rows on a refusal now, one predicate spelling naming and verdict. **29 -> 41** legs. No row
+booked: REDS held **15 bytes** when I read it.
 **PATCHOULI -- THE TWO COMMANDS THAT ONLY READ WERE THE TWO THAT CREATED A REPOSITORY.**
 Elder [shelved](archive/20260911-053330_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, hand-advanced), whose cardinal seat asks *would running it again change

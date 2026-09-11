@@ -59,6 +59,15 @@ assert ctl.out contains "pass=37 fail=0" else "gitlink-dependent: the control di
 
 say "gitlink-dependent: and this tree's own reading..."
 let scan = run ["sh" "tools/fixtures/g/gitlink_dependent_scan.sh" "probe"]
+# The closing line tells a reader to READ `optional_unrostered`, and until `20260911` nothing here
+# printed it -- the scan's whole output stood captured in `scan.out` and was said nowhere. It is
+# said HERE, ABOVE the first assert on the binding, because an assert ends the run: said below, the
+# reading a refusal most needs is exactly the reading the refusal throws away, and the reader
+# receives this witness's own sentence and nothing else (`shim_reason`, `late_say_rostered`).
+# BARE, never interpolated (`rish_report_bound`, repaired `20260911.035245`): `say "${scan.out}"`
+# opens a 4096-byte StrBuf and would end the run on a GREEN reading once this census outgrew it. A
+# bare `say` writes the value straight out, as `reds_spine_derive` does.
+say scan.out
 # invariant: a refusal reports BOTH streams, since this scan writes its reason to stderr and the
 # reds file a reader opens would otherwise carry an empty line where the reason belongs.
 assert scan.ok else "gitlink-dependent: the scan refused --\n${scan.out}\n${scan.err}"
@@ -79,14 +88,6 @@ assert scan.out contains "probe_green=" else "gitlink-dependent: the probe repor
 assert scan.out contains "probe_unread=" else "gitlink-dependent: the probe reported no unread count"
 assert scan.out contains "required_dependents=" else "gitlink-dependent: the required population went unreported"
 assert scan.out contains "optional_gitlinks=" else "gitlink-dependent: the two rooms were not counted apart"
-# The closing line tells a reader to READ `optional_unrostered` above, and until `20260911` nothing
-# here printed it -- the scan's whole output stood captured in `scan.out` and was said nowhere. A
-# guard pointing at a line it never speaks is the same fault this lap came to repair, one room in.
-# BARE, never interpolated (`rish_report_bound`, repaired `20260911.035245` as this lap landed out of
-# a stash): `say "${scan.out}"` opens a 4096-byte StrBuf and would end the run on a GREEN reading
-# once this census outgrew it. A bare `say` writes the value straight out, as `reds_spine_derive` does.
-say scan.out
-
 say "gitlink-dependent: and the capability field the cure rests on is really built..."
 # invariant: the roster honors at least one capability probe. This witness recommends a mechanism to
 # whoever reads the unrostered population, and recommending one the runner does not implement would

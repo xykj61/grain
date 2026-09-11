@@ -208,6 +208,50 @@ build_clean
 out=$(scan)
 echo "$out" | grep -q '^verdict=ok$' && note ok "31 lifted: restoring the bounded corpus returns ok" || note no "31 lifted: restoring the bounded corpus returns ok"
 
+# --- 9: a count run names what refused, and stays quiet when nothing did ----------------------
+# `list` has always named the day. The witness has only ever asked for `count`, so a fleet pass
+# reading `stale=3` named no day at all and a hand had to know a second spelling existed. These
+# legs hold the naming to the gated kinds: a clean tree says nothing extra, an `open_stale` row is
+# a duty rather than a refusal, a one-sided shelf AT its ceiling is an honest reading -- and each
+# of those three is proven silent on a tree where the reading is genuinely non-zero, since a
+# silence proven only at zero cannot be told from a printer that never fires.
+build_clean
+out=$(scan)
+naming=$(echo "$out" | grep -cE '^(disagree|stale|uncounted|phantom|one_sided): ' || true)
+[ "$naming" -eq 0 ] && note ok "32 free: a green count run names nothing" || note no "32 free: a green count run names nothing"
+
+build_clean
+rewrite "$PEN/tree/session-logs/README.md" '^| `20260908` | 3 |' '| `20260908` | 9 |'
+out=$(scan)
+echo "$out" | grep -q '^stale: 20260908 -- pin reads 9, the shelf holds 3' && note ok "33 bitten: a count run names the day behind stale" || note no "33 bitten: a count run names the day behind stale"
+echo "$out" | grep -q '^verdict=drift$' && note ok "34 bitten: and still refuses" || note no "34 bitten: and still refuses"
+build_clean
+out=$(scan)
+echo "$out" | grep -q '^stale: ' && note no "35 lifted: repairing the number takes the naming away" || note ok "35 lifted: repairing the number takes the naming away"
+
+# An `open_stale` row is a duty the next day-close pays, so it is never what refused. Planted
+# BESIDE a real refusal, so the leg reads a filter rather than an empty report file.
+build_clean
+rewrite "$PEN/tree/session-logs/README.md" '^| `20260908` | 3 |' '| `20260908` | open |'
+rewrite "$PEN/tree/session-logs/CHAPTERS.md" '^| 20260908 | `20260908` | 3 |' '| 20260908 | `20260908` | 9 |'
+out=$(scan)
+echo "$out" | grep -q '^stale: 20260908 -- chapters reads 9' && note ok "36 bitten: the gated row is named" || note no "36 bitten: the gated row is named"
+echo "$out" | grep -q '^open_stale: ' && note no "37 free: an open row for a past day is never named as the refusal" || note ok "37 free: an open row for a past day is never named as the refusal"
+echo "$out" | grep -q '^open_stale=1$' && note ok "38 free: and is still counted, so a hand can ask for it with list" || note no "38 free: and is still counted, so a hand can ask for it with list"
+scan list | grep -q '^open_stale: 20260908' && note ok "39 free: list still prints every reading" || note no "39 free: list still prints every reading"
+
+# A one-sided shelf AT the ceiling is an honest reading; over it, it is the refusal itself.
+build_clean
+shelf 20260905 6; pin_row 20260905 6
+rewrite "$PEN/tree/session-logs/README.md" '^| `20260907` | 4 |' '| `20260907` | 8 |'
+out=$(scan)
+echo "$out" | grep -q '^one_sided: ' && note no "40 free: a one-sided shelf at its ceiling is not named as the refusal" || note ok "40 free: a one-sided shelf at its ceiling is not named as the refusal"
+build_clean
+shelf 20260905 6; pin_row 20260905 6
+shelf 20260904 6; chapters_row 20260904 6
+out=$(scan)
+echo "$out" | grep -q '^one_sided: ' && note ok "41 bitten: over the ceiling it IS the refusal, and is named" || note no "41 bitten: over the ceiling it IS the refusal, and is named"
+
 echo "control_pass=$pass"
 echo "control_fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; else echo "control_verdict=misread"; exit 1; fi

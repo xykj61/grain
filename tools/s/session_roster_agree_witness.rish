@@ -38,7 +38,7 @@
 # this scan's first run against a living tree that was in fact clean. The count is the LAST bare
 # cell before the shelf link, and leg 6 of the control plants exactly that shape.
 #
-# Pen: tools/fixtures/s/session_roster_agree_control.sh -- 29 behaviors on real roster pages and
+# Pen: tools/fixtures/s/session_roster_agree_control.sh -- 41 behaviors on real roster pages and
 # real shelves in a throwaway pen, every refusal planted and then lifted again.
 #
 # Style: context/GAUGE_STYLE.md - Rule: .claude/rules/stamp-and-name.md - .claude/rules/session-logs.md
@@ -78,6 +78,18 @@ assert control.out contains "18 bitten: two roster rows naming an absent shelf f
 assert control.out contains "24 bitten: the ceiling refuses at two" else "session-roster-agree: the one-sided ceiling must refuse from above"
 assert control.out contains "27 free: and never gated -- the day-close pays it" else "session-roster-agree: an open row for a past day is a duty, never a red"
 assert control.out contains "29 bitten: an empty date room refuses at zero" else "session-roster-agree: a corpus of zero is a red, never a reading"
+
+# WHAT REFUSED, NAMED. `list` has always named the day; this witness has only ever asked for the
+# default `count`, so a fleet pass reading `stale=3` named no day and a hand had to know a second
+# spelling existed. The scan names the gated rows on a refusal now, and holds its tongue otherwise
+# -- each silence proven on a tree where the reading is genuinely non-zero, since a silence proven
+# only at zero cannot be told from a printer that never fires.
+assert control.out contains "32 free: a green count run names nothing" else "session-roster-agree: a passing run must stay quiet, or the naming becomes noise every lap reads past"
+assert control.out contains "33 bitten: a count run names the day behind stale" else "session-roster-agree: a refusal must name what refused, in the mode every lap actually runs"
+assert control.out contains "37 free: an open row for a past day is never named as the refusal" else "session-roster-agree: a duty the day-close pays is never the refusal, and naming it would teach a reader to repair the wrong row"
+assert control.out contains "40 free: a one-sided shelf at its ceiling is not named as the refusal" else "session-roster-agree: an honest reading at its ceiling is never the refusal"
+assert control.out contains "41 bitten: over the ceiling it IS the refusal, and is named" else "session-roster-agree: over its ceiling the ratchet becomes the refusal, and must name itself"
+assert control.out contains "control_pass=41" else "session-roster-agree: every behavior the pen plants must be read"
 say "the scan's behaviors proven on planted rosters and planted shelves, each reading shown from both sides"
 
 assert control.out contains "30 bitten: an oversized corpus refuses before counting" else "session-roster-agree: an oversized corpus must refuse instead of hiding shelves"

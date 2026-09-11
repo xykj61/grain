@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.055635` | [A guard that names nothing](20260911/20260911-055635_a-guard-that-names-nothing.kyri) | three guards refused and named nothing; all three name it now |
 | `20260911.053535` | [The showing reaches a person](20260911/20260911-053535_the-showing-reaches-a-person.kyri) | mantra annotate lands; a reading no longer creates a store |
 | `20260911.041915` | [The room that houses the law](20260911/20260911-041915_the-room-that-houses-the-law.kyri) | context/ living doors named: 23 rooms, ceiling 90 -> 67 |
 | `20260911.035345` | [The card said walled, the meter said door](20260911/20260911-035345_the-card-said-walled-the-instrument-said-door.kyri) | a loom binds a card claim to the pin's meter |
