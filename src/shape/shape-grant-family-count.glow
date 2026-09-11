@@ -9,6 +9,9 @@
 ::  Names the three grant families already GREEN in docs/TUBE.md /
 ::  HAWM (storage-scope - network-grant - sensors-grant). Does not
 ::  invent a fourth family - Mand policy - or APK permission emission.
+::  Source: linengrow/glow_storage_scope.rye - glow_network_grant.rye -
+::  glow_sensors_grant.rye -- one mold module per family, witnesses aside.
+::
 +$  grant-family-count-shape
   $:  families=@u32
   ==

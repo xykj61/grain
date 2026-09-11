@@ -8,6 +8,10 @@
 ::  Surface Chapter p19 -- second pedestal in src/app (Pool agents).
 ::  Names the TUBE app-manifest mold field count from docs/TUBE.md.
 ::  Does not seat packaging - APK - NativeActivity - or revive pond/apps.
+::  Source: linengrow/tube_manifest.rye -- the parameters of build(), which is where the
+::  mold's four fields are named. The Manifest struct itself holds seven, since a fixed
+::  buffer carries a length companion beside each of its two text fields.
+::
 +$  tube-manifest-field-count-shape
   $:  fields=@u32
   ==

@@ -13,8 +13,10 @@
 # green over a museum displaying a figure the engine stopped keeping.
 #
 # THIS RUNG TAKES FIVE OF THE TWELVE -- the class whose number is a published constant of one
-# module, `brushstroke/brush_parse.rye`. The remaining seven come from struct field counts, enum
-# members and fixture lines, and each wants its own reading of its own source.
+# module, `brushstroke/brush_parse.rye`. The remaining six are COUNTS of members -- struct fields,
+# constructor parameters, sibling modules, refusal sites, fixture lines -- and each got its own
+# reading of its own source in tools/s/shape_member_pedestal_witness.rish, seated
+# `20260910.193433`. The other three desks display words rather than a number.
 #
 # TWO OF THE FIVE ARE NOT LITERALS, which is why a source read beats a wider grep here rather than
 # merely reading better. `brush_skate_rows` is an alias -- `= max_frame_lines` -- so its desk shows
@@ -52,9 +54,9 @@
 # question. Whether the pedestals lower and run, which
 # tools/gen/chapter/src_first_resident_witness.rish already drives the Zig toolchain for; repeating
 # it would buy a second copy of one fact at the price of a toolchain launch, and the process bill
-# is the roster's largest single cost. And the other seven literal-held pedestals, named on
-# construction/ITINERARY.md rather than swept here, because a sweep of seven at once is how a
-# repair becomes its own red.
+# is the roster's largest single cost. And the six member-count pedestals, which the sibling rung
+# above reads -- taken as their own lap rather than swept in beside these five, because a sweep of
+# eleven at once is how a repair becomes its own red.
 
 say "shape-constants: Language EN -- the museum displays numbers, and this proves each one is the constant it claims."
 say "shape-constants: Style Gauge -- every figure is read from its source rather than remembered."

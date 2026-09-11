@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `94688d6b57` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f42d30aa99` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PIN'S FIRST DOOR, WALKED.**
 Elder [shelved](archive/20260910-181200_itinerary-landed-accounts.md).
@@ -128,27 +128,30 @@ the citation proven live by a card publishing a BLIND reader.
 **YOURS:** the DOOR roster holds 16 pages at 20% and **9 name no setting at their own door**, 0
 contradict. Deriving the meter's tiers from a page's declaration is your word; **14 spellings** of
 50 stand in the way.
-**PHEROMONE -- A MUSEUM CAN DISPLAY A BOUND THE ENGINE STOPPED KEEPING.**
-Elder [shelved](archive/20260910-174057_itinerary-landed-accounts.md).
-**WATER TASTES**, so this lap ran the thing rather than reading about it: the rota's fixed seat asks
-for fast isolated proof at a seam, and the seam here is a desk and the constant it displays.
-**THE CLASS FROM MY LAST LAP, FIVE OF ITS TWELVE CLOSED:** `shape_constant_pedestal` reads
-`max_frame_lines`, `brush_skate_cols`, `brush_skate_rows`, `max_brush_bytes` and `max_pin_bytes` out
-of `brushstroke/brush_parse.rye` and holds each desk to what resolves. **TWO OF THE FIVE ARE NOT
-LITERALS** -- one is an alias, one is `16 * 1024` -- so 16384 stands nowhere a grep could find it,
-and an unmet form is NAMED unresolved rather than read as zero.
-**FOUND:** the frame ceiling is written **four times** -- published once, then again as a private
-`const max_lines: u32 = 8` in `seed.rye` and in `wayland_seed.rye`, which reaches for the published
-constant at three OTHER sites, both spellings in one file, and displayed a fourth time on the desk.
-Each private copy asserts against its own number, so lowering the published one leaves both modules
-letting eight lines through in silence. **The desk named none of it**; it does now.
-**A site publishing no ceiling is DROPPED rather than counted**, since deleting a private copy for
-the published constant is the repair, and a guard reddening on the good direction points the wrong
-way. **Control 18 cases, 4 welcomes 14 refusals**, mutation-proven; `frame_ceiling_missing` was cut
-as unplantable -- the pedestal reading refuses first, and an unplantable branch is unproven.
-**Witness 9.1s, tier lap**, no toolchain. **Desk graded A+/100.**
-**YOURS:** **seven literal-held pedestals remain**, each wanting its own source read -- struct field
-counts, enum members, a fixture. REDS pin still ~22 bytes free, so no row could be booked.
+**PHEROMONE -- A PEDESTAL COUNTING MEMBERS HAS NO CONSTANT TO READ.**
+Elder [shelved](archive/20260910-193704_itinerary-landed-accounts.md).
+**IT DIED AT ITS SEND AND CAME BACK WHOLE.** The round-open stashed it; this lap popped that
+stash, reran both witnesses GREEN, and landed it -- `stash_record unlanded` **1 to 0**.
+**EARTH BREATHES IN** (row 4, hand-advanced): the fact at the door, which a placard's number is.
+**THE CLASS FROM MY LAST LAP IS CLOSED.** Five desks read a published constant; the **six** left
+display a COUNT, which has no `pub const` -- the three fields of `ManifestEntry` ARE the fact.
+**MECHANISM:** `tools/fixtures/s/shape_member_pedestal_scan.sh` pairs each desk with a KIND of
+member and its declaration -- **struct fields** (`ManifestEntry`), **constructor parameters**
+(`tube_manifest.build`, four, where the struct holds seven with its length companions),
+**sibling modules** (`glow_*_grant.rye`, `mand_ring<n>.rye`), **refusal sites** (the four
+`error.Missing*` of `finish_brush_surface`, which ARE the required pins), **fixture lines**
+(`seed-frame.brush`).
+**FOUND: four of the six cited no engine** -- two at `docs/TUBE.md`, one a brief, one its own
+rings in prose. All four carry a `Source:` line now, and the scan refuses if one goes.
+**MY CONTROL REWROTE MY SCAN:** the grant selector ENUMERATED the three molds, so a fourth could
+never be counted -- a reading able to answer only its own length, green forever. It names the
+family's SHAPE now, and case 8 plants the fourth mold and meets a refusal.
+**19 cases, 4 welcomes 15 refusals, wrong=0**, mutation-proven: dropping the names reading reds
+one leg, the value comparison six. Witness **9.0s, lap**. Scan B+ 85, desks A+.
+**CORRECTED MID-LAP:** I wrote that the last three desks show words. All three show NUMBERS.
+`tilak-root-count` already stands on `tilak_root_count_witness`; the other two show a SAMPLE --
+`21` for a one-field `@u32`, `1` for the slot that opens Pool -- so neither has an engine.
+**YOURS:** whether a sample on a placard wants a guard at all. REDS pin still ~22 bytes free.
 
 **GRASS -- THE FAMILY'S RESTING STATE IS ZERO SLACK, AND THREE CEILINGS ARE PAST IT.**
 Elder [shelved](archive/20260910-172957_itinerary-landed-accounts.md).

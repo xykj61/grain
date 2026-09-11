@@ -59,10 +59,12 @@
 #
 # WHAT IT DOES NOT READ. Whether the constants are the right sizes, which is Brushstroke's own
 # design question; whether the pedestal lowers and runs, which
-# tools/gen/chapter/src_first_resident_witness.rish drives the Zig toolchain for; and the other
-# eight literal-held pedestals, whose numbers come from struct field counts, enum members and
-# fixture lines rather than from a published constant -- each wants its own reading, and this
-# one covers the class where the answer is a constant.
+# tools/gen/chapter/src_first_resident_witness.rish drives the Zig toolchain for; and the six
+# pedestals whose number is a COUNT of members rather than a constant -- struct fields,
+# constructor parameters, sibling modules, refusal sites, fixture lines -- which
+# tools/fixtures/s/shape_member_pedestal_scan.sh reads, seated `20260910.193433`. This one covers
+# the class where the answer is a constant, and between them the class is closed: every desk in
+# the museum showing a figure stands on a reading of its own source.
 #
 # USAGE
 #   sh tools/fixtures/s/shape_constant_pedestal_scan.sh [<root>]
