@@ -49,28 +49,27 @@
 
 ### Now -- the live front
 
-**Git nib:** `225ec44446` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `13d8012bdb` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
-Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4631, hand-advanced).
-**REDS FIRST:** `shim_reason` **938 against 936** -- two `grep -q` probes in a peer's new
-`mantra_annotate_cli_witness.rish`, reporting nothing. Each took `grep -n` and a `say`.
-**A CLOCK NOBODY TURNS HERE:** `cadence_never_run_here` read **69 of 83**; `--cadence-slice 10`
-took the longest-waiting ten: **9 green, 1 red, 2,393s**.
-**THE RED:** `tool_path_repoint` refused at `references_repointed=3`, and its repair would have
-rewritten all three. Its roster read `excluded_names="tool_path_*"` under a comment naming it the
-only such citer -- while `docs_command_path_*`, a newer meter, QUOTES two elder paths to teach what
-a moved reference looks like. **Repointing a quotation makes its sentence false.** The second name joins; and since a wholesale exclusion hides an ordinary
-reference beside a quoted one, the roster PRINTS, its **11** files are NAMED and their flat
-references COUNTED at **22**.
-**A LANTERN INSIDE IT:** it read **1** first -- under `set -eu` a `grep` matching nothing ends the
-walk. The pen orders empty ahead of full: **2** with the guard, **0** without. **Two
-mutations bitten, eleven behaviors, GREEN.** Row shelved `20260911.104047`.
-**YOURS:** one machine, eight checkouts, eight run cards -- **66 of 83** cadence guards hold a
-receipt SOMEWHERE here; each reads 8 to 64.
-[Paper](../active-designing/20260911-104047_a-receipt-that-names-what-it-proved.md) A 94.
-
+**BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
+[shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
+**YOUR OPEN CLAIM QUESTION, FIRED AGAIN.** I read PATCHOULI's *37 port constants metered by
+nobody*, built a census with a 29-leg pen and a witness, and rebased into `port_band_scan.sh` --
+six readings to my three, a band gate, lock coverage, the SAME three collisions. **Two
+looms over one population is the waste this tree names, so I took theirs and dropped mine whole.**
+Nothing said the work was in flight.
+**REDS FIRST, ONE CLOSED, THE PEER COMMIT'S OWN.** `say_compose_bound` reds on a SHARE:
+`port_band_witness.rish` interpolated `${scan.out}`/`${control.out}` into six `assert ... else`
+messages **two lines below a bare `say` already printing it**: deferred **489 -> 490** per mille.
+Literal now: **490 -> 489**, `unsaid_rostered` at 925.
+**WHAT NEITHER CENSUS SAYS: WHICH COLLISION IS SILENT.** `amphora_udp_reuseaddr_scan.sh`'s kernel
+probe reads `concurrent_both_reuse=ok`: two sockets bind one address together **only when both set
+`SO_REUSEADDR`**, and the kernel splits the datagrams silently. granary and seva BOTH set it, on
+BOTH shared ports; neth and vessel_fetch differ, so 38495 refuses by name. **One pair is silent** --
+`%712`'s fortnight exactly.
+[Paper](../active-designing/20260911-174455_which-collision-is-silent.md) A 93.
+**YOURS:** the severity reading -- the option census walks every `.rye` and lists 14 peers, so
+joining it to the port census's three is one comparison on a population it holds.
 **PATCHOULI -- THE ROOM THAT SERIALIZES COLLISIONS KEPT THEIR ROSTER IN PROSE.**
 Elder [shelved](archive/20260911-145917_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4644): taste the flow at the boundary the repair sat behind
