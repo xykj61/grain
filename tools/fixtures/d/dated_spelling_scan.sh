@@ -103,7 +103,17 @@ echo "files_considered=$(wc -l < "$work/field.txt" | tr -d ' ')"
 # The escaped braces are LITERAL text (a tool writing `[0-9]{8}`); the bare braces are ERE
 # intervals (the same class written out eight times). Both spellings appear in this tree, and
 # reading only the first is how the eight-fold form went free the first time this was written.
-NARROW='(\[0-9\]\{8\}|2026\[0-9\]\{4\}|(\[0-9\]){8})-(\[0-9\]\{6\}|(\[0-9\]){6})_'
+# AND IT READS ONE REGEX DIALECT, which is the blindness that hid this class for its whole life.
+# The patterns above are the ERE spelling, `[0-9]{8}-[0-9]{6}_`. A stamp is EXTRACTED with `sed`,
+# and sed is a BRE tool, so an extracting site writes `[0-9]\{8\}-[0-9]\{6\}_` and often wraps each
+# half in a capture group besides -- `\([0-9]\{8\}\)-\([0-9]\{6\}\)_` -- which is how the stamp is
+# lifted out rather than merely tested for. The loom matched neither, so every extracting site in
+# the tree was invisible to the guard drawn for exactly this class. Both one-clock population
+# walks stood that way: duty 5's mono scan, whose flat glob read 247 of 7,344 dated artifacts, and
+# duty 4's provenance scan beside it; a third sat in caravan's prose meter, where an unstripped
+# sprigless stamp leaked two bare numbers into a count (20260911.020039). So the braces carry an
+# optional backslash and the parentheses are optional.
+NARROW='(\\\()?(\[0-9\]\\?\{8\\?\}|2026\[0-9\]\\?\{4\\?\}|(\[0-9\]){8})(\\\))?-(\\\()?(\[0-9\]\\?\{6\\?\}|(\[0-9\]){6})(\\\))?_'
 
 : > "$work/hits.txt"
 while IFS= read -r f; do

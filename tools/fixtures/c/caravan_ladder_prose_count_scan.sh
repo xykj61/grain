@@ -162,7 +162,7 @@ $(grep -n '^say ' "$meter" | while IFS= read -r line; do
     # stamp is the same kind of name, fixed when the file was named. Both come off the line before any
     # number is read. Only the full shapes are exempt; a bare number beside them stays a count.
     printf '%s\n' "${line#*:}" | tr -d ',' |
-        sed 's/%[0-9][0-9]*/ /g; s/[0-9]\{8\}-[0-9]\{6\}_/ /g; s/[0-9]\{8\}\.[0-9]\{6\}/ /g' |
+        sed 's/%[0-9][0-9]*/ /g; s/[0-9]\{8\}-[0-9]\{6\}[_.]/ /g; s/[0-9]\{8\}\.[0-9]\{6\}/ /g' |
         grep -oE '[0-9]+' | sort -u | sed "s/^/${ln}:/"
 done)
 EOF
