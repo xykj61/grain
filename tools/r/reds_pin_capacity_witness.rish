@@ -87,5 +87,24 @@ say control.out
 assert control.ok else "reds-pin-capacity: the control refuses"
 assert control.out contains "control_verdict=ok" else "reds-pin-capacity: want every planted behavior to hold"
 assert control.out contains "cases_failed=0" else "reds-pin-capacity: want no behavior changed"
+# invariant: the pen's leg COUNT is pinned, never only its failure count. `cases_failed=0` catches a
+# leg that breaks and reads exactly the same when a leg is DELETED, so the twenty-eight legs proving
+# the anointed reading could be lifted one at a time under a green witness. Pinned `20260911.064500`
+# beside those legs; raise it in the same commit that adds one.
+assert control.out contains "cases_ok=83" else "reds-pin-capacity: want every leg still standing -- a leg removed reads the same as a leg that never failed"
+
+# THE REACH, rather than the predicate (`20260911.064500`). Every leg above proves the anointed
+# reading in a pen, where the upstream pin is handed in as a file. This asks the scan for THIS
+# TREE's own reading, so a wiring that works only under the pen door is caught here: the fields
+# must be printed on the ordinary rostered run, whatever this checkout's state happens to be.
+let live = run ["sh" "tools/fixtures/r/reds_pin_capacity_scan.sh"]
+# SAID BEFORE THE FIRST ASSERT ON IT (`shim_reason`), which is the very rule this lap repaired in a
+# peer's witness an hour earlier and then broke in its own. BARE, never interpolated: the capacity
+# reading outgrows a 4096-byte StrBuf.
+say live.out
+assert live.ok else "reds-pin-capacity: this tree's own reading refuses"
+assert live.out contains "pin_upstream_state=" else "reds-pin-capacity: the anointed reading is absent from the tree's own run"
+assert live.out contains "pin_rows_ahead_of_upstream=" else "reds-pin-capacity: a row this pin holds and the anointed one lacks goes uncounted on the tree's own run"
+assert live.out contains "commits_behind=" else "reds-pin-capacity: the tree's own run names no distance from the anointed pin"
 
 say "reds-pin-capacity: GREEN -- capacity read, trail whole, both refusals bitten"

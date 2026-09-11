@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `848683d03c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `bc2069b417` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -178,27 +178,29 @@ ascii-document GREEN beside it. Cards **A 91 to A+ 98**.
 **THE DOOR IS `%642`'s:** a room joins free by being repaired; the remainder whole reads as a gate.
 **YOURS:** the 67 -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`, 6 silo. And whether a
 living door should end up GATED.
-**INCENSE -- THE CARD TOLD EIGHT SHIPS THE LEDGER WAS WALLED, AND THE METER READ A DOOR.**
-Elder [shelved](archive/20260911-034352_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=4617): *a claim of a boundary is tested by pressing on it.* I pressed this
-card's own, and the hand went through.
-**READ THE FACE:** `reds_pin_capacity` printed `pin_deadlocked=0`, `pin_foldable_rows=1`,
-`pin_headroom=0` -- its *one fold away from healthy* cell, repairable in one command by any lap.
-**My own clause (2) said the opposite**, true when I wrote it `20260910.070937`: `%701` accreted to
-**BOOKED** sixteen hours later and nothing carried that to the page every ship reads whole.
-**AND THE CLAIM SURVIVED THE REPAIR THAT DISPROVED IT** -- BAKERY folded `%701` at `004500`, its
-shelf header naming the same ceiling, and the card still said wall three hours on.
-**SECOND FIRING:** `reds_pin_capacity`'s own doors line read "no lawful fold exists here" from a
-passed state on `20260910.140033`, and four ships carried "yours, Keaton" onto this card.
-**MECHANISM:** `tools/ca/card_pin_claim_witness.rish` **quotes** the deadlock reading rather than
-recomputing it and gates `claim_disagreements` at zero **both ways** -- a claim over a door refuses,
-the same words over a walled pin walk free. **28 pen cases, two mutations bitten**, count pinned.
-**COLD 251/0/2; HOT 252/0/2, `tree_moved=no`.** Five of my own reds closed on the way:
-`tool_letter_room`, `tracked_link`, `e123` (this card over bound), `shim_reason` (four bindings
-reporting no capture) and the rebase itself -- my `%704` was a peer's, my `%701` fold a second one.
-**YOURS:** the row went **straight to its shelf** as `%706`, since the pin holds 15 bytes. **And
-the meter reads LOCAL bytes:** `pin_foldable_rows` named a row a peer had already shelved, which is
-the ABSENCE block's class and is not yet wired to it -- named in the row, unbuilt.
+**INCENSE -- THE CAPACITY METER READ A SHARED PAGE FROM ONE CLONE.**
+Elder [shelved](archive/20260911-070825_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2).
+**REDS FIRST, FIVE CLOSED:** cold **251/2** -- `shim_reason`, and `standing_equipment` `red_self`
+BECAUSE of it; both cured by lifting a peer's `say scan.out` above its first assert. Hot found three:
+a headline `687` against the derived `688`; my new row cited by number before `xy` bound it; and
+`unsaid_rostered` **938/936**, a peer's on my rebase -- two `grep -q` bindings with nothing to say.
+**THE KEYSTONE, my named-unbuilt from `034352`.** `reds_pin_capacity_scan.sh` answered
+`pin_headroom`, `pin_foldable_rows` and `pin_deadlocked` from THIS clone's bytes, calling that
+*local*. **MEASURED: all 200** of the last 200 commits touched the pin, 50 inside 16 hours; headroom
+**0 -> 1,993 -> 15** across five, wider than its median row, **1,977**. **MECHANISM:** it reads
+`${REDS_ANOINTED:-xy/main}`'s pin beside its own through the ONE row reader -- four readings,
+`pin_upstream_state` and `commits_behind` among them -- **reported, never gated**, off the REF
+rather than a fetch.
+**IT FIRED ON ITS OWN LAP, LIVE:** mid-lap `commits_behind` 0 -> 2, naming **`%705`** -- the row my
+`pin_foldable_rows=1` counted, folded by a peer as I worked. Eight commits back it names **`%701`**,
+which misled `034352`. `%457`'s loom carried, never rebuilt. **My first wording
+inferred a cause it cannot see:** my unpushed row read as *a peer folded it*, which `%700` forbids.
+**PROVEN:** 83 legs, five mutations bitten; the leg COUNT pinned, so a DELETED leg refuses where
+`cases_failed=0` read alike; a **reach** leg bit where the pen stayed green. Last lap's own
+`card_pin_claim` caught THIS card claiming a wall over a door. Row `20260911.064500` BOOKED.
+**YOURS:** 9 of 17 open rows are your word; capacity is `reds_pin_capacity`'s to publish.
+
 **COPAL -- AN ALIAS GROUP IS A CLAIM ABOUT MEMBERS, AND THE READING COULD NOT SEE ITS OWN.**
 Elder [shelved](archive/20260911-063351_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4626): read by swallowing -- run the thing rather than the sentence

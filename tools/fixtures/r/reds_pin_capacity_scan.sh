@@ -139,8 +139,25 @@
 #   REDS_PIN=pen/REDS.md REDS_ARCHIVE_GLOB="pen/REDS-*rows-*.md" \
 #     REDS_RECITAL=pen/recital.md REDS_PIN_BOUND=4096 sh tools/fixtures/r/reds_pin_capacity_scan.sh
 #
+# WHY IT READS THE ANOINTED PIN TOO (`20260911.064500`). Every reading above is taken from THIS
+# CLONE's bytes, and `construction/REDS.md` is one page eight ships write. Measured on the lap this
+# was added: **all 200** of the last 200 commits touched the pin, 50 of them inside 16 hours, and
+# headroom moved 0 -> 1,993 -> 15 bytes across five of them -- a swing wider than the median row of
+# 1,977. So a clone one commit behind does not read a slightly stale ledger; it reads a ledger whose
+# deadlock verdict can have flipped. The fault has already fired here: on `20260911.034352` this
+# scan's `pin_foldable_rows` named a row a peer had folded, and the lap acted on a door that was
+# already walked through. That is REDS %457's class exactly -- an answer about a shared tree drawn
+# from local bytes -- and `tools/fixtures/p/path_absence_scan.sh` is the loom already built for it,
+# never wired to this second site. A lantern that fires twice becomes a loom.
+#
+# It reads the REF rather than fetching, which is the sibling `reds_spine_derive_scan.sh`'s own
+# idiom and the right one for a lap-tier guard: the round-open pulls at lap START, this runs moments
+# later, and 8 ships fetching every lap buys nothing the pull did not. A ref that will not resolve
+# reads `unread` and says so, because an allocator that falls back to the local tree in silence is
+# the fault this reading names.
+#
 # Exit 0 clean - 1 a gated reading above zero or a ratchet above its ceiling - 2 misuse.
-# Purely local: it reads markdown and counts bytes.
+# It reads markdown, counts bytes, and reads one git ref; it opens no socket.
 set -eu
 
 # WHY THESE NUMBERS. Both are readings measured on `20260829`, held so they can only fall. Neither
@@ -255,6 +272,66 @@ else
   echo "detail: no_recital -- $RECITAL is absent, so the trail cannot be read"
 fi
 
+# --- the ANOINTED pin, beside this clone's ------------------------------------------------------
+# Reported, never gated, for the reason `dropped_upstream_stamps` is reported one guard over: being
+# behind is ordinary work on an eight-ship fleet, and a gate that reds on ordinary work is a gate
+# somebody turns off. What it buys is that a lap reading `pin_foldable_rows` is told, in the same
+# breath, whether the page it just measured is the page the fleet holds.
+ANOINTED=${REDS_ANOINTED:-xy/main}
+UPSTREAM_BYTES=unread
+UPSTREAM_STATE=unread
+AHEAD_OF_UPSTREAM=0
+ONLY_UPSTREAM=0
+COMMITS_BEHIND=unknown
+
+up_pin=""
+if [ -n "${REDS_UPSTREAM_PIN:-}" ]; then
+  # The pen door, and it is a door rather than a second mechanism: a control builds two real pin
+  # files without needing a remote, and the reading below is the same reading either way.
+  [ -f "$REDS_UPSTREAM_PIN" ] && up_pin=$REDS_UPSTREAM_PIN
+elif git rev-parse --verify --quiet "$ANOINTED" >/dev/null 2>&1; then
+  upwork=$(mktemp -d)
+  if git show "$ANOINTED:$PIN" > "$upwork/REDS.md" 2>/dev/null; then
+    up_pin=$upwork/REDS.md
+  fi
+  COMMITS_BEHIND=$(git rev-list --count "HEAD..$ANOINTED" 2>/dev/null || echo unknown)
+fi
+
+if [ -n "$up_pin" ]; then
+  UPSTREAM_BYTES=$(wc -c < "$up_pin" | tr -d ' ')
+  if [ "$UPSTREAM_BYTES" = "$PIN_BYTES" ]; then
+    UPSTREAM_STATE=same
+  else
+    UPSTREAM_STATE=differs
+  fi
+  # WHICH ROWS, rather than only how many bytes. A byte difference says the page moved; the row
+  # sets say WHAT moved. Both pins are read by the one row reader, so they cannot disagree about
+  # what a row is.
+  rowwork=$(mktemp -d)
+  awk -f "$ROWREAD" -v mode=all_rows "$PIN" | sort -u > "$rowwork/here.txt"
+  awk -f "$ROWREAD" -v mode=all_rows "$up_pin" | sort -u > "$rowwork/there.txt"
+  for r in $(comm -23 "$rowwork/here.txt" "$rowwork/there.txt"); do
+    # OBSERVED, never inferred (`%700`'s own sentence, applied to this reading an hour after it was
+    # written). A row here and not upstream has TWO causes that look identical from bytes: a peer has
+    # folded it, or this lap has just written it and not yet pushed. The first strands a capacity
+    # reading; the second is the ordinary state of every lap that books a row. The line names the
+    # observation and both readings of it, because guessing between them is what it came to refuse.
+    echo "detail: pin_row_ahead_of_upstream %$r -- this pin carries the row and $ANOINTED's does not, which is either a row this lap has yet to push or one a peer has folded; if it is the second, a capacity reading here counts a row the fleet's pin no longer holds"
+    AHEAD_OF_UPSTREAM=$((AHEAD_OF_UPSTREAM + 1))
+  done
+  for r in $(comm -13 "$rowwork/here.txt" "$rowwork/there.txt"); do
+    echo "detail: pin_row_only_upstream %$r -- $ANOINTED's pin carries the row and this one does not; this checkout is behind and every reading above is short by that row"
+    ONLY_UPSTREAM=$((ONLY_UPSTREAM + 1))
+  done
+  rm -rf "$rowwork"
+  if [ "$UPSTREAM_STATE" = differs ]; then
+    echo "detail: pin_upstream_differs -- this clone reads ${PIN_BYTES}B and $ANOINTED reads ${UPSTREAM_BYTES}B, so pin_headroom, rows_that_fit, pin_foldable_rows and pin_deadlocked above describe THIS checkout rather than the fleet's ledger; rebase before acting on them"
+  fi
+else
+  echo "detail: pin_upstream_unread -- $ANOINTED does not resolve here, or carries no $PIN, so every reading above is this clone's alone and nothing checks it"
+fi
+[ -n "${upwork:-}" ] && rm -rf "$upwork"
+
 if [ "$DEADLOCKED" -eq 1 ]; then
   echo "detail: pin_deadlocked -- $ROWS_THAT_FIT rows fit in ${HEADROOM}B of headroom and $PIN_FOLDABLE of $PIN_ROWS rows are foldable; a new red has nowhere in the pin to go"
   # The foldable case names the command to type (over_bound_foldable, below). The deadlocked case
@@ -266,6 +343,12 @@ if [ "$DEADLOCKED" -eq 1 ]; then
 fi
 
 echo "pin_bytes=$PIN_BYTES"
+echo "pin_upstream_ref=$ANOINTED"
+echo "pin_upstream_bytes=$UPSTREAM_BYTES"
+echo "pin_upstream_state=$UPSTREAM_STATE"
+echo "pin_rows_ahead_of_upstream=$AHEAD_OF_UPSTREAM"
+echo "pin_rows_only_upstream=$ONLY_UPSTREAM"
+echo "commits_behind=$COMMITS_BEHIND"
 echo "pin_bound=$BOUND"
 echo "pin_headroom=$HEADROOM"
 echo "pin_rows=$PIN_ROWS"
