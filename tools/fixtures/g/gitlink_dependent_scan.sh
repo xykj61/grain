@@ -25,8 +25,34 @@
 # same question for a different absent thing. So the two open rows are one gate, the gate has a
 # door, and from `20260908.224618` the door is walked through.
 #
-#   sh tools/fixtures/g/gitlink_dependent_scan.sh          # measure and gate
+#   sh tools/fixtures/g/gitlink_dependent_scan.sh          # measure and gate, statically
 #   sh tools/fixtures/g/gitlink_dependent_scan.sh list     # one line per dependent
+#   sh tools/fixtures/g/gitlink_dependent_scan.sh probe    # RUN each one and gate on what it does
+#
+# THE READING NAMED A BEHAVIOR IT NEVER RAN, for two days, and this is the repair (`20260911`). The
+# static half above counts a runner that names an optional gitlink on a working line and stands in
+# no roster row. It called that population `optional_unrostable` and printed, per member, *reds when
+# an optional submodule is absent*. Nothing ever ran one. Measured here with `gratitude/tigerbeetle`
+# empty, which is how all eight ships of this pier stand: **38 of 38 exit 0**, each printing its own
+# honest SKIP line, in 768 ms for the whole population. Not one reds. The name and the sentence
+# described a shape and claimed a behavior, and the two are different populations.
+#
+# THE CONTROL AGREED WITH THE PROSE, which is why a pen alone could never have caught it. Its CASE 3
+# plants `assert clone.ok else "...ABSENT"` -- the hard assert the header imagined -- so the pen held
+# exactly one specimen, written from the sentence rather than from a file on disk. A plant drawn
+# from a claim proves the claim to itself. The probe legs below are drawn from BOTH shapes, and the
+# honest-skip one is the shape the tree actually holds.
+#
+# WHAT `probe` DOES. For each optional dependent whose named gitlinks are all EMPTY on disk, it runs
+# the runner and reads its exit status: `probe_green` handles the absence and is rostable today,
+# `probe_red` refuses over it and is the REDS %646 shape exactly. A dependent whose gitlink is
+# checked out here reads `probe_unread`, because absence cannot be observed without removing a
+# clone, and a meter that deletes what it measures is worse than one that says it cannot see.
+#
+# THE HAZARD, named rather than hidden: a probe RUNS a runner, and a runner may write. Every member
+# of today's population is a census that reads. The standing runner digests the tree at open and
+# close, so a probe that writes surfaces as `tree_moved` rather than in silence -- which is the net
+# under this, and it is a net rather than a wall.
 #
 # WHAT A DEPENDENT IS, exactly. A tracked runner whose basename carries `witness` or `suite`, naming
 # a gitlink path on a line that is NOT a comment. Comments are read past because a header saying
@@ -37,13 +63,21 @@
 # clone through a scan script rather than naming the path itself reads as clean here. So the count
 # under-reports and can never invent one, which is the direction a gate wants.
 #
-# THE GATE, and why it is this one. `rostered_undeclared` -- a guard the standing roster names, whose
-# refusal depends on an OPTIONAL gitlink, carrying no `capability` line in its roster record -- is
-# held at zero. That single row would red the whole fleet on every machine that studies rather than
-# clones, which is the blast radius REDS %646 names. Everything else is reported: the unrostable
-# population is a fact about the tree, and rostering it is a hand's decision with a probe attached.
+# THE TWO GATES, and why each is this one. `rostered_undeclared` -- a guard the standing roster
+# names, whose refusal depends on an OPTIONAL gitlink, carrying no `capability` line in its roster
+# record -- is held at zero. That single row would red the whole fleet on every machine that studies
+# rather than clones, which is the blast radius REDS %646 names. `probe_red` is held at zero too, in
+# probe mode, and that gate is what turns %646's sample into a wall: the next runner written with a
+# hard assert over a reading library reds on the lap it lands, rather than being found by a census
+# forty witnesses wide. It is satisfiable today because the population is already clean.
 #
-# BOUNDS: at most 64 gitlinks, at most 4,000 runners read, at most 200 dependents reported.
+# `optional_unrostered` stays REPORTED. It says what it reads -- an optional dependent no roster row
+# names -- and rostering one is a hand's decision with a probe attached. The elder spelling
+# `optional_unrostable` is retired here; two living readers moved with it, and dated testimony keeps
+# every word it wrote.
+#
+# BOUNDS: at most 64 gitlinks, at most 4,000 runners read, at most 200 dependents reported, at most
+# 64 probed -- the population is 38 and a bound placed at the cliff fails on the day it matters.
 set -eu
 
 root=${GITLINK_ROOT:-$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)}
@@ -53,8 +87,13 @@ MODE=${1:-measure}
 MAX_GITLINKS=64
 MAX_RUNNERS=4000
 MAX_REPORT=200
+MAX_PROBE=64
 
 roster=${GITLINK_ROSTER:-construction/standing-equipment.kyri}
+# The runner the probe hands each dependent to. Overridable for the same reason GITLINK_ROOT is: a
+# pen holds planted witnesses and no interpreter, so the control aims this at the real tree's rishi
+# and keeps the subject in the pen.
+rishi=${GITLINK_RISHI:-rishi/bin/rishi}
 
 work=$(mktemp -d) || { echo "verdict=no_pen"; exit 1; }
 trap 'rm -rf "$work"' EXIT INT HUP TERM
@@ -140,14 +179,14 @@ else
 fi
 
 rostered_undeclared=0
-optional_unrostable=0
+optional_unrostered=0
 : > "$work/report.txt"
 while IFS="$(printf '\t')" read -r kind f; do
   [ "$kind" = optional ] || continue
   line=$(awk -F'\t' -v want="$f" '$1 == want { print $2 }' "$work/roster.txt")
   if [ -z "$line" ]; then
-    optional_unrostable=$((optional_unrostable + 1))
-    printf 'unrostable\t%s\n' "$f" >> "$work/report.txt"
+    optional_unrostered=$((optional_unrostered + 1))
+    printf 'unrostered\t%s\n' "$f" >> "$work/report.txt"
   elif [ "$line" = "0" ]; then
     rostered_undeclared=$((rostered_undeclared + 1))
     printf 'undeclared\t%s\n' "$f" >> "$work/report.txt"
@@ -157,10 +196,66 @@ done < "$work/dependents.txt"
 if [ "$MODE" = list ]; then
   head -"$MAX_REPORT" "$work/report.txt" | while IFS="$(printf '\t')" read -r kind f; do
     case "$kind" in
-      unrostable) printf 'unrostable: %s reds when an optional submodule is absent, and no roster row hears it\n' "$f" ;;
+      # The sentence says what this mode READ. Its elder claimed the runner reds when the submodule
+      # is absent, which no reading here has ever asked it. `probe` asks.
+      unrostered) printf 'unrostered: %s names an optional submodule on a working line, and no roster row names it\n' "$f" ;;
       undeclared) printf 'undeclared: %s is rostered, depends on an optional submodule, and names no capability\n' "$f" ;;
     esac
   done
+fi
+
+# THE PROBE. Static shape above, measured behavior here.
+probe_green=0
+probe_red=0
+probe_unread=0
+if [ "$MODE" = probe ]; then
+  # An instrument that cannot answer refuses. Without the runner every dependent would read `red`,
+  # which is a bench fact wearing a finding's colour -- and the finding it wears is the one this
+  # whole reading exists to keep honest.
+  if [ ! -x "$rishi" ] && ! command -v "$rishi" >/dev/null 2>&1; then
+    echo "verdict=no_runner"
+    echo "refused: the probe wants $rishi and this bench carries none" >&2
+    exit 1
+  fi
+  probed=0
+  while IFS="$(printf '\t')" read -r kind f; do
+    [ "$kind" = optional ] || continue
+    [ "$probed" -lt "$MAX_PROBE" ] || break
+    probed=$((probed + 1))
+    # A dependent is probeable only when EVERY optional gitlink it names stands empty here. One
+    # checked-out clone is enough to make the absence unobservable, and removing it to look is the
+    # one move a meter may never make.
+    absent=yes
+    grep -v -e '^[[:space:]]*#' -e '^[[:space:]]*//' "$f" > "$work/body.txt" 2>/dev/null || true
+    while read -r g; do
+      grep -qF "$g" "$work/body.txt" || continue
+      if [ -d "$g" ] && [ -n "$(ls -A "$g" 2>/dev/null)" ]; then absent=no; fi
+    done < "$work/optional.txt"
+    if [ "$absent" = no ]; then
+      probe_unread=$((probe_unread + 1))
+      printf 'unread\t%s\n' "$f" >> "$work/probe.txt"
+      continue
+    fi
+    if "$rishi" run "$f" >/dev/null 2>&1; then
+      probe_green=$((probe_green + 1))
+      printf 'green\t%s\n' "$f" >> "$work/probe.txt"
+    else
+      probe_red=$((probe_red + 1))
+      printf 'red\t%s\n' "$f" >> "$work/probe.txt"
+    fi
+  done < "$work/dependents.txt"
+  # The per-dependent detail goes to STDERR and the counts to stdout, so a caller that captures the
+  # reading gets a sayable card rather than forty lines. The witness says `scan.out`; a hand reading
+  # the terminal sees both, since a terminal shows the two streams together.
+  if [ -f "$work/probe.txt" ]; then
+    while IFS="$(printf '\t')" read -r verd f; do
+      case "$verd" in
+        green)  printf 'probe green: %s runs and exits clean with its reading library absent\n' "$f" >&2 ;;
+        red)    printf 'probe RED: %s refuses over a clone a correct checkout may lack\n' "$f" >&2 ;;
+        unread) printf 'probe unread: %s names a gitlink checked out here, so absence cannot be observed\n' "$f" >&2 ;;
+      esac
+    done < "$work/probe.txt"
+  fi
 fi
 
 echo "gitlinks=$gitlinks"
@@ -173,9 +268,16 @@ echo "required_dependents=$required_dependents"
 echo "roster_present=$roster_present"
 echo "rostered=$rostered"
 echo "rostered_undeclared=$rostered_undeclared"
-echo "optional_unrostable=$optional_unrostable"
-if [ "$rostered_undeclared" -eq 0 ]; then
-  echo "verdict=ok"
-else
+echo "optional_unrostered=$optional_unrostered"
+if [ "$MODE" = probe ]; then
+  echo "probe_green=$probe_green"
+  echo "probe_red=$probe_red"
+  echo "probe_unread=$probe_unread"
+fi
+if [ "$rostered_undeclared" -ne 0 ]; then
   echo "verdict=undeclared_dependency"
+elif [ "$probe_red" -ne 0 ]; then
+  echo "verdict=probe_red"
+else
+  echo "verdict=ok"
 fi

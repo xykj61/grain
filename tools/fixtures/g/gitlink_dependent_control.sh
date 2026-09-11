@@ -8,7 +8,9 @@
 #
 #   sh tools/fixtures/g/gitlink_dependent_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 20 cases, one pen holding a throwaway git repository.
+# Prints `pass=N fail=N`. Bounded: 37 cases, one pen holding a throwaway git repository. The last
+# five RUN the planted witnesses rather than reading them, which is the half a static pen could not
+# reach -- see the scan header for the population where shape and behavior came apart.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -65,7 +67,7 @@ stage
 out=$(ask)
 check "a comment is not a dependency" yes "$(has "$out" 'optional_dependents=0')"
 
-# CASE 3 -- the same path on a working line IS a dependency, and with no roster row it is unrostable.
+# CASE 3 -- the same path on a working line IS a dependency, and with no roster row it is unrostered.
 cat > tools/g/optional_witness.rish <<'W'
 let clone = run ["test" "-d" "gratitude/teacher/src"]
 assert clone.ok else "optional: gratitude/teacher/src ABSENT"
@@ -73,10 +75,10 @@ W
 stage
 out=$(ask)
 check "a working line IS a dependency" yes "$(has "$out" 'optional_dependents=1')"
-check "unrostered reads unrostable"    yes "$(has "$out" 'optional_unrostable=1')"
-check "and unrostable does not gate"   yes "$(has "$out" 'verdict=ok')"
+check "an unrostered one is counted"   yes "$(has "$out" 'optional_unrostered=1')"
+check "and unrostered does not gate"   yes "$(has "$out" 'verdict=ok')"
 out=$(ask list)
-check "the unrostable one is named"    yes "$(has "$out" 'unrostable: tools/g/optional_witness.rish')"
+check "the unrostered one is named"    yes "$(has "$out" 'unrostered: tools/g/optional_witness.rish')"
 
 # CASE 4 -- THE BITE. Rostering it without declaring the capability is the one row that would red
 # every machine studying rather than cloning, so it refuses.
@@ -143,6 +145,74 @@ mkdir -p "$outside"
 out=$(GITLINK_ROOT="$outside" sh "$scan" 2>&1 || true)
 check "a non-repository refuses"       yes "$(has "$out" 'verdict=not_a_repository')"
 check "and reports no count at all"    no  "$(has "$out" 'gitlinks=')"
+
+# --------------------------------------------------------------------------------------------
+# THE PROBE. Everything above reads a SHAPE. These read a BEHAVIOR, and the two came apart in the
+# real tree: 38 runners the static half called `unrostered` all exit clean with the clone absent,
+# while CASE 3's plant -- written from the header's own sentence rather than from a file on disk --
+# was the only hard-asserting specimen anywhere. So both shapes are planted here, and the free one
+# is planted FIRST, because a refusal proven only against a specimen built to refuse proves nothing
+# about the population it is aimed at.
+rishi_real=$root/rishi/bin/rishi
+probe() { GITLINK_ROOT="$pen" GITLINK_RISHI="$rishi_real" sh "$scan" probe 2>&1; }
+
+# Leave exactly one optional dependent standing, so each probe reading has one subject.
+rm -f tools/g/second_witness.rish
+cat > construction/standing-equipment.kyri <<'R'
+format standing-equipment-v1
+R
+
+# CASE 9 -- THE SHAPE THE TREE ACTUALLY HOLDS. A runner that reads the absence and skips is clean,
+# and the probe must say so rather than inheriting the static half's word for it.
+cat > tools/g/optional_witness.rish <<'W'
+let clone = run ["test" "-d" "gratitude/teacher/src"]
+if (clone.ok == false) then say "optional: SKIP -- gratitude/teacher is uninitialised here"
+if clone.ok then say "optional: read the clone"
+W
+stage
+out=$(probe || true)
+check "an honest skip reads green"     yes "$(has "$out" 'probe_green=1')"
+check "and nothing reds"               yes "$(has "$out" 'probe_red=0')"
+check "and the verdict stands"         yes "$(has "$out" 'verdict=ok')"
+check "and it is named as green"       yes "$(has "$out" 'probe green: tools/g/optional_witness.rish')"
+check "while the shape still counts it" yes "$(has "$out" 'optional_unrostered=1')"
+
+# CASE 10 -- THE BITE. The hard assert over a reading library is REDS %646's shape exactly, and it
+# is the one thing `probe_red` exists to refuse.
+cat > tools/g/optional_witness.rish <<'W'
+let clone = run ["test" "-d" "gratitude/teacher/src"]
+assert clone.ok else "optional: gratitude/teacher/src ABSENT"
+W
+stage
+out=$(probe || true)
+check "a hard assert reads red"        yes "$(has "$out" 'probe_red=1')"
+check "and the probe gate bites"       yes "$(has "$out" 'verdict=probe_red')"
+check "and it is named as red"         yes "$(has "$out" 'probe RED: tools/g/optional_witness.rish')"
+check "and green falls to zero"        yes "$(has "$out" 'probe_green=0')"
+
+# CASE 11 -- THE STATIC HALF IS BLIND TO BOTH. The same two plants read identically to `measure`,
+# which is the whole finding: one reading counts a shape, the other measures what it does.
+out=$(ask)
+check "measure sees no colour"         no  "$(has "$out" 'probe_red=')"
+check "and still says ok"              yes "$(has "$out" 'verdict=ok')"
+
+# CASE 12 -- THE PLANT LIFTED, by checking the clone OUT rather than by editing the runner. With
+# the submodule populated the absence cannot be observed, so the same red-shaped runner reads
+# `unread` -- and a meter that answered anything else would have to delete a clone to find out.
+mkdir -p gratitude/teacher/src
+printf 'teacher\n' > gratitude/teacher/src/readme
+out=$(probe || true)
+check "a checked-out clone is unread"  yes "$(has "$out" 'probe_unread=1')"
+check "and the red is not claimed"     yes "$(has "$out" 'probe_red=0')"
+check "and the verdict opens again"    yes "$(has "$out" 'verdict=ok')"
+check "and it is named as unread"      yes "$(has "$out" 'probe unread: tools/g/optional_witness.rish')"
+rm -rf gratitude/teacher
+
+# CASE 13 -- AN INSTRUMENT THAT CANNOT ANSWER REFUSES. Without a runner every dependent would read
+# red, and that red would be a bench fact wearing this very finding's colour.
+out=$(GITLINK_ROOT="$pen" GITLINK_RISHI="$pen/no-such-runner" sh "$scan" probe 2>&1 || true)
+check "an absent runner refuses"       yes "$(has "$out" 'verdict=no_runner')"
+check "and claims no colour at all"    no  "$(has "$out" 'probe_red=')"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

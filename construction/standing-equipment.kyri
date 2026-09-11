@@ -1259,8 +1259,17 @@ seated 20260828.114450
 # 32 on the required rungs. The GATE is the one row that would red the fleet -- a rostered guard
 # depending on an optional gitlink and naming no `capability` -- held at zero. The population is
 # reported rather than gated, because rostering a study census is a hand's decision with a probe
-# attached. `lap` rather than `cadence`: 11s on this bench, and the fault can be written again by
+# attached. `lap` rather than `cadence`: 14s on this bench, and the fault can be written again by
 # any lap that rosters a witness.
+#
+# A SECOND GATE FROM `20260911`, and the reason it had to be added. Everything above reads a SHAPE.
+# The reading called its population `optional_unrostable` and said of each member *reds when an
+# optional submodule is absent*, and nothing had ever run one: with `gratitude/tigerbeetle` empty --
+# how every ship on this pier stands -- 38 of 38 exit 0, each printing an honest SKIP. The reading
+# is `optional_unrostered` now, which is what it counts, and `probe` RUNS each dependent whose
+# gitlinks stand empty and gates `probe_red` at zero. That gate is what turns REDS %646's 5-in-40
+# sample into a wall: a runner written with a hard assert over a reading library reds on the lap it
+# lands rather than being found by the next census. The probe costs about 3s of the 14.
 guard gitlink_dependent
 path tools/g/gitlink_dependent_witness.rish
 tier lap
