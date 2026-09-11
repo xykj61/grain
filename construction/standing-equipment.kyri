@@ -3432,6 +3432,18 @@ seated 20260906.063124
 # and eight trees reach for, so `tools/fixtures/a/amphora_vessel_port_lock.sh` still keeps two lawful
 # runs from meeting. Halving the shared resource is not removing it; the source's own port discovery
 # is the booked lap after this one.
+#
+# AND IT HAD NOT RUN ONCE IN THE FOUR DAYS SINCE, on this pier (`20260910.234500`). The cost argument
+# above is sound and the tier it chose has no clock: REDS %568 booked `--tier cadence` with no caller
+# on `20260907.113635` and stands OPEN, while the tier grew from 58 guards to 74 in the three days
+# after. Measured on this tree the same stamp: of those 74, `construction/standing-equipment-runs.kyri`
+# holds a run row for exactly ONE, and that row records `lap` -- so the cadence tier has produced
+# zero cadence runs here. Asked by hand, this guard answers GREEN in 69s, matching the 68s its
+# seating measured; its sibling `amphora_udp_reuseaddr` answers GREEN in 104s. Both silences were
+# honest, and only the asking established that. A lap pass of 251 guards runs 2,940s, so moving the
+# pair to `tier lap` would spend 173s twice a lap to reprove what changes only when
+# `amphora/vessel_fetch_delivery.rye` changes -- which is why the rows below stay where they are and
+# the clock, rather than the tier, is what wants Keaton's word.
 
 guard amphora_asker_reply
 path tools/am/amphora_asker_reply.rish
@@ -3756,6 +3768,11 @@ seated 20260906.152821
 # `.rye`, and the control pays it again on the legs that read the living tree. `git ls-files` and
 # one grep pass would cut it; that is a change to the instrument, and this lap's keystone was
 # getting the instrument out of the box at all.
+#
+# ITS SILENCE, MEASURED `20260910.234500`: this pier's run card held one row for it, stamped
+# `20260906.181204` and recording `lap`, and no cadence pass has run since. Asked by hand it answers
+# GREEN in 104s. The reading for the whole tier, and why the pair stays on `tier cadence`, sits above
+# `guard amphora_asker_reply`.
 
 guard amphora_udp_reuseaddr
 path tools/am/amphora_udp_reuseaddr_witness.rish

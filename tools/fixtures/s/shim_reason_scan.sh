@@ -95,7 +95,17 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-157}"
 # its own move: 7,110 bindings are asserted on and never reported, 953 of them standing on the
 # standing roster across 170 of its 326 guards, and 6,157 off it. Both ceilings only fall -- add
 # `${var.err}` to an else message and lower the number in the same commit.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-948}"
+#
+# 946 `20260911.003300`. The reading stood at 949 against 948 and refused on every ship's roster
+# pass: the guards seated the same day carried their reasons, and the count rose anyway. Three of
+# the rostered bindings were in `tools/am/amphora_carry_negative_witness.rish`, each written
+# `if v.ok == false then say v.err` above its assert -- the shape this block's own WHAT THIS READING
+# DOES NOT REACH paragraph names, a say inside a conditional, which the parser cannot credit. That
+# spelling is not wrong; it is the same promise the repair makes, paid on a line the meter cannot
+# read. All three took the interpolated form and the reading fell 949 -> 946. The ceiling falls to
+# the reading rather than by the three removed, and claims no slack: the +1 a peer's lap added is
+# real, unrepaired here, and stays inside the count.
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-946}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"
