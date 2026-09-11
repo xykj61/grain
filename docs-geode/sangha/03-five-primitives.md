@@ -7,6 +7,7 @@
 **Elder siblings:** [`01-descriptor-exchange.md`](01-descriptor-exchange.md) - [`02-fact-fold.md`](02-fact-fold.md)  
 **Written from:** GREEN myc metal only -- [kumara](../../mycelium/kumara.rye) - [fold](../../mycelium/fold.rye) - [fold_persist](../../mycelium/fold_persist.rye) - [ship_sol](../../mycelium/ship_sol.rye) - [refusal_storm](../../mycelium/refusal_storm.rye) - [build_bounds](../../mycelium/build_bounds.rye)  
 **Shelf:** [the pattern book](README.md)
+**Room:** checkable -- written from GREEN Mycelium metal only, with each of the five carrying the witness command that proves it.
 
 *Written together by Keaton and Riyo.*
 

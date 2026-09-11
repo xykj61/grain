@@ -109,6 +109,18 @@ one, **9 `vision`** where a voice or a discipline is held by taste. `context/` r
 **0** living-silent, and the ceiling falls **90 to 67**. The room-at-a-time door is `%642`'s, and it
 costs no word: a room joins free by being repaired.
 
+**And the shipping shelf paid its share the same day** (`20260911.081500`). The 8 living
+`docs-geode/` pages naming no room are the shelf a newcomer is sent to -- the Rishi reference, the
+three Sangha patterns, the naming study, and the three tutorials -- so the room that teaches this
+tree to a stranger answered every question at its door except which register the stranger was
+standing in. Each took a `**Room:**` line judged from the body: **6 `checkable`** where a witness
+binds every claim, **1 `mixed`** -- [`the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md),
+whose quoted endings `tools/fixtures/t/tutorial_output_scan.sh` runs and whose welcome is judged --
+and **1 `vision`**, [`SHOPPING.md`](../docs-geode/tutorials/SHOPPING.md), a method that names no
+winner and quotes no price, so no guard could bind a sentence of it. `docs-geode/` reads 18 pages
+and **0** living-silent; the ceiling falls **67 to 59**, moved by the eight and by nothing else.
+The remainder is 33 `active-designing/`, 20 `manual/`, 6 `external-research/`.
+
 **And this page's own door was among them.** The witness read the first head line carrying
 `**Status:**` anywhere, and the `Last updated` line above quotes both key names, so the reading
 returned that sentence and called this page silent three lines above a Status reading

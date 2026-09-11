@@ -8,6 +8,7 @@
 **Status:** Living tutorial - **metal GREEN** at `docs-geode/edu/yonder/tower/bounded_tower.rye` - frame bite `docs-geode/edu/yonder/tower/frame_bound_overpush.rye` - witnesses `tools/e/edu_tower_witness.rish` - `tools/e/edu_tower_frame_bite_witness.rish`
 **Home:** `docs-geode/tutorials/` -- the prod crystal for shipping docs
 **Naming note:** written for **Glow** and the **rune shell** surface; the rune shell's proper name awaits Keaton's word (`context/specs/reserved-vocabulary.md`)
+**Room:** checkable -- both bounds and the overpush refusal are asserted in the source above and bitten by the two witnesses named there.
 
 *Written together by Keaton and Riyo.*
 

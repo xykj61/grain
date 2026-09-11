@@ -1,6 +1,7 @@
 # SHOPPING -- choosing a model, a forge, and a place to keep bytes
 
 **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living - **Seated:** `20260823.181323`
+**Room:** vision -- a way of shopping held by taste rather than by a witness; it names no winner, quotes no price, and seats no fact a guard could bind.
 **Kin:** [`the-first-hour.md`](the-first-hour.md) - [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md) - [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
 
 Before your first hour you make three purchases, and each one is easy to make badly. A language
