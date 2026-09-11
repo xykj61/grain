@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `79fa6cd48b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7952de7bb8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -180,31 +180,31 @@ red.**
 **YOURS:** may a law page cite a guard the roster reaches nowhere? And the law -- **gate what a hand
 may lower, count the rest** -- with its form: a ceiling declaring its GROWER.
 
-**INCENSE -- HALF THE LAW ROOM'S TOOL NAMES STOOD OUTSIDE EVERY GUARD.**
-Elder [shelved](archive/20260910-180244_itinerary-landed-accounts.md).
-**AIR FEELS FOR THE BOUNDARY** (row 1, today's least-read at two against row 2's eight). The row
-presses a fence post to see whether the hand goes through, so I pressed the law room's own
-citations: `.claude/rules/` prints **99 distinct `tools/` file paths across 54 pages**, and **50 of
-them appear nowhere in the room as a Markdown link.**
-**NOTHING READ THOSE FIFTY.** `tracked_link` reads Markdown LINKS, so a backticked name is invisible
-to it; `docs_command_path` reads a path a page tells a reader to RUN and **passes an absent one FREE
-on purpose**, since tree-wide such a path is usually one the reader is being asked to create. Right
-for a tutorial, wrong for a law page, where naming a guard is a promise about a file that already
-exists. **SCOPE IS WHAT MAKES A GATE HONEST HERE**, so the wall stands over this one room.
-**BUILT:** `law_tool_citation`, **tier lap**, `cited_untracked` walled at **zero**. It asks
-`git ls-files` rather than `[ -e ]` -- the lesson `tracked_link` was built after, and one pen plants
-exactly that difference. Control **39 legs, fail=0** on real git repositories, **four mutations
-bitten and lifted**, and the witness proven RED against a citation planted in a real rule page.
-**THE FENCE HELD, WHICH IS THE FINDING:** all 99 resolve today, and `.cursor/rules/*.mdc` reads **64
-cited, zero untracked**. Both rooms were held by care alone until this stamp.
-**COUNTED, NEVER GATED:** `runners_unrostered` **1** -- `tools/b/bat_fleet_witness.rish`, cited in
-`ascii-first` as a file whose `say` line was swept rather than as a proof; that class belongs to
-`witness_reach`, and one question wants one answer. An absent roster reads `unread`, never zero. The
-twin room is reported while **gate %7** stands.
-**COLD OPEN 240 green, 0 red, 3 gated, `tree_moved=no`.** Nine stashes stand here from `20260907`
-to `20260909`; `stash_record` reads them green.
-**YOURS:** `tools/b/bat_fleet_witness.rish` and `tools/s/scribe_reader_witness.rish` sit on no clock
-at all -- Scribe's lane, one roster row each, and `witness_reach` already carries the ceiling.
+**INCENSE -- THREE PAIRS DRIFTED APART WHILE THE METER WATCHING THEM WAS GATED SHUT.**
+Elder [shelved](archive/20260910-202551_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, today's least-read at 14), so I took the fact at the door:
+`rule_twin` read **`cohort_over_ceiling`, 38 against 35** -- red since `20260908`, behind **gate
+%7**, unheard.
+**MECHANISM:** replaying the scan's own `norm()` over both rule rooms as they stood at `6a2d0c3e9c`
+names the three cohort pairs that fell -- `exec-bit` one swept word, `gauge-style` a nine-line
+paragraph its twin never received, `placeholder-ship-names` a Radiant pass on one side. **Each is a
+lap editing the page its OWN editor reads**, so bringing the `.mdc` forward completes a half-made
+edit rather than ruling which sentence is law. **35 again, `verdict=ok`.**
+**MY HYPOTHESIS WAS REFUTED BY MY OWN WEAKER READING.** A rules-room link names the room the
+READER's editor loads, and that spelling sits in the differing lines of **24 of 48** pairs -- half
+the census as noise. At LINE level it is **12 of 1,512**, such a line nearly always differing for a
+second reason too. **One pair flipped**, `vocabulary-survey`, a table rule written `|------|`.
+**BUILT:** the transform grew **four steps to seven** -- sibling-room link, delimiter run, HTML
+entity -- each planted **twice**: the spelling alone, which must read free, and the spelling with a
+real change riding the line, which must still bite. **24 legs, `control_fail=0`**, all three
+mutation-proven, each biting exactly its own free leg. Ceiling **35 -> 34**. A/90.
+**COLD 244/2 red** -- `tracked_link` on my own untracked shelf, closed by staging; `tree_moved=yes`
+by my own hand, since I worked while it ran. **HOT 246 green, 0 red, 2 gated, `tree_moved=no`.**
+**YOURS, KEATON:** (1) **`cursor_only=2`** -- `arbor-voice` and `fuse-resin-cleanup` are live law
+the Cursor bench reads and **no Claude ship has seen**, printed and gated nowhere; mirroring costs
+~3 KB on every always-loaded lap of eight ships, so the spend is yours. (2) **44 pairs still drift,
+1,500 lines**; reconciling stays your word, and the size is now measurable. (3) Whether a guard
+behind a gate should still be **heard** when it reds.
 
 **COPAL -- A RISHI GUARD'S SENTENCE IS ALSO A WIRE, WHICH IS WHY NOBODY SWEPT IT.**
 Elder [shelved](archive/20260910-190809_itinerary-landed-accounts.md).

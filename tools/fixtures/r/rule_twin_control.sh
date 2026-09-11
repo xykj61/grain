@@ -28,6 +28,16 @@
 #  15 free    -- a pair born outside the cohort, drifted, is reported rather than refused
 #  16 bitten  -- a cohort name that is no longer a pair reads as absent rather than shrinking
 #  17 bitten  -- an absent cohort roster refuses rather than reading every pair as an arrival
+#  18 free    -- a link into the rules room naming each editor's own copy reads as agreeing
+#  19 bitten  -- and a changed word on that same line still counts as drift
+#  20 free    -- a table delimiter row written to a different width reads as agreeing
+#  21 bitten  -- and a changed cell in the table below it still counts as drift
+#  22 free    -- an escaped `&lt;` reads as the character it names
+#  23 bitten  -- and a changed bound beside it still counts as drift
+#
+# Cases 18 through 23 come in pairs on purpose. A transform step that reads two spellings as one
+# can hide a real disagreement, so each is planted twice -- the spelling alone, which must read
+# free, and the spelling with a genuine change riding on the same line, which must still bite.
 #
 # Run from the repository root.
 set -eu
@@ -159,6 +169,53 @@ printf -- '---\nd: x\n---\n\n# A\n\nsame\n' > "$U/a.mdc"
 out=$(run_scan 0)
 case "$out" in *cohort_missing=1*) got=reported;; *) got=silent;; esac
 check "16 bitten: a cohort name that is no longer a pair reads as absent" reported "$got"
+
+# ---- 18..23: the three transform steps added 20260910, each free and each still biting ----
+# A step that reads two spellings as one is a step that can hide a real disagreement, so every
+# one of the three is planted twice: once as the spelling difference alone, which must read free,
+# and once with a genuine change riding on the same line, which must still bite.
+
+fresh
+printf '# A\n\nRead [kyri](.claude/rules/kyri.md) first.\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nRead [kyri](.cursor/rules/kyri.mdc) first.\n' > "$U/a.mdc"
+out=$(run_scan)
+case "$out" in *pairs_agree=1*) got=agree;; *) got=drift;; esac
+check "18 free: a link into the rules room naming each editor's own copy reads as agreeing" agree "$got"
+
+fresh
+printf '# A\n\nRead [kyri](.claude/rules/kyri.md) first.\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nRead [kyri](.cursor/rules/kyri.mdc) last.\n' > "$U/a.mdc"
+out=$(run_scan)
+case "$out" in *pairs_drifted=1*) got=drift;; *) got=agree;; esac
+check "19 bitten: and a changed word on that same line still counts as drift" drift "$got"
+
+fresh
+printf '# A\n\n| Form | Meaning |\n|------|---------|\n| kg | keep going |\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\n| Form | Meaning |\n|---|---|\n| kg | keep going |\n' > "$U/a.mdc"
+out=$(run_scan)
+case "$out" in *pairs_agree=1*) got=agree;; *) got=drift;; esac
+check "20 free: a table delimiter row written to a different width reads as agreeing" agree "$got"
+
+fresh
+printf '# A\n\n| Form | Meaning |\n|------|---------|\n| kg | keep going |\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\n| Form | Meaning |\n|---|---|\n| kg | keep waiting |\n' > "$U/a.mdc"
+out=$(run_scan)
+case "$out" in *pairs_drifted=1*) got=drift;; *) got=agree;; esac
+check "21 bitten: and a changed cell in the table below it still counts as drift" drift "$got"
+
+fresh
+printf '# A\n\nNarrow-scope when fascia < 80.\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nNarrow-scope when fascia &lt; 80.\n' > "$U/a.mdc"
+out=$(run_scan)
+case "$out" in *pairs_agree=1*) got=agree;; *) got=drift;; esac
+check "22 free: an escaped &lt; reads as the character it names" agree "$got"
+
+fresh
+printf '# A\n\nNarrow-scope when fascia < 80.\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nNarrow-scope when fascia &lt; 90.\n' > "$U/a.mdc"
+out=$(run_scan)
+case "$out" in *pairs_drifted=1*) got=drift;; *) got=agree;; esac
+check "23 bitten: and a changed bound beside it still counts as drift" drift "$got"
 
 # ---- 17: an absent cohort roster ---------------------------------------------------------
 fresh
