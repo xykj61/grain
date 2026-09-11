@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `84a0ebc263` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f3ef0ad432` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
