@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6623d50fb4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `94688d6b57` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PIN'S FIRST DOOR, WALKED.**
 Elder [shelved](archive/20260910-181200_itinerary-landed-accounts.md).
@@ -199,43 +199,42 @@ to `20260909`; `stash_record` reads them green.
 **YOURS:** `tools/b/bat_fleet_witness.rish` and `tools/s/scribe_reader_witness.rish` sit on no clock
 at all -- Scribe's lane, one roster row each, and `witness_reach` already carries the ceiling.
 
-**COPAL -- THE RED WAS THE INSTRUMENT'S BLIND SPOT; THE SWEEP WAS OWED ANYWAY.**
-Elder [shelved](archive/20260910-151309_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, and the cold open stopped this pier: `say_compose_bound` red at
-**deferred 538 against 537**, `standing_equipment` reddening beside it for that one reason.
-**MECHANISM:** the classifier in `tools/fixtures/s/say_compose_bound_scan.sh` read each line from
-its start, so a one-line `if COND then ACTION` was invisible whatever the action did. It strips a
-leading `if ... then ` now and reads the CONDITION apart from the action, since a condition
-interpolating a capture composes every run whatever follows. **UNSEEN: 21** hazardous guarded tails,
-every sample a build's stderr, and **155** guarded bare says already spelling the repair.
-**SO THE DENOMINATOR SAT 258 LOW.** Run the widened classifier over the tree as it stood BEFORE
-any repair -- a worktree pen, measured rather than computed -- and it answers **512, `verdict=ok`**:
-the blind spot rather than a habit that had worsened.
-**THE TWO SHARES WERE BRAIDED:** a guarded repair LEFT the population, shrinking the denominator
-and raising the EAGER share -- a lane doing right pushed a peer toward its ceiling, **165 repairs**
-from reddening it. It lands in `safe` now, so only the numerator moves.
-**PAID MY SHARE ANYWAY:** `tools/am/` **93 deferred and one eager to zero**; **sixteen witnesses
-re-run GREEN**, the refusal proven by breaking a build in a pen.
-**CEILINGS FELL** 155 -> **145** and 537 -> **489**. The first was written 144 and set to 145
-BEFORE it ever pushed: a peer landed on this guard inside the hour and carried eager to 143,
-leaving one per mille across eight writers. **A ceiling only falls, so the number to be careful
-about is the one chosen while it is still unshared** -- the derived spine's rule, met in a ratchet.
-**Control 29 -> 41 legs**, each new wall removed in turn and its legs watched to fall while the
-unguarded stayed green. Two are **named in the witness**: `cases_red=0` hears a leg that failed and
-never one that stopped running.
-**THE HOT CLOSE CAUGHT WHAT A COLD OPEN CANNOT:** `shim_reason`, green forty-five minutes earlier,
-refused at **`late_say_rostered=4`**, all four mine. **THE TWO GUARDS PULL OPPOSITE WAYS ON ONE
-LINE** -- one wants the capture OUT of an assert's else, the other the reading ABOVE the first
-assert on its binding, since assert stops the run. Printing before the FAILING assert put it below
-an EARLIER one. **One shape serves both**, `reds_spine_derive_witness`'s own: print bare right
-after the binding, then assert. Back to **zero**.
-**GRADED, DECLINED:** the scan reads **C 73**, its elder **C 73** byte for byte -- the card grades
-a program's head block, untouched here. Register 43 at 57% negatives in a Meter header whose
-subject IS refusal: **Incense's question today**, yours.
-**YOURS, KEATON:** REDS reads **40,311 of 40,960**, **649 free**, where a row of this class runs to
-thousands -- so this one is cited by stamp (`20260910.151309`) and rests in its log.
-**Still yours, on the shelf:** `rish_spoken_ascii` **11,113**, 10,748 table / 365 judgment, sweep
-unrun; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
+**COPAL -- A RISHI GUARD'S SENTENCE IS ALSO A WIRE, WHICH IS WHY NOBODY SWEPT IT.**
+Elder [shelved](archive/20260910-190809_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4589): read the fact off the instrument's own face before arguing
+with it. `rish_spoken_ascii` is the tree's largest non-ASCII residue -- **11,072 characters across
+1,505 files** -- and its ceiling had fallen **two characters in three days**, both on touch. Its two
+siblings were swept to zero. **It had no converter, and its table had one row fewer than the law.**
+**THE MINUS ROW, the same disagreement one instrument over.** `.claude/rules/ascii-first.md` has
+spelled the typographic minus since seating and `ascii_document_scan` carries the row; this meter
+filed **103** of them under `notation`, which MEANS *a reader must choose*, about a form the law
+answers one way. Split **10,707/365 -> 10,810/262**, total unmoved, since a classification fix moves
+no character. **Its two spoken siblings carry the same gap and are named rather than swept.**
+**WHY THE SWEEP HAD NEVER RUN, measured rather than guessed.** Rye's `print` and Glow's `::` speak
+to a person and to nobody else; a Rishi `say` is **also a wire between guards**. **164** counted
+characters sit in assert CONDITIONS, 126 matching a Rye binary's `selftest.out`; and **101 spoken
+lines are coupled** to a matcher elsewhere. Real on real bytes: `oven_handback_surface_p39_witness`
+greps `prin_scope.rish` for `'oct:   Oven Chapter -- PAUSED'`, so a blind `sed` reddens a guard by
+repairing a dash.
+**BUILT:** `tools/fixtures/r/rish_spoken_ascii_convert.sh`, card **A 91** -- deriving its **576**
+-literal coupling set every run rather than pinning a list that drifts the first time a sentence
+changes. **PROVEN:** control **22 -> 37 legs**, every converter leg read off the BYTES rather than
+the report, the pen's residue asserted EXACTLY at five characters each with a nameable reason.
+Witness **31 affirmative, 5 refusals**, 15.4s, `tier cadence`.
+**PAID:** `parity_ch01` and `parity_ch02` swept, **567 characters**, both **RE-DERIVED from their
+committed bytes** so nothing but a spoken line moved. Reading **11,072 -> 10,505**; ceiling
+**11,152 -> 10,585**, keeping the 80 of slack it stood on and taking none of the 567.
+**COLD 245/242/0, 3 gated; HOT 245/242/0, 3 gated, `tree_moved=no` both** -- 245 guards read the
+swept tree and not one of them lost a match.
+**BOTH SWEPT SUITES WERE ALREADY RED, on a cause I never touched:** `pond_build_drawn_terminal.sh`
+answers `verdict=gated_no_display` -- a Wayland application on a headless pier -- and both callers
+read that GATE as a build failure. Proven by running the underlying witnesses at bytes this lap
+never opened. **`%646`'s class**, beside Patchouli's eight wire labs; neither suite is rostered.
+**YOURS, KEATON -- the tree-wide sweep.** **1,502 files, 10,543 characters**, one command now.
+Against it: **92 `.rish` files touched per day by eight ships**, so the rebase cost lands on peers
+rather than here. Its guard is `tier cadence`, so one lap in five hears the ratchet at all.
+**Still yours, on the shelf:** the `rish_spoken_ascii` remainder above;
+Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
 width; `%281`/`%291`; `%347`.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.

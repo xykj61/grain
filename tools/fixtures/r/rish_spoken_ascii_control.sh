@@ -41,6 +41,29 @@
 #       counts the grep pattern, so the exclusion is a mechanism rather than a lucky fixture
 #   22  and that stripped copy counts the `let` binding too, from the same one deleted line
 #
+# SIXTEEN MORE, seated `20260910.180158` with the minus row and the converter:
+#   23  a typographic minus in a spoken line is counted at all
+#   24  and it lands in `table_forms`, since the rule's own table spells it -- the row this meter
+#       lacked for its whole life while `tools/fixtures/a/ascii_document_scan.sh` carried it
+#   25  and it therefore LEAVES `notation`, which means *a reader must choose* and was answering for
+#       103 characters the law answers one way
+#   26  `--check` reports and changes nothing, read off the bytes rather than off the report
+#   27  a `say` line is converted -- the subject
+#   28  an `assert ... else` message is converted -- what a guard says when it refuses
+#   29  a minus is converted, so the converter and the scan carry ONE table
+#   30  a `#` comment is NOT converted -- the sibling meter's room and its own ceiling
+#   31  a `run [...]` grep pattern is NOT converted -- a guard hunting an em dash has to contain one
+#   32  an assert's CONDITION survives whole
+#   33  while its `else` message on the SAME LINE is still reached, so the two halves part at the
+#       last ` else "` rather than at the first
+#   34  a COUPLED SAYING is held back -- a spoken line another runner matches on. Rye's `print` and
+#       Glow's `::` each speak to a person and to nobody else; a Rishi `say` is also a wire between
+#       guards, and converting one end breaks the other
+#   35  and a held line is NAMED out loud, since a silent hold reads as a clean sweep
+#   36  the tracked exec bit survives the rewrite, which is what `cat "$tmp" > "$f"` buys
+#   37  and the two instruments AGREE: after the sweep this pen reads exactly the five characters
+#       whose reasons for standing are each nameable, and no others
+#
 # USAGE
 #   sh tools/fixtures/r/rish_spoken_ascii_control.sh
 #
@@ -49,6 +72,7 @@
 set -u
 
 scan=$PWD/tools/fixtures/r/rish_spoken_ascii_scan.sh
+OWN_ROOT=$PWD
 [ -r "$scan" ] || { echo "control_verdict=no_scan"; exit 1; }
 
 pen=$(mktemp -d)
@@ -151,4 +175,83 @@ case "$ungated" in *"room/pattern.rish"*) echo "gate_is_load_bearing=yes";; *) e
 case "$ungated" in *"room/binding.rish"*) echo "gate_holds_bindings=yes";; *) echo "gate_holds_bindings=no";; esac
 rm -f ungated_scan.sh
 
+
+# -- THE MINUS ROW (`20260910.180158`) -------------------------------------------------------------
+#
+# `.claude/rules/ascii-first.md` has spelled the typographic minus since it was seated, and both
+# spoken meters classified it as `notation` -- a reader's judgment -- about a form the law answers
+# one way. 103 of this meter's 365 notation characters were minus signs standing in arithmetic
+# prose a reader writes plainly. The same disagreement was found and closed one meter over, in the
+# document scan, and the lesson there is the lesson here: **a law and its instrument agreeing is a
+# thing to measure rather than assume.**
+minus='\xe2\x88\x92'
+printf "say \"a minus $minus one\"\n" > room/minus.rish
+git add -A >/dev/null 2>&1
+mout=$(sh "$scan" 2>/dev/null)
+case "$mout" in *"chars=5 "*) echo "minus_counted=yes";; *) echo "minus_counted=no";; esac
+case "$mout" in *"table_forms=4 "*) echo "minus_is_named=yes";; *) echo "minus_is_named=no";; esac
+case "$mout" in *"notation=1 "*) echo "minus_leaves_notation=yes";; *) echo "minus_leaves_notation=no";; esac
+
+# -- THE CONVERTER (`20260910.180158`) -------------------------------------------------------------
+#
+# The scan says what stands; the converter is what lowers it. Its reach must be exactly the scan's,
+# or a file it changes moves one meter and not the other. Every leg below is planted in this same
+# pen and read off the BYTES afterward rather than off the converter's own report.
+conv=$OWN_ROOT/tools/fixtures/r/rish_spoken_ascii_convert.sh
+if [ -r "$conv" ]; then
+  # A coupled saying: one runner matches on what another says. Convert one side of that wire and
+  # the other side stops matching, so the line is held back whole. This exclusion has no sibling --
+  # Rye's `print` and Glow's `::` each speak to a person and to nobody else.
+  printf "say \"a wired sentence $em one\"\n"                        > room/coupled.rish
+  printf "assert w.out contains \"a wired sentence $em one\" else \"held\"\n" > room/reader.rish
+  git add -A >/dev/null 2>&1
+
+  before=$(cat room/spoken.rish room/comment.rish room/pattern.rish room/coupled.rish)
+  sh "$conv" --check room/spoken.rish room/comment.rish room/pattern.rish room/coupled.rish >/dev/null 2>&1
+  after=$(cat room/spoken.rish room/comment.rish room/pattern.rish room/coupled.rish)
+  [ "$before" = "$after" ] && echo "check_changes_nothing=yes" || echo "check_changes_nothing=no"
+
+  creport=$(sh "$conv" --apply room/spoken.rish room/comment.rish room/pattern.rish room/coupled.rish room/minus.rish room/refusal.rish 2>/dev/null)
+  grep -q -- '--' room/spoken.rish && echo "convert_say=yes" || echo "convert_say=no"
+  grep -q -- '--' room/refusal.rish && echo "convert_refusal_message=yes" || echo "convert_refusal_message=no"
+  grep -q 'a minus - one' room/minus.rish && echo "convert_minus=yes" || echo "convert_minus=no"
+  high() { LC_ALL=C awk '/[\300-\377]/ { f = 1 } END { exit (f ? 0 : 1) }' "$1"; }
+  high room/comment.rish && echo "convert_comment=no" || echo "convert_comment=yes"
+  high room/pattern.rish && echo "convert_pattern=no" || echo "convert_pattern=yes"
+  high room/coupled.rish && echo "convert_coupled=no" || echo "convert_coupled=yes"
+  case "$creport" in *"held_coupled=1 "*) echo "coupled_reported=yes";; *) echo "coupled_reported=no";; esac
+
+  # An assert's CONDITION is a match pattern and its `else` message is prose, on one line. The two
+  # part at the LAST ` else "`, never the first, since a condition may itself hold those bytes and
+  # reading the last converts less rather than more.
+  printf "assert a.out contains \"target $em one\" else \"message $em two\"\n" > room/split.rish
+  git add -A >/dev/null 2>&1
+  sh "$conv" --apply room/split.rish >/dev/null 2>&1
+  grep -q "target $(printf "$em") one" room/split.rish && echo "condition_held=yes" || echo "condition_held=no"
+  grep -q -- 'message -- two' room/split.rish && echo "message_converted=yes" || echo "message_converted=no"
+
+  # THE TRACKED MODE SURVIVES THE REWRITE. `cat "$tmp" > "$f"` writes through the original inode;
+  # `mv` would carry the temporary file's mode instead (`.claude/rules/exec-bit.md`).
+  printf "say \"executable $em one\"\n" > room/exec.rish
+  chmod +x room/exec.rish
+  git add -A >/dev/null 2>&1
+  sh "$conv" --apply room/exec.rish >/dev/null 2>&1
+  [ -x room/exec.rish ] && echo "mode_survives=yes" || echo "mode_survives=no"
+
+  # AND THE TWO INSTRUMENTS AGREE, which is the whole claim. The scan's reading after the sweep
+  # falls by exactly the characters the converter removed, and by no others.
+  git add -A >/dev/null 2>&1
+  aout=$(sh "$scan" 2>/dev/null)
+  achars=$(printf '%s' "$aout" | sed -n 's/.* chars=\([0-9][0-9]*\) .*/\1/p')
+  # FIVE is what an honest sweep leaves standing in this pen, and each one names a reason the
+  # converter declined: the indented say and the notation say were never handed to it; the coupled
+  # saying was held; its reader's line is spoken and its condition holds the wire's other end; and
+  # the split line keeps its condition. Everything handed over and free went to zero.
+  case "$achars" in
+    5) echo "scan_falls_with_convert=yes" ;;
+    *) echo "scan_falls_with_convert=no achars=$achars" ;;
+  esac
+else
+  echo "converter_absent=yes"
+fi
 echo "control_verdict=ok"

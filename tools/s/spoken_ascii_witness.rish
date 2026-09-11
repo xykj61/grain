@@ -81,6 +81,35 @@ assert living.ok else "spoken-ascii: the living scan must complete"
 assert living.out contains "instrument=ok" else "spoken-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
 assert living.out contains "under_ceiling=yes" else "spoken-ascii: non-ASCII in spoken Rishi lines rose above the ceiling -- convert on touch rather than raising it"
 
+# THE MINUS ROW (`20260910.180158`). The rule's substitution table has spelled the typographic minus
+# since it was seated, and this meter called it notation -- a reader's judgment -- about a form the
+# law answers one way. 103 of its 365 notation characters were minus signs standing in arithmetic
+# prose a reader writes plainly. The same disagreement was found and closed one meter over, in the
+# document scan, which is what makes it a class rather than a slip.
+assert control.out contains "minus_counted=yes" else "spoken-ascii: a typographic minus in a spoken line is non-ASCII and must be counted"
+assert control.out contains "minus_is_named=yes" else "spoken-ascii: the rule's table spells the minus, so it belongs in table_forms rather than in the reader's-judgment tail"
+assert control.out contains "minus_leaves_notation=yes" else "spoken-ascii: a form the law answers one way must leave the notation count, or the two numbers stop meaning what they say"
+
+# THE CONVERTER. A meter that only counts is a ratchet nobody can turn, and this surface stood at
+# roughly 11,000 characters falling one a day on touch. The converter's reach must be EXACTLY the
+# scan's, so a file it rewrites falls in this reading by what it converted and moves no other meter.
+assert control.out contains "check_changes_nothing=yes" else "spoken-ascii: --check must report and change nothing, or a reader cannot look before they leap"
+assert control.out contains "convert_say=yes" else "spoken-ascii: a say line is the subject -- the converter must reach it"
+assert control.out contains "convert_refusal_message=yes" else "spoken-ascii: an assert's else message is what a guard says when it refuses, and is prose too"
+assert control.out contains "convert_minus=yes" else "spoken-ascii: the converter carries the same table the scan classifies by, minus row included"
+assert control.out contains "convert_comment=no" else "spoken-ascii: a comment belongs to the sibling meter and must be left standing"
+assert control.out contains "convert_pattern=no" else "spoken-ascii: a run [...] grep pattern is behavior -- converting one asks a guard to stop finding what it guards"
+assert control.out contains "condition_held=yes" else "spoken-ascii: an assert's condition is a match pattern and must survive the rewrite whole"
+assert control.out contains "message_converted=yes" else "spoken-ascii: and its else message on the same line must still be reached, or the two halves are read as one"
+assert control.out contains "mode_survives=yes" else "spoken-ascii: the rewrite writes through the original inode, so the tracked exec bit survives"
+
+# THE EXCLUSION WITH NO SIBLING. Rye's print and Glow's :: comment each speak one way -- to a person,
+# and to nobody else. A Rishi say is ALSO a wire between guards: one witness runs another and asserts
+# on what it said. Convert one side of that wire and the other side stops matching, so a spoken line
+# whose text another runner matches on is held back whole and named.
+assert control.out contains "convert_coupled=no" else "spoken-ascii: a spoken line another runner matches on is a wire between two guards, and converting one end breaks the other"
+assert control.out contains "coupled_reported=yes" else "spoken-ascii: a held line must be named out loud -- a silent hold reads as a clean sweep"
+
 # COUNTED OFF THE PEN, BOTH DIRECTIONS. A `_counted=no` is a behavior proven exactly as hard as a
 # `=yes` -- it is the reading that keeps a grep pattern out of a prose ceiling -- so a tally that
 # read only the affirmative half would understate the control by every refusal it owns.
@@ -88,4 +117,4 @@ let affirmed = where (lines control.out) as l: l contains "=yes"
 let refused = where (lines control.out) as l: l contains "_counted=no"
 say "spoken-ascii: ${length affirmed} affirmative readings and ${length refused} refusals proven in a throwaway repository, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
 
-say "GREEN: spoken-ascii -- what a Rishi guard says out loud now stands under a ceiling that only falls, printed above as the scan's own output. The meter counts a say line and an assert's refusal message, and refuses to count a grep pattern, a binding, or a comment -- the first because a guard hunting an em dash must contain one, the last because a character charged to two ceilings makes each reading depend on the other. The sweepable subset and the reader's-judgment tail are reported apart, so the next lap converts the first and weighs the second."
+say "GREEN: spoken-ascii -- what a Rishi guard says out loud now stands under a ceiling that only falls, printed above as the scan's own output. The meter counts a say line and an assert's refusal message, and refuses to count a grep pattern, a binding, or a comment -- the first because a guard hunting an em dash must contain one, the last because a character charged to two ceilings makes each reading depend on the other. The sweepable subset and the reader's-judgment tail are reported apart, and from `20260910.180158` the first has a converter -- `tools/fixtures/r/rish_spoken_ascii_convert.sh`, which reaches exactly what this meter counts and holds back the one thing a count cannot see: a spoken line another guard matches on."

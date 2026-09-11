@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.190908` | [the sentence that is also a wire](20260910/20260910-190908_the-sentence-that-is-also-a-wire.kyri) | a say is a wire; converter built, minus row seated |
 | `20260910.201128` | [The falsifier that landed in the middle](20260910/20260910-201128_the-falsifier-that-landed-in-the-middle.kyri) | 62% read by wall, 58% by process; neither door fired |
 | `20260910.182333` | [the pin's first door, walked](20260910/20260910-182333_the-pins-first-door.kyri) | %457 booked and folded; deadlock broken |
 | `20260910.180344` | [The names no guard was reading](20260910/20260910-180344_the-names-no-guard-was-reading.kyri) | the law room prints 99 tool paths; 50 no link guard could see |
