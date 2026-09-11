@@ -23,9 +23,13 @@
 //!                          aim at any target it supports -- including freestanding
 //!                          RISC-V, the ground Aurora's first seed wakes on.
 //!
-//! We locate the Zig toolchain through the RYE_ZIG environment variable when
-//! set, and otherwise as `zig` on the PATH. We pass this explicitly rather than
-//! guessing in the dark, so the backend in use is always clear.
+//! We locate the Zig toolchain in three readings, and pass the answer to the
+//! toolchain explicitly rather than guessing in the dark, so the backend in use
+//! is always clear. An explicit RYE_ZIG wins. Failing that, the pinned toolchain
+//! this tree fetches for itself, found beside this binary at
+//! `<exe_dir>/../../vendor/zig-toolchain/zig` -- the same reading `bootstrap.sh`
+//! already takes, so the cold start and the compiler it bootstraps answer one
+//! question one way. Last, a bare `zig` for the host's PATH to answer.
 //!
 //! Rye carries its own standard library at `rye/lib`: a copy of the toolchain's
 //! `std` that we are free to tend, with the unchanging remainder symlinked back
@@ -77,7 +81,7 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// Accretions in *capability* grow the tool itself: the `build` command, and
 /// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
 /// The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260827.023156";
+const rye_version = "20260911.115025";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -142,6 +146,21 @@ comptime {
     // empty template or one beginning at root would tie this build to one machine's filesystem.
     assert(rye_lib_relative_to_exe.len != 0);
     assert(rye_lib_relative_to_exe[0] != '/');
+}
+
+/// Where the pinned toolchain sits relative to this binary: the same kind of
+/// relative template as `rye_lib_relative_to_exe`, one directory further out.
+/// The binary lives at `rye/bin/rye`, so the clone root is two steps up and the
+/// toolchain `tools/f/fetch-toolchain.sh` installs sits beneath it at
+/// `vendor/zig-toolchain/zig`.
+const zig_relative_to_exe = "../../vendor/zig-toolchain/zig";
+
+comptime {
+    // invariant: this template stays relative for the reason the library's does -- resolved
+    // against the binary's own location it names the same file from any working directory,
+    // where an absolute path would tie the build to one machine
+    assert(zig_relative_to_exe.len != 0);
+    assert(zig_relative_to_exe[0] != '/');
 }
 
 pub fn main(init: std.process.Init) !u8 {
@@ -285,8 +304,9 @@ fn bridge_to_zig(
 
     const dir = std.Io.Dir.cwd();
 
-    // Resolve the toolchain explicitly: an absolute RYE_ZIG, else `zig` on PATH.
-    const zig = init.environ_map.get("RYE_ZIG") orelse "zig";
+    // Resolve the toolchain explicitly: RYE_ZIG, else the pinned toolchain this
+    // tree ships, else `zig` on PATH.
+    const zig = resolve_zig(init, garden);
 
     // Resolve Rye's own standard library, so `@import("std")` means *our* std.
     // Rye insists on its own std and never falls back to the toolchain's
@@ -448,8 +468,8 @@ fn bridge_to_zig(
 
     var child = std.process.spawn(io, .{ .argv = argv }) catch |err| {
         std.debug.print(
-            "rye {s}: could not start toolchain '{s}' ({s}). Set RYE_ZIG to the zig binary, or put zig on your PATH.\n",
-            .{ label, zig, @errorName(err) },
+            "rye {s}: could not start toolchain '{s}' ({s}). Rye looks for RYE_ZIG, then '{s}' beside this binary, then `zig` on your PATH. Run `sh tools/f/fetch-toolchain.sh` to install the pinned toolchain, or set RYE_ZIG to a zig binary.\n",
+            .{ label, zig, @errorName(err), zig_relative_to_exe },
         );
         return 1;
     };
@@ -533,6 +553,54 @@ fn resolve_self_exe(init: std.process.Init, garden: std.mem.Allocator) ![]const 
     if (std.fs.path.dirname(argv0) == null) return error.NoExecutableDirectory;
     return garden.dupe(u8, argv0);
 }
+
+/// Find the Zig toolchain this build runs through.
+///
+/// THREE READINGS, the first two in the order `rye/bootstrap.sh` already takes.
+/// An explicit RYE_ZIG wins, for clarity and for a host that keeps its toolchain
+/// somewhere of its own. Failing that, the toolchain this tree fetches for
+/// itself -- pinned to one version against a checksum by
+/// `tools/f/fetch-toolchain.sh` -- found beside this binary the way
+/// `resolve_rye_lib` finds our std, so it answers the same from any working
+/// directory. Last, a bare `zig` for the host's PATH to answer.
+///
+/// WHY THE PIN COMES BEFORE PATH. The cold start in `bootstrap.sh` reads
+/// `${RYE_ZIG:-../vendor/zig-toolchain/zig}` and consults no PATH at all, and the
+/// tree's witnesses spell `RYE_ZIG=vendor/zig-toolchain/zig` by hand at well over
+/// a thousand sites -- so the tree's standing answer to *which toolchain* is the
+/// pinned one, and this reading is the compiler agreeing with it rather than a
+/// new decision. A host `zig` of some other version stays reachable, in the last
+/// reading and through RYE_ZIG.
+///
+/// EVERY REFUSAL FALLS BACK rather than stopping, because each one means only
+/// *this* reading cannot answer: no `/proc` and no directory in argv[0], no room
+/// to print the path, or a vendored file that is absent or not executable. The
+/// spawn below names whatever this returns when it will not start, which is the
+/// one place a toolchain failure is worth reporting.
+fn resolve_zig(init: std.process.Init, garden: std.mem.Allocator) []const u8 {
+    // invariant: the fallback name is a bare command for PATH to resolve, so it carries no
+    // separator -- a path here would silently become a second, unannounced location
+    assert(std.fs.path.dirname(zig_fallback) == null);
+
+    if (init.environ_map.get("RYE_ZIG")) |path| return path;
+
+    const exe = resolve_self_exe(init, garden) catch return zig_fallback;
+    const bin_dir = std.fs.path.dirname(exe) orelse return zig_fallback;
+    const vendored = std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, zig_relative_to_exe }) catch return zig_fallback;
+
+    // invariant: the joined path is longer than the template alone, which is what says the
+    // binary's own directory actually reached the front of it
+    assert(vendored.len > zig_relative_to_exe.len);
+
+    // Asked whether it can be RUN, which is the only question a toolchain path
+    // answers. A directory or an unreadable file here would spawn and fail one
+    // step later under a name that says less.
+    std.Io.Dir.cwd().access(init.io, vendored, .{ .execute = true }) catch return zig_fallback;
+    return vendored;
+}
+
+/// The last reading's name: a bare command, left for the host's PATH to resolve.
+const zig_fallback = "zig";
 
 /// Find Rye's standard library directory, so the compiler can be pointed at it.
 /// An explicit RYE_LIB wins, for clarity and for hosts that name their running
