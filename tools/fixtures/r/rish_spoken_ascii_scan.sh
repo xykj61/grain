@@ -92,7 +92,16 @@ mode="${1:-count}"
 #                             spoken line moved. The reading fell 11,072 -> 10,505 and this falls
 #                             with it, keeping the same 80 of slack it already stood on and taking
 #                             none of the 567.
-CEILING=10585
+#   10584  `20260910.234500`  one em dash in the GREEN line of
+#                             `tools/gen/amphora/amphora_asker_reply.rish`, converted on touch while
+#                             its guard was run for the first time on this pier. Falls by exactly the
+#                             one character removed and claims none of the 80 of slack.
+#   10580  `20260911.003300`  four more in the same lane, on touch: the em dash and three middots in
+#                             `tools/am/amphora_carry_negative_witness.rish`'s GREEN line, while its
+#                             build reasons moved into their refusal messages. Checked first for a
+#                             coupled saying -- no runner greps that line -- and falls by exactly the
+#                             four removed.
+CEILING=10580
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).

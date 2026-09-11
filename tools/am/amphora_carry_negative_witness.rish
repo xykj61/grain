@@ -33,16 +33,17 @@ let far = "${home}/dock/vessel.bron"
 # All three, whatever this file names in run position: amphora/src/main.rye:138 and :176
 # resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present.
 # The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
+# Each build's reason rides in its own refusal message rather than on a `say` line above the
+# assert: a line that speaks only when `.ok` is false is the same promise, and `shim_reason`
+# can read an interpolation where it cannot read a say inside a conditional -- so the elder
+# spelling counted as a binding asserted on and never reported (`20260911.003300`).
 let zig = "vendor/zig-toolchain/zig"
 let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
-if build_amphora.ok == false then say build_amphora.err
-assert build_amphora.ok else "amphora_carry_neg: amphora build failed -- read the line above"
+assert build_amphora.ok else "amphora_carry_neg: amphora build failed --\n${build_amphora.err}"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
-if build_core.ok == false then say build_core.err
-assert build_core.ok else "amphora_carry_neg: vessel-core build failed -- read the line above"
+assert build_core.ok else "amphora_carry_neg: vessel-core build failed --\n${build_core.err}"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
-if build_seal.ok == false then say build_seal.err
-assert build_seal.ok else "amphora_carry_neg: vessel-seal build failed -- read the line above"
+assert build_seal.ok else "amphora_carry_neg: vessel-seal build failed --\n${build_seal.err}"
 
 let pour = run ["amphora/bin/amphora" "pour" season vessel]
 assert pour.ok else "carry_neg: pour must pass"
@@ -90,4 +91,4 @@ assert heal4.ok else "carry_neg: final heal must pass"
 let equal = run ["cmp" "-s" vessel far]
 assert equal.ok else "carry_neg: healed dock must equal the source"
 
-say "GREEN: amphora_carry_negative — missing · empty · reordered · forged all refuse; the dock heals."
+say "GREEN: amphora_carry_negative -- missing - empty - reordered - forged all refuse; the dock heals."

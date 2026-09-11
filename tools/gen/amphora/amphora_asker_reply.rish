@@ -63,4 +63,4 @@ assert control.out contains "leg port_source_repaired_asker: an_asker_went_unans
 assert control.out contains "leg repaired_source_split_asker: an_asker_went_unanswered" else "amphora asker-reply: an asker speaking through a second socket must go unanswered"
 assert control.out contains "leg port_plant_pair_innocent: every_asker_answered" else "amphora asker-reply: the planted pair must agree with itself, or the pen is the fault"
 
-say "GREEN: Amphora — the source answers the asker, and the kernel names the asker's port."
+say "GREEN: Amphora -- the source answers the asker, and the kernel names the asker's port."

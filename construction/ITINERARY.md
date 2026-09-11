@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a5832217d1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7c43783800` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SLOWER CLOCK HAD NEVER TURNED, PROMISED TO A ROUND NOBODY COUNTS.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -200,43 +200,40 @@ the Cursor bench reads and **no Claude ship has seen**, printed and gated nowher
 1,500 lines**; reconciling stays your word, and the size is now measurable. (3) Whether a guard
 behind a gate should still be **heard** when it reds.
 
-**COPAL -- THE SWEEP YOU ARE HOLDING IS PROVEN TO CONVERGE, ON YOUR OWN TREE.**
-Elder [shelved](archive/20260910-214217_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4598): taste works up close, and the row's cardinal seat,
-`what-brix-infuse-is.md`, says run it a SECOND time. `infusion(world') -> world'`.
-**THE FINDING:** `tools/fixtures/r/rish_spoken_ascii_convert.sh`, the converter I built last lap,
-stood in `convergence_census`'s **unproven** column -- **14 candidates, 11 proven, 3 unproven**. I
-shipped a writer and never asked it the tree's own question about writers.
-**MECHANISM:** a fifth subject in `tools/c/convergence_tree_prove_witness.rish` -- one `run` of
-`tools/c/convergence_tree_prove.sh` handed `--apply tools/m/mycelium_chorus_knot_witness.rish`, with
-`rs.ok` and `verdict=converges` both asserted. Census reads **12 proven, 2 unproven**;
-`proven_by_prover_run` **3 -> 4**.
-**WHY NO `--perturb`.** All four prior subjects run in `tools/hooks/pre-commit`, so at HEAD their
-work is done and a bare reading answers `inert`. This one is a **sweep** -- **1,501 of 2,485**
-tracked `.rish` sources still hold a character it converts -- so the committed tree is its own
-sample. The subject also holds **coupled sayings** back, and that set is **derived every run**
-rather than pinned, so a first run could hand the second a different derivation. It does not.
-**A FALL I GAVE BACK.** The first subject was `tools/gen/chapter/prin_scope.rish`, better at 3
-held lines, and naming it reddened `unheard_guard`: `unnamed_choirs` fell **11 -> 10**, because a
-path on a non-comment line reads as **heard**. My leg hands prin_scope to a converter **as a data
-file** and never RUNS it, and that guard's first line is *a guard that is never run guards
-nothing*. I moved the subject and left the count. **A citation-as-data buys a ratchet fall in a
-guard whose subject is execution** -- real, and not my lane.
-**THE WHOLE SWEEP, RUN RATHER THAN ARGUED:** the same prover over **all 2,485 tracked `.rish` paths
-at once** reads `verdict=converges`. Off the roster on purpose -- its `args=` line alone runs 99KB,
-and a witness that prints a hundred kilobytes of arguments teaches nothing.
-**A QA FRAME CLOSED ON A NUMBER:** the witness reads **C+ 77** and read **C+ 77 at HEAD**; the
-whole gap is `named_by_card=no`, which this block repairs.
-**COLD 249/243/3 red** -- `index_row_bound` on a peer's two misordered shelf rows, closed with the
-repair its own advice names; `unheard_guard` above; `standing_equipment` for both. **HOT 249/246/0,
-3 gated, `tree_moved=no`.**
-**YOURS, KEATON:** the tree-wide `.rish` sweep still waits on your word, and it now carries a
-convergence proof on your own tree rather than on a pen. The argument against it is unchanged --
-**92 `.rish` files touched per day by eight ships**, so the rebase cost lands on peers.
-**Still yours, on the shelf:** the `rish_spoken_ascii` remainder; `reds_fold.sh` and
-`bootstrap_wasmtime.sh`, the two candidates still unproven, neither in my lane;
-Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
-width; `%281`/`%291`; `%347`.
+**COPAL -- A TIER OF 74 GUARDS, AND ONE RUN ROW ON THIS WHOLE PIER.**
+Elder [shelved](archive/20260911-003212_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4609, hand-advanced past rows 1-4, all read by peers on `20260910`): the
+row listens for the page nobody answered, and found `%568` -- which a peer answered mid-lap.
+**REDS FIRST, BOTH CLOSED.** Cold **251/246/3**; hot **251 run, 249 green, 0 red, `tree_moved=no`**.
+`prose_register` refused `door_setting_undeclared` on the **root `README.md`**: its `**Style:**`
+declaration WRAPS and `declared_style_line_of()` reads the first line only -- a limit that scan's own
+header prints. Named on line 23; **1 -> 0**, GREEN. A peer's fuller repair won the rebase.
+`shim_reason` read **949 against 948** and refused on every ship. Its cause is in ITS OWN header:
+a `say` inside a conditional cannot be credited, and **three rostered bindings in my lane** wrote
+`if v.ok == false then say v.err` -- the same promise, paid on a line the parser cannot read. All
+three took the interpolated `assert ... else "...${v.err}"` form; **949 -> 946**, ceiling to the
+reading, claiming no slack, since the peer's +1 is real and unrepaired by me. Both guards GREEN.
+**THE FINDING, measured `20260910.234500`, and OVERTAKEN while I measured it.** `tier cadence` holds
+**74** guards, was **58** when `%568` booked *nothing turns that clock*, and this checkout's
+`standing-equipment-runs.kyri` held a run row for exactly **one** -- recording `lap`. A peer landed
+`--cadence-slice N` at `a5832217d` reading **74 of 74** on its own checkout; each tree keeps its own
+untracked card, so both readings are true and neither is the other's correction.
+**TWO OF THEM ARE MINE, AND I ASKED THEM.** `amphora_asker_reply` answers GREEN in **69s**, against
+the 68s its seating measured; `amphora_udp_reuseaddr` GREEN in **104s**. Both silences were honest,
+and only the asking established that -- which is the whole of the aether reading.
+**AND I DECLINED THE MOVE THAT WOULD HIDE IT.** `tier lap` for the pair would shrink the never-run
+count by two and spend **173s twice a lap** reproving what changes only when
+`amphora/vessel_fetch_delivery.rye` does, against a pass of **2,940s**. Both rows carry the reading.
+**ON TOUCH:** five spoken characters in two lane files, each checked for a coupled saying first --
+`rish_spoken_ascii` **10,505 -> 10,500**, ceiling **10,585 -> 10,580**, claiming none of the slack.
+**YOURS, KEATON -- the clock is built and its hand is still still.** `--cadence-slice` defaults to
+**0** and that peer's own body says *the fleet default stays 0*, so today's tier is `%568` one level
+up: a mechanism nobody invokes rather than a mechanism nobody wrote. Naming a slice in
+`tools/f/fleet-loop.sh` is the whole remaining move, and its price is one number: a slice of 2 adds
+roughly **170s a pass** at this lane's measured rates, which buys the 74 a full turn in 37 laps.
+**Still yours, on the shelf:** the tree-wide `.rish` sweep; the two unproven convergence
+candidates; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
+`glow/rune_shape.rye` width; `%281`/`%291`; `%347`.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **Gate 3 stands:** `.gnupg-rye/` holds
@@ -378,6 +375,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.204226` | The door that names its own ceiling | [log](../session-logs/date/20260910/20260910-204226_the-door-that-names-its-own-ceiling.kyri) |
+| `20260911.003300` | A tier of 74, one run row | [log](../session-logs/date/20260911/20260911-003300_a-tier-of-seventy-four-and-one-run-row.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
