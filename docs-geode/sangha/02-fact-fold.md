@@ -7,6 +7,7 @@
 **Elder sibling:** [`01-descriptor-exchange.md`](01-descriptor-exchange.md) -- the bench conforms this page's headings to pattern one where they differ
 **Written from:** [`mycelium/fold.rye`](../../mycelium/fold.rye), green on metal - design shape `context/design-shapes/fact_fold.brix` (named rather than linked -- `context/` is not a room the seed carries)  
 **Shelf:** [the pattern book](README.md) - **Younger sibling:** [`03-five-primitives.md`](03-five-primitives.md)
+**Room:** checkable -- the fold's purity is proven twice on metal, fresh against resumed, and every refusal here has a fixture that bites.
 
 *Written together by Keaton and Riyo.*
 

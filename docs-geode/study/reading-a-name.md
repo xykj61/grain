@@ -8,6 +8,7 @@
 
 **Language:** EN - **Style:** Gauge, Door setting - **Voice:** Kyri
 **Written:** `20260905.224930` - **Status:** Living - **Kind:** crushed study guide
+**Room:** checkable -- the naming law is [`stamp-and-name`](../../.claude/rules/stamp-and-name.md), and the fold claim is what `tools/d/dated_path_resolve.rish` computes.
 
 ---
 

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.080549` | [Which room you were in](20260911/20260911-080549_the-shelf-that-never-said-which-room.kyri) | docs-geode's eight doors name their register; ceiling 67 -> 59 |
 | `20260911.063359` | [A cell that counted a room](20260911/20260911-063359_a-cell-that-counted-a-room.kyri) | the stashed lap lands; a press count three days stale leaves a wiki cell |
 | `20260911.063351` | [A group blind to its members](20260911/20260911-063351_the-group-that-could-not-see-its-members.kyri) | one alias member read twice passed for three |
 | `20260911.055635` | [A guard that names nothing](20260911/20260911-055635_a-guard-that-names-nothing.kyri) | three guards refused and named nothing; all three name it now |

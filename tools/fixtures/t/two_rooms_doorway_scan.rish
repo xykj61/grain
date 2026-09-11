@@ -155,13 +155,26 @@ if ceiling_env != "" then let ceiling = ceiling_env
 # the 23 are mirrored documents, so `tools/fixtures/d/document_mirror_scan.sh write` carried the
 # line to `ember-voices/KYRI.md`, `spellbook/README.md` and `biochemistry/README.md` in the same
 # commit. `context/` reads 99 pages and 0 living-silent; the ceiling falls 90 -> 67, and the
-# remainder is 33 `active-designing/`, 20 `manual/`, 8 `docs-geode/`, 6 in the lineage silo.
+# remainder is 33 `active-designing/`, 20 `manual/`, 8 `docs-geode/`, 6 in `external-research/`.
+#
+# AND THE SHIPPING SHELF PAID ITS SHARE THE SAME DAY (20260911.081500). The 8 living
+# `docs-geode/` pages naming no room are the shelf a newcomer is sent to -- the Rishi
+# reference, the three Sangha patterns, the naming study, and the three tutorials -- so the
+# room that teaches this tree to a stranger was answering every question at its door except
+# which register the stranger was standing in. Each took a `**Room:**` line judged from the
+# body rather than the title: 6 `checkable` where a witness binds every claim, 1 `mixed`
+# where a counted half stands beside a judged one (`the-first-hour.md`, whose quoted endings
+# `tutorial_output_scan.sh` runs and whose welcome is judged), and 1 `vision`
+# (`SHOPPING.md`, a method that names no winner and quotes no price, so no guard could bind
+# a sentence of it). `docs-geode/` reads 18 pages and 0 living-silent; the ceiling falls
+# 67 -> 59, moved by the eight and by nothing else, and the remainder is 33
+# `active-designing/`, 20 `manual/`, 6 `external-research/`.
 #
 # TWO NUMBERS RATHER THAN ONE, because a page never changes class: a stamp is in a basename or it
 # is not. Merging them would let a repair in one class hide a regression in the other, and the
 # dated ratchet's floor of 3 is structural where this one's is zero.
 let living_ceiling_env = env "TWO_ROOMS_LIVING_CEILING"
-let living_ceiling = "67"
+let living_ceiling = "59"
 if living_ceiling_env != "" then let living_ceiling = living_ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]

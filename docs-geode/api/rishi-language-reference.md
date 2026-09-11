@@ -4,6 +4,7 @@
 
 **Language:** EN - **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.185852` - **Status:** Living - **Kind:** crushed API surface
+**Room:** checkable -- every form below was run before it was written down, and `rishi/tests/*.rish` with the `tools/r/rish_*_witness.rish` family bind the lot.
 **Source it compresses:** [`../../rishi/README.md`](../../rishi/README.md) (the tour) and `rishi/tests/*.rish` (the proofs). This page is the *reference*: what to reach for, what it returns, and where it refuses.
 
 ---
@@ -141,7 +142,7 @@ let block = "first${nl}second"
 
 ## Where this is proven
 
-`rishi/tests/*.rish` holds a test per feature, and `tools/rish_*_witness.rish` proves the exit vocabulary, the environment lookup, and the regex primitive on metal. Run one:
+`rishi/tests/*.rish` holds a test per feature, and `tools/r/rish_*_witness.rish` proves the exit vocabulary, the environment lookup, and the regex primitive on metal. Run one:
 
 ```sh
 rishi/bin/rishi run tools/r/rish_exit_codes_witness.rish
