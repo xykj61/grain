@@ -53,7 +53,31 @@ Every Mantra and Linengrow wire capability that crosses onto real virtio carries
 | Granary resin serve | 38496 / 38497 | 15573 / 15574 |
 | Tablecloth query (hosted + device) | 38490 / 38491 | 15575 / 15576 |
 
-Ports repeat across unrelated laps by design -- each witness binds, uses, and releases its own pair within one bounded run, and Comlink's laps never run concurrently against the same address.
+Ports repeat across unrelated laps by design -- each witness binds, uses, and releases its own pair
+within one bounded run. The table therefore reads 38490 / 38491 twice, for the snapshot export and
+the Tablecloth query, and both rows are right.
+
+**A port belongs to the machine, and this pier runs eight trees.** This paragraph closed with *and
+Comlink's laps never run concurrently against the same address* until `20260911`, which held for one
+checkout and lapsed the day a second one opened. The two rows above met inside a single tree as
+well: `mantra_snapshot_hosted` and `mantra_tablecloth_query_wire` are both rostered and both bound
+38490 / 38491, and the first was observed red at 2,689ms under load and GREEN alone straight after,
+its evidence naming `BadKind` then `RecvFailed`, which is the signature of a foreign sender. Eight
+concurrent Tablecloth selftests read 39 of 80 red on metal at load 14, where 120 serial runs of the
+same binary read zero.
+
+Three things answer it, at three levels. The Tablecloth query **removes the name**, binding port
+zero at both ends and exchanging addresses through a readiness datagram, so the kernel's own choice
+replaces a number a file spelled. Every Mantra delivery module now reads
+`SO_REUSEADDR` back and asserts it zero rather than setting it, so the kernel answers a second binder with
+`error.BindFailed` naming the bind site -- measured `20260911` against a foreign holder of 38491,
+where the elder module bound beside the holder and printed `GREEN`. Above that,
+[`tools/fixtures/m/mantra_delivery_port_lock.sh`](../tools/fixtures/m/mantra_delivery_port_lock.sh)
+holds a pair by its low port while a witness runs, so two lawful runs keep out of each other's way
+and the refusal stays a floor that lawful work clears. Held by
+[`tools/m/mantra_udp_reuseaddr_witness.rish`](../tools/m/mantra_udp_reuseaddr_witness.rish); Amphora
+met the same shape one lane over and measured the four binds that decide it
+([`tools/fixtures/a/amphora_udp_reuseaddr_scan.sh`](../tools/fixtures/a/amphora_udp_reuseaddr_scan.sh)).
 
 ---
 

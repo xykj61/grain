@@ -41,4 +41,16 @@ assert pool_control.ok else "answer-slot budget control did not reach verdict=ok
 assert pool_control.out contains "verdict=ok" else "answer-slot budget control verdict missing"
 assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused, so no break below reads honestly"
 
-say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter + answer-slot budget)."
+# THE LEG THAT RUNS THE SELFTEST BESIDE ITSELF. Every check above runs the delivery binary ONCE,
+# and the fault that made this witness flap was invisible to one run: the module spoke over two
+# port numbers written into the file, and a port is a name on the MACHINE rather than in a tree.
+# Eight checkouts stand on this pier, each running this witness every roster pass, so two of them
+# reaching port 38490 read each other's replies. Measured `20260911` at load 14, eight at once:
+# the elder binary 39 of 80 red, the repaired binary 0 of 80 -- and both 0 of 120 run serially,
+# which is why a fortnight of green passes never named it (REDS %700).
+let port_control = run ["sh" "tools/fixtures/m/mantra_delivery_port_control.sh"]
+assert port_control.ok else "delivery concurrency control did not reach verdict=ok: ${port_control.out}"
+assert port_control.out contains "clean_red=0" else "the delivery selftest refused beside itself: ${port_control.out}"
+assert port_control.out contains "verdict=ok" else "delivery concurrency control verdict missing"
+
+say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter + answer-slot budget + concurrent delivery)."

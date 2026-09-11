@@ -2512,6 +2512,33 @@ path tools/m/mantra_query_wire_flap_witness.rish
 tier lap
 seated 20260911.081500
 
+# THE PORT THE WHOLE PIER WAS SHARING, and the option that made the sharing silent. The counter
+# above proved `mantra_tablecloth_query_wire` flaps under load; this guard holds the cause it
+# turned out to have. Seven `mantra/*_delivery.rye` modules opened their UDP socket under
+# `setsockopt(SO_REUSEADDR)` whose invariant read *SO_REUSEADDR is what lets a bounded run rebind
+# its own port* -- TCP's sentence, since a closed TCP socket sits in TIME_WAIT holding its port.
+# UDP has no TIME_WAIT, so the option bought nothing it was named for and bought instead a
+# DUPLICATE BIND: two sockets holding one address and port while the kernel splits the datagrams
+# between them, with no error on either side. A port belongs to the MACHINE and this pier runs
+# eight trees, so the collision was ordinary; two of the seven bind one pair, 38490/38491, so it
+# stands inside a single tree too.
+#
+# TWO GATES AND A LIVE LEG. `reuseaddr_sites` is the regression guard, held at zero.
+# `dgram_unproven` asks for more than silence: every module opening SOCK_DGRAM reads the option
+# back and asserts it zero, so the property is stated rather than inferred from an absent line. The
+# live leg runs the BUILT binary against a foreign holder of 38491 and reads what it says --
+# `refused_by_name`, first stderr line `BindFailed`. Measured `20260911` both ways: the elder
+# module, built from the commit before the repair, bound beside the holder and printed `GREEN`.
+# The live leg takes the pair through `tools/fixtures/m/mantra_delivery_port_lock.sh` first,
+# because a probe that binds a machine-wide port bare would red a peer's lap -- the exact fault it
+# exists to name. The witness wiring count is REPORTED rather than gated: five of the thirteen
+# witnesses driving these binaries belong to the caravan lane. 7.9s measured `20260911.104500`,
+# most of it the Zig build the live leg needs.
+guard mantra_udp_reuseaddr
+path tools/m/mantra_udp_reuseaddr_witness.rish
+tier lap
+seated 20260911.104500
+
 # THE HAPPY ZONE THAT STOOD BEHIND A THIN EDGE. Measured `20260910.171423`: 26 witnesses in this
 # tree reach a wire lab under `comlink/run_*_wire_lab.sh`, and **0 of 26** stood on this roster.
 # The cause is one shape repeated -- each welds hosted legs, which want a Zig toolchain and stop

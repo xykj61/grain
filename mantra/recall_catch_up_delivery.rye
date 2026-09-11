@@ -57,14 +57,32 @@ fn localhost_addr(port: u16) sockaddr_in {
 fn open_socket() !c.fd_t {
     const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
     if (fd < 0) return error.SocketFailed;
-    const yes: c_int = 1;
-    // invariant: SO_REUSEADDR is what lets a bounded run rebind its own port, so a setsockopt
-    // that fails says so rather than handing back a socket whose next bind will refuse for a
-    // reason nothing recorded -- a discarded return is how REDS %282's open leg hid for a lap.
-    if (c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int)) < 0) {
+    // invariant: a socket the kernel hands back is a real descriptor, so a negative here would
+    // mean the guard above let a failure through.
+    assert(fd >= 0);
+    // THE OPTION THAT STOOD HERE WAS TCP REASONING ON A UDP SOCKET. `setsockopt(SO_REUSEADDR)`
+    // held this line until `20260911` under the invariant *SO_REUSEADDR is what lets a bounded
+    // run rebind its own port* -- true of TCP, whose closed sockets sit in TIME_WAIT holding the
+    // port, and empty on UDP, which has no TIME_WAIT and frees a closed port at once. What it
+    // bought instead was a DUPLICATE BIND: two sockets that both set it hold one address and
+    // port together while the kernel splits arriving datagrams between them, with no error on
+    // either side. A port belongs to the MACHINE, and this pier runs eight trees whose laps bind
+    // these same two numbers, so the collision was ordinary and silent -- observed as
+    // `BadKind` then `RecvFailed` in a run that passed alone straight after. Dropping the option
+    // makes a second reacher fail at `bind` with `error.BindFailed`, in the kernel, in the same
+    // namespace the port lives in. Amphora repaired the identical shape first and measured the
+    // four binds that decide it: amphora/vessel_fetch_delivery.rye, REDS `20260906.154105`,
+    // proven by tools/fixtures/a/amphora_udp_reuseaddr_scan.sh and held for this lane by
+    // tools/fixtures/m/mantra_udp_reuseaddr_scan.sh.
+    var reuse: c_int = 0;
+    var reuse_len: c.socklen_t = @sizeOf(c_int);
+    if (c.getsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &reuse, &reuse_len) < 0) {
         _ = c.close(fd);
-        return error.SetSockOptFailed;
+        return error.GetSockOptFailed;
     }
+    // invariant: this socket carries no address reuse, so a second bind to a port this one holds
+    // refuses by name rather than quietly splitting one port's datagrams between two readers.
+    assert(reuse == 0);
     return fd;
 }
 

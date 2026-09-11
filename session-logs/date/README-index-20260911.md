@@ -11,15 +11,18 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.105415` | [The option that said GREEN](20260911/20260911-105415_the-option-that-said-green.kyri) | The elder binary bound beside a held port and said GREEN. |
 | `20260911.104518` | [The room that owned the claim](20260911/20260911-104518_the-room-that-never-made-the-claim.kyri) | two front doors never named a room they hold; a key reads them |
 | `20260911.094628` | [Beaten to the repair](20260911/20260911-094628_beaten-to-the-repair.kyri) | ceiling 157 -> 154; a flap that does not reproduce alone |
 | `20260911.092124` | [The gate that inherited its bound](20260911/20260911-092124_the-gate-that-inherited-its-bound.kyri) | a law-room gate read tools/ alone; 128 room paths and two stale |
 | `20260911.091453` | [The door that promised a guard](20260911/20260911-091453_the-door-that-promised-a-guard.kyri) | a room's door named a guard the roster seated nowhere |
+| `20260911.091222` | [TCP reasoning on a UDP socket](20260911/20260911-091222_the-option-that-was-tcp-reasoning.kyri) | Seven mantra modules drop SO_REUSEADDR. |
 | `20260911.090537` | [Answers written on the face](20260911/20260911-090537_the-answers-written-on-the-face.kyri) | 104 gate-desk answers declared on their placards, run for the first time |
 | `20260911.083027` | [The gap the file named by name](20260911/20260911-083027_the-gap-the-file-named-by-name.kyri) | a count whose basis sits in the page is checked, never banned |
 | `20260911.082122` | [The read the ranking rested on](20260911/20260911-082122_the-read-the-ranking-rested-on.kyri) | a host read says no joule here; the counter tier gets a unit |
 | `20260911.080549` | [Which room you were in](20260911/20260911-080549_the-shelf-that-never-said-which-room.kyri) | docs-geode's eight doors name their register; ceiling 67 -> 59 |
 | `20260911.075746` | [The flap that shared a port](20260911/20260911-075746_the-flap-that-shared-a-port.kyri) | a rostered guard was sharing a UDP port with the whole pier |
+| `20260911.071505` | [The name it did not own](20260911/20260911-071505_the-name-it-did-not-own.kyri) | Door two: both sockets bind port zero, found by a ready byte. |
 | `20260911.071053` | [the meter that read one clone](20260911/20260911-071053_the-meter-that-read-one-clone.kyri) | the capacity meter reads the anointed pin beside its own |
 | `20260911.063359` | [A cell that counted a room](20260911/20260911-063359_a-cell-that-counted-a-room.kyri) | the stashed lap lands; a press count three days stale leaves a wiki cell |
 | `20260911.063351` | [A group blind to its members](20260911/20260911-063351_the-group-that-could-not-see-its-members.kyri) | one alias member read twice passed for three |

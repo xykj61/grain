@@ -37,8 +37,24 @@ const SO_RCVTIMEO: c_int = c.SO.RCVTIMEO;
 // roster's own patience, so an expiry means the datagram is genuinely gone rather than slow.
 const recv_timeout_sec: u32 = 5;
 
-const client_port: u16 = 38490;
-const host_port: u16 = 38491;
+// NEITHER SIDE NAMES A PORT, and the reason is three faults the two constants carried (REDS row
+// `20260911.064232`). A reply was addressed to a fixed 38490 the client bound only AFTER it had
+// sent, so a datagram arriving inside that window met a port nobody held and the kernel dropped
+// it. A fixed 38491 is a name on the MACHINE rather than in this tree, so eight ships on one pier
+// bound it eight times. And a 50 ms sleep stood in for the host being ready to listen.
+//
+// Measured `20260911`: all 8 checkouts on this pier carry this file, all 8 spell those two
+// numbers, and every one of their roster passes runs this witness. Eight concurrent selftests of
+// the elder binary read 39 of 80 red on metal at load 14, where 120 serial runs of that same
+// binary read 0 -- which is why running the guard again could only ever agree with it (REDS %700).
+//
+// Both sockets bind port 0 now -- the kernel's choice, which cannot be a port a sibling tree
+// spelled -- and the two sides find each other by a READINESS DATAGRAM rather than by a shared
+// number. The caller binds first, hands its own port to the dependent in argv, and blocks on the
+// dependent's ready byte; `recvfrom` reports where that byte came from, and that address is the
+// host. So the handshake replaces the sleep and the constant together, and the wait it replaces
+// the sleep with is bounded by the same `recv_timeout_sec` every other receive here honors.
+const ready_byte: u8 = 0x01;
 
 // THE KERNEL LAYS THIS OUT, NEVER THIS FILE. A hand-rolled `sockaddr_in` stood here in the
 // Linux layout -- a two-byte family and no length byte -- and BSD kernels open the same
@@ -59,44 +75,93 @@ fn localhost_addr(port: u16) sockaddr_in {
 fn open_socket() !c.fd_t {
     const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
     if (fd < 0) return error.SocketFailed;
-    const yes: c_int = 1;
-    // invariant: SO_REUSEADDR is what lets a bounded run rebind its own port, so a setsockopt
-    // that fails says so rather than handing back a socket whose next bind will refuse for a
-    // reason nothing recorded -- a discarded return is how REDS %282's open leg hid for a lap.
-    if (c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int)) < 0) {
+    // invariant: a socket the kernel hands back is a real descriptor, so a negative here would
+    // mean the guard above let a failure through.
+    assert(fd >= 0);
+    // THE OPTION THAT STOOD HERE WAS TCP REASONING ON A UDP SOCKET, and on a pier of eight trees
+    // it cost the flap of REDS %700. `setsockopt(SO_REUSEADDR)` stood here under the invariant
+    // *SO_REUSEADDR is what lets a bounded run rebind its own port*. That sentence is true of TCP,
+    // whose closed sockets sit in TIME_WAIT holding the port; UDP has no TIME_WAIT, so a closed
+    // UDP port is free at once and the option bought nothing it was added for. What it bought
+    // instead was a DUPLICATE BIND: two sockets that both set it hold one address and port
+    // together, and the kernel splits the arriving datagrams between them with no error on either
+    // side. These ports are compiled in and a port belongs to the MACHINE, so eight checkouts
+    // reach for one pair and the loser reads a peer's traffic as `BadKind` or waits out its
+    // timeout as `RecvFailed` -- a red naming a receive path for a fault that happened at bind.
+    // Dropping it makes a second reacher fail at `bind` with `error.BindFailed`, in the kernel,
+    // in the namespace the port lives in, needing no lock to be right. Measured on this metal by
+    // tools/fixtures/a/amphora_udp_reuseaddr_scan.sh: close-then-rebind without the option
+    // SUCCEEDS, two concurrent binds without it refuse the second EADDRINUSE, and two concurrent
+    // binds WITH it both succeed. Repaired first in amphora/vessel_fetch_delivery.rye
+    // (REDS `20260906.154105`); gated for this lane by tools/fixtures/m/mantra_udp_reuseaddr_scan.sh.
+    var reuse: c_int = 0;
+    var reuse_len: c.socklen_t = @sizeOf(c_int);
+    if (c.getsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &reuse, &reuse_len) < 0) {
         _ = c.close(fd);
-        return error.SetSockOptFailed;
+        return error.GetSockOptFailed;
     }
+    // invariant: this socket carries no address reuse, so a second bind to a port this one holds
+    // refuses by name rather than quietly splitting one port's datagrams between two readers.
+    assert(reuse == 0);
     return fd;
 }
 
-fn send_wire(port: u16, wire: []const u8) !void {
-    const fd = try open_socket();
-    defer _ = c.close(fd);
-    const dest = localhost_addr(port);
-    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
-    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
-}
-
-fn recv_wire(port: u16, wire: []u8) !u64 {
-    // invariant: a receive reads into a buffer that exists, so an empty slice refuses here
-    // rather than handing the kernel a zero length and reading a success that carries nothing.
-    assert(wire.len > 0);
+fn open_bound(port: u16) !c.fd_t {
     // invariant: the wait is bounded above zero, so the timeout below is a real deadline rather
     // than the "block forever" SO_RCVTIMEO spells with a zero timeval.
     assert(recv_timeout_sec > 0);
     const fd = try open_socket();
-    defer _ = c.close(fd);
+    errdefer _ = c.close(fd);
     var tv = c.timeval{ .sec = @intCast(recv_timeout_sec), .usec = 0 };
     // invariant: the caller is promised a BOUNDED wait, so a receive timeout that fails to set
     // refuses here rather than returning a socket that blocks until the run is killed.
     if (c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval)) < 0)
         return error.SetSockOptFailed;
+    // A zero port asks the kernel for one nobody else holds. That is the client's whole
+    // collision story: an ephemeral port cannot be the port a sibling tree chose, because the
+    // kernel hands out only what is free on this machine at this moment.
     var bind_addr = localhost_addr(port);
     if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
-    var from: sockaddr_in = undefined;
+    return fd;
+}
+
+// THE KERNEL KNOWS WHICH PORT IT GAVE, and this is the one call that asks. A socket bound to
+// port 0 carries a real port from the moment `bind` returns; without reading it back there is no
+// number to hand a dependent, and the whole rendezvous would fall back to a constant.
+fn bound_port(fd: c.fd_t) !u16 {
+    var addr: sockaddr_in = undefined;
+    var addr_len: c.socklen_t = @sizeOf(sockaddr_in);
+    if (c.getsockname(fd, @ptrCast(&addr), &addr_len) < 0) return error.GetSockNameFailed;
+    // invariant: the kernel filled the whole address, so the port read below is one it wrote
+    assert(addr_len == @sizeOf(sockaddr_in));
+    const port = std.mem.bigToNative(u16, addr.port);
+    // invariant: an ephemeral bind yields a real port, so a zero here means the bind never took
+    // and the dependent would be sent to a port nothing holds
+    assert(port != 0);
+    return port;
+}
+
+fn send_on(fd: c.fd_t, dest: sockaddr_in, wire: []const u8) !void {
+    // invariant: a datagram carries bytes, so an empty send refuses here rather than putting a
+    // zero-length packet on the port for a reader that will call it a truncated message.
+    assert(wire.len > 0);
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+    if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
+    // invariant: the whole message left in one datagram, which is what the length check above
+    // establishes and what every reader on the far side assumes.
+    assert(@as(usize, @intCast(sent)) == wire.len);
+}
+
+// THE SENDER'S ADDRESS IS AN ANSWER, NEVER A DISCARD. `recvfrom` already fills `from` on every
+// kernel this builds for, and the elder spelling threw it away and replied to a constant instead.
+// Handing it back is what lets the host answer whoever asked -- including a client whose port the
+// kernel chose a moment ago and no file could have spelled.
+fn recv_on(fd: c.fd_t, wire: []u8, from: *sockaddr_in) !u64 {
+    // invariant: a receive reads into a buffer that exists, so an empty slice refuses here
+    // rather than handing the kernel a zero length and reading a success that carries nothing.
+    assert(wire.len > 0);
     var from_len: c.socklen_t = @sizeOf(sockaddr_in);
-    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(from), &from_len);
     // A timeout lands here as a negative return, the same way the sibling modules read it. The
     // named error is what the caller sees either way, and the bound above is what makes the
     // difference between a refusal and a hang.
@@ -104,6 +169,9 @@ fn recv_wire(port: u16, wire: []u8) !u64 {
     // invariant: a datagram never exceeds the buffer it was read into, so the length handed back
     // indexes that buffer safely for every caller.
     assert(@as(usize, @intCast(n)) <= wire.len);
+    // invariant: the address was written whole, so the reply below goes to a sockaddr the kernel
+    // filled rather than to whatever stood in this frame before.
+    assert(from_len == @sizeOf(sockaddr_in));
     return @intCast(n);
 }
 
@@ -114,9 +182,20 @@ fn init_host_catalog(cat: *ns.BoltCatalog) !void {
     try cat.append_leaf("peerB", "c", 1, "other.txt", "beta", "plain-bytes");
 }
 
-fn run_host_once(cat: *const ns.BoltCatalog) !void {
+fn run_host_once(cat: *const ns.BoltCatalog, caller_port: u16) !void {
+    // invariant: the caller named a real port, so the ready byte below reaches a bound socket
+    // rather than drawing an ICMP refusal the sender never reads
+    assert(caller_port != 0);
+    const fd = try open_bound(0);
+    defer _ = c.close(fd);
+    // THE READY BYTE IS THE ANNOUNCEMENT. It leaves the same socket the request will arrive on,
+    // so the caller's `recvfrom` reads this host's own address from it -- which is how a port the
+    // kernel chose a moment ago becomes an address a second process can reach.
+    const ready = [_]u8{ready_byte};
+    try send_on(fd, localhost_addr(caller_port), ready[0..]);
     var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-    const n = try recv_wire(host_port, &wire_in);
+    var caller: sockaddr_in = undefined;
+    const n = try recv_on(fd, &wire_in, &caller);
     var opened: [@intCast(wf.max_message)]u8 = undefined;
     const opened_len = try wf.open_datagram(wire_in[0..n], &opened);
 
@@ -130,7 +209,10 @@ fn run_host_once(cat: *const ns.BoltCatalog) !void {
     const payload_len = try qw.encode_response(resp, &payload);
     var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
     const sealed_len = try wf.seal_message(payload[0..payload_len], &wire_out);
-    try send_wire(client_port, wire_out[0..@intCast(sealed_len)]);
+    // invariant: the reply leaves the socket the request arrived on, so its source port is the
+    // one the caller already addressed rather than a second name to keep in step.
+    assert(sealed_len > 0);
+    try send_on(fd, caller, wire_out[0..@intCast(sealed_len)]);
 }
 
 // THE CALLER OWNS THE ANSWER'S BYTES, NEVER THIS FRAME. `qw.decode_response` fills every hit's
@@ -141,6 +223,8 @@ fn run_host_once(cat: *const ns.BoltCatalog) !void {
 // back as 0xAA. So the opened buffer is a parameter -- the signature now says, where a reader can
 // see it, that the answer lives exactly as long as the bytes the caller supplied.
 fn run_client_query(
+    fd: c.fd_t,
+    host_addr: sockaddr_in,
     req: qw.QueryWireRequest,
     opened: *[@intCast(wf.max_message)]u8,
     out: *qw.QueryWireResponse,
@@ -152,10 +236,15 @@ fn run_client_query(
     // invariant: the sealed request fits the wire the socket send is bounded by, so the datagram
     // this call puts on the port is one the far side's fixed receive buffer can hold whole
     assert(sealed_len <= wf.wire_capacity);
-    try send_wire(host_port, wire_out[0..@intCast(sealed_len)]);
+    // THE SOCKET WAS BOUND BEFORE THE REQUEST GOES OUT, and it was bound before the dependent even
+    // started. The elder spelling sent from one socket and then opened a second to receive on, so
+    // a reply arriving between those two calls met a port nobody held; the kernel dropped it, the
+    // bounded receive spent its five seconds, and the run read RecvFailed on an unchanged tree.
+    try send_on(fd, host_addr, wire_out[0..@intCast(sealed_len)]);
 
     var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-    const n = try recv_wire(client_port, &wire_in);
+    var responder: sockaddr_in = undefined;
+    const n = try recv_on(fd, &wire_in, &responder);
     const opened_len = try wf.open_datagram(wire_in[0..n], opened);
     // invariant: the opened payload stops inside the caller's buffer, so every slice the decoder
     // cuts from it points at bytes the caller still owns
@@ -333,14 +422,32 @@ fn exchange(
     opened: *[@intCast(wf.max_message)]u8,
     out: *qw.QueryWireResponse,
 ) !void {
-    const host_argv = try allocator.alloc([]const u8, 2);
+    const fd = try open_bound(0);
+    defer _ = c.close(fd);
+    const caller_port = try bound_port(fd);
+    const caller_port_text = try std.fmt.allocPrint(allocator, "{d}", .{caller_port});
+    defer allocator.free(caller_port_text);
+    const host_argv = try allocator.alloc([]const u8, 3);
     defer allocator.free(host_argv);
     host_argv[0] = self_path;
     host_argv[1] = "host";
+    host_argv[2] = caller_port_text;
     var host_child = try std.process.spawn(io, .{ .argv = host_argv });
-    var pause = c.timespec{ .sec = 0, .nsec = 50_000_000 };
-    _ = c.nanosleep(&pause, null);
-    try run_client_query(req, opened, out);
+
+    // THE WAIT IS AN ANSWER, NEVER A DURATION. A 50 ms sleep stood here and it was a guess about
+    // how long a spawn takes on a loaded pier; the ready byte is the dependent saying it has
+    // bound. Its source address is the host, so this one receive supplies both the readiness and
+    // the destination, under the same bounded timeout every other receive here carries.
+    var ready_in: [1]u8 = undefined;
+    var host_addr: sockaddr_in = undefined;
+    const ready_len = try recv_on(fd, ready_in[0..], &host_addr);
+    // invariant: the announcement is the one byte this module sends, so a longer datagram here is
+    // a stranger on the port rather than the dependent that was just spawned
+    assert(ready_len == 1);
+    // invariant: and it carries the agreed mark, so a coincidental byte refuses rather than being
+    // read as a host that never announced itself
+    assert(ready_in[0] == ready_byte);
+    try run_client_query(fd, host_addr, req, opened, out);
     const term = try host_child.wait(io);
     const code: u8 = switch (term) {
         .exited => |value| value,
@@ -536,10 +643,13 @@ fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
     return 0;
 }
 
-fn run_host() !u8 {
+fn run_host(caller_port: u16) !u8 {
+    // invariant: the host was told where to announce itself, so a zero refuses here rather than
+    // binding a socket nobody will ever be told about
+    assert(caller_port != 0);
     var cat: ns.BoltCatalog = undefined;
     try init_host_catalog(&cat);
-    try run_host_once(&cat);
+    try run_host_once(&cat, caller_port);
     return 0;
 }
 
@@ -548,7 +658,11 @@ pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
     const args = try init.minimal.args.toSlice(garden);
     if (args.len >= 2 and std.mem.eql(u8, args[1], "host")) {
-        return run_host();
+        // The caller's port arrives in argv because a dependent cannot read the socket its parent
+        // bound. A host invoked without it has nowhere to announce itself, so it refuses by name.
+        if (args.len < 3) return error.CallerPortMissing;
+        const caller_port = try std.fmt.parseInt(u16, args[2], 10);
+        return run_host(caller_port);
     }
     return run_selftest(garden, io, args[0]);
 }

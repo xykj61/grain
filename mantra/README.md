@@ -35,6 +35,16 @@ The module grew as one foundation and a family of compositions. `recall_lap1.rye
 | `snapshot_export_delivery.rye` | Snapshot export delivery: source-loop + fetcher over batch wire, hosted **38490/38491**; device **15567/15568** | `tools/m/mantra_snapshot_wire.rish` |
 | `src/` | Mantra's own seed and the **Weave** aspect -- its own section below | see *The Weave* |
 
+**Every delivery module's hosted pair is machine-wide, and this pier runs eight trees.** The seven
+`*_delivery.rye` modules bind their two numbers at compile time, and two of them -- the snapshot
+export and the Tablecloth query -- bind the same pair, 38490 / 38491. Each module reads
+`SO_REUSEADDR` back and asserts it zero rather than setting it, so a second binder is refused with
+`error.BindFailed` naming the bind site; a witness driving one of these binaries takes the pair
+through [`../tools/fixtures/m/mantra_delivery_port_lock.sh`](../tools/fixtures/m/mantra_delivery_port_lock.sh)
+first, so two lawful runs never meet. Held by
+[`../tools/m/mantra_udp_reuseaddr_witness.rish`](../tools/m/mantra_udp_reuseaddr_witness.rish), and
+the whole port table lives at [`../comlink/README.md`](../comlink/README.md).
+
 Device-wire labs mirror the hosted ports under `../comlink/` -- `run_recall_sync_wire_lab.sh`, `run_recall_batch_wire_lab.sh`, `run_recall_catch_up_wire_lab.sh`, `run_snapshot_export_wire_lab.sh` (sync **15561/15562**, batch **15563/15564**, catch-up **15565/15566**, snapshot **15567/15568**).
 
 ## The Weave -- the aspect Mantra was named for
