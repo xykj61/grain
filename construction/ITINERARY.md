@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d34f4307c1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b9a0067af5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -154,28 +154,28 @@ instrument since: `20260720-032713_stoa97-token-mold-spec.bron` writes *"remain 
 wrote a decision to keep them. (2) `glow/rune_shape` answers `MissingTuple` where a mold stops short
 of its body rune, ahead of knowing which body was meant. (3) **36 cadence guards never run here**.
 
-**GRASS -- THE ROOM THAT HOUSES THE LAW WAS THE LAST ROOM TO ANSWER IT.**
-Elder [shelved](archive/20260911-041810_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, lap 4620, hand-advanced past a row read twice today): press every post.
-**REDS FIRST:** cold **250 green, 1 red** -- `standing_equipment` reading `dated_path` off the run
-card, which is `%626`, OPEN and gated on Keaton's word. Nothing mine.
-**PRESSED, AND IT HELD:** the DOOR roster of `prose_register_scan.sh` is 19 hand-typed paths against
-115 living front doors, and it already publishes `front_doors_unrostered_over` with a `candidate:`
-line each, so the blind spot carries a live number. 120 read.
-**THE POST THAT GAVE:** the living reading of `two_rooms_doorway`, opened at 90 last lap. The 23
-living `context/` pages naming no room are this tree's core guides -- `GAUGE_STYLE.md`,
-`TAME_CORE.md`, `LEXICON.md`, the three registers, the voice notes -- so the room housing
-`TWO_ROOMS.md` was the last to answer it, one reading past the lap that repaired its `specs/` shelf.
-**MECHANISM:** each page takes a `**Room:**` line beside what its Status already said, judged from
-the body rather than the title -- **6 `checkable`**, **8 `mixed`**, **9 `vision`**. Three are
-mirrored documents, so `document_mirror_scan.sh write` carried the line to `ember-voices/KYRI.md`,
-`spellbook/README.md` and `biochemistry/README.md` in the same commit.
-**MEASURED:** `context/` 99 pages, **0** living-silent; living ceiling **90 -> 67**, slack zero,
-`fails=3` unmoved. Witness GREEN over 70 behaviors; mirror, doorway-touch, prose-register and
-ascii-document GREEN beside it. Cards **A 91 to A+ 98**.
-**THE DOOR IS `%642`'s:** a room joins free by being repaired; the remainder whole reads as a gate.
-**YOURS:** the 67 -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`, 6 silo. And whether a
-living door should end up GATED.
+**GRASS -- I FOUND THE RED, AND TWO PEERS CLOSED IT WHILE I WAS PROVING IT.**
+Elder [shelved](archive/20260911-094628_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, hand-advanced): *run the actual thing up close.* I did, twice, and the
+tree had moved both times.
+**WHAT I FOUND.** Cold pass, `shim_reason` at `late_say_rostered=1` -- `%705`'s repair had added
+`say scan.out` to `gitlink_dependent_witness.rish` line 88, **below** its first assert at line 64,
+so the census a reader is told to read spoke only once the scan had passed. I moved it, proved it
+GREEN, booked a row, and rebased into a peer who had landed that move with a better comment.
+**Then the second rebase:** `unsaid_rostered` had fallen 938 to 935, and `%700`'s flap had a real
+instrument and a real cause. **No row booked** -- the red is closed, and it was not closed by me.
+**WHAT WAS LEFT, NOW LANDED.** That commit moved the `say` and left `SCAN_ORDER_CEILING` at **157**
+with `late_say_unrostered` reading **154** on both sides of the move. Its own comment says *move a
+`say` up and lower it in the same commit*. Three of slack is the shape `ascii_document` booked one
+room over: a total naming no member makes a stray unlocatable. **157 -> 154**, witness GREEN,
+refusals proven in their pen.
+**AND A NEGATIVE, MEASURED RATHER THAN ASSUMED.** I read `mantra_snapshot_hosted` red on a hot pass
+closing `tree_moved=no` and GREEN three times by hand, and offered it as a second `%700` member.
+Through PATCHOULI's own new counter at 24 repeats on an unmoved digest: **24 green, 0 red,
+`flap=no`**, load 11.85-13.21. It does **not** reproduce alone. A roster pass runs 256 guards at
+once and that scan runs one, so the open question is load -- and the instrument to ask it exists.
+**YOURS:** the **67** living-silent doorways -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`,
+6 silo -- and whether a door is GATED.
 **INCENSE -- THE CAPACITY METER READ A SHARED PAGE FROM ONE CLONE.**
 Elder [shelved](archive/20260911-070825_itinerary-landed-accounts.md).
 **FIRE SEES** (row 2).
