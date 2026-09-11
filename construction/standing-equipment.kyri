@@ -166,6 +166,20 @@ seated 20260827.181605
 guard room_bound
 path tools/r/room_bound_witness.rish
 seated 20260821.203103
+# room_enumeration -- a page that lists the rooms beside it, checked against the rooms on disk. A
+# door naming its neighbors so a reader learns a shelf without walking it makes a claim about a
+# POPULATION, and a population grows. docs-geode/etc/README.md, the room held open for a genre that
+# does not exist yet, named eleven neighbors by count and by name while twelve stood: lessons/
+# landed 20260910 in e40799aba, so the one room whose job is noticing a new genre missed one, and
+# its closing line about the day a twelfth arrives had come true a day early. crushed_index was
+# built for this exact fault -- its header records three typed counts wrong at once on 20260906 --
+# and it reads MEMBERSHIP, table rows against the room, so a count or a list a page types in PROSE
+# is read by nothing on any page, including the four it guards. The key is DECLARED, the way Style,
+# Room and Front door are, so opting in is the whole population filter.
+guard room_enumeration
+path tools/r/room_enumeration_witness.rish
+tier lap
+seated 20260911.025732
 
 guard rye_bridge_cycle
 path tools/r/rye_bridge_cycle_witness.rish

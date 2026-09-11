@@ -1,0 +1,106 @@
+# tools/r/room_enumeration_witness.rish -- a page that lists the rooms beside it is checked against
+# the rooms on disk.
+#   rishi/bin/rishi run tools/r/room_enumeration_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/r/room_enumeration_scan.sh, which reads the living tracked
+# pages for a declared **Neighbors:** key, resolves the parent room that key links, and walls at
+# zero every neighbor the list misses and every name the list invents.
+#
+# WHY IT EXISTS. A door often names its neighbors so a reader learns a shelf without walking it.
+# That sentence is a claim about a POPULATION, and a population grows. docs-geode/etc/README.md is
+# the room held open for a genre that does not exist yet, and it named the eleven rooms standing
+# beside it and listed all eleven. Twelve stood: docs-geode/lessons/ landed 20260910 in commit
+# e40799aba and the waiting room never heard, so the one page whose job is to notice a new genre
+# was the page that missed one. Its own closing line -- the day a twelfth genre arrives, this shelf
+# is already here to take it -- had come true a day before anybody read it.
+#
+# WHAT NOTHING ELSE READ, and this is the sharp half. tools/cr/crushed_index_witness.rish was built
+# for exactly this fault: its header records three typed counts wrong at once on 20260906, the shelf
+# front door among them saying ten rooms over a table of twelve. The repair reads MEMBERSHIP -- every
+# member of a declared room has a row on that room's index -- so the front door's lessons row was
+# there the day the room landed. A list a page types in PROSE is read by nothing, on any page,
+# including the four that guard declares. The fault it was built for survives beside it, in the half
+# it does not reach. The nearest other reading is announced_length_scan.sh, which reads an announced
+# RANGE -- NAME0-NAME63, a forecast of a ladder's length -- against the highest rung actually
+# written: the same family, a number promising more than the work keeps, and a different subject,
+# since a range is one token where a neighbor list is a set.
+#
+# WHAT MAKES THE LIST CHECKABLE. It is DECLARED on one line rather than inferred from prose, the way
+# a page declares its Style, its Room, and its Front door. Opting in by writing the key is the whole
+# population filter, so no reading here guesses which sentence meant to be a list and none walks a
+# body for a stray backticked word.
+#
+# WHAT IT STANDS ON. Thirty-eight behaviors proven on real git repositories in a throwaway pen by
+# tools/fixtures/r/room_enumeration_control.sh, welcomes asserted as hard as refusals: a true list
+# reads ok and exits 0, a room the list misses refuses and naming it lifts the refusal, a name with
+# no room refuses and removing it lifts that, the page's own room is read past so naming it is a
+# phantom, a key with no link refuses, a link naming no directory refuses, the date archive and
+# yonder shelves under the parent are read past, a page inside a closed stack is never counted, an
+# untracked page is outside the population, a tree where nobody declares the key refuses rather than
+# printing a green zero, outside a repository the scan refuses rather than reading the disk, and a
+# room name outside the comparable set is NAMED rather than split into false neighbors. Four
+# mutations bite: dropping the self exclusion, dropping the shelf exclusion, dropping the name rule
+# that keeps the link's own backticked text out of the claimed set, and dropping the name rule on
+# the disk side -- the last shown over the same pen calling a healthy shelf drifted by two.
+#
+# WHAT IT DOES NOT REACH. Whether a page that OUGHT to enumerate its neighbors has declined to --
+# opting in is the filter, so an undeclared door is invisible here, exactly as front_door_claim says
+# of its own population. And whether the prose around the key says anything true.
+#
+# Purely local: no key, no signature, no network, no funds, no real device.
+
+say "room-enumeration: Language EN -- a page that lists the rooms beside it is checked against the rooms on disk."
+say "room-enumeration: Style Gauge Meter -- four gates at zero, every refusal proven from both sides."
+say "room-enumeration: Lens TAME -- safety first; the population is opt-in, so the reading never guesses a list."
+
+let green = run ["sh" "tools/fixtures/r/room_enumeration_scan.sh"]
+say green.out
+assert green.ok else "room-enumeration: the living measure must exit 0 -- ${green.err}${green.out}"
+assert green.out contains "verdict=ok" else "room-enumeration: want verdict ok -- ${green.out}"
+
+# THE WALLS, at zero. A room the list misses is a reader told the shelf is smaller than it is; a
+# name with no room is a reader sent to a door that is not there.
+assert green.out contains "missing=0" else "room-enumeration: every room beside the page is named, or the list retires -- ${green.out}"
+assert green.out contains "phantom=0" else "room-enumeration: every name in the list has a room -- ${green.out}"
+assert green.out contains "no_target=0" else "room-enumeration: a declared key carries a link to its parent room -- ${green.out}"
+assert green.out contains "absent=0" else "room-enumeration: a linked parent room is a directory in this tree -- ${green.out}"
+assert green.out contains "unreadable=0" else "room-enumeration: a room name this reading cannot compare is named rather than split -- ${green.out}"
+
+# THE READING IS NOT VACUOUS ON THIS TREE. A population that came back empty would print four zeros
+# and read exactly like a tree whose every list is true -- the confident wrong zero of REDS %240.
+# The scan refuses that by name, and this leg holds the living population above it.
+assert (green.out contains "pages_declaring=0") == false else "room-enumeration: a tree declaring no enumeration is a reading that broke -- ${green.out}"
+
+# THE READING ITSELF, proven on planted repositories rather than trusted. Each leg is named here as
+# well as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
+let control = run ["sh" "tools/fixtures/r/room_enumeration_control.sh"]
+say control.out
+assert control.ok else "room-enumeration: the control must exit 0 -- ${control.err}${control.out}"
+assert control.out contains "control_verdict=ok" else "room-enumeration: want the control green"
+assert control.out contains "fail=0" else "room-enumeration: the control must carry no red leg"
+assert control.out contains "leg healthy_verdict ok" else "room-enumeration: the true-list leg is missing"
+assert control.out contains "leg healthy_exit ok" else "room-enumeration: the green-exit leg is missing"
+assert control.out contains "leg missing_bites ok" else "room-enumeration: the missed-room leg is missing"
+assert control.out contains "leg missing_exit ok" else "room-enumeration: the refusal-exit leg is missing"
+assert control.out contains "leg missing_lifted ok" else "room-enumeration: the missed-room lift leg is missing"
+assert control.out contains "leg phantom_bites ok" else "room-enumeration: the invented-name leg is missing"
+assert control.out contains "leg phantom_lifted ok" else "room-enumeration: the invented-name lift leg is missing"
+assert control.out contains "leg self_named_is_phantom ok" else "room-enumeration: the own-room leg is missing"
+assert control.out contains "leg no_target_bites ok" else "room-enumeration: the no-link leg is missing"
+assert control.out contains "leg absent_bites ok" else "room-enumeration: the absent-parent leg is missing"
+assert control.out contains "leg shelves_read_past ok" else "room-enumeration: the closed-stack leg is missing"
+assert control.out contains "leg archived_page_unread ok" else "room-enumeration: the testimony leg is missing"
+assert control.out contains "leg untracked_unread ok" else "room-enumeration: the untracked leg is missing"
+assert control.out contains "leg empty_population_refuses ok" else "room-enumeration: the vacuum leg is missing"
+assert control.out contains "leg no_repository_refuses ok" else "room-enumeration: the no-repository leg is missing"
+assert control.out contains "leg mutation_self_exclusion ok" else "room-enumeration: the self-exclusion mutation is missing"
+assert control.out contains "leg mutation_shelf_exclusion ok" else "room-enumeration: the shelf-exclusion mutation is missing"
+assert control.out contains "leg mutation_name_rule ok" else "room-enumeration: the name-rule mutation is missing"
+assert control.out contains "leg unreadable_named ok" else "room-enumeration: the unreadable-name leg is missing"
+assert control.out contains "leg unreadable_not_split ok" else "room-enumeration: the no-false-split leg is missing"
+assert control.out contains "leg unreadable_lifted ok" else "room-enumeration: the unreadable lift leg is missing"
+assert control.out contains "leg mutation_actual_name_rule ok" else "room-enumeration: the pre-repair split mutation is missing"
+assert control.out contains "leg spaced_path_counted ok" else "room-enumeration: the spaced-path leg is missing"
+assert control.out contains "pass=39" else "room-enumeration: the control must carry all thirty-nine legs"
+
+say "GREEN: room-enumeration -- every declared list of neighboring rooms matches the rooms on disk, the vacuum refuses rather than reading green, and all thirty-nine behaviors stand proven on real repositories."
