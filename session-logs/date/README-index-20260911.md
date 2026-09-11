@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260911.190515` | [The clock that could not hear the queue](20260911/20260911-190515_the-clock-that-could-not-hear-the-queue.kyri) | a witness that cannot red on its own falsifier |
+| `20260911.185828` | [The roster that read one language](20260911/20260911-185828_the-roster-that-read-one-language.kyri) | ports in Rishi too; 5 doubles, 4 overrides |
 | `20260911.174809` | [Which collision is silent](20260911/20260911-174809_which-collision-is-silent.kyri) | Two hands built one loom; the option says which port is silent. |
 | `20260911.173121` | [The hundred-column rule was mostly prose](20260911/20260911-173121_the-rule-that-was-mostly-prose.kyri) | 102,153 lines past 100, 72% of it prose |
 | `20260911.172433` | [The fence label the guard could not read](20260911/20260911-172433_the-fence-label-the-guard-could-not-read.kyri) | 8 of 18 pairs unread, two drifted |

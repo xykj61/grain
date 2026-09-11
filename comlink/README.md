@@ -39,23 +39,49 @@ Every Mantra and Linengrow wire capability that crosses onto real virtio carries
 
 ## Port Map
 
+**Read the roster rather than this table** (`20260911`), which is a readable face over a counted
+reading and goes stale the day a lab moves:
+
+```
+sh tools/fixtures/p/port_band_scan.sh --list
+```
+
+It counts every `const <name>_port: u16 = <number>;` in living tracked Rye and every
+`if <var> == "" then let <name>_port = "<number>"` in the wire labs, names each number two rooms
+claim, and offers the free numbers in both bands. Gated by `tools/p/port_band_witness.rish`.
+
 | Capability | Hosted | Device |
 |------------|--------|--------|
-| Recall sync | 38478 / 38479 | 15561 / 15562 |
-| Recall batch | 38480 / 38481 | 15563 / 15564 |
-| Two-way sync | 38482 / 38483 | -- |
-| Catch-up | 38484 / 38485 | -- |
-| Subscribe poll | 38486 / 38487 | 15565 / 15566 |
+| Device wire | -- | 15555 |
+| Receipt | -- | 15556 |
+| Open Asks | -- | 15557 / 15558 |
+| Open Asks escrow | -- | 15559 / 15560 |
 | Open Asks (OA-L5) | 38488 / 38489 | 15561-15563 |
+| Recall catch-up | 38484 / 38485 | 15565 / 15566 |
 | Snapshot device | 38490 / 38491 | 15567 / 15568 |
 | MALA M2 / M2b | 38492 / 38493 | 15569 / 15570 |
 | Amphora vessel fetch | 38494 / 38495 | 15571 / 15572 |
 | Granary resin serve | 38496 / 38497 | 15573 / 15574 |
 | Tablecloth query (hosted + device) | 38490 / 38491 | 15575 / 15576 |
+| Recall sync | 38478 / 38479 | 15577 / 15578 |
+| Recall two-way sync | 38482 / 38483 | 15579 / 15580 |
+| Recall batch | 38480 / 38481 | 15581 / 15582 |
+| Subscribe poll | 38486 / 38487 | 15583 / 15584 |
 
-Ports repeat across unrelated laps by design -- each witness binds, uses, and releases its own pair
-within one bounded run. The table therefore reads 38490 / 38491 twice, for the snapshot export and
-the Tablecloth query, and both rows are right.
+Ports repeat across unrelated laps by design in the **hosted** column -- each witness binds, uses,
+and releases its own pair within one bounded run. The table therefore reads 38490 / 38491 twice, for
+the snapshot export and the Tablecloth query, and both rows are right.
+
+**That sentence was written about the hosted column and read as covering the whole table.** Until
+`20260911` the device column carried repeats too, and they were a different thing: two labs holding
+one QEMU listen address. Five numbers had two or three claimants -- 15561 through 15563 between the
+open-asks lap-5 ladder and three recall labs, and 15565 / 15566 between catch-up and subscribe-poll
+-- and four override variables were each read by two labs, so a hand reaching for the documented
+override moved both labs at once. Four labs moved to 15577-15584, and `device_double_claimed` and
+`device_override_shared` are walls at zero, so the next lab copied from a sibling without editing
+its port block reds on the lap it lands. This table also showed `--` for the two-way sync and
+catch-up device pairs, which both labs declare, and carried no row at all for the four labs at
+15555 through 15560; both are why the reading above is the authority and this is its face.
 
 **A port belongs to the machine, and this pier runs eight trees.** This paragraph closed with *and
 Comlink's laps never run concurrently against the same address* until `20260911`, which held for one

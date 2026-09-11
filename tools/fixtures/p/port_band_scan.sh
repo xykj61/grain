@@ -202,6 +202,102 @@ while [ "$p" -le "$band_ceiling" ]; do
 done
 free_n=$(printf '%s\n' $free_list | grep -c . || true)
 
+
+# ---------------------------------------------------------------- THE DEVICE BAND
+# A SECOND ROOM, AND THE READING THAT COULD NOT SEE IT. Everything above reads Rye. The wire labs
+# that carry these same capabilities onto virtio declare their ports in RISHI, as the default half
+# of an environment override -- `if port_request_raw == "" then let port_request = "15561"` -- and a
+# reading of `const <name>: u16` passes over every one of them. So `ports_outside_band=0` was true
+# of Rye and blind to a room of twenty-nine declarations sitting twenty-three thousand numbers
+# below the seated band. A roster that reads one language reports the language, never the tree.
+#
+# WHAT THE BLINDNESS COST, measured `20260911`. Fifteen labs claimed twenty-two numbers, and FIVE
+# numbers carried two or three claimants: 15561, 15562 and 15563 between the open-asks lap-5 ladder
+# and three recall labs, and 15565 with 15566 between catch-up and subscribe-poll. Two labs
+# proving DIFFERENT capabilities held byte-identical pairs, because each was made by copying a
+# sibling and editing the capability name while the port block travelled unread.
+#
+# AND THE ESCAPE HATCH SHARED THE COLLISION. `recall_two_way_sync` reads `COMLINK_SYNC_LAB_PORT`,
+# the same name `recall_sync` reads; `subscribe_poll` reads `COMLINK_CATCHUP_LAB_PORT` beside
+# `catch_up`. So a hand meeting the clash and reaching for the documented override moved both labs
+# at once and met it again. `device_override_shared` is that reading, and it is the one no census
+# of numbers alone would have taken.
+#
+# WHY THIS HALF REPORTS WHERE THE RYE HALF REFUSES. A tree with no tracked Rye source cannot
+# honestly report a clean port band, so the reading above exits rather than answering zero. A tree
+# with no wire lab is a different thing: the labs are a room this tree GREW, and every tree before
+# they landed held none. So `device_labs=0` is reported and the verdict is left alone.
+device_band_floor=${PORT_BAND_DEVICE_FLOOR:-15555}
+device_band_ceiling=${PORT_BAND_DEVICE_CEILING:-15600}
+
+# BOTH DEVICE CEILINGS STAND AT ZERO, which makes each a wall rather than a ratchet. They were five
+# and four on the morning of `20260911` and the repair that lap took them down, so nothing holds a
+# lab silent: the next lab copied from a sibling without editing its port block reds on the lap it
+# lands. That is the whole reason to spend a repair before seating a number.
+device_double_ceiling=${PORT_BAND_DEVICE_DOUBLE_CEILING:-0}
+device_override_ceiling=${PORT_BAND_DEVICE_OVERRIDE_CEILING:-0}
+
+labs=$(git ls-files 'tools/co/comlink_*_wire_lab.rish' 2>/dev/null)
+lab_n=$(printf '%s\n' "$labs" | grep -c . || true)
+
+# THE DECLARATION SHAPE, and why the name test is the same one the Rye half uses. `port` must be a
+# whole component of the identifier, so `port_request` and `port_hold` count while a variable
+# merely carrying the letters is read past. The number is the DEFAULT half of the override, which
+# is the value the lab binds when nobody sets the variable -- and nobody does, on any pier here.
+device_decls=$(printf '%s\n' "$labs" | grep . | while IFS= read -r lab; do
+  [ -f "$lab" ] || continue
+  grep -n -E '^[[:space:]]*if [A-Za-z0-9_]+ == "" then let [A-Za-z0-9_]+ = "[0-9]+"' "$lab" 2>/dev/null |
+    awk -F: -v path="$lab" '
+      {
+        line = $1
+        rest = $0
+        sub(/^[0-9]+:/, "", rest)
+        if (match(rest, /then let [A-Za-z0-9_]+ =/) == 0) next
+        name = substr(rest, RSTART + 9, RLENGTH - 11)
+        if (name !~ /(^|_)[Pp]ort(_|$)/) next
+        if (match(rest, /= "[0-9]+"/) == 0) next
+        num = substr(rest, RSTART, RLENGTH)
+        gsub(/[^0-9]/, "", num)
+        print num "\t" path "\t" line "\t" name
+      }'
+done | sort -n -k1,1)
+
+device_decl_n=$(printf '%s\n' "$device_decls" | grep -c . || true)
+device_labs_declaring=$(printf '%s\n' "$device_decls" | grep . | cut -f2 | sort -u | grep -c . || true)
+
+device_outside=$(printf '%s\n' "$device_decls" | grep . |
+  awk -F'\t' -v lo="$device_band_floor" -v hi="$device_band_ceiling" '$1 < lo || $1 > hi')
+device_outside_n=$(printf '%s\n' "$device_outside" | grep -c . || true)
+
+device_doubles=$(printf '%s\n' "$device_decls" | grep . |
+  awk -F'\t' '{ n[$1]++; f[$1] = f[$1] " " $2 ":" $3 " " $4 } END { for (k in n) if (n[k] > 1) print k "\t" f[k] }' |
+  sort -n -k1,1)
+device_double_n=$(printf '%s\n' "$device_doubles" | grep -c . || true)
+
+# ONE OVERRIDE NAME READ BY TWO LABS. Counted per NAME, since one shared variable is one repair
+# whichever lab moves, and both sites are printed so the repair is one edit away in each.
+device_overrides=$(printf '%s\n' "$labs" | grep . | while IFS= read -r lab; do
+  [ -f "$lab" ] || continue
+  grep -oE 'env "[A-Z][A-Z0-9_]*PORT[A-Z0-9_]*"' "$lab" 2>/dev/null |
+    sed 's/^env "//; s/"$//' |
+    sort -u |
+    while IFS= read -r name; do
+      [ -n "$name" ] && printf '%s\t%s\n' "$name" "$lab"
+    done
+done | sort)
+device_shared=$(printf '%s\n' "$device_overrides" | grep . |
+  awk -F'\t' '{ n[$1]++; f[$1] = f[$1] " " $2 } END { for (k in n) if (n[k] > 1) print k "\t" f[k] }' | sort)
+device_shared_n=$(printf '%s\n' "$device_shared" | grep -c . || true)
+
+device_claimed=$(printf '%s\n' "$device_decls" | grep . | cut -f1 | sort -un)
+device_free_list=""
+p=$device_band_floor
+while [ "$p" -le "$device_band_ceiling" ]; do
+  printf '%s\n' "$device_claimed" | grep -qx "$p" || device_free_list="${device_free_list}${p} "
+  p=$((p + 1))
+done
+device_free_n=$(printf '%s\n' $device_free_list | grep -c . || true)
+
 if [ "$mode" = "--list" ]; then
   printf '%s\n' "$decls" | grep . | awk -F'\t' '{ print "port: " $1 "\t" $2 ":" $3 "\t" $4 }'
   printf '%s' "$doubles" | grep . | sed 's/^/double: /'
@@ -209,6 +305,10 @@ if [ "$mode" = "--list" ]; then
   printf '%s' "$unbound" | grep . | sed 's/^/unbound: /'
   printf '%s\n' "$bases" | grep . | sed 's/^/base: /'
   echo "free: $free_list"
+  printf '%s\n' "$device_decls" | grep . | awk -F'\t' '{ print "device: " $1 "\t" $2 ":" $3 "\t" $4 }'
+  printf '%s' "$device_doubles" | grep . | sed 's/^/device double: /'
+  printf '%s' "$device_shared" | grep . | sed 's/^/device override: /'
+  echo "device free: $device_free_list"
 fi
 
 echo "sources_read=$sources_n"
@@ -225,6 +325,16 @@ echo "lock_band_uncovered=$uncovered_n"
 echo "lock_claims_unbound=$unbound_n"
 echo "counting_bases=$base_n"
 echo "band_free=$free_n"
+echo "device_labs=$lab_n"
+echo "device_labs_declaring=$device_labs_declaring"
+echo "device_declarations=$device_decl_n"
+echo "device_band=$device_band_floor-$device_band_ceiling"
+echo "device_ports_outside_band=$device_outside_n"
+echo "device_double_claimed=$device_double_n"
+echo "device_double_ceiling=$device_double_ceiling"
+echo "device_override_shared=$device_shared_n"
+echo "device_override_ceiling=$device_override_ceiling"
+echo "device_free=$device_free_n"
 
 verdict=ok
 if [ "$outside_n" -gt 0 ]; then
@@ -238,6 +348,20 @@ fi
 if [ "$double_n" -gt "$double_ceiling" ]; then
   echo "over: ports_double_claimed=$double_n past its ceiling of $double_ceiling -- one number, two modules, one machine"
   verdict=over_ceiling
+fi
+if [ "$device_outside_n" -gt 0 ]; then
+  printf '%s' "$device_outside" | grep . | awk -F'\t' '{ print "over: " $2 ":" $3 " declares " $4 " = " $1 ", outside the seated device band -- count up from device_free instead" }'
+  verdict=device_outside_band
+fi
+if [ "$device_double_n" -gt "$device_double_ceiling" ]; then
+  printf '%s' "$device_doubles" | grep . | awk -F'\t' '{ print "over: device port " $1 " is claimed by" $2 }'
+  echo "over: device_double_claimed=$device_double_n past its ceiling of $device_double_ceiling -- one number, two labs, one machine"
+  verdict=device_over_ceiling
+fi
+if [ "$device_shared_n" -gt "$device_override_ceiling" ]; then
+  printf '%s' "$device_shared" | grep . | awk -F'\t' '{ print "over: override " $1 " is read by" $2 }'
+  echo "over: device_override_shared=$device_shared_n past its ceiling of $device_override_ceiling -- moving one lab moves the other"
+  verdict=device_override_shared
 fi
 echo "verdict=$verdict"
 [ "$verdict" = ok ] || exit 1

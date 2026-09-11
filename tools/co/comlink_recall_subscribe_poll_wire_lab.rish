@@ -15,10 +15,10 @@ let build_dir = "comlink/.build"
 fn build_guest src elf: run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/${elf}"]
 fn qemu_rx cable elf: ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${cable}" "-kernel" "${build_dir}/${elf}"]
 fn qemu_tx cable elf: ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${cable}" "-kernel" "${build_dir}/${elf}"]
-let port_request_raw = env "COMLINK_CATCHUP_LAB_PORT"
-if port_request_raw == "" then let port_request = "15565" else let port_request = port_request_raw
-let port_response_raw = env "COMLINK_CATCHUP_RESP_LAB_PORT"
-if port_response_raw == "" then let port_response = "15566" else let port_response = port_response_raw
+let port_request_raw = env "COMLINK_SUBSCRIBE_POLL_LAB_PORT"
+if port_request_raw == "" then let port_request = "15583" else let port_request = port_request_raw
+let port_response_raw = env "COMLINK_SUBSCRIBE_POLL_RESP_LAB_PORT"
+if port_response_raw == "" then let port_response = "15584" else let port_response = port_response_raw
 let sock_request = "127.0.0.1:${port_request}"
 let sock_response = "127.0.0.1:${port_response}"
 

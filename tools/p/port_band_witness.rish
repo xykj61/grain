@@ -35,10 +35,22 @@
 #     38495, 38496 and 38497, six declarations across four files, each lawful for its own module
 #     and a collision for the pier. Each repair is a choice of number inside another lane, so the
 #     three are NAMED for their owners and left for those hands.
-#   Forty-six behaviors on real git repositories in a throwaway pen: every refusal planted then
-#     lifted and read as zero, both ceilings shown from both sides, and TWO mutations each biting
-#     their own leg -- the pair-high rule and the whole-component rule -- since a rule nothing
-#     depends on is a rule that may quietly stop working.
+#   A SECOND ROOM, IN A SECOND LANGUAGE (`20260911`). The wire labs carrying these same
+#     capabilities onto virtio declare their ports in RISHI, as the default half of an environment
+#     override -- `if port_request_raw == "" then let port_request = "15561"` -- so a reading of
+#     `const <name>: u16` passed over 29 declarations across 15 labs. Three readings answer it, each
+#     a WALL at zero rather than a ratchet: a lab default outside the seated device band
+#     `15555-15600`; one number claimed by two labs; and ONE OVERRIDE NAME READ BY TWO LABS, which
+#     is the reading a census of numbers alone would have missed -- the escape hatch sharing the
+#     collision it exists to escape. Before the repair: five numbers doubled and four overrides
+#     shared, and they were the same four labs, each made by copying a sibling while the port block
+#     travelled unread. Four mantra labs moved to 15577-15584 and no other lane's file was touched.
+#   Eighty behaviors on real git repositories in a throwaway pen: every refusal planted then
+#     lifted and read as zero, every ceiling shown from both sides, and FOUR mutations each biting
+#     their own leg -- the pair-high rule, the whole-component rule shown biting BOTH halves since
+#     it is written once and read by both, and the `sort -u` that keeps one lab naming its own
+#     variable twice from reading as two labs sharing it -- since a rule nothing depends on is a
+#     rule that may quietly stop working.
 #
 # WHAT THIS LEAVES WHOLE, and the number that says why it matters.
 #   WHETHER two modules ever actually MEET on a number. That depends on which ships run which guard
@@ -59,6 +71,7 @@
 say "port-band: Language EN -- a port is a name on the machine, and eight checkouts share one machine."
 say "port-band: Style Gauge, Meter -- refusal is the subject."
 say "port-band: Lens TAME -- safety first: a number two modules claim is a reply one of them reads wrongly."
+say "port-band: and a roster that reads one language reports the language, never the tree."
 
 # THE CAPTURE IS SAID ONCE, BARE, ABOVE THE ASSERTS THAT READ IT. Rishi composes an interpolated
 # `assert ... else` into one 4,096-byte strbuf, so an else clause repeating a reading the bare `say`
@@ -71,6 +84,10 @@ assert scan.ok else "port-band: a reading stands past its gate -- the scan's who
 assert scan.out contains "verdict=ok" else "port-band: the scan must balance before it is believed -- its whole reading stands above this line"
 assert scan.out contains "ports_outside_band=0" else "port-band: a constant outside the seated band is a number picked at random -- the reading above names the file"
 assert scan.out contains "lock_band_uncovered=0" else "port-band: a lock refusing a port its own room declares turns away the caller it protects -- the reading above names the lock"
+assert scan.out contains "device_ports_outside_band=0" else "port-band: a lab default outside the seated device band is a number picked at random -- the reading above names the lab"
+assert scan.out contains "device_double_claimed=0" else "port-band: one device number claimed by two labs is one QEMU listen address two runs reach -- the reading above names both"
+assert scan.out contains "device_override_shared=0" else "port-band: an override two labs read moves both at once, so it separates nothing -- the reading above names it"
+say "device GREEN -- every lab default stands inside the seated device band, each number is one lab's, and each override moves one lab"
 say "field GREEN -- every constant port stands inside the seated band, and every lock covers its own room"
 
 let control = run ["sh" "tools/fixtures/p/port_band_control.sh"]
@@ -121,8 +138,42 @@ assert control.out contains "no_sources_refused=yes" else "port-band: a tree wit
 assert control.out contains "mutation_pair_high_bites=yes" else "port-band: removing the pair-high rule must report a fault against a correct file"
 assert control.out contains "mutation_substring_bites=yes" else "port-band: removing the whole-component rule must read max_report as a port"
 assert control.out contains "mutation_substring_reds_clean=yes" else "port-band: the extra reading must be a fault rather than a harmless count"
-assert control.out contains "behaviors=46" else "port-band: the control must run every behavior this witness names: ${control.out}"
-assert control.out contains "control_verdict=proven" else "port-band: the control must agree with itself: ${control.out}"
-say "RED and GREEN paths proven -- three refusals bitten, every free rule planted then read as zero, and two mutations each biting their own leg"
+assert control.out contains "device_no_lab_counted=yes" else "port-band: a tree with no wire lab must be counted rather than guessed"
+assert control.out contains "device_no_lab_zero=yes" else "port-band: no lab means no declaration"
+assert control.out contains "device_no_lab_free=yes" else "port-band: the labs are a room this tree grew, so a tree without them passes free"
+assert control.out contains "device_lab_found=yes" else "port-band: a lab is found by the name shape this room writes"
+assert control.out contains "device_inside_counted=yes" else "port-band: a lawful lab default must still be counted"
+assert control.out contains "device_inside_free=yes" else "port-band: a lawful lab default sits inside the band"
+assert control.out contains "device_lawful_lab_free=yes" else "port-band: a lawful lab must pass free"
+assert control.out contains "device_outside_counted=yes" else "port-band: a lab default outside the device band must be counted"
+assert control.out contains "device_outside_refused=yes" else "port-band: a lab default outside the device band must refuse"
+assert control.out contains "device_outside_named=yes" else "port-band: the refusal must name a verdict, never only an exit code"
+assert control.out contains "device_outside_file_named=yes" else "port-band: the reading must name the lab, so the repair is one line away"
+assert control.out contains "device_outside_lifted=yes" else "port-band: lifting the plant must return the reading to zero"
+assert control.out contains "device_double_counted=yes" else "port-band: one device number claimed by two labs must be counted"
+assert control.out contains "device_double_refused=yes" else "port-band: a device double must refuse, since its ceiling is zero"
+assert control.out contains "device_double_named=yes" else "port-band: the device double refusal must name its verdict"
+assert control.out contains "device_double_claimant_named=yes" else "port-band: both claimant labs must be named"
+assert control.out contains "device_double_at_ceiling_free=yes" else "port-band: a device double set at its ceiling must pass free"
+assert control.out contains "device_double_lifted=yes" else "port-band: lifting the plant must return the reading to zero"
+assert control.out contains "device_override_numbers_differ=yes" else "port-band: the override leg must plant labs whose numbers differ, so it can only pass by reading the name"
+assert control.out contains "device_override_counted=yes" else "port-band: one override name read by two labs must be counted"
+assert control.out contains "device_override_refused=yes" else "port-band: a shared override must refuse, since its ceiling is zero"
+assert control.out contains "device_override_named=yes" else "port-band: the shared-override refusal must name its verdict"
+assert control.out contains "device_override_name_named=yes" else "port-band: the shared variable must be named, so a hand knows what to rename"
+assert control.out contains "device_override_site_named=yes" else "port-band: both reading labs must be named"
+assert control.out contains "device_override_lifted=yes" else "port-band: lifting the plant must return the reading to zero"
+assert control.out contains "device_substring_free=yes" else "port-band: a lab variable merely carrying the letters holds no port"
+assert control.out contains "device_lab_counted_anyway=yes" else "port-band: a lab declaring no port is still a lab"
+assert control.out contains "device_free_includes_unclaimed=yes" else "port-band: the device free list must not become empty by accident"
+assert control.out contains "device_free_excludes_claimed=yes" else "port-band: a claimed device number is never offered as free"
+assert control.out contains "device_listed=yes" else "port-band: --list must name every device declaration"
+assert control.out contains "device_self_named_free=yes" else "port-band: one lab naming its own variable twice is not two labs"
+assert control.out contains "mutation_substring_bites_device=yes" else "port-band: removing the whole-component rule must read a lab passport as a port"
+assert control.out contains "mutation_override_dedupe_applied=yes" else "port-band: the dedupe mutation must actually change the scan it mutates"
+assert control.out contains "mutation_override_dedupe_bites=yes" else "port-band: removing the override dedupe must report a fault against a correct lab"
+assert control.out contains "behaviors=80" else "port-band: the control must run every behavior this witness names"
+assert control.out contains "control_verdict=proven" else "port-band: the control must agree with itself"
+say "RED and GREEN paths proven -- six refusals bitten across two rooms, every free rule planted then read as zero, and four mutations each biting their own leg"
 
-say "GREEN: port-band -- every port number this room writes down is counted, and the roster is read rather than re-typed."
+say "GREEN: port-band -- every port number this room writes down is counted in BOTH languages it writes them in, the Rye delivery constants and the Rishi lab defaults, and the roster is read rather than re-typed."

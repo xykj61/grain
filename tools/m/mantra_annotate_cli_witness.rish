@@ -41,12 +41,14 @@ say "mantra-annotate-cli: the CLI still names the library function this reading 
 # claim about it.
 let seat = run ["sh" "-c" "grep -n 'fn cmd_annotate' mantra/src/main.rye && grep -n 'base.annotate(allocator, &work)' mantra/src/main.rye"]
 say seat.out
-assert seat.ok else "mantra-annotate-cli: cmd_annotate or its call into Weave.annotate left main.rye, so the reading this guard proves is no longer there to prove --\n${seat.out}\n${seat.err}"
+say seat.err
+assert seat.ok else "mantra-annotate-cli: cmd_annotate or its call into Weave.annotate left main.rye, so the reading this guard proves is no longer there to prove -- read the two lines above"
 
 say "mantra-annotate-cli: the printed reading is still bounded, which is what keeps a story readable..."
 let bounded = run ["sh" "-c" "grep -n 'max_annotate_print' mantra/src/main.rye"]
 say bounded.out
-assert bounded.ok else "mantra-annotate-cli: max_annotate_print left main.rye -- a reading with no ceiling hands a terminal the file rather than the story --\n${bounded.out}\n${bounded.err}"
+say bounded.err
+assert bounded.ok else "mantra-annotate-cli: max_annotate_print left main.rye -- a reading with no ceiling hands a terminal the file rather than the story -- read the two lines above"
 
 say "mantra-annotate-cli: driving the built binary over one file in a pen, edited between runs..."
 let scan = run ["sh" "tools/fixtures/m/mantra_annotate_cli_scan.sh"]

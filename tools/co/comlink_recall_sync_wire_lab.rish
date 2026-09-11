@@ -16,9 +16,9 @@ fn build_guest src elf: run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${s
 fn qemu_rx cable elf: ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${cable}" "-kernel" "${build_dir}/${elf}"]
 fn qemu_tx cable elf: ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${cable}" "-kernel" "${build_dir}/${elf}"]
 let port_request_raw = env "COMLINK_SYNC_LAB_PORT"
-if port_request_raw == "" then let port_request = "15561" else let port_request = port_request_raw
+if port_request_raw == "" then let port_request = "15577" else let port_request = port_request_raw
 let port_response_raw = env "COMLINK_SYNC_RESP_LAB_PORT"
-if port_response_raw == "" then let port_response = "15562" else let port_response = port_response_raw
+if port_response_raw == "" then let port_response = "15578" else let port_response = port_response_raw
 let sock_request = "127.0.0.1:${port_request}"
 let sock_response = "127.0.0.1:${port_response}"
 
