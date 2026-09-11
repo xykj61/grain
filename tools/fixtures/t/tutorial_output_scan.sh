@@ -84,6 +84,24 @@
 # counted. And it proves the OUTPUT of a command, never that the command is the right one to teach.
 #
 #
+# WHAT A DANGLING COMMAND FENCE ATE, repaired `20260911`. The parser reads any ``` line arriving
+# after a command fence as the end of a pair that produced no output -- and a ```sh line matches
+# that rule. So a command promising nothing SWALLOWED the next command, whole output block and
+# all, and the swallowed pair was counted nowhere. A command fence now opens its own pair from
+# that state.
+#
+# THE PAGE IT COST, measured rather than supposed. `docs-geode/demos/README.md` check 3 quotes
+# eight lines of `room_bound_scan.sh`, and stood in NO pair -- because check 2 closes with a
+# witness invocation that quotes nothing after it, and that fence ate check 3. One of those eight
+# lines had gone stale by 197, `flat=713` against a tree reading 910, on the shipping shelf's own
+# demonstration page. The guard whose entire job is that reading had never seen the block.
+#
+# WHY SECTION 10 OF THE CONTROL DID NOT CATCH IT. It proves a lone command fence counts nothing,
+# which is true and is the cheaper question. What it never asked is what that fence does to what
+# FOLLOWS it -- presence standing in for effect, the shape this shelf has now met three times.
+# Section 10a asks the second question from both sides: a dangling fence between two real pairs
+# reads 2, and reads 2 with the dangling fence lifted, so the pen is proven innocent of the count.
+#
 # NOT tools/d/docs_command_path_witness.rish, which stands beside it in the same room and does a
 # different job: that one proves every path printed inside a fenced block RESOLVES for a reader who
 # clones, after a folded room left two pages naming a file at its elder address. This one proves
@@ -166,6 +184,11 @@ while IFS= read -r page; do
       gap++; if (gap > maxgap) state = 0
       next
     }
+    # A COMMAND FENCE ARRIVING HERE OPENS ITS OWN PAIR rather than closing the dangling one.
+    # The generic fence rule below reads any ``` line as the end of a pair that produced no
+    # output, and a ```sh line matches it -- so a command promising no output SWALLOWED the next
+    # command, whole output block and all. See the header, WHAT A DANGLING COMMAND FENCE ATE.
+    state == 2 && $0 == "```sh" { state = 1; cmd = ""; cmdline = NR; next }
     state == 2 && $0 == "```"   { state = 3; out = ""; next }
     state == 2 && $0 ~ /^```/   { state = 0; next }
     state == 2                  { prose++; gap++; if (gap > maxgap) state = 0; next }

@@ -4,15 +4,15 @@
 **Style:** Gauge, Door setting
 **Voice:** Kyri
 **Written:** `20260821.190149`
-**Updated:** `20260909.173000` -- land the recovered fifth check, all five commands run again
-**Status:** Living -- checkable; commands run in the working field on 2026-09-09
+**Updated:** `20260911.140000` -- all five commands run again; the two blocks holding a free figure declare themselves volatile
+**Status:** Living -- checkable; commands run in the working field on 2026-09-11
 **Kind:** crushed demonstrations
 **Where this sits:** home is [`../../README.md`](../../README.md) - start with
 [The First Hour](../tutorials/the-first-hour.md), then follow the full path in
 [`../../SOURCE.md`](../../SOURCE.md). The first hour builds the tools used here.
 
 Run these commands from the repository root. Each check answers one small question about the
-copy in your hands. The output below records this field on September 9, 2026; your counts may
+copy in your hands. The output below records this field on September 11, 2026; your counts may
 differ. Read each command's full output when you run it.
 
 ## 1. Find a file that moved
@@ -64,10 +64,11 @@ sh tools/fixtures/r/room_bound_scan.sh
 
 Selected lines from the full output:
 
+<!-- volatile: the archive count climbs as ledger rows fold; the command gives today's -->
 ```
 bound=256
 room=session-logs flat=0 verdict=under roster=enforce
-undated_room=construction/archive flat=713 verdict=over roster=advise
+undated_room=construction/archive flat=910 verdict=over roster=advise
 enforced_over=0
 undated_over=1
 terminal_over=0
@@ -79,9 +80,10 @@ verdict=ok
 room reads zero. `enforce` marks a checked limit; `advise` marks a finding for review. Here the
 archive exceeds its advisory bound while every enforced room stays within its limit.
 
-That archive count climbs through the day as ledger rows fold onto shelves. It read 680 earlier
-on the same date and 713 when this page was landed, so read the line as the day's reading
-rather than the tree's. Nothing here holds it still; the command is what tells you today's.
+That archive count climbs through the day as ledger rows fold onto shelves. It read 713 on
+September 9 and 910 when this line was refreshed on September 11, so read it as the day's
+reading rather than the tree's. Nothing here holds it still; the command is what tells you
+today's.
 
 The scan discovers rooms each time it runs. Its full output names the room beside every count,
 so you can see where a finding belongs.
@@ -94,10 +96,10 @@ sh tools/fixtures/f/fascia_metric_v0.sh
 
 Two adjacent lines from the full output:
 
-<!-- selected: two adjacent lines of a longer report, one unbroken run -->
+<!-- volatile: the maintenance score moves as the tree grows -->
 ```
-clutter=43
-fascia=57
+clutter=44
+fascia=56
 ```
 
 **Fascia** is this tree's name for its connective tissue. This meter turns four maintenance

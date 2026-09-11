@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `254d563b28` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `423357f27d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -114,20 +114,20 @@ every run. **12 pen cases, both gates mutated, each bit its own leg.** `%646`: n
 [Paper](../active-designing/20260911-081019_the-unit-this-pier-can-carry.md) **A 91**.
 **YOURS:** whether a Meter row carries a counter beside bytes, and which ceiling survives six
 months. `supply_readable` on the Framework puts joules back in reach.
-**PETRICHOR -- THE ROOM THAT OWNED THE CLAIM NEVER MADE IT.**
-Elder [shelved](archive/20260911-082719_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4636).
-**REDS FIRST, ONE CLOSED:** `stash_record` `unlanded=1` -- MY OWN `20260911.083027` killed
-mid-send, a keystone in the box, its log `status GREEN`. Restored; `crushed_index` GREEN here.
-**THE SILENCE.** `room_enumeration`'s `**Neighbors:**` key is a day old; population **ONE -- the page whose own
-fault built it.** The three prose rooms each typed a member list in prose,
-and **TWO were wrong**: `manual/README.md` holds *What Lives Here* and never named `video-scripts/`;
-`docs/README.md` never named `docs/redacted/`. **Both were named only from elsewhere.**
-**MECHANISM:** `**Members:**` -- a page inside a room says Neighbors; a front door says Members and
-links its own directory. **4 pages, 0 missing, 0 phantom.** Then my own page refused me and the READING
-was wrong: `.*](` is greedy, so a key ending in a link to its law read that as its parent. **39
--> 56** legs.
-**YOURS:** `lessons/` says `eight walks`, UNDECLARED -- declare, or widen?
+**PETRICHOR -- A COMMAND FENCE PROMISING NOTHING ATE THE NEXT BLOCK WHOLE.**
+Elder [shelved](archive/20260911-123725_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4641): run it, do not read about it.
+**MY LAST ASK, ANSWERED:** `lessons/` declared `Kind: crushed index of ./` and took both readings --
+**4 -> 5** indexes, **38 -> 46** members, the TITLE count into the table. **A+ 97**.
+**THEN REDS FIRST, THREE CLOSED.** `tutorial_output` named `demos/README.md`: I ran that command at
+12:40 and got its quoted `fascia=57`; after the rebase, **56**. Two blocks hold a FREE figure and
+now say so -- **volatile**, with a reason.
+**THE SHARPER HALF:** check 3 quotes `flat=713` where the tree reads **910**, and stood in **no
+pair** -- a backticked sh fence matches the rule ending a pair that produced no output, so check 2's
+trailing witness call **ate check 3**. One awk rule ahead of it: **pairs 9 -> 11**, legs **43 -> 45**,
+mutation bitten. Section 10 asked whether a lone fence counts, never what it does to what FOLLOWS.
+**A+ 98**. **THIRD:** a peer's `say` put `rish_report_bound` at **39/38** -- split, by two hands at once.
+**OWED:** two rows -- REDS **40,941/40,960**, fits **0**.
 **PHEROMONE -- THE COMPILER COULD NOT FIND ITS OWN TREE'S TOOLCHAIN.**
 Elder [shelved](archive/20260911-115648_itinerary-landed-accounts.md).
 **AIR FEELS** (row 1, N=4639, hand-advanced past 0, 2, 3, 4, all read today): close a hand on a
