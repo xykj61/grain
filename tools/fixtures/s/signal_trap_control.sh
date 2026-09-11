@@ -263,6 +263,41 @@ else
   faults=$((faults + 1))
 fi
 
+# ---- the stop advice a reader actually meets ------------------------------------------------
+# THE LEG ABOVE, `lock_window_not_exploitable`, measured that a trap runs once the current command
+# completes -- and `standing_equipment_run.sh` told an operator to `kill -TERM` a held lock without
+# ever passing that on. Seconds after a lawful TERM the lock still stands, which reads as a failed
+# signal, and the same sentence's next clause sends a reader who believes that to SIGKILL -- the
+# one move it warns leaves the lock behind. These legs hold the advice to what the pen proved.
+RUNNER="$(CDPATH= cd -- "$(dirname "$0")" && pwd)/standing_equipment_run.sh"
+if [ -r "$RUNNER" ]; then
+  # said once: a rule written at two sites is a rule two sites may come to disagree about
+  defs=$(grep -c '^stop_line() {' "$RUNNER" || true)
+  claim stop_advice_said_once 1 "$defs"
+
+  # and the latency is named beside it, in the same breath as the SIGKILL warning
+  body=$(sed -n '/^stop_line() {/,/^}/p' "$RUNNER")
+  kills=$(echo "$body" | grep -c 'SIGKILL bypasses the trap' || true)
+  claim stop_advice_warns_sigkill 1 "$kills"
+  late=$(echo "$body" | grep -c 'lands when the guard in flight returns' || true)
+  claim stop_advice_names_latency 1 "$late"
+  notfail=$(echo "$body" | grep -c 'not a failed signal' || true)
+  claim stop_advice_names_the_misread 1 "$notfail"
+
+  # it runs, and prints BOTH sentences with the pid it was handed
+  said=$( { echo "$body"; echo 'stop_line 4242'; } | sh 2>&1 )
+  claim stop_advice_prints_two 2 "$(echo "$said" | grep -c '^detail: ')"
+  claim stop_advice_carries_pid 1 "$(echo "$said" | grep -c 'kill -TERM 4242')"
+
+  # MUTATED: strip the latency sentence and the reading falls -- so the leg bites the plant
+  mutated=$(echo "$body" | grep -v 'lands when the guard in flight returns')
+  claim stop_advice_mutation_bites 0 "$(echo "$mutated" | grep -c 'lands when the guard in flight returns' || true)"
+  claim stop_advice_mutation_drops_a_line 1 "$( { echo "$mutated"; echo 'stop_line 4242'; } | sh 2>&1 | grep -c '^detail: ')"
+else
+  echo "FAULT stop_advice_runner_absent: no runner at $RUNNER"
+  faults=$((faults + 1))
+fi
+
 echo "proven $proven"
 echo "faults $faults"
 [ "$faults" -eq 0 ] || exit 1

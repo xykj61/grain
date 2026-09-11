@@ -348,6 +348,23 @@ owner_lap_read() {
   fi
 }
 
+stop_line() {
+  # $1 the owner's pid. THE ONE PLACE this runner says how to stop a peer pass, because the
+  # sentence stood at two sites and a rule written twice is a rule two sites may come to
+  # disagree about.
+  #
+  # THE LATENCY IS NAMED because leaving it out steers a reader into the very move the second
+  # clause warns against. `trap 'exit 143' TERM` runs the handler when the shell next regains
+  # control, and a runner mid-pass is blocked in a foreground guard -- so the lock is released
+  # when THAT GUARD RETURNS, never at the signal. Measured in a pen with this exact trap shape:
+  # a TERM sent one second into an eight-second child released the lock seven seconds later.
+  # On this roster one guard has read 455s, so a lock still standing minutes after a TERM is the
+  # ordinary case rather than a failed signal -- and a reader who reads it as failure reaches for
+  # SIGKILL, which the next clause tells them leaves the lock behind.
+  echo "detail: stop it with \`kill -TERM $1\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
+  echo "detail: that TERM lands when the guard in flight returns, never at the signal, so the lock can stand for one guard's full run afterward -- minutes on this roster. A lock still held is not a failed signal; re-read it rather than reaching for SIGKILL." >&2
+}
+
 owner_lap_detail() {
   # $1 the owner's pid, $2 its lock directory. Printed after the caller's own `refused:` line.
   if [ "$detached" = yes ]; then
@@ -360,7 +377,7 @@ owner_lap_detail() {
       echo "detail: its launch_head $lap_head is still HEAD, so it is measuring this tree -- wait for its run_verdict line rather than opening a second." >&2
     else
       echo "detail: its launch_head $lap_head is no longer HEAD ($head_now), so its verdict is already fixed at tree_moved and more of this machine spent on it buys nothing." >&2
-      echo "detail: stop it with \`kill -TERM $1\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
+      stop_line "$1"
     fi
     return 0
   fi
@@ -372,7 +389,7 @@ owner_lap_detail() {
     else
       echo "detail: that pass's process group leader is running and has itself been adopted by init -- the lap launched it into its own session, so parent and leader both read alive while the lap that started the family is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
     fi
-    echo "detail: stop it with \`kill -TERM $owner\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
+    stop_line "$1"
   fi
 }
 
