@@ -18,14 +18,14 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
-| [`amphora/`](../../amphora/README.md) | 7 | 26 |
+| [`amphora/`](../../amphora/README.md) | 7 | 27 |
 | [`aurora/`](../../aurora/README.md) | 7 | 7 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 111 | 130 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 74 | 14 |
 | [`constel/`](../../constel/README.md) | 32 | 39 |
-| [`construction/`](../../construction/README.md) | 1 | 65 |
+| [`construction/`](../../construction/README.md) | 1 | 64 |
 | [`crypto/`](../../crypto/README.md) | 82 | 122 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
@@ -36,7 +36,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
-| [`linengrow/`](../../linengrow/README.md) | 155 | 82 |
+| [`linengrow/`](../../linengrow/README.md) | 155 | 83 |
 | [`lotus/`](../../lotus/README.md) | 238 | 247 |
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |

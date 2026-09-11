@@ -4732,3 +4732,35 @@ guard shape_constant_pedestal
 path tools/s/shape_constant_pedestal_witness.rish
 tier lap
 seated 20260910.173003
+
+# shape_member_pedestal -- the sibling row to `shape_constant_pedestal`, and the one that closes
+# the class. Five museum pedestals display a published constant; SIX display a COUNT -- struct
+# fields, constructor parameters, sibling modules, refusal sites, fixture lines -- and a count has
+# no published name to read. There is no `pub const manifest_field_count`: the three fields of
+# `ManifestEntry` are the fact, and the desk's `3` is a reading of them. So this row names the
+# KIND of member per pedestal, five kinds for six desks, each a reading a visitor can rerun by hand
+# at the declaration. With it seated, every desk in `src/shape/` showing a figure stands on its own
+# engine; the three showing words rather than a number have no pair to compare.
+#
+# The lap's own finding: FOUR of the six named no source at all. `shape-manifest-field-count` cited
+# a brief, two cited `docs/TUBE.md`, and `shape-mand-ring-count` recited its rings in prose --
+# honest provenance, and none of it a path to an engine, so a visitor had a number and nothing to
+# check it against. All four carry a `Source:` line now, and the scan refuses if one leaves.
+#
+# The CONTROL's own finding, which rewrote the scan: the grant-family selector first ENUMERATED the
+# three mold modules by name, so a fourth family in the room could never be counted -- a reading
+# able to answer only its own length, green forever. It names the family's SHAPE now,
+# `glow_*_grant.rye` and `glow_*_scope.rye`, and case 8 plants the fourth mold and is refused.
+#
+# 19 control cases, 4 welcomes and 15 refusals, each planted and then lifted, mutation-proven --
+# dropping the names reading reds one leg, dropping the value comparison reds six. A mold grown in
+# Rye AND on its desk walks free, and so does a grant witness added beside its mold: a proof of a
+# mold is no new family.
+#
+# `lap` because the whole witness is a pure text reading plus a pen, 9.0s measured on this pier
+# `20260910.193433`. It drives no toolchain: `src_first_resident` already lowers and builds these
+# six pedestals through Glow and Zig.
+guard shape_member_pedestal
+path tools/s/shape_member_pedestal_witness.rish
+tier lap
+seated 20260910.193433

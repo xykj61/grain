@@ -11,8 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.203100` | [The lap that came back](20260910/20260910-203100_the-lap-that-came-back-from-the-stash.kyri) | a finished lap recovered from the stash, reproven, landed |
 | `20260910.190908` | [the sentence that is also a wire](20260910/20260910-190908_the-sentence-that-is-also-a-wire.kyri) | a say is a wire; converter built, minus row seated |
 | `20260910.201128` | [The falsifier that landed in the middle](20260910/20260910-201128_the-falsifier-that-landed-in-the-middle.kyri) | 62% read by wall, 58% by process; neither door fired |
+| `20260910.193823` | [Pedestals that count members](20260910/20260910-193823_the-pedestal-that-counts-members.kyri) | six desks read against their declarations |
 | `20260910.182333` | [the pin's first door, walked](20260910/20260910-182333_the-pins-first-door.kyri) | %457 booked and folded; deadlock broken |
 | `20260910.180344` | [The names no guard was reading](20260910/20260910-180344_the-names-no-guard-was-reading.kyri) | the law room prints 99 tool paths; 50 no link guard could see |
 | `20260910.180320` | [The happy zone behind a thin edge](20260910/20260910-180320_the-happy-zone-behind-a-thin-edge.kyri) | 26 wire witnesses, 0 rostered; one split, one arm |

@@ -1,0 +1,82 @@
+# tools/s/shape_member_pedestal_witness.rish -- the museum pedestals whose number is a count of
+# members, and the declarations those members live in, held to one reading.
+#
+#   rishi/bin/rishi run tools/s/shape_member_pedestal_witness.rish
+#
+# WHY THIS RUNG. `src/shape/` is a structure museum: each pedestal is a Glow desk whose placard
+# names a shape and displays one `example` value. Seventeen stand under one leg in
+# tools/gen/chapter/src_first_resident_witness.rish. Three read the engine there and assert
+# agreement -- the repair REDS %358 bought. Five read a published constant of
+# brushstroke/brush_parse.rye, held by tools/s/shape_constant_pedestal_witness.rish on the lap
+# before this one. THIS RUNG TAKES THE SIX THAT REMAIN whose number is a FACT about an engine,
+# and closes that class. Of the three left over, `tilak-root-count` already stands on its own
+# source under tools/t/tilak_root_count_witness.rish; `shape-surface-count` and
+# `shape-pool-agent-slot` display a SAMPLE -- an illustrative `21` for a one-field `@u32` shape,
+# and the single slot that opens the Pool room -- so each keeps its placard and has no engine to
+# be held against.
+#
+# A COUNT HAS NO PUBLISHED NAME, which is why these six could not join the constant rung. There is
+# no `pub const manifest_field_count` to read: the three fields of `ManifestEntry` ARE the fact,
+# and the desk's `3` is a reading of them. So the scan names the KIND of member per pedestal --
+# struct fields, constructor parameters, sibling modules, refusal sites, fixture lines -- five
+# kinds for six desks, each one a reading a visitor can rerun by hand at the declaration.
+#
+# WHAT THE LAP FOUND, and repaired. Four of the six desks named no source at all: the number stood
+# on the placard and a reader had no declaration to reach. `shape-manifest-field-count` cited a
+# brief, `shape-tube-manifest-field-count` and `shape-grant-family-count` cited docs/TUBE.md, and
+# `shape-mand-ring-count` cited its own rings in prose -- honest provenance, and none of it a path
+# to the engine. All four now carry a `Source:` line naming the module and the declaration, and the
+# scan refuses if one leaves.
+#
+# WHAT THE CONTROL FOUND, and it rewrote the scan. The grant-family selector first ENUMERATED the
+# three family modules by name, so a fourth mold in the room could never be counted -- a reading
+# able to answer only its own length, green forever. Case 8 planted the fourth and walked free. The
+# selector names the family's shape now, `glow_*_grant.rye` and `glow_*_scope.rye`, and a fourth
+# family is seen the lap it lands.
+#
+# WHAT IS PROVEN, on metal.
+#   Each of the six placards reads in the order src/shape/PLACARD.md seats.
+#   Each desk NAMES its source, so the pairing is checkable at the pedestal rather than private.
+#   Each declaration resolves -- present, and in a form the reading understands.
+#   Each desk's `example` equals the count of its members.
+#   Every reading refuses from its own side: fifteen plantings in a throwaway pen, each caught by
+#   the reading it was planted against, and four honest trees walking free -- among them a mold
+#   grown in Rye and on its desk together, which walks free because this scan carries no number of
+#   its own, and a grant WITNESS added beside its mold, which counts as no new family.
+#
+# WHAT IS NOT PROVEN. Whether these are the right counts, which is each module's own design
+# question. Whether the pedestals lower and run, which
+# tools/gen/chapter/src_first_resident_witness.rish already drives the Zig toolchain for; repeating
+# it would buy one fact twice at the price of a toolchain launch, and the process bill is the
+# roster's largest single cost.
+
+say "shape-members: Language EN -- the museum displays counts, and this proves each one is the count it claims."
+say "shape-members: Style Gauge -- every figure is read from its declaration rather than remembered."
+say "shape-members: Lens TAME -- say why: five kinds of member for six desks, because six desks genuinely count five different things."
+
+say "shape-members: the six pedestals against their declarations..."
+let scan = run ["sh" "tools/fixtures/s/shape_member_pedestal_scan.sh"]
+say scan.out
+assert scan.ok else "shape-members: a pedestal and its declaration disagree -- read the verdict line"
+assert scan.out contains "verdict=agree" else "shape-members: every desk must show the count its declaration resolves to"
+assert scan.out contains "pedestals=6" else "shape-members: six pedestals are read; a seventh pair is welcome and moves this line with it"
+say "field GREEN -- six desks stand on what their sources declare"
+
+say "shape-members: the source citations, named..."
+assert scan.out contains "manifest_fields_names=yes" else "shape-members: the manifest desk names amphora/manifest_entry.rye, so a reader reaches the declaration in one step"
+assert scan.out contains "tube_fields_names=yes" else "shape-members: the TUBE desk names linengrow/tube_manifest.rye"
+assert scan.out contains "grant_families_names=yes" else "shape-members: the grant desk names its mold modules"
+assert scan.out contains "mand_rings_names=yes" else "shape-members: the Mand desk names its ring modules"
+say "citations GREEN -- four desks that cited a brief now cite an engine"
+
+say "shape-members: the control, both ways..."
+let control = run ["sh" "tools/fixtures/s/shape_member_pedestal_control.sh"]
+say control.out
+assert control.ok else "shape-members: the control must complete"
+assert control.out contains "welcomes=4" else "shape-members: an honest tree, a mold grown in both rooms, a witness beside its mold, and a fixture grown with its desk must all walk free"
+assert control.out contains "refusals=15" else "shape-members: every reading must refuse from its own side"
+assert control.out contains "wrong=0" else "shape-members: no case may land on the side it was not planted for"
+assert control.out contains "control_verdict=ok" else "shape-members: the control must agree with itself"
+say "RED and GREEN paths proven -- fifteen plantings refused, four honest trees welcomed"
+
+say "GREEN: shape-members -- every numbered pedestal in the museum now reads its own engine."

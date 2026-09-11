@@ -8,6 +8,9 @@
 ::  Surface Chapter p18 -- second pedestal in src/til.
 ::  Names the three-field manifest line from the marked-value brief.
 ::  Does not seat %tile (held for Keaton). Does not invent absorb-express.
+::  Source: amphora/manifest_entry.rye -- the fields of ManifestEntry, counted at
+::  the declaration rather than displayed on trust.
+::
 +$  manifest-field-count-shape
   $:  fields=@u32
   ==

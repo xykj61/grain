@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260910.203100
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- pheromone, the language and its molecules
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json reads model claude-opus-5; this ship launches via tools/f/fleet-loop.sh, which execs bare rather than through the enclosure
+voice Kyri
+host Vultr Dallas pier, AMD, NixOS, America/New_York
+title The lap that came back from the stash
+prompt the autonomous loop -- take the next agent-doable lap in the language lane, Lindy-first and crux-first
+rota lap 4593, row 4 -- Earth, the row that breathes in; the same row the lap I recovered read, since HEAD did not move. Earth asks for the concrete fact at the door, and the fact at my door was a stash list rather than a plan.
+think Reds first, and my cold open named the red for me. stash_record read unlanded=1 against a roster otherwise clean -- the third such firing on this pier in one day, after GRASS and DIFFUSER each recovered one. So the crux was already chosen: a finished lap sitting outside the tree is worth more than any new lap I could start.
+think The stash was whole. Nine tracked files modified and five untracked carried in stash@{0}^3 -- the scan, the control, the witness, the session log and the shelf file. A lap that wrote its status before its send, exactly as the baton asks, so its own log said GREEN and named which witnesses backed the word.
+think I refused to take that word. The log's claim was made before a send that never happened, so I reran both rungs on metal here: shape_member_pedestal answers six pedestals GREEN with control 19 cases, 4 welcomes and 15 refusals, wrong=0, and shape_constant_pedestal answers GREEN with 14 refusals, its repointed header intact. A recovered claim is a claim until a witness says otherwise.
+think tracked_link read red on my cold pass and GREEN when I ran it alone twelve minutes later, with no hand of mine between. I record it rather than explain it: the roster pass opens over a tree the round-open had just stashed, and a scan reading links while the working tree settles is the one shape that fits. Nothing in the guard moved.
+obs The card cost more than the code. The recovered block already described this work, so the whole edit was one honest sentence saying it had died and come back -- and the pin stood 12 bytes under its bound, so four sentences elsewhere were tightened to buy 200. A card at its ceiling taxes every lap a judgment call, which is the PINS clause of the baton met in the smallest possible form.
+obs The recovered log keeps every word it wrote, including status GREEN and its mention of a hot pass in the account. That lap could not know it would not send. Accrete-never-break means the correction lives here, in the log of the lap that found it, rather than in an edit to a dated page.
+obs What this closes is one instance and not the class. Three ships lost a finished lap at its send today; the round-open's stash caught all three, which is the mechanism working. Whether a lap should land its commit before the card block that describes it is the shape worth Keaton's word.
+loom witness=shape_member_pedestal wall_ms=9023 pedestals=6 control_legs=19 control_failed=0
+loom witness=shape_constant_pedestal control_legs=18 control_failed=0
+loom roster=cold green=242 red=2 gated=3 tree_moved=no
+loom roster=hot green=245 red=0 gated=3 tree_moved=no
+file tools/fixtures/s/shape_member_pedestal_scan.sh recovered -- the six member-count pedestals read against their declarations
+file tools/fixtures/s/shape_member_pedestal_control.sh recovered -- nineteen cases in a throwaway pen, each planted and lifted
+file tools/s/shape_member_pedestal_witness.rish recovered -- the rung that drives both, rerun GREEN here before landing
+file construction/ITINERARY.md the recovery named at the head of my block, four sentences tightened to buy its room, nib carried
+file session-logs/date/20260910/20260910-193823_the-pedestal-that-counts-members.kyri the recovered lap's own log, landed as it was written
+scope one lap -- a finished lap recovered from the round-open's stash, reproven on metal, and landed whole
+status GREEN -- shape_member_pedestal and shape_constant_pedestal both green here; stash_record unlanded 1 to 0
+recommend keep-going -- the seven-pedestal class is closed; the open question is whether a placard SAMPLE wants a guard at all

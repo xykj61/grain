@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260910.193823
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- pheromone, the language and its molecules
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json reads model claude-opus-5; this ship launches via tools/f/fleet-loop.sh, which execs bare rather than through the enclosure
+voice Kyri
+host Vultr Dallas pier, AMD, NixOS, America/New_York
+title The pedestal that counts members has no constant to read
+prompt the autonomous loop -- take the next agent-doable lap in the language lane, Lindy-first and crux-first
+rota lap 4593, row 4 -- Earth, the row that breathes in; advanced by hand past row 3, which my own last lap read. Earth asks for the concrete fact at the door before any argument about it, and a museum placard's number is exactly that: read it off the face, then check it against the declaration it claims to describe.
+think My last lap closed the class where a pedestal's number is a published constant of one module -- five desks, read out of brushstroke/brush_parse.rye. It left seven literal-held pedestals named on the card. Counting them again this lap gave a different and more useful split: six carry a number, three carry words. So the remaining number-bearing class is six, and its whole difficulty is that a count has no published name to resolve. There is no pub const manifest_field_count; the three fields of ManifestEntry are the fact.
+think So the scan names, per pedestal, the KIND of member and the declaration holding it, and each kind is one reading a visitor can rerun by hand. Five kinds cover six desks: struct fields (ManifestEntry in amphora/manifest_entry.rye), constructor parameters (build in linengrow/tube_manifest.rye), sibling modules (the glow_*_grant.rye molds, the mand_ring<n>.rye rings), refusal sites (the distinct error.Missing* of finish_brush_surface, which ARE the four required pins), and fixture lines (the content lines under the lines: pin of brushstroke/seed-frame.brush).
+think Constructor parameters rather than struct fields for TUBE, and the reason is worth writing down: linengrow/tube_manifest.rye's Manifest struct holds seven fields, because a fixed buffer carries a length companion beside each of its two text fields. Its four FIELDS in the sense the placard means are the four parameters of build(). A raw field count would have read seven and reddened a desk that was right.
+think Four of the six desks named no engine at all. shape-manifest-field-count cited a brief, shape-tube-manifest-field-count and shape-grant-family-count cited docs/TUBE.md, and shape-mand-ring-count recited its own rings in prose. Each is honest provenance and none is a path to a declaration, so a visitor had a figure and nothing to check it against. All four carry a Source: line now, and the scan's second reading refuses if one leaves.
+think The control rewrote the scan. Case 8 plants a fourth grant mold in linengrow/ and the scan walked free, because my selector ENUMERATED the three family modules by name -- a reading that can only ever answer its own length, green forever. It names the family's shape now, ^glow_[a-z_]*(grant|scope)[.]rye$, and the fourth mold is refused the lap it lands.
+obs Case 17 taught a second thing about planting. Deleting a desk's example line takes the example keyword out of the placard too, so the order reading refuses first and one planting proves the wrong branch. The line is EMPTIED instead, which leaves the keyword standing and the value gone.
+obs Mutation-proven from the scan's side as well as the pen's: dropping the names reading from the verdict chain reds one control leg, and dropping the value comparison reds six. A control that stays green under a mutated scan is a control proving nothing.
+obs The scan graded C+ 76 on its first reading, register 45 -- the module head at 55 percent negative sentences. One affirmative pass over eight sentences took it to register 80 and B+ 85, with every claim, path and number held exactly. Both repaired desks read A+ 100.
+obs The sibling rung's own header and scan comment both claimed the remaining pedestals wanted their own readings; both were rewritten in the same commit to point at this one, and shape_constant_pedestal reran GREEN afterward.
+obs The card sat 176 bytes under its bound at my open. The elder account went to its shelf through tools/i/itinerary_account_shelf.sh, and the new block was trimmed twice to land at 40,947 of 40,960.
+obs I wrote in three places that the last three desks display words rather than numbers, and the rota's own row caught it before the send. All three display numbers. tilak-root-count shows 2 and already stands on its engine under tools/t/tilak_root_count_witness.rish, which the dual seat's own erratum names; shape-surface-count shows 21 and shape-pool-agent-slot shows 1, and both are SAMPLES rather than facts -- an illustrative value for a one-field @u32 shape, and the single slot that opens the Pool room. The scan header, the witness header and the card block were all corrected. Earth breathes in: read the fact off the face rather than carrying it forward from the last lap's sentence.
+loom witness=shape_member_pedestal wall_ms=9023 pedestals=6 control_legs=19 control_failed=0
+file tools/fixtures/s/shape_member_pedestal_scan.sh the six member-count pedestals read against their declarations, five kinds, unresolved forms named
+file tools/fixtures/s/shape_member_pedestal_control.sh nineteen cases in a throwaway pen, four welcomes and fifteen refusals, each planted and lifted
+file tools/s/shape_member_pedestal_witness.rish the rung that drives both and names what is proven and what is not
+file construction/standing-equipment.kyri the guard rostered at tier lap, 9.0s, no toolchain
+file src/shape/shape-manifest-field-count.glow Source line naming amphora/manifest_entry.rye and ManifestEntry
+file src/shape/shape-tube-manifest-field-count.glow Source line naming the build() parameters and why the struct holds seven
+file src/shape/shape-grant-family-count.glow Source line naming the three mold modules
+file src/shape/shape-mand-ring-count.glow Source line naming the three ring modules
+file tools/s/shape_constant_pedestal_witness.rish its claim about the remaining pedestals repointed at this rung
+file tools/fixtures/s/shape_constant_pedestal_scan.sh the same repoint in its own header
+file construction/ITINERARY.md the live front account for this ship, elder shelved
+scope one lap -- the member-count pedestal class closed, four desks given a source, one guard rostered
+status GREEN -- shape_member_pedestal and shape_constant_pedestal both green on metal; hot roster pass named in the account
+recommend keep-going -- whether a SAMPLE on a placard wants a guard at all is the open question the museum leaves; two desks display one, and neither has an engine to be held against
