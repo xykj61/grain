@@ -1,0 +1,49 @@
+# mantra_query_wire_flap_witness.rish -- the flap counter, proven before its reading is trusted.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_query_wire_flap_witness.rish
+#
+# WHAT THIS GUARDS (REDS %700). `tools/m/mantra_recall_tablecloth_query_wire.rish` answered red on
+# one cold roster pass and green on a re-run minutes later over a tree that had not moved. Every
+# instrument in that room reads ONE run, so a law that holds and a law that holds most of the time
+# read alike, and a fortnight of greens never raised the question. The row named its own first
+# repair -- a repeat count -- and `tools/fixtures/m/mantra_query_wire_flap_scan.sh` is that count.
+#
+# WHY THE COUNTER NEEDS A GUARD OF ITS OWN. The reading a flap counter is built to take is
+# `flap=no`, and that answer is worth exactly nothing until the instrument has been shown saying
+# `flap=yes`. An instrument that CANNOT report a flap and one that HAS NOT yet reported one are
+# indistinguishable from their output, and the second is the state every new counter starts in. So
+# `tools/fixtures/m/mantra_query_wire_flap_control.sh` plants three stub guards with known answers
+# in a throwaway pen -- one that always passes, one that always refuses, and one that refuses on
+# every odd run -- and watches the counter report each correctly. The alternating stub flaps at
+# exactly one half by construction, so the arithmetic is checked against a rate nobody had to
+# observe, which the real guard's own rate could never provide without circularity.
+#
+# THE LEG THAT KEEPS `flap` HONEST is `always_red`. A guard that is simply broken is not flapping,
+# and a counter calling it one would send the next lap hunting a race that was never there.
+#
+# THE LEG THAT CARRIES THE VOICE is `reason_carried`. Rishi prints a failed assert as two lines --
+# the else-message, then an indented echo of the source line -- and a counter harvesting the LAST
+# line would log a line number and discard the compiler's or the selftest's own words. That is the
+# precise loss the `20260910.203444` repair spent a lap ending one room over, and it would have
+# been re-made here. The control proves the message arrives and proves the line number did not.
+#
+# WHAT THIS WITNESS DOES NOT SAY. Whether the query wire guard flaps, and at what rate. That is the
+# scan's own reading, taken on a tree held still, and it belongs in a session log rather than in a
+# gate -- a rate measured under one pier's load on one afternoon is testimony, and gating on it
+# would red on a quiet day for no fault of the tree.
+
+let control = run ["sh" "tools/fixtures/m/mantra_query_wire_flap_control.sh"]
+assert control.ok else "the flap-counter control did not reach verdict=ok: ${control.err}"
+assert control.out contains "verdict=ok" else "flap-counter control verdict missing: ${control.out}"
+assert control.out contains "control_failed=0" else "a control leg refused, so the counter's own readings are unproven: ${control.out}"
+
+# The three readings the counter exists to tell apart, each asserted by name rather than left to
+# the composite above. A control that reached its last line proves only that it reached its last
+# line (the `20260910.043000` lesson, one room over): a leg written tomorrow must be heard the day
+# it lands, so the legs that carry this witness's whole claim are named here too.
+assert control.out contains "alternating_flap=ok" else "the counter did not report a planted 50% flap as flap=yes: ${control.out}"
+assert control.out contains "always_red_flap=ok" else "the counter called a wholly broken guard a flap: ${control.out}"
+assert control.out contains "reason_carried=ok" else "the guard's own refusal sentence did not reach red_reason: ${control.out}"
+
+say "GREEN: the flap counter reports a planted flap, a plain break, and each refusal's own words."

@@ -170,7 +170,7 @@ the truth as the tree grows.
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **57** / 100 |
-| **Witnesses** running on metal | **1948** |
+| **Witnesses** running on metal | **1949** |
 | **Rye modules** they stand over | **1741** |
 | **Rooms grown past what a browser can list** | **1** |
 

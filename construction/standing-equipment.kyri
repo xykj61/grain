@@ -2431,6 +2431,20 @@ path tools/m/mantra_recall_tablecloth_query_wire.rish
 tier lap
 seated 20260909.170000
 
+# AND THE COUNTER THAT READS THAT GUARD MORE THAN ONCE. The row above answered red on one cold
+# pass and green on a re-run minutes later over a tree that had not moved (`%700`), and every
+# instrument in this room reads ONE run -- so a law that holds and a law that holds most of the
+# time read alike, and a fortnight of greens never raised the question. This guard proves the
+# repeat counter that closes that gap: it plants three stub guards with known answers in a pen --
+# always green, always red, and refusing on every odd run -- and watches the counter report each
+# correctly. The leg that earns the roster seat is `alternating_flap`, since `flap=no` is worth
+# nothing from an instrument nobody has seen say `flap=yes`. 3.5s measured `20260911.081500`,
+# because the stubs are cheap where their subject is not.
+guard mantra_query_wire_flap
+path tools/m/mantra_query_wire_flap_witness.rish
+tier lap
+seated 20260911.081500
+
 # THE HAPPY ZONE THAT STOOD BEHIND A THIN EDGE. Measured `20260910.171423`: 26 witnesses in this
 # tree reach a wire lab under `comlink/run_*_wire_lab.sh`, and **0 of 26** stood on this roster.
 # The cause is one shape repeated -- each welds hosted legs, which want a Zig toolchain and stop
