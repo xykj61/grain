@@ -14,6 +14,11 @@
 #      ONE_CLOCK_HEAD_TOLERANCE_SECONDS. Duty 4 weighs only artifacts new
 #      against debrided/main, so a merged lap leaves that comparison; duty 5
 #      weighs the head itself, every run, forever (REDS %96)
+#   6. reach -- duty 5's POPULATION, proven by planting a fabricated stamp where
+#      the law puts one: on its day shelf. Duties 1-5 read a flat glob that saw
+#      247 of 7,344 dated artifacts, so a log born on its shelf from
+#      20260827.171500 was invisible to the gate built for it
+#      (tools/fixtures/o/one_clock_population_control.sh, 20260911.020039)
 #
 # Mode: tools/fixtures/o/one_clock_mode.txt -- blocking (seated 20260724.204741).
 #
@@ -89,6 +94,26 @@ let head_ahead_dot = trim head_ahead.out
 let head_fail = run ["sh" "-c" "ONE_CLOCK_HEAD_STAMPS='${head_ahead_dot}' sh tools/fixtures/o/one_clock_head_scan.sh"]
 assert head_fail.ok == false else "head FAIL fixture passed -- a stamp ahead of the clock must fail"
 assert head_fail.out contains "HEAD_BAD" else "head FAIL fixture must emit HEAD_BAD"
+
+# Duty 5's REACH, not only its comparison (20260911.020039).
+#
+# The two fixtures above hand the stamp in through ONE_CLOCK_HEAD_STAMPS, which
+# bypasses the population walk -- so both proved the predicate and neither proved
+# that the walk can SEE a fabricated stamp where the law puts one. A log is born
+# on its day shelf from 20260827.171500, and the flat glob that stood in the mono
+# scan read 247 of 7,344 dated artifacts: a log stamped four hours ahead, on its
+# shelf, passed both duties, and the same file moved flat reddened duty 5 at once.
+# The control plants real files in real directories and runs the real scans, so
+# the population is what is on trial. Its own legs are tallied and asserted,
+# because a control that merely reaches its last line proves nothing about the
+# legs written after the one that broke.
+let population = run ["sh" "tools/fixtures/o/one_clock_population_control.sh"]
+say population.out
+assert population.ok else "one-clock population control failed -- duty 5 no longer reaches a folded shelf"
+assert population.out contains "control_verdict=ok" else "population control named no ok verdict"
+assert population.out contains "fails=0" else "population control reported a failing leg"
+assert population.out contains "future_on_day_shelf_reds" else "population control skipped the day-shelf leg"
+assert population.out contains "sprigless_future_on_shelf_reds" else "population control skipped the sprigless leg"
 
 let head = run ["sh" "tools/fixtures/o/one_clock_head_scan.sh"]
 say head.out

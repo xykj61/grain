@@ -716,3 +716,5 @@ at a closed fold.*
 *Row %697 folded to [`REDS-the-record-that-shipped-empty-rows-697.md`](REDS-the-record-that-shipped-empty-rows-697.md) on `20260910.140046`, **BOOKED** -- a record shipped empty and every session-log guard read the row rather than the log; the reading moved to the commit that makes the fault, and the row stood OPEN for six hours after its own repair landed.*
 
 *Row %457 folded to [`REDS-absence-is-the-one-reading-rows-457.md`](REDS-absence-is-the-one-reading-rows-457.md) on `20260910.181200`, **BOOKED** -- absence is the one reading a seat may not take from local bytes alone; the repair is an instrument that fetches first, and the remainder was a habit seated on the baton.*
+
+*Row %703 written straight onto [`REDS-the-gate-that-read-a-thirtieth-of-the-tree-rows-703.md`](REDS-the-gate-that-read-a-thirtieth-of-the-tree-rows-703.md) on `20260911.021000`, **BOOKED** -- the false-future gate built its population from a flat glob and read 247 of 7,344 dated artifacts, so a log stamped four hours ahead on the day shelf the law requires passed both duties while the same file moved flat reddened at once.*

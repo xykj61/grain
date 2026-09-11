@@ -81,7 +81,11 @@ if git rev-parse --verify "$BASE" >/dev/null 2>&1; then
     test -n "$path" || continue
     test -f "$path" || continue
     base=$(basename "$path")
-    stamp=$(printf '%s' "$base" | sed -n 's/^\([0-9]\{8\}\)-\([0-9]\{6\}\)_.*$/\1.\2/p')
+    # [_.] rather than _: the sprig is OPTIONAL, and 237 dated files carry a
+    # stamp and none, so an underscore-anchored read calls every one of them
+    # undated and weighs none of them (the REDS %175 shape, found here on
+    # 20260911.020039 while repairing the same blindness in duty 5's population).
+    stamp=$(printf '%s' "$base" | sed -n 's/^\([0-9]\{8\}\)-\([0-9]\{6\}\)[_.].*$/\1.\2/p')
     test -n "$stamp" || continue
     check_stamp "$stamp" "$path" || bad=$((bad + 1))
   done <"$diff_tmp"

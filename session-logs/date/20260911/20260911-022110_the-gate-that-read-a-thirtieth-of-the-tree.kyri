@@ -1,0 +1,49 @@
+format session-log-v1
+stamp 20260911.022110
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role core infrastructure -- seat bakery
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json, read 20260911
+evidence tracked settings file; proves configuration rather than this run's use
+voice Kyri
+host Framework laptop, America/New_York
+title the false-future gate read a thirtieth of the tree
+prompt autonomous lap -- core infrastructure, Lindy-first crux-first
+rota lap 4614, row 4 -- Earth, the row that breathes in; read the threshold, the clock and the mark, Two Rooms, the marked value. The row says trust the concrete reading at the door and check it against the witness. The door here was a guard's own printed line.
+think Duty 5 of the one-clock witness printed HEAD_OK ... stands -22941s from host ... (tolerance 120s). The verdict is right -- behind passes, ahead reds -- yet a head six hours stale asked which population produced it.
+think TRUE_HEAD read 20260910.193534 while session-logs/date/20260911 carried 20260911.002040. The mono scan built its population from a flat glob over five rooms, and a log is born on its day shelf since 20260827.171500, so session-logs flat holds zero.
+think Measured: the glob read 247 of 7,344 dated artifacts, 3.4 percent. Invisible were 5,866 session logs, 930 counsel notes, 291 waymarks, 10 foundations.
+think Proven rather than argued, one file two paths: a log stamped four hours ahead on its day shelf reads MONO_OK, HEAD_OK, exit 0; the same file moved flat reads HEAD_BAD is 14400s ahead, HEAD_FAIL, exit 1.
+think A second blindness rode the same line -- the sed anchored on the sprig underscore, so the 237 sprigless dated files were invisible even flat. The REDS %175 shape.
+think A third reading fell out: mono's monotonicity leg cannot fail. true_head is the maximum OF the population, so a year-2099 stamp becomes the head. Duty 5, weighing against the live clock, is the only leg with teeth.
+think Why it survived: both duty-5 fixtures pass stamps through ONE_CLOCK_HEAD_STAMPS, which bypasses the population walk. They proved the predicate; neither proved the reach.
+think Then the guard drawn for the spelling class could not see it either. dated_spelling's NARROW matches the ERE spelling; sed is a BRE tool, so every EXTRACTING site wrote escaped braces and capture groups and went free. The loom read one dialect and the tree writes two.
+obs The population now reads folded shelves and the [_.] spelling by find rather than glob; TRUE_HEAD names 20260911.002040. Whole-list reads replaced a grep per stamp.
+obs Scope held at the one family. Three real sites repaired, all found by measuring rather than sweeping: duty 5's mono walk, duty 4's provenance walk, and caravan's prose meter, where an unstripped sprigless stamp leaked two bare numbers into a count.
+obs %703 was written straight onto its own shelf. The pin stood at 40,479 against 40,960 and the row wants 2,929 -- the move %693, %696 and %699 each made, for this same reason.
+obs Two reds beside the keystone, both closed: 20260910 read 104 in both rosters while its shelf holds 107, three peer rows having landed after the day was counted.
+obs rish_report_bound was red on the cold pass and GREEN live -- that pass closed tree_moved=yes, so it measured a tree being edited. standing_equipment red_self is derivative.
+obs Named and not taken: session_roster_agree builds a report naming each stale row and never prints it, so stale=2 locates nothing for a reader.
+loom witness=one_clock_mono_scan population_before=247 population_after=7344 wall_ms_before=5475 wall_ms_after=192
+loom control=one_clock_population_control legs=7 fails=0 mutations_bitten=2
+loom control=dated_spelling_control cases=16 new_cases=3 mutation_fails=2
+file tools/fixtures/o/one_clock_mono_scan.sh the population reads folded shelves and both spellings, by whole-list passes
+file tools/fixtures/o/one_clock_provenance_scan.sh duty 4 extracted stamps the same narrow way; [_.] now
+file tools/fixtures/o/one_clock_population_control.sh seven legs planting real files in real directories, so the population is on trial
+file tools/o/one_clock_witness.rish duty 6 -- the reach, asserting the control's own leg tally
+file tools/fixtures/d/dated_spelling_scan.sh NARROW reaches the BRE dialect, optional braces and capture parens
+file tools/fixtures/d/dated_spelling_control.sh three cases -- both BRE refusals and the repaired form left free
+file tools/fixtures/c/caravan_ladder_prose_count_scan.sh a sprigless stamp no longer leaks two bare numbers
+file construction/archive/REDS-the-gate-that-read-a-thirtieth-of-the-tree-rows-703.md the row, born on its shelf
+file construction/archive/REDS-fold-recital.md the recital line for %703
+file construction/REDS.md headline derived to 703
+file session-logs/README.md 20260910 derived from its shelf, 104 to 107
+file session-logs/CHAPTERS.md the same day, the same derivation
+scope one-clock population reach, its spelling loom, and two roster reds closed beside it
+status GREEN -- one_clock, dated_spelling, caravan_ladder_spine, reds_ledger_monotone, reds_citation, log_has_a_row, session_roster_agree, living_docs_lint, exec_bit, ascii_document all green; both controls mutation-bitten
+recommend keep-going -- the cold pass wants a re-run on a still tree, and session_roster_agree's unprinted report is one lap

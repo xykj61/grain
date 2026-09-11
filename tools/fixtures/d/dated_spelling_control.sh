@@ -39,6 +39,14 @@ E8='[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
 E6='[0-9][0-9][0-9][0-9][0-9][0-9]'
 Y4='2026[0-9]{4}'
 U='_'
+# The BRE spellings, assembled the same way. sed is a BRE tool and a stamp is EXTRACTED with sed,
+# so an extracting site writes the braces escaped and usually wraps each half in a capture group.
+# The loom read only the ERE spellings for its whole life, so every extracting site in the tree
+# went free -- three of them real (20260911.020039).
+B8='[0-9]\{8\}'
+B6='[0-9]\{6\}'
+C8='\([0-9]\{8\}\)'
+C6='\([0-9]\{6\}\)'
 
 run_scan() { ( cd "$1" && sh "$SCAN" 2>&1 ); }
 
@@ -54,6 +62,33 @@ esac
 case "$out" in
   *"t.sh"*) ok offender_named ;;
   *) bad offender_named "the refusal named no file: $out" ;;
+esac
+
+# ---- 1b. the BRE spelling, refused ------------------------------------------------------------
+d=$(new_repo brebrace)
+printf "sed -n 's/%s-%s%s.*//p'\n" "$B8" "$B6" "$U" > "$d/t.sh"
+git -C "$d" add -A >/dev/null 2>&1
+case "$(run_scan "$d")" in
+  *a_dated_pattern_requires_the_sprig*) ok bre_brace_form_bitten ;;
+  *) bad bre_brace_form_bitten "the escaped-brace spelling went free" ;;
+esac
+
+# ---- 1c. the BRE spelling inside capture groups, refused --------------------------------------
+d=$(new_repo brecapture)
+printf "sed -n 's/^%s-%s%s.*\$/x/p'\n" "$C8" "$C6" "$U" > "$d/t.sh"
+git -C "$d" add -A >/dev/null 2>&1
+case "$(run_scan "$d")" in
+  *a_dated_pattern_requires_the_sprig*) ok bre_capture_form_bitten ;;
+  *) bad bre_capture_form_bitten "the captured spelling went free" ;;
+esac
+
+# ---- 1d. the same captured spelling REPAIRED, free --------------------------------------------
+d=$(new_repo brerepaired)
+printf "sed -n 's/^%s-%s[_.].*\$/x/p'\n" "$C8" "$C6" > "$d/t.sh"
+git -C "$d" add -A >/dev/null 2>&1
+case "$(run_scan "$d")" in
+  *a_dated_pattern_requires_the_sprig*) bad bre_repaired_free "the repaired captured spelling was bitten" ;;
+  *) ok bre_repaired_free ;;
 esac
 
 # ---- 2. the year-anchored form, refused -------------------------------------------------------
