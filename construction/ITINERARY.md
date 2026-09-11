@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `65257a19d9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1cce134c51` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
