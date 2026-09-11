@@ -55,6 +55,10 @@ let frozen = run ["sh" "-c" "head -1 tools/fixtures/m/mantra_elder_v1_store/blob
 # The capture is said ABOVE the first assert on this binding, never below it: an assert ends the
 # run, so a say underneath reaches a reader on the passing runs alone and leaves a refusing one
 # holding this witness's own sentence and nothing of the blob it read (BAKERY, `20260911`).
+# AND THE LABEL AND THE READING GO ON SEPARATE SAYS, so the report crosses no ceiling. Rishi
+# composes an interpolated literal through a bounded 4,096-byte StrBuf and refuses StringTooLong
+# past it, while a bare say writes its value under no such ceiling -- and a success report is
+# exactly what grows as the tree it reads grows (tools/fixtures/r/rish_report_bound_scan.sh).
 say "mantra-cli-record: the frozen blob's first line reads --"
 say frozen.out
 assert frozen.ok else "mantra-cli-record: the frozen elder weave blob is gone -- without a real v1 store nothing proves an elder store opens"

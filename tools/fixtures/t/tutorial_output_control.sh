@@ -425,6 +425,36 @@ case "$(run_scan "$d")" in
   *) bad lone_command_free "a command promising no output was counted as a claim" ;;
 esac
 
+# ---- 10a. a dangling command fence leaves the NEXT pair alone -----------------------------------
+# THE SHARPER HALF OF 10, and the half that stood unasked. Section 10 proves a lone command fence
+# counts nothing; it never asks what that fence does to what follows it. The generic fence rule in
+# the parser reads any ``` line as the end of a pair that produced no output, and a ```sh line
+# matches it -- so until `20260911` a command promising no output ate the next command, whole
+# output block and all. `docs-geode/demos/README.md` check 3 stood in no pair for exactly that
+# reason, carrying a count that had gone stale by 197. Proven from both sides on one page: the
+# dangling fence in place, and lifted.
+d=$(new_pen swallow)
+{
+  printf '# a page\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n\n```\none\ntwo\n```\n'
+  printf '\nProse.\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n'
+  printf '\n## Next\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n\n```\none\ntwo\n```\n'
+} > "$d/docs-geode/tutorials/page.md"
+git -C "$d" add -A >/dev/null 2>&1
+case "$(run_scan "$d")" in
+  *pairs=2*) ok dangling_fence_spares_next ;;
+  *) bad dangling_fence_spares_next "a command fence promising no output swallowed the next pair" ;;
+esac
+d=$(new_pen swallow_lifted)
+{
+  printf '# a page\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n\n```\none\ntwo\n```\n'
+  printf '\n## Next\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n\n```\none\ntwo\n```\n'
+} > "$d/docs-geode/tutorials/page.md"
+git -C "$d" add -A >/dev/null 2>&1
+case "$(run_scan "$d")" in
+  *pairs=2*) ok dangling_fence_lifted_same ;;
+  *) bad dangling_fence_lifted_same "lifting the dangling fence changed the pair count" ;;
+esac
+
 # ---- 11. an empty corpus refuses rather than reading clean --------------------------------------
 d=$(new_pen empty)
 git -C "$d" add -A >/dev/null 2>&1

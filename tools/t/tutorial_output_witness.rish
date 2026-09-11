@@ -78,7 +78,7 @@
 # clones, after a folded room left two pages naming a file at its elder address. This one proves
 # what a command PRINTS. A page can name paths that all resolve and still promise output no command
 # produces -- which is exactly what the first hour did. Two jobs, two names.
-# Pen: tools/fixtures/t/tutorial_output_control.sh -- forty-three behaviors on real git
+# Pen: tools/fixtures/t/tutorial_output_control.sh -- forty-five behaviors on real git
 # repositories in a throwaway pen, every refusal planted and then lifted, the gap bound and the
 # scattered ceiling each shown from both sides, the order strand proven load-bearing by a mutation
 # that reds one leg alone, and the shape strand by one that reds seven.
@@ -86,8 +86,10 @@
 # This header read "twenty-nine" until 20260910, and the pen emitted THIRTY-ONE the whole time. The
 # number had been taken from the witness's own assertion list rather than from the control's
 # output, so it counted the reader instead of the thing read -- which is the same fault one room
-# over as a page quoting output nobody ran. Both rosters agree at forty-three now, and the count
-# below is read off the control rather than off this file.
+# over as a page quoting output nobody ran. Both rosters agree at forty-five now -- forty-three until
+# `20260911`, when section 10a added two -- and the count below is read off the control rather
+# than off this file. It is a count typed in prose three times in one file, which this shelf spent
+# the same day proving is the form that goes wrong; it stays because nothing derives it yet.
 # Run from the repository root.
 
 say "tutorial-output: Language EN -- a quoted output block is a claim about behavior, and a claim nobody checks is a claim that decays."
@@ -159,4 +161,4 @@ assert control.out contains "case=list_names_pairs ok" else "tutorial-output: th
 assert control.out contains "control=ok" else "tutorial-output: the control must agree with itself"
 
 say ""
-say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, whole or as a declared selection whose shape is read as well as its contents, with forty-three behaviors proven in a pen and every refusal bitten and then lifted."
+say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, whole or as a declared selection whose shape is read as well as its contents, with forty-five behaviors proven in a pen and every refusal bitten and then lifted."
