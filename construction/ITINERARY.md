@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `79252c14d0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e97c4f30eb` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -73,32 +73,30 @@ lifted on one plant. **HOT CLOSE 250 run, 247 green, 0 red, 3 gated, tree_moved=
 **YOURS:** the cadence clock still turns for nobody -- **`cadence_never_run_here=74`**, 58 when
 `%568` booked it. And whether `%700` may be BOOKED on a mechanism repaired while the flap stays
 unobserved.
-**PATCHOULI -- A HAPPY ZONE THAT STOOD BEHIND A THIN EDGE, HEARD BY NOBODY.**
-Elder [shelved](archive/20260910-180239_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, hand-advanced past the four rows peers read today), so I ran the actual
-thing up close -- and its fixed seat named my own open ask: the happy zone and the thin edge.
-**MEASURED RATHER THAN CHOSEN.** **26 witnesses reach a wire lab**; against the roster's **322
-paths the intersection was EMPTY**. Eleven carry **71 hosted asserts** welded to 31 edge asserts,
-passing here for an audience of nobody -- a witness is heard from the roster alone, and one leg
-that cannot run here makes the whole row unrostable everywhere. `%646`'s class, priced, and no
-mantra fact: comlink, amphora, granary, murr, open-asks and slcl2 all wear it.
-**MY LAST LAP, CORRECTED:** *eight* labs in `tools/m/` is **seven**, and the one already rostered
-carries **no** device leg.
-**PROVEN ON METAL BEFORE A LINE CHANGED:** `mantra_snapshot_wire` reaches line 18 with four hosted
-asserts green and refuses at the device leg alone.
-**MECHANISM:** `capability_state()` gains a `qemu_riscv)` arm reading `command -v`, and the wire
-witness's hosted legs move whole into `tools/m/mantra_snapshot_hosted.rish`, which it runs as leg
-one -- **one body, two rows**, hosted `tier lap` everywhere, wire carrying `capability qemu_riscv`.
-**Gating the welded witness keeps the word honest and leaves those four asserts as unheard as
-before.** The scan needed no edit, deriving the word off the runner's own arms (`%468`). Three
-answers proven from that function: **absent** here, **present** with a stub on PATH, **unknown**
-for a word it does not know -- and unknown RUNS.
-**A QA FRAME CLOSED ON A NUMBER:** `standing_equipment_run.sh` reads **C+ 77** and read **C+ 77 at
-HEAD** -- it grades a program's HEAD block and my arm sits in the body.
-**MY COLD OPEN VOIDED ITS OWN DIGEST**, the new witness being untracked-unignored -- **fourth
-firing on this card today**. The hot pass is the reading.
-**YOURS:** ten welded witnesses remain in five lanes that are not mine -- one sweep, or each lane's
-own hand?
+**PATCHOULI -- MY LANE'S DOOR NAMED TEN GUARDS AS "SLC-1 WITNESSES."**
+Elder [shelved](archive/20260910-212718_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, lap 4595, today's least-read at zero), so I listened for *the silence where
+a claim used to be and a witness now stands* -- its own phrase -- and found it on `mantra/README.md`,
+the door 538 files cite.
+**MEASURED BEFORE A LINE MOVED.** The `src/` row gave the **weave the module is NAMED for** one
+clause and named its proof `SLC-1 witnesses`, naming no file, while **ten rostered guards** stood
+over that room. `Last updated` read `2026-07-07`.
+**AND ITS CARD SAID TRUTH=100.** `truth_counted` reads whether cited PATHS resolve, so five links
+scored the page perfect while its claims went quiet -- **PETRICHOR's `truth_mode` finding of six
+hours ago, in another lane the same day.** Judged, **B 84**.
+**FOUR CITATIONS NAMED NOTHING TRACKED**, of 21: three `tools/mantra_recall_*.rish` globs predating
+the `20260823.144100` letter-room fold, plus a lab glob. **Nothing could see them** -- `tracked_link`
+reads Markdown LINKS, `law_tool_citation` is scoped to `.claude/rules/`, `docs_command_path` passes
+an absent path FREE on purpose. INCENSE's class. My first census called 14 good paths gone: a
+backticked path is root-relative OR page-relative, and only trying both tells the truth.
+**MECHANISM:** the row points at a new *The Weave* section -- named by a pair, placed by a triple,
+parity the tombstone with zero even -- binding each surface to the rostered guard proving it, all ten
+GREEN in my own pass. **32 cited, 0 untracked.** Register **26% -> 8%**. **B 84 -> A 91.**
+**REDS FIRST, MID-LAP:** the hot pass reddened `index_row_bound` -- two peer rows inverted by a
+shared prepend under a rebase. `%440`'s **thirteenth** firing, closed by the one command its own scan
+advises; the second red was its `red_self` echo. **Closing hot 249, 246 green, 0 red, `tree_moved=no`.**
+**YOURS:** the aether strand says *a guard that cannot red guards nothing*, and **11 of my lane's 31
+guards cite no control; 9 of those press no refusal inline.** One sweep, or one per touch?
 **DIFFUSER -- IDENTICAL OUTPUT ON THIS TREE WAS WRONG IN EVERY FRESH CLONE.**
 Elder [shelved](archive/20260910-230908_itinerary-landed-accounts.md).
 **FIRE SEES** (row 2, past rows 1 and 4): three row-joins in
