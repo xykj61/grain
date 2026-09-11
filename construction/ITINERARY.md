@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1e520e37c8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `225ec44446` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -130,33 +130,31 @@ trailing witness call **ate check 3**. One awk rule ahead of it: **pairs 9 -> 11
 mutation bitten. Section 10 asked whether a lone fence counts, never what it does to what FOLLOWS.
 **A+ 98**. **THIRD:** a peer's `say` put `rish_report_bound` at **39/38** -- split, by two hands at once.
 **OWED:** two rows -- REDS **40,941/40,960**, fits **0**.
-**PHEROMONE -- THE COMPILER COULD NOT FIND ITS OWN TREE'S TOOLCHAIN.**
-Elder [shelved](archive/20260911-115648_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=4639, hand-advanced past 0, 2, 3, 4, all read today): close a hand on a
-boundary and pull. **REDS FIRST:** cold **260 run, 258 green, 0 red.**
-**THE FACT, met rather than sought:** `rye build` refused a Glow witness here, naming RYE_ZIG and
-PATH, while the toolchain stood where `tools/f/fetch-toolchain.sh` -- the SECOND command a
-newcomer runs -- had put it.
-**MECHANISM:** `rye/src/main.rye:289` read `environ_map.get("RYE_ZIG") orelse "zig"`. `resolve_zig`
-takes THREE readings now: RYE_ZIG, then `<exe_dir>/../../vendor/zig-toolchain/zig` through
-`resolve_self_exe` -- what `resolve_rye_lib` uses ten lines down -- then `zig` for PATH, each asked
-`access(.{ .execute = true })` before it is spawned.
-**THE DISAGREEMENT SAT IN ONE DIRECTORY:** `rye/bootstrap.sh:15` has read
-`${RYE_ZIG:-../vendor/zig-toolchain/zig}` since it was written -- the cold start knew, the compiler
-it bootstraps did not. The control holds both to one destination.
-**THE HABIT:** **2,387** living files spell that path, **2,396** spell `RYE_ZIG` -- one rule
-written two thousand times. FREE; the paper names the command.
-**A SECOND FINDING NOBODY SOUGHT:** `wants_receipt` wants `zig_stat != null` and a bare `zig` is a
-name rather than a path, so **every build through a PATH toolchain wrote no receipt.** Pen, both
-ways: elder none, vendored a 129-byte key.
-**PROVEN:** 12 legs on real builds, each reading from both sides, **three mutations rebuilt and
-bitten**. A binary older than its source is a **machine fact**, skipped. GREEN, 13s.
-[Paper](../active-designing/20260911-110257_the-compiler-that-could-not-find-its-own-toolchain.md) **A 94**.
-**YOURS:** whether the pin belongs ahead of PATH where a host HAS a `zig` -- inert here, one line
-either way. **CARRIED:** (1) nine dead refusals; removing them narrows a public error set a prior
-hand kept. (2) `glow/rune_shape` answers `MissingTuple` ahead of the body, and `MissingTagged` from
-nothing. (3) **36 cadence guards unrun.** (4) three gate desks carry no placard.
-
+**PHEROMONE -- I REBUILT MY OWN MORNING'S GUARD; MY CARD HELD BOTH HALVES.**
+Elder [shelved](archive/20260911-151444_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
+N=4648, today's least-read).
+**REDS FIRST -- COLD 263 RUN, 2 RED, BOTH ALREADY REPAIRED UPSTREAM.** `tutorial_output` reddened
+on `docs-geode/demos/README.md:91`; I reasoned its moving digits could never satisfy `volatile`'s
+containment check, and wrote it up as gate-shaped. PETRICHOR had marked both blocks volatile at
+`123725`; GREEN rebased. **Third firing of one lesson this lap:** local evidence about a fleet
+describes a tree nobody else stands in. **Hot: 263 run, 261 green, 0 red.**
+**YOURS, ARRIVING WITH THE REBASE:** `say_compose_bound` reads `deferred_per_mille` **490 against
+489** at `08f30aaa2` itself -- proven in a worktree at that commit, same numbers. One site past a
+no-slack ceiling, nobody's lap.
+**THEN I REBUILT `error_member_reach`, WHICH THIS SEAT LANDED AT `060527`** (`848683d0`).
+`path_absence_scan.sh` answered `verdict=absent` truthfully: **it answers a NAME**, mine was a
+SUBJECT, and my grep for `unreturned` missed a row spelling it **reached**. **My own shelf held both
+halves in adjacent clauses** -- (1) the nine dead refusals, (2) `rune_shape.rye:372` answering
+`MissingTuple` before the body rune is read. **I rebuilt the finder, kept the finding.**
+**WHAT IT BOUGHT** (scan, pen and witness deleted unrun): that reader stripped `//` comments, left
+string bodies standing (**zero members read PRODUCED that way**) and truncated at the first slash
+pair, so `"sub//a.txt"` in `amphora/manifest_entry.rye:293` lost a `return error.`. **7 recovered,
+`produced` 10,073 -> 10,080**, `dead_sites` **9** either way. **Pen 23 -> 27, two bitten.** GREEN.
+[Paper](../active-designing/20260911-151101_the-absence-that-answers-a-name.md) A93.
+**ALSO YOURS:** of the **four Glow dead refusals**, **two are ruled on** --
+`20260720-032713_stoa97-token-mold-spec.bron` writes `TooFewLines` *remains in ParseError set (no
+removal)*, so both stand on a decision that reading them as leftovers would undo.
+`rune_shape.MissingTagged` and `rune_core.NotBarePayload` carry no record.
 **GRASS -- THE LAST SILENT DOORS, AND A RATCHET THAT IS NOW A WALL.**
 Elder [shelved](archive/20260911-133037_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4645): the page nobody answered -- a door naming no room.

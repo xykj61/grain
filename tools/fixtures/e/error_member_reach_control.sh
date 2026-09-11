@@ -114,6 +114,57 @@ out=$(run_scan "$pen/live")
 leg comment_mention_is_not_production 1 "$(read_leg dead_sites "$out")"
 rm -f "$pen/live/d.rye"
 
+# ---------------------------------------------------------------- string-body mention
+# A member named only inside a STRING LITERAL is prose by the same reasoning as a comment: nothing
+# in a literal returns. The reader stripped comments and left string bodies standing until
+# `20260911`, so this leg is what holds the second half of that sentence.
+cat > "$pen/live/d2.rye" <<'RYE'
+pub const StrError = error{
+    OnlyInLiteral,
+};
+pub fn note() []const u8 {
+    return "this path would answer error.OnlyInLiteral one day";
+}
+RYE
+out=$(run_scan "$pen/live")
+leg string_mention_is_not_production 1 "$(read_leg dead_sites "$out")"
+out=$(run_scan "$pen/live" --list)
+leg string_mention_named 1 "$(printf '%s\n' "$out" | grep -c 'd2.rye OnlyInLiteral')"
+rm -f "$pen/live/d2.rye"
+
+# ---------------------------------------------------------------- a `//` inside a string opens no
+# comment. Planted from the two shapes that actually stand in this tree: `"sub//a.txt"` in
+# `amphora/manifest_entry.rye:293` and `"ok|udp://1|fresh|0"` in `comlink/discovery/gossip.rye:137`.
+# Truncating at that slash pair takes the real `return error.` off the end of the same line, so the
+# member reads dead while a line producing it sits right there.
+cat > "$pen/live/d3.rye" <<'RYE'
+pub const SlashError = error{
+    MadeAfterSlashes,
+};
+pub fn h(p: []const u8) SlashError!void {
+    if (std.mem.eql(u8, p, "sub//a.txt")) return error.MadeAfterSlashes;
+}
+RYE
+out=$(run_scan "$pen/live")
+leg instring_slashes_open_no_comment 0 "$(read_leg dead_sites "$out")"
+rm -f "$pen/live/d3.rye"
+
+# ---------------------------------------------------------------- and a quote inside a COMMENT
+# opens no string, which is the same walk read the other way: a comment holding one quote would
+# otherwise swallow every line after it.
+cat > "$pen/live/d4.rye" <<'RYE'
+pub const QuoteError = error{
+    MadeAfterQuote,
+};
+// the caller's "own" bound decides this
+pub fn k(x: u32) QuoteError!void {
+    if (x == 0) return error.MadeAfterQuote;
+}
+RYE
+out=$(run_scan "$pen/live")
+leg quote_in_comment_opens_no_string 0 "$(read_leg dead_sites "$out")"
+rm -f "$pen/live/d4.rye"
+
 # ---------------------------------------------------------------- inline set in a signature
 # An inline set stands in a DECLARATION rather than a function body, so no `}` follows it to
 # close a block opened by mistake. That is the shape where the open guard earns its place: with

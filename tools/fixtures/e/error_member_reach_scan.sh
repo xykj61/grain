@@ -16,8 +16,11 @@
 # since a vendored source keeps its own discipline. A member is a line inside an `error{...}`
 # block reading `Name,` with an optional trailing `//` comment; a production is `error.Name` or
 # `SomeError.Name` anywhere in authored code, which covers a `return`, a `try ... catch` switch
-# arm, and a witness's `expectError`. Comments are stripped before the production pass, because a
-# member named only in prose is a member nothing can produce.
+# arm, and a witness's `expectError`. Comments AND string bodies are stripped before the production
+# pass, because a member named only in prose is a member nothing can produce -- and a string body is
+# prose by that same sentence. The two are told apart by one left-to-right walk rather than by two
+# substitutions, since a `//` inside a string opens no comment and a quote inside a comment opens
+# no string; the walk and the seven productions it recovered are described at the line that does it.
 #
 # TWO READINGS, AND ONLY ONE IS A FAULT.
 #
@@ -103,7 +106,33 @@ tr '\n' '\0' < "$pen/files.txt" | xargs -0 awk '
   FNR == 1 { flush(); nd = 0; inset = 0; delete used; delete seen; prevfile = FILENAME }
   {
     line = $0
-    sub(/[[:space:]]*\/\/.*$/, "", line)
+    # A STRING BODY IS PROSE, and a `//` inside one opens no comment. Both halves of that sentence
+    # were learned by measuring `20260911`: the reader stripped comments and left string bodies
+    # standing, so a member named only inside a literal would have read as PRODUCED; and it
+    # truncated at the first `//` anywhere, so `"sub//a.txt"` in `amphora/manifest_entry.rye:293`
+    # and `"ok|udp://1|fresh|0"` in `comlink/discovery/gossip.rye:137` each took a real
+    # `return error.` off the end of their own line. Seven productions were being lost that way, and
+    # the count came from the repair itself rather than from a probe -- a first probe read fifteen
+    # and was measuring its own broken patch. Neither moved `dead_sites` -- every name the strip
+    # dropped is produced elsewhere too -- so both
+    # were latent rather than live, and a reader repaired while its gate is quiet is a reader
+    # repaired for free. The walk below runs only on lines holding a quote or a slash pair, which
+    # is what keeps the pass at its measured speed.
+    if (line ~ /["]/ || line ~ /\/\//) {
+      out = ""; instr = 0; L = length(line); i = 1
+      while (i <= L) {
+        ch = substr(line, i, 1)
+        if (instr) {
+          if (ch == "\\") { out = out "  "; i += 2; continue }
+          if (ch == "\"") { instr = 0; out = out "\""; i++; continue }
+          out = out " "; i++; continue
+        }
+        if (ch == "\"") { instr = 1; out = out "\""; i++; continue }
+        if (ch == "/" && substr(line, i + 1, 1) == "/") break
+        out = out ch; i++
+      }
+      line = out
+    }
     # A set opens only when `error{` ENDS the line. An inline set -- `error{Overflow}!u32` in a
     # signature -- closes on its own line and must never open the block, or a capitalized member
     # below it in the file reads as a declared refusal.
