@@ -3,7 +3,7 @@
 *From nothing to something you made work. One path, straight through. Everything else in this tree
 is a map you will want **after** this hour.*
 
-**Language:** EN - **Style:** Bhakta (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the field) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta at the Door setting (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the maintainer's working tree) - **Voice:** Kyri
 **Written:** `20260821.180613` - **Last updated:** `20260909.231456` (step 2's quoted ending read off a real fetch: `staged=` restored, the second run's shorter ending shown)
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.

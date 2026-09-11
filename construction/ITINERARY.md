@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `870b884c4f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ed21c7dcbf` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -118,20 +118,18 @@ elder thresholds were an Amdahl reading that never said so.
 **YOURS:** two doors with a live corridor spend a lap to learn what a lap suspected; one door at 2x
 answers today. The sharper falsifier is ONE rebuild -- `unshared_citation`, 98% read, 8,057
 processes. Above 6x the ceiling holds; under 3x the plan retires.
-**PETRICHOR -- TWO READERS OF ONE LINE, AND ONE OF THEM ANNOUNCED THEY AGREED.**
-Elder [shelved](archive/20260910-175434_itinerary-landed-accounts.md); the pin sat 3 bytes under
-bound at my open, so this is written short.
-**FIRE SEES.** `qa_report_card.sh` matched `^**Style:**` and read past **65** pages writing the key
-INLINE -- `docs/README.md` declares Door, the card said `absent`; the census read above the first
-`---` and missed **5** declaring below it, `README.md` among them, its comment claiming it read the
-line as the card does. By stamp (`20260910.163831`), REDS full.
-**MECHANISM:** `declared_style_line_of()` published once in the card at `QA_HEAD_LINES=40`, LIFTED
-by the census beside `measure()`. **158/48/110/172 -> 164/50/114/166**; pens **38** and **162** legs;
-the citation proven live by a card publishing a BLIND reader.
-[Paper](../active-designing/20260910-175434_two-readers-of-one-line.md), B+ 88.
-**YOURS:** the DOOR roster holds 16 pages at 20% and **9 name no setting at their own door**, 0
-contradict. Deriving the meter's tiers from a page's declaration is your word; **14 spellings** of
-50 stand in the way.
+**PETRICHOR -- A ROSTER IS A PROMISE TWELVE OF ITS PAGES LEFT UNSPOKEN.**
+Elder [shelved](archive/20260910-204226_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3): opened all **19** doors the register roster holds at 20%. **Seven said
+Door; twelve said nothing.** Eleven now declare it; the twelfth is DATED and keeps every word.
+**MECHANISM:** `door_setting_verdict()` answers `testimony` on a one-clock basename and classifies
+the rest, printing `door_setting_declared|undeclared|testimony` -- **18/0/1** -- refusing at
+`verdict=door_setting_undeclared`. Its Style line is the card's own `declared_style_line_of()`,
+lifted by `sed`: **three instruments, one reader**, and an unreachable card REFUSES rather than
+reading every door silent. Control **32 -> 43 legs, failed=0**; gate and testimony arm both
+mutation-proven. [Paper](../active-designing/20260910-204226_the-door-that-names-its-own-ceiling.md), A 92.
+**YOURS:** the wall says a door DECLARES its setting, never that the meter READS it. **114** pages
+still declare a style and name none. The derivation is your word.
 **PHEROMONE -- A PEDESTAL COUNTING MEMBERS HAS NO CONSTANT TO READ.**
 Elder [shelved](archive/20260910-193704_itinerary-landed-accounts.md).
 **IT DIED AT ITS SEND AND CAME BACK WHOLE.** The round-open stashed it; this lap popped that
@@ -384,6 +382,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260910.175434` | Two readers of one line | [log](../session-logs/date/20260910/20260910-175434_two-readers-of-one-line.kyri) |
+| `20260910.204226` | The door that names its own ceiling | [log](../session-logs/date/20260910/20260910-204226_the-door-that-names-its-own-ceiling.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

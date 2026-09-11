@@ -1,0 +1,51 @@
+format session-log-v1
+stamp 20260910.204226
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- petrichor, the docs-geode and prose-product lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json reads model claude-opus-5; this ship launches via tools/f/fleet-loop.sh, which execs bare rather than through the enclosure
+voice Kyri
+host Vultr Dallas pier, AMD, NixOS, America/New_York
+title The door that names its own ceiling
+prompt the autonomous loop -- take the next agent-doable lap in the prose-product lane, Lindy-first and crux-first
+rota lap 4592, row 3 -- Water, the row that tastes; advanced by hand past row 2, which my own previous lap read. Water reads up close and runs the actual thing, so the lap opened all nineteen doors the register roster holds rather than reading the roster's count, and what the tongue found was a promise nineteen pages were held to that twelve of them had never made out loud.
+think My last lap left one measured reading on the card: the DOOR roster holds its pages at the strictest ceiling this tree writes, and most of them say nothing about it at their own door. Re-measured at this lap's head the roster reads 19 pages, 7 declaring Door and 12 silent -- two with no Style line at all and ten declaring a register while leaving the setting open. The gated question beside it, whether the meter should DERIVE its tiers from a page's declaration, stays Keaton's word; making a page state the ceiling it has already agreed to is a different act and needs no word.
+think The sweep chose no new spelling. Measured across the living pages, the tree writes a declared setting two ways -- `Gauge, <Setting> setting` in 32 pages and `Gauge <Setting>` in 22 -- and the roster's own majority writes the first, so seven pages took one clause inserted into the line they already carried. README.md and the-first-hour.md declare Bhakta, which is a register rather than a dial, so both now read `Bhakta at the Door setting`: the register they are written in, and the setting Gauge reads them on.
+think The twelfth page refused the sweep on the law's own grounds. foundations/20260823-034321_the-return-that-feeds-everyone.md carries a one-clock stamp in its basename, so it is testimony, and testimony keeps the words it wrote. The roster may hold a founding statement to the front-door share because a reading takes nothing away, while asking that page for a clause would be an edit to a dated artifact. So door_setting_verdict() answers testimony on a dated basename and counts it apart from the wall.
+think The instrument reads the Style line through the one reader the card publishes rather than through a copy. prose_register_scan.sh lifts declared_style_line_of() and QA_HEAD_LINES out of tools/fixtures/q/qa_report_card.sh at run time with sed, the way qa_setting_declared_scan.sh already does, so three instruments read one line one way. A scan that cannot reach that reader refuses with verdict=reader_absent, since reading every door as silent and being unable to read at all look identical from outside and only one of them is a fault.
+think The wall is drawn around the roster and stops there. The population census counts the same question across 330 pages and gates nothing, because a page at large may honestly name no setting; a page named in DOOR has already agreed to a ceiling, so the promise costs it one clause. The wall says a door declares its setting, and says nothing about the meter reading that declaration.
+obs Handing the pens the card's absolute path was owed the moment the citation landed. Four existing legs went red on the first control run -- the census and law pens run the scan from their own directories, where the relative path to the card resolves nowhere -- and each was repaired by passing PROSE_CARD_READER rather than by softening the refusal. Two of those pens also needed their own rostered front door to declare Door, which is the wall biting its own control exactly as it bites the tree.
+obs Both new halves were mutation-proven before the lap closed. Dropping door_undeclared from the verdict condition reads door_gate_bites=no while door_gate_lifts stays yes, so the two legs tell the gate from the reading. Dropping the testimony arm makes the scan demand a clause from a dated foundation and answer verdict=door_setting_undeclared -- the exemption is load-bearing rather than decorative.
+obs The eleven swept pages all read B or better at Door with --service 90, so no frame was pushed: README.md A 94, bat/README.md A 96, the-first-hour A 94, mycelium B 80. Mycelium is the door nearest the edge in two readings at once -- 20% negative against a 20% ceiling, and reach 50 at grade 13 -- and its repair is a rewrite rather than a clause, so it is named here rather than started.
+obs One wording change rode along and is named rather than hidden: the-first-hour's Style line ended "it stays in the field", which my last lap measured as one of two false positives the setting match cannot tell from a declaration. It now reads "it stays in the maintainer's working tree", which is what the sentence meant.
+obs Shelving the elder block broke two of its relative links, and the guard caught it mid-hot-pass: a block written at the pin's depth carries `archive/...` and `../active-designing/...`, which mean different files one directory down. fold_shelf_link_repoint fixed both by computing the repair rather than guessing it. Applying that fix moved the tree under a running hot pass, so that pass was stopped by its pid -- verified as mine through /proc/<pid>/cwd, never by pattern -- and relaunched over the staged set, since a close that reads tree_moved=yes measures neither the tree it opened on nor the tree the commit ships.
+loom witness=prose_register control_legs=43 was=32 control_failed=0
+loom scan=prose_register door_documents=19 door_setting_declared=18 door_setting_undeclared=0 door_setting_testimony=1 seconds=3
+loom roster=standing_equipment_cold guards_run=246 green=243 red=0 gated=3
+loom roster=standing_equipment_hot guards_run=249 green=246 red=0 gated=3 tree_moved=no
+file tools/fixtures/p/prose_register_scan.sh -- door_setting_verdict() classifies each rostered door testimony, declared, unnamed or absent; prints three counts and an undeclared line per page; refuses at verdict=door_setting_undeclared; lifts the card's Style-line reader and refuses when it is gone
+file tools/fixtures/p/prose_register_control.sh -- eleven new legs, the pens carry PROSE_CARD_READER, and two pen front doors declare their own setting
+file tools/p/prose_register_witness.rish -- asserts door_setting_undeclared=0 and each new leg by name, control_legs 32 to 43
+file README.md -- Bhakta at the Door setting, with the dial's two numbers named and the guard that holds them
+file docs-geode/tutorials/the-first-hour.md -- Bhakta at the Door setting; the trailing "in the field" restated to what it meant
+file bat/README.md -- a front-matter line beside its siblings', naming Language, Voice and the Door setting
+file mycelium/README.md -- the Style line its front matter lacked
+file encoding/README.md -- one clause, Door setting
+file foundations/README.md -- one clause, Door setting
+file amphora/README.md -- one clause, Door setting
+file mikrophone/README.md -- one clause, Door setting
+file tally/README.md -- one clause, Door setting
+file mantra/README.md -- one clause, Door setting
+file comlink/README.md -- one clause, Door setting
+file active-designing/20260910-204226_the-door-that-names-its-own-ceiling.md -- the account, the testimony exemption argued, the wall-against-count distinction named, A 92 at 24% negative
+file construction/ITINERARY.md -- elder block shelved, the new block written under the bound, prior-lap row and Git nib carried
+file construction/archive/20260910-204226_itinerary-landed-accounts.md -- the elder block, its one ask printed as it left the card
+scope the roster's own declarations -- eleven doors swept, one dated door left whole, one classifier, one wall, eleven control legs
+status GREEN -- prose_register_witness GREEN at 43 legs and door_setting_undeclared=0, qa_report_card_witness GREEN at 162, qa_setting_declared_witness GREEN, cards A 92 and A 94/96/94 with mycelium B 80, cold open 246 run 243 green 0 red 3 gated, hot close 249 run 246 green 0 red 3 gated tree_moved=no
+recommend check-in (Claude) -- the derivation question is now the only thing standing between a page's declaration and the ceiling it is graded at, and the roster half of it is proven; one word settles whether the meter reads what a page says

@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-07-10 (Tablecloth query device **15575**/**15576**; Granary device **15573**/**15574**; hosted resin **38496**/**38497**)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- sealed datagram wire
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole

@@ -7,7 +7,7 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 
 **Amphora** is **vessel software** -- preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar.
 

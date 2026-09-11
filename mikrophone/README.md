@@ -1,6 +1,6 @@
 # The Mikrophone firmware -- a device that forgets on purpose
 
-**Stamp:** `20260814.071500` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Stamp:** `20260814.071500` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Status:** Living front door -- the Mikrophone firmware journey stands whole and witnessed (DREY0-DREY16)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
