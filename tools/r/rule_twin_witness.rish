@@ -109,6 +109,16 @@ assert control.out contains "21 bitten: and a changed cell in the table below it
 assert control.out contains "22 free: an escaped &lt; reads as the character it names -- ok" else "rule-twin: an escaped character and the character are one character"
 assert control.out contains "23 bitten: and a changed bound beside it still counts as drift -- ok" else "rule-twin: an entity read as its character must still leave the number beside it visible"
 assert control.out contains "17 bitten: an absent cohort roster refuses rather than reading every pair as an arrival -- ok" else "rule-twin: a meter that cannot name its cohort must refuse rather than gate on nothing"
+assert control.out contains "24 free: a Cursor rule with no Claude canonical is named, not only counted -- ok" else "rule-twin: a count says a law exists one bench cannot read, and only the name says which"
+assert control.out contains "25 free: a Claude rule with no Cursor twin is named the same way -- ok" else "rule-twin: the blindness runs both directions, so the naming must too"
+assert control.out contains "26 free: and the side with nothing one-sided names nobody -- ok" else "rule-twin: a bare zero must be provable rather than merely observed"
+
+# THE CASE COUNT, PINNED HERE ON PURPOSE. control_fail=0 catches a leg that FAILS and reads exactly
+# the same over a leg somebody DELETED, so the pen could quietly shrink under a green witness --
+# the shape ascii-first booked when its own control was speaking to a gate hearing 46 of 82
+# readings. Pinned exactly: adding a leg costs a deliberate hand in both files, and removing one
+# reds on the lap it lands.
+assert control.out contains "control_cases=27" else "rule-twin: the pen carries twenty-seven legs, and a pen that shrinks under a green witness proves less than it says"
 
 say ""
-say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift among the seated cohort held under a ceiling that only falls, growth reported beside it rather than folded into it, proven both ways across twenty-four behaviors, the three transform steps seated 20260910 each planted twice so a spelling read as one still bites a real change riding on its line, and the reconciliation itself surfaced as a gate rather than attempted."
+say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift among the seated cohort held under a ceiling that only falls, growth reported beside it rather than folded into it, proven both ways across twenty-seven behaviors, the three transform steps seated 20260910 each planted twice so a spelling read as one still bites a real change riding on its line, and the reconciliation itself surfaced as a gate rather than attempted."

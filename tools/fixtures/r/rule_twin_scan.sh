@@ -59,6 +59,20 @@
 #                       ordinary act of writing a new rule -- a gate on new writing in a ratchet's
 #                       clothes.
 #
+# A ONE-SIDED RULE IS NAMED, NOT ONLY COUNTED (20260911.001354). `claude_only` and `cursor_only`
+# were the two readings here that printed a bare number, where `arrival:` and `absent:` have always
+# printed their members. The count says a law exists that one bench cannot read; the name says
+# WHICH law, which is the whole of what a hand needs to act. Measured 20260910: `cursor_only=2` --
+# `arbor-voice`, which governs how every `.arbor` voice tile in `arbor/` is written, and
+# `fuse-resin-cleanup`, which governs what happens to a counsel zip after its round pushes. Three
+# tracked `.arbor` files stand in this tree, so a Claude ship editing one has no rule at all, and
+# the meter that knew it would not say the name. `claude_only` reads 0 today, and that is the
+# second reason to print members: a bare zero cannot be told from a reading that found nothing
+# because it was looking in the wrong room.
+#
+# Whether either rule is MIRRORED stays Keaton's word -- a `.claude/rules/*.md` page loads on every
+# lap of every ship, so the spend is his. Naming costs nothing and is what lets him decide.
+#
 # The split is also the honest reading of how the tree is doing: 8 of the 11 pairs born since the
 # seating arrived AGREEING, against 5 of 40 among the elders. The habit changed, and one absolute
 # could not see it.
@@ -128,6 +142,8 @@ arrival_pairs=0
 arrival_drift=0
 DRIFTED=""
 ARRIVED=""
+CLAUDE_ONLY=""
+CURSOR_ONLY=""
 
 for f in "$CLAUDE_DIR"/*.md; do
   [ -f "$f" ] || continue
@@ -135,6 +151,7 @@ for f in "$CLAUDE_DIR"/*.md; do
   m="$CURSOR_DIR/$b.mdc"
   if [ ! -f "$m" ]; then
     claude_only=$((claude_only + 1))
+    CLAUDE_ONLY="$CLAUDE_ONLY $b"
     continue
   fi
   pairs=$((pairs + 1))
@@ -167,7 +184,10 @@ done
 for m in "$CURSOR_DIR"/*.mdc; do
   [ -f "$m" ] || continue
   b=$(basename "$m" .mdc)
-  [ -f "$CLAUDE_DIR/$b.md" ] || cursor_only=$((cursor_only + 1))
+  if [ ! -f "$CLAUDE_DIR/$b.md" ]; then
+    cursor_only=$((cursor_only + 1))
+    CURSOR_ONLY="$CURSOR_ONLY $b"
+  fi
 done
 
 if [ "$MODE" = diff ]; then
@@ -197,6 +217,8 @@ echo "arrival_drifted=$arrival_drift"
 echo "claude_only=$claude_only"
 echo "cursor_only=$cursor_only"
 for a in $ARRIVED; do echo "arrival: $a -- born since the cohort and already drifted; reported, never gated"; done
+for o in $CLAUDE_ONLY; do echo "claude-only: $o -- $CLAUDE_DIR/$o.md is live law, and no Cursor bench has a copy"; done
+for o in $CURSOR_ONLY; do echo "cursor-only: $o -- $CURSOR_DIR/$o.mdc is live law, and no Claude ship has a copy"; done
 for x in $MISSING; do echo "absent: $x -- named in the cohort roster and no longer a pair"; done
 
 # A reading over no pairs finds no drift and would report clean while measuring nothing.

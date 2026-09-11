@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7c43783800` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c8857e1a57` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SLOWER CLOCK HAD NEVER TURNED, PROMISED TO A ROUND NOBODY COUNTS.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -174,66 +174,68 @@ run, 245 green, 3 red, 3 gated, `tree_moved=no`** -- held still for the pass.
 **YOURS:** the population is **two** and opt-in, so a page that ought to declare a door and
 declines is invisible here. Whether a reading may infer the claim from prose is yours.
 
-**INCENSE -- THREE PAIRS DRIFTED APART WHILE THE METER WATCHING THEM WAS GATED SHUT.**
-Elder [shelved](archive/20260910-202551_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, today's least-read at 14), so I took the fact at the door:
-`rule_twin` read **`cohort_over_ceiling`, 38 against 35** -- red since `20260908`, behind **gate
-%7**, unheard.
-**MECHANISM:** replaying the scan's own `norm()` over both rule rooms as they stood at `6a2d0c3e9c`
-names the three cohort pairs that fell -- `exec-bit` one swept word, `gauge-style` a nine-line
-paragraph its twin never received, `placeholder-ship-names` a Radiant pass on one side. **Each is a
-lap editing the page its OWN editor reads**, so bringing the `.mdc` forward completes a half-made
-edit rather than ruling which sentence is law. **35 again, `verdict=ok`.**
-**MY HYPOTHESIS WAS REFUTED BY MY OWN WEAKER READING.** A rules-room link names the room the
-READER's editor loads, and that spelling sits in the differing lines of **24 of 48** pairs -- half
-the census as noise. At LINE level it is **12 of 1,512**, such a line nearly always differing for a
-second reason too. **One pair flipped**, `vocabulary-survey`, a table rule written `|------|`.
-**BUILT:** the transform grew **four steps to seven** -- sibling-room link, delimiter run, HTML
-entity -- each planted **twice**: the spelling alone, which must read free, and the spelling with a
-real change riding the line, which must still bite. **24 legs, `control_fail=0`**, all three
-mutation-proven, each biting exactly its own free leg. Ceiling **35 -> 34**. A/90.
-**COLD 244/2 red** -- `tracked_link` on my own untracked shelf, closed by staging; `tree_moved=yes`
-by my own hand, since I worked while it ran. **HOT 246 green, 0 red, 2 gated, `tree_moved=no`.**
-**YOURS, KEATON:** (1) **`cursor_only=2`** -- `arbor-voice` and `fuse-resin-cleanup` are live law
-the Cursor bench reads and **no Claude ship has seen**, printed and gated nowhere; mirroring costs
-~3 KB on every always-loaded lap of eight ships, so the spend is yours. (2) **44 pairs still drift,
-1,500 lines**; reconciling stays your word, and the size is now measurable. (3) Whether a guard
-behind a gate should still be **heard** when it reds.
-
-**COPAL -- A TIER OF 74 GUARDS, AND ONE RUN ROW ON THIS WHOLE PIER.**
-Elder [shelved](archive/20260911-003212_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4609, hand-advanced past rows 1-4, all read by peers on `20260910`): the
-row listens for the page nobody answered, and found `%568` -- which a peer answered mid-lap.
-**REDS FIRST, BOTH CLOSED.** Cold **251/246/3**; hot **251 run, 249 green, 0 red, `tree_moved=no`**.
-`prose_register` refused `door_setting_undeclared` on the **root `README.md`**: its `**Style:**`
-declaration WRAPS and `declared_style_line_of()` reads the first line only -- a limit that scan's own
-header prints. Named on line 23; **1 -> 0**, GREEN. A peer's fuller repair won the rebase.
-`shim_reason` read **949 against 948** and refused on every ship. Its cause is in ITS OWN header:
-a `say` inside a conditional cannot be credited, and **three rostered bindings in my lane** wrote
-`if v.ok == false then say v.err` -- the same promise, paid on a line the parser cannot read. All
-three took the interpolated `assert ... else "...${v.err}"` form; **949 -> 946**, ceiling to the
-reading, claiming no slack, since the peer's +1 is real and unrepaired by me. Both guards GREEN.
-**THE FINDING, measured `20260910.234500`, and OVERTAKEN while I measured it.** `tier cadence` holds
-**74** guards, was **58** when `%568` booked *nothing turns that clock*, and this checkout's
-`standing-equipment-runs.kyri` held a run row for exactly **one** -- recording `lap`. A peer landed
-`--cadence-slice N` at `a5832217d` reading **74 of 74** on its own checkout; each tree keeps its own
-untracked card, so both readings are true and neither is the other's correction.
-**TWO OF THEM ARE MINE, AND I ASKED THEM.** `amphora_asker_reply` answers GREEN in **69s**, against
-the 68s its seating measured; `amphora_udp_reuseaddr` GREEN in **104s**. Both silences were honest,
-and only the asking established that -- which is the whole of the aether reading.
-**AND I DECLINED THE MOVE THAT WOULD HIDE IT.** `tier lap` for the pair would shrink the never-run
-count by two and spend **173s twice a lap** reproving what changes only when
-`amphora/vessel_fetch_delivery.rye` does, against a pass of **2,940s**. Both rows carry the reading.
-**ON TOUCH:** five spoken characters in two lane files, each checked for a coupled saying first --
-`rish_spoken_ascii` **10,505 -> 10,500**, ceiling **10,585 -> 10,580**, claiming none of the slack.
-**YOURS, KEATON -- the clock is built and its hand is still still.** `--cadence-slice` defaults to
-**0** and that peer's own body says *the fleet default stays 0*, so today's tier is `%568` one level
-up: a mechanism nobody invokes rather than a mechanism nobody wrote. Naming a slice in
-`tools/f/fleet-loop.sh` is the whole remaining move, and its price is one number: a slice of 2 adds
-roughly **170s a pass** at this lane's measured rates, which buys the 74 a full turn in 37 laps.
-**Still yours, on the shelf:** the tree-wide `.rish` sweep; the two unproven convergence
-candidates; Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**;
-`glow/rune_shape.rye` width; `%281`/`%291`; `%347`.
+**INCENSE -- A METER KNEW A LAW WAS UNREADABLE AND WOULD NOT NAME IT.**
+Elder [shelved](archive/20260911-001547_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=4607, unread today): the ledger first. Cold **246/3/2**, the third
+`red_self`; **HOT 249 green, 0 red, 2 gated, tree unmoved.**
+**(1) `prose_register` refused `door_setting_undeclared=1` on the ROOT `README.md`.**
+`declared_style_line_of()` reads only the FIRST PHYSICAL `**Style:**` line and this one wrapped,
+so the word had to land on line 23. **18/0** -- **and a peer landed the same repair while my hot
+pass ran, so theirs shipped and I took it.**
+**(2) `shim_reason` refused 949 against Bakery's 948**, `law_guard_heard_witness.rish` landing
+after it with one binding of the old habit. Its `list` mode named it: `under` at line 76, a refusal
+leg whose two `else` messages said what was wanted and nothing of what the scan answered. Both
+carry `${under.out} ${under.err}` -- **949 to 948**, ceiling unmoved, proven on metal over an
+exit-3 run. **A peer landed `${under.out}` alone; the rebase kept `.err` beside it.**
+**MY OWN OPEN ASK, HALF WRONG.** I called `cursor_only=2` *printed and gated nowhere*. It **is**
+printed -- a bare number, where `arrival:` and `absent:` print members. **A count says a law one
+bench cannot read exists; a name says which.**
+**NAMED: `arbor-voice` and `fuse-resin-cleanup`.** The first governs every `.arbor` voice tile and
+**three stand tracked in `arbor/`**, so a Claude ship editing one has no rule. `claude_only` reads
+**0** -- the second reason to print members, a bare zero reading like a wrong room.
+**PROVEN:** three legs, **27 cases, `control_fail=0`**, both mutation-proven. **AND THE PEN IS
+HEARD:** `control_fail=0` reads alike over a leg that FAILED and one DELETED, so the witness pins
+`control_cases=27` -- proven by deleting leg 3, the leg no assertion names: 26, the pin reddening
+alone.
+**YOURS:** whether either Cursor-only rule is **mirrored** -- a `.claude/rules/*.md` page loads
+every lap of eight ships, so ~3 KB x 8 is yours. **44 pairs drift, 1,500 lines.**
+**COPAL -- A RISHI GUARD'S SENTENCE IS ALSO A WIRE, WHICH IS WHY NOBODY SWEPT IT.**
+Elder [shelved](archive/20260910-190809_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4589): read the fact off the instrument's own face before arguing
+with it. `rish_spoken_ascii` is the tree's largest non-ASCII residue -- **11,072 characters across
+1,505 files** -- and its ceiling had fallen **two characters in three days**, both on touch. Its two
+siblings were swept to zero. **It had no converter, and its table had one row fewer than the law.**
+**THE MINUS ROW, the same disagreement one instrument over.** `.claude/rules/ascii-first.md` has
+spelled the typographic minus since seating and `ascii_document_scan` carries the row; this meter
+filed **103** of them under `notation`, which MEANS *a reader must choose*, about a form the law
+answers one way. Split **10,707/365 -> 10,810/262**, total unmoved, since a classification fix moves
+no character. **Its two spoken siblings carry the same gap and are named rather than swept.**
+**WHY THE SWEEP HAD NEVER RUN, measured rather than guessed.** Rye's `print` and Glow's `::` speak
+to a person and to nobody else; a Rishi `say` is **also a wire between guards**. **164** counted
+characters sit in assert CONDITIONS, 126 matching a Rye binary's `selftest.out`; and **101 spoken
+lines are coupled** to a matcher elsewhere. Real on real bytes: `oven_handback_surface_p39_witness`
+greps `prin_scope.rish` for `'oct:   Oven Chapter -- PAUSED'`, so a blind `sed` reddens a guard by
+repairing a dash.
+**BUILT:** `tools/fixtures/r/rish_spoken_ascii_convert.sh`, card **A 91** -- deriving its **576**
+-literal coupling set every run rather than pinning a list that drifts the first time a sentence
+changes. **PROVEN:** control **22 -> 37 legs**, every converter leg read off the BYTES rather than
+the report, the pen's residue asserted EXACTLY at five characters each with a nameable reason.
+Witness **31 affirmative, 5 refusals**, 15.4s, `tier cadence`.
+**PAID:** `parity_ch01` and `parity_ch02` swept, **567 characters**, both **RE-DERIVED from their
+committed bytes** so nothing but a spoken line moved. Reading **11,072 -> 10,505**; ceiling
+**11,152 -> 10,585**, keeping the 80 of slack it stood on and taking none of the 567.
+**COLD 245/242/0, 3 gated; HOT 245/242/0, 3 gated, `tree_moved=no` both** -- 245 guards read the
+swept tree and not one of them lost a match.
+**BOTH SWEPT SUITES WERE ALREADY RED, on a cause I never touched:** `pond_build_drawn_terminal.sh`
+answers `verdict=gated_no_display` -- a Wayland application on a headless pier -- and both callers
+read that GATE as a build failure. Proven by running the underlying witnesses at bytes this lap
+never opened. **`%646`'s class**, beside Patchouli's eight wire labs; neither suite is rostered.
+**YOURS, KEATON -- the tree-wide sweep.** **1,502 files, 10,543 characters**, one command now.
+Against it: **92 `.rish` files touched per day by eight ships**, so the rebase cost lands on peers
+rather than here. Its guard is `tier cadence`, so one lap in five hears the ratchet at all.
+**Still yours, on the shelf:** the `rish_spoken_ascii` remainder above;
+Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
+width; `%281`/`%291`; `%347`.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **Gate 3 stands:** `.gnupg-rye/` holds
