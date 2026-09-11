@@ -153,34 +153,78 @@ rebindings=0
 squatters=0
 published_doubles=0
 if [ "$anointed_ok" = yes ]; then
-  while read -r n stamp; do
-    [ -n "${n:-}" ] || continue
-    up=$(awk -v k="$n" '$1 == k {print $2; exit}' "$work/shared.txt")
-    [ -n "${up:-}" ] || continue
-    [ "$up" = "$stamp" ] && continue
-    if awk -v s="$stamp" '$2 == s {found=1} END {exit !found}' "$work/shared.txt"; then
-      elsewhere=$(awk -v s="$stamp" '$2 == s {print $1; exit}' "$work/shared.txt")
-      # ONE NUMBER BOUND TO TWO PUBLISHED STAMPS IS NOT A REBINDING A LAP CAN REPAIR, and calling it
-      # one reddens eight ships every lap on a fault none of them may touch. A rebinding means THIS
-      # tree binds a number the anointed spine bound elsewhere -- repairable here, by renumbering the
-      # unshared row. A published double-binding means the ANOINTED SPINE ITSELF carries the number
-      # twice: `derived-spine` rule 3 holds for both rows, so neither may move, and the two rules
-      # meet head on. That deadlock is Keaton's word rather than a lap's, and it stands booked at
-      # `20260907.014654`. Counted and named separately from `20260907.024141`, so the gate keeps
-      # biting what a lap can fix and stops biting what it cannot.
-      if [ "$elsewhere" = "$n" ]; then
+  # ONE PASS FOR THE WHOLE JOIN. The elder form read one row at a time and spawned a fresh `awk`
+  # per row to look the number up in the anointed spine -- 615 rows against a 615-row spine, so
+  # 615 processes to answer 615 questions of one 20 KB file. `awk` already takes two files and
+  # already holds a hash, so the spine is read ONCE into two maps and every local row is answered
+  # from memory.
+  #
+  # FIRST LINE WINS, exactly as the elder `{print $2; exit}` did. Both files are `sort -u`'d, so
+  # for a number bound twice the first line carries the lexically smaller stamp, and `!(k in m)`
+  # preserves that choice rather than letting a later line overwrite it. Reproducing the elder
+  # tiebreak matters more than improving it: the published doubles below are named by these very
+  # stamps, and a different pick would rewrite seven detail lines that a reader has already read.
+  #
+  # `FILENAME == sharedf` RATHER THAN `NR == FNR`, AND A WITNESS IS WHAT TAUGHT IT. The idiom
+  # `NR == FNR` partitions two files only while the FIRST one has lines: an empty first file never
+  # advances `FNR`, so the second file's own first line reads `NR == FNR` as true and is swallowed
+  # by the map-building rule. Every map then stays empty and every answer comes back zero -- a
+  # silent wrong reading rather than a refusal. The first draft of this pass wrote `NR == FNR` in
+  # all three joins, read identically on the live tree where neither file is ever empty, and was
+  # caught by `reds_ledger_monotone_witness.rish` in a pen with no anointed ref: `local_rows=2`
+  # with a planted double-booking answered `double_booked=0`. Comparing `FILENAME` names the file
+  # rather than counting it, so an empty side is simply an empty map.
+  #
+  # THE CLASSIFICATION STAYS IN THE SHELL. `awk` decides WHICH of the three shapes a row wears and
+  # prints its fields; the counters and the prose stay where they were, so the three messages read
+  # word for word as before and a diff shows a join replaced rather than a verdict rewritten.
+  if ! awk -v sharedf="$work/shared.txt" '
+    FILENAME == sharedf {
+      if ($1 == "") next
+      if (!($1 in up)) up[$1] = $2
+      if (!($2 in where)) where[$2] = $1
+      next
+    }
+    {
+      if ($1 == "") next
+      if (!($1 in up)) next
+      if (up[$1] == $2) next
+      if ($2 in where) {
+        if (where[$2] == $1) { print "published_double", $1, up[$1], $2; next }
+        print "rebinding", $1, up[$1], where[$2], $2
+        next
+      }
+      print "squatting", $1, up[$1], $2
+    }
+  ' "$work/shared.txt" "$work/local.txt" > "$work/verdicts.txt"; then
+    echo "refused: the anointed-comparison join failed -- no verdict can be given about rebinding" >&2
+    exit 2
+  fi
+  while read -r kind n up_stamp a b; do
+    case "$kind" in
+      published_double)
+        # ONE NUMBER BOUND TO TWO PUBLISHED STAMPS IS NOT A REBINDING A LAP CAN REPAIR, and calling it
+        # one reddens eight ships every lap on a fault none of them may touch. A rebinding means THIS
+        # tree binds a number the anointed spine bound elsewhere -- repairable here, by renumbering the
+        # unshared row. A published double-binding means the ANOINTED SPINE ITSELF carries the number
+        # twice: `derived-spine` rule 3 holds for both rows, so neither may move, and the two rules
+        # meet head on. That deadlock is Keaton's word rather than a lap's, and it stands booked at
+        # `20260907.014654`. Counted and named separately from `20260907.024141`, so the gate keeps
+        # biting what a lap can fix and stops biting what it cannot.
         published_doubles=$((published_doubles + 1))
-        detail "detail: published_double %$n -- the anointed spine binds this number to BOTH $up and $stamp; rule 3 holds for each, so no lap may move either. Keaton's word, booked 20260907.014654"
-        continue
-      fi
-      rebindings=$((rebindings + 1))
-      detail "detail: rebinding %$n -- the anointed spine binds it to $up, and binds $stamp to %$elsewhere"
-    else
-      rebindings=$((rebindings + 1))
-      squatters=$((squatters + 1))
-      detail "detail: squatting %$n -- the anointed spine spent it on $up; this row ($stamp) is unshared and derives above %$shared_max"
-    fi
-  done < "$work/local.txt"
+        detail "detail: published_double %$n -- the anointed spine binds this number to BOTH $up_stamp and $a; rule 3 holds for each, so no lap may move either. Keaton's word, booked 20260907.014654"
+        ;;
+      rebinding)
+        rebindings=$((rebindings + 1))
+        detail "detail: rebinding %$n -- the anointed spine binds it to $up_stamp, and binds $b to %$a"
+        ;;
+      squatting)
+        rebindings=$((rebindings + 1))
+        squatters=$((squatters + 1))
+        detail "detail: squatting %$n -- the anointed spine spent it on $up_stamp; this row ($a) is unshared and derives above %$shared_max"
+        ;;
+    esac
+  done < "$work/verdicts.txt"
 fi
 
 # A stamp the anointed spine carries and this tree does not. Reported rather than gated: a fold,
@@ -188,11 +232,22 @@ fi
 # the third is a fault. A gate here would red on ordinary work, which is a gate someone turns off.
 dropped=0
 if [ "$anointed_ok" = yes ]; then
-  while read -r n stamp; do
-    [ -n "${n:-}" ] || continue
-    awk -v s="$stamp" '$2 == s {found=1} END {exit !found}' "$work/local.txt" && continue
-    dropped=$((dropped + 1))
-  done < "$work/shared.txt"
+  # The same whole-file join as above, pointed the other way: this tree's stamps read into one set,
+  # the anointed spine's rows counted against it in one pass rather than one `awk` per shared row.
+  #
+  # AND THE REFUSAL STOPS BEING A READING. The elder form wrote `awk ... && continue`, which spends
+  # the exit status on the ANSWER -- found is 0, absent is 1 -- so an `awk` that genuinely failed
+  # was counted as a dropped stamp and the number came back larger with nothing said. That is the
+  # shape `instrument_refusal` holds at zero. The count is printed now and the exit status carries
+  # failure alone.
+  if ! dropped=$(awk -v localf="$work/local.txt" '
+    FILENAME == localf { if ($1 != "") seen[$2]; next }
+    { if ($1 == "") next; if (!($2 in seen)) c++ }
+    END { print c + 0 }
+  ' "$work/local.txt" "$work/shared.txt"); then
+    echo "refused: the dropped-stamp join failed -- no verdict can be given about dropped rows" >&2
+    exit 2
+  fi
 fi
 
 # READING 3 -- two rows sharing a stamp to the second. Lawful; it means the tiebreak decides,
@@ -225,16 +280,24 @@ if ! awk '{print $1}' "$work/local.txt" | sort | uniq -d > "$work/dupes.txt"; th
   echo "refused: the duplicate-number read failed -- no verdict can be given about double-booking" >&2
   exit 2
 fi
+# THE THIRD JOIN OF THE SAME FAMILY, and the reason it is here rather than left alone: every
+# duplicate number spent an `awk`, a `wc` and a `tr` to ask one question of the spine already in
+# hand -- does the anointed spine bind this number twice? One pass counts each number's rows once
+# and prints only the duplicates the spine does NOT already carry twice, which is the set the elder
+# `else` branch reached. With no anointed ref the counts are empty, so every duplicate is named,
+# exactly as the elder `[ "$anointed_ok" = yes ] &&` short-circuit did.
+if ! awk -v sharedf="$work/shared.txt" '
+  FILENAME == sharedf { if ($1 != "") c[$1]++; next }
+  { if ($1 == "") next; if (c[$1] >= 2) next; print $1 }
+' "$work/shared.txt" "$work/dupes.txt" > "$work/doubles.txt"; then
+  echo "refused: the duplicate-number join failed -- no verdict can be given about double-booking" >&2
+  exit 2
+fi
 while IFS= read -r n; do
   [ -n "$n" ] || continue
-  if [ "$anointed_ok" = yes ] \
-     && [ "$(awk -v k="$n" '$1 == k' "$work/shared.txt" | wc -l | tr -d ' ')" -ge 2 ]; then
-    : # already named above by the anointed-comparison pass; one message per pair, not two
-  else
-    double_booked=$((double_booked + 1))
-    detail "detail: double_booked %$n -- this tree binds one number to two stamps"
-  fi
-done < "$work/dupes.txt"
+  double_booked=$((double_booked + 1))
+  detail "detail: double_booked %$n -- this tree binds one number to two stamps"
+done < "$work/doubles.txt"
 
 # The allocator. A new row takes one above the ANOINTED maximum, never one above the local
 # maximum -- reading the local tree is the fault, not the fix. With no anointed ref reachable,
