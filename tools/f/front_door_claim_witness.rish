@@ -1,0 +1,84 @@
+# tools/f/front_door_claim_witness.rish -- a page that says a front door names it is checked.
+#   rishi/bin/rishi run tools/f/front_door_claim_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/f/front_door_claim_scan.sh, which reads the living pages of
+# foundations, context and docs for a declared **Front door:** key, resolves the pages that key
+# names, and walls at zero every declared front door that does not name the claiming page back.
+#
+# WHY IT EXISTS. A page telling its reader where it is reached from is making a claim about ANOTHER
+# page's contents, and that is the one claim a page cannot keep by itself. The link out belongs to
+# the author; the link back belongs to whoever edits the front door next week. On 20260811 the AHOY
+# weave wrote that sentence into foundations/20260811-211431_the-lindy-effect-and-the-long-return.md.
+# On 20260823 commit 7191a938b rewrote the root README for the two-repository projection and the
+# word Lindy left it. The claim stood for eighteen days and nothing in the tree could hear it:
+# foundations_link proves the links a page writes land, foundations_reach asks whether the ROOM's
+# index names a page, and neither reads a sentence as a promise about the root front door.
+#
+# WHAT MAKES THE CLAIM CHECKABLE. It is DECLARED rather than inferred, the way a page declares its
+# Style and its Room. Opting in by writing the key is the whole population filter, so no reading
+# here guesses which prose sentence meant to be a promise.
+#
+# WHAT IT STANDS ON. Fifteen behaviours proven on real git repositories in a throwaway pen by
+# tools/fixtures/f/front_door_claim_control.sh, welcomes asserted as hard as refusals: a kept claim
+# reads ok, a broken one refuses and names page, target and cause, adding the link lifts it, a claim
+# naming an untracked page refuses under its own cause and tracking it lifts that, a key with no
+# link refuses, a keyless page is never counted, a tree where nobody declares the key refuses rather
+# than printing a green zero, an empty room refuses, the scan refuses outside a repository, an
+# interior `..` resolves, two links on one key are two claims, and a dated shelf keeps its words.
+#
+# WHAT IT DOES NOT REACH. Whether the front door's sentence about the page says anything true, and
+# whether a page that ought to declare a front door has declined to. It proves the declared promise
+# is kept, no more.
+#
+# Purely local: no key, no signature, no network, no funds, no real device.
+
+say "front-door-claim: Language EN -- a page that says a front door names it is checked against that front door."
+say "front-door-claim: Style Gauge Meter -- one gate at zero, three named causes, every refusal proven from both sides."
+say "front-door-claim: Lens TAME -- safety first; the population is opt-in, so the reading never guesses a promise."
+
+let green = run ["sh" "tools/fixtures/f/front_door_claim_scan.sh"]
+say green.out
+assert green.ok else "front-door-claim: the living measure must exit 0 -- ${green.err}${green.out}"
+assert green.out contains "verdict=ok" else "front-door-claim: want verdict ok -- ${green.out}"
+
+# THE WALL, at zero. A declared front door that does not name its claimant has published a promise
+# only one side keeps, and a reader who follows it arrives at a page that never heard of theirs.
+assert green.out contains "claims_unkept=0" else "front-door-claim: a declared front door names its claimant, or the claim retires -- ${green.out}"
+
+# THE READING IS NOT VACUOUS ON THIS TREE. A population that came back empty would print zero unkept
+# and read exactly like a tree whose every declared claim is kept (REDS %240's confident wrong zero).
+# The scan refuses that by name; these two legs close the same door from the reading's side.
+assert green.out contains "pages_read=" else "front-door-claim: the rooms must be counted"
+assert (green.out contains "claims=0") == false else "front-door-claim: a tree declaring no front door is a reading that broke"
+
+# THE GATE DOES THE WORK, proven on the living tree rather than asserted: a room holding no declared
+# key refuses rather than passing, so the green above is the claim's doing.
+let vacuum = run ["sh" "tools/fixtures/f/front_door_claim_scan.sh" "rishi"]
+assert (vacuum.ok == false) else "front-door-claim: a room declaring no front door must refuse -- ${vacuum.out}"
+assert vacuum.out contains "verdict=no_claims" else "front-door-claim: want the vacuum named -- ${vacuum.out}"
+
+# THE READING ITSELF, proven on planted repositories rather than trusted. Each leg is named here as
+# well as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
+let control = run ["sh" "tools/fixtures/f/front_door_claim_control.sh"]
+say control.out
+assert control.ok else "front-door-claim: the control must exit 0 -- ${control.err}${control.out}"
+assert control.out contains "verdict=control_green" else "front-door-claim: want the control green"
+assert control.out contains "fail=0" else "front-door-claim: the control must carry no red leg"
+assert control.out contains "ok   a front door that names the claiming page reads ok" else "front-door-claim: the kept leg is missing"
+assert control.out contains "ok   a front door that never names it refuses under claim_unkept" else "front-door-claim: the gate leg is missing"
+assert control.out contains "ok   and the refusal names page, target and cause" else "front-door-claim: the naming leg is missing"
+assert control.out contains "ok   adding the back link lifts the refusal -- the reading did the work" else "front-door-claim: the lift leg is missing"
+assert control.out contains "ok   the back link is read by basename, so any relative form keeps the claim" else "front-door-claim: the basename leg is missing"
+assert control.out contains "ok   a claim naming a path the tree does not carry refuses under absent" else "front-door-claim: the absent leg is missing"
+assert control.out contains "ok   and tracking that page lifts it" else "front-door-claim: the absent lift leg is missing"
+assert control.out contains "ok   a key carrying no Markdown link refuses under no_target" else "front-door-claim: the no-target leg is missing"
+assert control.out contains "ok   a page with no key is never counted as a claim" else "front-door-claim: the opt-in leg is missing"
+assert control.out contains "ok   a tree where nobody declares the key refuses rather than reading green" else "front-door-claim: the vacuum leg is missing"
+assert control.out contains "ok   a room holding no page refuses rather than counting zero claims" else "front-door-claim: the empty-room leg is missing"
+assert control.out contains "ok   outside a git repository the scan refuses rather than reading the disk" else "front-door-claim: the no-repository leg is missing"
+assert control.out contains "ok   an interior .. is resolved textually, so ../../README.md finds the root" else "front-door-claim: the dotdot leg is missing"
+assert control.out contains "ok   two links on one key are two claims" else "front-door-claim: the two-target leg is missing"
+assert control.out contains "ok   a page on a date/ shelf keeps its words and is never read" else "front-door-claim: the testimony leg is missing"
+assert control.out contains "pass=15" else "front-door-claim: the control must carry all fifteen legs"
+
+say "GREEN: front-door-claim -- every declared front door in the living rooms names the page that claims it, the vacuum refuses rather than reading green, and all fifteen behaviours stand proven on real repositories."

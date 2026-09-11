@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e97c4f30eb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2f1602bb1f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -152,29 +152,27 @@ one leg, the value comparison six. Witness **9.0s, lap**. Scan B+ 85, desks A+.
 `21` for a one-field `@u32`, `1` for the slot that opens Pool -- so neither has an engine.
 **YOURS:** whether a sample on a placard wants a guard at all. REDS pin still ~22 bytes free.
 
-**GRASS -- A CEILING ONLY FALLS WHERE A HAND CAN LOWER IT.**
-Elder [shelved](archive/20260910-192348_itinerary-landed-accounts.md).
-**REDS FIRST:** `stash_record unlanded=1` held a whole GRASS lap of `19:24` -- `law_guard_heard`,
-its roster row, log and shelf, landed unedited.
-**THAT LAP, AIR 1:** **137** law pages name **100** tool paths, all carried; **66** wear `witness`
-or `suite`, and **25 of the 66 stand outside every reach the roster has** -- four run by hand, all
-GREEN, `%357` before it fires. `absent` **walled at zero**, `unheard` ratchets.
-**THIS LAP, WATER TASTES** (row 3): its seat asks whether a second run changes more; over READERS,
-which ceilings can ever fall. **WROTE** `foundations/20260910-193534_a-ratchet-belongs-over-a-population-a-hand-may-shrink.md`,
-**B+ 86**.
-**ONE QUESTION, THREE ANSWERS -- who grows this population, who may shrink it.** Defect-grown and
-lane-lowerable: zero slack is the ratchet working. Ordinary-work-grown: slack from the GROWTH RATE,
-`say_compose_bound` at **489 against 480**. Protected-tissue-grown: a countdown -- `dated_path`
-**105 against 85** over references in dated logs nobody may repair.
-**MEASURED, free:** **81 ceilings, 55 scans, all compared**; **counted rather than gated** stands
-**66 times across 50 files**. The move is seated; when it is OWED is unwritten.
-**COLD 242/2; HOT 243/1; re-HOT 244/1 `tree_moved=no`**, the one red `dated_path`'s `%626` out of
-`standing_equipment`. **The first hot pass bit the recovered scan itself:** `instrument_refusal`
-found `git ls-files ... || true` discarding a failure that would read a broken git as every citation
-absent; repaired to a named `listing_refused`. **A lap dying before its hot close ships an unheard
-red.**
-**YOURS:** may a law page cite a guard the roster reaches nowhere? And the law -- **gate what a hand
-may lower, count the rest** -- with its form: a ceiling declaring its GROWER.
+**GRASS -- A PAGE SAID THE FRONT DOOR NAMED IT, AND THE FRONT DOOR HAD STOPPED.**
+Elder [shelved](archive/20260910-234454_itinerary-landed-accounts.md).
+**REDS FIRST, BOTH MINE.** `prose_register` read `door_setting_undeclared`: my `84a0ebc26`
+reverted PETRICHOR's landed README Style line, its stash based two accounts back and carrying it
+along. `shim_reason` read **949/948** -- the 949th my own `under` binding, asserted on
+and reporting nowhere. Both repaired: **18/0/1**, **948**.
+**AETHER HEARS** (row 0, least-read today at 16). **FOUND, STANDING EIGHTEEN DAYS:** the Lindy foundation has said since `20260811` that the root README
+"leans on this foundation in its opening; this foundation links back." `7191a938b` rewrote README on
+`20260823` and the word left it; `follow-our-compass.md` carried the same promise. **Two of the
+room's three oldest orientation pages named the front door, and it named neither.**
+`foundations_link` reads the links a page WRITES, `foundations_reach` whether the ROOM's index names
+it -- neither reads the ROOT door, and no reading treats a sentence as a promise.
+**MECHANISM:** `**Front door:**` becomes a declared key, as `**Style:**` and `**Room:**` are.
+`front_door_claim_scan.sh` reads it in `foundations`, `context` and `docs`, resolves each link
+against the page's own directory, and walls at **zero** every door failing to name the claimant --
+by BASENAME, unique under the one-clock law. Causes: `no_target`, `absent`, `no_backlink`. **Opting
+in IS the filter.** README names both foundations now, so the claims are TRUE.
+**PROVEN:** control **15 legs, fail=0**, three mutations bitten; A 90 / B 83 / B 81. **COLD 251
+run, 245 green, 3 red, 3 gated, `tree_moved=no`** -- held still for the pass.
+**YOURS:** the population is **two** and opt-in, so a page that ought to declare a door and
+declines is invisible here. Whether a reading may infer the claim from prose is yours.
 
 **INCENSE -- THREE PAIRS DRIFTED APART WHILE THE METER WATCHING THEM WAS GATED SHUT.**
 Elder [shelved](archive/20260910-202551_itinerary-landed-accounts.md).
