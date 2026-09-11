@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260911.105415` | [The option that said GREEN](20260911/20260911-105415_the-option-that-said-green.kyri) | The elder binary bound beside a held port and said GREEN. |
 | `20260911.104518` | [The room that owned the claim](20260911/20260911-104518_the-room-that-never-made-the-claim.kyri) | two front doors never named a room they hold; a key reads them |
+| `20260911.104047` | [The roster that named one instrument](20260911/20260911-104047_the-roster-that-named-one-instrument.kyri) | one instrument named, a second had grown |
 | `20260911.094628` | [Beaten to the repair](20260911/20260911-094628_beaten-to-the-repair.kyri) | ceiling 157 -> 154; a flap that does not reproduce alone |
 | `20260911.092124` | [The gate that inherited its bound](20260911/20260911-092124_the-gate-that-inherited-its-bound.kyri) | a law-room gate read tools/ alone; 128 room paths and two stale |
 | `20260911.091453` | [The door that promised a guard](20260911/20260911-091453_the-door-that-promised-a-guard.kyri) | a room's door named a guard the roster seated nowhere |

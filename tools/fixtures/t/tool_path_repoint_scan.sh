@@ -120,10 +120,22 @@ LIVING_DATED_ROOMS="foundations"
 # stands, so it reddened on the next roster run.
 #
 # So the question the two lists answer is the same, and the answer is different, because the
-# references are different. Only `tool_path_*` cites a `tools/` path that must stay stale, since
-# tools/t/tool_path_witness.rish proves recovery and needs something to recover. That is REDS %121
-# read correctly rather than borrowed: exclude the instrument for THIS meter, not for another's.
-excluded_names="tool_path_*"
+# references are different. A file joins this list when it cites a `tools/` path that must stay
+# stale, since a meter over stale paths needs something stale to find. That is REDS %121 read
+# correctly rather than borrowed: exclude the instrument for THIS meter, not for another's.
+#
+# THE LIST SAID `only tool_path_*` AND WENT SILENT AS THE TREE GREW. `docs_command_path_*` is a
+# newer meter over printed command paths, and its own explanation quotes two elder flat paths --
+# `tools/tame_style_check.rish` and `tools/kumara_tilak_witness.rish` -- to teach a reader what a
+# moved reference looks like. Repointing those quotations makes each sentence claim that a log
+# from June named a path that stood nowhere in June, which is a lie written to tidy a meter. Three
+# such references stood, and this guard sits on the cadence clock, so nothing heard them until a
+# lap turned that clock by hand on `20260911`.
+#
+# A WHOLESALE EXCLUSION HIDES AN ORDINARY REFERENCE BESIDE THE QUOTED ONE, which the paragraph
+# above already records happening once. So the roster is printed every run, and so is the count of
+# flat references standing inside the excluded files -- the number a reader watches for growth.
+excluded_names="tool_path_* docs_command_path_*"
 excluded_paths=""
 
 living_rooms_re=$(printf '%s' "$LIVING_DATED_ROOMS" | tr ' ' '|')
@@ -147,10 +159,43 @@ git ls-files 2>/dev/null \
       # `git ls-files` reads the INDEX, which lags the working tree the moment a move is made and
       # not yet staged. A path the index still names and the disk no longer has is skipped rather
       # than silently dropped by a later grep, so the considered count says what was actually read.
-      [ "$skip" = no ] && [ -f "$f" ] && printf '%s\n' "$f"
+      if [ "$skip" = yes ]; then
+        [ -f "$f" ] && printf '%s\n' "$f" >> "$work/excluded.txt"
+      else
+        [ -f "$f" ] && printf '%s\n' "$f"
+      fi
     done > "$work/living.txt"
 
 echo "living_files_considered=$(wc -l < "$work/living.txt" | tr -d ' ')"
+
+# THE EXCLUSION, NAMED AND COUNTED. A file this meter declines to read is a file whose stale
+# references nobody counts, and an uncounted blind spot is a floor with no number under it
+# (REDS %466). The roster is printed, every excluded file is named, and the flat references inside
+# them are counted against the same map the rewrite uses -- so a quotation that must stay stale
+# and an ordinary reference that must move are at least visible as one rising number.
+#
+# THE COUNT IS A SEPARATE, SIMPLER READING than the awk below, and deliberately so: it asks only
+# whether a flat `<room>/<basename>` names a file the map can move, with none of the prefix
+# arithmetic the rewrite needs. It is therefore an upper bound on what an apply would touch here,
+# which is the safe direction for a number a reader watches.
+[ -f "$work/excluded.txt" ] || : > "$work/excluded.txt"
+echo "excluded_names=$excluded_names"
+echo "excluded_files=$(wc -l < "$work/excluded.txt" | tr -d ' ')"
+sort -u "$work/excluded.txt" | sed 's/^/excluded_file: /'
+cut -f1 "$work/map.tsv" > "$work/mapkeys.txt"
+excluded_refs=0
+if [ -s "$work/excluded.txt" ]; then
+  excluded_refs=$(
+    while IFS= read -r xf; do
+      # `|| true` because this file runs under `set -e` and a grep that matches nothing exits 1,
+      # which aborts the subshell mid-list. Written without it, the count read 1 where the same
+      # loop read 45 at a prompt: the first excluded file holding no flat path ended the walk, and
+      # the number looked like an answer rather than a stop.
+      grep -oE "$room/[A-Za-z0-9._-]+\.(rish|sh|rye|example|jq|awk|conf)" "$xf" 2>/dev/null || true
+    done < "$work/excluded.txt" | grep -Fxf "$work/mapkeys.txt" | wc -l | tr -d ' '
+  )
+fi
+echo "excluded_flat_references=$excluded_refs"
 
 # Narrow to files that could possibly hold a tools reference, so awk is spawned only where it
 # could do work.

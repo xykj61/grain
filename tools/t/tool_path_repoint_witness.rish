@@ -8,7 +8,7 @@
 # being proven on a tree whose right answer is known before it runs.
 #
 # WHAT IS PROVEN, all of it on a throwaway git repository built by
-# tools/fixtures/t/tool_path_repoint_control.sh, so nine behaviors are read rather than argued:
+# tools/fixtures/t/tool_path_repoint_control.sh, so eleven behaviors are read rather than argued:
 #
 #   A living file citing a flat path that folded is REPOINTED.
 #   A dated-basename file citing the very same path is LEFT BYTE-IDENTICAL -- accrete-never-break,
@@ -24,6 +24,15 @@
 #     transcript. Those are a memory of what an agent read rather than a reference anyone follows.
 #   `tool_path_*` keeps its citations, because tools/t/tool_path_witness.rish must cite a stale
 #     path to prove the resolver recovers one (REDS %121).
+#   `docs_command_path_*` keeps its citations too, and that is the second instrument name rather
+#     than a widening of the first: its own explanation quotes `tools/tame_style_check.rish` and
+#     `tools/kumara_tilak_witness.rish` to teach a reader what a moved reference looks like, and
+#     repointing a quotation makes the sentence around it false.
+#   The excluded files are NAMED and their own flat references COUNTED, so a file this meter
+#     declines to read carries a number a reader can watch rise. The pen holds an excluded file
+#     with no flat path at all, placed ahead of one that has them, because the scan runs under
+#     `set -e`: a grep matching nothing exits 1 and ends the walk, and the short count then reads
+#     as an answer.
 #   `otherproject/tools/<basename>` is left alone even though the basename is in the map, because
 #     a leading segment is cut only behind a `$` -- the one case where the segment was a shell
 #     variable rather than a directory.
@@ -46,7 +55,7 @@
 #   rishi/bin/rishi run tools/t/tool_path_repoint_witness.rish
 
 say "tool-path-repoint: Language EN -- a fold that breaks its own references costs more than the clutter it cleared, and a repointer that rewrites the wrong file costs more still. This proves which files it touches and which it leaves whole."
-say "tool-path-repoint: Style Gauge at Meter -- nine behaviors on a throwaway repository, each with its right answer known before the tool runs, plus idempotence and an honest dry reading of the field."
+say "tool-path-repoint: Style Gauge at Meter -- eleven behaviors on a throwaway repository, each with its right answer known before the tool runs, plus idempotence and an honest dry reading of the field."
 say "tool-path-repoint: Lens TAME -- safety first: the field is read in dry mode only, every claim comes from the control's own output rather than from this file's memory, and the rule that protects dated testimony is tested rather than trusted."
 
 let bin = "rishi/bin/rishi"
@@ -54,7 +63,7 @@ let control = "tools/fixtures/t/tool_path_repoint_control.sh"
 let scan = "tools/fixtures/t/tool_path_repoint_scan.sh"
 
 # ---------------------------------------------------------------------------------------------
-# PART ONE -- the nine behaviors, on a tree whose answers are known before the tool runs.
+# PART ONE -- the eleven behaviors, on a tree whose answers are known before the tool runs.
 # ---------------------------------------------------------------------------------------------
 
 let controlled = run ["sh" control]
@@ -68,11 +77,14 @@ assert controlled.out contains "untouched_already=1" else "tool-path-repoint: a 
 assert controlled.out contains "untouched_elsewhere=1" else "tool-path-repoint: a path that never moved must be left alone"
 assert controlled.out contains "untouched_untracked=1" else "tool-path-repoint: an untracked file must be left alone"
 assert controlled.out contains "untouched_instrument=1" else "tool-path-repoint: the instrument must keep its deliberately stale citation"
+assert controlled.out contains "untouched_second_instrument=1" else "tool-path-repoint: a SECOND instrument name must keep its deliberately stale citation too -- the roster said only tool_path_* for eighteen days while docs_command_path_* quoted two elder paths to teach a reader what a moved reference looks like"
+assert controlled.out contains "excluded_files_counted=3" else "tool-path-repoint: the scan must name every file it declined to read, since an exclusion nobody can see is a blind spot with no number under it"
+assert controlled.out contains "excluded_refs_counted=2" else "tool-path-repoint: the exclusion census must walk past an excluded file holding no flat path -- under set -e a grep that matches nothing ends the walk, and the count then reads as an answer rather than as a stop"
 assert controlled.out contains "untouched_foreign=1" else "tool-path-repoint: a path in another tree must be left alone even when the basename matches"
 assert controlled.out contains "repointed_varprefix=1" else "tool-path-repoint: a path reached through a shell variable must be repointed, prefix carried through"
 assert controlled.out contains "idempotent=yes" else "tool-path-repoint: a second apply must change nothing at all"
 assert controlled.out contains "verdict=ok" else "tool-path-repoint: the control must reach its own verdict"
-say "control GREEN -- nine behaviors and idempotence, each read from a tree whose answer was known before the tool ran"
+say "control GREEN -- eleven behaviors, the exclusion census, and idempotence, each read from a tree whose answer was known before the tool ran"
 
 # ---------------------------------------------------------------------------------------------
 # PART TWO -- the field, read DRY. Nothing living is left to repoint, which is the steady state.
@@ -95,4 +107,4 @@ assert driver.ok else "tool-path-repoint: the driver must run clean in its defau
 assert driver.out contains "mode=dry" else "tool-path-repoint: the driver must default to dry, so no hand rewrites the tree by forgetting a word"
 say "driver GREEN -- the tool a hand reaches for defaults to reporting rather than to rewriting"
 
-say "tool-path-repoint: GREEN -- nine behaviors proven on a throwaway repository, dated testimony left whole while a guarded room is repointed, an untracked file and another tree's path both left alone, idempotence proven, and the field standing at zero living references left to move."
+say "tool-path-repoint: GREEN -- eleven behaviors proven on a throwaway repository, dated testimony left whole while a guarded room is repointed, an untracked file and another tree's path both left alone, idempotence proven, the exclusion roster named and its own references counted, and the field standing at zero living references left to move."
