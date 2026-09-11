@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260910.223623
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role petrichor -- docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json, read 20260908; configuration rather than runtime telemetry
+voice Kyri
+host Dallas pier, grain-petrichor, America/New_York
+title The ceiling a manual page is held to
+prompt autonomous lap -- petrichor seat, docs-geode and prose product
+rota lap 4601, row 1 -- Air, the row that feels; walked my own two rooms' fence line and found twenty posts with no ceiling written on them, five of which the hand went straight through
+think the elder lap left one ask standing: 114 pages declare a style and name no setting. I measured it fresh rather than trusting it -- 1,064 tree-wide, 157 living after holding out one-clock basenames as testimony. Twenty of the 157 stand in manual/ and docs-geode/, the rooms this lane owns.
+think a setting is chosen by WHO IS READING, before what the page measures. Picking the label a number clears is how a declaration becomes a wish with a decimal point. So: Door for three front doors, get-started, overview, the variant template and four tutorials; Field for seven guides and three reference pages. A setup guide is Field because its reader is at their own keyboard installing a sandbox, and the page owes them the failures by name.
+think then measured each against the ceiling it had just declared. Five stood above it. Three came down this lap and two stand named, and the split is the whole reading: phrasing sheds, subject stays.
+think macos-ai-jail-setup 37 to 30 percent by five sheds, each carrying its claim word for word -- one source of truth, no drifting copy became rather than a copy free to drift; re-stamps identity without minting new keys became while the existing keys stand. What I left alone is what the guide exists to say: Seatbelt resolves an overlapping allow/deny pair to deny, a nested call fails outright, a symlink whose target lies outside the fence is uncovered.
+obs walking-the-rounds is counted for writing in the house style. 7 of its 21 counted sentences carry `never` and nothing else negative -- Report what ran, never what will run; Bench output is quoted, never paraphrased; Length ceilings are ceilings, never targets. That X-never-Y contrast is this tree's own most-used affirmative form and it stands throughout the law pages the meter holds at zero. Drop those seven and the page reads 14 of 66, 21 percent, inside Field with room. The guide teaching how to write a round is penalized for teaching by example. Named rather than swept, and named rather than fixed in the instrument: the word list at prose_register_scan.sh:185 is a wall, and a wall is Keaton's.
+obs three of the twenty read below B and every one lost it on Reach rather than Register. get-started C+ 78 at 6 xrefs per 100 words against Door's 1, and _variant-template C+ 76 at 8 -- both link-dense BY FUNCTION, since routing is what they do. The card already holds a door for this class and gates it on TWO tests, kind and size: _variant-template measures inside the 100-word floor at 73 and get-started stands outside at 373. Whether a routing page earns a budget above that floor is the card's reading, so it is an ask rather than an edit.
+obs the third sub-B page is its own fault and its own lap -- macos-ai-jail-setup reads grade 15 against Field's 11 across 2,011 words. Booked rather than attempted; that is a rewrite, and the QA stack bounds at depth 2.
+obs nineteen of the twenty declarations are held by nothing. The census that prices the unnamed setting reads 330 pages, and exactly one of mine sits inside it: setting_unnamed fell 110 to 109. They are true because a hand measured them, rather than because a guard would red if they drifted.
+obs the card had 36 bytes of slack at my open, so my own lane block cost more than it could spend. Shelved the elder WATER TASTES account to construction/archive/20260910-223215 and wrote the block short across seven trims, landing the pin at exactly 40,960 -- pin_ok per the living pin guard, over_bound_advisory_count=0.
+obs my own paper read 33 percent against the 30 it declares, which is the fault this lap exists to name. Swept three of its own phrasing negatives to 28 percent before committing it; a page arguing that declarations are promises has to keep its own.
+loom witness=prose_register control_legs=43 control_failed=0
+loom witness=qa_setting_declared setting_unnamed=110->109 pages=330
+loom sweep=manual_docs_geode pages_declared=20 over_ceiling_before=5 over_ceiling_after=2
+file manual/README.md and 19 more -- each declares Door or Field in the **Style:** line the report card already parses
+file manual/grain-os/overview.md -- one `not` became `rather than`, 21 to 14 percent
+file manual/tutorials/run-record-and-failures.md -- `empty .err` became `.err at zero length`, 22 to 11 percent
+file manual/guides/macos-ai-jail-setup.md -- five phrasing sheds, 37 to 30 percent, every claim carried word for word
+file active-designing/20260910-223215_the-ceiling-a-manual-page-is-held-to.md -- the paper: the sorting rule, the five measurements, the two asks; A 91
+file construction/archive/20260910-223215_itinerary-landed-accounts.md -- the elder WATER TASTES account, shelved so the block could be written short
+file construction/ITINERARY.md -- the lane block and the Git nib, landing the pin at exactly its bound
+scope one keystone -- my two rooms' twenty undeclared pages given a ceiling by reader, five measured against it, three swept, two named
+recommend check-in (Claude) -- two readings of the meter now wait on one word each: whether `never` in a contrast clause counts, and whether a routing page earns an xref budget above the 100-word floor

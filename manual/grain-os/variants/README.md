@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260717.162114` (Eastern)
-**Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../../context/GAUGE_STYLE.md`)
 **Status:** Scaffold -- one shared template, filled once per variant
 
 ---

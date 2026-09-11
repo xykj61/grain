@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Version:** `20260730.145920` (EDT) - SUNN7  
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Guide for the task -- witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them  
 **Sibling:** [`SOURCE.md`](../../SOURCE.md) Step 6 - [`enclosure-editors.md`](../../context/specs/enclosure-editors.md) - [`key-cards-setup.md`](key-cards-setup.md)  
@@ -15,7 +15,7 @@ You are on macOS, and [`SOURCE.md`](../../SOURCE.md)'s Step 6 describes ai-jail.
 1. **Upstream ai-jail itself now runs on macOS.** It grew a native `sandbox-exec` backend, and it is the right tool here for what it was always for: wrapping **terminal agents and shells** (`ai-jail claude`, `ai-jail bash`). Installed and witnessed on this host, v1.13.0.
 2. **This project's own launcher jails the Cursor GUI app** -- something this launcher aims at on its own. It is a Rish script generating a Seatbelt profile and launching Cursor.app inside it, with project-local state. The research behind the approach lives in [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); the gratitude note for upstream's macOS arrival is [`gratitude/20260714-070200_ai-jail-macos-backend.md`](../../gratitude/20260714-070200_ai-jail-macos-backend.md).
 
-**The primary launcher and witness are written in Rish** -- [`tools/cu/cursor_jail_macos.rish`](../../tools/cu/cursor_jail_macos.rish) and [`tools/cu/cursor_jail_macos_witness.rish`](../../tools/cu/cursor_jail_macos_witness.rish). The witness now tests the launcher's own emitted profile (one source of truth, no drifting copy). The original bash pair, [`tools/cu/cursor-jail-macos.sh`](../../tools/cu/cursor-jail-macos.sh) and [`tools/cu/cursor_jail_macos_witness.sh`](../../tools/cu/cursor_jail_macos_witness.sh), stays as the elder -- same policy, for a host without Rishi built yet.
+**The primary launcher and witness are written in Rish** -- [`tools/cu/cursor_jail_macos.rish`](../../tools/cu/cursor_jail_macos.rish) and [`tools/cu/cursor_jail_macos_witness.rish`](../../tools/cu/cursor_jail_macos_witness.rish). The witness now tests the launcher's own emitted profile (one source of truth, rather than a copy free to drift). The original bash pair, [`tools/cu/cursor-jail-macos.sh`](../../tools/cu/cursor-jail-macos.sh) and [`tools/cu/cursor_jail_macos_witness.sh`](../../tools/cu/cursor_jail_macos_witness.sh), stays as the elder -- same policy, for a host where Rishi is yet to be built.
 
 ## What You Get, Plainly
 
@@ -83,7 +83,7 @@ rishi/bin/rishi run tools/g/generate_jail_local_keys_macos.rish
 
 This makes a fresh SSH deploy key for **GitHub** (and, today, still a historically named Codeberg-shaped second key file from the dual-forge season -- the generator refresh that retires that mint is a later door), a jail-local `known_hosts` (fetched fresh via `ssh-keyscan`, since `--harden-home` denies the real `~/.ssh/known_hosts` too -- it lives inside the same denied `~/.ssh` subpath, and without a jail-local replacement every push fails with `Host key verification failed` before it ever gets to checking your key), and a passphrase-free, signing-only GPG key -- all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`, never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). For a **GitHub-living** pier, paste the GitHub deploy key into GitHub's SSH settings; skip Codeberg while it stays retired from living push. You do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice -- a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
 
-**Git wiring is automatic.** The script itself sets `core.sshCommand` (pointing at a repo-local `.git/ssh_config_jail` -- renamed from the elder `ssh_config_urbit` on `20260828`; the file is untracked either way), naming the identity files and the jail-local `known_hosts`, plus `gpg.program` (a tiny wrapper exporting `GNUPGHOME`, per `SOURCE.md` Step 8c's own pattern), and `user.signingkey` -- nothing to configure by hand afterward. Rerunning the script is safe: it leaves existing key material alone and only refreshes the SSH comment and the repo-local config, so editing `GLOW_PROFILE.bron` and rerunning re-stamps identity without minting new keys.
+**Git wiring is automatic.** The script itself sets `core.sshCommand` (pointing at a repo-local `.git/ssh_config_jail` -- renamed from the elder `ssh_config_urbit` on `20260828`; the file is untracked either way), naming the identity files and the jail-local `known_hosts`, plus `gpg.program` (a tiny wrapper exporting `GNUPGHOME`, per `SOURCE.md` Step 8c's own pattern), and `user.signingkey` -- every value set for you, with the hand free afterward. Rerunning the script is safe: it leaves existing key material alone and only refreshes the SSH comment and the repo-local config, so editing `GLOW_PROFILE.bron` and rerunning re-stamps identity while the existing keys stand.
 
 **Prove it, from outside the jail.** `tools/cu/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable, yet only when the shell running it is not already inside a jail:
 
@@ -176,7 +176,7 @@ EOF
 git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_grain"
 ```
 
-The generator writes `.git/ssh_config_jail` now; a clone still carrying the elder `.git/ssh_config_urbit` renames it and repoints `core.sshCommand` on touch. `.git/` stays untracked, so this file and this config change stay local to this one clone with no gitignore entry needed.
+The generator writes `.git/ssh_config_jail` now; a clone still carrying the elder `.git/ssh_config_urbit` renames it and repoints `core.sshCommand` on touch. `.git/` stays untracked, so this file and this config change stay local to this one clone, and the gitignore stands as it is.
 
 **`git log --show-signature` and `gpg --list-secret-keys` can hang or fail, even though signing itself works.** Both operations try to update `~/.gnupg/trustdb.gpg`, and the jail's write fence denies that -- sometimes as a fast `Operation not permitted`, sometimes as a hang waiting on `gpg-agent`. Plain `gpg --sign` and `git commit` do not hit the same path and complete normally; every signed commit made from inside this jail proves it. Guard any signature-inspecting command with `timeout` so a trustdb stall cannot block a session:
 

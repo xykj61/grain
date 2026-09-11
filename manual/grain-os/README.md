@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260713.235900` (Pacific)
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Status:** Mixed register (Two Rooms) -- onboarding hub; Get Started names checkable Pixel/HAWM/TUBE0.5 and Rishi paths; five variants remain scaffold
 
 ---

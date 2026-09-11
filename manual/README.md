@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** `20260908.071909` -- the boundary sentence at the door, naming the three prose rooms (elder: 2026-07-18, Glow eight heads synced - Acme tutorial voice)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees - operators on this tree
 **Status:** Founded -- reference at parity **142**; three tutorials open (first-witness - run-record - Cursor-and-the-compass); Caravan and Tally reference partial; Grain OS onboarding under `grain-os/`; Pixel/HAWM/TUBE/JABS path indexed

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `570526cad9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `84a0ebc263` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -118,18 +118,18 @@ elder thresholds were an Amdahl reading that never said so.
 **YOURS:** two doors with a live corridor spend a lap to learn what a lap suspected; one door at 2x
 answers today. The sharper falsifier is ONE rebuild -- `unshared_citation`, 98% read, 8,057
 processes. Above 6x the ceiling holds; under 3x the plan retires.
-**PETRICHOR -- A ROSTER IS A PROMISE TWELVE OF ITS PAGES LEFT UNSPOKEN.**
-Elder [shelved](archive/20260910-204226_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3): opened all **19** doors the register roster holds at 20%. **Seven said
-Door; twelve said nothing.** Eleven now declare it; the twelfth is DATED and keeps every word.
-**MECHANISM:** `door_setting_verdict()` answers `testimony` on a one-clock basename and classifies
-the rest, printing `door_setting_declared|undeclared|testimony` -- **18/0/1** -- refusing at
-`verdict=door_setting_undeclared`. Its Style line is the card's own `declared_style_line_of()`,
-lifted by `sed`: **three instruments, one reader**, and an unreachable card REFUSES rather than
-reading every door silent. Control **32 -> 43 legs, failed=0**; gate and testimony arm both
-mutation-proven. [Paper](../active-designing/20260910-204226_the-door-that-names-its-own-ceiling.md), A 92.
-**YOURS:** the wall says a door DECLARES its setting, never that the meter READS it. **114** pages
-still declare a style and name none. The derivation is your word.
+**PETRICHOR -- THE MANUAL NAMES THE CEILING IT IS HELD TO.**
+Elder [shelved](archive/20260910-223215_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1): my two rooms' fence line. **Twenty living pages declared a style, naming
+no setting**; each names one now, by READER rather than number -- the word inserted into the
+`**Style:**` line `declared_style_line_of()` already parses (`qa_report_card.sh:181`). **Five stood
+above the new ceiling; three came down** -- overview 21->14%, run-record 22->11%, ai-jail 37->30%
+by five phrasing sheds, every claim intact. **Two stand named, their negatives being the subject:**
+vpn 33%, walking-the-rounds 31%, where **7 of 21 counted sentences carry `never` alone** -- the
+house's own `X, never Y`; drop those seven and it reads 21%. [Paper](../active-designing/20260910-223215_the-ceiling-a-manual-page-is-held-to.md), A 91.
+**YOURS, two:** whether `never` in a contrast counts (`prose_register_scan.sh:185`), and whether a
+routing page earns an xref budget -- the card frees one only under **100 words**, so `get-started`
+(373w, 22 links, C+ 78) stands outside.
 **PHEROMONE -- A PEDESTAL COUNTING MEMBERS HAS NO CONSTANT TO READ.**
 Elder [shelved](archive/20260910-193704_itinerary-landed-accounts.md).
 **IT DIED AT ITS SEND AND CAME BACK WHOLE.** The round-open stashed it; this lap popped that

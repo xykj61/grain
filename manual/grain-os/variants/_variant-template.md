@@ -1,7 +1,7 @@
 # Glow OS Variant -- `{{VARIANT}}`
 
 **Language:** EN
-**Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../../context/GAUGE_STYLE.md`)
 **Status:** Template -- fill `{{VARIANT}}` with one of Reya / Riyo / Trey / Triz; do not hand-edit the fills, regenerate from this template
 
 ---
