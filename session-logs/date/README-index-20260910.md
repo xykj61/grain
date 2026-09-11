@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.223623` | [The ceiling a manual page is held to](20260910/20260910-223623_the-ceiling-a-manual-page-is-held-to.kyri) | twenty manual pages name a setting; three swept, two named |
 | `20260910.222633` | [The residue has a name](20260910/20260910-222633_the-residue-has-a-name.kyri) | my own falsifier fired; the sweep retires, the residue named |
 | `20260910.214315` | [the writer asked its own question](20260910/20260910-214315_the-writer-asked-its-own-question.kyri) | the converter proven to converge; census 11 -> 12 |
+| `20260910.212830` | [the door that said SLC-1 witnesses](20260910/20260910-212830_the-door-that-said-slc-1-witnesses.kyri) | mantra's door bound ten weave guards; B 84 -> A 91 |
 | `20260910.210034` | [The refusal that named no cause](20260910/20260910-210034_the-refusal-that-named-no-cause.kyri) | shim_reason fourth shape: 7,110 bindings judged and never reported |
 | `20260910.204226` | [The door that names its own ceiling](20260910/20260910-204226_the-door-that-names-its-own-ceiling.kyri) | eleven doors name their ceiling; the dated one stays whole |
 | `20260910.203413` | [A ratchet and the hand that lowers it](20260910/20260910-203413_a-ratchet-and-the-hand-that-may-lower-it.kyri) | who grows a population decides its ceiling |
