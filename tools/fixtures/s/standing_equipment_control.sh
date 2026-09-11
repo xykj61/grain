@@ -443,6 +443,148 @@ else
   echo "name_runs_only_that_guard=no"
 fi
 
+# --- the cadence slice: a clock that turns, proven by turning it -------------------------
+# WHY THESE LEGS. `tier cadence` promised a slower clock and delivered none -- measured on this pier
+# `20260910.221225`, every one of the 74 cadence guards had never run here. The repair is a rotation
+# read off the run card, and a rotation is exactly the kind of mechanism that can look right while
+# standing still: a slice that picked the same guard every lap would pass a leg asserting it ran
+# one. So the legs below prove the ORDER and its MOVEMENT, not merely the count.
+cat > "$pen/slice.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+guard choir
+path tools/real_witness.rish
+tier cadence
+seated 20260825.000000
+guard descant
+path tools/real_witness.rish
+tier cadence
+seated 20260826.000000
+EOF
+
+run_slice() {
+  ( cd "$pen" && STANDING_ROSTER=slice.kyri STANDING_CARD=slice-card.kyri \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+# The refusals below are read from stderr and from the exit status, because a flag that does nothing
+# quietly is the exact fault this mechanism exists to end -- a silent no-op would pass any leg that
+# only read stdout.
+slice_refusal() {
+  # The status is caught with `|| st=$?` rather than read from `$?` after the fact, because `set -e`
+  # would end the subshell at the refusal itself and the echo below would never run -- which is how
+  # a refusal leg can quietly become no leg at all.
+  (
+    cd "$pen" || exit 1
+    st=0
+    STANDING_ROSTER=slice.kyri STANDING_CARD=slice-card.kyri \
+      sh "$runner" "$@" 2>&1 >/dev/null || st=$?
+    echo "status=$st"
+  )
+}
+
+rm -f "$pen/slice-card.kyri"
+out=$(run_slice)
+case "$out" in *"cadence_slice=0"*) echo "slice_default_off=yes" ;; *) echo "slice_default_off=no" ;; esac
+case "$out" in *"cadence_slice_run=0"*) echo "slice_default_takes_none=yes" ;; *) echo "slice_default_takes_none=no" ;; esac
+case "$out" in *"guards_run=1"*) echo "slice_default_lap_only=yes" ;; *) echo "slice_default_lap_only=no" ;; esac
+
+# A slice of one rides the lap pass: two guards run, and the pass is still a lap pass.
+rm -f "$pen/slice-card.kyri"
+out=$(run_slice --cadence-slice 1)
+case "$out" in *"guards_run=2"*) echo "slice_one_adds_one=yes" ;; *) echo "slice_one_adds_one=no" ;; esac
+case "$out" in *"cadence_slice_run=1"*) echo "slice_counts_its_turn=yes" ;; *) echo "slice_counts_its_turn=no" ;; esac
+case "$out" in *"tier_run=lap"*) echo "slice_stays_a_lap_pass=yes" ;; *) echo "slice_stays_a_lap_pass=no" ;; esac
+# Named out loud, with what the card knew: a reader of a cold open can say which guard was heard.
+case "$out" in *"cadence_slice_named choir last=never"*) echo "slice_names_its_pick=yes" ;; *) echo "slice_names_its_pick=no" ;; esac
+# And the row it writes carries the guard's own tier, so the next pass reads it as a cadence guard
+# that has now spoken rather than as a lap guard that appeared from nowhere.
+if grep -qE "^ran choir [0-9.]+ green cadence " "$pen/slice-card.kyri"; then
+  echo "slice_records_cadence_tier=yes"
+else
+  echo "slice_records_cadence_tier=no"
+fi
+
+# THE LEG THAT PROVES THE CLOCK MOVES. A second pass over the card the first one wrote must take the
+# OTHER cadence guard -- a rotation that re-picked `choir` would satisfy every count above.
+out=$(run_slice --cadence-slice 1)
+case "$out" in *"cadence_slice_named descant last=never"*) echo "slice_rotates=yes" ;; *) echo "slice_rotates=no" ;; esac
+if grep -q "^ran choir " "$pen/slice-card.kyri" && grep -q "^ran descant " "$pen/slice-card.kyri"; then
+  echo "slice_reaches_whole_tier=yes"
+else
+  echo "slice_reaches_whole_tier=no"
+fi
+
+# And a third pass returns to the guard whose stamp is now the older of the two, which is the same
+# rule as the first two passes rather than a special case for an exhausted queue.
+out=$(run_slice --cadence-slice 1)
+case "$out" in *"cadence_slice_named choir last=2"*) echo "slice_returns_to_oldest=yes" ;; *) echo "slice_returns_to_oldest=no" ;; esac
+
+# A NEVER-RUN GUARD SORTS AHEAD OF A DATED ONE, whatever the roster order says. The card below
+# names the FIRST cadence guard as freshly run, so roster order alone would pick it again.
+cat > "$pen/slice-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran choir 20260909.120000 green cadence 0 0
+EOF
+out=$(run_slice --cadence-slice 1)
+case "$out" in *"cadence_slice_named descant last=never"*) echo "slice_never_run_first=yes" ;; *) echo "slice_never_run_first=no" ;; esac
+
+# AND AMONG DATED ONES, THE OLDER GOES FIRST -- the half of the ordering the leg above cannot see.
+cat > "$pen/slice-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran choir 20260909.120000 green cadence 0 0
+ran descant 20260901.120000 green cadence 0 0
+EOF
+out=$(run_slice --cadence-slice 1)
+case "$out" in *"cadence_slice_named descant last=20260901.120000"*) echo "slice_oldest_first=yes" ;; *) echo "slice_oldest_first=no" ;; esac
+
+# A SLICE WIDER THAN THE TIER TAKES THE TIER, never a guard twice.
+rm -f "$pen/slice-card.kyri"
+out=$(run_slice --cadence-slice 9)
+case "$out" in *"cadence_slice_run=2"*) echo "slice_bounded_by_tier=yes" ;; *) echo "slice_bounded_by_tier=no" ;; esac
+case "$out" in *"guards_run=3"*) echo "slice_no_duplicate=yes" ;; *) echo "slice_no_duplicate=no" ;; esac
+
+# A CADENCE GUARD THIS HOST CANNOT RUN IS NEVER SPENT AS A TURN. The skip is the lap tier's own,
+# taken by the one selector both readings share.
+cat > "$pen/slice-host.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+guard choir
+path tools/real_witness.rish
+tier cadence
+host some-other-pier
+seated 20260825.000000
+guard descant
+path tools/real_witness.rish
+tier cadence
+seated 20260826.000000
+EOF
+rm -f "$pen/slice-host-card.kyri"
+out=$( ( cd "$pen" && STANDING_ROSTER=slice-host.kyri STANDING_CARD=slice-host-card.kyri \
+    sh "$runner" --cadence-slice 1 2>/dev/null ) || true )
+case "$out" in *"cadence_slice_named descant last=never"*) echo "slice_honors_host_skip=yes" ;; *) echo "slice_honors_host_skip=no" ;; esac
+
+# THE REFUSALS, each spoken. `--all` and `--tier cadence` already sing the whole choir, a guard named
+# by hand already crosses every tier, and a `--scoped` pass proves a delta rather than a rotation.
+out=$(slice_refusal --cadence-slice 1 --all)
+case "$out" in *"refused: --cadence-slice serves the lap tier"*) echo "slice_refuses_all=yes" ;; *) echo "slice_refuses_all=no" ;; esac
+case "$out" in *"status=1"*) echo "slice_refuses_all_status=yes" ;; *) echo "slice_refuses_all_status=no" ;; esac
+out=$(slice_refusal --cadence-slice 1 --tier cadence)
+case "$out" in *"refused: --cadence-slice serves the lap tier"*) echo "slice_refuses_tier=yes" ;; *) echo "slice_refuses_tier=no" ;; esac
+out=$(slice_refusal --cadence-slice 1 --scoped)
+case "$out" in *"refused: --cadence-slice with --scoped"*) echo "slice_refuses_scoped=yes" ;; *) echo "slice_refuses_scoped=no" ;; esac
+out=$(slice_refusal --cadence-slice 1 choir)
+case "$out" in *"refused: --cadence-slice with a guard name"*) echo "slice_refuses_named=yes" ;; *) echo "slice_refuses_named=no" ;; esac
+out=$(slice_refusal --cadence-slice two)
+case "$out" in *"refused: --cadence-slice wants a whole number"*) echo "slice_refuses_word=yes" ;; *) echo "slice_refuses_word=no" ;; esac
+out=$(slice_refusal --cadence-slice)
+case "$out" in *"refused: --cadence-slice wants a whole number"*) echo "slice_refuses_empty=yes" ;; *) echo "slice_refuses_empty=no" ;; esac
+
 # A guard whose path is gone answers absent rather than green, so the runner cannot pass a hole.
 cat > "$pen/gonepath.kyri" <<'EOF'
 format standing-equipment-v1

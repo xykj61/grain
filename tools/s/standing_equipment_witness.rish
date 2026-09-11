@@ -154,6 +154,36 @@ assert control.out contains "card_keeps_untouched=yes" else "standing-equipment:
 assert control.out contains "all_runs_every_tier=yes" else "standing-equipment: --all must run every tier"
 assert control.out contains "name_selects_any_tier=yes" else "standing-equipment: a guard named by hand runs whatever its tier"
 assert control.out contains "name_runs_only_that_guard=yes" else "standing-equipment: a guard named by hand runs alone"
+
+# THE CADENCE SLICE -- the clock that had never turned here. `tier cadence` promised a slower clock
+# and no tool in this tree counted the round it named, so on this pier `cadence_never_run_here` read
+# 74 of 74 on `20260910.221225`: every guard on the slower clock unheard since it was seated. The
+# rotation reads the run card, so the guards that have waited longest ride an ordinary lap pass and
+# running them is what sends them to the back of the queue. THE ORDER AND ITS MOVEMENT are what the
+# legs prove -- a slice that re-picked one guard forever would satisfy every count on its own.
+assert control.out contains "slice_default_off=yes" else "standing-equipment: a pass asked for no slice must say so, rather than leave a reader to infer it"
+assert control.out contains "slice_default_takes_none=yes" else "standing-equipment: a slice of zero must take no cadence guard"
+assert control.out contains "slice_default_lap_only=yes" else "standing-equipment: a bare pass must stay exactly what it was before the slice existed"
+assert control.out contains "slice_one_adds_one=yes" else "standing-equipment: a slice of one must run the lap tier plus one cadence guard"
+assert control.out contains "slice_counts_its_turn=yes" else "standing-equipment: a pass must report how many cadence turns it took"
+assert control.out contains "slice_stays_a_lap_pass=yes" else "standing-equipment: a slice must not change what tier the pass claims to be"
+assert control.out contains "slice_names_its_pick=yes" else "standing-equipment: a slice must name the guard it heard and when that guard last spoke"
+assert control.out contains "slice_records_cadence_tier=yes" else "standing-equipment: a sliced guard's card row must carry its own tier"
+assert control.out contains "slice_rotates=yes" else "standing-equipment: a second pass must take the OTHER cadence guard -- a clock that re-picks one guard has not turned"
+assert control.out contains "slice_reaches_whole_tier=yes" else "standing-equipment: successive slices must reach every cadence guard"
+assert control.out contains "slice_returns_to_oldest=yes" else "standing-equipment: a slice past the end of the tier must return to the guard that has waited longest"
+assert control.out contains "slice_never_run_first=yes" else "standing-equipment: a never-run guard has waited longest and must go first"
+assert control.out contains "slice_oldest_first=yes" else "standing-equipment: among guards that have run, the older stamp must go first"
+assert control.out contains "slice_bounded_by_tier=yes" else "standing-equipment: a slice wider than the tier must take the tier"
+assert control.out contains "slice_no_duplicate=yes" else "standing-equipment: a slice must never run one guard twice in a pass"
+assert control.out contains "slice_honors_host_skip=yes" else "standing-equipment: a cadence guard this host cannot run must never be spent as a turn"
+assert control.out contains "slice_refuses_all=yes" else "standing-equipment: --cadence-slice with --all must refuse -- a slice of the whole choir is a smaller number pretending to be a larger one"
+assert control.out contains "slice_refuses_all_status=yes" else "standing-equipment: a spoken refusal must also exit non-zero"
+assert control.out contains "slice_refuses_tier=yes" else "standing-equipment: --cadence-slice with --tier cadence must refuse"
+assert control.out contains "slice_refuses_scoped=yes" else "standing-equipment: --cadence-slice with --scoped must refuse -- a receipt proves a delta, never a rotation"
+assert control.out contains "slice_refuses_named=yes" else "standing-equipment: --cadence-slice with a guard name must refuse"
+assert control.out contains "slice_refuses_word=yes" else "standing-equipment: --cadence-slice must refuse a word where a number belongs"
+assert control.out contains "slice_refuses_empty=yes" else "standing-equipment: --cadence-slice with nothing after it must refuse"
 assert control.out contains "absent_path_reds_runner=yes" else "standing-equipment: a rostered path absent from disk must red the runner"
 
 # THE DETACHED LAUNCH (REDS row `20260908.113404`). Three reds in one family -- `%541` signaling a

@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260910.233719
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure seat
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_status tracked settings file, read 20260910
+evidence .claude/settings.json
+voice Kyri
+host linux pier, America/New_York
+title the cadence clock had never turned, and it was promised to a round nobody counts
+prompt autonomous lap -- bakery seat, core infrastructure, Lindy-first and crux-first
+rota lap 4600, row 0 -- Aether, the row that hears; it surfaced a whole tier of guards nobody had ever heard on this pier, printed on every cold pass and read as a backlog
+think the card's open ask named cadence_never_run_here=74; the roster holds 74 cadence guards, so the reading is the whole tier rather than a backlog within it
+think the runner's header promises the cadence lap is the fifth round, and nothing in this tree counts rounds, so no pass was ever the fifth -- the tier had become the exemption its own vocabulary forbids
+think a rotation needs no counter: the run card already records when each guard last answered, so the longest-waiting guards are the ones whose turn it is, and running them writes the stamps that move them to the back
+think one selector read twice rather than a second copy, so a slice honors host and capability exactly as a lap pass does
+obs the legs that matter prove ORDER and MOVEMENT, never the count -- a slice re-picking one guard forever satisfies every count; two mutations bite that, never-run sorting last and dropping the sort
+obs the default stays 0 and that is a choice rather than timidity: a cadence red costs every ship its receipt and forces a full pass, which is a fleet-wide change belonging to Keaton
+obs the first turn paid at once -- dated_path reads 107 lost of 85, and 100 of the 107 stand in dated testimony no lap may edit, so the ceiling is one its own lane can never reach
+loom witness=standing_equipment legs_added=23 mutations_bitten=2 control_seconds=39
+loom cadence_sung=6 wall_seconds=582 green=5 red=1
+loom roster=cold guards=251 green=246 red=2 gated=3 seconds=3432
+file tools/fixtures/s/standing_equipment_run.sh --cadence-slice N, the rotation read off the run card, and one selector serving both tiers
+file tools/fixtures/s/standing_equipment_control.sh 23 slice legs on planted rosters, 7 refusals carrying their exit status
+file tools/s/standing_equipment_witness.rish the assertions that hear those legs
+file construction/standing-equipment.kyri the tier vocabulary says the slower clock rather than the fifth round
+file construction/REDS.md the row booking the tier that never ran
+file construction/ITINERARY.md the BAKERY front block and the Standing roster clause
+file session-logs/date/README-index-20260910.md the misordered row that reddened index_row_bound
+scope one keystone -- the cadence rotation, its proof, and the docs that claimed the elder clock
+status GREEN on standing_equipment, ascii_document, reds_spine_derive, unshared_citation, pin_bound_touch, index_row_bound; dated_path stands RED at 107 of 85 and is named rather than closed, since 100 of those references are testimony
+recommend check-in (Keaton) -- whether the fleet default rises above zero, and whether a ceiling its lane cannot reach may gate at all

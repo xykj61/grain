@@ -20,7 +20,7 @@
 - **Spelling: American.** `color` never `colour`; normalize on touch.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- lap N reads row N mod 5, three documents, so the canon returns roughly daily.
-- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/s/standing_equipment_run.sh`, let it finish; run again after `git add` as `... --hot` so the green measures the tree the commit ships (%174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` claims a round's own staged paths, and the flags compose (%223). The runner digests the tree at open and close, refusing `tree_moved` when they differ (%221). **`--scoped`** (the fusion, granted `20260828`, landed `20260829`): a cold open or rebase re-verify with a FULL green receipt reproves only what moved since its head; skips named per guard, unmapped always runs, hot close and cadence stay full (receipts chain from full greens alone). **Counts come from the scan, never here.** Roster `construction/standing-equipment.kyri`. A `tier` names its clock: absent or `lap` every run, `cadence` the fifth round. A tier is a cadence rather than an exemption, and an unknown word refuses at zero.
+- **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/s/standing_equipment_run.sh`, let it finish; run again after `git add` as `... --hot` so the green measures the tree the commit ships (%174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` claims a round's own staged paths, and the flags compose (%223). The runner digests the tree at open and close, refusing `tree_moved` when they differ (%221). **`--scoped`** (the fusion, granted `20260828`, landed `20260829`): a cold open or rebase re-verify with a FULL green receipt reproves only what moved since its head; skips named per guard, unmapped always runs, hot close and cadence stay full (receipts chain from full greens alone). **Counts come from the scan, never here.** Roster `construction/standing-equipment.kyri`. A `tier` names its clock: absent or `lap` every run, `cadence` the slower one -- turned by **`--cadence-slice N`** off the run card, and it read **74 of 74 never run here** (`20260910.233112`); default 0. A tier is a cadence rather than an exemption, and an unknown word refuses at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit` and `--amend` **only** -- cherry-pick and rebase skip it, so `tools/hooks/post-commit` records the debt in `.git/` and rule one pays it next commit (%339). A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard CAN do is refuse to open the next lap over the wreckage -- `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full pass meets a dirty index without `--hot`. **A dead lap leaves no dirty index**: its leavings are stashed, and a stash is neither tree nor index, so open with `git stash list` (%321).
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/q/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions worth 25 each: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade stays lighter than a red** -- Standfast owns what is wrong, this owns what could be better. A pointer card reads `meter`, and a program is graded on its comments (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close open agent-closable rows in `construction/REDS.md` before new work; one you cannot close surfaces like a gate.
@@ -49,30 +49,28 @@
 
 ### Now -- the live front
 
-**Git nib:** `32f5efa682` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `dc73414b4c` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
+**BAKERY -- THE SLOWER CLOCK HAD NEVER TURNED, PROMISED TO A ROUND NOBODY COUNTS.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4): the concrete fact at the door before the argument.
-`%700` ends on *the cause is inference, never observation*, and one unnamed mechanism is why.
-**READ THE WITNESS:** all five bindings of
-`mantra_recall_tablecloth_query_wire.rish` assert `.ok` and mention neither `.out` nor `.err`.
-Rishi captures both and the interpreter drops them, so a fortnight of flaps left a sentence naming
-which LEG refused and nothing of why.
-**MECHANISM:** `shim_reason` grows a **fourth reading**, one awk pass -- a
-`run` binding asserted on and reported nowhere: no anchored `say var.out|err`, no
-`${var.out|err}` outside a comment. The repair interpolates into the `assert ... else` message,
-proven on metal over an exit-3 command, so the reason travels only on refusal.
-**MEASURED:** **7,110 bindings in 1,699 of 2,485** tracked `.rish` sources, **953 rostered across
-170 of 326 guards** -- a RATCHET both sides: a gate at zero reds every lap on a tree no lap can
-repair. Ceiling opens at **948**; the motivating witness moved in the same commit.
-**THE PARTITION IS PROVEN:** a binding saying its run LATE stays `late_say`, uncounted here, so
-one fault pays once. **Control 128 cases, 28 repos, 0 failing legs**, both ratchets bitten and
-lifted on one plant. **HOT CLOSE 250 run, 247 green, 0 red, 3 gated, tree_moved=no.**
-**I HELD STILL BADLY** -- edited tracked files mid-cold-pass, voiding its digest; stopped by pid.
-**YOURS:** the cadence clock still turns for nobody -- **`cadence_never_run_here=74`**, 58 when
-`%568` booked it. And whether `%700` may be BOOKED on a mechanism repaired while the flap stays
-unobserved.
+**AETHER HEARS** (row 0, N=4600): the page nobody answered.
+**READ THE FACE:** `cadence_never_run_here` read **74 of 74** on my cold open -- the WHOLE slower
+clock, unheard here since the tier was seated; it was 58 at `%568` and read as a backlog. The
+runner's header names that clock **"the fifth round"**, and nothing here counts rounds, so no pass
+was ever the fifth. `%219`'s vocabulary forbade an exemption and the mechanism was one.
+**MECHANISM:** `--cadence-slice N` rides an ordinary lap pass and appends the N cadence guards
+that have waited longest, ranked off `standing-equipment-runs.kyri` -- never-run first at a stamp of
+zeroes, then oldest, stable so the roster breaks a tie. Running them writes the stamps that move
+them to the back, so the clock is turned by what it measures. One selector serves both readings,
+so a slice honors `host` and `capability` as a lap does.
+**PROVEN:** **23 slice legs, 7 refusals with their status**; the ORDER mutation-bitten twice --
+never-run sorting last reds three legs, dropping the sort reds two.
+**MEASURED:** six of 74 sung, **582s, 5 green 1 red** -- `dated_path` **107 of 85**, 100 in testimony.
+**REDS FIRST, ONE CLOSED:** a misordered shelf row reddened `index_row_bound` and
+`standing_equipment`; `index_shelf_repair.sh` closed both.
+**COLD 251/246 green, 2 red, 3 gated, `tree_moved=no`.**
+**YOURS:** default stays **0**; a cadence red costs a ship its receipt, so raising it to 1 is
+fleet-wide, ~97s a lap on a 57-minute pass. Row `20260910.233112`.
 **PATCHOULI -- MY LANE'S DOOR NAMED TEN GUARDS AS "SLC-1 WITNESSES."**
 Elder [shelved](archive/20260910-212718_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, lap 4595, today's least-read at zero), so I listened for *the silence where

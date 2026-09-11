@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260910.234454` | [The front door that stopped naming it](20260910/20260910-234454_the-page-that-said-the-front-door-named-it.kyri) | a declared front-door claim, checked |
+| `20260910.233719` | [The clock that never turned](20260910/20260910-233719_the-clock-that-never-turned.kyri) | tier cadence read 74 of 74 never run here; a rotation off the run card |
 | `20260910.231544` | [Identical output is not a proof](20260910/20260910-231544_identical-output-is-not-a-proof.kyri) | 1,258 awk become 10; a pen found what the live-tree diff could not |
 | `20260910.225849` | [Three files, one arity](20260910/20260910-225849_three-files-one-arity.kyri) | the desk, the worker and the lowering compared at last |
 | `20260910.225152` | [The falsifier on its own threshold](20260910/20260910-225152_the-falsifier-on-its-own-threshold.kyri) | 878 git calls become 4; the wall clause declined |

@@ -15,8 +15,16 @@
 #
 #   tier lap       every roster run. What a record naming no tier means, so the roster's existing
 #                  rows keep their meaning without being edited.
-#   tier cadence   the cadence lap -- the fifth round, where the council rota closes its cycle and
-#                  the seed ships -- and any lap where a hand asks for the guard by name.
+#   tier cadence   the slower clock -- sung whole by `--all` or `--tier cadence`, and turned one
+#                  guard at a time by `--cadence-slice N` on an ordinary lap pass.
+#
+# THE CADENCE LAP WAS A ROUND NOBODY COUNTED. This header said "the fifth round" for its whole life,
+# and no tool in this tree counts rounds, so no pass was ever the fifth: measured `20260910.221225`,
+# `cadence_never_run_here` read **74 of 74** on this pier -- every guard on the slower clock had
+# never run here even once, which is REDS %219's fault exactly, wearing the vocabulary that was
+# written to forbid it. `--cadence-slice N` turns the clock off the run card instead: the N cadence
+# guards that have waited longest ride an ordinary lap pass, and running them is what moves them to
+# the back of the queue. No counter, no round number, and nothing to remember.
 #
 # A tier is a CADENCE rather than an exemption. REDS %219 was a choir standing off the roster
 # entirely, which is a refusal nobody receives; a cadence guard is still heard, on a slower clock,
@@ -97,6 +105,7 @@
 #   sh tools/fixtures/s/standing_equipment_run.sh --all           # every tier, choirs included
 #   sh tools/fixtures/s/standing_equipment_run.sh --scoped        # only what moved since the full receipt
 #   sh tools/fixtures/s/standing_equipment_run.sh --tier cadence  # one tier
+#   sh tools/fixtures/s/standing_equipment_run.sh --cadence-slice 1  # a lap pass, plus the longest-waiting cadence guard
 #   sh tools/fixtures/s/standing_equipment_run.sh banner_room     # one guard by name, whatever its tier
 #   sh tools/fixtures/s/standing_equipment_run.sh --detach        # launch it detached; the path is printed, never invented
 #
@@ -133,6 +142,15 @@ only=""
 hot=no
 probe=no
 scoped=no
+
+# THE CADENCE SLICE -- how many cadence guards this lap sings beside its lap tier. A tier is a
+# cadence rather than an exemption, and on this pier it had become the second: measured
+# `20260910.221225`, `cadence_never_run_here` read **74 of 74**, so the whole slower clock had never
+# turned once here. The runner's own header promised "the fifth round", and nothing in the tree
+# counts rounds, so no lap was ever the fifth. Rotation needs no counter: the run card already
+# records when each guard last answered, so the least-recently-run cadence guards ARE the ones whose
+# turn it is, and a never-run guard sorts first because it has waited longest of all.
+cadence_slice="${CADENCE_SLICE:-0}"
 
 detach=no
 # `--detach` is stripped BEFORE the parse loop rather than handled inside it, because the loop's
@@ -382,6 +400,13 @@ while [ $# -gt 0 ]; do
     --tier) shift
             want_tier="${1:-}"
             [ -n "$want_tier" ] || { echo "refused: --tier wants a tier name" >&2; exit 1; } ;;
+    --cadence-slice) shift
+            cadence_slice="${1:-}"
+            # A whole number, checked here rather than at the arithmetic below, because `set -e` and
+            # `$(( ))` turn a word into a shell error naming no flag.
+            case "$cadence_slice" in
+              ''|*[!0-9]*) echo "refused: --cadence-slice wants a whole number" >&2; exit 1 ;;
+            esac ;;
     --*)    echo "refused: unknown option $1" >&2; exit 1 ;;
     *)      only="$1"; want_tier=all ;;
   esac
@@ -406,6 +431,26 @@ fi
 if [ "$scoped" = yes ] && [ "$want_tier" != lap ]; then
   echo "refused: --scoped serves the lap tier only; the cadence sings the full choir" >&2
   exit 1
+fi
+
+# THE SLICE RIDES AN ORDINARY LAP PASS AND NOTHING ELSE, and each refusal below is spoken rather
+# than quietly ignored -- a flag that silently does nothing is the exemption this whole mechanism
+# exists to end. `--all` and `--tier cadence` already sing the full choir, so a slice of it is a
+# smaller number pretending to be a larger one; a guard asked for by name is already a hand's own
+# scope; and a `--scoped` pass proves a delta against a receipt, which a rotation cannot be part of.
+if [ "$cadence_slice" -gt 0 ]; then
+  if [ -n "$only" ]; then
+    echo "refused: --cadence-slice with a guard name -- a by-name run already crosses every tier" >&2
+    exit 1
+  fi
+  if [ "$want_tier" != lap ]; then
+    echo "refused: --cadence-slice serves the lap tier; --all and --tier cadence sing the whole choir" >&2
+    exit 1
+  fi
+  if [ "$scoped" = yes ]; then
+    echo "refused: --cadence-slice with --scoped -- a receipt proves a delta, never a rotation" >&2
+    exit 1
+  fi
 fi
 
 # THE DETACHED LAUNCH (REDS row `20260908.113404`). A full pass runs for twenty minutes, so a lap
@@ -451,6 +496,10 @@ if [ "$detach" = yes ]; then
   if [ "$hot" = yes ]; then set -- "$@" --hot; label=hot; fi
   if [ "$scoped" = yes ]; then set -- "$@" --scoped; label="$label-scoped"; fi
   if [ "$probe" = yes ]; then set -- "$@" --receipt-probe; label="$label-probe"; fi
+  # Rendered into the child's arguments and deliberately NOT into the label: the transcript name is
+  # what `%620` fixed in place so a reader finds today's pass, and a rotation size is not a different
+  # KIND of pass. `--detach` with a slice writes `standing-equipment-cold.txt`, as a cold open should.
+  if [ "$cadence_slice" -gt 0 ]; then set -- "$@" --cadence-slice "$cadence_slice"; fi
   if [ -n "$only" ]; then
     set -- "$@" "$only"; label="$label-$only"
   elif [ "$want_tier" = all ]; then
@@ -992,7 +1041,11 @@ for _cap in $(awk '$1 == "capability" { print $2 }' "$roster" 2>/dev/null | sort
     caps_absent="$caps_absent$_cap "
   fi
 done
-awk -v want="$want_tier" -v only="$only" -v here="$this_host" -v capsabsent="$caps_absent" '
+# ONE SELECTOR, READ TWICE. The cadence slice below asks this same roster the same question for a
+# different tier, and a second copy of these seven rules is how two readings of one roster begin --
+# the `host` and `capability` skips especially, which a slice must honor exactly as a lap pass does.
+select_rows() {
+  awk -v want="$1" -v only="$2" -v here="$this_host" -v capsabsent="$caps_absent" '
   function reset() { name = ""; path = ""; tier = ""; host = ""; cap = ""; gate = "" }
   function flush(   t) {
     if (name == "") return
@@ -1011,7 +1064,9 @@ awk -v want="$want_tier" -v only="$only" -v here="$this_host" -v capsabsent="$ca
   $1 == "capability" { if (name != "") cap = $2; next }
   $1 == "gate"       { if (name != "") gate = $2; next }
   END { flush() }
-' "$roster" > "$pen/selected"
+' "$roster"
+}
+select_rows "$want_tier" "$only" > "$pen/selected"
 grep '^SKIPHOST ' "$pen/selected" > "$pen/skiphost" || true
 grep '^SKIPCAP ' "$pen/selected" > "$pen/skipcap" || true
 grep -vE '^(SKIPHOST|SKIPCAP) ' "$pen/selected" > "$pen/todo" || true
@@ -1095,6 +1150,55 @@ if [ "$scoped" = yes ]; then
   cat "$pen/todo.scoped" > "$pen/todo"
 fi
 echo "skipped_scope=$skipped_scope"
+
+# THE CADENCE CLOCK, TURNED BY THE CARD RATHER THAN BY A COUNTER. A cadence guard was promised "the
+# fifth round"; nothing in this tree counts rounds, so the fifth never arrived and the whole tier
+# stood unheard -- 74 of 74 on this pier, measured `20260910.221225`. The run card already answers
+# the only question a rotation needs: when did this guard last speak here. So the slice takes the
+# guards that have waited longest, a never-run guard first of all, and running them writes the very
+# stamps that put a different set at the front of the queue next lap.
+#
+# BOUNDED, because the cadence tier is where the choirs live: `caravan_suite` sang 111 rungs in
+# 8m31s and `crypto_suite` 74 in 9m06s on this pier. One guard a lap adds a bounded, named cost to a
+# pass that already runs 250, and 74 guards sing through in 74 laps -- under a day at this fleet's
+# pace -- where the elder clock needed forever.
+#
+# THE SKIPS ARE THE LAP TIER'S OWN, taken by the one selector above: a cadence guard this host
+# cannot run is skipped by `host` or `capability` exactly as any other guard is, and is never
+# spent as a turn of the rotation.
+cadence_slice_run=0
+echo "cadence_slice=$cadence_slice"
+if [ "$cadence_slice" -gt 0 ]; then
+  select_rows cadence "" | grep -vE '^(SKIPHOST|SKIPCAP) ' > "$pen/cadence.pool" || true
+  : > "$pen/cadence.ranked"
+  while read -r cname cpath ctier cgate; do
+    [ -n "$cname" ] || continue
+    cstamp=""
+    if [ -f "$card" ]; then
+      cstamp=$(awk -v n="$cname" '$1 == "ran" && $2 == n { s = $3 } END { print s }' "$card")
+    fi
+    # A never-run guard sorts ahead of every dated one because it has waited longest of all, and a
+    # stamp of zeroes says that in the same field rather than in a second one a sort would ignore.
+    printf '%s %s %s %s %s\n' "${cstamp:-00000000.000000}" "$cname" "$cpath" "$ctier" "$cgate" \
+      >> "$pen/cadence.ranked"
+  done < "$pen/cadence.pool"
+  # A STABLE SORT ON THE STAMP ALONE, so the roster's own order breaks a tie among the never-run
+  # rather than the alphabet breaking it -- a rotation that reordered itself each lap would leave
+  # the same guards at the back forever.
+  sort -s -k1,1 "$pen/cadence.ranked" | head -n "$cadence_slice" > "$pen/cadence.turn"
+  while read -r cstamp cname cpath ctier cgate; do
+    [ -n "$cname" ] || continue
+    printf '%s %s %s %s\n' "$cname" "$cpath" "$ctier" "$cgate" >> "$pen/todo"
+    cadence_slice_run=$((cadence_slice_run + 1))
+    # Named, never merely counted -- the same courtesy the host and capability skips take. A reader
+    # of a cold open should be able to say which cadence guard this lap heard, and when it last spoke.
+    case "$cstamp" in
+      00000000.000000) echo "cadence_slice_named $cname last=never" ;;
+      *) echo "cadence_slice_named $cname last=$cstamp" ;;
+    esac
+  done < "$pen/cadence.turn"
+fi
+echo "cadence_slice_run=$cadence_slice_run"
 
 # THE GUARD THAT READS THE CARD RUNS WHEN THE CARD IS COMPLETE (REDS %483, second half). This
 # runner's own guard, `standing_equipment`, stands at roster position 188 of 196 -- so eight guards

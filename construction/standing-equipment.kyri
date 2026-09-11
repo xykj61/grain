@@ -29,8 +29,13 @@
 #
 #   tier lap       every roster run. What a record naming no tier means, which is why none of the
 #                  rows below had to be edited when the field arrived.
-#   tier cadence   the cadence lap -- the fifth round, where the council rota
-#                  closes its cycle -- and any lap where a hand asks for the guard by name.
+#   tier cadence   the slower clock -- sung whole by `--all` or `--tier cadence`, turned one guard
+#                  at a time by `--cadence-slice N` on an ordinary lap pass, and reached by name
+#                  on any lap where a hand asks for the guard.
+#                  (This line read "the fifth round" until `20260910.221225`, and nothing in this
+#                  tree counts rounds, so no pass was ever the fifth: `cadence_never_run_here` read
+#                  74 of 74 on this pier. The rotation reads the run card instead, so the guards
+#                  that have waited longest ride the next lap and need no round number at all.)
 #                  (The seed once shipped on this clock too; that cadence was CUT 20260826,
 #                  and custody gate %1 holds every refresh at Keatons hand.)
 #
@@ -591,8 +596,8 @@ seated 20260908.184342
 # honest is what it guards: the publish is custody gate %1, a manual act at Keaton's hand, and
 # `publish-seed.sh` runs this witness in its own flow. So no lap can take the act this protects,
 # and running it on every lap spent 15% of the pass proving a gate that already stops everyone.
-# A tier is a cadence rather than an exemption: it still runs, on the fifth round, and the run card
-# records the clock that heard it.
+# A tier is a cadence rather than an exemption: it still runs, on the rotation `--cadence-slice`
+# turns, and the run card records the clock that heard it.
 guard sow
 path tools/s/sow_witness.rish
 tier cadence
@@ -1438,7 +1443,7 @@ seated 20260828.213503
 # the 2s each of its three pure siblings above. The elder note in this room read 151s; a witness
 # timed under a lap's own load reads high, and the number a row carries should be measured by the
 # lap that writes it. Either reading is two orders above the siblings, which is what `cadence`
-# answers -- it sings on the fifth round rather than every lap.
+# answers -- it sings on the rotation's turn rather than every lap.
 
 guard comlink_topology
 path tools/co/comlink_topology_witness.rish
@@ -2476,7 +2481,7 @@ path tools/m/module_room_reach_witness.rish
 tier lap
 seated 20260905.225236
 
-# The Realidream surface built ON Mantra, at `cadence` -- the fifth round. These prove an editor
+# The Realidream surface built ON Mantra, at `cadence` -- the slower clock. These prove an editor
 # and a browser rather than the module's own contracts, so they answer on the slower clock. A
 # cadence is a clock, never an exemption. Surface cost, measured: 23s.
 
