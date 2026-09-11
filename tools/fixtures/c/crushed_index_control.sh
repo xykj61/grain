@@ -42,6 +42,13 @@
 #   29-33.  A page spelling the count a GENERATED index derives is counted; making the two agree
 #           clears it, naming the scale without an integer stays free, and a count spelled about a
 #           typed index counts zero. The generator proves its own page and nothing beside it.
+#   34-38.  A count spelled in a declared index's own TITLE is counted and refuses the tree; taking
+#           it out of the name clears it; a number at a title's END walks free, since that is an
+#           identifier rather than a census; and the same title on an UNDECLARED page counts zero.
+#           The planted count is CORRECT on the day it is written -- two members, `two pages` -- and
+#           is still expected to refuse, because the fault is the form rather than the value. A
+#           value check would pass that plant right up until a third page landed, which is the whole
+#           of what this reading exists to prevent.
 #   24, 25. THE DEEP WALK IS BOUNDED at `max_deep_members`, proven from both sides at a distance of
 #           one file: a room standing exactly at 256 walks free with all 256 counted, and one page
 #           past it is refused by name. Every planted page carries a row, so `index_unlisted` cannot
@@ -322,6 +329,40 @@ check "naming the scale without an integer counts zero" "$(read_of "$d" generate
 ( cd "$d" && printf '\nThe [shelf index](README.md) lists 9 pages.\n' > shelf/aside.md \
   && git add -A && git commit -qm 'pen: a count spelled about a typed index' ) >/dev/null 2>&1
 check "a count spelled about a typed index counts zero" "$(read_of "$d" generated_count_disagrees)" "0"
+
+# --- 34-38. A COUNT SPELLED IN A DECLARED INDEX'S OWN TITLE ---------------------------------------
+# A title is a NAME, and a total inside a name stays at whatever it was the day somebody typed it.
+# This shelf met that fault three times in prose and repaired each by moving the count into a table;
+# the fourth stood in a title, which none of the three repairs had read. The FORM is refused rather
+# than the value, so the leg below plants a count that is CORRECT on the day it is written -- two
+# members, `two pages` -- and still expects a refusal. A value check would pass that plant, and pass
+# it right up until the day a third page landed, which is the whole fault.
+d=$(build titlecount)
+( cd "$d" && sed_inplace '1s/.*/# The shelf index -- two pages stand/' shelf/README.md \
+  && git add -A && git commit -qm 'pen: a count in the title' ) >/dev/null 2>&1
+check "a count spelled in a declared index title is counted" "$(read_of "$d" title_count_claimed)" "1"
+check "the count in the title refuses the tree" "$(read_of "$d" verdict)" "index_disagrees"
+
+# Taking the count out of the name clears it, and nothing else about the page moves -- so the
+# reading is the title rather than the room.
+( cd "$d" && sed_inplace '1s/.*/# The shelf index -- the bar a page has to clear/' shelf/README.md \
+  && git add -A && git commit -qm 'pen: the count leaves the title' ) >/dev/null 2>&1
+check "taking the count out of the title clears it" "$(read_of "$d" title_count_claimed)" "0"
+
+# A NUMBER AT A TITLE'S END is an identifier rather than a census -- `Kyri 6` names a thing, and
+# names no quantity of anything. The reading wants a number followed by a word, so this walks free.
+( cd "$d" && sed_inplace '1s/.*/# The shelf index 6/' shelf/README.md \
+  && git add -A && git commit -qm 'pen: a trailing number is an identifier' ) >/dev/null 2>&1
+check "a number at a title's end counts zero" "$(read_of "$d" title_count_claimed)" "0"
+
+# AND THE READING REACHES DECLARED INDEXES ONLY. A page that never promised to tell the truth about
+# a room owes its name no derived count, so the same title on an undeclared page walks free. This is
+# the same opt-in every other reading here keeps, proven where it matters most: the refusal is about
+# a promise the page made, never about English.
+d=$(build titleundeclared)
+( cd "$d" && printf '# An aside -- two pages stand\n\nnothing is declared here.\n' > shelf/aside.md \
+  && git add -A && git commit -qm 'pen: a count in an undeclared title' ) >/dev/null 2>&1
+check "a count in an undeclared page's title counts zero" "$(read_of "$d" title_count_claimed)" "0"
 
 # --- 16. AN EMPTY CORPUS REFUSES ------------------------------------------------------------------
 d=$pen/empty
