@@ -71,6 +71,12 @@ sh "$root/tools/fixtures/d/dated_path_scan.sh"
 # worktree and is not pruned, so the census counts it. Without this the reading of case two could
 # not be told from a walker that never descends into any subdirectory at all.
 cp -R room plain
+# STAGED, because the citing corpus is the tracked tree from `20260911` and this leg is about
+# WORKTREE against ORDINARY DIRECTORY rather than about tracked against untracked. Left untracked
+# the copy would leave the corpus for the newer reason and this leg would read 2, proving the new
+# filter twice and the worktree exclusion not at all. Case five below is where tracked parts from
+# untracked, on its own pen, from both sides.
+git add -A plain
 echo "=== case three: an ordinary copy, which the census must count"
 sh "$root/tools/fixtures/d/dated_path_scan.sh"
 
@@ -129,3 +135,42 @@ echo "=== case four: a declared absence, and the two bounds on it"
 sh "$root/tools/fixtures/d/dated_path_scan.sh"
 cd "$work"
 rm -rf "$work4"
+
+# CASE FIVE, added `20260911`: THE CITING CORPUS IS THE TRACKED TREE. The walker is `grep -r .`, so
+# every untracked room walks in with the field -- and `.lap/` is exactly that room: gitignored, one
+# per checkout, holding what a lap drafted an hour ago and let go (`.claude/rules/read-scope.md`).
+# On this pier `.lap/mine/convergence_tree_prove.sh` supplied a `gone` reading to a gate held at a
+# ceiling, so eight checkouts answered one meter differently for a reason none of them could see.
+#
+# Proven from both sides in one pen, since a filter shown only where it subtracts cannot be told
+# from a walker that never reached the file at all:
+#
+#   scratch_walk_sees   -- the recursive walk DOES reach the scratch file
+#   scratch_untracked   -- gone, with the scratch file untracked
+#   scratch_tracked     -- gone, after `git add` on that same file and nothing else
+#
+# The third leg is the one that keeps this honest. A lap's own new page must rejoin the corpus the
+# moment it is staged, because `git ls-files` reads the INDEX, and the hot roster pass every send
+# runs reads the tree after `git add`. A filter keyed on the commit rather than the index would
+# hide a page's broken links for exactly as long as the lap that wrote them was still open.
+work5="$(mktemp -d)"
+mkdir -p "$work5/room" "$work5/.lap/mine"
+: > "$work5/room/20260101-000000_real.md"
+printf 'cites room/20260101-000000_real.md and room/20260101-000000_ghost.md\n' \
+  > "$work5/room/citer.md"
+printf 'scratch cites room/20260101-000000_scratch-ghost.md\n' \
+  > "$work5/.lap/mine/draft.md"
+cd "$work5"
+git init -q
+git config user.email pen@example.invalid
+git config user.name Pen
+git config commit.gpgsign false
+printf '/.lap/\n' > .gitignore
+git add -A
+echo "=== case five: an untracked scratch room, outside the corpus and back inside it"
+echo "scratch_walk_sees=$(grep -rIoE '20260101-000000_scratch-ghost\.md' .lap 2>/dev/null | wc -l | tr -d ' ')"
+echo "scratch_untracked=$(sh "$root/tools/fixtures/d/dated_path_scan.sh" | sed -n "s/^broken_gone=//p")"
+git add -f .lap/mine/draft.md
+echo "scratch_tracked=$(sh "$root/tools/fixtures/d/dated_path_scan.sh" | sed -n "s/^broken_gone=//p")"
+cd "$work"
+rm -rf "$work5"

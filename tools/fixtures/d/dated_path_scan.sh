@@ -210,6 +210,23 @@ for _rd in $(dp_readmit_dirs); do
 done
 set +f
 
+# THE CITING CORPUS IS THE TRACKED TREE, and until `20260911.060000` only the existence oracle was.
+# `grep -r .` walks the filesystem, so every untracked room walks in with it -- and `.lap/`, the
+# per-ship scratch room seated by `.claude/rules/read-scope.md`, is exactly that: gitignored, one
+# per checkout, holding whatever a lap drafted an hour ago and let go. Measured on this pier,
+# `.lap/mine/convergence_tree_prove.sh` contributed a `gone` reading to `refs_lost`, a gate held at
+# a ceiling -- so eight checkouts answered this meter differently for a reason none of them shared,
+# and a lap could red the fleet's gate with a file no peer can see. That is the fault the worktree
+# pass below already names in its own words, *a meter whose reading depends on untracked scratch is
+# measuring the bench*, and it reached worktrees alone. The oracle and the corpus read one list now.
+# A lap's own new page rejoins the moment it is staged, since `git ls-files` reads the INDEX -- which
+# is before the hot roster pass every send runs, so a page is measured on the lap that writes it.
+awk '
+  NR == FNR { tracked[$0] = 1; next }
+  { p = $0; sub(/:.*/, "", p); if (p in tracked) print }
+' "$work/all.txt" "$work/pairs.txt" > "$work/pairs.tracked"
+mv "$work/pairs.tracked" "$work/pairs.txt"
+
 # EVERY IN-ROOT WORKTREE, filtered one step later for the same reason -- grep matches a directory
 # by NAME and a worktree is known by its PATH. A worktree is a second checkout of this same
 # repository, so counting it reads a photograph of the field as the field, and its commit is not

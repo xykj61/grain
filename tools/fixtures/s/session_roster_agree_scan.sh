@@ -15,8 +15,8 @@
 # by counting stays true as the work grows. Both pins are readable by a person, so both keep their
 # numbers -- and this scan holds the two of them to the one reading the shelves give.
 #
-#   sh tools/fixtures/s/session_roster_agree_scan.sh          # counts
-#   sh tools/fixtures/s/session_roster_agree_scan.sh list     # one line per disagreement
+#   sh tools/fixtures/s/session_roster_agree_scan.sh          # counts, and on a refusal the rows behind it
+#   sh tools/fixtures/s/session_roster_agree_scan.sh list     # every reading, gated and reported alike
 #   SESSION_ROSTER_ROOT=<dir> sh tools/fixtures/s/session_roster_agree_scan.sh
 #
 # WHAT A ROW IS, on either side of the reading. A shelf row is a line opening with a one-clock stamp
@@ -153,10 +153,39 @@ while read -r roster key count; do
   printf 'phantom\t%s\t%s names it at %s; no shelf file\n' "$key" "$roster" "$count" >> "$work/report.txt"
 done < "$work/claims.txt"
 
-if [ "$MODE" = list ]; then
-  head -"$MAX_REPORT" "$work/report.txt" | while IFS="$(printf '\t')" read -r kind key detail; do
+# WHAT REFUSED, NAMED. `list` prints every reading; a plain `count` run -- the one every lap makes,
+# through the witness, which has never asked for anything else -- printed totals alone. So a fleet
+# pass reading `stale=3` named no day, and a hand had to know a second spelling existed to find out
+# which three. A guard that refuses without naming what refused spends the next reader's ten
+# minutes, and it spends them on eight ships. So a count run about to read `drift` prints the rows
+# behind it, and the GATED kinds only: `open_stale` is a duty the next day-close pays, and a
+# one-sided shelf at its ceiling is an honest reading, so neither of those is what refused.
+#
+# ONE PREDICATE, read twice. `gated_drift` is what the verdict below is spelled from as well, so
+# the rows a refusal names and the refusal itself can never disagree -- two conditions that must
+# always agree are one condition wearing two spellings.
+gated_drift=no
+if [ "$disagree" -ne 0 ] || [ "$stale" -ne 0 ] || [ "$uncounted" -ne 0 ] || [ "$phantom" -ne 0 ] \
+   || [ "$one_sided" -gt "$ONE_SIDED_CEILING" ]; then
+  gated_drift=yes
+fi
+
+print_report() {
+  head -"$MAX_REPORT" | while IFS="$(printf '\t')" read -r kind key detail; do
     printf '%s: %s -- %s\n' "$kind" "$key" "$detail"
   done
+}
+
+if [ "$MODE" = list ]; then
+  print_report < "$work/report.txt"
+elif [ "$gated_drift" = yes ]; then
+  skip_one_sided=yes
+  [ "$one_sided" -gt "$ONE_SIDED_CEILING" ] && skip_one_sided=no
+  awk -F"$(printf '\t')" -v skip="$skip_one_sided" '
+    $1 == "open_stale" { next }
+    $1 == "one_sided" && skip == "yes" { next }
+    { print }
+  ' "$work/report.txt" | print_report
 fi
 
 shelves=$(wc -l < "$work/keys.txt" | tr -d ' ')
@@ -175,8 +204,9 @@ echo "open_stale=$open_stale"
 echo "one_sided=$one_sided"
 echo "one_sided_ceiling=$ONE_SIDED_CEILING"
 if [ "$one_sided" -le "$ONE_SIDED_CEILING" ]; then echo "one_sided_ok=yes"; else echo "one_sided_ok=no"; fi
-if [ "$disagree" -eq 0 ] && [ "$stale" -eq 0 ] && [ "$uncounted" -eq 0 ] && [ "$phantom" -eq 0 ] \
-   && [ "$one_sided" -le "$ONE_SIDED_CEILING" ]; then
+# Spelled from the one predicate the naming above reads, so the rows and the verdict agree by
+# construction rather than by two conditions being kept in step by hand.
+if [ "$gated_drift" = no ]; then
   echo "verdict=ok"
 else
   echo "verdict=drift"
