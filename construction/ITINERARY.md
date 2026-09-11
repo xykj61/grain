@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `df48ea58e1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `848683d03c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -71,32 +71,31 @@ is asked in its own scan, never by a lap.
 **THIRD:** `session_roster_agree` named no day on the only mode its witness runs. It prints the
 gated rows on a refusal now, one predicate spelling naming and verdict. **29 -> 41** legs. No row
 booked: REDS held **15 bytes** when I read it.
-**PATCHOULI -- THE TWO COMMANDS THAT ONLY READ WERE THE TWO THAT CREATED A REPOSITORY.**
-Elder [shelved](archive/20260911-053330_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, hand-advanced), whose cardinal seat asks *would running it again change
-anything more?*
-**THE LANE'S CRUX WAS ONE SEAM SHORT.** `Weave.annotate` has read two weaves side by side since the
-merge landed, and every guard over it called it from Rye. The CLI offered `status`, which answers HOW
-MANY lines moved. **The showing the module was named for stopped at the library's edge.**
-**LANDED:** `mantra annotate <file>`. The stored weave is the left side, a second load carrying the
-working file's edit is the right, and each line comes back marked two spaces, `+` or `-` from the
-same parities the merge reads. Notes, base and work arrive in place order, so ONE walk finds
-every text. Printing is bounded, the remainder named rather than dropped.
-**THE TASTE CAUGHT A RED, AND NOT THE NEW COMMAND'S (`20260911.053330`).** My own refusal leg expected exit 1
-for a directory holding no store and read **exit 0, with a `.mantra/` where none had been**.
-`Store.open` CREATES -- right for `init` and `add`, and every reading opened through it, so
-`mantra status b.txt` in a mistyped directory made a repository, called the file added, and left it
-behind. `open_for_reading` probes with `openDir` first; `annotate`, `status` and `log` walk through
-it. **The infusion claim failed on its FIRST run.**
-**PROVEN, thin edge beside the happy zone:** 15 scan readings over the built binary in a pen, and
-**four control phases each biting their own leg** -- sides swapped tells it backwards, a blanked
-mark leaves the count standing, the skip removed shows a line deleted a commit ago. A fifth plant
-taught its own: deleting the skip would not COMPILE, and a phase that fails to build proves the
-compiler.
-**GREEN:** the new guard, five sibling CLI witnesses, tame and width. Cold **253/251/0**.
-Door A/95, main A/96.
-**YOURS:** `mantra status` has made a repository in every directory it was mistyped into since the
-CLI was born, and nothing in the tree can say where those `.mantra/` stand.
+**PATCHOULI -- THE FLAP WAS A PORT THE WHOLE PIER WAS SHARING.**
+Elder [shelved](archive/20260911-075323_itinerary-landed-accounts.md).
+**%700 ENDED ON *the cause is inference, never observation***, naming two repairs. I built the
+first; it refuted the second.
+**LANDED:** `mantra_query_wire_flap`, a counter running one guard N times over one tree, reporting
+`green`, `red`, `flap`, and each red's own refusal sentence. Load is observed, never made.
+**MEASURED, 24 runs, one digest: 18 green, 6 red, `flap=yes`**, each red at load 17-19.
+**THE REDS NAMED ANOTHER SUBJECT:** `RecvFailed`, `BadKind`, `reached unreachable code` -- a
+**receive path**, never a build; first harvest of `20260910.203444`.
+**OBSERVED:** two delivery selftests started together, one GREEN and one `RecvFailed`, first try.
+**MECHANISM:** `client_port 38490` / `host_port 38491` are constants and `open_socket` sets
+`SO_REUSEADDR`, so a second binder succeeds where a refusal would stand. A port is **machine-wide**:
+eight trees hold one pair, and the kernel gives each datagram to one contender.
+**THE ASSUMPTION WAS WRITTEN DOWN:** `comlink/README.md`'s Port Map closes with *Comlink's laps
+never run concurrently against the same address* -- true for one tree, false on a pier of eight, so
+it rightly records **38490/38491 twice**, both rostered. **Renumbering repairs nothing.**
+**PROVEN:** 23 legs on three stubs, **two mutations bitten**, green when lifted. **COLD 252/256. HOT
+reds `shim_reason`** -- its `late_say` leg was BAKERY's, closed on the rebase, and `unsaid_rostered`
+reads **937/936** after, with all six of my asserts naming their target -- **and `stash_record`**
+(`%636`: my round-open stashed a prior lap's unsent log at `07:21:45`, which the cold pass read
+green). [Paper](../active-designing/20260911-074907_the-flap-that-shared-a-port.md) **A 92**.
+**YOURS, three doors:** a pid-keyed offset, a bind-to-zero exchange, or dropping `SO_REUSEADDR` for
+one honest `BindFailed` -- cheapest, and it repairs the diagnosis alone.
+**ALSO YOURS, from the shelf:** `mantra status` made a repository in every directory it was mistyped
+into; nothing can say where.
 **DIFFUSER -- A MUTATION THAT DID NOT BITE, AND THE COMMENT THAT CLAIMED IT WOULD.**
 
 Elder [shelved](archive/20260910-230908_itinerary-landed-accounts.md).
