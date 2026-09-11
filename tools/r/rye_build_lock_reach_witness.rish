@@ -1,0 +1,74 @@
+# tools/r/rye_build_lock_reach_witness.rish -- the build lock is scoped to a working directory and
+# the shadows it guards are scoped to the tree, so this is where the two are held together.
+#
+#   rishi/bin/rishi run tools/r/rye_build_lock_reach_witness.rish
+#
+# WHAT THIS GUARDS. `rye build` and `rye run` bridge a `.rye` root and every local `.rye` module it
+# imports to adjacent `.zig` shadow files, hand those to the toolchain, and delete them on the way
+# out. Two builds staging one shadow would delete each other's files mid-compile, which is the race
+# REDS %281 booked, and `rye/src/main.rye` answered it on `20260827.023156` with one lock held from
+# the first shadow write to the last delete, cache-hit path included.
+#
+# WHERE THE TWO SCOPES PART, read off the source rather than assumed. The lock directory is
+# `.rye-build.lock` opened against `std.Io.Dir.cwd()`, so its scope is THE CALLER'S WORKING
+# DIRECTORY. A shadow's path is its source's path with `.rye` traded for `.zig`, so its scope is
+# THE TREE. Two callers standing in two directories take two locks over one namespace and neither
+# waits for the other -- a boundary drawn on one axis over a hazard that lives on another.
+#
+# WHY IT READS ZERO TODAY, AND WHAT HOLDS THAT. Two working directories reach this tree's builds:
+# the repository root and `glow/.cache`, the second used by two Glow lowering witnesses whose
+# closures stay inside that directory. Their shadow sets do not intersect -- so the gap is real and
+# unexploited, held by a coincidence of paths rather than by the lock. That coincidence is exactly
+# what a guard is for: it is free while it holds and it says so the day it stops.
+#
+# WHAT A SHARED SHADOW UNDER ONE SCOPE MEANS, so the green is not read wider than it is. 907 of this
+# tree's 1,696 shadow paths are claimed by two or more build roots, and every one of those is SAFE:
+# one lock stands over them, which is the whole reason the lock exists. `shared_paths` is reported
+# for that reason and gated at nothing. The gate is `cross_scope_collisions` alone.
+#
+# WHY `tier lap`. One `git ls-files` over `tools/`, then an awk walk of 1,314 import closures --
+# about a second, measured `20260911`. The fault it catches is written by ordinary work: a witness
+# that reaches for `cd <dir> && rye build ...` to shorten a path opens a second lock scope in the
+# line it was typed, and nothing else in the tree would say so.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked sources and a pen.
+
+say "rye-build-lock-reach: Language EN -- two locks may stand over one tree only while their shadows never meet."
+say "rye-build-lock-reach: Style Gauge, Meter -- the shared-under-one-lock count is reported, the cross-scope count is the gate."
+say "rye-build-lock-reach: Lens TAME -- safety first: the refusal is proven in a pen, since the field reads zero."
+
+# 1 -- the pen, which builds real repositories and shows the refusal from the failing side. A gate
+# proven only in the passing direction cannot be told from a bypass, so the cross-scope case is
+# planted, read, and then lifted back to green inside one pen.
+let control = run ["sh" "tools/fixtures/r/rye_build_lock_reach_control.sh"]
+say control.out
+say control.err
+assert control.ok else "rye-build-lock-reach: a control case read the wrong way: ${control.out} ${control.err}"
+assert control.out contains "control_fail=0" else "rye-build-lock-reach: the pen must balance before the field is believed: ${control.out}"
+assert control.out contains "control_legs=22" else "rye-build-lock-reach: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out}"
+
+# 2 -- the field. One gate at zero; the rest is reported, because a shadow shared under a single
+# lock is the lock doing its job rather than a fault.
+let field = run ["sh" "tools/fixtures/r/rye_build_lock_reach_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "rye-build-lock-reach: the field reading refused: ${field.out} ${field.err}"
+assert field.out contains "cross_scope_collisions=0" else "rye-build-lock-reach: a shadow path is claimed under two lock scopes, so two builds may delete each other's bridge -- run the scan with --explain to name it: ${field.out}"
+assert field.out contains "verdict=ok" else "rye-build-lock-reach: the field reading must close ok: ${field.out}"
+
+# The one exemption this reading takes, asserted so it can never go quiet. This scan's own control
+# writes pens with literal `cd <dir>` lines, so reading it measures the plant rather than the tree
+# (REDS %519's law, one room over) -- and the day that file is renamed without the scan being told,
+# the exclusion would silently stop applying. The name is printed by the scan and read back here.
+assert field.out contains "self_control_excluded=tools/fixtures/r/rye_build_lock_reach_control.sh" else "rye-build-lock-reach: the reading must name the one file it reads past, since an unnamed exemption is the fault this family keeps booking: ${field.out}"
+
+# 3 -- the reach, asserted rather than assumed. A reading of nothing is indistinguishable from a
+# healthy tree (REDS %463), so the population is named here: the walk must find build roots, it must
+# find shadows, and it must find the shared ones the single lock is holding still. A scan that
+# silently stopped finding invocations would otherwise report a perfect zero.
+assert (field.out contains "build_roots=0") == false else "rye-build-lock-reach: the walk found no build invocation at all, so its zero means nothing: ${field.out}"
+assert (field.out contains "shadow_paths=0") == false else "rye-build-lock-reach: the walk found no shadow path at all, so its zero means nothing: ${field.out}"
+assert (field.out contains "shared_paths=0") == false else "rye-build-lock-reach: the walk found no shadow shared between two roots, which this tree has 907 of -- the closure walk has stopped reaching imports: ${field.out}"
+assert field.out contains "lock_scope_names:" else "rye-build-lock-reach: the reading must name its scopes, since a count of two says which fence stands and not where: ${field.out}"
+
+say "GREEN: rye-build-lock-reach -- every shadow path this tree bridges is claimed under one lock scope, with the shared-under-one-lock count and the scope names read aloud."
