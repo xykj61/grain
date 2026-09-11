@@ -185,6 +185,11 @@ guard rye_bridge_cycle
 path tools/r/rye_bridge_cycle_witness.rish
 seated 20260821.232733
 
+guard rye_toolchain_resolve
+path tools/r/rye_toolchain_resolve_witness.rish
+seated 20260911.115552
+tier lap       # 13s: three pen builds through the real toolchain plus three mutant rebuilds
+
 guard sha3_file
 path tools/s/sha3_file_witness.rish
 seated 20260821.203103

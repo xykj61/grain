@@ -1,0 +1,62 @@
+# tools/r/rye_toolchain_resolve_witness.rish -- the compiler finds the toolchain this tree ships.
+#
+# WHY THIS RUNG. `tools/f/fetch-toolchain.sh` is the second command a newcomer runs, and it
+# installs a pinned Zig 0.16.0 to `vendor/zig-toolchain/zig` against a checksum this repository
+# holds. `rye build` then spawned a toolchain resolved from two places and neither was that one:
+# an explicit RYE_ZIG, else a bare `zig` for the host's PATH to answer. On a host with no `zig` on
+# PATH -- this pier -- the tree's own compiler refused to build the tree, and its refusal named
+# two doors while the one the newcomer had just walked through went unmentioned.
+#
+# THE DISAGREEMENT WAS INSIDE ONE DIRECTORY. `rye/bootstrap.sh` has read
+# `${RYE_ZIG:-../vendor/zig-toolchain/zig}` since it was written -- the cold start knew where the
+# toolchain lived and the compiler it bootstraps did not. One question, two answers, and only the
+# cold start's was right. The tree's witnesses had all worked around it by hand: over a thousand
+# tracked sources spell `RYE_ZIG=vendor/zig-toolchain/zig` into an `env` line, which is one rule
+# written a thousand times.
+#
+# WHAT IS PROVEN, on metal, over `tools/fixtures/r/rye_toolchain_resolve_control.sh`. Three
+# readings in order -- an explicit RYE_ZIG, then the pinned toolchain found beside the binary at
+# `<exe_dir>/../../vendor/zig-toolchain/zig`, then `zig` for PATH -- each shown from BOTH sides:
+# the reading answers when it should, and the next one answers when it should not. The vendored
+# reading is resolved against the binary's own location rather than the working directory, so a
+# build from any directory finds the same toolchain. A candidate that is present and not
+# executable falls through rather than spawning. The refusal names all three places and the
+# command that installs the pinned one. The cold start and the compiler are read against each
+# other and must name one destination.
+#
+# AND THREE MUTATIONS ARE REBUILT AND SHOWN TO BITE -- the vendored reading removed, RYE_ZIG moved
+# out of first place, the executable check dropped -- since a leg that has never failed cannot be
+# told from a leg that cannot fail.
+#
+# WHAT IS NOT PROVEN. That the pinned toolchain is the right toolchain for a given host. A host
+# `zig` stays reachable through RYE_ZIG and through the last reading; what this rung settles is
+# that the tree's own answer is the one the compiler takes when nobody says otherwise.
+#
+# A BINARY OLDER THAN ITS SOURCE IS A MACHINE FACT, never a red: `rye/bin/rye` is gitignored, so a
+# fresh clone holds none. The control asks the version at the door and skips by name.
+#
+# No network, no key, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_toolchain_resolve_witness.rish
+
+say "rye-toolchain-resolve: Language EN -- a compiler that cannot find the toolchain its own tree installs sends a newcomer looking for a door the tree already opened."
+say "rye-toolchain-resolve: Style Gauge, Meter -- every reading is shown from both sides, and each of the three mutations names the leg it drops."
+say "rye-toolchain-resolve: Lens TAME -- safety first: an explicit setting still wins, a candidate is asked whether it can be RUN before it is spawned, and every refusal falls through to the next reading rather than stopping."
+
+let control = run ["sh" "tools/fixtures/r/rye_toolchain_resolve_control.sh"]
+say control.out
+assert control.ok else "rye-toolchain-resolve: the resolver did not survive its own pen -- ${control.err}"
+
+assert control.out contains "resolve_verdict=" else "rye-toolchain-resolve: the control must name a verdict before it is believed"
+
+if control.out contains "resolve_verdict=machine_fact" then say "rye-toolchain-resolve: SKIPPED on a machine fact -- this pier's rye binary predates the source it would speak for. Rebuild with 'sh rye/bootstrap.sh' and run this again; nothing in the tree is wrong."
+if control.out contains "resolve_verdict=machine_fact" then exit 0
+
+assert control.out contains "resolve_verdict=green" else "rye-toolchain-resolve: the control must read green or name its machine fact"
+assert control.out contains "CONTROL_GREEN" else "rye-toolchain-resolve: the control must close on its own green line"
+assert control.out contains "bootstrap and compiler agree on vendor/zig-toolchain" else "rye-toolchain-resolve: the cold start and the compiler must name one toolchain destination"
+assert control.out contains "three readings in order" else "rye-toolchain-resolve: the three readings must each be proven from both sides"
+assert control.out contains "three mutations bitten" else "rye-toolchain-resolve: a leg that has never failed cannot be told from a leg that cannot fail"
+
+say "GREEN: rye-toolchain-resolve -- rye reads RYE_ZIG, then the pinned toolchain beside its own binary, then PATH, and says so when none of the three answers."

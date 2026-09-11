@@ -90,9 +90,12 @@ Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds i
 From then on, Rye rebuilds itself with its own `build` verb, self-hosting the build and standing as the first resident of the `std` it ships. We write the new binary beside the old one and move it into place. A running program keeps its open file, so the move swaps the directory entry while the process finishes on the prior copy:
 
 ```sh
-export RYE_ZIG="$PWD/../vendor/zig-toolchain/zig"
 ./bin/rye build src/main.rye -femit-bin=bin/rye.next && mv -f bin/rye.next bin/rye
 ```
+
+The toolchain needs no naming here. `rye build` reads `RYE_ZIG` first, then the pinned toolchain
+beside its own binary at `../vendor/zig-toolchain/zig`, then a `zig` on PATH -- the same order
+`bootstrap.sh` takes. Export `RYE_ZIG` when you want a different one.
 
 Run the SHA3-512 test; the command finds `lib/` beside its own binary, so `.rye` programs compile against Rye's `std` automatically:
 

@@ -99,7 +99,7 @@ Witnessed extras that guide did not yet carry:
 - Living keys stay on the machine. Public seeds ship `REPLACE_WITH_YOUR_PUBLIC_KEY`. The field's tracked `nixos/` is a private snapshot.
 - NAR hash mismatch on `nixos-install`: `rm -rf /root/.cache/nix`, then the same install. Reboot on `status=0`.
 - After steward, `sudo -v` as `keeper`, then `PermitRootLogin = "no"`. The generation's file is `/run/current-system/etc/ssh/sshd_config`.
-- First-hour Rye and Rishi on this host use musl `-lc`; `RYE_ZIG` from the clone root. See [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md).
+- First-hour Rye and Rishi on this host use musl `-lc`. `RYE_ZIG` is optional from `rye 20260911.115025`: `rye build` reads it first, then the pinned toolchain beside its own binary, then PATH. See [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md).
 - `cursor-cli` is in the template packages. Sign in with `cursor-agent login`. Print mode takes the prompt as argv: `cursor-agent -p --force --trust --sandbox disabled pong`.
 - GitHub: a classic PAT over HTTPS first (`gh config set -h github.com git_protocol https` when login picked SSH with no pier key). Paste the SSH public line in the GitHub UI when the PAT stays lean. Then `rishi/bin/rishi run tools/g/generate_jail_local_keys_linux.rish` from host tmux, after `GLOW_PROFILE.kyri` carries your forge email.
 

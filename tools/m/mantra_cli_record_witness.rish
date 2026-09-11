@@ -55,7 +55,8 @@ let frozen = run ["sh" "-c" "head -1 tools/fixtures/m/mantra_elder_v1_store/blob
 # The capture is said ABOVE the first assert on this binding, never below it: an assert ends the
 # run, so a say underneath reaches a reader on the passing runs alone and leaves a refusing one
 # holding this witness's own sentence and nothing of the blob it read (BAKERY, `20260911`).
-say "mantra-cli-record: the frozen blob's first line reads: ${frozen.out}"
+say "mantra-cli-record: the frozen blob's first line reads --"
+say frozen.out
 assert frozen.ok else "mantra-cli-record: the frozen elder weave blob is gone -- without a real v1 store nothing proves an elder store opens"
 assert frozen.out contains "mantra-weave-v1" else "mantra-cli-record: the frozen store no longer holds a v1 record, so the compatibility claim tests nothing"
 

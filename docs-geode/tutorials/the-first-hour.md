@@ -136,6 +136,13 @@ cd ..
 
 Witnessed `20260903` on NixOS 26.05: `rye 20260827.023156`. `file(1)` is not on the host; skip it. Do not `export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"` while you are still inside `rye/` -- that path does not exist.
 
+**From `rye 20260911.115025`, setting `RYE_ZIG` at all is optional.** `rye build` looks for it
+first, then for the pinned toolchain beside its own binary at `vendor/zig-toolchain/zig` -- the one
+you fetched above -- and only then for a `zig` on your PATH, so the export below is a way of naming
+a different toolchain rather than a step you owe. The `$PWD` caution above applies whenever you do
+set it. Proven by
+[`../../tools/r/rye_toolchain_resolve_witness.rish`](../../tools/r/rye_toolchain_resolve_witness.rish).
+
 ## 4. Build Rishi, the shell
 
 **Rishi** is the faithful hand -- the shell that runs this tree. It is a Rye program, so Rye builds

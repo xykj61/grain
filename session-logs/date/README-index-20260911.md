@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260911.125647` | [The box held two of my own laps](20260911/20260911-125647_the-box-held-two-of-my-own-laps.kyri) | two killed laps read back out; stash_record 2 -> 0 |
 | `20260911.121653` | [The table that said Enforced Now](20260911/20260911-121653_the-table-that-said-enforced-now.kyri) | a rule the law called enforced; one_title seated |
+| `20260911.120049` | [Rye finds its own toolchain](20260911/20260911-120049_rye-finds-its-own-toolchain.kyri) | three readings: RYE_ZIG, the pinned toolchain, PATH |
 | `20260911.115233` | [The manual that named no room](20260911/20260911-115233_the-manual-that-named-no-room.kyri) | 20 manual doors named; doorway ceiling 59 -> 39 |
 | `20260911.105415` | [The option that said GREEN](20260911/20260911-105415_the-option-that-said-green.kyri) | The elder binary bound beside a held port and said GREEN. |
 | `20260911.104518` | [The room that owned the claim](20260911/20260911-104518_the-room-that-never-made-the-claim.kyri) | two front doors never named a room they hold; a key reads them |
