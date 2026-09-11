@@ -87,6 +87,24 @@ token in its `**Status:**` line or in a `**Room:**` line, and the witness reads 
 under the doorway roster answered under `**Room:**`, two of them spelling `Mixed` -- this table's
 own token, at the door, in this page's own word -- and were counted as pages naming no room at all.
 
+**A living page is read too, and it was the larger half** (amended `20260911.023000`). The witness
+gated a page whose basename carries a one-clock stamp and passed every other page as
+*grandfathered*, on the reasoning that a missing stamp means the page predates the seating. The
+mark law reads the same absence the other way -- *a file whose own basename carries a one-clock
+stamp is testimony, and everything else is living*
+([`stamp-and-name`](../.claude/rules/stamp-and-name.md)) -- so the exemption stood over exactly the
+pages a reader meets first. Measured on the amending lap: 1,254 pages, 138 of them stampless, and
+**106 of those named no room**, against a dated reading of 3. Both numbers are reported now, each
+under its own ceiling, because a page never changes class and one merged number would let a living
+repair hide a dated regression. Sixteen doors were named the same lap and the living ceiling opens
+at 90.
+
+**And this page's own door was among them.** The witness read the first head line carrying
+`**Status:**` anywhere, and the `Last updated` line above quotes both key names, so the reading
+returned that sentence and called this page silent three lines above a Status reading
+`checkable-room canon`. A key's own line is preferred now; the anywhere-in-line match stays as the
+fallback a shared header row needs.
+
 **Two laws use the word room, so a `**Room:**` line may be answering the other one.** This page
 names a **register**; [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) names a
 **directory**, decided by *would this still be worth reading if the code were deleted?* So

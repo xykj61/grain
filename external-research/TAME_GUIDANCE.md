@@ -8,6 +8,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Reya 2
 **Status:** Living
+**Room:** mixed -- the reflexes are linted; the order of values is a stance ([`TWO_ROOMS`](../context/TWO_ROOMS.md))
 
 ---
 

@@ -68,9 +68,13 @@ build() {
 commit_all() { ( cd "$1" && git add -A && git commit -qm 'pen: doorway subject' ) >/dev/null 2>&1; }
 
 # Every leg runs the REAL scan, at ceiling zero unless the leg says otherwise, so a single
-# counted page is the difference between free and refused.
+# counted page is the difference between free and refused. The third argument is the LIVING
+# ceiling, held at zero for the same reason: a stampless page naming no room is one page, and one
+# page must be the whole difference between free and refused.
 scan_at() {
-  ( cd "$1" && TWO_ROOMS_DOORWAY_CEILING="$2" "$rishi_bin" run tools/fixtures/t/two_rooms_doorway_scan.rish 2>/dev/null )
+  ( cd "$1" \
+    && TWO_ROOMS_DOORWAY_CEILING="$2" TWO_ROOMS_LIVING_CEILING="${3:-0}" \
+       "$rishi_bin" run tools/fixtures/t/two_rooms_doorway_scan.rish 2>/dev/null )
 }
 
 # The honest tree: one page per room, one of them folded onto a date/ shelf, each naming a room.
@@ -118,11 +122,27 @@ page "$d/external-research/20260101-010101_elder.md" 'Living'
 commit_all "$d"
 scan_at "$d" 0 | grep -q 'verdict=ok' && echo "before_seating_free=yes" || echo "before_seating_free=no"
 
-# 5. No one-clock stamp in the basename -- grandfathered, free.
+# 5. No one-clock stamp in the basename -- outside the DATED ratchet, and inside the living one.
+#    The elder leg read this page as grandfathered and stopped there. The mark law reads the same
+#    absence the other way -- a stampless basename means LIVING -- so the page is free of `fails`
+#    and counted in `living_silent`, which is the whole of the 20260911 repair in one plant.
 d=$(build unstamped); honest "$d"
 page "$d/external-research/PLAIN.md" 'Living'
 commit_all "$d"
-scan_at "$d" 0 | grep -q 'verdict=ok' && echo "unstamped_free=yes" || echo "unstamped_free=no"
+out=$(scan_at "$d" 0 1)
+echo "$out" | grep -q 'verdict=ok' && echo "unstamped_free=yes" || echo "unstamped_free=no"
+echo "$out" | grep -q 'doorway fails=0 ' && echo "unstamped_not_dated=yes" || echo "unstamped_not_dated=no"
+echo "$out" | grep -q 'living_silent=1 ' && echo "living_silent_counted=yes" || echo "living_silent_counted=no"
+echo "$out" | grep -q 'LIVING-SILENT external-research/PLAIN.md' \
+  && echo "living_silent_named=yes" || echo "living_silent_named=no"
+echo "$out" | grep -q 'stampless=1 ' && echo "stampless_counted=yes" || echo "stampless_counted=no"
+out=$(scan_at "$d" 0 0)
+echo "$out" | grep -q 'FAIL doorway living ratchet: 1 living pages name no room' \
+  && echo "living_over_ceiling_refused=yes" || echo "living_over_ceiling_refused=no"
+# The refusal must DECIDE the verdict too, never name a fault and report ok -- the same leg the
+# reach refusals already carry, and the one a naming-only check cannot tell from a bypass.
+echo "$out" | grep -q 'verdict=ok' \
+  && echo "living_over_ceiling_verdict=no" || echo "living_over_ceiling_verdict=yes"
 
 # 6. A folded page naming no room -- counted. The three the fold hid, in miniature.
 d=$(build folded_fail); honest "$d"
@@ -420,5 +440,68 @@ commit_all "$d"
 out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'doorway fails=0 ' && echo "fixture_plant_free=yes" || echo "fixture_plant_free=no"
 echo "$out" | grep -q 'context=1 ' && echo "fixture_plant_uncounted=yes" || echo "fixture_plant_uncounted=no"
+
+
+# 24. A LIVING PAGE THAT NAMES ITS ROOM WALKS FREE, and reads zero. The repair this lap made to
+#     sixteen real doors is exactly this shape -- a stampless page gaining a token -- and a fix
+#     proven only where it fails is half a proof.
+d=$(build living_named); honest "$d"
+page "$d/context/specs/PLAIN.md" 'Living -- checkable'
+commit_all "$d"
+out=$(scan_at "$d" 0 0)
+echo "$out" | grep -q 'living_silent=0 ' && echo "living_named_uncounted=yes" || echo "living_named_uncounted=no"
+echo "$out" | grep -q 'stampless=1 ' && echo "living_named_stampless=yes" || echo "living_named_stampless=no"
+echo "$out" | grep -q 'verdict=ok' && echo "living_named_free=yes" || echo "living_named_free=no"
+
+# 25. THE TWO NUMBERS STAY APART. A dated page naming no room and a living page naming no room are
+#     two faults with two repairs -- one of them impossible, since dated testimony keeps every word
+#     it wrote. Merged into one reading, repairing a living door would hide a dated regression.
+d=$(build both_ratchets); honest "$d"
+page "$d/external-research/20260902-070701_dated.md" 'Living'
+page "$d/external-research/PLAIN.md" 'Living'
+commit_all "$d"
+out=$(scan_at "$d" 1 1)
+echo "$out" | grep -q 'doorway fails=1 ' && echo "ratchets_split_dated=yes" || echo "ratchets_split_dated=no"
+echo "$out" | grep -q 'living_silent=1 ' && echo "ratchets_split_living=yes" || echo "ratchets_split_living=no"
+scan_at "$d" 0 1 | grep -q 'FAIL doorway ratchet: 1 pages name no room' \
+  && echo "ratchets_split_dated_gates=yes" || echo "ratchets_split_dated_gates=no"
+
+# 26. A DAY SHELF'S INDEX IS A TABLE OF CONTENTS, never a page speaking from a room. The 21 such
+#     shelves in `active-designing/date/` became visible the moment living doors were read, every
+#     one of them silent; they leave the population rather than joining a ratchet nobody can work.
+d=$(build shelf_index); honest "$d"
+page "$d/active-designing/date/README-index-20260901.md" 'Chapter index -- OPEN while the day runs'
+commit_all "$d"
+out=$(scan_at "$d" 0 0)
+echo "$out" | grep -q 'doorway pages=8 ' && echo "shelf_index_excluded=yes" || echo "shelf_index_excluded=no"
+echo "$out" | grep -q 'verdict=ok' && echo "shelf_index_free=yes" || echo "shelf_index_free=no"
+
+# 27. THE DOOR IS A KEY'S OWN LINE, never a mention of it. `context/TWO_ROOMS.md` -- the law this
+#     guard enforces -- writes "`**Status:**` or `**Room:**`" inside its `Last updated` line, three
+#     lines above a Status reading `checkable-room canon`, and the elder anywhere-in-the-head grep
+#     returned that sentence and called the law's own door silent.
+d=$(build door_line); honest "$d"
+mkdir -p "$d/docs"
+{
+  printf '# pen page\n\n'
+  printf '**Last updated:** the door is read from **Status:** or **Room:**\n'
+  printf '**Status:** Living -- checkable\n\nbody\n'
+} > "$d/docs/20260902-080801_mention.md"
+commit_all "$d"
+out=$(scan_at "$d" 0 0)
+echo "$out" | grep -q 'doorway fails=0 ' && echo "prose_mention_not_the_door=yes" || echo "prose_mention_not_the_door=no"
+echo "$out" | grep -q 'verdict=ok' && echo "prose_mention_verdict=yes" || echo "prose_mention_verdict=no"
+
+# 28. AND THE SHARED HEADER ROW STILL READS. Reading line-starts ALONE misreported 92 pages as
+#     having no Status at all, so the anywhere-in-line match stays as the fallback. Both legs
+#     matter: the preference above and this fallback fail in opposite directions.
+d=$(build header_row); honest "$d"
+mkdir -p "$d/docs"
+{
+  printf '# pen page\n\n'
+  printf '**Stamp:** `20260902.080802` - **Voice:** Kyri - **Status:** Living, mixed -- measured\n\nbody\n'
+} > "$d/docs/20260902-080802_row.md"
+commit_all "$d"
+scan_at "$d" 0 0 | grep -q 'doorway fails=0 ' && echo "header_row_read=yes" || echo "header_row_read=no"
 
 echo "control_verdict=ok"

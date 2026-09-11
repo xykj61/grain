@@ -4,6 +4,7 @@
 **Last updated:** 2026-06-18
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Decided
+**Room:** checkable -- a version name is derived from the one clock ([`TWO_ROOMS`](../TWO_ROOMS.md))
 
 ---
 

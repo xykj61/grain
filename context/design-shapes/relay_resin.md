@@ -4,6 +4,7 @@
 **Voice:** Kyri · **Coords:** equinox A · journey 3 (h3 Radiant Style) · round 10/256
 **Destination:** `context/design-shapes/relay_resin` — the bench matches the extension its siblings `bounds_home` and `tend_hygiene` already use
 **Follows from:** Amphora's graduation to pattern, `20260730`
+**Room:** mixed -- the twelve-bead bound is checkable; the shape it serves is proposed ([`TWO_ROOMS`](../TWO_ROOMS.md))
 
 *Written together by Keaton and Riyo.*
 

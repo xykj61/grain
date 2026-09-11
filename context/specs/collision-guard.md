@@ -6,6 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living practice + tool
+**Room:** checkable -- every hit here is classified by a tool that runs ([`TWO_ROOMS`](../TWO_ROOMS.md))
 **Voice:** Rio 3
 **Ground:** mudra soft-collision owned in `79a79ba` - seating [`20260712-061012_bud-and-mudra-names-seated.md`](20260712-061012_bud-and-mudra-names-seated.md) - RTAC [`../../construction/ready-to-ask-claude.md`](../../construction/ready-to-ask-claude.md)
 

@@ -4,6 +4,7 @@
 **Last updated:** 2026-06-18
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Decided
+**Room:** mixed -- the decision is seated; the language it describes is still growing ([`TWO_ROOMS`](../TWO_ROOMS.md))
 
 ---
 

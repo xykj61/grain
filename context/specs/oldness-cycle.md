@@ -4,6 +4,7 @@
 **Voice:** Kyri - **Coords:** equinox A - journey 3 (h3 Radiant Style) - round 10/256
 **Destination proposal:** `context/specs/oldness-cycle.md`, with the list itself at root as `SAFE.md`
 **Status:** Proposal — designed at Keaton's word this pass, seated on his word and the bench's
+**Room:** mixed -- the freshness readings are measurable; the safe list is proposed ([`TWO_ROOMS`](../TWO_ROOMS.md))
 **Companion to:** `context/specs/living-vs-dated.md` - `context/BREACH.md` - the custody-first principle
 
 *Written together by Keaton and Riyo.*

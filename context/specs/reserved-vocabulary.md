@@ -21,6 +21,7 @@ Warm names still enter beside inherited types (`inherited-names.md`). This list 
 ### `plot`
 
 **Status:** Reserved -- no public assignment yet.
+**Room:** checkable -- each entry is a word held or spent, and the register says which ([`TWO_ROOMS`](../TWO_ROOMS.md))
 
 **Why it matters:** A garden **plot** is bounded ground where something is tended on purpose -- growth with edges, care with intent. The word also carries story (a plot unfolds), which we may want someday; that double meaning is part of why we hold it carefully.
 
