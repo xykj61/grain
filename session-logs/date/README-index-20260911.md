@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.174809` | [Which collision is silent](20260911/20260911-174809_which-collision-is-silent.kyri) | Two hands built one loom; the option says which port is silent. |
 | `20260911.154233` | [The fence that ate the next block](20260911/20260911-154233_the-fence-that-ate-the-next-block.kyri) | a dangling command fence hid a demo block carrying a stale count |
 | `20260911.152042` | [The guard I had already built](20260911/20260911-152042_the-guard-i-had-already-built.kyri) | I rebuilt my own morning's guard; the card held both halves. |
 | `20260911.150205` | [The roster a sentence could not hold](20260911/20260911-150205_the-roster-a-sentence-could-not-hold.kyri) | port band metered; 3 doubles named |

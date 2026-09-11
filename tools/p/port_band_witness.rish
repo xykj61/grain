@@ -60,18 +60,23 @@ say "port-band: Language EN -- a port is a name on the machine, and eight checko
 say "port-band: Style Gauge, Meter -- refusal is the subject."
 say "port-band: Lens TAME -- safety first: a number two modules claim is a reply one of them reads wrongly."
 
+# THE CAPTURE IS SAID ONCE, BARE, ABOVE THE ASSERTS THAT READ IT. Rishi composes an interpolated
+# `assert ... else` into one 4,096-byte strbuf, so an else clause repeating a reading the bare `say`
+# two lines up already printed costs that buffer on the failing path and hands a reader nothing new
+# -- the shape `tools/fixtures/s/say_compose_bound_scan.sh` counts as `deferred` (BAKERY,
+# `20260911`, closing that guard's 490-against-489 red).
 let scan = run ["sh" "tools/fixtures/p/port_band_scan.sh"]
 say scan.out
-assert scan.ok else "port-band: a reading stands past its gate -- read the scan's own lines: ${scan.out}"
-assert scan.out contains "verdict=ok" else "port-band: the scan must balance before it is believed: ${scan.out}"
-assert scan.out contains "ports_outside_band=0" else "port-band: a constant outside the seated band is a number picked at random: ${scan.out}"
-assert scan.out contains "lock_band_uncovered=0" else "port-band: a lock refusing a port its own room declares turns away the caller it protects: ${scan.out}"
+assert scan.ok else "port-band: a reading stands past its gate -- the scan's whole reading stands above this line"
+assert scan.out contains "verdict=ok" else "port-band: the scan must balance before it is believed -- its whole reading stands above this line"
+assert scan.out contains "ports_outside_band=0" else "port-band: a constant outside the seated band is a number picked at random -- the reading above names the file"
+assert scan.out contains "lock_band_uncovered=0" else "port-band: a lock refusing a port its own room declares turns away the caller it protects -- the reading above names the lock"
 say "field GREEN -- every constant port stands inside the seated band, and every lock covers its own room"
 
 let control = run ["sh" "tools/fixtures/p/port_band_control.sh"]
 say control.out
-assert control.ok else "port-band: the control must complete: ${control.out}"
-assert control.out contains "control_failed=0" else "port-band: a control leg refused, so no reading below is believable: ${control.out}"
+assert control.ok else "port-band: the control must complete -- its whole output stands above this line"
+assert control.out contains "control_failed=0" else "port-band: a control leg refused, so no reading below is believable -- the failing leg names itself above"
 assert control.out contains "clean_reads_zero=yes" else "port-band: a clean tree must read zero rather than merely pass"
 assert control.out contains "clean_free=yes" else "port-band: a clean tree must pass free"
 assert control.out contains "inside_band_counted=yes" else "port-band: a lawful constant port must still be counted"
