@@ -51,7 +51,12 @@ newpen() {
 # fourth defaults high: a pen plants four or five runners where the living tree carries hundreds,
 # so the tree's floor would refuse every pen here and prove nothing about any of them. A leg that
 # wants the floor sets it explicitly, which pen eight below does from both sides.
-run() { ( cd "$1" && shift && UNHEARD_GUARD_CEILING="$1" UNHEARD_CHOIR_CEILING="$2" UNNAMED_CHOIR_CEILING="${4:-99}" UNNAMED_POPULATION_FLOOR="${5:-0}" sh "$scan" "$3" ); }
+#
+# The sixth is the third reading's population FLOOR and defaults to 0, and the seventh is that
+# reading's CEILING and defaults high -- both for the reasons the fourth and fifth already give. A
+# pen plants at most a handful of controls where the living tree carries 258, so the tree's own
+# floor of 200 would refuse every pen here and prove nothing about any of them.
+run() { ( cd "$1" && shift && UNHEARD_GUARD_CEILING="$1" UNHEARD_CHOIR_CEILING="$2" UNNAMED_CHOIR_CEILING="${4:-99}" UNNAMED_POPULATION_FLOOR="${5:-0}" UNHEARD_CONTROL_POPULATION_FLOOR="${6:-0}" UNHEARD_CONTROL_CEILING="${7:-99}" sh "$scan" "$3" ); }
 
 echo "unheard_guard_control: proving the reading on real repositories in a throwaway pen."
 
@@ -240,6 +245,70 @@ d=$(mkpen_self eleven tools/u/other_witness.rish)
 run "$d" 99 99 measure > "$pen/eleven.out" 2>/dev/null || true
 check 0 "$(field "$pen/eleven.out" unnamed_choirs)" "the SAME pen with the accuser renamed reads the choir heard -- the exclusion is what did the work"
 check 1 "$(field "$pen/eleven.out" unnamed_heard)" "and a mention by any other rostered guard is credited, as the generous reading says"
+
+# --- Pen twelve: the controls, and the rule that can see them -------------------------------
+# THE READING UNDER PROOF asks whether the PROOF beneath a guard is ever run. Both elder naming
+# rules end `\.(rish|rye)`, so a `.sh` path is invisible to them by construction -- the first draft
+# of this reading used the elder rule, answered `control_heard=0` on a tree where a plain grep finds
+# 248 of 258 named, and had to be thrown away. Every leg below is shown from both sides.
+d=$(newpen twelve)
+mkdir -p "$d/tools/fixtures/b"
+# alpha is rostered and RUNS its control -- the welcome
+printf 'let pen = run ["sh" "tools/fixtures/a/alpha_control.sh"]\nassert pen.ok else "alpha"\n' > "$d/tools/a/alpha_witness.rish"
+printf 'echo alpha control\n' > "$d/tools/fixtures/a/alpha_control.sh"
+# beta is NOT rostered and runs its control -- the silence is inherited
+printf 'let pen = run ["sh" "tools/fixtures/b/beta_control.sh"]\nassert pen.ok else "beta"\n' > "$d/tools/a/beta_witness.rish"
+printf 'echo beta control\n' > "$d/tools/fixtures/b/beta_control.sh"
+# gamma is rostered and names its control in a COMMENT -- run by nothing
+printf '# runs tools/fixtures/a/gamma_control.sh one day\nsay "gamma"\n' > "$d/tools/a/gamma_witness.rish"
+printf 'echo gamma control\n' > "$d/tools/fixtures/a/gamma_control.sh"
+# delta is named nowhere at all
+printf 'echo delta control\n' > "$d/tools/fixtures/a/delta_control.sh"
+printf 'guard alpha\npath tools/a/alpha_witness.rish\nguard gamma\npath tools/a/gamma_witness.rish\nseated 20260911.000000\n' > "$d/construction/standing-equipment.kyri"
+git -C "$d" add -A >/dev/null; git -C "$d" commit -qm pen >/dev/null
+
+run "$d" 99 99 measure > "$pen/ctl.out" 2>"$pen/ctl.err" || true
+check 4 "$(field "$pen/ctl.out" control_population)" "the population counts all four planted controls"
+check 1 "$(field "$pen/ctl.out" control_heard)"      "only the control a rostered witness runs is heard"
+check 3 "$(field "$pen/ctl.out" control_unheard)"    "the other three stand unrun"
+check ok "$(field "$pen/ctl.out" verdict)"           "under the ceiling the reading is ok"
+
+check 0 "$(run "$d" 99 99 controls | grep -c 'unheard_control tools/fixtures/a/alpha_control.sh' || true)" "a control run by a rostered witness is never called unheard"
+check 1 "$(run "$d" 99 99 controls | grep -c 'unheard_control tools/fixtures/b/beta_control.sh cause=unrun' || true)" "a control whose only runner is unheard reads unrun, and names that runner"
+check 1 "$(run "$d" 99 99 controls | grep -c 'namer=tools/a/beta_witness.rish' || true)" "and the namer it prints is the witness that actually runs it"
+check 1 "$(run "$d" 99 99 controls | grep -c 'unheard_control tools/fixtures/a/gamma_control.sh cause=orphan' || true)" "a control named only in a comment is run by nothing, so it reads orphan"
+check 1 "$(run "$d" 99 99 controls | grep -c 'unheard_control tools/fixtures/a/delta_control.sh cause=orphan' || true)" "a control named nowhere reads orphan"
+check 2 "$(field "$pen/ctl.out" control_orphans)" "the orphan count carries both of them"
+
+# THE CEILING FROM BOTH SIDES, on one pen, so the readings differ only in the ceiling.
+run "$d" 99 99 measure 99 0 0 3 > "$pen/ctl_at.out" 2>/dev/null || true
+check ok "$(field "$pen/ctl_at.out" verdict)" "a control ceiling exactly at the reading passes"
+if run "$d" 99 99 measure 99 0 0 2 > "$pen/ctl_over.out" 2>/dev/null; then ctl_rc=0; else ctl_rc=1; fi
+check 1 "$ctl_rc" "one under the control reading refuses"
+check over_control_ceiling "$(field "$pen/ctl_over.out" verdict)" "and the control ceiling refuses under its own name"
+
+# THE FLOOR FROM BOTH SIDES. A glob that stops matching reads zero unheard, which a ratchet passes.
+run "$d" 99 99 measure 99 0 4 > "$pen/ctl_floor_at.out" 2>/dev/null || true
+check ok "$(field "$pen/ctl_floor_at.out" verdict)" "a population floor exactly at the reading passes"
+if run "$d" 99 99 measure 99 0 5 > "$pen/ctl_floor_under.out" 2>/dev/null; then flr_rc=0; else flr_rc=1; fi
+check 1 "$flr_rc" "one over the control population refuses"
+check under_control_population_floor "$(field "$pen/ctl_floor_under.out" verdict)" "and the control population floor refuses under its own name"
+
+# THE HAZARD THIS DESIGN OPENS, walled here rather than described. The `.sh` source set drops the
+# scan and this control and KEEPS the witness, because the witness genuinely runs the control beside
+# it and dropping it would report that control unrun -- a false red, which is worse than the false
+# green %486 booked. What makes that safe is a property of the witness rather than a wish: it must
+# name no control but its own. Measured 20260911, it names exactly one. This leg holds it there, so
+# the day a hand asserts a foreign control path by name, the reading cannot quietly credit it.
+foreign=$(grep -v '^[ 	]*#' "$root/tools/u/unheard_guard_witness.rish"   | grep -oE 'tools/fixtures/[A-Za-z0-9_/.-]*_control\.sh'   | grep -v '^tools/fixtures/u/unheard_guard_control\.sh$' | sort -u | grep -c . || true)
+check 0 "$foreign" "the witness names no control but its own, so the kept source set cannot credit a foreign proof"
+
+# THE ELDER READINGS DO NOT MOVE. This pen carries four witnesses and one roster of two, and the
+# first two readings must answer exactly as they would have before the third existed.
+check 3 "$(field "$pen/ctl.out" population)" "the elder population still counts the three tools/a witnesses that wear the word"
+check 2 "$(field "$pen/ctl.out" heard)"      "the elder heard reading still counts the two rostered ones"
+check 1 "$(field "$pen/ctl.out" unheard)"    "and beta still stands unheard in the elder reading"
+
 
 # --- Outside a repository ---------------------------------------------------------------------
 bare="$pen/bare"; mkdir -p "$bare"

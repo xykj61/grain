@@ -154,6 +154,23 @@ UNNAMED_CHOIR_CEILING="${UNNAMED_CHOIR_CEILING:-11}"
 # mirror of its sibling ceilings: it moves when a repair legitimately shrinks the population, by a
 # deliberate hand in two files, and never when a stranger writes a program.
 UNNAMED_POPULATION_FLOOR="${UNNAMED_POPULATION_FLOOR:-384}"
+
+# THE THIRD READING'S CEILING. A control proves a scan, and a control nothing runs is a proof
+# standing on a claim: the day the scan's parse drifts, no leg fires and no hand hears. Measured
+# 20260911.004115 on this tree: 258 tracked controls, 240 reached by the standing roster, 18 not.
+# A RATCHET rather than a wall, and the reason is the same one the sibling ceilings give -- a wall
+# at zero would ask a hand to roster eighteen guards in one lap. It does not red on ordinary
+# growth either: a control arrives beside the witness that runs it, so a new pair joins HEARD on
+# the lap it lands and this number holds still.
+CONTROL_CEILING="${UNHEARD_CONTROL_CEILING:-18}"
+
+# AND ITS POPULATION FLOOR, the mirror of the ceiling and of `UNNAMED_POPULATION_FLOOR` above. The
+# population is a glob, and a glob that stops matching reads zero unheard -- which a ratchet passes.
+# So the reading refuses from BELOW as well: 258 controls stand here, the floor sits at 200, and no
+# single lap has ever removed 58 of them. A FLOOR ONLY FALLS, by a deliberate hand, when a repair
+# legitimately shrinks the population. A pen carries four files where the tree carries hundreds, so
+# every pen below sets it to zero explicitly.
+CONTROL_POPULATION_FLOOR="${UNHEARD_CONTROL_POPULATION_FLOOR:-200}"
 ROSTER="${UNHEARD_GUARD_ROSTER:-construction/standing-equipment.kyri}"
 mode="${1:-measure}"
 
@@ -219,6 +236,21 @@ cat > "$work/names_wide.awk" <<'AWK'
 {
   line = $0
   while (match(line, "tools/[A-Za-z0-9_/.-]*\\.(rish|rye)")) {
+    print FILENAME "\t" substr(line, RSTART, RLENGTH)
+    line = substr(line, RSTART + RLENGTH)
+  }
+}
+AWK
+
+# THE THIRD NAMING RULE, for the controls alone. Both rules above end `\.(rish|rye)`, so neither
+# can match a `.sh` path at all -- a control is invisible to them by construction rather than by
+# oversight, which is why the first draft of this reading read `control_heard=0` and had to be
+# thrown away. A rule is paired with the population it can see, or it reads zero and calls it news.
+cat > "$work/names_sh.awk" <<'AWK'
+/^[ \t]*#/ { next }
+{
+  line = $0
+  while (match(line, "tools/[A-Za-z0-9_/.-]*\\.sh")) {
     print FILENAME "\t" substr(line, RSTART, RLENGTH)
     line = substr(line, RSTART + RLENGTH)
   }
@@ -325,6 +357,84 @@ while [ "$hops" -lt "$max_hops" ]; do
   mv "$work/heard2.txt" "$work/heard.txt"
   hops=$((hops + 1))
 done
+
+# THE THIRD READING: the controls, and who runs them (seated 20260911). The two readings above ask
+# whether a GUARD is run. This one asks whether the PROOF under a guard is run, which is a different
+# question with a different failure: a scan whose classifier drifts still reports a number, and the
+# control that would have caught it sits on disk saying nothing. 258 stand here and every one of
+# them was outside both elder populations, because both `grep -v '^tools/fixtures/'` -- an exclusion
+# written for pen material that swept out the whole instrument layer beside it.
+#
+# IT REUSES THE FIRST CLOSURE rather than growing a third. `heard.txt` already holds every path the
+# roster reaches; what was missing was a rule able to see a `.sh` at the end of it. Copying the
+# closure would give this tree two answers to `what does the roster reach`, free to drift, which is
+# the braid `single-stranded` names.
+#
+# THE SOURCE SET DROPS THE SCAN AND ITS CONTROL, and keeps the witness. %486's fault is an
+# instrument reading its own findings, and the two files that could ever ENUMERATE a control path
+# are those two; the witness names exactly one `.sh` in command position and genuinely runs it.
+# Measured 20260911: none of the three names any control but this guard's own.
+git ls-files 'tools/fixtures/*_control.sh' 2>/dev/null | sort -u > "$work/ctl.txt"
+control_population=$(grep -c . "$work/ctl.txt" || true)
+printf '%s\n' \
+  "tools/fixtures/u/unheard_guard_scan.sh" \
+  "tools/fixtures/u/unheard_guard_control.sh" > "$work/self_sh.txt"
+: > "$work/heard_present.txt"
+while IFS= read -r h; do
+  [ -n "$h" ] || continue
+  [ -f "$h" ] && printf '%s\n' "$h" >> "$work/heard_present.txt"
+done < "$work/heard.txt"
+grep -Fxv -f "$work/self_sh.txt" "$work/heard_present.txt" > "$work/heard_present2.txt" || true
+mv "$work/heard_present2.txt" "$work/heard_present.txt"
+if ! xargs_lines_batched 200 "$work/heard_present.txt" awk -f "$work/names_sh.awk" \
+     > "$work/sh_named.txt" 2>"$work/sh_names.err"; then
+  echo "instrument=failed"
+  echo "detail=control_name_pass_refused"
+  sed -n '1,5p' "$work/sh_names.err" | sed 's/^/detail_awk=/'
+  echo "verdict=misread"
+  exit 1
+fi
+cut -f2 "$work/sh_named.txt" | sort -u > "$work/sh_reached.txt"
+comm -12 "$work/sh_reached.txt" "$work/ctl.txt" > "$work/ctl_heard.txt"
+comm -23 "$work/ctl.txt" "$work/ctl_heard.txt" > "$work/ctl_unheard.txt"
+control_heard=$(grep -c . "$work/ctl_heard.txt" || true)
+control_unheard=$(grep -c . "$work/ctl_unheard.txt" || true)
+
+# THE DIAGNOSIS, apart from the gate. Two causes wear the one number and they want two different
+# repairs. An ORPHAN is named by no runner in the tree at all, so its proof has no way to run and
+# somebody must write or roster one. An UNRUN control HAS a runner, and that runner is itself
+# unheard -- the silence is inherited, already counted once by the reading above, and rostering the
+# witness closes both. Reported, never gated: one fault pays once, in the gate above.
+: > "$work/ctl_cause.txt"
+if [ -s "$work/ctl_unheard.txt" ]; then
+  git ls-files 'tools/*' 2>/dev/null \
+    | grep -E '\.(rish|rye)$' \
+    | grep -v '^tools/fixtures/' \
+    | sort -u > "$work/runners.txt"
+  : > "$work/runners_present.txt"
+  while IFS= read -r r; do
+    [ -n "$r" ] || continue
+    [ -f "$r" ] && printf '%s\n' "$r" >> "$work/runners_present.txt"
+  done < "$work/runners.txt"
+  if ! xargs_lines_batched 200 "$work/runners_present.txt" awk -f "$work/names_sh.awk" \
+       > "$work/all_sh.txt" 2>"$work/all_sh.err"; then
+    echo "instrument=failed"
+    echo "detail=control_cause_pass_refused"
+    sed -n '1,5p' "$work/all_sh.err" | sed 's/^/detail_awk=/'
+    echo "verdict=misread"
+    exit 1
+  fi
+  while IFS= read -r c; do
+    [ -n "$c" ] || continue
+    namer=$(awk -F'\t' -v want="$c" '$2 == want { print $1; exit }' "$work/all_sh.txt")
+    if [ -n "$namer" ]; then
+      echo "$c cause=unrun namer=$namer" >> "$work/ctl_cause.txt"
+    else
+      echo "$c cause=orphan" >> "$work/ctl_cause.txt"
+    fi
+  done < "$work/ctl_unheard.txt"
+fi
+control_orphans=$(grep -c 'cause=orphan' "$work/ctl_cause.txt" || true)
 
 comm -12 "$work/heard.txt" "$work/pop.txt" > "$work/heard_pop.txt"
 comm -23 "$work/pop.txt" "$work/heard_pop.txt" > "$work/unheard.txt"
@@ -433,6 +543,12 @@ echo "unnamed_runners=$unnamed_runners"
 echo "unnamed_choirs=$unnamed_choirs"
 echo "unnamed_choir_ceiling=$UNNAMED_CHOIR_CEILING"
 echo "elder_reach_gap=$elder_reach_gap"
+echo "control_population=$control_population"
+echo "control_heard=$control_heard"
+echo "control_unheard=$control_unheard"
+echo "control_ceiling=$CONTROL_CEILING"
+echo "control_orphans=$control_orphans"
+echo "control_population_floor=$CONTROL_POPULATION_FLOOR"
 echo "hops=$hops"
 echo "wide_hops=$whops"
 
@@ -448,6 +564,13 @@ if [ "$mode" = choirs ] || [ "$choirs" -gt "$CHOIR_CEILING" ]; then
     [ -n "$line" ] || continue
     echo "choir $line"
   done < "$work/choirs.txt"
+fi
+
+if [ "$mode" = list ] || [ "$mode" = controls ] || [ "$control_unheard" -gt "$CONTROL_CEILING" ]; then
+  while IFS= read -r line; do
+    [ -n "$line" ] || continue
+    echo "unheard_control $line"
+  done < "$work/ctl_cause.txt"
 fi
 
 if [ "$mode" = unnamed ]; then
@@ -507,6 +630,21 @@ fi
 if [ "$unnamed_population" -lt "$UNNAMED_POPULATION_FLOOR" ]; then
   echo "verdict=under_unnamed_population_floor"
   echo "refused: $unnamed_population runners carry a checkable claim outside the naming convention, under a floor of $UNNAMED_POPULATION_FLOOR. A population this small is a reading that collapsed, not a tree that repaired itself -- read the awk passes above before lowering the floor." >&2
+  exit 1
+fi
+
+# A COLLAPSED POPULATION IS NOT A REPAIRED TREE -- the %416 shape exactly: a ratchet passes on a
+# low number, so a glob that stopped matching and a tree with no controls at all report the same
+# green. This reading refuses from below for that reason.
+if [ "$control_population" -lt "$CONTROL_POPULATION_FLOOR" ]; then
+  echo "verdict=under_control_population_floor"
+  echo "refused: $control_population tracked controls reached the reading, under a floor of $CONTROL_POPULATION_FLOOR. A population this small is a glob that stopped matching, not a tree that shed its proofs -- read the ls-files pattern above before lowering the floor." >&2
+  exit 1
+fi
+
+if [ "$control_unheard" -gt "$CONTROL_CEILING" ]; then
+  echo "verdict=over_control_ceiling"
+  echo "refused: $control_unheard controls stand unrun against a ceiling of $CONTROL_CEILING -- a proof nothing runs is a claim. Roster the witness that runs it, or let something already heard name its path." >&2
   exit 1
 fi
 

@@ -1708,6 +1708,36 @@ seated 20260830.072125
 # behaviours to 52, and the scan itself runs FASTER than HEAD's despite carrying a second closure
 # (0.88s against 0.60s), because both closures now read each source once.
 
+# AND A THIRD READING JOINED IT `20260911`, over the proofs rather than the guards. Both populations
+# above end `grep -v '^tools/fixtures/'` -- an exclusion written for pen material a control plants,
+# measured and correct for its own question, and `tools/fixtures/` holds the tree's whole INSTRUMENT
+# layer beside that material. So the census asking who is listening could not see a control at all.
+# A control is what proves a scan reads what its header says; when one stops running, nothing reds,
+# and the first drift in a classifier lands in a number a hand then quotes. Measured here
+# `20260911`: **258 tracked controls, 240 reached by this roster, 18 not** -- among them
+# `invariant_coverage_control.sh`, whose 37 legs prove the classifier behind three figures published
+# the day before. The remainder splits by CAUSE, reported apart from the gate: an ORPHAN is named by
+# no runner anywhere and wants one written or rostered, where an UNRUN control HAS a runner that is
+# itself unheard, so rostering that witness closes both and one fault pays once.
+#
+# ITS FIRST DRAFT READ `control_heard=0`. Both elder naming rules end `\.(rish|rye)`, so neither can
+# match a `.sh` at all, while a plain grep finds 248 of the 258 named somewhere. A rule is paired
+# with the population it can see, or it reads zero and calls it news. The third reading carries
+# `names_sh.awk` for that reason and REUSES the first closure rather than growing a second, since
+# two answers to *what the roster reaches* would be free to drift.
+#
+# THE SOURCE SET KEEPS THE WITNESS and drops the scan and the control -- the two files that could
+# ever ENUMERATE a control path. Dropping the witness would report its own control unrun, a false
+# RED, which is worse than the false green `%486` booked; a control leg holds the witness to naming
+# no control but its own, so a hand asserting a foreign path cannot quietly credit it. Ceiling opens
+# at 18 and only falls; the population floor sits at 200 against 258, because a glob that
+# stopped matching reads zero unheard and a ratchet passes a low number (`%416`).
+#
+# `tier lap` still, and the reading is not free: the scan runs 0.9s -> 2.3s for its two `.sh` passes,
+# and the witness 21s -> 50s, since each both-sides leg runs the scan twice and the pen grew 52
+# behaviours -> 75. That is 29s against a lap pass of 2,999s, and the two causes are worth it: a
+# reading that cannot name which repair a finding wants sends a hand to read eighteen files.
+
 guard unheard_guard
 path tools/u/unheard_guard_witness.rish
 tier lap
