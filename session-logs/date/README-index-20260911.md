@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260911.154233` | [The fence that ate the next block](20260911/20260911-154233_the-fence-that-ate-the-next-block.kyri) | a dangling command fence hid a demo block carrying a stale count |
+| `20260911.150205` | [The roster a sentence could not hold](20260911/20260911-150205_the-roster-a-sentence-could-not-hold.kyri) | port band metered; 3 doubles named |
 | `20260911.134709` | [The last silent doors](20260911/20260911-134709_the-last-silent-doors.kyri) | Doorway living ceiling 39 -> 0; a ratchet became a wall |
 | `20260911.125647` | [The box held two of my own laps](20260911/20260911-125647_the-box-held-two-of-my-own-laps.kyri) | two killed laps read back out; stash_record 2 -> 0 |
 | `20260911.123725` | [The page that declared what it was](20260911/20260911-123725_the-page-that-declared-what-it-was.kyri) | a front door's count moved into the table its own guard reads |

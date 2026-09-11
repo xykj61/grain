@@ -1,12 +1,24 @@
 #!/usr/bin/env sh
 # tools/fixtures/m/mantra_delivery_port_lock.sh -- run one command holding a mantra delivery port pair.
 #
-# WHY. Seven modules under mantra/ bind two compiled-in UDP ports apiece -- 38478/38479 through
-# 38490/38491 -- and a port belongs to the MACHINE rather than to a checkout. This pier runs eight
-# trees whose roster passes overlap freely, so two lawful runs reach for one pair as a matter of
-# course. Two of the seven, mantra/snapshot_export_delivery.rye and
-# mantra/recall_tablecloth_query_delivery.rye, bind the SAME pair 38490/38491, so the collision
-# stands inside one tree as well as across the pier.
+# WHY. Modules under mantra/ bind two compiled-in UDP ports apiece, and a port belongs to the
+# MACHINE. This pier runs eight trees whose roster passes overlap freely, so two lawful runs reach
+# one pair as a matter of course.
+#
+# THE ROSTER IS COUNTED HERE RATHER THAN SPELLED (`20260911.145000`). This paragraph read *seven
+# modules ... 38478/38479 through 38490/38491* and named *two of the seven* --
+# snapshot_export_delivery and recall_tablecloth_query_delivery -- as binding the SAME pair
+# 38490/38491. Every word was true when it was typed. The second sentence went stale the same
+# morning: the tablecloth delivery module took the bind-to-zero handshake at `20260911.105415` and
+# let 38490/38491 go. So the double claim stood in one place alone, and that place was this file. A
+# sentence holding a roster is a roster a hand must re-type. Read the roster instead:
+#
+#   sh tools/fixtures/p/port_band_scan.sh --list
+#
+# which counts every `const <name>_port: u16 = <number>;` in living tracked Rye, names every number
+# two modules claim, offers the free numbers inside the room's seated band, and holds this file's
+# own edge band below against the ports mantra/ actually declares. Gated by
+# tools/p/port_band_witness.rish.
 #
 # WHAT THE MODULE ALREADY DOES, so this file is never mistaken for the repair. As of `20260911`
 # none of the seven sets SO_REUSEADDR: each reads the option back and asserts it zero, so a second
@@ -53,8 +65,12 @@ done
 low_port=$1
 shift
 
-# Checked at the edge: the seven modules bind 38478 through 38491, and a number outside that run is
-# a caller naming a pair that does not exist rather than a pair this lock should invent.
+# Checked at the edge: a number outside this run names a pair this lock would have to invent. The
+# band is named by hand, since an edge check must answer before it reads anything, and the roster
+# reading above HOLDS it -- `lock_band_uncovered` reds when a mantra module opens a pair past 38490,
+# so the next module to arrive is caught by that guard. A pair's HIGH port arrives here never: the
+# lock is taken on the low one, 38490 for the 38490/38491 exchange. That is why 38491 stands inside
+# mantra/ and outside this range, with both readings correct.
 case "$low_port" in
   ''|*[!0-9]*) echo "$0: low port must be a number -- got [$low_port]" >&2; exit 2 ;;
 esac
