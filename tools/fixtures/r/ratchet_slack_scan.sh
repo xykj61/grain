@@ -64,7 +64,10 @@
 #
 # WHAT THIS DOES NOT REACH. Whether a zero-slack ceiling is a trap or a wall doing its job, which
 # is a judgment about who grows the population and who may lower it. The census hands a reader the
-# slack and the scan's own header; the reading of them stays a person's.
+# slack and the scan's own header; the reading of them stays a person's. The three answers that
+# judgment has, each with a named instance, are written up at
+# `foundations/20260910-193534_a-ratchet-belongs-over-a-population-a-hand-may-shrink.md`, together
+# with the law proposed on them and waiting on Keaton's word.
 
 set -u
 ROOT=${RATCHET_SLACK_ROOT:-$(cd "$(dirname "$0")/../../.." && pwd)}

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ed21c7dcbf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `570526cad9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -155,28 +155,29 @@ one leg, the value comparison six. Witness **9.0s, lap**. Scan B+ 85, desks A+.
 `21` for a one-field `@u32`, `1` for the slot that opens Pool -- so neither has an engine.
 **YOURS:** whether a sample on a placard wants a guard at all. REDS pin still ~22 bytes free.
 
-**GRASS -- THE FAMILY'S RESTING STATE IS ZERO SLACK, AND THREE CEILINGS ARE PAST IT.**
-Elder [shelved](archive/20260910-172957_itinerary-landed-accounts.md).
-**FIRE SEES WHAT MUST STOP**, so this lap read the instrument family itself.
-**BUILT:** `tools/fixtures/r/ratchet_slack_scan.sh` -- ceilings discovered rather than listed, so
-one written tomorrow is counted the day it lands; its pairing table in a file a pen can replace;
-`--live` for the slack. Witness `ratchet_slack`, `tier lap`, **51 legs**.
-**MEASURED `20260910.172957`, ALL FREE:** **81 ceilings across 55 scans**, all compared in their own
-scan. Of 72 read -- 4 builders declined, 5 unanswered at the 120s bound -- **35 at ZERO SLACK, 21
-walls at zero, 13 with slack, 3 OVER**.
-**%626 IS A CLASS.** `dated_path` 105 of 85 at `tier cadence`, unheard; `say_compose_bound` one per
-mille over at `tier lap`, red on my cold and hot passes both -- and **repaired upstream while I
-measured**, reading `480 of 489` after my rebase. The instance closed; the shape holds, since each
-population grows when a ship writes a log or a witness that explains itself.
-**THREE FAULTS OF MY OWN, EACH BITTEN BY A LEG:** it counted its own `ceilings=` counter; it read
-its own control's planted `CEILING=3`; and it took a caller's value as the living ceiling, calling
-two GREEN guards over -- `tame_reach_witness` passes `0` to show its gate refusing. The slack now
-reads against the file default and lists every caller.
-**REDS FIRST, ONE CLOSED:** `stash_record` -- my `15:18` lap died at its send; recovered whole,
-`unlanded` **2 to 0**. Hot close **239 green, 2 red, 3 gated**.
-**I STEPPED IN THE BATON'S OWN WARNING:** `pgrep -f` killed the shell that typed it, exit **144**;
-`fleet_call.sh --signal TERM` then refused five peer trees by name. **Seventh firing.**
-**YOURS:** whether a ceiling over a population its own lane cannot lower may be gated at all.
+**GRASS -- A CEILING ONLY FALLS WHERE A HAND CAN LOWER IT.**
+Elder [shelved](archive/20260910-192348_itinerary-landed-accounts.md).
+**REDS FIRST:** `stash_record unlanded=1` held a whole GRASS lap of `19:24` -- `law_guard_heard`,
+its roster row, log and shelf, landed unedited.
+**THAT LAP, AIR 1:** **137** law pages name **100** tool paths, all carried; **66** wear `witness`
+or `suite`, and **25 of the 66 stand outside every reach the roster has** -- four run by hand, all
+GREEN, `%357` before it fires. `absent` **walled at zero**, `unheard` ratchets.
+**THIS LAP, WATER TASTES** (row 3): its seat asks whether a second run changes more; over READERS,
+which ceilings can ever fall. **WROTE** `foundations/20260910-193534_a-ratchet-belongs-over-a-population-a-hand-may-shrink.md`,
+**B+ 86**.
+**ONE QUESTION, THREE ANSWERS -- who grows this population, who may shrink it.** Defect-grown and
+lane-lowerable: zero slack is the ratchet working. Ordinary-work-grown: slack from the GROWTH RATE,
+`say_compose_bound` at **489 against 480**. Protected-tissue-grown: a countdown -- `dated_path`
+**105 against 85** over references in dated logs nobody may repair.
+**MEASURED, free:** **81 ceilings, 55 scans, all compared**; **counted rather than gated** stands
+**66 times across 50 files**. The move is seated; when it is OWED is unwritten.
+**COLD 242/2; HOT 243/1; re-HOT 244/1 `tree_moved=no`**, the one red `dated_path`'s `%626` out of
+`standing_equipment`. **The first hot pass bit the recovered scan itself:** `instrument_refusal`
+found `git ls-files ... || true` discarding a failure that would read a broken git as every citation
+absent; repaired to a named `listing_refused`. **A lap dying before its hot close ships an unheard
+red.**
+**YOURS:** may a law page cite a guard the roster reaches nowhere? And the law -- **gate what a hand
+may lower, count the rest** -- with its form: a ceiling declaring its GROWER.
 
 **INCENSE -- HALF THE LAW ROOM'S TOOL NAMES STOOD OUTSIDE EVERY GUARD.**
 Elder [shelved](archive/20260910-180244_itinerary-landed-accounts.md).

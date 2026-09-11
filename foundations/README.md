@@ -76,6 +76,10 @@ stamp. Held at zero by [`../tools/f/foundations_reach_witness.rish`](../tools/f/
 
 **Foundation briefs** -- the why beneath the daily work, on our own roots:
 
+- `20260910-193534_a-ratchet-belongs-over-a-population-a-hand-may-shrink.md` -- zero slack is
+  the ratchet family's resting state, so the question a ceiling answers is **who grows this
+  population and who may shrink it**; three answers, each with a named instance, and the law
+  proposed -- gate what a hand may lower, count the rest; **seated** `20260910.193534`.
 - `20260909-211955_a-meter-reports-what-it-keys-on.md` -- an instrument answers the question its
   **key** asks rather than the one its name asks; four keys this tree watched drift -- a name, a
   literal number, a hand-written list, a whole population -- each with the command that reads it
