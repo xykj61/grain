@@ -67,15 +67,21 @@ git grep -noE '%[0-9]+' -- . 2>/dev/null \
   | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
   > "$work/cites.txt" || true
 
-: > "$work/unshared.txt"
-while IFS= read -r line; do
-  n=$(printf '%s' "$line" | sed 's/.*%//')
-  case "$n" in ''|*[!0-9]*) continue ;; esac
-  # a run of 5+ digits is a colour, a byte count, or a stamp fragment -- never a ledger row
-  case "${#n}" in 3|4) ;; *) continue ;; esac
-  [ "$n" -gt "$shared" ] 2>/dev/null || continue
-  printf '%s\n' "$line" >> "$work/unshared.txt"
-done < "$work/cites.txt"
+# ONE PASS, ONE PROCESS. The elder form ran this filter as a shell `while read` loop spawning a
+# `printf` and a `sed` for every line -- two processes for each of the 4,150 citations `git grep`
+# finds in this tree, which is 8,300 forks to answer a question about digits. Measured
+# `20260910.221500` on this pier: that loop took 40.3s of a 59.0s run. The awk below applies the
+# SAME three tests in the same order -- the field after the last `%` is all digits, its whole run
+# is 3 or 4 long, and its value exceeds `shared_max` -- and takes 26ms. `-F'%'` with `$NF`
+# reproduces `sed 's/.*%//'` exactly, since `git grep -o` prints one match per line and the match
+# is the last thing on that line. Leading zeros read decimal in both forms, so a zero-padded
+# four-digit run equal to the boundary is excluded by each. (The literal is spelled out in the
+# control rather than here: a comment naming a number above the boundary is itself a citation this
+# scan would count, which the pen caught on the lap this awk landed.)
+awk -v shared="$shared" -F'%' '
+  { n = $NF
+    if (n ~ /^[0-9]+$/ && (length(n) == 3 || length(n) == 4) && n + 0 > shared + 0) print }
+' "$work/cites.txt" > "$work/unshared.txt"
 
 unshared=$(wc -l < "$work/unshared.txt" | tr -d ' ')
 files=$(cut -d: -f1 "$work/unshared.txt" | sort -u | wc -l | tr -d ' ')
