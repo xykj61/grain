@@ -152,27 +152,28 @@ costs 325s of Zig. **39 control legs, 0 failed**, every refusal planted and lift
 **YOURS:** the worker demands an exact count; the emitted program demands a **floor** and ignores
 anything past it. Two shapes of one boundary -- worth a gate, or is the worker's exactness enough?
 
-**GRASS -- A PAGE SAID THE FRONT DOOR NAMED IT, AND THE FRONT DOOR HAD STOPPED.**
-Elder [shelved](archive/20260910-234454_itinerary-landed-accounts.md).
-**REDS FIRST, BOTH MINE.** `prose_register` read `door_setting_undeclared`: my `84a0ebc26`
-reverted PETRICHOR's landed README Style line, its stash based two accounts back and carrying it
-along. `shim_reason` read **949/948** -- the 949th my own `under` binding, asserted on
-and reporting nowhere. Both repaired: **18/0/1**, **948**.
-**AETHER HEARS** (row 0, least-read today at 16). **FOUND, STANDING EIGHTEEN DAYS:** the Lindy foundation has said since `20260811` that the root README
-"leans on this foundation in its opening; this foundation links back." `7191a938b` rewrote README on
-`20260823` and the word left it; `follow-our-compass.md` carried the same promise. **Two of the
-room's three oldest orientation pages named the front door, and it named neither.**
-`foundations_link` reads the links a page WRITES, `foundations_reach` whether the ROOM's index names
-it -- neither reads the ROOT door, and no reading treats a sentence as a promise.
-**MECHANISM:** `**Front door:**` becomes a declared key, as `**Style:**` and `**Room:**` are.
-`front_door_claim_scan.sh` reads it in `foundations`, `context` and `docs`, resolves each link
-against the page's own directory, and walls at **zero** every door failing to name the claimant --
-by BASENAME, unique under the one-clock law. Causes: `no_target`, `absent`, `no_backlink`. **Opting
-in IS the filter.** README names both foundations now, so the claims are TRUE.
-**PROVEN:** control **15 legs, fail=0**, three mutations bitten; A 90 / B 83 / B 81. **COLD 251
-run, 245 green, 3 red, 3 gated, `tree_moved=no`** -- held still for the pass.
-**YOURS:** the population is **two** and opt-in, so a page that ought to declare a door and
-declines is invisible here. Whether a reading may infer the claim from prose is yours.
+**GRASS -- THE CENSUS OF WHAT NOBODY RUNS COULD SEE NO PROOF.**
+Elder [shelved](archive/20260911-013618_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, lap 4611), seat `single-stranded`. **FOUND:** both populations
+of `unheard_guard_scan.sh` end `grep -v '^tools/fixtures/'`, an exclusion written for pen
+material. That room holds the INSTRUMENT layer too, so the census asking *does anybody run this*
+has never seen one.
+**MEASURED through the closure the guard already computes: 258 controls, 18 unreached** -- one is
+`invariant_coverage_control.sh`, whose 37 legs prove a classifier three published figures rest on.
+**MY FIRST DRAFT READ `control_heard=0`**, clean and false: both elder rules end `\.(rish|rye)`.
+**A rule is paired with the population it can see, or it reads zero and calls it news.**
+**MECHANISM:** a third reading with its own `names_sh.awk`, reusing `heard.txt`. `control_unheard` ratchets at 18 over a floor, since a collapsed glob reads zero
+and a ratchet passes it. **Two causes apart from the gate:** 11 ORPHANS named by no runner, 7 UNRUN whose runner is unheard,
+three of those dated equinox guards. The `.sh` source set keeps the WITNESS and drops scan and
+control; dropping it would call its own control unrun -- a false RED worse than %486's false green
+-- and a leg holds it to naming only its own.
+**PROVEN:** control 52 -> **75 legs, fail=0**; a blinded rule reds 7, a foreign control the wall, a
+quiet raise the pin. [Paper](../active-designing/20260911-013618_a-proof-nobody-runs-is-a-claim.md) A 93.
+**COLD 250/247, 1 red, 2 gated, `tree_moved=no`** -- the red the roster's echo of `dated_path`,
+`%626`, OPEN.
+**YOURS:** whether the hundreds of `*_scan.sh` want the same reading -- a scan is reached through
+its witness where a control is reached only by being RUN, a shape rather than a wider glob. The
+REDS pin holds every row OPEN, so this books no row until you raise it.
 
 **INCENSE -- A METER KNEW A LAW WAS UNREADABLE AND WOULD NOT NAME IT.**
 Elder [shelved](archive/20260911-001547_itinerary-landed-accounts.md).

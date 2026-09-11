@@ -16,6 +16,22 @@
 # rule's own blind spot a number. The largest silent choir here is tools/p/parity_ch01.rish, which
 # sings 281 guards and stood outside the census built to find silent choirs.
 #
+# AND A THIRD READING, seated 20260911. The two above ask whether a GUARD is run. This one asks
+# whether the PROOF beneath a guard is run, which is a different question with a different failure:
+# a scan whose classifier drifts still answers, and the control that would have caught it sits on
+# disk saying nothing. Both elder populations end `grep -v '^tools/fixtures/'` -- an exclusion
+# written for pen material that swept out the tree's whole instrument layer beside it, so a control
+# has never been visible to this census at all. control_population counts the tracked controls,
+# control_heard those a rostered guard reaches, and control_unheard the remainder, under a ceiling
+# that only falls and a population floor that only falls beside it. control_orphans splits the
+# remainder by cause: an orphan is named by no runner anywhere, where an unrun control HAS a runner
+# that is itself unheard -- two causes wanting two repairs, reported apart from the gate.
+#
+# AND ITS FIRST DRAFT READ ZERO. Both elder naming rules end `\.(rish|rye)`, so neither can match a
+# `.sh` at all; run the closure's own rule over the heard set and it answers control_heard=0 on a
+# tree where a plain grep finds 248 of 258 named. A rule is paired with the population it can see,
+# or it reads zero and calls it news.
+#
 # WHAT IT STANDS ON. Fifty-two behaviours proven on real git repositories in a throwaway pen by
 # tools/fixtures/u/unheard_guard_control.sh, welcomes asserted as hard as refusals: a rostered
 # guard is heard, a guard it runs is heard, reach is transitive, reach flows only out of what is
@@ -80,6 +96,14 @@ assert green.out contains "unheard_choir_ceiling=37" else "unheard-guard: the ch
 # `glow_choir` reached `tools/gen/chapter/glow_hygiene_pin.rish` two hops down, and a ceiling
 # carrying slack over a count that has fallen lets the next silent choir arrive unheard.
 assert green.out contains "unnamed_choir_ceiling=11" else "unheard-guard: the second reading's ceiling stands where it was measured"
+# THE THIRD READING'S CEILING AND FLOOR, pinned the same way and for the same reason. The ceiling
+# opens at exactly the count measured on the round that seated it -- 18 on 20260911 -- so the
+# seating reddened no ship and the nineteenth unrun control reds on the lap it arrives. It does not
+# move on ordinary growth: a control arrives beside the witness that runs it, so a new pair joins
+# the heard set on the lap it lands. The floor sits at 200 against a population of 258, wide enough
+# that no lawful lap reaches it and narrow enough to catch a glob that stopped matching.
+assert green.out contains "control_ceiling=18" else "unheard-guard: the third reading's ceiling stands where it was measured -- a ceiling only falls"
+assert green.out contains "control_population_floor=200" else "unheard-guard: the third reading's floor stands where it was measured -- a floor only falls"
 
 # THE VACUUMS, closed before the count is believed. A reading that reaches no guards prints zero
 # unheard, and a zero nobody planted looks exactly like a heard tree (REDS %240). Both vacuums are
@@ -130,6 +154,16 @@ assert green.out contains "unnamed_population_floor=384" else "unheard-guard: th
 
 # THE FLOOR FROM BOTH SIDES, ON THE LIVING TREE, read out of the scan's own output rather than
 # spelled here, so the leg cannot drift away from the reading it proves.
+# THE THIRD READING FROM BOTH SIDES, ON THE LIVING TREE, each number read out of the scan's own
+# output rather than spelled here, so neither leg can drift away from the reading it proves.
+let ctl_under = run ["sh" "-c" "n=$(sh tools/fixtures/u/unheard_guard_scan.sh | sed -n 's/^control_unheard=//p'); UNHEARD_CONTROL_CEILING=$((n-1)) sh tools/fixtures/u/unheard_guard_scan.sh"]
+assert (ctl_under.ok == false) else "unheard-guard: a control ceiling one under the live reading must refuse"
+assert ctl_under.out contains "verdict=over_control_ceiling" else "unheard-guard: want the control refusal named apart from every other -- ${ctl_under.out}"
+
+let ctl_floor = run ["sh" "-c" "n=$(sh tools/fixtures/u/unheard_guard_scan.sh | sed -n 's/^control_population=//p'); UNHEARD_CONTROL_POPULATION_FLOOR=$((n+1)) sh tools/fixtures/u/unheard_guard_scan.sh"]
+assert (ctl_floor.ok == false) else "unheard-guard: a control population floor one above the live count must refuse"
+assert ctl_floor.out contains "verdict=under_control_population_floor" else "unheard-guard: want the control floor refusal named apart from every other -- ${ctl_floor.out}"
+
 let pop_under = run ["sh" "-c" "n=$(sh tools/fixtures/u/unheard_guard_scan.sh | sed -n 's/^unnamed_population=//p'); UNNAMED_POPULATION_FLOOR=$((n+1)) sh tools/fixtures/u/unheard_guard_scan.sh"]
 assert (pop_under.ok == false) else "unheard-guard: a population floor one above the live count must refuse"
 assert pop_under.out contains "verdict=under_unnamed_population_floor" else "unheard-guard: want the floor refusal named apart from every ceiling -- ${pop_under.out}"
@@ -176,5 +210,15 @@ assert control.out contains "ok   the SAME pen with the accuser renamed reads th
 assert control.out contains "ok   a population floor exactly at the count passes" else "unheard-guard: the floor's passing-side leg is missing"
 assert control.out contains "ok   one above the count refuses" else "unheard-guard: the floor's refusing-side leg is missing"
 assert control.out contains "ok   and the floor refuses under its own name, apart from every ceiling" else "unheard-guard: the floor's named-verdict leg is missing"
+# THE THIRD READING'S OWN PEN LEGS, named here as well as counted, for the reason every leg above
+# is: a control that quietly dropped them would still read fail=0.
+assert control.out contains "ok   only the control a rostered witness runs is heard" else "unheard-guard: the control welcome leg is missing"
+assert control.out contains "ok   a control whose only runner is unheard reads unrun, and names that runner" else "unheard-guard: the inherited-silence leg is missing"
+assert control.out contains "ok   a control named only in a comment is run by nothing, so it reads orphan" else "unheard-guard: the comment-only control leg is missing"
+assert control.out contains "ok   a control named nowhere reads orphan" else "unheard-guard: the orphan leg is missing"
+assert control.out contains "ok   and the control ceiling refuses under its own name" else "unheard-guard: the control ceiling's named-verdict leg is missing"
+assert control.out contains "ok   and the control population floor refuses under its own name" else "unheard-guard: the control floor's named-verdict leg is missing"
+assert control.out contains "ok   the witness names no control but its own, so the kept source set cannot credit a foreign proof" else "unheard-guard: the foreign-control wall leg is missing"
+assert control.out contains "ok   the elder population still counts the three tools/a witnesses that wear the word" else "unheard-guard: the third reading's elder-unmoved leg is missing"
 
-say "GREEN: unheard-guard -- the roster's reach is measured, the unheard remainder stands under a ceiling that only falls, the runners wearing neither word are counted rather than absent, all three ceilings refuse one under the live reading, the population floor refuses one above it, and every welcome is proven on a pen."
+say "GREEN: unheard-guard -- the roster's reach is measured, the unheard remainder stands under a ceiling that only falls, the runners wearing neither word are counted rather than absent, the controls beneath the guards are counted for the first time and split by cause, every ceiling refuses one under the live reading, both population floors refuse one above it, and every welcome is proven on a pen."
