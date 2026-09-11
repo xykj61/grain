@@ -18,10 +18,23 @@
 #
 # THAT FIGURE IS FREE, and it has already moved. `20260908.224618` drew the sixth probe --
 # `capability tigerbeetle_clone` -- and rostered one of the 22 behind it, so the population reads 21
-# and falls with every further rostering. Read `optional_unrostable` off the scan rather than off
+# and falls with every further rostering. Read `optional_unrostered` off the scan rather than off
 # this paragraph: a witness header reciting a number its own scan derives is the drift the standing
 # equipment witness confessed to one room over, where a header said `forty-three` while the control
 # ran more.
+#
+# AND THE POPULATION WAS NAMED FOR A BEHAVIOR NOBODY HAD RUN (`20260911`). The reading was static:
+# it counted a runner naming an optional gitlink on a working line with no roster row, called that
+# `optional_unrostable`, and said of each member *reds when an optional submodule is absent*. Run
+# with `gratitude/tigerbeetle` empty -- how every ship on this pier stands -- **38 of 38 exit 0**,
+# each printing an honest SKIP, the whole population in 768 ms. Not one reds. The count was a count
+# of a SHAPE and the sentence claimed a BEHAVIOR, and the two are different populations; the reading
+# is named `optional_unrostered` from here, which is what it reads.
+#
+# So the scan grew a `probe` mode that RUNS each optional dependent whose gitlinks stand empty and
+# classifies it by exit status, and this witness asks for that mode rather than the static one. The
+# second gate, `probe_red=0`, is what turns REDS %646's 5-in-40 sample into a wall: a runner written
+# with a hard assert over a reading library reds on the lap it lands.
 #
 # THE CURE ALREADY STANDS, which is the second finding and the larger one. REDS %460, one lane over,
 # named the roster's `capability` field as the mechanism for exactly this and called seating it a
@@ -31,21 +44,21 @@
 # thing. So the two open rows are one gate, and the gate has a door.
 #
 # THE GATE IS THE ONE ROW THAT WOULD RED THE FLEET: a rostered guard depending on an optional
-# gitlink and naming no capability. Held at zero. The unrostable population is reported rather than
+# gitlink and naming no capability. Held at zero, beside `probe_red`. The unrostered population is reported rather than
 # gated, because rostering a study census is a hand's decision with a probe attached, and a guard
 # that reds on a decision nobody has made is a guard somebody turns off.
 
 say "gitlink-dependent: Language EN -- what a correct clone may lack, and who reds over it."
-say "gitlink-dependent: Style Gauge, Meter -- one gate at zero, one population reported."
+say "gitlink-dependent: Style Gauge, Meter -- two gates at zero, one population reported."
 say "gitlink-dependent: Lens TAME -- every refusal planted and then lifted."
 
-say "gitlink-dependent: the control -- twenty behaviors on real repositories in a throwaway pen..."
+say "gitlink-dependent: the control -- thirty-seven behaviors on real repositories in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/g/gitlink_dependent_control.sh"]
 assert ctl.ok else "gitlink-dependent: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=20 fail=0" else "gitlink-dependent: the control did not prove twenty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=37 fail=0" else "gitlink-dependent: the control did not prove thirty-seven behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "gitlink-dependent: and this tree's own reading..."
-let scan = run ["sh" "tools/fixtures/g/gitlink_dependent_scan.sh"]
+let scan = run ["sh" "tools/fixtures/g/gitlink_dependent_scan.sh" "probe"]
 # invariant: a refusal reports BOTH streams, since this scan writes its reason to stderr and the
 # reds file a reader opens would otherwise carry an empty line where the reason belongs.
 assert scan.ok else "gitlink-dependent: the scan refused --\n${scan.out}\n${scan.err}"
@@ -55,13 +68,28 @@ assert scan.out contains "rostered_undeclared=0" else "gitlink-dependent: a rost
 assert scan.out contains "verdict=ok" else "gitlink-dependent: the census refused --\n${scan.out}\n${scan.err}"
 # invariant: both populations are reported, empty or full. A reading that printed only the fault
 # would leave a reader unable to tell a healthy tree from a scan that could not see one.
-assert scan.out contains "optional_unrostable=" else "gitlink-dependent: the unrostable population went unreported"
+assert scan.out contains "optional_unrostered=" else "gitlink-dependent: the unrostered population went unreported"
+# invariant: the probe gate is held at zero -- a runner that REFUSES over a reading library a
+# correct clone may lack is REDS %646's shape exactly, and this is where it reds on arrival.
+assert scan.out contains "probe_red=0" else "gitlink-dependent: an optional dependent refuses over an absent reading library --\n${scan.out}"
+# invariant: the measured readings are all three reported, empty or full, so a reader tells a clean
+# population from a probe that could see nothing. `probe_unread` is the honest zero here: every
+# gratitude gitlink on this pier stands empty, so every dependent was actually run.
+assert scan.out contains "probe_green=" else "gitlink-dependent: the probe reported no green count"
+assert scan.out contains "probe_unread=" else "gitlink-dependent: the probe reported no unread count"
 assert scan.out contains "required_dependents=" else "gitlink-dependent: the required population went unreported"
 assert scan.out contains "optional_gitlinks=" else "gitlink-dependent: the two rooms were not counted apart"
+# The closing line tells a reader to READ `optional_unrostered` above, and until `20260911` nothing
+# here printed it -- the scan's whole output stood captured in `scan.out` and was said nowhere. A
+# guard pointing at a line it never speaks is the same fault this lap came to repair, one room in.
+# BARE, never interpolated (`rish_report_bound`, repaired `20260911.035245` as this lap landed out of
+# a stash): `say "${scan.out}"` opens a 4096-byte StrBuf and would end the run on a GREEN reading
+# once this census outgrew it. A bare `say` writes the value straight out, as `reds_spine_derive` does.
+say scan.out
 
 say "gitlink-dependent: and the capability field the cure rests on is really built..."
 # invariant: the roster honors at least one capability probe. This witness recommends a mechanism to
-# whoever reads the unrostable population, and recommending one the runner does not implement would
+# whoever reads the unrostered population, and recommending one the runner does not implement would
 # be prose rather than a door.
 let caps = run ["sh" "-c" "grep -c '^capability ' construction/standing-equipment.kyri || true"]
 assert caps.ok else "gitlink-dependent: the roster could not be read"
@@ -70,5 +98,5 @@ assert (trim caps.out) != "0" else "gitlink-dependent: the capability field this
 # The closing line names the READING rather than a figure. The elder spelled `22`, which was true
 # for six hours and false the moment the first dependent was rostered behind a probe -- and a GREEN
 # line carrying a stale number is worse than one carrying none, since it is read as measurement.
-# The scan's own `optional_unrostable=` line is said above and is the record.
-say "GREEN: gitlink-dependent -- the unrostable population counted rather than sampled (read `optional_unrostable` above), zero rostered undeclared, and the capability door proven open and walked through."
+# The scan's own `optional_unrostered=` line is said above and is the record.
+say "GREEN: gitlink-dependent -- the unrostered population counted rather than sampled (read `optional_unrostered` above), zero rostered undeclared, zero refusing over an absent reading library when actually RUN (`probe_red`), and the capability door proven open and walked through."

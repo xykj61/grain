@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260911.014546
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent, seat BAKERY (core infrastructure)
+modality text
+model claude-opus-5
+model_status active, runtime-reported by the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json names claude-opus-5; evidence is configuration, never runtime
+evidence .claude/settings.json, read 20260911
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8/180, TZ America/New_York
+title the population named for a behavior nobody had run
+prompt autonomous lap -- core infrastructure, Lindy-first crux-first
+rota lap 4614, row 4 -- Earth, the row that breathes in; read the threshold page and the dual seat (the marked value), and took its instruction literally: run two members of a list before reading the argument about them. That single move is what found this red.
+think Reds first. The pin held nine rows; three in my lane (%689 %680 %678) wait on Keaton's word, and %646 -- the class of witnesses that red on an absent optional dependency -- read as a sweep whose size was a 5-in-40 sample.
+think A later lap had already counted it: tools/fixtures/g/gitlink_dependent_scan.sh reads optional_unrostable=38 and gates rostered_undeclared at zero. So the count existed and the question was whether to roster them.
+think Before arguing that, I ran two of the 38. Both exit 0, printing an honest SKIP over the uninitialised gratitude/tigerbeetle. Then all 38: 38 green, 0 red, 768 ms.
+think Reading the scan, the reason is structural. It greps a path and reads the roster -- a purely STATIC reading -- while its per-member sentence claims a behavior (reds when an optional submodule is absent) nothing had ever asked a runner.
+obs The control agreed with the prose, which is why a pen alone could not catch it: CASE 3 plants `assert clone.ok else "...ABSENT"`, written from the header's own sentence rather than from a file on disk. The only hard-asserting specimen anywhere was the one the claim had built for itself.
+obs So the repair is two-sided. The reading is renamed optional_unrostered, which is what it counts; and a probe mode RUNS each optional dependent whose gitlinks stand empty, classifying probe_green / probe_red / probe_unread. Unread rather than guessed: observing absence by deleting a clone is the one move a meter may never make.
+obs probe_red is gated at zero. That is what turns %646's sample into a wall -- a runner written with a hard assert over a reading library reds on the lap it lands rather than being found by the next census.
+obs An absent runner refuses no_runner rather than calling every dependent red, since without the interpreter every probe would read as this very finding's colour.
+obs A third repair rode along: the witness's closing line told a reader to read `optional_unrostered` above, and nothing had ever printed it -- the scan's whole output stood captured in scan.out and was said nowhere. The probe detail now goes to stderr so the card is short enough to say, and the witness says it.
+obs Pin room was made rather than asked for. REDS held 481 bytes with every row OPEN, so no ship in the fleet could book a red. Folding the one BOOKED row (%701, my own from last night) to its shelf freed 2,475; my row took most of it back. 301 free now, 9 OPEN, none foldable by law -- the bound is the fleet's real choke and it is sized for 8 open rows.
+obs REDS FIRST, one peer red closed mid-lap: log_has_a_row read pin_count_drift=1 on my cold open -- session-logs/README.md said 104 logs for the closed day 20260910 while its shelf carried 107, and session-logs/CHAPTERS.md carried the same 104. Both derived from the shelf and set to 107; session_roster_agree and log_has_a_row GREEN.
+obs No card line for that repair: construction/ITINERARY.md stands at 40957 of a 40960 bound, so three bytes were the whole budget. That is the same choke as the REDS bound, one pin over, and it is why the account block was cut four times to fit.
+loom witness=gitlink_dependent wall_ms=14299 probe_ms=2550 dependents=39 probe_green=39 probe_red=0
+loom probe=optional_dependents runs=38 wall_ms=768 green=38 red=0
+file tools/fixtures/g/gitlink_dependent_scan.sh the probe mode, the rename, the two gates, and the header recording what was measured
+file tools/fixtures/g/gitlink_dependent_control.sh five probe cases -- the honest skip planted FIRST, the hard assert, the static blindness, the checked-out clone, the absent runner
+file tools/g/gitlink_dependent_witness.rish asks for probe mode, gates probe_red at zero, and says the card it points at
+file construction/standing-equipment.kyri the roster record carries the second gate and the true cost
+file construction/REDS.md the row booked at this lap's stamp, and %701 folded out to make the room
+file construction/archive/REDS-a-cadence-needs-a-mechanism-rows-701.md the shelf %701 folded onto
+file construction/archive/20260911-014147_itinerary-landed-accounts.md the elder BAKERY account, shelved whole
+file construction/ITINERARY.md the live BAKERY block, and the two questions this lap leaves Keaton
+scope one keystone -- a census that measured the behavior it had been naming
+status GREEN -- gitlink_dependent GREEN with probe (37 control legs, fail=0, three mutations bitten), reds_ledger_monotone GREEN, remember_git_nib GREEN; log_has_a_row and session_roster_agree GREEN after the pin repair; cold roster pass still running at send, named honestly
+recommend check-in (Keaton) -- the 38 read clean and are rostable today behind `capability tigerbeetle_clone`, which is 38 roster rows and a hand's call; and the REDS bound is sized for 8 open rows against 9 that cannot fold

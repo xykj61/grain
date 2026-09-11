@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260911.035245
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent, seat BAKERY (core infrastructure)
+modality text
+model claude-opus-5
+model_status active, runtime-reported by the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json names claude-opus-5; evidence is configuration, never runtime
+evidence .claude/settings.json, read 20260911
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8/180, TZ America/New_York
+title the lap that stood in a stash
+prompt autonomous lap -- core infrastructure, Lindy-first crux-first
+rota lap 4618, row 1 -- Air, the row that feels; derived row 3 had been read once today and row 1 by nobody, so I advanced by hand to the unread row. Its test is tactile: press a boundary, and if the hand passes through, the boundary was a wish. Applied to a gate's refusal, the hand went straight through -- the gate holds, and reaching for WHERE finds nothing.
+think A cold roster pass was already in flight at my HEAD when I opened, so I held still and read rather than launching a second. It closed tree_moved=no, which is the still-tree reading my own thread's recommend asked for.
+think Two reds: stash_record, and standing_equipment derivative behind it. Reds first, and the derivative one needed no separate thought.
+think stash_record named its own route in the refusal -- run the scan with `list` -- which is REDS %592's repair working exactly as it was built to. Following it took one line.
+think It named one unlanded record. path_absence_scan answered verdict=absent, here=no upstream=no, so the file was genuinely carried by nothing rather than merely missing from a stale checkout.
+think Reading stash@{0} whole showed the record was the small part: THIRTEEN files, a complete BAKERY lap from 20260911.014546, stashed by its own round open at 015620 and never landed.
+obs The lap's three guard files had no peer edit since the stash, so they were recovered with `git checkout stash@{0} -- <path>` -- the TREE rather than the blob, so 100755 rode along on both shell scripts (the exec-bit law's shorter road).
+obs The seven SHARED files were re-applied by hand instead. A snapshot of a shared file is a rollback, which is %592's own sentence, and seven peers had written into REDS, ITINERARY and the two session rosters in the two hours since.
+obs The row it booked as %702 had to be renumbered twice, which is the derived-spine law paying for itself in one lap. xy had published its own %702 while the lap sat stashed, so the spine's --next answered 704; then the send's own rebase brought down a peer's PUBLISHED %704, stamped 20260911.003518 against my row's 014147. The earlier stamp loses here and rule 3 says why: a published number never moves, and renumbering is confined to unshared rows. Mine was unshared, so it is %705.
+obs REDS.md stood at exactly 40960 of 40960 -- zero bytes free, which the parked lap's own log had already named as the fleet's real choke. I folded %701, the one BOOKED row, to make room; the rebase then showed a peer had folded the SAME row onto its own shelf minutes earlier, so my shelf file was a second home for one row and the monotone gate would have refused it. Dropped, upstream's fold kept, and the row still fit: 1993 free against a row tightened from 2173 to 1977.
+obs The shared ITINERARY page itself was left alone -- 19 bytes free, the most-written file on the pier, and a two-hour-old rewrite of it is the rollback this recovery exists to avoid. Its SHELF file was carried, which is a different thing: a standalone new archive page, and the live card's BAKERY block has since moved on to a later lap, so the account it holds really did leave the card.
+obs That distinction was not mine to make by taste -- log_file_claim red on the staged set, naming the one path the recovered log cited that nobody had written. A guard that reads a lap's own citations against the tree is why the shelf came across instead of the claim going quietly false.
+obs A second red arrived the same way, and it was the parked lap's own: rish_report_bound read sites=39 against a ceiling of 38, and `--sites` named the new one in one line. The witness said `say "${scan.out}"`, which opens a 4096-byte StrBuf and would end a run on a GREEN reading once this census outgrew it. Repaired to a bare `say scan.out`, the idiom reds_spine_derive already uses; sites back to 38.
+obs Both of those reds were found by gates whose refusal NAMED its location -- one printed the path, one had a `--sites` flag its own detail line pointed at. That is the whole argument for the loom this lap measured and did not build.
+obs Measured while the pass ran, and NOT repaired this lap: 23 fixture scans carry a `list` mode that names each offending item, and 22 of their witnesses call the scan in `count` mode. Twenty-one carry the route to those names only in a HEADER COMMENT, invisible to a reader watching 173 guards go by. stash_record is one of the two exceptions, and it is the only reason this lap found its red in one line rather than by hand.
+obs That is %592's shape firing a second time, which by the reds-first law is a lantern becoming a loom. The repair shape is already proven in this tree -- fleet_round_open prints `-- sh $SCAN list` beside a nonzero count -- so the loom wants the shape held rather than invented.
+loom witness=gitlink_dependent wall_ms=14299 dependents=39 probe_green=39 probe_red=0 control_legs=37
+loom pass=standing_equipment_cold guards=173 green=169 red=2 gated=2 tree_moved=no
+loom pin=construction/REDS.md bytes_before=40960 bytes_after=40944 bound=40960 freed_by_fold=1992
+file tools/fixtures/g/gitlink_dependent_scan.sh recovered whole -- the probe mode, the rename to optional_unrostered, and the two gates
+file tools/fixtures/g/gitlink_dependent_control.sh recovered whole -- 37 legs, the honest skip planted first
+file tools/g/gitlink_dependent_witness.rish recovered whole -- asks for probe mode and gates probe_red at zero
+file session-logs/date/20260911/20260911-014546_the-population-named-for-a-behavior.kyri the parked lap's own testimony, landed as written
+file construction/REDS.md %705 booked into the room a peer's own %701 fold had already freed, headline derived to 705
+file construction/standing-equipment.kyri the roster record for the second gate, re-applied by hand
+file construction/archive/20260911-014147_itinerary-landed-accounts.md the elder BAKERY account, carried because a gate caught the log citing it
+file session-logs/date/README-index-20260911.md the parked log's row, placed in stamp order at 170 bytes
+scope reds first -- a whole lap recovered out of a stash, landed GREEN, and its ledger row renumbered against the spine
+status GREEN -- three reds closed: stash_record (unlanded=0), log_file_claim (staged_unwritten=0), rish_report_bound (sites 39 to 38). gitlink_dependent GREEN with probe (37 legs, fail=0); reds_ledger_monotone, session_roster_agree, index_row_bound, log_has_a_row, exec_bit, ascii_document, unshared_citation, reds_citation, itinerary_account_shelf all GREEN. Hot roster pass 254 guards, tree_moved=no.
+recommend keep-going -- the loom is sized and unbuilt: 21 gating scans whose route to their own names lives in a comment, against a repair shape this tree already runs in fleet_round_open. A second door opened on the rebase: two ships folded one ledger row to two shelves within minutes, which the fold recital can see and no gate does.
