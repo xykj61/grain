@@ -96,6 +96,14 @@ if [ "$sites" -le "$ceiling" ]; then
     echo "verdict=under_ceiling"
     exit 0
 fi
+# A REFUSAL NAMES ITS MEMBERS. The two lines below say what the class is and how to repair one,
+# and until `20260911` they said it over a bare total: a reader met `sites=39 ceiling=38` and had
+# to discover `--sites` for themselves before they could touch a single file. That is the shape
+# GRASS booked one room over for `late_say` -- a total naming no member makes a stray unlocatable
+# -- and `session_roster_agree` took the same repair the same day. The list is already gathered in
+# `$tmp` whether or not `--sites` was passed, so printing it on a refusal costs one line and the
+# flag keeps its job of showing the roster on a GREEN reading.
+[ "$list" = yes ] || { [ -s "$tmp" ] && cat "$tmp"; }
 echo "detail: a guard composes a report that may outgrow ${buf} bytes and end the run on a GREEN reading"
 echo "detail: repair -- put the label on its own say and the reading on a bare one, as reds_spine_derive does"
 echo "verdict=over_ceiling"

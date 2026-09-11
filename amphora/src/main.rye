@@ -255,6 +255,13 @@ const restore_out_suffix = ".season";
 /// Listing-only sealed cargo needs these bodies for the Return (Q38-Q42).
 const resins_dir_name = "resins";
 
+/// Suffix a pour's scratch vessel wears while it is being filled, sealed and
+/// stamped. It rides in the TARGET'S OWN directory rather than a temporary one,
+/// because the landing step is `rename(2)`, which POSIX makes atomic only within
+/// one filesystem -- a cross-device rename refuses, and a copy-then-delete would
+/// reopen the very window this suffix closes.
+const pour_scratch_suffix = ".pouring";
+
 /// Assembled far-side vessel name inside a dock directory.
 /// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent --
 /// Keaton's rename word replaces it whole, accrete-migrate on rename).
@@ -305,6 +312,23 @@ const CliError = error{
     RestoreUnwritable,
     ManifestDisagrees,
 };
+
+/// A pour's refusal, with its half-filled scratch swept off disk first. The
+/// refusal text and exit code are `refuse`'s own, so a reader meets exactly the
+/// sentence they already know; what this adds is that the pen the pour was
+/// working in leaves with it.
+fn refuse_and_clear(io: std.Io, scratch: []const u8, fault: CliError, detail: []const u8) u8 {
+    // invariant: a real scratch path, since sweeping an empty name would reach
+    // whatever the current directory happens to hold.
+    assert(scratch.len > 0);
+    // invariant: and it wears the pour's own suffix, so this can only ever remove
+    // a file this pour made -- never the target vessel standing beside it.
+    assert(std.mem.endsWith(u8, scratch, pour_scratch_suffix));
+    // Swallowed on purpose: the refusal below is what the caller came for, and a
+    // scratch that outlives one failed pour is swept by the next pour's own write.
+    Dir.cwd().deleteFile(io, scratch) catch {};
+    return refuse(fault, detail);
+}
 
 /// One door for every CLI fault -- switch on the name, never compare.
 fn refuse(fault: CliError, detail: []const u8) u8 {
@@ -423,6 +447,22 @@ fn resins_dir_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
     return std.fmt.bufPrint(buf, "{s}/{s}", .{ dir, resins_dir_name }) catch {
         return error.PathTooLong;
     };
+}
+
+/// The scratch address a pour fills before it lands: the target plus one suffix.
+/// Same directory on purpose -- see `pour_scratch_suffix` for why the rename
+/// wants one filesystem.
+fn pour_scratch_path(vessel: []const u8, buf: []u8) []const u8 {
+    // invariant: a real target, since the scratch is derived from it and an empty
+    // vessel path would name the bare suffix in whatever directory we stand in.
+    assert(vessel.len > 0);
+    // invariant: the caller's buffer holds target plus suffix, so this derivation
+    // cannot overrun and needs no PathTooLong door of its own -- the parser already
+    // held the target at max_vessel_path_len.
+    assert(buf.len >= vessel.len + pour_scratch_suffix.len);
+    // Unreachable rather than a refusal: the assert above already proved the buffer
+    // holds both halves, so a short write here would mean that invariant is false.
+    return std.fmt.bufPrint(buf, "{s}{s}", .{ vessel, pour_scratch_suffix }) catch unreachable;
 }
 
 /// One resin address: `{dirname(vessel)}/resins/{digest_hex}`.
@@ -925,35 +965,55 @@ fn pour_ship(
     // vessel missing either is one no dock reader could name the cargo of.
     assert(filled.manifest_len > 0);
 
+    // The fill, the seal and the stamp all land on a SCRATCH path beside the target,
+    // and the target is replaced only once all three have proven. A pour that writes
+    // the target first is a pour whose every refusal destroys the vessel already
+    // standing there -- measured on metal `20260911`, where an absent seal tool left
+    // an unsealed, unstamped file where a sealed and stamped one had been, and both
+    // walls then refused the leavings. This is `amphora_prove_before_write` one verb
+    // over: restore proves every resin before its first byte; pour lands nothing on
+    // the target until the whole rite has passed.
+    var scratch_buf: [max_vessel_path_len + pour_scratch_suffix.len]u8 = undefined;
+    const scratch = pour_scratch_path(filled.vessel, &scratch_buf);
+
     write_unsealed_vessel(
         io,
-        filled.vessel,
+        scratch,
         parent_hex,
         manifest[0..filled.manifest_len],
         cargo[0..filled.cargo_len],
     ) catch |fault| {
+        // No scratch to clear: this refusal is the write itself failing.
         return refuse(fault, filled.vessel);
     };
 
     var seal_path_buf: [max_vessel_path_len]u8 = undefined;
     const seal_bin = resolve_seal_bin(init, io, args[0], &seal_path_buf) catch {
         // Detail names the default roof; AMPHORA_VESSEL_SEAL still gates resolve.
-        return refuse(error.SealToolAbsent, default_seal_bin);
+        return refuse_and_clear(io, scratch, error.SealToolAbsent, default_seal_bin);
     };
-    run_vessel_seal(allocator, io, seal_bin, filled.vessel) catch {
-        return refuse(error.SealFailed, filled.vessel);
+    run_vessel_seal(allocator, io, seal_bin, scratch) catch {
+        return refuse_and_clear(io, scratch, error.SealFailed, filled.vessel);
     };
-    verify_seal_fields(io, filled.vessel) catch {
-        return refuse(error.SealFailed, filled.vessel);
+    verify_seal_fields(io, scratch) catch {
+        return refuse_and_clear(io, scratch, error.SealFailed, filled.vessel);
     };
     print("amphora: vessel sealed cargo_bytes={d}\n", .{filled.cargo_len});
 
-    stamp_sealed_vessel(init, allocator, io, args[0], filled.vessel) catch |fault| {
+    stamp_sealed_vessel(init, allocator, io, args[0], scratch) catch |fault| {
         return switch (fault) {
             // Detail names the default roof; AMPHORA_VESSEL_CORE still gates resolve.
-            error.StampToolAbsent => refuse(error.StampToolAbsent, default_core_bin),
-            else => refuse(error.StampFailed, filled.vessel),
+            error.StampToolAbsent => refuse_and_clear(io, scratch, error.StampToolAbsent, default_core_bin),
+            else => refuse_and_clear(io, scratch, error.StampFailed, filled.vessel),
         };
+    };
+
+    // The landing. Same directory, so this is a within-filesystem rename: the target
+    // path holds the elder vessel right up to this call and the new one after it,
+    // and never a half-written thing in between.
+    const cwd = Dir.cwd();
+    cwd.rename(scratch, cwd, filled.vessel, io) catch {
+        return refuse_and_clear(io, scratch, error.VesselUnwritable, filled.vessel);
     };
     write_season_resins(allocator, io, filled.season, filled.vessel) catch |fault| {
         return switch (fault) {

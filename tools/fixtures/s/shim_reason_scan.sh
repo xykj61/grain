@@ -124,6 +124,12 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 # mantra ones, and the reading fell to 936 together. The ceiling meets the reading and claims no
 # slack, the way both halves of this arc already do.
 #
+# 925 `20260911` -- `tools/am/amphora_pour_atomic_witness.rish` arrived carrying 36 bindings and
+# every one of them interpolates its capture, so a guard seated this lap raised the reading by
+# nothing. The ceiling stood one ABOVE the reading when the roster settled, which is the slack this
+# arc's own comment declines to keep and the shape GRASS booked one room over for `late_say`: a
+# total naming no member makes a stray unlocatable. Lowered to meet it.
+#
 # `20260911.031057` -- two legs added to `tools/am/amphora_bounds_agree.rish` were written with a
 # bare `else` string and read +2 over the ceiling standing then. Both took the interpolated form
 # before they shipped, so the wall bit at write time rather than a week later, and the reading
@@ -146,7 +152,7 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 # merged tree answers, taken on the rebase rather than carried in from either side. That is the
 # only move available to a ceiling that only falls: a hand who keeps their own number discards a
 # peer's repair, and a hand who takes the peer's discards their own. The merged tree reads **926**.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-926}"
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-925}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"
