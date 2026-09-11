@@ -2095,6 +2095,30 @@ path tools/c/cyclic_witness_witness.rish
 tier cadence
 seated 20260910.063900
 
+# retired_count -- first witness for the joules-as-a-unit moonshot, reshaped by the host read that
+# row was ranked on and nobody had taken. `tools/fixtures/e/energy_instrument_scan.sh` answers
+# `joule_source=none`, `powercap_domains=0`, `msr_device=no`, `tier=counters` on this pier: no joule
+# is readable here by anybody, so the millijoule witness the moonshot named cannot be built at all.
+# What the same scan reads is `hw_instructions=yes` and `perf_event_paranoid=2`, and paranoid 2
+# permits a process to count its OWN user space -- reachable from Rye through `perf_event_open(2)`
+# without the `perf` binary this host also lacks.
+#
+# The claim it holds: retired instructions is steady where wall time is not. Measured
+# `20260911.080700` at load 10.11 over sixteen runs, five times: instruction spread 356-357 ppm,
+# wall spread 195,724-1,422,106 ppm -- three orders of magnitude apart, and the wall figure's own
+# range is 7.3x while the counter's is one part per million.
+#
+# A HOST IS NOT A FAULT (REDS %646). Where `perf_event_open` refuses, the program prints
+# `counter=unavailable` and reaches GREEN, so a machine without a counter keeps this guard green.
+# What IS gated is the distinction -- exactly one branch named, every run. The control mutates both
+# measured gates in a throwaway pen and requires each to bite, and builds the unmutated copy beside
+# them. `tier cadence`: it compiles a Rye binary three times, which is choir money rather than lap
+# money.
+guard retired_count
+path tools/r/retired_count_witness.rish
+tier cadence
+seated 20260911.081019
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer

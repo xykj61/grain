@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.082122` | [The read the ranking rested on](20260911/20260911-082122_the-read-the-ranking-rested-on.kyri) | a host read says no joule here; the counter tier gets a unit |
 | `20260911.080549` | [Which room you were in](20260911/20260911-080549_the-shelf-that-never-said-which-room.kyri) | docs-geode's eight doors name their register; ceiling 67 -> 59 |
 | `20260911.075746` | [The flap that shared a port](20260911/20260911-075746_the-flap-that-shared-a-port.kyri) | a rostered guard was sharing a UDP port with the whole pier |
 | `20260911.071053` | [the meter that read one clone](20260911/20260911-071053_the-meter-that-read-one-clone.kyri) | the capacity meter reads the anointed pin beside its own |

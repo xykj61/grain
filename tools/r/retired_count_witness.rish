@@ -1,0 +1,62 @@
+# tools/r/retired_count_witness.rish -- a unit this pier can actually carry, proven on metal.
+#
+#   rishi/bin/rishi run tools/r/retired_count_witness.rish
+#
+# First witness for moonshot 6 of
+# `active-designing/20260910-060204_the-bounded-torus-moonshots.md`, reshaped by the host read that
+# row was ranked on and nobody had taken.
+#
+# WHAT THE HOST ANSWERED. Row 6 asked for millijoules and rested on RAPL being readable here. Run
+# `20260911`, `tools/fixtures/e/energy_instrument_scan.sh` reads `joule_source=none`,
+# `powercap_domains=0`, `msr_device=no`, `tier=counters` -- no joule is readable on this pier by
+# anybody. The witness row 6 named cannot be built here, and no amount of paper changes that.
+#
+# WHAT IS READABLE. The same scan reads `hw_instructions=yes` and `perf_event_paranoid=2`, and
+# paranoid 2 permits a process to count its OWN user space. `perf_event_open(2)` reaches that from
+# Rye without the `perf` binary, which this host also lacks. So the unit changes and the SHAPE row 6
+# asked for -- a counter beside bytes and wall time in a Meter row -- survives whole.
+#
+# A HOST IS NOT A FAULT (REDS %646). Where the counter refuses to open, the program says
+# `counter=unavailable` and reaches GREEN. A witness that reds on an absent optional capability reds
+# on every machine lacking it, and a guard nobody can keep green is a guard somebody turns off. What
+# IS gated is the distinction: exactly one branch is named, every run.
+
+say "retired-count: Style Gauge, Meter -- every figure below is a reading this run took."
+say "retired-count: Lens TAME -- the run count, the workload, and the ceiling are named at construction."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "retired-count: building from source, so the binary matches the file this witness reads..."
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/retired_count.rye -femit-bin=tools/bin/retired-count"]
+assert build.ok else "retired-count: the build refused --\n${build.out}\n${build.err}"
+
+# The claim lines arrive on stderr, as every hosted Rye program in this tree prints through
+# `std.debug.print`; the redirect is what puts them where the asserts below can read them.
+let out = run ["sh" "-c" "tools/bin/retired-count selftest 2>&1"]
+# SAID BEFORE THE FIRST ASSERT ON IT (`shim_reason`, `late_say_rostered`): an assert stops the run,
+# so a reader meeting a refusal receives the program's own lines rather than this file's sentence.
+say out.out
+assert out.ok else "retired-count: the selftest refused -- read its lines above"
+
+# invariant: exactly one branch is named. This is the gate a host cannot fail by being itself: a
+# machine with no counter says so, and a program saying neither has stopped reading the host at all.
+let branch = run ["sh" "-c" "tools/bin/retired-count selftest 2>&1 | grep -c '^counter='"]
+assert branch.out contains "1" else "retired-count: the run named neither branch, or both --\n${branch.out}\n${branch.err}"
+
+# invariant: the program reaches its own green line whichever branch it took.
+assert out.out contains "GREEN: retired-count" else "retired-count: the selftest reached no green line"
+
+# The branch-aware legs are proven in the control below rather than here, because the check has to
+# ASK which branch the host took and a single-statement conditional cannot carry that honestly. The
+# control knows `host_branch` already, so the reading lives where the answer is.
+
+say "retired-count: the control -- each gate mutated in a throwaway pen and required to bite..."
+let ctl = run ["sh" "tools/fixtures/r/retired_count_control.sh"]
+say ctl.out
+assert ctl.ok else "retired-count: the control refused --\n${ctl.out}\n${ctl.err}"
+# invariant: the control ran every case it planted and none failed. Reading the verdict alone would
+# pass a control that reached its last line having proven nothing.
+assert ctl.out contains "fail=0" else "retired-count: a control case failed -- read its own lines above"
+assert ctl.out contains "control_verdict=" else "retired-count: the control reached no verdict"
+
+say "GREEN: retired-count -- the joule is unreadable here and the counter is not, and the program says which."
