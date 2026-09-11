@@ -38,7 +38,9 @@
 # run. A fresh clone has genuinely run nothing, so `never run here` is an honest reading rather
 # than a defect, and gating it would red every clone on the day it lands. The cadence figure is
 # printed on its own because that tier is where a guard can go quiet without anyone noticing --
-# the every-lap tier reports its own absence by simply not running.
+# the every-lap tier reports its own absence by simply not running. `cadence_never_run_oldest:`
+# NAMES that population, bounded and oldest-first, so a lap can turn the clock for the guards
+# whose promise has stood unkept longest rather than counting them again.
 #
 # USAGE
 #   sh tools/fixtures/s/standing_equipment_scan.sh
@@ -131,8 +133,8 @@ known_gates=$(
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp); reds_self=$(mktemp)
 badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
-undeclaredrows=$(mktemp); timedrows=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$undeclaredrows" "$timedrows"' EXIT
+undeclaredrows=$(mktemp); timedrows=$(mktemp); cadence_rows=$(mktemp); cadence_never_rows=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$undeclaredrows" "$timedrows" "$cadence_rows" "$cadence_never_rows"' EXIT
 
 rostered=0
 red_self=0
@@ -185,6 +187,10 @@ close_record() {
   if [ "$t" = cadence ]; then
     tier_cadence=$((tier_cadence + 1))
     echo "$name" >> "$cadence_names"
+    # THE SEATED STAMP BESIDE THE NAME, so the never-run report below can order by how long
+    # the promise has stood unkept. A guard carrying no `seated` line sorts first under a zero
+    # stamp, for the reason the undeclared ratchet above already gives.
+    echo "${seated:-00000000.000000} $name" >> "$cadence_rows"
   elif [ "$t" = lap ]; then
     tier_lap=$((tier_lap + 1))
   fi
@@ -332,10 +338,14 @@ while IFS= read -r n; do
 done < "$names"
 
 never_cadence=0
-if [ -s "$cadence_names" ]; then
-  while IFS= read -r n; do
-    if [ ! -s "$ranlist" ] || ! grep -qx "$n" "$ranlist" 2>/dev/null; then never_cadence=$((never_cadence + 1)); fi
-  done < "$cadence_names"
+if [ -s "$cadence_rows" ]; then
+  while IFS= read -r row; do
+    n=${row#* }
+    if [ ! -s "$ranlist" ] || ! grep -qx "$n" "$ranlist" 2>/dev/null; then
+      never_cadence=$((never_cadence + 1))
+      echo "$row" >> "$cadence_never_rows"
+    fi
+  done < "$cadence_rows"
 fi
 
 echo "guards_rostered=$rostered"
@@ -407,6 +417,19 @@ else
 fi
 echo "guards_never_run_here=$never"
 echo "cadence_never_run_here=$never_cadence"
+# NAMED AND BOUNDED, the last reading here that printed a quantity and no name (REDS %592 made
+# exactly this repair one reading over, and this one was left). A count cannot be acted on: a lap
+# that wants to turn the cadence clock has to know WHICH guards it owes, and two laps answered that
+# by hand-walking the roster with awk before this line existed -- a lantern firing twice.
+#
+# ORDERED OLDEST-FIRST, which is the opposite of the undeclared ratchet above, and the reason is
+# the opposite too. That ratchet rises when a guard is seated without a tier, so the NEWEST row is
+# the one whose author still holds the context. This reading rises when nobody turns the clock, so
+# the OLDEST row is the promise that has stood unkept longest -- the one a lap should pay first.
+cadence_never_show="${CADENCE_NEVER_SHOW:-8}"
+echo "cadence_never_run_shown=$cadence_never_show"
+[ "$never_cadence" -eq 0 ] || sort "$cadence_never_rows" | head -n "$cadence_never_show" \
+  | sed 's/^\([^ ]*\) \(.*\)$/cadence_never_run_oldest: \2 seated \1/'
 echo "oldest_run=${oldest:-none}"
 echo "newest_run=${newest:-none}"
 
