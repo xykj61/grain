@@ -5,4 +5,12 @@ if r.out != "" then say r.out
 # The reason rides with the verdict -- `run` puts the target's stderr in `r.err`, which a shim
 # saying only `r.out` drops. Gate: `tools/s/shim_reason_witness.rish`.
 if r.err != "" then say r.err
+# A ROSTERED SHIM REFUSES ON ITS OWN READING, seated with this file's roster row `20260911`.
+# `tools/fixtures/s/standing_equipment_redleg_scan.sh` gates `guards_no_assert` at zero because a
+# guard carrying no assertion cannot red for itself. `exit r.code` alone passes the exit status on
+# and states nothing, so the refusal here is written rather than inherited -- and the capture rides
+# with it, which `shim_reason` holds for every shim this roster seats. Both `say` lines stand ABOVE
+# it on purpose: an assert ends the run, so a reason said below one reaches a reader only when the
+# run passes, which is the shape `20260911.055635` repaired one room over.
+assert r.ok else "amphora_device_wire: the virtio vessel-fetch lab refused -- ${r.out} ${r.err}"
 exit r.code

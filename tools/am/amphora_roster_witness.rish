@@ -58,7 +58,7 @@ say "amphora roster: the control, so a green reading below can be believed..."
 let c = run ["sh" control]
 assert c.ok else "amphora_roster: control FAILED -- the scan cannot be trusted to red"
 assert c.out contains "verdict=ok" else "amphora_roster: control did not answer ok"
-assert c.out contains "behaviors=77" else "amphora_roster: control ran a different number of behaviors"
+assert c.out contains "behaviors=103" else "amphora_roster: control ran a different number of behaviors"
 assert c.out contains "failed=0" else "amphora_roster: control reported a failed behavior"
 assert c.out contains "innocence patch landed" else "amphora_roster: the innocence patch planted nothing"
 
@@ -78,5 +78,19 @@ assert s.out contains "own_lines=" else "amphora_roster: the room's weight went 
 # own door read `Those eight build three modules` while nine of sixteen rostered guards built all
 # three, so the letter form is read beside the digit form and left to a hand to judge.
 assert s.out contains "readme_spelled_words=" else "amphora_roster: the letter form of a count went unread at the front door -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_spelled_word`"
+# THE OTHER DIRECTION, seated `20260911.083000`. Every assertion above walks the ROSTER and asks the
+# door; this one walks the DOOR and asks the roster. `readme_named` could never answer it -- it is
+# `guards` minus `readme_unnamed`, a number describing this page derived wholly from the roster --
+# so a guard this door promises and no row seats was invisible here. `amphora_device_wire` was
+# standing in exactly that gap, which is REDS `%646`: an unrostable witness runs nowhere, so its
+# honest exit-1 refusal reached no reader on any bench.
+assert s.out contains "readme_unrostered=1" else "amphora_roster: a guard named at the room's front door that no roster row seats -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_readme_unrostered`; the ceiling only falls, so seat the row or lower `README_UNROSTERED_CEILING` in the same commit"
+assert s.out contains "readme_claims=" else "amphora_roster: the door's own claim count went unread, so nothing counts what this page promises rather than deriving it from the roster"
+# REPORTED rather than gated, for the reason `readme_spelled_words` above is: a door name with no
+# file under the guard room is a real promise of a witness nobody wrote OR a plain noun starting
+# with the room's name, and a hand tells those apart where a pattern cannot. Asserted so that the
+# reading HAPPENED -- an unprinted blind spot reads exactly like an empty one.
+assert s.out contains "readme_claims_fileless=" else "amphora_roster: the door-claim blind spot went unread -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_readme_fileless`"
+assert s.out contains "readme_namespace=amphora" else "amphora_roster: the room's own namespace stopped deriving from its rostered guard names, so the blind-spot half reads `unread` rather than a population"
 
-say "GREEN: amphora roster -- 77 planted behaviors, every authored module has a rostered guard, the room's front door names every one, it spells no line count in digits, and the letter form of a count is read beside it."
+say "GREEN: amphora roster -- 103 planted behaviors, every authored module has a rostered guard, the room's front door names every one and claims none the roster leaves unseated, it spells no line count in digits, and the letter form and the door-claim blind spot are read beside it."

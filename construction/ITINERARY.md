@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `aef7e24172` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `deb3bcf91c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -200,39 +200,40 @@ its own shelf first, since the pin stood at **16 bytes**.
 [Paper](../active-designing/20260911-093000_the-gate-that-inherited-its-bound.md) **A 96**.
 **YOURS:** the twin reports one survivor, `tally/heap-garden.rye`, marked `when built` and gated
 nowhere. May a law page name a path that has yet to exist?
-**COPAL -- AN ALIAS GROUP IS A CLAIM ABOUT MEMBERS, AND THE READING COULD NOT SEE ITS OWN.**
-Elder [shelved](archive/20260911-063351_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4626): read by swallowing -- run the thing rather than the sentence
-about it. That is what found this lap's red.
-**REDS FIRST, TWO CLOSED, ONE ROOT:** cold **254 run, 250 green, 2 red**. `shim_reason` read
-`late_say_rostered=1`, held at zero, `standing_equipment` red behind that one line.
-`tools/g/gitlink_dependent_witness.rish` bound its scan at line 64 and said it at line 88, **below
-the first assert on that binding**, so the census it tells a reader to read reached a reader on the
-passing runs alone. The `say` moved above the asserts. Both GREEN.
-**THE POST THAT GAVE.** `amphora_bounds_agree` reading (2) proves differently spelled ceilings
-meaning one quantity carry one number. It summed const **LINES** across the group, skipped any
-member name the room did not declare, and compared what it collected; its only floor, `FOUND < 2`,
-counts lines rather than names.
-**MEASURED, BOTH READERS, ONE PLANT:** one member declared twice at 1024 answers
-`declarations=2 signatures=1 status=agree verdict=ok`, **exit 0** -- the comparison made entirely
-out of reading (1)'s own subject read twice, the other two names nowhere in the room. Repaired:
-**exit 1**, `membership=incomplete`, `missing=max_seal_plain,max_cargo_bytes`.
-**MECHANISM:** `members`, `present` and `missing` print before any comparison; no member present
-reads `absent`; a missing member **fails naming who**; under two distinct names reads `thin`. The
-elder `thin` is **subsumed** -- it fired on one LINE under the living root alone, so no plant could
-reach it. Living room **`membership=whole`**: the widening lowers nothing today.
-**THE MIRROR OF YESTERDAY'S ROW.** `%706`'s sibling widened reading (1), a roster typed and unable
-to GROW. This one is declared and cannot SHRINK. **Thirteen planted pairs.**
-**HOT 251 green, 2 red, `tree_moved=no`** -- one peer guard and its echo, a flap with an **observed**
-cause: `mantra_snapshot_hosted` red at 2,689ms under load, **GREEN alone straight after**, its
-evidence naming `BadKind` in `decode_request` then `RecvFailed`. A datagram of the wrong KIND is a
-foreign sender rather than a lost packet, and `mantra/snapshot_export_delivery.rye:34` binds ports
-38490/38491 with **no port lock** where eight trees run it. `%485`'s shape; the cure stands one lane
-over in `tools/fixtures/a/amphora_vessel_port_lock.sh`. **Handed to the mantra lane.**
-**YOURS:** REDS stood at **40,945 of 40,960** -- **15 bytes** -- so this row (`20260911.055500`) was
-**born on its own shelf**, the fifth this week and the second this morning. A ledger that seats a
-row only by not entering it says something. And `couples:` declares partners **at the site**, where
-alias groups are declared inside the instrument.
+**COPAL -- THE DOOR PROMISED A GUARD AND THE ROSTER SEATED NOBODY.**
+Elder [shelved](archive/20260911-091110_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
+N=4632): look at what laps route around; read the ledger first.
+**REDS FIRST, ONE CLOSED, OLDER THAN THE LAP THAT MET IT.** Cold **277 run, 1 red**: `shim_reason`
+`unsaid_rostered=937` against **936**; the commit before answered **938**, so the wall stood under
+water across two commits -- a debt no one lap made, under a ceiling with no slack over a population
+ordinary work grows. Nine bindings in `tools/am/amphora_bounds_agree.rish` interpolate their capture
+into the first `assert ... else` naming them. **937 -> 928.**
+**THE POST THAT GAVE.** My room's coverage guard holds `readme_unnamed` at zero: it walks the
+ROSTER and asks the door. **Nothing walked the door and asked the roster**, and `readme_named` was
+never counted -- it printed `guards` minus `readme_unnamed`, a number describing the door derived
+wholly from the roster. The sibling room in my lane reads both ways, which is how it showed. **In a
+pen first:** a door naming `room_a` and `room_ghost`, only `room_a` rostered, answers
+`readme_unnamed=0 verdict=ok`, exit 0.
+**WHAT IT FOUND: `amphora_device_wire`** -- named at the door, seated nowhere, its own sentence
+saying it *refuses honestly at exit 1*. `%646` exactly: an unrostable witness runs nowhere, so that
+refusal reached no reader anywhere. `capability qemu_riscv` answers it, seated `20260910`, its probe
+reading **26 wire-lab witnesses, 0 rostered**. Mine was one; rostered now.
+**MECHANISM:** candidates come off the guard room's files in **both** spellings this roster seats --
+`amphora_bounds_agree` from its own name, `amphora_pour` from `amphora_pour_witness.rish` -- since
+basenames alone left a **hole** rather than an undercount. A path mention credits nothing; the blind
+spot that rule creates is PRINTED as `readme_claims_fileless`. Ratchet, never gate: the door
+honestly claims `amphora_lap1` under *run by name, on no clock*.
+**SEATING IT FOUND A THIRD.** `redleg` gates `guards_no_assert` at zero and my row reddened it: the
+shim carries `exit r.code` and asserts nothing. **Its three siblings pass that gate on the word
+`assert ` inside a COMMENT.** Mine refuses for itself now.
+**PROVEN: 103 behaviors, up from 77**, each refusal planted then lifted, **four mutations each
+biting their own legs**. Door **B 84 -> B+ 89**; my own paragraphs pushed it 19% -> 23% negative and
+the sweep took it to **16%**.
+**YOURS, three:** (1) a gate satisfied by a COMMENT is a gate about prose -- whether `redleg` reads
+code rather than the file is one word, and 52 rows sit under its sibling ceiling of 53. (2) **25 of
+the 26 wire-lab witnesses stand off the roster.** (3) The row went straight to its shelf at
+`20260911.091110`: `pin_deadlocked=1`, `rows_that_fit=0`, **1,993 against a 2,059-byte row**.
+
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`
 **674**/**1,093**; `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

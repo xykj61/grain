@@ -51,19 +51,19 @@ let unseated_agree = "tools/fixtures/amphora_bounds_plants/unseated_agree"
 let unseated_diverge = "tools/fixtures/amphora_bounds_plants/unseated_diverge"
 
 let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
-assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL"
+assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL -- ${pos.out} ${pos.err}"
 assert pos.out contains "verdict=misread" else "amphora_bounds_agree: disagree missing misread"
 assert pos.out contains "bound_max_cargo_status=diverge" else "amphora_bounds_agree: disagree must name diverge"
 say "plant_positive=honored"
 
 let neg = run ["env" "AMPHORA_BOUNDS_ROOT=${agree}" "sh" scan]
-assert neg.ok else "amphora_bounds_agree: agree plant must PASS"
+assert neg.ok else "amphora_bounds_agree: agree plant must PASS -- ${neg.out} ${neg.err}"
 assert neg.out contains "verdict=ok" else "amphora_bounds_agree: agree missing ok"
 assert neg.out contains "bound_max_cargo_status=agree" else "amphora_bounds_agree: agree must name agree"
 say "plant_negative=honored"
 
 let apos = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_disagree}" "sh" scan]
-assert (apos.ok == false) else "amphora_bounds_agree: alias disagree must FAIL"
+assert (apos.ok == false) else "amphora_bounds_agree: alias disagree must FAIL -- ${apos.out} ${apos.err}"
 assert apos.out contains "alias_cargo_ceiling_status=diverge" else "alias disagree must name diverge"
 say "plant_alias_positive=honored"
 
@@ -90,25 +90,25 @@ assert (ainc.out contains "alias_cargo_ceiling_status=agree" == false) else "one
 say "plant_alias_incomplete=honored"
 
 let cpos = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_disagree}" "sh" scan]
-assert (cpos.ok == false) else "amphora_bounds_agree: couples disagree must FAIL"
+assert (cpos.ok == false) else "amphora_bounds_agree: couples disagree must FAIL -- ${cpos.out} ${cpos.err}"
 assert cpos.out contains "couples_status=diverge" else "couples disagree must name diverge"
 say "plant_couples_positive=honored"
 
 let cneg = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_agree}" "sh" scan]
-assert cneg.ok else "amphora_bounds_agree: couples agree must PASS"
+assert cneg.ok else "amphora_bounds_agree: couples agree must PASS -- ${cneg.out} ${cneg.err}"
 assert cneg.out contains "couples_status=agree" else "couples agree must name agree"
 say "plant_couples_negative=honored"
 
 # The short plant carries Amphora's own `20260906` numbers -- 200 covering 512
 # -- so the refusal this leg proves is the one the living tree actually had.
 let vpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_short}" "sh" scan]
-assert (vpos.ok == false) else "amphora_bounds_agree: covers short must FAIL"
+assert (vpos.ok == false) else "amphora_bounds_agree: covers short must FAIL -- ${vpos.out} ${vpos.err}"
 assert vpos.out contains "covers_status=short" else "covers short must name short"
 assert vpos.out contains "_slack=-312" else "covers short must print the signed gap"
 say "plant_covers_positive=honored"
 
 let vneg = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_hold}" "sh" scan]
-assert vneg.ok else "amphora_bounds_agree: covers holding must PASS"
+assert vneg.ok else "amphora_bounds_agree: covers holding must PASS -- ${vneg.out} ${vneg.err}"
 assert vneg.out contains "covers_status=hold" else "covers holding must name hold"
 say "plant_covers_negative=honored"
 
@@ -117,14 +117,14 @@ say "plant_covers_negative=honored"
 # marker to the unrelated 8192 below -- so the leg proves the false green, not
 # merely the refusal.
 let dpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_on_derived}" "sh" scan]
-assert (dpos.ok == false) else "amphora_bounds_agree: a marker on a derived bound must FAIL"
+assert (dpos.ok == false) else "amphora_bounds_agree: a marker on a derived bound must FAIL -- ${dpos.out} ${dpos.err}"
 assert dpos.out contains "cover_max_roof_to_b_max_partner_status=marker_on_derived" else "the marker must bind to max_roof and name it derived"
 assert (dpos.out contains "unrelated_large" == false) else "the marker must never reach the stranger below it"
 say "plant_marker_on_derived=honored"
 
 # A partner that exists and carries an expression is present, not absent.
 let ppos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_partner_derived}" "sh" scan]
-assert (ppos.ok == false) else "amphora_bounds_agree: a derived partner must FAIL"
+assert (ppos.ok == false) else "amphora_bounds_agree: a derived partner must FAIL -- ${ppos.out} ${ppos.err}"
 assert ppos.out contains "cover_max_roof_to_b_max_line_len_status=partner_derived" else "a spelled derived partner must read partner_derived"
 assert (ppos.out contains "partner_absent" == false) else "a present const must never be called absent"
 say "plant_partner_derived=honored"

@@ -3966,6 +3966,41 @@ path tools/am/amphora_udp_reuseaddr_witness.rish
 tier cadence
 seated 20260906.154105
 
+# amphora_device_wire -- the vessel room's own instance of REDS %646, rostered under the capability
+# that answers it.
+#
+# WHAT WAS WRONG. `amphora/README.md` named this witness under *Hand witnesses (run by name, on no
+# clock)*, saying it *drives a virtio lab this pier has no qemu for, and refuses honestly at exit 1
+# rather than pretending*. Every word true, and the consequence is %646's sentence exactly: a hard
+# refusal on an absent OPTIONAL dependency makes a witness unrostable, and an unrostered witness
+# runs nowhere -- so the honest refusal reached no reader on any bench, including the benches that
+# carry the emulator and would have run it green.
+#
+# WHY IT CAN BE ROSTERED NOW. `capability qemu_riscv` was seated `20260910.171423` for
+# `mantra_snapshot_wire`, and its probe's own comment measures the population this row belongs to:
+# **26 witnesses in this tree reach a wire lab and 0 of 26 stand on this roster**. This is one of
+# the 26, and the first from this lane. `tools/gen/amphora/amphora_device_wire.rish` is the whole
+# body -- `comlink/run_vessel_fetch_wire_lab.sh` into `run_wire_lab.sh vessel_fetch` into
+# `tools/co/comlink_vessel_fetch_wire_lab.rish`, which spawns `qemu-system-riscv64 -machine virt`
+# -- so the capability is the whole of what it needs and nothing beside.
+#
+# WHAT IT COSTS HERE. Nothing: `command -v qemu-system-riscv64` answers absent on this pier, so the
+# pass prints `skipped_capability amphora_device_wire wants=qemu_riscv here=absent` and moves on.
+# That line is the point. A guard named is a guard a reader can ask for; a guard off the roster is
+# one nobody knows to ask.
+#
+# `tier lap`, matching its `mantra_snapshot_wire` sibling: a row whose capability is absent costs a
+# probe, and on a bench that HAS the emulator the lab is what that bench is for.
+#
+# The shim carries its reason already (`tools/am/amphora_device_wire.rish` says `r.err` as well as
+# `r.out`), which `shim_reason` gates for every shim this roster seats -- so this row arrives under
+# that wall already paying it.
+guard amphora_device_wire
+path tools/am/amphora_device_wire.rish
+tier lap
+capability qemu_riscv
+seated 20260911.083000
+
 # amphora_mark_wreck -- the vessel named the wreck rule for eight weeks and kept it nowhere.
 #
 # WHAT WAS WRONG (`20260907.015042`). `foundations/20260703-202312_the-marked-value.md` vows that

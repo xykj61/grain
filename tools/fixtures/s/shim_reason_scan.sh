@@ -128,7 +128,25 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 # bare `else` string and read +2 over the ceiling standing then. Both took the interpolated form
 # before they shipped, so the wall bit at write time rather than a week later, and the reading
 # below is what the tree answers with this lap's own repair already inside it.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-935}"
+#
+# 928 `20260911.083000`. The reading refused on this ship's cold pass at **937 against 936**, and
+# measuring the commit before it answered **938** -- so the wall had stood under water across two
+# commits and the lap that met it had already lowered the count by one. That is the growth this
+# block's own paragraph above names: a ceiling with no slack over a population ordinary work grows
+# reds on whichever ship opens next, for a debt no single lap made. Nine bindings in
+# `tools/am/amphora_bounds_agree.rish` -- `pos`, `neg`, `apos`, `cpos`, `cneg`, `vpos`, `vneg`,
+# `dpos`, `ppos` -- each asserted on and each answering a plant, now interpolate `${var.out}` and
+# `${var.err}` into the first `assert ... else` message that names them, so a plant that stops
+# biting says what it printed instead of only that it should have bitten. **937 -> 928.**
+#
+# AND A PEER LOWERED THE SAME CEILING IN THE SAME HOUR, 936 -> 935, which is the collision this
+# arc's own paragraph predicted and the ledger's derived spine describes one room over: two ships
+# reading one number from two trees, each correct alone. Both repairs are real and they compose --
+# theirs removed one binding, mine nine -- so the resolution is neither number but the reading the
+# merged tree answers, taken on the rebase rather than carried in from either side. That is the
+# only move available to a ceiling that only falls: a hand who keeps their own number discards a
+# peer's repair, and a hand who takes the peer's discards their own. The merged tree reads **926**.
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-926}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"

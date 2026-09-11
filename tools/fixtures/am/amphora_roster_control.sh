@@ -79,6 +79,10 @@ detail_has() { # detail_has <key> <value> <pen_root>
   if ( cd "$3" && sh "$SCAN" room construction/roster.kyri tools/am 2>/dev/null ) \
      | grep -qx "detail_$1=$2"; then echo yes; else echo no; fi
 }
+field_of_ceiling() { # field_of_ceiling <key> <pen_root> <ceiling>
+  ( cd "$2" && README_UNROSTERED_CEILING="$3" sh "$SCAN" room construction/roster.kyri tools/am 2>/dev/null ) \
+    | sed -n "s/^$1=//p" | head -1
+}
 field_of_door() { # field_of_door <key> <pen_root> <readme>
   ( cd "$2" && sh "$SCAN" room construction/roster.kyri tools/am "$3" 2>/dev/null ) \
     | sed -n "s/^$1=//p" | head -1
@@ -297,6 +301,85 @@ check "spelled word bounded"   "0"   "$(field_of readme_spelled_words "$p")"
 printf '# room\n\nGuards: room_alpha and room_beta.\nIt holds one socket per exchange across two ports.\n' > "$p/room/README.md"
 check "spelled word nouns"     "0"   "$(field_of readme_spelled_words "$p")"
 check "spelled word clean"     "ok"  "$(field_of verdict "$p")"
+
+# -- 16. the OTHER direction: a name at the door that no roster row seats -------------------------
+# `readme_unnamed` walks the roster and asks the door; nothing walked the door and asked the roster,
+# so a guard this page promises and nobody runs was invisible. That is how `amphora_device_wire`
+# stood named at the living door and off the roster. Every leg here is planted and then lifted.
+p=$(mkpen door_ghost)
+printf '# a witness nobody rosters\nlet m = "room/alpha.rye"\n' > "$p/tools/am/room_ghost.rish"
+printf '# room\n\nGuards: room_alpha, room_beta and room_ghost.\n' > "$p/room/README.md"
+check "ghost counted"          "1"        "$(field_of readme_unrostered "$p")"
+check "ghost named"            "yes"      "$(detail_has readme_unrostered room_ghost "$p")"
+check "ghost claimed"          "3"        "$(field_of readme_claims "$p")"
+# THE ELDER READING CANNOT SEE IT, which is the whole reason this one exists. `readme_unnamed`
+# answers zero over a door promising a guard nobody runs, and its own `readme_named` reads the
+# roster's count back. A leg proving the new reading bites means nothing without this one beside it.
+check "elder reading blind"    "0"        "$(field_of readme_unnamed "$p")"
+check "elder count derived"    "2"        "$(field_of readme_named "$p")"
+check "ghost at ceiling walks" "ok"       "$(field_of verdict "$p")"
+check "ghost under 0 refuses"  "drifted"  "$(field_of_ceiling verdict "$p" 0)"
+check "ghost under 0 counted"  "1"        "$(field_of_ceiling readme_unrostered "$p" 0)"
+# Lifted by the repair the living room took: a roster row rather than a deleted sentence.
+cat >> "$p/construction/roster.kyri" <<'ADD'
+
+guard room_ghost
+path tools/am/room_ghost.rish
+tier lap
+capability qemu_riscv
+seated 20260911.083000
+ADD
+check "ghost lifted"           "0"        "$(field_of_ceiling readme_unrostered "$p" 0)"
+check "ghost lift verdict"     "ok"       "$(field_of_ceiling verdict "$p" 0)"
+check "lifted still named"     "0"        "$(field_of readme_unnamed "$p")"
+
+# -- 17. the guard-name spelling, which a file-basename candidate alone would miss ----------------
+# This roster seats `amphora_pour` from `amphora_pour_witness.rish` and `amphora_bounds_agree` from
+# a file of its own name. A candidate set built from file basenames alone never carries the first
+# spelling, so a ghost written that way would be no candidate and therefore no finding -- a hole in
+# the gate rather than an undercount.
+p=$(mkpen door_ghost_witness)
+printf '# a witness nobody rosters\nlet m = "room/alpha.rye"\n' > "$p/tools/am/room_spectre_witness.rish"
+printf '# room\n\nGuards: room_alpha, room_beta and room_spectre.\n' > "$p/room/README.md"
+check "witness-form counted"   "1"        "$(field_of readme_unrostered "$p")"
+check "witness-form named"     "yes"      "$(detail_has readme_unrostered room_spectre "$p")"
+check "witness-form refuses"   "drifted"  "$(field_of_ceiling verdict "$p" 0)"
+rm -f "$p/tools/am/room_spectre_witness.rish"
+check "witness-form lifted"    "0"        "$(field_of readme_unrostered "$p")"
+
+# -- 18. a path mention is never a claim ---------------------------------------------------------
+# The door cites `tools/am/amphora_pour_witness.rish` as a path throughout. A reading that credited
+# a path would name two dozen components of this room's own front door and say nothing true.
+p=$(mkpen door_path_only)
+printf '# a witness nobody rosters\nlet m = "room/alpha.rye"\n' > "$p/tools/am/room_ghost.rish"
+printf '# room\n\nGuards: room_alpha and room_beta. Elder path tools/am/room_ghost.rish.\n' \
+  > "$p/room/README.md"
+check "path credits nothing"   "0"        "$(field_of readme_unrostered "$p")"
+check "path not a claim"       "2"        "$(field_of readme_claims "$p")"
+check "path walks free at 0"   "ok"       "$(field_of_ceiling verdict "$p" 0)"
+# And the same name written bare in the same door IS a claim, so the rule is the slash and nothing
+# else -- a leg that only ever showed the path form could not tell the rule from a blanket skip.
+printf '# room\n\nGuards: room_alpha and room_beta. Elder path tools/am/room_ghost.rish, or room_ghost.\n' \
+  > "$p/room/README.md"
+check "bare form is a claim"   "1"        "$(field_of readme_unrostered "$p")"
+
+# -- 19. a door name with no file reports, and never gates ---------------------------------------
+# The living door names `amphora_lap3_tree`, a pour fixture rather than a witness. A pattern cannot
+# tell that from a real promise of a witness nobody wrote, so this half names them for a hand and
+# holds no ceiling. It is printed rather than left silent, because a blind spot nobody prints reads
+# exactly like an empty one.
+p=$(mkpen door_fileless)
+printf '# room\n\nGuards: room_alpha and room_beta. See also room_phantom.\n' > "$p/room/README.md"
+check "fileless counted"       "1"        "$(field_of readme_claims_fileless "$p")"
+check "fileless named"         "yes"      "$(detail_has readme_fileless room_phantom "$p")"
+check "fileless gates nothing" "ok"       "$(field_of_ceiling verdict "$p" 0)"
+check "fileless not a claim"   "0"        "$(field_of readme_unrostered "$p")"
+check "namespace derived"      "room"     "$(field_of readme_namespace "$p")"
+# THE TWO POPULATIONS ARE DISJOINT. Give the phantom a file and it must LEAVE this report for the
+# ratchet -- counted in both, one name would be one finding wearing two numbers.
+printf '# now it exists\nlet m = "room/alpha.rye"\n' > "$p/tools/am/room_phantom_witness.rish"
+check "fileless moves out"     "0"        "$(field_of readme_claims_fileless "$p")"
+check "fileless moves in"      "1"        "$(field_of readme_unrostered "$p")"
 
 # -- 15. the pen is proven innocent ---------------------------------------------------------------
 # A scan that always answers ok must fail the uncovered leg above; if it passes, this control proves
