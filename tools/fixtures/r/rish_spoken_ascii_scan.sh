@@ -101,7 +101,16 @@ mode="${1:-count}"
 #                             build reasons moved into their refusal messages. Checked first for a
 #                             coupled saying -- no runner greps that line -- and falls by exactly the
 #                             four removed.
-CEILING=10580
+#   10541  `20260911.003518`  nine mantra and tally gate witnesses swept ON TOUCH, in the lap that
+#                             repaired their substring answer reads -- 44 characters, every one a
+#                             form the rule's table spells, converted by the tool above with
+#                             `held_coupled=0`, and all nine re-run GREEN afterwards so no
+#                             cross-guard match was cut. The reading fell 10,505 -> 10,461 and this
+#                             falls with it, keeping the same 80 of slack and taking none of the 44.
+#   10536  `20260911`          the two sweeps above met in one rebase -- four amphora characters and
+#                             forty-four mantra and tally ones -- and the reading fell to 10,456
+#                             together. This falls with it, keeping the same 80 of slack.
+CEILING=10536
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).

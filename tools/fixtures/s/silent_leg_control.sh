@@ -8,6 +8,13 @@
 #      answered, and the exact list read refuses the same stream.
 # Claim 1 is read off the worker's own source; claim 2 is run through this tree's own Rishi.
 #
+# The scan reads a SECOND family on the same corpus, and a third claim holds that one up:
+#   3. A digit needle the trailer cannot supply is satisfied by any WIDER number carrying it, so
+#      `assert p.out contains "1"` passes on a desk answering 105, and the list read refuses it.
+# The two families are disjoint by construction -- a needle inside the trailer pays as SILENT and
+# never as WIDE -- so one loose leg pays exactly once, and the partition is checked here rather
+# than trusted. Claim 3 runs through this tree's own Rishi beside claim 2.
+#
 # Proven once on metal `20260910`, and recorded here rather than rebuilt every lap: a copy of
 # `src/gate/gate-mantra-gen-floor-u32.glow` answering 7 where its stated invariant says 0 printed
 # `7` then `EXIT:0`, the elder assertion passed, and the list assertion refused. The desk build
@@ -78,6 +85,7 @@ p=$(new_pen honest)
   echo 'assert g.out contains "15" else "did not fold to 15"'; } > "$p/tools/a/a_witness.rish"
 seal "$p"; run_pen "$p"
 check_says "the exit read and an answer outside the trailer stay free" "silent=0" "$out"
+check_says "and the digit answer is read by the wide family instead" "wide=1" "$out"
 
 # 3. A binding that never ran the worker is nobody's business here.
 p=$(new_pen foreign)
@@ -188,6 +196,93 @@ if [ -f "$ROOT/tools/m/mantra_gen_floor_a1_gate_witness.rish" ]; then
   check_lacks "and no longer carries the substring read" \
     'assert reserved.out contains "0"' \
     "$(cat "$ROOT/tools/m/mantra_gen_floor_a1_gate_witness.rish")"
+fi
+
+# 14. THE PARTITION. A needle inside the trailer pays as silent and never as wide, so one loose
+#     leg pays once. Checked from both sides on one pen.
+p=$(new_pen partition)
+{ echo "$worker_line"
+  echo 'assert g.out contains "0" else "no"'
+  echo 'assert g.out contains "15" else "no"'; } > "$p/tools/a/a_witness.rish"
+seal "$p"; run_pen "$p"
+check_says "the trailer needle pays as silent" "silent=1" "$out"
+check_says "the digit needle pays as wide" "wide=1" "$out"
+
+# 15. A needle that is neither inside the trailer nor a digit run is nobody's business.
+p=$(new_pen word)
+{ echo "$worker_line"; echo 'assert g.out contains "GREEN" else "no"'; } > "$p/tools/a/a_witness.rish"
+seal "$p"; run_pen "$p"
+check_says "a word needle is not silent" "silent=0" "$out"
+check_says "a word needle is not wide" "wide=0" "$out"
+
+# 16. The list read is the repair, so it leaves both families.
+p=$(new_pen repaired)
+{ echo "$worker_line"; echo 'assert (lines g.out) contains "15" else "no"'; } > "$p/tools/a/a_witness.rish"
+seal "$p"; run_pen "$p"
+check_says "the repaired leg leaves the wide family" "wide=0" "$out"
+
+# 17. The lane wide ceiling bites at one, from both sides.
+p=$(new_pen lanewide)
+echo 'say "quiet"' > "$p/tools/a/quiet_witness.rish"
+{ echo "$worker_line"; echo 'assert g.out contains "15" else "no"'; } > "$p/tools/t/t_witness.rish"
+seal "$p"; run_pen "$p"
+check_eq "a lane wide leg refuses" 1 "$rc"
+check_says "the lane wide refusal names its own verdict" "verdict=lane_wide_over_ceiling" "$out"
+check_says "the lane wide refusal names the site" "detail: wide lane leg -- tools/t/t_witness.rish" "$out"
+rm -f "$p/tools/t/t_witness.rish"; seal "$p"; run_pen "$p"
+check_eq "the same pen with the wide plant lifted walks free" 0 "$rc"
+
+# 18. The tree wide ceiling bites one past itself, and the count is the whole basis.
+wceiling=$(sed -n 's/^wide_ceiling=\([0-9][0-9]*\)$/\1/p' "$SCAN" | head -1)
+[ -n "$wceiling" ] || { echo "  FAIL the scan states no wide ceiling"; fail=$((fail + 1)); wceiling=0; }
+p=$(new_pen wideceiling)
+i=0
+while [ "$i" -le "$wceiling" ]; do
+  { echo "$worker_line"; echo 'assert g.out contains "15" else "no"'; } > "$p/tools/a/w$i.rish"
+  i=$((i + 1))
+done
+seal "$p"; run_pen "$p"
+check_eq "one leg past the tree wide ceiling refuses" 1 "$rc"
+check_says "the tree wide refusal names its own verdict" "verdict=wide_over_ceiling" "$out"
+rm -f "$p/tools/a/w$wceiling.rish"; seal "$p"; run_pen "$p"
+check_eq "standing exactly at the tree wide ceiling walks free" 0 "$rc"
+
+# 19. --list wide and --list lane_wide print the sites they counted.
+p=$(new_pen widelisting)
+{ echo "$worker_line"; echo 'assert g.out contains "15" else "no"'; } > "$p/tools/a/a_witness.rish"
+seal "$p"; run_pen "$p" --list wide
+check_says "--list wide names the site" "tools/a/a_witness.rish:2" "$out"
+run_pen "$p" --list lane_wide
+check_lacks "--list lane_wide leaves a non-lane site out" "tools/a/a_witness.rish:2" "$out"
+
+# 20. CLAIM THREE, run through this tree's own Rishi: a wider number satisfies the substring read
+#     and refuses the list read. The stream is the one a fold desk answering 105 actually produces,
+#     and the needle is the one `tally_a2_list_reducer_witness.rish` uses for its identity leg.
+if [ -x "$RISHI" ]; then
+  probe="$pen/wide.rish"
+  {
+    echo 'let stream = run ["printf" "105\nEXIT:0"]'
+    echo 'assert stream.out contains "1" else "WIDE: the substring read refused -- it can red"'
+    echo 'assert ((lines stream.out) contains "1") == false else "WIDE: the list read passed -- it cannot red"'
+    echo 'assert (lines stream.out) contains "105" else "WIDE: the list read lost the real answer"'
+    echo 'say "WIDE: substring true, list false, on one stream."'
+  } > "$probe"
+  wsem=$( cd "$ROOT" && "$RISHI" run "$probe" 2>&1 ) && wrc=0 || wrc=$?
+  check_eq "the wide semantics probe holds" 0 "$wrc"
+  check_says "a wider answer passes the substring read and refuses the list read" \
+    "WIDE: substring true, list false, on one stream." "$wsem"
+else
+  echo "  ok   rishi absent -- claim three unread here"; pass=$((pass + 1))
+fi
+
+# 21. The wide repair is what the lane actually carries, read off the tree rather than asserted.
+if [ -f "$ROOT/tools/t/tally_a2_list_reducer_witness.rish" ]; then
+  check_says "the lane's own reducer witness carries the list read" \
+    'assert (lines p2.out) contains "1"' \
+    "$(cat "$ROOT/tools/t/tally_a2_list_reducer_witness.rish")"
+  check_lacks "and no longer carries the substring read" \
+    'assert p2.out contains "1"' \
+    "$(cat "$ROOT/tools/t/tally_a2_list_reducer_witness.rish")"
 fi
 
 echo "legs_pass=$pass"

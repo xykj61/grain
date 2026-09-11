@@ -24,6 +24,18 @@ const SOCK_DGRAM: c_uint = 2;
 // tools/fixtures/s/socket_dialect_scan.sh.
 const SOL_SOCKET: c_int = c.SOL.SOCKET;
 const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
+const SO_RCVTIMEO: c_int = c.SO.RCVTIMEO;
+
+// THE WAIT NAMES ITS MAXIMUM, the way every collection here names its size. A datagram on
+// localhost is still a datagram: the kernel may drop it when a receive buffer fills, and
+// `recvfrom` with no SO_RCVTIMEO then waits for a packet that will never arrive. Observed on
+// metal `20260911` at load 14.1 -- this binary's own `selftest` sat 29 minutes in
+// `__skb_wait_for_more_packets` with two voluntary context switches, hanging a rostered roster
+// pass. The two sibling delivery modules, mantra/recall_batch_delivery.rye and
+// mantra/recall_subscribe_poll_delivery.rye, have both carried this bound for chapters; this one
+// alone never received it. Five seconds is far above a localhost round trip and far below the
+// roster's own patience, so an expiry means the datagram is genuinely gone rather than slow.
+const recv_timeout_sec: u32 = 5;
 
 const client_port: u16 = 38490;
 const host_port: u16 = 38491;
@@ -67,14 +79,31 @@ fn send_wire(port: u16, wire: []const u8) !void {
 }
 
 fn recv_wire(port: u16, wire: []u8) !u64 {
+    // invariant: a receive reads into a buffer that exists, so an empty slice refuses here
+    // rather than handing the kernel a zero length and reading a success that carries nothing.
+    assert(wire.len > 0);
+    // invariant: the wait is bounded above zero, so the timeout below is a real deadline rather
+    // than the "block forever" SO_RCVTIMEO spells with a zero timeval.
+    assert(recv_timeout_sec > 0);
     const fd = try open_socket();
     defer _ = c.close(fd);
+    var tv = c.timeval{ .sec = @intCast(recv_timeout_sec), .usec = 0 };
+    // invariant: the caller is promised a BOUNDED wait, so a receive timeout that fails to set
+    // refuses here rather than returning a socket that blocks until the run is killed.
+    if (c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, @sizeOf(c.timeval)) < 0)
+        return error.SetSockOptFailed;
     var bind_addr = localhost_addr(port);
     if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
     var from: sockaddr_in = undefined;
     var from_len: c.socklen_t = @sizeOf(sockaddr_in);
     const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    // A timeout lands here as a negative return, the same way the sibling modules read it. The
+    // named error is what the caller sees either way, and the bound above is what makes the
+    // difference between a refusal and a hang.
     if (n < 0) return error.RecvFailed;
+    // invariant: a datagram never exceeds the buffer it was read into, so the length handed back
+    // indexes that buffer safely for every caller.
+    assert(@as(usize, @intCast(n)) <= wire.len);
     return @intCast(n);
 }
 
