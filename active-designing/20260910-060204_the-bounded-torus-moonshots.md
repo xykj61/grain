@@ -6,6 +6,7 @@
 **Lane:** Diffuser -- moonshots and whitepaper research, walked in tandem with Bakery
 **Style:** Gauge at the Field setting
 **Voice:** Kyri
+**Row 6 erratum:** `20260911.081019` -- row 6 was ranked third on *one host read away*, and the read says no. `tools/fixtures/e/energy_instrument_scan.sh` answers `joule_source=none` and `tier=counters` on this pier, so the millijoule witness cannot be built here. The counters-tier reshaping, its measurement, and its witness stand at [`20260911-081019_the-unit-this-pier-can-carry.md`](20260911-081019_the-unit-this-pier-can-carry.md). Every other word on this page is kept as written.
 
 ---
 

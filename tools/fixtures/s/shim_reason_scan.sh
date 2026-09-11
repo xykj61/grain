@@ -121,7 +121,7 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-157}"
 # bare `else` string and read +2 over the ceiling standing then. Both took the interpolated form
 # before they shipped, so the wall bit at write time rather than a week later, and the reading
 # below is what the tree answers with this lap's own repair already inside it.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-936}"
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-935}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"

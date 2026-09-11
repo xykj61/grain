@@ -1,0 +1,271 @@
+//! tools/rye/retired_count.rye -- a unit this pier can actually carry.
+//!
+//! A first witness for moonshot 6 of
+//! `active-designing/20260910-060204_the-bounded-torus-moonshots.md`, reshaped by what the host
+//! turned out to be.
+//!
+//! WHAT THE MOONSHOT ASKED FOR, AND WHAT THE HOST ANSWERED. Row 6 asked for millijoules beside
+//! bytes in a Meter row, and rested on one assumption: *this pier's CPU exposes RAPL counters to a
+//! reader with the permissions we have*. Run on `20260911`,
+//! `tools/fixtures/e/energy_instrument_scan.sh` answers `joule_source=none`, `powercap_domains=0`,
+//! `msr_device=no`, and `tier=counters` -- no joule is readable here by anyone. The assumption is
+//! false on this machine, so the witness row 6 named cannot be built here at all.
+//!
+//! WHAT IS READABLE, MEASURED RATHER THAN ASSUMED. The same scan reads `hw_instructions=yes` and
+//! `perf_event_paranoid=2`. Paranoid 2 permits a process to count its OWN user-space execution, and
+//! `perf_event_open(2)` reaches that without the `perf` binary, which this host also lacks. So the
+//! counter tier is reachable from Rye directly.
+//!
+//! THE CLAIM THIS FILE MAKES. Retired instructions is a unit a Meter row can carry on a
+//! counters-tier host, because it is stable where wall time is not. A unit that moves with the
+//! neighbours' load is not a unit; it is a rumour with a decimal point.
+//!
+//! THE FALSIFIER, NAMED BEFORE THE NUMBER. If the instruction count's run-to-run spread is no
+//! smaller than wall time's, the counter buys nothing a clock did not already give, and this row
+//! should close rather than grow. The selftest prints both spreads and gates only the first.
+//!
+//! WHY A DOUBLING LEG. A counter that returned a constant, or that returned the loop bound it was
+//! handed, would hold a small spread and mean nothing -- the same trap moonshot 1 named, where an
+//! index-only assert proves arithmetic. So the selftest runs the workload at two sizes and requires
+//! the count to follow.
+//!
+//! A HOST IS NOT A FAULT (REDS %646). Where the counter refuses to open, this program says so by
+//! name and exits GREEN. A witness that reds on an absent optional capability reds on every machine
+//! that lacks it, and a guard nobody can keep green is a guard somebody turns off.
+//!
+//!   rye build tools/rye/retired_count.rye -femit-bin=tools/bin/retired-count
+//!   tools/bin/retired-count selftest
+//!
+//! Gratitude: gratitude/TIGER_STYLE.md -- bounds named at construction, and say why.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const linux = std.os.linux;
+
+pub const retired_count_version = "20260911.081500";
+
+/// How many times the workload is run when measuring spread. Named at construction, and small on
+/// purpose: this runs inside a witness beside two hundred others, so a bound that costs seconds
+/// would be paid every lap by every ship.
+pub const max_runs: u32 = 16;
+
+/// Iterations in one unit of workload. Chosen so a single run lands in the low milliseconds on this
+/// class of host -- long enough that the fixed open-and-read overhead is a rounding error, short
+/// enough that sixteen runs stay under a second.
+pub const workload_iterations: u32 = 1_000_000;
+
+/// The ceiling this file gates on, in parts per million of the mean. Retired instructions for a
+/// fixed loop should be very nearly constant; 1,000 ppm (0.1%) is loose by two orders of magnitude
+/// against what was measured, and loose on purpose -- a ceiling set at the measurement would red on
+/// the first host with a different branch predictor.
+pub const instruction_spread_ceiling_ppm: u64 = 1000;
+
+/// ioctl requests for a perf event fd, from `linux/perf_event.h`. Spelled here because Zig's std
+/// does not publish them, and spelled as constants rather than inline so the reason has somewhere
+/// to live.
+const perf_ioc_enable: u32 = 0x2400;
+const perf_ioc_disable: u32 = 0x2401;
+const perf_ioc_reset: u32 = 0x2403;
+
+pub const CounterError = error{
+    OpenRefused,
+    ShortRead,
+};
+
+/// One reading of one run: what the counter said, and what the clock said.
+pub const Reading = struct {
+    instructions: u64,
+    wall_ns: u64,
+};
+
+/// Open a hardware counter on this process alone, counting user space only.
+///
+/// `pid = 0, cpu = -1` is the self-monitoring form, which is what
+/// `perf_event_paranoid = 2` permits an unprivileged reader. `exclude_kernel` is what makes it
+/// permitted rather than merely attempted.
+fn open_counter(config: u64) CounterError!i32 {
+    // invariant: the attribute struct is fully zeroed before any field is set, since the kernel
+    // reads its whole declared size and a stray byte is a different request.
+    var attr = std.mem.zeroes(linux.perf_event_attr);
+    attr.type = linux.PERF.TYPE.HARDWARE;
+    attr.size = @sizeOf(linux.perf_event_attr);
+    attr.config = config;
+    attr.flags.disabled = true;
+    attr.flags.exclude_kernel = true;
+    attr.flags.exclude_hv = true;
+
+    const rc = linux.perf_event_open(&attr, 0, -1, -1, 0);
+    if (linux.errno(rc) != .SUCCESS) return CounterError.OpenRefused;
+
+    // invariant: a successful open returns a real descriptor, so a zero or negative value here
+    // would mean the errno check above read the wrong thing.
+    assert(rc > 0);
+    return @intCast(rc);
+}
+
+/// Read the counter's current value. The fd yields exactly eight little-endian bytes in this
+/// configuration, and a short read is an error rather than a partial number.
+fn read_counter(fd: i32) CounterError!u64 {
+    var buf: [8]u8 = undefined;
+    const n = linux.read(fd, &buf, buf.len);
+
+    // invariant: the counter delivers its whole width or none of it -- a partial read would be
+    // silently interpreted as a small number, which is the worst shape a measurement can take.
+    if (n != buf.len) return CounterError.ShortRead;
+
+    const value = std.mem.readInt(u64, &buf, .little);
+    // invariant: the value fits the width it was read into, which the reader above guarantees and
+    // this states so a later change to the read format trips here.
+    assert(buf.len == 8);
+    return value;
+}
+
+/// The monotonic clock in nanoseconds. Spelled against `linux.clock_gettime` because this std
+/// publishes no `Timer`, and monotonic rather than realtime so an NTP step cannot make a run
+/// appear to take negative time.
+fn monotonic_ns() u64 {
+    var ts: linux.timespec = undefined;
+    // invariant: the clock answers, since CLOCK_MONOTONIC is always available on Linux; a refusal
+    // here would mean the call shape itself is wrong rather than the host lacking a clock.
+    const rc = linux.clock_gettime(.MONOTONIC, &ts);
+    assert(rc == 0);
+    // invariant: the seconds field is non-negative, which monotonic time guarantees and which the
+    // cast below relies on.
+    assert(ts.sec >= 0);
+    return @as(u64, @intCast(ts.sec)) * 1_000_000_000 + @as(u64, @intCast(ts.nsec));
+}
+
+/// The workload, kept deliberately dull. A multiply-and-accumulate over a fixed count, with the
+/// accumulator returned so no optimizer may delete the loop.
+///
+/// `scale` multiplies the iteration count, which is what the doubling leg turns.
+fn workload(scale: u32) u64 {
+    // invariant: the scale is bounded, so the loop's total is a number named before it runs.
+    assert(scale >= 1);
+    assert(scale <= 8);
+
+    var acc: u64 = 0;
+    var i: u64 = 0;
+    const total: u64 = @as(u64, workload_iterations) * @as(u64, scale);
+    while (i < total) : (i += 1) acc +%= i *% 2654435761;
+    return acc;
+}
+
+/// Run the workload once with the counter open around it, returning both readings.
+fn measure_once(scale: u32) CounterError!Reading {
+    // invariant: the scale reaching the counter is the scale the workload will use, stated here so
+    // the two cannot drift apart in a later edit.
+    assert(scale >= 1);
+
+    const fd = try open_counter(@intFromEnum(linux.PERF.COUNT.HW.INSTRUCTIONS));
+    defer _ = linux.close(fd);
+
+    _ = linux.ioctl(fd, perf_ioc_reset, 0);
+    _ = linux.ioctl(fd, perf_ioc_enable, 0);
+    const started = monotonic_ns();
+    const acc = workload(scale);
+    const wall_ns = monotonic_ns() - started;
+    _ = linux.ioctl(fd, perf_ioc_disable, 0);
+
+    const instructions = try read_counter(fd);
+
+    // invariant: the accumulator is consumed, so the loop above cannot be optimized away and leave
+    // a counter reading of nearly nothing that still passes every spread leg.
+    assert(acc != 0 or workload_iterations == 0);
+    // invariant: a run that executed a million iterations retired more than a million instructions.
+    assert(instructions > workload_iterations);
+
+    return .{ .instructions = instructions, .wall_ns = wall_ns };
+}
+
+/// Spread in parts per million of the mean, over a bounded slice of readings.
+///
+/// Parts per million rather than a percentage because the interesting figure here is small enough
+/// that a percentage would print as zero and teach a reader nothing.
+fn spread_ppm(values: []const u64) u64 {
+    // invariant: a spread over nothing has no meaning, so the caller names at least two.
+    assert(values.len >= 2);
+    // invariant: the slice is bounded by the run ceiling named at construction.
+    assert(values.len <= max_runs);
+
+    var lo: u64 = values[0];
+    var hi: u64 = values[0];
+    var sum: u64 = 0;
+    for (values) |v| {
+        if (v < lo) lo = v;
+        if (v > hi) hi = v;
+        sum += v;
+    }
+    const mean = sum / @as(u64, @intCast(values.len));
+    if (mean == 0) return 0;
+    return ((hi - lo) * 1_000_000) / mean;
+}
+
+fn selftest() !u8 {
+    // The honest absence, taken first. A host with no readable counter says so and stops, GREEN.
+    const probe = open_counter(@intFromEnum(linux.PERF.COUNT.HW.INSTRUCTIONS)) catch {
+        print("counter=unavailable -- perf_event_open refused; this host reads no hardware counter for us\n", .{});
+        print("GREEN: retired-count -- a host is not a fault, and the absence is named rather than guessed\n", .{});
+        return 0;
+    };
+    _ = linux.close(probe);
+    print("counter=available -- perf_event_open counts this process's own user space\n", .{});
+
+    var instructions: [max_runs]u64 = undefined;
+    var walls: [max_runs]u64 = undefined;
+    var r: u32 = 0;
+    while (r < max_runs) : (r += 1) {
+        const reading = try measure_once(1);
+        instructions[r] = reading.instructions;
+        walls[r] = reading.wall_ns;
+    }
+
+    const i_ppm = spread_ppm(instructions[0..max_runs]);
+    const w_ppm = spread_ppm(walls[0..max_runs]);
+    print("runs={d} workload_iterations={d}\n", .{ max_runs, workload_iterations });
+    print("instructions_first={d} instructions_spread_ppm={d}\n", .{ instructions[0], i_ppm });
+    print("wall_ns_first={d} wall_spread_ppm={d}\n", .{ walls[0], w_ppm });
+
+    // The gate: the counter is steady enough to be a unit.
+    if (i_ppm > instruction_spread_ceiling_ppm) {
+        print("RED: retired-count -- instruction spread {d} ppm is past the {d} ppm ceiling\n", .{ i_ppm, instruction_spread_ceiling_ppm });
+        return 1;
+    }
+    print("instruction spread holds under the {d} ppm ceiling\n", .{instruction_spread_ceiling_ppm});
+
+    // The comparison, reported and never gated: wall time is the neighbours' business as much as
+    // ours, and a ceiling on it would red whenever the pier is busy -- which is most of the time.
+    if (w_ppm > i_ppm) {
+        print("the clock is noisier than the counter by {d}x\n", .{w_ppm / (i_ppm + 1)});
+    } else {
+        print("the clock was NOT noisier than the counter this run -- the falsifier fired\n", .{});
+    }
+
+    // The doubling leg: a counter that ignored the work would hold its spread and mean nothing.
+    const one = try measure_once(1);
+    const two = try measure_once(2);
+    const ratio_ppm = (two.instructions * 1_000_000) / one.instructions;
+    print("doubling_ratio_ppm={d}\n", .{ratio_ppm});
+    if (ratio_ppm < 1_900_000 or ratio_ppm > 2_100_000) {
+        print("RED: retired-count -- doubling the workload did not double the count\n", .{});
+        return 1;
+    }
+    print("doubling the workload doubled the count, so the counter follows the work\n", .{});
+
+    print("GREEN: retired-count -- retired instructions is a unit this pier can carry\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    // The argument shape follows this tree's own Rye programs: `std.process.Init` handed in, args
+    // taken as a slice off the season allocator. The elder `std.process.args()` spelling is absent
+    // from this std and refused to build.
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) return try selftest();
+        print("retired-count: usage -- retired-count selftest\n", .{});
+        return 2;
+    }
+    return try selftest();
+}
