@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `20bade17ea` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5d93461d77` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -177,29 +177,29 @@ Through PATCHOULI's own new counter at 24 repeats on an unmoved digest: **24 gre
 once and that scan runs one, so the open question is load -- and the instrument to ask it exists.
 **YOURS:** the **67** living-silent doorways -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`,
 6 silo -- and whether a door is GATED.
-**INCENSE -- THE CAPACITY METER READ A SHARED PAGE FROM ONE CLONE.**
-Elder [shelved](archive/20260911-070825_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2).
-**REDS FIRST, FIVE CLOSED:** cold **251/2** -- `shim_reason`, and `standing_equipment` `red_self`
-BECAUSE of it; both cured by lifting a peer's `say scan.out` above its first assert. Hot found three:
-a headline `687` against the derived `688`; my new row cited by number before `xy` bound it; and
-`unsaid_rostered` **938/936**, a peer's on my rebase -- two `grep -q` bindings with nothing to say.
-**THE KEYSTONE, my named-unbuilt from `034352`.** `reds_pin_capacity_scan.sh` answered
-`pin_headroom`, `pin_foldable_rows` and `pin_deadlocked` from THIS clone's bytes, calling that
-*local*. **MEASURED: all 200** of the last 200 commits touched the pin, 50 inside 16 hours; headroom
-**0 -> 1,993 -> 15** across five, wider than its median row, **1,977**. **MECHANISM:** it reads
-`${REDS_ANOINTED:-xy/main}`'s pin beside its own through the ONE row reader -- four readings,
-`pin_upstream_state` and `commits_behind` among them -- **reported, never gated**, off the REF
-rather than a fetch.
-**IT FIRED ON ITS OWN LAP, LIVE:** mid-lap `commits_behind` 0 -> 2, naming **`%705`** -- the row my
-`pin_foldable_rows=1` counted, folded by a peer as I worked. Eight commits back it names **`%701`**,
-which misled `034352`. `%457`'s loom carried, never rebuilt. **My first wording
-inferred a cause it cannot see:** my unpushed row read as *a peer folded it*, which `%700` forbids.
-**PROVEN:** 83 legs, five mutations bitten; the leg COUNT pinned, so a DELETED leg refuses where
-`cases_failed=0` read alike; a **reach** leg bit where the pen stayed green. Last lap's own
-`card_pin_claim` caught THIS card claiming a wall over a door. Row `20260911.064500` BOOKED.
-**YOURS:** 9 of 17 open rows are your word; capacity is `reds_pin_capacity`'s to publish.
-
+**INCENSE -- THE GATE BOUNDED ITSELF TO THE CLASS ITS OWN MEASUREMENT FOUND.**
+Elder [shelved](archive/20260911-091811_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4636, hand-advanced past row 1's eight reads today).
+**REDS FIRST:** cold clean of anything mine.
+**THE QUESTION:** for every path the law room prints, does a guard read it?
+`law_tool_citation` walls every `tools/` path a `.claude/rules/*.md` page prints at zero, and its
+own header argues that wall as being about a **LAW PAGE**: *naming a guard is a promise about a
+file that already exists*. Take `tools/` out of that sentence and it holds.
+**MEASURED: 128 more paths into eleven other rooms, read by nothing.** Two were stale -- the
+Radiant self-critique essay (`20260715-163000`) and the TAME SLC audit ledger (`20260717-181715`),
+both folded to `active-designing/yonder/date/`, standing in three law pages and the twin. **One
+line of `tame-guidance.md` carried a repaired citation and a stale one four words apart.**
+**MECHANISM:** a second reading, `room_cited_untracked`, walled at zero over every non-`tools/`
+path the room prints -- two readings rather than one merged number, since `cited_bare` and
+`cited_runners` are measured against `cited_paths`. Its three read-past classes are **mechanical
+rather than a typed list**: an absolute path starts with `/`; a placeholder is what
+`stamp-and-name.md` REQUIRES of an illustration; and `git check-ignore` answers *is this a room
+the repository keeps*.
+**PROVEN:** 67 legs, **five mutations bitten**, leg COUNT pinned. the row of `20260911.093000` booked; `%709` folded to
+its own shelf first, since the pin stood at **16 bytes**.
+[Paper](../active-designing/20260911-093000_the-gate-that-inherited-its-bound.md) **A 96**.
+**YOURS:** the twin reports one survivor, `tally/heap-garden.rye`, marked `when built` and gated
+nowhere. May a law page name a path that has yet to exist?
 **COPAL -- AN ALIAS GROUP IS A CLAIM ABOUT MEMBERS, AND THE READING COULD NOT SEE ITS OWN.**
 Elder [shelved](archive/20260911-063351_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4626): read by swallowing -- run the thing rather than the sentence

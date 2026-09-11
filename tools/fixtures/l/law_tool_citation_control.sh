@@ -21,7 +21,8 @@ PEN=$(mktemp -d "${TMPDIR:-/tmp}/law-tool-citation-control.XXXXXX")
 trap 'rm -rf "$PEN"' EXIT INT TERM
 
 fails=0
-note() { printf '%s=%s\n' "$1" "$2"; [ "$2" = yes ] || fails=$((fails + 1)); }
+cases=0
+note() { printf '%s=%s\n' "$1" "$2"; cases=$((cases + 1)); [ "$2" = yes ] || fails=$((fails + 1)); }
 yn() { if [ "$1" -eq 0 ]; then echo yes; else echo no; fi; }
 has() { echo "$1" | grep -q "$2" && echo yes || echo no; }
 
@@ -156,12 +157,100 @@ seal "$d"; out=$(run "$d"); rc=$?
 note empty_room_refused "$([ $rc -ne 0 ] && echo yes || echo no)"
 note empty_room_verdict "$(has "$out" '^verdict=law_room_empty$')"
 
+# --- a room path the repository carries, and one it does not -----------------------------------
+# The widened reading, proven the same way: every plant counted while it stands, read back to zero
+# once lifted, and every read-past class shown to leave the real citation counted.
+d=$(mkpen room)
+mkdir -p "$d/foundations"
+printf 'x\n' > "$d/foundations/real.md"
+printf '# a\n\nRun `tools/o/one_witness.rish`. Canon: `foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note room_clean_free "$(yn $rc)"
+note room_clean_counted "$(has "$out" '^room_cited_paths=1$')"
+note room_clean_zero "$(has "$out" '^room_cited_untracked=0$')"
+
+printf '# a\n\nRun `tools/o/one_witness.rish`. Canon: `foundations/real.md` and `foundations/gone.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note room_ghost_refused "$([ $rc -ne 0 ] && echo yes || echo no)"
+note room_ghost_counted "$(has "$out" '^room_cited_untracked=1$')"
+note room_ghost_named "$(has "$out" '^room_untracked: foundations/gone.md$')"
+note room_ghost_verdict "$(has "$out" '^verdict=citation_absent$')"
+note room_ghost_tools_clean "$(has "$out" '^cited_untracked=0$')"
+printf '# a\n\nRun `tools/o/one_witness.rish`. Canon: `foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note room_ghost_lifted_zero "$(has "$out" '^room_cited_untracked=0$')"
+note room_ghost_lifted_free "$(yn $rc)"
+
+# --- a climb is stripped, so one citation of one file is one reading ---------------------------
+d=$(mkpen climb)
+mkdir -p "$d/foundations"
+printf 'x\n' > "$d/foundations/real.md"
+printf '# a\n\nRun `tools/o/one_witness.rish`. See `../../foundations/real.md` and `../foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note climb_free "$(yn $rc)"
+note climb_counted_once "$(has "$out" '^room_cited_paths=1$')"
+
+# --- an absolute path names the host, never the tree -------------------------------------------
+d=$(mkpen abspath)
+printf '# a\n\nRun `tools/o/one_witness.rish`. Copy it to `/etc/nixos/configuration.nix`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note abspath_free "$(yn $rc)"
+note abspath_uncounted "$(has "$out" '^room_cited_paths=0$')"
+
+# --- a placeholder is what the illustration law asks for, and it passes free --------------------
+d=$(mkpen placeholder)
+mkdir -p "$d/foundations"
+printf 'x\n' > "$d/foundations/real.md"
+printf '# a\n\nRun `tools/o/one_witness.rish`. Shape: `date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.md`\nand `docs/<subroom>/<page>.md`. Real: `foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note placeholder_free "$(yn $rc)"
+note placeholder_counted "$(has "$out" '^room_placeholder_read_past=1$')"
+note placeholder_leaves_real "$(has "$out" '^room_cited_paths=1$')"
+# The angle-bracket form is never collected, so it is neither counted as a placeholder nor gated.
+# Proven by removing the stamped form and reading the placeholder count back to zero with the
+# angle form still standing and the page still free.
+printf '# a\n\nRun `tools/o/one_witness.rish`. Shape: `docs/<subroom>/<page>.md`. Real: `foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note angle_free "$(yn $rc)"
+note angle_uncounted "$(has "$out" '^room_placeholder_read_past=0$')"
+note angle_leaves_real "$(has "$out" '^room_cited_paths=1$')"
+
+# --- a gitignored path is a room the repository keeps outside itself ---------------------------
+d=$(mkpen ignored)
+mkdir -p "$d/foundations"
+printf 'x\n' > "$d/foundations/real.md"
+printf 'scratch/\n' > "$d/.gitignore"
+printf '# a\n\nRun `tools/o/one_witness.rish`. Draft in `scratch/commit-msg.txt`, canon `foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+seal "$d"; out=$(run "$d"); rc=$?
+note ignored_free "$(yn $rc)"
+note ignored_counted "$(has "$out" '^room_ignored_read_past=1$')"
+note ignored_leaves_real "$(has "$out" '^room_cited_paths=1$')"
+# Un-ignore it, and the same path must now be a promise the pen has to keep.
+printf 'nothing\n' > "$d/.gitignore"
+seal "$d"; out=$(run "$d"); rc=$?
+note ignored_lifted_refuses "$([ $rc -ne 0 ] && echo yes || echo no)"
+note ignored_lifted_counted "$(has "$out" '^room_cited_untracked=1$')"
+
+# --- the twin room's own room paths are reported, named, and gate nothing -----------------------
+d=$(mkpen twinroom)
+mkdir -p "$d/foundations"
+printf 'x\n' > "$d/foundations/real.md"
+printf '# a\n\nRun `tools/o/one_witness.rish`. Canon `foundations/real.md`.\n' > "$d/.claude/rules/a.md"
+printf '# twin\n\nSee `tools/o/two.sh` and `foundations/absent.md`.\n' > "$d/.cursor/rules/a.mdc"
+seal "$d"; out=$(run "$d"); rc=$?
+note twinroom_free "$(yn $rc)"
+note twinroom_counted "$(has "$out" '^twin_room_cited_untracked=1$')"
+note twinroom_named "$(has "$out" '^twin_room_untracked: foundations/absent.md$')"
+
 # --- outside a repository the scan refuses rather than reading a filesystem ---------------------
 d="$PEN/norepo"; mkdir -p "$d/.claude/rules"
 printf '# a\n\nRun `tools/o/one_witness.rish`.\n' > "$d/.claude/rules/a.md"
 out=$( cd "$d" && sh "$SCAN" 2>&1 ); rc=$?
 note norepo_refused "$([ $rc -ne 0 ] && echo yes || echo no)"
 
+# The leg COUNT is published and pinned by the witness, because `control_failures=0` reads exactly
+# the same whether a leg passed or was deleted.
+echo "control_cases=$cases"
 echo "control_failures=$fails"
 if [ "$fails" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
 echo "control_verdict=disagreement"

@@ -87,11 +87,11 @@ No new law -- the supplement already seats this. Agents must not skip it when sh
 5. **Before claiming GREEN** -- run `tame_style_check` and the module's own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
 6. **Glass / NativeActivity touch** -- migrate `@memcpy` and add opening lines in that file before leaving.
 
-**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
+**Ledger:** `active-designing/yonder/date/20260717/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
 
 ## SLC Rye Definition of Done (hosted - linengrow - glass)
 
-Existing law, not new philosophy -- agents must not skip when shipping SLC Rye (`20260717.181715` realign). Ledger: `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md`.
+Existing law, not new philosophy -- agents must not skip when shipping SLC Rye (`20260717.181715` realign). Ledger: `active-designing/yonder/date/20260717/20260717-181715_tame-slc-rye-audit-ledger.md`.
 
 1. **Opening triad** on every new or touched hosted / linengrow / glass `.rye`: `const std`, bare `assert`, bare `print`.
 2. **Contract asserts** on every new or touched `fn` -- aim >= two asserts per function (pre / post / invariant); `// invariant:` on each. A GREEN `*_witness.rye` does **not** excuse zero asserts in the module under test.

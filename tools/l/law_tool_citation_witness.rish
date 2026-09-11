@@ -1,5 +1,5 @@
-# tools/l/law_tool_citation_witness.rish -- a tool path the law room prints is a path the
-# repository carries.
+# tools/l/law_tool_citation_witness.rish -- a path the law room prints is a path the repository
+# carries.
 #
 #   rishi/bin/rishi run tools/l/law_tool_citation_witness.rish
 #
@@ -20,9 +20,18 @@
 # TAME Core's declared surface runs; this one asks whether the law room's printed paths exist.
 #
 # WHAT IS PROVEN, on metal. Every `tools/` file path printed in a tracked `.claude/rules/*.md`
-# page is a path `git ls-files` carries -- a wall at zero. The reading asks the REPOSITORY rather
-# than the filesystem, because a file present on one machine and absent from every clone is the
-# shape `tools/t/tracked_link_scan.sh` was built after.
+# page is a path `git ls-files` carries -- a wall at zero. AND, from `20260911.093000`, every
+# other room's path the same pages print, on its own reading and its own wall at zero. The first
+# gate was bounded to `tools/` because that was the class the measurement found; the argument it
+# makes is about a LAW PAGE, and the room prints 128 more paths into eleven other rooms. Two were
+# stale -- the pre-fold flat paths of the Radiant self-critique essay and the TAME SLC audit
+# ledger, both folded to `active-designing/yonder/` -- cited across three law pages and the twin,
+# with one line of `.claude/rules/tame-guidance.md` carrying a repaired citation beside a stale
+# one. Two readings rather than one merged number, since `cited_bare` and `cited_runners` are
+# measured against `cited_paths` and a merged total could be improved by moving a citation.
+#
+# Both readings ask the REPOSITORY rather than the filesystem, because a file present on one
+# machine and absent from every clone is the shape `tools/t/tracked_link_scan.sh` was built after.
 #
 # WHAT IS REPORTED, never gated, each for its own reason.
 #   `cited_bare` -- the share no link guard can see. It is the reason the gate exists, and it
@@ -33,9 +42,18 @@
 #   named in `.claude/rules/ascii-first.md` as a file whose own `say` line was swept.
 #   An absent roster reads `unread` rather than zero, since an instrument that cannot answer must
 #   not answer cleanly.
-#   The `.cursor/rules/*.mdc` twin room, read the same way. Its own guard `rule_twin` stands
-#   behind custody gate %7, and a second gate over that room would push a lane into the merge
-#   that gate reserves.
+#   The `.cursor/rules/*.mdc` twin room, read the same way on both readings. Its own guard
+#   `rule_twin` stands behind custody gate %7, and a second gate over that room would push a lane
+#   into the merge that gate reserves. Its one survivor is NAMED rather than counted, because a
+#   reader handed a bare number can act on nothing. Today's one is a path in the Tally room whose
+#   own sentence marks it `when built`; the scan prints its full name at runtime rather than this
+#   header spelling it, because `tools/g/geode_libraries.rish` counts a witness for a room by the
+#   room paths its text names -- so spelling one here would enrol this guard in Tally's census.
+#   `room_placeholder_read_past` and `room_ignored_read_past` -- the two classes the room reading
+#   declines, each mechanical rather than a typed list of exceptions. A placeholder is what
+#   `.claude/rules/stamp-and-name.md` REQUIRES of an illustration; a gitignored path answers the
+#   `.gitignore` that denies this tree's root with `/*` and allows each project room back by name,
+#   so `git check-ignore` answers precisely *is this a room the repository keeps*.
 #
 # WHAT IS NOT PROVEN. That a named tool does what the page says it does, that the page names the
 # tool it ought to, or that a rostered guard is green. Three other questions, three other
@@ -47,10 +65,11 @@ say "law-tool-citation: Lens TAME -- docs and implementation stay synced: assert
 
 let scan = run ["sh" "tools/fixtures/l/law_tool_citation_scan.sh"]
 say scan.out
-assert scan.ok else "law-tool-citation: a law page names a tool path the repository does not carry -- read the scan's own lines"
+assert scan.ok else "law-tool-citation: a law page names a path the repository does not carry -- read the scan's own lines"
 assert scan.out contains "cited_untracked=0" else "law-tool-citation: every cited tool path must be one the repository carries"
+assert scan.out contains "room_cited_untracked=0" else "law-tool-citation: every OTHER room's path the law room prints must be one the repository carries too"
 assert scan.out contains "verdict=ok" else "law-tool-citation: the scan must balance before it is believed"
-say "field GREEN -- every tool path the law room prints is a path a fresh clone receives"
+say "field GREEN -- every path the law room prints, tools and rooms alike, is one a fresh clone receives"
 
 let control = run ["sh" "tools/fixtures/l/law_tool_citation_control.sh"]
 say control.out
@@ -82,8 +101,25 @@ assert control.out contains "twin_counted=yes" else "law-tool-citation: and its 
 assert control.out contains "silent_refused=yes" else "law-tool-citation: a room naming no tool must refuse rather than read clean"
 assert control.out contains "empty_room_refused=yes" else "law-tool-citation: an absent room must refuse rather than read zero"
 assert control.out contains "norepo_refused=yes" else "law-tool-citation: outside a repository the scan must refuse"
+assert control.out contains "room_clean_free=yes" else "law-tool-citation: a room path the pen carries must pass free"
+assert control.out contains "room_clean_counted=yes" else "law-tool-citation: and be counted rather than merely passed"
+assert control.out contains "room_ghost_refused=yes" else "law-tool-citation: a named room path the repository lacks must be refused"
+assert control.out contains "room_ghost_named=yes" else "law-tool-citation: the refusal must name it under its own prefix"
+assert control.out contains "room_ghost_tools_clean=yes" else "law-tool-citation: the two readings must stay apart -- a room fault leaves the tool count at zero"
+assert control.out contains "room_ghost_lifted_zero=yes" else "law-tool-citation: lifting the plant must return the room reading to zero"
+assert control.out contains "climb_counted_once=yes" else "law-tool-citation: two climbs of one file are one citation"
+assert control.out contains "abspath_uncounted=yes" else "law-tool-citation: an absolute path names the host rather than the tree"
+assert control.out contains "placeholder_counted=yes" else "law-tool-citation: a stamped placeholder must be counted as read past"
+assert control.out contains "placeholder_leaves_real=yes" else "law-tool-citation: and must leave the real citation counted"
+assert control.out contains "angle_uncounted=yes" else "law-tool-citation: an angle-bracket form is never collected, so it needs no filter"
+assert control.out contains "ignored_counted=yes" else "law-tool-citation: a gitignored path is a room the repository keeps outside itself"
+assert control.out contains "ignored_lifted_refuses=yes" else "law-tool-citation: un-ignore that same path and it becomes a promise the tree must keep"
+assert control.out contains "twinroom_counted=yes" else "law-tool-citation: the twin room's own room paths are read"
+assert control.out contains "twinroom_named=yes" else "law-tool-citation: and named, since a bare count cannot be acted on"
+assert control.out contains "twinroom_free=yes" else "law-tool-citation: and gate nothing while gate %7 stands"
+assert control.out contains "control_cases=67" else "law-tool-citation: the leg count is pinned, because control_failures=0 reads alike whether a leg passed or was deleted"
 assert control.out contains "control_failures=0" else "law-tool-citation: every planted reading must agree"
 assert control.out contains "control_verdict=ok" else "law-tool-citation: the control must agree with itself"
-say "RED and GREEN paths proven -- thirty-nine readings on real git pens, every plant counted while it stood and read back to zero once lifted"
+say "RED and GREEN paths proven -- sixty-seven readings on real git pens, every plant counted while it stood and read back to zero once lifted, and five mutations of the room reading bitten"
 
-say "GREEN: law-tool-citation -- the law room's printed tool paths are paths the repository carries."
+say "GREEN: law-tool-citation -- every path the law room prints is a path the repository carries."
