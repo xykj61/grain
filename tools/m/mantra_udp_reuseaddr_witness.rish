@@ -1,0 +1,87 @@
+# tools/m/mantra_udp_reuseaddr_witness.rish -- every Mantra UDP module proves its port is its own,
+# and a second reacher for a held port is refused BY NAME.
+#
+# WHAT THIS HOLDS. Seven delivery modules under mantra/ opened their socket under
+# `setsockopt(SO_REUSEADDR)`, carrying the invariant *SO_REUSEADDR is what lets a bounded run
+# rebind its own port*. That sentence belongs to TCP, whose closed sockets sit in TIME_WAIT holding
+# the port until the option lets a restart bind through. UDP frees a closed port at once, so on
+# these sockets the option bought one thing: a DUPLICATE BIND, two sockets holding one address and
+# port while the kernel splits the arriving datagrams between them, silently. A port belongs to the
+# MACHINE, and this pier runs eight trees, so the sharing was ordinary. Amphora met the identical
+# shape one lane over and measured the four binds that decide it (REDS `20260906.154105`); this
+# pier then watched the Mantra half, `mantra_snapshot_hosted` red at 2,689ms under load and GREEN
+# alone straight after, its evidence naming `BadKind` then `RecvFailed` -- the signature of a
+# foreign sender.
+#
+# TWO GATES AND A LIVE LEG.
+#
+#   reuseaddr_sites  -- setsockopt calls naming SO_REUSEADDR in Mantra sources. HELD AT ZERO, the
+#                       regression guard, since the option walks back in under a plausible comment.
+#   dgram_unproven   -- HELD AT ZERO. Every module opening SOCK_DGRAM reads the option back and
+#                       asserts it zero, so each states the property rather than leaving a reader
+#                       to infer it from an absent line.
+#   the live leg     -- the BUILT binary run against a foreign holder of 38491, read by what it
+#                       says: `refused_by_name`, first stderr line `BindFailed`. Source reading
+#                       alone tells a repair from a comment about one by luck; this asks the
+#                       kernel. Measured `20260911` both ways -- the elder module, built from the
+#                       commit before the repair, bound beside the holder and printed `GREEN`.
+#
+# THE LIVE LEG TAKES THE PORT LOCK FIRST. It binds a real machine-wide port, so a bare run would
+# red a peer's lap -- the exact fault it exists to name.
+#
+# THE KERNEL PROBE STAYS AMPHORA'S. Its scan runs the four binds that decide whether dropping the
+# option is right, and one expectation written in two files is the shape this tree keeps finding
+# drifted.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_udp_reuseaddr_witness.rish
+
+let scan = "tools/fixtures/m/mantra_udp_reuseaddr_scan.sh"
+let control = "tools/fixtures/m/mantra_udp_reuseaddr_control.sh"
+let lock = "tools/fixtures/m/mantra_delivery_port_lock.sh"
+let probe = "tools/fixtures/m/mantra_bind_refusal_probe.sh"
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/snapshot-export-delivery"
+
+let living = run ["sh" scan]
+say living.out
+if living.ok == false then say living.err
+assert living.ok else "mantra_udp_reuseaddr: living mantra must carry no address reuse -- read the lines above"
+assert living.out contains "reuseaddr_sites=0" else "mantra_udp_reuseaddr: a setsockopt site stands"
+assert living.out contains "dgram_unproven=0" else "mantra_udp_reuseaddr: a UDP module proves nothing about the option"
+assert living.out contains "verdict=ok" else "mantra_udp_reuseaddr: living scan not ok"
+assert living.out contains "corpus_source=git_ls_files" else "mantra_udp_reuseaddr: the living reading must read tracked files, never the filesystem"
+say "living=clean"
+
+# THE WIRING IS REPORTED, NEVER GATED. Five of the witnesses driving these binaries belong to the
+# caravan lane, and a guard that reds mantra over a peer's file is a guard that lane turns off. The
+# scan names each unwired path, so the number is a door rather than a verdict.
+say "witness_lock wiring=reported_by_scan gated=no"
+
+let pen = run ["sh" control]
+say pen.out
+if pen.ok == false then say pen.err
+assert pen.ok else "mantra_udp_reuseaddr: control must pass -- read the lines above"
+assert pen.out contains "control_verdict=ok" else "mantra_udp_reuseaddr: control not ok"
+assert pen.out contains "failed=0" else "mantra_udp_reuseaddr: a control behavior failed"
+# THE LEG COUNT IS PINNED. `failed=0` reads the same over 28 behaviors and over a control whose legs
+# were quietly deleted, so the count is asserted beside the verdict.
+assert pen.out contains "behaviors=28" else "mantra_udp_reuseaddr: the control's leg count moved -- add the number here in the same commit that adds the leg"
+say "pen=28 behaviors, two mutations bitten on 20260911"
+
+# THE LIVE LEG. A source reading cannot tell a repair from a comment about one, so the built binary
+# is run against a foreign holder of 38491. The port pair is taken through the lock first: this leg
+# binds a real machine-wide port, and running it bare would red a peer's lap -- the exact fault it
+# exists to name.
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
+say build.out
+assert build.ok else "mantra_udp_reuseaddr: snapshot delivery build failed: ${build.err}"
+
+let live = run ["sh" lock "38490" "sh" probe bin "38491"]
+say live.out
+assert live.ok else "mantra_udp_reuseaddr: the built binary did not refuse a held port by name -- read the lines above"
+if live.out contains "probe_verdict=absent_instrument" then say "probe=absent_instrument wants=python3 -- the source gates above still stand"
+if live.out contains "probe_verdict=port_busy" then say "probe=port_busy -- 38491 is held outside this lock, so the reading is about the pier rather than the binary"
+if live.out contains "probe_verdict=refused_by_name" then say "probe=refused_by_name first_error=BindFailed"
+
+say "GREEN: mantra_udp_reuseaddr -- no address reuse in Mantra, every UDP module proves it off, a held port refused by name, pen innocent."

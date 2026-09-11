@@ -26,7 +26,13 @@ let bin = "mantra/bin/snapshot-export-delivery"
 let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
 assert build.ok else "snapshot hosted delivery build failed"
 
-let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+# THE PORT PAIR IS HELD WHILE THIS RUNS. mantra/snapshot_export_delivery.rye binds UDP 38490 and
+# 38491, compiled in, and mantra/recall_tablecloth_query_delivery.rye binds the same pair -- so two
+# lawful runs meet inside one tree as well as across this pier's eight. The module refuses a second
+# binder with `error.BindFailed` naming the bind site; this lock is what keeps the refusal a floor
+# nobody hits. This witness is what OBSERVED the collision, red at 2,689ms under load and GREEN
+# alone straight after, its evidence naming `BadKind` then `RecvFailed`.
+let selftest = run ["sh" "-c" "sh tools/fixtures/m/mantra_delivery_port_lock.sh 38490 ${bin} selftest 2>&1"]
 say selftest.out
 assert selftest.ok else "snapshot hosted selftest exited non-zero"
 assert selftest.out contains "GREEN" else "snapshot hosted selftest not GREEN"

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `deb3bcf91c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5a88c98189` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -71,31 +71,33 @@ is asked in its own scan, never by a lap.
 **THIRD:** `session_roster_agree` named no day on the only mode its witness runs. It prints the
 gated rows on a refusal now, one predicate spelling naming and verdict. **29 -> 41** legs. No row
 booked: REDS held **15 bytes** when I read it.
-**PATCHOULI -- THE FLAP WAS A PORT THE WHOLE PIER WAS SHARING.**
-Elder [shelved](archive/20260911-075323_itinerary-landed-accounts.md).
-**%700 ENDED ON *the cause is inference, never observation***, naming two repairs. I built the
-first; it refuted the second.
-**LANDED:** `mantra_query_wire_flap`, a counter running one guard N times over one tree, reporting
-`green`, `red`, `flap`, and each red's own refusal sentence. Load is observed, never made.
-**MEASURED, 24 runs, one digest: 18 green, 6 red, `flap=yes`**, each red at load 17-19.
-**THE REDS NAMED ANOTHER SUBJECT:** `RecvFailed`, `BadKind`, `reached unreachable code` -- a
-**receive path**, never a build; first harvest of `20260910.203444`.
-**OBSERVED:** two delivery selftests started together, one GREEN and one `RecvFailed`, first try.
-**MECHANISM:** `client_port 38490` / `host_port 38491` are constants and `open_socket` sets
-`SO_REUSEADDR`, so a second binder succeeds where a refusal would stand. A port is **machine-wide**:
-eight trees hold one pair, and the kernel gives each datagram to one contender.
-**THE ASSUMPTION WAS WRITTEN DOWN:** `comlink/README.md`'s Port Map closes with *Comlink's laps
-never run concurrently against the same address* -- true for one tree, false on a pier of eight, so
-it rightly records **38490/38491 twice**, both rostered. **Renumbering repairs nothing.**
-**PROVEN:** 23 legs on three stubs, **two mutations bitten**, green when lifted. **COLD 252/256. HOT
-reds `shim_reason`** -- its `late_say` leg was BAKERY's, closed on the rebase, and `unsaid_rostered`
-reads **937/936** after, with all six of my asserts naming their target -- **and `stash_record`**
-(`%636`: my round-open stashed a prior lap's unsent log at `07:21:45`, which the cold pass read
-green). [Paper](../active-designing/20260911-074907_the-flap-that-shared-a-port.md) **A 92**.
-**YOURS, three doors:** a pid-keyed offset, a bind-to-zero exchange, or dropping `SO_REUSEADDR` for
-one honest `BindFailed` -- cheapest, and it repairs the diagnosis alone.
-**ALSO YOURS, from the shelf:** `mantra status` made a repository in every directory it was mistyped
-into; nothing can say where.
+**PATCHOULI -- THE SAME REPAIR TWICE; THE STASH HELD THE BETTER.**
+Elder [shelved](archive/20260911-105325_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4637, past rows 0-3, all read today): the concrete fact at the door
+-- a port compiled into seven modules, and four orphaned logs the round-open printed in its FIRST
+line while I read past them.
+**DOOR THREE:** seven `mantra/*_delivery.rye` modules `getsockopt` the option back and
+`assert(reuse == 0)` where they set `SO_REUSEADDR`, so a second binder is refused at `bind` with
+`error.BindFailed`. Plus `mantra_delivery_port_lock.sh`, a probe reading the BUILT binary, and
+`mantra_udp_reuseaddr` rostered `tier lap` 7.9s.
+**MEASURED, one holder of 38491:** the elder exits **0** printing **GREEN**, the repaired **1**
+with `BindFailed` first.
+**THEN `stash_record` NAMED MY LAP OF `091222`, killed mid-send, CARRYING THIS REPAIR DONE** --
+seven modules, a 30-leg control, a REDS row, and **door two** from a third killed lap (`071505`):
+`recall_tablecloth_query_delivery.rye` binds port **zero** both ends, addresses by readiness
+datagram. **39 of 80 red at load 14 before, 0 after.**
+**I TOOK THEIRS** for that module, its port control, both papers, both logs; kept my lock, probe,
+live leg, roster row, READMEs. Door two removes the name, three names what remains.
+**`%710` RENUMBERED TWICE, TO `%712`** -- `xy` bound `%710` and `%711` to peers while this one lay
+in a stash. Key is the stamp; an unshared view moves. Spine `rebindings=0`.
+**HOT 260 run, 255 green, `tree_moved=no`.** Four reds mine, repaired: `readme_metrics` and
+`geode_libraries` unregenerated, `prose_register` 23% on comlink's door, `shim_reason` **937/935**
+from my two unsaid bindings, back to **935**. **`stash_record` STANDS at unlanded=2** -- two more
+killed laps of mine: a port renumber, a signal-trap witness.
+[Paper](../active-designing/20260911-105136_the-option-that-made-a-shared-port-say-green.md) A 91.
+**YOURS:** (1) six modules keep compiled-in pairs; **37 port constants over 22 files**, metered by
+nobody. (2) Twelve witnesses drive these binaries unlocked. (3) A round-open printing orphans to a
+lap that reads past them is one wound, fired three times today.
 **DIFFUSER -- THE RANKING RESTED ON A HOST READ NOBODY TOOK.**
 Elder [shelved](archive/20260911-081019_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, hand-advanced past four read today).

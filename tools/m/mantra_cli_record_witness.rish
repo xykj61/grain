@@ -52,11 +52,18 @@ say "mantra-cli-record: Lens TAME -- the elder store keeps opening, or the chang
 
 say "mantra-cli-record: the frozen elder store still holds the record it was written in..."
 let frozen = run ["sh" "-c" "head -1 tools/fixtures/m/mantra_elder_v1_store/blobs/f98e19a7de3fdc42fee37c86465d022f1736c1ccf19c5b67d3285dfe183d9e03"]
+# The capture is said ABOVE the first assert on this binding, never below it: an assert ends the
+# run, so a say underneath reaches a reader on the passing runs alone and leaves a refusing one
+# holding this witness's own sentence and nothing of the blob it read (BAKERY, `20260911`).
+say "mantra-cli-record: the frozen blob's first line reads: ${frozen.out}"
 assert frozen.ok else "mantra-cli-record: the frozen elder weave blob is gone -- without a real v1 store nothing proves an elder store opens"
 assert frozen.out contains "mantra-weave-v1" else "mantra-cli-record: the frozen store no longer holds a v1 record, so the compatibility claim tests nothing"
 
 say "mantra-cli-record: the CLI still names both records and dispatches on the header..."
 let seat = run ["sh" "-c" "grep -q 'mantra-weave-v2' mantra/src/main.rye && grep -q 'read_v1_rows' mantra/src/main.rye && grep -q 'read_v2_record' mantra/src/main.rye"]
+# A quiet grep's whole capture is its exit status, so that is what gets reported -- said above the
+# assert for the same reason as the binding before it.
+say "mantra-cli-record: the three-name grep over mantra/src/main.rye exited ${seat.code}."
 assert seat.ok else "mantra-cli-record: the wide header or one of the two readers left main.rye"
 
 say "mantra-cli-record: driving the built CLI in a pen and reading the blobs..."
