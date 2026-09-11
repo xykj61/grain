@@ -1,0 +1,74 @@
+# tools/m/mantra_annotate_cli_witness.rish -- the story the weave tells, reaching a person.
+#
+# WHAT THIS PROVES. `mantra/src/weave.rye` has published `Weave.annotate` since the merge landed:
+# two weaves read side by side, one note per position, each note carrying what both sides did. Every
+# guard over it called that function from Rye. The CLI offered `status`, which answers how many
+# lines moved, and nothing that answers what each line DID -- so the showing the module was named
+# for stopped at the library's edge. `mantra annotate <file>` carries it across, and this guard
+# drives the built binary in a pen and reads the story it prints.
+#
+# THE SEAM THIS PRESSES. `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` asks for
+# fast isolated checks in the pure heart and a few honest integrated ones at the thin edge where the
+# world enters. `tools/m/mantra_weave_annotate_witness.rish` is the happy zone -- the function
+# proven alone. This is the thin edge: a real binary, a real directory, a real file edited between
+# runs, and the bytes a person would actually see.
+#
+# THE WATER READING, which is why the repeat leg is here rather than implied.
+# `foundations/20260823-222019_what-brix-infuse-is.md` states the tree's claim that running a thing
+# twice does what running it once did. A reading is the strictest case of that claim: it must not
+# only leave the store alone, it must print the same bytes. `store_untouched`, `head_untouched` and
+# `repeat_identical` are the three halves of it -- the world, its pointer, and the answer.
+#
+# WHAT IS NOT PROVEN HERE. `%680` stands OPEN over a REPLACEMENT, where `Place.less_than` reads the
+# run ahead of the position and the replaced line leaves the document. The edits in the scan append
+# and drop, so this guard measures the reading rather than re-measuring a seam awaiting Keaton's
+# word, and it neither tests that seam nor hides it. `%689`'s trailing newline stands untouched too.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_annotate_cli_witness.rish
+
+say "mantra-annotate-cli: Language EN -- the weave's own story, printed for a person."
+say "mantra-annotate-cli: Style Gauge, Meter -- every claim is an answer the built CLI gave in a pen."
+say "mantra-annotate-cli: Lens TAME -- a reading writes nothing, and says so by being run twice."
+
+say "mantra-annotate-cli: the CLI still names the library function this reading is made of..."
+let seat = run ["sh" "-c" "grep -q 'fn cmd_annotate' mantra/src/main.rye && grep -q 'base.annotate(allocator, &work)' mantra/src/main.rye"]
+assert seat.ok else "mantra-annotate-cli: cmd_annotate or its call into Weave.annotate left main.rye, so the reading this guard proves is no longer there to prove"
+
+say "mantra-annotate-cli: the printed reading is still bounded, which is what keeps a story readable..."
+let bounded = run ["sh" "-c" "grep -q 'max_annotate_print' mantra/src/main.rye"]
+assert bounded.ok else "mantra-annotate-cli: max_annotate_print left main.rye -- a reading with no ceiling hands a terminal the file rather than the story"
+
+say "mantra-annotate-cli: driving the built binary over one file in a pen, edited between runs..."
+let scan = run ["sh" "tools/fixtures/m/mantra_annotate_cli_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-annotate-cli: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-annotate-cli: the CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "clean_unchanged=3" else "mantra-annotate-cli: a file nobody edited must read three unchanged lines, since three is what was woven"
+assert scan.out contains "clean_shows_text=yes" else "mantra-annotate-cli: an unchanged line came back without its own text, so the reading names positions rather than showing a document"
+assert scan.out contains "edit_added=1" else "mantra-annotate-cli: the appended line was not counted as added"
+assert scan.out contains "edit_removed=0" else "mantra-annotate-cli: an append reported a removal, so the two sides are being read backwards"
+assert scan.out contains "edit_shows_plus=yes" else "mantra-annotate-cli: the added line carries no plus mark, so the count is right and the showing is not"
+assert scan.out contains "drop_removed=1" else "mantra-annotate-cli: the dropped line was not counted as removed"
+assert scan.out contains "drop_shows_minus=yes" else "mantra-annotate-cli: the dropped line came back without its minus mark and its own text"
+assert scan.out contains "tombstone_hidden=yes" else "mantra-annotate-cli: a line deleted in a past commit was shown again, so the reading tells the document's history rather than the document"
+assert scan.out contains "repeat_identical=yes" else "mantra-annotate-cli: two runs over one state printed different bytes, so the reading is not a function of the state"
+assert scan.out contains "store_untouched=yes" else "mantra-annotate-cli: a reading wrote to the store"
+assert scan.out contains "head_untouched=yes" else "mantra-annotate-cli: a reading moved HEAD"
+assert scan.out contains "absent_file_code=1" else "mantra-annotate-cli: a path that is not there must be refused by name rather than crashed through"
+assert scan.out contains "no_store_code=1" else "mantra-annotate-cli: a directory with no .mantra/ must be refused by name, pointing at `mantra init`"
+assert scan.out contains "verdict=ok" else "mantra-annotate-cli: the scan reached its own red"
+
+say "mantra-annotate-cli: breaking the reading three ways in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_annotate_cli_control.sh"]
+say control.out
+assert control.ok else "mantra-annotate-cli: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-annotate-cli: the control must reach its own verdict"
+assert control.out contains "clean_ok=1" else "mantra-annotate-cli: the unmutated pen must read ok, or every phase below fails for a reason the pen invented"
+assert control.out contains "sides_swap_added=0" else "mantra-annotate-cli: swapping the two weaves must stop the append reading as added -- otherwise the sides are not what the counts are made of"
+assert control.out contains "sides_swap_removed=1" else "mantra-annotate-cli: swapping the two weaves must make the append read as a removal, which is the story told backwards"
+assert control.out contains "mark_blind_shows_plus=no" else "mantra-annotate-cli: blanking the plus mark must be visible, or the mark leg is reading something else"
+assert control.out contains "mark_blind_added=1" else "mantra-annotate-cli: that same break must leave the count standing, which is the pair telling a lost mark from a lost count"
+assert control.out contains "tomb_shown_hidden=no" else "mantra-annotate-cli: removing the skip must show the deleted line again -- otherwise tombstone_hidden holds nothing in place"
+
+say "mantra-annotate-cli: GREEN -- the weave's story reaches a person, and reading it changes nothing."

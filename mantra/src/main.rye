@@ -19,6 +19,7 @@
 //!   mantra add <file>     Weave the file's current content into the history.
 //!   mantra log            Show the commit chain and the files each names.
 //!   mantra status <file>  Show what has changed since the last weave.
+//!   mantra annotate <file> Show every line marked with what each side did.
 //!   mantra version        Print the Mantra version.
 //!
 //! Build:
@@ -124,6 +125,16 @@ const diff_mod = @import("diff.rye");
 /// way round: the elder record IS this CLI's history, so the CLI keeps writing
 /// at the site its own record already carries.
 const cli_site: u32 = weave.v1_site;
+
+/// The largest working-file text one Mantra command reads into memory.
+///
+/// Named once because three commands read a file into a buffer, and three
+/// spellings of one ceiling is how two of them come to disagree -- the shape
+/// `max_blob_bytes` closed in `mantra/src/store.rye`, where two heights over
+/// one directory turned a blob written by one hand into a prefix read by
+/// another. Stated in BYTES because bytes are what the machine has; the
+/// weave's own ceiling is stated in LINES, and `split_lines` refuses past it.
+const max_working_file_bytes: u32 = 4 * 1024 * 1024;
 
 // =========================================================================
 // Section Store -- SHA3-256 content-addressed blob store
@@ -702,6 +713,12 @@ pub fn main(init: std.process.Init) !u8 {
             return 2;
         }
         return cmd_status(allocator, io, args[2]);
+    } else if (std.mem.eql(u8, cmd, "annotate")) {
+        if (args.len < 3) {
+            print("mantra: annotate requires a file path\n", .{});
+            return 2;
+        }
+        return cmd_annotate(allocator, io, args[2]);
     } else if (std.mem.eql(u8, cmd, "version")) {
         print("mantra {s}\n", .{mantra_version});
         return 0;
@@ -723,9 +740,42 @@ fn print_usage() void {
         \\  mantra add <file>     weave one file's current text into the history
         \\  mantra log            show the commit chain
         \\  mantra status <file>  show what has changed since the last weave
+        \\  mantra annotate <file> show every line and what each side did
         \\  mantra version        print the Mantra version
         \\
     , .{});
+}
+
+/// Open the store for a command that only reads, or refuse in the command's
+/// own name.
+///
+/// WHY A SECOND DOOR. `Store.open` creates `.mantra/` and `.mantra/blobs/`
+/// when they are absent, which is right for `init` and `add` and wrong for
+/// every command that only reads. Measured `20260911` from the built binary:
+/// `mantra status b.txt` in a directory holding no repository answered by
+/// CREATING one, called the whole file added, and left `.mantra/` behind. So a
+/// mistyped directory gained a repository, and a reading changed the world --
+/// which is the claim `foundations/20260823-222019_what-brix-infuse-is.md`
+/// makes about running a thing twice, failing on the first run.
+///
+/// The probe and the open are two steps on purpose. Asking `Store.open`
+/// whether a repository is there would answer by making one, so the question
+/// is put to the directory first and the answer is `null` with the refusal
+/// already printed.
+fn open_for_reading(io: std.Io, cwd: Dir, command: []const u8) ?Store {
+    // invariant: a refusal names the command it came from, so the line a
+    // person reads says what refused and what to run instead. One assert,
+    // because a directory handle carries no fact this function may state --
+    // what it protects is proven by tools/m/mantra_annotate_cli_witness.rish.
+    assert(command.len > 0);
+    _ = cwd.openDir(io, ".mantra", .{}) catch {
+        print("mantra {s}: no .mantra/ here -- run `mantra init` first\n", .{command});
+        return null;
+    };
+    return Store.open(io, cwd) catch |err| {
+        print("mantra {s}: cannot open .mantra/ ({})\n", .{ command, err });
+        return null;
+    };
 }
 
 fn cmd_init(allocator: std.mem.Allocator, io: std.Io) !u8 {
@@ -765,7 +815,7 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
         print("mantra add: cannot open .mantra/ ({}) -- run `mantra init` first\n", .{err});
         return 1;
     };
-    const file_buf = try allocator.alloc(u8, 4 * 1024 * 1024);
+    const file_buf = try allocator.alloc(u8, max_working_file_bytes);
     const file_content = cwd.readFile(io, file_path, file_buf) catch |err| {
         print("mantra add: cannot read '{s}': {}\n", .{ file_path, err });
         return 1;
@@ -826,10 +876,7 @@ fn cmd_add_all(allocator: std.mem.Allocator, io: std.Io) !u8 {
 
 fn cmd_log(allocator: std.mem.Allocator, io: std.Io) !u8 {
     const cwd = Dir.cwd();
-    var store = Store.open(io, cwd) catch |err| {
-        print("mantra log: cannot open .mantra/ ({}) -- run `mantra init` first\n", .{err});
-        return 1;
-    };
+    var store = open_for_reading(io, cwd, "log") orelse return 1;
     var head: ?[]const u8 = try store.read_head(allocator, io);
     if (head == null) {
         print("mantra: no commits yet -- run `mantra add` to weave the first line.\n", .{});
@@ -867,11 +914,8 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
     // invariant: an empty path names no file to report on
     assert(file_path.len > 0);
     const cwd = Dir.cwd();
-    var store = Store.open(io, cwd) catch |err| {
-        print("mantra status: cannot open .mantra/ ({}) -- run `mantra init` first\n", .{err});
-        return 1;
-    };
-    const file_buf = try allocator.alloc(u8, 4 * 1024 * 1024);
+    var store = open_for_reading(io, cwd, "status") orelse return 1;
+    const file_buf = try allocator.alloc(u8, max_working_file_bytes);
     const file_content = cwd.readFile(io, file_path, file_buf) catch |err| {
         print("mantra status: cannot read '{s}': {}\n", .{ file_path, err });
         return 1;
@@ -892,6 +936,149 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
         for (old) |line| {
             if (line.id().eq(target)) { print("- {s}\n", .{line.text}); break; }
         }
+    }
+    return 0;
+}
+
+/// The largest number of annotated lines one `mantra annotate` prints.
+///
+/// Named in LINES, because a reading is made for a person and a person reads
+/// lines. A weave may hold `weave.max_weave_lines` -- 1,048,576 -- and a
+/// terminal handed a million of them has been sent the file rather than shown
+/// the story. So the reading stops here and names the remainder in its own
+/// last line; a bound that truncated in silence would leave a reader believing
+/// they had seen the whole document.
+const max_annotate_print: u32 = 4096;
+
+/// The mark one line wears in the reading, read from the two parities the
+/// merge reads.
+///
+/// Parity is the tombstone in `mantra/src/weave.rye`, so `present_left` and
+/// `present_right` answer the whole question between them and no third field
+/// is consulted. The stored weave is the left side and the working file the
+/// right, which is what makes `+` mean *the working file holds it and the
+/// store does not*.
+///
+/// The fourth case -- neither side holding the line -- is a position deleted in
+/// an earlier commit and still gone. `cmd_annotate` counts it and moves on
+/// without printing, so `x` reaches a terminal only when that skip is broken;
+/// it is named here rather than left to a default arm, because the four parity
+/// pairs are the whole enumeration and a reader deserves to see all four.
+fn annotate_mark(note: weave.Note) []const u8 {
+    // invariant: a note names a position at least one side has seen, since a
+    // position neither weave holds never enters the union at all
+    assert(note.left_gen != 0 or note.right_gen != 0);
+    // invariant: the merged count stands at one or above, because zero is the
+    // count reserved for a side that has never seen the position and at least
+    // one side has
+    assert(note.gen() >= 1);
+    if (note.present_left() and note.present_right()) return "  ";
+    if (note.present_right()) return "+ ";
+    if (note.present_left()) return "- ";
+    return "x ";
+}
+
+/// `mantra annotate <file>` -- the story the weave tells about one file.
+///
+/// WHAT IT SHOWS. `mantra status` answers how many lines moved; this answers
+/// what each line DID. Every line the document shows comes back with a mark:
+/// two spaces for a line both sides hold, `+` for one the working file added,
+/// `-` for one it removed. The marks come from `Weave.annotate`, so the story
+/// and the merge read the same two generation counts and cannot drift into two
+/// answers.
+///
+/// WHY TWO LOADS RATHER THAN ONE COPY. The left side must stand exactly as the
+/// store handed it while the right carries the working file's edit, and
+/// `load_weave` is the one function that knows how HEAD reaches a file's
+/// weave. Asking it twice keeps one answer about that path; a hand-written
+/// deep copy beside it would be a second answer waiting to disagree.
+///
+/// WHAT IT NEVER DOES. A reading writes nothing: no blob is stored and HEAD
+/// stays where it stands, which is what lets a person run this as often as
+/// they like on a repository they are unsure of.
+fn cmd_annotate(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 {
+    // invariant: an empty path names no file to read
+    assert(file_path.len > 0);
+    const cwd = Dir.cwd();
+    var store = open_for_reading(io, cwd, "annotate") orelse return 1;
+    const file_buf = try allocator.alloc(u8, max_working_file_bytes);
+    const file_content = cwd.readFile(io, file_path, file_buf) catch |err| {
+        print("mantra annotate: cannot read '{s}': {}\n", .{ file_path, err });
+        return 1;
+    };
+    var base = try load_weave(allocator, &store, io, file_path);
+    var work = try load_weave(allocator, &store, io, file_path);
+    const old = try base.current(allocator);
+    const new = try diff_mod.split_lines(allocator, file_content);
+    const d = try diff_mod.diff(allocator, cli_site, old, new);
+    try work.apply(allocator, d);
+    const notes = try base.annotate(allocator, &work);
+
+    // invariant: both sides stand inside the weave's own ceiling, which is what
+    // makes the two casts below safe rather than hopeful
+    assert(base.lines.items.len <= weave.max_weave_lines);
+    assert(work.lines.items.len <= weave.max_weave_lines);
+    // invariant: the union carries one note per identity and `annotate` refuses
+    // a union past the ceiling, so the count fits the width the walk uses
+    assert(notes.len <= weave.max_weave_lines);
+    // usize lives at the inherited-std seam alone: a slice counts in usize, and
+    // the three bounds just asserted are what make these casts safe.
+    const base_len: u32 = @intCast(base.lines.items.len);
+    const work_len: u32 = @intCast(work.lines.items.len);
+    const note_len: u32 = @intCast(notes.len);
+
+    // Notes, base lines and work lines all arrive in place order, so one walk
+    // through each finds every note's text -- rather than searching a side per
+    // note, which would cost the reading a factor it has no need to spend.
+    var li: u32 = 0;
+    var ri: u32 = 0;
+    var unchanged: u32 = 0;
+    var added: u32 = 0;
+    var removed: u32 = 0;
+    var gone: u32 = 0;
+    var printed: u32 = 0;
+    var held: u32 = 0;
+    for (notes) |note| {
+        while (li < base_len and base.lines.items[li].place().less_than(note.place())) li += 1;
+        while (ri < work_len and work.lines.items[ri].place().less_than(note.place())) ri += 1;
+        if (note.present_left() and note.present_right()) {
+            unchanged += 1;
+        } else if (note.present_right()) {
+            added += 1;
+        } else if (note.present_left()) {
+            removed += 1;
+        } else {
+            // A line deleted in an earlier commit and still gone. Both sides
+            // agree it left the document, so it is counted and left unprinted:
+            // a reading of what the file says today has no line to show for it.
+            gone += 1;
+            continue;
+        }
+        const from_work = ri < work_len and work.lines.items[ri].id().eq(note.id());
+        const from_base = li < base_len and base.lines.items[li].id().eq(note.id());
+        // invariant: a note comes from the union of the two sides, so at least
+        // one of them holds the line whose text this reading is about
+        assert(from_work or from_base);
+        const text = if (from_work) work.lines.items[ri].text else base.lines.items[li].text;
+        if (printed < max_annotate_print) {
+            print("{s}{s}\n", .{ annotate_mark(note), text });
+            printed += 1;
+        } else {
+            held += 1;
+        }
+    }
+    // invariant: every note was counted exactly once, so the summary below
+    // describes the whole reading rather than a sample of it
+    assert(unchanged + added + removed + gone == note_len);
+    // invariant: the reading stopped at its own ceiling rather than past it
+    assert(printed <= max_annotate_print);
+    print("mantra annotate: '{s}' -- {d} unchanged, {d} added, {d} removed\n", .{
+        file_path, unchanged, added, removed,
+    });
+    if (held > 0) {
+        print("mantra annotate: {d} further line(s) held -- the reading stops at {d}\n", .{
+            held, max_annotate_print,
+        });
     }
     return 0;
 }
