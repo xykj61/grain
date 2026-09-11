@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260911.152042
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role repository agent, PHEROMONE seat
+modality text
+model claude-opus-5
+model_status active runtime reported by harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default proven by .claude/settings.json, read 20260908
+evidence .claude/settings.json proves configuration alone; the effort a lap runs at depends on its launch path
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The guard I had already built, and the card that held both halves
+prompt Baton lap as PHEROMONE -- language lane, water rota row, reds first, one keystone.
+rota lap 4648, row 3 -- Water, the row that tastes; today's least-read row across the fleet's 60 logs. Its cardinal seat teaches that a measurement finding evidence by NAME reports the convention it was handed, which is precisely what my own grep did to me an hour later.
+think Opened the round, read the card whole, ran the cold roster detached, and read the dead-letter box: unlanded=0, nothing of mine parked.
+think Took my own elder card's YOURS item (2) into glow/rune_shape.rye. Counted by hand: 19 declared ParseError members, 13 returned. MissingTagged is returned nowhere, and rune_shape.rye:372 answers MissingTuple before the body rune is read, so a source ending after the mold name is blamed on a tuple its author may have meant as a tagged union.
+think Asked whether the class was instrumented. Ran path_absence_scan.sh on tools/fixtures/e/error_reach_scan.sh and tools/e/error_reach_witness.rish: commits_behind=0, here=no, upstream=no, verdict=absent. True of both paths. Also grepped tools/ for error_set, dead_error, unreturned -- two hits, neither the guard.
+think Built the instrument: a scan with a left-to-right code/prose state machine, a 35-leg control pen, a witness, five mutations each biting their own legs. The pen caught a real fault in my own join -- NR == FNR with an empty first file reads the second file as the first, so a module returning none of its members would have read as returning all of them.
+think Went to add the roster row and found guard error_member_reach already seated at construction/standing-equipment.kyri:5216.
+obs This seat built it. Commit 848683d03 at 20260911.060527, with session-logs/date/20260911/20260911-061149_the-refusal-nothing-can-make.kyri beside it. My own shelved account carried YOURS (1), the nine dead refusals, one line above YOURS (2), the rune_shape finding that sent me. I took the finding and rebuilt the finder.
+obs path_absence_scan.sh answered correctly throughout. It answers about a NAME; my question was about a SUBJECT, and the standing row spells the idea reached where my grep spelled it unreturned. construction/standing-equipment.kyri is the one page that answers the subject question whoever wrote the instrument, and I read it last rather than first.
+obs Deleted the duplicate unrun and moved the two readings it did buy into the standing guard instead. Its reader stripped // comments and left string bodies standing, and truncated at the first slash pair anywhere.
+obs Both holes measured quiet: no member is produced solely from inside a literal, and every name the slash strip dropped is produced elsewhere too, so dead_sites read 9 before the repair and 9 after. A reader repaired while its gate is quiet is a reader repaired for free.
+obs Corrected a figure before it shipped. A first differential probe read 15 recovered productions and was measuring its own broken patch; the repair itself reads 7.
+obs The cold pass met tutorial_output red on docs-geode/demos/README.md:91, quoting clutter=43 and fascia=57 where fascia_metric_v0.sh reads 44 and 56. I reasoned that the two digits move with the tree and that the guard's volatile marker checks containment in order, so no marker could hold them, and wrote it onto the card as a gate-shaped red nobody had booked.
+obs That was wrong, and the rebase is what showed it. PETRICHOR closed it upstream at 20260911.123725 by marking both blocks volatile with a reason, and tutorial_output_witness.rish reads GREEN on the rebased tree. Third firing of one lesson in this single lap: local bytes answered truly about a tree nobody else was standing in. The card and this log carry the correction rather than the claim.
+obs Two of the four Glow dead refusals are already ruled on. session-logs/date/20260720/20260720-032713_stoa97-token-mold-spec.bron writes, fourteen months back, that TooFewLines/TooManyLines/MissingTuple remain in the ParseError set with no removal. MissingTagged and rune_core.NotBarePayload carry no such record.
+loom guard=error_member_reach wall_s=13 sources=1972 members=4215 names=1474 produced=10080 dead_sites=9 unreached_in_file=261
+loom control=error_member_reach_control legs=27 fail=0 mutations=2
+file tools/fixtures/e/error_member_reach_scan.sh a string body is prose and a // inside one opens no comment, so the reader is one left-to-right walk rather than two substitutions
+file tools/fixtures/e/error_member_reach_control.sh four legs hold the repair -- a string-body mention, its name in the list, in-string slashes, and a quote inside a comment
+file tools/e/error_member_reach_witness.rish the pen's leg count moves 23 to 27, so a leg deleted tomorrow is still heard
+file active-designing/20260911-151101_the-absence-that-answers-a-name.md the paper -- absence answers a name, and a lap needs to ask about a subject
+file construction/ITINERARY.md the PHEROMONE account, and the four Glow refusals with the two already ruled on named apart
+file construction/archive/20260911-151444_itinerary-landed-accounts.md the elder account, shelved whole
+scope one keystone -- the standing guard's reader repaired and proven; no new instrument landed; no language surface touched
+status GREEN for my own work, with one red met and left open. error_member_reach GREEN 13s, 27 pen legs, two mutations bitten; prose_register, qa_report_card, living_docs_lint, living_pin_near_bound and pin_bound_touch all GREEN; paper A 93, card A+ 99, scan B 80, control B 82. The cold roster closed guards_run=263 green=259 red=2 gated=2 tree_moved=yes -- tree_moved because I edited the guard's own scan while the pass ran from the roster, so the hot pass after staging is this lap's binding reading. Of the two reds, tutorial_output was already repaired upstream by PETRICHOR at 123725 and reads GREEN after the rebase, and standing_equipment redded downstream of it.
+recommend check-in (Keaton) -- two Glow refusals, MissingTagged and NotBarePayload, want a word before any public error set moves; the other two stand on a 20260720 decision and should stay.

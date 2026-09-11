@@ -38,7 +38,7 @@ say control.out
 say control.err
 assert control.ok else "error-member-reach: a control case read the wrong way: ${control.out} ${control.err}"
 assert control.out contains "control_fail=0" else "error-member-reach: the pen must balance before the field is believed: ${control.out}"
-assert control.out contains "control_legs=23" else "error-member-reach: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out}"
+assert control.out contains "control_legs=27" else "error-member-reach: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out}"
 
 # 2 -- the field, under a ceiling that only falls.
 let field = run ["sh" "tools/fixtures/e/error_member_reach_scan.sh"]
