@@ -3,6 +3,7 @@
 **Language:** EN
 **Version:** `20260713.232506` (Pacific)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Room:** research for understanding -- an outside proposal restated in our own words, its load-bearing half named apart from its vision half.
 **Originals (held whole):** [`../../gratitude/grain-lineage/silken-ground-en.md`](../../gratitude/grain-lineage/silken-ground-en.md) - [`../../gratitude/grain-lineage/silken-ground-v3-visionary.md`](../../gratitude/grain-lineage/silken-ground-v3-visionary.md)
 
 ---

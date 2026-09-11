@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.112555` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES1
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES2
 **Kin:** [`ALES1 -- the audio byte stream`](20260814-fill-ales1-lotus-audio-stream.md) - [`lotus/timeline.rye`](../lotus/timeline.rye) - [`lotus/stream.rye`](../lotus/stream.rye) (ALES1) - [`lotus/wire.rye`](../lotus/wire.rye) (ALES0)
 

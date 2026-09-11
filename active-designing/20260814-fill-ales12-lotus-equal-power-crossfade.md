@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.123255` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES11
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES12
 **Kin:** [`ALES11 -- the equal-power law`](20260814-fill-ales11-lotus-equal-power.md) - [`ALES4 -- a fade envelope`](20260814-fill-ales4-lotus-fade-envelope.md) - [`ALES3 -- mix a second track`](20260814-fill-ales3-lotus-mix-second-track.md) - [`lotus/crossfade.rye`](../lotus/crossfade.rye) - [`lotus/power.rye`](../lotus/power.rye) (ALES11)
 

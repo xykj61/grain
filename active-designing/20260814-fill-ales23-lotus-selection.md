@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.135230` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES22
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES23
 **Kin:** [`ALES20 -- the markers track`](20260814-fill-ales20-lotus-markers.md) - [`ALES22 -- the cue sheet`](20260814-fill-ales22-lotus-cue-sheet.md) - [`lotus/selection.rye`](../lotus/selection.rye) - [`lotus/timeline.rye`](../lotus/timeline.rye) (ALES2, `cut` and `gain` reused whole) - [`lotus/pan.rye`](../lotus/pan.rye) (ALES10, the `StereoClip` whose channels share one length) - [`lotus/markers.rye`](../lotus/markers.rye) (ALES20, `region_between`)
 

@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design -- the reserved self-approved naming round, seated under the placeholder-ship-names law
+**Room:** mixed -- the naming law and `tools/f/fora_name_witness.rish` are checkable; the fake-pier harness is a named horizon.
 **Chapter:** the Six-Chapter double-seat, Chapter D/F thread (Kresfa & Mycelium - Surface & Namespace) - **Waymark:** FORA
 **Kin:** [`../.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) - [`20260816-205859_double-seat-expansion-eight-seasons.md`](date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md) - [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 

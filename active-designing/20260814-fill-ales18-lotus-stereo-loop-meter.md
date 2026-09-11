@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.131319` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES17
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES18
 **Kin:** [`ALES13 -- the peak/RMS meter`](20260814-fill-ales13-lotus-meter.md) - [`ALES16 -- the stereo loop`](20260814-fill-ales16-lotus-stereo-loop.md) - [`ALES17 -- the stereo meter`](20260814-fill-ales17-lotus-stereo-meter.md) - [`lotus/stereo_loop_meter.rye`](../lotus/stereo_loop_meter.rye) - [`lotus/stereo_meter.rye`](../lotus/stereo_meter.rye) (ALES17, the StereoMeter reused whole) - [`lotus/stereo_loop.rye`](../lotus/stereo_loop.rye) (ALES16, the wrapping head)
 

@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.133106` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES19
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES20
 **Kin:** [`ALES19 -- the scrub window`](20260814-fill-ales19-lotus-scrub.md) - [`ALES14 -- the transport loop`](20260814-fill-ales14-lotus-transport-loop.md) - [`lotus/markers.rye`](../lotus/markers.rye) - [`lotus/scrub.rye`](../lotus/scrub.rye) (ALES19, the scrub snapped) - [`lotus/loop.rye`](../lotus/loop.rye) (ALES14, the region between two markers)
 

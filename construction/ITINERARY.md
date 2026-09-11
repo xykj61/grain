@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `423357f27d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0c8b7361c9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -155,28 +155,29 @@ either way. **CARRIED:** (1) nine dead refusals; removing them narrows a public 
 hand kept. (2) `glow/rune_shape` answers `MissingTuple` ahead of the body, and `MissingTagged` from
 nothing. (3) **36 cadence guards unrun.** (4) three gate desks carry no placard.
 
-**GRASS -- THE MANUAL ANSWERED EVERY QUESTION AT ITS DOOR EXCEPT WHICH ROOM YOU WERE IN.**
-Elder [shelved](archive/20260911-114108_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4638, past rows 0-3, read today). Its fixed seat IS
-`context/TWO_ROOMS.md`, so rota and open door named one lap.
-**REDS FIRST:** cold **256 green, 1 red, 2 gated**. The red is the standing `dated_path`: **106
-against 85**, `lost_testimony=101` accrete-never-break forbids touching,
-**`lost_promised_living=0`** -- the cell a lap may touch is empty. It reddens `standing_equipment`
-too, so every ship's receipt reads `withheld_guard_red` every run for a fault none may repair.
-Moving the gate stays Keaton's.
-**THE READING.** Of the **59** living pages naming no room, **20 are `manual/`**. **It never
-regressed:** it joined `20260908` at 0 silent, and `20260911`'s amendment reading a stampless
-basename as LIVING reopened 20 of its 29 doors at once.
-**MECHANISM:** a `**Room:**` line per page judged from the body -- **9 `checkable`** where a command
-answers for itself or a witness binds the page, **8 `mixed`**, **3 `vision`**. Clearest mixed:
-`pixel-10a-grapheneos-setup.md`, verbatim from a cited installer page, never run end to end here.
-`manual/` reads **29 pages, 0 living-silent**; ceiling **59 -> 39**. GREEN, 70 behaviors.
-**A C+ PUSHED ONE FRAME, DEPTH 2.** `macos-ai-jail-setup.md` read **C+ 75**, all of it grade **15
-against 11** -- its `**Versions, all enduring:**` line was **one 179-word sentence**. Nine rows now,
-plus ten body splits at existing punctuation. **B 84**, molted in place under a checkpoint (10
-citers); two `claim_preserve` FAILs read by hand -- a split's capitals, one quantifier made exact.
-**YOURS:** the remaining 39 are **33 `active-designing`** -- 31 near-identical ALES fill templates,
-so one mechanical pass rather than 33 -- and **6 `external-research`**.
+**GRASS -- THE LAST SILENT DOORS, AND A RATCHET THAT IS NOW A WALL.**
+Elder [shelved](archive/20260911-133037_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4645): the page nobody answered -- a door naming no room.
+**REDS FIRST, ONE CLOSED, A PEER'S:** cold **261 run, 3 red**. `rish_report_bound` read **39
+against 38**, zero slack -- a `${frozen.out}` composed into a say by `785f45f08`. Label on its own
+say, reading on a bare one: **38**, their witness GREEN.
+**THE READING.** The census's living half stood at **39** in **three shapes, not 39 judgments**. **Thirty** are ALES captures whose sameness is MEASURED: **30 of 30** carry both a
+`## What the witness proves (GREEN on metal)` and a `## The road on` section, so `mixed` is their
+own structure speaking; three more are mixed for their own reasons. **The six lineage silos carried
+NO Status line at all** -- the one shape where a door was silent rather than answering another
+question -- and each names its halves apart in its headings: all six read **research for
+understanding**, the first room where that token answers every one.
+**MECHANISM:** a `**Room:**` line per page. `living_silent=0 living_ceiling=0` GREEN, 1,267.
+**39 -> 0, A RATCHET AT ZERO IS A WALL** -- nothing holds a LIVING page silent, so the next written
+into these rooms with no token reds the lap it lands.
+**A FRAME, FOUND BY GRADING ALL 39** rather than a sample, which read A.
+`silicon-torus-hardware.md` read **C 71**, 7 negatives in 9 sentences; molted IN PLACE: **B+ 88**.
+**MY OWN FAULT:** I edited while the cold pass ran, so it reads `tree_moved` and the hot pass is
+this round's. *Hold still while it runs* is a card line I broke.
+**YOURS:** (1) the dated floor of **3** walls a cell no lap may repair. (2) `yonder/`'s **262**
+pages, **11** silent, never inside the reach.
+[Paper](../active-designing/20260911-133037_the-last-silent-doors.md).
+
 **INCENSE -- A TABLE HEADED *ENFORCED NOW* HELD A RULE NOTHING ENFORCED.**
 Elder [shelved](archive/20260911-121531_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4640): listen for the page nobody answered.
@@ -199,6 +200,7 @@ filter to `(^|/)seed/` reads as tidy and drops `recursion-prompts/seed/`'s three
 [Paper](../active-designing/20260911-112513_the-table-that-said-enforced-now.md) **A 90**.
 **YOURS:** (1) *Line length <= 100 columns* -- guard it or retire the row. (2) still standing:
 `tally/heap-garden.rye`, `when built` and gated nowhere -- may a law page name a path not yet made?
+
 **COPAL -- THE DOOR PROMISED A GUARD AND THE ROSTER SEATED NOBODY.**
 Elder [shelved](archive/20260911-091110_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
 N=4632): look at what laps route around; read the ledger first.
