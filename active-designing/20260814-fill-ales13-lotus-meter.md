@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.164000` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES12
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES13
 **Kin:** [`ALES11 -- the equal-power law`](20260814-fill-ales11-lotus-equal-power.md) - [`ALES7 -- the transport play head`](20260814-fill-ales7-lotus-transport.md) - [`lotus/meter.rye`](../lotus/meter.rye) - [`lotus/power.rye`](../lotus/power.rye) (ALES11, the isqrt reused) - [`lotus/transport.rye`](../lotus/transport.rye) (ALES7, the blocks metered)
 

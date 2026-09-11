@@ -3,6 +3,7 @@
 **Language:** EN
 **Version:** `20260713.232506` (Pacific)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Room:** research for understanding -- an outside proposal restated in our own words, its load-bearing half named apart from its vision half.
 **Original (held whole):** [`../../gratitude/grain-lineage/toroidal_ml_synthesis_whitepaper.md`](../../gratitude/grain-lineage/toroidal_ml_synthesis_whitepaper.md)
 
 ---

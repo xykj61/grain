@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.130009` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES15
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES16
 **Kin:** [`ALES14 -- the transport loop`](20260814-fill-ales14-lotus-transport-loop.md) - [`ALES15 -- the stereo transport`](20260814-fill-ales15-lotus-stereo-transport.md) - [`lotus/stereo_loop.rye`](../lotus/stereo_loop.rye) - [`lotus/loop.rye`](../lotus/loop.rye) (ALES14, the mono loop reused whole) - [`lotus/stereo_transport.rye`](../lotus/stereo_transport.rye) (ALES15, the stereo head)
 

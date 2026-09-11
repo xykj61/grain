@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.143348` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES28
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES29
 **Kin:** [`ALES28 -- the two-sided insert-join`](20260814-fill-ales28-lotus-two-sided-insert-join.md) - [`ALES27 -- the stereo crossfade join`](20260814-fill-ales27-lotus-stereo-crossfade-join.md) - [`lotus/stereo_insert_join.rye`](../lotus/stereo_insert_join.rye) - [`lotus/insert_join.rye`](../lotus/insert_join.rye) (ALES28, `insert_join` run once per channel) - [`lotus/pan.rye`](../lotus/pan.rye) (ALES10, the `StereoClip` whose channels share one length)
 

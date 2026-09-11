@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.140611` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES24
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES25
 **Kin:** [`ALES24 -- the graft`](20260814-fill-ales24-lotus-graft.md) - [`ALES23 -- the selection`](20260814-fill-ales23-lotus-selection.md) - [`lotus/clipboard.rye`](../lotus/clipboard.rye) - [`lotus/timeline.rye`](../lotus/timeline.rye) (ALES2, `splice` and `cut` reused whole) - [`lotus/pan.rye`](../lotus/pan.rye) (ALES10, the `StereoClip` whose channels share one length)
 

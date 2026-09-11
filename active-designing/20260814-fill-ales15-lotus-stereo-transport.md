@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.131500` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES14
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES15
 **Kin:** [`ALES7 -- the transport play head`](20260814-fill-ales7-lotus-transport.md) - [`ALES10 -- pan, the second channel`](20260814-fill-ales10-lotus-pan-stereo.md) - [`lotus/stereo_transport.rye`](../lotus/stereo_transport.rye) - [`lotus/transport.rye`](../lotus/transport.rye) (ALES7, the mono head) - [`lotus/pan.rye`](../lotus/pan.rye) (ALES10, the StereoClip read)
 

@@ -189,8 +189,35 @@ if ceiling_env != "" then let ceiling = ceiling_env
 # letter no guard binds a sentence of. `manual/` reads 29 pages and 0 living-silent; the ceiling
 # falls 59 -> 39, moved by the twenty and by nothing else, and the remainder is 33
 # `active-designing/` and 6 `external-research/`.
+#
+# AND THE DESIGN ROOM AND THE SILO CLOSED IT (20260911.133037). The last 39 living pages are 33
+# `active-designing/` and 6 `external-research/`, and they fall into three shapes rather than 39
+# judgments. THIRTY are ALES fill captures of the Lotus rungs, and their uniformity is a reading
+# rather than an assumption: 30 of 30 carry both a `## What the witness proves (GREEN on metal)`
+# section and a `## The road on` section, so each holds a proven half beside a named horizon and
+# `mixed` is what their own structure says. One token over 30 pages is therefore one honest
+# reading, where the same line typed over 30 pages of differing shape would be a shortcut.
+#
+# THE OTHER THREE DESIGN PAGES ARE MIXED FOR THEIR OWN REASONS. `20260814-fill-constel-naming-law.md`
+# seats a law `tools/f/fora_name_witness.rish` binds and names the fake-pier harness as a later
+# round; `proven-seat-guest-hammock.md` and `seam-season-hammock.md` are living ledgers whose green
+# rungs and pinned nibs stand beside parked rulings and a named Caravan horizon.
+#
+# THE SIX LINEAGE SILOS CARRIED NO `**Status:**` LINE AT ALL -- the one shape in this whole family
+# where the door was silent rather than answering a different question. Each is an outside
+# whitepaper restated in our own words under `context/SILO_TECHNIQUE.md`, and each names its own two
+# halves apart in its own headings: *What Is Load-Bearing* and *What to Read as Vision*. So all six
+# read `research for understanding`, the fourth token of `context/TWO_ROOMS.md`, and this is the
+# first room where that token is the honest answer for every page in it.
+#
+# THE LIVING CEILING FALLS 39 -> 0, AND A RATCHET AT ZERO IS A WALL. Nothing structural holds a
+# living page silent -- a living path may always be repaired, which is why this half's floor was
+# named zero when the two numbers came apart. So the next living page written into these seven
+# rooms without a room token reds on the lap it lands, which is what the baton already asks of
+# every ship. The dated half keeps its floor of 3, untouched: accrete-never-break can never let
+# anyone repair those three.
 let living_ceiling_env = env "TWO_ROOMS_LIVING_CEILING"
-let living_ceiling = "39"
+let living_ceiling = "0"
 if living_ceiling_env != "" then let living_ceiling = living_ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]

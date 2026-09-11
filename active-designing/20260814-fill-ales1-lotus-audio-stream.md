@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.112048` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES0
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES1
 **Kin:** [`ALES0 -- the basic audio wire shape`](20260814-fill-ales0-lotus-audio-wire-shape.md) - [`lotus/stream.rye`](../lotus/stream.rye) - byte-stream idiom twin [`constel/channel.rye`](../constel/channel.rye) (FORA5)
 

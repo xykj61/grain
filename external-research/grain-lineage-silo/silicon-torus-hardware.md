@@ -3,17 +3,18 @@
 **Language:** EN
 **Version:** `20260713.232506` (Pacific)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Room:** research for understanding -- an outside proposal restated in our own words, its load-bearing half named apart from its vision half.
 **Original (held whole):** [`../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md`](../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md)
 
 ---
 
 ## The One-Sentence Claim
 
-Build a computer whose memory and compute are the same physical medium, shaped as a solid torus (a doughnut) rather than a flat wafer, so that no core sits at an edge and every core has an identical set of neighbors.
+Build a computer whose memory and compute are the same physical medium, shaped as a solid torus (a doughnut) rather than a flat wafer, so that every core sits inside the medium rather than on a rim, with an identical set of neighbors.
 
 ## What the Geometry Actually Buys (the load-bearing part)
 
-These claims stand on ordinary geometry and do not require any contested physics:
+These claims rest on ordinary geometry alone:
 
 - **No edges.** On a flat wafer, cores at the rim have fewer neighbors than cores in the middle, so performance is not uniform. On a torus, every point has the same local neighborhood. Uniform topology means uniform behavior.
 - **Bounded, known distances.** The farthest any two points sit apart is fixed and knowable before the machine runs. That is exactly the kind of stated, compile-time bound TAME Guidance already asks for everywhere else.
@@ -23,7 +24,7 @@ These claims stand on ordinary geometry and do not require any contested physics
 
 ## What the Aether Framing Costs (the part to hold at arm's length)
 
-The original grounds much of its language in "aether-theoretic field interactions" (Wheeler, Dollard) -- a contested, non-mainstream physics framework. Stated plainly for a general reviewer: **the toroidal geometry's advantages above do not depend on aether theory being correct.** Uniform topology, bounded distance, on-die memory, and coordinate-addressing are geometry and engineering; they survive intact if the aether language is removed entirely. A PR proposal to a skeptical audience should lead with the geometry and treat the field-theoretic register as the author's inspiration, not as a load-bearing premise. Keeping the two separate is the honest move, and it makes the strong parts stronger by not tying them to the contested parts.
+The original grounds much of its language in "aether-theoretic field interactions" (Wheeler, Dollard) -- a contested, non-mainstream physics framework. Stated plainly for a general reviewer: **the toroidal geometry's advantages above stand on geometry alone, whatever verdict aether theory eventually earns.** Uniform topology, bounded distance, on-die memory, and coordinate-addressing are geometry and engineering; they survive intact if the aether language is removed entirely. A PR proposal to a skeptical audience should lead with the geometry. Such a proposal treats the field-theoretic register as the author's inspiration rather than as a load-bearing premise. Keeping the two separate is the honest move, and it lets the strong parts stand on their own.
 
 ## What Stays Genuinely Speculative
 

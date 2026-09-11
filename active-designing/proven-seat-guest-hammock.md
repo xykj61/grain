@@ -7,6 +7,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Living -- **G0** GREEN - **G0-complete** `004012` - **`lane_kvm`** on-path GREEN `140403` - parity re-pin GREEN `193958` - **G1 opened** `195339` -- crossing path named; serial verify-witness ahead
+**Room:** mixed -- the green rungs and pinned parities are checkable; the crossing path and Caravan horizon are vision.
 **Ground:** ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) - counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](date/20260712/20260712-195155_proven-seat-g1-claude-opening-counsel.md) - crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md) - product nib **430** - suite nib **432**
 **License (gratitude):** Genode/Sculpt images are AGPL-hosted teacher artifacts -- held under `tools/.cache/proven-seat/` (gitignored); never linked into Rye ship binaries; Caravan keeps its name.
 

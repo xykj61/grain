@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.120123` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES7
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES8
 **Kin:** [`ALES6 -- the track table`](20260814-fill-ales6-lotus-track-table.md) - [`ALES2 -- the timeline edits`](20260814-fill-ales2-lotus-timeline-edits.md) - [`lotus/fader.rye`](../lotus/fader.rye) - [`lotus/track.rye`](../lotus/track.rye) (ALES6) - [`lotus/timeline.rye`](../lotus/timeline.rye) (ALES2)
 

@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.141500` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES25
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES26
 **Kin:** [`ALES25 -- the clipboard`](20260814-fill-ales25-lotus-clipboard.md) - [`ALES12 -- the equal-power crossfade`](20260814-fill-ales12-lotus-equal-power-crossfade.md) - [`lotus/join.rye`](../lotus/join.rye) - [`lotus/crossfade.rye`](../lotus/crossfade.rye) (ALES12, `crossfade` reused whole) - [`lotus/timeline.rye`](../lotus/timeline.rye) (ALES2, `splice` and `max_clip` reused whole)
 

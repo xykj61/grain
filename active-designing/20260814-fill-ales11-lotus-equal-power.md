@@ -2,6 +2,7 @@
 
 **Stamp:** `20260814.122502` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living design capture -- the self-approved round after ALES10
+**Room:** mixed -- the shape and what its witness proves are checkable; *The road on* names horizons.
 **Waymark:** ALES - rung ALES11
 **Kin:** [`ALES10 -- pan, the second channel`](20260814-fill-ales10-lotus-pan-stereo.md) - [`ALES4 -- a fade envelope`](20260814-fill-ales4-lotus-fade-envelope.md) - [`lotus/power.rye`](../lotus/power.rye) - [`lotus/pan.rye`](../lotus/pan.rye) (ALES10) - [`lotus/fader.rye`](../lotus/fader.rye) (ALES8)
 
