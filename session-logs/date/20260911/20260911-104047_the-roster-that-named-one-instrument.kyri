@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260911.104047
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent, seat BAKERY
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status configured default read from .claude/settings.json
+evidence .claude/settings.json names claude-opus-5; no runtime telemetry names the serving model
+voice Kyri
+host pier, linux, 8 cores, America/New_York
+title The roster that named one instrument, and the tree grew a second
+prompt autonomous lap -- core infrastructure lane, Lindy-first crux-first
+rota lap 4631, row 0 -- Aether, the row that hears; derived row 1 had been read six times on this shelf today and row 0 three times, so I advanced by hand to the least-read row. Its instruction is to listen for the silence where a claim used to be, and this lap found two: a guard's comment claiming one instrument where two stand, and a cadence clock whose refusals nobody here had ever heard.
+think Cold roster pass refused a stale lock from a dead lap, already tree_moved; released it through fleet_call.sh --signal TERM so the runner's own EXIT trap ran, never SIGKILL.
+think Cold pass read 253 green, 2 red -- shim_reason at 938 against a ceiling of 936, and standing_equipment reading red_self behind it. Two readings, one cause.
+think Named the two new sites rather than hunting them: built a detached worktree at c4a67daa1, the commit that set the ceiling, ran the same scan there, and diffed the two rostered-unsaid lists with line numbers stripped. Both new sites stood in a peer's tools/m/mantra_annotate_cli_witness.rish.
+think Both were grep -q probes, so their capture was empty by construction. Gave each grep -n, a say above the first assert (never below it, which is the late_say reading one line over), and an interpolated ${v.out}/${v.err} tail. 938 -> 936, witness GREEN.
+think Turned the cadence clock. construction/standing-equipment-runs.kyri read cadence_never_run_here=69 of 83 in this checkout, and REDS %568 has stood open since 20260907 for exactly that. Ran --cadence-slice 10, which takes the longest-waiting ten off the run card rather than a list anyone types.
+think Nine answered green and tool_path_repoint answered red at references_repointed=3. Its named repair would have rewritten all three -- and all three are QUOTATIONS of elder flat paths inside docs_command_path_*, held deliberately to teach a reader what a moved reference looks like. Repointing a quotation makes the sentence around it false.
+think Repaired by widening excluded_names to tool_path_* docs_command_path_*, reasoned per entry rather than as a claim about the whole tree. Then covered the hazard the scan's own comment already records: a wholesale exclusion hides an ordinary reference beside the quoted one, which bit dated_path_witness.rish once. The roster prints, its 11 files are named, and their flat references are counted at 20.
+think That count read 1 before it read 20. The scan runs under set -eu, so a grep matching nothing exits 1 and ends the walk mid-list; the first excluded file holding no flat path stopped it and the short number looked exactly like an answer. Added || true, and ordered the pen so an empty excluded file stands ahead of a full one -- 2 with the guard, 0 without.
+obs Two mutations bitten, each in its own direction: dropping docs_command_path_* reds untouched_second_instrument, and dropping || true reds excluded_refs_counted. Eleven behaviors now stand in the control where nine did.
+obs On the rebase a peer had already made the shim_reason repair at 20260911.072500, the same grep -n and say; my commit adds the interpolated capture beside it, and the row renumbered 710 -> 711 -> 713 across two rebases, each bringing in a peer who had booked the number with an earlier stamp. The earlier stamp keeps the number; the key is the stamp.
+obs The pin reads pin_deadlocked=1 and rows_that_fit=0, so the row was born on its own shelf as %699, %703 and %706 were. Cited by stamp everywhere outside the ledger, since shared_max reads 709 and this number is unshared until the push lands.
+obs Measured the fleet shape this lap: one machine, eight checkouts, eight run cards. 66 of 83 cadence guards hold a receipt somewhere on this pier while each ship reads its own between 8 and 64, and 17 no checkout here has ever run. A ran row records when and where, never which head it proved -- though standing-equipment-receipt.kyri already records head and digest one file over.
+loom cadence_slice=10 guards_green=9 guards_red=1 seconds=2393 caravan_suite_s=776 crypto_suite_s=681 ales_suite_s=411 sow_s=319
+loom shim_reason unsaid_rostered_before=938 unsaid_rostered_after=936 ceiling=936
+loom tool_path_repoint references_repointed_before=3 references_repointed_after=0 excluded_files=11 excluded_flat_references=20 excluded_flat_references_after_rebase=22
+loom fleet cadence_guards=83 receipt_somewhere_on_pier=66 never_run_anywhere_here=17 never_run_in_bakery=69
+file tools/m/mantra_annotate_cli_witness.rish two grep -q probes now report their capture, so a refusal names which half of main.rye left
+file tools/fixtures/t/tool_path_repoint_scan.sh the exclusion roster takes a second instrument name, prints itself, and counts the references inside what it declines to read
+file tools/fixtures/t/tool_path_repoint_control.sh two cases added -- a second instrument name, and an excluded file holding no flat path placed ahead of one that does
+file tools/t/tool_path_repoint_witness.rish three asserts added over the new readings, and the behavior count corrected from nine to eleven
+file construction/archive/REDS-the-roster-that-named-one-instrument-rows-713.md the row, born on its shelf because no lawful fold stands here
+file active-designing/20260911-104047_a-receipt-that-names-what-it-proved.md the fleet reading and a two-half proposal, the second half Keaton's word
+file construction/ITINERARY.md the BAKERY account, elder shelved, and the Git nib
+scope one red closed at the open, one cadence clock turned ten guards deep, one red found there and closed, one design page
+status GREEN -- shim_reason, tool_path_repoint, tool_path, docs_command_path, mantra_annotate_cli, reds_monotone, reds_ledger_headline, reds_row_present, reds_pin_capacity and card_pin_claim all green by name. The re-verify pass after the rebase read 258 green, 1 red: standing_equipment reading red_self behind dated_path, whose own red was recorded 20260910.232156 and is %626, OPEN on Keaton's word. Nothing of this lap's stands red.
+recommend keep-going -- the same slice can take the next ten cadence guards, and the run card carries the order

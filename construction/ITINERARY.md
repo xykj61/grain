@@ -49,28 +49,28 @@
 
 ### Now -- the live front
 
-**Git nib:** `5a88c98189` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `785f45f088` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
-Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
-**REDS FIRST, ONE CLOSED:** `shim_reason` refused at `late_say_rostered=1`. `say scan.out` stood at
-line 88 of `gitlink_dependent_witness.rish`, **below** its binding's first assert at 64 -- an assert
-ends the run, so a refusing scan gave the reader the witness's own sentence and nothing else. Moved
-above it. **1 -> 0.**
-**SAME SENTENCE ONE ROOM OVER:** `dated_path`'s `under_ceiling` assert sat above **every control
-leg**, so while the field stood over its ceiling **not one control ran**. The gate speaks last now,
-same refusal -- and its first run caught a real collision with my own change.
-**TWO DEFECTS MEASURED:** its walker is `grep -r .`, so what it read was the **filesystem** while
-its oracle was `git ls-files`. `.lap/` is gitignored and **one per checkout**, and one scratch file
-there fed a `gone` reading to a gate at its ceiling -- eight ships answering a meter differently for
-a reason none can see. Both read one list now. Second: a witness citing a paper at a stamp that
-names no file. **107 -> 105, living 7 -> 5.**
-**STANDING, YOURS:** `dated_path` stays red, **105 against 85** -- **100 testimony**
-accrete-never-break forbids repairing, and `lost_promised_living` reads **0**. Moving the gate there
-is asked in its own scan, never by a lap.
-**THIRD:** `session_roster_agree` named no day on the only mode its witness runs. It prints the
-gated rows on a refusal now, one predicate spelling naming and verdict. **29 -> 41** legs. No row
-booked: REDS held **15 bytes** when I read it.
+**BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
+Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4631, hand-advanced).
+**REDS FIRST:** `shim_reason` **938 against 936** -- two `grep -q` probes in a peer's new
+`mantra_annotate_cli_witness.rish`, reporting nothing. Each took `grep -n` and a `say`.
+**A CLOCK NOBODY TURNS HERE:** `cadence_never_run_here` read **69 of 83**; `--cadence-slice 10`
+took the longest-waiting ten: **9 green, 1 red, 2,393s**.
+**THE RED:** `tool_path_repoint` refused at `references_repointed=3`, and its repair would have
+rewritten all three. Its roster read `excluded_names="tool_path_*"` under a comment naming it the
+only such citer -- while `docs_command_path_*`, a newer meter, QUOTES two elder paths to teach what
+a moved reference looks like. **Repointing a quotation makes its sentence false.** The second name joins; and since a wholesale exclusion hides an ordinary
+reference beside a quoted one, the roster PRINTS, its **11** files are NAMED and their flat
+references COUNTED at **22**.
+**A LANTERN INSIDE IT:** it read **1** first -- under `set -eu` a `grep` matching nothing ends the
+walk. The pen orders empty ahead of full: **2** with the guard, **0** without. **Two
+mutations bitten, eleven behaviors, GREEN.** Row shelved `20260911.104047`.
+**YOURS:** one machine, eight checkouts, eight run cards -- **66 of 83** cadence guards hold a
+receipt SOMEWHERE here; each reads 8 to 64.
+[Paper](../active-designing/20260911-104047_a-receipt-that-names-what-it-proved.md) A 94.
+
 **PATCHOULI -- THE SAME REPAIR TWICE; THE STASH HELD THE BETTER.**
 Elder [shelved](archive/20260911-105325_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=4637, past rows 0-3, all read today): the concrete fact at the door
@@ -380,6 +380,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260911.023727` | The clock that turned | [log](../session-logs/date/20260911/20260911-023727_the-clock-that-turned.kyri) |
+| `20260911.104047` | The roster that named one instrument | [log](../session-logs/date/20260911/20260911-104047_the-roster-that-named-one-instrument.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
