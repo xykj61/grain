@@ -3,6 +3,7 @@
 **Language:** EN
 **Last updated:** `20260829.150417` (row-condense ratchet seated; Lap row repointed at the daily words)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
+**Room:** checkable -- seated names, each pointing at the file that carries it
 
 ---
 

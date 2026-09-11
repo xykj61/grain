@@ -5,6 +5,7 @@
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 
 **Purpose:** Name a way of taking in an idea from outside your work and making it truly your own -- so that what enters your writing arrives as an owned, understood concept in your own voice, rather than a borrowed quotation wearing someone else's name. This is a portable technique; it travels to any subject and any tool.
+**Room:** vision -- a way of taking in an idea; no witness binds it
 
 ---
 

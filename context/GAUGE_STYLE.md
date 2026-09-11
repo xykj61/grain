@@ -18,6 +18,7 @@ ceilings, and the meter -- while **New Gauge Style** speaks to a person choosing
 **Seated:** `20260823.045448` on Keaton's word
 **Status:** Living -- the working style for technical documentation, analysis, forecasting, ecosystem description, and design essays
 **Inherits:** [`RADIANT_STYLE.md`](RADIANT_STYLE.md) (warmth and clarity) - [`CIVIC_STYLE.md`](CIVIC_STYLE.md) (name what you reward) - [`TAME_GUIDANCE.md`](TAME_GUIDANCE.md) (bound everything, say why)
+**Room:** mixed -- the three ceilings are counted; the reading they serve is judged
 
 **Whether Gauge now contains the elders, asked and answered `20260908.141652` on Keaton's word.**
 **It does not, and the lattice is why.** Gauge *relaxes* the negation floor to 20% so a measured page

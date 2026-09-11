@@ -4,6 +4,7 @@
 **Stamp:** `20260728.024417`  
 **Status:** Living — seated by Keaton's word  
 **Kind:** OS variant identity · nested writing voice  
+**Room:** vision -- an identity and a seat, held by Keaton's word  
 **Standing voice remains Quin** — Trya nests; Quin does not retire
 
 ---

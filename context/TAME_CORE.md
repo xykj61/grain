@@ -2,6 +2,7 @@
 
 **Stamp:** `20260811.200854` - **Voice:** Kyri - **Status:** Living -- the **core** of a core/shelf pair.
 **Shelf (full, lossless):** [`TAME_GUIDANCE.md`](TAME_GUIDANCE.md) - **Source:** `../gratitude/TIGER_STYLE.md` (studied) - **Agent rules:** [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) - [`../.cursor/rules/tame-guidance.mdc`](../.cursor/rules/tame-guidance.mdc)
+**Room:** checkable -- reflexes bound to the witness scripts named at its close
 
 Token-dense on purpose. This is the smallest form that still holds TAME's highest points, so it can ride in the agent rules and be present every time we write **`.rye` - `.rish` - `.brix` - `.bron` - `.kyri` - Glow - Brush - `.myc`** code. The shelf keeps the full reasoning; the core keeps the reflexes.
 

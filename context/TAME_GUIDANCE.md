@@ -11,6 +11,7 @@ type: reference
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Active -- grow by supplement, earned when the language is ready
+**Room:** mixed -- the rules are checked; the compiler fork stays a named horizon
 
 ---
 

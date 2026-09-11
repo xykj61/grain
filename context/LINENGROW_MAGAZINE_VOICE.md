@@ -4,6 +4,7 @@
 **Seated:** `20260810.145033` on Keaton's word - **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Purpose:** Name the author voice for Linengrow magazine's **interview profiles** -- how we write a person, a founder, a farm, a brand into the world.
 **In the spirit of:** the long-form venture profile at <https://colossus.com/article/sarah-guo-conviction/> -- its patient, human, thesis-carrying shape, adapted to our civic and ecological ground.
+**Room:** vision -- a register for profiles, judged by a reader
 
 ---
 

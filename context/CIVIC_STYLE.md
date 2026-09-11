@@ -8,6 +8,7 @@
 **Voice:** Reya 2
 **Companion to:** `TAME_GUIDANCE.md` (code), `RADIANT_STYLE.md` (prose), `SIMPLE_LOVABLE_COMPLETE.md` (product)
 **Scope:** policy, law, public-benefit corporations, nonprofits -- any system that spends public trust
+**Room:** vision -- a discipline for policy design; no meter binds its claims
 
 ---
 

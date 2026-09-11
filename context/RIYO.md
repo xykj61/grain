@@ -7,6 +7,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Riyo
 **Elder record:** [`archive/RIYO.md`](archive/RIYO.md) -- the first Riyo chapter, kept unchanged
+**Room:** vision -- a writing fossil kept whole; identity rather than measurement
 
 ---
 

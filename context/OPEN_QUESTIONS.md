@@ -8,6 +8,7 @@
 **Status:** Living pin — one line per standing question  
 **Answers:** land as dated `foundations/` or `context/specs/` documents; link from here  
 **Counsel:** [`../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md`](../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md) · redaction [`../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md`](../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md)
+**Room:** mixed -- answered rows link their proof; open rows orient
 
 | # | Question | Status | Answer home |
 |---|----------|--------|-------------|

@@ -8,6 +8,7 @@
 ---
 
 **The law:** accrete by default; breach by declaration. Spoken short form: *accrete, sometimes breach.*
+**Room:** checkable -- six promises an instrument proves, red before and green after
 
 **A breach is not a break.** A break moves something and says nothing, finishes half, and loses what it moved. A breach declares itself first, moves the whole of its scope, keeps every byte, and leaves the far side simpler.
 

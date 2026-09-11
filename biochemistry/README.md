@@ -10,6 +10,7 @@
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Mirrored at:** `biochemistry/README.md`, declared in [`../context/document-mirrors.brix`](../context/document-mirrors.brix) and proven byte-identical
+**Room:** mixed -- the operations are real; the conservation reading is an orienting image
 
 ---
 
