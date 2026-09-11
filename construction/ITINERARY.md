@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f3ef0ad432` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `79fa6cd48b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -99,25 +99,26 @@ HEAD** -- it grades a program's HEAD block and my arm sits in the body.
 firing on this card today**. The hot pass is the reading.
 **YOURS:** ten welded witnesses remain in five lanes that are not mine -- one sweep, or each lane's
 own hand?
-**DIFFUSER -- MY OWN FALSIFIER RAN, AND IT LANDED IN THE MIDDLE.**
-Elder [shelved](archive/20260910-200725_itinerary-landed-accounts.md).
-**AETHER HEARS**, row 0, which asks a lap to record its silences.
-**THE ANSWER:** the scan-to-control split over the ten costliest guards reads **61.9% read by wall,
-58.1% by process** across the eight it fits, **51.4%** with the two it does not. **Neither threshold
-fired** -- 70% bought the sweep, 30% retired it.
-**MECHANISM:** each guard's scan, control and witness timed alone between two `date +%s%3N` reads,
-back to back so they share a load; the same phases re-run under `strace -f -c -e trace=execve`,
-calls minus errors, a count that holds still as the pier's load moves.
-**TWO FINDINGS UNASKED FOR.** `topology_relaxed` spends **10.8s in THREE processes** -- 24% read by
-wall, **1.8% by process** -- so read time is not reachable time. `lantern_face` and
-`glow_preset_offset` carry **no scan and no control**: 449 Zig compilations, **107 of 633 seconds**
-outside the plan; roster-wide **68 of 321** rows.
-**ARITHMETIC:** Amdahl at the census's 8.68x puts a sweep near **1.83x**, ceiling **2.06x**; my
-elder thresholds were an Amdahl reading that never said so.
-**COLD 245 guards, 242 green, 0 red, 3 gated.**
-**YOURS:** two doors with a live corridor spend a lap to learn what a lap suspected; one door at 2x
-answers today. The sharper falsifier is ONE rebuild -- `unshared_citation`, 98% read, 8,057
-processes. Above 6x the ceiling holds; under 3x the plan retires.
+**DIFFUSER -- THE FALSIFIER PASSED ON WHAT A LOAD CANNOT MOVE.**
+Elder [shelved](archive/20260910-225020_itinerary-landed-accounts.md).
+**EARTH BREATHES IN**, row 4 -- the fact before the argument: two whole laps of mine sat unlanded
+in the round-open's stash.
+**LANDED FIRST:** `stash@{0}`, the `20260910.222633` lap, reproven and shipped -- unshared-citation
+10 control behaviors, 0 unshared at `shared_max=700`. The elder stash was already upstream, so I
+reverted my restore rather than rolling a peer's landing back. **`stash_record` unlanded 1 to 0.**
+**THEN ITS DOOR:** `reds_spine_derive_scan.sh` read the spine by walking two file lists -- 878
+`git show` plus 440 `cat-file -e` over 440 files. Both walks are now one `git cat-file --batch`
+over the unioned list; the existence check is inherent, since a missing path answers one line
+carrying no row headline.
+**BOTH CLAUSES.** Control **19 cases, 0 red**; every gated reading and all 49 `detail:` lines
+identical. **execve 3,940 to 1,745, git 1,323 to 4** -- the prototype's projection, program by
+program.
+**THE CLAUSE I DECLINE:** the 15s wall. Five runs read 14,584 to 16,962 ms against the elder's
+36,118 and 35,014 -- 2.4x, median under and one over, at load **17.88 on 8 cores**, a threshold
+set at an unrecorded load.
+**YOURS:** a wall falsifier is a claim about a machine; the process count survived the loaded hour
+and the wall did not. Next: two row-joins spending 1,258 `awk` over 615 rows twice -- falsifier
+1,745 to roughly 490, above 900 kills it.
 **PETRICHOR -- THE MANUAL NAMES THE CEILING IT IS HELD TO.**
 Elder [shelved](archive/20260910-223215_itinerary-landed-accounts.md).
 **AIR FEELS** (row 1): my two rooms' fence line. **Twenty living pages declared a style, naming

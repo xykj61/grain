@@ -109,17 +109,28 @@ anointed_ok=no
 : > "$work/shared.txt"
 if git rev-parse --verify --quiet "$anointed" >/dev/null 2>&1; then
   anointed_ok=yes
-  while IFS= read -r f; do
-    git cat-file -e "$anointed:$f" 2>/dev/null || continue
-    git show "$anointed:$f" 2>/dev/null | pairs_of >> "$work/shared.txt"
-  done < "$work/files.txt"
-  # A shelf may exist upstream and not here (or the reverse), so ask the remote tree for its
-  # own file set too rather than only for the paths this checkout happens to hold.
-  git ls-tree -r --name-only "$anointed" -- construction 2>/dev/null \
-    | grep -E '^construction/(REDS\.md|archive/REDS-.*rows-.*\.md)$' \
-    | while IFS= read -r f; do
-        git show "$anointed:$f" 2>/dev/null | pairs_of
-      done >> "$work/shared.txt"
+  # ONE PROCESS FOR THE WHOLE SPINE. The elder form walked two file lists, spending a
+  # `git cat-file -e` and a `git show` on each path of the first and a `git show` on each path
+  # of the second -- 878 `git show` calls and 440 existence checks against a 440-file ledger,
+  # measured `20260910.223000` on this pier, which was 3,940 of the guard's 3,958 processes.
+  # `git cat-file --batch` takes one path per line on standard input and streams every blob,
+  # so the two walks become one union list read by one process.
+  #
+  # A shelf may stand upstream and not here, or here and not upstream, so the union of both
+  # lists is what the two walks produced between them -- and a path the ref lacks is handled
+  # rather than dropped: `--batch` answers `<input> missing` on a single line, which carries
+  # no row headline, so the same `pairs_of` sed finds nothing there and the `cat-file -e`
+  # guard is inherent rather than removed.
+  #
+  # The header line `<oid> blob <size>` cannot be mistaken for a row either, for the same
+  # reason: the pattern anchors on `**REDS %` at the start of a line.
+  { cat "$work/files.txt"
+    git ls-tree -r --name-only "$anointed" -- construction 2>/dev/null \
+      | grep -E '^construction/(REDS\.md|archive/REDS-.*rows-.*\.md)$'
+  } | sort -u > "$work/sharedfiles.txt"
+  sed "s|^|$anointed:|" "$work/sharedfiles.txt" \
+    | git cat-file --batch 2>/dev/null \
+    | pairs_of >> "$work/shared.txt"
   sort -u -o "$work/shared.txt" "$work/shared.txt"
 fi
 
