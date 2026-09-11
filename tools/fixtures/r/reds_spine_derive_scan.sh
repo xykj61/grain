@@ -81,15 +81,52 @@ fi
 #   **REDS %N (`YYYYMMDD.HHMMSS`) -- headline.**
 # Elder table rows carry no stamp and are frozen by age; they are counted, never derived.
 pairs_of() {
-  # $1 = a command that prints one file's contents
-  sed -n 's/^\*\*REDS [%#]\([0-9][0-9]*\) *(`\([0-9]\{8\}\.[0-9]\{6\}\)`).*/\1 \2/p'
+  # With file operands, reads them in order and concatenates; with none, reads standard input,
+  # which is how the anointed side feeds it one `git cat-file --batch` stream.
+  sed -n 's/^\*\*REDS [%#]\([0-9][0-9]*\) *(`\([0-9]\{8\}\.[0-9]\{6\}\)`).*/\1 \2/p' "$@"
 }
 
+# ONE PROCESS PER CHUNK, rather than one per ledger file. The elder form piped each spine file
+# into its own `sed`, which is 440 processes to ask one question of 440 files already on disk --
+# 442 of this guard's 483 `execve` calls, measured `20260910.232700` on this pier. `sed` takes
+# many file operands, so the walk becomes two invocations.
+#
+# WHY CHUNKED RATHER THAN ONE CALL. An argument list has a host limit (`ARG_MAX`), and the spine
+# grows every time the ledger folds, so a single call would work for years and then fail with an
+# error about arguments that names nothing a reader could act on. Flushing at a named bound needs
+# no ceiling and breaches none: the collection is bounded per call, and the file count is not
+# bounded at all. 256 paths is roughly 16 KB of argument list against a 2 MB limit on this host,
+# two orders of magnitude of headroom on the smallest limit a POSIX host may declare.
+#
+# `set --` IS SAFE HERE because the argument loop above consumed every positional parameter this
+# script was given, and nothing below reads one. Building the list this way rather than by word
+# splitting a variable is what keeps a path with a space in it one operand.
+MAX_SED_OPERANDS=256
+
 : > "$work/local.txt"
+pending=0
+set --
 while IFS= read -r f; do
   [ -f "$f" ] || continue
-  pairs_of < "$f" >> "$work/local.txt"
+  set -- "$@" "$f"
+  pending=$((pending + 1))
+  if [ "$pending" -ge "$MAX_SED_OPERANDS" ]; then
+    pairs_of "$@" >> "$work/local.txt"
+    set --
+    pending=0
+  fi
 done < "$work/files.txt"
+# The final short chunk, which is empty when the file count is an exact multiple of the bound.
+# An `if` rather than `[ ... ] && ...`, and the reason is narrower than it first looks: measured
+# on this host, a false AND-list does NOT end a `set -e` script, so the trailing form is safe
+# HERE only because more lines follow it. The `if` costs one line and removes the dependence on
+# that fact, so moving this flush to the end of the file can never turn an empty chunk into an
+# exit status of 1 -- which a caller would read as a gated refusal rather than a clean spine.
+# The control proves the row count across this seam; it does not prove the exit status, because
+# the trailing form passes that leg too.
+if [ "$pending" -gt 0 ]; then
+  pairs_of "$@" >> "$work/local.txt"
+fi
 # Bytewise unique, never numeric: `sort -n -u` compares by the leading number alone, so two
 # stamps under one number look equal and one is silently dropped -- the very fault reading 4
 # gates. Order is irrelevant to every consumer; the maxima sort numerically for themselves.
