@@ -34,6 +34,9 @@
 #  21 bitten  -- and a changed cell in the table below it still counts as drift
 #  22 free    -- an escaped `&lt;` reads as the character it names
 #  23 bitten  -- and a changed bound beside it still counts as drift
+#  24 free    -- a Cursor rule with no Claude canonical is NAMED, not only counted
+#  25 free    -- a Claude rule with no Cursor twin is named the same way
+#  26 free    -- and the side with nothing one-sided names nobody, so a bare zero is provable
 #
 # Cases 18 through 23 come in pairs on purpose. A transform step that reads two spellings as one
 # can hide a real disagreement, so each is planted twice -- the spelling alone, which must read
@@ -225,6 +228,32 @@ rm -f "$COH"
 out=$(run_scan 0)
 case "$out" in *verdict=cohort_absent*) got=refused;; *) got=allowed;; esac
 check "17 bitten: an absent cohort roster refuses rather than reading every pair as an arrival" refused "$got"
+
+# ---- 24..26: a one-sided rule is NAMED, not only counted -------------------------------
+# The two readings that printed a bare number. A count says a law exists one bench cannot read;
+# the name says which law, which is the whole of what a hand needs. Both sides are planted, and
+# the empty case is asserted too -- a bare zero cannot be told from a reading looking in the wrong
+# room, so the absence of a name must be provable rather than merely observed.
+fresh
+printf 'a\n' > "$COH"
+printf '# A\n\nsame\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nsame\n' > "$U/a.mdc"
+printf -- '---\nd: x\n---\n\n# Orphan\n\nno canonical\n' > "$U/lonely.mdc"
+out=$(run_scan 0)
+case "$out" in *"cursor-only: lonely"*) got=named;; *) got=silent;; esac
+check "24 free: a Cursor rule with no Claude canonical is named, not only counted" named "$got"
+
+fresh
+printf 'a\n' > "$COH"
+printf '# A\n\nsame\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nsame\n' > "$U/a.mdc"
+printf '# Solo\n\nno twin\n' > "$C/solo.md"
+out=$(run_scan 0)
+case "$out" in *"claude-only: solo"*) got=named;; *) got=silent;; esac
+check "25 free: a Claude rule with no Cursor twin is named the same way" named "$got"
+
+case "$out" in *cursor-only:*) got=spoke;; *) got=quiet;; esac
+check "26 free: and the side with nothing one-sided names nobody" quiet "$got"
 
 echo "control_cases=$((PASS + FAIL))"
 echo "control_fail=$FAIL"
