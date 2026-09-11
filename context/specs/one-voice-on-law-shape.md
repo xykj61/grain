@@ -6,6 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- seated by Keaton's word `20260802` (*"seat the recommendations"*)
+**Room:** mixed -- the one-voice habit is seated; its enforcement stays a reader ([`TWO_ROOMS`](../TWO_ROOMS.md))
 **Voice:** Kyri
 **Occasion:** four commits moved `living-vs-dated.md` in a single day, ending where the first had put it. Every step was made in good faith; the sequence was still a pendulum. Record: `../../counsel/20260802-185500_*_e238-*.md`.
 

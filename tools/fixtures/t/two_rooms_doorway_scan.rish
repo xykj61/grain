@@ -131,6 +131,26 @@ let ceiling_env = env "TWO_ROOMS_DOORWAY_CEILING"
 let ceiling = "3"
 if ceiling_env != "" then let ceiling = ceiling_env
 
+# THE EXEMPTION WAS POINTED AT THE LIVING PAGES (20260911). `scan_one` passed any page whose
+# basename carries no one-clock stamp, calling it grandfathered. The mark law reads that same
+# absence the other way -- *a file whose own basename carries a one-clock stamp is testimony, and
+# everything else is living* -- so the clause freed `context/LEXICON.md`, the `manual/` guides and
+# the `docs-geode/` tutorials, and gated three pages of dated testimony nobody may ever repair.
+#
+# Measured the lap this reading landed: 1,254 pages, of which 138 carry no stamp and 106 of those
+# named no room. The roster's own comments read `manual/ 29 pages and 0 silent` and `foundations/
+# 83 pages and 0 silent`, and both zeros were true of the population the guard could see. Sixteen
+# were repaired the same lap -- 13 `context/specs/`, one design shape, one foundation, one
+# external-research canon -- so the ceiling opens at 90. The remainder, by room: 33
+# `active-designing/`, 23 `context/`, 20 `manual/`, 9 `docs-geode/`, 6 in the lineage silo.
+#
+# TWO NUMBERS RATHER THAN ONE, because a page never changes class: a stamp is in a basename or it
+# is not. Merging them would let a repair in one class hide a regression in the other, and the
+# dated ratchet's floor of 3 is structural where this one's is zero.
+let living_ceiling_env = env "TWO_ROOMS_LIVING_CEILING"
+let living_ceiling = "90"
+if living_ceiling_env != "" then let living_ceiling = living_ceiling_env
+
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]
 assert roster.ok else "two_rooms doorway roster failed"
 let files = where (lines roster.out) as p: p != ""
@@ -149,9 +169,12 @@ let results = map files as f: run ["sh" "tools/fixtures/t/two_rooms_doorway_scan
 for-each results as r do say trim r.out
 
 let fails = where results as r: r.ok == false
+let living_silent = where results as r: (trim r.out) starts-with "LIVING-SILENT"
+let stampless = where results as r: r.out contains "no one-clock stamp"
 
 say "doorway pages=${length files} research=${length from_research} designing=${length from_designing} docs=${length from_docs} geode=${length from_geode} manual=${length from_manual} foundations=${length from_foundations} context=${length from_context} folded=${length from_shelves}"
 say "doorway fails=${length fails} ceiling=${ceiling} seating=${seating}"
+say "doorway stampless=${length stampless} living_silent=${length living_silent} living_ceiling=${living_ceiling}"
 
 if length from_research == 0 then say "FAIL doorway reach: external-research read no page"
 if length from_designing == 0 then say "FAIL doorway reach: active-designing read no page"
@@ -175,6 +198,11 @@ let under = run ["sh" "-c" "test ${length fails} -le ${ceiling}"]
 
 if under.ok == false then say "FAIL doorway ratchet: ${length fails} pages name no room, above the ceiling of ${ceiling}"
 if under.ok == false then exit 1
+
+let living_under = run ["sh" "-c" "test ${length living_silent} -le ${living_ceiling}"]
+
+if living_under.ok == false then say "FAIL doorway living ratchet: ${length living_silent} living pages name no room, above the ceiling of ${living_ceiling}"
+if living_under.ok == false then exit 1
 
 say "verdict=ok"
 say "OK   doorway scan complete (seating ${seating})"

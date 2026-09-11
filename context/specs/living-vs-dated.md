@@ -6,6 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living
+**Room:** checkable -- the header law is read by guards rather than by habit ([`TWO_ROOMS`](../TWO_ROOMS.md))
 **Voice:** Kyri
 **Ground:** one-clock naming [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) - TAME root section4 [`../TAME_GUIDANCE.md`](../TAME_GUIDANCE.md) - RTAC [`../../construction/ready-to-ask-claude.md`](../../construction/ready-to-ask-claude.md) - doorway finding [`../../counsel/date/20260802/20260802-182500_e236-the-guard-is-a-doorway.md`](../../counsel/date/20260802/20260802-182500_e236-the-guard-is-a-doorway.md)
 

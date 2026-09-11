@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `361a3c7a48` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2e04305582` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -152,28 +152,28 @@ costs 325s of Zig. **39 control legs, 0 failed**, every refusal planted and lift
 **YOURS:** the worker demands an exact count; the emitted program demands a **floor** and ignores
 anything past it. Two shapes of one boundary -- worth a gate, or is the worker's exactness enough?
 
-**GRASS -- THE CENSUS OF WHAT NOBODY RUNS COULD SEE NO PROOF.**
-Elder [shelved](archive/20260911-013618_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, lap 4611), seat `single-stranded`. **FOUND:** both populations
-of `unheard_guard_scan.sh` end `grep -v '^tools/fixtures/'`, an exclusion written for pen
-material. That room holds the INSTRUMENT layer too, so the census asking *does anybody run this*
-has never seen one.
-**MEASURED through the closure the guard already computes: 258 controls, 18 unreached** -- one is
-`invariant_coverage_control.sh`, whose 37 legs prove a classifier three published figures rest on.
-**MY FIRST DRAFT READ `control_heard=0`**, clean and false: both elder rules end `\.(rish|rye)`.
-**A rule is paired with the population it can see, or it reads zero and calls it news.**
-**MECHANISM:** a third reading with its own `names_sh.awk`, reusing `heard.txt`. `control_unheard` ratchets at 18 over a floor, since a collapsed glob reads zero
-and a ratchet passes it. **Two causes apart from the gate:** 11 ORPHANS named by no runner, 7 UNRUN whose runner is unheard,
-three of those dated equinox guards. The `.sh` source set keeps the WITNESS and drops scan and
-control; dropping it would call its own control unrun -- a false RED worse than %486's false green
--- and a leg holds it to naming only its own.
-**PROVEN:** control 52 -> **75 legs, fail=0**; a blinded rule reds 7, a foreign control the wall, a
-quiet raise the pin. [Paper](../active-designing/20260911-013618_a-proof-nobody-runs-is-a-claim.md) A 93.
-**COLD 250/247, 1 red, 2 gated, `tree_moved=no`** -- the red the roster's echo of `dated_path`,
-`%626`, OPEN.
-**YOURS:** whether the hundreds of `*_scan.sh` want the same reading -- a scan is reached through
-its witness where a control is reached only by being RUN, a shape rather than a wider glob. The
-REDS pin holds every row OPEN, so this books no row until you raise it.
+**GRASS -- THE EXEMPTION STOOD OVER THE PAGES A READER MEETS FIRST.**
+Elder [shelved](archive/20260911-022523_itinerary-landed-accounts.md).
+**REDS FIRST, TWO CLOSED.** `log_has_a_row` read `pin_count_drift` -- both rosters said 104 laps for
+`20260910` where the shelf holds **107**. `stash_record` read `records_unlanded=1`: a GRASS lap of
+`20260911.013618` killed mid-send, recovered and re-proven at **75 legs**.
+**EARTH BREATHES IN** (row 4, lap 4614).
+**FOUND:** `two_rooms_doorway_scan_one.sh` passes any stampless basename as **grandfathered**. The
+mark law reads that absence the other way -- *a stamp means testimony; everything else is living*
+-- so it freed `context/LEXICON.md` and the `manual/` guides, and gated
+three dated pages nobody may repair. **1,254 pages, 138 stampless, 106 naming no room**
+against a dated 3; the roster's own `manual/ 0 silent` held over the population it could see.
+**THE LAW'S OWN DOOR WAS AMONG THEM:** `context/TWO_ROOMS.md` quotes both key names in its `Last
+updated` line and the reading kept the first line carrying them anywhere, so the law read silent
+three lines above `checkable-room canon`. A key's own line is preferred now; the anywhere match
+stays the fallback 92 header rows need.
+**MECHANISM:** `names_room()` states the token test once for both branches; the scan prints
+`stampless=` and `living_silent=` under their own ceiling; the roster drops 21 day-shelf indexes.
+**MY FIRST DRAFT READ 122 SILENT DOORS WHERE 3 STAND:** `grep ... | head -1 && return 0` binds `&&` to the pipeline, whose status is `head`'s -- caught by the number, never the diff.
+**REPAIRED 16 DOORS**, so the ceiling opens at **90**. **PROVEN:** 70 behaviors over 70 readings,
++10 legs, three mutations bitten.
+**YOURS:** the 90 -- 33 `active-designing`, 23 `context`, 20 `manual`, 9 `docs-geode`, 6 silo, the
+last two PETRICHOR's. And whether a living door should end up GATED.
 
 **INCENSE -- A METER KNEW A LAW WAS UNREADABLE AND WOULD NOT NAME IT.**
 Elder [shelved](archive/20260911-001547_itinerary-landed-accounts.md).

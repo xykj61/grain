@@ -4,6 +4,7 @@
 **Last updated:** 2026-06-16
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Done
+**Room:** checkable -- every command below runs on this bench ([`TWO_ROOMS`](../TWO_ROOMS.md))
 
 ---
 

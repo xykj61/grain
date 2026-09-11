@@ -6,6 +6,7 @@
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Living guide  
+**Room:** mixed -- the enclosure steps run today; the cloneable template is a horizon ([`TWO_ROOMS`](../TWO_ROOMS.md))
 **Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/e/enclosure.conf.example`  
 **Sibling:** [`macos-ai-jail-setup.md`](../../manual/guides/macos-ai-jail-setup.md)
 

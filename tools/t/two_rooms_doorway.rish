@@ -37,6 +37,27 @@
 # shelves that accrete-never-break keeps exactly as written. A gate that can never close is one
 # somebody turns off, so the ceiling falls as pages are repaired and never rises.
 #
+# THE EXEMPTION WAS POINTED AT THE LIVING PAGES (20260911). A page whose basename carries no
+# one-clock stamp passed free as `grandfathered`, on the reasoning that no stamp means elder. The
+# mark law reads that same absence the other way -- *a file whose own basename carries a one-clock
+# stamp is testimony, and everything else is living* -- so the clause freed `context/LEXICON.md`,
+# the `manual/` guides and the `docs-geode/` tutorials, and gated three pages of dated testimony
+# accrete-never-break lets nobody repair. Measured: 1,254 pages, 138 stampless, 106 of those
+# naming no room, against a dated reading of 3. The roster's own comments read `manual/ 29 pages
+# and 0 silent` and `foundations/ 83 pages and 0 silent`, and both zeros were true of the
+# population the guard could see.
+#
+# TWO READINGS RATHER THAN ONE, each with its own ceiling. A page never changes class -- a stamp
+# is in a basename or it is not -- so merging them would let a living repair hide a dated
+# regression, and the dated floor of 3 is structural where the living floor is zero. Sixteen doors
+# were repaired the same lap and the living ceiling opens at 90.
+#
+# AND THE LAW'S OWN DOOR WAS BEING MISREAD. `grep -o '**Status:**.*' | head -1` takes the first
+# line of the head carrying those characters anywhere, and `context/TWO_ROOMS.md` writes
+# "`**Status:**` or `**Room:**`" in its `Last updated` line three lines above a Status reading
+# `checkable-room canon`. A key's own line is preferred now, with the anywhere match kept as the
+# fallback the shared header row needs; both directions are proven, because they fail opposite ways.
+#
 # WHAT IS NOT PROVEN. That a page naming `checkable` belongs in the checkable room. The token is
 # read; the judgment behind it stays a reader's.
 #
@@ -62,6 +83,7 @@ if result.ok == false then say "two-rooms doorway scan stderr:"
 if result.ok == false then say result.err
 
 assert result.out contains "doorway pages=" else "two-rooms doorway: the scan must report its own reach"
+assert result.out contains "doorway stampless=" else "two-rooms doorway: the scan must report the living population it once passed in silence"
 assert result.out contains "verdict=ok" else "two-rooms doorway RED -- read the FAIL lines above; each names one page"
 assert result.ok else "two-rooms doorway scan failed"
 
@@ -76,7 +98,24 @@ assert control.out contains "no_room_counted=yes" else "two-rooms doorway: a Sta
 assert control.out contains "no_room_named=yes" else "two-rooms doorway: the refusal must name the page, so the repair is one line away"
 assert control.out contains "no_status_counted=yes" else "two-rooms doorway: a page with no Status line must be counted"
 assert control.out contains "before_seating_free=yes" else "two-rooms doorway: a page stamped before seating is grandfathered"
-assert control.out contains "unstamped_free=yes" else "two-rooms doorway: a page carrying no one-clock stamp is grandfathered"
+assert control.out contains "unstamped_free=yes" else "two-rooms doorway: a page carrying no one-clock stamp stays outside the dated ratchet"
+assert control.out contains "unstamped_not_dated=yes" else "two-rooms doorway: a stampless page must not enter the dated count -- the two ratchets are two faults with two repairs"
+assert control.out contains "stampless_counted=yes" else "two-rooms doorway: the stampless population must be reported, so an empty blind spot reads apart from a large one"
+assert control.out contains "living_silent_counted=yes" else "two-rooms doorway: a LIVING page naming no room must be counted -- the mark law reads a missing stamp as life, never as age"
+assert control.out contains "living_silent_named=yes" else "two-rooms doorway: the living reading must name its page, so the repair is one line away"
+assert control.out contains "living_over_ceiling_refused=yes" else "two-rooms doorway: the living ratchet must refuse one page over its ceiling"
+assert control.out contains "living_over_ceiling_verdict=yes" else "two-rooms doorway: the living refusal must decide the verdict too, never name a fault and report ok"
+assert control.out contains "living_named_uncounted=yes" else "two-rooms doorway: a living page naming its room must leave the count"
+assert control.out contains "living_named_stampless=yes" else "two-rooms doorway: a repaired living page stays in the stampless population -- only its silence leaves"
+assert control.out contains "living_named_free=yes" else "two-rooms doorway: the sixteen doors repaired this lap must carry the verdict free, not merely stop counting"
+assert control.out contains "ratchets_split_dated=yes" else "two-rooms doorway: a dated page naming no room keeps its own number"
+assert control.out contains "ratchets_split_living=yes" else "two-rooms doorway: a living page naming no room keeps its own number"
+assert control.out contains "ratchets_split_dated_gates=yes" else "two-rooms doorway: the dated ceiling must still gate while the living one is slack"
+assert control.out contains "shelf_index_excluded=yes" else "two-rooms doorway: a day shelf index is a table of contents and leaves the population"
+assert control.out contains "shelf_index_free=yes" else "two-rooms doorway: excluding the shelf indexes must carry the verdict free"
+assert control.out contains "prose_mention_not_the_door=yes" else "two-rooms doorway: a key mentioned in prose is not the door -- the law page itself was misread on its own Last updated line"
+assert control.out contains "prose_mention_verdict=yes" else "two-rooms doorway: preferring a key own line must carry the verdict free"
+assert control.out contains "header_row_read=yes" else "two-rooms doorway: a Status folded into a shared header row must still be read -- line-starts alone misreported 92 pages"
 assert control.out contains "folded_page_read=yes" else "two-rooms doorway: a page on a date/ shelf must be read"
 assert control.out contains "folded_fail_counted=yes" else "two-rooms doorway: a folded page naming no room must be counted, not filed away"
 assert control.out contains "yonder_excluded=yes" else "two-rooms doorway: yonder is deferred-yet-alive and stays outside the elder reach"

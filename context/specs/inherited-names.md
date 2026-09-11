@@ -5,6 +5,7 @@
 **Decided:** Rye clock `20260618.210812`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Decided
+**Room:** checkable -- the ban is walled by `tools/c/chapter_allocator_witness.rish` ([`TWO_ROOMS`](../TWO_ROOMS.md))
 
 ---
 

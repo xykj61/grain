@@ -23,6 +23,11 @@
 #
 # WHAT STAYS OUT, and why each is the elder reach rather than a new judgment.
 #   */README.md          a room's front door describes the room rather than speaking from a room.
+#   */README-index-*.md  a day shelf's index, which is the same genre one fold down: a table of
+#                        contents for a closed day, listing pages rather than speaking from a room.
+#                        Excluded 20260911, when the living-door reading below made the 21 such
+#                        shelves in `active-designing/date/` visible for the first time -- every one
+#                        of them silent, and none of them a page any register applies to.
 #   */yonder/*           deferred-yet-alive (ORGANIZING); the shell glob never reached it either,
 #                        so pulling it in would widen the subject rather than restore it. Its 262
 #                        post-seating pages, 11 of which name no room, wait on Keaton's word.
@@ -103,6 +108,7 @@ while IFS= read -r f; do
   [ -n "$f" ] || continue
   case "$f" in
     */README.md) continue ;;
+    */README-index-*.md) continue ;;
     */yonder/*|*/archive/*) continue ;;
     */fixtures/*) continue ;;
   esac
