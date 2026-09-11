@@ -5233,3 +5233,41 @@ guard one_title
 path tools/o/one_title_witness.rish
 tier lap
 seated 20260911.114500
+
+# port_band -- the room's port numbers, counted off the sources rather than typed in a sentence.
+#
+# WHY IT IS ROSTERED. REDS %700 cost a fortnight: a rostered witness read red on one cold pass and
+# green on a re-run over an unchanged tree, and the cause was two lawful runs on eight checkouts
+# reaching for one compiled-in UDP port. A port is a name on the MACHINE rather than in a checkout,
+# and this pier stands eight checkouts deep whose passes overlap almost entirely.
+#
+# THE ROOM ALREADY HAD AN ANSWER AND WROTE IT IN PROSE. Two lock scripts serialize the runs that
+# share a pair, and each spelled its room's roster in its own header. Both sentences were true when
+# typed and both went stale the moment a module was repaired -- the tablecloth delivery module took
+# the bind-to-zero handshake on `20260911.105415` and let 38490/38491 go, and the amphora fetcher
+# let 38494 go, which `linengrow/neth_serial_core_delivery.rye` now declares. COUNT, NEVER NUMBER
+# (`.claude/rules/stamp-and-name.md`): the roster is read off the declarations and the sentences
+# point at the reading.
+#
+# WHAT IT HOLDS. `ports_outside_band` at zero, so a module reaching for 8080 at random reds on the
+# lap it arrives; `lock_band_uncovered` at zero, so the next module past a lock's numeric edge is
+# caught here rather than by the lock turning its own caller away. `ports_double_claimed` ratchets
+# at THREE -- 38495, 38496 and 38497, six declarations across four files, each lawful for its own
+# module and a collision for the pier, each repair a choice of number inside another lane.
+# `lock_claims_unbound` reports the one stale sentence. 46 control legs in a pen, two mutations
+# each biting their own leg.
+#
+# WHAT IT DOES NOT REACH. The host. Read `20260911`,
+# `/proc/sys/net/ipv4/ip_local_port_range` answers `32768 60999` and `ip_local_reserved_ports` is
+# EMPTY, so every number in the seated band is one the kernel may hand any client socket here. The
+# band orders our own modules and buys nothing against the host; a reservation is a `nixos/` change
+# and so Keaton's.
+#
+# WHY `tier lap`. One `git grep` over 1,972 Rye sources plus a pen of small git repositories, 8s
+# measured `20260911`. Ordinary work writes this fault: a module is repaired to bind-to-zero and a
+# sentence naming its old pair stays behind.
+
+guard port_band
+path tools/p/port_band_witness.rish
+tier lap
+seated 20260911.145000

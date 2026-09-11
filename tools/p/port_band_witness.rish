@@ -1,0 +1,123 @@
+# tools/p/port_band_witness.rish -- the room's port numbers, counted off the sources.
+#
+# WHY THIS RUNG. A port is a name on the MACHINE, and this pier stands eight checkouts deep whose
+# roster passes overlap almost entirely. REDS %700 is the bill: a rostered witness read red on one
+# cold pass and green on a re-run over an unchanged tree, and the cause took a fortnight to name --
+# two lawful runs reached one compiled-in UDP port and each read the other's replies. Proven on
+# metal `20260911` at load 14, eight at once: the elder binary 39 of 80 red, the repaired binary 0
+# of 80, and both 0 of 120 run serially. A fault that appears only in company is a fault one run
+# alone will always miss.
+#
+# WHY A METER RATHER THAN ANOTHER SENTENCE. The room already had an answer and wrote it in prose.
+# Two lock scripts serialize the runs that share a pair, and each spells its room's roster in its
+# own header -- *seven modules under mantra/ bind 38478/38479 through 38490/38491*, and
+# *amphora/vessel_fetch_delivery.rye binds UDP 38494 and 38495*. Both sentences were true when they
+# were typed, and both went stale the moment a module was repaired. The tablecloth delivery module
+# took the bind-to-zero handshake on `20260911.105415` and let 38490/38491 go; the amphora fetcher
+# let 38494 go, and `linengrow/neth_serial_core_delivery.rye` declares it today. A sentence holding
+# a roster is a roster a hand must re-type, and this tree's own law already names the cure: COUNT,
+# NEVER NUMBER (`.claude/rules/stamp-and-name.md`). So the roster is read off the declarations, and
+# each sentence points here.
+#
+# WHAT IS PROVEN, on metal.
+#   Every `const <name>: u16 = <number>;` in living tracked Rye where `port` is a whole component
+#     of the identifier, so `wire_port` counts and `max_report` is read past. A port of 0 is the
+#     CURE, named apart and charged to nothing.
+#   A constant outside the room's seated band `38472-38600`, held at ZERO. The floor is the first
+#     number this room seated and the ceiling leaves the counting-up convention room to grow, so a
+#     module reaching for 8080 at random reds on the lap it arrives.
+#   A lock whose numeric edge check would refuse a port its own room declares, held at ZERO. The
+#     next module past a lock's band is caught by this reading, where before it would have met a
+#     closed door at the lock itself. The comparison runs against each port that OPENS a pair,
+#     since a lock is taken on the low port: the first draft compared every declared port and
+#     reported a fault against a correct file, which is the one failure a guard cannot afford.
+#   One number declared by two modules, under a ceiling that only falls. THREE stand today --
+#     38495, 38496 and 38497, six declarations across four files, each lawful for its own module
+#     and a collision for the pier. Each repair is a choice of number inside another lane, so the
+#     three are NAMED for their owners and left for those hands.
+#   Forty-six behaviors on real git repositories in a throwaway pen: every refusal planted then
+#     lifted and read as zero, both ceilings shown from both sides, and TWO mutations each biting
+#     their own leg -- the pair-high rule and the whole-component rule -- since a rule nothing
+#     depends on is a rule that may quietly stop working.
+#
+# WHAT THIS LEAVES WHOLE, and the number that says why it matters.
+#   WHETHER two modules ever actually MEET on a number. That depends on which ships run which guard
+#     at which second, and `tools/fixtures/m/mantra_delivery_port_control.sh` proves that half in
+#     company. This rung proves the SHAPE that lets the meeting happen.
+#   THE HOST. Read on this pier `20260911`, `/proc/sys/net/ipv4/ip_local_port_range` answers
+#     `32768 60999` and `ip_local_reserved_ports` is EMPTY, so every number in the seated band is
+#     one the kernel may hand any client socket on this machine at any moment. The band orders our
+#     own modules, and the host remains free. A one-line `ip_local_reserved_ports` reservation
+#     would settle it, and that is a host configuration -- authored in `nixos/` and copied out
+#     (`.claude/rules/declared-host-config.md`), which makes it Keaton's.
+#   A base a module counts UP from claims a span a literal census reads past. Two stand --
+#     `comlink/rehearsal_wire.rye` at 38498, one per ship, and `constel/socket.rye` at 38512, one
+#     per seat -- so `band_free` is printed beside `counting_bases` and read together with it.
+#
+#   rishi/bin/rishi run tools/p/port_band_witness.rish
+
+say "port-band: Language EN -- a port is a name on the machine, and eight checkouts share one machine."
+say "port-band: Style Gauge, Meter -- refusal is the subject."
+say "port-band: Lens TAME -- safety first: a number two modules claim is a reply one of them reads wrongly."
+
+let scan = run ["sh" "tools/fixtures/p/port_band_scan.sh"]
+say scan.out
+assert scan.ok else "port-band: a reading stands past its gate -- read the scan's own lines: ${scan.out}"
+assert scan.out contains "verdict=ok" else "port-band: the scan must balance before it is believed: ${scan.out}"
+assert scan.out contains "ports_outside_band=0" else "port-band: a constant outside the seated band is a number picked at random: ${scan.out}"
+assert scan.out contains "lock_band_uncovered=0" else "port-band: a lock refusing a port its own room declares turns away the caller it protects: ${scan.out}"
+say "field GREEN -- every constant port stands inside the seated band, and every lock covers its own room"
+
+let control = run ["sh" "tools/fixtures/p/port_band_control.sh"]
+say control.out
+assert control.ok else "port-band: the control must complete: ${control.out}"
+assert control.out contains "control_failed=0" else "port-band: a control leg refused, so no reading below is believable: ${control.out}"
+assert control.out contains "clean_reads_zero=yes" else "port-band: a clean tree must read zero rather than merely pass"
+assert control.out contains "clean_free=yes" else "port-band: a clean tree must pass free"
+assert control.out contains "inside_band_counted=yes" else "port-band: a lawful constant port must still be counted"
+assert control.out contains "outside_band_counted=yes" else "port-band: a port outside the band must be counted"
+assert control.out contains "outside_band_refused=yes" else "port-band: a port outside the band must refuse"
+assert control.out contains "outside_band_named=yes" else "port-band: the refusal must name a verdict, never only an exit code"
+assert control.out contains "outside_file_named=yes" else "port-band: the reading must name the file, so the repair is one line away"
+assert control.out contains "outside_band_lifted=yes" else "port-band: lifting the plant must return the reading to zero"
+assert control.out contains "zero_port_named=yes" else "port-band: a kernel-chosen port must be named apart"
+assert control.out contains "zero_port_uncharged=yes" else "port-band: the cure must never be charged as the fault"
+assert control.out contains "zero_port_free=yes" else "port-band: a port of 0 is inside no band"
+assert control.out contains "substring_free=yes" else "port-band: max_report holds the letters and holds no port"
+assert control.out contains "pub_counted=yes" else "port-band: a pub prefix changes nothing about who holds the number"
+assert control.out contains "testimony_free=yes" else "port-band: dated testimony binds no port on this pier"
+assert control.out contains "testimony_absent=yes" else "port-band: a freed declaration must be absent from the listing, not merely uncounted"
+assert control.out contains "double_counted=yes" else "port-band: one number declared by two modules must be counted"
+assert control.out contains "double_named=yes" else "port-band: both claimants must be named"
+assert control.out contains "double_at_ceiling_free=yes" else "port-band: a double set at its ceiling must pass free"
+assert control.out contains "double_over_ceiling_refused=yes" else "port-band: a double set past its ceiling must refuse"
+assert control.out contains "double_over_named=yes" else "port-band: the ceiling refusal must name its verdict"
+assert control.out contains "free_excludes_claimed=yes" else "port-band: a claimed number is never offered as free"
+assert control.out contains "free_includes_unclaimed=yes" else "port-band: the free list must not become empty by accident"
+assert control.out contains "base_reported=yes" else "port-band: a base that counts up claims a span no literal census sees"
+assert control.out contains "lock_found=yes" else "port-band: a lock is found by the name shape this room writes"
+assert control.out contains "lock_pair_high_free=yes" else "port-band: a lock is taken on the low port, so the high half of a pair is never handed to it"
+assert control.out contains "lock_covering_free=yes" else "port-band: a lock covering its own room must pass free"
+assert control.out contains "lock_uncovered_counted=yes" else "port-band: a pair opening past a lock's band must be counted"
+assert control.out contains "lock_uncovered_refused=yes" else "port-band: a pair opening past a lock's band must refuse"
+assert control.out contains "lock_uncovered_named=yes" else "port-band: the refusal must name its verdict"
+assert control.out contains "lock_uncovered_port_named=yes" else "port-band: the refusal must name the port, so the band is one edit away"
+assert control.out contains "lock_uncovered_lifted=yes" else "port-band: lifting the plant must return the reading to zero"
+assert control.out contains "lock_no_edge_free=yes" else "port-band: a lock bounding no range refuses nothing and is read past"
+assert control.out contains "lock_own_number_free=yes" else "port-band: a lock naming its own room's port claims nothing stale"
+assert control.out contains "lock_no_edge_verdict_ok=yes" else "port-band: a lock with no edge check must leave the verdict alone"
+assert control.out contains "lock_unbound_counted=yes" else "port-band: a number a lock's own room let go must be reported"
+assert control.out contains "lock_unbound_named=yes" else "port-band: the stale number and its lock must both be named"
+assert control.out contains "lock_unbound_reported_not_gated=yes" else "port-band: a reading the owning lane must judge is reported, never gated"
+assert control.out contains "lock_unbound_lifted=yes" else "port-band: declaring the number again must return the reading to zero"
+assert control.out contains "no_root_refused=yes" else "port-band: a root that is not a directory must refuse"
+assert control.out contains "no_git_refused=yes" else "port-band: a root that is not a checkout must refuse"
+assert control.out contains "no_sources_refused=yes" else "port-band: a tree with no Rye source must refuse rather than read zero"
+assert control.out contains "mutation_pair_high_bites=yes" else "port-band: removing the pair-high rule must report a fault against a correct file"
+assert control.out contains "mutation_substring_bites=yes" else "port-band: removing the whole-component rule must read max_report as a port"
+assert control.out contains "mutation_substring_reds_clean=yes" else "port-band: the extra reading must be a fault rather than a harmless count"
+assert control.out contains "behaviors=46" else "port-band: the control must run every behavior this witness names: ${control.out}"
+assert control.out contains "control_verdict=proven" else "port-band: the control must agree with itself: ${control.out}"
+say "RED and GREEN paths proven -- three refusals bitten, every free rule planted then read as zero, and two mutations each biting their own leg"
+
+say "GREEN: port-band -- every port number this room writes down is counted, and the roster is read rather than re-typed."

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0c8b7361c9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `42826c45db` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -71,31 +71,32 @@ mutations bitten, eleven behaviors, GREEN.** Row shelved `20260911.104047`.
 receipt SOMEWHERE here; each reads 8 to 64.
 [Paper](../active-designing/20260911-104047_a-receipt-that-names-what-it-proved.md) A 94.
 
-**PATCHOULI -- THE DEAD-LETTER BOX HELD TWO LAPS, AND I READ THEM BACK OUT.**
-Elder [shelved](archive/20260911-125005_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4643). *The happy zone and the thin edge* reads the recovered work
-exactly: the runner's stop advice is a **contract with an operator**, and the control proves the
-answerer honors it rather than watching the whole stand up.
-**REDS FIRST, AND THE BACKLOG WAS MINE:** `stash_record` refused at `unlanded=2`, both records
-**mine**, killed mid-send this morning. Read back out: **2 -> 0, verdict=ok**.
-**LANDED WHOLE (`100007`):** `standing_equipment_run.sh`'s stop advice stood at **two sites**, one
-reading `$1` and one a global `$owner`; folded to one `stop_line()` **and given the latency it
-omitted** -- `trap 'exit 143' TERM` runs when the shell regains control, so a lock stands for one
-guard's full run past a lawful TERM, and a reader calling that a failed signal reaches for the
-SIGKILL the same sentence warns leaves the lock behind. `signal_trap_control` **16 -> 24** legs, the
-latency sentence **mutated out and shown falling**. GREEN, `proven 24 faults 0`.
-**LANDED AS TESTIMONY (`102212`):** its pid-keyed port window was **superseded before it landed** by
-the bind-to-zero handshake at `105415`, which that page itself names as the move that frees the
-window. Bannered; three findings retired, four standing.
-**RE-MEASURED, and the banner was wrong until I ran it:** the ephemeral hazard is **7 files holding
-13 constant ports** inside `32768 60999`, six under `mantra/` plus `comlink/hosted_wire.rye`.
-[Paper](../active-designing/20260911-101524_the-repair-that-moved-the-number.md) A 94.
-**MY OWN BREACH:** I edited `standing_equipment_run.sh` **while its cold pass ran from it** --
-`tree_moved` at best, a live `sh` reading a moved offset at worst. TERMed through `fleet_call.sh`
-(1 sent, 6 peers refused by cwd); the **hot pass is this lap's only honest roster reading**.
-**YOURS:** (1) those 13 constants are metered by nobody. (2) Twelve witnesses drive these binaries
-unlocked. (3) Whether a lap MUST read the dead-letter box before taking work -- three laps
-rediscovered their own done work today.
+**PATCHOULI -- THE ROOM THAT SERIALIZES COLLISIONS KEPT THEIR ROSTER IN PROSE.**
+Elder [shelved](archive/20260911-145917_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4644): taste the flow at the boundary the repair sat behind
+**REDS FIRST, AND A PEER FIXED IT FIRST.** Cold **261 run, 256 green, 3 red**. `rish_report_bound`
+read **39 against 38**; one site was `mantra_cli_record_witness`, my lane. I split the say -- and
+the rebase carried BAKERY's identical split with better prose, so I took theirs. **The open claim
+question, third firing today.**
+**THE READING.** `%700` cost a fortnight and its repair leaned on a roster written in PROSE: the
+mantra lock's header named **two of seven** modules as sharing 38490/38491, amphora's said
+*vessel_fetch_delivery binds 38494 and 38495*. Both true when typed -- then `105415` let
+38490/38491 go and the fetcher let 38494 go. **The better a lane repairs, the wronger its lock
+headers read.**
+**MEASURED, my elder count wrong:** not 13 constants in 7 files but **35 in 21**, and **38495,
+38496, 38497 each claimed twice** -- lawful alone, a collision here.
+**LANDED (`145641`, and the row renumbered once on the rebase, its stamp holding):**
+`port_band` reads every `const *_port: u16` off the sources. Two walls at zero --
+`ports_outside_band` over `38472-38600`, and `lock_band_uncovered`, a lock refusing a port its own
+room declares. Port **0** is the cure, charged to nothing. **46 legs, two mutations bitten**, GREEN.
+**THE CONTROL CAUGHT ME ACCUSING A CORRECT FILE:** the draft compared a lock's band to EVERY port
+its room declares, and a lock takes the **low** one, so it charged the mantra lock with refusing
+38491. Compares pair-OPENERS now, both ways planted.
+[Paper](../active-designing/20260911-145641_the-roster-a-sentence-could-not-hold.md) A 86.
+**YOURS:** (1) three doubles in amphora, granary, linengrow; 98 free banded numbers. (2)
+`ip_local_reserved_ports` **EMPTY** against a `32768 60999` range, so the kernel may hand any banded
+number out mid-selftest; one `nixos/` line, yours. (3) **Eleven** runners drive a constant port
+binary unlocked (said twelve), all off the roster -- `%646` again.
 **DIFFUSER -- THE RANKING RESTED ON A HOST READ NOBODY TOOK.**
 Elder [shelved](archive/20260911-081019_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, hand-advanced past four read today).
