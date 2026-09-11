@@ -97,24 +97,25 @@ its room declares, and a lock takes the **low** one, so it charged the mantra lo
 `ip_local_reserved_ports` **EMPTY** against a `32768 60999` range, so the kernel may hand any banded
 number out mid-selftest; one `nixos/` line, yours. (3) **Eleven** runners drive a constant port
 binary unlocked (said twelve), all off the roster -- `%646` again.
-**DIFFUSER -- THE RANKING RESTED ON A HOST READ NOBODY TOOK.**
-Elder [shelved](archive/20260911-081019_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, hand-advanced past four read today).
-**REDS FIRST, PEERS FIRST.** I closed `late_say_rostered=1` and `unsaid_rostered=938/936`; the
-rebase carried BAKERY's `07:25` and PATCHOULI's `grep -n`, both better, and I took theirs. Now **0**
-and **935/936**. **Two hands, one morning, two lines:** your open claim question, fired again.
-**THE READ ROW 6 WAS RANKED ON:** `energy_instrument_scan.sh` answers `joule_source=none`,
-`tier=counters` -- **no joule is readable here by anybody**. It already stood; ABSENCE stopped me
-writing a second.
-**MECHANISM:** `tools/rye/retired_count.rye` opens `PERF_COUNT_HW_INSTRUCTIONS` on itself via
-`perf_event_open(2)` -- `pid=0, cpu=-1, exclude_kernel`, what paranoid 2 permits.
-**MEASURED `080700`, five runs, load 10.11:** instructions **356-357 ppm**, wall
-**195,724-1,422,106**; the wall range moves **7.3x**, the counter's one. Doubling **1,999,977 ppm**
-every run. **12 pen cases, both gates mutated, each bit its own leg.** `%646`: no counter reads
-`counter=unavailable`, GREEN; the DISTINCTION is gated.
-[Paper](../active-designing/20260911-081019_the-unit-this-pier-can-carry.md) **A 91**.
-**YOURS:** whether a Meter row carries a counter beside bytes, and which ceiling survives six
-months. `supply_readable` on the Framework puts joules back in reach.
+**DIFFUSER -- THE LOOP THAT ALREADY REFUSED, AND THE CELL NOBODY FILLED.**
+Elder [shelved](archive/20260911-111917_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=4637): a falsifier run before its estimate was spent.
+**THE READING:** row 10 (*Glow loops with circumference*, 4th, 3-6wk) **already stood**. Through
+`glow/bin/glow_run`: `|-` refuses exit 1 `MissingBound`, `|-  32` accepts exit 0 -- its own first
+witness, since `glow/rune_bounded_trap.rye` held the rune from `20260716`.
+**Falsifier twice retired:** `(lent records)` is **accepted**; **2** of **451** tracked `.glow`
+sources carry a trap, both fixtures.
+**THREE CELLS, TWO PROOFS:** module-refuses by `rune_bounded_trap_witness.rye` (**2.161s**, no
+roster here or at `xy/main`); driver-accepts by `glow_desk_run` (**347**, 301 on `20260907`);
+driver-refuses by **nothing** -- a proof blind by construction.
+**MECHANISM:** `tools/fixtures/g/glow_trap_bound_control.sh` builds the driver into its **own pen**,
+writes 9 probes, requires each refusal **by name**, lifts the plant. `tier lap` **4.1s**. My two
+upstream-red repairs went EMPTY on rebase; peers landed both.
+**3 REDS HERE, NONE MINE, NOT CLAIMED:** `standing_equipment` on the run card;
+`mantra_snapshot_hosted` and `amphora_lap3` sit in PATCHOULI's port arc, the second GREEN
+by hand after.
+[Paper](../active-designing/20260911-111917_the-loop-that-already-refused.md) **A 93**.
+**YOURS:** whether `|-  0` should parse.
 **PETRICHOR -- A COMMAND FENCE PROMISING NOTHING ATE THE NEXT BLOCK WHOLE.**
 Elder [shelved](archive/20260911-123725_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4641): run it, do not read about it.
