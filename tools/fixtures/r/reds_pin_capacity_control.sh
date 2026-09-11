@@ -259,6 +259,52 @@ say "and still names the three held doors"    "$(has "$out" "each is Keaton's wo
 out=$(run_scan "$pen/a" REDS_PIN_BOUND=100000)
 say "a healthy pin names no doors"            "$([ "$(has "$out" 'detail: pin_deadlock_doors')" = no ] && echo yes || echo no)"
 
+# ---- 5b. the ANOINTED pin, read beside this clone's ------------------------------------------
+# Every leg here is asserted from BOTH sides, because the reading exists to tell two states apart
+# and one proven direction cannot be told from a reading that always says the same thing. The pen
+# builds two real pin files and hands the second in as the upstream door, so no remote is wanted.
+mkdir -p "$pen/u"
+build "$pen/u" 2 1 100
+cp "$pen/u/REDS.md" "$pen/u/upstream.md"
+
+# SAME: two identical pins agree, and name no row in either direction.
+out=$(run_scan "$pen/u" REDS_PIN_BOUND=100000 REDS_UPSTREAM_PIN="$pen/u/upstream.md")
+say "an agreeing pin reads same"              "$(has "$out" 'pin_upstream_state=same')"
+say "an agreeing pin folds nothing upstream"  "$(has "$out" 'pin_rows_ahead_of_upstream=0')"
+say "an agreeing pin lacks no row"            "$(has "$out" 'pin_rows_only_upstream=0')"
+say "an agreeing pin names no drift"          "$([ "$(has "$out" 'detail: pin_upstream_differs')" = no ] && echo yes || echo no)"
+say "agreement is still verdict=ok"           "$(has "$out" 'verdict=ok')"
+
+# FOLDED UPSTREAM: the fault that actually fired. A row stands on this pin and a peer has folded it
+# from the anointed one, so the local capacity reading counts a row the fleet's pin no longer holds.
+# Replayed on real history the day this landed, this leg names %701 -- the row that misled the lap
+# of `20260911.034352` -- so the plant below is the same shape the tree already produced.
+{ echo '# REDS -- a pen ledger'; echo; row 1 open 100; } > "$pen/u/upstream.md"
+out=$(run_scan "$pen/u" REDS_PIN_BOUND=100000 REDS_UPSTREAM_PIN="$pen/u/upstream.md")
+say "a peer's fold reads differs"             "$(has "$out" 'pin_upstream_state=differs')"
+say "a peer's fold is counted"                "$(has "$out" 'pin_rows_ahead_of_upstream=2')"
+say "a peer's fold is named by row"           "$(has "$out" 'detail: pin_row_ahead_of_upstream %2')"
+say "the drift line names both byte counts"   "$(has "$out" 'detail: pin_upstream_differs')"
+say "a drifted pin still exits 0"             "$([ "$(run_status "$pen/u" REDS_PIN_BOUND=100000 REDS_UPSTREAM_PIN="$pen/u/upstream.md")" = 0 ] && echo yes || echo no)"
+
+# BEHIND: the mirror direction. Upstream carries a row this checkout lacks, which is the ordinary
+# state of a clone minutes after its round-open, and it is named rather than gated for that reason.
+cp "$pen/u/REDS.md" "$pen/u/upstream.md"
+row 9 open 100 >> "$pen/u/upstream.md"
+out=$(run_scan "$pen/u" REDS_PIN_BOUND=100000 REDS_UPSTREAM_PIN="$pen/u/upstream.md")
+say "a row only upstream is counted"          "$(has "$out" 'pin_rows_only_upstream=1')"
+say "a row only upstream is named"            "$(has "$out" 'detail: pin_row_only_upstream %9')"
+say "being behind folds nothing"              "$(has "$out" 'pin_rows_ahead_of_upstream=0')"
+say "being behind is not gated"               "$([ "$(run_status "$pen/u" REDS_PIN_BOUND=100000 REDS_UPSTREAM_PIN="$pen/u/upstream.md")" = 0 ] && echo yes || echo no)"
+
+# UNREAD: a ref that will not resolve says so rather than falling back to the local tree, which is
+# the silent fallback this whole reading exists to refuse.
+out=$(run_scan "$pen/u" REDS_PIN_BOUND=100000 REDS_ANOINTED=no/such/ref/here)
+say "an unresolvable ref reads unread"        "$(has "$out" 'pin_upstream_state=unread')"
+say "an unread ref says so by name"           "$(has "$out" 'detail: pin_upstream_unread')"
+say "an unread ref claims no bytes"           "$(has "$out" 'pin_upstream_bytes=unread')"
+say "an unread ref still exits 0"             "$([ "$(run_status "$pen/u" REDS_PIN_BOUND=100000 REDS_ANOINTED=no/such/ref/here)" = 0 ] && echo yes || echo no)"
+
 # ---- 6. misuse refuses rather than guessing ----------------------------------------------------
 if ( cd "$ROOT" && env REDS_PIN="$pen/absent/REDS.md" sh "$SCAN" >/dev/null 2>&1 ); then code=0; else code=$?; fi
 say "an absent pin exits 2"                   "$([ "$code" = 2 ] && echo yes || echo no)"

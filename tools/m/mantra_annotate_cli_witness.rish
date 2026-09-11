@@ -32,11 +32,18 @@ say "mantra-annotate-cli: Style Gauge, Meter -- every claim is an answer the bui
 say "mantra-annotate-cli: Lens TAME -- a reading writes nothing, and says so by being run twice."
 
 say "mantra-annotate-cli: the CLI still names the library function this reading is made of..."
-let seat = run ["sh" "-c" "grep -q 'fn cmd_annotate' mantra/src/main.rye && grep -q 'base.annotate(allocator, &work)' mantra/src/main.rye"]
+# `grep -n` rather than `-q`, so the binding HAS a capture to report (`shim_reason`, captain's repair
+# `20260911.072500`). Under `-q` these two bindings were asserted on and could say nothing, which put
+# the rostered unsaid count two over its ceiling the lap this witness landed. Named line numbers are
+# worth more than silence on both paths: a refusal shows which half of the seat went missing, and a
+# green run tells a reader where in `main.rye` the seat currently stands.
+let seat = run ["sh" "-c" "grep -n 'fn cmd_annotate' mantra/src/main.rye && grep -n 'base.annotate(allocator, &work)' mantra/src/main.rye"]
+say seat.out
 assert seat.ok else "mantra-annotate-cli: cmd_annotate or its call into Weave.annotate left main.rye, so the reading this guard proves is no longer there to prove"
 
 say "mantra-annotate-cli: the printed reading is still bounded, which is what keeps a story readable..."
-let bounded = run ["sh" "-c" "grep -q 'max_annotate_print' mantra/src/main.rye"]
+let bounded = run ["sh" "-c" "grep -n 'max_annotate_print' mantra/src/main.rye"]
+say bounded.out
 assert bounded.ok else "mantra-annotate-cli: max_annotate_print left main.rye -- a reading with no ceiling hands a terminal the file rather than the story"
 
 say "mantra-annotate-cli: driving the built binary over one file in a pen, edited between runs..."

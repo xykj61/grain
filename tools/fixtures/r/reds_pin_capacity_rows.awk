@@ -28,6 +28,11 @@
 #   awk -f reds_pin_capacity_rows.awk -v mode=open_rows FILE   # one row number per line
 #   awk -f reds_pin_capacity_rows.awk -v mode=held_rows FILE   # one held OPEN row number per line
 #   awk -f reds_pin_capacity_rows.awk -v mode=unheld_rows FILE # one unheld OPEN row number per line
+#   awk -f reds_pin_capacity_rows.awk -v mode=all_rows  FILE   # every row number, whatever its status
+#
+# `all_rows` exists so the local pin and the ANOINTED pin are read by one reader (`20260911.064500`).
+# Comparing two pins with two spellings of what a row is would be the very drift this file was
+# written to prevent, one file further out.
 
 function last_marker(s,   pos, rest, hit, len, found, word) {
   found = "unmarked"
@@ -67,6 +72,7 @@ function row_number(s,   r) {
 /^\*\*REDS [%#][0-9]/ {
   rows++
   len[rows] = length($0) + 1
+  if (mode == "all_rows") print row_number($0)
   if (fold_refused($0)) refused++
   if (last_marker($0) == "open") {
     opens++
