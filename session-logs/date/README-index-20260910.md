@@ -13,9 +13,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260910.210034` | [The refusal that named no cause](20260910/20260910-210034_the-refusal-that-named-no-cause.kyri) | shim_reason fourth shape: 7,110 bindings judged and never reported |
 | `20260910.204226` | [The door that names its own ceiling](20260910/20260910-204226_the-door-that-names-its-own-ceiling.kyri) | eleven doors name their ceiling; the dated one stays whole |
+| `20260910.203413` | [A ratchet and the hand that lowers it](20260910/20260910-203413_a-ratchet-and-the-hand-that-may-lower-it.kyri) | who grows a population decides its ceiling |
 | `20260910.203100` | [The lap that came back](20260910/20260910-203100_the-lap-that-came-back-from-the-stash.kyri) | a finished lap recovered from the stash, reproven, landed |
 | `20260910.201128` | [The falsifier that landed in the middle](20260910/20260910-201128_the-falsifier-that-landed-in-the-middle.kyri) | 62% read by wall, 58% by process; neither door fired |
 | `20260910.193823` | [Pedestals that count members](20260910/20260910-193823_the-pedestal-that-counts-members.kyri) | six desks read against their declarations |
+| `20260910.192423` | [A wall the roster reaches nowhere](20260910/20260910-192423_a-wall-the-roster-reaches-nowhere.kyri) | 25 of 66 guards the law cites are run by no lap |
 | `20260910.190908` | [the sentence that is also a wire](20260910/20260910-190908_the-sentence-that-is-also-a-wire.kyri) | a say is a wire; converter built, minus row seated |
 | `20260910.182333` | [the pin's first door, walked](20260910/20260910-182333_the-pins-first-door.kyri) | %457 booked and folded; deadlock broken |
 | `20260910.180344` | [The names no guard was reading](20260910/20260910-180344_the-names-no-guard-was-reading.kyri) | the law room prints 99 tool paths; 50 no link guard could see |

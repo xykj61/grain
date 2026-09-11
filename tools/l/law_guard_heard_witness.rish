@@ -1,0 +1,108 @@
+# tools/l/law_guard_heard_witness.rish -- a law that names its guard promises that guard runs.
+#   rishi/bin/rishi run tools/l/law_guard_heard_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/l/law_guard_heard_scan.sh, which reads the two editors' rule
+# rooms and the canon they send a reader to, collects every authored tool path those pages name,
+# walls the ones the repository does not carry at zero, and holds the guard-named citations no
+# roster pass reaches under a ceiling that only falls.
+#
+# WHY IT EXISTS. A rule page in this tree names the instrument that holds each boundary still, and
+# Gauge asks for exactly that -- a figure carries unit, date, source, and what holds it still, where
+# "walled" means a guard reds the lap the number moves. A reader meets that citation and reads a
+# wall. It is a wall only while something runs the guard on a lap nobody is watching. REDS %357 is
+# the wound: three witnesses red at HEAD for days, none of them on the roster, a 96-guard pass
+# reading 95 green beside them. Its repair was a tree-wide census; this is that same question asked
+# of the loudest population, the guards the law itself cites.
+#
+# WHAT IT FOUND ON THE SEATING LAP (20260910, at 2410630a80). 137 law pages name 100 distinct tool
+# paths. All 100 are carried by the repository. 66 wear witness or suite, and 25 of those 66 -- 38
+# percent -- stand outside every reach the standing roster has. Four were run by hand and all four
+# read GREEN, so the finding is about reach rather than about a standing red.
+#
+# WHAT IT STANDS ON. Twenty-two behaviours proven on real git repositories in a throwaway pen by
+# tools/fixtures/l/law_guard_heard_control.sh, welcomes asserted as hard as refusals: all three
+# citation forms are read, a path cited twice counts once, a cited runner wearing neither word lands
+# outside the population and is never counted unheard, an uncarried citation gates under its own
+# name and is printed so a reader can repair it, tracking it lifts the refusal, a file on the
+# machine and outside the repository stays absent, an untracked law page is read past, the ceiling
+# refuses from both sides on one pen, four vacuums each refuse under their own name, and the scan
+# refuses outside a repository rather than reading the filesystem.
+#
+# WHY THE PEN HANDS IT A STUB SIBLING. Reach is decided in one place -- the census this scan calls --
+# whose transitivity, roster seed, comment rule, and pen exclusion carry fifty-two legs of their own.
+# Proving them again here would spell one rule twice and let the two come to disagree.
+#
+# WHY NO GUARD PATH IS SPELLED BELOW OUTSIDE A COMMENT. The reach census credits a real guard path
+# named on any non-comment line as run, which is deliberate generosity that makes its count a floor,
+# and it is exactly wrong for a file whose subject is what nothing runs -- REDS %486, which that
+# census booked against itself. It answered by excluding its own three files from its closure. This
+# family stays out a second way, by construction: every assert below reads a count or a verdict word.
+#
+# WHAT IT DOES NOT REACH. Whether a cited guard passes. Whether a guard can run with no arguments at
+# all -- a parameterized instrument a style pass drives sits in the unheard count correctly and
+# uninterestingly. And whether the citing sentence was making a wall claim, which no count can tell.
+#
+# Purely local: no key, no signature, no network, no funds, no real device.
+
+say "law-guard-heard: Language EN -- a law that names its guard promises that guard runs."
+say "law-guard-heard: Style Gauge Meter -- the reading is counted, its wall stands at zero, its ceiling only falls, and every refusal is proven from both sides."
+say "law-guard-heard: Lens TAME -- safety first; the reading narrows to the sibling census's own population rather than spelling a second one."
+
+let green = run ["sh" "tools/fixtures/l/law_guard_heard_scan.sh"]
+say green.out
+assert green.ok else "law-guard-heard: the living measure must exit 0"
+assert green.out contains "verdict=ok" else "law-guard-heard: want verdict ok"
+
+# THE WALL, at zero. A law page naming a tool the repository does not carry has published a
+# citation that resolves on nobody's clone. 63 of the 100 citations here stand outside a Markdown
+# link, so the link duty cannot see them; this is the only reading that does.
+assert green.out contains "absent=0" else "law-guard-heard: a law page names a tool the tree carries, or it names nothing"
+
+# THE PUBLISHED CEILING, PINNED HERE ON PURPOSE. The scan carries the operative number and this line
+# carries the published one, so the two disagree the moment either moves alone and a fall costs a
+# deliberate hand in both files. Seated at 25, exactly the seating lap's reading, so the widening
+# reds no ship and the twenty-sixth unheard citation reds on the lap it lands.
+assert green.out contains "unheard_ceiling=25" else "law-guard-heard: the ceiling stands where it was measured -- a ceiling only falls"
+
+# THE READING IS NOT VACUOUS ON THIS TREE. A population that came back empty would print unheard=0,
+# pass its ceiling, and read exactly like a tree whose every law-cited guard runs -- REDS %240's
+# confident wrong zero. The scan refuses four such vacuums by name and the control proves all four;
+# these two legs close the same door from the reading's side.
+assert green.out contains "law_pages=" else "law-guard-heard: the law rooms must be counted"
+assert (green.out contains "citations=0") == false else "law-guard-heard: a law citing no tool at all is a reading that broke"
+
+# THE CEILING FROM BOTH SIDES, ON THE LIVING TREE, read out of the scan's own output rather than
+# spelled here, so this leg cannot drift away from the reading it proves.
+let under = run ["sh" "-c" "n=$(sh tools/fixtures/l/law_guard_heard_scan.sh | sed -n 's/^unheard=//p'); LAW_GUARD_UNHEARD_CEILING=$((n-1)) sh tools/fixtures/l/law_guard_heard_scan.sh"]
+assert (under.ok == false) else "law-guard-heard: a ceiling one under the live reading must refuse"
+assert under.out contains "verdict=over_ceiling" else "law-guard-heard: want the refusal named"
+
+# THE READING ITSELF, proven on planted trees rather than trusted. Each leg is named here as well as
+# counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
+let control = run ["sh" "tools/fixtures/l/law_guard_heard_control.sh"]
+say control.out
+assert control.ok else "law-guard-heard: the control must exit 0"
+assert control.out contains "verdict=control_green" else "law-guard-heard: want the control green"
+assert control.out contains "fail=0" else "law-guard-heard: the control must carry no red leg"
+assert control.out contains "ok   all three citation forms are read -- link, backticks, and bare" else "law-guard-heard: the citation-form leg is missing"
+assert control.out contains "ok   one path cited on two pages counts once" else "law-guard-heard: the distinct-count leg is missing"
+assert control.out contains "ok   a cited runner wearing neither word lands outside the population" else "law-guard-heard: the population-narrowing leg is missing"
+assert control.out contains "ok   and is never counted unheard, even when the sibling names it" else "law-guard-heard: the narrowing's failing-side leg is missing"
+assert control.out contains "ok   a cited path the repository does not carry is absent" else "law-guard-heard: the absent leg is missing"
+assert control.out contains "ok   and it gates under its own name, apart from the ceiling" else "law-guard-heard: the absent verdict leg is missing"
+assert control.out contains "ok   the absent path is named, so a reader can repair it" else "law-guard-heard: the absent naming leg is missing"
+assert control.out contains "ok   a file on this machine and outside the repository stays absent" else "law-guard-heard: the tracked-tree leg is missing"
+assert control.out contains "ok   and tracking it lifts the refusal -- the tracked tree is what was asked" else "law-guard-heard: the absent lift leg is missing"
+assert control.out contains "ok   an untracked law page is read past -- it is law nobody receives" else "law-guard-heard: the untracked-page leg is missing"
+assert control.out contains "ok   a ceiling one under the reading refuses" else "law-guard-heard: the pen ceiling refusal leg is missing"
+assert control.out contains "ok   and exactly at the reading it passes -- the ceiling is what did the work" else "law-guard-heard: the pen ceiling welcome leg is missing"
+assert control.out contains "ok   a tree with no law pages refuses rather than printing a green zero" else "law-guard-heard: the law-room vacuum leg is missing"
+assert control.out contains "ok   a law citing no tool refuses rather than reading zero unheard" else "law-guard-heard: the citation vacuum leg is missing"
+assert control.out contains "ok   a missing sibling refuses rather than calling every guard heard" else "law-guard-heard: the missing-sibling leg is missing"
+assert control.out contains "ok   a sibling that names nothing refuses -- an empty answer is a broken reading" else "law-guard-heard: the empty-sibling leg is missing"
+assert control.out contains "ok   outside a git repository the scan refuses rather than reading the filesystem" else "law-guard-heard: the no-repository leg is missing"
+assert control.out contains "ok   list names each unheard law-cited guard" else "law-guard-heard: the list-mode leg is missing"
+assert control.out contains "ok   pages names each citing page and how many it cites" else "law-guard-heard: the pages-mode leg is missing"
+assert control.out contains "pass=22" else "law-guard-heard: the control must carry all twenty-two legs"
+
+say "GREEN: law-guard-heard -- the law's own guard citations are counted, every one resolves in the tracked tree, the unheard remainder stands under a ceiling that only falls, and every welcome is proven on a pen."

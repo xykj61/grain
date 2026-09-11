@@ -20,10 +20,9 @@
 **Voice:** [Kyri](context/KYRI.md) -- the standing voice this tree writes in, and the name of its
 own [Kyri notation](context/KYRI.md) that every session log is written in.
 
-**Style:** Bhakta at the **Door** setting, with [Gauge](context/GAUGE_STYLE.md) and
+**Style:** Bhakta with [Gauge](context/GAUGE_STYLE.md) and
 [Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
-claims, and reaches for the image. Door is the dial Gauge reads it on: at or under 20% negative
-sentences, one cross-reference per hundred words, held by `tools/p/prose_register_witness.rish`. Its negation reads **6%**, down from 14, and the last of it lives
+claims, and reaches for the image. Its negation reads **6%**, down from 14, and the last of it lives
 in a teacher's quotation and a foundation's title, which keep their own words. Bhakta's own guide,
 `context/BHAKTA_STYLE.md`, stays in the maintainer's working tree rather than in this published
 copy, so it is named here rather than linked.
@@ -170,7 +169,7 @@ the truth as the tree grows.
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **57** / 100 |
-| **Witnesses** running on metal | **1940** |
+| **Witnesses** running on metal | **1941** |
 | **Rye modules** they stand over | **1735** |
 | **Rooms grown past what a browser can list** | **1** |
 
