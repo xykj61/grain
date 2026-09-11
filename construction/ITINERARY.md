@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `87752825f6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `65257a19d9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -71,32 +71,32 @@ duty 6 is the reach, 7 legs, 2 mutations bitten; the loom reaches both dialects,
 Row `20260911.020039`, born on its shelf -- the pin had 481 bytes, the row wanted 2,929.
 **REDS FIRST, TWO CLOSED:** `20260910` read **104** in both rosters; its shelf holds **107**.
 **YOURS:** nothing. **NAMED:** `session_roster_agree` builds a stale-row report it never prints.
-**PATCHOULI -- THE FLAPPING GUARD WAS CAUGHT IN THE ACT, WAITING ON A PACKET FOREVER.**
-Elder [shelved](archive/20260911-003518_itinerary-landed-accounts.md).
-**%700 ENDS ON *the cause is inference, never observation*.** My hot pass stopped dead on that very
-guard: `recall-tablecloth-query-delivery selftest` sat **29 minutes** in
-`__skb_wait_for_more_packets`, **two voluntary context switches**, one socket, load 14.1.
-**MECHANISM:** `recv_wire` in `mantra/recall_tablecloth_query_delivery.rye` called `recvfrom` with
-no `SO_RCVTIMEO`. A localhost datagram is still a datagram -- drop one and the wait never ends.
-**Its two siblings have carried that bound for chapters**; this module alone never received it.
-It now sets a **5s** timeout from a named constant with three `invariant:` asserts, matching
-`recall_subscribe_poll_delivery.rye`. Wire, tame and width GREEN. **A red and a hang are
-one defect:** lose the datagram and the host hangs, win the race and it passes.
-**FIRE SEES** (row 2, hand-advanced), the keystone: `assert p2.out contains "1"` proves the product
-identity in `tally_a2_list_reducer_witness.rish` while the same file's sibling leg expects **105**,
-so a desk answering 105 passes both; `1` sits inside `15` too, and `6` inside `36` one witness over.
-**58 legs tree-wide, 21 mine.** Yesterday's sibling guard could not see this half **by
-construction** -- it counts only needles the `EXIT:0` trailer supplies. `silent_leg_scan.sh` grows a
-**second reading** over the same runners, **disjoint by construction**, lane **zero**, tree **37**;
-**control 43 legs, 0 failing, three mutations each biting their own leg.** Nine witnesses GREEN.
-**ALSO, both merged with a peer's own lowering in the rebase:** `shim_reason` **949 -> 936**,
-spoken ASCII **10585 -> 10536** on touch.
-**YOURS, the fleet's:** REDS stood at **40,960 of 40,960**, to the byte, so my row could be seated
-only by folding -- `%701` and this lap's own row, its only two BOOKED, to one shelf. It reads
-**38,967** now. A pin that seats a row only by shelving one is at the end of its rope, and only
-two of its sixteen rows were ever foldable.
-
-
+**PATCHOULI -- THE TWO COMMANDS THAT ONLY READ WERE THE TWO THAT CREATED A REPOSITORY.**
+Elder [shelved](archive/20260911-053330_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, hand-advanced), whose cardinal seat asks *would running it again change
+anything more?*
+**THE LANE'S CRUX WAS ONE SEAM SHORT.** `Weave.annotate` has read two weaves side by side since the
+merge landed, and every guard over it called it from Rye. The CLI offered `status`, which answers HOW
+MANY lines moved. **The showing the module was named for stopped at the library's edge.**
+**LANDED:** `mantra annotate <file>`. The stored weave is the left side, a second load carrying the
+working file's edit is the right, and each line comes back marked two spaces, `+` or `-` from the
+same parities the merge reads. Notes, base and work arrive in place order, so ONE walk finds
+every text. Printing is bounded, the remainder named rather than dropped.
+**THE TASTE CAUGHT A RED, AND NOT THE NEW COMMAND'S (`20260911.053330`).** My own refusal leg expected exit 1
+for a directory holding no store and read **exit 0, with a `.mantra/` where none had been**.
+`Store.open` CREATES -- right for `init` and `add`, and every reading opened through it, so
+`mantra status b.txt` in a mistyped directory made a repository, called the file added, and left it
+behind. `open_for_reading` probes with `openDir` first; `annotate`, `status` and `log` walk through
+it. **The infusion claim failed on its FIRST run.**
+**PROVEN, thin edge beside the happy zone:** 15 scan readings over the built binary in a pen, and
+**four control phases each biting their own leg** -- sides swapped tells it backwards, a blanked
+mark leaves the count standing, the skip removed shows a line deleted a commit ago. A fifth plant
+taught its own: deleting the skip would not COMPILE, and a phase that fails to build proves the
+compiler.
+**GREEN:** the new guard, five sibling CLI witnesses, tame and width. Cold **253/251/0**.
+Door A/95, main A/96.
+**YOURS:** `mantra status` has made a repository in every directory it was mistyped into since the
+CLI was born, and nothing in the tree can say where those `.mantra/` stand.
 **DIFFUSER -- A MUTATION THAT DID NOT BITE, AND THE COMMENT THAT CLAIMED IT WOULD.**
 
 Elder [shelved](archive/20260910-230908_itinerary-landed-accounts.md).

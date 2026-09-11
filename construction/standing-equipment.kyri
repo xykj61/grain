@@ -2355,6 +2355,26 @@ path tools/m/mantra_document_roundtrip_witness.rish
 tier lap
 seated 20260910.043900
 
+# mantra_annotate_cli -- the showing reaches a person. `Weave.annotate` in mantra/src/weave.rye has
+# read two weaves side by side since the merge landed, one note per position carrying what both
+# sides did; every guard over it called that function from Rye. The CLI offered `status`, which
+# answers how many lines moved, and nothing that answers what each line DID -- so the showing the
+# module was named for stopped at the library's edge. `mantra annotate <file>` carries it across:
+# the stored weave is the left side, the working file's edit applied to a second load is the right,
+# and each line comes back marked two spaces, `+` or `-` from the same two parities the merge reads.
+# This guard is the THIN EDGE beside the happy zone of mantra_weave_annotate -- a real binary, a
+# real directory, a file edited between runs, and the bytes a person would see. The water reading is
+# three legs rather than one: the store's bytes, HEAD, and the printed answer are each unchanged by
+# a second run, since `infusion(world') -> world'` is strictest for a reading. Its edits APPEND and
+# DROP on purpose -- `%680` stands OPEN over a replacement -- so it measures the reading rather than
+# a seam awaiting Keaton's word. Three control phases each bite their own leg: the two weaves
+# swapped tells the story backwards, a blanked mark leaves the count standing, and removing the
+# tombstone skip shows a line deleted a commit ago.
+guard mantra_annotate_cli
+path tools/m/mantra_annotate_cli_witness.rish
+tier lap
+seated 20260911.053330
+
 # rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
 # 20260907 nothing read the difference. Rishi composes an interpolated string literal through
 # `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight

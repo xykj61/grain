@@ -1,7 +1,7 @@
 # Mantra -- the Referential Namespace
 
 **Language:** EN
-**Last updated:** 2026-09-10
+**Last updated:** 2026-09-11
 **Status:** Checkable -- referential namespace front door
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -59,6 +59,15 @@ inserts, which is what makes three inserted lines sort as one block.
 | `annotate` | what each side did at every position, in one of five readings -- `left_only`, `right_only`, `agreed`, `left_moved`, `right_moved` | `tools/m/mantra_weave_annotate_witness.rish` |
 | `from_v1` - `to_v1` | the elder `mantra-weave-v1` record lifts in and writes back, every byte on disk reading the same document after | `tools/m/mantra_weave_v1_lift_witness.rish` - `tools/m/mantra_weave_v1_write_witness.rish` |
 | `to_v2` - `from_v2` | the widened record carries the pair and the triple whole | `tools/m/mantra_weave_v2_witness.rish` |
+| `mantra annotate <file>` | the same reading, reaching a person: every line marked two spaces, `+` or `-`, and the store left exactly as it stood | `tools/m/mantra_annotate_cli_witness.rish` |
+
+The CLI carries that last row across. `mantra status` answers how many lines moved; `mantra
+annotate <file>` answers what each line DID, reading the stored weave against the working file's
+text and marking every line from the same two generation counts the merge reads. It is a reading, so
+it writes nothing: the store keeps its bytes, HEAD keeps its place, and a second run prints the same
+answer. A command that only reads opens through `open_for_reading`, which asks the directory whether
+a repository stands here rather than asking the function that would answer by making one (the red
+of `20260911.053330`).
 
 Beside the weave, `src/` holds Mantra's own seed: `main.rye` writes the elder record on every
 commit (`tools/m/mantra_cli_record_witness.rish`) and `store.rye` holds it
