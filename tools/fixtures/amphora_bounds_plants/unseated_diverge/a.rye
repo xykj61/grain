@@ -1,0 +1,4 @@
+//! Plant -- a same-name family no hand seated, diverging (positive control).
+//! The typed roster read GREEN over exactly this shape: two roofs, one name,
+//! two numbers, and no hand had ever typed the name into the scan.
+pub const max_frame_len: u32 = 4096;

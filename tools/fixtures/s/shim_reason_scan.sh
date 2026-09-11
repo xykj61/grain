@@ -116,6 +116,11 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-157}"
 # 936 `20260911` -- the two lowerings above landed in one rebase, three amphora bindings and nine
 # mantra ones, and the reading fell to 936 together. The ceiling meets the reading and claims no
 # slack, the way both halves of this arc already do.
+#
+# `20260911.031057` -- two legs added to `tools/am/amphora_bounds_agree.rish` were written with a
+# bare `else` string and read +2 over the ceiling standing then. Both took the interpolated form
+# before they shipped, so the wall bit at write time rather than a week later, and the reading
+# below is what the tree answers with this lap's own repair already inside it.
 UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-936}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 

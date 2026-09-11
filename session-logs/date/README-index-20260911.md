@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260911.041915` | [The room that houses the law](20260911/20260911-041915_the-room-that-houses-the-law.kyri) | context/ living doors named: 23 rooms, ceiling 90 -> 67 |
 | `20260911.035245` | [The lap that stood in a stash](20260911/20260911-035245_the-lap-that-stood-in-a-stash.kyri) | a whole parked lap recovered, landed GREEN, row renumbered |
+| `20260911.031057` | [The list a discovery was reading](20260911/20260911-031057_the-list-a-discovery-was-reading.kyri) | a discovery reading iterated a typed name roster; derived now |
 | `20260911.025732` | [The room that waits for a genre](20260911/20260911-025732_the-room-that-waits-for-a-genre.kyri) | it named eleven rooms beside it; twelve stood |
 | `20260911.023727` | [The clock that turned](20260911/20260911-023727_the-clock-that-turned.kyri) | 29 cadence guards run for the first time; the never-run list named |
 | `20260911.022809` | [The exemption over the living doors](20260911/20260911-022809_the-exemption-over-the-living-doors.kyri) | doorway reads living pages: 106 silent, 16 named, ceiling 90 |

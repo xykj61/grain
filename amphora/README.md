@@ -46,7 +46,7 @@ Canonical roof: [`src/main.rye`](src/main.rye) -- `//!` header + Q3 metal. HTML 
 | `amphora carry <vessel> <dock>` | move to far dock - chunk inside carry |
 | `amphora restore <vessel>` | cold scrub - verify - restore |
 
-*Q3-Q6: version - bounds - CliError - couples - pour parse (`PourArgs`). Shared bounds agree via `tools/am/amphora_bounds_agree.rish` (path C - alias - couples). Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Chapter** (seat Keaton's).*
+*Q3-Q6: version - bounds - CliError - couples - pour parse (`PourArgs`). Shared bounds agree via `tools/am/amphora_bounds_agree.rish`, which reads four relations -- a **derived** same-name roster, alias value groups, declared `couples:` equalities, and declared `covers:` orders. Run it for the counts; this line names the readings rather than their numbers. Pour/carry/restore wait their quests. Nested wave lean: **the Crossing Chapter** (seat Keaton's).*
 
 | Lap | What |
 |-----|------|

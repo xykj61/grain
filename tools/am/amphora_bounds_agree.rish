@@ -16,6 +16,7 @@
 #   covers short MUST fail - covers holding MUST pass
 #   a marker above a DERIVED bound MUST fail, naming marker_on_derived
 #   a marker whose partner is DERIVED MUST fail, naming partner_derived
+#   an UNSEATED same-name family diverging MUST fail - agreeing MUST pass
 #
 # REDS `20260907.123037`: a marker binds to the const BENEATH IT, whatever form
 #   its value takes. Reading only literal consts made the walk step over a
@@ -42,6 +43,8 @@ let covers_hold = "tools/fixtures/amphora_bounds_plants/covers_hold"
 let covers_short = "tools/fixtures/amphora_bounds_plants/covers_short"
 let covers_on_derived = "tools/fixtures/amphora_bounds_plants/covers_marker_on_derived"
 let covers_partner_derived = "tools/fixtures/amphora_bounds_plants/covers_partner_derived"
+let unseated_agree = "tools/fixtures/amphora_bounds_plants/unseated_agree"
+let unseated_diverge = "tools/fixtures/amphora_bounds_plants/unseated_diverge"
 
 let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
 assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL"
@@ -105,10 +108,33 @@ assert ppos.out contains "cover_max_roof_to_b_max_line_len_status=partner_derive
 assert (ppos.out contains "partner_absent" == false) else "a present const must never be called absent"
 say "plant_partner_derived=honored"
 
+
+# A same-name family NO HAND SEATED. Reading (1) iterated a typed roster of
+# three names, so two roofs declaring one name at two numbers read GREEN
+# whenever nobody had typed that name into the scan -- proven by mutation on
+# this exact plant, which answers `verdict=ok` and exit 0 the moment the roster
+# stops being derived. The roster is the union of the seated three and every
+# identifier the room actually declares in two or more files, so the family
+# below is read on the lap it lands rather than on the lap somebody remembers.
+let upos = run ["env" "AMPHORA_BOUNDS_ROOT=${unseated_diverge}" "sh" scan]
+assert (upos.ok == false) else "amphora_bounds_agree: an unseated diverging family must FAIL -- ${upos.err}"
+assert upos.out contains "bound_max_frame_len_status=diverge" else "the unseated family must be read and named diverge"
+assert upos.out contains "same_name_unseated=max_frame_len" else "the unseated family must be named out loud"
+say "plant_unseated_positive=honored"
+
+let uneg = run ["env" "AMPHORA_BOUNDS_ROOT=${unseated_agree}" "sh" scan]
+assert uneg.ok else "amphora_bounds_agree: an unseated agreeing family must PASS -- ${uneg.err}"
+assert uneg.out contains "bound_max_frame_len_status=agree" else "the unseated agreeing family must read agree"
+assert uneg.out contains "same_name_unseated=max_frame_len" else "an agreeing unseated family is still named"
+say "plant_unseated_negative=honored"
+
 let living = run ["sh" scan]
 say living.out
 assert living.ok else "amphora_bounds_agree: living amphora must agree"
 assert living.out contains "verdict=ok" else "amphora_bounds_agree: living missing ok"
+assert living.out contains "same_name_seated=3" else "living seated roster"
+assert living.out contains "same_name_discovered=3" else "living derived roster"
+assert living.out contains "same_name_unseated=none" else "living room declares no family the seated roster misses"
 assert living.out contains "bound_max_vessel_len_status=agree" else "living max_vessel_len"
 assert living.out contains "bound_max_cargo_status=agree" else "living max_cargo"
 assert living.out contains "bound_digest_hex_len_status=agree" else "living digest_hex_len"
@@ -117,4 +143,4 @@ assert living.out contains "alias_datagram_status=agree" else "living datagram a
 assert living.out contains "couples_status=agree" else "living couples must agree"
 assert living.out contains "covers_status=hold" else "living covers must hold"
 assert living.out contains "cover_max_manifest_name_len_to_main_max_season_name_len_status=covers" else "living season door must fit the listing"
-say "GREEN: amphora_bounds_agree -- same-name - alias - couples - covers - derived binding - planted pairs - no rename."
+say "GREEN: amphora_bounds_agree -- derived same-name roster - alias - couples - covers - derived binding - twelve planted pairs - no rename."
