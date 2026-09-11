@@ -3500,6 +3500,27 @@ seated 20260906.120905
 # Twenty-one new pen readings, six new repositories, every refusal planted and then lifted: 61
 # cases over 14 repositories, and the guard runs in 8 seconds measured `20260907.000030` against a
 # full lap pass of 983.
+#
+# THE FOURTH SHAPE, `20260910.203444`: the reason is never said at all. The three readings above
+# each watch a witness forward its target's reason badly -- wrong stream, wrong field, one line too
+# late. Under them sits the plain case: `let r = run [...]` followed by `assert r.ok else "the
+# build failed"`, mentioning neither `.out` nor `.err`, so a refusal hands the reader the witness's
+# own sentence and discards the compiler's. REDS %700 is this shape: a rostered guard answering red
+# on one cold pass and green on a re-run over one unchanged tree, with an evidence page naming
+# which LEG refused and nothing about why. All five of its bindings wore it.
+#
+# THE REPAIR IS QUIET, which is what tells it from the third shape. Rishi interpolates a capture
+# into an `assert ... else` message, so the reason travels only when the door closes -- where a
+# `say` moved above the assert prints on every green run forever.
+#
+# A RATCHET ON BOTH SIDES RATHER THAN A GATE, because 953 rostered bindings wore this shape across
+# 170 of this roster's 326 guards on the lap it was seated (7,110 tree-wide). A gate at zero would
+# red every lap on a tree no lap can repair, which is a gate somebody turns off. The rostered
+# ceiling opened at 948 -- five lower, the motivating witness having taken its own move in the same
+# commit. Sixteen new pen readings over three new repositories, both ratchets proven from both
+# sides on one plant, and the PARTITION against the third shape proven too: a binding that says its
+# run late is counted by `late_say` and not here, so one fault never pays twice. 128 cases over 28
+# repositories; the guard runs in 60 seconds measured `20260910.203444`.
 
 guard shim_reason
 path tools/s/shim_reason_witness.rish

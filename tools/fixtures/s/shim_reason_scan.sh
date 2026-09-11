@@ -52,6 +52,8 @@
 #   late_say_rostered      -- a rostered binding printing its run BELOW the first assert on it,
 #                             where the assert stops the run first. HELD AT ZERO.
 #   late_say_unrostered    -- the same shape off the roster. RATCHET, ceiling only falls.
+#   unsaid_rostered        -- a rostered binding asserted on and never reported at all. RATCHET.
+#   unsaid_unrostered      -- the same shape off the roster. RATCHET, ceiling only falls.
 #
 # USAGE
 #   sh tools/fixtures/s/shim_reason_scan.sh                 # census -- key=value lines
@@ -87,6 +89,14 @@ REASON_CEILING="${REASON_CEILING:-0}"
 # and its repair both live in the body. The gate opens at zero; the ceiling only falls -- move a
 # `say` up and lower it in the same commit.
 SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-157}"
+
+# The fourth shape's residue, measured `20260910.203444` over 2,485 tracked `.rish` sources, then
+# lowered by five in the same commit when `tools/m/mantra_recall_tablecloth_query_wire.rish` took
+# its own move: 7,110 bindings are asserted on and never reported, 953 of them standing on the
+# standing roster across 170 of its 326 guards, and 6,157 off it. Both ceilings only fall -- add
+# `${var.err}` to an else message and lower the number in the same commit.
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-948}"
+UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"
 
@@ -375,10 +385,97 @@ sort -u "$work/order_rows" -o "$work/order_rows"
 late_say_rostered=$(awk '$1 == "rostered"' "$work/order_rows" | grep -c . || true)
 late_say_unrostered=$(awk '$1 == "unrostered"' "$work/order_rows" | grep -c . || true)
 
+# -- THE FOURTH SHAPE: THE REASON IS NEVER SAID AT ALL (`20260910.203444`) -------------------------
+#
+# The three shapes above each read a witness that forwards its target's reason and forwards it
+# badly -- to the wrong stream, from the wrong field, or one line too late. The fourth is the plain
+# one they all stand on top of: a binding that is judged and never reported anywhere.
+#
+#   let build_wire = run ["sh" "-c" "... rye/bin/rye build ... -femit-bin=${wire_bin}"]
+#   assert build_wire.ok else "tablecloth query wire build failed"
+#
+# Rishi's `run` captures the target's stdout into `r.out` and its stderr into `r.err`, and this
+# file mentions neither. When the build fails a reader receives `rishi: assertion failed --
+# tablecloth query wire build failed` and the line number, and the compiler's own sentence is
+# discarded inside the interpreter.
+#
+# FOUND BY A RED THAT COULD NOT BE READ. `REDS %700` (`20260910.140919`) booked
+# `tools/m/mantra_recall_tablecloth_query_wire.rish` answering red on a cold roster pass and green
+# on a re-run minutes later over one unchanged tree -- `tree_at_close` equal, `tree_moved=no`,
+# thirteen greens and one red in fifteen runs by hand. That row's own last sentence is *the cause
+# is inference, never observation*, and the reason is this shape: the guard that fired wrote down
+# which LEG refused and nothing about WHY, so a fortnight of flaps left no evidence a hand could
+# act on. All five of its bindings wore it.
+#
+# THE REPAIR COSTS NOTHING ON THE GREEN PATH, which is what tells this shape from the third. Rishi
+# interpolates a capture into an `assert ... else` message -- proven on metal before this was
+# written, `assert r.ok else "probe failed: ${r.err}"` over a command exiting 3 printing
+# `probe failed: to-stderr` -- so the reason travels only when the door actually closes. The third
+# shape's repair is a `say` that prints on every run; this one's is quiet until it is needed.
+#
+# THE FOUR SHAPES PARTITION, and the partition is structural rather than careful. `late_say` wants
+# a `say` to exist and stand below the assert; `reason_lost` wants `${var.out}` interpolated; this
+# one wants NEITHER a say NOR an interpolation of either field. A binding reported any of those
+# three ways is reported here, so no binding is counted twice and none falls between.
+#
+# A RATCHET ON BOTH SIDES RATHER THAN A GATE, and the reason is the size. 953 rostered bindings
+# stand in this shape across 170 of the roster's 326 guards. A gate at zero would red every lap on
+# a tree nobody can repair in one, which is a gate somebody turns off; a ceiling that only falls
+# pays the same debt one witness at a time, on touch.
+#
+# WHAT THIS READING DOES NOT REACH. A capture forwarded through some other spelling -- a say inside
+# a conditional, an interpolation into a `run` argument -- reads as unsaid here. The forms it
+# credits are an anchored `say var.out`/`say var.err` line and a `${var.out}`/`${var.err}`
+# interpolation anywhere outside a comment, which are the two this tree writes.
+
+cat > "$work/unsaid.awk" <<'AWK'
+function flush(  v) {
+  for (v in bind) {
+    if ((v in asserted) && !(v in reported)) print cur, v, bind[v]
+  }
+  for (v in bind) delete bind[v]
+  for (v in asserted) delete asserted[v]
+  for (v in reported) delete reported[v]
+}
+FILENAME != cur { if (cur != "") flush(); cur = FILENAME }
+/^[[:space:]]*#/ { next }
+/^let [a-z_][a-z0-9_]* = run \[/ { bind[$2] = FNR; next }
+/^[[:space:]]*say[[:space:]]+[a-z_][a-z0-9_]*\.(out|err)/ { v = $2; sub(/[.].*/, "", v); reported[v] = FNR }
+/\$\{[a-z_][a-z0-9_]*\.(out|err)\}/ {
+  rest = $0
+  while (match(rest, /\$\{[a-z_][a-z0-9_]*\.(out|err)\}/)) {
+    tok = substr(rest, RSTART + 2, RLENGTH - 3)
+    sub(/[.].*/, "", tok)
+    reported[tok] = FNR
+    rest = substr(rest, RSTART + RLENGTH)
+  }
+}
+/^assert [a-z_][a-z0-9_]*[. ]/ { v = $2; sub(/[.].*/, "", v); if (v in bind) asserted[v] = FNR }
+END { flush() }
+AWK
+if ! xargs awk -f "$work/unsaid.awk" < "$work/rish" > "$work/unsaid_raw"; then
+  echo "rish_files=$rish_files"
+  echo "verdict=instrument_refusal"
+  echo "refused: the unsaid-binding parser could not read the corpus" >&2
+  exit 2
+fi
+
+# Seated by a JOIN rather than by a grep per row. The three shapes above seat tens of rows and can
+# afford one `grep -qxF` each; this one reads thousands, so the roster's own `path` rows are lifted
+# once and matched in awk. Same anchored grammar -- a `path` row standing alone at column zero.
+awk '/^path / { print $2 }' "$ROSTER" | sort -u > "$work/roster_paths"
+awk 'NR == FNR { seat[$1] = 1; next }
+     { print (($1 in seat) ? "rostered" : "unrostered"), $1, $2, $3 }' \
+  "$work/roster_paths" "$work/unsaid_raw" | sort -u > "$work/unsaid_rows"
+
+unsaid_rostered=$(awk '$1 == "rostered"' "$work/unsaid_rows" | grep -c . || true)
+unsaid_unrostered=$(awk '$1 == "unrostered"' "$work/unsaid_rows" | grep -c . || true)
+
 if [ "$MODE" = list ]; then
   sort "$work/rows"
   awk '{ print "reason_lost " $1 " " $2 " (" $3 ")" }' "$work/reason_rows" | sort
   awk '{ print "late_say " $1 " " $2 " " $3 " (assert " $4 ", say " $5 ")" }' "$work/order_rows" | sort
+  awk '{ print "unsaid " $1 " " $2 " " $3 " (bound at line " $4 ")" }' "$work/unsaid_rows" | sort
   exit 0
 fi
 
@@ -396,6 +493,10 @@ echo "reason_lost_ceiling=$REASON_CEILING"
 echo "late_say_rostered=$late_say_rostered"
 echo "late_say_unrostered=$late_say_unrostered"
 echo "late_say_ceiling=$SCAN_ORDER_CEILING"
+echo "unsaid_rostered=$unsaid_rostered"
+echo "unsaid_rostered_ceiling=$UNSAID_ROSTERED_CEILING"
+echo "unsaid_unrostered=$unsaid_unrostered"
+echo "unsaid_ceiling=$UNSAID_CEILING"
 while IFS= read -r f; do echo "alias: $f"; done < "$work/alias"
 awk '{ print "reason_lost: " $1 " " $2 " (" $3 ")" }' "$work/reason_rows" | sort
 awk '{ print "late_say: " $1 " " $2 " " $3 " (assert " $4 ", say " $5 ")" }' "$work/order_rows" | sort
@@ -438,6 +539,21 @@ fi
 if [ "$late_say_unrostered" -gt "$SCAN_ORDER_CEILING" ]; then
   echo "verdict=late_say_over_ceiling"
   echo "refused: $late_say_unrostered bindings off the roster print their target below the assert that judges it, against a ceiling of $SCAN_ORDER_CEILING -- the ceiling only falls" >&2
+  exit 1
+fi
+
+# The fourth shape gates last, in the order the four were seated, so no two verdicts race for one
+# line. Its rows stay in `list` mode alone: 7,110 of them would bury the eleven readings above in a
+# census a hand reads at every cold open.
+if [ "$unsaid_rostered" -gt "$UNSAID_ROSTERED_CEILING" ]; then
+  echo "verdict=unsaid_rostered_over_ceiling"
+  echo "refused: $unsaid_rostered rostered binding(s) are asserted on and never report their capture, against a ceiling of $UNSAID_ROSTERED_CEILING -- the ceiling only falls" >&2
+  exit 1
+fi
+
+if [ "$unsaid_unrostered" -gt "$UNSAID_CEILING" ]; then
+  echo "verdict=unsaid_over_ceiling"
+  echo "refused: $unsaid_unrostered bindings off the roster are asserted on and never report their capture, against a ceiling of $UNSAID_CEILING -- the ceiling only falls" >&2
   exit 1
 fi
 

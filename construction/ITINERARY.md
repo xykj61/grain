@@ -49,26 +49,30 @@
 
 ### Now -- the live front
 
-**Git nib:** `f42d30aa99` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `870b884c4f` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE PIN'S FIRST DOOR, WALKED.**
-Elder [shelved](archive/20260910-181200_itinerary-landed-accounts.md).
-**WATER TASTES**, row 3 by hand: run the thing rather than read the sentence about it, so
-**THE DEADLOCK IS BROKEN.** The pin held **22 bytes**, 16 open rows, none foldable, so no ship could
-book a red. My `reds_pin_capacity_scan.sh` named the first door the fleet's own -- **7 of 16 open
-rows name no hand outside the loop** -- and this lap took one.
-**`%457` RE-PROVEN ON METAL AGAINST LIVE DIVERGENCE**, never a pen: `commits_behind=1` mid-lap, a
-path both sides hold, a made-up name reading `absent`, a witness upstream held and this checkout
-lacked reading `behind`. **THE REMAINDER IS A HABIT** no instrument reaches -- a lap's own grep
-sits in no file -- so it is seated as the baton's **ABSENCE** block, first measured at **zero**
-mentions on every living directive surface. Row **BOOKED**, folded: **pin 40,938 -> 38,485B,
-`pin_deadlocked=0`, `rows_that_fit=1`.**
-**AND THAT SCAN'S HEADER WAS UNTRUE FOR SIX HOURS:** it called the unheld rows "printed row by row"
-and printed a count. `pin_unheld_row` names each now against the derived count; control **65 legs,
-0 failed**, both ways. **COLD 245/242.**
-**YOURS:** the cadence clock turns for nobody -- **`cadence_never_run_here=74`**, 58 when `%568`
-booked it three days ago. Where that cost lands stays your word.
-
+**BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
+Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4): the concrete fact at the door before the argument.
+`%700` ends on *the cause is inference, never observation*, and one unnamed mechanism is why.
+**READ THE WITNESS:** all five bindings of
+`mantra_recall_tablecloth_query_wire.rish` assert `.ok` and mention neither `.out` nor `.err`.
+Rishi captures both and the interpreter drops them, so a fortnight of flaps left a sentence naming
+which LEG refused and nothing of why.
+**MECHANISM:** `shim_reason` grows a **fourth reading**, one awk pass -- a
+`run` binding asserted on and reported nowhere: no anchored `say var.out|err`, no
+`${var.out|err}` outside a comment. The repair interpolates into the `assert ... else` message,
+proven on metal over an exit-3 command, so the reason travels only on refusal.
+**MEASURED:** **7,110 bindings in 1,699 of 2,485** tracked `.rish` sources, **953 rostered across
+170 of 326 guards** -- a RATCHET both sides: a gate at zero reds every lap on a tree no lap can
+repair. Ceiling opens at **948**; the motivating witness moved in the same commit.
+**THE PARTITION IS PROVEN:** a binding saying its run LATE stays `late_say`, uncounted here, so
+one fault pays once. **Control 128 cases, 28 repos, 0 failing legs**, both ratchets bitten and
+lifted on one plant. **HOT CLOSE 250 run, 247 green, 0 red, 3 gated, tree_moved=no.**
+**I HELD STILL BADLY** -- edited tracked files mid-cold-pass, voiding its digest; stopped by pid.
+**YOURS:** the cadence clock still turns for nobody -- **`cadence_never_run_here=74`**, 58 when
+`%568` booked it. And whether `%700` may be BOOKED on a mechanism repaired while the flap stays
+unobserved.
 **PATCHOULI -- A HAPPY ZONE THAT STOOD BEHIND A THIN EDGE, HEARD BY NOBODY.**
 Elder [shelved](archive/20260910-180239_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, hand-advanced past the four rows peers read today), so I ran the actual

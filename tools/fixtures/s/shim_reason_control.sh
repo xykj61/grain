@@ -134,6 +134,24 @@ late_say_witness() {
     'say scan.out'
 }
 
+# The FOURTH shape, written once so its plant and its repair differ by one interpolation. The
+# binding is judged and never reported -- no `say` of either field anywhere in the file, and no
+# capture in the assert's own message -- so a refusal hands the reader the witness's sentence and
+# discards the target's. The repair is quiet on the green path, which is what tells this shape from
+# the third: nothing prints until the door closes.
+unsaid_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let probe = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+    'assert probe.ok else "pen: the probe refused"'
+}
+reported_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let probe = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+    'assert probe.ok else "pen: the probe refused -- ${probe.err}"'
+}
+
 seal() { ( cd "$pen/$1" && git add -A && git commit -q -m "pen: seed" ); }
 
 # Count, never number. A total typed into a header is falsified by the next phase somebody adds, so
@@ -145,8 +163,8 @@ r() { readings=$((readings + 1)); echo "$1"; }
 # `set +e` inside both: most phases run a scan that REFUSES, and under `set -e` a command
 # substitution assigned to a variable carries that exit outward and kills the script at its first
 # successful refusal -- which reads exactly like a control that ran out of phases.
-run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
-run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
+run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" UNSAID_ROSTERED_CEILING="${5:-99}" UNSAID_CEILING="${6:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
+run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" UNSAID_ROSTERED_CEILING="${5:-99}" UNSAID_CEILING="${6:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
 
 # --- clean_free ---------------------------------------------------------------------------
 new_repo clean
@@ -613,6 +631,61 @@ printf '%s\n' 'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' 'assert c
 out=$(run_scan comment_reason); code=$(run_code comment_reason)
 r "comment_out_exit=$code"
 case "$out" in *"reason_lost_rostered=0"*) r "comment_out_unseen=yes" ;; *) r "comment_out_unseen=no" ;; esac
+
+# --- the fourth shape: a binding judged and never reported ------------------------------------
+#
+# Both ratchets are proven from both sides on one plant, and the partition against the third shape
+# is proven too: a binding that says its run LATE belongs to `late_say` and must not be counted
+# here as well, or one fault would pay twice and a repair would look like two.
+new_repo unsaid
+forwarding_shim > "$pen/unsaid/tools/x/a.rish"
+printf '#!/bin/sh\necho pen\n' > "$pen/unsaid/tools/fixtures/p/pen_scan.sh"
+unsaid_witness > "$pen/unsaid/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/unsaid/construction/standing-equipment.kyri"
+seal unsaid
+out=$(run_scan unsaid 99 99 99 0); code=$(run_code unsaid 99 99 99 0)
+r "unsaid_rostered_exit=$code"
+case "$out" in *"unsaid_rostered=1"*) r "unsaid_rostered_counted=yes" ;; *) r "unsaid_rostered_counted=no" ;; esac
+case "$out" in *"verdict=unsaid_rostered_over_ceiling"*) r "unsaid_rostered_bitten=yes" ;; *) r "unsaid_rostered_bitten=no" ;; esac
+reported_witness > "$pen/unsaid/tools/x/pen_witness.rish"
+out=$(run_scan unsaid 99 99 99 0); code=$(run_code unsaid 99 99 99 0)
+r "unsaid_lifted_exit=$code"
+case "$out" in *"unsaid_rostered=0"*) r "unsaid_lifted=yes" ;; *) r "unsaid_lifted=no" ;; esac
+case "$out" in *"verdict=ok"*) r "unsaid_lifted_free=yes" ;; *) r "unsaid_lifted_free=no" ;; esac
+
+# The ratchet off the roster, both directions on one plant.
+new_repo unsaid_ceiling
+forwarding_shim > "$pen/unsaid_ceiling/tools/x/a.rish"
+printf '#!/bin/sh\necho pen\n' > "$pen/unsaid_ceiling/tools/fixtures/p/pen_scan.sh"
+unsaid_witness > "$pen/unsaid_ceiling/tools/x/one.rish"
+unsaid_witness > "$pen/unsaid_ceiling/tools/x/two.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/unsaid_ceiling/construction/standing-equipment.kyri"
+seal unsaid_ceiling
+out=$(run_scan unsaid_ceiling 99 99 99 99 2); code=$(run_code unsaid_ceiling 99 99 99 99 2)
+r "unsaid_ceiling_free_exit=$code"
+case "$out" in *"unsaid_unrostered=2"*) r "unsaid_ceiling_counted=yes" ;; *) r "unsaid_ceiling_counted=no" ;; esac
+case "$out" in *"verdict=ok"*) r "unsaid_ceiling_free=yes" ;; *) r "unsaid_ceiling_free=no" ;; esac
+out=$(run_scan unsaid_ceiling 99 99 99 99 1); code=$(run_code unsaid_ceiling 99 99 99 99 1)
+r "unsaid_ceiling_bitten_exit=$code"
+case "$out" in *"verdict=unsaid_over_ceiling"*) r "unsaid_ceiling_bitten=yes" ;; *) r "unsaid_ceiling_bitten=no" ;; esac
+
+# The partition against the third shape, and the comment that cannot report.
+new_repo unsaid_partition
+forwarding_shim > "$pen/unsaid_partition/tools/x/a.rish"
+printf '#!/bin/sh\necho pen\n' > "$pen/unsaid_partition/tools/fixtures/p/pen_scan.sh"
+late_say_witness > "$pen/unsaid_partition/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/unsaid_partition/construction/standing-equipment.kyri"
+seal unsaid_partition
+out=$(run_scan unsaid_partition 99 99 99 0 0); code=$(run_code unsaid_partition 99 99 99 0 0)
+r "unsaid_partition_exit=$code"
+case "$out" in *"late_say_unrostered=1"*) r "late_say_still_counted=yes" ;; *) r "late_say_still_counted=no" ;; esac
+case "$out" in *"unsaid_unrostered=0"*) r "late_say_not_double_counted=yes" ;; *) r "late_say_not_double_counted=no" ;; esac
+
+unsaid_witness > "$pen/unsaid_partition/tools/x/pen_witness.rish"
+printf '%s\n' '  # ${probe.err} would carry the reason' >> "$pen/unsaid_partition/tools/x/pen_witness.rish"
+out=$(run_scan unsaid_partition 99 99 99 99 0); code=$(run_code unsaid_partition 99 99 99 99 0)
+r "unsaid_comment_exit=$code"
+case "$out" in *"unsaid_unrostered=1"*) r "unsaid_comment_unseen=yes" ;; *) r "unsaid_comment_unseen=no" ;; esac
 
 echo "cases=$readings"
 echo "repos=$repos"

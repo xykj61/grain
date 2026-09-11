@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260910.210034` | [The refusal that named no cause](20260910/20260910-210034_the-refusal-that-named-no-cause.kyri) | shim_reason fourth shape: 7,110 bindings judged and never reported |
 | `20260910.203100` | [The lap that came back](20260910/20260910-203100_the-lap-that-came-back-from-the-stash.kyri) | a finished lap recovered from the stash, reproven, landed |
 | `20260910.190908` | [the sentence that is also a wire](20260910/20260910-190908_the-sentence-that-is-also-a-wire.kyri) | a say is a wire; converter built, minus row seated |
 | `20260910.201128` | [The falsifier that landed in the middle](20260910/20260910-201128_the-falsifier-that-landed-in-the-middle.kyri) | 62% read by wall, 58% by process; neither door fired |

@@ -2,23 +2,33 @@
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_recall_tablecloth_query_wire.rish
+#
+# EVERY REFUSAL HERE CARRIES ITS TARGET'S OWN SENTENCE (`20260910.203444`, REDS %700). This witness
+# read red on one cold roster pass and green on a re-run minutes later over an unchanged tree, and
+# the evidence page could name only which LEG refused -- its five bindings each asserted on `.ok`
+# and mentioned neither `.out` nor `.err`, so the compiler's and the selftest's own words were
+# discarded inside the interpreter. Rishi interpolates a capture into an `assert ... else` message,
+# which costs nothing on the green path and is the whole difference between a flap a hand can
+# diagnose and one that can only be inferred. The two selftest runs fold stderr into stdout with
+# `2>&1`, so `.out` is the field carrying their reason; the builds keep theirs on `.err`. Counted
+# tree-wide as `unsaid_rostered` by `tools/fixtures/s/shim_reason_scan.sh`.
 
 let zig = "vendor/zig-toolchain/zig"
 let wire_bin = "mantra/bin/recall-tablecloth-query-wire"
 let delivery_bin = "mantra/bin/recall-tablecloth-query-delivery"
 
 let build_wire = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_wire.rye -femit-bin=${wire_bin}"]
-assert build_wire.ok else "tablecloth query wire build failed"
+assert build_wire.ok else "tablecloth query wire build failed: ${build_wire.err}"
 
 let wire_selftest = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
-assert wire_selftest.ok else "tablecloth query wire selftest exited non-zero"
+assert wire_selftest.ok else "tablecloth query wire selftest exited non-zero: ${wire_selftest.out}"
 assert wire_selftest.out contains "GREEN" else "tablecloth query wire selftest not GREEN"
 
 let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=${delivery_bin}"]
-assert build_delivery.ok else "tablecloth query delivery build failed"
+assert build_delivery.ok else "tablecloth query delivery build failed: ${build_delivery.err}"
 
 let delivery_selftest = run ["sh" "-c" "${delivery_bin} selftest 2>&1"]
-assert delivery_selftest.ok else "tablecloth query delivery selftest exited non-zero"
+assert delivery_selftest.ok else "tablecloth query delivery selftest exited non-zero: ${delivery_selftest.out}"
 assert delivery_selftest.out contains "GREEN" else "tablecloth query delivery selftest not GREEN"
 
 # THE REFUSALS, PROVEN FROM THE FAILING SIDE. The delivery selftest now carries the answer-slot
@@ -27,7 +37,7 @@ assert delivery_selftest.out contains "GREEN" else "tablecloth query delivery se
 # ceiling nobody enforces, so the control breaks the module six ways in a pen and watches five of
 # them refuse -- with one unmutated leg, so a refusal stays tellable from a bypass.
 let pool_control = run ["sh" "tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh"]
-assert pool_control.ok else "answer-slot budget control did not reach verdict=ok"
+assert pool_control.ok else "answer-slot budget control did not reach verdict=ok: ${pool_control.err}"
 assert pool_control.out contains "verdict=ok" else "answer-slot budget control verdict missing"
 assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused, so no break below reads honestly"
 
