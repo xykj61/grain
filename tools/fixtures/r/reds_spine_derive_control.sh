@@ -169,6 +169,89 @@ else
   fail=$((fail + 1))
 fi
 
+# THE CHUNK FLUSH, which is the one place a multi-file read can silently lose rows. The local
+# spine is read by `sed` in chunks of MAX_SED_OPERANDS file operands rather than one process per
+# file, so the boundary between two chunks is a seam, and a seam that drops or repeats a row would
+# change a number nobody re-derives. The live tree crosses it once at 440 files and says nothing
+# about it either way, because a lost row there would simply read as a shorter spine.
+#
+# So the pen builds a spine LARGER than one chunk, one row per file, each row's number equal to
+# its file's index. Every row must arrive: local_rows equals the file count exactly.
+echo "== 10. a spine larger than one chunk loses no row at the flush =="
+chunk=$(sed -n 's/^MAX_SED_OPERANDS=\([0-9][0-9]*\).*/\1/p' "$SCAN" | head -1)
+if [ -z "$chunk" ]; then
+  echo "FAIL: the scan no longer names MAX_SED_OPERANDS -- this leg cannot know where the seam is"
+  fail=$((fail + 1))
+else
+  newpen
+  files=$((chunk + 3))
+  rm -f REDS.md
+  i=1
+  while [ "$i" -le "$files" ]; do
+    row "$i" "2026010$(( i % 2 + 1 )).$(printf '%06d' "$i")" "pen row $i" > "$pen/r/REDS-$(printf '%04d' "$i").md"
+    i=$((i + 1))
+  done
+  out=$(REDS_SPINE_GLOB='REDS-*.md' sh "$SCAN" 2>&1 || true)
+  check_field "every row across the chunk seam arrives" local_rows "$files" "$out"
+  # AND THE SEAM IS WHERE IT IS CLAIMED TO BE. A chunk bound large enough to swallow the whole
+  # pen would pass the leg above while proving nothing, so the same pen is read with the bound
+  # forced to two: the answer must not move.
+  # The forced copy carries its sibling with it: the scan asks `dirname "$0"` for
+  # reds_spine_files.sh, so a lone copy in a bare directory would refuse for the wrong reason
+  # and this leg would read as a pass about nothing.
+  mkdir -p "$pen/bin"
+  cp "$(dirname "$SCAN")/reds_spine_files.sh" "$pen/bin/"
+  sed 's/^MAX_SED_OPERANDS=.*/MAX_SED_OPERANDS=2/' "$SCAN" > "$pen/bin/tiny.sh"
+  out2=$(REDS_SPINE_GLOB='REDS-*.md' sh "$pen/bin/tiny.sh" 2>&1 || true)
+  check_field "a two-file chunk bound reads the same spine" local_rows "$files" "$out2"
+fi
+
+# A PATH CARRYING A SPACE IS ONE OPERAND. The chunk list is built with `set -- "$@" "$f"` rather
+# than by word splitting a variable, and the difference is invisible until a path has a space in
+# it: split, the two halves name nothing, `sed` reads neither, and the rows in that file vanish
+# without a word. No ledger file carries a space today, which is exactly why the pen must.
+echo "== 11. a spine path carrying a space keeps its rows =="
+newpen
+rm -f REDS.md
+row 1 20260101.000001 "the first" > "$pen/r/REDS-one row.md"
+row 2 20260101.000002 "the second" > "$pen/r/REDS-two.md"
+out=$(REDS_SPINE_GLOB='REDS-*.md' sh "$SCAN" 2>&1 || true)
+check_field "a spaced path is one operand, not two" local_rows 2 "$out"
+
+# A FILE COUNT THAT IS AN EXACT MULTIPLE OF THE CHUNK BOUND, which is the one input that leaves
+# the final chunk empty -- the seam where an off-by-one flush would drop the last whole chunk or
+# repeat it. The live spine holds 440 files and will pass through 512 one fold at a time; the pen
+# reaches the same seam now by forcing the bound to two and giving it four files.
+#
+# WHAT THIS LEG DOES NOT PROVE, said plainly because the first draft claimed it did: the flush is
+# written as an `if` rather than a trailing `[ ... ] && ...`, and replacing it with the trailing
+# form passes every case here. A false AND-list does not end a `set -e` script mid-file, so that
+# choice is insurance against the flush moving to the end of the file rather than a fault this
+# control can bite. Two mutations DO bite -- removing the flush entirely, and word splitting the
+# operand list -- and those are what these legs are for.
+echo "== 12. a file count that is an exact multiple of the chunk bound still reads =="
+newpen
+rm -f REDS.md
+i=1
+while [ "$i" -le 4 ]; do
+  row "$i" "20260101.00000$i" "pen row $i" > "$pen/r/REDS-$i.md"
+  i=$((i + 1))
+done
+mkdir -p "$pen/bin"
+cp "$(dirname "$SCAN")/reds_spine_files.sh" "$pen/bin/"
+sed 's/^MAX_SED_OPERANDS=.*/MAX_SED_OPERANDS=2/' "$SCAN" > "$pen/bin/tiny.sh"
+set +e
+out=$(REDS_SPINE_GLOB='REDS-*.md' sh "$pen/bin/tiny.sh" 2>&1); rc_exact=$?
+set -e
+check_field "no row is lost when the last chunk is empty" local_rows 4 "$out"
+if [ "$rc_exact" -eq 0 ]; then
+  echo "PASS: an exact-multiple spine exits 0 rather than dying on the flush test"
+  pass=$((pass + 1))
+else
+  echo "FAIL: an exact-multiple spine exited $rc_exact (wanted 0)"
+  fail=$((fail + 1))
+fi
+
 echo
 echo "cases_ok=$pass cases_red=$fail"
 if [ "$fail" -ne 0 ]; then echo "control_verdict=red"; exit 1; fi
