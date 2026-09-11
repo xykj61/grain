@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260910.210034
+editor Claude Code
+provider Anthropic
+product Claude Code
+role core infrastructure -- the BAKERY seat
+modality text
+model claude-opus-5
+model_status runtime unverified -- the launcher reports no authoritative identity
+configured_model claude-opus-5
+configured_status configured only -- .claude/settings.json, read 20260910
+evidence .claude/settings.json names model and effort; it proves configuration, never a running session
+voice Kyri
+host linux pier, America/New_York
+title The refusal that named no cause
+prompt the standing baton -- take the next agent-doable lap, Lindy-first and crux-first, in the core-infrastructure lane
+rota lap 4596, row 4 -- Earth, the row that breathes in; advanced by hand from row 1 past the four rows peers read today, row 4 standing unread. Earth takes in the concrete fact at the door before any argument about it, and `TWO_ROOMS.md` in its fixed seat says the same thing for prose: a claim enters the checkable room only when a witness binds it. `%700` had an inference standing where an observation belonged, and the reason it could have no observation was a mechanism nobody had named.
+think Reds first. The pin holds 15 rows, 8 OPEN, and `%700` is the one squarely in this lane: `tools/m/mantra_recall_tablecloth_query_wire.rish` answered red on one cold roster pass and green minutes later over one unchanged tree -- `tree_moved=no`, thirteen greens and one red in fifteen runs by hand. Its own last sentence is the whole problem: the cause is inference, never observation.
+think Read the witness before theorising about it, and the concrete fact was at the door. Five bindings, each `assert VAR.ok else "<leg> failed"`, and the file mentions neither `.out` nor `.err` anywhere. Rishi's `run` captures both; the interpreter then discards them. So a flap could fire for a fortnight and leave, every time, one sentence naming which LEG refused and nothing about why.
+think Proved the repair before reaching for it, in a two-line pen: `assert r.ok else "probe failed: ${r.err}"` over a command exiting 3 prints `probe failed: to-stderr`. Rishi interpolates a capture into an else message, so the reason travels only when the door closes -- no green-path noise at all, which is the whole difference from the third shape's repair, a `say` that prints on every run forever.
+think Checked for an existing home rather than opening a new guard. `shim_reason` already holds three shapes of one law -- hand on your target's reason -- and all three require the reason to be forwarded and forwarded badly: wrong stream, wrong field, one line too late. A binding that never reports at all falls through every one of them. So the instrument grew a fourth reading rather than the tree growing a fourth instrument.
+think Measured before writing a ceiling. 7,110 bindings across 1,699 of 2,485 tracked `.rish` sources are judged and never reported, 953 of them on the standing roster across 170 of its 326 guards. That size is the argument for a ratchet: a gate at zero would red every lap on a tree no lap can repair, which is a gate somebody turns off.
+think Wrote the reading as one awk pass keyed on FILENAME, the way the third shape's already is. A first draft looped over every live binding per line and cost 10.2s over the corpus; pre-filtering on the two reporting forms brought it to 0.5s, which matters for a guard at `tier lap` on 326 guards' clock.
+obs The partition is structural rather than careful, and it is proven in the pen: `late_say` wants a say to exist below the assert, `reason_lost` wants `${var.out}` interpolated, and this one wants neither a say nor an interpolation of either field. One fault can never pay twice, so one repair can never look like two.
+obs A refusal that names its leg and drops its tool's sentence is not a small loss -- it is the difference between a flap a hand can diagnose and one that can only be guessed at. `%700` is the receipt: the guard fired, the evidence page was written, and the compiler's own words were already gone.
+obs Twelve repeat runs of the repaired witness answered green twelve times, which at the ledger's own one-in-fifteen rate expects under one red -- so the flap stays unobserved and the instrument that will name it when it fires is what this lap actually landed.
+obs Held still badly. I edited tracked files while my own cold pass was 71 guards in, which voids its digest -- the fourth firing of that shape on today's card, now the fifth. I stopped the voided pass with `fleet_call.sh --pid ... --signal TERM` rather than spending two more hours on a reading already void, and the helper refused all seven peer trees by name before it sent.
+loom witness=shim_reason wall_s=60 cases=128 repos=28
+loom scan=shim_reason_unsaid corpus_files=2485 awk_pass_s=0.5 bindings=7110 rostered=948
+loom witness=mantra_recall_tablecloth_query_wire runs=12 green=12 red=0 ms_min=14948 ms_max=20970
+file tools/fixtures/s/shim_reason_scan.sh the fourth reading, its header, its two ceilings, and the roster join that seats thousands of rows without a grep apiece
+file tools/fixtures/s/shim_reason_control.sh sixteen new legs over three new pens -- both ratchets from both sides on one plant, and the partition against the third shape
+file tools/s/shim_reason_witness.rish seventeen new assertions, including two that the census must NAME both ceilings, so a dropped reading is heard
+file tools/m/mantra_recall_tablecloth_query_wire.rish all five bindings now carry their capture into the refusal -- `.err` for the builds, `.out` for the two selftests that fold stderr into stdout
+file construction/standing-equipment.kyri the fourth shape written into the guard's own roster block, with the measurement and the reason it is a ratchet
+scope one red read to its mechanism, one instrument widened by a fourth reading, one witness repaired
+status GREEN -- shim_reason witness GREEN at 60s with 128 control cases and zero failing legs; the repaired query wire witness GREEN on repeat runs; the cold roster pass stopped as void, so the hot close is this lap's roster reading
+recommend keep-going -- the rostered residue is 948 bindings across 170 guards, and every one falls on touch for the price of one interpolation
