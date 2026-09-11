@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2f1602bb1f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9e2403b1e0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A REFUSAL THAT NAMED ITS LEG AND DISCARDED ITS TOOL'S SENTENCE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -127,30 +127,30 @@ house's own `X, never Y`; drop those seven and it reads 21%. [Paper](../active-d
 **YOURS, two:** whether `never` in a contrast counts (`prose_register_scan.sh:185`), and whether a
 routing page earns an xref budget -- the card frees one only under **100 words**, so `get-started`
 (373w, 22 links, C+ 78) stands outside.
-**PHEROMONE -- A PEDESTAL COUNTING MEMBERS HAS NO CONSTANT TO READ.**
-Elder [shelved](archive/20260910-193704_itinerary-landed-accounts.md).
-**IT DIED AT ITS SEND AND CAME BACK WHOLE.** The round-open stashed it; this lap popped that
-stash, reran both witnesses GREEN, and landed it -- `stash_record unlanded` **1 to 0**.
-**EARTH BREATHES IN** (row 4, hand-advanced): the fact at the door, which a placard's number is.
-**THE CLASS FROM MY LAST LAP IS CLOSED.** Five desks read a published constant; the **six** left
-display a COUNT, which has no `pub const` -- the three fields of `ManifestEntry` ARE the fact.
-**MECHANISM:** `tools/fixtures/s/shape_member_pedestal_scan.sh` pairs each desk with a KIND of
-member and its declaration -- **struct fields** (`ManifestEntry`), **constructor parameters**
-(`tube_manifest.build`, four, where the struct holds seven with its length companions),
-**sibling modules** (`glow_*_grant.rye`, `mand_ring<n>.rye`), **refusal sites** (the four
-`error.Missing*` of `finish_brush_surface`, which ARE the required pins), **fixture lines**
-(`seed-frame.brush`).
-**FOUND: four of the six cited no engine** -- two at `docs/TUBE.md`, one a brief, one its own
-rings in prose. All four carry a `Source:` line now, and the scan refuses if one goes.
-**MY CONTROL REWROTE MY SCAN:** the grant selector ENUMERATED the three molds, so a fourth could
-never be counted -- a reading able to answer only its own length, green forever. It names the
-family's SHAPE now, and case 8 plants the fourth mold and meets a refusal.
-**19 cases, 4 welcomes 15 refusals, wrong=0**, mutation-proven: dropping the names reading reds
-one leg, the value comparison six. Witness **9.0s, lap**. Scan B+ 85, desks A+.
-**CORRECTED MID-LAP:** I wrote that the last three desks show words. All three show NUMBERS.
-`tilak-root-count` already stands on `tilak_root_count_witness`; the other two show a SAMPLE --
-`21` for a one-field `@u32`, `1` for the slot that opens Pool -- so neither has an engine.
-**YOURS:** whether a sample on a placard wants a guard at all. REDS pin still ~22 bytes free.
+**PHEROMONE -- ONE DESK'S ARITY IS WRITTEN IN THREE FILES, AND NOTHING COMPARED THEM.**
+Elder [shelved](archive/20260910-225815_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, hand-advanced): walk the fence line, press every post. **REDS FIRST:**
+`index_row_bound` -- two shelf rows misordered, repaired by `index_shelf_repair.sh`.
+**THE POST THAT GAVE.** A desk's sample count stands in **three** files -- its `::  Sample:` head
+line, `glow_run_worker.sh`'s accepted counts, and the argv gates `glow_run --sample-argv` emits.
+Only the third is derived. `%532` repaired two of the desk room's
+three enumerations, named arity as the one left underived, and **predicted the fourth in its own
+words** -- a sampled desk needs a chosen value "and then a fourth hand-written enumeration to hold
+the answers." The `Sample:` line is that fourth.
+**MECHANISM:** the worker stated arity only as the shape of what it refused -- a nest of
+`test "$NARGS" -eq N`. `arity_accepts()` states the counts once, the membership test is the whole
+check, and **`--arity` prints that same list**, so a meter asks the worker rather than parsing it.
+`tools/fixtures/g/glow_desk_arity_scan.sh` compares all three; four readings gated at zero.
+**MEASURED `20260910`: 46 sampled desks, three statements each, ZERO disagreement** -- the same
+perfect agreement `%532` found among its own three, and stored in nobody's instrument until now.
+**THE ARITHMETIC THE GATES REST ON:** a tag desk's emitted program checks `argv.len < 2` for the
+tag and `< 3` inside the mint arm, so the reading takes the **maximum**; the first gate calls four
+real desks split when nothing is wrong, and that mutation reds three control legs.
+**PROVEN:** witness `glow_desk_arity`, `tier lap`, **9s** -- the sibling that RUNS these desks
+costs 325s of Zig. **39 control legs, 0 failed**, every refusal planted and lifted. `glow_desk_run` **347 desks GREEN** through the refactored worker, and
+`glow_desk_reach` GREEN beside it. Scan B+ 87, control A+, worker A+.
+**YOURS:** the worker demands an exact count; the emitted program demands a **floor** and ignores
+anything past it. Two shapes of one boundary -- worth a gate, or is the worker's exactness enough?
 
 **GRASS -- A PAGE SAID THE FRONT DOOR NAMED IT, AND THE FRONT DOOR HAD STOPPED.**
 Elder [shelved](archive/20260910-234454_itinerary-landed-accounts.md).

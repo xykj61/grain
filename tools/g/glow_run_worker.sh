@@ -13,6 +13,18 @@ ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$ROOT"
 
 ZIG="${RYE_ZIG:-vendor/zig-toolchain/zig}"
+
+# --arity asks the run contract a question instead of discovering it by refusal. The counts
+# below are stated ONCE, in arity_accepts(), and this mode prints that statement; the check
+# further down tests membership in the same list. A caller that needs to know how many samples
+# a desk takes therefore reads the worker's own answer rather than keeping a second copy of it
+# (REDS %532's third enumeration -- arity lived here and nowhere a meter could ask).
+ARITY_ONLY=no
+if [ "${1-}" = "--arity" ]; then
+  ARITY_ONLY=yes
+  shift
+fi
+
 GLOW=$1
 shift || true
 
@@ -42,87 +54,78 @@ fields_need() {
 
 NEED_FIELDS=$(fields_need "$STEM")
 
-case "$STEM" in
-sample-u32|gate-sample-u32|gate-double-u32|gate-pleac-double-u32|gate-surface-double-u32|gate-surface-inc-u32|gate-tally-dec-u32|gate-tally-garden-bound-u32|gate-tally-fold-sumto-u32|gate-tally-fold-prodto-u32|gate-caravan-dependents-bound-u32|gate-aurora-wire-bound-u32|gate-aurora-seed-length-eq-u32|gate-aurora-signature-length-eq-u32|gate-aurora-living-stages-eq-u32|gate-caravan-exit-meanings-eq-u32|gate-mantra-line-fields-eq-u32|gate-mantra-weave-fields-eq-u32|gate-mantra-diff-fields-eq-u32|gate-mantra-store-dirs-eq-u32|gate-mantra-gen-floor-u32|gate-tally-name-len-bound-u32|gate-caravan-caps-bound-u32|gate-comlink-dual-stack-bind-u32|gate-comlink-addr-width-u32|gate-rishi-env-bindings-bound-u32|gate-rishi-history-bound-u32|gate-say-u32|gate-inc-u32|gate-sumto-u32|gate-prodto-u32|gate-sumto-lawful-u32|gate-prodto-lawful-u32|gate-gardens-lawful-u32|gate-caps-lawful-u32|gate-dependents-lawful-u32|gate-caravan-caps-pair-bound-u32|gate-mantra-gen-floor-pair-u32|gate-pair-eq-faces|gate-pair-gth-faces|gate-tally-garden-pair-bound-u32|gate-pair-max|gate-pair-min|gate-compose-sumto-u32|gate-dec-u32|gate-amount-u32|gate-count-u32|gate-barket-sample-u32|gate-barket-double-u32|gate-barket-inc-u32|gate-barket-dec-u32|gate-barket-amount-u32|gate-barket-count-u32|gate-fold-sumto-missing-bound|gate-fold-sum-on-u32|gate-fold-prodto-bound-13|gate-skate-kind-ceiling-u32|gate-skate-kind-floor-u32|gate-skate-ring-admit-u32|gate-surface-lit-area-u32|gate-lantern-face-text-u32|gate-lantern-unknown-law-u32|gate-lantern-feed-unknown-u32|gate-lantern-unknown-law-rune-u32|gate-pond-preset-offset-u32|gate-pond-preset-offset-rune-u32)
-  case "$STEM" in
-    gate-pair-eq-faces|gate-pair-gth-faces|gate-tally-garden-pair-bound-u32|gate-caravan-caps-pair-bound-u32|gate-mantra-gen-floor-pair-u32|gate-pair-max|gate-pair-min|gate-lantern-unknown-law-u32|gate-lantern-feed-unknown-u32|gate-lantern-unknown-law-rune-u32|gate-pond-preset-offset-u32|gate-pond-preset-offset-rune-u32)
-      test "$NARGS" -eq 2 -o "$NARGS" -eq 0 || {
-        echo "FAIL: ${STEM}.glow needs exactly two @u32 sample decimals"
-        exit 2
-      }
-      ;;
-    gate-surface-lit-area-u32)
-      # mul-b: the composed cond's desk takes lit, width, height.
-      test "$NARGS" -eq 3 || {
-        echo "FAIL: ${STEM}.glow needs exactly three @u32 sample decimals"
-        exit 2
-      }
-      ;;
-    *)
-  test "$NARGS" -eq 1 || {
-    echo "FAIL: ${STEM}.glow needs exactly one @u32 sample decimal"
-    exit 2
-  }
-      ;;
+# THE RUN CONTRACT, STATED ONCE. How many samples a desk takes was written here as a nest of
+# refusals -- a `case` whose branches each tested NARGS against a literal -- so the count existed
+# only as the shape of what the worker rejects. Nothing could ASK it, which is why REDS %532 named
+# arity as the third hand-written enumeration of this corpus and left it underived while the other
+# two were repaired. It is a list now: one function returns the sample counts a stem accepts, the
+# membership test below is the whole check, and `--arity` prints the same list. A meter that wants
+# to compare this contract against what the lowering actually reads asks the worker rather than
+# parsing it (tools/fixtures/g/glow_desk_arity_scan.sh).
+#
+# WHY A LIST RATHER THAN A NUMBER. Three families accept two counts, each for its own reason. The
+# pair family runs bare from the fixture road OR with its two faces. `gate-lantern-face-core`
+# takes an arm ordinal and then that arm's one or two samples. The tag families take a tag alone
+# for `send` and a tag plus payload for `mint`, and their tag-to-count agreement is checked below,
+# beside the tag itself, because that is a statement about the VALUE rather than about the count.
+arity_accepts() {
+  case "$1" in
+  gate-pair-eq-faces|gate-pair-gth-faces|gate-tally-garden-pair-bound-u32|gate-caravan-caps-pair-bound-u32|gate-mantra-gen-floor-pair-u32|gate-pair-max|gate-pair-min|gate-lantern-unknown-law-u32|gate-lantern-feed-unknown-u32|gate-lantern-unknown-law-rune-u32|gate-pond-preset-offset-u32|gate-pond-preset-offset-rune-u32) echo "0 2" ;;
+  gate-surface-lit-area-u32) echo "3" ;;
+  sample-u32|gate-sample-u32|gate-double-u32|gate-pleac-double-u32|gate-surface-double-u32|gate-surface-inc-u32|gate-tally-dec-u32|gate-tally-garden-bound-u32|gate-tally-fold-sumto-u32|gate-tally-fold-prodto-u32|gate-caravan-dependents-bound-u32|gate-aurora-wire-bound-u32|gate-aurora-seed-length-eq-u32|gate-aurora-signature-length-eq-u32|gate-aurora-living-stages-eq-u32|gate-caravan-exit-meanings-eq-u32|gate-mantra-line-fields-eq-u32|gate-mantra-weave-fields-eq-u32|gate-mantra-diff-fields-eq-u32|gate-mantra-store-dirs-eq-u32|gate-mantra-gen-floor-u32|gate-tally-name-len-bound-u32|gate-caravan-caps-bound-u32|gate-comlink-dual-stack-bind-u32|gate-comlink-addr-width-u32|gate-rishi-env-bindings-bound-u32|gate-rishi-history-bound-u32|gate-say-u32|gate-inc-u32|gate-sumto-u32|gate-prodto-u32|gate-sumto-lawful-u32|gate-prodto-lawful-u32|gate-gardens-lawful-u32|gate-caps-lawful-u32|gate-dependents-lawful-u32|gate-caravan-caps-pair-bound-u32|gate-mantra-gen-floor-pair-u32|gate-pair-eq-faces|gate-pair-gth-faces|gate-tally-garden-pair-bound-u32|gate-pair-max|gate-pair-min|gate-compose-sumto-u32|gate-dec-u32|gate-amount-u32|gate-count-u32|gate-barket-sample-u32|gate-barket-double-u32|gate-barket-inc-u32|gate-barket-dec-u32|gate-barket-amount-u32|gate-barket-count-u32|gate-fold-sumto-missing-bound|gate-fold-sum-on-u32|gate-fold-prodto-bound-13|gate-skate-kind-ceiling-u32|gate-skate-kind-floor-u32|gate-skate-ring-admit-u32|gate-surface-lit-area-u32|gate-lantern-face-text-u32|gate-lantern-unknown-law-u32|gate-lantern-feed-unknown-u32|gate-lantern-unknown-law-rune-u32|gate-pond-preset-offset-u32|gate-pond-preset-offset-rune-u32) echo "1" ;;
+  gate-lantern-face-core) echo "2 3" ;;
+  gate-kind-tag|gate-barket-kind-tag) echo "1" ;;
+  gate-xact-tag|gate-barket-xact-tag) echo "1 2" ;;
+  gate-xfer-tag|gate-barket-xfer-tag) echo "1 3" ;;
+  *)
+    # STOA324: closed $: pair...nona fields -- one path (stem -> N -> exact count).
+    if [ "$(fields_need "$1")" -ge 2 ]; then fields_need "$1"; else echo "0"; fi
+    ;;
   esac
-  ;;
-gate-lantern-face-core)
-  # core: argv[1] is the arm ordinal, then that arm's one or two samples.
-  test "$NARGS" -eq 2 -o "$NARGS" -eq 3 || {
-    echo "FAIL: ${STEM}.glow needs an arm ordinal and its one or two @u32 samples"
-    exit 2
-  }
-  ;;
-gate-kind-tag|gate-barket-kind-tag)
-  test "$NARGS" -eq 1 || {
-    echo "FAIL: ${STEM}.glow needs exactly one kind unit tag (mint|send)"
-    exit 2
-  }
-  ;;
-gate-xact-tag|gate-barket-xact-tag)
+}
+
+ACCEPTS=$(arity_accepts "$STEM")
+
+if [ "$ARITY_ONLY" = yes ]; then
+  echo "stem=$STEM"
+  echo "accepts=$ACCEPTS"
+  exit 0
+fi
+
+arity_ok=no
+for _k in $ACCEPTS; do
+  if [ "$NARGS" -eq "$_k" ]; then arity_ok=yes; fi
+done
+test "$arity_ok" = yes || {
+  if [ "$ACCEPTS" = "0" ]; then
+    echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-fields take a sample"
+  else
+    echo "FAIL: ${STEM}.glow takes ${ACCEPTS} sample argument(s), got ${NARGS}"
+  fi
+  exit 2
+}
+
+# The tag families check the VALUE they were handed against the count that came with it. The count
+# alone is lawful either way -- `mint` and `send` differ by a payload -- so this is a second,
+# separate question and it is asked where the tag is read.
+case "$STEM" in
+gate-xact-tag|gate-barket-xact-tag|gate-xfer-tag|gate-barket-xfer-tag)
   test -n "${1-}" || {
     echo "FAIL: ${STEM}.glow needs tag mint|send"
     exit 2
   }
+  case "$STEM" in
+  gate-xact-tag|gate-barket-xact-tag) _mint_wants=2 ;;
+  *) _mint_wants=3 ;;
+  esac
   if [ "$1" = "mint" ]; then
-    test "$NARGS" -eq 2 || {
-      echo "FAIL: ${STEM}.glow mint needs exactly one amount u32"
+    test "$NARGS" -eq "$_mint_wants" || {
+      echo "FAIL: ${STEM}.glow mint needs ${_mint_wants} argument(s), got ${NARGS}"
       exit 2
     }
   else
     test "$NARGS" -eq 1 || {
-      echo "FAIL: ${STEM}.glow send takes no amount"
-      exit 2
-    }
-  fi
-  ;;
-gate-xfer-tag|gate-barket-xfer-tag)
-  test -n "${1-}" || {
-    echo "FAIL: ${STEM}.glow needs tag mint|send"
-    exit 2
-  }
-  if [ "$1" = "mint" ]; then
-    test "$NARGS" -eq 3 || {
-      echo "FAIL: ${STEM}.glow mint needs from u32 and amount u32"
-      exit 2
-    }
-  else
-    test "$NARGS" -eq 1 || {
-      echo "FAIL: ${STEM}.glow send takes no faces"
-      exit 2
-    }
-  fi
-  ;;
-*)
-  # STOA324: closed $: pair...nona fields -- one path (stem -> N -> exact count).
-  if [ "$NEED_FIELDS" -ge 2 ]; then
-    test "$NARGS" -eq "$NEED_FIELDS" || {
-      echo "FAIL: ${STEM}.glow needs exactly ${NEED_FIELDS} field decimals"
-      exit 2
-    }
-  else
-    test "$NARGS" -eq 0 || {
-      echo "FAIL: only sample-u32 / gate-*-u32 / gate-*-kind-tag / gate-*-xact-tag / gate-*-xfer-tag / gate-*-fields take a sample"
+      echo "FAIL: ${STEM}.glow ${1} takes no payload, got ${NARGS} argument(s)"
       exit 2
     }
   fi

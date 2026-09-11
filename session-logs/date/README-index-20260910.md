@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260910.234454` | [The front door that stopped naming it](20260910/20260910-234454_the-page-that-said-the-front-door-named-it.kyri) | a declared front-door claim, checked |
 | `20260910.231544` | [Identical output is not a proof](20260910/20260910-231544_identical-output-is-not-a-proof.kyri) | 1,258 awk become 10; a pen found what the live-tree diff could not |
+| `20260910.225849` | [Three files, one arity](20260910/20260910-225849_three-files-one-arity.kyri) | the desk, the worker and the lowering compared at last |
 | `20260910.225152` | [The falsifier on its own threshold](20260910/20260910-225152_the-falsifier-on-its-own-threshold.kyri) | 878 git calls become 4; the wall clause declined |
 | `20260910.223623` | [The ceiling a manual page is held to](20260910/20260910-223623_the-ceiling-a-manual-page-is-held-to.kyri) | twenty manual pages name a setting; three swept, two named |
 | `20260910.222633` | [The residue has a name](20260910/20260910-222633_the-residue-has-a-name.kyri) | my own falsifier fired; the sweep retires, the residue named |
