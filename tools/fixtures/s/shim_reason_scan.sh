@@ -88,7 +88,14 @@ REASON_CEILING="${REASON_CEILING:-0}"
 # is read twice and repaired once -- which is the honest arithmetic for a ratchet, since the fault
 # and its repair both live in the body. The gate opens at zero; the ceiling only falls -- move a
 # `say` up and lower it in the same commit.
-SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-157}"
+#
+# 157 -> 154 on `20260911.094628`. The rostered gate fell to zero when `gitlink_dependent_witness`
+# moved its `say` above the first assert, and the unrostered reading has read 154 on both sides of
+# that move -- so the three between them were never a population, only slack the repairing commit
+# left behind. A ceiling above its own reading is the shape `ascii_document` booked one room over:
+# a total naming no member makes one stray character unlocatable, and three of them unlocatable
+# together. Lowering it here costs nothing today and refuses the next arrival on the lap it lands.
+SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 
 # The fourth shape's residue, measured `20260910.203444` over 2,485 tracked `.rish` sources, then
 # lowered by five in the same commit when `tools/m/mantra_recall_tablecloth_query_wire.rish` took
