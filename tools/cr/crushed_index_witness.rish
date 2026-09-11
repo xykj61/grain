@@ -124,7 +124,13 @@ assert control.out contains "a page spelling a count the index disagrees with is
 assert control.out contains "making the two agree clears it -- read 0" else "crushed-index: agreeing with the generated page must clear it"
 assert control.out contains "naming the scale without an integer counts zero -- read 0" else "crushed-index: naming the scale without spelling it is the honest form and must stay free"
 assert control.out contains "a count spelled about a typed index counts zero -- read 0" else "crushed-index: nothing derives a typed index's count, so there is no second reading to disagree with it"
+assert control.out contains "a count spelled in a declared index title is counted -- read 1" else "crushed-index: a count spelled in a declared index's own title must be counted -- a title is a name, and a total inside a name stays at whatever it was the day somebody typed it"
+assert control.out contains "the count in the title refuses the tree -- read index_disagrees" else "crushed-index: a count in a declared index's title must refuse, rather than merely being reported"
+assert control.out contains "taking the count out of the title clears it -- read 0" else "crushed-index: taking the count out of the name must clear it, or the reading is not the title"
+assert control.out contains "a number at a title's end counts zero -- read 0" else "crushed-index: a number at a title's end is an identifier rather than a census and must stay free"
+assert control.out contains "a count in an undeclared page's title counts zero -- read 0" else "crushed-index: the title reading must reach declared indexes alone -- the refusal is about a promise the page made, never about English"
 assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
+assert control.out contains "control_pass=48" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
 assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
 
 # The tree itself, after the pen.
@@ -137,7 +143,8 @@ assert scan.out contains "index_rooms_oversize=0" else "crushed-index: a deep de
 assert scan.out contains "index_doors_missing=0" else "crushed-index: every row on a declared index must open on something"
 assert scan.out contains "row_stamp_disagrees=0" else "crushed-index: a row's stamp must agree with the file it links -- the link resolves either way, so nothing else reads this"
 assert scan.out contains "generated_count_disagrees=0" else "crushed-index: a page spelling a generated index's count must agree with it -- the generator proves its own page and nothing beside it"
+assert scan.out contains "title_count_claimed=0" else "crushed-index: a declared index must not spell a count of its room in its own title -- the count lives in the table, where the member walk reads it against the room on disk"
 assert scan.out contains "signature_unbacked=0" else "crushed-index: a GREEN signature must name an instrument that exists"
 assert scan.out contains "verdict=ok" else "crushed-index: the scan must reach its own verdict"
 
-say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, and every GREEN signature names something real."
+say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, every GREEN signature names something real, and no declared index carries a count inside its own name."

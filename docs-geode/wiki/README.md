@@ -22,7 +22,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [study / **Reading a name**](../study/reading-a-name.md) | the clock-and-mark foundation, the stamp-and-name law, `demos/` | `study/`, this page |
 | [demos / **Five checks you can run**](../demos/README.md) | the first hour, the resolver, the sha3 witness, the room bound, the fascia meter, the announcement scan, reading a name | `study/`, this page |
 | [edu / **The teaching surfaces**](../edu/README.md) | the manual, `docs-geode/edu/yonder/` drafts, SOURCE.md, the api reference | this page |
-| [press / **What has been said publicly**](../press/README.md) | the four announcements in `press/` | this page |
+| [press / **What has been said publicly**](../press/README.md) | every piece filed in `press/`, counted on that page | this page |
 | [sangha / **the patterns**](../sangha/README.md) | descriptor exchange, fact fold, five primitives | this page |
 | [sangha / **Pattern one -- the descriptor exchange**](../sangha/01-descriptor-exchange.md) | the four `comlink/discovery/` modules, the bounds brix, the pattern book | `sangha/`, pattern three |
 | [sangha / **Pattern two -- the fact fold**](../sangha/02-fact-fold.md) | `mycelium/` fold, build_bounds, kumara and copy; the fact-fold brix; patterns one and three | `sangha/`, pattern three |
@@ -49,6 +49,16 @@ That is the whole discipline of a wiki here: a promise that following any thread
 ## What is missing, named plainly
 
 `etc/` stands empty and its own README says so plainly. `templates/` carries a pointer crush. `blog/` opened with its first piece on `20260908` and now carries a row like any other room. When a page enters a room, it earns a row above -- **a row in this table is how the shelf finishes admitting a page.**
+
+**A cell that counted a room went stale, and the guard above reads a different half.** This table's
+`press/` row read *the four announcements in `press/`* while **seven** pieces stood there, counted
+`20260911.054529` off that room's own index. The cell was true the day it was written, `20260906`,
+and went false on `20260908`, when the Radiator essay landed as the room's fifth piece. The cell names what the row leads to now, and the count
+stays on the page that holds it. `crushed_index` walls a count typed in a declared index's **title**
+from `20260911`, and a count typed in a **cell** is the half it leaves open on purpose: a body
+quotes its own past numbers -- `press/README.md` says *this page said three for two weeks* -- so a
+value check there cannot tell testimony from a live claim. The habit carries this half: a cell
+points at the room, and the room counts itself.
 
 **The room doors are ways in rather than shipped pages.** `api/README.md`, `tutorials/README.md`, and the shelf's own [front door](../README.md) each stand behind the row that names their room, so this table lists what the shelf ships.
 

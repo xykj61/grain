@@ -71,6 +71,12 @@
 #                            `38 rooms` in the table row pointing at a generated page whose fresh
 #                            render listed 37. The generator proves its own page and nothing beside
 #                            it, so a restatement one file away is invisible to it.
+#   title_count_claimed   -- a declared index whose own TITLE spells a count of its room. A title is
+#                            a name, and the mark law forbids a total inside one, since it stays at
+#                            whatever it was the day somebody typed it. Three rooms on this shelf
+#                            met the fault in prose and each moved its count into a table; the
+#                            fourth stood in a title, where none of the three repairs had looked.
+#                            The FORM is refused rather than the value -- see the pass itself.
 #   signature_unbacked    -- a page signing `witness:<name> GREEN` names an instrument something
 #                            can find. Measured 20260906: seven living signed pages, six backed by
 #                            a fixture that reads their claims, and one -- the shipping shelf's own
@@ -87,6 +93,14 @@
 # sentence beside it is honest. And `backed` means an instrument by that name exists and is either
 # on the standing roster or named by a tracked file under tools/; it does not prove the instrument
 # reads the claims the signature covers. Naming the weaker claim is the point (REDS %446).
+#
+# AND A COUNT IN A TITLE IS READ ONLY ON A DECLARED INDEX, which is the honest bound rather than an
+# oversight. `docs-geode/demos/README.md` opens `# Demos -- five checks you can run` and holds five
+# numbered sections, so the count is true and read by nothing; it declares `crushed demonstrations`
+# rather than an index of a room, so no member walk here derives a number to check it against. A
+# page counting its own SECTIONS is a different subject from a page counting a ROOM, and giving one
+# reading both jobs is the braid this tree already names single-stranded. Named here so the next
+# hand meets the gap rather than assuming coverage.
 #
 # USAGE
 #   sh tools/fixtures/c/crushed_index_scan.sh
@@ -435,6 +449,63 @@ xargs awk -v GEN="$work/generated.txt" < "$work/living.txt" '
 generated_count_disagrees=$(wc -l < "$work/gencounts.txt" | tr -d ' ')
 echo "generated_count_disagrees=$generated_count_disagrees"
 
+# --- a count spelled in a declared index's own TITLE ----------------------------------------------
+# THE FAULT, and this shelf has now met it four times. A crushed index is the page a reader trusts
+# instead of walking the room, so a count on it is the page's strongest claim. Three of the four
+# firings were repaired by hand, each the same way, and each repair wrote down what it learned:
+#
+#   docs-geode/README.md   -- three sentences said `ten rooms` while the table listed twelve, from
+#                             the very commit that added the twelfth, and stood sixteen days. Its
+#                             own repair line now reads *the count lives in the table*.
+#   docs-geode/press/README.md -- said `three` for two weeks while four pieces stood, and argued the
+#                             point at length in the paragraph carrying the wrong number.
+#   docs-geode/etc/README.md -- named eleven neighbors while twelve stood, so the list became the
+#                             `**Neighbors:**` key that tools/r/room_enumeration_witness.rish reads.
+#
+# All three moved the count OUT of prose and into a structure something derives. None of them looked
+# at a title. `docs-geode/blog/README.md` opened `# Blog -- one piece stands`, true on the day it
+# was typed and false on the day a second piece lands -- the fourth instance, standing in the one
+# place the three repairs never reached. A lantern that fires twice becomes a loom; this one fired
+# three times.
+#
+# WHAT IS READ, and why the FORM rather than the VALUE. A title is a NAME, and the mark law is
+# already explicit about a total inside one: *Count, rather than number -- a total carried inside a
+# name stays at whatever it was the day somebody typed it* (.claude/rules/stamp-and-name.md, and
+# foundations/20260905-154954_the-clock-and-the-mark.md, which measured nine ladders whose announced
+# lengths outran what they reached). So the reading refuses the form rather than checking the
+# number, and that choice is what makes it safe: a page's BODY quotes its own past counts -- press/'s
+# repair paragraph says *this page said three for two weeks* -- and a value check cannot tell that
+# testimony from a live claim. A title holds no such quotation, which is why the title is the one
+# line where refusing the form is both possible and right.
+#
+# WHO IS READ: the declared indexes above, and nobody else. A page whose whole promise is to tell
+# the truth about a room's membership is the page that owes its name to a derived count. Four stand
+# today; a fifth arrives guarded on the day it declares itself, like every other reading here.
+#
+# WHAT A COUNT IS: a cardinal numeral or number word, standing as its own word, FOLLOWED by an
+# alphabetic word -- `one piece`, `12 rooms`. A number at a title's end is an identifier rather than
+# a census (`Kyri 6`), so it passes free. The named answer to a refusal is the one all three repairs
+# above already took: move the count into the table, where the member walk at the top of this file
+# reads it against the room on disk every lap.
+#
+# IT CAN REFUSE A NUMBER THAT IS NOT A COUNT, and that trade is chosen rather than overlooked. A
+# declared index titled `Press 2026 index` would be held, since a year followed by a word reads the
+# same as a census from here. The refusal names the page and its repair in one line, so the cost of
+# being wrong is one sentence a hand reads -- against three repairs this shelf has already paid for
+# being blind. On a population of four pages, over-refusing is the cheaper direction.
+: > "$work/titlecounts.txt"
+while read -r page room depth; do
+  title=$(head -1 "$page")
+  case "$title" in '#'*) ;; *) continue ;; esac
+  printf '%s\n' "$title" \
+    | grep -oiE '(^|[^a-z0-9-])(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|[0-9]+)[ ]+[a-z]' \
+    | head -1 | grep -q . || continue
+  printf '%s: the title spells a count of %s -- move it into the table, which the member walk reads\n' \
+    "$page" "$room" >> "$work/titlecounts.txt"
+done < "$work/declared.txt"
+title_count_claimed=$(wc -l < "$work/titlecounts.txt" | tr -d ' ')
+echo "title_count_claimed=$title_count_claimed"
+
 [ "$unlisted" -eq 0 ] || sed 's/^/unlisted: /' "$work/unlisted.txt"
 [ "$rooms_missing" -eq 0 ] || sed 's/^/room_missing: /' "$work/rooms_missing.txt"
 [ "$rooms_oversize" -eq 0 ] || sed 's/^/room_oversize: /' "$work/rooms_oversize.txt"
@@ -442,9 +513,11 @@ echo "generated_count_disagrees=$generated_count_disagrees"
 [ "$stamp_disagrees" -eq 0 ] || sed 's/^/stamp: /' "$work/stamps.txt"
 [ "$unbacked" -eq 0 ] || sed 's/^/unbacked: /' "$work/unbacked.txt"
 [ "$generated_count_disagrees" -eq 0 ] || sed 's/^/generated_count: /' "$work/gencounts.txt"
+[ "$title_count_claimed" -eq 0 ] || sed 's/^/title_count: /' "$work/titlecounts.txt"
 
 if [ "$unlisted" -eq 0 ] && [ "$rooms_missing" -eq 0 ] && [ "$rooms_oversize" -eq 0 ] \
    && [ "$doors_missing" -eq 0 ] && [ "$generated_count_disagrees" -eq 0 ] \
+   && [ "$title_count_claimed" -eq 0 ] \
    && [ "$stamp_disagrees" -eq 0 ] && [ "$unbacked" -eq 0 ]; then
   echo "verdict=ok"
 else
