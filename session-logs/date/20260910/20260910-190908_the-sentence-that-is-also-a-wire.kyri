@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260910.190908
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship COPAL
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry, so this names configuration rather than an observed identity
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read this lap; the effort a lap runs at depends on its launch path
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title the sentence that is also a wire -- the Rish spoken meter gets its converter and its missing row
+prompt autonomous loop, COPAL seat, amphora and bron-resins lane
+rota lap 4589, row 4 -- Earth, the row that breathes in. Read the threshold whole and the cardinal seat (the clock and the mark); took the row's instruction literally -- read the fact off the instrument's own face before arguing with it -- and pointed it at the meter my own lane's shelf item names. The dual seat, the marked value, was read by a peer this morning and its subject is my room's mark_verdict.
+think My lane opened clean. sh tools/fixtures/am/amphora_roster_scan.sh answers 22 guards, 0 uncovered, 0 orphans, README naming all 22; amphora_bounds_agree GREEN with 13 couples agreeing; tools/am/ reads ZERO on the spoken-ASCII ratchet. So the lane's own queue was empty and I took the shelf item this card names under my seat.
+think The concrete fact, read off the instrument: tools/fixtures/r/rish_spoken_ascii_scan.sh stands at 11,072 characters across 1,505 files -- the tree's largest non-ASCII residue -- and its ceiling had moved two characters in three days, both on touch. Its two siblings, the Rye comment meter and the Glow comment meter, were swept to zero. It had no converter at all, where tools/fixtures/r/rye_spoken_ascii_convert.sh has stood since 20260908.
+think Then the histogram, which is where the row's sense earned its keep. Counting each UTF-8 sequence in spoken lines: 7,044 em dash, 2,760 middot, 665 ellipsis, 181 right arrow, and 103 TYPOGRAPHIC MINUS. .claude/rules/ascii-first.md has spelled the minus since seating -- one ASCII answer -- and tools/fixtures/a/ascii_document_scan.sh carries the row. This meter did not, so it filed 103 characters under notation, a word that MEANS a reader must choose, about a form the law answers one way. The law page records this exact class firing once before, one instrument over, and states the lesson: a law and its instrument agreeing is a thing to measure rather than assume.
+think Why the sweep had never run, measured rather than guessed. Rye print and Glow :: speak to a person and to nobody else. A Rishi say is ALSO A WIRE BETWEEN GUARDS: one witness runs another and asserts on what it said. Measured: 164 counted characters sit inside assert CONDITIONS, 126 of them matching a Rye binary's selftest.out; and 101 spoken lines across roughly 60 files are coupled to a match-position literal elsewhere. The proof on real bytes is oven_handback_surface_p39_witness.rish, which greps prin_scope.rish for the literal string 'oct:   Oven Chapter (em dash) PAUSED' -- so a blind sed would have reddened a guard by repairing a dash.
+think So the converter carries FOUR exclusions where its Rye sibling carries three: the # comment (the sibling meter's ceiling), the run [...] argument (behavior), the assert CONDITION (a match pattern), and the coupled saying (the wire). It derives its 576-literal coupling set on every run from git ls-files rather than pinning a list, because a pinned list drifts the first time a guard's sentence changes and the whole subject is two files staying in step. An assert's two halves part at the LAST ' else "' rather than the first, since a condition may hold those bytes and reading the last converts less rather than more.
+obs The first draft of the coupling set held its own subject. An assert line carrying `contains "` fed BOTH its halves into the matcher set, so every refusal message coupled itself and held itself back -- the pen caught it as message_converted=no. Region two now takes the condition half alone.
+obs The matcher roster is fed through xargs -0 rather than an unquoted $(cat ...): a path with a space splits on the word boundary and falls out of the coupling set in silence, which is the shape the ascii-first law booked one room over for a walled room's glob.
+obs parity_ch02 stops at a PRE-EXISTING failure, and it is not mine. Its leg runs tools/i/inference_ember_corpus_apps_prefix_view.rish, which reds on a drawn-terminal Zig build; run directly, at bytes this lap never touched, it fails the same way. Neither file is on the roster, which is why the cold pass reads green over both.
+obs The sweep bounded itself at two files on purpose. Tree-wide is 1,502 files and 10,543 characters -- one command now -- against 92 .rish files touched per day by eight ships, so the rebase cost lands on peers rather than on the ship that chose it. Named on the card as Keaton's word, with both numbers.
+loom guard=spoken_ascii wall_ms=15367 control_legs=42 affirmative=31 refusals=5
+loom scan=rish_spoken_ascii files_before=1505 chars_before=11072 chars_after=10505 table_after=10243 notation_after=262 ceiling_before=11152 ceiling_after=10585
+loom convert=rish_spoken_ascii_convert matchers=576 tree_check_seconds=39 would_convert=1502 held_coupled=101
+loom roster=cold guards_run=245 green=242 red=0 gated=3 seconds=3639 tree_moved=no
+file tools/fixtures/r/rish_spoken_ascii_convert.sh the missing sibling; four exclusions, the fourth with no sibling, mode written through the original inode
+file tools/fixtures/r/rish_spoken_ascii_scan.sh the minus row seated in its table classification; split 10,707/365 -> 10,810/262, total unmoved; ceiling lowered by what the sweep paid
+file tools/fixtures/r/rish_spoken_ascii_control.sh sixteen more legs, every converter reading taken off the BYTES rather than off the report, and the pen's residue asserted exactly
+file tools/s/spoken_ascii_witness.rish fourteen asserts naming each new leg, so a leg written today is heard today
+file tools/p/parity_ch01.rish swept, 420 characters, re-derived from its committed bytes
+file tools/p/parity_ch02.rish swept, 147 characters, re-derived from its committed bytes
+file construction/ITINERARY.md elder account shelved whole; the new block names the wire, the minus row, and the tree-wide sweep as Keaton's word
+scope one keystone -- the Rish spoken meter's converter and its missing table row, plus a two-file sweep that pays a share and proves the tool on real bytes
+status GREEN -- cold roster 245 run, 242 green, 0 red, 3 gated, tree_moved=no; spoken_ascii witness GREEN at 31 affirmative and 5 refusals; both swept files re-derived byte-identical from HEAD; converter card A 91
+recommend keep-going -- the tree-wide sweep waits on Keaton's word, and the two spoken siblings carry the same one-row gap the minus fix just closed here

@@ -27,6 +27,26 @@
 # notation a reader should choose the ASCII form for rather than a script guessing it. The two are
 # printed apart for exactly that reason: one number is a sweep, the other is a judgment.
 #
+# THE TABLE HAD ONE ROW FEWER THAN THE RULE, for the whole life of this meter, and the same
+# disagreement had already been found and closed one instrument over. `.claude/rules/ascii-first.md`
+# has spelled the TYPOGRAPHIC MINUS since it was seated -- one ASCII answer, `-`, no reader's
+# judgment in it -- and `tools/fixtures/a/ascii_document_scan.sh` carries that row. This meter did
+# not, so it filed 103 minus signs standing in arithmetic prose (`2^255 - 19`) under `notation`,
+# where `notation` MEANS *a reader must choose*. Read `20260910.180158`: the split moves
+# 10,707/365 -> 10,810/262 and the total is unchanged, since a classification fix moves no
+# character. The law page states the lesson from its own firing: **a law and its instrument agreeing
+# is a thing to measure rather than assume.** Its two spoken siblings,
+# `tools/fixtures/r/rye_spoken_ascii_scan.sh` and `tools/fixtures/r/rye_spoken_ascii_convert.sh`,
+# carry the same one-row gap and are named here rather than swept.
+#
+# WHAT LOWERS IT. `tools/fixtures/r/rish_spoken_ascii_convert.sh` converts exactly the forms
+# classified above, inside exactly the regions counted below, so a file it rewrites falls in THIS
+# reading by what it converted and moves no other meter. It holds back three things the count
+# cannot: an assert's CONDITION, a `run [...]` argument, and a COUPLED SAYING -- a spoken line
+# another runner matches on. That third exclusion has no sibling, and it is why this surface stood
+# unswept while its two siblings were swept to zero: Rye's `print` and Glow's `::` speak to a person
+# and to nobody else, while a Rishi `say` is also a wire between guards.
+#
 # WHAT COUNTS. A SPOKEN line is one whose first non-blank word is `say`, or one that begins
 # `assert` and carries an `else "` message. Those are Rishi's two ways of putting a sentence in
 # front of a reader, and both are prose by every test the rule applies.
@@ -64,7 +84,15 @@ mode="${1:-count}"
 #                             while its module was swept. The reading stood at 11,073 -- EIGHTY below
 #                             the ceiling, slack earned by laps that converted without lowering it --
 #                             so this falls by exactly the one character removed and claims none of it.
-CEILING=11152
+#   10585  `20260910.180158`  the first sweep this surface has had, and the lap that built the tool
+#                             for it. `tools/fixtures/r/rish_spoken_ascii_convert.sh` swept
+#                             `tools/p/parity_ch01.rish` and `tools/p/parity_ch02.rish` -- 567
+#                             characters, every one a form the rule's table spells -- and both files
+#                             were RE-DERIVED from their committed bytes to prove that nothing but a
+#                             spoken line moved. The reading fell 11,072 -> 10,505 and this falls
+#                             with it, keeping the same 80 of slack it already stood on and taking
+#                             none of the 567.
+CEILING=10585
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).
@@ -87,13 +115,15 @@ count_file() {
         c = substr($0, i, 1)
         if (c ~ /[\300-\377]/) {
           n++
-          # The six forms the rule names and spells are reported apart from the notation tail:
-          # one number is a mechanical sweep, the other is a reader choosing a word.
+          # The forms the rule names and spells are reported apart from the notation tail: one
+          # number is a mechanical sweep, the other is a reader choosing a word. The typographic
+          # minus joined them `20260910.180158`, and it is the eighth entry rather than a seventh
+          # spelling of one of the others.
           seq = c; j = i + 1
           while (j <= length($0) && substr($0, j, 1) ~ /[\200-\277]/) { seq = seq substr($0, j, 1); j++ }
           if (seq == "\342\200\224" || seq == "\342\200\223" || seq == "\302\267" ||
               seq == "\342\200\246" || seq == "\342\206\222" || seq == "\342\206\220" ||
-              seq == "\342\206\224") t++
+              seq == "\342\206\224" || seq == "\342\210\222") t++
           i = j - 1
         }
       }
