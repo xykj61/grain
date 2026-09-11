@@ -1,0 +1,6 @@
+//! Plant -- alias cargo_ceiling incomplete (positive control).
+//! One member of a three-name group, declared twice at one value. The elder
+//! reading summed const LINES, found two agreeing numbers, and answered
+//! `status=agree` with `verdict=ok` -- a group claim proven by reading one of
+//! its names twice while the other two stood nowhere in the room.
+pub const max_resin_bytes: u32 = 1024;
