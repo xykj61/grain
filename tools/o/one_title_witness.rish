@@ -1,0 +1,67 @@
+# tools/o/one_title_witness.rish -- does every living page carry exactly one title?
+#
+#   rishi/bin/rishi run tools/o/one_title_witness.rish
+#
+# WHAT THIS GUARDS. `context/TAME_GUIDANCE.md`'s lint table stands under the heading **Enforced
+# now**, and one of its rows asks for exactly one top-level `#` per markdown page, fenced code
+# ignored. That row named no instrument, and nothing in this tree held it. The only other page
+# mentioning the duty -- `tools/fixtures/r/radiant_lint_scan.sh`, duty 3 -- prints `deferred (TAME
+# one-# Title / tame-check owns it)`, and `tools/t/tame-check.rish` spells no heading anywhere.
+# Two pages pointing at each other is a promise standing on nobody, and a reader meeting `Enforced
+# now` could not tell that row from the nineteen beside it a guard really holds.
+#
+# WHY THE RULE IS WORTH HOLDING. A page's single top-level heading is its name. Two titles is two
+# documents sharing one file, which misleads every reader that takes the first `# ` as the subject
+# -- a table of contents, a link preview, an agent skimming a room. Zero titles is a page that
+# cannot say what it is.
+#
+# WHAT IT READS. Tracked `*.md`, minus dated testimony, the `date/`, `archive/` and `yonder/`
+# shelves, the rooms whose text is not ours to edit, and every `fixtures/` path -- that last one
+# because a fixture may plant a violation on purpose, including the fenced-decoy control this
+# reading borrows its method from. Measured `20260911`: **390 living pages, 389 carrying exactly
+# one title.**
+#
+# THREE FORMS COUNT AS A TITLE, and the third is the one a naive reading gets wrong: `README.md`
+# centers its title as HTML, so a bare `^# ` count calls the tree's own front door untitled. A
+# meter that reddened the most-read page here would be turned off on its first day.
+#
+# AND INLINE CODE IS MASKED BEFORE EITHER TEST, which the first live run taught: a page that writes
+# ABOUT titles names both forms in backticks, so `context/TAME_GUIDANCE.md` and this card each read
+# as carrying two titles until the mention was told from the heading.
+#
+# WHY A CEILING OF ONE RATHER THAN A WALL AT ZERO. The single page outside the rule is
+# `classical-vedic-astrology/templates/reading-template.md`, a template in another lane's room
+# where two titles may well be the point. Editing a peer's room to make a number pretty is the
+# opposite of what a ceiling is for. It falls when that lane rules on its own page.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked pages and a pen.
+
+say "one-title: Language EN -- a page's single top-level heading is its name, and a rule the law calls enforced wants an instrument."
+say "one-title: Style Gauge, Meter -- the population is named beside the gate, since a reading of nothing looks exactly like a clean tree."
+say "one-title: Lens TAME -- docs and implementation stay synced; assert it rather than assume it."
+
+# 1 -- the pen. Every refusal is planted and then lifted, so a refusal stays tellable from a
+# bypass, and every read-past class is planted with a violation before the corpus is called clean.
+let control = run ["sh" "tools/fixtures/o/one_title_control.sh"]
+say control.out
+say control.err
+assert control.ok else "one-title: a control case read the wrong way: ${control.out} ${control.err}"
+assert control.out contains "control_fail=0" else "one-title: the pen must balance before the field is believed: ${control.out}"
+assert control.out contains "control_legs=48" else "one-title: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out}"
+
+# 2 -- the field, under a ceiling that only falls.
+let field = run ["sh" "tools/fixtures/o/one_title_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "one-title: the field reading refused: ${field.out} ${field.err}"
+assert field.out contains "outside_ceiling=1" else "one-title: the ceiling moved -- it may fall on a repair and never rise: ${field.out}"
+assert field.out contains "verdict=ok" else "one-title: a living page carrying no title or two has entered the tree -- run the scan with --list to name it: ${field.out}"
+
+# 3 -- the reach, asserted rather than assumed. A walk that found nothing reports a perfect zero
+# (REDS %463), so the population is named here rather than trusted.
+assert (field.out contains "pages=0") == false else "one-title: the walk found no living page at all, so its reading means nothing: ${field.out}"
+assert (field.out contains "titled=0") == false else "one-title: the walk found no titled page at all, so the reader has lost the form it counts: ${field.out}"
+assert field.out contains "no_title=" else "one-title: the two halves of `outside` are printed apart, since a total naming no member leaves a stray unlocatable: ${field.out}"
+assert field.out contains "many_titles=" else "one-title: the two halves of `outside` are printed apart, since a total naming no member leaves a stray unlocatable: ${field.out}"
+
+say "GREEN: one-title -- every living page beyond the standing one says what it is, exactly once."

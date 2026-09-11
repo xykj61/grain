@@ -5212,3 +5212,19 @@ guard error_member_reach
 path tools/e/error_member_reach_witness.rish
 tier lap
 seated 20260911.060527
+
+# THE ROW `context/TAME_GUIDANCE.md` CALLED ENFORCED AND NOBODY HELD, seated 20260911.114500.
+# That page's lint table stands under the heading "Enforced now" and one of its rows asks for
+# exactly one top-level `#` per markdown page, fenced code ignored. It named no instrument. The
+# only other page carrying the duty, `tools/fixtures/r/radiant_lint_scan.sh` duty 3, prints
+# `deferred (TAME one-# Title / tame-check owns it)` -- and `tools/t/tame-check.rish` spells no
+# heading anywhere. Two pages pointing at each other, and a reader checking either end finds a
+# citation rather than a hole.
+#
+# The rule was kept by habit at 389 of 390 living pages before the guard existed, which is the
+# cheapest moment to seat one: the ceiling costs a single page of slack rather than a migration.
+# 0.23s over 390 pages and 2.7s for its pen, so it rides every lap.
+guard one_title
+path tools/o/one_title_witness.rish
+tier lap
+seated 20260911.114500

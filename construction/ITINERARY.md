@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f7e78f51e3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f9468fe9be` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -177,29 +177,28 @@ plus ten body splits at existing punctuation. **B 84**, molted in place under a 
 citers); two `claim_preserve` FAILs read by hand -- a split's capitals, one quantifier made exact.
 **YOURS:** the remaining 39 are **33 `active-designing`** -- 31 near-identical ALES fill templates,
 so one mechanical pass rather than 33 -- and **6 `external-research`**.
-**INCENSE -- THE GATE BOUNDED ITSELF TO THE CLASS ITS OWN MEASUREMENT FOUND.**
-Elder [shelved](archive/20260911-091811_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4636, hand-advanced past row 1's eight reads today).
-**REDS FIRST:** cold clean of anything mine.
-**THE QUESTION:** for every path the law room prints, does a guard read it?
-`law_tool_citation` walls every `tools/` path a `.claude/rules/*.md` page prints at zero, and its
-own header argues that wall as being about a **LAW PAGE**: *naming a guard is a promise about a
-file that already exists*. Take `tools/` out of that sentence and it holds.
-**MEASURED: 128 more paths into eleven other rooms, read by nothing.** Two were stale -- the
-Radiant self-critique essay (`20260715-163000`) and the TAME SLC audit ledger (`20260717-181715`),
-both folded to `active-designing/yonder/date/`, standing in three law pages and the twin. **One
-line of `tame-guidance.md` carried a repaired citation and a stale one four words apart.**
-**MECHANISM:** a second reading, `room_cited_untracked`, walled at zero over every non-`tools/`
-path the room prints -- two readings rather than one merged number, since `cited_bare` and
-`cited_runners` are measured against `cited_paths`. Its three read-past classes are **mechanical
-rather than a typed list**: an absolute path starts with `/`; a placeholder is what
-`stamp-and-name.md` REQUIRES of an illustration; and `git check-ignore` answers *is this a room
-the repository keeps*.
-**PROVEN:** 67 legs, **five mutations bitten**, leg COUNT pinned. the row of `20260911.093000` booked; `%709` folded to
-its own shelf first, since the pin stood at **16 bytes**.
-[Paper](../active-designing/20260911-093000_the-gate-that-inherited-its-bound.md) **A 96**.
-**YOURS:** the twin reports one survivor, `tally/heap-garden.rye`, marked `when built` and gated
-nowhere. May a law page name a path that has yet to exist?
+**INCENSE -- A TABLE HEADED *ENFORCED NOW* HELD A RULE NOTHING ENFORCED.**
+Elder [shelved](archive/20260911-121531_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4640): listen for the page nobody answered.
+**REDS FIRST:** cold **258 green, 0 red**, 2 gated. Nothing of mine to close.
+**WHAT I HEARD.** `context/TAME_GUIDANCE.md`'s lint table stands under **Enforced now**. Twenty
+rows, four sentences: **8** held by a rostered tool, **6** naming a tool no lap runs, **4** held by
+`tame_style_scan_bans.rish` and naming nothing, **2** held by nothing at all.
+**THE CIRCLE:** *One `# Title` per markdown* named no instrument; `radiant_lint_scan.sh` duty 3
+prints `deferred (TAME one-# Title / tame-check owns it)`; `tame-check` spells no heading anywhere.
+Each end cites the other, so a reader checking either finds a citation rather than a hole.
+**MEASURED BEFORE BUILT:** **390 living pages, 389 titled, one with two** -- kept at 99.7% by habit
+and by nothing else, which is the cheapest hour to seat a guard.
+**THE FORM A NAIVE READING GETS WRONG:** `README.md` centers its title as `<h1>`, so a bare `^# `
+count calls the front door untitled. Fences masked -- `census_control_h1_fenced.md` had proved that
+method and had been aimed at no room.
+**LANDED:** `one_title`, `tier lap`, 0.23s over 390 pages, ceiling **1** -- that page is a template
+in another lane's room. **48 pen legs, six mutations bitten.** One matters twice: widening the room
+filter to `(^|/)seed/` reads as tidy and drops `recursion-prompts/seed/`'s three living pages.
+**ALSO:** every row with an instrument names it. Row `20260911.112513` booked; `%710` folded first.
+[Paper](../active-designing/20260911-112513_the-table-that-said-enforced-now.md) **A 90**.
+**YOURS:** (1) *Line length <= 100 columns* -- guard it or retire the row. (2) still standing:
+`tally/heap-garden.rye`, `when built` and gated nowhere -- may a law page name a path not yet made?
 **COPAL -- THE DOOR PROMISED A GUARD AND THE ROSTER SEATED NOBODY.**
 Elder [shelved](archive/20260911-091110_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
 N=4632): look at what laps route around; read the ledger first.
@@ -378,6 +377,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260911.104047` | The roster that named one instrument | [log](../session-logs/date/20260911/20260911-104047_the-roster-that-named-one-instrument.kyri) |
+| `20260911.121653` | The table that said Enforced Now | [log](../session-logs/date/20260911/20260911-121653_the-table-that-said-enforced-now.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -625,16 +625,30 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | **Amber first lap** (export / verify / restore on fixture tree) | `tools/ce/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
 | **No `Self = @This()`** | `tools/t/tame-check.rish` (witness; the predicate reaches any spacing, `Self=@This()` included) |
 | **No tabs, no trailing whitespace** | `tools/t/tame-check.rish` (witness; tabs walled at zero, trailing whitespace split -- **1** authored site ratcheted, **2** inside `\\` multiline strings reported as program content the tree emits) |
-| **Line length <= 100 columns** | flag lines past 100, allowing a URL or a multiline-string result that itself fits |
-| **One `# Title` per markdown** | flag any `.md` with zero or more than one top-level `#`, fenced code ignored -- directly serving our doc-heavy tree |
+| **Line length <= 100 columns** | flag lines past 100, allowing a URL or a multiline-string result that itself fits -- **held by nothing yet** (`20260911`): no tracked tool compares a line length against a hundred outside a study of upstream code |
+| **One `# Title` per markdown** | `tools/o/one_title_witness.rish` (live witness, seated `20260911`; fence-aware, and an HTML `<h1>` counts, since `README.md` centers its own title that way). **390 living pages, 389 carrying exactly one**; ratchet ceiling **1** |
 | **Living docs lint (roster advisory)** | `tools/l/living_docs_lint.rish` -- five duties; ratchet advisory; prints in parity ch.1 beside `tame_style`; roster in `tools/fixtures/l/living_docs_lint_roster.sh` |
 | **signed-Kumara parity (proven-seat)** | `tools/p/proven_seat_signed_kumara_parity.rish` -- parity ch.2 tail; fetch gates; build+serial when bench staged; jail-safe ADVISE skip |
-| **No leftover `FIXME` or `dbg(`** | flag both before merge; `FIXME` is welcome while iterating, gone before main |
+| **No leftover `FIXME` or `dbg(`** | `tools/t/tame_style_scan_bans.rish`, driven by `tools/t/tame_style_check.rish` (live); `FIXME` is welcome while iterating, gone before main |
 | **Disjoint copies through `tally/copy.rye`** | `copyForwards`/`copyBackwards` banned; `@memcpy` counted down as a ratchet; new code calls `copy_disjoint` -- `tools/t/tame_style_check.rish` (live) |
-| **Qualified `debug.assert(` anywhere** | banned; import once, call bare -- the import line carries no parenthesis, so the string alone convicts |
-| **Compound `assert(a and b)`** | banned; split so the failing half is named |
-| **Call-result compared to an error** | `) == error.` and `) != error.` banned at the call seam (silent `anyerror` upcast); a captured `\|err\|` compared inside an assert stays welcome -- the refined seam, reasoned in the alignment study |
+| **Qualified `debug.assert(` anywhere** | banned; import once, call bare -- the import line carries no parenthesis, so the string alone convicts. `tools/t/tame_style_scan_bans.rish` (live) |
+| **Compound `assert(a and b)`** | banned; split so the failing half is named -- `tools/t/tame_style_scan_bans.rish` (live) |
+| **Call-result compared to an error** | `) == error.` and `) != error.` banned at the call seam (silent `anyerror` upcast); a captured `\|err\|` compared inside an assert stays welcome -- the refined seam, reasoned in the alignment study; `tools/t/tame_style_scan_bans.rish` (live) |
 | **`usingnamespace` - `!comptime` - `Self = @This()`** | banned verbatim, as upstream -- `tools/t/tame_style_check.rish` (live) |
+
+
+**What actually holds these rows, read `20260911.112513` and written down rather than assumed.**
+Twenty rule rows stand here; eight lean on five tools a roster pass runs every lap, and six name a
+tool **no lap runs** -- each for its own reason, and only one of them is *nobody got round to it*.
+`tools/cl/claim_preserve_witness.rish` refuses a bare invocation by design, wanting
+`CLAIM_PRESERVE_FILES` named, so a style pass drives it rather than a roster.
+`tools/d/designed_not_built_witness.rish` opens on *not in parity until Kaeden rules for the bound*.
+`tools/r/radiant_lint.rish` prints and never fails, so **advisory** is the honest roof for its row
+rather than *enforced*. `tools/d/dated_guard.rish` is a doorway over the staged index, reached by
+the parity chapter. `tools/p/proven_seat_signed_kumara_parity.rish` wants a staged bench. The sixth,
+`tools/ce/cellar_first_ring.rish`, looks plainly rosterable and waits on a lap that can measure its
+cost. Reading:
+[`../active-designing/20260911-112513_the-table-that-said-enforced-now.md`](../active-designing/20260911-112513_the-table-that-said-enforced-now.md).
 
 **Ratchet advisories -- print every parity run, never fail** (`tools/t/tame_style_check.rish` second half; hand-run `rishi/bin/rishi run tools/t/tame_style_scan_advise.rish` or `sh tools/fixtures/t/tame_style_scan.sh advise`):
 
