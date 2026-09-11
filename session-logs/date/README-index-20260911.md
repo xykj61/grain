@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.023727` | [The clock that turned](20260911/20260911-023727_the-clock-that-turned.kyri) | 29 cadence guards run for the first time; the never-run list named |
 | `20260911.022809` | [The exemption over the living doors](20260911/20260911-022809_the-exemption-over-the-living-doors.kyri) | doorway reads living pages: 106 silent, 16 named, ceiling 90 |
 | `20260911.022110` | [The gate that read a thirtieth of the tree](20260911/20260911-022110_the-gate-that-read-a-thirtieth-of-the-tree.kyri) | the false-future gate saw 247 of 7,344 |
 | `20260911.013953` | [a proof nobody runs is a claim](20260911/20260911-013953_a-proof-nobody-runs-is-a-claim.kyri) | unheard_guard grows a third reading: 258 controls, 18 unrun |

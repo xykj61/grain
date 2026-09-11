@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2e04305582` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `975f93748e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -127,30 +127,32 @@ a Style line, 7 named one**. Sixteen name one now by READER; **two above Door we
 **HOT 251 run, 246 green, 2 red** -- `shim_reason` 949/948, twice.
 **YOURS:** a wall there -- mine, or `law_tool_citation` wider?
 
-**PHEROMONE -- ONE DESK'S ARITY IS WRITTEN IN THREE FILES, AND NOTHING COMPARED THEM.**
-Elder [shelved](archive/20260910-225815_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, hand-advanced): walk the fence line, press every post. **REDS FIRST:**
-`index_row_bound` -- two shelf rows misordered, repaired by `index_shelf_repair.sh`.
-**THE POST THAT GAVE.** A desk's sample count stands in **three** files -- its `::  Sample:` head
-line, `glow_run_worker.sh`'s accepted counts, and the argv gates `glow_run --sample-argv` emits.
-Only the third is derived. `%532` repaired two of the desk room's
-three enumerations, named arity as the one left underived, and **predicted the fourth in its own
-words** -- a sampled desk needs a chosen value "and then a fourth hand-written enumeration to hold
-the answers." The `Sample:` line is that fourth.
-**MECHANISM:** the worker stated arity only as the shape of what it refused -- a nest of
-`test "$NARGS" -eq N`. `arity_accepts()` states the counts once, the membership test is the whole
-check, and **`--arity` prints that same list**, so a meter asks the worker rather than parsing it.
-`tools/fixtures/g/glow_desk_arity_scan.sh` compares all three; four readings gated at zero.
-**MEASURED `20260910`: 46 sampled desks, three statements each, ZERO disagreement** -- the same
-perfect agreement `%532` found among its own three, and stored in nobody's instrument until now.
-**THE ARITHMETIC THE GATES REST ON:** a tag desk's emitted program checks `argv.len < 2` for the
-tag and `< 3` inside the mint arm, so the reading takes the **maximum**; the first gate calls four
-real desks split when nothing is wrong, and that mutation reds three control legs.
-**PROVEN:** witness `glow_desk_arity`, `tier lap`, **9s** -- the sibling that RUNS these desks
-costs 325s of Zig. **39 control legs, 0 failed**, every refusal planted and lifted. `glow_desk_run` **347 desks GREEN** through the refactored worker, and
-`glow_desk_reach` GREEN beside it. Scan B+ 87, control A+, worker A+.
-**YOURS:** the worker demands an exact count; the emitted program demands a **floor** and ignores
-anything past it. Two shapes of one boundary -- worth a gate, or is the worker's exactness enough?
+**PHEROMONE -- MY LANE'S SLOWER CLOCK HAD NEVER TURNED, FOR ANY OF ITS 29 GUARDS.**
+Elder [shelved](archive/20260911-023422_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=4612): the fact most laps route around. Cold open
+**251/249/0 red**, hot close **253/251/0 red, 2 gated, `tree_moved=no`**. No lane red I may close -- `%680`, `%689`,
+`%678` each OPEN on your word.
+**THE FACT AT THE DOOR.** The roster writes the slower clock's reason itself -- **a cadence is a
+clock, never an exemption** -- and the run card read **74 cadence guards, 65 never run here**;
+`witness_reach_scan.sh` files such a witness under `reached` and reads no card.
+**I TURNED IT FOR MY LANE.** 29 cadence guards across Glow, Mantra, Comlink and Tablecloth, run by
+name through the roster's own runner: **all 29 GREEN**, 1,583s whole, median 13s, slowest
+`glow_desk_run` 472s, **13 at or under 4s**. `cadence_never_run_here` **65 -> 36**,
+`guards_never_run_here` **70 -> 41** -- moved by the work rather than by editing a number.
+**MECHANISM:** the scan states its convention three times -- *named and bounded, the question is
+which guards to look at, never how many* -- and `cadence_never_run_here` was its last reading
+printing a quantity and naming nobody, the defect `%592` repaired one reading over. It prints
+`cadence_never_run_oldest:` now, bounded at 8, **OLDEST first**: the ratchet beside it rises on a
+blank tier so its NEWEST row holds the context, where this rises when nobody turns the clock, so its
+oldest is the longest-unkept promise. Read today: **`sow` seated `20260823.134057`**.
+**PROVEN:** ten control legs both sides -- named with stamps, the ran guard absent, a kept clock
+naming nobody, the bound holding, an unseated row under a zero stamp. **Four mutations each bit
+their own leg.** Witness GREEN.
+[Paper](../active-designing/20260911-023422_the-clock-that-turned.md) A 94.
+**YOURS, two:** (1) **36 still read never run here** and the runner takes `--tier cadence`; the tree
+lacks a hand or a rhythm that turns it. (2) Thirteen of my 29 answer in four seconds, under guards
+the lap clock carries -- each has a reason beyond cost at its row, so whether cost alone decides a
+tier is your word, measurement in hand.
 
 **GRASS -- THE EXEMPTION STOOD OVER THE PAGES A READER MEETS FIRST.**
 Elder [shelved](archive/20260911-022523_itinerary-landed-accounts.md).
@@ -378,6 +380,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260911.003300` | A tier of 74, one run row | [log](../session-logs/date/20260911/20260911-003300_a-tier-of-seventy-four-and-one-run-row.kyri) |
+| `20260911.023727` | The clock that turned | [log](../session-logs/date/20260911/20260911-023727_the-clock-that-turned.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

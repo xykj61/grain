@@ -116,6 +116,24 @@ assert control.out contains "cadence_never_run_counted=yes" else "standing-equip
 assert control.out contains "cadence_run_lowers_count=yes" else "standing-equipment: a recorded cadence run must lower that count"
 assert control.out contains "tiered_card_free=yes" else "standing-equipment: a card carrying tiers must pass free"
 
+# THE SECOND GATED-ADJACENT READING THAT PRINTED NO NAMES, one over from the undeclared ratchet
+# below. `cadence_never_run_here` is where a guard goes quiet, and a count cannot be turned: two
+# laps answered "which guards do we owe the clock?" by hand-walking the roster with awk. The seven
+# readings hold the naming exact from both sides -- the never-run guards are named with their own
+# seated stamps, oldest first, the guard that DID run is absent, a kept clock names nobody, the
+# bound is printed and holds, and a guard with no `seated` line is named under a zero stamp rather
+# than vanishing.
+assert control.out contains "three_cadence_counted=yes" else "standing-equipment: two never-run cadence guards beside one that ran must count two"
+assert control.out contains "never_run_named=yes" else "standing-equipment: a never-run cadence guard must be named with its own seated stamp"
+assert control.out contains "never_run_named_second=yes" else "standing-equipment: the second never-run cadence guard must be named too -- one name is a sample, never a list"
+assert control.out contains "ran_guard_unnamed=yes" else "standing-equipment: a cadence guard that ran must never appear in the list -- a naming that names everything names nothing"
+assert control.out contains "never_run_oldest_first=yes" else "standing-equipment: the list must lead with the oldest promise, since that is the one a lap should pay first"
+assert control.out contains "kept_clock_names_none=yes" else "standing-equipment: a card where every cadence guard ran must print no name at all"
+assert control.out contains "never_run_bound_holds=yes" else "standing-equipment: the shown bound must hold, and be printed rather than left to a pipe"
+assert control.out contains "never_run_bound_printed=yes" else "standing-equipment: the shown bound must appear in the output a reader reads"
+assert control.out contains "unseated_named=yes" else "standing-equipment: a cadence guard with no seated line must be named under a zero stamp rather than vanishing"
+assert control.out contains "unseated_sorts_first=yes" else "standing-equipment: a row missing two fields sorts first -- it is no less interesting than one missing one"
+
 # THE ONE GATED RATCHET THAT PRINTED NO NAMES (REDS %592). It reds, so a lap meets it -- and then
 # hand-walks 246 roster records with awk to find the guard that arrived without a `tier` line.
 # Two laps did exactly that, `20260907` and `20260908`. The four readings below hold the naming

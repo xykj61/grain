@@ -186,6 +186,66 @@ EOF
 out=$(run_scan cadence.kyri both-card.kyri)
 case "$out" in *"cadence_never_run_here=0"*) echo "cadence_run_lowers_count=yes" ;; *) echo "cadence_run_lowers_count=no" ;; esac
 case "$out" in *"verdict=ok"*) echo "tiered_card_free=yes" ;; *) echo "tiered_card_free=no" ;; esac
+# A card where every cadence guard has run must print no name at all -- a list that appears on a
+# kept promise reads as a finding and stops being read.
+case "$out" in *"cadence_never_run_oldest:"*) echo "kept_clock_names_none=no" ;; *) echo "kept_clock_names_none=yes" ;; esac
+
+# --- the never-run cadence reading NAMES what it counts, oldest first --------------------
+# The last reading here that printed a quantity and no name, one over from the undeclared ratchet
+# REDS %592 repaired. Proven from both sides, since a naming shown only where it fires cannot be
+# told from one that names every cadence guard: the two that never ran are named with their own
+# seated stamps, the one that DID run is absent from the list, and the order is oldest-first --
+# the opposite of the undeclared ratchet, because here the oldest promise is the actionable one.
+cat > "$pen/three-cadence.kyri" <<'EOF'
+format standing-equipment-v1
+guard middle
+path tools/real_witness.rish
+tier cadence
+seated 20260825.000000
+guard eldest
+path tools/real_witness.rish
+tier cadence
+seated 20260823.000000
+guard ranone
+path tools/real_witness.rish
+tier cadence
+seated 20260824.000000
+EOF
+cat > "$pen/ranone-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran ranone 20260826.100000 green cadence
+EOF
+out=$(run_scan three-cadence.kyri ranone-card.kyri)
+case "$out" in *"cadence_never_run_here=2"*) echo "three_cadence_counted=yes" ;; *) echo "three_cadence_counted=no" ;; esac
+case "$out" in *"cadence_never_run_oldest: eldest seated 20260823.000000"*) echo "never_run_named=yes" ;; *) echo "never_run_named=no" ;; esac
+case "$out" in *"cadence_never_run_oldest: middle seated 20260825.000000"*) echo "never_run_named_second=yes" ;; *) echo "never_run_named_second=no" ;; esac
+case "$out" in *"cadence_never_run_oldest: ranone"*) echo "ran_guard_unnamed=no" ;; *) echo "ran_guard_unnamed=yes" ;; esac
+first_named=$(printf '%s\n' "$out" | sed -n 's/^cadence_never_run_oldest: \([^ ]*\) .*/\1/p' | head -1)
+case "$first_named" in eldest) echo "never_run_oldest_first=yes" ;; *) echo "never_run_oldest_first=no" ;; esac
+# The bound is named in the output rather than left to a pipe, and it holds: one shown of two.
+out=$(CADENCE_NEVER_SHOW=1 run_scan three-cadence.kyri ranone-card.kyri)
+named_n=$(printf '%s\n' "$out" | grep -c '^cadence_never_run_oldest: ' || true)
+case "$named_n" in 1) echo "never_run_bound_holds=yes" ;; *) echo "never_run_bound_holds=no" ;; esac
+case "$out" in *"cadence_never_run_shown=1"*) echo "never_run_bound_printed=yes" ;; *) echo "never_run_bound_printed=no" ;; esac
+# A cadence guard carrying no `seated` line sorts first under a zero stamp rather than vanishing,
+# the same clause the undeclared ratchet writes, so a row missing two fields is still named.
+cat > "$pen/unseated-cadence.kyri" <<'EOF'
+format standing-equipment-v1
+guard dated
+path tools/real_witness.rish
+tier cadence
+seated 20260823.000000
+guard unseated
+path tools/real_witness.rish
+tier cadence
+EOF
+cat > "$pen/no-runs-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+EOF
+out=$(run_scan unseated-cadence.kyri no-runs-card.kyri)
+case "$out" in *"cadence_never_run_oldest: unseated seated 00000000.000000"*) echo "unseated_named=yes" ;; *) echo "unseated_named=no" ;; esac
+first_named=$(printf '%s\n' "$out" | sed -n 's/^cadence_never_run_oldest: \([^ ]*\) .*/\1/p' | head -1)
+case "$first_named" in unseated) echo "unseated_sorts_first=yes" ;; *) echo "unseated_sorts_first=no" ;; esac
 
 # --- the undeclared-tier ratchet NAMES what it counts (REDS %592) ------------------------
 # Every other named class here prints its rows; this one printed a quantity alone, and it is the
