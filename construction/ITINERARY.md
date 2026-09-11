@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7ff4bd2691` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `254d563b28` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
