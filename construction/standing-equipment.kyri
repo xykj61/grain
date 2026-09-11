@@ -5295,3 +5295,38 @@ guard port_band
 path tools/p/port_band_witness.rish
 tier lap
 seated 20260911.145000
+
+# THE THIRD CELL OF A THREE-CELL GATE (`20260911.111917`). Glow's `|-` trap takes a required bound as its
+# first child, so an unbounded loop is a compile-time refusal rather than a runtime surprise. That
+# claim had two proofs standing beside it and a hole between them, read `20260911`: the MODULE's
+# refusal is proven by `glow/rune_bounded_trap_witness.rye` -- nine claims, GREEN in 2.2s -- which
+# stood outside every roster, here and at the anointed head; and the DRIVER's acceptance by
+# `glow_desk_run`, whose derived selection lowers, builds and runs 347 desks (its own roster
+# comment records 301 on `20260907`), two of them traps. The DRIVER's refusal
+# was proven by nothing, ever. `MissingBound` appeared in exactly two files in the whole tree, both
+# Rye sources.
+#
+# A refusal proven only in the passing direction cannot be told from a bypass, which is this tree's
+# own sentence one meter over in `.claude/rules/ascii-first.md`. The control drives
+# `glow/bin/glow_run` itself -- nine probes into a throwaway pen, the bare trap planted and refused
+# BY NAME, the same trap lifted to `|-  32` and required to pass, and the four other refusals each
+# in the compiler's own word. Both mutations bite: flipping the plant's expectation fails it, and
+# changing only the expected error word from `MissingBound` to `LiteralOverflow` fails it too.
+#
+# It builds the driver into its OWN pen rather than over `glow/bin/glow_run`. Those bytes are
+# shared by `tools/g/glow_run_worker.sh` and the batch desk runner, which take a directory lock
+# against each other; a control needing that lock could never run beside a desk pass.
+#
+# The ninth leg records rather than praises: `|-  0` is ACCEPTED -- a loop declared with a
+# circumference of zero, which parses, lowers and runs clean. Whether a language should let a
+# reader write that is a question for a hand; the leg makes a change to the answer audible.
+#
+# `tier lap` at 4.1s, of which 2.4s is the driver build. This is the family's third firing in three
+# days -- `glow_rune_alphabet` was rostered `20260909.155028` after standing GREEN and unheard since
+# STOA90 -- and a lantern that fires twice becomes a loom.
+#
+# Paper: `active-designing/20260911-111917_the-loop-that-already-refused.md`
+guard glow_trap_bound
+path tools/g/glow_trap_bound_witness.rish
+tier lap   # 4.1s; nine probes through a pen-built driver, plant refused by name and lifted
+seated 20260911.111917

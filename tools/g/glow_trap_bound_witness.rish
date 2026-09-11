@@ -1,0 +1,39 @@
+# glow_trap_bound_witness.rish -- Glow refuses a loop that names no circumference.
+#
+# Glow's `|-` trap takes a required bound as its first child (glow/rune_bounded_trap.rye), so an
+# unbounded loop is a compile-time refusal. Three proofs could stand beside that claim and only
+# two did, read 20260911: the MODULE's refusal is proven by glow/rune_bounded_trap_witness.rye
+# (GREEN in 2.2s, on no roster), and the DRIVER's acceptance by glow_desk_run, which lowers,
+# builds and runs 301 desks including both trap fixtures. The driver's REFUSAL was proven by
+# nothing. A gate proven in the accepting direction alone cannot be told from a bypass.
+#
+# This guard closes that third cell through glow/bin/glow_run itself, the binary a hand runs.
+#
+#   rishi/bin/rishi run tools/g/glow_trap_bound_witness.rish
+
+say "glow trap bound: nine probes through the real driver -- a trap with no circumference planted and refused, the same trap lifted to a bound and accepted, and every other refusal named in the compiler's own word."
+
+let ctl = run ["sh" "tools/fixtures/g/glow_trap_bound_control.sh"]
+
+# THE CONTROL'S OWN LINES ARE PRINTED BEFORE THE FIRST ASSERT ON THEM. An assert ends the run, so
+# a say below one is a say the reader never receives on the one occasion it was written for --
+# the refusal. That fault stood in a sibling guard until 20260911 and shim_reason caught it.
+say ctl.out
+
+assert ctl.ok else "glow trap bound control failed: ${ctl.err}${ctl.out}"
+
+# The verdict alone is not enough. A control whose legs fell to an early exit reaches its close
+# with a smaller count and an honest ok, so the leg tally is asserted beside it -- the same
+# reading ascii_document's pen taught, where sixteen legs could read no under a GREEN witness
+# because nothing asserted that they had been heard.
+assert ctl.out contains "control_failed=0" else "glow trap bound: a leg failed"
+assert ctl.out contains "control_legs=9" else "glow trap bound: the leg count moved"
+assert ctl.out contains "control_verdict=ok" else "glow trap bound: control did not reach ok"
+
+# The plant and its lift, named one at a time, so a reader of this witness's output sees the two
+# halves of the gate rather than a total.
+assert ctl.out contains "case=bare_trap want=refuse got=refuse error=MissingBound leg=ok" else "glow trap bound: a bare |- was not refused MissingBound by the driver"
+assert ctl.out contains "case=literal_bound want=accept got=accept" else "glow trap bound: the same trap with a bound was not accepted"
+assert ctl.out contains "case=lent_bound want=accept got=accept" else "glow trap bound: the dependent (lent x) form was not accepted"
+
+say "GREEN: glow trap bound -- the driver refuses an unbounded trap by name and accepts the bounded one; nine legs, zero failed."
