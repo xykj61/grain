@@ -75,7 +75,8 @@ say "pen=28 behaviors, two mutations bitten on 20260911"
 # exists to name.
 let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
 say build.out
-assert build.ok else "mantra_udp_reuseaddr: snapshot delivery build failed: ${build.err}"
+say build.err
+assert build.ok else "mantra_udp_reuseaddr: snapshot delivery build failed -- read the two lines above"
 
 let live = run ["sh" lock "38490" "sh" probe bin "38491"]
 say live.out

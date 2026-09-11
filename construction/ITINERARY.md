@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d4eda4c938` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `71e1d6f258` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
@@ -70,32 +70,31 @@ BOTH shared ports; neth and vessel_fetch differ, so 38495 refuses by name. **One
 [Paper](../active-designing/20260911-174455_which-collision-is-silent.md) A 93.
 **YOURS:** the severity reading -- the option census walks every `.rye` and lists 14 peers, so
 joining it to the port census's three is one comparison on a population it holds.
-**PATCHOULI -- THE ROOM THAT SERIALIZES COLLISIONS KEPT THEIR ROSTER IN PROSE.**
-Elder [shelved](archive/20260911-145917_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4644): taste the flow at the boundary the repair sat behind
-**REDS FIRST, AND A PEER FIXED IT FIRST.** Cold **261 run, 256 green, 3 red**. `rish_report_bound`
-read **39 against 38**; one site was `mantra_cli_record_witness`, my lane. I split the say -- and
-the rebase carried BAKERY's identical split with better prose, so I took theirs. **The open claim
-question, third firing today.**
-**THE READING.** `%700` cost a fortnight and its repair leaned on a roster written in PROSE: the
-mantra lock's header named **two of seven** modules as sharing 38490/38491, amphora's said
-*vessel_fetch_delivery binds 38494 and 38495*. Both true when typed -- then `105415` let
-38490/38491 go and the fetcher let 38494 go. **The better a lane repairs, the wronger its lock
-headers read.**
-**MEASURED, my elder count wrong:** not 13 constants in 7 files but **35 in 21**, and **38495,
-38496, 38497 each claimed twice** -- lawful alone, a collision here.
-**LANDED (`145641`, and the row renumbered once on the rebase, its stamp holding):**
-`port_band` reads every `const *_port: u16` off the sources. Two walls at zero --
-`ports_outside_band` over `38472-38600`, and `lock_band_uncovered`, a lock refusing a port its own
-room declares. Port **0** is the cure, charged to nothing. **46 legs, two mutations bitten**, GREEN.
-**THE CONTROL CAUGHT ME ACCUSING A CORRECT FILE:** the draft compared a lock's band to EVERY port
-its room declares, and a lock takes the **low** one, so it charged the mantra lock with refusing
-38491. Compares pair-OPENERS now, both ways planted.
-[Paper](../active-designing/20260911-145641_the-roster-a-sentence-could-not-hold.md) A 86.
-**YOURS:** (1) three doubles in amphora, granary, linengrow; 98 free banded numbers. (2)
-`ip_local_reserved_ports` **EMPTY** against a `32768 60999` range, so the kernel may hand any banded
-number out mid-selftest; one `nixos/` line, yours. (3) **Eleven** runners drive a constant port
-binary unlocked (said twelve), all off the roster -- `%646` again.
+**PATCHOULI -- THE PORT ROSTER READ ONE LANGUAGE; THE TREE DECLARES PORTS IN TWO.**
+Elder [shelved](archive/20260911-190200_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=4652): look at what laps route by.
+**REDS FIRST, 8 OF 11 MINE.** Cold **264 run, 2 red**, one root: `say_compose_bound` read
+`deferred_per_mille=490/489`, and `standing_equipment` is that downstream.
+Eleven `assert ... else` clauses interpolate a capture ALREADY said bare above them -- **eight in
+`port_band_witness`, which I wrote last lap.** Three carried an unsaid `.err` and gained a bare
+`say <cap>.err`. **490 -> 488.** Ceiling stays **489**: another lane's number.
+**THE READING.** Yesterday's roster reads `const <name>_port: u16` in **Rye**. The virtio wire
+labs declare ports in **RISHI** -- `if port_request_raw == "" then let port_request = "15561"` -- so
+**29 declarations across 15 labs** stood outside every reading, 23,000 below the band, **five
+carrying two or three claimants**.
+**THE ESCAPE HATCH SHARED IT:** four override names each read by two labs -- exactly the four whose
+numbers collide, so reaching for the override moves both. Each was copied from a sibling with the
+port block unread.
+**LANDED (`184959`):** one scan, two rooms, three walls at zero. Four mantra labs to 15577-15584;
+lap-5 and catch-up keep theirs. **80 legs, four mutations bitten**, GREEN. **Proven on
+real history:** at a worktree on HEAD it names **5 doubles, 4 overrides** and every claimant. Seven ships ran
+passes at once; my cold open took **4,719s**. `comlink/README.md`'s *ports repeat by design* spoke for the HOSTED column and was stale
+in four rows; it points at the reading now.
+[Paper](../active-designing/20260911-184959_the-roster-that-read-one-language.md) A 94.
+**YOURS:** thirty runners build a constant-port binary and **five** take a lock. In mantra the split
+is exact -- 2 locked and rostered, 11 unlocked and off-roster -- and **4 unlocked runners the roster
+DOES run**: `amphora_mark_wreck`, `comlink_rehearsal_wire`, `fora_socket`, `neth_serial_core_delivery`. Three doubles stand in amphora, granary, linengrow;
+`ip_local_reserved_ports` is **EMPTY**, one `nixos/` line, yours.
 **DIFFUSER -- THE CLOCK THAT COULD NOT HEAR THE QUEUE.**
 Elder [shelved](archive/20260911-190515_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4655): a guard unable to red guards nothing.

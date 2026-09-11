@@ -242,6 +242,136 @@ mut_decls=$(field "$out" port_declarations)
 # outside the band, so the mutant reds a pen the scan reads clean.
 [ "$(field "$out" ports_outside_band)" -gt 0 ] && say_leg mutation_substring_reds_clean yes || say_leg mutation_substring_reds_clean no
 
+
+# ---------------------------------------------------------------- THE DEVICE BAND
+# A SECOND ROOM IN A SECOND LANGUAGE. The readings above see Rye; the wire labs declare their ports
+# in Rishi, as the default half of an environment override. Every leg below is planted, read as a
+# refusal, then lifted and read as zero, on the same real repositories.
+make_lab() {
+  mkdir -p "$pen/$1/tools/co"
+  cat > "$pen/$1/tools/co/comlink_$2_wire_lab.rish" <<LAB
+let port_request_raw = env "$3"
+if port_request_raw == "" then let port_request = "$4" else let port_request = port_request_raw
+LAB
+}
+
+# A tree holding Rye and no lab at all: reported, never refused. The labs are a room this tree grew,
+# and every tree before they landed held none.
+out=$(read_scan clean); rc=$?
+[ "$(field "$out" device_labs)" = 0 ] && say_leg device_no_lab_counted yes || say_leg device_no_lab_counted no
+[ "$(field "$out" device_declarations)" = 0 ] && say_leg device_no_lab_zero yes || say_leg device_no_lab_zero no
+[ "$rc" -eq 0 ] && say_leg device_no_lab_free yes || say_leg device_no_lab_free no
+
+# A lawful lab inside the seated device band.
+make_lab clean sync COMLINK_SYNC_LAB_PORT 15561
+commit_tree clean
+out=$(read_scan clean); rc=$?
+[ "$(field "$out" device_labs)" = 1 ] && say_leg device_lab_found yes || say_leg device_lab_found no
+[ "$(field "$out" device_declarations)" = 1 ] && say_leg device_inside_counted yes || say_leg device_inside_counted no
+[ "$(field "$out" device_ports_outside_band)" = 0 ] && say_leg device_inside_free yes || say_leg device_inside_free no
+[ "$rc" -eq 0 ] && say_leg device_lawful_lab_free yes || say_leg device_lawful_lab_free no
+
+# A device port outside the seated band.
+make_lab clean stray COMLINK_STRAY_LAB_PORT 9099
+commit_tree clean
+out=$(read_scan clean); rc=$?
+[ "$(field "$out" device_ports_outside_band)" = 1 ] && say_leg device_outside_counted yes || say_leg device_outside_counted no
+[ "$rc" -ne 0 ] && say_leg device_outside_refused yes || say_leg device_outside_refused no
+[ "$(field "$out" verdict)" = device_outside_band ] && say_leg device_outside_named yes || say_leg device_outside_named no
+printf '%s\n' "$out" | grep -q 'comlink_stray_wire_lab.rish' && say_leg device_outside_file_named yes || say_leg device_outside_file_named no
+rm -f "$pen/clean/tools/co/comlink_stray_wire_lab.rish"
+commit_tree clean
+out=$(read_scan clean)
+[ "$(field "$out" device_ports_outside_band)" = 0 ] && say_leg device_outside_lifted yes || say_leg device_outside_lifted no
+
+# ONE NUMBER, TWO LABS -- the shape that stood five times unread in the tree.
+make_lab clean twoway COMLINK_TWOWAY_LAB_PORT 15561
+commit_tree clean
+out=$(read_scan clean); rc=$?
+[ "$(field "$out" device_double_claimed)" = 1 ] && say_leg device_double_counted yes || say_leg device_double_counted no
+[ "$rc" -ne 0 ] && say_leg device_double_refused yes || say_leg device_double_refused no
+[ "$(field "$out" verdict)" = device_over_ceiling ] && say_leg device_double_named yes || say_leg device_double_named no
+printf '%s\n' "$out" | grep -q 'comlink_twoway_wire_lab.rish' && say_leg device_double_claimant_named yes || say_leg device_double_claimant_named no
+PORT_BAND_DEVICE_DOUBLE_CEILING=1 PORT_BAND_ROOT="$pen/clean" sh "$SCAN" >/dev/null 2>&1 && say_leg device_double_at_ceiling_free yes || say_leg device_double_at_ceiling_free no
+rm -f "$pen/clean/tools/co/comlink_twoway_wire_lab.rish"
+commit_tree clean
+out=$(read_scan clean)
+[ "$(field "$out" device_double_claimed)" = 0 ] && say_leg device_double_lifted yes || say_leg device_double_lifted no
+
+# ONE OVERRIDE NAME, TWO LABS -- the escape hatch sharing the collision it exists to escape. The
+# numbers differ here on purpose, so this leg can only pass by reading the NAME.
+make_lab clean twin COMLINK_SYNC_LAB_PORT 15590
+commit_tree clean
+out=$(read_scan clean); rc=$?
+[ "$(field "$out" device_double_claimed)" = 0 ] && say_leg device_override_numbers_differ yes || say_leg device_override_numbers_differ no
+[ "$(field "$out" device_override_shared)" = 1 ] && say_leg device_override_counted yes || say_leg device_override_counted no
+[ "$rc" -ne 0 ] && say_leg device_override_refused yes || say_leg device_override_refused no
+[ "$(field "$out" verdict)" = device_override_shared ] && say_leg device_override_named yes || say_leg device_override_named no
+printf '%s\n' "$out" | grep -q 'COMLINK_SYNC_LAB_PORT' && say_leg device_override_name_named yes || say_leg device_override_name_named no
+printf '%s\n' "$out" | grep -q 'comlink_twin_wire_lab.rish' && say_leg device_override_site_named yes || say_leg device_override_site_named no
+rm -f "$pen/clean/tools/co/comlink_twin_wire_lab.rish"
+commit_tree clean
+out=$(read_scan clean)
+[ "$(field "$out" device_override_shared)" = 0 ] && say_leg device_override_lifted yes || say_leg device_override_lifted no
+
+# PORT AS A WHOLE COMPONENT, in this language too. A lab timeout carrying a banded-looking number
+# holds no port, and a variable merely carrying the letters is read past.
+cat > "$pen/clean/tools/co/comlink_timeout_wire_lab.rish" <<'LAB'
+let passport_raw = env "COMLINK_TIMEOUT_LAB_PASSPORT"
+if passport_raw == "" then let passport = "15599" else let passport = passport_raw
+LAB
+commit_tree clean
+out=$(read_scan clean)
+[ "$(field "$out" device_declarations)" = 1 ] && say_leg device_substring_free yes || say_leg device_substring_free no
+[ "$(field "$out" device_labs)" = 2 ] && say_leg device_lab_counted_anyway yes || say_leg device_lab_counted_anyway no
+
+# The free list answers the repair it instructs.
+out=$(read_scan clean --list)
+printf '%s\n' "$out" | grep -q '^device free:.*15590' && say_leg device_free_includes_unclaimed yes || say_leg device_free_includes_unclaimed no
+printf '%s\n' "$out" | grep -E '^device free:' | grep -qw 15561 && say_leg device_free_excludes_claimed no || say_leg device_free_excludes_claimed yes
+printf '%s\n' "$out" | grep -q '^device: 15561' && say_leg device_listed yes || say_leg device_listed no
+rm -f "$pen/clean/tools/co/comlink_timeout_wire_lab.rish"
+commit_tree clean
+
+# ---------------------------------------------------------------- the device mutations
+# TWO MORE RULES, EACH DELETED AND READ AGAIN. A reading nothing depends on is a reading that may
+# quietly stop working.
+
+# The whole-component rule is written ONCE and read by both halves, so the mutation that removes it
+# must be shown biting BOTH. Without it the lab's `passport` default is read as a port -- and it
+# sits outside the seated device band, so the mutant reds a pen the scan reads clean.
+make_lab clean sync COMLINK_SYNC_LAB_PORT 15561
+cat > "$pen/clean/tools/co/comlink_timeout_wire_lab.rish" <<'LAB'
+let passport_raw = env "COMLINK_TIMEOUT_LAB_PASSPORT"
+if passport_raw == "" then let passport = "15599" else let passport = passport_raw
+LAB
+commit_tree clean
+base_out=$(read_scan clean)
+base_device=$(field "$base_out" device_declarations)
+mutate '/name !~/d'
+out=$(PORT_BAND_ROOT="$pen/clean" sh "$pen/mutant.sh" 2>/dev/null)
+[ "$(field "$out" device_declarations)" -gt "$base_device" ] && say_leg mutation_substring_bites_device yes || say_leg mutation_substring_bites_device no
+
+# ONE LAB NAMING ITS OWN VARIABLE TWICE IS NOT TWO LABS. `grep -oE` returns every occurrence, so the
+# `sort -u` inside the override harvest is what keeps a lab from colliding with itself. Delete it
+# and a single honest lab reads as a shared override -- a fault against a correct file, which is the
+# one failure a guard cannot afford.
+cat > "$pen/clean/tools/co/comlink_selfnamer_wire_lab.rish" <<'LAB'
+let port_request_raw = env "COMLINK_SELFNAMER_LAB_PORT"
+if port_request_raw == "" then let port_request = "15591" else let port_request = port_request_raw
+let port_again_raw = env "COMLINK_SELFNAMER_LAB_PORT"
+if port_again_raw == "" then let port_again = "15592" else let port_again = port_again_raw
+LAB
+commit_tree clean
+out=$(read_scan clean)
+[ "$(field "$out" device_override_shared)" = 0 ] && say_leg device_self_named_free yes || say_leg device_self_named_free no
+mutate '/^    sort -u |$/d'
+cmp -s "$pen/mutant.sh" "$SCAN" && say_leg mutation_override_dedupe_applied no || say_leg mutation_override_dedupe_applied yes
+out=$(PORT_BAND_ROOT="$pen/clean" sh "$pen/mutant.sh" 2>/dev/null)
+[ "$(field "$out" device_override_shared)" != 0 ] && say_leg mutation_override_dedupe_bites yes || say_leg mutation_override_dedupe_bites no
+rm -f "$pen/clean/tools/co/comlink_selfnamer_wire_lab.rish" "$pen/clean/tools/co/comlink_timeout_wire_lab.rish"
+commit_tree clean
+
 echo "behaviors=$legs"
 echo "control_failed=$fails"
 if [ "$fails" -eq 0 ]; then
