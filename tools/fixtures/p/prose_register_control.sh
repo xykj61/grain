@@ -16,6 +16,10 @@ set -u
 scan=tools/fixtures/p/prose_register_scan.sh
 [ -f "$scan" ] || { echo "control_verdict=scan_missing" >&2; exit 1; }
 
+# Every pen below runs the scan from ITS OWN directory, where the relative path to the card that
+# publishes the Style-line reader does not resolve -- so the absolute path is handed in. The scan
+# refusing without it is the behaviour two legs below prove on purpose.
+card_abs=$(CDPATH= cd -- tools/fixtures/q && pwd)/qa_report_card.sh
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
 
@@ -187,6 +191,8 @@ mkdir -p "$census/room"
 cat > "$census/README.md" <<'EOF'
 # The pen front door
 
+**Style:** Gauge, Door setting
+
 This page leads with what is, and it names the work it holds in plain words.
 Every room here keeps its own catalog, and the catalog names each file it holds.
 A reader arriving today finds the same order a reader finds in a decade.
@@ -211,8 +217,8 @@ EOF
 ( cd "$census" && git init -q . && git add -A ) >/dev/null 2>&1
 sed 's|^DOOR=".*"|DOOR="README.md"|' "$scan" > "$census/scan_unrostered.sh"
 sed 's|^DOOR=".*"|DOOR="README.md room/README.md"|' "$scan" > "$census/scan_rostered.sh"
-un=$(cd "$census" && sh scan_unrostered.sh 2>/dev/null)
-ro=$(cd "$census" && sh scan_rostered.sh 2>/dev/null)
+un=$(cd "$census" && PROSE_CARD_READER="$card_abs" sh scan_unrostered.sh 2>/dev/null)
+ro=$(cd "$census" && PROSE_CARD_READER="$card_abs" sh scan_rostered.sh 2>/dev/null)
 
 # The plant plants something: the page IS named, by path and by share.
 echo "$un" | grep -q '^candidate: room/README.md ' \
@@ -238,6 +244,8 @@ law=$(mktemp -d "${TMPDIR:-/tmp}/prose_register_law.XXXXXX")
 mkdir -p "$law/.claude/rules"
 cat > "$law/README.md" <<'EOF'
 # The pen front door
+
+**Style:** Gauge, Door setting
 
 This page leads with what is, and it names the work it holds in plain words.
 Every room here keeps its own catalog, and the catalog names each file it holds.
@@ -281,8 +289,8 @@ EOF
 sed 's|^DOOR=".*"|DOOR="README.md"|' "$scan" > "$law/base.sh"
 sed 's|^law_ceiling=.*|law_ceiling=0|' "$law/base.sh" > "$law/scan_tight.sh"
 sed 's|^law_ceiling=.*|law_ceiling=1|' "$law/base.sh" > "$law/scan_loose.sh"
-tight=$(cd "$law" && sh scan_tight.sh 2>/dev/null)
-loose=$(cd "$law" && sh scan_loose.sh 2>/dev/null)
+tight=$(cd "$law" && PROSE_CARD_READER="$card_abs" sh scan_tight.sh 2>/dev/null)
+loose=$(cd "$law" && PROSE_CARD_READER="$card_abs" sh scan_loose.sh 2>/dev/null)
 
 # The plant plants something: the cold page IS named, by path and by share.
 echo "$tight" | grep -q '^law: .claude/rules/cold.md ' \
@@ -370,6 +378,90 @@ plain=$(measure "$ex/page.md")
 flagged=$(measure "$ex/page.md" 1 80 | grep -vE '^(neg |explain_)')
 [ "$plain" = "$flagged" ] && say explain_reading_unchanged yes || say explain_reading_unchanged no
 rm -rf "$ex"
+
+# --- The door roster's own declarations ---------------------------------------------------------
+# The scan asks each rostered door whether it names its Door setting at its own door. The
+# classifier is lifted the way measure() is, so the control reads exactly what the guard reads,
+# and the Style-line reader beneath it is lifted from the card the scan cites.
+sed -n '/^door_setting_verdict() {/,/^}/p' "$scan" > "$pen/door_verdict.sh"
+sed -n '/^QA_HEAD_LINES=/p;/^declared_style_line_of() {/,/^}/p' tools/fixtures/q/qa_report_card.sh > "$pen/declared.sh"
+if [ -s "$pen/door_verdict.sh" ] && [ -s "$pen/declared.sh" ]; then
+  say door_classifier_lifted yes
+  . "$pen/declared.sh"
+  . "$pen/door_verdict.sh"
+
+  printf '# A page\n\n**Style:** Gauge, Door setting (see `x.md`)\n\nProse.\n' > "$pen/d_named.md"
+  [ "$(door_setting_verdict "$pen/d_named.md")" = declared ] \
+    && say door_named_reads_declared yes || say door_named_reads_declared no
+
+  printf '# A page\n\n**Style:** Gauge, Field setting\n\nProse.\n' > "$pen/d_field.md"
+  [ "$(door_setting_verdict "$pen/d_field.md")" = unnamed ] \
+    && say door_field_reads_unnamed yes || say door_field_reads_unnamed no
+
+  printf '# A page\n\nProse with no front matter at all.\n' > "$pen/d_none.md"
+  [ "$(door_setting_verdict "$pen/d_none.md")" = absent ] \
+    && say door_silent_reads_absent yes || say door_silent_reads_absent no
+
+  # The key written INLINE after another key is the shape 65 pages use, and the shape the elder
+  # anchored grep in the card could not see (REDS-class finding of 20260910.163831).
+  printf '# A page\n\n**Language:** EN - **Style:** Gauge, Door setting - **Voice:** Kyri\n' > "$pen/d_inline.md"
+  [ "$(door_setting_verdict "$pen/d_inline.md")" = declared ] \
+    && say door_inline_reads_declared yes || say door_inline_reads_declared no
+
+  # Past the head bound is body prose rather than a declaration.
+  { i=1; while [ "$i" -le 45 ]; do echo "Filler line $i carries no key at all."; i=$((i + 1)); done
+    echo '**Style:** Gauge, Door setting'; } > "$pen/d_deep.md"
+  [ "$(door_setting_verdict "$pen/d_deep.md")" = absent ] \
+    && say door_past_head_reads_absent yes || say door_past_head_reads_absent no
+
+  # Lowercase is the same declaration; the card's own case arms say so.
+  printf '**Style:** gauge, door setting\n' > "$pen/d_case.md"
+  [ "$(door_setting_verdict "$pen/d_case.md")" = declared ] \
+    && say door_case_insensitive yes || say door_case_insensitive no
+else
+  say door_classifier_lifted no
+fi
+
+# The citation is live rather than decorative: a card that is gone, and a card that has stopped
+# publishing the reader, each REFUSE. A scan that guessed would report every door as silent.
+printf '#!/bin/sh\necho hi\n' > "$pen/blind_card.sh"
+blind=$(PROSE_CARD_READER="$pen/blind_card.sh" sh "$scan" 2>&1 || :)
+echo "$blind" | grep -q '^verdict=reader_absent$' \
+  && say door_reader_blind_refuses yes || say door_reader_blind_refuses no
+gone=$(PROSE_CARD_READER="$pen/no_such_card.sh" sh "$scan" 2>&1 || :)
+echo "$gone" | grep -q '^verdict=reader_absent$' \
+  && say door_reader_absent_refuses yes || say door_reader_absent_refuses no
+
+# The wall, shown from both sides on one warm page: an undeclared rostered door refuses, and the
+# SAME bytes one clause later walk free. A refusal proven only in the passing direction cannot be
+# told from a bypass.
+dpen=$(mktemp -d)
+mkdir -p "$dpen/room"
+cat > "$dpen/room/README.md" <<'EOF'
+# A room
+
+Grain gives you a computer that answers to you. Your words stay on your machine here.
+Every promise on this page is one a program has already checked before you read it.
+A witness prints green when a promise holds, and the tree keeps its own books openly.
+Every name we choose stays clear on the first day and on the ten thousandth day too.
+EOF
+( cd "$dpen" && git init -q . && git add -A ) >/dev/null 2>&1
+sed 's|^DOOR=".*"|DOOR="room/README.md"|' "$scan" > "$dpen/scan.sh"
+bare=$(cd "$dpen" && PROSE_CARD_READER="$card_abs" sh scan.sh 2>&1 || :)
+{ echo "$bare" | grep -q '^door_setting_undeclared=1$' \
+  && echo "$bare" | grep -q '^verdict=door_setting_undeclared$' \
+  && echo "$bare" | grep -q '^undeclared: room/README.md carries no Style line'; } \
+  && say door_gate_bites yes || say door_gate_bites no
+{ printf '**Style:** Gauge, Door setting\n\n'; cat "$dpen/room/README.md"; } > "$dpen/head.tmp"
+cat "$dpen/head.tmp" > "$dpen/room/README.md"
+rm -f "$dpen/head.tmp"
+( cd "$dpen" && git add -A ) >/dev/null 2>&1
+lifted=$(cd "$dpen" && PROSE_CARD_READER="$card_abs" sh scan.sh 2>&1 || :)
+{ echo "$lifted" | grep -q '^door_setting_undeclared=0$' \
+  && echo "$lifted" | grep -q '^door_setting_declared=1$' \
+  && echo "$lifted" | grep -q '^verdict=ok$'; } \
+  && say door_gate_lifts yes || say door_gate_lifts no
+rm -rf "$dpen"
 
 # These two say what the legs read, beneath every named assertion in the witness.
 echo "control_legs=$legs"

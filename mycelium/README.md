@@ -6,6 +6,7 @@
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
+**Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Kin:** the *why* beneath this directory -- [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md) - the road that opened it -- [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) (Chapter D)
 
 **Mycelium** is Grain's own consensus protocol -- the way many mutually distrusting nodes arrive at one shared history of who holds what, each checking every fact for itself rather than electing a leader or guarding a central book. The name is the picture: underground, a fungal mycelium binds many separate threads into one living network that feeds a whole forest floor while every thread stays an equal peer. A **Cord** bundles many validators' signed blocks the same way -- many threads, one strand, one agreed order.

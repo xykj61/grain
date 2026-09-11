@@ -49,6 +49,26 @@
 # proxy among several, and the second number to read is always the prose itself. A page can pass
 # this meter and still fail a reader.
 #
+# THE ROSTER IS A PROMISE MOST OF ITS PAGES NEVER MADE OUT LOUD. Every document named in DOOR is
+# held at the strictest ceiling this tree writes, and the pages themselves mostly said nothing
+# about it: measured `20260910.191740`, 12 of the 19 named no Door setting in their own front
+# matter, so a reader arriving at `tally/README.md` could learn its ceiling only by opening this
+# file. The reading below counts that gap and names each page, and the sweep of the same stamp
+# closed it.
+#
+# WALLED, and only for the roster. A page at large may honestly name no setting -- Gauge's own law
+# says most know their own -- so `tools/fixtures/q/qa_setting_declared_scan.sh` counts that
+# population and gates nothing. A page NAMED IN DOOR has already agreed to a ceiling, so saying
+# which one costs it one clause and buys every reader the page's own answer. The wall says a door
+# DECLARES its setting; it says nothing about the meter READING that declaration, which is the
+# derivation question standing on Keaton's word since `20260910.175434`.
+#
+# ONE READER, CITED RATHER THAN COPIED. `tools/fixtures/q/qa_report_card.sh` publishes
+# `declared_style_line_of()` and `QA_HEAD_LINES`, and this scan lifts both at run time, the way
+# `tools/fixtures/q/qa_setting_declared_scan.sh` already does. Three instruments then read one
+# line one way. A second copy of that reader here is the exact fault `20260910.175434` repaired,
+# where two readers of one line disagreed for weeks while announcing that they agreed.
+#
 # USAGE
 #   sh tools/fixtures/p/prose_register_scan.sh
 #
@@ -285,6 +305,39 @@ if [ "${1:-}" = "--explain" ]; then
   exit 0
 fi
 
+# The one reader of a page's Style line, lifted from the card that publishes it. A scan that
+# cannot reach the reader REFUSES rather than reporting every door as silent, since a silent
+# reading and an absent one look identical from the outside and only one of them is a fault.
+card_reader=${PROSE_CARD_READER:-tools/fixtures/q/qa_report_card.sh}
+sed -n '/^QA_HEAD_LINES=/p;/^declared_style_line_of() {/,/^}/p' "$card_reader" > "$work/declared.sh" 2>/dev/null || :
+if [ ! -s "$work/declared.sh" ] || ! grep -q '^declared_style_line_of() {' "$work/declared.sh"; then
+  echo "door_setting_declared=unread"
+  echo "detail=card_no_longer_publishes_declared_style_line_of ($card_reader)"
+  echo "verdict=reader_absent"
+  echo "refused: the Style-line reader this scan cites is gone -- see tools/fixtures/q/qa_report_card.sh" >&2
+  exit 1
+fi
+. "$work/declared.sh"
+
+door_setting_verdict() { # <path> -> testimony | declared | unnamed | absent
+  # A page whose own basename carries a one-clock stamp is TESTIMONY, and testimony keeps the
+  # words it wrote (accrete-never-break). The roster may hold a founding statement to the
+  # front-door share -- a reading takes nothing away -- and asking that page to add a clause
+  # would be an edit to a dated artifact, so it answers `testimony` and is counted apart.
+  case "${1##*/}" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) echo testimony; return ;;
+  esac
+  case "$(declared_style_line_of "$1" 2>/dev/null || :)" in
+    "")        echo absent ;;
+    *[Dd]oor*) echo declared ;;
+    *)         echo unnamed ;;
+  esac
+}
+
+door_declared=0
+door_undeclared=0
+door_testimony=0
+: > "$work/door_undeclared.txt"
 door_over=0
 : > "$work/door.txt"
 for f in $DOOR; do
@@ -292,6 +345,14 @@ for f in $DOOR; do
     set -- $(measure "$f")
     pct=$3
     printf 'door: %s %s%% (%s of %s sentences)\n' "$f" "$pct" "$2" "$1" >> "$work/door.txt"
+    case "$(door_setting_verdict "$f")" in
+      testimony) door_testimony=$((door_testimony + 1)) ;;
+      declared) door_declared=$((door_declared + 1)) ;;
+      unnamed)  door_undeclared=$((door_undeclared + 1))
+                printf 'undeclared: %s declares a style and names no Door setting\n' "$f" >> "$work/door_undeclared.txt" ;;
+      absent)   door_undeclared=$((door_undeclared + 1))
+                printf 'undeclared: %s carries no Style line in its first %s lines\n' "$f" "$QA_HEAD_LINES" >> "$work/door_undeclared.txt" ;;
+    esac
     [ "$pct" -le "$DOOR_MAX" ] || { door_over=$((door_over + 1)); printf 'over: %s reads %s%% against a %s%% door ceiling\n' "$f" "$pct" "$DOOR_MAX" >> "$work/door.txt"; }
   else
     door_over=$((door_over + 1))
@@ -419,6 +480,10 @@ cat "$work/door.txt"
 echo "door_documents=$(echo $DOOR | wc -w | tr -d ' ')"
 echo "door_over_ceiling=$door_over"
 echo "door_ceiling_percent=$DOOR_MAX"
+echo "door_setting_declared=$door_declared"
+echo "door_setting_undeclared=$door_undeclared"
+echo "door_setting_testimony=$door_testimony"
+[ "$door_undeclared" -eq 0 ] || head -"$FRONT_DETAIL_MAX" "$work/door_undeclared.txt"
 echo "teaching_documents=$(wc -l < "$work/teaching.txt" | tr -d ' ')"
 echo "teaching_over_field_target=$teaching_over"
 echo "teaching_ceiling=$ceiling"
@@ -442,9 +507,16 @@ if [ "$front_unrostered_over" -gt 0 ]; then
   fi
 fi
 
-if [ "$door_over" -eq 0 ] && [ "$teaching_over" -le "$ceiling" ] && [ "$law_over" -le "$law_ceiling" ]; then
+if [ "$door_over" -eq 0 ] && [ "$teaching_over" -le "$ceiling" ] && [ "$law_over" -le "$law_ceiling" ] \
+   && [ "$door_undeclared" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
+fi
+if [ "$door_undeclared" -gt 0 ] && [ "$door_over" -eq 0 ] && [ "$teaching_over" -le "$ceiling" ] \
+   && [ "$law_over" -le "$law_ceiling" ]; then
+  echo "verdict=door_setting_undeclared"
+  echo "refused: a rostered door names no Door setting at its own door -- add the clause to its Style line" >&2
+  exit 1
 fi
 echo "verdict=register_drift"
 echo "refused: a door, teaching, or law document reads more negatively than the style it claims -- read the lines above" >&2

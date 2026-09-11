@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-07-28 (Tensegral Arc IV r11 -- canon Who calls Tally map - `tally_caller_map_witness`)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- bounded garden allocator - small marks - Kumara - Bud
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
