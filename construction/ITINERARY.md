@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `13d8012bdb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0cdfc1ee00` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
@@ -96,25 +96,23 @@ its room declares, and a lock takes the **low** one, so it charged the mantra lo
 `ip_local_reserved_ports` **EMPTY** against a `32768 60999` range, so the kernel may hand any banded
 number out mid-selftest; one `nixos/` line, yours. (3) **Eleven** runners drive a constant port
 binary unlocked (said twelve), all off the roster -- `%646` again.
-**DIFFUSER -- THE LOOP THAT ALREADY REFUSED, AND THE CELL NOBODY FILLED.**
-Elder [shelved](archive/20260911-111917_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=4637): a falsifier run before its estimate was spent.
-**THE READING:** row 10 (*Glow loops with circumference*, 4th, 3-6wk) **already stood**. Through
-`glow/bin/glow_run`: `|-` refuses exit 1 `MissingBound`, `|-  32` accepts exit 0 -- its own first
-witness, since `glow/rune_bounded_trap.rye` held the rune from `20260716`.
-**Falsifier twice retired:** `(lent records)` is **accepted**; **2** of **451** tracked `.glow`
-sources carry a trap, both fixtures.
-**THREE CELLS, TWO PROOFS:** module-refuses by `rune_bounded_trap_witness.rye` (**2.161s**, no
-roster here or at `xy/main`); driver-accepts by `glow_desk_run` (**347**, 301 on `20260907`);
-driver-refuses by **nothing** -- a proof blind by construction.
-**MECHANISM:** `tools/fixtures/g/glow_trap_bound_control.sh` builds the driver into its **own pen**,
-writes 9 probes, requires each refusal **by name**, lifts the plant. `tier lap` **4.1s**. My two
-upstream-red repairs went EMPTY on rebase; peers landed both.
-**3 REDS HERE, NONE MINE, NOT CLAIMED:** `standing_equipment` on the run card;
-`mantra_snapshot_hosted` and `amphora_lap3` sit in PATCHOULI's port arc, the second GREEN
-by hand after.
-[Paper](../active-designing/20260911-111917_the-loop-that-already-refused.md) **A 93**.
-**YOURS:** whether `|-  0` should parse.
+**DIFFUSER -- THE CLOCK THAT COULD NOT HEAR THE QUEUE.**
+Elder [shelved](archive/20260911-190515_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4655): a guard unable to red guards nothing.
+**THE READING:** row 9 (*Seasonal duty cycle*, 5th, 1-2wk) proposes a witness printing parked and
+running **sector counts** -- properties of the parking rule -- against a falsifier about
+**backlog**, wanting an arrival and a service rate the clock holds nowhere. It stays green whatever
+the falsifier does. **Nothing** in `caravan/`, `tally/`, `mantra/`, `aurora/` parks by sector.
+**THREE FORMS**, `tools/rye/duty_cycle_backlog.rye`: a park holds at `k <= S*(1-rho)`; drains in
+`k*rho/(1-rho)` spans; worst wait is **`k` spans, utilization entering nowhere**. Two quantities,
+and the falsifier reached for one.
+**PROVEN:** 6 configs, three forms. At `k=3` the wait reads 3,000 ticks at `rho` 0.5 **and** 0.6
+while the drain moves 3,000 -> 4,500. Two mutations **bit** at `check_row`, lifted clean. My assert
+caught `rho=0`: the form offers the cycle whole, an off switch.
+**ROW 9's `3 of 8`:** utilization at or under **62.5%**, latency at least **3** spans. **7 of 77**
+rows park nothing, all at `rho=0.9`. **COMPOSES**: `k/S` here x the power paper's term -- **35.73%**.
+[Paper](../active-designing/20260911-190217_the-clock-that-could-not-hear-the-queue.md) **A 94**.
+**YOURS:** whether `|-  0` should parse (carried); does row 9 re-rank now.
 **PETRICHOR -- A COMMAND FENCE PROMISING NOTHING ATE THE NEXT BLOCK WHOLE.**
 Elder [shelved](archive/20260911-123725_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4641): run it, do not read about it.

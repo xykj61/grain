@@ -1,0 +1,292 @@
+//! Run the falsifier of row 9 (*Seasonal duty cycle*) of
+//! `active-designing/20260910-060204_the-bounded-torus-moonshots.md` BEFORE its one-to-two-week
+//! estimate is spent -- the discipline rows 6 and 10 of the same page each paid to learn.
+//!
+//! Row 9 proposes a first witness -- *a fake clock that parks 3 of 8 sectors, with the parked and
+//! running sector counts printed each tick* -- and a falsifier about BACKLOG. A clock with no
+//! arrivals and no service has no backlog term in it, so that witness cannot red on that
+//! falsifier. This program supplies the terms the clock lacks: an arrival rate, a service rate,
+//! and a declared latency ceiling.
+//!
+//! It answers in three closed forms and then PROVES each one by simulating a tick loop and
+//! asserting the measurement against the form. A form that drifts from its own simulation reds
+//! here rather than in a paper.
+//!
+//! Every quantity is an integer. Work is carried in micro-units of one awake sector-span of
+//! service, and rates are carried in parts per million, because a crossover near two-thirds needs
+//! decimals that a float would blur across rows.
+//!
+//! Run: `RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/duty_cycle_backlog.rye`
+//!      `./duty_cycle_backlog`
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// Parts per million, the one fixed-point scale in this program. Named once so no line invents
+/// a second one.
+const ppm: u64 = 1_000_000;
+
+/// Sectors in one cycle. Row 9 writes "3 of 8", so 8 is the row's own number rather than ours.
+const sectors_per_cycle: u32 = 8;
+
+/// Micro-units of work one awake sector-span serves. Chosen equal to `ppm` so that a utilization
+/// written in ppm IS the arrival per span in micro-units, which keeps every ratio exact.
+const service_per_span_u: u64 = ppm;
+
+/// Simulation granularity. A thousand ticks a span divides `service_per_span_u` exactly, so the
+/// per-tick service rate is a whole number and the loop carries no rounding of its own.
+const ticks_per_span: u32 = 1_000;
+
+/// Bound on the simulated run. Two cycles reach steady state for a stable configuration, and this
+/// leaves generous room above it -- TAME asks every loop to name a maximum.
+const max_cycles: u32 = 16;
+
+/// Bound on simulated ticks, derived from the two bounds above so the loop cannot outlive them.
+const max_ticks: u32 = max_cycles * sectors_per_cycle * ticks_per_span;
+
+/// Bound on the grid below: eleven utilizations by eight ceilings, with headroom.
+const grid_max_rows: u32 = 128;
+
+// ---- The three closed forms ----
+
+/// The longest park a workload's headroom allows, in whole sectors.
+///
+/// Over one cycle arrivals are `rho * S` spans of work and capacity is `S - k` spans, so a queue
+/// that returns to where it started needs `rho * S <= S - k`, which is `k <= S * (1 - rho)`.
+/// Utilization alone sets it; the latency ceiling is a separate bound and is applied separately.
+fn stable_park_max(rho_ppm: u64) u32 {
+    // invariant: utilization is a fraction of capacity, so it stays inside the scale
+    assert(rho_ppm < ppm);
+    const headroom: u64 = ppm - rho_ppm;
+    const raw: u64 = (@as(u64, sectors_per_cycle) * headroom) / ppm;
+    // A workload with no arrivals makes the arithmetic offer the whole cycle, and a cycle with no
+    // waking sector is an off switch rather than a duty cycle -- nothing remains to notice work
+    // returning. So one sector stays awake by construction, and the clamp says why here rather
+    // than leaving a caller to discover it.
+    const k: u64 = if (raw >= sectors_per_cycle) sectors_per_cycle - 1 else raw;
+    // invariant: a park never reaches the whole cycle, since some sector must serve
+    assert(k < sectors_per_cycle);
+    return @intCast(k);
+}
+
+/// Ticks the queue takes to drain after wake, for a park of `k` sectors.
+///
+/// The park accumulates `k * rho` spans of work; awake, the queue falls at `1 - rho` spans of work
+/// per span, so the drain runs `k * rho / (1 - rho)` spans. This is where utilization enters the
+/// answer, and it is a DIFFERENT quantity from the wait below.
+fn drain_ticks_form(k: u32, rho_ppm: u64) u64 {
+    // invariant: a drain is only defined below saturation
+    assert(rho_ppm < ppm);
+    // invariant: the park fits inside the cycle it belongs to
+    assert(k < sectors_per_cycle);
+    const spans_ppm: u64 = (@as(u64, k) * rho_ppm * ppm) / (ppm - rho_ppm);
+    return (spans_ppm * @as(u64, ticks_per_span)) / ppm;
+}
+
+/// Ticks the worst-served work waits, for a park of `k` sectors.
+///
+/// Work arriving at the first tick of a park finds an empty queue in steady state and waits
+/// exactly until wake. So the worst wait is the park's own length -- `k` spans -- and it does not
+/// depend on utilization at all. Saying that plainly is half of what this program is for.
+fn wait_ticks_form(k: u32) u64 {
+    // invariant: the park fits inside the cycle it belongs to
+    assert(k < sectors_per_cycle);
+    const w: u64 = @as(u64, k) * @as(u64, ticks_per_span);
+    // invariant: the worst wait never exceeds a whole cycle
+    assert(w <= @as(u64, sectors_per_cycle) * @as(u64, ticks_per_span));
+    return w;
+}
+
+/// The park a workload may actually take: the smaller of its headroom and its patience.
+///
+/// `ceiling_spans` is the latency budget the workload declares, in sector-spans. The two bounds
+/// are independent -- one is how much capacity is spare, the other how long a wait is tolerable --
+/// so the answer is a minimum rather than a product.
+fn feasible_park(rho_ppm: u64, ceiling_spans: u32) u32 {
+    // invariant: a ceiling of zero forbids parking, which is a real answer rather than an error
+    assert(ceiling_spans <= sectors_per_cycle);
+    const by_headroom: u32 = stable_park_max(rho_ppm);
+    const k: u32 = if (ceiling_spans < by_headroom) ceiling_spans else by_headroom;
+    // invariant: the feasible park never exceeds either bound it was built from
+    assert(k <= by_headroom and k <= sectors_per_cycle);
+    return k;
+}
+
+/// Energy saved by parking `k` of `S` sectors, as a fraction of the never-parking cycle.
+///
+/// Powers are in nanowatts at whatever rail the caller names. `baseline_nw` is the always-on load
+/// the processor cannot switch off; `active_nw` and `sleep_nw` are the processor awake and parked.
+/// The saving is `k * (active - sleep)` over the whole cycle's `S * (baseline + active)`.
+fn saving_ppm(k: u32, baseline_nw: u64, active_nw: u64, sleep_nw: u64) u64 {
+    // invariant: a processor asleep draws less than one awake, or parking is not a saving at all
+    assert(active_nw > sleep_nw);
+    // invariant: the park fits inside the cycle it belongs to
+    assert(k < sectors_per_cycle);
+    const saved_nw: u64 = @as(u64, k) * (active_nw - sleep_nw);
+    const whole_nw: u64 = @as(u64, sectors_per_cycle) * (baseline_nw + active_nw);
+    const share: u64 = (saved_nw * ppm) / whole_nw;
+    // invariant: no parking scheme saves the whole budget, since the baseline never sleeps
+    assert(share < ppm);
+    return share;
+}
+
+// ---- The simulation that can red on all three ----
+
+const SimResult = struct {
+    peak_queue_u: u64,
+    drain_ticks: u64,
+    wait_ticks: u64,
+};
+
+/// Run a tick loop for `max_cycles` cycles, parking the first `k` sectors of each, and measure the
+/// three quantities the forms above predict. Measurement is taken on the LAST cycle, so any
+/// warm-up transient has left the reading.
+fn simulate(k: u32, rho_ppm: u64) SimResult {
+    // invariant: the loop only runs where the closed forms are defined
+    assert(rho_ppm < ppm);
+    // invariant: the park fits inside the cycle it belongs to
+    assert(k < sectors_per_cycle);
+    // invariant: arrivals divide evenly into ticks, so the loop adds no rounding of its own
+    assert(rho_ppm % @as(u64, ticks_per_span) == 0);
+
+    const arrive_per_tick_u: u64 = rho_ppm / @as(u64, ticks_per_span);
+    const serve_per_tick_u: u64 = service_per_span_u / @as(u64, ticks_per_span);
+
+    var queue_u: u64 = 0;
+    var peak_u: u64 = 0;
+    var drain_ticks: u64 = 0;
+    var wait_ticks: u64 = 0;
+    var ticks: u32 = 0;
+
+    var cycle: u32 = 0;
+    while (cycle < max_cycles) : (cycle += 1) {
+        const last: bool = (cycle + 1 == max_cycles);
+        if (last) {
+            peak_u = 0;
+            drain_ticks = 0;
+            wait_ticks = 0;
+        }
+        // The park. Work arrives and nothing serves it.
+        var parked_ticks: u32 = 0;
+        while (parked_ticks < k * ticks_per_span) : (parked_ticks += 1) {
+            queue_u += arrive_per_tick_u;
+            if (last) {
+                if (queue_u > peak_u) peak_u = queue_u;
+                wait_ticks += 1;
+            }
+            ticks += 1;
+            // invariant: the run stays inside the tick bound it declared
+            assert(ticks <= max_ticks);
+        }
+        // The waking run. Work arrives and is served.
+        var awake_ticks: u32 = 0;
+        var draining: bool = true;
+        while (awake_ticks < (sectors_per_cycle - k) * ticks_per_span) : (awake_ticks += 1) {
+            queue_u += arrive_per_tick_u;
+            queue_u = if (queue_u > serve_per_tick_u) queue_u - serve_per_tick_u else 0;
+            if (last and draining) {
+                drain_ticks += 1;
+                if (queue_u == 0) draining = false;
+            }
+            ticks += 1;
+            // invariant: the run stays inside the tick bound it declared
+            assert(ticks <= max_ticks);
+        }
+        // invariant: a stable configuration empties its queue before the next park
+        assert(queue_u == 0);
+    }
+
+    return .{ .peak_queue_u = peak_u, .drain_ticks = drain_ticks, .wait_ticks = wait_ticks };
+}
+
+fn print_pct(label: []const u8, value_ppm: u64) void {
+    print("{s}={d}.{d:0>4} pct\n", .{ label, value_ppm / 10_000, value_ppm % 10_000 });
+}
+
+/// Compare one simulated run against the three forms, printing both and asserting agreement.
+/// A tolerance of one tick is allowed on the two measured durations, because a tick loop counts
+/// whole ticks where the form divides exactly.
+fn check_row(k: u32, rho_ppm: u64) void {
+    // invariant: only a feasible park is worth checking, since an unstable one has no steady state
+    assert(k <= stable_park_max(rho_ppm));
+    // invariant: the park fits inside the cycle it belongs to
+    assert(k < sectors_per_cycle);
+
+    const sim = simulate(k, rho_ppm);
+    const form_peak_u: u64 = @as(u64, k) * rho_ppm;
+    const form_drain: u64 = drain_ticks_form(k, rho_ppm);
+    const form_wait: u64 = wait_ticks_form(k);
+
+    print("  k={d} rho_ppm={d}  peak_u sim={d} form={d}  drain_ticks sim={d} form={d}  wait_ticks sim={d} form={d}\n", .{
+        k, rho_ppm, sim.peak_queue_u, form_peak_u, sim.drain_ticks, form_drain, sim.wait_ticks, form_wait,
+    });
+
+    // invariant: the peak queue is the park's accumulation exactly, with no tick rounding to allow
+    assert(sim.peak_queue_u == form_peak_u);
+    // invariant: the measured drain sits within one tick of its closed form
+    assert(sim.drain_ticks >= form_drain and sim.drain_ticks <= form_drain + 1);
+    // invariant: the worst wait is the park's own length, independent of utilization
+    assert(sim.wait_ticks == form_wait);
+}
+
+pub fn main() void {
+    print("== row 9's falsifier, run before its estimate ==\n", .{});
+    print("row=9 seasonal duty cycle  page=active-designing/20260910-060204_the-bounded-torus-moonshots.md\n", .{});
+    print("unit=micro-units of one awake sector-span  sectors_per_cycle={d}  ticks_per_span={d}\n\n", .{
+        sectors_per_cycle, ticks_per_span,
+    });
+
+    print("== the forms, proven against a tick loop ==\n", .{});
+    check_row(1, 500_000);
+    check_row(3, 500_000);
+    check_row(3, 600_000);
+    check_row(5, 300_000);
+    check_row(2, 750_000);
+    check_row(6, 200_000);
+
+    print("\n== row 9's own configuration: park 3 of 8 ==\n", .{});
+    const row9_park: u32 = 3;
+    // The utilization at which a park of 3 stops being stable: k <= S(1-rho) gives rho <= 1 - k/S.
+    const row9_rho_limit_ppm: u64 = ppm - (@as(u64, row9_park) * ppm) / @as(u64, sectors_per_cycle);
+    print_pct("  utilization_ceiling_for_a_park_of_3", row9_rho_limit_ppm);
+    print("  latency_floor_for_a_park_of_3={d} sector-spans\n", .{row9_park});
+    print("  a fake clock printing sector counts measures neither\n", .{});
+
+    print("\n== the surface: feasible park across utilization and patience ==\n", .{});
+    var rows: u32 = 0;
+    var rows_parking_nothing: u32 = 0;
+    var r: u32 = 0;
+    while (r <= 10) : (r += 1) {
+        const rho_ppm: u64 = @as(u64, r) * 90_000;
+        var ceiling: u32 = 1;
+        while (ceiling <= 7) : (ceiling += 1) {
+            const k: u32 = feasible_park(rho_ppm, ceiling);
+            if (k == 0) rows_parking_nothing += 1;
+            rows += 1;
+            // invariant: the grid stays inside the bound it declared
+            assert(rows <= grid_max_rows);
+        }
+        const wide: u32 = feasible_park(rho_ppm, sectors_per_cycle - 1);
+        print("  rho_ppm={d:>6} park_at_ceiling_2={d} park_at_ceiling_7={d}\n", .{
+            rho_ppm, feasible_park(rho_ppm, 2), wide,
+        });
+    }
+    print("  grid_rows={d} of {d}  rows_parking_nothing={d}\n", .{ rows, grid_max_rows, rows_parking_nothing });
+
+    print("\n== what a park is worth, on the sibling paper's own parts ==\n", .{});
+    // Nordic nRF52840 at 3.0 V with the DC/DC regulator, and an ST MP23DB01HP mic at 1.8 V, both
+    // as converted in `tools/rye/power_budget_crossover.rye`. Figures are that program's, unchanged.
+    const mic_low_power_nw: u64 = 513_000;
+    const mcu_active_nw: u64 = 10_500_000;
+    const mcu_idle_retaining_nw: u64 = 5_400;
+    var k2: u32 = 1;
+    while (k2 <= 6) : (k2 += 1) {
+        print_pct("  saving_parking_k_of_8", saving_ppm(k2, mic_low_power_nw, mcu_active_nw, mcu_idle_retaining_nw));
+    }
+
+    print("\n== verdict ==\n", .{});
+    print("falsifier=parked_sectors_accumulate_an_unclearable_backlog answer=conditional\n", .{});
+    print("condition=park k stays at or under S*(1-rho); latency cost is k spans, set by the park alone\n", .{});
+    print("row9_first_witness_reaches_row9_falsifier=no\n", .{});
+}
