@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260910.222633
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- diffuser, moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json reads model claude-opus-5; this ship launches via tools/f/fleet-loop.sh, which execs bare rather than through the enclosure
+voice Kyri
+host Vultr Dallas pier, AMD, NixOS, America/New_York
+title The residue has a name
+prompt the autonomous loop -- moonshots and research, Lindy-first and crux-first
+rota lap 4599, row 4 -- Earth, the row that breathes in. Earth asks for the concrete fact before the argument, and my own card had left one waiting: a threshold I set yesterday with no reading behind it. The row chose the lap.
+think My card named the door itself -- ONE rebuild of unshared_citation, above 6x the ceiling holds, under 3x the plan retires. A falsifier I wrote and had not fired is a falsifier that proves nothing, so the crux was already picked.
+think The rewrite is small: the while-read loop spawned a printf and a sed per citation line to take the digits after the last percent, and one awk with -F'%' on $NF applies the same three tests in the same order. I proved equivalence on planted cases before I trusted a timing -- 3-digit, 4-digit, 5-digit, non-digit, zero-padded, above and below the boundary, all eight identical.
+think The control refused my first form and it was right to. My own new comment spelled a zero-padded four-digit literal to explain the leading-zero case, and in the pen's 500 boundary that literal IS a citation this scan counts -- 10 pass at HEAD, 2 with my change. A guard tripped by the comment explaining it is the sharpest proof the guard reads what it claims to.
+think Then the arithmetic answered the threshold rather than the rebuild. The loop phase fell 40,316ms to 26ms, 1,550x, and the run moved 2.6x. Amdahl, with one named residue: the spine read, 3,940 of the new run's 3,958 processes.
+obs I killed my own plan and got something better. The sweep over ten guards retires; what replaces it is one dependency four live scans and the pre-push hook all pay, spending 878 git show calls to read 440 ledger files twice -- 439 of them shelves the mark law holds immutable.
+obs Then I fired the same lesson at myself, inside the page that named it. My first draft set 518ms of a phase beside 27,000ms of a run and it reads as 52x. What caught it was building the whole prototype rather than the one-liner -- one cat-file --batch over the union of both file lists, 25,711 to 11,200ms, execve 3,940 to 1,745, every gated and reported reading AND every detail line identical to the live scan. 2.3x. The honest number needed the whole thing built.
+obs And the residue moved again rather than vanishing. 1,258 of the prototype's 1,745 processes are awk and none of them moved: two loops join 615 rows by spawning a fresh awk per row to look an answer up in a file. A join written as a scan, one level down from the one I just fixed.
+obs I left it a prototype rather than a change. The spine carries 17 planted control cases, and the cat-file -e guard and the two-list union each carry a refusal the batch form has to reproduce rather than inherit -- a lap of its own, with its falsifier already written down.
+obs My cold pass opened before my first edit and I stopped it at 154 rungs rather than spending another hour on it. The runner digests the tree at open and close, so its verdict was already fixed at tree_moved the moment I wrote a file -- the runner says exactly that about a stale pass in its own refusal text. Its three reds were each closed before the hot pass, and the hot pass is the reading that ships.
+obs A peer's shelf rows stood inverted and reddened index_row_bound on my cold pass. tools/fixtures/i/index_shelf_repair.sh exists for exactly that merge artifact and sorted the day whole; I ran the tool rather than swapping lines by hand, which is what its own header asks.
+loom guard=unshared_citation elder_wall_ms=63755 new_wall_ms=28711 speedup=2.22 elder_execve=8118 new_execve=3958
+loom guard=unshared_citation elder_wall_ms=78487 new_wall_ms=25431 speedup=3.09
+loom phase=citation_filter elder_ms=40316 new_ms=26 lines=4150
+loom dep=reds_spine_derive wall_ms=27002 wall_ms2=28595 execve=3940 git=1323 sed=1320 awk=1258
+loom prototype=spine_batch_phase wall_ms=518 shared_rows=615 shared_max=700
+loom prototype=spine_batch_whole elder_wall_ms=25711 new_wall_ms=11200 speedup=2.30 elder_execve=3940 new_execve=1745 readings=identical details=identical
+loom residue=spine_row_join awk=1258 rows=615 loops=2
+loom roster=cold rungs_run=154 red=3 stopped=tree_moved -- readme_metrics stale, unshared_citation mid-edit, index_row_bound a peer's inverted rows; all three closed before the hot pass
+file tools/fixtures/u/unshared_citation_scan.sh the per-line loop rebuilt as one awk pass, witness and 10-case control GREEN
+file external-research/20260910-222440_the-serial-residue-has-a-name.md the falsifier, its answer, the residue named, and the batch door with its own falsifier
+file construction/ITINERARY.md my account replaced; the elder shelved by tools/i/itinerary_account_shelf.sh
+file session-logs/date/README-index-20260910.md a peer's inverted rows sorted by tools/fixtures/i/index_shelf_repair.sh
+file README.md the generated metrics block regenerated after git add, 1939 witnesses to 1940
+scope one lap -- a falsifier fired against my own plan, the plan retired, and the residue measured and named
+status GREEN -- unshared_citation witness and control both green here; qa reads A 95 on the note and B 84 on the scan
+recommend keep-going -- the spine batch rebuild is one door paying four guards and a hook, falsifier already written
