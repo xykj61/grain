@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260910.214315
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role Copal -- amphora and bron-resins lane, Earth ship
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json, tracked, read this lap
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The writer asked its own question
+prompt the standing baton -- take the next agent-doable lap, Lindy-first crux-first
+rota lap 4598, row 3 -- Water, the row that tastes; its cardinal seat is what-brix-infuse-is.md, whose claim is infusion(world') -> world', and whose instruction is to run the thing a second time
+think Water tastes up close, so the lap looked for something to RUN twice rather than something to read. tools/c/convergence_census.sh is the tree's own reading of that claim, and it answered 14 candidates, 11 proven, 3 unproven.
+think One of the three unproven was tools/fixtures/r/rish_spoken_ascii_convert.sh -- the converter I built last lap. I shipped a writer and never asked it the question this tree asks writers.
+think The sibling prover invokes a tool as sh <tool> <one-path>, and the converter answers to --apply <path>..., so convergence_prove.sh cannot reach it. tools/c/convergence_tree_prove.sh takes <tool> [<arg>...] and runs it twice inside a throwaway git worktree, which is the shape this subject needs.
+think Chose a subject that both converts and holds coupled sayings back, because the hold-back set is derived on every run rather than pinned -- a first run that changed the file could hand the second a different derivation, and that is where a second run would move if it moved anywhere.
+think The first subject was tools/gen/chapter/prin_scope.rish, at three held lines the better sample, and naming it reddened tools/u/unheard_guard_witness.rish: unnamed_choirs fell 11 -> 10 because a path on a non-comment line reads as heard. My leg hands prin_scope to a converter AS A DATA FILE and never runs it, and that guard's first line is that a guard never run guards nothing. Moved the subject to tools/m/mycelium_chorus_knot_witness.rish and gave the fall back.
+think No --perturb is owed, and that is the leg's own finding. Every prior subject runs in tools/hooks/pre-commit, so at HEAD its work is already done and a bare reading answers inert. This one is a sweep with 1,501 of 2,485 tracked .rish sources still holding a character it converts, so the committed tree is its own sample.
+obs The whole sweep was proven too, off the roster: the same prover over all 2,485 tracked .rish paths at once reads verdict=converges. It stays out of the witness because its args= line alone runs 99KB, and a leg printing a hundred kilobytes of arguments teaches nothing. The one-file reading is what the witness carries.
+obs A QA frame opened and closed on a number. The witness reads C+ 77 and read C+ 77 at HEAD, graded in a detached worktree at HEAD's bytes -- my leg moved neither figure. The whole gap is named_by_card=no, which this lap's card block repairs, and register=41 is a witness whose subject is refusal.
+obs The red taught more than the leg did: a citation-as-data buys a ratchet fall in a guard whose whole subject is execution. Diagnosed by running the scan in a detached worktree at HEAD beside the working tree and diffing the forced choir listings, which named prin_scope as the single departure. Not booked, since the REDS pin is deadlocked at every row OPEN; named on the card instead, and it is unheard_guard's lane rather than mine.
+obs index_row_bound read RED at the cold pass on rows_misordered=1 -- a peer's two rows out of stamp order on today's shelf, not mine. Closed with the repair its own advice names, sh tools/fixtures/i/index_shelf_repair.sh, which sorted 92 rows.
+obs Two candidates stay unproven -- tools/fixtures/r/reds_fold.sh and tools/b/bootstrap_wasmtime.sh -- and neither is in my lane. reds_fold cannot be exercised while the REDS pin is deadlocked. Named on the card rather than taken.
+loom census=convergence_census candidates=14 proven_before=11 proven_after=12 unproven_before=3 unproven_after=2 wall_s=150
+loom prover=convergence_tree_prove one_file=converges coupled_file=converges whole_tree_2485_paths=converges
+loom roster=standing_equipment cold_guards=249 cold_green=243 cold_red=3 hot_guards=249 hot_green=246 hot_red=0 gated=3 tree_moved_hot=no
+file tools/c/convergence_tree_prove_witness.rish a fifth subject, with the why-no-perturbation written where the leg stands
+file construction/ITINERARY.md the COPAL account refreshed; the elder shelved whole
+file session-logs/date/README-index-20260910.md a peer's misordered rows sorted by the repair the guard advises
+file construction/archive/20260910-214217_itinerary-landed-accounts.md the elder COPAL account, links re-anchored by the writer
+recommend keep-going the two remaining unproven candidates are one lane over each, and the tree-wide sweep still waits on Keaton's word
+scope one witness leg, one card fold, no converter byte changed
+status GREEN -- convergence_tree_prove_witness five subjects green, unheard_guard green, index_row_bound green, convergence_census green; hot roster pass read before the send

@@ -113,4 +113,32 @@ let sp = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed -n '/^<!
 assert sp.ok else "convergence-tree-prove: the metrics splice did not converge --\n${sp.out}\n${sp.err}"
 assert sp.out contains "verdict=converges" else "convergence-tree-prove: the metrics splice read something other than converges --\n${sp.out}"
 
-say "GREEN: convergence-tree-prove -- four subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, a write git ignores refused rather than read as inert, and all three pages the pre-commit hook regenerates proven to converge."
+# THE FIRST SUBJECT THE COMMITTED TREE ALREADY HAS WORK FOR, and it is the one that makes the
+# perturb leg above legible by contrast. Every subject before this one runs in `tools/hooks/pre-commit`,
+# so at HEAD its work is already done and a bare reading answers `inert` -- which is why each of
+# them is handed a perturbation. `tools/fixtures/r/rish_spoken_ascii_convert.sh` is a SWEEP rather
+# than a regenerator: read `20260910.211856` over 2,485 tracked `.rish` sources, 1,501 of them still
+# hold a character it would convert, so the committed tree is its own sample and no perturbation is
+# owed.
+#
+# THE SUBJECT IS CHOSEN FOR ITS HELD LINES. `tools/m/mycelium_chorus_knot_witness.rish` carries
+# convertible spoken text AND two COUPLED sayings -- lines another runner greps for, which the
+# converter holds back whole. A converter that converts some lines of a file and refuses others is
+# where a second run is most likely to move: the hold-back set is derived on every run rather than
+# pinned, so a first run that changed the file could hand the second run a different derivation. It
+# does not, and this leg is what says so.
+#
+# AND THE FIRST SUBJECT THIS LEG REACHED FOR WAS PUT BACK, which is worth writing down rather than
+# quietly fixing. `tools/gen/chapter/prin_scope.rish` holds three coupled sayings and was the better
+# sample; naming it here moved it out of `unheard_guard`'s `unnamed_choirs` set -- 11 to 10 -- and
+# reddened that guard's published leg. The fall was bought by a MENTION. This leg hands prin_scope
+# to a converter as a data file; it never RUNS it, and `unheard_guard`'s own first line is *a guard
+# that is never run guards nothing*. So the subject moved to a file that is not a silent choir, and
+# the reading that guard publishes stays honest. The blind spot it names -- a path cited as data
+# reading as a path that was run -- is that guard's lane rather than this one's.
+say "convergence-tree-prove: the Rishi spoken-ASCII sweep, on a file whose held lines it must re-derive..."
+let rs = run ["sh" "tools/c/convergence_tree_prove.sh" "tools/fixtures/r/rish_spoken_ascii_convert.sh" "--apply" "tools/m/mycelium_chorus_knot_witness.rish"]
+assert rs.ok else "convergence-tree-prove: the Rishi spoken sweep did not converge --\n${rs.out}\n${rs.err}"
+assert rs.out contains "verdict=converges" else "convergence-tree-prove: the Rishi spoken sweep read something other than converges --\n${rs.out}"
+
+say "GREEN: convergence-tree-prove -- five subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, a write git ignores refused rather than read as inert, all three pages the pre-commit hook regenerates proven to converge, and a whole-tree sweep proven on the committed tree itself, holding its coupled sayings back on both runs."
