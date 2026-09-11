@@ -1,0 +1,83 @@
+# tools/g/gate_example_witness.rish -- a gate desk's placard states its answers; this proves the
+# statement is checkable, and that the checker bites.
+#
+#   rishi/bin/rishi run tools/g/gate_example_witness.rish
+#
+# WHY THIS RUNG. Every desk in src/gate/ opens with the six placard lines src/shape/PLACARD.md
+# seats, and on a gate the `example` line is a table of input and answer -- `3 5 -> 1 - 3 2 -> 0 -
+# 3 3 -> 1`. That is the program's behavior written down by the hand that wrote the program, on the
+# program's own face, in a form a machine can read. Measured 20260911 over the 43 gate desks of the
+# room: 40 carry an example, 39 parse as machine tables, and they hold 104 cases between them.
+# Nothing in the tree had ever run one.
+#
+# The desks themselves are run -- tools/fixtures/g/glow_desk_reach_scan.sh reads 347 covered desks
+# and gates its uncovered at zero -- so the gap was never the run. It was the comparison: a witness
+# that runs a desk asserts an answer it typed into itself, and the placard beside the desk says the
+# same thing in a second place nobody compared. tools/g/glow_vane_pair_mirrors_witness.rish asserts
+# `3 5 -> 1` for gate-mantra-gen-floor-pair-u32 by hand; the desk's own placard says `3 5 -> 1`; the
+# two were written separately and neither knew about the other.
+#
+# WHAT THE SIBLING ALREADY HOLDS, SO THIS IS NOT A SECOND COPY OF IT. `glow_desk_arity`
+# (`20260910.223000`) compares three statements of one desk's arity -- a `::  Sample:` head line,
+# the worker's accepted-count list, and the argv gates `--sample-argv` derives. Its room is
+# `glow/gen`, and it reads 46 sampled desks there. Measured `20260911`: **zero** desks in
+# `src/gate/` carry a `Sample:` line at all, so that rung's first statement does not exist in this
+# room and its reading has never reached one of these desks. Here the desk's statement of its own
+# arity is the shape of its `example` table, which is a different sentence in a different room --
+# and, unlike a `Sample:` line, it carries the ANSWER beside the inputs.
+#
+# WHAT RUNS HERE, AND WHAT DOES NOT. The free readings -- parse, and every case's arity against the
+# run contract tools/g/glow_run_worker.sh states for that stem -- cost no build and run at lap tier.
+# The run half is opt-in: each case lowers and builds its desk with Zig at 5.5 to 6.0 seconds, so
+# the live 104 take about eleven minutes, and spending that every lap would re-prove 104 answers
+# that moved for nobody. It is proven instead on miniature desk rooms in a pen, where a wrong
+# answer is planted and bitten in seconds, and the live sweep is one command a hand takes:
+#
+#   sh tools/fixtures/g/gate_example_scan.sh --run
+#
+# WHAT IS PROVEN, on metal.
+#   Every case of every table parses, or its desk is named as prose and left alone. The count is a
+#   reading rather than a claim: 104 parsed cases plus the 3 arrows of the one prose desk account
+#   for all 107 arrows standing on example lines in the room.
+#   Every case's input count stands inside the set the worker accepts for that stem -- two
+#   statements of one fact, in two rooms, compared for the first time.
+#   The arity is read PER CASE. gate-lantern-face-core carries cases of two and of three inputs and
+#   the worker accepts both, so a reading taken from the first case alone calls that desk arity 2
+#   and passes its three-input cases unseen. The control plants exactly that shape.
+#   An answer is read as the last line before the worker's `EXIT:<code>` tail, exactly, never by
+#   substring -- because `EXIT:0` contains the digits an answer of `0` is, which is REDS %310's own
+#   shape, and the control plants a program that says nothing at all against a desk declaring 0.
+#   Thirty-two legs in a throwaway pen, every refusal planted and then lifted, and two mutations of the
+#   scan bitten: reading arity from the first case alone fell one leg, reading the answer by
+#   substring fell three.
+#
+# WHAT IS NOT PROVEN. Whether a desk's declared answer is the RIGHT answer -- that is the vane's own
+# design question, and this rung proves only that the desk and its placard agree. Whether the three
+# placardless desks of the room should carry one, which is a language custody ruling about what a
+# gate desk must declare. And the live run half, which this rung reports rather than drives.
+
+say "gate-example: Language EN -- a placard states a program's answers, and a statement wants a reader."
+say "gate-example: Style Gauge -- the counts below are read from the room, never remembered."
+say "gate-example: Lens TAME -- bound everything and say why: the room, the cases per desk, and the cost of a run are each named."
+
+say "gate-example: the room's tables, parsed and their arities compared..."
+let scan = run ["sh" "tools/fixtures/g/gate_example_scan.sh"]
+say scan.out
+assert scan.ok else "gate-example: a table refused -- read the verdict line above"
+assert scan.out contains "verdict=ok" else "gate-example: every case must parse and take an arity the worker accepts"
+assert scan.out contains "arity_unreadable=0" else "gate-example: a desk the worker states no run contract for has a table nothing can run"
+assert scan.out contains "arity_unaccepted=0" else "gate-example: a case's input count must stand inside the worker's own accepted set"
+assert scan.out contains "run=no" else "gate-example: the lap-tier reading runs nothing, so its cost stays a parse"
+assert scan.out contains "ran=0" else "gate-example: the free reading must launch no toolchain"
+say "free reading GREEN -- the placards parse and agree with the run contract"
+
+say "gate-example: the control, both ways..."
+let control = run ["sh" "tools/fixtures/g/gate_example_control.sh"]
+say control.out
+assert control.ok else "gate-example: the control must complete"
+assert control.out contains "legs=32" else "gate-example: thirty-two legs stand; adding one moves this line with it"
+assert control.out contains "faults=0" else "gate-example: no leg may land on the side it was not planted for"
+assert control.out contains "control_verdict=ok" else "gate-example: the control must agree with itself"
+say "RED and GREEN paths proven -- every refusal planted and then lifted"
+
+say "GREEN: gate-example -- a gate desk's stated answers are readable, its arity is checked against the worker, and the runner that compares them is proven to bite."
