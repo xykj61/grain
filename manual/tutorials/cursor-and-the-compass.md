@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260717.173427` (Eastern)
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Mixed register (Two Rooms) -- scaffold tutorial path; each section becomes checkable when its named witness is run and cited.
 **Audience:** an Acme Corporation employee opening Cursor on this tree for the first time.

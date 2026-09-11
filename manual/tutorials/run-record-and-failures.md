@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-07-18 (Voice Quin - Acme audience)
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** an Acme Corporation employee reading run-record fields after first-witness
 **Parity ground:** **142** -- RW-3 and RW-4 green today
@@ -29,7 +29,7 @@ Run RW-3:
 rishi/bin/rishi run tools/r/run_record_witness.rish
 ```
 
-Open the script and read both branches: success captures stdout on `.out` with empty `.err`; a fault preserves code `7` and places the message on `.err`.
+Open the script and read both branches: success captures stdout on `.out` with `.err` at zero length; a fault preserves code `7` and places the message on `.err`.
 
 ## Step 2 -- Assert every field you rely on
 

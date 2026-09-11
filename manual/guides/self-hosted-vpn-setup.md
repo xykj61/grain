@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260714.011504` (Pacific)
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task -- the client half is real and witnessed on this host; the server half is a real, tested-for-syntax deploy artifact, run once for real on a VPS
 

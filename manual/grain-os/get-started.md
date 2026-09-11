@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260718.192716` (Eastern) - prior `20260717.173427` - scaffold `20260713.235900`
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** an Acme Corporation employee choosing a first door on this tree
 **Status:** Mixed register (Two Rooms) -- real Pixel/HAWM/TUBE0.5 and Rishi paths named first; OS variants remain scaffold

@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-08-26
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Version:** `20260826.195758` -- derived from the living witness collection and the interpreter at `rishi/src/main.rye`
 **Versions, all enduring:** `20260702.180812` first page (parity 140) - same-arc revision to parity 142 (`if`, stderr seam) - `20260702.184312` the page's own versioning brought under the chronological law (`../../context/specs/rye-versioning-style.md`)
 **Conformance:** *must* and *should* carry their plain conformance weight

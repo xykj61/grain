@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260702.205630`
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Witness:** `rye/tests/tally_gardens_test.rye` (via parity) - `tools/f/foundation_seeds.rish` - parity **142**
 

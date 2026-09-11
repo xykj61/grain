@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260702.205630`
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Witness:** `tools/ca/caravan_capabilities_witness.rish` - parity **142**
 

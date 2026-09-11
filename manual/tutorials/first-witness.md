@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-07-18 (Voice Quin - Acme audience)
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** an Acme Corporation employee running a first witness on this tree
 **Parity ground:** **142** -- every command below runs green today
