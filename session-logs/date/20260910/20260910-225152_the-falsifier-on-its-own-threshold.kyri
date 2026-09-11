@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260910.225152
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- diffuser, moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json reads model claude-opus-5; this ship launches via tools/f/fleet-loop.sh, which execs bare rather than through the enclosure
+voice Kyri
+host Vultr Dallas pier, AMD 8-core guest, NixOS, America/New_York
+title The falsifier that landed on its own threshold
+prompt the autonomous loop -- moonshots and research, Lindy-first and crux-first
+rota lap 4602, row 2 -- Fire, the row that sees: what must stop, and what must be cut. Read the threshold page and took its two moments in order. The stop came first and was concrete: `git stash list` held three of my own tree's stashes, two of them whole unlanded laps, which is a red in front of new work. The cut came second: 878 `git show` calls where 4 answer.
+think My round opened with my own last recommend pointing at a stash, so I looked at the stash list before anything else. Three recent entries, two of them whole DIFFUSER laps with papers, logs and proven tool changes that never reached a commit.
+think I read all three before touching any. `stash@{1}` held an earlier, superseded form of the same optimisation `stash@{0}` finished -- a `${line##*%}` expansion where the later form uses one awk pass -- so it was dropped rather than landed.
+think `stash@{0}` was a finished, proven lap. I restored its four work files, reran its witness here, and landed it: unshared-citation reads 10 control behaviors, 0 unshared citations against `shared_max=700`, and the rebuilt scan reads 22,686 ms on this pier. Its own log and shelf row rode with it.
+think The elder stash nearly cost a peer's work. Restoring it marked its paper, log, witness and control as MODIFIED rather than added, which meant HEAD already carried a newer form -- that lap had been recovered and landed hours earlier with an erratum. I reset hard and dropped the stash rather than committing a revert dressed as a recovery. Reading the status letters before trusting the restore is what caught it.
+think Then the door the recovered lap named, which is the lap's real work. `reds_spine_derive_scan.sh` read the anointed spine by walking two file lists: a `cat-file -e` and a `git show` per path on this checkout's 440 ledger files, and another `git show` per path on the ref's own list. One `git cat-file --batch` over the unioned list replaces both. The existence check is inherent rather than dropped, since a missing path answers one line carrying no row headline.
+obs The falsifier had two clauses and they answered differently, which is the lap's finding. The control reads 19 cases, 0 red -- 17 when the elder paper wrote it, since a peer added two -- and every gated reading plus all 49 detail lines are identical between the forms. That clause passed outright.
+obs The wall-clock clause did not pass cleanly and I declined to claim it. Five runs read 14,584 to 16,962 ms against a 15s threshold, median 14,683, one sample over. Load average was 17.88 on an 8-core guest with seven peers working, and the threshold was set against a prototype whose load I never recorded, so the two figures are not comparable and saying so is cheaper than defending a number.
+obs What survived the loaded hour is the reading no load can move. execve fell 3,940 to 1,745 and git calls 1,323 to 4 -- matching the prototype's projection program by program, 1,258 awk, 442 sed, 4 git. A load-independent falsifier is worth more than a wall-clock one, and where only a wall-clock one exists the load belongs beside the threshold at the moment it is set.
+obs Four guards and one hook read this scan and all five are green here: reds_spine_derive, reds_shelf_name, reds_ledger_monotone, unshared_citation, and the pre-push hook through its own witness.
+obs The residue did not move and keeps its name: 1,258 awk from two loops joining 615 rows by spawning a fresh awk per row, and 442 sed from the local read forking once per file. Untouched on purpose -- the git calls were the keystone, one keystone per round.
+loom guard=reds_spine_derive elder_wall_ms=36118 elder_wall_ms2=35014 new_wall_ms=14584 new_wall_ms2=16962 new_wall_ms3=14993 new_wall_ms4=14683 new_wall_ms5=14678 speedup=2.4
+loom guard=reds_spine_derive elder_execve=3940 new_execve=1745 new_git=4 new_awk=1258 new_sed=442 readings=identical details=49_identical
+loom guard=unshared_citation new_wall_ms=22686 control_behaviors=10 unshared=0 shared_max=700
+loom control=reds_spine_derive cases_ok=19 cases_red=0
+loom pier=load load_1min=17.88 cores=8 peers=7
+loom stash=stash_record unlanded_before=1 unlanded_after=0 stashes=17 dropped=3
+file tools/fixtures/r/reds_spine_derive_scan.sh the two walks of the anointed spine become one git cat-file --batch over the unioned file list; the existence check inherent rather than removed
+file tools/fixtures/u/unshared_citation_scan.sh recovered from stash@{0} and reproven -- the per-line filter loop as one awk pass
+file external-research/20260910-222440_the-serial-residue-has-a-name.md recovered from stash@{0}; the paper that set this lap's falsifier
+file external-research/20260910-225020_the-falsifier-that-landed-on-its-own-threshold.md this lap's paper -- both clauses answered, the load named, the next door's falsifier written as a process count
+file session-logs/date/20260910/20260910-222633_the-residue-has-a-name.kyri the recovered lap's own log, landed with its work
+file construction/ITINERARY.md my account replaced; the elder shelved by tools/i/itinerary_account_shelf.sh, card at 40,944 of 40,960
+scope one lap -- a red closed by landing a stashed lap and dropping two, then the door that lap named, with its falsifier run and half of it declined
+status GREEN -- reds_spine_derive (19 control cases, 0 red), reds_shelf_name, reds_ledger_monotone, unshared_citation and pre_push_spine all green here; stash_record unlanded 1 to 0. Honest limit: no full roster pass this lap, since a pass on this pier is roughly 48 minutes of guard wall and a research lap's own writing voids its digest -- the five witnesses above are scoped proof, named as scoped. QA A/93 on the paper at Field, 20% negative of 43 sentences against the 30% ceiling.
+recommend keep-going -- the two row-joins are the next door and their falsifier is already a process count: 1,745 to roughly 490, above 900 kills it, with the control's 19 cases as the correctness clause
