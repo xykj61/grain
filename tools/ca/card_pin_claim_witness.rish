@@ -1,0 +1,71 @@
+# tools/ca/card_pin_claim_witness.rish -- the card's claim about the ledger agrees with the ledger.
+#
+# `reds_pin_capacity_scan.sh` derives whether construction/REDS.md can still accept a row.
+# construction/ITINERARY.md is the page every lap of every ship reads WHOLE to choose its work, and
+# a hand may write that same fact there in prose. Two spellings of one reading are two files that
+# may come to disagree (REDS %231) -- and when they do, the prose wins, because the card is read
+# first and read whole.
+#
+# The disagreement has fired twice in one direction. On 20260910.140033 the capacity scan's own
+# doors line still read "no lawful fold exists here" from a state that had passed, and four ships
+# carried "yours, Keaton" onto the card in one morning. On 20260911.025632 the card's own
+# work-in-progress clause said no new red could be booked until Keaton raised the bound, while the
+# instrument read pin_deadlocked=0 and pin_foldable_rows=1 -- one reds_fold.sh from headroom, with
+# no word from anyone. A lantern that fires twice becomes a loom.
+#
+# The cure is the one %555 seated for the waymark roster on this same card: the card names no
+# roster, and a claim it does make is read against the instrument both ways.
+#
+#   rishi/bin/rishi run tools/ca/card_pin_claim_witness.rish
+say "card-pin-claim: reading the operator card's ledger claim against the ledger's own instrument"
+
+let scan = run ["sh" "tools/fixtures/c/card_pin_claim_scan.sh"]
+say scan.out
+assert scan.ok else "card-pin-claim: the card claims the ledger is walled where the instrument reads a door -- ${scan.out}"
+assert scan.out contains "verdict=ok" else "card-pin-claim: want a clean verdict over the living card -- ${scan.out}"
+
+# The readings this scan exists to publish are present and named, so an edit that silently drops
+# one is caught here rather than by a reader wondering where the number went.
+assert scan.out contains "card_blocked_claims=" else "card-pin-claim: want the claim count reported"
+assert scan.out contains "claim_disagreements=" else "card-pin-claim: want the gated reading reported"
+assert scan.out contains "silent_deadlock=" else "card-pin-claim: want the converse reported"
+assert scan.out contains "card_cites_scan=" else "card-pin-claim: want the citation reading reported"
+assert scan.out contains "claim_phrases=" else "card-pin-claim: want the net's own size printed"
+
+# ONE INSTRUMENT, ONE ANSWER. The deadlock reading is QUOTED from the capacity scan rather than
+# recomputed, and that is the whole discipline this guard exists to hold -- so it is proven rather
+# than promised. A third spelling of the reading would be the fault wearing the guard's clothes.
+let quoted = run ["sh" "-c" "want=$(sh tools/fixtures/r/reds_pin_capacity_scan.sh | sed -n 's/^pin_deadlocked=//p'); sh tools/fixtures/c/card_pin_claim_scan.sh | grep -q ^pin_deadlocked=$want"]
+assert quoted.ok else "card-pin-claim: the deadlock reading must be the capacity scan's own, never a copy -- ${quoted.out} ${quoted.err}"
+
+# RED path -- the gate really bites, on a pen card carrying the exact clause that fired.
+let bite = run ["sh" "-c" "d=$(mktemp -d); printf '# pen card\nOPEN: the REDS pin holds ~8 bytes with every row OPEN, so no new red can be booked until the bound rises on your word.\n' > $d/card.md; printf '#!/bin/sh\necho pin_deadlocked=0\necho pin_foldable_rows=1\n' > $d/cap.sh; CARD_PATH=$d/card.md CAPACITY_SCAN=$d/cap.sh sh tools/fixtures/c/card_pin_claim_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (bite.ok == false) else "card-pin-claim: a claim standing over a lawful fold must refuse -- ${bite.out} ${bite.err}"
+assert bite.out contains "verdict=claim_disagrees" else "card-pin-claim: want the disagreement refused by name"
+assert bite.out contains "reds_fold.sh" else "card-pin-claim: a refusal a lap can repair must name the remedy"
+
+# GREEN path -- the same clause over a genuinely walled pin is honest prose and walks free, so the
+# guard reads agreement rather than firing on the words alone.
+let honest = run ["sh" "-c" "d=$(mktemp -d); printf '# pen card\nOPEN: no new red can be booked until the bound rises on your word.\n' > $d/card.md; printf '#!/bin/sh\necho pin_deadlocked=1\necho pin_foldable_rows=0\n' > $d/cap.sh; CARD_PATH=$d/card.md CAPACITY_SCAN=$d/cap.sh sh tools/fixtures/c/card_pin_claim_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert honest.ok else "card-pin-claim: an honest claim over a walled pin must walk free -- ${honest.out} ${honest.err}"
+assert honest.out contains "detail: claim_agrees" else "card-pin-claim: want the agreement named"
+
+# RED path two -- an instrument that cannot answer refuses, rather than letting a missing reading
+# read as agreement. A silent pass is what the first firing shipped.
+let silent = run ["sh" "-c" "d=$(mktemp -d); printf '# pen card\nno new red can be booked\n' > $d/card.md; printf '#!/bin/sh\necho pin_bytes=1\n' > $d/cap.sh; CARD_PATH=$d/card.md CAPACITY_SCAN=$d/cap.sh sh tools/fixtures/c/card_pin_claim_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (silent.ok == false) else "card-pin-claim: an instrument printing no reading must refuse -- ${silent.out} ${silent.err}"
+assert silent.out contains "verdict=capacity_silent" else "card-pin-claim: want the silent instrument refused by name"
+
+# The control proves every case on real files in a throwaway pen -- refusals planted and then
+# lifted, welcomes asserted as hard as refusals, the citation exemption shown by mutation.
+let control = run ["sh" "tools/fixtures/c/card_pin_claim_control.sh"]
+say control.out
+assert control.ok else "card-pin-claim: the control refuses -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "card-pin-claim: want every planted behavior to hold"
+assert control.out contains "cases_failed=0" else "card-pin-claim: want no behavior changed"
+
+# AND THE PEN IS HEARD. control_verdict=ok reads alike over a leg that was DELETED, so the case
+# count is pinned: a leg removed from the control reds here rather than passing in silence.
+assert control.out contains "cases_ok=28" else "card-pin-claim: want all 28 planted cases still asserted"
+
+say "card-pin-claim: GREEN -- one reading, one spelling, and the disagreement bitten both ways"

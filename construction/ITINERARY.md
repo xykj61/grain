@@ -23,7 +23,7 @@
 - **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/s/standing_equipment_run.sh`, let it finish; run again after `git add` as `... --hot` so the green measures the tree the commit ships (%174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` claims a round's own staged paths, and the flags compose (%223). The runner digests the tree at open and close, refusing `tree_moved` when they differ (%221). **`--scoped`** (the fusion, granted `20260828`, landed `20260829`): a cold open or rebase re-verify with a FULL green receipt reproves only what moved since its head; skips named per guard, unmapped always runs, hot close and cadence stay full (receipts chain from full greens alone). **Counts come from the scan, never here.** Roster `construction/standing-equipment.kyri`. A `tier` names its clock: absent or `lap` every run, `cadence` the slower one -- turned by **`--cadence-slice N`** off the run card, and it read **74 of 74 never run here** (`20260910.233112`); default 0. A tier is a cadence rather than an exemption, and an unknown word refuses at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit` and `--amend` **only** -- cherry-pick and rebase skip it, so `tools/hooks/post-commit` records the debt in `.git/` and rule one pays it next commit (%339). A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard CAN do is refuse to open the next lap over the wreckage -- `staged_uncommitted` on line one, and `run_verdict=lap_unclosed` when a full pass meets a dirty index without `--hot`. **A dead lap leaves no dirty index**: its leavings are stashed, and a stash is neither tree nor index, so open with `git stash list` (%321).
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/q/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions worth 25 each: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade stays lighter than a red** -- Standfast owns what is wrong, this owns what could be better. A pointer card reads `meter`, and a program is graded on its comments (%276). Rule: `.claude/rules/quality-assurance.md`.
-- **Reds first.** Close open agent-closable rows in `construction/REDS.md` before new work; one you cannot close surfaces like a gate.
+- **Reds first.** Close open agent-closable rows in `construction/REDS.md` before new work; one you cannot close surfaces like a gate. **Capacity comes from the instrument, never from this card** -- a full pin with one foldable row is one `reds_fold.sh` from headroom, and a card sentence spelling that state is held to `reds_pin_capacity`'s own reading by `tools/ca/card_pin_claim_witness.rish` (stamp `20260911.034352`).
 - **Raw transcripts land in `session-output/`** (gitignored, `20260828`): each loop tees its outer transcript to one per-seat file, overwritten in place -- `mkdir -p session-output && <loop> 2>&1 | tee session-output/<seat>.txt` -- so agents read a peer's full output by path, not by paste.
 - **Read scope -- open shelves and closed stacks** (`20260827.155213`): walk the open shelves; fetch a closed stack only by a named path -- every `date/`, `archive/`, and `yonder/` shelf, plus the rule's named roster. Never `ls` the root (`MAP.md` is the walk), never walk `tools/` whole (resolve by name), scope greps to the lane's rooms -- the whole-tree reference sweep before a move stays whole-tree by law. **A jailed inner lap (Mind's Codex) proves scoped witnesses only; the cold/hot roster rides with the pier and the unjailed benches.** Rule: `.claude/rules/read-scope.md`.
 - **A fresh clone inits its submodules first, and a global `insteadOf` will stop it.** The vendored rungs need `vendor/{microkit,monocypher,pqclean,sel4}` checked out, and a RED from an empty `vendor/` is an environment fact rather than a tree red. A host that rewrites `https://github.com/` to ssh (this bench does) cannot clone the public third-party submodules at all, since the key has no rights there -- `GIT_CONFIG_GLOBAL=/dev/null git submodule update --init <path>` clones each one over plain https without touching the host's config. `--init --recursive` aborts on the first unreachable repository and leaves the rest untouched, so name the paths.
@@ -40,7 +40,7 @@
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the scrub that remembers** (`20260908.155715`, the scrub red): the seed publish rescrubs all 8,187 files through a 251-rule manifest every run, and two publishes twenty minutes apart -- differing by one file -- each paid the full cost. The scrub is a pure function of bytes and verdict, so it caches by content, which is what Tablecloth holds. **The sow witness keeps reading the whole projection before any push**; only the per-file scrub caches. Design: `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`. Awaits Keaton's word.
 - **STANDFAST -- the dated equinox guards, and the pin that cannot hold their row** (`20260908.235139`): the equinox room reads **70 green, 10 red, 2 hung**, and **five of the ten share one cause** -- a guard pinned to a count of a growing surface (`e106` wants 33 REDS rows, `e108` 37, where the spine passes 645; `e102`/`e105` a moved metric revision; `e110` four chapter surfaces). Three more read `verdict=ok` on their scans while refusing, so their cause is unread. **No repair taken:** these are DATED guards, and whether they read an archived state, the living value, or retire is a testimony decision governing a family. **The ledger row cannot land** -- REDS holds 173 bytes with all seven rows OPEN, so no fold is lawful. Both want Keaton's word. Detail in `tools/fixtures/e/equinox_choir_census_scan.sh`.
-- **INCENSE -- WORK IN PROGRESS, `20260910.070937`.** Landed: eight Bhakta lessons in `docs-geode/lessons/` (95-97); two vortex press pages carrying the **Buckmaster and Alpoge** priority record at the door; twelve single-stranded moonshots; the tally-infuse spell; and the first two moonshot witnesses, `wrap_ring` and `cyclic_witness`. **OPEN:** (1) equinox choir census **70 green, 12 red** against a ceiling of **10**, deliberately not raised; (2) the REDS pin holds ~8 bytes with every row OPEN, so **no new red can be booked** until the bound rises on your word; (3) five dated equinox guards pin counts of a growing surface; (4) ten moonshots remain, ranked on their own page. **Corrected:** `glow_desk_run` is NOT hung -- 455s, exit 0 -- and the verdict word is `over_bound`, since a timeout is a claim about the bound as much as the run.
+- **INCENSE -- WORK IN PROGRESS, `20260910.070937`.** Landed: eight Bhakta lessons in `docs-geode/lessons/` (95-97); two vortex press pages carrying the **Buckmaster and Alpoge** priority record at the door; twelve single-stranded moonshots; the tally-infuse spell; and the first two moonshot witnesses, `wrap_ring` and `cyclic_witness`. **OPEN:** (1) equinox choir census **70 green, 12 red** against a ceiling of **10**, deliberately not raised; (2) the pin's capacity is `reds_pin_capacity`'s to publish rather than this card's to spell, and a bound raise is yours when that reading leaves a lap nothing to fold; (3) five dated equinox guards pin counts of a growing surface; (4) ten moonshots remain, ranked on their own page. **Corrected:** `glow_desk_run` is NOT hung -- 455s, exit 0 -- and the verdict word is `over_bound`, since a timeout is a claim about the bound as much as the run.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** (`cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (gate %6); the **WADE journey** double-seat (plan in `expanding-prompts/`).
 - **Seated names and breaches** rest on the [third shelf](archive/20260831-023122_itinerary-settled-decisions.md), each walk-back in [`CHECKPOINTS.md`](CHECKPOINTS.md). Live clause: the debride grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; a deep debride takes Keaton's word naming its target.
@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8aa384e0ea` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `87752825f6` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -181,31 +181,27 @@ ascii-document GREEN beside it. Cards **A 91 to A+ 98**.
 **THE DOOR IS `%642`'s:** a room joins free by being repaired; the remainder whole reads as a gate.
 **YOURS:** the 67 -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`, 6 silo. And whether a
 living door should end up GATED.
-**INCENSE -- A METER KNEW A LAW WAS UNREADABLE AND WOULD NOT NAME IT.**
-Elder [shelved](archive/20260911-001547_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=4607, unread today): the ledger first. Cold **246/3/2**, the third
-`red_self`; **HOT 249 green, 0 red, 2 gated, tree unmoved.**
-**(1) `prose_register` refused `door_setting_undeclared=1` on the ROOT `README.md`.**
-`declared_style_line_of()` reads only the FIRST PHYSICAL `**Style:**` line and this one wrapped,
-so the word had to land on line 23. **18/0** -- **and a peer landed the same repair while my hot
-pass ran, so theirs shipped and I took it.**
-**(2) `shim_reason` refused 949 against Bakery's 948**, `law_guard_heard_witness.rish` landing
-after it with one binding of the old habit. Its `list` mode named it: `under` at line 76, a refusal
-leg whose two `else` messages said what was wanted and nothing of what the scan answered. Both
-carry `${under.out} ${under.err}` -- **949 to 948**, ceiling unmoved, proven on metal over an
-exit-3 run. **A peer landed `${under.out}` alone; the rebase kept `.err` beside it.**
-**MY OWN OPEN ASK, HALF WRONG.** I called `cursor_only=2` *printed and gated nowhere*. It **is**
-printed -- a bare number, where `arrival:` and `absent:` print members. **A count says a law one
-bench cannot read exists; a name says which.**
-**NAMED: `arbor-voice` and `fuse-resin-cleanup`.** The first governs every `.arbor` voice tile and
-**three stand tracked in `arbor/`**, so a Claude ship editing one has no rule. `claude_only` reads
-**0** -- the second reason to print members, a bare zero reading like a wrong room.
-**PROVEN:** three legs, **27 cases, `control_fail=0`**, both mutation-proven. **AND THE PEN IS
-HEARD:** `control_fail=0` reads alike over a leg that FAILED and one DELETED, so the witness pins
-`control_cases=27` -- proven by deleting leg 3, the leg no assertion names: 26, the pin reddening
-alone.
-**YOURS:** whether either Cursor-only rule is **mirrored** -- a `.claude/rules/*.md` page loads
-every lap of eight ships, so ~3 KB x 8 is yours. **44 pairs drift, 1,500 lines.**
+**INCENSE -- THE CARD TOLD EIGHT SHIPS THE LEDGER WAS WALLED, AND THE METER READ A DOOR.**
+Elder [shelved](archive/20260911-034352_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=4617): *a claim of a boundary is tested by pressing on it.* I pressed this
+card's own, and the hand went through.
+**READ THE FACE:** `reds_pin_capacity` printed `pin_deadlocked=0`, `pin_foldable_rows=1`,
+`pin_headroom=0` -- its *one fold away from healthy* cell, repairable in one command by any lap.
+**My own clause (2) said the opposite**, true when I wrote it `20260910.070937`: `%701` accreted to
+**BOOKED** sixteen hours later and nothing carried that to the page every ship reads whole.
+**AND THE CLAIM SURVIVED THE REPAIR THAT DISPROVED IT** -- BAKERY folded `%701` at `004500`, its
+shelf header naming the same ceiling, and the card still said wall three hours on.
+**SECOND FIRING:** `reds_pin_capacity`'s own doors line read "no lawful fold exists here" from a
+passed state on `20260910.140033`, and four ships carried "yours, Keaton" onto this card.
+**MECHANISM:** `tools/ca/card_pin_claim_witness.rish` **quotes** the deadlock reading rather than
+recomputing it and gates `claim_disagreements` at zero **both ways** -- a claim over a door refuses,
+the same words over a walled pin walk free. **28 pen cases, two mutations bitten**, count pinned.
+**COLD 251/0/2; HOT 252/0/2, `tree_moved=no`.** Five of my own reds closed on the way:
+`tool_letter_room`, `tracked_link`, `e123` (this card over bound), `shim_reason` (four bindings
+reporting no capture) and the rebase itself -- my `%704` was a peer's, my `%701` fold a second one.
+**YOURS:** the row went **straight to its shelf** as `%706`, since the pin holds 15 bytes. **And
+the meter reads LOCAL bytes:** `pin_foldable_rows` named a row a peer had already shelved, which is
+the ABSENCE block's class and is not yet wired to it -- named in the row, unbuilt.
 **COPAL -- A DISCOVERY READING WAS ITERATING A LIST SOMEBODY TYPED.**
 Elder [shelved](archive/20260911-031057_itinerary-landed-accounts.md).
 **AIR FEELS** (row 1, N=4616): press every post; the row's test is to pull a part and see if it

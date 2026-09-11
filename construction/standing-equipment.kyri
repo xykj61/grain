@@ -4933,3 +4933,24 @@ guard shape_member_pedestal
 path tools/s/shape_member_pedestal_witness.rish
 tier lap
 seated 20260910.193433
+
+# card_pin_claim -- reds_pin_capacity derives whether construction/REDS.md can still accept a row;
+# construction/ITINERARY.md is the page every lap of every ship reads WHOLE to choose its work, and
+# a hand may write that same fact there in prose. Two spellings of one reading are two files that
+# may come to disagree (%231), and when they do the prose wins, because the card is read first and
+# read whole. The disagreement has fired twice in one direction: on 20260910.140033 the capacity
+# scan's own doors line read "no lawful fold exists here" from a state that had passed and four
+# ships carried "yours, Keaton" onto the card in one morning; on 20260911.025632 the card said no
+# new red could be booked until Keaton raised the bound while the instrument read pin_deadlocked=0
+# and pin_foldable_rows=1, one reds_fold.sh from headroom. Gates claim_disagreements at zero and
+# REPORTS card_blocked_claims, silent_deadlock and card_cites_scan -- the converse reported rather
+# than gated because its cure is a line somebody must WRITE, and a gate there would ask every ship
+# to edit the card. The deadlock reading is QUOTED from the capacity scan rather than recomputed, so
+# this guard adds no third spelling of the reading it exists to hold to two. `lap` rather than
+# `cadence`: it reads one card and one scan, and the page it reads is the page every lap chooses
+# its work from.
+
+guard card_pin_claim
+path tools/ca/card_pin_claim_witness.rish
+tier lap
+seated 20260911.034352

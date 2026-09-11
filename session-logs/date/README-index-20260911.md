@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260911.041915` | [The room that houses the law](20260911/20260911-041915_the-room-that-houses-the-law.kyri) | context/ living doors named: 23 rooms, ceiling 90 -> 67 |
+| `20260911.035345` | [The card said walled, the meter said door](20260911/20260911-035345_the-card-said-walled-the-instrument-said-door.kyri) | a loom binds a card claim to the pin's meter |
 | `20260911.035245` | [The lap that stood in a stash](20260911/20260911-035245_the-lap-that-stood-in-a-stash.kyri) | a whole parked lap recovered, landed GREEN, row renumbered |
 | `20260911.031057` | [The list a discovery was reading](20260911/20260911-031057_the-list-a-discovery-was-reading.kyri) | a discovery reading iterated a typed name roster; derived now |
 | `20260911.025732` | [The room that waits for a genre](20260911/20260911-025732_the-room-that-waits-for-a-genre.kyri) | it named eleven rooms beside it; twelve stood |
