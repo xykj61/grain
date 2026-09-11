@@ -32,6 +32,7 @@
 #   uncovered         a module no rostered guard names                     GATED at zero
 #   singly_covered    a module exactly one rostered guard names            reported
 #   readme_unnamed    a rostered guard the room's front door never names    GATED at zero
+#   readme_unrostered a guard named at that door which no roster row seats  ratchet, only falls
 #   own_lines         how many lines the room's own modules carry           reported
 #   readme_spelled_lines  a line count spelled in digits at the front door  GATED at zero
 #   readme_spelled_words  the same count spelled in letters at that door    reported
@@ -51,6 +52,45 @@
 # rostered guards, missing `amphora_roster` -- the guard this scan serves -- and `amphora_mark_wreck`,
 # both seated after the list was last written. A count read off an instrument and a LIST typed by
 # hand is half a repair, so the list is held here too.
+#
+# AND THAT HOLD READ ONE DIRECTION ONLY (`20260911.083000`). `readme_unnamed` walks the ROSTER and
+# asks the door about each row. Nothing walked the DOOR and asked the roster about each name, and
+# `readme_named` was never counted at all -- it was printed as `guards - readme_unnamed`, a number
+# describing the door derived entirely from the roster. So a name at this door that no roster row
+# seats was invisible to the instrument built to keep the two in step. Proven in a pen rather than
+# argued: a room whose door names `room_a` and `room_ghost`, with only `room_a` rostered, answers
+# `readme_named=1`, `readme_unnamed=0`, `verdict=ok`.
+#
+# THE SIBLING ROOM IN THIS LANE ALREADY READS BOTH WAYS, which is how the asymmetry showed.
+# `tools/fixtures/b/bron_resins_catalog_scan.sh` prints `uncatalogued` beside `orphan_entries` and
+# `unsealed` beside `orphan_seals` -- each list checked against the other. This scan carried
+# `orphan_rows` for the roster-to-file direction and had no door-to-roster twin.
+#
+# WHAT IT FOUND ON THE LAP IT LANDED, which is the only reason it earns a row:
+# `amphora_device_wire`. The door named it, no roster row seated it, and the door's own sentence
+# said why -- it *drives a virtio lab this pier has no qemu for, and refuses honestly at exit 1
+# rather than pretending*. That is REDS `%646` exactly: a hard refusal on an absent optional
+# dependency makes a witness unrostable, and an unrostered witness runs nowhere, so its red is one
+# nobody will ever hear. The roster's own `capability qemu_riscv` answers it -- seated `20260910`,
+# and measured in that probe's own comment as **26 witnesses reaching a wire lab, 0 of 26 on this
+# roster**. This room held one of the 26. It is rostered under that capability now, so a bench
+# carrying the emulator runs it and this pier reads its name in `skipped_capability` rather than
+# losing it.
+#
+# A NAME IS A CLAIM ONLY WHEN A FILE ANSWERS IT, and a path mention is never a claim. The token
+# stands with no `/` before it, so `tools/am/amphora_pour_witness.rish` credits nothing, and a file
+# of that name exists under the guard room, so `amphora_lap3_tree` -- a pour fixture this door names
+# in passing -- is read past rather than reported. Both rules were measured against the living door
+# before they were written: without the first the reading names 24 path components, without the
+# second it names a fixture that is no witness at all.
+#
+# A RATCHET RATHER THAN A GATE, and the reason is measured rather than cautious. With
+# `amphora_device_wire` rostered the living door still names `amphora_lap1`, inside the dated
+# sentence `amphora_lap1/2/3` -- and this door declares its hand witnesses honestly, in a section
+# whose own words are *run by name, on no clock*. A wall at zero would refuse that sentence, and a
+# wall that reds on honest prose is a wall somebody turns off. The ceiling only falls, so a name
+# arriving at this door tomorrow with no roster row reds on the lap it lands, which is the class
+# `amphora_device_wire` sat in unheard.
 #
 # GATED rather than ratcheted, and the counter-argument is named. `singly_covered` is reported
 # because a module born today is named by one guard on the day it lands, which is ordinary work; a
@@ -108,6 +148,11 @@ README=${4:-$ROOM/README.md}
 # Bound: the detail listing stops here and says so. An unbounded print is an unbounded allocation
 # (TAME), and a room past this wants a fold rather than a longer printout.
 MAX_DETAIL=64
+# The door-to-roster ratchet. It only falls: repair a name and lower this in the same commit.
+# 1 `20260911.083000` -- `amphora_lap1`, inside the dated sentence `amphora_lap1/2/3`, which the
+# door's Hand witnesses section already declares as running on no clock. `amphora_device_wire` was
+# the other and took a roster row instead.
+README_UNROSTERED_CEILING="${README_UNROSTERED_CEILING:-1}"
 # Bound: how far one guard is followed. Four covers a shim and its target with room to spare.
 MAX_HOPS=4
 
@@ -260,6 +305,74 @@ if test -f "$README"; then
   awk 'tolower($0) ~ /(^|[^a-z])(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty)[ -](line|module|guard|witness)(s|es)?([^a-z]|$)/ { print FNR }' "$README" > "$TMP/spelledword"
   readme_spelled_words=$(grep -c '' "$TMP/spelledword" || true)
   echo "readme_spelled_words=$readme_spelled_words"
+
+  # THE OTHER DIRECTION. Every basename in the guard room is a name this door could claim; the
+  # candidates come off the filesystem rather than a typed list, so a witness written tomorrow is a
+  # candidate the day it lands. A name counts as CLAIMED when the door writes it with no `/` before
+  # it -- which is what separates `amphora_device_wire` said plainly from
+  # `tools/am/amphora_device_wire.rish` cited as a path -- and it is UNROSTERED when no roster row
+  # seats it. `readme_claims` counts the door's own names rather than deriving them from the roster,
+  # which `readme_named` above cannot do by construction.
+  : > "$TMP/readme_unrostered"
+  claims=0
+  : > "$TMP/candidates"
+  for f in "$GUARD_ROOM"/*; do
+    test -f "$f" || continue
+    b=$(basename "$f"); b=${b%.*}
+    echo "$b" >> "$TMP/candidates"
+    # A guard is named `amphora_pour` and its file is `amphora_pour_witness.rish`, so the file
+    # basename alone would never be the name the door writes. Both forms are candidates, because
+    # this roster seats both spellings -- `amphora_pour` from `_witness.rish`, and
+    # `amphora_bounds_agree` from a file of its own name. Taking only the first left a hole in the
+    # gate rather than merely undercounting: a door claim spelled as the guard name, backed by a
+    # `_witness.rish` file and seated by no roster row, was no candidate and so no finding.
+    case $b in *_witness) echo "${b%_witness}" >> "$TMP/candidates" ;; esac
+  done
+  LC_ALL=C sort -u "$TMP/candidates" -o "$TMP/candidates"
+  while read -r b; do
+    test -n "$b" || continue
+    grep -qE "(^|[^/A-Za-z0-9_])$b([^A-Za-z0-9_]|\$)" "$README" || continue
+    claims=$((claims + 1))
+    grep -qE "^guard $b\$" "$ROSTER" && continue
+    echo "$b" >> "$TMP/readme_unrostered"
+  done < "$TMP/candidates"
+  readme_claims=$claims
+  readme_unrostered=$(grep -c '' "$TMP/readme_unrostered" || true)
+  echo "readme_claims=$readme_claims"
+  echo "readme_unrostered=$readme_unrostered"
+  echo "readme_unrostered_ceiling=$README_UNROSTERED_CEILING"
+
+  # AND THE BLIND SPOT THIS READING CARRIES, PRINTED RATHER THAN LEFT SILENT. The candidates above
+  # are files, so a door claim naming a guard with NO file under the guard room cannot be a
+  # candidate at all. That second population is read here off the room's own namespace -- the first
+  # segment every rostered guard name shares -- and REPORTED with names, never gated, because it
+  # holds two honest kinds at once: a real promise of a witness nobody wrote, and a plain noun that
+  # merely starts with the room's name. The living door carries one, `amphora_lap3_tree`, which is a
+  # pour fixture rather than a witness. A reader can tell those apart and a pattern cannot, which is
+  # why this half reports and the half above ratchets. Named here because a blind spot nobody prints
+  # reads exactly like an empty one -- the lesson `tools/fixtures/g/glow_comment_ascii_scan.sh` set
+  # down when it published its own `trailing_unread` and the sibling beside it read 1,319.
+  : > "$TMP/readme_fileless"
+  prefix=$(awk '{print $NF}' "$TMP/rows" | awk -F_ 'NF>1{print $1}' | LC_ALL=C sort -u)
+  if [ "$(printf '%s\n' "$prefix" | grep -c '')" -eq 1 ] && [ -n "$prefix" ]; then
+    echo "readme_namespace=$prefix"
+    grep -oE "(^|[^/A-Za-z0-9_])${prefix}_[a-z0-9_]+" "$README" \
+      | sed "s/^[^A-Za-z0-9_]*//" | LC_ALL=C sort -u > "$TMP/doortokens"
+    while read -r t; do
+      test -n "$t" || continue
+      # The two populations are disjoint by construction rather than by care: a token already a
+      # candidate above has a file under one of the two spellings, so it belongs to the ratchet and
+      # never to this report. Counted in both, one name would be one finding wearing two numbers.
+      grep -qx "$t" "$TMP/candidates" && continue
+      grep -qE "^guard $t\$" "$ROSTER" && continue
+      echo "$t" >> "$TMP/readme_fileless"
+    done < "$TMP/doortokens"
+    echo "readme_claims_fileless=$(grep -c '' "$TMP/readme_fileless" || true)"
+  else
+    # More than one namespace among the rostered names, so no single prefix is this room's own.
+    echo "readme_namespace=mixed"
+    echo "readme_claims_fileless=unread"
+  fi
 else
   # A word rather than a number: an absent door and a whole one must never read alike.
   echo "readme=absent"
@@ -267,10 +380,18 @@ else
   echo "readme_unnamed=absent"
   echo "readme_spelled_lines=absent"
   echo "readme_spelled_words=absent"
+  echo "readme_claims=absent"
+  echo "readme_unrostered=absent"
+  echo "readme_unrostered_ceiling=$README_UNROSTERED_CEILING"
+  echo "readme_namespace=absent"
+  echo "readme_claims_fileless=absent"
+  : > "$TMP/readme_unrostered"
+  : > "$TMP/readme_fileless"
   : > "$TMP/spelled"
   : > "$TMP/spelledword"
   readme_unnamed=0
   readme_spelled_lines=0
+  readme_unrostered=0
 fi
 
 # Name every one of them. A count nobody can act on is the complaint the dated-path census made of
@@ -290,13 +411,16 @@ name_them uncovered "$TMP/uncovered"
 name_them singly "$TMP/singly"
 name_them orphan_row "$TMP/orphans"
 name_them readme_unnamed "$TMP/readme_unnamed"
+name_them readme_unrostered "$TMP/readme_unrostered"
+name_them readme_fileless "$TMP/readme_fileless"
 name_them linked "$TMP/linked"
 name_them lines "$TMP/lines"
 name_them spelled_line "$TMP/spelled"
 name_them spelled_word "$TMP/spelledword"
 
 if [ "$uncovered" -eq 0 ] && [ "$orphan_rows" -eq 0 ] && [ "$readme_unnamed" -eq 0 ] \
-   && [ "$readme_spelled_lines" -eq 0 ]; then
+   && [ "$readme_spelled_lines" -eq 0 ] \
+   && [ "$readme_unrostered" -le "$README_UNROSTERED_CEILING" ]; then
   echo "verdict=ok"
   exit 0
 fi

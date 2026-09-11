@@ -1,0 +1,51 @@
+format session-log-v1
+stamp 20260911.091453
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent, seat COPAL
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness system prompt
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default proven by .claude/settings.json, read 20260908; this lap launched bare through tools/f/fleet-loop.sh
+evidence .claude/settings.json for configuration; no runtime telemetry file for effort
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The door that promised a guard and the roster seated nobody
+prompt the standing autonomous lap under the baton; lane amphora and bron-resins
+rota lap 4632, row 2 -- Fire, the row that sees. Every row was already read on this shelf, so the derived row stands. Its threshold asks a lap to look straight at the thing most laps would route around and to read the ledger before reading anything new. Both halves of this lap came from that instruction: the ledger read first surfaced a ratchet standing over its ceiling, and the looking read my own room's guard against the sibling room in my own lane.
+think Opened with fleet_round_open, clean on 7bd40c5584, no stop sentinels, then launched the cold roster pass detached and held the tree still while it ran.
+think Read the fire threshold, then the REDS pin. Nothing OPEN was mine to close, so I turned to the lane.
+think bron-resins, the half of my lane I had never opened, turned out to be the healthy one -- its catalog scan walks both directions, uncatalogued beside orphan_entries and unsealed beside orphan_seals. That contrast is what made the vessel room's one-directional reading visible.
+think Proved the blindness in a pen before writing a word of it: a room whose door names room_a and room_ghost, only room_a rostered, answers readme_named=1 readme_unnamed=0 verdict=ok, exit 0.
+think The cold pass then came back red on shim_reason, so the constructive work waited. Measured rather than inferred: a detached worktree at HEAD~1 answered unsaid_rostered=938 against the same ceiling of 936, so the wall had been under water across two commits and my own previous lap had already lowered it by one. That is the ceiling's own no-slack hazard, which the block above the constant already names.
+think Repaired nine bindings in my own rostered witness, 937 to 928, lowered the ceiling to meet the reading, and proved shim_reason GREEN before returning to the lane.
+think Candidate design took two corrections on metal. File basenames alone left a hole rather than an undercount, since this roster seats amphora_pour from amphora_pour_witness.rish; and the fileless report double-counted a name the ratchet already held, so the two populations are made disjoint by construction.
+obs Four mutations each bit their own legs and nothing else -- dropping the _witness spelling fells 7 legs, the slash rule 3, disjointness 1, the ceiling 2. A leg proving the new reading bites is worth little without the leg proving the elder reading was blind, so `elder reading blind` and `elder count derived` stand beside it.
+obs A gate here would have refused the room's own honest prose. The door declares its hand witnesses under the words run by name, on no clock, and amphora_lap1 stands inside a dated sentence, so the reading ratchets under a ceiling that only falls rather than walling at zero.
+think Seating the roster row reddened a third guard, and that refusal was worth more than the row. standing_equipment_redleg gates guards_no_assert at zero -- a rostered witness carrying no assertion cannot red for itself -- and my shim carries exit r.code and asserts nothing.
+obs The three rostered sibling shims in this same room pass that gate on the word assert standing inside a COMMENT, since the scan greps the file. I gave mine a real assert rather than the comment that would have satisfied the gate, and left the three as they stand for a hand to rule on. guards_no_refusal_marker rose 51 to 52 under its ceiling of 53, which is honest and named rather than hidden.
+obs Three findings in one lap, and all three are the same shape: a check reading a surface rather than the thing. readme_named described a door and read the roster; the candidate set described guard names and read file basenames; guards_no_assert describes code and reads the file's bytes.
+obs My own new paragraphs pushed the door from 19 to 23 percent negative, over the Door target it had been under. The style sweep caught it and brought it to 16 percent, so the page leaves better than it arrived rather than merely passing.
+obs The card needed four trims to fit; my first block ran 902 bytes past the elder it replaced, and the pin sat 4 bytes under its bound before I touched it.
+loom witness=amphora_roster behaviors=103 behaviors_before=77 mutations=4
+loom scan=amphora_roster_scan readme_claims=24 readme_unrostered=1 readme_claims_fileless=1
+loom scan=shim_reason unsaid_rostered_before=937 unsaid_rostered_after=928 ceiling_before=936 ceiling_after=928
+loom pass=standing_equipment_cold guards_run=277 guards_red=1
+loom card=amphora/README.md grade_before=84 grade_after=89 negative_before=23 negative_after=16
+file tools/fixtures/am/amphora_roster_scan.sh the door-to-roster reading, its printed blind spot, and the ceiling
+file tools/fixtures/am/amphora_roster_control.sh twenty-six new legs across four sections, each refusal planted then lifted
+file tools/am/amphora_roster_witness.rish reads the three new lines and carries the raised behavior count
+file construction/standing-equipment.kyri seats amphora_device_wire tier lap under capability qemu_riscv
+file amphora/README.md the guard moves from hand witnesses to the standing list; the both-ways paragraph; the register sweep
+file tools/am/amphora_bounds_agree.rish nine assert messages interpolate their capture
+file tools/am/amphora_device_wire.rish the shim refuses on its own reading rather than passing an exit code on
+file tools/fixtures/s/shim_reason_scan.sh ceiling 936 to 928 with the lowering's own account
+file construction/archive/REDS-the-door-that-promised-a-guard-nobody-ran-rows-709.md the row, born on its shelf
+file construction/archive/REDS-fold-recital.md records the shelf so the capacity scan reads no phantom
+file construction/ITINERARY.md the COPAL account and the Git nib
+scope two reds closed, one reading widened, one guard rostered, one row booked
+status GREEN -- amphora_roster, amphora_bounds_agree, shim_reason, ascii_document, prose_register, card_pin_claim all run green on metal; cold pass 277 run with its one red closed; hot close named in the commit
+recommend keep-going -- the same door-to-roster reading is missing from every other room's roster scan, and 25 of the 26 wire-lab witnesses still stand off the roster, one lane at a time
