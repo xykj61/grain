@@ -1163,6 +1163,49 @@ path tools/g/glow_desk_arity_witness.rish
 tier lap
 seated 20260910.223000
 
+# gate_example -- a gate desk writes its own answers on its face, and nothing ever read them.
+#
+# Every desk in `src/gate/` opens with the six placard lines `src/shape/PLACARD.md` seats, and on a
+# GATE the `example` line is a table of input and answer -- `3 5 -> 1 - 3 2 -> 0 - 3 3 -> 1`. On a
+# shape pedestal that same line is one literal, and two rungs seated `20260910` hold each of those
+# numbers against the Rye it describes. The gate room's tables had no such reader at all.
+#
+# Measured `20260911` over the 43 gate desks: 40 carry an example, 39 parse as machine tables, and
+# they hold 104 cases. The count is a reading rather than a claim -- those 104 plus the 3 arrows of
+# the one prose desk account for all 107 arrows standing on example lines in the room.
+#
+# NOT A SECOND COPY OF `glow_desk_arity`. That rung compares a `::  Sample:` head line, the
+# worker's accepted-count list, and the argv gates `--sample-argv` derives, over 46 desks in
+# `glow/gen`. Measured the same day: ZERO desks in `src/gate/` carry a `Sample:` line, so its first
+# statement does not exist in this room. Here the desk's own statement of its arity is the shape of
+# its example table -- and that table carries the ANSWER beside the inputs, which no `Sample:` line
+# does.
+#
+# The arity is read PER CASE. `gate-lantern-face-core` carries cases of two and of three inputs and
+# the worker accepts both, so a reading taken from the first case alone calls that desk arity 2 and
+# passes its three-input cases unseen. The control plants exactly that shape and it bites.
+#
+# WHAT RUNS ON THIS CLOCK, AND WHAT DOES NOT. The free readings -- parse, and every case's arity
+# against the worker's own `--arity` answer -- cost no build. The run half is opt-in: each case
+# lowers and builds its desk with Zig at 5.5 to 6.0 seconds, so the live 104 take about eleven
+# minutes. Spending that every lap would re-prove 104 answers that moved for nobody, so it is
+# proven on miniature desk rooms in a pen instead, and the live sweep is one command a hand takes:
+# `sh tools/fixtures/g/gate_example_scan.sh --run`.
+#
+# 30 control legs, every refusal planted and then lifted, and two mutations of the scan bitten:
+# reading arity from the first case alone fell one leg, reading the answer by substring fell three.
+# That second is REDS %310's own shape -- `EXIT:0` contains the digits an answer of `0` is -- so the
+# scan reads the last line before the tail exactly, and a program that says nothing answers
+# `<silence>` rather than passing for zero.
+#
+# `lap` rather than `cadence`: 10.5s measured on this pier `20260911.093000`, a text reading plus a
+# pen, no toolchain. A desk lands in this room by hand a few a round, and the lap it lands is when
+# its table wants reading.
+guard gate_example
+path tools/g/gate_example_witness.rish
+tier lap
+seated 20260911.093000
+
 # gen_home -- the instrument stood green, on no clock, while the door it answers drifted 34 desks.
 #
 # WHAT WENT WRONG. `src/gen/README.md` is the door onto the desks' future home, and it pinned
