@@ -4990,3 +4990,82 @@ guard card_pin_claim
 path tools/ca/card_pin_claim_witness.rish
 tier lap
 seated 20260911.034352
+
+# rye_build_lock_reach -- the build lock is scoped to a working directory and the shadows it guards
+# are scoped to the tree (found `20260911.041926` on the air rota row, pressing REDS %700's fence).
+# `rye build` and `rye run` bridge a `.rye` root and every local `.rye` module it imports to
+# adjacent `.zig` shadow files, hand those to the toolchain, and delete them on the way out. Two
+# builds staging one shadow delete each other's bridge mid-compile, which is the race %281 booked
+# and `rye/src/main.rye` answered on `20260827.023156` with one lock held from the first shadow
+# write to the last delete, cache-hit path included.
+#
+# THE TWO SCOPES PART, read off the source rather than inferred. The lock directory is
+# `.rye-build.lock` opened against `std.Io.Dir.cwd()`, so the lock's scope is THE CALLER'S WORKING
+# DIRECTORY. A shadow's path is its source's path with `.rye` traded for `.zig`, so the shadow's
+# scope is THE TREE. Two callers standing in two directories take two locks over one namespace and
+# neither waits for the other.
+#
+# WHAT HOLDS IT TODAY IS A COINCIDENCE, WHICH IS WHY IT EARNS A GUARD. Two working directories reach
+# this tree's builds -- the repository root and `glow/.cache`, the second used by two Glow lowering
+# witnesses whose closures stay inside that directory. Measured `20260911`: 1,314 build roots, 1,696
+# shadow paths, 907 of them shared between two or more roots under the ONE root lock, and zero
+# claimed across the two scopes. The shared 907 are safe by construction -- one lock stands over
+# them, which is the lock's whole purpose -- so they are reported and gated at nothing. The gate is
+# `cross_scope_collisions` alone, and it is free while the coincidence holds and loud the day a
+# witness reaches for `cd <dir> && rye build ...` to shorten a path. Twenty-two control legs on real
+# repositories prove it both ways, four mutations biting 8, 2, 3 and 2 of them.
+#
+# ONE FILE IS READ PAST, NAMED AND PRINTED: this scan's own control, whose whole content is planted
+# material. It writes its pens with literal `cd <dir>` lines rather than shell variables, so the
+# elder pen reading could not tell them from tree invocations -- and the guard refused its own pen
+# the moment the control was staged, `lock_scopes` reading 5 and naming three pen directories. The
+# same trap then closed on the scan's own head comment, whose example spelled a plant out in full;
+# an illustration is written from placeholders for exactly this reason. Four further legs prove the
+# exclusion is load-bearing rather than decorative.
+#
+# WHY `tier lap`. One `git ls-files` over `tools/` and an awk walk of 1,314 import closures, about a
+# second measured `20260911`. Ordinary work writes this fault in the line it is typed, so a cadence
+# clock would let one ride four laps before anything said so.
+
+guard rye_build_lock_reach
+path tools/r/rye_build_lock_reach_witness.rish
+tier lap
+seated 20260911.041926
+
+# error_member_reach -- can this tree produce every refusal it declares? (found `20260911.060527`
+# on the air rota row, whose instruction is to close a hand on a boundary and pull). TAME asks that
+# a bound fail with a NAMED error, and a named error is a promise to the caller: this function can
+# refuse in this particular way, so switch on it. Zig enforces one direction of that promise -- a
+# returned error must belong to the declared set -- and nothing asks the other, whether a declared
+# member can ever arrive. So a member left behind by a widening keeps standing in the set and reads
+# as a refusal a caller may plan for.
+#
+# MEASURED `20260911`: 1,965 tracked authored sources, 4,213 declared member sites, 1,472 distinct
+# names, and NINE sites naming a refusal nothing in this tree can make -- four in Glow
+# (`MissingTagged` and `TooFewLines` in `rune_shape`, `TooFewLines` in `lower_named_cast`,
+# `NotBarePayload` in `rune_core`) and five across Caravan, Mycelium, Rishi's matcher and the vault.
+# Three of the four Glow names were left deliberately: `session-logs/date/20260720/
+# 20260720-032713_stoa97-token-mold-spec.bron` records a lap deciding "remain in ParseError set (no
+# removal); only their emission paths change". That decision has stood in no instrument since, which
+# is what this row changes -- the removal itself is a language-surface question and stays Keaton's.
+#
+# THE GATE IS THE TREE-WIDE QUESTION, NEVER THE PER-FILE ONE. Zig error names are global, so a
+# ladder may declare one shared vocabulary across many rungs and produce it in a couple:
+# `OweMisrecorded` stands in 47 Caravan rungs and is returned in two. 261 sites read unreached in
+# their own file and 165 of them are that shape, so the per-file number is reported with its cause
+# named and gated at nothing. A guard that reds on a sound habit is one somebody turns off.
+#
+# WHY A CEILING RATHER THAN ZERO. The nine were not made today and five belong to other lanes. A
+# ceiling that only falls means the tenth reds on the lap it arrives, and it costs no lane a forced
+# edit. Twenty-three control legs on miniature sources in a pen, every refusal planted and lifted;
+# five mutations of the scan bite 2, 3, 2, 1 and 2 of them.
+#
+# WHY `tier lap`. ONE awk pass over 1,965 sources, 7.6s measured `20260911` -- it was three walks at
+# 11.7s until the declared, produced and per-file readings were folded into one reader.
+# Ordinary work writes this fault -- a widening that makes a check moot leaves its name behind in
+# the line above it, and nothing else in this tree would say so.
+
+guard error_member_reach
+path tools/e/error_member_reach_witness.rish
+tier lap
+seated 20260911.060527

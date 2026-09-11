@@ -1,0 +1,60 @@
+# tools/e/error_member_reach_witness.rish -- can this tree produce every refusal it declares?
+#
+#   rishi/bin/rishi run tools/e/error_member_reach_witness.rish
+#
+# WHAT THIS GUARDS. TAME asks that a bound fail with a NAMED error, and a named error is a promise
+# to the caller: this function can refuse in this particular way, so switch on it. Zig enforces one
+# direction of that promise -- a returned error must belong to the declared set -- and nothing asks
+# the other, whether a declared member can ever arrive. So a member left behind by a widening keeps
+# standing in the set, reads as a refusal a caller may plan for, and produces nothing.
+#
+# WHAT IT READS. Every tracked `*.rye` outside `vendor/`, `gratitude/` and `seed/`. Measured
+# `20260911`: 1,965 sources, 4,213 declared member sites, 1,472 distinct names -- and NINE sites
+# naming a refusal nothing in this tree can make.
+#
+# THE GATE IS THE TREE-WIDE QUESTION, NEVER THE PER-FILE ONE. Zig error names are global, so a
+# ladder may declare one shared vocabulary across many rungs and produce it in a couple:
+# `OweMisrecorded` stands in 47 Caravan rungs and is returned in two, which is one name meaning one
+# thing. 261 sites read unreached in their own file and 165 of them are that shape. Gating the
+# per-file number would red the tree for a sound habit, so it is reported with its cause named and
+# the gate asks only whether ANYTHING can produce the name.
+#
+# WHY A CEILING RATHER THAN ZERO. The nine were not made today, and five of them belong to lanes
+# whose repair is their own word -- Caravan, Mycelium, Rishi's matcher, the vault. A ceiling that
+# only falls means the tenth reds on the lap it arrives, which is the promise worth having, and it
+# costs no other lane a forced edit to make.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked sources and a pen.
+
+say "error-member-reach: Language EN -- a declared refusal this tree can never make is a promise with nothing behind it."
+say "error-member-reach: Style Gauge, Meter -- the per-file reading is reported, the tree-wide one is the gate."
+say "error-member-reach: Lens TAME -- fail with a named error, and let the name be reachable."
+
+# 1 -- the pen. Every refusal is planted and then lifted, so a refusal stays tellable from a
+# bypass: a scan that always answered `dead_sites=1` would pass the planted leg and fail the
+# lifted one.
+let control = run ["sh" "tools/fixtures/e/error_member_reach_control.sh"]
+say control.out
+say control.err
+assert control.ok else "error-member-reach: a control case read the wrong way: ${control.out} ${control.err}"
+assert control.out contains "control_fail=0" else "error-member-reach: the pen must balance before the field is believed: ${control.out}"
+assert control.out contains "control_legs=23" else "error-member-reach: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out}"
+
+# 2 -- the field, under a ceiling that only falls.
+let field = run ["sh" "tools/fixtures/e/error_member_reach_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "error-member-reach: the field reading refused: ${field.out} ${field.err}"
+assert field.out contains "dead_ceiling=9" else "error-member-reach: the ceiling moved -- it may fall on a repair and never rise: ${field.out}"
+assert field.out contains "verdict=ok" else "error-member-reach: a declared refusal nothing can produce has entered the tree -- run the scan with --list to name it: ${field.out}"
+
+# 3 -- the reach, asserted rather than assumed. A reading of nothing is indistinguishable from a
+# healthy tree (REDS %463), so the population is named here: the walk must find sources, it must
+# find declared members, and it must find productions. A scan that silently stopped reading would
+# otherwise report a perfect zero.
+assert (field.out contains "files=0") == false else "error-member-reach: the walk found no authored source at all, so its reading means nothing: ${field.out}"
+assert (field.out contains "members=0") == false else "error-member-reach: the walk found no declared error member at all, so its zero means nothing: ${field.out}"
+assert (field.out contains "produced=0") == false else "error-member-reach: the walk found no produced error at all, so every member would read dead: ${field.out}"
+assert field.out contains "unreached_in_file=" else "error-member-reach: the per-file reading must be printed beside the gate, since a quantity naming nobody is the shape this tree keeps booking: ${field.out}"
+
+say "GREEN: error-member-reach -- every refusal this tree declares beyond the standing nine is one some line can actually make."

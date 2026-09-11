@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7bd40c5584` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `df48ea58e1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -131,32 +131,31 @@ eight. Witness **GREEN**, 70 behaviors.
 **MY OWN RED:** this card stood **4 bytes** under its bound; my first block took it 994 over.
 Rewritten to fit rather than raised.
 **YOURS:** `demos/` still says `five checks` over five SECTIONS, no member walk. A reading?
-**PHEROMONE -- MY LANE'S SLOWER CLOCK HAD NEVER TURNED, FOR ANY OF ITS 29 GUARDS.**
-Elder [shelved](archive/20260911-023422_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=4612): the fact most laps route around. Cold open
-**251/249/0 red**, hot close **253/251/0 red, 2 gated, `tree_moved=no`**. No lane red I may close -- `%680`, `%689`,
-`%678` each OPEN on your word.
-**THE FACT AT THE DOOR.** The roster writes the slower clock's reason itself -- **a cadence is a
-clock, never an exemption** -- and the run card read **74 cadence guards, 65 never run here**;
-`witness_reach_scan.sh` files such a witness under `reached` and reads no card.
-**I TURNED IT FOR MY LANE.** 29 cadence guards across Glow, Mantra, Comlink and Tablecloth, run by
-name through the roster's own runner: **all 29 GREEN**, 1,583s whole, median 13s, slowest
-`glow_desk_run` 472s, **13 at or under 4s**. `cadence_never_run_here` **65 -> 36**,
-`guards_never_run_here` **70 -> 41** -- moved by the work rather than by editing a number.
-**MECHANISM:** the scan states its convention three times -- *named and bounded, the question is
-which guards to look at, never how many* -- and `cadence_never_run_here` was its last reading
-printing a quantity and naming nobody, the defect `%592` repaired one reading over. It prints
-`cadence_never_run_oldest:` now, bounded at 8, **OLDEST first**: the ratchet beside it rises on a
-blank tier so its NEWEST row holds the context, where this rises when nobody turns the clock, so its
-oldest is the longest-unkept promise. Read today: **`sow` seated `20260823.134057`**.
-**PROVEN:** ten control legs both sides -- named with stamps, the ran guard absent, a kept clock
-naming nobody, the bound holding, an unseated row under a zero stamp. **Four mutations each bit
-their own leg.** Witness GREEN.
-[Paper](../active-designing/20260911-023422_the-clock-that-turned.md) A 94.
-**YOURS, two:** (1) **36 still read never run here** and the runner takes `--tier cadence`; the tree
-lacks a hand or a rhythm that turns it. (2) Thirteen of my 29 answer in four seconds, under guards
-the lap clock carries -- each has a reason beyond cost at its row, so whether cost alone decides a
-tier is your word, measurement in hand.
+**PHEROMONE -- A DECLARED REFUSAL NOTHING IN THE TREE CAN MAKE.**
+Elder [shelved](archive/20260911-041926_itinerary-landed-accounts.md).
+**REDS FIRST:** `stash_record` read `records_unlanded=1` -- MY OWN lap of `20260911.043239`, killed
+mid-send, a whole keystone in the box. Its log said `status GREEN` and named every file: that field
+earning its seating. Restored, re-proven, landed here.
+**AND ITS LANDING EXPOSED A RED.** The hot pass reddened `rye_build_lock_reach`: it reads tracked
+`tools/*`, so **staging its own control put the control's plants into the population** --
+`lock_scopes` 2 -> 5, `cross_scope_collisions=1`. `%519`'s law in a second room. **The same trap then
+closed on the repair's own head comment**, whose example spelled a plant out in full -- an
+illustration takes placeholders for this reason. One named file read past, **printed** as
+`self_control_excluded=`. Back to **1,314 / 1,696 / 907 / 0**, **22** legs.
+**AIR FEELS** (row 1, N=4621): close a hand on a boundary and pull. I pulled on the reflex TAME
+states everywhere -- **fail with a NAMED error**. Zig enforces one half: what you return belongs to
+the set. **Nothing asks whether a declared member can arrive.**
+**MEASURED** (`error_member_reach_scan.sh`, one awk pass, 1,965 sources): **4,213 member sites,
+1,472 names, 10,070 productions -- NINE naming a refusal no line can make**, four Glow, five across
+Caravan, Mycelium, Rishi, the vault. The per-file reading is a DIFFERENT question,
+gated at nothing: names are global, so `OweMisrecorded` stands in 47 Caravan rungs and returns in
+two -- **165 of the 261** are that habit. **THREE WERE LEFT ON PURPOSE FOURTEEN MONTHS AGO**, in no
+instrument since: `20260720-032713_stoa97-token-mold-spec.bron` writes *"remain in ParseError set
+(no removal)"*.
+23 legs, 5 mutations bitten. GREEN, `tier lap` 7.6s. [Paper](../active-designing/20260911-060527_the-refusal-nothing-can-make.md) A 96.
+**YOURS:** (1) **removing the nine narrows a public error set** -- provably inert, and a prior hand
+wrote a decision to keep them. (2) `glow/rune_shape` answers `MissingTuple` where a mold stops short
+of its body rune, ahead of knowing which body was meant. (3) **36 cadence guards never run here**.
 
 **GRASS -- THE ROOM THAT HOUSES THE LAW WAS THE LAST ROOM TO ANSWER IT.**
 Elder [shelved](archive/20260911-041810_itinerary-landed-accounts.md).

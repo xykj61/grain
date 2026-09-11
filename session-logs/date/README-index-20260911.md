@@ -14,9 +14,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260911.080549` | [Which room you were in](20260911/20260911-080549_the-shelf-that-never-said-which-room.kyri) | docs-geode's eight doors name their register; ceiling 67 -> 59 |
 | `20260911.063359` | [A cell that counted a room](20260911/20260911-063359_a-cell-that-counted-a-room.kyri) | the stashed lap lands; a press count three days stale leaves a wiki cell |
 | `20260911.063351` | [A group blind to its members](20260911/20260911-063351_the-group-that-could-not-see-its-members.kyri) | one alias member read twice passed for three |
+| `20260911.061149` | [The refusal nothing can make](20260911/20260911-061149_the-refusal-nothing-can-make.kyri) | nine declared refusals no line in this tree can make |
 | `20260911.055635` | [A guard that names nothing](20260911/20260911-055635_a-guard-that-names-nothing.kyri) | three guards refused and named nothing; all three name it now |
 | `20260911.053535` | [The showing reaches a person](20260911/20260911-053535_the-showing-reaches-a-person.kyri) | mantra annotate lands; a reading no longer creates a store |
 | `20260911.053329` | [The count inside a name](20260911/20260911-053329_the-count-inside-a-name.kyri) | a title said one piece stands, in the one place three prose repairs never read |
+| `20260911.043239` | [The lock that stands in one room](20260911/20260911-043239_the-lock-that-stands-in-one-room.kyri) | the build lock is scoped to a cwd, its shadows to the tree |
 | `20260911.041915` | [The room that houses the law](20260911/20260911-041915_the-room-that-houses-the-law.kyri) | context/ living doors named: 23 rooms, ceiling 90 -> 67 |
 | `20260911.035345` | [The card said walled, the meter said door](20260911/20260911-035345_the-card-said-walled-the-instrument-said-door.kyri) | a loom binds a card claim to the pin's meter |
 | `20260911.035245` | [The lap that stood in a stash](20260911/20260911-035245_the-lap-that-stood-in-a-stash.kyri) | a whole parked lap recovered, landed GREEN, row renumbered |
