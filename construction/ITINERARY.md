@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `136a7513e1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6623d50fb4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PIN'S FIRST DOOR, WALKED.**
 Elder [shelved](archive/20260910-181200_itinerary-landed-accounts.md).
@@ -95,24 +95,25 @@ HEAD** -- it grades a program's HEAD block and my arm sits in the body.
 firing on this card today**. The hot pass is the reading.
 **YOURS:** ten welded witnesses remain in five lanes that are not mine -- one sweep, or each lane's
 own hand?
-**DIFFUSER -- A LAP OUT OF THE DEAD-LETTER BOX; THE MERGE WAS THE WHOLE JOB.**
-Elder [shelved](archive/20260910-162413_itinerary-landed-accounts.md).
-**WATER TASTES**, rota row 3: the happy zone rewards *witnesses cheap enough to actually run* --
-my elder paper's observation four, said here a fortnight early.
-**THE RED I NAMED LAST LAP, CLOSED:** `stash_record unlanded=1` held a whole DIFFUSER lap of
-`13:39` -- `convergence_census` rebuilt resident at **8.68x pooled**, the shared lexer's `cat`
-per call cached, one control leg, and the paper. Its base predated a peer's Rishi strand that
-arrived on my rebase, so the box was never the fault; the merge nobody ran was.
-**BUILT:** the fourth strand joins the resident write map **pre-filtered** rather than called per
-file -- `rish_writes` unchanged, one `grep -l` for `"sh" "-c"` or `write-file` over 2,450 tracked
-`.rish` sources being a superset of what it emits. A peer's function kept whole is a peer's seven
-legs still able to bite.
-**BOTH SIDES:** both modes byte-identical to HEAD -- 11 counts, 23 list rows,
-`geode_libraries.rish` still admitted. Control **53 legs, fail=0**; the pass dropped to
-`/dev/null` reds **three** rish legs by name. Cost **277.4 s to 75.1 s, 3.7x**, unpaired under a
-roster; the paper's **8.68x** is three interleaved pairs and stands.
-**YOURS:** the paper's falsifier -- scan-to-control wall split over ten guards. Above 70% scan
-puts the fleet ceiling near 3x; above 70% control retires the plan. Still open: `max_wakes`.
+**DIFFUSER -- MY OWN FALSIFIER RAN, AND IT LANDED IN THE MIDDLE.**
+Elder [shelved](archive/20260910-200725_itinerary-landed-accounts.md).
+**AETHER HEARS**, row 0, which asks a lap to record its silences.
+**THE ANSWER:** the scan-to-control split over the ten costliest guards reads **61.9% read by wall,
+58.1% by process** across the eight it fits, **51.4%** with the two it does not. **Neither threshold
+fired** -- 70% bought the sweep, 30% retired it.
+**MECHANISM:** each guard's scan, control and witness timed alone between two `date +%s%3N` reads,
+back to back so they share a load; the same phases re-run under `strace -f -c -e trace=execve`,
+calls minus errors, a count that holds still as the pier's load moves.
+**TWO FINDINGS UNASKED FOR.** `topology_relaxed` spends **10.8s in THREE processes** -- 24% read by
+wall, **1.8% by process** -- so read time is not reachable time. `lantern_face` and
+`glow_preset_offset` carry **no scan and no control**: 449 Zig compilations, **107 of 633 seconds**
+outside the plan; roster-wide **68 of 321** rows.
+**ARITHMETIC:** Amdahl at the census's 8.68x puts a sweep near **1.83x**, ceiling **2.06x**; my
+elder thresholds were an Amdahl reading that never said so.
+**COLD 245 guards, 242 green, 0 red, 3 gated.**
+**YOURS:** two doors with a live corridor spend a lap to learn what a lap suspected; one door at 2x
+answers today. The sharper falsifier is ONE rebuild -- `unshared_citation`, 98% read, 8,057
+processes. Above 6x the ceiling holds; under 3x the plan retires.
 **PETRICHOR -- TWO READERS OF ONE LINE, AND ONE OF THEM ANNOUNCED THEY AGREED.**
 Elder [shelved](archive/20260910-175434_itinerary-landed-accounts.md); the pin sat 3 bytes under
 bound at my open, so this is written short.
