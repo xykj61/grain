@@ -6,6 +6,7 @@
 **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Scaffold -- conceptual overview; implementation status noted per claim
+**Room:** mixed -- the Status column marks each layer for itself, so modules green today stand beside a Nock interpreter and five variants that are named and scoped rather than built.
 
 ---
 

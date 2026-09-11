@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Guide for the task -- the macOS path is witnessed end to end on this host; the Linux path is the inherited script  
+**Room:** mixed -- the macOS path is witnessed end to end on this host, and the Linux path is the inherited script, proven nowhere here yet.
 **Sibling:** [`SOURCE.md`](../../SOURCE.md) Step 4 - [`first-day-personal-ops.md`](first-day-personal-ops.md)
 
 ---

@@ -3,6 +3,7 @@
 **Language:** EN
 **Style:** Gauge, Door setting (see `../../../context/GAUGE_STYLE.md`)
 **Status:** Template -- fill `{{VARIANT}}` with one of Reya / Riyo / Trey / Triz; do not hand-edit the fills, regenerate from this template
+**Room:** vision -- every variant this template fills describes an OS image that is scaffold rather than running; the boot command stays commented out and waits on a boot witness.
 
 ---
 

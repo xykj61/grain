@@ -7,6 +7,7 @@
 **Audience:** an Acme Corporation employee running a first witness on this tree
 **Parity ground:** **142** -- every command below runs green today
 **Law:** [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
+**Room:** checkable -- every command in the tutorial runs green today at the parity named above.
 
 ---
 

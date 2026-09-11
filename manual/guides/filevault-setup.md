@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task -- this is the single highest-priority security finding for this work machine, per [`../../context/specs/20260713-211800_local-host-system-hardware-anonymized.md`](../../context/specs/20260713-211800_local-host-system-hardware-anonymized.md)
+**Room:** checkable -- each step is verifiable against the machine, and the guide closes on `fdesetup status`, which answers for itself.
 
 ---
 

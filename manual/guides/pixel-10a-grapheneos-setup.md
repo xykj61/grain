@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Guide for the task -- every step below is transcribed directly from GrapheneOS's own official web installer instructions (`grapheneos.org/install/web`, checked `20260716`), not paraphrased from memory. The Pixel 10a's own verified-boot key hash is quoted verbatim from that same page. This guide has not yet been run end to end against a real device from this session -- treat your own first real run as the actual proof, and tell your agent how it goes so this page can be corrected in place if reality differs from what follows.
+**Room:** mixed -- every step is transcribed verbatim from a cited installer page, so the transcription is checkable against that source, while the end-to-end run stands unproven here by the page's own word.
 
 ---
 

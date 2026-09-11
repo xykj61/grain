@@ -121,6 +121,23 @@ winner and quotes no price, so no guard could bind a sentence of it. `docs-geode
 and **0** living-silent; the ceiling falls **67 to 59**, moved by the eight and by nothing else.
 The remainder is 33 `active-designing/`, 20 `manual/`, 6 `external-research/`.
 
+**And the OS manual paid its share** (`20260911.114108`). The 20 living `manual/` pages naming no
+room are the manual itself -- eight setup and operating guides a person follows on their own
+machine, the overview and the variant template, three reference pages, two tutorials, and three
+video scripts. **The room never regressed.** It joined this roster on `20260908` reading 0 silent,
+and the `20260911` amendment above, which reads a stampless basename as **living** rather than
+elder, reopened 20 of its 29 doors in one reading -- the amendment working rather than the room
+slipping. Each took a `**Room:**` line judged from the body: **9 `checkable`** where a command
+answers for itself or a named witness binds the page, **8 `mixed`** where a proven half stands
+beside an unproven one, and **3 `vision`** where the page is held by taste. The clearest `mixed` is
+[`pixel-10a-grapheneos-setup.md`](../manual/guides/pixel-10a-grapheneos-setup.md), whose steps are
+transcribed verbatim from a cited installer page -- checkable against that source -- while its own
+Status says the end-to-end run stands unproven here. The clearest `vision` is
+[`apprentice-welcome.md`](../manual/guides/apprentice-welcome.md), a person-to-person letter no
+guard binds a sentence of. `manual/` reads 29 pages and **0** living-silent; the ceiling falls
+**59 to 39**, moved by the twenty and by nothing else, and the remainder is 33 `active-designing/`
+and 6 `external-research/`.
+
 **And this page's own door was among them.** The witness read the first head line carrying
 `**Status:**` anywhere, and the `Last updated` line above quotes both key names, so the reading
 returned that sentence and called this page silent three lines above a Status reading

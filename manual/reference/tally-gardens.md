@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Witness:** `rye/tests/tally_gardens_test.rye` (via parity) - `tools/f/foundation_seeds.rish` - parity **142**
+**Room:** checkable -- the page documents only what the gardens witness and the foundation-seed gate prove.
 
 ---
 

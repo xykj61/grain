@@ -2,6 +2,7 @@
 
 **Language:** EN  
 **Status:** Living guide — generic hygiene beside SOURCE’s First Day  
+**Room:** vision -- browser, password-manager, and extension choices held by taste; the one hard line, that vault material never enters git, is law elsewhere rather than bound here.
 **Voice:** Kyri  
 **Last updated:** `20260730.145723` (EDT) · SUNN6  
 **Sibling:** [`SOURCE.md`](../../SOURCE.md) · [`apprentice-welcome.md`](apprentice-welcome.md) · [`first-season-personalize.md`](first-season-personalize.md)

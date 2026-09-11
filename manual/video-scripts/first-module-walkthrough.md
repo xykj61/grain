@@ -4,6 +4,7 @@
 **Voice:** Kyri -- warm, plain, radiant civic. Second person ("you"), never a named person.
 **Render notes:** built for **Remotion** (code-driven terminal captures) or **HeyGen** (narration over the same captures). Each scene gives `[VISUAL]`, `[ON-SCREEN]`, `[VOICEOVER]`. Every command is real and runs green against a fresh clone -- record the captures live so the GREEN banner is genuine.
 **License:** original script, this project's own. No third-party footage, music, or text.
+**Room:** mixed -- every command is real and runs green against a fresh clone, while the scenes and timings are a plan for a video nobody has recorded.
 
 ---
 

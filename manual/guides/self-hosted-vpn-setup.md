@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Guide for the task -- the client half is real and witnessed on this host; the server half is a real, tested-for-syntax deploy artifact, run once for real on a VPS
+**Room:** mixed -- the client half is witnessed on this host; the server half is a deploy artifact tested for syntax and run once for real.
 
 ---
 
