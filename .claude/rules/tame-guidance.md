@@ -105,4 +105,4 @@ No new law -- the supplement already seats this. Agents must not skip it when sh
 5. **Before claiming GREEN** -- run `tame_style_check` and the module's own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
 6. **Glass / NativeActivity touch** -- migrate `@memcpy` and add opening lines in that file before leaving.
 
-**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
+**Ledger:** `active-designing/yonder/date/20260717/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`

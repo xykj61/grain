@@ -33,7 +33,7 @@ refused, and honesty outranks brightness. Full statement: `context/RADIANT_STYLE
 - Vary sentence length; let each sentence land before the next.
 - Weave practical and meaningful together.
 - Name a coined term's plain function on first use, so a newcomer can follow.
-- Spend the benediction where it is earned (devotional and foundational pieces); let ordinary and technical pieces end plainly -- `active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`.
+- Spend the benediction where it is earned (devotional and foundational pieces); let ordinary and technical pieces end plainly -- `active-designing/yonder/date/20260715/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`.
 
 ## Vocabulary of correctness
 

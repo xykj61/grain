@@ -147,7 +147,7 @@ characters **twice**. The set is enumerated once now, from the tracked listing, 
 the same question. Two further hazards rode in the elder spelling, each proven in the pen by
 mutation: `for f in docs/*.md` **splits a path on a space**, so a spaced page inside a walled room
 falls out of the wall in silence; and a `case` pattern's `*` **crosses a slash** where pathname
-expansion's does not, so `docs/redacted/a-note.md` would leave the ratchet for a wall that never
+expansion's does not, so `docs/<subroom>/<page>.md` would leave the ratchet for a wall that never
 enumerated it. **A walled room also reads dated testimony past** -- accrete-never-break outranks the
 wall, and a teaching shelf may hold a dated page where a rule room never does.
 
