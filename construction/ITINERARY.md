@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b1e2463386` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `da57b52929` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -200,38 +200,39 @@ reporting no capture) and the rebase itself -- my `%704` was a peer's, my `%701`
 **YOURS:** the row went **straight to its shelf** as `%706`, since the pin holds 15 bytes. **And
 the meter reads LOCAL bytes:** `pin_foldable_rows` named a row a peer had already shelved, which is
 the ABSENCE block's class and is not yet wired to it -- named in the row, unbuilt.
-**COPAL -- A DISCOVERY READING WAS ITERATING A LIST SOMEBODY TYPED.**
-Elder [shelved](archive/20260911-031057_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=4616): press every post; the row's test is to pull a part and see if it
-comes free. **REDS FIRST:** none at open -- cold **253/251 green, 0 red, 2 gated**. **MID-LAP,
-BOTH MINE, BOTH CLOSED:** hot read `readme_metrics` (four plant `.rye` files, 1735 -> 1739,
-regenerated) and `shim_reason` **+2 over its ceiling** -- my two new legs written with a bare
-`else` string, the wall biting at write time rather than a week later. Both took the interpolated
-`${v.err}` form. A peer lowered that ceiling to **936** on the rebase, already counting my repair,
-so the reading meets it exactly. **HOT scoped 222 run, 221 green, 0 red, `tree_moved=no`.**
-**THE POST THAT GAVE.** `amphora_bounds_agree` states four relations, and the FIRST is a discovery
-rather than a declaration: *when two roofs carry one name, either they agree or the name is doing
-two jobs.* Its scan iterated `NAMES="max_vessel_len max_cargo digest_hex_len"` -- a list a hand
-typed. The other three are declared by a marker above a const, which is their point. A discovery
-reading a typed roster is where the tree grows past the instrument in silence.
-**MECHANISM:** `discovered_names()` takes the scan's own `rg` pattern over the root and keeps every
-identifier declared as a spelled `u<N>` const in **two or more distinct files**; the roster is that
-unioned with the seated three, which stay seated because a seated name VANISHING from the room is a
-fault this reading must still name. Four `same_name_*` readings print every run.
-**MEASURED `20260911.022245`: derived and seated both answer three, `same_name_unseated=none`** --
-`digest_hex_len` in 4 roofs, `max_vessel_len` in 3, `max_cargo` in 2. The widening lowers nothing
-today and holds the door for the fourth family.
-**THE MUTATION BIT.** Two plant roofs declaring `max_frame_len` at 4096 and 2048 answer
-`verdict=ok` and **exit 0** the moment the roster stops being derived -- the false GREEN shown from
-the failing side. Both directions land as plants; the family stands at **twelve pairs**.
-**ON TOUCH, three docs resynced:** the roster note said *one `covers:` declaration stands today*
-where the scan reads **two**; `amphora/README.md` named the readings *path C - alias - couples*,
-passing over covers; the scan's header named the typed three. All three point at the instrument.
-**`20260908`'s SHAPE, ONE ROOM OVER:** `opening_lines`, `tame_check` and `rune_assert_sweep` each
-took a lap that week for it. **A 91 / B+ 87 / B+ 86.**
-**YOURS:** the other three readings are opt-in by design, and `covers:` stands at **two
-declarations over 37 bounds**. Whether an undeclared ORDER should be inferred and reported -- never
-gated -- I decline without your word, since inference is what this guard was built to refuse.
+**COPAL -- AN ALIAS GROUP IS A CLAIM ABOUT MEMBERS, AND THE READING COULD NOT SEE ITS OWN.**
+Elder [shelved](archive/20260911-063351_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4626): read by swallowing -- run the thing rather than the sentence
+about it. That is what found this lap's red.
+**REDS FIRST, TWO CLOSED, ONE ROOT:** cold **254 run, 250 green, 2 red**. `shim_reason` read
+`late_say_rostered=1`, held at zero, `standing_equipment` red behind that one line.
+`tools/g/gitlink_dependent_witness.rish` bound its scan at line 64 and said it at line 88, **below
+the first assert on that binding**, so the census it tells a reader to read reached a reader on the
+passing runs alone. The `say` moved above the asserts. Both GREEN.
+**THE POST THAT GAVE.** `amphora_bounds_agree` reading (2) proves differently spelled ceilings
+meaning one quantity carry one number. It summed const **LINES** across the group, skipped any
+member name the room did not declare, and compared what it collected; its only floor, `FOUND < 2`,
+counts lines rather than names.
+**MEASURED, BOTH READERS, ONE PLANT:** one member declared twice at 1024 answers
+`declarations=2 signatures=1 status=agree verdict=ok`, **exit 0** -- the comparison made entirely
+out of reading (1)'s own subject read twice, the other two names nowhere in the room. Repaired:
+**exit 1**, `membership=incomplete`, `missing=max_seal_plain,max_cargo_bytes`.
+**MECHANISM:** `members`, `present` and `missing` print before any comparison; no member present
+reads `absent`; a missing member **fails naming who**; under two distinct names reads `thin`. The
+elder `thin` is **subsumed** -- it fired on one LINE under the living root alone, so no plant could
+reach it. Living room **`membership=whole`**: the widening lowers nothing today.
+**THE MIRROR OF YESTERDAY'S ROW.** `%706`'s sibling widened reading (1), a roster typed and unable
+to GROW. This one is declared and cannot SHRINK. **Thirteen planted pairs.**
+**HOT 251 green, 2 red, `tree_moved=no`** -- one peer guard and its echo, a flap with an **observed**
+cause: `mantra_snapshot_hosted` red at 2,689ms under load, **GREEN alone straight after**, its
+evidence naming `BadKind` in `decode_request` then `RecvFailed`. A datagram of the wrong KIND is a
+foreign sender rather than a lost packet, and `mantra/snapshot_export_delivery.rye:34` binds ports
+38490/38491 with **no port lock** where eight trees run it. `%485`'s shape; the cure stands one lane
+over in `tools/fixtures/a/amphora_vessel_port_lock.sh`. **Handed to the mantra lane.**
+**YOURS:** REDS stood at **40,945 of 40,960** -- **15 bytes** -- so this row (`20260911.055500`) was
+**born on its own shelf**, the fifth this week and the second this morning. A ledger that seats a
+row only by not entering it says something. And `couples:` declares partners **at the site**, where
+alias groups are declared inside the instrument.
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`
 **674**/**1,093**; `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.

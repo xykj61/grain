@@ -12,6 +12,11 @@
 #     quantity must share one numeric value (width may differ):
 #       cargo_ceiling  -- max_resin_bytes - max_seal_plain - max_cargo_bytes
 #       datagram       -- max_wire_payload - max_chunk_datagram
+#     MEMBERSHIP BEFORE AGREEMENT (REDS `20260911.055500`): a group names
+#     members, so `members`, `present` and `missing` are read before any
+#     comparison. The elder reading summed const LINES, so one member declared
+#     twice answered `status=agree` while the other two names stood nowhere in
+#     the room -- proven exit 0 on the `alias_incomplete` plant.
 # (3) Declared couples (e148): `/// couples: <module>.<name>` above a const
 #     must match the partner's VALUE (width free; report widths). Coupling is
 #     declared, never inferred -- coincidences carry no marker.
@@ -241,6 +246,17 @@ done
 
 # Alias value groups -- same number under different names (width free).
 # Format: group_label:name1,name2,name3
+#
+# A group is a CLAIM ABOUT MEMBERS, so membership is read before agreement
+# (REDS `20260911.055500`). The elder reading summed const LINES across the
+# whole group and compared the numbers it happened to find, so one member
+# declared twice answered `declarations=2 signatures=1 status=agree` while the
+# other two names stood nowhere in the room -- proven on metal, exit 0, on a
+# group whose comparison was entirely reading (1)'s own subject read twice.
+# Membership and agreement are two questions: `members` is what the group
+# names, `present` is how many of those names the room declares, `missing`
+# names the rest, and a group with one name present compares nothing across
+# names and says `thin` rather than `agree`.
 ALIAS_GROUPS="cargo_ceiling:max_resin_bytes,max_seal_plain,max_cargo_bytes datagram:max_wire_payload,max_chunk_datagram"
 
 for group in $ALIAS_GROUPS; do
@@ -249,35 +265,51 @@ for group in $ALIAS_GROUPS; do
   VALS=$(mktemp)
   : >"$VALS"
   FOUND=0
+  MEMBERS=0
+  PRESENT=0
+  MISSING=""
   OLDIFS=$IFS
   IFS=,
   for name in $names; do
     TMP=$(mktemp)
     collect_name "$name" "$TMP"
     N=$(wc -l <"$TMP" | tr -d ' ')
+    MEMBERS=$((MEMBERS + 1))
     if [ "$N" -gt 0 ]; then
+      PRESENT=$((PRESENT + 1))
       FOUND=$((FOUND + N))
       sed -E "s/^[^:]+:[0-9]+:(pub )?const ${name}: (u[0-9]+) = ([0-9]+);/\\3/" "$TMP" >>"$VALS"
+    else
+      MISSING="${MISSING:+$MISSING,}$name"
     fi
     rm -f "$TMP"
   done
   IFS=$OLDIFS
 
+  echo "alias_${label}_members=${MEMBERS}"
+  echo "alias_${label}_present=${PRESENT}"
   echo "alias_${label}_declarations=${FOUND}"
-  if [ "$FOUND" -eq 0 ]; then
+  echo "alias_${label}_missing=${MISSING:-none}"
+
+  # A group no member of which stands here is a group this root does not carry.
+  if [ "$PRESENT" -eq 0 ]; then
+    echo "alias_${label}_membership=absent"
     echo "alias_${label}_status=skipped"
     rm -f "$VALS"
     continue
   fi
-  if [ "$FOUND" -lt 2 ]; then
-    # A single declaration cannot diverge with itself; living amphora should
-    # eventually carry the full group -- require >=2 when ROOT is amphora.
-    if [ "$ROOT" = "amphora" ]; then
-      echo "alias_${label}_status=thin"
-      FAIL=1
-    else
-      echo "alias_${label}_status=skipped"
-    fi
+
+  # One member present is a claim half made: the names that would have proven
+  # it are gone, and the elder reading called that agreement.
+  if [ -n "$MISSING" ]; then
+    echo "alias_${label}_membership=incomplete"
+    FAIL=1
+  else
+    echo "alias_${label}_membership=whole"
+  fi
+
+  if [ "$PRESENT" -lt 2 ]; then
+    echo "alias_${label}_status=thin"
     rm -f "$VALS"
     continue
   fi

@@ -1,2 +1,6 @@
 //! Plant -- alias cargo_ceiling disagree (positive control).
 pub const max_seal_plain: u32 = 999;
+// The third member, so this plant's ONLY fault is the divergence above: an
+// incomplete group reds for membership, and a plant proving two things at once
+// proves neither cleanly.
+const max_cargo_bytes: u32 = 999;

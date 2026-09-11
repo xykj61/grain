@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260911.063351
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role vessel lane -- COPAL, amphora and the crossing
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the CLI exposes no identity call
+configured_model claude-opus-5
+configured_status evidence .claude/settings.json, read this lap
+voice Kyri
+host linux pier, TZ America/New_York
+title an alias group is a claim about members, and the reading could not see its own
+prompt the standing COPAL seat -- amphora, bron-resins, the vessels and the crossing
+rota lap 4626, row 3 -- Water, the row that tastes. Its instruction is to read by swallowing: run the actual thing up close rather than reading the sentence about it. Its cardinal seat asks what the round changed and whether running it again would change more; its fixed seat asks whether each seam carries two small answers, the asker's and the answerer's. Taste is what found this lap's red -- the scan was run against a two-file pen rather than read.
+think Cold roster pass opened detached: 254 guards, 250 green, 2 red, 2 gated, tree_moved=no, run_verdict=guard_red.
+think Reds first, and the two reds were one root. shim_reason read late_say_rostered=1, a reading held at zero, and standing_equipment read red behind it for that one line. tools/g/gitlink_dependent_witness.rish bound its scan at line 64 and said it at line 88, below the first assert on that binding -- so the census it tells a reader to read reached a reader only on the runs that passed, which are the runs nobody needs it for. The say moved above the asserts; both guards GREEN again, and the peer's own bare-say reasoning is kept beside a second note naming this one.
+think Then the lane. amphora_bounds_agree states four relations, and last lap widened the first out of a typed roster. Reading (2), the alias groups, is the mirror of that fault: its roster is declared in the instrument, so where the first could not GROW, this one cannot SHRINK.
+think The mechanism is smaller than that sentence. The group loop summed const LINES across all member names into one FOUND, skipped any name the room did not declare, and compared the numbers it happened to collect. Its only floor, FOUND < 2, counts lines rather than names.
+think So one member declared twice at one value reads declarations=2, signatures=1, status=agree, verdict=ok, exit 0 -- and the comparison is entirely reading (1)'s own subject read twice. Proven on metal in a two-file pen before a byte was written, then again against the landed plant: elder exit 0, repaired exit 1.
+obs Membership and agreement are two questions, so they are two readings now: members, present, declarations and missing print before any comparison; a group no member of which stands under this root reads absent and is skipped; a missing member reads incomplete and fails while naming who is gone; fewer than two distinct names present reads thin rather than agree.
+obs The elder thin branch is subsumed rather than kept beside the new one. It fired on one LINE and only under the living root, which is why no plant could ever prove it -- a refusal a pen cannot reach is a refusal proven in one direction.
+obs tools/fixtures/amphora_bounds_plants/alias_disagree/b.rye gained its third member constant in the same commit. A plant that reds for two reasons proves neither cleanly, and that plant is planted for the divergence.
+obs The living room reads membership=whole for both groups, so the widening lowers nothing today. That is the water cardinal seat's own question answered: run it again and nothing more moves.
+loom witness=amphora_bounds_agree plants=13 alias_groups=2 members_read=5 wall_ms=1800
+loom run=standing_equipment_cold guards=254 green=250 red=2 gated=2 seconds=2575
+loom run=standing_equipment_hot guards=255 green=251 red=2 gated=2 seconds=2874 tree_moved=no
+obs The hot pass carries two reds and they are one peer guard with its roster echo. mantra_snapshot_hosted read red at 2689ms under a loaded pier and GREEN alone on metal straight after. Its evidence names BadKind in decode_request and then RecvFailed, and a datagram of the WRONG KIND is a foreign sender rather than a lost packet: mantra/snapshot_export_delivery.rye binds fetcher_port 38490 and source_port 38491 with no port lock, on a pier where eight trees run the same guard. %485's shape, and the cure stands one lane over in tools/fixtures/a/amphora_vessel_port_lock.sh. Handed to the mantra lane rather than repaired from here.
+file tools/fixtures/a/amphora_bounds_agree_scan.sh membership read before agreement, with the elder false green recorded in the header
+file tools/am/amphora_bounds_agree.rish the incomplete plant leg, and membership asserted on the living tree
+file tools/fixtures/amphora_bounds_plants/alias_incomplete/a.rye the thirteenth planted pair -- one member, declared twice
+file tools/g/gitlink_dependent_witness.rish the say moved above the first assert on its binding, closing shim_reason
+file construction/archive/REDS-the-alias-group-that-could-not-see-its-members-rows-708.md the row (20260911.055500), born on its own shelf because the pin has 15 bytes; booked at 707, renumbered on the rebase when the anointed spine spent that number at 20260911.053330
+file construction/standing-equipment.kyri the roster note records what the second reading could not see
+scope one guard reading repaired, one plant pair landed, one fleet red closed, one row booked
+status GREEN for this lap's own work -- amphora_bounds_agree, amphora_roster, shim_reason, gitlink_dependent, exec_bit, reds_ledger_monotone, reds_pin_capacity, unshared_citation, tracked_link, prose_register, ascii_document all green on metal. The hot pass reads 251/2 and both reds are the peer flap named above, green when run alone.
+recommend keep-going -- the third reading, couples, declares its partners at the site and is the one alias groups should follow

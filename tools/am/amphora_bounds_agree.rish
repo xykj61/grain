@@ -1,7 +1,9 @@
 # amphora_bounds_agree.rish -- shared Amphora bounds agree across module roofs.
 #
 # Path C (e146): leave every home as it is; prove agreement with a witness.
-# e147: also alias value groups (1024 under three names - 340 under two widths).
+# e147: also alias value groups (1024 under three names - 340 under two widths),
+#   membership read before agreement -- a group names members, and the elder
+#   reading counted const lines, so one member read twice passed for three.
 # e148: declared `/// couples:` markers -- coupling named, never inferred.
 # REDS `20260906.193823`: declared `/// covers:` markers -- an ORDER, expressed as coverage. The
 #   three readings above can each state only `A == B`, and the relations that
@@ -12,6 +14,7 @@
 # Planted pairs before totals are believed:
 #   same-name disagree MUST fail - same-name agree MUST pass
 #   alias disagree MUST fail - alias agree MUST pass
+#   an alias group missing a member MUST fail, naming who is missing
 #   couples disagree MUST fail - couples agree MUST pass
 #   covers short MUST fail - covers holding MUST pass
 #   a marker above a DERIVED bound MUST fail, naming marker_on_derived
@@ -37,6 +40,7 @@ let agree = "tools/fixtures/amphora_bounds_plants/agree"
 let disagree = "tools/fixtures/amphora_bounds_plants/disagree"
 let alias_agree = "tools/fixtures/amphora_bounds_plants/alias_agree"
 let alias_disagree = "tools/fixtures/amphora_bounds_plants/alias_disagree"
+let alias_incomplete = "tools/fixtures/amphora_bounds_plants/alias_incomplete"
 let couples_agree = "tools/fixtures/amphora_bounds_plants/couples_agree"
 let couples_disagree = "tools/fixtures/amphora_bounds_plants/couples_disagree"
 let covers_hold = "tools/fixtures/amphora_bounds_plants/covers_hold"
@@ -64,9 +68,26 @@ assert apos.out contains "alias_cargo_ceiling_status=diverge" else "alias disagr
 say "plant_alias_positive=honored"
 
 let aneg = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_agree}" "sh" scan]
-assert aneg.ok else "amphora_bounds_agree: alias agree must PASS"
+assert aneg.ok else "amphora_bounds_agree: alias agree must PASS -- ${aneg.out} ${aneg.err}"
 assert aneg.out contains "alias_cargo_ceiling_status=agree" else "alias agree must name agree"
+assert aneg.out contains "alias_cargo_ceiling_membership=whole" else "an agreeing group names its membership whole"
 say "plant_alias_negative=honored"
+
+# A GROUP IS A CLAIM ABOUT MEMBERS, and the elder reading could not see its own
+# membership. It summed const LINES across the whole group, so one member declared
+# twice at one value answered `declarations=2 signatures=1 status=agree` with
+# `verdict=ok` and exit 0 -- the comparison made entirely out of reading (1)'s own
+# subject read twice, while the other two names stood nowhere in the room. This
+# plant is that shape, proven on metal before the repair. Membership and agreement
+# are two questions: `present` counts distinct names, `missing` names the rest, and
+# a group with one name present compares nothing across names.
+let ainc = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_incomplete}" "sh" scan]
+assert (ainc.ok == false) else "amphora_bounds_agree: an incomplete alias group must FAIL -- ${ainc.out} ${ainc.err}"
+assert ainc.out contains "alias_cargo_ceiling_membership=incomplete" else "an incomplete group must name its membership"
+assert ainc.out contains "alias_cargo_ceiling_missing=max_seal_plain,max_cargo_bytes" else "the absent members must be named rather than counted"
+assert ainc.out contains "alias_cargo_ceiling_present=1" else "one distinct name present must read as one"
+assert (ainc.out contains "alias_cargo_ceiling_status=agree" == false) else "one member read twice must never be called agreement"
+say "plant_alias_incomplete=honored"
 
 let cpos = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_disagree}" "sh" scan]
 assert (cpos.ok == false) else "amphora_bounds_agree: couples disagree must FAIL"
@@ -139,8 +160,10 @@ assert living.out contains "bound_max_vessel_len_status=agree" else "living max_
 assert living.out contains "bound_max_cargo_status=agree" else "living max_cargo"
 assert living.out contains "bound_digest_hex_len_status=agree" else "living digest_hex_len"
 assert living.out contains "alias_cargo_ceiling_status=agree" else "living cargo_ceiling alias"
+assert living.out contains "alias_cargo_ceiling_membership=whole" else "living cargo_ceiling names all three members"
+assert living.out contains "alias_datagram_membership=whole" else "living datagram names both members"
 assert living.out contains "alias_datagram_status=agree" else "living datagram alias"
 assert living.out contains "couples_status=agree" else "living couples must agree"
 assert living.out contains "covers_status=hold" else "living covers must hold"
 assert living.out contains "cover_max_manifest_name_len_to_main_max_season_name_len_status=covers" else "living season door must fit the listing"
-say "GREEN: amphora_bounds_agree -- derived same-name roster - alias - couples - covers - derived binding - twelve planted pairs - no rename."
+say "GREEN: amphora_bounds_agree -- derived same-name roster - alias membership and agreement - couples - covers - derived binding - thirteen planted pairs - no rename."
