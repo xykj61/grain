@@ -5,7 +5,11 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living foundation -- the *why* beneath how we write for the long haul -- **mixed room**: the long-return test is checkable, the effect it borrows orients rather than binds
-**Front door:** the root [`../README.md`](../README.md) leans on this foundation in its opening; this foundation links back.
+**Front door:** the root [`../README.md`](../README.md) names this foundation where it points a
+reader into `foundations/`, and this page links back. The claim is a promise about another
+page's contents, so it is declared in this key and held by
+[`../tools/f/front_door_claim_witness.rish`](../tools/f/front_door_claim_witness.rish) -- it
+stood broken for eighteen days after the README rewrite of `20260823`, and nothing could hear it.
 **Chapter:** AHOY (`.claude/rules/waymark-ladders.md`) -- the front-door weave.
 
 ---
@@ -32,7 +36,7 @@ The Lindy effect turns three of our standing disciplines from preference into st
 
 - **Favorite words over fashion words.** The [`comlink-tendency`](../.claude/rules/comlink-tendency.md) already reaches for the clearest, most fun, safest word at any length -- Comlink, Mantra, Caravan, Tally, Pond, Nib, Rye, Rishi, Kyri, baton. Lindy explains *why this compounds*: a plain word a newcomer grasps on their first day is a word that will still read plainly on their ten-thousandth. Clever coinages age; clear ones don't.
 - **Witness before narrative.** The [`two-rooms`](../context/TWO_ROOMS.md) discipline -- every claim marked *proven* or *proposed* -- is a Lindy safeguard. A doc that only ever claims what a green witness shows cannot rot into a lie as the code moves beneath it. Truth that was checked stays checkable; truth that was merely asserted decays.
-- **Accrete, never break.** TAME's tiered accretion (`../context/TAME_GUIDANCE.md` section4) and the one-clock law keep dated testimony readable forever. A tree that never rewrites its past is a tree whose age is *earned* -- every old stamp is a survived year, and Lindy says those years are the best predictor of the years to come.
+- **Accrete, never break.** TAME's tiered accretion (`../context/TAME_GUIDANCE.md` section 4) and the one-clock law keep dated testimony readable forever. A tree that never rewrites its past is a tree whose age is *earned* -- every old stamp is a survived year, and Lindy says those years are the best predictor of the years to come.
 
 ## The long-return test for our prose
 

@@ -1,0 +1,50 @@
+format session-log-v1
+stamp 20260910.234454
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role auditing lane -- grass, the ship that tends the whole surface
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260910; the launch path chooses the effort a lap runs at, so this proves configuration and never runtime
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The page that said the front door named it
+prompt the baton -- grass, auditing lane; an aether lap over the claims a page makes about another page
+rota lap 4602, row 0 -- Aether, the row that hears, taken by hand: 4602 mod 5 is row 2, and today's shelf reads 16 / 20 / 18 / 22 / 21 across the five, so row 0 was the least-read. Read the threshold, follow-our-compass, the Lindy effect, and the grain and the crossing. Aether listens for the silence where a claim used to sound, and the three pages agree on one sentence -- a claim is kept by whatever checks it, and a claim nothing can check goes quiet without going wrong.
+think Reds first, and the red was mine. The cold open answered `prose_register red` at `verdict=door_setting_undeclared`, naming `README.md` as a rostered door that declares a style and no Door setting. PETRICHOR landed that declaration at `570526cad` four hours earlier and read 18/0/1; the tree now read 17/1/1.
+think Found the cause in the diff rather than guessing it. My own last commit `84a0ebc26` carries `-**Style:** Bhakta at the **Door** setting, with` and `+**Style:** Bhakta with`, along with the removal of the three-line dial sentence. That lap recovered a round-open stash based two peer accounts back; its commit body already records resolving `construction/ITINERARY.md` by hand for exactly that staleness, and `README.md` rode along unnoticed in the same stash. Restored byte for byte out of `570526cad`.
+think The lesson is small and worth saying: a stash recovered from a stale base reverts a peer's landed edit in every file the stash carried, not only the one the lap was thinking about. What caught it was a guard landed the same evening, on its first lap of standing. The pin holds about 22 bytes with every row OPEN, so no row could be booked; surfaced on the card instead.
+think The second red was mine too, and from the same lap. `shim_reason` read 949 rostered bindings asserted on and never reporting their capture, against a ceiling of 948 opened hours earlier. `shim_reason_scan.sh list` names the 949th: `under`, bound at line 76 of `tools/l/law_guard_heard_witness.rish`, which I wrote. It proves a ceiling one below the live reading refuses, and it swallowed the refusal's own words. Both assert messages now interpolate `${under.out}`, so the reason travels on refusal; the reading falls to 948 and sits at the ceiling.
+think Two reds on one tree, both from one lap of mine, both caught by guards landed by other ships the same evening. That is the fleet working rather than a fault in it, and it is the plainest argument for the wall this lap builds: a claim is kept by whatever checks it.
+think Then the aether read. A foundation that tells its reader where it is reached from is making a claim about ANOTHER page's contents, and that is the one claim a page cannot keep by itself. The link out belongs to the author; the link back belongs to whoever edits the front door next.
+think `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` has carried `**Front door:** the root README leans on this foundation in its opening; this foundation links back` since the AHOY weave of `20260811`. `grep -i lindy README.md` returns nothing. `git log -S Lindy -- README.md` names two commits: `73886392d` wrote it in, and `7191a938b` on `20260823` rewrote the page for the two-repository projection and took it out. Eighteen days.
+think The same broken promise stood one page over. `follow-our-compass.md` says in its Kin block that the root README `points here for the return habit`, and `grep -c compass README.md` reads zero. Two of the room's three oldest orientation pages, both naming the front door, and it named neither.
+think Measured why nothing heard it. `foundations_link` proves the links a page WRITES land. `foundations_reach`, landed this morning, asks whether the ROOM's index names a page -- and `foundations/README.md` names both of these correctly, so that reading is green and right. Neither reads the ROOT front door, and no reading in the tree treats a sentence as a promise about another page.
+think Two lawful repairs, and the tree's own law picks between them. Retiring the claims would make the pages honest and leave the front door still silent about its two oldest orientation foundations. Making the claims true costs one sentence in `README.md` and restores what the AHOY weave meant. Took the second, and left the claim checkable rather than trusting the next rewrite.
+think The claim becomes checkable by being DECLARED rather than inferred -- the same move `**Style:**` took yesterday and `**Room:**` took before it. A page opts in by writing the `**Front door:**` key, so the population filter is the page's own consent and no reading guesses which prose sentence meant to be a promise.
+obs The back link is read by BASENAME rather than by path. The one-clock naming law makes a foundation's basename globally unique, so a front door naming the page from any depth in any relative form keeps the claim, and `foundations_reach_scan.sh` already reads reach exactly this way. One rule, read the same way in two instruments.
+obs One gate with three named causes rather than three gates. `no_target`, `absent` and `no_backlink` are three ways for one promise to fail, and the question -- is the declared claim kept -- has one answer. The printout names page, target and cause on every unkept line, so the reading is repairable without a second run.
+obs The vacuum refuses. A tree where nobody declares the key would print `claims_unkept=0` and read exactly like a tree whose every claim is kept, which is REDS %240's confident wrong zero; `verdict=no_claims` refuses instead, and the witness proves it on the living tree by handing the scan a room that declares nothing.
+obs Three mutations bitten in the pen rather than trusted: dropping the backlink reading reds two legs, reading the `date/` shelves reds one, and a vacuum made green reds one. A control reporting fail=0 while quietly losing a leg reports nothing.
+obs The honest limit is the opt-in itself. A page that ought to declare a front door and declines is invisible to this guard by construction -- which is what makes the reading trustworthy and what bounds it, and it is named in the scan's own what-it-does-not-reach clause rather than left for a reader to discover.
+obs The population is two. Small on purpose: the key is new, and a guard over a declared promise grows with the pages that choose to promise.
+loom witness=front_door_claim legs=15 claims=2 claiming_pages=2 pages_read=214 claims_unkept=0
+loom guard=prose_register door_setting_declared=18 door_setting_undeclared=0 door_setting_testimony=1
+loom guard=shim_reason unsaid_rostered=948 unsaid_rostered_ceiling=948 repaired_bindings=1
+loom pass=standing_equipment_cold guards_run=251 green=245 red=3 gated=3 tree_moved=no
+file README.md the Door declaration restored out of 570526cad, and the two foundations named where the page points a reader into foundations/
+file tools/l/law_guard_heard_witness.rish the swallowing `under` binding repaired -- its refusal now carries the scan's own words
+file foundations/20260811-211431_the-lindy-effect-and-the-long-return.md the Front door key reworded to what is true, and named as held
+file foundations/20260826-024943_follow-our-compass.md the same key seated, so its Kin claim is declared rather than asserted
+file tools/fixtures/f/front_door_claim_scan.sh the reading -- the declared key, the resolved target, the wall at zero, three named causes
+file tools/fixtures/f/front_door_claim_control.sh fifteen behaviours on real git repositories in a pen, every refusal planted and then lifted
+file tools/f/front_door_claim_witness.rish the witness, tier lap, with the vacuum proven on the living tree
+file construction/standing-equipment.kyri the roster row, seated beside foundations_reach, whose question this one turns around
+file construction/ITINERARY.md the GRASS front replaced; the elder shelved by tools/i/itinerary_account_shelf.sh
+scope one keystone -- a page's claim about another page's contents, declared and then held; plus the reds-first repair of a peer's edit my own last lap reverted
+status GREEN -- front_door_claim witness green on metal, control 15 legs fail=0; the two reds of the cold pass closed on metal, prose_register 18/0/1 and shim_reason 948 at its ceiling; cards A 90 / B 83 / B 81; cold pass tree_moved=no, hot pass named in the send
+recommend check-in (Keaton) -- the key is opt-in, so this guard hears only the pages that choose to promise. Whether a reading should infer the claim from prose instead, and so reach the pages that never declared one, is a ruling about what a page may assert rather than a lap.

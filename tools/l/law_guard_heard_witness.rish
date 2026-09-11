@@ -74,8 +74,8 @@ assert (green.out contains "citations=0") == false else "law-guard-heard: a law 
 # THE CEILING FROM BOTH SIDES, ON THE LIVING TREE, read out of the scan's own output rather than
 # spelled here, so this leg cannot drift away from the reading it proves.
 let under = run ["sh" "-c" "n=$(sh tools/fixtures/l/law_guard_heard_scan.sh | sed -n 's/^unheard=//p'); LAW_GUARD_UNHEARD_CEILING=$((n-1)) sh tools/fixtures/l/law_guard_heard_scan.sh"]
-assert (under.ok == false) else "law-guard-heard: a ceiling one under the live reading must refuse"
-assert under.out contains "verdict=over_ceiling" else "law-guard-heard: want the refusal named"
+assert (under.ok == false) else "law-guard-heard: a ceiling one under the live reading must refuse -- ${under.out}"
+assert under.out contains "verdict=over_ceiling" else "law-guard-heard: want the refusal named -- ${under.out}"
 
 # THE READING ITSELF, proven on planted trees rather than trusted. Each leg is named here as well as
 # counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.

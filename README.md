@@ -20,9 +20,10 @@
 **Voice:** [Kyri](context/KYRI.md) -- the standing voice this tree writes in, and the name of its
 own [Kyri notation](context/KYRI.md) that every session log is written in.
 
-**Style:** Bhakta with [Gauge](context/GAUGE_STYLE.md) and
+**Style:** Bhakta at the **Door** setting, with [Gauge](context/GAUGE_STYLE.md) and
 [Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
-claims, and reaches for the image. Its negation reads **6%**, down from 14, and the last of it lives
+claims, and reaches for the image. Door is the dial Gauge reads it on: at or under 20% negative
+sentences, one cross-reference per hundred words, held by `tools/p/prose_register_witness.rish`. Its negation reads **6%**, down from 14, and the last of it lives
 in a teacher's quotation and a foundation's title, which keep their own words. Bhakta's own guide,
 `context/BHAKTA_STYLE.md`, stays in the maintainer's working tree rather than in this published
 copy, so it is named here rather than linked.
@@ -169,7 +170,7 @@ the truth as the tree grows.
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **57** / 100 |
-| **Witnesses** running on metal | **1941** |
+| **Witnesses** running on metal | **1942** |
 | **Rye modules** they stand over | **1735** |
 | **Rooms grown past what a browser can list** | **1** |
 
@@ -362,7 +363,11 @@ identity that signs the work. Both stay local to you.
 The reasons beneath them live in [`foundations/`](foundations/README.md), among them
 [the custody-first principle](foundations/20260724-200912_nothing-to-give-custody-first-principle.md)
 (*build nothing that destroys*), [the wire serves the fold](foundations/20260706-022912_the-wire-serves-the-fold.md),
-and [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md).
+and [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md). Two of them
+say how to read the rest: [follow our compass](foundations/20260826-024943_follow-our-compass.md) is
+the walk back to direction when it frays, and
+[the long return](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md) is why a
+front door earns more care than any other page here.
 
 **Standing on shoulders.** Grain is built in gratitude to the makers who came before. We study
 their ideas in a clean room and write our own code beneath our own names. We owe the

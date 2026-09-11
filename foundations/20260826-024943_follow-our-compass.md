@@ -9,6 +9,8 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Landed -- Kaeden `20260706.185512 UDT`; companion to grain index and `context/README.md` compass home. **Reviewed and kept** `20260710.171707` -- commerce season Granary/Mandi through Mandi listing settle (parity **242**) rests on the rose; next commerce gates parked until brief.
 **Room:** checkable -- a read order over named files, each of which resolves.
+**Front door:** the root [`../README.md`](../README.md) names this brief among the reasons
+beneath its own pages, and this brief links back.
 
 *Written by Rio 3 for Kaeden.*
 Radiant pass `20260725.035453`
@@ -88,7 +90,7 @@ If the card disagrees with a seated brief, **the brief and green witnesses win**
 
 The compass is one of two canonical hubs every leaf foundation routes through; naming its neighbours keeps the tree wiki-connected rather than star-shaped.
 
-- **The front door** -- the root [`../README.md`](../README.md) opens onto the whole tree and points here for the return habit.
+- **The front door** -- the root [`../README.md`](../README.md) opens onto the whole tree and points here for the return habit; the `**Front door:**` key at the head of this page declares that promise so [`../tools/f/front_door_claim_witness.rish`](../tools/f/front_door_claim_witness.rish) can hold it.
 - **The room** -- the [`foundations/README.md`](README.md) indexes the *why*; this brief is its navigation habit.
 - **The sibling hub** -- [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md) defines the strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
 - **The order of the read** -- the newest-first walk now follows [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): among what direction offers, take the longest-lived work first, and within a tier the *crux* -- the hardest solvable problem. Grounded in [the Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md).

@@ -105,6 +105,20 @@ path tools/f/foundations_reach_witness.rish
 tier lap
 seated 20260910.004858
 
+# front_door_claim -- a page that says a front door names it, checked against that front door. A
+# foundation telling its reader where it is reached from makes a claim about ANOTHER page's
+# contents, and that is the one claim a page cannot keep alone: the link out belongs to the author,
+# the link back to whoever edits the front door next. The Lindy foundation carried that sentence
+# from 20260811; commit 7191a938b rewrote README on 20260823 and the word left the page; the claim
+# stood eighteen days and nothing in the tree could hear it. foundations_link reads the links a page
+# WRITES, foundations_reach reads whether the ROOM's index names a page, and neither reads the root
+# front door. The key is DECLARED, the way Style and Room are, so opting in is the whole population
+# filter and no reading guesses which sentence meant to be a promise.
+guard front_door_claim
+path tools/f/front_door_claim_witness.rish
+tier lap
+seated 20260910.234454
+
 guard generated_page_freshness
 path tools/g/generated_page_freshness_witness.rish
 seated 20260823.000512
