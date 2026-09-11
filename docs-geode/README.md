@@ -4,6 +4,7 @@
 **Stamp:** `20260728.031722`
 **Last refreshed:** `20260910.073603` -- the doorway sentence's two typed numbers leave, the second such pair in as many days: `20260909.151033` freed the library row and the room-separation reading, and this pass freed a page count the shelf's own eight new lessons had already outgrown
 **Voice:** Kyri
+**Members:** the rooms under [`./`](./) -- `api`, `blog`, `demos`, `edu`, `etc`, `lessons`, `libraries`, `press`, `sangha`, `study`, `templates`, `tutorials`, `wiki`
 **Kind:** crushed index of [`docs-geode/`](./) -- the root prod folder, holding the canonical docs that ship
 **Status:** Living crystal -- read against the rooms on disk each lap by [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is

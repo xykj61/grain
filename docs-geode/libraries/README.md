@@ -42,7 +42,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
 | [`mantra/`](../../mantra/README.md) | 36 | 49 |
-| [`manual/`](../../manual/README.md) | 1 | 11 |
+| [`manual/`](../../manual/README.md) | 1 | 12 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
 | [`pleac/`](../../pleac/README.md) | 3 | 7 |

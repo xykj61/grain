@@ -62,10 +62,26 @@
 #   a roster kept here, and its noun comes from its own first column, so `| Room |` asks after
 #   `N rooms`. Naming the scale without an integer stays free, which is the honest form the
 #   first-hour tutorial already uses for the witness count.
+#   A page whose TITLE spells a count of its own numbered sections agrees with the sections it holds.
+#   This is the second strand of the count subject and takes the opposite choice from the title
+#   reading above, for a stated reason: a declared index's basis is a room other hands grow, so a
+#   number in its name is a forecast and the FORM is refused; a page's numbered sections stand inside
+#   that same page, moved only by the hand editing it, so the VALUE can be checked and a true count
+#   keeps its place in a title that reads well. `docs-geode/demos/README.md` is the population --
+#   `# Demos -- five checks you can run` over five sections, true since it was written and held by
+#   nothing until now. The scan head named this gap by name and left it open; it is closed here.
 #   A page signing `witness:<name> GREEN` names an instrument that exists. Seven living pages sign
 #   themselves; six are backed by a fixture that reads their claims and aborts on the first that
 #   fails. The seventh was the shipping shelf's own front door, signing GREEN from a witness that
 #   existed exactly once in this tree -- inside that sentence.
+#
+# AND ONE GAP STAYS OPEN, measured rather than guessed. An UNDECLARED page whose title counts a
+# ROOM is read by neither strand: `docs-geode/lessons/README.md` opens `# Lessons -- eight walks`
+# over eight lesson files, and says eight three more times in its body. The title reading reaches
+# declared indexes alone, on purpose, and this page never declared. Two doors stand -- the page
+# declares itself a crushed index, which hands it the member walk and the title reading together,
+# or the title reading widens to every room door under a deep-declared room. Named here so the next
+# hand meets the gap rather than assuming coverage, exactly as the gap closed above was named.
 #
 # WHAT IS NOT PROVEN, said plainly. Whether a row says anything TRUE about the member it names:
 # this proves every member has a row and every row opens, not that the sentence beside it is
@@ -86,7 +102,7 @@
 #   rishi/bin/rishi run tools/cr/crushed_index_witness.rish
 
 say "crushed-index: Language EN -- an index is trusted instead of checked, which is exactly why the room behind it must be read."
-say "crushed-index: Style Radiant -- five claims. Every member has a row, every row opens, every stamp agrees with the file it points at, every spelled count of a generated index agrees with the rows that index derives, and every GREEN signature names something that exists."
+say "crushed-index: Style Radiant -- six claims. Every member has a row, every row opens, every stamp agrees with the file it points at, every spelled count of a generated index agrees with the rows that index derives, every GREEN signature names something that exists, and a title counting the page's own numbered sections agrees with them."
 say "crushed-index: Lens TAME -- safety first: three indexes on one shelf miscounted their own rooms while every link on all three resolved, so a link check could never have found any of them."
 
 # The counting rule is proven on real git repositories before any page is trusted to it. A rule
@@ -129,8 +145,18 @@ assert control.out contains "the count in the title refuses the tree -- read ind
 assert control.out contains "taking the count out of the title clears it -- read 0" else "crushed-index: taking the count out of the name must clear it, or the reading is not the title"
 assert control.out contains "a number at a title's end counts zero -- read 0" else "crushed-index: a number at a title's end is an identifier rather than a census and must stay free"
 assert control.out contains "a count in an undeclared page's title counts zero -- read 0" else "crushed-index: the title reading must reach declared indexes alone -- the refusal is about a promise the page made, never about English"
+assert control.out contains "a title over-counting its own sections is counted -- read 1" else "crushed-index: a title spelling a count of the page's own numbered sections must be checked against them -- the basis is inside the page, so the number can be checked rather than banned"
+assert control.out contains "the section count refuses the tree -- read index_disagrees" else "crushed-index: a title disagreeing with its own sections must refuse, rather than merely being reported"
+assert control.out contains "and the title reading stays out of it -- read 0" else "crushed-index: the two count readings are separate strands -- neither may answer for the other"
+assert control.out contains "adding the missing section clears it -- read 0" else "crushed-index: adding the missing section must clear it with the title untouched, or the reading is not the page's own body"
+assert control.out contains "and the pen reads ok again -- read ok" else "crushed-index: a repaired page must return the pen to green"
+assert control.out contains "a section past the announced count is counted -- read 1" else "crushed-index: a section past the announced count must bite too -- a guard catching only under-counting misses every page that grows"
+assert control.out contains "a gap in the numbering leaves the count at four -- read 0" else "crushed-index: the reading is how many sections stand, never the highest number one wears"
+assert control.out contains "a title count with no numbered sections counts zero -- read 0" else "crushed-index: a page with no numbered sections supplies no basis and must stay unread here"
+assert control.out contains "and that page reads ok -- read ok" else "crushed-index: a page outside this reading must leave the tree green"
+assert control.out contains "a trailing number over numbered sections counts zero -- read 0" else "crushed-index: a number at a title's end is an identifier rather than a census, on both count readings alike"
 assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
-assert control.out contains "control_pass=48" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
+assert control.out contains "control_pass=58" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
 assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
 
 # The tree itself, after the pen.
@@ -144,7 +170,8 @@ assert scan.out contains "index_doors_missing=0" else "crushed-index: every row 
 assert scan.out contains "row_stamp_disagrees=0" else "crushed-index: a row's stamp must agree with the file it links -- the link resolves either way, so nothing else reads this"
 assert scan.out contains "generated_count_disagrees=0" else "crushed-index: a page spelling a generated index's count must agree with it -- the generator proves its own page and nothing beside it"
 assert scan.out contains "title_count_claimed=0" else "crushed-index: a declared index must not spell a count of its room in its own title -- the count lives in the table, where the member walk reads it against the room on disk"
+assert scan.out contains "section_count_disagrees=0" else "crushed-index: a title spelling a count of its own numbered sections must agree with the sections the page holds"
 assert scan.out contains "signature_unbacked=0" else "crushed-index: a GREEN signature must name an instrument that exists"
 assert scan.out contains "verdict=ok" else "crushed-index: the scan must reach its own verdict"
 
-say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, every GREEN signature names something real, and no declared index carries a count inside its own name."
+say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, every GREEN signature names something real, no declared index carries a count inside its own name, and every title counting its own numbered sections agrees with them."

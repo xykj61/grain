@@ -5,6 +5,7 @@
 **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees - operators on this tree
+**Members:** the rooms under [`./`](./) -- `grain-os`, `guides`, `reference`, `tutorials`, `video-scripts`
 **Status:** Founded -- reference at parity **142**; three tutorials open (first-witness - run-record - Cursor-and-the-compass); Caravan and Tally reference partial; Grain OS onboarding under `grain-os/`; Pixel/HAWM/TUBE/JABS path indexed
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -12,7 +13,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 
-The manual teaches what already runs, and it has four rooms, each answering a different visitor. **Tutorials** teach by the hand -- Radiant and gentle, each one ending at a green witness. **Guides** serve the person mid-task. **Reference** serves the person looking something up: one living, versioned specification per stable surface. **Understanding** lives where it always has -- the essays in `foundations/` and the design records in `active-designing/` -- and this README points there rather than duplicating them.
+The manual teaches what already runs, and it has four rooms, each answering a different visitor. The four are **registers** rather than directories -- the `**Members:**` key above names the directories on disk, and one of the four lives outside this lane entirely. **Tutorials** teach by the hand -- Radiant and gentle, each one ending at a green witness. **Guides** serve the person mid-task. **Reference** serves the person looking something up: one living, versioned specification per stable surface. **Understanding** lives where it always has -- the essays in `foundations/` and the design records in `active-designing/` -- and this README points there rather than duplicating them.
 
 **Three prose rooms stand in this tree, and the manual is the one about your own machine.** Here you turn on disk encryption, raise a VPN, build an enclosure, flash a phone, and make your own key cards. [`../docs-geode/`](../docs-geode/README.md) is the shipping shelf, for the reader who receives the product rather than operates it; its [First Hour](../docs-geode/tutorials/the-first-hour.md) is the living beginner path, which is why this page's own header points there. [`../docs/`](../docs/README.md) is the compression shelf, one operator page per chapter for a hand already mid-run.
 
@@ -70,6 +71,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 - **`guides/filevault-setup.md`** -- turning on macOS disk encryption, the single highest-priority security fix for a work machine.
 - **`guides/pixel-10a-grapheneos-setup.md`** -- installing GrapheneOS on a Pixel 10a via the official web installer, transcribed from GrapheneOS's own instructions, with the device's own published verified-boot key hash to check at the end.
 - **`guides/cloud-agent-toolchain-setup.md`** -- raising `rye` / `rishi` inside a Cursor Cloud Agent sandbox (July 15 path).
+- **`video-scripts/`** -- three newcomer video scripts, written to be recorded: [`intro-what-is-grain.md`](video-scripts/intro-what-is-grain.md) (what Grain is, zero prior knowledge), [`first-module-walkthrough.md`](video-scripts/first-module-walkthrough.md) (build a module and watch it go green), and [`contributing-walkthrough.md`](video-scripts/contributing-walkthrough.md) (write one the Grain way and send it back). Each scene names its visual, its on-screen text, and its voiceover; every command shown is real.
 - **`guides/20260731-014410_opus-bench-raise.md`** -- Opus in-container raise: restore `vendor/zig-toolchain/lib` plus the `zig` wrapper; M1 census GREEN beside it.
 
 *Next rooms, in season: Aurora interface reference when the surface stabilizes; a Glow language reference when a general parser lands; utility pages rendered from their own `.bron` man records when the toolset's first lap lands.*

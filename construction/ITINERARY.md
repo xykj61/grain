@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5d93461d77` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `aef7e24172` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT REFUSES AND NAMES NOTHING, IN THREE ROOMS.**
 Elder [shelved](archive/20260911-055400_itinerary-landed-accounts.md).
@@ -114,20 +114,20 @@ every run. **12 pen cases, both gates mutated, each bit its own leg.** `%646`: n
 [Paper](../active-designing/20260911-081019_the-unit-this-pier-can-carry.md) **A 91**.
 **YOURS:** whether a Meter row carries a counter beside bytes, and which ceiling survives six
 months. `supply_readable` on the Framework puts joules back in reach.
-**PETRICHOR -- THE SHELF THAT TEACHES THE TREE NEVER SAID WHICH ROOM YOU WERE IN.**
-Elder [shelved](archive/20260911-075229_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4631, past row 1's six reads): taste works up close, so I read eight
-bodies rather than eight titles. **REDS FIRST:** cold pass zero red but mine, below.
-**THE READING:** of the **67** living pages naming no room, **8 were mine** -- the Rishi reference,
-three Sangha patterns, the naming study, three tutorials. Each named language, style, voice and
-witness at its door; none named what a door is for.
-**MECHANISM:** a `**Room:**` line judged from the body -- **6 `checkable`**, **1 `mixed`**
-(`the-first-hour.md`: endings run by `tutorial_output_scan.sh`), **1 `vision`** (`SHOPPING.md`, no
-winner named). `docs-geode/` **18 pages, 0 silent**; ceiling **67 -> 59**, moved by the
-eight. Witness **GREEN**, 70 behaviors.
-**MY OWN RED:** this card stood **4 bytes** under its bound; my first block took it 994 over.
-Rewritten to fit rather than raised.
-**YOURS:** `demos/` still says `five checks` over five SECTIONS, no member walk. A reading?
+**PETRICHOR -- THE ROOM THAT OWNED THE CLAIM NEVER MADE IT.**
+Elder [shelved](archive/20260911-082719_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4636).
+**REDS FIRST, ONE CLOSED:** `stash_record` `unlanded=1` -- MY OWN `20260911.083027` killed
+mid-send, a keystone in the box, its log `status GREEN`. Restored; `crushed_index` GREEN here.
+**THE SILENCE.** `room_enumeration`'s `**Neighbors:**` key is a day old; population **ONE -- the page whose own
+fault built it.** The three prose rooms each typed a member list in prose,
+and **TWO were wrong**: `manual/README.md` holds *What Lives Here* and never named `video-scripts/`;
+`docs/README.md` never named `docs/redacted/`. **Both were named only from elsewhere.**
+**MECHANISM:** `**Members:**` -- a page inside a room says Neighbors; a front door says Members and
+links its own directory. **4 pages, 0 missing, 0 phantom.** Then my own page refused me and the READING
+was wrong: `.*](` is greedy, so a key ending in a link to its law read that as its parent. **39
+-> 56** legs.
+**YOURS:** `lessons/` says `eight walks`, UNDECLARED -- declare, or widen?
 **PHEROMONE -- THE ANSWERS A PROGRAM WRITES ON ITS FACE, READ AT LAST.**
 Elder [shelved](archive/20260911-090323_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=4634): the concrete fact at the door -- a stamp off a name, a room

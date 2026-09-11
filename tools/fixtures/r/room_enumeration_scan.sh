@@ -24,7 +24,32 @@
 # `**Front door:**`. Opting in is the whole population filter, so no reading here guesses which
 # sentence meant to be a list, and no reading walks a page's body for a stray backticked word.
 #
-# WHY THE KEY IS SPELLED `Neighbors` AND NOT `Rooms beside`. The Comlink tendency asks three things
+# TWO SENSES, TWO KEYS, ONE COMPARISON. A page standing INSIDE a room lists the rooms beside it and
+# says `**Neighbors:**`; a room's own FRONT DOOR lists the rooms under it and says `**Members:**`,
+# with its link naming its own directory. The mechanism is identical -- resolve the link, walk the
+# directories, compare -- and only the word differs, because `api/` is a neighbor of
+# `docs-geode/etc/README.md` and a member of `docs-geode/README.md`. Calling both neighbors would
+# save a line of shell and tell a reader something untrue, which is the trade this tree declines.
+#
+# WHY THE SECOND KEY EARNED ITS OWN LAP. Read `20260911.092737`, the day after the first key landed:
+# ONE page in the tree declared, and it was the page whose own fault built the guard. Meanwhile the
+# three prose rooms this tree names -- `manual/`, `docs/`, `docs-geode/` -- each typed a member list
+# in prose, and TWO of the three were already wrong. `manual/README.md` holds a section literally
+# titled "What Lives Here" and never named `video-scripts/`, three newcomer video scripts; and
+# `docs/README.md`, the compression shelf, never named `docs/redacted/`. Both rooms were named only
+# from OTHER rooms -- the Bhakta register law, and `docs-geode/edu/README.md` one lane over -- so the
+# claim stood in a distant room while the room that owned it was silent. A front door is the most
+# Lindy-exposed page a project owns (`foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`),
+# so a list typed there and read by nothing goes quietly wrong the first time a room lands.
+#
+# THE SAME SAFETY TEST, RUN RATHER THAN ASSUMED. `**Members:**` was grepped against every reader in
+# `tools/` before a byte landed: no scan matches it, no living page carried it, and it does not match
+# `two_rooms_doorway_scan_one.sh`'s `\*\*Room[^:]*:\*\*` -- proven by feeding that regex the literal
+# line rather than by reading it. The two memberships are PRINTED APART, `pages_neighbors` beside
+# `pages_members`, so a page that falls out of one by an edit made elsewhere is legible in the census
+# rather than silent.
+#
+# WHY THE FIRST KEY IS SPELLED `Neighbors` AND NOT `Rooms beside`. The Comlink tendency asks three things
 # of a new name -- clear, fun, and SAFE, where safe means it collides with nothing seated. The first
 # draft read `**Rooms beside:**` and failed the third test by grep: `two_rooms_doorway_scan_one.sh`
 # reads a page's door with `\*\*Room[^:]*:\*\*`, which `**Rooms beside:**` matches. Nothing breaks
@@ -69,6 +94,8 @@ no_target=0
 absent=0
 unreadable=0
 pages=0
+neighbors=0
+members=0
 
 # THE POPULATION, in ONE process rather than one per page. A `grep -q` per tracked Markdown file
 # spawns a process for each of several thousand pages to find the handful that declare the key;
@@ -80,17 +107,28 @@ pages=0
 # the counts whole.
 DECLARING=$(mktemp) || { echo "verdict=no_pen"; exit 2; }
 trap 'rm -f "$DECLARING"' EXIT
-git grep -lE '^\*\*Neighbors:\*\*' -- '*.md' 2>/dev/null \
+git grep -lE '^\*\*(Neighbors|Members):\*\*' -- '*.md' 2>/dev/null \
     | grep -vE '(^|/)(date|archive|yonder)/' > "$DECLARING"
 
 while IFS= read -r page; do
     [ -n "$page" ] || continue
     pages=$((pages + 1))
-    line=$(grep -m1 '^\*\*Neighbors:\*\*' "$page")
+    line=$(grep -m1 -E '^\*\*(Neighbors|Members):\*\*' "$page")
+    # The two memberships are counted apart, so a page leaving one is visible rather than silent.
+    case "$line" in
+        '**Members:**'*) members=$((members + 1)) ;;
+        *)               neighbors=$((neighbors + 1)) ;;
+    esac
     dir=$(dirname "$page")
 
     # The link names the parent room, resolved against the page's own directory.
-    rel=$(printf '%s\n' "$line" | sed -n 's/.*](\([^)]*\)).*/\1/p' | head -1)
+    # THE FIRST LINK ON THE LINE, never the last. The key's grammar is "the rooms under <link> --
+    # `name`, `name`", so the parent is always the first link, and a `.*](` is GREEDY: it walks to
+    # the LAST link on the line. A key that closes with a pointer to the law behind the room -- which
+    # is ordinary, useful prose -- then had its parent read as that pointer, and `docs/README.md`
+    # refused with `absent` naming a rule page. Taking the first link lets a key carry a trailing
+    # link and costs nothing where there is only one, which is every key written before this lap.
+    rel=$(printf '%s\n' "$line" | sed -n 's/^[^]]*](\([^)]*\)).*/\1/p' | head -1)
     if [ -z "$rel" ]; then
         no_target=$((no_target + 1))
         [ "$EXPLAIN" = yes ] && echo "detail: $page -- no_target, the key carries no Markdown link"
@@ -137,6 +175,8 @@ while IFS= read -r page; do
 done < "$DECLARING"
 
 echo "pages_declaring=$pages"
+echo "pages_neighbors=$neighbors"
+echo "pages_members=$members"
 echo "missing=$missing"
 echo "phantom=$phantom"
 echo "no_target=$no_target"
