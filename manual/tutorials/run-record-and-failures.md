@@ -7,6 +7,7 @@
 **Audience:** an Acme Corporation employee reading run-record fields after first-witness
 **Parity ground:** **142** -- RW-3 and RW-4 green today
 **Law:** [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md)
+**Room:** checkable -- the run-record fields it reads are the ones RW-3 and RW-4 print green today.
 
 ---
 

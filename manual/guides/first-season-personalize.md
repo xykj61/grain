@@ -2,6 +2,7 @@
 
 **Language:** EN  
 **Status:** Living guide — Acme / new-steward walk  
+**Room:** checkable -- the walk runs real Brix templates, and each named `.brix` either fills or refuses.
 **Voice:** Kyri  
 **Last updated:** `20260801.033305` · e149 personal sync · gitignore  
 **Data:** [`tools/gen/chapter/personalize.template.brix`](../../tools/gen/chapter/personalize.template.brix) · [`first_season_journeys.brix`](../../tools/gen/chapter/first_season_journeys.brix) · [`first_season_questions.brix`](../../tools/gen/chapter/first_season_questions.brix)  

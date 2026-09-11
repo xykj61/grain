@@ -7,6 +7,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living guide - **Acme hand** -- every house term is named in plain words at first use
+**Room:** mixed -- the round's priority is computed on metal by `priority_of_round(n)` and the field contract lives in `counsel_flow.brix`, while the storytelling craft around them is held by taste.
 **Kin:** `RADIANT_STYLE.md` (the sentences) - `counsel_flow.brix` (the checkable contract) - `context/specs/20260729-215600_scan-seam-convention.md` (the machine's half of the dialogue)
 
 ---

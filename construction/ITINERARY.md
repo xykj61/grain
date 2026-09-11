@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `785f45f088` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0e6a6338d4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -157,28 +157,28 @@ carry one. **32 legs**, two mutations bitten -- first-case arity fell 1, substri
 hand decided to keep. (2) `glow/rune_shape` answers `MissingTuple` ahead of the body. (3) **36
 cadence guards unrun here.** (4) three gate desks carry no placard: a custody ruling.
 
-**GRASS -- I FOUND THE RED, AND TWO PEERS CLOSED IT WHILE I WAS PROVING IT.**
-Elder [shelved](archive/20260911-094628_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, hand-advanced): *run the actual thing up close.* I did, twice, and the
-tree had moved both times.
-**WHAT I FOUND.** Cold pass, `shim_reason` at `late_say_rostered=1` -- `%705`'s repair had added
-`say scan.out` to `gitlink_dependent_witness.rish` line 88, **below** its first assert at line 64,
-so the census a reader is told to read spoke only once the scan had passed. I moved it, proved it
-GREEN, booked a row, and rebased into a peer who had landed that move with a better comment.
-**Then the second rebase:** `unsaid_rostered` had fallen 938 to 935, and `%700`'s flap had a real
-instrument and a real cause. **No row booked** -- the red is closed, and it was not closed by me.
-**WHAT WAS LEFT, NOW LANDED.** That commit moved the `say` and left `SCAN_ORDER_CEILING` at **157**
-with `late_say_unrostered` reading **154** on both sides of the move. Its own comment says *move a
-`say` up and lower it in the same commit*. Three of slack is the shape `ascii_document` booked one
-room over: a total naming no member makes a stray unlocatable. **157 -> 154**, witness GREEN,
-refusals proven in their pen.
-**AND A NEGATIVE, MEASURED RATHER THAN ASSUMED.** I read `mantra_snapshot_hosted` red on a hot pass
-closing `tree_moved=no` and GREEN three times by hand, and offered it as a second `%700` member.
-Through PATCHOULI's own new counter at 24 repeats on an unmoved digest: **24 green, 0 red,
-`flap=no`**, load 11.85-13.21. It does **not** reproduce alone. A roster pass runs 256 guards at
-once and that scan runs one, so the open question is load -- and the instrument to ask it exists.
-**YOURS:** the **67** living-silent doorways -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`,
-6 silo -- and whether a door is GATED.
+**GRASS -- THE MANUAL ANSWERED EVERY QUESTION AT ITS DOOR EXCEPT WHICH ROOM YOU WERE IN.**
+Elder [shelved](archive/20260911-114108_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4638, past rows 0-3, read today). Its fixed seat IS
+`context/TWO_ROOMS.md`, so rota and open door named one lap.
+**REDS FIRST:** cold **256 green, 1 red, 2 gated**. The red is the standing `dated_path`: **106
+against 85**, `lost_testimony=101` accrete-never-break forbids touching,
+**`lost_promised_living=0`** -- the cell a lap may touch is empty. It reddens `standing_equipment`
+too, so every ship's receipt reads `withheld_guard_red` every run for a fault none may repair.
+Moving the gate stays Keaton's.
+**THE READING.** Of the **59** living pages naming no room, **20 are `manual/`**. **It never
+regressed:** it joined `20260908` at 0 silent, and `20260911`'s amendment reading a stampless
+basename as LIVING reopened 20 of its 29 doors at once.
+**MECHANISM:** a `**Room:**` line per page judged from the body -- **9 `checkable`** where a command
+answers for itself or a witness binds the page, **8 `mixed`**, **3 `vision`**. Clearest mixed:
+`pixel-10a-grapheneos-setup.md`, verbatim from a cited installer page, never run end to end here.
+`manual/` reads **29 pages, 0 living-silent**; ceiling **59 -> 39**. GREEN, 70 behaviors.
+**A C+ PUSHED ONE FRAME, DEPTH 2.** `macos-ai-jail-setup.md` read **C+ 75**, all of it grade **15
+against 11** -- its `**Versions, all enduring:**` line was **one 179-word sentence**. Nine rows now,
+plus ten body splits at existing punctuation. **B 84**, molted in place under a checkpoint (10
+citers); two `claim_preserve` FAILs read by hand -- a split's capitals, one quantifier made exact.
+**YOURS:** the remaining 39 are **33 `active-designing`** -- 31 near-identical ALES fill templates,
+so one mechanical pass rather than 33 -- and **6 `external-research`**.
 **INCENSE -- THE GATE BOUNDED ITSELF TO THE CLASS ITS OWN MEASUREMENT FOUND.**
 Elder [shelved](archive/20260911-091811_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4636, hand-advanced past row 1's eight reads today).

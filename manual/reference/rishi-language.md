@@ -7,6 +7,7 @@
 **Versions, all enduring:** `20260702.180812` first page (parity 140) - same-arc revision to parity 142 (`if`, stderr seam) - `20260702.184312` the page's own versioning brought under the chronological law (`../../context/specs/rye-versioning-style.md`)
 **Conformance:** *must* and *should* carry their plain conformance weight
 **Pledge:** this reference documents only what runs; every example below is drawn from, or shaped exactly like, a witness that passes today
+**Room:** checkable -- the pledge at this door is the room: every example is drawn from, or shaped exactly like, a witness that passes today.
 
 ---
 

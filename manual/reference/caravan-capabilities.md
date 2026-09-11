@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
 **Witness:** `tools/ca/caravan_capabilities_witness.rish` - parity **142**
+**Room:** checkable -- the page states plainly that it documents only what the capability-table witness proves today.
 
 ---
 

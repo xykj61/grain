@@ -2,6 +2,7 @@
 
 **Language:** EN  
 **Status:** Living guide — person-to-person welcome; not a seating of this pier’s voice  
+**Room:** vision -- a person-to-person letter whose welcome and choices are held by taste; no guard binds a sentence of it.
 **Voice:** Keaton’s letter, lightly tightened by Riyo  
 **Last updated:** `20260730.145124` (EDT) - SUNN
 

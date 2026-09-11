@@ -173,8 +173,24 @@ if ceiling_env != "" then let ceiling = ceiling_env
 # TWO NUMBERS RATHER THAN ONE, because a page never changes class: a stamp is in a basename or it
 # is not. Merging them would let a repair in one class hide a regression in the other, and the
 # dated ratchet's floor of 3 is structural where this one's is zero.
+#
+# AND THE MANUAL PAID ITS SHARE (20260911.114108). The 20 living `manual/` pages naming no room are
+# the OS user manual -- eight setup and operating guides a person follows on their own machine, the
+# overview and the variant template, three reference pages, two tutorials, and three video scripts.
+# The room joined this roster on 20260908 reading 0 silent, and it never regressed: the 20260911
+# amendment that reads a stampless basename as LIVING rather than elder reopened 20 of its 29 doors
+# in one reading, which is the amendment working rather than the room slipping. Each took a
+# `**Room:**` line judged from the body rather than the title: 9 `checkable` where a command answers
+# for itself or a named witness binds the page, 8 `mixed` where a proven half stands beside an
+# unproven one, and 3 `vision` where the page is held by taste. The clearest `mixed` is
+# `guides/pixel-10a-grapheneos-setup.md`, whose steps are transcribed verbatim from a cited
+# installer page -- checkable against that source -- while its own Status says the end-to-end run
+# stands unproven here; the clearest `vision` is `guides/apprentice-welcome.md`, a person-to-person
+# letter no guard binds a sentence of. `manual/` reads 29 pages and 0 living-silent; the ceiling
+# falls 59 -> 39, moved by the twenty and by nothing else, and the remainder is 33
+# `active-designing/` and 6 `external-research/`.
 let living_ceiling_env = env "TWO_ROOMS_LIVING_CEILING"
-let living_ceiling = "59"
+let living_ceiling = "39"
 if living_ceiling_env != "" then let living_ceiling = living_ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]
