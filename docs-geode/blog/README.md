@@ -4,7 +4,7 @@
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Last refreshed:** `20260908.081630` -- the room's first piece lands
 **Status:** Living - **Kind:** crushed index of [`./`](./), with its entry criterion named
 

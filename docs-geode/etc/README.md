@@ -3,7 +3,7 @@
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living -- **checkable room**: the entry criterion and the promotion rule are both readable off this shelf - **Kind:** named entry criterion
 
 ---

@@ -1,6 +1,6 @@
 # Pattern One -- The Descriptor Exchange
 
-**Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Stamp:** `20260730.034319` - Build Journey - equinox A - journey 2 (h2 Aparigraha) - quest Do  
 **Home:** `docs-geode/sangha/01-descriptor-exchange.md` - **Shelf:** [the pattern book](README.md)  
 **Witness basis:** discovery quartet GREEN on Cloud bench at stamp (descriptor - table - gossip - introduce)

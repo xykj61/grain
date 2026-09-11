@@ -4,7 +4,7 @@
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-**Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Chartered:** `20260730.021218` (Voice v29 - slot 13 - radiant) -- expanding the `20260730.014817` seat
 **Home:** `docs-geode/sangha/` -- a shelf inside the prod crystal, no new root door
 
@@ -12,7 +12,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 ## The crystal this shelf lives in
 
-**docs-geode is where documents go when they are done becoming.** The rest of the tree drafts, designs, witnesses, and argues; the geode is the crystal that forms out of all that pressure -- canonical, shipping, written for the reader who arrives with nothing. A page reaches the geode the way a finding reaches an almanac: proven first, polished second, published last. Sangha joining here rather than at a new root says something on purpose: the pattern book is a **shipping document**, held to the crystal's standard from its first page -- Acme-hand plain, every coined term named at first use, nothing that has not run.
+**docs-geode is where documents go when they are done becoming.** The rest of the tree drafts, designs, witnesses, and argues; the geode is the crystal that forms out of all that pressure -- canonical, shipping, written for the reader who arrives fresh. A page reaches the geode the way a finding reaches an almanac: proven first, polished second, published last. Sangha joining here rather than at a new root says something on purpose: the pattern book is a **shipping document**, held to the crystal's standard from its first page -- Acme-hand plain, every coined term named at first use, nothing that has not run.
 
 ## What this book is
 
@@ -20,11 +20,11 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 ## What a page owes
 
-Every pattern page carries four parts, in order. **Context** -- the situation, plainly, for a reader who has never met this tree. **Forces** -- what pulls against what; the tension that makes the pattern worth naming. **The fold** -- the composition itself, as the pure fold it is: which facts enter, what anyone can recompute. **The witness** -- the path to the code that proved it, with the stamp it ran at. A page missing its witness is a design note that wandered into the wrong room, and the shelf refuses it rather than shelving it.
+Every pattern page carries four parts, in order. **Context** -- the situation, plainly, for a reader meeting this tree for the first time. **Forces** -- what pulls against what; the tension that makes the pattern worth naming. **The fold** -- the composition itself, as the pure fold it is: which facts enter, what anyone can recompute. **The witness** -- the path to the code that proved it, with the stamp it ran at. A page missing its witness is a design note that wandered into the wrong room, and the shelf refuses it rather than shelving it.
 
 ## Page one -- landed
 
-**The descriptor exchange** -- [`01-descriptor-exchange.md`](01-descriptor-exchange.md) - stamped `20260730.034319`. Written *from* the running `comlink/discovery/` quartet after its Check witnesses went green -- never before. Bounds cited from `recursion_block.brix` (v27), each with its why. Page zero's reservation is fulfilled.
+**The descriptor exchange** -- [`01-descriptor-exchange.md`](01-descriptor-exchange.md) - stamped `20260730.034319`. Written *from* the running `comlink/discovery/` quartet only after its Check witnesses went green. Bounds cited from `recursion_block.brix` (v27), each with its why. Page zero's reservation is fulfilled.
 
 ## Page two -- landed
 
