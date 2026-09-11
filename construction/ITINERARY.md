@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6d8838acaf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8aa384e0ea` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -206,43 +206,41 @@ HEARD:** `control_fail=0` reads alike over a leg that FAILED and one DELETED, so
 alone.
 **YOURS:** whether either Cursor-only rule is **mirrored** -- a `.claude/rules/*.md` page loads
 every lap of eight ships, so ~3 KB x 8 is yours. **44 pairs drift, 1,500 lines.**
-**COPAL -- A RISHI GUARD'S SENTENCE IS ALSO A WIRE, WHICH IS WHY NOBODY SWEPT IT.**
-Elder [shelved](archive/20260910-190809_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4589): read the fact off the instrument's own face before arguing
-with it. `rish_spoken_ascii` is the tree's largest non-ASCII residue -- **11,072 characters across
-1,505 files** -- and its ceiling had fallen **two characters in three days**, both on touch. Its two
-siblings were swept to zero. **It had no converter, and its table had one row fewer than the law.**
-**THE MINUS ROW, the same disagreement one instrument over.** `.claude/rules/ascii-first.md` has
-spelled the typographic minus since seating and `ascii_document_scan` carries the row; this meter
-filed **103** of them under `notation`, which MEANS *a reader must choose*, about a form the law
-answers one way. Split **10,707/365 -> 10,810/262**, total unmoved, since a classification fix moves
-no character. **Its two spoken siblings carry the same gap and are named rather than swept.**
-**WHY THE SWEEP HAD NEVER RUN, measured rather than guessed.** Rye's `print` and Glow's `::` speak
-to a person and to nobody else; a Rishi `say` is **also a wire between guards**. **164** counted
-characters sit in assert CONDITIONS, 126 matching a Rye binary's `selftest.out`; and **101 spoken
-lines are coupled** to a matcher elsewhere. Real on real bytes: `oven_handback_surface_p39_witness`
-greps `prin_scope.rish` for `'oct:   Oven Chapter -- PAUSED'`, so a blind `sed` reddens a guard by
-repairing a dash.
-**BUILT:** `tools/fixtures/r/rish_spoken_ascii_convert.sh`, card **A 91** -- deriving its **576**
--literal coupling set every run rather than pinning a list that drifts the first time a sentence
-changes. **PROVEN:** control **22 -> 37 legs**, every converter leg read off the BYTES rather than
-the report, the pen's residue asserted EXACTLY at five characters each with a nameable reason.
-Witness **31 affirmative, 5 refusals**, 15.4s, `tier cadence`.
-**PAID:** `parity_ch01` and `parity_ch02` swept, **567 characters**, both **RE-DERIVED from their
-committed bytes** so nothing but a spoken line moved. Reading **11,072 -> 10,505**; ceiling
-**11,152 -> 10,585**, keeping the 80 of slack it stood on and taking none of the 567.
-**COLD 245/242/0, 3 gated; HOT 245/242/0, 3 gated, `tree_moved=no` both** -- 245 guards read the
-swept tree and not one of them lost a match.
-**BOTH SWEPT SUITES WERE ALREADY RED, on a cause I never touched:** `pond_build_drawn_terminal.sh`
-answers `verdict=gated_no_display` -- a Wayland application on a headless pier -- and both callers
-read that GATE as a build failure. Proven by running the underlying witnesses at bytes this lap
-never opened. **`%646`'s class**, beside Patchouli's eight wire labs; neither suite is rostered.
-**YOURS, KEATON -- the tree-wide sweep.** **1,502 files, 10,543 characters**, one command now.
-Against it: **92 `.rish` files touched per day by eight ships**, so the rebase cost lands on peers
-rather than here. Its guard is `tier cadence`, so one lap in five hears the ratchet at all.
-**Still yours, on the shelf:** the `rish_spoken_ascii` remainder above;
-Meter SCORE for a program; `%456`; `%460`; `%360` **674**/**1,093**; `glow/rune_shape.rye`
-width; `%281`/`%291`; `%347`.
+**COPAL -- A DISCOVERY READING WAS ITERATING A LIST SOMEBODY TYPED.**
+Elder [shelved](archive/20260911-031057_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=4616): press every post; the row's test is to pull a part and see if it
+comes free. **REDS FIRST:** none at open -- cold **253/251 green, 0 red, 2 gated**. **MID-LAP,
+BOTH MINE, BOTH CLOSED:** hot read `readme_metrics` (four plant `.rye` files, 1735 -> 1739,
+regenerated) and `shim_reason` **+2 over its ceiling** -- my two new legs written with a bare
+`else` string, the wall biting at write time rather than a week later. Both took the interpolated
+`${v.err}` form. A peer lowered that ceiling to **936** on the rebase, already counting my repair,
+so the reading meets it exactly. **HOT scoped 222 run, 221 green, 0 red, `tree_moved=no`.**
+**THE POST THAT GAVE.** `amphora_bounds_agree` states four relations, and the FIRST is a discovery
+rather than a declaration: *when two roofs carry one name, either they agree or the name is doing
+two jobs.* Its scan iterated `NAMES="max_vessel_len max_cargo digest_hex_len"` -- a list a hand
+typed. The other three are declared by a marker above a const, which is their point. A discovery
+reading a typed roster is where the tree grows past the instrument in silence.
+**MECHANISM:** `discovered_names()` takes the scan's own `rg` pattern over the root and keeps every
+identifier declared as a spelled `u<N>` const in **two or more distinct files**; the roster is that
+unioned with the seated three, which stay seated because a seated name VANISHING from the room is a
+fault this reading must still name. Four `same_name_*` readings print every run.
+**MEASURED `20260911.022245`: derived and seated both answer three, `same_name_unseated=none`** --
+`digest_hex_len` in 4 roofs, `max_vessel_len` in 3, `max_cargo` in 2. The widening lowers nothing
+today and holds the door for the fourth family.
+**THE MUTATION BIT.** Two plant roofs declaring `max_frame_len` at 4096 and 2048 answer
+`verdict=ok` and **exit 0** the moment the roster stops being derived -- the false GREEN shown from
+the failing side. Both directions land as plants; the family stands at **twelve pairs**.
+**ON TOUCH, three docs resynced:** the roster note said *one `covers:` declaration stands today*
+where the scan reads **two**; `amphora/README.md` named the readings *path C - alias - couples*,
+passing over covers; the scan's header named the typed three. All three point at the instrument.
+**`20260908`'s SHAPE, ONE ROOM OVER:** `opening_lines`, `tame_check` and `rune_assert_sweep` each
+took a lap that week for it. **A 91 / B+ 87 / B+ 86.**
+**YOURS:** the other three readings are opt-in by design, and `covers:` stands at **two
+declarations over 37 bounds**. Whether an undeclared ORDER should be inferred and reported -- never
+gated -- I decline without your word, since inference is what this guard was built to refuse.
+**Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
+sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`
+**674**/**1,093**; `glow/rune_shape.rye` width; `%281`/`%291`; `%347`.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **Gate 3 stands:** `.gnupg-rye/` holds

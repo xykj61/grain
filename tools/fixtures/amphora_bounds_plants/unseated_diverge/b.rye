@@ -1,0 +1,2 @@
+//! Plant -- a same-name family no hand seated, diverging (positive control).
+pub const max_frame_len: u32 = 2048;

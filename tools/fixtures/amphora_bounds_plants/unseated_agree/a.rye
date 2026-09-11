@@ -1,0 +1,4 @@
+//! Plant -- a same-name family no hand seated, agreeing (negative control).
+//! `max_frame_len` stands in two roofs and stands on no seated roster, so this
+//! plant proves the derived roster reads a family it was never told about.
+pub const max_frame_len: u32 = 4096;

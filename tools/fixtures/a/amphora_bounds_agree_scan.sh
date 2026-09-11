@@ -1,8 +1,13 @@
 #!/bin/sh
 # amphora_bounds_agree_scan.sh -- shared Amphora bounds must agree across roofs.
 #
-# (1) Same-name roofs: every `pub const <name>` / `const <name>` for
-#     max_vessel_len - max_cargo - digest_hex_len must share one type=value.
+# (1) Same-name roofs: every `pub const <name>` / `const <name>` sharing one
+#     identifier across two or more files must share one type=value. The
+#     roster is DERIVED from the room rather than typed (REDS `20260911.022245`),
+#     unioned with the three seated names -- max_vessel_len, max_cargo,
+#     digest_hex_len -- which stay seated so a seated name VANISHING is still
+#     a fault this reading names. Prints `same_name_seated`, `_discovered`,
+#     `_read` and `_unseated`, so a family nobody typed is visible either way.
 # (2) Alias value groups (e147): differently named ceilings that mean one
 #     quantity must share one numeric value (width may differ):
 #       cargo_ceiling  -- max_resin_bytes - max_seal_plain - max_cargo_bytes
@@ -32,7 +37,7 @@
 set -eu
 
 ROOT=${AMPHORA_BOUNDS_ROOT:-amphora}
-NAMES="max_vessel_len max_cargo digest_hex_len"
+SEATED_NAMES="max_vessel_len max_cargo digest_hex_len"
 FAIL=0
 
 if ! test -d "$ROOT"; then
@@ -43,6 +48,45 @@ if ! test -d "$ROOT"; then
 fi
 
 echo "root=$ROOT"
+
+# Reading (1) reads a DERIVED roster, never a typed one (REDS `20260911.022245`).
+# The three seated names stay seated, because a seated name that vanishes from
+# the living room is itself a fault this guard must still name -- so the roster
+# is the UNION of what a hand seated and what the room actually holds. An
+# identifier declared as a spelled `u<N>` const in two or more distinct files
+# under ROOT is a same-name family by the law this reading was written for:
+# either the roofs agree, or the name is doing two jobs. Typed, the roster held
+# exactly what somebody typed, and a fourth family born tomorrow would read
+# GREEN here forever -- the shape three TAME-core guards were widened out of on
+# `20260908`, one room over. Measured `20260911.022245`: the derived roster and
+# the seated one both answer three, so the widening lowers nothing today and
+# holds the door for what lands next.
+discovered_names() {
+  rg -n --no-heading -g '*.rye' \
+    '^(pub )?const [a-z_][a-z0-9_]*: u[0-9]+ = [0-9]+;' "$ROOT" 2>/dev/null \
+    | grep -Ev '^[^:]+:[0-9]+:[[:space:]]*//' \
+    | sed -E 's|^([^:]+):[0-9]+:(pub )?const ([a-z_][a-z0-9_]*):.*|\3 \1|' \
+    | sort -u \
+    | awk '{ print $1 }' \
+    | uniq -c \
+    | awk '$1 > 1 { print $2 }' \
+    || true
+}
+
+SEATED_LIST=$(mktemp)
+DISCOVERED_LIST=$(mktemp)
+printf '%s\n' $SEATED_NAMES | sort -u >"$SEATED_LIST"
+discovered_names | sort -u >"$DISCOVERED_LIST"
+
+DISCOVERED=$(paste -sd' ' - <"$DISCOVERED_LIST")
+NAMES=$(cat "$SEATED_LIST" "$DISCOVERED_LIST" | sort -u | paste -sd' ' -)
+UNSEATED=$(comm -23 "$DISCOVERED_LIST" "$SEATED_LIST" | paste -sd' ' -)
+rm -f "$SEATED_LIST" "$DISCOVERED_LIST"
+
+echo "same_name_seated=$(printf '%s' "$SEATED_NAMES" | wc -w | tr -d ' ')"
+echo "same_name_discovered=$(printf '%s' "$DISCOVERED" | wc -w | tr -d ' ')"
+echo "same_name_read=$(printf '%s' "$NAMES" | wc -w | tr -d ' ')"
+echo "same_name_unseated=${UNSEATED:-none}"
 
 # Collect matching const lines for one identifier into TMP (path:line:text).
 collect_name() {
