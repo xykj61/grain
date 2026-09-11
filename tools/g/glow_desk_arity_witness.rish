@@ -1,0 +1,71 @@
+# glow_desk_arity_witness.rish -- do the three statements of a Glow desk's arity agree?
+#
+# How many sample arguments a desk takes is written down three times: in the desk's own
+# `::  Sample:` head line, in tools/g/glow_run_worker.sh's accepted-count list, and in the Rye
+# that glow/glow_run.rye --sample-argv emits, whose argv gates are the only DERIVED statement of
+# the three. REDS %532 named the worker's copy as the third hand-written enumeration of this
+# corpus, repaired the other two, and predicted the fourth in its own words -- a sampled desk
+# needs a value somebody chooses, "and then a fourth hand-written enumeration to hold the
+# answers." The `Sample:` line is that fourth. Nothing compared any of them until this guard.
+#
+# Measured 20260910: 46 sampled desks, three statements each, zero disagreement. That perfect
+# agreement is exactly what %532 found among ITS three enumerations, and its lesson is the reason
+# this exists -- an agreement nobody's instrument holds is stored in a person's memory, which is
+# the one place a check cannot stand.
+#
+# What made the worker askable: `arity_accepts()` states the counts once and `--arity` prints
+# that statement, where the elder shape expressed arity only as the shape of what it refused.
+#
+#   rishi/bin/rishi run tools/g/glow_desk_arity_witness.rish
+
+let scan = run ["sh" "tools/fixtures/g/glow_desk_arity_scan.sh"]
+assert scan.ok else "glow_desk_arity scan failed: ${scan.err}${scan.out}"
+
+# invariant: the corpus is present. A scan reading zero desks has lost its subject, and every
+# reading below would then be satisfied by an empty room.
+assert scan.out contains "desks=" else "glow_desk_arity scan printed no desk count"
+assert scan.out contains "permitted=" else "glow_desk_arity scan printed no permitted count"
+assert scan.out contains "declared=" else "glow_desk_arity scan printed no declared count"
+
+# invariant: the worker answers for every stem it permits. An instrument that cannot answer is a
+# fault rather than a pass -- a silent `accepts=` would let every comparison below read green by
+# having nothing to compare.
+assert scan.out contains "arity_unanswered=0" else "glow_desk_arity: the worker permits a sample for a stem whose accepted count it will not name"
+
+# invariant: a desk's own Sample line names a count the worker accepts. The two are independent
+# statements of one fact and their parting fails at the run, by name, on whichever lap next hands
+# that desk its sample.
+assert scan.out contains "contract_split=0" else "glow_desk_arity: a desk's Sample line declares a count the run worker refuses"
+
+# invariant: a desk declaring a Sample is a desk the worker will take one for. A Sample line the
+# worker refuses is a promise the tree cannot keep -- the desk says how to run it and the one
+# runner declines the argument by name.
+assert scan.out contains "sample_unpermitted=0" else "glow_desk_arity: a desk declares a Sample the run worker permits no argument for"
+
+# invariant: the declared count matches what the emitted program actually reads. This is the
+# derived statement, so it is the anchor rather than a peer: a desk passing the worker and then
+# returning 2 from a program that read fewer arguments than the desk believed reads as a failing
+# gate rather than as a miscount, which is the harder fault to trace.
+assert scan.out contains "lowering_split=0" else "glow_desk_arity: a desk's Sample line declares a different count from the argv gates its own lowering emits"
+
+# invariant: the lowering reading says how far it reached. It answers only where the argv-sample
+# road accepts the desk, so an unread lowering is reported rather than gated -- and printed, since
+# a reader cannot otherwise tell an empty blind spot from a large one.
+assert scan.out contains "lowering_built=" else "glow_desk_arity scan printed no lowering availability"
+assert scan.out contains "lowering_read=" else "glow_desk_arity scan printed no lowering-read count"
+assert scan.out contains "lowering_unread=" else "glow_desk_arity scan printed no lowering-unread count"
+
+assert scan.out contains "verdict=agree" else "glow_desk_arity: the three statements of a desk's arity have parted -- run with --explain"
+
+# invariant: the reading is proven on planted rooms rather than trusted. The control builds
+# miniature desk rooms and a stub worker in a throwaway pen, plants each refusal and then lifts
+# it, and proves the one piece of arithmetic the gates rest on: a tag desk's emitted program
+# carries a floor of one argument and a payload gate of two, so the reading takes the MAXIMUM.
+# Reading the first gate calls four real desks split when nothing is wrong, and that mutation
+# reds three legs here.
+let control = run ["sh" "tools/fixtures/g/glow_desk_arity_control.sh"]
+assert control.ok else "glow_desk_arity control failed: ${control.out}"
+assert control.out contains "control_failed=0" else "glow_desk_arity control reported failures: ${control.out}"
+assert control.out contains "control_verdict=ok" else "glow_desk_arity control did not reach its verdict: ${control.out}"
+
+say "GREEN: glow_desk_arity -- the desk's Sample line, the worker's accepted counts and the lowering's own argv gates agree on every sampled desk in the room, the worker answers for every stem it permits, and 39 control behaviors stand green with each refusal planted and lifted."

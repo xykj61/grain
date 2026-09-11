@@ -1123,6 +1123,27 @@ path tools/g/glow_desk_run_witness.rish
 tier cadence
 seated 20260907.110022
 
+# glow_desk_arity -- three files state one desk's arity, and nothing compared them.
+#
+# How many sample arguments a Glow desk takes is written in the desk's own `::  Sample:` head
+# line, in tools/g/glow_run_worker.sh's accepted-count list, and in the argv gates that
+# glow/glow_run.rye --sample-argv emits. The third is DERIVED; the first two are hand-written.
+# REDS %532 repaired two of this corpus's three enumerations and named arity as the one left
+# underived, then predicted the fourth in its own words -- a sampled desk needs a value somebody
+# chooses "and then a fourth hand-written enumeration to hold the answers." The `Sample:` line is
+# that fourth.
+#
+# Measured 20260910: 46 sampled desks, three statements each, zero disagreement -- the same
+# perfect agreement %532 found among its own three, stored in nobody's instrument.
+#
+# `lap` rather than `cadence`: 9s, because it reads and lowers rather than building. The sibling
+# that RUNS these desks costs 325s of Zig and sits on the slower clock; this one answers the
+# contract question every lap, which is when a desk lands.
+guard glow_desk_arity
+path tools/g/glow_desk_arity_witness.rish
+tier lap
+seated 20260910.223000
+
 # gen_home -- the instrument stood green, on no clock, while the door it answers drifted 34 desks.
 #
 # WHAT WENT WRONG. `src/gen/README.md` is the door onto the desks' future home, and it pinned
