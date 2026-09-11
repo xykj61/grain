@@ -1,14 +1,15 @@
-# Lessons -- eight walks for a reader meeting computing itself
+# Lessons -- reading walks for someone meeting computing itself
 
 **Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) at the Door setting, with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
-**Stamp:** `20260910.060225` - **Status:** Living - **Room:** mixed -- an index to pages that are checkable, vision and mixed in turn
+**Stamp:** `20260910.060225` - **Updated:** `20260911.122211` -- declared an index, so the room is read against this page every lap - **Status:** Living - **Room:** mixed -- an index to pages that are checkable, vision and mixed in turn
+**Kind:** crushed index of [`./`](./)
 **Where this sits:** home is [`../../README.md`](../../README.md) - the hands-on hour is [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - how to read the tree is [`../study/README.md`](../study/README.md)
 
 ---
 
 ## What these are
 
-Eight lessons, written for someone who has **never written a line of code** and is trusted with
+Reading walks, written for someone who has **never written a line of code** and is trusted with
 the whole truth anyway. That register has a name here: **Bhakta**, the open door.
 
 They are **reading walks** rather than exercises. Hands come in the first-hour tutorial. These
@@ -21,7 +22,11 @@ the courtesy that lets a beginner trust a page.
 
 ---
 
-## The eight
+## The walks
+
+One row per lesson in the room, so the table below is the count.
+[`tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) reads it against
+the room every lap, so a ninth lesson earns its row on the day it lands.
 
 | # | Lesson | What you carry away |
 |---|---|---|
