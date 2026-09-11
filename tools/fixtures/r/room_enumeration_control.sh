@@ -157,6 +157,57 @@ cp "$PEN/shelf/etc/README.md" "$PEN/shelf/two/deep dir/README.md"
 ( cd "$PEN" && git add -A && git -c user.email=p@p -c user.name=p commit -qm spaced )
 leg spaced_path_counted 2 "$(read_scan pages_declaring)"
 
+# --- A room's own FRONT DOOR declares `**Members:**` and its link names its own directory.
+# A miniature shelf whose door lists the rooms UNDER it rather than beside it.
+build_door() { # build_door <list-line-body> [<trailing-link>]
+    rm -rf "$PEN/shelf"
+    mkdir -p "$PEN/shelf/api" "$PEN/shelf/blog" "$PEN/shelf/demos"
+    for r in api blog demos; do echo "# $r" > "$PEN/shelf/$r/README.md"; done
+    {
+        echo "# Shelf -- the front door"
+        echo ""
+        echo "**Members:** the rooms under [\`./\`](./) -- $1${2:-}"
+        echo ""
+        echo "Body prose."
+    } > "$PEN/shelf/README.md"
+    ( cd "$PEN" && git init -q . && git add -A && git -c user.email=p@p -c user.name=p commit -qm door >/dev/null 2>&1 || true )
+}
+
+build_door '`api`, `blog`, `demos`'
+leg members_verdict ok "$(read_scan verdict)"
+leg members_counted 1 "$(read_scan pages_members)"
+leg members_not_neighbors 0 "$(read_scan pages_neighbors)"
+leg members_missing 0 "$(read_scan missing)"
+leg members_phantom 0 "$(read_scan phantom)"
+
+# --- A member room lands and the front door never hears: the fault, in the members sense.
+build_door '`api`, `blog`'
+leg members_missing_bites 1 "$(read_scan missing)"
+leg members_missing_verdict enumeration_drift "$(read_scan verdict)"
+# lifted
+build_door '`api`, `blog`, `demos`'
+leg members_missing_lifted 0 "$(read_scan missing)"
+
+# --- A name with no room behind it, in the members sense.
+build_door '`api`, `blog`, `demos`, `wiki`'
+leg members_phantom_bites 1 "$(read_scan phantom)"
+# lifted
+build_door '`api`, `blog`, `demos`'
+leg members_phantom_lifted 0 "$(read_scan phantom)"
+
+# --- A TRAILING LINK on the key line is read past: the parent is the FIRST link, never the last.
+# This is the shape that refused a true page -- a key closing with a pointer to the law behind the
+# room -- and the reading, rather than the page, was what was wrong.
+build_door '`api`, `blog`, `demos`' ' (see [`../law.md`](../law.md))'
+leg trailing_link_absent 0 "$(read_scan absent)"
+leg trailing_link_verdict ok "$(read_scan verdict)"
+leg trailing_link_missing 0 "$(read_scan missing)"
+
+# --- The two memberships are counted apart, so a page leaving one is legible rather than silent.
+build_pen '`api`, `blog`, `demos`'
+leg neighbors_counted_apart 1 "$(read_scan pages_neighbors)"
+leg neighbors_members_zero 0 "$(read_scan pages_members)"
+
 # --- MUTATION: the legs must bite the scan rather than merely run beside it.
 mutate() { # mutate <sed-expr> -> prints missing reading of the healthy shelf
     cp "$SCAN" "$PEN/mutant.sh"
@@ -186,6 +237,18 @@ build_pen '`api`, `blog`, `demos`'
 mkdir -p "$PEN/shelf/odd name"; echo x > "$PEN/shelf/odd name/k.md"
 ( cd "$PEN" && git add -A && git -c user.email=p@p -c user.name=p commit -qm m4 )
 leg mutation_actual_name_rule 2 "$( ( cd "$PEN" && sh "$PEN/m4.sh" 2>/dev/null ) | sed -n 's/^missing=//p')"
+
+# Dropping `Members` from the population leaves a front door unread -- the whole widening, mutated.
+cp "$SCAN" "$PEN/m5.sh"
+sed_inplace 's/(Neighbors|Members)/Neighbors/' "$PEN/m5.sh"
+build_door '`api`, `blog`, `demos`'
+leg mutation_members_population 0 "$( ( cd "$PEN" && sh "$PEN/m5.sh" 2>/dev/null ) | sed -n 's/^pages_declaring=//p')"
+# Restoring the GREEDY link read makes a trailing link the parent again: the pre-repair reading, run
+# over the same pen and shown calling a true page absent.
+cp "$SCAN" "$PEN/m6.sh"
+sed_inplace "s|sed -n 's/\^\[^]\]\*](|sed -n 's/.*](|" "$PEN/m6.sh"
+build_door '`api`, `blog`, `demos`' ' (see [`../law.md`](../law.md))'
+leg mutation_first_link 1 "$( ( cd "$PEN" && sh "$PEN/m6.sh" 2>/dev/null ) | sed -n 's/^absent=//p')"
 
 echo "pass=$pass fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; else echo "control_verdict=failed"; fi

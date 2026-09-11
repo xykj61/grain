@@ -77,6 +77,13 @@
 #                            met the fault in prose and each moved its count into a table; the
 #                            fourth stood in a title, where none of the three repairs had looked.
 #                            The FORM is refused rather than the value -- see the pass itself.
+#   section_count_disagrees -- a title spelling a count of the page's OWN numbered sections, where
+#                            the two numbers disagree. The other strand of the same subject, and the
+#                            opposite choice: an index's basis is a room other hands grow, so the
+#                            form is refused; a page's numbered sections sit inside it, so the VALUE
+#                            is checked and a true count keeps its place in a name that reads well.
+#                            Measured 20260911 over every living page: eight hold numbered top-level
+#                            sections and one spells a count in its title, green over all of it.
 #   signature_unbacked    -- a page signing `witness:<name> GREEN` names an instrument something
 #                            can find. Measured 20260906: seven living signed pages, six backed by
 #                            a fixture that reads their claims, and one -- the shipping shelf's own
@@ -94,13 +101,14 @@
 # on the standing roster or named by a tracked file under tools/; it does not prove the instrument
 # reads the claims the signature covers. Naming the weaker claim is the point (REDS %446).
 #
-# AND A COUNT IN A TITLE IS READ ONLY ON A DECLARED INDEX, which is the honest bound rather than an
-# oversight. `docs-geode/demos/README.md` opens `# Demos -- five checks you can run` and holds five
-# numbered sections, so the count is true and read by nothing; it declares `crushed demonstrations`
-# rather than an index of a room, so no member walk here derives a number to check it against. A
-# page counting its own SECTIONS is a different subject from a page counting a ROOM, and giving one
-# reading both jobs is the braid this tree already names single-stranded. Named here so the next
-# hand meets the gap rather than assuming coverage.
+# A COUNT IN A TITLE IS READ ONLY ON A DECLARED INDEX, which is the honest bound on THAT reading
+# rather than an oversight, and the gap it left has its own reading below. `docs-geode/demos/README.md`
+# opens `# Demos -- five checks you can run` and holds five numbered sections; it declares `crushed
+# demonstrations` rather than an index of a room, so no member walk here derives a number to check it
+# against. A page counting its own SECTIONS is a different subject from a page counting a ROOM, and
+# giving one reading both jobs is the braid this tree already names single-stranded. So the two stay
+# apart: `title_count_claimed` refuses the FORM on a declared index, and `section_count_disagrees`
+# checks the VALUE on a page whose own numbered sections supply the basis.
 #
 # USAGE
 #   sh tools/fixtures/c/crushed_index_scan.sh
@@ -506,6 +514,61 @@ done < "$work/declared.txt"
 title_count_claimed=$(wc -l < "$work/titlecounts.txt" | tr -d ' ')
 echo "title_count_claimed=$title_count_claimed"
 
+# --- a title spelling a count of the page's OWN numbered sections ---------------------------------
+# THE SUBJECT, and why it is a separate strand. The reading above refuses a count in a declared
+# index's title without looking at its value, and that choice is right THERE: an index's basis is a
+# room on disk, which grows under other hands, so any number in the name is a forecast. A page
+# counting its own numbered sections is the opposite case. Its basis is INSIDE it -- the sections it
+# holds, in the same file, moved only by the hand editing that page -- so the number can be CHECKED
+# rather than banned, and a true count keeps its place in a title that reads well.
+#
+# This is the gap the head named by name and left open. `docs-geode/demos/README.md` opens
+# `# Demos -- five checks you can run` over five sections headed `## 1.` through `## 5.`, true since
+# it was written and held by nothing. A sixth check lands and the title is wrong with no line moving
+# in any file a standing guard reads.
+#
+# WHAT IS READ, derived rather than rostered: a living page whose first line is a `# ` title, whose
+# title spells a cardinal followed by an alphabetic word, and which holds at least one top-level
+# section headed by an integer -- `## 1.`, `## 2 `, `## 3)`. Its derived reading is HOW MANY such
+# sections the page holds, never the highest number one of them wears: a page whose sections run
+# 1, 2, 3, 5 holds four checks, and whether its numbering skipped a step is a different subject
+# wanting a different repair.
+#
+# WHAT IT LEAVES ALONE. A page with no numbered sections supplies no basis, so it is not read here
+# at all. A number at a title's END is an identifier rather than a census, exactly as above. And an
+# undeclared page counting a ROOM is still unread by anything -- named under *what is not proven*.
+#
+# THE POPULATION IS ONE, said plainly rather than dressed up. Measured `20260911.083000` across every
+# living non-testimony Markdown page: EIGHT hold numbered top-level sections, and exactly one of
+# those spells a count in its title. The reading is green over all of it today. A guard is worth what
+# it catches on the lap the fault arrives, and this one is standing before the sixth check lands.
+: > "$work/sectioncounts.txt"
+while IFS= read -r page; do
+  [ -f "$page" ] || continue
+  title=$(head -1 "$page")
+  case "$title" in '#'[!#]*) ;; *) continue ;; esac
+  sections=$(grep -cE '^## *[0-9]+[.) ]' "$page" || true)
+  [ "${sections:-0}" -gt 0 ] || continue
+  word=$(printf '%s\n' "$title" \
+    | grep -oiE '(^|[^a-z0-9-])(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|[0-9]+)[ ]+[a-z]' \
+    | head -1 | sed 's/^[^A-Za-z0-9]*//; s/[ ][A-Za-z]$//' | tr 'A-Z' 'a-z')
+  [ -n "$word" ] || continue
+  case "$word" in
+    one) spelled=1 ;; two) spelled=2 ;; three) spelled=3 ;; four) spelled=4 ;;
+    five) spelled=5 ;; six) spelled=6 ;; seven) spelled=7 ;; eight) spelled=8 ;;
+    nine) spelled=9 ;; ten) spelled=10 ;; eleven) spelled=11 ;; twelve) spelled=12 ;;
+    thirteen) spelled=13 ;; fourteen) spelled=14 ;; fifteen) spelled=15 ;; sixteen) spelled=16 ;;
+    seventeen) spelled=17 ;; eighteen) spelled=18 ;; nineteen) spelled=19 ;; twenty) spelled=20 ;;
+    *[!0-9]*) continue ;;
+    *) spelled=$word ;;
+  esac
+  [ "$spelled" -eq "$sections" ] && continue
+  printf '%s: the title says %s, and the page holds %s numbered sections\n' \
+    "$page" "$spelled" "$sections" >> "$work/sectioncounts.txt"
+done < "$work/living.txt"
+section_count_disagrees=$(wc -l < "$work/sectioncounts.txt" | tr -d ' ')
+echo "section_count_disagrees=$section_count_disagrees"
+
 [ "$unlisted" -eq 0 ] || sed 's/^/unlisted: /' "$work/unlisted.txt"
 [ "$rooms_missing" -eq 0 ] || sed 's/^/room_missing: /' "$work/rooms_missing.txt"
 [ "$rooms_oversize" -eq 0 ] || sed 's/^/room_oversize: /' "$work/rooms_oversize.txt"
@@ -514,10 +577,11 @@ echo "title_count_claimed=$title_count_claimed"
 [ "$unbacked" -eq 0 ] || sed 's/^/unbacked: /' "$work/unbacked.txt"
 [ "$generated_count_disagrees" -eq 0 ] || sed 's/^/generated_count: /' "$work/gencounts.txt"
 [ "$title_count_claimed" -eq 0 ] || sed 's/^/title_count: /' "$work/titlecounts.txt"
+[ "$section_count_disagrees" -eq 0 ] || sed 's/^/section_count: /' "$work/sectioncounts.txt"
 
 if [ "$unlisted" -eq 0 ] && [ "$rooms_missing" -eq 0 ] && [ "$rooms_oversize" -eq 0 ] \
    && [ "$doors_missing" -eq 0 ] && [ "$generated_count_disagrees" -eq 0 ] \
-   && [ "$title_count_claimed" -eq 0 ] \
+   && [ "$title_count_claimed" -eq 0 ] && [ "$section_count_disagrees" -eq 0 ] \
    && [ "$stamp_disagrees" -eq 0 ] && [ "$unbacked" -eq 0 ]; then
   echo "verdict=ok"
 else

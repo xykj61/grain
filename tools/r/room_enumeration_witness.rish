@@ -1,10 +1,23 @@
-# tools/r/room_enumeration_witness.rish -- a page that lists the rooms beside it is checked against
-# the rooms on disk.
+# tools/r/room_enumeration_witness.rish -- a page that lists the rooms beside it, or the rooms under
+# it, is checked against the rooms on disk.
 #   rishi/bin/rishi run tools/r/room_enumeration_witness.rish
 #
 # WHAT IT STANDS OVER. tools/fixtures/r/room_enumeration_scan.sh, which reads the living tracked
-# pages for a declared **Neighbors:** key, resolves the parent room that key links, and walls at
-# zero every neighbor the list misses and every name the list invents.
+# pages for a declared **Neighbors:** or **Members:** key, resolves the room that key links, and
+# walls at zero every room the list misses and every name the list invents.
+#
+# TWO SENSES, TWO KEYS. A page standing INSIDE a room lists the rooms beside it and says Neighbors;
+# a room's own FRONT DOOR lists the rooms under it and says Members, its link naming its own
+# directory. One comparison serves both, and only the word differs, because api/ is a neighbor of
+# docs-geode/etc/README.md and a member of docs-geode/README.md.
+#
+# WHY THE SECOND KEY EARNED ITS OWN LAP, measured 20260911.092737. A day after the first key landed,
+# ONE page in the tree declared -- the page whose own fault built the guard -- while the three prose
+# rooms this tree names each typed a member list in prose and TWO of the three were already wrong.
+# manual/README.md holds a section titled What Lives Here and never named video-scripts/, three
+# newcomer video scripts; docs/README.md, the compression shelf, never named docs/redacted/. Both
+# rooms were named only from OTHER rooms, so the claim stood in a distant room while the room that
+# owned it was silent.
 #
 # WHY IT EXISTS. A door often names its neighbors so a reader learns a shelf without walking it.
 # That sentence is a claim about a POPULATION, and a population grows. docs-geode/etc/README.md is
@@ -30,7 +43,7 @@
 # population filter, so no reading here guesses which sentence meant to be a list and none walks a
 # body for a stray backticked word.
 #
-# WHAT IT STANDS ON. Thirty-eight behaviors proven on real git repositories in a throwaway pen by
+# WHAT IT STANDS ON. Fifty-six behaviors proven on real git repositories in a throwaway pen by
 # tools/fixtures/r/room_enumeration_control.sh, welcomes asserted as hard as refusals: a true list
 # reads ok and exits 0, a room the list misses refuses and naming it lifts the refusal, a name with
 # no room refuses and removing it lifts that, the page's own room is read past so naming it is a
@@ -41,7 +54,13 @@
 # room name outside the comparable set is NAMED rather than split into false neighbors. Four
 # mutations bite: dropping the self exclusion, dropping the shelf exclusion, dropping the name rule
 # that keeps the link's own backticked text out of the claimed set, and dropping the name rule on
-# the disk side -- the last shown over the same pen calling a healthy shelf drifted by two.
+# the disk side -- the last shown over the same pen calling a healthy shelf drifted by two. The
+# members sense is proven the same way, refusal and lift alike, a trailing link on the key line is
+# read past, and two further mutations bite: dropping Members from the population leaves a front
+# door unread, and restoring the GREEDY link read calls a true page absent. That greedy read is not
+# hypothetical -- it refused docs/README.md on the lap this key landed, because a .*]( walks to the
+# LAST link on the line and the key closed with a pointer to the law behind its room. The parent is
+# the FIRST link, which is what the key's own grammar always said.
 #
 # WHAT IT DOES NOT REACH. Whether a page that OUGHT to enumerate its neighbors has declined to --
 # opting in is the filter, so an undeclared door is invisible here, exactly as front_door_claim says
@@ -49,7 +68,7 @@
 #
 # Purely local: no key, no signature, no network, no funds, no real device.
 
-say "room-enumeration: Language EN -- a page that lists the rooms beside it is checked against the rooms on disk."
+say "room-enumeration: Language EN -- a page that lists the rooms beside it, or the rooms under it, is checked against the rooms on disk."
 say "room-enumeration: Style Gauge Meter -- four gates at zero, every refusal proven from both sides."
 say "room-enumeration: Lens TAME -- safety first; the population is opt-in, so the reading never guesses a list."
 
@@ -57,6 +76,10 @@ let green = run ["sh" "tools/fixtures/r/room_enumeration_scan.sh"]
 say green.out
 assert green.ok else "room-enumeration: the living measure must exit 0 -- ${green.err}${green.out}"
 assert green.out contains "verdict=ok" else "room-enumeration: want verdict ok -- ${green.out}"
+# The two memberships are printed apart on purpose: a page can leave one by an edit made somewhere
+# else, and a single total would swallow that where two numbers make it legible in the census.
+assert green.out contains "pages_neighbors=" else "room-enumeration: the neighbors membership must be printed"
+assert green.out contains "pages_members=" else "room-enumeration: the members membership must be printed"
 
 # THE WALLS, at zero. A room the list misses is a reader told the shelf is smaller than it is; a
 # name with no room is a reader sent to a door that is not there.
@@ -101,6 +124,17 @@ assert control.out contains "leg unreadable_not_split ok" else "room-enumeration
 assert control.out contains "leg unreadable_lifted ok" else "room-enumeration: the unreadable lift leg is missing"
 assert control.out contains "leg mutation_actual_name_rule ok" else "room-enumeration: the pre-repair split mutation is missing"
 assert control.out contains "leg spaced_path_counted ok" else "room-enumeration: the spaced-path leg is missing"
-assert control.out contains "pass=39" else "room-enumeration: the control must carry all thirty-nine legs"
+assert control.out contains "leg members_counted ok" else "room-enumeration: the front-door members leg is missing"
+assert control.out contains "leg members_not_neighbors ok" else "room-enumeration: the counted-apart leg is missing"
+assert control.out contains "leg members_missing_bites ok" else "room-enumeration: the missed-member leg is missing"
+assert control.out contains "leg members_missing_lifted ok" else "room-enumeration: the missed-member lift leg is missing"
+assert control.out contains "leg members_phantom_bites ok" else "room-enumeration: the invented-member leg is missing"
+assert control.out contains "leg members_phantom_lifted ok" else "room-enumeration: the invented-member lift leg is missing"
+assert control.out contains "leg trailing_link_absent ok" else "room-enumeration: the trailing-link leg is missing"
+assert control.out contains "leg trailing_link_verdict ok" else "room-enumeration: the trailing-link verdict leg is missing"
+assert control.out contains "leg neighbors_counted_apart ok" else "room-enumeration: the neighbors-apart leg is missing"
+assert control.out contains "leg mutation_members_population ok" else "room-enumeration: the members-population mutation is missing"
+assert control.out contains "leg mutation_first_link ok" else "room-enumeration: the greedy-link mutation is missing"
+assert control.out contains "pass=56" else "room-enumeration: the control must carry all fifty-six legs"
 
-say "GREEN: room-enumeration -- every declared list of neighboring rooms matches the rooms on disk, the vacuum refuses rather than reading green, and all thirty-nine behaviors stand proven on real repositories."
+say "GREEN: room-enumeration -- every declared list of rooms, beside a page or under it, matches the rooms on disk; the vacuum refuses rather than reading green; and all fifty-six behaviors stand proven on real repositories."

@@ -27,6 +27,12 @@
 #           have credited exactly the fault it hunts.
 #   15.     A link carrying a `#fragment` still names its file, since a fragment is a place inside
 #           a page rather than a different page.
+#   39-48.  A title spelling a count of the page's OWN numbered sections is checked against the
+#           sections it holds, from BOTH sides -- over-counting and under-counting each bite, adding
+#           the missing section clears it with the title untouched, a gap in the numbering leaves the
+#           count where it stands, a page with no numbered sections supplies no basis and is unread,
+#           and a trailing number is an identifier. `title_count_claimed` is read beside it at every
+#           step, so neither strand can answer for the other.
 #   16.     An empty corpus REFUSES rather than reading clean (REDS %170) -- the shape a guard is
 #           least able to notice about itself, since every gate answers zero at once.
 #   17.     THE PEN IS INNOCENT: a repository with nothing planted reads `verdict=ok`, so every
@@ -363,6 +369,62 @@ d=$(build titleundeclared)
 ( cd "$d" && printf '# An aside -- two pages stand\n\nnothing is declared here.\n' > shelf/aside.md \
   && git add -A && git commit -qm 'pen: a count in an undeclared title' ) >/dev/null 2>&1
 check "a count in an undeclared page's title counts zero" "$(read_of "$d" title_count_claimed)" "0"
+
+# --- A TITLE SPELLING A COUNT OF THE PAGE'S OWN NUMBERED SECTIONS ---------------------------------
+# THE OTHER STRAND, and the legs prove it is the other one. The title reading above refuses the FORM
+# on a declared index, because an index's basis is a room other hands grow. This reading checks the
+# VALUE on a page whose basis is inside itself, so a true count keeps its place in the name. The two
+# must not bleed: the plant below stands on an UNDECLARED page, and `title_count_claimed` is read
+# beside `section_count_disagrees` at every step to prove neither reading answered for the other.
+d=$(build sectioncount)
+( cd "$d" && cat > shelf/checks.md <<'PAGE'
+# The checks -- three checks you can run
+
+## 1. the first
+
+## 2. the second
+PAGE
+  git add -A && git commit -qm 'pen: a title counting its own sections' ) >/dev/null 2>&1
+check "a title over-counting its own sections is counted" "$(read_of "$d" section_count_disagrees)" "1"
+check "the section count refuses the tree" "$(read_of "$d" verdict)" "index_disagrees"
+check "and the title reading stays out of it" "$(read_of "$d" title_count_claimed)" "0"
+
+# ADDING THE MISSING SECTION clears it, and the title never moves -- so the reading is the page's own
+# body rather than its name. This is the direction a form refusal cannot offer at all.
+( cd "$d" && printf '\n## 3. the third\n' >> shelf/checks.md \
+  && git add -A && git commit -qm 'pen: the third section lands' ) >/dev/null 2>&1
+check "adding the missing section clears it" "$(read_of "$d" section_count_disagrees)" "0"
+check "and the pen reads ok again" "$(read_of "$d" verdict)" "ok"
+
+# A FOURTH SECTION over a title still saying three is counted from the other side. A guard that only
+# catches under-counting would miss every page that grows, which is the fault this exists for.
+( cd "$d" && printf '\n## 4. the fourth\n' >> shelf/checks.md \
+  && git add -A && git commit -qm 'pen: a fourth section nobody announced' ) >/dev/null 2>&1
+check "a section past the announced count is counted" "$(read_of "$d" section_count_disagrees)" "1"
+
+# THE COUNT IS HOW MANY SECTIONS STAND, never the highest number one wears. Renumbering the fourth
+# section to `## 9.` leaves four sections, so a title saying three still refuses and a title saying
+# four walks free -- proven by moving the title rather than the body.
+( cd "$d" && sed_inplace 's/^## 4\. the fourth$/## 9. the fourth/' shelf/checks.md \
+  && sed_inplace '1s/.*/# The checks -- four checks you can run/' shelf/checks.md \
+  && git add -A && git commit -qm 'pen: a gap in the numbering is a different subject' ) >/dev/null 2>&1
+check "a gap in the numbering leaves the count at four" "$(read_of "$d" section_count_disagrees)" "0"
+
+# A PAGE WITH NO NUMBERED SECTIONS supplies no basis, so it is not read here at all. Without this the
+# reading would refuse every page whose title happens to carry a number, which is the other guard's
+# job on the pages that opted into it.
+d=$(build sectionless)
+( cd "$d" && printf '# An aside -- three reasons to read this\n\n## Why\n\nprose.\n' > shelf/aside.md \
+  && git add -A && git commit -qm 'pen: a count with no numbered sections beneath it' ) >/dev/null 2>&1
+check "a title count with no numbered sections counts zero" "$(read_of "$d" section_count_disagrees)" "0"
+check "and that page reads ok" "$(read_of "$d" verdict)" "ok"
+
+# A NUMBER AT A TITLE'S END is an identifier rather than a census here too, on a page that does hold
+# numbered sections -- so the two readings agree about what a count looks like.
+d=$(build sectionident)
+( cd "$d" && printf '# The checks 6\n\n## 1. the first\n\n## 2. the second\n' > shelf/checks.md \
+  && git add -A && git commit -qm 'pen: a trailing number over numbered sections' ) >/dev/null 2>&1
+check "a trailing number over numbered sections counts zero" "$(read_of "$d" section_count_disagrees)" "0"
 
 # --- 16. AN EMPTY CORPUS REFUSES ------------------------------------------------------------------
 d=$pen/empty

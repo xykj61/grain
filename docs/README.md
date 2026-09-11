@@ -3,9 +3,9 @@
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- compression shelf routing - **Depth:** routing
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+**Members:** the rooms under [`./`](./) -- `redacted`, where a page whose specifics are private is set down as a method anyone can use ([`../.claude/rules/redact-technique.md`](../.claude/rules/redact-technique.md))
 **Ceiling:** <=40 lines
-**Last updated:** `20260825.025730` -- the way-home line set on one line, matching this page's own header style, so the page holds the 40 it declares
-**Compresses:** [`20260712-221600`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - [`20260717-173848`](../active-designing/date/20260717/20260717-173848_compass-card-and-foundations-compress.md)
+**Last updated:** `20260911.092737` -- the `redacted/` room named at the door for the first time, its key paid for by folding this reader-only pointer onto this line rather than raising the 40 - **Compresses:** [`20260712-221600`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - [`20260717-173848`](../active-designing/date/20260717/20260717-173848_compass-card-and-foundations-compress.md)
 
 ---
 
