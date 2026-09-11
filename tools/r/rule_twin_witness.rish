@@ -44,9 +44,27 @@
 # WHAT IT DOES NOT REACH. Which side of a drifted pair is RIGHT. That is a reading, and this is a
 # count. `sh tools/fixtures/r/rule_twin_scan.sh diff <name>` prints what one pair disagrees about.
 #
-# Pen: tools/fixtures/r/rule_twin_control.sh -- eighteen behaviors on real directories in a
-# throwaway pen, seven refusals bitten and eleven honest readings left free, the cohort ceiling
-# proven from both sides and the arrival leg proven to report rather than refuse. Run from the
+# THE TRANSFORM WIDENED 20260910.201341, BY THREE STEPS. A link into the rules room names the
+# room the READER's own editor loads, so `.cursor/rules/` and `.claude/rules/` read as one
+# directory; a GFM table delimiter run canonicalizes, since `|------|` and `|---|` render one way;
+# and `&lt;` reads as `<`. The pair-level reading that proposed them was WRONG -- the sibling-room
+# spelling stood among the differing lines of 24 of 48 pairs, which reads like half the census
+# being noise, and at LINE level it is 12 lines of 1,512, because such a line almost always
+# differs for a second reason too. One cohort pair flipped, `vocabulary-survey`, whose whole
+# disagreement was a table rule. A difference that is not a difference should never stand in a
+# count somebody is asked to act on, however small it turns out to be.
+#
+# THREE COHORT PAIRS WENT AGREE -> DRIFT BETWEEN 20260908 AND 20260910, which is what carried the
+# reading 35 -> 38 and refused the meter. `exec-bit` by one swept word, `gauge-style` by a
+# nine-line paragraph the twin never received, `placeholder-ship-names` by a Radiant pass applied
+# to one side. Each is a lap editing the page its own editor reads and leaving the other bench
+# behind, so bringing the three twins forward completes a half-made edit rather than deciding
+# which sentence is the law, and needed no word. The ceiling stands at 34.
+#
+# Pen: tools/fixtures/r/rule_twin_control.sh -- twenty-four behaviors on real directories in a
+# throwaway pen, ten refusals bitten and fourteen honest readings left free, the cohort ceiling
+# proven from both sides, the arrival leg proven to report rather than refuse, and each of the
+# three new transform steps mutation-proven: removed in turn, each bites exactly its own free leg. Run from the
 # repository root.
 
 say "rule-twin: Language EN -- a rule written twice is read as law twice, so both copies must say one thing."
@@ -84,7 +102,13 @@ assert control.out contains "14 free: and the tree passes free at a ceiling the 
 assert control.out contains "15 free: a pair born outside the cohort, drifted, is reported rather than refused -- ok" else "rule-twin: gating arrivals would refuse the ordinary act of writing a new rule"
 assert control.out contains "15b free: and it is named in the reading rather than passed over -- ok" else "rule-twin: an ungated reading that names nobody is an unread reading"
 assert control.out contains "16 bitten: a cohort name that is no longer a pair reads as absent -- ok" else "rule-twin: a rule retired and a pair reconciled are two facts wearing one appearance"
+assert control.out contains "18 free: a link into the rules room naming each editor's own copy reads as agreeing -- ok" else "rule-twin: one instruction spelled for two benches is the transform rather than a disagreement"
+assert control.out contains "19 bitten: and a changed word on that same line still counts as drift -- ok" else "rule-twin: a step that reads two spellings as one must still see a real change riding beside it"
+assert control.out contains "20 free: a table delimiter row written to a different width reads as agreeing -- ok" else "rule-twin: a delimiter run of any length past three renders one way, so it says one thing"
+assert control.out contains "21 bitten: and a changed cell in the table below it still counts as drift -- ok" else "rule-twin: canonicalizing the rule must never quiet the row beneath it"
+assert control.out contains "22 free: an escaped &lt; reads as the character it names -- ok" else "rule-twin: an escaped character and the character are one character"
+assert control.out contains "23 bitten: and a changed bound beside it still counts as drift -- ok" else "rule-twin: an entity read as its character must still leave the number beside it visible"
 assert control.out contains "17 bitten: an absent cohort roster refuses rather than reading every pair as an arrival -- ok" else "rule-twin: a meter that cannot name its cohort must refuse rather than gate on nothing"
 
 say ""
-say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift among the seated cohort held under a ceiling that only falls, growth reported beside it rather than folded into it, proven both ways across eighteen behaviors, and the reconciliation itself surfaced as a gate rather than attempted."
+say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift among the seated cohort held under a ceiling that only falls, growth reported beside it rather than folded into it, proven both ways across twenty-four behaviors, the three transform steps seated 20260910 each planted twice so a spelling read as one still bites a real change riding on its line, and the reconciliation itself surfaced as a gate rather than attempted."

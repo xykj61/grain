@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260910.204226` | [The door that names its own ceiling](20260910/20260910-204226_the-door-that-names-its-own-ceiling.kyri) | eleven doors name their ceiling; the dated one stays whole |
 | `20260910.203413` | [A ratchet and the hand that lowers it](20260910/20260910-203413_a-ratchet-and-the-hand-that-may-lower-it.kyri) | who grows a population decides its ceiling |
 | `20260910.203100` | [The lap that came back](20260910/20260910-203100_the-lap-that-came-back-from-the-stash.kyri) | a finished lap recovered from the stash, reproven, landed |
+| `20260910.202749` | [The gated guard that stood red](20260910/20260910-202749_the-gated-guard-that-stood-red.kyri) | red two days behind gate %7; three law twins caught up |
 | `20260910.201128` | [The falsifier that landed in the middle](20260910/20260910-201128_the-falsifier-that-landed-in-the-middle.kyri) | 62% read by wall, 58% by process; neither door fired |
 | `20260910.193823` | [Pedestals that count members](20260910/20260910-193823_the-pedestal-that-counts-members.kyri) | six desks read against their declarations |
 | `20260910.192423` | [A wall the roster reaches nowhere](20260910/20260910-192423_a-wall-the-roster-reaches-nowhere.kyri) | 25 of 66 guards the law cites are run by no lap |

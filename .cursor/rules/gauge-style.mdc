@@ -10,6 +10,15 @@ alwaysApply: true
 **Full guide:** [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md) - **Seated:** `20260823.045448` on Keaton's word - **Status:** Living
 **Inherits:** [`radiant-style`](radiant-style.mdc) (warmth) - `context/CIVIC_STYLE.md` (name what you reward) - [`tame-guidance`](tame-guidance.mdc) (bound every claim, say why)
 **Meter:** [`../../tools/p/prose_register_witness.rish`](../../tools/p/prose_register_witness.rish)
+-- which reads **this room** from `20260910`, at the Field target of 30%, under a ceiling that only
+falls. Seating lap: 54 rule pages, 38 clearing the eight-sentence floor, **19 above the target**.
+The sibling that has guarded these files since `20260821`,
+[`../../tools/fixtures/r/radiant_negation_scan.sh`](../../tools/fixtures/r/radiant_negation_scan.sh),
+ratchets each page against its own baseline and stays; the two readings are different numbers, and
+this one is the number the law states. A lane sweeping a page takes its name off the printout and
+lowers the ceiling in the same commit, reading
+`sh tools/fixtures/p/prose_register_scan.sh --explain <path>` first: it names each counted
+sentence and the words that counted it, out of the same `measure()` the gate reads.
 
 Write documentation, analysis, forecasting, ecosystem description, and design essays in **Gauge
 Style** -- writing that carries measurements and stays worth reading. Radiant Style keeps its

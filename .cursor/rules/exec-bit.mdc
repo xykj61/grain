@@ -30,7 +30,7 @@ git checkout <ref> -- <path>          # the tree is read: 100755 arrives 100755
 git show <ref>:<path> > <path>        # the blob is read: 100755 arrives 100644
 ```
 
-`git cat-file -p <ref>:<path> >` loses it the same way, for the same reason. Proven on metal
+`git cat-file -p <ref>:<path> >` drops it the same way, for the same reason. Proven on metal
 `20260827` in a throwaway pen -- one blob, `4163036efa`, two spellings, two modes. This is how a
 thirty-file adoption landed every file at `100644` in one commit, four of them carrying a shebang,
 and how the ratchet rose 57 to 61 on the next lap (REDS %292).

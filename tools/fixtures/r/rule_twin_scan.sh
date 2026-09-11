@@ -19,8 +19,30 @@
 #   3. a line beginning `Canonical Claude twin` or `Canonical Cursor twin` is dropped from both,
 #      since each file names the other there and agreeing would make them wrong
 #   4. blank lines are dropped, so a reflow is not read as a disagreement
+#   5. `.cursor/rules/` and `.claude/rules/` read as one directory, because a link into the rules
+#      room names the room the READER's own editor loads -- `quin.md` sends you to
+#      `.claude/rules/kyri.md` and `quin.mdc` to `.cursor/rules/kyri.md`, which is one instruction
+#      spelled for two benches, the same transform step 3 already grants the closing cross-pointer
+#   6. a GFM table delimiter row's dash run canonicalizes, since `|------|---------|` and
+#      `|---|---|` render identically and the spec cares only that the run reaches three
+#   7. `&lt;`, `&gt;` and `&amp;` read as the characters they name, one twin having escaped a
+#      `<` the other wrote plainly
 #
 # Anything still differing after that is two editors being told two different things.
+#
+# STEPS 5 THROUGH 7 WERE ADDED 20260910.201341, AND THE PAIR-LEVEL READING THAT PROPOSED THEM WAS
+# WRONG. The sibling-room spelling appears among the differing lines of 24 of the 48 pairs then
+# drifted, which reads like half the census being noise. At LINE level it is 12 lines of 1,512 --
+# because a line carrying that spelling almost always differs for a second reason as well, so
+# normalizing one of the two leaves the line unequal. One cohort pair flipped, `vocabulary-survey`,
+# whose whole disagreement was a table rule written `|------|---------|` on one side. The steps
+# earn their place by being true rather than by being large: a difference that is not a difference
+# should never stand in a count somebody is asked to act on.
+#
+# WHAT STEP 5 CANNOT SEE. A twin that deliberately sends its reader to the OTHER editor's copy of
+# some third rule now reads as agreeing with a canonical that sends them to its own. That is the
+# one sentence this step spends, and step 3 already spends it for the closing cross-pointer, where
+# naming the other room is the whole purpose of the line.
 #
 # TWO READINGS, BECAUSE ONE NUMBER WAS ANSWERING TWO QUESTIONS. The elder gate was the single
 # figure 36, read at `20260824.112806` over 40 pairs. By `20260908` the tree held 51 pairs and 38
@@ -63,15 +85,24 @@ CLAUDE_DIR="${RULE_TWIN_CLAUDE_DIR:-.claude/rules}"
 CURSOR_DIR="${RULE_TWIN_CURSOR_DIR:-.cursor/rules}"
 COHORT_FILE="${RULE_TWIN_COHORT:-tools/fixtures/r/rule_twin_cohort.txt}"
 
-# The cohort ceiling only ever falls. Measured 20260908.034712: 40 cohort pairs, 5 agreeing,
-# 35 drifted -- one below the 36 the elder absolute recorded on 20260824.112806.
-ceiling="${RULE_TWIN_COHORT_CEILING:-35}"
+# The cohort ceiling only ever falls. Measured 20260910.201341: 40 cohort pairs, 6 agreeing,
+# 34 drifted -- one below the 35 read on 20260908.034712, and two below the 36 the elder absolute
+# recorded on 20260824.112806. Three of that day's agreeing pairs had drifted apart again by
+# 20260910 -- `exec-bit` by one swept word, `gauge-style` by a nine-line paragraph the twin never
+# received, `placeholder-ship-names` by a Radiant pass applied to one side -- each of them a lap
+# editing the page its own editor reads and leaving the other bench behind. Bringing the three
+# twins forward is completing a half-made edit rather than deciding which sentence is the law, so
+# it needed no word, and it returned the reading to 35. The fall to 34 is step 6 below.
+ceiling="${RULE_TWIN_COHORT_CEILING:-34}"
 
 norm() {
-  # $1 path. Applies the four declared transform steps, in order.
+  # $1 path. Applies the seven declared transform steps, in order.
   awk 'NR==1 && /^---$/ {fm=1; next} fm && /^---$/ {fm=0; next} !fm' "$1" \
     | sed 's/\.mdc)/.md)/g; s/\.mdc`/.md`/g' \
     | grep -vE '^Canonical (Claude|Cursor) twin' \
+    | sed 's#\.cursor/rules/#.claude/rules/#g' \
+    | sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g' \
+    | awk '/^\|[ :|-]+\|$/ { gsub(/-{3,}/, "---") } { print }' \
     | sed '/^[[:space:]]*$/d'
 }
 
