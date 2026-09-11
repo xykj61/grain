@@ -1,7 +1,7 @@
 # Pattern Three -- The Five Primitives
 
 **Stamp:** `20260730.103002` - door 12 **GREEN** under j4 h4 Accrete-never-break  
-**Voice:** Kyri - nested documentary voice: Trey - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Voice:** Kyri - nested documentary voice: Trey - **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Coords:** equinox A - journey 4 - quest Do  
 **Destination:** `docs-geode/sangha/03-five-primitives.md` -- living reference page  
 **Elder siblings:** [`01-descriptor-exchange.md`](01-descriptor-exchange.md) - [`02-fact-fold.md`](02-fact-fold.md)  

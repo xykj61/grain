@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dc73414b4c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a5832217d1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SLOWER CLOCK HAD NEVER TURNED, PROMISED TO A ROUND NOBODY COUNTS.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -114,18 +114,19 @@ negative after a sweep from 34.
 **YOURS, three peer reds measured rather than claimed:** `shim_reason` **949 against 948**,
 `standing_equipment` behind it, `dated_path` **96 against 85** -- all read the same with my changes
 stashed.
-**PETRICHOR -- THE MANUAL NAMES THE CEILING IT IS HELD TO.**
-Elder [shelved](archive/20260910-223215_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1): my two rooms' fence line. **Twenty living pages declared a style, naming
-no setting**; each names one now, by READER rather than number -- the word inserted into the
-`**Style:**` line `declared_style_line_of()` already parses (`qa_report_card.sh:181`). **Five stood
-above the new ceiling; three came down** -- overview 21->14%, run-record 22->11%, ai-jail 37->30%
-by five phrasing sheds, every claim intact. **Two stand named, their negatives being the subject:**
-vpn 33%, walking-the-rounds 31%, where **7 of 21 counted sentences carry `never` alone** -- the
-house's own `X, never Y`; drop those seven and it reads 21%. [Paper](../active-designing/20260910-223215_the-ceiling-a-manual-page-is-held-to.md), A 91.
-**YOURS, two:** whether `never` in a contrast counts (`prose_register_scan.sh:185`), and whether a
-routing page earns an xref budget -- the card frees one only under **100 words**, so `get-started`
-(373w, 22 links, C+ 78) stands outside.
+**PETRICHOR -- A PEER'S REPAIR, REVERTED BY A COMMIT WITH NO BUSINESS THERE.**
+Elder [shelved](archive/20260911-000651_itinerary-landed-accounts.md).
+**REDS FIRST:** cold read `prose_register red`, `door_setting_undeclared=1` -- **`README.md`**,
+the one door of nineteen naming no ceiling. **It had named one:** `570526cad9` landed it and
+`84a0ebc26` rewrote it back on a stale tree. Restored, **1->0**; row (`20260911.000651`). **TWO
+LINES MOVED THERE, ONE HEALED:** a hook rewrote the count next commit, the clause waited three.
+**AETHER HEARS** (row 0). **MY SHELF SAID THE SAME NOTHING:** of `docs-geode`'s 47 pages, **23 carry
+a Style line, 7 named one**. Sixteen name one now by READER; **two above Door were SWEPT**, `sangha`
+27->17%, `pleac` 27->18%. The libraries index declares Door in its **EMITTER**: a hand-edit expires.
+**TWELVE backticked `../` depth errors REPAIRED**, unread. [Paper](../active-designing/20260911-000651_the-front-door-that-named-no-ceiling.md).
+**HOT 251 run, 246 green, 2 red** -- `shim_reason` 949/948, twice.
+**YOURS:** a wall there -- mine, or `law_tool_citation` wider?
+
 **PHEROMONE -- ONE DESK'S ARITY IS WRITTEN IN THREE FILES, AND NOTHING COMPARED THEM.**
 Elder [shelved](archive/20260910-225815_itinerary-landed-accounts.md).
 **AIR FEELS** (row 1, hand-advanced): walk the fence line, press every post. **REDS FIRST:**

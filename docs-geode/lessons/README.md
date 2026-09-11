@@ -1,6 +1,6 @@
 # Lessons -- eight walks for a reader meeting computing itself
 
-**Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
+**Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) at the Door setting, with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
 **Stamp:** `20260910.060225` - **Status:** Living - **Room:** mixed -- an index to pages that are checkable, vision and mixed in turn
 **Where this sits:** home is [`../../README.md`](../../README.md) - the hands-on hour is [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - how to read the tree is [`../study/README.md`](../study/README.md)
 

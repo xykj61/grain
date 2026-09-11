@@ -12,7 +12,7 @@ TEACH -- the [first hour](../tutorials/the-first-hour.md) and [how to read this 
 both carry it. A register named on a page that merely points would be a claim about writing that is
 not there.
 
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed index
 
 ---

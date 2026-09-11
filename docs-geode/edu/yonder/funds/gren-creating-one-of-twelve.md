@@ -45,7 +45,7 @@ A fund name on this wheel carries **exactly four ASCII letters**, lowercase in v
 |-------|--------|
 | Letters | `G` `r` `e` `n` — length **4** |
 | Alphabet | ASCII letters only |
-| Civic Style | Public-benefit posture: teaching how seats join the wheel, not extracting rent from the lesson ([`../../context/CIVIC_STYLE.md`](../../../../context/CIVIC_STYLE.md)) |
+| Civic Style | Public-benefit posture: teaching how seats join the wheel, not extracting rent from the lesson ([`../../../../context/CIVIC_STYLE.md`](../../../../context/CIVIC_STYLE.md)) |
 | Distinct hats | Gren the **fund** ≠ Grain Energy PBC · ≠ MUR module |
 
 **witness:step1** four-letter name shape + Civic Style named — GREEN when gen-gren passes.
@@ -93,7 +93,7 @@ The constellation contract is a **phone book** rather than a mint. Version one h
 
 | Artifact | Role |
 |----------|------|
-| [`../../mycelium/constellation/SPEC.md`](../../../../mycelium/constellation/SPEC.md) | Design — registry-only · two lanes · hard lines |
+| [`../../../../mycelium/constellation/SPEC.md`](../../../../mycelium/constellation/SPEC.md) | Design — registry-only · two lanes · hard lines |
 | [`../../mycelium/constellation/sui/sources/constellation.move`](../../../../mycelium/constellation/sui/sources/constellation.move) | Unaudited Move sketch — `add_seat` under AdminCap · **mints nothing** |
 | Settlement lane | Sui package (devnet/testnet/mainnet = his hand) |
 | Sovereign lane | Same registry truth over **Comlink** on house metal |

@@ -4,7 +4,7 @@
 [`the-first-hour.md`](the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Refreshed:** `20260907.160051` - **Status:** Living
 
 ---

@@ -1,7 +1,7 @@
 # Pattern Two -- The Fact Fold
 
 **Stamp:** `20260730.072710` -- carried; metal blanks `20260730.081647` - door 8 **GREEN** under j4 `20260730.083821`.
-**Voice:** Kyri - nested documentary voice: Trey - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Voice:** Kyri - nested documentary voice: Trey - **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
 **Coords:** equinox A - journey 4 (h4 Accrete-never-break) - door 8 **CLOSED** - round 13/256
 **Destination:** `docs-geode/sangha/02-fact-fold.md` -- living page, plain spoken name
 **Elder sibling:** [`01-descriptor-exchange.md`](01-descriptor-exchange.md) -- the bench conforms this page's headings to pattern one where they differ

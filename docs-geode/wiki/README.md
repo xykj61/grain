@@ -1,6 +1,6 @@
 # The Wiki -- how the shelf connects, both ways
 
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living
 **Kind:** the shelf's connective tissue -- a crushed index of every page under [`../`](../)
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
