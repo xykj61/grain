@@ -14,7 +14,7 @@
 # evidence, a needle the COMMAND OPERAND handed the tool. It cannot see this family: its own
 # `min_needle=3` passes over the one-character needle that carries almost all of these.
 #
-# Usage: sh tools/fixtures/s/silent_leg_scan.sh [--list silent|lane]
+# Usage: sh tools/fixtures/s/silent_leg_scan.sh [--list silent|lane|wide|lane_wide]
 # Exit 0 within both ceilings, 1 over either, 2 for misuse or an unreadable corpus.
 set -eu
 
@@ -33,6 +33,11 @@ done
 lane_ceiling=0
 # invariant: the rest of the tree ratchets down as each room's own hand reaches it.
 ceiling=28
+# invariant: the lane is held at zero for the WIDE family too, by the same hand.
+lane_wide_ceiling=0
+# invariant: the wide family ratchets down as each room's own hand reaches it. Measured
+# `20260910`: 58 legs, 21 of them mantra and tally, repaired in the lap that seated this reading.
+wide_ceiling=37
 # The trailer the worker echoes after every desk run, and the whole basis of the reading.
 trailer='EXIT:0'
 # Bound, named because a census over a growing tree needs one. Measured `20260910`: 2,470 tracked
@@ -48,8 +53,8 @@ while [ $# -gt 0 ]; do
   esac
 done
 case "$list" in
-  ''|silent|lane) ;;
-  *) echo "detail: --list takes silent or lane"; echo "verdict=bad_set"; exit 2 ;;
+  ''|silent|lane|wide|lane_wide) ;;
+  *) echo "detail: --list takes silent, lane, wide or lane_wide"; echo "verdict=bad_set"; exit 2 ;;
 esac
 
 cd "$_fd_root"
@@ -94,21 +99,31 @@ awk -v trailer="$trailer" '
     if (!(v in worker)) next
     if (nd == "") next
     if (nd == trailer) next
-    if (index(trailer, nd) == 0) next
-    printf "%s:%d\t%s\n", FILENAME, FNR, nd
+    # THE PARTITION. A needle standing inside the trailer is SILENT and pays there; a digit needle
+    # the trailer cannot supply is WIDE, because any wider number carrying it satisfies the read.
+    # The two are disjoint by construction, so one loose leg pays exactly once.
+    if (index(trailer, nd) > 0) { printf "silent\t%s:%d\t%s\n", FILENAME, FNR, nd; next }
+    if (nd ~ /^[0-9]+$/) { printf "wide\t%s:%d\t%s\n", FILENAME, FNR, nd; next }
   }
 ' $xargs_args > "$work/hits.txt" || {
   echo "detail: corpus reader failed"; echo "verdict=reader_failed"; exit 2; }
 
-sort -u "$work/hits.txt" > "$work/silent.txt"
+sort -u "$work/hits.txt" > "$work/all.txt"
+sed -n 's/^silent\t//p' "$work/all.txt" > "$work/silent.txt"
+sed -n 's/^wide\t//p' "$work/all.txt" > "$work/wide.txt"
 grep -E '^(mantra|tally)/|^tools/(m|t)/' "$work/silent.txt" > "$work/lane.txt" || true
+grep -E '^(mantra|tally)/|^tools/(m|t)/' "$work/wide.txt" > "$work/lane_wide.txt" || true
 silent=$(wc -l < "$work/silent.txt" | tr -d ' ')
 lane=$(wc -l < "$work/lane.txt" | tr -d ' ')
+wide=$(wc -l < "$work/wide.txt" | tr -d ' ')
+lane_wide=$(wc -l < "$work/lane_wide.txt" | tr -d ' ')
 
 if [ -n "$list" ]; then
   case "$list" in
-    silent) cat "$work/silent.txt" ;;
-    lane)   cat "$work/lane.txt" ;;
+    silent)    cat "$work/silent.txt" ;;
+    lane)      cat "$work/lane.txt" ;;
+    wide)      cat "$work/wide.txt" ;;
+    lane_wide) cat "$work/lane_wide.txt" ;;
   esac
 fi
 
@@ -118,6 +133,10 @@ echo "silent=$silent"
 echo "ceiling=$ceiling"
 echo "lane_silent=$lane"
 echo "lane_ceiling=$lane_ceiling"
+echo "wide=$wide"
+echo "wide_ceiling=$wide_ceiling"
+echo "lane_wide=$lane_wide"
+echo "lane_wide_ceiling=$lane_wide_ceiling"
 
 if [ "$lane" -gt "$lane_ceiling" ]; then
   echo "detail: $lane mantra/tally legs read their needle off the worker's own trailer, over a ceiling of $lane_ceiling"
@@ -131,6 +150,18 @@ if [ "$silent" -gt "$ceiling" ]; then
   echo "verdict=silent_over_ceiling"
   exit 1
 fi
-echo "detail: the lane stands at zero and the tree ratchet is within its ceiling"
+if [ "$lane_wide" -gt "$lane_wide_ceiling" ]; then
+  echo "detail: $lane_wide mantra/tally legs read a digit answer as a substring, over a ceiling of $lane_wide_ceiling"
+  sed 's/^/detail: wide lane leg -- /' "$work/lane_wide.txt"
+  echo "verdict=lane_wide_over_ceiling"
+  exit 1
+fi
+if [ "$wide" -gt "$wide_ceiling" ]; then
+  echo "detail: $wide legs read a digit answer as a substring, over a ceiling of $wide_ceiling"
+  sed 's/^/detail: wide leg -- /' "$work/wide.txt"
+  echo "verdict=wide_over_ceiling"
+  exit 1
+fi
+echo "detail: both lanes stand at zero and both tree ratchets are within their ceilings"
 echo "verdict=ok"
 exit 0

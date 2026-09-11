@@ -11,6 +11,15 @@
 # assertion refused. Eleven mantra and tally legs carried the elder form and now carry the list
 # read, each witness re-run GREEN. The lane is gated at zero; every other room ratchets.
 #
+# A SECOND family stands on the same corpus from 20260911: a digit needle the trailer cannot supply
+# is satisfied by any WIDER number carrying it, so `assert p.out contains "1"` passes on a desk
+# answering 105. The two are disjoint by construction -- a needle inside the trailer pays as silent
+# and never as wide -- so one loose leg pays exactly once. Measured 20260911: 58 wide legs, 21 of
+# them mantra and tally, and the lane's 21 were repaired to the list read in the lap that seated
+# this reading. Three collisions are demonstrable inside a single file rather than hypothetical:
+# needle 1 stands inside sibling needles 105 and 15 in tools/t/tally_a2_list_reducer_witness.rish,
+# and needle 6 inside sibling needle 36 in tools/t/tally_glow_tend_a2_gate_fold_witness.rish.
+#
 # Kin: tools/s/self_matching_assert_witness.rish reads the other borrowed-evidence source, a needle
 # the command operand handed the tool. Its own min_needle of 3 passes over the one-character needle
 # that carries almost all of this family, so neither guard can see the other's subject.
@@ -30,6 +39,15 @@ assert census.out contains "trailer=EXIT:0" else "silent-leg: the scan stopped n
 assert census.out contains "runners=" else "silent-leg: corpus count"
 assert census.out contains "silent=" else "silent-leg: family count"
 assert census.out contains "ceiling=" else "silent-leg: tree ceiling"
+assert (lines census.out) contains "lane_wide=0" else "silent-leg: a mantra or tally leg reads a digit answer as a substring"
+assert (lines census.out) contains "lane_wide_ceiling=0" else "silent-leg: the lane wide ceiling left the scan"
+# The two tree ratchets carry a moving value, so these read the KEY rather than the number -- a
+# guard spelling a ratchet's number a second time can only ever agree with itself. The value is
+# heard through census.ok, which the scan refuses on when either ratchet stands over its ceiling.
+# Both are substring reads on purpose and both are satisfiable by their own lane_ sibling line;
+# that is presence of a reading, never a value gate, and it is written down rather than implied.
+assert census.out contains "wide=" else "silent-leg: the wide family reading left the scan"
+assert census.out contains "wide_ceiling=" else "silent-leg: the tree wide ceiling left the scan"
 
 let control = run ["sh" "tools/fixtures/s/silent_leg_control.sh"]
 say control.out
@@ -38,6 +56,9 @@ assert control.ok else "silent-leg: the control refused"
 assert control.out contains "control_verdict=ok" else "silent-leg: control verdict"
 assert control.out contains "legs_fail=0" else "silent-leg: a control leg failed"
 assert control.out contains "ok   a lane leg refuses" else "silent-leg: the lane gate is unproven"
+assert control.out contains "ok   a lane wide leg refuses" else "silent-leg: the lane wide gate is unproven"
+assert control.out contains "ok   the digit needle pays as wide" else "silent-leg: the partition is unproven"
+assert control.out contains "ok   a wider answer passes the substring read and refuses the list read" else "silent-leg: the wide semantics are unproven"
 assert control.out contains "ok   the same pen with the plant lifted walks free" else "silent-leg: the lane gate is unproven from the free side"
 assert control.out contains "ok   one leg past the tree ceiling refuses" else "silent-leg: the tree ceiling is unproven"
 assert control.out contains "ok   standing exactly at the tree ceiling walks free" else "silent-leg: the tree ceiling is unproven from the free side"

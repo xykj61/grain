@@ -105,7 +105,18 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-157}"
 # read. All three took the interpolated form and the reading fell 949 -> 946. The ceiling falls to
 # the reading rather than by the three removed, and claims no slack: the +1 a peer's lap added is
 # real, unrepaired here, and stays inside the count.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-946}"
+# Lowered 948 -> 940 on `20260911` when the two mantra gate witnesses took their own move: nine
+# bindings in `tools/m/mantra_a2_list_fold_witness.rish` and
+# `tools/m/mantra_gen_floor_a1_gate_witness.rish` now interpolate their capture into the
+# `assert ... else` message. The reading had stood at 949 against the 948 above -- a red on a
+# population ORDINARY WORK grows, since every new rostered guard adds bindings and the ceiling
+# carries no slack. Whether this family's ceiling should price its own growth rate, the way
+# `say_compose_bound` does, is its own lane's word rather than this one's.
+#
+# 936 `20260911` -- the two lowerings above landed in one rebase, three amphora bindings and nine
+# mantra ones, and the reading fell to 936 together. The ceiling meets the reading and claims no
+# slack, the way both halves of this arc already do.
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-936}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"

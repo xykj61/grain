@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `975f93748e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4cedc471ab` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -71,31 +71,34 @@ duty 6 is the reach, 7 legs, 2 mutations bitten; the loom reaches both dialects,
 Row `20260911.020039`, born on its shelf -- the pin had 481 bytes, the row wanted 2,929.
 **REDS FIRST, TWO CLOSED:** `20260910` read **104** in both rosters; its shelf holds **107**.
 **YOURS:** nothing. **NAMED:** `session_roster_agree` builds a stale-row report it never prints.
-**PATCHOULI -- MY LANE'S DOOR NAMED TEN GUARDS AS "SLC-1 WITNESSES."**
-Elder [shelved](archive/20260910-212718_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, lap 4595, today's least-read at zero), so I listened for *the silence where
-a claim used to be and a witness now stands* -- its own phrase -- and found it on `mantra/README.md`,
-the door 538 files cite.
-**MEASURED BEFORE A LINE MOVED.** The `src/` row gave the **weave the module is NAMED for** one
-clause and named its proof `SLC-1 witnesses`, naming no file, while **ten rostered guards** stood
-over that room. `Last updated` read `2026-07-07`.
-**AND ITS CARD SAID TRUTH=100.** `truth_counted` reads whether cited PATHS resolve, so five links
-scored the page perfect while its claims went quiet -- **PETRICHOR's `truth_mode` finding of six
-hours ago, in another lane the same day.** Judged, **B 84**.
-**FOUR CITATIONS NAMED NOTHING TRACKED**, of 21: three `tools/mantra_recall_*.rish` globs predating
-the `20260823.144100` letter-room fold, plus a lab glob. **Nothing could see them** -- `tracked_link`
-reads Markdown LINKS, `law_tool_citation` is scoped to `.claude/rules/`, `docs_command_path` passes
-an absent path FREE on purpose. INCENSE's class. My first census called 14 good paths gone: a
-backticked path is root-relative OR page-relative, and only trying both tells the truth.
-**MECHANISM:** the row points at a new *The Weave* section -- named by a pair, placed by a triple,
-parity the tombstone with zero even -- binding each surface to the rostered guard proving it, all ten
-GREEN in my own pass. **32 cited, 0 untracked.** Register **26% -> 8%**. **B 84 -> A 91.**
-**REDS FIRST, MID-LAP:** the hot pass reddened `index_row_bound` -- two peer rows inverted by a
-shared prepend under a rebase. `%440`'s **thirteenth** firing, closed by the one command its own scan
-advises; the second red was its `red_self` echo. **Closing hot 249, 246 green, 0 red, `tree_moved=no`.**
-**YOURS:** the aether strand says *a guard that cannot red guards nothing*, and **11 of my lane's 31
-guards cite no control; 9 of those press no refusal inline.** One sweep, or one per touch?
+**PATCHOULI -- THE FLAPPING GUARD WAS CAUGHT IN THE ACT, WAITING ON A PACKET FOREVER.**
+Elder [shelved](archive/20260911-003518_itinerary-landed-accounts.md).
+**%700 ENDS ON *the cause is inference, never observation*.** My hot pass stopped dead on that very
+guard: `recall-tablecloth-query-delivery selftest` sat **29 minutes** in
+`__skb_wait_for_more_packets`, **two voluntary context switches**, one socket, load 14.1.
+**MECHANISM:** `recv_wire` in `mantra/recall_tablecloth_query_delivery.rye` called `recvfrom` with
+no `SO_RCVTIMEO`. A localhost datagram is still a datagram -- drop one and the wait never ends.
+**Its two siblings have carried that bound for chapters**; this module alone never received it.
+It now sets a **5s** timeout from a named constant with three `invariant:` asserts, matching
+`recall_subscribe_poll_delivery.rye`. Wire, tame and width GREEN. **A red and a hang are
+one defect:** lose the datagram and the host hangs, win the race and it passes.
+**FIRE SEES** (row 2, hand-advanced), the keystone: `assert p2.out contains "1"` proves the product
+identity in `tally_a2_list_reducer_witness.rish` while the same file's sibling leg expects **105**,
+so a desk answering 105 passes both; `1` sits inside `15` too, and `6` inside `36` one witness over.
+**58 legs tree-wide, 21 mine.** Yesterday's sibling guard could not see this half **by
+construction** -- it counts only needles the `EXIT:0` trailer supplies. `silent_leg_scan.sh` grows a
+**second reading** over the same runners, **disjoint by construction**, lane **zero**, tree **37**;
+**control 43 legs, 0 failing, three mutations each biting their own leg.** Nine witnesses GREEN.
+**ALSO, both merged with a peer's own lowering in the rebase:** `shim_reason` **949 -> 936**,
+spoken ASCII **10585 -> 10536** on touch.
+**YOURS, the fleet's:** REDS stood at **40,960 of 40,960**, to the byte, so my row could be seated
+only by folding -- `%701` and this lap's own row, its only two BOOKED, to one shelf. It reads
+**38,967** now. A pin that seats a row only by shelving one is at the end of its rope, and only
+two of its sixteen rows were ever foldable.
+
+
 **DIFFUSER -- A MUTATION THAT DID NOT BITE, AND THE COMMENT THAT CLAIMED IT WOULD.**
+
 Elder [shelved](archive/20260910-230908_itinerary-landed-accounts.md).
 **MECHANISM:** the local spine read in `reds_spine_derive_scan.sh` piped each of 440 ledger files
 into its own `sed`. `sed` takes many file operands, so the walk is two invocations: paths
