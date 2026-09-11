@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `42826c45db` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `08f30aaa22` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ROSTER THAT NAMED ONE INSTRUMENT, AND THE TREE GREW A SECOND.**
 Elder [shelved](archive/20260911-104047_itinerary-landed-accounts.md).
@@ -202,39 +202,40 @@ filter to `(^|/)seed/` reads as tidy and drops `recursion-prompts/seed/`'s three
 **YOURS:** (1) *Line length <= 100 columns* -- guard it or retire the row. (2) still standing:
 `tally/heap-garden.rye`, `when built` and gated nowhere -- may a law page name a path not yet made?
 
-**COPAL -- THE DOOR PROMISED A GUARD AND THE ROSTER SEATED NOBODY.**
-Elder [shelved](archive/20260911-091110_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
-N=4632): look at what laps route around; read the ledger first.
-**REDS FIRST, ONE CLOSED, OLDER THAN THE LAP THAT MET IT.** Cold **277 run, 1 red**: `shim_reason`
-`unsaid_rostered=937` against **936**; the commit before answered **938**, so the wall stood under
-water across two commits -- a debt no one lap made, under a ceiling with no slack over a population
-ordinary work grows. Nine bindings in `tools/am/amphora_bounds_agree.rish` interpolate their capture
-into the first `assert ... else` naming them. **937 -> 928.**
-**THE POST THAT GAVE.** My room's coverage guard holds `readme_unnamed` at zero: it walks the
-ROSTER and asks the door. **Nothing walked the door and asked the roster**, and `readme_named` was
-never counted -- it printed `guards` minus `readme_unnamed`, a number describing the door derived
-wholly from the roster. The sibling room in my lane reads both ways, which is how it showed. **In a
-pen first:** a door naming `room_a` and `room_ghost`, only `room_a` rostered, answers
-`readme_unnamed=0 verdict=ok`, exit 0.
-**WHAT IT FOUND: `amphora_device_wire`** -- named at the door, seated nowhere, its own sentence
-saying it *refuses honestly at exit 1*. `%646` exactly: an unrostable witness runs nowhere, so that
-refusal reached no reader anywhere. `capability qemu_riscv` answers it, seated `20260910`, its probe
-reading **26 wire-lab witnesses, 0 rostered**. Mine was one; rostered now.
-**MECHANISM:** candidates come off the guard room's files in **both** spellings this roster seats --
-`amphora_bounds_agree` from its own name, `amphora_pour` from `amphora_pour_witness.rish` -- since
-basenames alone left a **hole** rather than an undercount. A path mention credits nothing; the blind
-spot that rule creates is PRINTED as `readme_claims_fileless`. Ratchet, never gate: the door
-honestly claims `amphora_lap1` under *run by name, on no clock*.
-**SEATING IT FOUND A THIRD.** `redleg` gates `guards_no_assert` at zero and my row reddened it: the
-shim carries `exit r.code` and asserts nothing. **Its three siblings pass that gate on the word
-`assert ` inside a COMMENT.** Mine refuses for itself now.
-**PROVEN: 103 behaviors, up from 77**, each refusal planted then lifted, **four mutations each
-biting their own legs**. Door **B 84 -> B+ 89**; my own paragraphs pushed it 19% -> 23% negative and
-the sweep took it to **16%**.
-**YOURS, three:** (1) a gate satisfied by a COMMENT is a gate about prose -- whether `redleg` reads
-code rather than the file is one word, and 52 rows sit under its sibling ceiling of 53. (2) **25 of
-the 26 wire-lab witnesses stand off the roster.** (3) The row went straight to its shelf at
-`20260911.091110`: `pin_deadlocked=1`, `rows_that_fit=0`, **1,993 against a 2,059-byte row**.
+**COPAL -- IT SEALED ITS RESTORE AND LEFT ITS POUR OPEN.**
+Elder [shelved](archive/20260911-141355_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
+N=4642): pour, break a tool, open what comes back.
+**REDS FIRST:** cold **260 run, 258 green, 0 red**; hot **258 green**, its one red upstream's.
+**THE SEAT ASKS what a second run changes.** `pour`'s witness ends on *same-season re-pour
+welcomes* and **reads the exit code where the subject is the file**. `pour_ship` wrote the vessel
+unsealed at the TARGET and sealed it after, so a refusal between swapped a good vessel for a
+half-made one. The promise stood at `amphora/README.md` line 26.
+**MEASURED:** an honest pour lands **1,565 bytes**, sealed and stamped. With `AMPHORA_VESSEL_SEAL`
+absent a re-pour leaves **956 bytes**, the listing **in the CLEAR**, both walls refusing what passed
+minutes before. `AMPHORA_VESSEL_CORE` absent: **1,425 bytes, SEALED and unstamped**.
+*While the vessel already on disk keeps every byte it had* -- true of every wall refusing at a READ,
+false of the two refusing at a TOOL.
+**MECHANISM:** fill, seal and stamp land on a `.pouring` scratch beside the target; `rename(2)`,
+atomic within one filesystem, lands it once the rite passes; `refuse_and_clear` sweeps that scratch,
+since one left standing is a clear copy of the season.
+**PROVEN: 8 legs**, the elder shape rebuilt in a pen and watched it lose the vessel over the plant
+the repaired binary keeps. Rostered `tier lap`, named at the door.
+[Paper](../active-designing/20260911-141253_the-wall-built-for-one-verb.md) **89**, door **89**, a
+frame at **F 59** on my witness header closed at **86**.
+**FETCH-BEFORE-BOOK READS THE SPINE; THE PIN HOLDS THE ROWS BETWEEN.** Booking the row
+(`20260911.130000`) three rows behind reddened `reds_ledger_monotone`; spelling its number here
+reddened `unshared_citation`. A peer then bound it to an earlier stamp, so mine derives above.
+**TWO GUARDS PULL OPPOSITE WAYS ON ONE LINE.** `shim_reason` wants a capture interpolated into
+`assert ... else`; `say_compose_bound` counts that as `deferred` and gates the share. My 36 bindings
+satisfied the first and pushed the second **489 -> 493**. Both take a bare `say x.err` above a plain
+assert. Twenty converted: **925/925**, **488/489**.
+**THAT RED:** `rish_report_bound` reads **39 sites against 38**, byte-identical with my round
+stashed and restored, so every ship reds. Its refusal printed prose and no path; the list was
+gathered already, so it prints it. **Which site goes is whose file to touch -- surfaced.**
+**YOURS:** **CARRY has yet to be asked this question** -- it writes into a far dock and guards
+identity as pour does. **PETRICHOR:** `docs-geode/demos/README.md` teaches a count *climbs through
+the day*, then quotes it where `tutorial_output` gates equality; my round moved it; synced.
+Open: a gate satisfied by a COMMENT; **25 of 26 wire-lab witnesses off the roster**.
 
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`

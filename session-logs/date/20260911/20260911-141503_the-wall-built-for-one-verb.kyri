@@ -1,0 +1,52 @@
+format session-log-v1
+stamp 20260911.141503
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role COPAL -- amphora and bron-resins lane, grain-copal checkout
+modality text
+model claude-opus-5
+model_status active runtime unverified -- no runtime telemetry exposed to this session
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default read from .claude/settings.json; the lap's actual effort depends on the launch path
+evidence .claude/settings.json tracked in this tree
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title the wall built for one verb -- a refused pour destroyed the vessel it was refusing to replace
+prompt autonomous lap on the COPAL seat; baton, card, water rota row 3
+rota lap 4642, row 3 -- Water, the row that tastes; its cardinal seat asks what a second run changes, and pour's own witness ended on a re-pour leg that read the exit code and never opened the file
+think Cold roster opened first and read 260 run, 258 green, 0 red, tree_moved=no -- no red to close, so the lane was free for constructive work.
+think Water cardinal is what-brix-infuse-is -- infusion(world') -> world'. The lane's idempotence question is the re-pour: amphora/bin/amphora pour <season> <vessel> run twice over one path.
+think Reading pour_ship in amphora/src/main.rye showed the order: write_unsealed_vessel on the TARGET, then seal, then stamp. So the target holds a clear-cargo file for the whole seal-and-stamp window.
+think Measured rather than argued. Poured a good vessel (1565 bytes, seal_cargo and stamp_sig present), then re-poured with AMPHORA_VESSEL_SEAL absent: 956 bytes stood at that path, manifest and cargo listing in the clear, vessel-core verify and vessel-seal open-check both answering InvalidVessel.
+think Second refusal path measured too: AMPHORA_VESSEL_CORE absent leaves 1425 bytes SEALED and unstamped, which reads legitimate to a hand checking the seal alone -- the quieter of the two.
+think amphora/README.md line 26 already promised the opposite in so many words: "while the vessel already on disk keeps every byte it had". True of every wall that refuses at a read, false of the two that refuse at a tool.
+think Repair: pour_scratch_path derives <target>.pouring into a buffer sized max_vessel_path_len + suffix, so the derivation cannot overrun and needs no PathTooLong door; fill, seal and stamp land there; Dir.cwd().rename(scratch, cwd, target, io) lands it once the rite passes.
+think refuse_and_clear sweeps the scratch on every refusal and asserts the path ends with pour_scratch_suffix, so it can only ever remove a file this pour made -- never the target beside it.
+think Wrote tools/am/amphora_pour_atomic_witness.rish with 8 legs including both mutation directions: a pen rebuilds the elder shape (scratch becomes target, landing removed), watches it lose the vessel, then the repaired binary keeps every byte of the same plant.
+think The elder strip took three tries. A sed LHS carrying & failed to match; the first working strip left unused declarations Zig refuses; and replacing the endsWith assert with _ = scratch collided with the assert above it. Each bite is now asserted, so a pattern that stops matching reds rather than passing as a proof of nothing.
+obs Booked %714 off reds_spine_derive --next while standing three peer rows behind, and reds_ledger_monotone reddened at gaps_or_dupes=1. Fetch-before-book reads the SPINE; the pin the row lands in must also hold the rows between.
+obs Then the send's rebase taught the other half. A peer had already folded %710 to its own shelf, so my fold was a duplicate and I dropped it; a peer had bound %714 to 20260911.112513, the earlier stamp, so my row derives above at %716 and the key stayed the stamp. It is born on its own shelf, construction/archive/REDS-the-wall-built-for-one-verb-rows-716.md, because reds_pin_capacity_scan.sh read rows_that_fit=0 -- the door %699, %703, %706-%708 and %711-%713 came through.
+obs The ledger headline was rewritten by tools/fixtures/r/reds_ledger_headline_write.sh rather than typed, twice.
+obs Two rostered guards pull opposite ways on one line. shim_reason counts a binding asserted on and never reported; say_compose_bound counts a capture interpolated into an else clause as deferred and gates its share. Interpolating all 36 of my bindings satisfied the first and took the second 489 -> 493 per mille. Twenty converted to a bare say x.err above a plain assert, which both accept: 925/925 and 488/489.
+obs rish_report_bound reads 39 sites against 38 at HEAD, byte-identical with my round stashed and restored, so the red is upstream's and every ship carries it. Its refusal printed two prose lines and no path while the list was already gathered; it prints the list now. Which site goes is whose file to touch on a pier of eight, so it is surfaced rather than taken.
+obs My first conflict resolution took my whole side of an ITINERARY hunk and re-added a peer's shelved GRASS account. Rebuilt the card from xy/main with only my own block swapped in, and checked the count of each ship's header before staging.
+obs A QA frame opened at depth 2 and closed by repair: the witness header graded F 59 at 75% negative over seven sentences -- my own prose, read by the card's program dial, leading with what refused. Rewritten to lead with what is, it reads B+ 86.
+obs Not taken, and named rather than assumed answered: CARRY writes into a far dock and guards identity there exactly as pour does, and nobody has asked it this question.
+loom witness=amphora_pour_atomic legs=8 wall_s=190 builds=4
+loom guard=standing_equipment_cold guards_run=260 guards_green=258 guards_red=0
+file amphora/src/main.rye pour_ship fills a .pouring scratch and lands it by rename once seal and stamp have passed; refuse_and_clear sweeps it
+file tools/am/amphora_pour_atomic_witness.rish the wall, 8 legs, elder shape rebuilt in a pen and proven to lose the vessel
+file construction/standing-equipment.kyri seats amphora_pour_atomic tier lap
+file amphora/README.md names the new guard, so readme_unnamed stays zero
+file construction/REDS.md the row, renumbered %716 on the rebase and born on its own shelf
+file construction/archive/REDS-the-wall-built-for-one-verb-rows-716.md the shelf it was born on
+file tools/fixtures/s/shim_reason_scan.sh UNSAID_ROSTERED_CEILING 926 -> 925, lowered to meet its reading
+file tools/fixtures/r/rish_report_bound_scan.sh a refusal prints its site list rather than a bare total
+file docs-geode/demos/README.md the fascia reading this round moved, synced 43/57 -> 44/56
+file active-designing/20260911-141253_the-wall-built-for-one-verb.md the paper, Field, room checkable, B+ 89
+file construction/ITINERARY.md the COPAL account and the git nib
+scope one keystone -- the pour atomicity red, found by the water rota, closed on a witness on metal
+status GREEN -- amphora_pour_atomic 8 legs; hot pass 262 run, 258 green, tree_moved=no, its one red (rish_report_bound) proven upstream's and not this round's; amphora_pour, pour_negative, prove_before_write, grand_round, roster, bounds_agree, first_resident, redleg, shim_reason, say_compose_bound, tutorial_output, card_pin_claim, tame_style_check, width-check, reds_ledger_monotone, reds_ledger_headline, reds_citation all green
+recommend check-in (Keaton) -- carry is the third verb and has never been asked this question; the pin took my row at 9 bytes of headroom with nothing foldable left behind it

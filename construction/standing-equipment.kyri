@@ -3187,6 +3187,30 @@ path tools/am/amphora_prove_before_write_witness.rish
 tier lap
 seated 20260910.074214
 
+# amphora_pour_atomic -- the same question one verb over. `prove_before_write` asks WHEN a
+# RESTORE proves; this asks what a refused POUR leaves at the target. `pour_ship` wrote the
+# vessel unsealed at the target FIRST and ran the seal and the stamp over it afterward, so
+# every refusal between those steps destroyed whatever vessel already stood there. Measured
+# on metal `20260911` before a line changed: a good 1,565-byte vessel, then a re-pour with
+# `AMPHORA_VESSEL_SEAL` absent, and 956 bytes stand at that path carrying the manifest and
+# cargo listing in the CLEAR with neither seal nor stamp -- `vessel-core verify` and
+# `vessel-seal open-check` both answering InvalidVessel over the wreck of a vessel that had
+# passed both minutes earlier. With `AMPHORA_VESSEL_CORE` absent instead, the leavings are
+# SEALED and unstamped, which reads legitimate to anyone checking the seal alone. The room's
+# own `amphora_pour` witness asserts that a same-season re-pour "welcomes" and never asks what
+# the second pour left, so this stood green over a verb that could eat a vessel. The fill, the
+# seal and the stamp land on a `.pouring` scratch beside the target now, and `rename(2)` -- one
+# filesystem, so POSIX makes it atomic -- replaces the target only once the whole rite has
+# passed; every refusal sweeps its own scratch, because a scratch left behind is a clear-cargo
+# copy of the season lying beside the vessel. The pen reconstructs the elder shape by making
+# the scratch the target and removing the landing, watches it lose the vessel over the same
+# plant, and returns the wall. `tier lap`: three rye builds plus one in the elder pen.
+
+guard amphora_pour_atomic
+path tools/am/amphora_pour_atomic_witness.rish
+tier lap
+seated 20260911.133000
+
 # amphora_named_once -- a listing names each place once. Every wall the vessel family carries reads
 # ONE cargo line at a time: `mark_verdict` against the engine's two roots, `name_verdict` against
 # the containment and framing rules, and each resin body against the digest that addresses it. A
