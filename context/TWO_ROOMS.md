@@ -99,6 +99,16 @@ under its own ceiling, because a page never changes class and one merged number 
 repair hide a dated regression. Sixteen doors were named the same lap and the living ceiling opens
 at 90.
 
+**And this room paid its own share the next lap** (`20260911.032352`). The 23 living pages of
+`context/` that named no room are this tree's core guides -- `GAUGE_STYLE.md`, `TAME_CORE.md`,
+`LEXICON.md`, the three alternate registers, the voice notes -- so the room housing this law was
+the last room whose own front matter never answered it. Each carries a `**Room:**` line beside what
+its Status already said, judged from the body rather than the title: **6 `checkable`** where a
+witness or a rule file binds every claim, **8 `mixed`** where a counted half stands beside a judged
+one, **9 `vision`** where a voice or a discipline is held by taste. `context/` reads 99 pages and
+**0** living-silent, and the ceiling falls **90 to 67**. The room-at-a-time door is `%642`'s, and it
+costs no word: a room joins free by being repaired.
+
 **And this page's own door was among them.** The witness read the first head line carrying
 `**Status:**` anywhere, and the `Last updated` line above quotes both key names, so the reading
 returned that sentence and called this page silent three lines above a Status reading

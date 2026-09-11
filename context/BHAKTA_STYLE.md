@@ -3,6 +3,7 @@
 **Language:** EN
 **Stamp:** `20260908.120903` (EDT) - **Voice:** Kyri - **Style:** written in Bhakta
 **Status:** Living -- a third **alternate register** of Radiant Style, seated `20260908` on Keaton's
+**Room:** mixed -- the register is judged; the Gauge measurements it keeps are counted
 word. Sibling to [`RADIANT_STYLE.md`](RADIANT_STYLE.md) and [`TWILIGHT_STYLE.md`](TWILIGHT_STYLE.md),
 governed like both by [`GAUGE_STYLE.md`](GAUGE_STYLE.md).
 

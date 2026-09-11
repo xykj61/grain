@@ -5,6 +5,7 @@
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 
 **Purpose:** Name how we ship -- so that every release, at every size, is something a person can use today and genuinely love.
+**Room:** vision -- how we ship, judged release by release
 
 ---
 

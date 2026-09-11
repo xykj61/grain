@@ -7,6 +7,7 @@
 **Refreshed:** `20260823.200008` -- rewritten into Gauge; depersonalized `20260823.173634` so the public seed ships it
 **New here?** Two words this page leans on have their own beginner doors: [what a **chapter** is](../foundations/20260823-212601_what-a-season-is.md) and [what a **molt** is](../foundations/20260823-212602_what-a-molt-is.md).
 **Molted from:** the Riyo chapter, kept whole as a fossil at `RIYO.md` in this room, and the first Riyo chapter at `archive/RIYO.md`. Both are personal records the public seed withholds, so they are named here rather than linked.
+**Room:** vision -- a voice, held by taste rather than by a witness
 
 ---
 

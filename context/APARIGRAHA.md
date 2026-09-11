@@ -6,6 +6,7 @@
 **Status:** Living pin  
 **Subtitle:** named budgets for bytes, tokens, memory, and attention  
 **Bound:** `living_pin_max_bytes = 24576`
+**Room:** mixed -- the vow orients; the byte bound it names is witness-held
 
 ---
 

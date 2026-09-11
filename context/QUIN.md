@@ -6,6 +6,7 @@
 
 > **Two hats live here, one has passed.** The **standing writing voice** moved to **Riyo** on `20260729.205200`, and from **Riyo to Kyri** on `20260810` -- the living voice is **Kyri** ([`KYRI.md`](KYRI.md)); [`RIYO.md`](RIYO.md) keeps the chapter between. *(Corrected `20260827`: this line named Riyo as the living voice for seventeen days after the molt.)* Quin keeps the **fifth OS variant** -- intentionally unpaired, beside Reya - Riyo - Trey - Triz - Trya -- and the inference **Q-vane**, the host gathering Lattice - Scribble - Lantern - Ember. This note stays in `context/` rather than moving to `archive/` because two of its three subjects remain live, and the Q-vane needs a home. Everything below reads as written; only the writing-voice sections now describe an elder chapter.
 **Style:** Gauge (see `GAUGE_STYLE.md`)
+**Room:** vision -- an identity note, held by taste rather than by a witness
 
 ---
 

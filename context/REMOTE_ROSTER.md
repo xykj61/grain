@@ -5,6 +5,7 @@
 **Voice:** Kyri  
 **Status:** Living pin -- single home for the pier's remote count  
 **Bound:** keep thin  
+**Room:** checkable -- remote names a clone reads back with git remote  
 
 *One place names the count. Other pages point here rather than restate.*
 

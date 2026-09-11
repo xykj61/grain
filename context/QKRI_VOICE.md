@@ -3,6 +3,7 @@
 **Language:** EN
 **Seated:** `20260810.145743` on Keaton's word - **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Galaxy:** `queyquinqkri` -- **Qkri** for short - water element - dual mode - roster `context/council-names.kyri`
+**Room:** vision -- a galaxy voice, held by taste
 
 ---
 

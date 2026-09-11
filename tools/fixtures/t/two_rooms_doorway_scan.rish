@@ -144,11 +144,24 @@ if ceiling_env != "" then let ceiling = ceiling_env
 # external-research canon -- so the ceiling opens at 90. The remainder, by room: 33
 # `active-designing/`, 23 `context/`, 20 `manual/`, 9 `docs-geode/`, 6 in the lineage silo.
 #
+# `context/` PAID ITS LIVING SHARE THE NEXT LAP (20260911.032352), the way `%642` taught the dated
+# half to pay: one room at a time rather than the whole remainder at once. The 23 are this tree's
+# core guides -- `GAUGE_STYLE.md`, `TAME_CORE.md`, `LEXICON.md`, the three alternate registers, the
+# voice notes -- so the room that houses `TWO_ROOMS.md` was the last room whose own front matter
+# never answered it, one reading deeper than the lap that repaired its `specs/` shelf. Each took a
+# `**Room:**` line beside what its Status already said, judged from the body rather than the title:
+# 6 `checkable` where a witness or a rule file binds every claim, 8 `mixed` where a counted half
+# stands beside a judged one, 9 `vision` where a voice or a discipline is held by taste. Three of
+# the 23 are mirrored documents, so `tools/fixtures/d/document_mirror_scan.sh write` carried the
+# line to `ember-voices/KYRI.md`, `spellbook/README.md` and `biochemistry/README.md` in the same
+# commit. `context/` reads 99 pages and 0 living-silent; the ceiling falls 90 -> 67, and the
+# remainder is 33 `active-designing/`, 20 `manual/`, 8 `docs-geode/`, 6 in the lineage silo.
+#
 # TWO NUMBERS RATHER THAN ONE, because a page never changes class: a stamp is in a basename or it
 # is not. Merging them would let a repair in one class hide a regression in the other, and the
 # dated ratchet's floor of 3 is structural where this one's is zero.
 let living_ceiling_env = env "TWO_ROOMS_LIVING_CEILING"
-let living_ceiling = "90"
+let living_ceiling = "67"
 if living_ceiling_env != "" then let living_ceiling = living_ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]

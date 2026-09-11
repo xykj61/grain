@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0b6d32375e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6d8838acaf` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE FALSE-FUTURE GATE READ A THIRTIETH OF THE TREE.**
 Elder [shelved](archive/20260910-210133_itinerary-landed-accounts.md).
@@ -159,29 +159,28 @@ lacks a hand or a rhythm that turns it. (2) Thirteen of my 29 answer in four sec
 the lap clock carries -- each has a reason beyond cost at its row, so whether cost alone decides a
 tier is your word, measurement in hand.
 
-**GRASS -- THE EXEMPTION STOOD OVER THE PAGES A READER MEETS FIRST.**
-Elder [shelved](archive/20260911-022523_itinerary-landed-accounts.md).
-**REDS FIRST, TWO CLOSED.** `log_has_a_row` read `pin_count_drift` -- both rosters said 104 laps for
-`20260910` where the shelf holds **107**. `stash_record` read `records_unlanded=1`: a GRASS lap of
-`20260911.013618` killed mid-send, recovered and re-proven at **75 legs**.
-**EARTH BREATHES IN** (row 4, lap 4614).
-**FOUND:** `two_rooms_doorway_scan_one.sh` passes any stampless basename as **grandfathered**. The
-mark law reads that absence the other way -- *a stamp means testimony; everything else is living*
--- so it freed `context/LEXICON.md` and the `manual/` guides, and gated
-three dated pages nobody may repair. **1,254 pages, 138 stampless, 106 naming no room**
-against a dated 3; the roster's own `manual/ 0 silent` held over the population it could see.
-**THE LAW'S OWN DOOR WAS AMONG THEM:** `context/TWO_ROOMS.md` quotes both key names in its `Last
-updated` line and the reading kept the first line carrying them anywhere, so the law read silent
-three lines above `checkable-room canon`. A key's own line is preferred now; the anywhere match
-stays the fallback 92 header rows need.
-**MECHANISM:** `names_room()` states the token test once for both branches; the scan prints
-`stampless=` and `living_silent=` under their own ceiling; the roster drops 21 day-shelf indexes.
-**MY FIRST DRAFT READ 122 SILENT DOORS WHERE 3 STAND:** `grep ... | head -1 && return 0` binds `&&` to the pipeline, whose status is `head`'s -- caught by the number, never the diff.
-**REPAIRED 16 DOORS**, so the ceiling opens at **90**. **PROVEN:** 70 behaviors over 70 readings,
-+10 legs, three mutations bitten.
-**YOURS:** the 90 -- 33 `active-designing`, 23 `context`, 20 `manual`, 9 `docs-geode`, 6 silo, the
-last two PETRICHOR's. And whether a living door should end up GATED.
-
+**GRASS -- THE ROOM THAT HOUSES THE LAW WAS THE LAST ROOM TO ANSWER IT.**
+Elder [shelved](archive/20260911-041810_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, lap 4620, hand-advanced past a row read twice today): press every post.
+**REDS FIRST:** cold **250 green, 1 red** -- `standing_equipment` reading `dated_path` off the run
+card, which is `%626`, OPEN and gated on Keaton's word. Nothing mine.
+**PRESSED, AND IT HELD:** the DOOR roster of `prose_register_scan.sh` is 19 hand-typed paths against
+115 living front doors, and it already publishes `front_doors_unrostered_over` with a `candidate:`
+line each, so the blind spot carries a live number. 120 read.
+**THE POST THAT GAVE:** the living reading of `two_rooms_doorway`, opened at 90 last lap. The 23
+living `context/` pages naming no room are this tree's core guides -- `GAUGE_STYLE.md`,
+`TAME_CORE.md`, `LEXICON.md`, the three registers, the voice notes -- so the room housing
+`TWO_ROOMS.md` was the last to answer it, one reading past the lap that repaired its `specs/` shelf.
+**MECHANISM:** each page takes a `**Room:**` line beside what its Status already said, judged from
+the body rather than the title -- **6 `checkable`**, **8 `mixed`**, **9 `vision`**. Three are
+mirrored documents, so `document_mirror_scan.sh write` carried the line to `ember-voices/KYRI.md`,
+`spellbook/README.md` and `biochemistry/README.md` in the same commit.
+**MEASURED:** `context/` 99 pages, **0** living-silent; living ceiling **90 -> 67**, slack zero,
+`fails=3` unmoved. Witness GREEN over 70 behaviors; mirror, doorway-touch, prose-register and
+ascii-document GREEN beside it. Cards **A 91 to A+ 98**.
+**THE DOOR IS `%642`'s:** a room joins free by being repaired; the remainder whole reads as a gate.
+**YOURS:** the 67 -- 33 `active-designing`, 20 `manual`, 8 `docs-geode`, 6 silo. And whether a
+living door should end up GATED.
 **INCENSE -- A METER KNEW A LAW WAS UNREADABLE AND WOULD NOT NAME IT.**
 Elder [shelved](archive/20260911-001547_itinerary-landed-accounts.md).
 **FIRE SEES** (row 2, N=4607, unread today): the ledger first. Cold **246/3/2**, the third

@@ -4,6 +4,7 @@
 **Last updated:** `20260810` (living writing voice molted Riyo -> **Kyri**; SUNN12 `20260730.154600` seated Riyo before)
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear -- whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
+**Room:** mixed -- the negation floor is counted; the poetry axis is judged
 
 **The voice that writes in this style is Kyri** -- the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
 

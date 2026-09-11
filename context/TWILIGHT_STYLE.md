@@ -3,6 +3,7 @@
 **Language:** EN
 **Stamp:** `20260811.012115` (EDT) - **Voice:** Kyri - **Style:** written in Twilight
 **Status:** Living -- an **alternate register** of Radiant Style, seated `20260811` on Keaton's word. Sibling to [`RADIANT_STYLE.md`](RADIANT_STYLE.md).
+**Room:** mixed -- the register is judged; the claim-preserving pass is proven
 
 ---
 

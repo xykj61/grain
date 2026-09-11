@@ -3,6 +3,7 @@
 **Language:** EN
 **Last updated:** `20260712` (cloud Cursor lane-key seated `062656`)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
+**Room:** checkable -- fingerprints anyone verifies against a signature
 
 ---
 
