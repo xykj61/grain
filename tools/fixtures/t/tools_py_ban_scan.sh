@@ -29,12 +29,37 @@ cd "$SCAN_ROOT"
 
 EXEMPT="$HERE/tools/fixtures/t/tools_py_exempt.txt"
 TMP=$(mktemp)
-trap 'rm -f "$TMP" "$TMP.all"' EXIT
+trap 'rm -f "$TMP" "$TMP.all" "$TMP.walk" "$TMP.ign"' EXIT
 
-# Prune host caches -- tools/.cache (HAWM Android SDK) and tools/.build stay
-# gitignored; counting them would false-RED the living tree on Framework.
-find tools \( -path 'tools/.cache' -o -path 'tools/.build' \) -prune -o \
-  -name '*.py' -type f -print 2>/dev/null | sort >"$TMP.all" || : >"$TMP.all"
+# A PATH GIT IGNORES IS NOT TREE EVIDENCE, AND THIS WALK ASKS GIT RATHER THAN SPELLING TWO NAMES.
+# The elder line pruned `tools/.cache` (the HAWM Android SDK) and `tools/.build` by name, with the
+# reason written beside it: both stay gitignored, and counting them false-REDs the living tree on
+# Framework. So this guard had already PAID for the fault, and paid it in the one direction a guard
+# must never be wrong in -- a red on every ship for a file no clone holds is how a gate gets turned
+# off. What the elder line could not do is cover the room nobody had opened yet: a third ignored
+# directory under `tools/`, or a `git worktree` parked there, carries a `.py` past a list of two.
+# REDS %722 booked exactly that class after `.lap/verify` reddened a no-slack ceiling one guard over.
+#
+# The ignore rules are the tree's own statement of what it disowns, kept current by whichever hand
+# opens a room, so they are asked instead. The two names stay as the fallback for the pen this
+# script is built to run in: the root walk above is deliberately git-free, and a copy running outside
+# a repository must still refuse a planted `.py` rather than read every path as ignored. Which
+# branch ran is printed, since a silent fallback is the same shape of fault this repair closes.
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  TOOLS_PY_FILTER=git
+  find tools -name '*.py' -type f -print 2>/dev/null | sort >"$TMP.walk" || : >"$TMP.walk"
+  : >"$TMP.all"
+  if [ -s "$TMP.walk" ]; then
+    # One batched call rather than one per path: `--stdin` answers for the whole walk at once.
+    git check-ignore --stdin <"$TMP.walk" 2>/dev/null | sort >"$TMP.ign" || : >"$TMP.ign"
+    comm -23 "$TMP.walk" "$TMP.ign" >"$TMP.all" || : >"$TMP.all"
+  fi
+else
+  TOOLS_PY_FILTER=spelled
+  find tools \( -path 'tools/.cache' -o -path 'tools/.build' \) -prune -o \
+    -name '*.py' -type f -print 2>/dev/null | sort >"$TMP.all" || : >"$TMP.all"
+fi
+echo "TOOLS_PY_FILTER=$TOOLS_PY_FILTER"
 : >"$TMP"
 
 while IFS= read -r path; do
