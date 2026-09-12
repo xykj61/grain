@@ -226,6 +226,9 @@ parked_on() {
 # end reads the tracked index and every orphan together. The process count stops depending on how
 # full the box is.
 orphan_paths=""
+# Where each orphan's bytes live, so the rename reading can open them. Kept beside the path list
+# rather than inside it, since the classifier's input shape is proven by its own pen.
+orphan_src=""
 
 # WHICH KIND, decided for every orphan at once. Three, and they want three different hands -- see
 # the header. The two streams are tagged `T` (tracked) and `O` (orphan) and read in one pass, since
@@ -264,6 +267,226 @@ classify_orphans() {
   '
 }
 
+# THE READING BETWEEN THE TWO PROBES (`20260911.230630`). Cited by stamp rather than by a ledger
+# number: `reds_pin_capacity` read `pin_deadlocked=1 rows_that_fit=0 pin_foldable_rows=0` on this
+# lap, so no row could be booked, and the derived spine's own rule 4 says a lap names its work by
+# stamp until the anointed spine binds a number to it. The header above names an exact
+# probe that found nothing and an inexact one that ships, and it names the shape falling between
+# them in its own prose: *a file landed under a different NAME reads as an orphan*. On this field
+# that sentence WAS the whole work drawer. Measured `20260911.230000`: `orphans_work=3`, and all
+# three were `tools/fixtures/t/topology_routed_*` -- the draft name of what landed on `20260907` as
+# `topology_stretch_*`, two days later. The basename probe cannot see a rename, since the names
+# differ by construction; the blob probe cannot either, since a renamed file is edited on the way.
+# So the one number this scan calls "the only one worth a lap" read three, and three of three were
+# landed work wearing a draft name -- the `%592` shape regrown inside the drawer `%592` left.
+#
+# WHAT THE MIDDLE READING IS. For an orphan nothing else answers for, ask of each SIBLING in its
+# own room: what share of this orphan's own non-blank lines does that file carry? The question is
+# ASYMMETRIC on purpose, and the asymmetry is the instrument -- *what does A hold that B does not*
+# answers supersession, where any symmetric count (a diff size, a shared subject, a shared elder)
+# reads the same from either end and cannot tell a rewrite from a fork. Two careful laps refused
+# this same set on symmetric evidence before that was written down, and the sentence is quoted from
+# the very paper whose instrument these three orphans are.
+#
+# AND THE NAME IS MAPPED BEFORE THE READING IS TAKEN, which is the step that makes it answer. A
+# guard says its own name in every `say` line and every assert message, so the loudest textual
+# difference between a draft and its landing is the name itself. Measured on the three: raw
+# containment reads 97, 99 and **42** percent, and every one of the witness's forty-five unheld
+# lines differed only in the word `routed` where the landing writes `stretch`. Mapped, all three
+# read **100 percent with nothing unheld**. A floor set anywhere above 42 misses the file that most
+# needed the answer, so an unmapped reading would have shipped a class that skips its hardest case.
+#
+# THE CLAIM IS BOUNDED FOUR WAYS, because a triage column that guesses is worse than the count it
+# replaced -- the sentence the `moved` class already stands on.
+#   - SAME ROOM. Candidates are the tracked files of the orphan's own directory. A rename that also
+#     changed rooms is a `moved` question, or nobody's.
+#   - SIBLING NAMES. The basenames share a leading or a trailing `_` token, so the mapping is
+#     attempted only between names already related.
+#   - A FLOOR: the best mapped share reaches `rename_floor` percent.
+#   - DOMINANCE: it is also `rename_dominance` times the runner-up. On the three standing here the
+#     separation is 100 against 21, 13 and 6, so a close pair is a different situation and falls
+#     through rather than being settled by a tiebreak nobody can check.
+# A share between `rename_near_floor` and the floor is counted as `orphans_renamed_near` and stays
+# in the `work` drawer, since the safe direction for an unproven claim is the drawer a hand already
+# reads. The near count prints even at zero: a reach nobody prints is claimed by implication
+# (%505).
+#
+# IT NAMES THE PATH AND THE REMAINDER -- `orphan:renamed:<path>:unheld=N`. The class is not a
+# verdict that the bytes are disposable. It says a named living file carries all but N of these
+# lines, and a reader checks the claim in one `diff`: `unheld=0` is the strong case, `unheld=12` is
+# an invitation to read twelve lines rather than seven hundred.
+rename_floor=90
+rename_dominance=4
+rename_near_floor=50
+# Reads, bounded per orphan and per run. The sibling filter runs before any file is opened, so
+# these bite only where one room holds many relatives of one name.
+max_rename_candidates=64
+max_rename_reads=512
+rename_reads=0
+
+# Scratch under `.git/`, never in the worktree and never shared between trees. A fixed name in a
+# shared `/tmp` is the fault this tree booked twice (%549, %620); `.git` is per-checkout by
+# construction and the pid keeps two passes on one tree apart.
+rename_pen=".git/stash-record-rename.$$"
+
+# ARE THESE TWO NAMES ONE RENAME APART -- the same `_` token count, differing in exactly one
+# position. This is the sibling filter, it runs before one file is opened, and it is taken over the
+# whole room in ONE `awk` rather than once per candidate. Both halves of that sentence were paid
+# for:
+#
+#   A LOOSER FILTER WAS TRIED FIRST. Sharing a LEADING or a TRAILING token admits every
+#   `*_witness.rish` in `tools/t/`, which is 106 files, so a per-orphan read bound of 64 cut the
+#   walk off alphabetically before it reached `topology_stretch_witness` -- and the one orphan
+#   whose answer was 100 percent read `work`. A bound that decides an answer by sort order is worse
+#   than a narrower question.
+#
+#   AND A PER-CANDIDATE PROCESS WAS TRIED FIRST. Asking this question in its own `awk` for each of
+#   27 candidates held the round open at 4.7s against a 2.3s baseline -- the same objection this
+#   scan's own header already sustains against a per-orphan classifier, and 27 small processes beat
+#   one larger one only in intuition. That sentence is now proven twice in one file.
+#
+# It is also exactly the shape the mapping below can carry: one token moved, its neighbours
+# standing. A rename that ALSO changed the token count falls through to `work`, the safe direction.
+#
+# ONE LOOSENESS, NAMED WITH ITS SIZE. A stem carrying no `_` at all -- `fleet-fly-bare` -- is one
+# token, so every other one-token stem in its room is "one token apart" and the filter degenerates
+# to the room. Measured `20260911.231405` over this tree's tracked files, the largest such rooms
+# are `construction/archive` at 462 one-token stems, `glow/gen/g` at 140 and `caravan` at 106. The
+# first can never arrive here, since `shelf` is decided before this reading runs and that room is
+# what the shelf class names; the rest are held by `max_rename_candidates`, and `rename_reads`
+# prints what was actually opened. The floor and the dominance test are what keep a wide candidate
+# set from becoming a wide CLAIM -- a room of 64 unrelated siblings answers with a best share in
+# the teens, which reaches neither.
+rename_siblings() {
+  git ls-files "$2" 2>/dev/null | awk -v ostem="$1" -v odir="$2" -v op="$3" -v cap="$4" '
+    function stem(b,   d, a, i, out) {
+      d = split(b, a, ".")
+      if (d <= 1) return b
+      out = a[1]; for (i = 2; i < d; i++) out = out "." a[i]
+      return out
+    }
+    $0 == op { next }
+    { n = split($0, a, "/"); b = a[n]
+      d = $0; sub("/" b "$", "", d); if (n == 1) d = "."
+      if (d != odir) next
+      cs = stem(b)
+      if (cs == ostem) next
+      no = split(ostem, x, "_"); nc = split(cs, y, "_")
+      if (no != nc) next
+      k = 0
+      for (i = 1; i <= no; i++) if (x[i] != y[i]) k++
+      if (k != 1) next
+      if (++seen > cap) exit
+      print $0 }'
+}
+
+# ONE `awk` PER ORPHAN, reading its whole room at once, and the process count is why. A first
+# working draft spent three processes per candidate -- one to emit the substitutions, one `sed` to
+# apply them, one to take the reading -- and the round open went 2.3s to 4.0s. That is the same
+# objection this scan's own header already sustains against a per-orphan classifier, so it holds
+# against a per-candidate one with more force. Mapping and reading inside one pass leaves one
+# process per orphan.
+#
+# THE MAPPING, per candidate, derived from the two names: the full stem in both separator
+# spellings, plus the single differing token carried by its own left neighbour. The neighbour is
+# what keeps it narrow -- mapping a bare differing token would rewrite `routed_mean` into
+# `stretch_mean` and LOWER the share, since the landed file keeps the reading's own name.
+#
+# THE READING IS THE ORPHAN'S OWN LINES, asked of the candidate, and never the other way. Blank
+# lines are dropped from both sides; they would flatter every pair equally.
+rename_prog='
+function stem(path,   n, a, b, d, i) {
+  n = split(path, a, "/"); b = a[n]
+  d = split(b, a, ".")
+  if (d > 1) { b = a[1]; for (i = 2; i < d; i++) b = b "." a[i] }
+  return b
+}
+function build_subs(os, cs,   no, nc, a, b, i, d, at, go, gc) {
+  ns = 0
+  from[++ns] = os; to[ns] = cs
+  go = os; gsub(/_/, "-", go); gc = cs; gsub(/_/, "-", gc)
+  from[++ns] = go; to[ns] = gc
+  no = split(os, a, "_"); nc = split(cs, b, "_")
+  if (no != nc) return
+  d = 0; at = 0
+  for (i = 1; i <= no; i++) if (a[i] != b[i]) { d++; at = i }
+  if (d != 1 || at < 2) return
+  from[++ns] = a[at-1] "_" a[at]; to[ns] = b[at-1] "_" b[at]
+  from[++ns] = a[at-1] "-" a[at]; to[ns] = b[at-1] "-" b[at]
+}
+function map_line(l,   i, out) {
+  out = l
+  for (i = 1; i <= ns; i++) gsub(from[i], to[i], out)
+  return out
+}
+function finish(   l, t, h, share) {
+  if (cur == "") return
+  t = 0; h = 0
+  for (l in orph) { t++; if (map_line(l) in cand) h++ }
+  if (t == 0) return
+  share = int(h * 100 / t)
+  if (share > best)        { second = best; best = share; best_unheld = t - h; best_path = cur }
+  else if (share > second) { second = share }
+}
+NR == FNR { if ($0 ~ /[^ \t]/) orph[$0] = 1; next }
+FNR == 1 { finish(); cur = FILENAME; delete cand; build_subs(ostem, stem(FILENAME)) }
+{ if ($0 ~ /[^ \t]/) cand[$0] = 1 }
+END { finish(); printf "%d %d %d %s\n", best + 0, second + 0, best_unheld + 0, best_path }'
+
+# The orphan's own bytes, wherever the stash keeps them: a tracked change rides in the stash commit
+# itself, an untracked addition in its third parent.
+rename_blob() {
+  git show "$2:$1" 2>/dev/null || git show "$2^3:$1" 2>/dev/null
+}
+
+# The second stage over the classifier's output, reading stdin and writing the same two columns.
+# Only a `work` row is asked, so the three proven classes are untouched and the cost is paid for
+# the one drawer a hand acts on.
+rename_reading() {
+  work_src=$1
+  mkdir -p "$rename_pen" 2>/dev/null || true
+  while IFS='	' read -r rp rk; do
+    [ -n "$rp" ] || continue
+    if [ "$rk" != "work" ]; then printf '%s\t%s\n' "$rp" "$rk"; continue; fi
+    rsref=$(printf '%s\n' "$work_src" | awk -F'\t' -v p="$rp" '$1 == p { print $2; exit }')
+    rdir=${rp%/*}; [ "$rdir" = "$rp" ] && rdir="."
+    rbase=${rp##*/}; rstem=${rbase%.*}
+    best=0; best_unheld=0; best_path=""; second=0; looked=0; cands=""
+    if [ -n "$rsref" ] && rename_blob "$rp" "$rsref" > "$rename_pen/orphan" 2>/dev/null; then
+      # The room's siblings, chosen by name before one file is opened.
+      left=$((max_rename_reads - rename_reads))
+      [ "$left" -gt "$max_rename_candidates" ] && left=$max_rename_candidates
+      if [ "$left" -gt 0 ]; then
+        cands=$(rename_siblings "$rstem" "$rdir" "$rp" "$left")
+        looked=$(printf '%s' "$cands" | awk 'NF' | wc -l | tr -d ' ')
+        rename_reads=$((rename_reads + looked))
+      fi
+      if [ -n "$cands" ]; then
+        reading=$(awk -v ostem="$rstem" "$rename_prog" "$rename_pen/orphan" $cands 2>/dev/null)
+        best=$(printf '%s' "$reading" | cut -d' ' -f1)
+        second=$(printf '%s' "$reading" | cut -d' ' -f2)
+        best_unheld=$(printf '%s' "$reading" | cut -d' ' -f3)
+        best_path=$(printf '%s' "$reading" | cut -d' ' -f4)
+        best=${best:-0}; second=${second:-0}; best_unheld=${best_unheld:-0}
+      fi
+    fi
+    if [ -n "$best_path" ] && [ "$best" -ge "$rename_floor" ] &&
+       [ "$best" -ge $((second * rename_dominance)) ]; then
+      printf '%s\trenamed:%s:unheld=%s\n' "$rp" "$best_path" "$best_unheld"
+    elif [ -n "$best_path" ] && [ "$best" -ge "$rename_near_floor" ]; then
+      printf '%s\twork:near:%s:%s\n' "$rp" "$best_path" "$best"
+    else
+      printf '%s\twork\n' "$rp"
+    fi
+  done
+  # The read count rides OUT on a sentinel line rather than in a variable. This stage runs inside a
+  # command substitution, so a counter incremented here never reaches the caller -- a shell fault
+  # that would have printed `rename_reads=0` beside however many files it opened, which is exactly
+  # the shape of an unprinted reach (%505) with the print present and lying.
+  printf 'RENAME_READS\t%s\n' "$rename_reads"
+  rm -rf "$rename_pen" 2>/dev/null || true
+}
+
 # Every path a stash holds, tracked changes and untracked additions alike.
 stash_paths() {
   git stash show --include-untracked --name-only "$1" 2>/dev/null
@@ -278,6 +501,8 @@ paths=0
 orphans=0
 orphans_moved=0
 orphans_shelf=0
+orphans_renamed=0
+orphans_renamed_near=0
 orphans_work=0
 unread=0
 seen=""
@@ -312,6 +537,8 @@ for sref in $(git stash list --format='%gd' 2>/dev/null); do
       orphans=$((orphans + 1))
       orphan_paths="$orphan_paths$p
 "
+      orphan_src="$orphan_src$p	$sref
+"
       lines="$lines$sref	$p	orphan:PENDING
 "
     fi
@@ -345,10 +572,27 @@ done
 # The one pass, and the labels it fills in. Skipped entirely on an empty box, since a classifier
 # run over nothing still forks `git ls-files` at every open on every ship.
 if [ -n "$orphan_paths" ]; then
-  kinds=$(classify_orphans "$orphan_paths")
-  orphans_moved=$(printf '%s\n' "$kinds" | grep -c '	moved:')
-  orphans_shelf=$(printf '%s\n' "$kinds" | grep -c '	shelf$')
-  orphans_work=$(printf '%s\n'  "$kinds" | grep -c '	work$')
+  kinds_raw=$(classify_orphans "$orphan_paths" | rename_reading "$orphan_src")
+  rename_reads=$(printf '%s\n' "$kinds_raw" | awk -F'\t' '$1 == "RENAME_READS" { print $2; exit }')
+  rename_reads=${rename_reads:-0}
+  kinds=$(printf '%s\n' "$kinds_raw" | grep -v '^RENAME_READS	')
+  # THE KINDS ARE COUNTED IN ONE `awk` ON THE SECOND FIELD, never by a `grep` pattern spelling a
+  # tab. `grep -E '\twork'` reads that escape as a literal `t` on this bench -- POSIX ERE has no
+  # `\t` -- so the first draft of this block counted zero work rows while one stood in its own
+  # output, and the partition check below is what caught it. A field read as a field cannot make
+  # that mistake.
+  kind_counts=$(printf '%s\n' "$kinds" | awk -F'\t' '
+    NF >= 2 { k = $2
+              if (k ~ /^moved:/)     m++
+              else if (k ~ /^renamed:/) r++
+              else if (k == "shelf") s++
+              else { w++; if (k ~ /^work:near:/) n++ } }
+    END { printf "%d %d %d %d %d\n", m+0, r+0, s+0, w+0, n+0 }')
+  orphans_moved=$(printf '%s' "$kind_counts" | cut -d' ' -f1)
+  orphans_renamed=$(printf '%s' "$kind_counts" | cut -d' ' -f2)
+  orphans_shelf=$(printf '%s' "$kind_counts" | cut -d' ' -f3)
+  orphans_work=$(printf '%s' "$kind_counts" | cut -d' ' -f4)
+  orphans_renamed_near=$(printf '%s' "$kind_counts" | cut -d' ' -f5)
   # `printf '%s'` on the kinds, whose last line carries no newline of its own, glues the first
   # `lines` row onto it -- which cost one label a stray `L` and swallowed a whole `unread` row,
   # caught by the pen the same lap. The newline is the fix and the reason it is spelled out here.
@@ -383,13 +627,17 @@ echo "parked=$parked"
 echo "paths=$paths"
 echo "orphans=$orphans"
 echo "orphans_moved=$orphans_moved"
+echo "orphans_renamed=$orphans_renamed"
+echo "orphans_renamed_near=$orphans_renamed_near"
 echo "orphans_shelf=$orphans_shelf"
 echo "orphans_work=$orphans_work"
+echo "rename_reads=$rename_reads"
 echo "unread=$unread"
-# invariant: every orphan is given exactly one kind, so the three sum to the count they partition.
+# invariant: every orphan is given exactly one kind, so the four sum to the count they partition.
 # A partition stated in a header and never checked is a partition that drifts on the lap somebody
-# adds a fourth kind.
-kind_sum=$((orphans_moved + orphans_shelf + orphans_work))
+# adds a fifth kind -- which is exactly how the fourth arrived, and the check is what caught the
+# first draft counting a `near` row twice.
+kind_sum=$((orphans_moved + orphans_renamed + orphans_shelf + orphans_work))
 if [ "$kind_sum" -ne "$orphans" ]; then
   echo "orphan_kinds=disagree:$kind_sum"
 else

@@ -136,6 +136,7 @@ printf 'format session-log-v1\nstamp 20260101.010101\n' > "$pen/work/session-log
 nk "a landed record is not reported" "dead-letter box and nowhere" "$(run_open)"
 
 
+
 # a fresh work tree pointed at a fresh anointed remote, both one commit deep
 fresh() {
   rm -rf "$pen/anointed" "$pen/work"

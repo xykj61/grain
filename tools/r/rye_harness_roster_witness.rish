@@ -124,6 +124,42 @@ assert control.out contains "39 free" else "harness-roster: an assembled target 
 assert control.out contains "40 free" else "harness-roster: and not a second time as literal"
 assert control.out contains "41 free" else "harness-roster: so the residue stands at zero rather than going below it"
 
+# WHAT GIT IGNORES IS NOT TREE EVIDENCE. The walk is a `find`, so it read every scratch room a
+# ship keeps -- `.lap/`, `loops/`, `session-output/`, and any `git worktree` checked out beneath
+# them. Proven by accident first: a lap verifying an unrelated repair in a worktree at
+# `.lap/verify` took the live reading from `unresolved=1` to `unresolved=2`, one past a no-slack
+# ceiling, and reddened that ship's whole rostered pass for a file no clone will hold. A second
+# ship met the same fault the same night through `.lap/norm/`.
+#
+# The eight legs below arrived with that repair and stood pinned by nothing, which is the
+# `unheard_guard` shape one room over: a leg nobody names can be dropped or reordered in silence.
+# They are named here by ordinal, like every case above.
+assert control.out contains "42 free" else "harness-roster: an ignored copy of the whole tree must be read past"
+assert control.out contains "43 free" else "harness-roster: so its units must be counted once rather than twice"
+assert control.out contains "44 free" else "harness-roster: and the reading must say it filtered, or a filtered reading cannot be told from an unfiltered one"
+assert control.out contains "45 free" else "harness-roster: the tree must still pass with the scratch read past"
+assert control.out contains "46 free" else "harness-roster: lift the ignore rule and the copy must be counted -- the same bytes, shown from both sides"
+assert control.out contains "47 free" else "harness-roster: with its units doubling, which is what the elder reading did on every ship"
+assert control.out contains "48 free" else "harness-roster: a tree with no git must name its unfiltered reading rather than claim a filter it never ran"
+assert control.out contains "49 free" else "harness-roster: and must still read the tree"
+
+# AN INSTRUMENT THAT CANNOT RUN MUST REFUSE. That filter's probe read `2>/dev/null ... || true` for
+# one lap, and `instrument_refusal` bit it: a `check-ignore` that cannot run at all then writes an
+# empty ignored list, the whole scratch flows back into the reading, and the fault the filter closes
+# is restored in silence. Exit 1 means *nothing is ignored* and stays an answer.
+assert control.out contains "50 bitten" else "harness-roster: a broken ignore probe must refuse rather than fall back to reading the whole tree"
+
+# invariant: the drop is printed at all. A filter whose size nobody prints is a reach claimed by
+# implication (%505), and one that quietly swallowed the whole corpus would answer every ratchet
+# with zero and read exactly like a healthy tree.
+# invariant: both readings of the filter are printed. The FLAG says whether it ran, the COUNT says
+# how much it dropped, and they answer different questions -- a reader distrusting a small
+# `unresolved` wants the second, and a pen with no git has only the first. A filter whose size
+# nobody prints is a reach claimed by implication (%505), and one that quietly swallowed the whole
+# tree would answer every ratchet with zero and read exactly like health.
+assert scan.out contains "ignored_filtered=" else "harness-roster: the scan no longer says whether it filtered at all"
+assert scan.out contains "ignored_read_past=" else "harness-roster: the scan no longer says how much of its own reading it read past"
+
 assert control.out contains "control_failures=0" else "harness-roster: every planted case must read the way its label says"
 assert control.out contains "control_verdict=ok" else "harness-roster: the control must agree with itself"
 say "RED and GREEN paths proven -- every planted refusal bitten and every honest reading left free, counted by the control in cases="

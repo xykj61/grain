@@ -81,6 +81,9 @@ let control = run ["sh" "tools/fixtures/s/stash_record_control.sh"]
 say control.out
 assert control.ok else "stash-record: a planted case read wrong -- see the control's own lines"
 assert control.out contains "fail=0" else "stash-record: the control closed with a failing leg"
+# invariant: and every leg RAN. `fail=0` reads the same over 105 legs and over a control that lost
+# 28 of them to an edit, which is the one number a healthy pen and a gutted one spell identically.
+assert control.out contains "pass=105" else "stash-record: the control no longer proves 105 behaviors -- a leg was dropped, or one was added without moving this number"
 
 # invariant: the reading on THIS tree, which is the one the fleet lives in.
 let here = run ["sh" "tools/fixtures/s/stash_record_scan.sh"]
@@ -109,6 +112,16 @@ assert here.out contains "unread=" else "stash-record: the scan no longer names 
 assert here.out contains "orphans_moved=" else "stash-record: the scan no longer tells a moved orphan from a lost one, so this guard's own elder paths would read as parked work"
 assert here.out contains "orphans_shelf=" else "stash-record: the scan no longer tells a fold shelf from a lap, and a shelf checked out is a rollback rather than a recovery"
 assert here.out contains "orphans_work=" else "stash-record: the scan no longer names the orphans that are actually a lap, which is the only one of the three worth a hand"
+
+# invariant: the fourth kind is read too, and its two readings are asserted apart. A file landed
+# under a DIFFERENT NAME reads as an orphan to both standing probes -- the basename probe by
+# definition, since a rename is what makes the names differ, and the blob probe because a renamed
+# file is edited on the way. Measured `20260911.225140` on this field: `orphans_work=3`, and all
+# three were the draft-named `topology_routed_*` instrument that landed on `20260907` as
+# `topology_stretch_*`. The whole drawer this guard calls the only one worth a lap was landed work.
+assert here.out contains "orphans_renamed=" else "stash-record: the scan no longer tells a renamed landing from parked work, so a drawer a hand is told to act on fills with files already in the tree"
+assert here.out contains "orphans_renamed_near=" else "stash-record: the scan no longer prints the near band, and an unproven claim nobody prints is a claim made by silence"
+assert here.out contains "rename_reads=" else "stash-record: the scan no longer says how many siblings it opened, so a bound that cut the walk short would be invisible"
 
 # invariant: and every orphan is given exactly one kind. The scan sums the three against the count
 # it partitions and says which it got; a partition stated in a header and never checked is a

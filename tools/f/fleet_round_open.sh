@@ -168,9 +168,10 @@ if [ -r "$SCAN" ]; then
   WORK=$(printf '%s\n' "$BOX" | grep '^orphans_work=' | cut -d= -f2)
   SHELF=$(printf '%s\n' "$BOX" | grep '^orphans_shelf=' | cut -d= -f2)
   MOVED=$(printf '%s\n' "$BOX" | grep '^orphans_moved=' | cut -d= -f2)
+  RENAMED=$(printf '%s\n' "$BOX" | grep '^orphans_renamed=' | cut -d= -f2)
   case "${ORPHANS:-0}" in
     ''|0) : ;;
-    *) say "$ORPHANS file(s) stand in the dead-letter box and on no ref -- ${WORK:-?} parked work, ${SHELF:-?} fold shelves, ${MOVED:-?} answered elsewhere -- sh $SCAN list" ;;
+    *) say "$ORPHANS file(s) stand in the dead-letter box and on no ref -- ${WORK:-?} parked work, ${SHELF:-?} fold shelves, ${MOVED:-?} moved, ${RENAMED:-?} renamed -- sh $SCAN list" ;;
   esac
   # AND THE PARKED WORK IS NAMED, NEVER MERELY COUNTED. A count tells a hand that something is in
   # the box; only a path tells them it is THEIRS. The split above was already honest and still cost
@@ -187,7 +188,10 @@ if [ -r "$SCAN" ]; then
   # headroom, and a box past it says how many it held back and where the whole list lives.
   BOX_NAME_MAX=8
   NAMED=0
-  printf '%s\n' "$BOX" | grep '	orphan:work$' | while IFS='	' read -r sref path kind; do
+  # The match is the kind's PREFIX rather than its whole field (`20260912.000053`): a `near`
+  # reading rides in the same drawer as `orphan:work:near:<path>:<share>`, so an anchored
+  # match would name every work path except the ones carrying a candidate worth checking.
+  printf '%s\n' "$BOX" | grep '	orphan:work' | while IFS='	' read -r sref path kind; do
     NAMED=$((NAMED + 1))
     [ "$NAMED" -le "$BOX_NAME_MAX" ] && say "  parked work: $path -- $sref"
     [ "$NAMED" -eq "$BOX_NAME_MAX" ] && [ "${WORK:-0}" -gt "$BOX_NAME_MAX" ] \
