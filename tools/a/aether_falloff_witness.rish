@@ -1,0 +1,103 @@
+# tools/a/aether_falloff_witness.rish -- the roster has no gradient, and that is a measurement.
+#
+# WHY THIS RUNG. Row 4 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes
+# an aether falloff field over the standing roster: wake the guards within path-distance R of a
+# touched file, intensity falling with distance. Its own falsifier reads -- the woken set at any
+# useful R covers most of the roster. tools/fixtures/a/aether_falloff_scan.sh takes that
+# measurement, and this rung keeps it checkable rather than remembered.
+#
+# WHAT THE SCAN FINDS, read 20260911 over a 200-commit window: 288 of 345 seated guards carry no
+# coordinate at all, so they wake at every radius including zero, and the woken share at radius zero
+# is already 0.881. Among the 57 guards the map does place, two hops wake all of them. The falsifier
+# fires, and it fires for a cause it left unnamed: it attributes the covering to a DENSE roster,
+# where the measurement reads a largely UNCOORDINATED one. Those are two faults wearing one number,
+# wanting two repairs, and only a reading tells them apart.
+#
+# WHAT IS GATED HERE. The control, and the control alone. Every figure the scan publishes is a fact
+# about the roster rather than a defect in it, so a gate on the floor share would red this tree for
+# carrying a backlog -- one already priced by tools/fixtures/s/standing_equipment_scope_rank.sh at
+# absent_cost_share=0.920. What must stay loud is the instrument: a scan answering "no gradient" for
+# every input would have produced this same finding on a tree that had a perfect one.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/a/aether_falloff_control.sh -- 38 behaviors on real
+# git repositories in a throwaway pen:
+#
+#   A PEN WITH REAL LOCALITY reads it: one guard at radius zero, three siblings two hops out,
+#     saturation at two. The same pen stripped of its map reads a floor of the whole roster and
+#     saturates nowhere. Both directions, so the negative earns its silence.
+#   DISCOVERY AND ABSENT counted apart, since they share one floor and want two repairs.
+#   THE ANCHOR RULE, one word shape per leg: a room word, a glob that truncates, a bare filename at
+#     the root, and a file anchoring to the directory holding it.
+#   AN ORPHAN ROW read past rather than counted as coverage.
+#   ELEVEN REFUSALS, each beside an argument that passes -- and a radius of zero passing, since that
+#     is the reading the falsifier itself turns on.
+#   A MUTATION: the anchor rule broken on a copy, the plant proven landed by cmp, and the copy shown
+#     reading a different distance on the same pen.
+#
+# WHAT IT LEAVES TO OTHERS. Whether a falloff field would serve a roster that HAD a coordinate;
+# whether the directory tree is the right coordinate; and the seconds each guard costs, which the
+# ranking beside it already reads.
+#
+# Style: context/GAUGE_STYLE.md - Paper: active-designing/20260911-195059_the-field-with-no-distance.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/a/aether_falloff_witness.rish
+
+say "aether-falloff: Language EN -- a falloff field grades a distance, so the roster must carry one."
+say "aether-falloff: Style Gauge, Meter -- every reading names its population and its window."
+say "aether-falloff: Lens TAME -- bound the window, bound the radius, and prove the negative from both sides."
+
+let control = run ["sh" "tools/fixtures/a/aether_falloff_control.sh"]
+say control.out
+assert control.ok else "aether-falloff: the control must complete -- its own lines are printed above"
+
+# A pen that genuinely has locality, read as having it.
+assert control.out contains "leg local_verdict_ok ok" else "aether-falloff: the scan must complete on a pen it can read"
+assert control.out contains "leg local_mapped_4 ok" else "aether-falloff: every mapped guard must be counted as mapped"
+assert control.out contains "leg local_floor_zero ok" else "aether-falloff: a fully mapped roster has no floor"
+assert control.out contains "leg local_r0_one ok" else "aether-falloff: only the touched room's guard stands at radius zero"
+assert control.out contains "leg local_r2_four ok" else "aether-falloff: a sibling room is two hops away, up one and down one"
+assert control.out contains "leg local_saturates_at_2 ok" else "aether-falloff: the saturation radius must be read rather than assumed"
+
+# The same pen with no map, read as having no gradient -- the other side of the negative.
+assert control.out contains "leg absent_mapped_0 ok" else "aether-falloff: a roster with no rows maps nobody"
+assert control.out contains "leg absent_floor_whole ok" else "aether-falloff: an unmapped guard wakes at every radius, so it is the floor"
+assert control.out contains "leg absent_r0_share_whole ok" else "aether-falloff: a whole-roster floor covers the roster at radius zero"
+assert control.out contains "leg absent_no_saturation ok" else "aether-falloff: with nothing mapped there is nothing to saturate"
+
+# The two halves of the floor, told apart.
+assert control.out contains "leg disc_discovery_1 ok" else "aether-falloff: a guard declaring DISCOVERY reads the whole tree by design"
+assert control.out contains "leg disc_absent_2 ok" else "aether-falloff: a guard nobody has mapped is a backlog rather than a design"
+assert control.out contains "leg disc_floor_3 ok" else "aether-falloff: both halves wake at every radius, so both are the floor"
+
+# The anchor rule, one word shape at a time.
+assert control.out contains "leg anchor_room_zero ok" else "aether-falloff: a word ending in a slash anchors to its own room"
+assert control.out contains "leg anchor_glob_truncates ok" else "aether-falloff: an anchor stops at the first component carrying a glob"
+assert control.out contains "leg anchor_bare_root_one ok" else "aether-falloff: a bare filename anchors at the root"
+assert control.out contains "leg anchor_file_dirname_three ok" else "aether-falloff: a word naming a file anchors to the directory holding it"
+
+# A row naming nobody buys no coverage here.
+assert control.out contains "leg orphan_mapped_1 ok" else "aether-falloff: an orphan row must not inflate the mapped count"
+
+# Every refusal, and the one lawful edge beside them.
+assert control.out contains "leg refuse_unknown_flag ok" else "aether-falloff: an unknown argument refuses rather than being read past"
+assert control.out contains "leg refuse_window_word ok" else "aether-falloff: a window must be a whole number of commits"
+assert control.out contains "leg refuse_window_zero ok" else "aether-falloff: a window of nothing measures nothing"
+assert control.out contains "leg refuse_window_past_bound ok" else "aether-falloff: every bound is checked at the edge"
+assert control.out contains "leg refuse_radius_past_bound ok" else "aether-falloff: a radius past the bound would name a curve nobody walked"
+assert control.out contains "leg refuse_radius_word ok" else "aether-falloff: a radius must be a whole number of hops"
+assert control.out contains "leg refuse_missing_roster ok" else "aether-falloff: a scan with no roster must refuse rather than read an empty population as green"
+assert control.out contains "leg refuse_missing_map ok" else "aether-falloff: an absent map reads as total absence, so it refuses instead"
+assert control.out contains "leg refuse_failing_map ok" else "aether-falloff: a map fixture that fails must refuse rather than be read as empty"
+assert control.out contains "leg refuse_empty_roster ok" else "aether-falloff: a roster seating nobody has no curve to draw"
+assert control.out contains "leg radius_zero_lawful ok" else "aether-falloff: radius zero is the reading the falsifier turns on, so it must pass"
+
+# The mutation, planted and proven to bite.
+assert control.out contains "leg mutation_planted ok" else "aether-falloff: a plant that matches nothing tests the real scan twice"
+assert control.out contains "leg mutation_bit ok" else "aether-falloff: the anchor rule must change a reading when it is broken"
+
+assert control.out contains "legs=38" else "aether-falloff: a leg written tomorrow must be heard on the lap it lands"
+assert control.out contains "faults=0" else "aether-falloff: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "aether-falloff: the control must balance before it is believed"
+
+say "GREEN: aether-falloff -- 38 behaviors, the negative proven from both sides, the anchor rule mutated and bitten."

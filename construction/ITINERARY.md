@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3fb4516db1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9f18cae59d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
@@ -95,23 +95,25 @@ in four rows; it points at the reading now.
 is exact -- 2 locked and rostered, 11 unlocked and off-roster -- and **4 unlocked runners the roster
 DOES run**: `amphora_mark_wreck`, `comlink_rehearsal_wire`, `fora_socket`, `neth_serial_core_delivery`. Three doubles stand in amphora, granary, linengrow;
 `ip_local_reserved_ports` is **EMPTY**, one `nixos/` line, yours.
-**DIFFUSER -- THE CLOCK THAT COULD NOT HEAR THE QUEUE.**
-Elder [shelved](archive/20260911-190515_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4655): a guard unable to red guards nothing.
-**THE READING:** row 9 (*Seasonal duty cycle*, 5th, 1-2wk) proposes a witness printing parked and
-running **sector counts** -- properties of the parking rule -- against a falsifier about
-**backlog**, wanting an arrival and a service rate the clock holds nowhere. It stays green whatever
-the falsifier does. **Nothing** in `caravan/`, `tally/`, `mantra/`, `aurora/` parks by sector.
-**THREE FORMS**, `tools/rye/duty_cycle_backlog.rye`: a park holds at `k <= S*(1-rho)`; drains in
-`k*rho/(1-rho)` spans; worst wait is **`k` spans, utilization entering nowhere**. Two quantities,
-and the falsifier reached for one.
-**PROVEN:** 6 configs, three forms. At `k=3` the wait reads 3,000 ticks at `rho` 0.5 **and** 0.6
-while the drain moves 3,000 -> 4,500. Two mutations **bit** at `check_row`, lifted clean. My assert
-caught `rho=0`: the form offers the cycle whole, an off switch.
-**ROW 9's `3 of 8`:** utilization at or under **62.5%**, latency at least **3** spans. **7 of 77**
-rows park nothing, all at `rho=0.9`. **COMPOSES**: `k/S` here x the power paper's term -- **35.73%**.
-[Paper](../active-designing/20260911-190217_the-clock-that-could-not-hear-the-queue.md) **A 94**.
-**YOURS:** whether `|-  0` should parse (carried); does row 9 re-rank now.
+**DIFFUSER -- I REBUILT A CENSUS THE STASH ALREADY HELD, FINISHED, FOR AN HOUR.**
+Elder [shelved](archive/20260911-210649_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4658): taste what is in the box before cooking a second pot.
+**THE OPEN CLAIM QUESTION, FOURTH FIRING TODAY, AND THE PEER WAS ME.** I read row 4 (*aether as
+falloff field*), measured the roster's wake set off `scope_rank`, and reached the row's own verdict
+independently -- the woken set covers the roster, cause **absence rather than density**. My previous
+lap had built it whole: **747 lines**, scan, control, witness, paper, roster seat, stashed at the
+round open **15 seconds** before this lap began. I read `git stash list` and never opened it.
+**RECOVERED, NOT REBUILT.** `aether_falloff` GREEN, **38 legs**, anchor rule mutated and bitten.
+`r0` woken share **0.888**, saturation **two hops**, floor **291 of 348**. My own reading was a
+subset of its r0 column, so I **dropped it whole**.
+**A ROW BOOKED (`20260911.205727`), AND THE GHOST THAT CAUGHT IT.** `standing_equipment` red on `unrostered:
+aether_falloff` -- the dead lap's pass wrote a card row for a guard whose roster seat the round-open
+then stashed, and the untracked card carried it forward every pass. **`stash@{13}` has held
+`topology_routed`, witness and two fixtures, since `20260906.190715` -- five days** --
+and `stash_record_scan.sh list` names all three `orphan:work` under `verdict=ok`. No round open
+reads it. Folded `%717`; pin **40,460/40,960**.
+**YOURS:** (1) a round-open reader printing `orphans_work` by name is one lap. (2) recover
+`stash@{13}`. (3) whether `|-  0` should parse (carried).
 **PETRICHOR -- THE GUARD READ ONE OF THE TWO FENCE LABELS THIS TREE WRITES.**
 Elder [shelved](archive/20260911-171657_itinerary-landed-accounts.md).
 **FIRE SEES** (row 2, N=4651, past row 1's 15 to row 2's 9).
