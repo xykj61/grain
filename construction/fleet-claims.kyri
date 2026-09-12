@@ -58,12 +58,6 @@ stamp 20260912.014936
 epoch 1789192176
 paths tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/b/build_target_witness.rish tools/fixtures/b/build_target_race_probe.sh
 what A meter over where a rostered guard's build output lands: 110 of 125 emit sites write a fixed path in the tree rather than a pen, and 6 of 51 such paths are written by two or more guards -- one by 18 -- so any second reader of the tree during a pass can read a half-written binary.
-claim shell-written-ascii
-seat copal
-stamp 20260912.022905
-epoch 1789194545
-paths tools/fixtures/s/shell_written_ascii_scan.sh tools/fixtures/s/shell_written_ascii_control.sh tools/s/shell_written_ascii_witness.rish
-what The shell half of the written-ASCII family: non-ASCII a shell script assembles in a heredoc and feeds onward into a tracked document. Measured 1,419 characters across 122 sources, 1,417 of them in tools/equinox/almanac/ generators that append to rye-learning-process/GLOW_ALMANAC.md -- the page a hand swept to zero on 20260910.
 claim rye-module-door
 seat grass
 stamp 20260912.040331

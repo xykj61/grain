@@ -49,11 +49,15 @@
 # `\x00-\x7F` is a GNU awk extension the BWK awk parses as literal characters, and `LC_ALL=C` pins
 # awk to bytes so one em dash reads 1 under either.
 #
-# THE SHELL HALF IS OPEN, and its size is named rather than guessed. `tools/fixtures/a/amphora_pour.sh`
-# writes a vessel header carrying an em dash, and `tools/fixtures/a/amphora_vessel_lap1.bron` is a
-# stored vessel carrying one. Both sit in `fixtures/`, which every meter in this family reads past
-# by design -- the planted mojibake control MUST keep its high bytes or its own prove-red leg proves
-# nothing. A shell writer's meter is its own lap; the residue is 2 characters in 2 files.
+# THE SHELL HALF CLOSED THE NEXT DAY, and the guess above read seven hundred times small. This
+# header priced the remainder from the two fixture files it happened to know --
+# `tools/fixtures/a/amphora_pour.sh` and `tools/fixtures/a/amphora_vessel_lap1.bron`, "2 characters
+# in 2 files" -- and a meter can only price what it opens, which is the reading rather than a
+# scold. `tools/fixtures/s/shell_written_ascii_scan.sh` reads a HEREDOC BODY across 3,556 tracked
+# `.sh` and `.rish` sources and finds 1,419 characters in 122 files (`20260912.023000`), 1,417 of
+# them in `tools/equinox/almanac/` generators appending to `rye-learning-process/GLOW_ALMANAC.md`.
+# Its classification is the half this one did not need: a heredoc a bare interpreter consumes is
+# code, and the same interpreter with a script path is feeding that script data.
 #
 # USAGE
 #   sh tools/fixtures/r/rye_written_ascii_scan.sh          # count

@@ -1,0 +1,99 @@
+# shell_written_ascii_witness.rish -- what a shell script assembles in a heredoc and feeds onward
+# is prose too, and the tree carries seven hundred times what a guess from fixtures priced.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/shell_written_ascii_witness.rish
+#
+# `.claude/rules/ascii-first.md` governs prose in five subjects now, and the fifth -- what a program
+# ASSEMBLES and hands onward -- was closed for Rye on `20260911.215028` and left open for shell.
+# That meter named the gap in its own header and priced it from the two fixture files it happened
+# to know: "the residue is 2 characters in 2 files." Measured over every tracked shell source, the
+# population is 1,419 characters across 122 files, and 1,417 of them stand in
+# `tools/equinox/almanac/` generators whose heredocs append entries to
+# `rye-learning-process/GLOW_ALMANAC.md` -- the page a hand swept from 1,437 to zero on
+# `20260910.042550`. A guess taken from the files a meter could already see read small by a factor
+# of seven hundred, which is the reading rather than a scold: a meter can only price what it opens.
+#
+# THREE SIBLINGS NAMED THIS BODY AND ALL STEPPED PAST IT, each giving one reason -- converting a
+# heredoc changes what a program feeds onward. That reason is right about a heredoc a PARSER
+# consumes and covers a second population it was never asked about, exactly as the Rye written
+# meter found one language over. A heredoc handed to `python3` is a program; a heredoc handed to an
+# appender that writes Markdown is prose, and prose is what this law governs. So the meter
+# CLASSIFIES rather than excluding: `program` names the subset an interpreter consumes as code, and
+# `sweepable` is the remainder a lane may actually convert.
+#
+# WHY `written` RATCHETS AND NOTHING IS WALLED. A wall at zero is impossible today: 1,417 living
+# characters stand in dated equinox almanac stubs, whose engine exits 0 on a seat already present,
+# so they are inert rather than pending. Whether a dated generator is swept, re-poured, or retired
+# governs a family and wants Keaton's word -- the same standfast `construction/ITINERARY.md`
+# already carries for the dated equinox guards. A ceiling that only falls is the honest instrument
+# for a population a lap may not touch.
+
+say "shell-written-ascii: Language EN -- a heredoc a shell script feeds into a document is prose before it is bytes, and plain ASCII survives every tool, pipe, and re-encoding intact."
+say "shell-written-ascii: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "shell-written-ascii: Lens TAME -- safety first: the meter counts what a shell script ASSEMBLES FOR A READER and refuses to count a comment or a spoken line another meter already holds. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/s/shell_written_ascii_control.sh"]
+say control.out
+assert control.ok else "shell-written-ascii: the control must complete"
+assert control.out contains "control_verdict=ok" else "shell-written-ascii: the control must reach its own verdict"
+
+# THE CONTROL'S OWN LEGS ARE TALLIED, and the tally is asserted beside the verdict. A verdict says
+# only that the control reached its last line, so a leg written tomorrow would pass unheard under
+# it -- the fault `ascii_document_control` booked one meter over on `20260910`.
+assert control.out contains "control_failed=0" else "shell-written-ascii: every leg of the control must pass, not merely the ones this file happens to name"
+
+# THE SUBJECT: a heredoc body, in both authored extensions.
+assert control.out contains "heredoc_counts=yes" else "shell-written-ascii: text assembled in a heredoc is prose and must be counted"
+assert control.out contains "heredoc_lifts=yes" else "shell-written-ascii: removing the plant must return the reading to zero, or the count is a latch"
+assert control.out contains "rish_counts=yes" else "shell-written-ascii: one law, two authored extensions -- a Rishi heredoc is read like a shell one"
+assert control.out contains "mixed_named=yes" else "shell-written-ascii: a form the rule's table spells is reported apart from notation a reader must choose a word for"
+
+# THE TWO SIBLING ROOMS, each left whole. Charging one character to two ceilings makes each reading
+# depend on the other, and neither is then readable alone.
+assert control.out contains "comment_not_counted=yes" else "shell-written-ascii: a comment outside a heredoc belongs to the comment meter"
+assert control.out contains "spoken_not_counted=yes" else "shell-written-ascii: a spoken line outside a heredoc belongs to the spoken meter"
+assert control.out contains "hash_inside_heredoc_counts=yes" else "shell-written-ascii: a hash line INSIDE a heredoc is assembled content rather than prose about the program -- which is the distinction the comment meter's own header draws"
+
+# THE SHELL'S OWN DELIMITER RULES, kept exactly. Closing a heredoc early reads assembled text as
+# code and goes silent; closing it late reads code as assembled text and reds on nothing.
+assert control.out contains "dash_closes_indented=yes" else "shell-written-ascii: `<<-WORD` closes on an indented delimiter, which is the shell's rule"
+assert control.out contains "plain_ignores_indented_delim=yes" else "shell-written-ascii: plain `<<WORD` does not close on an indented delimiter, so the body runs on"
+assert control.out contains "quoted_delims_open=yes" else "shell-written-ascii: both quoted delimiter spellings open a heredoc"
+assert control.out contains "arith_shift_not_opener=yes" else "shell-written-ascii: an arithmetic shift is not a heredoc opener"
+assert control.out contains "here_string_not_opener=yes" else "shell-written-ascii: a here-string carries `<<WORD` one character in, and reading it as an opener swallows the rest of the file"
+assert control.out contains "commented_opener_not_read=yes" else "shell-written-ascii: an opener quoted inside a comment must not swallow a file"
+
+# THE CLASSIFICATION, which is the whole reason this meter can see its own largest population.
+assert control.out contains "program_classified=yes" else "shell-written-ascii: a heredoc a bare interpreter consumes is code, and converting it would change behavior"
+assert control.out contains "program_not_sweepable=yes" else "shell-written-ascii: code must leave the sweepable remainder, or a lane is handed a number it may not act on"
+assert control.out contains "data_not_program=yes" else "shell-written-ascii: the same interpreter with a script path hands the heredoc that script's stdin, which is data"
+assert control.out contains "data_sweepable=yes" else "shell-written-ascii: data a script feeds onward is exactly what a lane may convert"
+assert control.out contains "exec_read_past=yes" else "shell-written-ascii: `exec` is a prefix rather than a command, and the almanac's own shape opens with it"
+assert control.out contains "dash_c_is_program=yes" else "shell-written-ascii: `-c` makes the heredoc code again whatever words follow"
+assert control.out contains "pipeline_command_read=yes" else "shell-written-ascii: a pipeline's command is the one after the last separator"
+assert control.out contains "vendor_read_past=yes" else "shell-written-ascii: a vendored source keeps its own words"
+
+# THE CEILING, from both sides. There is no override and none is wanted.
+assert control.out contains "ceiling_at_bound=yes" else "shell-written-ascii: a reading standing exactly at the ceiling must walk free"
+assert control.out contains "ceiling_one_over=yes" else "shell-written-ascii: one character past the ceiling must refuse, or the ceiling is decoration"
+
+# THE THREE MUTATIONS, each asserted to BITE. A control whose legs all pass against a broken
+# instrument is a control proving nothing.
+assert control.out contains "mutation_shadow_bites=yes" else "shell-written-ascii: a local that shadows the named-form counter must red a leg -- it fired for real on the seating lap, where the total read right and the named reading read zero, which is what a clean tree prints"
+assert control.out contains "mutation_operand_bites=yes" else "shell-written-ascii: dropping the script-path operand check reads every interpreter word as code, and the whole almanac population would vanish from the sweepable remainder"
+assert control.out contains "mutation_dash_bites=yes" else "shell-written-ascii: dropping the `<<-` distinction closes a plain heredoc early and reads assembled text as code"
+
+let living = run ["sh" "tools/fixtures/s/shell_written_ascii_scan.sh"]
+say living.out
+assert living.ok else "shell-written-ascii: the living scan must complete"
+assert living.out contains "instrument=ok" else "shell-written-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
+assert living.out contains "under_ceiling=yes" else "shell-written-ascii: non-ASCII in assembled shell text rose above the ceiling -- convert on touch rather than raising it"
+
+# COUNTED OFF THE PEN, BOTH DIRECTIONS. A refusal is a behavior proven exactly as hard as a
+# welcome, so a tally reading only the affirmative half would understate the control by every
+# refusal it owns.
+let affirmed = where (lines control.out) as l: l contains "=yes"
+say "shell-written-ascii: ${length affirmed} readings proven on real git repositories in a throwaway pen, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: shell-written-ascii -- the fifth ASCII subject now has both its halves. The meter reads a heredoc body rather than a line at a time, classifies the subset an interpreter consumes as code apart from the data a script feeds onward, and leaves the comment and spoken rooms whole. What it still cannot see is a `printf` argument assembling one line, which needs to know whether a quote sits inside another quote -- so it undercounts on purpose and says so, the way all four siblings do."

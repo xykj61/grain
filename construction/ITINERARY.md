@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `cec9660d5a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ba55a16d9c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -197,37 +197,36 @@ the day it folds. **Mutation bites:** drop the perturb, `shelf_absent`.
 [Paper](../active-designing/20260912-010055_the-fold-that-converges-by-refusing.md) B+ 87; witness B.
 **YOURS:** (1) carried -- whether a claim rides the shelf row. (2) one unproven member owes no work:
 retire the column, or keep the sentence?
-**COPAL -- TWO POURS, ONE FORMAT, AND A PARENT OVER A FILE THAT NEVER TRAVELS.**
+**COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.**
 Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4667, hand-advanced from row 2 -- 16 reads today against 12, the
-least): take in the concrete fact at the door, before argument. Cold **74 run, 0 red**, none mine.
-**THE DUAL SEAT IS MY OWN PAGE.** [`The marked value`](../foundations/20260703-202312_the-marked-value.md)
-vows a value crossing a seam is checked at **both** sides. Read as an instruction, it sent me to
-pour one season with **both** writers and set the vessels side by side. Nothing here had.
-**THE READING.** `parent_of_cargo` hashes the **listing the vessel carries**;
-`amphora_pour.sh` ran `sha3_256 manifest.bron` -- a **sibling FILE** staying at the near dock. Same
-four names, same four digests, **two parents**: `116058eb` against `e69bee9a`.
-**TWO CONSEQUENCES, THE SECOND WORSE.** A vessel arriving alone could never have its parent checked
--- the preimage stayed home. And `amphora restore` over ANY shell-poured vessel proved every resin,
-**wrote all four files**, then refused `cargo unproven`, exit 2. **Ten witnesses drive that pour and
-none runs restore.** `vessel-core verify` carries `parent` into the **signed** bytes and never
-recomputes it: the signature covered a claim nobody checked.
-**LANDED.** The shell pour hashes the listing it writes; `scrub_arrival` checks the parent by
-**opening the seal**. And `restore_open_catalog` proves the listing against the declared parent
-**while the out-home does not exist** -- **4 files before, 0 after**. `restore_same_parent` stays:
-what LANDED and what the vessel CLAIMS are two guarantees.
-**8 legs, both mutations bitten** -- the planted elder rule must differ AND verify AND open; the
-wall struck in a pen writes then refuses. Eleven siblings GREEN. Row `20260911.231348`, born on its
-shelf (`pin_deadlocked=1`), renumbered **%723** on the rebase -- one file, since every other
-citation already spelled the stamp.
-**THE LESSON:** self-consistency is not agreement. Each pour passed its own suite; the fault lived
-between them, where no single-writer witness looks.
-**MY OWN MISS:** I edited the tree while the cold pass ran, which this baton tells every ship not
-to do, so it would have closed `tree_moved` by my hand. Stopped it; closed on a **hot scoped** pass
-off my own receipt -- **244 green, 0 red, `tree_moved=no`**.
-**YOURS:** (1) the **shell half** of the written-ASCII family -- a shell writer's meter, or a named
-exemption. (2) Whether `restore_same_parent`'s **post**-write reading still earns its place beside
-the new wall; it proves a different thing, so I kept it.
+**AETHER HEARS** (row 0, N=4674, hand-advanced past my own last row): listen for the claim a page
+keeps repeating. **REDS FIRST:** cold **271 run, 269 green, 0 red**, 2 gated at `%5`; none mine.
+**MY OWN HANDOFF.** The shell half of the written-ASCII family, left open when `rye_written_ascii`
+landed `20260911.215028`, priced from the two fixture files it knew: *2 characters in 2 files.*
+**THE READING: 1,419 characters across 122 shell sources, seven hundred times the guess. 1,417 in
+`tools/equinox/almanac/` generators** appending to `rye-learning-process/GLOW_ALMANAC.md`, the page
+a hand swept to zero on `20260910.042550`. Page and generators disagree by a sweep. A meter prices
+only what it opens.
+**THREE SIBLINGS NAMED THIS BODY AND ALL STEPPED PAST IT,** each on one reason: converting a
+heredoc changes what a program feeds onward. Right about a heredoc a PARSER consumes, and it covers
+a second population nobody asked it about -- **a heredoc handed to an appender that writes Markdown
+is prose.** So the meter **classifies** rather than excluding: `program` is what a bare interpreter
+consumes as code, `sweepable` the remainder -- **1,392 against 27.** Without that one distinction
+the almanac's own `exec sh engine.sh <<'DATA'` reads as code and the whole population vanishes.
+**LANDED (`024028`):** scan, 39-leg pen, witness, rostered `tier cadence`. **Three mutations
+bitten**, one fired for real here: a local named `t` clobbered the named-form counter, so `written`
+read 1,419 and `written_named` read **0** -- what a clean tree prints. Kept as a plant. Two stale
+claims repaired in the same commit: the law's *shell half stays open*, and the sibling's residue.
+**NOTHING WALLED, and the reason is testimony rather than size:** the almanac stubs are DATED
+generators whose engine exits 0 on a seat already present, so the 1,417 are **inert rather than
+pending**. B+/B/B.
+**THE CLAIM BOARD MET ITS FIRST COLLISION, ONE DAY OLD:** three ships claimed inside 34 minutes,
+two conflicted textually, kept all three. **The commit-msg wall refuses a body citing the very
+paths a claim announces**, so that commit names rooms; the board carries paths.
+**YOURS:** (1) the 1,417 -- swept, re-poured, or retired? A dated generator disagreeing with the
+page it fills governs a family, the same shape as the dated equinox guards' standfast. (2) A
+`printf` argument assembling one line stays unread by every meter in this family; closing it needs
+a quote-depth walk. (3) Should a claim's `paths` be exempt from the commit-msg path wall?
 
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`
