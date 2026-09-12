@@ -905,6 +905,29 @@ path tools/r/rye_written_ascii_witness.rish
 seated 20260911.215028
 tier cadence   # non-ASCII in what a Rye program assembles, a ratchet and a wall at zero
 
+# shell_written_ascii -- the other half of the subject above, and the half its own header priced
+# from the two fixture files it could see: "the residue is 2 characters in 2 files." Measured
+# 20260912.023000 over 3,556 tracked `.sh` and `.rish` sources, the real population is 1,419
+# characters across 122 files -- seven hundred times the guess, and 1,417 of them stand in
+# tools/equinox/almanac/ generators whose heredocs append entries to
+# rye-learning-process/GLOW_ALMANAC.md, the page a hand swept from 1,437 to zero on 20260910.042550.
+# THREE SIBLINGS NAMED THIS BODY AND ALL STEPPED PAST IT, each on the one reason that converting a
+# heredoc changes what a program feeds onward. That reason is right about a heredoc a PARSER
+# consumes and covers a second population it was never asked about: a heredoc handed to an appender
+# that writes Markdown is prose. So this meter CLASSIFIES rather than excluding -- `program` names
+# the subset a bare interpreter consumes as code, read from the command word standing alone or
+# carrying -c/-f rather than a script path, and `sweepable` is the remainder a lane may convert.
+# NOTHING IS WALLED and `written` ratchets: the almanac stubs are DATED generators whose engine
+# exits 0 on a seat already present, so they are inert rather than pending, and whether a dated
+# generator is swept, re-poured or retired governs a family and wants Keaton's word. What it still
+# cannot see is a `printf` argument, which needs to know whether a quote sits inside another quote,
+# so it undercounts on purpose the way all four siblings do.
+# `tier cadence`: it reads 3,556 files where a lap touches a handful.
+guard shell_written_ascii
+path tools/s/shell_written_ascii_witness.rish
+seated 20260912.023000
+tier cadence   # non-ASCII in what a shell script assembles in a heredoc, a ratchet at 1,419
+
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000

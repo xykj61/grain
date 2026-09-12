@@ -268,10 +268,48 @@ dataflow a scanner does not follow. Forty-one behaviors stand proven on real git
 throwaway pen under
 [`../../tools/fixtures/r/rye_written_ascii_control.sh`](../../tools/fixtures/r/rye_written_ascii_control.sh),
 every refusal planted and then lifted, two mutations asserted to bite, and the control's own leg
-tally asserted beside its verdict. **The shell half stays open** and its size is named rather than
-guessed: `tools/fixtures/a/amphora_pour.sh` writes a vessel header carrying an em dash and
-`tools/fixtures/a/amphora_vessel_lap1.bron` is a stored vessel carrying one -- 2 characters in 2
-files, both inside `fixtures/`, which every meter in this family reads past by design.
+tally asserted beside its verdict.
+
+**The shell half closed the next day, and its size was seven hundred times the guess**
+(`20260912.023000`). That header priced the remainder from the two fixture files it happened to
+know -- *2 characters in 2 files* -- and a meter can only price what it opens.
+[`../../tools/s/shell_written_ascii_witness.rish`](../../tools/s/shell_written_ascii_witness.rish)
+over [`../../tools/fixtures/s/shell_written_ascii_scan.sh`](../../tools/fixtures/s/shell_written_ascii_scan.sh)
+reads a **heredoc body** across 3,556 tracked `.sh` and `.rish` sources and finds **1,419
+characters in 122 files**, **1,393 of them forms this rule's own table spells**. **1,417 stand in
+`tools/equinox/almanac/` generators** whose heredocs append entries to
+`rye-learning-process/GLOW_ALMANAC.md` -- the one page a hand swept from 1,437 to zero on
+`20260910.042550`. The page and the generators that fill it now disagree by a sweep.
+
+**Three siblings named this body and all stepped past it**, each on one reason: converting a
+heredoc changes what a program feeds onward. That reason is exactly right about a heredoc a
+**parser** consumes, and it is the Rye written meter's own argument one language over that it
+covers a second population it was never asked about -- **a heredoc handed to an appender that
+writes Markdown is prose**, and prose is what this rule governs. So the meter **classifies** rather
+than excluding: `program` names the subset a bare interpreter consumes as code, read from the
+command word standing alone or carrying `-c`/`-f` rather than a script path, and **`sweepable` is
+the remainder a lane may convert** -- **1,392** against 27 of code. That one distinction is what
+lets the meter see its own largest population at all, since the almanac opens
+`exec sh engine.sh <<'DATA'` and an interpreter-word rule alone would read every entry as code.
+
+**Nothing is walled and `written` ratchets**, for a reason about testimony rather than about size.
+The almanac stubs are **dated generators** whose engine exits 0 on a seat already present, so the
+1,417 are **inert rather than pending** -- no run re-pours them. Whether a dated generator is
+swept, re-poured, or retired governs a family and wants Keaton's word, which is the standfast
+`construction/ITINERARY.md` already carries for the dated equinox guards one room over.
+
+**What it still cannot see** is a `printf` argument assembling one line: finding it needs to know
+whether a quote sits inside another quote, which is parsing rather than scanning, so the meter
+**undercounts on purpose** and says so, the way all four siblings do. `amphora_pour.sh`'s own em
+dash left on an earlier lap and `amphora_vessel_lap1.bron` is a stored vessel rather than a shell
+source, so both halves of the elder guess are closed by other means. **39 behaviors** stand proven
+on real git repositories in a throwaway pen under
+[`../../tools/fixtures/s/shell_written_ascii_control.sh`](../../tools/fixtures/s/shell_written_ascii_control.sh),
+every refusal planted and then lifted, three mutations asserted to bite, and the control's own leg
+tally asserted beside its verdict. **One of those mutations fired for real on the seating lap**: a
+local variable named `t` clobbered the named-form counter, so `written` read 1,419 and
+`written_named` read **0** -- which is precisely what a tree carrying only judgment-call notation
+prints. A counter shadowed by a local is invisible from its own output, so the plant is kept.
 
 ## Why the rule exists
 
