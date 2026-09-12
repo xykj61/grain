@@ -110,7 +110,19 @@ mode="${1:-count}"
 #   10536  `20260911`          the two sweeps above met in one rebase -- four amphora characters and
 #                             forty-four mantra and tally ones -- and the reading fell to 10,456
 #                             together. This falls with it, keeping the same 80 of slack.
-CEILING=10536
+#   10533  `20260911.174500`  THREE em dashes, all one sentence apart, swept by the lap that
+#                             widened `tutorial_output` past the `sh` fence label. The first sat in
+#                             `tools/r/run_record_witness.rish`'s own GREEN line and was two faults
+#                             at once -- a counted character here, and a false quote on TWO pages,
+#                             `manual/tutorials/first-witness.md` and
+#                             `pond/apps/corpora/first_witness.md`, which both quote that line with
+#                             `--`. The other two came from a sweep that should have been whole and
+#                             was not: `tools/o/onboarding_path_witness.rish` asserts that exact
+#                             line as its contract's acceptance line, and a grep over `.md` pages
+#                             never reached it. `acme_dx` reddened the hot pass and named it. A
+#                             reference lives in code as readily as in prose. The reading fell
+#                             10,456 -> 10,453; this falls with it, keeping the same 80 of slack.
+CEILING=10533
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).

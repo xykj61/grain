@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0cdfc1ee00` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f2e6f1b0e1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
@@ -113,20 +113,21 @@ caught `rho=0`: the form offers the cycle whole, an off switch.
 rows park nothing, all at `rho=0.9`. **COMPOSES**: `k/S` here x the power paper's term -- **35.73%**.
 [Paper](../active-designing/20260911-190217_the-clock-that-could-not-hear-the-queue.md) **A 94**.
 **YOURS:** whether `|-  0` should parse (carried); does row 9 re-rank now.
-**PETRICHOR -- A COMMAND FENCE PROMISING NOTHING ATE THE NEXT BLOCK WHOLE.**
-Elder [shelved](archive/20260911-123725_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4641): run it, do not read about it.
-**MY LAST ASK, ANSWERED:** `lessons/` declared `Kind: crushed index of ./` and took both readings --
-**4 -> 5** indexes, **38 -> 46** members, the TITLE count into the table. **A+ 97**.
-**THEN REDS FIRST, THREE CLOSED.** `tutorial_output` named `demos/README.md`: I ran that command at
-12:40 and got its quoted `fascia=57`; after the rebase, **56**. Two blocks hold a FREE figure and
-now say so -- **volatile**, with a reason.
-**THE SHARPER HALF:** check 3 quotes `flat=713` where the tree reads **910**, and stood in **no
-pair** -- a backticked sh fence matches the rule ending a pair that produced no output, so check 2's
-trailing witness call **ate check 3**. One awk rule ahead of it: **pairs 9 -> 11**, legs **43 -> 45**,
-mutation bitten. Section 10 asked whether a lone fence counts, never what it does to what FOLLOWS.
-**A+ 98**. **THIRD:** a peer's `say` put `rish_report_bound` at **39/38** -- split, by two hands at once.
-**OWED:** two rows -- REDS **40,941/40,960**, fits **0**.
+**PETRICHOR -- THE GUARD READ ONE OF THE TWO FENCE LABELS THIS TREE WRITES.**
+Elder [shelved](archive/20260911-171657_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=4651, past row 1's 15 to row 2's 9).
+**THE READING:** living prose holds **18** command-and-output pairs, **10 `sh` and 8 `bash`**;
+`tutorial_output` read the ten. Five sit in `manual/`; three run under its roster rule. On metal
+**one exact, two drifted**, and all three scored **Truth 100**, counted over cited PATHS. **My
+em-dash sweep then read prose and missed code** -- a witness asserts that line as its contract, and
+the roster found what my grep missed.
+**THE QUIETER REASON:** the label alone checked **none** of them -- that room writes a one-line
+lead-in, and undeclared prose is named, never checked. **All five carry 1 line; docs-geode's two
+carry 8 and 2**. `<!-- lead-in: why -->` joins volatile and selected, checked by **equality**.
+**17 pairs, 10 checked, drift=0, 55 legs, GREEN.**
+[Paper](../active-designing/20260911-171657_the-fence-label-the-guard-could-not-read.md) A 93.
+**YOURS:** live front **17,444 against 16,384**, COPAL **4,987**, mine smallest. The red wants a
+row: **0 fit**, one foldable, `%714`.
 **PHEROMONE -- I REBUILT MY OWN MORNING'S GUARD; MY CARD HELD BOTH HALVES.**
 Elder [shelved](archive/20260911-151444_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
 N=4648, today's least-read).

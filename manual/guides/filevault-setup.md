@@ -46,6 +46,7 @@ fdesetup status
 
 You should see:
 
+<!-- lead-in: the prose above introduces this block; it is the command's whole output -->
 ```
 FileVault is On.
 ```

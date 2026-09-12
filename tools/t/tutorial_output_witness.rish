@@ -69,8 +69,9 @@
 # the pen proves the bound from both sides.
 #
 # WHAT IT DOES NOT REACH. Stdout alone -- two interleaved streams give an order that depends on
-# buffering rather than on the program. Only the pairs the docs-geode room already writes. And it
-# proves what a command PRINTS, never that the command is the right one to teach.
+# buffering rather than on the program. Only the pairs the corpus rooms already write, and only the
+# two fence labels this tree spells. And it proves what a command PRINTS, never that the command is
+# the right one to teach.
 #
 #
 # NOT tools/d/docs_command_path_witness.rish, which stands beside it in the same room and does a
@@ -78,7 +79,26 @@
 # clones, after a folded room left two pages naming a file at its elder address. This one proves
 # what a command PRINTS. A page can name paths that all resolve and still promise output no command
 # produces -- which is exactly what the first hour did. Two jobs, two names.
-# Pen: tools/fixtures/t/tutorial_output_control.sh -- forty-five behaviors on real git
+# THE SECOND FENCE LABEL, seated 20260911. This read the literal ```sh alone, and the tree writes
+# two labels: measured over living tracked Markdown, 18 command-and-output pairs stand in living
+# prose, TEN labelled `sh` and EIGHT labelled `bash`. The eight sat in four rooms, five of them in
+# `manual/` -- the room that teaches a reader to encrypt a disk and hold their own keys. Three of
+# those five run under the roster rule, and on metal one was exact and TWO had drifted. All three
+# pages scored Truth 100 on the report card, whose counted half reads cited PATHS.
+#
+# A THIRD DECLARATION rode with it, the LEAD-IN, because the label alone made those five visible
+# and checked NONE of them: that room writes one line of prose between the blocks -- "You should
+# see:" -- and prose with nothing declaring it is named, never checked. All five carry exactly one
+# line, where the two undeclared pairs in docs-geode carry eight and two and are real
+# reattributions. `<!-- lead-in: why -->` says the prose introduces the block rather than
+# reattributing it, so the block is the command's whole output and equality is the right test.
+#
+# THE CORPUS WIDENED BY MEASUREMENT. `docs/` holds 16 pages and ZERO pairs; `bat/` one page and
+# zero. So it is the two teaching rooms the shelf's front door names as a pair, plus the clone
+# path. The held ceiling rose 2 -> 3 for the one case a ceiling may honestly rise for -- a widened
+# denominator, here a macOS `fdesetup` this pier cannot run -- never for a page that drifted.
+#
+# Pen: tools/fixtures/t/tutorial_output_control.sh -- fifty-five behaviors on real git
 # repositories in a throwaway pen, every refusal planted and then lifted, the gap bound and the
 # scattered ceiling each shown from both sides, the order strand proven load-bearing by a mutation
 # that reds one leg alone, and the shape strand by one that reds seven.
@@ -86,10 +106,16 @@
 # This header read "twenty-nine" until 20260910, and the pen emitted THIRTY-ONE the whole time. The
 # number had been taken from the witness's own assertion list rather than from the control's
 # output, so it counted the reader instead of the thing read -- which is the same fault one room
-# over as a page quoting output nobody ran. Both rosters agree at forty-five now -- forty-three until
-# `20260911`, when section 10a added two -- and the count below is read off the control rather
-# than off this file. It is a count typed in prose three times in one file, which this shelf spent
-# the same day proving is the form that goes wrong; it stays because nothing derives it yet.
+# over as a page quoting output nobody ran.
+#
+# THE TWO ROSTERS DISAGREED AGAIN, and this time the pen was the larger. On `20260911` the control
+# ran 47 legs and this file named 45: `dangling_fence_spares_next` and `dangling_fence_lifted_same`
+# had been written the lap before and asserted nowhere, so either could have read RED under a GREEN
+# witness. Both are named now, and the structural repair sits beside them -- the control prints
+# `control_cases` and `control_failed`, and the witness asserts the failure count, so a leg written
+# tomorrow is heard the day it lands rather than on the day somebody remembers to name it. The
+# spoken figure left the claim line in the same pass: the pen counts itself, and a number typed in
+# prose was the form this shelf has now watched go wrong three times.
 # Run from the repository root.
 
 say "tutorial-output: Language EN -- a quoted output block is a claim about behavior, and a claim nobody checks is a claim that decays."
@@ -158,7 +184,32 @@ assert control.out contains "case=lone_command_free ok" else "tutorial-output: a
 assert control.out contains "case=empty_corpus_refused ok" else "tutorial-output: a corpus with no pairs must refuse rather than read clean"
 assert control.out contains "case=no_tree_told_apart ok" else "tutorial-output: a directory with no git tree must read distinctly"
 assert control.out contains "case=list_names_pairs ok" else "tutorial-output: the list verb must name every pair with its verdict"
+assert control.out contains "case=dangling_fence_spares_next ok" else "tutorial-output: a command fence promising no output must leave the next pair whole"
+assert control.out contains "case=dangling_fence_lifted_same ok" else "tutorial-output: lifting the dangling fence must leave the count where it stood, so the pen is innocent of it"
+
+# The second fence label, seated 20260911. docs-geode writes ```sh and the operator manual writes
+# ```bash, and a guard reading one label reads one room -- eight of the tree's eighteen living
+# pairs stood outside this, five of them in the room that teaches a reader to hold their own keys.
+assert control.out contains "case=bash_label_counted ok" else "tutorial-output: a bash-labelled command fence must be read as a pair"
+assert control.out contains "case=bash_label_checked ok" else "tutorial-output: a bash-labelled pair must be checked, never merely counted"
+assert control.out contains "case=bash_label_mutation_bitten ok" else "tutorial-output: dropping the bash arm must return the reading to zero, or the leg above proves nothing"
+assert control.out contains "case=bash_drift_bitten ok" else "tutorial-output: a drifted bash-labelled block must be refused exactly as an sh one is"
+
+# The lead-in, seated the same lap. Teaching the label made the manual visible and checked none of
+# it, because that room writes one line of prose between the blocks.
+assert control.out contains "case=leadin_checked ok" else "tutorial-output: a declared lead-in must be checked by equality"
+assert control.out contains "case=leadin_leaves_undeclared ok" else "tutorial-output: a declared lead-in must leave the undeclared count at zero"
+assert control.out contains "case=leadin_mutation_bitten ok" else "tutorial-output: dropping the lead-in arm must return the pair to undeclared, or the leg above proves nothing"
+assert control.out contains "case=leadin_drift_bitten ok" else "tutorial-output: a lead-in must never excuse a drifted block -- a declaration that hides output is an exemption"
+assert control.out contains "case=undeclared_unchanged ok" else "tutorial-output: prose with nothing declaring it must still be named"
+assert control.out contains "case=leadin_reason_required ok" else "tutorial-output: a lead-in with no reason must declare nothing, as the other two tokens already require"
+
+# THE PEN MUST BE HEARD WHOLE. `control=ok` says the script reached its last line and nothing more,
+# so a leg this file never names could read RED under a GREEN witness -- which two did, written one
+# lap before and asserted nowhere. The tally is what makes tomorrow's leg audible today.
+assert control.out contains "control_failed=0" else "tutorial-output: every leg the pen runs must pass, including ones this witness does not name by hand"
+assert control.out contains "control_cases=" else "tutorial-output: the pen must count its own legs, or a silent leg cannot be told from an absent one"
 assert control.out contains "control=ok" else "tutorial-output: the control must agree with itself"
 
 say ""
-say "GREEN: tutorial-output -- every quoted output block in docs-geode still prints what its page promises, whole or as a declared selection whose shape is read as well as its contents, with forty-five behaviors proven in a pen and every refusal bitten and then lifted."
+say "GREEN: tutorial-output -- every quoted output block in the shipping shelf, the operator manual and the clone path still prints what its page promises, whole or as a declared selection whose shape is read as well as its contents, with every behavior the pen runs proven and every refusal bitten and then lifted."

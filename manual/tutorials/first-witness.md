@@ -23,6 +23,7 @@ rishi/bin/rishi run tools/r/run_record_witness.rish
 
 You should see:
 
+<!-- lead-in: the prose above introduces this block; it is the witness's whole output -->
 ```
 GREEN: RW-3 -- run record pins .ok, .code, .out, and .err for both outcomes.
 ```

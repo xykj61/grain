@@ -4871,7 +4871,12 @@ seated 20260909.215647
 # catches is spent by a reader on their first hour.
 guard tutorial_output
 path tools/t/tutorial_output_witness.rish
-tier lap   # 1.0s; 6 pairs read, 4 run, 20 control checks with 5 refusals bitten and lifted
+tier lap   # 72s (was 1.0s); 17 pairs read, 10 run, 55 control legs with every refusal bitten and
+           # lifted. The cost rose with the corpus on `20260911.171657`: the operator manual and
+           # SOURCE.md joined docs-geode, and three more pairs now invoke real witnesses that build
+           # binaries. It stays `tier lap` on purpose -- `cadence` is the clock 69 of 83 guards have
+           # never been turned on here (%568), and a drift guard nobody runs is the fault it exists
+           # to catch, one room over.
 seated 20260909.235500
 
 # self_matching_assert reads the command FORM and the output channel before gating an operand

@@ -9,10 +9,27 @@
 # holds neither a path nor a mirror. So the one sentence a tutorial exists to make -- here is what
 # you will see -- was the one sentence nothing in this tree read.
 #
-# THE CONVENTION IT READS, which the docs-geode room already writes. A fence opened `sh`, then its
-# close, then an unlabelled fence: the second block is what the first block prints. Measured over
-# the 38 tracked docs-geode pages at seating, 17 fences open `sh` and 6 of them carry an output
-# fence, so the shape is the room's habit rather than a shape invented here.
+# THE CONVENTION IT READS, which the docs-geode room already writes. A fence opened `sh` or
+# `bash`, then its close, then an unlabelled fence: the second block is what the first block
+# prints. Measured over the 38 tracked docs-geode pages at seating, 17 fences open `sh` and 6 of
+# them carry an output fence, so the shape is the room's habit rather than a shape invented here.
+#
+# THE SECOND LABEL, and the room it was hiding, read 20260911. This read the literal ```sh alone
+# for two days. Measured over living tracked Markdown, past dated shelves and the closed stacks:
+# 18 command-and-output pairs stand in living prose, TEN labelled `sh` and EIGHT labelled `bash`,
+# and this read the ten. The eight sat in four rooms, five of them in `manual/` -- the room that
+# teaches a reader to encrypt a disk and hold their own keys, which writes 71 command fences.
+#
+# The blind spot was occupied. Three of the manual's five run under the roster rule below, and on
+# metal one was exact and TWO had drifted: `manual/tutorials/first-witness.md` quoted `--` where
+# `tools/r/run_record_witness.rish` printed an em dash, and the first hour quoted a two-line
+# scribe ending against the one line that witness prints today. All three pages scored Truth 100
+# on the report card, whose counted half reads cited PATHS -- the blindness this exists to cover.
+#
+# WIDENED BY MEASUREMENT RATHER THAN APPETITE. `docs/` holds 16 pages and ZERO pairs; `bat/` holds
+# one page and zero. The corpus is the two teaching rooms the shelf's own front door names as a
+# pair, plus the clone path: docs-geode, manual, SOURCE.md. `pond/` and `active-designing/` each
+# hold one `bash` pair and stay outside, named here so the decline is visible rather than silent.
 #
 # THE ROOM WRITES A SECOND SHAPE, and this read it as nothing for a day (20260910). A page may
 # quote SOME of a longer report, and it says so in a sentence sitting between the two blocks --
@@ -22,6 +39,21 @@
 # appears in what ran, in the order the page prints them.
 #
 #     <!-- selected: two lines of a longer report -->
+#
+# A THIRD DECLARATION, seated 20260911: the LEAD-IN. Teaching this the `bash` label made the
+# manual's five pairs visible and checked NONE of them, because that room writes one line of prose
+# between the blocks -- "You should see:" -- and prose with nothing declaring it is named, never
+# checked. Measured: all five carry exactly ONE line, where the two undeclared pairs in docs-geode
+# carry eight and two, and both of those are real reattributions the caution below is right about.
+# So a lead-in says the prose above INTRODUCES the block rather than reattributing it, which means
+# the block is the whole output of the command and equality is the right test:
+#
+#     <!-- lead-in: the prose above introduces this block -->
+#
+# A reason is required, as it is for the other two, and the pen proves a reasonless one declares
+# nothing. `lead-in` names the PROSE, which is what is being declared. Reusing `selected` here
+# would have weakened three exact claims into three containments, since a selection is checked by
+# containment in order and a lead-in by equality -- two tokens because they are two claims.
 #
 # Order is part of the claim rather than a convenience. A page listing a verdict above the count
 # that produced it teaches the output's shape wrongly even when both lines are present, and the pen
@@ -118,9 +150,13 @@ set -u
 
 verb=${1:-report}
 
-# The ceiling only falls. Held pairs at seating 20260909: two -- the sha3 demo, which makes a
-# directory and writes a file, and step 6 of the first hour, whose script the reader writes.
-HELD_CEILING=${TUTORIAL_OUTPUT_HELD_CEILING:-2}
+# The ceiling only falls, and it rose once, on 20260911, when the CORPUS widened rather than when
+# a page drifted. Held pairs at seating 20260909: two -- the sha3 demo, which makes a directory and
+# writes a file, and step 6 of the first hour, whose script the reader writes. The operator manual
+# joined the corpus and brought a third: `manual/guides/filevault-setup.md` runs `fdesetup status`,
+# a macOS command this pier has no way to run. A widened denominator is the one case where a
+# ratchet ceiling may honestly rise; a page that drifts still falls to the gate.
+HELD_CEILING=${TUTORIAL_OUTPUT_HELD_CEILING:-3}
 
 # How far an output fence may sit from the command it belongs to. Twelve lines is about a screen
 # of prose: past that a reader has stopped holding the command in their eye, so a block that far
@@ -150,8 +186,16 @@ fi
 # The corpus. docs-geode is the shipping shelf -- the pages a newcomer meets -- and the room whose
 # fence convention this reads. A page elsewhere writing the same shape is out of reach on purpose:
 # a guard widened past the habit it was built on starts guessing.
-CORPUS=${TUTORIAL_OUTPUT_CORPUS:-docs-geode}
-git ls-files "$CORPUS/*.md" 2>/dev/null > "$work/pages.txt" || : > "$work/pages.txt"
+CORPUS=${TUTORIAL_OUTPUT_CORPUS:-docs-geode/*.md manual/*.md SOURCE.md}
+# The corpus is a list of GIT PATHSPECS, so the words are split and then handed to git with the
+# shell's own globbing switched off. Left on, the shell expands `docs-geode/*.md` itself and hands
+# git one top-level page where the pathspec means the whole subtree -- git's `*` crosses a slash
+# and the shell's does not, and the difference is 38 pages against 1.
+set -f
+# shellcheck disable=SC2086
+set -- $CORPUS
+set +f
+git ls-files -- "$@" 2>/dev/null > "$work/pages.txt" || : > "$work/pages.txt"
 pages=$(wc -l < "$work/pages.txt" | tr -d ' ')
 echo "pages_considered=$pages"
 
@@ -165,15 +209,25 @@ n=0
 while IFS= read -r page; do
   [ -f "$page" ] || continue
   n=$(awk -v pen="$work" -v page="$page" -v start="$n" -v maxgap="$MAX_GAP_LINES" '
-    BEGIN { n = start; state = 0; vol = ""; sel = ""; prose = 0; gap = 0 }
-    state == 0 && $0 == "```sh" { state = 1; cmd = ""; cmdline = NR; next }
-    state == 1 && $0 == "```"   { state = 2; vol = ""; sel = ""; prose = 0; gap = 0; next }
+    BEGIN { n = start; state = 0; vol = ""; sel = ""; lead = ""; prose = 0; gap = 0 }
+    state == 0 && ($0 == "```sh" || $0 == "```bash") { state = 1; cmd = ""; cmdline = NR; next }
+    state == 1 && $0 == "```"   { state = 2; vol = ""; sel = ""; lead = ""; prose = 0; gap = 0; next }
     state == 1                  { cmd = cmd $0 "\n"; next }
     state == 2 && $0 == ""      { gap++; if (gap > maxgap) state = 0; next }
     state == 2 && $0 ~ /^<!-- volatile:.*-->$/ {
       v = $0
       sub(/^<!-- volatile:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
       if (v != "") vol = v
+      gap++; if (gap > maxgap) state = 0
+      next
+    }
+    # A LEAD-IN declares that the prose above is an introduction rather than a reattribution,
+    # so the block below is the WHOLE output of that command and is checked by equality, where
+    # `selected` means a subset and is checked by containment. Two tokens, two claims.
+    state == 2 && $0 ~ /^<!-- lead-in:.*-->$/ {
+      v = $0
+      sub(/^<!-- lead-in:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
+      if (v != "") lead = v
       gap++; if (gap > maxgap) state = 0
       next
     }
@@ -188,7 +242,7 @@ while IFS= read -r page; do
     # The generic fence rule below reads any ``` line as the end of a pair that produced no
     # output, and a ```sh line matches it -- so a command promising no output SWALLOWED the next
     # command, whole output block and all. See the header, WHAT A DANGLING COMMAND FENCE ATE.
-    state == 2 && $0 == "```sh" { state = 1; cmd = ""; cmdline = NR; next }
+    state == 2 && ($0 == "```sh" || $0 == "```bash") { state = 1; cmd = ""; cmdline = NR; next }
     state == 2 && $0 == "```"   { state = 3; out = ""; next }
     state == 2 && $0 ~ /^```/   { state = 0; next }
     state == 2                  { prose++; gap++; if (gap > maxgap) state = 0; next }
@@ -196,7 +250,7 @@ while IFS= read -r page; do
       n++
       printf "%s", cmd > (pen "/pair." n ".cmd")
       printf "%s", out > (pen "/pair." n ".out")
-      printf "%s\t%s\t%s\t%s\t%s\n", page, cmdline, vol, sel, prose >> (pen "/index.txt")
+      printf "%s\t%s\t%s\t%s\t%s\t%s\n", page, cmdline, vol, sel, prose, lead >> (pen "/index.txt")
       state = 0; next
     }
     state == 3                  { out = out $0 "\n"; next }
@@ -221,13 +275,14 @@ while [ "$i" -lt "$pairs" ]; do
   vol=$(printf '%s' "$meta" | cut -f3)
   sel=$(printf '%s' "$meta" | cut -f4)
   prose=$(printf '%s' "$meta" | cut -f5)
+  lead=$(printf '%s' "$meta" | cut -f6)
 
   # Prose between the blocks, with nothing declaring what it does. The page may be reattributing
   # the output to another invocation, quoting a subset, or setting two unrelated blocks side by
   # side, and those want three different tests. Reported and named rather than checked or held,
   # so the population is visible: a block nothing reads and a block nothing MAY read read alike
   # from outside, and only one of them is a gap.
-  if [ "${prose:-0}" -gt 0 ] && [ -z "$sel" ] && [ -z "$vol" ]; then
+  if [ "${prose:-0}" -gt 0 ] && [ -z "$sel" ] && [ -z "$vol" ] && [ -z "$lead" ]; then
     undeclared=$((undeclared + 1))
     printf '%s:%s\tundeclared_after_prose\t%s\n' "$page" "$line" \
       "$prose line(s) of prose sit between the command and the block; declare selected or volatile to have it read" \

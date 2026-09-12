@@ -15,4 +15,4 @@ assert fail_run.code == 7 else "failure path must preserve exit code"
 assert fail_run.out == "" else "failure path must leave stdout empty"
 assert fail_run.err contains "RW-3 stderr" else "failure path must capture stderr"
 
-say "GREEN: RW-3 — run record pins .ok, .code, .out, and .err for both outcomes."
+say "GREEN: RW-3 -- run record pins .ok, .code, .out, and .err for both outcomes."
