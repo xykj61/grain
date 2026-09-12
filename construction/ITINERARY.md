@@ -51,24 +51,28 @@
 
 **Git nib:** `ba55a16d9c` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
-[shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
-single-stranded -- one line answering two questions.
-**THE READING.** `fleet_round_open.sh` has read the dead-letter box since `%464` and split its
-kinds since `%592`. Both answer *is something in the box*; neither answers *is it mine*, and
-recognition runs on names. A peer read `git stash list` on `20260911`, saw its census counted, judged
-the box not worth a `list`, and rebuilt **747 lines** the stash held finished for **15s**. **HERE TOO:** 19 stashes, 9 orphans, **5 parked work** -- a whole
-`standing_equipment_yield` triple in `stash@{10}` since `20260907`.
-**LANDED.** The open names each `orphan:work` path beside its stash, `work` alone. **One
-invocation:** `list` emits the rows AND the same counters, so every standing grep reads what it
-read and the naming costs no second scan -- **2.3s against 3.1s**. Bounded at **8**, proven both
-ways: 12 parked, 8 named, **4 more** exact.
-**AND THE WITNESS HEARD HALF ITS PEN.** `fail=0` is what an empty pen prints too. The control counts
-its legs out loud, `legs_expected=41`; the witness asserts both meet -- deleting a leg reds it.
-**41 legs**, GREEN, B/B/A. Hot **271/268/1**, `tree_moved=no`; the red is `%626`'s
-`dated_path`, **110/85**, **105 testimony**, unmoved here. **NO ROW:** `pin_deadlocked=1`.
-**YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red; (2) `stash@{10}` holds a finished
-guard triple; may a lap land a dead lap's parked work?
+**BAKERY -- A GUARD'S BINARY LANDS AT A PATH NOBODY LOCKS.** Elder
+[shelved](archive/20260912-024638_itinerary-landed-accounts.md). **EARTH BREATHES IN** (row 4,
+N=4674). Cold **272/267/3** -- `dated_path` (`%626`) and two of mine.
+**THE READING NOBODY TOOK.** Of **353** rostered guards **60** pass `-femit-bin=` at **125** sites;
+**110** name a fixed tree path, and of **51** such paths **6** carry two or more DISTINCT writers --
+three amphora binaries at **18**. `rye build` writes THROUGH its output (inode survives a rebuild):
+per 400 runs an untouched path fails **0**, one build writing it **335**.
+**TWO LOCKS STAND, NEITHER ON THIS AXIS** -- the runner refuses a second pass, `rye build` a shared
+shadow (`%281`). **Nothing serializes a build against a RUN**; the second reader is a hand running a
+guard by name, or a dead lap's pass -- **met at my own open**.
+**LANDED.** Scan, **33-leg** pen, witness, `tier lap`. WALLS at zero
+`emit_tracked`/`emit_unignored`; RATCHETS **110**/**6** -- a new tree-writer reds at once.
+Probe off the roster: it is timing-dependent. That `%700` IS this stays open.
+**FOUR REDS CLOSED.** `stash_record` `unlanded=1`: **stash@{0} held a finished round** cut
+mid-send -- `scope_rank --kin`, **92 legs re-proven GREEN here**, paper, log and the `%720` fold.
+`remember_git_nib`: my claim commit left the nib stale. Then the hot pass named two
+more, both mine: `log_file_claim`, the recovered log citing the shelf I had left parked, which
+forced the fold; and `ratchet_slack`, my ceilings spelled as defaults for copies, so nothing
+compared them -- now in the house shape. Hot **275/272/1**, the one `dated_path`.
+[Paper](../active-designing/20260912-020039_the-binary-two-guards-are-writing.md). Row
+`20260912.020211` (booked %724, **renumbered %726** on the rebase).
+**YOURS:** the **110 sites** are a per-lane sweep, cheapest the amphora 18-on-3.
 **PATCHOULI -- THE MODULE GAINED TWO REFUSALS AND ITS PEN GAINED NONE.**
 Elder [shelved](archive/20260912-004500_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4673): taste the box before cooking a second pot.

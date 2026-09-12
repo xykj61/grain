@@ -5738,3 +5738,26 @@ guard capability_lattice
 path tools/c/capability_lattice_witness.rish
 tier lap   # 2s; 59 behaviors in a pen, six refusals each lifted, three mutations
 seated 20260912.021711
+# WHERE A GUARD'S BUILD OUTPUT LANDS -- the question nobody had asked. 60 of 353 rostered guards
+# pass `-femit-bin=` to `rye build` across 125 emit sites, and 110 of those name a fixed path in the
+# tree rather than a directory the run made for itself. Of 51 distinct fixed paths, 6 are written by
+# two or more DISTINCT guards, three of them by 18 apiece.
+#
+# THE COST IS MEASURED RATHER THAN ARGUED. `rye build` writes THROUGH its output -- the inode
+# survives a rebuild -- so a concurrent reader executes a partial binary. Over 400 executions on
+# this pier: a reader whose own path nobody writes fails 0, one other build writing it fails 335.
+#
+# TWO LOCKS STAND AND NEITHER IS ON THIS AXIS. This runner refuses a second roster pass; `rye build`
+# holds `.rye-build.lock` so two builds cannot stage one shadow (%281). Pass against pass, build
+# against build -- and nothing serializes a build against a RUN, which is the only pairing that
+# needs it. So the single-writer reading, with no build race at all, is the worst of the three.
+#
+# TWO WALLS AT ZERO -- a build output the repository carries, and one git would show, which would
+# move this runner's own tree digest. TWO RATCHETS under ceilings that only fall, so a NEW guard
+# building into the tree reds on the lap it lands; the escape is `d=$(mktemp -d)`.
+#
+# Paper: `active-designing/20260912-020039_the-binary-two-guards-are-writing.md`
+guard build_target
+path tools/b/build_target_witness.rish
+tier lap   # 2s; 33 legs in a pen on real git repositories, two mutations bitten
+seated 20260912.020039

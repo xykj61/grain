@@ -47,6 +47,7 @@
 #
 # Run from anywhere -- the root is found by upward walk:
 #   sh tools/fixtures/s/standing_equipment_scope_rank.sh [--window N] [--top N] [--list]
+#   sh tools/fixtures/s/standing_equipment_scope_rank.sh --kin PATH [--kin PATH ...]
 
 set -eu
 
@@ -70,16 +71,27 @@ done
 max_window=2000
 max_top=512
 max_guards=1024
+# A kin reading is paths times map rows, so the paths are bounded at the edge like the window.
+max_kin=32
 
 window=120
 top=12
 want_list=no
+kin_paths=
+kin_asked=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --window) window=${2:-}; shift 2 ;;
     --top)    top=${2:-};    shift 2 ;;
     --list)   want_list=yes; shift ;;
-    *) echo "refused: unknown argument '$1' -- takes --window N, --top N, --list" >&2; exit 2 ;;
+    --kin)
+      [ $# -ge 2 ] && [ -n "${2:-}" ] \
+        || { echo "refused: --kin wants a path" >&2; exit 2; }
+      kin_paths="$kin_paths$2
+"
+      kin_asked=$((kin_asked + 1))
+      shift 2 ;;
+    *) echo "refused: unknown argument '$1' -- takes --window N, --top N, --list, --kin PATH" >&2; exit 2 ;;
   esac
 done
 case "$window" in ''|*[!0-9]*) echo "refused: --window wants a whole number of commits" >&2; exit 2 ;; esac
@@ -88,6 +100,8 @@ case "$top" in ''|*[!0-9]*) echo "refused: --top wants a whole number of rows" >
   || { echo "refused: --window $window outside 1..$max_window" >&2; exit 2; }
 [ "$top" -ge 1 ] && [ "$top" -le "$max_top" ] \
   || { echo "refused: --top $top outside 1..$max_top" >&2; exit 2; }
+[ "$kin_asked" -le "$max_kin" ] \
+  || { echo "refused: --kin given $kin_asked paths, past the bound of $max_kin" >&2; exit 2; }
 
 cd "$_fd_root"
 
@@ -126,6 +140,73 @@ comm -23 "$pen/mapnames" "$pen/rosternames" > "$pen/orphans"
 orphan_map_rows=$(grep -c . "$pen/orphans" || true)
 sort "$pen/mapnames" | uniq -d > "$pen/dupes"
 duplicate_map_rows=$(grep -c . "$pen/dupes" || true)
+
+# --- --kin: which seated guards ALREADY watch these files? --------------------------------------
+#
+# WHY THIS VERB SITS ON THIS SCAN. Everything it needs is already parsed two paragraphs up: the
+# roster, the map, and one matcher. It answers the reverse of the question the ranking asks. The
+# ranking takes a guard and prices its row; this takes a PATH and names the guards whose rows
+# already reach it -- so a lap about to build an instrument over some files can see, in one line,
+# who reads those files today.
+#
+# THE FIRING. On 20260912 a lap opened the dead-letter box and found a finished guard triple parked
+# since 20260907 -- `standing_equipment_yield`, a scan, a control and a witness measuring what each
+# scope-map row is worth. `tools/fixtures/p/path_absence_scan.sh` answered `verdict=absent` for all
+# three paths, here and upstream, truthfully. The reading was useless, because
+# `standing_equipment_scope_rank.sh` -- this file -- had been built meanwhile by another hand, for
+# the same purpose, strictly wider, and it wears a name none of those three paths mention. Absence
+# is checked by PATH; supersession happens by PURPOSE, and the two never meet.
+#
+# WHAT DOES MEET THEM is the watch-set. The parked scan's own map row named
+# tools/fixtures/s/standing_equipment_scope_map.sh; so do the rows of `scope_rank` and
+# `scope_trace`. A kin reading on that one path returns both names, which is the whole discovery
+# the lap made by hand, in one command, before a line is written.
+#
+# THE LIMIT IS PRINTED BESIDE THE ANSWER, because it is larger than the answer. A guard with no map
+# row is invisible here: ABSENCE RUNS means it reads on every pass and may well read this very
+# path, and no watch-set exists to say so. `unmapped=` is that population, and on this pier it has
+# been the large majority of the roster since the map was written. So `kin_count 0` means "none
+# among the mapped", never "nobody" -- a distinction this file's own DISCOVERY split was built to
+# keep, one reading over.
+#
+# A PATH THAT IS NOT THERE REFUSES, rather than reading zero. A typo returns no kin, and no kin is
+# exactly the answer that sends a lap off to build. The most dangerous wrong answer this verb can
+# give is the encouraging one, so the path must exist before it is asked about.
+if [ "$kin_asked" -gt 0 ]; then
+  printf '%s' "$kin_paths" > "$pen/kinpaths"
+  while IFS= read -r kin_p; do
+    [ -n "$kin_p" ] || continue
+    [ -e "$kin_p" ] || { echo "refused: --kin $kin_p names no file here -- a path that is not there reads as no kin, which is the answer that sends a lap off to build" >&2; exit 2; }
+  done < "$pen/kinpaths"
+
+  echo "format standing-equipment-scope-kin-v1"
+  echo "guards=$guards"
+  cut -f1 "$pen/map" | sort -u > "$pen/mapseated"
+  kin_mapped=$(comm -12 "$pen/mapseated" "$pen/rosternames" | grep -c . || true)
+  echo "mapped=$kin_mapped"
+  echo "unmapped=$((guards - kin_mapped))"
+  echo "orphan_map_rows=$orphan_map_rows"
+  while IFS= read -r kin_p; do
+    [ -n "$kin_p" ] || continue
+    kin_hits=0
+    kin_disc=0
+    while IFS="$(printf '\t')" read -r kin_g kin_row; do
+      [ -n "$kin_g" ] || continue
+      # invariant: an orphan row names no seated guard, so it is dead text and never counted as kin.
+      grep -qx "$kin_g" "$pen/rosternames" || continue
+      if [ "$kin_row" = DISCOVERY ]; then kin_disc=$((kin_disc + 1)); continue; fi
+      if scope_match_row "$kin_row" "$kin_p"; then
+        kin_tier=$(awk -F'\t' -v g="$kin_g" '$1 == g { print $2; exit }' "$pen/roster")
+        echo "kin $kin_p $kin_g $kin_tier"
+        kin_hits=$((kin_hits + 1))
+      fi
+    done < "$pen/map"
+    echo "kin_count $kin_p $kin_hits"
+    echo "kin_discovery $kin_p $kin_disc"
+  done < "$pen/kinpaths"
+  echo "verdict=ok"
+  exit 0
+fi
 
 # THE THIRD GATE: a row reaches its guard's own control. The map's rule is that a row follows the
 # guard's GATED readings, and every witness in this tree asserts on its `<name>_control.sh` between
