@@ -33,11 +33,34 @@ canon="tally/copy.rye"
 extra="${2:-}"
 [ -f "$canon" ] || { echo "verdict=missing_canon"; exit 2; }
 want=$(md5sum "$canon" | cut -d' ' -f1)
+# A PATH GIT IGNORES IS A LAP'S OWN SCRATCH, NEVER TREE EVIDENCE. This walk asks the filesystem
+# rather than the index, so anything standing under the root is read -- including the gitignored
+# rooms this tree's own laws tell a lap to work in: `.lap/` for a lap's scratch, `session-output/`
+# for a transcript, `loops/` for a launcher's state, and a `git worktree` parked under any of them.
+# Proven on metal `20260911.211500`: copying `mantra/` into `.lap/probe/` took this scan from
+# `verdict=ok` to `verdict=drift` and named `./.lap/probe/mantra/tally_copy.rye`. The reading was
+# true about the bytes and false about the tree, which is the direction a guard must never be wrong
+# in -- it reddens a rostered pass on every ship for a file no clone will ever hold.
+#
+# `git check-ignore` is asked rather than a path list being spelled here, because the elder line
+# spelled one -- `-not -path './vendor/*'` -- and a spelled list is a claim about the names somebody
+# remembered. The ignore rules already say which paths this tree disowns, in one place, kept current
+# by the hand that adds a room. A pen with no git in it skips the filter and says so, since a silent
+# fallback is the same fault this repair is closing.
+ignored_filtered=0
+if git rev-parse --git-dir >/dev/null 2>&1; then ignored_filtered=1; fi
+keep() {
+  [ "$ignored_filtered" -eq 1 ] || return 0
+  git check-ignore -q "$1" 2>/dev/null && return 1
+  return 0
+}
+
 n=0
 drift=0
 links=0
 reals=0
 for f in $(find . -name 'tally_copy.rye' -not -path './vendor/*' | sort); do
+  keep "$f" || continue
   n=$((n + 1))
   if [ -L "$f" ]; then links=$((links + 1)); else reals=$((reals + 1)); fi
   got=$(md5sum "$f" | cut -d' ' -f1)
@@ -51,6 +74,7 @@ if [ -n "$extra" ]; then
   got=$(md5sum "$extra" | cut -d' ' -f1)
   if [ "$got" != "$want" ]; then echo "detail: drifted $extra"; drift=$((drift + 1)); fi
 fi
+echo "ignored_filtered=$ignored_filtered"
 echo "paths=$n"
 echo "symlinks=$links"
 echo "real_files=$reals"

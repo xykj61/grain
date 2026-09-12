@@ -29,4 +29,33 @@ let clean = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh"]
 assert clean.ok else "copy-sameness-negative: clean call did not succeed"
 assert clean.out contains "verdict=ok" else "copy-sameness-negative: the live tree no longer agrees"
 
-say "GREEN: copy-sameness-negative — catches the fixture, passes the live tree"
+# A PATH GIT IGNORES IS A LAP'S OWN SCRATCH, NEVER TREE EVIDENCE. The scan walks the filesystem
+# with `find`, so before `20260911` it read every copy standing under the root -- including the
+# gitignored rooms this tree's own laws send a lap to work in. Proven on metal that day: copying
+# `mantra/` into `.lap/probe/` took the live reading from `verdict=ok` to `verdict=drift`, naming
+# `./.lap/probe/mantra/tally_copy.rye`, a file no clone will ever hold.
+#
+# BOTH DIRECTIONS FROM ONE PLANT, which is what makes the first leg mean anything. The same drifted
+# bytes are read twice: once standing under an ignored path, where the walk must pass them by, and
+# once handed in as the scan's own `extra` argument, where they must be refused. A plant the guard
+# ignores for some other reason would pass the first leg and fail the second.
+let probe_dir = ".lap/copy-sameness-probe"
+let probe = ".lap/copy-sameness-probe/tally_copy.rye"
+let plant = run ["sh" "-c" "mkdir -p .lap/copy-sameness-probe && cp context/fixtures/copy_sameness_drift/tally_copy_drifted.rye .lap/copy-sameness-probe/tally_copy.rye"]
+say plant.err
+assert plant.ok else "copy-sameness-negative: the drifted copy could not be planted under an ignored path"
+
+let ignored = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh"]
+let swept = run ["rm" "-rf" probe_dir]
+say ignored.out
+say swept.err
+assert ignored.out contains "ignored_filtered=1" else "copy-sameness-negative: the scan took an unfiltered reading"
+assert ignored.out contains "verdict=ok" else "copy-sameness-negative: a drifted copy under an ignored path was counted as tree evidence"
+assert ignored.ok else "copy-sameness-negative: an ignored plant reddened the live tree"
+assert swept.ok else "copy-sameness-negative: the probe room outlived its leg"
+
+let handed = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh" "Kyri" fixture]
+say handed.out
+assert handed.out contains "verdict=drift" else "copy-sameness-negative: the planted bytes were never drifted, so the leg above proves nothing"
+
+say "GREEN: copy-sameness-negative -- catches the fixture, reads past an ignored plant, passes the live tree"

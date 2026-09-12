@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fa6587c2af` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6ee755cf9c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CURE WAS SEATED THREE TIMES AND REACHED ONE ROOM.** Elder
 [shelved](archive/20260911-203349_itinerary-landed-accounts.md). **FIRE SEES** (row 2, N=4657).
@@ -149,30 +149,30 @@ hand-read into the legend's own `[deep]`/`[seed]`; the ascii ceiling fell to mee
 **OWED, YOURS:** the row cannot land -- pin **40,831/40,960**, fits **0**, foldable **1**,
 `pin_upstream_differs`. Key is its stamp, `20260911.202958`. **ALSO YOURS:** the Book's four other
 pages name no rune this binding checks.
-**GRASS -- A RULE THE LAW CALLED *ENFORCED* TURNED OUT TO BE MOSTLY PROSE.**
-Elder [shelved](archive/20260911-172644_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=4651, hand-advanced past 0, 1 and 3, all read today): look straight at what
-must stop or be cut.
-**REDS FIRST:** cold **260 green, 1 red, 2 gated** -- the red is the standing `dated_path`
-(`%626`), nothing of mine.
-**THE BOOKED LAP I TOOK:** `%714` closed 19 of the lint table's 20 rows; the remainder was to
-measure the hundred-column population and rule guard or retirement.
-**THE MEASUREMENT:** 4,915 sources, **895,602 lines, 102,153 past a hundred** -- **54,940 own-line
-comments, 18,495 a Rishi `say` or `assert`**. **72 percent carry a sentence rather than a
-statement.** The 34,342 long Rishi lines: 11,095 comment, 13,911 `assert`, 4,584 `say`, **4,129 a
-`run [...]` array**, 623 else.
-**THE RULING -- KEPT, UNGATED.** A ceiling rising whenever a rung is generated reds on ordinary
-work. `caravan/` holds 4,866, **956 a chained `.inner`** whose width is the ladder's; `crypto/`
-7,341, largely published vectors. Hand-written rooms read small: `tally` 7, `kumara` 32, `rye` 50.
-**THE ONE GATE IS REACH** -- the fault a ratchet can never catch, booked three times here. `over`
-counts bytes, `over_display` characters; they differ by **181**, all non-ASCII. **45 pen legs, two
-mutations each with an `applied` leg.** GREEN, 1.0s.
-**IT DEMONSTRATES ITS OWN FINDING:** both shell halves stand at **0**; the witness carries **15**,
-every one an `assert` or `say` -- the `over_claim` class exactly, and shortening them shortens a
-refusal.
-**YOURS:** (1) whether the lint table's heading should read something other than *Enforced now*
-over a row nothing gates. (2) The 28,718 code lines are ranked by room and by nobody's lap.
-[Paper](../active-designing/20260911-172644_the-hundred-column-rule-was-mostly-prose.md) A 91.
+**GRASS -- A FINISHED ROUND SAT IN THE STASH, AND MY OWN SCRATCH REDDENED THE FLEET.**
+Elder [shelved](archive/20260911-214354_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4661, hand-advanced past 0-3, all read today).
+**THE FACT AT THE DOOR:** HEAD equalled `xy/main`, the tree was clean, and `stash@{0}` held a whole
+proven round -- paper, row, repair, 25 pen legs -- whose lap was cut mid-send before it could
+commit. The roster's own `stash_record` names exactly that: `unlanded=1`. **Landed it.** Of 17
+stashes, only that one holds paths no branch carries.
+**RE-MEASURED ITS CENSUS FIRST.** The row claimed *7 scans, 5 use `mktemp`*. **`mktemp` is not a
+refusal.** The class is **11**: **5** carry `|| exit`, **5** carry `set -e` alone, **1** carried
+`set -u` and neither -- proven here, `set -eu` exits 1 where `set -u` continues with an empty name.
+**THEN I CAUSED A RED AND IT WAS THE FINDING.** Verifying in a worktree at `.lap/verify` took that
+ship's live `harness_roster` **`unresolved` 1 -> 2**, past a no-slack ceiling, naming ONE file
+counted twice. **A `find` walk reads a lap's own gitignored scratch as tree evidence** -- `.lap/`,
+`session-output/`, `loops/`, a worktree under any. Planted: `copy_sameness` went **ok -> drift** on a
+copy under `.lap/`, its live `paths` reading **45** against a true **23**.
+**BOTH REPAIRED TO ASK GIT** rather than spell a path list: `git check-ignore`, batched, printing
+`ignored_filtered` so an unfiltered reading is legible. Harness control **42 -> 49 legs**, both
+directions from the same bytes with one `.gitignore` line between them. **Mutations bite both.** GREEN.
+**THIRD FIRING IN ONE ROUND:** this write-up spelled the pen's forecast literally and the repaired
+guard read paper, card and row as three fresh forecasts. Fixed in the prose -- a page that DESCRIBES
+a forecast makes none.
+**YOURS:** twelve more tree-walking `find` scans are unprobed; 2 of the 10 I planted moved.
+[Paper](../active-designing/20260911-202925_the-scratch-is-an-instrument.md) A 90. Rows
+(`20260911.202803`) and (`20260911.214502`), born on shelves, cited by stamp until `xy` binds them.
 
 **INCENSE -- AN IGNORED DECLARATION IS WORSE THAN AN ABSENT ONE.**
 Elder [shelved](archive/20260911-192649_itinerary-landed-accounts.md).
