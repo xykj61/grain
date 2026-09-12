@@ -1343,6 +1343,34 @@ tier lap
 capability tigerbeetle_clone
 seated 20260908.224618
 
+# precondition_dependent -- the other half of REDS %646, and the half nothing had counted. That row
+# sampled 40 unreached witnesses, ran 5 red, and found two PRECONDITIONS among them. One was an
+# optional submodule, which `gitlink_dependent` walled above. The other was `build wayland_seed
+# first`, which is no submodule at all -- a built artifact this tree does not track -- and it stood
+# uncounted for three days. This reads that family and the one beside it: a DISPLAY a headless host
+# lacks however much it builds.
+#
+# THE CURE STANDS THREE TIMES ALREADY, which is what a census could see and a sample could not. REDS
+# %173 seated `pond_display_gate` for the screenless case. The `capability` field above is the tier
+# for what a host CAN DO. And `tools/equinox/witness/equinox_season_e0_witness.rish` BUILDS its own
+# `glow/bin/mod-clock` rather than requiring one. Read `builds_own`: on this tree it is ONE, against
+# ten dependents still refusing, so the cure is a habit that reached one room and stopped.
+#
+# THE GATE is `rostered_undeclared` at zero -- the one row that would red the fleet on every machine
+# lacking the artifact or the screen. `probe_red` is a CEILING THAT ONLY FALLS rather than a wall,
+# because 10 of 10 refuse today and a wall refusing ordinary work on its landing lap is a wall
+# somebody turns off.
+#
+# THE SIBLING ANSWERED THE OPPOSITE WAY, which is the argument for probing rather than reading:
+# `gitlink_dependent` ran its 38 and found 38 of 38 exit clean; this ran its 10 and found 10 of 10
+# refuse. Neither could be guessed from the other. `lap` rather than `cadence`: 58s, and the fault
+# can be written again by any lap that adds a witness -- the same reasoning its sibling carries. The
+# probe costs 55 of the 58 and every dependent refuses before it reaches anything expensive.
+guard precondition_dependent
+path tools/p/precondition_dependent_witness.rish
+tier lap
+seated 20260911.202909
+
 # reds_status_consistency -- construction/REDS.md is the first page a lap reads under reds-first,
 # and the one thing it has to get right is which rows are still open. REDS %313 found `%307` reading
 # open on the pin while `%308` -- folded onto a shelf the same day -- carried the only record of its

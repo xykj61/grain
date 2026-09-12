@@ -1,0 +1,104 @@
+# tools/p/precondition_dependent_witness.rish -- a witness that refuses when a precondition it
+# cannot satisfy is absent buys a red nobody will ever hear.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/p/precondition_dependent_witness.rish
+#
+# WHY (REDS %646). That row sampled 40 of the unreached witnesses, ran 35 green and 5 red, and found
+# the five were three different things wearing one colour -- a genuine finding, a choir whose member
+# fails, and PRECONDITIONS. Two preconditions appeared in the sample. One was an optional submodule,
+# `gratitude/tigerbeetle/src ABSENT`, which `gitlink_dependent` counted and walled on
+# `20260908.214427`. The other was `build wayland_seed first`, which is no submodule at all, and
+# nothing in this tree has ever counted it. The row left its class as a sample rather than a count;
+# this is the count.
+#
+# WHAT IS PROVEN. Two preconditions, read apart and counted together: an ARTIFACT a correct clone
+# lacks until something builds it, and a DISPLAY a headless host lacks however much it builds. One
+# gate at zero -- a rostered guard wanting either and naming no `capability` -- and one ratchet under
+# a ceiling that only falls, on what the dependents do when actually RUN.
+#
+# THE CURE STANDS THREE TIMES IN THIS TREE ALREADY, which is the finding a census could reach and a
+# sample could not. REDS %173 seated `pond_display_gate` for the screenless case -- *a machine with no
+# screen is a machine, never a red*. The roster's `capability` field, built `20260829`, carries six
+# probes and is the tier for what a host CAN DO. And `tools/equinox/witness/equinox_season_e0_witness.rish`
+# BUILDS its own `glow/bin/mod-clock` rather than requiring one, saying so in its own comment. Read
+# `builds_own` below: on this tree that count is ONE, against ten dependents still refusing. The cure
+# is a habit that reached one room and stopped, and no guard ever asked which witnesses still refuse.
+#
+# WHY THE RATCHET IS A CEILING RATHER THAN A WALL. Measured `20260911.190817`, 10 of 10 probed
+# dependents refuse, so a wall at zero would refuse ordinary work on the lap it landed, and a wall
+# that refuses ordinary work is a wall somebody turns off. The GATE is satisfiable today and is held
+# at zero: no rostered guard wants a precondition it does not declare. The ceiling falls each time a
+# dependent learns to build what it needs or to skip and say so.
+#
+# THE SIBLING READING, AND WHY BOTH ARE WORTH HAVING. `gitlink_dependent` probed its 38 members on
+# `20260911` and found 38 of 38 exit clean, each printing an honest SKIP -- so its shape reading had
+# described a behavior nothing held. This family probed 10 and found 10 of 10 refuse. Two sibling
+# censuses over two precondition families, opposite answers, and neither could be guessed from the
+# other: which is the whole argument for running a population rather than reading it.
+#
+# Pen: tools/fixtures/p/precondition_dependent_control.sh -- 40 behaviors on a real repository,
+# every refusal planted and then lifted. Kin: tools/g/gitlink_dependent_witness.rish and
+# tools/p/pond_display_gate_witness.rish, which hold the two neighbouring halves of this question.
+
+say "precondition-dependent: Language EN -- what a correct clone may lack, and who refuses over it."
+say "precondition-dependent: Style Gauge, Meter -- one gate at zero, one ratchet, two populations reported."
+say "precondition-dependent: Lens TAME -- safety first: every refusal planted and then lifted."
+
+say "precondition-dependent: the control -- forty behaviors on a real repository in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/p/precondition_dependent_control.sh"]
+say ctl.out
+# invariant: a refusal reports both streams, since the pen writes each failed leg to stderr and a
+# reader opening the reds file would otherwise find an empty line where the reason belongs.
+assert ctl.ok else "precondition-dependent: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=40 fail=0" else "precondition-dependent: the control did not prove forty behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "precondition-dependent: and this tree's own reading, probed rather than read..."
+let scan = run ["sh" "tools/fixtures/p/precondition_dependent_scan.sh" "probe"]
+# Said ABOVE the first assert on the binding, because an assert ends the run: said below, the reading
+# a refusal most needs is exactly the reading the refusal throws away. BARE rather than interpolated
+# (`rish_report_bound`, `say_compose_bound`): `say "${scan.out}"` opens a bounded StrBuf and would
+# end the run on a GREEN reading once this census outgrew it.
+say scan.out
+assert scan.ok else "precondition-dependent: the scan refused --\n${scan.out}\n${scan.err}"
+# invariant: the gate is held at zero -- a rostered guard whose refusal depends on a built artifact
+# or a screen, naming no capability, would red every machine in the fleet that lacks either.
+assert scan.out contains "rostered_undeclared=0" else "precondition-dependent: a rostered guard wants a precondition and names no capability --\n${scan.out}"
+# invariant: the ratchet holds -- the count of dependents that refuse when actually run stays under
+# a ceiling that only falls, so a runner written with a fresh hard assert reds on the lap it lands.
+assert scan.out contains "probe_under_ceiling=yes" else "precondition-dependent: more dependents refuse over an absent precondition than the ceiling allows --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "precondition-dependent: the census refused --\n${scan.out}\n${scan.err}"
+# invariant: every population is reported, empty or full. A reading printing only the fault would
+# leave a reader unable to tell a healthy tree from a scan that could see nothing.
+assert scan.out contains "dependents=" else "precondition-dependent: the population went unreported"
+assert scan.out contains "artifact_dependents=" else "precondition-dependent: the artifact population went unreported"
+assert scan.out contains "display_dependents=" else "precondition-dependent: the display population went unreported"
+assert scan.out contains "both_dependents=" else "precondition-dependent: the overlap went unreported"
+assert scan.out contains "builds_own=" else "precondition-dependent: the count already carrying the cure went unreported"
+assert scan.out contains "required_dependents=" else "precondition-dependent: the required population went unreported"
+assert scan.out contains "unrostered=" else "precondition-dependent: the unrostered population went unreported"
+assert scan.out contains "probe_green=" else "precondition-dependent: the probe reported no green count"
+assert scan.out contains "probe_unread=" else "precondition-dependent: the probe reported no unread count"
+
+say "precondition-dependent: and the two cures this reading points at are really built..."
+# invariant: the roster honors at least one capability probe. A witness that recommends a mechanism
+# the runner does not implement is prose rather than a door.
+let caps = run ["sh" "-c" "grep -c '^capability ' construction/standing-equipment.kyri || true"]
+# Both captures are said BARE and ABOVE their asserts (`shim_reason`, `late_say_rostered`,
+# `say_compose_bound`): a binding asserted on without reporting its capture files an evidence page
+# with no sentence in it, and an interpolation into the `else` pays the same debt into a bounded
+# StrBuf instead.
+say caps.out
+assert caps.ok else "precondition-dependent: the roster could not be read"
+assert (trim caps.out) != "0" else "precondition-dependent: the capability field this reading points at is named by no roster row"
+# invariant: the build-your-own cure names a file that exists. `builds_own` counts the shape; this
+# asserts the worked example the header cites is still on disk, since a header citing a moved path
+# teaches a reader a dead end.
+let e0 = run ["test" "-f" "tools/equinox/witness/equinox_season_e0_witness.rish"]
+say e0.err
+assert e0.ok else "precondition-dependent: the build-your-own worked example this header cites is gone"
+
+# The closing line names the READINGS rather than their figures. A GREEN line carrying a stale number
+# is worse than one carrying none, since a reader takes it for measurement; the scan's own lines are
+# said above and are the record.
+say "GREEN: precondition-dependent -- the class REDS %646 left as a sample now counted and RUN (read `dependents`, `probe_red`, and `builds_own` above), zero rostered guards wanting an undeclared precondition, and both cures proven to exist rather than recommended."

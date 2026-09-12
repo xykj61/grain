@@ -25,12 +25,12 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 1 |
 | [`comlink/`](../../comlink/README.md) | 74 | 15 |
 | [`constel/`](../../constel/README.md) | 32 | 40 |
-| [`construction/`](../../construction/README.md) | 1 | 65 |
+| [`construction/`](../../construction/README.md) | 1 | 66 |
 | [`crypto/`](../../crypto/README.md) | 82 | 123 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 133 | 126 |
+| [`glow/`](../../glow/README.md) | 133 | 127 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 252 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
