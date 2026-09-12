@@ -1,0 +1,73 @@
+# tools/l/lint_surface_census_witness.rish -- which rows of the lint table does a lap actually run?
+#
+#   rishi/bin/rishi run tools/l/lint_surface_census_witness.rish
+#
+# WHAT THIS GUARDS. `context/TAME_GUIDANCE.md` carries the tree's lint surface as a table under the
+# heading **Enforced now**, and beneath it a paragraph naming what actually holds those rows -- read
+# `20260911.112513`, and written down rather than assumed, which was the right instinct. It is a
+# hand-typed census carried inside prose, and the mark law already rules on that shape: COUNT, NEVER
+# NUMBER. A total inside a sentence stays at whatever it was on the day somebody typed it.
+#
+# IT WENT STALE IN ONE DAY. Measured over the guide's own history: 11 tools named and 5 rostered at
+# `20260911.050903`, 13 and 6 at `140923`, **14 and 7** today. Two rows seated later the same day
+# each arrived with a rostered guard beside it -- the tree working exactly as it should, and nothing
+# recomputing the sentence that described it.
+#
+# AND THE HEADLINE NEVER SIGNALLED THE DRIFT. Rows read TWENTY at every one of those commits and
+# reads twenty today, so the first figure a reader spot-checks agrees -- which buys the breakdown
+# beneath it a trust it has stopped earning. A census whose total stays right while its parts move
+# is worse than one that goes visibly wrong, because nothing in it looks wrong.
+#
+# WHAT THE INSTRUMENT ADDS OVER THE SENTENCE. Three states rather than two. A row is `rostered` when
+# it names a tool the standing roster carries by `path`; `driven` when it names an unrostered tool
+# BESIDE a rostered one in the same row, which is the table's own reading of the bans scan; and
+# `unreached` when no lap runs anything it names. That middle state is why the paragraph's SIX is
+# right where a naive count of unrostered tools reads seven, and a guard blind to it would call an
+# honest row broken and be turned off in a week.
+#
+# THE DERIVED SIX ARE THE HAND-NAMED SIX, exactly -- cellar_first_ring, claim_preserve,
+# dated_guard, designed_not_built, proven_seat, radiant_lint. Agreement on the population is what
+# makes the disagreement on the counts worth trusting.
+#
+# WHY ONE WALL AND ONE RATCHET. A table citing a tool absent from disk tells a reader to run
+# something that cannot run, repairable on the lap it lands, so **zero**. A row no lap runs is often
+# correct and reasoned -- claim_preserve refuses a bare invocation by design, designed_not_built
+# waits on a ruling, proven_seat wants a staged bench -- so a wall there would red on rows nobody
+# may repair, and a wall that reds on honest work is a wall somebody turns off.
+#
+# WHAT IT DOES NOT REACH. Whether a rostered guard actually CHECKS the rule its row claims. A tool
+# may run every lap and read a different question than the row beside it names. This asks only
+# whether a lap runs anything the row points at.
+#
+# Purely local -- no key, no network, no funds, no device. It reads two tracked files and a pen.
+
+say "lint-surface: Language EN -- a census typed into prose stops counting the day it is written."
+say "lint-surface: Style Gauge, Meter -- both fault populations are named beside their totals, since a bare count is visible the way a locked door is."
+say "lint-surface: Lens TAME -- docs and implementation stay synced; assert it rather than assume it."
+
+# 1 -- the pen. Every refusal planted and then lifted, and every state proven from both sides, so a
+# reader that always says `held` is caught by the same bytes that prove `held` works.
+let control = run ["sh" "tools/fixtures/l/lint_surface_census_control.sh"]
+say control.out
+say control.err
+assert control.ok else "lint-surface: a control case read the wrong way: ${control.out} ${control.err}"
+assert control.out contains "control_failed=0" else "lint-surface: the pen must balance before the field is believed: ${control.out}"
+assert control.out contains "legs=46" else "lint-surface: a leg left the pen unheard -- `control_failed=0` reads alike over a leg that failed and one deleted: ${control.out}"
+
+# 2 -- the field.
+let field = run ["sh" "tools/fixtures/l/lint_surface_census_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "lint-surface: the field reading refused: ${field.out} ${field.err}"
+assert field.out contains "tools_missing=0" else "lint-surface: the lint table cites a tool that is not on disk, so a reader is told to run something that cannot run: ${field.out}"
+assert field.out contains "unheld_ceiling=9" else "lint-surface: the ceiling moved -- it may fall when a row earns a rostered guard, and never rise: ${field.out}"
+assert field.out contains "verdict=ok" else "lint-surface: a row of the lint surface has lost its instrument, or one it cites has left the tree: ${field.out}"
+
+# 3 -- the reach, asserted rather than assumed. A walk that found nothing reports a perfect zero
+# (REDS %463), so the population is named here rather than trusted.
+assert (field.out contains "rows=0") == false else "lint-surface: the table walk read no rule row at all, so its reading means nothing: ${field.out}"
+assert (field.out contains "tools_rostered=0") == false else "lint-surface: not one cited tool matched the roster, which is a broken reader wearing a finding's clothes: ${field.out}"
+assert field.out contains "unreached_list:" else "lint-surface: the unreached population is named every run rather than behind a verb, since its size alone locates nothing: ${field.out}"
+assert field.out contains "missing_list:" else "lint-surface: the missing population is named every run for the same reason: ${field.out}"
+
+say "GREEN: lint-surface -- every row of the lint table names a tool that exists, and the ones no lap runs are named rather than counted."

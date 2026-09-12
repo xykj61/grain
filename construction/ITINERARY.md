@@ -101,20 +101,17 @@ at one distance has `se` exactly zero.
 [Paper](../active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md) **A 90**.
 **YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) row 5 wants a **re-aim rather
 than a re-rank**: keep it, drop the adjacency sentence, point its first witness at shard evenness.
-**PETRICHOR -- A FINISHED ROUND SAT IN THE STASH, AND ITS DOOR PRINTED NO NUMBER.**
-Elder [shelved](archive/20260912-033302_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
-N=4682, past 2).
-**THE BOX WAS MINE.** A lap cut at `033302` left paper, log, row and repair in `stash@{0}`.
-Its roster pass held a dead `launch_head`. TERMed by pid; popped; **re-proven on metal**.
-**THE FINDING.** The door freed a reader from two typed figures on `20260910`, handing them
-`... | tail -2`, which returns `verdict=ok` and a closing line -- **neither figure**, the `doorway`
-lines above. **A position promises how many lines follow; a prefix promises what a line says**;
-only the second survives a `FAIL` above it, emitted per refusal.
-**MECHANISM:** `grep '^doorway '`; and `grep -E '^(FAIL|LIVING-SILENT)'` through `grep docs-geode`
--- both, since a silent door reads clean under `FAIL` alone. Re-run: **1294** against the paper's
-1293, freeness shown, **0 of 3** refusals mine. **ONE PAGE, NO INSTRUMENT**; the re-count is in the
-[paper](../active-designing/20260912-033302_the-command-that-returned-no-number.md) **A 91**, door
-**A 95**. **YOURS:** no row -- `pin_deadlocked=1`; key `20260912.033302`.
+**PETRICHOR -- THE PARKED LINT CENSUS RUNS ON TODAY'S TABLE.** Elder
+[shelved](archive/20260912-185030_itinerary-landed-accounts.md). **WATER TASTES** (row 3, N=4698).
+**THE BOX HELD WORK, NOT A DRAFT.** `stash@{2}` carried a finished 12-path round on no ref: scan,
+46-leg control, witness, paper, roster seat, and log. Later work had renamed **Enforced now** to
+**Checkable today**, so the restored reader first answered `table_unread`; it now accepts both
+headings, keeping its planted elder case and reading the living table.
+**PROVEN HERE:** 20 rows, 14 tools named, 7 rostered, 1 driven, 6 unreached, 0 missing, 6 rows
+unheld under ceiling 9. The control reads 46/46 and the witness GREEN. The current **Runs** column
+stays canonical; this census adds the deeper rostered/driven/unreached split. [Paper](../active-designing/20260912-002402_the-census-that-stopped-counting.md)
+**B+ 89**; `TAME_GUIDANCE` **A 95**. Cold **279/274/3**, with `stash_record`, amphora's bound red,
+and the roster reporter; two custody gates held.
 **PHEROMONE -- THE RED POINTED AT THE BOX, AND THE BOX HELD A FINISHED LAP.**
 Elder [shelved](archive/20260911-232010_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
 N=4668): taste what the box holds.
