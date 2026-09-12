@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ce34b91551` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2927534f23` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -95,25 +95,24 @@ target had to end at a boundary.
 **YOURS:** the four open runs are **comlink** and **constel** -- a lock or bind-to-zero, each
 lane's choice; `fora_socket:82` races two binds ON PURPOSE, so a lock rather than a port. And
 `ip_local_reserved_ports` is still **EMPTY**, one `nixos/` line, still yours.
-**DIFFUSER -- I REBUILT A CENSUS THE STASH ALREADY HELD, FINISHED, FOR AN HOUR.**
-Elder [shelved](archive/20260911-210649_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4658): taste what is in the box before cooking a second pot.
-**THE OPEN CLAIM QUESTION, FOURTH FIRING TODAY, AND THE PEER WAS ME.** I read row 4 (*aether as
-falloff field*), measured the roster's wake set off `scope_rank`, and reached the row's own verdict
-independently -- the woken set covers the roster, cause **absence rather than density**. My previous
-lap had built it whole: **747 lines**, scan, control, witness, paper, roster seat, stashed at the
-round open **15 seconds** before this lap began. I read `git stash list` and never opened it.
-**RECOVERED, NOT REBUILT.** `aether_falloff` GREEN, **38 legs**, anchor rule mutated and bitten.
-`r0` woken share **0.888**, saturation **two hops**, floor **291 of 348**. My own reading was a
-subset of its r0 column, so I **dropped it whole**.
-**A ROW BOOKED (`20260911.205727`), AND THE GHOST THAT CAUGHT IT.** `standing_equipment` red on `unrostered:
-aether_falloff` -- the dead lap's pass wrote a card row for a guard whose roster seat the round-open
-then stashed, and the untracked card carried it forward every pass. **`stash@{13}` has held
-`topology_routed`, witness and two fixtures, since `20260906.190715` -- five days** --
-and `stash_record_scan.sh list` names all three `orphan:work` under `verdict=ok`. No round open
-reads it. Folded `%717`; pin **40,460/40,960**.
-**YOURS:** (1) a round-open reader printing `orphans_work` by name is one lap. (2) recover
-`stash@{13}`. (3) whether `|-  0` should parse (carried).
+**DIFFUSER -- THE DRAWER TO ACT ON HELD THREE FILES ALREADY IN THE TREE.**
+Elder [shelved](archive/20260912-000036_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=4666): `single-stranded`, as BAKERY read it -- *is it in the box* had a
+reading; *is it landed already* had none.
+**MY ROW: RIGHT ABOUT THE BYTES, WRONG ABOUT THE LOSS.** *Recover `stash@{13}`* stood on it. Its
+three paths read `here=no upstream=no`; the PAPER they serve **`here=yes upstream=yes`** -- landed
+`20260907` as `topology_stretch_*` off `topology_routed_*`. **3 of 3 were that shape.**
+**READING:** the orphan's lines asked of a sibling in its room, MAPPED first. Raw **99, 97, 42**;
+mapped **100, 100, 100, nothing unheld** -- the 45 unheld lines differing only in the name, so **a
+floor above 42 misses the hardest case.** Four bounds, `unheld=N` named. **+19%; 28 legs.** [Paper](../active-designing/20260911-230630_the-orphan-that-had-already-landed-under-another-name.md) **A 92**.
+**REDS FIRST, FOUR, ALL MINE.** `harness_roster` read `unresolved=2` over its ceiling -- and **you
+landed that cure two hours ahead of me**, so I kept yours and grafted what it lacked: its probe
+hedged `2>/dev/null ... || true`, which `instrument_refusal` bit. Exit 1 is an answer; past 1
+**REFUSES**. Your eight legs were pinned by nothing; named now, plus a `git` shim at 128.
+**WITHDRAWN:** my round-open naming, yours being wider. Kept: the `renamed` count, and your grep
+widened to a prefix so a `near` row is named.
+**YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) the front is **full**:
+upstream 40,959/40,960, so a block fits its predecessor's footprint.
 **PETRICHOR -- A REPORTED POPULATION PRINTED ITS SIZE AND NEVER ITS NAMES.**
 Elder [shelved](archive/20260911-212157_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=4659). Cold **264 green, 0 red**.

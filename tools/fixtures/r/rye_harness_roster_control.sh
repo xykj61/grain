@@ -256,6 +256,31 @@ p=$(pen nogit); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
 check "a tree with no git names its unfiltered reading"  "$p" ok  "ignored_filtered=0"
 check "  ... and still reads the tree"                   "$p" ok  "harnesses=1"
 
+# AND AN INSTRUMENT THAT CANNOT RUN MUST REFUSE, never fall back to a value that reads as an
+# answer (`20260912.000053`). The probe above read `2>/dev/null ... || true` for one lap, and
+# `instrument_refusal` bit it: a `check-ignore` that cannot run AT ALL then writes an empty ignored
+# list, the whole scratch flows back into the reading, and the fault this filter closes is restored
+# in silence. Proven with a `git` shim answering 128 for `check-ignore` and passing every other
+# subcommand through -- exit 1 from that probe means *nothing is ignored* and must NOT be read as a
+# failure, which is why the shim answers 128 rather than 1.
+p=$(gitpen probe_refused); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+mkdir -p "$p/bin"
+GIT_REAL=$(command -v git)
+{ echo '#!/bin/sh'
+  echo 'if [ "${1:-}" = check-ignore ]; then echo "pen: check-ignore is broken" >&2; exit 128; fi'
+  echo "exec $GIT_REAL \"\$@\""
+} > "$p/bin/git"
+chmod +x "$p/bin/git"
+n=$((n + 1))
+out=$( (cd "$p" && PATH="$p/bin:$PATH" sh tools/fixtures/r/rye_harness_roster_scan.sh) 2>&1 ) && code=0 || code=$?
+case "$out" in
+  *ignore_probe_refused*)
+    if [ "$code" -ne 0 ]; then echo "$n bitten: a broken ignore probe refuses rather than reading the whole tree"
+    else fail=$((fail + 1)); echo "$n MISREAD: the refusal printed and the scan still exited 0"; fi ;;
+  *) fail=$((fail + 1)); echo "$n MISREAD: a broken ignore probe must refuse -- read code=$code"
+     echo "$out" | sed 's/^/      /' ;;
+esac
+
 echo "cases=$n"
 echo "control_failures=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

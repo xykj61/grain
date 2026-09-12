@@ -141,9 +141,28 @@ find . -name '*.rish' -o -name '*.sh' 2>/dev/null \
   | sed 's|^\./||' | grep -vE '^(vendor|gratitude|seed)/' \
   | grep -vE 'rye_harness_roster|rye_compile_reach_control' | sort > "$TMP/all_scripts"
 ignored_filtered=0
+# TWO READINGS, TWO QUESTIONS: the flag says WHETHER the filter ran, the count says how much it
+# dropped. A reader distrusting a small `unresolved` wants the second, and a reader on a pen with
+# no git wants the first (`20260912.000053`).
+ignored_read_past=0
 if git rev-parse --git-dir >/dev/null 2>&1; then
   ignored_filtered=1
-  git check-ignore --stdin < "$TMP/all_scripts" > "$TMP/ignored" 2>/dev/null || true
+  # AND THE PROBE ANSWERS OR REFUSES -- never both, hedged into silence (`20260912.000053`). This
+  # call read `2>/dev/null ... || true` for one lap, and `instrument_refusal` bit it: a
+  # `check-ignore` that cannot run AT ALL then writes an empty ignored list, the whole scratch
+  # flows back into the reading, and the fault this filter exists to close is restored WITHOUT a
+  # word. Exit 1 means *nothing here is ignored*, which is an answer. Anything past 1 is the
+  # instrument failing, and a scan whose instrument failed has no reading to report.
+  git check-ignore --stdin < "$TMP/all_scripts" > "$TMP/ignored" 2>"$TMP/ignored_err"
+  ci=$?
+  case "$ci" in
+    0|1) : ;;
+    *) echo "ignore_probe_exit=$ci"
+       sed 's/^/detail: /' "$TMP/ignored_err" 2>/dev/null | head -3
+       echo "verdict=ignore_probe_refused"
+       exit 1 ;;
+  esac
+  ignored_read_past=$(grep -c . "$TMP/ignored" || true)
   grep -vxF -f "$TMP/ignored" "$TMP/all_scripts" > "$TMP/scripts" || : > "$TMP/scripts"
 else
   cp "$TMP/all_scripts" "$TMP/scripts"
@@ -381,6 +400,7 @@ if [ "$MODE" = list ]; then
 fi
 
 echo "scripts=$(wc -l < "$TMP/scripts" | tr -d ' ')"
+echo "ignored_read_past=$ignored_read_past"
 echo "build_sites=$sites_total"
 echo "sites_literal=$sites_literal"
 echo "sites_assembled=$sites_assembled"
@@ -391,6 +411,7 @@ echo "stems_absent=$n_absent"
 echo "files_unlisted=$n_unlisted"
 echo "assemblers_not_harnesses=$n_nonharness"
 echo "ignored_filtered=$ignored_filtered"
+echo "ignored_read_past=$ignored_read_past"
 echo "unresolved=$n_unresolved"
 echo "unresolved_ceiling=$unresolved_ceiling"
 

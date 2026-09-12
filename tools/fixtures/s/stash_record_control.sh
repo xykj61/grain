@@ -330,5 +330,131 @@ ck "the landed path counts as unread"    "unread=1"        "$out"
 ck "with the partition still holding"    "orphan_kinds=partition" "$out"
 ck "and every stash still standing"      "fleet-round-open" "$( g -C "$pen/kinds" stash list )"
 
+
+# ============================================================================================
+# THE RENAME READING -- the class between the exact probe and the basename one.
+#
+# Every pen below writes a landed file and stashes an untracked ELDER whose body differs from it
+# ONLY in the name, which is what a rename actually leaves behind. The bodies are built so the RAW
+# share sits at 70 percent and the MAPPED share at 100, so the floor leg and the mapping leg prove
+# each other: remove the mapping and the strong case falls out of the class by itself.
+# ============================================================================================
+
+# The landed body and its elder twin, written by one function so the pair can never drift apart in
+# the pen itself -- a pen whose two files disagree for a reason nobody meant proves nothing.
+body() { # $1 the name as this copy spells it
+  printf '# tools/fixtures/t/%s_scan.sh -- the reading\n' "$1"
+  printf 'say "%s: one"\n'  "$(printf '%s' "$1" | tr '_' '-')"
+  printf 'say "%s: two"\n'  "$(printf '%s' "$1" | tr '_' '-')"
+  printf 'echo alpha\necho beta\necho gamma\necho delta\necho epsilon\necho zeta\necho eta\n'
+}
+
+g init -q -b main "$pen/rename"
+mkdir -p "$pen/rename/tools/fixtures/t"
+( cd "$pen/rename"
+  body shape_stretch > tools/fixtures/t/shape_stretch_scan.sh
+  g add -A && g commit -qm "the landed reading" )
+ren() { ( cd "$pen/rename" && sh "$1" 2>&1 ); }
+mkdir -p "$pen/rename/tools/fixtures/t"
+body shape_routed > "$pen/rename/tools/fixtures/t/shape_routed_scan.sh"
+( cd "$pen/rename" && g stash push -u -m "fleet-round-open 20260101-101010: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(ren "$src"); outall=$( ( cd "$pen/rename" && sh "$src" all 2>&1 ) )
+ck "a renamed landing is one orphan"        "orphans=1"          "$out"
+ck "and it is read as renamed"              "orphans_renamed=1"  "$out"
+ck "naming the living path and the remainder" "tools/fixtures/t/shape_routed_scan.sh	orphan:renamed:tools/fixtures/t/shape_stretch_scan.sh:unheld=0" "$outall"
+ck "the work drawer is empty"                "orphans_work=0"    "$out"
+nk "and it is never called work"             "shape_routed_scan.sh	orphan:work" "$outall"
+ck "the four kinds still partition"          "orphan_kinds=partition" "$out"
+ck "one sibling was read to answer it"       "rename_reads=1"    "$out"
+ck "list names it too"                       "orphan:renamed"    "$( ( cd "$pen/rename" && sh "$src" list 2>&1 ) )"
+
+# THE MAPPING IS LOAD-BEARING, proven by removing it. The two `say` lines spell the name with
+# hyphens, as a guard's own claim lines do, so a copy that maps only the underscore spelling reads
+# 80 percent against a floor of 90 -- and the strong case falls out of the class. This is the leg
+# that says why the mapped reading exists at all: unmapped, this tree's own three orphans read 97,
+# 99 and 42.
+sed -e '/to\[ns\] = gc/d' -e '/"-" a\[at\]/d' "$src" > "$pen/no_hyphen.sh"
+outnh=$(ren "$pen/no_hyphen.sh")
+ck "unmapped, the hyphen spelling is unheld" "orphans_renamed=0"      "$outnh"
+ck "so it falls back to the work drawer"     "orphans_work=1"         "$outnh"
+ck "named as near rather than silent"        "orphans_renamed_near=1" "$outnh"
+
+# AND THE FLOOR IS LOAD-BEARING, proven by lowering it to zero: an unrelated sibling then claims
+# the orphan, which is exactly the guess a triage column must never make.
+sed -e 's/^rename_floor=90$/rename_floor=0/' "$src" > "$pen/no_floor.sh"
+g init -q -b main "$pen/unrelated"
+mkdir -p "$pen/unrelated/tools/fixtures/t"
+( cd "$pen/unrelated"
+  printf 'one\ntwo\nthree\nfour\nfive\nsix\nseven\necho alpha\necho beta\nten\n' > tools/fixtures/t/other_stretch_scan.sh
+  g add -A && g commit -qm "an unrelated landing" )
+mkdir -p "$pen/unrelated/tools/fixtures/t"
+body other_routed > "$pen/unrelated/tools/fixtures/t/other_routed_scan.sh"
+( cd "$pen/unrelated" && g stash push -u -m "fleet-round-open 20260101-101111: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+outu=$( ( cd "$pen/unrelated" && sh "$src" 2>&1 ) )
+outuf=$( ( cd "$pen/unrelated" && sh "$pen/no_floor.sh" 2>&1 ) )
+ck "an unrelated sibling makes no claim"  "orphans_renamed=0" "$outu"
+ck "and stays in the work drawer"         "orphans_work=1"    "$outu"
+ck "with the floor at zero it claims"     "orphans_renamed=1" "$outuf"
+
+# DOMINANCE. Two siblings answering equally well make the claim a coin toss, so neither is named --
+# the same rule the `moved` class already keeps for an ambiguous basename.
+g init -q -b main "$pen/twins"
+mkdir -p "$pen/twins/tools/fixtures/t"
+( cd "$pen/twins"
+  body shape_stretch > tools/fixtures/t/shape_stretch_scan.sh
+  body shape_relaxed > tools/fixtures/t/shape_relaxed_scan.sh
+  g add -A && g commit -qm "two landed readings" )
+mkdir -p "$pen/twins/tools/fixtures/t"
+body shape_routed > "$pen/twins/tools/fixtures/t/shape_routed_scan.sh"
+( cd "$pen/twins" && g stash push -u -m "fleet-round-open 20260101-101212: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+outt=$( ( cd "$pen/twins" && sh "$src" 2>&1 ) )
+ck "two equal answers make no claim"   "orphans_renamed=0"      "$outt"
+ck "the orphan stays work"             "orphans_work=1"         "$outt"
+ck "and the near reading names it"     "orphans_renamed_near=1" "$outt"
+ck "both siblings were read"           "rename_reads=2"         "$outt"
+
+# THE NEAR BAND, on its own: a sibling carrying most of the orphan and not nearly all of it. Seven
+# of the ten lines land, which is 70 percent -- above the near floor, below the claim floor.
+g init -q -b main "$pen/near"
+mkdir -p "$pen/near/tools/fixtures/t"
+( cd "$pen/near"
+  { printf '# tools/fixtures/t/shape_stretch_scan.sh -- the reading\n'
+    printf 'say "shape-stretch: one"\nsay "shape-stretch: two"\n'
+    printf 'echo alpha\necho beta\necho gamma\necho delta\n'
+    printf 'echo CHANGED\necho ALSO\necho AGAIN\n'; } > tools/fixtures/t/shape_stretch_scan.sh
+  g add -A && g commit -qm "a landing that moved on" )
+mkdir -p "$pen/near/tools/fixtures/t"
+body shape_routed > "$pen/near/tools/fixtures/t/shape_routed_scan.sh"
+( cd "$pen/near" && g stash push -u -m "fleet-round-open 20260101-101313: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+outn=$( ( cd "$pen/near" && sh "$src" 2>&1 ) ); outna=$( ( cd "$pen/near" && sh "$src" all 2>&1 ) )
+ck "most is not nearly all"            "orphans_renamed=0"      "$outn"
+ck "so the near count stands at one"   "orphans_renamed_near=1" "$outn"
+ck "the row names the share it read"   "work:near:tools/fixtures/t/shape_stretch_scan.sh:70" "$outna"
+ck "and it is still counted as work"   "orphans_work=1"         "$outn"
+
+# TWO WAYS A NAME IS NOT ONE RENAME APART, and both fall through rather than guessing: a different
+# token COUNT, and a sibling in another room. The bodies are identical on purpose, so the only
+# thing under test is the name and the room.
+g init -q -b main "$pen/shape"
+mkdir -p "$pen/shape/tools/fixtures/t" "$pen/shape/tools/other"
+( cd "$pen/shape"
+  body shape_stretch_second > tools/fixtures/t/shape_stretch_second_scan.sh
+  body wander_stretch       > tools/other/wander_stretch_scan.sh
+  g add -A && g commit -qm "a longer name and a far room" )
+mkdir -p "$pen/shape/tools/fixtures/t"
+body shape_stretch > "$pen/shape/tools/fixtures/t/shape_stretch_scan.sh"
+body wander_routed > "$pen/shape/tools/fixtures/t/wander_routed_scan.sh"
+( cd "$pen/shape" && g stash push -u -m "fleet-round-open 20260101-101414: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+outs=$( ( cd "$pen/shape" && sh "$src" 2>&1 ) )
+ck "two orphans stand in the box"           "orphans=2"         "$outs"
+ck "neither is one rename apart"            "orphans_renamed=0" "$outs"
+ck "so both stay in the work drawer"        "orphans_work=2"    "$outs"
+ck "and no sibling was ever opened"         "rename_reads=0"    "$outs"
+
+# AN EMPTY BOX READS ZERO READS, so the count is honest about a pass that opened nothing.
+outempty=$( ( cd "$pen/rename" && g stash drop -q "stash@{0}" >/dev/null 2>&1; sh "$src" 2>&1 ) )
+ck "an empty box opens no sibling"  "rename_reads=0" "$outempty"
+ck "and holds its partition"        "orphan_kinds=partition" "$outempty"
+
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1
