@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0d8e140a20` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `543029de43` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD'S BINARY LANDS AT A PATH NOBODY LOCKS.** Elder
 [shelved](archive/20260912-024638_itinerary-landed-accounts.md). **EARTH BREATHES IN** (row 4,

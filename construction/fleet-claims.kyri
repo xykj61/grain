@@ -64,12 +64,6 @@ stamp 20260912.041507
 epoch 1789200907
 paths mantra/src/weave_apply_witness.rye tools/m/mantra_weave_apply_witness.rish tools/fixtures/m/mantra_weave_apply_control.sh
 what A witness for Weave.apply, which no guard owns: its delete half stated three preconditions and asserted them, so a stale or hand-built diff met exit 134 where the insert half refuses by name. Three named refusals land plus the witness that holds them.
-claim torus-fold
-seat diffuser
-stamp 20260912.042235
-epoch 1789201355
-paths tools/fixtures/t/torus_fold_scan.sh tools/fixtures/t/torus_fold_control.sh tools/t/torus_fold_witness.rish active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md
-what Row 5 of the bounded-torus moonshots: whether folding Tablecloth's SHA3-512 resins onto a 256x256 torus buys adjacency. Its falsifier is clustering; a cryptographic hash cannot cluster, so the falsifier fails -- and the same uniformity that clears it is what makes fold-adjacency carry no relation. Measuring both halves on the tree's real bytes.
 claim tree-moved-names
 seat incense
 stamp 20260912.043553
