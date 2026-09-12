@@ -135,7 +135,7 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 # before they shipped, so the wall bit at write time rather than a week later, and the reading
 # below is what the tree answers with this lap's own repair already inside it.
 #
-# 928 `20260911.083000`. The reading refused on this ship's cold pass at **937 against 936**, and
+# 928 `20260911.083000`. The reading refused on this ship's cold endurance run at **937 against 936**, and
 # measuring the commit before it answered **938** -- so the wall had stood under water across two
 # commits and the lap that met it had already lowered the count by one. That is the growth this
 # block's own paragraph above names: a ceiling with no slack over a population ordinary work grows
@@ -277,7 +277,7 @@ alias_count=$(grep -c . "$work/alias" || true)
 # travels, the count `pass=15 fail=1` travels, and the one clause naming WHICH behavior failed does
 # not. The evidence page reads: this guard is red, and nothing more.
 #
-# Found by a red rather than by a search. `fleet_watch` reddened a cold pass on `20260906.233111`,
+# Found by a red rather than by a search. `fleet_watch` reddened a cold endurance run on `20260906.233111`,
 # filed seven lines that could not name a behavior, and then passed sixteen of sixteen on six
 # consecutive re-runs -- so the one reading that could have diagnosed a flake was the reading the
 # witness threw away. Measured the same hour: EIGHT controls print FAIL to stderr, five of them are
@@ -376,7 +376,7 @@ reason_lost_unrostered=$(awk '$1 == "unrostered"' "$work/reason_rows" | grep -c 
 # travels; the reading does not. Same law as the two shapes above, third mechanism: the reason is
 # forwarded, and forwarded after the door has already closed.
 #
-# THIS FIRED TWICE ON ONE MORNING, on the fleet's own metal, in one cold pass. `20260907.042817`
+# THIS FIRED TWICE ON ONE MORNING, on the fleet's own metal, in one cold endurance run. `20260907.042817`
 # came back `guards_red=2`, and NEITHER evidence page could name its cause. `index_row_bound` had
 # a real fault -- one row of the open day shelf standing above a newer one -- and reproduced when
 # its scan was run by hand. `shipped_binary_claim` did not reproduce: its control passed on the

@@ -42,7 +42,7 @@
 #
 #   ONE PASS AT A TIME. The runner takes a directory lock at zero wait before it measures anything,
 #   and a second pass in the same tree refuses under `run_verdict=run_in_flight` naming the pid that
-#   holds it. Two cold passes ran in one tree for fifty minutes with nothing to say so, while a
+#   holds it. Two cold endurance runs ran in one tree for fifty minutes with nothing to say so, while a
 #   choir that clears its own bin directory before it sings deleted binaries the other pass was
 #   using (REDS %359). The lock primitive is proven in tools/fixtures/s/shell_portable_control.sh;
 #   what is proven here is the runner's use of it, and the load-bearing case is that a refusing
@@ -269,7 +269,7 @@ assert control.out contains "moved_tree_refuses=yes" else "standing-equipment: a
 assert control.out contains "moved_tree_keeps_lines=yes" else "standing-equipment: a moved tree must still print every guard line it learned"
 assert control.out contains "red_outranks_moved=yes" else "standing-equipment: a guard red is the louder finding and keeps the verdict"
 
-# HOW FAR BEHIND THE ANOINTED ORDER A PASS OPENED (`20260910.060000`). A cold pass costs about forty
+# HOW FAR BEHIND THE ANOINTED ORDER A PASS OPENED (`20260910.060000`). A cold endurance run costs about forty
 # minutes and the fleet lands five to seven commits an hour, so a lap that opens the roster instead
 # of the round-open measures a tree the fleet has already left -- and one lap spent itself
 # rebuilding a repair that had landed in a commit it opened three behind. The distance is read off
@@ -291,8 +291,8 @@ assert control.out contains "porcelain_blind_to_content=yes" else "standing-equi
 assert control.out contains "modified_rewrite_moves=yes" else "standing-equipment: rewriting an already-modified file under the run must move the digest"
 assert control.out contains "modified_rewrite_refuses=yes" else "standing-equipment: rewriting an already-modified file under the run must refuse under run_verdict=tree_moved"
 assert control.out contains "untracked_rewrite_moves=yes" else "standing-equipment: rewriting an already-untracked file under the run must move the digest"
-assert control.out contains "restaged_rewrite_moves=yes" else "standing-equipment: re-staging an edit under a --hot pass must move the digest"
-assert control.out contains "restaged_rewrite_refuses=yes" else "standing-equipment: re-staging an edit under a --hot pass must refuse under run_verdict=tree_moved"
+assert control.out contains "restaged_rewrite_moves=yes" else "standing-equipment: re-staging an edit under a --hot endurance run must move the digest"
+assert control.out contains "restaged_rewrite_refuses=yes" else "standing-equipment: re-staging an edit under a --hot endurance run must refuse under run_verdict=tree_moved"
 assert control.out contains "staged_modified_rewrite_moves=yes" else "standing-equipment: rewriting a staged-and-modified file under the run must move the digest"
 assert control.out contains "dirty_still_tree_reads_no=yes" else "standing-equipment: a dirty tree that stands still must read tree_moved=no"
 assert control.out contains "dirty_still_tree_passes=yes" else "standing-equipment: a dirty tree that stands still must pass"
@@ -303,11 +303,11 @@ assert control.out contains "staged_still_tree_passes=yes" else "standing-equipm
 # class fired again eleven hours later (REDS %223), so the runner refuses rather than reports -- and
 # the refusal is proven against a clean cold open, which it must leave entirely alone.
 assert control.out contains "clean_cold_reads_zero=yes" else "standing-equipment: a clean cold open must read zero staged"
-assert control.out contains "clean_cold_passes=yes" else "standing-equipment: a clean cold open must run its guards and pass"
+assert control.out contains "clean_cold_endurance_runs=yes" else "standing-equipment: a clean cold open must run its guards and pass"
 assert control.out contains "staged_cold_refuses=yes" else "standing-equipment: a full-roster pass over a dirty index must refuse under run_verdict=lap_unclosed"
 assert control.out contains "staged_cold_refuses_early=yes" else "standing-equipment: the unclosed lap must refuse before the first guard runs"
 assert control.out contains "staged_cold_skips_digest=yes" else "standing-equipment: a refused pass measured nothing, so it prints no tree digest"
-assert control.out contains "staged_hot_passes=yes" else "standing-equipment: --hot must pass the same tree, since the staged paths are the round's own"
+assert control.out contains "staged_hot_endurance_runs=yes" else "standing-equipment: --hot must pass the same tree, since the staged paths are the round's own"
 assert control.out contains "hot_still_reads_staged=yes" else "standing-equipment: --hot must still report the staged count it declines to refuse over"
 assert control.out contains "staged_named_guard_free=yes" else "standing-equipment: a guard asked for by name is no lap open and runs free"
 assert control.out contains "hot_composes_with_all=yes" else "standing-equipment: --hot must compose with --all"
@@ -342,7 +342,7 @@ assert control.out contains "known_capability_free=yes" else "standing-equipment
 # than a host one. `sow_allow_reach` reads the shipped side and needs a projection at `seed/`, which
 # is gitignored and absent from every fresh clone, so rostered `tier lap` with no capability it went
 # red on every tree that had not projected -- and a red guard withholds the roster receipt, which
-# costs each ship a full cold pass every lap.
+# costs each ship a full cold endurance run every lap.
 assert control.out contains "seed_present_runs=yes" else "standing-equipment: a checkout holding a projection must run the guard that reads it"
 assert control.out contains "seed_present_skips_none=yes" else "standing-equipment: a present projection must skip nothing"
 assert control.out contains "seed_absent_skips=yes" else "standing-equipment: a checkout with no projection must skip the guard rather than red on an environment fact"
@@ -353,7 +353,7 @@ assert control.out contains "seed_env_followed=yes" else "standing-equipment: th
 assert control.out contains "day_absent_skips=yes" else "standing-equipment: a day with no shelf yet must skip the guard that counts that day's logs, rather than red on the clock"
 assert control.out contains "day_absent_counted=yes" else "standing-equipment: that skip must be counted"
 assert control.out contains "day_absent_named=yes" else "standing-equipment: that skip must name the guard and the capability, or it is a quiet hole"
-assert control.out contains "day_absent_still_passes=yes" else "standing-equipment: a day that has not started yet is a cadence rather than a fault -- the receipt it withholds costs every ship a full cold pass"
+assert control.out contains "day_absent_still_passes=yes" else "standing-equipment: a day that has not started yet is a cadence rather than a fault -- the receipt it withholds costs every ship a full cold endurance run"
 assert control.out contains "day_untracked_skips=yes" else "standing-equipment: a shelf whose only log is untracked must read absent, since the guard's own scan asks git the same question"
 assert control.out contains "day_present_runs=yes" else "standing-equipment: a day whose shelf carries a tracked log must run the guard like any other row"
 assert control.out contains "day_present_skips_none=yes" else "standing-equipment: a present day shelf must skip nothing"
@@ -458,7 +458,7 @@ assert control.out contains "unblocked_basis_reads_none=yes" else "standing-equi
 assert control.out contains "green_close_names_no_withholding=yes" else "standing-equipment: a green close names no withholding -- the line is caused by the red"
 assert control.out contains "green_close_writes_receipt=yes" else "standing-equipment: a fully green full close writes the receipt"
 
-# ONE PASS AT A TIME (REDS %359). Two cold passes ran in this pier's tree for fifty minutes and
+# ONE PASS AT A TIME (REDS %359). Two cold endurance runs ran in this pier's tree for fifty minutes and
 # neither said so, while a choir that clears its own bin directory before it sings deleted the
 # binaries the other pass's rungs were using. The lock primitive -- taken, refused, released,
 # reaped -- is proven in tools/fixtures/s/shell_portable_control.sh; these prove the runner's own
@@ -487,7 +487,7 @@ assert control.out contains "orphan_names_the_repair=yes" else "standing-equipme
 assert control.out contains "orphan_left_running=yes" else "standing-equipment: a refused pass must never stop the holder -- an orphan is still a live writer, and reaping one would be a body ending another's work (REDS %291)"
 assert control.out contains "orphan_keeps_its_lock=yes" else "standing-equipment: a refused pass must leave an orphan's lock exactly where it found it"
 # AND THE PARENT READING MISSES THE SHAPE THIS FLEET MAKES (20260906.231137). A lap that launches
-# its hot pass detached -- `( sh runner --hot > out; echo EXIT=$? ) &` -- forks a subshell to carry
+# its hot endurance run detached -- `( sh runner --hot > out; echo EXIT=$? ) &` -- forks a subshell to carry
 # that compound command, so the runner's parent is the subshell rather than the lap. When the lap
 # ends, the SUBSHELL reparents to init while the runner's own ppid goes on naming it, alive. The
 # reading above answers `alive` for a lap that has gone, and the refusal then prints no repair at

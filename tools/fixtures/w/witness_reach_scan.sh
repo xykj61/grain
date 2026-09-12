@@ -224,7 +224,7 @@ done
 # same motion, two families gaining their first clock.
 # HELD AT 1093 on 20260830.214500. The sixth of that set, mechanism_sentence, was rostered this
 # round and DID lower the reading by one -- the seed subject the commit wall exempts became
-# Keaton's word on 20260830.190407 (`crashed-meteor`), and the last tracked site planting the
+# Keaton's word on 20260912 (`crashed-wave`), and the last tracked site planting the
 # retired spelling was the wall's own fixture. The fall did not survive the send: two witnesses
 # landed upstream in the same window, unrostered, and the population came back to 1093. A ceiling
 # reports what the tree reads, so it stands where it was published rather than recording a fall

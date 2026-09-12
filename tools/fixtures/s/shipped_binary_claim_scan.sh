@@ -49,7 +49,7 @@ scope="${1:-.}"
 # direction: a peer's truncation empties the file mid-append and the count reads zero, a peer's
 # removal deletes it before `wc -l` reads it, and a peer's hits are counted as this tree's. The
 # last is the worst, because it is the shape that reports a false claim against a page that never
-# made one. It fired on this pier's cold pass of `20260907.150519`, where this guard read red in
+# made one. It fired on this pier's cold endurance run of `20260907.150519`, where this guard read red in
 # company and GREEN alone. `mktemp -d` asks the kernel for a name no two runs can agree on, and the
 # trap removes only what this process made.
 pen=$(mktemp -d)

@@ -29,7 +29,7 @@
 #
 # THE DECLARED LIMIT: this reads a NUMBER NEXT TO A UNIT inside a row's comment, and it
 # cannot tell whose cost that number is. The standing counterexample is `sow_allow_reach`,
-# whose preamble names "778s" for a whole cold pass rather than for itself. So every drifted
+# whose preamble names "778s" for a whole cold endurance run rather than for itself. So every drifted
 # row prints as a detail line with both numbers, and a hand confirms before anything moves.
 #
 # THE CARD COUNTS WHOLE SECONDS, so a row stating 0.6s and measured at 1 has drifted by
@@ -47,7 +47,7 @@
 # both figures to both names would buy coverage with a wrong number, so the header is read past
 # and `caravan_suite` reads as stating nothing.
 #
-# THE UNMEASURED ARE THE POINT, NOT THE REMAINDER. A cold pass runs the lap tier alone, so a
+# THE UNMEASURED ARE THE POINT, NOT THE REMAINDER. A cold endurance run runs the lap tier alone, so a
 # `cadence` row's stated cost goes unchecked by every cold transcript -- and the cadence rows
 # are where the largest figures live. That count is reported as its own value.
 set -eu

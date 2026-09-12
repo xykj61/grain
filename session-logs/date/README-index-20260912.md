@@ -11,11 +11,16 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.165121` | [the four parked laps came home](20260912/20260912-165121_the-four-parked-laps-came-home.kyri) | four completed unsent laps recovered as one set |
 | `20260912.163124` | [the parked door came home](20260912/20260912-163124_the-parked-door-came-home.kyri) | recovered a finished docs-geode lap from the dead-letter box |
 | `20260912.162301` | [the binary that stays with its reading](20260912/20260912-162301_the-binary-that-stays-with-its-reading.kyri) | 18 Amphora guards moved builds into per-run pens |
 | `20260912.162152` | [the recovered fold landed whole](20260912/20260912-162152_the-recovered-fold-landed-whole.kyri) | the parked torus instrument was restored and re-proved before send |
 | `20260912.153216` | [the fold recovered on today's tree](20260912/20260912-153216_the-fold-recovered-on-todays-tree.kyri) | the parked 28-leg torus reading held on today's bytes |
 | `20260912.150836` | [Codex default provenance](20260912/20260912-150836_the-fleet-default-carried-its-provenance.kyri) | the selected model reaches the loop and both rule doors |
+| `20260912.150623` | [crashed wave called seven ships](20260912/20260912-150623_the-crashed-wave-called-seven-ships.kyri) | one clean root crossed; seven sail; Incense waits |
+| `20260912.145410` | [endurance road reached the anonymous seed](20260912/20260912-145410_the-endurance-road-reached-the-anonymous-seed.kyri) | proof lightened; seeds crossed; watch waits |
+| `20260912.143726` | [receipt cloth at the still pier](20260912/20260912-143726_the-receipt-cloth-was-molted-at-the-still-pier.kyri) | two products share one cloth; all ships wait |
+| `20260912.142315` | [fleet course returned to the Compass](20260912/20260912-142315_the-fleet-course-returned-to-the-compass.kyri) | eight ships share one lasting crossing |
 | `20260912.044314` | [the fold that had nothing to hold](20260912/20260912-044314_the-fold-that-had-nothing-to-hold.kyri) | row 5 cleared its falsifier, and the clearing is what killed it |
 | `20260912.035328` | [the round that was cut](20260912/20260912-035328_the-round-that-was-cut-and-the-clock-that-held-its-lock.kyri) | a cut lap's work recovered, re-proven |
 | `20260912.033302` | [the command that returned no number](20260912/20260912-033302_the-command-that-returned-no-number.kyri) | a door's free-number repair printed a tail returning none |

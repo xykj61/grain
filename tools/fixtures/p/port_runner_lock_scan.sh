@@ -7,7 +7,7 @@
 # the ones two modules share. That reading answers *can two modules meet*. It cannot answer the
 # question a fleet pass actually asks, which is *does the roster run a binder at all, and is that
 # run held apart from the seven other ships running the same guard on the same machine at the same
-# second*. REDS %700 is what the unanswered half costs: a rostered witness read red on one cold pass
+# second*. REDS %700 is what the unanswered half costs: a rostered witness read red on one cold endurance run
 # and green on a re-run over an unchanged tree, and naming the cause took a fortnight.
 #
 # THE TWO QUESTIONS CROSS, AND THE CROSSING IS THE POINT.

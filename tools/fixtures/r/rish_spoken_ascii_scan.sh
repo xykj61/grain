@@ -119,7 +119,7 @@ mode="${1:-count}"
 #                             `--`. The other two came from a sweep that should have been whole and
 #                             was not: `tools/o/onboarding_path_witness.rish` asserts that exact
 #                             line as its contract's acceptance line, and a grep over `.md` pages
-#                             never reached it. `acme_dx` reddened the hot pass and named it. A
+#                             never reached it. `acme_dx` reddened the hot endurance run and named it. A
 #                             reference lives in code as readily as in prose. The reading fell
 #                             10,456 -> 10,453; this falls with it, keeping the same 80 of slack.
 CEILING=10533

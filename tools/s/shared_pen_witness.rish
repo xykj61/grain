@@ -7,7 +7,7 @@
 #
 # It has now fired three times in two laps, and each time the witness was GREEN when run alone:
 # `signal_trap` and `tlb_reach` on `20260906.213507`, and `amphora_restore_negative` on this pier's
-# cold pass at `20260906.222342`, whose assertion read `tamper refusal must leave no out-home` while
+# cold endurance run at `20260906.222342`, whose assertion read `tamper refusal must leave no out-home` while
 # a peer's `rm -rf /tmp/amphora_rneg_home` was the only thing that had touched it. Green alone and
 # red in company is the signature. A lantern that fires twice becomes a loom.
 #
@@ -19,7 +19,7 @@
 # passed over each in turn and the count of nine was a count of what one grep could see.
 #
 # THE FIFTH SPELLING IS WHY THIS GUARD REDDENED ITS FOURTH GUARD RATHER THAN CLOSING THE CLASS.
-# `tlb_reach` reddened the cold pass of `20260906.233225` at *the probe no longer builds*, GREEN
+# `tlb_reach` reddened the cold endurance run of `20260906.233225` at *the probe no longer builds*, GREEN
 # alone one minute later, and the cause was `${TMPDIR:-/tmp}/tlb_reach_build_pen` wiped with
 # `rm -rf` before a Zig build. Two concurrent copies of the elder file: one of two failed with
 # `compile_failed`. Two concurrent copies of the repaired file: both green. Proven on metal, both
@@ -33,7 +33,7 @@
 #     an `r` or `R` flag, so `rm -f /tmp/name.txt` on a plain FILE read as a hold -- and the hold
 #     class was defined by that survive-an-interleave claim, which was false of exactly those
 #     files. `tools/fixtures/s/shipped_binary_claim_scan.sh` truncated a constant name, appended,
-#     counted and removed it, and read RED in company and GREEN alone on the cold pass of
+#     counted and removed it, and read RED in company and GREEN alone on the cold endurance run of
 #     `20260907.150519`, taking `standing_equipment` red behind it. Two files were repaired in that
 #     lap and the other sixteen are named by `--list` for their owners, five of them the Caravan
 #     poll family sharing ONE sentinel path. Two tightenings landed beside the widening so it could

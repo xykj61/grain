@@ -45,7 +45,7 @@ assert gate.out contains "book_named=" else "worker must publish book_named= bes
 # invariant: this guard is proven able to red. It asserts on a delegate's result, so its own file
 # demonstrated no refusal of its own until `20260909.183200`, and `standing_equipment_redleg` reads
 # exactly that population -- rostering this guard took it from 53 to 54 and refused every ship's
-# cold pass with `ceiling_raised`. The control plants seven faults in a pen checkout, requires the
+# cold endurance run with `ceiling_raised`. The control plants seven faults in a pen checkout, requires the
 # worker to refuse each in its own words, and lifts every plant back to OK, because a refusal shown
 # only in the failing direction cannot be told from a tool that refuses everything. Four plants sit
 # in the lexer table; three more, added `20260909.194500`, sit in the DOCUMENTS this worker binds --

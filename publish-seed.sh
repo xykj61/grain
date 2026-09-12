@@ -85,11 +85,11 @@ git -C seed remote add ww   git@github.com:grain-ww/grain.git   2>/dev/null || t
 #
 # One parentless commit carrying the whole projection: the public repository has no history to
 # inherit, which is what keeps the field's own 2,900-commit lineage out of it. The subject is
-# exactly `crashed-meteor` -- the one named exemption the mechanism-sentence wall recognises, since
+# exactly `crashed-wave` -- the one named exemption the mechanism-sentence wall recognises, since
 # this body describes a repository rather than a change. Any other subject is refused by the hook,
 # which is the wall doing its job rather than an obstacle.
 git -C seed add -A
-printf 'crashed-meteor\n' > "$ROOT/seed/.commit-msg-tmp"
+printf 'crashed-wave\n' > "$ROOT/seed/.commit-msg-tmp"
 git -C seed commit -q -F "$ROOT/seed/.commit-msg-tmp"
 rm -f "$ROOT/seed/.commit-msg-tmp"
 

@@ -31,7 +31,7 @@ PROFILE=${PUBLISH_PROFILE:-GLOW_PROFILE.template.kyri}
 # The literals this field owns. Each is spelled here rather than derived, because the point is to
 # name what must NOT travel -- and a derivation would read them out of the very file being checked.
 leaked=0
-for lit in 'grain-os/grain' 'grain-ww/grain' 'grain-ww@users' 'crashed-meteor' 'xykj61' 'debrided' 'Keaton' 'Dunsford' '/home/keeper'; do
+for lit in 'grain-os/grain' 'grain-ww/grain' 'grain-ww@users' 'crashed-wave' 'xykj61' 'debrided' 'Keaton' 'Dunsford' '/home/keeper'; do
   if grep -qF "$lit" "$TPL"; then
     echo "leaked: $lit"
     leaked=$((leaked + 1))

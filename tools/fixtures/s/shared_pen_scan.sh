@@ -3,7 +3,7 @@
 #
 # WHY. Eight ships run one roster from eight checkouts, and a guard that builds its fixture in
 # /tmp/<a name somebody chose> builds it in the SAME directory on every one of them. The failure is
-# not subtle and it is not rare: on `20260906.222342` this pier's cold pass reddened at
+# not subtle and it is not rare: on `20260906.222342` this pier's cold endurance run reddened at
 # `amphora_restore_negative`, whose first line was `rm -rf /tmp/amphora_rneg_home`, and whose
 # assertion `tamper refusal must leave no out-home` was reporting a fact about a peer's pen rather
 # than about Amphora. Run alone it was GREEN, minutes later. Green alone and red in company is the
@@ -14,7 +14,7 @@
 # in a command, a Rishi `let home = "/tmp/name"`, a redirection target, and `${TMPDIR:-/tmp}/<name>`
 # -- so a count taken from one of them is a count of what that grep can see. Measured across the
 # first four on `20260906`: 69 files and 341 sites, where the elder reading said nine. The fifth was
-# added `20260907.000549` after `tlb_reach` reddened a cold pass on a pen written that way, and it
+# added `20260907.000549` after `tlb_reach` reddened a cold endurance run on a pen written that way, and it
 # cost two files and bought back the two it named: 61 files either way, one more spelling covered.
 #
 # WHAT IS COUNTED. A `/tmp/<token>` path -- written literally, or as `${TMPDIR:-/tmp}/<token>` on a
@@ -160,7 +160,7 @@ root=${SHARED_PEN_ROOT:-.}
 # class was defined by the claim that a writer "may interleave with a peer and survive". That
 # claim was false of exactly those files. `tools/fixtures/s/shipped_binary_claim_scan.sh`
 # truncated a constant name, appended its hits, counted them, and removed the file; on this pier's
-# cold pass of `20260907.150519` that guard read RED in company and GREEN alone, and the roster's
+# cold endurance run of `20260907.150519` that guard read RED in company and GREEN alone, and the roster's
 # own `standing_equipment` reddened behind it. Removing an in-flight FILE takes a peer down
 # exactly as removing a directory does. Two files were repaired in the same lap -- that scan and
 # `tools/fixtures/d/documented_room_scan.sh`, which carried the shape line for line -- and the
@@ -293,7 +293,7 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # writes a pen as ${TMPDIR:-/tmp}/<name>, and TMPDIR is UNSET on this pier, so that default
     # resolves to /tmp for all eight ships. The literal /tmp/ never appears in it -- the text reads
     # /tmp} -- so the four elder spellings passed straight over it. tools/fixtures/t/tlb_reach_census.sh
-    # is written that way, opens with rm -rf on that pen, and reddened the cold pass of
+    # is written that way, opens with rm -rf on that pen, and reddened the cold endurance run of
     # 20260906.233225 at "the probe no longer builds" while running GREEN alone one minute later.
     # Substituting a SAME-LENGTH stand-in keeps every column where it stood, so the quote rule and
     # the dollar lookahead below read true positions and there is one matcher rather than two.
@@ -306,7 +306,7 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # 20260907.163000. The elder predicate demanded an r or R flag, so `rm -f /tmp/name.txt` on a
     # plain file read as a HOLD, and the header reason for the hold class -- that a writer may
     # interleave with a peer and survive -- was false of exactly those files. It fired on this
-    # pier cold pass of 20260907.150519: tools/fixtures/s/shipped_binary_claim_scan.sh truncated a
+    # pier cold endurance run of 20260907.150519: tools/fixtures/s/shipped_binary_claim_scan.sh truncated a
     # constant /tmp name, appended, counted, and removed it, and the guard read red in company and
     # GREEN alone. Removing an in-flight FILE takes a peer down exactly as removing a directory
     # does; the flag says how, never whether.

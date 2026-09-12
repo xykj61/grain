@@ -107,7 +107,7 @@
 #
 # Measured `20260906.212057`, which is why the cell is gated rather than merely printed: the pin
 # stood at 41,153 of 40,960 with `pin_foldable_rows=7`, and TWO OTHER rostered guards red on that
-# same page in that same cold pass -- `equinox_e123_living_pin_guard` with `detail=pin_over_bound`
+# same page in that same cold endurance run -- `equinox_e123_living_pin_guard` with `detail=pin_over_bound`
 # and `declared_ceiling` with `verdict=over_declared_bound`. Neither names a remedy, because
 # neither knows this ledger folds. This scan knew, printed `rows_that_fit=0` beside
 # `pin_headroom=-193`, and answered `verdict=ok`. Four of 111 commit states that day carried the

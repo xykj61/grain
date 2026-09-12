@@ -20,7 +20,7 @@
 # `Failed to make / slave: Operation not permitted`, which is an environment fact rather than a
 # fault in the launcher. Read as a failure it turned this guard red on eight of eight ships, and a
 # red guard withholds the roster receipt, which makes `--scoped` refuse, which costs every ship a
-# full cold pass every lap for a leg that could never have run there.
+# full cold endurance run every lap for a leg that could never have run there.
 #
 #   AGENT_JAIL_PART=base       the legs that run anywhere -- rostered as `agent_jail`
 #   AGENT_JAIL_PART=enclosure  those, then the legs that launch the jail -- rostered as

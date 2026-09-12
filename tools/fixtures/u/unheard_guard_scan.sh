@@ -9,7 +9,7 @@
 #
 # WHAT IT COSTS WHEN IT IS MISSED. REDS %357 found three witnesses of one family red at HEAD, each
 # failing since the day a document they pinned was edited. None sat on the roster, so a 96-guard
-# cold pass read 95 green while three guards outside it had been failing for days. REDS %219 was
+# cold endurance run read 95 green while three guards outside it had been failing for days. REDS %219 was
 # the same shape one layer up -- a whole choir standing off the roster, which the ledger named as
 # a refusal nobody receives. The roster's own header already writes the law this reading measures:
 # a guard that cannot red guards nothing, AND a guard that is never run guards nothing either. The

@@ -63,7 +63,7 @@ fi
 # This scan wrote its link list to `/tmp/fls_links.txt` -- a name fixed when the file was written
 # rather than when it runs. Eight ships run one roster from eight checkouts, and 146 guards run
 # eight at a time inside each pass, so that one name belongs to every run of this scan anywhere on
-# the pier. On `20260907.043200` this pier's cold pass refused here while the same scan read GREEN
+# the pier. On `20260907.043200` this pier's cold endurance run refused here while the same scan read GREEN
 # alone two minutes later: the witness's own control, running beside the pass, wrote its four-link
 # list over the field pass's five hundred.
 #

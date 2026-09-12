@@ -3,7 +3,7 @@
 # guard, or is counted.
 #
 # WHAT THIS READS. `amphora/` is the vessel room: pour, carry, restore, and the seal and stamp
-# beneath them. `construction/standing-equipment.kyri` is the one roster the cold and hot passes
+# beneath them. `construction/standing-equipment.kyri` is the one roster the cold and hot endurance runs
 # read. This scan asks the coverage question those two documents can only answer together -- for
 # each authored `.rye` module in the room, does at least one ROSTERED guard name it?
 #

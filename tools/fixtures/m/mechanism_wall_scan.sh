@@ -96,7 +96,7 @@ fi
 # repository rather than a change, so it carries no mechanism to name -- and an ordinary
 # commit must be unable to borrow that exemption by writing a thin body.
 cat > "$WORK/seedroot" <<'MSG'
-crashed-meteor
+crashed-wave
 
 A personal operating system in the Glow language: bounded, asserted,
 custody-first. Clone it, build a module, run its witness, watch it go green.
@@ -111,7 +111,7 @@ else
 fi
 
 cat > "$WORK/borrower" <<'MSG'
-caravan: crashed-meteor
+caravan: crashed-wave
 
 A personal operating system in the Glow language: bounded, asserted,
 custody-first. Clone it, build a module, run its witness, watch it go green.

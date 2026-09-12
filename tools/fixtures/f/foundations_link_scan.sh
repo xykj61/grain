@@ -41,7 +41,7 @@ broken=0
 # The pen is named at RUN time, never at write time. Two ships run one roster from eight
 # checkouts, and a constant `/tmp/fls_links.txt` is the SAME file on every one of them -- so a
 # peer's run, or this witness's own control running beside its field pass, writes the list this
-# read then trusts. That is not a theoretical shape: on `20260907.043200` this pier's cold pass
+# read then trusts. That is not a theoretical shape: on `20260907.043200` this pier's cold endurance run
 # refused here while the same scan ran GREEN alone two minutes later, because the control's
 # planted broken link arrived in the field pass's own link list. The dangerous direction is the
 # other one -- a peer writing a SHORT list makes a room full of broken links read `broken=0`.

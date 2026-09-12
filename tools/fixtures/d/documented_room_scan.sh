@@ -31,7 +31,7 @@ set -eu
 # and removed one constant name under the `/tmp` eight ships share, so two ships running it in the
 # same second read one file: a peer truncation empties it mid-append, a peer removal deletes it
 # before `wc -l`, and a peer room list is counted as this tree's. The sibling carrying the same
-# shape, `tools/fixtures/s/shipped_binary_claim_scan.sh`, reddened this pier's cold pass of
+# shape, `tools/fixtures/s/shipped_binary_claim_scan.sh`, reddened this pier's cold endurance run of
 # `20260907.150519` and ran GREEN alone. `mktemp -d` asks the kernel for a name no two runs share.
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
