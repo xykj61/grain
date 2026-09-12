@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
 | `20260912.173722` | [default and boundary](20260912/20260912-173722_the-default-and-the-boundary-read-on-this-pier.kyri) | model control and Amphora fallback read true |
 | `20260912.165121` | [the four parked laps came home](20260912/20260912-165121_the-four-parked-laps-came-home.kyri) | four completed unsent laps recovered as one set |
 | `20260912.163124` | [the parked door came home](20260912/20260912-163124_the-parked-door-came-home.kyri) | recovered a finished docs-geode lap from the dead-letter box |
