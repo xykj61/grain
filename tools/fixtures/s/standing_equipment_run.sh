@@ -94,7 +94,7 @@
 #
 # IT ALSO REFUSES A SECOND PASS IN THE SAME TREE. Before it measures anything, a pass takes a
 # directory lock at ZERO wait, and one that finds it held refuses under `run_verdict=run_in_flight`
-# naming the pid that holds it. Two cold passes stood in one tree for fifty minutes with nothing in
+# naming the pid that holds it. Two cold endurance runs stood in one tree for fifty minutes with nothing in
 # either to say so (REDS %359), and the said-why for zero wait rather than a queue sits beside the
 # acquisition below. The lock path is relative to the repository root, so the six-body fleet's
 # other trees are lawful concurrency and only a second pass in THIS tree refuses.
@@ -240,7 +240,7 @@ owner_transcript() {
   # UNDER-reports -- it never accuses a live lap of being gone, and that is the direction to be
   # wrong in.
   # AND THE PARENT READING MISSES THE SHAPE THIS FLEET ACTUALLY MAKES, which is why a second
-  # reading stands beside it. A lap that launches its hot pass detached -- `( sh runner --hot
+  # reading stands beside it. A lap that launches its hot endurance run detached -- `( sh runner --hot
   # > out 2>&1; echo EXIT=$? >> out ) &` -- forks a subshell to carry that compound command, and
   # the runner's parent is that subshell rather than the lap. When the lap ends, the SUBSHELL is
   # what reparents to init; the runner's own ppid still names it and it is still alive, so the
@@ -632,7 +632,7 @@ fi
 
 # ONE PASS AT A TIME, and it comes before every refusal that asks a hand to change the tree. This
 # runner held no lock at all, so a second pass started beside a first and both ran to completion:
-# two cold passes stood in ~/grain-hush from 20260830.091545 to 20260830.093000, fifty minutes,
+# two cold endurance runs stood in ~/grain-hush from 20260830.091545 to 20260830.093000, fifty minutes,
 # with nothing in the output of either to say so (REDS %359). The contention is not merely slow.
 # tools/ca/caravan_suite_witness.rish clears caravan/bin/ before it sings -- REDS %92's own repair
 # for cold-start self-sufficiency -- so one pass deletes the binaries the other pass's rungs are
@@ -751,7 +751,7 @@ tree_digest() {
 tree_open=$(tree_digest)
 echo "tree_at_open=$tree_open"
 
-# HOW FAR BEHIND THE ANOINTED ORDER THIS PASS OPENED (`20260910.060000`). A cold pass costs about
+# HOW FAR BEHIND THE ANOINTED ORDER THIS PASS OPENED (`20260910.060000`). A cold endurance run costs about
 # forty minutes -- 2,251 guard-seconds measured `20260910.051007` -- and the fleet lands five to
 # seven commits an hour, so a lap that opens the roster instead of `tools/f/fleet_round_open.sh`
 # is reading a tree the fleet has already left, and is further behind at its close than at its
@@ -965,7 +965,7 @@ capability_state() {
       # every ship's receipt at once -- measured `20260909`, **12 of the last 40 commits** did, and
       # `tools/` is an allowed room, so a lap that lands one tool file stales the fleet. The guard
       # then read `red` on an eight-ship pier for a fact that was never a tree fault, the receipt was
-      # withheld, and every ship paid a full cold pass. That is precisely the `day_shelf` arm's own
+      # withheld, and every ship paid a full cold endurance run. That is precisely the `day_shelf` arm's own
       # lesson two arms below -- *the scan refuses twice, and a probe answering only the first would
       # read `present` ... which is a probe and its guard disagreeing* -- written there and left
       # unapplied here.
@@ -991,10 +991,10 @@ capability_state() {
       # first log lands there is nothing to count -- so its scan refuses (REDS %170: a scan that
       # cannot measure refuses rather than reporting clean) and the guard reds. That is the state
       # of every day between midnight and its first landing, on every ship, so the elder rostering
-      # made an ordinary daily state read as a fault: measured 20260907.003211, a cold pass at
+      # made an ordinary daily state read as a fault: measured 20260907.003211, a cold endurance run at
       # 00:12 answered `guards_red=2` -- this guard, and `standing_equipment` reading its own
       # roster's red -- and the receipt was withheld, which is what makes `--scoped` refuse and
-      # every ship pay a FULL cold pass. Same reading the operator card gives an empty `vendor/`,
+      # every ship pay a FULL cold endurance run. Same reading the operator card gives an empty `vendor/`,
       # and the same one `seed_projection` gives a fresh clone one arm above.
       #
       # THE PROBE ASKS THE GUARD'S OWN QUESTION, in both of its halves, reading `ROTA_DAY` and the
@@ -1236,7 +1236,7 @@ awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
 # below exists so a `tier cadence` guard keeps its own history between its runs, and that is right.
 # It is NOT right for a guard skipped by `host` or `capability`: that guard is not merely waiting its
 # turn, it cannot run here at all, so its last verdict was recorded in a different world and nothing
-# will ever overwrite it. `sow_allow_reach` is the case that taught it -- red on the cold pass for a
+# will ever overwrite it. `sow_allow_reach` is the case that taught it -- red on the cold endurance run for a
 # missing `seed/`, given `capability seed_projection` in the same lap, and its red then stood on the
 # card permanently while `standing_equipment` counted it every pass. The skip is announced by name on
 # every pass (`skipped_capability <name> wants=<cap> here=absent`), so dropping the row loses no
@@ -1249,11 +1249,11 @@ cat "$pen/skiphost" "$pen/skipcap" 2>/dev/null | awk '{print $2}' | sort -u > "$
 # THE RECORD A GUARD READS MUST DESCRIBE THIS PASS, NOT THE LAST ONE (REDS %483). The card in the
 # working tree is written once, at the close far below, so every guard reading it mid-pass read the
 # PREVIOUS pass's verdict for every peer -- including reds this same pass had already repaired.
-# Measured `20260906.113000`: a cold pass read `index_row_bound red`, the shelf was repaired, and
-# the hot pass read `index_row_bound green` at line 60 and `standing_equipment red` at line 151 --
+# Measured `20260906.113000`: a cold endurance run read `index_row_bound red`, the shelf was repaired, and
+# the hot endurance run read `index_row_bound green` at line 60 and `standing_equipment red` at line 151 --
 # the same scan run by hand two minutes later read `runs_red=0 verdict=ok`. That phantom red is
 # counted, so it costs the receipt at `withheld_guard_red` below, `--scoped` refuses without one,
-# and the NEXT lap pays a full cold pass. On this pier that is 798 seconds of guard time alone, and
+# and the NEXT lap pays a full cold endurance run. On this pier that is 798 seconds of guard time alone, and
 # six ships share eight cores, so the bill is a full pass under whatever contention the pier carries.
 #
 # THE REPAIR KEEPS THE CARD OUT OF THE WORKING TREE. Writing the tree's card incrementally would

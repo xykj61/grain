@@ -54,9 +54,9 @@ command -v claude && claude --version || echo "claude not on PATH"
 
 # 5. Confirm the codex overlay took effect. configuration.nix replaces nixpkgs'
 #    source-built codex (0.133.0 on nixos-26.05) with upstream's prebuilt static
-#    musl binary at 0.150.1, because DREAM's seat runs `codex exec --sandbox
+#    musl binary at 0.154.0, because DREAM's seat runs `codex exec --sandbox
 #    danger-full-access` inside ai-jail and the CLI moves faster than the channel.
-#    Expect 0.150.1 below; the build already self-verified the tarball hash and
+#    Expect 0.154.0 below; the build already self-verified the tarball hash and
 #    ran `codex --version` through versionCheckHook.
 command -v codex && codex --version || echo "codex not on PATH"
 

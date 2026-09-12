@@ -23,7 +23,7 @@
 # from the row number a hand remembered rather than read off disk, an archive page named before the
 # fold that would have created it. That is a claim about a file, and nothing checked the claim at
 # the moment it was made. It is what `20260907.141249` cost: one card link reading `rows-571` where
-# the shelf is `rows-570`, discovered by a 1,527-second cold pass rather than by a 0.4-second one.
+# the shelf is `rows-570`, discovered by a 1,527-second cold endurance run rather than by a 0.4-second one.
 #
 # THE CLASS IT DOES NOT CATCH, said plainly, because a wall believed to cover more than it does is
 # worse than no wall. A link that was TRUE when written and that a later rebase falsified -- a peer

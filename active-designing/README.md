@@ -85,7 +85,8 @@ this section: the rule stood in canon and on the roster, and this door had yet t
 |-------|-------|---------|
 | `20260909.062114` | [A request ends before its budget is reused](20260909-062114_a-request-ends-before-its-budget-is-reused.md) | completion, deadline, and memory release before a storage trial |
 | `20260909.044642` | [A query budget reaches its caller](20260909-044642_a-query-budget-reaches-its-caller.md) | separate search, result, and recovery budgets before a store plan |
-| `20260826.022443` | [The Linengrow Design Theme](20260826-022443_the-linengrow-design-theme.md) | rounded shape law; tileable brushstroke; five rota encapsulations |
+| `20260912.144043` | [The two endurance runs](20260912-144043_the-two-endurance-runs.md) | cold and hot endurance-running metaphors; proof stays whole while builds grow lighter |
+| `20260912.142909` | [The Linengrow Receipt Cloth Design System](20260912-142909_the-linengrow-receipt-cloth-design-system.md) | receipt components; ASCII-first motion; Brushstroke and Skate layers |
 | `20260826.021136` | [Caravan rearchitected](20260826-021136_caravan-rearchitected-the-optimization-spine.md) | five bounded moves; wrap named, set word-wide, drain replayable |
 | `20260826.014903` | [Skate returns, the DAG platform](20260826-014903_skate-returns-the-dag-rendering-platform.md) | DVUI read MIT; hot reload with witnesses; sameness macro; gate %6 |
 | `20260826.014902` | [Eight modules through the spine](20260826-014902_eight-modules-through-the-optimization-spine.md) | one bounded move per module, stretches named plainly |
@@ -130,4 +131,3 @@ When a design brief **supersedes** research or an executed prompt, the old file 
 ---
 
 *May this room stay clean. May every idea that enters earn its place on its own merit, undivided from where it came. May our names -- and the ones still to come -- grow here on their own roots, safe and swift and a joy, woven into the open grain of the machine we build upon.*
-

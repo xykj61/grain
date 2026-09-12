@@ -10,7 +10,7 @@ After pushing, remind the user to upload their public GPG key to GitHub if commi
 
 ## The one exception -- the depersonalized public seed (`seed/` -> `grain-os/grain`)
 
-The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`grain-ww <grain-ww@users.noreply.github.com>`** identity (was `Grain OS`; renamed with the crashed-meteor bump, `20260828` on Keaton's word -- the name now matches the living domain `grain-ww.com`) with a **single Option-B commit**.
+The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`grain-ww <grain-ww@users.noreply.github.com>`** identity (was `Grain OS`; identity renamed `20260828`, and root subject molted to `crashed-wave` `20260912`, both on Keaton's word -- the name now matches the living domain `grain-ww.com`) with a **single Option-B commit**.
 
 That identity **has no secret key on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** -- defeating the whole point of depersonalization (`tools/s/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit is **unsigned**, by design, on Keaton's word (`20260817`).
 
@@ -20,7 +20,7 @@ Concretely, the seed repo sets `commit.gpgsign false` in its **own** `seed/.git/
 cd ~/grain/seed
 git config commit.gpgsign false          # local to seed/ only
 git add -A
-git commit --amend -m "crashed-meteor"
+git commit --amend -m "crashed-wave"
 git push --force origin main             # origin here IS grain-os/grain
 ```
 

@@ -163,7 +163,7 @@ claim var_unheld_still_counted 1 "$(readout varunheld constant_pen_files)"
 # --- 12f-12k. the sixth spelling, and the two tightenings that shipped with it --------------------
 # A removal without an `r` flag is still a removal. `tools/fixtures/s/shipped_binary_claim_scan.sh`
 # truncated a constant name, appended to it, counted it and `rm -f`d it, and read RED in company
-# and GREEN alone on the cold pass of `20260907.150519`. Both spellings are planted here, the
+# and GREEN alone on the cold endurance run of `20260907.150519`. Both spellings are planted here, the
 # literal and the held variable, because the elder predicate missed both.
 newtree plainwipe
 printf '#!/bin/sh\n: > /tmp/plain_hits.txt\nrm -f /tmp/plain_hits.txt\n' > "$pen/plainwipe/tools/f/p.sh"

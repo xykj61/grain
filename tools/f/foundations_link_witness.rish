@@ -30,7 +30,7 @@
 #
 # AND THE ANSWER MUST BE THIS RUN'S. The scan wrote its link list to `/tmp/fls_links.txt`, a name
 # fixed when the file was written rather than when it runs, so every run of it anywhere on the pier
-# shared one file. On `20260907.043200` this pier's cold pass refused here and the same scan read
+# shared one file. On `20260907.043200` this pier's cold endurance run refused here and the same scan read
 # GREEN alone two minutes later -- the witness's own control, running beside the pass, wrote its
 # four-link list over the field pass's five hundred and sixteen. The pen is named at run time now,
 # and the control proves BOTH directions of the elder shape: a clean room made to read broken, and

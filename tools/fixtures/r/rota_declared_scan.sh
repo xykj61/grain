@@ -63,7 +63,7 @@ tracked_logs() {
 # THE OPEN DAY IS EMPTY AT MIDNIGHT, AND THAT IS A CLOCK FACT RATHER THAN A FAULT. The subject was
 # `today` alone, so between 00:00 and the day's first COMMITTED log there is nothing to count and
 # the scan refused -- daily, on every ship, healing itself an hour later. A withheld receipt makes
-# every ship pay a full cold pass, so an ordinary daily state read as somebody's fault.
+# every ship pay a full cold endurance run, so an ordinary daily state read as somebody's fault.
 #
 # A named day still refuses. A caller who writes ROTA_DAY asked about THAT day and is owed the
 # refusal rather than a silent answer about another one; only the open day, which nobody named,

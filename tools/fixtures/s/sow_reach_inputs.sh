@@ -7,7 +7,7 @@
 # WHY A STATE RATHER THAN AN INVENTORY (REDS %660 refined, 20260909). The elder
 # receipt hashed `git ls-files` under the allow entries, so every commit adding a
 # tracked file under an allowed room -- a session log, a witness, a shelf -- read
-# as stale coverage on the next ship's cold pass. Eight ships pay that refusal
+# as stale coverage on the next ship's cold endurance run. Eight ships pay that refusal
 # every lap, and each pays it by re-running the projector rather than by learning
 # anything: the reader's question is whether an allowed room LEAVES files in the
 # projection, and one more file in a room already answered cannot change it.

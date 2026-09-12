@@ -6,7 +6,7 @@
 # WHY THIS FIXTURE EXISTS. `tools/g/glow_rune_alphabet_witness.rish` was rostered on
 # `20260909.155028` after the fault it watches walked straight past it, and it arrived asserting on
 # a delegate's result with no refusal of its own on disk. `standing_equipment_redleg` reads exactly
-# that population and held it at 53; this guard made it 54 and the cold pass refused
+# that population and held it at 53; this guard made it 54 and the cold endurance run refused
 # `ceiling_raised` on every ship. The aether row states the standard the repair answers: a witness
 # must be proven able to make a sound before its silence means anything.
 #

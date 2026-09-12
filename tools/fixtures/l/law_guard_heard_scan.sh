@@ -10,7 +10,7 @@
 #
 # The wound is already in the ledger one room over. REDS %357 found three witnesses of one family
 # red at HEAD, each failing since the day a document they pinned was edited, none of them on the
-# standing roster -- so a 96-guard cold pass read 95 green beside three guards that had been
+# standing roster -- so a 96-guard cold endurance run read 95 green beside three guards that had been
 # failing for days. That row's repair was a tree-wide census, tools/fixtures/u/unheard_guard_scan.sh,
 # which holds 1,063 unheard guards under a ceiling that only falls. This reading asks the same
 # question of a far smaller and far louder population: the guards THE LAW ITSELF cites.

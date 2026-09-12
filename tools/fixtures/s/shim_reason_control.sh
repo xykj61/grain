@@ -422,7 +422,7 @@ r "$(case "$out" in *"verdict=ok"*) echo "instrument_pen_innocent=yes" ;; *) ech
 
 # --- the third shape: the reason is said, and said too late -------------------------------------
 # `assert` stops the run, so a `say` on the next line never happens when the target refuses. This
-# fired twice on the fleet's own metal in one cold pass on `20260907` -- `index_row_bound` with a
+# fired twice on the fleet's own metal in one cold endurance run on `20260907` -- `index_row_bound` with a
 # real fault and `shipped_binary_claim` with a flake -- and neither evidence page could name its
 # cause. Every pen here carries one forwarding shim, so the first shape stays out of the way and
 # the refusal below can only belong to the third.

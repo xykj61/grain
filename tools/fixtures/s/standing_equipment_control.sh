@@ -933,7 +933,7 @@ out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri 
 case "$out" in *"run_verdict=guard_red"*) echo "red_outranks_moved=yes" ;; *) echo "red_outranks_moved=no" ;; esac
 
 # --- how far behind the anointed order a pass opened, proven in all three answers ---------------
-# A cold pass costs about forty minutes against a fleet landing five to seven commits an hour, so a
+# A cold endurance run costs about forty minutes against a fleet landing five to seven commits an hour, so a
 # lap that opens the roster instead of `tools/f/fleet_round_open.sh` measures a tree the fleet has
 # already left. The runner reads that distance off the remote-tracking ref the last fetch left --
 # no network, so it can only under-report -- and reports it without gating. Three answers stand:
@@ -1016,7 +1016,7 @@ else
 fi
 
 # 1. A tracked file already unstaged-modified, rewritten under the run. Nothing is staged, so the
-#    cold pass opens rather than refusing, and the only thing that changes is the file's bytes.
+#    cold endurance run opens rather than refusing, and the only thing that changes is the file's bytes.
 digest_stub "printf 'four\n' > kept.txt"
 out=$(run_digestpen)
 case "$out" in *"tree_moved=yes"*) echo "modified_rewrite_moves=yes" ;; *) echo "modified_rewrite_moves=no" ;; esac
@@ -1074,7 +1074,7 @@ run_gitpen() {
 rm -f "$gitpen/mid-run.txt" "$gitpen/mid-run-two.txt"
 out=$(run_gitpen)
 case "$out" in *"staged_uncommitted=0"*) echo "clean_cold_reads_zero=yes" ;; *) echo "clean_cold_reads_zero=no" ;; esac
-case "$out" in *"run_verdict=ok"*) echo "clean_cold_passes=yes" ;; *) echo "clean_cold_passes=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "clean_cold_endurance_runs=yes" ;; *) echo "clean_cold_endurance_runs=no" ;; esac
 
 # The refusing side: one path staged and never committed, and the bare pass refuses.
 ( cd "$gitpen" && echo staged > left_behind.txt && git add left_behind.txt ) >/dev/null 2>&1 || true
@@ -1086,7 +1086,7 @@ case "$out" in *"tree_at_open="*) echo "staged_cold_skips_digest=no" ;; *) echo 
 
 # `--hot` is how a round says the staged paths are its own -- the after-`git add` pass.
 out=$(run_gitpen --hot)
-case "$out" in *"run_verdict=ok"*) echo "staged_hot_passes=yes" ;; *) echo "staged_hot_passes=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "staged_hot_endurance_runs=yes" ;; *) echo "staged_hot_endurance_runs=no" ;; esac
 case "$out" in *"staged_uncommitted=1"*) echo "hot_still_reads_staged=yes" ;; *) echo "hot_still_reads_staged=no" ;; esac
 
 # A guard asked for by name is no lap open, so it runs free over the same dirty index.
@@ -1488,7 +1488,7 @@ out=$(run_seed_in "$seedpen")
 echo "seed_reprojected_runs_again=$(ran_both "$out")"
 
 # 7. ABSENT -- skipped, named, counted, and the pass still passes. All four, because the whole point
-#    is that a fresh clone with no projection stops paying a full cold pass for an environment fact.
+#    is that a fresh clone with no projection stops paying a full cold endurance run for an environment fact.
 mkdir -p "$pen/seed" && rmdir "$pen/seed"
 out=$(run_seed_in "$pen")
 case "$out" in *"guards_run=1"*) echo "seed_absent_skips=yes" ;; *) echo "seed_absent_skips=no" ;; esac
@@ -1638,7 +1638,7 @@ fi
 # host, the checkout, or the kernel: does the day this pass stands in have a shelf with tracked logs
 # in it? `rota_declared` counts how many of TODAY's session logs declare the rota row they read, so
 # before the day's first log lands there is nothing to count and its scan refuses (REDS %170).
-# Rostered without a capability it reddened the fleet's first cold pass of every day -- and a red
+# Rostered without a capability it reddened the fleet's first cold endurance run of every day -- and a red
 # guard withholds the roster receipt, so every ship then paid a FULL pass for a fact about the clock.
 #
 # PLANTED IN A REAL GIT REPOSITORY, because the probe asks git the same `ls-files` its guard asks. A
@@ -1677,7 +1677,7 @@ run_day_capability() {
 
 # absent -- no shelf for that day at all, which is the state of every day between midnight and its
 # first landing. Skipped, named, counted, and the pass still passes: all four, because the whole
-# point is that a day which has not started yet stops costing the fleet a full cold pass.
+# point is that a day which has not started yet stops costing the fleet a full cold endurance run.
 out=$(run_day_capability)
 case "$out" in *"guards_run=1"*) echo "day_absent_skips=yes" ;; *) echo "day_absent_skips=no" ;; esac
 case "$out" in *"skipped_capability=1"*) echo "day_absent_counted=yes" ;; *) echo "day_absent_counted=no" ;; esac
@@ -1693,7 +1693,7 @@ out=$(run_day_capability)
 case "$out" in *"skipped_capability=1"*) echo "day_untracked_skips=yes" ;; *) echo "day_untracked_skips=no" ;; esac
 
 # present -- the same log, committed. The guard runs like any other row. Committed rather than left
-# staged on purpose: a cold pass over a dirty index refuses under `lap_unclosed`, and this leg would
+# staged on purpose: a cold endurance run over a dirty index refuses under `lap_unclosed`, and this leg would
 # then read absent for a reason that has nothing to do with the shelf.
 ( cd "$daypen" && git add -A && git commit -q -m "pen: the day's first log lands" ) >/dev/null 2>&1
 out=$(run_day_capability)
@@ -1732,7 +1732,7 @@ case "$out" in *"guards_unknown_capability=0"*) echo "day_capability_known_to_sc
 # A GUARD THIS HOST CANNOT RUN LOSES ITS ELDER CARD ROW (REDS %492, second half). The carry-forward
 # keeps a `tier cadence` guard's history between its runs, which is right; it is wrong for a guard
 # that cannot run here at all, whose last verdict was recorded in a different world and which nothing
-# will ever overwrite. `sow_allow_reach` taught it inside one lap: red on the cold pass for a missing
+# will ever overwrite. `sow_allow_reach` taught it inside one lap: red on the cold endurance run for a missing
 # `seed/`, given its capability in the same lap, and its red then stood on the card permanently.
 # Planted as a stale RED, because that is the direction that costs -- the roster's own guard counts
 # card reds, so an immortal one reds the fleet forever.
@@ -2001,7 +2001,7 @@ case "$out" in *"withheld_guard_red"*) echo "green_close_names_no_withholding=no
 if [ -f "$scopepen/receipt.kyri" ]; then echo "green_close_writes_receipt=yes"; else echo "green_close_writes_receipt=no"; fi
 
 
-# ONE PASS AT A TIME (REDS %359). Two cold passes stood in this pier's own tree for fifty minutes
+# ONE PASS AT A TIME (REDS %359). Two cold endurance runs stood in this pier's own tree for fifty minutes
 # with nothing in the runner to say so, and the contention is not merely slow: a choir that clears
 # its own bin directory before it sings deletes the binaries another pass's rungs are partway
 # through using. The lock PRIMITIVE -- taken, refused, released, and reaped when its owner has
@@ -2100,7 +2100,7 @@ rm -rf "$lockpen/lock.d"
 
 # THE SHAPE THE FLEET ACTUALLY MAKES, and the one the plant above cannot reach. The orphan above is
 # two generations -- parent exits, child adopted by init -- and the parent reading catches it. A lap
-# that launches its hot pass detached makes THREE: `( sh runner --hot > out; echo EXIT=$? ) &` forks
+# that launches its hot endurance run detached makes THREE: `( sh runner --hot > out; echo EXIT=$? ) &` forks
 # a subshell to carry the compound command, so the runner's parent is that subshell. When the lap
 # ends it is the SUBSHELL that reparents to init, while the runner's own ppid goes on naming a live
 # process. The parent reading answers `alive` for a lap that has gone, which is how a pass came to
