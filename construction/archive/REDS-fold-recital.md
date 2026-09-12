@@ -736,3 +736,5 @@ at a closed fold.*
 
 *Row %716 folded to [`REDS-the-wall-built-for-one-verb-rows-716.md`](REDS-the-wall-built-for-one-verb-rows-716.md) on `20260911.182827`, **CLOSED** -- a wall built for one verb is a wall for one verb -- the rule was stated generally, implemented locally, and the sibling verb kept the elder shape.*
 *Row %714 folded to [`REDS-the-table-that-said-enforced-now-rows-714.md`](REDS-the-table-that-said-enforced-now-rows-714.md) on `20260911.185500`, **BOOKED** -- the one_title guard landed and the row booked, so its remainder is a ratchet in another lane's room.*
+
+*Row %718 born onto [`REDS-the-dock-that-could-not-deliver-rows-718.md`](REDS-the-dock-that-could-not-deliver-rows-718.md) on `20260911.193818`, **CLOSED** -- the unit that must land whole is the dock rather than the file; a refused carry left a far dock advertising cargo it could not deliver. Booked at `%717` and renumbered on the rebase: `xy` bound that number to `20260911.185900`, the earlier stamp, and the key stayed the stamp.*

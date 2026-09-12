@@ -262,6 +262,11 @@ const resins_dir_name = "resins";
 /// reopen the very window this suffix closes.
 const pour_scratch_suffix = ".pouring";
 
+/// Suffix a carry's far vessel wears while its resins are still crossing. Same
+/// dock directory as the landing, for the reason `pour_scratch_suffix` gives:
+/// `rename(2)` is atomic within one filesystem and refuses across two.
+const carry_scratch_suffix = ".crossing";
+
 /// Assembled far-side vessel name inside a dock directory.
 /// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent --
 /// Keaton's rename word replaces it whole, accrete-migrate on rename).
@@ -317,13 +322,14 @@ const CliError = error{
 /// refusal text and exit code are `refuse`'s own, so a reader meets exactly the
 /// sentence they already know; what this adds is that the pen the pour was
 /// working in leaves with it.
-fn refuse_and_clear(io: std.Io, scratch: []const u8, fault: CliError, detail: []const u8) u8 {
-    // invariant: a real scratch path, since sweeping an empty name would reach
-    // whatever the current directory happens to hold.
-    assert(scratch.len > 0);
-    // invariant: and it wears the pour's own suffix, so this can only ever remove
-    // a file this pour made -- never the target vessel standing beside it.
-    assert(std.mem.endsWith(u8, scratch, pour_scratch_suffix));
+fn refuse_and_clear(io: std.Io, scratch: []const u8, suffix: []const u8, fault: CliError, detail: []const u8) u8 {
+    // invariant: the scratch is longer than the suffix it wears, so a real name
+    // stands in front of it rather than the bare suffix in whatever directory we
+    // happen to stand in.
+    assert(scratch.len > suffix.len);
+    // invariant: and it ends in the rite's own suffix, so this can only ever remove
+    // a file that rite made -- never the target vessel standing beside it.
+    assert(std.mem.endsWith(u8, scratch, suffix));
     // Swallowed on purpose: the refusal below is what the caller came for, and a
     // scratch that outlives one failed pour is swept by the next pour's own write.
     Dir.cwd().deleteFile(io, scratch) catch {};
@@ -452,17 +458,17 @@ fn resins_dir_path(vessel: []const u8, buf: []u8) CliError![]const u8 {
 /// The scratch address a pour fills before it lands: the target plus one suffix.
 /// Same directory on purpose -- see `pour_scratch_suffix` for why the rename
 /// wants one filesystem.
-fn pour_scratch_path(vessel: []const u8, buf: []u8) []const u8 {
+fn scratch_path(target: []const u8, suffix: []const u8, buf: []u8) []const u8 {
     // invariant: a real target, since the scratch is derived from it and an empty
-    // vessel path would name the bare suffix in whatever directory we stand in.
-    assert(vessel.len > 0);
+    // target path would name the bare suffix in whatever directory we stand in.
+    assert(target.len > 0);
     // invariant: the caller's buffer holds target plus suffix, so this derivation
     // cannot overrun and needs no PathTooLong door of its own -- the parser already
     // held the target at max_vessel_path_len.
-    assert(buf.len >= vessel.len + pour_scratch_suffix.len);
+    assert(buf.len >= target.len + suffix.len);
     // Unreachable rather than a refusal: the assert above already proved the buffer
     // holds both halves, so a short write here would mean that invariant is false.
-    return std.fmt.bufPrint(buf, "{s}{s}", .{ vessel, pour_scratch_suffix }) catch unreachable;
+    return std.fmt.bufPrint(buf, "{s}{s}", .{ target, suffix }) catch unreachable;
 }
 
 /// One resin address: `{dirname(vessel)}/resins/{digest_hex}`.
@@ -974,7 +980,7 @@ fn pour_ship(
     // over: restore proves every resin before its first byte; pour lands nothing on
     // the target until the whole rite has passed.
     var scratch_buf: [max_vessel_path_len + pour_scratch_suffix.len]u8 = undefined;
-    const scratch = pour_scratch_path(filled.vessel, &scratch_buf);
+    const scratch = scratch_path(filled.vessel, pour_scratch_suffix, &scratch_buf);
 
     write_unsealed_vessel(
         io,
@@ -990,21 +996,21 @@ fn pour_ship(
     var seal_path_buf: [max_vessel_path_len]u8 = undefined;
     const seal_bin = resolve_seal_bin(init, io, args[0], &seal_path_buf) catch {
         // Detail names the default roof; AMPHORA_VESSEL_SEAL still gates resolve.
-        return refuse_and_clear(io, scratch, error.SealToolAbsent, default_seal_bin);
+        return refuse_and_clear(io, scratch, pour_scratch_suffix, error.SealToolAbsent, default_seal_bin);
     };
     run_vessel_seal(allocator, io, seal_bin, scratch) catch {
-        return refuse_and_clear(io, scratch, error.SealFailed, filled.vessel);
+        return refuse_and_clear(io, scratch, pour_scratch_suffix, error.SealFailed, filled.vessel);
     };
     verify_seal_fields(io, scratch) catch {
-        return refuse_and_clear(io, scratch, error.SealFailed, filled.vessel);
+        return refuse_and_clear(io, scratch, pour_scratch_suffix, error.SealFailed, filled.vessel);
     };
     print("amphora: vessel sealed cargo_bytes={d}\n", .{filled.cargo_len});
 
     stamp_sealed_vessel(init, allocator, io, args[0], scratch) catch |fault| {
         return switch (fault) {
             // Detail names the default roof; AMPHORA_VESSEL_CORE still gates resolve.
-            error.StampToolAbsent => refuse_and_clear(io, scratch, error.StampToolAbsent, default_core_bin),
-            else => refuse_and_clear(io, scratch, error.StampFailed, filled.vessel),
+            error.StampToolAbsent => refuse_and_clear(io, scratch, pour_scratch_suffix, error.StampToolAbsent, default_core_bin),
+            else => refuse_and_clear(io, scratch, pour_scratch_suffix, error.StampFailed, filled.vessel),
         };
     };
 
@@ -1013,7 +1019,7 @@ fn pour_ship(
     // and never a half-written thing in between.
     const cwd = Dir.cwd();
     cwd.rename(scratch, cwd, filled.vessel, io) catch {
-        return refuse_and_clear(io, scratch, error.VesselUnwritable, filled.vessel);
+        return refuse_and_clear(io, scratch, pour_scratch_suffix, error.VesselUnwritable, filled.vessel);
     };
     write_season_resins(allocator, io, filled.season, filled.vessel) catch |fault| {
         return switch (fault) {
@@ -1336,7 +1342,10 @@ fn write_dock_chunks(io: std.Io, dock: []const u8, vessel_text: []const u8, chun
 
 /// Q24: reassemble the chunks in order and demand byte-equality with the
 /// source -- a crossing is only believed when the far bytes are the near bytes.
-fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, source_text: []const u8, chunk_count: u32) CliError!void {
+/// `landing` is the address the joined bytes are written to -- the carry hands it a
+/// `.crossing` scratch inside the dock rather than the dock's own vessel name, so a
+/// later refusal leaves the dock exactly as it stood.
+fn assemble_dock_vessel(io: std.Io, dock: []const u8, landing: []const u8, source_text: []const u8, chunk_count: u32) CliError!void {
     // invariant: the source text stands, since equality is what the crossing is
     // believed on and an empty source would make every dock compare equal.
     assert(source_text.len > 0);
@@ -1362,7 +1371,7 @@ fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, so
     }
     if (off != source_text.len) return error.CrossingUnequal;
     if (!std.mem.eql(u8, joined[0..off], source_text)) return error.CrossingUnequal;
-    cwd.writeFile(io, .{ .sub_path = far_vessel, .data = joined[0..off] }) catch {
+    cwd.writeFile(io, .{ .sub_path = landing, .data = joined[0..off] }) catch {
         return error.DockUnwritable;
     };
 }
@@ -1370,12 +1379,12 @@ fn assemble_dock_vessel(io: std.Io, dock: []const u8, far_vessel: []const u8, so
 /// Q25: the manifest crossed whole -- the far vessel must list its cargo
 /// readably before anyone touches a seal. Byte-equality already implies it;
 /// this door says it aloud, so a dock reader's first promise is checked.
-fn verify_far_manifest(io: std.Io, far_vessel: []const u8) CliError!void {
-    // invariant: the far vessel was written by the assemble pass above, so this reads
-    // back the landed bytes rather than confirming a manifest on nothing.
-    assert(far_vessel.len > 0);
+fn verify_far_manifest(io: std.Io, landed: []const u8) CliError!void {
+    // invariant: the assemble pass above wrote this address, so this reads back the
+    // landed bytes rather than confirming a manifest on nothing.
+    assert(landed.len > 0);
     var buf: [max_vessel_len]u8 = undefined;
-    const text = Dir.cwd().readFile(io, far_vessel, &buf) catch
+    const text = Dir.cwd().readFile(io, landed, &buf) catch
         return error.ChunkTorn;
     const has = std.mem.indexOf(u8, text, "\nmanifest ") != null or std.mem.startsWith(u8, text, "manifest ");
     if (!has) return error.CrossingUnequal;
@@ -1386,7 +1395,21 @@ const CarryFilled = struct {
     vessel: []const u8,
     dock: []const u8,
     far_vessel: []const u8,
+    far_scratch: []const u8,
 };
+
+/// A carry's refusal, with the crossing's `.crossing` scratch swept off the dock
+/// first. One place names the suffix, so each switch arm below stays readable on
+/// one line and no arm can reach for the wrong file.
+fn refuse_carry(io: std.Io, filled: *const CarryFilled, fault: CliError, detail: []const u8) u8 {
+    // invariant: the check pass derived a scratch address, so there is a name to sweep
+    // rather than whatever the current directory happens to hold.
+    assert(filled.far_scratch.len > 0);
+    // invariant: and it stands inside the dock this carry was cut for, so the sweep
+    // reaches the crossing's own leavings rather than a path somewhere else.
+    assert(std.mem.startsWith(u8, filled.far_scratch, filled.dock));
+    return refuse_and_clear(io, filled.far_scratch, carry_scratch_suffix, fault, detail);
+}
 
 /// Carry front: parse - walls - traveling parent - far path - dock guard.
 /// Returns an exit code when a door refused, null when the check is whole.
@@ -1395,6 +1418,7 @@ fn carry_check(
     allocator: std.mem.Allocator,
     args: []const []const u8,
     far_path_buf: *[max_vessel_path_len]u8,
+    far_scratch_buf: *[max_vessel_path_len + carry_scratch_suffix.len]u8,
     filled: *CarryFilled,
 ) ?u8 {
     const parsed = parse_carry_args(args) catch |fault| {
@@ -1437,7 +1461,13 @@ fn carry_check(
     guard_identity_fork(init.io, far_vessel, &parent_hex) catch
         return refuse(error.IdentityFork, far_vessel);
 
-    filled.* = .{ .vessel = parsed.vessel, .dock = parsed.dock, .far_vessel = far_vessel };
+    const far_scratch = scratch_path(far_vessel, carry_scratch_suffix, far_scratch_buf);
+    filled.* = .{
+        .vessel = parsed.vessel,
+        .dock = parsed.dock,
+        .far_vessel = far_vessel,
+        .far_scratch = far_scratch,
+    };
     return null;
 }
 
@@ -1449,8 +1479,11 @@ fn carry_cross(
     args: []const []const u8,
     filled: *const CarryFilled,
 ) u8 {
+    // One local name for the io handle: the crossing reaches for it eleven times, and
+    // the switch arms below read on one line with it rather than past a hundred columns.
+    const io = init.io;
     var vbuf: [max_vessel_len]u8 = undefined;
-    const vtext = Dir.cwd().readFile(init.io, filled.vessel, &vbuf) catch
+    const vtext = Dir.cwd().readFile(io, filled.vessel, &vbuf) catch
         return refuse(error.StampUnverified, filled.vessel);
     // invariant: the vessel read back has bytes, so the plan below cuts a real
     // crossing -- plan_chunks refuses a zero length at its own door.
@@ -1465,29 +1498,41 @@ fn carry_cross(
     // gate mirrors AMPHORA_VESSEL_SEAL / _CORE; production carries never set it.
     const trust_dock = init.environ_map.get("AMPHORA_CARRY_TRUST_DOCK") != null;
     if (!trust_dock) {
-        write_dock_chunks(init.io, filled.dock, vtext, chunk_count) catch |fault| {
+        write_dock_chunks(io, filled.dock, vtext, chunk_count) catch |fault| {
             return switch (fault) {
                 error.PathTooLong => refuse(error.PathTooLong, filled.dock),
                 else => refuse(error.DockUnwritable, filled.dock),
             };
         };
     }
-    assemble_dock_vessel(init.io, filled.dock, filled.far_vessel, vtext, chunk_count) catch |fault| {
+    // The assembled vessel lands on a `.crossing` scratch inside the dock, and the
+    // dock's own `vessel.bron` is renamed into place only once the resins beside it
+    // have all crossed. A carry that writes the dock vessel first is a carry whose
+    // every later refusal leaves a dock advertising cargo it cannot deliver --
+    // measured on metal `20260911`, with one near resin body forged so the ferry
+    // answers `cargo unproven`: a first carry into a fresh dock left a 1,565-byte
+    // vessel there whose Kumara stamp and cellar seal both verified, standing
+    // beside ZERO of the four bodies its manifest names, and a far restore read
+    // the catalog whole before answering `resin absent`. This is
+    // `amphora_pour_atomic` one verb over, at the dock's own scale, and the same
+    // rule `amphora_prove_before_write` seated for restore.
+    assemble_dock_vessel(io, filled.dock, filled.far_scratch, vtext, chunk_count) catch |fault| {
         return switch (fault) {
             error.ChunkTorn => refuse(error.ChunkTorn, filled.dock),
             error.CrossingUnequal => refuse(error.CrossingUnequal, filled.dock),
             else => refuse(error.DockUnwritable, filled.far_vessel),
         };
     };
-    carry_verify_walls(init, allocator, init.io, args[0], filled.far_vessel) catch |fault| {
+    carry_verify_walls(init, allocator, io, args[0], filled.far_scratch) catch |fault| {
         return switch (fault) {
-            error.SealUnopened => refuse(error.SealUnopened, filled.far_vessel),
-            error.ManifestDisagrees => refuse(error.ManifestDisagrees, filled.far_vessel),
-            else => refuse(error.StampUnverified, filled.far_vessel),
+            error.SealUnopened => refuse_carry(io, filled, error.SealUnopened, filled.far_vessel),
+            error.ManifestDisagrees =>
+                refuse_carry(io, filled, error.ManifestDisagrees, filled.far_vessel),
+            else => refuse_carry(io, filled, error.StampUnverified, filled.far_vessel),
         };
     };
-    verify_far_manifest(init.io, filled.far_vessel) catch
-        return refuse(error.CrossingUnequal, filled.far_vessel);
+    verify_far_manifest(io, filled.far_scratch) catch
+        return refuse_carry(io, filled, error.CrossingUnequal, filled.far_vessel);
     print("amphora: far manifest readable\n", .{});
     // Witness seam: with AMPHORA_CARRY_SKIP_PROVE set, the ferry declines its
     // prove-before-write pass so the wall inside the writing walk stands ALONE and
@@ -1497,14 +1542,20 @@ fn carry_cross(
     // planted dock tamper testable. It only DECLINES a check; it forges nothing,
     // and production carries never set it.
     const skip_prove = init.environ_map.get("AMPHORA_CARRY_SKIP_PROVE") != null;
-    ferry_resins(init.io, allocator, filled.vessel, filled.far_vessel, skip_prove) catch |fault| {
+    ferry_resins(io, allocator, filled.vessel, filled.far_vessel, skip_prove) catch |fault| {
         return switch (fault) {
-            error.PathTooLong => refuse(error.PathTooLong, filled.dock),
-            error.ResinAbsent => refuse(error.ResinAbsent, filled.vessel),
-            error.CargoUnproven => refuse(error.CargoUnproven, filled.vessel),
-            else => refuse(error.DockUnwritable, filled.dock),
+            error.PathTooLong => refuse_carry(io, filled, error.PathTooLong, filled.dock),
+            error.ResinAbsent => refuse_carry(io, filled, error.ResinAbsent, filled.vessel),
+            error.CargoUnproven => refuse_carry(io, filled, error.CargoUnproven, filled.vessel),
+            else => refuse_carry(io, filled, error.DockUnwritable, filled.dock),
         };
     };
+    // The dock's own landing, taken only once the cargo is across. Same directory, so
+    // this is a within-filesystem rename: the dock's vessel path holds the elder
+    // crossing right up to this call and the new one after it, and never a listing
+    // whose bodies have yet to arrive.
+    Dir.cwd().rename(filled.far_scratch, Dir.cwd(), filled.far_vessel, io) catch
+        return refuse_carry(io, filled, error.DockUnwritable, filled.far_vessel);
     print("amphora: carry complete chunks={d} far={s}\n", .{ chunk_count, filled.far_vessel });
     return exit_ok;
 }
@@ -1614,8 +1665,9 @@ fn ferry_resins(
 fn cmd_carry(init: std.process.Init, args: []const []const u8) u8 {
     const allocator = init.arena.allocator();
     var far_path_buf: [max_vessel_path_len]u8 = undefined;
+    var far_scratch_buf: [max_vessel_path_len + carry_scratch_suffix.len]u8 = undefined;
     var filled: CarryFilled = undefined;
-    if (carry_check(init, allocator, args, &far_path_buf, &filled)) |code| {
+    if (carry_check(init, allocator, args, &far_path_buf, &far_scratch_buf, &filled)) |code| {
         return code;
     }
     return carry_cross(init, allocator, args, &filled);

@@ -1,0 +1,226 @@
+# tools/am/amphora_carry_atomic_witness.rish -- a dock keeps exactly what it had until a
+# crossing is whole.
+#
+# [`amphora_pour_atomic`](amphora_pour_atomic_witness.rish) asks where a POUR lands. The answer
+# there is a `.pouring` scratch, renamed into place once the rite has passed. This asks the same
+# question one verb over, of CARRY, whose target is a far dock rather than a path. The answer
+# holds its shape at the dock's own scale. The assembled vessel lands on a `.crossing` scratch
+# inside the dock. The resins ferry beside it. Then `rename(2)` -- one filesystem, so POSIX makes
+# it atomic -- puts `vessel.bron` in place, once every body the manifest names has crossed.
+#
+# MEASURED ON METAL `20260911.183720`, on the ring-1 fixture, with the elder carry writing the
+# dock vessel ahead of the ferry. The plant is one forged near resin body, so `ferry_prove_resins`
+# answers `cargo unproven`. It rides the production path, with an env seam and a permission game
+# both left aside. The readings:
+#
+#   an honest carry lands 1,565 far bytes equal to the near ones, beside four resin bodies
+#   a first carry whose ferry stops leaves that same 1,565-byte vessel at the dock, with
+#     `vessel-core verify` GREEN and `vessel-seal open-check` GREEN, standing beside ZERO of
+#     the four bodies its manifest names
+#   a restore there passes the carry walls, passes the restore walls, reads the catalog whole
+#     -- files=4 plain_bytes=378 -- and answers `resin absent` at the last step
+#
+# So every wall this room offers says yes, and the reader who came for the cargo pays.
+#
+# THE ROOM ALREADY HELD HALF THIS PROMISE.
+# [`amphora_carry_negative`](amphora_carry_negative_witness.rish) makes it for each of its four
+# chunk plants, and it holds there because `assemble_dock_vessel` proves byte-equality BEFORE it
+# writes. The promise reached as far as the assemble stage. This witness carries the same
+# sentence to the end of the crossing, over the three steps past it.
+#
+# THE EIGHT LEGS, in order:
+#
+#   an honest carry lands a far vessel equal to the near one, and a far restore completes
+#   a first carry whose ferry stops leaves the dock's vessel path clear
+#   and the `.crossing` scratch leaves with it
+#   a stopped re-carry keeps the dock's standing vessel BYTE-IDENTICAL
+#   and sweeps its scratch there too
+#   an honest RE-carry still welcomes, and still lands equal bytes
+#   the wall REMOVED in a pen: the elder write-the-dock-first carry leaves a verifying vessel
+#     with zero bodies, and a far restore answers `resin absent` over it
+#   the wall RETURNED: the repaired binary over that same plant leaves the dock's vessel path
+#     clear, so a far reader reads a crossing still to come
+#
+# The law behind it is [`quality-assurance`](../../.claude/rules/quality-assurance.md) and the
+# reading is [the paper](../../active-designing/20260911-193818_the-dock-that-advertised-what-it-could-not-deliver.md).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_carry_atomic_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# The repo root, read once: two legs `cd` into a dock and need an absolute path back to the
+# binary they run. Rishi reads `${...}` as its own variable, so a shell `$PWD` inside one of
+# these strings would resolve to nothing.
+let here = run ["sh" "-c" "pwd"]
+assert here.ok else "carry_atomic: the repository root must read -- ${here.err}"
+let root = trim here.out
+
+# The pen carries a kernel-picked name (the class REDS %512 named): eight ships run this
+# roster from eight checkouts and share one /tmp, so a constant home is one directory on all
+# eight and a peer's carry lands inside this reading.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_carry_atomic.XXXXXX"]
+assert pen.ok else "carry_atomic: pen must open -- ${pen.err}"
+let home = trim pen.out
+
+# Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
+# of these, and `carry` resolves vessel-seal and vessel-core as sibling subprocesses.
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+say build_amphora.err
+assert build_amphora.ok else "carry_atomic: amphora build failed -- read the line above"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+say build_core.err
+assert build_core.ok else "carry_atomic: vessel-core build failed -- read the line above"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+say build_seal.err
+assert build_seal.ok else "carry_atomic: vessel-seal build failed -- read the line above"
+
+# Each plant pours into its OWN home, because a vessel's resins live beside it and two
+# vessels in one directory would share one near resins dock.
+let mk = run ["sh" "-c" "mkdir -p ${home}/a ${home}/b ${home}/c ${home}/d"]
+assert mk.ok else "carry_atomic: the plant homes must open -- ${mk.err}"
+
+# --- leg 1: an honest carry crosses whole, and a far restore completes ---
+let good = "${home}/a/v.bron"
+let pour_good = run ["amphora/bin/amphora" "pour" season good]
+say pour_good.err
+assert pour_good.ok else "carry_atomic: the honest pour must pass -- read the line above"
+let carry_good = run ["amphora/bin/amphora" "carry" good "${home}/a/dock"]
+say carry_good.err
+assert carry_good.ok else "carry_atomic: the honest carry must pass -- read the line above"
+let equal = run ["sh" "-c" "cmp -s ${good} ${home}/a/dock/vessel.bron"]
+assert equal.ok else "carry_atomic: the far vessel equals the near one -- ${equal.err}"
+let far_restore = run ["sh" "-c" "cd ${home}/a/dock && ${root}/amphora/bin/amphora restore vessel.bron"]
+say far_restore.err
+assert far_restore.err contains "restore complete" else "carry_atomic: a far restore over an honest dock completes"
+say "leg_honest=crossed_and_restored"
+
+# --- leg 2: a first carry whose ferry refuses leaves NO vessel at the dock ---
+# The plant is a forged near resin BODY: `ferry_prove_resins` proves every body against the
+# filename addressing it and refuses `cargo unproven`. It needs no env seam and no permission
+# game, so it is the production path rather than a witness door.
+let plant = "${home}/b/v.bron"
+let pour_plant = run ["amphora/bin/amphora" "pour" season plant]
+say pour_plant.err
+assert pour_plant.ok else "carry_atomic: the plant pour must pass -- read the line above"
+let forge = run ["sh" "-c" "printf forged > ${home}/b/resins/$(ls ${home}/b/resins | head -1)"]
+assert forge.ok else "carry_atomic: the forged body must be planted -- ${forge.err}"
+let refused = run ["sh" "-c" "amphora/bin/amphora carry ${plant} ${home}/b/dock; true"]
+say refused.err
+assert refused.err contains "cargo unproven" else "carry_atomic: a forged near body refuses by name"
+let no_vessel = run ["sh" "-c" "test ! -e ${home}/b/dock/vessel.bron"]
+assert no_vessel.ok else "carry_atomic: a refused first carry leaves NO vessel at the dock -- this is the whole rule -- ${no_vessel.err}"
+say "leg_first_refusal=dock_holds_no_vessel"
+
+# --- leg 3: and no `.crossing` scratch either ---
+# A scratch left standing is a vessel under another name: a dock reader who lists the
+# directory finds a stamped, sealed file whose bodies never arrived.
+let no_scratch = run ["sh" "-c" "test ! -e ${home}/b/dock/vessel.bron.crossing"]
+assert no_scratch.ok else "carry_atomic: a refused carry leaves no .crossing scratch behind -- ${no_scratch.err}"
+say "leg_first_scratch=swept"
+
+# --- leg 4: a refused RE-carry leaves the dock's standing vessel byte-identical ---
+let held = "${home}/c/v.bron"
+let pour_held = run ["amphora/bin/amphora" "pour" season held]
+say pour_held.err
+assert pour_held.ok else "carry_atomic: the held pour must pass -- read the line above"
+let carry_held = run ["amphora/bin/amphora" "carry" held "${home}/c/dock"]
+say carry_held.err
+assert carry_held.ok else "carry_atomic: the held carry must pass first -- read the line above"
+let keep = run ["sh" "-c" "cp ${home}/c/dock/vessel.bron ${home}/c/good.keep"]
+assert keep.ok else "carry_atomic: the reference copy must be taken -- ${keep.err}"
+let forge_again = run ["sh" "-c" "printf forged > ${home}/c/resins/$(ls ${home}/c/resins | head -1)"]
+assert forge_again.ok else "carry_atomic: the second forged body must be planted -- ${forge_again.err}"
+let refused_again = run ["sh" "-c" "amphora/bin/amphora carry ${held} ${home}/c/dock; true"]
+say refused_again.err
+assert refused_again.err contains "cargo unproven" else "carry_atomic: the re-carry refuses by the same name"
+let intact = run ["sh" "-c" "cmp -s ${home}/c/good.keep ${home}/c/dock/vessel.bron"]
+assert intact.ok else "carry_atomic: the dock's standing vessel survives byte for byte -- ${intact.err}"
+say "leg_recarry_refusal=dock_vessel_intact"
+
+# --- leg 5: and the scratch leaves with that refusal too ---
+let no_scratch_two = run ["sh" "-c" "test ! -e ${home}/c/dock/vessel.bron.crossing"]
+assert no_scratch_two.ok else "carry_atomic: the re-carry sweeps its scratch as well -- ${no_scratch_two.err}"
+say "leg_recarry_scratch=swept"
+
+# --- leg 6: an honest RE-carry still welcomes, and still lands equal bytes ---
+# The elder carry witness asserts a re-carry's exit code; this reads the far file afterward.
+let heal = run ["sh" "-c" "rm -rf ${home}/c/resins && amphora/bin/amphora pour ${season} ${held}"]
+say heal.err
+assert heal.ok else "carry_atomic: the healed pour must pass -- read the line above"
+let recarry = run ["amphora/bin/amphora" "carry" held "${home}/c/dock"]
+say recarry.err
+assert recarry.ok else "carry_atomic: an honest re-carry must welcome -- read the line above"
+let recarry_equal = run ["sh" "-c" "cmp -s ${held} ${home}/c/dock/vessel.bron"]
+assert recarry_equal.ok else "carry_atomic: and what it lands equals the near vessel -- ${recarry_equal.err}"
+say "leg_recarry=welcomed_and_equal"
+
+# --- the wall removed: a pen copy that writes the DOCK vessel first is the ELDER carry ---
+# Shown because a refusal proven only from the passing side cannot be told from a door with
+# nothing behind it. The strip reconstructs the elder shape in six edits -- the scratch address
+# becomes the far vessel; the buffer it was derived into leaves the signature, the declaration
+# and the call, since Zig refuses to build around an unused parameter; the landing rename goes
+# with them; and every `refuse_carry` becomes a plain `refuse`, because the elder had no scratch
+# to sweep and the sweep asserts a suffix the elder's address never wears. That last edit was
+# added after the pen PANICKED on exactly that assert -- the elder shape has to be built
+# honestly, and an assert firing in the pen is the witness catching its own reconstruction.
+# Three are asserted to have BITTEN, so a pattern that stops matching after a refactor reds here
+# rather than passing as a proof of nothing.
+let elder = "${home}/elder"
+let elder_copy = run ["sh" "-c" "mkdir -p ${elder}/src ${elder}/bin && cp amphora/manifest_entry.rye amphora/vessel_seal.rye amphora/vessel_core.rye amphora/kumara.rye amphora/tally_copy.rye ${elder}/ && cp amphora/src/main.rye ${elder}/src/ && cp amphora/manifest_entry.rye ${elder}/src/manifest_entry.rye"]
+say elder_copy.err
+assert elder_copy.ok else "carry_atomic: the elder pen must copy"
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && f=${elder}/src/main.rye && sed_inplace 's|.*const far_scratch = scratch_path(far_vessel, carry_scratch_suffix, far_scratch_buf);.*|    const far_scratch = far_vessel;|' $f && sed_inplace '/far_scratch_buf: \*/d' $f && sed_inplace '/var far_scratch_buf:/d' $f && sed_inplace 's|&far_path_buf, &far_scratch_buf, &filled|\&far_path_buf, \&filled|' $f && sed_inplace '/Dir.cwd().rename(filled.far_scratch/,/error.DockUnwritable, filled.far_vessel);/d' $f && sed_inplace 's|refuse_carry(io, filled, error\.|refuse(error.|' $f"]
+say strip.err
+assert strip.ok else "carry_atomic: the elder strip must run"
+let bit_scratch = run ["sh" "-c" "grep -q 'const far_scratch = far_vessel;' ${elder}/src/main.rye"]
+assert bit_scratch.ok else "carry_atomic: the strip's first edit must bite -- the scratch becomes the dock vessel -- ${bit_scratch.err}"
+let bit_rename = run ["sh" "-c" "grep -q 'rename(filled.far_scratch' ${elder}/src/main.rye; test $? -ne 0"]
+assert bit_rename.ok else "carry_atomic: the strip must remove the landing rename -- ${bit_rename.err}"
+let bit_sweep = run ["sh" "-c" "grep -q 'refuse_carry(io, filled' ${elder}/src/main.rye; test $? -ne 0"]
+assert bit_sweep.ok else "carry_atomic: the strip must remove the scratch sweep -- ${bit_sweep.err}"
+let build_elder = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder}/src/main.rye -femit-bin=${elder}/bin/amphora"]
+say build_elder.err
+assert build_elder.ok else "carry_atomic: the elder binary must build -- read the line above"
+
+let elder_vessel = "${home}/d/v.bron"
+let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=amphora/bin/vessel-core ${elder}/bin/amphora pour ${season} ${elder_vessel}"]
+say elder_pour.err
+assert elder_pour.ok else "carry_atomic: the elder binary must pour an honest vessel first"
+let elder_forge = run ["sh" "-c" "printf forged > ${home}/d/resins/$(ls ${home}/d/resins | head -1)"]
+assert elder_forge.ok else "carry_atomic: the elder plant must be forged -- ${elder_forge.err}"
+let elder_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=amphora/bin/vessel-core ${elder}/bin/amphora carry ${elder_vessel} ${home}/d/dock; true"]
+say elder_refused.err
+assert elder_refused.err contains "cargo unproven" else "carry_atomic: the elder binary refuses by the same name"
+let elder_left = run ["sh" "-c" "test -e ${home}/d/dock/vessel.bron"]
+assert elder_left.ok else "carry_atomic: the elder carry MUST leave a vessel at the dock -- if it does not, this witness is proving nothing -- ${elder_left.err}"
+let elder_verifies = run ["sh" "-c" "amphora/bin/vessel-core verify ${home}/d/dock/vessel.bron"]
+say elder_verifies.err
+assert elder_verifies.ok else "carry_atomic: and that vessel's stamp VERIFIES, which is what makes the half-made dock believable"
+let elder_bodyless = run ["sh" "-c" "test ! -d ${home}/d/dock/resins"]
+assert elder_bodyless.ok else "carry_atomic: with none of the bodies its manifest names -- ${elder_bodyless.err}"
+let elder_restore = run ["sh" "-c" "cd ${home}/d/dock && ${root}/amphora/bin/amphora restore vessel.bron; true"]
+say elder_restore.err
+assert elder_restore.err contains "resin absent" else "carry_atomic: and a far restore discovers it only at the last step"
+say "leg_wall_removed=elder_leaves_a_verifying_bodyless_dock"
+
+# --- the wall returned: the repaired binary over the same plant leaves the dock empty ---
+let kept_pour = run ["sh" "-c" "mkdir -p ${home}/d/k && amphora/bin/amphora pour ${season} ${home}/d/k/v.bron"]
+say kept_pour.err
+assert kept_pour.ok else "carry_atomic: the repaired binary pours its own plant"
+let kept_forge = run ["sh" "-c" "printf forged > ${home}/d/k/resins/$(ls ${home}/d/k/resins | head -1)"]
+assert kept_forge.ok else "carry_atomic: the repaired plant must be forged -- ${kept_forge.err}"
+let kept_refused = run ["sh" "-c" "amphora/bin/amphora carry ${home}/d/k/v.bron ${home}/d/k/dock; true"]
+say kept_refused.err
+assert kept_refused.err contains "cargo unproven" else "carry_atomic: the repaired binary refuses by the same name"
+let kept_empty = run ["sh" "-c" "test ! -e ${home}/d/k/dock/vessel.bron"]
+assert kept_empty.ok else "carry_atomic: and leaves the dock with no vessel over the very plant the elder filled -- ${kept_empty.err}"
+say "leg_wall_returned=dock_holds_no_vessel"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+say sweep.err
+assert sweep.ok else "carry_atomic: the pen must be swept"
+
+say "legs=8 honest=crossed first_refusal=no_vessel first_scratch=swept recarry_refusal=intact recarry_scratch=swept recarry=equal elder=fills repaired=empty"
+say "GREEN: amphora_carry_atomic -- a refused carry leaves the dock exactly as it found it."

@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `71e1d6f258` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `59127a1a96` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
@@ -200,40 +200,36 @@ filter to `(^|/)seed/` reads as tidy and drops `recursion-prompts/seed/`'s three
 **YOURS:** (1) *Line length <= 100 columns* -- guard it or retire the row. (2) still standing:
 `tally/heap-garden.rye`, `when built` and gated nowhere -- may a law page name a path not yet made?
 
-**COPAL -- IT SEALED ITS RESTORE AND LEFT ITS POUR OPEN.**
-Elder [shelved](archive/20260911-141355_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
-N=4642): pour, break a tool, open what comes back.
-**REDS FIRST:** cold **260 run, 258 green, 0 red**; hot **258 green**, its one red upstream's.
-**THE SEAT ASKS what a second run changes.** `pour`'s witness ends on *same-season re-pour
-welcomes* and **reads the exit code where the subject is the file**. `pour_ship` wrote the vessel
-unsealed at the TARGET and sealed it after, so a refusal between swapped a good vessel for a
-half-made one. The promise stood at `amphora/README.md` line 26.
-**MEASURED:** an honest pour lands **1,565 bytes**, sealed and stamped. With `AMPHORA_VESSEL_SEAL`
-absent a re-pour leaves **956 bytes**, the listing **in the CLEAR**, both walls refusing what passed
-minutes before. `AMPHORA_VESSEL_CORE` absent: **1,425 bytes, SEALED and unstamped**.
-*While the vessel already on disk keeps every byte it had* -- true of every wall refusing at a READ,
-false of the two refusing at a TOOL.
-**MECHANISM:** fill, seal and stamp land on a `.pouring` scratch beside the target; `rename(2)`,
-atomic within one filesystem, lands it once the rite passes; `refuse_and_clear` sweeps that scratch,
-since one left standing is a clear copy of the season.
-**PROVEN: 8 legs**, the elder shape rebuilt in a pen and watched it lose the vessel over the plant
-the repaired binary keeps. Rostered `tier lap`, named at the door.
-[Paper](../active-designing/20260911-141253_the-wall-built-for-one-verb.md) **89**, door **89**, a
-frame at **F 59** on my witness header closed at **86**.
-**FETCH-BEFORE-BOOK READS THE SPINE; THE PIN HOLDS THE ROWS BETWEEN.** Booking the row
-(`20260911.130000`) three rows behind reddened `reds_ledger_monotone`; spelling its number here
-reddened `unshared_citation`. A peer then bound it to an earlier stamp, so mine derives above.
-**TWO GUARDS PULL OPPOSITE WAYS ON ONE LINE.** `shim_reason` wants a capture interpolated into
-`assert ... else`; `say_compose_bound` counts that as `deferred` and gates the share. My 36 bindings
-satisfied the first and pushed the second **489 -> 493**. Both take a bare `say x.err` above a plain
-assert. Twenty converted: **925/925**, **488/489**.
-**THAT RED:** `rish_report_bound` reads **39 sites against 38**, byte-identical with my round
-stashed and restored, so every ship reds. Its refusal printed prose and no path; the list was
-gathered already, so it prints it. **Which site goes is whose file to touch -- surfaced.**
-**YOURS:** **CARRY has yet to be asked this question** -- it writes into a far dock and guards
-identity as pour does. **PETRICHOR:** `docs-geode/demos/README.md` teaches a count *climbs through
-the day*, then quotes it where `tutorial_output` gates equality; my round moved it; synced.
-Open: a gate satisfied by a COMMENT; **25 of 26 wire-lab witnesses off the roster**.
+**COPAL -- A REFUSED CROSSING LEFT A DOCK PROMISING CARGO IT HAD YET TO CARRY.**
+Elder [shelved](archive/20260911-193818_itinerary-landed-accounts.md). **EARTH BREATHES IN** (row 4, N=4653, hand-advanced past
+0, 1 and 3, all read today): the concrete fact at the door, ahead of the argument.
+**REDS FIRST:** cold ****265 run, 263 green, 0 red**; nothing of mine to close**.
+**THE CARD HANDED ME THE QUESTION AND I RAN IT RATHER THAN READING IT.** *CARRY has yet to be
+asked this question* stood on my own row from three hours earlier. `carry_cross` assembled the far
+vessel at the dock's own `vessel.bron` and ferried the resin bodies AFTER it.
+**MEASURED, ring-1, before a line changed.** Forge one near resin body -- production path, no env
+seam -- and a **first** carry refuses `cargo unproven` at the near end while the dock keeps
+**1,565 bytes**, byte-equal to the near vessel, `vessel-core verify` **GREEN**, `vessel-seal
+open-check` **GREEN**, beside **zero** of the four bodies its manifest names. A far restore passes
+the carry walls, passes the restore walls, reads `files=4 plain_bytes=378`, and only then answers
+`resin absent`. **Every wall says yes; the reader who came for the cargo pays.**
+**MECHANISM:** the assembly lands on a `.crossing` scratch inside the dock; the far walls and the
+far manifest read the scratch; the resins ferry beside it into the dock's own content-addressed
+`resins/`; `rename(2)` lands `vessel.bron` once every body is across. `refuse_and_clear` takes the
+suffix it may remove and sweeps the scratch on every refusal; `pour_scratch_path` generalized to
+`scratch_path(target, suffix, buf)`, one rule for two rites.
+**WHAT WAS ALREADY RIGHT, and why the FIRST carry is the sharp case:** resin bodies are addressed
+by digest and `guard_identity_fork` holds a dock to one identity for life, so a **re**-carry writes
+the bodies already there. The loss lived where the dock had nothing yet.
+**PROVEN: 8 legs**, the elder shape rebuilt in a pen by five sed edits, two asserted to bite,
+watched leaving a verifying bodyless dock over the plant the repaired binary leaves empty.
+Rostered `tier lap`, named at the door.
+[Paper](../active-designing/20260911-193818_the-dock-that-advertised-what-it-could-not-deliver.md) **A 95**.
+**YOURS:** (1) **POUR'S OWN SECOND HALF** -- `pour_ship` lands the vessel by rename and writes the
+season's resins after it, the same shape one verb nearer home. The near reader holds the season
+itself, so the cost differs; whether it earns the same repair is your word. (2) the dock's
+`chunk-NNNN.bron` cuts stay after a refusal -- scratch rather than promise, sealed bytes, swept by
+the next carry's own re-cut; a tidiness lap rather than a wall.
 
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`

@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260911.193818
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role amphora and bron-resins, seat COPAL
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status evidence .claude/settings.json, tracked
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The dock that could not deliver
+prompt Autonomous lap. My own card row from three hours earlier handed me the question: CARRY has yet to be asked what pour was asked.
+rota lap 4653, row 4 -- Earth breathes in, hand-advanced past rows 0, 1 and 3, all read by peers today. The row takes the concrete fact at the door ahead of the argument, and that is exactly what this lap did: I reasoned my way to carry being safe, then ran it and watched a dock keep a verifying vessel with no cargo.
+think Reasoning first, and it was wrong in the useful direction. assemble_dock_vessel proves byte-equality BEFORE it writes, resin bodies are content-addressed, and guard_identity_fork holds a dock to one identity -- three facts that make a RE-carry into a populated dock genuinely safe. I nearly wrote that carry already kept its promise.
+think Then I ran it on a fresh dock. Forge one near resin body so ferry_prove_resins answers cargo unproven, and the refusal at the near end leaves 1,565 bytes at dock/vessel.bron, byte-equal to the near vessel, vessel-core verify GREEN, vessel-seal open-check GREEN, with no resins directory at all.
+think A far restore over that dock passes the carry walls, passes the restore walls, reads files=4 plain_bytes=378, and only then answers resin absent. Every wall Amphora offers says yes, and the far reader is the one who pays.
+think The order was load-bearing rather than careless: carry_verify_walls runs vessel-core and vessel-seal as subprocesses over a PATH, and verify_far_manifest reads landed bytes back, so both need a file on disk. What the elder order missed is that the dock vessel is also the dock's PROMISE.
+think Repair mirrors pour one scale up: assemble to a .crossing scratch inside the dock, verify the far walls and the far manifest over the scratch, ferry the resins beside it, then rename(2) the scratch into vessel.bron. Same directory on purpose -- POSIX makes rename atomic within one filesystem.
+think refuse_and_clear took a suffix parameter rather than being written twice, and pour_scratch_path became scratch_path(target, suffix, buf). One rule for two rites; the pour witness's elder strip was updated in the same commit so its two mutations keep biting.
+obs Every leg was run by hand in a pen before a line of the witness was written: honest carry, refused first carry, refused re-carry, honest re-carry, and the stripped elder built and watched losing the dock.
+obs The elder strip needed five sed edits rather than two, because removing the scratch leaves far_scratch_buf unused and Zig refuses to build around an unused parameter. Proven identical to the hand-run strip before it went into the witness.
+obs A bracket inside the strip's sed pattern would ride inside a rish run list, so both bracketed patterns were rewritten bracket-free and the result diffed against the proven one.
+obs Folded REDS %714, the pin's one foldable row, to make headroom -- the capacity scan names that as the way, and the pin stood at rows_that_fit=0 with 129 bytes free.
+loom measure=amphora_carry honest_far_bytes=1565 resins=4 chunks=5 restore_files=4 plain_bytes=378
+loom measure=elder_refused_first_carry far_bytes=1565 core_verify=green seal_open=green far_resins=0
+loom measure=repaired_refused_first_carry far_vessel=absent scratch=absent chunks=5
+file amphora/src/main.rye carry lands its far vessel by rename once the resins are across; scratch_path and refuse_and_clear generalized over the suffix
+file tools/am/amphora_carry_atomic_witness.rish eight legs, the elder shape rebuilt in a pen and watched leaving a verifying bodyless dock
+file tools/am/amphora_pour_atomic_witness.rish elder strip updated for the two renamed helpers, both edits still asserted to bite
+file construction/standing-equipment.kyri amphora_carry_atomic seated tier lap
+file amphora/README.md the new guard named at the door so readme_unnamed stays at zero
+file construction/REDS.md the row, and %714 folded to make it fit
+recommend keep-going -- pour's own second half is the same shape one verb nearer home, and it is on the card as yours
+scope reds first -- one red found, measured, repaired and closed on metal in this lane
+status GREEN -- amphora_carry_atomic 8 legs on metal; the amphora family, tame_style_check and width-check all GREEN; cold 265 run, 263 green, 0 red

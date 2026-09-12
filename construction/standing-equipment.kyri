@@ -3211,6 +3211,41 @@ path tools/am/amphora_pour_atomic_witness.rish
 tier lap
 seated 20260911.133000
 
+# amphora_carry_atomic -- the same question a third time, at the dock's own scale.
+# `pour_atomic` asks what a refused POUR leaves at the target path; this asks what a refused
+# CARRY leaves at the far dock. `carry_cross` assembled the far vessel at the dock's own
+# `vessel.bron` and ferried the resin bodies AFTER it, so a refusal between those steps left a
+# dock holding a listing whose bodies had yet to arrive. Measured on metal `20260911.183720` on
+# the ring-1 fixture, before a line changed, with one near resin body forged so
+# `ferry_prove_resins` answers `cargo unproven` -- the production path, needing no env seam and
+# no permission game: a FIRST carry into a fresh dock refuses at the near end and leaves 1,565
+# bytes at `dock/vessel.bron`, byte-equal to the near vessel, with `vessel-core verify` GREEN
+# and `vessel-seal open-check` GREEN, standing beside ZERO of the four bodies its manifest
+# names. A far `amphora restore` over that dock passes the carry walls, passes the restore
+# walls, reads its catalog whole -- `files=4 plain_bytes=378` -- and only then answers `resin
+# absent`. So every wall the room offers says yes, and the reader who came for the cargo meets
+# the gap at the last step.
+#
+# The unit that must land whole is the DOCK rather than the file: a directory listing is the
+# promise a far reader trusts, so the vessel is the last thing that may appear in it. The
+# assembly lands on a `.crossing` scratch inside the dock now, the far walls and the far
+# manifest read that scratch, the resins ferry beside it into the dock's own content-addressed
+# `resins/`, and `rename(2)` -- one filesystem, so POSIX makes it atomic -- puts `vessel.bron`
+# in place once every body is across. Every refusal after the scratch exists sweeps it, since a
+# scratch left standing is a vessel under another name.
+#
+# What was ALREADY right, and why the first carry is the sharp case: a resin body is addressed
+# by its own digest and `guard_identity_fork` holds a dock to one identity for its life, so a
+# RE-carry writes the bodies already standing there -- measured, a refused re-carry on the elder
+# binary left every body in place. The loss lived where the dock had nothing yet. The witness
+# reads both, because a rule holding only in the case someone happened to test is a rule waiting
+# for the other case. `tier lap`: three rye builds plus one in the elder pen.
+
+guard amphora_carry_atomic
+path tools/am/amphora_carry_atomic_witness.rish
+tier lap
+seated 20260911.193818
+
 # amphora_named_once -- a listing names each place once. Every wall the vessel family carries reads
 # ONE cargo line at a time: `mark_verdict` against the engine's two roots, `name_verdict` against
 # the containment and framing rules, and each resin body against the digest that addresses it. A
