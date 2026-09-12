@@ -310,6 +310,44 @@ case "$out" in
   *) bad selection_reasonless_declares_nothing "a reasonless selection was honored: $out" ;;
 esac
 
+# ---- 9f. a selection whose numbers MOVE declares itself, and the declaration is honored --------
+# The two declarations answer different questions -- `selected` which lines a page quotes,
+# `volatile` whether they move -- so a block may carry both. For one lap the selected comparison
+# fell straight through to `drift` and ignored `volatile` entirely, which is worse than offering
+# no declaration at all: the page writes it, the reading discards it, and a reader believes the
+# block is covered. `docs-geode/demos/README.md`'s fascia pair is exactly this shape.
+#
+# PLANTED FIRST, undeclared, so the refusal is real before it is lifted.
+d=$(new_pen sel_moved)
+page4 "$d" 'two
+nine
+' '<!-- selected: two lines of a longer report -->'
+out=$(run_scan "$d")
+case "$out" in
+  *a_quoted_block_no_longer_matches*) ok selection_moved_bitten ;;
+  *) bad selection_moved_bitten "a selection quoting a line nothing printed went free: $out" ;;
+esac
+
+# THEN LIFTED by the declaration alone -- the same page, the same wrong line, one comment added.
+d=$(new_pen sel_moved_declared)
+page4 "$d" 'two
+nine
+' '<!-- selected: two lines of a longer report -->
+<!-- volatile: the second number climbs as the tree grows -->'
+out=$(run_scan "$d")
+case "$out" in
+  *every_quoted_block_still_prints*) ok selection_volatile_free ;;
+  *) bad selection_volatile_free "a selection declared moving was gated anyway: $out" ;;
+esac
+case "$out" in
+  *volatile=1*) ok selection_volatile_counted ;;
+  *) bad selection_volatile_counted "the declared selection was not counted volatile: $out" ;;
+esac
+case "$out" in
+  *drift=0*) ok selection_volatile_not_drift ;;
+  *) bad selection_volatile_not_drift "a declared selection was counted as drift too: $out" ;;
+esac
+
 # ---- 9g. a selection quoted as one unbroken run reads contiguous -------------------------------
 # Containment in order says every quoted line printed. It says nothing about what stands between
 # them, so each selection is read a second time for its shape.

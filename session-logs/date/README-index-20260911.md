@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260911.193818` | [The dock that could not deliver](20260911/20260911-193818_the-dock-that-could-not-deliver.kyri) | a refused carry left it verifying with no cargo |
+| `20260911.192649` | [an ignored declaration](20260911/20260911-192649_an-ignored-declaration.kyri) | a guard ignored the comment it offered; a duplicate withdrawn |
 | `20260911.190515` | [The clock that could not hear the queue](20260911/20260911-190515_the-clock-that-could-not-hear-the-queue.kyri) | a witness that cannot red on its own falsifier |
 | `20260911.185828` | [The roster that read one language](20260911/20260911-185828_the-roster-that-read-one-language.kyri) | ports in Rishi too; 5 doubles, 4 overrides |
 | `20260911.174809` | [Which collision is silent](20260911/20260911-174809_which-collision-is-silent.kyri) | Two hands built one loom; the option says which port is silent. |
