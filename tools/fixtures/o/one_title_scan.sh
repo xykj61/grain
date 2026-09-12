@@ -1,14 +1,14 @@
 #!/bin/sh
 # tools/fixtures/o/one_title_scan.sh -- does every living page carry exactly one title?
 #
-# WHY THIS EXISTS. `context/TAME_GUIDANCE.md`'s lint table stands under the heading **Enforced
-# now**, and one of its rows reads *One `# Title` per markdown -- flag any `.md` with zero or more
+# WHY THIS EXISTS. `context/TAME_GUIDANCE.md`'s lint table stood under the heading **Enforced
+# now** until `20260912`, and one of its rows reads *One `# Title` per markdown -- flag any `.md` with zero or more
 # than one top-level `#`, fenced code ignored*. Nothing in this tree flagged one. The rule was
 # written with no instrument named beside it, and the one page that mentions the duty --
 # `tools/fixtures/r/radiant_lint_scan.sh`, duty 3 -- prints `deferred (TAME one-# Title /
 # tame-check owns it)`, while `tools/t/tame-check.rish` and its scan spell no heading at all.
 # Two pages each pointing at the other is a promise standing on nobody, and a reader meeting
-# `Enforced now` has no way to tell that row from the nineteen beside it that a guard really holds.
+# that heading had no way to tell that row from the nineteen beside it that a guard really holds.
 #
 # Found on an aether lap `20260911` -- the row that hears, listening for the page nobody answered.
 #

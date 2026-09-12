@@ -611,35 +611,41 @@ Short pipelines are good. A pipeline longer than roughly ten stages earns a name
 
 These are the machine-checkable rules -- the lint surface. The discipline is the distinctiveness we chose when we made Rye a thin frontend, so we grow these checks the way we grow everything: as small, demand-driven increments beside the work, rather than one large sweep. Each line names the rule, and the tool that catches it today or the horizon it waits for.
 
-**Enforced now -- textual checks in Rishi** (grow these first, each with a witness, alongside SLC-1 and the width migration):
+**Checkable today -- textual checks in Rishi** (grow these first, each with a witness, alongside SLC-1 and
+the width migration). The **Runs** column says what an unattended lap actually does with each row --
+`every lap`, `on cadence`, or `by hand` -- derived from `construction/standing-equipment.kyri` and held
+there by [`../tools/l/lint_table_runs_witness.rish`](../tools/l/lint_table_runs_witness.rish):
 
-| Rule | Check |
-|------|-------|
-| **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/w/width-check.rish` (live, TH-1) |
-| **Dated artifacts on main stay Tier-2 sealed** (living ledger - freeze pointer - recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/d/dated_guard.rish` (live; roster `tools/fixtures/d/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
-| **Radiant surface advisory** (bare but-word - emoji - benediction - co-author - header) | `tools/r/radiant_lint.rish` (ratchet advisory; never fails) |
-| **Radiant pass claim preserve** (tokens - modality - structure - pinned digests) | `tools/cl/claim_preserve_witness.rish` - includes `markdown_structure_witness` (blocking for any pass) |
-| **Unqualified assert** | `tools/t/tame-check.rish` (live witness, TH-2c; widened `20260908.133141` from 16 hand-named files to the **1,127 authored `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- three walls at zero, one ratchet) |
-| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/o/opening_lines_witness.rish` (live witness, parity **140**; widened `20260908.125347` from 24 hand-named files to the **1,073 hosted `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- two walls, three ratchets) |
-| **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/d/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |
-| **Amber first lap** (export / verify / restore on fixture tree) | `tools/ce/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
-| **No `Self = @This()`** | `tools/t/tame-check.rish` (witness; the predicate reaches any spacing, `Self=@This()` included) |
-| **No tabs, no trailing whitespace** | `tools/t/tame-check.rish` (witness; tabs walled at zero, trailing whitespace split -- **1** authored site ratcheted, **2** inside `\\` multiline strings reported as program content the tree emits) |
-| **Line length <= 100 columns** | `tools/l/line_length_census_witness.rish` (census, seated `20260911`) -- **measured rather than gated**: 4,915 sources, 895,602 lines, **102,153 past a hundred**, of which **54,940 are own-line comments and 18,495 a Rishi `say` or `assert`**, so 72 percent carry a sentence rather than a statement. No ceiling holds the total, since it rises whenever a rung is generated; the one gate is the census's own reach. RUN it rather than reading these figures |
-| **One `# Title` per markdown** | `tools/o/one_title_witness.rish` (live witness, seated `20260911`; fence-aware, and an HTML `<h1>` counts, since `README.md` centers its own title that way). **390 living pages, 389 carrying exactly one**; ratchet ceiling **1** |
-| **Living docs lint (roster advisory)** | `tools/l/living_docs_lint.rish` -- five duties; ratchet advisory; prints in parity ch.1 beside `tame_style`; roster in `tools/fixtures/l/living_docs_lint_roster.sh` |
-| **signed-Kumara parity (proven-seat)** | `tools/p/proven_seat_signed_kumara_parity.rish` -- parity ch.2 tail; fetch gates; build+serial when bench staged; jail-safe ADVISE skip |
-| **No leftover `FIXME` or `dbg(`** | `tools/t/tame_style_scan_bans.rish`, driven by `tools/t/tame_style_check.rish` (live); `FIXME` is welcome while iterating, gone before main |
-| **Disjoint copies through `tally/copy.rye`** | `copyForwards`/`copyBackwards` banned; `@memcpy` counted down as a ratchet; new code calls `copy_disjoint` -- `tools/t/tame_style_check.rish` (live) |
-| **Qualified `debug.assert(` anywhere** | banned; import once, call bare -- the import line carries no parenthesis, so the string alone convicts. `tools/t/tame_style_scan_bans.rish` (live) |
-| **Compound `assert(a and b)`** | banned; split so the failing half is named -- `tools/t/tame_style_scan_bans.rish` (live) |
-| **Call-result compared to an error** | `) == error.` and `) != error.` banned at the call seam (silent `anyerror` upcast); a captured `\|err\|` compared inside an assert stays welcome -- the refined seam, reasoned in the alignment study; `tools/t/tame_style_scan_bans.rish` (live) |
-| **`usingnamespace` - `!comptime` - `Self = @This()`** | banned verbatim, as upstream -- `tools/t/tame_style_check.rish` (live) |
+| Rule | Check | Runs |
+|------|-------|------|
+| **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/w/width-check.rish` (live, TH-1) | every lap |
+| **Dated artifacts on main stay Tier-2 sealed** (living ledger - freeze pointer - recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/d/dated_guard.rish` (live; roster `tools/fixtures/d/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) | by hand |
+| **Radiant surface advisory** (bare but-word - emoji - benediction - co-author - header) | `tools/r/radiant_lint.rish` (ratchet advisory; never fails) | by hand |
+| **Radiant pass claim preserve** (tokens - modality - structure - pinned digests) | `tools/cl/claim_preserve_witness.rish` - includes `markdown_structure_witness` (blocking for any pass) | by hand |
+| **Unqualified assert** | `tools/t/tame-check.rish` (live witness, TH-2c; widened `20260908.133141` from 16 hand-named files to the **1,127 authored `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- three walls at zero, one ratchet) | every lap |
+| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/o/opening_lines_witness.rish` (live witness, parity **140**; widened `20260908.125347` from 24 hand-named files to the **1,073 hosted `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- two walls, three ratchets) | every lap |
+| **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/d/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) | by hand |
+| **Amber first lap** (export / verify / restore on fixture tree) | `tools/ce/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) | by hand |
+| **No `Self = @This()`** | `tools/t/tame-check.rish` (witness; the predicate reaches any spacing, `Self=@This()` included) | every lap |
+| **No tabs, no trailing whitespace** | `tools/t/tame-check.rish` (witness; tabs walled at zero, trailing whitespace split -- **1** authored site ratcheted, **2** inside `\\` multiline strings reported as program content the tree emits) | every lap |
+| **Line length <= 100 columns** | `tools/l/line_length_census_witness.rish` (census, seated `20260911`) -- **measured rather than gated**: 4,915 sources, 895,602 lines, **102,153 past a hundred**, of which **54,940 are own-line comments and 18,495 a Rishi `say` or `assert`**, so 72 percent carry a sentence rather than a statement. No ceiling holds the total, since it rises whenever a rung is generated; the one gate is the census's own reach. RUN it rather than reading these figures | every lap |
+| **One `# Title` per markdown** | `tools/o/one_title_witness.rish` (live witness, seated `20260911`; fence-aware, and an HTML `<h1>` counts, since `README.md` centers its own title that way). **390 living pages, 389 carrying exactly one**; ratchet ceiling **1** | every lap |
+| **Living docs lint (roster advisory)** | `tools/l/living_docs_lint.rish` -- five duties; ratchet advisory; prints in parity ch.1 beside `tame_style`; roster in `tools/fixtures/l/living_docs_lint_roster.sh` | on cadence |
+| **signed-Kumara parity (proven-seat)** | `tools/p/proven_seat_signed_kumara_parity.rish` -- parity ch.2 tail; fetch gates; build+serial when bench staged; jail-safe ADVISE skip | by hand |
+| **No leftover `FIXME` or `dbg(`** | `tools/t/tame_style_scan_bans.rish`, driven by `tools/t/tame_style_check.rish` (live); `FIXME` is welcome while iterating, gone before main | every lap |
+| **Disjoint copies through `tally/copy.rye`** | `copyForwards`/`copyBackwards` banned; `@memcpy` counted down as a ratchet; new code calls `copy_disjoint` -- `tools/t/tame_style_check.rish` (live) | every lap |
+| **Qualified `debug.assert(` anywhere** | banned; import once, call bare -- the import line carries no parenthesis, so the string alone convicts. `tools/t/tame_style_scan_bans.rish`, driven by `tools/t/tame_style_check.rish` (live) | every lap |
+| **Compound `assert(a and b)`** | banned; split so the failing half is named -- `tools/t/tame_style_scan_bans.rish`, driven by `tools/t/tame_style_check.rish` (live) | every lap |
+| **Call-result compared to an error** | `) == error.` and `) != error.` banned at the call seam (silent `anyerror` upcast); a captured `\|err\|` compared inside an assert stays welcome -- the refined seam, reasoned in the alignment study; `tools/t/tame_style_scan_bans.rish`, driven by `tools/t/tame_style_check.rish` (live) | every lap |
+| **`usingnamespace` - `!comptime` - `Self = @This()`** | banned verbatim, as upstream -- `tools/t/tame_style_check.rish` (live) | every lap |
 
 
-**What actually holds these rows, read `20260911.112513` and written down rather than assumed.**
-Twenty rule rows stand here; eight lean on five tools a roster pass runs every lap, and six name a
-tool **no lap runs** -- each for its own reason, and only one of them is *nobody got round to it*.
+**Why six rows read `by hand`, each for its own reason -- and only one of them is *nobody got round
+to it*.** The split itself is not spelled here: it moved into the **Runs** column above on
+`20260912`, because a count typed into a paragraph is held by nobody. This one had gone stale inside
+a day, by the size of its own repair -- it read *eight lean on five tools a roster pass runs every
+lap*, and the round that wrote the sentence rostered two more of the rows it was counting. RUN
+`sh tools/fixtures/l/lint_table_runs_scan.sh` for the reading.
 `tools/cl/claim_preserve_witness.rish` refuses a bare invocation by design, wanting
 `CLAIM_PRESERVE_FILES` named, so a style pass drives it rather than a roster.
 `tools/d/designed_not_built_witness.rish` opens on *not in parity until Kaeden rules for the bound*.

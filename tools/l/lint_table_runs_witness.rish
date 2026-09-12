@@ -1,0 +1,57 @@
+# tools/l/lint_table_runs_witness.rish -- does each lint row keep the claim its heading makes?
+#
+#   rishi/bin/rishi run tools/l/lint_table_runs_witness.rish
+#
+# WHAT THIS GUARDS. `context/TAME_GUIDANCE.md` closes on **What We Check, and When**, whose first
+# table holds this tree's whole textual lint surface. REDS %714 listened to that table one row at a
+# time and found twenty rows under one heading keeping four different promises. The repair landed
+# two instruments and a paragraph beneath the table naming the split in prose.
+#
+# THE PARAGRAPH WENT STALE INSIDE A DAY, by the size of its own repair. It reads *eight lean on
+# five tools a roster pass runs every lap*, written `20260911.112513`; measured `20260912` against
+# the same roster, thirteen rows do, because the round that wrote the sentence rostered two more of
+# the rows it was counting. A figure spelled in prose is held by nobody -- Gauge's fifth question
+# about a number, and this tree's own count-never-number law.
+#
+# SO THE SPLIT MOVED INTO THE TABLE, one word per row, and this witness holds each word to the
+# roster's own reading: `every lap` for a named tool at `tier lap`, `on cadence` at `tier cadence`,
+# `by hand` for a row no roster carries. Three walls at zero -- a word that disagrees, a row with
+# no word, and a row naming no instrument at all.
+#
+# WHAT IT DOES NOT REACH. Whether a guard that runs is a guard worth running, and whether a rule
+# the table states is a rule worth stating. This proves the table's own claim about itself, and
+# stops there.
+#
+# Purely local -- no key, no network, no funds, no device. It reads two tracked files and a pen.
+
+say "lint-table-runs: Language EN -- a heading is a claim about every row beneath it, so each row says what runs it."
+say "lint-table-runs: Style Gauge, Meter -- the three populations are printed beside the gate, since a split nobody counts drifts back into prose."
+say "lint-table-runs: Lens TAME -- docs and implementation stay synced; assert it rather than assume it."
+
+# 1 -- the pen. Every refusal planted and then lifted, and two mutations run against a broken copy
+# so a leg that would go quiet if its rule were deleted is shown to be load-bearing.
+let control = run ["sh" "tools/fixtures/l/lint_table_runs_control.sh"]
+say control.out
+say control.err
+assert control.ok else "lint-table-runs: a control case read the wrong way: ${control.out} ${control.err}"
+assert control.out contains "control_failed=0" else "lint-table-runs: the pen must balance before the field is believed: ${control.out}"
+assert control.out contains "control_legs=32" else "lint-table-runs: a leg left the pen unheard -- `control_failed=0` reads alike over a leg that failed and one deleted: ${control.out}"
+
+# 2 -- the field, three walls at zero.
+let field = run ["sh" "tools/fixtures/l/lint_table_runs_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "lint-table-runs: the field reading refused: ${field.out} ${field.err}"
+assert field.out contains "disagree=0" else "lint-table-runs: a lint row claims a reach the roster does not give it -- run the scan with `list` to name it: ${field.out}"
+assert field.out contains "undeclared=0" else "lint-table-runs: a lint row carries no word for what runs it: ${field.out}"
+assert field.out contains "unnamed=0" else "lint-table-runs: a lint row names no instrument, so no word could be derived for it: ${field.out}"
+assert field.out contains "verdict=ok" else "lint-table-runs: the lint table and the roster disagree: ${field.out}"
+
+# 3 -- the reach, asserted rather than assumed. A walk that found nothing reports a perfect zero
+# (REDS %463), so the population is named here rather than trusted.
+assert (field.out contains "rows=0") == false else "lint-table-runs: the reader found no lint row at all, so its three zeros mean nothing: ${field.out}"
+assert (field.out contains "runs_every_lap=0") == false else "lint-table-runs: not one row reads as running every lap, so the derivation has lost its strongest word: ${field.out}"
+assert field.out contains "runs_by_hand=" else "lint-table-runs: the three populations print apart, since a total naming no member leaves a stray unlocatable: ${field.out}"
+assert field.out contains "runs_on_cadence=" else "lint-table-runs: the three populations print apart, since a total naming no member leaves a stray unlocatable: ${field.out}"
+
+say "GREEN: lint-table-runs -- every row of the lint table says what runs it, and the roster agrees."

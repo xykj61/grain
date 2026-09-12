@@ -11,4 +11,5 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.014100` | [the column the paragraph could not keep](20260912/20260912-014100_the-column-the-paragraph-could-not-keep.kyri) | a lint table's split left prose for a derived column |
 | `20260912.000053` | [The orphan already landed](20260912/20260912-000053_the-orphan-that-had-already-landed.kyri) | 3 of 3 work orphans were landed work under a draft name |

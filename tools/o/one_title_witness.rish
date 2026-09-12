@@ -2,13 +2,13 @@
 #
 #   rishi/bin/rishi run tools/o/one_title_witness.rish
 #
-# WHAT THIS GUARDS. `context/TAME_GUIDANCE.md`'s lint table stands under the heading **Enforced
-# now**, and one of its rows asks for exactly one top-level `#` per markdown page, fenced code
+# WHAT THIS GUARDS. `context/TAME_GUIDANCE.md`'s lint table stood under the heading **Enforced
+# now** until `20260912`, and one of its rows asks for exactly one top-level `#` per markdown page, fenced code
 # ignored. That row named no instrument, and nothing in this tree held it. The only other page
 # mentioning the duty -- `tools/fixtures/r/radiant_lint_scan.sh`, duty 3 -- prints `deferred (TAME
 # one-# Title / tame-check owns it)`, and `tools/t/tame-check.rish` spells no heading anywhere.
-# Two pages pointing at each other is a promise standing on nobody, and a reader meeting `Enforced
-# now` could not tell that row from the nineteen beside it a guard really holds.
+# Two pages pointing at each other is a promise standing on nobody, and a reader meeting that
+# heading could not tell that row from the nineteen beside it a guard really holds.
 #
 # WHY THE RULE IS WORTH HOLDING. A page's single top-level heading is its name. Two titles is two
 # documents sharing one file, which misleads every reader that takes the first `# ` as the subject

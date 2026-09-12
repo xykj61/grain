@@ -5585,3 +5585,25 @@ guard aether_falloff
 path tools/a/aether_falloff_witness.rish
 tier lap   # 3s; 38 behaviors in a pen, eleven refusals and one mutation
 seated 20260911.195059
+
+# WHY THIS GUARD. `context/TAME_GUIDANCE.md`'s lint table holds the tree's whole textual lint
+# surface, and REDS %714 found twenty rows under one heading keeping four different promises. That
+# repair named the split in a paragraph, and the paragraph went stale inside a day by the size of
+# its own repair -- it read "eight lean on five tools a roster pass runs every lap" while the round
+# writing it rostered two more of the rows it counted. A count typed into prose is held by nobody.
+#
+# So the split moved into a Runs column, one word per row, and this guard holds each word to THIS
+# FILE's own reading: `every lap` for a named tool at `tier lap`, `on cadence` at `tier cadence`,
+# `by hand` for a row no roster carries. Three walls at zero -- a word that disagrees, a row with no
+# word, and a row naming no instrument at all.
+#
+# A row is judged by what it NAMES rather than by what a reader could work out. Three rows read the
+# bans scan alone while `tame_style_check` drives it every lap, so their own text could not say what
+# ran them; naming the driver in the row is the repair, where a private driver map inside the scan
+# would put the relationship in a second place two files could disagree about.
+#
+# Paper: `active-designing/20260912-011500_the-column-the-paragraph-could-not-keep.md`
+guard lint_table_runs
+path tools/l/lint_table_runs_witness.rish
+tier lap   # 1s; 32 behaviors in a pen, nine refusals and two mutations
+seated 20260912.011500

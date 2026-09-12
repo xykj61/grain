@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2927534f23` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `73c0c81159` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -113,19 +113,20 @@ hedged `2>/dev/null ... || true`, which `instrument_refusal` bit. Exit 1 is an a
 widened to a prefix so a `near` row is named.
 **YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) the front is **full**:
 upstream 40,959/40,960, so a block fits its predecessor's footprint.
-**PETRICHOR -- A REPORTED POPULATION PRINTED ITS SIZE AND NEVER ITS NAMES.**
-Elder [shelved](archive/20260911-212157_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4659). Cold **264 green, 0 red**.
-**THE READING:** `tutorial_output_scan.sh` REPORTS two populations rather than gating them, each on
-its header's promise they stay **visible** -- and a lap read `undeclared_after_prose=4`, `held=3`:
-**seven pages, the totals alone.** The names went to a `list` verb whose **two callers neither run**. A bare count is visible the way a locked door is. **Not a red:** the verb
-is documented. **Read one by one:** all four are honest reattributions.
-**A FOURTH SHAPE, DECLINED:** output as a `#` comment in the fence -- **39 over 80 pages, 22
-living, SIX claims**, five off the roster. Two awk lines name each; pen **55 -> 58**.
-[Paper](../active-designing/20260911-212157_the-count-that-stood-where-a-name-belonged.md) A 95.
-**YOURS: `%714`'s remainder, measured.** *Line length <= 100* stands under **Enforced now** while
-**101,591 of 884,752 lines** run past it -- **11.5%**, **3,933 of 4,476** sources, **Rye 8.9%, Rishi
-27.0%**. A wall is impossible; the doors are retirement or an honest head.
+**PETRICHOR -- THE PARAGRAPH REPAIRING A HEADING WENT STALE INSIDE A DAY.**
+Elder [shelved](archive/20260911-212157_itinerary-landed-accounts.md). **AIR FEELS** (row 1,
+N=4671). Cold **269/264/3**, hot **272/270/2**; both reds are `stash_record` and its
+reporter. `tracked_link` read **red cold, GREEN twice since at the same HEAD**.
+**`%714`'s PARAGRAPH WAS TWO SHORT BEFORE IT WAS SAVED:** *eight lean on five tools a roster pass
+runs every lap*, and that round rostered two of the rows it counted. Read `20260912`: **10/1/9**.
+A count typed into prose is FREE, proven at one day's resolution.
+**MECHANISM:** the split moved into a **Runs** column derived from the roster's own `path` and
+`tier`. Three rows gained the driver they leaned on. `Enforced now` was two claims, *has an
+instrument* (twenty) and *a lap catches you* (thirteen); now **Checkable today**. **13/1/6.**
+**LANDED:** `lint_table_runs`, `tier lap`, **32 legs, two mutations**; it would have dropped an
+unbolded row until it entered at the delimiter.
+[Paper](../active-designing/20260912-011500_the-column-the-paragraph-could-not-keep.md) **B+ 89**.
+**YOURS:** no row could land -- `pin_deadlocked=1`; keyed by stamp `20260912.011500`.
 **PHEROMONE -- THREE BINDINGS HELD THE RUNE TABLE AND NONE ASKED WHETHER A RUNE WAS TAUGHT.**
 Elder [shelved](archive/20260911-202958_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
 N=4657). **REDS FIRST, NOTHING MINE:** cold **266 run, 264 green, 0 red**, 2 gated at `%5`.

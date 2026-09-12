@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260912.014100
+editor Claude Code CLI, terminal
+provider Anthropic
+product Claude Code
+role Petrichor -- docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_status tracked settings file, read 20260912
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title the column the paragraph could not keep
+prompt the baton -- Petrichor, docs-geode and prose product; my own handoff owed %714's remainder
+rota lap 4671, row 1 -- Air, the row that feels (law and boundary); read TAME_CORE, single-stranded, GAUGE_STYLE. Single-stranded named the fault exactly: one heading was carrying two questions, and a paragraph written to untangle it was carrying a third.
+think Reds first. Cold roster 269 run, 264 green, 3 red. `stash_record` is the peer-owed `stash@{13}`; `standing_equipment` only reports the other two; `tracked_link` read red at 06s in the pass and GREEN on re-run at the same HEAD, so I record it as a red that does not reproduce rather than inventing a cause.
+think My handoff owed %714's remainder -- `Line length <= 100` standing under **Enforced now**. The peer had already landed the census, so the row was answered. What stood unanswered was the heading itself, and the paragraph written beneath the table to explain it.
+think Measured the paragraph rather than trusting it. It reads *eight lean on five tools a roster pass runs every lap*, written `20260911.112513`. Read `20260912` against the same two files: ten every lap, one on cadence, nine by hand. The round that wrote the sentence rostered two of the rows it was counting, so it was two short before the file was saved.
+think Three more rows read `by hand` only because they name the bans scan alone while `tame_style_check` drives it every lap. Naming the driver in the row is the repair; a driver map inside the scan would put the relationship in a second file two readers could disagree about.
+obs The durable move is a column, not a better paragraph. A count typed into prose is free by Gauge's fifth question, and this one proved it at one day's resolution.
+obs `Enforced now` was two claims wearing one heading -- *has an instrument today* (true of all twenty) and *a lap will catch you* (true of thirteen). `Checkable today` keeps the first and the Runs column carries the second, so the contrast with the *Horizon* table below survives.
+obs The pen's first draft entered the table at its first bold rule and would have dropped an unbolded row in silence. Anchored at the delimiter instead -- a population that can lose a member is the fault this family exists to catch.
+obs The hot pass refused my own filing: `tool_letter_room` read `misfiled=3` because I filed all three files under `t` for TAME, the subject, where a letter room is decided by the file's own first sprig letter. Moved to `l`, seven citing files repointed, ceiling back to zero.
+obs No REDS row could be booked: `reds_pin_capacity` reads `pin_deadlocked=1`, `rows_that_fit=0`, `pin_foldable_rows=0`. Keyed by its stamp, `20260912.011500`, per the derived-spine law.
+loom witness=lint_table_runs control_legs=32 mutations=2 rows=20 every_lap=13 on_cadence=1 by_hand=6 wall_s=1
+loom roster=cold guards_run=269 green=264 red=3 gated=2 seconds=4190
+loom roster=hot guards_run=272 green=270 red=2 gated=2 tree_moved=no
+file tools/fixtures/l/lint_table_runs_scan.sh the reading -- derives each row's word from the roster's own path and tier rows
+file tools/fixtures/l/lint_table_runs_control.sh the pen -- 32 legs, nine refusals planted and lifted, two mutations bitten
+file tools/l/lint_table_runs_witness.rish three walls at zero: disagree, undeclared, unnamed
+file context/TAME_GUIDANCE.md the heading, the Runs column on twenty rows, the three rows that gained their driver, the paragraph that stopped spelling a count
+file construction/standing-equipment.kyri the guard's seat, tier lap, with the reason it exists
+file tools/fixtures/l/line_length_census_scan.sh citation repaired -- it named a heading this round retired
+file tools/fixtures/o/one_title_scan.sh same citation, same repair
+file tools/o/one_title_witness.rish same citation, same repair
+file active-designing/20260912-011500_the-column-the-paragraph-could-not-keep.md the paper, Field, A 89 B+
+scope one lap: the lint table's own claim about itself, its instrument, and the four living citations of the heading it retired
+status GREEN -- lint_table_runs 32 pen legs and three field walls at zero; tool_letter_room back to zero after my misfiling; one_title and line_length re-run GREEN after their headers moved; hot 272 run, 270 green, 2 red -- `stash_record` is the peer-owed `stash@{13}` and `standing_equipment` reports it; `tracked_link` green this pass, so the cold red did not reproduce
+recommend check-in (Keaton) -- the REDS pin is deadlocked at zero foldable rows, so this finding is keyed by stamp and cannot enter the ledger until the bound or a fold is yours
