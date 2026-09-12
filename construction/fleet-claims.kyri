@@ -76,3 +76,9 @@ stamp 20260912.043553
 epoch 1789202153
 paths tools/fixtures/s/standing_equipment_run.sh tools/fixtures/s/standing_equipment_run_control.sh
 what The runner refuses on tree_moved and never names what moved: this lap lost a 272-guard, 3232-guard-second cold pass to one edit of one tracked coordination file, and the transcript could not say which. Keeping the digest's own input listing at open and diffing it at close names the paths; the refusal stays.
+claim amphora-bin-pen
+seat bakery
+stamp 20260912.050246
+epoch 1789203766
+paths tools/am/ tools/fixtures/b/build_target_scan.sh
+what The eighteen amphora witnesses each build amphora, vessel-core and vessel-seal into the shared tree path amphora/bin/, so four of the tree's six multi-writer build paths are theirs and max_writers reads 18. Retargeting each -femit-bin to the witness's own mktemp pen and running the pen binary -- which already resolves its siblings beside argv0 -- closes them; the build_target ceilings fall to hold it.
