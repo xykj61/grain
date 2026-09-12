@@ -1,0 +1,49 @@
+# glow_run_contract_witness.rish -- glow_run's exit contract says what it does (`20260911.230925`).
+#
+# THE HOLE THIS CLOSES. glow/glow_run.rye is the language hop, and what it hands a caller besides
+# the emitted `.rye` path is an EXIT CODE that three instruments read by number. None of them could
+# cite a statement of the contract, because the module returning the number carried none -- so the
+# reading was taken by hand off metal and rewritten twice, at `%532` and again on `20260908.234354`.
+#
+# TWO CODES EACH CARRIED TWO MEANINGS, which is what no amount of careful reading could fix:
+#
+#   exit 1  a lowering was attempted and failed   AND  the source was never read at all
+#   exit 2  glow_run knows no head for this file  AND  glow_run was called with no file
+#
+# `readFileAlloc` was reached with `try`, so `FileNotFound`, `IsDir` and `StreamTooLong` each
+# returned through Zig's `!u8` main -- which exits 1 -- and downstream named that *lowering failed*,
+# a claim about a desk's CONTENT for a file whose bytes nobody had read. `3 unreadable` and
+# `4 usage` are seated with this witness, each naming itself on stderr.
+#
+# THREE READINGS, ALL GATES AT ZERO. A contract admits no ratchet: a table and an implementation
+# that disagree are drift, and a table and an implementation that agree while the binary answers
+# otherwise is the half a source reading can never reach -- which is why the scan probes metal.
+#
+#   rishi/bin/rishi run tools/g/glow_run_contract_witness.rish
+
+let control = run ["sh" "tools/fixtures/g/glow_run_contract_control.sh"]
+assert control.ok else "glow_run_contract: control red -- ${control.out}${control.err}"
+assert control.out contains "control_failed=0" else "glow_run_contract: a control leg refused -- ${control.out}"
+assert control.out contains "legs=34" else "glow_run_contract: the pen's leg count moved -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "glow_run_contract: control verdict -- ${control.out}"
+
+let scan = run ["sh" "tools/fixtures/g/glow_run_contract_scan.sh"]
+assert scan.ok else "glow_run_contract: scan failed -- ${scan.out}${scan.err}"
+
+# The table and the code agree about which numbers exist.
+assert scan.out contains "undeclared_returns=0" else "glow_run_contract: main returns a code its head table never names -- ${scan.out}"
+assert scan.out contains "unreturned_declared=0" else "glow_run_contract: the head table names a code main never returns -- ${scan.out}"
+assert scan.out contains "declared_codes=5" else "glow_run_contract: five codes stand in the contract -- ${scan.out}"
+assert scan.out contains "returned_codes=5" else "glow_run_contract: five codes are returned -- ${scan.out}"
+
+# And the binary agrees with both. Six probes, each naming the shape it hands over.
+assert scan.out contains "probe_mismatch=0" else "glow_run_contract: metal answers a code the contract does not -- ${scan.out}"
+assert scan.out contains "probes=6" else "glow_run_contract: six shapes are probed on metal -- ${scan.out}"
+assert scan.out contains "probe_usage_bare=4" else "glow_run_contract: no file argument exits 4 usage -- ${scan.out}"
+assert scan.out contains "probe_unreadable_absent=3" else "glow_run_contract: an absent source exits 3 unreadable -- ${scan.out}"
+assert scan.out contains "probe_unreadable_directory=3" else "glow_run_contract: a directory exits 3 unreadable -- ${scan.out}"
+assert scan.out contains "probe_unreadable_over_ceiling=3" else "glow_run_contract: a source past 64 KiB exits 3 unreadable -- ${scan.out}"
+assert scan.out contains "probe_lowered=0" else "glow_run_contract: a desk that lowers exits 0 -- ${scan.out}"
+assert scan.out contains "verdict=ok" else "glow_run_contract: the scan refused -- ${scan.out}"
+
+say "GREEN: glow_run_contract -- five exit codes declared in the module head, returned by main, and answered by the binary; 34 pen legs, two mutations bitten."

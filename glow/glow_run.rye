@@ -8,6 +8,33 @@
 //! two to four bare `=/` literals share one multi-line lower (STOA10).
 //! Named-cast dispatch peeks the shared token stream (STOA84 same-desk -
 //! STOA85 cross-desk). Build/run stay in tools/g/glow_run.rish.
+//!
+//! THE EXIT CONTRACT, declared here because downstream reads it by number.
+//! tools/fixtures/g/glow_desk_run_scan.sh maps this status onto its own stage
+//! codes, and two more doors recite it in prose. Its door called that a virtue:
+//! "glow_run draws the line itself, in its own contract rather than in its
+//! prose." The line was drawn in the code and read by hand, so the reading was
+//! rewritten twice off metal. One table, in the module that returns the number:
+//!
+//!   0  lowered     the emitted `.rye` path stands on stdout
+//!   1  broke       the source was read, and a lowering -- or the write that
+//!                  follows one -- failed; the error is named on stderr
+//!   2  declined    the source was read and glow_run knows no head for it:
+//!                  no Glow line, more lines than the form admits, or a
+//!                  `--sample-argv` shape this hop carries later
+//!   3  unreadable  the source was never read at all -- absent, a directory,
+//!                  or past the 64 KiB ceiling -- named rather than counted
+//!                  as a lowering fault (seated `20260911.230925`)
+//!   4  usage       glow_run was called wrong; no file argument reached it
+//!
+//! CODES 3 AND 4 WERE BOTH SPELLED BY SOMETHING ELSE until the stamp above.
+//! Each collision closed off one honest answer. An unreadable source exited 1
+//! through Zig's own `!u8` error return, so `FileNotFound`, `IsDir` and
+//! `StreamTooLong` each arrived downstream wearing the name *lowering failed* --
+//! a claim about a desk's CONTENT, for a file whose bytes went unseen. A usage
+//! slip exited 2, so *glow_run declined this file* was the answer given when no
+//! file had been named. Held by tools/g/glow_run_contract_witness.rish, which
+//! reads this table and the source's own return sites and holds them together.
 
 
 const std = @import("std");
@@ -77,7 +104,9 @@ pub fn main(init: std.process.Init) !u8 {
     const argv = try init.minimal.args.toSlice(alloc);
     if (argv.len < 2) {
         print("usage: glow_run [--sample-argv] <file.glow>\n", .{});
-        return 2;
+        // invariant: a caller fault leaves the file question unasked, so it
+        // carries its own code rather than borrowing `declined` (head table).
+        return 4;
     }
     var sample_argv = false;
     var path_i: usize = 1;
@@ -86,12 +115,23 @@ pub fn main(init: std.process.Init) !u8 {
         path_i = 2;
         if (argv.len < 3) {
             print("usage: glow_run --sample-argv <file.glow>\n", .{});
-            return 2;
+            // invariant: same caller fault, same code -- one meaning, one number.
+            return 4;
         }
     }
     const glow_path = argv[path_i];
 
-    const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
+    // The read is caught rather than propagated: a `try` here returns through
+    // Zig's `!u8` main, which exits 1 -- the code the head table gives to a
+    // lowering that broke. `FileNotFound`, `IsDir` and `StreamTooLong` are all
+    // reachable from a caller's path argument, and each one arrived downstream
+    // as a claim about a desk's content for bytes nobody had read.
+    const src = cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024)) catch |err| {
+        print("glow_run: unreadable source {s} ({s})\n", .{ glow_path, @errorName(err) });
+        // invariant: the error is named, so the caller learns which of the three
+        // it met rather than inferring one from an empty stdout.
+        return 3;
+    };
 
     // STOA176: same-desk named-cast (<=9 `$:` faces -> <=12 Glow lines) bypasses
     // the bare multi-line budget of six -- peek + lower share named_cast_parts.

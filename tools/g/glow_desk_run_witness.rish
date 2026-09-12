@@ -107,7 +107,8 @@ assert scan.out contains "failed_declined=2" else "glow_desk_run: two of the thr
 assert scan.out contains "failed_lower=1" else "glow_desk_run: one of the three is taken as a desk and breaks in the lowerer (exit 1) -- ${scan.out}"
 assert scan.out contains "failed_build=0" else "glow_desk_run: no selected desk fails to build -- ${scan.out}"
 assert scan.out contains "failed_run=0" else "glow_desk_run: no built desk exits nonzero -- ${scan.out}"
+assert scan.out contains "failed_unreadable=0" else "glow_desk_run: no selected desk is unreadable -- glow_run exit 3, seated 20260911.230925 -- ${scan.out}"
 assert scan.out contains "failed_unclassified=0" else "glow_desk_run: every failure is named by its stage -- ${scan.out}"
 assert scan.out contains "verdict=ok" else "glow_desk_run: the scan refused -- ${scan.out}"
 
-say "GREEN: glow_desk_run -- 347 runnable desks derived from the room and run, 301 bare and 46 on the sample each declares for itself, 3 unmarked data fixtures at their ceiling split by stage (2 declined, 1 broken in the lowerer), both runner-swap legs proven, 95 control behaviors green."
+say "GREEN: glow_desk_run -- 347 runnable desks derived from the room and run, 301 bare and 46 on the sample each declares for itself, 3 unmarked data fixtures at their ceiling split by stage (2 declined, 1 broken in the lowerer), both runner-swap legs proven, 109 control behaviors green."

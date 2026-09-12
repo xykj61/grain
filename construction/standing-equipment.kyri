@@ -1172,6 +1172,30 @@ path tools/g/glow_desk_run_witness.rish
 tier cadence
 seated 20260907.110022
 
+# glow_run's own exit contract, seated 20260911.230925. The guard above reads glow_run's exit status
+# by number and maps it onto its own stage codes; two more doors recite the same numbers in prose.
+# Not one of them could cite a statement of the contract, because the module returning the number
+# carried none -- so the reading was taken by hand off metal and rewritten twice, once at REDS %532
+# and once on 20260908.234354, each correction making the same shape of error at a different size.
+#
+# Two codes each carried two meanings. `readFileAlloc` was reached with `try`, so FileNotFound,
+# IsDir and StreamTooLong each returned through Zig's `!u8` main -- exit 1 -- and downstream named
+# that *lowering failed*, a claim about a desk's CONTENT for a file whose bytes were never read. A
+# usage slip exited 2, so *glow_run declined this file* was the answer when no file had been named.
+# `3 unreadable` and `4 usage` are seated with the guard, each naming itself on stderr.
+#
+# Three gates at zero, never a ratchet: a contract is not a backlog. The head table and main's own
+# return sites must name one set of codes, and the built binary must answer them -- the metal half
+# is what a source-versus-table reading can never reach, and the pen's `metal_disagrees` legs plant
+# exactly the elder collision to prove it.
+#
+# `tier lap` at 5s: the probes run against a shell stub in the pen and against the standing binary
+# once, so the guard costs no Zig build of its own.
+guard glow_run_contract
+path tools/g/glow_run_contract_witness.rish
+tier lap
+seated 20260911.230925
+
 # glow_desk_arity -- three files state one desk's arity, and nothing compared them.
 #
 # How many sample arguments a Glow desk takes is written in the desk's own `::  Sample:` head
