@@ -66,6 +66,11 @@
 #     `comlink/rehearsal_wire.rye` at 38498, one per ship, and `constel/socket.rye` at 38512, one
 #     per seat -- so `band_free` is printed beside `counting_bases` and read together with it.
 #
+# THE OTHER HALF, one rung over. This rung reads the NUMBERS; tools/p/port_runner_lock_witness.rish
+# reads the RUNS -- which rostered guards execute a binder, and which of those runs holds a lock.
+# Only one side of one double below is rostered, so the roster's real exposure is one guard against
+# eight ships rather than two modules against one number.
+#
 #   rishi/bin/rishi run tools/p/port_band_witness.rish
 
 say "port-band: Language EN -- a port is a name on the machine, and eight checkouts share one machine."
