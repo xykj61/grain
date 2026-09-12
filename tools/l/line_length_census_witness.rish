@@ -1,0 +1,69 @@
+# tools/l/line_length_census_witness.rish -- how far past a hundred columns does this tree write?
+#
+#   rishi/bin/rishi run tools/l/line_length_census_witness.rish
+#
+# WHAT THIS GUARDS. `context/TAME_GUIDANCE.md`'s lint table stands under the heading **Enforced
+# now** and carries the row *Line length <= 100 columns*. REDS %714 read that table one row at a
+# time and found this row held by nothing: no tracked tool compared a line length against a
+# hundred anywhere outside a study of upstream code. The remainder it booked was one lap -- measure
+# the population, then decide whether the row earns a guard or a retirement.
+#
+# THE MEASUREMENT, AND WHY IT DECIDES. Read `20260911` over 4,915 tracked sources of the six
+# extensions TAME governs: **102,153 lines past a hundred columns**, better than one line in nine
+# of everything they hold. **54,940 are own-line comments, 18,495 more a Rishi `say` or
+# `assert` carrying a sentence**, so 72 percent of what the rule catches here is prose rather than
+# code a reader has to follow across a terminal. The rest is concentrated where length is
+# structural rather than chosen: `tools/` holds 37,262, most of them a `run [...]` invocation array
+# no wrapping shortens; `caravan/` holds 4,866, of which 956 are a chained `.inner` field access
+# whose width is the ladder's nesting; `crypto/` holds 7,341, largely published test vectors that
+# must stand exactly as their source prints them.
+#
+# SO THE ROW KEEPS ITS PLACE AND LOSES ITS CEILING. A ratchet over a hundred thousand lines that
+# rises whenever a rung is generated is a guard that reds on ordinary work, and this tree has said
+# in four laws that such a guard is one somebody turns off. What the row earns instead is an
+# instrument that publishes its own number, so the lint table names a command rather than a figure
+# a reader has to trust.
+#
+# THE ONE GATE IS REACH. A walk that quietly stops early reports a smaller population and reads as
+# a cleaner tree -- the one failure a ratchet can never catch, and one this tree has booked three
+# times: a shell glob that stopped at `/` after a room folded, `index_row_bound` reading the pin
+# alone over 87 unheld rows (%381), and `log_has_a_row` answering `flat_logs=0` for nine days. So
+# `files_read` is held against a floor, and a census that lost its corpus refuses.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked sources and a pen.
+
+say "line-length: Language EN -- a rule the law calls enforced is measured here rather than asserted."
+say "line-length: Style Gauge, Meter -- the population is printed beside the gate, since a reading of nothing looks exactly like a tree that holds the rule."
+say "line-length: Lens TAME -- docs and implementation stay synced; assert it rather than assume it."
+
+# 1 -- the pen. Every refusal is planted and then lifted, and both mutations carry an `applied` leg
+# beside them, because a plant that plants nothing passes every leg it was written to bite (%519).
+let control = run ["sh" "tools/fixtures/l/line_length_census_control.sh"]
+say control.out
+say control.err
+assert control.ok else "line-length: a control case read the wrong way -- read the lines above"
+assert control.out contains "control_fail=0" else "line-length: the pen must balance before the field is believed -- read the lines above"
+assert control.out contains "control_legs=45" else "line-length: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted -- read the lines above"
+
+# 2 -- the field. It gates reach and reports the census; no ceiling holds the total, and the reason
+# is written in the header above rather than left for a reader to infer from an absent assert.
+let field = run ["sh" "tools/fixtures/l/line_length_census_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "line-length: the census refused -- read `verdict=` for which half -- read the lines above"
+assert field.out contains "verdict=ok" else "line-length: the census answered something other than ok -- read the lines above"
+
+# 3 -- the reach, asserted rather than assumed. A walk that found nothing reports a perfect zero
+# (REDS %463), so every denominator is named here.
+assert (field.out contains "files_read=0") == false else "line-length: the walk read no source at all, so its census means nothing -- read the lines above"
+assert (field.out contains "lines=0") == false else "line-length: the walk read no line at all -- read the lines above"
+assert (field.out contains "over=0") == false else "line-length: a tree this size reading zero long lines is a broken reader rather than a clean corpus -- read the lines above"
+
+# 4 -- the split, both halves printed. A total naming no member leaves the finding unlocatable, and
+# the finding here IS the split: more than half of what the rule catches is prose.
+assert field.out contains "over_comment=" else "line-length: the comment half is unprinted, so the census cannot say what kind of line it counted -- read the lines above"
+assert field.out contains "over_claim=" else "line-length: the claim-line half is unprinted -- a Rishi `say` or `assert` carries a sentence, and calling it code hides where this population actually lives -- read the lines above"
+assert field.out contains "over_code=" else "line-length: the code half is unprinted -- read the lines above"
+assert field.out contains "over_display=" else "line-length: the display-locale reading is unprinted -- `over` counts bytes so every host agrees, and a column is a display cell -- read the lines above"
+
+say "GREEN: line-length -- the hundred-column row names an instrument now, and the instrument names its own population."

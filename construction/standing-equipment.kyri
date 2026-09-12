@@ -5335,3 +5335,23 @@ guard glow_trap_bound
 path tools/g/glow_trap_bound_witness.rish
 tier lap   # 4.1s; nine probes through a pen-built driver, plant refused by name and lifted
 seated 20260911.111917
+# THE LINE-LENGTH CENSUS, seated 20260911. `context/TAME_GUIDANCE.md`'s lint table carries the row
+# *Line length <= 100 columns* under the heading **Enforced now**, and REDS %714 found that row held
+# by nothing at all. The remainder it booked was one lap: measure the population, then decide
+# whether the row earns a guard or a retirement.
+#
+# The measurement decided it. Across 4,915 tracked sources, **102,153 lines run past a hundred
+# columns** -- and 54,940 of those are own-line comments while 18,495 more are a Rishi `say` or
+# `assert` carrying a sentence, so 72 percent of the population is prose rather than code a reader
+# follows across a terminal. RUN the guard for today's figures rather than
+# reading these. The rest concentrates where width is structural: a `run [...]` array, a
+# chained `.inner` access whose depth is the ladder's, a published test vector.
+#
+# So this guard REPORTS its census and gates one thing -- its own reach. A ratchet over a hundred
+# thousand lines that rises whenever a rung is generated is a guard that reds on ordinary work, and
+# four laws here already name that as how a guard gets turned off. 1.0s over 4,915 sources and 1.3s
+# for its pen, so it rides every lap.
+guard line_length_census
+path tools/l/line_length_census_witness.rish
+tier lap
+seated 20260911.172644

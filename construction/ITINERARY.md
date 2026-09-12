@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f2e6f1b0e1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d4eda4c938` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
@@ -153,28 +153,30 @@ pair, so `"sub//a.txt"` in `amphora/manifest_entry.rye:293` lost a `return error
 `20260720-032713_stoa97-token-mold-spec.bron` writes `TooFewLines` *remains in ParseError set (no
 removal)*, so both stand on a decision that reading them as leftovers would undo.
 `rune_shape.MissingTagged` and `rune_core.NotBarePayload` carry no record.
-**GRASS -- THE LAST SILENT DOORS, AND A RATCHET THAT IS NOW A WALL.**
-Elder [shelved](archive/20260911-133037_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4645): the page nobody answered -- a door naming no room.
-**REDS FIRST, ONE CLOSED, A PEER'S:** cold **261 run, 3 red**. `rish_report_bound` read **39
-against 38**, zero slack -- a `${frozen.out}` composed into a say by `785f45f08`. Label on its own
-say, reading on a bare one: **38**, their witness GREEN.
-**THE READING.** The census's living half stood at **39** in **three shapes, not 39 judgments**. **Thirty** are ALES captures whose sameness is MEASURED: **30 of 30** carry both a
-`## What the witness proves (GREEN on metal)` and a `## The road on` section, so `mixed` is their
-own structure speaking; three more are mixed for their own reasons. **The six lineage silos carried
-NO Status line at all** -- the one shape where a door was silent rather than answering another
-question -- and each names its halves apart in its headings: all six read **research for
-understanding**, the first room where that token answers every one.
-**MECHANISM:** a `**Room:**` line per page. `living_silent=0 living_ceiling=0` GREEN, 1,267.
-**39 -> 0, A RATCHET AT ZERO IS A WALL** -- nothing holds a LIVING page silent, so the next written
-into these rooms with no token reds the lap it lands.
-**A FRAME, FOUND BY GRADING ALL 39** rather than a sample, which read A.
-`silicon-torus-hardware.md` read **C 71**, 7 negatives in 9 sentences; molted IN PLACE: **B+ 88**.
-**MY OWN FAULT:** I edited while the cold pass ran, so it reads `tree_moved` and the hot pass is
-this round's. *Hold still while it runs* is a card line I broke.
-**YOURS:** (1) the dated floor of **3** walls a cell no lap may repair. (2) `yonder/`'s **262**
-pages, **11** silent, never inside the reach.
-[Paper](../active-designing/20260911-133037_the-last-silent-doors.md).
+**GRASS -- A RULE THE LAW CALLED *ENFORCED* TURNED OUT TO BE MOSTLY PROSE.**
+Elder [shelved](archive/20260911-172644_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=4651, hand-advanced past 0, 1 and 3, all read today): look straight at what
+must stop or be cut.
+**REDS FIRST:** cold **260 green, 1 red, 2 gated** -- the red is the standing `dated_path`
+(`%626`), nothing of mine.
+**THE BOOKED LAP I TOOK:** `%714` closed 19 of the lint table's 20 rows; the remainder was to
+measure the hundred-column population and rule guard or retirement.
+**THE MEASUREMENT:** 4,915 sources, **895,602 lines, 102,153 past a hundred** -- **54,940 own-line
+comments, 18,495 a Rishi `say` or `assert`**. **72 percent carry a sentence rather than a
+statement.** The 34,342 long Rishi lines: 11,095 comment, 13,911 `assert`, 4,584 `say`, **4,129 a
+`run [...]` array**, 623 else.
+**THE RULING -- KEPT, UNGATED.** A ceiling rising whenever a rung is generated reds on ordinary
+work. `caravan/` holds 4,866, **956 a chained `.inner`** whose width is the ladder's; `crypto/`
+7,341, largely published vectors. Hand-written rooms read small: `tally` 7, `kumara` 32, `rye` 50.
+**THE ONE GATE IS REACH** -- the fault a ratchet can never catch, booked three times here. `over`
+counts bytes, `over_display` characters; they differ by **181**, all non-ASCII. **45 pen legs, two
+mutations each with an `applied` leg.** GREEN, 1.0s.
+**IT DEMONSTRATES ITS OWN FINDING:** both shell halves stand at **0**; the witness carries **15**,
+every one an `assert` or `say` -- the `over_claim` class exactly, and shortening them shortens a
+refusal.
+**YOURS:** (1) whether the lint table's heading should read something other than *Enforced now*
+over a row nothing gates. (2) The 28,718 code lines are ranked by room and by nobody's lap.
+[Paper](../active-designing/20260911-172644_the-hundred-column-rule-was-mostly-prose.md) A 91.
 
 **INCENSE -- A TABLE HEADED *ENFORCED NOW* HELD A RULE NOTHING ENFORCED.**
 Elder [shelved](archive/20260911-121531_itinerary-landed-accounts.md).
