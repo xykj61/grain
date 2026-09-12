@@ -5761,3 +5761,28 @@ guard build_target
 path tools/b/build_target_witness.rish
 tier lap   # 2s; 33 legs in a pen on real git repositories, two mutations bitten
 seated 20260912.020039
+
+# torus_fold -- the storage moonshot's own witness, and it publishes a DECLINE. Row 5 of the
+# bounded-torus moonshots proposes folding Tablecloth's hash space onto a 2-torus so that names
+# near each other in the fold sit near each other in storage, with clustering as its falsifier.
+# `tools/fixtures/t/torus_fold_scan.sh` reads both halves over the tree's own bytes: it hashes a
+# strided sample of tracked files with SHA3-512, reads two digest bytes as coordinates on a
+# 256 x 256 torus, and reports a chi-squared over an adaptive grid beside the toroidal pair
+# distance of three populations -- random, same-directory, and a file against itself with one byte
+# changed -- each against the closed form 128.
+#
+# THE FALSIFIER FAILS AND THE ROW DIES ANYWAY, which is why this rung exists. A cryptographic hash
+# is built to avalanche, so the fold is even by construction -- and that same avalanche is what
+# leaves fold-adjacency carrying no relation. Two documents differing in one byte land as far apart
+# as two strangers. Evenness and adjacency are one property read twice, so row 5's two halves
+# cannot both be answered the way it wants.
+#
+# WHAT IS GATED. The control, and the live reading's SHAPE -- never the live verdict. A three-sigma
+# test over six populations refuses roughly one run in sixty by construction, so a gate on the
+# verdict would red this tree at the rate its own instrument publishes.
+#
+# Paper: `active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md`
+guard torus_fold
+path tools/t/torus_fold_witness.rish
+tier lap   # 5s; 28 behaviors in a pen, both verdicts reachable, three mutations bitten
+seated 20260912.042053
