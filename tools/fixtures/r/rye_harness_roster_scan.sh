@@ -120,9 +120,34 @@ trap 'rm -rf "$TMP"' EXIT INT TERM
 # excluded and must never be -- that file consumes the answer without spelling the shape, so it
 # stays out of this corpus on its own merit, and the day somebody writes the shape into it the
 # count rises and says so. An exclusion is a claim about one file, never about a family.
+#
+# AND A PATH GIT IGNORES IS NOT TREE EVIDENCE EITHER, which is a different exclusion from the two
+# above and wants a different instrument. The lines above name files by hand, correctly, because
+# each is a claim about one file this guard knows it must not read. Ignored paths are a claim about
+# nothing in particular: they are whatever a lap happens to have parked under the root this
+# minute -- `.lap/` scratch, `session-output/` transcripts, `loops/` launcher state, a `git
+# worktree` checked out beneath any of them. Proven on metal `20260911.210000`, and by accident:
+# a lap verifying a repair in a worktree at `.lap/verify` took this scan from `unresolved=1` to
+# `unresolved=2`, over its ceiling, and reddened that ship's whole rostered pass. The second
+# `unresolved` named `.lap/verify/tools/fixtures/c/caravan_reply_control.sh` -- the same file as the
+# first, counted twice because it stood on disk twice.
+#
+# Asked of git in ONE call rather than per path: 3,800 candidates would be 3,800 forks. A tree with
+# nothing ignored makes `check-ignore` exit 1 with an empty list, which `|| true` absorbs, and
+# `grep -vxF -f` over an empty pattern file passes every line through. A pen with no git skips the
+# filter and prints `ignored_filtered=0`, so a reader can tell a filtered reading from an unfiltered
+# one rather than guessing.
 find . -name '*.rish' -o -name '*.sh' 2>/dev/null \
   | sed 's|^\./||' | grep -vE '^(vendor|gratitude|seed)/' \
-  | grep -vE 'rye_harness_roster|rye_compile_reach_control' | sort > "$TMP/scripts"
+  | grep -vE 'rye_harness_roster|rye_compile_reach_control' | sort > "$TMP/all_scripts"
+ignored_filtered=0
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  ignored_filtered=1
+  git check-ignore --stdin < "$TMP/all_scripts" > "$TMP/ignored" 2>/dev/null || true
+  grep -vxF -f "$TMP/ignored" "$TMP/all_scripts" > "$TMP/scripts" || : > "$TMP/scripts"
+else
+  cp "$TMP/all_scripts" "$TMP/scripts"
+fi
 
 # A build site is the token in argument position after a rye verb, with the verb bound to the rye
 # driver itself -- so the prose `rye build failed for RW-2` is read past rather than counted.
@@ -365,6 +390,7 @@ echo "harness_units=$n_stems"
 echo "stems_absent=$n_absent"
 echo "files_unlisted=$n_unlisted"
 echo "assemblers_not_harnesses=$n_nonharness"
+echo "ignored_filtered=$ignored_filtered"
 echo "unresolved=$n_unresolved"
 echo "unresolved_ceiling=$unresolved_ceiling"
 

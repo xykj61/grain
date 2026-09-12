@@ -215,6 +215,47 @@ check "an assembled .rye target is counted as assembled" "$p" ok  "sites_assembl
 check "  ... and not a second time as literal"           "$p" ok  "sites_literal=0"
 check "  ... so the residue stands at zero, never below" "$p" ok  "sites_unparsed=0"
 
+# --- a path git ignores is a lap's own scratch, never tree evidence --------------------------
+# THE FAULT THIS PROVES, AND IT WAS PROVEN BY ACCIDENT FIRST. This scan walks the filesystem with
+# `find`, so it reads whatever stands under the root -- including the gitignored rooms this tree's
+# own laws send a lap to work in. On `20260911` a lap verifying an unrelated repair in a `git
+# worktree` at `.lap/verify` took the live reading from `unresolved=1` to `unresolved=2`, one past
+# a no-slack ceiling, and reddened that ship's whole rostered pass for a file no clone will hold.
+# The pens above hold no git, so the filter is inert in them and none of those legs could see this.
+#
+# The plant is the same pen tree copied under an ignored path, which is exactly the worktree shape.
+# Both directions are proven from the SAME bytes: one `.gitignore` line is the only difference
+# between the two legs below, so a leg that passed for some other reason would fail its twin.
+gitpen() {
+  d=$(pen "$1")
+  ( cd "$d" \
+    && git init -q . >/dev/null 2>&1 \
+    && git -c user.name=pen -c user.email=pen@pen -c commit.gpgsign=false \
+         -c core.hooksPath=/dev/null add -A >/dev/null 2>&1 ) || true
+  echo "$d"
+}
+
+p=$(gitpen ignored); programs "$p" rye/tests a_test b_test; harness "$p" rye/tests a_test b_test
+mkdir -p "$p/.lap"
+cp -r "$p/tools" "$p/rye" "$p/.lap/" 2>/dev/null || true
+printf '.lap/\n' > "$p/.gitignore"
+check "an ignored copy of the whole tree is read past"   "$p" ok  "harnesses=1"
+check "  ... so its units are counted once"              "$p" ok  "harness_units=2"
+check "  ... and the reading says it filtered"           "$p" ok  "ignored_filtered=1"
+check "  ... and the tree still passes"                  "$p" ok  "verdict=ok"
+
+# The twin: the same bytes with the ignore rule lifted. The copy becomes tree evidence, which is
+# what the elder reading did to every path under `.lap/` on every ship.
+: > "$p/.gitignore"
+check "lift the ignore and the copy is counted"          "$p" ok  "harnesses=2"
+check "  ... its units doubling the reading"             "$p" ok  "harness_units=4"
+
+# A pen with no git at all skips the filter and SAYS SO, rather than reporting a filtered reading
+# it never took. A silent fallback is the fault this repair closes, one layer down.
+p=$(pen nogit); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+check "a tree with no git names its unfiltered reading"  "$p" ok  "ignored_filtered=0"
+check "  ... and still reads the tree"                   "$p" ok  "harnesses=1"
+
 echo "cases=$n"
 echo "control_failures=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

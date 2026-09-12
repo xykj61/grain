@@ -10,6 +10,11 @@ trap 'rm -rf "$pen"' EXIT
 pass=0; fail=0
 ck() { if printf '%s' "$3" | grep -q -- "$2"; then pass=$((pass+1)); else
   fail=$((fail+1)); echo "  FAIL $1: wanted '$2'"; printf '%s\n' "$3" | sed 's/^/        /'; fi; }
+# A refusal must be silent about the reading, so one leg asserts an ABSENCE. A scan that refuses
+# and prints a verdict anyway has handed a reader both answers and let them pick.
+ckn() { if printf '%s' "$3" | grep -q -- "$2"; then
+  fail=$((fail+1)); echo "  FAIL $1: did not want '$2'"; printf '%s\n' "$3" | sed 's/^/        /'
+  else pass=$((pass+1)); fi; }
 export GIT_AUTHOR_NAME=pen GIT_AUTHOR_EMAIL=pen@pen GIT_COMMITTER_NAME=pen GIT_COMMITTER_EMAIL=pen@pen
 g() { git -c commit.gpgsign=false -c core.hooksPath=/dev/null "$@"; }
 
@@ -101,6 +106,32 @@ rm -f "$pen/tree/quote.md"
 out=$(run); rc=$?
 ck "empty listing refuses" "REFUSED" "$out"
 [ "$rc" = 2 ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL empty listing exit: got $rc wanted 2"; }
+
+# 19-23. THE SCRATCH IS AN INSTRUMENT, AND A SILENT ONE READS EXACTLY LIKE A CLEAN TREE. The walk
+# writes its findings to a scratch file and reads them back, so a scratch that never arrives yields
+# an empty read: nothing counted, nothing short, `verdict=no_living_forecast` at exit 0. Proven on
+# metal before the repair -- this same WIDE0-WIDE63 pen read `living_forecast` with a writable
+# scratch and `no_living_forecast` with an unwritable one, the forecast standing untouched in both.
+# Planted from BOTH sides, and the forecast is restored first so the pen has something to lose.
+printf 'The WIDE ladder (WIDE0-WIDE63).\nWIDE1 landed.\n' > "$pen/tree/pin.md"
+commit
+out=$(run)
+ck "the pen has a forecast to lose"   "verdict=living_forecast" "$out"
+
+out=$( cd "$pen/tree" && TMPDIR=$pen/nowhere sh "$scan" 2>&1 ); rc=$?
+ck "an unmakeable scratch refuses"    "REFUSED -- no scratch file could be made" "$out"
+ckn "and prints no verdict at all"    "verdict=" "$out"
+[ "$rc" = 2 ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL unmakeable scratch exit: got $rc wanted 2"; }
+
+# A WRITE THAT FAILS PARTWAY IS THE SAME FAULT ONE STEP ON, and mktemp cannot see it: the file
+# exists, and the listing inside it is short. The completion sentinel is written last, so its
+# absence is what a truncated write leaves behind. Bitten by mutation -- drop the sentinel from a
+# copy of the scan and the copy must refuse rather than report a clean tree.
+sed 's/^  echo .#listing-complete.$//' "$scan" > "$pen/tree/tools/fixtures/a/truncated.sh"
+out=$( cd "$pen/tree" && sh tools/fixtures/a/truncated.sh 2>&1 ); rc=$?
+ck "a truncated listing refuses"      "REFUSED -- the scratch listing did not survive the write" "$out"
+[ "$rc" = 2 ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL truncated listing exit: got $rc wanted 2"; }
+rm -f "$pen/tree/tools/fixtures/a/truncated.sh"
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1
