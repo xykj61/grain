@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
 | `20260912.181026` | [the refusal named the path again](20260912/20260912-181026_the-refusal-named-the-path-again.kyri) | recovered the runner repair that named a moved tree |
 | `20260912.173722` | [default and boundary](20260912/20260912-173722_the-default-and-the-boundary-read-on-this-pier.kyri) | model control and Amphora fallback read true |
+| `20260912.173424` | [the parked door lands whole](20260912/20260912-173424_the-parked-door-lands-whole.kyri) | recovered Rye module-door wall: 45 legs, zero silent |
 | `20260912.165121` | [the four parked laps came home](20260912/20260912-165121_the-four-parked-laps-came-home.kyri) | four completed unsent laps recovered as one set |
 | `20260912.163124` | [the parked door came home](20260912/20260912-163124_the-parked-door-came-home.kyri) | recovered a finished docs-geode lap from the dead-letter box |
 | `20260912.162301` | [the binary that stays with its reading](20260912/20260912-162301_the-binary-that-stays-with-its-reading.kyri) | 18 Amphora guards moved builds into per-run pens |
@@ -29,6 +30,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.050629` | [The refusal that named its cost](20260912/20260912-050629_the-refusal-that-named-its-cost.kyri) | The runner named what a moved tree cost and never which file moved. |
 | `20260912.044314` | [the fold that had nothing to hold](20260912/20260912-044314_the-fold-that-had-nothing-to-hold.kyri) | row 5 cleared its falsifier, and the clearing is what killed it |
 | `20260912.044148` | [the pin door the fleet owned](20260912/20260912-044148_the-pin-door-the-fleet-owned.kyri) | two rows booked on metal, folded; deadlock 1 -> 0 |
+| `20260912.041905` | [the door the grammar reserves](20260912/20260912-041905_the-door-the-grammar-reserves.kyri) | ten Rye modules opened outside the door form the compiler reserves |
 | `20260912.035328` | [the round that was cut](20260912/20260912-035328_the-round-that-was-cut-and-the-clock-that-held-its-lock.kyri) | a cut lap's work recovered, re-proven |
 | `20260912.033302` | [the command that returned no number](20260912/20260912-033302_the-command-that-returned-no-number.kyri) | a door's free-number repair printed a tail returning none |
 | `20260912.031636` | [the grade that was remembered](20260912/20260912-031636_the-grade-that-was-remembered.kyri) | a parked build landed; its A 93 read A 91 when measured |

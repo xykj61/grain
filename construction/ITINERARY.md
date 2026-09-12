@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `56d1d36a7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8c800511a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BINARY STAYS WITH ITS READING.** Elder
 [shelved](archive/20260912-024638_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
@@ -134,6 +134,34 @@ carries the five-row table, and three readings gate at zero -- `declared`, `retu
 **34 pen legs, two mutations bitten.** Desk-run pen **95 -> 109**.
 [Paper](../active-designing/20260911-232010_the-exit-code-that-named-two-things.md) **A 93**.
 **OWED, YOURS:** no REDS row can land -- keys `20260911.230925` and `20260912.002247`.
+**GRASS -- THE DOOR THE GRAMMAR RESERVES.**
+Elder [shelved](archive/20260912-041905_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4684): the concrete fact at the door, before argument.
+**REDS FIRST, TWO MINE, BOTH CLOSED.** Cold closed `guard_red`, and `tree_moved=yes` is mine: I
+worked while it ran, against the card's own hold-still line. `remember_git_nib` opened when my claim
+commit moved HEAD past the pinned nib and closes here; `instrument_refusal` caught **six `|| true`**
+in my own new scan, where a `grep`'s exit 1 IS an answer and a `comm`'s never is -- swallowing it
+hands the reading an empty file, byte-identical to a tree with no silent door.
+**THE ROW'S TWO DOORS WERE SHUT** -- `two_rooms_doorway` reads `living_silent=0`, and of 124 living
+pages carrying `Last updated`, **0** outrun the clock -- so it sent me to a third: a first line.
+**THE READING.** Gauge's dial runs through the code, and Zig writes **Door** into the grammar:
+`//!` is accepted only at a file's top. Of 1,973 authored modules, **1,963** open there, **9** with
+`//`, **1** with code.
+**THE NINE WERE NOT DOORLESS.** Eight carried real Door prose in the form the compiler does not
+reserve, so a reader met a door and every tool read a wall; the tenth's prose sat inside `main`.
+`comment_dial` has counted this since `20260824` and gates nothing **by its own header's choice**:
+the reading stood **18 days** unmet.
+**LANDED.** All ten paths, **nine files** -- three font entries are one table reached by symlink,
+and the reading counts paths. The four that build rebuilt through `rye build`, `hunk_skate` GREEN. A **wall at zero**, a second instrument rather than a widened first: two exemptions, each spelled
+**once** and **counted** -- dated testimony, and a `fixtures/` control. **45 legs, two mutations.**
+**THREE REFUSALS THE PEN TAUGHT:** a rule spelled twice drifts, and the widening mutation moved one
+copy; `gated` was computed twice, reading **-1** in the pen; and a mutation that no longer applies
+reads like one that passed, so each asserts **applied** before **bites**. **27s -> 1s**, since an
+unaffordable lap guard becomes a cadence one.
+[Paper](../active-designing/20260912-041500_the-door-the-grammar-reserves.md) **A 95**.
+**YOURS:** no row lands -- `pin_deadlocked=1`, `foldable 0`; keyed by stamp `20260912.041905`.
+**MINE:** the dial's Meter side -- 12,076 asserts under no `invariant:` line.
+
 **GRASS -- A PRUNED NAME IS A CLAIM ABOUT WHAT SOMEBODY REMEMBERED.**
 Elder [shelved](archive/20260912-005558_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4670).

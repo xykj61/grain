@@ -5809,3 +5809,39 @@ guard torus_fold
 path tools/t/torus_fold_witness.rish
 tier lap   # 5s; 28 behaviors in a pen, both verdicts reachable, three mutations bitten
 seated 20260912.042053
+
+# rye_module_door -- Gauge sets its dial by reader and the dial runs through the code: METER beside
+# a bound, DOOR at the head of a module where somebody arriving cold deserves a plain sentence about
+# what the thing is for. Zig, and Rye after it, writes that setting into the grammar -- `//!` is a
+# module doc comment the compiler accepts only at the top of a file -- so the door is a POSITION the
+# language reserves rather than a habit a reader infers.
+#
+# WHAT WAS UNREAD. `tools/fixtures/c/comment_dial_scan.sh` has counted the form since `20260824` and
+# gates nothing, deliberately: its header says a measurement is finished when its question is
+# answered. So the reading stood for eighteen days and no lap met it.
+#
+# THE SILENT MODULES WERE NOT DOORLESS, which is the finding. Of the ten that opened outside the
+# form, eight carried real Door prose in the ordinary `//` block -- `comlink/query_wire_retention_cost.rye`
+# opens on a WHY paragraph naming the design question it settles; `linengrow/retting_timer.rye` names
+# its two commands and the append-only log behind them -- so a reader met a door and every tool read
+# a wall. One more, `rye/tests/version_test.rye`, carried its prose INSIDE `main`, where the sentence
+# explains the statement below it and answers nobody arriving at the file. The reading counts PATHS,
+# so the three `font8x8_data.rye` entries are one file reached by two symlinks -- right for a meter
+# asking whether a reader arriving at a path meets a door. All ten paths stand repaired, nine files,
+# and the four that build as programs were rebuilt on metal through `rye/bin/rye build` to prove the
+# compiler accepts the form at the head of each.
+#
+# A WALL RATHER THAN A RATCHET, on the two-rooms doorway guard's own line: nothing structural holds
+# a living module's head silent, so a floor above zero would be slack rather than a fact. Two
+# exemptions stand, each named and each COUNTED -- dated testimony by the mark law, and a `fixtures/`
+# module because a planted control must stay free to carry the fault it plants. A reach floor sits
+# under both, since a gate held at zero cannot tell a clean collection from a dead instrument.
+#
+# WHAT IT CANNOT SAY. Whether the sentence behind the door welcomes anybody. Position is checkable;
+# the welcome is graded by `sh tools/fixtures/q/qa_report_card.sh`.
+#
+# Paper: `active-designing/20260912-041500_the-door-the-grammar-reserves.md`
+guard rye_module_door
+path tools/r/rye_module_door_witness.rish
+tier lap   # 5s; 45 behaviors in a pen, every refusal lifted and two mutations bitten
+seated 20260912.041500

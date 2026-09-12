@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim rye-module-door
-seat grass
-stamp 20260912.040331
-epoch 1789200211
-paths tools/r/rye_module_door_witness.rish tools/fixtures/r/rye_module_door_scan.sh tools/fixtures/r/rye_module_door_control.sh
-what A wall over the Door setting at the head of every authored Rye module: comment_dial measures 1963 of 1973 carrying a //! module doc and gates nothing, so the ten silent heads are read by no lap. Four are living authored modules, three are generated font data, two are pen fixtures, one is dated testimony -- each exemption named rather than assumed.
 claim apply-witness
 seat patchouli
 stamp 20260912.041507
