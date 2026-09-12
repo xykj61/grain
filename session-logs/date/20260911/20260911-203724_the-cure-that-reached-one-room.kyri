@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260911.203724
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role core infrastructure -- the BAKERY seat, grain-bakery
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json, read 20260911; configuration rather than runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host Framework-class Linux pier, America/New_York
+title The cure that reached one room
+prompt autonomous lap -- reds first, then the next agent-doable lap Lindy-first and crux-first
+rota lap 4657, row 2 -- Fire, the row that sees; read foundations/20260826-021733_fire-the-row-that-sees.md and took its own instruction literally. Fire's lap exists for two kinds of trouble -- the defect a tree builds over, and the dead tissue it keeps -- so I read the REDS ledger before reading anything new and found the defect was mine. Row 2 was the day's least-read at 7 against row 0's 12, so no hand advance was needed.
+think Cold roster pass first, detached so the lap holds still: 267 run, 264 green, 1 red, 2 gated. The one red was `standing_equipment` answering `verdict=roster_broken`, and its evidence file named TWO causes under that one word.
+think Cause one was mine. `unrostered: port_constant_census` -- a `ran` row in `construction/standing-equipment-runs.kyri` for a guard no roster row names, left when this seat dropped its port-constant loom whole at `20260911.162225` in favour of a peer's. The run card is untracked and per-pier, and its own doctrine says a run card naming a guard the roster never seated is a fault; so removing that one line is the sanctioned repair rather than a history act. `runs_unrostered` 1 -> 0.
+think The general lesson is worth more than the line: a loom dropped whole leaves its run-card row behind, and the run card is the one surface a drop does not reach -- so the roster guard reds on that tree forever.
+think Cause two was `dated_path red`, a cadence guard whose last run refused. Re-ran it on metal: `refs_lost=110` against `lost_ceiling=85`, `lost_testimony=105`, `lost_promised_living=0`, and the LIVING half FELL 6 -> 5 since %626's last reading. The gate rises by journaling, which is %626's own finding, confirmed with a fresh figure. Not mine to close.
+think And a finding came with it: a roster row CANNOT park that red. The `gate` field's vocabulary is read out of ITINERARY's custody-gate list, so a red surfaced at a LEDGER gate has no word at all -- and a cadence guard that reds once reds every lap after, for a fault no lap may repair.
+think Then the keystone, the crux in my own lane. REDS %646 found that a hard assert on a precondition makes a witness unrostable, sampled 40 of 820 unreached witnesses, and left its class as a 5-in-40 sample. Two preconditions stood in that sample; `gitlink_dependent` walled the submodule one on 20260908 and `build wayland_seed first` is no submodule at all and stood uncounted.
+think Built the census: `tools/fixtures/p/precondition_dependent_scan.sh` reads 2,033 tracked runners, masks comments, extracts each `run ["test" "-x"/"-f"]` probe resolving a bound `let NAME = "literal"`, and calls an untracked probed path the runner does not itself build an ARTIFACT precondition, a `WAYLAND_DISPLAY` presence test a DISPLAY one. 10 dependents, 4 also wanting a screen, 2 probing `vendor/` and read as required by the room, 1 `builds_own`.
+think Probed rather than read, which is the lesson `gitlink_dependent` learned the hard way the same day: 10 of 10 REFUSE. Its sibling ran 38 and found 38 of 38 exit clean. Two precondition families, opposite answers, neither guessable from the other.
+obs The finding the sample could not reach: this tree has seated this cure THREE times. %173's `pond_display_gate` for the screenless case, the roster's `capability` field with six probes, and `tools/equinox/witness/equinox_season_e0_witness.rish`, which BUILDS its own `glow/bin/mod-clock` and is the ONE green of the eleven runners probed. A habit that reached one room, and no guard had ever asked which witnesses still refuse.
+obs The pen stopped me accusing the cure. The draft read each probe and asked git, so e0 -- whose build names `-femit-bin=${bin}` and whose literal path appears on its binding line alone -- read as a dependent. Two pen cases now prove the e0 rule in both spellings, and the variable one is the spelling the tree actually writes.
+obs The pen also caught a fault the population could not. The draft read bindings and bodies in two files over `NR == FNR`; with an empty bindings file -- a runner probing a literal and binding nothing -- FNR and NR both count the second file and the whole body is swallowed. The real tree reads 10 either way, because all ten of its dependents happen to bind, so only a pen holding the shape the tree lacks could refuse the reader.
+obs The hot pass found a third red that was also mine, and the second half of reds-first caught it: rostering the witness made its two new bindings rostered, and `caps` and `e0` were asserted on without reporting their captures -- `unsaid_rostered` 927 against a no-slack ceiling of 925. Both say their capture BARE and ABOVE the assert now, which is the one form satisfying `shim_reason`, `late_say_rostered` and `say_compose_bound` at once; 925/925, GREEN. Hot: 268 run, 265 green, 1 red, 2 gated, and the one red is `dated_path` at %626's gate.
+obs No REDS row booked, and the pin is the reason rather than a choice: `pin_deadlocked=1`, 136 bytes of headroom at `xy/main` against a median row of 2,059, `pin_foldable_rows=0`. I folded %714 to make room and found a peer had already folded it to the same shelf filename; reverted whole and took theirs. The open claim question firing inside the ledger's own loom.
+loom witness=precondition_dependent wall_s=58 probe_s=55 runners=2033 dependents=10 probe_red=10 builds_own=1 pen_legs=40
+loom pass=standing_equipment_cold guards_run=267 guards_green=264 guards_red=1 guards_gated=2 seconds=3641
+loom pass=standing_equipment_hot guards_run=268 guards_green=265 guards_red=1 guards_gated=2 seconds=3301
+loom scan=dated_path refs_lost=110 lost_ceiling=85 lost_testimony=105 lost_living=5 lost_promised_living=0
+file tools/fixtures/p/precondition_dependent_scan.sh the census -- two precondition kinds read apart, counted together, probed rather than assumed
+file tools/fixtures/p/precondition_dependent_control.sh forty behaviors on a real repository in a pen, every refusal planted and lifted
+file tools/p/precondition_dependent_witness.rish the gate at zero and the ratchet under a ceiling, both cures proven to exist rather than recommended
+file construction/standing-equipment.kyri rosters the guard `tier lap`, naming the 58s cost and why lap rather than cadence
+file active-designing/20260911-202947_the-cure-that-reached-one-room.md the paper, checkable room, A 92
+file construction/ITINERARY.md the live front, elder account shelved, and the LEDGER-parked-red question surfaced
+file session-logs/date/README-index-20260911.md the day shelf row
+scope one red closed of the two under one verdict word, one census landed and rostered, one paper, no ledger row bookable
+status GREEN -- precondition_dependent GREEN on metal with its pen at pass=40 fail=0 and two mutations bitten; shim_reason back to 925/925 GREEN; hot 268 run, 265 green, and the one remaining red is dated_path at %626's gate, which no lap may close
+recommend check-in (Keaton) -- two words wanted: a `gate` vocabulary for a red parked at a LEDGER row rather than a custody gate, since a cadence guard that reds once reds every lap after; and which of three doors each of the ten dependents takes
