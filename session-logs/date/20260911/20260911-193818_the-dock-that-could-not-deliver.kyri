@@ -23,7 +23,9 @@ think refuse_and_clear took a suffix parameter rather than being written twice, 
 obs Every leg was run by hand in a pen before a line of the witness was written: honest carry, refused first carry, refused re-carry, honest re-carry, and the stripped elder built and watched losing the dock.
 obs The elder strip needed five sed edits rather than two, because removing the scratch leaves far_scratch_buf unused and Zig refuses to build around an unused parameter. Proven identical to the hand-run strip before it went into the witness.
 obs A bracket inside the strip's sed pattern would ride inside a rish run list, so both bracketed patterns were rewritten bracket-free and the result diffed against the proven one.
-obs Folded REDS %714, the pin's one foldable row, to make headroom -- the capacity scan names that as the way, and the pin stood at rows_that_fit=0 with 129 bytes free.
+obs The pin read rows_that_fit=0 with 129 bytes free and one foldable row standing in another lane, so the row was born on its own shelf rather than folding a peer's -- the door %660 and %716 came through.
+obs ERRATUM, written after the send: the two lines above and the file line below first said I folded REDS %714 to make headroom. I did not; %714 is another lane's row and it stayed where it was. Accreted rather than rewritten silently.
+obs Booked at %717 and renumbered to %718 on the rebase: xy had bound %717 to 20260911.185900, the earlier stamp, and the key stayed the stamp. Nothing else needed sweeping, because every citation in the round already spelled the stamp -- which is rule 4 of the derived spine paying for itself.
 loom measure=amphora_carry honest_far_bytes=1565 resins=4 chunks=5 restore_files=4 plain_bytes=378
 loom measure=elder_refused_first_carry far_bytes=1565 core_verify=green seal_open=green far_resins=0
 loom measure=repaired_refused_first_carry far_vessel=absent scratch=absent chunks=5
@@ -32,7 +34,7 @@ file tools/am/amphora_carry_atomic_witness.rish eight legs, the elder shape rebu
 file tools/am/amphora_pour_atomic_witness.rish elder strip updated for the two renamed helpers, both edits still asserted to bite
 file construction/standing-equipment.kyri amphora_carry_atomic seated tier lap
 file amphora/README.md the new guard named at the door so readme_unnamed stays at zero
-file construction/REDS.md the row, and %714 folded to make it fit
+file construction/archive/REDS-the-dock-that-could-not-deliver-rows-718.md the row, born on its shelf; construction/REDS.md carries the re-derived headline
 recommend keep-going -- pour's own second half is the same shape one verb nearer home, and it is on the card as yours
 scope reds first -- one red found, measured, repaired and closed on metal in this lane
 status GREEN -- amphora_carry_atomic 8 legs on metal; the amphora family, tame_style_check and width-check all GREEN; cold 265 run, 263 green, 0 red
