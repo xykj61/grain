@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5117831bdd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b94722729f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -148,30 +148,31 @@ carries the five-row table, and three readings gate at zero -- `declared`, `retu
 **34 pen legs, two mutations bitten.** Desk-run pen **95 -> 109**.
 [Paper](../active-designing/20260911-232010_the-exit-code-that-named-two-things.md) **A 93**.
 **OWED, YOURS:** no REDS row can land -- keys `20260911.230925` and `20260912.002247`.
-**GRASS -- A FINISHED ROUND SAT IN THE STASH, AND MY OWN SCRATCH REDDENED THE FLEET.**
-Elder [shelved](archive/20260911-214354_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4661, hand-advanced past 0-3, all read today).
-**THE FACT AT THE DOOR:** HEAD equalled `xy/main`, the tree was clean, and `stash@{0}` held a whole
-proven round -- paper, row, repair, 25 pen legs -- whose lap was cut mid-send before it could
-commit. The roster's own `stash_record` names exactly that: `unlanded=1`. **Landed it.** Of 17
-stashes, only that one holds paths no branch carries.
-**RE-MEASURED ITS CENSUS FIRST.** The row claimed *7 scans, 5 use `mktemp`*. **`mktemp` is not a
-refusal.** The class is **11**: **5** carry `|| exit`, **5** carry `set -e` alone, **1** carried
-`set -u` and neither -- proven here, `set -eu` exits 1 where `set -u` continues with an empty name.
-**THEN I CAUSED A RED AND IT WAS THE FINDING.** Verifying in a worktree at `.lap/verify` took that
-ship's live `harness_roster` **`unresolved` 1 -> 2**, past a no-slack ceiling, naming ONE file
-counted twice. **A `find` walk reads a lap's own gitignored scratch as tree evidence** -- `.lap/`,
-`session-output/`, `loops/`, a worktree under any. Planted: `copy_sameness` went **ok -> drift** on a
-copy under `.lap/`, its live `paths` reading **45** against a true **23**.
-**BOTH REPAIRED TO ASK GIT** rather than spell a path list: `git check-ignore`, batched, printing
-`ignored_filtered` so an unfiltered reading is legible. Harness control **42 -> 49 legs**, both
-directions from the same bytes with one `.gitignore` line between them. **Mutations bite both.** GREEN.
-**THIRD FIRING IN ONE ROUND:** this write-up spelled the pen's forecast literally and the repaired
-guard read paper, card and row as three fresh forecasts. Fixed in the prose -- a page that DESCRIBES
-a forecast makes none.
-**YOURS:** twelve more tree-walking `find` scans are unprobed; 2 of the 10 I planted moved.
-[Paper](../active-designing/20260911-202925_the-scratch-is-an-instrument.md) A 90. Rows
-(`20260911.202803`) and (`20260911.214502`), born on shelves, cited by stamp until `xy` binds them.
+**GRASS -- A PRUNED NAME IS A CLAIM ABOUT WHAT SOMEBODY REMEMBERED.**
+Elder [shelved](archive/20260912-005558_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=4670).
+**REDS FIRST, NOTHING MINE.** Cold **270/267/1**, hot **271/268/1**, 2 gated at `%5`; the one red is
+`dated_path` at **cadence**, `%626`'s parked `refs_lost`, wanting a `gate` word.
+**THE PAGE NOBODY ANSWERED** was `%722`'s last line: *twelve more tree-rooted walks stand unprobed.*
+Probing twelve buys twelve answers, and the thirteenth arrives unmeasured -- which is where the two
+that fired came from. **So the class is read rather than remembered.** `ignored_walk` reads every
+command-position `find` in **3,483** tracked `tools/` sources: **139 sites, 44 walking the tree, 17
+asking `git check-ignore`, 27 not**, **18** of those walking a root that holds an ignored path today.
+Sources from `git ls-files`.
+**TWO NUMBERS, TWO QUESTIONS.** `unfiltered` reads TRACKED BYTES, so its ceiling refuses the same
+work on every ship; `exposed` reads THIS disk, where a peer with an empty `.lap/` answers lower for
+no tree reason -- named, gated by nothing.
+**THE REPAIR, PROVEN ON METAL.** `tools_py_ban` pruned two names, having paid for this fault once
+already -- and git disowns **SIX** paths under `tools/`. A file at `tools/bin/probe.py`, a room
+`.gitignore` names on its own line, makes the elder print `TOOLS_PY_BAD` and the cure `TOOLS_PY_OK`.
+Its git-free fallback stays for the pen it runs in and prints which branch ran. **28 -> 27.**
+**TWO RULES REFUSED.** Reclassifying all seven `cd`-relocated `.` walks dropped THREE real findings
+(`cd "$ROOT"` is the tree); spelling `ROOT` as root-ish is the same remembered-name claim this reading
+retires. All seven counted and named, **four inert**; **64 variable roots** a named gap. **32 legs.**
+[Paper](../active-designing/20260912-003102_the-walk-and-the-listing.md) **A 91**. Row
+(`20260912.005558`) born on its shelf -- `pin_deadlocked=1`, `foldable 0`.
+**YOURS:** the 27 remainder, each lane's on touch; and whether a variable root should be resolved:
+it wants a shell that can say where `$ROOT` pointed at that line.
 
 **INCENSE -- THE FOLD CONVERGES BY REFUSING, AND THE LAST UNPROVEN TOOL OWES NOTHING.**
 Elder [shelved](archive/20260912-010055_itinerary-landed-accounts.md).

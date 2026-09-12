@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.014100` | [the column the paragraph could not keep](20260912/20260912-014100_the-column-the-paragraph-could-not-keep.kyri) | a lint table's split left prose for a derived column |
 | `20260912.011940` | [the pen that held no leg](20260912/20260912-011940_the-pen-that-held-no-leg-for-the-new-refusal.kyri) | a parked round landed, its pen widened to hold it |
 | `20260912.010055` | [The fold that converges by refusing](20260912/20260912-010055_the-fold-that-converges-by-refusing.kyri) | a one-way move proven to move once |
+| `20260912.005811` | [The walk and the listing](20260912/20260912-005811_the-walk-and-the-listing.kyri) | a meter over guards that walk what git disowns |
 | `20260912.004500` | [the bound that counted](20260912/20260912-004500_the-bound-that-counted-and-never-measured.kyri) | the weave counters take the ceiling its lines had |
 | `20260912.002247` | [The red that pointed at the box](20260912/20260912-002247_the-red-that-pointed-at-the-box.kyri) | the cold red named the stash holding a finished lap |
 | `20260912.000053` | [The orphan already landed](20260912/20260912-000053_the-orphan-that-had-already-landed.kyri) | 3 of 3 work orphans were landed work under a draft name |

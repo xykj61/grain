@@ -5631,3 +5631,41 @@ guard lint_table_runs
 path tools/l/lint_table_runs_witness.rish
 tier lap   # 1s; 32 behaviors in a pen, nine refusals and two mutations
 seated 20260912.011500
+# ignored_walk -- a guard that finds its population by WALKING reads whatever stands under the root,
+# and this tree's own laws send a lap to work in rooms git ignores: `.lap/` for a lap's scratch,
+# `session-output/` for a transcript, `loops/` for launcher state, and a `git worktree` parked under
+# any of them (`read-scope.md`). REDS %722 caught two such guards by living through them -- a
+# worktree at `.lap/verify` took `rye_harness_roster` from `unresolved=1` to `2`, one past a ceiling
+# with no slack, naming ONE file counted twice; a copy of `mantra/` under `.lap/probe/` took
+# `copy_sameness` from `ok` to `drift`. Both readings were true about that disk and false about the
+# tree, which is the direction a guard can least afford: a red on every ship for a file no clone
+# holds is how a gate gets turned off. That row repaired the two that fired and named the rest a lap.
+#
+# THIS READS THE CLASS, so the walk written tomorrow is counted the day it lands rather than probed
+# by hand some later week. Its own corpus comes from `git ls-files`, for exactly that reason.
+#
+# TWO NUMBERS BECAUSE THEY ASK TWO THINGS. `unfiltered` -- a tree walk in a file that never calls
+# `git check-ignore` -- is a property of TRACKED BYTES, identical on every ship, so a ceiling over it
+# refuses the same work everywhere. `exposed` counts the walks whose root holds an ignored path on
+# THIS disk, where a peer with an empty `.lap/` answers lower for no tree reason, so it is printed by
+# name and gated by nothing.
+#
+# THE PROXY AND THE INERT MEMBERS, BOTH NAMED. A static reading says a walk CAN reach an ignored
+# path, never that one would MOVE a published number; two of the ten probed by hand at %722 did.
+# And seven `.` walks sit in files that `cd` to a variable: three land on the repository root, four
+# land in a pen. Reclassifying all seven drops three real findings, and spelling `ROOT` as the
+# root-ish name is the same claim-about-remembered-names this reading exists to retire -- so all
+# seven stay counted and all seven are printed under `cd_relocated`, four of them inert members the
+# ceiling can never bring to zero. Sixty-four variable roots are a named gap rather than a guess.
+#
+# The repair that rode with it: `tools/fixtures/t/tools_py_ban_scan.sh` pruned `tools/.cache` and
+# `tools/.build` by name, having already paid for this fault once, and git's own rules disown SIX
+# paths under `tools/`. Proven on metal -- a file at `tools/bin/probe.py`, a room `.gitignore` names
+# on its own line, false-REDs the elder spelling and reads clean under the cure. Its git-free
+# fallback stays for the pen it is built to run in, and prints which branch ran.
+#
+# Paper: `active-designing/20260912-003102_the-walk-and-the-listing.md`
+guard ignored_walk
+path tools/i/ignored_walk_witness.rish
+tier lap   # 8s; 32 behaviors in a pen, every refusal lifted and two mutations bitten
+seated 20260912.003102

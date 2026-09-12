@@ -1,0 +1,88 @@
+# ignored_walk_witness.rish -- a population discovered by walking is a claim about a disk; a
+# population discovered by asking git is a claim about the tree.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/i/ignored_walk_witness.rish
+#
+# REDS %722 caught two guards reading a lap's own gitignored scratch as tree evidence. A worktree at
+# `.lap/verify` took `rye_harness_roster` from `unresolved=1` to `2`, one past a no-slack ceiling,
+# and a copy of `mantra/` under `.lap/probe/` took `copy_sameness` from `ok` to `drift`. Both
+# readings were true about the bytes on that disk and false about the tree, which is the direction a
+# guard must never be wrong in: a red on every ship for a file no clone holds is how a gate gets
+# turned off. That row repaired the two that fired and named the class a lap.
+#
+# THIS IS THE CLASS, READ RATHER THAN REMEMBERED. The elder census of this family was a claim about a
+# spelling three times running (%721), so the spelling lives in the scan and the control mutates it.
+# `unfiltered` counts tree walks in tracked sources that never ask git what the tree disowns, and it
+# is a property of TRACKED BYTES -- identical on every ship, so a ceiling over it refuses the same
+# work everywhere. `exposed` counts the walks whose root holds an ignored path on THIS disk, which is
+# a fact about one checkout, so it is reported by name and gated by nothing.
+#
+# WHAT IT CANNOT SAY. Whether an ignored path would MOVE a published number. Two of the ten probed by
+# hand at %722 did. This reads REACH rather than damage, and the roster it prints is a work list.
+
+say "ignored-walk: Language EN -- a guard's population is the tree's, and the tree says what it disowns in one place."
+say "ignored-walk: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "ignored-walk: Lens TAME -- safety first: the gated reading is a property of tracked sources alone, so no ship reads a different ceiling than its peers. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/i/ignored_walk_control.sh"]
+say control.out
+assert control.ok else "ignored-walk: the control must complete"
+assert control.out contains "control_verdict=ok" else "ignored-walk: the control must reach its own verdict"
+assert control.out contains "control_failed=0" else "ignored-walk: every leg must pass, not merely the ones this file happens to name"
+
+# The reading itself, both ways from the same bytes with one helper between them.
+assert control.out contains "plain_walk_counts=yes" else "ignored-walk: a tree walk in a file that never asks git is what this meter counts"
+assert control.out contains "plain_walk_is_tree=yes" else "ignored-walk: the walk must be recognised as reaching the working tree"
+assert control.out contains "cure_lifts_unfiltered=yes" else "ignored-walk: asking git check-ignore must lift the reading, or the cure this meter names is not the cure it measures"
+assert control.out contains "cure_counts_filtered=yes" else "ignored-walk: a cured walk must still be counted somewhere, or repairs vanish from the census"
+
+# What is NOT a walk. A census that counts a sentence is a census nobody can lower.
+assert control.out contains "comment_counts_nothing=yes" else "ignored-walk: a commented-out walk is testimony rather than a walk"
+assert control.out contains "prose_counts_nothing=yes" else "ignored-walk: the word find inside a sentence is not a command"
+assert control.out contains "substitution_counts=yes" else "ignored-walk: a walk after a pipe, a substitution or an opening paren is still a walk"
+assert control.out contains "leading_option_stepped=yes" else "ignored-walk: find -L names its root one operand later, and the root is what decides the reading"
+
+# The gap this meter names rather than guesses at. A variable root needs the shell's own state.
+assert control.out contains "variable_root_unresolved=yes" else "ignored-walk: a variable root must be reported"
+assert control.out contains "variable_root_not_gated=yes" else "ignored-walk: an unresolved root must never enter the gated number -- a guess in either direction is worse than a named gap"
+assert control.out contains "variable_root_named=yes" else "ignored-walk: a reported population that prints only its size is visible the way a locked door is"
+assert control.out contains "absolute_root_off_tree=yes" else "ignored-walk: an absolute path and an untracked name walk somewhere this tree does not answer for"
+assert control.out contains "off_tree_not_gated=yes" else "ignored-walk: an off-tree walk must stay out of the gated number"
+
+# Exposure, from both sides, since it is the half a reader most wants and the half no ceiling holds.
+assert control.out contains "latent_before_plant=yes" else "ignored-walk: a walk whose root holds no ignored path today is latent, and says so"
+assert control.out contains "exposed_after_plant=yes" else "ignored-walk: one ignored path under the walked root must move the exposure reading"
+assert control.out contains "exposed_named=yes" else "ignored-walk: an exposed walk must be named, since naming it is the whole work list"
+assert control.out contains "exposed_keeps_unfiltered=yes" else "ignored-walk: exposure must never change the gated number, or one checkout's scratch would set another ship's ceiling"
+assert control.out contains "cd_relocated_named=yes" else "ignored-walk: a dot walk in a file that changes directory to a variable must be named, since a static reader cannot follow the cd"
+assert control.out contains "cd_relocated_still_counted=yes" else "ignored-walk: it stays in the gated number too -- reclassifying every one of them drops the three that cd to the repository root"
+assert control.out contains "no_cd_not_relocated=yes" else "ignored-walk: a file that changes no directory must not be named as relocated"
+assert control.out contains "exposure_lifts=yes" else "ignored-walk: removing the ignored path must return exposure to zero, or the reading is a latch"
+
+# The ceiling, from both sides. There is no override and none is wanted.
+assert control.out contains "at_ceiling_green=yes" else "ignored-walk: a reading exactly at its ceiling must pass"
+assert control.out contains "over_ceiling_refuses=yes" else "ignored-walk: one walk past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "removed_returns_green=yes" else "ignored-walk: removing the walk must return the reading to green, or the refusal is a latch"
+
+# The instrument itself (REDS %513). Every assert above asks what the meter counted; these ask
+# whether it read anything at all. An empty answer from a refused read is byte-identical to an empty
+# answer from a clean tree, and the second is the one everybody hopes for.
+assert control.out contains "no_git_refuses=yes" else "ignored-walk: this reading asks git what the tree disowns, so without git it must decline rather than call every walk clean"
+assert control.out contains "empty_corpus_refuses=yes" else "ignored-walk: an empty corpus must refuse -- a meter that opened nothing prints a clean ceiling too"
+
+# The mutations. A check nobody has watched fail is a check nobody has proven.
+assert control.out contains "mutation_anchor_applied=yes" else "ignored-walk: the anchor mutation must start from a reading of zero, or it proves the inert path"
+assert control.out contains "mutation_anchor_bites=yes" else "ignored-walk: drop the command-position anchor and a sentence holding the word find must be counted as a walk"
+assert control.out contains "mutation_cure_applied=yes" else "ignored-walk: the cure mutation must start from a cured reading"
+assert control.out contains "mutation_cure_bites=yes" else "ignored-walk: stop looking for check-ignore and a cured file must read unfiltered, or the cure test proves nothing"
+
+let living = run ["sh" "tools/fixtures/i/ignored_walk_scan.sh"]
+say living.out
+assert living.ok else "ignored-walk: tree walks reading what git disowns rose above the ceiling -- ask git rather than spelling a list, as tools/fixtures/c/copy_sameness_scan.sh and tools/fixtures/t/tools_py_ban_scan.sh carry it"
+assert living.out contains "verdict=ok" else "ignored-walk: the living reading must reach its own verdict"
+
+let affirmed = where (lines control.out) as l: l contains "=yes"
+say "ignored-walk: ${length affirmed} readings proven on real git repositories in a throwaway pen, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: ignored-walk -- the tree walks that read what git disowns now stand under a ceiling that only falls, each one named with the room it walks and whether that room holds an ignored path today. The gated number reads tracked bytes alone, so it is the same on every ship; exposure reads this disk and is reported rather than gated."
