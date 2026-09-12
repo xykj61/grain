@@ -42,7 +42,7 @@ root=$(git rev-parse --show-toplevel 2>/dev/null) || {
 }
 cd "$root" || exit 1
 
-CEILING="${ASCII_DOC_CEILING:-770}"
+CEILING="${ASCII_DOC_CEILING:-750}"
 ENFORCE_GLOBS="${ASCII_DOC_ENFORCE_GLOBS:-.claude/rules/*.md .cursor/rules/*.mdc docs/*.md}"
 DERIVE_GLOBS="${ASCII_DOC_DERIVE_GLOBS:-.claude/rules/*.md .cursor/rules/*.mdc}"
 

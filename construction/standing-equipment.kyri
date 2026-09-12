@@ -4913,9 +4913,19 @@ seated 20260909.152110
 #
 # `tier lap` at 0.6s, which is 0.04 percent of a 1,537s pass. It reads five files and forks no
 # compiler; there is no cadence cheap enough to be worth the drift.
+#
+# A FOURTH BINDING, AND THE FIRST THAT ASKS WHETHER A RUNE IS TAUGHT (`20260911.202958`). The three
+# bindings above each hold the lexer against a NAME -- the pronunciation roll, three G1 briefs, the
+# TAME family index -- so a rune with a name answers all three, and whether a reader could learn it
+# went unasked. `|+` barlus was named `20260822`, carries STOA332-336, is parsed in
+# `glow/rune_shop_gate.rye:parse_body` and folded by seven gate sources under `src/gate/`, and no
+# page of the Glow Book taught it. The worker walks the same derived heads against
+# `active-designing/docs/glow/runes.md` now, publishing `book_named` and `book_unnamed_glyphs`, and
+# refuses an untaught head that stands on no exemption. `?&` and `?|` keep the exemption they
+# already hold one binding over, for the same cause: an entry leads with its spoken name.
 guard glow_rune_alphabet
 path tools/g/glow_rune_alphabet_witness.rish
-tier lap   # 0.6s; 30 lexer heads derived from match_rune2 against 28 pronunciation rows, two exempt by name
+tier lap   # 0.6s; 30 lexer heads derived from match_rune2 against 28 pronunciation rows and 28 taught entries, two exempt by name in both
 seated 20260909.155028
 
 # mantra_tablecloth_hit_census -- how large an answer can be, enumerated rather than sampled. Two

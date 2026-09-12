@@ -146,6 +146,56 @@ for glyph in $unnamed_glyphs; do
   esac
 done
 
+
+# THE FOURTH BINDING -- THE PAGE THAT TEACHES THE RUNE, seated `20260911.202958`. Every binding
+# above holds the lexer table against a NAME: the closed pronunciation roll, the three G1 briefs,
+# and the TAME family index. None of them asks whether the reference a beginner opens teaches the
+# rune at all, and a rune slipped through that hole and stood in it for twenty days. `|+` barlus
+# was named on `20260822`, carries STOA332-336, and is folded by seven gate sources under
+# `src/gate/` -- and `active-designing/docs/glow/runes.md`, whose own audience line reads *a
+# careful beginner writing their first Glow, and any LLM asked to help them*, named it nowhere.
+# Neither did the primer, the inventory, or any other page of the Book.
+#
+# The reading is the same shape as the roll's, one document over: walk the lexer's own heads and
+# ask the page about each. A glyph is taught when the page writes it backticked, which is how every
+# entry above spells its own digraph.
+BOOK="$ROOT/active-designing/docs/glow/runes.md"
+test -f "$BOOK" || {
+  echo 'FAIL: the rune reference is missing at active-designing/docs/glow/runes.md'
+  exit 1
+}
+
+book_named=0
+book_unnamed=0
+book_unnamed_glyphs=
+while read -r glyph; do
+  [ -n "$glyph" ] || continue
+  if grep -qF "\`$glyph\`" "$BOOK"; then
+    book_named=$((book_named + 1))
+    continue
+  fi
+  book_unnamed=$((book_unnamed + 1))
+  book_unnamed_glyphs="$book_unnamed_glyphs $glyph"
+done < "$HEADS"
+
+# EXEMPT BY NAME, AND BY THE SAME CAUSE the pronunciation exemption already stands on. Every entry
+# in the reference leads with its spoken name, so a glyph the closed table cannot pronounce is a
+# glyph the reference cannot head an entry with: one custody question holding two pages, rather
+# than two questions. `?&` and `?|` are the ancestor's own spellings, seated as peer names by
+# `foundations/20260830-011530_a-rune-is-earned-by-a-law.md`, and naming them stays Keaton's word.
+# A head absent from BOTH lists reds on the lap it arrives, wherever it arrives.
+BOOK_EXEMPT='?& ?|'
+for glyph in $book_unnamed_glyphs; do
+  case " $BOOK_EXEMPT " in
+    *" $glyph "*) ;;
+    *)
+      echo "FAIL: lexer head $glyph is taught nowhere in the rune reference and stands on no exemption"
+      echo "detail=exempt is '$BOOK_EXEMPT'; active-designing/docs/glow/runes.md is the page a beginner and an LLM read first"
+      exit 1
+      ;;
+  esac
+done
+
 test "$n" = "28" || {
   echo "FAIL: expected 28 head rows, got $n"
   exit 1
@@ -161,6 +211,9 @@ echo "rune_heads=$n"
 echo "lexer_heads=$COUNT"
 echo "unnamed_heads=$unnamed"
 echo "unnamed_glyphs=${unnamed_glyphs# }"
+echo "book_named=$book_named"
+echo "book_unnamed=$book_unnamed"
+echo "book_unnamed_glyphs=${book_unnamed_glyphs# }"
 
 # Old closed table stays at 25 (dated artifact, STOA90).
 grep -F '**25**' "$TABLE" >/dev/null || {
