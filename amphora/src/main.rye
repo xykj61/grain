@@ -648,7 +648,7 @@ fn write_unsealed_vessel(
     assert(std.mem.eql(u8, shoulder_ring1_wire, "amber-ring1-season"));
 
     var text: [max_vessel_len]u8 = undefined;
-    const head = std.fmt.bufPrint(&text, "# amphora vessel — season poured for crossing\nformat {s}\nstamp {s}\nshoulder {s}\nparent {s}\n", .{
+    const head = std.fmt.bufPrint(&text, "# amphora vessel -- season poured for crossing\nformat {s}\nstamp {s}\nshoulder {s}\nparent {s}\n", .{
         vessel_format,
         amphora_version,
         shoulder_ring1_wire,

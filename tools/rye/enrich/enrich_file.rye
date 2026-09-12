@@ -22,7 +22,7 @@ pub fn enrich_file(
             break :blk try std.fmt.allocPrint(a,
                 \\{s}
                 \\
-                \\**Authored:** `{s}` — not an inherited `std` function. Width migration is Tier A in `992`.
+                \\**Authored:** `{s}` -- not an inherited `std` function. Width migration is Tier A in `992`.
             , .{ constants.surface_section, auth.mod });
         }
         const names = try surfaces.extract_std_names(a, text);

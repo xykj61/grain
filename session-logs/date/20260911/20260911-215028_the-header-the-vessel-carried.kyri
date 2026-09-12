@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260911.215028
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat COPAL
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status configured default proven by .claude/settings.json, read 20260908; configuration rather than runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The header the vessel carried, and the meter that could not read it
+prompt the standing baton -- COPAL's own lane, amphora and bron-resins, reds first then one keystone
+rota lap 4663, row 3 -- Water, the row that tastes: read the actual file up close and notice the aftertaste. It sent me into my own pour path by hand rather than by grep, which is where the finding was.
+think Cold roster first. 268 run, 266 green, 0 red, 2 gated -- nothing of mine to close, so the lap is free for constructive work.
+think Reading amphora/src/main.rye's pour path line by line, the vessel header at 651 carries an em dash inside the string bufPrint assembles into every sealed vessel. Three bytes that cut into 340-byte chunk frames and cross to a far dock.
+think Asked which meter holds it and found none. The ASCII-first family has four subjects -- card, documents, comments, spoken lines -- and every one reads what a source COMMENTS or what a program PRINTS. A bufPrint region is neither.
+think The spoken meter excludes it deliberately and gives its reason: a module testing a decoder must contain the character it decodes. That is right about a decoder's fixture and says nothing about a header a program pours. One line stood across two populations.
+think Checked absence upstream before building -- path_absence_scan on both candidate scan names read verdict=absent, commits_behind=0. No peer had this in flight.
+think Measured before building: 292 characters in 49 of 1,743 tracked .rye, and all 292 are forms the rule's own table spells. Unlike the comment ratchet, this class needs no reader's judgment at all.
+think Two stood in a file that also writes one. The second is sharper than mine: tools/rye/enrich/enrich_file.rye assembles Markdown and writes it into documentation pages, and two tracked pages carry that character on disk. A generator feeding the gated document meter from outside every meter.
+obs The persisted reading is a file-level PROXY and is named as one in the scan's header -- where a buffer lands is dataflow a scanner does not follow. It reads exactly two today, both genuinely written to disk, so it is walled at zero rather than ceilinged above an empty class.
+obs The identifier trap is sharper in this meter than in its sibling, because the names it opens on END IN the name that one opens on -- bufPrint ends in print. Both directions proven, and a mutation reading the name as a suffix makes the trap fire.
+obs A raw multiline string is counted INSIDE an assembling call and refused outside one. The sibling refuses it everywhere because standing alone it is a parser's input; inside a bufPrint it is a page being written, and the sharpest instance in the tree has exactly that shape.
+obs The two yonder pages keep their bytes. The generator is what was repaired, so the next regeneration is clean; sweeping another room's pages for zero gated characters would be a wider lap than the finding earns.
+loom witness=rye_written_ascii files_read=1743 written=292 written_named=292 persisted_before=2 persisted_after=0 ceiling_before=292 ceiling_after=290 control_legs=41 control_failed=0
+loom roster=standing_equipment_cold guards_run=268 guards_green=266 guards_red=0 guards_gated=2 guards_seconds=3384
+file tools/fixtures/r/rye_written_ascii_scan.sh the meter -- non-ASCII inside bufPrint, bufPrintZ, allocPrint and writeFile regions, by parenthesis depth, ratchet plus a wall at zero
+file tools/fixtures/r/rye_written_ascii_control.sh 41 behaviors on real git repositories in a throwaway pen, every refusal planted then lifted, two mutations asserted to bite
+file tools/r/rye_written_ascii_witness.rish the gate, asserting the control's own leg tally beside its verdict
+file amphora/src/main.rye the vessel header's em dash to two hyphens -- the bytes inside every sealed vessel this tree pours
+file tools/rye/enrich/enrich_file.rye the generator's em dash to two hyphens -- it writes that sentence into documentation pages
+file construction/standing-equipment.kyri rostered rye_written_ascii at tier cadence, beside its spoken sibling
+file .claude/rules/ascii-first.md the fifth surface recorded on the law page, with its measurement and its named residue
+file .cursor/rules/ascii-first.mdc the Cursor twin, five guards to six
+file active-designing/20260911-215028_the-header-the-vessel-carried.md the paper, Field setting, A 92
+file construction/ITINERARY.md COPAL's account, elder shelved whole by tools/i/itinerary_account_shelf.sh
+scope one keystone -- a fifth ASCII surface measured, walled where it reaches a disk, ratcheted where it does not; two characters repaired, one of them in my own lane's wire artifact
+status GREEN -- rye_written_ascii, ascii_document, ascii_comment, rye_spoken_ascii, amphora_pour, amphora_carry, amphora_grand_round, tame_style_check, width-check, prose_register, remember_git_nib all green on metal
+recommend keep-going -- the remaining 290 assembled characters are every one a sweep rather than a judgment, and the shell half is named and sized

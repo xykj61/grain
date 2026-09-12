@@ -227,6 +227,38 @@ its **upper bound is 90 characters across 40 of 3,353** tracked Rishi and shell 
 same stamp -- an upper bound rather than a count, since a `#` inside a shell string needs the same
 walk to tell from a comment. Small, and open; the shape of the risk differs by language.
 
+**And a FIFTH surface stood behind all four, which every meter above reads past by construction**
+(seated `20260911.215028`): what a program **assembles into a buffer and hands onward** -- to a
+file, a wire frame, or a generated page. Each meter above reads what a source COMMENTS or what a
+program PRINTS. None reads what it WRITES, and that is the surface this law was born on, since REDS
+%83 was a persisted document a tool rewrote into mojibake. **The exclusion covered two
+populations:** `rye_spoken_ascii_scan.sh` steps past every literal outside a `print` call and gives
+its reason -- *a module testing a decoder must contain the character it decodes* -- which is exactly
+right about a decoder's own fixture and says nothing about a header a program writes into every
+artifact it pours. `tools/r/rye_written_ascii_witness.rish` over
+`tools/fixtures/r/rye_written_ascii_scan.sh` reads the half that reason does not cover: non-ASCII
+inside a `bufPrint`, `bufPrintZ`, `allocPrint`, or `writeFile` region, by parenthesis depth outside
+string literals, every call name read as a WHOLE identifier -- the trap is sharper here than in the
+sibling, because the names this meter opens on END IN the name that one opens on. Measured on the
+seating lap over the same 1,743 tracked `.rye` sources: **292 characters across 49 files, and all
+292 are forms the table above spells** -- unlike the comment ratchet, where notation needs a reader
+to choose the word, assembled text is a sentence somebody wrote for somebody to read. **Two of them
+stood in a file that also writes one**, and that reading is a **wall at zero** rather than a
+ratchet, because both were repaired on the seating lap: `amphora/src/main.rye` assembles the header
+inside every sealed vessel this tree pours, and `tools/rye/enrich/enrich_file.rye` assembles
+Markdown and writes it into documentation pages -- **a generator feeding the gated document meter,
+standing outside every meter.** Two tracked pages in a `yonder/` shelf carry that character on disk
+still; the generator is what was repaired, so the next regeneration is clean. The persisted reading
+is a **file-level proxy named as one** in the scan's own header, since where a buffer lands is
+dataflow a scanner does not follow. Forty-one behaviors stand proven on real git repositories in a
+throwaway pen under
+[`../../tools/fixtures/r/rye_written_ascii_control.sh`](../../tools/fixtures/r/rye_written_ascii_control.sh),
+every refusal planted and then lifted, two mutations asserted to bite, and the control's own leg
+tally asserted beside its verdict. **The shell half stays open** and its size is named rather than
+guessed: `tools/fixtures/a/amphora_pour.sh` writes a vessel header carrying an em dash and
+`tools/fixtures/a/amphora_vessel_lap1.bron` is a stored vessel carrying one -- 2 characters in 2
+files, both inside `fixtures/`, which every meter in this family reads past by design.
+
 ## Why the rule exists
 
 Plain ASCII survives every tool, terminal, diff, and re-encoding intact. Keaton asked that documents and commits prioritize it after the operator card corrupted itself in the dark. Canonical Cursor twin: `.cursor/rules/ascii-first.mdc`.

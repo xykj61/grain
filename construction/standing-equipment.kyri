@@ -880,6 +880,31 @@ path tools/r/rye_spoken_ascii_witness.rish
 seated 20260908.214712
 tier cadence   # non-ASCII in what a Rye program prints, a ratchet that only falls
 
+# rye_written_ascii -- every meter in this family reads what a source COMMENTS or what a program
+# PRINTS. None read what a program ASSEMBLES INTO A BUFFER and hands onward -- to a file, a wire
+# frame, or a generated page -- and that is the surface the ASCII-first law was born on, since
+# REDS %83 was a persisted document a tool rewrote into mojibake. THE EXCLUSION COVERED TWO
+# POPULATIONS: the sibling above steps past every literal outside a `print` call and gives its
+# reason -- a module testing a decoder must contain the character it decodes -- which is exactly
+# right about a decoder's own fixture and says nothing about a header a program writes into every
+# artifact it pours. This meter reads the half that reason does not cover: a `bufPrint`,
+# `bufPrintZ`, `allocPrint` or `writeFile` region, by parenthesis depth outside string literals,
+# every call name read as a WHOLE identifier -- the trap is sharper here than in the sibling,
+# because the names this one opens on END IN the name that one opens on. Measured 20260911.215028
+# over the same 1,743 tracked `.rye` sources: 292 characters in 49 files, ALL 292 forms the rule's
+# own table spells. TWO stood in a file that also writes one, and both were repaired on the seating
+# lap -- amphora/src/main.rye assembles the header inside every sealed vessel this tree pours, and
+# tools/rye/enrich/enrich_file.rye assembles Markdown and writes it into documentation pages, a
+# generator feeding the gated document meter from outside every meter. So the second reading is a
+# WALL at zero rather than a ratchet, and the first fell to 290 in the same commit. The persisted
+# reading is a file-level PROXY named as one in the scan's header, since where a buffer lands is
+# dataflow a scanner does not follow.
+# `tier cadence`: it reads 1,743 files where a lap touches a handful.
+guard rye_written_ascii
+path tools/r/rye_written_ascii_witness.rish
+seated 20260911.215028
+tier cadence   # non-ASCII in what a Rye program assembles, a ratchet and a wall at zero
+
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000
