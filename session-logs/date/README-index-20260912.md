@@ -21,6 +21,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.163124` | [the parked door came home](20260912/20260912-163124_the-parked-door-came-home.kyri) | recovered a finished docs-geode lap from the dead-letter box |
 | `20260912.162301` | [the binary that stays with its reading](20260912/20260912-162301_the-binary-that-stays-with-its-reading.kyri) | 18 Amphora guards moved builds into per-run pens |
 | `20260912.162152` | [the recovered fold landed whole](20260912/20260912-162152_the-recovered-fold-landed-whole.kyri) | the parked torus instrument was restored and re-proved before send |
+| `20260912.161250` | [model default, runtime boundary](20260912/20260912-161250_the-model-default-and-the-runtime-boundary.kyri) | gpt-5.6-sol configured; runtime verified apart |
 | `20260912.153216` | [the fold recovered on today's tree](20260912/20260912-153216_the-fold-recovered-on-todays-tree.kyri) | the parked 28-leg torus reading held on today's bytes |
 | `20260912.150836` | [Codex default provenance](20260912/20260912-150836_the-fleet-default-carried-its-provenance.kyri) | the selected model reaches the loop and both rule doors |
 | `20260912.150623` | [crashed wave called seven ships](20260912/20260912-150623_the-crashed-wave-called-seven-ships.kyri) | one clean root crossed; seven sail; Incense waits |
