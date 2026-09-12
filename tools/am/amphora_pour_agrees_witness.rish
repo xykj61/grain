@@ -53,13 +53,13 @@ let home = trim pen.out
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
 # of these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 say build_amphora.err
 assert build_amphora.ok else "pour_agrees: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 say build_core.err
 assert build_core.ok else "pour_agrees: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 say build_seal.err
 assert build_seal.ok else "pour_agrees: vessel-seal build failed -- read the line above"
 
@@ -70,7 +70,7 @@ assert mk.ok else "pour_agrees: the plant homes must open -- ${mk.err}"
 let pour_sh = run ["sh" "-c" "sh tools/fixtures/a/amphora_pour.sh ${season} ${home}/sh 20260710.143500"]
 say pour_sh.err
 assert pour_sh.ok else "pour_agrees: the shell pour must pass -- read the line above"
-let pour_rye = run ["amphora/bin/amphora" "pour" season "${home}/rye/v.bron"]
+let pour_rye = run ["${home}/bin/amphora" "pour" season "${home}/rye/v.bron"]
 say pour_rye.err
 assert pour_rye.ok else "pour_agrees: the Rye pour must pass -- read the line above"
 
@@ -85,7 +85,7 @@ say "leg_agree=one_parent ${parent_sh}"
 
 # --- leg 2: that parent is the digest of the listing the vessel carries ---
 # The preimage rides inside the seal, so a dock holding nothing but the vessel can check it.
-let open_sh = run ["amphora/bin/vessel-seal" "open" "${home}/sh/vessel.bron" "${home}/sh/plain"]
+let open_sh = run ["${home}/bin/vessel-seal" "open" "${home}/sh/vessel.bron" "${home}/sh/plain"]
 say open_sh.err
 assert open_sh.ok else "pour_agrees: the shell vessel's seal must open"
 let digest_sh = run ["sh" "-c" "sh tools/fixtures/s/sha3_256.sh ${home}/sh/plain"]
@@ -95,14 +95,14 @@ assert carried == parent_sh else "pour_agrees: the parent must be the digest of 
 say "leg_preimage=travels"
 
 # --- leg 3: a shell-poured vessel restores whole under the Rye reader ---
-let rest_sh = run ["sh" "-c" "cd ${home}/sh && ${root}/amphora/bin/amphora restore vessel.bron"]
+let rest_sh = run ["sh" "-c" "cd ${home}/sh && ${home}/bin/amphora restore vessel.bron"]
 say rest_sh.err
 assert rest_sh.ok else "pour_agrees: the Rye reader must restore a shell-poured vessel -- read the line above"
 assert rest_sh.err contains "same-parent ok" else "pour_agrees: and it must reach the same-parent wall, not merely exit"
 say "leg_restore_shell=whole"
 
 # --- leg 4: a Rye-poured vessel restores whole too ---
-let rest_rye = run ["sh" "-c" "cd ${home}/rye && ${root}/amphora/bin/amphora restore v.bron"]
+let rest_rye = run ["sh" "-c" "cd ${home}/rye && ${home}/bin/amphora restore v.bron"]
 say rest_rye.err
 assert rest_rye.ok else "pour_agrees: the Rye reader must restore its own vessel -- read the line above"
 assert rest_rye.err contains "same-parent ok" else "pour_agrees: and reach the same-parent wall"
@@ -139,22 +139,22 @@ assert elder_head.ok else "pour_agrees: the elder head must be written"
 let elder_body = run ["sh" "-c" "cat ${home}/sh/plain >> ${home}/elder/vessel.bron"]
 say elder_body.err
 assert elder_body.ok else "pour_agrees: the elder listing must be appended"
-let elder_seal = run ["amphora/bin/vessel-seal" "seal" "${home}/elder/vessel.bron"]
+let elder_seal = run ["${home}/bin/vessel-seal" "seal" "${home}/elder/vessel.bron"]
 say elder_seal.err
 assert elder_seal.ok else "pour_agrees: the elder vessel must seal"
-let elder_sign = run ["amphora/bin/vessel-core" "sign" "${home}/elder/vessel.bron"]
+let elder_sign = run ["${home}/bin/vessel-core" "sign" "${home}/elder/vessel.bron"]
 say elder_sign.err
 assert elder_sign.ok else "pour_agrees: the elder vessel must sign"
-let elder_verify = run ["amphora/bin/vessel-core" "verify" "${home}/elder/vessel.bron"]
+let elder_verify = run ["${home}/bin/vessel-core" "verify" "${home}/elder/vessel.bron"]
 say elder_verify.err
 assert elder_verify.ok else "pour_agrees: and it VERIFIES -- which is the whole trouble: every wall says yes"
-let elder_opens = run ["amphora/bin/vessel-seal" "open-check" "${home}/elder/vessel.bron"]
+let elder_opens = run ["${home}/bin/vessel-seal" "open-check" "${home}/elder/vessel.bron"]
 say elder_opens.err
 assert elder_opens.ok else "pour_agrees: and its seal opens, so no elder wall catches it either"
 say "leg_plant=elder_parent_differs_and_verifies"
 
 # --- leg 7: the repaired reader refuses that vessel with ZERO files in the out-home ---
-let elder_restore = run ["sh" "-c" "cd ${home}/elder && ${root}/amphora/bin/amphora restore vessel.bron; true"]
+let elder_restore = run ["sh" "-c" "cd ${home}/elder && ${home}/bin/amphora restore vessel.bron; true"]
 say elder_restore.err
 assert elder_restore.err contains "cargo unproven" else "pour_agrees: the repaired reader must refuse the elder vessel by name"
 let elder_left = run ["sh" "-c" "find ${home}/elder/vessel.bron.season -type f 2>/dev/null | wc -l"]
@@ -181,7 +181,7 @@ say build_nowall.err
 assert build_nowall.ok else "pour_agrees: the no-wall binary must build -- read the line above"
 let reset = run ["sh" "-c" "rm -rf ${home}/elder/vessel.bron.season"]
 assert reset.ok else "pour_agrees: the elder out-home must be cleared before the second reading -- ${reset.err}"
-let nowall_restore = run ["sh" "-c" "cd ${home}/elder && AMPHORA_VESSEL_SEAL=${root}/amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=${root}/amphora/bin/vessel-core ${pen_src}/bin/amphora restore vessel.bron; true"]
+let nowall_restore = run ["sh" "-c" "cd ${home}/elder && AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${pen_src}/bin/amphora restore vessel.bron; true"]
 say nowall_restore.err
 assert nowall_restore.err contains "cargo unproven" else "pour_agrees: the no-wall binary refuses by the same name"
 let nowall_left = run ["sh" "-c" "find ${home}/elder/vessel.bron.season -type f 2>/dev/null | wc -l"]

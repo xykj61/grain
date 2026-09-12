@@ -44,13 +44,13 @@ let home = trim pen.out
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries
 # none of these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 say build_amphora.err
 assert build_amphora.ok else "pour_atomic: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 say build_core.err
 assert build_core.ok else "pour_atomic: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 say build_seal.err
 assert build_seal.ok else "pour_atomic: vessel-seal build failed -- read the line above"
 
@@ -61,13 +61,13 @@ assert mk.ok else "pour_atomic: the plant homes must open -- ${mk.err}"
 
 # --- leg 1: an honest pour lands a vessel both walls accept ---
 let good = "${home}/a/v.bron"
-let pour_good = run ["amphora/bin/amphora" "pour" season good]
+let pour_good = run ["${home}/bin/amphora" "pour" season good]
 say pour_good.err
 assert pour_good.ok else "pour_atomic: the honest pour must pass -- read the line above"
-let verify_good = run ["amphora/bin/vessel-core" "verify" good]
+let verify_good = run ["${home}/bin/vessel-core" "verify" good]
 say verify_good.err
 assert verify_good.ok else "pour_atomic: the honest vessel's stamp must verify"
-let open_good = run ["amphora/bin/vessel-seal" "open-check" good]
+let open_good = run ["${home}/bin/vessel-seal" "open-check" good]
 say open_good.err
 assert open_good.ok else "pour_atomic: the honest vessel's seal must open"
 let keep = run ["sh" "-c" "cp ${good} ${home}/a/good.keep"]
@@ -76,19 +76,19 @@ say "leg_honest=landed"
 
 # --- leg 2: an honest RE-pour still welcomes, and what it lands still stands ---
 # The elder witness asserted the exit code alone. This reads the vessel afterward.
-let repour = run ["amphora/bin/amphora" "pour" season good]
+let repour = run ["${home}/bin/amphora" "pour" season good]
 say repour.err
 assert repour.ok else "pour_atomic: a same-season re-pour must welcome -- read the line above"
-let verify_repour = run ["amphora/bin/vessel-core" "verify" good]
+let verify_repour = run ["${home}/bin/vessel-core" "verify" good]
 say verify_repour.err
 assert verify_repour.ok else "pour_atomic: the re-poured vessel's stamp must verify"
-let open_repour = run ["amphora/bin/vessel-seal" "open-check" good]
+let open_repour = run ["${home}/bin/vessel-seal" "open-check" good]
 say open_repour.err
 assert open_repour.ok else "pour_atomic: the re-poured vessel's seal must open"
 say "leg_repour=welcomed_and_whole"
 
 # --- leg 3: a refused re-pour with the seal tool absent leaves the vessel byte-identical ---
-let seal_gone = run ["sh" "-c" "env AMPHORA_VESSEL_SEAL=/nonexistent/seal amphora/bin/amphora pour ${season} ${good}; true"]
+let seal_gone = run ["sh" "-c" "env AMPHORA_VESSEL_SEAL=/nonexistent/seal ${home}/bin/amphora pour ${season} ${good}; true"]
 say seal_gone.err
 assert seal_gone.err contains "seal tool absent" else "pour_atomic: an absent seal tool refuses by name"
 let survives_seal = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
@@ -99,7 +99,7 @@ say "leg_seal_refusal=vessel_intact"
 # Named apart from leg 3 because the elder leavings differed in kind: this refusal came
 # after the seal had run, so the file it left carried `seal_cargo` and read legitimate to
 # anyone checking the seal alone.
-let core_gone = run ["sh" "-c" "env AMPHORA_VESSEL_CORE=/nonexistent/core amphora/bin/amphora pour ${season} ${good}; true"]
+let core_gone = run ["sh" "-c" "env AMPHORA_VESSEL_CORE=/nonexistent/core ${home}/bin/amphora pour ${season} ${good}; true"]
 say core_gone.err
 assert core_gone.err contains "stamp tool absent" else "pour_atomic: an absent stamp tool refuses by name"
 let survives_core = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
@@ -117,7 +117,7 @@ say "leg_scratch=swept"
 let forkseason = "${home}/b/season"
 let plant_fork = run ["sh" "-c" "mkdir -p ${forkseason} && printf 'a different season\n' > ${forkseason}/a.txt"]
 assert plant_fork.ok else "pour_atomic: the fork plant must prepare -- ${plant_fork.err}"
-let fork = run ["sh" "-c" "amphora/bin/amphora pour ${forkseason} ${good}; true"]
+let fork = run ["sh" "-c" "${home}/bin/amphora pour ${forkseason} ${good}; true"]
 say fork.err
 assert fork.err contains "identity fork" else "pour_atomic: a different season over a standing vessel still refuses by name"
 let survives_fork = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
@@ -149,7 +149,7 @@ say build_elder.err
 assert build_elder.ok else "pour_atomic: the elder binary must build -- read the line above"
 
 let elder_vessel = "${home}/c/v.bron"
-let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=amphora/bin/vessel-core ${elder}/bin/amphora pour ${season} ${elder_vessel}"]
+let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${elder}/bin/amphora pour ${season} ${elder_vessel}"]
 say elder_pour.err
 assert elder_pour.ok else "pour_atomic: the elder binary must pour an honest vessel first"
 let elder_keep = run ["sh" "-c" "cp ${elder_vessel} ${home}/c/good.keep"]
@@ -165,12 +165,12 @@ say "leg_wall_removed=elder_loses_the_vessel"
 
 # --- the wall returned: the repaired binary over the same plant keeps every byte ---
 let kept_vessel = "${home}/d/v.bron"
-let kept_pour = run ["amphora/bin/amphora" "pour" season kept_vessel]
+let kept_pour = run ["${home}/bin/amphora" "pour" season kept_vessel]
 say kept_pour.err
 assert kept_pour.ok else "pour_atomic: the repaired binary pours its own plant"
 let kept_keep = run ["sh" "-c" "cp ${kept_vessel} ${home}/d/good.keep"]
 assert kept_keep.ok else "pour_atomic: the repaired reference copy must be taken -- ${kept_keep.err}"
-let kept_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=/nonexistent/seal amphora/bin/amphora pour ${season} ${kept_vessel}; true"]
+let kept_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=/nonexistent/seal ${home}/bin/amphora pour ${season} ${kept_vessel}; true"]
 say kept_refused.err
 assert kept_refused.err contains "seal tool absent" else "pour_atomic: the repaired binary refuses by the same name"
 let kept_intact = run ["sh" "-c" "cmp -s ${home}/d/good.keep ${kept_vessel}"]

@@ -66,13 +66,13 @@ let home = trim pen.out
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
 # of these, and `carry` resolves vessel-seal and vessel-core as sibling subprocesses.
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 say build_amphora.err
 assert build_amphora.ok else "carry_atomic: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 say build_core.err
 assert build_core.ok else "carry_atomic: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 say build_seal.err
 assert build_seal.ok else "carry_atomic: vessel-seal build failed -- read the line above"
 
@@ -83,15 +83,15 @@ assert mk.ok else "carry_atomic: the plant homes must open -- ${mk.err}"
 
 # --- leg 1: an honest carry crosses whole, and a far restore completes ---
 let good = "${home}/a/v.bron"
-let pour_good = run ["amphora/bin/amphora" "pour" season good]
+let pour_good = run ["${home}/bin/amphora" "pour" season good]
 say pour_good.err
 assert pour_good.ok else "carry_atomic: the honest pour must pass -- read the line above"
-let carry_good = run ["amphora/bin/amphora" "carry" good "${home}/a/dock"]
+let carry_good = run ["${home}/bin/amphora" "carry" good "${home}/a/dock"]
 say carry_good.err
 assert carry_good.ok else "carry_atomic: the honest carry must pass -- read the line above"
 let equal = run ["sh" "-c" "cmp -s ${good} ${home}/a/dock/vessel.bron"]
 assert equal.ok else "carry_atomic: the far vessel equals the near one -- ${equal.err}"
-let far_restore = run ["sh" "-c" "cd ${home}/a/dock && ${root}/amphora/bin/amphora restore vessel.bron"]
+let far_restore = run ["sh" "-c" "cd ${home}/a/dock && ${home}/bin/amphora restore vessel.bron"]
 say far_restore.err
 assert far_restore.err contains "restore complete" else "carry_atomic: a far restore over an honest dock completes"
 say "leg_honest=crossed_and_restored"
@@ -101,12 +101,12 @@ say "leg_honest=crossed_and_restored"
 # filename addressing it and refuses `cargo unproven`. It needs no env seam and no permission
 # game, so it is the production path rather than a witness door.
 let plant = "${home}/b/v.bron"
-let pour_plant = run ["amphora/bin/amphora" "pour" season plant]
+let pour_plant = run ["${home}/bin/amphora" "pour" season plant]
 say pour_plant.err
 assert pour_plant.ok else "carry_atomic: the plant pour must pass -- read the line above"
 let forge = run ["sh" "-c" "printf forged > ${home}/b/resins/$(ls ${home}/b/resins | head -1)"]
 assert forge.ok else "carry_atomic: the forged body must be planted -- ${forge.err}"
-let refused = run ["sh" "-c" "amphora/bin/amphora carry ${plant} ${home}/b/dock; true"]
+let refused = run ["sh" "-c" "${home}/bin/amphora carry ${plant} ${home}/b/dock; true"]
 say refused.err
 assert refused.err contains "cargo unproven" else "carry_atomic: a forged near body refuses by name"
 let no_vessel = run ["sh" "-c" "test ! -e ${home}/b/dock/vessel.bron"]
@@ -122,17 +122,17 @@ say "leg_first_scratch=swept"
 
 # --- leg 4: a refused RE-carry leaves the dock's standing vessel byte-identical ---
 let held = "${home}/c/v.bron"
-let pour_held = run ["amphora/bin/amphora" "pour" season held]
+let pour_held = run ["${home}/bin/amphora" "pour" season held]
 say pour_held.err
 assert pour_held.ok else "carry_atomic: the held pour must pass -- read the line above"
-let carry_held = run ["amphora/bin/amphora" "carry" held "${home}/c/dock"]
+let carry_held = run ["${home}/bin/amphora" "carry" held "${home}/c/dock"]
 say carry_held.err
 assert carry_held.ok else "carry_atomic: the held carry must pass first -- read the line above"
 let keep = run ["sh" "-c" "cp ${home}/c/dock/vessel.bron ${home}/c/good.keep"]
 assert keep.ok else "carry_atomic: the reference copy must be taken -- ${keep.err}"
 let forge_again = run ["sh" "-c" "printf forged > ${home}/c/resins/$(ls ${home}/c/resins | head -1)"]
 assert forge_again.ok else "carry_atomic: the second forged body must be planted -- ${forge_again.err}"
-let refused_again = run ["sh" "-c" "amphora/bin/amphora carry ${held} ${home}/c/dock; true"]
+let refused_again = run ["sh" "-c" "${home}/bin/amphora carry ${held} ${home}/c/dock; true"]
 say refused_again.err
 assert refused_again.err contains "cargo unproven" else "carry_atomic: the re-carry refuses by the same name"
 let intact = run ["sh" "-c" "cmp -s ${home}/c/good.keep ${home}/c/dock/vessel.bron"]
@@ -146,10 +146,10 @@ say "leg_recarry_scratch=swept"
 
 # --- leg 6: an honest RE-carry still welcomes, and still lands equal bytes ---
 # The elder carry witness asserts a re-carry's exit code; this reads the far file afterward.
-let heal = run ["sh" "-c" "rm -rf ${home}/c/resins && amphora/bin/amphora pour ${season} ${held}"]
+let heal = run ["sh" "-c" "rm -rf ${home}/c/resins && ${home}/bin/amphora pour ${season} ${held}"]
 say heal.err
 assert heal.ok else "carry_atomic: the healed pour must pass -- read the line above"
-let recarry = run ["amphora/bin/amphora" "carry" held "${home}/c/dock"]
+let recarry = run ["${home}/bin/amphora" "carry" held "${home}/c/dock"]
 say recarry.err
 assert recarry.ok else "carry_atomic: an honest re-carry must welcome -- read the line above"
 let recarry_equal = run ["sh" "-c" "cmp -s ${held} ${home}/c/dock/vessel.bron"]
@@ -185,33 +185,33 @@ say build_elder.err
 assert build_elder.ok else "carry_atomic: the elder binary must build -- read the line above"
 
 let elder_vessel = "${home}/d/v.bron"
-let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=amphora/bin/vessel-core ${elder}/bin/amphora pour ${season} ${elder_vessel}"]
+let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${elder}/bin/amphora pour ${season} ${elder_vessel}"]
 say elder_pour.err
 assert elder_pour.ok else "carry_atomic: the elder binary must pour an honest vessel first"
 let elder_forge = run ["sh" "-c" "printf forged > ${home}/d/resins/$(ls ${home}/d/resins | head -1)"]
 assert elder_forge.ok else "carry_atomic: the elder plant must be forged -- ${elder_forge.err}"
-let elder_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=amphora/bin/vessel-core ${elder}/bin/amphora carry ${elder_vessel} ${home}/d/dock; true"]
+let elder_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${elder}/bin/amphora carry ${elder_vessel} ${home}/d/dock; true"]
 say elder_refused.err
 assert elder_refused.err contains "cargo unproven" else "carry_atomic: the elder binary refuses by the same name"
 let elder_left = run ["sh" "-c" "test -e ${home}/d/dock/vessel.bron"]
 assert elder_left.ok else "carry_atomic: the elder carry MUST leave a vessel at the dock -- if it does not, this witness is proving nothing -- ${elder_left.err}"
-let elder_verifies = run ["sh" "-c" "amphora/bin/vessel-core verify ${home}/d/dock/vessel.bron"]
+let elder_verifies = run ["sh" "-c" "${home}/bin/vessel-core verify ${home}/d/dock/vessel.bron"]
 say elder_verifies.err
 assert elder_verifies.ok else "carry_atomic: and that vessel's stamp VERIFIES, which is what makes the half-made dock believable"
 let elder_bodyless = run ["sh" "-c" "test ! -d ${home}/d/dock/resins"]
 assert elder_bodyless.ok else "carry_atomic: with none of the bodies its manifest names -- ${elder_bodyless.err}"
-let elder_restore = run ["sh" "-c" "cd ${home}/d/dock && ${root}/amphora/bin/amphora restore vessel.bron; true"]
+let elder_restore = run ["sh" "-c" "cd ${home}/d/dock && ${home}/bin/amphora restore vessel.bron; true"]
 say elder_restore.err
 assert elder_restore.err contains "resin absent" else "carry_atomic: and a far restore discovers it only at the last step"
 say "leg_wall_removed=elder_leaves_a_verifying_bodyless_dock"
 
 # --- the wall returned: the repaired binary over the same plant leaves the dock empty ---
-let kept_pour = run ["sh" "-c" "mkdir -p ${home}/d/k && amphora/bin/amphora pour ${season} ${home}/d/k/v.bron"]
+let kept_pour = run ["sh" "-c" "mkdir -p ${home}/d/k && ${home}/bin/amphora pour ${season} ${home}/d/k/v.bron"]
 say kept_pour.err
 assert kept_pour.ok else "carry_atomic: the repaired binary pours its own plant"
 let kept_forge = run ["sh" "-c" "printf forged > ${home}/d/k/resins/$(ls ${home}/d/k/resins | head -1)"]
 assert kept_forge.ok else "carry_atomic: the repaired plant must be forged -- ${kept_forge.err}"
-let kept_refused = run ["sh" "-c" "amphora/bin/amphora carry ${home}/d/k/v.bron ${home}/d/k/dock; true"]
+let kept_refused = run ["sh" "-c" "${home}/bin/amphora carry ${home}/d/k/v.bron ${home}/d/k/dock; true"]
 say kept_refused.err
 assert kept_refused.err contains "cargo unproven" else "carry_atomic: the repaired binary refuses by the same name"
 let kept_empty = run ["sh" "-c" "test ! -e ${home}/d/k/dock/vessel.bron"]

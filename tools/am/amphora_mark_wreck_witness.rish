@@ -43,39 +43,39 @@ let planted = "${pen}/planted.bron"
 # it runs rather than trusting a previous lap (REDS %334); mkdir first, since rye build
 # refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build_entry = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
+let build_entry = run ["sh" "-c" "mkdir -p ${pen}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=${pen}/bin/manifest-entry"]
 if build_entry.ok == false then say build_entry.err
 assert build_entry.ok else "mark_wreck: manifest_entry build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${pen}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "mark_wreck: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${pen}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "mark_wreck: vessel-seal build failed -- read the line above"
-let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${pen}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "mark_wreck: amphora build failed -- read the line above"
 
 # The receipt seam reads the mark through the same parser rather than a second hand-rolled
 # tokenizer, so it is built here too -- it needs libc for its sockets, as its own three
 # rostered witnesses already spell.
-let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=amphora/bin/vessel-fetch-delivery"]
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${pen}/bin/vessel-fetch-delivery"]
 if build_delivery.ok == false then say build_delivery.err
 assert build_delivery.ok else "mark_wreck: vessel_fetch_delivery no longer compiles -- read the line above"
 
 # --- the module's own both-ways selftest, which carries the two roots and two strangers ---
 # `std.debug.print` writes to stderr, so the claim is read through a merging shell -- the
 # same spelling the three elder amphora witnesses already use.
-let selftest = run ["sh" "-c" "amphora/bin/manifest-entry selftest 2>&1"]
+let selftest = run ["sh" "-c" "${pen}/bin/manifest-entry selftest 2>&1"]
 say selftest.out
 assert selftest.ok else "mark_wreck: manifest_entry selftest exited non-zero -- read the reading above"
 assert selftest.out contains "GREEN" else "mark_wreck: manifest_entry not GREEN -- read the reading above"
 
 # --- welcome: an honest vessel pours and verifies ---
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${pen}/bin/amphora" "pour" season vessel]
 if pour.ok == false then say pour.err
 assert pour.ok else "mark_wreck: honest pour must pass -- read the line above"
-let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+let verify = run ["${pen}/bin/vessel-core" "verify" vessel]
 if verify.ok == false then say verify.err
 assert verify.ok else "mark_wreck: honest vessel must verify -- read the line above"
 
@@ -90,17 +90,17 @@ assert plant.ok else "mark_wreck: plant must write"
 let planted_ok = run ["sh" "-c" "grep -q 'zzz-unknown-stranger' ${planted}"]
 assert planted_ok.ok else "mark_wreck: plant did not take -- the vessel shape moved"
 
-let refused = run ["amphora/bin/vessel-core" "verify" planted]
+let refused = run ["${pen}/bin/vessel-core" "verify" planted]
 assert refused.code != 0 else "mark_wreck: a vessel carrying an unnamed kind was ACCEPTED"
 
 # The reason, not merely the refusal. A sealed vessel edited anywhere fails its Kumara
 # signature, so this names the frame: parse_manifest_line must be what turned it away.
-let reason = run ["sh" "-c" "amphora/bin/vessel-core verify ${planted} 2>&1 | head -3"]
+let reason = run ["sh" "-c" "${pen}/bin/vessel-core verify ${planted} 2>&1 | head -3"]
 say reason.out
 assert reason.out contains "parse_manifest_line" else "mark_wreck: refused, yet NOT at the mark -- read the reading above"
 
 # --- lifting the plant returns the reading to green, so the refusal is the mark's own ---
-let lifted = run ["amphora/bin/vessel-core" "verify" vessel]
+let lifted = run ["${pen}/bin/vessel-core" "verify" vessel]
 assert lifted.ok else "mark_wreck: the honest vessel must still verify after the plant"
 
 say "amphora_mark_wreck: honest vessel verifies; an unnamed kind refuses at parse_manifest_line"

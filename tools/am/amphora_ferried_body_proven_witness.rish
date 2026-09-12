@@ -45,13 +45,13 @@ let home = trim pen.out
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none of
 # these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "ferry-body: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "ferry-body: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "ferry-body: vessel-seal build failed -- read the line above"
 
@@ -63,12 +63,12 @@ assert mk.ok else "ferry-body: the two plant homes must open"
 
 # --- leg 1: the honest vessel crosses whole, and both proof lines arrive ---
 let honest = "${home}/h/honest.bron"
-let pour_honest = run ["amphora/bin/amphora" "pour" season honest]
+let pour_honest = run ["${home}/bin/amphora" "pour" season honest]
 if pour_honest.ok == false then say pour_honest.err
 assert pour_honest.ok else "ferry-body: honest pour must pass -- read the line above"
 let mkdock = run ["sh" "-c" "mkdir -p ${home}/h/dock"]
 assert mkdock.ok else "ferry-body: honest dock must open"
-let carry_honest = run ["amphora/bin/amphora" "carry" honest "${home}/h/dock"]
+let carry_honest = run ["${home}/bin/amphora" "carry" honest "${home}/h/dock"]
 if carry_honest.ok == false then say carry_honest.err
 assert carry_honest.ok else "ferry-body: the honest vessel must carry -- read the line above"
 assert carry_honest.err contains "ferry resins proven" else "ferry-body: the honest carry says its bodies were proven before crossing"
@@ -86,14 +86,14 @@ say "leg_honest=crossed"
 # body stands AHEAD of the forgery in the walk. That ordering is what tells a wall from a report:
 # a ferry proving as it writes would already have landed the honest body before refusing.
 let forged = "${home}/f/forged.bron"
-let pour_forged = run ["amphora/bin/amphora" "pour" season forged]
+let pour_forged = run ["${home}/bin/amphora" "pour" season forged]
 if pour_forged.ok == false then say pour_forged.err
 assert pour_forged.ok else "ferry-body: forged-plant pour must pass -- read the line above"
 let forge_prep = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test x$f != x; printf 'FORGED-BODY-NOT-THIS-ADDRESS\n' > ${home}/f/resins/$f"]
 assert forge_prep.ok else "ferry-body: the forge plant must prepare"
 let mkdock2 = run ["sh" "-c" "mkdir -p ${home}/f/dock"]
 assert mkdock2.ok else "ferry-body: forged dock must open"
-let carry_forged = run ["amphora/bin/amphora" "carry" forged "${home}/f/dock"]
+let carry_forged = run ["${home}/bin/amphora" "carry" forged "${home}/f/dock"]
 assert (carry_forged.ok == false) else "ferry-body: a body that does not hash to its address must refuse the crossing"
 assert carry_forged.err contains "cargo unproven" else "ferry-body: the forged body refuses by name"
 
@@ -118,7 +118,7 @@ let mkdock_inner = run ["sh" "-c" "mkdir -p ${home}/f/dock_inner"]
 assert mkdock_inner.ok else "ferry-body: inner-wall dock must open"
 let re_forge = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); printf 'FORGED-BODY-NOT-THIS-ADDRESS\n' > ${home}/f/resins/$f"]
 assert re_forge.ok else "ferry-body: the inner-wall plant must prepare"
-let inner = run ["sh" "-c" "env AMPHORA_CARRY_SKIP_PROVE=1 amphora/bin/amphora carry ${forged} ${home}/f/dock_inner 2>&1"]
+let inner = run ["sh" "-c" "env AMPHORA_CARRY_SKIP_PROVE=1 ${home}/bin/amphora carry ${forged} ${home}/f/dock_inner 2>&1"]
 assert (inner.ok == false) else "ferry-body: with the first pass declined, the writing walk must refuse alone"
 assert inner.out contains "cargo unproven" else "ferry-body: the inner wall refuses by the same name"
 let no_prove_line = run ["sh" "-c" "printf '%s' '${inner.out}' | grep -c 'ferry resins proven' || true"]
@@ -134,13 +134,13 @@ say "leg_inner=refused_alone"
 # --- LIFT the plant, and show the welcome returning ---
 # The honest body is recovered from a fresh pour of the same season, which is exactly what makes
 # it honest: the same bytes hash to the same address every time.
-let fresh = run ["sh" "-c" "mkdir -p ${home}/r && amphora/bin/amphora pour ${season} ${home}/r/fresh.bron > /dev/null 2>&1"]
+let fresh = run ["sh" "-c" "mkdir -p ${home}/r && ${home}/bin/amphora pour ${season} ${home}/r/fresh.bron > /dev/null 2>&1"]
 assert fresh.ok else "ferry-body: the recovery pour must pass"
 let lift = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); cp ${home}/r/resins/$f ${home}/f/resins/$f"]
 assert lift.ok else "ferry-body: the lift must land the honest body back"
 let mkdock3 = run ["sh" "-c" "mkdir -p ${home}/f/dock2"]
 assert mkdock3.ok else "ferry-body: third dock must open"
-let carry_after = run ["amphora/bin/amphora" "carry" forged "${home}/f/dock2"]
+let carry_after = run ["${home}/bin/amphora" "carry" forged "${home}/f/dock2"]
 if carry_after.ok == false then say carry_after.err
 assert carry_after.ok else "ferry-body: the crossing welcome must return once the forgery is lifted -- read the line above"
 assert carry_after.err contains "ferry resins proven" else "ferry-body: the returned welcome proves its bodies too"

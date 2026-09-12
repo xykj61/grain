@@ -28,17 +28,17 @@ let vessel = "${home}/v.bron"
 # resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present.
 # The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "amphora_rneg: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "amphora_rneg: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "amphora_rneg: vessel-seal build failed -- read the line above"
 
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "rneg: seed pour must pass"
 
 # --- plant 1: tamper seal_cargo, then re-stamp so the seal wall is the one that speaks ---
@@ -46,9 +46,9 @@ let bak = run ["sh" "-c" "cp ${home}/v.bron ${home}/v.bron.bak"]
 assert bak.ok else "rneg: bak must land"
 let tamp_prep = run ["sh" tamp_sh "${home}/v.bron"]
 assert tamp_prep.ok else "rneg: tamper plant must prepare"
-let restamp = run ["amphora/bin/vessel-core" "sign" "${home}/v.bron"]
+let restamp = run ["${home}/bin/vessel-core" "sign" "${home}/v.bron"]
 assert restamp.ok else "rneg: re-stamp after tamper must pass (isolates seal wall)"
-let tamp = run ["amphora/bin/amphora" "restore" vessel]
+let tamp = run ["${home}/bin/amphora" "restore" vessel]
 assert (tamp.ok == false) else "rneg: tampered seal_cargo must refuse"
 assert tamp.err contains "seal unopened" else "rneg: tamper names seal unopened"
 let tamp_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
@@ -61,7 +61,7 @@ assert heal1.ok else "rneg: heal vessel after tamper"
 # --- plant 2: truncate vessel ---
 let trunc_prep = run ["sh" "-c" "cp ${home}/v.bron ${home}/v.bron.full; n=$(wc -c < ${home}/v.bron); head -c $((n/2)) ${home}/v.bron.full > ${home}/v.bron"]
 assert trunc_prep.ok else "rneg: truncate plant must prepare"
-let trunc = run ["amphora/bin/amphora" "restore" vessel]
+let trunc = run ["${home}/bin/amphora" "restore" vessel]
 assert (trunc.ok == false) else "rneg: truncated vessel must refuse"
 assert trunc.err contains "stamp unverified" else "rneg: truncate names stamp unverified"
 let trunc_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
@@ -74,7 +74,7 @@ assert heal2.ok else "rneg: heal vessel after truncate"
 # --- plant 3: forge one resin body ---
 let forge_prep = run ["sh" "-c" "f=$(ls ${home}/resins | head -1); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > ${home}/resins/$f"]
 assert forge_prep.ok else "rneg: forge resin plant must prepare"
-let forge = run ["amphora/bin/amphora" "restore" vessel]
+let forge = run ["${home}/bin/amphora" "restore" vessel]
 assert (forge.ok == false) else "rneg: forged resin must refuse"
 assert forge.err contains "cargo unproven" else "rneg: forge names cargo unproven"
 say "plant_forged_digest=refused"
@@ -85,9 +85,9 @@ say "plant_forged_digest=refused"
 # does not exist, so the sweep became an assertion.
 let forge_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
 assert forge_out.ok else "rneg: forge refusal must leave no out-home"
-let heal3 = run ["amphora/bin/amphora" "pour" season vessel]
+let heal3 = run ["${home}/bin/amphora" "pour" season vessel]
 assert heal3.ok else "rneg: re-pour heal must pass"
-let ok = run ["amphora/bin/amphora" "restore" vessel]
+let ok = run ["${home}/bin/amphora" "restore" vessel]
 assert ok.ok else "rneg: healed restore must pass"
 assert ok.err contains "restore complete" else "rneg: healed restore completes"
 

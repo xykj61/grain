@@ -27,27 +27,27 @@ let out = "${home}/counsel.bron.season"
 # resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present
 # (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 assert build.ok else "first_resident: amphora build must succeed"
 
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "first_resident: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "first_resident: vessel-seal build failed -- read the line above"
 
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "first_resident: pour must exit ok"
 assert pour.err contains "pour complete" else "first_resident: pour speaks complete"
 
-let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+let verify = run ["${home}/bin/vessel-core" "verify" vessel]
 assert verify.ok else "first_resident: stamp must verify"
 
-let seal = run ["amphora/bin/vessel-seal" "open-check" vessel]
+let seal = run ["${home}/bin/vessel-seal" "open-check" vessel]
 assert seal.ok else "first_resident: seal must open"
 
-let restore = run ["amphora/bin/amphora" "restore" vessel]
+let restore = run ["${home}/bin/amphora" "restore" vessel]
 assert restore.ok else "first_resident: restore must exit ok"
 assert restore.err contains "restore complete" else "first_resident: restore speaks complete"
 

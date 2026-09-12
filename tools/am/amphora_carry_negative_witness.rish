@@ -38,55 +38,55 @@ let far = "${home}/dock/vessel.bron"
 # can read an interpolation where it cannot read a say inside a conditional -- so the elder
 # spelling counted as a binding asserted on and never reported (`20260911.003300`).
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 assert build_amphora.ok else "amphora_carry_neg: amphora build failed --\n${build_amphora.err}"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 assert build_core.ok else "amphora_carry_neg: vessel-core build failed --\n${build_core.err}"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 assert build_seal.ok else "amphora_carry_neg: vessel-seal build failed --\n${build_seal.err}"
 
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "carry_neg: pour must pass"
-let seed = run ["amphora/bin/amphora" "carry" vessel dock]
+let seed = run ["${home}/bin/amphora" "carry" vessel dock]
 assert seed.ok else "carry_neg: seed carry must pass"
 
 let torn_prep = run ["sh" "-c" "rm ${far} ${dock}/chunk-0002.bron"]
 assert torn_prep.ok else "carry_neg: torn plant must prepare"
-let torn = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+let torn = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (torn.ok == false) else "carry_neg: missing chunk must refuse"
 assert torn.err contains "chunk torn" else "carry_neg: torn names its fault"
 let torn_far = run ["sh" "-c" "test ! -e ${far}"]
 assert torn_far.ok else "carry_neg: refusal must leave no far vessel"
 say "plant_missing=refused"
 
-let heal1 = run ["amphora/bin/amphora" "carry" vessel dock]
+let heal1 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal1.ok else "carry_neg: heal after torn must pass"
 let empty_prep = run ["sh" "-c" "rm ${far}; : > ${dock}/chunk-0001.bron"]
 assert empty_prep.ok else "carry_neg: empty plant must prepare"
-let empty = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+let empty = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (empty.ok == false) else "carry_neg: empty chunk must refuse"
 assert empty.err contains "chunk torn" else "carry_neg: empty names torn"
 say "plant_empty=refused"
 
-let heal2 = run ["amphora/bin/amphora" "carry" vessel dock]
+let heal2 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal2.ok else "carry_neg: heal after empty must pass"
 let swap_prep = run ["sh" "-c" "rm ${far}; mv ${dock}/chunk-0001.bron ${dock}/t; mv ${dock}/chunk-0002.bron ${dock}/chunk-0001.bron; mv ${dock}/t ${dock}/chunk-0002.bron"]
 assert swap_prep.ok else "carry_neg: reorder plant must prepare"
-let swapped = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+let swapped = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (swapped.ok == false) else "carry_neg: reordered chunks must refuse"
 assert swapped.err contains "crossing unequal" else "carry_neg: reorder names unequal"
 say "plant_reorder=refused"
 
-let heal3 = run ["amphora/bin/amphora" "carry" vessel dock]
+let heal3 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal3.ok else "carry_neg: heal after reorder must pass"
 let forge_prep = run ["sh" "-c" "rm ${far}; n=$(wc -c < ${dock}/chunk-0003.bron); head -c $n /dev/zero | tr '\\0' 'z' > ${dock}/chunk-0003.bron"]
 assert forge_prep.ok else "carry_neg: forge plant must prepare"
-let forged = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+let forged = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (forged.ok == false) else "carry_neg: forged chunk must refuse"
 assert forged.err contains "crossing unequal" else "carry_neg: forge names unequal"
 say "plant_forge=refused"
 
-let heal4 = run ["amphora/bin/amphora" "carry" vessel dock]
+let heal4 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal4.ok else "carry_neg: final heal must pass"
 let equal = run ["cmp" "-s" vessel far]
 assert equal.ok else "carry_neg: healed dock must equal the source"
