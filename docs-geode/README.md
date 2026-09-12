@@ -64,19 +64,35 @@ brought under a guard while it is clean stays clean; the same room brought under
 repair somebody has to schedule.
 
 **That sentence carried two typed numbers, and this shelf outgrew them in two days.** It read *10
-of the 1,004 pages the guard reads* when it was written on `20260908`; the same scan answers **18
-of 1,261** today, because the eight `lessons/` pages landed on `20260910` and every one of them
-carries a stamp the guard counts. Both figures are **free** -- nothing holds either still, and each
-rises whenever anyone writes a stamped page anywhere in the tree. So run the reading rather than
-trusting a line:
+of the 1,004 pages the guard reads* when it was written on `20260908`; the eight `lessons/` pages
+landed on `20260910` and every one of them carries a stamp the guard counts, so both figures moved.
+Both are **free** -- nothing holds either still, and each rises whenever anyone writes a stamped
+page anywhere in the tree. So run the reading rather than trusting a line:
 
 ```
-sh tools/fixtures/t/two_rooms_doorway_scan.sh | tail -2
+sh tools/fixtures/t/two_rooms_doorway_scan.sh | grep '^doorway '
 ```
+
+**A prefix rather than a position, and this page is why.** That command read `| tail -2` from
+`20260910` to `20260912`, and the scan prints one line per page it reads before its three `doorway`
+summary lines, its verdict, and its closing line -- so `tail -2` returned `verdict=ok` and `OK
+doorway scan complete`, and not one of the figures the paragraph had just promised. A position is a
+promise about how many lines follow; a prefix is a promise about what a line says, and only the
+second survives a `FAIL` line appearing above it. Read
+[`../active-designing/20260912-033302_the-command-that-returned-no-number.md`](../active-designing/20260912-033302_the-command-that-returned-no-number.md).
 
 The claim that earned the sentence keeps its place, because it is the one a room can hold: this
-shelf names **none** of the pages the guard fails. Run the same scan and grep for `docs-geode` to
-check it.
+shelf names **none** of the pages the guard refuses. Empty output is the claim holding:
+
+```
+sh tools/fixtures/t/two_rooms_doorway_scan.sh | grep -E '^(FAIL|LIVING-SILENT)' | grep docs-geode
+```
+
+Both refusal words are matched, because the scan writes `FAIL` for a stamped page whose door names
+no room and `LIVING-SILENT` for a stampless one; a check reading only the first would call a silent
+door clean. Each run reads every tracked page one subprocess at a time, so it costs minutes rather
+than seconds -- **166s** here on `20260912`, a **free** figure that rises with the page count. Time
+your own run rather than trusting that one.
 
 ## Laws
 
