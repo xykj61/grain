@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260911.215028` | [The header the vessel carried](20260911/20260911-215028_the-header-the-vessel-carried.kyri) | no ASCII meter read what a program writes |
+| `20260911.212157` | [The count that stood where a name belonged](20260911/20260911-212157_the-count-that-stood-where-a-name-belonged.kyri) | a count where a name belonged |
 | `20260911.210824` | [The box I did not open](20260911/20260911-210824_the-box-i-did-not-open.kyri) | a finished lap recovered from the round-open stash |
 | `20260911.204400` | [The rune the book never taught](20260911/20260911-204400_the-rune-the-book-never-taught.kyri) | none of three bindings asked if a rune was taught |
 | `20260911.203724` | [The cure that reached one room](20260911/20260911-203724_the-cure-that-reached-one-room.kyri) | %646's uncounted half: 10 of 10 refuse; the cure was seated thrice |

@@ -85,6 +85,57 @@
 # block belongs to a different command -- so the caution is right and only its silence was wrong.
 # A block nothing reads and a block nothing MAY read read alike from outside; one is a gap.
 #
+# AND FOR A DAY IT SAID "NAMED" AND PRINTED A COUNT. Both reported populations above --
+# `undeclared_after_prose` and `held` -- stay ungated on the promise that they stay VISIBLE, and
+# until 20260911 the default report printed `undeclared_after_prose=4` and nothing more. The names
+# went to the pen's own line file, reachable through the `list` verb alone, and NOTHING in this tree
+# runs `list`: the witness runs the default report and the control runs the pen. So a reader of a
+# roster pass met a number with no way to reach the four pages behind it. A population reported as a
+# bare count is visible the way a locked door is visible. The report names each one now, page and
+# line, and the pen proves the naming from both sides.
+#
+# WHAT THE FOUR TURNED OUT TO BE, read one at a time rather than sampled, 20260911:
+#
+#   SOURCE.md:241 -- `gpg --armor --export` above, a fingerprint card below, and the prose between
+#   them says "reads like": an illustration of shape rather than that command's output.
+#
+#   docs-geode/tutorials/the-first-hour.md:65 -- the "run it twice" block, a real reattribution to a
+#   second invocation of a different command.
+#
+#   docs-geode/tutorials/the-first-hour.md:96 -- `already=yes / verdict=ok`, which belongs to the
+#   fetch script three fences above rather than to the `zig version` line directly over it.
+#
+#   manual/guides/cloud-agent-toolchain-setup.md:23 -- a recipe fence of pip and export lines, then a
+#   block quoting what `rye` and `rishi --help` answer afterwards: two other commands' output.
+#
+# All four are honest reattributions or illustrations, so the caution is right and not one of them
+# wants a lead-in. What the reading left behind is a different shape entirely.
+#
+# A FOURTH SHAPE, named here and DECLINED on measurement, 20260911. A page may write a command and
+# its expected output on the next line, inside the SAME fence, as a comment:
+#
+#     ```sh
+#     vendor/zig-toolchain/zig version
+#     # 0.16.0
+#     ```
+#
+# That is a claim about behavior wearing a comment's clothes, and no pair machinery reaches it --
+# the parser strips a trailing comment before deciding whether a line is runnable, so the claim is
+# discarded on the way past. Measured over the corpus: 39 comment lines stand inside command fences
+# across the 80 tracked pages, 22 of them in the 49 living ones, and SIX of those 22 are output
+# claims -- SOURCE.md 223, 582, 589 and 591, the first hour's 98, and manual/grain-os/get-started.md
+# 48. The other sixteen are asides: a section label, an alternate command, a note about where a
+# download landed.
+#
+# Position alone cannot tell the two apart. A comment following a command line inside the fence
+# catches SIXTEEN of the twenty-two, six of them the claims, so this shape wants a declaration
+# exactly as the prose above it does. A fourth token was declined because the population says so:
+# of the six claims FIVE are off the run roster -- a macOS `fdesetup`, two `socketfilterfw` reads, a
+# `gpg` fingerprint, and a toolchain binary rather than a tracked script -- and the sixth abbreviates
+# its output with an arrow rather than quoting it. A checker built for this shape would check
+# nothing today. It is counted and named here so the decline is visible rather than silent, and so
+# the lap that adds a seventh claim has a standard to build against.
+#
 # WHAT IS GATED, hard, at zero: `drift` -- a pair whose command ran and printed something other
 # than what the page quotes. That is the fault this exists to catch.
 #
@@ -291,7 +342,7 @@ while [ "$i" -lt "$pairs" ]; do
   if [ "${prose:-0}" -gt 0 ] && [ -z "$sel" ] && [ -z "$vol" ] && [ -z "$lead" ]; then
     undeclared=$((undeclared + 1))
     printf '%s:%s\tundeclared_after_prose\t%s\n' "$page" "$line" \
-      "$prose line(s) of prose sit between the command and the block; declare selected or volatile to have it read" \
+      "$prose line(s) of prose sit between the command and the block; declare selected, volatile or lead-in to have it read" \
       >> "$work/lines.txt"
     continue
   fi
@@ -464,6 +515,18 @@ echo "drift=$drift"
 echo "held=$held"
 echo "held_ceiling=$HELD_CEILING"
 echo "undeclared_after_prose=$undeclared"
+
+# THE NAMES BESIDE THE COUNTS. Both readings above report rather than gate, and a reported
+# population that prints only its size tells a reader there is something to look at and never where.
+# These lines are what make the word "named" in the header true of the report a lap actually reads
+# rather than of a verb nothing runs. Each is asked only when its count says there is something to
+# name, so an awk standing silently over an empty file is never mistaken for one that ran.
+if [ "$undeclared" -gt 0 ]; then
+  awk -F'\t' '$2 == "undeclared_after_prose" { print "undeclared: " $1 " -- " $3 }' "$work/lines.txt"
+fi
+if [ "$held" -gt 0 ]; then
+  awk -F'\t' '$2 == "held" { print "held: " $1 " -- " $3 }' "$work/lines.txt"
+fi
 
 if [ "$pairs" -eq 0 ]; then
   echo "verdict=no_pairs_read"
