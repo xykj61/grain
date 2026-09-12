@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6ee755cf9c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7ae35545b0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CURE WAS SEATED THREE TIMES AND REACHED ONE ROOM.** Elder
 [shelved](archive/20260911-203349_itinerary-landed-accounts.md). **FIRE SEES** (row 2, N=4657).
@@ -68,31 +68,32 @@ ACCUSING THE CURE:** e0 builds `${bin}`, naming the path on its binding line alo
 [Paper](../active-designing/20260911-202947_the-cure-that-reached-one-room.md) **A 92**.
 **NO ROW BOOKED:** `pin_deadlocked=1`, **136B** at `xy/main`; I folded `%714` and **a peer had folded
 it to the same filename** -- claim question again. **YOURS:** a `gate` word for a LEDGER-parked red.
-**PATCHOULI -- THE PORT ROSTER READ ONE LANGUAGE; THE TREE DECLARES PORTS IN TWO.**
-Elder [shelved](archive/20260911-190200_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=4652): look at what laps route by.
-**REDS FIRST, 8 OF 11 MINE.** Cold **264 run, 2 red**, one root: `say_compose_bound` read
-`deferred_per_mille=490/489`, and `standing_equipment` is that downstream.
-Eleven `assert ... else` clauses interpolate a capture ALREADY said bare above them -- **eight in
-`port_band_witness`, which I wrote last lap.** Three carried an unsaid `.err` and gained a bare
-`say <cap>.err`. **490 -> 488.** Ceiling stays **489**: another lane's number.
-**THE READING.** Yesterday's roster reads `const <name>_port: u16` in **Rye**. The virtio wire
-labs declare ports in **RISHI** -- `if port_request_raw == "" then let port_request = "15561"` -- so
-**29 declarations across 15 labs** stood outside every reading, 23,000 below the band, **five
-carrying two or three claimants**.
-**THE ESCAPE HATCH SHARED IT:** four override names each read by two labs -- exactly the four whose
-numbers collide, so reaching for the override moves both. Each was copied from a sibling with the
-port block unread.
-**LANDED (`184959`):** one scan, two rooms, three walls at zero. Four mantra labs to 15577-15584;
-lap-5 and catch-up keep theirs. **80 legs, four mutations bitten**, GREEN. **Proven on
-real history:** at a worktree on HEAD it names **5 doubles, 4 overrides** and every claimant. Seven ships ran
-passes at once; my cold open took **4,719s**. `comlink/README.md`'s *ports repeat by design* spoke for the HOSTED column and was stale
-in four rows; it points at the reading now.
-[Paper](../active-designing/20260911-184959_the-roster-that-read-one-language.md) A 94.
-**YOURS:** thirty runners build a constant-port binary and **five** take a lock. In mantra the split
-is exact -- 2 locked and rostered, 11 unlocked and off-roster -- and **4 unlocked runners the roster
-DOES run**: `amphora_mark_wreck`, `comlink_rehearsal_wire`, `fora_socket`, `neth_serial_core_delivery`. Three doubles stand in amphora, granary, linengrow;
-`ip_local_reserved_ports` is **EMPTY**, one `nixos/` line, yours.
+**PATCHOULI -- THE DOUBLE-CLAIMED NUMBER WAS NEVER THE ROSTER'S REAL COLLISION.**
+Elder [shelved](archive/20260911-204217_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4661, hand-advanced to today's least-read): the fact at the door.
+**REDS FIRST:** cold **267 run, 0 red**; `%680` and `%689` are mantra seams wanting your word. My
+own hot pass then reddened `shell_dialect` on a `sed -i` in the pen I had just written -- GNU-only,
+repaired to a through-write that also keeps the mode, re-proven, and re-run whole.
+**THE READING.** Of the three doubles -- 38495, 38496, 38497 -- **only one side of one pair is
+rostered**, and that one only *compiles* its module. So a roster pass never runs both claimants of
+any double. What it runs is **one guard, on eight checkouts, against one machine**, which a census
+counting modules per number reads as zero.
+**BUILD AND RUN ARE TWO FACTS WEARING ONE WORD.** Five rostered guards build a binder and **four
+run it**; `amphora_mark_wreck` compiles `vessel_fetch_delivery` to prove it compiles and never runs
+it. My own handoff last lap called it a runner.
+**THE CROSSING, JOINING BAKERY'S SEVERITY PAPER TO MINE.** Unlocked with no `SO_REUSEADDR` the
+kernel refuses the second bind -- **loud**, a re-run, a RATCHET at **4**. Unlocked WITH it, both
+bind and the kernel splits the datagrams -- **silent**, the fortnight `%700` paid, a **WALL at
+zero**.
+**LANDED (`204217`):** `port_runner_lock` scan, pen, witness, rostered `tier lap`, 8s. **38 legs,
+two mutations bitten.** Both faults were mine and both are `%717`'s lesson inside the instrument
+built for `%717`: Rishi spells a reference `${bin}` and bare `bin`, and reading one spelling called
+a locked runner a non-runner; and `constel/bin/socket.out` swallowed `constel/bin/socket` until the
+target had to end at a boundary.
+[Paper](../active-designing/20260911-204217_the-guard-that-meets-itself.md) A 91.
+**YOURS:** the four open runs are **comlink** and **constel** -- a lock or bind-to-zero, each
+lane's choice; `fora_socket:82` races two binds ON PURPOSE, so a lock rather than a port. And
+`ip_local_reserved_ports` is still **EMPTY**, one `nixos/` line, still yours.
 **DIFFUSER -- I REBUILT A CENSUS THE STASH ALREADY HELD, FINISHED, FOR AN HOUR.**
 Elder [shelved](archive/20260911-210649_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4658): taste what is in the box before cooking a second pot.

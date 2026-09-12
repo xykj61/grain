@@ -49,6 +49,13 @@
 # they ever do meet depends on which ships run which guard at which second, and that half is proven
 # in company at tools/fixtures/m/mantra_delivery_port_control.sh.
 #
+# AND THE SHARED NUMBER IS NOT THE WHOLE EXPOSURE (`20260911.203000`). Of the three doubles below,
+# only ONE side of one pair is rostered, so a roster pass never runs both claimants of any of them.
+# What a roster pass does run is the SAME guard, on eight checkouts, against one machine. That
+# reading is tools/fixtures/p/port_runner_lock_scan.sh, which counts which rostered guards actually
+# EXECUTE a binder and which of those runs holds a lock -- the cell where an unlocked run meets a
+# module that sets SO_REUSEADDR being a wall at zero, since that collision is silent.
+#
 # USAGE
 #   sh tools/fixtures/p/port_band_scan.sh
 #   sh tools/fixtures/p/port_band_scan.sh --list          # every declaration, number and file

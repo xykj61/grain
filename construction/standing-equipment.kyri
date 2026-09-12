@@ -5399,6 +5399,38 @@ path tools/p/port_band_witness.rish
 tier lap
 seated 20260911.145000
 
+# port_runner_lock -- which standing guards BIND a port, and which of those runs holds a lock.
+#
+# WHY IT IS ROSTERED, BESIDE port_band RATHER THAN INSIDE IT. port_band counts the NUMBERS our
+# modules declare and names the ones two modules share, which answers *can two modules meet*. A
+# fleet pass asks the other half: *does the roster RUN a binder, and is that run held apart from the
+# seven other ships running the same guard on the same machine at the same second*. The shared
+# number was never the whole exposure -- of the three doubles, only one side of one pair is
+# rostered, so a roster pass never runs both claimants of any of them. What it does run is one
+# guard, on eight checkouts, against one machine.
+#
+# WHAT IT HOLDS, and why two instruments rather than one. Unlocked with no SO_REUSEADDR, the kernel
+# refuses the second bind: the pass reds, a re-run passes, and the bill is a re-run -- a RATCHET at
+# FOUR that only falls. Unlocked WITH SO_REUSEADDR, both sockets bind and the kernel splits the
+# datagrams between them with no refusal at all: every reading of it is plausible, which is what
+# made REDS %700 take a fortnight -- a WALL at zero. The silent cell is empty today and the loud
+# cell holds four, both in `tools/co/comlink_rehearsal_wire_witness.rish` and
+# `tools/f/fora_socket_witness.rish`, each repair a choice inside another lane.
+#
+# WHAT THE PEN PROVES. 38 legs on real git repositories, every refusal planted and then lifted, the
+# ceiling shown from both sides, and two mutations biting their own legs: dropping the bare-variable
+# resolution loses both Rishi spellings, and dropping the path boundary charges `${bin}.out` as an
+# execution of `${bin}`.
+#
+# WHY `tier lap`. 8s measured `20260911`, one pass over the roster's own `.rish` files plus a pen of
+# ten small git repositories. Ordinary work writes this fault: a witness gains a second run, or a
+# module gains a setsockopt, and neither hand is thinking about the other seven ships.
+
+guard port_runner_lock
+path tools/p/port_runner_lock_witness.rish
+tier lap
+seated 20260911.203000
+
 # THE THIRD CELL OF A THREE-CELL GATE (`20260911.111917`). Glow's `|-` trap takes a required bound as its
 # first child, so an unbounded loop is a compile-time refusal rather than a runtime surprise. That
 # claim had two proofs standing beside it and a hole between them, read `20260911`: the MODULE's
