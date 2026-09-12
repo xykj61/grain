@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.225821` | [The box that was never named](20260911/20260911-225821_the-box-that-was-never-named.kyri) | the round-open names its parked work; the witness hears its own pen |
 | `20260911.215028` | [The header the vessel carried](20260911/20260911-215028_the-header-the-vessel-carried.kyri) | no ASCII meter read what a program writes |
 | `20260911.214826` | [the round that sat in the stash](20260911/20260911-214826_the-round-that-sat-in-the-stash.kyri) | a `.lap/` worktree reddened two find-walking guards |
 | `20260911.212157` | [The count that stood where a name belonged](20260911/20260911-212157_the-count-that-stood-where-a-name-belonged.kyri) | a count where a name belonged |

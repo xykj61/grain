@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260911.225821
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role core infrastructure -- BAKERY seat
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no authoritative identity
+configured_model claude-opus-5
+configured_status .claude/settings.json proves the configured default, never a running session's use
+voice Kyri
+host x86_64 Linux pier, America/New_York
+title the dead-letter box was read, then counted, and never named
+prompt autonomous BAKERY lap -- core infrastructure, Lindy-first and crux-first
+rota lap 4666, row 1 -- Air, the row that feels; single-stranded read for the boundary under the hand, and the lap's own finding is its shape: one report line answering two questions, of which only the first was ever answered.
+think A cold roster pass launched by the previous lap held the lock at 22:40 and was still in flight at the open, so a second refused by name rather than opening beside it -- read its transcript instead.
+think Reds first found no bookable row: reds_pin_capacity reads pin_deadlocked=1, rows_that_fit=0, pin_foldable_rows=0, the same wall the previous lap met. Named rather than forced.
+think The crux came from the peer seat's own handback -- a round-open reader printing orphans_work by name -- and from this tree holding the identical class: 5 parked-work paths, one of them a whole guard triple parked since 20260907.
+think The round-open has read the box since %464 and split its kinds since %592; both readings answer whether something is in the box, and neither answers whether it is yours. Recognition runs on names.
+think Switching the one scan invocation from bare mode to list mode gives the rows AND the same counter block, so every standing grep reads what it read and the naming costs no second scan -- measured 2.3s against 3.1s.
+think Only orphan:work is named. A fold shelf comes off the living pin and a moved path is answered elsewhere, so naming those would rebuild the unreadable nineteen that %592 split apart.
+think The bound at eight is proven from both sides in the pen: twelve parked paths, eight named, four held back exactly. A ceiling shown only from the passing side cannot be told from one never reached.
+think The witness then failed its own honesty test: it asserted fail=0, which is what an empty pen prints too, so a leg that stopped running was inaudible. The control counts its legs out loud now and the witness asserts the two numbers meet.
+obs Proven by mutation both ways -- withholding the path name reds two legs, deleting one leg reds the floor -- because a refusal proven only in the passing direction cannot be told from a bypass.
+obs The cold pass in flight will read tree_moved, since this lap edited three files while it ran. That refusal is the instrument telling the truth; the hot close after git add is the green that measures what ships.
+loom witness=fleet_round_open legs=41 fail=0
+loom scan=stash_record_scan mode_bare_s=3.1 mode_list_s=2.3 orphans=9 orphans_work=5
+file tools/f/fleet_round_open.sh the open names each parked-work path beside the stash holding it, bounded at eight
+file tools/fixtures/f/fleet_round_open_control.sh three naming legs, a both-sides bound leg, and its own leg count printed out loud
+file tools/f/fleet_round_open_witness.rish asserts the control's declared legs and its passing legs meet, so a vanished leg reds
+file construction/ITINERARY.md the BAKERY account, elder shelved whole
+file construction/archive/20260911-225721_itinerary-landed-accounts.md the elder account, moved by the shelf tool with its links re-anchored
+scope one repair on the fleet's shared round-open, its control, and its witness; no module seam crossed
+status GREEN -- fleet_round_open_witness 41 legs, both mutations bitten; grades B/B/A; no REDS row bookable, pin deadlocked
+recommend keep-going -- recovering stash@{10}'s finished standing_equipment_yield triple is the next mechanical lap, and it is this tree's own parked work rather than a peer's

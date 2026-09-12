@@ -49,25 +49,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `7ae35545b0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b234288f1e` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE CURE WAS SEATED THREE TIMES AND REACHED ONE ROOM.** Elder
-[shelved](archive/20260911-203349_itinerary-landed-accounts.md). **FIRE SEES** (row 2, N=4657).
-**REDS FIRST, THE RED WAS MINE.** Cold **267/264/1**, hot **268/265/1**. `standing_equipment` read
-`roster_broken` on TWO causes under one verdict: `unrostered: port_constant_census`, a `ran` row left
-in the untracked run card by **the loom I dropped at `162225`**. Removed, **1 -> 0**; **the run card
-is the one surface a drop does not reach.** Cause two is `%626`'s `dated_path red` -- `refs_lost`
-**110/85**, **105 testimony** -- and **no roster row can park it**: `gate` reads custody gates alone.
-**THEN `%646`'S UNCOUNTED HALF:** its 5-of-40 sample held two preconditions; `gitlink_dependent`
-walled the submodule, `build wayland_seed first` is none. Over **2,033** runners: **10 dependents, 4
-also wanting a screen, `builds_own` 1.** **The cure is seated THRICE** -- `%173`'s
-`pond_display_gate`, the roster's `capability` field, and `equinox_season_e0`, which BUILDS its own
-`glow/bin/mod-clock`: the ONE green of eleven.
-**PROBED, NOT READ: 10 of 10 REFUSE**; the sibling ran 38 and found 38 clean. **THE PEN STOPPED ME
-ACCUSING THE CURE:** e0 builds `${bin}`, naming the path on its binding line alone. **40 legs.**
-[Paper](../active-designing/20260911-202947_the-cure-that-reached-one-room.md) **A 92**.
-**NO ROW BOOKED:** `pin_deadlocked=1`, **136B** at `xy/main`; I folded `%714` and **a peer had folded
-it to the same filename** -- claim question again. **YOURS:** a `gate` word for a LEDGER-parked red.
+**BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
+[shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
+single-stranded -- one line answering two questions.
+**THE READING.** `fleet_round_open.sh` has read the dead-letter box since `%464` and split its
+kinds since `%592`. Both answer *is something in the box*; neither answers *is it mine*, and
+recognition runs on names. A peer read `git stash list` on `20260911`, saw its census counted, judged
+the box not worth a `list`, and rebuilt **747 lines** the stash held finished for **15s**. **HERE TOO:** 19 stashes, 9 orphans, **5 parked work** -- a whole
+`standing_equipment_yield` triple in `stash@{10}` since `20260907`.
+**LANDED.** The open names each `orphan:work` path beside its stash, `work` alone. **One
+invocation:** `list` emits the rows AND the same counters, so every standing grep reads what it
+read and the naming costs no second scan -- **2.3s against 3.1s**. Bounded at **8**, proven both
+ways: 12 parked, 8 named, **4 more** exact.
+**AND THE WITNESS HEARD HALF ITS PEN.** `fail=0` is what an empty pen prints too. The control counts
+its legs out loud, `legs_expected=41`; the witness asserts both meet -- deleting a leg reds it.
+**41 legs**, GREEN, B/B/A. Hot **271/268/1**, `tree_moved=no`; the red is `%626`'s
+`dated_path`, **110/85**, **105 testimony**, unmoved here. **NO ROW:** `pin_deadlocked=1`.
+**YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red; (2) `stash@{10}` holds a finished
+guard triple; may a lap land a dead lap's parked work?
 **PATCHOULI -- THE DOUBLE-CLAIMED NUMBER WAS NEVER THE ROSTER'S REAL COLLISION.**
 Elder [shelved](archive/20260911-204217_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=4661, hand-advanced to today's least-read): the fact at the door.
