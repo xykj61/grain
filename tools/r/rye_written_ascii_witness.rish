@@ -1,0 +1,115 @@
+# rye_written_ascii_witness.rish -- what a Rye program ASSEMBLES is prose too, and the half of it
+# that reaches a disk stands at zero.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_written_ascii_witness.rish
+#
+# `.claude/rules/ascii-first.md` governs prose in four subjects, and every meter this tree owns
+# reads what a source COMMENTS or what a program PRINTS. None reads what a program BUILDS INTO A
+# BUFFER and hands onward -- to a file, a wire frame, or a generated page. That is where the law was
+# born: REDS %83 was a persisted document a tool rewrote into mojibake.
+#
+# THE EXCLUSION COVERED TWO POPULATIONS. `tools/fixtures/r/rye_spoken_ascii_scan.sh` steps past
+# "every line outside a print call", and gives its reason: a module testing a decoder must contain
+# the character it decodes. That reason is exactly right about a decoder's own fixture and says
+# nothing about a header a program writes into every artifact it pours. One line stood across two
+# populations; this meter reads the half the reason does not cover.
+#
+# WHY THE SECOND READING IS A WALL RATHER THAN A RATCHET. Measured before a line changed:
+# 292 characters are assembled tree-wide, and exactly TWO of them stood in a file that also writes
+# one. Both were em dashes, both forms the rule's own table spells, and both were repaired on this
+# lap -- `amphora/src/main.rye`, whose vessel header crosses to a far dock inside every sealed
+# vessel this tree pours, and `tools/rye/enrich/enrich_file.rye`, which assembles Markdown and
+# writes it into documentation pages. Two tracked pages carry that character on disk today. A
+# generator feeding the gated document meter, standing outside every meter, is the shape this
+# reading closes. A population at zero is walled; a ceiling above zero on an empty class is
+# decoration.
+
+say "rye-written-ascii: Language EN -- a sentence a Rye program assembles is prose before it is bytes, and plain ASCII survives every tool, pipe, and re-encoding intact."
+say "rye-written-ascii: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "rye-written-ascii: Lens TAME -- safety first: the meter counts what a program ASSEMBLES FOR A READER and refuses to count a plain binding, a comment, or a spoken call another meter already holds. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/r/rye_written_ascii_control.sh"]
+say control.out
+assert control.ok else "rye-written-ascii: the control must complete"
+assert control.out contains "control_verdict=ok" else "rye-written-ascii: the control must reach its own verdict"
+
+# THE CONTROL'S OWN LEGS ARE TALLIED, and the tally is asserted beside the verdict. A verdict says
+# only that the control reached its last line, so a leg written tomorrow would pass unheard under it
+# -- the fault `ascii_document_control` booked one meter over on `20260910`.
+assert control.out contains "control_failed=0" else "rye-written-ascii: every leg of the control must pass, not merely the ones this file happens to name"
+
+# The four assembling calls, each counted. These are the shapes that put text in front of a reader
+# without ever calling print.
+assert control.out contains "bufprint_counts=yes" else "rye-written-ascii: text assembled by bufPrint is prose and must be counted"
+assert control.out contains "allocprint_counts=yes" else "rye-written-ascii: allocPrint assembles the same sentence into a different allocator"
+assert control.out contains "writefile_counts=yes" else "rye-written-ascii: a literal handed straight to writeFile becomes a file's own bytes"
+assert control.out contains "bufprintz_counts=yes" else "rye-written-ascii: bufPrintZ assembles the same sentence with a terminator"
+assert control.out contains "bufprint_lifts=yes" else "rye-written-ascii: removing the plant must return the reading to zero, or the count is a latch"
+assert control.out contains "all_four_lift=yes" else "rye-written-ascii: the depth must return to zero when a call closes, or one call would swallow the rest of its file"
+
+# The shapes a line-oriented reader would miss. This tree writes a header as a multi-line call and a
+# generated page as a raw multiline string, and both carry characters on continuation lines.
+assert control.out contains "continuation_line_counts=yes" else "rye-written-ascii: a continuation line of a multi-line assembling call is prose too"
+assert control.out contains "raw_multiline_counts=yes" else "rye-written-ascii: a raw multiline string INSIDE an assembling call is a page being written, unlike one standing alone as a parser's input"
+assert control.out contains "escaped_quote_keeps_string_open=yes" else "rye-written-ascii: an escaped quote must not close a string, or every reading after it desynchronizes"
+
+# The three rooms this meter refuses to enter, each a line drawn where counting would be wrong
+# rather than merely hard.
+assert control.out contains "spoken_is_not_written=yes" else "rye-written-ascii: a print call belongs to the spoken meter -- charging one character to two ceilings makes each reading depend on the other"
+assert control.out contains "nested_in_print_not_charged_twice=yes" else "rye-written-ascii: an assembling call nested inside a print is already counted there, and a character charged twice makes neither ceiling readable"
+assert control.out contains "own_line_comment_free=yes" else "rye-written-ascii: a comment belongs to the comment meter"
+assert control.out contains "trailing_comment_free=yes" else "rye-written-ascii: a comment trailing an assembling line belongs to that same sibling, which closed exactly that residue on 20260908"
+assert control.out contains "bare_literal_free=yes" else "rye-written-ascii: the spoken meter's own reason holds here whole -- a module testing a decoder must contain the character it decodes"
+assert control.out contains "char_literal_opens_nothing=yes" else "rye-written-ascii: a character literal may hold a parenthesis, and a meter that miscounts one desynchronizes every reading after it"
+
+# THE IDENTIFIER TRAP, and it is sharper here than in the spoken meter, because the names this
+# meter reads CONTAIN the name that one reads. `bufPrint` ends in the spoken call's own letters.
+assert control.out contains "fingerprint_opens_nothing=yes" else "rye-written-ascii: a longer identifier ending in those letters must never certify itself as an assembling call"
+assert control.out contains "longer_name_opens_nothing=yes" else "rye-written-ascii: mybufPrint is somebody else's function and must open nothing"
+assert control.out contains "mutation_identity_applied=yes" else "rye-written-ascii: the identity mutation must start from a reading of zero, or it proves the inert path"
+assert control.out contains "mutation_identity_bites=yes" else "rye-written-ascii: read the identifier as a suffix and the trap must fire, or the whole-identifier read proves nothing"
+assert control.out contains "mutation_nested_applied=yes" else "rye-written-ascii: the double-charge mutation must start from a reading of zero"
+assert control.out contains "mutation_nested_bites=yes" else "rye-written-ascii: drop the spoken-region tracking and the nested call must be charged twice, or that tracking proves nothing"
+
+# TWO NUMBERS, BECAUSE THEY ASK TWO THINGS. `written_named` is the subset the rule's own table
+# names and spells, which a sweep converts mechanically. The remainder is a reader's judgment.
+assert control.out contains "notation_counts_written=yes" else "rye-written-ascii: notation outside the table is still non-ASCII in assembled text"
+assert control.out contains "notation_is_unnamed=yes" else "rye-written-ascii: notation must land apart from the sweepable half, since a script choosing its ASCII word is guessing"
+
+# THE PERSISTED PROXY, NAMED AS ONE AND PROVEN BOTH WAYS. Where a buffer lands is dataflow a
+# scanner does not follow; a file that also calls writeFile is the closest reading available.
+assert control.out contains "persist_counted=yes" else "rye-written-ascii: assembled text in a file that also writes a file is text that may reach a disk"
+assert control.out contains "persist_files=yes" else "rye-written-ascii: the proxy must name how many files it counted, or a reader cannot weigh it"
+assert control.out contains "no_writefile_not_persisted=yes" else "rye-written-ascii: a file that writes nothing must stay out of the persisted reading"
+assert control.out contains "no_writefile_still_written=yes" else "rye-written-ascii: staying out of the wall must never drop a character from the ratchet"
+
+# THE TWO CEILINGS, each from both sides. There is no override and none is wanted.
+assert control.out contains "over_ceiling_refuses=yes" else "rye-written-ascii: one character past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "removed_returns_green=yes" else "rye-written-ascii: removing the plant must return the reading to green, or the refusal is a latch"
+assert control.out contains "persisted_wall_refuses=yes" else "rye-written-ascii: one character reaching a disk must refuse at the wall, which is the whole reason this meter was built"
+assert control.out contains "persisted_wall_returns_green=yes" else "rye-written-ascii: lifting it must return the wall to green"
+
+# THE INSTRUMENT ITSELF (REDS %513). Every assert above asks what the meter COUNTED; these ask
+# whether it READ anything. An empty answer from a refused read is byte-identical to an empty
+# answer from a clean file, and the second is the one everyone hopes for.
+assert control.out contains "unreadable_refuses=yes" else "rye-written-ascii: a meter that cannot open its subject must say so rather than count a zero"
+assert control.out contains "unreadable_counted=yes" else "rye-written-ascii: the unreadable file must be counted, so a reader knows how much went unread"
+assert control.out contains "broken_instrument_named=yes" else "rye-written-ascii: a refused read must print instrument=failed"
+assert control.out contains "broken_instrument_refuses=yes" else "rye-written-ascii: a broken instrument must never answer under_ceiling=yes -- a green from a meter that read nothing is the worst shape a reading can take"
+assert control.out contains "readable_again=yes" else "rye-written-ascii: the refusal must lift when the file can be read again"
+
+let living = run ["sh" "tools/fixtures/r/rye_written_ascii_scan.sh"]
+say living.out
+assert living.ok else "rye-written-ascii: the living scan must complete"
+assert living.out contains "instrument=ok" else "rye-written-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
+assert living.out contains "under_ceiling=yes" else "rye-written-ascii: non-ASCII in assembled Rye text rose above the ceiling -- convert on touch rather than raising it"
+assert living.out contains "persisted_under_ceiling=yes" else "rye-written-ascii: a character assembled in a file that also writes one reached the disk -- convert it, since every character this wall has ever held was a form the rule's own table spells"
+
+# COUNTED OFF THE PEN, BOTH DIRECTIONS. A refusal is a behavior proven exactly as hard as a
+# welcome, so a tally reading only the affirmative half would understate the control by every
+# refusal it owns.
+let affirmed = where (lines control.out) as l: l contains "=yes"
+say "rye-written-ascii: ${length affirmed} readings proven on real git repositories in a throwaway pen, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: rye-written-ascii -- what a Rye program assembles now stands under a ceiling that only falls, and the half of it reaching a disk stands at zero. The meter reads parenthesis depth rather than a line at a time, since this tree writes a header as a multi-line call; it refuses a plain binding, a comment, and a spoken call another meter already holds, and it reads every call name as a whole identifier, because the names it opens on end in the letters the spoken meter opens on."

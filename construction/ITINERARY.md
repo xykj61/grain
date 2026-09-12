@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dc74dd0183` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8bc9de3e87` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CURE WAS SEATED THREE TIMES AND REACHED ONE ROOM.** Elder
 [shelved](archive/20260911-203349_itinerary-landed-accounts.md). **FIRE SEES** (row 2, N=4657).
@@ -197,36 +197,36 @@ earlier**, strictly wider. **My absence check was honest and two hours stale**:
 faster than that answer keeps.
 **YOURS, A MECHANISM RATHER THAN A REPAIR:** absence is checkable, **intent is not**. Nothing lets
 a ship say *I am building this* before it exists; a claim surface costs one line and saves a day.
-**COPAL -- A REFUSED CROSSING LEFT A DOCK PROMISING CARGO IT HAD YET TO CARRY.**
-Elder [shelved](archive/20260911-193818_itinerary-landed-accounts.md). **EARTH BREATHES IN** (row 4, N=4653, hand-advanced past
-0, 1 and 3, all read today): the concrete fact at the door, ahead of the argument.
-**REDS FIRST:** cold ****265 run, 263 green, 0 red**; nothing of mine to close**.
-**THE CARD HANDED ME THE QUESTION AND I RAN IT RATHER THAN READING IT.** *CARRY has yet to be
-asked this question* stood on my own row from three hours earlier. `carry_cross` assembled the far
-vessel at the dock's own `vessel.bron` and ferried the resin bodies AFTER it.
-**MEASURED, ring-1, before a line changed.** Forge one near resin body -- production path, no env
-seam -- and a **first** carry refuses `cargo unproven` at the near end while the dock keeps
-**1,565 bytes**, byte-equal to the near vessel, `vessel-core verify` **GREEN**, `vessel-seal
-open-check` **GREEN**, beside **zero** of the four bodies its manifest names. A far restore passes
-the carry walls, passes the restore walls, reads `files=4 plain_bytes=378`, and only then answers
-`resin absent`. **Every wall says yes; the reader who came for the cargo pays.**
-**MECHANISM:** the assembly lands on a `.crossing` scratch inside the dock; the far walls and the
-far manifest read the scratch; the resins ferry beside it into the dock's own content-addressed
-`resins/`; `rename(2)` lands `vessel.bron` once every body is across. `refuse_and_clear` takes the
-suffix it may remove and sweeps the scratch on every refusal; `pour_scratch_path` generalized to
-`scratch_path(target, suffix, buf)`, one rule for two rites.
-**WHAT WAS ALREADY RIGHT, and why the FIRST carry is the sharp case:** resin bodies are addressed
-by digest and `guard_identity_fork` holds a dock to one identity for life, so a **re**-carry writes
-the bodies already there. The loss lived where the dock had nothing yet.
-**PROVEN: 8 legs**, the elder shape rebuilt in a pen by five sed edits, two asserted to bite,
-watched leaving a verifying bodyless dock over the plant the repaired binary leaves empty.
-Rostered `tier lap`, named at the door.
-[Paper](../active-designing/20260911-193818_the-dock-that-advertised-what-it-could-not-deliver.md) **A 95**.
-**YOURS:** (1) **POUR'S OWN SECOND HALF** -- `pour_ship` lands the vessel by rename and writes the
-season's resins after it, the same shape one verb nearer home. The near reader holds the season
-itself, so the cost differs; whether it earns the same repair is your word. (2) the dock's
-`chunk-NNNN.bron` cuts stay after a refusal -- scratch rather than promise, sealed bytes, swept by
-the next carry's own re-cut; a tidiness lap rather than a wall.
+
+**COPAL -- EVERY ASCII METER READS WHAT A PROGRAM SAYS; NONE READ WHAT IT WRITES.**
+Elder [shelved](archive/20260911-215028_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4663): read the actual file, up close, and notice the aftertaste.
+**REDS FIRST:** cold **268 run, 266 green, 0 red**, 2 gated; nothing of mine to close.
+**THE AFTERTASTE.** Reading my own `pour` path I met, at `amphora/src/main.rye:651`, an **em dash
+inside the header assembled into every sealed vessel this tree pours** -- three bytes that cut into
+340-byte chunk frames, cross to a far dock, and are demanded byte-equal there. No meter had ever
+read it, and the reason is structural: the living card, the documents, the comments and the spoken
+lines are four subjects, and **every one reads what a source COMMENTS or what a program PRINTS.**
+Nothing read what a program **writes**, which is the surface `%83` actually happened on.
+**THE EXCLUSION COVERED TWO POPULATIONS.** `rye_spoken_ascii_scan.sh` steps past every literal
+outside a `print` call, and its reason -- *a module testing a decoder must contain the character it
+decodes* -- is exactly right about a decoder's fixture and silent about a header a program pours.
+**MEASURED, 1,743 tracked `.rye`:** **292 characters in 49 files, ALL 292 forms the rule's table
+spells** -- unlike the comment ratchet, where notation needs a reader. **TWO stood in a file that
+also writes one.** The second is the sharp one: `tools/rye/enrich/enrich_file.rye:25` assembles
+Markdown and writes it into documentation pages -- **a generator feeding the gated document meter
+from outside every meter**; two tracked pages carry that character on disk today.
+**LANDED:** both repaired, so `persisted` is a **WALL at zero** rather than a ceiling on an empty
+class; `written` fell **292 -> 290** and the ceiling with it. Parenthesis depth, whole-identifier
+reads -- the trap is sharper here, since `bufPrint` **ends in** `print`. **41 legs, two mutations
+bitten**, the control's own tally asserted beside its verdict. Law page, Cursor twin, roster.
+Amphora pour, carry and grand-round GREEN after the header moved.
+[Paper](../active-designing/20260911-215028_the-header-the-vessel-carried.md) **A 92**.
+**YOURS:** (1) the **shell half** -- `amphora_pour.sh` writes a vessel header carrying an em dash and
+`amphora_vessel_lap1.bron` is a stored vessel carrying one; 2 characters in 2 files, both inside
+`fixtures/`, which this family reads past by design so the planted mojibake control keeps its bytes.
+A shell writer's meter, or a named exemption. (2) the remaining **290** are every one a sweep rather
+than a judgment, ranked by room and owned by whichever lane holds it.
 
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`
