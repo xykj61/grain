@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.190713` | [the paused ship held at the card](20260912/20260912-190713_the-paused-ship-held-at-the-card.kyri) | the newer fleet pause held ahead of another stash recovery |
 | `20260912.185104` | [the parked lint census ran again](20260912/20260912-185104_the-parked-lint-census-ran-again.kyri) | a 46-leg lint reader recovered across its heading rename |
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
 | `20260912.181026` | [the refusal named the path again](20260912/20260912-181026_the-refusal-named-the-path-again.kyri) | recovered the runner repair that named a moved tree |
