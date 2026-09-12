@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d24e1a44a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `56d1d36a7` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BINARY STAYS WITH ITS READING.** Elder
 [shelved](archive/20260912-024638_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
