@@ -207,6 +207,37 @@
 # 8 -> 7, `candidates_proven` unchanged at 10, and the single departure is that file -- one strand
 # moved, one member out, which is what the four cancelling cures above never managed.
 #
+# THE UNPROVEN COLUMN HELD TWO KINDS, AND ONLY ONE WAS A GAP A LAP COULD CLOSE (`20260912.010055`).
+# Both remaining candidates were handed to `tools/c/convergence_tree_prove.sh` rather than reasoned
+# about, which is this file's own law -- a static pattern finds candidates, only the prover classifies.
+#
+#   tools/fixtures/r/reds_fold.sh        verdict=write_once
+#   tools/b/bootstrap_wasmtime.sh        verdict=unseen
+#
+# The fold's reading is the one this census exists to find. On a pen whose pin carries a planted
+# BOOKED row it moves that row onto a shelf once, and asked the same question again it answers
+# `row_absent` and touches pin, shelf and recital not at all -- the refusal accrete-never-break asks
+# of a shelf writer, told from `refused_on_second` by asking the tree rather than the exit code. It
+# is the first REAL tool to earn that verdict: the five subjects before it all REGENERATE a page, so
+# their convergence is a second write that happens to agree. The proof landed as a leg on
+# `tools/c/convergence_tree_prove_witness.rish`, so this census reads it: **proven 13 -> 14,
+# `proven_by_prover_run` 4 -> 5, unproven 2 -> 1**, with no line of the fold itself changed.
+#
+# THE OTHER IS A CANDIDATE NO PROVER IN THIS FAMILY CAN EVER ANSWER, which is a different fact from
+# a check nobody wrote. `bootstrap_wasmtime.sh` writes `tools/.cache/wasmtime/` on an ordinary run,
+# and `.gitignore` denies it, so `git write-tree` is blind to that whole output -- `unseen` by the
+# prover's own definition, and a refusal rather than a report. Its one TRACKED write is the
+# `.sha256` digest fixture, and the tool's own header says when that fires: a first seating with no
+# fixture. The fixture is tracked, so on any checkout of this tree it is already there and that
+# write can never happen. The git strand admitted the tool on a write its live tree forbids.
+#
+# NAMED HERE RATHER THAN SPLIT INTO A COLUMN. `admitted_on_comment_only` retired above for reading a
+# permanent zero, and a column whose population is one tool would read the same way. What a reader
+# needs is the sentence, and the whole reading stands at
+# `active-designing/20260912-010055_the-fold-that-converges-by-refusing.md`:
+# `candidates_unproven` is an upper bound on work owed, and its last member
+# owes none.
+#
 # REPORTED, NEVER GATED, and for a reason this tree has met four times now: a tool that legitimately
 # runs once -- a one-shot projection, a publisher -- has nothing to converge, and a gate cannot tell
 # it from a tool that simply never checked. The number is the finding; the ceiling is a later word.

@@ -141,4 +141,27 @@ let rs = run ["sh" "tools/c/convergence_tree_prove.sh" "tools/fixtures/r/rish_sp
 assert rs.ok else "convergence-tree-prove: the Rishi spoken sweep did not converge --\n${rs.out}\n${rs.err}"
 assert rs.out contains "verdict=converges" else "convergence-tree-prove: the Rishi spoken sweep read something other than converges --\n${rs.out}"
 
-say "GREEN: convergence-tree-prove -- five subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, a write git ignores refused rather than read as inert, all three pages the pre-commit hook regenerates proven to converge, and a whole-tree sweep proven on the committed tree itself, holding its coupled sayings back on both runs."
+
+# THE SIXTH SUBJECT IS THE FIRST REAL TOOL TO EARN `write_once`, and that verdict is the reading the
+# other five could never produce. Each of them REGENERATES a page: run it twice and it rewrites the
+# same bytes, so its convergence is a second write that happens to agree. `tools/fixtures/r/reds_fold.sh`
+# moves rows OUT of `construction/REDS.md` onto a shelf, and a fold is a one-way move -- asked the
+# same question again it answers `row_absent` and touches pin, shelf and recital not at all. That
+# refusal IS the convergence accrete-never-break asks of a shelf writer, and the prover tells it from
+# `refused_on_second` by asking the tree rather than the exit code.
+#
+# WHY THE ROW IS PLANTED RATHER THAN BORROWED. A leg naming a live row number goes stale the day that
+# row folds, which is the shape `.claude/rules/stamp-and-name.md` refuses under *count, never number*.
+# `%999001` stands far above the spine -- `tools/gen/chapter/reds_ledger_monotone_witness.rish` holds
+# the living numbers gapless from 1, so this one can never collide -- and it exists only inside the
+# worktree pen, which is removed whole on every exit path. The real pin is never handed to the fold.
+#
+# THE PERTURBATION CARRIES NO BACKSLASH ON PURPOSE. The prover's own header records a witness whose
+# `sed` expression had its backslashes doubled passing through Rishi, matched nothing, exited zero,
+# and read `inert` -- a broken sample wearing a true verdict's clothes. Two `echo` calls and a
+# single-quoted body need no escape at all, so there is nothing for a second parser to double.
+say "convergence-tree-prove: the REDS fold, a one-way move that must refuse its own output..."
+let rf = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "echo '' >> construction/REDS.md && echo '**REDS %999001 (20260101.000001) -- a pen row planted so the fold has work.** *What went wrong:* nothing; this row lives only inside a throwaway checkout. *What caught it:* the convergence witness. *What it taught:* a fold asked twice moves nothing the second time. **BOOKED.**' >> construction/REDS.md && echo '# REDS -- the pen fold, rows 999001' > construction/archive/REDS-pen-convergence-rows-999001.md && echo 'A shelf the convergence witness writes inside a throwaway pen.' >> construction/archive/REDS-pen-convergence-rows-999001.md" "tools/fixtures/r/reds_fold.sh" "construction/archive/REDS-pen-convergence-rows-999001.md" "999001" "--why" "a fold asked twice moves nothing the second time"]
+assert rf.ok else "convergence-tree-prove: the REDS fold did not converge --\n${rf.out}\n${rf.err}"
+assert rf.out contains "verdict=write_once" else "convergence-tree-prove: the REDS fold read something other than write_once --\n${rf.out}"
+say "GREEN: convergence-tree-prove -- six subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag and one a one-way move that converges by refusing its own output, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, a write git ignores refused rather than read as inert, all three pages the pre-commit hook regenerates proven to converge, and a whole-tree sweep proven on the committed tree itself, holding its coupled sayings back on both runs."
