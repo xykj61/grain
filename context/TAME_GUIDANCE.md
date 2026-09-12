@@ -646,6 +646,14 @@ to it*.** The split itself is not spelled here: it moved into the **Runs** colum
 a day, by the size of its own repair -- it read *eight lean on five tools a roster pass runs every
 lap*, and the round that wrote the sentence rostered two more of the rows it was counting. RUN
 `sh tools/fixtures/l/lint_table_runs_scan.sh` for the reading.
+
+The deeper census is also derived: `sh tools/fixtures/l/lint_surface_census_scan.sh` separates a
+named tool into **rostered**, **driven** beside a rostered tool in the same row, or **unreached**.
+Its wall holds cited tools that are absent from disk at zero, while its `rows_unheld` reading is a
+ratchet because an unreached row can still be correct and reasoned. The instrument prints every
+unreached name on each run. Reading:
+[`../active-designing/20260912-002402_the-census-that-stopped-counting.md`](../active-designing/20260912-002402_the-census-that-stopped-counting.md).
+
 `tools/cl/claim_preserve_witness.rish` refuses a bare invocation by design, wanting
 `CLAIM_PRESERVE_FILES` named, so a style pass drives it rather than a roster.
 `tools/d/designed_not_built_witness.rish` opens on *not in parity until Kaeden rules for the bound*.

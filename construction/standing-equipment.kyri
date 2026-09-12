@@ -5479,6 +5479,29 @@ path tools/o/one_title_witness.rish
 tier lap
 seated 20260911.114500
 
+# lint_surface_census -- which rows of the lint table does a lap actually run?
+#
+# WHY IT IS ROSTERED. `context/TAME_GUIDANCE.md` carries the tree's lint surface as twenty rule rows
+# under the heading **Enforced now**, and beneath it stood a hand census reading twenty rows, eight
+# leaning on five rostered tools, six naming a tool no lap runs. It was exact on the morning it was
+# typed, `20260911.112513`, and stale by nightfall: the guide's own history reads 11 tools named and
+# 5 rostered at `050903`, 13 and 6 at `140923`, 14 and 7 the next day, as two rows seated later that
+# same day each arrived with a rostered guard beside it. COUNT, NEVER NUMBER, one room over.
+#
+# AND THE HEADLINE NEVER SIGNALLED THE DRIFT. Rows read twenty at every one of those commits and
+# reads twenty today, so the cheapest figure to spot-check agrees while the breakdown beneath it has
+# stopped earning that agreement -- which is why this is a guard rather than a repaired sentence.
+#
+# THE WALL is `tools_missing` at zero: a row citing a tool absent from disk tells a reader to run
+# something that cannot run. The RATCHET is `rows_unheld`, since a row no lap runs is often correct
+# and reasoned, and a wall there would red on rows nobody may repair.
+#
+# 0.6s over two files and 1.5s for its 46-leg pen, measured on the seating lap, so it rides every lap.
+guard lint_surface_census
+path tools/l/lint_surface_census_witness.rish
+tier lap
+seated 20260912.002402
+
 # port_band -- the room's port numbers, counted off the sources rather than typed in a sentence.
 #
 # WHY IT IS ROSTERED. REDS %700 cost a fortnight: a rostered witness read red on one cold pass and

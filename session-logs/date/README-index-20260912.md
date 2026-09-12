@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.185104` | [the parked lint census ran again](20260912/20260912-185104_the-parked-lint-census-ran-again.kyri) | a 46-leg lint reader recovered across its heading rename |
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
 | `20260912.173722` | [default and boundary](20260912/20260912-173722_the-default-and-the-boundary-read-on-this-pier.kyri) | model control and Amphora fallback read true |
 | `20260912.165121` | [the four parked laps came home](20260912/20260912-165121_the-four-parked-laps-came-home.kyri) | four completed unsent laps recovered as one set |
@@ -37,5 +38,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.010055` | [The fold that converges by refusing](20260912/20260912-010055_the-fold-that-converges-by-refusing.kyri) | a one-way move proven to move once |
 | `20260912.005811` | [The walk and the listing](20260912/20260912-005811_the-walk-and-the-listing.kyri) | a meter over guards that walk what git disowns |
 | `20260912.004500` | [the bound that counted](20260912/20260912-004500_the-bound-that-counted-and-never-measured.kyri) | the weave counters take the ceiling its lines had |
+| `20260912.002402` | [the census that stopped counting](20260912/20260912-002402_the-census-that-stopped-counting.kyri) | the lint table's roster census became a derived reading |
 | `20260912.002247` | [The red that pointed at the box](20260912/20260912-002247_the-red-that-pointed-at-the-box.kyri) | the cold red named the stash holding a finished lap |
 | `20260912.000053` | [The orphan already landed](20260912/20260912-000053_the-orphan-that-had-already-landed.kyri) | 3 of 3 work orphans were landed work under a draft name |
