@@ -11,8 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.194204` | [the parked contract returned to the live card](20260912/20260912-194204_the-parked-contract-returned-to-the-live-card.kyri) | Glow contract recovered; fleet pause held |
 | `20260912.191028` | [the two parked records came home](20260912/20260912-191028_the-two-parked-records-came-home.kyri) | Rye door and model-boundary records landed whole |
 | `20260912.190713` | [the paused ship held at the card](20260912/20260912-190713_the-paused-ship-held-at-the-card.kyri) | the newer fleet pause held ahead of another stash recovery |
+| `20260912.190653` | [the contract came home on current metal](20260912/20260912-190653_the-contract-came-home-on-current-metal.kyri) | parked Glow contract restored and re-proved |
 | `20260912.185104` | [the parked lint census ran again](20260912/20260912-185104_the-parked-lint-census-ran-again.kyri) | a 46-leg lint reader recovered across its heading rename |
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
 | `20260912.181026` | [the refusal named the path again](20260912/20260912-181026_the-refusal-named-the-path-again.kyri) | recovered the runner repair that named a moved tree |
@@ -23,6 +25,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.162301` | [the binary that stays with its reading](20260912/20260912-162301_the-binary-that-stays-with-its-reading.kyri) | 18 Amphora guards moved builds into per-run pens |
 | `20260912.162152` | [the recovered fold landed whole](20260912/20260912-162152_the-recovered-fold-landed-whole.kyri) | the parked torus instrument was restored and re-proved before send |
 | `20260912.161250` | [model default, runtime boundary](20260912/20260912-161250_the-model-default-and-the-runtime-boundary.kyri) | gpt-5.6-sol configured; runtime verified apart |
+| `20260912.161403` | [the default and the two parked logs](20260912/20260912-161403_the-default-and-the-two-parked-logs.kyri) | gpt-5.6-sol selected; a finished Glow round recovered |
 | `20260912.153216` | [the fold recovered on today's tree](20260912/20260912-153216_the-fold-recovered-on-todays-tree.kyri) | the parked 28-leg torus reading held on today's bytes |
 | `20260912.150836` | [Codex default provenance](20260912/20260912-150836_the-fleet-default-carried-its-provenance.kyri) | the selected model reaches the loop and both rule doors |
 | `20260912.150623` | [crashed wave called seven ships](20260912/20260912-150623_the-crashed-wave-called-seven-ships.kyri) | one clean root crossed; seven sail; Incense waits |
@@ -30,9 +33,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.143726` | [receipt cloth at the still pier](20260912/20260912-143726_the-receipt-cloth-was-molted-at-the-still-pier.kyri) | two products share one cloth; all ships wait |
 | `20260912.142315` | [fleet course returned to the Compass](20260912/20260912-142315_the-fleet-course-returned-to-the-compass.kyri) | eight ships share one lasting crossing |
 | `20260912.050629` | [The refusal that named its cost](20260912/20260912-050629_the-refusal-that-named-its-cost.kyri) | The runner named what a moved tree cost and never which file moved. |
+| `20260912.050629` | [the stat that hid a stash's untracked half](20260912/20260912-050629_the-stat-that-hid-a-stash-untracked-half.kyri) | a -u stash parks untracked files apart |
 | `20260912.044314` | [the fold that had nothing to hold](20260912/20260912-044314_the-fold-that-had-nothing-to-hold.kyri) | row 5 cleared its falsifier, and the clearing is what killed it |
 | `20260912.044148` | [the pin door the fleet owned](20260912/20260912-044148_the-pin-door-the-fleet-owned.kyri) | two rows booked on metal, folded; deadlock 1 -> 0 |
 | `20260912.041905` | [the door the grammar reserves](20260912/20260912-041905_the-door-the-grammar-reserves.kyri) | ten Rye modules opened outside the door form the compiler reserves |
+| `20260912.035654` | [the contract case resolved by line order](20260912/20260912-035654_the-contract-case-resolved-by-line-order.kyri) | thirteen stems answered twice |
 | `20260912.035328` | [the round that was cut](20260912/20260912-035328_the-round-that-was-cut-and-the-clock-that-held-its-lock.kyri) | a cut lap's work recovered, re-proven |
 | `20260912.033302` | [the command that returned no number](20260912/20260912-033302_the-command-that-returned-no-number.kyri) | a door's free-number repair printed a tail returning none |
 | `20260912.031636` | [the grade that was remembered](20260912/20260912-031636_the-grade-that-was-remembered.kyri) | a parked build landed; its A 93 read A 91 when measured |

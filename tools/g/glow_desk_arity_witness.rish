@@ -42,6 +42,13 @@ assert scan.out contains "contract_split=0" else "glow_desk_arity: a desk's Samp
 # runner declines the argument by name.
 assert scan.out contains "sample_unpermitted=0" else "glow_desk_arity: a desk declares a Sample the run worker permits no argument for"
 
+# invariant: the worker answers each stem once. A shell `case` stops at its first matching
+# branch, so a stem listed a second time lower down is unreachable -- and invisible to `--arity`,
+# which is why this one reading is taken from the worker's text rather than asked of it. Read
+# 20260912 against the committed worker: thirteen stems answered twice, every one of them
+# disagreeing with itself, the run correct only because `case` resolved it by line order.
+assert scan.out contains "contract_restated=0" else "glow_desk_arity: the run worker answers a stem twice in one case block -- the first match wins and the second is dead text disagreeing with it"
+
 # invariant: the declared count matches what the emitted program actually reads. This is the
 # derived statement, so it is the anchor rather than a peer: a desk passing the worker and then
 # returning 2 from a program that read fewer arguments than the desk believed reads as a failing
@@ -68,4 +75,9 @@ assert control.ok else "glow_desk_arity control failed: ${control.out}"
 assert control.out contains "control_failed=0" else "glow_desk_arity control reported failures: ${control.out}"
 assert control.out contains "control_verdict=ok" else "glow_desk_arity control did not reach its verdict: ${control.out}"
 
-say "GREEN: glow_desk_arity -- the desk's Sample line, the worker's accepted counts and the lowering's own argv gates agree on every sampled desk in the room, the worker answers for every stem it permits, and 39 control behaviors stand green with each refusal planted and lifted."
+# invariant: the pen declares how many legs it meant to run, and met it. A green pen and an empty
+# one both print control_failed=0, so a leg deleted with the rest left standing passes in silence
+# unless the count is declared; the control compares its own tally against LEGS_EXPECTED.
+assert control.out contains "legs_expected=" else "glow_desk_arity control declared no leg count"
+
+say "GREEN: glow_desk_arity -- the desk's Sample line, the worker's accepted counts and the lowering's own argv gates agree on every sampled desk in the room, the worker answers for every stem it permits, and the control ran every leg it declared, each refusal planted and lifted."

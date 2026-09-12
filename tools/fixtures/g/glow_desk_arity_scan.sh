@@ -32,6 +32,7 @@
 #   arity_unanswered  permitted desks the worker answers with no counts   -- GATED AT ZERO
 #   contract_split    declared count outside the worker's accepted set    -- GATED AT ZERO
 #   sample_unpermitted  a desk declaring a Sample the worker would refuse -- GATED AT ZERO
+#   contract_restated   a stem the worker answers twice in one `case`      -- GATED AT ZERO
 #   lowering_split    declared count against the lowering's own argv gate -- GATED AT ZERO
 #   lowering_read     permitted desks whose argv-sample lowering answered
 #   lowering_unread   permitted desks whose lowering emits no argv gate   -- reported
@@ -50,6 +51,24 @@
 # then returns 2 from a program that read fewer arguments than the desk believed it had, which
 # reads as a failing gate rather than as a miscount. A reader repairing one must not have to
 # reason about the other.
+#
+# WHY contract_restated IS READ FROM THE TEXT RATHER THAN ASKED. Every other reading here asks
+# the worker its own question, because a meter keeping a second copy of an answer is the fault
+# this file exists to catch. This one reading cannot, and the reason is exact: a shell `case`
+# answers with its FIRST matching branch, so a stem listed a second time lower down is invisible
+# to `--arity` by construction. Asking the worker returns the first answer and says nothing about
+# the second. Measured 20260912, `arity_accepts()` listed THIRTEEN stems twice, and every one
+# disagreed with itself -- the pair and lantern families at `0 2` then again at `1`, and
+# `gate-surface-lit-area-u32` at `3` then again at `1`. The run was correct the whole time,
+# because `case` resolved it by position: the contract held as a property of LINE ORDER in a list
+# nobody reads as ordered. Sort those branches by length, or delete the shorter one as dead text,
+# and `gate-pair-max` starts refusing its two faces while `gate-surface-lit-area-u32` takes one
+# argument where it needs three -- with no diff line anywhere saying so.
+#
+# The reading walks `case`/`esac` depth so a nested block is its own question, skips `*)`, and
+# flags a stem appearing in two branches of ONE block. A stem answered in two DIFFERENT functions
+# is not counted: `fields_need()` and `arity_accepts()` answer different questions about one stem,
+# which is the tree working as designed.
 #
 # WHY sample_unpermitted IS GATED RATHER THAN REPORTED. A `Sample:` line the worker would refuse
 # is a promise the tree cannot keep: the desk says how to run it and the one runner declines the
@@ -123,6 +142,7 @@ declared=0
 arity_unanswered=0
 contract_split=0
 sample_unpermitted=0
+contract_restated=0
 lowering_split=0
 lowering_read=0
 lowering_unread=0
@@ -188,6 +208,45 @@ while IFS= read -r desk; do
   fi
 done < "$WORK/desks"
 
+# The worker's own text, read for a stem answered twice inside one `case` block. See the header:
+# `--arity` can never surface this, since `case` stops at its first match.
+awk '
+  /^[[:space:]]*#/ { next }
+  {
+    line = $0
+    if (line ~ /(^|[[:space:]])case[[:space:]]+.*[[:space:]]in[[:space:]]*$/) {
+      depth++
+      blockid++
+      stack[depth] = blockid
+      next
+    }
+    if (line ~ /(^|[[:space:]])esac([[:space:]]|;|$)/) {
+      if (depth > 0) depth--
+      next
+    }
+    if (depth == 0) next
+    if (line !~ /^[[:space:]]*[A-Za-z0-9_*|.-]+\)/) next
+    pat = line
+    sub(/\).*$/, "", pat)
+    gsub(/^[[:space:]]+/, "", pat)
+    n = split(pat, parts, "|")
+    for (i = 1; i <= n; i++) {
+      s = parts[i]
+      if (s == "" || s == "*") continue
+      key = stack[depth] SUBSEP s
+      if (key in seen) print s
+      else seen[key] = 1
+    }
+  }
+' "$WORKER" > "$WORK/restated"
+
+contract_restated=$(wc -l < "$WORK/restated" | tr -d ' ')
+while IFS= read -r stem; do
+  [ -n "$stem" ] || continue
+  printf 'contract_restated %s -- answered twice in one case block of %s; the first match wins and the second is unreachable\n' \
+    "$stem" "$WORKER" >> "$WORK/splits"
+done < "$WORK/restated"
+
 lowering_built=no
 if [ -x "$LOWER" ]; then lowering_built=yes; fi
 
@@ -199,6 +258,7 @@ echo "declared=$declared"
 echo "arity_unanswered=$arity_unanswered"
 echo "contract_split=$contract_split"
 echo "sample_unpermitted=$sample_unpermitted"
+echo "contract_restated=$contract_restated"
 echo "lowering_built=$lowering_built"
 echo "lowering_read=$lowering_read"
 echo "lowering_unread=$lowering_unread"
@@ -212,7 +272,7 @@ if [ "$explain" = yes ]; then
   fi
 fi
 
-faults=$((arity_unanswered + contract_split + sample_unpermitted + lowering_split))
+faults=$((arity_unanswered + contract_split + sample_unpermitted + contract_restated + lowering_split))
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then
   echo "verdict=agree"
