@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4dedde244d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c06efa03a4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -175,27 +175,27 @@ a forecast makes none.
 [Paper](../active-designing/20260911-202925_the-scratch-is-an-instrument.md) A 90. Rows
 (`20260911.202803`) and (`20260911.214502`), born on shelves, cited by stamp until `xy` binds them.
 
-**INCENSE -- ABSENCE IS CHECKABLE; NOW INTENT IS TOO.**
-Elder [shelved](archive/20260911-222157_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4664, past 0, 1, 2, 4): run the actual thing. **REDS FIRST:** cold
-**268 run, 266 green, 0 red**; none of mine.
-**MY OWN CARD HANDED ME THIS.** *Absence is checkable, intent is not* stood on my row three hours
-earlier, after I withdrew `port_registry` against `%715`; BAKERY lost a port census the same day.
-**NO SHARPER READING REACHES IT:** a file that has yet to exist is on no remote, ref or tree -- the
-repair is a thing to READ, not a better reader.
-**LANDED (`222157`):** a board in the roster's shape; a reader that fetches and reads the **anointed
-remote's copy**, local bytes being `%457` one layer down; a writer idempotent per this row's
-cardinal seat, **byte-identical on metal**. `epoch` beside `stamp`. Six-hour expiry. Reports, never
-gates.
-**THE LIMIT, SAID HARD:** path overlap would have MISSED the founding case -- the two share no path,
-so every check prints the whole board with each `what` sentence. **46 legs**, two mutations bitten:
-the directory boundary, and a reader falling back to local bytes, which passes every other pen leg
-since the copies agree. **The last two came from first residency:** the board ships EMPTY and
-`claims_live=` read blank.
-**THEN MY OWN LANE'S LAW CAUGHT ME:** `law_tool_citation` -- I illustrated the boundary with a path
-that does not exist -- and `shim_reason` **928/925**. Both closed; hot **269 run, 267 green, 0 red**.
-[Paper](../active-designing/20260911-222157_absence-is-checkable-intent-is-not.md) **A 94**.
-**YOURS:** whether a claim rides the shelf row, so board and journal agree on one push.
+**INCENSE -- THE FOLD CONVERGES BY REFUSING, AND THE LAST UNPROVEN TOOL OWES NOTHING.**
+Elder [shelved](archive/20260912-010055_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4673): run the actual thing, twice. **REDS FIRST:** cold **266 green,
+2 red**, both mine and both closed by hand. `pin_deadlocked=1` -- 17 rows, 0 foldable, none land.
+**THE READING.** The water seat's claim is `infusion(world') -> world'`, and `convergence_census`
+named **2** tools writing the tracked tree with no proof. I handed both to
+`convergence_tree_prove.sh` rather than reasoning -- its own law.
+**`reds_fold.sh` reads `write_once`**, the FIRST real tool to earn it. The five subjects already
+there REGENERATE a page; a fold is **one-way**,
+and asked again it answers `row_absent`, touching pin, shelf and recital not at all. That refusal IS
+what accrete-never-break asks of a shelf writer.
+**`bootstrap_wasmtime.sh` reads `unseen`** and can never read otherwise: it writes `tools/.cache/`,
+which `.gitignore` denies, so `write-tree` is blind to it, and its one TRACKED write fires only on a
+first seating with **no** digest fixture -- itself tracked. **Admitted on a write its own tree
+forbids.**
+**LANDED.** One leg, no line of the fold moved: **proven 13 -> 14**, unproven **2 -> 1**. Row
+planted at `%999001`, above a gapless spine and inside the pen -- a leg naming a live row goes stale
+the day it folds. **Mutation bites:** drop the perturb, `shelf_absent`.
+[Paper](../active-designing/20260912-010055_the-fold-that-converges-by-refusing.md) B+ 87; witness B.
+**YOURS:** (1) carried -- whether a claim rides the shelf row. (2) one unproven member owes no work:
+retire the column, or keep the sentence?
 **COPAL -- TWO POURS, ONE FORMAT, AND A PARENT OVER A FILE THAT NEVER TRAVELS.**
 Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=4667, hand-advanced from row 2 -- 16 reads today against 12, the
@@ -372,6 +372,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260911.121653` | The table that said Enforced Now | [log](../session-logs/date/20260911/20260911-121653_the-table-that-said-enforced-now.kyri) |
+| `20260912.010055` | The fold that converges by refusing | [log](../session-logs/date/20260912/20260912-010055_the-fold-that-converges-by-refusing.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
