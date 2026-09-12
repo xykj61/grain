@@ -2024,6 +2024,20 @@ path tools/f/fleet_roster_witness.rish
 tier lap
 seated 20260904.190000
 
+# fleet_claim -- absence is checkable and intent is not. `path_absence_scan.sh` answers about a
+# remote AS IT STOOD WHEN ASKED, and a file that does not exist yet is on no remote, in no ref, in
+# no tree -- so no sharper reading could reach it. On `20260911` that gap cost two ships a whole
+# build apiece inside one day: incense withdrew `port_registry` (35 constants, 21 files, 44 pen
+# legs, GREEN on metal) against a peer's `port_band` landed two hours earlier, and bakery dropped a
+# 29-leg port census into that same peer's scan. Both absence readings were honest and both were
+# hours stale. `construction/fleet-claims.kyri` is the declaration a peer can read before anything
+# exists; this proves the reader reads the ANOINTED REMOTE's copy rather than local bytes, which is
+# REDS %457 one layer down and the one fault that would pass every other leg in a pen.
+guard fleet_claim
+path tools/f/fleet_claim_witness.rish
+tier lap
+seated 20260911.222157
+
 # fleet_lap_verdict -- a lap that dies instantly is either an agent the loop could not reach or a
 # window the account has spent, and the two answers are opposite: stop and fetch a person, against
 # hold and try again. On `20260906` the loop knew only the first, so six ships stopped themselves

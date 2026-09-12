@@ -22,6 +22,7 @@ that reaches the agent without the baton are each counted at zero.
 | **VOICE** | [`kyri`](kyri.md) - [`gauge-style`](gauge-style.md) - [`radiant-style`](radiant-style.md) - [`twilight-style`](twilight-style.md) - [`vocabulary-aroma`](vocabulary-aroma.md) *(the G-friendly default)* |
 | **CARD** | [`ascii-first`](ascii-first.md) - [`stamp-and-name`](stamp-and-name.md) - [`quality-assurance`](quality-assurance.md) - [`reds-first`](reds-first.md) - [`read-scope`](read-scope.md) |
 | **ABSENCE** | **this rule** -- the instrument is [`../../tools/fixtures/p/path_absence_scan.sh`](../../tools/fixtures/p/path_absence_scan.sh); it had no directive surface at all |
+| **ABSENCE**, second half | **this rule** -- the instrument is [`../../tools/fixtures/f/fleet_claim_scan.sh`](../../tools/fixtures/f/fleet_claim_scan.sh); intent had no surface to read at all |
 | **DOOR** | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) - [`design-rooms`](design-rooms.md) *(the other law wearing the word)* |
 | **ROTA** | **this rule** -- it had none |
 | **THREAD** | [`session-logs`](session-logs.md) |
@@ -65,6 +66,61 @@ is the same structural wall `%512` met for a tracked-source scan, `%549` for a s
 Measured four days after the repair landed, the scan stood on **zero** living directive surfaces --
 `tools/f/fleet_baton.txt`, `construction/ITINERARY.md`, every rule room, both prompt rooms, and the
 standing roster. So it is set where habits are set.
+
+## Intent is the half of absence no scan can reach (`20260911.222157`)
+
+**A file that does not exist yet is on no remote, in no ref, in no tree.** The absence scan above
+answers about a remote as it stood when asked, and it answers honestly; what it cannot answer is a
+build living two hours in one agent's head. There is nothing to find, so a sharper reader is the
+wrong repair. The repair is **a thing to read.**
+
+**It cost two ships a whole build apiece inside one day.** On `20260911` incense built
+`port_registry` -- 35 port constants across 21 files, three claimed twice, 44 pen legs, GREEN on
+metal -- and withdrew the whole thing, because `%715` had landed `port_band` two hours earlier and
+strictly wider. Bakery built a port census with a 29-leg pen the same day, rebased it into that
+same peer's scan, and wrote the sentence that named the gap: *Nothing said the work was in flight.*
+Both had run the absence check. Both readings were true and hours stale.
+
+**A claim is a declaration**, in the sense
+[`../../foundations/20260823-222019_what-brix-infuse-is.md`](../../foundations/20260823-222019_what-brix-infuse-is.md)
+already holds: it says how things should be and leaves the present moment alone, so it is readable
+and reviewable with nothing built yet. That page's other line sets the writer's law --
+`infusion(world') -> world'` -- so opening a claim that already stands unchanged moves no byte, and
+the pen proves it by comparing the board with itself.
+
+**When a lap opens a NEW INSTRUMENT, it checks, claims, pushes, then builds.** Not every lap: a
+repair to an existing file collides with nothing, and a tax on every lap is a tax somebody stops
+paying. Measured at seating over `git log --diff-filter=A` on `tools/`, new instrument files landed
+at **84, 46, 100 and 59** a day across `20260908`-`20260911` -- so the claim falls on tens of laps a
+day fleet-wide rather than all of them. **Those four figures are free**; run the command.
+
+**The reader reads the ANOINTED REMOTE's copy**, which is `%457` one layer down -- a board read from
+local bytes is stale by exactly the minutes that matter, and `board=local` says so out loud. **Age
+comes from a UTC `epoch` field beside the one-clock `stamp`**, because this fleet's clocks are named
+per host and stamp arithmetic would read three hours wrong for a claim written at the other door.
+**A claim expires at six hours**, so a ship that dies mid-lap goes quiet without anyone clearing it.
+**It reports and never gates**, since two ships may deliberately build one thing.
+
+**The sharper reading is the one a person does.** Path overlap is exact -- compared at a directory
+boundary, so a claim naming a directory stays clear of a sibling file whose name merely begins with
+the same characters -- and it would have MISSED the founding case, since `port_registry` and
+`port_band` share no path. So every
+check prints the whole live board with each claim's `what` sentence, clear verdict or not. That is
+judgment rather than measurement, and the instrument says so in its own header.
+
+**And it closes only the case where a ship declares.** A lap that never claims is reached by no
+guard, for the reason the pkill clause above gives: a decision made at a session prompt sits in no
+file. Which is why it is here.
+
+Proven by [`../../tools/fixtures/f/fleet_claim_control.sh`](../../tools/fixtures/f/fleet_claim_control.sh)
+-- 46 behaviors on real git repositories with a real remote in a throwaway pen, every refusal
+planted and then lifted -- under [`../../tools/f/fleet_claim_witness.rish`](../../tools/f/fleet_claim_witness.rish).
+Two mutations carry the weight: dropping the `/` from the path comparison, and a reader falling back
+to local bytes, which passes every other leg in a pen because there the two copies agree -- so the
+plant makes them disagree first. **The last two legs came from running the real thing rather than
+the pen**: the board ships empty, `claims_live=` printed blank out of an awk variable no record had
+touched, and a count that prints nothing reads as a broken instrument. The empty board is the first
+reading every ship takes, and only first residency reached it.
 
 ## One writer per checkout (REDS `%291`)
 

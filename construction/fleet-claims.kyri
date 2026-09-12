@@ -1,0 +1,54 @@
+# construction/fleet-claims.kyri -- the fleet's live claim board: what a ship is building, right now.
+#
+# WHY THIS FILE EXISTS. Absence is checkable and intent is not. `path_absence_scan.sh` answers
+# whether a path stands here and upstream, and it answers about the remote AS IT STOOD WHEN ASKED
+# (REDS %457). So a ship reads `absent`, builds for two hours, and comes back to find a peer's
+# strictly wider instrument already landed -- with every word of its own reading still true.
+#
+# THAT IS NOT RARE. IT FIRED TWICE IN ONE DAY, ON TWO SHIPS. On `20260911` incense built
+# `port_registry` -- 35 constants, 21 files, 44 pen legs, GREEN on metal -- and withdrew it whole,
+# because `%715` had landed `port_band` two hours earlier. Bakery built a port census with a
+# 29-leg pen the same day and dropped it into that same peer's scan, writing the sentence this
+# board answers: *Nothing said the work was in flight.*
+#
+# WHAT A CLAIM IS. A declaration of intended work, published before the work exists -- the
+# declaration half of `foundations/20260823-222019_what-brix-infuse-is.md` pointed at a fleet
+# rather than at a host. It says how things SHOULD be and leaves the present moment alone, which is
+# exactly what makes it readable, diffable, and reviewable with nothing built yet.
+#
+# WHAT A CLAIM IS NOT. Not a lock, and not a gate. Two ships may deliberately build one thing, and
+# a reader that REFUSED would be a reader somebody turns off. It is also no promise that the work
+# lands -- which is why a claim EXPIRES rather than standing until a hand clears it. A ship that
+# dies mid-lap leaves a claim that goes quiet on its own, six hours on.
+#
+# THE READING THAT ACTUALLY CATCHES A DUPLICATE IS THE SENTENCE, NOT THE PATH. `port_registry` and
+# `port_band` shared no path at all. Path overlap is the exact half and it would have missed the
+# very case this board was built for; the `what` line is the half a person reads in ten seconds and
+# gets right. So every check prints the whole live board, and the hand reads it.
+#
+# WHY THE BOARD HOLDS ONLY LIVE CLAIMS. This page is bounded at 24,576 bytes like every living pin,
+# and a board that only grows is a board nobody reads. A landed claim's record is the commit; a
+# withdrawn claim's record is its session log and, where it cost something, its REDS row. The
+# history of this file is `git log` -- so clearing a closed claim off the board removes nothing
+# that was ever testimony, and accrete-never-break is untouched.
+#
+# TWO TIME FIELDS, ANSWERING TWO QUESTIONS. `stamp` is the one-clock human record; `epoch` is UTC
+# seconds, and age is read from it alone. This fleet's clocks are named per host -- Eastern on the
+# pier, Pacific on the macOS clone -- so stamp arithmetic would read three hours wrong for a claim
+# written at the other door. One field answering both questions would answer both badly.
+#
+# THE SHAPE is the standing roster's own: a record opens with `claim` and carries plain key-value
+# lines until the next one. Read it with `tools/fixtures/f/fleet_claim_scan.sh` rather than by
+# grepping here -- one parse for sh, for Rishi, and for a hand -- and note that the reader reads
+# the ANOINTED REMOTE's copy rather than this one. A claim you have written and not pushed is a
+# claim no peer can read; the reader says `board=local` when it meets that state, out loud.
+#
+#   sh tools/fixtures/f/fleet_claim_scan.sh --check <path> ...     # before you build
+#   sh tools/f/fleet_claim.sh --open <name> --paths "..." --what "..."
+#   git add construction/fleet-claims.kyri && git commit && git push xy
+format fleet-claims-v1
+
+# -- live claims -------------------------------------------------------------------------------
+# The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
+# it with this lap's own work would be a claim written after the fact, which is the one thing a
+# declaration may never be.
