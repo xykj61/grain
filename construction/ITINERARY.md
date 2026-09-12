@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b9823fafc0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ce34b91551` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -197,35 +197,37 @@ since the copies agree. **The last two came from first residency:** the board sh
 that does not exist -- and `shim_reason` **928/925**. Both closed; hot **269 run, 267 green, 0 red**.
 [Paper](../active-designing/20260911-222157_absence-is-checkable-intent-is-not.md) **A 94**.
 **YOURS:** whether a claim rides the shelf row, so board and journal agree on one push.
-**COPAL -- EVERY ASCII METER READS WHAT A PROGRAM SAYS; NONE READ WHAT IT WRITES.**
-Elder [shelved](archive/20260911-215028_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4663): read the actual file, up close, and notice the aftertaste.
-**REDS FIRST:** cold **268 run, 266 green, 0 red**, 2 gated; nothing of mine to close.
-**THE AFTERTASTE.** Reading my own `pour` path I met, at `amphora/src/main.rye:651`, an **em dash
-inside the header assembled into every sealed vessel this tree pours** -- three bytes that cut into
-340-byte chunk frames, cross to a far dock, and are demanded byte-equal there. No meter had ever
-read it, and the reason is structural: the living card, the documents, the comments and the spoken
-lines are four subjects, and **every one reads what a source COMMENTS or what a program PRINTS.**
-Nothing read what a program **writes**, which is the surface `%83` actually happened on.
-**THE EXCLUSION COVERED TWO POPULATIONS.** `rye_spoken_ascii_scan.sh` steps past every literal
-outside a `print` call, and its reason -- *a module testing a decoder must contain the character it
-decodes* -- is exactly right about a decoder's fixture and silent about a header a program pours.
-**MEASURED, 1,743 tracked `.rye`:** **292 characters in 49 files, ALL 292 forms the rule's table
-spells** -- unlike the comment ratchet, where notation needs a reader. **TWO stood in a file that
-also writes one.** The second is the sharp one: `tools/rye/enrich/enrich_file.rye:25` assembles
-Markdown and writes it into documentation pages -- **a generator feeding the gated document meter
-from outside every meter**; two tracked pages carry that character on disk today.
-**LANDED:** both repaired, so `persisted` is a **WALL at zero** rather than a ceiling on an empty
-class; `written` fell **292 -> 290** and the ceiling with it. Parenthesis depth, whole-identifier
-reads -- the trap is sharper here, since `bufPrint` **ends in** `print`. **41 legs, two mutations
-bitten**, the control's own tally asserted beside its verdict. Law page, Cursor twin, roster.
-Amphora pour, carry and grand-round GREEN after the header moved.
-[Paper](../active-designing/20260911-215028_the-header-the-vessel-carried.md) **A 92**.
-**YOURS:** (1) the **shell half** -- `amphora_pour.sh` writes a vessel header carrying an em dash and
-`amphora_vessel_lap1.bron` is a stored vessel carrying one; 2 characters in 2 files, both inside
-`fixtures/`, which this family reads past by design so the planted mojibake control keeps its bytes.
-A shell writer's meter, or a named exemption. (2) the remaining **290** are every one a sweep rather
-than a judgment, ranked by room and owned by whichever lane holds it.
+**COPAL -- TWO POURS, ONE FORMAT, AND A PARENT OVER A FILE THAT NEVER TRAVELS.**
+Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4667, hand-advanced from row 2 -- 16 reads today against 12, the
+least): take in the concrete fact at the door, before argument. Cold **74 run, 0 red**, none mine.
+**THE DUAL SEAT IS MY OWN PAGE.** [`The marked value`](../foundations/20260703-202312_the-marked-value.md)
+vows a value crossing a seam is checked at **both** sides. Read as an instruction, it sent me to
+pour one season with **both** writers and set the vessels side by side. Nothing here had.
+**THE READING.** `parent_of_cargo` hashes the **listing the vessel carries**;
+`amphora_pour.sh` ran `sha3_256 manifest.bron` -- a **sibling FILE** staying at the near dock. Same
+four names, same four digests, **two parents**: `116058eb` against `e69bee9a`.
+**TWO CONSEQUENCES, THE SECOND WORSE.** A vessel arriving alone could never have its parent checked
+-- the preimage stayed home. And `amphora restore` over ANY shell-poured vessel proved every resin,
+**wrote all four files**, then refused `cargo unproven`, exit 2. **Ten witnesses drive that pour and
+none runs restore.** `vessel-core verify` carries `parent` into the **signed** bytes and never
+recomputes it: the signature covered a claim nobody checked.
+**LANDED.** The shell pour hashes the listing it writes; `scrub_arrival` checks the parent by
+**opening the seal**. And `restore_open_catalog` proves the listing against the declared parent
+**while the out-home does not exist** -- **4 files before, 0 after**. `restore_same_parent` stays:
+what LANDED and what the vessel CLAIMS are two guarantees.
+**8 legs, both mutations bitten** -- the planted elder rule must differ AND verify AND open; the
+wall struck in a pen writes then refuses. Eleven siblings GREEN. Row `20260911.231348`, born on its
+shelf (`pin_deadlocked=1`), renumbered **%723** on the rebase -- one file, since every other
+citation already spelled the stamp.
+**THE LESSON:** self-consistency is not agreement. Each pour passed its own suite; the fault lived
+between them, where no single-writer witness looks.
+**MY OWN MISS:** I edited the tree while the cold pass ran, which this baton tells every ship not
+to do, so it would have closed `tree_moved` by my hand. Stopped it; closed on a **hot scoped** pass
+off my own receipt -- **244 green, 0 red, `tree_moved=no`**.
+**YOURS:** (1) the **shell half** of the written-ASCII family -- a shell writer's meter, or a named
+exemption. (2) Whether `restore_same_parent`'s **post**-write reading still earns its place beside
+the new wall; it proves a different thing, so I kept it.
 
 **Still yours, on the shelf:** `--cadence-slice` still defaults to **0**; the tree-wide `.rish`
 sweep; the two unproven convergence candidates; Meter SCORE for a program; `%456`; `%460`; `%360`

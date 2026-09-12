@@ -1,0 +1,198 @@
+# tools/am/amphora_pour_agrees_witness.rish -- this tree pours vessels two ways, and both
+# writers compute `parent` over the same preimage: the cargo listing the vessel carries.
+#
+# The sibling rules ask WHEN a verb proves. `amphora_prove_before_write` asks it of restore,
+# `amphora_pour_atomic` of pour, `amphora_carry_atomic` of carry. This asks a different
+# question: whether the two INDEPENDENT writers of one declared format agree about what they
+# wrote. Amphora has two pours -- `amphora/src/main.rye` in Rye and
+# `tools/fixtures/a/amphora_pour.sh` in shell, the second feeding ten witnesses -- and both
+# stamp `format amphora-v1` on what they produce.
+#
+# Measured on metal `20260911.231500` before a line changed, one season poured both ways:
+#   the Rye pour wrote parent 116058eb91161d50... -- sha3-256 of its own cargo listing
+#   the shell pour wrote parent e69bee9a0f4b526e... -- sha3-256 of the sibling manifest.bron
+# Same four files, same four digests, same four names, two parents. The shell preimage is a
+# file the vessel does not carry, so a vessel arriving alone at a far dock could never have its
+# parent checked at all -- and `amphora restore` over a shell-poured vessel proved every resin,
+# wrote all four files, and refused at `cargo unproven`, exit 2, with the season standing in the
+# out-home. Every shell witness passed throughout, because none of them ran restore.
+#
+# Two repairs, one root. The shell pour hashes the listing it writes, so the preimage travels.
+# And `restore_open_catalog` proves the listing against the declared parent while the out-home
+# still does not exist, so a vessel that disagrees refuses with nothing on disk -- REDS %694's
+# own lesson, one field over: a refusal that arrives after the write is not a wall.
+#
+# The legs, in order:
+#   the two pours agree on parent, exactly, over one season
+#   that parent is the digest of the listing the vessel carries -- the preimage travels
+#   a shell-poured vessel restores whole under the Rye reader, same-parent ok
+#   a Rye-poured vessel restores whole too, so the agreement runs both ways
+#   both pours write one header line, and it is plain ASCII
+#   the ELDER shell rule planted: the two parents DISAGREE, so the plant bites
+#   the repaired reader refuses that vessel with ZERO files in the out-home
+#   the wall REMOVED in a source pen: the same vessel restores its files, then refuses
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_pour_agrees_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# The pen carries a kernel-picked name (the class REDS %512 named): eight ships run this roster
+# from eight checkouts and share one /tmp, so a constant home is one directory on all eight.
+# The restores below run with the pen as the working directory -- a vessel's resins live
+# beside it -- so the tree root is captured here, BEFORE any cd, and every binary is named
+# from it absolutely.
+let rootq = run ["sh" "-c" "pwd"]
+assert rootq.ok else "pour_agrees: the tree root must resolve -- ${rootq.err}"
+let root = trim rootq.out
+
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pour_agrees.XXXXXX"]
+assert pen.ok else "pour_agrees: pen must open -- ${pen.err}"
+let home = trim pen.out
+
+# Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
+# of these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+say build_amphora.err
+assert build_amphora.ok else "pour_agrees: amphora build failed -- read the line above"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+say build_core.err
+assert build_core.ok else "pour_agrees: vessel-core build failed -- read the line above"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+say build_seal.err
+assert build_seal.ok else "pour_agrees: vessel-seal build failed -- read the line above"
+
+let mk = run ["sh" "-c" "mkdir -p ${home}/sh ${home}/rye ${home}/elder"]
+assert mk.ok else "pour_agrees: the plant homes must open -- ${mk.err}"
+
+# --- leg 1: the two pours agree on parent, exactly, over one season ---
+let pour_sh = run ["sh" "-c" "sh tools/fixtures/a/amphora_pour.sh ${season} ${home}/sh 20260710.143500"]
+say pour_sh.err
+assert pour_sh.ok else "pour_agrees: the shell pour must pass -- read the line above"
+let pour_rye = run ["amphora/bin/amphora" "pour" season "${home}/rye/v.bron"]
+say pour_rye.err
+assert pour_rye.ok else "pour_agrees: the Rye pour must pass -- read the line above"
+
+let read_sh = run ["sh" "-c" "awk '/^parent / {print $2; exit}' ${home}/sh/vessel.bron"]
+assert read_sh.ok else "pour_agrees: the shell vessel must carry a parent line -- ${read_sh.err}"
+let parent_sh = trim read_sh.out
+let read_rye = run ["sh" "-c" "awk '/^parent / {print $2; exit}' ${home}/rye/v.bron"]
+assert read_rye.ok else "pour_agrees: the Rye vessel must carry a parent line -- ${read_rye.err}"
+let parent_rye = trim read_rye.out
+assert parent_sh == parent_rye else "pour_agrees: two pours of one season must write ONE parent -- shell ${parent_sh} against rye ${parent_rye}"
+say "leg_agree=one_parent ${parent_sh}"
+
+# --- leg 2: that parent is the digest of the listing the vessel carries ---
+# The preimage rides inside the seal, so a dock holding nothing but the vessel can check it.
+let open_sh = run ["amphora/bin/vessel-seal" "open" "${home}/sh/vessel.bron" "${home}/sh/plain"]
+say open_sh.err
+assert open_sh.ok else "pour_agrees: the shell vessel's seal must open"
+let digest_sh = run ["sh" "-c" "sh tools/fixtures/s/sha3_256.sh ${home}/sh/plain"]
+assert digest_sh.ok else "pour_agrees: the listing digest must be taken -- ${digest_sh.err}"
+let carried = trim digest_sh.out
+assert carried == parent_sh else "pour_agrees: the parent must be the digest of the listing the vessel CARRIES -- declared ${parent_sh}, carried ${carried}"
+say "leg_preimage=travels"
+
+# --- leg 3: a shell-poured vessel restores whole under the Rye reader ---
+let rest_sh = run ["sh" "-c" "cd ${home}/sh && ${root}/amphora/bin/amphora restore vessel.bron"]
+say rest_sh.err
+assert rest_sh.ok else "pour_agrees: the Rye reader must restore a shell-poured vessel -- read the line above"
+assert rest_sh.err contains "same-parent ok" else "pour_agrees: and it must reach the same-parent wall, not merely exit"
+say "leg_restore_shell=whole"
+
+# --- leg 4: a Rye-poured vessel restores whole too ---
+let rest_rye = run ["sh" "-c" "cd ${home}/rye && ${root}/amphora/bin/amphora restore v.bron"]
+say rest_rye.err
+assert rest_rye.ok else "pour_agrees: the Rye reader must restore its own vessel -- read the line above"
+assert rest_rye.err contains "same-parent ok" else "pour_agrees: and reach the same-parent wall"
+say "leg_restore_rye=whole"
+
+# --- leg 5: both pours write one header line, and it is plain ASCII ---
+# The header carries no signature weight -- `build_canonical` covers format, stamp, shoulder,
+# parent and cargo -- so this is a register reading rather than an integrity one, and it is
+# here because two writers of one format disagreeing on their first line is how the parent
+# disagreement stayed invisible: nobody had ever put the two vessels side by side.
+let head_sh = run ["sh" "-c" "head -1 ${home}/sh/vessel.bron"]
+let head_rye = run ["sh" "-c" "head -1 ${home}/rye/v.bron"]
+assert trim head_sh.out == trim head_rye.out else "pour_agrees: the two pours must write ONE header -- shell '${head_sh.out}' against rye '${head_rye.out}'"
+let head_ascii = run ["sh" "-c" "LC_ALL=C grep -q '[^ -~]' ${home}/rye/v.bron; test $? -ne 0"]
+assert head_ascii.ok else "pour_agrees: a poured vessel carries plain ASCII -- ${head_ascii.err}"
+say "leg_header=one_line_ascii"
+
+# --- leg 6: the ELDER shell rule planted -- the two parents DISAGREE ---
+# Shown because a refusal proven only from the passing side cannot be told from a door with
+# nothing behind it. The plant rebuilds exactly what the elder script wrote: the same bundle,
+# the same listing, and a parent that is sha3-256 of the sibling manifest FILE, then the same
+# seal-then-sign rite. The listing is the one already opened in leg 2, so the only difference
+# between this vessel and the honest one is the preimage its parent names.
+let elder_bundle = run ["sh" "-c" "cp -r ${home}/sh/resins ${home}/elder/resins && cp ${home}/sh/manifest.bron ${home}/elder/manifest.bron"]
+say elder_bundle.err
+assert elder_bundle.ok else "pour_agrees: the elder bundle must copy"
+let elder_digest = run ["sh" "-c" "sh tools/fixtures/s/sha3_256.sh ${home}/elder/manifest.bron"]
+assert elder_digest.ok else "pour_agrees: the elder parent must be computed -- ${elder_digest.err}"
+let elder_parent = trim elder_digest.out
+assert elder_parent != parent_sh else "pour_agrees: the elder rule MUST name a different digest -- if it does not, this plant proves nothing"
+let elder_head = run ["sh" "-c" "printf '# amphora vessel -- season poured for crossing\nformat amphora-v1\nstamp 20260710.143500\nshoulder amber-ring1-season\nparent ${elder_parent}\n' > ${home}/elder/vessel.bron"]
+say elder_head.err
+assert elder_head.ok else "pour_agrees: the elder head must be written"
+let elder_body = run ["sh" "-c" "cat ${home}/sh/plain >> ${home}/elder/vessel.bron"]
+say elder_body.err
+assert elder_body.ok else "pour_agrees: the elder listing must be appended"
+let elder_seal = run ["amphora/bin/vessel-seal" "seal" "${home}/elder/vessel.bron"]
+say elder_seal.err
+assert elder_seal.ok else "pour_agrees: the elder vessel must seal"
+let elder_sign = run ["amphora/bin/vessel-core" "sign" "${home}/elder/vessel.bron"]
+say elder_sign.err
+assert elder_sign.ok else "pour_agrees: the elder vessel must sign"
+let elder_verify = run ["amphora/bin/vessel-core" "verify" "${home}/elder/vessel.bron"]
+say elder_verify.err
+assert elder_verify.ok else "pour_agrees: and it VERIFIES -- which is the whole trouble: every wall says yes"
+let elder_opens = run ["amphora/bin/vessel-seal" "open-check" "${home}/elder/vessel.bron"]
+say elder_opens.err
+assert elder_opens.ok else "pour_agrees: and its seal opens, so no elder wall catches it either"
+say "leg_plant=elder_parent_differs_and_verifies"
+
+# --- leg 7: the repaired reader refuses that vessel with ZERO files in the out-home ---
+let elder_restore = run ["sh" "-c" "cd ${home}/elder && ${root}/amphora/bin/amphora restore vessel.bron; true"]
+say elder_restore.err
+assert elder_restore.err contains "cargo unproven" else "pour_agrees: the repaired reader must refuse the elder vessel by name"
+let elder_left = run ["sh" "-c" "find ${home}/elder/vessel.bron.season -type f 2>/dev/null | wc -l"]
+assert elder_left.ok else "pour_agrees: the out-home must be readable -- ${elder_left.err}"
+let elder_count = trim elder_left.out
+assert elder_count == "0" else "pour_agrees: and refuse with NOTHING written -- the out-home holds ${elder_count} files"
+say "leg_wall=refused_before_write"
+
+# --- leg 8: the wall REMOVED in a source pen -- the refusal trails the write ---
+# Four files land and the refusal arrives afterward, which is the state measured on metal
+# before this repair. Each edit is asserted to have BITTEN, so a pattern that stops matching
+# after a refactor reds here rather than passing as a proof of nothing.
+let pen_src = "${home}/nowall"
+let pen_copy = run ["sh" "-c" "mkdir -p ${pen_src}/src ${pen_src}/bin && cp amphora/manifest_entry.rye amphora/vessel_seal.rye amphora/vessel_core.rye amphora/kumara.rye amphora/tally_copy.rye ${pen_src}/ && cp amphora/src/main.rye ${pen_src}/src/ && cp amphora/manifest_entry.rye ${pen_src}/src/manifest_entry.rye"]
+say pen_copy.err
+assert pen_copy.ok else "pour_agrees: the no-wall pen must copy"
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && f=${pen_src}/src/main.rye && sed_inplace '/Q40c: the listing is proven/,/restore listing parent ok/d' $f"]
+say strip.err
+assert strip.ok else "pour_agrees: the no-wall strip must run"
+let bit_strip = run ["sh" "-c" "grep -q 'restore listing parent ok' ${pen_src}/src/main.rye; test $? -ne 0"]
+assert bit_strip.ok else "pour_agrees: the strip must BITE -- the pre-write parent proof must be gone -- ${bit_strip.err}"
+let build_nowall = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_src}/src/main.rye -femit-bin=${pen_src}/bin/amphora"]
+say build_nowall.err
+assert build_nowall.ok else "pour_agrees: the no-wall binary must build -- read the line above"
+let reset = run ["sh" "-c" "rm -rf ${home}/elder/vessel.bron.season"]
+assert reset.ok else "pour_agrees: the elder out-home must be cleared before the second reading -- ${reset.err}"
+let nowall_restore = run ["sh" "-c" "cd ${home}/elder && AMPHORA_VESSEL_SEAL=${root}/amphora/bin/vessel-seal AMPHORA_VESSEL_CORE=${root}/amphora/bin/vessel-core ${pen_src}/bin/amphora restore vessel.bron; true"]
+say nowall_restore.err
+assert nowall_restore.err contains "cargo unproven" else "pour_agrees: the no-wall binary refuses by the same name"
+let nowall_left = run ["sh" "-c" "find ${home}/elder/vessel.bron.season -type f 2>/dev/null | wc -l"]
+assert nowall_left.ok else "pour_agrees: the no-wall out-home must be readable -- ${nowall_left.err}"
+let nowall_count = trim nowall_left.out
+assert nowall_count != "0" else "pour_agrees: the no-wall binary MUST write files before refusing -- it wrote ${nowall_count}, so this witness would be proving nothing"
+say "leg_wall_removed=refusal_trails_the_write"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+say sweep.err
+assert sweep.ok else "pour_agrees: the pen must be swept"
+
+say "legs=8 agree=one_parent preimage=travels restore_shell=whole restore_rye=whole header=ascii plant=differs wall=before_write removed=trails"
+say "GREEN: amphora_pour_agrees -- two pours, one format, one parent over the listing that travels."

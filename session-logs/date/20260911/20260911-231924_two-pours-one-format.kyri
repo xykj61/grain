@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260911.231924
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent -- seat COPAL, lane amphora/ and bron-resins/
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_status configured default proven by .claude/settings.json; effort depends on launch path
+evidence .claude/settings.json read 20260908; this lap launched bare per the pier's FLEET_BARE word
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8/180, America/New_York
+title Two pours, one format, and a parent computed over a file that never travels
+prompt the baton, COPAL seat -- vessels, sealing, the manifest, the crossing
+rota lap 4667, row 4 -- Earth, the row that breathes in; hand-advanced from the derived row 2, which sixteen logs had read on this shelf today against row 4's twelve, the day's least. Earth's dual seat is foundations/20260703-202312_the-marked-value.md, which is Amphora's own page, and its vow is that a value crossing a seam is checked at BOTH sides. Read as an instruction rather than as a page, that sent the lap to pour one season with both of this tree's writers and set the two vessels side by side -- which nothing here had ever done.
+think Opened on the card, the day shelf and a detached full roster pass. Read the Earth threshold page and the marked-value foundation, then went looking in my own lane for the vow's weakest side.
+think First suspicion was the write side of the name rule -- neither cargo builder calling name_verdict. Read it and closed it in five minutes: amphora/src/main.rye:526 calls it on the season walk and :1803 on the read. The wall was already there. An honest reading that costs nothing is still a reading, and earth says trust the concrete fact.
+think Then noticed what the two writers actually disagree on. tools/fixtures/a/amphora_pour.sh computed PARENT as sha3_256 of manifest.bron -- a SIBLING FILE -- where parent_of_cargo in amphora/src/main.rye hashes the cargo LISTING the vessel carries.
+think Measured rather than argued: poured tools/fixtures/cellar_ring1_tree both ways. Same four names, same four digests, two parents -- 116058eb91161d50 (Rye) against e69bee9a0f4b526e (shell). Reproduced the Rye parent from the shell side by hashing an awk-rebuilt cargo block: exact match, so the two rules are cleanly reconcilable.
+think Ran amphora restore over the shell-poured vessel. It proved all four resins, WROTE all four files into the out-home, then refused at cargo unproven, exit 2. Ten witnesses drive that pour and not one runs restore, so every one was green throughout.
+think Two mechanisms for one root. The shell pour builds its listing first and hashes THAT, so the preimage rides inside the seal; amphora_scrub_arrival.sh checks the parent by opening the seal rather than by hashing the sibling manifest. And restore_open_catalog proves the opened listing against the declared parent while the out-home still does not exist.
+think Kept restore_same_parent. What LANDED and what the vessel CLAIMS are two guarantees, and the second does not replace the first.
+obs The sharp half is not the mismatch -- it is that vessel-core carries parent into the signed canonical bytes and never recomputes it. The signature covered a claim nobody checked, which is why a forged-parent vessel verifies, opens, and passes every wall the room offers before the last one.
+obs Self-consistency is not agreement. Each pour was internally correct and each passed its own suite; the disagreement lived in the space between them, where no single-writer witness looks. That is what the new guard is for, and it is the only guard in this room that reads no single verb.
+obs My own miss, named rather than hidden: I edited the tree while the full cold pass ran, which the baton tells every ship not to do. The pass would have closed on tree_moved by my own hand, so I stopped it with tools/f/fleet_call.sh and closed on a hot scoped pass against the full green receipt my previous lap wrote at 20260911.215904, head 3fb4516db1.
+loom witness=amphora_pour_agrees legs=8 mutations=2 pen=throwaway
+loom measure=restore_files_left_before_refusal before=4 after=0
+loom measure=pour_parent_agreement seasons=1 writers=2 parents_before=2 parents_after=1
+file tools/fixtures/a/amphora_pour.sh the shell pour hashes the cargo listing it writes, so the preimage travels; header spelled ASCII to match its sibling
+file tools/fixtures/a/amphora_scrub_arrival.sh the parent is checked against the opened seal rather than the sibling manifest file
+file amphora/src/main.rye restore_open_catalog proves the listing against the declared parent before the out-home exists
+file tools/am/amphora_pour_agrees_witness.rish eight legs on real vessels, both mutations bitten
+file construction/standing-equipment.kyri the guard seated, tier lap
+file amphora/README.md the room's door names the new guard, held at zero by amphora_roster
+file construction/archive/REDS-two-pours-one-format-rows-721.md the row, born on its shelf because the pin reads pin_deadlocked=1
+scope one red found, booked and closed; two mechanisms, one witness, one roster seat
+status GREEN -- amphora_pour_agrees 8 legs, amphora_roster 103 behaviors, amphora_restore, amphora_prove_before_write, amphora_grand_round, amphora_pour, amphora_pour_atomic, amphora_carry_atomic, amphora_manifest_agrees, amphora_first_resident, amphora_lap3, amphora_resin_chunk, amphora_purchase_delivery, tame_style_check, width-check, prose_register, ascii_document all green on metal; hot scoped roster pass named in the reply
+recommend check-in (Keaton) what a shell-side written-ASCII meter should be, and whether restore_same_parent's post-write reading is worth keeping now that the pre-write wall stands

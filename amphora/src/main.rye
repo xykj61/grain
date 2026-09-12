@@ -2002,6 +2002,30 @@ fn restore_open_catalog(
     catalog_from_cargo_plain(plain, catalog) catch |fault| {
         return refuse(fault, vessel);
     };
+    // Q40c: the listing is proven against the declared parent HERE, while the out-home still
+    // does not exist. `restore_same_parent` asks the same question of what LANDED, which is a
+    // different guarantee and stays; this one asks whether the vessel is internally consistent,
+    // and that answer is available the moment the seal opens. Measured on metal `20260911`
+    // before this door existed: a vessel whose parent named a different preimage restored all
+    // four of its files and refused afterward at `cargo unproven`, exit 2 -- every resin honest,
+    // every file faithful, and a refusal arriving after the write is not a wall (REDS %694's
+    // own lesson, one field over).
+    var want_parent: [digest_hex_len]u8 = undefined;
+    read_vessel_parent(io, vessel, &want_parent) catch {
+        return refuse(error.StampUnverified, vessel);
+    };
+    // invariant: the plain carries bytes -- catalog_from_cargo_plain refused an empty listing
+    // above, so the digest below is taken over a real cargo block rather than over nothing.
+    assert(plain.len > 0);
+    var got_parent: [digest_hex_len]u8 = undefined;
+    parent_of_cargo(plain, &got_parent);
+    if (!std.mem.eql(u8, &got_parent, &want_parent)) {
+        return refuse(error.CargoUnproven, vessel);
+    }
+    // invariant: the listing this catalog was read from hashes to the parent the vessel
+    // declares, so every door below writes bytes whose identity is already settled.
+    assert(std.mem.eql(u8, &got_parent, &want_parent));
+    print("amphora: restore listing parent ok\n", .{});
     print("amphora: restore catalog files={d} plain_bytes={d}\n", .{ catalog.file_count, plain.len });
     return null;
 }

@@ -26,10 +26,11 @@ test -f "$VESSEL" || { echo "FAIL missing vessel"; exit 1; }
 test -f "$MANIFEST" || { echo "FAIL missing manifest"; exit 1; }
 
 parent=$(awk '/^parent / {print $2; exit}' "$VESSEL")
-got=$(sh "$ROOT/tools/fixtures/s/sha3_256.sh" "$MANIFEST")
 test -n "$parent" || { echo "FAIL vessel missing parent"; exit 1; }
-test "$parent" = "$got" || { echo "FAIL parent mismatch want=$got got=$parent"; exit 1; }
-echo "PARENT ok $parent"
+# The parent is checked below, once `vessel-seal` is built -- it is the digest of the CARGO
+# LISTING the vessel carries, so the preimage travels with the vessel. It read
+# `sha3_256 manifest.bron` until 20260911: the digest of a sibling file, uncheckable at any
+# dock the vessel reaches alone, and disagreeing with `parent_of_cargo` in amphora/src/main.rye.
 
 # Amphora vessel parse on metal (wreck rule already seated at lap 1).
 vessel_bin="$ROOT/amphora/bin/vessel-core"
@@ -50,6 +51,15 @@ if ! test -x "$seal_bin"; then
 fi
 "$seal_bin" open-check "$VESSEL" >/dev/null
 echo "SEAL ok cellar AEAD cargo opens"
+
+# Parent over the vessel's own cargo listing -- the preimage rides inside the seal, so this
+# reading holds at a dock holding nothing but the vessel.
+plain="$BUNDLE/.scrub-plain"
+"$seal_bin" open "$VESSEL" "$plain" >/dev/null
+got=$(sh "$ROOT/tools/fixtures/s/sha3_256.sh" "$plain")
+rm -f "$plain"
+test "$parent" = "$got" || { echo "FAIL parent mismatch want=$got got=$parent"; exit 1; }
+echo "PARENT ok $parent"
 
 # Pond customs -- policy at receipt before Cellar place/restore.
 customs_bin="$ROOT/pond/bin/customs"

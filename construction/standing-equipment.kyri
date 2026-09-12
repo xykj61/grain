@@ -3313,6 +3313,40 @@ path tools/am/amphora_carry_atomic_witness.rish
 tier lap
 seated 20260911.193818
 
+# amphora_pour_agrees -- the three rules above each examine ONE verb, and every witness either
+# room owns reads ONE writer. This tree pours Amphora vessels two ways: `amphora/src/main.rye`
+# in Rye, and `tools/fixtures/a/amphora_pour.sh` in shell, which feeds ten witnesses. Both
+# stamp `format amphora-v1` on what they produce, and until `20260911` they computed `parent`
+# over different preimages -- the Rye pour over the cargo LISTING the vessel carries, the shell
+# pour over `manifest.bron`, a sibling FILE that stays at the near dock. One season poured both
+# ways: same four names, same four digests, two parents.
+#
+# Two consequences, the second worse than the first. A vessel arriving alone at a far dock could
+# never have its shell-written parent checked, because the preimage stayed home. And `amphora
+# restore` over a shell-poured vessel proved every resin, WROTE ALL FOUR FILES, and refused
+# afterward at `cargo unproven`, exit 2 -- a refusal after the write, which is `%694`'s own
+# lesson one field over. Ten shell witnesses were green throughout, because not one runs restore,
+# and `vessel-core verify` carries `parent` into the signed canonical bytes without ever
+# recomputing it, so the signature covered a claim nobody checked.
+#
+# The repair is two mechanisms for one root: the shell pour hashes the listing it writes, and
+# `restore_open_catalog` proves that listing against the declared parent while the out-home
+# still does not exist -- measured, 4 files left before and 0 after. `restore_same_parent` stays,
+# since what LANDED and what the vessel CLAIMS are two guarantees.
+#
+# Both mutations are proven to bite: the elder shell rule planted, where the two parents MUST
+# differ and the forged vessel must still verify AND still open (or the plant proves nothing),
+# and the pre-write wall struck out in a source pen, where the same vessel writes its files and
+# refuses afterward. `tier lap`: three rye builds plus one in the no-wall pen.
+#
+# Self-consistency is not agreement. A format with two implementations wants a guard that reads
+# one against the other, and that guard belongs to neither implementation's own suite.
+
+guard amphora_pour_agrees
+path tools/am/amphora_pour_agrees_witness.rish
+tier lap
+seated 20260911.231348
+
 # amphora_named_once -- a listing names each place once. Every wall the vessel family carries reads
 # ONE cargo line at a time: `mark_verdict` against the engine's two roots, `name_verdict` against
 # the containment and framing rules, and each resin body against the digest that addresses it. A
