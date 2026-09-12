@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.031636` | [the grade that was remembered](20260912/20260912-031636_the-grade-that-was-remembered.kyri) | a parked build landed; its A 93 read A 91 when measured |
+| `20260912.023319` | [the privilege that was never a line](20260912/20260912-023319_the-privilege-that-was-never-a-line.kyri) | row 2 falsified on seated code: privilege is a lattice |
 | `20260912.014100` | [the column the paragraph could not keep](20260912/20260912-014100_the-column-the-paragraph-could-not-keep.kyri) | a lint table's split left prose for a derived column |
 | `20260912.011940` | [the pen that held no leg](20260912/20260912-011940_the-pen-that-held-no-leg-for-the-new-refusal.kyri) | a parked round landed, its pen widened to hold it |
 | `20260912.010055` | [The fold that converges by refusing](20260912/20260912-010055_the-fold-that-converges-by-refusing.kyri) | a one-way move proven to move once |

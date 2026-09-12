@@ -5669,3 +5669,49 @@ guard ignored_walk
 path tools/i/ignored_walk_witness.rish
 tier lap   # 8s; 32 behaviors in a pen, every refusal lifted and two mutations bitten
 seated 20260912.003102
+# capability_lattice -- the polar moonshot's own witness, and it publishes a REFUSAL. Row 2 of the
+# bounded-torus page reads Caravan's process graph in polar coordinates, radius standing for
+# privilege, and rests on one written assumption: privilege in Caravan is already ordered.
+# `caravan/capabilities.rye` declares five rights as bits of a `u8` mask and compares them in
+# `Rights.contains(have, need)`, returning `(have & need) == need` -- subset containment, which is
+# the Boolean lattice rather than a line. `tools/fixtures/c/capability_lattice_scan.sh` derives the
+# rights from their own declarations, reads the ten masks the `caravan/` room actually constructs,
+# and finds 32 of their 45 unordered pairs incomparable. The row's own falsifier fires on seated
+# code.
+#
+# THE HALF WORTH KEEPING IS THE SIGN. A radius-only checker admits 48 of the seated conferrals the
+# lattice refuses and refuses none it allows, because popcount is monotone under subset. So every
+# error a ring model can make is an OVER-GRANT -- a supervisor handing a dependent a right nobody
+# conferred, silently, since from inside the ring model the hop is legal. That is a reason to
+# decline the coordinate rather than to refine it.
+#
+# WHY THE ROSTER GATES THE CONTROL RATHER THAN THE COUNTS. Every figure the scan prints is a fact
+# about a capability model that is CORRECT, so a gate on the incomparable count would red the tree
+# for holding a good one. What must never go quiet is the instrument: a scan answering `lattice` for
+# every input would have produced this finding on a module whose privileges genuinely sat on a line.
+# So the control proves the verdict from BOTH sides -- a chain pen reads `line` with the two models
+# agreeing pair for pair, and one incomparable mask flips it on a single changed line.
+#
+# The full-lattice figures are closed forms rather than a 4^n walk, so the reading costs n^2 and
+# stays available at any mask width. A closed form is a claim, so the control enumerates all 4^n
+# ordered pairs at three and five rights and compares every figure, including the under-admission
+# zero the scan asserts rather than measures. Three mutations bite: the declaration-line filter
+# inverted, the verdict hard-wired, and containment read backwards. Each plant is proven landed by
+# `cmp` before its reading is believed (%519).
+#
+# A DECLARATION IS NOT A CONSTRUCTION, so the mask harvest reads past `pub const right_x: u8 = ...`
+# lines. Measured on the seating lap the filter changes nothing here -- every right Caravan declares
+# is also used as a mask somewhere, `right_net` at `caravan/capabilities.rye:284` -- and what it
+# buys is a right declared tomorrow and left unused, which would otherwise seat a privilege nobody
+# built. The pen's declaration sits inside its room, as Caravan's does, or the filter goes
+# unexercised on a geometry the tree does not have.
+#
+# The rights bound is DERIVED from the declared mask type rather than typed here: `u8` caps Caravan
+# at eight rights and it holds five, so `rights_headroom=3` and a ninth right is a type change in a
+# published struct.
+#
+# Paper: `active-designing/20260912-021711_the-privilege-that-was-never-a-line.md`
+guard capability_lattice
+path tools/c/capability_lattice_witness.rish
+tier lap   # 2s; 59 behaviors in a pen, six refusals each lifted, three mutations
+seated 20260912.021711
