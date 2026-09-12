@@ -58,3 +58,9 @@ stamp 20260912.014936
 epoch 1789192176
 paths tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/b/build_target_witness.rish tools/fixtures/b/build_target_race_probe.sh
 what A meter over where a rostered guard's build output lands: 110 of 125 emit sites write a fixed path in the tree rather than a pen, and 6 of 51 such paths are written by two or more guards -- one by 18 -- so any second reader of the tree during a pass can read a half-written binary.
+claim capability-lattice
+seat diffuser
+stamp 20260912.021952
+epoch 1789193992
+paths tools/fixtures/c/capability_lattice_scan.sh tools/fixtures/c/capability_lattice_control.sh tools/c/capability_lattice_witness.rish active-designing/20260912-021711_the-privilege-that-was-never-a-line.md
+what A meter over Caravan's rights model against moonshot row 2's polar claim: rights are a 5-bit subset lattice, the tree seats ten masks of which most pairs are incomparable, and a radius-only hop checker over-admits and never under-admits.
