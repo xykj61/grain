@@ -1,0 +1,135 @@
+# tools/t/torus_fold_witness.rish -- the fold onto a torus is even, and evenness is why it is empty.
+#
+# WHY THIS RUNG. Row 5 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes
+# folding Tablecloth's hash space onto a 2-torus so that "names that sit near each other in the
+# fold sit near each other in storage". Its stated falsifier is clustering: a fold that crams real
+# names into a few cells would trade lookup evenness for adjacency. tools/fixtures/t/torus_fold_scan.sh
+# takes both readings on the tree's own bytes, and this rung keeps the instrument checkable.
+#
+# WHAT THE SCAN FINDS, read 20260912 over 512 tracked files sampled by stride, their SHA3-512
+# digests folded on two independent byte offsets. The stated falsifier FAILS: chi-squared reads
+# 58.50 and 71.75 against a p=0.001 critical value of 103.51 at 63 degrees of freedom, so the fold
+# is even on both offsets. And the claim fails beside it. Toroidal pair distance has the closed
+# form 128 for uniform coordinates -- the per-axis circular difference averages exactly 64 -- and
+# all six populations sit inside three standard errors of it: same-directory files at 126.250 and
+# 122.531, one-byte-edited copies of one file at 130.844 and 122.469, random pairs at 124.234 and
+# 124.441. Two documents differing in a single byte land as far apart as two strangers.
+#
+# THE TWO HALVES SHARE ONE CAUSE, which is the finding rather than the coincidence. A cryptographic
+# hash is built to avalanche: one input bit changed redistributes the whole output. That property
+# IS what clears the falsifier, and it is the same property that leaves fold-adjacency carrying no
+# relation. A fold cannot be even and informative at once over a cryptographic name, so row 5's
+# falsifier and row 5's value cannot both be answered the way the row wants.
+#
+# WHAT SURVIVES. Even fill is a real and useful property -- of PLACEMENT rather than of adjacency.
+# A torus gives every cell exactly four neighbours with no edge case, which is a bounded replica
+# set derived from the topology instead of from a table. That is row 1's wrap applied to storage,
+# and it needs none of the adjacency this reading declines.
+#
+# WHAT IS GATED HERE. The control, and the live reading's SHAPE -- never the live verdict. The scan
+# calls a population distinguishable at three standard errors, so across six populations it refuses
+# by chance in roughly one run of sixty. Gating the verdict would red this tree at its own stated
+# error rate, on a fact about SHA3-512 that is correct. What must stay loud is the instrument: a
+# scan answering "even and uninformative" for every input would have produced this same finding on
+# a name that genuinely carried relation.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/t/torus_fold_control.sh -- 28 behaviors on planted
+# digest populations in a throwaway pen:
+#
+#   AN EVEN POPULATION reads even and uninformative, so the live verdict is reachable rather than
+#     constant. Drawn pseudorandomly rather than on a lattice, because a lattice is even by
+#     chi-squared AND has every pair at one distance -- zero variance, which reads as an effect.
+#   A CLUSTERED POPULATION fires the stated falsifier on both folds and is named by fold.
+#   A RELATED POPULATION -- same-directory partners one cell apart -- reads adjacency_informative
+#     while its random baseline stays even, which is the shape a non-avalanching name would give.
+#   ONE-BYTE-EDIT PAIRS planted adjacent read informative too, so the sharpest population has its
+#     own reachable positive.
+#   THE THREE VERDICTS are distinct words, and a population that both clusters and adjoins is named
+#     by its falsifier, since a fired falsifier settles the row whatever else is true.
+#   THE CLOSED FORMS checked rather than quoted: the toroidal axis mean is exactly 64, zero and 255
+#     are one apart, and Wilson-Hilferty matches published chi-squared tables at three degrees of
+#     freedom within one percent.
+#   THE GRID adapts to the sample so no cell expects fewer than five, the failure that made a first
+#     draft read 316 against a critical 330 and call it even on arithmetic that did not hold.
+#   THREE MUTATIONS, each proven landed by cmp before its reading: the wrap dropped, the pairs made
+#     overlapping, and the critical value put out of reach. Each moves an answer.
+#
+# WHAT IT LEAVES TO OTHERS. Whether a torus is a good placement scheme, which is a different claim;
+# whether a non-cryptographic name could carry relation worth folding; and the real store, which
+# this reading never opens.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/torus_fold_witness.rish
+
+say "torus-fold: Language EN -- a fold is a claim about distance, so distance is what gets measured."
+say "torus-fold: Style Gauge, Meter -- every figure names the population and the bound it was read under."
+say "torus-fold: Lens TAME -- bound the sample, and prove the verdict from both sides before believing it."
+
+let control = run ["sh" "tools/fixtures/t/torus_fold_control.sh"]
+say control.out
+assert control.ok else "torus-fold: the control must complete -- its own lines are printed above"
+
+# The even case, which is what makes the live verdict a reading rather than a constant.
+assert control.out contains "leg even_reads_uninformative yes" else "torus-fold: an even population must reach the even verdict"
+assert control.out contains "leg even_clusters_zero yes" else "torus-fold: an even population clusters on neither fold"
+assert control.out contains "leg even_no_related_effect yes" else "torus-fold: an even population shows no related effect"
+
+# The stated falsifier, reachable on both folds and named by fold.
+assert control.out contains "leg clustered_fires_falsifier yes" else "torus-fold: a clustered population must fire the falsifier, or the falsifier is decoration"
+assert control.out contains "leg clustered_both_folds yes" else "torus-fold: clustering planted on both folds must be seen on both"
+assert control.out contains "leg clustered_names_fold_zero yes" else "torus-fold: a fold that clusters is named, so a reader can check which"
+assert control.out contains "leg clustered_names_fold_thirty yes" else "torus-fold: the second offset is read as hard as the first"
+
+# The claim's own positive: a name that DID carry relation would be seen.
+assert control.out contains "leg related_reads_informative yes" else "torus-fold: partners one cell apart must read as adjacency, or the reading cannot find what it looks for"
+assert control.out contains "leg related_samedir_distinguishable yes" else "torus-fold: the same-directory population is where a store would want locality"
+assert control.out contains "leg related_random_still_even yes" else "torus-fold: a related population must not disturb its own baseline"
+assert control.out contains "leg onebit_near_reads_informative yes" else "torus-fold: the sharpest population needs its own reachable positive"
+assert control.out contains "leg onebit_near_distinguishable yes" else "torus-fold: two nearly identical documents planted adjacent must read adjacent"
+
+# The three answers stay apart, and a fired falsifier outranks an adjacency finding.
+assert control.out contains "leg three_verdicts_distinct yes" else "torus-fold: three readings wanting three answers must not share a word"
+assert control.out contains "leg falsifier_outranks_adjacency yes" else "torus-fold: a fired falsifier settles the row whatever else is true"
+assert control.out contains "leg unread_named yes" else "torus-fold: a population with too few pairs is unread rather than clean"
+
+# The closed forms, checked rather than recited.
+assert control.out contains "leg toroidal_axis_mean_is_64 yes" else "torus-fold: the expectation the whole reading rests on is derived, never quoted"
+assert control.out contains "leg wrap_makes_0_and_255_adjacent yes" else "torus-fold: without the wrap this is a square, not a torus"
+assert control.out contains "leg chi_critical_df15 yes" else "torus-fold: the derived critical value must match the published table"
+assert control.out contains "leg chi_critical_df63 yes" else "torus-fold: the same at the degrees of freedom the live reading uses"
+assert control.out contains "leg chi_critical_df255 yes" else "torus-fold: and at the finest grid the scan can choose"
+assert control.out contains "leg grid_adapts_to_512_names yes" else "torus-fold: the grid follows the sample, so the approximation holds"
+assert control.out contains "leg expected_per_cell_at_least_5 yes" else "torus-fold: a chi-squared over cells expecting fewer than five is arithmetic that does not hold"
+
+# The mutations, each proven landed before its reading is believed.
+assert control.out contains "leg mutation_no_wrap_applied yes" else "torus-fold: a plant that changed no byte tests the real scan twice"
+assert control.out contains "leg mutation_no_wrap yes" else "torus-fold: dropping the wrap must move an answer, or the torus is decoration"
+assert control.out contains "leg mutation_all_pairs_applied yes" else "torus-fold: the overlapping-pairs plant must land before its reading"
+assert control.out contains "leg mutation_all_pairs yes" else "torus-fold: reusing a point in every pair must be seen, which is why the pairs are disjoint"
+assert control.out contains "leg mutation_blind_critical_applied yes" else "torus-fold: the critical-value plant must land before its reading"
+assert control.out contains "leg mutation_blind_critical yes" else "torus-fold: a critical value out of reach must let a clustered population walk free"
+
+assert control.out contains "legs_expected=28" else "torus-fold: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "fail=0" else "torus-fold: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "torus-fold: the control must balance before it is believed"
+
+# The live reading, on the tree's own bytes. Its SHAPE is gated and its VERDICT is not, for the
+# reason the header gives: a three-sigma test over six populations refuses about one run in sixty
+# by construction, and a gate that reds at its own stated error rate is a gate somebody turns off.
+let live = run ["sh" "tools/fixtures/t/torus_fold_scan.sh" "--names" "96" "--onebit" "16" "--samedir" "64"]
+say live.out
+assert live.ok else "torus-fold: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=torus_fold" else "torus-fold: the reading names its own instrument"
+assert live.out contains "population=git_ls_files" else "torus-fold: the live population is the tree's own tracked bytes"
+assert live.out contains "expected_pair_distance=128" else "torus-fold: the closed form the populations are compared against is published in the reading"
+assert live.out contains "fold off=0" else "torus-fold: the first byte offset must be reported"
+assert live.out contains "fold off=30" else "torus-fold: a finding true of one arbitrary offset and not another is a fact about the choice"
+assert live.out contains "pop random" else "torus-fold: the baseline must be reported beside the populations it baselines"
+assert live.out contains "pop samedir" else "torus-fold: the same-directory population must be reported"
+assert live.out contains "resolution_pct" else "torus-fold: an indistinguishable reading publishes what it could have seen"
+assert live.out contains "unread_populations=" else "torus-fold: an absent population is counted rather than passed over"
+
+say "GREEN: torus-fold -- 28 behaviors, both verdicts reachable from planted populations, the closed forms checked against published tables, three mutations bitten, and the live reading published without being gated."

@@ -11,7 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.162152` | [the recovered fold landed whole](20260912/20260912-162152_the-recovered-fold-landed-whole.kyri) | the parked torus instrument was restored and re-proved before send |
+| `20260912.153216` | [the fold recovered on today's tree](20260912/20260912-153216_the-fold-recovered-on-todays-tree.kyri) | the parked 28-leg torus reading held on today's bytes |
 | `20260912.150836` | [Codex default provenance](20260912/20260912-150836_the-fleet-default-carried-its-provenance.kyri) | the selected model reaches the loop and both rule doors |
+| `20260912.044314` | [the fold that had nothing to hold](20260912/20260912-044314_the-fold-that-had-nothing-to-hold.kyri) | row 5 cleared its falsifier, and the clearing is what killed it |
 | `20260912.031636` | [the grade that was remembered](20260912/20260912-031636_the-grade-that-was-remembered.kyri) | a parked build landed; its A 93 read A 91 when measured |
 | `20260912.025057` | [the binary two guards write](20260912/20260912-025057_the-binary-two-guards-are-writing.kyri) | 110 of 125 guard builds land at a fixed tree path; no lock covers it. |
 | `20260912.024028` | [A gap priced from what a meter saw](20260912/20260912-024028_the-gap-priced-from-what-the-meter-could-see.kyri) | 2 characters guessed, 1,419 read |
