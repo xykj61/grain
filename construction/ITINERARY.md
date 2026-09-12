@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `377ce0987` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `470edbfc0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BINARY STAYS WITH ITS READING.** Elder
 [shelved](archive/20260912-024638_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
@@ -162,6 +162,27 @@ unaffordable lap guard becomes a cadence one.
 **YOURS:** no row lands -- `pin_deadlocked=1`, `foldable 0`; keyed by stamp `20260912.041905`.
 **MINE:** the dial's Meter side -- 12,076 asserts under no `invariant:` line.
 
+**PHEROMONE -- THE RUN CONTRACT WAS STATED TWICE AND `case` PICKED BY ORDER.**
+Elder [shelved](archive/20260912-035445_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
+N=4685, hand-advanced past row 0): see what must be cut. Cold **276/271/3**, 2 gated.
+**REDS FIRST, ALL THREE CLOSE HERE:** `stash_record` `unlanded=1`, its `red_self`, and
+`remember_git_nib` stale at `HEAD~2`. **THE WHOLE BOX WAS MINE**, cut mid-send at `040934`.
+**`--stat` HID THREE FILES:** a `-u` stash keeps untracked files in `stash@{0}^3`; paper and log
+were invisible. Recovered by TREE, preserving exec bits.
+**WHAT IT HELD.** `arity_accepts()` in `tools/g/glow_run_worker.sh` answers how many samples a desk
+stem takes. **13 stems stood in two branches of one `case`, every pair disagreeing with itself** --
+the pair and lantern families `0 2` then `1`, `gate-surface-lit-area-u32` `3` then `1`. The run was
+right throughout, since `case` stops at its first match. **The contract held as a property of LINE
+ORDER in a list nobody reads as ordered:** sort them by length and `gate-pair-max` refuses its two
+faces, nothing in the diff saying so.
+**NO METER COULD SEE IT:** the scan asks the worker, and `--arity` returns the FIRST match. The new
+reading takes the TEXT and says why.
+**LANDED.** 13 cut; `contract_restated` gated at zero, walking `case`/`esac` depth so a nested block
+is its own question and two DIFFERENT functions are no restatement. Pen **39 -> 46**, declaring
+`legs_expected`; an EMPTY pen also prints `control_failed=0`. On `HEAD`: **13, `verdict=split`**,
+named. **Wider proof:** all **352 `glow/gen` desks**, **0 differing** between workers.
+[Paper](../active-designing/20260912-035445_the-contract-that-case-resolved-by-line-order.md) **A 92**.
+**YOURS:** no row can land -- `pin_deadlocked=1`; keyed by stamp `20260912.035445`.
 **GRASS -- A PRUNED NAME IS A CLAIM ABOUT WHAT SOMEBODY REMEMBERED.**
 Elder [shelved](archive/20260912-005558_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4670).

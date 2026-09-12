@@ -27,6 +27,11 @@ export LC_ALL=C
 legs=0
 failed=0
 
+# The pen counts its own legs out loud. A green pen and an EMPTY pen both print failed=0, so a
+# leg deleted with the rest left standing would pass in silence; the declared count is what makes
+# that deletion loud, and the witness asserts the declaration is present.
+LEGS_EXPECTED=46
+
 check() {
   legs=$((legs + 1))
   if [ "$1" = "$2" ]; then
@@ -215,6 +220,83 @@ env GLOW_DESK_DIR="$A" GLOW_DESK_WORKER="$PEN/worker.sh" \
   sh "$SCAN" --bogus > "$PEN/o.bogus" 2>&1 && rc=0 || rc=$?
 check 2 "$rc" "an unknown argument refuses"
 
+# ---- contract_restated: one `case` answering a stem twice ------------------------------------
+#
+# The reading the scan cannot take by asking. `case` stops at its first matching branch, so a
+# second listing lower down is unreachable and `--arity` reports only the first. Each stub below
+# is a whole worker, planted and then lifted, so the gate is shown from both sides.
+#
+# make_restated_worker <path> <body-of-the-arity-case>
+make_restated_worker() {
+  _out=$1
+  shift
+  {
+    echo '#!/bin/sh'
+    echo 'set -eu'
+    echo 'if [ "${1-}" = "--arity" ]; then'
+    echo '  shift'
+    echo '  stem=$(basename "$1" .glow)'
+    echo '  case "$stem" in'
+    for _b in "$@"; do echo "  $_b"; done
+    echo '  *) echo "stem=$stem"; echo "accepts=0" ;;'
+    echo '  esac'
+    echo '  exit 0'
+    echo 'fi'
+    echo 'exit 0'
+  } > "$_out"
+  chmod +x "$_out"
+}
+
+check 0 "$(field "$PEN/o.agree" contract_restated)" "a stem answered by two DIFFERENT case blocks is no restatement"
+
+make_restated_worker "$PEN/dup.sh" \
+  'pen-one|pen-two) echo "stem=$stem"; echo "accepts=0 2" ;;' \
+  'pen-tag|pen-one) echo "stem=$stem"; echo "accepts=1" ;;'
+env GLOW_DESK_DIR="$A" GLOW_DESK_WORKER="$PEN/dup.sh" GLOW_ARITY_LOWER="$PEN/lower.sh" \
+    PEN_OUT="$PEN/emit" sh "$SCAN" --explain > "$PEN/o.dup" 2>&1 || true
+check 1 "$(field "$PEN/o.dup" contract_restated)" "a stem listed in two branches of one case bites"
+check split "$(field "$PEN/o.dup" verdict)" "contract_restated turns the verdict"
+grep -q 'detail: contract_restated pen-one' "$PEN/o.dup" \
+  && check yes yes "the restatement names the stem under --explain" \
+  || check yes no "the restatement names the stem under --explain"
+
+make_restated_worker "$PEN/nodup.sh" \
+  'pen-one|pen-two) echo "stem=$stem"; echo "accepts=0 2" ;;' \
+  'pen-tag) echo "stem=$stem"; echo "accepts=1" ;;'
+env GLOW_DESK_DIR="$A" GLOW_DESK_WORKER="$PEN/nodup.sh" GLOW_ARITY_LOWER="$PEN/lower.sh" \
+    PEN_OUT="$PEN/emit" sh "$SCAN" --explain > "$PEN/o.nodup" 2>&1 || true
+check 0 "$(field "$PEN/o.nodup" contract_restated)" "lifting the second listing goes quiet again"
+
+# A stem named inside a COMMENT, and the catch-all listed by every branch, are neither of them a
+# second answer. A reading that counted either would red on every honest worker in the tree.
+{
+  echo '#!/bin/sh'
+  echo 'set -eu'
+  echo '# pen-one) is named here in prose, and prose answers nothing'
+  echo 'if [ "${1-}" = "--arity" ]; then'
+  echo '  shift'
+  echo '  stem=$(basename "$1" .glow)'
+  echo '  case "$stem" in'
+  echo '  pen-one) echo "stem=$stem"; echo "accepts=1" ;;'
+  echo '  *) echo "stem=$stem"; echo "accepts=0" ;;'
+  echo '  esac'
+  echo '  case "$stem" in'
+  echo '  pen-two) : ;;'
+  echo '  *) : ;;'
+  echo '  esac'
+  echo '  exit 0'
+  echo 'fi'
+  echo 'exit 0'
+} > "$PEN/prose.sh"
+chmod +x "$PEN/prose.sh"
+env GLOW_DESK_DIR="$A" GLOW_DESK_WORKER="$PEN/prose.sh" GLOW_ARITY_LOWER="$PEN/lower.sh" \
+    PEN_OUT="$PEN/emit" sh "$SCAN" > "$PEN/o.prose" 2>&1 || true
+check 0 "$(field "$PEN/o.prose" contract_restated)" "a stem named in a comment, and a repeated catch-all, answer nothing"
+
+# The tree's own worker, read as the subject rather than as the stub. This is the leg that would
+# have caught the thirteen: run against the committed worker of 20260912 it read 13.
+check 0 "$(sh "$SCAN" | sed -n 's/^contract_restated=//p')" "the tree's own run worker answers each stem once"
+
 # ---- the real worker answers every family it serves --------------------------------------------
 for pair in "gate-say-u32 1" "gate-pair-max 0 2" "gate-surface-lit-area-u32 3" \
             "gate-lantern-face-core 2 3" "gate-xact-tag 1 2" "gate-xfer-tag 1 3" \
@@ -225,7 +307,13 @@ for pair in "gate-say-u32 1" "gate-pair-max 0 2" "gate-surface-lit-area-u32 3" \
   check "$want" "$got" "the worker states $stem's accepted count(s) when asked"
 done
 
+if [ "$legs" -ne "$LEGS_EXPECTED" ]; then
+  failed=$((failed + 1))
+  echo "leg FAIL -- the pen ran $legs legs against legs_expected=$LEGS_EXPECTED"
+fi
+
 echo "legs=$legs"
+echo "legs_expected=$LEGS_EXPECTED"
 echo "control_failed=$failed"
 if [ "$failed" -eq 0 ]; then
   echo "control_verdict=ok"
