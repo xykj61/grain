@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.210824` | [The box I did not open](20260911/20260911-210824_the-box-i-did-not-open.kyri) | a finished lap recovered from the round-open stash |
 | `20260911.193818` | [The dock that could not deliver](20260911/20260911-193818_the-dock-that-could-not-deliver.kyri) | a refused carry left it verifying with no cargo |
 | `20260911.192649` | [an ignored declaration](20260911/20260911-192649_an-ignored-declaration.kyri) | a guard ignored the comment it offered; a duplicate withdrawn |
 | `20260911.190515` | [The clock that could not hear the queue](20260911/20260911-190515_the-clock-that-could-not-hear-the-queue.kyri) | a witness that cannot red on its own falsifier |

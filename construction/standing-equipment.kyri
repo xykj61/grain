@@ -5390,3 +5390,32 @@ guard line_length_census
 path tools/l/line_length_census_witness.rish
 tier lap
 seated 20260911.172644
+
+# aether_falloff -- the falloff-field moonshot's own witness, and it publishes a NEGATIVE. Row 4 of
+# the bounded-torus page proposes waking only the guards within path-distance R of a touched file,
+# intensity falling with distance. `tools/fixtures/a/aether_falloff_scan.sh` measures the curve over
+# real commits and the row's own falsifier fires at radius ZERO: 288 of 345 seated guards carry no
+# coordinate at all, so 88.1 pct of the roster wakes before any radius is opened, and the 57 the map
+# does place saturate in two hops.
+#
+# WHY THE ROSTER GATES THE CONTROL RATHER THAN THE CURVE. Every number the scan prints is a fact
+# about the roster rather than a defect in it, and gating a floor share would red the tree for
+# carrying guards nobody has mapped -- a backlog, priced already by
+# `tools/fixtures/s/standing_equipment_scope_rank.sh` at `absent_cost_share=0.920`. What must never
+# go quiet is the instrument: a scan answering "no gradient" for every input would have produced
+# this finding on a tree that had a perfect one. So the control proves the negative from BOTH sides,
+# on real git repositories in a pen -- a roster with real locality read as having it, saturation at
+# two; the same roster with no map read as having none and no saturation at all.
+#
+# The anchor rule is the scan's one piece of judgment and it is mutated: breaking the glob-truncation
+# line moves `g_beta`'s mean distance from 0.00 to 1.00 on the same pen, the plant proven landed by
+# `cmp` before the reading is believed (%519).
+#
+# It spends no seconds counting seconds. The ranking beside it prices guards in wall time, and two
+# meters over one population is the waste this tree names.
+#
+# Paper: `active-designing/20260911-195059_the-field-with-no-distance.md`
+guard aether_falloff
+path tools/a/aether_falloff_witness.rish
+tier lap   # 3s; 38 behaviors in a pen, eleven refusals and one mutation
+seated 20260911.195059
