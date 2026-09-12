@@ -63,7 +63,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const weave = @import("weave.rye");
 
-const witness_version = "20260909.232846";
+const witness_version = "20260912.004700";
 
 /// The site a second hand merges in from. Any number but `v1_site` would do;
 /// naming it is what lets the claims below build a two-hand history by writing
@@ -379,6 +379,49 @@ fn prove_a_counter_below_a_line_refused(garden: std.mem.Allocator) !void {
     print("mantra-v2: a counter at or below a line it holds refused V2CounterBelowLine -- both counters, read apart\n", .{});
 }
 
+/// A header counter past the ceiling is refused by name, both counters read
+/// apart -- and a counter standing exactly AT the ceiling is welcomed, since
+/// that is the number a full weave's counter reads.
+///
+/// THE ELDER READING BOUNDED THE COUNT AND LEFT THE COUNTERS FREE. `from_v2`
+/// checked `rows.len` against `max_weave_lines` and each row against the header,
+/// so a record of one row at position 4,294,967,294 under a header of
+/// 4,294,967,295 passed every reading -- and the next `apply` met
+/// `next_pos += 1` as an integer overflow, proven on metal `20260912` at
+/// `weave.rye:1063`, exit 134.
+fn prove_counter_ceiling_refused(garden: std.mem.Allocator) !void {
+    const one = [_]weave.V2Row{
+        .{ .text = "a line under a counter at the u32 ceiling", .gen = 1, .pos = 0, .site = 0, .run = 0 },
+    };
+
+    const wide_pos = weave.V2Record{ .rows = &one, .next_pos = std.math.maxInt(u32), .next_run = 1 };
+    const pos_outcome = weave.Weave.from_v2(garden, wide_pos);
+    // invariant: a position counter above the ceiling is refused at the edge,
+    // since the weave it would restore cannot take another insert without wrapping
+    assert(pos_outcome == weave.WeaveError.CounterPastCeiling);
+
+    const wide_run = weave.V2Record{ .rows = &one, .next_pos = 1, .next_run = std.math.maxInt(u32) };
+    const run_outcome = weave.Weave.from_v2(garden, wide_run);
+    // invariant: the run counter carries the same ceiling and is read separately,
+    // because a record may honor one counter and break the other
+    assert(run_outcome == weave.WeaveError.CounterPastCeiling);
+
+    // The welcome is asserted as hard as the refusals: a bound proven only in
+    // the refusing direction cannot be told from a bound that refuses everything.
+    const at_ceiling = weave.V2Record{
+        .rows = &one,
+        .next_pos = weave.max_weave_lines,
+        .next_run = weave.max_weave_lines,
+    };
+    const standing = try weave.Weave.from_v2(garden, at_ceiling);
+    // invariant: a counter standing exactly at the ceiling is lawful -- it is what
+    // a weave holding max_weave_lines lines reads -- so the refusal is above it
+    assert(standing.next_pos == weave.max_weave_lines);
+    assert(standing.lines.items.len == 1);
+
+    print("mantra-v2: a header counter past max_weave_lines refused CounterPastCeiling -- both counters apart, the ceiling itself welcomed\n", .{});
+}
+
 fn prove_the_document_survives(garden: std.mem.Allocator) !void {
     const joined = try merged_weave(garden);
     const before = try joined.current(garden);
@@ -413,10 +456,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_rows_out_of_place_order_refused(garden);
     try prove_a_repeated_identity_refused(garden);
     try prove_a_counter_below_a_line_refused(garden);
+    try prove_counter_ceiling_refused(garden);
     try prove_the_document_survives(garden);
 
     print("mantra-v2: version {s}\n", .{witness_version});
-    print("GREEN: a merged history writes a record and reads back whole -- eleven claims, four refusals by name.\n", .{});
+    print("GREEN: a merged history writes a record and reads back whole -- twelve claims, six refusals by name.\n", .{});
     return 0;
 }
 

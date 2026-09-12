@@ -12,9 +12,11 @@
 # THE PEN IS A DIRECTORY. Zig resolves an import inside the root file's own directory, so
 # weave.rye and its witness sit side by side here.
 #
-# FOURTEEN PHASES -- ten over the Rye witness, four over the head scan. Three are innocence
-# legs that must exit 0 (clean, bound_shrunk, head_clean); the other eleven are breaks that
-# must not.
+# EIGHTEEN PHASES -- fourteen over the Rye witness, four over the head scan. Three are
+# innocence legs that must exit 0 (clean, bound_shrunk, head_clean); the other fifteen are
+# breaks that must not. The count is declared once, as `legs_expected` beside the readings at
+# the foot, counted at runtime as `legs_ran`, and asserted by the witness -- so a leg deleted
+# here reds rather than passing with less proof than the run before it.
 #   clean          -- the unmutated copy reaches GREEN, exit 0. This leg is what lets every
 #                     other phase read as the break speaking rather than the pen.
 #   site           -- a lifted line is stamped with a site of its own rather than `v1_site`,
@@ -41,6 +43,15 @@
 #                     the widest record the witness lifts is three rows.
 #   bound_removed  -- shrunk, with the edge check deleted. Claim 10 answers.
 #   bound_misnamed -- shrunk, check intact, refusing under the wrong error name.
+#   ceiling_removed -- `from_v1`'s counter-ceiling check is deleted, so a row at the u32
+#                     ceiling lifts and `next_pos = row.pos + 1` overflows. Claim 11 answers,
+#                     and the answer is the original panic naming itself.
+#   ceiling_misnamed -- that check intact, refusing under the wrong error name, so a refusal
+#                     proven only by its direction stays tellable from one proven by name.
+#   apply_ceiling  -- `apply`'s position-counter guard is made unreachable, so the sparse lift
+#                     -- two rows at 0 and max-1, two lines against a bound of a million --
+#                     meets the counter at the ceiling on its next insert. Claim 12 answers,
+#                     and it is the case the LINE bound cannot see.
 #
 # THE LAST FOUR READ A DIFFERENT INSTRUMENT, and one of them is why this control exists in the
 # shape it does. tools/fixtures/m/mantra_weave_head_scan.sh holds the module head to the
@@ -56,8 +67,8 @@
 #                     the class reds here rather than in a year.
 #   head_stale     -- a head line names an operation the module does not publish.
 #
-# EXPECTED: clean_exit=0, bound_shrunk_exit=0, head_clean_exit=0, and every other phase
-# non-zero.
+# EXPECTED: clean_exit=0, bound_shrunk_exit=0, head_clean_exit=0, every other phase non-zero,
+# and legs_ran equal to legs_expected.
 #
 # Driven by tools/m/mantra_weave_v1_lift_witness.rish. Run from the repository root.
 
@@ -146,11 +157,19 @@ shrunk_exit="$(run_pen bound_shrunk "$shrink")"
 removed_exit="$(run_pen bound_removed "$shrink; /if (rows\.len > max_weave_lines) return WeaveError\.TooManyLines;/d")"
 misnamed_exit="$(run_pen bound_misnamed "$shrink; s/if (rows\.len > max_weave_lines) return WeaveError\.TooManyLines;/if (rows.len > max_weave_lines) return WeaveError.V1GenerationBelowOne;/")"
 
+# The three below hold the counter ceiling the module gained on `20260912.003734`. Until this
+# lap the pen held none of them: the module proved two new refusals and the pen could not tell
+# a live check from a deleted one -- a half-heard pen, the shape a peer named one room over.
+ceiling_removed_exit="$(run_pen ceiling_removed '/if (row\.pos >= max_weave_lines) return WeaveError\.CounterPastCeiling;/d')"
+ceiling_misnamed_exit="$(run_pen ceiling_misnamed 's/if (row\.pos >= max_weave_lines) return WeaveError\.CounterPastCeiling;/if (row.pos >= max_weave_lines) return WeaveError.V1GenerationBelowOne;/')"
+apply_ceiling_exit="$(run_pen apply_ceiling 's/^        if (diff\.inserts\.len > max_weave_lines - self\.next_pos) {$/        if (false) {/')"
+
 head_clean_exit="$(run_head_pen clean '')"
 head_missing_exit="$(run_head_pen missing '/^\/\/!   weave\.merge(/d')"
 head_digit_exit="$(run_head_pen digit '/^\/\/!   Weave\.from_v1(/d')"
 head_stale_exit="$(run_head_pen stale 's|^//!   weave\.merge(alloc, w)    -- one weave from two, by union and max|&\n//!   weave.dissolve(alloc)    -- an operation the module does not publish|')"
 
+report="$(
 echo "phase=clean"
 echo "clean_exit=$clean_exit"
 echo "phase=site"
@@ -173,6 +192,12 @@ echo "phase=bound_removed"
 echo "bound_removed_exit=$removed_exit"
 echo "phase=bound_misnamed"
 echo "bound_misnamed_exit=$misnamed_exit"
+echo "phase=ceiling_removed"
+echo "ceiling_removed_exit=$ceiling_removed_exit"
+echo "phase=ceiling_misnamed"
+echo "ceiling_misnamed_exit=$ceiling_misnamed_exit"
+echo "phase=apply_ceiling"
+echo "apply_ceiling_exit=$apply_ceiling_exit"
 echo "phase=head_clean"
 echo "head_clean_exit=$head_clean_exit"
 echo "phase=head_missing"
@@ -182,22 +207,38 @@ echo "head_digit_exit=$head_digit_exit"
 echo "phase=head_stale"
 echo "head_stale_exit=$head_stale_exit"
 
+)"
+printf '%s\n' "$report"
+
+# THE PEN COUNTS ITS OWN LEGS OUT LOUD. `fail=0` is what an empty pen prints too, so a
+# control that merely finishes proves nothing about how much of it ran. `legs_ran` counts the
+# readings this run actually emitted; `legs_expected` is declared beside the phase list above
+# and asserted by the witness, so deleting a leg reds both the control and its witness rather
+# than passing quietly with less proof than yesterday.
+legs_expected=18
+legs_ran="$(printf '%s\n' "$report" | grep -c '_exit=')"
+echo "legs_expected=$legs_expected"
+echo "legs_ran=$legs_ran"
+
 verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
 # other reading below is a number and this one is a word.
 for reading in "$clean_exit" "$site_exit" "$run_exit" "$next_run_exit" "$next_pos_exit" \
                "$order_check_exit" "$gen_check_exit" "$parity_exit" "$shrunk_exit" \
-               "$removed_exit" "$misnamed_exit" "$head_clean_exit" "$head_missing_exit" \
-               "$head_digit_exit" "$head_stale_exit"; do
+               "$removed_exit" "$misnamed_exit" "$ceiling_removed_exit" \
+               "$ceiling_misnamed_exit" "$apply_ceiling_exit" "$head_clean_exit" \
+               "$head_missing_exit" "$head_digit_exit" "$head_stale_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
 if [ "$verdict" = ok ]; then
+  [ "$legs_ran" -eq "$legs_expected" ] || verdict=leg_count_disagrees
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
   [ "$head_clean_exit" -eq 0 ] || verdict=head_clean_failed
   for broken in "$site_exit" "$run_exit" "$next_run_exit" "$next_pos_exit" \
                 "$order_check_exit" "$gen_check_exit" "$parity_exit" \
-                "$removed_exit" "$misnamed_exit" \
+                "$removed_exit" "$misnamed_exit" "$ceiling_removed_exit" \
+                "$ceiling_misnamed_exit" "$apply_ceiling_exit" \
                 "$head_missing_exit" "$head_digit_exit" "$head_stale_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done

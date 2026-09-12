@@ -13,8 +13,10 @@
 # THE PEN IS A DIRECTORY. Zig resolves an import inside the root file's own directory, so
 # weave.rye and its witness sit side by side here.
 #
-# FIFTEEN PHASES -- thirteen over the Rye witness, two over the head scan. Two are innocence
-# legs that must exit 0 (clean, head_clean); the other thirteen are breaks that must not.
+# EIGHTEEN PHASES -- sixteen over the Rye witness, two over the head scan. Two are innocence
+# legs that must exit 0 (clean, head_clean); the other sixteen are breaks that must not. The
+# count is declared once as `legs_expected` at the foot, counted at runtime as `legs_ran`, and
+# asserted by the witness -- so a leg deleted here reds rather than passing with less proof.
 #   clean            -- the unmutated copy reaches GREEN, exit 0. This leg is what lets every
 #                       other phase read as the break speaking rather than the pen.
 #   gen_check        -- the reserved-generation refusal is deleted, so a row claiming to
@@ -47,6 +49,11 @@
 #                       CARRIED because the weave's declared invariant is an upper bound rather
 #                       than an equality, and claim 4 is what a deriving reader breaks.
 #   run_derived      -- the same substitution on the run counter.
+#   ceiling_pos      -- the header's position-counter ceiling check is deleted, so a record
+#                       whose `next_pos` stands above `max_weave_lines` restores clean and the
+#                       first insert meets `self.next_pos += 1` as an overflow.
+#   ceiling_run      -- the same, for the run counter, read apart: one check standing for two
+#                       counters is a check that proves one.
 #   head_clean       -- the unmutated copy reads ok, exit 0. The head scan's own innocence leg.
 #   head_missing     -- the head's `to_v2` line is deleted, so an operation stands unnamed and
 #                       tools/fixtures/m/mantra_weave_head_scan.sh reds.
@@ -147,9 +154,15 @@ run_field_exit="$(run_pen run_field "${to_v2_range} s/\.run = line\.run,/.run = 
 pos_derived_exit="$(run_pen pos_derived 's/\.next_pos = record\.next_pos,/.next_pos = 1,/')"
 run_derived_exit="$(run_pen run_derived 's/\.next_run = record\.next_run,/.next_run = 1,/')"
 
+# The two below hold the header-counter ceiling the module gained on `20260912.003734`. Each
+# header counter is read apart, since one check standing for two is a check that proves one.
+ceiling_pos_exit="$(run_pen ceiling_pos '/if (record\.next_pos > max_weave_lines) return WeaveError\.CounterPastCeiling;/d')"
+ceiling_run_exit="$(run_pen ceiling_run '/if (record\.next_run > max_weave_lines) return WeaveError\.CounterPastCeiling;/d')"
+
 head_clean_exit="$(run_head_pen clean '')"
 head_missing_exit="$(run_head_pen missing '/^\/\/!   weave\.to_v2(/d')"
 
+report="$(
 echo "phase=clean";             echo "clean_exit=$clean_exit"
 echo "phase=gen_check";         echo "gen_check_exit=$gen_check_exit"
 echo "phase=gen_misnamed";      echo "gen_misnamed_exit=$gen_misnamed_exit"
@@ -164,8 +177,21 @@ echo "phase=site_field";        echo "site_field_exit=$site_field_exit"
 echo "phase=run_field";         echo "run_field_exit=$run_field_exit"
 echo "phase=pos_derived";       echo "pos_derived_exit=$pos_derived_exit"
 echo "phase=run_derived";       echo "run_derived_exit=$run_derived_exit"
+echo "phase=ceiling_pos";        echo "ceiling_pos_exit=$ceiling_pos_exit"
+echo "phase=ceiling_run";        echo "ceiling_run_exit=$ceiling_run_exit"
 echo "phase=head_clean";        echo "head_clean_exit=$head_clean_exit"
 echo "phase=head_missing";      echo "head_missing_exit=$head_missing_exit"
+
+)"
+printf '%s\n' "$report"
+
+# THE PEN COUNTS ITS OWN LEGS OUT LOUD, for the reason the sibling control gives: a control
+# that merely finishes proves nothing about how much of it ran. `legs_expected` is declared
+# beside the phase list and asserted by the witness, so a deleted leg reds both.
+legs_expected=18
+legs_ran="$(printf '%s\n' "$report" | grep -c '_exit=')"
+echo "legs_expected=$legs_expected"
+echo "legs_ran=$legs_ran"
 
 verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
@@ -174,17 +200,20 @@ for reading in "$clean_exit" "$gen_check_exit" "$gen_misnamed_exit" "$order_chec
                "$order_misnamed_exit" "$identity_check_exit" "$identity_misnamed_exit" \
                "$counter_pos_check_exit" "$counter_run_check_exit" "$counter_misnamed_exit" \
                "$site_field_exit" "$run_field_exit" "$pos_derived_exit" "$run_derived_exit" \
+               "$ceiling_pos_exit" "$ceiling_run_exit" \
                "$head_clean_exit" "$head_missing_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
 if [ "$verdict" = ok ]; then
+  [ "$legs_ran" -eq "$legs_expected" ] || verdict=leg_count_disagrees
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$head_clean_exit" -eq 0 ] || verdict=head_clean_failed
   for broken in "$gen_check_exit" "$gen_misnamed_exit" "$order_check_exit" \
                 "$order_misnamed_exit" "$identity_check_exit" "$identity_misnamed_exit" \
                 "$counter_pos_check_exit" "$counter_run_check_exit" "$counter_misnamed_exit" \
                 "$site_field_exit" "$run_field_exit" "$pos_derived_exit" \
-                "$run_derived_exit" "$head_missing_exit"; do
+                "$run_derived_exit" "$ceiling_pos_exit" "$ceiling_run_exit" \
+                "$head_missing_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi

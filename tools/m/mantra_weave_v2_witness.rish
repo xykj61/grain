@@ -87,13 +87,21 @@ assert selftest.out contains "refused V2GenerationBelowOne" else "mantra-v2: the
 assert selftest.out contains "refused V2PlaceOrderNotRising" else "mantra-v2: the place-order refusal is missing"
 assert selftest.out contains "refused V2IdentityRepeated" else "mantra-v2: the repeated-identity refusal is missing -- the one the elder record never needed"
 assert selftest.out contains "refused V2CounterBelowLine" else "mantra-v2: the counter-bound refusal is missing"
+assert selftest.out contains "refused CounterPastCeiling -- both counters apart, the ceiling itself welcomed" else "mantra-v2: the counter-ceiling refusal is missing -- a header counter above `max_weave_lines` restores clean and overflows on the first insert, and the ceiling itself must be WELCOMED, since a bound proven only in the refusing direction cannot be told from one that refuses everything"
 assert selftest.out contains "text for text" else "mantra-v2: the document claim is missing"
 
-say "mantra-v2: breaking the record in a pen, so the guard is proven able to red..."
+say "mantra-v2: breaking the record sixteen ways in a pen, so the guard is proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_weave_v2_control.sh"]
 assert control.ok else "mantra-v2: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-v2: the control must reach its own verdict"
 assert control.out contains "clean_exit=0" else "mantra-v2: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
 assert control.out contains "head_clean_exit=0" else "mantra-v2: the head scan's own innocence leg must pass"
+assert control.out contains "legs_expected=18" else "mantra-v2: the pen must declare how many legs it runs, and this witness must be edited with it -- `fail=0` is what an empty pen prints too"
 
-say "GREEN: a merged history writes a record and reads back whole -- eleven claims, four refusals by name, fourteen breaks caught."
+# The count is the module's own sentence rather than a copy of it, for the reason the sibling
+# wrapper gives: one number in two places drifts, and this line stood at "eleven claims, four
+# refusals" for the lap after the module reached twelve and six.
+let green = run ["sh" "-c" "${bin} 2>&1 | grep '^GREEN:'"]
+say green.out
+assert green.ok else "mantra-v2: the module must print its own GREEN line"
+say "mantra-v2: eighteen pen legs ran, sixteen of them breaks, two innocence."

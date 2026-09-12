@@ -51,7 +51,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const weave = @import("weave.rye");
 
-const witness_version = "20260908.051232";
+const witness_version = "20260912.004500";
 
 /// The site a later hand edits from, once the elder record is lifted. Any
 /// number but `v1_site` would do; naming it is what lets claim 5 tell the
@@ -296,6 +296,51 @@ fn prove_bound_refused(garden: std.mem.Allocator) !void {
     print("mantra-v1-lift: a record past max_weave_lines refused TooManyLines\n", .{});
 }
 
+/// A row at the u32 ceiling is refused by name, and the sparse record whose
+/// counter reaches the ceiling refuses the next insert rather than overflowing.
+///
+/// THESE TWO ARE ONE FAULT READ AT TWO SEAMS. The elder bound counted LINES and
+/// said nothing about the numbers those lines are named by, so `next_pos =
+/// row.pos + 1` at 4,294,967,295 was an integer overflow -- proven on metal
+/// `20260912`, exit 134 at `weave.rye:592`, where every other malformed record
+/// is a named refusal. The second seam is the same number one function over:
+/// a record may be sparse, so a weave can hold two lines and have spent a
+/// counter to the ceiling, and the line bound cannot see it.
+fn prove_counter_ceiling_refused(garden: std.mem.Allocator) !void {
+    const at_ceiling = [_]weave.V1Row{
+        .{ .text = "a", .gen = 1, .pos = std.math.maxInt(u32) },
+    };
+    const lifted = weave.Weave.from_v1(garden, &at_ceiling);
+    // invariant: the ceiling is read before the counter rises off the position,
+    // so a record naming the widest u32 is refused rather than overflowed
+    assert(lifted == weave.WeaveError.CounterPastCeiling);
+
+    print("mantra-v1-lift: a row at the u32 ceiling refused CounterPastCeiling\n", .{});
+
+    // A record of two rows whose second sits at the last lawful position. The
+    // lift stands -- the record is inside every bound -- and the counter it
+    // leaves behind has no room above it.
+    const sparse = [_]weave.V1Row{
+        .{ .text = "a", .gen = 1, .pos = 0 },
+        .{ .text = "b", .gen = 1, .pos = weave.max_weave_lines - 1 },
+    };
+    var spent = try weave.Weave.from_v1(garden, &sparse);
+    // invariant: a sparse record is lawful, so the lift stands and the counter
+    // it leaves is exactly one above the record's highest position
+    assert(spent.next_pos == weave.max_weave_lines);
+    // invariant: two lines, far under the line bound -- which is what makes this
+    // the reading the line bound cannot take
+    assert(spent.lines.items.len == 2);
+
+    const inserts = [_][]const u8{"c"};
+    const grown = spent.apply(garden, .{ .deletes = &.{}, .inserts = &inserts, .site = 1 });
+    // invariant: the insert is refused by the counter rather than by the count,
+    // since the count stands at two against a bound of a million
+    assert(grown == weave.WeaveError.CounterPastCeiling);
+
+    print("mantra-v1-lift: an insert on a counter at the ceiling refused CounterPastCeiling -- 2 lines held\n", .{});
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_shape(garden);
     try prove_document_order_survives(garden);
@@ -307,9 +352,10 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_repeated_position_refused(garden);
     try prove_generation_zero_refused(garden);
     try prove_bound_refused(garden);
+    try prove_counter_ceiling_refused(garden);
 
     print("mantra-v1-lift: version {s}\n", .{witness_version});
-    print("GREEN: the elder v1 record lifts into the wide model whole -- ten claims, four refusals by name.\n", .{});
+    print("GREEN: the elder v1 record lifts into the wide model whole -- eleven claims, six refusals by name.\n", .{});
     return 0;
 }
 

@@ -66,8 +66,17 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-/// The largest number of lines one weave holds, and the ceiling both `apply`
-/// and `merge` read before they allocate anything. A weave keeps every line a
+/// The largest number of lines one weave holds -- and, from `20260912`, the
+/// ceiling its two COUNTERS stand under as well. The elder reading bounded the
+/// count and left the numbers those lines are named by free to the width of a
+/// u32, so a record carrying one line at position 4,294,967,295 passed every
+/// check and overflowed the next rise. One bound, said in two units: a position
+/// rises once per line and a run once per inserting edit, and `merge` takes the
+/// maximum of two counters rather than their sum, so a weave inside the line
+/// bound is inside the counter bound by construction.
+///
+/// This is the ceiling both `apply` and `merge` read before they allocate
+/// anything. A weave keeps every line a
 /// file has ever held, so its natural size is the whole history rather than the
 /// current length; a million lines stands far above any history this tree has
 /// written, and is small enough that the refusal arrives long before the
@@ -141,6 +150,20 @@ pub const WeaveError = error{
     /// born with a name that is taken. Read at the edge rather than asserted,
     /// since a record arrives from disk where no caller vouched for it.
     V2CounterBelowLine,
+    /// A weave's position or run counter would stand at or above
+    /// `max_weave_lines`. The elder bound counts LINES and says nothing about
+    /// the numbers those lines are named by, so a record could carry one line
+    /// at position 4,294,967,295 and pass every reading -- and the next rise of
+    /// the counter is then an integer overflow rather than a refusal. A lawful
+    /// weave can never reach here: a position comes off a counter that rises
+    /// once per line, a run off one that rises once per inserting edit, and
+    /// `merge` takes the MAXIMUM of two counters rather than their sum, so
+    /// every counter in a weave standing inside the line bound stands inside
+    /// this one too. What arrives past it is a forged or corrupted record,
+    /// which is the class `V1PositionsDoNotRise` and `V2CounterBelowLine`
+    /// already name -- this is the third reading of the same blob, and until
+    /// `20260912` it was the one that aborted the process instead of speaking.
+    CounterPastCeiling,
 };
 
 /// What names a line for all time: the position one counter handed it, and the
@@ -584,6 +607,13 @@ pub const Weave = struct {
         var previous_pos: u32 = 0;
         for (rows) |row| {
             if (row.gen == 0) return WeaveError.V1GenerationBelowOne;
+            // Read BEFORE the counter below rises off this position: the line
+            // that follows is `row.pos + 1`, and at the u32 ceiling that
+            // addition is an overflow rather than a number. A lawful elder
+            // record cannot reach here, since its writer appends one row per
+            // position off a counter that starts at zero and the record stands
+            // inside `max_weave_lines` rows.
+            if (row.pos >= max_weave_lines) return WeaveError.CounterPastCeiling;
             if (seen_any and row.pos <= previous_pos) return WeaveError.V1PositionsDoNotRise;
             previous_pos = row.pos;
             seen_any = true;
@@ -842,6 +872,13 @@ pub const Weave = struct {
         // The bound is read at the edge, before anything is allocated, so a
         // record too large to hold is named rather than half-read.
         if (record.rows.len > max_weave_lines) return WeaveError.TooManyLines;
+        // The counters are read at the same edge and for the same reason: the
+        // row loop below proves every line stands under them, so a header at
+        // the u32 ceiling would restore a weave whose next `apply` overflows.
+        // A counter may stand AT `max_weave_lines` -- that is the number a full
+        // weave's counter reads -- and never above it.
+        if (record.next_pos > max_weave_lines) return WeaveError.CounterPastCeiling;
+        if (record.next_run > max_weave_lines) return WeaveError.CounterPastCeiling;
 
         // usize lives at the inherited-std seam alone: a slice counts in usize,
         // and the bound just checked is what makes the cast safe.
@@ -966,11 +1003,38 @@ pub const Weave = struct {
         // refusal just below names the diff rather than covering for a weave
         // that was over the ceiling before this call arrived
         assert(self.lines.items.len <= max_weave_lines);
+        // invariant: the position counter stands inside the same ceiling, which is
+        // what makes the subtraction below a real number rather than a wrap. Every
+        // constructor holds it -- `empty` at zero, `from_v1` and `from_v2` refusing
+        // past it by name, `merge` taking the max of two that already do
+        assert(self.next_pos <= max_weave_lines);
+        // invariant: and so does the run counter, said separately because the two
+        // rise at different rates -- one per line against one per inserting edit
+        assert(self.next_run <= max_weave_lines);
 
         // The weave grows by exactly the diff's inserts, so the sum is what the
         // ceiling reads -- at the edge, before a single line is appended.
         if (self.lines.items.len + diff.inserts.len > max_weave_lines) {
             return WeaveError.TooManyLines;
+        }
+
+        // The COUNT is bounded above; the two counters are bounded here, and
+        // the pair is one bound said in two units. A weave lifted from a sparse
+        // record holds fewer lines than its counter has spent, so the line
+        // reading above can pass while the position reading below refuses --
+        // which is the case the elder bound could not see, and the one that
+        // reached `next_pos += 1` at the u32 ceiling as a panic.
+        //
+        // Written as a subtraction rather than a sum on purpose: both counters
+        // stand at or under `max_weave_lines` by the weave's own invariant, so
+        // the difference is a real number where the sum is what overflows.
+        if (diff.inserts.len > max_weave_lines - self.next_pos) {
+            return WeaveError.CounterPastCeiling;
+        }
+        // The run counter rises once for the whole edit, and only when the edit
+        // places a line -- so it is read under exactly that condition.
+        if (diff.inserts.len > 0 and self.next_run >= max_weave_lines) {
+            return WeaveError.CounterPastCeiling;
         }
 
         // Process deletes first: bump each named line's gen to even. Identity
