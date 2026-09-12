@@ -906,6 +906,7 @@ out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri 
 case "$out" in *"tree_moved=no"*) echo "still_tree_reads_no=yes" ;; *) echo "still_tree_reads_no=no" ;; esac
 case "$out" in *"run_verdict=ok"*) echo "still_tree_passes=yes" ;; *) echo "still_tree_passes=no" ;; esac
 case "$out" in *"tree_at_open=nogit"*) echo "real_repo_digests=no" ;; *) echo "real_repo_digests=yes" ;; esac
+out2_still=$out
 
 # A stub that writes an untracked file: the tree moves under the run, and the runner refuses.
 cat > "$gitpen/rishi/bin/rishi" <<'EOF'
@@ -920,6 +921,16 @@ case "$out" in *"tree_moved=yes"*) echo "moved_tree_reads_yes=yes" ;; *) echo "m
 case "$out" in *"run_verdict=tree_moved"*) echo "moved_tree_refuses=yes" ;; *) echo "moved_tree_refuses=no" ;; esac
 # Every guard line still prints above the refusal, so a moved tree loses no reading.
 case "$out" in *"alpha green"*) echo "moved_tree_keeps_lines=yes" ;; *) echo "moved_tree_keeps_lines=no" ;; esac
+
+# WHAT MOVED, NAMED (`20260912.043553`). `tree_moved=yes` above says only that two twelve-character
+# digests differ, so the pass that pays for the refusal learns its cost and never its cause. The
+# stub just above wrote `mid-run.txt` and nothing else, so that path is the whole answer and the
+# transcript is asked for it by name. The count rides beside it, since a hand reads the number
+# before the rows.
+case "$out" in *"tree_moved_paths=1"*) echo "moved_tree_counts_one=yes" ;; *) echo "moved_tree_counts_one=no" ;; esac
+case "$out" in *"detail: moved appeared mid-run.txt"*) echo "moved_tree_names_path=yes" ;; *) echo "moved_tree_names_path=no" ;; esac
+# A still tree names nothing, because a reading nobody needs is noise on every green pass.
+case "$out2_still" in *"tree_moved_paths="*) echo "still_tree_names_nothing=no" ;; *) echo "still_tree_names_nothing=yes" ;; esac
 
 # A guard red is the louder finding and keeps the verdict even when the tree also moved.
 cat > "$gitpen/rishi/bin/rishi" <<'EOF'
@@ -1054,6 +1065,40 @@ case "$out" in *"run_verdict=ok"*) echo "dirty_still_tree_passes=yes" ;; *) echo
 out=$(run_digestpen --hot)
 case "$out" in *"tree_moved=no"*) echo "staged_still_tree_reads_no=yes" ;; *) echo "staged_still_tree_reads_no=no" ;; esac
 case "$out" in *"run_verdict=ok"*) echo "staged_still_tree_passes=yes" ;; *) echo "staged_still_tree_passes=no" ;; esac
+
+# --- WHAT MOVED, NAMED: the three verbs and the bound (`20260912.043553`) -----------------
+# `tree_moved=yes` costs a pass its whole reading, and until this lap it named no path. Each verb
+# is proven against a mid-run edit that produces exactly it, because a reader told only that
+# SOMETHING moved is told what a hash already said.
+
+# CHANGED -- a tracked file whose bytes move under the run. The path stands in both listings, so
+# only the hash differs, and this is the verb the elder reading could reach least: porcelain prints
+# `M kept.txt` before and after.
+( cd "$digestpen" && git reset -q && git checkout -q -- kept.txt )
+digest_stub "printf 'c9\n' > kept.txt"
+out=$(run_digestpen)
+case "$out" in *"detail: moved changed kept.txt"*) echo "named_changed=yes" ;; *) echo "named_changed=no" ;; esac
+case "$out" in *"tree_moved_paths=1"*) echo "named_changed_counts_one=yes" ;; *) echo "named_changed_counts_one=no" ;; esac
+
+# VANISHED -- an untracked file the run removes. `hash-object` refuses a path that is gone, which
+# is why the listing labels a missing path rather than hashing it; this leg is what proves that
+# branch runs at all.
+( cd "$digestpen" && git checkout -q -- kept.txt && printf 'v1\n' > vanishing.txt )
+digest_stub "rm -f vanishing.txt"
+out=$(run_digestpen)
+case "$out" in *"detail: moved vanished vanishing.txt"*) echo "named_vanished=yes" ;; *) echo "named_vanished=no" ;; esac
+
+# APPEARED, MANY -- and the bound. Seventeen files arrive under one run, so sixteen are named and
+# the remainder is counted rather than dropped. A rebase mid-pass moves hundreds, and a transcript
+# printing all of them buys a scroll where a hand wanted a sentence.
+( cd "$digestpen" && rm -f vanishing.txt )
+digest_stub "i=1; while [ \$i -le 17 ]; do : > many\$i.txt; i=\$((i+1)); done"
+out=$(run_digestpen)
+case "$out" in *"tree_moved_paths=17"*) echo "named_bound_counts_all=yes" ;; *) echo "named_bound_counts_all=no" ;; esac
+case "$out" in *"tree_moved_unnamed=1"*) echo "named_bound_leaves_one=yes" ;; *) echo "named_bound_leaves_one=no" ;; esac
+named_rows=$(printf '%s\n' "$out" | grep -c '^detail: moved ' || true)
+echo "named_bound_rows=$named_rows"
+( cd "$digestpen" && rm -f many*.txt )
 # --- the unclosed lap, proven from both sides on the same real repository -----------------
 # A full-roster pass opening on a dirty index is a lap that ended at `git add` (REDS %188, %220,
 # %223). The refusal has to be shown against the case it must NOT bite -- a clean cold open -- or a

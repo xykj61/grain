@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260912.050629
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role fleet captain, incense seat
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json, tracked; configuration rather than runtime telemetry
+voice Kyri
+host Framework pier, America/New_York
+title The refusal that named its cost and never its cause
+prompt autonomous lap -- fleet baton, incense lane: law, active-designing, iterative review
+rota lap 4682, row 0 -- Aether, the row that hears; hand-advanced past row 2, which pheromone read today. The threshold asks a lap to listen for the silence where a claim used to be and a witness now stands. It heard one: the runner says a pass was thrown away and says nothing about why.
+think Opened with fleet_round_open, then launched the cold roster pass detached per the baton's own naming rule.
+think Read the aether triad -- the compass, the Lindy effect, the grain -- and the grain's own strand: a guard that cannot red guards nothing.
+think Chose control-legs as the crux at first: 234 paired control+witness families, 32 controls print a leg count, 27 read by their witness. Claimed it.
+think The claim wrote construction/fleet-claims.kyri, the cold pass closed tree_moved=yes, and 272 green guards over 3232 guard-seconds were rightly thrown away.
+think The transcript named the cost and never the cause -- and the cause was the baton's own instruction to claim before building. Copal reported the same shape one lap earlier. A lantern fired twice, so it is a loom.
+think Withdrew the control-legs claim, opened tree-moved-names, pushed it, then built.
+think tree_paths() emits one hash-and-path line per path differing from HEAD or untracked, plus HEAD's own, written to the runner's mktemp pen at open and at close. One awk at the close prints three verbs, bounded at sixteen with the remainder counted.
+obs The pen caught the verb. A first draft read verbs off set membership, so a committed file rewritten mid-pass read appeared -- it stands in no open listing at all, because it was clean when the pass opened. The listing holds what differs from HEAD, never the tree. Each verb is now asserted apart; one leg standing for three would have passed on whichever happened to work.
+obs Two mutations bite: collapsing changed into appeared reds named_changed, and lifting the bound reds named_bound_rows=16.
+obs Three own-goals, all the same class and all undone: a no-op git commit -F .lap/commit-msg.txt committed a previous lap's body; the shelf tool shelved a previous lap's block from a stale .lap/incense-block.txt; and a git stash pop typed in the shared tree aborted rather than applying a peer's stash. read-scope names the .lap/ hazard in prose and no guard reaches it.
+obs The pin is deadlocked -- 17 rows, 0 foldable, 0 fit -- so both reds are keyed by stamp rather than numbered.
+loom witness=standing_equipment control_legs_added=9 mutations_bitten=2
+loom tool=tree_paths wall_ms=162 dirty_paths=3 calls_per_pass=2
+loom pass=standing_equipment_cold guards_green=272 guards_red=0 guards_seconds=3232 verdict=tree_moved
+file tools/fixtures/s/standing_equipment_run.sh tree_paths beside tree_digest, and the three-verb naming at the close
+file tools/fixtures/s/standing_equipment_control.sh nine legs proving each verb apart plus the bound from both sides
+file tools/s/standing_equipment_witness.rish the nine legs asserted by name, so the pen is heard
+file active-designing/20260912-050057_the-refusal-that-named-its-cost.md the paper, B+ 87, checkable room
+file construction/ITINERARY.md the INCENSE account, elder shelved, one question for Keaton
+file construction/archive/20260912-050057_itinerary-landed-accounts.md the elder account, links re-anchored by the writer
+file construction/fleet-claims.kyri the claim, opened and pushed before the build
+scope one repair to the roster runner, its pen, and its witness; one paper; the card and its shelf
+status GREEN -- tools/s/standing_equipment_witness.rish green on metal, both mutations proven to bite, first resident on the real runner naming the path; hot pass to follow this log into the same commit
+recommend check-in (Keaton) -- may construction/fleet-claims.kyri be read past by the run digest, as the runner's own gitignored card already is? A tracked file every ship writes mid-lap by instruction is the same kind of thing, and weakening a digest is a word rather than a repair.

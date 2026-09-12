@@ -299,6 +299,32 @@ assert control.out contains "dirty_still_tree_passes=yes" else "standing-equipme
 assert control.out contains "staged_still_tree_reads_no=yes" else "standing-equipment: a staged tree standing still under --hot must read tree_moved=no"
 assert control.out contains "staged_still_tree_passes=yes" else "standing-equipment: a staged tree standing still under --hot must pass"
 
+# WHAT MOVED, NAMED (`20260912.043553`). Every reading above answers WHETHER the tree moved, and a
+# twelve-character digest is all a close had to compare, so a pass could refuse and name no path.
+# That is a real bill rather than a tidiness: the lap that seated these legs lost a cold pass of
+# 272 green guards and 3,232 guard-seconds to one edit of `construction/fleet-claims.kyri`, made
+# because `tools/f/fleet_baton.txt` tells every ship to open a claim before it builds -- and the
+# transcript said only `tree_moved=yes`. Copal reported the same shape one lap earlier from its own
+# door, so the lantern had already fired twice.
+#
+# THE THREE VERBS ARE ASSERTED APART, because they are read from three different facts and a single
+# leg standing for all three would pass on the one that happens to work. `changed` is the sharpest:
+# a first draft read its verb off set membership and called a committed file's rewrite `appeared`,
+# since a clean file stands in no open listing at all, and only a leg naming the verb caught it.
+assert control.out contains "moved_tree_counts_one=yes" else "standing-equipment: a moved tree must count the paths that moved"
+assert control.out contains "moved_tree_names_path=yes" else "standing-equipment: a moved tree must name the untracked file the stub wrote"
+assert control.out contains "named_changed=yes" else "standing-equipment: a committed file rewritten under the run must be named changed, never appeared"
+assert control.out contains "named_changed_counts_one=yes" else "standing-equipment: one file rewritten is one path moved"
+assert control.out contains "named_vanished=yes" else "standing-equipment: a file the run removes must be named vanished"
+# The bound, both halves. Seventeen arrive, sixteen are named, and the seventeenth is counted
+# rather than dropped -- a withheld row nobody mentions is the fault a bound exists to avoid.
+assert control.out contains "named_bound_counts_all=yes" else "standing-equipment: the count must name every path that moved, past the naming bound"
+assert control.out contains "named_bound_rows=16" else "standing-equipment: the naming bound must hold at sixteen rows"
+assert control.out contains "named_bound_leaves_one=yes" else "standing-equipment: the paths past the bound must be counted out loud as unnamed"
+# And the green side: a still tree prints no naming at all, since a reading nobody needs on every
+# green pass is noise a reader learns to skip.
+assert control.out contains "still_tree_names_nothing=yes" else "standing-equipment: a tree that stood still must name nothing"
+
 # The unclosed lap, both sides, on the same real repository. A reading on line one persuaded and the
 # class fired again eleven hours later (REDS %223), so the runner refuses rather than reports -- and
 # the refusal is proven against a clean cold open, which it must leave entirely alone.
