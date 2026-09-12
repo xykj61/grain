@@ -52,3 +52,9 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
+claim build-target
+seat bakery
+stamp 20260912.014936
+epoch 1789192176
+paths tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/b/build_target_witness.rish tools/fixtures/b/build_target_race_probe.sh
+what A meter over where a rostered guard's build output lands: 110 of 125 emit sites write a fixed path in the tree rather than a pen, and 6 of 51 such paths are written by two or more guards -- one by 18 -- so any second reader of the tree during a pass can read a half-written binary.
