@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `59127a1a96` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `521c591c07` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT THE SAME LOOM; A PEER'S LANDED FIRST.** Elder
 [shelved](archive/20260911-174455_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4644).
