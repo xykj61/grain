@@ -1,0 +1,148 @@
+# tools/c/capability_lattice_witness.rish -- Caravan's privilege is a lattice, and that is measured.
+#
+# WHY THIS RUNG. Row 2 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes
+# reading Caravan's process graph in polar coordinates, with radius standing for privilege and a
+# supervisor refusing any hop past a declared maximum. It rests on one written assumption --
+# "Privilege in Caravan is already ordered" -- and carries one falsifier: a real supervised process
+# needing a privilege between two rings would show privilege is a lattice rather than a line.
+# tools/fixtures/c/capability_lattice_scan.sh takes that measurement against the seated module, and
+# this rung keeps it checkable rather than remembered.
+#
+# WHAT THE SCAN FINDS, read 20260912 over caravan/capabilities.rye and the caravan room beside it.
+# The module declares five rights as bits of a u8 mask and checks them in one function,
+# Rights.contains(have, need), returning (have & need) == need -- subset containment, which is the
+# Boolean lattice rather than a line. The tree already constructs ten distinct masks, and 32 of
+# their 45 unordered pairs are incomparable. The falsifier fires on seated code, so no hypothetical
+# process is needed to raise it.
+#
+# AND IT FIRES IN ONE DIRECTION ONLY, which is the half worth carrying. A radius-only checker admits
+# 48 of the seated conferrals the lattice refuses and refuses none that it allows -- because
+# popcount is monotone under subset, so lattice-legal always implies radius-legal. Every error a
+# radius model can make is therefore an OVER-GRANT: a supervisor handing a dependent a right nobody
+# conferred. A privilege checker whose only failure mode is over-granting is the worst shape a
+# supervisor can take, and that is a reason to decline the radius rather than to refine it.
+#
+# WHAT IS GATED HERE. The control, and the control alone. Every figure the scan publishes is a fact
+# about the module rather than a defect in it: a gate on the incomparable count would red this tree
+# for holding a capability model that is correct. What must stay loud is the instrument, since a
+# scan answering "lattice" for every input would have produced this same finding on a module whose
+# privileges genuinely sat on a line.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/c/capability_lattice_control.sh -- 59 behaviors on
+# root-shaped pens in a throwaway directory:
+#
+#   A CHAIN PEN reads `line`, with the two models agreeing pair for pair, so the verdict below is
+#     falsifiable rather than constant.
+#   ONE INCOMPARABLE PAIR flips it to `lattice` on a single changed line, and the pair is named.
+#   THE CLOSED FORMS checked against a brute-force walk of all 4^n ordered pairs at three and five
+#     rights -- including the under-admission zero the scan asserts rather than measures.
+#   THE BOUND DERIVED from the mask type: nine rights refuse under u8 and pass under u16, eight
+#     pass at the edge, a room mixing two mask types refuses, and u64 is the ceiling itself.
+#   AN UNDECLARED right name counted rather than resolved to zero, since a zero mask would read as
+#     the bottom of the lattice and compare to everything.
+#   A DECLARED-BUT-UNUSED right left unseated, and the declaration-line filter mutated to prove it:
+#     a copy keeping those lines rather than dropping them seats a privilege the room never built.
+#     The pen's declaration sits inside its room, as Caravan's does, so the filter is exercised
+#     rather than stepped around on a geometry the tree does not have.
+#   SIX REFUSALS, each planted and then lifted, so a refusal proven one way cannot be told from a
+#     scan that refuses every input.
+#   THREE MUTATIONS: the declaration-line filter inverted, the verdict hard-wired to `lattice`, and
+#     containment read backwards. Each plant proven landed by cmp before the reading, and each
+#     shown to change a number.
+#
+# WHAT IT LEAVES TO OTHERS. Whether a supervisor SHOULD hold privilege on a line; whether the angle
+# half of row 2 survives at all; and what Caravan ought to do with the three rights of headroom its
+# u8 mask still holds. This reads what the seated module means by privilege and prices one proposed
+# replacement against it.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260912-021711_the-privilege-that-was-never-a-line.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/capability_lattice_witness.rish
+
+say "capability-lattice: Language EN -- privilege is an order, so the shape of that order is a measurement."
+say "capability-lattice: Style Gauge, Meter -- every figure names the population it was read over."
+say "capability-lattice: Lens TAME -- bound the rights by the mask type, and prove the verdict from both sides."
+
+let control = run ["sh" "tools/fixtures/c/capability_lattice_control.sh"]
+say control.out
+assert control.ok else "capability-lattice: the control must complete -- its own lines are printed above"
+
+# A population that genuinely is a line, read as one. Without this the verdict below is constant.
+assert control.out contains "leg chain_rights_derived ok" else "capability-lattice: the rights come from their own declarations, never from this file"
+assert control.out contains "leg chain_lattice_size ok" else "capability-lattice: the lattice size follows from the rights count"
+assert control.out contains "leg chain_masks_seated ok" else "capability-lattice: every mask the room constructs must be counted once"
+assert control.out contains "leg chain_incomparable ok" else "capability-lattice: a chain holds no incomparable pair"
+assert control.out contains "leg chain_verdict ok" else "capability-lattice: a chain must read line, or the lattice verdict proves nothing"
+assert control.out contains "leg chain_over_admitted ok" else "capability-lattice: on a chain the radius model over-admits nothing, which is why a line is safe there"
+assert control.out contains "leg chain_legal_agree ok" else "capability-lattice: on a chain the two models must agree pair for pair"
+assert control.out contains "leg chain_under_admitted ok" else "capability-lattice: subset containment never raises the popcount"
+
+# One incomparable pair, and the verdict turns on it.
+assert control.out contains "leg pair_masks_seated ok" else "capability-lattice: the pair pen seats the same three masks"
+assert control.out contains "leg pair_incomparable ok" else "capability-lattice: two masks sharing no order must be counted as incomparable"
+assert control.out contains "leg pair_verdict ok" else "capability-lattice: one incomparable pair is enough to make the population a lattice"
+assert control.out contains "leg pair_over_admitted ok" else "capability-lattice: masks at one radius are where the radius model over-admits"
+assert control.out contains "leg pair_under_admitted ok" else "capability-lattice: the asymmetry holds on every population"
+assert control.out contains "leg pair_named ok" else "capability-lattice: an incomparable pair must be nameable, or a reader cannot check it"
+
+# The full lattice, by closed form, against its own brute-force walk.
+assert control.out contains "leg closed_3_full_pairs ok" else "capability-lattice: the ordered-pair count must match an enumeration"
+assert control.out contains "leg closed_3_full_lattice_legal ok" else "capability-lattice: 3^n - 2^n must match a walk of the subset order"
+assert control.out contains "leg closed_3_full_radius_legal ok" else "capability-lattice: the rank-sum must match a walk of the popcount order"
+assert control.out contains "leg closed_3_full_over_admitted ok" else "capability-lattice: the over-admission is the gap between the two orders"
+assert control.out contains "leg closed_3_full_under_admitted ok" else "capability-lattice: a zero asserted rather than measured must be proven somewhere"
+assert control.out contains "leg closed_3_full_incomparable_unordered ok" else "capability-lattice: the incomparable count must match an enumeration"
+assert control.out contains "leg closed_5_full_pairs ok" else "capability-lattice: the closed forms must hold at Caravan's own width too"
+assert control.out contains "leg closed_5_full_lattice_legal ok" else "capability-lattice: the legal-conferral count at five rights is the tree's own figure"
+assert control.out contains "leg closed_5_full_radius_legal ok" else "capability-lattice: the radius count at five rights is the tree's own figure"
+assert control.out contains "leg closed_5_full_over_admitted ok" else "capability-lattice: the over-admission at five rights is the paper's headline number"
+assert control.out contains "leg closed_5_full_under_admitted ok" else "capability-lattice: the asymmetry must hold at five rights as well as three"
+assert control.out contains "leg closed_5_full_incomparable_unordered ok" else "capability-lattice: the incomparable count at five rights must match an enumeration"
+assert control.out contains "leg full_antichain ok" else "capability-lattice: the widest antichain is the width a line would have to hold at one point"
+
+# A right declared and never built stays unseated, and the filter is what does it.
+assert control.out contains "leg unused_rights_declared ok" else "capability-lattice: a declared right is counted as declared whether or not the room builds it"
+assert control.out contains "leg unused_masks_seated ok" else "capability-lattice: a declaration is not a construction, so it seats no mask"
+assert control.out contains "leg unused_incomparable ok" else "capability-lattice: a privilege nobody built must not move the incomparable count"
+assert control.out contains "leg unused_verdict ok" else "capability-lattice: a chain plus an unused declaration is still a chain"
+assert control.out contains "leg mutation0_planted ok" else "capability-lattice: the filter plant must land before its reading is believed"
+assert control.out contains "leg mutation0_bit ok" else "capability-lattice: keeping the declaration lines must seat a mask the room never built"
+
+# An undeclared name counted rather than quietly resolved to the bottom of the lattice.
+assert control.out contains "leg ghost_unresolved ok" else "capability-lattice: a right the declaration does not name must be counted, never guessed"
+assert control.out contains "leg ghost_masks_seated ok" else "capability-lattice: an unresolved name buys no mask"
+
+# The bound read from the mask type rather than written into the scan.
+assert control.out contains "leg refuse_past_rights_bound ok" else "capability-lattice: a ninth right cannot fit a u8 mask, so it refuses"
+assert control.out contains "leg lift_at_rights_bound ok" else "capability-lattice: eight rights is the bound itself and must pass"
+assert control.out contains "leg at_bound_headroom ok" else "capability-lattice: headroom at the bound is nothing, and must say so"
+assert control.out contains "leg at_bound_lattice ok" else "capability-lattice: the lattice size must follow the derived width"
+assert control.out contains "leg lift_wider_mask_type ok" else "capability-lattice: a wider mask type raises the bound by saying so in Rye"
+assert control.out contains "leg wider_rights_declared ok" else "capability-lattice: nine rights are lawful once the mask holds them"
+assert control.out contains "leg wider_headroom ok" else "capability-lattice: headroom is the mask's width less the rights declared"
+assert control.out contains "leg refuse_mixed_mask_types ok" else "capability-lattice: two mask types name two lattices, so one reading refuses"
+assert control.out contains "leg refuse_mask_type_past_ceiling ok" else "capability-lattice: a mask wider than the ceiling refuses by name"
+assert control.out contains "leg lift_mask_type_at_ceiling ok" else "capability-lattice: the ceiling itself must pass, or the bound is one short"
+
+# Every other refusal, each beside the lift that proves it is not a blanket one.
+assert control.out contains "leg refuse_absent_declaration ok" else "capability-lattice: no declaration means no reading, rather than an empty one"
+assert control.out contains "leg lift_absent_declaration ok" else "capability-lattice: the same pen with its declaration back must pass"
+assert control.out contains "leg refuse_no_bit_declarations ok" else "capability-lattice: a file declaring no rights has no lattice to read"
+assert control.out contains "leg lift_no_bit_declarations ok" else "capability-lattice: the same pen with its bits back must pass"
+assert control.out contains "leg refuse_absent_room ok" else "capability-lattice: an absent room would read as zero seated masks and pass"
+assert control.out contains "leg refuse_unknown_argument ok" else "capability-lattice: an unknown argument refuses rather than being read past"
+
+# The mutations, each planted, proven landed, and shown to bite.
+assert control.out contains "leg mutation_planted ok" else "capability-lattice: a plant that matches nothing tests the real scan twice"
+assert control.out contains "leg mutation_bit ok" else "capability-lattice: a hard-wired verdict must fail the chain pen"
+assert control.out contains "leg mutation2_planted ok" else "capability-lattice: the containment plant must land before its reading is believed"
+assert control.out contains "leg mutation2_bit ok" else "capability-lattice: containment read backwards must move a number"
+
+assert control.out contains "legs=59" else "capability-lattice: a leg written tomorrow must be heard on the lap it lands"
+assert control.out contains "legs_expected=59" else "capability-lattice: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "faults=0" else "capability-lattice: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "capability-lattice: the control must balance before it is believed"
+
+say "GREEN: capability-lattice -- 59 behaviors, the verdict proven from both sides, the closed forms walked, three mutations bitten."
