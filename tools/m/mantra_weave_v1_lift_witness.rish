@@ -93,13 +93,22 @@ assert selftest.out contains "the merge is the union" else "mantra-v1-lift: the 
 assert selftest.out contains "refused V1PositionsDoNotRise" else "mantra-v1-lift: the refusal the elder reader never had is missing"
 assert selftest.out contains "refused V1GenerationBelowOne" else "mantra-v1-lift: the reserved-generation refusal is missing"
 assert selftest.out contains "refused TooManyLines" else "mantra-v1-lift: the bound refusal is missing"
+assert selftest.out contains "a row at the u32 ceiling refused CounterPastCeiling" else "mantra-v1-lift: the counter-ceiling refusal is missing -- a record whose position stands at the u32 ceiling would meet `row.pos + 1` as a panic"
+assert selftest.out contains "an insert on a counter at the ceiling refused CounterPastCeiling" else "mantra-v1-lift: the sparse-lift refusal is missing -- the case the LINE bound cannot see, two lines whose counter is spent"
 
-say "mantra-v1-lift: breaking the lift eleven ways in a pen, so both guards are proven able to red..."
+say "mantra-v1-lift: breaking the lift fifteen ways in a pen, so both guards are proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_weave_v1_lift_control.sh"]
 assert control.ok else "mantra-v1-lift: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-v1-lift: the control must reach its own verdict"
 assert control.out contains "clean_exit=0" else "mantra-v1-lift: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
 assert control.out contains "bound_shrunk_exit=0" else "mantra-v1-lift: shrinking the bound alone must stay GREEN, or the two bound breaks below are failing for the shrink"
 assert control.out contains "head_clean_exit=0" else "mantra-v1-lift: the head scan's own innocence leg must pass"
+assert control.out contains "legs_expected=18" else "mantra-v1-lift: the pen must declare how many legs it runs, and this witness must be edited with it -- `fail=0` is what an empty pen prints too"
 
-say "GREEN: the elder v1 record lifts into the wide model whole -- ten claims, four refusals by name, fifteen breaks caught."
+# The count is the module's own sentence rather than a copy of it. A wrapper that spells the
+# number keeps a second copy of one fact, and this line stood at "ten claims, four refusals"
+# for the lap after the module reached eleven and six -- one number in two places, drifting.
+let green = run ["sh" "-c" "${bin} 2>&1 | grep '^GREEN:'"]
+say green.out
+assert green.ok else "mantra-v1-lift: the module must print its own GREEN line"
+say "mantra-v1-lift: eighteen pen legs ran, fifteen of them breaks, three innocence."

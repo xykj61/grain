@@ -12,4 +12,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260912.014100` | [the column the paragraph could not keep](20260912/20260912-014100_the-column-the-paragraph-could-not-keep.kyri) | a lint table's split left prose for a derived column |
+| `20260912.011940` | [the pen that held no leg](20260912/20260912-011940_the-pen-that-held-no-leg-for-the-new-refusal.kyri) | a parked round landed, its pen widened to hold it |
+| `20260912.004500` | [the bound that counted](20260912/20260912-004500_the-bound-that-counted-and-never-measured.kyri) | the weave counters take the ceiling its lines had |
 | `20260912.000053` | [The orphan already landed](20260912/20260912-000053_the-orphan-that-had-already-landed.kyri) | 3 of 3 work orphans were landed work under a draft name |

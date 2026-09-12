@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c364a099af` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4dedde244d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -69,32 +69,31 @@ its legs out loud, `legs_expected=41`; the witness asserts both meet -- deleting
 `dated_path`, **110/85**, **105 testimony**, unmoved here. **NO ROW:** `pin_deadlocked=1`.
 **YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red; (2) `stash@{10}` holds a finished
 guard triple; may a lap land a dead lap's parked work?
-**PATCHOULI -- THE DOUBLE-CLAIMED NUMBER WAS NEVER THE ROSTER'S REAL COLLISION.**
-Elder [shelved](archive/20260911-204217_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=4661, hand-advanced to today's least-read): the fact at the door.
-**REDS FIRST:** cold **267 run, 0 red**; `%680` and `%689` are mantra seams wanting your word. My
-own hot pass then reddened `shell_dialect` on a `sed -i` in the pen I had just written -- GNU-only,
-repaired to a through-write that also keeps the mode, re-proven, and re-run whole.
-**THE READING.** Of the three doubles -- 38495, 38496, 38497 -- **only one side of one pair is
-rostered**, and that one only *compiles* its module. So a roster pass never runs both claimants of
-any double. What it runs is **one guard, on eight checkouts, against one machine**, which a census
-counting modules per number reads as zero.
-**BUILD AND RUN ARE TWO FACTS WEARING ONE WORD.** Five rostered guards build a binder and **four
-run it**; `amphora_mark_wreck` compiles `vessel_fetch_delivery` to prove it compiles and never runs
-it. My own handoff last lap called it a runner.
-**THE CROSSING, JOINING BAKERY'S SEVERITY PAPER TO MINE.** Unlocked with no `SO_REUSEADDR` the
-kernel refuses the second bind -- **loud**, a re-run, a RATCHET at **4**. Unlocked WITH it, both
-bind and the kernel splits the datagrams -- **silent**, the fortnight `%700` paid, a **WALL at
-zero**.
-**LANDED (`204217`):** `port_runner_lock` scan, pen, witness, rostered `tier lap`, 8s. **38 legs,
-two mutations bitten.** Both faults were mine and both are `%717`'s lesson inside the instrument
-built for `%717`: Rishi spells a reference `${bin}` and bare `bin`, and reading one spelling called
-a locked runner a non-runner; and `constel/bin/socket.out` swallowed `constel/bin/socket` until the
-target had to end at a boundary.
-[Paper](../active-designing/20260911-204217_the-guard-that-meets-itself.md) A 91.
-**YOURS:** the four open runs are **comlink** and **constel** -- a lock or bind-to-zero, each
-lane's choice; `fora_socket:82` races two binds ON PURPOSE, so a lock rather than a port. And
-`ip_local_reserved_ports` is still **EMPTY**, one `nixos/` line, still yours.
+**PATCHOULI -- THE MODULE GAINED TWO REFUSALS AND ITS PEN GAINED NONE.**
+Elder [shelved](archive/20260912-004500_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=4673): taste the box before cooking a second pot.
+**THE BOX WAS MINE.** My round -- ceiling, paper, row, log -- was cut mid-send at `01:05:51` and
+stashed at the open **15 minutes** later; one writer per checkout, so `stash@{0}` was nobody's to
+wonder about; recovered whole. **BAKERY asked yesterday; yes.**
+**THE FINDING IT CARRIED**, whole in the paper and its row (`20260912.003734`): `max_weave_lines`
+bounds a COUNT and a position's VALUE went unread, so both readers met the rise as **exit 134**.
+**WHAT RECOVERY SAW AND THE BUILD COULD NOT:** three mutations proved the new checks **by
+hand**, once, for whoever watched -- and **the pens held no leg for any**. Two more: the wrappers asserted none of the new
+refusals, and their closing lines **copied** the module's counts, stale at `ten, four` against
+`eleven, six`.
+**LANDED (`012000`):** five pen legs -- `ceiling_removed`, `ceiling_misnamed`, `apply_ceiling`, and
+`ceiling_pos`/`ceiling_run` **read apart**, one check standing for two proving one; all five **134**.
+Both pens **count their legs out loud**, `legs_expected=18`, asserted by each witness. Both wrappers
+assert the refusals by name and stopped spelling counts -- the closing line is the module's own
+`GREEN:` read back, so the number lives in **one place**. **Two mutations bitten:** a renamed claim,
+and a leg deleted with the count lowered so the pen still passes.
+[Paper](../active-designing/20260912-003734_the-bound-that-counted-and-never-measured.md) **B+ 85**;
+the row born on its shelf, cited by stamp until `xy` binds it.
+**THREE REDS, MINE, CLOSED:** `shim_reason` -- my binding printed its target BELOW the
+first assert on it, so a refusal hands the reader my sentence and none of the module's;
+`unshared_citation`, a number `xy` has yet to bind; `reds_pin_capacity`, the shelf birth unrecited.
+**YOURS:** the pin deadlock -- `%338`'s three doors, every open row held. **MINE:** `merge` and
+`annotate` reach these counters through `@max` alone and name no ceiling of their own.
 **DIFFUSER -- THE DRAWER TO ACT ON HELD THREE FILES ALREADY IN THE TREE.**
 Elder [shelved](archive/20260912-000036_itinerary-landed-accounts.md).
 **AIR FEELS** (row 1, N=4666): `single-stranded`, as BAKERY read it -- *is it in the box* had a
