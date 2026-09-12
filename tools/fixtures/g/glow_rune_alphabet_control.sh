@@ -50,7 +50,26 @@ git -C "$root" worktree add --detach "$pen" HEAD >/dev/null 2>&1 \
 
 # `cat >` writes through the checkout's own inode, so the mode git tracks survives the copy
 # (`.claude/rules/exec-bit.md`).
-cat "$worker_real" > "$pen/tools/g/glow_rune_alphabet_worker.sh"
+#
+# THE WHOLE SUBJECT COMES FROM THE WORKING TREE, not the worker alone (`20260911.202958`). The pen
+# is HEAD, and a lap repairing one of the documents the worker binds would otherwise be proven
+# against the elder copy: the widened worker met HEAD's reference page, which did not yet teach
+# `|+`, and eighteen checks failed for a fault the working tree had already repaired. Copying only
+# the worker made the pen half-current, which is worse than either whole, so every file the worker
+# reads is copied beside it.
+for rel in \
+  tools/g/glow_rune_alphabet_worker.sh \
+  glow/tokens.rye \
+  context/TAME_GUIDANCE.md \
+  active-designing/docs/glow/runes.md \
+  active-designing/date/20260719/20260719-220814_glow-rune-pronunciation-closed-table.md \
+  active-designing/date/20260720/20260720-033852_glow-bartis-g1-row.md \
+  active-designing/date/20260720/20260720-151119_glow-barket-g1-row.md \
+  active-designing/20260822-221639_glow-barlus-g1-row.md
+do
+  [ -f "$root/$rel" ] || { echo "refused: the working tree holds no $rel" >&2; exit 2; }
+  cat "$root/$rel" > "$pen/$rel"
+done
 
 tokens="$pen/glow/tokens.rye"
 [ -f "$tokens" ] || { echo "refused: the pen holds no glow/tokens.rye -- nothing to plant in" >&2; exit 2; }
@@ -133,6 +152,27 @@ doc_case "table_witness" "$table" 's/glow_rune_alphabet_witness\.rish/glow_rune_
 doc_case "table_seal"    "$table" 's/\*\*25\*\*/**24**/g'                                              "closed table must still claim"
 doc_case "tame_index"    "$tame"  's/barket/barkat/g'                                                    "TAME family index missing barket"
 
-echo "coverage: a clean pen, the published fields, four plants in the lexer table -- count, an unnamed head that keeps the count, a pronunciation row whose head has gone, and the barket head -- and three in the documents the worker binds: the table's own witness name, its sealed count, and the family index. Each refused and each lifted back to OK"
+# THE FOURTH BINDING, PLANTED FROM BOTH SIDES (`20260911.202958`). The worker now walks the lexer's
+# own heads against `active-designing/docs/glow/runes.md`, the page a beginner and an LLM read
+# first, and that binding arrived because a rune had already walked past every other one: `|+`
+# barlus, named `20260822` and folded by seven gate sources, was taught on no page of the Book.
+# A binding proven only by the tree passing today cannot be told from a binding nobody reads.
+book=active-designing/docs/glow/runes.md
+
+# One taught head vanishes from the page while the lexer keeps it. `|~` is no lexer head, so the
+# substitution removes `|-` from the reference and adds nothing the other readings would notice.
+doc_case "book_head" "$book" 's/`|-`/`|~`/g' "lexer head |- is taught nowhere in the rune reference"
+
+# THE PAGE ITSELF GONE, which is the one fault a substitution can never plant. A missing binding is
+# the shape that reads as agreement from every side: no page, no unnamed head, no refusal.
+mv "$pen/$book" "$pen/$book.aside"
+out=$(run_worker) && refused=no || refused=yes
+check "book_absent refuses" yes "$refused"
+check "book_absent names its fault" yes "$(has "$out" "the rune reference is missing")"
+mv "$pen/$book.aside" "$pen/$book"
+back=$(run_worker) && back_ok=yes || back_ok=no
+check "book_absent lifted reads OK" yes "$back_ok"
+
+echo "coverage: a clean pen, the published fields, four plants in the lexer table -- count, an unnamed head that keeps the count, a pronunciation row whose head has gone, and the barket head -- and five in the documents the worker binds: the table's own witness name, its sealed count, the family index, a taught rune struck from the reference, and the reference itself gone. Each refused and each lifted back to OK"
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

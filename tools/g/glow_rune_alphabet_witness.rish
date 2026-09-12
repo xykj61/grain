@@ -22,6 +22,22 @@ assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
 # (REDS %283).
 assert gate.out contains "unnamed_glyphs=" else "worker must publish unnamed_glyphs= so the gap is read as a field"
 
+# THE FOURTH BINDING -- THE PAGE THAT TEACHES THE RUNE (`20260911.202958`). Three bindings held the
+# lexer table against a NAME: the closed pronunciation roll, the three G1 briefs, and the TAME
+# family index. None asked whether `active-designing/docs/glow/runes.md` -- whose own audience line
+# reads *a careful beginner writing their first Glow, and any LLM asked to help them* -- teaches the
+# rune at all, and a rune stood in that hole for twenty days. `|+` barlus was named `20260822`,
+# carries STOA332-336, and is folded by seven gate sources under `src/gate/`; the reference named it
+# nowhere, and neither did the primer, the inventory, or any other page of the Book. It is taught
+# now, and the binding is what keeps the next one from waiting as long.
+#
+# `book_unnamed` holds the same two glyphs the pronunciation ceiling holds, exempt for the same
+# cause rather than a second one: every entry in the reference leads with its spoken name, so a
+# glyph the closed table cannot pronounce is a glyph the reference cannot head an entry with. One
+# custody question, two pages, one word of Keaton's to answer both.
+assert gate.out contains "book_unnamed_glyphs=" else "worker must publish book_unnamed_glyphs= so the reference's own gap is read as a field"
+assert gate.out contains "book_named=" else "worker must publish book_named= beside the roll's count"
+
 # The claim line spells no count. It said "30 heads" while the field beside it published
 # rune_heads=28, which is the drift REDS %283 booked and this line then repeated: the lexer table
 # grew to 30 on 20260830 and the pronunciation roll stayed at 28, and no reader could see the
@@ -36,9 +52,9 @@ assert gate.out contains "unnamed_glyphs=" else "worker must publish unnamed_gly
 # the closed pronunciation table's own witness name and sealed count, and the family index in
 # `context/TAME_GUIDANCE.md`. Those bindings carry the language's vocabulary, they are edited by
 # hands rather than by the lexer, and no plant reached them until now.
-say "glow rune alphabet: the control -- seven plants in a pen checkout, four in the lexer table and three in the documents it binds, each refused and each lifted..."
+say "glow rune alphabet: the control -- nine plants in a pen checkout, four in the lexer table and five in the documents it binds, each refused and each lifted..."
 let ctl = run ["sh" "tools/fixtures/g/glow_rune_alphabet_control.sh"]
 assert ctl.ok else "glow rune alphabet: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=26 fail=0" else "glow rune alphabet: the control did not prove twenty-six behaviors --\n${ctl.out}"
+assert ctl.out contains "pass=32 fail=0" else "glow rune alphabet: the control did not prove thirty-two behaviors --\n${ctl.out}"
 
-say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111; the gate proven able to red on seven planted faults, four in the lexer table and three in the documents it binds."
+say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111; the gate proven able to red on nine planted faults, four in the lexer table and five in the documents it binds -- the last two the rune reference itself, a taught head struck from it and the page gone."

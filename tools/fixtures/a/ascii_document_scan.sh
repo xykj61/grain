@@ -97,7 +97,7 @@ mode="${1:-census}"
 #                            one taking a spelling the tree had already written elsewhere. The
 #                            reading fell 1336 -> 763; the ceiling keeps the same 7 of slack and
 #                            takes none of the 573.
-CEILING="${ASCII_DOC_CEILING:-770}"
+CEILING="${ASCII_DOC_CEILING:-750}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.

@@ -121,6 +121,20 @@ carry it now, and three legs in the pen prove it from both sides -- `minus_count
 earns its place only beside the first. Removing either row reds two legs; the pen stands at **85**.
 **A law and its instrument agreeing is a thing to measure rather than assume**, and this one had
 disagreed by exactly one row for the whole life of the document meter.
+**A language's own reference was swept by the lap that came for its runes** (`20260911.202958`).
+`active-designing/docs/glow/runes.md` carried **20 characters in two forms** -- 18 of the deep-entry
+marker and 2 of the seed marker -- and every one of them stood in a HEADING or in the legend that
+explains the pair, which is the position a converter cannot guess at, since the table above spells
+no marker. Both were read by hand and took the words the legend already used: `[deep]` and `[seed]`.
+The page was open for a different reason -- a rune it never taught -- and the sweep rode along on
+touch. The ratchet fell **763 to 743** and the ceiling **770 to 750**, keeping the same seven of
+slack every sweep before it kept and taking none of the 20. **The ceiling is spelled in two
+files, which the sweep learned by lowering one of them.** `tools/fixtures/a/ascii_document_resident_probe.sh` is the scan transcribed with every per-file
+process removed, so it carries its own `CEILING=` line, and a lowering that reaches one reader
+and not the other makes the two answer differently about one tree. `tools/a/ascii_resident_agree_witness.rish` is the guard that hears it, and it did -- eight legs
+of its pen parted on the hot pass of this very sweep. Lower both, or the cheap reader stops
+measuring the same question.
+
 **A front door outside every roster carried 36 more** (`20260910.054344`). `bat/README.md` sat in
 the ratchet alone -- unwalled, since no rule room cites it and it stands outside `docs/` -- holding
 21 middots and 15 em dashes across its head, its table and its body. All 36 are gone, every one a
