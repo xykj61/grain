@@ -5,9 +5,9 @@
 #   sh tools/fixtures/b/build_target_scan.sh --list    # the counts, plus every site named
 #
 # WHY THIS EXISTS. A guard that builds a binary has to put it somewhere, and nothing in this tree
-# ever asked where. Measured `20260912.014632` over the 353 rostered guards: 60 of them pass a
-# `-femit-bin=` argument to `rye build`, across 125 emit sites, and 110 of those sites name a fixed
-# path inside the tree rather than a directory the run made for itself.
+# ever asked where. The first reading on `20260912` found 110 fixed emit sites and 6 shared paths.
+# Moving the 18 Amphora guards into their own pens lowered those ratchets to 51 and 2; the live
+# scan prints the current population rather than asking this comment to keep count.
 #
 # WHY A FIXED PATH COSTS SOMETHING. A build into a fixed tree path is a write to a file whose name
 # no other reader knows is busy. So two readings of one tree that overlap in time write the same
@@ -24,10 +24,9 @@
 #
 # THE SHARPEST READING IS `shared_paths`, AND IT IS NOT THE BIGGEST NUMBER. One guard writing one
 # path collides only with itself, which needs the same guard run twice at once. A path written by
-# TWO guards collides whenever EITHER runs beside the pass. Read `20260912`: 51 distinct fixed
-# paths, 6 of them written by two or more distinct guards, and three of the six --
-# `amphora/bin/vessel-seal`, `amphora/bin/vessel-core`, `amphora/bin/amphora` -- written by 18
-# guards apiece.
+# TWO guards collides whenever EITHER runs beside the pass. The first `20260912` reading found 51
+# distinct fixed paths and 6 shared paths. Three were Amphora binaries written by 18 guards apiece;
+# moving those builds into per-run pens leaves 2 shared paths in the live reading.
 #
 # WHAT IS INFERENCE HERE, SAID PLAINLY. REDS %700 records a rostered guard reading red and then
 # green on one unchanged tree, and names two builds into fixed tree paths as the suspicion. No run
@@ -61,8 +60,8 @@
 # bypass; one the reading announces is a pen.
 set -u
 
-CEILING_FIXED=${BUILD_TARGET_CEILING_FIXED:-110}
-CEILING_SHARED=${BUILD_TARGET_CEILING_SHARED:-6}
+CEILING_FIXED=${BUILD_TARGET_CEILING_FIXED:-51}
+CEILING_SHARED=${BUILD_TARGET_CEILING_SHARED:-2}
 
 root=${BUILD_TARGET_ROOT:-.}
 roster=${BUILD_TARGET_ROSTER:-construction/standing-equipment.kyri}

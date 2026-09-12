@@ -29,20 +29,20 @@ let blob = "${home}/v.bron.season/blob.bin"
 # resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present.
 # The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "amphora_restore: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "amphora_restore: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "amphora_restore: vessel-seal build failed -- read the line above"
 
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "amphora_restore: pour must exit ok"
 
-let restore = run ["amphora/bin/amphora" "restore" vessel]
+let restore = run ["${home}/bin/amphora" "restore" vessel]
 assert restore.ok else "amphora_restore: restore must exit ok"
 assert restore.err contains "restore catalog files=4" else "amphora_restore: want four cargo lines"
 assert restore.err contains "restore same-parent ok" else "amphora_restore: want same-parent"
@@ -55,13 +55,13 @@ assert n.ok else "amphora_restore: nested/leaf.txt must land"
 let b = run ["test" "-f" blob]
 assert b.ok else "amphora_restore: blob.bin must land"
 
-let again = run ["amphora/bin/amphora" "restore" vessel]
+let again = run ["${home}/bin/amphora" "restore" vessel]
 assert again.ok else "amphora_restore: same-parent re-restore must welcome"
 
 let plant = run ["sh" "-c" "rm -rf ${home}/v.bron.season && mkdir -p ${home}/v.bron.season && echo other > ${home}/v.bron.season/x.txt"]
 assert plant.ok else "amphora_restore: plant fork fixture"
 
-let fork = run ["amphora/bin/amphora" "restore" vessel]
+let fork = run ["${home}/bin/amphora" "restore" vessel]
 assert fork.ok == false else "amphora_restore: planted fork must refuse"
 assert fork.err contains "identity fork" else "amphora_restore: want identity fork"
 

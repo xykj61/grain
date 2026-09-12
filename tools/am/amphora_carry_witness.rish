@@ -28,41 +28,41 @@ let dock = "${home}/dock"
 # resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present.
 # The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "amphora_carry: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "amphora_carry: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "amphora_carry: vessel-seal build failed -- read the line above"
 
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "amphora_carry: pour must exit ok"
 
-let carry = run ["amphora/bin/amphora" "carry" vessel dock]
+let carry = run ["${home}/bin/amphora" "carry" vessel dock]
 assert carry.ok else "amphora_carry: carry must exit ok"
 assert carry.err contains "carry complete" else "amphora_carry: completion spoken"
 
 let equal = run ["cmp" "-s" vessel "${dock}/vessel.bron"]
 assert equal.ok else "amphora_carry: far bytes must equal near bytes"
 
-let far = run ["amphora/bin/vessel-core" "verify" "${dock}/vessel.bron"]
+let far = run ["${home}/bin/vessel-core" "verify" "${dock}/vessel.bron"]
 assert far.ok else "amphora_carry: far stamp must verify"
-let faropen = run ["amphora/bin/vessel-seal" "open-check" "${dock}/vessel.bron"]
+let faropen = run ["${home}/bin/vessel-seal" "open-check" "${dock}/vessel.bron"]
 assert faropen.ok else "amphora_carry: far seal must open"
 
-let again = run ["amphora/bin/amphora" "carry" vessel dock]
+let again = run ["${home}/bin/amphora" "carry" vessel dock]
 assert again.ok else "amphora_carry: re-carry must welcome"
 
 let forkprep = run ["sh" "-c" "rm -rf ${home}/fork; cp -r ${season} ${home}/fork; printf x >> ${home}/fork/$(ls ${home}/fork | head -1)"]
 assert forkprep.ok else "amphora_carry: fork plant must prepare"
-let fv = run ["amphora/bin/amphora" "pour" "${home}/fork" "${home}/fork_v.bron"]
+let fv = run ["${home}/bin/amphora" "pour" "${home}/fork" "${home}/fork_v.bron"]
 assert fv.ok else "amphora_carry: fork pour must pass"
 let plant = run ["cp" "${home}/fork_v.bron" "${dock}/vessel.bron"]
 assert plant.ok else "amphora_carry: fork plant at dock"
-let refused = run ["amphora/bin/amphora" "carry" vessel dock]
+let refused = run ["${home}/bin/amphora" "carry" vessel dock]
 assert (refused.ok == false) else "amphora_carry: forked dock must refuse"
 assert refused.err contains "identity fork" else "amphora_carry: fork names its fault"
 

@@ -2,8 +2,8 @@
 #
 # WHY THIS STANDS. A guard that builds a binary has to put it somewhere, and until this witness
 # nothing in this tree asked where. Measured at seating, 20260912: of 353 rostered guards, 60 pass
-# a -femit-bin= argument to rye build across 125 emit sites, and 110 of those sites name a fixed
-# path inside the tree rather than a directory the run made for itself.
+# a -femit-bin= argument to rye build. The first reading found 110 fixed sites; the scan prints
+# the current population rather than asking this comment to keep count.
 #
 # WHAT A FIXED PATH COSTS, MEASURED RATHER THAN ARGUED. rye build writes THROUGH its output file --
 # the inode survives a rebuild -- so the write is not atomic and a concurrent reader sees a partial

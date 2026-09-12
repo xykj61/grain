@@ -41,6 +41,37 @@
 # Coupling must be declared (REDS 56 lean): the number finds coincidences.
 set -eu
 
+# This scan may run on a small host that carries POSIX grep and no ripgrep. Keep one reader shape:
+# recursive calls print path:line:text, while the single-file `-N` call prints text alone.
+if ! command -v rg >/dev/null 2>&1; then
+  rg() {
+    line_numbers=no
+    glob='*'
+    while [ "$#" -gt 0 ]; do
+      case "$1" in
+        -n) line_numbers=yes; shift ;;
+        -N|--no-heading) shift ;;
+        -g) glob=$2; shift 2 ;;
+        --) shift; break ;;
+        *) break ;;
+      esac
+    done
+    pattern=$1
+    target=$2
+    if [ -d "$target" ]; then
+      if [ "$line_numbers" = yes ]; then
+        grep -RInE --include="$glob" -- "$pattern" "$target"
+      else
+        grep -RIE --include="$glob" -- "$pattern" "$target"
+      fi
+    elif [ "$line_numbers" = yes ]; then
+      grep -nE -- "$pattern" "$target"
+    else
+      grep -E -- "$pattern" "$target"
+    fi
+  }
+fi
+
 ROOT=${AMPHORA_BOUNDS_ROOT:-amphora}
 SEATED_NAMES="max_vessel_len max_cargo digest_hex_len"
 FAIL=0

@@ -27,17 +27,17 @@ let vessel = "${home}/v.bron"
 # resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present.
 # The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "amphora_pour: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "amphora_pour: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "amphora_pour: vessel-seal build failed -- read the line above"
 
-let pour = run ["amphora/bin/amphora" "pour" season vessel]
+let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "amphora_pour: grown round path must exit ok"
 
 let text = read-file vessel
@@ -45,13 +45,13 @@ assert text contains "manifest plain-bytes " else "amphora_pour: readable manife
 assert text contains "seal_cargo " else "amphora_pour: sealed cargo present"
 assert text contains "stamp_sig " else "amphora_pour: stamp present"
 
-let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+let verify = run ["${home}/bin/vessel-core" "verify" vessel]
 assert verify.ok else "amphora_pour: Kumara stamp must verify"
 
-let opened = run ["amphora/bin/vessel-seal" "open-check" vessel]
+let opened = run ["${home}/bin/vessel-seal" "open-check" vessel]
 assert opened.ok else "amphora_pour: seal must open after stamp"
 
-let again = run ["amphora/bin/amphora" "pour" season vessel]
+let again = run ["${home}/bin/amphora" "pour" season vessel]
 assert again.ok else "amphora_pour: same-identity re-pour must welcome"
 
 say "round=poured manifest=readable stamp=verified seal=opens repour=welcome"

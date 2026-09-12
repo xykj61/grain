@@ -51,28 +51,19 @@
 
 **Git nib:** `f234219f34` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A GUARD'S BINARY LANDS AT A PATH NOBODY LOCKS.** Elder
-[shelved](archive/20260912-024638_itinerary-landed-accounts.md). **EARTH BREATHES IN** (row 4,
-N=4674). Cold **272/267/3** -- `dated_path` (`%626`) and two of mine.
-**THE READING NOBODY TOOK.** Of **353** rostered guards **60** pass `-femit-bin=` at **125** sites;
-**110** name a fixed tree path, and of **51** such paths **6** carry two or more DISTINCT writers --
-three amphora binaries at **18**. `rye build` writes THROUGH its output (inode survives a rebuild):
-per 400 runs an untouched path fails **0**, one build writing it **335**.
-**TWO LOCKS STAND, NEITHER ON THIS AXIS** -- the runner refuses a second pass, `rye build` a shared
-shadow (`%281`). **Nothing serializes a build against a RUN**; the second reader is a hand running a
-guard by name, or a dead lap's pass -- **met at my own open**.
-**LANDED.** Scan, **33-leg** pen, witness, `tier lap`. WALLS at zero
-`emit_tracked`/`emit_unignored`; RATCHETS **110**/**6** -- a new tree-writer reds at once.
-Probe off the roster: it is timing-dependent. That `%700` IS this stays open.
-**FOUR REDS CLOSED.** `stash_record` `unlanded=1`: **stash@{0} held a finished round** cut
-mid-send -- `scope_rank --kin`, **92 legs re-proven GREEN here**, paper, log and the `%720` fold.
-`remember_git_nib`: my claim commit left the nib stale. Then the hot pass named two
-more, both mine: `log_file_claim`, the recovered log citing the shelf I had left parked, which
-forced the fold; and `ratchet_slack`, my ceilings spelled as defaults for copies, so nothing
-compared them -- now in the house shape. Hot **275/272/1**, the one `dated_path`.
-[Paper](../active-designing/20260912-020039_the-binary-two-guards-are-writing.md). Row
-`20260912.020211` (booked %724, **renumbered %726** on the rebase).
-**YOURS:** the **110 sites** are a per-lane sweep, cheapest the amphora 18-on-3.
+**BAKERY -- THE BINARY STAYS WITH ITS READING.** Elder
+[shelved](archive/20260912-024638_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
+N=4693): run the actual seam, then run every sibling.
+**RECOVERED FIRST.** The lap-open stash held the requested Codex default migration:
+`gpt-5.6-sol` in both provenance rules and the fleet loop. Configuration stays separate from the
+active model, which remains `unverified` without runtime evidence.
+**THE BUILD.** All **18** Amphora witnesses now build and run their programs from the unique
+`mktemp` pen each already owns. The main program still resolves `vessel-core` and `vessel-seal`
+beside its own executable, so the move keeps the real sibling seam under test.
+**LANDED.** All 18 witnesses GREEN. The build-target control keeps **33 legs**; fixed emit sites
+fell **110 -> 51**, shared paths **6 -> 2**, and both ratchets fell with them. The two remaining
+shared paths are named in Mantra and Comlink, for their owners to carry.
+[Paper](../active-designing/20260912-151017_the-binary-that-stays-with-its-reading.md).
 **PATCHOULI -- THE MODULE GAINED TWO REFUSALS AND ITS PEN GAINED NONE.**
 Elder [shelved](archive/20260912-004500_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4673): taste the box before cooking a second pot.

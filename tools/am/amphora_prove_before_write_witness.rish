@@ -34,13 +34,13 @@ let home = trim pen.out
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none of
 # these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "pbw: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "pbw: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "pbw: vessel-seal build failed -- read the line above"
 
@@ -52,10 +52,10 @@ assert mk.ok else "pbw: the three plant homes must open"
 
 # --- leg 1: the honest season restores whole, and the two proof lines arrive in order ---
 let honest = "${home}/h/honest.bron"
-let pour_honest = run ["amphora/bin/amphora" "pour" season honest]
+let pour_honest = run ["${home}/bin/amphora" "pour" season honest]
 if pour_honest.ok == false then say pour_honest.err
 assert pour_honest.ok else "pbw: honest pour must pass -- read the line above"
-let restore_honest = run ["amphora/bin/amphora" "restore" honest]
+let restore_honest = run ["${home}/bin/amphora" "restore" honest]
 if restore_honest.ok == false then say restore_honest.err
 assert restore_honest.ok else "pbw: honest restore must pass -- read the line above"
 assert restore_honest.err contains "restore resins proven" else "pbw: the honest restore says its resins were proven"
@@ -70,12 +70,12 @@ say "leg_honest=whole"
 # file stands ahead of the forgery in the write walk. That ordering is what made the elder fault
 # visible: an earlier honest write is a mutation, whatever the refusal afterward says.
 let forged = "${home}/f/forged.bron"
-let pour_forged = run ["amphora/bin/amphora" "pour" season forged]
+let pour_forged = run ["${home}/bin/amphora" "pour" season forged]
 if pour_forged.ok == false then say pour_forged.err
 assert pour_forged.ok else "pbw: forged-plant pour must pass -- read the line above"
 let forge_prep = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > ${home}/f/resins/$f"]
 assert forge_prep.ok else "pbw: the forge plant must prepare"
-let forged_restore = run ["sh" "-c" "amphora/bin/amphora restore ${forged}; true"]
+let forged_restore = run ["sh" "-c" "${home}/bin/amphora restore ${forged}; true"]
 assert forged_restore.err contains "cargo unproven" else "pbw: a forged resin refuses by name"
 let forged_out = run ["sh" "-c" "test ! -e ${home}/f/forged.bron.season"]
 assert forged_out.ok else "pbw: the refusal must leave NO out-home -- this is the whole rule"
@@ -88,12 +88,12 @@ say "leg_forged=refused_before_write"
 
 # --- leg 3: an absent resin refuses at the same door, ahead of the out-home ---
 let absent = "${home}/a/absent.bron"
-let pour_absent = run ["amphora/bin/amphora" "pour" season absent]
+let pour_absent = run ["${home}/bin/amphora" "pour" season absent]
 if pour_absent.ok == false then say pour_absent.err
 assert pour_absent.ok else "pbw: absent-plant pour must pass -- read the line above"
 let drop = run ["sh" "-c" "rm -f ${home}/a/resins/$(ls ${home}/a/resins | sed -n 2p)"]
 assert drop.ok else "pbw: the absent plant must drop one resin"
-let absent_restore = run ["sh" "-c" "amphora/bin/amphora restore ${absent}; true"]
+let absent_restore = run ["sh" "-c" "${home}/bin/amphora restore ${absent}; true"]
 assert absent_restore.err contains "resin absent" else "pbw: a missing resin refuses by name"
 let absent_out = run ["sh" "-c" "test ! -e ${home}/a/absent.bron.season"]
 assert absent_out.ok else "pbw: the absent refusal must leave no out-home either"
@@ -118,7 +118,7 @@ assert (trim kept.out) == "1" else "pbw: the elder keeps its write walk, or it p
 let elder_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/src/main.rye -femit-bin=${elder_dir}/bin/amphora"]
 if elder_build.ok == false then say elder_build.err
 assert elder_build.ok else "pbw: elder amphora build failed -- read the line above"
-let elder_seal = run ["sh" "-c" "cp amphora/bin/vessel-seal amphora/bin/vessel-core ${elder_dir}/bin/"]
+let elder_seal = run ["sh" "-c" "cp ${home}/bin/vessel-seal ${home}/bin/vessel-core ${elder_dir}/bin/"]
 assert elder_seal.ok else "pbw: the elder pen must carry its sibling tools"
 
 let elder_restore = run ["sh" "-c" "cp ${forged} ${home}/f/elder.bron && ${elder_dir}/bin/amphora restore ${home}/f/elder.bron; true"]
@@ -130,7 +130,7 @@ assert elder_files != "0" else "pbw: the wall removed, a file must land before t
 say "wall_removed=mutation_before_refusal files=${elder_files}"
 
 # --- the wall returned: the repaired binary, over the very same forged vessel ---
-let returned = run ["sh" "-c" "rm -rf ${home}/f/elder.bron.season && cp ${forged} ${home}/f/again.bron && amphora/bin/amphora restore ${home}/f/again.bron; true"]
+let returned = run ["sh" "-c" "rm -rf ${home}/f/elder.bron.season && cp ${forged} ${home}/f/again.bron && ${home}/bin/amphora restore ${home}/f/again.bron; true"]
 assert returned.err contains "cargo unproven" else "pbw: the repaired restore refuses the same vessel"
 let returned_out = run ["sh" "-c" "test ! -e ${home}/f/again.bron.season"]
 assert returned_out.ok else "pbw: the wall returned, nothing may land"

@@ -31,45 +31,45 @@ let home = trim pen.out
 # The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
 # them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
 let zig = "vendor/zig-toolchain/zig"
-let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "named-once: amphora build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "named-once: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "named-once: vessel-seal build failed -- read the line above"
-let build_entry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
+let build_entry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=${home}/bin/manifest-entry"]
 if build_entry.ok == false then say build_entry.err
 assert build_entry.ok else "named-once: manifest-entry build failed -- read the line above"
 
 # --- the contract's own roster, proven in all three directions before any vessel is poured ---
-let entry_self = run ["amphora/bin/manifest-entry" "selftest"]
+let entry_self = run ["${home}/bin/manifest-entry" "selftest"]
 if entry_self.ok == false then say entry_self.err
 assert entry_self.ok else "named-once: the entry contract must hold its own roster -- read the line above"
 
 let honest = "${home}/honest.bron"
-let pour = run ["amphora/bin/amphora" "pour" season honest]
+let pour = run ["${home}/bin/amphora" "pour" season honest]
 if pour.ok == false then say pour.err
 assert pour.ok else "named-once: seed pour must pass -- read the line above"
 
 # --- the welcome, asserted as hard as every refusal below ---
-let ok_check = run ["amphora/bin/vessel-seal" "manifest-check" honest]
+let ok_check = run ["${home}/bin/vessel-seal" "manifest-check" honest]
 assert ok_check.ok else "named-once: the honest listing must welcome"
 assert ok_check.err contains "listing agrees" else "named-once: the welcome names its walk"
 
 let dock = "${home}/dock"
 let mkdock = run ["sh" "-c" "mkdir -p ${dock}"]
 assert mkdock.ok else "named-once: dock must open"
-let ok_carry = run ["amphora/bin/amphora" "carry" honest dock]
+let ok_carry = run ["${home}/bin/amphora" "carry" honest dock]
 assert ok_carry.ok else "named-once: the honest vessel must carry"
 
 # Each restore leg gets its OWN vessel name, because restore derives its out-home from the vessel
 # path and guards an existing one as an identity fork.
 let ok_copy = run ["sh" "-c" "cp ${honest} ${home}/ok.bron"]
 assert ok_copy.ok else "named-once: honest restore copy must land"
-let ok_restore = run ["amphora/bin/amphora" "restore" "${home}/ok.bron"]
+let ok_restore = run ["${home}/bin/amphora" "restore" "${home}/ok.bron"]
 if ok_restore.ok == false then say ok_restore.err
 assert ok_restore.ok else "named-once: the honest vessel must restore -- read the line above"
 assert ok_restore.err contains "restore complete" else "named-once: the honest restore names its close"
@@ -82,15 +82,15 @@ assert craft.ok else "named-once: the plant must prepare -- read the line above"
 assert craft.out contains "distinct_places=1" else "named-once: the fixture must state what it made"
 assert craft.out contains "listing_lines=2" else "named-once: the listed plant must carry its listing"
 
-let plant_check = run ["amphora/bin/vessel-seal" "manifest-check" plant]
+let plant_check = run ["${home}/bin/vessel-seal" "manifest-check" plant]
 assert (plant_check.ok == false) else "named-once: a place named twice must refuse at the listing door"
 
 let mkdock2 = run ["sh" "-c" "mkdir -p ${home}/dock2"]
 assert mkdock2.ok else "named-once: second dock must open"
-let plant_carry = run ["amphora/bin/amphora" "carry" plant "${home}/dock2"]
+let plant_carry = run ["${home}/bin/amphora" "carry" plant "${home}/dock2"]
 assert (plant_carry.ok == false) else "named-once: a place named twice must refuse at the crossing"
 
-let plant_restore = run ["amphora/bin/amphora" "restore" plant]
+let plant_restore = run ["${home}/bin/amphora" "restore" plant]
 assert (plant_restore.ok == false) else "named-once: a place named twice must refuse at restore"
 
 # THE WHOLE POINT OF THE ROUND: the refusal arrives before the mutation. A wall that lets the
@@ -111,10 +111,10 @@ let craft_elder = run ["sh" "-c" "sh tools/fixtures/am/amphora_repeated_name_ves
 if craft_elder.ok == false then say craft_elder.err
 assert craft_elder.ok else "named-once: the elder plant must prepare -- read the line above"
 assert craft_elder.out contains "listing_lines=0" else "named-once: the elder plant must carry no listing"
-let elder_check = run ["amphora/bin/vessel-seal" "manifest-check" elder]
+let elder_check = run ["${home}/bin/vessel-seal" "manifest-check" elder]
 assert elder_check.ok else "named-once: a head with no listing makes no claim, so the outer door must let it by"
 assert elder_check.err contains "no listing" else "named-once: the outer door must say it read no claim"
-let elder_restore = run ["amphora/bin/amphora" "restore" elder]
+let elder_restore = run ["${home}/bin/amphora" "restore" elder]
 assert (elder_restore.ok == false) else "named-once: the catalog wall alone must refuse a repeat"
 let elder_absent = run ["sh" "-c" "test ! -e ${elder}.season"]
 assert elder_absent.ok else "named-once: the catalog wall must refuse with NO out-home written"
@@ -122,11 +122,11 @@ assert elder_absent.ok else "named-once: the catalog wall must refuse with NO ou
 # --- LIFT the plant, and show every welcome returning ---
 let lift = run ["sh" "-c" "cp ${honest} ${plant}"]
 assert lift.ok else "named-once: lift must land"
-let after_check = run ["amphora/bin/vessel-seal" "manifest-check" plant]
+let after_check = run ["${home}/bin/vessel-seal" "manifest-check" plant]
 assert after_check.ok else "named-once: the listing welcome must return once the repeat is lifted"
 let mkdock3 = run ["sh" "-c" "mkdir -p ${home}/dock3"]
 assert mkdock3.ok else "named-once: third dock must open"
-let after_carry = run ["amphora/bin/amphora" "carry" plant "${home}/dock3"]
+let after_carry = run ["${home}/bin/amphora" "carry" plant "${home}/dock3"]
 assert after_carry.ok else "named-once: the crossing welcome must return once the repeat is lifted"
 
 let sweep = run ["sh" "-c" "rm -rf ${home}"]
