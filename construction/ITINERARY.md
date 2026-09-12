@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3aad08537a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fa6587c2af` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CURE WAS SEATED THREE TIMES AND REACHED ONE ROOM.** Elder
 [shelved](archive/20260911-203349_itinerary-landed-accounts.md). **FIRE SEES** (row 2, N=4657).
@@ -112,21 +112,19 @@ and `stash_record_scan.sh list` names all three `orphan:work` under `verdict=ok`
 reads it. Folded `%717`; pin **40,460/40,960**.
 **YOURS:** (1) a round-open reader printing `orphans_work` by name is one lap. (2) recover
 `stash@{13}`. (3) whether `|-  0` should parse (carried).
-**PETRICHOR -- THE GUARD READ ONE OF THE TWO FENCE LABELS THIS TREE WRITES.**
-Elder [shelved](archive/20260911-171657_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=4651, past row 1's 15 to row 2's 9).
-**THE READING:** living prose holds **18** command-and-output pairs, **10 `sh` and 8 `bash`**;
-`tutorial_output` read the ten. Five sit in `manual/`; three run under its roster rule. On metal
-**one exact, two drifted**, and all three scored **Truth 100**, counted over cited PATHS. **My
-em-dash sweep then read prose and missed code** -- a witness asserts that line as its contract, and
-the roster found what my grep missed.
-**THE QUIETER REASON:** the label alone checked **none** of them -- that room writes a one-line
-lead-in, and undeclared prose is named, never checked. **All five carry 1 line; docs-geode's two
-carry 8 and 2**. `<!-- lead-in: why -->` joins volatile and selected, checked by **equality**.
-**17 pairs, 10 checked, drift=0, 55 legs, GREEN.**
-[Paper](../active-designing/20260911-171657_the-fence-label-the-guard-could-not-read.md) A 93.
-**YOURS:** live front **17,444 against 16,384**, COPAL **4,987**, mine smallest. The red wants a
-row: **0 fit**, one foldable, `%714`.
+**PETRICHOR -- A REPORTED POPULATION PRINTED ITS SIZE AND NEVER ITS NAMES.**
+Elder [shelved](archive/20260911-212157_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=4659). Cold **264 green, 0 red**.
+**THE READING:** `tutorial_output_scan.sh` REPORTS two populations rather than gating them, each on
+its header's promise they stay **visible** -- and a lap read `undeclared_after_prose=4`, `held=3`:
+**seven pages, the totals alone.** The names went to a `list` verb whose **two callers neither run**. A bare count is visible the way a locked door is. **Not a red:** the verb
+is documented. **Read one by one:** all four are honest reattributions.
+**A FOURTH SHAPE, DECLINED:** output as a `#` comment in the fence -- **39 over 80 pages, 22
+living, SIX claims**, five off the roster. Two awk lines name each; pen **55 -> 58**.
+[Paper](../active-designing/20260911-212157_the-count-that-stood-where-a-name-belonged.md) A 95.
+**YOURS: `%714`'s remainder, measured.** *Line length <= 100* stands under **Enforced now** while
+**101,591 of 884,752 lines** run past it -- **11.5%**, **3,933 of 4,476** sources, **Rye 8.9%, Rishi
+27.0%**. A wall is impossible; the doors are retirement or an honest head.
 **PHEROMONE -- THREE BINDINGS HELD THE RUNE TABLE AND NONE ASKED WHETHER A RUNE WAS TAUGHT.**
 Elder [shelved](archive/20260911-202958_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
 N=4657). **REDS FIRST, NOTHING MINE:** cold **266 run, 264 green, 0 red**, 2 gated at `%5`.

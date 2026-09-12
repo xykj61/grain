@@ -98,7 +98,8 @@
 # path. The held ceiling rose 2 -> 3 for the one case a ceiling may honestly rise for -- a widened
 # denominator, here a macOS `fdesetup` this pier cannot run -- never for a page that drifted.
 #
-# Pen: tools/fixtures/t/tutorial_output_control.sh -- fifty-five behaviors on real git
+# Pen: tools/fixtures/t/tutorial_output_control.sh -- every behavior it counts for itself in
+# `control_cases`, asserted below rather than spelled here, on real git
 # repositories in a throwaway pen, every refusal planted and then lifted, the gap bound and the
 # scattered ceiling each shown from both sides, the order strand proven load-bearing by a mutation
 # that reds one leg alone, and the shape strand by one that reds seven.
@@ -116,6 +117,23 @@
 # tomorrow is heard the day it lands rather than on the day somebody remembers to name it. The
 # spoken figure left the claim line in the same pass: the pen counts itself, and a number typed in
 # prose was the form this shelf has now watched go wrong three times.
+#
+# THE WORD "NAMED" WAS TRUE OF A VERB NOTHING RUNS, repaired 20260911. Two of the readings above --
+# `undeclared_after_prose` and `held` -- report rather than gate, and both earn that on the promise
+# that their populations stay visible. The default report printed the counts and nothing else; the
+# page and line of each one went to the scan's `list` verb, which this witness never calls and no
+# roster lap has ever called. So a reader met `undeclared_after_prose=4` and could not reach the
+# four pages. The report names each one now. A population reported as a bare count is visible the
+# way a locked door is visible, and a header claiming otherwise is the same fault this guard exists
+# to catch, one room over: a document promising something nobody ran.
+#
+# READ ONE AT A TIME, the four turned out to be honest reattributions and illustrations -- a
+# fingerprint card under "reads like", the first hour's "run it twice" block and its `already=yes`
+# ending, and a cloud recipe quoting what two OTHER commands answer. None wants a lead-in, so that
+# population is honestly unreadable rather than merely unread. A fourth shape came out of the same
+# reading and was declined on measurement: a command and its expected output on the next line inside
+# one fence, as a `#` comment. Six of those stand in the living corpus, and five are off the run
+# roster, so a checker for them would check nothing today. The scan's header carries the census.
 # Run from the repository root.
 
 say "tutorial-output: Language EN -- a quoted output block is a claim about behavior, and a claim nobody checks is a claim that decays."
@@ -203,6 +221,12 @@ assert control.out contains "case=leadin_mutation_bitten ok" else "tutorial-outp
 assert control.out contains "case=leadin_drift_bitten ok" else "tutorial-output: a lead-in must never excuse a drifted block -- a declaration that hides output is an exemption"
 assert control.out contains "case=undeclared_unchanged ok" else "tutorial-output: prose with nothing declaring it must still be named"
 assert control.out contains "case=leadin_reason_required ok" else "tutorial-output: a lead-in with no reason must declare nothing, as the other two tokens already require"
+
+# The names beside the counts, seated 20260911. A reported population that prints only its size
+# tells a reader there is something to look at and never where.
+assert control.out contains "case=undeclared_name_printed ok" else "tutorial-output: the report must name the page behind every undeclared pair, not only count them"
+assert control.out contains "case=names_mutation_bitten ok" else "tutorial-output: dropping the naming lines must take the names and leave the count, or the leg above proves nothing"
+assert control.out contains "case=held_name_printed ok" else "tutorial-output: the report must name the page behind every held fence"
 
 # THE PEN MUST BE HEARD WHOLE. `control=ok` says the script reached its last line and nothing more,
 # so a leg this file never names could read RED under a GREEN witness -- which two did, written one

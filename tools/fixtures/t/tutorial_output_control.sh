@@ -639,6 +639,45 @@ case "$(run_scan "$d")" in
   *) bad leadin_reason_required "a lead-in with no reason was honored" ;;
 esac
 
+# ---- 17. a reported population prints its NAMES, not only its size ----------------------------
+# `undeclared_after_prose` and `held` both report rather than gate, on the promise that the
+# population stays visible. Until 20260911 the default report printed a bare count and the names
+# were reachable through the `list` verb alone -- which the witness never runs and no roster lap
+# ever ran. A reader met `undeclared_after_prose=4` with no way to reach the four pages. These
+# legs hold the word "named" to the report a lap actually reads.
+d=$(new_pen namedprose)
+{
+  printf '# a page\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n\nAnd here is a listing:\n\n```\nnothing to do with it\n```\n'
+} > "$d/docs-geode/tutorials/page.md"
+git -C "$d" add -A >/dev/null 2>&1
+out=$(run_scan "$d")
+case "$out" in
+  *"undeclared: docs-geode/tutorials/page.md:"*) ok undeclared_name_printed ;;
+  *) bad undeclared_name_printed "the report counted an undeclared pair and never said which page: $out" ;;
+esac
+
+# the mutation: drop the two naming lines and the count stands alone again, which is the state this
+# section exists to refuse. Without it, the leg above could be passing on a line printed elsewhere.
+mutn="$pen/mut_names.sh"
+sed '/print "undeclared: "/d;/print "held: "/d' "$SCAN" > "$mutn"
+mout=$( cd "$d" && sh "$mutn" 2>&1 )
+case "$mout" in
+  *"undeclared: docs-geode/tutorials/page.md:"*) bad names_mutation_bitten "dropping the naming lines still named the page -- the leg above proves nothing" ;;
+  *undeclared_after_prose=1*) ok names_mutation_bitten ;;
+  *) bad names_mutation_bitten "the mutated scan lost the count as well, so the mutation is too wide: $mout" ;;
+esac
+
+# and a held fence is named the same way, since it carries the same promise
+d=$(new_pen namedheld)
+{
+  printf '# a page\n\n```sh\nmkdir -p out\nsh tools/fixtures/p/say_two.sh > out/f\n```\n\n```\none\ntwo\n```\n'
+} > "$d/docs-geode/tutorials/page.md"
+git -C "$d" add -A >/dev/null 2>&1
+case "$(run_scan "$d")" in
+  *"held: docs-geode/tutorials/page.md:"*) ok held_name_printed ;;
+  *) bad held_name_printed "the report counted a held fence and never said which page" ;;
+esac
+
 # THE PEN TALLIES ITSELF, seated 20260911. `control=ok` says only that the script reached its last
 # line, so a leg the witness never names could read RED under a GREEN witness -- and two did:
 # `dangling_fence_spares_next` and `dangling_fence_lifted_same`, written the lap before and asserted
