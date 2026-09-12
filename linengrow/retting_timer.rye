@@ -1,14 +1,14 @@
-// linengrow/retting_timer.rye -- the retting timer, ring one.
-//
-// Simple: two commands, one append-only log. Lovable: your fiber batches,
-// on your own machine, named and counted in days. Complete: start, status,
-// ready -- the loop closes. Keaton named this the first shippable candidate;
-// ring two is the Wasm build of this same file (pier lane).
-//
-// State is a pure fold over an append-only log (house law): each `start`
-// appends one line `start <epoch> <days> <name>`; `status` folds the log.
-// Chapter home: RETTING_HOME env, else linengrow/.retting (durable -- /tmp
-// clears with the enclosure; REDS row 8).
+//! linengrow/retting_timer.rye -- the retting timer, ring one.
+//!
+//! Simple: two commands, one append-only log. Lovable: your fiber batches,
+//! on your own machine, named and counted in days. Complete: start, status,
+//! ready -- the loop closes. Keaton named this the first shippable candidate;
+//! ring two is the Wasm build of this same file (pier lane).
+//!
+//! State is a pure fold over an append-only log (house law): each `start`
+//! appends one line `start <epoch> <days> <name>`; `status` folds the log.
+//! Chapter home: RETTING_HOME env, else linengrow/.retting (durable -- /tmp
+//! clears with the enclosure; REDS row 8).
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;

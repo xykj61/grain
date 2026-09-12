@@ -1,18 +1,18 @@
-// tools/rye/perf_self_count.rye -- count this process's own retired instructions, so the counters
-// rung of the energy ladder is proven rather than inferred.
-//
-// WHY. tools/fixtures/e/energy_instrument_scan.sh reads sysfs and reports which instrument a host
-// exposes. Sysfs answers what is DECLARED; only an open answers what is COUNTABLE. This program is
-// the second wall behind that reading: it opens a hardware event for itself, runs a bounded loop of
-// a named size, and prints the count it got back. A pier that cannot read a joule can still read
-// its own work, and this is what proves that sentence on metal.
-//
-// It needs no root, no `perf` binary, and no privileged kernel setting: perf_event_paranoid 2
-// permits a process to count itself. The kernel's refusal is a first-class answer here rather than
-// an error -- a host that forbids the syscall says so, and the witness reads that word.
-//
-// Run from the repository root:
-//   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/perf_self_count.rye
+//! tools/rye/perf_self_count.rye -- count this process's own retired instructions, so the counters
+//! rung of the energy ladder is proven rather than inferred.
+//!
+//! WHY. tools/fixtures/e/energy_instrument_scan.sh reads sysfs and reports which instrument a host
+//! exposes. Sysfs answers what is DECLARED; only an open answers what is COUNTABLE. This program is
+//! the second wall behind that reading: it opens a hardware event for itself, runs a bounded loop of
+//! a named size, and prints the count it got back. A pier that cannot read a joule can still read
+//! its own work, and this is what proves that sentence on metal.
+//!
+//! It needs no root, no `perf` binary, and no privileged kernel setting: perf_event_paranoid 2
+//! permits a process to count itself. The kernel's refusal is a first-class answer here rather than
+//! an error -- a host that forbids the syscall says so, and the witness reads that word.
+//!
+//! Run from the repository root:
+//!   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/perf_self_count.rye
 
 const std = @import("std");
 const assert = std.debug.assert;

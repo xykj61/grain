@@ -1,0 +1,101 @@
+# rye_module_door_witness.rish -- the Door setting is a position the compiler reserves, and every
+# authored Rye module opens there.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_module_door_witness.rish
+#
+# WHY THIS RUNG. Gauge sets its dial by reader, and the dial runs through the code: METER beside a
+# bound, DOOR at the head of a module where somebody arriving cold deserves a plain sentence about
+# what the thing is for. Zig, and Rye after it, writes that setting into the grammar -- `//!` is a
+# module doc comment the compiler accepts only at the top of a file -- so the door is a position the
+# language reserves rather than a habit a reader has to infer.
+#
+# WHAT WAS UNREAD. `tools/fixtures/c/comment_dial_scan.sh` has counted the form since `20260824` and
+# gates nothing, deliberately: its own header says a measurement is finished when its question is
+# answered. So the reading stood and no lap met it. The numbers are the scan's to publish rather
+# than this file's to recite; what is worth writing down is the SHAPE the first reading found.
+#
+# THE SILENT MODULES WERE NOT DOORLESS. Of the ten that opened outside the form, eight carried real
+# Door prose in the ordinary `//` block -- a WHY paragraph naming the design question the program
+# settles, a list of the two commands and the append-only log behind them -- so a reader met a door
+# and every tool read a wall. One more carried its prose INSIDE `main`, where the sentence explains
+# the statement below it and answers nobody arriving at the file. The repair for the common shape is
+# one character on a line that already existed.
+#
+# WHY A WALL RATHER THAN A RATCHET. Nothing structural holds a living module's head silent, so a
+# floor above zero would be slack rather than a fact -- the same line the two-rooms doorway guard
+# drew when its living and dated halves came apart. Two exemptions stand, each named: a module whose
+# basename carries a one-clock stamp is dated testimony accrete-never-break keeps as written, and a
+# module under a `fixtures/` path is a planted control that must stay free to carry the fault it
+# plants. Both are COUNTED, so an exemption that quietly widened shows as a number.
+#
+# WHAT IT CANNOT SAY. Whether the sentence behind the door welcomes anybody. A `//!` line restating
+# the filename counts here exactly like a paragraph a stranger could follow. Position is checkable;
+# the welcome is graded by `sh tools/fixtures/q/qa_report_card.sh`.
+
+say "rye-module-door: Language EN -- a module's first line is the sentence a stranger reads first."
+say "rye-module-door: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "rye-module-door: Lens TAME -- safety first: the gated reading is a property of tracked sources alone, so no ship reads a different ceiling than its peers. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/r/rye_module_door_control.sh"]
+say control.out
+assert control.ok else "rye-module-door: the control must complete -- ${control.err}"
+assert control.out contains "control_verdict=ok" else "rye-module-door: the control must reach its own verdict"
+assert control.out contains "control_failed=0" else "rye-module-door: every leg must pass, not merely the ones this file happens to name"
+assert control.out contains "control_legs=45" else "rye-module-door: the control must run all 45 of its legs -- fail=0 is what an empty pen prints too, so the count is asserted beside the verdict"
+
+# The reading itself, from both sides of one plant.
+assert control.out contains "door_form_clean=yes" else "rye-module-door: a module opening in the grammar's own form must read clean"
+assert control.out contains "slash_head_counts=yes" else "rye-module-door: an ordinary comment head is Door prose no tool can read, and it must be counted"
+assert control.out contains "slash_head_named=yes" else "rye-module-door: a counted module must be named, since naming it is the whole work list"
+assert control.out contains "slash_head_lifted=yes" else "rye-module-door: one character must lift the reading, or the refusal is a latch"
+assert control.out contains "code_head_counts=yes" else "rye-module-door: a module opening with code has no door at all"
+assert control.out contains "code_head_lifted=yes" else "rye-module-door: removing it must return the reading"
+
+# Position is the whole claim, so the three neighbours of the door form are proven apart.
+assert control.out contains "blank_lines_read_past=yes" else "rye-module-door: the door is the first NON-BLANK line, so blank lines above it change nothing"
+assert control.out contains "late_door_counts=yes" else "rye-module-door: a doc comment below code is not a door -- the compiler refuses it there, and a meter reading it anywhere would pass a file that cannot build"
+assert control.out contains "late_door_lifted=yes" else "rye-module-door: removing the late claim must return the reading"
+assert control.out contains "decl_doc_counts=yes" else "rye-module-door: a declaration doc comment is a different setting of the same dial and opens no door"
+assert control.out contains "decl_doc_lifted=yes" else "rye-module-door: removing it must return the reading"
+
+# The two exemptions, each proven by its own reason rather than by the head it happens to carry.
+assert control.out contains "fixture_exempt_holds=yes" else "rye-module-door: a pen fixture is a planted control and must stay free to carry the fault it plants"
+assert control.out contains "fixture_still_counted=yes" else "rye-module-door: an exemption that prints no count is an exemption nobody can watch widen"
+assert control.out contains "testimony_exempt_holds=yes" else "rye-module-door: a stamped basename is dated testimony, and accrete-never-break keeps every word it wrote"
+assert control.out contains "sprigless_stamp_exempt=yes" else "rye-module-door: a stamp with no sprig is still a stamp -- REDS %175 read 237 logs the narrow pattern could not see"
+assert control.out contains "gated_excludes_exempt=yes" else "rye-module-door: the gated corpus must exclude what the exemptions hold, or the two numbers say the same thing"
+assert control.out contains "vendor_outside_corpus=yes" else "rye-module-door: a vendored module is somebody else's dial and never enters the corpus"
+
+# The ceiling and the reach floor, from both sides. There is no override and none is wanted.
+assert control.out contains "ceiling_zero_refuses=yes" else "rye-module-door: one silent door past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "ceiling_one_welcomes=yes" else "rye-module-door: a reading exactly at its ceiling must pass"
+assert control.out contains "reach_floor_refuses=yes" else "rye-module-door: a corpus under the reach floor must refuse -- a gate held at zero cannot tell a clean collection from a dead instrument (REDS %416)"
+assert control.out contains "reach_floor_lifted=yes" else "rye-module-door: lifting the floor must return the reading"
+
+# The instrument itself. An empty answer from a refused read is byte-identical to a clean tree.
+assert control.out contains "exempt_unreached_refuses=yes" else "rye-module-door: an exemption matching nothing has stopped being an exemption, and the reading below it cannot be trusted either way"
+assert control.out contains "exempt_unreached_names=yes" else "rye-module-door: the refusal must name which exemption went unreached"
+assert control.out contains "empty_module_refuses=yes" else "rye-module-door: a module holding no line is unread rather than clean"
+assert control.out contains "spaced_path_refuses=yes" else "rye-module-door: a path carrying whitespace must refuse by name rather than shrink the reading in silence"
+assert control.out contains "no_git_declines=yes" else "rye-module-door: the corpus is the tracked listing, so without git the reading must decline rather than call every module clean"
+
+# The mutations. A check nobody has watched fail is a check nobody has proven.
+assert control.out contains "helper_reads_tree=yes" else "rye-module-door: inside a tree the scan must source the tree's own portable helper"
+assert control.out contains "helper_reads_local=yes" else "rye-module-door: a copy driven from outside any tree must fall back and SAY so -- a copy that exits before it reads a line looks exactly like a mutation that did not bite"
+assert control.out contains "helper_local_still_reads=yes" else "rye-module-door: the fallback must actually read the corpus rather than merely announce itself"
+
+assert control.out contains "mutation_position_applied=yes" else "rye-module-door: the position mutation must start from a counted reading, or it proves the inert path"
+assert control.out contains "mutation_position_bites=yes" else "rye-module-door: read the door anywhere rather than at the first line and a module opening with code must read clean"
+assert control.out contains "mutation_exempt_applied=yes" else "rye-module-door: the exemption mutation must start from a gated corpus"
+assert control.out contains "mutation_exempt_bites=yes" else "rye-module-door: widen the fixture exemption to every path and the gated corpus must collapse to nothing"
+
+let living = run ["sh" "tools/fixtures/r/rye_module_door_scan.sh"]
+say living.out
+assert living.ok else "rye-module-door: an authored module opens outside the door form -- run `sh tools/fixtures/r/rye_module_door_scan.sh names` for the list; the repair is usually one character"
+assert living.out contains "verdict=ok" else "rye-module-door: the living reading must reach its own verdict"
+
+let affirmed = where (lines control.out) as l: l contains "=yes"
+say "rye-module-door: ${length affirmed} readings proven on real git repositories in a throwaway pen, counted off the pen rather than recited."
+
+say "GREEN: rye-module-door -- every authored Rye module opens at the position the compiler reserves for its door, with dated testimony and pen fixtures exempt by name and counted."

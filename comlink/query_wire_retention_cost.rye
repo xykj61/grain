@@ -1,38 +1,38 @@
-// comlink/query_wire_retention_cost.rye -- measure what a retained answer costs, in retired
-// instructions and in bytes, for the two shapes a caller may keep it in.
-//
-// WHY. `a retained reply needs its own bytes` proved that a decoded QueryWireResponse borrows its
-// text from the payload it was decoded from, so a caller who keeps the answer keeps those bytes.
-// That left one design question unmeasured: having kept the bytes, should the caller ALSO keep the
-// decoded struct, or decode again on every read? The first spends memory once; the second spends
-// instructions per read. This program measures both sides of that exchange on this host, so the
-// choice is settled by a number rather than by an argument.
-//
-// It counts its own retired instructions through `perf_event_open` with pid 0, needing no root and
-// no `perf` binary -- the shape proven by `tools/rye/perf_self_count.rye`. A kernel that refuses the
-// counter is a first-class answer here: the program says so and exits without claiming a ratio.
-//
-// The two workloads alternate, sample by sample, so a machine that drifts warmer or busier during
-// the run moves both readings together rather than one of them. Each reports its MEDIAN of an odd
-// number of samples, so the figure published is a sample that actually happened.
-//
-// A THIRD SHAPE joined the two on `20260909.171151`: KEEP VARIED, where the caller retains only as
-// many hits as the answer holds rather than the format's whole `[max_wire_hits]` array. The elder
-// paper projected that this shape would close most of the 7.3x swing between a one-hit and an
-// eight-hit answer, and wrote down a falsifier: a variable form whose one-hit cache still exceeds a
-// quarter of the fixed form's 456 bytes. This harness runs that falsifier rather than arguing it.
-// Its retained-byte figure names the region a caller would allocate -- `@sizeOf` of the header plus
-// the live hits -- computed the same way the fixed form's 456 is, so the two are comparable.
-//
-// ALL THREE LOOPS READ A ROTATING HIT INDEX, and that detail is load-bearing rather than decorative. A
-// first draft read one fixed hit, which made the cached loop's body loop-invariant: under
-// `-OReleaseFast` the whole twenty-thousand-read loop compiled to six instructions, and the harness
-// reported a saving that was really an elimination. Rotating the index gives each iteration its own
-// address to compute, so a hoist cannot stand in for a measurement.
-//
-// Run from the repository root:
-//   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye
-//   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye -OReleaseFast
+//! comlink/query_wire_retention_cost.rye -- measure what a retained answer costs, in retired
+//! instructions and in bytes, for the two shapes a caller may keep it in.
+//!
+//! WHY. `a retained reply needs its own bytes` proved that a decoded QueryWireResponse borrows its
+//! text from the payload it was decoded from, so a caller who keeps the answer keeps those bytes.
+//! That left one design question unmeasured: having kept the bytes, should the caller ALSO keep the
+//! decoded struct, or decode again on every read? The first spends memory once; the second spends
+//! instructions per read. This program measures both sides of that exchange on this host, so the
+//! choice is settled by a number rather than by an argument.
+//!
+//! It counts its own retired instructions through `perf_event_open` with pid 0, needing no root and
+//! no `perf` binary -- the shape proven by `tools/rye/perf_self_count.rye`. A kernel that refuses the
+//! counter is a first-class answer here: the program says so and exits without claiming a ratio.
+//!
+//! The two workloads alternate, sample by sample, so a machine that drifts warmer or busier during
+//! the run moves both readings together rather than one of them. Each reports its MEDIAN of an odd
+//! number of samples, so the figure published is a sample that actually happened.
+//!
+//! A THIRD SHAPE joined the two on `20260909.171151`: KEEP VARIED, where the caller retains only as
+//! many hits as the answer holds rather than the format's whole `[max_wire_hits]` array. The elder
+//! paper projected that this shape would close most of the 7.3x swing between a one-hit and an
+//! eight-hit answer, and wrote down a falsifier: a variable form whose one-hit cache still exceeds a
+//! quarter of the fixed form's 456 bytes. This harness runs that falsifier rather than arguing it.
+//! Its retained-byte figure names the region a caller would allocate -- `@sizeOf` of the header plus
+//! the live hits -- computed the same way the fixed form's 456 is, so the two are comparable.
+//!
+//! ALL THREE LOOPS READ A ROTATING HIT INDEX, and that detail is load-bearing rather than decorative. A
+//! first draft read one fixed hit, which made the cached loop's body loop-invariant: under
+//! `-OReleaseFast` the whole twenty-thousand-read loop compiled to six instructions, and the harness
+//! reported a saving that was really an elimination. Rotating the index gives each iteration its own
+//! address to compute, so a hoist cannot stand in for a measurement.
+//!
+//! Run from the repository root:
+//!   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye
+//!   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/query_wire_retention_cost.rye -OReleaseFast
 
 const std = @import("std");
 const assert = std.debug.assert;
