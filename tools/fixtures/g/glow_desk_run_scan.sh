@@ -288,6 +288,21 @@ fi
 # one set apart shares a side with one of them. That correction was written by matching the word
 # TooManyLines, which is the one reading this door already says not to make.
 #
+# AND GLOW_RUN NOW STATES ITS OWN CONTRACT, seated 20260911.230925. The sentence above -- "glow_run
+# draws the line itself, in its own contract rather than in its prose" -- was true, and the prose it
+# pointed at lived in THIS door rather than in the module returning the number, which is why the
+# reading was rewritten twice from metal. glow/glow_run.rye carries the table in its own `//!` head
+# now, and tools/g/glow_run_contract_witness.rish holds the table, main's return sites, and the
+# built binary's answers to one another.
+#
+# Two of glow_run's codes each carried two meanings when that table was written, and one of them
+# reached this scan. `readFileAlloc` was called with `try`, so FileNotFound, IsDir and
+# StreamTooLong each returned through Zig's `!u8` main -- exit 1 -- and the row below named that
+# *lowering failed*: a claim about a desk's CONTENT for a file whose bytes were never read. glow_run
+# answers `3 unreadable` for all three now, and this scan gives it a stage of its own rather than
+# letting it fall to `unclassified`, since a desk that vanished under a running pass and a desk that
+# broke in the lowerer want two different repairs.
+#
 # The stage codes, returned here and expected of a GLOW_DESK_RUN_ONE stub:
 #
 #   0  ran
@@ -295,7 +310,12 @@ fi
 #   3  glow_run's lowering failed          (glow_run exit 1)
 #   4  the build failed
 #   5  the built binary exited nonzero
+#   6  glow_run never read the file        (glow_run exit 3 -- absent, a directory, past 64 KiB)
 #   1  anything else -- counted, and named unclassified rather than guessed at
+#
+# glow_run's `4 usage` stays in `unclassified` on purpose: this scan always hands over a path, so a
+# usage answer would mean the scan itself is broken, and inventing a stage for it would give that
+# fault a name that reads like a fact about a desk.
 run_desk() {
   _desk=$1
   shift
@@ -315,6 +335,7 @@ run_desk() {
     case "$_gs" in
       2) return 2 ;;
       1) return 3 ;;
+      3) return 6 ;;
       *) return 1 ;;
     esac
   fi
@@ -336,6 +357,7 @@ failed_declined=0
 failed_lower=0
 failed_build=0
 failed_run=0
+failed_unreadable=0
 failed_unclassified=0
 : > "$WORK/failures"
 : > "$WORK/fail.log"
@@ -358,6 +380,7 @@ while IFS="$TAB" read -r desk args; do
       3) failed_lower=$((failed_lower + 1)); _stage=lower ;;
       4) failed_build=$((failed_build + 1)); _stage=build ;;
       5) failed_run=$((failed_run + 1)); _stage=run ;;
+      6) failed_unreadable=$((failed_unreadable + 1)); _stage=unreadable ;;
       *) failed_unclassified=$((failed_unclassified + 1)); _stage=unclassified ;;
     esac
     printf '%s %s\n' "$_stage" "$desk" >> "$WORK/failures"
@@ -390,13 +413,14 @@ echo "bare=$bare"
 echo "selected=$selected"
 echo "ran=$ran"
 echo "failed=$failed"
-# The five parts of that one number. `failed` stays the gated total, so this scan refuses exactly
+# The six parts of that one number. `failed` stays the gated total, so this scan refuses exactly
 # what it refused before; what the parts buy is that a fourth fixture landing tomorrow raises the
 # reading that names its own fault rather than joining a bucket of three.
 echo "failed_declined=$failed_declined"
 echo "failed_lower=$failed_lower"
 echo "failed_build=$failed_build"
 echo "failed_run=$failed_run"
+echo "failed_unreadable=$failed_unreadable"
 echo "failed_unclassified=$failed_unclassified"
 echo "failed_ceiling=$FAILED_CEILING"
 echo "verdict=$verdict"

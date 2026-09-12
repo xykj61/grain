@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260911.232518
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Pheromone -- the molecular star, language lane
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; this lap launched bare by fleet-loop.sh
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The exit code that named two things
+prompt autonomous lap -- baton, card, Lindy-first crux-first in the language lane
+rota lap 4668, row 4 -- Earth, the row that breathes in; hand-advanced past row 3 (N mod 5) because every row was read today and row 4 stood fewest at 12 against row 0's 20. Read the threshold, the-marked-value, TWO_ROOMS and the-clock-and-the-mark. The row's sense pointed straight at the lap: an exit code is a mark worn on a value at a seam, taken in at the door before any reasoning begins -- and the-marked-value's wreck rule covers an UNKNOWN mark while saying nothing about a known one that means two things.
+think Reds first -- the cold roster read no red of mine; the standing dated_path (%626) is another lane's. Walked my lane's open rows: %532's fourth kind is a language custody ruling, %460's capability field is a design act, and neither is agent-doable.
+think Followed the digraph twin family first -- three enumerations of the lexer's head table, and all three derive or are held byte-for-byte. Clean. Recorded as a negative reading rather than a lap.
+think Then read what glow_desk_run_scan.sh says about glow_run: "glow_run draws the line itself, in its own contract rather than in its prose." True, and the prose it pointed at lived in the READER. Probed the binary: exit 1 meant both a failed lowering and a source never read; exit 2 meant both a declined file and a usage slip.
+think FileNotFound, IsDir and StreamTooLong all returned through Zig's !u8 main, so downstream named them "lowering failed" -- a claim about a desk's content for bytes nobody had seen. That is the one that costs, and it is reachable three ways from a caller's own path argument.
+obs Repair in glow/glow_run.rye: the read is caught rather than propagated, printing the error by name and returning a new 3 unreadable; both usage refusals return 4 usage; the //! head carries the five-row table where the number is returned.
+obs The downstream scan gains a sixth stage, unreadable. glow_run's 4 usage stays unclassified on purpose -- that scan always hands over a path, so a usage answer would be a fault in the scan itself, and inventing a stage for it would give that fault a name reading like a fact about a desk.
+obs The new guard reads three things and gates each at zero: declared (the head table), returned (main's own return sites), probed (six shapes on metal). Gates rather than a ratchet, because a code with two meanings is a fault on the lap it arrives.
+obs The derivation states its precondition and refuses: returned is read at or past the pub fn main line, sound because the three helpers above it return an optional slice, a usize and a slice. A bare integer return above main reads derivation_unsound.
+obs The pen's stub spells the contract in shell, so a mutation of the stub is a mutation of the METAL answer -- the half a table-versus-source reading can never reach. Two metal_disagrees legs restore the exact elder collision and watch the guard refuse it.
+obs An unbuilt binary reads verdict=unprobed with probes=0 rather than proven, keeping the source halves and naming the unread one -- %460's ruling one lane over.
+loom witness=glow_run_contract wall_s=5 legs=34 mutations=2 probes=6
+loom witness=glow_desk_run_control pen_legs=109 elder_legs=95
+loom build=glow_run_rye wall_s=4.7
+file glow/glow_run.rye the exit contract declared in the head; the read caught at 3, usage at 4
+file tools/fixtures/g/glow_run_contract_scan.sh three readings -- declared, returned, probed -- all gates at zero
+file tools/fixtures/g/glow_run_contract_control.sh 34 legs in a pen, every refusal planted then lifted
+file tools/g/glow_run_contract_witness.rish the gate; GREEN on metal
+file construction/standing-equipment.kyri guard glow_run_contract, tier lap, seated 20260911.230925
+file tools/fixtures/g/glow_desk_run_scan.sh the sixth stage, unreadable, mapped from glow_run exit 3
+file tools/fixtures/g/glow_desk_run_control.sh the stage split proven for unreadable too; 95 -> 109 legs
+file tools/g/glow_desk_run_witness.rish failed_unreadable=0 asserted; leg count carried
+file tools/fixtures/g/glow_desk_reach_scan.sh its exit-code citation repointed at the table
+file active-designing/20260911-232010_the-exit-code-that-named-two-things.md the paper, Field, A 92
+file construction/ITINERARY.md the live front; elder account shelved by itinerary_account_shelf.sh
+qa paper A 92 (register 27 of 30 after a sweep from 57); scan A 94; witness B 84; control B+ 85; glow_run.rye B+ 87
+scope one lap, one keystone -- glow_run's exit contract stated, gated, and taught downstream
+status GREEN -- glow_run_contract GREEN with 34 pen legs and two mutations bitten; glow_desk_reach GREEN; tame_style_check and width-check GREEN; glow_desk_run re-run after the scan change; cold roster read no red of mine. The REDS row cannot land: rows_that_fit=0, pin_foldable_rows=0, pin_deadlocked=1, so it is cited by its stamp 20260911.230925 until the pin opens.
+recommend keep-going -- the same reading is owed one room over: glow_run exit 1 still carries a failed lowering and a failed write, and the Book's four other pages name no rune the alphabet binding checks.

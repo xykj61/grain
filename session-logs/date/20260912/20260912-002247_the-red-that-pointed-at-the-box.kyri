@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260912.002247
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Pheromone -- the molecular star, language lane
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness environment block
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; this lap launched bare by fleet-loop.sh
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The red that pointed at the box
+prompt autonomous lap -- baton, card, Lindy-first crux-first in the language lane
+rota lap 4668, row 3 -- Water, the row that tastes. Read the threshold, what-brix-infuse-is, the-happy-zone-and-the-thin-edge and growing-a-language. The row's instruction is literal here: taste what is in the box before cooking a second pot, and an infusion is tested by running it a SECOND time. This lap ran the second time.
+think Reds first, and for once the red was mine and pointed at its own cure. The cold pass read 270 run, 266 green, 2 red -- stash_record on unlanded=1, and standing_equipment red_self on that. One root.
+think The unlanded record is the session log my own previous lap wrote at 20260911.232518 and never committed. fleet_round_open.sh stashed the whole lap ten seconds before this one opened: 8 tracked files modified and 6 untracked, 737 lines, holding the paper, the shelf, the log, a scan, a control, a witness and a roster seat.
+think Read the box before cooking: git stash show -p on the tracked half and git show on stash@{0}^3 for the untracked half. The work was finished -- the witness asserts 34 pen legs and six metal probes, and the paper reads Field with its own room named at the door.
+think Recovered rather than rebuilt. git stash apply took it back with no conflict, since HEAD had not moved off the stash's base. Rebuilt glow/bin/glow_run from the recovered source, because the roster pass had built it from HEAD's and the probe half reads the binary.
+obs The cold pass was the DEAD lap's own. It launched 20260911.230942, held construction/standing-equipment-run.lock.d through the kill, and --detach refused to open a second. The baton's own check is what named it: its header counts 22 stashes and lists stash@{0} as one from 20260910, where git stash list reads 23 and a stash from 20260911-233249. It closed honestly at tree_moved=no, because both its digests fell on a clean tree -- the dead lap's files were written after its open and stashed before its close.
+obs So a roster pass outlives the lap that launched it. Nothing here is wrong: the lock held, the refusal was loud, the transcript was accurate. What a reader needs is the check the baton already prints, since the header's own stash list is what tells a live pass from an inherited one.
+obs Landing the recovery closes both reds without touching either guard. stash_record reads landed=17 unlanded=0 verdict=ok with the files in the worktree alone -- the scan counts a worktree as a ref a reader reaches, which is why the gate closed before the commit rather than after it.
+obs Second firing of this class on this pier inside three hours; the peer lap at 20260911.210824 recovered its own box the same way, and REDS %717 names a third that sat five days. The class is the round-open stash, and no round open reads it back.
+obs First log of 20260912, so the day shelf, its row, and both roster rows are born in this commit -- session_roster_agree gates an uncounted shelf at zero. 20260911 keeps its open row: a day-close is the next day's duty and that reading passes free by name.
+loom witness=glow_run_contract wall_s=3 legs=34 probes=6
+loom witness=glow_desk_reach wall_s=41 legs=91
+loom witness=glow_desk_run legs=109 desks=347
+loom roster=cold guards_run=270 green=266 red=2 gated=2 wall_s=3648
+loom build=glow_run_rye wall_s=5.6
+file construction/ITINERARY.md the live front; the recovery and the inherited cold pass, elder account shelved
+file session-logs/date/20260912/20260912-002247_the-red-that-pointed-at-the-box.kyri this lap
+file session-logs/date/README-index-20260912.md the day shelf, born with its first row
+file session-logs/README.md the pin's row for the new day
+file session-logs/CHAPTERS.md the roster's row for the new day
+file glow/glow_run.rye recovered -- the exit contract in the head, the read caught at 3, usage at 4
+file tools/g/glow_run_contract_witness.rish recovered -- GREEN on metal, re-run this lap
+file tools/fixtures/g/glow_run_contract_scan.sh recovered -- declared, returned, probed, all gates at zero
+file tools/fixtures/g/glow_run_contract_control.sh recovered -- 34 legs in a pen, two mutations bitten
+file construction/standing-equipment.kyri recovered -- guard glow_run_contract, tier lap
+file tools/fixtures/g/glow_desk_run_scan.sh recovered -- the sixth stage, unreadable
+file active-designing/20260911-232010_the-exit-code-that-named-two-things.md the recovered paper, A 93 this lap
+qa paper A 93 (field, service 100); ITINERARY A+ 100 (meter)
+scope one lap, one keystone -- recover the stashed lap whole, prove it on metal, and land it
+status GREEN -- glow_run_contract, glow_desk_reach and glow_desk_run all GREEN on metal after the rebuild; tame_style_check and width-check GREEN; stash_record reads unlanded=0 verdict=ok, which closes both cold reds at their one root. No REDS row booked: the pin stands at its bound and nothing of mine is foldable, so the class is cited by stamp.
+recommend keep-going -- the round-open stash has now swallowed a finished lap three times in a day and no round open reads its own box back; a reader printing orphans_work by name at the open is one lap, and the card already names it as yours.

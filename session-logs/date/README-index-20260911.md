@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260911.232518` | [The exit code that named two things](20260911/20260911-232518_the-exit-code-that-named-two-things.kyri) | one glow_run exit code named two different things |
 | `20260911.231924` | [two pours, one format](20260911/20260911-231924_two-pours-one-format.kyri) | Amphora's two pours computed `parent` over different preimages; one never travelled. |
 | `20260911.225821` | [The box that was never named](20260911/20260911-225821_the-box-that-was-never-named.kyri) | the round-open names its parked work; the witness hears its own pen |
 | `20260911.224339` | [Absence is checkable; now intent is too](20260911/20260911-224339_absence-is-checkable-intent-is-not.kyri) | a board so a ship says what it builds |

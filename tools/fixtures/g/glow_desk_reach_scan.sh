@@ -111,7 +111,11 @@
 # `too many Glow lines` and at `multi lower failed (TooManyLines)`, on opposite sides of
 # glow_run's own exit-code line -- 2 declines the file, 1 means a lowering ran and broke.
 # tools/fixtures/g/glow_desk_run_scan.sh now splits its failure count by that code, so the three
-# are counted where they belong rather than recited from one sample.)
+# are counted where they belong rather than recited from one sample. And from 20260911.230925 that
+# line is a TABLE in glow/glow_run.rye's own `//!` head rather than a reading taken from its code:
+# `3 unreadable` and `4 usage` joined it, so an absent source stops arriving as a lowering failure
+# and a usage slip stops arriving as a declined file. tools/g/glow_run_contract_witness.rish holds
+# the table, main's return sites, and the built binary's answers to one another.)
 # They are data fixtures rather than desks (sample-digraph-table.glow names its own twin,
 # tools/fixtures/g/glow_digraph_table.txt) and they carry no marker in either the name or the
 # head, so no instrument can tell them from a desk that ought to run. They stay inside `uncovered`

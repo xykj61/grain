@@ -239,15 +239,17 @@ rm -f "$d/tools/g/glow_run_worker.sh"
 rc=0; ( cd "$d" && sh tools/fixtures/g/glow_desk_run_scan.sh --list ) >/dev/null 2>&1 || rc=$?
 check 2 "$rc" "a missing run worker refuses"
 
-# --- 9. one failure count is five, and each stage is counted under its own name ----------------
+# --- 9. one failure count is six, and each stage is counted under its own name -----------------
 # The elder reading answered `failed=1` for a file glow_run DECLINED, for a lowering that ran and
 # broke, for a build that broke, and for a binary that exited nonzero. Four faults wanting four
 # repairs read identically, which is how three fixtures came to be recorded as refusing "in two
-# distinct ways" when metal answers three across both of glow_run's exit codes.
+# distinct ways" when metal answers three across both of glow_run's exit codes. `unreadable` joined the split on
+# 20260911.230925, when glow_run stopped spelling *the source was never read* as *the lowering
+# failed* -- the sixth stage names a file whose bytes nobody saw.
 d=$(newpen stages)
 desk "$d/glow/gen/g/gate-one.glow"
 desk "$d/glow/gen/g/gate-bad.glow"
-for pair in 'declined 2' 'lower 3' 'build 4' 'run 5' 'unclassified 1'; do
+for pair in 'declined 2' 'lower 3' 'build 4' 'run 5' 'unreadable 6' 'unclassified 1'; do
   stage=${pair% *}; code=${pair#* }
   stub "$d" "gate-bad.glow" "$code"
   runscan "$d" "$pen/o" GLOW_DESK_RUN_FAILED_CEILING=1
@@ -255,7 +257,7 @@ for pair in 'declined 2' 'lower 3' 'build 4' 'run 5' 'unclassified 1'; do
   check 1 "$(field "$pen/o" "failed_$stage")" "and it is counted under failed_$stage"
   check 1 "$(grep -c "^  $stage " "$pen/o")" "the detail names the stage beside the desk"
   # The four it is NOT must all read zero, or a split that always answers one would pass.
-  for other in declined lower build run unclassified; do
+  for other in declined lower build run unreadable unclassified; do
     [ "$other" = "$stage" ] && continue
     check 0 "$(field "$pen/o" "failed_$other")" "stage $stage leaves failed_$other at zero"
   done
@@ -264,7 +266,7 @@ done
 stub "$d" ""
 runscan "$d" "$pen/o" GLOW_DESK_RUN_FAILED_CEILING=0
 check ok "$(field "$pen/o" verdict)" "lifting every plant returns the pen to ok"
-for other in declined lower build run unclassified; do
+for other in declined lower build run unreadable unclassified; do
   check 0 "$(field "$pen/o" "failed_$other")" "and failed_$other falls with it"
 done
 
@@ -293,8 +295,9 @@ check 1 "$(field "$pen/o" failed_run)" "one binary that exited nonzero"
 check 0 "$(field "$pen/o" failed_build)" "and no build failure"
 sum=$(( $(field "$pen/o" failed_declined) + $(field "$pen/o" failed_lower) \
       + $(field "$pen/o" failed_build) + $(field "$pen/o" failed_run) \
+      + $(field "$pen/o" failed_unreadable) \
       + $(field "$pen/o" failed_unclassified) ))
-check "$(field "$pen/o" failed)" "$sum" "the five parts sum to the gated total"
+check "$(field "$pen/o" failed)" "$sum" "the six parts sum to the gated total"
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

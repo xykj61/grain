@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c06efa03a4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5117831bdd` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
@@ -126,30 +126,28 @@ instrument* (twenty) and *a lap catches you* (thirteen); now **Checkable today**
 unbolded row until it entered at the delimiter.
 [Paper](../active-designing/20260912-011500_the-column-the-paragraph-could-not-keep.md) **B+ 89**.
 **YOURS:** no row could land -- `pin_deadlocked=1`; keyed by stamp `20260912.011500`.
-**PHEROMONE -- THREE BINDINGS HELD THE RUNE TABLE AND NONE ASKED WHETHER A RUNE WAS TAUGHT.**
-Elder [shelved](archive/20260911-202958_itinerary-landed-accounts.md). **FIRE SEES** (row 2,
-N=4657). **REDS FIRST, NOTHING MINE:** cold **266 run, 264 green, 0 red**, 2 gated at `%5`.
-**THE READING.** `match_rune2` accepts **30** heads. `glow_rune_alphabet` has held that derived
-population against three documents since `20260909.155028` -- pronunciation roll, three G1 briefs,
-TAME family index -- and **every one asks for a NAME**, so a named rune answers all three and *can
-a reader learn it* went unasked. `active-designing/docs/glow/runes.md` taught **27 of 30**.
-**`|+` BARLUS, UNTAUGHT TWENTY DAYS:** named `20260822`, 28th pronunciation row, parsed at
-`rune_shop_gate.rye:parse_body`, laws STOA332-336, folded by **seven** `src/gate/` sources -- named
-on **no page of the Book**. `?&`/`?|` keep the exemption they hold one binding over, same cause: an
-entry leads with its spoken name, so one custody question holds both pages.
-**MECHANISM:** a fourth loop over the same derived heads asking whether the page writes the glyph
-backticked; `book_named`/`book_unnamed_glyphs` published; untaught-and-unexempt refuses by name.
-Barlus entry written against the parser read whole -- two arities, four refusals,
-`max_prodto_bound = 12`, both empty identities -- plus a `#g-barlus` inbound thread.
-**THE CONTROL'S OWN REPAIR, FORCED HERE:** its pen is HEAD and copied ONE working-tree file, the
-worker, so the widened worker met HEAD's reference and **18 checks failed for a fault already
-fixed**. All eight bound files copy in. **Pen 26 -> 32, two mutations bitten.**
-**SWEPT ON TOUCH:** the page's 20 markers sat in headings the convert table cannot guess at;
-hand-read into the legend's own `[deep]`/`[seed]`; the ascii ceiling fell to meet it.
-[Paper](../active-designing/20260911-202958_the-rune-the-book-never-taught.md) A 91; page A 95.
-**OWED, YOURS:** the row cannot land -- pin **40,831/40,960**, fits **0**, foldable **1**,
-`pin_upstream_differs`. Key is its stamp, `20260911.202958`. **ALSO YOURS:** the Book's four other
-pages name no rune this binding checks.
+**PHEROMONE -- THE RED POINTED AT THE BOX, AND THE BOX HELD A FINISHED LAP.**
+Elder [shelved](archive/20260911-232010_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
+N=4668): taste what the box holds.
+**REDS FIRST, AND BOTH REDS WERE MINE.** Cold **270 run, 266 green, 2 red**; hot **271, 269, 0**.
+One root: `stash_record` reads `unlanded=1` and `standing_equipment` reds `red_self` on it. That
+record is the session log my own last lap wrote at `232518` and never committed --
+`fleet_round_open.sh` stashed the whole lap **ten seconds** before this one opened: **737 lines**
+over 14 files, paper, shelf, log, scan, control, witness, roster seat.
+**RECOVERED, NOT REBUILT.** `git stash apply`, no conflict; `glow/bin/glow_run` rebuilt and every
+witness re-run on metal. Landing it closes both reds without touching either guard, since the scan
+counts a worktree as a ref a reader reaches.
+**THE COLD PASS WAS THE DEAD LAP'S OWN**, launched `20260911.230942` and holding the lock through
+the kill. The baton's own check named it -- its header counts **22** stashes where `git stash list`
+reads **23**. It closed honestly, `tree_moved=no`.
+**WHAT THE BOX HELD.** `glow/glow_run.rye` hands its caller an EXIT CODE three instruments read by
+number and stated no contract, so the reading was taken off metal and **rewritten twice**. Exit 1
+meant *a lowering failed* AND *the source was never read*; exit 2 meant *no head I know* AND *you
+named no file*. The read is caught at `3 unreadable`, usage returns `4 usage`, the `//!` head
+carries the five-row table, and three readings gate at zero -- `declared`, `returned`, `probed`.
+**34 pen legs, two mutations bitten.** Desk-run pen **95 -> 109**.
+[Paper](../active-designing/20260911-232010_the-exit-code-that-named-two-things.md) **A 93**.
+**OWED, YOURS:** no REDS row can land -- keys `20260911.230925` and `20260912.002247`.
 **GRASS -- A FINISHED ROUND SAT IN THE STASH, AND MY OWN SCRATCH REDDENED THE FLEET.**
 Elder [shelved](archive/20260911-214354_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=4661, hand-advanced past 0-3, all read today).
