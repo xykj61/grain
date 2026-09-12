@@ -13,6 +13,7 @@ printf '#!/bin/sh\necho grain-incense\n' > "$tree/tools/fixtures/f/fleet_roster_
 printf '#!/bin/sh\nexit 0\n' > "$tree/tools/f/fleet_round_open.sh"
 cat > "$pen/bin/codex" <<'STUB'
 #!/bin/sh
+printf '%s\n' "$*" >> codex-args.txt
 case "$*" in
   *'Reply with exactly:'*)
     while [ "$#" -gt 0 ]; do
@@ -33,6 +34,8 @@ export PATH="$pen/bin:$PATH"
 export LOOP_HOURS=1 LOOP_LAPS=1 LOOP_BACKOFF=0 LOOP_LIMIT_WAIT=0
 run() { sh "$tree/tools/f/fleet-loop-codex.sh" incense; }
 run > "$pen/out"
+grep -q -- '-m gpt-5.6-sol' "$tree/codex-args.txt"
+echo 'ok -- default model reaches the Codex CLI'
 grep -q BATON_CONTROL "$tree/received-prompt.txt"
 grep -q LANE_CONTROL "$tree/received-prompt.txt"
 grep -q fifteen-asks-sorted-for-the-fleet "$tree/received-prompt.txt"
@@ -61,6 +64,11 @@ fi
 echo 'ok -- missing lane refused'
 
 rm -f "$tree/.loop-clockout"
+rm -f "$tree/codex-args.txt"
+CODEX_MODEL=control-model run > "$pen/out"
+grep -q -- '-m control-model' "$tree/codex-args.txt"
+echo 'ok -- explicit model override reaches the Codex CLI'
+
 if CONTROL_PROBE_FAIL=1 run > "$pen/out"; then
   echo 'FAIL -- echoed probe request accepted'; exit 1
 fi
