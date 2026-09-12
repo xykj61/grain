@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260912.185104` | [the parked lint census ran again](20260912/20260912-185104_the-parked-lint-census-ran-again.kyri) | a 46-leg lint reader recovered across its heading rename |
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
+| `20260912.181026` | [the refusal named the path again](20260912/20260912-181026_the-refusal-named-the-path-again.kyri) | recovered the runner repair that named a moved tree |
 | `20260912.173722` | [default and boundary](20260912/20260912-173722_the-default-and-the-boundary-read-on-this-pier.kyri) | model control and Amphora fallback read true |
 | `20260912.165121` | [the four parked laps came home](20260912/20260912-165121_the-four-parked-laps-came-home.kyri) | four completed unsent laps recovered as one set |
 | `20260912.163124` | [the parked door came home](20260912/20260912-163124_the-parked-door-came-home.kyri) | recovered a finished docs-geode lap from the dead-letter box |
@@ -24,6 +25,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.145410` | [endurance road reached the anonymous seed](20260912/20260912-145410_the-endurance-road-reached-the-anonymous-seed.kyri) | proof lightened; seeds crossed; watch waits |
 | `20260912.143726` | [receipt cloth at the still pier](20260912/20260912-143726_the-receipt-cloth-was-molted-at-the-still-pier.kyri) | two products share one cloth; all ships wait |
 | `20260912.142315` | [fleet course returned to the Compass](20260912/20260912-142315_the-fleet-course-returned-to-the-compass.kyri) | eight ships share one lasting crossing |
+| `20260912.050629` | [The refusal that named its cost](20260912/20260912-050629_the-refusal-that-named-its-cost.kyri) | The runner named what a moved tree cost and never which file moved. |
 | `20260912.044314` | [the fold that had nothing to hold](20260912/20260912-044314_the-fold-that-had-nothing-to-hold.kyri) | row 5 cleared its falsifier, and the clearing is what killed it |
 | `20260912.044148` | [the pin door the fleet owned](20260912/20260912-044148_the-pin-door-the-fleet-owned.kyri) | two rows booked on metal, folded; deadlock 1 -> 0 |
 | `20260912.035328` | [the round that was cut](20260912/20260912-035328_the-round-that-was-cut-and-the-clock-that-held-its-lock.kyri) | a cut lap's work recovered, re-proven |

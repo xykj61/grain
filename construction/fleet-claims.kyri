@@ -64,9 +64,3 @@ stamp 20260912.041507
 epoch 1789200907
 paths mantra/src/weave_apply_witness.rye tools/m/mantra_weave_apply_witness.rish tools/fixtures/m/mantra_weave_apply_control.sh
 what A witness for Weave.apply, which no guard owns: its delete half stated three preconditions and asserted them, so a stale or hand-built diff met exit 134 where the insert half refuses by name. Three named refusals land plus the witness that holds them.
-claim tree-moved-names
-seat incense
-stamp 20260912.043553
-epoch 1789202153
-paths tools/fixtures/s/standing_equipment_run.sh tools/fixtures/s/standing_equipment_run_control.sh
-what The runner refuses on tree_moved and never names what moved: this lap lost a 272-guard, 3232-guard-second cold pass to one edit of one tracked coordination file, and the transcript could not say which. Keeping the digest's own input listing at open and diffing it at close names the paths; the refusal stays.

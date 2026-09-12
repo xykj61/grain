@@ -748,8 +748,57 @@ tree_digest() {
     echo nogit
   fi
 }
+# THE DIGEST ANSWERS *WHETHER*; THIS ANSWERS *WHICH* (`20260912.043553`). Twelve characters cannot
+# be diffed from, which the receipt's own comment below already says out loud -- so a pass that
+# ran for forty minutes could report `tree_moved=yes` and name no path at all, and a hand reading
+# the transcript learned what the refusal COST and nothing about its CAUSE. This lap paid that
+# bill: 272 guards green, 3,232 guard-seconds, lost to one edit of `construction/fleet-claims.kyri`
+# made because `tools/f/fleet_baton.txt` tells every ship to open a claim before it builds. Copal
+# reported the same shape one lap earlier from its own door, so it is a loom rather than a lantern.
+#
+# The listing is keyed by PATH rather than by content alone, which is the one thing the digest's
+# own inputs cannot give: `git hash-object --stdin-paths` prints hashes and no names, so an
+# untracked file's content change leaves no path in the digest's stream. Here the path list is
+# built first and the hashes are pasted beside it, so every line reads `<hash> <path>` and a plain
+# `comm` over two sorted listings names what appeared, vanished, or changed.
+#
+# ONE `hash-object` PROCESS for the whole list, for the reason the digest gives above: measured in
+# a pen at 2,003 untracked files, one process took 45ms where a call per file took 10,393ms. A
+# deleted path carries the literal `deleted` in the hash column, since `hash-object` refuses a path
+# that is gone and a refusal per file would cost that same 231-fold.
+#
+# It writes into the runner's own `mktemp` pen, which stands outside the tree entirely, so taking
+# this reading can never be one of the things it measures.
+tree_paths() {
+  git rev-parse --git-dir >/dev/null 2>&1 || return 0
+  {
+    git diff HEAD --name-only 2>/dev/null
+    git diff --cached --name-only 2>/dev/null
+    git ls-files --others --exclude-standard 2>/dev/null
+  } | sort -u > "$pen/paths.list"
+  # A path git names and the filesystem lacks is a deletion; hash-object would refuse it and take
+  # the whole batch down with it, so the two populations are hashed and labelled apart.
+  : > "$pen/paths.present"
+  : > "$pen/paths.gone"
+  while IFS= read -r _p; do
+    [ -n "$_p" ] || continue
+    if [ -f "$_p" ]; then printf '%s\n' "$_p" >> "$pen/paths.present"
+    else printf 'deleted %s\n' "$_p" >> "$pen/paths.gone"; fi
+  done < "$pen/paths.list"
+  if [ -s "$pen/paths.present" ]; then
+    git hash-object --stdin-paths < "$pen/paths.present" 2>/dev/null > "$pen/paths.hashes"
+    paste -d' ' "$pen/paths.hashes" "$pen/paths.present"
+  fi
+  cat "$pen/paths.gone"
+  # HEAD rides in the listing under a name no working path can wear, so a pass whose HEAD moved --
+  # a peer landing a commit in this checkout -- is named rather than left to be inferred from the
+  # dozens of paths that move with it.
+  printf '%s HEAD\n' "$(git rev-parse HEAD 2>/dev/null || echo no_head)"
+}
+
 tree_open=$(tree_digest)
 echo "tree_at_open=$tree_open"
+tree_paths | sort > "$pen/paths.open"
 
 # HOW FAR BEHIND THE ANOINTED ORDER THIS PASS OPENED (`20260910.060000`). A cold endurance run costs about
 # forty minutes -- 2,251 guard-seconds measured `20260910.051007` -- and the fleet lands five to
@@ -1443,6 +1492,7 @@ done < "$pen/todo"
 # to `git status --porcelain` either way; ordering it this way means a clone where it is not yet
 # ignored still reads honestly.
 tree_close=$(tree_digest)
+tree_paths | sort > "$pen/paths.close"
 
 # The open's hit-ledger row lands here, beside the card and the evidence and for the same
 # reason: nothing this runner writes belongs between its own two digests.
@@ -1515,6 +1565,82 @@ done
 
 moved=no
 [ "$tree_open" = "$tree_close" ] || moved=yes
+
+# WHAT MOVED, NAMED (`20260912.043553`). The two path-keyed listings taken beside the two digests
+# are compared here, and only here -- a reading nobody needs when the tree held still costs nothing
+# when it did.
+#
+# THE LISTING HOLDS WHAT DIFFERS FROM HEAD, NEVER THE WHOLE TREE, and the verbs are read against
+# that fact rather than against the listing's own shape. A first draft called every path entering
+# the close listing `appeared`, and the pen caught it at once: a committed file rewritten under the
+# run had CHANGED, and it stood in no open listing at all because it was clean when the pass began.
+# A verb read off set membership describes the instrument; these three describe the tree.
+#
+#   vanished  the path is gone from disk at the close -- a `deleted` hash, or no close line at all
+#   appeared  the path is UNTRACKED and stood in no open listing; every untracked file is listed,
+#             so its absence from the open reading means it did not exist then
+#   changed   everything else, which is the tracked file that was clean at the open and differs now
+#
+# BOUNDED AT SIXTEEN, with the remainder counted rather than dropped. A rebase mid-pass moves
+# hundreds of paths and a transcript that prints them all buys a scroll where a hand wanted a
+# sentence; one that prints some and says how many it withheld keeps both.
+moved_named=0
+moved_unnamed=0
+if [ "$moved" = yes ]; then
+  [ -f "$pen/paths.open" ] || : > "$pen/paths.open"
+  [ -f "$pen/paths.close" ] || : > "$pen/paths.close"
+  cut -d' ' -f2- "$pen/paths.open" | sort -u > "$pen/names.open"
+  cut -d' ' -f2- "$pen/paths.close" | sort -u > "$pen/names.close"
+  # Every path either listing names, once, minus HEAD's own row -- a moved HEAD is named by the
+  # commits that moved with it and by its own line below, so it is classified apart.
+  sort -u "$pen/names.open" "$pen/names.close" | grep -v '^HEAD$' > "$pen/names.all"
+  git ls-files 2>/dev/null | sort -u > "$pen/names.tracked" || : > "$pen/names.tracked"
+  # ONE awk over the three listings rather than a grep per path, and the reason is the same one
+  # the digest gives for its single `hash-object`: a per-path process is a cost that grows with a
+  # count this runner does not control, and a rebase mid-pass can move hundreds. A path is the
+  # whole rest of the line, so a name carrying a space is read whole.
+  awk '
+    FILENAME == o_file { h = $1; sub(/^[^ ]+ /, ""); open[$0] = h; next }
+    FILENAME == c_file { h = $1; sub(/^[^ ]+ /, ""); close_[$0] = h; next }
+    { tracked[$0] = 1 }
+    END {
+      for (n in open) all[n] = 1
+      for (n in close_) all[n] = 1
+      for (n in all) {
+        if (n == "HEAD") continue
+        if ((n in open) && (n in close_) && open[n] == close_[n]) continue
+        if (!(n in close_) || close_[n] == "deleted") v = "vanished"
+        else if (!(n in open) && !(n in tracked)) v = "appeared"
+        else v = "changed"
+        print v " " n
+      }
+    }
+  ' o_file="$pen/paths.open" c_file="$pen/paths.close" \
+    "$pen/paths.open" "$pen/paths.close" "$pen/names.tracked" | sort -k2 > "$pen/moved.rows"
+  # HEAD moving is a peer landing a commit in this checkout, which is a different fact from a file
+  # being edited and is said in its own words.
+  _ho=$(grep ' HEAD$' "$pen/paths.open" | head -1)
+  _hc=$(grep ' HEAD$' "$pen/paths.close" | head -1)
+  [ "$_ho" = "$_hc" ] || printf 'changed HEAD\n' >> "$pen/moved.rows"
+  moved_named=$(grep -c . "$pen/moved.rows" 2>/dev/null || echo 0)
+fi
+if [ "$moved" = yes ]; then
+  echo "tree_moved_paths=$moved_named"
+  if [ "$moved_named" -gt 16 ]; then
+    moved_unnamed=$((moved_named - 16))
+    head -16 "$pen/moved.rows" | sed 's/^/detail: moved /'
+    echo "tree_moved_unnamed=$moved_unnamed"
+  elif [ "$moved_named" -gt 0 ]; then
+    sed 's/^/detail: moved /' "$pen/moved.rows"
+    echo "tree_moved_unnamed=0"
+  else
+    # HONEST RATHER THAN SILENT. The digest reads the porcelain's SHAPE beside the content, so a
+    # rename or a staging move can change it while every path keeps its bytes. Saying so is the
+    # difference between an instrument with a known reach and one that quietly missed.
+    echo "tree_moved_unnamed=0"
+    echo "detail: the digest moved and no path-keyed line did -- a rename, or a path moving between the index and the working tree." >&2
+  fi
+fi
 
 echo "tier_run=$want_tier"
 echo "guards_run=$ran"
