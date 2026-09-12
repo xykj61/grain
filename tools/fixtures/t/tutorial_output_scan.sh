@@ -109,6 +109,12 @@
 # own habit is to say why beside every exemption, and an undeclared moving block is exactly the
 # drift this guard is for.
 #
+# THE TWO DECLARATIONS COMPOSE. `selected` answers WHICH lines a page quotes; `volatile` answers
+# WHETHER they move. A block may carry both comments, and a selection whose numbers climb as the
+# tree grows is read as volatile rather than as drift. For one lap it was not: the selected
+# comparison fell straight through to `drift`, so a page could write the declaration and the
+# reading would ignore it -- which is worse than offering no declaration at all.
+#
 # WHAT THIS DOES NOT REACH, said plainly. It reads stdout alone. A page quotes what a reader sees
 # on a good run, and interleaving two streams gives an order that depends on buffering rather than
 # on the program -- so a command whose claim lives on stderr is invisible here. It reads only the
@@ -388,6 +394,16 @@ while [ "$i" -lt "$pairs" ]; do
         ' "$work/pair.$i.out" "$work/pair.$i.got" > "$work/shape.txt"
         sed "s|^|shape: $page:$line |" "$work/shape.txt" >> "$work/shapes.txt"
       fi
+    elif [ -n "$vol" ]; then
+      # THE TWO DECLARATIONS COMPOSE, and for one lap they did not. `selected` says WHICH lines a
+      # page quotes; `volatile` says WHETHER they move. Those are different questions, and a block
+      # answering both -- two lines lifted out of a longer report, whose numbers climb as the tree
+      # grows -- had no way to say so: this branch fell straight through to `drift`, so the page
+      # was offered a declaration the reading then ignored. `docs-geode/demos/README.md`'s fascia
+      # pair is exactly that shape and is what found it (`20260911`).
+      volatile=$((volatile + 1))
+      printf '%s:%s\tvolatile\tselected and declared moving: %s\n' "$page" "$line" "$vol" \
+        >> "$work/lines.txt"
     else
       drift=$((drift + 1))
       printf '%s:%s\tdrift\t%s\n' "$page" "$line" \
