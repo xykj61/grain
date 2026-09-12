@@ -135,7 +135,7 @@ let elder = "${home}/elder"
 let elder_copy = run ["sh" "-c" "mkdir -p ${elder}/src ${elder}/bin && cp amphora/manifest_entry.rye amphora/vessel_seal.rye amphora/vessel_core.rye amphora/kumara.rye amphora/tally_copy.rye ${elder}/ && cp amphora/src/main.rye ${elder}/src/ && cp amphora/manifest_entry.rye ${elder}/src/manifest_entry.rye"]
 say elder_copy.err
 assert elder_copy.ok else "pour_atomic: the elder pen must copy"
-let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && f=${elder}/src/main.rye && sed_inplace 's|.*const scratch = pour_scratch_path.*|    const scratch = filled.vessel;|' $f && sed_inplace '/assert(std.mem.endsWith(u8, scratch, pour_scratch_suffix));/d' $f && sed_inplace 's|.*deleteFile(io, scratch) catch {};.*|    _ = io;|' $f && sed_inplace '/var scratch_buf: /d' $f && sed_inplace '/^    \/\/ The landing\./,/^    };$/d' $f"]
+let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && f=${elder}/src/main.rye && sed_inplace 's|.*const scratch = scratch_path(filled.vessel.*|    const scratch = filled.vessel;|' $f && sed_inplace '/assert(std.mem.endsWith(u8, scratch, suffix));/d' $f && sed_inplace 's|.*deleteFile(io, scratch) catch {};.*|    _ = io;|' $f && sed_inplace '/var scratch_buf: /d' $f && sed_inplace '/^    \/\/ The landing\./,/^    };$/d' $f"]
 say strip.err
 assert strip.ok else "pour_atomic: the elder strip must run"
 let bit_scratch = run ["sh" "-c" "grep -q 'const scratch = filled.vessel;' ${elder}/src/main.rye"]
