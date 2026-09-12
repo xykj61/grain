@@ -4,8 +4,8 @@
 #
 #   sh tools/fixtures/l/line_length_census_scan.sh [--list] [--max N]
 #
-# WHAT THIS READS, AND WHY IT EXISTS. `context/TAME_GUIDANCE.md`'s lint table stands under the
-# heading **Enforced now** and carries the row *Line length <= 100 columns*. REDS %714 read that
+# WHAT THIS READS, AND WHY IT EXISTS. `context/TAME_GUIDANCE.md`'s lint table stood under the
+# heading **Enforced now** until `20260912` and carries the row *Line length <= 100 columns*. REDS %714 read that
 # table one row at a time and found this row held by nothing at all: no tracked tool compares a
 # line length against a hundred outside a study of upstream code. The remainder it booked was a
 # measurement and a decision -- does the row earn a guard, or a retirement? This is the
