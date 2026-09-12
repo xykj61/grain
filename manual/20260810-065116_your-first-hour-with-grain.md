@@ -118,11 +118,11 @@ The selftest is scribe checking itself. A **witness** is Grain checking scribe -
 rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
 
-You should see a line like:
+You should see:
 
+<!-- lead-in: the prose above introduces this block; it is the witness's whole output -->
 ```
-GREEN: scribe reader -- the Kyri voice's home reads its own records: parse a document,
-dispatch by format, get a field, count a repeated key -- bounded and zero-copy.
+GREEN: scribe reader -- a planted baton crosses the bounded disk seam; wrong-format, absent, and oversize documents refuse by name.
 ```
 
 When that line appears, you have proven -- on real metal, with your own eyes -- that scribe works. Not "should work." *Works.* Should any check ever fail, the witness stops loudly, prints a plain message telling you which promise broke, and exits with an error rather than pretending all is well. Green is earned every time.

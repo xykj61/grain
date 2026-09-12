@@ -20,8 +20,9 @@ ROOT=$(pwd)
 SCAN="$ROOT/tools/fixtures/t/tutorial_output_scan.sh"
 
 fails=0
-ok() { echo "case=$1 ok"; }
-bad() { echo "case=$1 RED -- $2"; fails=$((fails + 1)); }
+cases=0
+ok() { cases=$((cases + 1)); echo "case=$1 ok"; }
+bad() { cases=$((cases + 1)); echo "case=$1 RED -- $2"; fails=$((fails + 1)); }
 
 # A pen repository holding one page in a docs-geode room, plus the tiny script its page runs.
 # The script is `sh`-run and tracked, so it sits on the scan's roster the way the real pages do.
@@ -60,6 +61,24 @@ page() {
   {
     printf '# a page\n\nRun it:\n\n'
     printf '```sh\n'
+    printf 'sh tools/fixtures/p/say_two.sh\n'
+    printf '```\n\n'
+    [ -n "$above" ] && printf '%s\n\n' "$above"
+    printf '```\n'
+    printf '%s' "$body"
+    printf '```\n'
+  } > "$d/docs-geode/tutorials/page.md"
+  git -C "$d" add -A >/dev/null 2>&1
+}
+
+# The same page written with the OTHER fence label this tree uses. docs-geode writes ```sh and
+# the operator manual writes ```bash, and a guard reading one of the two labels reads one of the
+# two rooms. $1 pen dir, $2 output-block body, $3 optional line above the output fence.
+page_bash() {
+  d=$1; body=$2; above=${3:-}
+  {
+    printf '# a page\n\nRun it:\n\n'
+    printf '```bash\n'
     printf 'sh tools/fixtures/p/say_two.sh\n'
     printf '```\n\n'
     [ -n "$above" ] && printf '%s\n\n' "$above"
@@ -480,6 +499,115 @@ case "$(run_list "$d")" in
   *) bad list_names_pairs "the list verb did not name the pair and its verdict" ;;
 esac
 
+
+# ---- 14. the second fence label is read, and from both sides -----------------------------------
+# docs-geode writes ```sh; the operator manual writes ```bash. A guard reading one label reads one
+# room, and the manual's five pairs stood outside it. Proven by mutation: with the bash arm of the
+# parser removed, the same page reads zero pairs.
+d=$(new_pen bashlabel)
+page_bash "$d" 'one
+two
+'
+out=$(run_scan "$d")
+case "$out" in
+  *pairs=1*) ok bash_label_counted ;;
+  *) bad bash_label_counted "a bash-labelled command fence was not read as a pair: $out" ;;
+esac
+case "$out" in
+  *exact=1*) ok bash_label_checked ;;
+  *) bad bash_label_checked "a bash-labelled pair was not checked: $out" ;;
+esac
+
+# the mutation: drop the bash arm and the same page reads nothing
+mut="$pen/mut_bash.sh"
+sed 's/($0 == "```sh" || $0 == "```bash")/$0 == "```sh"/g' "$SCAN" > "$mut"
+case "$( cd "$d" && sh "$mut" 2>&1 )" in
+  *pairs=0*) ok bash_label_mutation_bitten ;;
+  *) bad bash_label_mutation_bitten "dropping the bash arm still read the pair -- the leg proves nothing" ;;
+esac
+
+# ---- 15. a drifted bash pair is bitten ---------------------------------------------------------
+d=$(new_pen bashdrift)
+page_bash "$d" 'one
+three
+'
+case "$(run_scan "$d")" in
+  *a_quoted_block_no_longer_matches*) ok bash_drift_bitten ;;
+  *) bad bash_drift_bitten "a drifted bash-labelled block went free" ;;
+esac
+
+# ---- 16. a lead-in declares the prose above and the block is checked by equality ----------------
+# The operator manual writes one line of prose between the blocks -- "You should see:" -- and prose
+# with nothing declaring it is named, never checked. A lead-in says that prose introduces the block
+# rather than reattributing it, so the block is the command's WHOLE output and equality is right.
+d=$(new_pen leadin)
+page_bash "$d" 'one
+two
+' 'You should see:
+
+<!-- lead-in: the prose above introduces this block -->'
+out=$(run_scan "$d")
+case "$out" in
+  *checked=1*) ok leadin_checked ;;
+  *) bad leadin_checked "a declared lead-in was not checked: $out" ;;
+esac
+case "$out" in
+  *undeclared_after_prose=0*) ok leadin_leaves_undeclared ;;
+  *) bad leadin_leaves_undeclared "a declared lead-in still counted as undeclared: $out" ;;
+esac
+
+# the mutation: drop the lead-in arm and the same page falls back to being named, never checked.
+# Without this leg, `leadin_checked` could be passing because the pen page has no prose at all.
+mutl="$pen/mut_leadin.sh"
+sed '/<!-- lead-in:\.\*-->/,+6d' "$SCAN" > "$mutl"
+case "$( cd "$d" && sh "$mutl" 2>&1 )" in
+  *undeclared_after_prose=1*) ok leadin_mutation_bitten ;;
+  *) bad leadin_mutation_bitten "dropping the lead-in arm still checked the pair -- the leg proves nothing" ;;
+esac
+
+# ---- 16a. drift behind a lead-in is bitten ------------------------------------------------------
+# A declaration that made a block unreadable would be an exemption wearing a token's clothes.
+d=$(new_pen leadindrift)
+page_bash "$d" 'one
+three
+' 'You should see:
+
+<!-- lead-in: the prose above introduces this block -->'
+case "$(run_scan "$d")" in
+  *a_quoted_block_no_longer_matches*) ok leadin_drift_bitten ;;
+  *) bad leadin_drift_bitten "a lead-in let a drifted block go free -- the token is an exemption" ;;
+esac
+
+# ---- 16b. undeclared prose is still named, so the lead-in changed nothing else ------------------
+d=$(new_pen stillundeclared)
+page_bash "$d" 'one
+two
+' 'You should see:'
+case "$(run_scan "$d")" in
+  *undeclared_after_prose=1*) ok undeclared_unchanged ;;
+  *) bad undeclared_unchanged "prose with no declaration stopped being named" ;;
+esac
+
+# ---- 16c. a lead-in with no reason declares nothing ----------------------------------------------
+# The tree's habit is to say why beside every exemption, and the other two tokens already require it.
+d=$(new_pen leadinnoreason)
+page_bash "$d" 'one
+two
+' 'You should see:
+
+<!-- lead-in: -->'
+case "$(run_scan "$d")" in
+  *undeclared_after_prose=1*) ok leadin_reason_required ;;
+  *) bad leadin_reason_required "a lead-in with no reason was honored" ;;
+esac
+
+# THE PEN TALLIES ITSELF, seated 20260911. `control=ok` says only that the script reached its last
+# line, so a leg the witness never names could read RED under a GREEN witness -- and two did:
+# `dangling_fence_spares_next` and `dangling_fence_lifted_same`, written the lap before and asserted
+# nowhere. The witness asserts `control_failed=0` beside its named readings, so a leg added tomorrow
+# is heard the day it lands rather than on the day somebody remembers to name it.
+echo "control_cases=$cases"
+echo "control_failed=$fails"
 if [ "$fails" -eq 0 ]; then
   echo "control=ok"
   exit 0

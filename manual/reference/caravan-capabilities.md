@@ -19,6 +19,7 @@ rishi/bin/rishi run tools/ca/caravan_capabilities_witness.rish
 
 The witness builds `caravan/bin/capabilities` from [`caravan/capabilities.rye`](../../caravan/capabilities.rye) and runs `selftest`. Success ends with:
 
+<!-- lead-in: the prose above introduces this block; it is the witness's whole output -->
 ```
 GREEN: Caravan capability table witness passed.
 ```

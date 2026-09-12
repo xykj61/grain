@@ -17,6 +17,6 @@ assert boot.ok else "onboarding: rye/bootstrap.sh (the cold-start step) is missi
 # The path's end -- the first green witness -- greens on the contract's exact line.
 let first = run ["rishi/bin/rishi" "run" "tools/r/run_record_witness.rish"]
 assert first.ok else "onboarding: the first-green witness did not exit 0"
-assert (first.out contains "GREEN: RW-3 — run record pins .ok, .code, .out, and .err for both outcomes.") else "onboarding: the first-green line no longer matches the contract's acceptance line"
+assert (first.out contains "GREEN: RW-3 -- run record pins .ok, .code, .out, and .err for both outcomes.") else "onboarding: the first-green line no longer matches the contract's acceptance line"
 
-say "GREEN: onboarding-path — the cold-start step exists and the first green witness matches the contract's acceptance line."
+say "GREEN: onboarding-path -- the cold-start step exists and the first green witness matches the contract's acceptance line."
