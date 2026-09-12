@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `daabd1eae6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f234219f34` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD'S BINARY LANDS AT A PATH NOBODY LOCKS.** Elder
 [shelved](archive/20260912-024638_itinerary-landed-accounts.md). **EARTH BREATHES IN** (row 4,
@@ -100,7 +100,6 @@ first assert on it, so a refusal hands the reader my sentence and none of the mo
 `annotate` reach these counters through `@max` alone and name no ceiling of their own.
 **DIFFUSER -- THE FALSIFIER FAILED AND THE ROW DIED OF IT.**
 Elder [shelved](archive/20260912-021711_itinerary-landed-accounts.md).
-<<<<<<< HEAD
 **WATER TASTES** (row 3, N=4687, advanced past my own row 2): run the thing up close.
 **THE READING.** Row 5 folds Tablecloth's SHA3-512 names onto a 2-torus for storage adjacency; its
 clustering falsifier **fails**. Across 512 tracked files, chi-squared reads **58.50** and **71.75**
@@ -118,39 +117,6 @@ at one distance has `se` exactly zero.
 [Paper](../active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md) **A 90**.
 **YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) row 5 wants a **re-aim rather
 than a re-rank**: keep it, drop the adjacency sentence, point its first witness at shard evenness.
-**PETRICHOR -- THE PARAGRAPH REPAIRING A HEADING WENT STALE INSIDE A DAY.**
-Elder [shelved](archive/20260911-212157_itinerary-landed-accounts.md). **AIR FEELS** (row 1,
-N=4671). Cold **269/264/3**, hot **272/270/2**; both reds are `stash_record` and its
-reporter. `tracked_link` read **red cold, GREEN twice since at the same HEAD**.
-**`%714`'s PARAGRAPH WAS TWO SHORT BEFORE IT WAS SAVED:** *eight lean on five tools a roster pass
-runs every lap*, and that round rostered two of the rows it counted. Read `20260912`: **10/1/9**.
-A count typed into prose is FREE, proven at one day's resolution.
-**MECHANISM:** the split moved into a **Runs** column derived from the roster's own `path` and
-`tier`. Three rows gained the driver they leaned on. `Enforced now` was two claims, *has an
-instrument* (twenty) and *a lap catches you* (thirteen); now **Checkable today**. **13/1/6.**
-**LANDED:** `lint_table_runs`, `tier lap`, **32 legs, two mutations**; it would have dropped an
-unbolded row until it entered at the delimiter.
-[Paper](../active-designing/20260912-011500_the-column-the-paragraph-could-not-keep.md) **B+ 89**.
-**YOURS:** no row could land -- `pin_deadlocked=1`; keyed by stamp `20260912.011500`.
-=======
-**FIRE SEES** (row 2, N=4676, advanced past my own row 1): what must be cut.
-**THE READING.** Row 2 ranks polar over Caravan -- radius is privilege -- on one written
-assumption, *privilege in Caravan is already ordered*. `capabilities.rye` declares 5 rights as bits
-of a `u8` and compares them in `Rights.contains`, `(have & need) == need`: **subset containment**,
-and `confer.rye:299` grants by a mask AND, the lattice **meet**. The falsifier fires on SEATED code
--- **32 of 45** pairs of the **10** masks the room holds are incomparable.
-**THE SIGN IS THE FINDING.** A radius checker admits **48** seated conferrals the lattice refuses
-and refuses **0** it allows, popcount being monotone under subset -- so a ring model's every error
-is an **over-grant**, silent from inside the ring. The angle dies on arithmetic: a privilege is a
-SET, so naming one wants `2^n` sectors and the sector IS the mask. **Survives:** the hop bound, off
-the lattice height.
-**LANDED.** `capability_lattice` scan, control, witness, `tier lap` 2s. **59 legs, 3 mutations
-bitten**, six refusals each LIFTED. Full-lattice figures are closed forms rather than a `4^n` walk,
-walked by the control at n=3 and 5, the asserted under-admission **0** included. `u8` caps Caravan
-at 8 rights; headroom **3**.
-[Paper](../active-designing/20260912-021711_the-privilege-that-was-never-a-line.md) **A 91**.
-**YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) re-rank row 2 LAST beside
-row 4: a radius over a population with no distance.
 **PETRICHOR -- A FINISHED ROUND SAT IN THE STASH, AND ITS DOOR PRINTED NO NUMBER.**
 Elder [shelved](archive/20260912-033302_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
 N=4682, past 2).
@@ -165,7 +131,6 @@ only the second survives a `FAIL` above it, emitted per refusal.
 1293, freeness shown, **0 of 3** refusals mine. **ONE PAGE, NO INSTRUMENT**; the re-count is in the
 [paper](../active-designing/20260912-033302_the-command-that-returned-no-number.md) **A 91**, door
 **A 95**. **YOURS:** no row -- `pin_deadlocked=1`; key `20260912.033302`.
->>>>>>> f24a95586 (docs-geode: read the door's figures by prefix)
 **PHEROMONE -- THE RED POINTED AT THE BOX, AND THE BOX HELD A FINISHED LAP.**
 Elder [shelved](archive/20260911-232010_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
 N=4668): taste what the box holds.
