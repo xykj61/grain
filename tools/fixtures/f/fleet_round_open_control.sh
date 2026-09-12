@@ -100,6 +100,35 @@ out=$(run_open)
 ck "the open reports the parked record" "stand in the dead-letter box" "$out"
 ck "and names how to read it"           "stash_record_scan.sh list"    "$out"
 
+# 16b. THE PARKED WORK IS NAMED, NOT MERELY COUNTED (`20260911`). Planted as a tool source rather
+# than a session log, since only `orphan:work` earns a name -- and proven by running the open over
+# a real stash, because a naming line that exists and never fires is an absence wearing a pass.
+mkdir -p "$pen/work/tools/z"
+printf '# a parked guard\n' > "$pen/work/tools/z/parked_guard_witness.rish"
+( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-010103: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(run_open)
+ck "the open names the parked path"  "parked work: tools/z/parked_guard_witness.rish" "$out"
+ck "and names the stash holding it"  "stash@{"                                        "$out"
+# The bound holds its tongue while the box is small, so a five-path field never reads a truncation
+# line it did not earn. Under the bound there is nothing held back and nothing to say.
+nk "no truncation line under the bound" "more parked path(s)" "$out"
+# A moved or shelf orphan is counted in the split above and never named -- which is the whole
+# reason the naming is worth its lines, and it fails silently open if the kind filter ever widens.
+nk "a fold shelf is not named as work" "parked work: construction/archive" "$out"
+
+# 16c. THE BOUND, PROVEN FROM BOTH SIDES. Leg 16b stood under it; this one plants ten parked paths
+# so the cap actually fires -- a ceiling shown only from the passing side cannot be told from a
+# ceiling that is never reached. The count held back is asserted exactly, since an off-by-one in a
+# truncation line is a lie about how much work is in the box.
+mkdir -p "$pen/work/tools/z"
+i=1; while [ "$i" -le 10 ]; do printf '# parked %s\n' "$i" > "$pen/work/tools/z/parked_${i}_witness.rish"; i=$((i+1)); done
+( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-010104: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(run_open)
+named=$(printf '%s\n' "$out" | grep -c 'parked work: ')
+[ "$named" = 8 ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL the cap names eight: got $named"; }
+ck "and says how many it held back" "and 4 more parked path(s)" "$out"
+ck "and names where the whole list lives" "stash_record_scan.sh list" "$out"
+
 # 17. Land the record and the line goes quiet, with the stash left exactly where it stands.
 mkdir -p "$pen/work/session-logs/date/20260101"
 printf 'format session-log-v1\nstamp 20260101.010101\n' > "$pen/work/session-logs/date/20260101/20260101-010101_parked.kyri"
@@ -157,5 +186,9 @@ ck "C3 the park is kept"        "pier/diverged" "$(g -C "$pen/work" for-each-ref
 ck "C4 the lap's commit survives" "the lap's own work" "$(g -C "$pen/work" log --format=%s xy/main..HEAD)"
 if corpse; then fail=$((fail+1)); echo "  FAIL C5 a rebase stands after a drop"; else pass=$((pass+1)); fi
 
+# THE LEGS ARE COUNTED OUT LOUD, so the witness can hear a leg that stopped running. `fail=0`
+# catches a leg that ran and read wrong; a pen whose cases quietly stop reaching the script closes
+# on the same `fail=0` an empty pen would. Raise this in the same commit that adds a leg.
+echo "legs_expected=41"
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

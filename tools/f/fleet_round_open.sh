@@ -150,7 +150,10 @@ fi
 # the second drawer costs this open nothing.
 SCAN=tools/fixtures/s/stash_record_scan.sh
 if [ -r "$SCAN" ]; then
-  BOX=$(sh "$SCAN" 2>/dev/null)
+  # ONE INVOCATION, BOTH DRAWERS AND THE NAMES (`20260911`). `list` emits the orphan rows and then
+  # the same counter block the bare mode prints, so every grep below reads exactly what it read
+  # before and the naming costs this open no second scan -- 2.3s against 3.1s, measured here.
+  BOX=$(sh "$SCAN" list 2>/dev/null)
   UNLANDED=$(printf '%s\n' "$BOX" | grep '^unlanded=' | cut -d= -f2)
   case "${UNLANDED:-0}" in
     ''|0) : ;;
@@ -169,6 +172,28 @@ if [ -r "$SCAN" ]; then
     ''|0) : ;;
     *) say "$ORPHANS file(s) stand in the dead-letter box and on no ref -- ${WORK:-?} parked work, ${SHELF:-?} fold shelves, ${MOVED:-?} answered elsewhere -- sh $SCAN list" ;;
   esac
+  # AND THE PARKED WORK IS NAMED, NEVER MERELY COUNTED. A count tells a hand that something is in
+  # the box; only a path tells them it is THEIRS. The split above was already honest and still cost
+  # a peer an hour on `20260911`: that lap read `git stash list`, saw its own parked census counted,
+  # judged the box not worth a `list`, and rebuilt 747 lines the stash had held finished for fifteen
+  # seconds. Recognition runs on names, so the open spends its lines on the one kind that is a lap.
+  #
+  # ONLY `orphan:work` IS NAMED. A fold shelf comes off the living pin and a moved path is answered
+  # elsewhere, so printing those would rebuild the unreadable nineteen `%592` split apart.
+  #
+  # BOUNDED AT EIGHT, because this report is read at a glance and a longer list is skimmed rather
+  # than read -- which returns the reading to the count it replaced. Eight covers both fields
+  # measured on the seating lap (five parked paths here, three on the peer that asked for this) with
+  # headroom, and a box past it says how many it held back and where the whole list lives.
+  BOX_NAME_MAX=8
+  NAMED=0
+  printf '%s\n' "$BOX" | grep '	orphan:work$' | while IFS='	' read -r sref path kind; do
+    NAMED=$((NAMED + 1))
+    [ "$NAMED" -le "$BOX_NAME_MAX" ] && say "  parked work: $path -- $sref"
+    [ "$NAMED" -eq "$BOX_NAME_MAX" ] && [ "${WORK:-0}" -gt "$BOX_NAME_MAX" ] \
+      && say "  ... and $((WORK - BOX_NAME_MAX)) more parked path(s) -- sh $SCAN list"
+    :
+  done
 fi
 
 say "open on $(git rev-parse --short=10 HEAD)"
