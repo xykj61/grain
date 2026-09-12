@@ -12,9 +12,9 @@ The required `model` field names a verified active model identity. When the runt
 
 Use `configured_model`, `configured_reasoning`, `configured_service_tier`, and `configured_service_name` only for settings supported by named evidence. Add `configured_status` and `evidence` so a reader can tell a configured default from runtime telemetry. A clone's `GLOW_PROFILE.kyri`, a tracked product settings file, or a user-confirmed host config may prove configuration; each remains weaker than active-runtime evidence.
 
-Keep identifiers in their own fields. For OpenAI Codex, `gpt-6-astra` is the user-selected default model slug (Astra 6, seated `20260909`), `ultra` is a Codex reasoning setting, and `priority` is the service-tier id whose user-facing name is Fast. For Claude Code, `.claude/settings.json` currently proves the configured default `claude-opus-5` at `medium`, read `20260908`; it proves configuration alone rather than a running session's use of either value, and the effort a lap runs at depends on its launch path -- `tools/f/fleet_lap.sh` execs `--effort max` inside the enclosure while `tools/f/fleet-loop.sh` execs `--effort medium` bare, which this pier runs.
+Keep identifiers in their own fields. For OpenAI Codex, `gpt-5.6-sol` is the user-selected default model slug (seated `20260912`), `ultra` is a Codex reasoning setting, and `priority` is the service-tier id whose user-facing name is Fast. For Claude Code, `.claude/settings.json` currently proves the configured default `claude-opus-5` at `medium`, read `20260908`; it proves configuration alone rather than a running session's use of either value, and the effort a lap runs at depends on its launch path -- `tools/f/fleet_lap.sh` execs `--effort max` inside the enclosure while `tools/f/fleet-loop.sh` execs `--effort medium` bare, which this pier runs.
 
-For this Codex pier, record `configured_model gpt-6-astra` and name the evidence:
+For this Codex pier, record `configured_model gpt-5.6-sol` and name the evidence:
 `~/.codex/config.toml` is the personal default; the fleet loop passes `-m "$CODEX_MODEL"`,
 defaulting to the same slug. An explicit model override is logged as the configured choice
 for that lap. Keep `model` tied to runtime evidence, as above.
