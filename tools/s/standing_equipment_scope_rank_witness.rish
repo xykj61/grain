@@ -160,6 +160,35 @@ assert control.out contains "OK   unmapped_total_unchanged_either_way" else "sco
 assert control.out contains "OK   split_sums_to_the_whole" else "scope-rank: the two halves must sum to the whole, so neither is dropped nor double-counted"
 assert control.out contains "OK   claimable_share_below_unmapped_share" else "scope-rank: the claimable ceiling must read below the unmapped one once any guard is declared"
 
+# --kin: the reverse reading -- which seated guards already watch a given file. Its dangerous
+# failure is the ENCOURAGING one, an empty answer read as "nobody does this", so each of the three
+# shapes that produce an empty answer wrongly is asserted from both sides.
+assert control.out contains "OK   kin_names_the_watching_guard" else "scope-rank: --kin must name the guard whose row reaches the path"
+assert control.out contains "OK   kin_names_the_tier_it_runs_on" else "scope-rank: a kin name without its tier leaves a reader unable to tell a lap guard from a cadence one"
+assert control.out contains "OK   kin_counts_what_it_named" else "scope-rank: the count must match the names printed"
+assert control.out contains "OK   kin_leaves_out_a_row_that_does_not_reach" else "scope-rank: a row that does not reach the path must not be named"
+assert control.out contains "OK   kin_verdict_ok" else "scope-rank: a kin reading must balance before it is believed"
+assert control.out contains "OK   kin_names_the_mapped_it_can_speak_for" else "scope-rank: a kin reading must say how much of the roster it can see"
+assert control.out contains "OK   kin_names_the_unmapped_it_cannot" else "scope-rank: zero kin means none among the mapped, so the unmapped count rides beside it"
+assert control.out contains "OK   kin_never_walks_the_window" else "scope-rank: a kin reading needs no git history, so it must exit before the window"
+assert control.out contains "OK   kin_zero_when_no_row_reaches" else "scope-rank: a path no row reaches must read zero rather than guess"
+assert control.out contains "OK   kin_refuses_a_path_that_is_not_there" else "scope-rank: a typo reads as no kin, which is the answer that sends a lap off to build"
+assert control.out contains "OK   kin_without_a_path_refused" else "scope-rank: --kin with no path must refuse rather than read as none"
+assert control.out contains "OK   kin_counts_a_discovery_guard_apart" else "scope-rank: a DISCOVERY guard reads the path by design, so it is counted rather than lost"
+assert control.out contains "OK   kin_never_prints_a_discovery_row_as_kin" else "scope-rank: a DISCOVERY row has no watch-set, so it can never be matched as kin"
+assert control.out contains "OK   kin_never_names_an_orphan_row" else "scope-rank: an orphan row names no seated guard, so naming it sends a lap to an instrument that does not run"
+assert control.out contains "OK   kin_reports_the_orphan_count_beside_the_answer" else "scope-rank: a kin reading over a map holding dead text must say so"
+assert control.out contains "OK   kin_reads_two_paths_together" else "scope-rank: --kin must take more than one path"
+assert control.out contains "OK   kin_second_path_finds_its_own_guard" else "scope-rank: each path must be answered on its own"
+assert control.out contains "OK   kin_at_the_bound_runs" else "scope-rank: a reading exactly at the path bound must run"
+assert control.out contains "OK   kin_past_the_bound_refused" else "scope-rank: paths times rows is the work, so the paths are bounded at the edge"
+
+# The control counts its own legs out loud and this asserts the two numbers meet, off the run
+# already made. Exact rather than a floor, so adding a leg raises the number in the same commit --
+# `faults=0` alone is what an empty pen prints, and cannot tell a silent leg from a passing one.
+assert control.out contains "legs_expected=92" else "scope-rank: the control no longer declares its leg count"
+assert control.out contains "behaviors=92" else "scope-rank: the control ran fewer legs than the 92 it declares -- a leg stopped reaching the scan"
+
 assert control.out contains "faults=0" else "scope-rank: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "scope-rank: the control must balance before it is believed"
 say "the matcher and the arithmetic proven in a real repository, all three gates shown from both sides"

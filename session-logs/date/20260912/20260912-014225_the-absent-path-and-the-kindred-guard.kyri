@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260912.014225
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure seat
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status tracked settings file .claude/settings.json, read 20260912
+voice Kyri
+host Vultr Dallas pier, NixOS, America/New_York
+title the absent path and the kindred guard
+prompt autonomous lap -- take the next agent-doable core-infrastructure work, Lindy-first and crux-first
+rota lap 4672, row 2 -- Fire, the row that sees; read the threshold plus standfast, reds-first and the three depths of removal, and took the instruction literally -- look straight at the parked work most laps route around, then cut once at the depth the truth requires.
+think The round open named five parked work paths, which is the reader I landed last lap speaking for the first time on a lap that was not mine to expect it. Three of them are one finished instrument, standing_equipment_yield, parked in stash at 20260907.042750.
+think Ran the absence check the baton asks for. path_absence_scan.sh answered commits_behind=0, here=no upstream=no, verdict=absent on all three. Every word true, and permanently so.
+think Read the parked scan's header before believing it, and found it measures what each scope-map row is worth. Grepped for other readers of that map and met tools/fixtures/s/standing_equipment_scope_rank.sh -- same roster, same map, same cost-times-one-minus-touch product, three gates against the parked scan's one, and DISCOVERY told apart from ABSENT, which the parked scan itself named as a silence it left standing.
+think So absence is checked by PATH and supersession happens by PURPOSE, and no path check crosses that. INCENSE met the same shape on 20260911 with port_registry against port_band and named the remainder as intent -- a ship declaring a build before it exists. That is the expensive half.
+think The cheap half was already on disk. Two instruments built for one purpose read the same files, and the scope map records what each guard reads. The parked scan's own map row named standing_equipment_scope_map.sh; so do scope_rank's, scope_trace's and fixture_depth's.
+obs Built the reading as a VERB on the existing scan rather than a new family. A second scan reading the same map would have been the fault this lap is about. --kin PATH reuses the roster parse, the map parse and the one shared matcher in scope_match.sh, and exits before the git window that is the expensive half of the ranking.
+obs Three shapes give an empty answer wrongly, and an empty answer is the ENCOURAGING one -- it sends a lap off to build. A path that is not there REFUSES. An orphan row is never named, since it points at an instrument that does not run. A DISCOVERY guard is counted apart, since it reads the path by design and has no watch set to match.
+obs The limit is printed beside the answer because it is larger than the answer: 351 guards, 66 mapped, 285 awaiting a row. kin_count 0 means none among the mapped, never nobody.
+obs Proved the patch in a throwaway pen before touching the tree, since the cold roster pass was running and the runner digests the tree at open and close. Four mutations planted and bitten, each naming exactly the leg built for it: the existence refusal, the DISCOVERY counter, the orphan filter, and the unmapped line.
+obs Added legs_expected=92 to the control and asserted it beside behaviors=92 in the witness, so a leg that stops running is heard. faults=0 is what an empty pen prints too.
+obs REDS %720 asked for exactly the reader I landed last lap, and this lap's own open proved it on metal. Booked and folded to its shelf; the pin fell 40,460 to 38,967 bytes and headroom rose 500 to 1,993. pin_deadlocked still reads 1, since none of the remaining 16 rows is foldable -- that stays Keaton's word.
+obs Left stash@{10} untouched. The scan is superseded and its one unheld reading, dead_rows, is derivable from --list. A stash is the record of a good lap that came second.
+loom witness=standing_equipment_scope_rank legs=92 faults=0 mutations_bitten=4
+loom roster=cold guards_run=270 green=267 red=1 gated=2 seconds=3356 tree_moved=no
+loom kin=scope_map_reverse_lookup guards=351 mapped=66 unmapped=285 discovery=9 kin_found=3
+loom pin=reds headroom_before=500 headroom_after=1993 rows_before=17 rows_after=16
+file tools/fixtures/s/standing_equipment_scope_rank.sh the --kin verb, bounded at 32 paths, refusing a path that is not there
+file tools/fixtures/s/standing_equipment_scope_rank_control.sh nineteen legs for the verb, each shape planted and lifted, plus legs_expected
+file tools/s/standing_equipment_scope_rank_witness.rish asserts every new leg by name and holds the control's declared count to its counted one
+file active-designing/20260912-013920_the-absent-path-and-the-kindred-guard.md the paper, A 96, checkable room
+file construction/archive/REDS-the-box-that-was-named-rows-720.md the shelf %720 folded to
+file construction/ITINERARY.md the BAKERY account, elder shelved
+scope one keystone -- the kinship verb -- plus the reds-first close of %720 that the capacity scan itself pointed at
+status GREEN -- standing_equipment_scope_rank_witness GREEN at 92 legs; cold roster 270 run, 267 green, one red which is %626's dated_path, booked, held, and not mine to close; hot pass and send to follow
+recommend keep-going -- the sequel is a way for a named parked path to say judged, so the round open's naming keeps its force as the box fills

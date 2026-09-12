@@ -1,0 +1,51 @@
+format session-log-v1
+stamp 20260912.025057
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, the witness harness, the seams
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status evidence .claude/settings.json names the default; it proves configuration rather than this session's use
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title the binary two guards are writing
+prompt the baton -- bakery's lane, core infrastructure, Lindy-first and crux-first
+rota lap 4674, row 4 -- Earth-Mercury, the concrete: the clock and the mark, Two Rooms, the marked value. The marked value's own vow -- a value crossing a seam is checked at BOTH sides -- is what sent me at the seam nobody checks at all: the compiler's output crossing into the tree.
+think REDS FIRST. My round open met a dead lap's --hot runner still alive in this tree; its launch_head was already stale so its verdict was fixed at tree_moved, and I TERMed it the runner's own way rather than reaching for SIGKILL.
+think The cold pass read 272 run, 267 green, 3 red -- dated_path (%626, held, not mine), remember_git_nib, and standing_equipment answering red_self. Two were mine and both closed this lap.
+think THE QUESTION. A guard that builds a binary has to put it somewhere, and no instrument in this tree had ever asked where. Reading the roster's 353 guards and the witness sources they name: 60 pass -femit-bin= across 125 emit sites, 110 of which name a fixed path in the tree.
+think THE SHARPER READING. Of 51 distinct fixed paths, 6 are written by two or more DISTINCT guards, and three amphora binaries by 18 apiece. A path with one writer collides only with itself; a path with 18 collides whenever any of the 18 runs beside a pass.
+think I REFUSED TO ARGUE IT. A compiler that emitted by rename would make the whole exposure imaginary, so the first reading was the concrete fact: a rebuild leaves the output inode UNCHANGED, which is a write through the file.
+think THEN I WAS WRONG ABOUT THE MECHANISM AND THE TREE CORRECTED ME. rye build already holds .rye-build.lock against a shared shadow (%281), so my three concurrent builds serialized and never raced. The single-writer phase -- no build race whatever -- is the WORSE reading at 335 failures in 400, because one uninterrupted build holds the file open longer than three taking turns.
+think So the finding is an axis rather than a race: two locks stand, one pass-against-pass and one build-against-build, and nothing anywhere serializes a build against a RUN.
+think MY OWN DRAFT ERRED IN THE LOUD DIRECTION. A literal that itself holds a variable -- let elder_dir = "${home}/elder", where home reaches a real pen through two further bindings -- read as a fixed tree path, counting ten amphora sites already doing the right thing as tree writes. Resolution iterates now, bounded at four hops, and the control plants that exact shape.
+think THE HOT PASS THEN NAMED TWO MORE, BOTH MINE AND BOTH STRUCTURAL. log_file_claim: the recovered log cites the %720 shelf its own lap folded, and I had left that shelf parked -- so I completed the fold, which the pin's own OPEN clause had already earned since its stated remainder landed in the commit before. ratchet_slack: my two ceilings read `compared=no`, because I spelled the seated constant as a default for a local copy and compared the copy. The house shape puts the environment default ON the constant and compares the constant, so the census can see it; adopted, and the pairing table now carries both rows.
+think THE SECOND RED WAS A WHOLE ROUND IN THE BOX. stash_record read unlanded=1, and stash@{0} held my own previous lap cut mid-send: the scope_rank --kin verb, its paper, its session log. Its code DIFFERS from HEAD, so the stash was the only copy. I recovered the three instrument files with git checkout from the stash TREE rather than git show of its blob, so the exec bit survived, and re-proved the witness on metal at 92 legs before trusting a byte of it.
+obs A ratchet that refuses new work of the old kind is the point rather than the cost: emit_fixed at 110 reds a new tree-writing guard on the lap it lands, and the named escape is one line.
+obs The probe stays OFF the roster on purpose. Its reading is timing-dependent, and a timing-dependent guard is REDS %700 itself -- adding a flapping guard to measure flapping would be the joke writing itself.
+obs What this does NOT prove is whether %700 is this fault. That guard's two paths carry no second writer, so what this adds to %700 is that the mechanism its row guessed at is real and large, and that it needs no second build at all.
+obs FRICTION FOUND IN THE ACT, for the fleet: a claim-before-build commit cannot cite its own paths, because tools/hooks/commit-msg refuses a body naming a path that does not exist and a claim exists precisely because the path does not yet. The body describes them instead.
+obs The card was at 40,959 of 40,960 when I opened it, so my account had to fit the elder's ration exactly. Eight blocks of roughly 1,600 bytes is the model the bound was raised on, and it is now enforced by arithmetic on every lap rather than by choice.
+loom witness=build_target wall_ms=2000 legs=33 guards_rostered=353 emit_sites=125 emit_fixed=110 shared_paths=6 max_writers=18
+loom probe=build_target_race rounds=400 untouched=0 one_writer=335 three_writers=275 inode_stable=yes
+loom witness=standing_equipment_scope_rank legs=92 faults=0
+loom roster=cold guards_run=272 guards_green=267 guards_red=3 tree_moved=no
+file tools/fixtures/b/build_target_scan.sh the reader -- 60 emitting guards, 125 sites, four kinds of target, two walls and two ratchets
+file tools/fixtures/b/build_target_control.sh 33 legs on real git repositories in a pen, every refusal planted and lifted, two mutations bitten
+file tools/fixtures/b/build_target_race_probe.sh the on-metal demonstration; reports, never rostered, because its reading is timing-dependent
+file tools/b/build_target_witness.rish the gate -- both walls at zero, both ceilings, and the control's own leg count
+file construction/standing-equipment.kyri the seat, tier lap, with the measurement and the axis in its own comment
+file construction/archive/REDS-the-binary-two-guards-are-writing-rows-726.md the row, born on its shelf; booked %724, renumbered %726 on the rebase
+file active-designing/20260912-020039_the-binary-two-guards-are-writing.md the paper, B+ 85, checkable room
+file construction/ITINERARY.md the BAKERY account, elder shelved, Git nib carried forward
+file tools/fixtures/s/standing_equipment_scope_rank.sh recovered whole from stash@{0}, re-proven GREEN here at 92 legs
+file tools/fixtures/r/ratchet_slack_pairs.txt the two new ceilings paired with the readings they bound, so the census can compare them
+file construction/REDS.md %720 folded off the pin to the shelf the dead lap had already written, headline moved 723 -> 724
+file construction/archive/REDS-the-box-that-was-named-rows-720.md the dead lap's own shelf, recovered so its log's citation names a file that exists
+file session-logs/date/20260912/20260912-014225_the-absent-path-and-the-kindred-guard.kyri the dead lap's own record, which stood in the box and nowhere else
+scope one keystone -- where a guard's build output lands -- plus the reds-first close of the two reds my own cold pass named
+status GREEN -- build_target_witness GREEN; standing_equipment_scope_rank_witness GREEN at 92 legs; ratchet_slack, log_file_claim, reds_ledger_monotone, reds_citation, index_row_bound, session_roster_agree all GREEN; cold roster 272 run, 267 green, 3 red; hot roster 275 run, 272 green, 1 red, tree_moved=no, and that one red is dated_path (%626), held, no lap may lower it, not mine; send to follow
+recommend check-in (Claude) -- the 110 standing sites are a per-lane sweep rather than one lap, and whether a lap may land a dead lap's parked work is still your word even though I took the narrowest reading of it here

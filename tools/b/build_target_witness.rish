@@ -1,0 +1,72 @@
+# tools/b/build_target_witness.rish -- a guard's build output lands where nobody else is writing.
+#
+# WHY THIS STANDS. A guard that builds a binary has to put it somewhere, and until this witness
+# nothing in this tree asked where. Measured at seating, 20260912: of 353 rostered guards, 60 pass
+# a -femit-bin= argument to rye build across 125 emit sites, and 110 of those sites name a fixed
+# path inside the tree rather than a directory the run made for itself.
+#
+# WHAT A FIXED PATH COSTS, MEASURED RATHER THAN ARGUED. rye build writes THROUGH its output file --
+# the inode survives a rebuild -- so the write is not atomic and a concurrent reader sees a partial
+# binary. Read on metal by tools/fixtures/b/build_target_race_probe.sh over 400 executions: the
+# reader's own path untouched fails 0 times, one other build writing it fails 335, three fail 275.
+#
+# AND THE LOCK THAT EXISTS IS ON THE OTHER AXIS. rye build holds .rye-build.lock so two builds
+# cannot stage one shadow (REDS %281), and standing_equipment_run.sh refuses a second roster pass.
+# Builds against builds, and passes against passes. Nothing serializes a build against a RUN, which
+# is why the single-writer reading -- no build race at all -- is the worst of the three.
+#
+# WHAT IS PROVEN AND WHAT IS NOT. This proves the SHAPE of the exposure and its size. REDS %700
+# records a rostered guard reading red then green on one unchanged tree and names two builds into
+# fixed tree paths as the suspicion; no run has caught that guard in the act and this witness does
+# not either.
+#
+#   rishi/bin/rishi run tools/b/build_target_witness.rish
+
+say "build-target: Language EN -- where a rostered guard's build output lands."
+say "build-target: Style Gauge, Meter -- every count is a reading, every refusal shown from both sides."
+say "build-target: Lens TAME -- safety first: a build into a shared path is a write nobody else knows about."
+
+# invariant: the scan, its control, its probe and the roster all stand before any of them is judged.
+# `ls` rather than `test`, so the refusal names which one is missing rather than restating the ask.
+let present = run ["ls" "tools/fixtures/b/build_target_scan.sh" "tools/fixtures/b/build_target_control.sh" "tools/fixtures/b/build_target_race_probe.sh" "construction/standing-equipment.kyri"]
+assert present.ok else "build-target: the scan, its control, its probe or the roster is missing -- ${present.err}"
+
+let control = run ["sh" "tools/fixtures/b/build_target_control.sh"]
+say control.out
+assert control.ok else "build-target: a leg disagreed -- read the control's own lines"
+assert control.out contains "control_verdict=ok" else "build-target: the control did not close ok"
+assert control.out contains "fail=0" else "build-target: a leg failed -- the count above names how many"
+
+# invariant: the pen ran every leg it was written with. `fail=0` is what an empty pen prints too,
+# so the seated count is carried in two places -- the control's own constant and this line -- and
+# deleting a leg parts them both.
+assert control.out contains "legs_run=33" else "build-target: the pen ran a different number of legs than the 33 seated here"
+assert control.out contains "legs_expected=33" else "build-target: the control's own seated count moved"
+
+# invariant: the two mutations bite. A refusal proven only in the passing direction cannot be told
+# from a bypass, and these two are the readings whose loss would be silent -- one guard writing a
+# path twice reading as two writers, and a literal that itself holds a variable reading as a fixed
+# tree path.
+assert control.out contains "leg mutation_sort_u ok" else "build-target: the distinct-writer mutation stopped biting"
+assert control.out contains "leg mutation_one_hop ok" else "build-target: the variable-chain mutation stopped biting"
+
+let live = run ["sh" "tools/fixtures/b/build_target_scan.sh"]
+say live.out
+assert live.ok else "build-target: the live reading refuses -- its verdict line names which wall or ratchet"
+
+# invariant: the live reading is measured against the seated ceilings rather than an environment's.
+# An override is lawful inside a pen and never on the tree, and the scan says which it used.
+assert live.out contains "ceiling_source=seated" else "build-target: the live reading used an environment ceiling"
+
+# invariant: the two walls hold at zero. A tracked build output is a binary the repository carries;
+# an unignored one moves the tree digest standing_equipment_run.sh takes at open and close, so a
+# pass would refuse itself under tree_moved. Both read zero from the day they were measured.
+assert live.out contains "emit_tracked=0" else "build-target: a guard builds into a path the repository carries"
+assert live.out contains "emit_unignored=0" else "build-target: a guard builds into a path git would show"
+
+# invariant: the live verdict is ok, which is the two ratchets holding under ceilings that only
+# fall. A new guard building into a fixed tree path reds here on the lap it lands, and the named
+# escape is a directory the run makes for itself -- d=$(mktemp -d) and -femit-bin=$d/<name>.
+assert live.out contains "verdict=ok" else "build-target: a ratchet or a wall refused -- lower a ceiling only by moving a site into a pen"
+
+say "GREEN: build-target -- no guard writes a build output the repository carries, and neither ratchet rose."

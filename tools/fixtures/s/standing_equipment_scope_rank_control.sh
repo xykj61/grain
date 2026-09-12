@@ -277,6 +277,79 @@ roster slow:lap noisy:lap quiet:lap bare:lap
 cardfile slow:100 noisy:100 quiet:100 bare:70
 
 echo
+echo "== 9. --kin: which seated guards already watch these files =="
+# WHY THESE LEGS. The verb exists to answer a question a lap asks BEFORE it writes anything, so its
+# dangerous failure is the encouraging one: an empty answer that means "nobody does this". Three
+# shapes produce an empty answer wrongly -- a path that is not there, an orphan row, and a guard
+# the map never mapped -- and each is planted here and then lifted.
+roster slow:lap noisy:lap quiet:lap bare:lap
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/'
+cardfile slow:100 noisy:100 quiet:100 bare:70
+o=$(rank --kin caravan/unhand.rye)
+note "kin_names_the_watching_guard" \
+  "$(echo "$o" | sed -n 's|^kin caravan/unhand.rye \([a-z]*\) .*|\1|p')" "slow"
+note "kin_names_the_tier_it_runs_on" \
+  "$(echo "$o" | sed -n 's|^kin caravan/unhand.rye slow \([a-z]*\)|\1|p')" "lap"
+note "kin_counts_what_it_named" \
+  "$(echo "$o" | sed -n 's|^kin_count caravan/unhand.rye \([0-9]*\)|\1|p')" "1"
+note "kin_leaves_out_a_row_that_does_not_reach" \
+  "$(echo "$o" | grep -c '^kin caravan/unhand.rye noisy ' || true)" "0"
+note "kin_verdict_ok" "$(val "$o" verdict)" "ok"
+# THE LIMIT, printed beside the answer because it is usually larger than the answer.
+note "kin_names_the_mapped_it_can_speak_for" "$(val "$o" mapped)" "3"
+note "kin_names_the_unmapped_it_cannot" "$(val "$o" unmapped)" "1"
+# The window is the expensive half of this scan and a kin reading needs none of it.
+note "kin_never_walks_the_window" "$(echo "$o" | grep -c '^commits_read=' || true)" "0"
+
+# A path no row reaches reads zero -- honestly, and beside the unmapped count that bounds it.
+o=$(rank --kin README.md)
+note "kin_zero_when_no_row_reaches" \
+  "$(echo "$o" | sed -n 's|^kin_count README.md \([0-9]*\)|\1|p')" "0"
+
+# PLANTED: a path that is not there. It would read zero kin, which is the answer that sends a lap
+# off to build, so it refuses instead.
+note "kin_refuses_a_path_that_is_not_there" "$(yn rank --kin caravan/nothing-here.rye)" "no"
+note "kin_without_a_path_refused" "$(yn rank --kin)" "no"
+
+# PLANTED: a DISCOVERY guard reads the whole tree, so it has no watch-set to match and can never be
+# printed as kin -- yet it does read this path, so it is counted apart rather than lost.
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/' 'bare DISCOVERY'
+o=$(rank --kin caravan/unhand.rye)
+note "kin_counts_a_discovery_guard_apart" \
+  "$(echo "$o" | sed -n 's|^kin_discovery caravan/unhand.rye \([0-9]*\)|\1|p')" "1"
+note "kin_never_prints_a_discovery_row_as_kin" \
+  "$(echo "$o" | grep -c '^kin caravan/unhand.rye bare ' || true)" "0"
+
+# PLANTED: an orphan row names no seated guard, so it is dead text. Printing one as kin would send
+# a lap to read an instrument that does not run.
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/' 'ghost caravan/'
+o=$(rank --kin caravan/unhand.rye)
+note "kin_never_names_an_orphan_row" \
+  "$(echo "$o" | grep -c '^kin caravan/unhand.rye ghost ' || true)" "0"
+note "kin_reports_the_orphan_count_beside_the_answer" "$(val "$o" orphan_map_rows)" "1"
+
+# LIFTED: the orphan gone, two paths read together, each finding its own guard.
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/'
+o=$(rank --kin caravan/unhand.rye --kin glow/rune.glow)
+note "kin_reads_two_paths_together" "$(echo "$o" | grep -c '^kin_count ' || true)" "2"
+note "kin_second_path_finds_its_own_guard" \
+  "$(echo "$o" | sed -n 's|^kin glow/rune.glow \([a-z]*\) .*|\1|p')" "noisy"
+
+# The bound, proven from both sides: a reading is guard-rows times paths, so the paths are bounded
+# at the edge like the window is.
+kinargs=""; kinn=0
+while [ "$kinn" -lt 32 ]; do kinargs="$kinargs --kin README.md"; kinn=$((kinn + 1)); done
+# shellcheck disable=SC2086
+note "kin_at_the_bound_runs" "$(yn rank $kinargs)" "yes"
+kinargs="$kinargs --kin README.md"
+# shellcheck disable=SC2086
+note "kin_past_the_bound_refused" "$(yn rank $kinargs)" "no"
+
+echo
+# THE LEGS ARE COUNTED OUT LOUD, so the witness can hear a leg that stopped running.
+# `faults=0` is what an empty pen prints too, and a leg that quietly stops reaching the
+# scan reads exactly like a leg that passed. Raise this in the same commit that adds one.
+echo "legs_expected=92"
 echo "behaviors=$behaviors"
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
