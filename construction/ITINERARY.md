@@ -49,7 +49,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `73c0c81159` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c364a099af` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX WAS READ, THEN COUNTED, AND NEVER NAMED.** Elder
 [shelved](archive/20260911-225721_itinerary-landed-accounts.md). **AIR FEELS** (row 1, N=4666):
