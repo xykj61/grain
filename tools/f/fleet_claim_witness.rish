@@ -1,0 +1,42 @@
+# fleet_claim_witness.rish -- the fleet's live claim board, and the reader that must read upstream.
+#
+# Absence is checkable and intent is not. On 20260911 that gap cost two ships a whole build apiece:
+# incense withdrew port_registry -- 35 constants, 21 files, 44 pen legs, GREEN on metal -- against
+# a peer's port_band landed two hours earlier, and bakery dropped a 29-leg port census into that
+# same peer's scan. Both absence readings were honest and both were hours stale. The board is the
+# declaration a peer can read before anything exists; this proves the reader cannot be fooled.
+#
+#   rishi/bin/rishi run tools/f/fleet_claim_witness.rish
+
+say "fleet-claim: Language EN -- a declaration of intended work, published before the work exists."
+say "fleet-claim: Style Gauge, Meter -- every leg is a reading, and every refusal is shown from both sides."
+say "fleet-claim: Lens TAME -- safety first: a reader that answers from local bytes answers about a tree nobody stands in."
+
+# invariant: the board, the reader and the writer all stand before any of them is judged. One
+# binding rather than three `test -f` calls, and `ls` rather than `test`, because `test` reports
+# nothing when it refuses -- so an asserting witness would hand the reader its own sentence and
+# discard the reason. `ls` names exactly which of the three is missing, and the assert forwards it.
+let present = run ["ls" "construction/fleet-claims.kyri" "tools/fixtures/f/fleet_claim_scan.sh" "tools/f/fleet_claim.sh"]
+assert present.ok else "fleet-claim: the board, the reader or the writer is missing -- ${present.err}"
+
+let control = run ["sh" "tools/fixtures/f/fleet_claim_control.sh"]
+say control.out
+assert control.ok else "fleet-claim: a reading disagreed with the board -- read the control's own lines"
+assert control.out contains "control_verdict=ok" else "fleet-claim: the control did not close ok"
+assert control.out contains "control_failures=0" else "fleet-claim: a leg failed -- the count above names how many"
+
+# The readings worth naming here are the ones whose loss would be silent. A reader that fell back
+# to local bytes passes every other leg, because in a pen the two copies agree.
+assert control.out contains "board_read_from_upstream=yes" else "fleet-claim: the reader stopped reading the anointed remote"
+assert control.out contains "a_local_edit_does_not_reach_the_reader=yes" else "fleet-claim: the reader is answering from local bytes"
+assert control.out contains "peer_claim_is_found=yes" else "fleet-claim: a peer building the same path went unreported"
+assert control.out contains "own_claim_does_not_shout=yes" else "fleet-claim: a seat is colliding with itself"
+assert control.out contains "stale_claim_is_its_own_verdict=yes" else "fleet-claim: a dead ship's claim now reads as live work"
+assert control.out contains "a_merely_similar_name_is_not_a_collision=yes" else "fleet-claim: the path comparison lost its directory boundary"
+assert control.out contains "mutation_substring_boundary_bites=yes" else "fleet-claim: the boundary leg passes a loosened comparison, so it proves nothing"
+assert control.out contains "the_sentence_is_printed_even_when_clear=yes" else "fleet-claim: the board stopped printing what each ship is building"
+assert control.out contains "reopening_is_idempotent=yes" else "fleet-claim: the writer stopped being idempotent"
+assert control.out contains "idempotent_run_moves_no_byte=yes" else "fleet-claim: a second identical open rewrote the board"
+assert control.out contains "a_peers_claim_name_is_refused=yes" else "fleet-claim: one seat can now overwrite another's claim"
+
+say "GREEN: fleet-claim -- intent is declared before it exists, and the reader reads the fleet's copy."
