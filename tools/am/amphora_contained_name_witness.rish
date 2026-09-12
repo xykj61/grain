@@ -81,8 +81,24 @@ assert open_plain.ok else "contained: the honest seal must open"
 
 # --- plant 1: the seal writer. A forged unsealed vessel whose listing and cargo both name a path
 # one directory up, handed to `seal`. The seal door reads every cargo line through the contract.
-let forge = run ["sh" "-c" "{ sed -n '1,5p' ${vessel}; grep '^manifest ' ${vessel} | sed 's| hello.txt$| ../escaped.txt|'; sed 's| hello.txt$| ../escaped.txt|' ${home}/plain.txt; } > ${home}/forged.bron"]
+#
+# The forgery recomputes the vessel's `parent` over the listing it just rewrote, and that step
+# was added `20260911` when the pre-write parent proof landed one door over. Until then this
+# plant left the elder `parent` line standing beside a listing that no longer hashed to it, so
+# the forged vessel was internally INCONSISTENT and the elder pen's own leg had two possible
+# refusals to choose from. `restore_open_catalog` now catches exactly that inconsistency before
+# it writes anything, which would have retired this rule's elder leg by accident -- a wall that
+# quietly absorbs a sibling's plant proves the sibling nothing. So the plant does the arithmetic
+# a real forger would do, and the name rule is the only thing left for the elder to fail on.
+let forged_cargo = run ["sh" "-c" "sed 's| hello.txt$| ../escaped.txt|' ${home}/plain.txt > ${home}/forged_cargo.txt"]
+assert forged_cargo.ok else "contained: the forged listing must prepare -- ${forged_cargo.err}"
+let forged_parent_read = run ["sh" "-c" "sh tools/fixtures/s/sha3_256.sh ${home}/forged_cargo.txt"]
+assert forged_parent_read.ok else "contained: the forged parent must compute -- ${forged_parent_read.err}"
+let forged_parent = trim forged_parent_read.out
+let forge = run ["sh" "-c" "{ sed -n '1,5p' ${vessel} | sed 's|^parent .*|parent ${forged_parent}|'; grep '^manifest ' ${vessel} | sed 's| hello.txt$| ../escaped.txt|'; cat ${home}/forged_cargo.txt; } > ${home}/forged.bron"]
 assert forge.ok else "contained: the forged vessel must prepare"
+let forge_consistent = run ["sh" "-c" "grep -q '^parent ${forged_parent}$' ${home}/forged.bron"]
+assert forge_consistent.ok else "contained: and the forgery must be INTERNALLY CONSISTENT -- it must carry parent ${forged_parent}, or the elder leg below could refuse for the parent rather than for the name -- ${forge_consistent.err}"
 let seal_door = run ["amphora/bin/vessel-seal" "seal" "${home}/forged.bron"]
 assert (seal_door.ok == false) else "contained: the seal writer must refuse an escaping name"
 

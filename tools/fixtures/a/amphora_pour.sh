@@ -30,14 +30,14 @@ sh "$ROOT/tools/fixtures/c/cellar_ring1_export.sh" "$SRC" "$OUT" "$STAMP"
 
 MANIFEST="$OUT/manifest.bron"
 VESSEL="$OUT/vessel.bron"
-PARENT=$(sh "$ROOT/tools/fixtures/s/sha3_256.sh" "$MANIFEST")
+CARGO_PLAIN="$OUT/.cargo-plain"
 
+# The cargo listing is built BEFORE the parent, because the parent is a digest OF the listing.
+# It read `sha3_256 manifest.bron` until 20260911 -- the digest of a sibling FILE that the
+# vessel does not carry, so a vessel arriving alone could never have its parent checked, and
+# `amphora restore` (which hashes the listing, per `parent_of_cargo` in amphora/src/main.rye)
+# refused every vessel this script poured. One format word, two preimages: see the REDS row.
 {
-  printf '%s\n' '# amphora vessel — Cellar season poured for crossing'
-  printf 'format amphora-v1\n'
-  printf 'stamp %s\n' "$STAMP"
-  printf 'shoulder amber-ring1-season\n'
-  printf 'parent %s\n' "$PARENT"
   while read -r line; do
     case "$line" in
       entry\ *)
@@ -48,7 +48,20 @@ PARENT=$(sh "$ROOT/tools/fixtures/s/sha3_256.sh" "$MANIFEST")
         ;;
     esac
   done < "$MANIFEST"
+} > "$CARGO_PLAIN"
+
+PARENT=$(sh "$ROOT/tools/fixtures/s/sha3_256.sh" "$CARGO_PLAIN")
+
+{
+  printf '%s\n' '# amphora vessel -- season poured for crossing'
+  printf 'format amphora-v1\n'
+  printf 'stamp %s\n' "$STAMP"
+  printf 'shoulder amber-ring1-season\n'
+  printf 'parent %s\n' "$PARENT"
+  cat "$CARGO_PLAIN"
 } > "$VESSEL"
+
+rm -f "$CARGO_PLAIN"
 
 cargo_count=$(grep -c '^cargo ' "$VESSEL" || true)
 test "$cargo_count" -ge 1 || { echo "FAIL pour produced no cargo"; exit 1; }
