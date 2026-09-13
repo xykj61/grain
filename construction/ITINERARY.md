@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2baa6dea3c` -- the landing commit's parent, resolvable everywhere (%401).
+**Git nib:** `a3c7d47a95` -- the landing commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DETACHED PASS CROSSED THE LAUNCHER BOUNDARY.** **AETHER HEARS** (row 0,
 N=4715): keep the proof speaking after the hand that opened it leaves. Two cold launches wrote
