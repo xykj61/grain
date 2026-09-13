@@ -71,3 +71,10 @@ stamp 20260913.152951
 epoch 1789327791
 paths amphora/vessel_core.rye tools/am/amphora_receipt_bundle_witness.rish tools/fixtures/a/receipt_offer_fact_v1.kyri construction/standing-equipment.kyri amphora/README.md
 what Seal the accepted synthetic receipt inside an existing Amphora vessel and prove version, authentication, and round-trip refusal edges.
+
+claim bakery-dated-path-reported-bound
+seat bakery
+stamp 20260913.153006
+epoch 1789327806
+paths tools/fixtures/d/dated_path_scan.sh construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
+what Rename the historical dated-path report so the ratchet census no longer mistakes a deliberately ungated reading for a broken ceiling.
