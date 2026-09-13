@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.145310` | [the parked log rejoined its shelf](20260913/20260913-145310_the_parked_log_rejoined_its_shelf.kyri) | recovered 203746; closed shelf and rosters agree at 63 |
 | `20260913.143321` | [gate moved to work a ship can do](20260913/20260913-143321_the-gate-moved-to-the-work-a-ship-can-do.kyri) | repairable promises gate at zero; full formation chosen |
 | `20260913.052357` | [the fire row held the review gate](20260913/20260913-052357_the-fire-row-held-the-review-gate.kyri) | seventeen parks audited; receipt review gate held |
 | `20260913.035758` | [the finished recovery found its shelf](20260913/20260913-035758_the-finished-recovery-found-its-shelf.kyri) | two finished incense records restored and proven |
