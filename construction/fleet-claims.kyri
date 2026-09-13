@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim grass-receipt-mark
-seat grass
-stamp 20260913.143705
-epoch 1789324625
-paths active-designing/20260913-143658_the-receipt-mark-that-already-stands.md construction/ITINERARY.md session-logs/date/README-index-20260913.md session-logs/date/20260913
-what Trace the accepted receipt schema back to the oldest marked-value premise and record whether that type boundary stands or must change before implementation.
 
 claim copal-receipt-vessel
 seat copal
