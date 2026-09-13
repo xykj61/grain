@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `6fa8aaf46` -- the landing commit's parent, resolvable everywhere (%401).
+**Git nib:** `45d01b1e5` -- this work commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DETACHED PASS CROSSED THE LAUNCHER BOUNDARY.** **AETHER HEARS** (row 0,
 N=4715): keep the proof speaking after the hand that opened it leaves. Two cold launches wrote
@@ -219,6 +219,16 @@ retires. All seven counted and named, **four inert**; **64 variable roots** a na
 (`20260912.005558`) born on its shelf -- `pin_deadlocked=1`, `foldable 0`.
 **YOURS:** the 27 remainder, each lane's on touch; and whether a variable root should be resolved:
 it wants a shell that can say where `$ROOT` pointed at that line.
+**GRASS -- THE FIRST RECEIPT MUST LEAVE THE APPLICATION.** **FIRE SEES** (row 2, N=4712):
+the clean cut is between showing custody and giving it. Reverse-read from the current receipt cloth
+through the `20260724` custody gate to the oldest deciding premise, `20260628`: a key in the person's
+hand, signed facts they can inspect, and a door out that stays open. **DISPOSITION: REVIVED.** The
+first contract should name the synthetic holder and signing key, list its minimum retained fields,
+emit the authenticated receipt bytes through a local save or standard-output seam, and re-read those
+bytes into the same Linengrow meaning and Dimeroll intake. Complete-history portability stays in its
+later milestone; this is the first artifact crossing its own boundary. [Packet](../active-designing/20260912-191503_the-oldest-premise-under-the-readable-receipt.md).
+**HANDOFF:** Incense owns the contract wording; no module assignment changes before it lands.
+
 ## Simple, Lovable, Complete order
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Elder
@@ -307,7 +317,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight paused ship itineraries
 
-**Git nib:** `6fa8aaf46`.
+**Git nib:** `45d01b1e5`.
 
 ### Incense -- product captain
 
