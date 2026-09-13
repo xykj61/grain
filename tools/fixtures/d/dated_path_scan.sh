@@ -103,7 +103,7 @@ verb="${1:-census}"
 # between readings. Discovery skips full-line comments now, and the page is LISTED in
 # dated_path_exclusions.sh by decision, so the subtraction is on the record and this comment is
 # free to name it. Proven both ways: remove the listing and the same tree reads 183.
-LOST_CEILING=85    # 165 until 20260907.104201, when a DECLARED ABSENCE stopped reading as
+LOST_CEILING=85    # Historical/testimony census ceiling, reported rather than gated from
                    # breakage. 88 of the 173 then standing were rows that name a log and say on
                    # the same line that it never landed -- the exact repair the shelves' own
                    # header asks for, counted as the wound it heals. The buckets are what prove
@@ -549,7 +549,13 @@ echo "lost_living=$lost_living"
 echo "lost_testimony=$((lost - lost_living))"
 echo "lost_promised_living=$lost_promised_living"
 
-if [ "$lost" -le "$LOST_CEILING" ]; then
+# Keaton's ruling `20260913`: gate only the repairable cell. A living Markdown promise that
+# resolves nowhere is work a lap can close; testimony and plain mentions remain counted without
+# asking an agent to rewrite history. Zero is the natural ceiling because one broken living link
+# is already a reader-facing defect.
+REPAIRABLE_CEILING=0
+echo "repairable_ceiling=$REPAIRABLE_CEILING"
+if [ "$lost_promised_living" -le "$REPAIRABLE_CEILING" ]; then
   echo "under_ceiling=yes"
 else
   echo "under_ceiling=no"
