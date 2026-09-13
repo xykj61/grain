@@ -113,7 +113,7 @@ const build_lock_poll_ms: u64 = 50;
 
 /// The receipt key's domain separator, versioned so a future key shape can
 /// never collide with this one's stamps.
-const ryekey_marker = "ryekey-v3\x00";
+const ryekey_marker = "ryekey-v4\x00";
 
 /// A receipt stamp is two 64-hex lines -- the input key, then the emitted
 /// binary's own hash -- and this bound refuses to read a stamp-shaped file
@@ -343,17 +343,11 @@ fn bridge_to_zig(
     hasher.update("\x00");
     hasher.update(zig);
     hasher.update("\x00");
-    // The toolchain's size stands in for its bytes: hashing a ~50 MB binary
-    // per build would cost more than many of the builds it guards, while the
-    // fetch pin (tools/f/fetch-toolchain.sh) already proves those bytes by
-    // checksum at install. A toolchain statFile refusal turns receipts off
-    // below rather than guessing.
-    const zig_stat: ?std.Io.Dir.Stat = dir.statFile(io, zig, .{}) catch null;
-    if (zig_stat) |st| {
-        var sizeb: [8]u8 = undefined;
-        std.mem.writeInt(u64, &sizeb, st.size, .little);
-        hasher.update(&sizeb);
-    }
+    // Hash the compiler itself. The fetch pin proves the installed archive at
+    // arrival, while this reading proves the executable used by THIS build.
+    // Path and size alone let a same-size replacement reuse an elder output.
+    // A read refusal turns receipts off below rather than guessing.
+    const zig_content_readable = hash_file_into(io, dir, zig, &hasher);
     hasher.update(rye_lib);
     hasher.update("\x00");
     {
@@ -398,12 +392,12 @@ fn bridge_to_zig(
 
     // A receipt is consulted only where every one of its conditions holds
     // plainly: a build verb (running is the point of `run`), a named output,
-    // no RYE_BUILD_FRESH, a toolchain whose size was readable, and this
+    // no RYE_BUILD_FRESH, a toolchain whose bytes were readable, and this
     // binary's own path resolvable so its bytes can join the key. Anything
     // less builds fresh, which is always the safe direction.
     const wants_receipt = !std.mem.eql(u8, label, "run") and
         init.environ_map.get("RYE_BUILD_FRESH") == null and
-        zig_stat != null and
+        zig_content_readable and
         keyable and
         flags_are_keyable(extra);
     var receipt_path: ?[]const u8 = null;
@@ -501,6 +495,20 @@ fn bridge_to_zig(
 /// The named output of a build, read from the forwarded flags: the value of
 /// `-femit-bin=<path>`. A build that names no output earns no receipt, since a
 /// receipt with nowhere to sit beside is a receipt for nothing.
+fn hash_file_into(io: std.Io, dir: std.Io.Dir, path: []const u8, hasher: *Sha256) bool {
+    var file = dir.openFile(io, path, .{}) catch return false;
+    defer file.close(io);
+
+    var reader = file.reader(io, &.{});
+    var buffer: [64 * 1024]u8 = undefined;
+    while (true) {
+        const n = reader.interface.readSliceShort(&buffer) catch return false;
+        if (n == 0) return true;
+        hasher.update(buffer[0..n]);
+        if (n < buffer.len) return true;
+    }
+}
+
 fn find_emit_path(extra: []const [:0]const u8) ?[]const u8 {
     var found: ?[]const u8 = null;
     for (extra) |flag| {

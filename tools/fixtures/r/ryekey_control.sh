@@ -156,6 +156,22 @@ env RYE_ZIG="$PEN/zigalt" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OR
 k8=$(stamp)
 [ "$k8" != "$k7" ] || fail "the toolchain path did not change the key"
 
+# --- leg 9: same path and size, different toolchain bytes miss -------------------------------
+printf '#!/bin/sh\n# compiler-key-a\nexec "%s" "$@"\n' "$ZIG" > "$PEN/zigbytes"
+chmod +x "$PEN/zigbytes"
+env RYE_ZIG="$PEN/zigbytes" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OReleaseSmall \
+    || fail "zig-bytes baseline build failed"
+k8a=$(stamp)
+sed 's/compiler-key-a/compiler-key-b/' "$PEN/zigbytes" > "$PEN/zigbytes.next"
+mv "$PEN/zigbytes.next" "$PEN/zigbytes"
+chmod +x "$PEN/zigbytes"
+[ "$(wc -c < "$PEN/zigbytes" | tr -d ' ')" = "$(printf '#!/bin/sh\n# compiler-key-a\nexec "%s" "$@"\n' "$ZIG" | wc -c | tr -d ' ')" ] \
+    || fail "the same-size toolchain plant changed size"
+env RYE_ZIG="$PEN/zigbytes" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OReleaseSmall \
+    || fail "zig-bytes flip build failed"
+k8b=$(stamp)
+[ "$k8b" != "$k8a" ] || fail "same-path same-size toolchain bytes did not change the key"
+
 # --- leg 9: the library's std link target misses ---------------------------------------------
 # A pen lib whose every entry points at the real library's resolved targets; the
 # std entry is then re-seated to an equivalent path with a different SPELLING,
@@ -241,6 +257,6 @@ env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extr
     || fail "positional-arg build failed"
 [ ! -f "$KEY" ] || fail "a positional argument still earned a receipt"
 
-echo "legs=17 all proven -- eight flips missed, including root and dependency source modes; the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
+echo "legs=18 all proven -- nine flips missed, including same-size compiler bytes and root and dependency source modes; the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"

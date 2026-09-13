@@ -77,9 +77,3 @@ stamp 20260913.184358
 epoch 1789339438
 paths active-designing/20260913-184351_the-offer-that-stays-outside-the-journal.md construction/DIMEROLL_ITINERARY.md construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
 what Reverse-read the first Dimeroll receipt milestone and decide whether an offer may enter the journal before recognition.
-claim bakery-ryekey-toolchain-bytes
-seat bakery
-stamp 20260913.194526
-epoch 1789343126
-paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish rye/README.md construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
-what Hash the compiler bytes into Rye build receipts and prove a same-size compiler mutation always misses.
