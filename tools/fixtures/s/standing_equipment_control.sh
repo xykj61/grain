@@ -685,6 +685,14 @@ out=$(run_runner --detach)
 case "$out" in *"transcript=session-output/standing-equipment-cold.txt"*)
   echo "detach_prints_path=yes" ;; *) echo "detach_prints_path=no" ;; esac
 case "$out" in *"pid="[0-9]*) echo "detach_prints_pid=yes" ;; *) echo "detach_prints_pid=no" ;; esac
+# The pier needs a session boundary where one is available: nohup protects against SIGHUP, while
+# the Codex command boundary closes the launcher's whole process group. Keep the fallback visible
+# too, since macOS commonly carries nohup and no setsid.
+if grep -q '^  if command -v setsid ' "$runner" &&
+   grep -q 'STANDING_TRANSCRIPT="\$transcript" setsid sh ' "$runner"; then
+  echo "detach_prefers_session_boundary=yes"; else echo "detach_prefers_session_boundary=no"; fi
+if grep -q 'STANDING_TRANSCRIPT="\$transcript" nohup sh ' "$runner"; then
+  echo "detach_keeps_portable_fallback=yes"; else echo "detach_keeps_portable_fallback=no"; fi
 # The parent returns having launched rather than having run: no guard line, no verdict of its own.
 case "$out" in *"ran alpha"*|*"run_verdict="*) echo "detach_parent_returns=no" ;; *) echo "detach_parent_returns=yes" ;; esac
 cold=$(detach_transcript cold)

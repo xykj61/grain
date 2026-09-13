@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.214739` | [parked launcher boundary came home](20260912/20260912-214739_the-parked-launcher-boundary-came-home.kyri) | recovered detached-pass repair re-proved on current metal |
+| `20260912.211158` | [detached pass crossed launcher](20260912/20260912-211158_the-detached-pass-crossed-the-launcher-boundary.kyri) | parked repair recovered; full cold roster completed |
 | `20260912.194819` | [the parked boundary came home](20260912/20260912-194819_the-parked-boundary-came-home.kyri) | recovered Amphora's false-empty repair from the parked lap |
 | `20260912.194204` | [parked contract returned](20260912/20260912-194204_the-parked-contract-returned-to-the-live-card.kyri) | Glow contract recovered; fleet pause held |
 | `20260912.191028` | [the two parked records came home](20260912/20260912-191028_the-two-parked-records-came-home.kyri) | Rye door and model-boundary records landed whole |
