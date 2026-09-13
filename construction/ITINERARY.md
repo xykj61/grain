@@ -1,7 +1,7 @@
 # ITINERARY -- the receipt-value product fleet
 
 **Language:** EN
-**Status:** Living pin -- operator card; fleet paused
+**Status:** Living pin -- operator card; full eight-ship formation sailing
 **Stamp:** `20260912.144043` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
@@ -9,7 +9,7 @@
 **Prior elder:** [`archive/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/20260912-141814_itinerary-before-lindy-crux-molt.md).
 **Bound:** `living_pin_max_bytes[construction/ITINERARY.md] = 40960`.
 
-The fleet and watcher remain stopped. This card changes written courses only. Sailing waits for Keaton's fresh word after the interactive review.
+Keaton's `20260913` word accepts the first receipt contract and chooses the full eight-ship formation. The watcher may keep every live seat sailing; product and custody walls below remain unchanged.
 
 ## INNER LOOP -- what every future lap carries
 
@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `74731ca339` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `4d6c511352` -- this work commit's parent, resolvable everywhere (%401).
 
 **GRASS -- THE NIB KEPT NINE HEX DIGITS WHERE THE WITNESS REQUIRES TEN.**
 **EARTH BREATHES IN** (row 4, N=4724): read the mark on its face before explaining it.
@@ -323,7 +323,7 @@ The interface uses ASCII as structure, linen as material, and motion as a bounde
 
 Brushstroke declares each component's grid, role, state, tokens, and motion profile. Skate renders the fixed frame and bounded events. A correspondence witness forces meaning, description, and behavior to change together.
 
-## Now -- the eight paused ship itineraries
+## Now -- the eight sailing ship itineraries
 
 **Git nib:** `74731ca339`.
 
@@ -332,7 +332,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 **Priority:** VERY HIGH Lindy; VERY HIGH crux.
 
 1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
-2. After Keaton's product review, keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation.
+2. Keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation; the `20260913` review accepts this boundary.
 3. Integrate the first whole and stamp its achieved name only after the dual-product witness passes.
 
 **Stop:** product meaning, DJINN design authority, custody, or a new module seat returns to Keaton.
@@ -443,8 +443,8 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 
 ## Open doors for Keaton
 
-- Review and revise the first receipt product contract before any fleet resumes.
-- Choose the future fleet formation; the present state remains paused.
+- The first receipt contract is accepted for bounded synthetic implementation; material scope changes return here.
+- The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
 - Keep real personal data, valuation agreements, money, identity, and deployment behind their later gates.
 
@@ -454,6 +454,6 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - Its elder rests at [`archive/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/20260912-141814_itinerary-before-lindy-crux-molt.md).
 - The prior design system rests at [`../active-designing/archive/20260826-022443_the-linengrow-design-theme.md`](../active-designing/archive/20260826-022443_the-linengrow-design-theme.md).
 - Archives are historical continuity outside Mitra and shred-prep.
-- Fleet roster, engines, trees, and paused state remain unchanged.
+- Fleet roster, engines, and trees remain unchanged; the operational state is the full live formation from `20260913`.
 
 May every valuable fact remain the person's own. May every receipt make consent and return easy to see. May the books close gently around truth that can travel.

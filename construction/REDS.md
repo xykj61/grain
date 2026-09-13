@@ -69,6 +69,8 @@ correction accretes. The full statement rests on
 
 ---
 
+**Closure of REDS %626 (`20260913.143229`) -- Keaton granted the captain the gate choice.** The gate now holds `lost_promised_living` at zero, so one broken Markdown promise in living prose refuses while testimony and plain mentions remain reported. `dated_path` moves from cadence to lap on the measured affordable path. The full witness reads `refs_lost=111`, `lost_testimony=106`, `lost_promised_living=0`, `repairable_ceiling=0`, `under_ceiling=yes`; its planted promise/living split and all controls remain GREEN. This closure supersedes the row's elder **OPEN** status without rewriting its stamped account. **CLOSED.**
+
 ## What the pattern says
 
 Read down the *what caught it* column and a guard, a stopwatch, or a second look catches almost

@@ -51,10 +51,9 @@
 #   rule tracked_link_scan draws one room over -- a link is a promise a reader clicks, a name in
 #   prose is not. `lost_living` counts the citers a lap may lawfully edit, by the same basename
 #   predicate the repointer uses to decide what it may write to. Their intersection is the
-#   repairable class and it is the number the standing gate question turns on. The gate stays on
-#   `refs_lost` until Keaton's word moves it; these five print so the next lap that meets the
-#   ceiling reads whether the count is repairable rather than classifying it again by hand, which
-#   two laps did on 20260907 alone.
+#   repairable class and it is the standing gate from Keaton's ruling `20260913`. The elder
+#   `refs_lost` count remains visible as history and diagnosis without asking a lap to rewrite
+#   testimony it is forbidden to alter.
 #
 #   Under the mark law a stale reference is resolved rather than repointed, so recovered
 #   references RISE when a room folds and that is the fold working; what must never rise is what
@@ -275,8 +274,8 @@ say "declared GREEN -- a declared absence leaves the lost count, while a link an
 # THE LOST SET, SPLIT TWO WAYS. `lost_promised` counts the broken LINKS, by the same rule
 # tools/fixtures/t/tracked_link_scan.sh draws one room over; `lost_living` counts the citers a lap
 # may lawfully edit, by the same basename predicate dated_path_repoint_scan.sh uses to decide what
-# it may write to. Their intersection is the repairable class, and it is the number the standing
-# gate question turns on. Reported, never gated -- moving the gate is Keaton's word.
+# it may write to. Their intersection is the repairable class and, from Keaton's `20260913`
+# ruling, the field gate held at zero.
 #
 # EACH READING IS PROVEN AWAY FROM ZERO, because a reading that is always zero cannot be told from
 # one that is right. Case four's living citer holds a broken link and a bare mention, and its
@@ -349,10 +348,9 @@ say "one list GREEN -- census and repointer read the same exclusions, a private 
 # still works. Moved `20260911` -- same gate, same refusal, read after everything that proves the
 # reading is honest. Same shape as `shim_reason`'s `late_say`, one room over.
 #
-# WHAT IT STILL REFUSES, unchanged: a reference that resolves nowhere, or resolves to two places at
-# once, and neither is something the resolver can repair. `lost_promised_living` is the repairable
-# cell and the gate's standing question; moving the gate to that reading is Keaton's word, asked on
-# `construction/ITINERARY.md` and never taken by a lap for itself.
-assert census.out contains "under_ceiling=yes" else "dated-path: LOST references have risen above the ceiling -- a reference now resolves nowhere, or resolves to two places at once, and neither is something the resolver can repair"
+# WHAT IT REFUSES: a broken Markdown promise in living prose. Testimony and plain mentions remain
+# reported, because no lawful lap can lower them and a ceiling on them only rises as history grows.
+assert census.out contains "repairable_ceiling=0" else "dated-path: the repairable living-promise ceiling must be declared at zero"
+assert census.out contains "under_ceiling=yes" else "dated-path: a living Markdown promise resolves nowhere -- repair that reader-facing link before the lap closes"
 
-say "GREEN: dated-path -- seven verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the lost-reference census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."
+say "GREEN: dated-path -- seven verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and every broken living Markdown promise held at zero while testimony stays visible. A room may now fold without the tree losing its way back."
