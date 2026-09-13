@@ -84,3 +84,9 @@ stamp 20260913.160800
 epoch 1789330080
 paths skate/Sources/SkateCore/ReceiptCard.swift skate/Tests/SkateCoreTests/ReceiptCardTests.swift skate/README.md
 what Build one bounded Receipt Card value that renders the accepted synthetic Linengrow reading into a deterministic Still frame and accessibility snapshot.
+claim patchouli-receipt-offer-runner
+seat patchouli
+stamp 20260913.161300
+epoch 1789330380
+paths tools/m/receipt_offer_witness.rish
+what Compile and run the claimed receipt-offer declaration walk and deterministic replay from a tracked Rishi witness.
