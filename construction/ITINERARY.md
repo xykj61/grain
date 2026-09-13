@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `74ea296718` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `fd8264ebfd` -- this work commit's parent, resolvable everywhere (%401).
 
 **GRASS -- THE RECEIPT'S TYPE-MARK WAS ALREADY ON ITS FACE.** **EARTH BREATHES IN**
 (row 4, N=4734): take in the concrete field before adding a new type system. Reverse-reading the
@@ -52,6 +52,19 @@ a seam wears a mark naming its kind, and an unknown mark refuses whole. The cont
 append. **DISPOSITION: STANDFASTED.** Treat `schema` as this milestone's type-mark; open no fifth
 public type and no new registry. Incense owns the one-sentence contract clarification on touch;
 Patchouli and Pheromone can implement the existing boundary. [Packet](../active-designing/20260913-143658_the-receipt-mark-that-already-stands.md).
+
+**BAKERY -- THE RECEIPT READS HOW EVERY SOURCE MAY BE REACHED.** **AETHER HEARS** (row 0,
+N=4750): the build exists to make repeated proof cheaper without making its account quieter.
+Rye's content receipt already keyed source paths and bytes, flags, the standard-library overlay,
+toolchain identity, embedded files, and Rye's own binary. A source's executable bit was the one
+tracked input left unheard: changing it reused the elder binary. `bridge_rye_tree` now normalizes
+the three POSIX execute bits to one byte for every root and imported source; hosts without that
+filesystem concept contribute zero, and an unreadable stat makes the build compile fresh. The
+domain marker advances to `ryekey-v3`. The control grows **15 -> 17 legs** and changes root and
+dependency modes separately, so a root-only repair fails; all **eight** independent input changes
+miss while an identical build hits and the complete proof still runs. Cold **284/279/3**, with two
+custody gates; `tally_roster` and `tool_letter_room` share Patchouli's live receipt-roster repair,
+and `standing_equipment` repeats those two peer reds.
 
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
@@ -353,7 +366,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `74ea296718`.
+**Git nib:** `fd8264ebfd`.
 
 ### Incense -- product captain
 

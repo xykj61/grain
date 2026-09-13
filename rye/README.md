@@ -25,6 +25,11 @@ The `rye` command speaks four verbs:
 
 Because the toolchain's front-end reads only the `.zig` extension, `run`, `build`, and `build-lib` bridge: they copy the `.rye` source to an adjacent `.zig` file, hand that to the compiler -- pointed at Rye's standard library -- and clear the bridge away so the tree stays tidy.
 
+A build with a named output also writes a content receipt beside it. Rye reuses the output only
+when the full local source closure still agrees: path, bytes, executable bit, flags, library
+overlay, toolchain identity, Rye binary, and embedded files all join the key. Every build still
+reads that closure, and any input it cannot account for takes the safe path and compiles fresh.
+
 The first place we aimed `rye build` was bare metal. It compiled a freestanding RISC-V program that wakes on an emulator -- at once Rye's RISC-V cohesion made concrete and Aurora's first living seed, a hart that comes up, speaks one asserted line, and rests. That seed and its story live in `../aurora/`.
 
 ---

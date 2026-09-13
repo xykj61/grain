@@ -18,7 +18,9 @@
 #   sh tools/fixtures/r/ryekey_control.sh [path-to-rye-binary]
 #
 # Exit 0 with CONTROL_GREEN on the last line; exit 1 naming the first leg that
-# failed. Nothing outside the pen is written; the pen is removed on exit.
+# failed. Source modes are flipped without changing bytes, once at the root
+# and once in a dependency, so a root-only implementation cannot pass. Nothing
+# outside the pen is written; the pen is removed on exit.
 
 set -u
 
@@ -129,20 +131,32 @@ build || fail "dep-flip build failed"
 k4=$(stamp)
 [ "$k4" != "$k3" ] || fail "a dep source byte did not change the key"
 
-# --- leg 5: a forwarded flag misses ----------------------------------------------------------
+# --- leg 5: the ROOT source executable bit misses without changing its bytes -----------------
+chmod +x "$PEN/main.rye"
+build || fail "root-mode-flip build failed"
+k5=$(stamp)
+[ "$k5" != "$k4" ] || fail "the root source executable bit did not change the key"
+
+# --- leg 6: a DEP source executable bit misses without changing its bytes --------------------
+chmod +x "$PEN/dep.rye"
+build || fail "dep-mode-flip build failed"
+k6=$(stamp)
+[ "$k6" != "$k5" ] || fail "a dependency source executable bit did not change the key"
+
+# --- leg 7: a forwarded flag misses ----------------------------------------------------------
 env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OReleaseSmall \
     || fail "flag-flip build failed"
-k5=$(stamp)
-[ "$k5" != "$k4" ] || fail "a forwarded flag did not change the key"
+k7=$(stamp)
+[ "$k7" != "$k6" ] || fail "a forwarded flag did not change the key"
 
-# --- leg 6: the toolchain PATH misses (same bytes, different name) ---------------------------
+# --- leg 8: the toolchain PATH misses (same bytes, different name) ---------------------------
 ln -s "$ZIG" "$PEN/zigalt"
 env RYE_ZIG="$PEN/zigalt" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OReleaseSmall \
     || fail "zig-path build failed"
-k6=$(stamp)
-[ "$k6" != "$k5" ] || fail "the toolchain path did not change the key"
+k8=$(stamp)
+[ "$k8" != "$k7" ] || fail "the toolchain path did not change the key"
 
-# --- leg 7: the library's std link target misses ---------------------------------------------
+# --- leg 9: the library's std link target misses ---------------------------------------------
 # A pen lib whose every entry points at the real library's resolved targets; the
 # std entry is then re-seated to an equivalent path with a different SPELLING,
 # so the build still succeeds while the link's target string moves.
@@ -154,33 +168,33 @@ for entry in "$REPO/rye/lib"/*; do
 done
 env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
     || fail "pen-lib build failed"
-k7a=$(stamp)
+k9a=$(stamp)
 std_tgt=$(readlink "$PEN/lib2/std")
 rm "$PEN/lib2/std"
 ln -s "${std_tgt%/}/." "$PEN/lib2/std"
 env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
     || fail "retargeted-std build failed"
-k7b=$(stamp)
-[ "$k7b" != "$k7a" ] || fail "a re-seated std link did not change the key"
+k9b=$(stamp)
+[ "$k9b" != "$k9a" ] || fail "a re-seated std link did not change the key"
 
-# --- leg 8: the rye binary's own bytes miss --------------------------------------------------
+# --- leg 10: the rye binary's own bytes miss -------------------------------------------------
 cp "$RYE_BIN" "$PEN/ryeflip"
 printf 'x' >> "$PEN/ryeflip"
 chmod +x "$PEN/ryeflip"
 env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
     || fail "flipped-rye build failed"
-k8=$(stamp)
-[ "$k8" != "$k7b" ] || fail "the rye binary's own bytes did not change the key"
-k_base=$k8; t_base=$(btime)
+k10=$(stamp)
+[ "$k10" != "$k9b" ] || fail "the rye binary's own bytes did not change the key"
+k_base=$k10; t_base=$(btime)
 
-# --- leg 9: RYE_BUILD_FRESH rebuilds past a standing receipt ---------------------------------
+# --- leg 11: RYE_BUILD_FRESH rebuilds past a standing receipt --------------------------------
 sleep 1
 env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" RYE_BUILD_FRESH=1 "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
     || fail "fresh-bypass build failed"
 [ "$(stamp)" = "$k_base" ] || fail "the bypass rewrote the stamp it exists to ignore"
 [ "$(btime)" != "$t_base" ] || fail "RYE_BUILD_FRESH did not rebuild"
 
-# --- leg 10: determinism -- two fresh builds of one tree speak one key -----------------------
+# --- leg 12: determinism -- two fresh builds of one tree speak one key -----------------------
 rm -f "$KEY"
 env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
     || fail "determinism build one failed"
@@ -192,18 +206,18 @@ env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" 
 # since a Mach-O link stamps a fresh UUID into byte-identical inputs' output.
 [ "$(stamp | head -1)" = "$kd1" ] || fail "two fresh builds of one tree spoke two keys"
 
-# --- leg 11: a build naming no output earns no receipt ---------------------------------------
+# --- leg 13: a build naming no output earns no receipt ---------------------------------------
 rm -f "$KEY" "$PEN/main"
 ( cd "$PEN" && env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" ) \
     || fail "no-emit build failed"
 [ ! -f "$KEY" ] || fail "a no-emit build left a receipt"
 
-# --- leg 12: run never consults or writes a receipt ------------------------------------------
+# --- leg 14: run never consults or writes a receipt ------------------------------------------
 out=$(env RYE_ZIG="$ZIG" "$RYE_BIN" run "$PEN/main.rye" 2>&1) || fail "run failed"
 [ "$out" = "42" ] || fail "run answered '$out' rather than 42"
 [ ! -f "$PEN/main.rye.ryekey" ] || fail "run left a receipt"
 
-# --- leg 13: one byte in an @embedFile target misses -----------------------------------------
+# --- leg 15: one byte in an @embedFile target misses -----------------------------------------
 build || fail "embed-baseline build failed"
 k13a=$(stamp)
 printf 'second seed\n' > "$PEN/seed.txt"
@@ -211,7 +225,7 @@ build || fail "embed-flip build failed"
 k13b=$(stamp)
 [ "$k13b" != "$k13a" ] || fail "an embedded byte did not change the key"
 
-# --- leg 14: a tampered output misses its own hash and rebuilds ------------------------------
+# --- leg 16: a tampered output misses its own hash and rebuilds ------------------------------
 printf 'torn' > "$BIN"
 t14a=$(btime)
 sleep 1
@@ -220,13 +234,13 @@ build || fail "tamper-recovery build failed"
 sz=$(wc -c < "$BIN" | tr -d ' ')
 [ "$sz" -gt 1000 ] || fail "the rebuild left a torn binary ($sz bytes)"
 
-# --- leg 15: a positional argument earns no receipt ------------------------------------------
+# --- leg 17: a positional argument earns no receipt ------------------------------------------
 printf 'int nothing_here;\n' > "$PEN/extra.c"
 rm -f "$KEY"
 env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extra.c" \
     || fail "positional-arg build failed"
 [ ! -f "$KEY" ] || fail "a positional argument still earned a receipt"
 
-echo "legs=15 all proven -- six flips missed, the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
+echo "legs=17 all proven -- eight flips missed, including root and dependency source modes; the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"

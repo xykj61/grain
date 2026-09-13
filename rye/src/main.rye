@@ -81,7 +81,7 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// Accretions in *capability* grow the tool itself: the `build` command, and
 /// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
 /// The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260911.115025";
+const rye_version = "20260913.175414";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -113,7 +113,7 @@ const build_lock_poll_ms: u64 = 50;
 
 /// The receipt key's domain separator, versioned so a future key shape can
 /// never collide with this one's stamps.
-const ryekey_marker = "ryekey-v2\x00";
+const ryekey_marker = "ryekey-v3\x00";
 
 /// A receipt stamp is two 64-hex lines -- the input key, then the emitted
 /// binary's own hash -- and this bound refuses to read a stamp-shaped file
@@ -750,6 +750,23 @@ fn bridge_rye_tree(
     std.mem.writeInt(u64, &src_len, source.len, .little);
     hasher.update(&src_len);
     hasher.update(source);
+
+    // The repository tracks whether a source is executable, so the receipt
+    // does too. Normalize the three POSIX execute bits to one byte: their
+    // presence can change how a source is reached, while owner and write
+    // permissions do not change the program the compiler reads. Hosts with no
+    // executable-bit concept contribute zero, which is their whole answer.
+    const source_stat: ?std.Io.Dir.Stat = dir.statFile(io, rye_path, .{}) catch null;
+    if (source_stat) |st| {
+        var executable: u8 = 0;
+        if (comptime std.Io.File.Permissions.has_executable_bit) {
+            executable = @intFromBool((st.permissions.toMode() & 0o111) != 0);
+        }
+        hasher.update(&.{executable});
+    } else {
+        // invariant: metadata the key cannot read is metadata the key cannot cover.
+        keyable.* = false;
+    }
 
     var import_paths = std.ArrayListUnmanaged([]const u8).empty;
     defer {
