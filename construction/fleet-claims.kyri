@@ -77,3 +77,9 @@ stamp 20260913.184358
 epoch 1789339438
 paths active-designing/20260913-184351_the-offer-that-stays-outside-the-journal.md construction/DIMEROLL_ITINERARY.md construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
 what Reverse-read the first Dimeroll receipt milestone and decide whether an offer may enter the journal before recognition.
+claim bakery-moved-proof-closure
+seat bakery
+stamp 20260913.195912
+epoch 1789343952
+paths tools/f/fleet_moved_proof.sh tools/fixtures/f/fleet_moved_proof_control.sh tools/f/fleet-loop-codex.sh construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
+what Derive local and upstream change sets at the twice-pull send and require a full roster when their proof watches overlap or the basis is unknown.
