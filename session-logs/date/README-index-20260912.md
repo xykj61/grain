@@ -11,10 +11,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260912.231224` | [third dead-letter bundle came home](20260912/20260912-231224_the-third-dead-letter-bundle-came-home.kyri) | three Copal records restored; pause held |
 | `20260912.224202` | [two elders and two living heirs](20260912/20260912-224202_the-box-held-two-elders-and-two-living-heirs.kyri) | parked work matched living successors; pause held |
+| `20260912.223303` | [the two dead-letter records came home](20260912/20260912-223303_the-two-dead-letter-records-came-home.kyri) | two completed Copal records restored and indexed |
 | `20260912.214739` | [parked launcher boundary came home](20260912/20260912-214739_the-parked-launcher-boundary-came-home.kyri) | recovered detached-pass repair re-proved on current metal |
 | `20260912.211158` | [detached pass crossed launcher](20260912/20260912-211158_the-detached-pass-crossed-the-launcher-boundary.kyri) | parked repair recovered; full cold roster completed |
+| `20260912.210612` | [the dead-letter record came home](20260912/20260912-210612_the-dead-letter-record-came-home.kyri) | one parked record restored; index bound and order repaired |
 | `20260912.194819` | [the parked boundary came home](20260912/20260912-194819_the-parked-boundary-came-home.kyri) | recovered Amphora's false-empty repair from the parked lap |
+| `20260912.194556` | [the park that had already landed](20260912/20260912-194556_the-park-that-had-already-landed.kyri) | newest copal park reconciled against its landed work |
 | `20260912.194204` | [parked contract returned](20260912/20260912-194204_the-parked-contract-returned-to-the-live-card.kyri) | Glow contract recovered; fleet pause held |
 | `20260912.191028` | [the two parked records came home](20260912/20260912-191028_the-two-parked-records-came-home.kyri) | Rye door and model-boundary records landed whole |
 | `20260912.190713` | [the paused ship held at the card](20260912/20260912-190713_the-paused-ship-held-at-the-card.kyri) | the newer fleet pause held ahead of another stash recovery |
