@@ -78,3 +78,9 @@ stamp 20260913.153006
 epoch 1789327806
 paths tools/fixtures/d/dated_path_scan.sh tools/fixtures/r/ratchet_slack_pairs.txt construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
 what Rename the historical dated-path report so the ratchet census no longer mistakes a deliberately ungated reading for a broken ceiling.
+claim diffuser-receipt-card
+seat diffuser
+stamp 20260913.160800
+epoch 1789330080
+paths skate/Sources/SkateCore/ReceiptCard.swift skate/Tests/SkateCoreTests/ReceiptCardTests.swift skate/README.md
+what Build one bounded Receipt Card value that renders the accepted synthetic Linengrow reading into a deterministic Still frame and accessibility snapshot.
