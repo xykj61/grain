@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
 | `20260913.192054` | [three parked records rejoined the thread](20260913/20260913-192054_three-parked-records-rejoined-the-thread.kyri) | three records restored; closed shelf derives to 65 |
 | `20260913.180539` | [two parked diffuser records came home](20260913/20260913-180539_two-parked-diffuser-records-came-home.kyri) | two records restored; closed shelf derives to 65 |
 | `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri) | root and dependency execute bits join receipt; 17 green |
