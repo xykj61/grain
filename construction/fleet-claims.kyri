@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim apply-witness
-seat patchouli
-stamp 20260912.041507
-epoch 1789200907
-paths mantra/src/weave_apply_witness.rye tools/m/mantra_weave_apply_witness.rish tools/fixtures/m/mantra_weave_apply_control.sh
-what A witness for Weave.apply, which no guard owns: its delete half stated three preconditions and asserted them, so a stale or hand-built diff met exit 134 where the insert half refuses by name. Three named refusals land plus the witness that holds them.
 claim incense-two-rooms-recovery
 seat incense
 stamp 20260912.232447

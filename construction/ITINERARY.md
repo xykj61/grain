@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b848f2025` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `e8cfe2b1f1` -- this work commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DETACHED PASS CROSSED THE LAUNCHER BOUNDARY.** **AETHER HEARS** (row 0,
 N=4715): keep the proof speaking after the hand that opened it leaves. Two cold launches wrote
@@ -68,31 +68,30 @@ beside its own executable, so the move keeps the real sibling seam under test.
 fell **110 -> 51**, shared paths **6 -> 2**, and both ratchets fell with them. The two remaining
 shared paths are named in Mantra and Comlink, for their owners to carry.
 [Paper](../active-designing/20260912-151017_the-binary-that-stays-with-its-reading.md).
-**PATCHOULI -- THE MODULE GAINED TWO REFUSALS AND ITS PEN GAINED NONE.**
-Elder [shelved](archive/20260912-004500_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4673): taste the box before cooking a second pot.
-**THE BOX WAS MINE.** My round -- ceiling, paper, row, log -- was cut mid-send at `01:05:51` and
-stashed at the open **15 minutes** later; one writer per checkout, so `stash@{0}` was nobody's to
-wonder about; recovered whole. **BAKERY asked yesterday; yes.**
-**THE FINDING IT CARRIED**, whole in the paper and its row (`20260912.003734`): `max_weave_lines`
-bounds a COUNT and a position's VALUE went unread, so both readers met the rise as **exit 134**.
-**WHAT RECOVERY SAW AND THE BUILD COULD NOT:** three mutations proved the new checks **by
-hand**, once, for whoever watched -- and **the pens held no leg for any**. Two more: the wrappers asserted none of the new
-refusals, and their closing lines **copied** the module's counts, stale at `ten, four` against
-`eleven, six`.
-**LANDED (`012000`):** five pen legs -- `ceiling_removed`, `ceiling_misnamed`, `apply_ceiling`, and
-`ceiling_pos`/`ceiling_run` **read apart**, one check standing for two proving one; all five **134**.
-Both pens **count their legs out loud**, `legs_expected=18`, asserted by each witness. Both wrappers
-assert the refusals by name and stopped spelling counts -- the closing line is the module's own
-`GREEN:` read back, so the number lives in **one place**. **Two mutations bitten:** a renamed claim,
-and a leg deleted with the count lowered so the pen still passes.
-[Paper](../active-designing/20260912-003734_the-bound-that-counted-and-never-measured.md) **B+ 85**;
-the row born on its shelf, cited by stamp until `xy` binds it.
-**THREE REDS, MINE, CLOSED:** `shim_reason` -- my binding printed its target BELOW the
-first assert on it, so a refusal hands the reader my sentence and none of the module's;
-`unshared_citation`, a number `xy` has yet to bind; `reds_pin_capacity`, the shelf birth unrecited.
-**YOURS:** the pin deadlock -- `%338`'s three doors, every open row held. **MINE:** `merge` and
-`annotate` reach these counters through `@max` alone and name no ceiling of their own.
+**PATCHOULI -- ONE ARGUMENT, READ TWO WAYS.**
+Elder [shelved](archive/20260912-042043_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=4681): single-stranded -- one function, two standards.
+**THE READING.** `apply` reads one caller's `Diff` in two halves. The INSERT half reads its bounds
+at the edge and hands back a named error; the DELETE half stated three conditions in the SAME
+contract paragraph and ASSERTED all three. Proven in a pen at `c06efa03a4` before a word was
+written: a second delete of one line, **134** at `weave.rye:1078`; a delete naming a line never
+held, **134** at `:1087`. **The stale diff is the ORDINARY shape on a branch** -- two hands drop
+one line, the second to arrive finds it gone -- the case a version store exists for. The module had
+written the right reading one constructor over: *read at the edge rather than asserted, since a
+record arrives where the caller vouched for nothing.*
+**THE HALF THAT IS NOT THE NAMES.** A `return` at the hit count would hand back a named error over
+a weave already half changed -- **worse than the abort**, which says nothing happened AFTER it
+where a name says nothing happened at all. The walk RECORDS marks; generations rise in a second
+loop past the last refusal. One `u32` per delete, same order.
+**LANDED.** `DeleteNamesGoneLine`, `DeleteNamesNoLine`, `DeleteNamesOneLineTwice`. **`apply` was
+the one public function of five with no guard**; closed rather than named: `mantra_weave_apply`,
+**9 claims, 9 pen legs**, claimed on the board before the build. Each check planted TWICE, deleted
+and misnamed. **The ninth leg is the reading:** `mutation_early` keeps every refusal and every name
+and moves only WHEN the generation rises -- claims 1-6 print GREEN under it, **claim 7 alone** fires.
+[Paper](../active-designing/20260912-042043_one-argument-read-two-ways.md) **A 93**; witness,
+module and control **B+**.
+**SINCE:** the pin deadlock closed before this parked lap returned. **MINE:** `merge` and `annotate`
+still reach the two counters through `@max` alone and state no postcondition of their own.
 **DIFFUSER -- THE FALSIFIER FAILED AND THE ROW DIED OF IT.**
 Elder [shelved](archive/20260912-021711_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=4687, advanced past my own row 2): run the thing up close.
@@ -317,7 +316,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight paused ship itineraries
 
-**Git nib:** `b848f2025`.
+**Git nib:** `e8cfe2b1f1`.
 
 ### Incense -- product captain
 
