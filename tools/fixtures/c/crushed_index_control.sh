@@ -426,6 +426,76 @@ d=$(build sectionident)
   && git add -A && git commit -qm 'pen: a trailing number over numbered sections' ) >/dev/null 2>&1
 check "a trailing number over numbered sections counts zero" "$(read_of "$d" section_count_disagrees)" "0"
 
+# --- A COUNT IN A DECLARED INDEX'S ROW ABOUT ANOTHER DECLARED INDEX'S ROOM -------------------------
+# THE TITLE READING'S OWN SUBJECT, one line further out. A row on an index claims the same thing a
+# title claims, about the same basis -- a room other hands grow -- so the same FORM is refused. The
+# pen needs TWO declared indexes to stage it, since both sides opt in: the row must sit on an index
+# and must link another index's door. `shelf2/` is that second index, over a room of its own.
+d=$(build rowcount)
+( cd "$d" && mkdir -p room2 \
+  && printf '# alpha\n' > room2/alpha.md && printf '# beta\n' > room2/beta.md \
+  && mkdir -p shelf2 && cat > shelf2/README.md <<'PAGE'
+# The second shelf index
+
+**Kind:** crushed index of [`../room2/`](../room2/)
+
+---
+
+| Page | What it says |
+|---|---|
+| [alpha](../room2/alpha.md) | the first |
+| [beta](../room2/beta.md) | the second |
+PAGE
+  printf '| [shelf2](../shelf2/README.md) | the sibling index |\n' >> shelf/README.md \
+  && git add -A && git commit -qm 'pen: a second declared index, named plainly' ) >/dev/null 2>&1
+check "two declared indexes and a plain row read ok" "$(read_of "$d" verdict)" "ok"
+check "the second index is found" "$(read_of "$d" declared_indexes)" "2"
+check "a row naming a sibling index counts zero" "$(read_of "$d" row_count_claimed)" "0"
+
+# THE PLANT IS TRUE ON THE DAY IT IS WRITTEN -- `two pages` over a room holding exactly two -- and is
+# refused anyway, which is what makes this a form reading rather than a value one. A value check
+# passes this plant right up until the day a third page lands, and that day is the fault.
+( cd "$d" && sed_inplace '$s@.*@| [shelf2](../shelf2/README.md) | two pages stand |@' shelf/README.md \
+  && git add -A && git commit -qm 'pen: a count in the row' ) >/dev/null 2>&1
+check "a count in a row about a declared room is counted" "$(read_of "$d" row_count_claimed)" "1"
+check "the count in the row refuses the tree" "$(read_of "$d" verdict)" "index_disagrees"
+check "and the title reading stays out of it" "$(read_of "$d" title_count_claimed)" "0"
+
+# TAKING THE COUNT OUT OF THE ROW clears it while the room never moves, so the reading is the row.
+( cd "$d" && sed_inplace '$s@.*@| [shelf2](../shelf2/README.md) | the pages that stand |@' shelf/README.md \
+  && git add -A && git commit -qm 'pen: the count leaves the row' ) >/dev/null 2>&1
+check "taking the count out of the row clears it" "$(read_of "$d" row_count_claimed)" "0"
+check "and the pen reads ok again" "$(read_of "$d" verdict)" "ok"
+
+# A SINGULAR NOUN AFTER A CARDINAL IS A DEPTH OR A MANNER, never a census of more than one thing.
+# The front door's own wiki row says `rather than one room deep`, and it was the single false refusal
+# the wider form produced -- so the plural is required, and this leg is that measurement kept.
+( cd "$d" && sed_inplace '$s@.*@| [shelf2](../shelf2/README.md) | walked one room deep |@' shelf/README.md \
+  && git add -A && git commit -qm 'pen: one room deep is a depth' ) >/dev/null 2>&1
+check "a cardinal with a singular noun counts zero" "$(read_of "$d" row_count_claimed)" "0"
+
+# A CARDINAL INSIDE LINK TEXT IS A PIECE'S TITLE quoted in a cell, never a count of the room. The
+# front door quotes `Eighteen times, two agents did the same job` in its blog row, and the row is
+# naming that piece rather than counting anything -- so every link text leaves before the read.
+( cd "$d" && sed_inplace '$s@.*@| [shelf2](../shelf2/README.md) | [Two agents did one job](../room2/alpha.md) |@' shelf/README.md \
+  && git add -A && git commit -qm 'pen: a cardinal inside a quoted title' ) >/dev/null 2>&1
+check "a cardinal inside link text counts zero" "$(read_of "$d" row_count_claimed)" "0"
+
+# BOTH SIDES OPT IN. A row spelling a count about a room NO index declares is unread here: the
+# refusal is about a promise two pages made, never about English in a table.
+( cd "$d" && sed_inplace '$s@.*@| [shelf2](../shelf2/README.md) | two pages stand |@' shelf/README.md \
+  && sed_inplace 's@^\*\*Kind:\*\* crushed index of.*@A second shelf, declaring nothing.@' shelf2/README.md \
+  && git add -A && git commit -qm 'pen: the sibling stops declaring' ) >/dev/null 2>&1
+check "a count about an undeclared room counts zero" "$(read_of "$d" row_count_claimed)" "0"
+check "and only one index is declared now" "$(read_of "$d" declared_indexes)" "1"
+
+# AND THE ROW MUST SIT ON AN INDEX. The same count, in a table on a page that declares nothing,
+# walks free -- the other half of the same opt-in, proven from its own side.
+d=$(build rowundeclared)
+( cd "$d" && printf '| [the shelf](README.md) | two pages stand |\n' > shelf/aside.md \
+  && git add -A && git commit -qm 'pen: a counting row on an undeclared page' ) >/dev/null 2>&1
+check "a counting row on an undeclared page counts zero" "$(read_of "$d" row_count_claimed)" "0"
+
 # --- 16. AN EMPTY CORPUS REFUSES ------------------------------------------------------------------
 d=$pen/empty
 mkdir -p "$d"

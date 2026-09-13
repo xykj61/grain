@@ -569,6 +569,92 @@ done < "$work/living.txt"
 section_count_disagrees=$(wc -l < "$work/sectioncounts.txt" | tr -d ' ')
 echo "section_count_disagrees=$section_count_disagrees"
 
+# --- a count spelled in a declared index's ROW about ANOTHER declared index's room ----------------
+# THE FAULT, and it is the title reading's own subject standing one line further out. The reading
+# above refuses a count in a declared index's TITLE, because an index's basis is a room other hands
+# grow, so a number in its name is a forecast. A ROW on an index makes the identical claim about the
+# identical basis: `| lessons/ | Eight walks ... |` on the shelf's front door says the lessons room
+# holds eight, in a cell a reader trusts exactly as far as they trust the title above it.
+#
+# AND THE TWO HALVES WERE MEASURED TOGETHER ON `20260911.234550`, which is what turned this from a
+# guess into a reading. `docs-geode/lessons/README.md` gave up `# Lessons -- eight walks` to the
+# title reading on `20260911.122211`. The same count stood, the next day, in the front door's
+# lessons row -- moved out of the one place a guard read and into a place nothing read. A count does
+# not leave a shelf because one page stopped spelling it.
+#
+# WHY THE FORM AGAIN, rather than the value. The title reading's stated reason carries over whole: a
+# count of a room other hands grow is a forecast whatever line it sits on. And the value reading was
+# tried here first and cannot hold this population -- a row reaches for a SYNONYM of the room's own
+# noun, so `Eight walks` about a room whose index column reads `Lesson`, and `Seven pieces` about one
+# whose column reads `Announcement`, are both invisible to any noun match that is not a roster
+# somebody edits. A genre breakdown makes it worse: `three announcements, one magazine piece` is
+# TRUE of a room holding seven members, so a value check against the member count refuses honest
+# prose. The form refuses both without reading either.
+#
+# WHO IS READ: a declared index's own table rows, and only where the row LINKS another declared
+# index's room door. Both sides opt in, which is what keeps this off English. Measured across the
+# five declared indexes standing: three rows link a declared room and spell a cardinal, and TWO are
+# the class. Widened to every living page the same rule reads 91 rows tree-wide and 10 on this
+# shelf, of which the same two are the class -- so the narrow door is the one that earns its keep.
+#
+# WHAT A COUNT IS HERE, and the two exclusions are each a measured false refusal rather than a
+# guess. A cardinal followed by a PLURAL noun, read case-blind, OUTSIDE every link text on the row:
+#
+#   `one room deep` passes -- a singular noun after a cardinal is a DEPTH or a manner, never a
+#   census of more than one thing, and the wiki row on the front door says exactly this.
+#   A cardinal inside link text passes -- `[Eighteen times, two agents did the same job](...)` is a
+#   PIECE'S TITLE quoted in a cell, and the row is naming it rather than counting anything.
+#
+# The exactly-one case (`one page stands`) reads singular and walks free here; the title reading
+# holds it on the page's own front, which is where a room of one announces itself.
+#
+# THE NAMED REPAIR is the one this shelf has taken four times: move the count into the table the
+# member walk at the top of this file reads against the room on disk every lap, or say the shape
+# without the number -- `reading walks`, `announcements, a magazine piece, a public projection`.
+: > "$work/rowcounts.txt"
+awk '{ print $1 }' "$work/declared.txt" | xargs awk -v DECL="$work/declared.txt" '
+  function fold(p,   n, part, i, top, out, s) {
+    n = split(p, part, "/")
+    top = 0
+    for (i = 1; i <= n; i++) {
+      if (part[i] == "" || part[i] == ".") continue
+      if (part[i] == "..") { if (top > 0) top--; continue }
+      out[++top] = part[i]
+    }
+    s = ""
+    for (i = 1; i <= top; i++) s = s (i > 1 ? "/" : "") out[i]
+    return s
+  }
+  BEGIN {
+    while ((getline line < DECL) > 0) { split(line, f, " "); indexpage[f[1]] = 1 }
+    close(DECL)
+  }
+  FNR == 1 { dir = FILENAME; if (!sub(/\/[^\/]*$/, "/", dir)) dir = "" }
+  # a table row whose first cell opens a link -- the shape every index here writes
+  /^\| *\[/ {
+    named = ""
+    rest = $0
+    while (match(rest, /\]\([^)]+\)/)) {
+      target = substr(rest, RSTART + 2, RLENGTH - 3)
+      rest = substr(rest, RSTART + RLENGTH)
+      sub(/#.*$/, "", target)
+      if (target ~ /^[A-Za-z][A-Za-z0-9+.-]*:/) continue
+      probe = fold(substr(target, 1, 1) == "/" ? substr(target, 2) : dir target)
+      if (probe == FILENAME) continue
+      if (probe in indexpage) { named = probe; break }
+    }
+    if (named == "") next
+    # every link text and target leaves, so a cardinal inside a quoted title is not a count
+    bare = $0
+    while (match(bare, /\[[^]]*\]\([^)]*\)/)) \
+      bare = substr(bare, 1, RSTART - 1) " LINK " substr(bare, RSTART + RLENGTH)
+    if (tolower(bare) !~ /(^|[^a-z0-9-])(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|[0-9]+) +[a-z]+s([^a-z]|$)/) next
+    printf "%s:%d: the row for %s spells a count of it -- move the count into the table that room keeps\n", \
+      FILENAME, FNR, named
+  }' > "$work/rowcounts.txt"
+row_count_claimed=$(wc -l < "$work/rowcounts.txt" | tr -d ' ')
+echo "row_count_claimed=$row_count_claimed"
+
 [ "$unlisted" -eq 0 ] || sed 's/^/unlisted: /' "$work/unlisted.txt"
 [ "$rooms_missing" -eq 0 ] || sed 's/^/room_missing: /' "$work/rooms_missing.txt"
 [ "$rooms_oversize" -eq 0 ] || sed 's/^/room_oversize: /' "$work/rooms_oversize.txt"
@@ -578,10 +664,12 @@ echo "section_count_disagrees=$section_count_disagrees"
 [ "$generated_count_disagrees" -eq 0 ] || sed 's/^/generated_count: /' "$work/gencounts.txt"
 [ "$title_count_claimed" -eq 0 ] || sed 's/^/title_count: /' "$work/titlecounts.txt"
 [ "$section_count_disagrees" -eq 0 ] || sed 's/^/section_count: /' "$work/sectioncounts.txt"
+[ "$row_count_claimed" -eq 0 ] || sed 's/^/row_count: /' "$work/rowcounts.txt"
 
 if [ "$unlisted" -eq 0 ] && [ "$rooms_missing" -eq 0 ] && [ "$rooms_oversize" -eq 0 ] \
    && [ "$doors_missing" -eq 0 ] && [ "$generated_count_disagrees" -eq 0 ] \
    && [ "$title_count_claimed" -eq 0 ] && [ "$section_count_disagrees" -eq 0 ] \
+   && [ "$row_count_claimed" -eq 0 ] \
    && [ "$stamp_disagrees" -eq 0 ] && [ "$unbacked" -eq 0 ]; then
   echo "verdict=ok"
 else

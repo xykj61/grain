@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `7a89394ab7` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `c091f3533b` -- this work commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
@@ -63,7 +63,6 @@ and RISC-V callers each stopped honestly at their absent emulator and printed GR
 roster read 277 green, 2 red, and 2 custody-gated. `remember_git_nib` closes in this landing;
 `tally_roster` and `tool_letter_room` remain separate peer reds outside this recovery;
 `ratchet_slack` closed in the Bakery landing above.
-
 **GRASS -- THE NIB KEPT NINE HEX DIGITS WHERE THE WITNESS REQUIRES TEN.**
 **EARTH BREATHES IN** (row 4, N=4724): read the mark on its face before explaining it.
 The current-head cold pass ran **279** guards: **275 green, 2 red, 2 custody-gated**, with
@@ -345,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `7a89394ab7`.
+**Git nib:** `c091f3533b`.
 
 ### Incense -- product captain
 

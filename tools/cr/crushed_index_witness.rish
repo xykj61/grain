@@ -85,6 +85,29 @@
 # reads zero when lifted; the elder title restored reads `title_count_claimed=1` naming the page and
 # its repair, and zero when the count moves out. `declared_indexes` 4 -> 5, `index_members` 38 -> 46.
 #
+# AND THE TITLE READING'S OWN SUBJECT STOOD ONE LINE OUT, closed `20260912.000156`. The title
+# reading above took `# Lessons -- eight walks` off docs-geode/lessons/README.md on `20260911.135729`
+# (commit 423357f27). The SAME COUNT stood the next day in the shelf front door's lessons row --
+# `| lessons/ | Eight walks for a reader meeting computing itself |` -- and beside it the press row
+# spelled `three announcements, one magazine piece, one public projection and one paired telling`
+# over a room of seven. A count does not leave a shelf because one page stopped spelling it; it
+# leaves the one line a guard reads.
+#
+# `row_count_claimed` refuses the FORM on a declared index's row that links ANOTHER declared index's
+# door, and the title reading's reason carries over whole: a count of a room other hands grow is a
+# forecast whatever line it sits on. The value reading was tried first and cannot hold this
+# population -- a row reaches for a SYNONYM of the room's own column noun (`walks` over `Lesson`,
+# `pieces` over `Announcement`), and a genre breakdown is TRUE of a larger room, so a value check
+# refuses honest prose. Both sides opt in, which keeps the reading off English.
+#
+# TWO EXCLUSIONS, each a false refusal actually produced rather than imagined. A cardinal with a
+# SINGULAR noun passes -- the front door's wiki row says `rather than one room deep`, a depth rather
+# than a census. A cardinal inside LINK TEXT passes -- its blog row quotes the piece title `Eighteen
+# times, two agents did the same job`, and the row names that piece rather than counting anything.
+# Measured: over the five declared indexes the rule reads 3 rows and 2 are the class; widened to
+# every living page it reads 91 tree-wide and 10 on this shelf, the same 2. The narrow door is the
+# one that earns its keep. Both mutations are defended by a leg, `control_pass` 58 -> 71.
+#
 # WHY THE OTHER DOOR WAS DECLINED. Widening the title reading to every room door under a deep
 # declaration would hold pages that never claimed to index anything, and the title reading refuses
 # the FORM without reading the value -- so its cost is borne by whoever opted in. Declaring is the
@@ -169,7 +192,7 @@ assert control.out contains "a title count with no numbered sections counts zero
 assert control.out contains "and that page reads ok -- read ok" else "crushed-index: a page outside this reading must leave the tree green"
 assert control.out contains "a trailing number over numbered sections counts zero -- read 0" else "crushed-index: a number at a title's end is an identifier rather than a census, on both count readings alike"
 assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
-assert control.out contains "control_pass=58" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
+assert control.out contains "control_pass=71" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
 assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
 
 # The tree itself, after the pen.
@@ -184,7 +207,8 @@ assert scan.out contains "row_stamp_disagrees=0" else "crushed-index: a row's st
 assert scan.out contains "generated_count_disagrees=0" else "crushed-index: a page spelling a generated index's count must agree with it -- the generator proves its own page and nothing beside it"
 assert scan.out contains "title_count_claimed=0" else "crushed-index: a declared index must not spell a count of its room in its own title -- the count lives in the table, where the member walk reads it against the room on disk"
 assert scan.out contains "section_count_disagrees=0" else "crushed-index: a title spelling a count of its own numbered sections must agree with the sections the page holds"
+assert scan.out contains "row_count_claimed=0" else "crushed-index: a declared index must not spell a count of another declared room in a row about it -- the count lives in the table that room keeps, and a count that leaves one page for another has only moved out of view"
 assert scan.out contains "signature_unbacked=0" else "crushed-index: a GREEN signature must name an instrument that exists"
 assert scan.out contains "verdict=ok" else "crushed-index: the scan must reach its own verdict"
 
-say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, every GREEN signature names something real, no declared index carries a count inside its own name, and every title counting its own numbered sections agrees with them."
+say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, every spelled count of a generated index agrees with it, every GREEN signature names something real, no declared index carries a count inside its own name or inside a row it writes about another declared room, and every title counting its own numbered sections agrees with them."
