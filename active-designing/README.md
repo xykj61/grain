@@ -11,6 +11,8 @@
 > reference to any of them is **resolved** rather than hunted --
 > `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 
+**Current product contract:** [`20260912-201126_the-receipt-you-can-read-contract.md`](20260912-201126_the-receipt-you-can-read-contract.md) fixes one synthetic receipt, its four public types, module residences, eight acceptance cases, and the falsifier that keeps Linengrow and Dimeroll distinct.
+
 
 **Language:** EN
 **Last updated:** 2026-09-07 (`20260907.015907` -- the room at the door named: a brief here carries its two-rooms token in its Status line, where this door had stayed quiet while supplying 31 of the doorway's 44 unnamed pages; elder refresh `20260827.173952`, coverage stated honestly against a 94-document room)
