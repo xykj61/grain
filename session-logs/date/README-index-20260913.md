@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.052357` | [the fire row held the review gate](20260913/20260913-052357_the-fire-row-held-the-review-gate.kyri) | seventeen parks audited; receipt review gate held |
 | `20260913.035758` | [the finished recovery found its shelf](20260913/20260913-035758_the-finished-recovery-found-its-shelf.kyri) | two finished incense records restored and proven |
 | `20260913.034044` | [the gate kept its word](20260913/20260913-034044_the-gate-kept-its-word.kyri) | cold roster 279/1; receipt review and REDS %626 hold |
 | `20260913.032543` | [the boundary held at the pause](20260913/20260913-032543_the-boundary-held-at-the-pause.kyri) | Recovery boxes preserved; cold roster 280/0 |
