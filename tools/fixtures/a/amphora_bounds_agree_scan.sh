@@ -98,7 +98,7 @@ echo "root=$ROOT"
 # the seated one both answer three, so the widening lowers nothing today and
 # holds the door for what lands next.
 discovered_names() {
-  rg -n --no-heading -g '*.rye' \
+  grep -R -n -E --include='*.rye' \
     '^(pub )?const [a-z_][a-z0-9_]*: u[0-9]+ = [0-9]+;' "$ROOT" 2>/dev/null \
     | grep -Ev '^[^:]+:[0-9]+:[[:space:]]*//' \
     | sed -E 's|^([^:]+):[0-9]+:(pub )?const ([a-z_][a-z0-9_]*):.*|\3 \1|' \
@@ -128,7 +128,7 @@ echo "same_name_unseated=${UNSEATED:-none}"
 collect_name() {
   name=$1
   out=$2
-  rg -n --no-heading -g '*.rye' \
+  grep -R -n -E --include='*.rye' \
     "^(pub )?const ${name}: (u[0-9]+) = ([0-9]+);" "$ROOT" 2>/dev/null \
     | grep -Ev '^[^:]+:[0-9]+:[[:space:]]*//' \
     >"$out" || true
@@ -152,7 +152,7 @@ partner_value() {
     return 0
   fi
   # Single-file rg prints line:text (no path). Emit type=value only.
-  rg --no-heading -N \
+  grep -E -h \
     "^(pub )?const ${name}: (u[0-9]+) = ([0-9]+);" "$cand" 2>/dev/null \
     | grep -Ev '^[[:space:]]*//' \
     | head -n1 \
@@ -360,7 +360,7 @@ done
 # Declared couples -- parse `/// couples: module.name` then the next const.
 # Discovers marker count; does not hardcode how many couplings exist.
 COUPLE_HITS=$(mktemp)
-rg -n --no-heading -g '*.rye' '/// couples: ([a-z0-9_]+)\.([a-z0-9_]+)' "$ROOT" 2>/dev/null \
+grep -R -n -E --include='*.rye' '/// couples: ([a-z0-9_]+)\.([a-z0-9_]+)' "$ROOT" 2>/dev/null \
   >"$COUPLE_HITS" || true
 COUPLE_N=$(wc -l <"$COUPLE_HITS" | tr -d ' ')
 echo "couples_declarations=${COUPLE_N}"
@@ -449,7 +449,7 @@ rm -f "$COUPLE_HITS"
 # The marker asserts an ORDER: this const must be >= the partner it names.
 # Discovers marker count; hardcodes no expectation of how many exist.
 COVER_HITS=$(mktemp)
-rg -n --no-heading -g '*.rye' '/// covers: ([a-z0-9_]+)\.([a-z0-9_]+)' "$ROOT" 2>/dev/null \
+grep -R -n -E --include='*.rye' '/// covers: ([a-z0-9_]+)\.([a-z0-9_]+)' "$ROOT" 2>/dev/null \
   >"$COVER_HITS" || true
 COVER_N=$(wc -l <"$COVER_HITS" | tr -d ' ')
 echo "covers_declarations=${COVER_N}"

@@ -11,12 +11,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260912.194204` | [the parked contract returned to the live card](20260912/20260912-194204_the-parked-contract-returned-to-the-live-card.kyri) | Glow contract recovered; fleet pause held |
+| `20260912.194819` | [the parked boundary came home](20260912/20260912-194819_the-parked-boundary-came-home.kyri) | recovered Amphora's false-empty repair from the parked lap |
+| `20260912.194204` | [parked contract returned](20260912/20260912-194204_the-parked-contract-returned-to-the-live-card.kyri) | Glow contract recovered; fleet pause held |
 | `20260912.191028` | [the two parked records came home](20260912/20260912-191028_the-two-parked-records-came-home.kyri) | Rye door and model-boundary records landed whole |
 | `20260912.190713` | [the paused ship held at the card](20260912/20260912-190713_the-paused-ship-held-at-the-card.kyri) | the newer fleet pause held ahead of another stash recovery |
 | `20260912.190653` | [the contract came home on current metal](20260912/20260912-190653_the-contract-came-home-on-current-metal.kyri) | parked Glow contract restored and re-proved |
 | `20260912.185104` | [the parked lint census ran again](20260912/20260912-185104_the-parked-lint-census-ran-again.kyri) | a 46-leg lint reader recovered across its heading rename |
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
+| `20260912.182001` | [the empty reading that was not empty](20260912/20260912-182001_the-empty-reading_that_was_not_empty.kyri) | a missing search command read six families as zero |
 | `20260912.181026` | [the refusal named the path again](20260912/20260912-181026_the-refusal-named-the-path-again.kyri) | recovered the runner repair that named a moved tree |
 | `20260912.173722` | [default and boundary](20260912/20260912-173722_the-default-and-the-boundary-read-on-this-pier.kyri) | model control and Amphora fallback read true |
 | `20260912.173424` | [the parked door lands whole](20260912/20260912-173424_the-parked-door-lands-whole.kyri) | recovered Rye module-door wall: 45 legs, zero silent |
@@ -24,8 +26,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.163124` | [the parked door came home](20260912/20260912-163124_the-parked-door-came-home.kyri) | recovered a finished docs-geode lap from the dead-letter box |
 | `20260912.162301` | [the binary that stays with its reading](20260912/20260912-162301_the-binary-that-stays-with-its-reading.kyri) | 18 Amphora guards moved builds into per-run pens |
 | `20260912.162152` | [the recovered fold landed whole](20260912/20260912-162152_the-recovered-fold-landed-whole.kyri) | the parked torus instrument was restored and re-proved before send |
-| `20260912.161250` | [model default, runtime boundary](20260912/20260912-161250_the-model-default-and-the-runtime-boundary.kyri) | gpt-5.6-sol configured; runtime verified apart |
 | `20260912.161403` | [the default and the two parked logs](20260912/20260912-161403_the-default-and-the-two-parked-logs.kyri) | gpt-5.6-sol selected; a finished Glow round recovered |
+| `20260912.161250` | [model default, runtime boundary](20260912/20260912-161250_the-model-default-and-the-runtime-boundary.kyri) | gpt-5.6-sol configured; runtime verified apart |
 | `20260912.153216` | [the fold recovered on today's tree](20260912/20260912-153216_the-fold-recovered-on-todays-tree.kyri) | the parked 28-leg torus reading held on today's bytes |
 | `20260912.150836` | [Codex default provenance](20260912/20260912-150836_the-fleet-default-carried-its-provenance.kyri) | the selected model reaches the loop and both rule doors |
 | `20260912.150623` | [crashed wave called seven ships](20260912/20260912-150623_the-crashed-wave-called-seven-ships.kyri) | one clean root crossed; seven sail; Incense waits |
