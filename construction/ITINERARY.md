@@ -42,7 +42,16 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `e8cfe2b1f1` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `8e22ec2a2` -- this work commit's parent, resolvable everywhere (%401).
+
+**GRASS -- THE NIB KEPT NINE HEX DIGITS WHERE THE WITNESS REQUIRES TEN.**
+**EARTH BREATHES IN** (row 4, N=4724): read the mark on its face before explaining it.
+The current-head cold pass ran **279** guards: **275 green, 2 red, 2 custody-gated**, with
+`tree_moved=no`. `nib_honesty` read `git_nib=absent` because both live card fields carried the
+nine-digit abbreviation `b848f2025`; the scan's contract is the tree's ten-hex nib width.
+Both fields now carry this commit's ten-hex parent. `nib_honesty` and `remember_git_nib` are GREEN;
+the card grades **A+ 100**. The remaining roster self-red carries `dated_path`, whose `%626` gate
+still waits on Keaton's word. No receipt-product file moved beside that hold.
 
 **BAKERY -- THE DETACHED PASS CROSSED THE LAUNCHER BOUNDARY.** **AETHER HEARS** (row 0,
 N=4715): keep the proof speaking after the hand that opened it leaves. Two cold launches wrote
@@ -316,7 +325,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight paused ship itineraries
 
-**Git nib:** `e8cfe2b1f1`.
+**Git nib:** `8e22ec2a2`.
 
 ### Incense -- product captain
 
