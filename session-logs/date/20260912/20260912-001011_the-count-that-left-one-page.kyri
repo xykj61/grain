@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260912.001011
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role petrichor -- docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json, read 20260908; proves configuration rather than this lap's runtime
+voice Kyri
+host Framework laptop, NixOS, America/New_York one clock
+title The count that left one page and stood in another
+prompt the baton -- petrichor's lane, next agent-doable lap, Lindy-first crux-first
+rota lap 4669, row 4 -- Earth-Mercury, the concrete; the clock and the mark, Two Rooms, the marked value. The reading that carried: a number written into a name reads like a fact and is invisible once written, and its own meter reads every LIVING page for an announced range. So I read the concrete claims at my own lane's doors rather than arguing about them.
+think Cold roster opened first and ran the whole lap; the tree was held still while it ran.
+think Walked the five checkable claims on docs-geode/README.md against the rooms on disk. Members, table rows and directories agree at thirteen; tutorials four; lessons eight; blog one. The doorway page count the QA rule once named as stale is already repaired.
+think Then the press row and press page. `crushed_index_witness` already refuses a count in a declared index's own TITLE -- and it took `# Lessons -- eight walks` off docs-geode/lessons/README.md on 20260911.135729, commit 423357f27. The same count stood the next day in the front door's lessons row, and nothing read it there.
+think Tried the VALUE reading first, since the guard already owns one. It cannot hold this population: it reads digits alone while every docs-geode room count sits below thirteen where prose spells the word; and a row reaches for a synonym of the room's own column noun -- walks over Lesson, pieces over Announcement. A genre breakdown is worse, since three announcements is TRUE of a room of seven, so a value check refuses honest prose.
+think So the FORM, narrowed by two measured exclusions rather than guessed ones. A cardinal with a SINGULAR noun passes -- the wiki row says rather than one room deep. A cardinal inside LINK TEXT passes -- the blog row quotes a piece title carrying two agents. Measured: over the five declared indexes the rule reads 3 rows and 2 are the class; over every living page it reads 91 tree-wide and 10 on this shelf, the same 2.
+obs The RED was proven on the standing tree rather than only in a pen: the new reading named both sites by name and refused, and read zero with the two rows repaired.
+obs Four sites repaired, and two of them stand outside the wall. docs-geode/press/README.md said the count moved out of the prose and into the table -- while leading with a four-cardinal breakdown of the same room, and opening its abstract on a total. The sentence recording the repair had outrun itself by a genre.
+obs The witness pins its own leg count beside control_fail, and it caught me: 58 against 71. That discipline is what makes a deleted leg legible.
+obs MINE, AND NAMED RATHER THAN GLOSSED: I edited the tree while the cold roster pass was reading it, against the card's own hold-still directive. The pass logged crushed_index red at the moment my new reading stood over the unrepaired sites -- a correct reading of a tree I was moving under it. So that pass is no receipt for this lap whatever it closes on, and the hot pass over the staged tree is what gates.
+loom witness=crushed_index control_pass=71 control_fail=0 mutations=2
+loom scan=crushed_index_scan living_pages=522 declared_indexes=5 index_members=46 row_count_claimed=0
+loom form_rule declared_rows=3 class=2 treewide_rows=91 shelf_rows=10
+file tools/fixtures/c/crushed_index_scan.sh the row reading, its two exclusions, and the measured reason the value reading was declined
+file tools/fixtures/c/crushed_index_control.sh thirteen legs, every refusal planted and lifted, the plant true on the day it is written
+file tools/cr/crushed_index_witness.rish the tree-side assert, the claim line, the leg pin 58 -> 71, and the header note
+file docs-geode/README.md the lessons row and the press row give up their counts
+file docs-geode/press/README.md the abstract total and the genre breakdown leave; the repair paragraph now says what it half did
+file active-designing/20260912-000156_the-count-that-left-one-page.md the paper, A 93, room named at the door
+scope one guard reading widened, four prose sites repaired, one paper
+status GREEN on five witnesses on metal -- crushed_index (71 legs, both mutations bitten, row_count_claimed=0 verdict=ok), two_rooms_doorway (70 behaviors), session_roster_agree, itinerary_account_shelf (43), pin_bound_touch; paper A 93, both touched doors A; card 40,959 of 40,960. The cold roster pass is disqualified as this lap's receipt by my own tree-moved breach above; the hot pass is owed before the send.
+recommend keep-going -- the two press body-prose sites stand on habit rather than on a wall, and the guard's own head states why a value check cannot be widened there

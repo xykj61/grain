@@ -11,8 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri) | parked row-count proof restored and green on current HEAD |
 | `20260913.161143` | [the receipt card found its own boundary](20260913/20260913-161143_the-receipt-card-found-its-own-boundary.kyri) | fixed frame and semantic parity await macOS proof |
 | `20260913.155145` | [the parked reader rejoined the tree](20260913/20260913-155145_the-parked-reader-rejoined-the-tree.kyri) | restored two Glow-lap products; ELF reader green twice |
+| `20260913.154759` | [the parked count came home](20260913/20260913-154759_the-parked-count-came-home.kyri) | finished docs-geode round restored; peer repair left with its claimant |
 | `20260913.153444` | [the report stopped dressing as a ceiling](20260913/20260913-153444_the-report-stopped-dressing-as-a-ceiling.kyri) | dated-path report renamed; ratchet 99/99 |
 | `20260913.145310` | [the parked log rejoined its shelf](20260913/20260913-145310_the_parked_log_rejoined_its_shelf.kyri) | recovered 203746; closed shelf and rosters agree at 63 |
 | `20260913.144455` | [the first receipt-offer spine](20260913/20260913-144455_the-first-receipt-offer-spine.kyri) | Tally bounds and deterministic Mantra replay run GREEN |
