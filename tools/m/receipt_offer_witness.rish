@@ -1,0 +1,29 @@
+# tools/m/receipt_offer_witness.rish -- bounded admission and deterministic replay for one receipt offer.
+#
+# This runner builds the Rye witness in a unique pen, then requires its complete
+# GREEN sentence. The Rye witness walks every declaration in the admission module,
+# so a public function cannot escape semantic analysis merely because this fixture
+# does not call it.
+
+let zig = "vendor/zig-toolchain/zig"
+let mk = run ["sh" "-c" "mktemp -d"]
+say mk.err
+assert mk.ok else "receipt-offer: the build pen could not be opened"
+let pen = trim mk.out
+let bin = "${pen}/receipt_offer_witness"
+
+say "receipt-offer: Language EN -- one accepted synthetic offer enters a bounded log and replays deterministically."
+say "receipt-offer: Style Gauge, Meter -- each refusal is exercised before the durable slot changes."
+say "receipt-offer: Lens TAME -- explicit ceilings are checked at admission, and the first over-bound append leaves the elder fact still."
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/src/receipt_offer_witness.rye -femit-bin=${bin}"]
+say build.err
+assert build.ok else "receipt-offer: the Rye witness did not build"
+
+let proof = run ["sh" "-c" "${bin} 2>&1"]
+say proof.err
+assert proof.ok else "receipt-offer: the Rye witness exited non-zero"
+assert proof.out contains "GREEN: receipt offer" else "receipt-offer: the witness did not print its complete GREEN claim"
+
+say proof.out
+say "GREEN: receipt-offer runner -- the tracked build compiles every declaration and proves bounded replay on metal."
