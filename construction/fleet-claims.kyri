@@ -65,12 +65,6 @@ stamp 20260913.152951
 epoch 1789327791
 paths amphora/vessel_core.rye tools/am/amphora_receipt_bundle_witness.rish tools/fixtures/a/receipt_offer_fact_v1.kyri construction/standing-equipment.kyri amphora/README.md
 what Seal the accepted synthetic receipt inside an existing Amphora vessel and prove version, authentication, and round-trip refusal edges.
-claim bakery-dated-path-reported-bound
-seat bakery
-stamp 20260913.153006
-epoch 1789327806
-paths tools/fixtures/d/dated_path_scan.sh tools/fixtures/r/ratchet_slack_pairs.txt construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
-what Rename the historical dated-path report so the ratchet census no longer mistakes a deliberately ungated reading for a broken ceiling.
 claim patchouli-tally-receipt-roster
 seat patchouli
 stamp 20260913.171959
@@ -83,3 +77,9 @@ stamp 20260913.173200
 epoch 1789335120
 paths active-designing/20260912-201126_the-receipt-you-can-read-contract.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
 what Record Keaton's accepted bounded synthetic implementation edge on the receipt contract while keeping every unproven acceptance case visibly proposed.
+claim bakery-ryekey-source-mode
+seat bakery
+stamp 20260913.175301
+epoch 1789336381
+paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish rye/README.md construction/ITINERARY.md session-logs/date/README-index-20260913.md
+what Hash every Rye source executable bit into the build receipt and prove root and dependency mode changes both force cache misses.
