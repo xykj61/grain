@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.034044` | [the gate kept its word](20260913/20260913-034044_the-gate-kept-its-word.kyri) | cold roster 279/1; receipt review and REDS %626 hold |
 | `20260913.032543` | [the boundary held at the pause](20260913/20260913-032543_the-boundary-held-at-the-pause.kyri) | Recovery boxes preserved; cold roster 280/0 |
 | `20260913.023823` | [the parked apply contract landed whole](20260913/20260913-023823_the-parked-apply-contract-landed-whole.kyri) | Weave.apply recovered and re-proved; hot roster 263/0 |
 | `20260913.014806` | [the nib wore its full width](20260913/20260913-014806_the-nib-wore-its-full-width.kyri) | nine hex digits became the required ten; both nib guards green |
