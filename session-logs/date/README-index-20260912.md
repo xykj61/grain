@@ -1,7 +1,7 @@
 # session-logs day index -- 20260912
 
 **Language:** EN
-**Status:** Chapter index -- CLOSED at 55 rows, immutable
+**Status:** Chapter index -- CLOSED at 63 rows, immutable
 **Chapter:** `20260912`
 
 Rows for `20260912`, newest first. A session log is written straight to `date/YYYYMMDD/` and its
@@ -24,6 +24,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.211144` | [the parked apply contract crossed](20260912/20260912-211144_the-parked-apply-contract-crossed.kyri) | Weave.apply restored and re-proved before its send |
 | `20260912.210612` | [the dead-letter record came home](20260912/20260912-210612_the-dead-letter-record-came-home.kyri) | one parked record restored; index bound and order repaired |
 | `20260912.204513` | [the parked apply contract landed](20260912/20260912-204513_the-parked-apply-contract-landed.kyri) | Weave.apply now refuses three invalid deletes before mutation |
+| `20260912.203746` | [the live mark held the ship](20260912/20260912-203746_the-live-mark-held-the-ship.kyri) | index red closed; receipt-language pause held |
 | `20260912.200803` | [the first receipt crossed its own boundary](20260912/20260912-200803_the-first-receipt-crossed-its-own-boundary.kyri) | revived holder custody for the first receipt |
 | `20260912.194819` | [the parked boundary came home](20260912/20260912-194819_the-parked-boundary-came-home.kyri) | recovered Amphora's false-empty repair from the parked lap |
 | `20260912.194556` | [the park that had already landed](20260912/20260912-194556_the-park-that-had-already-landed.kyri) | newest copal park reconciled against its landed work |
