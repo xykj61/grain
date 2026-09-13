@@ -1,0 +1,104 @@
+# tools/m/mantra_weave_apply_witness.rish -- what apply does with a diff, and what it refuses.
+#
+# Weave.apply is Mantra's one mutation and was the only public function of the five
+# that no guard owned. merge, annotate, from_v1 and from_v2 each have a witness of
+# their own; apply was proven wherever a lap happened to be standing, which is how
+# the reading below went unread for the module's whole life.
+#
+# THE READING. apply takes one argument from its caller and reads it in two halves.
+# The insert half reads its two bounds at the edge and refuses by name. The delete
+# half stated three conditions of its own in the very same contract paragraph and
+# ASSERTED all three, so a caller handing a stale or hand-built diff met exit 134
+# where the insert half would have handed back an error. Proven on metal 20260912:
+# a second delete of one line, and a delete naming a line the weave never held, each
+# aborted the process.
+#
+# A stale diff is the ORDINARY shape on a branch -- two hands drop one line, and the
+# second delete to arrive finds it gone. That is the case a version store exists for.
+#
+# This guard proves the repair by DOING: it runs the Rye witness beside the module,
+# which presses all five refusals and reads the weave field for field before and
+# after each -- then runs the control, which breaks the contract eight ways in a pen
+# and proves the witness answers every break.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_apply_witness.rye,
+# because Zig refuses an import that escapes the root file's directory.
+#
+# Charter: active-designing/20260905-153729_mantra-was-named-for-the-weave.md.
+# Module: mantra/src/weave.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_apply_witness.rish
+
+# Each captured run reports its own stderr before the assert on it. An assert stops the run,
+# so a reader meeting a refusal should receive the failing command's sentence rather than only
+# this wrapper's -- the swallow `tools/fixtures/s/shim_reason_scan.sh` counts.
+let zig = "vendor/zig-toolchain/zig"
+let mk = run ["sh" "-c" "mktemp -d"]
+say mk.err
+assert mk.ok else "mantra-apply: the build pen could not be opened"
+let pen = trim mk.out
+let bin = "${pen}/weave_apply_witness"
+
+say "mantra-apply: Language EN -- what apply does with a diff, and what it refuses."
+say "mantra-apply: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-apply: Lens TAME -- one caller's argument, read to one standard in both halves."
+
+say "mantra-apply: the module still declares the three delete refusals by name..."
+let law = run ["sh" "-c" "grep -q 'DeleteNamesGoneLine' mantra/src/weave.rye && grep -q 'DeleteNamesNoLine' mantra/src/weave.rye && grep -q 'DeleteNamesOneLineTwice' mantra/src/weave.rye"]
+say law.err
+assert law.ok else "mantra-apply: a named delete refusal left weave.rye"
+
+let seat = run ["sh" "-c" "grep -q 'pub fn apply' mantra/src/weave.rye"]
+say seat.err
+assert seat.ok else "mantra-apply: apply left weave.rye"
+
+say "mantra-apply: building the witness against the real module..."
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_apply_witness.rye -femit-bin=${bin}"]
+say build.err
+assert build.ok else "mantra-apply: weave apply witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+say selftest.err
+assert selftest.ok else "mantra-apply: weave apply witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-apply: weave apply witness not GREEN"
+assert selftest.out contains "three inserts land present" else "mantra-apply: the welcome claim is missing -- without it every refusal could be a weave that never worked"
+assert selftest.out contains "marks one line gone and leaves two" else "mantra-apply: the ordinary delete claim is missing"
+assert selftest.out contains "refused DeleteNamesGoneLine, weave unmoved" else "mantra-apply: the stale-diff refusal is missing -- it is the ordinary shape on a branch and the one that aborted"
+assert selftest.out contains "refused DeleteNamesNoLine, weave unmoved" else "mantra-apply: the unheld-identity refusal is missing"
+assert selftest.out contains "refused DeleteNamesOneLineTwice, weave unmoved" else "mantra-apply: the repeated-target refusal is missing"
+assert selftest.out contains "a corrected diff still applies after three refusals" else "mantra-apply: the claim that a refusal leaves a WORKING weave is missing -- a state reading alone cannot see it"
+assert selftest.out contains "refused whole -- the good target still present" else "mantra-apply: the refusal-before-mutation claim is missing, and it is the only one that can see a named error handed back over a half-applied diff"
+assert selftest.out contains "refused TooManyLines" else "mantra-apply: the insert half's count refusal is missing -- this witness argues that BOTH halves read one standard, so showing one is the same fault one level up"
+assert selftest.out contains "refused CounterPastCeiling" else "mantra-apply: the insert half's counter refusal is missing"
+
+say "mantra-apply: breaking the contract eight ways in a pen, so the witness is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_apply_control.sh"]
+say control.err
+assert control.ok else "mantra-apply: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-apply: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-apply: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "lifted_exit=0" else "mantra-apply: the lifted plant must return the pen to GREEN, which is the pen proving its own innocence"
+# The ordering phase is the one this witness exists for: every refusal kept, every name right,
+# and only the MOMENT the generation rises moved. Naming the phase here is what keeps the plant
+# from being quietly deleted -- a control that stops planting a law reads exactly like a law
+# that holds.
+assert control.out contains "phase=mutation_early" else "mantra-apply: the control must plant the mutation back inside the walk -- a named error handed back over a half-applied diff is worse than the abort it replaced"
+assert control.out contains "phase=gone_misnamed" else "mantra-apply: the control must plant a WRONG error name as well as a missing check -- a refusal proven only by its absence is proven in one direction"
+# A pen prints fail=0 when it is empty too, so the leg count is asserted rather than trusted:
+# deleting a phase reds this guard instead of quietly shrinking it.
+assert control.out contains "legs_expected=9" else "mantra-apply: the control must declare its leg count"
+assert control.out contains "legs_ran=9" else "mantra-apply: the control ran a different number of legs than it declares"
+
+# The closing line is the MODULE'S own, read back rather than transcribed. A wrapper that
+# spells a count keeps a second copy of a number the module already publishes, and the copy
+# goes stale on the lap that adds a claim -- which is exactly what happened to this family's
+# two elder wrappers on `20260912`. The say comes before the assert because an assert stops
+# the run, and a reader meeting a refusal should receive the module's sentence.
+let green = run ["sh" "-c" "${bin} 2>&1 | grep '^GREEN:'"]
+say green.out
+assert green.ok else "mantra-apply: the witness published no GREEN line to read back"
+
+let cleanup = run ["sh" "-c" "rm -rf ${pen}"]
+say cleanup.err
+assert cleanup.ok else "mantra-apply: the build pen could not be removed"

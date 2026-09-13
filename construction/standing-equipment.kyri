@@ -2410,6 +2410,11 @@ path tools/m/mantra_weave_annotate_witness.rish
 tier lap
 seated 20260906.115458
 
+guard mantra_weave_apply
+path tools/m/mantra_weave_apply_witness.rish
+tier lap
+seated 20260912.041507
+
 # The elder record, lifted rather than converted. `mantra/src/main.rye` writes a three-field
 # `mantra-weave-v1` blob and this module widened past it, so the open question (REDS %589) was
 # whether closing that gap breaks the record already on disk. It does not: the record was

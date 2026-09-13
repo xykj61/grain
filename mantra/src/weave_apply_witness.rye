@@ -1,0 +1,301 @@
+//! mantra/src/weave_apply_witness.rye -- what `apply` does with a diff, and what it refuses.
+//!
+//!   rye build mantra/src/weave_apply_witness.rye -femit-bin=mantra/bin/weave_apply_witness
+//!   mantra/bin/weave_apply_witness
+//!
+//! The claim under test is `Weave.apply` in `mantra/src/weave.rye` -- the
+//! module's one mutation, and the only public function of the five that no
+//! guard owned. `merge`, `annotate`, `from_v1` and `from_v2` each have a
+//! witness of their own; `apply` was proven wherever a lap happened to be
+//! standing, which is how the reading below went unread for the module's
+//! whole life.
+//!
+//! WHAT WENT UNREAD. `apply` takes one argument from its caller and reads it
+//! in two halves. The INSERT half reads two bounds at the edge and refuses by
+//! name -- `TooManyLines` on the count, `CounterPastCeiling` on each counter.
+//! The DELETE half stated three conditions of its own in the very same
+//! contract paragraph and ASSERTED all three, so a caller handing a stale or
+//! hand-built diff met `exit 134` where the insert half would have handed back
+//! an error. One argument, one caller, two readings of whose data it is.
+//!
+//! A `Diff` is the caller's. `diff.rye` builds one against a weave's `current`
+//! view, so a diff applied to the weave it was read from meets none of the
+//! three; what meets them is a STALE diff, which is the ordinary shape on a
+//! branch -- two hands drop one line, and the second delete to arrive finds it
+//! gone. That is the case a version store exists for, and it was the case that
+//! aborted the process.
+//!
+//! Claims, each shown from the side that matters:
+//!   1. An insert-only apply lands every line, present, at rising positions --
+//!      the welcome leg, without which every refusal below could be a weave
+//!      that never worked.
+//!   2. A delete by identity marks its line gone and leaves every other alone.
+//!   3. A delete naming a line already gone is refused `DeleteNamesGoneLine`.
+//!   4. A delete naming a line the weave never held is refused
+//!      `DeleteNamesNoLine`.
+//!   5. Two deletes naming one line are refused `DeleteNamesOneLineTwice`.
+//!   6. A REFUSED apply moves nothing. Each of the three refusals is pressed
+//!      against a weave read field for field before and after, because a named
+//!      error handed back over a half-applied diff is worse than the abort it
+//!      replaced -- the caller believes nothing happened.
+//!   7. A refused apply's diff, corrected, still applies -- so the refusal
+//!      leaves a weave that works rather than one that merely looks unchanged.
+//!   8. The insert half's own refusals still stand by name, pressed here
+//!      beside the delete half's so the two halves are read together.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+
+// Every declaration of `weave.rye`, referenced at comptime so each body is forced through
+// semantic analysis. Without it Zig analyses only what this witness happens to CALL, and a
+// public function carrying a type error rides through the build while the witness prints GREEN.
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+}
+
+const witness_version = "20260912.041507";
+
+/// The hand every claim here edits from. One site throughout: this witness
+/// argues about a diff rather than about branching, and a second site would
+/// put a second question in every plant.
+const site_here: u32 = 1;
+
+/// A site no plant ever edits from, used to name an identity the weave cannot
+/// hold. Named rather than written inline, so the reason it differs is read
+/// once instead of guessed at each use.
+const site_absent: u32 = 9;
+
+/// The largest number of texts a plant holds here. Named because every plant
+/// is meant to be read: a proof whose input outgrows a reader stops proving
+/// anything that reader can check.
+const max_planted_lines: u32 = 8;
+
+/// A fresh weave holding exactly these lines, at positions 0..texts.len.
+fn planted(garden: std.mem.Allocator, texts: []const []const u8) !weave.Weave {
+    // invariant: a plant stays small enough to read, since this witness argues
+    // a law by showing every line it touches
+    assert(texts.len <= max_planted_lines);
+    var w = weave.Weave.empty();
+    try w.apply(garden, .{ .site = site_here, .inserts = texts, .deletes = &[_]weave.LineId{} });
+    // invariant: the plant holds exactly the lines it was handed, so a later
+    // count reads the diff's work rather than the plant's
+    assert(w.lines.items.len == texts.len);
+    return w;
+}
+
+/// A weave's whole state as three numbers and its lines' generations, read so
+/// a refusal can be proven to have moved nothing.
+///
+/// The generations are what a delete writes, so a reading that skipped them
+/// would pass over the one field the refusals guard. The two counters are what
+/// an insert writes. Together they are every field `apply` can reach.
+const Reading = struct {
+    lines: u32,
+    next_pos: u32,
+    next_run: u32,
+    gen_sum: u64,
+
+    /// Whether two readings describe one state.
+    fn same(self: Reading, other: Reading) bool {
+        return self.lines == other.lines and
+            self.next_pos == other.next_pos and
+            self.next_run == other.next_run and
+            self.gen_sum == other.gen_sum;
+    }
+};
+
+/// Read a weave's whole mutable state.
+///
+/// `gen_sum` is a u64 over u32 generations so the sum of a full weave cannot
+/// itself overflow -- 1,048,576 lines at any u32 generation stay inside it,
+/// which is the module's own ceiling said in this witness's units.
+fn read(w: *const weave.Weave) Reading {
+    // invariant: the weave stands inside its module's own ceiling, which is what
+    // makes the cast below a real number rather than a truncation
+    assert(w.lines.items.len <= weave.max_weave_lines);
+    var sum: u64 = 0;
+    for (w.lines.items) |line| sum += line.gen;
+    // usize lives at the inherited-std seam alone: a slice counts in usize, and the
+    // ceiling asserted above is what makes the cast safe.
+    const held: u32 = @intCast(w.lines.items.len);
+    // invariant: a weave with lines carries a generation sum above zero, since zero
+    // is reserved and every line starts at one
+    assert(held == 0 or sum > 0);
+    return .{ .lines = held, .next_pos = w.next_pos, .next_run = w.next_run, .gen_sum = sum };
+}
+
+/// Claim 1: an insert-only apply lands every line, present, at rising positions.
+fn prove_inserts_land(garden: std.mem.Allocator) !void {
+    var w = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
+    const live = try w.current(garden);
+    // invariant: every inserted line is present, since parity is the tombstone and
+    // an insert enters at generation one
+    assert(live.len == 3);
+    for (live, 0..) |line, i| {
+        assert(line.gen == 1);
+        assert(line.site == site_here);
+        if (i + 1 < live.len) assert(line.pos < live[i + 1].pos);
+    }
+    print("mantra-apply: three inserts land present, at rising positions -- GREEN\n", .{});
+}
+
+/// Claim 2: a delete by identity marks its line gone and leaves the rest alone.
+fn prove_delete_marks_gone(garden: std.mem.Allocator) !void {
+    var w = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
+    const gone = [_]weave.LineId{.{ .pos = 1, .site = site_here }};
+    try w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &gone });
+    const live = try w.current(garden);
+    // invariant: the weave keeps every line it ever held, since parity is the
+    // tombstone and a delete removes nothing from the backing list
+    assert(w.lines.items.len == 3);
+    assert(live.len == 2);
+    assert(std.mem.eql(u8, live[0].text, "alpha"));
+    assert(std.mem.eql(u8, live[1].text, "gamma"));
+    print("mantra-apply: a delete by identity marks one line gone and leaves two -- GREEN\n", .{});
+}
+
+/// Claims 3 through 6: each delete refusal, by name, over a weave read field
+/// for field before and after.
+///
+/// The before-and-after reading is the load-bearing half. A named error is an
+/// improvement on an abort only if the call it refuses did nothing -- a caller
+/// handed `DeleteNamesGoneLine` over a weave with two of three deletes already
+/// applied has been told less than the abort told it. So each leg presses the
+/// refusal and then asserts the state is the one it read a line earlier.
+fn prove_delete_refusals(garden: std.mem.Allocator) !void {
+    var w = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
+    const first = [_]weave.LineId{.{ .pos = 0, .site = site_here }};
+    try w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &first });
+    const before = read(&w);
+
+    // Claim 3 -- the line is already gone. This is the STALE DIFF, the ordinary
+    // shape on a branch, and the one that aborted until 20260912.
+    if (w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &first })) |_| {
+        unreachable; // a second delete of one line must refuse
+    } else |err| {
+        assert(err == weave.WeaveError.DeleteNamesGoneLine);
+    }
+    assert(read(&w).same(before));
+    print("mantra-apply: a delete of a line already gone refused DeleteNamesGoneLine, weave unmoved -- GREEN\n", .{});
+
+    // Claim 4 -- the weave never held the identity. A position it never issued
+    // and a site it never saw are two ways in, and both are one refusal.
+    const stranger = [_]weave.LineId{.{ .pos = 1, .site = site_absent }};
+    if (w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &stranger })) |_| {
+        unreachable; // a delete naming no held line must refuse
+    } else |err| {
+        assert(err == weave.WeaveError.DeleteNamesNoLine);
+    }
+    assert(read(&w).same(before));
+    print("mantra-apply: a delete naming no held line refused DeleteNamesNoLine, weave unmoved -- GREEN\n", .{});
+
+    // Claim 5 -- two targets, one line. `diff` cannot build this; a hand or a
+    // concatenation can, and bumping one generation twice would carry a deleted
+    // line from even back to odd and resurrect it.
+    const twinned = [_]weave.LineId{
+        .{ .pos = 2, .site = site_here },
+        .{ .pos = 2, .site = site_here },
+    };
+    if (w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &twinned })) |_| {
+        unreachable; // two deletes naming one line must refuse
+    } else |err| {
+        assert(err == weave.WeaveError.DeleteNamesOneLineTwice);
+    }
+    assert(read(&w).same(before));
+    print("mantra-apply: two deletes naming one line refused DeleteNamesOneLineTwice, weave unmoved -- GREEN\n", .{});
+
+    // Claim 6, the half a state reading cannot see: a refusal must leave the
+    // weave WORKING rather than merely unchanged in its numbers. The diff that
+    // was refused is corrected and applied, and the line it names goes.
+    const good = [_]weave.LineId{.{ .pos = 2, .site = site_here }};
+    try w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &good });
+    const live = try w.current(garden);
+    assert(live.len == 1);
+    assert(std.mem.eql(u8, live[0].text, "beta"));
+    print("mantra-apply: a corrected diff still applies after three refusals -- GREEN\n", .{});
+}
+
+/// Claim 7: a delete block refuses as a whole, leaving no part of itself behind.
+///
+/// The three refusals above each press ONE target. This presses a block whose
+/// first target is good and whose second is not, which is the shape a partial
+/// apply would show and a whole one cannot: the good target's line must still
+/// be present after the refusal.
+fn prove_block_refuses_whole(garden: std.mem.Allocator) !void {
+    var w = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
+    const before = read(&w);
+    const mixed = [_]weave.LineId{
+        .{ .pos = 0, .site = site_here },
+        .{ .pos = 7, .site = site_here },
+    };
+    if (w.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &mixed })) |_| {
+        unreachable; // a block holding one bad target must refuse whole
+    } else |err| {
+        assert(err == weave.WeaveError.DeleteNamesNoLine);
+    }
+    assert(read(&w).same(before));
+    const live = try w.current(garden);
+    // invariant: the good target of the refused block is still present, which is
+    // what tells a whole refusal from one that applied what it could
+    assert(live.len == 3);
+    assert(std.mem.eql(u8, live[0].text, "alpha"));
+    print("mantra-apply: a block holding one bad target refused whole -- the good target still present -- GREEN\n", .{});
+}
+
+/// Claim 8: the insert half's own refusals, pressed beside the delete half's.
+///
+/// They are proven elsewhere too, and they are pressed HERE because this
+/// witness's whole subject is that the two halves of one function read one
+/// caller's argument to one standard. A witness arguing that and showing only
+/// half of it would be the same fault one level up.
+fn prove_insert_refusals(garden: std.mem.Allocator) !void {
+    var w = try planted(garden, &[_][]const u8{"alpha"});
+
+    // The count: a weave plus its diff's inserts past the module's ceiling.
+    const flood = try garden.alloc([]const u8, weave.max_weave_lines);
+    defer garden.free(flood);
+    for (flood) |*slot| slot.* = "x";
+    if (w.apply(garden, .{ .site = site_here, .inserts = flood, .deletes = &[_]weave.LineId{} })) |_| {
+        unreachable; // a weave past max_weave_lines must refuse
+    } else |err| {
+        assert(err == weave.WeaveError.TooManyLines);
+    }
+    print("mantra-apply: inserts carrying the weave past max_weave_lines refused TooManyLines -- GREEN\n", .{});
+
+    // The counter: a weave whose position counter stands at the ceiling has room
+    // for no further identity, whatever its line count says.
+    var spent = try planted(garden, &[_][]const u8{"alpha"});
+    spent.next_pos = weave.max_weave_lines;
+    if (spent.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{"beta"}, .deletes = &[_]weave.LineId{} })) |_| {
+        unreachable; // an insert on a spent counter must refuse
+    } else |err| {
+        assert(err == weave.WeaveError.CounterPastCeiling);
+    }
+    print("mantra-apply: an insert on a counter at the ceiling refused CounterPastCeiling -- GREEN\n", .{});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    print("mantra-apply: Language EN -- what apply does with a diff, and what it refuses.\n", .{});
+    print("mantra-apply: Style Gauge, Meter -- every claim is a run, and every refusal is named.\n", .{});
+
+    try prove_inserts_land(garden);
+    try prove_delete_marks_gone(garden);
+    try prove_delete_refusals(garden);
+    try prove_block_refuses_whole(garden);
+    try prove_insert_refusals(garden);
+
+    print("mantra-apply: version {s}\n", .{witness_version});
+    print("GREEN: apply reads one caller's diff to one standard -- both halves refuse by name, before a line moves.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}

@@ -164,6 +164,31 @@ pub const WeaveError = error{
     /// already name -- this is the third reading of the same blob, and until
     /// `20260912` it was the one that aborted the process instead of speaking.
     CounterPastCeiling,
+    /// A diff names one line twice among its deletes. Every target must name a
+    /// line the weave holds, and a weave holds one line per identity -- so two
+    /// targets sharing an identity name one line, and bumping its generation
+    /// twice would carry a deleted line from even back to odd and resurrect it.
+    /// `diff` cannot build this: it walks the old document once and writes one
+    /// identity per line it drops. What arrives here is a hand-built or a
+    /// concatenated diff, which is a caller's data rather than a weave's
+    /// corruption -- and until `20260912` it aborted the process on the
+    /// distinctness assert instead of speaking.
+    DeleteNamesOneLineTwice,
+    /// A diff names a line this weave does not hold. A delete carries an
+    /// identity rather than a position, so a target the weave never issued is
+    /// not a stale number -- it is a change against a document this weave is
+    /// not. Applying the rest and reporting success would say a line went away
+    /// that was never there.
+    DeleteNamesNoLine,
+    /// A diff names a line this weave already holds as gone. Parity is the
+    /// tombstone here, so a second delete would bump an even generation to odd
+    /// and bring the line back -- the exact inverse of what was asked for. This
+    /// is the ordinary shape of a STALE diff rather than a corrupt one: two
+    /// branches drop the same line, one side's diff is applied to a weave the
+    /// other's has already reached, and the target is gone before it arrives.
+    /// That is the case a version store exists to meet, which is why it is
+    /// refused by name rather than asserted.
+    DeleteNamesGoneLine,
 };
 
 /// What names a line for all time: the position one counter handed it, and the
@@ -994,8 +1019,20 @@ pub const Weave = struct {
     /// weave's own invariant already holds every line below it, so a new
     /// identity is fresh by construction and one floor read replaces the walk.
     ///
+    /// THE TWO HALVES DISAGREED ABOUT WHOSE DATA A DIFF IS until `20260912`.
+    /// The insert half read its two bounds at the edge and refused by name;
+    /// the delete half stated the same three conditions and ASSERTED them, so
+    /// a caller handing a stale or hand-built diff met `exit 134` where the
+    /// insert half would have handed back an error. Both halves read one
+    /// argument, and a `Diff` is a caller's data on both of them -- which is
+    /// the reading this module already wrote down for a record arriving from
+    /// disk, one constructor over. All three are refusals now.
+    ///
     /// Precondition:  every delete names a line the weave holds and that is
-    ///   present (odd gen), and no two deletes name one line -- both asserted.
+    ///   present (odd gen), and no two deletes name one line -- each refused
+    ///   by its own name, `DeleteNamesNoLine`, `DeleteNamesGoneLine` and
+    ///   `DeleteNamesOneLineTwice`, and all three read BEFORE a generation
+    ///   moves, so a refused apply leaves the weave exactly as it arrived.
     /// Postcondition: all inserted lines carry gen == 1 and odd (present);
     ///   all deleted lines carry gen % 2 == 0 (gone).
     pub fn apply(self: *Weave, allocator: std.mem.Allocator, diff: Diff) !void {
@@ -1061,30 +1098,62 @@ pub const Weave = struct {
                     return a.less_than(b);
                 }
             }.less_than);
+            // The targets are distinct, which is what lets the hit count below
+            // prove every one of them was found. They are sorted, so two equal
+            // targets are neighbours and one pass reads the whole question.
+            // Read at the edge rather than asserted: a diff is a CALLER'S data,
+            // and the three readings from here to the mark loop each answer
+            // something a caller can get wrong without corrupting anything.
             for (targets, 0..) |_, i| {
-                // invariant: the targets are distinct and strictly increasing, which is
-                // what lets the hit count below prove every one of them was found. Two
-                // deletes naming one line would otherwise bump one generation twice and
-                // report two changes where the weave saw one.
-                if (i + 1 < targets.len) assert(targets[i].less_than(targets[i + 1]));
+                if (i + 1 < targets.len and !targets[i].less_than(targets[i + 1])) {
+                    return WeaveError.DeleteNamesOneLineTwice;
+                }
             }
 
+            // NOTHING BELOW MOVES A BYTE OF THE WEAVE until every target has
+            // been read. The walk records WHERE each target sits and the second
+            // loop is what raises a generation, so a refusal leaves the weave
+            // exactly as it arrived -- where a walk that bumped as it went would
+            // leave half a diff applied and a named error to explain it.
+            const marks = try allocator.alloc(u32, diff.deletes.len);
+            defer allocator.free(marks);
+
             var hits: u32 = 0;
-            for (self.lines.items) |*line| {
+            for (self.lines.items, 0..) |line, at| {
                 if (std.sort.binarySearch(LineId, targets, line.id(), search_by_name) == null) continue;
-                // invariant: an odd generation means present -- the parity IS the
-                // tombstone, so an even one reaching here would be a deleted line treated
-                // as live
-                assert(line.gen % 2 == 1);
-                line.gen += 1;                       // odd -> even: mark gone
+                // An odd generation means present -- the parity IS the tombstone, so
+                // an even one here is a line this weave already let go. Refused rather
+                // than asserted because a stale diff is ordinary: two branches drop one
+                // line, and the second delete to arrive finds it gone.
+                if (line.gen % 2 == 0) return WeaveError.DeleteNamesGoneLine;
+                // invariant: one mark per target, since the targets are distinct and a
+                // weave holds one line per identity -- so the scratch sized by the
+                // delete count can never be written past its end
+                assert(hits < marks.len);
+                // usize lives at the inherited-std seam alone: a slice counts in usize,
+                // and the weave's own ceiling, asserted at the head of this function, is
+                // what makes the cast safe.
+                marks[hits] = @intCast(at);
                 hits += 1;
             }
+
             // usize lives at the inherited-std seam alone: a slice counts in usize, and
             // the bound asserted above is what makes the cast safe.
-            // invariant: every delete named a line the weave holds, since deleting one
-            // that is not there would report success for a change that never happened.
-            // The targets are distinct, so one hit apiece is exactly this count.
-            assert(hits == @as(u32, @intCast(diff.deletes.len)));
+            // Every delete must name a line the weave holds, since deleting one that is
+            // not there would report success for a change that never happened. The
+            // targets are distinct, so one hit apiece is exactly this count.
+            if (hits != @as(u32, @intCast(diff.deletes.len))) {
+                return WeaveError.DeleteNamesNoLine;
+            }
+
+            // Past the last refusal: now the generations rise.
+            for (marks[0..hits]) |at| {
+                // invariant: the line under each mark is still present, which the walk
+                // above read and nothing between here and there could change -- this
+                // loop is the weave's only mutation on the delete path
+                assert(self.lines.items[at].gen % 2 == 1);
+                self.lines.items[at].gen += 1;       // odd -> even: mark gone
+            }
         }
 
         // Process inserts: each new line enters at generation 1 (first appearance,

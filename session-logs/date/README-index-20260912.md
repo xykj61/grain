@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260912.233613` | [the cold pass found the gate already named](20260912/20260912-233613_the-cold-pass-found-the-gate-already-named.kyri) | 282 guards ran; dated-path policy gate held |
+| `20260912.233520` | [the parked apply lap landed whole](20260912/20260912-233520_the-parked-apply-lap-landed-whole.kyri) | Weave.apply recovery reconciled, proven, and ready to send |
 | `20260912.232706` | [the parked reverse reading came home](20260912/20260912-232706_the-parked-reverse-reading-came-home.kyri) | grass's receipt-custody packet restored and re-proved |
 | `20260912.231224` | [third dead-letter bundle came home](20260912/20260912-231224_the-third-dead-letter-bundle-came-home.kyri) | three Copal records restored; pause held |
 | `20260912.224202` | [two elders and two living heirs](20260912/20260912-224202_the-box-held-two-elders-and-two-living-heirs.kyri) | parked work matched living successors; pause held |
@@ -19,7 +20,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.214739` | [parked launcher boundary came home](20260912/20260912-214739_the-parked-launcher-boundary-came-home.kyri) | recovered detached-pass repair re-proved on current metal |
 | `20260912.214006` | [readable receipt contract](20260912/20260912-214006_readable-receipt-contract.kyri) | One-fact boundary proposed; implementation held |
 | `20260912.211158` | [detached pass crossed launcher](20260912/20260912-211158_the-detached-pass-crossed-the-launcher-boundary.kyri) | parked repair recovered; full cold roster completed |
+| `20260912.211144` | [the parked apply contract crossed](20260912/20260912-211144_the-parked-apply-contract-crossed.kyri) | Weave.apply restored and re-proved before its send |
 | `20260912.210612` | [the dead-letter record came home](20260912/20260912-210612_the-dead-letter-record-came-home.kyri) | one parked record restored; index bound and order repaired |
+| `20260912.204513` | [the parked apply contract landed](20260912/20260912-204513_the-parked-apply-contract-landed.kyri) | Weave.apply now refuses three invalid deletes before mutation |
 | `20260912.200803` | [the first receipt crossed its own boundary](20260912/20260912-200803_the-first-receipt-crossed-its-own-boundary.kyri) | revived holder custody for the first receipt |
 | `20260912.194819` | [the parked boundary came home](20260912/20260912-194819_the-parked-boundary-came-home.kyri) | recovered Amphora's false-empty repair from the parked lap |
 | `20260912.194556` | [the park that had already landed](20260912/20260912-194556_the-park-that-had-already-landed.kyri) | newest copal park reconciled against its landed work |
@@ -30,6 +33,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.185104` | [the parked lint census ran again](20260912/20260912-185104_the-parked-lint-census-ran-again.kyri) | a 46-leg lint reader recovered across its heading rename |
 | `20260912.184042` | [the box was read before it was opened](20260912/20260912-184042_the-box-was-read-before-it-was-opened.kyri) | five parked paths judged against their living successors |
 | `20260912.182001` | [the empty reading that was not empty](20260912/20260912-182001_the-empty-reading_that_was_not_empty.kyri) | a missing search command read six families as zero |
+| `20260912.181115` | [the stopped lap returned](20260912/20260912-181115_the-stopped-lap-returned.kyri) | Patchouli's finished Weave.apply repair recovered onto the current product card |
 | `20260912.181026` | [the refusal named the path again](20260912/20260912-181026_the-refusal-named-the-path-again.kyri) | recovered the runner repair that named a moved tree |
 | `20260912.173722` | [default and boundary](20260912/20260912-173722_the-default-and-the-boundary-read-on-this-pier.kyri) | model control and Amphora fallback read true |
 | `20260912.173424` | [the parked door lands whole](20260912/20260912-173424_the-parked-door-lands-whole.kyri) | recovered Rye module-door wall: 45 legs, zero silent |
@@ -39,6 +43,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.162152` | [the recovered fold landed whole](20260912/20260912-162152_the-recovered-fold-landed-whole.kyri) | the parked torus instrument was restored and re-proved before send |
 | `20260912.161403` | [the default and the two parked logs](20260912/20260912-161403_the-default-and-the-two-parked-logs.kyri) | gpt-5.6-sol selected; a finished Glow round recovered |
 | `20260912.161250` | [model default, runtime boundary](20260912/20260912-161250_the-model-default-and-the-runtime-boundary.kyri) | gpt-5.6-sol configured; runtime verified apart |
+| `20260912.161244` | [the lap recovered whole](20260912/20260912-161244_the-lap-recovered-whole.kyri) | the finished apply round returned from its stash and met today's guards |
 | `20260912.153216` | [the fold recovered on today's tree](20260912/20260912-153216_the-fold-recovered-on-todays-tree.kyri) | the parked 28-leg torus reading held on today's bytes |
 | `20260912.150836` | [Codex default provenance](20260912/20260912-150836_the-fleet-default-carried-its-provenance.kyri) | the selected model reaches the loop and both rule doors |
 | `20260912.150623` | [crashed wave called seven ships](20260912/20260912-150623_the-crashed-wave-called-seven-ships.kyri) | one clean root crossed; seven sail; Incense waits |
@@ -49,6 +54,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.050629` | [the stat that hid a stash's untracked half](20260912/20260912-050629_the-stat-that-hid-a-stash-untracked-half.kyri) | a -u stash parks untracked files apart |
 | `20260912.044314` | [the fold that had nothing to hold](20260912/20260912-044314_the-fold-that-had-nothing-to-hold.kyri) | row 5 cleared its falsifier, and the clearing is what killed it |
 | `20260912.044148` | [the pin door the fleet owned](20260912/20260912-044148_the-pin-door-the-fleet-owned.kyri) | two rows booked on metal, folded; deadlock 1 -> 0 |
+| `20260912.042256` | [one argument, read two ways](20260912/20260912-042256_one-argument-read-two-ways.kyri) | apply asserted what it should refuse |
 | `20260912.041905` | [the door the grammar reserves](20260912/20260912-041905_the-door-the-grammar-reserves.kyri) | ten Rye modules opened outside the door form the compiler reserves |
 | `20260912.035654` | [the contract case resolved by line order](20260912/20260912-035654_the-contract-case-resolved-by-line-order.kyri) | thirteen stems answered twice |
 | `20260912.035328` | [the round that was cut](20260912/20260912-035328_the-round-that-was-cut-and-the-clock-that-held-its-lock.kyri) | a cut lap's work recovered, re-proven |
