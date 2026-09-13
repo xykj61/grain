@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `6f600aaeb5` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `b84ae748b1` -- this work commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
@@ -335,7 +335,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `6f600aaeb5`.
+**Git nib:** `b84ae748b1`.
 
 ### Incense -- product captain
 
