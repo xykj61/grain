@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.233613` | [the cold pass found the gate already named](20260912/20260912-233613_the-cold-pass-found-the-gate-already-named.kyri) | 282 guards ran; dated-path policy gate held |
 | `20260912.233520` | [the parked apply lap landed whole](20260912/20260912-233520_the-parked-apply-lap-landed-whole.kyri) | Weave.apply recovery reconciled, proven, and ready to send |
 | `20260912.232706` | [the parked reverse reading came home](20260912/20260912-232706_the-parked-reverse-reading-came-home.kyri) | grass's receipt-custody packet restored and re-proved |
+| `20260912.232608` | [two elder parks met their living heirs](20260912/20260912-232608_the-two-elder-parks-met-their-living-heirs.kyri) | two parked tools were superseded; pause held |
 | `20260912.231224` | [third dead-letter bundle came home](20260912/20260912-231224_the-third-dead-letter-bundle-came-home.kyri) | three Copal records restored; pause held |
 | `20260912.224202` | [two elders and two living heirs](20260912/20260912-224202_the-box-held-two-elders-and-two-living-heirs.kyri) | parked work matched living successors; pause held |
 | `20260912.223303` | [the two dead-letter records came home](20260912/20260912-223303_the-two-dead-letter-records-came-home.kyri) | two completed Copal records restored and indexed |
