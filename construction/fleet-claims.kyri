@@ -65,3 +65,10 @@ stamp 20260913.143705
 epoch 1789324625
 paths active-designing/20260913-143658_the-receipt-mark-that-already-stands.md construction/ITINERARY.md session-logs/date/README-index-20260913.md session-logs/date/20260913
 what Trace the accepted receipt schema back to the oldest marked-value premise and record whether that type boundary stands or must change before implementation.
+
+claim patchouli-receipt-offer-spine
+seat patchouli
+stamp 20260913.143718
+epoch 1789324638
+paths tally/receipt_offer_bounds.rye mantra/src/receipt_offer.rye mantra/src/receipt_offer_witness.rye
+what Build the bounded receipt-offer admission and deterministic Mantra replay named by the accepted readable-receipt contract.
