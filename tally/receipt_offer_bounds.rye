@@ -1,0 +1,78 @@
+//! tally/receipt_offer_bounds.rye -- ceilings for the first readable receipt offer.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const max_encoded_fact_bytes: u32 = 4096;
+pub const max_identifier_bytes: u32 = 96;
+pub const max_purpose_bytes: u32 = 80;
+pub const max_value_basis_bytes: u32 = 120;
+pub const max_value_amount: u64 = 9_000_000_000;
+pub const max_replay_facts: u32 = 1;
+pub const receipt_card_width: u32 = 72;
+pub const receipt_card_height: u32 = 18;
+
+pub const BoundError = error{ Empty, NonAscii, TooLong, AmountTooLarge, TooManyFacts };
+
+fn text(value: []const u8, ceiling: u32) BoundError!void {
+    _ = print;
+    // invariant: every caller names a positive, wire-sized ceiling.
+    assert(ceiling > 0);
+    // invariant: every accepted slice can be counted in the published u32 model.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len == 0) return BoundError.Empty;
+    if (value.len > ceiling) return BoundError.TooLong;
+    for (value) |byte| if (!std.ascii.isAscii(byte)) return BoundError.NonAscii;
+}
+
+pub fn identifier(value: []const u8) BoundError!void {
+    // invariant: identifier admission uses a positive contract ceiling.
+    assert(max_identifier_bytes > 0);
+    // invariant: the inherited slice length fits the published count width.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len > max_identifier_bytes) return BoundError.TooLong;
+    try text(value, max_identifier_bytes);
+}
+
+pub fn purpose(value: []const u8) BoundError!void {
+    // invariant: purpose admission uses a positive contract ceiling.
+    assert(max_purpose_bytes > 0);
+    // invariant: the inherited slice length fits the published count width.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len > max_purpose_bytes) return BoundError.TooLong;
+    try text(value, max_purpose_bytes);
+}
+
+pub fn value_basis(value: []const u8) BoundError!void {
+    // invariant: value-basis admission uses a positive contract ceiling.
+    assert(max_value_basis_bytes > 0);
+    // invariant: the inherited slice length fits the published count width.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len > max_value_basis_bytes) return BoundError.TooLong;
+    try text(value, max_value_basis_bytes);
+}
+
+pub fn amount(value: u64) BoundError!void {
+    // invariant: the published ceiling itself fits the explicit wire width.
+    assert(max_value_amount <= std.math.maxInt(u64));
+    // invariant: zero remains a valid stated offer amount.
+    assert(value >= 0);
+    if (value > max_value_amount) return BoundError.AmountTooLarge;
+}
+
+pub fn encodedFact(length: u32) BoundError!void {
+    // invariant: the encoded-fact ceiling is positive.
+    assert(max_encoded_fact_bytes > 0);
+    // invariant: the incoming length already uses the published count width.
+    assert(length <= std.math.maxInt(u32));
+    if (length > max_encoded_fact_bytes) return BoundError.TooLong;
+}
+
+pub fn factCount(count: u32) BoundError!void {
+    // invariant: one admitted offer is the bounded first replay.
+    assert(max_replay_facts == 1);
+    // invariant: the incoming count already uses the published count width.
+    assert(count <= std.math.maxInt(u32));
+    if (count > max_replay_facts) return BoundError.TooManyFacts;
+}

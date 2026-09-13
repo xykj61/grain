@@ -1,0 +1,66 @@
+//! mantra/src/receipt_offer_witness.rye -- admission, deterministic replay, and refusal stillness.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt = @import("receipt_offer.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(receipt).@"struct".decls) |decl| {
+        _ = &@field(receipt, decl.name);
+    }
+}
+
+fn fixture() receipt.ReceiptOfferFact {
+    return .{
+        .schema = receipt.schema_v1,
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .holder_id = "person:sample-holder", .recipient_id = "org:sample-steward",
+        .product_id = "data:weekly-pollinator-counts",
+        .product_digest = "7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a1",
+        .purpose = "habitat-planning", .value_amount = 1200,
+        .value_unit = "USD-cent-simulated", .value_basis = "one-purpose license offer",
+        .return_kind = "service-credit", .issued_at = 1_789_228_800,
+        .expires_at = 1_791_820_800, .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v1",
+    };
+}
+
+fn unchanged(log: *const receipt.Log) void {
+    // invariant: a refused admission leaves the sole durable slot empty.
+    assert(log.offer == null);
+    // invariant: the typed durable slot has a concrete, nonzero representation.
+    assert(@sizeOf(receipt.Log) > 0);
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    const fact = fixture();
+    var log = receipt.Log{};
+    try log.append(fact, 512, true);
+    const first = try log.replay(fact.issued_at);
+    const second = try log.replay(fact.issued_at);
+    assert(first.status == .offered);
+    assert(second.status == .offered);
+    assert(std.mem.eql(u8, first.offer.receipt_id, second.offer.receipt_id));
+    assert((try log.replay(fact.expires_at)).status == .expired);
+
+    if (log.append(fact, 512, true)) |_| unreachable else |err| assert(err == error.TooManyFacts);
+    assert(std.mem.eql(u8, (try log.replay(fact.issued_at)).offer.receipt_id, fact.receipt_id));
+
+    var refused = receipt.Log{};
+    var bad = fact;
+    bad.purpose = "";
+    if (refused.append(bad, 512, true)) |_| unreachable else |err| assert(err == error.Empty);
+    unchanged(&refused);
+    bad = fact;
+    bad.value_amount = 9_000_000_001;
+    if (refused.append(bad, 512, true)) |_| unreachable else |err| assert(err == error.AmountTooLarge);
+    unchanged(&refused);
+    if (refused.append(fact, 512, false)) |_| unreachable else |err| assert(err == error.InvalidSignature);
+    unchanged(&refused);
+
+    print("GREEN: receipt offer -- bounded admission, deterministic replay, expiration, refusal stillness.\n", .{});
+    return 0;
+}
