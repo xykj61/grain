@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.232608` | [two elder parks met their living heirs](20260912/20260912-232608_the-two-elder-parks-met-their-living-heirs.kyri) | two parked tools were superseded; pause held |
 | `20260912.231224` | [third dead-letter bundle came home](20260912/20260912-231224_the-third-dead-letter-bundle-came-home.kyri) | three Copal records restored; pause held |
 | `20260912.224202` | [two elders and two living heirs](20260912/20260912-224202_the-box-held-two-elders-and-two-living-heirs.kyri) | parked work matched living successors; pause held |
+| `20260912.223959` | [the paused diffuser held its edge](20260912/20260912-223959_the-paused-diffuser-held-its-edge.kyri) | stash recovery proved complete; fleet pause held |
 | `20260912.223303` | [the two dead-letter records came home](20260912/20260912-223303_the-two-dead-letter-records-came-home.kyri) | two completed Copal records restored and indexed |
 | `20260912.214739` | [parked launcher boundary came home](20260912/20260912-214739_the-parked-launcher-boundary-came-home.kyri) | recovered detached-pass repair re-proved on current metal |
 | `20260912.214006` | [readable receipt contract](20260912/20260912-214006_readable-receipt-contract.kyri) | One-fact boundary proposed; implementation held |

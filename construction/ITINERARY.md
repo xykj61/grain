@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `fd8264ebfd` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `bc5e71c999` -- this work commit's parent, resolvable everywhere (%401).
 
 **GRASS -- THE RECEIPT'S TYPE-MARK WAS ALREADY ON ITS FACE.** **EARTH BREATHES IN**
 (row 4, N=4734): take in the concrete field before adding a new type system. Reverse-reading the
@@ -65,7 +65,6 @@ dependency modes separately, so a root-only repair fails; all **eight** independ
 miss while an identical build hits and the complete proof still runs. Cold **284/279/3**, with two
 custody gates; `tally_roster` and `tool_letter_room` share Patchouli's live receipt-roster repair,
 and `standing_equipment` repeats those two peer reds.
-
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
 custody gates; `ratchet_slack` found the agent-closable root and `standing_equipment` repeated it.
@@ -366,7 +365,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fd8264ebfd`.
+**Git nib:** `bc5e71c999`.
 
 ### Incense -- product captain
 
