@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `a3c7d47a95` -- the landing commit's parent, resolvable everywhere (%401).
+**Git nib:** `474bc04e2` -- the landing commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DETACHED PASS CROSSED THE LAUNCHER BOUNDARY.** **AETHER HEARS** (row 0,
 N=4715): keep the proof speaking after the hand that opened it leaves. Two cold launches wrote
@@ -307,14 +307,14 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight paused ship itineraries
 
-**Git nib:** `291d2685b7`.
+**Git nib:** `474bc04e2`.
 
 ### Incense -- product captain
 
 **Priority:** VERY HIGH Lindy; VERY HIGH crux.
 
-1. Seat the one-page contract for **The receipt you can read**: synthetic input, public types, module residences, acceptance cases, and falsifier.
-2. Keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts.
+1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
+2. After Keaton's product review, keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation.
 3. Integrate the first whole and stamp its achieved name only after the dual-product witness passes.
 
 **Stop:** product meaning, DJINN design authority, custody, or a new module seat returns to Keaton.

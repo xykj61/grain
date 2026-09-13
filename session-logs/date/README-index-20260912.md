@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260912.224202` | [two elders and two living heirs](20260912/20260912-224202_the-box-held-two-elders-and-two-living-heirs.kyri) | parked work matched living successors; pause held |
 | `20260912.223303` | [the two dead-letter records came home](20260912/20260912-223303_the-two-dead-letter-records-came-home.kyri) | two completed Copal records restored and indexed |
 | `20260912.214739` | [parked launcher boundary came home](20260912/20260912-214739_the-parked-launcher-boundary-came-home.kyri) | recovered detached-pass repair re-proved on current metal |
+| `20260912.214006` | [readable receipt contract](20260912/20260912-214006_readable-receipt-contract.kyri) | One-fact boundary proposed; implementation held |
 | `20260912.211158` | [detached pass crossed launcher](20260912/20260912-211158_the-detached-pass-crossed-the-launcher-boundary.kyri) | parked repair recovered; full cold roster completed |
 | `20260912.210612` | [the dead-letter record came home](20260912/20260912-210612_the-dead-letter-record-came-home.kyri) | one parked record restored; index bound and order repaired |
 | `20260912.194819` | [the parked boundary came home](20260912/20260912-194819_the-parked-boundary-came-home.kyri) | recovered Amphora's false-empty repair from the parked lap |
