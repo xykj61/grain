@@ -566,7 +566,16 @@ if [ "$detach" = yes ]; then
     echo "launch_head $(git rev-parse --short=10 HEAD 2>/dev/null || echo nogit)"
     echo "launch_args $*"
   } > "$transcript"
-  STANDING_TRANSCRIPT="$transcript" nohup sh "$0" "$@" >> "$transcript" 2>&1 < /dev/null &
+  # THE EXECUTION BOUNDARY IS STRONGER THAN A HANGUP ON THIS PIER. The Codex command runner
+  # closes the process group when the command returns, so `nohup ... &` can write the launch
+  # header and then disappear before its first line. `setsid` gives the pass its own session on
+  # hosts that carry it; the POSIX nohup form remains the portable fallback. The distinction is
+  # about process custody only -- both branches run this same script with these same arguments.
+  if command -v setsid >/dev/null 2>&1; then
+    STANDING_TRANSCRIPT="$transcript" setsid sh "$0" "$@" >> "$transcript" 2>&1 < /dev/null &
+  else
+    STANDING_TRANSCRIPT="$transcript" nohup sh "$0" "$@" >> "$transcript" 2>&1 < /dev/null &
+  fi
   echo "transcript=$transcript"
   echo "pid=$!"
   echo "finished_when=the transcript carries a run_verdict line"

@@ -42,7 +42,18 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `87dc5c448b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2baa6dea3c` -- the landing commit's parent, resolvable everywhere (%401).
+
+**BAKERY -- THE DETACHED PASS CROSSED THE LAUNCHER BOUNDARY.** **AETHER HEARS** (row 0,
+N=4715): keep the proof speaking after the hand that opened it leaves. Two cold launches wrote
+their four-line headers and vanished when the Codex command returned; `nohup` alone did not cross
+that execution boundary. The recovered repair starts the same runner in a new session when
+`setsid` is present and keeps `nohup` as the portable fallback. On this pier the child reached
+parent 1, held its own session, and completed all **282** lap guards. The cold pass read **277
+green, 3 red, 2 custody-gated**, with `tree_moved=no`; its three reds were the standing index-row,
+Git-nib, and roster-summary findings, and the nib closes in this landing. The focused control names
+both launch branches. The live roster witness reaches the recovered assertions and honestly keeps
+the unrelated reds visible.
 
 **BAKERY -- THE BINARY STAYS WITH ITS READING.** Elder
 [shelved](archive/20260912-024638_itinerary-landed-accounts.md). **WATER TASTES** (row 3,

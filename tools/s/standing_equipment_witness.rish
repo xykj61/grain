@@ -212,6 +212,8 @@ assert control.out contains "absent_path_reds_runner=yes" else "standing-equipme
 # bytes unreadable as this one's.
 assert control.out contains "detach_prints_path=yes" else "standing-equipment: --detach must print the transcript it just named -- a lap left to invent one is the fault this closes"
 assert control.out contains "detach_prints_pid=yes" else "standing-equipment: --detach must print the child's pid, so no lap finds its own pass by matching a command line"
+assert control.out contains "detach_prefers_session_boundary=yes" else "standing-equipment: a detached pass must leave the launcher's process group where setsid is available, so the command boundary cannot reap it"
+assert control.out contains "detach_keeps_portable_fallback=yes" else "standing-equipment: the session-bound launch must keep a nohup fallback for hosts without setsid"
 assert control.out contains "detach_parent_returns=yes" else "standing-equipment: --detach must return having launched, never having run the roster"
 assert control.out contains "detach_header_written=yes" else "standing-equipment: the transcript must identify its own launch before the child writes a byte"
 assert control.out contains "detach_truncates_elder=yes" else "standing-equipment: an elder pass's bytes must not survive a launch, or a stale read stays possible"
