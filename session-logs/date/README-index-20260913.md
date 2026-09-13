@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri) | root and dependency execute bits join receipt; 17 green |
 | `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri) | parked row-count proof restored and green on current HEAD |
 | `20260913.161143` | [the receipt card found its own boundary](20260913/20260913-161143_the-receipt-card-found-its-own-boundary.kyri) | fixed frame and semantic parity await macOS proof |
 | `20260913.161014` | [receipt mark stood](20260913/20260913-161014_the_receipt_mark_stood_without_a_new_type.kyri) | existing schema keeps the type boundary |
