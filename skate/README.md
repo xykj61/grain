@@ -67,6 +67,12 @@ format belongs to the one underlying `FrameGrid` contract. A repository-wide ali
 cross-language name schema remains a separate canon decision; this package records only the local
 MIND-owned instance.
 
+The first Linengrow Receipt Card has its own fixed **72-column by 18-row** plane, matching the
+accepted product contract without stretching the elder forty-by-eight media frame. Its initializer
+admits the deciding Linengrow fields, refuses empty, non-ASCII, over-wide, or over-limit input before
+publishing a value, and renders twelve deterministic ASCII lines. The accessibility reader walks
+those same rendered bytes in row order, so visual and semantic text cannot drift into two copies.
+
 ## The owned bounds
 
 - A Brushstroke frame declares a ceiling from one through eight and holds no more nonempty lines
