@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b84ae748b1` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `7a89394ab7` -- this work commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
@@ -53,6 +53,16 @@ longer belonged. The report is now `lost_reference_baseline`; its retired pairin
 the name. `ratchet_slack` reads **99/99 compared, 0 stale**, its 50-leg control is GREEN, and the
 dated-path witness keeps **0 repairable promises** while 112 testimony or prose references remain
 visible. No historical reference was rewritten.
+
+**PHEROMONE -- THE PARKED READER REJOINED THE TREE.** **WATER TASTES** (row 3, N=4743): run the
+actual seam twice. Round-open found two finished Glow-lap products on no anointed ref: the ELF
+target reader and the settled-decisions shelf that accounts for it. The living cross-target
+witnesses have since moved to the stronger `elf_machine` reader, so this recovery preserves the
+elder instrument without rewinding their current contract. `elf_machine` passed twice; the mobile
+and RISC-V callers each stopped honestly at their absent emulator and printed GREEN. The cold
+roster read 277 green, 2 red, and 2 custody-gated. `remember_git_nib` closes in this landing;
+`tally_roster` and `tool_letter_room` remain separate peer reds outside this recovery;
+`ratchet_slack` closed in the Bakery landing above.
 
 **GRASS -- THE NIB KEPT NINE HEX DIGITS WHERE THE WITNESS REQUIRES TEN.**
 **EARTH BREATHES IN** (row 4, N=4724): read the mark on its face before explaining it.
@@ -335,7 +345,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b84ae748b1`.
+**Git nib:** `7a89394ab7`.
 
 ### Incense -- product captain
 
