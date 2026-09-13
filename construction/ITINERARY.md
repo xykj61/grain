@@ -42,7 +42,17 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4d6c511352` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `6f600aaeb5` -- this work commit's parent, resolvable everywhere (%401).
+
+**BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
+N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
+custody gates; `ratchet_slack` found the agent-closable root and `standing_equipment` repeated it.
+The accepted dated-path repair gates `lost_promised_living` at zero and deliberately reports the
+historical testimony set, yet its elder `LOST_CEILING` name still promised a comparison that no
+longer belonged. The report is now `lost_reference_baseline`; its retired pairing row left with
+the name. `ratchet_slack` reads **99/99 compared, 0 stale**, its 50-leg control is GREEN, and the
+dated-path witness keeps **0 repairable promises** while 112 testimony or prose references remain
+visible. No historical reference was rewritten.
 
 **GRASS -- THE NIB KEPT NINE HEX DIGITS WHERE THE WITNESS REQUIRES TEN.**
 **EARTH BREATHES IN** (row 4, N=4724): read the mark on its face before explaining it.
@@ -325,7 +335,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `74731ca339`.
+**Git nib:** `6f600aaeb5`.
 
 ### Incense -- product captain
 

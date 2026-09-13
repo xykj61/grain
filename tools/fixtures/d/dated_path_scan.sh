@@ -103,7 +103,8 @@ verb="${1:-census}"
 # between readings. Discovery skips full-line comments now, and the page is LISTED in
 # dated_path_exclusions.sh by decision, so the subtraction is on the record and this comment is
 # free to name it. Proven both ways: remove the listing and the same tree reads 183.
-LOST_CEILING=85    # Historical/testimony census ceiling, reported rather than gated from
+LOST_REFERENCE_BASELINE=85
+                   # Historical/testimony census baseline, reported rather than gated from
                    # breakage. 88 of the 173 then standing were rows that name a log and say on
                    # the same line that it never landed -- the exact repair the shelves' own
                    # header asks for, counted as the wound it heals. The buckets are what prove
@@ -479,7 +480,7 @@ echo "broken_gone=$gone"
 echo "broken_declared=$declared"
 lost=$((ambiguous + gone))
 echo "refs_lost=$lost"
-echo "lost_ceiling=$LOST_CEILING"
+echo "lost_reference_baseline=$LOST_REFERENCE_BASELINE"
 
 # THE LOST SET READ TWO WAYS -- reported, never gated, and the two questions are separate.
 #

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.153444` | [the report stopped dressing as a ceiling](20260913/20260913-153444_the-report-stopped-dressing-as-a-ceiling.kyri) | dated-path report renamed; ratchet 99/99 |
 | `20260913.145310` | [the parked log rejoined its shelf](20260913/20260913-145310_the_parked_log_rejoined_its_shelf.kyri) | recovered 203746; closed shelf and rosters agree at 63 |
 | `20260913.144455` | [the first receipt-offer spine](20260913/20260913-144455_the-first-receipt-offer-spine.kyri) | Tally bounds and deterministic Mantra replay run GREEN |
 | `20260913.143321` | [gate moved to work a ship can do](20260913/20260913-143321_the-gate-moved-to-the-work-a-ship-can-do.kyri) | repairable promises gate at zero; full formation chosen |
