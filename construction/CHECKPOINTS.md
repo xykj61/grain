@@ -1,5 +1,11 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260914.081515` -- walk-back nib `d0c6094bbf`.** Recovering Patchouli's compiler-reach
+account put `construction/ITINERARY.md` at 41,472 bytes against its 40,960-byte ceiling. Bakery's
+completed second-pull account moves whole through `itinerary_account_shelf.sh`; the live card keeps
+one pointer. Its path-closure decisions, five control legs, Codex-loop send handoff, and owned
+held-still red remain whole on the shelf. No open gate or current Patchouli account moves.
+
 **Checkpoint `20260913.214700` -- walk-back nib `47a2e951a1`.** The recovered Copal receipt lap
 touches `construction/ITINERARY.md` after the card has grown 1,165 bytes past its 40,960-byte
 ceiling. Incense's completed tree-motion account already stands whole on

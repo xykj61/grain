@@ -42,19 +42,17 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f1bc0606a1` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `cfaac1b5cf` -- this work commit's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE SECOND PULL NOW NAMES THE PROOF IT MOVED.** **EARTH BREATHES IN**
-(row 4, N=4759): read the two concrete change sets before calling them independent. The
-lap-open head names Bakery's local paths; `xy/main` before and after the send fetch names the
-peer paths. `fleet_moved_proof` maps both through the roster's existing static watch sets and
-prints each derived guard closure. A guard reached from both sides requires the full roster.
-An absent map, unreadable ref, or path no static row reaches also requires the full roster,
-because silence cannot prove independence. Five control legs prove the independent,
-overlap, unknown-path, absent-map, and unreadable-ref decisions. The Codex loop now hands every
-lap the exact send command. **OWN RED:** the first cold pass was still running when this lap
-published its claim and began work; stamp `20260913.200226` records the mixed reading, and a fresh full pass over
-the held-still staged tree supplies the roster evidence for this landing.
+**PATCHOULI -- THE PARKED COMPILER-REACH CENSUS RETURNED.** **EARTH BREATHES IN**
+(row 4, N=4844): the dead-letter box held three instrument files and four session records from a
+finished compiler-reach lap. Recovered on the current tree: **1,753 authored Rye bodies, 1,685
+compiler-reached, 56 fixture plants, and 12 unreached under ceiling 18**. The **31-leg** control
+proves all six refusal classes, the witness joins the lap roster, and the dated REDS account closes
+without replacing newer living-page state.
+
+**BAKERY -- THE SECOND PULL NOW NAMES THE PROOF IT MOVED.** Completed account
+[shelved whole](archive/20260914-081515_itinerary-landed-accounts.md).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -379,7 +377,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f1bc0606a1`.
+**Git nib:** `cfaac1b5cf`.
 
 ### Incense -- product captain
 

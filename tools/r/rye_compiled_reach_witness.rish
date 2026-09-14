@@ -1,0 +1,93 @@
+# tools/r/rye_compiled_reach_witness.rish -- a module no compiler reads is a module the language
+# never checked.
+#
+# WHY THIS RUNG. On 20260906 REDS %449 found that mantra/src/weave.rye had not compiled since the
+# pinned toolchain moved to Zig 0.16: Weave.empty() still returned the elder .{ .lines = .{} }
+# where 0.16 wants .empty, and building the HEAD blob in a pen answers `missing struct field:
+# items`. Four guards stood over that file at tier lap -- mantra_gen_floor_a1_gate and
+# mantra_glow_tend_limb1 through limb3 -- and every one read it with `grep -q` for a field name.
+# All four were GREEN over a file the compiler refuses. Measured on this tree the same hour: those
+# four guards carry ZERO build verbs between them and name weave.rye between two and four times
+# each. Grep proves a file's shape; only a compiler proves a file.
+#
+# That row repaired its one instance by hand and booked this census, because a repair that fixes a
+# class by hand leaves whichever member the hand did not reach. This rung is the reach.
+#
+# WHAT IS PROVEN, on metal.
+#   Every tracked .rye body outside every compiler's reach is counted, and the count holds under a
+#   ceiling that only falls. A body is reached when a tool that carries a Rye build verb names it,
+#   when a directory-composing builder credits its room, or when a reached body imports it.
+#   The reading is taken over BODIES rather than paths: 227 of the 1,940 tracked .rye paths are
+#   symlinks, and a symlink is not a copy -- tally/parse_int.rye alone has eleven pointing at it
+#   from directories that are built, so a path count would report a live module dead.
+#   Thirty-one behaviours on throwaway repositories, every refusal shown from both sides: %449's
+#   own shape planted and then repaired by one build verb, transitive reach at two hops, a symlink
+#   crediting its target, a composed path crediting its room, a fixture plant counted and held out
+#   of the gate, the ceiling refused one over and free at it, four vacuum refusals, an import cycle
+#   settling rather than spinning, and a clean pen reading zero so every yes above is the plant
+#   speaking.
+#
+# WHAT IS REPORTED RATHER THAN GATED. The fixture plants -- .rye files under a fixtures/ pen, which
+# exist to be read by a scan rather than built. tools/fixtures/t/tame_style_ban_violation.rye is
+# there to be REFUSED by a style checker, so gating it would refuse a file doing its job.
+#
+# WHAT IS NOT PROVEN, named rather than implied. That a body in the uncompiled set fails to
+# compile. This reads who hands a file to the compiler, never what the compiler answers -- and the
+# distinction is not academic: measured 20260906.010429, tools/rye/mantra_a1_weave_fields_eq_witness.rye
+# stands in that set and builds, links, and RUNS GREEN on this toolchain, printing
+# `GREEN: equality sixth -- weave fields=2 decide exactly`. So the set names a population where
+# %449 can happen unseen, rather than a list of files already rotted. Four of the eighteen are
+# working witnesses of exactly that kind, whose only caller is src/gate/README.md.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_compiled_reach_witness.rish
+
+say "rye-reach: Language EN -- a file outside every compiler's reach is a file the language never read."
+say "rye-reach: Style Gauge, Meter -- the count is the subject, and the population is printed beside it."
+say "rye-reach: Lens TAME -- safety first: grep proves a file's shape, and only a compiler proves a file."
+
+let scan = run ["sh" "tools/fixtures/r/rye_compiled_reach_scan.sh"]
+assert scan.ok else "rye-reach: bodies stand outside every compiler's reach -- read the scan's own lines"
+say scan.out
+assert scan.out contains "verdict=ok" else "rye-reach: the scan must balance before it is believed"
+say "field GREEN -- the uncompiled set holds under its ceiling"
+
+let control = run ["sh" "tools/fixtures/r/rye_compiled_reach_control.sh"]
+assert control.ok else "rye-reach: the control must complete"
+say control.out
+assert control.out contains "grep_read_module_uncompiled=yes" else "rye-reach: a module only grepped must read uncompiled -- this is %449's own shape"
+assert control.out contains "grep_read_module_counted=yes" else "rye-reach: the refusal must name a count, never only a verdict"
+assert control.out contains "built_module_reached=yes" else "rye-reach: the module a builder names, and the one it imports, must both read reached"
+assert control.out contains "grep_alone_is_not_a_root=yes" else "rye-reach: a grep is not a build, and the root count must say so"
+assert control.out contains "build_verb_clears_it=yes" else "rye-reach: one build verb must clear the reading -- that is %449's repair"
+assert control.out contains "build_verb_adds_a_root=yes" else "rye-reach: the repair must be visible in the root count, not only in the total"
+assert control.out contains "repaired_tree_free=yes" else "rye-reach: a repaired tree must pass free"
+assert control.out contains "second_hop_reached=yes" else "rye-reach: reach must be transitive, or every imported module reads dead"
+assert control.out contains "second_hop_hops=yes" else "rye-reach: the closure must report the depth it actually walked"
+assert control.out contains "symlink_seen=yes" else "rye-reach: a tracked symlink must be seen as one"
+assert control.out contains "symlink_one_body=yes" else "rye-reach: a link and its target are one body, never two"
+assert control.out contains "symlink_credits_target=yes" else "rye-reach: a build through a link compiles the target's bytes"
+assert control.out contains "composed_dir_seen=yes" else "rye-reach: a builder composing its path from a variable must credit the room it names"
+assert control.out contains "composed_clears_room=yes" else "rye-reach: a composed root must clear its whole room, or live tests read dead"
+assert control.out contains "plant_counted=yes" else "rye-reach: a fixture plant must be counted rather than ignored"
+assert control.out contains "plant_named=yes" else "rye-reach: a plant must be nameable, so a reader can check the holdout"
+assert control.out contains "plant_not_gated=yes" else "rye-reach: a plant must stay out of the gate -- it is doing its job"
+assert control.out contains "plant_tree_free=yes" else "rye-reach: a tree whose only unreached file is a plant must pass free"
+assert control.out contains "over_ceiling_refuses=yes" else "rye-reach: one body over the ceiling must refuse"
+assert control.out contains "over_ceiling_names_it=yes" else "rye-reach: the refusal must name the body, so the repair is one line away"
+assert control.out contains "over_ceiling_exits_nonzero=yes" else "rye-reach: a refusal must carry a non-zero status, or no caller hears it"
+assert control.out contains "at_ceiling_free=yes" else "rye-reach: a tree standing exactly at its ceiling must walk free"
+assert control.out contains "empty_corpus_refuses=yes" else "rye-reach: an empty corpus must refuse -- a zero nobody planted is not a clean tree"
+assert control.out contains "no_builder_refuses=yes" else "rye-reach: a tree with no builder must refuse rather than call everything dead"
+assert control.out contains "no_root_refuses=yes" else "rye-reach: a builder naming nothing tracked must refuse -- the closure would start from nothing"
+assert control.out contains "no_import_refuses=yes" else "rye-reach: a corpus with no import at all must refuse, or a broken grep reads as a flat tree"
+assert control.out contains "cycle_settles=yes" else "rye-reach: an import cycle must settle rather than spin"
+assert control.out contains "cycle_free=yes" else "rye-reach: a cycle is lawful and must pass free"
+assert control.out contains "clean_reads_zero=yes" else "rye-reach: a tree with everything reached must read zero rather than merely pass"
+assert control.out contains "clean_reads_all=yes" else "rye-reach: a clean tree must reach every body, so the pen is proven innocent"
+assert control.out contains "clean_free=yes" else "rye-reach: a clean tree must pass free"
+assert control.out contains "control_failures=0" else "rye-reach: every planted behaviour must hold"
+assert control.out contains "control_verdict=ok" else "rye-reach: the control must agree with itself"
+say "RED and GREEN paths proven -- six refusals bitten, twenty-five honest readings left free"
+
+say "GREEN: rye-reach -- every module outside a compiler's reach is named, and the count only falls."
