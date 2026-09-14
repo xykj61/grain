@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.035618` | [the cold roster spent its last room](20260914/20260914-035618_the-cold-roster-spent-its-last-room.kyri) | stashes safe; filesystem ended cold roster |
 | `20260914.034844` | [the vessel rested on firm ground](20260914/20260914-034844_the-vessel-rested-on-firm-ground.kyri) | parked records safe; filesystem capacity holds product work |
 | `20260914.034432` | [the aether row heard the capacity stop](20260914/20260914-034432_the_aether_row_heard_the_capacity_stop.kyri) | parked work safe; capacity still blocks roster |
 | `20260914.034344` | [the tutorial stayed inside its edge](20260914/20260914-034344_the_tutorial_stayed_inside_the_proven_edge.kyri) | recovery clean; capacity and proof remain open |
