@@ -11,12 +11,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
 | `20260914.021718` | [the mark waited for both meanings](20260914/20260914-021718_the-mark-waited-for-both-meanings.kyri) | parked work safe; tutorial dependency remains |
 | `20260914.021602` | [the parked proof reached the standing roster](20260914/20260914-021602_the-parked-proof-reached-the-standing-roster.kyri) | newest stash recovered; proof green |
 | `20260914.021009` | [the tutorial waited at the proven edge](20260914/20260914-021009_the-tutorial-waited-at-the-proven-edge.kyri) | parked work landed; product proof still open |
 | `20260914.021002` | [the finished claim left the live board](20260914/20260914-021002_the-finished-claim-left-the-live-board.kyri) | completed incense claim retired; cold 277 green, 7 red |
 | `20260914.020502` | [the moved-proof reader joined the roster](20260914/20260914-020502_the-moved-proof-reader-joined-the-roster.kyri) | parked witness restored; five decisions green |
-| `20260914.020021` | [the two receipts kept their own meaning](20260914/20260914-020021_the_two_receipts_kept_their_own_meaning.kyri) | transaction proof stays distinct from offer acceptance |
+| `20260914.020021` | [the two receipts kept their own meaning](20260914/20260914-020021_the_two_receipts_kept_their_own_meaning.kyri) | transaction proof differs from offer acceptance |
 | `20260914.015912` | [the card landed before motion](20260914/20260914-015912_the_card_landed_before_motion.kyri) | card present; motion next; cold roster held six reds |
 | `20260914.015710` | [Tally repair crossed the living tip](20260914/20260914-015710_the-tally-refusal-repair-crossed-the-living-tip.kyri) | repair reconciled; 49-row shelf restored |
 | `20260914.011413` | [the parked Tally refusal repair came home](20260914/20260914-011413_the-parked-tally-refusal-repair-came-home.kyri) | 18 refusals speak; shim-reason 940 -> 922 |
