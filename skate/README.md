@@ -77,7 +77,9 @@ The Consent Rail carries the receipt's purpose, recipient, expiration, and conse
 one bounded presentation value. Still is complete. Settle reaches the same folded or expanded frame
 within 1,000 milliseconds, and reduced motion reaches it immediately. Respond is a 400-millisecond
 local pulse that changes no product state. Accessibility reads the rendered row bytes in the same
-order, so motion creates no second semantic description.
+order, so motion creates no second semantic description. Reduced motion, renderer loss, and a
+hidden document return the complete Still frame immediately; the 1,000-millisecond renderer boot
+deadline is a ceiling rather than a delay.
 
 ## The owned bounds
 
@@ -99,7 +101,8 @@ order, so motion creates no second semantic description.
   one-through-forty-cell row-local rect.
 - A Consent Rail owns two 360-byte inline frames, one folded and one expanded. Each frame holds at
   most five rows of seventy-two ASCII cells. Settle completes within 1,000 milliseconds; Respond
-  lives for 400 milliseconds and changes neither frame.
+  lives for 400 milliseconds and changes neither frame. Renderer loss falls back before a
+  1,000-millisecond boot deadline.
 - An admitted image plane owns exactly three hundred twenty full-block cells and three hundred
   twenty palette indexes. Each index is one through seven, matching HUNK2's fixed anchor palette.
 - A Lotus meter reading owns a count from zero through two to the twenty-sixth samples, a peak no

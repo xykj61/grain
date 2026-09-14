@@ -8,6 +8,7 @@ public struct ConsentRail: Equatable, Sendable {
   public static let rows = 5
   public static let cellCapacity = columns * rows
   public static let settleDurationMilliseconds = 1_000
+  public static let rendererBootDeadlineMilliseconds = 1_000
   public static let pulseLifetimeMilliseconds = 400
 
   public enum RailError: Error, Equatable, Sendable {
@@ -20,6 +21,13 @@ public struct ConsentRail: Equatable, Sendable {
   public enum Disclosure: Equatable, Sendable {
     case folded
     case expanded
+  }
+
+  public enum PresentationCondition: Equatable, Sendable {
+    case visible
+    case reducedMotion
+    case rendererLost
+    case documentHidden
   }
 
   public struct Frame: Equatable, Sendable {
@@ -97,6 +105,28 @@ public struct ConsentRail: Equatable, Sendable {
     let duration = reducedMotion ? 0 : Self.settleDurationMilliseconds
     guard elapsedMilliseconds >= duration else { return nil }
     return still(disclosure: disclosure)
+  }
+
+  /// Render through the optional-motion boundary.
+  ///
+  /// A hidden document or lost renderer returns the complete Still frame at
+  /// once. The boot deadline is therefore a ceiling rather than a delay.
+  public func present(
+    disclosure: Disclosure,
+    elapsedMilliseconds: Int,
+    condition: PresentationCondition
+  ) throws -> Frame? {
+    guard elapsedMilliseconds >= 0 else { throw RailError.invalidElapsedMilliseconds }
+    switch condition {
+    case .visible:
+      return try settle(
+        to: disclosure,
+        elapsedMilliseconds: elapsedMilliseconds,
+        reducedMotion: false
+      )
+    case .reducedMotion, .rendererLost, .documentHidden:
+      return still(disclosure: disclosure)
+    }
   }
 
   /// Report whether a local response pulse is visible at this instant.

@@ -51,6 +51,51 @@ final class ConsentRailTests: XCTestCase {
     )
   }
 
+  func testRendererLossAndHiddenDocumentReturnCompleteStillFrame() throws {
+    let rail = try fixture()
+    for disclosure in [ConsentRail.Disclosure.folded, .expanded] {
+      let still = rail.still(disclosure: disclosure)
+      XCTAssertEqual(
+        try rail.present(disclosure: disclosure, elapsedMilliseconds: 0, condition: .rendererLost),
+        still
+      )
+      XCTAssertEqual(
+        try rail.present(
+          disclosure: disclosure,
+          elapsedMilliseconds: ConsentRail.rendererBootDeadlineMilliseconds - 1,
+          condition: .rendererLost
+        ),
+        still
+      )
+      XCTAssertEqual(
+        try rail.present(
+          disclosure: disclosure,
+          elapsedMilliseconds: 0,
+          condition: .documentHidden
+        ),
+        still
+      )
+    }
+  }
+
+  func testEveryPresentationConditionKeepsAccessibilityParity() throws {
+    let rail = try fixture()
+    let expected = rail.still(disclosure: .expanded)
+    let conditions: [ConsentRail.PresentationCondition] = [
+      .visible, .reducedMotion, .rendererLost, .documentHidden,
+    ]
+    for condition in conditions {
+      let elapsed = condition == .visible ? ConsentRail.settleDurationMilliseconds : 0
+      let frame = try XCTUnwrap(
+        rail.present(disclosure: .expanded, elapsedMilliseconds: elapsed, condition: condition)
+      )
+      XCTAssertEqual(frame, expected)
+      for row in 0..<frame.lineCount {
+        XCTAssertEqual(frame.accessibilityLine(row: row), expected.accessibilityLine(row: row))
+      }
+    }
+  }
+
   func testResponsePulseHasFixedLifeAndChangesNoFrame() throws {
     let rail = try fixture()
     let before = rail.still(disclosure: .expanded)
