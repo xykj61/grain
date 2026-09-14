@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.093109` | [the boundary stayed under the hand](20260914/20260914-093109_the-boundary-stayed-under-the-hand.kyri) | stashes preserved; dual-product seam remains open |
 | `20260914.092301` | [missing record returned](20260914/20260914-092301_the-missing-record-returned-at-the-capacity-line.kyri) | restored one log; capacity stopped roster |
 | `20260914.091428` | [The cold roster ended mid-line](20260914/20260914-091428_the-cold-roster-ended-mid-line.kyri) | recovered lap preserved; roster terminal verdict absent |
 | `20260914.081818` | [The recovery was already home](20260914/20260914-081818_the-recovery-was-already-home.kyri) | stash kept; focused checks green; hot pass lost verdict |
