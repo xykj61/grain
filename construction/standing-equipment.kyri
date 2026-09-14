@@ -5865,3 +5865,12 @@ guard rye_module_door
 path tools/r/rye_module_door_witness.rish
 tier lap   # 5s; 45 behaviors in a pen, every refusal lifted and two mutations bitten
 seated 20260912.041500
+
+# fleet_moved_proof -- the send fetch can move xy/main after this lap packages its work. The helper
+# maps the lap and upstream change sets through the same static watch rows the roster runner reads,
+# then chooses scoped proof only when those closures are readable, known, and disjoint. Its control
+# proves the one scoped decision and all four conservative full-roster decisions in a real Git pen.
+guard fleet_moved_proof
+path tools/f/fleet_moved_proof_witness.rish
+tier lap
+seated 20260914.015559

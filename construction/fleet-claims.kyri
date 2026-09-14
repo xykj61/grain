@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim bakery-moved-proof-heard
-seat bakery
-stamp 20260914.015559
-epoch 1789365359
-paths tools/f/fleet_moved_proof_witness.rish tools/f/fleet_moved_proof.sh tools/fixtures/f/fleet_moved_proof_control.sh construction/standing-equipment.kyri tools/fixtures/s/standing_equipment_scope_map.sh session-logs/README.md session-logs/CHAPTERS.md construction/ITINERARY.md
-what Seat the moved-proof control on the live roster and repair the closed 20260913 shelf count before extending Rye's library cache key.
 claim patchouli-rye-compiled-reach-recovery
 seat patchouli
 stamp 20260914.025746
