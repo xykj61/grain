@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-receipt-vessel
-seat copal
-stamp 20260913.152951
-epoch 1789327791
-paths amphora/vessel_core.rye tools/am/amphora_receipt_bundle_witness.rish tools/fixtures/a/receipt_offer_fact_v1.kyri construction/standing-equipment.kyri amphora/README.md
-what Seal the accepted synthetic receipt inside an existing Amphora vessel and prove version, authentication, and round-trip refusal edges.
 claim incense-receipt-contract-status
 seat incense
 stamp 20260913.173200
