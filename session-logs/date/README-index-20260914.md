@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.114743` | [Cold roster capacity](20260914/20260914-114743_the_cold_roster_stopped_at_capacity.kyri) | three reds surfaced before ENOSPC stopped the pass |
 | `20260914.113849` | [Two reds before the disk wall](20260914/20260914-113849_the_roster_reached_two_reds_before_the_disk_wall.kyri) | 223 green; two reds; summary lost to ENOSPC |
 | `20260914.113318` | [The library receipt crossed today's head](20260914/20260914-113318_the-library-receipt-crossed-todays-head.kyri) | 19 legs green; scoped hot met capacity |
+| `20260914.113105` | [the parked rail was already home](20260914/20260914-113105_the-parked-rail-was-already-home.kyri) | elder stash matched HEAD; capacity stopped roster |
 | `20260914.112859` | [Recovered send](20260914/20260914-112859_the_recovered_send_crossed_both_remotes.kyri) | rebased log reached both remotes; capacity held |
 | `20260914.112413` | [Cold roster disk wall](20260914/20260914-112413_the_cold_roster_reached_the_disk_wall.kyri) | guards green; summary met ENOSPC |
 | `20260914.112401` | [The cold pass found the capacity wall](20260914/20260914-112401_the-cold-pass-found-the-capacity-wall.kyri) | recovered stash landed; roster ended without verdict |
