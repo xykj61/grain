@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ebd68600b8` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5054fb17a2` -- this follow-up's parent, resolvable everywhere (%401).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -55,12 +55,9 @@ N=4769): read the concrete mark before the plausible story. Round-open found
 `two_rooms_doorway_reach.sh` in `stash@{16}` and `fleet-fly-bare.sh` in `stash@{18}`. The fetched
 absence scan read `commits_behind=0` and `verdict=absent` for both prototype names.
 **DISPOSITION: STANDFASTED.** Their duties live in the rostered `two_rooms_doorway` guard and fleet
-watcher. The former reconciles tracked doors and folded shelves; the latter reads the seat table,
-passes `FLEET_BARE=1`, refuses duplicate loops and gated trees, and re-arms named tmux windows.
-Their prototype bytes remain recoverable; restoring them would duplicate those duties. Cold scoped
-ran **272 guards: 267 green, 3 red, 2 custody-gated**, with `tree_moved=no`; Patchouli's live claim
-owns the two primary reds. The Linengrow writing fossil now names its vision room, leaving three
-folded Caravan accounts as unchanged testimony.
+watcher, so restoring the recoverable prototypes would duplicate them. Cold scoped ran **272
+guards: 267 green, 3 red, 2 custody-gated**. The Linengrow
+writing fossil now names its vision room.
 
 **BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** Completed account
 [shelved whole](archive/20260913-232140_itinerary-compiler-bytes-account.md).
@@ -381,7 +378,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `ebd68600b8`.
+**Git nib:** `5054fb17a2`.
 
 ### Incense -- product captain
 
