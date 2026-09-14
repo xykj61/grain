@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.021718` | [the mark waited for both meanings](20260914/20260914-021718_the-mark-waited-for-both-meanings.kyri) | parked work safe; tutorial dependency remains |
 | `20260914.021009` | [the tutorial waited at the proven edge](20260914/20260914-021009_the-tutorial-waited-at-the-proven-edge.kyri) | parked work landed; product proof still open |
 | `20260914.021002` | [the finished claim left the live board](20260914/20260914-021002_the-finished-claim-left-the-live-board.kyri) | completed incense claim retired; cold 277 green, 7 red |
+| `20260914.015912` | [the card landed before motion](20260914/20260914-015912_the_card_landed_before_motion.kyri) | card present; motion next; cold roster held six reds |
 | `20260914.010103` | [the recovered account reached both shores](20260914/20260914-010103_the-recovered-account-reached-both-shores.kyri) | two account commits sent; roster hit disk limit |
 | `20260914.005538` | [the twelve lines needed thirteen seats](20260914/20260914-005538_the-twelve-lines-needed-thirteen-seats.kyri) | receipt snapshot mismatch bound; handoff A 95 |
 | `20260914.005504` | [the parked record rejoined its shelf](20260914/20260914-005504_the-parked-record-rejoined-its-shelf.kyri) | account restored; moving count kept; roster capacity red |
