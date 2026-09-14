@@ -11,10 +11,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260914.070950` | [the consent rail settled on Still](20260914/20260914-070950_the-consent-rail-settled-on-still.kyri) | fixed frames and motion bounds packaged; Swift 6.2 bench remains |
 | `20260914.081105` | [The concrete edge stayed proven](20260914/20260914-081105_the_concrete_edge_stayed_proven.kyri) | stash preserved; product seam still open |
 | `20260914.074531` | [The tutorial kept the proven edge](20260914/20260914-074531_the-tutorial-kept-the-proven-edge.kyri) | recovery present; product seam still open |
 | `20260914.072453` | [The long return kept the recovery whole](20260914/20260914-072453_the-long-return-kept-the-recovery-whole.kyri) | recovery held; cold roster remains in flight |
+| `20260914.071143` | [the library receipt came home](20260914/20260914-071143_the-library-receipt-came-home.kyri) | v5 restored; nineteen receipt legs green |
+| `20260914.070950` | [the consent rail settled on Still](20260914/20260914-070950_the-consent-rail-settled-on-still.kyri) | fixed frames and motion bounds packaged; Swift 6.2 bench remains |
 | `20260914.063324` | [The stash kept the missing testimony](20260914/20260914-063324_the-stash-kept-the-missing-testimony.kyri) | two restored; two parked; all stashes preserved |
 | `20260914.060056` | [the tutorial waited for both meanings](20260914/20260914-060056_the-tutorial-waited-for-both-meanings.kyri) | cold roster green; product seam still open |
 | `20260914.050343` | [the parked lap kept its record](20260914/20260914-050343_the-parked-lap-kept-its-record.kyri) | restored three paths; stash preserved |
@@ -32,6 +33,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.033537` | [the roster waited for room](20260914/20260914-033537_the-roster-waited-for-room.kyri) | parked work safe; filesystem capacity blocks roster |
 | `20260914.033437` | [the capacity red held the line](20260914/20260914-033437_the_capacity_red_held_the_line.kyri) | parked work safe; filesystem capacity red remains |
 | `20260914.032745` | [the boundary stayed at capacity](20260914/20260914-032745_the_boundary_stayed_at_capacity.kyri) | parked work safe; filesystem capacity red remains |
+| `20260914.032351` | [the library bytes entered the receipt](20260914/20260914-032351_the-library-bytes-entered-the-receipt.kyri) | v5 keys full std content; 19 legs green |
 | `20260914.032100` | [the tutorial listened for both meanings](20260914/20260914-032100_the-tutorial-listened-for-both-meanings.kyri) | cold reds reconciled; dual-product proof remains |
 | `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
 | `20260914.025828` | [the parent mark returned to the card](20260914/20260914-025828_the-parent-mark-returned-to-the-card.kyri) | nib guards green; cold roster stopped on disk capacity |
