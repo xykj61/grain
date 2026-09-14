@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.034344` | [the tutorial stayed inside its edge](20260914/20260914-034344_the_tutorial_stayed_inside_the_proven_edge.kyri) | recovery clean; capacity and proof remain open |
+| `20260914.034111` | [the two accounts left the dead-letter box](20260914/20260914-034111_the-two-accounts-left-the-dead-letter-box.kyri) | two Copal records restored; named guard green |
 | `20260914.034056` | [the water row stopped at capacity](20260914/20260914-034056_the_water_row_stopped_at_capacity.kyri) | parked work safe; disk capacity still blocks roster |
 | `20260914.033616` | [the tutorial held at the capacity line](20260914/20260914-033616_the-tutorial-held-at-the-capacity-line.kyri) | recovery clean; capacity and product seam remain open |
 | `20260914.033537` | [the roster waited for room](20260914/20260914-033537_the-roster-waited-for-room.kyri) | parked work safe; filesystem capacity blocks roster |
@@ -21,6 +22,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
 | `20260914.025828` | [the parent mark returned to the card](20260914/20260914-025828_the-parent-mark-returned-to-the-card.kyri) | nib guards green; cold roster stopped on disk capacity |
 | `20260914.025715` | [the cold run found two hard edges](20260914/20260914-025715_the-cold-run-found-two-hard-edges.kyri) | nib fixed; shared disk stopped cold roster |
+| `20260914.023837` | [the held account returned to its shelf](20260914/20260914-023837_the-held-account-returned-to-its-shelf.kyri) | one Copal dead-letter record restored; product boundary held |
 | `20260914.021718` | [the mark waited for both meanings](20260914/20260914-021718_the-mark-waited-for-both-meanings.kyri) | parked work safe; tutorial dependency remains |
 | `20260914.021602` | [the parked proof reached the standing roster](20260914/20260914-021602_the-parked-proof-reached-the-standing-roster.kyri) | newest stash recovered; proof green |
 | `20260914.021009` | [the tutorial waited at the proven edge](20260914/20260914-021009_the-tutorial-waited-at-the-proven-edge.kyri) | parked work landed; product proof still open |
@@ -29,6 +31,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.020021` | [the two receipts kept their own meaning](20260914/20260914-020021_the_two_receipts_kept_their_own_meaning.kyri) | transaction proof differs from offer acceptance |
 | `20260914.015912` | [the card landed before motion](20260914/20260914-015912_the_card_landed_before_motion.kyri) | card present; motion next; cold roster held six reds |
 | `20260914.015710` | [Tally repair crossed the living tip](20260914/20260914-015710_the-tally-refusal-repair-crossed-the-living-tip.kyri) | repair reconciled; 49-row shelf restored |
+| `20260914.015546` | [the vessel kept its thin edge](20260914/20260914-015546_the-vessel-kept-its-thin-edge.kyri) | Amphora focused green; first-receipt exclusion held |
 | `20260914.011413` | [the parked Tally refusal repair came home](20260914/20260914-011413_the-parked-tally-refusal-repair-came-home.kyri) | 18 refusals speak; shim-reason 940 -> 922 |
 | `20260914.010103` | [the recovered account reached both shores](20260914/20260914-010103_the-recovered-account-reached-both-shores.kyri) | two parked commits sent; roster met disk limit |
 | `20260914.005538` | [the twelve lines needed thirteen seats](20260914/20260914-005538_the-twelve-lines-needed-thirteen-seats.kyri) | receipt snapshot mismatch bound; handoff A 95 |
