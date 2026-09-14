@@ -25,6 +25,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260913.212328` | [the tutorial held its public edge](20260913/20260913-212328_the-tutorial-held-its-public-edge.kyri) | recovery clear; peer receipt seams remain in flight |
 | `20260913.211558` | [parked receipt proof joined Tally's clock](20260913/20260913-211558_the-parked-receipt-proof-joined-tallys-clock.kyri) | parked proof restored; Tally owns and runs it |
 | `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |
+| `20260913.202029` | [the second pull named its proof](20260913/20260913-202029_the-second-pull-named-its-proof.kyri) | two change sets derive scoped or full proof |
 | `20260913.201928` | [the rail waited for its facts](20260913/20260913-201928_the-rail-waited-for-its-facts.kyri) | Consent Rail waits on four landed inputs; design handoff A 91 |
 | `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
 | `20260913.194220` | [the offer stayed outside the journal](20260913/20260913-194220_the_offer_stayed_outside_the_journal.kyri) | first Dimeroll offer remains evidence, not an entry |
