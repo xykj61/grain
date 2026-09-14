@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.033537` | [the roster waited for room](20260914/20260914-033537_the-roster-waited-for-room.kyri) | parked work safe; filesystem capacity blocks roster |
 | `20260914.032745` | [the boundary stayed at capacity](20260914/20260914-032745_the_boundary_stayed_at_capacity.kyri) | parked work safe; filesystem capacity red remains |
 | `20260914.032100` | [the tutorial listened for both meanings](20260914/20260914-032100_the-tutorial-listened-for-both-meanings.kyri) | cold reds reconciled; dual-product proof remains |
 | `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
