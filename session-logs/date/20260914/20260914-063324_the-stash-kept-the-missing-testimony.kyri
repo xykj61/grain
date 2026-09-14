@@ -20,11 +20,11 @@ think The Air row surfaced the boundary: a record recovered into a closed day ch
 obs path_absence_scan read absent_both=4 before recovery; two records can land, while two REDS shelves stay parked because restoring them duplicated the living spine's %602 and %705 identities.
 obs the interrupted cold roster reached 132 classified rows: 127 green, 3 red, and 2 custody-gated; the claim commit moved HEAD while it ran, so it could not become closing evidence.
 obs all four candidate records grade A+ 100 at Meter; the session pin grades A 94 and both registry pages grade A+ 100.
-loom recovery stash_entries=31 paths_absent_both=4 candidate_blob_matches=4 restored_paths=2 parked_conflicts=2 stashes_preserved=31 closed_day_rows_before=68 closed_day_rows_after=69
+loom recovery stash_entries_after_rebase=32 paths_absent_both=4 candidate_blob_matches=4 restored_paths=2 parked_conflicts=2 original_stashes_preserved=31 recovery_package_stash=1 closed_day_rows_before=68 closed_day_rows_after=69
 loom cold_interrupted classified_rows=132 green=127 red=3 gated=2 transcript_lines=172 tree_moved=yes
 rota lap 4841, row 1 -- Air, the row that feels; the reading surfaced the closed-day count as the boundary a restored record must press
 file construction/archive/20260911-060856_itinerary-landed-accounts.md restores the parked Grass account byte-for-byte
 file session-logs/date/20260911/20260911-060856_the-repair-that-spoke-too-late.kyri restores the parked lap record byte-for-byte
-recommend keep all 31 stashes until a separate custody decision names deletion; two records now reach the tree and two conflicting REDS shelves remain safely parked
+recommend keep all 32 stashes until a separate custody decision names deletion; two records now reach the tree and two conflicting REDS shelves remain safely parked
 scope audit every Grass stash for paths absent from HEAD, verify absence against xy, restore two compatible historical records, and preserve two spine-conflicting shelves in place
 status GREEN -- restored blobs match; log, spine, nib, and shelf witnesses are GREEN after the hot roster named the two parked conflicts
