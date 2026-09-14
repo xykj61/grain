@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.222906` | [the red stayed with its owner](20260913/20260913-222906_the-red-stayed-with-its-owner.kyri) | claimed receipt witness red stays with Patchouli |
 | `20260913.220203` | [the language seam heard its owners](20260913/20260913-220203_the-language-seam-heard-its-owners.kyri) | claims keep receipt and Tally work with their owners |
 | `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |
 | `20260913.201928` | [the rail waited for its facts](20260913/20260913-201928_the-rail-waited-for-its-facts.kyri) | Consent Rail waits on four landed inputs; design handoff A 91 |
