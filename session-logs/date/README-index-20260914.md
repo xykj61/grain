@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260914.010103` | [the recovered account reached both shores](20260914/20260914-010103_the-recovered-account-reached-both-shores.kyri) | two parked-account commits sent; full roster met disk limit |
 | `20260914.002923` | [the radius kept the reading order](20260914/20260914-002923_the-radius-kept-the-reading-order.kyri) | radial grouping stays behind canonical rows |
+| `20260914.002722` | [the boundary kept the red with its owner](20260914/20260914-002722_the-boundary-kept-the-red-with-its-owner.kyri) | 282 cold green; Patchouli owns both red lines |
 | `20260914.002222` | [the parked vessel account crossed midnight](20260914/20260914-002222_the-parked-vessel-account-crossed-midnight.kyri) | parked account restored; focused green; roster met disk limit |
 | `20260914.002049` | [the card kept waiting for its marked value](20260914/20260914-002049_the-card-kept-waiting-for-its-marked-value.kyri) | projection absent; cold structural slice green |
 | `20260914.000904` | [the surface kept its product boundary](20260914/20260914-000904_the-surface-kept-its-product-boundary.kyri) | receipt projection absent; rail remains behind facts |
