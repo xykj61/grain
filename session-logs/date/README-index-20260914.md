@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.021718` | [the mark waited for both meanings](20260914/20260914-021718_the-mark-waited-for-both-meanings.kyri) | parked work safe; tutorial dependency remains |
 | `20260914.021009` | [the tutorial waited at the proven edge](20260914/20260914-021009_the-tutorial-waited-at-the-proven-edge.kyri) | parked work landed; product proof still open |
 | `20260914.010103` | [the recovered account reached both shores](20260914/20260914-010103_the-recovered-account-reached-both-shores.kyri) | two account commits sent; roster hit disk limit |
 | `20260914.005538` | [the twelve lines needed thirteen seats](20260914/20260914-005538_the-twelve-lines-needed-thirteen-seats.kyri) | receipt snapshot mismatch bound; handoff A 95 |
