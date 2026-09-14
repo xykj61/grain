@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.032745` | [the boundary stayed at capacity](20260914/20260914-032745_the_boundary_stayed_at_capacity.kyri) | parked work safe; filesystem capacity red remains |
 | `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
 | `20260914.025715` | [the cold run found two hard edges](20260914/20260914-025715_the-cold-run-found-two-hard-edges.kyri) | nib fixed; shared disk stopped cold roster |
 | `20260914.021718` | [the mark waited for both meanings](20260914/20260914-021718_the-mark-waited-for-both-meanings.kyri) | parked work safe; tutorial dependency remains |
