@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.154709` | [The parked refusal returned whole](20260914/20260914-154709_the_parked_refusal_returned_whole.kyri) | recovered witness and log; full hot roster closed at the Git nib |
+| `20260914.141348` | [The refusal spoke](20260914/20260914-141348_the_refusal_spoke_before_it_stopped.kyri) | parked work home; roster red closed |
 | `20260914.141113` | [The full roster named two reasons](20260914/20260914-141113_the_full_roster_named_two_reasons.kyri) | complete cold proof; two diagnostic roots closed |
 | `20260914.125631` | [Earth read the capacity wall](20260914/20260914-125631_earth-read-the-capacity-wall.kyri) | parked work preserved; ENOSPC still holds the cold roster |
 | `20260914.125617` | [The parked record was already home](20260914/20260914-125617_the-parked-record-was-already-home.kyri) | stash preserved; hot roster names rebuild work |
