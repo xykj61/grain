@@ -12,8 +12,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260913.225250` | [the parked tutorial record came home](20260913/20260913-225250_the-parked-tutorial-record-came-home.kyri) | parked record restored; peer receipt seams remain |
-| `20260913.225038` | [the boundary stayed under its own hand](20260913/20260913-225038_the-boundary-stayed-under-its-own-hand.kyri) | Air felt the claimed receipt seam; 16 cold guards green |
-| `20260913.224226` | [the language seam waited at its owned edge](20260913/20260913-224226_the-language-seam-waited-at-its-owned-edge.kyri) | Water tasted the claimed receipt seam; 38 cold guards green |
+| `20260913.225038` | [the boundary stayed under its own hand](20260913/20260913-225038_the-boundary-stayed-under-its-own-hand.kyri) | claimed receipt seam held; 16 cold guards green |
+| `20260913.224226` | [the language seam waited at its owned edge](20260913/20260913-224226_the-language-seam-waited-at-its-owned-edge.kyri) | receipt seam held; 38 cold guards green |
 | `20260913.222906` | [the red stayed with its owner](20260913/20260913-222906_the-red-stayed-with-its-owner.kyri) | claimed receipt witness red stays with Patchouli |
 | `20260913.222411` | [the parked offer was already home](20260913/20260913-222411_the_parked_offer_was_already_home.kyri) | newest Grass stash already landed; no replay |
 | `20260913.220203` | [the language seam heard its owners](20260913/20260913-220203_the-language-seam-heard-its-owners.kyri) | claims keep receipt and Tally work with their owners |
