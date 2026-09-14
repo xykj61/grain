@@ -11,11 +11,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |
 | `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
 | `20260913.193711` | [two parked contract records crossed the send](20260913/20260913-193711_two-parked-contract-records-crossed-the-send.kyri) | accepted edge and two records restored |
 | `20260913.192054` | [three parked records rejoined the thread](20260913/20260913-192054_three-parked-records-rejoined-the-thread.kyri) | three records restored; closed shelf derives to 65 |
 | `20260913.191904` | [the boundary held the tutorial](20260913/20260913-191904_the-boundary-held-the-tutorial.kyri) | recovery clear; receipt interfaces remain in flight |
 | `20260913.190441` | [the parked contract kept its boundary](20260913/20260913-190441_the-parked-contract-kept-its-boundary.kyri) | restored accepted edge; unproven cases stay proposed |
+| `20260913.183603` | [the claimed red held the language seam](20260913/20260913-183603_the-claimed-red-held-the-language-seam.kyri) | cold 278/3/2; patchouli owns the Tally repair |
 | `20260913.180539` | [two parked diffuser records came home](20260913/20260913-180539_two-parked-diffuser-records-came-home.kyri) | two records restored; closed shelf derives to 65 |
 | `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri) | root and dependency execute bits join receipt; 17 green |
 | `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri) | parked row-count proof restored and green on current HEAD |
