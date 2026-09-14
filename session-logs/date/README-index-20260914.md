@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.104012` | [Cold pass capacity](20260914/20260914-104012_the_cold_pass_stopped_at_the_full_disk.kyri) | README restored; full verdict absent |
 | `20260914.101831` | [the parent mark caught the roster red](20260914/20260914-101831_the-parent-mark-caught-the-roster-red.kyri) | stale nib repaired; dual-product seam held |
 | `20260914.101759` | [Recovered send](20260914/20260914-101759_the_recovered_send_reached_both_remotes.kyri) | parked record landed; capacity hold kept visible |
 | `20260914.100758` | [Rebased record](20260914/20260914-100758_the_rebased_record_carried_its_parent_forward.kyri) | debts paid; parent nib carried forward |
