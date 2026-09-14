@@ -13,8 +13,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260914.093109` | [the boundary stayed under the hand](20260914/20260914-093109_the-boundary-stayed-under-the-hand.kyri) | stashes preserved; dual-product seam remains open |
 | `20260914.092301` | [missing record returned](20260914/20260914-092301_the-missing-record-returned-at-the-capacity-line.kyri) | restored one log; capacity stopped roster |
+| `20260914.091630` | [Dead letter returned](20260914/20260914-091630_the_dead_letter_returned_before_capacity_closed_the_pass.kyri) | recovery whole; roster met capacity |
 | `20260914.091428` | [The cold roster ended mid-line](20260914/20260914-091428_the-cold-roster-ended-mid-line.kyri) | recovered lap preserved; roster terminal verdict absent |
 | `20260914.081818` | [The recovery was already home](20260914/20260914-081818_the-recovery-was-already-home.kyri) | stash kept; focused checks green; hot pass lost verdict |
+| `20260914.081524` | [The parent mark kept its full width](20260914/20260914-081524_the_parent_mark_kept_its_full_width.kyri) | two nib fields restored to ten hex digits |
 | `20260914.081105` | [The concrete edge stayed proven](20260914/20260914-081105_the_concrete_edge_stayed_proven.kyri) | stash preserved; product seam still open |
 | `20260914.074531` | [The tutorial kept the proven edge](20260914/20260914-074531_the-tutorial-kept-the-proven-edge.kyri) | recovery present; product seam still open |
 | `20260914.072453` | [The long return kept the recovery whole](20260914/20260914-072453_the-long-return-kept-the-recovery-whole.kyri) | recovery held; cold roster remains in flight |
