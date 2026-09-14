@@ -20,6 +20,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260913.222906` | [the red stayed with its owner](20260913/20260913-222906_the-red-stayed-with-its-owner.kyri) | claimed receipt witness red stays with Patchouli |
 | `20260913.222411` | [the parked offer was already home](20260913/20260913-222411_the_parked_offer_was_already_home.kyri) | newest Grass stash already landed; no replay |
 | `20260913.220203` | [the language seam heard its owners](20260913/20260913-220203_the-language-seam-heard-its-owners.kyri) | claims keep receipt and Tally work with their owners |
+| `20260913.213946` | [two parked prototypes met their living heirs](20260913/20260913-213946_two-parked-prototypes-met-their-living-heirs.kyri) | elder bytes kept; rostered duties stand |
 | `20260913.212328` | [the tutorial held its public edge](20260913/20260913-212328_the-tutorial-held-its-public-edge.kyri) | recovery clear; peer receipt seams remain in flight |
 | `20260913.211558` | [parked receipt proof joined Tally's clock](20260913/20260913-211558_the-parked-receipt-proof-joined-tallys-clock.kyri) | parked proof restored; Tally owns and runs it |
 | `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |

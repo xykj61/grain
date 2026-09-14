@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1558cb3669` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ebd68600b8` -- this commit's parent, resolvable everywhere (%401).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -50,15 +50,20 @@ holds at most **9** and named gates close at `nona-shape`. A split chooses ident
 changes the language. Both are custody rulings. **DISPOSITION: STANDFAST.** No product file moved.
 The claim closed. Tally is green. Two earlier Pheromone index rows now fit; 39 controls are green.
 
-**BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** **WATER TASTES** (row 3,
-N=4758): run the actual seam, then change one ingredient without changing its vessel. Rye's v3
-receipt keyed the compiler path and size, so a same-path, same-size replacement could reuse an
-elder binary. The v4 key streams the compiler's bytes into SHA-256 and compiles fresh when that
-read fails. The control grows **17 -> 18 legs**: one executable wrapper changes a same-length
-comment at the same path, still compiles through the pinned Zig, and must miss. All 18 legs are
-GREEN; every owed proof still runs. Cold **284/278/4**, with two custody gates: Patchouli's live
-claim owns `tally_roster` and the misfiled receipt witness, `standing_equipment` repeats them, and
-the upstream nib repair closes the remaining primary red.
+**INCENSE -- TWO PARKED PROTOTYPES MET THEIR LIVING HEIRS.** **EARTH BREATHES IN** (row 4,
+N=4769): read the concrete mark before the plausible story. Round-open found
+`two_rooms_doorway_reach.sh` in `stash@{16}` and `fleet-fly-bare.sh` in `stash@{18}`. The fetched
+absence scan read `commits_behind=0` and `verdict=absent` for both prototype names.
+**DISPOSITION: STANDFASTED.** Their duties live in the rostered `two_rooms_doorway` guard and fleet
+watcher. The former reconciles tracked doors and folded shelves; the latter reads the seat table,
+passes `FLEET_BARE=1`, refuses duplicate loops and gated trees, and re-arms named tmux windows.
+Their prototype bytes remain recoverable; restoring them would duplicate those duties. Cold scoped
+ran **272 guards: 267 green, 3 red, 2 custody-gated**, with `tree_moved=no`; Patchouli's live claim
+owns the two primary reds. The Linengrow writing fossil now names its vision room, leaving three
+folded Caravan accounts as unchanged testimony.
+
+**BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** Completed account
+[shelved whole](archive/20260913-232140_itinerary-compiler-bytes-account.md).
 
 **GRASS -- THE OFFER STAYED OUTSIDE THE JOURNAL.** **FIRE SEES** (row 2, N=4757): stop at the
 product contradiction before implementation hardens it. The first Dimeroll milestone said a
@@ -376,7 +381,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1558cb3669`.
+**Git nib:** `ebd68600b8`.
 
 ### Incense -- product captain
 
