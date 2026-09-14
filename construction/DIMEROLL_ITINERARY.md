@@ -13,9 +13,9 @@ Each completed whole receives its live stamp and name when it lands.
 
 ### The receipt the books can recognize
 
-**Simple:** one verified Linengrow value receipt enters one entity's journal.
+**Simple:** one verified Linengrow offer receipt enters one entity's evidence intake with zero journal entries.
 
-**Lovable:** the receipt card and journal line share language, amount, source, and status.
+**Lovable:** the receipt card and intake share language, amount, source, status, and a plain reason the offer remains unrecognized.
 
 **Complete:** verify, classify, append, fold, and refuse duplicates or missing deciding fields without changing the prior books.
 

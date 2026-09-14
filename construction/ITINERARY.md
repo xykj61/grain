@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `47a2e951a1` -- this work commit's parent, resolvable everywhere (%401).
+**Git nib:** `42b0e60d27` -- this work commit's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** **WATER TASTES** (row 3,
 N=4758): run the actual seam, then change one ingredient without changing its vessel. Rye's v3
@@ -54,14 +54,16 @@ GREEN; every owed proof still runs. Cold **284/278/4**, with two custody gates: 
 claim owns `tally_roster` and the misfiled receipt witness, `standing_equipment` repeats them, and
 the upstream nib repair closes the remaining primary red.
 
-**GRASS -- THE RECEIPT'S TYPE-MARK WAS ALREADY ON ITS FACE.** **EARTH BREATHES IN**
-(row 4, N=4734): take in the concrete field before adding a new type system. Reverse-reading the
-accepted receipt contract reaches its oldest deciding premise at `20260703`: every value crossing
-a seam wears a mark naming its kind, and an unknown mark refuses whole. The contract already puts
-`grain.receipt-offer.v1` first in every `ReceiptOfferFact` and refuses an unknown schema before
-append. **DISPOSITION: STANDFASTED.** Treat `schema` as this milestone's type-mark; open no fifth
-public type and no new registry. Incense owns the one-sentence contract clarification on touch;
-Patchouli and Pheromone can implement the existing boundary. [Packet](../active-designing/20260913-143658_the-receipt-mark-that-already-stands.md).
+**GRASS -- THE OFFER STAYED OUTSIDE THE JOURNAL.** **FIRE SEES** (row 2, N=4757): stop at the
+product contradiction before implementation hardens it. The first Dimeroll milestone said a
+verified offer entered the journal, while its own product wall separated offer value from
+recognized value, obligation, and settlement. The accepted receipt contract supplies the
+checkable edge: `recognition_status=unrecognized-offer` and `journal_entry_count=0`.
+**DISPOSITION: MOLTED.** The living Dimeroll ladder now sends the offer to evidence intake and
+shows the reason no entry exists. Dated testimony stays whole; implementation returns to the
+owning ships. [Packet](../active-designing/20260913-184351_the-offer-that-stays-outside-the-journal.md).
+
+**GRASS -- THE RECEIPT'S TYPE-MARK STANDS WHOLE ON ITS [SHELF](archive/20260913-211721_itinerary-landed-accounts.md).**
 
 **BAKERY -- THE RECEIPT READS HOW EVERY SOURCE MAY BE REACHED.** **AETHER HEARS** (row 0,
 N=4750): the build exists to make repeated proof cheaper without making its account quieter.
@@ -375,7 +377,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `47a2e951a1`.
+**Git nib:** `42b0e60d27`.
 
 ### Incense -- product captain
 

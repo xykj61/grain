@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |
 | `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
+| `20260913.194220` | [the offer stayed outside the journal](20260913/20260913-194220_the_offer_stayed_outside_the_journal.kyri) | first Dimeroll offer remains evidence, not an entry |
 | `20260913.193711` | [two parked contract records crossed the send](20260913/20260913-193711_two-parked-contract-records-crossed-the-send.kyri) | accepted edge and two records restored |
 | `20260913.192054` | [three parked records rejoined the thread](20260913/20260913-192054_three-parked-records-rejoined-the-thread.kyri) | three records restored; closed shelf derives to 65 |
 | `20260913.191904` | [the boundary held the tutorial](20260913/20260913-191904_the-boundary-held-the-tutorial.kyri) | recovery clear; receipt interfaces remain in flight |
