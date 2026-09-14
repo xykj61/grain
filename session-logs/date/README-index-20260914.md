@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.115240` | [The cold roster reached capacity](20260914/20260914-115240_the-cold-roster-reached-capacity.kyri) | parked work safe; full cold proof met ENOSPC |
 | `20260914.114743` | [Cold roster capacity](20260914/20260914-114743_the_cold_roster_stopped_at_capacity.kyri) | three reds surfaced before ENOSPC stopped the pass |
 | `20260914.113849` | [Two reds before the disk wall](20260914/20260914-113849_the_roster_reached_two_reds_before_the_disk_wall.kyri) | 223 green; two reds; summary lost to ENOSPC |
 | `20260914.113318` | [The library receipt crossed today's head](20260914/20260914-113318_the-library-receipt-crossed-todays-head.kyri) | 19 legs green; scoped hot met capacity |
