@@ -65,3 +65,9 @@ stamp 20260913.235207
 epoch 1789357927
 paths tools/t/tally_roster_witness.rish tools/t/tally_bud_witness.rish tools/fixtures/s/shim_reason_scan.sh construction/fleet-claims.kyri
 what Carry captured output into two rostered Tally witnesses and lower the shim-reason ceiling to the measured tree.
+claim bakery-moved-proof-heard
+seat bakery
+stamp 20260914.015559
+epoch 1789365359
+paths tools/f/fleet_moved_proof_witness.rish tools/f/fleet_moved_proof.sh tools/fixtures/f/fleet_moved_proof_control.sh construction/standing-equipment.kyri tools/fixtures/s/standing_equipment_scope_map.sh session-logs/README.md session-logs/CHAPTERS.md construction/ITINERARY.md
+what Seat the moved-proof control on the live roster and repair the closed 20260913 shelf count before extending Rye's library cache key.
