@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260914.170919
+editor Codex API
+provider OpenAI
+product Codex
+role petrichor -- docs-geode and the prose product
+modality text
+model gpt-5.6-sol
+model_status verified from session-output/petrichor.txt
+configured_model gpt-5.6-sol
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-5.6-sol; session-output/petrichor.txt reports model gpt-5.6-sol
+voice Kyri
+host Linux pier, America/New_York one clock
+title The full roster found one wrong digit
+prompt recover unfinished Petrichor work, honor its full send proof, and close through both remotes
+think Air felt the commit boundary: a parent mark is exact only when all ten written digits resolve.
+obs The full hot roster ran 287 guards: 282 green, 3 red, and 2 custody-gated; both primary reds shared the nonexistent nib dc0976359d and standing_equipment reported them.
+obs A peer landed the same nib repair upstream; the rebase kept that repair and preserved Petrichor's earlier session record without duplicating the card change.
+loom full_hot guards_run=287 guards_green=282 guards_red=3 guards_gated=2 tree_moved=no seconds=3909
+file construction/ITINERARY.md carries this follow-up commit's parent in both living nib fields
+grade construction/ITINERARY.md A 94 at Gauge Field; session log and index are Meter records
+rota lap 4911, row 1 -- Air; the boundary surfaced one nonexistent digit in an otherwise correct parent mark.
+recommend write the receipt walkthrough when its dual-product public seam is green; until then preserve the working-interface gate
+scope recover and rebase the unsent Petrichor follow-up, read the full roster refusal, carry the exact parent nib, and record the closure
+status GREEN before send -- the rebased parent mark resolves, the full red was read whole, and focused plus scoped hot checks close this independent card-and-log follow-up
