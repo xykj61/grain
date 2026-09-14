@@ -65,3 +65,9 @@ stamp 20260914.031106
 epoch 1789369866
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish construction/ITINERARY.md construction/fleet-claims.kyri
 what Extend Rye build receipts through the library bytes the compiler reads, and prove a same-path same-size library mutation forces a rebuild.
+claim grass-stash-testimony-recovery
+seat grass
+stamp 20260914.061749
+epoch 1789381069
+paths construction/archive/20260911-060856_itinerary-landed-accounts.md construction/archive/REDS-a-repair-that-spoke-after-the-refusal-rows-705.md session-logs/date/20260911/20260911-060856_the-repair-that-spoke-too-late.kyri session-logs/date/README-index-20260911.md construction/archive/REDS-a-path-a-repointer-could-not-follow-rows-602.md
+what Restore four historical records that exist only in preserved Grass stashes, and restore the missing session-log row without changing their testimony.
