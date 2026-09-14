@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.123026` | [Capacity held the build and not the send](20260914/20260914-123026_capacity-held-the-build-and-not-the-send.kyri) | stash held; finished commits cleared to send |
 | `20260914.122532` | [The resident builds were not scratch](20260914/20260914-122532_the-resident-builds-were-not-scratch.kyri) | cleanup cascade recorded; disk headroom still gates proof |
 | `20260914.122453` | [The roster reached the disk wall](20260914/20260914-122453_the_roster_reached_the_disk_wall.kyri) | recovery complete; cold pass met ENOSPC |
+| `20260914.122448` | [The cold roster crossed its old stop](20260914/20260914-122448_the_cold_roster_crossed_its_old_stop.kyri) | recovery held; roster passed its old stop before ENOSPC |
 | `20260914.115951` | [Capacity held the captain](20260914/20260914-115951_capacity-held-the-captain-at-the-evidence-line.kyri) | recovery safe; roster met ENOSPC |
 | `20260914.115315` | [The stash returned nothing twice](20260914/20260914-115315_the_stash_returned_nothing_twice.kyri) | recovery converged; scoped cold met ENOSPC |
 | `20260914.115257` | [Cold roster capacity edge](20260914/20260914-115257_the-cold-roster-met-the-capacity-edge.kyri) | landed stash matched; ENOSPC stopped the cold pass |
