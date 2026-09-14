@@ -23,7 +23,7 @@ loom cold_roster reported=204 green=147 red=55 gated=2 terminal_verdict=absent
 loom hot_roster guards=288 green=210 red=76 gated=2 seconds=2180 tree_moved=no verdict=guard_red
 loom storage available_mib_before_hot=366 available_mib_after_hot=30572
 rota lap 4892, row 2 -- Fire, the row that sees; the widening false-red cascade made the capacity stop and the exact repair boundary visible.
-file construction/ITINERARY.md carries parent cda9d90281 in both living nib fields
+file construction/ITINERARY.md carries parent 59fb107fea in both living nib fields
 file session-logs/date/README-index-20260914.md points to this record
 recommend keep-going rebuild the named resident module products, then rerun the full cold roster before new product work
 scope recover stash@{0}, reconcile its already-landed record, and preserve the cold roster's capacity-stopped evidence without taking peer-lane reds
