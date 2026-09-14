@@ -77,9 +77,3 @@ stamp 20260913.235207
 epoch 1789357927
 paths tools/t/tally_roster_witness.rish tools/t/tally_bud_witness.rish tools/fixtures/s/shim_reason_scan.sh construction/fleet-claims.kyri
 what Carry captured output into two rostered Tally witnesses and lower the shim-reason ceiling to the measured tree.
-claim diffuser-radial-reading-order
-seat diffuser
-stamp 20260914.002616
-epoch 1789359976
-paths active-designing/20260914-002615_the-radius-that-keeps-a-reading-order.md
-what Test whether a bounded radial receipt surface can preserve the accepted linear reading order without changing product meaning.

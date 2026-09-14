@@ -11,5 +11,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.002923` | [the radius kept the reading order](20260914/20260914-002923_the-radius-kept-the-reading-order.kyri) | radial grouping stays behind canonical rows |
 | `20260914.002049` | [the card kept waiting for its marked value](20260914/20260914-002049_the-card-kept-waiting-for-its-marked-value.kyri) | projection absent; cold structural slice green |
 | `20260914.000904` | [the surface kept its product boundary](20260914/20260914-000904_the-surface-kept-its-product-boundary.kyri) | receipt projection absent; rail remains behind facts |
