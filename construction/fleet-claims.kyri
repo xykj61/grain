@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim incense-receipt-contract-status
-seat incense
-stamp 20260913.173200
-epoch 1789335120
-paths active-designing/20260912-201126_the-receipt-you-can-read-contract.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
-what Record Keaton's accepted bounded synthetic implementation edge on the receipt contract while keeping every unproven acceptance case visibly proposed.
 claim patchouli-tally-shim-reason
 seat patchouli
 stamp 20260913.235207
