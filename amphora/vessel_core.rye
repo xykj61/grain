@@ -21,6 +21,7 @@ const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
 pub const amphora_vessel_version = "20260801.043522";
+pub const vessel_format = "amphora-v1";
 pub const max_vessel_len: u32 = 8192;
 pub const max_cargo: u32 = 16;
 pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
@@ -239,7 +240,7 @@ fn take_listed_line(line: []const u8, kind: []const u8, count: *u32) error{Inval
     return true;
 }
 
-pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!void {
+pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel, UnknownVersion}!void {
     var format_set = false;
     var stamp_set = false;
     var shoulder_set = false;
@@ -263,6 +264,9 @@ pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!v
         const value = trim_line(line[space + 1 ..]);
         if (value.len == 0) return error.InvalidVessel;
         if (std.mem.eql(u8, key, "format")) {
+            // A signature authenticates bytes rather than their meaning. Refuse a
+            // foreign grammar before any caller trusts the fields that follow.
+            if (!std.mem.eql(u8, value, vessel_format)) return error.UnknownVersion;
             out.format = value;
             format_set = true;
         } else if (std.mem.eql(u8, key, "stamp")) {
@@ -302,7 +306,7 @@ pub fn parse_vessel(text: []const u8, out: *VesselFields) error{InvalidVessel}!v
     out.sealed = sealed;
 }
 
-pub fn verify_vessel_stamp(text: []const u8) error{InvalidVessel, VerifyFailed, Overflow, BadHex}!void {
+pub fn verify_vessel_stamp(text: []const u8) error{InvalidVessel, UnknownVersion, VerifyFailed, Overflow, BadHex}!void {
     var fields: VesselFields = undefined;
     try parse_vessel(text, &fields);
     var canonical: [max_vessel_len]u8 = undefined;
@@ -403,7 +407,7 @@ fn run_selftest(io: std.Io) !u8 {
     try parse_vessel(text, &fields);
     // invariant: the fixture parses back into the exact format and stamp it was written with, so a
     // reader drifting on either field is caught here rather than in a vessel nobody can date.
-    assert(std.mem.eql(u8, fields.format, "amphora-v1"));
+    assert(std.mem.eql(u8, fields.format, vessel_format));
     assert(std.mem.eql(u8, fields.stamp, "20260710.143500"));
     // Class W wire shoulder (e149 restored) -- not product vocabulary.
     const shoulder_ring1_wire = "amber-ring1-season";
@@ -431,6 +435,11 @@ fn run_selftest(io: std.Io) !u8 {
     if (parse_vessel("format amphora-v1\nstamp x\nshoulder y\nparent short\ncargo plain-bytes ab name\n", &fields)) |_| {
         return error.UnwelcomePassed;
     } else |_| {}
+    if (parse_vessel("format amphora-v2\nstamp x\nshoulder y\nparent 0000000000000000000000000000000000000000000000000000000000000000\ncargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt\nstamp_sig 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\n", &fields)) |_| {
+        return error.UnwelcomePassed;
+    } else |fault| {
+        assert(fault == error.UnknownVersion);
+    }
 
     print("amphora: vessel version {s}\n", .{amphora_vessel_version});
     print("GREEN: Amphora vessel — parse, Kumara stamp, refuse wreck.\n", .{});

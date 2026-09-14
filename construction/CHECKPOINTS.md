@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260913.214700` -- walk-back nib `47a2e951a1`.** The recovered Copal receipt lap
+touches `construction/ITINERARY.md` after the card has grown 1,165 bytes past its 40,960-byte
+ceiling. Incense's completed tree-motion account already stands whole on
+`construction/archive/20260912-050057_itinerary-landed-accounts.md`, so its repeated live-card
+body folds to that shelf. The shelf keeps the cold-pass timing, path-diff mechanism, nine pen
+legs, two mutations, fixed-name firing, and open claim-board question; the card keeps one pointer.
+No living itinerary, custody gate, or open door moves.
+
 **Checkpoint `20260913.211721` -- walk-back nib `27d866c868`.** Recovering GRASS's offer/journal
 boundary account put `construction/ITINERARY.md` at 41,650 bytes against its 40,960-byte bound.
 The elder GRASS type-mark account is finished, carries no open question, and already has its own

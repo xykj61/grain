@@ -1,0 +1,70 @@
+# tools/am/amphora_receipt_bundle_witness.rish -- one accepted receipt crosses in an Amphora vessel.
+#
+# The receipt encoder belongs to Kyri. This witness treats its bytes as opaque cargo: Amphora
+# seals and signs them, refuses a decision-bearing mutation before restore, refuses an unknown
+# vessel version by name, and restores the exact original bytes. No real identity, key, data,
+# money, network service, or production signature enters this pen.
+
+let fixture = "tools/fixtures/r/receipt_offer_fact_v1.kyri"
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_receipt_bundle.XXXXXX"]
+assert pen.ok else "receipt-bundle: pen must open"
+let home = trim pen.out
+
+let prep = run ["sh" "-c" "mkdir -p ${home}/bin ${home}/season && cp ${fixture} ${home}/season/receipt-offer.kyri"]
+assert prep.ok else "receipt-bundle: synthetic season must open"
+
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
+if build_amphora.ok == false then say build_amphora.err
+assert build_amphora.ok else "receipt-bundle: amphora build failed"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
+if build_core.ok == false then say build_core.err
+assert build_core.ok else "receipt-bundle: vessel-core build failed"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
+if build_seal.ok == false then say build_seal.err
+assert build_seal.ok else "receipt-bundle: vessel-seal build failed"
+
+let vessel = "${home}/receipt.bron"
+let pour = run ["${home}/bin/amphora" "pour" "${home}/season" vessel]
+if pour.ok == false then say pour.err
+assert pour.ok else "receipt-bundle: accepted receipt must pour"
+let verify = run ["${home}/bin/vessel-core" "verify" vessel]
+assert verify.ok else "receipt-bundle: accepted receipt stamp must verify"
+let open = run ["${home}/bin/vessel-seal" "open-check" vessel]
+assert open.ok else "receipt-bundle: accepted receipt seal must authenticate"
+say "leg_authentication=green"
+
+# Purpose changes a decision. Flip one encrypted byte while leaving its stamp and tag untouched;
+# both authenticators must keep the changed meaning from reaching restore.
+let tamper = run ["sh" "-c" "sed '/^seal_cargo f/{s/^seal_cargo f/seal_cargo e/;b;};s/^seal_cargo ./seal_cargo f/' ${vessel} > ${home}/tampered.bron"]
+if tamper.ok == false then say tamper.err
+assert tamper.ok else "receipt-bundle: mutation plant must apply"
+let changed = run ["sh" "-c" "! cmp -s ${vessel} ${home}/tampered.bron"]
+assert changed.ok else "receipt-bundle: mutation plant must change one encrypted byte"
+let reject_stamp = run ["${home}/bin/vessel-core" "verify" "${home}/tampered.bron"]
+assert (reject_stamp.ok == false) else "receipt-bundle: changed sealed bytes must fail the stamp"
+let reject_seal = run ["${home}/bin/vessel-seal" "open-check" "${home}/tampered.bron"]
+assert (reject_seal.ok == false) else "receipt-bundle: changed sealed bytes must fail the seal"
+say "leg_decision_mutation=refused"
+
+# Authentication and grammar are separate readings. The signer must decline a vessel whose
+# version this parser does not know, so a valid local key cannot bless foreign meaning.
+let unknown = run ["sh" "-c" "sed 's/^format amphora-v1$/format amphora-v2/' ${vessel} > ${home}/unknown.bron"]
+assert unknown.ok else "receipt-bundle: version plant must apply"
+let reject_version = run ["${home}/bin/vessel-core" "sign" "${home}/unknown.bron"]
+assert (reject_version.ok == false) else "receipt-bundle: unknown vessel version must refuse before signing"
+assert reject_version.err contains "UnknownVersion" else "receipt-bundle: version refusal must be named"
+say "leg_version=refused"
+
+let restore = run ["${home}/bin/amphora" "restore" vessel]
+if restore.ok == false then say restore.err
+assert restore.ok else "receipt-bundle: accepted receipt must restore"
+let same = run ["cmp" fixture "${home}/receipt.bron.season/receipt-offer.kyri"]
+assert same.ok else "receipt-bundle: restored receipt bytes must equal the offered bytes"
+let schema = run ["grep" "-c" "^schema grain.receipt-offer.v1$" "${home}/receipt.bron.season/receipt-offer.kyri"]
+assert (trim schema.out) == "1" else "receipt-bundle: restored meaning must name the accepted schema once"
+say "leg_round_trip=byte_identical"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "receipt-bundle: pen must sweep"
+say "GREEN: amphora_receipt_bundle -- authenticated, versioned, decision mutation refused, byte-identical round trip"

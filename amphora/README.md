@@ -85,4 +85,6 @@ Canonical roof: [`src/main.rye`](src/main.rye) -- `//!` header + Q3 metal. HTML 
 | [`../tools/r/resin_unit_witness.rish`](../tools/r/resin_unit_witness.rish) | Arc II public resin fold -- batch - granary - chunk fixture - TUBE3 |
 | [`../tools/t/tensegral_arc_ii_witness.rish`](../tools/t/tensegral_arc_ii_witness.rish) | Arc II season fold -- resin unit + Glow floors |
 
+The receipt crossing is held by [`amphora_receipt_bundle`](../tools/am/amphora_receipt_bundle_witness.rish): it seals the accepted synthetic fixture as opaque cargo, refuses a changed decision-bearing byte and an unknown vessel version, then restores the exact offered bytes.
+
 *May every vessel stay sealed in motion. May every pour remember its cellar.*
