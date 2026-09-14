@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Proposed contract -- **mixed room**: module residences and elder capabilities are checkable; the public types and acceptance cases await implementation and the dual-product witness
+**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
 **Falsifier:** If one replay cannot produce both product readings below from the same admitted facts, or either product must import the other's projection type, this contract is wrong.
 
@@ -115,4 +115,7 @@ One dual-product witness runs every case and proves prior durable bytes remain u
 
 The milestone lands only when the same admitted fixture passes all eight cases on metal and the falsifier stays false. Palette values, signature composition, and richer motion remain at DJINN's design gate. Real identity, data, value, keys, payment, and deployment remain at their custody gates.
 
-Keaton's review may revise the product meaning before implementation begins. Until that review, this page is a proposed contract with a complete testable edge, not a claim that the product already runs.
+Keaton accepted this contract for bounded synthetic implementation on `20260913`. Material changes
+to product meaning, module residence, design authority, or custody return to him. Acceptance opens
+the build; it does not claim the whole product runs. Each case above becomes checkable only when its
+own witness passes, and the milestone name waits for the dual-product witness.
