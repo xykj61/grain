@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.100758` | [Rebased record](20260914/20260914-100758_the_rebased_record_carried_its_parent_forward.kyri) | debts paid; parent nib carried forward |
 | `20260914.093109` | [the boundary stayed under the hand](20260914/20260914-093109_the-boundary-stayed-under-the-hand.kyri) | stashes preserved; dual-product seam remains open |
 | `20260914.092301` | [missing record returned](20260914/20260914-092301_the-missing-record-returned-at-the-capacity-line.kyri) | restored one log; capacity stopped roster |
 | `20260914.091630` | [Dead letter returned](20260914/20260914-091630_the_dead_letter_returned_before_capacity_closed_the_pass.kyri) | recovery whole; roster met capacity |
