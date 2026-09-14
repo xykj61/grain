@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.122532` | [The resident builds were not scratch](20260914/20260914-122532_the-resident-builds-were-not-scratch.kyri) | cleanup cascade recorded; disk headroom still gates proof |
+| `20260914.115951` | [Capacity held the captain](20260914/20260914-115951_capacity-held-the-captain-at-the-evidence-line.kyri) | recovery safe; roster met ENOSPC |
 | `20260914.115315` | [The stash returned nothing twice](20260914/20260914-115315_the_stash_returned_nothing_twice.kyri) | recovery converged; scoped cold met ENOSPC |
 | `20260914.115240` | [The cold roster reached capacity](20260914/20260914-115240_the-cold-roster-reached-capacity.kyri) | parked work safe; full cold proof met ENOSPC |
 | `20260914.114743` | [Cold roster capacity](20260914/20260914-114743_the_cold_roster_stopped_at_capacity.kyri) | three reds surfaced before ENOSPC stopped the pass |
