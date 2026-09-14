@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.125631` | [Earth read the capacity wall](20260914/20260914-125631_earth-read-the-capacity-wall.kyri) | parked work preserved; ENOSPC still holds the cold roster |
+| `20260914.125617` | [The parked record was already home](20260914/20260914-125617_the-parked-record-was-already-home.kyri) | stash preserved; hot roster names rebuild work |
 | `20260914.125419` | [The cold roster spent the last block](20260914/20260914-125419_the-cold-roster-spent-the-last-block.kyri) | parked work safe; full cold roster met ENOSPC |
 | `20260914.125349` | [The cold roster met the capacity wall](20260914/20260914-125349_the-cold-roster-met-the-capacity-wall.kyri) | parked work safe; ENOSPC held new Patchouli work |
 | `20260914.124938` | [The Consent Rail returned to Still](20260914/20260914-124938_the-consent-rail-returned-to-still.kyri) | three fallback conditions share one complete frame |
