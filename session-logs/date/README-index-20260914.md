@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.070950` | [the consent rail settled on Still](20260914/20260914-070950_the-consent-rail-settled-on-still.kyri) | fixed frames and motion bounds packaged; Swift 6.2 bench remains |
 | `20260914.081105` | [The concrete edge stayed proven](20260914/20260914-081105_the_concrete_edge_stayed_proven.kyri) | stash preserved; product seam still open |
 | `20260914.074531` | [The tutorial kept the proven edge](20260914/20260914-074531_the-tutorial-kept-the-proven-edge.kyri) | recovery present; product seam still open |
 | `20260914.072453` | [The long return kept the recovery whole](20260914/20260914-072453_the-long-return-kept-the-recovery-whole.kyri) | recovery held; cold roster remains in flight |

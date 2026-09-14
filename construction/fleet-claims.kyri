@@ -65,9 +65,3 @@ stamp 20260914.031106
 epoch 1789369866
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish construction/ITINERARY.md construction/fleet-claims.kyri
 what Extend Rye build receipts through the library bytes the compiler reads, and prove a same-path same-size library mutation forces a rebuild.
-claim diffuser-consent-rail
-seat diffuser
-stamp 20260914.064239
-epoch 1789382559
-paths skate/Sources/SkateCore/ConsentRail.swift skate/Tests/SkateCoreTests/ConsentRailTests.swift skate/README.md
-what Build a bounded Consent Rail whose still and settled states share one final frame and one accessibility reading.
