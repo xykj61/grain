@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.091428` | [The cold roster ended mid-line](20260914/20260914-091428_the-cold-roster-ended-mid-line.kyri) | recovered lap preserved; roster terminal verdict absent |
 | `20260914.081818` | [The recovery was already home](20260914/20260914-081818_the-recovery-was-already-home.kyri) | stash kept; focused checks green; hot pass lost verdict |
 | `20260914.081105` | [The concrete edge stayed proven](20260914/20260914-081105_the_concrete_edge_stayed_proven.kyri) | stash preserved; product seam still open |
 | `20260914.074531` | [The tutorial kept the proven edge](20260914/20260914-074531_the-tutorial-kept-the-proven-edge.kyri) | recovery present; product seam still open |
