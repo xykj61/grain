@@ -1087,6 +1087,11 @@ guard tally_roster
 path tools/t/tally_roster_witness.rish
 seated 20260826.224730
 
+guard tally_receipt_offer_bounds
+path tools/t/tally_receipt_offer_bounds_witness.rish
+tier lap
+seated 20260913.171959
+
 # Seated 20260908.090000. The guard stood UNHEARD: no roster row, and its one caller
 # `tools/t/tensegral_arc_iv_witness.rish` is unrostered too, so nothing on any clock ran it. Widened
 # the same lap from a hand-listed 19 paths tested with `-e` to a population derived from the index

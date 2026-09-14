@@ -53,12 +53,24 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim patchouli-tally-receipt-roster
-seat patchouli
-stamp 20260913.171959
-epoch 1789334399
-paths tools/t/tally_receipt_offer_bounds_witness.rish tools/t/tally_roster_witness.rish tools/m/receipt_offer_witness.rish construction/standing-equipment.kyri session-logs/date/20260913 session-logs/date/README-index-20260913.md
-what Move the landed receipt-offer runner under Tally's ownership name, call it from the Tally roster, and roster the product proof.
+claim copal-receipt-vessel
+seat copal
+stamp 20260913.152951
+epoch 1789327791
+paths amphora/vessel_core.rye tools/am/amphora_receipt_bundle_witness.rish tools/fixtures/a/receipt_offer_fact_v1.kyri construction/standing-equipment.kyri amphora/README.md
+what Seal the accepted synthetic receipt inside an existing Amphora vessel and prove version, authentication, and round-trip refusal edges.
+claim incense-receipt-contract-status
+seat incense
+stamp 20260913.173200
+epoch 1789335120
+paths active-designing/20260912-201126_the-receipt-you-can-read-contract.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
+what Record Keaton's accepted bounded synthetic implementation edge on the receipt contract while keeping every unproven acceptance case visibly proposed.
+claim grass-offer-journal-boundary
+seat grass
+stamp 20260913.184358
+epoch 1789339438
+paths active-designing/20260913-184351_the-offer-that-stays-outside-the-journal.md construction/DIMEROLL_ITINERARY.md construction/ITINERARY.md session-logs/date/20260913 session-logs/date/README-index-20260913.md
+what Reverse-read the first Dimeroll receipt milestone and decide whether an offer may enter the journal before recognition.
 claim bakery-moved-proof-closure
 seat bakery
 stamp 20260913.195912

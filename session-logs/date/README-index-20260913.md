@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260913.222906` | [the red stayed with its owner](20260913/20260913-222906_the-red-stayed-with-its-owner.kyri) | claimed receipt witness red stays with Patchouli |
 | `20260913.222411` | [the parked offer was already home](20260913/20260913-222411_the_parked_offer_was_already_home.kyri) | newest Grass stash already landed; no replay |
 | `20260913.220203` | [the language seam heard its owners](20260913/20260913-220203_the-language-seam-heard-its-owners.kyri) | claims keep receipt and Tally work with their owners |
+| `20260913.211558` | [parked receipt proof joined Tally's clock](20260913/20260913-211558_the-parked-receipt-proof-joined-tallys-clock.kyri) | parked proof restored; Tally owns and runs it |
 | `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |
 | `20260913.201928` | [the rail waited for its facts](20260913/20260913-201928_the-rail-waited-for-its-facts.kyri) | Consent Rail waits on four landed inputs; design handoff A 91 |
 | `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
@@ -28,6 +29,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri) | root and dependency execute bits join receipt; 17 green |
 | `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri) | parked row-count proof restored and green on current HEAD |
 | `20260913.173445` | [accepted contract edge](20260913/20260913-173445_the-accepted-contract-said-what-remains-proposed.kyri) | unfinished cases stay proposed |
+| `20260913.172118` | [the receipt proof joined Tally's clock](20260913/20260913-172118_the-receipt-proof-joined-tallys-clock.kyri) | runner joined Tally roster; elder stash preserved |
 | `20260913.161143` | [the receipt card found its own boundary](20260913/20260913-161143_the-receipt-card-found-its-own-boundary.kyri) | fixed frame and semantic parity await macOS proof |
 | `20260913.161014` | [receipt mark stood](20260913/20260913-161014_the_receipt_mark_stood_without_a_new_type.kyri) | existing schema keeps the type boundary |
 | `20260913.155348` | [the paused record found its shelf](20260913/20260913-155348_the-paused-record-found-its-shelf.kyri) | parked diffuser testimony restored; shelf counts reconciled |
