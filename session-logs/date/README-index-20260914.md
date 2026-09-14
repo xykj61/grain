@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.113849` | [Two reds before the disk wall](20260914/20260914-113849_the_roster_reached_two_reds_before_the_disk_wall.kyri) | 223 green; two reds; summary lost to ENOSPC |
 | `20260914.113318` | [The library receipt crossed today's head](20260914/20260914-113318_the-library-receipt-crossed-todays-head.kyri) | 19 legs green; scoped hot met capacity |
 | `20260914.112859` | [Recovered send](20260914/20260914-112859_the_recovered_send_crossed_both_remotes.kyri) | rebased log reached both remotes; capacity held |
 | `20260914.112413` | [Cold roster disk wall](20260914/20260914-112413_the_cold_roster_reached_the_disk_wall.kyri) | guards green; summary met ENOSPC |
