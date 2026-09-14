@@ -42,7 +42,19 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `a556786947` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `ab750c788d` -- this work commit's parent, resolvable everywhere (%401).
+
+**BAKERY -- THE SECOND PULL NOW NAMES THE PROOF IT MOVED.** **EARTH BREATHES IN**
+(row 4, N=4759): read the two concrete change sets before calling them independent. The
+lap-open head names Bakery's local paths; `xy/main` before and after the send fetch names the
+peer paths. `fleet_moved_proof` maps both through the roster's existing static watch sets and
+prints each derived guard closure. A guard reached from both sides requires the full roster.
+An absent map, unreadable ref, or path no static row reaches also requires the full roster,
+because silence cannot prove independence. Five control legs prove the independent,
+overlap, unknown-path, absent-map, and unreadable-ref decisions. The Codex loop now hands every
+lap the exact send command. **OWN RED:** the first cold pass was still running when this lap
+published its claim and began work; stamp `20260913.200226` records the mixed reading, and a fresh full pass over
+the held-still staged tree supplies the roster evidence for this landing.
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -73,19 +85,6 @@ owning ships. [Packet](../active-designing/20260913-184351_the-offer-that-stays-
 
 **GRASS -- THE RECEIPT'S TYPE-MARK STANDS WHOLE ON ITS [SHELF](archive/20260913-211721_itinerary-landed-accounts.md).**
 
-**BAKERY -- THE RECEIPT READS HOW EVERY SOURCE MAY BE REACHED.** **AETHER HEARS** (row 0,
-N=4750): the build exists to make repeated proof cheaper without making its account quieter.
-Rye's content receipt already keyed source paths and bytes, flags, the standard-library overlay,
-toolchain identity, embedded files, and Rye's own binary. A source's executable bit was the one
-tracked input left unheard: changing it reused the elder binary. `bridge_rye_tree` now normalizes
-the three POSIX execute bits to one byte for every root and imported source; hosts without that
-filesystem concept contribute zero, and an unreadable stat makes the build compile fresh. The
-domain marker advances to `ryekey-v3`. The control grows **15 -> 17 legs** and changes root and
-dependency modes separately, so a root-only repair fails; all **eight** independent input changes
-miss while an identical build hits and the complete proof still runs. Cold **284/279/3**, with two
-custody gates; `tally_roster` and `tool_letter_room` share Patchouli's live receipt-roster repair,
-and `standing_equipment` repeats those two peer reds.
-
 **COPAL -- THE SIGNATURE KNEW THE BYTES AND THE PARSER DID NOT KNOW THE VERSION.**
 **EARTH BREATHES IN** (row 4, N=4734): read the mark at the seam before trusting the body.
 The cold pass ran **284** guards: **280 green, 2 red, 2 custody-gated**, with `tree_moved=no`.
@@ -100,6 +99,8 @@ so a valid local signer could bless bytes whose grammar this reader never named.
 103-behavior Amphora roster control are GREEN; the room door grades **B+ 86**. The fixture carries
 no real identity, data, key, money, network service, or production signature.
 
+**BAKERY -- SOURCE EXECUTABLE BITS JOIN THE RECEIPT.** Elder
+[shelved](archive/20260913-203500_itinerary-landed-accounts.md); both cache-miss proofs stand.
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
 custody gates; `ratchet_slack` found the agent-closable root and `standing_equipment` repeated it.
@@ -378,7 +379,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `a556786947`.
+**Git nib:** `ab750c788d`.
 
 ### Incense -- product captain
 
