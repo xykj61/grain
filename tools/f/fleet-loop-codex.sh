@@ -146,6 +146,7 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     echo "Read expanding-prompts/20260909-003000_the-codex-fleet-molt-and-the-401.md and expanding-prompts/20260908-161500_incense-handoff-a-fresh-window.md."
     echo "Follow the handoff to expanding-prompts/20260908-160500_fifteen-asks-sorted-for-the-fleet.md and expanding-prompts/20260908-155715_the-scrub-that-remembers.md. Honor their remaining gates."
     echo "Recover unfinished work and session logs from this seat's stashes before new work; inspect git stash list and the newest seat transcript. Never discard a parked lap."
+    echo "At the send, preserve the lap-open head and xy/main before the second fetch; run sh tools/f/fleet_moved_proof.sh LAP_OPEN_HEAD XY_BEFORE xy/main. A full verdict owes the full hot roster; scoped is lawful only on an independent mapped closure."
     echo "Close every lap with a commit and a session log, and push xy then gp405."
   } > "$prompt_file"
 
