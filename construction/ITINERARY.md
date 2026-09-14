@@ -42,7 +42,13 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `e8aef5393c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `1d2c08cf40` -- this follow-up's parent, resolvable everywhere (%401).
+
+**PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
+N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
+holds at most **9** and named gates close at `nona-shape`. A split chooses identity; a wider ceiling
+changes the language. Both are custody rulings. **DISPOSITION: STANDFAST.** No product file moved.
+The claim closed. Tally is green. Two earlier Pheromone index rows now fit; 39 controls are green.
 
 **BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** **WATER TASTES** (row 3,
 N=4758): run the actual seam, then change one ingredient without changing its vessel. Rye's v3
@@ -370,7 +376,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e8aef5393c`.
+**Git nib:** `1d2c08cf40`.
 
 ### Incense -- product captain
 
