@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
+| `20260914.025715` | [the cold run found two hard edges](20260914/20260914-025715_the-cold-run-found-two-hard-edges.kyri) | nib fixed; shared disk stopped cold roster |
 | `20260914.021718` | [the mark waited for both meanings](20260914/20260914-021718_the-mark-waited-for-both-meanings.kyri) | parked work safe; tutorial dependency remains |
 | `20260914.021602` | [the parked proof reached the standing roster](20260914/20260914-021602_the-parked-proof-reached-the-standing-roster.kyri) | newest stash recovered; proof green |
 | `20260914.021009` | [the tutorial waited at the proven edge](20260914/20260914-021009_the-tutorial-waited-at-the-proven-edge.kyri) | parked work landed; product proof still open |
