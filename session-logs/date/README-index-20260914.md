@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260914.164548` | [The parent mark caught the recovery](20260914/20260914-164548_the_parent_mark_caught_the_recovery.kyri) | parked work preserved; parent nib closed |
 | `20260914.154709` | [The parked refusal returned whole](20260914/20260914-154709_the_parked_refusal_returned_whole.kyri) | recovered witness and log; full hot roster closed at the Git nib |
+| `20260914.154140` | [The landed lap left its claim with its owner](20260914/20260914-154140_the_landed_lap_left_its_claim_with_its_owner.kyri) | parked lap landed; owner boundary held |
 | `20260914.141348` | [The refusal spoke](20260914/20260914-141348_the_refusal_spoke_before_it_stopped.kyri) | parked work home; roster red closed |
 | `20260914.141113` | [The full roster named two reasons](20260914/20260914-141113_the_full_roster_named_two_reasons.kyri) | complete cold proof; two diagnostic roots closed |
 | `20260914.125631` | [Earth read the capacity wall](20260914/20260914-125631_earth-read-the-capacity-wall.kyri) | parked work preserved; ENOSPC still holds the cold roster |
