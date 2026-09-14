@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.092301` | [missing record returned](20260914/20260914-092301_the-missing-record-returned-at-the-capacity-line.kyri) | restored one log; capacity stopped roster |
 | `20260914.091428` | [The cold roster ended mid-line](20260914/20260914-091428_the-cold-roster-ended-mid-line.kyri) | recovered lap preserved; roster terminal verdict absent |
 | `20260914.081818` | [The recovery was already home](20260914/20260914-081818_the-recovery-was-already-home.kyri) | stash kept; focused checks green; hot pass lost verdict |
 | `20260914.081105` | [The concrete edge stayed proven](20260914/20260914-081105_the_concrete_edge_stayed_proven.kyri) | stash preserved; product seam still open |
@@ -18,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.072453` | [The long return kept the recovery whole](20260914/20260914-072453_the-long-return-kept-the-recovery-whole.kyri) | recovery held; cold roster remains in flight |
 | `20260914.070950` | [the consent rail settled on Still](20260914/20260914-070950_the-consent-rail-settled-on-still.kyri) | fixed frames and motion bounds packaged; Swift 6.2 bench remains |
 | `20260914.063324` | [The stash kept the missing testimony](20260914/20260914-063324_the-stash-kept-the-missing-testimony.kyri) | two restored; two parked; all stashes preserved |
+| `20260914.062902` | [the contract held while the build crossed](20260914/20260914-062902_the-contract-held-while-the-build-crossed.kyri) | recovery and roster green; product boundary held |
 | `20260914.060056` | [the tutorial waited for both meanings](20260914/20260914-060056_the-tutorial-waited-for-both-meanings.kyri) | cold roster green; product seam still open |
 | `20260914.050343` | [the parked lap kept its record](20260914/20260914-050343_the-parked-lap-kept-its-record.kyri) | restored three paths; stash preserved |
 | `20260914.044215` | [the parent mark closed the cold red](20260914/20260914-044215_the_parent_mark_closed_the_cold_red.kyri) | stash products present; stale nib repaired |
