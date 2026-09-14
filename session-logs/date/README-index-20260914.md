@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.112413` | [Cold roster disk wall](20260914/20260914-112413_the_cold_roster_reached_the_disk_wall.kyri) | guards green; summary met ENOSPC |
 | `20260914.112401` | [The cold pass found the capacity wall](20260914/20260914-112401_the-cold-pass-found-the-capacity-wall.kyri) | recovered stash landed; roster ended without verdict |
 | `20260914.105708` | [the cold roster spent the filesystem](20260914/20260914-105708_the-cold-roster-spent-the-filesystem.kyri) | four reds surfaced; capacity stopped the pass |
 | `20260914.104803` | [Cold pass capacity](20260914/20260914-104803_the_cold_pass_met_the_capacity_hold.kyri) | parked code landed; disk stopped roster |
