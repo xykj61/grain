@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.113318` | [The library receipt crossed today's head](20260914/20260914-113318_the-library-receipt-crossed-todays-head.kyri) | 19 legs green; scoped hot met capacity |
 | `20260914.112859` | [Recovered send](20260914/20260914-112859_the_recovered_send_crossed_both_remotes.kyri) | rebased log reached both remotes; capacity held |
 | `20260914.112413` | [Cold roster disk wall](20260914/20260914-112413_the_cold_roster_reached_the_disk_wall.kyri) | guards green; summary met ENOSPC |
 | `20260914.112401` | [The cold pass found the capacity wall](20260914/20260914-112401_the-cold-pass-found-the-capacity-wall.kyri) | recovered stash landed; roster ended without verdict |
@@ -19,6 +20,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.104121` | [The recovered rail kept its boundary](20260914/20260914-104121_the-recovered-rail-kept-its-boundary.kyri) | recovery ready; full roster met disk capacity |
 | `20260914.104012` | [Cold pass capacity](20260914/20260914-104012_the_cold_pass_stopped_at_the_full_disk.kyri) | README restored; full verdict absent |
 | `20260914.103111` | [Compiler reach returned](20260914/20260914-103111_the_compiler_reach_returned_to_the_live_tree.kyri) | parked census restored; capacity hold named |
+| `20260914.102716` | [The library key record came home](20260914/20260914-102716_the-library-key-record-came-home.kyri) | library-complete receipt recovered; hot proof follows |
 | `20260914.101831` | [the parent mark caught the roster red](20260914/20260914-101831_the-parent-mark-caught-the-roster-red.kyri) | stale nib repaired; dual-product seam held |
 | `20260914.101759` | [Recovered send](20260914/20260914-101759_the_recovered_send_reached_both_remotes.kyri) | parked record landed; capacity hold kept visible |
 | `20260914.101132` | [The crossing was already home](20260914/20260914-101132_the-crossing-was-already-home.kyri) | recovery matched landing; full cold roster green |
