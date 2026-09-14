@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.072453` | [The long return kept the recovery whole](20260914/20260914-072453_the-long-return-kept-the-recovery-whole.kyri) | recovery held; cold roster remains in flight |
 | `20260914.063324` | [The stash kept the missing testimony](20260914/20260914-063324_the-stash-kept-the-missing-testimony.kyri) | two restored; two parked; all stashes preserved |
 | `20260914.050343` | [the parked lap kept its record](20260914/20260914-050343_the-parked-lap-kept-its-record.kyri) | restored three paths; stash preserved |
 | `20260914.044215` | [the parent mark closed the cold red](20260914/20260914-044215_the_parent_mark_closed_the_cold_red.kyri) | stash products present; stale nib repaired |
