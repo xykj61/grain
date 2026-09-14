@@ -12,11 +12,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
+| `20260913.193711` | [two parked contract records crossed the send](20260913/20260913-193711_two-parked-contract-records-crossed-the-send.kyri) | accepted edge and two records restored |
 | `20260913.192054` | [three parked records rejoined the thread](20260913/20260913-192054_three-parked-records-rejoined-the-thread.kyri) | three records restored; closed shelf derives to 65 |
 | `20260913.191904` | [the boundary held the tutorial](20260913/20260913-191904_the-boundary-held-the-tutorial.kyri) | recovery clear; receipt interfaces remain in flight |
+| `20260913.190441` | [the parked contract kept its boundary](20260913/20260913-190441_the-parked-contract-kept-its-boundary.kyri) | restored accepted edge; unproven cases stay proposed |
 | `20260913.180539` | [two parked diffuser records came home](20260913/20260913-180539_two-parked-diffuser-records-came-home.kyri) | two records restored; closed shelf derives to 65 |
 | `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri) | root and dependency execute bits join receipt; 17 green |
 | `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri) | parked row-count proof restored and green on current HEAD |
+| `20260913.173445` | [accepted contract edge](20260913/20260913-173445_the-accepted-contract-said-what-remains-proposed.kyri) | unfinished cases stay proposed |
 | `20260913.161143` | [the receipt card found its own boundary](20260913/20260913-161143_the-receipt-card-found-its-own-boundary.kyri) | fixed frame and semantic parity await macOS proof |
 | `20260913.161014` | [receipt mark stood](20260913/20260913-161014_the_receipt_mark_stood_without_a_new_type.kyri) | existing schema keeps the type boundary |
 | `20260913.155348` | [the paused record found its shelf](20260913/20260913-155348_the-paused-record-found-its-shelf.kyri) | parked diffuser testimony restored; shelf counts reconciled |
