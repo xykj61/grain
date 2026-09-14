@@ -1,4 +1,4 @@
-# tools/m/receipt_offer_witness.rish -- bounded admission and deterministic replay for one receipt offer.
+# tools/t/tally_receipt_offer_bounds_witness.rish -- bounded admission and deterministic replay for one receipt offer.
 #
 # This runner builds the Rye witness in a unique pen, then requires its complete
 # GREEN sentence. The Rye witness walks every declaration in the admission module,
