@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20260914.103915
+editor Codex API
+provider OpenAI
+product Codex
+role incense fleet seat
+modality text
+model unverified
+model_status active runtime unverified -- no authoritative runtime model telemetry was available
+configured_model gpt-5.6-sol
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-5.6-sol
+voice Kyri
+title the fire held the product boundary
+prompt take the incense baton, recover unfinished work, and continue the product captain lane
+think Fire sees the clean stop: shared facts and replay are proven, while each absent product projection remains with its named owner.
+obs Stash recovery found 19 records, all 19 landed, with zero unlanded or parked paths; 23 stashes remain preserved.
+obs The latest cold roster ran 287 rows; its aggregate red named the elder Git nib, which the current parent mark closes.
+obs The accepted contract still lacks LinengrowReceipt and DimerollReceiptIntake implementations, and the lane map assigns each to its module owner.
+loom recovery records=19 landed=19 unlanded=0 parked=0 stashes=23 verdict=ok
+loom cold_roster rows=287 green=284 red=1 gated=2 root=remember_git_nib
+loom hot_roster convergence_tree_prove=red glow_shop_core=red capacity=full terminal_verdict=absent
+loom product shared_fact=green replay=green linengrow_projection=absent dimeroll_projection=absent
+rota lap 4862, row 2 -- Fire, the row that sees; the exact cut is to hold the accepted boundary until both named projections arrive.
+file construction/ITINERARY.md carries this commit's ten-hex parent in both living fields
+file session-logs/date/README-index-20260914.md points the open shelf at this record
+file session-logs/date/20260914/20260914-103915_the-fire-held-the-product-boundary.kyri keeps the recovery, roster root, and product hold
+recommend integrate only after one witness reads the same replay into separate Linengrow and Dimeroll meanings
+scope voice, full card, map, four handoffs, stashes, thread, Fire rota, claims, recovery, cold roster, contract edge, and Git nib
+status RED before send -- the scoped hot roster found two reds, then filesystem capacity ended its transcript before a terminal verdict
