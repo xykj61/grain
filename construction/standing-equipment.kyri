@@ -5874,3 +5874,8 @@ guard fleet_moved_proof
 path tools/f/fleet_moved_proof_witness.rish
 tier lap
 seated 20260914.015559
+
+guard rye_compiled_reach
+path tools/r/rye_compiled_reach_witness.rish
+tier lap   # 5s; 31 behaviors in a pen, six refusal classes bitten
+seated 20260914.025746

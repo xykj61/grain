@@ -12,10 +12,12 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.104012` | [Cold pass capacity](20260914/20260914-104012_the_cold_pass_stopped_at_the_full_disk.kyri) | README restored; full verdict absent |
+| `20260914.103111` | [Compiler reach returned](20260914/20260914-103111_the_compiler_reach_returned_to_the_live_tree.kyri) | parked census restored; capacity hold named |
 | `20260914.101831` | [the parent mark caught the roster red](20260914/20260914-101831_the-parent-mark-caught-the-roster-red.kyri) | stale nib repaired; dual-product seam held |
 | `20260914.101759` | [Recovered send](20260914/20260914-101759_the_recovered_send_reached_both_remotes.kyri) | parked record landed; capacity hold kept visible |
 | `20260914.100758` | [Rebased record](20260914/20260914-100758_the_rebased_record_carried_its_parent_forward.kyri) | debts paid; parent nib carried forward |
 | `20260914.095701` | [The parked record kept its place](20260914/20260914-095701_the-parked-record-kept-its-place.kyri) | one parked log restored; newer rows preserved |
+| `20260914.094041` | [The compiler-reach census crossed](20260914/20260914-094041_the-compiler-reach-census-crossed.kyri) | recovered census and shelf order ready for hot proof |
 | `20260914.093109` | [the boundary stayed under the hand](20260914/20260914-093109_the-boundary-stayed-under-the-hand.kyri) | stashes preserved; dual-product seam remains open |
 | `20260914.092301` | [missing record returned](20260914/20260914-092301_the-missing-record-returned-at-the-capacity-line.kyri) | restored one log; capacity stopped roster |
 | `20260914.092201` | [The roster met the full disk](20260914/20260914-092201_the_roster_met_the_full_disk.kyri) | parked work safe; cold pass lost disk |
@@ -24,12 +26,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.081818` | [The recovery was already home](20260914/20260914-081818_the-recovery-was-already-home.kyri) | stash kept; focused checks green; hot pass lost verdict |
 | `20260914.081524` | [The parent mark kept its full width](20260914/20260914-081524_the_parent_mark_kept_its_full_width.kyri) | two nib fields restored to ten hex digits |
 | `20260914.081105` | [The concrete edge stayed proven](20260914/20260914-081105_the_concrete_edge_stayed_proven.kyri) | stash preserved; product seam still open |
+| `20260914.081041` | [the compiler-reach census came home](20260914/20260914-081041_the-compiler-reach-census-came-home.kyri) | three instruments recovered; 31 controls green |
 | `20260914.074531` | [The tutorial kept the proven edge](20260914/20260914-074531_the-tutorial-kept-the-proven-edge.kyri) | recovery present; product seam still open |
 | `20260914.072453` | [The long return kept the recovery whole](20260914/20260914-072453_the-long-return-kept-the-recovery-whole.kyri) | recovery held; cold roster remains in flight |
 | `20260914.070950` | [the consent rail settled on Still](20260914/20260914-070950_the-consent-rail-settled-on-still.kyri) | fixed frames and motion bounds packaged; Swift 6.2 bench remains |
 | `20260914.063324` | [The stash kept the missing testimony](20260914/20260914-063324_the-stash-kept-the-missing-testimony.kyri) | two restored; two parked; all stashes preserved |
 | `20260914.062902` | [the contract held while the build crossed](20260914/20260914-062902_the-contract-held-while-the-build-crossed.kyri) | recovery and roster green; product boundary held |
 | `20260914.060056` | [the tutorial waited for both meanings](20260914/20260914-060056_the-tutorial-waited-for-both-meanings.kyri) | cold roster green; product seam still open |
+| `20260914.051012` | [the compiler-reach reading came home](20260914/20260914-051012_the-compiler-reach-reading-came-home.kyri) | census recovered; 11 Rye bodies remain unreached |
 | `20260914.050343` | [the parked lap kept its record](20260914/20260914-050343_the-parked-lap-kept-its-record.kyri) | restored three paths; stash preserved |
 | `20260914.044215` | [the parent mark closed the cold red](20260914/20260914-044215_the_parent_mark_closed_the_cold_red.kyri) | stash products present; stale nib repaired |
 | `20260914.041635` | [the cold roster found the store edge](20260914/20260914-041635_the-cold-roster-found-the-store-edge.kyri) | nib repaired; Mantra red stays with Patchouli |
@@ -47,6 +51,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.032745` | [the boundary stayed at capacity](20260914/20260914-032745_the_boundary_stayed_at_capacity.kyri) | parked work safe; filesystem capacity red remains |
 | `20260914.032100` | [the tutorial listened for both meanings](20260914/20260914-032100_the-tutorial-listened-for-both-meanings.kyri) | cold reds reconciled; dual-product proof remains |
 | `20260914.030332` | [the parked packet was already home](20260914/20260914-030332_the-parked-packet-was-already-home.kyri) | stash reachable; filesystem capacity red remains |
+| `20260914.025902` | [the compiler-reach census returned](20260914/20260914-025902_the-compiler-reach-census-returned.kyri) | 11 Rye bodies outside compiler reach; 31 controls green |
 | `20260914.025828` | [the parent mark returned to the card](20260914/20260914-025828_the-parent-mark-returned-to-the-card.kyri) | nib guards green; cold roster stopped on disk capacity |
 | `20260914.025715` | [the cold run found two hard edges](20260914/20260914-025715_the-cold-run-found-two-hard-edges.kyri) | nib fixed; shared disk stopped cold roster |
 | `20260914.023837` | [the held account returned to its shelf](20260914/20260914-023837_the-held-account-returned-to-its-shelf.kyri) | Copal record restored; product boundary held |

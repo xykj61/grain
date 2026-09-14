@@ -41,19 +41,19 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
-| [`mantra/`](../../mantra/README.md) | 39 | 55 |
+| [`mantra/`](../../mantra/README.md) | 39 | 56 |
 | [`manual/`](../../manual/README.md) | 1 | 13 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
 | [`pleac/`](../../pleac/README.md) | 3 | 7 |
 | [`pond/`](../../pond/README.md) | 156 | 166 |
 | [`rishi/`](../../rishi/README.md) | 2 | 12 |
-| [`rye/`](../../rye/README.md) | 117 | 106 |
+| [`rye/`](../../rye/README.md) | 117 | 107 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 15 | 29 |
+| [`tally/`](../../tally/README.md) | 15 | 30 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---
