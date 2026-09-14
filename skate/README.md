@@ -73,6 +73,12 @@ admits the deciding Linengrow fields, refuses empty, non-ASCII, over-wide, or ov
 publishing a value, and renders twelve deterministic ASCII lines. The accessibility reader walks
 those same rendered bytes in row order, so visual and semantic text cannot drift into two copies.
 
+The Consent Rail carries the receipt's purpose, recipient, expiration, and consent status through
+one bounded presentation value. Still is complete. Settle reaches the same folded or expanded frame
+within 1,000 milliseconds, and reduced motion reaches it immediately. Respond is a 400-millisecond
+local pulse that changes no product state. Accessibility reads the rendered row bytes in the same
+order, so motion creates no second semantic description.
+
 ## The owned bounds
 
 - A Brushstroke frame declares a ceiling from one through eight and holds no more nonempty lines
@@ -91,6 +97,9 @@ those same rendered bytes in row order, so visual and semantic text cannot drift
   lines. Each root label owns one through 128 bytes, each text-line label owns one through forty,
   and every node owns row zero through seven, column start zero through thirty-nine, and a
   one-through-forty-cell row-local rect.
+- A Consent Rail owns two 360-byte inline frames, one folded and one expanded. Each frame holds at
+  most five rows of seventy-two ASCII cells. Settle completes within 1,000 milliseconds; Respond
+  lives for 400 milliseconds and changes neither frame.
 - An admitted image plane owns exactly three hundred twenty full-block cells and three hundred
   twenty palette indexes. Each index is one through seven, matching HUNK2's fixed anchor palette.
 - A Lotus meter reading owns a count from zero through two to the twenty-sixth samples, a peak no
