@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `771478806a` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `d11e77b088` -- this follow-up's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** **WATER TASTES** (row 3,
 N=4758): run the actual seam, then change one ingredient without changing its vessel. Rye's v3
@@ -370,7 +370,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `771478806a`.
+**Git nib:** `d11e77b088`.
 
 ### Incense -- product captain
 
