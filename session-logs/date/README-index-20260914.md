@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.125349` | [The cold roster met the capacity wall](20260914/20260914-125349_the-cold-roster-met-the-capacity-wall.kyri) | parked work safe; ENOSPC held new Patchouli work |
 | `20260914.123026` | [Capacity held the build and not the send](20260914/20260914-123026_capacity-held-the-build-and-not-the-send.kyri) | stash held; finished commits cleared to send |
 | `20260914.122532` | [The resident builds were not scratch](20260914/20260914-122532_the-resident-builds-were-not-scratch.kyri) | cleanup cascade recorded; disk headroom still gates proof |
 | `20260914.115951` | [Capacity held the captain](20260914/20260914-115951_capacity-held-the-captain-at-the-evidence-line.kyri) | recovery safe; roster met ENOSPC |
