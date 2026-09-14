@@ -52,3 +52,9 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
+claim diffuser-consent-rail-resilience
+seat diffuser
+stamp 20260914.124714
+epoch 1789404434
+paths skate/Sources/SkateCore/ConsentRail.swift skate/Tests/SkateCoreTests/ConsentRailTests.swift skate/README.md
+what Prove hidden-document and renderer-loss recovery preserve the Consent Rail's settled frame and accessible reading.
