@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.164548` | [The parent mark caught the recovery](20260914/20260914-164548_the_parent_mark_caught_the_recovery.kyri) | parked work preserved; parent nib closed |
+| `20260914.161455` | [The parked yield trio kept its stash](20260914/20260914-161455_the-parked-yield-trio-kept-its-stash.kyri) | absence proved; living instrument kept; stash preserved |
 | `20260914.154709` | [The parked refusal returned whole](20260914/20260914-154709_the_parked_refusal_returned_whole.kyri) | recovered witness and log; full hot roster closed at the Git nib |
 | `20260914.141348` | [The refusal spoke](20260914/20260914-141348_the_refusal_spoke_before_it_stopped.kyri) | parked work home; roster red closed |
 | `20260914.141113` | [The full roster named two reasons](20260914/20260914-141113_the_full_roster_named_two_reasons.kyri) | complete cold proof; two diagnostic roots closed |
