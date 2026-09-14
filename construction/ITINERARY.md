@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `321ef1e94f` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `a5b64e0b56` -- this follow-up's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE COMPILER'S BYTES ENTER THE RECEIPT.** **WATER TASTES** (row 3,
 N=4758): run the actual seam, then change one ingredient without changing its vessel. Rye's v3
@@ -77,6 +77,21 @@ dependency modes separately, so a root-only repair fails; all **eight** independ
 miss while an identical build hits and the complete proof still runs. Cold **284/279/3**, with two
 custody gates; `tally_roster` and `tool_letter_room` share Patchouli's live receipt-roster repair,
 and `standing_equipment` repeats those two peer reds.
+
+**COPAL -- THE SIGNATURE KNEW THE BYTES AND THE PARSER DID NOT KNOW THE VERSION.**
+**EARTH BREATHES IN** (row 4, N=4734): read the mark at the seam before trusting the body.
+The cold pass ran **284** guards: **280 green, 2 red, 2 custody-gated**, with `tree_moved=no`.
+Both reds shared Bakery's `ratchet_slack` repair, which has since landed; no Amphora guard was red.
+The accepted synthetic receipt now crosses as opaque cargo in the existing Amphora vessel. A
+decision-bearing encrypted-byte mutation fails both the Kumara stamp and the AEAD seal before
+restore, and the passing vessel restores byte-identical receipt bytes with its accepted schema.
+The missing wall was the vessel format itself: `parse_vessel` accepted any value after `format`,
+so a valid local signer could bless bytes whose grammar this reader never named. It now accepts
+`amphora-v1` alone and returns `UnknownVersion` before signing any other version. The focused
+[witness](../tools/am/amphora_receipt_bundle_witness.rish), elder pour and restore proofs, and the
+103-behavior Amphora roster control are GREEN; the room door grades **B+ 86**. The fixture carries
+no real identity, data, key, money, network service, or production signature.
+
 **BAKERY -- THE REPORT STOPPED DRESSING AS A CEILING.** **EARTH BREATHES IN** (row 4,
 N=4734): read the mark on the value before trusting its story. Cold **284/280/2**, with two
 custody gates; `ratchet_slack` found the agent-closable root and `standing_equipment` repeated it.
@@ -291,31 +306,9 @@ later milestone; this is the first artifact crossing its own boundary. [Packet](
 
 ## Simple, Lovable, Complete order
 
-**INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Elder
-[shelved](archive/20260912-050057_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4682, hand-advanced -- 1-4 read today, 0 by nobody).
-**REDS FIRST:** cold **272 green, 0 red**, 2 gated `%5`; the pass refused, which IS the finding.
-**THE BILL.** I opened the pass, read the card, chose work, opened a claim -- the baton's order.
-Fifty-four minutes on: `guards_seconds=3232 tree_moved=yes`, every verdict rightly thrown away, and
-**it could not say WHICH FILE** -- `tree_digest` returns twelve characters, and a digest cannot be
-diffed from. It was `construction/fleet-claims.kyri`, moved because the baton tells every ship to
-claim before it builds: **two directives, and the pair cost the pass.** COPAL reported the shape a
-lap earlier; the lantern had fired twice.
-**MECHANISM.** `tree_paths()` beside `tree_digest()`: one `<hash> <path>` per path differing
-from HEAD or untracked, into the `mktemp` pen at open and close -- path-keyed because the digest's
-own inputs cannot be, since `hash-object --stdin-paths` prints hashes and NO names. One `awk` at
-close, three verbs, bounded **16**.
-**THE VERB THE PEN CAUGHT.** My draft read verbs off SET MEMBERSHIP, so a committed file rewritten
-mid-pass read `appeared` -- it stands in no open listing because it was CLEAN. **The listing holds
-what differs from HEAD, never the tree.** 9 legs, each verb apart; two mutations bite; GREEN, and
-first resident names the path.
-[Paper](../active-designing/20260912-050057_the-refusal-that-named-its-cost.md) **B+ 87**.
-**THIRD FIRING:** a fixed `.lap/` name read by a step that did not write it -- a no-op
-`git commit -F .lap/commit-msg.txt` took a PREVIOUS lap's body, then the shelf tool shelved a stale
-`.lap/incense-block.txt`. `read-scope` names it in prose; NO guard reaches it. Undone; by stamp.
-`pin_deadlocked=1`.
-**YOURS:** may `construction/fleet-claims.kyri` be read PAST by the digest, as the runner's own
-gitignored card is?
+**INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
+[shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
+whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.**
 Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4674, hand-advanced past my own last row): listen for the claim a page

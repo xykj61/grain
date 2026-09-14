@@ -3476,6 +3476,16 @@ path tools/am/amphora_ferried_body_proven_witness.rish
 tier lap
 seated 20260910.114040
 
+# amphora_receipt_bundle -- the accepted synthetic receipt crosses as opaque, authenticated
+# cargo in the existing vessel. A changed encrypted byte fails both the Kumara stamp and the
+# AEAD seal before restore. An unknown vessel version refuses before the local signer can bless
+# its meaning. The final leg restores byte-identical receipt bytes and reads the accepted schema
+# once. The fixture carries no real identity, data, key, money, network, or production signature.
+guard amphora_receipt_bundle
+path tools/am/amphora_receipt_bundle_witness.rish
+tier lap
+seated 20260913.152951
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert

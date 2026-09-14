@@ -1,0 +1,16 @@
+format receipt-offer-fixture-v1
+schema grain.receipt-offer.v1
+receipt_id receipt:sample-pollinator-counts:20260912
+holder_id person:sample-holder
+recipient_id org:sample-steward
+product_id data:weekly-pollinator-counts
+product_digest 7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a1
+purpose habitat-planning
+value_amount 1200
+value_unit USD-cent-simulated
+value_basis one-purpose license offer
+return_kind service-credit
+issued_at 20260912.120000-0400
+expires_at 20261012.120000-0400
+signer_id person:sample-holder
+signature fixture-signature-v1
