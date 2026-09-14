@@ -15,7 +15,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.021009` | [the tutorial waited at the proven edge](20260914/20260914-021009_the-tutorial-waited-at-the-proven-edge.kyri) | parked work landed; product proof still open |
 | `20260914.021002` | [the finished claim left the live board](20260914/20260914-021002_the-finished-claim-left-the-live-board.kyri) | completed incense claim retired; cold 277 green, 7 red |
 | `20260914.015912` | [the card landed before motion](20260914/20260914-015912_the_card_landed_before_motion.kyri) | card present; motion next; cold roster held six reds |
-| `20260914.010103` | [the recovered account reached both shores](20260914/20260914-010103_the-recovered-account-reached-both-shores.kyri) | two account commits sent; roster hit disk limit |
+| `20260914.015710` | [Tally repair crossed the living tip](20260914/20260914-015710_the-tally-refusal-repair-crossed-the-living-tip.kyri) | repair reconciled; 49-row shelf restored |
+| `20260914.011413` | [the parked Tally refusal repair came home](20260914/20260914-011413_the-parked-tally-refusal-repair-came-home.kyri) | 18 refusals speak; shim-reason 940 -> 922 |
+| `20260914.010103` | [the recovered account reached both shores](20260914/20260914-010103_the-recovered-account-reached-both-shores.kyri) | two parked commits sent; roster met disk limit |
 | `20260914.005538` | [the twelve lines needed thirteen seats](20260914/20260914-005538_the-twelve-lines-needed-thirteen-seats.kyri) | receipt snapshot mismatch bound; handoff A 95 |
 | `20260914.005504` | [the parked record rejoined its shelf](20260914/20260914-005504_the-parked-record-rejoined-its-shelf.kyri) | account restored; moving count kept; roster capacity red |
 | `20260914.002923` | [the radius kept the reading order](20260914/20260914-002923_the-radius-kept-the-reading-order.kyri) | radial grouping stays behind canonical rows |

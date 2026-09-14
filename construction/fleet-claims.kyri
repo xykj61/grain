@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim patchouli-tally-shim-reason
-seat patchouli
-stamp 20260913.235207
-epoch 1789357927
-paths tools/t/tally_roster_witness.rish tools/t/tally_bud_witness.rish tools/fixtures/s/shim_reason_scan.sh construction/fleet-claims.kyri
-what Carry captured output into two rostered Tally witnesses and lower the shim-reason ceiling to the measured tree.
 claim bakery-moved-proof-heard
 seat bakery
 stamp 20260914.015559

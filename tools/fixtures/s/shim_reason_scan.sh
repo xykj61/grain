@@ -152,7 +152,11 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 # merged tree answers, taken on the rebase rather than carried in from either side. That is the
 # only move available to a ceiling that only falls: a hand who keeps their own number discards a
 # peer's repair, and a hand who takes the peer's discards their own. The merged tree reads **926**.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-925}"
+#
+# 922 `20260913` -- the roster grew to 940 while its ceiling stayed at 925. Two existing Tally
+# witnesses now carry the captured output into all 18 first assertions that previously named only
+# a generic failure. The reading falls 940 -> 922, and the ceiling meets it without slack.
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-922}"
 UNSAID_CEILING="${UNSAID_CEILING:-6157}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"
