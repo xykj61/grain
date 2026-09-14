@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260913.233758` | [the second parked reading was already home](20260913/20260913-233758_the_second_parked_reading_was_already_home.kyri) | second Grass stash already landed; no replay |
 | `20260913.232245` | [the parked account came home](20260913/20260913-232245_the-parked-account-came-home.kyri) | newest unfinished Diffuser log recovered once |
 | `20260913.232004` | [the receipt met the shape ceiling](20260913/20260913-232004_the-receipt-met-the-shape-ceiling.kyri) | receipt has 15 fields; Glow shape ceiling is 9 |
 | `20260913.225250` | [the parked tutorial record came home](20260913/20260913-225250_the-parked-tutorial-record-came-home.kyri) | parked record restored; peer receipt seams remain |
