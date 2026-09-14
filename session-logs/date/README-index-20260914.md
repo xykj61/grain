@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260914.105708` | [the cold roster spent the filesystem](20260914/20260914-105708_the-cold-roster-spent-the-filesystem.kyri) | four reds surfaced; capacity stopped the pass |
 | `20260914.104803` | [Cold pass capacity](20260914/20260914-104803_the_cold_pass_met_the_capacity_hold.kyri) | parked code landed; disk stopped roster |
+| `20260914.104121` | [The recovered rail kept its boundary](20260914/20260914-104121_the-recovered-rail-kept-its-boundary.kyri) | recovery ready; full roster met disk capacity |
 | `20260914.104012` | [Cold pass capacity](20260914/20260914-104012_the_cold_pass_stopped_at_the_full_disk.kyri) | README restored; full verdict absent |
 | `20260914.103111` | [Compiler reach returned](20260914/20260914-103111_the_compiler_reach_returned_to_the_live_tree.kyri) | parked census restored; capacity hold named |
 | `20260914.101831` | [the parent mark caught the roster red](20260914/20260914-101831_the-parent-mark-caught-the-roster-red.kyri) | stale nib repaired; dual-product seam held |
