@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.034056` | [the water row stopped at capacity](20260914/20260914-034056_the_water_row_stopped_at_capacity.kyri) | parked work safe; disk capacity still blocks roster |
 | `20260914.033616` | [the tutorial held at the capacity line](20260914/20260914-033616_the-tutorial-held-at-the-capacity-line.kyri) | recovery clean; capacity and product seam remain open |
 | `20260914.033537` | [the roster waited for room](20260914/20260914-033537_the-roster-waited-for-room.kyri) | parked work safe; filesystem capacity blocks roster |
 | `20260914.033437` | [the capacity red held the line](20260914/20260914-033437_the_capacity_red_held_the_line.kyri) | parked work safe; filesystem capacity red remains |
