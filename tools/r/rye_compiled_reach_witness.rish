@@ -47,14 +47,14 @@ say "rye-reach: Style Gauge, Meter -- the count is the subject, and the populati
 say "rye-reach: Lens TAME -- safety first: grep proves a file's shape, and only a compiler proves a file."
 
 let scan = run ["sh" "tools/fixtures/r/rye_compiled_reach_scan.sh"]
-assert scan.ok else "rye-reach: bodies stand outside every compiler's reach -- read the scan's own lines"
 say scan.out
+assert scan.ok else "rye-reach: bodies stand outside every compiler's reach -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "rye-reach: the scan must balance before it is believed"
 say "field GREEN -- the uncompiled set holds under its ceiling"
 
 let control = run ["sh" "tools/fixtures/r/rye_compiled_reach_control.sh"]
-assert control.ok else "rye-reach: the control must complete"
 say control.out
+assert control.ok else "rye-reach: the control must complete"
 assert control.out contains "grep_read_module_uncompiled=yes" else "rye-reach: a module only grepped must read uncompiled -- this is %449's own shape"
 assert control.out contains "grep_read_module_counted=yes" else "rye-reach: the refusal must name a count, never only a verdict"
 assert control.out contains "built_module_reached=yes" else "rye-reach: the module a builder names, and the one it imports, must both read reached"
