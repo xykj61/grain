@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.103111` | [Compiler reach returned](20260914/20260914-103111_the_compiler_reach_returned_to_the_live_tree.kyri) | parked census restored; capacity hold named |
 | `20260914.101831` | [the parent mark caught the roster red](20260914/20260914-101831_the-parent-mark-caught-the-roster-red.kyri) | stale nib repaired; dual-product seam held |
 | `20260914.101759` | [Recovered send](20260914/20260914-101759_the_recovered_send_reached_both_remotes.kyri) | parked record landed; capacity hold kept visible |
+| `20260914.101132` | [The crossing was already home](20260914/20260914-101132_the-crossing-was-already-home.kyri) | recovery matched landing; full cold roster green |
 | `20260914.100758` | [Rebased record](20260914/20260914-100758_the_rebased_record_carried_its_parent_forward.kyri) | debts paid; parent nib carried forward |
 | `20260914.095701` | [The parked record kept its place](20260914/20260914-095701_the-parked-record-kept-its-place.kyri) | one parked log restored; newer rows preserved |
 | `20260914.094041` | [The compiler-reach census crossed](20260914/20260914-094041_the-compiler-reach-census-crossed.kyri) | recovered census and shelf order ready for hot proof |
