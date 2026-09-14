@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.125631` | [Earth read the capacity wall](20260914/20260914-125631_earth-read-the-capacity-wall.kyri) | parked work preserved; ENOSPC still holds the cold roster |
 | `20260914.125419` | [The cold roster spent the last block](20260914/20260914-125419_the-cold-roster-spent-the-last-block.kyri) | parked work safe; full cold roster met ENOSPC |
 | `20260914.125349` | [The cold roster met the capacity wall](20260914/20260914-125349_the-cold-roster-met-the-capacity-wall.kyri) | parked work safe; ENOSPC held new Patchouli work |
+| `20260914.124938` | [The Consent Rail returned to Still](20260914/20260914-124938_the-consent-rail-returned-to-still.kyri) | three fallback conditions share one complete frame |
 | `20260914.123026` | [Capacity held the build and not the send](20260914/20260914-123026_capacity-held-the-build-and-not-the-send.kyri) | stash held; finished commits cleared to send |
 | `20260914.122532` | [The resident builds were not scratch](20260914/20260914-122532_the-resident-builds-were-not-scratch.kyri) | cleanup cascade recorded; disk headroom still gates proof |
 | `20260914.122453` | [The roster reached the disk wall](20260914/20260914-122453_the_roster_reached_the_disk_wall.kyri) | recovery complete; cold pass met ENOSPC |
