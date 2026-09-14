@@ -52,10 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-
-claim bakery-ryekey-library-content
-seat bakery
-stamp 20260914.031106
-epoch 1789369866
-paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish construction/ITINERARY.md construction/fleet-claims.kyri
-what Extend Rye build receipts through the library bytes the compiler reads, and prove a same-path same-size library mutation forces a rebuild.

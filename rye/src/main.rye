@@ -40,8 +40,8 @@
 //!
 //! BUILD RECEIPTS. A `build` or `build-lib` that names its output with
 //! `-femit-bin=<path>` earns a receipt: one SHA-256 over the whole import
-//! closure's bytes, the forwarded flags, the toolchain's path and size, the
-//! library's `std` link target, and this binary's own bytes, written beside the
+//! closure's bytes, the forwarded flags, the toolchain's bytes, the sorted
+//! standard-library tree, and this binary's own bytes, written beside the
 //! output as `<path>.ryekey`. When every one of those inputs is byte-identical
 //! on the next build, the toolchain is not spawned and the standing binary
 //! serves -- a skip of recompilation only, never of anything a program proves
@@ -55,10 +55,9 @@
 //! source) or whose closure reaches `@cImport` earns no receipt at all, since
 //! bytes outside the key would then shape the binary -- building fresh is the
 //! safe direction and the only one taken. Honest bounds, named rather than
-//! discovered: the library joins the key by its path and its `std` link
-//! target, so the pinned toolchain's own checksum (tools/f/fetch-toolchain.sh)
-//! and the std-overlay guard carry the vendored bytes; the toolchain itself
-//! joins by path and size for the same reason; and two builds racing one emit
+//! discovered: at most 4,096 standard-library files and 256 MiB of library
+//! bytes join a key, and an unreadable or larger tree builds fresh. Two builds
+//! racing one emit
 //! path can tear an output exactly as they could before receipts existed --
 //! the output hash then misses and the next build heals it, where a v1 receipt
 //! would have pinned it.
@@ -81,7 +80,7 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// Accretions in *capability* grow the tool itself: the `build` command, and
 /// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
 /// The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260913.175414";
+const rye_version = "20260914.031449";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -113,7 +112,7 @@ const build_lock_poll_ms: u64 = 50;
 
 /// The receipt key's domain separator, versioned so a future key shape can
 /// never collide with this one's stamps.
-const ryekey_marker = "ryekey-v4\x00";
+const ryekey_marker = "ryekey-v5\x00";
 
 /// A receipt stamp is two 64-hex lines -- the input key, then the emitted
 /// binary's own hash -- and this bound refuses to read a stamp-shaped file
@@ -133,6 +132,11 @@ const ryekey_emit_max_bytes: u64 = 256 * 1024 * 1024;
 /// magnitude over the ~2.5 MB the binary measures today, so a grown binary
 /// still hashes whole while a wildly wrong path meets a named limit.
 const rye_self_max_bytes: u64 = 32 * 1024 * 1024;
+
+/// The seated library is 552 files and about 18 MiB. These ceilings leave
+/// deliberate growth room and turn an unexpected tree into a fresh build.
+const ryekey_library_max_files: u32 = 4096;
+const ryekey_library_max_bytes: u64 = 256 * 1024 * 1024;
 
 /// Where Rye's standard library sits relative to this binary: a hard-coded,
 /// relative template that holds no matter where the repository is cloned. The
@@ -350,18 +354,7 @@ fn bridge_to_zig(
     const zig_content_readable = hash_file_into(io, dir, zig, &hasher);
     hasher.update(rye_lib);
     hasher.update("\x00");
-    {
-        // The library's load-bearing entry is its `std` link; the target string
-        // joins the key so a retargeted overlay misses the receipt.
-        const std_link = try std.fmt.allocPrint(garden, "{s}/std", .{rye_lib});
-        var linkbuf: [4096]u8 = undefined;
-        if (dir.readLink(io, std_link, &linkbuf)) |n| {
-            hasher.update(linkbuf[0..n]);
-        } else |_| {
-            hasher.update("std-not-a-link");
-        }
-        hasher.update("\x00");
-    }
+    const library_content_readable = hash_library_into(io, dir, rye_lib, garden, &hasher);
     for (extra) |flag| {
         hasher.update(flag);
         hasher.update("\x00");
@@ -398,6 +391,7 @@ fn bridge_to_zig(
     const wants_receipt = !std.mem.eql(u8, label, "run") and
         init.environ_map.get("RYE_BUILD_FRESH") == null and
         zig_content_readable and
+        library_content_readable and
         keyable and
         flags_are_keyable(extra);
     var receipt_path: ?[]const u8 = null;
@@ -507,6 +501,52 @@ fn hash_file_into(io: std.Io, dir: std.Io.Dir, path: []const u8, hasher: *Sha256
         hasher.update(buffer[0..n]);
         if (n < buffer.len) return true;
     }
+}
+
+fn path_less_than(_: void, a: []const u8, b: []const u8) bool {
+    return std.mem.order(u8, a, b) == .lt;
+}
+
+fn hash_library_into(
+    io: std.Io,
+    dir: std.Io.Dir,
+    rye_lib: []const u8,
+    garden: std.mem.Allocator,
+    hasher: *Sha256,
+) bool {
+    const std_root = std.fmt.allocPrint(garden, "{s}/std", .{rye_lib}) catch return false;
+    var library_dir = dir.openDir(io, std_root, .{ .iterate = true }) catch return false;
+    defer library_dir.close(io);
+
+    var walker = library_dir.walk(garden) catch return false;
+    defer walker.deinit();
+    var paths = std.ArrayListUnmanaged([]const u8).empty;
+    defer {
+        for (paths.items) |path| garden.free(path);
+        paths.deinit(garden);
+    }
+
+    while (walker.next(io) catch return false) |entry| {
+        if (entry.kind != .file and entry.kind != .sym_link) continue;
+        if (paths.items.len >= @as(usize, ryekey_library_max_files)) return false;
+        paths.append(garden, garden.dupe(u8, entry.path) catch return false) catch return false;
+    }
+    std.mem.sortUnstable([]const u8, paths.items, {}, path_less_than);
+
+    var total_bytes: u64 = 0;
+    for (paths.items) |path| {
+        const full_path = std.fmt.allocPrint(garden, "{s}/{s}", .{ std_root, path }) catch return false;
+        const stat = dir.statFile(io, full_path, .{}) catch return false;
+        if (stat.size > ryekey_library_max_bytes - total_bytes) return false;
+        total_bytes += stat.size;
+        hasher.update(path);
+        hasher.update("\x00");
+        var size_bytes: [8]u8 = undefined;
+        std.mem.writeInt(u64, &size_bytes, stat.size, .little);
+        hasher.update(&size_bytes);
+        if (!hash_file_into(io, dir, full_path, hasher)) return false;
+    }
+    return paths.items.len != 0;
 }
 
 fn find_emit_path(extra: []const [:0]const u8) ?[]const u8 {

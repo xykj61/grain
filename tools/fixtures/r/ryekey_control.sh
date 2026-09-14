@@ -172,7 +172,7 @@ env RYE_ZIG="$PEN/zigbytes" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -
 k8b=$(stamp)
 [ "$k8b" != "$k8a" ] || fail "same-path same-size toolchain bytes did not change the key"
 
-# --- leg 9: the library's std link target misses ---------------------------------------------
+# --- leg 9: an equivalent spelling of the same library content remains a hit ----------------
 # A pen lib whose every entry points at the real library's resolved targets; the
 # std entry is then re-seated to an equivalent path with a different SPELLING,
 # so the build still succeeds while the link's target string moves.
@@ -191,7 +191,23 @@ ln -s "${std_tgt%/}/." "$PEN/lib2/std"
 env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
     || fail "retargeted-std build failed"
 k9b=$(stamp)
-[ "$k9b" != "$k9a" ] || fail "a re-seated std link did not change the key"
+[ "$k9b" = "$k9a" ] || fail "equivalent library bytes changed the content key"
+
+# --- leg 10: same path and size, different standard-library bytes miss ----------------------
+cp -RL "$REPO/rye/lib/std" "$PEN/std-copy"
+rm "$PEN/lib2/std"
+ln -s "$PEN/std-copy" "$PEN/lib2/std"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "copied-std baseline build failed"
+k9c=$(stamp)
+sed '0,/^pub const AutoHashMap =/s//pub  const AutoHashMap=/' "$PEN/std-copy/std.zig" > "$PEN/std-copy/std.zig.next"
+[ "$(wc -c < "$PEN/std-copy/std.zig.next" | tr -d ' ')" = "$(wc -c < "$PEN/std-copy/std.zig" | tr -d ' ')" ] \
+    || fail "the same-size library plant changed size"
+mv "$PEN/std-copy/std.zig.next" "$PEN/std-copy/std.zig"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "same-size std-byte flip build failed"
+k9d=$(stamp)
+[ "$k9d" != "$k9c" ] || fail "same-path same-size standard-library bytes did not change the key"
 
 # --- leg 10: the rye binary's own bytes miss -------------------------------------------------
 cp "$RYE_BIN" "$PEN/ryeflip"
@@ -257,6 +273,6 @@ env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extr
     || fail "positional-arg build failed"
 [ ! -f "$KEY" ] || fail "a positional argument still earned a receipt"
 
-echo "legs=18 all proven -- nine flips missed, including same-size compiler bytes and root and dependency source modes; the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
+echo "legs=19 all proven -- ten flips missed, including same-size compiler and library bytes and root and dependency source modes; the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"

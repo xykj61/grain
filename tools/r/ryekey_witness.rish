@@ -2,7 +2,7 @@
 #   rishi/bin/rishi run tools/r/ryekey_witness.rish
 #
 # WHAT IT STANDS OVER. tools/fixtures/r/ryekey_control.sh, which proves rye's build receipt from both
-# sides in a throwaway pen: eighteen legs, nine flipped inputs that must each rebuild, one hit
+# sides in a throwaway pen: nineteen legs, ten flipped inputs that must each rebuild, one hit
 # that must skip, the RYE_BUILD_FRESH bypass, the run and no-emit exemptions, and two builds that
 # must agree byte for byte. The two mode legs flip root and dependency sources separately, so a
 # receipt that reads only the root's metadata cannot pass.
@@ -22,16 +22,16 @@
 # control names its answer in one token either way and this witness reads that token out loud.
 #
 # WHERE THE STRICTNESS LIVES. In the control, which exits 1 on any failed leg. This witness proves
-# the control ANSWERED -- exit 0 and a named verdict -- rather than restating seventeen assertions a
+# the control ANSWERED -- exit 0 and a named verdict -- rather than restating nineteen assertions a
 # second time in a second language.
 say "ryekey: Language EN -- a receipt proven from both sides, on a clock that runs it."
-say "ryekey: Style Gauge Meter -- eighteen legs counted, the stale binary named rather than reddened."
+say "ryekey: Style Gauge Meter -- nineteen legs counted, the stale binary named rather than reddened."
 say "ryekey: Lens TAME -- safety first; a control proven only in the hit direction cannot be told from a bypass."
 
 let control = run ["sh" "tools/fixtures/r/ryekey_control.sh"]
 say control.out
-assert control.ok else "ryekey: the control must exit 0 -- either seventeen legs green or an honest machine-fact skip"
+assert control.ok else "ryekey: the control must exit 0 -- either nineteen legs green or an honest machine-fact skip"
 assert control.out contains "ryekey_verdict=" else "ryekey: a control that named no verdict has answered nothing"
 
 if (control.out contains "ryekey_verdict=machine_fact") then say "MACHINE FACT: ryekey -- this pier's rye binary stands behind its own source; run sh rye/bootstrap.sh to prove the receipt here."
-if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- eighteen legs proven in a throwaway pen; every flipped input rebuilt, same-size compiler bytes and root and dependency modes missed separately, the hit skipped, the bypass forced a rebuild, and two fresh builds agreed byte for byte"
+if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- nineteen legs proven in a throwaway pen; every flipped input rebuilt, same-size compiler and library bytes and root and dependency modes missed separately, the hit skipped, the bypass forced a rebuild, and two fresh builds agreed byte for byte"

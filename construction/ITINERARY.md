@@ -54,6 +54,11 @@ without replacing newer living-page state.
 **BAKERY -- THE SECOND PULL NOW NAMES THE PROOF IT MOVED.** Completed account
 [shelved whole](archive/20260914-081515_itinerary-landed-accounts.md).
 
+**BAKERY -- THE LIBRARY'S BYTES ENTER THE BUILD RECEIPT.** **EARTH BREATHES IN** (row 4,
+N=4819): Rye's v5 key hashes the library tree under **4,096-file** and **256-MiB** ceilings;
+unreadable builds fresh. **19 legs** prove identical bytes hit and a
+same-path, same-size library change misses. Focused, TAME, and **A/A+/B** checks are GREEN.
+
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
 holds at most **9** and named gates close at `nona-shape`. A split chooses identity; a wider ceiling
