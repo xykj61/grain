@@ -14,8 +14,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.101831` | [the parent mark caught the roster red](20260914/20260914-101831_the-parent-mark-caught-the-roster-red.kyri) | stale nib repaired; dual-product seam held |
 | `20260914.101759` | [Recovered send](20260914/20260914-101759_the_recovered_send_reached_both_remotes.kyri) | parked record landed; capacity hold kept visible |
 | `20260914.100758` | [Rebased record](20260914/20260914-100758_the_rebased_record_carried_its_parent_forward.kyri) | debts paid; parent nib carried forward |
+| `20260914.095701` | [The parked record kept its place](20260914/20260914-095701_the-parked-record-kept-its-place.kyri) | one parked log restored; newer rows preserved |
 | `20260914.093109` | [the boundary stayed under the hand](20260914/20260914-093109_the-boundary-stayed-under-the-hand.kyri) | stashes preserved; dual-product seam remains open |
 | `20260914.092301` | [missing record returned](20260914/20260914-092301_the-missing-record-returned-at-the-capacity-line.kyri) | restored one log; capacity stopped roster |
+| `20260914.092201` | [The roster met the full disk](20260914/20260914-092201_the_roster_met_the_full_disk.kyri) | parked work safe; cold pass lost disk |
 | `20260914.091630` | [Dead letter returned](20260914/20260914-091630_the_dead_letter_returned_before_capacity_closed_the_pass.kyri) | recovery whole; roster met capacity |
 | `20260914.091428` | [The cold roster ended mid-line](20260914/20260914-091428_the-cold-roster-ended-mid-line.kyri) | recovered lap preserved; roster terminal verdict absent |
 | `20260914.081818` | [The recovery was already home](20260914/20260914-081818_the-recovery-was-already-home.kyri) | stash kept; focused checks green; hot pass lost verdict |
