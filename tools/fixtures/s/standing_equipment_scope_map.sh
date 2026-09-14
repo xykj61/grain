@@ -93,6 +93,7 @@ empty_document DISCOVERY
 equinox_e123_living_pin_guard tools/equinox/witness/equinox_e123_living_pin_guard_witness.rish tools/fixtures/e/equinox_e123_living_pin_guard_scan.sh tools/fixtures/l/living_pin_max_bytes.sh construction/ session-logs/README.md tools/equinox/witness/ gratitude/ironbeetle/
 exec_bit DISCOVERY
 fixture_depth tools/f/fixture_depth_witness.rish tools/fixtures/ tools/t/tool_path_resolve.rish
+fleet_moved_proof tools/f/fleet_moved_proof_witness.rish tools/f/fleet_moved_proof.sh tools/fixtures/f/fleet_moved_proof_control.sh tools/fixtures/s/standing_equipment_scope_map.sh tools/fixtures/s/scope_match.sh tools/f/fleet-loop-codex.sh
 fora_socket tools/f/fora_socket_witness.rish constel/ comlink/ [build]
 glow_choir tools/g/glow_choir_witness.rish glow/ tools/g/glow_* tools/au/aurora_glow_* tools/m/mantra_glow_* tools/t/tally_glow_* active-designing/docs/glow/ [build]
 glow_compose_after_inc tools/g/glow_compose_after_inc_witness.rish tools/g/glow_run.rish glow/ src/gate/ [build]

@@ -1,0 +1,17 @@
+# fleet_moved_proof_witness.rish -- prove the second pull chooses a truthful proof scope.
+#
+# The control builds a real Git repository in a throwaway pen and plants the five decisions the
+# send path depends on: independent changes stay scoped; overlapping proof closure, an unknown
+# path, an absent map, and an unreadable ref each choose the full roster.
+
+say "fleet-moved-proof: Language EN -- the second pull names the proof its changes moved."
+say "fleet-moved-proof: Style Gauge, Meter -- five decisions run in a real Git pen."
+say "fleet-moved-proof: Lens TAME -- uncertainty spends the full roster rather than silence."
+
+let control = run ["sh" "tools/fixtures/f/fleet_moved_proof_control.sh"]
+say control.out
+assert control.ok else "fleet-moved-proof: the five-decision control refused -- read its output"
+assert control.out contains "control_verdict=ok" else "fleet-moved-proof: the control named no verdict"
+assert control.out contains "control_legs=5" else "fleet-moved-proof: all five decisions must remain under proof"
+
+say "GREEN: fleet-moved-proof -- independent changes stay scoped and every uncertain case chooses full."
