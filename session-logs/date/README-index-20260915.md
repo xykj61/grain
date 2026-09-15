@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.184800` | [Industry normal, TAME unacceptable](20260915/20260915-184800_industry-normal-tame-unacceptable.kyri) | 51 of 1,252 witnesses carry the hazard |
 | `20260915.183900` | [The industry word on our own noun](20260915/20260915-183900_the-industry-word-on-our-own-noun.kyri) | flap molted to flaky across 12 files |
 | `20260915.182844` | [The path a reader copies](20260915/20260915-182844_the-path-a-reader-copies.kyri) | a link's visible path is a promise no guard read |
 | `20260915.182600` | [The pivot does not move](20260915/20260915-182600_the-pivot-does-not-move.kyri) | hinge and separator weighed against flap |
