@@ -18,7 +18,8 @@
 # context/TAME_GUIDANCE.md and left the anchor text at its pre-fold spelling -- visible on one line,
 # where sibling links that folded earlier carry both halves in agreement and the STOA plans carry
 # one half moved. Two room moves, and the anchor was touched by neither. Measured on the seating
-# lap: 69 living anchors across 15 pages promise a path this tree does not carry, while all 69 links open.
+# lap: 69 living anchors across 15 pages promise a path this tree does not carry, while all 69 links
+# open. All 69 were swept the next day, each anchor taking the path its own link already opened.
 #
 # WHAT IS READ, and what is deliberately read past.
 #   An anchor counts only when it LOOKS like a path a reader would copy: it holds a slash, ends in
@@ -32,9 +33,11 @@
 #   Resolution is against the TRACKED tree, never the filesystem, for the reason tracked_link_scan
 #   gives: an untracked symlink on one pier answers a question a fresh clone will answer differently.
 #
-# WHAT IS GATED. Living pages, under a ceiling that only ever falls. It is a ratchet rather than a
-# wall because 69 stand today and a guard that reds on the ordinary is a guard somebody turns off.
-# Lower the ceiling in the same commit as any sweep.
+# WHAT IS GATED. Living pages, at ZERO. It was a ratchet at 69 for one day, since a guard that reds
+# on the ordinary is a guard somebody turns off; the sweep of `20260915.184010` took all 69 with
+# tools/fixtures/l/link_text_promise_convert.sh, every page re-derived from its committed bytes, so
+# the ordinary is now zero and the reading is a wall. The next anchor promising a path this tree
+# does not carry reds on the lap it arrives.
 #
 # WHAT IS REPORTED, never gated. The same reading across dated testimony -- a page whose own
 # basename carries a one-clock stamp, and every date/, archive/ or yonder/ shelf. Accrete-never-break:
@@ -43,6 +46,18 @@
 # USAGE
 #   sh tools/fixtures/l/link_text_promise_scan.sh
 #   sh tools/fixtures/l/link_text_promise_scan.sh --list     # name every living hit
+#   sh tools/fixtures/l/link_text_promise_scan.sh --tsv      # the same hits, tab-separated for a tool
+#
+# WHY A TSV MODE. The converter beside this scan must reach exactly the anchors this scan counts and
+# nothing beside them, or a sweep and its meter are reading two different populations. One reading,
+# printed two ways: --list for a person, --tsv for tools/fixtures/l/link_text_promise_convert.sh.
+# Each --tsv row is page, shown text, opened target, tab separated, one living hit per line.
+# Duplicate rows collapse, since one pair repeated on a page is one substitution either way.
+# In this mode the summary lines go to STDERR, so a tool reading stdout receives rows and nothing
+# else. The ceiling still runs and still refuses -- a mode that quietly skipped the gate would be a
+# second population by another road. First residency taught the separation: with the summary on
+# stdout the converter read `ceiling=69` as a page name, and awk takes a bare name holding an equals
+# sign as a VARIABLE ASSIGNMENT rather than a missing file, so it reported no error at all.
 #
 # Driven by tools/l/link_text_promise_witness.rish. Run from the repository root.
 
@@ -54,9 +69,15 @@ set -eu
 # runs this scan from inside a throwaway repository where a relative source finds nothing.
 . "$(cd "$(dirname "$0")/../s" && pwd)/shell_portable.sh"
 
-ceiling="${LINK_TEXT_PROMISE_CEILING:-69}"
+ceiling="${LINK_TEXT_PROMISE_CEILING:-0}"
 list=no
-[ "${1:-}" = "--list" ] && list=yes
+tsv=no
+case "${1:-}" in
+  --list) list=yes ;;
+  --tsv)  tsv=yes ;;
+  "") ;;
+  *) echo "verdict=bad_flag"; echo "refused: unknown flag ${1} -- this scan takes --list or --tsv" >&2; exit 1 ;;
+esac
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads the tracked tree, so it wants git" >&2; exit 1; }
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refused: run me from inside the repository" >&2; exit 1; }
@@ -66,8 +87,15 @@ trap 'rm -rf "$work"' EXIT INT TERM
 
 git ls-files > "$work/tracked.txt"
 # vendor/, gratitude/ and seed/ are held or projected rather than authored here.
+# Each page is handed to awk with a leading `./`. awk reads a bare argument as a VARIABLE
+# ASSIGNMENT whenever the name left of an equals sign is a valid identifier, so a root-level page
+# called `eq=1.md` would be read as a setting rather than opened -- no error, no hit, and the page
+# passes in silence. A slash anywhere in the name already defeats that reading, which is why only
+# the root runs out of accident. The prefix is stripped back off inside the program, so every
+# reported path stays the tracked spelling.
 git ls-files '*.md' '*.mdc' \
-  | grep -v '^vendor/' | grep -v '^gratitude/' | grep -v '^seed/' > "$work/pages.txt" || true
+  | grep -v '^vendor/' | grep -v '^gratitude/' | grep -v '^seed/' \
+  | sed 's|^|./|' > "$work/pages.txt" || true
 
 pages=$(wc -l < "$work/pages.txt" | tr -d ' ')
 [ "$pages" -gt 0 ] || { echo "pages=0"; echo "verdict=no_pages"; exit 1; }
@@ -103,7 +131,7 @@ NR == FNR {
   while (sub(/\/[^\/]*$/, "", d)) dirs[d] = 1
   next
 }
-FNR == 1 { page = FILENAME; dir = page; if (!sub(/\/[^\/]*$/, "", dir)) dir = "" }
+FNR == 1 { page = FILENAME; sub(/^\.\//, "", page); dir = page; if (!sub(/\/[^\/]*$/, "", dir)) dir = "" }
 {
   line = $0
   while (match(line, /\[`[^`]+`\]\([^)]+\)/)) {
@@ -137,19 +165,27 @@ if [ "$list" = yes ]; then
   awk -F'\t' '$1 == "living" { print "promise: " $2 " shows " $3 " and opens " $4 }' "$work/hits.txt" | sort
 fi
 
-echo "pages=$pages"
-echo "living=$living"
-echo "living_pages=$living_pages"
-echo "testimony=$testimony"
-echo "ceiling=$ceiling"
+# The converter's whole roster, so a sweep can never reach a page this reading passed over.
+if [ "$tsv" = yes ]; then
+  awk -F'\t' '$1 == "living" { print $2 "\t" $3 "\t" $4 }' "$work/hits.txt" | sort -u
+fi
+
+# In --tsv mode the rows own stdout; every summary line goes to stderr.
+say() { if [ "$tsv" = yes ]; then echo "$@" >&2; else echo "$@"; fi; }
+
+say "pages=$pages"
+say "living=$living"
+say "living_pages=$living_pages"
+say "testimony=$testimony"
+say "ceiling=$ceiling"
 
 if [ "$living" -gt "$ceiling" ]; then
-  echo "ceiling_ok=no"
-  echo "verdict=over_ceiling"
+  say "ceiling_ok=no"
+  say "verdict=over_ceiling"
   echo "refused: $living living anchors promise a path the tree does not carry, above the ceiling of $ceiling" >&2
   echo "refused: name them with  sh tools/fixtures/l/link_text_promise_scan.sh --list" >&2
   exit 1
 fi
 
-echo "ceiling_ok=yes"
-echo "verdict=ok"
+say "ceiling_ok=yes"
+say "verdict=ok"

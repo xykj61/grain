@@ -75,7 +75,7 @@ When it passes, you hold the whole pattern: **run, assert, say GREEN**. Negative
 
 | Next read | Why |
 |-----------|-----|
-| [`reference/rishi-language.md`](../reference/rishi-language.md) | Full syntax at parity 142 |
+| [`../reference/rishi-language.md`](../reference/rishi-language.md) | Full syntax at parity 142 |
 | `tools/r/rs1_args.rish` | Script arguments and friendly failures |
 | `tools/r/rw4_slc_failure_paths.rish` | Shell meta-command and CLI failure paths |
 | `tools/p/parity.rish` | The full witness suite |

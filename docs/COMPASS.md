@@ -60,7 +60,7 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md), the Cursor loop secti
 | Surface | Role |
 |---------|------|
 | [`cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) | Stitched first-day path |
-| [`grain-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
+| [`../manual/grain-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
 | Markup pipeline silo | Scribble -> Brix -> Bron -> Mantra -> Seva |
 
 ## What this page refuses
