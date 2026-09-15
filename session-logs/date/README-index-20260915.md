@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.182600` | [The pivot does not move](20260915/20260915-182600_the-pivot-does-not-move.kyri) | hinge and separator weighed against flap |
 | `20260915.181200` | [The section that wanted a shelf](20260915/20260915-181200_the-section-that-wanted-a-shelf.kyri) | card folded 41,230 to 19,964 bytes |
 | `20260915.181038` | [The pen that was never entered](20260915/20260915-181038_the-pen-that-was-never-entered.kyri) | unentered pen moved this tree's identity |
 | `20260915.180500` | [The flap that wore two causes](20260915/20260915-180500_the-flap-that-wore-two-causes.kyri) | one red closed, eight booked, seven gated |
