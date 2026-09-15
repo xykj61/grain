@@ -5,7 +5,7 @@
 **Voice:** Quin · nested frame Trey  
 **Fund seat:** **Gren** — Taurus · earth · seat 2 · `%gren` · domain prep **gren.fund**  
 **Status:** Steps **1–6 taught and witnessed** · fund-prep arc **m5–m8 CLOSED** (`20260728.015058`) · rename-forward **Gren** (`20260728.025634`; was Djin · was Twah)  
-**Generator:** [`../../tools/g/gen_gren_fund_prep.rish`](../../../../tools/g/gen_gren_fund_prep.rish)
+**Generator:** [`../../../../tools/g/gen_gren_fund_prep.rish`](../../../../tools/g/gen_gren_fund_prep.rish)
 
 *Gren's gift under the fund seat (was Gren · was Twah): the edu-series tutorial for creating one of the twelve.*
 Radiant pass `20260728.025634` — Gren → Gren overwrite · core Gren Chapter · revert Gren name
@@ -94,7 +94,7 @@ The constellation contract is a **phone book** rather than a mint. Version one h
 | Artifact | Role |
 |----------|------|
 | [`../../../../mycelium/constellation/SPEC.md`](../../../../mycelium/constellation/SPEC.md) | Design — registry-only · two lanes · hard lines |
-| [`../../mycelium/constellation/sui/sources/constellation.move`](../../../../mycelium/constellation/sui/sources/constellation.move) | Unaudited Move sketch — `add_seat` under AdminCap · **mints nothing** |
+| [`../../../../mycelium/constellation/sui/sources/constellation.move`](../../../../mycelium/constellation/sui/sources/constellation.move) | Unaudited Move sketch — `add_seat` under AdminCap · **mints nothing** |
 | Settlement lane | Sui package (devnet/testnet/mainnet = his hand) |
 | Sovereign lane | Same registry truth over **Comlink** on house metal |
 

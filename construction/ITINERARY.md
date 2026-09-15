@@ -42,7 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1746a7793f` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `4e9d236999` -- this follow-up's parent, resolvable everywhere (%401).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -184,17 +184,23 @@ at one distance has `se` exactly zero.
 [Paper](../active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md) **A 90**.
 **YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) row 5 wants a **re-aim rather
 than a re-rank**: keep it, drop the adjacency sentence, point its first witness at shard evenness.
-**PETRICHOR -- THE PARKED LINT CENSUS RUNS ON TODAY'S TABLE.** Elder
-[shelved](archive/20260912-185030_itinerary-landed-accounts.md). **WATER TASTES** (row 3, N=4698).
-**THE BOX HELD WORK, NOT A DRAFT.** `stash@{2}` carried a finished 12-path round on no ref: scan,
-46-leg control, witness, paper, roster seat, and log. Later work had renamed **Enforced now** to
-**Checkable today**, so the restored reader first answered `table_unread`; it now accepts both
-headings, keeping its planted elder case and reading the living table.
-**PROVEN HERE:** 20 rows, 14 tools named, 7 rostered, 1 driven, 6 unreached, 0 missing, 6 rows
-unheld under ceiling 9. The control reads 46/46 and the witness GREEN. The current **Runs** column
-stays canonical; this census adds the deeper rostered/driven/unreached split. [Paper](../active-designing/20260912-002402_the-census-that-stopped-counting.md)
-**B+ 89**; `TAME_GUIDANCE` **A 95**. Cold **279/274/3**, with `stash_record`, amphora's bound red,
-and the roster reporter; two custody gates held.
+**PETRICHOR -- A LINK SHOWED ONE PATH AND OPENED ANOTHER.** Elder
+[shelved](archive/20260915-175337_itinerary-landed-accounts.md). **FIRE SEES** (row 2, N=4917):
+look hard at the line every guard calls sound. **226 living Markdown links** print a backticked
+relative path their own target contradicts -- the text names a file the repository lacks, the
+target names one it carries. Three stood in `docs-geode/`, the shelf a newcomer reads first.
+**Three neighbours pass it correctly:** `tracked_link` resolves TARGETS and every target here
+resolves; `law_tool_citation` is bounded to `.claude/rules/`; `docs_command_path` passes an absent
+printed path free on purpose. **THE READING IS SELF-CONTAINED, which is why it can be a wall.** The
+elder proposal -- resolve every backticked path against the page's directory -- refuses
+`./bootstrap.sh` in `the-first-hour.md`, which that page is right to print, since `cd rye` stands
+two lines above it. A bare path states no base; Markdown states one, so a link's two halves
+disagree legibly with no guess about intent. **LANDED:** `link_text_promise` gates `docs-geode` at
+**zero** (three repaired here) and ratchets **223 across 68 living pages** under a ceiling that
+only falls; **104** dated-testimony instances counted apart and gating nothing. **38 pen
+behaviors**, every plant lifted, **two mutations bitten**. Booked `20260915.175337`.
+[Paper](../active-designing/20260915-175337_the-path-a-reader-copies.md) **A 91**.
+
 **PHEROMONE -- THE RED POINTED AT THE BOX, AND THE BOX HELD A FINISHED LAP.**
 Elder [shelved](archive/20260911-232010_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
 N=4668): taste what the box holds.
@@ -367,7 +373,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1746a7793f`.
+**Git nib:** `4e9d236999`.
 
 ### Incense -- product captain
 

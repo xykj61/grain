@@ -1,0 +1,94 @@
+# tools/l/link_text_promise_witness.rish -- a link's visible path is a promise, and this reads the
+# pages where it disagrees with the link's own target.
+#
+#   rishi/bin/rishi run tools/l/link_text_promise_witness.rish
+#
+# WHY THIS RUNG. This tree writes most of its cross-references as
+# [`../room/file.md`](../room/file.md) -- a backticked relative path as the visible text, and the
+# same path again as the target. Two readers use that line two ways. One CLICKS and reaches the
+# target. One COPIES what they see, into a terminal, a grep, or a sibling page. Where the halves
+# disagree the second reader is sent nowhere, and every standing guard reports the line as sound.
+#
+# Measured on the lap this guard landed, over 6,347 tracked living pages and 15,907 backticked
+# links: 3 in `docs-geode/`, 223 in 68 other living pages, and 104 more in dated testimony.
+#
+# NOTHING READ THE CLASS, and each near neighbour passes it for its own good reason.
+# `tools/t/tracked_link_witness.rish` resolves link TARGETS, and every target here resolves --
+# which is exactly what makes the class invisible. `tools/l/law_tool_citation_witness.rish` reads
+# backticked paths and gates them, bounded to `.claude/rules/` by its own header.
+# `tools/d/docs_command_path_witness.rish` reads a path a page tells a reader to RUN and passes an
+# absent one free, on purpose.
+#
+# THE READING IS SELF-CONTAINED, which is why it can be a gate where the proposal it grew from
+# could not. `active-designing/20260911-000651_the-front-door-that-named-no-ceiling.md` proposed
+# resolving every backticked relative path against its page's own directory. Run against
+# `docs-geode/tutorials/the-first-hour.md` that reading refuses `./bootstrap.sh`, a line the page
+# is right to print: two lines above it the page says `cd rye`, so the path is relative to the
+# reader's working directory. A bare backticked path states nothing about what it is relative to.
+# A LINK does -- Markdown resolves a relative target against the document -- so both halves of
+# [`X`](Y) are page-relative by the format's own rule, and their disagreement needs no guess.
+#
+# WHAT IS PROVEN, on metal. `docs-geode/` -- the shipping shelf, the pages a newcomer meets first
+# -- carries zero broken promises. The room was swept to zero on this lap, so the wall refuses
+# only what arrives after it.
+#
+# WHAT IS RATCHETED under a ceiling that only falls: every other living page. The class stands in
+# rooms this lane does not own, and a gate at zero would red on 68 pages belonging to other ships.
+# A gate that reds on somebody else's work is a gate somebody turns off. A lane sweeping its own
+# page lowers CEILING in the same commit.
+#
+# WHAT IS READ PAST. A page whose own basename carries a one-clock stamp is TESTIMONY and keeps
+# every word it wrote, so it is counted apart and gates nothing (accrete-never-break). A text that
+# RESOLVES is welcomed even where it differs: a text naming a room beside a target opening that
+# room's door is one line doing two honest jobs. A broken TARGET belongs to `tracked_link`.
+#
+# WHAT IS NOT PROVEN. Whether the target is the right file, whether the page should cite it at
+# all, and whether a reader would rather have a plain sentence than a path. Three other questions.
+
+say "link-text-promise: Language EN -- what a reader copies reaches the same file as what a reader clicks."
+say "link-text-promise: Style Gauge at Meter -- the reading names its room, its ceiling, and what it declines."
+say "link-text-promise: Lens TAME -- docs and implementation stay synced: assert it, do not assume it."
+
+let scan = run ["sh" "tools/fixtures/l/link_text_promise_scan.sh"]
+say scan.out
+assert scan.ok else "link-text-promise: a living link shows a path the repository does not carry -- read the scan's own lines"
+assert scan.out contains "promise_broken_geode=0" else "link-text-promise: the shipping shelf must show no path the repository lacks"
+assert scan.out contains "verdict=ok" else "link-text-promise: the scan must balance before it is believed"
+say "field GREEN -- docs-geode at zero, every other living page under a ceiling that only falls"
+
+let control = run ["sh" "tools/fixtures/l/link_text_promise_control.sh"]
+say control.out
+assert control.ok else "link-text-promise: the control must complete"
+assert control.out contains "clean_free=yes" else "link-text-promise: a page whose text and target agree must pass free"
+assert control.out contains "clean_geode_zero=yes" else "link-text-promise: a clean pen must read zero rather than merely pass"
+assert control.out contains "clean_pages_counted=yes" else "link-text-promise: the pen's pages must be counted, so a silent scan cannot read clean"
+assert control.out contains "geode_refused=yes" else "link-text-promise: a wrong depth in the visible text alone must refuse"
+assert control.out contains "geode_verdict=yes" else "link-text-promise: and refuse under its own verdict"
+assert control.out contains "geode_counted=yes" else "link-text-promise: the refusal must carry a count, never only a verdict"
+assert control.out contains "geode_named=yes" else "link-text-promise: the refusal must name the page and the text, so the repair is one edit away"
+assert control.out contains "lift_free=yes" else "link-text-promise: lifting the plant must pass again"
+assert control.out contains "lift_geode_zero=yes" else "link-text-promise: and return the reading to zero"
+assert control.out contains "room_free=yes" else "link-text-promise: a text naming a room beside a target opening its door is two real paths"
+assert control.out contains "ghostroom_refused=yes" else "link-text-promise: a text naming a room the tree lacks must still refuse"
+assert control.out contains "broken_target_free=yes" else "link-text-promise: a broken target is tracked_link's class and passes free here"
+assert control.out contains "bare_free=yes" else "link-text-promise: a bare backticked path is no link and states no base"
+assert control.out contains "url_free=yes" else "link-text-promise: a URL target answers a different question"
+assert control.out contains "untracked_free=yes" else "link-text-promise: a page on disk the repository does not carry is read past"
+assert control.out contains "untracked_pages=yes" else "link-text-promise: and must leave the tracked page still counted"
+assert control.out contains "testimony_free=yes" else "link-text-promise: a dated basename keeps every word it wrote"
+assert control.out contains "testimony_counted=yes" else "link-text-promise: and is counted apart rather than vanishing"
+assert control.out contains "outside_counted=yes" else "link-text-promise: a living page outside the shelf is counted"
+assert control.out contains "outside_free=yes" else "link-text-promise: and ratchets rather than gating"
+assert control.out contains "outside_pages=yes" else "link-text-promise: its page count must move with it"
+assert control.out contains "outside_listed=yes" else "link-text-promise: --list must name it, since a bare number cannot be acted on"
+assert control.out contains "ceiling_refused=yes" else "link-text-promise: the ceiling must refuse from the other side"
+assert control.out contains "ceiling_verdict=yes" else "link-text-promise: and say which of the two walls it was"
+assert control.out contains "vendor_free=yes" else "link-text-promise: vendored rooms hold other people's bytes"
+assert control.out contains "mutation_text_resolves_bites=yes" else "link-text-promise: dropping the text-resolves clause must make two honest files read as broken"
+assert control.out contains "mutation_target_resolves_bites=yes" else "link-text-promise: dropping the target-resolves clause must pull in the neighbour's class"
+assert control.out contains "control_cases=38" else "link-text-promise: the leg count is pinned, because control_failures=0 reads alike whether a leg passed or was deleted"
+assert control.out contains "control_failures=0" else "link-text-promise: every planted reading must agree"
+assert control.out contains "control_verdict=ok" else "link-text-promise: the control must agree with itself"
+say "RED and GREEN paths proven -- thirty-eight readings on real git pens, every plant counted while it stood and read back to zero once lifted, and two mutations of the reading bitten"
+
+say "GREEN: link-text-promise -- what a docs-geode reader copies reaches the file a reader clicks."

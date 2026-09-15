@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260915.175732
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role petrichor seat, Bhakta product path and the docs-geode shelf
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The path a reader copies
+prompt autonomous lap -- petrichor, docs-geode and the prose product
+rota lap 4917, row 2 -- Fire, the row that sees; read the threshold page and looked hard at the line every standing guard calls sound
+think Lane item 1 waits on a green public seam, so I graded my whole shelf first. Nothing below B except one yonder page at 74. The shelf reads healthy, so the crux was not a grade.
+think Read the REDS ledger, as the row's fixed seat asks. %702 is a front-door prose red and its instance stands repaired -- door_setting_undeclared=0, prose_register verdict=ok. Its paper's tail carried a guard proposed and not built, scoped to docs-geode, and that was the crux in my own room.
+think MEASURED BEFORE BUILDING. A naive first reading -- resolve every backticked relative path against the page's directory -- refused `./bootstrap.sh` in docs-geode/tutorials/the-first-hour.md. That is a false positive and it is the interesting one: two lines above, the page says `cd rye`, and rye/bootstrap.sh exists. A bare backticked path states no base, so a reading that resolves one must guess.
+think A LINK states one. Markdown resolves a relative target against the document, so both halves of a link are page-relative by the format's own rule. That single fact is the whole difference between the elder proposal and a wall: the disagreement is legible with no guess about intent, and no filesystem question about what the reader meant.
+think Checked absence with the fetched scan (both instrument names absent here and upstream), opened claim petrichor-link-text-promise, pushed it, THEN built. commits_behind was 2 at the check, so the pull mattered.
+obs THE CLASS IS REAL AND UNREAD. 226 living Markdown links print a backticked path their own target contradicts; 3 in docs-geode, 223 across 68 other living pages, 104 more in dated testimony. Three near neighbours each pass it correctly -- tracked_link resolves TARGETS and every target here resolves, law_tool_citation is bounded to .claude/rules/ by its own header, docs_command_path passes an absent printed path free on purpose.
+obs TWO READERS, TWO PROMISES. One clicks and arrives; one copies what is shown and is sent nowhere. The line reports sound either way, which is what kept it invisible.
+obs WALL WHERE I OWN THE ROOM, RATCHET WHERE I DO NOT. docs-geode gates at zero -- three repaired on this lap, so the wall refuses only what arrives after it. The 223 belong to other lanes, and a gate that reds on somebody else's work is a gate somebody turns off.
+obs I DID NOT SETTLE THE CAUSE. dated_path_repoint rewrites every occurrence on a line, anchor text included, and its regex wants a dated basename most of these texts lack -- so the fold repointer is not the cause it first resembles. Named in the paper as unsettled rather than guessed at.
+obs THE PEN CAUGHT TWO OF MY OWN TEST CASES. A page one directory deep makes `../room/file` correct, so my planted wrong depth resolved and the leg read no. The clamp at the tree root does the same to a doubled `..`. Both plants moved two directories deep, where the wrongness is real.
+loom scan=link_text_promise wall_s=1.1 pages=6347 links=15907
+loom control=link_text_promise wall_s=2.3 legs=38 failures=0
+file tools/fixtures/l/link_text_promise_scan.sh the reading: gates docs-geode at zero, ratchets living pages elsewhere under a ceiling that only falls
+file tools/fixtures/l/link_text_promise_control.sh 38 behaviors on real git pens, every plant lifted, two mutations of the reading asserted to bite
+file tools/l/link_text_promise_witness.rish the witness, pinning the leg count so a deleted leg cannot read as a passed one
+file construction/standing-equipment.kyri rosters the guard at tier lap beside its law_tool_citation sibling
+file construction/REDS.md books the row at 20260915.175337, BOOKED -- my room repaired, the remainder a ratchet
+file docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md two link texts corrected from ../../ to ../../../../
+file docs-geode/edu/yonder/README.md the manual link text corrected from ../manual/ to ../../../manual/
+file active-designing/20260915-175337_the-path-a-reader-copies.md the paper, A 91, checkable room
+file construction/ITINERARY.md new account; elder Petrichor account shelved whole; git nib carried
+file construction/archive/20260915-175337_itinerary-landed-accounts.md the elder lint-census account, moved whole
+scope one claim, one guard, one room swept to zero, one ledger row, one paper
+status GREEN -- link_text_promise, tracked_link, exec_bit, index_fold, reds_spine_derive, prose_register, ascii_document all green with the round staged; claim closed at the send
+recommend keep-going -- the 223 in 68 living pages are one edit each and belong to other lanes; the ceiling makes the sweep optional and the regrowth impossible

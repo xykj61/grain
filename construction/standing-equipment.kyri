@@ -762,6 +762,15 @@ path tools/l/law_tool_citation_witness.rish
 seated 20260910.180224
 tier lap   # 5.1s (2.0s scan, 3.2s control); 99 cited paths over 54 law pages, 39 readings on real git pens
 
+# link_text_promise -- the sibling one room over. `law_tool_citation` reads a backticked path in
+# `.claude/rules/`; this reads a LINK whose visible backticked path disagrees with its own target,
+# anywhere the tree writes prose. `tracked_link` resolves targets and every target here resolves,
+# which is what kept the class invisible. docs-geode is walled at zero; the rest ratchets.
+guard link_text_promise
+path tools/l/link_text_promise_witness.rish
+seated 20260915.180000
+tier lap   # 3.5s (1.1s scan, 2.3s control); 15,907 links over 6,347 living pages, 38 readings on real git pens
+
 # ascii_document -- the ASCII-first law names THREE subjects and only two were measured over their
 # whole subject. Comments have two meters over every tracked source; commit messages have none and
 # want none (0 of the last 400 bodies carry a byte above 0x7F, measured 20260906.131411); documents,
