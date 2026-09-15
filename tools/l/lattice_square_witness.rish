@@ -1,6 +1,12 @@
 # lattice_square_witness.rish -- the Lattice square operation, proven on metal (landed `20260713.211127`).
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lattice/bin/lattice"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/lattice"
 let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
 assert build.ok else "Lattice build failed"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -9,3 +15,7 @@ assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
 assert selftest.out contains "square 2x2" else "Lattice missing square welcome"
 assert selftest.out contains "square shape mismatch" else "Lattice missing square unwelcome"
 say "GREEN: Lattice elementwise square with shape assert."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

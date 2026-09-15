@@ -101,6 +101,19 @@ sed_inplace 's/if (k in val) resolved = val\[k\]/if (0) resolved = val[k]/' "$p/
 ( cd "$p" && sh tools/fixtures/s/shared_build_path_scan.sh > out.txt 2>/dev/null ) || :
 note resolution_required 0 "$(read_key "$p/out.txt" sites_fixed_tree_path)"
 
+# ---- a pen named through a SECOND binding is penned, not merely unreadable
+p=$pen/g; new_pen "$p"
+cat > "$p/tools/x/four_witness.rish" <<'W'
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+let bin = "${pen.out}/thing"
+let build = run ["sh" "-c" "rye build lotus/thing.rye -femit-bin=${bin}"]
+W
+( cd "$p" && git add -A >/dev/null 2>&1 )
+( cd "$p" && sh tools/fixtures/s/shared_build_path_scan.sh > out.txt 2>/dev/null ) || :
+note second_binding_penned 1 "$(read_key "$p/out.txt" sites_penned)"
+note second_binding_not_fixed 0 "$(read_key "$p/out.txt" sites_fixed_tree_path)"
+note second_binding_not_unresolved 0 "$(read_key "$p/out.txt" sites_unresolved)"
+
 echo "legs=$legs"
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then echo "verdict=ok"; else echo "verdict=fault"; fi
