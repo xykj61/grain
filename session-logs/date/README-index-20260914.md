@@ -105,6 +105,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.005504` | [the parked record rejoined its shelf](20260914/20260914-005504_the-parked-record-rejoined-its-shelf.kyri) | account restored; moving count kept; roster capacity red |
 | `20260914.002923` | [the radius kept the reading order](20260914/20260914-002923_the-radius-kept-the-reading-order.kyri) | radial grouping stays behind canonical rows |
 | `20260914.002722` | [the boundary kept the red with its owner](20260914/20260914-002722_the-boundary-kept-the-red-with-its-owner.kyri) | 282 cold green; Patchouli owns both red lines |
+| `20260914.002310` | [the language boundary held after the roster](20260914/20260914-002310_the-language-boundary-held-after-the-roster.kyri) | 280 cold guards green; Glow shape ruling remains |
 | `20260914.002222` | [the parked vessel account crossed midnight](20260914/20260914-002222_the-parked-vessel-account-crossed-midnight.kyri) | account restored; focused green; disk full |
 | `20260914.002049` | [the card kept waiting for its marked value](20260914/20260914-002049_the-card-kept-waiting-for-its-marked-value.kyri) | projection absent; cold structural slice green |
 | `20260914.001026` | [the tutorial kept its proven edge](20260914/20260914-001026_the-tutorial-kept-its-proven-edge.kyri) | recovered lap sent; tutorial waits for dual-product proof |

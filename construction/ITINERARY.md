@@ -42,22 +42,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `fa310d296b` -- this follow-up's parent, resolvable everywhere (%401).
-
-**GRASS -- EXPIRATION NEEDS ITS EVALUATION TIME.** **AIR FEELS** (row 1, N=4911): the contract requires deterministic replay and expiration,
-yet names no evaluation time. The `20260628` premise makes state a pure fold
-over signed facts. **DISPOSITION: REVIVED.** Pass one explicit evaluation stamp: equal inputs replay
-equally; immediately before expiry stays `offered`, and expiry becomes `expired`. Incense owns the
-contract and Patchouli the proof. [Packet](../active-designing/20260914-174823_the-expiration-that-closes-use-and-keeps-history.md).
-
-**PATCHOULI -- THE PARKED COMPILER-REACH CENSUS RETURNED.** Completed account
-[shelved whole](archive/20260914-202320_itinerary-landed-accounts.md).
-
-**BAKERY -- THE SECOND PULL NOW NAMES THE PROOF IT MOVED.** Completed account
-[shelved whole](archive/20260914-081515_itinerary-landed-accounts.md).
-
-**BAKERY -- THE LIBRARY'S BYTES ENTER THE BUILD RECEIPT.** Completed account
-[shelved whole](archive/20260914-202320_itinerary-landed-accounts.md).
+**Git nib:** `c6111e0d08` -- this follow-up's parent, resolvable everywhere (%401).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -382,7 +367,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fa310d296b`.
+**Git nib:** `c6111e0d08`.
 
 ### Incense -- product captain
 
