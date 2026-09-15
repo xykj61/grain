@@ -1,8 +1,8 @@
 #!/bin/sh
-# query_wire_flap_scan.sh -- run one rostered guard many times on one unchanged tree, and count.
+# query_wire_flakiness_scan.sh -- run one rostered guard many times on one unchanged tree, and count.
 #
 # Run from the repository root:
-#   sh tools/fixtures/m/mantra_query_wire_flap_scan.sh [--repeat N] [--guard PATH]
+#   sh tools/fixtures/m/mantra_query_wire_flakiness_scan.sh [--repeat N] [--guard PATH]
 #
 # WHY THIS EXISTS (REDS %700). `tools/m/mantra_recall_tablecloth_query_wire.rish` answered red on a
 # cold roster pass and green on a re-run minutes later over a tree that had not moved. The row's
@@ -12,23 +12,23 @@
 # for a fault whose *what went wrong* is sometimes nothing at all. So the row named its own first
 # repair -- a repeat count -- and this is that count.
 #
-# WHAT IT ANSWERS. `green` and `red` over `repeat` runs of one guard, `flap=yes` the moment both
+# WHAT IT ANSWERS. `green` and `red` over `repeat` runs of one guard, `flaky=yes` the moment both
 # are above zero, and for every red the run index, the exit status, and the guard's own refusal
 # line. That last field is the harvest of the `20260910.203444` repair, which gave this guard's
 # five bindings their targets' own sentences: before it, a red here could name only which LEG
-# refused, so a flap could be inferred and never diagnosed. The voice was built one lap and is
+# refused, so flakiness could be inferred and never diagnosed. The voice was built one lap and is
 # listened to here.
 #
 # LOAD IS OBSERVED RATHER THAN GENERATED, and the choice is deliberate. The row's repair reads
 # "a repeat count under load", and a scan that manufactured its own load would spend CPU on a pier
 # where eight ships run their own passes -- harming the peers whose work IS the load this guard
-# flapped under. So each run records the one-minute load average it actually ran at, and the
+# was flaky under. So each run records the one-minute load average it actually ran at, and the
 # summary names the range. A reading taken on a quiet pier says so in its own numbers, which is
 # honest, where a reading taken beside a fabricated load says nothing about the fleet at all.
 #
-# WHAT IT CANNOT SAY. Whether a red would have arrived at repeat+1. A flap with a low rate needs a
+# WHAT IT CANNOT SAY. Whether a red would have arrived at repeat+1. Flakiness with a low rate needs a
 # larger count to surface, and this instrument reports the count it ran rather than implying the
-# count was enough -- `flap=no` reads "not seen in N", never "absent".
+# count was enough -- `flaky=no` reads "not seen in N", never "absent".
 #
 # Bounds: at most MAX_REPEAT runs, because a guard costing about sixteen seconds turns a careless
 # repeat into an hour nobody meant to spend.
@@ -190,18 +190,18 @@ echo "red=$red"
 
 if [ "$tree_open" != "$tree_close" ]; then
   # A count over a tree that moved counts two trees, so it answers the question nobody asked.
-  echo "flap=unread"
+  echo "flaky=unread"
   echo "verdict=tree_moved"
   exit 1
 fi
 
 if [ "$green" -gt 0 ] && [ "$red" -gt 0 ]; then
-  echo "flap=yes"
-  echo "verdict=flap"
+  echo "flaky=yes"
+  echo "verdict=flaky"
   exit 1
 fi
 
-echo "flap=no"
+echo "flaky=no"
 if [ "$red" -gt 0 ]; then
   echo "verdict=red_every_run"
   exit 1

@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260915.183900
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense seat, interactive captain
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The industry word on our own noun
+prompt Keaton -- can we just use flaky test if that is the industry standard, that is more comlink tendency straightforward, we can molt all working trees
+think Keaton's argument is right on comlink-tendency's own test: the clearest, most fun, safest word wins at whatever length, and sometimes that word is the one the world already uses.
+think I had recommended keeping flap twice, so I checked rather than defended. The tree twice rejected an industry standard -- red over bug, first resident over dogfooding -- yet BOTH replaced industry words that were POOR. Flaky test is a GOOD one, so the pattern does not reach it.
+obs MY OWN COUNT WAS WRONG AND I CAUGHT IT BY CHECKING THE SENSE. I reported 253 uses of flaky already in the tree and nearly argued the tree had voted. 240 of those are NIX FLAKES -- flake.nix, the cloud pier flake -- and only 13 carry the test sense.
+obs That mistake surfaced the one real cost, so it was worth making: flake is a load-bearing noun here at 240 uses, and flaky is its ordinary-English adjective. The collision is at grep level rather than comprehension level, and the rule names it rather than hiding it.
+obs THE NOUN CHANGES, because this tree has no tests. It has guards, witnesses, scans and controls. So the industry ADJECTIVE rides our own NOUN: a flaky guard, never a flaky test.
+obs FLAP WAS NOT ONLY PROSE. It was an emitted field -- flap=yes, flap=no, verdict=flap -- that a scan writes and a control reads back BY NAME. I renamed the emitter first and the control would have read a key that no longer existed, which the read-through caught before any run. Emitter and reader moved together.
+obs My first measurement missed four .sh files entirely, because I grepped md, rish, rye and kyri alone. Widening to every extension took the count from 8 living files to 12 and found all three renamable paths.
+obs LEFT THE LEDGER'S ROWS ALONE. A REDS row records what was found when it was found, and the ledger's first law is that a row is never edited, so the rows keep flap and the new rule page is where a reader learns the living word.
+obs Named the cheap fact Keaton may not have: the eight ships share one repository, so ONE sweep pushed reaches all eight at their next round-open pull rather than eight sweeps.
+loom molt living_files=12 renamed_paths=3 occurrences=30 remaining_living=0 modes_preserved=3
+loom counts flake_nix_sense=240 flaky_test_sense=13 flap_before=122
+loom grade page=vocabulary-flaky composite=89 letter=B+ setting=door
+rota none -- a word molt run on Keaton's word, no rota this lap
+file .claude/rules/vocabulary-flaky.md the rule, with the flake collision named and the molt measured
+file .cursor/rules/vocabulary-flaky.mdc the canonical twin
+file tools/m/mantra_query_wire_flakiness_witness.rish renamed from flap, GREEN on metal after the move
+file construction/standing-equipment.kyri the roster repointed in the same commit
+scope one word molted across twelve living files, three paths renamed, one emitted field moved with its reader, one rule seated in both editors
+status GREEN on both mantra witnesses after the rename, ascii_document, prose_register, and the three pin guards
+recommend check in (Keaton) -- flaky is seated; construction/archive/ at 975 entries and the seven gated reds are still open

@@ -25,8 +25,8 @@
 #
 # IT REPORTS AND IS NOT ROSTERED, ON PURPOSE. The reading is timing-dependent, and a
 # timing-dependent guard on the roster is a guard that answers differently on one unchanged tree --
-# which is REDS %700, the very fault this family was opened for. Adding a flapping guard to measure
-# flapping would be the joke writing itself. A hand runs this when the question comes up, and the
+# which is REDS %700, the very fault this family was opened for. Adding a flaky guard to measure
+# flaky would be the joke writing itself. A hand runs this when the question comes up, and the
 # ratchets in the scan are what stand.
 #
 # FOUR READINGS, EACH A COUNT OF FAILED EXECUTIONS OUT OF `ROUNDS`:

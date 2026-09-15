@@ -2666,16 +2666,16 @@ seated 20260909.170000
 # time read alike, and a fortnight of greens never raised the question. This guard proves the
 # repeat counter that closes that gap: it plants three stub guards with known answers in a pen --
 # always green, always red, and refusing on every odd run -- and watches the counter report each
-# correctly. The leg that earns the roster seat is `alternating_flap`, since `flap=no` is worth
-# nothing from an instrument nobody has seen say `flap=yes`. 3.5s measured `20260911.081500`,
+# correctly. The leg that earns the roster seat is `alternating_flaky`, since `flaky=no` is worth
+# nothing from an instrument nobody has seen say `flaky=yes`. 3.5s measured `20260911.081500`,
 # because the stubs are cheap where their subject is not.
 guard mantra_query_wire_flap
-path tools/m/mantra_query_wire_flap_witness.rish
+path tools/m/mantra_query_wire_flakiness_witness.rish
 tier lap
 seated 20260911.081500
 
 # THE PORT THE WHOLE PIER WAS SHARING, and the option that made the sharing silent. The counter
-# above proved `mantra_tablecloth_query_wire` flaps under load; this guard holds the cause it
+# above proved `mantra_tablecloth_query_wire` is flaky under load; this guard holds the cause it
 # turned out to have. Seven `mantra/*_delivery.rye` modules opened their UDP socket under
 # `setsockopt(SO_REUSEADDR)` whose invariant read *SO_REUSEADDR is what lets a bounded run rebind
 # its own port* -- TCP's sentence, since a closed TCP socket sits in TIME_WAIT holding its port.
