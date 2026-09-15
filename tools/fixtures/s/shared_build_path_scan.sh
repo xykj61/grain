@@ -31,7 +31,7 @@
 # ceiling in the same commit.
 set -eu
 
-CEILING=${SHARED_BUILD_PATH_CEILING:-1853}
+CEILING=${SHARED_BUILD_PATH_CEILING:-1813}
 list=no
 [ "${1:-}" = "--list" ] && list=yes
 
@@ -41,7 +41,7 @@ cd "$root"
 git ls-files 'tools/*/*witness.rish' > .shared_build_path.files 2>/dev/null || : > .shared_build_path.files
 
 awk -v want_list="$list" '
-FNR == 1 { delete val; files++ }
+FNR == 1 { delete val; delete penvar; files++ }
 # let <name> = "<value>"   -- record what a Rishi binding holds
 /^[ \t]*let[ \t]+[A-Za-z_][A-Za-z0-9_]*[ \t]*=/ {
   line = $0
@@ -52,6 +52,7 @@ FNR == 1 { delete val; files++ }
   sub(/^[^=]*=[ \t]*/, "", rest)
   if (rest ~ /^"/) { sub(/^"/, "", rest); sub(/".*$/, "", rest) }
   val[name] = rest
+  if ($0 ~ /mktemp/) penvar[name] = 1
 }
 /femit-bin=/ {
   n = split($0, parts, "femit-bin=")
@@ -66,7 +67,11 @@ FNR == 1 { delete val; files++ }
       k = t; sub(/^\$\{/, "", k); sub(/\}$/, "", k)
       if (k in val) resolved = val[k]
     }
+    # A MIGRATED SITE NAMES ITS PEN THROUGH A SECOND BINDING, and a reader that stops at one
+    # level calls it unresolved -- so the meter would go blind to its own repair, and a room
+    # migrated tomorrow would look like a room that merely got harder to read.
     penned = ($0 ~ /mktemp/) || (resolved ~ /mktemp/)
+    if (!penned) for (pv in penvar) if (index(resolved, "${" pv ".out}") > 0) penned = 1
     if (penned) { penned_n++; continue }
     if (resolved ~ /\$/) { unresolved++; continue }   # a shell variable this pass cannot follow
     if (resolved ~ /\//) {
