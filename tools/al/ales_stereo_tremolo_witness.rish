@@ -22,7 +22,13 @@ say "ales-stereo-tremolo: Style Radiant — the stereo equalization and filter c
 say "ales-stereo-tremolo: Lens TAME — two bounded in-process i16 clips (left, right), each tremoloed through ALES74's own attenuating triangle gain, the triangle and multiply run in i64 and the write saturating once as a proven no-op since the gain is held to an attenuation; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a tremolo writes values only, each length asserted equal and within bound on exit); the swing and span are validated once against the shared length before either channel is mutated (ALES74's precheck, factored out of the mono tremolo and shared, mirroring tone.precheck across the equalization rungs), so a refusal never tremolos one channel and leaves the other torn; StereoTremoloError is ALES74's TremoloError (BadPeriod, BadDepth, BadGain, BadRange) reused whole, the stereo lift adding no fault. The stereo tremolo law is proven by running both stereo_tremolo and ALES74's mono tremolo on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the image law proves an identical-channel master stays identical and a right-is-half-left pan keeps its ratio sample for sample after the tremolo; the attenuation law proves unity gain passes both channels byte for byte even at the plus and minus full-scale rail and no output magnitude exceeds its dry on either channel; and the balance, silence, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the gain in scaled units rather than hertz, no delay line, no snapshot, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_tremolo"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_tremolo"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_tremolo.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-tremolo: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-tremolo: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-tremolo' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-tremolo: selftest did not print the GREEN ales-stereo-tremolo line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

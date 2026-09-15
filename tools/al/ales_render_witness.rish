@@ -23,7 +23,13 @@ say "ales-render: Style Radiant — the render law (byte-for-byte to a hand-appl
 say "ales-render: Lens TAME — the clip's length is invariant under gain, fade, and invert, which is what makes the whole request checkable before it runs; a faulty step leaves the clip byte-for-byte unchanged and nothing written; the sample rate is a carried field not a real clock; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/render"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/render"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render.rye -femit-bin=${bin}"]
 assert build.ok else "ales-render: build failed — ${build.err}"
@@ -39,3 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-render' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-render: selftest did not print the GREEN ales-render line"
 
 say "ales-render: GREEN — an ordered chain of proven effects over one Clip renders to a canonical .wav byte-for-byte and atomically; the next Lotus rung can carry a stereo render (the chain over two channels into stereo_wav) or a named preset chain a keeper loads by name."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

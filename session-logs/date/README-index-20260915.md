@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.194903` | [The pen that closed one of two](20260915/20260915-194903_the-pen-that-closed-one-of-two.kyri) | lotus migrated; ceiling 1813 to 1574 |
 | `20260915.193000` | [Forty names the tree no longer shares](20260915/20260915-193000_forty-names-the-tree-no-longer-shares.kyri) | ceiling 1853 to 1813 |
 | `20260915.190200` | [The count that stopped at the dollar sign](20260915/20260915-190200_the-count-that-stopped-at-the-dollar-sign.kyri) | 1,853 sites ratcheted, not 51 |
 | `20260915.185421` | [The wall that decides its own memory](20260915/20260915-185421_the-wall-that-decides-its-own-memory.kyri) | a gate proved it decides, never what Rye decides |

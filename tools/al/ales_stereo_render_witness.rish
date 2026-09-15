@@ -23,7 +23,13 @@ say "ales-stereo-render: Style Radiant — the stereo-render law (byte-for-byte 
 say "ales-stereo-render: Lens TAME — it reuses ALES217's Step, check_step, and apply_step verbatim per channel; the two channels enter equal-length and the chain preserves length, so the whole request is checkable before a sample moves and a faulty chain leaves both channels byte-for-byte unchanged; the sample rate is a carried field not a real clock; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_render"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_render"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_render.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-render: build failed — ${build.err}"
@@ -39,3 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-render' ${outfile} && ech
 assert (trim green.out) == "yes" else "ales-stereo-render: selftest did not print the GREEN ales-stereo-render line"
 
 say "ales-stereo-render: GREEN — an ordered chain of proven effects over both channels of a StereoClip renders to a canonical interleaved stereo .wav byte-for-byte and atomically; the render family stands whole for mono and stereo. The next Lotus rung can carry a named preset chain a keeper loads by name."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

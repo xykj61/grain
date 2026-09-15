@@ -25,7 +25,13 @@ say "ales-stereo-reverb-freeze: Style Radiant — the freeze is stated positivel
 say "ales-stereo-reverb-freeze: Lens TAME — one StereoClip of i16 PCM, a validated clock, ALES190's fixed reverb banks, and a bounded freeze depth (max_passes, the SAME bound ALES208 carries); NO new audio arithmetic — the freeze composes the proven stereo reverb with itself, each pass saturating ONCE so an iterated pile-up pins never wraps; StereoReverbFreezeError = stereo_reverb_preset.StereoReverbPresetError || BadPasses, the depth checked BEFORE any conversion and the first pass PRECHECKED so a refusal leaves both channels dry and balanced (atomic), BadPasses / DurationTooLong / BadRange by name before any write; siloed to lotus/, no network, no keys, no funds, no device. 'Freeze' names iterated reverberation honestly, not a literal infinite sustain."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_reverb_freeze"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_reverb_freeze"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_freeze.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-freeze: build failed — ${build.err}"
@@ -49,3 +55,7 @@ let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_fre
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-freeze: the ALES208 mono freeze regressed under its stereo twin"
 
 say "ales-stereo-reverb-freeze: GREEN — the stereo frozen reverb: the held tail carried across a stereo master, sustained by iterated reverberation, closing the freeze axis whole for mono and stereo. Run ALES191's stereo_reverb_preset over the master once per unit of depth — pass one the plain stereo wet, each further pass reverberating the reverberation per ear with no cross-channel read — no new audio arithmetic, each pass saturating once so an iterated pile-up pins never wraps. Proven: at passes = 1 each channel exactly stereo_reverb_preset byte for byte (the plain stereo wet); passes = 2 exactly stereo_reverb_preset applied twice and passes = 3 thrice, byte for byte on both channels (the freeze IS iterated reverberation); passes = 2 differs from passes = 1 (the freeze deepens); the image is held (a centred master identical channel-to-channel, a stereo master distinct); the channels leave balanced and silence stays silence; a zero or over-bound depth refuses BadPasses, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched and balanced (the depth checked up front, the first pass prechecked, so atomic); the ALES191 stereo preset and the ALES208 mono freeze stay GREEN beside it. The freeze axis now stands whole for mono and stereo; a fresh reverb axis (width, wanting its own mid/side primitive) is next."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

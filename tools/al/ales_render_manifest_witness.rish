@@ -23,7 +23,13 @@ say "ales-render-manifest: Style Radiant — two hashes, two jobs: the seal's di
 say "ales-render-manifest: Lens TAME — content-addressing, never a signature: it proves the render arrived whole, not who made it; every bound named, every fault refused by name, siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/render_manifest"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/render_manifest"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render_manifest.rye -femit-bin=${bin}"]
 assert build.ok else "ales-render-manifest: build failed — ${build.err}"
@@ -39,3 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-render-manifest' ${outfile} && e
 assert (trim green.out) == "yes" else "ales-render-manifest: selftest did not print the GREEN ales-render-manifest line"
 
 say "ales-render-manifest: GREEN — a render now describes itself in a sealed, content-addressed manifest that binds its own .wav bytes, the durable record a publish or a chain of custody stands on. The next Lotus crux can carry the manifest beside a stereo render or let a keeper bundle manifest and .wav as one saveable artifact."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

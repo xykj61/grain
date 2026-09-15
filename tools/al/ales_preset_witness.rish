@@ -22,7 +22,13 @@ say "ales-preset: Style Radiant — the name law (from_name round-trips every ca
 say "ales-preset: Lens TAME — the preset owns the span arithmetic and clamps every span to the clip, so render never refuses a preset for BadRange; only gain, fade, and invert are composed, no new acoustic fact; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/preset"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/preset"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/preset.rye -femit-bin=${bin}"]
 assert build.ok else "ales-preset: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-preset' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-preset: selftest did not print the GREEN ales-preset line"
 
 say "ales-preset: GREEN — a keeper loads a named chain from the catalog and renders it, legal for any clip length and byte-for-byte to the same gestures by hand; the next Lotus rung can grow the catalog, carry a preset over both channels of a StereoClip, or let a keeper save their own chain as a named preset."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

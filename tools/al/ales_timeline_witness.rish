@@ -22,7 +22,13 @@ say "ales-timeline: Style Radiant — three edits that keep the audio gapless an
 say "ales-timeline: Lens TAME — bounded Clip, u32 counts, i16 samples, the gain multiply in i64 before the clamp; every edit checks its range at the edge and refuses by name; siloed to lotus/, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/timeline"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/timeline"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/timeline.rye -femit-bin=${bin}"]
 assert build.ok else "ales-timeline: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-timeline' ${outfile} && echo yes
 assert (trim green.out) == "yes" else "ales-timeline: selftest did not print the GREEN ales-timeline line"
 
 say "ales-timeline: GREEN — the timeline edits cut, gain, and splice transform the reassembled audio exactly and in order, gain saturates rather than wraps, and the rung composes on ALES1; the next Lotus rung can clock the timeline to a real sample rate or open a second track to mix."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

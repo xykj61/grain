@@ -22,7 +22,13 @@ say "ales-rack-merge: Style Radiant — the law is stated positively: merging sr
 say "ales-rack-merge: Lens TAME — precheck before any write makes the merge all-or-nothing without a scratch rack (a plain value-struct copy cannot fail once the checks pass); a rack.Slot is a disjoint value so the graft depends on no src memory; rack_seal.verify_and_parse reused whole as the integrity gate before a sealed import (a tampered sheet refuses DigestMismatch before a single slot joins); siloed to lotus/, no signature, no key, no network, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/rack_merge"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/rack_merge"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_merge.rye -femit-bin=${bin}"]
 assert build.ok else "ales-rack-merge: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-merge' ${outfile} && echo y
 assert (trim green.out) == "yes" else "ales-rack-merge: selftest did not print the GREEN ales-rack-merge line"
 
 say "ales-rack-merge: GREEN — a keeper joins a saved rack's stems into a live session: merge grafts every named slot whole, refusing Duplicate on a name collision and RackFull past the ceiling with dst untouched, and verify_and_import loads a sealed sheet's slots only after the digest verifies whole. The next Lotus rung can rename a slot in place (a collision-checked re-name) or carry more than one rack in a session file; the SIGNED carry (who wrote a rack, via a Kumara key) and the ALES0-wire carry stay module seams for Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

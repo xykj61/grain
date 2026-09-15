@@ -22,7 +22,13 @@ say "ales-clipboard: Style Radiant — the law is stated positively: the clipboa
 say "ales-clipboard: Lens TAME — timeline.splice and selection.cut reused whole (no new edit, no new bound); the held buffers bounded by max_clip; a paste checks emptiness, range, and capacity before either channel is touched, refusing by name; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/clipboard"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/clipboard"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/clipboard.rye -femit-bin=${bin}"]
 assert build.ok else "ales-clipboard: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-clipboard' ${outfile} && echo ye
 assert (trim green.out) == "yes" else "ales-clipboard: selftest did not print the GREEN ales-clipboard line"
 
 say "ales-clipboard: GREEN — a keeper carries a span between places and masters: the clipboard holds its own copy, pastes byte-for-byte into any master, repeats without consuming itself, and keeps the stereo aligned; cut_to lifts a span for a move across masters. The next Lotus rung can offer the choice of law where a pasted edit meets its neighbours, a multi-slot clipboard rack, or render the held span as an ALES0 wire frame so a span travels between two Lotus benches."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -24,7 +24,13 @@ say "ales-stereo-vibrato: Style Radiant — ALES176 and ALES177 opened the stere
 say "ales-stereo-vibrato: Lens TAME — two bounded in-process i16 clips (left, right), each rung through ALES72's own wet-only modulated delay, the triangle and the fractional interpolation run in i64 and each channel snapshotting its own dry prefix into one bounded max_clip-wide i16 scratch, the write saturating once as a proven no-op since the vibrato voice is a convex combination of two in-range dry neighbours and so already fits the i16 rail; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a vibrato writes values only, each length asserted equal and within bound on exit); the LFO and span are validated once against the shared length before either channel is snapshotted (ALES72's precheck, factored out of the mono vibrato and shared, mirroring the ALES75 ring modulator refactor), so a refusal never wobbles one channel and leaves the other torn; StereoVibratoError is ALES72's VibratoError (BadPeriod, BadDepth, BadDelay, BadRange) reused whole, the stereo lift adding no fault and there being no BadLevel since the vibrato is wet-only. The stereo vibrato law is proven by running both stereo_vibrato and ALES72's mono vibrato on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the chorus-family law proves a full-wet stereo chorus equals the dry master plus this stereo vibrato per channel sample for sample against ALES71's mono chorus run per channel; the image law proves an identical-channel master stays identical and a right-is-half-left pan keeps its ratio sample for sample; and the balance, silence, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the LFO in scaled units rather than hertz, no cross-channel snapshot, no feedback, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_vibrato"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_vibrato"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_vibrato.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-vibrato: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-vibrato: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-vibrato' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-vibrato: selftest did not print the GREEN ales-stereo-vibrato line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

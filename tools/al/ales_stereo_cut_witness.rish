@@ -20,7 +20,13 @@ say "ales-stereo-cut: Style Radiant — the rule is stated positively: run the m
 say "ales-stereo-cut: Lens TAME — two bounded i16 Clips (left, right) whose named span is removed in lockstep; the shared span is checked without underflow against the common channel length once up front (start against len, count against the remainder), so every refusal comes by name before any write and the channels can never desynchronise; cut is the family's root primitive — crop keeps the complement of what it removes, move composes it with a splice — so this stereo twin gives every destructive stereo span-edit its base gesture; it reuses ALES2's EditError whole and ALES2's cut per channel over its public API, inventing no new primitive; the stereo cut law is proven against ALES2's own cut run per channel; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_cut"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_cut"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_cut.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-cut: build failed — ${build.err}"
@@ -34,3 +40,7 @@ say "ales-stereo-cut: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-cut' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-cut: selftest did not print the GREEN ales-stereo-cut line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

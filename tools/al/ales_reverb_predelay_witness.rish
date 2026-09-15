@@ -21,7 +21,13 @@ say "ales-reverb-predelay: Style Radiant — the two edges are stated positively
 say "ales-reverb-predelay: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed banks, and a bounded stack snapshot (max_clip = 4096 samples); NO new audio arithmetic — the pre-delay is a bounded reindex of the proven wet, so no value is recomputed or can wrap and the gap is filled with true zeros; ReverbPredelayError = reverb_preset.ReverbPresetError || BadPredelay, DurationTooLong / BadRange / BadPredelay by name before any write, the wet snapshot within the span so a refusal leaves the clip untouched; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_predelay"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_predelay"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_predelay.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-predelay: build failed — ${build.err}"
@@ -41,3 +47,7 @@ let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_p
 assert (trim preset.out) == "yes" else "ales-reverb-predelay: the ALES190 named-room preset regressed under its pre-delay"
 
 say "ales-reverb-predelay: GREEN — the pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail begins. Reverberate the span wet in place through ALES190's reverb_preset unchanged, snapshot the wet, then rewrite the span shifted right by predelay samples out[i] = 0 for i < predelay, else wet[i - predelay] — no new audio arithmetic, a bounded reindex of the proven wet with a true-zero gap. Proven: at predelay = 0 exactly reverb_preset byte for byte; at predelay = count all zeros; a mid pre-delay zeros in front and the wet shifted by exactly predelay after, byte for byte; silence stays silence; a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset stays GREEN beside it. A stereo pre-delay (the same shift over both channels, one shared gap, the image held) is the thin twin next."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

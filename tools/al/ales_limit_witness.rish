@@ -18,7 +18,13 @@ say "ales-limit: Style Radiant — the law is stated positively: below the ceili
 say "ales-limit: Lens TAME — bounded Clip, u32 span, i16 samples; the ceiling checked as a legal magnitude in [1, sample_max] before any write (a zero ceiling refuses BadCeiling, an over-rail ceiling BadCeiling), an out-of-range span refuses BadRange; one comparison and at most one sign-carry per sample, nothing on the audio path can overflow since a limited magnitude is min(|x|, ceil) <= i16; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/limit"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/limit"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=${bin}"]
 assert build.ok else "ales-limit: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let bell = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/bell.rye -
 assert (trim bell.out) == "yes" else "ales-limit: the ALES48 parametric-bell witness regressed under the limiter"
 
 say "ales-limit: GREEN — a peak limiter holds a hard ceiling the signal may touch yet never cross; below the ceiling is the identity byte-for-byte, above it every sample is pinned to sign(x)·ceil so the ceiling is never crossed and the sign is always held; a ceiling at sample_max is the identity for in-range audio; a zero ceiling refuses BadCeiling, an over-rail ceiling BadCeiling, an out-of-range span BadRange, each leaving the clip untouched; the ALES48 bell selftest stays GREEN. The fixed-EQ family turned frequency; dynamics now turns level — the next Lotus rung can soften the brickwall with a ratio (a compressor), invert its threshold (a gate), or give it an attack and release over a real time base."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

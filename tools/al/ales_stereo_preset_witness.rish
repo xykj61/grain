@@ -23,7 +23,13 @@ say "ales-stereo-preset: Style Radiant — the named-stereo law (byte-for-byte o
 say "ales-stereo-preset: Lens TAME — build is total over the shared length so a named preset never refuses for BadRange and both channels leave equal length by construction; the only faults are the container's, each refusing before a sample moves; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_preset"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_preset"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_preset.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-preset: build failed — ${build.err}"
@@ -39,3 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-preset' ${outfile} && ech
 assert (trim green.out) == "yes" else "ales-stereo-preset: selftest did not print the GREEN ales-stereo-preset line"
 
 say "ales-stereo-preset: GREEN — a named preset renders over both channels of a stereo master, byte-for-byte to two mono renders sharing one interleaved container; the render+preset family now stands whole for mono and stereo. The next Lotus crux can grow the catalog or let a keeper save their own chain as a named preset."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

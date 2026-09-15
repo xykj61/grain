@@ -20,7 +20,13 @@ say "ales-catalog-verify: Language EN — ALES238 proves a whole catalog whole e
 say "ales-catalog-verify: Style Radiant — content-addressing composes into a proof of the whole tree; the library digest binds each album manifest, each album manifest binds each bundle, a Merkle check the shape of the catalog itself, never re-hashing a mountain of audio into one number; the whole-tree, catalog-tamper, record-tamper, name, and count laws each proven on metal."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/catalog_verify"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/catalog_verify"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/catalog_verify.rye -femit-bin=${bin}"]
 assert build.ok else "ales-catalog-verify: build failed — ${build.err}"
@@ -36,3 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-catalog-verify' ${outfile} && ec
 assert (trim green.out) == "yes" else "ales-catalog-verify: selftest did not print the GREEN ales-catalog-verify line"
 
 say "ales-catalog-verify: GREEN — a keeper holds one answer for a whole body of work, whole or broken by name at the level it broke; the Lotus catalog family now proves itself end to end. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

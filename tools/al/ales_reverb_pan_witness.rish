@@ -27,7 +27,13 @@ say "ales-reverb-pan: Style Radiant — the shape is stated positively as a comp
 say "ales-reverb-pan: Lens TAME — one bounded i16 StereoClip transformed in place; the balance invariant is asserted on entry and exit, the clock is asserted valid, and the pan fraction is bounded (max_pan_den 4096, reused through ALES11 from ALES10) and checked BEFORE the reverb writes, so a bad pan refuses BadPan with the master dry (the atomicity crux — the precheck precedes the first write); the reverb then prechecks its own DurationTooLong / BadRange before writing, and each equal-power weight is proven ≤ den so both gains are attenuations whose saturate is a proven no-op, and the spans are the whole clip so neither gain can fault — a legal call refuses whole up front or completes whole. It reuses ALES191's stereo_reverb_preset, ALES11's power.split, and ALES2's gain over their public APIs, inventing no new primitive; the hard-left law is proven byte-exact the pure wet left with the right silenced, the hard-right its mirror, the composition law proven byte for byte against the reverb then the two equal-power gains with each channel an attenuation, the centre-symmetry law proven identical channel-to-channel and attenuated on a centred master; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_pan"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_pan"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_pan.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-pan: build failed — ${build.err}"
@@ -41,3 +47,7 @@ say "ales-reverb-pan: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-pan' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-pan: selftest did not print the GREEN ales-reverb-pan line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

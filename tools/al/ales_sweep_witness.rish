@@ -20,7 +20,13 @@ say "ales-sweep: Style Radiant — the law is stated positively: a degenerate sw
 say "ales-sweep: Lens TAME — bounded Clip, u32 span, i16 samples, a named max_sweep_blocks partition, full-precision i64 state carried across every block through ALES43's low_pass_carry; the sweep adds only a coefficient schedule, no new arithmetic on the audio path; an illegal endpoint refuses BadCoeff, an out-of-range span BadRange, an illegal partition BadBlocks, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/sweep"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/sweep"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/sweep.rye -femit-bin=${bin}"]
 assert build.ok else "ales-sweep: build failed — ${build.err}"
@@ -40,3 +46,7 @@ let carry = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone_carr
 assert (trim carry.out) == "yes" else "ales-sweep: the ALES43 carried-filter witness regressed under the sweep"
 
 say "ales-sweep: GREEN — a filter sweep moves a low-pass's cutoff across a span, the block boundaries seamless because ALES43's i64 state carries; a sweep from a coefficient to itself equals ALES40's fixed low_pass byte-for-byte, a distinct-endpoint sweep genuinely moves the brightness, and a constant input rises to it exactly with no re-transient at any seam; the ALES43 carried-filter selftest stays GREEN. The next Lotus rung can carry the high-pass and shelf/stack into a sweep, sweep under a keeper-drawn envelope, or name a crossover in hertz through a real time base."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

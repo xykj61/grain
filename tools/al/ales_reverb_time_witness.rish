@@ -23,7 +23,13 @@ say "ales-reverb-time: Style Radiant — the law is stated positively: the CLOCK
 say "ales-reverb-time: Lens TAME — one clip of i16 PCM, a validated clock, two bounded stack banks of at most reverb.max_stages timed stages each a u32 delay_ms and a plain u32/u32 fraction; the bank counts are checked before any conversion, each delay converted into a bounded stack bank, then the proven reverb run; DurationTooLong from the clock and NoCombs / TooManyStages / BadDelay / BadGain / BadRange from the reverb forward by name before any write, the clip untouched on refusal; siloed to lotus/, no new arithmetic on the audio path, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_time"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_time"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_time.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-time: build failed — ${build.err}"
@@ -43,3 +49,7 @@ let reverb = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb.r
 assert (trim reverb.out) == "yes" else "ales-reverb-time: the ALES186 reverb regressed under its real-time twin"
 
 say "ales-reverb-time: GREEN — the reverb in real time: a Schroeder network named in milliseconds, a thin twin over ALES186 exactly as multitap_ms is over the multi-tap. The clock adds only the units, never the audio: reverb_ms converts start_ms, count_ms, and every comb's and allpass's delay_ms through ALES5's samples_for and delegates to ALES186's reverb unchanged, so the millisecond-named reverb lands byte-for-byte the same samples as the index-named reverb (ALES186's exact hand value [-8000,0,10000,-1333,8000,2000,5056,1000]); at 48 kHz 1 ms converts to 48 samples and the first recirculation sits exactly there; a sub-sample comb refuses BadDelay, a stage delay past the clip DurationTooLong, an empty comb bank NoCombs, an over-long bank TooManyStages, a feedback at unity BadGain, an out-of-range span BadRange, each leaving the clip untouched; the ALES186 reverb stays GREEN beside it. The stereo twin stereo_reverb_ms (the shared bank converted once, then ALES187's stereo_reverb) is the next thin rung, a named-room preset the higher-Lindy move after it."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

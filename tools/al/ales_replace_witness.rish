@@ -21,7 +21,13 @@ say "ales-replace: Style Radiant — the rule is stated positively: remove [at, 
 say "ales-replace: Lens TAME — one mono clip of i16 PCM whose named span is removed and refilled in place; the payload is a caller slice bounded once against max_clip before it is @intCast to u32 at the std seam (a bounded seam cast, correct Tiger code), the removed span is checked without underflow (count against the remainder), and the ClipFull headroom check (src.len against buf.len − len + count) lands before the cut mutates a single sample, so every refusal comes by name before any write, reusing ALES2's EditError whole and inventing none of its own; the generalization is proven against ALES2's own cut and splice and ALES114's own paste_over; it composes the two proven sub-edits over their public API with no new transport, buffer, or error; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/replace"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/replace"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/replace.rye -femit-bin=${bin}"]
 assert build.ok else "ales-replace: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-replace: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-replace' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-replace: selftest did not print the GREEN ales-replace line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -26,7 +26,13 @@ say "ales-stereo-soft-drive: Style Radiant — the nonlinear class holds exactly
 say "ales-stereo-soft-drive: Lens TAME — two bounded i16 Clips (left, right) soft-driven in lockstep by one shared nonlinear waveshaper; the balance invariant is asserted on entry and exit, the gain, knee, ceiling, and span are bound-checked once before any write, and because those checks hold identically for both channels each mono soft drive is pre-validated to succeed so no refusal can land between the two channel edits; soft_drive walks the span once per channel, boosting each sample by num/den in an i64 accumulator so the pre-gain never overflows before the piecewise shape lands every output in [-ceil, ceil] by construction (clean below the knee, half slope to the shoulder top, pinned above), the sign held (the waveshaper is odd), never touching a byte past len, so the length holds exactly; it reuses ALES79's soft_drive per channel over its public API and ALES79's SoftDriveError whole, inventing no new primitive; the stereo soft-drive law is proven against ALES79's own soft_drive run per channel, the per-channel nonlinear law proves the ceiling and sign hold on both channels, that a 1:2 field's ratio compresses to the rail, and that a knee at the ceiling reproduces ALES132's hard drive, the four refusals leave both channels byte-for-byte untouched, and a unity drive at the rail is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_soft_drive"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_soft_drive"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_soft_drive.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-soft-drive: build failed — ${build.err}"
@@ -40,3 +46,7 @@ say "ales-stereo-soft-drive: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-soft-drive' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-soft-drive: selftest did not print the GREEN ales-stereo-soft-drive line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

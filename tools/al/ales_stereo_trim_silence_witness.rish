@@ -23,7 +23,13 @@ say "ales-stereo-trim-silence: Style Radiant — ALES96 trims a mono clip by cut
 say "ales-stereo-trim-silence: Lens TAME — two bounded i16 Clips (left, right) trimmed in lockstep by one shared frame length, band, floor, and split; the balance invariant is asserted on entry and exit, and all validation runs once up front through ALES147's segment_stereo (ALES92's precheck for band and span, the floor against meter's sample_peak_max, the frame-length divisibility) read-only before a single sample is cut, so a refusal leaves both channels untouched; the forward pass records a bounded jointly-silent frame mask (sized once at max_clip, one bool per frame) by advancing one monotonic cursor per channel across its own tiling run list and marking a frame only where it is silent in both, asserting each cursor names the run that covers the frame start and that the removed samples never exceed the clip; the backward pass cuts each jointly-silent frame from both channels through ALES2's cut with the in-bounds span asserted before each cut so neither can fault and leave the pair half-trimmed, and the postcondition asserts both channels lost exactly the jointly-silent samples and leave equal length; the stereo trim law is proven against an independent by-hand reference (a second implementation reading the frame verdicts by run scan) across five frame lengths, four floors, and three splits, the preservation law proves a left-silent right-loud frame is kept on both, the lockstep law proves the mono trimmer desyncs where this does not, and the degenerate and atomicity cases leave both channels untouched and balanced; StereoSegmentError and EditError reused whole, siloed to lotus/, edits only by removing whole frames, fabricating no samples and reordering nothing, no adaptive floor, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_trim_silence"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_trim_silence"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_trim_silence.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-trim-silence: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-trim-silence: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-trim-silence' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-trim-silence: selftest did not print the GREEN ales-stereo-trim-silence line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

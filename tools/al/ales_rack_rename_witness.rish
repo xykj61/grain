@@ -21,7 +21,13 @@ say "ales-rack-rename: Style Radiant — the law is stated positively: renaming 
 say "ales-rack-rename: Lens TAME — a rack.Slot holds its name and its audio in separate storage, so overwriting the name buffer cannot touch the held samples; the collision check excludes the slot being renamed (so a same-name rename is not a false Duplicate); rack.find / name_of reused whole, RackRenameError = rack.RackError names no new fault; siloed to lotus/, no signature, no key, no network, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/rack_rename"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/rack_rename"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_rename.rye -femit-bin=${bin}"]
 assert build.ok else "ales-rack-rename: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-rename' ${outfile} && echo 
 assert (trim green.out) == "yes" else "ales-rack-rename: selftest did not print the GREEN ales-rack-rename line"
 
 say "ales-rack-rename: GREEN — a keeper fixes a mistyped slot name without dropping and re-filing the span: rename re-names exactly one slot in place, the held audio and every other slot untouched, refusing Duplicate on a collision, NoSlot on an absent name, and BadName on a bad target. With rename the purely-local rack primitives are complete (file, paste, drop, save, seal, load, merge, rename); the next purely-local rung is a session file carrying more than one rack. The SIGNED carry (via a Kumara key) and the ALES0-wire carry stay module seams for Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -22,7 +22,13 @@ say "ales-stereo-rotate: Style Radiant — the rule is stated positively: run th
 say "ales-stereo-rotate: Lens TAME — two bounded i16 Clips (left, right) reseated cyclically in lockstep; the balance invariant is asserted on entry and exit, and because mono rotate is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; rotate reduces the shift modulo len then reseats by three range-reversals in place, no second buffer, reading no byte past len, so the length holds exactly; it reuses ALES106's rotate_left per channel over its public API, inventing no new primitive; the stereo rotate law is proven against ALES106's own rotate run per channel, and the permutation law reads each channel's peak through ALES13 so a pure rearrangement is shown to move no loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_rotate"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_rotate"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_rotate.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-rotate: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-rotate: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-rotate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-rotate: selftest did not print the GREEN ales-stereo-rotate line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

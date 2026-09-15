@@ -21,7 +21,13 @@ say "ales-stack: Style Radiant — the law is stated positively: unity on all th
 say "ales-stack: Lens TAME — bounded Clip, u32 span, i16 samples; the low band and the high band each live in a scratch copy so the mid band's minuend stays intact; each band scaled in i64 and the sum clamped once (ALES8's fader lesson via ALES41); an illegal crossover refuses BadCoeff, a zero band denominator BadGain, an out-of-range span BadRange, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stack"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stack"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stack.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stack: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stack' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stack: selftest did not print the GREEN ales-stack line"
 
 say "ales-stack: GREEN — a three-band tone stack gives a keeper bass, mid, and treble from ALES40's proven split, the mid band the exact residual so flat stays truly flat and only bass reaches the still low end. The next Lotus rung can carry the filter state across a re-berthed span, sweep the mid crossovers under an envelope, or name a crossover in hertz through a real time base."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

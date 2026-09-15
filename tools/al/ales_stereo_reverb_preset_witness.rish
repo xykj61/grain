@@ -23,7 +23,13 @@ say "ales-stereo-reverb-preset: Style Radiant — the law is stated positively: 
 say "ales-stereo-reverb-preset: Lens TAME — one StereoClip of i16 PCM, a validated clock, and ALES190's three fixed compile-time banks each within reverb.max_stages, delays in u32 milliseconds and feedbacks and gains named u32/u32 fractions strictly below unity; the preset picks the constant bank and runs the proven timed stereo reverb, changing sample VALUES only, never a length, the two channels leaving balanced; StereoReverbPresetError = stereo_reverb_time.StereoReverbTimeError forwarded whole, DurationTooLong / NoCombs / TooManyStages / BadDelay / BadGain / BadRange by name before any write, both channels untouched on refusal; siloed to lotus/, no cross-channel read, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_reverb_preset"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_reverb_preset"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-preset: build failed — ${build.err}"
@@ -46,3 +52,7 @@ let stereo_timed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/st
 assert (trim stereo_timed.out) == "yes" else "ales-stereo-reverb-preset: the ALES189 timed stereo reverb regressed under its preset face"
 
 say "ales-stereo-reverb-preset: GREEN — stereo named rooms: the reverb a keeper reaches for by name (room · hall · plate), now across a stereo master, each ALES190's own curated bank run through ALES189's proven stereo_reverb_ms. A stereo preset IS exactly its named bank, and the bank is ALES190's own: stereo_reverb_preset imports reverb_preset.Room and bank_for and delegates to stereo_reverb_ms unchanged, inventing no new arithmetic and no new fault, proven literally — a stereo preset equals stereo_reverb_ms over that room's published bank byte for byte on both channels, for all three rooms; the rooms genuinely differ; a centred master stays identical channel-to-channel while a stereo master keeps its channels distinct; the channels leave balanced and silence stays silence; a span past the clip refuses DurationTooLong and an out-of-range span BadRange, both channels untouched; the ALES190 mono preset and ALES189 timed stereo reverb stay GREEN beside it. A wet/dry mix (blending the reverberated span with a snapshot of the dry) is the next genuinely new expressive knob."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

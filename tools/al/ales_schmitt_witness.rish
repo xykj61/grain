@@ -24,7 +24,13 @@ say "ales-schmitt: Style Radiant — the law is stated positively: flip HIGH on 
 say "ales-schmitt: Lens TAME — one mono clip of i16 PCM triggered in place over a span; one two-threshold comparison carrying one bit of state, run sample by sample, the compare in i32 so a threshold at the deep rail is representable, only ±sample_max ever written (no saturate owed); the band must be two ordered thresholds inside the rails (sample_min ≤ t_low ≤ t_high ≤ sample_max) or refuse BadThreshold before a sample is touched; a span outside the samples refuses BadRange before any read or write, the clip and carried rail untouched on refusal; siloed to lotus/, the band over amplitude not time (no debounce time constant), no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/schmitt"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/schmitt"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/schmitt.rye -femit-bin=${bin}"]
 assert build.ok else "ales-schmitt: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-schmitt: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-schmitt' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-schmitt: selftest did not print the GREEN ales-schmitt line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

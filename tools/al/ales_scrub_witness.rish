@@ -22,7 +22,13 @@ say "ales-scrub: Style Radiant — the law is stated positively: a scrub read at
 say "ales-scrub: Lens TAME — ALES15's read_block and ALES17's StereoMeter reused whole (no new copy path, no new arithmetic); the window length is bounded at make (≤ max_scrub_window ≤ the meter bound, so meter_window cannot overflow); nudge carries the signed drag in i64 and clamps to [0, len]; read-only, mutating neither channel; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/scrub"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/scrub"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/scrub.rye -femit-bin=${bin}"]
 assert build.ok else "ales-scrub: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-scrub' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-scrub: selftest did not print the GREEN ales-scrub line"
 
 say "ales-scrub: GREEN — a scrub window dragged across a stereo master reads the master's own slice at every position, tiling it back byte-for-byte, its level metered true under the drag. With play, loop, and scrub all stereo and metered, the read side offers a keeper the three gestures they edit by. The next Lotus rung can offer the choice of pan/crossfade law on the scrub's read, name a markers track a scrub snaps to, or (a module seam) a punch region tying playback back to the Mikrophone's capture."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

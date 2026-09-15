@@ -22,7 +22,13 @@ say "ales-stereo-compress: Style Radiant — ALES50 named the mono compressor: a
 say "ales-stereo-compress: Lens TAME — two bounded in-process i16 Clips (left, right) compressed by one linked gain, one comparison of the linked key and at most one multiply-then-divide per channel per sample (computed in i64, the product of a magnitude and new_key at most 32768 times 32768 never overflowing), memoryless (no attack, release, or knee; those are later rungs); the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a compressor writes values only, each length asserted equal and within bound on exit); threshold, ratio, and span are validated once against the shared length before either channel is mutated, so a refusal never compresses one channel and leaves the other torn; StereoCompressError is ALES50's CompressError (BadThreshold, BadRatio, BadRange) reused whole, the linked lift adding no fault. Nothing on the audio path can overflow: new_key is at most key, so every scaled magnitude is at most its input's, which already fits i16. The linked-gain law is proven against a master where the left always holds the peak — the left equals the mono compress of it byte for byte (8000 to 2750, 6000 to 2250, 500 within threshold, 9000 to 3000) while the right is scaled by the same fraction (2000 to 687, 1000 to 375, 100 within, 3000 to 1000), and the independent lift (mono compress of the right alone, 2000 to 1250) is shown to genuinely differ; the image law proves no magnitude expands and no sign flips over a mixed master and that an out-of-phase equal-magnitude pair returns still exactly out of phase; the sub-threshold law proves a master within the linked threshold passes byte for byte on both; the knob laws prove unit ratio the identity everywhere, a higher ratio monotone, and a huge ratio seating the linked key at the threshold (the loud channel on 1000, the quiet at 250 proportionally); and the balance, atomicity, and degenerate cases prove the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the threshold a magnitude in sample units and the ratio a plain fraction, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_compress"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_compress"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_compress.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-compress: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-compress: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-compress' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-compress: selftest did not print the GREEN ales-stereo-compress line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

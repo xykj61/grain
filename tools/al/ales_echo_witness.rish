@@ -23,7 +23,13 @@ say "ales-echo: Style Radiant — the law is stated positively: the delay line I
 say "ales-echo: Lens TAME — one clip of i16 PCM, a u32 span, a u32 delay, a plain u32/u32 feedback fraction; the sum runs in i64 and saturates once, so nothing on the path can overflow; a delay of zero or past max_clip refuses BadDelay, a feedback at or above unity (a runaway that would never decay) or with a zero denominator refuses BadFeedback, a span outside the samples refuses BadRange, all before any write, the clip untouched on refusal; siloed to lotus/, the delay counted in sample indices not milliseconds, no lookahead, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/echo"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/echo"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=${bin}"]
 assert build.ok else "ales-echo: build failed — ${build.err}"
@@ -43,3 +49,7 @@ let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/mix.rye -fe
 assert (trim mix.out) == "yes" else "ales-echo: the ALES3 mixer regressed under the feedback delay"
 
 say "ales-echo: GREEN — the feedback delay opens the time-based-effects wing: y[i] = saturate(x[i] + fb·y[i-delay]), the delay line the clip buffer itself so an echo needs no carried state. Silence stays silence; fb = 0 is the dry identity; a single impulse yields an exact decaying echo train (8000 -> 4000 -> 2000 -> 1000) byte-for-byte; the echoes decay and reach silence within the clip, never growing; a loud constructive sum saturates to the i16 rail rather than wrapping; split equals whole byte-for-byte with no carried state; a zero delay refuses BadDelay, a delay past max_clip BadDelay, a feedback at unity BadFeedback, a zero denominator BadFeedback, an out-of-range span BadRange, each leaving the clip untouched; the ALES3 mixer stays GREEN. The single-tap slapback, the modulated delay (chorus, flanger), and the multi-tap and real-time forms follow as later rungs on this foundation."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

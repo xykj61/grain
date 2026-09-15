@@ -24,7 +24,13 @@ say "ales-stereo-collapse-silence: Style Radiant — ALES100 caps each silent ru
 say "ales-stereo-collapse-silence: Lens TAME — two bounded i16 Clips (left, right) capped in lockstep by one shared frame length, band, floor, split, and max_silence; the balance invariant is asserted on entry and exit, and all validation runs once up front through ALES147's segment_stereo (ALES92's precheck for band and span, the floor against meter's sample_peak_max, the frame-length divisibility) read-only before a single sample is cut, so a refusal leaves both channels untouched; the forward pass records a bounded jointly-silent frame mask (sized once at max_clip, one bool per frame) by advancing one monotonic cursor per channel across its own tiling run list and marking a frame only where it is silent in both, asserting each cursor names the run that covers the frame start; consecutive marked frames are coalesced into runs and the total excess over max_silence counted so the length postcondition is asserted exactly (both channels lose exactly the joint excess and leave equal length); the backward pass finds each maximal joint run from its last frame, and where its sample count exceeds max_silence cuts the excess from both channels through ALES2's cut with the in-bounds span asserted before each cut so neither can fault and leave the pair half-capped, then steps past the run's start so no run is handled twice; the zero-cap law is proven against ALES148's stereo_trim_silence across six frame lengths, four floors, and three splits, the cap law against an independent by-hand reference (a second implementation reading the frame verdicts by run scan and coalescing) across nine caps, a known cap keeps exactly the named 14 samples per channel, the lockstep law proves the mono capper desyncs to ten and fourteen where this holds both at fourteen, and the degenerate and atomicity cases leave both channels untouched and balanced; StereoSegmentError and EditError reused whole, siloed to lotus/, edits only by removing whole excess-silent frames, fabricating no samples and reordering nothing, no adaptive floor, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_collapse_silence"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_collapse_silence"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_collapse_silence.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-collapse-silence: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-collapse-silence: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-collapse-silence' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-collapse-silence: selftest did not print the GREEN ales-stereo-collapse-silence line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -20,7 +20,13 @@ say "ales-gate: Style Radiant — the law is stated positively: above the thresh
 say "ales-gate: Lens TAME — bounded Clip, u32 span, i16 samples; the threshold checked in [1, sample_max] and the ratio checked at least unity with a nonzero denominator before any write; the magnitude divided in i64 with divTrunc, a gated magnitude at most the input's so nothing on the audio path can overflow; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/gate"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/gate"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=${bin}"]
 assert build.ok else "ales-gate: build failed — ${build.err}"
@@ -40,3 +46,7 @@ let compress = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compre
 assert (trim compress.out) == "yes" else "ales-gate: the ALES50 compressor witness regressed under the gate"
 
 say "ales-gate: GREEN — a noise gate inverts the compressor's threshold by dividing the below-threshold magnitude by the ratio; above the threshold is the identity, unit ratio is the identity everywhere, a quiet signal's floor pushes down with the sign held and the magnitude never expanding, a higher ratio gates at least as hard, and a ratio far past the magnitude drives the quiet exactly to silence (the hard gate); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange, each leaving the clip untouched; the ALES50 compressor selftest stays GREEN. The dynamics family now holds the brickwall, the softened ratio, and the inverted floor — the next rung can give any of the three an attack and release over a real time base, or a soft knee that rounds the threshold's corner."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

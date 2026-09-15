@@ -23,7 +23,13 @@ say "ales-chorus: Style Radiant — the law is stated positively: a triangle LFO
 say "ales-chorus: Lens TAME — one clip of i16 PCM, a u32 span, the scaled centre/depth, a u32 period and a plain u32/u32 wet level; the dry prefix is snapshotted into one bounded [max_clip]i16 scratch (glide's and taps' width), the triangle, interpolation, and wet mix all run in i64 and saturate once, so nothing on the path can overflow; a period not a positive multiple of four (or past max_clip) refuses BadPeriod, a swing below one whole sample BadDepth, a swing top past max_clip BadDelay, a wet above unity or a zero denominator BadLevel, a span outside the samples BadRange, all before any write, the clip untouched on refusal; siloed to lotus/, the delay in scaled sample indices and the period in samples, no lookahead, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/chorus"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/chorus"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/chorus.rye -femit-bin=${bin}"]
 assert build.ok else "ales-chorus: build failed — ${build.err}"
@@ -44,3 +50,7 @@ let glide = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/glide.rye
 assert (trim glide.out) == "yes" else "ales-chorus: the ALES70 gliding delay regressed under the chorus"
 
 say "ales-chorus: GREEN — the chorus reads a triangle-LFO modulated delay round a centre, the first periodic modulated delay: the scaled delay is centre + triangle(depth, period, k), a symmetric wave with EXACT quarter anchors, read by ALES70's fractional interpolation off a frozen dry snapshot, mixed dry and saturated once. level = 0 is the dry identity; a zero-depth chorus is EXACTLY ALES70's glide at its centre byte-for-byte (the periodic driver reduces to the one-way one at rest); the triangle honors its four quarter anchors and repeats one period later; a hand-computed modulated read matches exactly; a loud wet+dry sum saturates rather than wraps; a period not a positive multiple of four refuses BadPeriod, a swing below one whole sample BadDepth, a swing top past max_clip BadDelay, a wet above unity or a zero denominator BadLevel, an out-of-range span BadRange, each leaving the clip untouched; the ALES70 gliding delay stays GREEN beside it. The vibrato (this delay heard wet-only) and the flanger (a shorter modulated delay with feedback) are thin later rungs that only change the mix and add the feedback path."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -22,7 +22,13 @@ say "ales-trim-silence: Style Radiant — the rule is stated positively: segment
 say "ales-trim-silence: Lens TAME — one mono clip of i16 PCM segmented through ALES95 (all its validation — precheck for band/range, the floor ceiling, the dividing frame length, the empty-clip BadFrame — runs before any cut), then edited only by removing whole classified-silent frames through ALES2's own cut; no sample fabricated, nothing reordered; the error vocabulary is the segmenter's SegmentError and the editor's EditError reused by name; siloed to lotus/, not a transcript or a real adaptive VAD, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/trim_silence"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/trim_silence"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/trim_silence.rye -femit-bin=${bin}"]
 assert build.ok else "ales-trim-silence: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-trim-silence: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-trim-silence' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-trim-silence: selftest did not print the GREEN ales-trim-silence line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

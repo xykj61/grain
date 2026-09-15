@@ -23,7 +23,13 @@ say "ales-stereo-expand-env: Style Radiant — ALES159's stereo_expand leans on 
 say "ales-stereo-expand-env: Lens TAME — two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope, one linked-peak comparison and at most one widen and one multiply-then-divide for the gain per channel, all in i64 (the product of a magnitude and the deepened floor at most 32768 times 32767 never overflowing), the gain exp over e in the half-open interval zero to one so every scaled magnitude is at most its input's and fits i16; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (an expander writes values only, each length asserted equal and within bound on exit, each written sign asserted held); the threshold, ratio, both coefficients, and the span are validated once before either channel is mutated, so a refusal never expands one channel and leaves the other torn; the linked envelope is asserted a legal magnitude in zero to sample_max each sample and the deepened floor within zero to envelope, so the single gain is a genuine reduction; a shared envelope of exactly zero arises only when both channels are silent (asserted), so no divide by zero and nothing to expand; StereoExpandEnvError is ALES61's ExpandEnvError (BadThreshold, BadRatio, BadCoeff, BadRange) reused whole, the fusion adding no fault. The instantaneous law is proven by running both stereo_expand_env under unit attack and release and ALES159's memoryless stereo_expand on the same master and demanding byte-for-byte equality on both channels; the linked-gain-over-time law against a master where the left always holds the peak — the left equal to ALES61's mono expand_env of it byte for byte while the right is scaled by the same fraction, the independent mono expand_env of the right alone shown to genuinely differ; the image law proves no magnitude expands and no sign flips over a mixed master and that an out-of-phase pair returns still exactly out of phase; the knob laws prove unit ratio the identity everywhere and a slower release easing a quiet tail where an instant release deepens it; the carry law proves a span expanded in two pieces equal to the whole once on both channels; and the at-threshold, silence, balance, atomicity, and degenerate cases prove an always-loud master passing byte for byte, an all-silent master staying zero, the length held, each of the five refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the threshold a magnitude in sample units, the ratio a plain fraction, the attack and release fractions per sample index, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_expand_env"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_expand_env"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_expand_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-expand-env: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-expand-env: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-expand-env' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-expand-env: selftest did not print the GREEN ales-stereo-expand-env line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

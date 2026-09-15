@@ -23,7 +23,13 @@ say "ales-reverb-console-predelay: Style Radiant — the three edges are stated 
 say "ales-reverb-console-predelay: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed banks, and two bounded stack snapshots (max_clip = 4096 samples each); NO new audio arithmetic — the blend is ALES192's proven weighted average summed in i64 and saturated once so it can never wrap, over ALES194's bounded reindex with a true-zero gap; ReverbConsolePredelayError = reverb_predelay.ReverbPredelayError || BadMix, DurationTooLong / BadRange / BadPredelay / BadMix by name before any write, the dry snapshot a read only so a refusal leaves the clip untouched; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_console_predelay"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_console_predelay"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_console_predelay.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-console-predelay: build failed — ${build.err}"
@@ -46,3 +52,7 @@ let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_mix.
 assert (trim mix.out) == "yes" else "ales-reverb-console-predelay: the ALES192 wet/dry mix regressed under its console composition"
 
 say "ales-reverb-console-predelay: GREEN — the console pre-delay: the dry-composed pre-delay, end to end. Snapshot the dry span, reverberate it wet in place through ALES190's reverb_preset unchanged, form the pre-delayed wet (pw[i] = 0 for i < predelay, else wet[i - predelay]), then blend out[i] = saturate((den-num)·dry[i]/den + num·pw[i]/den) — ALES192's proven linear balance over ALES194's bounded reindex, saturated once, no new audio arithmetic. Proven: at predelay = 0 exactly reverb_mix byte for byte; at mix = 0 the exact dry at any pre-delay; at mix = den exactly reverb_predelay byte for byte; a mid pre-delay and mid mix the honest weighted average of the dry and the pre-delayed wet, differing from both the plain mix and the plain pre-delay; silence stays silence; a bad fraction refuses BadMix, a pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES194 pre-delay and ALES192 mix stay GREEN beside it. The stereo console pre-delay (the same dry-composed blend over both channels, one shared gap, the image held) is the thin twin next; after it the reverb's which/how-much/when are complete for mono and stereo."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

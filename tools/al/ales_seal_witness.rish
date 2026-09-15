@@ -23,7 +23,13 @@ say "ales-seal: Style Radiant — the law is stated positively: one primitive ow
 say "ales-seal: Lens TAME — open returns BYTES, not a parsed structure, so the generalization is exact and any per-format difference lives in the caller after the gate; the digest is a full Sha256 rendered 64 hex wide; a malformed header or digest line refuses BadRecord (structural), a body that no longer matches its digest refuses DigestMismatch (content), a too-small buffer refuses Overflow, each before the body is handed on; the seal proves a record arrived whole, not who wrote it — no signature, no key; siloed to lotus/, no network, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/seal"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/seal"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/seal.rye -femit-bin=${bin}"]
 assert build.ok else "ales-seal: build failed — ${build.err}"
@@ -39,3 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-seal' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-seal: selftest did not print the GREEN ales-seal line"
 
 say "ales-seal: GREEN — the verify-before-trust seal is one primitive both sheets call: begin/finish frame a body zero-scratch and open recomputes the digest and returns the body slice only on a match, refusing DigestMismatch on any flipped or truncated body, BadRecord on any malformed frame or wrong header, and Overflow on a too-small buffer; an arbitrary body round-trips whole, and both shipped seal witnesses (ales-rack-seal, ales-cue-seal) stay GREEN unchanged. The next Lotus rung is a SESSION FILE — begin, render the rack sheet and the cue sheet into one body over one master, finish, and a single open verifies the whole project before any of it is trusted."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

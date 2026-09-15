@@ -23,7 +23,13 @@ say "ales-stereo-ring-mod: Style Radiant — ALES176 opened the stereo modulatio
 say "ales-stereo-ring-mod: Lens TAME — two bounded in-process i16 clips (left, right), each rung through ALES75's own unit-bounded bipolar carrier, the triangle and multiply run in i64 and the write saturating once, a no-op except the lone sample-minimum-inverted corner where it genuinely earns its keep; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a ring modulator writes values only, each length asserted equal and within bound on exit); the carrier and span are validated once against the shared length before either channel is mutated (ALES75's precheck, factored out of the mono ring modulator and shared, mirroring the ALES176 tremolo refactor), so a refusal never rings one channel and leaves the other torn; StereoRingModError is ALES75's RingModError (BadPeriod, BadDepth, BadCarrier, BadRange) reused whole, the stereo lift adding no fault. The stereo ring law is proven by running both stereo_ring_mod and ALES75's mono ring modulator on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the tremolo-sibling law proves a non-negative carrier equals ALES176's stereo tremolo on both channels byte for byte and a bipolar carrier diverges from it; the image law proves an identical-channel master stays identical and a right-is-half-left pan keeps its ratio sample for sample through the sign flips; and the balance, silence, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the carrier in scaled units rather than hertz, no delay line, no snapshot, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_ring_mod"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_ring_mod"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_ring_mod.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-ring-mod: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-ring-mod: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-ring-mod' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-ring-mod: selftest did not print the GREEN ales-stereo-ring-mod line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

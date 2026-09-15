@@ -22,7 +22,13 @@ say "ales-meter: Style Radiant — the law is stated positively: rms ≤ peak al
 say "ales-meter: Lens TAME — no new arithmetic: the meter reuses ALES11's proven isqrt, widened to the audio square domain (2³⁰) and shared as one root; count and squares are bounded; refuses MeterFull by name; read-only, never mutating the master; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/meter"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/meter"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/meter.rye -femit-bin=${bin}"]
 assert build.ok else "ales-meter: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-meter' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-meter: selftest did not print the GREEN ales-meter line"
 
 say "ales-meter: GREEN — the meter reads the master with the same root ALES11 proved, rms ≤ peak, and a block-fed pass off the transport equals a whole measure. The next Lotus rung can name a stereo balance/width control, a transport loop over a marked region, or offer the keeper the choice of pan/crossfade law."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

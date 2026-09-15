@@ -23,7 +23,13 @@ say "ales-deess: Style Radiant — the law is stated positively: the de-esser IS
 say "ales-deess: Lens TAME — a mutable target beside a caller-owned empty scratch key (nothing allocates on the path); the band-pass runs first over the scratch copy so an illegal cutoff or span refuses before a single target sample changes, and the keyed compressor checks every threshold, ratio, coefficient, hold, and range edge before any write, so the target is atomic on any refusal; the fault set is tone.ToneError || sidechain.SidechainError, every name already the family's (BadKey cannot fire — the scratch key is a full copy of the target); siloed to lotus/, no lookahead, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/deess"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/deess"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/deess.rye -femit-bin=${bin}"]
 assert build.ok else "ales-deess: build failed — ${build.err}"
@@ -46,3 +52,7 @@ let s = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/sidechain.rye
 assert (trim s.out) == "yes" else "ales-deess: the ALES63 sidechain compressor regressed under the de-esser"
 
 say "ales-deess: GREEN — the de-esser band-passes a copy of the target to isolate the sibilant band and keys ALES63's attack/hold/release compressor on that copy over the target; it IS the composition {band-pass a copy; sidechain-compress} byte-for-byte (no arithmetic added on the audio path), the key's band-passed level sets the threshold crossing (a threshold above the band-passed peak is the identity however loud the broadband level, below it ducks — proven by measuring the copy's peak), a loud in-band signal ducks with the sign held and never expanding; an illegal band cutoff refuses BadCoeff, a zero threshold BadThreshold, a sub-unity ratio BadRatio, an illegal attack coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each before the target is touched; the ALES46 band-pass and ALES63 sidechain compressor selftests stay GREEN. The first sidechain composition stands — the ducker (a voice key) and the keyed gate follow as compositions of proven parts; external key routing, a carried/spanning form, and the lookahead delay stay taken only on Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

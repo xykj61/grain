@@ -22,7 +22,13 @@ say "ales-stereo-duplicate: Style Radiant — the rule is stated positively: run
 say "ales-stereo-duplicate: Lens TAME — two bounded i16 Clips (left, right) whose named span is repeated in lockstep; the three checks are made without underflow against the common channel length once up front (start against len, count against the remainder, count against the free seats that remain to max_clip), so every refusal comes by name before any write and the channels can never desynchronise; duplicate opens a count-sample gap through ALES109's insert_silence and fills it with a forward copy of an existing span, no temporary buffer; it reuses ALES2's EditError whole and ALES112's duplicate per channel over its public API, inventing no new primitive; the stereo duplicate law is proven against ALES112's own duplicate run per channel, and the inverse law closes the round trip through ALES117's stereo_cut; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_duplicate"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_duplicate"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_duplicate.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-duplicate: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-duplicate: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-duplicate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-duplicate: selftest did not print the GREEN ales-stereo-duplicate line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

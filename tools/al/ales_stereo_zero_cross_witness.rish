@@ -24,7 +24,13 @@ say "ales-stereo-zero-cross: Style Radiant — where ALES144 carried the Schmitt
 say "ales-stereo-zero-cross: Lens TAME — two bounded i16 Clips (left, right) read in lockstep by one shared band, each carrying its own counter (rail, count, previous-rail memory, started bit); the balance invariant is asserted on entry and exit, the shared band and span are bound-checked once via ALES92's precheck before any read, and because those checks hold identically for both balanced channels each mono counter is pre-validated to succeed so no refusal can land between the two channel counts or move a single counter; the counter composes ALES93's ZeroCounter.feed per channel, which composes ALES92's public one-sample comparator and reads its flips without writing a sample, the accumulation bounded by max_crossings far below the u32 top so the guard fires long before any wrap; StereoZeroCounter shares its band through a single init so left and right can never drift to different thresholds, threads each channel's carried rail and previous-rail memory, and resets both counters together; the stereo zero-cross law is proven against ALES93's own count_crossings run per channel, the independent-counter law proves an identical master reads equal counts while a busy channel counts more and a calm one counts zero, the carried-state crux proves a two-piece count equals the whole once on both channels, the read-only law proves the source clip is byte-for-byte unchanged on both, and the atomicity cases leave both counters and the clip untouched with count zero the identity; siloed to lotus/, read-only, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_zero_cross"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_zero_cross"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_zero_cross.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-zero-cross: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-zero-cross: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-zero-cross' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-zero-cross: selftest did not print the GREEN ales-stereo-zero-cross line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

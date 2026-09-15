@@ -21,7 +21,13 @@ say "ales-stereo-transport: Style Radiant — the law is stated positively: one 
 say "ales-stereo-transport: Lens TAME — reuses ALES7's single Transport head whole (no second cursor); refuses BadBlock / PastEnd by name; bounds proven within the shared length; read-only, never mutating the master; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_transport"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_transport"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_transport.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-transport: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-transport' ${outfile} && 
 assert (trim green.out) == "yes" else "ales-stereo-transport: selftest did not print the GREEN ales-stereo-transport line"
 
 say "ales-stereo-transport: GREEN — one head reads both channels in lockstep, each concatenating back byte-for-byte, and a power-rendered stereo master plays back exactly. The next Lotus rung can meter a stereo master during playback, loop a stereo region, or drive the paused two-channel sound-card write."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

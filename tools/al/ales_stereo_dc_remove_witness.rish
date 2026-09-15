@@ -18,7 +18,13 @@ say "ales-stereo-dc-remove: Style Radiant — ALES90 named dc_remove: subtract a
 say "ales-stereo-dc-remove: Lens TAME — two bounded in-process i16 Clips (left, right) DC-removed through the proven mono dc_remove, a two-pass block statistic per channel (sum in i64 so the accumulation never overflows, then subtract, one saturate per sample at the rail), memoryless, no carried state, no feedback, no delay line; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a remove writes values only, the length asserted equal and within bound on exit); the span is validated once against the shared length before either channel is mutated, so a refusal never DC-removes one channel and leaves the other biased; StereoDcError is ALES90's DcError (BadRange) reused whole, the lift adding no fault since the operation takes no coefficient. The stereo DC-remove law is proven against ALES90's mono dc_remove directly (a second call per channel) with a left biased plus 1100 and a right biased minus 500, each channel byte for byte; the independent-offset law proves a large left offset and a small right offset each removed to under one LSB independently and a zero-mean channel unchanged while its partner is corrected; the image-preserve law proves an out-of-phase master (right the negation of the left's AC) riding a common plus 1000 offset returns still exactly out of phase, a both-zero-mean master unchanged, and the map idempotent; the composition law proves a symmetric master rectified through ALES138 rides a positive DC of 18000 on the left and 12000 on the right, each removed to under one LSB; the span discipline proves a sub-span removal leaves the outer samples untouched on both channels; and the balance, atomicity, and degenerate cases prove the length held, a bad span refusing BadRange with both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the DC being the arithmetic mean of the block (the zero-frequency component by definition, not a claim about any hardware highpass), no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_dc_remove"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_dc_remove"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_dc_remove.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-dc-remove: build failed — ${build.err}"
@@ -32,3 +38,7 @@ say "ales-stereo-dc-remove: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-dc-remove' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-dc-remove: selftest did not print the GREEN ales-stereo-dc-remove line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

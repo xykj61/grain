@@ -26,7 +26,13 @@ say "ales-reverb-early-late: Style Radiant — the two edges are stated positive
 say "ales-reverb-early-late: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed reverb banks and this rung's fixed early-tap banks, and one bounded full-clip copy for the early signal; NO new audio arithmetic — the one blend is a weighted average of two i16 spans summed in i64 and saturated ONCE so it can never wrap (the exact blend ALES192 proved, now between early and late); ReverbEarlyLateError = multitap_time.MultitapTimeError || reverb_preset.ReverbPresetError || BadBalance, the early multi-tap run on a COPY and the late preset PRECHECKED so a refusal never half-writes the clip (atomic), BadBalance / DurationTooLong / BadRange by name before any write; siloed to lotus/, no network, no keys, no funds, no device. The early banks are named in MILLISECONDS, so one room sounds the same at any sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_early_late"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_early_late"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_early_late.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-early-late: build failed — ${build.err}"
@@ -50,3 +56,7 @@ let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_p
 assert (trim preset.out) == "yes" else "ales-reverb-early-late: the ALES190 named-room preset regressed under its early/late balance"
 
 say "ales-reverb-early-late: GREEN — the early/late balance: the first reflections against the diffuse wash, the reverb's fresh axis after the tone axis closed. Compute the early reflections with ALES69's multi-tap over the room's fixed early bank (on a copy of the dry), the late wash with ALES190's reverb_preset in place, then blend out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), a linear crossfade at the named fraction num/den, saturated once so a loud blend pins never wraps — no new audio arithmetic. Proven: at balance = 0 exactly the multi-tap over the room's early bank byte for byte (fully early); at balance = den exactly reverb_preset byte for byte (fully late); a half balance neither edge, each sample the honest weighted average; the rooms differ (room, hall, and plate early edges three real patterns); silence stays silence; a bad fraction refuses BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched (the early multi-tap on a copy, the late preset prechecked, so atomic); the ALES69 multi-tap and the ALES190 preset stay GREEN beside it. The stereo early/late balance (the same crossfade over both channels, image held) is the thin twin next."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

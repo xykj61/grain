@@ -22,7 +22,13 @@ say "ales-stereo-nyquist: Style Radiant — the rule is stated positively: run t
 say "ales-stereo-nyquist: Lens TAME — two bounded i16 Clips (left, right) parity-flipped in lockstep; the balance invariant is asserted on entry and exit, and because mono nyquist_flip is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; nyquist_flip walks only the odd seats of each channel, starting at 1 and stepping by 2, replacing each with saturate(-x) computed in i64 so the negation never overflows before the clamp, never touching an even seat or a byte past len, so the length holds exactly; it reuses ALES107's nyquist_flip per channel over its public API and ALES2's single saturate for the rail, inventing no new primitive; the stereo alternating-sign law is proven against ALES107's own flip run per channel, the honest-rail case is proven in place (an odd-indexed floor pinning to -32767), and the magnitude law reads each channel's peak through ALES13 so a parity sign-flip off the rail is shown to move no loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_nyquist"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_nyquist"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_nyquist.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-nyquist: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-nyquist: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-nyquist' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-nyquist: selftest did not print the GREEN ales-stereo-nyquist line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

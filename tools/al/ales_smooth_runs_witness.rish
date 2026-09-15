@@ -22,7 +22,13 @@ say "ales-smooth-runs: Style Radiant — the rule is stated positively: seed the
 say "ales-smooth-runs: Lens TAME — a read-only rewrite of one run-length label sequence, not one PCM sample touched; the input contract (a coalesced tiling from ALES95) asserted at the seam rather than re-derived; min_run a plain u32 with no illegal value (0 the identity, a value past the span coalescing to one run); output length can never exceed input length, so SmoothError.SegmentsFull stays named for the honest path though it cannot fire, the same honesty ALES95 keeps; siloed to lotus/, a causal left-to-right hold, NOT the symmetric smoothing or adaptive floors a production VAD would add, not a transcript, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/smooth_runs"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/smooth_runs"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/smooth_runs.rye -femit-bin=${bin}"]
 assert build.ok else "ales-smooth-runs: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-smooth-runs: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-smooth-runs' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-smooth-runs: selftest did not print the GREEN ales-smooth-runs line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -31,7 +31,7 @@
 # ceiling in the same commit.
 set -eu
 
-CEILING=${SHARED_BUILD_PATH_CEILING:-1813}
+CEILING=${SHARED_BUILD_PATH_CEILING:-1574}
 list=no
 [ "${1:-}" = "--list" ] && list=yes
 

@@ -21,7 +21,13 @@ say "ales-stereo-hold-env: Style Radiant — ALES160 carried the plain follower 
 say "ales-stereo-hold-env: Lens TAME — two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope and one shared u32 hold countdown, one linked-peak comparison, at most one env_step (ALES52's proven step, reused whole), and a single counter decrement per pair; nothing on the path can overflow, since the envelope stays in zero to sample_max which fits i16 and the hold counter is bounded by max_clip. The two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a follower writes values only, each length asserted equal and within bound on exit, the shared held value asserted written identically to both channels each pair); the two coefficients, the hold, and the span are validated once before either channel is mutated, so a refusal never follows one channel and leaves the other torn; the clamped linked key is asserted a legal i16 magnitude and the held envelope a legal magnitude in zero to sample_max each pair; StereoHoldEnvError is ALES56's HoldEnvError (BadCoeff, BadHold, BadRange) reused whole, the fusion adding no fault. The linked held detector law is proven by running the mono hold_follow on a synthetic clip of the per-sample linked key and demanding byte-for-byte equality with both output channels, the independent per-channel held follow shown to genuinely differ; the zero-hold law by running both stereo_hold_env with a hold of zero and ALES160's plain stereo_follow on the same master and demanding byte-for-byte equality on both channels; the hold-delays-release law by pinning a larger hold longer than a smaller one on a quiet tail; the hold-exact law by checking a whole curve byte for byte under instant attack and release with a hold of three; the carry law by splitting a span mid-hold and demanding equality with the whole on both channels; and the balance, silence, atomicity, and degenerate cases by an all-silent master staying zero, the length held, each of the three refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the attack, release, and hold counted in sample indices, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_hold_env"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_hold_env"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_hold_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-hold-env: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-stereo-hold-env: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-hold-env' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-hold-env: selftest did not print the GREEN ales-stereo-hold-env line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

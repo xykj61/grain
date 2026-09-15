@@ -20,7 +20,13 @@ say "ales-notch: Style Radiant — the law is stated positively: equal cutoffs r
 say "ales-notch: Lens TAME — bounded Clip, u32 span, i16 samples, two scratch bands and the sum in i64 with a single clamp (ALES8's fader lesson); both cutoffs checked up front through tone.precheck before any scratch is filled; the notch adds no arithmetic on the audio path; an illegal cutoff on either edge refuses BadCoeff, an out-of-range span BadRange, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/notch"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/notch"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/notch.rye -femit-bin=${bin}"]
 assert build.ok else "ales-notch: build failed — ${build.err}"
@@ -40,3 +46,7 @@ let band = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/band.rye -
 assert (trim band.out) == "yes" else "ales-notch: the ALES46 band-pass witness regressed under the band-reject"
 
 say "ales-notch: GREEN — a band-reject keeps the edges and drops the middle by summing ALES40's low-pass and high-pass in parallel, clamped once; equal cutoffs reconstruct the input byte-for-byte (the elegant crux — a zero-width reject removes nothing), a constant settles to itself (the notch keeps direct current, the exact contrast to the band-pass), a distinct-cutoff notch equals neither the input nor either single filter, and a loud transient stays in range; an illegal cutoff on either edge refuses BadCoeff and an out-of-range span BadRange, each leaving the clip untouched; the ALES46 band-pass selftest stays GREEN, so the band-pass/band-reject pair is whole. The next Lotus rung can carry the notch's cutoffs into a sweep, gain the retained bands (a parametric bell), or name the two edges in hertz through a real time base."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

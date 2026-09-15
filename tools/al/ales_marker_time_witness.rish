@@ -19,7 +19,13 @@ say "ales-marker-time: Style Radiant — the law is stated positively: a place s
 say "ales-marker-time: Lens TAME — ALES5's samples_for/ms_for and ALES20's markers.add reused whole (no new conversion, no new bound); DurationTooLong forwarded from the clock, every ALES20 edge forwarded unchanged; read-only over the master; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/marker_time"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/marker_time"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/marker_time.rye -femit-bin=${bin}"]
 assert build.ok else "ales-marker-time: build failed — ${build.err}"
@@ -35,3 +41,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-marker-time' ${outfile} && echo 
 assert (trim green.out) == "yes" else "ales-marker-time: selftest did not print the GREEN ales-marker-time line"
 
 say "ales-marker-time: GREEN — a keeper marks a session in time: a named place set in seconds lands at its exact sample and reads its time back, driving a real loop and snap. The next Lotus rung can offer the choice of law where a crossfade meets a marked edit, name a selection (a marked span cut or gained as one), or (a module seam) a punch region armed between two timed markers, tying playback back to the Mikrophone's capture."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

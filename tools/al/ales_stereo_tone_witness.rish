@@ -22,7 +22,13 @@ say "ales-stereo-tone: Style Radiant — every stereo rung so far carried a leve
 say "ales-stereo-tone: Lens TAME — two bounded in-process i16 Clips (left, right) carrying two independent i64 filter states, one estimate step per sample per channel run at full i64 precision so no fractional information is lost between samples and nothing overflows before ALES2's saturate on the high-pass difference; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a filter writes values only, each length asserted equal and within bound on exit); the coefficient and span are validated once through ALES40's precheck against the shared length before either channel is mutated, so a refusal never filters one channel and leaves the other torn; StereoToneError is ALES40's ToneError (BadCoeff, BadRange) reused whole, the stereo lift adding no fault. The stereo low-pass law is proven by running both stereo_low_pass and ALES40's mono low_pass on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the stereo high-pass law the same for high_pass, with the per-channel reconstruction low-pass plus high-pass equal to the input sample for sample where the difference fits; the parametric and image law proves an identical-channel master stays identical through both filters and a constant input settles to direct current exactly on each channel; the carry law proves a span filtered in two pieces, each channel carrying its own state, equal to the whole once on both channels; and the silence, balance, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the coefficient a smoothing fraction over sample indices rather than a cutoff in hertz, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_tone"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_tone"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_tone.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-tone: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-tone: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-tone' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-tone: selftest did not print the GREEN ales-stereo-tone line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

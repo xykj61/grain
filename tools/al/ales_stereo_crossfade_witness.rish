@@ -22,7 +22,13 @@ say "ales-stereo-crossfade: Style Radiant — the rule is stated positively: ref
 say "ales-stereo-crossfade: Lens TAME — four bounded i16 Clips (two masters, two channels each) crossed into two more in lockstep by one shared equal-power law; the balance invariant is asserted on entry for both masters and on exit for the output, the overlap length is bound-checked once before any write, and because that check holds identically for both channels each mono cross is pre-validated to succeed so no refusal can land between the two channel writes; crossfade walks the overlap once per channel, running each scaled sample in a wide i64 so neither the scale nor the sum overflows before ALES2's single saturate, never touching a byte past the overlap; it reuses ALES12's crossfade per channel over its public API and ALES12's EditError whole, inventing no new primitive; the stereo crossfade law is proven against ALES12's own crossfade run per channel, the shared-weight image law proves the equal-power center lands each channel's own level at the same positional weight and an identical-channel pair never splits, the two refusals leave the output byte-for-byte untouched, and a loud overlap saturates on both channels; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_crossfade"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_crossfade"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_crossfade.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-crossfade: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-crossfade: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-crossfade' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-crossfade: selftest did not print the GREEN ales-stereo-crossfade line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -20,7 +20,13 @@ say "ales-expand: Style Radiant — the law is stated positively: the threshold 
 say "ales-expand: Lens TAME — bounded Clip, u32 span, i16 samples; the threshold checked in [1, sample_max] and the ratio checked at least unity with a nonzero denominator before any write; the deficit widened in i64 (|sample_min|·ratio fits easily) then floored at zero so an expanded magnitude is at most the input's and nothing on the audio path can overflow; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/expand"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/expand"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/expand.rye -femit-bin=${bin}"]
 assert build.ok else "ales-expand: build failed — ${build.err}"
@@ -40,3 +46,7 @@ let compress = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compre
 assert (trim compress.out) == "yes" else "ales-expand: the ALES50 compressor witness regressed under the expander"
 
 say "ales-expand: GREEN — a downward expander mirrors the compressor about the threshold by widening the below-threshold deficit and flooring it at zero; the threshold is the identity (continuous where the gate steps), unit ratio is the identity everywhere, a quiet signal's floor deepens with the sign held and the magnitude never expanding, a higher ratio expands at least as hard, and a ratio far past the deficit floors the quiet exactly to silence (the gate within); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange, each leaving the clip untouched; the ALES50 compressor selftest stays GREEN. The dynamics family is now symmetric about the threshold — compressor above, expander below — and the next rung can give either an attack and release over a real time base."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

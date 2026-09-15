@@ -25,7 +25,13 @@ say "ales-stereo-top-tail: Style Radiant — ALES98 top-and-tails a mono clip by
 say "ales-stereo-top-tail: Lens TAME — two bounded i16 Clips (left, right) trimmed at the two ends in lockstep by one shared frame length, band, floor, and split; the balance invariant is asserted on entry and exit, and all validation runs once up front through ALES147's segment_stereo (ALES92's precheck for band and span, the floor against meter's sample_peak_max, the frame-length divisibility) read-only before a single sample is cut, so a refusal leaves both channels untouched; the forward pass advances one monotonic cursor per channel across its own tiling run list, marks a frame jointly-silent only where it is silent in both, and records the first and last frame that is not jointly-silent, asserting each cursor names the run that covers the frame start; when every frame is jointly silent the whole master is cut from both channels leaving each empty, otherwise the trailing joint-silence is cut first through ALES2's cut then the leading, the in-bounds span asserted before each cut so neither can fault and leave the pair half-trimmed, and the postcondition asserts both channels hold exactly the first-to-last not-jointly-silent span and leave equal length; the stereo span law is proven against an independent by-hand reference (a second implementation reading the frame verdicts by run scan and finding first and last by hand) across eight frame lengths, four floors, and three splits, the bracket law proves the result equals ALES149's stereo split outer takes and sits between ALES148's joint trim and the original length, the lockstep law proves the mono top_tail desyncs where this does not, and the degenerate and atomicity cases leave both channels untouched and balanced; StereoSegmentError and EditError reused whole, siloed to lotus/, edits only by removing whole frames, fabricating no samples and reordering nothing, no adaptive floor, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_top_tail"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_top_tail"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_top_tail.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-top-tail: build failed — ${build.err}"
@@ -39,3 +45,7 @@ say "ales-stereo-top-tail: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-top-tail' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-top-tail: selftest did not print the GREEN ales-stereo-top-tail line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

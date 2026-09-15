@@ -20,7 +20,13 @@ say "ales-stereo-smooth-runs: Style Radiant — ALES101 absorbs every run shorte
 say "ales-stereo-smooth-runs: Lens TAME — two bounded run-length sequences (left, right, each up to max_segments runs) smoothed by one shared min_run; the seam asserts both input sides are within the run-list ceiling on entry and both output sides never grow past their input count or the ceiling on exit, the per-run tiling and coalesced contract asserted inside ALES101's own smooth_runs; read-only over the labels, no PCM touched on either speaker, StereoSmoothError the mono SmoothError reused whole (the honest unreachable SegmentsFull, since smoothing only merges runs); the stereo smooth law is proven against ALES101's mono smooth_runs directly (a second call per channel) across nine min_run values with a flickering left and a clean right, the independence law proves a left blip coalesces to one silent run of 202 while the right stays two runs untouched, identical channels yield identical smoothed runs, the degenerate cases prove min_run zero the identity on both and an empty channel empty and single runs unchanged and a min_run past each channel's span coalescing it to one carrying its first verdict, and the grounded case proves the runs the stereo segmenter emits stay well-formed on both after smoothing; each output channel is checked as data by an independent well_smoothed reference (coverage same first start and total length, coalesced no adjacent shared verdict, hold every run past the first at least min_run); siloed to lotus/, a causal left-to-right minimum-duration hold per channel, no symmetric smoothing, no adaptive floor, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_smooth_runs"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_smooth_runs"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_smooth_runs.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-smooth-runs: build failed — ${build.err}"
@@ -34,3 +40,7 @@ say "ales-stereo-smooth-runs: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-smooth-runs' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-smooth-runs: selftest did not print the GREEN ales-stereo-smooth-runs line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

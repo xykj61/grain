@@ -20,7 +20,13 @@ say "ales-album-merge-sheet: Language EN — ALES237 draws the ALES235 record me
 say "ales-album-merge-sheet: Style Radiant — the mirror of library_merge_sheet one level down; a projection, not a round-trip; an absent side in a conflict prints `-`, a token a 64-hex digest can never be; the summary, resolved, dropped, conflict, and atomic laws each proven on metal."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/album_merge_sheet"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/album_merge_sheet"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_merge_sheet.rye -femit-bin=${bin}"]
 assert build.ok else "ales-album-merge-sheet: build failed — ${build.err}"
@@ -36,3 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-album-merge-sheet' ${outfile} &&
 assert (trim green.out) == "yes" else "ales-album-merge-sheet: selftest did not print the GREEN ales-album-merge-sheet line"
 
 say "ales-album-merge-sheet: GREEN — the record merge verdict reads as a page a keeper can accept at a glance or take to the ear a conflict wants; the merge tier now carries its readable page at BOTH levels, the merge family whole (merge + merge_sheet, record and catalog). The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

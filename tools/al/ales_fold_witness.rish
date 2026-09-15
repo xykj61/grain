@@ -24,7 +24,13 @@ say "ales-fold: Style Radiant — the law is stated positively as a recognition:
 say "ales-fold: Lens TAME — one mono clip of i16 PCM wavefolded in place over a span; the shape is a triangle map on the boosted magnitude with the sign carried (odd, so odd harmonics), p = m mod 2·ceil then folded = p if p ≤ ceil else 2·ceil − p, exact over non-negative integers; the folded magnitude sits in [0, ceil] so the output lands in [−ceil, ceil] ⊆ [sample_min, sample_max] BEFORE the write, the saturate a documented no-op; a zero denominator / below-unity gain / oversized numerator refuses BadGain, a ceiling outside [1, sample_max] BadCeiling, a span outside the samples BadRange, all before any write, the clip untouched on refusal; the shape is MEMORYLESS (every output depends only on its own input); siloed to lotus/, the gain a rational and the ceiling a magnitude in sample units, no delay line, no snapshot, no anti-aliasing, no network, no keys, no funds, no device, no speaker, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/fold"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/fold"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/fold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-fold: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-fold: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-fold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-fold: selftest did not print the GREEN ales-fold line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

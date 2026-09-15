@@ -5984,7 +5984,7 @@ seated 20260914.025746
 # to its value, which is the whole reason it is a scan rather than a grep -- the dominant spelling
 # is `femit-bin=${bin}`, and two hand counts that stopped at the dollar sign read 304 and then 51
 # where the tree holds 1,853 sites across 1,224 files. A ratchet that only falls; 3s measured.
-# Lowered to 1,813 on `20260915` when the forty lattice sites migrated to pens.
+# Lowered to 1,813 then 1,574 on `20260915` as the lattice forty and the lotus 239 took pens.
 guard shared_build_path
 path tools/s/shared_build_path_witness.rish
 tier lap

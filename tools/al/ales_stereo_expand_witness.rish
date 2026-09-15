@@ -21,7 +21,13 @@ say "ales-stereo-expand: Style Radiant — ALES60 named the mono downward expand
 say "ales-stereo-expand: Lens TAME — two bounded in-process i16 Clips (left, right) expanded by one linked gain, one comparison of the linked key and at most one multiply-then-divide per channel per sample (in i64, the product of a magnitude and new_key at most 32768 times 32768 never overflowing), memoryless (no attack, hold, or release; those are later rungs); the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (an expander writes values only, each length asserted equal and within bound on exit); threshold, ratio, and span are validated once against the shared length before either channel is mutated, so a refusal never expands one channel and leaves the other torn; a both-silent pair is guarded by the key-equals-zero branch so no divide by zero can occur; StereoExpandError is ALES60's ExpandError (BadThreshold, BadRatio, BadRange) reused whole, the linked lift adding no fault. Nothing on the audio path can overflow: the widened result is floored at zero and new_key is at most key, so every scaled magnitude is at most its input's, which already fits i16. The linked decision and gain law is proven against a master where the left always holds the peak — the left equal to the mono expand of it byte for byte (500 to 0, 800 to 600, 2000 plays, 300 to 0) while the right is scaled by the same fraction (200 to 0, 400 to 300, 1500 plays, 100 to 0), and the independent lift (mono expand of the right alone, 400 to 0) shown to genuinely differ; the image law proves no magnitude expands and no sign flips over a mixed master and that an out-of-phase quiet pair returns still exactly out of phase (600, -200, 800, 0); the at-threshold law proves a master whose keys reach the threshold passes byte for byte on both; the knob laws prove unit ratio the identity everywhere, a higher ratio monotone, and a huge ratio driving a quiet pair to silence on both channels; and the silence, balance, atomicity, and degenerate cases prove an all-silent master staying zero, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the threshold a magnitude in sample units and the ratio a plain fraction, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_expand"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_expand"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_expand.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-expand: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-stereo-expand: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-expand' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-expand: selftest did not print the GREEN ales-stereo-expand line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

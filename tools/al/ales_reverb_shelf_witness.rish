@@ -28,7 +28,13 @@ say "ales-reverb-shelf: Style Radiant — the identity edge is stated positively
 say "ales-reverb-shelf: Lens TAME — one clip of i16 PCM, a validated clock, and ALES190's fixed banks; NO new audio arithmetic — the shelf is ALES41's proven two-band shelf over the proven wet, each band scaled in the wide i64 domain and saturated ONCE; ReverbShelfError = reverb_preset.ReverbPresetError || shelf.ShelfError, the shelf setting PRECHECKED before the wet is written (the same guards ALES41 raises) so a bad shelf leaves the clip dry (atomic), DurationTooLong / BadRange / BadCoeff / BadGain by name before any write; siloed to lotus/, no network, no keys, no funds, no device. A wet-tail shelf; the split is a fraction per sample index (a clock-timed crossover in hertz is a later rung, as reverb_ms followed the index-named reverb)."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_shelf"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_shelf"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_shelf.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-shelf: build failed — ${build.err}"
@@ -56,3 +62,7 @@ let tone = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_ton
 assert (trim tone.out) == "yes" else "ales-reverb-shelf: the ALES198 darkness knob regressed beside its shelf"
 
 say "ales-reverb-shelf: GREEN — the shelf: a two-band tone shelf on the reverberant tail, the reverb's EQ. Reverberate the span wet in place through ALES190's reverb_preset unchanged, then tone-shelf the wet with ALES41's proven two-band shelf — bass == unity AND treble == unity the identity, a bass boost lifting the low wash, a treble cut darkening the tail — no new audio arithmetic, every shelved sample written by a proven stage. Proven: at bass == unity AND treble == unity exactly reverb_preset byte for byte; for a real shelf reverb_shelf equals reverb_preset then shelf.shelf byte for byte and the shelved tail differs from the un-shelved wet; a treble-cut tail's roughness is strictly less than the wet's (darkens); a bass-boost tail's energy is strictly greater than the wet's (lifts); silence stays silence; an illegal coefficient refuses BadCoeff, a zero band denominator BadGain with the clip still dry (prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset, the ALES41 shelf, and the ALES198 darkness knob stay GREEN beside it. A stereo tone shelf (the same two-band shelf over both channels, one shared bass, treble, and split, the image held) is the thin twin next."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"
