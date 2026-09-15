@@ -42,22 +42,22 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1f3421b5b1` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `fa310d296b` -- this follow-up's parent, resolvable everywhere (%401).
 
-**PATCHOULI -- THE PARKED COMPILER-REACH CENSUS RETURNED.** **EARTH BREATHES IN**
-(row 4, N=4844): the dead-letter box held three instrument files and four session records from a
-finished compiler-reach lap. Recovered on the current tree: **1,753 authored Rye bodies, 1,685
-compiler-reached, 56 fixture plants, and 12 unreached under ceiling 18**. The **31-leg** control
-proves all six refusal classes, the witness joins the lap roster, and the dated REDS account closes
-without replacing newer living-page state.
+**GRASS -- EXPIRATION NEEDS ITS EVALUATION TIME.** **AIR FEELS** (row 1, N=4911): the contract requires deterministic replay and expiration,
+yet names no evaluation time. The `20260628` premise makes state a pure fold
+over signed facts. **DISPOSITION: REVIVED.** Pass one explicit evaluation stamp: equal inputs replay
+equally; immediately before expiry stays `offered`, and expiry becomes `expired`. Incense owns the
+contract and Patchouli the proof. [Packet](../active-designing/20260914-174823_the-expiration-that-closes-use-and-keeps-history.md).
+
+**PATCHOULI -- THE PARKED COMPILER-REACH CENSUS RETURNED.** Completed account
+[shelved whole](archive/20260914-202320_itinerary-landed-accounts.md).
 
 **BAKERY -- THE SECOND PULL NOW NAMES THE PROOF IT MOVED.** Completed account
 [shelved whole](archive/20260914-081515_itinerary-landed-accounts.md).
 
-**BAKERY -- THE LIBRARY'S BYTES ENTER THE BUILD RECEIPT.** **EARTH BREATHES IN** (row 4,
-N=4819): Rye's v5 key hashes the library tree under **4,096-file** and **256-MiB** ceilings;
-unreadable builds fresh. **19 legs** prove identical bytes hit and a
-same-path, same-size library change misses. Focused, TAME, and **A/A+/B** checks are GREEN.
+**BAKERY -- THE LIBRARY'S BYTES ENTER THE BUILD RECEIPT.** Completed account
+[shelved whole](archive/20260914-202320_itinerary-landed-accounts.md).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -382,7 +382,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1f3421b5b1`.
+**Git nib:** `fa310d296b`.
 
 ### Incense -- product captain
 
