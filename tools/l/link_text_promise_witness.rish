@@ -1,0 +1,41 @@
+# tools/l/link_text_promise_witness.rish -- prove the link-text reading, and gate it on this tree.
+#
+# A link makes two promises and every standing guard reads one of them. The target promise is
+# *this opens*, held by tools/l/living_docs_lint.rish, tools/fixtures/t/tracked_link_scan.sh, and
+# tools/fixtures/l/link_touch_scan.sh. The text promise is *this is where it lives* -- the path a
+# reader takes in at the door and copies into a grep before anyone clicks. This witness holds the
+# second one.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/link_text_promise_witness.rish
+say "link-text-promise: Language EN -- a link's visible path is a promise a reader copies."
+say "link-text-promise: Style Gauge Meter -- one derivation - one gated class - the refusal named."
+say "link-text-promise: Lens TAME -- safety first: read the tracked tree, bound the class, say why."
+
+let pen = run ["sh" "tools/fixtures/l/link_text_promise_control.sh"]
+say pen.out
+assert pen.ok else "link-text-promise: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "link-text-promise: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "link-text-promise: every planted leg must pass"
+assert pen.out contains "control_legs=18" else "link-text-promise: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: ten welcome shapes stay uncounted and one plant is read" else "link-text-promise: an honest anchor must never be counted"
+assert pen.out contains "leg_ok: four testimony shapes are counted apart" else "link-text-promise: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: --list names the page, what it shows, and what it opens" else "link-text-promise: a refusal a reader cannot locate is no refusal"
+assert pen.out contains "leg_ok: standing exactly at the ceiling walks free" else "link-text-promise: the ceiling must be proven from the passing side"
+assert pen.out contains "leg_ok: one over the ceiling refuses" else "link-text-promise: and from the refusing side, with no slack"
+assert pen.out contains "leg_ok: with the plant lifted the living reading is zero" else "link-text-promise: lifting the plant must return the reading"
+assert pen.out contains "leg_ok: an untracked file on disk keeps the promise broken" else "link-text-promise: a fresh clone answers this, never one pier's disk"
+assert pen.out contains "leg_ok: a target carrying a fragment still resolves and is read" else "link-text-promise: a heading anchor must not hide the promise"
+assert pen.out contains "leg_ok: outside a repository the scan refuses rather than answering" else "link-text-promise: an instrument that cannot answer must refuse"
+assert pen.out contains "leg_ok: dropping the page-relative anchor try makes honest links read as broken" else "link-text-promise: both honest spellings must be tried"
+assert pen.out contains "leg_ok: dropping the target-resolves check pulls in the lint's own reading" else "link-text-promise: a broken link belongs to living_docs_lint"
+assert pen.out contains "leg_ok: reading the program from an exhausted stdin makes the tree pass in silence" else "link-text-promise: the batch fault this scan was born with must stay bitten"
+
+let tree = run ["sh" "tools/fixtures/l/link_text_promise_scan.sh"]
+say tree.out
+assert tree.ok else "link-text-promise: living anchors stand above the ceiling -- sweep, then lower it in the same commit"
+assert tree.out contains "ceiling_ok=yes" else "link-text-promise: the ceiling only ever falls"
+assert tree.out contains "verdict=ok" else "link-text-promise: the tree reading must reach ok"
+
+say "link-text-promise: GREEN -- the pen holds 18 legs and this tree stands under its ceiling."

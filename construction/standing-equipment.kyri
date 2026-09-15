@@ -281,6 +281,18 @@ path tools/l/link_counted_witness.rish
 tier lap
 seated 20260910.004524
 
+# link_text_promise -- a link makes two promises and every elder guard reads one. The target promise
+# is *this opens*; the text promise is *this is where it lives*, which is the path a reader takes in
+# at the door and copies into a grep long before anyone clicks. A fold repoints the target and leaves
+# the anchor at its pre-move spelling, so the two drift apart and every standing guard stays green:
+# proven on `20260828` commit d3ce030b4, which rewrote targets inside context/TAME_GUIDANCE.md and
+# touched no anchor on the same line. RATCHET under a ceiling that only falls -- 69 living anchors
+# across 15 pages stood on the seating lap, and a wall would red the ordinary.
+guard link_text_promise
+path tools/l/link_text_promise_witness.rish
+tier lap
+seated 20260915.183000
+
 # rota_declared -- the council rota's reading, counted rather than assumed. On `20260906` the record
 # answered three ways across 109 logs: 20 carried a `rota` field, 53 named a row in prose alone, 36
 # said nothing -- one observation carrying two claims (whether a rota was read, whether it was

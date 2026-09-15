@@ -64,12 +64,6 @@ stamp 20260915.174535
 epoch 1789508735
 paths tools/fixtures/a/amphora_bounds_agree_scan.sh tools/am/amphora_bounds_agree.rish tools/fixtures/amphora_bounds_plants
 what Read word-valued same-name Amphora consts, so the vessel grammar word spelled in two roofs cannot drift unseen.
-claim petrichor-link-text-promise
-seat petrichor
-stamp 20260915.174857
-epoch 1789508937
-paths tools/fixtures/l/link_text_promise_scan.sh tools/l/link_text_promise_witness.rish tools/fixtures/l/link_text_promise_control.sh docs-geode/edu
-what Read a Markdown link whose visible backticked path disagrees with its own working target, so a reader who copies what they see is promised a file the tree carries.
 claim bakery-ryekey-compiler-price
 seat bakery
 stamp 20260915.175203
