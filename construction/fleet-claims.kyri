@@ -88,3 +88,9 @@ stamp 20260915.180345
 epoch 1789509825
 paths tools/fixtures/r/readme_reach_control.sh tools/fixtures/p/precondition_dependent_control.sh tools/fixtures/s/say_compose_bound_control.sh tools/fixtures
 what A control that never entered its pen writes its fixtures into the live tree; check the cd at the edge and refuse by name.
+claim diffuser-locality-key-trade
+seat diffuser
+stamp 20260915.180523
+epoch 1789509923
+paths tools/fixtures/l/locality_key_scan.sh tools/fixtures/l/locality_key_control.sh tools/l/locality_key_witness.rish active-designing/20260915-181000_the-key-that-carries-locality.md
+what Price the locality-bearing key against the avalanche key: what adjacency it buys, and what evenness and confidentiality it sells, measured on this tree's own bytes.
