@@ -1,0 +1,149 @@
+# tools/l/locality_key_witness.rish -- a key that carries locality sells evenness and
+# confidentiality, and the three are one quantity read three ways.
+#
+# WHY THIS RUNG. Two readings in the Diffuser lane died on one property rather than on two.
+# tools/t/torus_fold_witness.rish killed the adjacency half of row 5 of
+# active-designing/20260910-060204_the-bounded-torus-moonshots.md, and tools/t/torus_place_witness.rish
+# killed its placement remainder; both closes name the SAME remaining door in the same words -- a
+# key built to carry locality on purpose, which no row in that page proposed. This rung opens it,
+# and the answer is a price rather than a yes.
+#
+# THE KEY PRICED, and why the crudest member of its family. The file's own leading two bytes, read
+# as a number. Two files beginning alike get keys sitting alike, by construction, with no hashing
+# and no parameter a reader must take on trust. A real design would reach for a similarity-
+# preserving sketch instead; the trade measured here belongs to the FAMILY, and the crudest member
+# shows it at full size.
+#
+# WHAT IT BUYS, read at its extreme rather than as a correlation. A real file is copied, ONE byte
+# is flipped at offset 32 -- well past the key -- and both keys are asked whether they noticed.
+# Read 20260915 over the tree's own tracked bytes: the prefix key survived every probe and the
+# digest survived none. Across the population, two files from the same top-level room sat 0.410
+# cells apart under the prefix key and 15.693 apart under the digest, against the 16.000 that two
+# independent uniform keys give on 64 cells. That is the buy, and it is real.
+#
+# WHAT IT SELLS, first half: EVENNESS -- the one property both torus readings found the digest
+# hands over for free. Pearson chi-squared on cell occupancy over 510 tracked files at a 64-cell
+# grid: the digest read 79.05 against a p=0.001 critical value of 103.51 at 63 degrees of freedom,
+# and the prefix key read 13134.05. That is 127 times its own critical value, on a population where
+# the digest is comfortably even. The sale is not marginal.
+#
+# WHAT IT SELLS, second half: CONFIDENTIALITY -- and this is the reading the other two exist to
+# frame. The argument is one sentence: a key preserving a relation on its inputs hands that same
+# relation to anyone holding only keys. Measured as ROOM RECOVERY -- the share of files an observer
+# holding keys alone places in the right room by guessing each cell's plurality. Over 44 rooms the
+# no-key baseline is 0.3471, the digest key reads 0.3980, and the prefix key reads 0.5353. So the
+# key alone names the room of more than half the population.
+#
+# THE CONCLUSION THIS LANE EARNS. Locality, evenness and confidentiality are not three properties
+# to be traded against one another by a clever key. They are one quantity read in three directions:
+# a key that lets a reader find neighbours is a key that groups documents unevenly, and a key that
+# groups documents is a key that tells an observer which group each document is in. The avalanche
+# the two torus readings kept running into is what BUYS the other two, and it is doing its job.
+#
+# WHAT IS GATED HERE, and what is only reported. The control, and the live reading's ARITHMETIC:
+# no digest survives a deep edit, every prefix does, and the recovery figures lie between their own
+# no-key baseline and one. Those are facts about the keys rather than about this tree. The three
+# TRADE verdicts and every chi-squared and mean figure are REPORTED rather than gated: a p=0.001
+# test refuses about one run in a thousand on a key behaving correctly, and the means move with the
+# tree's own contents, so a gate on them would red on honest work.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/l/locality_key_control.sh -- 43 behaviors on planted
+# populations in a throwaway pen, with the digest column swept evenly in every one so that only the
+# prefix and the room move:
+#
+#   A TRADED POPULATION -- rooms that share prefixes -- sells evenness and the room together, and
+#     passes, so the selling verdict is reachable rather than constant.
+#   A FLAT POPULATION -- the same rooms, prefixes swept evenly -- sells NOTHING on either half and
+#     reads its same-room names no closer. This is the falsifier shown fired, and it is the leg
+#     that separates a measurement from a foregone conclusion.
+#   A SCRAMBLED POPULATION -- prefixes clustered exactly as in the traded one, rooms assigned round
+#     robin -- sells evenness and keeps the room. Unevenness and leakage are shown to be separable,
+#     so the confidentiality reading is its own reading rather than a restatement of the chi.
+#   THE WRAP is read on a population whose neighbours sit at cells 0 and 63 of a 64-cell ring.
+#   THE ROWS DOOR carries no file to edit, so it reports zero probes and reads locality UNREAD
+#     rather than claiming a yes it did not measure.
+#   FOUR REFUSALS -- a population under the floor, an empty one, an absent file, an unknown flag.
+#   FOUR MUTATIONS, each proven landed by cmp before its reading is believed: the plurality
+#     baseline lost, the cyclic wrap removed, the per-cell maximum turned into a sum, and the
+#     prefix probe counter silenced.
+#
+# WHAT IT LEAVES TO OTHERS. Whether a similarity-preserving sketch lands better on the same trade,
+# which is a different key and wants its own reading. Whether the leak matters for a given corpus:
+# room membership in a public tree is public, so this figure is a LOWER bound on what the key gives
+# away over a corpus where it is not. Whether any locality key is safe to adopt, which is a custody
+# question and never a measurement. And the real store, which this reading never opens.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260915-181000_the-key-that-carries-locality.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/locality_key_witness.rish
+
+say "locality-key: Language EN -- a key is priced by what it sells, never by what it buys alone."
+say "locality-key: Style Gauge, Meter -- every figure names its population, its grid, and its baseline."
+say "locality-key: Lens TAME -- bound the sample, gate the arithmetic, report the statistic."
+
+let control = run ["sh" "tools/fixtures/l/locality_key_control.sh"]
+say control.out
+assert control.ok else "locality-key: the control must complete -- its own lines are printed above"
+
+# The selling case, so the live verdicts are readings rather than constants.
+assert control.out contains "traded: the evenly swept digest reads even" else "locality-key: the digest must be shown even on the population where the prefix is not"
+assert control.out contains "traded: the shared-prefix key does not" else "locality-key: a shared prefix must be seen as uneven"
+assert control.out contains "traded: so evenness is sold" else "locality-key: the evenness half of the trade must be reachable"
+assert control.out contains "traded: and the room is sold with it" else "locality-key: the confidentiality half must be reachable"
+assert control.out contains "traded: same-room names sit closer" else "locality-key: the population reading of locality must be reachable"
+assert control.out contains "traded: prefix recovery beats digest recovery" else "locality-key: recovery must be compared against the digest rather than against nothing"
+
+# The falsifier, fired -- the leg that makes every figure above a measurement.
+assert control.out contains "flat: an evenly swept prefix reads even" else "locality-key: a prefix carrying no locality must read even"
+assert control.out contains "flat: so nothing is sold" else "locality-key: the instrument must be able to answer no on evenness"
+assert control.out contains "flat: and no room is recovered" else "locality-key: the instrument must be able to answer no on confidentiality"
+assert control.out contains "flat: same-room names sit no closer" else "locality-key: the instrument must be able to answer no on locality"
+
+# Unevenness and leakage are separable, or the confidentiality reading says nothing new.
+assert control.out contains "scrambled: the clustered prefix is uneven" else "locality-key: the scrambled population must still read uneven"
+assert control.out contains "scrambled: yet the room is NOT" else "locality-key: leakage must be shown separable from unevenness"
+
+# The wrap, and the door that declines rather than guessing.
+assert control.out contains "wrapedge: cells 0 and 63 sit one apart on a 64-cell ring" else "locality-key: the cyclic distance must be read on its own edge"
+assert control.out contains "rows: no file to edit, so no probe is claimed" else "locality-key: a door with no files must claim no probes"
+assert control.out contains "rows: and locality reads unread, never yes" else "locality-key: an unread reading must be named unread"
+assert control.out contains "tiny: a population under the floor is unreadable" else "locality-key: too small a population is unreadable"
+assert control.out contains "empty: an empty rows file is unreadable" else "locality-key: an empty population is unreadable rather than clean"
+assert control.out contains "missing: an absent rows file is refused" else "locality-key: an absent file is refused by name"
+assert control.out contains "flag: an unknown flag is refused" else "locality-key: an unknown flag is refused rather than ignored"
+
+# The probes, run on real bytes inside the control as well as live below.
+assert control.out contains "live: no digest survives a deep edit" else "locality-key: the digest must move for every probe"
+assert control.out contains "live: every prefix does" else "locality-key: the prefix must survive every probe"
+
+# The mutations, each proven landed before its reading is believed.
+assert control.out contains "m_plurality: the mutation applied" else "locality-key: a plant that changed no byte tests the real scan twice"
+assert control.out contains "m_plurality: and the baseline it prints is the wrong one" else "locality-key: the no-key baseline must be computed rather than assumed"
+assert control.out contains "m_wrap: the mutation applied" else "locality-key: the wrap plant must land before its reading"
+assert control.out contains "m_wrap: without the wrap the same two cells read the long way round" else "locality-key: the distance must be cyclic"
+assert control.out contains "m_best: the mutation applied" else "locality-key: the recovery plant must land before its reading"
+assert control.out contains "m_best: summing instead of maxing recovers everything and breaks the identity check" else "locality-key: recovery must be a per-cell maximum"
+assert control.out contains "m_probe: the mutation applied" else "locality-key: the probe plant must land before its reading"
+assert control.out contains "m_probe: a prefix probe that never counts refuses the reading" else "locality-key: the probe counter must be load-bearing"
+
+assert control.out contains "legs_expected=43" else "locality-key: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_fail=0" else "locality-key: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "locality-key: the control must balance before it is believed"
+
+# The live reading, on the tree's own bytes.
+let live = run ["sh" "tools/fixtures/l/locality_key_scan.sh" "--names" "256" "--grid" "8"]
+say live.out
+assert live.ok else "locality-key: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=locality_key" else "locality-key: the reading names its own instrument"
+assert live.out contains "source=git_ls_files" else "locality-key: the live population is the tree's own tracked bytes"
+assert live.out contains "chi_critical=" else "locality-key: the critical value is published beside the statistic it judges"
+assert live.out contains "roomdist_expected=" else "locality-key: the uniform expectation is published beside the means it judges"
+assert live.out contains "plurality_room_share=" else "locality-key: the no-key baseline is published beside the recovery it judges"
+assert live.out contains "edit_survive_digest=0" else "locality-key: no digest may survive a deep edit"
+assert live.out contains "locality_bought=yes" else "locality-key: the prefix key must survive every probe on real bytes"
+assert live.out contains "recovery_in_range=yes" else "locality-key: recovery must lie between its own baseline and one"
+assert live.out contains "verdict=ok" else "locality-key: the live arithmetic must hold on this tree"
+
+say "GREEN: locality-key -- 43 behaviors, both verdicts reachable from planted populations, unevenness shown separable from leakage, four mutations bitten, and the door both torus readings left open now priced."

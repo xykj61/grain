@@ -8,8 +8,10 @@
 |---|---|---|
 | `20260915.184800` | [Industry normal, TAME unacceptable](20260915/20260915-184800_industry-normal-tame-unacceptable.kyri) | 51 of 1,252 witnesses carry the hazard |
 | `20260915.183900` | [The industry word on our own noun](20260915/20260915-183900_the-industry-word-on-our-own-noun.kyri) | flap molted to flaky across 12 files |
+| `20260915.183553` | [The work that stood on no ref](20260915/20260915-183553_the-work-that-stood-on-no-ref.kyri) | a whole unlanded lap recovered, re-proven, landed |
 | `20260915.182844` | [The path a reader copies](20260915/20260915-182844_the-path-a-reader-copies.kyri) | a link's visible path is a promise no guard read |
 | `20260915.182600` | [The pivot does not move](20260915/20260915-182600_the-pivot-does-not-move.kyri) | hinge and separator weighed against flap |
+| `20260915.182429` | [The key that carries locality](20260915/20260915-182429_the-key-that-carries-locality.kyri) | locality buys neighbours and sells evenness and the room |
 | `20260915.181805` | [The refusal that names its field](20260915/20260915-181805_the-refusal-that-names-its-field.kyri) | one refusal names field, value, ceiling, unit, reason |
 | `20260915.181200` | [The section that wanted a shelf](20260915/20260915-181200_the-section-that-wanted-a-shelf.kyri) | card folded 41,230 to 19,964 bytes |
 | `20260915.181038` | [The pen that was never entered](20260915/20260915-181038_the-pen-that-was-never-entered.kyri) | unentered pen moved this tree's identity |
