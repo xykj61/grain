@@ -88,3 +88,9 @@ stamp 20260915.175203
 epoch 1789509123
 paths rye/src/main.rye tools/r/ryekey_witness.rish tools/fixtures/r/ryekey_control.sh
 what Price the build receipt's own key: every rye build reads 172 MB of compiler bytes, and the reading costs more than the compile it may skip.
+claim pheromone-receipt-refusal-record
+seat pheromone
+stamp 20260915.175818
+epoch 1789509498
+paths tally/receipt_refusal.rye tally/receipt_refusal_witness.rye mantra/src/receipt_offer.rye tools/t/tally_receipt_refusal_witness.rish
+what Give a receipt admission refusal a stable record naming field, value, ceiling, unit, and reason, since a bare named error collapses twelve fields into one word.
