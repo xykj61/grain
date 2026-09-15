@@ -1,6 +1,7 @@
 ::  name       tally garden bound gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 while count stays within gardens=8 (count <= 7 slots used before this one); answers 0 past the wall
+::  law        tally/gardens.rye max_gardens below
 ::  example    3 -> 1 - 9 -> 0
 ::  readers    Tally - Glow Tend a1 - Ashvini
 ::  nib        equinox-a1-tally-gate1-v0 - STOA331 landed: the lowerer speaks this body now (e210)

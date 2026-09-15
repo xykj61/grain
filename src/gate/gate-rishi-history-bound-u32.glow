@@ -1,6 +1,7 @@
 ::  name       rishi history bound gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 while a kept-line count stays within history=50 (count <= 49 before this one); answers 0 past the wall
+::  law        rishi/src/main.rye max_history below
 ::  example    12 -> 1 - 80 -> 0
 ::  readers    Rishi - Glow Tend a1 - Ashvini
 ::  nib        equinox-e243-rishi-history-gate-v0

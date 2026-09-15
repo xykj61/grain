@@ -1,6 +1,7 @@
 ::  name       rishi env bindings bound gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 while a binding count stays within env=512 (count <= 511 before this one); answers 0 past the wall
+::  law        rishi/src/main.rye max_env_bindings below
 ::  example    300 -> 1 - 900 -> 0
 ::  readers    Rishi - Glow Tend a1 - Ashvini
 ::  nib        equinox-e243-rishi-env-gate-v0

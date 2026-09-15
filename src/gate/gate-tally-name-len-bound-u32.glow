@@ -1,6 +1,7 @@
 ::  name       tally name length bound gate
 ::  shape      len - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 while len stays within name-len=32 (len <= 31 before the closing byte); answers 0 past the wall
+::  law        tally/gardens.rye max_name_len below
 ::  example    12 -> 1 - 40 -> 0
 ::  readers    Tally - Glow Tend a1 - Ashvini
 ::  nib        equinox-e215-tally-gate2-v0

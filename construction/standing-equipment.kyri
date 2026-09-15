@@ -1200,6 +1200,22 @@ path tools/g/glow_desk_reach_witness.rish
 tier lap
 seated 20260907.005950
 
+# A Glow gate desk decides a module's law at the door by MEMORIZING its number, while the Rye
+# module holds the declaration -- three copies of one number in two languages. Every sibling
+# witness runs the desk twice and proves it DECIDES on both sides of the wall it carries, which
+# stays true after the Rye constant moves and the desk does not (`20260915.185309`). This one reads the
+# two together: a desk names its law once in its head, `::  law <file> <const> below|atmost|exact`,
+# and the constant's value, the head's restatement, and the body literal are derived from it.
+# Four readings gated at zero; `unlinked` ratchets at 18 and falls as each lane links its own.
+#
+# Cost: the scan reads 451 tracked .glow heads and a handful of Rye declarations -- no Zig build,
+# no lowering, no desk run -- so it sits at lap tier beside its sibling rather than at cadence.
+
+guard glow_gate_law_agree
+path tools/g/glow_gate_law_agree_witness.rish
+tier lap
+seated 20260915.185309
+
 # The desk corpus actually RUN, seated 20260907.110022. The reach guard above measures how far the
 # hand-written witness reaches; this one runs the room. tools/fixtures/g/glow_desk_run_scan.sh
 # derives the bare-runnable set on every pass -- every .glow under glow/gen/ minus those declaring

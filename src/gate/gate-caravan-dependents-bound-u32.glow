@@ -1,6 +1,7 @@
 ::  name       caravan dependents bound gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 while count stays within dependents=4 (count <= 3 seats used before this one); answers 0 past the wall
+::  law        caravan/capabilities.rye max_dependents below
 ::  example    2 -> 1 - 5 -> 0
 ::  readers    Caravan - Glow Tend a1 - Ashvini
 ::  nib        equinox-e212-caravan-gate1-v0
