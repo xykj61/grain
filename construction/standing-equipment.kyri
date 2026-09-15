@@ -5960,3 +5960,15 @@ guard rye_compiled_reach
 path tools/r/rye_compiled_reach_witness.rish
 tier lap   # 5s; 31 behaviors in a pen, six refusal classes bitten
 seated 20260914.025746
+
+# THE GUARDS THAT SHARE A BUILD PATH, COUNTED (REDS %700). A witness emitting its binary to a
+# literal path in the tree shares that name with every run in the same checkout: one run executes
+# the binary while another's linker opens the same path, and the linker refuses with ETXTBSY. The
+# guard then answers differently on bytes nobody changed. The reading resolves `let bin = "..."`
+# to its value, which is the whole reason it is a scan rather than a grep -- the dominant spelling
+# is `femit-bin=${bin}`, and two hand counts that stopped at the dollar sign read 304 and then 51
+# where the tree holds 1,853 sites across 1,224 files. A ratchet that only falls; 3s measured.
+guard shared_build_path
+path tools/s/shared_build_path_witness.rish
+tier lap
+seated 20260915.185705
