@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260915.190200` | [The count that stopped at the dollar sign](20260915/20260915-190200_the-count-that-stopped-at-the-dollar-sign.kyri) | 1,853 sites ratcheted, not 51 |
 | `20260915.185315` | [The anchor takes the path it opens](20260915/20260915-185315_the-anchor-takes-the-path-it-opens.kyri) | 69 anchors swept to zero, each proven by re-derivation |
+| `20260915.185133` | [The gate git never calls](20260915/20260915-185133_the-gate-git-never-calls.kyri) | git rebase calls no pre-commit hook |
 | `20260915.184800` | [Industry normal, TAME unacceptable](20260915/20260915-184800_industry-normal-tame-unacceptable.kyri) | 51 of 1,252 witnesses carry the hazard |
 | `20260915.184547` | [The card that shipped its markers](20260915/20260915-184547_the-card-that-shipped-its-markers.kyri) | the operator card shipped conflict markers; guard misplaced |
 | `20260915.183900` | [The industry word on our own noun](20260915/20260915-183900_the-industry-word-on-our-own-noun.kyri) | flap molted to flaky across 12 files |
