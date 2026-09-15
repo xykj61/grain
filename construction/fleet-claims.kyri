@@ -70,12 +70,6 @@ stamp 20260915.175203
 epoch 1789509123
 paths rye/src/main.rye tools/r/ryekey_witness.rish tools/fixtures/r/ryekey_control.sh
 what Price the build receipt's own key: every rye build reads 172 MB of compiler bytes, and the reading costs more than the compile it may skip.
-claim diffuser-locality-key-trade
-seat diffuser
-stamp 20260915.180523
-epoch 1789509923
-paths tools/fixtures/l/locality_key_scan.sh tools/fixtures/l/locality_key_control.sh tools/l/locality_key_witness.rish active-designing/20260915-181000_the-key-that-carries-locality.md
-what Price the locality-bearing key against the avalanche key: what adjacency it buys, and what evenness and confidentiality it sells, measured on this tree's own bytes.
 claim pheromone-glow-gate-law-agree
 seat pheromone
 stamp 20260915.183946
@@ -88,3 +82,9 @@ stamp 20260915.184010
 epoch 1789512010
 paths tools/fixtures/l/link_text_promise_convert.sh tools/fixtures/l/link_text_promise_scan.sh
 what Sweep the 69 living anchors that show a path the tree does not carry, setting each visible path to the one its link already opens.
+claim diffuser-prepush-marker-placement
+seat diffuser
+stamp 20260915.184523
+epoch 1789512323
+paths tools/hooks/pre-push tools/fixtures/p/pre_push_spine_control.sh tools/p/pre_push_spine_witness.rish
+what Ask the conflict-marker scan at the pre-push seam, where the send's final rebase actually makes markers; the rostered guard runs cold and hot and both sit before that rebase (%731).
