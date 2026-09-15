@@ -26,7 +26,13 @@ say "ales-stereo-flanger: Style Radiant — the flanger is the delay-line family
 say "ales-stereo-flanger: Lens TAME — two bounded in-process i16 clips (left, right), each rung through ALES73's own live-buffer feedback delay, the triangle and the fractional interpolation run in i64 and each channel reading and feeding back through its own buffer, the fed sum saturating once; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a flanger writes values only, each length asserted equal and within bound on exit); the LFO, feedback, and span are validated once against the shared length before either channel is mutated (ALES73's precheck, factored out of the mono flanger and shared, mirroring the ALES71 chorus, ALES72 vibrato, and ALES75 ring modulator refactors), so a refusal never flanges one channel and leaves the other torn; StereoFlangerError is ALES73's FlangerError (BadPeriod, BadDepth, BadDelay, BadFeedback, BadRange) reused whole, the stereo lift adding no fault and BadFeedback being the one the snapshot rungs never had, returned by the feedback path. The stereo flanger law is proven by running both stereo_flanger and ALES73's mono flanger on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the dry-identity law proves a zero-feedback flanger equals the dry master on both; the echo-degenerate law proves a zero-depth flanger equals ALES66's echo at its centre on both, an impulse on each channel exercising the whole decaying tail; the identical-channel image law proves a centred master stays identical, with the honest note that the accumulating feedback comb does not preserve an exact panned integer ratio (the @divTrunc truncation drifting it by ones); and the balance, silence, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the five refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the LFO in scaled units rather than hertz and the feedback a named fraction below unity rather than a decibel, no cross-channel feedback, no snapshot, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_flanger"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_flanger"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_flanger.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-flanger: build failed — ${build.err}"
@@ -40,3 +46,7 @@ say "ales-stereo-flanger: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-flanger' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-flanger: selftest did not print the GREEN ales-stereo-flanger line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

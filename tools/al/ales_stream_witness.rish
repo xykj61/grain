@@ -19,7 +19,13 @@ say "ales-stream: Style Radiant — one delimiter, one ordered reassembly; a spl
 say "ales-stream: Lens TAME — the stream only delimits and orders; it never re-checks a frame, so ALES0's two gates (the Sha256 and the audio border) stay the only trust boundary and run per frame during reassembly; siloed to lotus/, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stream"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stream"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stream.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stream: build failed — ${build.err}"
@@ -35,3 +41,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stream' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stream: selftest did not print the GREEN ales-stream line"
 
 say "ales-stream: GREEN — many audio frames cross one byte stream and reassemble into a gapless timeline; the next Lotus rung can open the timeline that edits these samples, or clock them to a real rate."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

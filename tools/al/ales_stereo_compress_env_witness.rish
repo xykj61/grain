@@ -22,7 +22,13 @@ say "ales-stereo-compress-env: Style Radiant — ALES157's stereo_compress leans
 say "ales-stereo-compress-env: Lens TAME — two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope, one linked-peak comparison and at most one multiply-then-divide for the envelope step (ALES160's proven stereo_env_step) plus one per channel for the gain, all in i64 (the product of a magnitude and the softened target at most 32768 times 32767 never overflowing), the gain comp over e in the half-open interval zero to one so every scaled magnitude is at most its input's and fits i16; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a compressor writes values only, each length asserted equal and within bound on exit, each written sign asserted held); the threshold, ratio, both coefficients, and the span are validated once before either channel is mutated, so a refusal never compresses one channel and leaves the other torn; the linked envelope is asserted a legal magnitude in zero to sample_max each sample and the softened target within threshold to envelope, so the single gain is a genuine reduction; StereoCompressEnvError is ALES53's CompressEnvError (BadThreshold, BadRatio, BadCoeff, BadRange) reused whole, the fusion adding no fault. The instantaneous law is proven by running both stereo_compress_env under unit attack and release and ALES157's memoryless stereo_compress on the same master and demanding byte-for-byte equality on both channels; the linked-gain-over-time law against a master where the left always holds the peak — the left equal to ALES53's mono compress_env of it byte for byte while the right is scaled by the same fraction, the independent mono compress_env of the right alone shown to genuinely differ; the image law proves no magnitude expands and no sign flips over a mixed master and that an out-of-phase pair returns still exactly out of phase; the knob laws prove unit ratio the identity everywhere and a slower attack letting the first onset sample through where an instant attack clamps it; the carry law proves a span compressed in two pieces equal to the whole once on both channels; and the sub-threshold, silence, balance, atomicity, and degenerate cases prove a below-threshold master passing byte for byte, an all-silent master staying zero, the length held, each of the five refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the threshold a magnitude in sample units, the ratio a plain fraction, the attack and release fractions per sample index, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_compress_env"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_compress_env"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_compress_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-compress-env: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-compress-env: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-compress-env' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-compress-env: selftest did not print the GREEN ales-stereo-compress-env line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

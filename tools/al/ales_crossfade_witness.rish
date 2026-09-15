@@ -22,7 +22,13 @@ say "ales-crossfade: Style Radiant — the law is stated positively: the overlap
 say "ales-crossfade: Lens TAME — the weights are power.split read at each overlap sample (the proven ALES11 law reused, not re-derived); the sum saturates once in i64 exactly as ALES3's mix; refuses BadRange by name on a length mismatch or a too-short overlap; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/crossfade"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/crossfade"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/crossfade.rye -femit-bin=${bin}"]
 assert build.ok else "ales-crossfade: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-crossfade' ${outfile} && echo ye
 assert (trim green.out) == "yes" else "ales-crossfade: selftest did not print the GREEN ales-crossfade line"
 
 say "ales-crossfade: GREEN — the equal-power law is proven in both axes now, field (pan) and time (crossfade), one isqrt at the root. The next Lotus rung can name stereo metering (an RMS is a square root of a mean square), a peak/RMS meter over the transport's read blocks, or offer the keeper the choice of law on either axis."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

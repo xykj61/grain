@@ -24,7 +24,13 @@ say "ales-stereo-schmitt: Style Radiant — the just-closed stereo dead-zone fam
 say "ales-stereo-schmitt: Lens TAME — two bounded i16 Clips (left, right) triggered in lockstep by one shared band, each carrying its own one bit of rail state; the balance invariant is asserted on entry and exit, the shared band and span are bound-checked once via ALES92's precheck before any write, and because those checks hold identically for both balanced channels each mono schmitt is pre-validated to succeed so no refusal can land between the two channel edits or advance a single rail; schmitt walks the span once per channel, comparing each sample in i32 so a threshold at the deep rail is representable, writing one of two signed rail constants per sample, never touching a byte past len so the length holds exactly; StereoSchmitt shares its band through a single init so left and right can never drift to different thresholds, threads each channel's carried rail through ALES92's SchmittTrigger, and resets both rails to low together; the stereo schmitt law is proven against ALES92's own schmitt run per channel, the independent-rail law proves an identical master stays identical while an out-of-phase master's channels both open on the shared low rail rather than negating and the two rails flip independently, the carried-state crux proves a two-piece StereoSchmitt run equals the whole once on both channels, and the atomicity cases leave both channels and both rails untouched with count zero the identity; siloed to lotus/, no real sample rate, no time constant, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_schmitt"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_schmitt"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_schmitt.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-schmitt: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-schmitt: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-schmitt' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-schmitt: selftest did not print the GREEN ales-stereo-schmitt line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

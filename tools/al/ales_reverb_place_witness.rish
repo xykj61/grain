@@ -28,7 +28,13 @@ say "ales-reverb-place: Style Radiant — the shape is stated positively as a co
 say "ales-reverb-place: Lens TAME — one bounded i16 StereoClip transformed in place; the balance invariant is asserted on entry and exit, the clock is asserted valid, and BOTH fractions are bounded and checked BEFORE the reverb writes (width by ALES211's max_width_den 4096 / max_width_num 32768, pan by ALES11's max_pan_den 4096), so a bad width refuses BadWidth and a bad pan BadPan with the master dry — the atomicity crux, the prechecks precede the first write. The reverb then prechecks its own DurationTooLong / BadRange before writing; the width is proven legal so stereo_width cannot fault; each equal-power weight is proven <= den so both gains are attenuations whose saturate is a proven no-op, and the spans are the whole clip so neither gain can fault — a legal call refuses whole up front or completes whole. It reuses ALES191's stereo_reverb_preset, ALES211's stereo_width, ALES11's power.split, and ALES2's gain over their public APIs, inventing no new primitive; the width-at-centre law is proven mono and attenuated, the pan-at-unity law proven left-placed with the right silenced, the composition law proven byte for byte against the reverb then the width then the two equal-power gains with each channel an attenuation, the centred-invariant law proven identical and attenuated on a centred master; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_place"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_place"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_place.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-place: build failed — ${build.err}"
@@ -42,3 +48,7 @@ say "ales-reverb-place: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-place' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb-place: selftest did not print the GREEN ales-reverb-place line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

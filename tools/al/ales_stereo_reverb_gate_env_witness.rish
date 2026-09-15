@@ -28,7 +28,13 @@ say "ales-stereo-reverb-gate-env: Style Radiant — the identity edge is stated 
 say "ales-stereo-reverb-gate-env: Lens TAME — one StereoClip of i16 PCM, a validated clock, and ALES191's fixed banks; NO new audio arithmetic — the gate is ALES54's proven envelope-following gate over the proven stereo wet, run per ear; StereoReverbGateEnvError = stereo_reverb_preset.StereoReverbPresetError || BadThreshold || BadRatio || BadCoeff, the gate's threshold, ratio, and both coefficients PRECHECKED before the wet is written (the same guards ALES54 raises) so a bad gate leaves both channels dry and balanced (atomic), DurationTooLong / BadRange / BadThreshold / BadRatio / BadCoeff by name before any write; siloed to lotus/, no network, no keys, no funds, no device. A wet-tail stereo envelope gate; the attack/release are fractions per sample index."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_reverb_gate_env"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_reverb_gate_env"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_gate_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-gate-env: build failed — ${build.err}"
@@ -56,3 +62,7 @@ let staticgate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/ster
 assert (trim staticgate.out) == "yes" else "ales-stereo-reverb-gate-env: the ALES201 static stereo gate regressed beside its envelope gate"
 
 say "ales-stereo-reverb-gate-env: GREEN — the stereo envelope gate: the reverb's GATED TAIL given a shaped edge, across a stereo master. Reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, then follow-gate each channel's wet with ALES54's proven envelope gate at the same threshold, ratio, and attack/release — run per ear with a fresh envelope and no cross-channel read, ratio_num == ratio_den the identity, a larger ratio cutting the quiet tail harder, a slower release holding the gate open longer — no new audio arithmetic. Proven on both channels: at ratio_num == ratio_den exactly stereo_reverb_preset byte for byte; for a firm ratio each channel equals stereo_reverb_preset then gate_follow byte for byte and each shaped-gated channel differs from its wet; with unit attack and unit release it equals ALES201's static stereo_reverb_gate byte for byte; each gated channel's total energy is strictly less than its wet's; the image is held (a centred master identical channel-to-channel, a stereo master distinct); the channels leave balanced and silence stays silence; a bad threshold refuses BadThreshold, a bad ratio BadRatio, an illegal coefficient BadCoeff with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset, the ALES202 mono envelope gate, and the ALES201 static stereo gate stay GREEN beside it. The gate axis now stands whole for mono and stereo in both its static and shaped forms; a fresh reverb axis (width, freeze, or early/late balance) is next."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

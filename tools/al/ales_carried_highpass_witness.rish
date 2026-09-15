@@ -21,7 +21,13 @@ say "ales-carried-highpass: Style Radiant — the law is stated positively: a fr
 say "ales-carried-highpass: Lens TAME — bounded Clip, u32 span, i16 samples, full-precision i64 state carried by the caller; high_pass becomes the state = 0 case of one high_pass_carry implementation, so the carried and from-silence forms cannot drift; an illegal coefficient refuses BadCoeff, an out-of-range span BadRange, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/tone_carry"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/tone_carry"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/tone_carry.rye -femit-bin=${bin}"]
 assert build.ok else "ales-carried-highpass: build failed — ${build.err}"
@@ -48,3 +54,7 @@ let sweep = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/sweep.rye
 assert (trim sweep.out) == "yes" else "ales-carried-highpass: the ALES44 sweep witness regressed after the high_pass_carry refactor"
 
 say "ales-carried-highpass: GREEN — a carried-state high-pass carries its state the same way the low-pass does, so both bands remember and a whole split spans a re-berthed region without a click; a fresh Highpass equals ALES40's from-silence high_pass byte-for-byte, a span high-passed in two pieces equals the whole once, and the carried low and high bands sum back to the input; the shipped ALES40 tone and ALES44 sweep selftests stay GREEN. The next Lotus rung can carry the shelf/stack, sweep the high-pass, or name a crossover in hertz through a real time base."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

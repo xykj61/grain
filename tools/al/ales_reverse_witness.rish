@@ -19,7 +19,13 @@ say "ales-reverse: Style Radiant — the rule is stated positively: swap from bo
 say "ales-reverse: Lens TAME — one mono clip of i16 PCM turned end for end in one in-place pass of len/2 swaps, no allocation and no second buffer; it rearranges existing samples and fabricates none, changes no length, and reads no byte past len; it names no span, so it forwards no EditError — total on any legal Clip; the permutation law is checked through ALES13's read-only meter (peak before equals peak after); siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverse"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverse"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverse.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverse: build failed — ${build.err}"
@@ -33,3 +39,7 @@ say "ales-reverse: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverse' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverse: selftest did not print the GREEN ales-reverse line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

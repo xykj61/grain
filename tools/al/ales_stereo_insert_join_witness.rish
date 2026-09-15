@@ -24,7 +24,13 @@ say "ales-stereo-insert-join: Style Radiant — the law is stated positively: bo
 say "ales-stereo-insert-join: Lens TAME — the mono two-sided insert is reused whole over its public API (the proven trailing-seam law and its scratch-clip atomicity, not re-derived); atomic across the two channels — every ALES28 guard depends only on the shared dimensions, so left refuses iff right would; refuses BadRange / ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_insert_join"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_insert_join"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_insert_join.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-insert-join: build failed — ${build.err}"
@@ -40,3 +46,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-insert-join' ${outfile} &
 assert (trim green.out) == "yes" else "ales-stereo-insert-join: selftest did not print the GREEN ales-stereo-insert-join line"
 
 say "ales-stereo-insert-join: GREEN — the trailing-seam law now lands in stereo the way a keeper works, both channels both seams crossed in lockstep. The next Lotus rung can offer a multi-slot clipboard rack, let the graft or paste join rather than butt by default, or carry a held span across the ALES0 audio wire (a module seam, Keaton's word)."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

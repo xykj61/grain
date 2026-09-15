@@ -23,7 +23,13 @@ say "ales-dc-block: Style Radiant — the law is stated positively: the differen
 say "ales-dc-block: Lens TAME — one mono clip of i16 PCM DC-blocked in place over a span; one recursive difference equation run sample by sample, every intermediate in i64 so nothing overflows before the one saturate (ALES2 reused, never a wrap), the feedback multiply bounded by max_pole_den; the pole must be a stable fraction in [0, 1) (num ≥ 0, num < den) or refuse BadCoeff before a sample is touched; a span outside the samples refuses BadRange before any read or write, the clip and carried state untouched on refusal; siloed to lotus/, no real sample rate, no frequency in hertz, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/dc_block"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/dc_block"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/dc_block.rye -femit-bin=${bin}"]
 assert build.ok else "ales-dc-block: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-dc-block: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-dc-block' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-dc-block: selftest did not print the GREEN ales-dc-block line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

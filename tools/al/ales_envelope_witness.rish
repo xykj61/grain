@@ -22,7 +22,13 @@ say "ales-envelope: Style Radiant — the law is stated positively: unit attack 
 say "ales-envelope: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; both coefficients checked in (0, 1] before any write; the target clamped to sample_max so a full-scale negative peak reads at the rail and the envelope stays in [0, sample_max], fitting i16; an illegal attack or release coefficient refuses BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/envelope"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/envelope"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=${bin}"]
 assert build.ok else "ales-envelope: build failed — ${build.err}"
@@ -42,3 +48,7 @@ let gate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -
 assert (trim gate.out) == "yes" else "ales-envelope: the ALES51 noise-gate witness regressed under the envelope follower"
 
 say "ales-envelope: GREEN — an envelope follower renders a running magnitude estimate stepping a fraction toward min(|x|, sample_max), the attack fraction rising and the release falling, a forced unit step making a held level reachable exactly; unit attack and release are the instantaneous magnitude, a constant input is reached exactly from below and above monotonically and without overshoot, a faster attack rises at least as fast, the state carries so a span in two pieces equals the whole once; an illegal coefficient refuses BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES51 gate selftest stays GREEN. The dynamics family now holds its time base — the next rung can wire this envelope into the limiter, compressor, or gate so each leans in over an attack and eases off over a release."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

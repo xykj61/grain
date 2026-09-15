@@ -24,7 +24,13 @@ say "ales-auto-pan: Style Radiant — the law is stated positively as a recognit
 say "ales-auto-pan: Lens TAME — one mono clip of i16 PCM rendered to a two-channel StereoClip, the scaled non-negative position centre/depth, and a u32 period; the position stays an attenuation weight (0 ≤ pos ≤ glide_scale), so the triangle and the two divisions run in i64 and each write saturates once — a proven no-op, since every channel is an attenuation of an in-range sample (auto-pan is the tremolo's non-negative kin, not the ring modulator's bipolar one); a period not a positive multiple of four (or past max_clip) refuses BadPeriod, a negative depth or a swing floor past hard-left BadDepth, a swing top past hard-right BadPan, all before any write, src and out untouched on refusal; there is NO BadGain, NO BadDelay, NO BadRange on a span; the source is READ-ONLY; siloed to lotus/, the position in scaled units and the period in samples, no delay line, no snapshot, no lookahead, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/auto_pan"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/auto_pan"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/auto_pan.rye -femit-bin=${bin}"]
 assert build.ok else "ales-auto-pan: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-auto-pan: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-auto-pan' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-auto-pan: selftest did not print the GREEN ales-auto-pan line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

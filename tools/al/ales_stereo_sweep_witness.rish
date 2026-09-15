@@ -22,7 +22,13 @@ say "ales-stereo-sweep: Style Radiant — the stereo EQ and filter class holds i
 say "ales-stereo-sweep: Lens TAME — two bounded in-process i16 Clips (left, right), each swept through ALES44's own bounded block partition (max_sweep_blocks equal to 4096), the filter state at full i64 precision per channel; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a sweep writes values only, each length asserted equal and within bound on exit); the two endpoints, the span, and the block count are validated once against the shared length before either channel is mutated (ALES44's check_sweep, exported as a one-word additive pub for this up-front atomic check), so a refusal never sweeps one channel and leaves the other torn; StereoSweepError is ALES44's SweepError (BadCoeff, BadRange, BadBlocks) reused whole, the stereo lift adding no fault. The stereo sweep law is proven by running both stereo_sweep and ALES44's mono sweep_low_pass on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the degenerate law proves a degenerate schedule equals ALES40's fixed low_pass on both channels byte for byte and a settled constant sweeps to itself on each; the image law proves an identical-channel master stays identical through the sweep; and the balance, silence, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the three refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the coefficient over sample indices rather than crossovers in hertz, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_sweep"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_sweep"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_sweep.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-sweep: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-sweep: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-sweep' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-sweep: selftest did not print the GREEN ales-stereo-sweep line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

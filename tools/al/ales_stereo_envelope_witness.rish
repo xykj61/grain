@@ -21,7 +21,13 @@ say "ales-stereo-envelope: Style Radiant — ALES52 named the mono envelope foll
 say "ales-stereo-envelope: Lens TAME — two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope, one comparison for the linked key and at most one multiply-then-divide per sample (ALES52's proven env_step reused whole), the envelope bounded in the range zero to sample_max which fits i16, so nothing on the path can overflow; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a follower writes values only, each length asserted equal and within bound on exit, the shared value asserted identical on both channels sample by sample); the attack and release are validated once by the one coeff_ok rule ALES52 proves and the span once against the shared length before either channel is mutated, so a refusal never follows one channel and leaves the other torn; StereoEnvelopeError is ALES52's EnvelopeError (BadCoeff, BadRange) reused whole, the linked detector adding no fault. The linked detector law is proven against the mono follow of a synthetic per-sample linked-key clip — both channels equal to it byte for byte and equal to each other, while the independent per-channel follow of the right alone is shown to genuinely differ; the instantaneous law proves unit attack and release make both channels the per-sample max magnitude (including the full-scale negative peak clamped to the rail); the convergence laws prove a steady left peak of 8000 reached exactly and monotonically from silence and a 10000-then-2000 linked peak eased down to exactly 2000, both channels tracking the one curve; the faster-attack law proves 1:2 no slower than 1:8 at every sample; the carry law proves a span followed in two pieces equal to the whole once on both channels; and the silence, atomicity, and degenerate cases prove an all-silent master staying zero, the length held, each of the four refusals (a bad attack, a bad release, a zero denominator, an out-of-range span) leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the attack and release fractions per sample index rather than milliseconds against a clock, the curve not yet routed into a gain (the next rung), no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_envelope"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_envelope"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_envelope.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-envelope: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-stereo-envelope: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-envelope' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-envelope: selftest did not print the GREEN ales-stereo-envelope line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

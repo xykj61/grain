@@ -22,7 +22,13 @@ say "ales-stereo-loop-meter: Style Radiant — the law is stated positively: met
 say "ales-stereo-loop-meter: Lens TAME — ALES17's StereoMeter reused whole (no new arithmetic); the wrapping read fills both channels in lockstep across the seam (asserted); the cycle count is bounded to ALES13's meter capacity before any read (guarding the u32 product from overflow); read-only, mutating neither channel; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_loop_meter"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_loop_meter"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_loop_meter.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-loop-meter: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-loop-meter' ${outfile} &&
 assert (trim green.out) == "yes" else "ales-stereo-loop-meter: selftest did not print the GREEN ales-stereo-loop-meter line"
 
 say "ales-stereo-loop-meter: GREEN — a looping stereo region metered live off the ALES16 wrapping head under ALES17's two meters, the per-channel level identical to the region at rest for any cycle count and block size. With play, loop, and meter all stereo — and the loop now metered live — the read side's tools compose freely over two channels. The next Lotus rung can name a scrub window, offer the keeper the choice of pan/crossfade law, or (a module seam) a punch region tying playback back to the Mikrophone's capture."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

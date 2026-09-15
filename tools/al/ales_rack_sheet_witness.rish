@@ -23,7 +23,13 @@ say "ales-rack-sheet: Style Radiant — the law is stated positively: parse_rack
 say "ales-rack-sheet: Lens TAME — rack.copy_to / name_of / paste and parse_int reused whole (no new rack bound beyond the text grammar); each channel bounded by max_clip and each name by max_name; a slot rebuilt over a temporary master so BadName / Duplicate / RackFull forward by name, and a bad header / mis-ordered line / L-R mismatch / bad sample refuses BadRecord before the rack is trusted; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/rack_sheet"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/rack_sheet"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_sheet.rye -femit-bin=${bin}"]
 assert build.ok else "ales-rack-sheet: build failed — ${build.err}"
@@ -39,3 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-sheet' ${outfile} && echo y
 assert (trim green.out) == "yes" else "ales-rack-sheet: selftest did not print the GREEN ales-rack-sheet line"
 
 say "ales-rack-sheet: GREEN — a keeper's whole rack persists across a session close and ports as plain text: render_rack writes each slot's name and both channels canonically, parse_rack recovers them byte-for-byte through ALES30's own copy_to, render(parse(render(r))) is a fixed point, a name with a space survives, and every corruption refuses by name. The next Lotus rung can give the slot sheet a Sha256 content digest (verify-before-trust, mirroring the ALES0 wire deframe), or carry a slot across the ALES0 audio wire (a module seam, taken on Keaton's word)."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

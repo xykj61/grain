@@ -24,7 +24,13 @@ say "ales-stereo-taps: Style Radiant — the multi-tap is the discrete early-ref
 say "ales-stereo-taps: Lens TAME — two bounded in-process i16 clips (left, right), each rung through ALES68's own bounded snapshot multi-tap, one frozen dry snapshot and at most max_taps multiply-divides per sample run in i64 and summed once, the fed sum saturating once per channel; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a multi-tap writes values only, each length asserted equal and within bound on exit); the tap set and span are validated once against the shared length before either channel is snapshotted (ALES68's precheck, factored out of the mono multitap and shared, mirroring the ALES71, ALES72, and ALES73 refactors), so a refusal never taps one channel and leaves the other torn; StereoTapError is ALES68's TapError (BadTapCount, BadDelay, BadLevel, BadRange) reused whole, the stereo lift adding no fault. The stereo multi-tap law is proven by running both stereo_multitap and ALES68's mono multitap on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the dry-identity law proves a zero-level tap set equals the dry master on both; and the image, balance, silence, atomicity, and degenerate cases prove an identical-channel centred master staying identical and a panned pair kept off the rail keeping its exact ratio (the linear snapshot sum scaling, so the pan survives with no feedback truncation), an all-silent master staying silent on both, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the delay a count of sample indices rather than milliseconds and the level a named fraction at or below unity rather than a decibel, no cross-channel snapshot, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_taps"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_taps"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_taps.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-taps: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-taps: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-taps' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-taps: selftest did not print the GREEN ales-stereo-taps line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

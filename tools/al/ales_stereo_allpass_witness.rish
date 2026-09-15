@@ -23,7 +23,13 @@ say "ales-stereo-allpass: Style Radiant — the law is stated positively: the sa
 say "ales-stereo-allpass: Lens TAME — two bounded i16 Clips (left, right), a u32 span, a u32 delay and a plain u32/u32 gain; each channel diffused through ALES184's own bounded allpass (one frozen dry snapshot and one in-place delayed-output read per sample, run in i64 and saturated once); the delay, gain, and span validated ONCE against the shared length before either channel is snapshotted (BadDelay, BadGain, BadRange; ALES184's precheck reused), so a refusal never diffuses one channel and leaves the other torn, AllpassError reused whole; it writes values only and the two channels leave balanced; siloed to lotus/, no cross-channel read, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_allpass"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_allpass"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_allpass.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-allpass: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-allpass: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-allpass' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-allpass: selftest did not print the GREEN ales-stereo-allpass line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

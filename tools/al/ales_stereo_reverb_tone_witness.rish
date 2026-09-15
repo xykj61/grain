@@ -25,7 +25,13 @@ say "ales-stereo-reverb-tone: Style Radiant — the identity edge is stated posi
 say "ales-stereo-reverb-tone: Lens TAME — one StereoClip of i16 PCM, a validated clock, and ALES191's fixed banks; NO new audio arithmetic — the tone is ALES40's proven one-pole low-pass over the proven stereo wet, run per ear; StereoReverbToneError = stereo_reverb_preset.StereoReverbPresetError || BadTone, the tone coefficient PRECHECKED before the wet is written so a BadTone leaves both channels dry and balanced (atomic), DurationTooLong / BadRange / BadTone by name before any write; siloed to lotus/, no network, no keys, no funds, no device. A wet-tail tone; a true in-loop Freeverb damping is named as a separate horizon, not claimed."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_reverb_tone"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_reverb_tone"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_tone.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-tone: build failed — ${build.err}"
@@ -49,3 +55,7 @@ let monot = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_to
 assert (trim monot.out) == "yes" else "ales-stereo-reverb-tone: the ALES198 mono reverb tone regressed under its stereo twin"
 
 say "ales-stereo-reverb-tone: GREEN — the stereo tone: the reverb's DARKNESS knob across a stereo master. Reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, then roll the treble off each channel's wet with ALES40's proven one-pole low-pass at the same coefficient, no cross-channel read — tone_num == tone_den the identity, a smaller fraction darker — no new audio arithmetic, every darkened sample written by a proven stage. Proven on both channels: at tone_num == tone_den exactly stereo_reverb_preset byte for byte; for a sub-unity coefficient each channel equals stereo_reverb_preset then tone.low_pass on that channel byte for byte and each darkened channel differs from its wet; each darkened channel's high-frequency roughness is strictly less than its wet's; the image is held (a centred master identical channel-to-channel, a stereo master distinct); the channels leave balanced and silence stays silence; an illegal tone coefficient refuses BadTone with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset and the ALES198 mono tone stay GREEN beside it. The tone axis now stands whole for mono and stereo; a true in-loop damped-comb primitive is the richer horizon."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

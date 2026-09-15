@@ -22,7 +22,13 @@ say "ales-stereo-echo-time: Style Radiant — a musician thinks in time, an echo
 say "ales-stereo-echo-time: Lens TAME — two bounded in-process i16 clips (left, right) and a validated clock; three millisecond conversions through the clock's own bounded samples_for, then ALES181's proven stereo echo delegated unchanged, so no new arithmetic touches the audio path. The two channels enter balanced (the StereoClip invariant asserted on entry) and the clock is asserted valid so each conversion is bounded and safe; the channels leave balanced (a timed echo writes values only, each length asserted equal and within bound on exit). StereoEchoTimeError is ALES5's ClockError composed with ALES66's EchoError (DurationTooLong beside BadDelay, BadFeedback, BadRange), the real-time face adding no fault of its own. The clock-adds-only-units law is proven by running both stereo_echo_ms and ALES181's stereo_echo on the same per-channel content at one sample per millisecond and demanding byte-for-byte equality on both channels while the channels genuinely differ; the real-rate law by converting one millisecond to forty-eight samples at forty-eight kilohertz and matching the index form; the dry-identity law by a zero feedback numerator passing the dry master on both; and the forwarding, atomicity, and balance law by a sub-sample delay refusing BadDelay, a delay past the clip DurationTooLong, a unity feedback BadFeedback, and an out-of-range span BadRange, each leaving both channels untouched and balanced, an empty span the identity on both, and an identical-channel master staying identical; siloed to lotus/, the delay spoken in milliseconds rather than sample indices and the feedback a named fraction below unity rather than a decibel, no cross-channel feedback, no real sample rate device, no network, no keys, no funds, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_echo_time"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_echo_time"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_echo_time.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-echo-time: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-echo-time: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-echo-time' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-echo-time: selftest did not print the GREEN ales-stereo-echo-time line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

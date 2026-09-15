@@ -25,7 +25,13 @@ say "ales-allpass: Style Radiant — the law is stated positively: the allpass i
 say "ales-allpass: Lens TAME — one clip of i16 PCM, a u32 span, a u32 delay and a plain u32/u32 gain; the dry prefix is snapshotted into one bounded [max_clip]i16 scratch (graft's width and stack cost) for the delayed INPUT while the delayed OUTPUT reads the clip buffer in place, the whole sum runs in i64 and saturates once so nothing on the path can overflow; a zero or too-wide delay refuses BadDelay, a gain at or above unity or a zero denominator BadGain, a span outside the samples BadRange, all before any write, the clip untouched on refusal; siloed to lotus/, the delay counted in sample indices not milliseconds, no lookahead, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/allpass"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/allpass"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/allpass.rye -femit-bin=${bin}"]
 assert build.ok else "ales-allpass: build failed — ${build.err}"
@@ -39,3 +45,7 @@ say "ales-allpass: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-allpass' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-allpass: selftest did not print the GREEN ales-allpass line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

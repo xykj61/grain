@@ -20,7 +20,13 @@ say "ales-stereo-smooth-trim: Style Radiant — ALES102 named the mono smooth_tr
 say "ales-stereo-smooth-trim: Lens TAME — two bounded in-process i16 Clips (left, right) trimmed by removing whole jointly-smoothed-silent frames through the timeline's own cut on both channels in lockstep; the smoothing it adds is read-only over the labels, touching no PCM on either speaker. The two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (both lose exactly the joint smoothed silence, the length asserted identical on exit); a joint-silence mask sized max_frames equal to max_clip bounds the frame count, asserted at least one and within the mask; each per-channel cursor is asserted to name the smoothed run that actually covers each frame start; the jointly-silent total is asserted never to exceed the original length; StereoSmoothTrimError is the stereo segmenter's StereoSegmentError, the smoother's StereoSmoothError (the honest unreachable SegmentsFull), and the editor's EditError reused whole, inventing no fault of its own. The crux is proven against a by-hand second implementation (segment both channels, smooth each, keep every frame not silent in both smoothed channels) across five frame lengths, four floors, three splits, and six min_run values, both channels leaving equal length; the min-zero law is proven against ALES148's stereo_trim_silence directly (byte for byte on both channels across the same frame/floor/split grid); the declick law proves a short voiced tick jointly buried in silence is removed on both at a min_run past the tick, strictly shorter than the min-zero trim; the keep-gap law proves a short silent gap jointly between speech is kept on both at a min_run past the gap, strictly longer; the lockstep law proves the mono smooth_trim per channel desyncs to 8 and 12 while the stereo smoothed trim holds both at 12; the degenerate laws prove all-joint-silent empties both and a master loud on at least one channel per frame is unchanged on both whatever the min_run; and the atomicity laws prove an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name (BadFrame, BadFrame, BadThreshold, BadFloor) before any cut, both channels untouched and still balanced; siloed to lotus/, a causal left-to-right hold per channel, no adaptive VAD, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_smooth_trim"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_smooth_trim"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_smooth_trim.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-smooth-trim: build failed — ${build.err}"
@@ -34,3 +40,7 @@ say "ales-stereo-smooth-trim: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-smooth-trim' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-smooth-trim: selftest did not print the GREEN ales-stereo-smooth-trim line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

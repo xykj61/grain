@@ -22,7 +22,13 @@ say "ales-compress-env: Style Radiant — the law is stated positively: with ins
 say "ales-compress-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; threshold checked in [1, sample_max], ratio at least unity with a nonzero denominator, both coefficients in (0, 1] by the follower's one proven rule, all before any write; the compressed envelope kept within [threshold, envelope] so the gain sits in (0, 1] and every written magnitude is at most the input's, fitting i16; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/compress_env"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/compress_env"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/compress_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-compress-env: build failed — ${build.err}"
@@ -45,3 +51,7 @@ let comp = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.r
 assert (trim comp.out) == "yes" else "ales-compress-env: the ALES50 compressor regressed under the attack/release compressor"
 
 say "ales-compress-env: GREEN — an attack/release compressor drives ALES50's softened ceiling from ALES52's proven envelope, each sample advancing the follower one step and, when the smoothed envelope crosses the threshold, dividing its excess by the ratio and applying that gain to the raw sample; with instant attack and release it is the plain compressor byte-for-byte, unit ratio is the identity everywhere, a loud signal's magnitude only reduces with the sign held, a slower attack lets the transient through (the knob monotone), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower and ALES50 compressor selftests stay GREEN. The compressor now breathes — the dynamics family's next rung can give the limiter and the gate the same attack and release."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

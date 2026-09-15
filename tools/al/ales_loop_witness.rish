@@ -20,7 +20,13 @@ say "ales-loop: Style Radiant — the law is stated positively: a loop is a play
 say "ales-loop: Lens TAME — a loop OFF delegates to ALES7's read whole (the loop generalizes the transport); no new arithmetic; make refuses BadLoop by name; region bounds proven within the master; read-only, never mutating the master; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/loop"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/loop"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/loop.rye -femit-bin=${bin}"]
 assert build.ok else "ales-loop: build failed — ${build.err}"
@@ -36,3 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-loop' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-loop: selftest did not print the GREEN ales-loop line"
 
 say "ales-loop: GREEN — the transport loop cycles a marked region exactly, the head kept within it, a loop off reading identically to ALES7. The next Lotus rung can name a stereo transport, a scrub window, or a punch region tying playback back to capture."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

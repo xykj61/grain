@@ -21,7 +21,13 @@ say "ales-reverb-mix: Style Radiant — the two edges are stated positively and 
 say "ales-reverb-mix: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed banks, and a bounded stack snapshot (max_clip = 4096 samples); the one new arithmetic is the linear blend, a weighted average of two i16 spans summed in i64 and saturated once so it can never wrap; ReverbMixError = reverb_preset.ReverbPresetError || BadMix, DurationTooLong / BadRange / BadMix by name before any write, the dry snapshot a read only so a refusal leaves the clip untouched; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb_mix"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb_mix"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_mix.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-mix: build failed — ${build.err}"
@@ -41,3 +47,7 @@ let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_p
 assert (trim preset.out) == "yes" else "ales-reverb-mix: the ALES190 named-room preset regressed under its wet/dry mix"
 
 say "ales-reverb-mix: GREEN — the wet/dry mix: the first reverb knob that is not a bank choice (HOW MUCH reverb). Snapshot the dry span, reverberate it wet in place through ALES190's reverb_preset unchanged, then blend out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), a linear balance at the named fraction num/den, saturated once so a loud blend pins never wraps. Proven: at mix = 0 the exact dry (the identity); at mix = den exactly the preset byte for byte; a half mix neither edge, each sample the honest weighted average; silence stays silence; a bad fraction refuses BadMix, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset stays GREEN beside it. A stereo wet/dry mix (the same blend over both channels, image held) is the thin twin next."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

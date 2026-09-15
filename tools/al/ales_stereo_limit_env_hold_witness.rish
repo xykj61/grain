@@ -23,7 +23,13 @@ say "ales-stereo-limit-env-hold: Style Radiant — ALES163 carried the breathing
 say "ales-stereo-limit-env-hold: Lens TAME — two bounded in-process i16 Clips (left, right) carrying one shared i64 envelope and one shared u32 hold countdown, one linked-peak comparison and at most one multiply-then-divide for the held envelope step (ALES165's proven stereo_env_step_hold) plus one per channel for the gain, all in i64 (the product of a magnitude and the ceiling at most 32768 times 32767 never overflowing), the gain ceiling over e in the open interval zero to one so every scaled magnitude is strictly below its input's and fits i16; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a limiter writes values only, each length asserted equal and within bound on exit, each written sign asserted held); the ceiling, both coefficients, the hold, and the span are validated once before either channel is mutated, so a refusal never limits one channel and leaves the other torn; on the above-ceiling branch the envelope is asserted strictly greater than the ceiling which is at least one, so the divide is always safe and the gain a genuine reduction; StereoLimitEnvHoldError is ALES59's LimitEnvHoldError (BadCeiling, BadCoeff, BadHold, BadRange) reused whole, the fusion adding no fault, and a limiter has no ratio knob so there is no BadRatio. The zero-hold law is proven by running both stereo_limit_env_hold under a hold of zero and ALES163's un-held stereo_limit_env on the same master and demanding byte-for-byte equality on both channels; the linked-gain-over-time law against a master where the left always holds the peak — the left equal to ALES59's mono limit_env_hold of it byte for byte while the right is scaled by the same fraction, the independent mono limit_env_hold of the right alone shown to genuinely differ; the image law proves no magnitude expands and no sign flips over a mixed master and that an out-of-phase pair returns still exactly out of phase; the knob and no-pump laws prove below the ceiling the identity everywhere and a nonzero hold keeping the reduction engaged across a duck where an un-held limiter pumps; the carry law proves a span limited in two pieces, the split mid-hold, equal to the whole once on both channels; and the sub-ceiling, silence, balance, atomicity, and degenerate cases prove a within-ceiling master passing byte for byte, an all-silent master staying zero, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the ceiling a magnitude in sample units, the attack, release, and hold per sample index, no lookahead, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_limit_env_hold"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_limit_env_hold"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_limit_env_hold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-limit-env-hold: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-limit-env-hold: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-limit-env-hold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-limit-env-hold: selftest did not print the GREEN ales-stereo-limit-env-hold line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

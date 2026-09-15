@@ -20,7 +20,13 @@ say "ales-album-diff: Language EN — ALES232 classifies two record versions (a 
 say "ales-album-diff: Style Radiant — a diff composes on the ALES231 resolve rather than re-walking from scratch; the content-address digest IS the whole comparison (no byte compare, no new hash), mirroring library_diff (ALES229) one level down; the added law, the removed law, the changed law, and the identity law each proven on metal."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/album_diff"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/album_diff"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_diff.rye -femit-bin=${bin}"]
 assert build.ok else "ales-album-diff: build failed — ${build.err}"
@@ -36,3 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-album-diff' ${outfile} && echo y
 assert (trim green.out) == "yes" else "ales-album-diff: selftest did not print the GREEN ales-album-diff line"
 
 say "ales-album-diff: GREEN — a keeper sees what moved in a record between two masters now, and the album level carries its own second-order primitive at parity with the library level. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

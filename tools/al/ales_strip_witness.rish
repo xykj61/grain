@@ -21,7 +21,13 @@ say "ales-strip: Style Radiant — the channel strip generalizes the fader colum
 say "ales-strip: Lens TAME — mute/solo is a pure map from switches to levels (a silenced track carries 0/1), the mix delegated to ALES8's fader.render whole; no new sum, no second saturation; forwards BadGain / ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/strip"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/strip"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/strip.rye -femit-bin=${bin}"]
 assert build.ok else "ales-strip: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-strip' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-strip: selftest did not print the GREEN ales-strip line"
 
 say "ales-strip: GREEN — mute and solo resolve to an effective fader column and the mix stays ALES8's one sum; solo-in-place overrides a track's own mute. The next Lotus rung can name pan (a fader per channel as stereo opens), a transport loop over a marked region, or the equal-power crossfade curve."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -24,7 +24,13 @@ say "ales-stereo-reverb-predelay: Style Radiant — the two edges are stated pos
 say "ales-stereo-reverb-predelay: Lens TAME — one StereoClip of i16 PCM, a validated clock, ALES191's fixed banks, and two bounded stack snapshots (max_clip = 4096 samples each); NO new audio arithmetic — the pre-delay is a bounded per-channel reindex of the proven stereo wet, so no value is recomputed or can wrap and the gap is filled with true zeros; StereoReverbPredelayError = stereo_reverb_preset.StereoReverbPresetError || BadPredelay, DurationTooLong / BadRange / BadPredelay by name before any write, the wet snapshots within the span so a refusal leaves both channels untouched and balanced; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_reverb_predelay"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_reverb_predelay"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_predelay.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-predelay: build failed — ${build.err}"
@@ -48,3 +54,7 @@ let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_pre
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-predelay: the ALES194 mono pre-delay regressed under its stereo twin"
 
 say "ales-stereo-reverb-predelay: GREEN — the stereo pre-delay: the reverb's WHEN knob (the silent gap before the reverberant tail begins), now across a stereo master. Reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, snapshot each channel's wet, then rewrite each channel shifted right by predelay samples out[i] = 0 for i < predelay, else wet[i - predelay] — run per ear with no cross-channel read, no new audio arithmetic, a bounded per-channel reindex of the proven stereo wet with a true-zero gap. Proven: at predelay = 0 exactly stereo_reverb_preset byte for byte on both channels; at predelay = count both channels all zeros; a mid pre-delay zeros in front and each channel's own wet shifted by exactly predelay after, byte for byte; the image is held; the channels leave balanced and silence stays silence; a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset and ALES194 mono pre-delay stay GREEN beside it. With the pre-delay axis complete for mono and stereo, a damping knob (a high-frequency roll-off inside the tail) or the dry-composed console pre-delay is the next genuinely new expressive control."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

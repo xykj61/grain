@@ -23,7 +23,13 @@ say "ales-stereo-width: Style Radiant — the shape is stated positively as a co
 say "ales-stereo-width: Lens TAME — two bounded i16 Clips (left, right) transformed in place; the balance invariant is asserted on entry and exit, and the width fraction is bounded (max_width_den 4096, max_width_num 32768) and checked BEFORE encode ever runs, so a zero or over-bound width refuses BadWidth with the master untouched (the atomicity crux — the precheck precedes the first write); once the width is legal the gain over the full valid span and the decode cannot fault, so the op refuses whole up front or completes whole. It reuses ALES210's encode and decode (each total, void, balance-preserving) and ALES2's gain (the side scaled in i64 and saturated once) over their public APIs, inventing no new primitive; the unity, collapse, and widen laws are proven byte for byte against hand vectors on a same-parity master so the round-trip is exact, the widen law also checked by |L−R| growing per sample, and the centred-invariant law proven at both the collapse and 2× settings; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_width"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_width"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_width.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-width: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-width: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-width' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-width: selftest did not print the GREEN ales-stereo-width line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

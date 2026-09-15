@@ -21,7 +21,13 @@ say "ales-stereo-band: Style Radiant — ALES170 opened the stereo EQ and filter
 say "ales-stereo-band: Lens TAME — two bounded in-process i16 Clips (left, right), each band-passed through ALES46's own two-stage cascade, both channels' four cascade states run at full i64 precision so no fractional information is lost between samples; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a band-pass writes values only, each length asserted equal and within bound on exit), and the two inner band-passes are asserted to carry the same two cutoffs so the shared knobs hold the image; both cutoffs and the span are validated once against the shared length before either channel is mutated, so a refusal never band-passes one channel and leaves the other torn and no legal low cutoff advances a state before an illegal high cutoff refuses; StereoBandError is ALES46's ToneError (BadCoeff, BadRange) reused whole, the stereo lift adding no fault. The stereo band-pass law is proven by running both stereo_band and ALES46's mono band-pass on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the carry law proves a span band-passed in two pieces with each channel carrying its own state equals the whole once on both; the image law proves an identical-channel master stays identical through the band-pass and a settled constant is rejected to zero per channel; and the reset, balance, silence, atomicity, and degenerate cases prove reset clearing all four states and re-opening both transients, an all-silent master staying silent on both, the length held, each of the three refusals leaving both channels and all four states untouched and balanced, and an empty span the identity on both; siloed to lotus/, the cutoffs over sample indices rather than crossovers in hertz, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_band"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_band"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_band.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-band: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-stereo-band: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-band' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-band: selftest did not print the GREEN ales-stereo-band line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

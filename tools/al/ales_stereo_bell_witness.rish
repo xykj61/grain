@@ -22,7 +22,13 @@ say "ales-stereo-bell: Style Radiant — the stereo EQ and filter class has its 
 say "ales-stereo-bell: Lens TAME — two bounded in-process i16 Clips (left, right), each belled through ALES48's own residual and scratch bands, every band scale and sum run in i64 so nothing overflows before the single clamp per channel; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a bell writes values only, each length asserted equal and within bound on exit); the two cutoffs, the gain denominator, and the span are validated once against the shared length before either channel is mutated, so a refusal never bells one channel and leaves the other torn; StereoBellError is ALES48's BellError (BadCoeff, BadGain, BadRange) reused whole, the stereo lift adding no fault. The stereo bell law is proven by running both stereo_bell and ALES48's mono bell on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the three-gain law proves unity gain is the input byte for byte on both, zero gain equals ALES173's stereo notch on both, and a settled constant is untouched at a boosting gain on each channel; the image law proves an identical-channel master stays identical through the bell; and the balance, silence, atomicity, and degenerate cases prove an all-silent master staying silent on both, the length held, each of the four refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the cutoffs over sample indices rather than crossovers in hertz, the gain a plain fraction rather than decibels, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_bell"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_bell"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_bell.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-bell: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-bell: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-bell' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-bell: selftest did not print the GREEN ales-stereo-bell line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

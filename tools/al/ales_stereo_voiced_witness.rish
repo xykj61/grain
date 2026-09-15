@@ -22,7 +22,13 @@ say "ales-stereo-voiced: Style Radiant — where ALES145 carried the single cros
 say "ales-stereo-voiced: Lens TAME — two bounded i16 Clips (left, right) read in lockstep by one shared band, floor, and split; the balance invariant is asserted on entry and exit, the shared band and span are bound-checked once via ALES92's precheck and the floor once against meter's sample_peak_max before any read, and because those checks hold identically for both balanced channels each mono classify is pre-validated to succeed so no refusal can land between the two channel verdicts; the classifier composes ALES94's classify per channel, which fuses ALES13's RMS and ALES93's count over the same span reading its features without writing a sample; the stereo fusion law is proven against ALES94's own classify run per channel across four floors and three splits, the independent-verdict law proves a loud-periodic left reads voiced while a quiet right reads silent and an identical master reads equal verdicts, the energy-gate-first ordering is proven per channel (a quiet many-crossing channel reads silent), the read-only law proves the source clip is byte-for-byte unchanged on both, and the atomicity cases leave the clip untouched with the floor-zero convention voiced on both and the span discipline reading only [start, count); siloed to lotus/, read-only, no adaptive floor, no time windowing, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_voiced"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_voiced"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_voiced.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-voiced: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-voiced: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-voiced' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-voiced: selftest did not print the GREEN ales-stereo-voiced line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

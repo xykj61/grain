@@ -21,7 +21,13 @@ say "ales-render-album: Style Radiant — the crux is the same quiet one, one le
 say "ales-render-album: Lens TAME — it proves a collection arrived whole, not who made it; every bound named, every fault refused by name, siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/render_album"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/render_album"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render_album.rye -femit-bin=${bin}"]
 assert build.ok else "ales-render-album: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-render-album' ${outfile} && echo
 assert (trim green.out) == "yes" else "ales-render-album: selftest did not print the GREEN ales-render-album line"
 
 say "ales-render-album: GREEN — many renders now save and open as one verify-before-trust catalog, the render→manifest→bundle→album loop whole. The next Lotus crux can carry the album to a keeper's session save/load, or name who made it — a signed carry, on Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

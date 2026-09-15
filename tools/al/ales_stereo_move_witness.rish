@@ -20,7 +20,13 @@ say "ales-stereo-move: Style Radiant — the rule is stated positively: run the 
 say "ales-stereo-move: Lens TAME — two bounded i16 Clips (left, right) whose named span is relocated in lockstep; the three range checks are made without underflow against the common channel length once up front (start against len, count against the remainder, dest against len minus count), so every refusal comes by name before any write and the channels can never desynchronise; move is ALES2's cut then splice composed with one bounded scratch buffer per channel, its net length unchanged so splice can never refuse ClipFull; it reuses ALES2's EditError whole and ALES113's move per channel over its public API, inventing no new primitive; the stereo move law is proven against ALES113's own move run per channel, and the inverse law closes the round trip; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_move"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_move"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_move.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-move: build failed — ${build.err}"
@@ -34,3 +40,7 @@ say "ales-stereo-move: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-move' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-move: selftest did not print the GREEN ales-stereo-move line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

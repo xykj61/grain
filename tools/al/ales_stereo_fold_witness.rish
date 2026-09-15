@@ -24,7 +24,13 @@ say "ales-stereo-fold: Style Radiant — the nonlinear class holds exactly as AL
 say "ales-stereo-fold: Lens TAME — two bounded i16 Clips (left, right) folded in lockstep by one shared nonlinear triangle; the balance invariant is asserted on entry and exit, the gain, ceiling, and span are bound-checked once before any write, and because those checks hold identically for both channels each mono wavefold is pre-validated to succeed so no refusal can land between the two channel edits; wavefold walks the span once per channel, boosting each sample by num/den in an i64 accumulator so the pre-gain never overflows before the triangle (period 2·ceil, @mod of a non-negative magnitude) lands every output in [-ceil, ceil] by construction, the sign held (the fold is odd), never touching a byte past len, so the length holds exactly; it reuses ALES80's wavefold per channel over its public API and ALES80's FoldError whole, inventing no new primitive; the stereo fold law is proven against ALES80's own wavefold run per channel, the per-channel nonlinear law proves the ceiling and sign hold on both channels, that a 1:2 field's ratio collapses to 1:1 by reflection (neither channel at the ceiling), and that the fold reflects a just-past-ceiling sample below the ceiling where ALES132's hard drive pins it there, the three refusals leave both channels byte-for-byte untouched, and a unity fold below the ceiling is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_fold"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_fold"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_fold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-fold: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-fold: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-fold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-fold: selftest did not print the GREEN ales-stereo-fold line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

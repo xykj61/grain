@@ -25,7 +25,13 @@ say "ales-session: Style Radiant — the law is stated positively: a session doc
 say "ales-session: Lens TAME — the body is length-delimited, never delimiter-scanned (a name may hold any character), and the manifest carries its own check (the payload must measure exactly rack_len + cue_len); seal.begin/finish/open and rack_sheet/cue_sheet render/parse are reused whole; a tampered body refuses DigestMismatch, a malformed seal or manifest refuses BadRecord, a too-small buffer refuses Overflow, each before a slot or marker is trusted; the seal proves a project arrived whole, not who wrote it — no signature, no key; siloed to lotus/, no network, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/session"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/session"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/session.rye -femit-bin=${bin}"]
 assert build.ok else "ales-session: build failed — ${build.err}"
@@ -41,3 +47,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-session' ${outfile} && echo yes"
 assert (trim green.out) == "yes" else "ales-session: selftest did not print the GREEN ales-session line"
 
 say "ales-session: GREEN — a keeper's whole project saves and loads as one sealed document: save seals a length manifest plus the rack record and the cue record, and load verifies the whole body before splitting it so each parser sees exactly its own bytes; a two-slot rack and a four-marker cue sheet round-trip whole, a flipped byte in either half or a truncated tail refuses DigestMismatch with both outputs empty, a malformed seal or manifest refuses BadRecord, a too-small buffer refuses Overflow. The purely-local persistence arc is whole — file, edit, save, seal, load, merge, rename, and now one document for the whole project. The SIGNED carry (who wrote a session, via a Kumara key) and the ALES0-wire carry stay module seams for Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

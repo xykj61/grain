@@ -21,7 +21,13 @@ say "ales-stereo-wav: Style Radiant — the same canonical 44-byte header, diffe
 say "ales-stereo-wav: Lens TAME — decoding is two independent gates, the size chain proving the container self-consistent and the frame border proving it frame-aligned so neither channel receives a lone unpaired sample; the sample rate is a carried field not a real clock; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_wav"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_wav"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_wav.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-wav: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-wav' ${outfile} && echo y
 assert (trim green.out) == "yes" else "ales-stereo-wav: selftest did not print the GREEN ales-stereo-wav line"
 
 say "ales-stereo-wav: GREEN — the container family stands whole for mono and stereo; the next Lotus rung can carry a render that runs an effect chain over a buffer and writes the .wav result."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

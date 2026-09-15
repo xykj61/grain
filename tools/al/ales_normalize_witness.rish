@@ -21,7 +21,13 @@ say "ales-normalize: Style Radiant — the rule is stated positively: measure th
 say "ales-normalize: Lens TAME — one mono clip of i16 PCM metered read-only through ALES13 (all its bounds run before any write), then scaled through ALES2's saturating gain; it changes sample VALUES only, never a length, never a byte fabricated; the target is a plain magnitude in [1, sample_max], NOT a decibel or a loudness model; the error vocabulary is the meter's MeterError and the editor's EditError reused by name (both honestly unreachable here — a bounded Clip, a measured non-zero denominator, a whole-clip span) plus BadTarget for a zero or over-ceiling target; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/normalize"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/normalize"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/normalize.rye -femit-bin=${bin}"]
 assert build.ok else "ales-normalize: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-normalize: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-normalize' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-normalize: selftest did not print the GREEN ales-normalize line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

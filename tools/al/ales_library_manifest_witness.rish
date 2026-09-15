@@ -22,7 +22,13 @@ say "ales-library-manifest: Style Radiant — content-addressing composes upward
 say "ales-library-manifest: Lens TAME — every field bounded so the record fits a fixed buffer, a too-small buffer refused by name; content-addressing, not a signature; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/library_manifest"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/library_manifest"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/library_manifest.rye -femit-bin=${bin}"]
 assert build.ok else "ales-library-manifest: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-library-manifest' ${outfile} && 
 assert (trim green.out) == "yes" else "ales-library-manifest: selftest did not print the GREEN ales-library-manifest line"
 
 say "ales-library-manifest: GREEN — a keeper's whole body of work now carries one short, sealed, citable name, content-addressed without shipping a byte of audio. The album family climbs whole: bundle · album · library, each fixed by the digest of the level below. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

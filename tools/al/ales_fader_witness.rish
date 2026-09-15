@@ -21,7 +21,13 @@ say "ales-fader: Style Radiant — the fader column generalizes the track table 
 say "ales-fader: Lens TAME — a fader is a validated num/den (BadGain at a zero denominator), the multiply runs in i64 inside the accumulator clamped once by the one true saturate; refuses BadGain, forwards ClipFull / DurationTooLong by name; siloed to lotus/, no network, no keys, no funds, no device."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/fader"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/fader"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/fader.rye -femit-bin=${bin}"]
 assert build.ok else "ales-fader: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-fader' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-fader: selftest did not print the GREEN ales-fader line"
 
 say "ales-fader: GREEN — the per-track fader column balances the mix before it renders, the fader scaling in the wide domain and the master saturating once over the true faded sum; a -1/1 fader nulls a track to exact silence. The next Lotus rung can name pan, mute/solo as session state, a transport loop, or the equal-power crossfade curve."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

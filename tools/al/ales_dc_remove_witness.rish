@@ -25,7 +25,13 @@ say "ales-dc-remove: Style Radiant — the law is stated positively: DC removal 
 say "ales-dc-remove: Lens TAME — one mono clip of i16 PCM DC-removed in place over a span; a two-pass block statistic (sum in i64, then subtract the truncated mean), memoryless (no carried state, no feedback, no delay line), one saturate per sample (ALES2 reused, never a wrap); an empty span is a clean no-op (no divide by zero); a span outside the samples refuses BadRange before any read or write, the clip untouched on refusal; siloed to lotus/, no gain, no coefficient, no envelope, no frequency, no snapshot, no network, no keys, no funds, no device, no speaker, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/dc_remove"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/dc_remove"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/dc_remove.rye -femit-bin=${bin}"]
 assert build.ok else "ales-dc-remove: build failed — ${build.err}"
@@ -39,3 +45,7 @@ say "ales-dc-remove: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-dc-remove' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-dc-remove: selftest did not print the GREEN ales-dc-remove line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

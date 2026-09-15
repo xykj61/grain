@@ -23,7 +23,13 @@ say "ales-rectify: Style Radiant — the law is stated positively: the rectifier
 say "ales-rectify: Lens TAME — one mono clip of i16 PCM rectified in place over a span; mag = (if x < 0 then −x else x) in i64 so negating sample_min never overflows before the pin, then y = saturate(mag) landing every output in [0, sample_max]; the map is memoryless (every output depends only on its own input); a span outside the samples refuses BadRange before any write, the clip untouched on refusal, and no other fault exists (an absolute value has no illegal parameter); siloed to lotus/, no gain, no ceiling, no delay line, no anti-aliasing, no snapshot, no network, no keys, no funds, no device, no speaker, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/rectify"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/rectify"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rectify.rye -femit-bin=${bin}"]
 assert build.ok else "ales-rectify: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-rectify: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-rectify' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-rectify: selftest did not print the GREEN ales-rectify line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

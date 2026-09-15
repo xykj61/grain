@@ -24,7 +24,13 @@ say "ales-stereo-decimate: Style Radiant — the four DRIVE corners already carr
 say "ales-stereo-decimate: Lens TAME — two bounded i16 Clips (left, right) decimated in lockstep by one shared zero-order hold; the balance invariant is asserted on entry and exit, the hold and span are bound-checked once before any write, and because those checks hold identically for both channels each mono decimation is pre-validated to succeed so no refusal can land between the two channel edits; decimate walks the span once per channel, computing each index's run anchor by flooring the offset to a whole multiple of hold and copying the anchor's already-original sample across the run (anchor at or before the index, written to itself before any later index in the run reads it), so every written value is a legal i16 by construction and no saturate is owed since the map narrows time never magnitude, never touching a byte past len so the length holds exactly; it reuses ALES83's decimate per channel over its public API and ALES83's DecimateError whole, inventing no new primitive; the stereo decimate law is proven against ALES83's own decimate run per channel and by hand, the shared-grid image law proves the antisymmetry and the ratio both hold at every held index on both channels (the honest reverse of the not-odd tube and crush), the map is idempotent, the two refusals leave both channels byte-for-byte untouched, and hold equal to one is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_decimate"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_decimate"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_decimate.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-decimate: build failed — ${build.err}"
@@ -38,3 +44,7 @@ say "ales-stereo-decimate: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-decimate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-decimate: selftest did not print the GREEN ales-stereo-decimate line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

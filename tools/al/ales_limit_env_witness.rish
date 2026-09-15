@@ -22,7 +22,13 @@ say "ales-limit-env: Style Radiant — the law is stated positively: with instan
 say "ales-limit-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; ceiling checked in [1, sample_max], both coefficients in (0, 1] by the follower's one proven rule, all before any write; the gain ceil/envelope kept in (0, 1) so every written magnitude is at most the input's, fitting i16; the above-ceiling branch (e > ceil >= 1) makes the divide always safe (the zero-envelope case the gate faced cannot arise here); a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate, no lookahead."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/limit_env"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/limit_env"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/limit_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-limit-env: build failed — ${build.err}"
@@ -45,3 +51,7 @@ let lim = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -
 assert (trim lim.out) == "yes" else "ales-limit-env: the ALES49 limiter regressed under the attack/release limiter"
 
 say "ales-limit-env: GREEN — an attack/release limiter drives ALES49's hard ceiling from ALES52's proven envelope, each sample advancing the follower one step and, when the smoothed envelope rises above the ceiling, applying the gain ceil/envelope to the raw sample; with instant attack and release it is the plain limiter byte-for-byte, below the ceiling is the identity, a loud signal's magnitude only reduces with the sign held, a slower attack lets the transient through (the knob monotone, the honest no-lookahead overshoot), the state carries so a span in two pieces equals the whole once; a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower and ALES49 limiter selftests stay GREEN. With the limiter, compressor, and gate all breathing over one proven follower, the dynamics trio is whole — the family's next rung can open a hold stage between attack and release, or a lookahead delay for a true brickwall."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

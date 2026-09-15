@@ -21,7 +21,13 @@ say "ales-graft: Style Radiant — the law is stated positively: both channels' 
 say "ales-graft: Lens TAME — timeline.splice/cut and selection.cut reused whole (no new edit, no new bound); the snapshot bounded by max_clip; the destination and capacity checked before either channel is touched so a bad graft refuses by name; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/graft"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/graft"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/graft.rye -femit-bin=${bin}"]
 assert build.ok else "ales-graft: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-graft' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-graft: selftest did not print the GREEN ales-graft line"
 
 say "ales-graft: GREEN — a keeper copies and moves a marked span as one across the stereo image: the graft snapshots before it mutates, so an overlapping copy reads the original audio; the same span lands in both channels in lockstep; a move re-bases its destination and keeps the net length unchanged. The next Lotus rung can offer the choice of law where a crossfade meets a grafted edit, a named clipboard so a span survives across masters, or carry a grafted span across the ALES0 audio wire as its own framed payload."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

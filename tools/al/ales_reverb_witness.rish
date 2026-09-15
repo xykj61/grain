@@ -25,7 +25,13 @@ say "ales-reverb: Style Radiant — the law is stated positively: wet = series_a
 say "ales-reverb: Lens TAME — one bounded i16 Clip, a u32 span, and two bounded slices of plain-fraction stage specs (up to max_stages combs and allpasses); each comb run on one bounded whole-clip copy through ALES66's echo, the comb-bank sum accumulated in one bounded [max_clip]i16 scratch and saturated once, each allpass run through ALES184's own bounded snapshot. Every stage and the span are validated up front through the stages' own precheck (NoCombs, TooManyStages, BadDelay, BadGain, BadRange) BEFORE any write, so the reverb is atomic — a bad late stage leaves the clip untouched; it writes values only and never a length; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/reverb"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/reverb"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb: build failed — ${build.err}"
@@ -39,3 +45,7 @@ say "ales-reverb: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-reverb: selftest did not print the GREEN ales-reverb line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

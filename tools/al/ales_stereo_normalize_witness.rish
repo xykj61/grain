@@ -22,7 +22,13 @@ say "ales-stereo-normalize: Style Radiant — the rule is stated positively: ref
 say "ales-stereo-normalize: Lens TAME — two bounded i16 Clips (left, right) scaled in lockstep by one shared gain; the balance invariant is asserted on entry and exit, the target is bound-checked before any read, and the both-silent path returns before the division so the denominator is always the measured non-zero master peak; measure_stereo reads both channels read-only through ALES13, peak reads the loudest of each, the max is taken as the master peak, and gain is run on each channel over the whole span [0, len) with the shared numerator target and shared denominator master_peak, so no BadRange and no BadGain can land and the forwarded EditError is honestly unreachable; the linked-scale law is proven against ALES2's own gain run with the shared denominator per channel, the master-peak law re-measures both channels and checks the max across four masters (loud channel left, loud channel right, the domain-ceiling floor, an alternating pair) at five targets, the image-preserving law proves a 2:1 field keeps its ratio and trips a guard if the right ever reaches the target, and the two BadTarget refusals leave both channels byte-for-byte untouched; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_normalize"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_normalize"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_normalize.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-normalize: build failed — ${build.err}"
@@ -36,3 +42,7 @@ say "ales-stereo-normalize: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-normalize' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-normalize: selftest did not print the GREEN ales-stereo-normalize line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

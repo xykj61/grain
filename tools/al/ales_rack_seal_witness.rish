@@ -22,7 +22,13 @@ say "ales-rack-seal: Style Radiant — the law is stated positively: a sealed sl
 say "ales-rack-seal: Lens TAME — rack_sheet.render_rack / parse_rack reused whole (the seal adds only the digest layer, no new grammar); the digest is a full Sha256 rendered 64 hex wide; a malformed header or digest line refuses BadRecord (structural), a body that no longer matches its digest refuses DigestMismatch (content), each before a slot is parsed; the seal proves a sheet arrived whole, not who wrote it — no signature, no key; siloed to lotus/, no network, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/rack_seal"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/rack_seal"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_seal.rye -femit-bin=${bin}"]
 assert build.ok else "ales-rack-seal: build failed — ${build.err}"
@@ -38,3 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-seal' ${outfile} && echo ye
 assert (trim green.out) == "yes" else "ales-rack-seal: selftest did not print the GREEN ales-rack-seal line"
 
 say "ales-rack-seal: GREEN — a keeper's saved rack verifies before it is trusted: seal_rack writes a Sha256 over exactly the ALES33 body, verify_and_parse refuses DigestMismatch on any flipped sample or truncated tail before a single slot is parsed and BadRecord on a malformed seal, a sealed two-slot rack round-trips whole, and a too-small buffer refuses Overflow. The next Lotus rung can SIGN the seal with a Kumara key (who wrote it, not only that it arrived whole — a module seam, taken on Keaton's word), or carry a slot across the ALES0 audio wire (also Keaton's word)."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

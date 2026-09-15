@@ -23,7 +23,13 @@ say "ales-stereo-crush: Style Radiant — the four DRIVE corners already carried
 say "ales-stereo-crush: Lens TAME — two bounded i16 Clips (left, right) crushed in lockstep by one shared quantizer; the balance invariant is asserted on entry and exit, the resolution and span are bound-checked once before any write, and because those checks hold identically for both channels each mono crush is pre-validated to succeed so no refusal can land between the two channel edits; crush walks the span once per channel, flooring each sample onto the grid of step two to the sixteen minus bits in i64 (the step at most two to the fifteen so sample_min is one of its multiples and the floor never drops a legal sample past the rail), the output landing in the i16 rail by construction so the saturate that follows is a documented no-op, never touching a byte past len so the length holds exactly; it reuses ALES81's crush per channel over its public API and ALES81's CrushError whole, inventing no new primitive; the stereo crush law is proven against ALES81's own crush run per channel, the per-channel not-odd law proves every output is a grid multiple at or below its input on both channels, that the map is idempotent, and that an out-of-phase field's antisymmetry breaks under the shared grid, the two refusals leave both channels byte-for-byte untouched, and bits equal to sixteen is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_crush"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_crush"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_crush.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-crush: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-crush: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-crush' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-crush: selftest did not print the GREEN ales-stereo-crush line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

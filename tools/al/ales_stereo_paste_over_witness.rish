@@ -23,7 +23,13 @@ say "ales-stereo-paste-over: Style Radiant — the rule is stated positively: ru
 say "ales-stereo-paste-over: Lens TAME — two bounded i16 Clips (left, right) whose named span is overwritten in lockstep; the payload is bounded once against max_clip before it names a u32 size, its two sides checked equal, and the write is checked without underflow against the common channel length once up front (at against len, count against the remainder), so every refusal comes by name before any write and the channels can never desynchronise; paste_over writes values only in one bounded in-place pass, no second buffer, so each channel holds its starting length and balance is preserved; it reuses ALES2's EditError whole and ALES114's paste_over per channel over its public API, inventing no new primitive; the stereo overwrite law is proven against ALES114's own paste_over run per channel, and the insert-contrast law sets it beside ALES116's stereo_replace(count 0); siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_paste_over"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_paste_over"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_paste_over.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-paste-over: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-paste-over: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-paste-over' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-paste-over: selftest did not print the GREEN ales-stereo-paste-over line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

@@ -21,7 +21,13 @@ say "ales-stereo-notch: Style Radiant — the stereo EQ and filter class now has
 say "ales-stereo-notch: Lens TAME — two bounded in-process i16 Clips (left, right), each notched through ALES47's own two scratch bands, every band sum run in i64 so nothing overflows before the single clamp per channel; the two channels enter balanced (the StereoClip invariant asserted on entry) and leave balanced (a notch writes values only, each length asserted equal and within bound on exit); both cutoffs and the span are validated once against the shared length before either channel is mutated, so a refusal never notches one channel and leaves the other torn; StereoNotchError is ALES47's ToneError (BadCoeff, BadRange) reused whole, the stereo lift adding no fault. The stereo notch law is proven by running both stereo_notch and ALES47's mono notch on the same per-channel content and demanding byte-for-byte equality on both channels while the two channels genuinely differ; the zero-width and direct-current law proves equal cutoffs are the input byte for byte on both and that a settled constant survives on each channel; the complement law proves the notch is neither the input, nor a plain low-pass, nor a plain high-pass, nor ALES172's band-pass on the same cutoffs; and the image, balance, silence, atomicity, and degenerate cases prove an identical-channel master staying identical, an all-silent master staying silent on both, the length held, each of the three refusals leaving both channels untouched and balanced, and an empty span the identity on both; siloed to lotus/, the cutoffs over sample indices rather than crossovers in hertz, no real sample rate, no anti-aliasing, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_notch"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_notch"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_notch.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-notch: build failed — ${build.err}"
@@ -35,3 +41,7 @@ say "ales-stereo-notch: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-notch' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-notch: selftest did not print the GREEN ales-stereo-notch line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

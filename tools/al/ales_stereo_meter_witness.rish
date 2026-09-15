@@ -21,7 +21,13 @@ say "ales-stereo-meter: Style Radiant — the law is stated positively: two mete
 say "ales-stereo-meter: Lens TAME — one ALES13 Meter per channel reused whole (no new arithmetic); the two blocks are one length from ALES15's read_block (asserted); feed forwards ALES13's MeterFull edge check; read-only, mutating neither channel; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_meter"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_meter"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_meter.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-meter: build failed — ${build.err}"
@@ -37,3 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-meter' ${outfile} && echo
 assert (trim green.out) == "yes" else "ales-stereo-meter: selftest did not print the GREEN ales-stereo-meter line"
 
 say "ales-stereo-meter: GREEN — two meters read both channels of a stereo master in lockstep off the one head, block-invariance holding per channel over the stereo transport. With play, loop, and meter all stereo, the read side is genuinely two-channel end to end. The next Lotus rung can name a scrub window, meter a looping stereo region, or (a module seam) a punch region tying playback back to capture."
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

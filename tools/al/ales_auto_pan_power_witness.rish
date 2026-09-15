@@ -27,7 +27,13 @@ say "ales-auto-pan-power: Style Radiant — the law is stated positively as a re
 say "ales-auto-pan-power: Lens TAME — one mono clip of i16 PCM rendered to a two-channel StereoClip, the scaled non-negative position centre/depth, and a u32 period; each weight is a non-negative amplitude ≤ glide_scale (isqrt monotone, glide_scale² its cap), so the triangle runs in i64, the equal-power split in u64 (ALES11's bounded isqrt), and each write saturates once — a proven no-op, since every channel is an attenuation of an in-range sample (the tremolo's non-negative kin, not the ring modulator's bipolar one); a period not a positive multiple of four (or past max_clip) refuses BadPeriod, a negative depth or a swing floor past hard-left BadDepth, a swing top past hard-right BadPan, all before any write, src and out untouched on refusal; there is NO BadGain, NO BadDelay, NO BadRange on a span; the source is READ-ONLY; siloed to lotus/, the position in scaled units and the period in samples, no delay line, no snapshot, no lookahead, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/auto_pan_power"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/auto_pan_power"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/auto_pan_power.rye -femit-bin=${bin}"]
 assert build.ok else "ales-auto-pan-power: build failed — ${build.err}"
@@ -41,3 +47,7 @@ say "ales-auto-pan-power: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-auto-pan-power' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-auto-pan-power: selftest did not print the GREEN ales-auto-pan-power line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"

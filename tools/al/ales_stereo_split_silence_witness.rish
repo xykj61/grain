@@ -23,7 +23,13 @@ say "ales-stereo-split-silence: Style Radiant — ALES97 splits a mono clip at i
 say "ales-stereo-split-silence: Lens TAME — two bounded i16 Clips (left, right) read through one shared frame length, band, floor, and split; the balance invariant is asserted on entry, and all validation runs once up front through ALES147's segment_stereo (ALES92's precheck for band and span, the floor against meter's sample_peak_max, the frame-length divisibility) read-only before a single take is named, so a refusal leaves out empty and both channels untouched; the forward pass advances one monotonic cursor per channel across its own tiling run list, decides each frame jointly-silent only where it is silent in both, and coalesces consecutive not-jointly-silent frames into one shared StereoTake (a start-and-count span into both channels, sized by max_stereo_takes = the segmenter's own run ceiling), asserting each cursor names the run covering the frame start and that the extension stays contiguous; stereo_take_clip materializes the index-th take into a fresh balanced StereoClip by copying both channels' samples over the shared span through ALES2's splice, asserting the destination begins empty and leaves balanced; the stereo take law is proven against an independent by-hand reference (a second implementation reading frame verdicts by run scan and coalescing by hand) across eight frame lengths, four floors, and three splits, the join law proves the takes re-joined per channel equal ALES148's stereo_trim_silence byte for byte, the preservation law proves a left-silent right-loud frame keeps its take, and the degenerate and atomicity cases leave out empty; StereoSegmentError and EditError reused whole plus a named-honest TakesFull, siloed to lotus/, the split reading only, copying whole samples and fabricating none, no adaptive floor, no real sample rate, no network, no keys, no funds, no device, no speaker."
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "lotus/bin/stereo_split_silence"
+# THE BINARY LANDS IN A PEN, NEVER A SHARED PATH IN THE TREE (REDS %700). A fixed path is
+# one name every run in this checkout writes: one run EXECUTES it while another's linker
+# opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
+# bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
+let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
+assert pen.ok else "could not make a build pen: ${pen.err}"
+let bin = "${pen.out}/stereo_split_silence"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_split_silence.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-split-silence: build failed — ${build.err}"
@@ -37,3 +43,7 @@ say "ales-stereo-split-silence: ${shown.out}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-split-silence' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-split-silence: selftest did not print the GREEN ales-stereo-split-silence line"
+
+# The pen is swept here rather than left for the next run to meet.
+let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"
