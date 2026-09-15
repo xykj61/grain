@@ -42,6 +42,21 @@ Canon: `foundations/20260725-034254_always-in-it-responsive-rhythm.md` - `contex
 
 **References are promises.** Before moving or renaming a file, grep the tree for its inbound references and repoint every one. A canonical reference -- a file many others cite -- keeps its stable name and is affirmed in place rather than renamed.
 
+**A link makes two promises, and the repoint keeps one.** A link written in this tree's own
+shape carries a backticked path as its visible text and a relative path as its target. The target
+promises *this opens*; the visible text promises *this is where it lives*, and a reader
+takes the second in at the door -- copying it into a grep or a message to a peer long before anyone
+clicks. Every fold tool and every link guard reads the target alone, so a room move rewrites the
+target and leaves the anchor at its pre-move spelling, with every guard green. Proven on this tree's
+own history: `20260828` commit `d3ce030b4` rewrote targets inside
+[`context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) and touched no anchor on the same line.
+**Repoint both halves**, and read what stands with
+[`tools/fixtures/l/link_text_promise_scan.sh`](../../tools/fixtures/l/link_text_promise_scan.sh)
+(`--list` names each one), gated as a ratchet by
+[`tools/l/link_text_promise_witness.rish`](../../tools/l/link_text_promise_witness.rish). It stood at
+**69 living anchors across 15 pages** on `20260915.183000`, a **walled** figure that only falls, and
+dated testimony keeps every word it wrote.
+
 ## Organizing
 
 Active work rests one level deep; deferred yet alive work moves to `yonder/` (forward-pointing); finished-and-historical work moves to `archive/` (backward-pointing). Age is a hint; relevance and inbound citation outrank the stamp. Affirming a kept file is a single touch: strip its dead `NNN -` prefix, lead the title with the sprig's concept, re-date `Last updated`, add the reviewed-and-kept line, and lightly freshen the Radiant voice where it has drifted. No rename, no reference change.
