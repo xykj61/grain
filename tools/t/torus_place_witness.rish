@@ -1,0 +1,131 @@
+# tools/t/torus_place_witness.rish -- the second axis of a torus buys nothing a ring cannot buy.
+#
+# WHY THIS RUNG. tools/t/torus_fold_witness.rish killed the adjacency half of row 5 of
+# active-designing/20260910-060204_the-bounded-torus-moonshots.md and left the row alive on a
+# remainder: even shards at any grid, and a bounded four-neighbour replica set uniform at every
+# cell. That witness names the open question in its own last paragraph -- "whether a torus is a
+# good placement scheme, which is a different claim" -- and this rung answers it.
+#
+# THE ANSWER, and it is a comparison rather than a measurement of the torus alone. Every property
+# in the remainder is compared against a RING of the same cell count, because a property a line
+# also has is not a property a second axis supplies.
+#
+#   EVENNESS IS THE DIGEST'S. Read 20260915 over 511 tracked files sampled by stride, folded onto
+#   64 cells two ways: chi-squared 74.02 for the torus and 73.02 for the ring, against a p=0.001
+#   critical value of 103.51 at 63 degrees of freedom. Both even. The two folds read DIFFERENT bits
+#   and agree on where to put a name 8 times out of 511, against the 7.98 agreements chance alone
+#   gives -- so they are genuinely different functions reading equally even. Evenness came from
+#   SHA3-512, and neither shape contributed to it.
+#
+#   UNIFORMITY IS VERTEX-TRANSITIVITY'S. Every cell of a torus has four neighbours and every cell
+#   of a ring has four within distance two, so both replica sets are uniform at every cell with no
+#   edge case. That is geometry rather than a finding, and it is stated here rather than measured.
+#
+#   WHAT IS LEFT IS SPREAD, AND THE RING WINS IT. What actually separates two placement rules is
+#   where the replicas SIT in the linear storage order. The shortest contiguous run of storage
+#   indices whose loss destroys every copy of some cell, computed over every cell at a 64-cell
+#   grid: the torus survives 17, a ring taking its nearest four survives 5, and a ring free to
+#   choose offsets of one and two rows survives 33. All three match their closed forms of 2g+1, 5
+#   and 4g+1 exactly. The wide ring survives a run nearly twice as long as the torus, so the second
+#   axis is not merely matched on spread -- it is beaten by one axis choosing better offsets.
+#
+#   THE CONCLUSION ROW 5 EARNS. What a torus supplies is a FIXED offset set, {1, g}, handed down by
+#   its shape. A ring supplies whatever offsets are chosen. The property worth keeping is that
+#   replicas sit far apart in the storage order, which is declustering, and it needs no torus.
+#
+# WHAT IS GATED HERE, and what is only reported. The control, and the live reading's ARITHMETIC:
+# the three run-kill lengths must match their closed forms, and the wide ring must out-survive the
+# torus. Those are facts about a grid and a ring rather than about this tree, so they cannot move
+# under it. The live EVENNESS verdict is reported rather than gated: a p=0.001 test taken twice
+# refuses about one run in five hundred on a digest that is behaving correctly, and a gate that
+# reds at its own stated error rate is a gate somebody turns off.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/t/torus_place_control.sh -- 29 behaviors on planted
+# digest populations in a throwaway pen:
+#
+#   AN EVEN POPULATION reads even on both folds, falls in imbalance as names arrive, and passes,
+#     so the passing verdict is reachable rather than constant.
+#   A CLUSTERED POPULATION refuses on BOTH folds, which is the reading's own falsifier fired.
+#   IDENTICAL DIGESTS land in two different cells, which is the agreement counter shown at zero
+#     beside its chance-rate reading on the even population.
+#   A POPULATION TOO SMALL is unreadable and claims no evenness either way, rather than guessing.
+#   THE CLOSED FORMS are checked against the measurement at the grid where all five copies are
+#     distinct, and NAMED ABSENT at the grid where the wide ring aliases around a short cycle --
+#     a precondition rather than a refusal, proven by the instrument still passing there.
+#   THREE MUTATIONS, each proven landed by cmp before its reading: the aliasing precondition cut,
+#     the spread comparison reversed, and one fold made to answer yes whatever it read.
+#
+# WHAT IT LEAVES TO OTHERS. Whether a non-cryptographic key could carry locality worth folding,
+# which is row 5's one surviving door and wants a key nobody has proposed. Whether contiguous-run
+# loss is the failure model a given medium has. And the real store, which this reading never opens.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260915-175000_the-axis-that-carried-nothing.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/torus_place_witness.rish
+
+say "torus-place: Language EN -- a shape earns its keep against the simpler shape beside it."
+say "torus-place: Style Gauge, Meter -- every figure names its population and the grid it was read at."
+say "torus-place: Lens TAME -- bound the sample, derive the closed form, prove the verdict both ways."
+
+let control = run ["sh" "tools/fixtures/t/torus_place_control.sh"]
+say control.out
+assert control.ok else "torus-place: the control must complete -- its own lines are printed above"
+
+# The passing case, so the live verdict is a reading rather than a constant.
+assert control.out contains "even: the torus fold reads even" else "torus-place: an even population must reach the even reading"
+assert control.out contains "even: the ring fold reads even too" else "torus-place: the ring is read as hard as the torus, or the comparison is decoration"
+assert control.out contains "even: imbalance falls as names arrive" else "torus-place: the growth reading must be reachable"
+assert control.out contains "even: the instrument passes its own gate" else "torus-place: the passing verdict must be reachable from a planted population"
+
+# The falsifier, fired on both folds.
+assert control.out contains "clustered: the torus fold refuses" else "torus-place: a clustered population must fire the falsifier"
+assert control.out contains "clustered: the ring fold refuses beside it" else "torus-place: clustering planted on the leading bytes must be seen by both folds"
+assert control.out contains "clustered: the instrument refuses" else "torus-place: a fired falsifier must reach the verdict"
+
+# The two folds are different functions, shown at both ends of the agreement counter.
+assert control.out contains "one cell: identical names still land in two different cells" else "torus-place: the two folds must be shown to be different functions"
+assert control.out contains "even: the folds agree at chance rather than by construction" else "torus-place: the agreement counter must read chance on an even population"
+
+# A reading that cannot be taken is declined rather than guessed.
+assert control.out contains "too few: the scan declines rather than guessing" else "torus-place: too small a population is unreadable"
+assert control.out contains "too few: and claims no evenness either way" else "torus-place: an unreadable population must claim nothing"
+assert control.out contains "empty: an empty population is unreadable" else "torus-place: an empty population is unreadable rather than clean"
+
+# The closed forms, and the precondition beneath them.
+assert control.out contains "g=8: the torus run-kill length is 2g+1" else "torus-place: the torus closed form must be checked against the measurement"
+assert control.out contains "g=8: the near ring holds five" else "torus-place: the near ring closed form must be checked"
+assert control.out contains "g=8: the wide ring holds 4g+1" else "torus-place: the wide ring closed form must be checked"
+assert control.out contains "g=8: the second axis buys no spread" else "torus-place: the comparison this rung exists for must be reachable"
+assert control.out contains "g=4: the wide ring aliases, so its closed form is named absent" else "torus-place: a closed form outside its precondition is named absent"
+assert control.out contains "g=4: a precondition is not a refusal" else "torus-place: a precondition must not red the instrument"
+
+# The mutations, each proven landed before its reading is believed.
+assert control.out contains "m_closed: the mutation applied" else "torus-place: a plant that changed no byte tests the real scan twice"
+assert control.out contains "m_closed: without the precondition an aliasing grid refuses" else "torus-place: the precondition must be load-bearing"
+assert control.out contains "m_compare: the mutation applied" else "torus-place: the comparison plant must land before its reading"
+assert control.out contains "m_compare: the spread verdict is read off the two numbers" else "torus-place: the spread verdict must come from the measurement rather than from a constant"
+assert control.out contains "m_even: the mutation applied" else "torus-place: the evenness plant must land before its reading"
+assert control.out contains "m_even: a fold that always answers yes still refuses on the ring half" else "torus-place: both folds must reach the verdict independently"
+
+assert control.out contains "legs_expected=29" else "torus-place: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_fail=0" else "torus-place: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "torus-place: the control must balance before it is believed"
+
+# The live reading, on the tree's own bytes.
+let live = run ["sh" "tools/fixtures/t/torus_place_scan.sh" "--names" "256" "--grid" "8"]
+say live.out
+assert live.ok else "torus-place: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=torus_place" else "torus-place: the reading names its own instrument"
+assert live.out contains "source=git_ls_files" else "torus-place: the live population is the tree's own tracked bytes"
+assert live.out contains "chi_critical=" else "torus-place: the critical value is published beside the statistic it judges"
+assert live.out contains "runkill_torus4=17" else "torus-place: the torus run-kill length at a 64-cell grid is 2g+1"
+assert live.out contains "runkill_ring4adj=5" else "torus-place: the near ring survives a run of five"
+assert live.out contains "runkill_ring4wide=33" else "torus-place: the wide ring survives 4g+1, which is the whole finding"
+assert live.out contains "runkill_closed_forms_hold=yes" else "torus-place: every measured run-kill length must equal its closed form"
+assert live.out contains "second_axis_buys_spread=no" else "torus-place: a ring free to choose offsets out-survives the grid"
+assert live.out contains "folds_agree_expected=" else "torus-place: the agreement counter publishes the chance rate it is read against"
+assert live.out contains "growth_prefix_4" else "torus-place: imbalance under growth is published at four prefixes"
+
+say "GREEN: torus-place -- 29 behaviors, both verdicts reachable from planted populations, three closed forms matched by measurement, three mutations bitten, and the comparison that leaves row 5 holding a ring."
