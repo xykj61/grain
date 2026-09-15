@@ -1,0 +1,42 @@
+# tools/g/glow_gate_law_agree_witness.rish -- a Glow gate's wall still says what Rye says.
+#
+#   rishi/bin/rishi run tools/g/glow_gate_law_agree_witness.rish
+#
+# A Glow gate desk decides a module's law at the door by MEMORIZING its number, while the Rye
+# module holds the declaration. Every other guard over these desks runs the gate twice and proves
+# it DECIDES on both sides of the wall it carries -- which stays true after the Rye constant moves
+# and the desk does not. This witness reads the two together.
+#
+# Scan: tools/fixtures/g/glow_gate_law_agree_scan.sh -- control: the sibling _control.sh, 40 legs
+# on planted desk rooms in a throwaway pen, three mutations proven to bite.
+
+say "glow_gate_law_agree: Language EN -- each linked Glow gate wall against the Rye const it names."
+
+let scan = run ["sh" "tools/fixtures/g/glow_gate_law_agree_scan.sh"]
+assert scan.out contains "verdict=" else "glow_gate_law_agree: the scan printed no verdict -- an instrument that cannot answer refuses rather than passing"
+assert scan.ok else "glow_gate_law_agree: a Glow gate wall disagrees with the Rye constant it names -- ${scan.out}"
+assert scan.out contains "verdict=ok" else "glow_gate_law_agree: scan did not read ok -- ${scan.out}"
+
+# The four gates, each named so a reader of this witness knows what is held at zero without
+# opening the scan. Reading them back separately also catches a scan that prints ok while a
+# counter it stopped incrementing reads blank.
+assert scan.out contains "law_malformed=0" else "glow_gate_law_agree: a law line is not <file> <const> below|atmost|exact"
+assert scan.out contains "law_unresolved=0" else "glow_gate_law_agree: a linked desk names a const no module declares as a plain integer"
+assert scan.out contains "head_disagree=0" else "glow_gate_law_agree: a desk head restates its law at a number the Rye const no longer holds"
+assert scan.out contains "body_disagree=0" else "glow_gate_law_agree: a desk wall literal disagrees with its declared relation to the Rye const"
+
+# The population must not read empty. A scan whose file list came back blank prints four honest
+# zeros and verdict=ok, which is exactly what a healthy tree prints -- so the counts are read back
+# and asserted positive, since a reader that stopped reading is invisible from its own output.
+let walls = run ["sh" "-c" "sh tools/fixtures/g/glow_gate_law_agree_scan.sh | grep -q '^walls=0' && echo no || echo yes"]
+assert (trim walls.out) == "yes" else "glow_gate_law_agree: the scan found no wall-memorizing desk at all, which reads like a broken reader rather than a clean tree"
+
+let linked = run ["sh" "-c" "sh tools/fixtures/g/glow_gate_law_agree_scan.sh | grep -q '^linked=0' && echo no || echo yes"]
+assert (trim linked.out) == "yes" else "glow_gate_law_agree: no desk is linked to a Rye const, so the four gates above hold nothing"
+
+let control = run ["sh" "tools/fixtures/g/glow_gate_law_agree_control.sh"]
+assert control.ok else "glow_gate_law_agree: the pen control failed -- ${control.out}"
+assert control.out contains "control_failed=0" else "glow_gate_law_agree: a control leg failed -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "glow_gate_law_agree: the control reached no verdict -- ${control.out}"
+
+say "GREEN: glow_gate_law_agree -- every linked gate wall agrees with the Rye const it names."
