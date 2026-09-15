@@ -22,7 +22,7 @@ cat > "$pen/bin/runner" <<'R'
 case "$*" in *fails*) exit 1 ;; *) exit 0 ;; esac
 R
 chmod +x "$pen/bin/runner"
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 export WITNESS_FAMILY_RUNNER="$pen/bin/runner"
 run() { sh "$scan" --dir tools/x --prefix demo "$@" 2>&1 || true; }
 

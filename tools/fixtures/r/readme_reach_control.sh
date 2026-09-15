@@ -50,7 +50,7 @@ check() {
 
 # The scan reads paths relative to the working directory, so each case runs inside its own tree.
 build() {
-  rm -rf "$pen/t"; mkdir -p "$pen/t"; cd "$pen/t"
+  rm -rf "$pen/t"; mkdir -p "$pen/t"; cd "$pen/t" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 }
 
 verdict_of() { printf '%s\n' "$1" | sed -n 's/^verdict=//p'; }

@@ -24,7 +24,7 @@ pass=0; fail=0
 check() { if [ "$3" = "$2" ]; then pass=$((pass+1)); else fail=$((fail+1)); printf 'FAIL %s -- wanted %s, got %s\n' "$1" "$2" "$3" >&2; fi; }
 has() { case "$1" in *"$2"*) echo yes ;; *) echo no ;; esac; }
 
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q .
 git config user.email pen@example.invalid
 git config user.name pen

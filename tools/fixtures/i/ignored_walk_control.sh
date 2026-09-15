@@ -27,7 +27,7 @@ leg() {
 fresh() {
   rm -rf "$PEN/t"
   mkdir -p "$PEN/t/tools/fixtures/z"
-  cd "$PEN/t"
+  cd "$PEN/t" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   git init -q .
   git config user.email pen@example.invalid
   git config user.name Pen

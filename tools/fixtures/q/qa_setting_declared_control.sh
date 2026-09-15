@@ -21,7 +21,7 @@ check(){ if [ "$2" = "$3" ]; then ok; else bad "$1 -- wanted [$3] read [$2]"; fi
 pen=$(mktemp -d "${TMPDIR:-/tmp}/qa-setting-pen.XXXXXX")
 trap 'rm -rf "$pen"' EXIT INT TERM
 
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q . 2>/dev/null
 git config user.email pen@example.invalid
 git config user.name "pen"

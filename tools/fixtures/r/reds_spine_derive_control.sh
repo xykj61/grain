@@ -48,7 +48,7 @@ row() { # number stamp headline
 }
 
 newpen() { # build a repo whose `anointed` branch holds rows 1 and 2
-  rm -rf "$pen/r"; mkdir -p "$pen/r"; cd "$pen/r"
+  rm -rf "$pen/r"; mkdir -p "$pen/r"; cd "$pen/r" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   git init -q .
   git config user.email pen@example.invalid
   git config user.name Pen

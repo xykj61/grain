@@ -158,7 +158,7 @@ git reset --quiet --hard HEAD~1
 # welcome every later push, because no lap may repair what is already shared (derived-spine rule 3).
 git clone --quiet "$pen/up.git" "$pen/rogue"
 (
-  cd "$pen/rogue"
+  cd "$pen/rogue" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   git config user.email rogue@example.invalid
   git config user.name "Rogue Hand"
   git config commit.gpgsign false

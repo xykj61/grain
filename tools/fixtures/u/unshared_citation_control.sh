@@ -30,7 +30,7 @@ echo "shared_max=${SPINE_SHARED:-500}"
 SPINE
 chmod +x "$pen/tools/fixtures/r/reds_spine_derive_scan.sh"
 
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q .
 git config user.email pen@example.invalid
 git config user.name pen

@@ -65,7 +65,7 @@ mkdir -p "$pen/vendor/upstream"
 : > "$pen/vendor/upstream/foreign.rye"
 
 git -C "$pen" add -A >/dev/null 2>&1
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 flat_out="$(sh "$scan" list 2>&1 || true)"
 
 # Now plant exactly one file one level down inside the flat room.
@@ -97,7 +97,7 @@ unlinked_out="$(sh "$scan" list 2>&1 || true)"
 # proves it is not.
 own_broken="$work/own_broken_scan.sh"
 sed 's|own=$(printf .%s\\n. "$own_sources" . grep -c "\^\$room/" .. true)|own=0|' "$scan" > "$own_broken"
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 own_out="$(sh "$own_broken" 2>&1 || true)"
 own_code=0
 sh "$own_broken" >/dev/null 2>&1 || own_code=$?
@@ -118,7 +118,7 @@ sh "$scan" >/dev/null 2>&1 || vacuum_code=$?
 # phase exists.
 broken="$work/broken_scan.sh"
 sed 's|grep -c "\^\$room/\[\^/\]\*/"|grep -c "^$room/never-matches-anything/"|' "$scan" > "$broken"
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git -C "$pen" add -A >/dev/null 2>&1
 mkdir -p "$pen/alpha/src"
 : > "$pen/alpha/src/hidden.rye"
