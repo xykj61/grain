@@ -82,3 +82,9 @@ stamp 20260915.174817
 epoch 1789508897
 paths tools/fixtures/t/torus_place_scan.sh tools/fixtures/t/torus_place_control.sh tools/t/torus_place_witness.rish active-designing/20260915-175000_the-axis-that-carried-nothing.md
 what Read whether the SECOND AXIS of a torus fold buys anything for placement over a ring of equal cell count, which the elder torus_fold scan names as the claim it does not touch.
+claim bakery-ryekey-compiler-price
+seat bakery
+stamp 20260915.175203
+epoch 1789509123
+paths rye/src/main.rye tools/r/ryekey_witness.rish tools/fixtures/r/ryekey_control.sh
+what Price the build receipt's own key: every rye build reads 172 MB of compiler bytes, and the reading costs more than the compile it may skip.
