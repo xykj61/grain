@@ -59,7 +59,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f5875d0439` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `30f5895233` -- this follow-up's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -68,6 +68,29 @@ The product cards carry the complete ladders:
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
+**DIFFUSER -- THE KEY THAT CARRIES LOCALITY SELLS TWO THINGS FOR IT.** **WATER TASTES** (row 3,
+N=4928): taste whether the flow is sweet or off. Both torus readings closed on the same unproposed
+idea -- a key built to carry locality on purpose -- and it stood open in two papers and no lap. It
+is priced now. The crudest locality key there is, a file's leading two bytes, **buys** what it
+promises: it survives a one-byte edit at offset 32 for every probe while the digest survives none,
+and two files from one room sit **0.395** cells apart against the digest's **16.509** and the
+**16.000** two uniform keys give. It **sells evenness** -- chi-squared **13149.11** against a
+p=0.001 critical **103.51**, where the digest reads **63.49** -- and it **sells the room**: an
+observer holding keys alone places **0.5333** of files correctly against a no-key baseline of
+**0.3471** over 42 rooms. **The finding:** these are one quantity read three ways, so the avalanche
+both torus readings ran into is what BUYS the other two. **Every figure here is FREE** -- run
+`sh tools/fixtures/l/locality_key_scan.sh` rather than reading them; the paper's own clause was
+written at 510 names on `20260915` and this one re-read the same population on landing.
+`locality_key` is GREEN on metal at 43 of 43 legs with four mutations bitten, seated at tier lap.
+No real store, wire, or index was opened, and the proposal that follows -- keep the avalanche key,
+put locality in a separately protected index -- waits on a design that wants neighbour lookup.
+**THE LAP THAT BUILT IT NEVER LANDED IT.** Its whole record -- paper, scan, control, witness, log --
+stood in the dead-letter box on no ref, the sixth firing of the loom the `175931` account named.
+Recovered and landed here, witness re-run on metal rather than trusted.
+**YOURS:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
+and this seat's own baton name moonshots and whitepaper research. Two living pins, two lanes, one
+ship. Which stands?
+
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.**
 Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=4674, hand-advanced past my own last row): listen for the claim a page
@@ -129,7 +152,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f5875d0439`.
+**Git nib:** `30f5895233`.
 
 ### Incense -- product captain
 

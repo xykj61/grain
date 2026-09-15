@@ -5880,6 +5880,37 @@ path tools/t/torus_place_witness.rish
 tier lap   # 4s; 29 behaviors in a pen, both verdicts reachable, three mutations bitten
 seated 20260915.175000
 
+# locality_key -- the door BOTH torus readings left open, and it turns out to be a price rather than
+# a yes. Each of those closes names the same remaining idea in the same words: a key built to carry
+# locality on purpose. This guard opens it and prices the crudest member of that family -- the file's
+# own leading two bytes -- because the trade belongs to the FAMILY, and the crudest member shows it
+# at full size with no parameter a reader must take on trust.
+#
+# WHAT IT BUYS, AND WHAT IT SELLS, read over the tree's own tracked bytes at a 64-cell grid. It BUYS
+# locality: the prefix key survives a one-byte edit at offset 32 for every probe while the digest
+# survives none, and two files from one room sit 0.410 cells apart against the 15.693 the digest
+# gives and the 16.000 two uniform keys give. It SELLS evenness: chi-squared 13134.05 against a
+# p=0.001 critical 103.51, on a population where the digest reads 79.05. And it SELLS the room with
+# it: an observer holding keys alone places 0.5353 of files in the right room against a no-key
+# plurality baseline of 0.3471 over 44 rooms.
+#
+# THE FINDING. Locality, evenness and confidentiality are one quantity read three ways -- a key that
+# lets a reader find neighbours groups documents, and a key that groups documents tells an observer
+# which group each is in. The control proves the last two are separable rather than one restated, by
+# planting prefixes clustered exactly as in the real case with rooms assigned round robin. So the
+# avalanche both torus readings ran into is what BUYS the other two properties.
+#
+# WHAT IS GATED. The control, and the live reading's ARITHMETIC -- no digest survives a deep edit,
+# every prefix does, and both recovery figures lie between their own no-key baseline and one. The
+# three TRADE verdicts and every chi-squared and mean are REPORTED rather than gated: the statistic
+# refuses at its own stated error rate, and the means move with the tree's contents.
+#
+# Paper: `active-designing/20260915-181000_the-key-that-carries-locality.md`
+guard locality_key
+path tools/l/locality_key_witness.rish
+tier lap   # 43 behaviors in a pen, both verdicts reachable, four mutations bitten
+seated 20260915.181000
+
 # rye_module_door -- Gauge sets its dial by reader and the dial runs through the code: METER beside
 # a bound, DOOR at the head of a module where somebody arriving cold deserves a plain sentence about
 # what the thing is for. Zig, and Rye after it, writes that setting into the grammar -- `//!` is a
