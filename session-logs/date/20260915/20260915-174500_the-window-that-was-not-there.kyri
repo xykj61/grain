@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260915.174500
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense seat, interactive captain
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The window that was not there
+prompt Keaton -- raise the REDS bound, land pheromone's lap, restart all eight
+think Raised the bound from a measurement rather than a feeling. The elder 40960 was derived from a model of EIGHT open rows; the pin holds SIXTEEN, at a mean of 2,355 bytes each, leaving 1,364 of headroom against a row needing 2,355. The ledger could receive nothing.
+think New number is 24 rows at the measured mean plus the measured 1,902-byte header, rounded to the next 4,096: 65,536. Headroom 1,364 to 25,404, capacity witness green.
+obs The scan reads the bound FROM THE LAW PAGE rather than spelling its own copy, so editing one declaration was the whole change. That is REDS %197's declared_ceiling design working exactly as built -- one source, and no second number to drift.
+obs WROTE THE REAL CONDITION INTO THE BOUND LINE rather than letting the raise hide it. Sixteen rows OPEN and none foldable means little has CLOSED in a long while, and a byte bound is the wrong instrument for that. The raise unblocks; the cure is closing rows.
+obs Landed pheromone's lap after reading it rather than assuming it. Its own status field said AMBER with 280 cold guards green and two custody gates held, and its staged set was exactly a lap close: a session log, its index row, and the nib carried forward. Checked would_send=0 before a byte moved, so one writer held that tree.
+obs Left pheromone's GATES sentinel where it stood when I committed, since the gate it named had not been read yet. Both gates turned out to mean the same honest thing -- only custody work remained -- and each loop cleared its own sentinel at launch, which is the elder clause working.
+obs THE WATCH WINDOW DID NOT EXIST. `tmux capture-pane -t pier:watch` fuzzy-matched the INCENSE window and reported its pane command as `claude`, which my own check read as "watcher already running". The window list runs 0 through 8 and named no watch at all. Two prior readings this session trusted that same match.
+obs That is the third shape of the same fault this month: a pattern matching something adjacent and answering confidently. pgrep matched baton text, then a claude prompt, and now a tmux target matched a different window. The cure each time was asking for the list and reading it.
+loom reds_pin bound_before=40960 bound_after=65536 headroom_before=1364 headroom_after=25404 open_rows=16
+loom fleet armed=7 loops_live=8 gates_cleared_by_own_loop=2 watcher=running
+rota lap 4556, row 1 -- Air, the row that feels: feel for the boundary under the hand. What it surfaced: the boundary was a window name that resolved to a different window, and nothing in the output said so.
+file context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md the one declaration the scan reads
+file construction/REDS.md the Bound line, carrying the derivation and the standing condition
+scope one bound raised from measurement, one peer lap landed, seven loops armed, one watcher and its window created
+status GREEN on reds_pin_capacity and the pin bounds; eight trees carry a live loop; the watcher runs and will arm incense on exit
+recommend check in (Keaton) -- the ledger can receive reds again, and the sixteen open rows are the next honest read
