@@ -1,0 +1,141 @@
+//! mantra/src/receipt_refusal_witness.rye -- every admission refusal names its field, and says so in one stable line.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt = @import("receipt_offer.rye");
+const refusal = @import("tally_receipt_refusal.rye");
+const bounds = @import("tally_receipt_offer_bounds.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(refusal).@"struct".decls) |decl| {
+        _ = &@field(refusal, decl.name);
+    }
+}
+
+fn fixture() receipt.ReceiptOfferFact {
+    return .{
+        .schema = receipt.schema_v1,
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .holder_id = "person:sample-holder", .recipient_id = "org:sample-steward",
+        .product_id = "data:weekly-pollinator-counts",
+        .product_digest = "7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a1",
+        .purpose = "habitat-planning", .value_amount = 1200,
+        .value_unit = "USD-cent-simulated", .value_basis = "one-purpose license offer",
+        .return_kind = "service-credit", .issued_at = 1_789_228_800,
+        .expires_at = 1_791_820_800, .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v1",
+    };
+}
+
+var line_buffer: [refusal.max_refusal_line_bytes]u8 = undefined;
+
+/// Read the refusal a fresh log would state for this fact, render it, and assert
+/// the whole line. Rendering the WHOLE line rather than one field is deliberate:
+/// a test that checks the reason alone passes while the field name is wrong.
+fn refusal_line(fact: receipt.ReceiptOfferFact, encoded_len: u32, signature_valid: bool, expected: []const u8) void {
+    const log = receipt.Log{};
+    const found = log.refusal(fact, encoded_len, signature_valid) orelse unreachable;
+    const rendered = found.render(&line_buffer) catch unreachable;
+    // invariant: the rendered refusal reads exactly as the contract states it.
+    assert(std.mem.eql(u8, rendered, expected));
+    // invariant: a rendered refusal always names a field.
+    assert(std.mem.startsWith(u8, rendered, "field="));
+}
+
+/// The same refusal, asked twice: once as a record and once as the elder named
+/// error, so the two faces of one reading cannot drift apart.
+fn agrees(fact: receipt.ReceiptOfferFact, encoded_len: u32, signature_valid: bool, expected: anyerror) void {
+    const log = receipt.Log{};
+    const found = log.refusal(fact, encoded_len, signature_valid) orelse unreachable;
+    // invariant: the record's reason maps to the error the elder contract returns.
+    assert(receipt.error_of(found.reason) == expected);
+    var writable = receipt.Log{};
+    if (writable.append(fact, encoded_len, signature_valid)) |_| unreachable else |err| {
+        // invariant: append refuses with the very error the record derives.
+        assert(err == expected);
+    }
+    // invariant: a refused admission leaves the sole durable slot empty.
+    assert(writable.offer == null);
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    const fact = fixture();
+
+    // A ceiling refusal names all five things the contract asks for.
+    var bad = fact;
+    bad.purpose = "x" ** (bounds.max_purpose_bytes + 1);
+    refusal_line(bad, 512, true, "field=purpose value=81 ceiling=80 unit=ascii-byte reason=too-long");
+    agrees(bad, 512, true, error.TooLong);
+
+    // A refusal with no ceiling names the field and the reason, and stops there.
+    bad = fact;
+    bad.purpose = "";
+    refusal_line(bad, 512, true, "field=purpose reason=empty");
+    agrees(bad, 512, true, error.Empty);
+
+    // Each identifier refuses under its own name rather than under one shared word.
+    bad = fact;
+    bad.holder_id = "";
+    refusal_line(bad, 512, true, "field=holder_id reason=empty");
+    bad = fact;
+    bad.signer_id = "";
+    refusal_line(bad, 512, true, "field=signer_id reason=empty");
+
+    bad = fact;
+    bad.value_amount = bounds.max_value_amount + 1;
+    refusal_line(bad, 512, true, "field=value_amount value=9000000001 ceiling=9000000000 unit=smallest-declared-unit reason=amount-too-large");
+    agrees(bad, 512, true, error.AmountTooLarge);
+
+    refusal_line(fact, bounds.max_encoded_fact_bytes + 1, true, "field=encoded_fact value=4097 ceiling=4096 unit=byte reason=too-long");
+    agrees(fact, bounds.max_encoded_fact_bytes + 1, true, error.TooLong);
+
+    bad = fact;
+    bad.schema = "grain.receipt-offer.v0";
+    refusal_line(bad, 512, true, "field=schema reason=unknown-schema");
+    agrees(bad, 512, true, error.UnknownSchema);
+
+    bad = fact;
+    bad.value_unit = "USD-cent";
+    refusal_line(bad, 512, true, "field=value_unit reason=unsuitable-value-unit");
+    agrees(bad, 512, true, error.UnsuitableValueUnit);
+
+    bad = fact;
+    bad.expires_at = fact.issued_at;
+    refusal_line(bad, 512, true, "field=expires_at reason=invalid-expiration");
+    agrees(bad, 512, true, error.InvalidExpiration);
+
+    refusal_line(fact, 512, false, "field=signature reason=invalid-signature");
+    agrees(fact, 512, false, error.InvalidSignature);
+
+    bad = fact;
+    bad.purpose = "habitat\xffplanning";
+    refusal_line(bad, 512, true, "field=purpose reason=non-ascii");
+    agrees(bad, 512, true, error.NonAscii);
+
+    // An accepted fact refuses nothing, and the second one refuses by count.
+    var log = receipt.Log{};
+    assert(log.refusal(fact, 512, true) == null);
+    // invariant: an empty log names the missing offer rather than an empty field.
+    assert(log.replay_refusal().?.reason == .no_admitted_fact);
+    assert(std.mem.eql(u8, log.replay_refusal().?.field, "offer"));
+    if (log.replay(fact.issued_at)) |_| unreachable else |err| assert(err == error.NoAdmittedFact);
+
+    try log.append(fact, 512, true);
+    assert(log.replay_refusal() == null);
+    const second = log.refusal(fact, 512, true) orelse unreachable;
+    const rendered = try second.render(&line_buffer);
+    assert(std.mem.eql(u8, rendered, "field=receipt_facts value=2 ceiling=1 unit=fact reason=too-many-facts"));
+
+    // The record refuses a field name it cannot render inside its published line.
+    const wide: refusal.Refusal = .{ .field = "n" ** (refusal.max_field_name_bytes + 1), .reason = .empty };
+    if (wide.render(&line_buffer)) |_| unreachable else |err| assert(err == error.FieldNameTooLong);
+    var narrow: [8]u8 = undefined;
+    const ordinary: refusal.Refusal = .{ .field = "purpose", .reason = .empty };
+    if (ordinary.render(&narrow)) |_| unreachable else |err| assert(err == error.LineTooLong);
+
+    print("GREEN: receipt refusal -- every admission refusal names its field, and renders one stable line.\n", .{});
+    return 0;
+}

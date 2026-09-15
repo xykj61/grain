@@ -1092,6 +1092,19 @@ path tools/t/tally_receipt_offer_bounds_witness.rish
 tier lap
 seated 20260913.171959
 
+# Seated 20260915.180000. A named error says what KIND of refusal happened and
+# nothing else, so twelve bounded receipt fields all refused as one word `TooLong`
+# and acceptance case 6 -- refuse by the missing field's own name -- could not be
+# written. This guard holds the refusal record that carries field, value, ceiling,
+# unit, and reason, and holds the record and the elder named error to ONE reading,
+# so the two faces of a refusal cannot drift. Its control plants five drifts a
+# reason-only test would pass: a wrong field name, a crossed error mapping, a
+# crossed unit, a reordered line, and a dropped field-name bound. 14s on this pier.
+guard tally_receipt_refusal
+path tools/t/tally_receipt_refusal_witness.rish
+tier lap
+seated 20260915.180000
+
 # Seated 20260908.090000. The guard stood UNHEARD: no roster row, and its one caller
 # `tools/t/tensegral_arc_iv_witness.rish` is unrostered too, so nothing on any clock ran it. Widened
 # the same lap from a hand-listed 19 paths tested with `-e` to a population derived from the index

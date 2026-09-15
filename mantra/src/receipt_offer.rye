@@ -1,11 +1,20 @@
 //! mantra/src/receipt_offer.rye -- bounded admission and replay for one immutable receipt offer.
+//!
+//! Admission is decided ONCE, by `Log.refusal`, which returns the stable refusal
+//! record naming field, value, ceiling, unit, and reason. Every named error this
+//! module returns is derived from that one reading, so the order of checks is
+//! stated in a single place and the two answers can never disagree.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const bounds = @import("tally_receipt_offer_bounds.rye");
+const tally_refusal = @import("tally_receipt_refusal.rye");
 
 pub const schema_v1 = "grain.receipt-offer.v1";
+
+pub const Refusal = tally_refusal.Refusal;
+pub const Reason = tally_refusal.Reason;
 
 pub const ReceiptOfferFact = struct {
     schema: []const u8, receipt_id: []const u8, holder_id: []const u8,
@@ -18,11 +27,74 @@ pub const ReceiptOfferFact = struct {
 pub const Status = enum { offered, expired };
 pub const ReceiptState = struct { offer: ReceiptOfferFact, status: Status };
 pub const AdmissionError = bounds.BoundError || error{
-    UnknownSchema, InvalidSignature, InvalidExpiration, UnsuitableValueUnit,
+    UnknownSchema, InvalidSignature, InvalidExpiration, UnsuitableValueUnit, NoAdmittedFact,
 };
+
+/// The one mapping from a stated reason to this module's published error name.
+/// A reason added without a name here fails to compile, which is the point.
+pub fn error_of(reason: tally_refusal.Reason) AdmissionError {
+    // invariant: the published reason set stays the size this mapping covers.
+    assert(@typeInfo(tally_refusal.Reason).@"enum".fields.len == 10);
+    return switch (reason) {
+        .empty => AdmissionError.Empty,
+        .non_ascii => AdmissionError.NonAscii,
+        .too_long => AdmissionError.TooLong,
+        .amount_too_large => AdmissionError.AmountTooLarge,
+        .too_many_facts => AdmissionError.TooManyFacts,
+        .unknown_schema => AdmissionError.UnknownSchema,
+        .invalid_signature => AdmissionError.InvalidSignature,
+        .invalid_expiration => AdmissionError.InvalidExpiration,
+        .unsuitable_value_unit => AdmissionError.UnsuitableValueUnit,
+        .no_admitted_fact => AdmissionError.NoAdmittedFact,
+    };
+}
+
+/// Read one offer fact field by field, in the contract's stated order, and hand
+/// back the first refusal, naming the field it stopped on.
+pub fn fact_refusal(f: ReceiptOfferFact, encoded_len: u32, signature_valid: bool) ?Refusal {
+    // invariant: validation runs under the contract's positive encoded ceiling.
+    assert(bounds.max_encoded_fact_bytes > 0);
+    // invariant: the schema name itself is a nonempty ASCII constant.
+    assert(schema_v1.len > 0);
+    if (tally_refusal.encoded_fact_refusal(encoded_len, bounds.max_encoded_fact_bytes)) |r| return r;
+    if (!std.mem.eql(u8, f.schema, schema_v1)) return .{ .field = "schema", .reason = .unknown_schema };
+    const identifiers = [_]struct { name: []const u8, value: []const u8 }{
+        .{ .name = "receipt_id", .value = f.receipt_id },
+        .{ .name = "holder_id", .value = f.holder_id },
+        .{ .name = "recipient_id", .value = f.recipient_id },
+        .{ .name = "product_id", .value = f.product_id },
+        .{ .name = "product_digest", .value = f.product_digest },
+        .{ .name = "signer_id", .value = f.signer_id },
+    };
+    for (identifiers) |entry| {
+        if (tally_refusal.text_refusal(entry.name, entry.value, bounds.max_identifier_bytes)) |r| return r;
+    }
+    if (tally_refusal.text_refusal("purpose", f.purpose, bounds.max_purpose_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("value_unit", f.value_unit, bounds.max_identifier_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("value_basis", f.value_basis, bounds.max_value_basis_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("return_kind", f.return_kind, bounds.max_identifier_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("signature", f.signature, bounds.max_identifier_bytes)) |r| return r;
+    if (tally_refusal.amount_refusal("value_amount", f.value_amount, bounds.max_value_amount)) |r| return r;
+    if (!std.mem.endsWith(u8, f.value_unit, "-simulated")) return .{ .field = "value_unit", .reason = .unsuitable_value_unit };
+    if (f.expires_at <= f.issued_at) return .{ .field = "expires_at", .reason = .invalid_expiration };
+    if (!signature_valid) return .{ .field = "signature", .reason = .invalid_signature };
+    return null;
+}
 
 pub const Log = struct {
     offer: ?ReceiptOfferFact = null,
+
+    /// Read this admission and hand back the refusal that would stop it, or null
+    /// when it would be admitted. Nothing durable moves here, so a caller may ask
+    /// before it commits and print the same sentence `append` refuses with.
+    pub fn refusal(self: *const Log, fact: ReceiptOfferFact, encoded_len: u32, signature_valid: bool) ?Refusal {
+        // invariant: this first replay owns at most one admitted fact.
+        assert(bounds.max_replay_facts == 1);
+        // invariant: the caller's encoded length uses the contract's explicit width.
+        assert(encoded_len <= std.math.maxInt(u32));
+        if (fact_refusal(fact, encoded_len, signature_valid)) |r| return r;
+        return tally_refusal.fact_count_refusal(if (self.offer == null) 1 else 2, bounds.max_replay_facts);
+    }
 
     pub fn append(self: *Log, fact: ReceiptOfferFact, encoded_len: u32, signature_valid: bool) AdmissionError!void {
         _ = print;
@@ -31,8 +103,7 @@ pub const Log = struct {
         // invariant: the caller's encoded length uses the contract's explicit width.
         assert(encoded_len <= std.math.maxInt(u32));
         // Every check precedes this struct's sole write, so every refusal leaves durable state still.
-        try validate(fact, encoded_len, signature_valid);
-        try bounds.factCount(if (self.offer == null) 1 else 2);
+        if (self.refusal(fact, encoded_len, signature_valid)) |r| return error_of(r.reason);
         self.offer = fact;
         // invariant: a successful admission performs the sole durable write.
         assert(self.offer != null);
@@ -41,30 +112,30 @@ pub const Log = struct {
     pub fn replay(self: *const Log, now: u64) AdmissionError!ReceiptState {
         // invariant: replay reads the log and never widens its one-fact ceiling.
         assert(bounds.max_replay_facts == 1);
-        const fact = self.offer orelse return AdmissionError.Empty;
+        const fact = self.offer orelse return AdmissionError.NoAdmittedFact;
         const state: ReceiptState = .{ .offer = fact, .status = if (now >= fact.expires_at) .expired else .offered };
         // invariant: replay preserves the admitted receipt identity.
         assert(std.mem.eql(u8, state.offer.receipt_id, fact.receipt_id));
         return state;
     }
+
+    /// The refusal a replay states when no fact has been admitted. An empty log
+    /// and an empty field are two different facts; they wore one name until this
+    /// reading separated them.
+    pub fn replay_refusal(self: *const Log) ?Refusal {
+        // invariant: replay reads the log and never widens its one-fact ceiling.
+        assert(bounds.max_replay_facts == 1);
+        if (self.offer == null) return .{ .field = "offer", .reason = .no_admitted_fact };
+        return null;
+    }
 };
 
+/// The published error-returning face of `fact_refusal`, kept so every elder
+/// caller keeps the contract it was written against.
 pub fn validate(f: ReceiptOfferFact, encoded_len: u32, signature_valid: bool) AdmissionError!void {
     // invariant: validation runs under the contract's positive encoded ceiling.
     assert(bounds.max_encoded_fact_bytes > 0);
     // invariant: the schema name itself is a nonempty ASCII constant.
     assert(schema_v1.len > 0);
-    try bounds.encodedFact(encoded_len);
-    if (!std.mem.eql(u8, f.schema, schema_v1)) return AdmissionError.UnknownSchema;
-    const identifiers = [_][]const u8{ f.receipt_id, f.holder_id, f.recipient_id, f.product_id, f.product_digest, f.signer_id };
-    for (identifiers) |value| try bounds.identifier(value);
-    try bounds.purpose(f.purpose);
-    try bounds.identifier(f.value_unit);
-    try bounds.value_basis(f.value_basis);
-    try bounds.identifier(f.return_kind);
-    try bounds.identifier(f.signature);
-    try bounds.amount(f.value_amount);
-    if (!std.mem.endsWith(u8, f.value_unit, "-simulated")) return AdmissionError.UnsuitableValueUnit;
-    if (f.expires_at <= f.issued_at) return AdmissionError.InvalidExpiration;
-    if (!signature_valid) return AdmissionError.InvalidSignature;
+    if (fact_refusal(f, encoded_len, signature_valid)) |r| return error_of(r.reason);
 }
