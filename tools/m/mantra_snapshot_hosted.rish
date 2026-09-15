@@ -21,10 +21,25 @@
 # the hosted half and the two stay in agreement by construction.
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "mantra/bin/snapshot-export-delivery"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
-assert build.ok else "snapshot hosted delivery build failed"
+# THE BUILD LANDS IN A DIRECTORY THIS RUN MADE FOR ITSELF (`20260915`, REDS %700). Both this witness
+# and tools/m/mantra_udp_reuseaddr_witness.rish built the same module into the one tree path
+# mantra/bin/snapshot-export-delivery, which tools/fixtures/b/build_target_scan.sh counted as the
+# Mantra half of its `shared_paths` reading. `rye build` writes THROUGH its output file, so the
+# write is not atomic and a concurrent reader sees a partial binary -- measured on metal by
+# tools/fixtures/b/build_target_race_probe.sh at 335 failures in 400 executions for a reader whose
+# path one other build is writing. Two locks stand and neither is on this axis: `rye build` holds
+# .rye-build.lock so two builds cannot stage one shadow, and standing_equipment_run.sh refuses a
+# second roster pass, while nothing serializes a build against a RUN. The port lock below serializes
+# the two RUN legs and leaves the builds free of each other, which is exactly the unguarded pairing.
+# A pen costs one directory and removes the sharing rather than scheduling around it.
+let pen = run ["sh" "-c" "mktemp -d /tmp/mantra_snapshot_hosted.XXXXXX"]
+assert pen.ok else "snapshot hosted: pen must open: ${pen.err}"
+let home = trim pen.out
+let bin = "${home}/snapshot-export-delivery"
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
+assert build.ok else "snapshot hosted delivery build failed: ${build.err}"
 
 # THE PORT PAIR IS HELD WHILE THIS RUNS. mantra/snapshot_export_delivery.rye binds UDP 38490 and
 # 38491, compiled in, and mantra/recall_tablecloth_query_delivery.rye binds the same pair -- so two
@@ -37,5 +52,8 @@ say selftest.out
 assert selftest.ok else "snapshot hosted selftest exited non-zero"
 assert selftest.out contains "GREEN" else "snapshot hosted selftest not GREEN"
 assert selftest.out contains "import and replay GREEN" else "snapshot hosted import replay missing"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "snapshot hosted: pen must close: ${sweep.err}"
 
 say "GREEN: I2 snapshot export hosted witness passed -- build, selftest, import and replay."

@@ -25,6 +25,7 @@
 | `20260915.192229` | [The pen a runner never entered](20260915/20260915-192229_the-pen-a-runner-never-entered.kyri) | 5 unguarded pen entries walled at zero |
 | `20260915.190129` | [The count that stopped at the dollar sign](20260915/20260915-190129_the-count-that-stopped-at-the-dollar-sign.kyri) | 1,853 sites ratcheted, not 51 |
 | `20260915.185943` | [The rebase that walks the wall](20260915/20260915-185943_the-rebase-that-walks-around-the-wall.kyri) | The marker wall moves to the push. |
+| `20260915.185511` | [Three paths nobody knew were busy](20260915/20260915-185511_three-paths-nobody-knew-were-busy.kyri) | four cold reds closed; Mantra builds in pens |
 | `20260915.185421` | [The wall that decides its own memory](20260915/20260915-185421_the-wall-that-decides-its-own-memory.kyri) | a gate proved it decides, never what Rye decides |
 | `20260915.185315` | [The anchor takes the path it opens](20260915/20260915-185315_the-anchor-takes-the-path-it-opens.kyri) | 69 anchors swept to zero, each proven by re-derivation |
 | `20260915.185133` | [The gate git never calls](20260915/20260915-185133_the-gate-git-never-calls.kyri) | git rebase calls no pre-commit hook |
