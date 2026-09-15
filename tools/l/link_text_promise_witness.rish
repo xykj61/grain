@@ -17,7 +17,7 @@ say pen.out
 assert pen.ok else "link-text-promise: the pen must pass"
 assert pen.out contains "control_verdict=ok" else "link-text-promise: the pen must reach its own ok"
 assert pen.out contains "control_failed=0" else "link-text-promise: every planted leg must pass"
-assert pen.out contains "control_legs=18" else "link-text-promise: a leg written tomorrow is heard the day it lands"
+assert pen.out contains "control_legs=44" else "link-text-promise: a leg written tomorrow is heard the day it lands"
 
 assert pen.out contains "leg_ok: ten welcome shapes stay uncounted and one plant is read" else "link-text-promise: an honest anchor must never be counted"
 assert pen.out contains "leg_ok: four testimony shapes are counted apart" else "link-text-promise: testimony keeps every word it wrote"
@@ -32,10 +32,22 @@ assert pen.out contains "leg_ok: dropping the page-relative anchor try makes hon
 assert pen.out contains "leg_ok: dropping the target-resolves check pulls in the lint's own reading" else "link-text-promise: a broken link belongs to living_docs_lint"
 assert pen.out contains "leg_ok: reading the program from an exhausted stdin makes the tree pass in silence" else "link-text-promise: the batch fault this scan was born with must stay bitten"
 
+assert pen.out contains "leg_ok: --tsv keeps every summary line off stdout" else "link-text-promise: the converter's roster must hold rows and nothing else"
+assert pen.out contains "leg_ok: --tsv does not quietly skip the ceiling" else "link-text-promise: a second reading must not become a second population"
+assert pen.out contains "leg_ok: --dry writes nothing" else "link-text-promise: a preview that writes is no preview"
+assert pen.out contains "leg_ok: the apply re-derives that page from its committed bytes" else "link-text-promise: a sweep is proven by re-derivation, never by a diff"
+assert pen.out contains "leg_ok: the anchor now shows the path the link opens" else "link-text-promise: the repair is the anchor taking the target"
+assert pen.out contains "leg_ok: the mode a page carried survives the write" else "link-text-promise: a mode is content the repository tracks"
+assert pen.out contains "leg_ok: a page carrying an unrelated edit fails to re-derive" else "link-text-promise: the proof must refuse an edit beyond the rule"
+assert pen.out contains "leg_ok: the scan sees a root page whose name holds an equals sign" else "link-text-promise: awk reads a bare name with an equals sign as an assignment"
+assert pen.out contains "leg_ok: dropping the scan's ./ prefix hides that page from the reading" else "link-text-promise: that prefix must be proven load-bearing"
+assert pen.out contains "leg_ok: dropping the ./ prefix lets awk read that page name as an assignment" else "link-text-promise: the converter needs the same prefix for the same reason"
+assert pen.out contains "leg_ok: a summary line leaking into the roster refuses the converter" else "link-text-promise: a malformed roster must refuse rather than be swept past"
+
 let tree = run ["sh" "tools/fixtures/l/link_text_promise_scan.sh"]
 say tree.out
 assert tree.ok else "link-text-promise: living anchors stand above the ceiling -- sweep, then lower it in the same commit"
 assert tree.out contains "ceiling_ok=yes" else "link-text-promise: the ceiling only ever falls"
 assert tree.out contains "verdict=ok" else "link-text-promise: the tree reading must reach ok"
 
-say "link-text-promise: GREEN -- the pen holds 18 legs and this tree stands under its ceiling."
+say "link-text-promise: GREEN -- the pen holds 44 legs, the sweep re-derives, and this tree stands at zero."

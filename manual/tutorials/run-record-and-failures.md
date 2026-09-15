@@ -64,7 +64,7 @@ When you write the next gate, pair paths in one file when they share one seam --
 | Next read | Why |
 |-----------|-----|
 | [`first-witness.md`](first-witness.md) | The opening pattern |
-| [`reference/rishi-language.md`](../reference/rishi-language.md) | Full syntax |
+| [`../reference/rishi-language.md`](../reference/rishi-language.md) | Full syntax |
 | [`../../construction/archive/20260702-200109_rw1-mirrored-pair-contract.md`](../../construction/archive/20260702-200109_rw1-mirrored-pair-contract.md) | Mirrored pairs at the history seam |
 
 ---

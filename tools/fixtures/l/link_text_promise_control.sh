@@ -176,6 +176,113 @@ mutliving=$(printf '%s\n' "$out" | read_key living)
 leg "reading the program from an exhausted stdin makes the tree pass in silence" \
   "$( [ "${mutliving:-1}" -eq 0 ] && echo bit || echo quiet )" bit
 
+# --- the --tsv reading, which is the converter's whole roster ---
+# One reading printed two ways. If these part, the sweep and the meter read two populations.
+cat > room/promise.md <<'MD'
+The visible path names a file this tree does not carry: [`room/gone.md`](../shelf/target.md).
+MD
+git add -A >/dev/null && git commit -qm replant2
+
+tsv=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$scan" --tsv 2>/dev/null || true )
+leg "--tsv prints one row for the one living hit" "$(printf '%s\n' "$tsv" | grep -c .)" 1
+leg "--tsv row is page, shown, opened" "$tsv" "$(printf 'room/promise.md\troom/gone.md\t../shelf/target.md')"
+leg "--tsv keeps every summary line off stdout" "$(printf '%s\n' "$tsv" | grep -c '=' || true)" 0
+leg "--tsv still sends its summary to stderr" \
+  "$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$scan" --tsv 2>&1 >/dev/null | read_key living )" 1
+code=0
+( cd "$repo" && LINK_TEXT_PROMISE_CEILING=0 sh "$scan" --tsv >/dev/null 2>&1 ) || code=$?
+leg "--tsv does not quietly skip the ceiling" "$code" 1
+code=0
+( cd "$repo" && sh "$scan" --nonsense >/dev/null 2>&1 ) || code=$?
+leg "an unknown flag refuses rather than reading as no flag" "$code" 1
+
+# --- the converter: the same roster, applied and proven ---
+conv="$root/tools/fixtures/l/link_text_promise_convert.sh"
+[ -f "$conv" ] || { echo "control_verdict=no_convert"; exit 1; }
+cp "$scan" "$pen/fixtures/l/link_text_promise_scan.sh"
+cp "$conv" "$pen/fixtures/l/conv.sh"
+penconv="$pen/fixtures/l/conv.sh"
+
+before=$(cat room/promise.md)
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$penconv" --dry 2>/dev/null || true )
+leg "--dry names the one substitution" "$(printf '%s\n' "$out" | read_key substitutions)" 1
+leg "--dry writes nothing" "$(cat room/promise.md)" "$before"
+
+chmod +x room/promise.md
+git update-index --chmod=+x room/promise.md >/dev/null 2>&1 || true
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$penconv" 2>/dev/null || true )
+leg "the apply rewrites one anchor" "$(printf '%s\n' "$out" | read_key substitutions)" 1
+leg "the apply re-derives that page from its committed bytes" "$(printf '%s\n' "$out" | read_key rederived)" 1
+leg "nothing disagreed" "$(printf '%s\n' "$out" | read_key disagreed)" 0
+leg "the apply's verdict names the proof" "$(printf '%s\n' "$out" | read_key verdict)" derived
+leg "the anchor now shows the path the link opens" \
+  "$(grep -c '\[`../shelf/target.md`\](../shelf/target.md)' room/promise.md)" 1
+leg "the mode a page carried survives the write" "$( [ -x room/promise.md ] && echo yes || echo no )" yes
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=0 sh "$scan" 2>/dev/null || true )
+leg "after the sweep the reading is zero at a ceiling of zero" "$(printf '%s\n' "$out" | read_key verdict)" ok
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$penconv" 2>/dev/null || true )
+leg "a swept tree gives the converter nothing to do" "$(printf '%s\n' "$out" | read_key verdict)" nothing_to_do
+
+# --- an edit beyond the rule refuses to re-derive ---
+git checkout -q -- room/promise.md
+printf 'A line the committed bytes never held.\n' >> room/promise.md
+code=0
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$penconv" 2>/dev/null ) || code=$?
+leg "a page carrying an unrelated edit fails to re-derive" "$(printf '%s\n' "$out" | read_key disagreed)" 1
+leg "and the tool refuses rather than reporting success" "$code" 1
+git checkout -q -- room/promise.md
+
+# --- the name that proves the ./ prefix, planted as a page ---
+# awk reads a bare argument holding an equals sign as a VARIABLE ASSIGNMENT rather than a file, so a
+# page named this way would be read as a setting, produce no error, and leave the tree untouched --
+# or, worse, hand awk an empty program and truncate what it wrote.
+# It must sit at the ROOT: awk reads an argument as an assignment only when the name left of the
+# equals sign is a valid identifier, and `room/eq` holds a slash, so a page one directory down is
+# already safe by accident. The root is where the accident runs out.
+cat > 'eq=1.md' <<'MD'
+An equals sign in the page name: [`room/gone.md`](shelf/target.md).
+MD
+git add -A >/dev/null && git commit -qm oddname
+leg "the scan sees a root page whose name holds an equals sign" \
+  "$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$scan" 2>/dev/null | read_key living )" 2
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$penconv" < /dev/null 2>/dev/null || true )
+leg "a page whose name holds an equals sign is swept like any other" \
+  "$(grep -c '\[`shelf/target.md`\](shelf/target.md)' 'eq=1.md')" 1
+leg "and it is not emptied" "$( [ -s 'eq=1.md' ] && echo yes || echo no )" yes
+git checkout -q -- 'eq=1.md' room/promise.md
+
+mutc="$pen/fixtures/l/mutconv.sh"
+sed 's|"\$work/roster.tsv" "\./\$page"|"$work/roster.tsv" "$page"|g' "$penconv" > "$mutc"
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$mutc" < /dev/null 2>/dev/null || true )
+penswept=$(grep -c '\[`shelf/target.md`\](shelf/target.md)' 'eq=1.md' || true)
+leg "dropping the ./ prefix lets awk read that page name as an assignment" \
+  "$( [ "$penswept" -eq 0 ] && echo bit || echo quiet )" bit
+git checkout -q -- 'eq=1.md' room/promise.md
+
+# The scan's own ./ prefix, asserted to bite on the same plant. Without it awk reads the root page
+# as a setting, so the scan under-reports and the converter is handed a roster that never named it.
+awk '/s\|\^\|\.\/\|/ { print "  > \"$work/pages.txt\" || true"; next } { print }' "$scan" > "$mut"
+mutliving=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$mut" 2>/dev/null | read_key living )
+leg "dropping the scan's ./ prefix hides that page from the reading" \
+  "$( [ "${mutliving:-9}" -eq 1 ] && echo bit || echo quiet )" bit
+
+# --- a roster that is not three fields refuses rather than being swept past ---
+sed 's|^say() {|say() { echo "$@";|' "$penconv" > /dev/null 2>&1 || true
+mutscan="$pen/fixtures/l/link_text_promise_scan.sh"
+cp "$scan" "$mutscan.keep"
+sed 's|say "pages=\$pages"|echo "pages=$pages"|' "$scan" > "$mutscan"
+out=$( cd "$repo" && LINK_TEXT_PROMISE_CEILING=99 sh "$penconv" < /dev/null 2>/dev/null || true )
+leg "a summary line leaking into the roster refuses the converter" \
+  "$(printf '%s\n' "$out" | read_key verdict)" bad_roster
+cp "$mutscan.keep" "$mutscan"
+
+code=0
+( cd "$bare" && sh "$penconv" >/dev/null 2>&1 ) || code=$?
+leg "outside a repository the converter refuses" "$code" 1
+code=0
+( cd "$repo" && sh "$penconv" --nonsense >/dev/null 2>&1 ) || code=$?
+leg "the converter refuses an unknown flag" "$code" 1
+
 cd "$root"
 echo "control_legs=$legs"
 echo "control_failed=$failed"

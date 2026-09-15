@@ -5,7 +5,7 @@
 **Stamp:** `20260701.232912`
 **Style:** Gauge at its Field setting, warm register throughout (see `../../context/GAUGE_STYLE.md`)
 **Refreshed:** `20260823.184309` -- the worked index anonymized so the template ships
-**Companions:** [`../cast_a_chart.rish`](../cast_a_chart.rish) (the computation), the numbered study silos in [`studies/`](../studies/) (`00`-`20` and those yet to come; index at [`studies/README.md`](../studies/README.md)), [`../../context/SILO_TECHNIQUE.md`](../../context/SILO_TECHNIQUE.md)
+**Companions:** [`../cast_a_chart.rish`](../cast_a_chart.rish) (the computation), the numbered study silos in [`studies/`](../studies/) (`00`-`20` and those yet to come; index at [`../studies/README.md`](../studies/README.md)), [`../../context/SILO_TECHNIQUE.md`](../../context/SILO_TECHNIQUE.md)
 
 *Written with the voices this tree carried at the time, and shaped into a template on the maintainer's direction.*
 
@@ -58,7 +58,7 @@
 *Composed from the Moon-sign silo, the birth-star silo, and the lunar-day weave.*
 
 ### The third lens -- four aims, four seasons, and where you stand
-*Composed from [`studies/life-frame/four-asramas-and-goals-of-life.md`](../studies/life-frame/four-asramas-and-goals-of-life.md), mapped onto this chart's houses.*
+*Composed from [`../studies/life-frame/four-asramas-and-goals-of-life.md`](../studies/life-frame/four-asramas-and-goals-of-life.md), mapped onto this chart's houses.*
 
 ### The rest of your sky -- the other lights, one at a time
 *One warm paragraph per remaining placement, each drawing its depth from the matching silo. Where a silo has yet to be written, name the placement plainly and add the study to the library before the final copy ships.*
@@ -155,7 +155,7 @@ The angle brackets are placeholders, in the shape the mark law asks for: a real 
 sprig that names no file reads as a citation to every tool that walks this tree.
 
 
-New placements earn the next number, a topic folder, a hyphenated filename, and a row here -- see [`studies/README.md`](../studies/README.md).
+New placements earn the next number, a topic folder, a hyphenated filename, and a row here -- see [`../studies/README.md`](../studies/README.md).
 
 ---
 

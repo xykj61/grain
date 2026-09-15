@@ -44,7 +44,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-call"></a>
 ### [deep] `%-` call -- one argument
 
-**Shape:** `%-  double  amount` -- gate, then one argument face, against a closed demo set. That line beside its `::` comment is the *entire* fixture [`gen/call-one.glow`](../../../glow/gen/c/call-one.glow) -- a desk is honestly small. **STOA6.** **Source:** [`rune_call.rye`](../../../glow/rune_call.rye) - [`lower_call.rye`](../../../glow/lower_call.rye) - [`tools/g/glow_run_desk_witness.rish`](../../../tools/g/glow_run_desk_witness.rish).
+**Shape:** `%-  double  amount` -- gate, then one argument face, against a closed demo set. That line beside its `::` comment is the *entire* fixture [`../../../glow/gen/c/call-one.glow`](../../../glow/gen/c/call-one.glow) -- a desk is honestly small. **STOA6.** **Source:** [`rune_call.rye`](../../../glow/rune_call.rye) - [`lower_call.rye`](../../../glow/lower_call.rye) - [`tools/g/glow_run_desk_witness.rish`](../../../tools/g/glow_run_desk_witness.rish).
 
 <a id="g-call2"></a>
 ### [deep] `%+` two-arg - <a id="g-call3"></a>`%^` three-arg - <a id="g-calln"></a>`%*` named-arg
@@ -61,7 +61,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-shape"></a>
 ### [deep] `+$` name a shape - `$:` state fields - `$%` tag variants
 
-**Shape** (a real desk, [`gen/shape-amount.glow`](../../../glow/gen/s/shape-amount.glow), whole):
+**Shape** (a real desk, [`../../../glow/gen/s/shape-amount.glow`](../../../glow/gen/s/shape-amount.glow), whole):
 
 ```
 +$  amount-shape
@@ -86,7 +86,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-assert"></a>
 ### [deep] `?>` assert-true - `?<` assert-false
 
-**Shape:** `?>  (gth tick 32)  1` -- Hoon's wutgar/wutgal parallels, lowered to ordinary Rye `assert` (STOA88). TAME's first habit -- the design written where the machine can check it -- as a first-class rune pair, positive and negative space arriving together. **Source:** [`lower_assert.rye`](../../../glow/lower_assert.rye) - desk [`gen/assert-true.glow`](../../../glow/gen/a/assert-true.glow).
+**Shape:** `?>  (gth tick 32)  1` -- Hoon's wutgar/wutgal parallels, lowered to ordinary Rye `assert` (STOA88). TAME's first habit -- the design written where the machine can check it -- as a first-class rune pair, positive and negative space arriving together. **Source:** [`lower_assert.rye`](../../../glow/lower_assert.rye) - desk [`../../../glow/gen/a/assert-true.glow`](../../../glow/gen/a/assert-true.glow).
 
 ## The Binds -- `=` Holds
 
@@ -105,7 +105,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-trap"></a>
 ### [deep] `|-` bounded trap -- the loop that states its ceiling
 
-**Shape:** `|-  32` -- the smallest Glow generator, whole ([`gen/bound-tick.glow`](../../../glow/gen/b/bound-tick.glow)): a trap with a **literal ceiling**, lowered to `run_bounded`, refusing past its bound with `BoundExceeded`. Where Hoon's trap recurses on faith, Glow's arrives already wearing TAME's bound: the ceiling is part of the form. Under `|-`, `(lent ...)` emits a shrinking-list fold under `face.len`. **Source:** [`rune_bounded_trap.rye`](../../../glow/rune_bounded_trap.rye) - [`lower_trap.rye`](../../../glow/lower_trap.rye).
+**Shape:** `|-  32` -- the smallest Glow generator, whole ([`../../../glow/gen/b/bound-tick.glow`](../../../glow/gen/b/bound-tick.glow)): a trap with a **literal ceiling**, lowered to `run_bounded`, refusing past its bound with `BoundExceeded`. Where Hoon's trap recurses on faith, Glow's arrives already wearing TAME's bound: the ceiling is part of the form. Under `|-`, `(lent ...)` emits a shrinking-list fold under `face.len`. **Source:** [`rune_bounded_trap.rye`](../../../glow/rune_bounded_trap.rye) - [`lower_trap.rye`](../../../glow/lower_trap.rye).
 
 <a id="g-bartis"></a>
 ### [deep] `|=` bartis -- the gate
@@ -125,7 +125,7 @@ The **27th digraph** (STOA111), tokenized, parsed, and lowered along the same la
 <a id="g-core"></a>
 ### [deep] `|%` core -- arms on a spine
 
-**Shape:** `|%` - optional one `=/` payload line (bare `face  <decimal>` or typed `face=@u32  <decimal>`) - one to **three** `++` arms - `--`. A closed arm is a bare name; an open arm carries a body expression -- `sample` or the payload face, a literal, `(mix ...)` - `(jam ...)` - `(lent ...)` - `(cue ...)` - a `^-` cast, one-deep nest jams left/right/both -- and every face inside an open body is checked against the core's own scope (`BadBodyFace` otherwise): an arm may speak only of what the core actually holds. Order is law: `PayloadAfterArm` refuses a payload below the first arm; `TooManyPayloads`, `TooManyArms` name the bounds. Sixteen refusals in all. **Desk** ([`gen/core-double.glow`](../../../glow/gen/c/core-double.glow), whole): `|%` / `++  double` / `--`. **Ledger:** STOA14-27. **Source:** [`rune_core.rye`](../../../glow/rune_core.rye):`parse_source` - [`lower_core.rye`](../../../glow/lower_core.rye) - [`lower_compose_core*.rye`](../../../glow/lower_compose_core.rye).
+**Shape:** `|%` - optional one `=/` payload line (bare `face  <decimal>` or typed `face=@u32  <decimal>`) - one to **three** `++` arms - `--`. A closed arm is a bare name; an open arm carries a body expression -- `sample` or the payload face, a literal, `(mix ...)` - `(jam ...)` - `(lent ...)` - `(cue ...)` - a `^-` cast, one-deep nest jams left/right/both -- and every face inside an open body is checked against the core's own scope (`BadBodyFace` otherwise): an arm may speak only of what the core actually holds. Order is law: `PayloadAfterArm` refuses a payload below the first arm; `TooManyPayloads`, `TooManyArms` name the bounds. Sixteen refusals in all. **Desk** ([`../../../glow/gen/c/core-double.glow`](../../../glow/gen/c/core-double.glow), whole): `|%` / `++  double` / `--`. **Ledger:** STOA14-27. **Source:** [`rune_core.rye`](../../../glow/rune_core.rye):`parse_source` - [`lower_core.rye`](../../../glow/lower_core.rye) - [`lower_compose_core*.rye`](../../../glow/lower_compose_core.rye).
 
 <a id="g-lib"></a>
 ### [deep] `/+` library compose -- the import

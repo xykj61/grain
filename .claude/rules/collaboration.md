@@ -52,10 +52,21 @@ own history: `20260828` commit `d3ce030b4` rewrote targets inside
 [`context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) and touched no anchor on the same line.
 **Repoint both halves**, and read what stands with
 [`tools/fixtures/l/link_text_promise_scan.sh`](../../tools/fixtures/l/link_text_promise_scan.sh)
-(`--list` names each one), gated as a ratchet by
+(`--list` names each one), gated by
 [`tools/l/link_text_promise_witness.rish`](../../tools/l/link_text_promise_witness.rish). It stood at
-**69 living anchors across 15 pages** on `20260915.183000`, a **walled** figure that only falls, and
-dated testimony keeps every word it wrote.
+69 living anchors across 15 pages on `20260915.183000`, and it stands at **zero** from
+`20260915.184010`: [`tools/fixtures/l/link_text_promise_convert.sh`](../../tools/fixtures/l/link_text_promise_convert.sh)
+took all 69 in one pass, each anchor receiving the path its own link already opened, and re-derived
+every page from its committed bytes inside the same run. So the reading is a **wall** rather than a
+ratchet, and the next anchor promising a path this tree lacks reds on the lap it arrives.
+Dated testimony keeps every word it wrote.
+
+**The sweep also found where the reading had been silent.** A page is handed to `awk` by name, and
+`awk` reads a bare argument as a **variable assignment** whenever the name left of an equals sign is
+a valid identifier -- so a root-level page called `eq=1.md` was read as a setting rather than opened,
+silently and hit-free. A slash anywhere in the name defeats that reading, which is why only the root
+ran out of accident. Both the scan and the converter prefix every page with `./`, and each
+prefix is proven load-bearing by its own mutation in the pen.
 
 ## Organizing
 
