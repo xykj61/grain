@@ -20,7 +20,7 @@ Named bound (TAME-style):
 ```
 living_pin_max_bytes = 24576  // ~6k tokens: a pin an agent reads in one breath beside its lap
 living_pin_max_bytes[session-logs/README.md] = 57344  // an index is read from the top, not whole
-living_pin_max_bytes[construction/ITINERARY.md] = 49152  // the live front holds one open state per ship, and the fleet is eight
+living_pin_max_bytes[construction/ITINERARY.md] = 40960  // the live front holds one open state per ship, and the fleet is eight
 living_pin_max_bytes[construction/REDS.md] = 65536  // the pin holds only OPEN rows, and a red is booked per ship
 ```
 
