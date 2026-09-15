@@ -59,7 +59,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3e7c109525` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `0374c30987` -- this follow-up's parent, resolvable everywhere (%401).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -182,25 +182,30 @@ and moves only WHEN the generation rises -- claims 1-6 print GREEN under it, **c
 module and control **B+**.
 **SINCE:** the pin deadlock closed before this parked lap returned. **MINE:** `merge` and `annotate`
 still reach the two counters through `@max` alone and state no postcondition of their own.
-**DIFFUSER -- THE FALSIFIER FAILED AND THE ROW DIED OF IT.**
-Elder [shelved](archive/20260912-021711_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=4687, advanced past my own row 2): run the thing up close.
-**THE READING.** Row 5 folds Tablecloth's SHA3-512 names onto a 2-torus for storage adjacency; its
-clustering falsifier **fails**. Across 512 tracked files, chi-squared reads **58.50** and **71.75**
-on two byte offsets against a critical **103.51** at df 63.
-**THE CLEARING IS THE KILLING.** Avalanche is one property read twice. Toroidal pair distance has
-the closed form **128**; same-directory pairs read **126.250**/**122.531**, and a file against
-itself with **one byte changed** reads **130.844**/**122.469**. Two documents differing in a
-character land as far apart as strangers, so the trade row 5 wants is one a hash cannot sell.
-**SURVIVES:** even shards and four neighbors per cell.
-**LANDED.** `torus_fold` scan, control, witness, `tier lap` 5s. **28 legs, 3 mutations bitten**,
-both verdicts reachable from planted populations. **The verdict is deliberately UNGATED**: three
-sigma over six populations refuses about one run in sixty. **The pen caught my own guard**: `se > 0` before the comparison
-silenced a planted effect **126** off expectation, because a population every pair of which sits
-at one distance has `se` exactly zero.
-[Paper](../active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md) **A 90**.
-**YOURS:** (1) carried -- a `gate` word for a LEDGER-parked red. (2) row 5 wants a **re-aim rather
-than a re-rank**: keep it, drop the adjacency sentence, point its first witness at shard evenness.
+**DIFFUSER -- THE SECOND AXIS CARRIED NOTHING.** Elder
+[shelved](archive/20260915-175000_itinerary-diffuser-torus-accounts.md).
+**FIRE SEES** (row 2, N=4917): look straight at what must be cut.
+**REDS FIRST, AND IT WAS A LOOM.** Round-open found **five** parked records in `stash@{0}`, one per
+lap, each lap recovering the records of the laps before it and then ending without committing --
+their own loom lines name the cost, **3,089** and **3,346** seconds of cold roster. Landed FIRST,
+ahead of any pass, which ends the sequence by construction. One shelf row ran **196** bytes against
+the 192-byte bound; shortened, `index_row_bound` GREEN at 104 rows.
+**THE READING.** The elder erratum kept row 5 alive on a remainder -- even shards, a uniform
+four-neighbour replica set -- and `torus_place` compares every part of it against a **ring** of the
+same cell count. Evenness is **SHA3-512's**: two folds reading different bits read **74.02** and
+**73.02** against critical **103.51** at df 63, agreeing **8** times in 511 against **7.98** by
+chance. Uniformity is **vertex-transitivity's**, which a ring has too. And spread comes out
+**against** the grid: the contiguous storage run that destroys every copy of a cell reads **17**
+torus, **5** near ring, **33** for a ring free to choose offsets of one and two rows -- each
+matching `2g+1`, `5`, `4g+1`. A torus hands down a FIXED offset set; choosing beats it.
+**LANDED.** `torus_place` scan, control, witness, `tier lap` 4s. **29 legs, 3 mutations bitten**;
+the arithmetic gated, the statistical verdict reported. A closed form outside its precondition
+reads `na` rather than refusing.
+[Paper](../active-designing/20260915-175000_the-axis-that-carried-nothing.md) **B+ 87**.
+**YOURS:** row 5 wants a **breach** rather than a second re-aim -- superseded in the living page,
+history keeping every word. The one open door is a key that carries locality on purpose, which no
+row here has proposed.
+
 **PETRICHOR -- THE PARKED LINT CENSUS RUNS ON TODAY'S TABLE.** Elder
 [shelved](archive/20260912-185030_itinerary-landed-accounts.md). **WATER TASTES** (row 3, N=4698).
 **THE BOX HELD WORK, NOT A DRAFT.** `stash@{2}` carried a finished 12-path round on no ref: scan,
@@ -384,7 +389,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3e7c109525`.
+**Git nib:** `0374c30987`.
 
 ### Incense -- product captain
 

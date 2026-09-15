@@ -5830,6 +5830,31 @@ path tools/t/torus_fold_witness.rish
 tier lap   # 5s; 28 behaviors in a pen, both verdicts reachable, three mutations bitten
 seated 20260912.042053
 
+# torus_place -- the second reading of the same moonshot row, and it answers the question the first
+# one names as untouched: whether a torus is a good PLACEMENT scheme. Every property row 5 had left
+# is compared against a RING of the same cell count, because a property a line also has is not a
+# property a second axis supplies.
+#
+# THREE ANSWERS, AND THE SHAPE LOSES ALL THREE. Evenness belongs to SHA3-512: two folds reading
+# different bits of one digest read equally even and agree on where to put a name at the chance
+# rate. Uniformity belongs to vertex-transitivity, which a ring has too. And SPREAD -- the shortest
+# contiguous run of storage indices whose loss destroys every copy of some cell -- comes out
+# AGAINST the grid: at a 64-cell grid the torus survives 17, a ring taking its nearest four
+# survives 5, and a ring free to choose offsets of one and two rows survives 33. All three match
+# their closed forms of 2g+1, 5 and 4g+1. What a torus supplies is a FIXED offset set handed down
+# by its shape; declustering needs no torus.
+#
+# WHAT IS GATED. The control, and the live reading's ARITHMETIC -- the three run-kill lengths
+# against their closed forms, and the wide ring out-surviving the torus. Those cannot move under
+# this tree. The live EVENNESS verdict is reported rather than gated: a p=0.001 test taken twice
+# refuses about one run in five hundred on a digest that is behaving correctly.
+#
+# Paper: `active-designing/20260915-175000_the-axis-that-carried-nothing.md`
+guard torus_place
+path tools/t/torus_place_witness.rish
+tier lap   # 4s; 29 behaviors in a pen, both verdicts reachable, three mutations bitten
+seated 20260915.175000
+
 # rye_module_door -- Gauge sets its dial by reader and the dial runs through the code: METER beside
 # a bound, DOOR at the head of a module where somebody arriving cold deserves a plain sentence about
 # what the thing is for. Zig, and Rye after it, writes that setting into the grammar -- `//!` is a
