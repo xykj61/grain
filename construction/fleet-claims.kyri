@@ -64,12 +64,6 @@ stamp 20260915.174535
 epoch 1789508735
 paths tools/fixtures/a/amphora_bounds_agree_scan.sh tools/am/amphora_bounds_agree.rish tools/fixtures/amphora_bounds_plants
 what Read word-valued same-name Amphora consts, so the vessel grammar word spelled in two roofs cannot drift unseen.
-claim bakery-ryekey-compiler-price
-seat bakery
-stamp 20260915.175203
-epoch 1789509123
-paths rye/src/main.rye tools/r/ryekey_witness.rish tools/fixtures/r/ryekey_control.sh
-what Price the build receipt's own key: every rye build reads 172 MB of compiler bytes, and the reading costs more than the compile it may skip.
 claim diffuser-locality-key-trade
 seat diffuser
 stamp 20260915.180523
@@ -88,12 +82,6 @@ stamp 20260915.184523
 epoch 1789512323
 paths tools/hooks/pre-push tools/fixtures/p/pre_push_spine_control.sh tools/p/pre_push_spine_witness.rish
 what Ask the conflict-marker scan at the pre-push seam, where the send's final rebase actually makes markers; the rostered guard runs cold and hot and both sit before that rebase (%731).
-claim bakery-marker-gate-placement
-seat bakery
-stamp 20260915.184509
-epoch 1789512309
-paths tools/hooks/pre-push tools/fixtures/p/pre_push_marker_control.sh tools/p/pre_push_marker_witness.rish
-what Ask the conflict-marker reading at the push, since a rebase replay commits without running pre-commit and that is the one operation that makes markers.
 claim petrichor-counsel-door-register
 seat petrichor
 stamp 20260915.190339
