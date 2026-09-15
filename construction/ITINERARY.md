@@ -7,9 +7,26 @@
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
 **Prior elder:** [`archive/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/20260912-141814_itinerary-before-lindy-crux-molt.md).
-**Bound:** `living_pin_max_bytes[construction/ITINERARY.md] = 40960`.
+**Bound:** `living_pin_max_bytes[construction/ITINERARY.md] = 49152` -- raised `20260915` from 40960, which stood 39 bytes above the card. Derived as the 40,921 standing plus 8,192 for an autonomous ship. **The real cure is a fold:** `## Product direction` alone is 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf.
 
 Keaton's `20260913` word accepts the first receipt contract and chooses the full eight-ship formation. The watcher may keep every live seat sailing; product and custody walls below remain unchanged.
+
+## NOW -- incense sails autonomous from `20260915.180000`
+
+The ledger's sixteen OPEN rows were read on metal this lap: **one CLOSED** (`%700`), **eight
+BOOKED** -- instances repaired, remainder a ratchet or a booked lap -- and **seven still OPEN,
+every one wanting Keaton's word**: `%689` `%680` `%678` `%636` `%626` `%568` `%456`. A lap opens
+none of those.
+
+**The agent-doable queue, Lindy first:**
+
+1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
+2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
+3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
+4. `%532` -- lower `uncovered` from 129 by covering runnable desks in `glow/gen/`.
+
+**Stop line:** when only the seven gated rows remain, print `GATES-ONLY` and `touch
+.loop-gates-only`. The watcher re-arms a stopped loop, so the sentinel is what makes a stop stick.
 
 ## INNER LOOP -- what every future lap carries
 
@@ -42,7 +59,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1746a7793f` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `3e7c109525` -- this follow-up's parent, resolvable everywhere (%401).
 
 **PHEROMONE -- THE RECEIPT OUTGREW THE LIVING SHAPE CEILING.** **WATER TASTES** (row 3,
 N=4783): the accepted offer has **15 fields**. Glow admits text, hex, and `u64`, yet a `$:` shape
@@ -367,7 +384,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1746a7793f`.
+**Git nib:** `3e7c109525`.
 
 ### Incense -- product captain
 

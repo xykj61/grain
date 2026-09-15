@@ -14,22 +14,27 @@
 # tree-wide as `unsaid_rostered` by `tools/fixtures/s/shim_reason_scan.sh`.
 
 let zig = "vendor/zig-toolchain/zig"
-let wire_bin = "mantra/bin/recall-tablecloth-query-wire"
-let delivery_bin = "mantra/bin/recall-tablecloth-query-delivery"
 
-let build_wire = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_wire.rye -femit-bin=${wire_bin}"]
-assert build_wire.ok else "tablecloth query wire build failed: ${build_wire.err}"
+# THE TWO BUILDS LAND IN A PEN, NEVER A FIXED TREE PATH (`20260915`, REDS %700's SECOND cause).
+# The shared port repaired below was one cause of this witness's flap and not the only one. Caught
+# in the act `20260915` by running three copies of THIS witness at once inside ONE checkout: two
+# red, one green, over identical bytes, and the refusal named itself --
+# `failed to open output binary: FileBusy`. That is ETXTBSY: one run is EXECUTING the delivery
+# binary while another run's linker opens the same path to write it. The elder shape built both
+# binaries to fixed paths under `mantra/bin/`, so any two passes in one checkout raced for two
+# filenames -- and the port fix could not reach this, because that one shares a name on the
+# MACHINE while this one shares a name in the TREE.
+#
+# Each leg builds and runs inside ONE shell, so the pen outlives neither half, and exits non-zero
+# when either fails -- `.ok` keeps meaning what this file's head promises, and `.out` still carries
+# the reason. `mantra/bin/` is a gitignored build directory no other guard reads.
+let wire = run ["sh" "-c" "d=$(mktemp -d) || exit 9; b=$d/wire; if env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_wire.rye -femit-bin=$b 2>$d/err; then $b selftest 2>&1; s=$?; else echo BUILD_FAILED; cat $d/err; s=3; fi; rm -rf $d; exit $s"]
+assert wire.ok else "tablecloth query wire build or selftest failed: ${wire.out}"
+assert wire.out contains "GREEN" else "tablecloth query wire selftest not GREEN: ${wire.out}"
 
-let wire_selftest = run ["sh" "-c" "${wire_bin} selftest 2>&1"]
-assert wire_selftest.ok else "tablecloth query wire selftest exited non-zero: ${wire_selftest.out}"
-assert wire_selftest.out contains "GREEN" else "tablecloth query wire selftest not GREEN"
-
-let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=${delivery_bin}"]
-assert build_delivery.ok else "tablecloth query delivery build failed: ${build_delivery.err}"
-
-let delivery_selftest = run ["sh" "-c" "${delivery_bin} selftest 2>&1"]
-assert delivery_selftest.ok else "tablecloth query delivery selftest exited non-zero: ${delivery_selftest.out}"
-assert delivery_selftest.out contains "GREEN" else "tablecloth query delivery selftest not GREEN"
+let delivery = run ["sh" "-c" "d=$(mktemp -d) || exit 9; b=$d/delivery; if env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=$b 2>$d/err; then $b selftest 2>&1; s=$?; else echo BUILD_FAILED; cat $d/err; s=3; fi; rm -rf $d; exit $s"]
+assert delivery.ok else "tablecloth query delivery build or selftest failed: ${delivery.out}"
+assert delivery.out contains "GREEN" else "tablecloth query delivery selftest not GREEN: ${delivery.out}"
 
 # THE REFUSALS, PROVEN FROM THE FAILING SIDE. The delivery selftest now carries the answer-slot
 # budget: a request reserves the slot its reply will live in, so a caller keeping an answer is
