@@ -40,7 +40,7 @@ leg() {
 
 # A PEN THAT IS A REAL REPOSITORY, since the census draws its population with `git ls-files`.
 mkdir -p "$pen/tree/tools/x"
-cd "$pen/tree"
+cd "$pen/tree" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q .
 git config user.email pen@example.invalid
 git config user.name pen
@@ -98,7 +98,7 @@ leg elder_admitted_the_pen_target      yes "$(elder tools/x/file_source_pen_targ
 # 8. THE PROVEN PREDICATE, from both sides. A tool may not certify itself, and prose is not a
 # proof. Each plant below is a tree writer by leg 2's shape, so the only thing separating them is
 # what stands beside them -- which is exactly what the proven column claims to read.
-cd "$pen/tree"
+cd "$pen/tree" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 # 8a. The self-certifying shape, taken from the tree: the ONLY idempotence sentence is a comment in
 #     the tool's own header. `dated_path_repoint_scan.sh` and `tool_path_repoint_scan.sh` both read
 #     proven on this alone until `20260908.190452`.
@@ -213,7 +213,7 @@ leg family_control_split_printed printed "$split_family"
 # `admitted_on_comment_only`. Dropping comments ALONE was measured and read worse (12 -> 9, the two
 # busiest writers leaving with the false one), so this section only holds together with section 12:
 # the git strand is what keeps the real writers whose targets the name list never held.
-cd "$pen/tree"
+cd "$pen/tree" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 # 11a. Admitted by a comment alone: the write the target test accepts is inside a `#` line, and the
 #      only live write targets a variable that resolves nowhere. This is the exact shape
 #      `reds_ledger_headline_write.sh`'s header carried while explaining the exec-bit idiom.
@@ -264,7 +264,7 @@ leg comment_reading_retired retired "$reading"
 # spellings and a list of room prefixes -- and four laps of refining that guess each read worse.
 # `git_admits` resolves the target through at most three in-file assignments and hands the literal
 # to `git ls-files`, so the TREE answers which destination is tracked.
-cd "$pen/tree"
+cd "$pen/tree" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 # 12a. A named destination the list never held: `$LEDGER` is on no variable list and `pen/ledger.md`
 #      is on no room list, and git tracks the file. This is `reds_ledger_headline_write.sh`'s and
 #      `reds_fold.sh`'s shape, both real writers of `construction/REDS.md`.
@@ -316,7 +316,7 @@ leg git_only_names_its_member named "$member"
 # carries no position, so neither can tell a write this tool performs from text it hands to another
 # command. `live_lines` walks the file as a shell lexer and emits only the lines standing outside
 # every quoted region and heredoc body.
-cd "$pen/tree"
+cd "$pen/tree" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 # 13a. THE TREE'S OWN FALSE POSITIVE, planted in its real shape: the write sits inside a
 #      single-quoted `--tree-filter` argument spanning several lines, against filter-branch's own
 #      pen. This is `upstream_shape_scan.sh:150`, the standing member the census header named as
@@ -382,7 +382,7 @@ leg balanced_file_admitted yes "$(seen balanced.sh)"
 # idioms, so a Rishi tool rewriting the tree could never be a candidate. The plants below prove the
 # strand from both sides, and the elder predicate is run over the admitting one, since a strand
 # shown only in the passing direction cannot be told from a coincidence.
-cd "$pen/tree"
+cd "$pen/tree" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 mkdir -p docs
 printf 'a tracked page\n' > docs/page.md
 # 14a. THE SHAPE THE TREE ACTUALLY WRITES, taken from `tools/g/geode_libraries.rish`, which
@@ -441,7 +441,7 @@ leg census_survives_unresolvable_operand ok "$(CONV_ROOT="$pen/tree" sh "$census
 
 # 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
 mkdir -p "$pen/bare"
-cd "$pen/bare"
+cd "$pen/bare" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q .
 if CONV_ROOT="$pen/bare" sh "$census" >/dev/null 2>&1; then empty=accepted; else empty=refused; fi
 leg empty_corpus_refuses refused "$empty"

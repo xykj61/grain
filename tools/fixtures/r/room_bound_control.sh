@@ -78,7 +78,7 @@ echo "all_counted_room_named=$all_named"
 # folds by first sprig letter. Both are proven from BOTH sides -- planted, then removed -- because
 # a reading proven only in the firing direction cannot be told from a line that always prints.
 pen="$(mktemp -d)"
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q . >/dev/null 2>&1
 
 # The enforced roster, every room under the bound, so the gate reads ok before the plants land and

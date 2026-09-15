@@ -82,12 +82,6 @@ stamp 20260915.175818
 epoch 1789509498
 paths tally/receipt_refusal.rye tally/receipt_refusal_witness.rye mantra/src/receipt_offer.rye tools/t/tally_receipt_refusal_witness.rish
 what Give a receipt admission refusal a stable record naming field, value, ceiling, unit, and reason, since a bare named error collapses twelve fields into one word.
-claim grass-control-pen-entered
-seat grass
-stamp 20260915.180345
-epoch 1789509825
-paths tools/fixtures/r/readme_reach_control.sh tools/fixtures/p/precondition_dependent_control.sh tools/fixtures/s/say_compose_bound_control.sh tools/fixtures
-what A control that never entered its pen writes its fixtures into the live tree; check the cd at the edge and refuse by name.
 claim diffuser-locality-key-trade
 seat diffuser
 stamp 20260915.180523

@@ -21,7 +21,7 @@ has() { case "$1" in *"$2"*) echo yes ;; *) echo no ;; esac; }
 
 mkdir -p "$pen/construction/archive" "$pen/tools/fixtures/f" "$pen/tools/f" "$pen/.claude/rules"
 cp "$tool" "$pen/tools/f/" ; cp "$scan" "$pen/tools/fixtures/f/"
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 git init -q .; git config user.email pen@example.invalid; git config user.name pen
 
 # The targets a correct link must reach.

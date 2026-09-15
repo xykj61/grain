@@ -45,7 +45,7 @@ check_exit() { # name expected actual
 # scratch file is not something a tree promises anybody.
 newpen() {
   rm -rf "$pen/r"; mkdir -p "$pen/r/tools/fixtures" "$pen/r/rishi/src"
-  cd "$pen/r"
+  cd "$pen/r" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   git init -q .
   git config user.email pen@example.invalid
   git config user.name Pen

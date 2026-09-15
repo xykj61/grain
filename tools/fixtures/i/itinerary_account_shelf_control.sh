@@ -22,7 +22,7 @@ has() { case "$1" in *"$2"*) echo yes ;; *) echo no ;; esac; }
 
 mkdir -p "$pen/construction/archive" "$pen/tools/i" "$pen/tools/fixtures/r" "$pen/external-research" "$pen/.claude/rules"
 cp "$tool" "$pen/tools/i/"; cp "$reanchor" "$pen/tools/fixtures/r/"
-cd "$pen"
+cd "$pen" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
 printf '# the card\n' > construction/ITINERARY.md
 printf '# the ledger\n' > construction/REDS.md
 printf '# an elder shelf\n' > construction/archive/20260908-230804_itinerary-landed-accounts.md
