@@ -76,3 +76,9 @@ stamp 20260915.174857
 epoch 1789508937
 paths tools/fixtures/l/link_text_promise_scan.sh tools/l/link_text_promise_witness.rish tools/fixtures/l/link_text_promise_control.sh docs-geode/edu
 what Read a Markdown link whose visible backticked path disagrees with its own working target, so a reader who copies what they see is promised a file the tree carries.
+claim diffuser-torus-placement
+seat diffuser
+stamp 20260915.174817
+epoch 1789508897
+paths tools/fixtures/t/torus_place_scan.sh tools/fixtures/t/torus_place_control.sh tools/t/torus_place_witness.rish active-designing/20260915-175000_the-axis-that-carried-nothing.md
+what Read whether the SECOND AXIS of a torus fold buys anything for placement over a ring of equal cell count, which the elder torus_fold scan names as the claim it does not touch.
