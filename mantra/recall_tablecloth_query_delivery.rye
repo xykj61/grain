@@ -79,7 +79,7 @@ fn open_socket() !c.fd_t {
     // mean the guard above let a failure through.
     assert(fd >= 0);
     // THE OPTION THAT STOOD HERE WAS TCP REASONING ON A UDP SOCKET, and on a pier of eight trees
-    // it cost the flap of REDS %700. `setsockopt(SO_REUSEADDR)` stood here under the invariant
+    // it cost the flakiness of REDS %700. `setsockopt(SO_REUSEADDR)` stood here under the invariant
     // *SO_REUSEADDR is what lets a bounded run rebind its own port*. That sentence is true of TCP,
     // whose closed sockets sit in TIME_WAIT holding the port; UDP has no TIME_WAIT, so a closed
     // UDP port is free at once and the option bought nothing it was added for. What it bought

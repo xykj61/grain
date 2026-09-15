@@ -14,7 +14,7 @@
 //! named place in one ordered pass -- and a scrub snapped to it lands EXACTLY there. Two facts make this exact. Every `add` refuses
 //! a duplicate position and inserts in sorted order, so the track is always a strictly-ascending run of positions -- the order is a
 //! maintained invariant, not a re-sort per query. And over an ascending run the marker of least distance to a query is well-
-//! defined, ties resolving to the LOWER position (the first encountered in order), so `snap` is deterministic, never flapping
+//! defined, ties resolving to the LOWER position (the first encountered in order), so `snap` is deterministic, never flaky
 //! between two equidistant marks. Composing ALES14, the region between marker i and marker j (i < j) is exactly the loop
 //! [pos_i, pos_j).
 //!

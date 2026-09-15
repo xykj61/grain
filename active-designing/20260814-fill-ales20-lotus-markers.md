@@ -19,7 +19,7 @@ Lindy-first, crux-first: markers are read on every editing session for years, an
 **A markers track keeps its named positions sorted and unique, so the nearest-marker query returns the true nearest named place in one ordered pass -- and a scrub snapped to it lands exactly there.** Two facts make this exact:
 
 - **Insertion keeps the invariant.** Every `add` refuses a duplicate position and inserts in sorted order, so the track is always a strictly-ascending run of positions. The order is a maintained invariant, not a re-sort per query.
-- **Sorted means the nearest is unambiguous.** Over an ascending run, the marker of least distance to a query position is well-defined, and ties resolve to the **lower** position (the first encountered in order) -- so `snap` is deterministic, never flapping between two equidistant marks.
+- **Sorted means the nearest is unambiguous.** Over an ascending run, the marker of least distance to a query position is well-defined, and ties resolve to the **lower** position (the first encountered in order) -- so `snap` is deterministic, never flaky between two equidistant marks.
 
 And composing ALES14: **the region between marker `i` and marker `j` (`i < j`) is exactly the loop `[pos_i, pos_j)`** -- a keeper marks two places and loops between them, the region validated by ALES14's own edge.
 

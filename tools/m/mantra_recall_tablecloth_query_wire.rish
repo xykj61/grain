@@ -8,7 +8,7 @@
 # the evidence page could name only which LEG refused -- its five bindings each asserted on `.ok`
 # and mentioned neither `.out` nor `.err`, so the compiler's and the selftest's own words were
 # discarded inside the interpreter. Rishi interpolates a capture into an `assert ... else` message,
-# which costs nothing on the green path and is the whole difference between a flap a hand can
+# which costs nothing on the green path and is the whole difference between flakiness a hand can
 # diagnose and one that can only be inferred. The two selftest runs fold stderr into stdout with
 # `2>&1`, so `.out` is the field carrying their reason; the builds keep theirs on `.err`. Counted
 # tree-wide as `unsaid_rostered` by `tools/fixtures/s/shim_reason_scan.sh`.
@@ -16,7 +16,7 @@
 let zig = "vendor/zig-toolchain/zig"
 
 # THE TWO BUILDS LAND IN A PEN, NEVER A FIXED TREE PATH (`20260915`, REDS %700's SECOND cause).
-# The shared port repaired below was one cause of this witness's flap and not the only one. Caught
+# The shared port repaired below was one cause of this witness's flakiness and not the only one. Caught
 # in the act `20260915` by running three copies of THIS witness at once inside ONE checkout: two
 # red, one green, over identical bytes, and the refusal named itself --
 # `failed to open output binary: FileBusy`. That is ETXTBSY: one run is EXECUTING the delivery
@@ -47,7 +47,7 @@ assert pool_control.out contains "verdict=ok" else "answer-slot budget control v
 assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused, so no break below reads honestly"
 
 # THE LEG THAT RUNS THE SELFTEST BESIDE ITSELF. Every check above runs the delivery binary ONCE,
-# and the fault that made this witness flap was invisible to one run: the module spoke over two
+# and the fault that made this witness flaky was invisible to one run: the module spoke over two
 # port numbers written into the file, and a port is a name on the MACHINE rather than in a tree.
 # Eight checkouts stand on this pier, each running this witness every roster pass, so two of them
 # reaching port 38490 read each other's replies. Measured `20260911` at load 14, eight at once:

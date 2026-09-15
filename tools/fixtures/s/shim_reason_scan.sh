@@ -465,7 +465,7 @@ late_say_unrostered=$(awk '$1 == "unrostered"' "$work/order_rows" | grep -c . ||
 # on a re-run minutes later over one unchanged tree -- `tree_at_close` equal, `tree_moved=no`,
 # thirteen greens and one red in fifteen runs by hand. That row's own last sentence is *the cause
 # is inference, never observation*, and the reason is this shape: the guard that fired wrote down
-# which LEG refused and nothing about WHY, so a fortnight of flaps left no evidence a hand could
+# which LEG refused and nothing about WHY, so a fortnight of flaky readings left no evidence a hand could
 # act on. All five of its bindings wore it.
 #
 # THE REPAIR COSTS NOTHING ON THE GREEN PATH, which is what tells this shape from the third. Rishi
