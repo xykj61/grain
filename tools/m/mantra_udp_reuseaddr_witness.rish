@@ -41,7 +41,6 @@ let control = "tools/fixtures/m/mantra_udp_reuseaddr_control.sh"
 let lock = "tools/fixtures/m/mantra_delivery_port_lock.sh"
 let probe = "tools/fixtures/m/mantra_bind_refusal_probe.sh"
 let zig = "vendor/zig-toolchain/zig"
-let bin = "mantra/bin/snapshot-export-delivery"
 
 let living = run ["sh" scan]
 say living.out
@@ -69,11 +68,24 @@ assert pen.out contains "failed=0" else "mantra_udp_reuseaddr: a control behavio
 assert pen.out contains "behaviors=28" else "mantra_udp_reuseaddr: the control's leg count moved -- add the number here in the same commit that adds the leg"
 say "pen=28 behaviors, two mutations bitten on 20260911"
 
-# THE LIVE LEG. A source reading cannot tell a repair from a comment about one, so the built binary
-# is run against a foreign holder of 38491. The port pair is taken through the lock first: this leg
-# binds a real machine-wide port, and running it bare would red a peer's lap -- the exact fault it
-# exists to name.
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
+# THE BUILD LANDS IN A DIRECTORY THIS RUN MADE FOR ITSELF (`20260915`, REDS %700). This witness and
+# tools/m/mantra_snapshot_hosted.rish built the one module into the one tree path
+# mantra/bin/snapshot-export-delivery, and tools/fixtures/b/build_target_scan.sh counted that as the
+# Mantra half of its `shared_paths` reading -- the sharper of its two numbers, since a path two
+# guards write collides whenever EITHER runs beside a roster pass. The lock below serializes the RUN
+# legs of the two and leaves their builds free of each other, so build-against-run stood unguarded
+# on the one axis no lock in this tree covers. A pen removes the sharing instead of scheduling it.
+
+# THE LIVE LEG, taking the pen's own binary. A source reading cannot tell a repair from a comment
+# about one, so the built binary is run against a foreign holder of 38491. The port pair is taken
+# through the lock first: this leg binds a real machine-wide port, and running it bare would red a
+# peer's lap -- the exact fault it exists to name.
+let box = run ["sh" "-c" "mktemp -d /tmp/mantra_udp_reuseaddr.XXXXXX"]
+assert box.ok else "mantra_udp_reuseaddr: pen must open: ${box.err}"
+let home = trim box.out
+let bin = "${home}/snapshot-export-delivery"
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
 say build.out
 say build.err
 assert build.ok else "mantra_udp_reuseaddr: snapshot delivery build failed -- read the two lines above"
@@ -84,5 +96,8 @@ assert live.ok else "mantra_udp_reuseaddr: the built binary did not refuse a hel
 if live.out contains "probe_verdict=absent_instrument" then say "probe=absent_instrument wants=python3 -- the source gates above still stand"
 if live.out contains "probe_verdict=port_busy" then say "probe=port_busy -- 38491 is held outside this lock, so the reading is about the pier rather than the binary"
 if live.out contains "probe_verdict=refused_by_name" then say "probe=refused_by_name first_error=BindFailed"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "mantra_udp_reuseaddr: pen must close: ${sweep.err}"
 
 say "GREEN: mantra_udp_reuseaddr -- no address reuse in Mantra, every UDP module proves it off, a held port refused by name, pen innocent."

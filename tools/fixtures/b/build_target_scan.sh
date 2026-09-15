@@ -25,8 +25,12 @@
 # THE SHARPEST READING IS `shared_paths`, AND IT IS NOT THE BIGGEST NUMBER. One guard writing one
 # path collides only with itself, which needs the same guard run twice at once. A path written by
 # TWO guards collides whenever EITHER runs beside the pass. The first `20260912` reading found 51
-# distinct fixed paths and 6 shared paths. Three were Amphora binaries written by 18 guards apiece;
-# moving those builds into per-run pens leaves 2 shared paths in the live reading.
+# distinct fixed paths and 6 shared paths. Three were Amphora binaries written by 18 guards apiece,
+# and moving those builds into per-run pens left 2. `20260915` took the Mantra half: the two guards
+# writing `mantra/bin/snapshot-export-delivery` -- `mantra_snapshot_hosted` and
+# `mantra_udp_reuseaddr` -- each build into their own pen now, so the live reading is 1. What made
+# that pair worth taking first is that a port lock already serialized their two RUN legs and left
+# their builds free of each other, which is build-against-run with nothing between it.
 #
 # WHAT IS INFERENCE HERE, SAID PLAINLY. REDS %700 records a rostered guard reading red and then
 # green on one unchanged tree, and names two builds into fixed tree paths as the suspicion. No run
@@ -60,8 +64,8 @@
 # bypass; one the reading announces is a pen.
 set -u
 
-CEILING_FIXED=${BUILD_TARGET_CEILING_FIXED:-51}
-CEILING_SHARED=${BUILD_TARGET_CEILING_SHARED:-2}
+CEILING_FIXED=${BUILD_TARGET_CEILING_FIXED:-47}
+CEILING_SHARED=${BUILD_TARGET_CEILING_SHARED:-1}
 
 root=${BUILD_TARGET_ROOT:-.}
 roster=${BUILD_TARGET_ROSTER:-construction/standing-equipment.kyri}

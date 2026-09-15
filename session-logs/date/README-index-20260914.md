@@ -14,14 +14,19 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260914.213430` | [Four parked records came home](20260914/20260914-213430_four-parked-records-came-home.kyri) | restored four records; kept stronger product state |
 | `20260914.212434` | [The grant left a trail and the refusal did not](20260914/20260914-212434_the-grant-left-a-trail-and-the-refusal-did-not.kyri) | Mand ring 1 logs grants alone |
 | `20260914.190841` | [Three parked records came home](20260914/20260914-190841_three-parked-records-came-home.kyri) | restored three records; kept the stronger living rail |
+| `20260914.190656` | [Four records rejoined](20260914/20260914-190656_the_four_records_rejoined_the_channel.kyri) | recovered every parked record; preserved peer work |
+| `20260914.183926` | [Two records rejoined](20260914/20260914-183926_the_two_records_rejoined_the_shelf.kyri) | restored two records; kept newer testimony and peer claim |
 | `20260914.183304` | [Two parked records crossed the boundary](20260914/20260914-183304_two-parked-records-crossed-the-boundary.kyri) | restored two records; kept stronger product state |
 | `20260914.175216` | [The expiration replay named its clock](20260914/20260914-175216_the-expiration-replay-named-its-clock.kyri) | explicit replay time revived; owners named |
+| `20260914.164708` | [The dead-letter record came home](20260914/20260914-164708_the_dead_letter_record_came_home.kyri) | recovered the prior reconciliation record and closed its claim |
 | `20260914.164548` | [The parent mark caught the recovery](20260914/20260914-164548_the_parent_mark_caught_the_recovery.kyri) | parked work preserved; parent nib closed |
 | `20260914.163137` | [The parked record found its shelf](20260914/20260914-163137_the-parked-record-found-its-shelf.kyri) | restored one Diffuser record; kept the stronger rail |
 | `20260914.161455` | [The parked yield trio kept its stash](20260914/20260914-161455_the-parked-yield-trio-kept-its-stash.kyri) | absence proved; living instrument kept; stash preserved |
+| `20260914.155237` | [The duplicate repair yielded upstream](20260914/20260914-155237_the-duplicate-repair-yielded-upstream.kyri) | preserved parked work; closed its landed claim |
 | `20260914.154709` | [The parked refusal returned whole](20260914/20260914-154709_the_parked_refusal_returned_whole.kyri) | recovered witness and log; full hot roster closed at the Git nib |
 | `20260914.141348` | [The refusal spoke](20260914/20260914-141348_the_refusal_spoke_before_it_stopped.kyri) | parked work home; roster red closed |
 | `20260914.141113` | [The full roster named two reasons](20260914/20260914-141113_the_full_roster_named_two_reasons.kyri) | complete cold proof; two diagnostic roots closed |
+| `20260914.135709` | [The compiler-reach witness speaks first](20260914/20260914-135709_the-compiler-reach-witness-speaks-first.kyri) | two readings speak before their assertions |
 | `20260914.135619` | [The parked rail had already reached Still](20260914/20260914-135619_the-parked-rail-had-already-reached-still.kyri) | elder rail converged on the stronger landed form |
 | `20260914.125631` | [Earth read the capacity wall](20260914/20260914-125631_earth-read-the-capacity-wall.kyri) | parked work preserved; ENOSPC still holds the cold roster |
 | `20260914.125617` | [The parked record was already home](20260914/20260914-125617_the-parked-record-was-already-home.kyri) | stash preserved; hot roster names rebuild work |
