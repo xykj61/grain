@@ -1,0 +1,36 @@
+# tools/t/tally_receipt_refusal_witness.rish -- an admission that stops names the field it stopped on.
+#
+# The product contract asks for five facts at that moment: field, value, ceiling,
+# unit, and reason. This runner builds the Rye witness on metal, where all five
+# read as one whole line, and then runs the control, which plants five drifts a
+# reason-only reading would welcome and requires the witness to catch each one.
+let zig = "vendor/zig-toolchain/zig"
+let mk = run ["sh" "-c" "mktemp -d"]
+say mk.err
+assert mk.ok else "receipt-refusal: the build pen could not be opened"
+let pen = trim mk.out
+let bin = "${pen}/receipt_refusal_witness"
+
+say "receipt-refusal: Language EN -- one refusal record carries field, value, ceiling, unit, and reason."
+say "receipt-refusal: Style Gauge, Meter -- every refusal is rendered whole and read whole."
+say "receipt-refusal: Lens TAME -- the record and the elder named error derive from one reading, so they cannot disagree."
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/src/receipt_refusal_witness.rye -femit-bin=${bin}"]
+say build.err
+assert build.ok else "receipt-refusal: the Rye witness did not build"
+
+let proof = run ["sh" "-c" "${bin} 2>&1"]
+say proof.err
+assert proof.ok else "receipt-refusal: the Rye witness exited non-zero"
+assert proof.out contains "GREEN: receipt refusal" else "receipt-refusal: the witness did not print its complete GREEN claim"
+say proof.out
+
+let control = run ["sh" "tools/fixtures/t/tally_receipt_refusal_control.sh"]
+say control.err
+say control.out
+assert control.ok else "receipt-refusal: the control did not run"
+assert control.out contains "control_failed=0" else "receipt-refusal: a control leg read NO"
+assert control.out contains "control_verdict=ok" else "receipt-refusal: the control refused its own run"
+assert control.out contains "legs=11 legs_expected=11" else "receipt-refusal: the control leg count moved without its declaration"
+
+say "GREEN: receipt-refusal runner -- the stable refusal record holds on metal and every planted drift is refused."

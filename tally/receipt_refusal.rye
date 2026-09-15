@@ -1,0 +1,177 @@
+//! tally/receipt_refusal.rye -- the stable refusal record for one receipt offer admission.
+//!
+//! The product contract asks a refusal to name `field`, `value`, `ceiling`,
+//! `unit`, and `reason` wherever a ceiling applies, and the field and reason
+//! elsewhere. This record carries exactly those five and renders them as one
+//! bounded ASCII line a reader and a test may both rely on. A named error alone
+//! reports which KIND of refusal happened, so twelve bounded text fields all
+//! arrive as the one word `TooLong`; the record keeps each field's own name
+//! beside its own measurement.
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// The longest rendered refusal line. Derived rather than guessed: the widest
+/// field name this contract writes is `product_digest` at 14 bytes, the widest
+/// reason `unsuitable_value_unit` at 21, two decimal numbers reach 20 bytes each,
+/// a unit name reaches 22, and the six keys with their separators take 40. That
+/// sums under 128, and 192 leaves a field name room to grow without a re-derivation.
+pub const max_refusal_line_bytes: u32 = 192;
+
+/// The longest field name a refusal may carry, so a caller cannot hand this record
+/// an unbounded string and overflow the line above.
+pub const max_field_name_bytes: u32 = 48;
+
+pub const RenderError = error{ FieldNameTooLong, LineTooLong };
+
+/// What a refusal's number counts. A number without its unit is a rumour with a
+/// decimal point, so the unit travels beside the value rather than in prose.
+pub const Unit = enum {
+    ascii_byte,
+    byte,
+    smallest_declared_unit,
+    fact,
+
+    pub fn name(self: Unit) []const u8 {
+        return switch (self) {
+            .ascii_byte => "ascii-byte",
+            .byte => "byte",
+            .smallest_declared_unit => "smallest-declared-unit",
+            .fact => "fact",
+        };
+    }
+};
+
+/// Why admission refused. Each member is one refusal the product contract names,
+/// and the set is closed: a new refusal earns a member here before it is thrown.
+pub const Reason = enum {
+    empty,
+    non_ascii,
+    too_long,
+    amount_too_large,
+    too_many_facts,
+    unknown_schema,
+    invalid_signature,
+    invalid_expiration,
+    unsuitable_value_unit,
+    no_admitted_fact,
+
+    pub fn name(self: Reason) []const u8 {
+        return switch (self) {
+            .empty => "empty",
+            .non_ascii => "non-ascii",
+            .too_long => "too-long",
+            .amount_too_large => "amount-too-large",
+            .too_many_facts => "too-many-facts",
+            .unknown_schema => "unknown-schema",
+            .invalid_signature => "invalid-signature",
+            .invalid_expiration => "invalid-expiration",
+            .unsuitable_value_unit => "unsuitable-value-unit",
+            .no_admitted_fact => "no-admitted-fact",
+        };
+    }
+};
+
+/// The reading a ceiling refusal carries. The three travel together or not at all,
+/// so `a ceiling applies` is a structural fact rather than three fields a caller
+/// may fill inconsistently.
+pub const Measure = struct {
+    value: u64,
+    ceiling: u64,
+    unit: Unit,
+};
+
+/// One refusal, stated once. `field` names the contract field that refused;
+/// `measure` is present exactly when a ceiling decided it.
+pub const Refusal = struct {
+    field: []const u8,
+    reason: Reason,
+    measure: ?Measure = null,
+
+    /// Render the stable one-line ASCII form into the caller's buffer.
+    ///
+    ///   field=purpose value=93 ceiling=80 unit=ascii-byte reason=too-long
+    ///   field=schema reason=unknown-schema
+    ///
+    /// Key order is fixed, so a reader and a test may both rely on it.
+    pub fn render(self: Refusal, buf: []u8) RenderError![]const u8 {
+        // invariant: the field name stays inside its published ceiling.
+        assert(max_field_name_bytes > 0);
+        // invariant: a rendered line fits the published line ceiling.
+        assert(max_refusal_line_bytes > max_field_name_bytes);
+        if (self.field.len > max_field_name_bytes) return RenderError.FieldNameTooLong;
+        if (buf.len < max_refusal_line_bytes) return RenderError.LineTooLong;
+        const written = if (self.measure) |m|
+            std.fmt.bufPrint(buf, "field={s} value={d} ceiling={d} unit={s} reason={s}", .{
+                self.field, m.value, m.ceiling, m.unit.name(), self.reason.name(),
+            }) catch return RenderError.LineTooLong
+        else
+            std.fmt.bufPrint(buf, "field={s} reason={s}", .{ self.field, self.reason.name() }) catch return RenderError.LineTooLong;
+        // invariant: the rendered line stays inside the published line ceiling.
+        assert(written.len <= max_refusal_line_bytes);
+        return written;
+    }
+};
+
+/// Read one bounded text field and name its refusal, in the same order the
+/// ceilings module already refuses: over the ceiling first, then empty, then a
+/// byte outside ASCII. Returning the reading rather than a bare name is the whole
+/// point -- the caller learns which field, how long it was, and what it exceeded.
+pub fn text_refusal(field: []const u8, value: []const u8, ceiling: u32) ?Refusal {
+    // invariant: every caller names a positive, wire-sized ceiling.
+    assert(ceiling > 0);
+    // invariant: the inherited slice length fits the published count width.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len > ceiling) return .{
+        .field = field,
+        .reason = .too_long,
+        .measure = .{ .value = value.len, .ceiling = ceiling, .unit = .ascii_byte },
+    };
+    if (value.len == 0) return .{ .field = field, .reason = .empty };
+    for (value) |byte| if (!std.ascii.isAscii(byte)) return .{ .field = field, .reason = .non_ascii };
+    return null;
+}
+
+/// Read the stated offer amount against the ceiling its caller names. Every
+/// ceiling arrives as a parameter rather than an import, so this record stays a
+/// shape and `tally/receipt_offer_bounds.rye` stays the one place the numbers live.
+pub fn amount_refusal(field: []const u8, value: u64, ceiling: u64) ?Refusal {
+    // invariant: the field name is a nonempty contract name.
+    assert(field.len > 0);
+    // invariant: the caller names a positive ceiling.
+    assert(ceiling > 0);
+    if (value > ceiling) return .{
+        .field = field,
+        .reason = .amount_too_large,
+        .measure = .{ .value = value, .ceiling = ceiling, .unit = .smallest_declared_unit },
+    };
+    return null;
+}
+
+/// Read the encoded fact length against its byte ceiling.
+pub fn encoded_fact_refusal(length: u32, ceiling: u32) ?Refusal {
+    // invariant: the encoded-fact ceiling is positive.
+    assert(ceiling > 0);
+    // invariant: the incoming length already uses the published count width.
+    assert(length <= std.math.maxInt(u32));
+    if (length > ceiling) return .{
+        .field = "encoded_fact",
+        .reason = .too_long,
+        .measure = .{ .value = length, .ceiling = ceiling, .unit = .byte },
+    };
+    return null;
+}
+
+/// Read how many facts this replay would hold against its fact ceiling.
+pub fn fact_count_refusal(count: u32, ceiling: u32) ?Refusal {
+    // invariant: the caller names a positive fact ceiling.
+    assert(ceiling > 0);
+    // invariant: the incoming count already uses the published count width.
+    assert(count <= std.math.maxInt(u32));
+    if (count > ceiling) return .{
+        .field = "receipt_facts",
+        .reason = .too_many_facts,
+        .measure = .{ .value = count, .ceiling = ceiling, .unit = .fact },
+    };
+    return null;
+}

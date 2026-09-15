@@ -28,7 +28,7 @@ say "tally-roster: Lens TAME -- the ceiling is named, the count is checked at th
 
 # These per-module proofs are the ownership edges this roster reports. Calling them here makes
 # the name and the clock one fact: a covered module has a proof the standing roster actually runs.
-# ALL TWELVE are called, and the sentence above is checked rather than trusted -- the scan reads
+# ALL THIRTEEN are called, and the sentence above is checked rather than trusted -- the scan reads
 # `heard` off this very file and gates the gap at zero (the row stamped `20260906.180651`).
 # Measured 20260907.071500 on this pier, each run alone: region 2s, gardens 0s, copy 0s, maybe 1s,
 # no_padding 0s, parse_int 0s -- 3s for the six together, so keeping the claim true costs this
@@ -63,15 +63,17 @@ let parse_int_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_parse_int.rish
 assert parse_int_proof.ok else "tally-roster: parse_int's owned witness must pass -- ${parse_int_proof.out}"
 let receipt_offer_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_receipt_offer_bounds_witness.rish"]
 assert receipt_offer_proof.ok else "tally-roster: receipt offer bounds' owned witness must pass -- ${receipt_offer_proof.out}"
+let receipt_refusal_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_receipt_refusal_witness.rish"]
+assert receipt_refusal_proof.ok else "tally-roster: the refusal record's owned witness must pass -- ${receipt_refusal_proof.out}"
 
 # Claim one: the live room, whole and seen.
 let live = run ["sh" "tools/fixtures/t/tally_roster_scan.sh"]
 assert live.ok else "tally-roster: the room must read whole -- ${live.out}"
 assert live.out contains "verdict=ok" else "tally-roster: want the live verdict ok -- ${live.out}"
-assert live.out contains "modules_total=15" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
-assert live.out contains "covered=12" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
+assert live.out contains "modules_total=16" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
+assert live.out contains "covered=13" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
 assert live.out contains "uncovered=0" else "tally-roster: the whole roster moved -- a newborn arrives with its check: ${live.out}"
-assert live.out contains "heard=12" else "tally-roster: every covered module's proof must be one this row actually calls -- ${live.out}"
+assert live.out contains "heard=13" else "tally-roster: every covered module's proof must be one this row actually calls -- ${live.out}"
 assert live.out contains "unheard=0" else "tally-roster: a covered module whose witness nothing runs is a filename wearing a proof's name -- ${live.out}"
 
 # THE PEN. A throwaway room with modules, their checks, and a runner to plant against.
@@ -161,4 +163,4 @@ assert no_runner.out contains "verdict=no_runner" else "tally-roster: the absent
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
 assert pen_rm.ok else "tally-roster: could not remove the pen -- ${pen_rm.out} ${pen_rm.err}"
 
-say "GREEN: tally-roster -- fifteen modules read, twelve covered and twelve heard, three test programs; the newborn refused by name, the longer word credited nothing, a covered module no runner calls refused and was named, a citation and a longer path each credited nothing, and the absent runner refused rather than counting twelve faults where there was one."
+say "GREEN: tally-roster -- sixteen modules read, thirteen covered and thirteen heard, three test programs; the newborn refused by name, the longer word credited nothing, a covered module no runner calls refused and was named, a citation and a longer path each credited nothing, and the absent runner refused rather than counting twelve faults where there was one."
