@@ -58,12 +58,6 @@ stamp 20260914.135454
 epoch 1789408494
 paths tools/r/rye_compiled_reach_witness.rish
 what Move the compiler-reach scan and control readings above the assertions that can stop them.
-claim bakery-pen-entry
-seat bakery
-stamp 20260915.191005
-epoch 1789513805
-paths tools/fixtures/p/pen_entry_scan.sh tools/fixtures/p/pen_entry_control.sh tools/p/pen_entry_witness.rish
-what Ask whether a shell runner that makes a throwaway pen ever ENTERED it, so a failed cd cannot leave its fixtures writing against the live checkout (%729's unguarded class).
 claim petrichor-library-index-free-figures
 seat petrichor
 stamp 20260915.200210
