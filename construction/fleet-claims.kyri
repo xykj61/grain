@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-rishi-make-pen
-seat bakery
-stamp 20260915.233209
-epoch 1789529529
-paths rishi/src/main.rye tools/r/rishi_make_pen_witness.rish tools/fixtures/r/rishi_make_pen_control.sh
-what Rishi already owns a CleanupRegistry that releases on normal return, refusal, exit, HUP, INT and TERM -- the card's standing claim that Rishi has no trap at all is false, and the registry's one kind is empty_dir registered only by acquire-lock. Add a make-pen expression builtin: the runtime creates the directory itself under TMPDIR and registers it for bounded recursive release, so it can only ever remove a directory it made in this process and never a caller-supplied path. Turns the 336 unreleased_on_refusal and the 16 never_removed Rishi pens from a language gap into a one-line cure.
 claim diffuser-locality-key-vs-avalanche
 seat diffuser
 stamp 20260916.050045
@@ -76,3 +70,9 @@ stamp 20260916.062146
 epoch 1789554106
 paths glow/refusal.rye glow/refusal_witness.rye tools/g/glow_refusal_witness.rish
 what The receipt contract says a refusal names field, value, ceiling, unit and reason where a ceiling applies, and field plus reason otherwise. Glow answers every refusal with a bare Zig error name carrying none of the five -- glow/rune_shape.rye refuses TooManyFields at three sites, each holding the face name and the count right there and dropping both. Build glow/refusal.rye: a bounded record of the five parts, the seven reasons read off the contract's own sentence, and one stable ASCII rendering; then thread it out of the shape parser's ceiling refusals through a reporting entry beside the published signature, which keeps its bytes.
+claim bakery-emit-path-out-of-key
+seat bakery
+stamp 20260916.075247
+epoch 1789559567
+paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish tools/fixtures/b/built_tool_freshness_scan.sh tools/fixtures/b/built_tool_freshness_control.sh tools/b/built_tool_freshness_witness.rish
+what The build receipt's key hashes every forwarded flag whole, and -femit-bin=<path> is a forwarded flag -- so WHERE an output lands decides the key. Measured in a pen: one source emitted to two paths spoke two keys and produced byte-identical binaries. A running binary refuses to be written over, so every ship rebuilds rishi by emitting to rishi/bin/rishi.new and renaming, which books a key no later build can match and leaves the elder rishi.ryekey beside the new binary speaking for the one it replaced -- five of the pier's eight checkouts stand that way. Drop the emit path's VALUE from the key (marker v6 to v7), keeping every other flag whole and keeping -femit-asm= and its kin exact; then teach built_tool_freshness to ask the mark beside the clock -- line two of <bin>.ryekey against the binary's own SHA-256 -- reported, never gated.
