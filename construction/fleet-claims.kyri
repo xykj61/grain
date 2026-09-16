@@ -82,3 +82,9 @@ stamp 20260916.120625
 epoch 1789574785
 paths tools/fixtures/s/shim_reason_scan.sh tools/fixtures/s/shim_reason_control.sh tools/s/shim_reason_witness.rish
 what The %768 repair widened three awk patterns to (out|err)(_brief)? and left a fourth site untouched: the reason_lost reading matches its two spellings with exact grep -qF for ${var.err} and ${var.out} at shim_reason_scan.sh:389-390. Same blindness, same file, and this one is a GATE at zero rather than a ratchet -- so a shape measuring nothing reads exactly like a shape passing. It moves no number today (0 rostered, 0 unrostered, both ways), which is why only the next arrival would have found it. Widen both seams to grep -qE with the bounded spelling, prove the widening load-bearing by planting the narrow form back into a pen's own scan copy, and name the zero as a zero that was measured.
+claim copal-shell-emit-ascii
+seat copal
+stamp 20260916.183114
+epoch 1789597874
+paths tools/fixtures/s/shell_emit_ascii_scan.sh tools/s/shell_emit_ascii_witness.rish tools/fixtures/s/shell_emit_ascii_control.sh
+what The written-ASCII family named a printf argument as its one unread population and priced it from nothing. Measured over 3,682 tracked shell sources: the residue outside heredocs and comments is 11,030 characters, and 10,416 of those stand in .rish where the spoken meter already holds them. The .sh half is 614 characters that NO meter in this tree reads -- echo 360, printf 113, the rest in other positions -- so the family's own guess named the smaller half of its gap by three to one. A POSIX .sh file has no say verb, so the spoken meter never opens one, and the whole .sh emit surface stands unread. Seat a meter over what a shell script emits through echo and printf, splitting spoken from written by the line's own redirect, with the bounded quote-depth walk the family named as the reason it could not.
