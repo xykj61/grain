@@ -23,14 +23,14 @@ rishi/bin/rishi run tools/v/vpn_wireguard_client_setup.rish
 
 (Prefix with `./tools/g/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell -- see [`../../GLOW_HOST.template.kyri`](../../GLOW_HOST.template.kyri).)
 
-On first run, if `wg` isn't installed, the script pauses and hands you the exact command (`brew install wireguard-tools`) rather than installing networking software for you -- installing it stays a deliberate act, never a silent one. Run it again once installed, and it will:
+On first run, if `wg` isn't installed, the script pauses and hands you the exact command (`brew install wireguard-tools`) rather than installing networking software for you -- installing it stays a deliberate act of your own. Run it again once installed, and it will:
 
 1. Generate this laptop's WireGuard keypair (idempotent -- a second run reuses an existing key rather than overwriting it; witnessed by re-running and confirming the same public key and file timestamp).
 2. Print the public key, which is safe to share, and leave the private key where it sits.
 3. Write a filled-in client config **template** to `.wireguard/wg0-client.conf.template` -- real newlines, real structure, with the two values only the server run can supply (the server's public key, the server's IP) left as clear placeholders.
 4. Print the exact next steps.
 
-**Everything under `.wireguard/` is gitignored** -- confirmed directly against `.gitignore`'s root catch-all before this guide was written; the private key and the filled config never enter git history.
+**Everything under `.wireguard/` is gitignored** -- confirmed directly against `.gitignore`'s root catch-all before this guide was written; the private key and the filled config stay outside git history.
 
 ## The Server Half -- Bring This to Your VPS
 
@@ -51,7 +51,7 @@ This script's syntax is checked (`bash -n`), and it awaits a real VPS to run aga
 1. Rename the filled template to `.wireguard/wg0.conf`.
 2. Import it into the WireGuard macOS app, or run `sudo wg-quick up ./.wireguard/wg0.conf`.
 3. `wg show` on both ends should show a recent handshake.
-4. Split-tunnel (`AllowedIPs = 10.0.0.0/8, 172.16.0.0/12`) is the default in the template; swap to `0.0.0.0/0` for the full-tunnel profile the original guide names for higher-risk travel.
+4. Split-tunnel (`AllowedIPs = 10.0.0.0/8, 172.16.0.0/12`) is the default in the template; swap to `0.0.0.0/0` for the full-tunnel profile the original guide names for travel on untrusted networks.
 
 ---
 

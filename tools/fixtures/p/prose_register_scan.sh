@@ -76,7 +76,7 @@
 
 set -u
 
-DOOR="README.md bat/README.md press/README.md counsel/README.md docs/README.md ember/README.md encoding/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md amphora/README.md mikrophone/README.md tally/README.md mantra/README.md comlink/README.md skate/README.md src/README.md settlement/README.md"
+DOOR="README.md bat/README.md press/README.md counsel/README.md docs/README.md ember/README.md encoding/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md amphora/README.md mikrophone/README.md tally/README.md mantra/README.md comlink/README.md skate/README.md src/README.md settlement/README.md recursion-prompts/README.md"
 DOOR_MAX=20
 FIELD_MAX=30
 # A share needs a denominator big enough to mean something. Below this many sentences the reading is
@@ -117,7 +117,37 @@ FRONT_DETAIL_MAX=40
 # floor, so the reading has never counted it and the tier has read 4 since the day it was seated.
 # The ceiling was set by counting the prose list rather than by asking the meter, which bought one
 # slot for a page no lane could ever sweep off it. Four is what the reading answers.
-ceiling=4
+#
+# IT FELL 4 TO 1 ON 20260916, and two of the three pages it gave back were swept in one lap.
+# `manual/guides/walking-the-rounds.md` read 31% of 67 sentences and reads 7%; sixteen restatements,
+# every one a form this tree's own style guide already names -- `quoted, never paraphrased` became
+# `quoted verbatim`, `always a measurement, never an act` became `rather than an act`, `length
+# ceilings are ceilings, never targets` became `bound a round rather than aim it`. Five sentences
+# stand and each earns it: the term definition a red carries, two quoted round titles that are
+# testimony, one camera image, and the aphorism whose whole force is its paradox.
+# `manual/guides/self-hosted-vpn-setup.md` read 33% of 18 and reads 16% on three restatements --
+# and the three it KEPT are the reading that matters: the honest `no VPS exists to run it on from
+# here`, the `not yet an end-to-end-witnessed deploy`, and the lockout hazard `a mistake there can
+# lock you out of a box with no console access`. A guide whose reader may lose access to their own
+# machine keeps every warning it earned; Gauge puts honesty ahead of brightness and this is where
+# that clause is spent.
+#
+# ONE IS WHAT THE READING ANSWERS, AND ITS FLOOR IS A CUSTODY QUESTION RATHER THAN A STRUCTURE.
+# `docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md` reads 35% of 28 sentences, and
+# 5 of its 10 counted sentences are bound VERBATIM by the greps in
+# `tools/fixtures/g/gen_gren_fund_prep.sh` -- measured, rather than assumed: `Gren m5-m8 CLOSED`,
+# `mints nothing`, `witness:step4`, `witness:step5`, `witness:step6`. Sweeping one of those five
+# reds that witness on the lap it lands.
+# The arithmetic says the tier CAN still reach zero: the five bound sentences alone read 5 of 28,
+# which is 18% and under the target. So nothing structural holds this ceiling at one. What holds it
+# is that the five UNBOUND sentences are a funds page's own refusals -- `counsel never purchases
+# it`, `no token genesis in v1`, `it mints nothing and moves no value` -- plus its closing
+# benediction, on a page whose Status declares a closed arc from 20260728 in a retired voice.
+# Softening a custody refusal to move a ratchet is the one trade this tree does not make, and
+# whether those five may be restated at all is Keaton's word rather than a lane's sweep. The
+# ceiling is one, the floor is named, and the next lap is spared the guess -- which is the exact
+# fault the paragraph above this one records the ceiling having made once already.
+ceiling=1
 
 # THE COMPRESSOR SHELF JOINED THE TEACHING TIER ON 20260910, and it arrived by the road the ASCII
 # wall took through the same room that morning. docs/ is where MAP.md sends a newcomer after the

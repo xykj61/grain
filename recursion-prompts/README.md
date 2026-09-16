@@ -1,7 +1,7 @@
 # recursion-prompts -- the cellar of prompts that wake a bench
 
 **Stamp:** `20260812.071043` - seated this session on Keaton's word (*add a recursion-prompts root level folder inspired by our baton-resins with seed template versions*)
-**Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Living cellar -- seed templates plus their filled, dated versions
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -12,15 +12,15 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ## What this folder is
 
-A **recursion prompt** is the single artifact an autonomous agent reads once and then lives inside for hours -- the prompt that wakes a fresh bench already knowing where it stands, under the tree's laws held whole. Every unattended run this project has enjoyed came from one such prompt.
+A **recursion prompt** is the one artifact an autonomous agent reads once and then lives inside for hours. It wakes a fresh bench that already knows where it stands, under the tree's laws held whole. Every unattended run this project has enjoyed came from one such prompt.
 
-Where the **baton museum** holds the *shape* of a recursion prompt (`recursion_prompt.brix`, its fields named), and **bron-resins** holds *filled handoff instances* preserved for the record, this cellar sits between them: it holds the **living, fillable templates** and their **dated filled versions**, so the next run is a form to fill rather than a page to invent.
+The **baton museum** holds the *shape* of a recursion prompt: `recursion_prompt.brix`, its fields named. **bron-resins** holds *filled handoff instances*, kept for the record. This cellar sits between them and holds the **living, fillable templates** beside their **dated filled versions**, so the next run is a form to fill rather than a page to invent.
 
 The name **resin** is the image: sap that hardens around what it carries and preserves it whole across a long chapter. A recursion prompt is resin for a whole autonomous run -- it hardens the laws, the route, and the gates around the work so the far side opens intact.
 
 ## The balance compass -- harmony of all our styles
 
-A recursion prompt written here rewards *finished, proven, bounded* work, because every prompt rewards something and the whole craft is keeping the reward pointed at the good (the craft guide's one principle). It holds every style of the tree in balance, none crowding the rest:
+A recursion prompt written here rewards *finished, proven, bounded* work. Every prompt rewards something, and the whole craft is keeping that reward pointed at the good -- the craft guide's one principle. It holds every style of the tree in balance, each keeping its own seat:
 
 - **Radiant** carries the day voice -- lead with what is, active, affirmative; a benediction only where earned.
 - **Twilight** is the seed for the rare night run -- calm, dark, gentle, the same laws in a nocturne register ([`../context/TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md)).
@@ -48,7 +48,7 @@ A **seed** is a template with `{{fill}}` slots and its laws stated in full. A **
 ## How to mint a recursion prompt
 
 1. Read the craft guide once -- the eight load-bearing parts, the four anti-patterns.
-2. Copy the closest `seed/*.seed.md` into `versions/` at a fresh live-clock stamp (`TZ=America/New_York date +%Y%m%d-%H%M%S`), never a fabricated one.
+2. Copy the closest `seed/*.seed.md` into `versions/` at a fresh live-clock stamp (`TZ=America/New_York date +%Y%m%d-%H%M%S`), read from the live clock rather than typed from memory.
 3. Fill every `{{slot}}` honestly -- the hard bounds by tag first, then the route, then the gates, then the budget.
 4. State the custody gates by name and the stop rule exactly: *if only those gates remain, print `GATES-ONLY` and stop.*
 5. Leave the filled version in `versions/` when the run closes, so the cellar grows one proven prompt at a time.
@@ -64,16 +64,16 @@ Census witness: [`../tools/r/recursion_prompts_census_witness.rish`](../tools/r/
 
 ## Watching a run live
 
-Plain `--verbose` does **not** stream through a pipe ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)); the streaming format is **`--output-format stream-json --verbose`**, which emits one JSON event per line as they happen. `jq` is installed on the pier by [`../tools/p/pier_jq_install.sh`](../tools/p/pier_jq_install.sh) (guarded, reversible; infuses `jq` into the NixOS config and rebuilds), so the loop renders the stream readable through a filter kept in its own file -- [`../tools/s/stream_render.jq`](../tools/s/stream_render.jq):
+Streaming through a pipe takes **`--output-format stream-json --verbose`**. It emits one JSON event per line as it lands. Plain `--verbose` holds its output back until the run ends ([claude-code #733](https://github.com/anthropics/claude-code/issues/733)). [`../tools/p/pier_jq_install.sh`](../tools/p/pier_jq_install.sh) installs `jq` on the pier, guarded and reversible: it infuses `jq` into the NixOS config and rebuilds. The loop then renders the stream through a filter kept in its own file, [`../tools/s/stream_render.jq`](../tools/s/stream_render.jq):
 
 ```sh
 ... claude --output-format stream-json --verbose -p '...' \
-  | tee /tmp/claude_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq
+  | tee "session-output/${seat}.jsonl" | jq -Rrj -f tools/s/stream_render.jq
 ```
 
-It shows assistant text and `[tool: ...]` markers as they land. The raw stream is always saved to `/tmp/claude_lap.jsonl`, so if a future Claude Code version changes the event shape and the filter shows nothing, the whole run is still there to inspect and the filter's paths can be adjusted. No-jq fallback: drop the `| jq ...` segment and the raw NDJSON scrolls instead.
+**A lap's transcript lands inside the tree.** `session-output/` is gitignored and per seat, so a path under this root stays beyond every other ship's reach and beyond yesterday's -- a property `/tmp` gave away twice before the habit was seated (REDS `%549`, `%620`). [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh) is the living eight-ship loop, and it writes both halves there: the raw NDJSON to `session-output/<seat>.jsonl` and the rendered text to `session-output/<seat>.txt`. It shows assistant text and `[tool: ...]` markers as they land. Keeping the raw stream buys a margin. A future Claude Code version may reshape its events and leave the filter rendering a blank line. The whole run still stands there to inspect, and the filter's paths catch up. Lacking `jq`, drop the `| jq ...` segment and the raw NDJSON scrolls instead.
 
-**The loop stops on a file sentinel, not a grep.** Because stream-json echoes the prompt -- which contains the words `GATES-ONLY` -- a grep on the stream would false-match and stop after one lap. So the prompt tells the agent to `touch .loop-gates-only` when only custody gates remain, and the outer loop checks for that file (`[ -f .loop-gates-only ]`), leaving the stream purely for the operator's eyes. The exact loop lives in [`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish). The cleanest progress signal of all is the **per-increment commits on GitHub** -- the loop pushes each finished file, witness, and doc as its own round.
+**The loop stops on a file sentinel.** Because stream-json echoes the prompt -- which contains the words `GATES-ONLY` -- a grep on the stream would match its own instructions and halt after one lap. So the prompt tells the agent to `touch .loop-gates-only` when only custody gates remain. The outer loop checks for that file with `[ -f .loop-gates-only ]`, which leaves the stream purely for the operator's eyes. The single-ship recipe a hand pastes lives in [`../tools/l/launch-claude-chapter.rish`](../tools/l/launch-claude-chapter.rish). The clearest progress signal of all is the **per-increment commits on GitHub** -- the loop pushes each finished file, witness, and doc as its own round.
 
 ---
 
