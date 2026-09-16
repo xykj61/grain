@@ -109,7 +109,7 @@ reading() { printf '%s\n' "$1" | sed -n "s/^$2=//p" | head -1; }
 clean=$(run_pen clean "")
 clean_ok=0
 if [ "$(reading "$clean" verdict)" = "ok" ] \
-  && [ "$(reading "$clean" fresh_header)" = "mantra-weave-v2" ] \
+  && [ "$(reading "$clean" fresh_header)" = "mantra-weave-v3" ] \
   && [ "$(reading "$clean" elder_opens)" = "yes" ] \
   && [ "$(reading "$clean" mixed_opens)" = "yes" ] \
   && [ "$(reading "$clean" tampered_blob_refused)" = "yes" ]; then
@@ -117,7 +117,7 @@ if [ "$(reading "$clean" verdict)" = "ok" ] \
 fi
 echo "clean_ok=$clean_ok"
 
-v1=$(run_pen writes_v1 's|try out.appendSlice(allocator, "mantra-weave-v2\\n");|try out.appendSlice(allocator, "mantra-weave-v1\\n");|')
+v1=$(run_pen writes_v1 's|try out.appendSlice(allocator, "mantra-weave-v3\\n");|try out.appendSlice(allocator, "mantra-weave-v1\\n");|')
 echo "writes_v1_header=$(reading "$v1" fresh_header)"
 
 d1=$(run_pen drops_v1_read 's|^.*if (std.mem.eql(u8, header, "mantra-weave-v1")) return read_v1_rows.*$||')
@@ -126,6 +126,14 @@ echo "drops_v1_read_elder_opens=$(reading "$d1" elder_opens)"
 d2=$(run_pen drops_v2_read 's|^.*if (std.mem.eql(u8, header, "mantra-weave-v2")) return read_v2_record.*$||')
 echo "drops_v2_read_elder_opens=$(reading "$d2" elder_opens)"
 echo "drops_v2_read_mixed_opens=$(reading "$d2" mixed_opens)"
+
+# THE READER THAT MATTERS IS THE ONE THE CLI WRITES FOR. Deleting the v2
+# dispatch used to close a mixed store because v2 was the newest record; the CLI
+# writes v3 now (REDS %680), so the v3 dispatch is what a fresh blob needs and
+# the v2 one only carries the elder history. Both plants stand, each proving its
+# own reader.
+d3=$(run_pen drops_v3_read 's|^.*if (std.mem.eql(u8, header, "mantra-weave-v3")) return read_v3_record.*$||')
+echo "drops_v3_read_mixed_opens=$(reading "$d3" mixed_opens)"
 
 nd=$(run_pen no_digest 's|if (!std.mem.eql(u8, recomputed, name)) return StoreError.BlobNameMismatch;||' store.rye)
 echo "no_digest_tamper_refused=$(reading "$nd" tampered_blob_refused)"

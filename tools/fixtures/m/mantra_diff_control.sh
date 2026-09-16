@@ -30,6 +30,9 @@
 #                     line is ever common. Identical documents then diff as a whole
 #                     replacement, and claim 1 catches it.
 #   inverted_inserts -- the insert-collection test is inverted, so the lines held in common
+#                       (RE-AIMED `20260916`: the loop reads `kept_new` as the SKIP test now,
+#                       since it also counts the gap each insert falls in for the replacement
+#                       pairing. The plant inverts that test wherever it stands.)
 #                     are carried as inserts and the genuinely new ones are dropped. Claim 1
 #                     catches it at its first assert: an unchanged document stops being free.
 #   trailing_token -- the break that drops the empty token after a file's last newline is
@@ -142,7 +145,7 @@ walker_removed_exit="$(run_pen walker_removed '' "$drop_walker" 'yes')"
 lcs_exit="$(run_pen lcs_equality \
   's/            if (std.mem.eql(u8, old_lines\[i - 1\].text, new_text\[j - 1\])) {/            if (false) {/' '' '')"
 inverted_inserts_exit="$(run_pen inverted_inserts \
-  's/        if (!kept_new\[idx\]) {/        if (kept_new[idx]) {/' '' '')"
+  's/        if (kept_new\[idx\]) {/        if (!kept_new[idx]) {/' '' '')"
 trailing_exit="$(run_pen trailing_token \
   '/        if (line.len == 0 and it.rest().len == 0) break;/d' '' '')"
 
