@@ -160,7 +160,15 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 **What counts as a library here:** a top-level room holding at least one `.rye` module *and* its own `README.md`. Both halves matter -- the README is the door a reader opens, the modules are what stands behind it, and a room becomes a library by holding both.
 
-**How the witness count is taken:** a witness belongs to a room when it *references* that room -- not when its filename happens to contain the room name, and not when it merely invokes the toolchain that lives there. Globbing `tools/*<room>*_witness.rish` reported **zero** for `image` and `lotus`, which hold 463 modules between them, because their proofs are named for what they prove rather than for where it lives. Testing for the room's path instead then reported **1,770** witnesses for `rishi` -- 98 percent of every witness in the tree, against a room of two modules -- because each one runs under `rishi/bin/rishi`, and **1,313** for `rye`, because each one builds with `rye/bin/rye`. So both entry paths are removed from a line before the room test reads it, and what remains was written to name a room rather than to run a program. Only a number a reader can trust is worth printing, and that holds in either direction.
+**How the witness count is taken:** a witness belongs to a room when it *references* that room. This rule replaced two plainer ones, and each of those landed wide in its own direction.
+
+Matching the **filename** reported zero witnesses for `image` and `lotus`, two of the largest rooms in the table below, because their proofs are named for what they prove rather than for where it lives. Matching the room's **path** swung the other way. Nearly every witness in the tree claimed `rishi`, and most claimed `rye`, since each one runs under `rishi/bin/rishi` and builds with `rye/bin/rye`. A path a program runs under names its toolchain rather than its room.
+
+So both entry paths leave the line before the room test reads it, and what remains was written to name a room. Only a number a reader can trust is worth printing, and that holds in either direction -- which is why the two elder readings above are described rather than spelled. Both are **free**: they rise with every witness the tree gains, so read them off the tree yourself.
+
+```
+find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | wc -l
+```
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
