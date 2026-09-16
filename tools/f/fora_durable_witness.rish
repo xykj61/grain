@@ -20,7 +20,7 @@ say "fora-durable: Lens TAME — record_vote refuses StaleTerm/AlreadyVoted over
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/durable"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/durable.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/durable.rye -femit-bin=${bin}"]
 assert build.ok else "fora-durable: build failed — ${build.err}"
 
 let outfile = "constel/bin/durable.out"

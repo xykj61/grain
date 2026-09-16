@@ -46,7 +46,7 @@ trap 'rm -rf "$PEN"' EXIT INT TERM
 # batch scan already takes a directory lock against. A control that needed that lock could not
 # run beside a desk pass; one that owns its own binary can.
 DRIVER="$PEN/glow_run"
-if ! env RYE_ZIG="$ZIG" rye/bin/rye build glow/glow_run.rye -femit-bin="$DRIVER" > "$PEN/build.log" 2>&1; then
+if ! env RYE_ZIG="$ZIG" sh tools/fixtures/r/rye_build.sh glow/glow_run.rye -femit-bin="$DRIVER" > "$PEN/build.log" 2>&1; then
   echo "glow_trap_bound: driver build failed" >&2
   tail -20 "$PEN/build.log" >&2
   exit 2

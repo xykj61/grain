@@ -31,7 +31,7 @@ say "crypto-xchacha20: Lens TAME — the primitive path calls no std.crypto; it 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/xchacha20"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/xchacha20.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/xchacha20.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-xchacha20: build failed — ${build.err}"
 
 let outfile = "crypto/bin/xchacha20.out"

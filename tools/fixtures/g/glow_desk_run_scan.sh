@@ -250,7 +250,7 @@ if [ -z "$RUN_ONE" ]; then
 
   # Built once, and named as the whole point of the batch. Emitted beside the target and renamed,
   # which is atomic, so an interrupted build leaves the previous good binary standing.
-  if ! env RYE_ZIG="$ZIG" rye/bin/rye build glow/glow_run.rye -femit-bin=glow/bin/glow_run.batch.$$ > "$WORK/compiler.log" 2>&1; then
+  if ! env RYE_ZIG="$ZIG" sh tools/fixtures/r/rye_build.sh glow/glow_run.rye -femit-bin=glow/bin/glow_run.batch.$$ > "$WORK/compiler.log" 2>&1; then
     echo "glow_desk_run: the Glow compiler did not build --" >&2
     tail -20 "$WORK/compiler.log" >&2
     exit 2

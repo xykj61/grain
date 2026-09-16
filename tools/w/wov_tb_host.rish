@@ -14,7 +14,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/wov-tb-host"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/wov_tb_host.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/wov_tb_host.rye -femit-bin=${bin}"]
 assert build.ok else "WOV TB host build failed"
 
 let ensure = run ["sh" "tools/w/wov_tb_ensure_binary.sh"]

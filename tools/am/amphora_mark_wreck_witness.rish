@@ -43,23 +43,23 @@ let planted = "${pen}/planted.bron"
 # it runs rather than trusting a previous lap (REDS %334); mkdir first, since rye build
 # refuses an absent -femit-bin directory (REDS %337).
 let zig = "vendor/zig-toolchain/zig"
-let build_entry = run ["sh" "-c" "mkdir -p ${pen}/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=${pen}/bin/manifest-entry"]
+let build_entry = run ["sh" "-c" "mkdir -p ${pen}/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/manifest_entry.rye -femit-bin=${pen}/bin/manifest-entry"]
 if build_entry.ok == false then say build_entry.err
 assert build_entry.ok else "mark_wreck: manifest_entry build failed -- read the line above"
-let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${pen}/bin/vessel-core"]
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_core.rye -femit-bin=${pen}/bin/vessel-core"]
 if build_core.ok == false then say build_core.err
 assert build_core.ok else "mark_wreck: vessel-core build failed -- read the line above"
-let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${pen}/bin/vessel-seal"]
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_seal.rye -femit-bin=${pen}/bin/vessel-seal"]
 if build_seal.ok == false then say build_seal.err
 assert build_seal.ok else "mark_wreck: vessel-seal build failed -- read the line above"
-let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=${pen}/bin/amphora"]
+let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/src/main.rye -femit-bin=${pen}/bin/amphora"]
 if build_amphora.ok == false then say build_amphora.err
 assert build_amphora.ok else "mark_wreck: amphora build failed -- read the line above"
 
 # The receipt seam reads the mark through the same parser rather than a second hand-rolled
 # tokenizer, so it is built here too -- it needs libc for its sockets, as its own three
 # rostered witnesses already spell.
-let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${pen}/bin/vessel-fetch-delivery"]
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_fetch_delivery.rye -lc -femit-bin=${pen}/bin/vessel-fetch-delivery"]
 if build_delivery.ok == false then say build_delivery.err
 assert build_delivery.ok else "mark_wreck: vessel_fetch_delivery no longer compiles -- read the line above"
 

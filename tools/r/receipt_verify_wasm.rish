@@ -28,7 +28,7 @@ let wt_ver = run ["sh" "-c" "${wasmtime} --version"]
 assert wt_ver.ok else "wasmtime --version failed"
 say "receipt-verify wasm: pinned wasmtime ${wt_ver.out} (${wasmtime})"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/receipt_verify_guest.rye -target wasm32-freestanding -fno-entry -rdynamic -OReleaseSmall -femit-bin=${wasm}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/receipt_verify_guest.rye -target wasm32-freestanding -fno-entry -rdynamic -OReleaseSmall -femit-bin=${wasm}"]
 assert build.ok else "receipt-verify wasm guest build failed"
 
 let witness = run ["sh" "-c" "${wasmtime} run --invoke verify_witness ${wasm} 2>&1"]

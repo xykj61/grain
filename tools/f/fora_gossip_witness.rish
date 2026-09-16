@@ -22,7 +22,7 @@ say "fora-gossip: Lens TAME — a bounded loop over the switchboard's mailboxes,
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/gossip"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/gossip.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/gossip.rye -femit-bin=${bin}"]
 assert build.ok else "fora-gossip: build failed — ${build.err}"
 
 let outfile = "constel/bin/gossip.out"

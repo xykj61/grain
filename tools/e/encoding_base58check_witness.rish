@@ -26,7 +26,7 @@ say "encoding-base58check: Lens TAME — no new cryptography: the hash is the GR
 let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/base58check"
 
-let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/base58check.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/base58check.rye -femit-bin=${bin}"]
 assert build.ok else "encoding-base58check: build failed — ${build.err}"
 
 let outfile = "encoding/bin/base58check.out"

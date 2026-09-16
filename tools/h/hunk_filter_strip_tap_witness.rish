@@ -19,7 +19,7 @@ say "hunk-filter-strip-tap: Lens TAME — a pure composition over three proven s
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/filter_strip_tap"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/filter_strip_tap.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/filter_strip_tap.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-filter-strip-tap: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

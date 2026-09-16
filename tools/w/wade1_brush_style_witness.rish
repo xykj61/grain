@@ -21,7 +21,7 @@ let zig = "vendor/zig-toolchain/zig"
 # --- build the parser; exercise the `style` path on the styled fixture -------
 
 say "wade1 brush style: build brush-parse..."
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/brush_parse.rye -femit-bin=brushstroke/bin/brush-parse"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/brush_parse.rye -femit-bin=brushstroke/bin/brush-parse"]
 assert build.ok else "wade1 brush style: brush-parse build failed"
 
 let self = run ["brushstroke/bin/brush-parse" "selftest"]

@@ -7,7 +7,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/open-asks"
 let delivery = "linengrow/bin/open-asks-escrow-delivery"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks.rye -femit-bin=${bin} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks_escrow_delivery.rye -lc -femit-bin=${delivery}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/open_asks.rye -femit-bin=${bin} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/open_asks_escrow_delivery.rye -lc -femit-bin=${delivery}"]
 
 assert build.ok else "OA-L3 open asks build failed"
 

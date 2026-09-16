@@ -23,7 +23,7 @@ say "fora-elect: Lens TAME — elect asserts no second candidate also reaches th
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/elect"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/elect.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/elect.rye -femit-bin=${bin}"]
 assert build.ok else "fora-elect: build failed — ${build.err}"
 
 let outfile = "constel/bin/elect.out"

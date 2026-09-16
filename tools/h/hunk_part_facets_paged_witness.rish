@@ -24,7 +24,7 @@ say "hunk-part-facets-paged: Lens TAME — pure text-and-painting over HUNK87 fo
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/part_facets_paged"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_paged.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_paged.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-facets-paged: build failed — ${build.err}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
@@ -39,13 +39,13 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-facets-paged' ${outfile} && echo
 assert (trim green.out) == "yes" else "hunk-part-facets-paged: selftest did not print the GREEN part-facets-paged line"
 
 # HUNK87 stays GREEN -- the faceted header this rung appends a page line to.
-let h = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_header.rye -femit-bin=brushstroke/bin/part_facets_header && brushstroke/bin/part_facets_header selftest > brushstroke/bin/part_facets_header.out 2>&1"]
+let h = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_header.rye -femit-bin=brushstroke/bin/part_facets_header && brushstroke/bin/part_facets_header selftest > brushstroke/bin/part_facets_header.out 2>&1"]
 assert h.ok else "hunk-part-facets-paged: HUNK87 part_facets_header re-run failed — see brushstroke/bin/part_facets_header.out"
 let h_green = run ["sh" "-c" "grep -q 'GREEN part-facets-header' brushstroke/bin/part_facets_header.out && echo yes"]
 assert (trim h_green.out) == "yes" else "hunk-part-facets-paged: HUNK87 part_facets_header did not stay GREEN"
 
 # HUNK86 stays GREEN -- the faceted shelf this rung pages and crowns.
-let s = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_search.rye -femit-bin=brushstroke/bin/part_facets_search && brushstroke/bin/part_facets_search selftest > brushstroke/bin/part_facets_search.out 2>&1"]
+let s = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_search.rye -femit-bin=brushstroke/bin/part_facets_search && brushstroke/bin/part_facets_search selftest > brushstroke/bin/part_facets_search.out 2>&1"]
 assert s.ok else "hunk-part-facets-paged: HUNK86 part_facets_search re-run failed — see brushstroke/bin/part_facets_search.out"
 let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' brushstroke/bin/part_facets_search.out && echo yes"]
 assert (trim s_green.out) == "yes" else "hunk-part-facets-paged: HUNK86 part_facets_search did not stay GREEN"

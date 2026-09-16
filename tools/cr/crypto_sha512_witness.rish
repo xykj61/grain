@@ -25,7 +25,7 @@ say "crypto-sha512: Lens TAME — the primitive calls no std.crypto; it is autho
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/sha512"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/sha512.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/sha512.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-sha512: build failed — ${build.err}"
 
 let outfile = "crypto/bin/sha512.out"

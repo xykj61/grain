@@ -54,7 +54,7 @@ let one = run ["sh" "-c" "grep -q 'const store_mod = @import(\"store.rye\")' man
 assert one.ok else "mantra-store: mantra/src/main.rye carries its own Store again, so two ceilings stand over one .mantra/blobs/"
 
 say "mantra-store: building the witness against the real module..."
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/store_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/store_witness.rye -femit-bin=${bin}"]
 assert build.ok else "mantra-store: store witness build failed"
 
 say "mantra-store: running it in a pen of its own..."

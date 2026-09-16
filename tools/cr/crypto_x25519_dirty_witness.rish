@@ -33,7 +33,7 @@ say "crypto-x25519-dirty: Lens TAME — the primitive calls no std.crypto; it re
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/x25519_dirty"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/x25519_dirty.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/x25519_dirty.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-x25519-dirty: build failed — ${build.err}"
 
 let outfile = "crypto/bin/x25519_dirty.out"

@@ -6,7 +6,7 @@
 # company). Every exemplar holds fake data only.
 #
 # Build first (the vendored toolchain):
-#   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader
+#   RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh scribe/reader.rye -femit-bin=scribe/bin/reader
 #   rishi/bin/rishi run tools/b/bat_fleet_witness.rish
 
 # Build the reader this witness runs, rather than assuming a previous lap left one behind.
@@ -15,7 +15,7 @@
 # tools/s/scribe_reader_witness.rish builds the same reader, because each header tells a reader
 # to run that witness directly.
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p scribe/bin && env RYE_ZIG=${zig} rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader"]
+let build = run ["sh" "-c" "mkdir -p scribe/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh scribe/reader.rye -femit-bin=scribe/bin/reader"]
 assert build.ok else "bat fleet: scribe reader build failed -- ${build.err}"
 
 # 1. The reader validates every shape and refuses a short Galleon (its selftest).

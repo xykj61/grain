@@ -40,7 +40,7 @@ assert clock.ok else "equinox-e0: mod_clock.rye missing"
 # tree, so the rung builds its own binary the same way and keeps the reading it always wanted.
 let bin = "glow/bin/mod-clock"
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/mod_clock.rye -femit-bin=${bin} 2>&1"]
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/mod_clock.rye -femit-bin=${bin} 2>&1"]
 assert build.ok else "equinox-e0: mod_clock.rye must build"
 let have = run ["test" "-x" bin]
 assert have.ok else "equinox-e0: the build must leave an executable"

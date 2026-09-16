@@ -26,7 +26,7 @@ say "crypto-eth-address: Lens TAME — no new cryptography: every hash is the GR
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/eth_address"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/eth_address.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/eth_address.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-eth-address: build failed — ${build.err}"
 
 let outfile = "crypto/bin/eth_address.out"

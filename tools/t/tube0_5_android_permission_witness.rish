@@ -13,7 +13,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/tube_manifest_android_permission_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_manifest_android_permission_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/tube_manifest_android_permission_witness.rye -femit-bin=${bin}"]
 assert build.ok else "TUBE0.5 permission-emission witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

@@ -48,7 +48,7 @@ assert cmp_wrong.ok == false else "wrong-order fixture must fail cmp — gate in
 # Tokenizer face: each fixture digraph is Kind.rune2 length 2.
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/digraph_twin_check"
-let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/digraph_twin_check.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/digraph_twin_check.rye -femit-bin=${bin}"]
 assert build.ok else "digraph_twin_check build failed: ${build.err}${build.out}"
 let check = run ["sh" "-c" "${bin} 2>&1"]
 assert check.ok else "digraph_twin_check failed: ${check.err}${check.out}"

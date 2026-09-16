@@ -32,7 +32,7 @@ say "crypto-kumara-identity: Lens TAME — every width named (a 32-byte secret s
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/kumara_identity"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_identity.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/kumara_identity.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-kumara-identity: build failed — ${build.err}"
 
 let outfile = "crypto/bin/kumara_identity.out"

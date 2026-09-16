@@ -21,7 +21,7 @@ say "drey-manifest: Lens TAME — write_manifest emits address + length per entr
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/manifest"
 
-let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/manifest.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mikrophone/manifest.rye -femit-bin=${bin}"]
 assert build.ok else "drey-manifest: build failed — ${build.err}"
 
 let outfile = "mikrophone/bin/manifest.out"

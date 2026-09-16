@@ -167,7 +167,7 @@ assert ry.ok else "birth-a-clone: the rye bootstrap refused -- ${ry.err}"
 # lesson, met again at birth.
 let rb = run ["mkdir" "-p" (dest + "/rishi/bin")]
 assert rb.ok else "birth-a-clone: could not make rishi/bin"
-let ri = run ["sh" "-c" ("cd " + dest + " && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi")]
+let ri = run ["sh" "-c" ("cd " + dest + " && env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh rishi/src/main.rye -femit-bin=rishi/bin/rishi")]
 assert ri.ok else "birth-a-clone: the rishi build refused -- ${ri.err}"
 
 # The proof: a real witness runs GREEN inside the newborn, on the newborn's own binaries.

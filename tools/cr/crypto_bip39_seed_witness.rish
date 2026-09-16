@@ -27,7 +27,7 @@ say "crypto-bip39-seed: Lens TAME — every width named (seed_len 64, bip39_iter
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/bip39_seed"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bip39_seed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/bip39_seed.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-bip39-seed: build failed — ${build.err}"
 
 let outfile = "crypto/bin/bip39_seed.out"

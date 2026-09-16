@@ -2,7 +2,7 @@
 # glow_host_run.sh -- run a command with THIS host's pinned toolchain, never
 # a silent PATH fallback.
 #
-#   ./tools/g/glow_host_run.sh -- rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
+#   ./tools/g/glow_host_run.sh -- sh tools/fixtures/r/rye_build.sh rishi/src/main.rye -femit-bin=rishi/bin/rishi
 #   ./tools/g/glow_host_run.sh -- rishi/bin/rishi run tools/p/parity.rish
 #
 # Reads GLOW_HOST.kyri, or the elder GLOW_HOST.bron (copy from GLOW_HOST.template.kyri and fill in your

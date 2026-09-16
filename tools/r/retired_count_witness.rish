@@ -27,7 +27,7 @@ say "retired-count: Lens TAME -- the run count, the workload, and the ceiling ar
 let zig = "vendor/zig-toolchain/zig"
 
 say "retired-count: building from source, so the binary matches the file this witness reads..."
-let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/retired_count.rye -femit-bin=tools/bin/retired-count"]
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/retired_count.rye -femit-bin=tools/bin/retired-count"]
 assert build.ok else "retired-count: the build refused --\n${build.out}\n${build.err}"
 
 # The claim lines arrive on stderr, as every hosted Rye program in this tree prints through

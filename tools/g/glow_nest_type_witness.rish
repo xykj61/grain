@@ -14,7 +14,7 @@ let bin = "glow/bin/nest_type_witness"
 let tame_pin = run ["sh" "-c" "grep -F 'STOA130' ${tame}"]
 assert tame_pin.ok else "TAME missing STOA130 stated nesting gold vocabulary"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/nest_type_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/nest_type_witness.rye -femit-bin=${bin}"]
 assert build.ok else "nest_type_witness build failed: ${build.err}${build.out}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

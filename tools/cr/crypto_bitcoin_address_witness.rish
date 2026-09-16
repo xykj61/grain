@@ -26,7 +26,7 @@ say "crypto-bitcoin-address: Lens TAME — no new cryptography: every hash is th
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/bitcoin_address"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bitcoin_address.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/bitcoin_address.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-bitcoin-address: build failed — ${build.err}"
 
 let outfile = "crypto/bin/bitcoin_address.out"

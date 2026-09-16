@@ -16,7 +16,7 @@ let lent_welcome_bin = "glow/bin/lent_tick_welcome"
 let lent_unwelcome_rye = "glow/.cache/lent_tick_unwelcome.rye"
 let lent_unwelcome_bin = "glow/bin/lent_tick_unwelcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_trap_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_trap_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_trap_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

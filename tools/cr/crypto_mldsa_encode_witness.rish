@@ -27,7 +27,7 @@ say "crypto-mldsa-encode: Lens TAME — bounded loops (every pack/unpack cites n
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/mldsa_encode"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mldsa_encode.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/mldsa_encode.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-mldsa-encode: build failed — ${build.err}"
 
 let outfile = "crypto/bin/mldsa_encode.out"

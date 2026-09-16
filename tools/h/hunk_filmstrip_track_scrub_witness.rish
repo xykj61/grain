@@ -21,7 +21,7 @@ say "hunk-filmstrip-track-scrub: Lens TAME — a pure composition over HUNK16 se
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/edit_filmstrip_track_scrub"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip_track_scrub.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/edit_filmstrip_track_scrub.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-filmstrip-track-scrub: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

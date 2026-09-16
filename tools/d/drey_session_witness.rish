@@ -24,7 +24,7 @@ say "drey-session: Lens TAME — two bounded fixed buffers, no heap outliving th
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/session"
 
-let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/session.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mikrophone/session.rye -femit-bin=${bin}"]
 assert build.ok else "drey-session: build failed — ${build.err}"
 
 let outfile = "mikrophone/bin/session.out"

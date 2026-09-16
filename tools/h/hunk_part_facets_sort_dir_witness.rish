@@ -23,7 +23,7 @@ say "hunk-part-facets-sort-dir: Lens TAME — one SortDir parameter drives both 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/part_facets_sort_dir"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_dir.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_sort_dir.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-facets-sort-dir: build failed — ${build.err}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
@@ -38,13 +38,13 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-dir' ${outfile} && e
 assert (trim green.out) == "yes" else "hunk-part-facets-sort-dir: selftest did not print the GREEN part-facets-sort-dir line"
 
 # HUNK90 stays GREEN -- the ascending sorted screen this rung generalizes to a direction.
-let a = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sorted_screen.rye -femit-bin=brushstroke/bin/part_facets_sorted_screen && brushstroke/bin/part_facets_sorted_screen selftest > brushstroke/bin/part_facets_sorted_screen.out 2>&1"]
+let a = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_sorted_screen.rye -femit-bin=brushstroke/bin/part_facets_sorted_screen && brushstroke/bin/part_facets_sorted_screen selftest > brushstroke/bin/part_facets_sorted_screen.out 2>&1"]
 assert a.ok else "hunk-part-facets-sort-dir: HUNK90 part_facets_sorted_screen re-run failed — see brushstroke/bin/part_facets_sorted_screen.out"
 let a_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sorted-screen' brushstroke/bin/part_facets_sorted_screen.out && echo yes"]
 assert (trim a_green.out) == "yes" else "hunk-part-facets-sort-dir: HUNK90 part_facets_sorted_screen did not stay GREEN"
 
 # HUNK91 stays GREEN -- the descending shelf this rung crowns with a directional header.
-let d = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_sort_desc.rye -femit-bin=brushstroke/bin/part_facets_sort_desc && brushstroke/bin/part_facets_sort_desc selftest > brushstroke/bin/part_facets_sort_desc.out 2>&1"]
+let d = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_sort_desc.rye -femit-bin=brushstroke/bin/part_facets_sort_desc && brushstroke/bin/part_facets_sort_desc selftest > brushstroke/bin/part_facets_sort_desc.out 2>&1"]
 assert d.ok else "hunk-part-facets-sort-dir: HUNK91 part_facets_sort_desc re-run failed — see brushstroke/bin/part_facets_sort_desc.out"
 let d_green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-desc' brushstroke/bin/part_facets_sort_desc.out && echo yes"]
 assert (trim d_green.out) == "yes" else "hunk-part-facets-sort-dir: HUNK91 part_facets_sort_desc did not stay GREEN"

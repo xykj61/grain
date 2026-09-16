@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.205911` | [The counts that carried constants](20260915/20260915-205911_the-counts-that-carried-constants.kyri) | every resolvable build site locked |
 | `20260915.204403` | [The stamps I rounded](20260915/20260915-204403_the-stamps-i-rounded.kyri) | nine guessed stamps corrected |
 | `20260915.204128` | [The rooms a build writes into](20260915/20260915-204128_the-rooms-a-build-writes-into.kyri) | four rooms locked; the walk widened |
 | `20260915.202608` | [The lock and the word that had no rule](20260915/20260915-202608_the-lock-and-the-word-that-had-no-rule.kyri) | 6 failures to 0; molt seated |

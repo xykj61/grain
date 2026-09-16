@@ -22,7 +22,7 @@ let zig = "vendor/zig-toolchain/zig"
 
 # dimeroll_core stays GREEN beneath the entity layer -- additive.
 let binc = "dimeroll/bin/dimeroll"
-let buildc = run ["sh" "-c" "mkdir -p dimeroll/bin && env RYE_ZIG=${zig} rye/bin/rye build dimeroll/dimeroll.rye -femit-bin=${binc}"]
+let buildc = run ["sh" "-c" "mkdir -p dimeroll/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh dimeroll/dimeroll.rye -femit-bin=${binc}"]
 assert buildc.ok else "gism-ayre-j8r1: dimeroll build failed"
 let selfc = run ["sh" "-c" "${binc} selftest 2>&1"]
 assert selfc.ok else "gism-ayre-j8r1: dimeroll selftest exited non-zero"

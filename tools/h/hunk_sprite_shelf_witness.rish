@@ -24,7 +24,7 @@ say "hunk-sprite-shelf: Lens TAME — pure composition over public APIs; the swa
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/sprite_shelf"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_shelf.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/sprite_shelf.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-sprite-shelf: build failed — ${build.err}"
 
 # Write the selftest output to a file and grep the file -- the GREEN line carries apostrophes ("product's",
@@ -49,12 +49,12 @@ let shape = run ["sh" "-c" "grep -q 'carries the window' ${outfile} && echo yes"
 assert (trim shape.out) == "yes" else "hunk-sprite-shelf: the selftest did not prove the strip carries the window's shape"
 
 # HUNK5 stays GREEN -- the shelf reuses sprite.render and image_skate.down_map that the product page proved.
-let page = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_page.rye -femit-bin=brushstroke/bin/sprite_page && brushstroke/bin/sprite_page selftest 2>&1"]
+let page = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/sprite_page.rye -femit-bin=brushstroke/bin/sprite_page && brushstroke/bin/sprite_page selftest 2>&1"]
 assert page.ok else "hunk-sprite-shelf: HUNK5 sprite_page re-run failed — ${page.out}"
 assert page.out contains "GREEN sprite-page" else "hunk-sprite-shelf: HUNK5 sprite_page did not stay GREEN"
 
 # HUNK2 stays GREEN -- the down-map the swatch stands on, and the set_anchor_palette refactor beneath it, must hold.
-let skate = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/image_skate.rye -femit-bin=brushstroke/bin/image_skate && brushstroke/bin/image_skate selftest 2>&1"]
+let skate = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/image_skate.rye -femit-bin=brushstroke/bin/image_skate && brushstroke/bin/image_skate selftest 2>&1"]
 assert skate.ok else "hunk-sprite-shelf: HUNK2 image_skate re-run failed — ${skate.out}"
 assert skate.out contains "GREEN image-skate" else "hunk-sprite-shelf: HUNK2 image_skate did not stay GREEN after the set_anchor_palette refactor"
 

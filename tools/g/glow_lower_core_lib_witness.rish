@@ -8,7 +8,7 @@ let lib_rye = "glow/.cache/lib_core_double.rye"
 let use_rye = "glow/.cache/lib_core_double_use.rye"
 let use_bin = "glow/bin/lib_core_double_use"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_core_lib_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_core_lib_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_core_lib_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

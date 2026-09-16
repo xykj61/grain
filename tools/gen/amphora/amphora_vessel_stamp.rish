@@ -7,7 +7,7 @@ let zig = "vendor/zig-toolchain/zig"
 let vessel_bin = "amphora/bin/vessel-core"
 
 say "amphora-stamp: build vessel-core..."
-let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
 assert build.ok else "amphora vessel_core build failed for stamp lap"
 
 let selftest = run ["sh" "-c" "${vessel_bin} selftest 2>&1"]

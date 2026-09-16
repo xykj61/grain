@@ -10,7 +10,7 @@
 #   rishi/bin/rishi run tools/b/brix_infuse_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build brix/infuse.rye -femit-bin=tools/.build/brix_infuse"]
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brix/infuse.rye -femit-bin=tools/.build/brix_infuse"]
 assert build.ok else "brix infuse build failed"
 
 let st = run ["tools/.build/brix_infuse" "selftest"]

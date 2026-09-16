@@ -8,7 +8,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "mandi/bin/commerce-steward"
 
 say "build: commerce steward demo — list, settle, Dimeroll receipt"
-let build = run ["sh" "-c" "mkdir -p mandi/bin && env RYE_ZIG=${zig} rye/bin/rye build mandi/commerce_steward_demo.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mandi/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mandi/commerce_steward_demo.rye -femit-bin=${bin}"]
 assert build.ok else "Commerce steward demo build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

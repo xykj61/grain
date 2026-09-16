@@ -31,7 +31,7 @@ say "crypto-vault-seal: Lens TAME — the composition authors no new cryptograph
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/vault_seal"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/vault_seal.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/vault_seal.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-vault-seal: build failed — ${build.err}"
 
 let outfile = "crypto/bin/vault_seal.out"

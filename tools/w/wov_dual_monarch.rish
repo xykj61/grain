@@ -6,7 +6,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/wov"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/wov_core.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/wov_core.rye -femit-bin=${bin}"]
 assert build.ok else "WOV dual-monarch build failed"
 
 let dual = run ["sh" "-c" "${bin} selftest-dual 2>&1"]

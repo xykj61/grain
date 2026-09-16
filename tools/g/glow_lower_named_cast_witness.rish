@@ -21,7 +21,7 @@ let memo_bin = "glow/bin/cast_named_memo_welcome"
 let peer_rye = "glow/.cache/cast_named_peer_welcome.rye"
 let peer_bin = "glow/bin/cast_named_peer_welcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_named_cast_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_named_cast_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_named_cast_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

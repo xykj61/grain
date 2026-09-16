@@ -23,7 +23,7 @@ say "fora-commit: Lens TAME — MatchView and the commit rule are bounded to the
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/commit"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/commit.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/commit.rye -femit-bin=${bin}"]
 assert build.ok else "fora-commit: build failed — ${build.err}"
 
 let outfile = "constel/bin/commit.out"

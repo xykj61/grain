@@ -6,7 +6,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/open-asks"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/open_asks.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/open_asks.rye -femit-bin=${bin}"]
 
 assert build.ok else "OA-L4 open asks build failed"
 

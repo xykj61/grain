@@ -21,7 +21,7 @@ say "fora-channel: Lens TAME — a fixed-buffer FIFO with a read cursor, every f
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/channel"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/channel.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/channel.rye -femit-bin=${bin}"]
 assert build.ok else "fora-channel: build failed — ${build.err}"
 
 let outfile = "constel/bin/channel.out"

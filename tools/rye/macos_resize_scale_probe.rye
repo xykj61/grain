@@ -28,7 +28,7 @@
 //! at every draw.
 //!
 //! Build and run:
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_resize_scale_probe.rye \
+//!   env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/macos_resize_scale_probe.rye \
 //!     -femit-bin=tools/.build/macos_resize_scale_probe -lobjc -framework Cocoa -framework CoreGraphics
 //!   tools/.build/macos_resize_scale_probe
 //!   PROBE_PROVE_RED=1 tools/.build/macos_resize_scale_probe   # the cell-bound gate, refusing side

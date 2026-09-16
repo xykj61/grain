@@ -8,7 +8,7 @@
 #   rishi/bin/rishi run tools/r/rw1_history_contract.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/main.rye -femit-bin=mantra/bin/mantra"]
 assert build.ok else "mantra must self-provision for the contract witness"
 
 let fresh = run ["sh" "-c" "rm -rf .mantra .rw1_probe.txt"]

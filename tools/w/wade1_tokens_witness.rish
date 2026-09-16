@@ -12,7 +12,7 @@
 #   rishi/bin/rishi run tools/w/wade1_tokens_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens"]
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens"]
 assert build.ok else "brushstroke tokens build failed"
 
 let st = run ["tools/.build/brushstroke_tokens" "selftest"]

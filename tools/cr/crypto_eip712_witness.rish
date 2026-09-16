@@ -30,7 +30,7 @@ say "crypto-eip712: Lens TAME — no new cryptography: every hash is the GREEN c
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/eip712"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/eip712.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/eip712.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-eip712: build failed — ${build.err}"
 
 let outfile = "crypto/bin/eip712.out"

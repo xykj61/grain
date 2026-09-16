@@ -32,7 +32,7 @@ say "crypto-x25519: Lens TAME — the primitive calls no std.crypto; it composes
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/x25519"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/x25519.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/x25519.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-x25519: build failed — ${build.err}"
 
 let outfile = "crypto/bin/x25519.out"

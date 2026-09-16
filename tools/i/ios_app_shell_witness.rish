@@ -29,7 +29,7 @@ assert booted.ok else "ios-app-shell: no booted simulator -- open -a Simulator, 
 # The witness builds the binary it runs, with the five-flag recipe plus the frameworks.
 # The SDK path carries no spaces, so the command line stays quote-free -- Rishi strings pass no
 # backslash escapes through to the shell.
-let build = run ["sh" "-c" "SDK=$(xcrun --sdk iphonesimulator --show-sdk-path) && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/ios_app_shell_probe.rye -femit-bin=tools/.build/ios_app_shell -target aarch64-ios-simulator --sysroot $SDK -L/usr/lib -F$SDK/System/Library/Frameworks -fstrip -lobjc -framework UIKit -framework CoreGraphics -framework QuartzCore -framework CoreFoundation"]
+let build = run ["sh" "-c" "SDK=$(xcrun --sdk iphonesimulator --show-sdk-path) && env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/ios_app_shell_probe.rye -femit-bin=tools/.build/ios_app_shell -target aarch64-ios-simulator --sysroot $SDK -L/usr/lib -F$SDK/System/Library/Frameworks -fstrip -lobjc -framework UIKit -framework CoreGraphics -framework QuartzCore -framework CoreFoundation"]
 assert build.ok else "ios-app-shell: the probe must build with the iOS recipe"
 
 let wipe = run ["rm" "-rf" pen]

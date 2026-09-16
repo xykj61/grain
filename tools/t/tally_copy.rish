@@ -6,7 +6,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "tally/bin/copy"
 
-let build = run ["sh" "-c" "mkdir -p tally/bin && env RYE_ZIG=${zig} rye/bin/rye build tally/copy.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p tally/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tally/copy.rye -femit-bin=${bin}"]
 assert build.ok else "tally copy build failed"
 
 let self = run ["sh" "-c" "${bin} selftest 2>&1"]

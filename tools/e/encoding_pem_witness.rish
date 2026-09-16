@@ -29,7 +29,7 @@ say "encoding-pem: Lens TAME — no new base conversion: the rendering is the GR
 let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/pem"
 
-let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/pem.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/pem.rye -femit-bin=${bin}"]
 assert build.ok else "encoding-pem: build failed — ${build.err}"
 
 let outfile = "encoding/bin/pem.out"

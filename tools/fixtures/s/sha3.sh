@@ -58,7 +58,7 @@ if [ ! -x "$BIN" ]; then
   ZIG="$ROOT/vendor/zig-toolchain/zig"
   [ -x "$ZIG" ] || { echo "sha3: no toolchain -- run: sh tools/f/fetch-toolchain.sh" >&2; exit 1; }
   mkdir -p "$ROOT/crypto/bin"
-  ( cd "$ROOT" && env RYE_ZIG="$ZIG" rye/bin/rye build crypto/sha3_digest.rye -femit-bin=crypto/bin/sha3-digest ) >/dev/null 2>&1 \
+  ( cd "$ROOT" && env RYE_ZIG="$ZIG" sh tools/fixtures/r/rye_build.sh crypto/sha3_digest.rye -femit-bin=crypto/bin/sha3-digest ) >/dev/null 2>&1 \
     || { echo "sha3: could not build crypto/sha3_digest.rye" >&2; exit 1; }
 fi
 

@@ -25,7 +25,7 @@ say "encoding-hex: Lens TAME — the primitive calls no std hex; it is authored 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/hex"
 
-let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/hex.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/hex.rye -femit-bin=${bin}"]
 assert build.ok else "encoding-hex: build failed — ${build.err}"
 
 let outfile = "encoding/bin/hex.out"

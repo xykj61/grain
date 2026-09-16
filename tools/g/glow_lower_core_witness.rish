@@ -17,7 +17,7 @@ let two_welcome_bin = "glow/bin/core_two_welcome"
 let one_welcome_rye = "glow/.cache/core_double_welcome.rye"
 let one_welcome_bin = "glow/bin/core_double_welcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_core_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_core_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_core_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

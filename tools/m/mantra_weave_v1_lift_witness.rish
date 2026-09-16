@@ -78,7 +78,7 @@ assert head.out contains "head_stale=0" else "mantra-v1-lift: the module head na
 assert head.out contains "verdict=ok" else "mantra-v1-lift: the head scan must reach its own verdict, or the two zero readings above are readings of a scan that stopped early"
 
 say "mantra-v1-lift: building the witness against the real module..."
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_v1_lift_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_v1_lift_witness.rye -femit-bin=${bin}"]
 assert build.ok else "mantra-v1-lift: weave v1 lift witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

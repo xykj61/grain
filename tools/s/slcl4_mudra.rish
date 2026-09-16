@@ -7,7 +7,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bud_bin = "tally/bin/bud"
 let disclosure_bin = "linengrow/bin/disclosure"
 
-let build = run ["sh" "-c" "mkdir -p tally/bin linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build tally/bud.rye -femit-bin=${bud_bin} && env RYE_ZIG=${zig} rye/bin/rye build linengrow/disclosure_core.rye -femit-bin=${disclosure_bin}"]
+let build = run ["sh" "-c" "mkdir -p tally/bin linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tally/bud.rye -femit-bin=${bud_bin} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/disclosure_core.rye -femit-bin=${disclosure_bin}"]
 
 assert build.ok else "SLC-L4 bud/disclosure build failed"
 

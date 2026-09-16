@@ -22,7 +22,7 @@ say "fora-depart: Lens TAME — depart refuses NotAVoter and (via config_of) Emp
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/depart"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/depart.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/depart.rye -femit-bin=${bin}"]
 assert build.ok else "fora-depart: build failed — ${build.err}"
 
 let outfile = "constel/bin/depart.out"

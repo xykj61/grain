@@ -23,7 +23,7 @@ say "hunk-edit-strip-view: Lens TAME — a pure composition over HUNK51's finger
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/edit_strip_view"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_strip_view.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/edit_strip_view.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-edit-strip-view: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

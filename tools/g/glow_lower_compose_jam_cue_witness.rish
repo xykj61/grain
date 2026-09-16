@@ -9,7 +9,7 @@ let welcome_bin = "glow/bin/compose_jam_cue_welcome"
 let unwelcome_rye = "glow/.cache/compose_jam_cue_unwelcome.rye"
 let unwelcome_bin = "glow/bin/compose_jam_cue_unwelcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_compose_jam_cue_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_compose_jam_cue_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_compose_jam_cue_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

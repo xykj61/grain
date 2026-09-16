@@ -22,7 +22,7 @@ say "hunk-filmstrip-track: Lens TAME — a pure read over proven seams; the wind
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/edit_filmstrip_track"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_filmstrip_track.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/edit_filmstrip_track.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-filmstrip-track: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

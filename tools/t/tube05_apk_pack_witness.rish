@@ -13,7 +13,7 @@
 let zig = "vendor/zig-toolchain/zig"
 
 say "tube05: proving the NativeActivity envelope emission first…"
-let env_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness"]
+let env_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness"]
 assert env_build.ok else "NativeActivity envelope witness failed to build"
 let env_run = run ["sh" "-c" "linengrow/bin/tube_android_manifest_witness 2>&1"]
 assert env_run.ok else "NativeActivity envelope witness exited non-zero"
@@ -26,7 +26,7 @@ assert perm.ok else "permission-emission witness failed"
 say "tube05: permission emission GREEN"
 
 say "tube05: proving the Seva B0 fold unit matches the HAWM1 demo root…"
-let fold_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_b0_fold_witness.rye -femit-bin=linengrow/bin/seva_b0_fold_witness"]
+let fold_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/seva_b0_fold_witness.rye -femit-bin=linengrow/bin/seva_b0_fold_witness"]
 assert fold_build.ok else "seva_b0_fold witness failed to build"
 let fold_run = run ["sh" "-c" "linengrow/bin/seva_b0_fold_witness 2>&1"]
 assert fold_run.ok else "seva_b0_fold witness exited non-zero"

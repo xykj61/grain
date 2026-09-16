@@ -29,7 +29,7 @@ say "encoding-bech32: Lens TAME — the primitive calls no std bech32 (Zig ships
 let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/bech32"
 
-let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/bech32.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/bech32.rye -femit-bin=${bin}"]
 assert build.ok else "encoding-bech32: build failed — ${build.err}"
 
 let outfile = "encoding/bin/bech32.out"

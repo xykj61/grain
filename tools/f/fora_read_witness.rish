@@ -22,7 +22,7 @@ say "fora-read: Lens TAME — leadership_confirmed spends FORA16's term-majority
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/read"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/read.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/read.rye -femit-bin=${bin}"]
 assert build.ok else "fora-read: build failed — ${build.err}"
 
 let outfile = "constel/bin/read.out"

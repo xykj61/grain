@@ -23,7 +23,7 @@ say "hunk-part-row: Lens TAME — pure composition over public APIs; the price i
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/part_row"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_row.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_row.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-row: build failed — ${build.err}"
 
 # Write the selftest output to a file and grep the file -- the GREEN line carries apostrophes ("product's") that
@@ -56,7 +56,7 @@ let cat_green = run ["sh" "-c" "grep -q 'GREEN part-catalog' image/bin/part_cata
 assert (trim cat_green.out) == "yes" else "hunk-part-row: HUNK71 part_catalog did not stay GREEN"
 
 # HUNK38 stays GREEN -- the shared paint_swatch the part row reuses was refactored additively; its own shelf must hold.
-let shelf = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/sprite_shelf.rye -femit-bin=brushstroke/bin/sprite_shelf && brushstroke/bin/sprite_shelf selftest > brushstroke/bin/sprite_shelf.out 2>&1"]
+let shelf = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/sprite_shelf.rye -femit-bin=brushstroke/bin/sprite_shelf && brushstroke/bin/sprite_shelf selftest > brushstroke/bin/sprite_shelf.out 2>&1"]
 assert shelf.ok else "hunk-part-row: HUNK38 sprite_shelf re-run failed — see brushstroke/bin/sprite_shelf.out"
 let shelf_green = run ["sh" "-c" "grep -q 'GREEN sprite-shelf' brushstroke/bin/sprite_shelf.out && echo yes"]
 assert (trim shelf_green.out) == "yes" else "hunk-part-row: HUNK38 sprite_shelf did not stay GREEN after the paint_swatch refactor"

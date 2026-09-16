@@ -17,7 +17,7 @@ assert mk.ok else "poll pen: the pen could not be opened"
 let pen = trim mk.out
 let sentinel = "${pen}/poll-stop"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${bin}"]
 assert build.ok else "subscribe poll delivery build failed"
 
 let prep = run ["sh" "-c" "rm -f ${sentinel}"]

@@ -9,7 +9,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/setu65_lab_tx_witness"
 let check = "linengrow/bin/setu65_lab_tx_check"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_witness.rye -lc -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu65_lab_tx_witness.rye -lc -femit-bin=${bin}"]
 assert build.ok else "SETU6.5 lab TX witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -19,7 +19,7 @@ assert selftest.out contains "stand-in refuses" else "SETU6.5 missing stand-in r
 assert selftest.out contains "armed prepares" else "SETU6.5 missing armed prepare"
 say "${selftest.out}"
 
-let build_check = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_check.rye -lc -femit-bin=${check}"]
+let build_check = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu65_lab_tx_check.rye -lc -femit-bin=${check}"]
 assert build_check.ok else "SETU6.5 lab TX check build failed"
 let stand = run ["sh" "-c" "${check} 2>&1"]
 assert stand.ok else "SETU6.5 check failed"

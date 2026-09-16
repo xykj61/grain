@@ -6,7 +6,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mantra/bin/recall-beaded"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_beaded.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_beaded.rye -femit-bin=${bin}"]
 assert build.ok else "recall_beaded build failed"
 
 let beaded = run ["sh" "-c" "${bin} beaded 2>&1"]

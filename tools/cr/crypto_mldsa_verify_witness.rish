@@ -30,7 +30,7 @@ say "crypto-mldsa-verify: Lens TAME — bounded loops (k rows, l columns, 256 co
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/mldsa_verify"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mldsa_verify.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/mldsa_verify.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-mldsa-verify: build failed — ${build.err}"
 
 let outfile = "crypto/bin/mldsa_verify.out"

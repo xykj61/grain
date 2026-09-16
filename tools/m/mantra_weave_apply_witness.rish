@@ -54,7 +54,7 @@ say seat.err
 assert seat.ok else "mantra-apply: apply left weave.rye"
 
 say "mantra-apply: building the witness against the real module..."
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_apply_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_apply_witness.rye -femit-bin=${bin}"]
 say build.err
 assert build.ok else "mantra-apply: weave apply witness build failed"
 

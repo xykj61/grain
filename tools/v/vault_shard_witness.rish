@@ -14,7 +14,7 @@
 # vault/bin/ is gitignored (.gitignore:192), so a clone carries no binary at all: the "Build
 # first" line above is documentation, and a comment builds nothing (REDS %334).
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p vault/bin && env RYE_ZIG=${zig} rye/bin/rye build vault/shard.rye -femit-bin=vault/bin/shard"]
+let build = run ["sh" "-c" "mkdir -p vault/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh vault/shard.rye -femit-bin=vault/bin/shard"]
 assert build.ok else "vault shard: build failed -- ${build.err}"
 
 let st = run ["vault/bin/shard" "selftest"]

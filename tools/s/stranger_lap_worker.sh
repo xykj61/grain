@@ -104,7 +104,7 @@ test -x "$RYE_ZIG" || {
 
 sh rye/bootstrap.sh
 mkdir -p rishi/bin
-rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
+sh tools/fixtures/r/rye_build.sh rishi/src/main.rye -femit-bin=rishi/bin/rishi
 
 set +e
 rishi/bin/rishi run "$STRANGER_NAMED_WITNESS"

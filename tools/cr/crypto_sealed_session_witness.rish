@@ -31,7 +31,7 @@ say "crypto-sealed-session: Lens TAME — the composition authors no new cryptog
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/sealed_session"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/sealed_session.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/sealed_session.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-sealed-session: build failed — ${build.err}"
 
 let outfile = "crypto/bin/sealed_session.out"

@@ -25,7 +25,7 @@ say "encoding-base32: Lens TAME — the primitive calls no std base32 (Zig ships
 let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/base32"
 
-let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/base32.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/base32.rye -femit-bin=${bin}"]
 assert build.ok else "encoding-base32: build failed — ${build.err}"
 
 let outfile = "encoding/bin/base32.out"

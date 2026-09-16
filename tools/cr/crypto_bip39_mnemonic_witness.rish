@@ -27,7 +27,7 @@ say "crypto-bip39-mnemonic: Lens TAME — every width named (2048-word list, 11-
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/bip39_mnemonic"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bip39_mnemonic.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/bip39_mnemonic.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-bip39-mnemonic: build failed — ${build.err}"
 
 let outfile = "crypto/bin/bip39_mnemonic.out"

@@ -29,7 +29,7 @@ say "crypto-mlkem-encaps: Lens TAME — bounded loops (k rows, k columns, 256 co
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/mlkem_encaps"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_encaps.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/mlkem_encaps.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-mlkem-encaps: build failed — ${build.err}"
 
 let outfile = "crypto/bin/mlkem_encaps.out"

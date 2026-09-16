@@ -5,7 +5,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "granary/bin/consumer-edge-pass"
 
-let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} rye/bin/rye build granary/consumer_edge_pass.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p granary/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh granary/consumer_edge_pass.rye -femit-bin=${bin}"]
 
 assert build.ok else "Door 3 consumer-edge-pass build failed"
 

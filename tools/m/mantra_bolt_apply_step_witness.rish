@@ -12,7 +12,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mantra/bin/bolt_apply_step_witness"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/bolt_apply_step_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/bolt_apply_step_witness.rye -femit-bin=${bin}"]
 
 assert build.ok else "Mantra bolt apply step witness build failed"
 

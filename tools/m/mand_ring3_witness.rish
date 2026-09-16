@@ -5,7 +5,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mand/bin/mand_ring3_witness"
 
-let build = run ["sh" "-c" "mkdir -p mand/bin && env RYE_ZIG=${zig} rye/bin/rye build mand/mand_ring3_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mand/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mand/mand_ring3_witness.rye -femit-bin=${bin}"]
 assert build.ok else "Mand ring-3 witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
