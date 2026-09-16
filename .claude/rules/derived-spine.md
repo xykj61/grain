@@ -64,6 +64,29 @@ stamped basenames keep every word. And a **five-digit run is a colour** -- `%200
 modules is what taught the pattern to take the whole run of digits before measuring its length. Ten behaviors stand proven against a stub spine in a throwaway repository, every refusal planted and
 then lifted, and a spine that cannot answer **refuses** rather than calling everything shared.
 
+**A fourth genre stands beside those three rooms, and it is a role rather than a room: a pen
+plant** (`20260916.113557`). A control proving a resolver's `missing` verdict has to NAME a row the
+ledger lacks, so `tools/fixtures/r/reds_shelf_resolve_control.sh` planted three such numbers in a
+throwaway pen, each a three- or four-digit run above `shared_max`. Seven citations of rows the spine
+has yet to bind therefore stood in a living file, and the gate read every one as a claim. **They are
+named in the control and left unspelled here**, since writing an unshared number on this page is the
+very thing the page governs.
+
+The gate was right to read them that way. All three rooms above are testimony, where a plant is a
+role, and **a meter reading for truth hears a sentence that must stay false exactly as it hears one
+asserting it.**
+
+Two repairs stood, and the smaller one needs no law. Widening the read-past decides whether a plant
+is recognised by its ROOM or by its ROLE, which is an open word beside the same question one
+instrument over. Moving the plant settles only itself: the digits carry whatever value a pen gives
+them, so they take a **five-digit run**, which the clause above already skips, and the control
+states that reason on its own face so the length survives a later tidy. A plant outside the shape
+also survives a renumbering sweep, which is the second reason to keep it there.
+
+**What this leaves open:** a plant whose number sits BELOW `shared_max` reads as an ordinary
+citation, and always will. Telling the two apart sits past what this gate can do, which is exactly
+why the plant moved rather than the meter.
+
 ## When both are published, the deadlock is named rather than guessed (`20260907.024141`)
 
 **Rules 1 and 3 meet head on when one number is bound to two stamps that are BOTH on the anointed

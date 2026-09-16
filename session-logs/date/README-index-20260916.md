@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.114636` | [A plant is a sentence that must not be true](20260916/20260916-114636_a-plant-is-a-sentence-that-must-not-be-true.kyri) | pen plants read as claims of unbound rows |
 | `20260916.113530` | [Asking without building](20260916/20260916-113530_asking-without-building.kyri) | rye key: one computation, 40 legs, a mutation that caught a false green |
 | `20260916.111221` | [A breach needs a resolver behind it](20260916/20260916-111221_a-breach-needs-a-resolver-behind-it.kyri) | %774: 82 of 88 dead shelf citations recovered |
 | `20260916.100409` | [The room this tree renames on purpose](20260916/20260916-100409_the-room-this-tree-renames-on-purpose.kyri) | 99 shelf citations name no path, and none resolved |

@@ -795,3 +795,5 @@ at a closed fold.*
 *Row %770 folded to [`REDS-a-trap-wears-two-spellings-rows-770.md`](REDS-a-trap-wears-two-spellings-rows-770.md) on `20260916.103937`, **CLOSED** -- a census predicate that knew one of the two spellings a trap wears called twelve fully-released pens leaks.*
 
 *Row %766 folded to [`REDS-a-sample-sizes-a-class-rows-766.md`](REDS-a-sample-sizes-a-class-rows-766.md) on `20260916.112149`, **CLOSED** -- a class booked off a five-of-forty sample came out as three shapes when it was counted.*
+
+*Row %772 folded to [`REDS-a-ratchet-that-counted-prose-rows-772.md`](REDS-a-ratchet-that-counted-prose-rows-772.md) on `20260916.113655`, **CLOSED** -- a ratchet counting prose will eventually be raised by a sentence, and a total that cannot name its phantoms cannot be acted on.*
