@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-emit-path-out-of-key
-seat bakery
-stamp 20260916.075247
-epoch 1789559567
-paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish tools/fixtures/b/built_tool_freshness_scan.sh tools/fixtures/b/built_tool_freshness_control.sh tools/b/built_tool_freshness_witness.rish
-what The build receipt's key hashes every forwarded flag whole, and -femit-bin=<path> is a forwarded flag -- so WHERE an output lands decides the key. Measured in a pen: one source emitted to two paths spoke two keys and produced byte-identical binaries. A running binary refuses to be written over, so every ship rebuilds rishi by emitting to rishi/bin/rishi.new and renaming, which books a key no later build can match and leaves the elder rishi.ryekey beside the new binary speaking for the one it replaced -- five of the pier's eight checkouts stand that way. Drop the emit path's VALUE from the key (marker v6 to v7), keeping every other flag whole and keeping -femit-asm= and its kin exact; then teach built_tool_freshness to ask the mark beside the clock -- line two of <bin>.ryekey against the binary's own SHA-256 -- reported, never gated.
 claim pheromone-ceiling-name-collision
 seat pheromone
 stamp 20260916.080028
