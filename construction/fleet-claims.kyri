@@ -82,3 +82,9 @@ stamp 20260916.003208
 epoch 1789533128
 paths comlink/query_wire_retention_cost.rye
 what REDS-first: query_wire_retention has read red on every ship since 0d6e6829a landed two hours ago. That commit made mantra/recall_tablecloth_query_wire.rye max_wire_hits derived rather than the literal 8, and it now computes to 2; comlink/query_wire_retention_cost.rye still spells measured_hit_count as the literal 4, so kept_store[0..measured_hit_count] refuses to compile -- end index 4 out of bounds for array of length 2. The harness already carries the right comptime assert and the wire moved under it.
+claim bakery-ryekey-toolchain-spelling
+seat bakery
+stamp 20260916.023136
+epoch 1789540296
+paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
+what The build receipt keys on the toolchain PATH STRING beside its content, so one pinned compiler wears four live spellings and four different keys -- measured on this tree: RYE_ZIG absolute gives bdd5d31e, the compiler's own default resolution gives c626631a, same 172MB binary, same sources, same flags. The tree spells the pin 980 times relative, 34 absolute, 13 through a root variable, and leaves it unset everywhere rye_build.sh runs. Drop the path and the library path from the key, keep both content hashes, bump the marker to v6, and turn control leg 8 around with its reason written.
