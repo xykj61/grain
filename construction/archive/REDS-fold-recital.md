@@ -787,3 +787,5 @@ at a closed fold.*
 
 *Rows %762-%764 folded to [`REDS-a-guards-own-words-and-the-path-that-reached-it-rows-762-764.md`](REDS-a-guards-own-words-and-the-path-that-reached-it-rows-762-764.md) on `20260916.084253`, each **CLOSED** -- each found a claim nothing was holding still, and in each the claim was the instrument's own account of itself.*
 *Rows %760 and %761 folded to [`REDS-the-last-step-of-a-send-rows-760-761.md`](REDS-the-last-step-of-a-send-rows-760-761.md) on `20260916.084104`, both **BOOKED** -- the last step of a send is where a correct tool goes unreached -- one amended a published commit, the other wrote a shelf link past the repointer that fixes it.*
+
+*Row %680 folded to [`REDS-a-status-that-reported-an-untouched-file-rows-680.md`](REDS-a-status-that-reported-an-untouched-file-rows-680.md) on `20260916.093538`, **CLOSED** -- the oldest CLOSED row on the pin, folded to make room -- a status reporting a change on an untouched file is the shape a reader learns to read past.*

@@ -17,7 +17,7 @@
 #   Every declared tool whose binary stands on disk was modified no earlier than the newest TRACKED
 #   source in its module. A stale tool refuses, names the source that outran it, counts how far
 #   behind it stands, and prints the one command that repairs it.
-#   Thirty-six behaviors on real git repositories in a throwaway pen, every refusal planted and
+#   Forty-seven behaviors on real git repositories in a throwaway pen, every refusal planted and
 #   then LIFTED, since a refusal proven only in the failing direction cannot be told from a scan
 #   that refuses everything. Three mutations bitten: reading untracked files rather than
 #   `git ls-files` (2 legs), counting an absent binary as stale (5 legs), and inverting the
@@ -27,12 +27,26 @@
 # bootstrap is the documented first step. And whether `rishi` is older than the `rye` that compiles
 # it -- a real chain, and gating it would refuse every ship for the minutes between two builds.
 #
+# WHAT THE MARK ANSWERS, beside what the clock answers (`20260916`, REDS %754's other half).
+# `rye build -femit-bin=<path>` writes a receipt at `<path>.ryekey` whose second line is the
+# emitted binary's own SHA-256, so one hash says whether the receipt standing beside a tool speaks
+# for the tool standing there. It reads `speaks`, `orphan`, `absent`, or `malformed`, and it is
+# REPORTED rather than gated.
+#
+# WHY IT WAS WORTH ASKING. A running binary refuses to be written over, so every ship rebuilds
+# `rishi` by emitting to `rishi/bin/rishi.new` and renaming. The receipt stays behind at
+# `rishi.new.ryekey`, and the elder `rishi.ryekey` keeps its place beside the new binary speaking
+# for the one it replaced. Read over the pier's eight checkouts `20260916.064500`: five orphaned,
+# one speaking, two carrying none. Eleven more legs stand for it, three mutations bitten -- a
+# reading that compares the receipt's FIRST line, one that counts an absent receipt as an orphan,
+# and one that lets an orphan gate.
+#
 # WHAT IS NOT PROVEN. That the binary is CORRECT, or that it was built from the source it sits
 # beside. Modification time answers *later*, never *different*: a checkout rewriting a source to
 # byte-identical content reads stale when nothing changed, and `touch` fools it. That false
 # positive costs one rebuild; the false negative it avoids is a fleet attributing phantom errors
-# to the tree. A content digest would answer *different*, and it wants the build to record one
-# beside the binary, which is a compiler change rather than a reading.
+# to the tree. The receipt names WHICH binary stands there; whether today's sources would speak
+# its key is the half still open, and asking it wants a key-only mode `rye` has yet to carry.
 #
 # THE READING LIVES IN PLAIN SHELL for a load-bearing reason: its subject is the interpreter this
 # half runs under, and a `rishi` stale enough to matter may refuse to parse the guard that would
@@ -50,6 +64,7 @@ say scan.out
 assert scan.ok else "built-tool: a built tool is older than its own source -- ${scan.out_brief}"
 assert scan.out contains "tools_stale=0" else "built-tool: every present binary must be no older than its newest tracked source"
 assert scan.out contains "verdict=ok" else "built-tool: the scan must balance before it is believed"
+assert scan.out contains "receipts_orphaned=" else "built-tool: the mark must answer beside the clock -- a reading that prints nothing cannot be told from one that found nothing"
 say "field GREEN -- every built tool on this ship stands no earlier than the source it was built from"
 
 let control = run ["sh" "tools/fixtures/b/built_tool_freshness_control.sh"]
@@ -58,6 +73,9 @@ assert control.ok else "built-tool: the control must complete -- ${control.err_b
 assert control.out contains "control_failed=0" else "built-tool: every planted leg must answer, or a leg written tomorrow goes unheard"
 assert control.out contains "control_verdict=ok" else "built-tool: the control must agree with itself"
 assert control.out contains "fresh_tree_free=yes" else "built-tool: a tree whose binaries outlive their sources must pass free"
+assert control.out contains "orphan_named=yes" else "built-tool: a receipt speaking for another binary must be named"
+assert control.out contains "orphan_never_gates=yes" else "built-tool: an orphan is reported -- gating it would red five ships for a state none of them chose"
+assert control.out contains "orphan_lifts=yes" else "built-tool: a refusal proven only from the failing side cannot be told from a reading that always refuses"
 assert control.out contains "fresh_tree_reads_zero=yes" else "built-tool: a clean tree must read zero rather than merely pass"
 assert control.out contains "stale_refused=yes" else "built-tool: a source newer than its binary must refuse"
 assert control.out contains "stale_counted=yes" else "built-tool: the refusal must name a count, never only a verdict"
@@ -83,6 +101,6 @@ assert control.out contains "chain_clears=yes" else "built-tool: rebuilding rish
 assert control.out contains "bare_clone_free=yes" else "built-tool: a clone with no binaries at all is the expected first state"
 assert control.out contains "no_repo_refused=yes" else "built-tool: a reading run outside a repository must refuse rather than call every tool fresh"
 assert control.out contains "no_repo_not_green=yes" else "built-tool: the refusal outside a repository must never read ok"
-say "RED and GREEN paths proven -- every refusal planted and then lifted, 36 legs, 3 mutations bitten"
+say "RED and GREEN paths proven -- every refusal planted and then lifted, 47 legs, 6 mutations bitten"
 
 say "GREEN: built-tool -- every binary this ship runs its guards through stands no earlier than its source."

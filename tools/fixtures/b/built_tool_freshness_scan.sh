@@ -33,9 +33,26 @@
 # The limit is that mtime answers *later*, never *different*. A checkout that rewrites a source to
 # byte-identical content moves its mtime and reads stale when nothing changed; the cost of that
 # false positive is one rebuild, and the false NEGATIVE it avoids is a whole fleet attributing
-# phantom errors to the tree. `touch` fools it, and so does a clock moved backward. A content
-# digest would answer *different*, and it wants the build to record one beside the binary, which
-# is a compiler change rather than a reading.
+# phantom errors to the tree. `touch` fools it, and so does a clock moved backward.
+#
+# WHAT THE MARK ANSWERS, beside what the clock answers. `rye build -femit-bin=<path>` writes a
+# receipt at `<path>.ryekey`: two 64-hex lines, the key over every declared input and the emitted
+# binary's own SHA-256. That second line is a fact about THIS binary, so one hash says whether the
+# receipt standing beside a tool speaks for the tool standing there.
+#
+# It answers that and stops. Whether today's sources would speak the same key is the other half,
+# and asking it wants the compiler to compute a key without building -- a mode `rye` has yet to
+# carry. Named here, so the reading's edge is visible from inside the reading.
+#
+# WHY IT IS WORTH ASKING. A running binary refuses to be written over, so every ship rebuilds
+# `rishi` by emitting to `rishi/bin/rishi.new` and renaming. The receipt stays behind at
+# `rishi.new.ryekey` and the elder `rishi.ryekey` keeps its place beside the new binary, speaking
+# for the old one. Measured `20260916.064500` over the pier's eight checkouts: five carried a
+# receipt describing a binary no longer there, one spoke truly, two carried none. An orphan buys
+# one rebuild and misleads every reader, and `rm` is the whole repair.
+#
+# REPORTED rather than gated, for now. The population is five ships wide and none of them put it
+# there on purpose; a wall arrives once the count reaches zero.
 #
 # WHY THIS IS PLAIN SHELL RATHER THAN RISHI. The subject of the reading is the interpreter the
 # witness half runs under. A `rishi` stale enough to matter is a `rishi` that may refuse to parse
@@ -100,6 +117,31 @@ newer_sources() {
   done
 }
 
+# Both piers, one spelling. GNU ships `sha256sum` and macOS ships `shasum`, and reaching for
+# either alone is the host-only idiom `shell_dialect` holds at zero.
+digest_of() {
+  if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1
+  elif command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1" | cut -d' ' -f1
+  else return 1
+  fi
+}
+
+# Does the receipt beside a binary speak for the binary standing there? The stamp's second line is
+# the emitted file's own SHA-256, so one hash answers it. `absent` is an honest third answer --
+# `rye` is bootstrapped straight through the toolchain and earns no receipt at all -- and
+# `malformed` keeps a stamp-shaped file that has grown into something else from reading as a match.
+receipt_speaks() {
+  rk="$1.ryekey"
+  [ -f "$rk" ] || { echo absent; return 0; }
+  want=$(sed -n 2p "$rk" 2>/dev/null | tr -d ' \r')
+  case "$want" in
+    ????????????????????????????????????????????????????????????????) : ;;
+    *) echo malformed; return 0 ;;
+  esac
+  have=$(digest_of "$1") || { echo unreadable; return 0; }
+  if [ "$want" = "$have" ]; then echo speaks; else echo orphan; fi
+}
+
 mtime_of() {
   # `file_mtime` answers in fractional seconds on both piers; the whole part is what a distance
   # in seconds wants, and a fractional remainder would only make the number harder to read.
@@ -109,6 +151,8 @@ mtime_of() {
 }
 
 : > "$work/stale.txt"
+: > "$work/orphan.txt"
+: > "$work/receipts.txt"
 
 echo "$tools" | while IFS='|' read -r name bin src repair; do
   [ -n "$name" ] || continue
@@ -117,17 +161,22 @@ echo "$tools" | while IFS='|' read -r name bin src repair; do
     echo absent >> "$work/tally"
     continue
   fi
+  spoke=$(receipt_speaks "$bin")
+  echo "$spoke" >> "$work/receipts.txt"
+  if [ "$spoke" = orphan ]; then
+    echo "repair: $bin.ryekey speaks for another binary -- rm $bin.ryekey" >> "$work/orphan.txt"
+  fi
   newer_sources "$src" "$bin" > "$work/newer.$name"
   if [ -s "$work/newer.$name" ]; then
     top=$(head -1 "$work/newer.$name")
     bin_m=$(mtime_of "$bin")
     src_m=$(mtime_of "$top")
     behind=$((src_m - bin_m))
-    echo "tool=$name binary=$bin verdict=stale outran_by=$(wc -l < "$work/newer.$name" | tr -d ' ') newest_source=$top behind_seconds=$behind"
+    echo "tool=$name binary=$bin receipt=$spoke verdict=stale outran_by=$(wc -l < "$work/newer.$name" | tr -d ' ') newest_source=$top behind_seconds=$behind"
     echo "repair: $name is $behind seconds behind $top -- $repair" >> "$work/stale.txt"
     echo stale >> "$work/tally"
   else
-    echo "tool=$name binary=$bin verdict=fresh"
+    echo "tool=$name binary=$bin receipt=$spoke verdict=fresh"
     echo fresh >> "$work/tally"
   fi
 done
@@ -151,6 +200,10 @@ echo "tools_absent=$absent"
 echo "tools_fresh=$fresh"
 echo "tools_stale=$stale"
 echo "rishi_older_than_compiler=$chain"
+echo "receipts_speaking=$(grep -c '^speaks$' "$work/receipts.txt" || true)"
+echo "receipts_absent=$(grep -c '^absent$' "$work/receipts.txt" || true)"
+echo "receipts_orphaned=$(grep -c '^orphan$' "$work/receipts.txt" || true)"
+[ -s "$work/orphan.txt" ] && cat "$work/orphan.txt" 
 
 [ "$stale" -eq 0 ] || cat "$work/stale.txt"
 

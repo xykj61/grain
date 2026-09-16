@@ -78,17 +78,27 @@ EOF
 cat > "$pen/kinds/tools/x/unknown_witness.rish" <<'EOF'
 let out = run ["sh" "-c" "rye build a.rye -femit-bin=${whatever}/thing"]
 EOF
+# A PLACEHOLDER IN A GUARD'S OWN PROSE. The extraction reads a source line by line without asking
+# whether the line is code, so a comment spelling the shape of the command reads as a call. Three
+# stood in the tree on `20260916`, one of them a ceiling breach and one the build_target witness's
+# own instruction naming the escape it recommends.
+cat > "$pen/kinds/tools/x/prose_witness.rish" <<'EOF'
+# the shape a guard drives: rye build a.rye -femit-bin=<path>
+let out = run ["sh" "-c" "true"]
+EOF
 seat kinds fixed fixed_witness.rish
 seat kinds inline inline_witness.rish
 seat kinds chain chain_witness.rish
 seat kinds nested nested_witness.rish
 seat kinds unknown unknown_witness.rish
+seat kinds prose prose_witness.rish
 k=$(read_scan kinds)
-leg kinds_sites 5 "$(field "$k" emit_sites)"
+leg kinds_sites 6 "$(field "$k" emit_sites)"
 leg kinds_fixed 1 "$(field "$k" emit_fixed)"
 leg kinds_pen 3 "$(field "$k" emit_pen)"
 leg kinds_unresolved 1 "$(field "$k" emit_unresolved)"
-leg kinds_guards_emitting 5 "$(field "$k" guards_emitting)"
+leg kinds_prose 1 "$(field "$k" emit_prose)"
+leg kinds_guards_emitting 6 "$(field "$k" guards_emitting)"
 leg kinds_verdict ok "$(field "$k" verdict)"
 
 # THE NESTED LEG IS THIS LAP'S OWN FAULT, PLANTED. A literal that itself holds a variable read as a
@@ -222,7 +232,7 @@ mutate mutation_one_hop 's|-lt 4 \]; do|-lt 1 ]; do|' kinds emit_unresolved 2
 # THE SEATED COUNT, AND THE COUNT THIS RUN REACHED. Two independent copies of one number: delete a
 # leg and `legs_run` falls away from `LEGS_EXPECTED` here, and away from the number
 # `tools/b/build_target_witness.rish` carries. `fail=0` is what an empty pen prints too.
-LEGS_EXPECTED=33
+LEGS_EXPECTED=34
 echo "legs_expected=$LEGS_EXPECTED"
 echo "legs_run=$legs"
 [ "$legs" -eq "$LEGS_EXPECTED" ] || { echo "detail: legs_run $legs against seated $LEGS_EXPECTED" >&2; fail=$((fail + 1)); }

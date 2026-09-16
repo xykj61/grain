@@ -40,8 +40,8 @@ assert control.out contains "fail=0" else "build-target: a leg failed -- the cou
 # invariant: the pen ran every leg it was written with. `fail=0` is what an empty pen prints too,
 # so the seated count is carried in two places -- the control's own constant and this line -- and
 # deleting a leg parts them both.
-assert control.out contains "legs_run=33" else "build-target: the pen ran a different number of legs than the 33 seated here"
-assert control.out contains "legs_expected=33" else "build-target: the control's own seated count moved"
+assert control.out contains "legs_run=34" else "build-target: the pen ran a different number of legs than the 34 seated here"
+assert control.out contains "legs_expected=34" else "build-target: the control's own seated count moved"
 
 # invariant: the two mutations bite. A refusal proven only in the passing direction cannot be told
 # from a bypass, and these two are the readings whose loss would be silent -- one guard writing a
