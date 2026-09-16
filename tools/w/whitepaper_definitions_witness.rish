@@ -1,0 +1,151 @@
+# tools/w/whitepaper_definitions_witness.rish -- the whitepaper row's premise fails, and its own
+# falsifier cannot fire.
+#
+# WHY THIS RUNG. Row 11 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the
+# last unopened row of the twelve, and unlike the other eleven it makes no claim about the world.
+# It claims something about the other rows: "One paper binds the three definitions the other eleven
+# rows lean on: what a BOUND is when space wraps, what a RADIUS is when privilege is distance, and
+# what a TOPOS is when every proof is a cycle." Its assumption is that at least two rows go green
+# first and the definitions survive contact; its falsifier is that the first two green witnesses
+# give definitions that pull against each other. Nine rows now carry landed readings, so both are
+# checkable -- and they are checked by RUNNING the sibling instruments and reading their emitted
+# keys rather than by reading the errata that describe them, so the answer moves when an instrument
+# moves rather than when somebody remembers to edit a sentence.
+#
+# ONE DEFINITION OF THREE STANDS. D1, a bound when space wraps, holds: bearing_quorum reads
+# cost_half=stands and wrap_worth_one_cut=yes. D2, a radius when privilege is distance, is refuted
+# on three independent keys across two instruments -- capability_lattice reads 32 incomparable
+# unordered pairs where a line would read 0, and 48 conferrals a radius-only checker would
+# over-admit where a line would read 0, while aether_falloff reads a mapped saturation radius of 2
+# where a falloff needs at least three distinct radii to grade anything. D3, a topos when every
+# proof is a cycle, is left unrun: its instrument is the rostered cyclic_witness, which is
+# tier cadence because it RUNS other witnesses to digest their residue.
+#
+# AND THE UNRUN ONE CANNOT CHANGE THE ANSWER, which the scan proves rather than asserts by
+# recomputing the shape reading with D3 forced to stand: finding_robust_to_def3=yes.
+#
+# THE SHAPE COMES OUT A RING. Each definition states how many independent cycles the space must
+# carry. A period needs one; a name and a privilege on separate axes need two, which is the
+# proposal page's own sentence. The maximum among the SUPPORTED definitions reads 1, so the
+# surviving definitions rest on a circle while the page is titled for a torus. That is two ideas
+# wearing one name -- which is row 11's own falsifier, arriving along an axis its sentence never
+# named. The second axis is the one thing a torus has that a ring does not, and torus_place already
+# read second_axis_buys_spread=no one row over.
+#
+# THE FALSIFIER CANNOT FIRE AT ALL, which is the sharper half and the reason this is a witness
+# rather than a note. Each definition bounds the space FROM BELOW -- D1 needs a cycle to exist, it
+# does not need a second one to be absent -- and lower bounds compose by maximum, so no pair of
+# standing definitions can be jointly unsatisfiable. The scan enumerates all 27 assignments of the
+# three verdicts and counts the conflicting ones under both readings of that hinge: 0 under
+# `atleast`, the reading argued above, and 5 under `exact`, in which a one-axis definition would
+# refuse a two-axis space. So the falsifier watches for a failure these definitions are structurally
+# incapable of having, while the failure they DID have went unwatched.
+#
+# THAT HINGE IS AN INFERENCE, named as one. Whether a definition's axis count is a floor or an exact
+# requirement is a reading of the proposal's prose rather than a measurement, so both answers are
+# printed and a reader who disagrees has one place to say so.
+#
+# WHAT IS GATED, and why all of it. Every figure is either arithmetic over the assignment space or a
+# key emitted by a sibling instrument that is itself gated, and the classification thresholds are
+# the values a definition HOLDING would produce -- zero incomparable pairs, zero over-admissions,
+# three distinct radii. None is a ratchet, because none is a count of this tree's own population
+# that ordinary work moves.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/w/whitepaper_definitions_control.sh -- 55 behaviors in
+# throwaway pens whose sibling scans are stubs emitting chosen keys, so every branch is reached from
+# both sides:
+#
+#   D2 RESTORED, by planting zero incomparable pairs, zero over-admissions and three radii, reads
+#     premise_holds=yes and shape_supported=torus. The refutation is shown from the other side, or
+#     it cannot be told from a scan that always refuses.
+#   EACH OF D2's THREE KEYS ALONE refutes it, and a fourth pen raising only the saturation radius
+#     restores it, so no single key is carrying the verdict by accident.
+#   EACH OF D1's TWO KEYS ALONE refutes it, dropping the supported set to zero and the shape to
+#     none.
+#   A MISSING KEY IS REFUSED rather than defaulted, proven on every one of the six and on all six at
+#     once, because an instrument that broke and a definition that stands must never read alike.
+#   AN ABSENT SIBLING SCAN is the same refusal, as are an unreadable root and an unknown flag.
+#
+#   And five mutations, each proven landed by cmp before its reading is believed: a missing key
+#   defaulted instead of counted, the incomparable-pairs test dropped, the saturation floor lowered
+#   to something every population clears, the shape reported as a torus whatever the survivors need,
+#   and the exact-semantics sweep collapsed onto the atleast one so the hinge is hidden.
+#
+# TWO FAULTS THE PEN FOUND IN THE SCAN, both fixed before this rung was written. The missing-key
+# counter was incremented inside a command substitution, so it read zero while four keys were
+# absent. And each of the three per-definition lines carried a bare `verdict=` key, so a reader
+# taking the first match read a definition's classification as the scan's own answer.
+#
+# WHAT IT LEAVES TO OTHERS. Whether the paper is worth writing, which is a judgment rather than a
+# reading. Whether these are the RIGHT three definitions, which is the proposal's choice. D3's own
+# instrument, named above and left to a cadence-tier lap. Any row of the twelve bearing on none of
+# the three.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260915-212827_the-paper-that-checked-its-own-premise.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/w/whitepaper_definitions_witness.rish
+
+say "whitepaper-definitions: Language EN -- a paper's premise is a claim like any other."
+say "whitepaper-definitions: Style Gauge, Meter -- every definition names the keys that judge it."
+say "whitepaper-definitions: Lens TAME -- refuse a partial read, prove each branch from both sides."
+
+let control = run ["sh" "tools/fixtures/w/whitepaper_definitions_control.sh"]
+say control.out
+assert control.ok else "whitepaper-definitions: the control must complete -- its own lines are printed above"
+
+assert control.out contains "control_legs_expected=55" else "whitepaper-definitions: the control counts its own legs, so a shrunken pen cannot read as a full one"
+assert control.out contains "control_legs=55" else "whitepaper-definitions: a leg added or lost is a leg nobody heard"
+assert control.out contains "control_failed=0" else "whitepaper-definitions: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "whitepaper-definitions: the control must balance before it is believed"
+
+# Each mutation proven landed before its reading, so a plant that changed no byte cannot pass.
+assert control.out contains "leg mutation_default_missing_landed ok" else "whitepaper-definitions: the defaulted-key plant must land before its reading"
+assert control.out contains "leg mutation_default_missing_bites ok" else "whitepaper-definitions: a missing key defaulted to zero must change the reading"
+assert control.out contains "leg mutation_drop_incomp_landed ok" else "whitepaper-definitions: the dropped-incomparable plant must land"
+assert control.out contains "leg mutation_drop_incomp_bites ok" else "whitepaper-definitions: dropping the incomparable-pairs test must change the reading"
+assert control.out contains "leg mutation_loosen_satrad_landed ok" else "whitepaper-definitions: the loosened-radius plant must land"
+assert control.out contains "leg mutation_loosen_satrad_bites ok" else "whitepaper-definitions: a floor every population clears must change the reading"
+assert control.out contains "leg mutation_shape_always_torus_landed ok" else "whitepaper-definitions: the always-torus plant must land"
+assert control.out contains "leg mutation_shape_always_torus_bites ok" else "whitepaper-definitions: a shape reported without reading the survivors must change the reading"
+assert control.out contains "leg mutation_hide_hinge_landed ok" else "whitepaper-definitions: the collapsed-semantics plant must land"
+assert control.out contains "leg mutation_hide_hinge_bites ok" else "whitepaper-definitions: hiding the exact-semantics reading must change the answer"
+
+# A missing key is refused rather than defaulted -- the fault the pen found in the scan itself.
+assert control.out contains "leg missing_all_counted ok" else "whitepaper-definitions: six absent keys must count as six"
+assert control.out contains "leg missing_all_refused ok" else "whitepaper-definitions: a partial read classifies nothing"
+assert control.out contains "leg absent_sibling_refused ok" else "whitepaper-definitions: an absent sibling scan refuses"
+
+# The refutation shown from the other side.
+assert control.out contains "leg d2ok_premise ok" else "whitepaper-definitions: privilege back on a line must restore the premise"
+assert control.out contains "leg d2ok_shape ok" else "whitepaper-definitions: a standing two-axis definition must read the shape as a torus"
+
+let scan = run ["sh" "tools/fixtures/w/whitepaper_definitions_scan.sh"]
+say scan.out
+assert scan.ok else "whitepaper-definitions: the reading must complete"
+
+assert scan.out contains "keys_absent=0" else "whitepaper-definitions: every bearing instrument must answer before a definition is classified"
+
+# The three definitions, each judged by the keys named in the header.
+assert scan.out contains "def1_verdict=supported" else "whitepaper-definitions: the bound-when-space-wraps definition stands on bearing_quorum"
+assert scan.out contains "def2_verdict=refuted" else "whitepaper-definitions: privilege is a Boolean lattice and the mapped population saturates at two radii"
+assert scan.out contains "def2_axes=2" else "whitepaper-definitions: a name and a privilege on separate axes is the two-axis definition"
+assert scan.out contains "definitions_refuted=1" else "whitepaper-definitions: exactly one of the three is refuted by landed readings"
+
+# The shape the survivors need, and the proof that the unrun definition cannot move it.
+assert scan.out contains "max_axes_among_supported=1" else "whitepaper-definitions: the surviving definitions need one cycle, not two"
+assert scan.out contains "finding_robust_to_def3=yes" else "whitepaper-definitions: the unrun definition must not be able to change the shape"
+assert scan.out contains "shape_claimed=torus" else "whitepaper-definitions: the page is titled for a torus"
+assert scan.out contains "shape_supported=ring" else "whitepaper-definitions: what the survivors rest on is a circle"
+assert scan.out contains "premise_holds=no" else "whitepaper-definitions: the paper's own premise fails"
+
+# The falsifier cannot fire, under the reading this rung argues for -- and could, under the other.
+assert scan.out contains "assignments=27" else "whitepaper-definitions: all three verdicts over three definitions is 27 assignments"
+assert scan.out contains "conflict_assignments_atleast=0" else "whitepaper-definitions: lower bounds compose by maximum, so no pair conflicts"
+assert scan.out contains "conflict_assignments_exact=5" else "whitepaper-definitions: the hinge must stay visible -- exact requirements would conflict in five"
+assert scan.out contains "falsifier_satisfiable=no" else "whitepaper-definitions: row 11 watches for a failure its definitions cannot have"
+assert scan.out contains "falsifier_blind_to_failure=yes" else "whitepaper-definitions: the premise fails while the falsifier stays quiet"
+assert scan.out contains "verdict=blind" else "whitepaper-definitions: the reading's own name for that state"
+
+say "whitepaper-definitions: GREEN -- one definition of three stands, the survivors need a ring, and row 11's falsifier cannot fire in any of 27 assignments."
