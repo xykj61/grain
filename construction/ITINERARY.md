@@ -19,24 +19,19 @@ Keaton's `20260913` word accepts the first receipt contract and chooses the full
 newest the minute it was measured -- **still leaking, once per run, on every ship**.
 
 **Nothing was reading the pier's free space.** The first instrument to notice was a `pwd` inside a
-send answering `write error: No space left on device`. Builds will begin failing across the fleet
-for reasons that look like anything but this.
+send answering `write error: No space left on device`.
 
-**AND THE PRESSURE LIFTED 107 SECONDS LATER, BY A HAND THIS LAP CANNOT NAME.** Re-read
-`20260915.220240`: **84G free, 50 percent**, `/tmp` down to **11G across 5,409 entries**, and the
-leaked pens from **1,312 to 13**. It was not the scheduled cleaner --
-`systemd-tmpfiles-clean.timer` last ran at **17:32**, four and a half hours before the full reading.
-So 82G was reclaimed by a peer, a finishing pass, or a hand, and **nothing recorded it**, which is
-its own small lesson: the pier has no log of who takes 82G back.
+**THE HAND WAS COPAL, AND THE RECLAIM IS NOW ON THE ROW** (`20260915.231116`). The 82G went back
+107 seconds before the re-read -- **84G free, `/tmp` 11G, pens 1,312 to 13** -- and it reached wider
+than one witness: **nineteen `tools/am/` witnesses call `mktemp -d` and none calls `rm`**, eight
+families near 1,335 pens apiece. The floor was three hours rather than a blanket wipe, since a
+peer's witness may be in flight, which is why 13 stood afterward rather than zero.
 
-**The crisis is over and the leak is not.** `amphora_mark_wreck_witness.rish:36` is unchanged and
-still leaves a pen on every run; 13 stand already. At roughly 150 runs a day across eight ships this
-refills in about a week, and the next ship to meet it will meet it mid-send, as this one did.
-
-**Deleted nothing, deliberately.** **The repair is copal's lane** -- the `trap 'rm -rf "$pen"' EXIT`
-every `tools/fixtures/` control already carries. **What is yours:** whether the fleet should read its
-own free space at all. The first instrument to notice a full pier was a `pwd` builtin failing, and
-5,409 `/tmp` entries still say this witness is unlikely to be the only leaker.
+**The crisis is over and the leak is not.** Line 36 is unchanged, and so are the other eighteen. At
+roughly 150 runs a day across eight ships this refills in about a week. **The nineteen-file repair
+is copal's next lap** -- the `trap 'rm -rf "$pen"' EXIT` every `tools/fixtures/` control carries,
+which Rishi has no form for, so the shape is the question. **What is yours:** whether the fleet
+should read its own free space at all.
 
 ## NOW -- incense sails autonomous from `20260915.180000`
 
@@ -47,6 +42,7 @@ none of those.
 
 **The agent-doable queue, Lindy first:**
 
+0. `%745` -- **REDS FIRST, copal's next lap:** the nineteen leaking `tools/am/` pens above.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
@@ -95,7 +91,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `69838dfa76` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3d822d670a` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -149,11 +145,13 @@ guard is what keeps them fresh rather than a sweep that must be repeated.
 **MINE:** `merge` and `annotate` in `mantra/src/weave.rye` still reach the two counters through
 `@max` alone and state no postcondition of their own.
 
-**COPAL -- A GUARD COUNTED ONE FILE AS TWO ROOFS, AND THE PLANT MEASURED AS DRIFT.** Completed
-account [shelved whole](archive/20260915-200611_itinerary-copal-plant-account.md): `roofs` counts
-distinct files by inode, reading (5) reads the vessel's wire words, and `copy_lag` reads a
-control's own plants past and counts them. **YOURS:** should `one_file` become a refusal once a
-room declares it deliberately, or stay the honest name it is now?
+**COPAL -- A CONTROL LANDED PROVEN AND UNRUN, AND THE CEILING WAS WHAT SPOKE.** Completed account
+[shelved whole](archive/20260915-231116_itinerary-copal-unrun-control-account.md): nothing ran
+`rye_build`'s control, `control_unheard` refused at 19 of 18, and the witness now asserts all
+sixteen legs (the row booked at `20260915.202715`). The send then died on `No space left on device` -- nineteen `tools/am/`
+witnesses leak a `mktemp -d` pen on the SUCCESS path; **/tmp 94G to 11G** reclaimed and recorded on
+a peer's `%745`. **The nineteen-file repair is this lane's next lap.**
+**YOURS:** should `one_file` become a refusal once a room declares it deliberately?
 
 **PATCHOULI -- TWO GUARDS WROTE ONE BINARY WHILE A LOCK WATCHED THEIR OTHER HALVES.**
 **FIRE SEES** (row 2, N=4917): look at what must stop, then cut once.

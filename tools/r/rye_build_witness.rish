@@ -1,0 +1,83 @@
+# rye_build_witness.rish -- the per-module build lock, and the control that was proven and unrun.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_build_witness.rish
+#
+# WHY THIS EXISTS. `tools/fixtures/r/rye_build.sh` and its control landed together on `20260915`
+# answering REDS %734: `rye/src/main.rye` bridges each `.rye` source to an adjacent `.zig` shadow
+# and clears those files when a build ends, so two builds over one module directory delete each
+# other's inputs mid-compile. The wrapper takes a lock named inside the module directory, runs the
+# real build, and releases it from a trap. The control proves sixteen behaviors.
+#
+# Nothing ran the control. `tools/fixtures/u/unheard_guard_scan.sh` reads every control on disk and
+# asks which one a rostered runner reaches; the answer rose to 19 unreached against a ceiling of
+# 18, and the scan refused. A proof nothing runs is a claim -- it passes review, reads like
+# coverage, and reports nothing on the day the wrapper changes. This file is the runner, and its
+# roster row in `construction/standing-equipment.kyri` is the clock.
+#
+# THE LEG THAT CARRIES THE SUBJECT is `two_modules_concurrent`. A lock serializing EVERY build
+# would satisfy a naive no-collision reading while costing the tree its parallelism, so the control
+# holds one room shut and watches a build in a second room walk straight through.
+#
+# THE MUTATION, added here on the same lap. The control's held-lock refusal was asserted only in
+# the affirmative direction, so a wrapper that had quietly lost its `lock_acquire` call would pass
+# every leg. The control now copies the wrapper with that one call traded for `true` and asserts
+# the refusal STOPS -- a reading rather than a constant.
+#
+# WHAT THIS DOES NOT REACH. The control plants and removes `lotus/.rye-build.lock`,
+# `image/.rye-build.lock`, `dimeroll/.rye-build.lock`, and `pond/apps/.rye-build.lock` by name, so a
+# hand running it beside a live build over any of those modules removes a lock it never took. A
+# roster pass runs its guards one at a time, which is why the row sits on that clock; a second
+# build launched by hand during this guard is outside what any wall here can see.
+#
+# Purely local -- no key, no network, no funds, no device. It builds three modules into a pen.
+
+say "rye-build: Language EN -- one build at a time per module directory, because the shadows a build writes are named after the sources and shared by the room."
+say "rye-build: Style Gauge, Meter -- every reading is printed by the control on this run rather than recited in this file."
+say "rye-build: Lens TAME -- safety first: the lock is per module so two rooms keep their parallelism, the wait is bounded, and the refusal names itself."
+
+let control = run ["sh" "tools/fixtures/r/rye_build_control.sh"]
+say control.out
+assert control.ok else "rye-build: the control must complete"
+assert control.out contains "verdict=ok" else "rye-build: the control must reach its own verdict"
+
+# EVERY LEG IS TALLIED. A verdict says only that the control reached its last line, so a leg
+# written tomorrow would pass unheard beneath it.
+assert control.out contains "faults=0" else "rye-build: every leg of the control must pass, not merely the ones this file names"
+
+# THE THREE REFUSALS AT THE DOOR, each exiting 2 rather than building something unexpected.
+assert control.out contains "leg rejects_non_rye=ok" else "rye-build: a first argument that is not a .rye source must refuse"
+assert control.out contains "leg rejects_absent=ok" else "rye-build: a source that does not exist must refuse by name"
+assert control.out contains "leg rejects_empty=ok" else "rye-build: no argument at all must refuse"
+
+# THE ORDINARY BUILD, which must succeed and leave the room open behind it.
+assert control.out contains "leg builds_ok=ok" else "rye-build: an ordinary build must succeed through the wrapper"
+assert control.out contains "leg binary_made=ok" else "rye-build: the build must write its binary -- an exit code alone does not prove a compile happened"
+assert control.out contains "leg lock_released=ok" else "rye-build: the trap must release the lock, or one interrupted build shuts the room for good"
+
+# THE LOCK ITSELF, proven from both sides and then proven to be per module.
+assert control.out contains "leg held_lock_refuses=ok" else "rye-build: a room held by a live owner must refuse at the bound rather than hang"
+assert control.out contains "leg refusal_lifts=ok" else "rye-build: the refusal must lift once the room is free -- a wrapper that always refuses passes the leg above"
+assert control.out contains "leg two_modules_concurrent=ok" else "rye-build: a build in a second module must walk through while the first room stays held, or the lock is global and the tree has lost its parallelism"
+assert control.out contains "leg dead_owner_reaped=ok" else "rye-build: a lock whose recorded owner no longer exists must be reaped rather than waited out"
+
+# THE IMPORTED ROOM, which the wrapper covers because a source importing across a room writes its
+# shadow beside the IMPORTED file. These four legs and the room bound below landed upstream on the
+# same day; this witness is what runs them.
+assert control.out contains "leg imported_room_covered=ok" else "rye-build: holding a room the source imports from must stop the build, or a cross-room build deletes a peer's shadows"
+assert control.out contains "leg source_room_free=ok" else "rye-build: a refusal at an imported room must leave the source's own room unlocked"
+assert control.out contains "leg cross_refusal_lifts=ok" else "rye-build: the cross-room refusal must lift once the imported room is free"
+assert control.out contains "leg cross_locks_released=ok" else "rye-build: a completed cross-room build must release every room it took"
+assert control.out contains "leg room_bound_refuses=ok" else "rye-build: a walk past the room bound must refuse rather than truncate its room set in silence"
+
+# THE MUTATION, asserted to BITE. A control whose legs all pass against a broken wrapper is a
+# control proving nothing.
+assert control.out contains "leg mutation_lock_bites=ok" else "rye-build: a copy of the wrapper with its lock_acquire call traded for true must stop refusing a held room"
+
+# COUNTED OFF THE CONTROL, and the filter takes the leg lines alone. A filter reading every `=ok`
+# in the output also takes the control's own `verdict=ok` and reports one behavior more than were
+# run, which is the shape of overcount a recited total wears permanently.
+let legs = where (lines control.out) as l: l contains "leg "
+say "rye-build: ${length legs} behaviors proven against real builds in a throwaway pen, counted off the control rather than recited -- and every one of them affirmative, since faults=0 is asserted above."
+
+say "GREEN: rye-build -- the wrapper refuses at its door, holds one module at a time, keeps a second module free, reaps a dead owner, and releases from a trap. The control that proves it is on a clock now, so the day the lock leaves the wrapper a lap hears it."

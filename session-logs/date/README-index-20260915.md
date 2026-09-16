@@ -25,8 +25,10 @@
 | `20260915.211724` | [The bearing that meets rather than floods](20260915/20260915-211724_the-bearing-that-meets-rather-than-floods.kyri) | row 8 is a rendezvous, not a broadcast |
 | `20260915.211217` | [The reason lost at four thousand](20260915/20260915-211217_the-reason-lost-at-four-thousand.kyri) | the cliff bisected; my repair withdrawn |
 | `20260915.205911` | [The counts that carried constants](20260915/20260915-205911_the-counts-that-carried-constants.kyri) | every resolvable build site locked |
+| `20260915.205138` | [The legs nobody ran](20260915/20260915-205138_the-legs-that-arrived-while-nobody-ran-them.kyri) | parked work recovered; control 16 legs, all run |
 | `20260915.204403` | [The stamps I rounded](20260915/20260915-204403_the-stamps-i-rounded.kyri) | nine guessed stamps corrected |
 | `20260915.204128` | [The rooms a build writes into](20260915/20260915-204128_the-rooms-a-build-writes-into.kyri) | four rooms locked; the walk widened |
+| `20260915.202739` | [a proof nothing runs](20260915/20260915-202739_a-proof-nothing-runs.kyri) | a landed control ran on no clock; ceiling 19 of 18 refused |
 | `20260915.202608` | [The lock and the word that had no rule](20260915/20260915-202608_the-lock-and-the-word-that-had-no-rule.kyri) | 6 failures to 0; molt seated |
 | `20260915.200709` | [The index that typed what it forbade](20260915/20260915-200709_the-index-that-typed-what-it-forbade.kyri) | a generated page re-typed three free figures; B/83 to A/91 |
 | `20260915.200611` | [a plant is built to differ](20260915/20260915-200611_a-plant-is-built-to-differ.kyri) | a control's own plants were measured as a room's drift; read past and counted |

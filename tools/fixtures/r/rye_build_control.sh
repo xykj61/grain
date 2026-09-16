@@ -15,6 +15,7 @@ set -eu
 root=$(cd "$(dirname "$0")/../../.." && pwd -P)
 cd "$root"
 wrap=tools/fixtures/r/rye_build.sh
+mutant="tools/fixtures/r/.rye_build_mutant_$$.sh"
 legs=0
 faults=0
 note() {
@@ -24,7 +25,7 @@ note() {
 }
 
 pen=$(mktemp -d)
-trap 'rm -rf "$pen" lotus/.rye-build.lock image/.rye-build.lock dimeroll/.rye-build.lock pond/apps/.rye-build.lock' EXIT
+trap 'rm -rf "$pen" "$mutant" lotus/.rye-build.lock image/.rye-build.lock dimeroll/.rye-build.lock pond/apps/.rye-build.lock' EXIT
 
 # ---- a non-.rye first argument refuses rather than building something unexpected
 sh "$wrap" lotus/pan.zig >/dev/null 2>&1 && c=0 || c=$?
@@ -93,6 +94,20 @@ fi
 # ---- the room bound refuses rather than truncating in silence
 RYE_BUILD_MAX_ROOMS=0 env RYE_ZIG=vendor/zig-toolchain/zig sh "$wrap" lotus/pan.rye -femit-bin="$pen/p5" >/dev/null 2>&1 && c=0 || c=$?
 note room_bound_refuses 4 "$c"
+
+# ---- THE MUTATION, which proves the held-lock leg is a reading rather than a constant. The
+# wrapper is copied with its `lock_acquire` call traded for `true`, so the copy takes no lock at
+# all; a held room then stops refusing. Without this leg a control would pass unchanged against a
+# wrapper that had quietly lost the one call it exists to make.
+sed 's|lock_acquire "$lock" "$wait_max"|true|' "$wrap" > "$mutant"
+mkdir -p lotus/.rye-build.lock
+sh -c 'sleep 30' & holder=$!
+printf '%s\n' "$holder" > lotus/.rye-build.lock/pid
+RYE_BUILD_LOCK_WAIT=2 env RYE_ZIG=vendor/zig-toolchain/zig sh "$mutant" lotus/pan.rye -femit-bin="$pen/p6" >/dev/null 2>&1 && c=0 || c=$?
+note mutation_lock_bites yes "$( [ "$c" -ne 3 ] && echo yes || echo no )"
+kill "$holder" 2>/dev/null || :
+wait "$holder" 2>/dev/null || :
+rm -rf lotus/.rye-build.lock "$mutant"
 
 echo "legs=$legs"
 echo "faults=$faults"
