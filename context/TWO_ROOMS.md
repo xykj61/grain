@@ -1,7 +1,7 @@
 # Two Rooms -- The Checkable and the Visionary
 
 **Language:** EN
-**Last updated:** `20260907.094712` (the door is the head and two keys open it -- `**Status:**` or `**Room:**`; the token is a word rather than a substring; the three questions a Status line answers seated `20260907.015907` -- elder refresh `20260717`, Quin voice)
+**Last updated:** `20260916.034104` (the living ratchet reached zero on `20260911.160504` and this page said so five days late -- each figure now names what holds it still; elder refresh: the door is the head and two keys open it -- `**Status:**` or `**Room:**`; the token is a word rather than a substring; the three questions a Status line answers seated `20260907.015907` -- elder refresh `20260717`, Quin voice)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Seated -- checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/t/two_rooms_doorway.rish`)
@@ -137,6 +137,54 @@ Status says the end-to-end run stands unproven here. The clearest `vision` is
 guard binds a sentence of. `manual/` reads 29 pages and **0** living-silent; the ceiling falls
 **59 to 39**, moved by the twenty and by nothing else, and the remainder is 33 `active-designing/`
 and 6 `external-research/`.
+
+**And the living ratchet reached zero the same day, which this page records only now** (`20260911.160504`,
+commit `42826c45d`). The 39 remaining living pages each took a `**Room:**` line, and
+`living_ceiling` in
+[`../tools/fixtures/t/two_rooms_doorway_scan.rish`](../tools/fixtures/t/two_rooms_doorway_scan.rish)
+fell **39 to 0**. Thirty were ALES fill captures reading `mixed`, since each carries a *What the
+witness proves* section beside a *The road on* section and that structure is the reading; six were
+the lineage silos reading `research for understanding`, the first room where the fourth token
+answers every page in it; and three were `active-designing` pages -- the Constel naming law and the
+two hammocks -- each `mixed` for a reason of its own. **A ratchet at zero is a wall, and this one
+holds structurally:** a living path may always be repaired, so a living page stays silent only until
+a hand reaches it. The dated floor keeps its **3**, since accrete-never-break holds those three
+exactly as written.
+
+**Read on metal `20260916.033406`**, five days after that close: **1,328 pages, 619 folded shelves
+reached, 138 stampless, `living_silent=0` against `living_ceiling=0`, and `fails=3` against
+`ceiling=3`.** The two zeros are **walled** -- the guard reds on the lap either one moves. The
+counts of pages, shelves, and stampless heads are **free**, rising with every page this tree writes,
+so run the reading rather than trusting this line:
+
+```
+rishi/bin/rishi run tools/fixtures/t/two_rooms_doorway_scan.rish
+```
+
+**What the five quiet days cost, and the shape of the fault.** Every fall above narrates itself --
+106 to 90, 90 to 67, 67 to 59, 59 to 39 -- and the last one stood in the scan alone. So this page
+closed on *the remainder is 33 `active-designing/` and 6 `external-research/`* while the wall read
+zero, and it read as a bare fact rather than as a figure with a stamp. A rota lap meets that
+sentence on its Earth-Fixed seat once per orbit
+([`the earth row`](../foundations/20260826-021735_earth-the-row-that-breathes-in.md)), where the
+reading is the concrete fact taken in at the door. **A number narrated in prose is a number no
+instrument reads.**
+[`../tools/fixtures/d/declared_ceiling_scan.sh`](../tools/fixtures/d/declared_ceiling_scan.sh) gates
+that exact fault at zero -- *a declaration a tool cannot read* -- and it reaches a page's
+`**Ceiling:** <=N lines` and `**Bound:**` headers while a sentence stays outside it. `docs/CRYPTO.md`
+taught the shape by replacing its header with a paragraph about its own drift; this page taught it
+again by narrating a ceiling it declares nowhere. **Whether a law page's narrated ceiling earns a
+machine-readable declaration beside it is a style law and waits on Keaton's word.** What a hand
+supplies meanwhile is what this amendment supplies: each figure named with what holds it still, so a
+free one reads as free.
+
+**The grade said A and the drift was in the half it left unread.** `qa_report_card.sh` scored this
+page **A/92** at Field an hour before the amendment -- register scored, reach 100, service 100, and
+**`truth=100` at `truth_mode=counted`**, all 16 cited paths resolving. Every path did resolve, and
+the stale sentence carries a number where a path would have been read. That is the third recorded firing of the reading
+[`quality-assurance`](../.claude/rules/quality-assurance.md) names -- a page scoring `A+/98` as its
+own elder, and `docs-geode/README.md` teaching 1,004 pages where its scan answered 1,261 -- so
+handing in `--truth` is what closes a Truth reading on a page whose claims carry numbers.
 
 **And this page's own door was among them.** The witness read the first head line carrying
 `**Status:**` anywhere, and the `Last updated` line above quotes both key names, so the reading
