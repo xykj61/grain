@@ -1,6 +1,7 @@
 ::  name       skate ring admit gate
 ::  shape      occupancy - int (@u32) -> lawful - int (@u32)
-::  invariant  answers 1 while occupancy leaves a seat free (0..127 used); answers 0 at the full ring
+::  invariant  answers 1 while occupancy leaves a seat free (event-capacity=128, so 0..127 used); answers 0 at the full ring
+::  law        brushstroke/skate_event_ring.rye event_capacity below
 ::  example    5 -> 1 - 128 -> 0
 ::  readers    Skate - the native surface - Glow
 ::  nib        loca-skate-binding-v0 - the ring's Full wall in Glow (20260829)

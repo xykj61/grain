@@ -13,6 +13,7 @@
 | `20260915.195922` | [The source that vanished mid-compile](20260915/20260915-195922_the-source-that-vanished-mid-compile.kyri) | the flaky cause captured and confirmed |
 | `20260915.195227` | [The room that counted itself short](20260915/20260915-195227_the-room-that-counted-itself-short.kyri) | a door swept 50 to 3 percent, three figures re-measured |
 | `20260915.194903` | [The pen that closed one of two](20260915/20260915-194903_the-pen-that-closed-one-of-two.kyri) | lotus migrated; ceiling 1813 to 1574 |
+| `20260915.192622` | [The ratchet that counted held desks](20260915/20260915-192622_the-ratchet-that-counted-held-desks.kyri) | floor named desk by desk, 18 to 14 |
 | `20260915.192312` | [Forty names the tree no longer shares](20260915/20260915-192312_forty-names-the-tree-no-longer-shares.kyri) | ceiling 1853 to 1813 |
 | `20260915.190129` | [The count that stopped at the dollar sign](20260915/20260915-190129_the-count-that-stopped-at-the-dollar-sign.kyri) | 1,853 sites ratcheted, not 51 |
 | `20260915.185943` | [The rebase that walks the wall](20260915/20260915-185943_the-rebase-that-walks-around-the-wall.kyri) | The marker wall moves to the push. |
@@ -27,8 +28,8 @@
 | `20260915.182506` | [The pivot does not move](20260915/20260915-182506_the-pivot-does-not-move.kyri) | hinge and separator weighed against flap |
 | `20260915.182429` | [The key that carries locality](20260915/20260915-182429_the-key-that-carries-locality.kyri) | locality buys neighbours and sells evenness and the room |
 | `20260915.181805` | [The refusal that names its field](20260915/20260915-181805_the-refusal-that-names-its-field.kyri) | one refusal names field, value, ceiling, unit, reason |
-| `20260915.181035` | [The section that wanted a shelf](20260915/20260915-181035_the-section-that-wanted-a-shelf.kyri) | card folded 41,230 to 19,964 bytes |
 | `20260915.181038` | [The pen that was never entered](20260915/20260915-181038_the-pen-that-was-never-entered.kyri) | unentered pen moved this tree's identity |
+| `20260915.181035` | [The section that wanted a shelf](20260915/20260915-181035_the-section-that-wanted-a-shelf.kyri) | card folded 41,230 to 19,964 bytes |
 | `20260915.180055` | [The flap that wore two causes](20260915/20260915-180055_the-flap-that-wore-two-causes.kyri) | one red closed, eight booked, seven gated |
 | `20260915.175931` | [The axis that carried nothing](20260915/20260915-175931_the-axis-that-carried-nothing.kyri) | the torus second axis loses to a ring; five parked records landed |
 | `20260915.175358` | [a roof was a path](20260915/20260915-175358_a-roof-was-a-path.kyri) | three of six const families were one file read twice; wire words stood outside every reading |

@@ -1,6 +1,7 @@
 ::  name       lantern face text budget gate
 ::  shape      text bytes - int (@u32) -> lawful - int (@u32)
-::  invariant  answers 1 while text stays at or under the 38-byte face budget; answers 0 past it
+::  invariant  answers 1 while text stays at or under max-face-text=38 bytes; answers 0 past it
+::  law        pond/apps/lantern_face.rye max_face_text atmost
 ::  example    38 -> 1 - 39 -> 0
 ::  readers    Lantern - Realidream - Glow
 ::  nib        lantern-face-v0 - the asking voice's wall spoken in Glow (20260829)
