@@ -82,3 +82,9 @@ stamp 20260915.205732
 epoch 1789520252
 paths tools/fixtures/r/rye_build_sites_scan.sh tools/r/rye_build_sites_witness.rish
 what Spread the per-module build lock to the rooms still building unlocked -- linengrow first -- and give the spread a meter so the remainder is a ratchet a reader can run rather than a number in prose.
+claim diffuser-whitepaper-definition-ledger
+seat diffuser
+stamp 20260915.213017
+epoch 1789522217
+paths tools/fixtures/w/whitepaper_definitions_scan.sh tools/fixtures/w/whitepaper_definitions_control.sh tools/w/whitepaper_definitions_witness.rish active-designing/20260915-212827_the-paper-that-checked-its-own-premise.md
+what Fire or extinguish row 11's own falsifier by running the lane's nine landed scans and reading whether the three definitions the whitepaper would bind pull against each other.
