@@ -1,0 +1,131 @@
+# tools/l/ladder_order_witness.rish -- the errata cannot state an order, and they can state a
+# partition.
+#
+# WHY THIS RUNG. The twelve rows of active-designing/20260910-060204_the-bounded-torus-moonshots.md
+# were ranked once, on the day they were written, by what a lane could start on this pier. Ten
+# errata have landed since, each reporting a measurement, and several recommend a re-rank or a
+# re-aim in their own words. The ranking table still reads as first written -- correctly, since
+# dated testimony keeps every word -- so no page states the order the twelve measurements support.
+# The obvious repair is to write that order down. This rung asks first whether it exists.
+#
+# IT DOES NOT, and the refusal is arithmetic rather than judgment. Of the ten clauses the page
+# carries, nine rows speak (row 5 carries two, and the later one wins). Six of those nine
+# recommend anything at all; three report a reading and recommend nothing. Only FOUR name a seat,
+# and two of the four name the same seat -- both rows 2 and 4 say "last", for the same stated
+# cause. So the recommendations spoken for four of twelve positions, collide on two seats, and no
+# permutation stands.
+#
+# THE MECHANISM, in plain words. An erratum speaks in a CLASS and the table speaks in a POSITION.
+# "Last of the twelve" is a demotion rather than a seat: two rows may both be demoted and only one
+# may be twelfth. A class cannot be transcribed into a table without inventing a tiebreak nobody
+# measured, and inventing one is exactly what this rung exists to refuse. That is why the reading
+# is a collision count rather than a sorted list.
+#
+# WHAT CAN BE STATED IS A PARTITION. Each of the twelve falls into exactly one disposition class
+# read from its latest erratum -- 3 unread, 3 reported, 1 re-aimed, 2 seated, 2 demoted, 1
+# superseded -- and those six counts sum to the roster, which is gated rather than assumed. A
+# partition is the weaker statement, and it is the one the measurements actually support.
+#
+# WHAT IS GATED, and why each. The roster count is gated against the ranking table, because a
+# reader seeing a different number of rows than seats is reading one of them wrongly. Parse
+# failures are gated at zero, since a clause the page carries and this reader passes over is the
+# reader measuring its own blind spot. The class total is gated against the roster, because a
+# disjoint partition is the one property making the weaker statement true. The COLLISION count is
+# reported rather than walled: it is a reading of a dated page, and an erratum landing tomorrow
+# may raise or lower it honestly.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/l/ladder_order_control.sh -- 54 behaviors on planted
+# pages in a throwaway pen, every refusal shown from both sides:
+#
+#   A PERMUTATION IS REACHABLE, proven by planting a page whose four errata name four distinct
+#     seats and watching it read permutation=yes. A refusal proven only in the refusing direction
+#     cannot be told from an instrument that always refuses.
+#   THE COLLISION IS REACHED THREE WAYS and each is planted apart -- two recommendations naming one
+#     seat, a recommendation landing on a seat the standing table holds, and "last" resolving onto
+#     the final seat -- because they are three different faults wearing one count.
+#   THE DISPOSITION ORDER, proven from both sides: "re-aim rather than re-rank, and a rank of
+#     fourth" is a SEAT, and a sentence carrying both breach and a seat is a BREACH.
+#   THE LATEST ERRATUM SPEAKS, proven by planting two clauses on one row and watching the earlier
+#     fall silent.
+#   THE ROSTER IS COUNTED, proven on a thirteen-row page: a reader that cannot see a thirteenth row
+#     would pass in silence on the day one lands.
+#   AND FOUR MUTATIONS, each proven landed by cmp before its reading is believed.
+#
+# TWO FAULTS THE PEN FOUND IN THE SCAN, both fixed before this rung was written, and both of one
+# kind. The scan wrote its four scratch files into `.lap/` and never made that room, so in a tree
+# lacking it every write failed -- and the scan still printed `verdict=order`, an answer about a
+# page it had not read. It makes its own pen now and refuses when it cannot. The pen is released
+# on refusal as well as on success, which REDS %745 is open about fleet-wide, and the control
+# proves the release from both exits rather than trusting the trap.
+#
+# WHAT IT LEAVES TO OTHERS. Whether any of the twelve rows is worth building, which is a judgment.
+# What the right order IS -- this rung proves the errata do not supply one and proposes none.
+# Whether "last" should be read as a seat rather than a class, which is a reading of English and is
+# named here so a reader who disagrees has one place to say so.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260916-003332_the-order-the-errata-could-not-state.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/ladder_order_witness.rish
+
+say "ladder-order: Language EN -- an order is a claim like any other, and this one refuses."
+say "ladder-order: Style Gauge, Meter -- the collision is counted, never adjudicated."
+say "ladder-order: Lens TAME -- refuse a partial read, prove each branch from both sides."
+
+let control = run ["sh" "tools/fixtures/l/ladder_order_control.sh"]
+say control.out
+assert control.ok else "ladder-order: the control must complete -- its own lines are printed above"
+
+assert control.out contains "control_expected=54" else "ladder-order: the control counts its own legs, so a shrunken pen cannot read as a full one"
+assert control.out contains "control_legs=54" else "ladder-order: a leg added or lost is a leg nobody heard"
+assert control.out contains "control_failed=0" else "ladder-order: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "ladder-order: the control must balance before it is believed"
+
+# The refusal shown from the other side -- a page whose errata DO compose reads an order.
+assert control.out contains "a full reversal IS a permutation" else "ladder-order: a reachable permutation is what makes the refusal mean something"
+assert control.out contains "and its verdict is an order" else "ladder-order: the passing verdict must be reachable"
+
+# The three roads to one collision, each proven apart.
+assert control.out contains "a seat the table already holds collides" else "ladder-order: a recommendation onto a standing seat must collide"
+assert control.out contains "two recommendations on one seat collide" else "ladder-order: two recommendations naming one seat must collide"
+assert control.out contains "'last' lands on the final seat and collides" else "ladder-order: a demotion onto the final seat must collide"
+assert control.out contains "lifting the plant returns a clean reading" else "ladder-order: removing the plant must return the reading"
+
+# The class reading, and the disjointness that makes the weaker statement true.
+assert control.out contains "'last' is a demotion, never a seat" else "ladder-order: a class must not be transcribed as a position"
+assert control.out contains "six rows, six classes, one each" else "ladder-order: every row falls into exactly one class"
+assert control.out contains "the classes partition the roster" else "ladder-order: the partition is the statement that stands"
+
+# The pen this instrument makes must be released on both exits -- REDS %745 read on itself.
+assert control.out contains "a finished run leaves no pen behind" else "ladder-order: a finished run must release its pen"
+assert control.out contains "and a REFUSING run leaves none either" else "ladder-order: a refusing run must release its pen too"
+
+# Each mutation proven landed before its reading, so a plant that changed no byte cannot pass.
+assert control.out contains "reading the disposition before the position loses a named seat" else "ladder-order: the disposition-order mutation must bite"
+assert control.out contains "an unbounded 'last' match demotes on a passing word" else "ladder-order: the bare-word mutation must bite"
+assert control.out contains "a hard-coded roster cannot see a thirteenth row" else "ladder-order: the hard-coded roster mutation must bite"
+assert control.out contains "losing the latest-stamp tiebreak lets a retired erratum speak" else "ladder-order: the tiebreak mutation must bite"
+assert control.out contains "every mutation applied and bit" else "ladder-order: a mutation that no longer applies proves nothing"
+
+let scan = run ["sh" "tools/fixtures/l/ladder_order_scan.sh"]
+say scan.out
+assert scan.ok else "ladder-order: the reading must complete"
+
+assert scan.out contains "page_readable=yes" else "ladder-order: the proposal page must stand where the reading expects it"
+assert scan.out contains "parse_failures=0" else "ladder-order: every clause the page carries must be read, or the reader measures its own blind spot"
+
+# The roster and the ranking table must agree, or one of them is being read wrongly.
+assert scan.out contains "rows=12" else "ladder-order: the proposal page carries twelve rows"
+assert scan.out contains "standing_ranked=12" else "ladder-order: the ranking table seats every row it lists"
+
+# The finding: four seats named, two collisions, and no permutation.
+assert scan.out contains "permutation=no" else "ladder-order: the errata do not compose into an order"
+assert scan.out contains "verdict=partition_only" else "ladder-order: what stands is the partition rather than the order"
+
+# The partition, gated at the roster, because disjointness is what makes it a statement.
+assert scan.out contains "classes_partition=yes" else "ladder-order: every row must fall into exactly one class"
+assert scan.out contains "class_total=12" else "ladder-order: the classes must sum to the roster"
+
+say "ladder-order: GREEN -- nine rows speak, six recommend, four name a seat, two seats collide."
+say "ladder-order: the order the errata support is a partition of twelve into six dispositions."

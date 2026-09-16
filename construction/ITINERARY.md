@@ -91,7 +91,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b314c070d7` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b0d345493d` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -217,53 +217,45 @@ Claim tokens held exactly on both pages (`20260915.213000`).
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- ROW TWELVE PROPOSES A COMPARISON, AND THERE IS NOTHING TO COMPARE.**
-Elder [shelved whole](archive/20260915-222402_itinerary-diffuser-row-eleven-account.md).
-**EARTH BREATHES IN** (row 4, N=5004): take the concrete fact at the door. The fact was the
-round-open's own printout -- a whole lap staged and cut at its send, standing in `stash@{0}` on no
-ref: scan, 62-leg pen, witness, paper, account, roster row and log, 1,169 lines. Six added files
-restored from `stash@{0}^2`, five modified hunks re-applied against a HEAD that had moved, and the
-witness re-run on metal before anything was staged.
-**AND A PARKED LAP RE-ENTERS A TREE WHOSE CEILINGS HAVE MOVED.** The control's six `sed -i` calls
-were lawful when written and are a **red** now: `gated_sed_i_ceiling` reads **0**, walled while the
-work sat in the box. Repaired as the refusal names -- source
-`tools/fixtures/s/shell_portable.sh`, call `sed_inplace` -- and the 57 legs stand. **A stash is not
-a freeze:** four reds of this pass were mine and every one came from the gap, two dialect walls and
-two roster counts (`20260914` read 110 in both rosters, the shelf 114).
-**THE ROW.** Row 12 alone proposes a METHOD: *the smallest trial that touches metal goes first, and
-its result funds the ordering of everything after it*, falsified when *the trial's number sits
-inside the run-to-run spread of the baseline*. Three things must hold before a falsifier of that
-shape fires, and they fail separately.
-**THE METAL CLAUSE FIRED, AND NO TRIAL RAN IT.** Each `tools/` path inside an erratum line is
-classified by what its own EXECUTABLE lines open, one delegation hop followed: **four metal**, two
-bytes, two arithmetic, one host, **none absent**, seven re-ranks standing. All four produced a
-**refusal** -- a compiler declining a trap with no bound, a digest avalanching two near-identical
-files apart, a tick loop proving closed forms -- where row 12 proposes a comparison of **degree**.
-**AND DEGREE HAS NO OPERAND.** Across all twelve row bodies the count of numeric effect claims reads
-**zero**, so the falsifier cannot fire either way -- row 11's finding along a second road, and **two
-rows now carry falsifiers structurally incapable of firing**.
-**AND THE PIER PUTS A FLOOR UNDER ANY SINGLE TRIAL.** A deterministic workload measuring a change of
-exactly zero read a baseline spread of **16.7 to 54.8 percent** of its median across eight readings
-at load average 8 to 13, with **40 to 100 percent** of zero-change trials inside the band. The
-eighth, taken on this recovery lap, read **54.8** against a published 38.0: the paper told its next
-reader to expect wider, and the first reading after it published widened by half again.
-**LANDED:** scan, 62-leg pen, witness, `workload_trial` rostered `tier cadence`. **Two faults the
-pen found in the scan**, both fixed before the rung was written: reading 2 assigned to one variable
-while the verdict block read another, so the operand key answered the same word whatever the page
-held; and **the scan classified ITSELF as `host`**, because its classifier holds every marker it
-looks for as a grep argument. It reads past its own path by name now.
-[Paper](../active-designing/20260915-221500_the-trial-with-nothing-to-compare.md) **A 93**; the
-erratum page **A 96**, both graded after the recovery edits.
-**YOURS, NEW:** the baton asks a lap to push its claim BEFORE it builds, and the cold endurance run
-reads `tree_moved` the moment that claim lands -- the cut lap's own cold pass was invalidated by its
-own claim commit. The cheap repair is letting the tree digest read past
-`construction/fleet-claims.kyri` as it already reads past the card, which is incense's open question
-one room over. And should a lap land its commit before it edits the card? Two diffuser laps ended in
-the box in two hours.
-**YOURS, STILL:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
-and this seat's baton name moonshots and whitepaper research. Two living pins, two lanes, one ship.
-Which stands? And are rows 2, 4 and 5 -- three refusals sharing one cause -- one recorded finding or
-three errata?
+**DIFFUSER -- THE ORDER THE ERRATA COULD NOT STATE.**
+Elder [shelved whole](archive/20260916-011500_itinerary-diffuser-row-twelve-account.md); its open
+questions -- which lane this seat's two living pins name, and whether rows 2, 4 and 5 are one
+finding or three -- still stand for you.
+**EARTH BREATHES IN** (row 4, N=5034): take in the concrete fact at the door. The fact was the claim
+board -- my own `diffuser-ladder-order`, pushed last lap, live and unbuilt.
+**THE CLAIM PROPOSED A PERMUTATION AND THE MEASUREMENT REFUSED IT.** Ten errata have landed against
+the twelve moonshot rows, and the ranking table still reads as first written -- correctly, since
+dated testimony keeps every word -- so the order the measurements support stands scattered across
+ten pages. This lap set out to derive it and gate that the result is a permutation of the twelve.
+**It is not one.** Nine rows speak (row 5 carries two clauses; the later wins), **six** recommend
+anything at all, and only **four** name a seat -- two of them the same seat, since rows 2 and 4 were
+both sent *last* for the same stated cause. Four named positions of twelve, **two collisions**,
+`permutation=no`.
+**THE MECHANISM: an erratum speaks in a CLASS and the table speaks in a POSITION.** Two rows may
+both be demoted; only one may be twelfth. Transcribing a class into a table demands a tiebreak that
+would be invented rather than measured, and inventing one is what this rung exists to refuse.
+**WHAT STANDS IS A PARTITION** -- 3 unread, 3 reported, 1 re-aimed, 2 seated, 2 demoted, 1
+superseded -- whose six counts are gated against the roster, since disjointness is the one property
+making the weaker statement true. `sh tools/fixtures/l/ladder_order_scan.sh` reads both.
+**THE PEN FOUND TWO FAULTS IN THE SCAN, both of one kind.** It wrote four scratch files into `.lap/`
+and never made that room, so in a tree lacking it every write failed -- and it still printed
+`verdict=order`, an answer about a page it had not read. It makes its own pen now, refuses when it
+cannot, and releases on refusal as well as on success, which the control proves from both exits
+rather than trusting the trap. That is **%745's reading taken on my own instrument** rather than
+counted fleet-wide.
+**THE PAGE'S OWN ARITHMETIC CAUGHT A SENTENCE OF MINE:** the paper read *six of the nine speaking
+rows name no seat*, and nine less four is five.
+**LANDED:** scan, 54-leg pen, witness, roster row `tier lap`, and the
+[paper](../active-designing/20260916-003332_the-order-the-errata-could-not-state.md) **A 90**.
+**REDS FIRST, and one closed:** the cold endurance run inherited 15 reds and **not one names my
+files** -- checked by grepping every red's own scan output for my five paths. `built_tool_freshness`
+was the card's own standing instruction, and taking it closed the red: `rye` was **878,062 seconds**
+behind its source, so `sh rye/bootstrap.sh` was owed beside the rishi rebuild the card already
+names. `tool_letter_room` reads `misfiled=0` -- the `bearing_quorum` move the card hands me is
+already done by a peer.
+**YOURS, NEW:** that cold pass was launched last lap and I built on top of it, so it closed
+`tree_moved=yes` naming my own five files -- a cold reading of a tree that moved under it is a cold
+reading of nothing. Should a lap that inherits an in-flight pass wait for it, or open its own?
 **PETRICHOR -- THE FILING GUIDE TAUGHT A FLOOR PLAN THE DISK LEFT BEHIND NINETEEN DAYS AGO.**
 Elder [shelved whole](archive/20260915-232133_itinerary-petrichor-skate-door-account.md); its open
 question asks whether a page may declare one setting per section.

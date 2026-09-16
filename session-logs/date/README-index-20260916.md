@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260916.023834` | [Three doors, three probes](20260916/20260916-023834_three-doors-three-probes.kyri) | the v3 record named as the one blocker |
 | `20260916.022355` | [the pen the runtime owns](20260916/20260916-022355_the-pen-the-runtime-owns.kyri) | make-pen: the runtime creates and recursively releases its own pen |
+| `20260916.011339` | [The order the errata could not state](20260916/20260916-011339_the-order-the-errata-could-not-state.kyri) | four named seats, two collisions, no order |
 | `20260916.002627` | [The word a beginner door spent twice](20260916/20260916-002627_the-word-a-beginner-door-spent-twice.kyri) | weave to batch; rye rebuilt; %755 |
 | `20260916.001052` | [The identity inside the place](20260916/20260916-001052_the-identity-inside-the-place.kyri) | the ruling measured to its remaining work |
 | `20260916.000547` | [The paper that reached no ref](20260916/20260916-000547_the-paper-that-reached-no-ref.kyri) | a finished paper stood on no ref |
