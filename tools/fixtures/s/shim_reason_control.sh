@@ -116,6 +116,22 @@ carrying_witness() {
     'assert ctl.ok else "pen: the control refused --\\n${ctl.out}\\n${ctl.err}"'
 }
 
+# The bounded forms of the same two witnesses. `run` returns `out_brief` and `err_brief` beside the
+# whole captures, and a witness forwarding the bounded stderr forwards its control's reason just as
+# truly. These two carry the reason_lost reading's own `_brief` blindness, one direction each.
+brief_carrying_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' \
+    'assert ctl.ok else "pen: the control refused --\\n${ctl.out}\\n${ctl.err_brief}"'
+}
+brief_losing_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' \
+    'assert ctl.ok else "pen: the control refused --\\n${ctl.out_brief}"'
+}
+
 # The THIRD shape, written once so its plant and its repair differ only in the ORDER of two lines.
 # A witness that says its run before judging it hands the reader everything the run wrote; the same
 # two lines the other way round hand the reader nothing, because `assert` stops the run.
@@ -174,6 +190,12 @@ r() { readings=$((readings + 1)); echo "$1"; }
 # successful refusal -- which reads exactly like a control that ran out of phases.
 run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" UNSAID_ROSTERED_CEILING="${5:-99}" UNSAID_CEILING="${6:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
 run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" UNSAID_ROSTERED_CEILING="${5:-99}" UNSAID_CEILING="${6:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
+
+# The instrument as it stood before the `_brief` widenings: every `(_brief)?` removed, so a bounded
+# field reads as no field at all. Written once here because two phases plant against it, and a pen
+# proving a widening load-bearing has to run the NARROW reader over the SAME bytes.
+narrow_scan() { sed 's/(_brief)?//g' "$pen/$1/tools/fixtures/s/shim_reason_scan.sh" > "$pen/$1/narrow_scan.sh"; }
+run_narrow() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" SCAN_ORDER_CEILING="${4:-99}" UNSAID_ROSTERED_CEILING="${5:-99}" UNSAID_CEILING="${6:-99}" sh ./narrow_scan.sh 2>/dev/null; exit 0 ); }
 
 # --- clean_free ---------------------------------------------------------------------------
 new_repo clean
@@ -718,6 +740,46 @@ sed 's/(out|err)(_brief)?/(out|err)/g' \
   "$pen/unsaid_brief/tools/fixtures/s/shim_reason_scan.sh" > "$pen/unsaid_brief/narrow_scan.sh"
 out=$( set +e; cd "$pen/unsaid_brief" || exit 0; CEILING=99 REASON_CEILING=99 SCAN_ORDER_CEILING=99 UNSAID_ROSTERED_CEILING=0 UNSAID_CEILING=99 sh ./narrow_scan.sh 2>/dev/null; exit 0 )
 case "$out" in *"unsaid_rostered=1"*) r "unsaid_brief_narrow_blind=yes" ;; *) r "unsaid_brief_narrow_blind=no" ;; esac
+
+# --- reason_brief, the fourth seam of the same blindness --------------------------------------
+# `%768` widened three awk patterns to `(out|err)(_brief)?` and left the reason_lost seam reading
+# its two spellings with exact `grep -qF`, in the same file. That seam is a GATE at zero where
+# `unsaid` is a ratchet, so the sweep that cost `unsaid` 316 would have reddened the fleet here.
+# Both directions are planted, because they are two different faults.
+#
+# ONE: a witness forwarding `${ctl.err_brief}` beside `${ctl.out}` HAS handed the reader the
+# control's reason. It must walk free, and under the narrow instrument it is counted -- a false red
+# on a witness that is already correct.
+new_repo reason_brief_carry
+forwarding_shim       > "$pen/reason_brief_carry/tools/x/a.rish"
+stderr_control        > "$pen/reason_brief_carry/tools/fixtures/p/pen_control.sh"
+brief_carrying_witness > "$pen/reason_brief_carry/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason_brief_carry/construction/standing-equipment.kyri"
+seal reason_brief_carry
+out=$(run_scan reason_brief_carry); code=$(run_code reason_brief_carry)
+r "reason_brief_carry_exit=$code"
+case "$out" in *"reason_lost_rostered=0"*) r "reason_brief_carry_credited=yes" ;; *) r "reason_brief_carry_credited=no" ;; esac
+case "$out" in *"verdict=ok"*) r "reason_brief_carry_free=yes" ;; *) r "reason_brief_carry_free=no" ;; esac
+narrow_scan reason_brief_carry
+out=$(run_narrow reason_brief_carry)
+case "$out" in *"reason_lost_rostered=1"*) r "reason_brief_carry_narrow_false_red=yes" ;; *) r "reason_brief_carry_narrow_false_red=no" ;; esac
+
+# TWO: a witness forwarding `${ctl.out_brief}` alone has lost the reason exactly as one forwarding
+# `${ctl.out}` has. It must be counted, and under the narrow instrument it is unseen -- a false
+# green, which is the worse of the two, since nothing tells it from a tree with no fault in it.
+new_repo reason_brief_lose
+forwarding_shim     > "$pen/reason_brief_lose/tools/x/a.rish"
+stderr_control      > "$pen/reason_brief_lose/tools/fixtures/p/pen_control.sh"
+brief_losing_witness > "$pen/reason_brief_lose/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason_brief_lose/construction/standing-equipment.kyri"
+seal reason_brief_lose
+out=$(run_scan reason_brief_lose); code=$(run_code reason_brief_lose)
+r "reason_brief_lose_exit=$code"
+case "$out" in *"verdict=rostered_reason_lost"*) r "reason_brief_lose_bitten=yes" ;; *) r "reason_brief_lose_bitten=no" ;; esac
+case "$out" in *"reason_lost_rostered=1"*) r "reason_brief_lose_counted=yes" ;; *) r "reason_brief_lose_counted=no" ;; esac
+narrow_scan reason_brief_lose
+out=$(run_narrow reason_brief_lose)
+case "$out" in *"reason_lost_rostered=0"*) r "reason_brief_lose_narrow_blind=yes" ;; *) r "reason_brief_lose_narrow_blind=no" ;; esac
 
 echo "cases=$readings"
 echo "repos=$repos"

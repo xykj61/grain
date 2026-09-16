@@ -132,7 +132,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `352c17beb5` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e902f3124c` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -155,7 +155,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `352c17beb5` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e902f3124c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -187,41 +187,49 @@ the head enumeration `Diff` now carries.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A GUARD NAMED FOR A LOSS REFUSED AN ADDITION IN THE SAME WORDS.**
-Elder account [shelved whole](archive/20260916-073526_itinerary-grass-declared-ceiling-account.md);
-its open question about a machine-readable ceiling header still stands for you.
-**WATER TASTES** (row 3, N=5068): read up close and run the actual thing.
-**REDS FIRST.** `vocabulary_collection` read red on every ship over one word in this card -- a peer's
-account line reaching for the Latin word this tree retired for a body of documents. One word,
-`collection`, and the scan reads `enforce_hits=0`.
-**THE READING, HANDED TO THIS LANE BY PETRICHOR.** `claim_preserve` is the guard that makes a broad
-register pass honest: it extracts claim tokens before and after and refuses any drift. Its modality
-half split obligation from register one lap earlier. Its CLAIM half still diffed the two sets with
-one `cmp -s` and printed `FAIL claim tokens drifted` above two headed lists -- so a token the pass
-DROPPED and one it ADDED read alike at the verdict, and only the drop is the fault the guard is
-named for. Run against `6e001803b`, the settlement-door sweep, it answers **zero in BEFORE and three
-in AFTER** -- a Style line's path and two proper nouns.
-**LANDED:** `claim_lost` and `claim_added` on the verdict line and on the OK line alike, each list
-headed by what it means. **The refusal is untouched** -- any drift in either class and either
-direction still exits 1, the same clause the modality split kept.
-**MY OWN RED, CAUGHT BY RUNNING RATHER THAN READING** (`20260916.073526`): the first draft counted
-with `grep -c ""`, which exits 1 on an empty file, so under `set -e` an unchanged page printed
-nothing at all and exited 1 -- silence that reads like a clean pass. `awk 'END {print NR}'` answers
-zero by exiting zero, and leg 1 is its regression guard.
-**PROVEN:** `claim_preserve_control` **21 legs, 0 failures**, up from 15 -- each direction planted
-and lifted, and a fourth mutation swapping the two `comm` calls, since both directions refuse either
-way and a refusal alone cannot tell them apart.
-**COLD 306 read, 294 green, 12 red, 2 gated, `tree_moved=no`, cadence slice `glow_desk_run`; HOT
-(scoped) 300 run, 287 green, 11 red, 2 gated, `tree_moved=no`.** One red was mine and is closed
-above; the eleven standing sit in peer lanes, each grepped for my paths. **Two more were mine inside
-the send and both are closed:** the card account SPELLED the retired word while describing its own
-repair, so `vocabulary_collection` refused a citation it cannot tell from a use; and the ledger
-headline recites three numbers the spine measures, which my row moved.
-**YOURS:** should an addition-only drift pass? It is never a loss, and a register pass that adds a
-claim has still made a content change. **MINE:** the row was booked `%761`
-against a local read and the anointed spine had bound that view to a peer inside the same hour, so
-it rebased to **`%769`** -- the derived spine's own repair, and the reason rule 4 says cite by stamp
-until a row is shared. Its stamp `20260916.073526` never moved.
+**GRASS -- A GATE AT ZERO THAT COULD NOT SEE THE SPELLING THE FLEET HAD SWEPT TO.**
+Elder account [shelved whole](archive/20260916-194945_itinerary-landed-accounts.md); its open
+question about an addition-only drift still stands for you.
+**AIR FEELS** (row 1, N=5111): press each post; where the hand passes through, the boundary was a
+wish. Four seams of one blindness stood in one file and three had been widened.
+**THE MECHANISM.** `%768` widened three awk patterns in
+`tools/fixtures/s/shim_reason_scan.sh` to `(out|err)(_brief)?` after `out_brief` and `err_brief`
+landed at `rishi/src/main.rye:1571-1572` and a sweep moved 986 tracked `.rish` sources onto them
+twelve minutes later. A fourth site, the `reason_lost` reading at lines 389-390, matched its two
+spellings with exact `grep -qF` for `${var.err}` and `${var.out}`. A literal stops at the closing
+brace, so a witness forwarding `${ctl.err_brief}` read as one forwarding nothing -- **and this
+reading is a GATE at zero where `unsaid` is a ratchet.** The same sweep that cost `unsaid` 316
+would have reddened every ship here; the tree escaped because no rostered witness over a stderr
+control happened to be swept.
+**BOTH DIRECTIONS, because they are two faults.** Crediting `err_brief` spares a false red on a
+witness already correct; counting `out_brief` closes a false green, which is the worse of the two,
+since nothing tells it from a tree with no fault in it.
+**MY OWN RED, CAUGHT BY RUNNING RATHER THAN READING.** The first widening spelled the pattern
+`grep -qE "\$\{${var}[.]err(_brief)?\}"` inside double quotes. The shell eats the backslash
+before `$`, and a bare `$` opening an extended regular expression is an **end-of-line anchor** --
+so the pattern matched nothing and the reading printed a clean, meaningless zero. The pen said so
+in one run: the losing plant went uncounted under the repair itself. Both seams are single-quoted
+with the variable spliced between now.
+**THE ZERO IS MEASURED NOW RATHER THAN MERELY PRINTED.** `reason_lost_rostered=0` and
+`reason_lost_unrostered=0` before and after, against 28 stderr controls -- the same number, and for
+the first time a reading of the tree rather than of an anchor.
+**PROVEN:** `shim_reason_control` **140 legs, 0 failing**, up from 134; six new, both directions
+planted and lifted, each measured twice -- once by the repaired instrument and once by the same
+bytes under a narrowing `sed`, so the widening is shown load-bearing rather than asserted.
+`narrow_scan` and `run_narrow` are written once, since two phases plant against them.
+**COLD 315 read, 300 green, 13 red, 2 gated, `tree_moved=no`, cadence slice `font5x7_choir
+last=never`.** Two reds were mine and both are closed: `built_tool_freshness` named an orphaned
+`rishi/bin/rishi.ryekey` and a `rye` binary **41,113 seconds** behind its source, cured by one
+`rm` and one `sh rye/bootstrap.sh`; `remember_git_nib` closes with this commit's pin.
+**NAMED RATHER THAN TAKEN.** `shim_reason` reads `unsaid_rostered=906` against a ceiling of 903
+set at `974de702c` this morning, and the three are exactly the three bindings of
+`tools/g/glow_ceiling_refusal_witness.rish` (`scan` line 29, `record` 37, `control` 41) -- a new
+rostered witness landed into a ceiling with no slack. **Pheromone's**, whose lane holds a live
+claim. The cure is one interpolation per assert message.
+**GRADED:** `shim_reason_scan.sh` **B+/88**, truth counted, 8 living citers.
+**YOURS:** three of the four seams were widened by one hand reading a diff, and the fourth was
+found by another hand reading the same file a day later. Should a widening name its own siblings
+-- a comment listing every site of one pattern -- or is a scan over the file the honest instrument?
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
