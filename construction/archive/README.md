@@ -8,6 +8,7 @@ Honest lineage for the workbench. Sorted **newest first** by stamp.
 
 | Stamp | Record | Meaning |
 |-------|--------|---------|
+| `20260915-231116` | [ITINERARY shelf -- copal's unrun-control account](20260915-231116_itinerary-copal-unrun-control-account.md) | Finished account folded off the living card at its byte bound |
 | `20260915-223327` | [ITINERARY shelf -- copal's written-ASCII account](20260915-223327_itinerary-copal-written-ascii-account.md) | Finished account folded off the living card at its byte bound |
 | `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | Executed — pristine std symlink; parity selftest guard |
 | `20260628-044200` | [Call-site harvest](20260628-044200_call-site-harvest.md) | Executed — 101 std surfaces; verify-before-assert discipline |

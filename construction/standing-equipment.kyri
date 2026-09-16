@@ -5630,6 +5630,45 @@ path tools/r/rye_build_lock_holder_witness.rish
 tier cadence
 seated 20260915.211500
 
+# rye_build -- the wrapper that holds one build at a time per module directory, and the control
+# that was proven and unrun (`20260915.202715`). `tools/fixtures/r/rye_build.sh` answers REDS %734:
+# `rye/src/main.rye` bridges each `.rye` source to an adjacent `.zig` shadow and clears those files
+# when a build ends, so two builds over one module delete each other's inputs mid-compile. The
+# wrapper derives the module from the source path's directory, takes a lock inside that directory
+# through `lock_acquire` in `tools/fixtures/s/shell_portable.sh`, runs the real build, and releases
+# the lock from a trap.
+#
+# WHY IT IS HERE. The wrapper and its control landed together and nothing ran the control.
+# `tools/fixtures/u/unheard_guard_scan.sh` reads every control on disk and asks which one a
+# rostered runner reaches; its `control_unheard` rose to 19 against a ceiling of 18 and the scan
+# refused. A proof nothing runs passes review, reads like coverage, and says nothing on the day the
+# thing it proves changes -- which is the same shape REDS %357 booked when three witnesses of one
+# family stood red at HEAD for days beneath a green endurance run.
+#
+# THE LEG THAT CARRIES THE SUBJECT is `two_modules_concurrent`. A lock serializing EVERY build
+# would satisfy a naive no-collision reading while costing the tree its parallelism, so the control
+# holds one room shut and watches a build in a second room walk straight through. One leg was added
+# on the seating lap: the held-lock refusal stood proven only in the affirmative direction, so the
+# control now copies the wrapper with its `lock_acquire` call traded for `true` and asserts the
+# refusal STOPS. Without it a wrapper that had lost the one call it exists to make would pass every
+# leg. The control stands at sixteen legs, five of them the cross-room and room-bound readings
+# `10fcae2878` landed the same day -- count them off the control's own `legs=` line rather than
+# from this comment, since only that number is read on a run.
+#
+# WHAT IT DOES NOT REACH. The control plants and removes `lotus/.rye-build.lock`,
+# `image/.rye-build.lock`, `dimeroll/.rye-build.lock`, and `pond/apps/.rye-build.lock` by name, so a
+# hand running it beside a live build over any of those modules removes a lock it never took. A
+# roster pass runs its guards one at a time, which is why the row sits on the lap clock rather than
+# beside a parallel launcher.
+#
+# WHY `tier lap`. Three real module builds and two bounded waits -- 19s measured `20260915`. The fault
+# it catches is written by ordinary work on the wrapper or on the lock helper beneath it.
+
+guard rye_build
+path tools/r/rye_build_witness.rish
+tier lap
+seated 20260915.202715
+
 # error_member_reach -- can this tree produce every refusal it declares? (found `20260911.060527`
 # on the air rota row, whose instruction is to close a hand on a boundary and pull). TAME asks that
 # a bound fail with a NAMED error, and a named error is a promise to the caller: this function can

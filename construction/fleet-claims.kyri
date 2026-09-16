@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim copal-rye-build-witness
-seat copal
-stamp 20260915.201952
-epoch 1789517992
-paths tools/r/rye_build_witness.rish tools/fixtures/r/rye_build_control.sh construction/standing-equipment.kyri
-what Give the landed rye_build lock control a witness and a roster row, so the proof of the per-module build lock is actually run; control_unheard stands 19 against a ceiling of 18.
 claim diffuser-workload-trial
 seat diffuser
 stamp 20260915.220631
