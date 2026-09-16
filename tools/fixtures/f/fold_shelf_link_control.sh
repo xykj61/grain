@@ -486,6 +486,15 @@ EOF
   # and again on the same tree: a repointer that is not idempotent rewrites its own repair.
   out=$( set +e; cd "$pen/repoint" || exit 0; sh ./tools/fixtures/f/fold_shelf_link_repoint.sh 2>/dev/null; exit 0 )
   say repoint_idempotent "$out" "verdict=nothing_to_do"
+
+  # THE FLAG A RED TELLS A READER TO PASS MUST WORK. The repoint witness's refusal
+  # message names `--apply`, and the tool answered `unknown argument` at exit 2 until
+  # `20260916`. A dashed synonym for the default costs nothing and closes that gap --
+  # so it is proven here, beside the refusal that must still bite for a real typo.
+  out=$( set +e; cd "$pen/repoint" || exit 0; sh ./tools/fixtures/f/fold_shelf_link_repoint.sh --apply 2>/dev/null; exit 0 )
+  say repoint_apply_flag "$out" "verdict=nothing_to_do"
+  out=$( set +e; cd "$pen/repoint" || exit 0; sh ./tools/fixtures/f/fold_shelf_link_repoint.sh --nonsense 2>&1; exit 0 )
+  say repoint_bad_flag_refused "$out" "unknown argument --nonsense"
 else
   echo "repoint_dry_names=no"
   echo "refused: no fold_shelf_link_repoint.sh beside the scan" >&2

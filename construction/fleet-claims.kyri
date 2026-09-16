@@ -58,12 +58,6 @@ stamp 20260915.233209
 epoch 1789529529
 paths rishi/src/main.rye tools/r/rishi_make_pen_witness.rish tools/fixtures/r/rishi_make_pen_control.sh
 what Rishi already owns a CleanupRegistry that releases on normal return, refusal, exit, HUP, INT and TERM -- the card's standing claim that Rishi has no trap at all is false, and the registry's one kind is empty_dir registered only by acquire-lock. Add a make-pen expression builtin: the runtime creates the directory itself under TMPDIR and registers it for bounded recursive release, so it can only ever remove a directory it made in this process and never a caller-supplied path. Turns the 336 unreleased_on_refusal and the 16 never_removed Rishi pens from a language gap into a one-line cure.
-claim bakery-ryekey-toolchain-spelling
-seat bakery
-stamp 20260916.023136
-epoch 1789540296
-paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
-what The build receipt keys on the toolchain PATH STRING beside its content, so one pinned compiler wears four live spellings and four different keys -- measured on this tree: RYE_ZIG absolute gives bdd5d31e, the compiler's own default resolution gives c626631a, same 172MB binary, same sources, same flags. The tree spells the pin 980 times relative, 34 absolute, 13 through a root variable, and leaves it unset everywhere rye_build.sh runs. Drop the path and the library path from the key, keep both content hashes, bump the marker to v6, and turn control leg 8 around with its reason written.
 claim diffuser-locality-key-vs-avalanche
 seat diffuser
 stamp 20260916.050045

@@ -45,6 +45,7 @@
 # USAGE
 #   sh tools/fixtures/f/fold_shelf_link_repoint.sh --dry-run       # name every edit, change nothing
 #   sh tools/fixtures/f/fold_shelf_link_repoint.sh                 # apply them, working tree
+#   sh tools/fixtures/f/fold_shelf_link_repoint.sh --apply          # the same, said out loud
 #   sh tools/fixtures/f/fold_shelf_link_repoint.sh --tracked-only  # apply them, index only
 #
 # Proven by doing: the pass that landed this tool repaired 345 links across four shelves, and
@@ -56,9 +57,14 @@ CORPUS=working
 for arg in "$@"; do
   case "$arg" in
     --dry-run|-n) MODE=dry ;;
-    apply) MODE=apply ;;
+    # `--apply` is a synonym for the default, seated `20260916` after the repoint
+    # witness's own refusal message told a reader to pass it and this tool answered
+    # `unknown argument` at exit 2. Applying is already what a bare call does, so the
+    # flag adds no power -- what it adds is that the instruction a red prints works,
+    # and that the dashed spelling a reader guesses from `--dry-run` beside it lands.
+    apply|--apply) MODE=apply ;;
     --tracked-only) CORPUS=tracked ;;
-    *) echo "refused: unknown argument $arg -- pass --dry-run, --tracked-only, or nothing" >&2; exit 2 ;;
+    *) echo "refused: unknown argument $arg -- pass --apply, --dry-run, --tracked-only, or nothing" >&2; exit 2 ;;
   esac
 done
 export FOLD_SHELF_CORPUS="$CORPUS"
