@@ -64,12 +64,6 @@ stamp 20260916.094320
 epoch 1789566200
 paths rye/src/main.rye tools/r/rye_key_witness.rish tools/fixtures/r/rye_key_control.sh
 what The card's open ask in my own lane: whether today's sources would speak the standing key -- a rye mode computing a key without building. rye/src/main.rye computes the build-receipt key inside bridge_to_zig, entangled with staging .zig shadows, taking the build lock, deleting the standing receipt, and spawning the toolchain, so the only way to ask whether a binary is current is to attempt a full build. %746 says every ship owes its rishi binary a rebuild and a stale one answers NoSuchField on a field a peer landed hours ago. Add a stage bool to bridge_rye_tree so the closure walk hashes without writing, add a key_only path through bridge_to_zig so ONE key computation serves both verbs rather than two that can drift, and seat rye key <file.rye> -femit-bin=<path> printing verdict=hit|miss|unkeyable with the computed key and the standing one, writing nothing and spawning nothing. Pen proves both sides, including that the key rye key prints equals the key a build writes.
-claim incense-reds-shelf-resolver
-seat incense
-stamp 20260916.095226
-epoch 1789566746
-paths tools/r/reds_shelf_resolve.sh tools/fixtures/r/reds_shelf_resolve_scan.sh tools/r/reds_shelf_resolve_witness.rish tools/fixtures/r/reds_shelf_resolve_control.sh
-what A REDS fold shelf is named REDS-<title>-rows-<N>.md and a later refold RENAMES it -- absorbing the row into a wider range, or retitling the same rows -- so every elder citation of that basename resolves nowhere. Measured this lap: 575 distinct shelf basenames are cited across the tree and 99 of them exist on no path, cited by 100 files, 80 of them dated session logs that accrete-never-break forbids rewriting. No resolver reaches them: dated_path_resolve computes a day directory from a stamp and a REDS shelf basename carries no stamp, and fold_shelf_link reads link DEPTH inside a shelf rather than a renamed target. The row number in the name is what actually identifies the shelf, so build reds_shelf_resolve.sh: hand it a shelf basename or a bare %N and it answers the shelf holding those rows today, read off the row headlines on disk, with a scan counting the standing population and a pen proving both directions.
 claim pheromone-tokens-ceiling-records
 seat pheromone
 stamp 20260916.102127

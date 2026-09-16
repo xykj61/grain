@@ -791,3 +791,7 @@ at a closed fold.*
 *Row %680 folded to [`REDS-a-status-that-reported-an-untouched-file-rows-680.md`](REDS-a-status-that-reported-an-untouched-file-rows-680.md) on `20260916.093538`, **CLOSED** -- the oldest CLOSED row on the pin, folded to make room -- a status reporting a change on an untouched file is the shape a reader learns to read past.*
 
 *Row %768 folded to [`REDS-the-meter-that-read-a-spelling-rows-768.md`](REDS-the-meter-that-read-a-spelling-rows-768.md) on `20260916.092827`, **CLOSED** -- a meter reads a spelling, and a tree may change its spelling in one commit.*
+
+*Row %770 folded to [`REDS-a-trap-wears-two-spellings-rows-770.md`](REDS-a-trap-wears-two-spellings-rows-770.md) on `20260916.103937`, **CLOSED** -- a census predicate that knew one of the two spellings a trap wears called twelve fully-released pens leaks.*
+
+*Row %766 folded to [`REDS-a-sample-sizes-a-class-rows-766.md`](REDS-a-sample-sizes-a-class-rows-766.md) on `20260916.112149`, **CLOSED** -- a class booked off a five-of-forty sample came out as three shapes when it was counted.*
