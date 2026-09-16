@@ -1,0 +1,111 @@
+//! glow/refusal.rye -- the stable refusal record for one Glow parse refusal.
+//!
+//! The product contract asks a refusal to name `field`, `value`, `ceiling`, `unit` and
+//! `reason` wherever a ceiling applies, and the field and reason elsewhere. A named error
+//! alone reports which KIND of refusal happened, so `glow/rune_shape.rye` answers BOTH its
+//! nine-face tuple ceiling and its three-face payload ceiling with the one word
+//! `TooManyFields` -- two different ceilings arriving as one name. This record keeps each
+//! refusal's own field beside its own measurement.
+//!
+//! Shaped after `tally/receipt_refusal.rye`, which landed this form first and renders the
+//! same line. Two records rather than one, because a Glow parse refusal is not a receipt
+//! admission refusal and borrowing that vocabulary would braid the language into the
+//! product. One line, two vocabularies, each in its own lane.
+//!
+//!   field=ten value=10 ceiling=9 unit=field reason=too-many-fields
+//!   field=xfer-mold reason=not-a-mold
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// The longest rendered refusal line. Derived rather than guessed: the widest field name
+/// is a Glow ident at `tokens.max_name_len` 64 bytes, the widest reason
+/// `too-many-payload-faces` at 22, the widest unit `payload-face` at 12, two decimal
+/// numbers reach 20 each, and the five keys with their separators take 36. That sums to
+/// 174, and 192 leaves a reason room to grow without a re-derivation. The same number the
+/// receipt record derives, from different parts.
+pub const max_refusal_line_bytes: u32 = 192;
+
+/// The longest field name a refusal may carry -- Glow's own ident ceiling, so a refusal can
+/// always hold the name of the thing it refused rather than truncating it into another.
+pub const max_field_name_bytes: u32 = 64;
+
+pub const RenderError = error{ FieldNameTooLong, LineTooLong };
+
+/// What a refusal's number counts. A number without its unit is a rumour with a decimal
+/// point, so the unit travels beside the value rather than in prose. Each member names a
+/// ceiling `glow/rune_shape.rye` or `glow/tokens.rye` declares.
+pub const Unit = enum {
+    field,
+    payload_face,
+
+    pub fn name(self: Unit) []const u8 {
+        return switch (self) {
+            .field => "field",
+            .payload_face => "payload-face",
+        };
+    }
+};
+
+/// Why the parse refused. Each member is one refusal this module can actually build a
+/// record for; the set is closed, and a new refusal earns a member here before it is
+/// thrown. A declared refusal nothing reaches is a promise with nothing behind it.
+pub const Reason = enum {
+    too_many_fields,
+    too_many_payload_faces,
+
+    pub fn name(self: Reason) []const u8 {
+        return switch (self) {
+            .too_many_fields => "too-many-fields",
+            .too_many_payload_faces => "too-many-payload-faces",
+        };
+    }
+};
+
+/// The reading a ceiling refusal carries. The three travel together or not at all, so
+/// *a ceiling applies* is a structural fact rather than three fields a caller may fill
+/// inconsistently.
+pub const Measure = struct {
+    value: u64,
+    ceiling: u64,
+    unit: Unit,
+};
+
+/// One refusal, stated once. `field` names the Glow face, tag or mold name that refused;
+/// `measure` is present exactly when a ceiling decided it.
+pub const Refusal = struct {
+    field: []const u8,
+    reason: Reason,
+    measure: ?Measure = null,
+
+    /// Render the stable one-line ASCII form into the caller's buffer. Key order is fixed,
+    /// so a reader and a test may both rely on it.
+    pub fn render(self: Refusal, buf: []u8) RenderError![]const u8 {
+        // invariant: the field name arrives inside its declared ceiling, so the line below
+        // stays inside max_refusal_line_bytes and a caller sizing by that number is never short
+        if (self.field.len > max_field_name_bytes) return RenderError.FieldNameTooLong;
+        assert(buf.len >= 1);
+        const line = if (self.measure) |m|
+            std.fmt.bufPrint(buf, "field={s} value={d} ceiling={d} unit={s} reason={s}", .{
+                self.field,
+                m.value,
+                m.ceiling,
+                m.unit.name(),
+                self.reason.name(),
+            }) catch return RenderError.LineTooLong
+        else
+            std.fmt.bufPrint(buf, "field={s} reason={s}", .{ self.field, self.reason.name() }) catch
+                return RenderError.LineTooLong;
+        // invariant: the written span holds under the declared line ceiling, which is what
+        // lets a caller allocate once from max_refusal_line_bytes
+        assert(line.len >= 1);
+        assert(line.len <= max_refusal_line_bytes);
+        return line;
+    }
+};
+
+/// The slot a caller hands to a function that may refuse. `null` on the way in, and filled
+/// exactly when a refusal this module names decided the outcome -- so the caller asks
+/// whether the slot is filled rather than guessing from the error name.
+pub const Slot = ?Refusal;

@@ -6551,3 +6551,30 @@ guard chemical_formula
 path tools/c/chemical_formula_witness.rish
 tier lap
 seated 20260916.052706
+# glow_refusal -- the refusal record the receipt contract asks for, and its one rendering.
+#
+# The contract asks a refusal to name field, value, ceiling, unit and reason where a ceiling
+# applies, and field and reason where none does. `glow/rune_shape.rye` answered with a bare Zig
+# error name, and one of those names covered two different ceilings: a nine-face `$:` tuple and a
+# three-face `$%` payload both return `error.TooManyFields`, so a caller could not tell which of
+# the two refused while the face name, the count and the ceiling all stood in locals the return
+# threw away.
+#
+# SHAPED AFTER `tally/receipt_refusal.rye`, which landed this form first for the receipt side --
+# the same `Measure` struct holding value, ceiling and unit together, and the same rendering. Two
+# records rather than one, because a Glow parse refusal is not a receipt admission refusal and
+# borrowing that vocabulary would braid the language into the product.
+#
+# WHAT IS GATED: both renderings byte for byte; distinct printable space-free reason and unit
+# words; a 64-byte field name admitted and 65 refused; an eight-byte buffer refused by name; the
+# tuple ceiling naming its tenth face in units of field; the payload ceiling naming its tag in
+# units of payload-face, told apart from the tuple one behind their shared error name; a refusal
+# no record names leaving the slot null; and `parse_source` keeping its published bytes. Beside
+# them four asserts grepping BOTH format strings out of BOTH records, so two files rendering one
+# line drift only by reddening this guard on the lap it happens.
+#
+# `tier lap`: one small Zig module built through the toolchain, 1.6s warm.
+guard glow_refusal
+path tools/g/glow_refusal_witness.rish
+tier lap
+seated 20260916.062546

@@ -1,0 +1,45 @@
+# glow_refusal_witness.rish -- the Glow refusal record, and its agreement with the receipt one.
+#
+# The product contract asks a refusal to name field, value, ceiling, unit and reason where a
+# ceiling applies, and field and reason where none does. glow/rune_shape.rye answered its
+# nine-face tuple ceiling and its three-face payload ceiling with the one error name
+# TooManyFields, so a caller could not tell which of the two refused. glow/refusal.rye is the
+# record that tells them apart, shaped after tally/receipt_refusal.rye, which landed this form
+# first for the receipt side.
+#
+# THE LAST TWO LEGS ARE THE POINT. Two records rendering one line is one rule written twice, so
+# the format strings are compared here rather than trusted. Change either spelling alone and this
+# reds on the lap it lands.
+#
+#   rishi/bin/rishi run tools/g/glow_refusal_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/refusal_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/refusal_witness.rye -femit-bin=${bin}"]
+assert build.ok else "refusal_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "refusal_witness exited non-zero"
+assert selftest.out contains "five-part rendering -- GREEN" else "refusal_witness missing five-part rendering"
+assert selftest.out contains "two-part rendering -- GREEN" else "refusal_witness missing two-part rendering"
+assert selftest.out contains "reason and unit words distinct and printable -- GREEN" else "refusal_witness missing word legs"
+assert selftest.out contains "name ceiling admitted, one past refused -- GREEN" else "refusal_witness missing name ceiling both sides"
+assert selftest.out contains "short buffer refused by name -- GREEN" else "refusal_witness missing short buffer refusal"
+assert selftest.out contains "tuple ceiling names the face that would not fit -- GREEN" else "refusal_witness missing tuple ceiling record"
+assert selftest.out contains "one error name, two ceilings, told apart -- GREEN" else "refusal_witness missing shared-error-name leg"
+assert selftest.out contains "an unnamed refusal leaves the slot empty -- GREEN" else "refusal_witness missing empty-slot leg"
+assert selftest.out contains "parse_source unchanged, nine admitted -- GREEN" else "refusal_witness missing published-entry leg"
+assert selftest.out contains "9 legs, 0 failures -- GREEN" else "refusal_witness leg tally absent or short"
+
+let five = run ["sh" "-c" "grep -c 'field={s} value={d} ceiling={d} unit={s} reason={s}' glow/refusal.rye tally/receipt_refusal.rye | tr '\n' ' '"]
+assert five.ok else "the five-part format string is absent from one of the two records"
+assert five.out contains "glow/refusal.rye:1" else "glow/refusal.rye does not spell the five-part line once"
+assert five.out contains "tally/receipt_refusal.rye:1" else "tally/receipt_refusal.rye does not spell the five-part line once"
+
+let two = run ["sh" "-c" "grep -c 'field={s} reason={s}' glow/refusal.rye tally/receipt_refusal.rye | tr '\n' ' '"]
+assert two.ok else "the two-part format string is absent from one of the two records"
+assert two.out contains "glow/refusal.rye:1" else "glow/refusal.rye does not spell the two-part line once"
+assert two.out contains "tally/receipt_refusal.rye:1" else "tally/receipt_refusal.rye does not spell the two-part line once"
+
+say "GREEN: Glow refusal record -- field, value, ceiling, unit, reason; one error name and two ceilings told apart; both format strings agreeing with tally/receipt_refusal.rye byte for byte; 9 legs plus 4 agreement asserts."

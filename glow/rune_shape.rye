@@ -20,6 +20,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
+const refusal = @import("refusal.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
 /// what decides where a name ends. Aliased rather than respelled, so this parser can
@@ -180,12 +181,12 @@ fn rune2_text_is(src: []const u8, tok: tokens.Token, lit: []const u8) bool {
 
 /// Copy `face` (a `tokens.slice_of` span) into `spec.fields[i]` and advance
 /// `spec.field_count`. The `face` slice is already validated by the lexer.
-fn push_name(spec: *ShapeSpec, face: []const u8) ParseError!void {
-    return push_field(spec, face, .{});
+fn push_name(spec: *ShapeSpec, face: []const u8, out: *refusal.Slot) ParseError!void {
+    return push_field(spec, face, .{}, out);
 }
 
 /// `$:` face with aura kind -- cord `@t` - hex `@ux` - `@u64` - else `@u32`.
-fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags) ParseError!void {
+fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags, out: *refusal.Slot) ParseError!void {
     // invariant: the face is copied into a fixed buffer of max_name_len, and its three aura
     // flags are read independently downstream, so one kind per face is what keeps a field from
     // taking two branches
@@ -198,7 +199,17 @@ fn push_field(spec: *ShapeSpec, face: []const u8, flags: ShapeAuraFlags) ParseEr
     if (flags.is_hex) assert(!flags.is_u64);
     if (flags.is_u64) assert(!flags.is_cord);
     if (flags.is_u64) assert(!flags.is_hex);
-    if (spec.field_count >= max_fields) return error.TooManyFields;
+    if (spec.field_count >= max_fields) {
+        // invariant: the record names the face that would not fit and the count it would
+        // have become, so a caller can tell this ceiling from the payload-face ceiling below
+        // that shares its error name
+        out.* = .{
+            .field = face,
+            .reason = .too_many_fields,
+            .measure = .{ .value = @as(u64, spec.field_count) + 1, .ceiling = max_fields, .unit = .field },
+        };
+        return error.TooManyFields;
+    }
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..face.len], face);
     spec.field_lens[i] = face.len;
@@ -236,12 +247,22 @@ pub fn any_u64_field(spec: *const ShapeSpec) bool {
 }
 
 /// Record a unit `$%` arm (payload 0 faces) into `spec`.
-fn push_tag_unit(spec: *ShapeSpec, tag: []const u8) ParseError!void {
+fn push_tag_unit(spec: *ShapeSpec, tag: []const u8, out: *refusal.Slot) ParseError!void {
     // invariant: the tag is copied into a fixed buffer of max_name_len, so a longer name would
     // arrive truncated into a different tag rather than refused
     assert(tag.len >= 1);
     assert(tag.len <= max_name_len);
-    if (spec.field_count >= max_fields) return error.TooManyFields;
+    if (spec.field_count >= max_fields) {
+        // invariant: the record names the tag whose arm would not fit and the count it would
+        // have become, so a caller can tell this ceiling from the payload-face ceiling below
+        // that shares its error name
+        out.* = .{
+            .field = tag,
+            .reason = .too_many_fields,
+            .measure = .{ .value = @as(u64, spec.field_count) + 1, .ceiling = max_fields, .unit = .field },
+        };
+        return error.TooManyFields;
+    }
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
     spec.field_lens[i] = tag.len;
@@ -258,6 +279,7 @@ fn push_tag_faces(
     is_cord: []const bool,
     is_hex: []const bool,
     is_u64: []const bool,
+    out: *refusal.Slot,
 ) ParseError!void {
     // invariant: the three flag arrays are indexed by face position, so any disagreement in
     // length would read one face's kind from its neighbour, and the payload budget is what
@@ -269,7 +291,17 @@ fn push_tag_faces(
     assert(is_cord.len == faces.len);
     assert(is_hex.len == faces.len);
     assert(is_u64.len == faces.len);
-    if (spec.field_count >= max_fields) return error.TooManyFields;
+    if (spec.field_count >= max_fields) {
+        // invariant: the record names the tag whose arm would not fit and the count it would
+        // have become, so a caller can tell this ceiling from the payload-face ceiling below
+        // that shares its error name
+        out.* = .{
+            .field = tag,
+            .reason = .too_many_fields,
+            .measure = .{ .value = @as(u64, spec.field_count) + 1, .ceiling = max_fields, .unit = .field },
+        };
+        return error.TooManyFields;
+    }
     const i = spec.field_count;
     tally_copy.copy_disjoint(u8, spec.fields[i][0..tag.len], tag);
     spec.field_lens[i] = tag.len;
@@ -335,8 +367,22 @@ pub fn any_payload_bytes_field(spec: *const ShapeSpec) bool {
 /// Parse mold source via token stream (STOA97 token->ShapeSpec).
 /// Accepts `$:` tuples (1-9 admitted field auras) and `$%` tagged unions
 /// (2-3 arms, each `[%tag ~]` or `[%tag face=<admitted> ...]`).
-/// Same public signature as before: `parse_source(src) ParseError!ShapeSpec`.
+/// Same published signature as before: `parse_source(src) ParseError!ShapeSpec`. A caller
+/// wanting the five-part refusal record reaches for `parse_source_reporting` beside it.
 pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
+    // invariant: the scratch record is written only on a ceiling refusal and dropped here,
+    // so this entry keeps the bytes it always had while the detail stays reachable one
+    // function over
+    var scratch: refusal.Slot = null;
+    assert(scratch == null);
+    return parse_source_reporting(src, &scratch);
+}
+
+/// The same parse, handing back the refusal record on a ceiling refusal. `out` arrives
+/// null, is filled exactly when a ceiling this module names refused, and stays null for
+/// every other error -- so the slot is the caller's question rather than a guess. The
+/// field names a slice of `src`, which the caller owns and which outlives this call.
+pub fn parse_source_reporting(src: []const u8, out: *refusal.Slot) ParseError!ShapeSpec {
     if (src.len == 0) return error.EmptySource;
 
     var buf: [tokens.max_tokens]tokens.Token = undefined;
@@ -407,7 +453,7 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
             i += 1;
             const aura = tokens.slice_of(src, aura_tok);
             const flags = try classify_shape_aura(aura);
-            try push_field(&spec, tokens.slice_of(src, face_tok), flags);
+            try push_field(&spec, tokens.slice_of(src, face_tok), flags, out);
         }
         if (spec.field_count == 0) return error.MissingField;
     } else if (rune2_text_is(src, body_tok, "$%")) {
@@ -441,7 +487,7 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
                 i += 1;
                 if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedTag;
                 i += 1;
-                try push_tag_unit(&spec, tag_name);
+                try push_tag_unit(&spec, tag_name, out);
             } else {
                 // Payload arm: one or more face=<admitted>, then ].
                 var faces: [max_payload_faces][]const u8 = undefined;
@@ -450,7 +496,17 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
                 var face_u64: [max_payload_faces]bool = [_]bool{false} ** max_payload_faces;
                 var face_count: u32 = 0;
                 while (i < n and toks[@as(usize, @intCast(i))].kind != .rbracket) {
-                    if (face_count >= max_payload_faces) return error.TooManyFields;
+                    if (face_count >= max_payload_faces) {
+                        // invariant: this ceiling and the field ceiling above answer with one
+                        // error name, so the record's unit and reason are what tell a caller
+                        // which of the two refused
+                        out.* = .{
+                            .field = tag_name,
+                            .reason = .too_many_payload_faces,
+                            .measure = .{ .value = @as(u64, face_count) + 1, .ceiling = max_payload_faces, .unit = .payload_face },
+                        };
+                        return error.TooManyFields;
+                    }
                     if (toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedTag;
                     const pface_tok = toks[@as(usize, @intCast(i))];
                     i += 1;
@@ -472,7 +528,7 @@ pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
                 i += 1;
                 if (face_count == 0) return error.MalformedTag;
                 const nfaces = @as(usize, @intCast(face_count));
-                try push_tag_faces(&spec, tag_name, faces[0..nfaces], face_cord[0..nfaces], face_hex[0..nfaces], face_u64[0..nfaces]);
+                try push_tag_faces(&spec, tag_name, faces[0..nfaces], face_cord[0..nfaces], face_hex[0..nfaces], face_u64[0..nfaces], out);
             }
         }
         if (spec.field_count < 2) return error.TooFewTags;
