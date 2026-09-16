@@ -1,0 +1,85 @@
+# tools/r/rune_assert_arrival_witness.rish -- the arrival finder, proven and then replayed.
+#
+#   rishi/bin/rishi run tools/r/rune_assert_arrival_witness.rish
+#
+# WHY THIS RUNG. `rune_assert_sweep` gates three ratchets over a population of eight hundred files.
+# A ratchet one over its ceiling refuses by a number and attributes to nobody: the red prints the
+# heaviest twenty files by STANDING count, and a file that arrived carrying one unnamed assert can
+# never appear in that list. REDS %752 stood exactly there -- a whole-tree count breached by one,
+# a red on every ship's pass, and no reading able to say which commit did it.
+#
+# WHAT THE FINDER ADDS. `tools/fixtures/r/rune_assert_arrival.sh <old-ref> [<new-ref>]` walks the
+# window, extracts only the commits that touched a roster `.rye`, measures each tree through the
+# sweep scan's own `--map` reading, and names every commit where the count moved together with the
+# files that moved it. One ruler measures every tree -- this checkout's scan rather than each
+# commit's own -- so a predicate that changed mid-window is stated plainly rather than scattered
+# across the population as a false arrival in every file at once.
+#
+# WHAT IS PROVEN, on metal. The control builds real git repositories in a throwaway pen and reads
+# 24 behaviors, every refusal shown from both sides -- planted, then lifted -- since a refusal
+# proven only in the passing direction cannot be told from a bypass. The window bound is shown by
+# moving the ceiling to one rather than by making 256 commits, and the pen is proven released on a
+# refusal as well as on a read, which is REDS %745's own reading.
+#
+# AND THEN IT IS REPLAYED ON REAL HISTORY, which is the leg a pen cannot buy. Run across the %752
+# breach window the finder names both arrivals and both files, and the answer matches what a hand
+# spent thirty-two extractions and a reimplementation of the predicate to reach.
+#
+# WHAT IS NOT PROVEN. That an arrival is WRONG -- a lane may add an assert it means to name on the
+# next touch, and the ratchet is a ratchet on purpose. This says which commit and which file.
+
+say "rune-assert-arrival: Language EN -- which commit raised the unnamed-assert population."
+say "rune-assert-arrival: Style Gauge, Meter -- the arrival is the sentence."
+say "rune-assert-arrival: Lens TAME -- a ratchet that refuses by one names the one."
+
+let control = run ["sh" "tools/fixtures/r/rune_assert_arrival_control.sh"]
+say control.out
+assert control.ok else "rune-assert-arrival: the control must complete"
+assert control.out contains "prose_commit_not_touching=yes" else "rune-assert-arrival: a commit touching no .rye must never be extracted"
+assert control.out contains "prose_commit_no_arrival=yes" else "rune-assert-arrival: a commit touching no .rye must read as no arrival"
+assert control.out contains "named_assert_reads_zero=yes" else "rune-assert-arrival: an assert under its own comment must read zero"
+assert control.out contains "arrival_counted=yes" else "rune-assert-arrival: an unnamed assert entering a file must be counted"
+assert control.out contains "arrival_delta_printed=yes" else "rune-assert-arrival: the delta must be printed rather than merely counted"
+assert control.out contains "arrival_names_the_file=yes" else "rune-assert-arrival: an arrival must name the file"
+assert control.out contains "arrival_names_the_commit=yes" else "rune-assert-arrival: an arrival must name the commit"
+assert control.out contains "arrival_names_the_subject=yes" else "rune-assert-arrival: an arrival must carry the commit subject a reader recognizes"
+assert control.out contains "arrival_moves_the_total=yes" else "rune-assert-arrival: the window total must move with the arrival"
+assert control.out contains "silent_commit_skipped_inside_window=yes" else "rune-assert-arrival: a silent commit inside the window is still passed over"
+assert control.out contains "new_file_arrival_named=yes" else "rune-assert-arrival: a NEW file carrying one must be named, which is the shape the red cannot show"
+assert control.out contains "repair_reads_as_a_fall=yes" else "rune-assert-arrival: naming an assert must read as a fall rather than be passed over"
+assert control.out contains "fall_is_counted_too=yes" else "rune-assert-arrival: a fall is a movement and is counted"
+assert control.out contains "proving_file_is_no_arrival=yes" else "rune-assert-arrival: a witness assert stays in the proving half"
+assert control.out contains "proving_file_still_extracted=yes" else "rune-assert-arrival: a proving .rye still costs an extraction, honestly reported"
+assert control.out contains "no_ref_refused=yes" else "rune-assert-arrival: a call with no ref must refuse"
+assert control.out contains "bad_ref_refused=yes" else "rune-assert-arrival: an unresolvable ref must refuse by name"
+assert control.out contains "good_ref_welcomed=yes" else "rune-assert-arrival: a real window must be welcomed as hard as a bad one is refused"
+assert control.out contains "absent_roster_refused=yes" else "rune-assert-arrival: an absent roster must refuse rather than read an empty population"
+assert control.out contains "roster_restored_welcomed=yes" else "rune-assert-arrival: the roster restored must be welcomed"
+assert control.out contains "window_over_bound_refused=yes" else "rune-assert-arrival: a window past max_commits must refuse by name"
+assert control.out contains "window_at_bound_welcomed=yes" else "rune-assert-arrival: a window at the bound must walk free"
+assert control.out contains "pen_released_both_paths=yes" else "rune-assert-arrival: the pen must be released on a refusal as well as on a read"
+assert control.out contains "filter_mutation_bites=yes" else "rune-assert-arrival: dropping the .rye filter must change the reading"
+assert control.out contains "control_failed=0" else "rune-assert-arrival: a control leg read no -- read the control's own lines above"
+assert control.out contains "control=done" else "rune-assert-arrival: the control must run to its end"
+
+# THE MAP THE FINDER READS THROUGH, asserted where it is published rather than only where it is
+# consumed. `--map` gates nothing and is the whole seam between the two instruments.
+let mapping = run ["sh" "tools/fixtures/r/rune_assert_sweep_scan.sh" "--map"]
+assert mapping.ok else "rune-assert-arrival: the sweep scan must answer --map"
+assert mapping.out contains "map_unnamed=" else "rune-assert-arrival: the map must publish its own total"
+assert mapping.out contains "verdict=map" else "rune-assert-arrival: the map must finish before it is believed"
+
+# REPLAYED ON THIS TREE'S OWN HISTORY -- the leg no pen can buy. The %752 window is two arrivals in
+# thirty-two commits, and both are mantra sources.
+let replay = run ["sh" "tools/fixtures/r/rune_assert_arrival.sh" "4c05c9d63" "cd05e9fac"]
+say replay.out
+assert replay.ok else "rune-assert-arrival: the %752 replay must read"
+assert replay.out contains "commits=32 touching_rye=2" else "rune-assert-arrival: the replay window is 32 commits, 2 touching Rye"
+assert replay.out contains "old_unnamed=6487" else "rune-assert-arrival: the window opens at the ceiling the last repair left"
+assert replay.out contains "new_unnamed=6492" else "rune-assert-arrival: the window closes at the count that refused"
+assert replay.out contains "arrivals=2" else "rune-assert-arrival: the replay must find both arrivals"
+assert replay.out contains "mantra/recall_tablecloth_hit_census.rye 0 -> 1" else "rune-assert-arrival: the first arrival is the hit census"
+assert replay.out contains "mantra/src/weave.rye 1 -> 5" else "rune-assert-arrival: the second arrival is the weave"
+assert replay.out contains "verdict=read" else "rune-assert-arrival: the replay must finish before it is believed"
+
+say "GREEN: rune-assert-arrival -- 24 legs in a pen, and the %752 window replayed on real history"
