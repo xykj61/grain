@@ -226,26 +226,117 @@ fn print_version() void {
 /// the bridge away. `run` and `build` share this one path; only the toolchain
 /// verb and the spoken label differ. Flags after the file pass straight through,
 /// so a caller can aim a build at any target the toolchain supports.
+/// Hold still inside the lock's one unprotected window, on purpose, so a
+/// control can prove what a waiter does to a holder standing there. Zero
+/// unless `RYE_BUILD_LOCK_STALL_MS` names a number, which no build outside a
+/// control ever sets; a race proven only by running many builds and counting
+/// is a race nobody can show on demand.
+///
+/// The bound is named rather than open: a stall past it reads as a typo rather
+/// than an instruction, and a compiler that can be told to sleep forever by an
+/// environment variable is a worse thing than the race it was added to prove.
+const build_lock_stall_max_ms: u64 = 10_000;
+
+fn build_lock_stall(init: std.process.Init) void {
+    const raw = init.environ_map.get("RYE_BUILD_LOCK_STALL_MS") orelse return;
+    const want = std.fmt.parseInt(u64, std.mem.trim(u8, raw, " \n\r\t"), 10) catch return;
+    const ms = if (want > build_lock_stall_max_ms) build_lock_stall_max_ms else want;
+    // invariant: a deliberate stall stays inside the bound this file names.
+    assert(ms <= build_lock_stall_max_ms);
+    if (ms == 0) return;
+    // invariant: a stall that runs names a positive number of milliseconds.
+    assert(ms > 0);
+    var ts = c.timespec{
+        .sec = @intCast(ms / 1000),
+        .nsec = @intCast((ms % 1000) * 1_000_000),
+    };
+    _ = c.nanosleep(&ts, null);
+}
+
+/// Build the lock somewhere else, complete, and move it into place in one
+/// step. `rename` onto a directory that already holds a pid refuses with
+/// `DirNotEmpty`, so the move is both the claim and the test of it -- and the
+/// lock never exists without the pid inside, which is the whole point.
+///
+/// True means this process holds a complete lock. False means somebody else
+/// does, and the caller queues. The staging directory is cleaned either way, so
+/// a refused claim leaves nothing behind for the next build to puzzle over.
+fn build_lock_claim(init: std.process.Init, io: std.Io, dir: std.Io.Dir, garden: std.mem.Allocator) !bool {
+    const staging = try std.fmt.allocPrint(garden, "{s}.staging.{d}", .{ build_lock_dir, c.getpid() });
+    defer garden.free(staging);
+    const staged_pid = try std.fmt.allocPrint(garden, "{s}/pid", .{staging});
+    defer garden.free(staged_pid);
+    // invariant: a staging name is this process's own, never the lock's.
+    assert(!std.mem.eql(u8, staging, build_lock_dir));
+
+    // A staging directory of our own pid may survive a killed build. Clearing it
+    // is safe precisely because it carries our pid and we are alive.
+    dir.deleteFile(io, staged_pid) catch {};
+    dir.deleteDir(io, staging) catch {};
+    try dir.createDir(io, staging, .default_dir);
+    var cleanup_staging = true;
+    defer if (cleanup_staging) {
+        dir.deleteFile(io, staged_pid) catch {};
+        dir.deleteDir(io, staging) catch {};
+    };
+
+    var pidbuf: [32]u8 = undefined;
+    const pid_text = std.fmt.bufPrint(&pidbuf, "{d}\n", .{c.getpid()}) catch return false;
+    // invariant: a lock is moved into place already naming its holder.
+    assert(pid_text.len > 0);
+    // The refusal is NOT swallowed. A lock whose pid never landed is the exact
+    // state this protocol exists to make impossible, so a failed write refuses
+    // the claim rather than proceeding behind an anonymous lock.
+    dir.writeFile(io, .{ .sub_path = staged_pid, .data = pid_text }) catch return false;
+
+    // This protocol's one window, held open on demand so a control can look
+    // through it. What stands here is a STAGING directory carrying our pid; the
+    // lock itself is untouched, which is the property under test. The elder
+    // protocol's window stood at the lock itself, with nothing inside it.
+    // Zero in every build nobody is testing.
+    build_lock_stall(init);
+
+    dir.rename(staging, dir, build_lock_dir, io) catch |err| switch (err) {
+        // Somebody holds a complete lock. `DirNotEmpty` is the answer a kernel
+        // gives for a target directory carrying a pid, which under this protocol
+        // is the only kind a live holder ever publishes; `FileBusy` is the same
+        // refusal wearing another name on a platform that reports it that way.
+        error.DirNotEmpty, error.FileBusy => return false,
+        else => return err,
+    };
+    cleanup_staging = false;
+    return true;
+}
+
 /// Take the tree's one build lock, or say plainly why not. True means held.
-/// A dead holder's lock is cleared once and retried; a live holder is waited
-/// on up to the named bound; a lock with no readable pid is given one poll of
-/// grace (the maker may sit in the gap between mkdir and write) and then
-/// treated as a corpse, which costs one wrong clear only when a maker hangs
-/// inside a two-line window.
-fn build_lock_acquire(io: std.Io, dir: std.Io.Dir, garden: std.mem.Allocator, label: []const u8) !bool {
+/// A dead holder's lock is cleared once and retried; a live holder is waited on
+/// up to the named bound.
+///
+/// THE GAP THIS CLOSED, recorded because the elder protocol read reasonably and
+/// was wrong. The lock used to be an atomic `mkdir` followed by a separate write
+/// of the holder's pid, so between those two calls it stood with nothing inside.
+/// A waiter reading that state twice, one 50ms poll apart, called it a corpse and
+/// cleared it -- out from under a live holder, which then bridged beside the
+/// waiter that took it, and the two deleted each other's shadows. The elder
+/// comment priced that window at "a maker hanging inside two lines"; under eight
+/// parallel builds a stall of one poll between two syscalls is ordinary, and a
+/// swallowed pid write left the lock permanently anonymous with no timing luck at
+/// all. Proven on metal `20260915`: a lock directory standing with no pid inside
+/// was cleared by the next build, which walked straight on into the bridge.
+///
+/// THE REPAIR IS THAT THE STATE NO LONGER EXISTS. `build_lock_claim` assembles a
+/// complete lock in a staging directory and `rename`s it into place, so a lock is
+/// never seen without its pid. Reading the pid back after writing it was the
+/// first answer tried and it does not work: a holder robbed during the gap writes
+/// its own pid over the thief's and reads back exactly what it just wrote.
+///
+/// The waiter's reading is untouched, because clearing a genuine corpse is still
+/// its job -- and under this protocol an anonymous lock can only ever be one.
+fn build_lock_acquire(init: std.process.Init, io: std.Io, dir: std.Io.Dir, garden: std.mem.Allocator, label: []const u8) !bool {
     var waited_ms: u64 = 0;
     var unreadable_looks: u32 = 0;
     while (true) {
-        if (dir.createDir(io, build_lock_dir, .default_dir)) |_| {
-            var pidbuf: [32]u8 = undefined;
-            const pid_text = std.fmt.bufPrint(&pidbuf, "{d}\n", .{c.getpid()}) catch "0\n";
-            // invariant: a held lock names its holder, or a waiter treats it as young.
-            dir.writeFile(io, .{ .sub_path = build_lock_pid_file, .data = pid_text }) catch {};
-            return true;
-        } else |err| switch (err) {
-            error.PathAlreadyExists => {},
-            else => return err,
-        }
+        if (try build_lock_claim(init, io, dir, garden)) return true;
         const holder_alive = blk: {
             const raw = dir.readFileAlloc(io, build_lock_pid_file, garden, .limited64(64)) catch {
                 unreadable_looks += 1;
@@ -364,7 +455,7 @@ fn bridge_to_zig(
     // write to the last delete, hit path included, since the bridge stages
     // shadows before any receipt is consulted. Declared ahead of the shadow
     // defers below, so LIFO order releases the lock after their cleanup.
-    if (!(try build_lock_acquire(io, dir, garden, label))) return 1;
+    if (!(try build_lock_acquire(init, io, dir, garden, label))) return 1;
     defer build_lock_release(io, dir);
 
     // Bridge the root `.rye` file and every local `.rye` module dependency to

@@ -1,0 +1,79 @@
+# tools/r/rye_build_lock_holder_witness.rish -- a live holder keeps the build lock it took.
+#
+#   rishi/bin/rishi run tools/r/rye_build_lock_holder_witness.rish
+#
+# WHAT THIS GUARDS. `rye/src/main.rye` holds one tree-wide lock across the whole `.rye`-to-`.zig`
+# bridge, because two builds staging one shadow delete each other's files mid-compile (REDS %281).
+# The sibling guard `rye_build_lock_reach` asks whether that lock's SCOPE reaches the shadows it
+# covers. This one asks a different question about the same lock: whether the holder actually keeps
+# it. A lock with perfect reach that can be taken from a live holder guards nothing.
+#
+# THE FAULT, AND WHY IT SURVIVED. The elder protocol created the lock directory with an atomic mkdir
+# and wrote the holder's pid in a SECOND call, so between the two it stood with nothing inside. The
+# waiter's own rule then read that state as a corpse after two looks and cleared it -- correctly, by
+# its own lights, since a lock naming nobody is exactly what a killed build leaves behind. Neither
+# half was wrong alone. The elder comment priced the window at "a maker hanging inside two lines",
+# and the measurement says otherwise: the grace is one 50ms poll, and this pier runs eight parallel
+# builds at a load average near 17, where a stall of that size between two syscalls is ordinary.
+#
+# THE REPAIR. The anonymous state no longer exists. `build_lock_claim` assembles the lock complete --
+# pid already inside -- in a staging directory and `rename`s it into place; `rename` onto a directory
+# that already holds a pid refuses with `DirNotEmpty`, so the move is both the claim and the test of
+# it. The WAITER is deliberately untouched, because clearing a genuine corpse is still its job, and
+# under this protocol an anonymous lock can only ever be one.
+#
+# WHY A PEN AND NOT A FIELD READING. There is no tree-wide count to take here: the fault is a race,
+# and a race has no census. What a pen can do is open the window on demand -- `RYE_BUILD_LOCK_STALL_MS`
+# holds a claim still between staging and rename -- and let a second process look through it. A race
+# proven only by running many builds and counting failures is a race nobody can show twice.
+#
+# WHY `tier cadence`. The pen builds the compiler twice -- once from the working tree, once from the
+# commit before the repair -- and then runs a dozen small builds through them, which is minutes rather
+# than seconds on a loaded pier. The fault it catches is written once and then lived with, so
+# a daily reading is the right cadence for it.
+#
+# Purely local -- no key, no network, no funds, no device. It builds two compilers from tracked
+# sources and runs them in a throwaway pen.
+
+say "rye-build-lock-holder: Language EN -- a lock is held by the process that took it, or it is not a lock."
+say "rye-build-lock-holder: Style Gauge, Meter -- the window is opened on purpose and looked through."
+say "rye-build-lock-holder: Lens TAME -- safety first: the refusal is shown from the elder side before it is lifted."
+
+let control = run ["sh" "tools/fixtures/r/rye_build_lock_holder_control.sh"]
+say control.out
+say control.err
+assert control.ok else "rye-build-lock-holder: the pen refused to run: ${control.out} ${control.err}"
+
+# A skip is an honest answer on a pier without a toolchain, and it must never read as a pass. The
+# verdict is asserted by name so a skipped run says so in the roster rather than going quiet.
+assert control.out contains "verdict=ok" else "rye-build-lock-holder: the pen must close ok -- a skip or a failed leg both land here: ${control.out}"
+
+# The leg tally is asserted as hard as the failure count. `control_fail=0` reads exactly alike over a
+# leg that passed and a leg somebody deleted, so the count is what keeps a leg from going quiet.
+assert control.out contains "control_fail=0" else "rye-build-lock-holder: a leg read the wrong way: ${control.out}"
+assert control.out contains "control_legs=28" else "rye-build-lock-holder: a leg left the pen unheard -- the tally moves with the pen, so raise it here in the same commit: ${control.out}"
+
+# The five readings this guard exists for, named so none can go silent behind a green tally.
+#
+# 1 -- the elder fault, shown. A compiler built from the commit before the repair walks into the
+# anonymous lock its own protocol publishes, and clears it. That is the theft, on metal.
+assert control.out contains "leg=elder_enters_anonymous_lock want=0 got=0 ok" else "rye-build-lock-holder: the elder side must show the fault, or the repair is being compared with itself: ${control.out}"
+
+# 2 -- the repair, read from the observer's side rather than from the source. Through a claim held
+# open for two seconds, the lock is never once seen without a pid inside it.
+assert control.out contains "leg=stalled_never_anonymous want=0 got=0 ok" else "rye-build-lock-holder: a lock stood anonymous while a live holder was claiming it: ${control.out}"
+
+# 3 -- and the observer was actually looking. A reading of nothing is indistinguishable from a healthy
+# one (REDS %463), so the pen proves it saw the staging directory the stall holds open.
+assert control.out contains "leg=stalled_window_observed want=yes got=yes ok" else "rye-build-lock-holder: the pen never caught the window open, so its zero above means nothing: ${control.out}"
+
+# 4 -- a live holder is still waited on rather than stolen from, which is the whole subject stated
+# the plain way round.
+assert control.out contains "leg=live_holder_not_stolen want=named got=named ok" else "rye-build-lock-holder: a live holder's lock was taken: ${control.out}"
+
+# 5 -- the waiter's half is unchanged, asserted so a future repair cannot quietly stop clearing
+# corpses and leave every build queued behind a process that died last week.
+assert control.out contains "leg=named_corpse_reaped want=0 got=0 ok" else "rye-build-lock-holder: a corpse is no longer cleared, so a killed build now blocks the tree: ${control.out}"
+assert control.out contains "leg=repaired_also_clears_anonymous want=0 got=0 ok" else "rye-build-lock-holder: an anonymous leftover is no longer cleared: ${control.out}"
+
+say "GREEN: rye-build-lock-holder -- the lock is published complete, a live holder keeps it, and a corpse is still cleared."
