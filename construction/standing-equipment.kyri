@@ -6062,3 +6062,14 @@ guard pen_entry
 path tools/p/pen_entry_witness.rish
 tier lap
 seated 20260915.191655
+
+# THE BOUNDED CAPTURE FIELDS, AND THE CLIFF THEY EXIST FOR (REDS %740). Composing a WHOLE capture
+# into an assert message drops it in silence past 4,096 bytes -- the composed string emits the
+# literal placeholder rather than the value, a truncation, or a refusal, so the reason is lost
+# exactly when there is most of it. `out_brief` and `err_brief` are the same captures bounded to
+# 512 bytes and marked where they cut. The witness asserts the cliff too, since a tree that forgot
+# it would go back to composing whole captures. 13 legs; 2s measured.
+guard rishi_brief
+path tools/r/rishi_brief_witness.rish
+tier lap
+seated 20260915.212007
