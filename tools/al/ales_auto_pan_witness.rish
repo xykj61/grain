@@ -32,7 +32,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/auto_pan"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/auto_pan.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/auto_pan.rye -femit-bin=${bin}"]
 assert build.ok else "ales-auto-pan: build failed — ${build.err}"
 
 let outfile = "lotus/bin/auto_pan.out"

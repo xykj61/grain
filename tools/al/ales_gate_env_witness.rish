@@ -30,7 +30,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/gate_env"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-gate-env: build failed — ${build.err}"
 
 let outfile = "lotus/bin/gate_env.out"
@@ -44,10 +44,10 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-env' ${outfile} && echo yes
 assert (trim green.out) == "yes" else "ales-gate-env: selftest did not print the GREEN ales-gate-env line"
 
 # This rung composes both parents over their public APIs -- re-prove ALES52's follower and ALES51's gate still stand green.
-let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
 assert (trim env.out) == "yes" else "ales-gate-env: the ALES52 envelope follower regressed under the attack/release gate"
 
-let g = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+let g = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
 assert (trim g.out) == "yes" else "ales-gate-env: the ALES51 gate regressed under the attack/release gate"
 
 say "ales-gate-env: GREEN — an attack/release noise gate drives ALES51's silenced floor from ALES52's proven envelope, each sample advancing the follower one step and, when the smoothed envelope falls below the threshold, dividing its whole magnitude by the ratio and applying that gain to the raw sample; with instant attack and release it is the plain gate byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor pushes down with the sign held, a slower release holds the gate open longer (the knob monotone), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower and ALES51 gate selftests stay GREEN. The gate now breathes too — with the compressor (ALES53) and the gate breathing, the dynamics family's next rung can give the limiter the same attack and release, or open a hold stage between them."

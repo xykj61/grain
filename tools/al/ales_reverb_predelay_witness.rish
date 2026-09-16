@@ -29,7 +29,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/reverb_predelay"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_predelay.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_predelay.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-predelay: build failed — ${build.err}"
 
 let outfile = "lotus/bin/reverb_predelay.out"
@@ -43,7 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-predelay' ${outfile} && e
 assert (trim green.out) == "yes" else "ales-reverb-predelay: selftest did not print the GREEN ales-reverb-predelay line"
 
 # This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
-let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-predelay: the ALES190 named-room preset regressed under its pre-delay"
 
 say "ales-reverb-predelay: GREEN — the pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail begins. Reverberate the span wet in place through ALES190's reverb_preset unchanged, snapshot the wet, then rewrite the span shifted right by predelay samples out[i] = 0 for i < predelay, else wet[i - predelay] — no new audio arithmetic, a bounded reindex of the proven wet with a true-zero gap. Proven: at predelay = 0 exactly reverb_preset byte for byte; at predelay = count all zeros; a mid pre-delay zeros in front and the wet shifted by exactly predelay after, byte for byte; silence stays silence; a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset stays GREEN beside it. A stereo pre-delay (the same shift over both channels, one shared gap, the image held) is the thin twin next."

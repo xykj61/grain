@@ -29,7 +29,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/reverb_preset"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_preset.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-preset: build failed — ${build.err}"
 
 let outfile = "lotus/bin/reverb_preset.out"
@@ -43,7 +43,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-preset' ${outfile} && ech
 assert (trim green.out) == "yes" else "ales-reverb-preset: selftest did not print the GREEN ales-reverb-preset line"
 
 # This rung delegates to ALES188's reverb_ms over its public API -- re-prove the timed reverb still stands green beside it.
-let timed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_time.rye -femit-bin=lotus/bin/reverb_time && lotus/bin/reverb_time selftest 2>&1 | grep -q 'GREEN ales-reverb-time' && echo yes"]
+let timed = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_time.rye -femit-bin=lotus/bin/reverb_time && lotus/bin/reverb_time selftest 2>&1 | grep -q 'GREEN ales-reverb-time' && echo yes"]
 assert (trim timed.out) == "yes" else "ales-reverb-preset: the ALES188 timed reverb regressed under its preset face"
 
 say "ales-reverb-preset: GREEN — named rooms: a reverb a keeper reaches for by name (room · hall · plate), each a curated bank of timed comb and allpass stages run through ALES188's proven reverb_ms. A preset IS exactly its named bank: reverb_preset picks the room's published bank and delegates to reverb_ms unchanged, inventing no new arithmetic and no new fault, proven literally — a preset equals reverb_ms over that room's explicit published bank byte for byte, for all three rooms; the rooms genuinely differ; each decays to silence within the clip; silence stays silence; a span past the clip refuses DurationTooLong and an out-of-range span BadRange, each leaving the clip untouched; the ALES188 timed reverb stays GREEN beside it. A stereo named-room preset (the same banks through ALES189's stereo_reverb_ms) is the thin twin next, a wet/dry mix the next genuinely new expressive knob after it."

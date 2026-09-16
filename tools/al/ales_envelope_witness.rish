@@ -30,7 +30,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/envelope"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/envelope.rye -femit-bin=${bin}"]
 assert build.ok else "ales-envelope: build failed — ${build.err}"
 
 let outfile = "lotus/bin/envelope.out"
@@ -44,7 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-envelope' ${outfile} && echo yes
 assert (trim green.out) == "yes" else "ales-envelope: selftest did not print the GREEN ales-envelope line"
 
 # The follower is the time base the gate will later read -- re-prove ALES51's gate still stands green, so the two rest together.
-let gate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+let gate = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
 assert (trim gate.out) == "yes" else "ales-envelope: the ALES51 noise-gate witness regressed under the envelope follower"
 
 say "ales-envelope: GREEN — an envelope follower renders a running magnitude estimate stepping a fraction toward min(|x|, sample_max), the attack fraction rising and the release falling, a forced unit step making a held level reachable exactly; unit attack and release are the instantaneous magnitude, a constant input is reached exactly from below and above monotonically and without overshoot, a faster attack rises at least as fast, the state carries so a span in two pieces equals the whole once; an illegal coefficient refuses BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES51 gate selftest stays GREEN. The dynamics family now holds its time base — the next rung can wire this envelope into the limiter, compressor, or gate so each leans in over an attack and eases off over a release."

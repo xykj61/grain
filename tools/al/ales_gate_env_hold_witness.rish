@@ -32,7 +32,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/gate_env_hold"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env_hold.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate_env_hold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-gate-env-hold: build failed — ${build.err}"
 
 let outfile = "lotus/bin/gate_env_hold.out"
@@ -47,13 +47,13 @@ assert (trim green.out) == "yes" else "ales-gate-env-hold: selftest did not prin
 
 # This rung composes three parents over their public APIs -- re-prove ALES56's held follower, ALES51's gate, and ALES54's un-held gate
 # still stand green under it.
-let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+let h = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim h.out) == "yes" else "ales-gate-env-hold: the ALES56 held follower regressed under the attack/hold/release gate"
 
-let g = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+let g = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
 assert (trim g.out) == "yes" else "ales-gate-env-hold: the ALES51 gate regressed under the attack/hold/release gate"
 
-let ge = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env.rye -femit-bin=lotus/bin/gate_env && lotus/bin/gate_env selftest 2>&1 | grep -q 'GREEN ales-gate-env' && echo yes"]
+let ge = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate_env.rye -femit-bin=lotus/bin/gate_env && lotus/bin/gate_env selftest 2>&1 | grep -q 'GREEN ales-gate-env' && echo yes"]
 assert (trim ge.out) == "yes" else "ales-gate-env-hold: the ALES54 attack/release gate regressed under the attack/hold/release gate"
 
 say "ales-gate-env-hold: GREEN — an attack/HOLD/release noise gate drives ALES51's silenced floor from ALES56's HELD envelope, each sample advancing the held follower one step and, when the held envelope falls below the threshold, dividing its whole magnitude by the ratio and applying that gain to the raw sample; a hold of zero is the plain ALES54 gate byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor pushes down with the sign held, a nonzero hold keeps the gate open across a brief dip (the knob monotone, no chatter), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each leaving the clip untouched; the ALES56 held follower, ALES51 gate, and ALES54 gate selftests stay GREEN. The gate now holds — the same swap gives the compressor (ALES53) and the limiter (ALES55) their hold too, each a short rung reading the same proven env_step_hold; the lookahead delay for a true brickwall stays Keaton's hand."

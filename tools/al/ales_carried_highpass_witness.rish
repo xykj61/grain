@@ -29,7 +29,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/tone_carry"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/tone_carry.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/tone_carry.rye -femit-bin=${bin}"]
 assert build.ok else "ales-carried-highpass: build failed — ${build.err}"
 
 let outfile = "lotus/bin/tone_carry.out"
@@ -47,10 +47,10 @@ let hp = run ["sh" "-c" "grep -q 'carried-state HIGH-pass' ${outfile} && echo ye
 assert (trim hp.out) == "yes" else "ales-carried-highpass: the GREEN line did not carry the ALES45 high-pass proof clause"
 
 # The high_pass_carry refactor must leave ALES40's tone selftest and ALES44's sweep GREEN -- prove it by their green, not by claim.
-let tone = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/tone.rye -femit-bin=lotus/bin/tone && lotus/bin/tone selftest 2>&1 | grep -q 'GREEN ales-tone' && echo yes"]
+let tone = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/tone.rye -femit-bin=lotus/bin/tone && lotus/bin/tone selftest 2>&1 | grep -q 'GREEN ales-tone' && echo yes"]
 assert (trim tone.out) == "yes" else "ales-carried-highpass: the ALES40 tone witness regressed after the high_pass_carry refactor"
 
-let sweep = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/sweep.rye -femit-bin=lotus/bin/sweep && lotus/bin/sweep selftest 2>&1 | grep -q 'GREEN ales-sweep' && echo yes"]
+let sweep = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/sweep.rye -femit-bin=lotus/bin/sweep && lotus/bin/sweep selftest 2>&1 | grep -q 'GREEN ales-sweep' && echo yes"]
 assert (trim sweep.out) == "yes" else "ales-carried-highpass: the ALES44 sweep witness regressed after the high_pass_carry refactor"
 
 say "ales-carried-highpass: GREEN — a carried-state high-pass carries its state the same way the low-pass does, so both bands remember and a whole split spans a re-berthed region without a click; a fresh Highpass equals ALES40's from-silence high_pass byte-for-byte, a span high-passed in two pieces equals the whole once, and the carried low and high bands sum back to the input; the shipped ALES40 tone and ALES44 sweep selftests stay GREEN. The next Lotus rung can carry the shelf/stack, sweep the high-pass, or name a crossover in hertz through a real time base."

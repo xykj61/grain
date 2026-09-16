@@ -32,7 +32,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/stereo_reverb_predelay"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_predelay.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_reverb_predelay.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-predelay: build failed — ${build.err}"
 
 let outfile = "lotus/bin/stereo_reverb_predelay.out"
@@ -46,11 +46,11 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-predelay' ${outfil
 assert (trim green.out) == "yes" else "ales-stereo-reverb-predelay: selftest did not print the GREEN ales-stereo-reverb-predelay line"
 
 # This rung runs ALES191's stereo_reverb_preset over its public API for the wet -- re-prove the named-room stereo preset still stands green beside it.
-let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-stereo-reverb-predelay: the ALES191 stereo named-room preset regressed under its pre-delay"
 
 # And re-prove the ALES194 mono pre-delay this twin mirrors still stands green.
-let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_predelay.rye -femit-bin=lotus/bin/reverb_predelay && lotus/bin/reverb_predelay selftest 2>&1 | grep -q 'GREEN ales-reverb-predelay' && echo yes"]
+let mono = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_predelay.rye -femit-bin=lotus/bin/reverb_predelay && lotus/bin/reverb_predelay selftest 2>&1 | grep -q 'GREEN ales-reverb-predelay' && echo yes"]
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-predelay: the ALES194 mono pre-delay regressed under its stereo twin"
 
 say "ales-stereo-reverb-predelay: GREEN — the stereo pre-delay: the reverb's WHEN knob (the silent gap before the reverberant tail begins), now across a stereo master. Reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, snapshot each channel's wet, then rewrite each channel shifted right by predelay samples out[i] = 0 for i < predelay, else wet[i - predelay] — run per ear with no cross-channel read, no new audio arithmetic, a bounded per-channel reindex of the proven stereo wet with a true-zero gap. Proven: at predelay = 0 exactly stereo_reverb_preset byte for byte on both channels; at predelay = count both channels all zeros; a mid pre-delay zeros in front and each channel's own wet shifted by exactly predelay after, byte for byte; the image is held; the channels leave balanced and silence stays silence; a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset and ALES194 mono pre-delay stay GREEN beside it. With the pre-delay axis complete for mono and stereo, a damping knob (a high-frequency roll-off inside the tail) or the dry-composed console pre-delay is the next genuinely new expressive control."

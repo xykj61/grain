@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/echo"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/echo.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/echo.rye -femit-bin=${bin}"]
 assert build.ok else "ales-echo: build failed — ${build.err}"
 
 let outfile = "lotus/bin/echo.out"
@@ -45,7 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-echo' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-echo: selftest did not print the GREEN ales-echo line"
 
 # This rung reuses ALES3's one true saturation over its public API -- re-prove the mixer still stands green beside it.
-let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/mix.rye -femit-bin=lotus/bin/mix && lotus/bin/mix selftest 2>&1 | grep -q 'GREEN ales-mix' && echo yes"]
+let mix = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/mix.rye -femit-bin=lotus/bin/mix && lotus/bin/mix selftest 2>&1 | grep -q 'GREEN ales-mix' && echo yes"]
 assert (trim mix.out) == "yes" else "ales-echo: the ALES3 mixer regressed under the feedback delay"
 
 say "ales-echo: GREEN — the feedback delay opens the time-based-effects wing: y[i] = saturate(x[i] + fb·y[i-delay]), the delay line the clip buffer itself so an echo needs no carried state. Silence stays silence; fb = 0 is the dry identity; a single impulse yields an exact decaying echo train (8000 -> 4000 -> 2000 -> 1000) byte-for-byte; the echoes decay and reach silence within the clip, never growing; a loud constructive sum saturates to the i16 rail rather than wrapping; split equals whole byte-for-byte with no carried state; a zero delay refuses BadDelay, a delay past max_clip BadDelay, a feedback at unity BadFeedback, a zero denominator BadFeedback, an out-of-range span BadRange, each leaving the clip untouched; the ALES3 mixer stays GREEN. The single-tap slapback, the modulated delay (chorus, flanger), and the multi-tap and real-time forms follow as later rungs on this foundation."

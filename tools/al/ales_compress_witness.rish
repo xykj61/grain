@@ -28,7 +28,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/compress"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/compress.rye -femit-bin=${bin}"]
 assert build.ok else "ales-compress: build failed — ${build.err}"
 
 let outfile = "lotus/bin/compress.out"
@@ -42,7 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-compress' ${outfile} && echo yes
 assert (trim green.out) == "yes" else "ales-compress: selftest did not print the GREEN ales-compress line"
 
 # The compressor softens the ceiling the limiter proved -- re-prove ALES49's limiter still stands green, so the two rest together.
-let limit = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
+let limit = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
 assert (trim limit.out) == "yes" else "ales-compress: the ALES49 peak-limiter witness regressed under the compressor"
 
 say "ales-compress: GREEN — a compressor softens the limiter's ceiling by dividing the above-threshold excess by the ratio; below the threshold is the identity, unit ratio is the identity everywhere, a loud signal's peaks reduce with the sign held and the magnitude never expanding, a higher ratio compresses at least as hard, and a ratio far past the excess seats a peak at the threshold (the limiter within); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange, each leaving the clip untouched; the ALES49 limiter selftest stays GREEN. The dynamics family now holds the brickwall and its softened ratio — the next rung can invert the threshold into a gate, or give the compressor an attack and release over a real time base."

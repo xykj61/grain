@@ -36,7 +36,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/reverb_shelf"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_shelf.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_shelf.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-shelf: build failed — ${build.err}"
 
 let outfile = "lotus/bin/reverb_shelf.out"
@@ -50,15 +50,15 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-shelf' ${outfile} && echo
 assert (trim green.out) == "yes" else "ales-reverb-shelf: selftest did not print the GREEN ales-reverb-shelf line"
 
 # This rung runs ALES190's reverb_preset over its public API for the wet -- re-prove the named-room preset still stands green beside it.
-let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-shelf: the ALES190 named-room preset regressed under its shelf"
 
 # And re-prove ALES41's two-band tone shelf still stands green -- the shelving it applies to the wet (its precheck now shared with this rung).
-let shelf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/shelf.rye -femit-bin=lotus/bin/shelf && lotus/bin/shelf selftest 2>&1 | grep -q 'GREEN ales-shelf' && echo yes"]
+let shelf = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/shelf.rye -femit-bin=lotus/bin/shelf && lotus/bin/shelf selftest 2>&1 | grep -q 'GREEN ales-shelf' && echo yes"]
 assert (trim shelf.out) == "yes" else "ales-reverb-shelf: the ALES41 two-band shelf regressed under its reverb shelf"
 
 # And re-prove ALES198's plain darkness knob still stands green -- the one-direction high-cut this rung generalizes into a shelf.
-let tone = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_tone.rye -femit-bin=lotus/bin/reverb_tone && lotus/bin/reverb_tone selftest 2>&1 | grep -q 'GREEN ales-reverb-tone' && echo yes"]
+let tone = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_tone.rye -femit-bin=lotus/bin/reverb_tone && lotus/bin/reverb_tone selftest 2>&1 | grep -q 'GREEN ales-reverb-tone' && echo yes"]
 assert (trim tone.out) == "yes" else "ales-reverb-shelf: the ALES198 darkness knob regressed beside its shelf"
 
 say "ales-reverb-shelf: GREEN — the shelf: a two-band tone shelf on the reverberant tail, the reverb's EQ. Reverberate the span wet in place through ALES190's reverb_preset unchanged, then tone-shelf the wet with ALES41's proven two-band shelf — bass == unity AND treble == unity the identity, a bass boost lifting the low wash, a treble cut darkening the tail — no new audio arithmetic, every shelved sample written by a proven stage. Proven: at bass == unity AND treble == unity exactly reverb_preset byte for byte; for a real shelf reverb_shelf equals reverb_preset then shelf.shelf byte for byte and the shelved tail differs from the un-shelved wet; a treble-cut tail's roughness is strictly less than the wet's (darkens); a bass-boost tail's energy is strictly greater than the wet's (lifts); silence stays silence; an illegal coefficient refuses BadCoeff, a zero band denominator BadGain with the clip still dry (prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset, the ALES41 shelf, and the ALES198 darkness knob stay GREEN beside it. A stereo tone shelf (the same two-band shelf over both channels, one shared bass, treble, and split, the image held) is the thin twin next."

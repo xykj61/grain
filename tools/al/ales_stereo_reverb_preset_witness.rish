@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/stereo_reverb_preset"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_reverb_preset.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-preset: build failed — ${build.err}"
 
 let outfile = "lotus/bin/stereo_reverb_preset.out"
@@ -45,10 +45,10 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-preset' ${outfile}
 assert (trim green.out) == "yes" else "ales-stereo-reverb-preset: selftest did not print the GREEN ales-stereo-reverb-preset line"
 
 # This rung reuses ALES190's banks and delegates to ALES189's stereo_reverb_ms over their public APIs -- re-prove both still stand green beside it.
-let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+let mono = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-preset: the ALES190 mono named-room preset regressed under its stereo twin"
 
-let stereo_timed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_time.rye -femit-bin=lotus/bin/stereo_reverb_time && lotus/bin/stereo_reverb_time selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-time' && echo yes"]
+let stereo_timed = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_reverb_time.rye -femit-bin=lotus/bin/stereo_reverb_time && lotus/bin/stereo_reverb_time selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-time' && echo yes"]
 assert (trim stereo_timed.out) == "yes" else "ales-stereo-reverb-preset: the ALES189 timed stereo reverb regressed under its preset face"
 
 say "ales-stereo-reverb-preset: GREEN — stereo named rooms: the reverb a keeper reaches for by name (room · hall · plate), now across a stereo master, each ALES190's own curated bank run through ALES189's proven stereo_reverb_ms. A stereo preset IS exactly its named bank, and the bank is ALES190's own: stereo_reverb_preset imports reverb_preset.Room and bank_for and delegates to stereo_reverb_ms unchanged, inventing no new arithmetic and no new fault, proven literally — a stereo preset equals stereo_reverb_ms over that room's published bank byte for byte on both channels, for all three rooms; the rooms genuinely differ; a centred master stays identical channel-to-channel while a stereo master keeps its channels distinct; the channels leave balanced and silence stays silence; a span past the clip refuses DurationTooLong and an out-of-range span BadRange, both channels untouched; the ALES190 mono preset and ALES189 timed stereo reverb stay GREEN beside it. A wet/dry mix (blending the reverberated span with a snapshot of the dry) is the next genuinely new expressive knob."

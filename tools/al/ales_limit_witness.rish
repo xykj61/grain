@@ -26,7 +26,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/limit"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/limit.rye -femit-bin=${bin}"]
 assert build.ok else "ales-limit: build failed — ${build.err}"
 
 let outfile = "lotus/bin/limit.out"
@@ -40,7 +40,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-limit' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-limit: selftest did not print the GREEN ales-limit line"
 
 # The dynamics opener rests beside the finished EQ family -- re-prove ALES48's bell still stands green, so nothing regressed.
-let bell = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/bell.rye -femit-bin=lotus/bin/bell && lotus/bin/bell selftest 2>&1 | grep -q 'GREEN ales-bell' && echo yes"]
+let bell = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/bell.rye -femit-bin=lotus/bin/bell && lotus/bin/bell selftest 2>&1 | grep -q 'GREEN ales-bell' && echo yes"]
 assert (trim bell.out) == "yes" else "ales-limit: the ALES48 parametric-bell witness regressed under the limiter"
 
 say "ales-limit: GREEN — a peak limiter holds a hard ceiling the signal may touch yet never cross; below the ceiling is the identity byte-for-byte, above it every sample is pinned to sign(x)·ceil so the ceiling is never crossed and the sign is always held; a ceiling at sample_max is the identity for in-range audio; a zero ceiling refuses BadCeiling, an over-rail ceiling BadCeiling, an out-of-range span BadRange, each leaving the clip untouched; the ALES48 bell selftest stays GREEN. The fixed-EQ family turned frequency; dynamics now turns level — the next Lotus rung can soften the brickwall with a ratio (a compressor), invert its threshold (a gate), or give it an attack and release over a real time base."
