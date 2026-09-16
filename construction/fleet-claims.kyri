@@ -82,3 +82,9 @@ stamp 20260915.191005
 epoch 1789513805
 paths tools/fixtures/p/pen_entry_scan.sh tools/fixtures/p/pen_entry_control.sh tools/p/pen_entry_witness.rish
 what Ask whether a shell runner that makes a throwaway pen ever ENTERED it, so a failed cd cannot leave its fixtures writing against the live checkout (%729's unguarded class).
+claim petrichor-library-index-free-figures
+seat petrichor
+stamp 20260915.200210
+epoch 1789516930
+paths tools/fixtures/g/geode_libraries_scan.sh docs-geode/libraries/README.md
+what Drop three free figures from the library index generator's prose and hand the reader the command, so a regeneration stops re-typing a stale number.
