@@ -70,12 +70,6 @@ stamp 20260915.231912
 epoch 1789528752
 paths tools/am/
 what The nineteen tools/am/ witnesses that make a mktemp -d pen: ten never remove it at all and nine remove it only on the success path, which is REDS %745's 32G leak. Give each a sweep, and answer the shape question -- Rishi has no trap EXIT, so a failing assert leaves the pen behind. Bakery holds the fleet-wide meter; this is the owning lane's per-guard repair.
-claim bakery-rishi-make-pen
-seat bakery
-stamp 20260915.233209
-epoch 1789529529
-paths rishi/src/main.rye tools/r/rishi_make_pen_witness.rish tools/fixtures/r/rishi_make_pen_control.sh
-what Rishi already owns a CleanupRegistry that releases on normal return, refusal, exit, HUP, INT and TERM -- the card's standing claim that Rishi has no trap at all is false, and the registry's one kind is empty_dir registered only by acquire-lock. Add a make-pen expression builtin: the runtime creates the directory itself under TMPDIR and registers it for bounded recursive release, so it can only ever remove a directory it made in this process and never a caller-supplied path. Turns the 336 unreleased_on_refusal and the 16 never_removed Rishi pens from a language gap into a one-line cure.
 claim diffuser-ladder-order
 seat diffuser
 stamp 20260916.001453

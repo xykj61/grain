@@ -5,10 +5,10 @@
 # read as one whole line, and then runs the control, which plants five drifts a
 # reason-only reading would welcome and requires the witness to catch each one.
 let zig = "vendor/zig-toolchain/zig"
-let mk = run ["sh" "-c" "mktemp -d"]
-say mk.err
-assert mk.ok else "receipt-refusal: the build pen could not be opened"
-let pen = trim mk.out
+# The pen comes from the runtime rather than from `mktemp -d`, so it is released after a return,
+# a refusal, an `exit`, HUP, INT, or TERM. A failing assert below ends this run where it stands,
+# and the elder three-line shape left its build pen on a pier eight ships share (REDS %745).
+let pen = make-pen "tally_receipt_refusal"
 let bin = "${pen}/receipt_refusal_witness"
 
 say "receipt-refusal: Language EN -- one refusal record carries field, value, ceiling, unit, and reason."

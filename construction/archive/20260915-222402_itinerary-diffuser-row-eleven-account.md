@@ -11,7 +11,7 @@ until row 12 landed beside it. Every word below is as it stood.
 ---
 
 **DIFFUSER -- THE WHITEPAPER ROW'S PREMISE FAILS, AND ITS FALSIFIER CANNOT FIRE.**
-Elder [shelved whole](archive/20260915-212827_itinerary-diffuser-row-eight-account.md).
+Elder [shelved whole](20260915-212827_itinerary-diffuser-row-eight-account.md).
 **FIRE SEES** (row 2, N=4977): look at the thing itself rather than the account of it. **THE ROW.**
 Row 11 is the last unopened row of the twelve and the only one whose subject is the other eleven:
 *one paper binds the three definitions the other eleven rows lean on.* Nine rows now carry landed
@@ -41,7 +41,7 @@ it read zero while four keys were absent; and three per-definition lines each ca
 `verdict=` key, so a reader taking the first match read a definition's classification as the scan's
 own answer. Everything is **GATED** -- every figure is arithmetic over the assignment space or a key
 from a sibling that is itself gated.
-[Paper](../active-designing/20260915-212827_the-paper-that-checked-its-own-premise.md) **A 91**; the
+[Paper](../../active-designing/20260915-212827_the-paper-that-checked-its-own-premise.md) **A 91**; the
 moonshot page carries row 11's erratum at **A 94**.
 **YOURS, STILL:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
 and this seat's baton name moonshots and whitepaper research. Two living pins, two lanes, one ship.
