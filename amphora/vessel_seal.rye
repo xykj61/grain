@@ -70,6 +70,11 @@ pub fn seal_key() [ChaCha20Poly1305.key_length]u8 {
 }
 
 /// Deterministic nonce from stamp + parent -- same pour yields the same seal.
+/// Proven by running it twice rather than asserted here: `tools/am/amphora_pour_atomic_witness.rish`
+/// legs 2 and 3 pour one season into a standing vessel and into an empty path and compare the
+/// bytes, and its last leg builds a pen copy of this file whose nonce mixes in the process id
+/// and watches two pours differ. The stamp this takes is `amphora_version`, a constant, so no
+/// clock enters the vessel head -- which is what makes a second pour owe the first every byte.
 pub fn nonce_from_stamp_parent(stamp: []const u8, parent: []const u8) [ChaCha20Poly1305.nonce_length]u8 {
     var digest: [Sha3_256.digest_length]u8 = undefined;
     var h = Sha3_256.init(.{});
@@ -215,7 +220,7 @@ fn run_seal_file(io: std.Io, path: []const u8) !u8 {
     try cwd.writeFile(io, .{ .sub_path = path, .data = out[0..off] });
     try open_check_text(out[0..off]);
     print("amphora: vessel sealed cargo_bytes={d}\n", .{plain_len});
-    print("GREEN: Amphora vessel — cellar AEAD seal written.\n", .{});
+    print("GREEN: Amphora vessel -- cellar AEAD seal written.\n", .{});
     return 0;
 }
 
@@ -392,7 +397,7 @@ fn run_open_check(io: std.Io, path: []const u8) !u8 {
     const text = try cwd.readFile(io, path, &buf);
     try open_check_text(text);
     print("amphora: vessel seal opens\n", .{});
-    print("GREEN: Amphora vessel — cellar AEAD seal ok.\n", .{});
+    print("GREEN: Amphora vessel -- cellar AEAD seal ok.\n", .{});
     return 0;
 }
 
@@ -428,7 +433,7 @@ fn run_selftest() !u8 {
     assert(n.len == ChaCha20Poly1305.nonce_length);
 
     print("amphora: seal version {s}\n", .{amphora_seal_version});
-    print("GREEN: Amphora vessel — cellar AEAD seal, refuse wreck.\n", .{});
+    print("GREEN: Amphora vessel -- cellar AEAD seal, refuse wreck.\n", .{});
     return 0;
 }
 

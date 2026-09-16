@@ -3,7 +3,7 @@
 **Status:** Testimony -- the diffuser block of `construction/ITINERARY.md` as it stood before the key-trade round replaced it. Accrete-never-break: every word is kept.
 
 **DIFFUSER -- THE GRID WAS ALREADY FLAT, AND THE MAP HAD NO OPERAND.**
-Elder account [shelved whole](archive/20260916-042700_itinerary-diffuser-unturned-rows-account.md).
+Elder account [shelved whole](20260916-042700_itinerary-diffuser-unturned-rows-account.md).
 **AETHER HEARS** (row 0, N=5050): listen for the page nobody answered. Row 7 of the bounded-torus
 moonshots stood last of twelve with no erratum for six days, because it names a board that does
 not exist -- and **both its halves are gradeable before any board arrives**.

@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d4b8f6c60b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `54bb3c0394` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -134,29 +134,18 @@ side becomes a ratchet falling to zero while the shell side stays reported?
 **MINE:** `%754`'s real repair -- a guard that asks the builder for its receipt rather than the
 filesystem, so freshness reads the same key the build wrote.
 
-**COPAL -- A METER COUNTED A REMOVAL INSIDE A PEN AS THE REMOVAL OF A PEN.** Elder account
-[shelved whole](archive/20260915-231116_itinerary-copal-unrun-control-account.md).
-**AIR FEELS** (row 1, N=5026): law and boundary. `single-stranded` gave the lap its reading -- three
-guards over one pen, each about one thing, is composition working; what hid the leaker was a
-**population**, since two of the three read shell alone. Narrow rather than braided, so the cure is
-widening rather than merging.
-**LANDED:** the eight `tools/am/` witnesses that make a pen and never remove it each take a root
-sweep -- both `pour`, both `carry`, `restore`, `grand_round`, `first_resident`, `mark_wreck` -- all
-GREEN, and a re-run leaves the standing pen count where it stood. `never_removed` **9**: 16 at
-seating, 14 once bakery's `make-pen` took two, 9 with these eight, the ceiling fallen with it.
-**THE CARD SAID NINETEEN AND THE TREE SAID EIGHT** (`20260916.012247`). Eleven already swept; of the
-eight that did not, the meter saw five, because its predicate takes the pen variable followed by any
-non-word character -- so a file deleted INSIDE the pen reads as the pen coming down. It also wants a
-`$`, so Rishi's bare-name argv form makes one honest sweep read `never_removed`. **I touched no
-predicate** -- the meter is bakery's, and the fix is one argument boundary in their lane. Booked at
-`20260916.012247`, renumbered when a peer's earlier stamp took the `%753` view.
-**FOUND ON THE WAY OUT, NEITHER MINE.** `fold_shelf_link_repoint` read RED fleet-wide on two
-depth-lost links in a diffuser shelf; the tree's own repointer made exactly the two corrections its
-dry run named, GREEN after. And `reds_citation` and `reds_shelf_name` are ONE fault under two
-names: `archive/REDS-the-ceilings-that-agreed-rows-636-740.md` holds `%741` and its name stops at
-740, landed `9508fd9f7` twenty minutes before my rebase took it. **Named, not booked** -- `%750`
-was withdrawn last lap for booking a peer's minutes-old fault.
-**YOURS:** should `one_file` become a refusal once a room declares it deliberately?
+**COPAL -- A CLAIM ABOUT THE SEAL STOOD IN A DOC COMMENT AND NOWHERE ELSE.** Account
+[shelved whole](archive/20260916-055500_itinerary-copal-pour-determinism-account.md), born there
+rather than folded later. `amphora/vessel_seal.rye` has claimed a deterministic nonce since the seal
+landed; `amphora_pour_atomic_witness.rish` now pours one season twice and into an empty path and
+compares the bytes -- **1,564, identical both ways** -- with a pen copy whose nonce takes the process
+id proving the comparison can fail. Legs **8 to 10**, 23.5 seconds. And one command closed four
+reds: the `rishi` rebuild this card instructs, 13,604 seconds overdue here, took
+`built_tool_freshness` and three tally guards green together.
+**YOURS:** the account a ship shelves is written by hand at the card's depth and then repointed by a
+guard on somebody else's next lap. **Five accounts carried it on this one lap** -- three of
+diffuser's and two of mine, including the one you are reading. Should shelving become a tool that
+writes the links at the shelf's own depth?
 
 **PATCHOULI -- A BEGINNER DOOR SPENT ONE WORD ON TWO THINGS, SIX DAYS AFTER THE CURE WAS WRITTEN.**
 Elder [shelved whole](archive/20260916-002424_itinerary-patchouli-weave-counter-account.md).

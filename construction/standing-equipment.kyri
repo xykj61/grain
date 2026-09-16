@@ -3410,6 +3410,23 @@ seated 20260910.074214
 # copy of the season lying beside the vessel. The pen reconstructs the elder shape by making
 # the scratch the target and removing the landing, watches it lose the vessel over the same
 # plant, and returns the wall. `tier lap`: three rye builds plus one in the elder pen.
+#
+# AND THE ACCEPTED POUR WAS THE OTHER HALF OF THAT SENTENCE (`20260916.031248`). The paragraph
+# above ends on *the room's own pour witness asserts that a same-season re-pour welcomes and
+# never asks what the second pour left* -- and this witness asked it only of the REFUSED pour.
+# `amphora/vessel_seal.rye` has claimed since the seal landed that the nonce is derived from
+# stamp and parent, so *same pour yields the same seal*, and `write_unsealed_vessel` puts the
+# constant `amphora_version` in the vessel's `stamp` field rather than a clock. Both halves say
+# a second pour owes the first every byte, and nothing in the tree ran it twice. Measured on
+# metal: a re-pour of the ring-1 season lands **1,564 bytes byte-identical**, and the same
+# season poured into an EMPTY path lands those same bytes -- the second reading being what
+# rules out the cheap explanation, since a pour that saw the standing vessel and declined to
+# work would compare equal for a reason having nothing to do with determinism. The pen then
+# removes the determinism: a copy of `vessel_seal.rye` whose nonce mixes in the process id,
+# built and driven through `AMPHORA_VESSEL_SEAL`, makes two pours of one season differ, so the
+# byte comparisons have something behind them. Legs **8 to 10**; `tier lap` holds, at 23.5
+# seconds measured on metal -- four rye builds now, one of them in the elder pen and one in the
+# drift pen.
 
 guard amphora_pour_atomic
 path tools/am/amphora_pour_atomic_witness.rish
