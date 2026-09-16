@@ -1,0 +1,50 @@
+# tools/s/section_citation_witness.rish -- prove the section-citation reading, and gate it on this tree.
+#
+# A citation of a place INSIDE another page makes a promise, and every standing link guard reads a
+# path instead. tools/fixtures/t/tracked_link_scan.sh asks whether the target resolves in a fresh
+# clone; tools/fixtures/l/link_text_promise_scan.sh asks whether the visible anchor names the path it
+# opens. Both read the path. The section name is prose beside it, so nothing read it until this
+# guard. The founding case: the compass rose sent a reader to three stations of the operator card
+# that the molt of 20260912 renamed, with every link green.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/section_citation_witness.rish
+say "section-citation: Language EN -- a section named beside a path is a promise a reader follows."
+say "section-citation: Style Gauge Meter -- one derivation - one gated class - the refusal named."
+say "section-citation: Lens TAME -- safety first: read the tracked tree, bound the class, say why."
+
+let pen = run ["sh" "tools/fixtures/s/section_citation_control.sh"]
+say pen.out
+assert pen.ok else "section-citation: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "section-citation: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "section-citation: every planted leg must pass"
+assert pen.out contains "control_legs=24" else "section-citation: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: five honest citations counted" else "section-citation: an honest citation must be counted rather than refused"
+assert pen.out contains "leg_ok: a parenthetical gloss is not a citation" else "section-citation: a gloss beside a link names no section"
+assert pen.out contains "leg_ok: an arrow citation naming no place refuses" else "section-citation: the arrow join must bite"
+assert pen.out contains "leg_ok: a spoken section citation naming no place refuses" else "section-citation: the spoken join must bite"
+assert pen.out contains "leg_ok: a link-close citation naming no place refuses" else "section-citation: the compass rose's own shape must bite"
+assert pen.out contains "leg_ok: lifting the plant returns the pen to green" else "section-citation: a refusal proven one way cannot be told from a bypass"
+assert pen.out contains "leg_ok: and is named by --list" else "section-citation: a refusal a reader cannot locate is no refusal"
+assert pen.out contains "leg_ok: the ceiling lifts it from both sides" else "section-citation: the ceiling must be proven from the passing side too"
+assert pen.out contains "leg_ok: a dash-joined candidate never gates" else "section-citation: a gate that reds on ordinary prose is a gate somebody turns off"
+assert pen.out contains "leg_ok: and is counted apart" else "section-citation: what cannot be gated is still counted"
+assert pen.out contains "leg_ok: and is named by --dash" else "section-citation: an ungated reading a reader cannot locate teaches nothing"
+assert pen.out contains "leg_ok: dated testimony is read past" else "section-citation: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: a dated page the law cites is read" else "section-citation: a page the law cites is canon whatever its basename says"
+assert pen.out contains "leg_ok: and joins the derived roster" else "section-citation: the derived membership must be legible rather than silent"
+assert pen.out contains "leg_ok: a fixtures page is read past" else "section-citation: a control may plant a citation that must stay false"
+assert pen.out contains "leg_ok: an unresolved target is not called stale" else "section-citation: a broken link belongs to the link guards"
+assert pen.out contains "leg_ok: an unknown flag refuses" else "section-citation: an instrument that cannot answer must refuse"
+assert pen.out contains "leg_ok: mutation: dropping the gloss filter bites" else "section-citation: the gloss filter must be proven load-bearing"
+assert pen.out contains "leg_ok: mutation: reading headings alone bites" else "section-citation: a bold table-row key is a named place too"
+assert pen.out contains "leg_ok: mutation: refusing a head-of-heading match bites" else "section-citation: naming the head of a longer heading is honest"
+
+let tree = run ["sh" "tools/fixtures/s/section_citation_scan.sh"]
+say tree.out
+assert tree.ok else "section-citation: a living page names a section that does not stand -- repair it, or say what it meant"
+assert tree.out contains "verdict=ok" else "section-citation: the tree reading must reach ok"
+assert tree.out contains "stale=0" else "section-citation: the gated class stands at zero"
+
+say "section-citation: GREEN -- the pen holds 24 legs, and every gated citation on this tree names a place that stands."

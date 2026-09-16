@@ -799,3 +799,5 @@ at a closed fold.*
 *Row %772 folded to [`REDS-a-ratchet-that-counted-prose-rows-772.md`](REDS-a-ratchet-that-counted-prose-rows-772.md) on `20260916.113655`, **CLOSED** -- a ratchet counting prose will eventually be raised by a sentence, and a total that cannot name its phantoms cannot be acted on.*
 
 *Rows %746 and %771 folded to [`REDS-the-binary-and-the-receipt-beside-it-rows-746-771.md`](REDS-the-binary-and-the-receipt-beside-it-rows-746-771.md) on `20260916.183602`, both **BOOKED** -- a binary's presence was checked and its freshness was not, and the receipt beside a binary spoke for the binary it replaced.*
+
+*Row %744 folded to [`REDS-a-front-door-that-halts-rows-744.md`](REDS-a-front-door-that-halts-rows-744.md) on `20260916.190500`, **BOOKED** -- a front door's runnable block is a promise about the reader's machine, not about ours.*

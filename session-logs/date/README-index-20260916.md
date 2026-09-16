@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.190156` | [The promise beside the path](20260916/20260916-190156_the-promise-beside-the-path.kyri) | a section named beside a path, gated at last |
 | `20260916.185029` | [The half that was pinned](20260916/20260916-185029_the-half-that-was-pinned.kyri) | A checkable page's quoted output lost two fields the day after it was written. |
 | `20260916.184140` | [The grade that resolved the link](20260916/20260916-184140_the-grade-that-resolved-the-link.kyri) | %776: a newcomer door false since its birth commit |
 | `20260916.183614` | [The hand the watcher asked for](20260916/20260916-183614_the-hand-the-watcher-asked-for.kyri) | five seats armed; watcher reset |

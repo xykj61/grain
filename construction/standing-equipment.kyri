@@ -293,6 +293,20 @@ path tools/l/link_text_promise_witness.rish
 tier lap
 seated 20260915.183000
 
+# section_citation -- a section named beside a path is the third promise, and the two link guards
+# read the other two. `tracked_link` asks whether the target resolves in a fresh clone;
+# `link_text_promise` asks whether the anchor names the path it opens. Both read a PATH, so a name
+# standing beside it -- `context/GAUGE_STYLE.md` -> *Quality assurance -- the report card* -- was
+# read by nothing. The operator card molted on `20260912` and renamed its sections, and the compass
+# rose kept sending a reader to three stations that no longer stood, every link green. WALL at zero
+# for the three precise joins (an arrow, the word `section`, a link close then italic). The bare
+# `--` join is COUNTED AND PRINTED, never gated: 21 candidates on the seating lap, 10 naming a real
+# place and 11 not, and nine of those eleven are a writer emphasising a word.
+guard section_citation
+path tools/s/section_citation_witness.rish
+tier lap
+seated 20260916.190000
+
 # rota_declared -- the council rota's reading, counted rather than assumed. On `20260906` the record
 # answered three ways across 109 logs: 20 carried a `rota` field, 53 named a row in prose alone, 36
 # said nothing -- one observation carrying two claims (whether a rota was read, whether it was
