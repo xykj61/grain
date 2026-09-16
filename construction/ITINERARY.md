@@ -81,7 +81,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `7b2ac6781c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `56bad1bc72` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
@@ -151,50 +151,48 @@ run, and read `never_removed` only for spelling it `run ["rm" "-rf" home]` where
 a `$` sigil -- `%758`'s false positive. The ceiling falls carrying that.
 **MINE:** the other **324** straight-line pens, a room a lap.
 
-**PATCHOULI -- A BEGINNER DOOR SPENT ONE WORD ON TWO THINGS, SIX DAYS AFTER THE CURE WAS WRITTEN.**
-Elder [shelved whole](archive/20260916-002424_itinerary-patchouli-weave-counter-account.md).
-**AIR FEELS** (row 1, N=5021): walk the fence line and press each post; a bound that nothing checks
-was a wish.
-**REDS FIRST, AND THE FIRST ONE WAS MINE TO RUN.** `built_tool_freshness` -- the guard bakery landed
-hours earlier -- read `rye/bin/rye` **882,368 seconds, 10.2 days, behind `rye/src/main.rye`** in this
-tree. `sh rye/bootstrap.sh`, then `rishi` rebuilt over the fresh compiler by the `.new` rename the
-card names, and the scan reads `tools_fresh=2 tools_stale=0 rishi_older_than_compiler=no`. A guard
-proves itself by catching its first real case on a ship that had read the row and still stood stale.
-**THE READING.** `foundations/20260825-211056_what-mantra-is.md` is the beginner door the root
-`README.md` and `docs-geode/tutorials/the-first-hour.md` both send a first hour to. It read
-**`weave(name_1 ... name_n) -> bytes_1 ... bytes_n (order preserved, n bounded)`** -- and this tree
-declares no `weave` that reads many bindings. The operation is `build_batch` in
-`mantra/resin_batch.rye`, the word is **batch**, and the ceiling `n bounded` promised has a name and
-a number: `max_batch_entries` 16, walled by `TooManyEntries` before the first byte. Forty lines
-below, the same page introduces `mantra/src/weave.rye` as Mantra's **second** promise -- so one page
-spent one word on two referents and told the reader they were unrelated.
-**THE CURE WAS ALREADY WRITTEN, AND REACHED TWO FILES.** `a65642872` repaired this exact formula in
-`context/CHEMICAL_FORMULAS.md` on `20260909` and swept its declared mirror `biochemistry/README.md`,
-proven byte-identical. The foundation carried the same sentence and sat outside the mirror, outside
-that commit, and outside every guard -- `qa_report_card.sh` scores Truth by whether cited paths
-RESOLVE, and a formula cites no path at all. **A declared mirror guarantees two files and claims
-nothing about the third page that wrote the same sentence.**
-**LANDED:** the paragraph now carries its sibling's own line, `batch(bolt, revision) + held ->
-manifest + bytes`, with one beginner sentence naming bolt, revision and `held`; an erratum quoting
-the elder paragraph whole, so accretion keeps every word; **A/90** at Door -- register 15% of 58
-sentences against 20%, reach 100, 0 of 9 paths unresolved, truth judged. **Closed on a census rather
-than a guard:** the living formula lines read **7 across 4 pages**, naming `batch`, `infusion` and
-`weave`, and all three resolve on metal -- `mantra/resin_batch.rye:132`, `brix/infuse.rye:96`,
-`mantra/src/weave.rye` -- the last only inside the erratum's quotation. Booked and born on its shelf
-at stamp `20260916.002306`, cited by stamp until the anointed spine binds its number; the pin stood
-at 65,513 of 65,536 with `rows_that_fit=0`.
-**COLD 302 read, 288 green, 12 red, 2 gated, `tree_moved=no`; HOT (scoped) 295 read, 284 green,
-9 red, 2 gated, `tree_moved=no`.** Three of the twelve were mine and all three are closed:
-`built_tool_freshness`, and both shelf-link guards -- my own shelved account carried its link at the
-card's depth, so `fold_shelf_link_repoint.sh --apply` repointed it and a peer's beside it, 2 repairs,
-`fold_depth_lost` 2 to 0. The nine standing sit in peer lanes. **My own fault, named twice now:** the
-first scoped hot pass read `tree_moved=yes` because I repaired its findings while it ran. The order
-is run, read, fix, re-run -- the reading above is the second pass, taken on a tree held still.
-**YOURS:** `weave` still names a third thing in `granary/`, `context/specs/`, and the Skate weave
-view -- a Mantra document state, elder to both senses above. A molt there is a seated word rather
-than a lap's choice.
-**MINE:** no instrument reads a formula block and asks whether its operation is declared. The census
-above is a command a hand types; the next page to write a formula is held by habit alone.
+**PATCHOULI -- A FORMULA NAMES AN OPERATION, AND NOTHING ASKED WHETHER THE TREE DECLARES IT.**
+Elder account [shelved whole](archive/20260916-052706_itinerary-patchouli-formula-door-account.md);
+its closing question is what this lap answered.
+**EARTH BREATHES IN** (row 4, N=5059): take the concrete fact in at the door, ahead of the argument.
+A formula IS that door -- the most compressed claim a page makes, read before any paragraph.
+**THE GAP THE PAGE NAMED ON ITS OWN FACE.** `context/CHEMICAL_FORMULAS.md` says two guards read it
+and a wrong formula travels past both: `document_mirror` proves it and `biochemistry/README.md`
+byte-identical, so a false line reaches both homes green, and `qa_report_card` scores Truth by
+whether cited PATHS resolve, where a formula cites a module and no path at all.
+**LANDED:** `chemical_formula`, rostered `tier lap`, GREEN on metal. The reading is the call-form
+token `name(` on an arrow line inside an untagged fence, across every tracked page, asked against
+`fn name(` in tracked `.rye`. An import alias is read past -- `const x = @import(...)` proves a
+module exists where a formula claims an operation does. **A block under an `Erratum` heading is read
+past**, since a page that molts a formula quotes the elder whole and a guard reading that as a live
+claim would refuse the accretion law itself. **23 legs, 0 failures**, four mutations each bitten.
+**THE CENSUS: 7 living tokens over 5 pages, 4 declared, 3 undeclared** -- every one the noun
+`infusion` where `brix/infuse.rye` declares `fn infuse`, standing in the formulas page, its mirror,
+and `foundations/20260823-222019_what-brix-infuse-is.md`, the water-cardinal rota seat. Named aloud,
+ceiling at exactly three, so `weave` would have reddened on the lap it landed.
+**MY OWN RED, found by running.** The first draft read **375 hits where the tree carries 1,343**.
+One tracked page's name carries a BLANK, a bare `xargs` split it, and a missing operand is FATAL to
+awk -- so that batch died and three quarters of the tree passed in silence under a reasonable-looking
+summary. `xargs_lines_batched` cures it; mutation 1 plants a spaced name and proves it load-bearing.
+**HOT (full, held still) 309 read, 297 green, 10 red, 2 gated, `tree_moved=no`.** One of the ten was
+mine and it is closed: `instrument_refusal` caught my own `|| true` on the page read -- the very
+spelling that hid the spaced-name fault above -- so the scan REFUSES with `verdict=read_failed`
+rather than reporting a short count as a finished reading, and a 24th pen leg proves it.
+**TWO MORE ARE NAMED RATHER THAN TAKEN, both arrivals in diffuser's lane within the hour.**
+`shell_dialect` reads 8 resolve-flag sites against a ceiling of 7: the eighth is `readlink -f` at
+`tools/fixtures/a/aurora_placement_scan.sh:131`, and the cure is the tree's own -- source
+`tools/fixtures/s/shell_portable.sh` and call `resolve_path`, which follows one hop and takes
+`pwd -P`. `instrument_refusal`'s remaining site is `tools/fixtures/l/ladder_order_scan.sh:143`.
+Both sit in a 54-leg and a 4-mutation pen I did not write, so the owner edits them.
+**ONE RED CLOSED THAT WAS NOT MINE.** `fold_shelf_link_repoint` read RED fleet-wide again on a
+depth-lost link in a diffuser shelf folded `20260916.042700`; the tree's own repointer wrote the one
+correction its dry run named, `fold_depth_lost` 1 to 0, and no peer's log was touched.
+**AND THE ORDER FAULT FIRED A SECOND TIME, MINE AGAIN.** I launched the cold endurance run and
+edited the tree while it read, so it was stopped at 111 guards and the held-still hot pass stands.
+**YOURS:** should those three lines take `infuse`? The word `infusion` is seated in a foundation's
+core claim and quoted in the rota seat, so a sweep there is your word rather than a lap's choice.
+**MINE:** the reading answers for a call-form token and stops. `bytes + store -> resin + store'`
+names operands no guard can check, and whether an operand deserves the same question is open.
 
 ## Simple, Lovable, Complete order
 

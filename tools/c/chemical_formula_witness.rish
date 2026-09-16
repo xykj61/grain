@@ -1,0 +1,55 @@
+# tools/c/chemical_formula_witness.rish -- prove a formula names an operation this tree declares.
+#
+# context/CHEMICAL_FORMULAS.md writes this tree's operations as reactions, and says on its own face
+# that two guards read it and a wrong formula travels past both -- the mirror guard proves two files
+# byte-identical, and the report card scores Truth by whether cited PATHS resolve, where a formula
+# cites a module rather than a path. The word `weave` stood in that page for seventeen days under
+# both, and in the beginner door at foundations/20260825-211056_what-mantra-is.md for six days past
+# the repair, because a declared mirror guarantees two files and claims nothing about a third page
+# that wrote the same sentence.
+#
+# This witness holds the one part of a formula the tree can answer for: the call-form token. A
+# quotation under an Erratum heading is read past, since an erratum keeps every word by law.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/chemical_formula_witness.rish
+say "chemical-formula: Language EN -- a formula names an operation, and the tree declares it or does not."
+say "chemical-formula: Style Gauge Meter -- one derivation - one gated class - the refusal named."
+say "chemical-formula: Lens TAME -- safety first: read the tracked tree, bound the class, say why."
+
+let pen = run ["sh" "tools/fixtures/c/chemical_formula_control.sh"]
+say pen.out
+assert pen.ok else "chemical-formula: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "chemical-formula: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "chemical-formula: every planted leg must pass"
+assert pen.out contains "control_legs=24" else "chemical-formula: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: a declared fn counts as declared" else "chemical-formula: a real operation must read declared"
+assert pen.out contains "leg_ok: tagged fence read past" else "chemical-formula: a transcript is nobody's formula"
+assert pen.out contains "leg_ok: untagged fence with no arrow read past" else "chemical-formula: the arrow is what makes a line a reaction"
+assert pen.out contains "leg_ok: arrow outside a fence read past" else "chemical-formula: prose is read by a person, never by this scan"
+assert pen.out contains "leg_ok: a digit-leading token is no operation" else "chemical-formula: sha3-512(8) must stay out of the reading"
+assert pen.out contains "leg_ok: a shell substitution is no operation" else "chemical-formula: a command substitution must stay out of the reading"
+assert pen.out contains "leg_ok: an import binding is not a declaration" else "chemical-formula: an alias proves a module exists, never the operation"
+assert pen.out contains "leg_ok: the erratum quotation is read past" else "chemical-formula: a quoted elder is testimony rather than a live claim"
+assert pen.out contains "leg_ok: the erratum closes at the next heading" else "chemical-formula: a page keeps reading below its erratum"
+assert pen.out contains "leg_ok: three shelves counted apart" else "chemical-formula: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: a vendored page is read past" else "chemical-formula: vendored pages are held rather than authored here"
+assert pen.out contains "leg_ok: a spaced page name is still read" else "chemical-formula: one blank in one name silenced three quarters of the tree"
+assert pen.out contains "leg_ok: undeclared names each hit" else "chemical-formula: a count a reader cannot locate is a count nobody repairs"
+assert pen.out contains "leg_ok: a ceiling at the standing count passes" else "chemical-formula: the ceiling must be proven from the passing side"
+assert pen.out contains "leg_ok: one token past the ceiling refuses" else "chemical-formula: and from the refusing side, with no slack"
+assert pen.out contains "leg_ok: an unknown flag refuses" else "chemical-formula: a flag nobody wrote must refuse rather than be ignored"
+assert pen.out contains "leg_ok: outside a repository it refuses" else "chemical-formula: an instrument that cannot answer must refuse"
+assert pen.out contains "leg_ok: mutation 1 -- a bare xargs loses the spaced page" else "chemical-formula: the portable spelling must be proven load-bearing"
+assert pen.out contains "leg_ok: mutation 1 -- and the short read refuses rather than reporting" else "chemical-formula: an instrument that cannot read must refuse"
+assert pen.out contains "leg_ok: mutation 2 -- without the erratum branch the quotation is counted" else "chemical-formula: the erratum branch must be proven load-bearing"
+assert pen.out contains "leg_ok: mutation 3 -- accepting const reads an import as a declaration" else "chemical-formula: the fn-only rule must be proven load-bearing"
+assert pen.out contains "leg_ok: mutation 4 -- without the tag test a transcript reads as a formula" else "chemical-formula: the untagged-fence rule must be proven load-bearing"
+
+let tree = run ["sh" "tools/fixtures/c/chemical_formula_scan.sh"]
+say tree.out
+assert tree.ok else "chemical-formula: an undeclared formula operation stands above the ceiling -- name the module that declares it, or say what the page means"
+assert tree.out contains "verdict=ok" else "chemical-formula: the tree reading must reach ok"
+
+say "chemical-formula: GREEN -- the pen holds 24 legs, and this tree's three undeclared tokens are named."
