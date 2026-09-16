@@ -1,6 +1,6 @@
 # Ember -- the warmth that is kept
 
-**Stamp:** `20260827.192500` - **Language:** EN - **Voice:** Kyri - **Style:** **Twilight**, the nocturne register (see [`../context/TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md))
+**Stamp:** `20260915.222400` - **Language:** EN - **Voice:** Kyri - **Style:** **Twilight**, the nocturne register, held at the **Door** setting (see [`../context/TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md))
 **Status:** Living module -- the corpus catalog and its query are green on metal here; the Skate view draws through Wayland, so it asks a host with a display and answers `verdict=gated_no_display` on a headless pier; training and LoRA are horizon, named and unbuilt
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole

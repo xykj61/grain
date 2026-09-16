@@ -7,7 +7,7 @@
 next lap. Moved rather than rewritten, so every word it published stands.
 
 **DIFFUSER -- ROW 8 PRICED A QUORUM AND DESCRIBED A BROADCAST.**
-Elder [shelved whole](archive/20260915-211724_itinerary-diffuser-rebase-wall-account.md).
+Elder [shelved whole](20260915-211724_itinerary-diffuser-rebase-wall-account.md).
 **WATER TASTES** (row 3, N=4973): taste whether the flow is sweet or off. **THE ROW.** Row 8 of the
 bounded-torus page was the last measurable one of the twelve nobody had opened, and its one sentence
 carries two claims: *a node announces along a meridian and confirms along a parallel, so message
@@ -28,7 +28,7 @@ extinguished by the wrap.
 **Five mutations bitten**; the one that matters most makes the querier read its own row, since two
 perpendicular lines meeting once is exactly the fact a scan can assert without ever checking it.
 Everything is **GATED** because the scan opens no file -- no figure can move under this tree.
-[Paper](../active-designing/20260915-211724_the-bearing-that-meets-rather-than-floods.md) **A 91**;
+[Paper](../../active-designing/20260915-211724_the-bearing-that-meets-rather-than-floods.md) **A 91**;
 the moonshot page carries row 8's erratum at **A 92**.
 **HOT ROSTER: 376 rostered, 0 path-missing, 0 half-written; 3 red, none mine** -- `fixture_depth`,
 `prose_register` and `shim_reason` sit in peer lanes and are reported rather than taken.
