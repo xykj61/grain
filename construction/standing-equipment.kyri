@@ -6664,3 +6664,34 @@ guard precondition_skip
 path tools/p/precondition_skip_witness.rish
 tier lap
 seated 20260916.083000
+# glow_ceiling_refusal -- two ceilings behind one error name, counted as a class.
+#
+# `glow_refusal` above closed ONE instance: `glow/rune_shape.rye` answered its field ceiling and
+# its payload-face ceiling with the one word `error.TooManyFields`. The next lap found the same
+# defect in `glow/tokens.rye`, the lexer every Glow parse passes through, where `error.BadToken`
+# answers four ceilings -- a name too long, a cord literal too long, a hex literal with too many
+# digits, a source too long -- among nineteen sites that also carry fifteen shape faults. A lantern
+# that fires twice becomes a loom, so this guard measures the class.
+#
+# WHAT IT COUNTS: a relational comparison against a named `max_` constant whose block returns a
+# named error, over tracked `glow/` sources; error names grouped by how many DISTINCT constants
+# they refuse; and the sites under a shared name that fill no `glow/refusal.rye` record. That last
+# number is the gate, under a ceiling that only falls -- 44 at seating, from 48 ambiguous sites of
+# which four already carry records.
+#
+# THE ERROR NAME IS NEVER THE CURE. A published error set is a contract, so the repair fills a
+# record beside the return and leaves the word alone (accrete-never-break). Coverage is credited by
+# the filled record, and a mutant crediting it by name is proven to bite.
+#
+# WHAT MAKES THE READING HONEST, each planted: string literals stripped first, since
+# `glow/lower_shop_gate.rye` emits Zig text carrying a comparison beside a print-buffer refusal --
+# seven false sites; an `assert(` line read past, since an assert crashes and can never be a named
+# refusal -- `unpaired` 69 to 16; and the return found by brace depth rather than a line count,
+# which is what sees the founding case at all. `unpaired` is printed, so the undercount is a
+# measurement rather than a memory.
+#
+# `tier lap`: two shell readings, 0.5s for the tree and 1.1s for the pen.
+guard glow_ceiling_refusal
+path tools/g/glow_ceiling_refusal_witness.rish
+tier lap
+seated 20260916.090645

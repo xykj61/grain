@@ -33,12 +33,12 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 1 |
 | [`comlink/`](../../comlink/README.md) | 74 | 16 |
 | [`constel/`](../../constel/README.md) | 32 | 41 |
-| [`construction/`](../../construction/README.md) | 1 | 73 |
+| [`construction/`](../../construction/README.md) | 1 | 74 |
 | [`crypto/`](../../crypto/README.md) | 82 | 123 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 4 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 135 | 130 |
+| [`glow/`](../../glow/README.md) | 135 | 131 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 253 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |

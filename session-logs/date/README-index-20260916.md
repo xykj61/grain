@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260916.092827` | [A meter read a spelling](20260916/20260916-092827_a-meter-read-a-spelling.kyri) | %768 closed: 986 files changed spelling, the pattern could not read it |
 | `20260916.092641` | [The trap that wore two spellings](20260916/20260916-092641_the-trap-that-wore-two-spellings.kyri) | 12 released pens read as leaks. |
+| `20260916.090645` | [The lantern fired twice](20260916/20260916-090645_the-lantern-fired-twice.kyri) | five Glow error names over fifteen ceilings; the class gets a gate |
 | `20260916.084328` | [The box held two whole laps](20260916/20260916-084328_the-box-held-two-whole-laps.kyri) | two parked laps adopted; %767 and %768 booked |
 | `20260916.084019` | [The depth a resolver needs](20260916/20260916-084019_the-depth-a-resolver-needs.kyri) | %762 closed: the bound is the kernel's own 40, a bare `cd` refuses under sh |
 | `20260916.082619` | [A sample sizes a class](20260916/20260916-082619_a-sample-sizes-a-class.kyri) | %646 counted: three shapes, one sampled |
