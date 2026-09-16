@@ -81,7 +81,7 @@ say "pen=28 behaviors, two mutations bitten on 20260911"
 # through the lock first: this leg binds a real machine-wide port, and running it bare would red a
 # peer's lap -- the exact fault it exists to name.
 let box = run ["sh" "-c" "mktemp -d /tmp/mantra_udp_reuseaddr.XXXXXX"]
-assert box.ok else "mantra_udp_reuseaddr: pen must open: ${box.err}"
+assert box.ok else "mantra_udp_reuseaddr: pen must open: ${box.err_brief}"
 let home = trim box.out
 let bin = "${home}/snapshot-export-delivery"
 
@@ -98,6 +98,6 @@ if live.out contains "probe_verdict=port_busy" then say "probe=port_busy -- 3849
 if live.out contains "probe_verdict=refused_by_name" then say "probe=refused_by_name first_error=BindFailed"
 
 let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "mantra_udp_reuseaddr: pen must close: ${sweep.err}"
+assert sweep.ok else "mantra_udp_reuseaddr: pen must close: ${sweep.err_brief}"
 
 say "GREEN: mantra_udp_reuseaddr -- no address reuse in Mantra, every UDP module proves it off, a held port refused by name, pen innocent."

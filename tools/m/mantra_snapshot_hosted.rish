@@ -34,12 +34,12 @@ let zig = "vendor/zig-toolchain/zig"
 # the two RUN legs and leaves the builds free of each other, which is exactly the unguarded pairing.
 # A pen costs one directory and removes the sharing rather than scheduling around it.
 let pen = run ["sh" "-c" "mktemp -d /tmp/mantra_snapshot_hosted.XXXXXX"]
-assert pen.ok else "snapshot hosted: pen must open: ${pen.err}"
+assert pen.ok else "snapshot hosted: pen must open: ${pen.err_brief}"
 let home = trim pen.out
 let bin = "${home}/snapshot-export-delivery"
 
 let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
-assert build.ok else "snapshot hosted delivery build failed: ${build.err}"
+assert build.ok else "snapshot hosted delivery build failed: ${build.err_brief}"
 
 # THE PORT PAIR IS HELD WHILE THIS RUNS. mantra/snapshot_export_delivery.rye binds UDP 38490 and
 # 38491, compiled in, and mantra/recall_tablecloth_query_delivery.rye binds the same pair -- so two
@@ -54,6 +54,6 @@ assert selftest.out contains "GREEN" else "snapshot hosted selftest not GREEN"
 assert selftest.out contains "import and replay GREEN" else "snapshot hosted import replay missing"
 
 let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "snapshot hosted: pen must close: ${sweep.err}"
+assert sweep.ok else "snapshot hosted: pen must close: ${sweep.err_brief}"
 
 say "GREEN: I2 snapshot export hosted witness passed -- build, selftest, import and replay."
