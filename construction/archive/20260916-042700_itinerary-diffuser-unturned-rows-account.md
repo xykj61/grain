@@ -5,7 +5,7 @@
 row 7 and left `class_unread` at zero. A finished account belongs on a shelf.
 
 **DIFFUSER -- TWO ROWS RANKED FIRST AND SECOND, BUILT AND NEVER TURNED.**
-Elder [shelved whole](archive/20260916-030500_itinerary-diffuser-unturned-instrument-account.md); its
+Elder [shelved whole](20260916-030500_itinerary-diffuser-unturned-instrument-account.md); its
 open questions -- which lane this seat's two living pins name, and whether rows 2, 4 and 5 are one
 finding or three -- still stand for you.
 **AIR FEELS** (row 1, N=5041): run a hand along the edge and ask where each thing ends.

@@ -13,6 +13,8 @@ yourself with `git ls-files 'construction/archive/*.md' | grep -vc 'README.md$'`
 
 | Stamp | Record | Meaning |
 |-------|--------|---------|
+| `20260916-055500` | [ITINERARY shelf -- copal's pour-determinism account](20260916-055500_itinerary-copal-pour-determinism-account.md) | Born on its shelf: the card keeps a pointer line and the open question |
+| `20260916-032454` | [ITINERARY shelf -- copal's pen-sweep account](20260916-032454_itinerary-copal-pen-sweep-account.md) | Finished account folded off the living card at its byte bound |
 | `20260916-012247` | [ITINERARY shelf -- the pier that filled](20260916-012247_itinerary-pier-filled-account.md) | Finished account folded off the living card at its byte bound |
 | `20260916-003450` | [ITINERARY shelf -- pheromone's gate-law pedestal account](20260916-003450_itinerary-pheromone-gate-law-account.md) | Finished account folded out of the card's queue, where work still to do belongs |
 | `20260915-232133` | [ITINERARY shelf -- petrichor's skate-door account](20260915-232133_itinerary-petrichor-skate-door-account.md) | Finished account lifted off the living card when the next Petrichor lap replaced it |

@@ -86,7 +86,13 @@ mode="${1:-count}"
 #                            this lap's fall was to 3892 and took no slack, because the reading stood
 #                            EXACTLY at the ceiling. It landed beside the amphora sweep above, so the
 #                            two falls compose rather than contend: 26 characters and 3, one ceiling.
-CEILING=3866
+#   3863  `20260916.031248`  amphora/vessel_seal.rye swept on touch -- three em dashes in its three
+#                            `print` GREEN lines, taken while the file was open for the pour
+#                            determinism proof. Checked first for a coupled saying: `git grep`
+#                            over `.rish`, `.sh` and `.rye` finds the phrase in no reader, so no
+#                            runner greps the line. The reading stood EXACTLY at 3866, so this
+#                            fall takes no slack either.
+CEILING=3863
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340). The Rye comment meter paid

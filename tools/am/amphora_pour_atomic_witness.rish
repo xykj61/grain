@@ -19,15 +19,35 @@
 # The room's own pour witness reads a same-season re-pour's exit code and stops there, so this
 # is the leg that opens the file afterward.
 #
+# AND THE ACCEPTED POUR IS THE OTHER HALF OF THAT SENTENCE (`20260916.031248`).
+# `amphora/vessel_seal.rye` carries the claim in a doc comment -- *Deterministic nonce from
+# stamp + parent -- same pour yields the same seal* -- and the vessel head is deterministic
+# beside it: `write_unsealed_vessel` writes `amphora_version` into the `stamp` field rather
+# than reading a clock, and the `parent` field is the season's own digest. So a second pour of
+# one season should land the same bytes, and nothing ran it twice to find out. Leg 1 already
+# kept a reference copy; leg 2 asserted the exit code and the two walls over it and never
+# compared. Measured here on metal: a re-pour lands **1,564 bytes byte-identical**, which is
+# `infusion(world') -> world'` from `foundations/20260823-222019_what-brix-infuse-is.md`.
+#
+# THE FRESH-PATH LEG IS WHAT RULES OUT THE CHEAP EXPLANATION. A re-pour that matched because
+# the pour SAW the standing vessel and declined to work would read exactly the same from here.
+# So the same season is also poured into a path holding nothing, and those bytes are compared
+# against the first vessel: equal, so the pour is a function of the season rather than of what
+# already stood at the target.
+#
 # The legs, in order:
 #   an honest pour lands a vessel both walls accept
-#   an honest RE-pour welcomes, and what it lands still verifies and still opens
+#   an honest RE-pour welcomes, still verifies, still opens, and lands the SAME BYTES
+#   the same season poured into an EMPTY path lands those same bytes, so the match above is
+#     the pour's own determinism rather than a short-circuit over the standing file
 #   a refused re-pour (seal tool absent) leaves the standing vessel BYTE-IDENTICAL
 #   a refused re-pour (stamp tool absent) leaves it byte-identical too, past the seal
 #   each refusal sweeps its own scratch, so the `.pouring` file leaves with the pour
 #   the fork law stands: a different season over a standing vessel refuses by name
 #   the wall REMOVED in a pen -- the elder write-the-target-first pour loses the vessel
 #   the wall RETURNED -- the repaired binary over the same plant keeps every byte
+#   the DETERMINISM removed in a pen -- a seal whose nonce mixes in the process id makes two
+#     pours of one season differ, so the byte comparisons above have something behind them
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_pour_atomic_witness.rish
@@ -74,8 +94,11 @@ let keep = run ["sh" "-c" "cp ${good} ${home}/a/good.keep"]
 assert keep.ok else "pour_atomic: the reference copy must be taken -- ${keep.err_brief}"
 say "leg_honest=landed"
 
-# --- leg 2: an honest RE-pour still welcomes, and what it lands still stands ---
-# The elder witness asserted the exit code alone. This reads the vessel afterward.
+# --- leg 2: an honest RE-pour still welcomes, and lands the SAME BYTES ---
+# The elder witness asserted the exit code alone. This reads the vessel afterward, and then
+# compares it: `vessel_seal.rye` claims a deterministic nonce from stamp and parent, and the
+# vessel head takes its `stamp` from `amphora_version` rather than from a clock, so a second
+# pour of one season owes the first one every byte.
 let repour = run ["${home}/bin/amphora" "pour" season good]
 say repour.err
 assert repour.ok else "pour_atomic: a same-season re-pour must welcome -- read the line above"
@@ -85,9 +108,25 @@ assert verify_repour.ok else "pour_atomic: the re-poured vessel's stamp must ver
 let open_repour = run ["${home}/bin/vessel-seal" "open-check" good]
 say open_repour.err
 assert open_repour.ok else "pour_atomic: the re-poured vessel's seal must open"
-say "leg_repour=welcomed_and_whole"
+let repour_same = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
+assert repour_same.ok else "pour_atomic: a same-season re-pour lands the same bytes -- the seal claims a deterministic nonce and the head takes no clock -- ${repour_same.err_brief}"
+say "leg_repour=welcomed_and_identical"
 
-# --- leg 3: a refused re-pour with the seal tool absent leaves the vessel byte-identical ---
+# --- leg 3: the same season into an EMPTY path lands those same bytes ---
+# Without this the leg above has a cheap explanation: a pour that SAW the standing vessel and
+# declined to do the work would compare equal for a reason that has nothing to do with
+# determinism. Pouring into a path holding nothing takes that reading away.
+let fresh = "${home}/e/v.bron"
+let mk_fresh = run ["sh" "-c" "mkdir -p ${home}/e"]
+assert mk_fresh.ok else "pour_atomic: the fresh home must open -- ${mk_fresh.err_brief}"
+let pour_fresh = run ["${home}/bin/amphora" "pour" season fresh]
+say pour_fresh.err
+assert pour_fresh.ok else "pour_atomic: the fresh-path pour must pass -- read the line above"
+let fresh_same = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${fresh}"]
+assert fresh_same.ok else "pour_atomic: one season poured into an empty path equals the first vessel, so the pour is a function of the season -- ${fresh_same.err_brief}"
+say "leg_fresh_path=identical_to_the_first"
+
+# --- leg 4: a refused re-pour with the seal tool absent leaves the vessel byte-identical ---
 let seal_gone = run ["sh" "-c" "env AMPHORA_VESSEL_SEAL=/nonexistent/seal ${home}/bin/amphora pour ${season} ${good}; true"]
 say seal_gone.err
 assert seal_gone.err contains "seal tool absent" else "pour_atomic: an absent seal tool refuses by name"
@@ -95,8 +134,8 @@ let survives_seal = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
 assert survives_seal.ok else "pour_atomic: the standing vessel survives a seal refusal byte for byte -- this is the whole rule -- ${survives_seal.err_brief}"
 say "leg_seal_refusal=vessel_intact"
 
-# --- leg 4: and with the stamp tool absent, which refuses PAST the seal ---
-# Named apart from leg 3 because the elder leavings differed in kind: this refusal came
+# --- leg 5: and with the stamp tool absent, which refuses PAST the seal ---
+# Named apart from leg 4 because the elder leavings differed in kind: this refusal came
 # after the seal had run, so the file it left carried `seal_cargo` and read legitimate to
 # anyone checking the seal alone.
 let core_gone = run ["sh" "-c" "env AMPHORA_VESSEL_CORE=/nonexistent/core ${home}/bin/amphora pour ${season} ${good}; true"]
@@ -106,14 +145,14 @@ let survives_core = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
 assert survives_core.ok else "pour_atomic: the standing vessel survives a stamp refusal byte for byte -- ${survives_core.err_brief}"
 say "leg_stamp_refusal=vessel_intact"
 
-# --- leg 5: each refusal sweeps its own scratch ---
+# --- leg 6: each refusal sweeps its own scratch ---
 # A scratch left behind is a clear-cargo copy of the season lying beside the vessel, which
 # is the same exposure the refusal was supposed to prevent, one filename over.
 let no_scratch = run ["sh" "-c" "test ! -e ${good}.pouring"]
 assert no_scratch.ok else "pour_atomic: a refused pour leaves no .pouring scratch behind -- ${no_scratch.err_brief}"
 say "leg_scratch=swept"
 
-# --- leg 6: the fork law is untouched ---
+# --- leg 7: the fork law is untouched ---
 let forkseason = "${home}/b/season"
 let plant_fork = run ["sh" "-c" "mkdir -p ${forkseason} && printf 'a different season\n' > ${forkseason}/a.txt"]
 assert plant_fork.ok else "pour_atomic: the fork plant must prepare -- ${plant_fork.err_brief}"
@@ -177,9 +216,45 @@ let kept_intact = run ["sh" "-c" "cmp -s ${home}/d/good.keep ${kept_vessel}"]
 assert kept_intact.ok else "pour_atomic: and the repaired binary keeps the vessel over the very plant the elder lost -- ${kept_intact.err_brief}"
 say "leg_wall_returned=vessel_kept"
 
+# --- the determinism removed: a seal whose nonce mixes in the process id ---
+# Legs 2 and 3 compare bytes, and a byte comparison that has never been shown failing cannot
+# be told from two files nothing was ever going to change. So the pen takes a copy of
+# `vessel_seal.rye`, mixes the process id into `nonce_from_stamp_parent`'s digest, and builds
+# it. Each pour spawns its own seal subprocess, so the mutant draws a fresh nonce per pour --
+# which is the honest generic crypto habit, and exactly what the vessel may not do if a
+# re-pour is to converge. The edit is asserted to have BITTEN, so a pattern that stops
+# matching after a refactor reds here rather than passing as a proof of nothing.
+let drift = "${home}/drift"
+let drift_copy = run ["sh" "-c" "mkdir -p ${drift} && cp amphora/manifest_entry.rye amphora/vessel_seal.rye amphora/kumara.rye amphora/tally_copy.rye ${drift}/"]
+say drift_copy.err
+assert drift_copy.ok else "pour_atomic: the drift pen must copy -- ${drift_copy.err_brief}"
+let drift_edit = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace 's|^    var h = Sha3_256.init(.{});$|    var h = Sha3_256.init(.{}); const drift_pid: i32 = std.os.linux.getpid(); const drift_bytes: [4]u8 = @bitCast(drift_pid); h.update(drift_bytes[0..]);|' ${drift}/vessel_seal.rye"]
+say drift_edit.err
+assert drift_edit.ok else "pour_atomic: the drift edit must run -- ${drift_edit.err_brief}"
+let bit_drift = run ["sh" "-c" "grep -qF 'h.update(drift_bytes' ${drift}/vessel_seal.rye"]
+assert bit_drift.ok else "pour_atomic: the drift edit must bite -- the nonce must take the process id -- ${bit_drift.err_brief}"
+let build_drift = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh ${drift}/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal-drift"]
+say build_drift.err
+assert build_drift.ok else "pour_atomic: the drifting seal must build -- read the line above"
+
+let drift_vessel = "${home}/f/v.bron"
+let mk_drift_home = run ["sh" "-c" "mkdir -p ${home}/f"]
+assert mk_drift_home.ok else "pour_atomic: the drift home must open -- ${mk_drift_home.err_brief}"
+let drift_first = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal-drift AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${home}/bin/amphora pour ${season} ${drift_vessel}"]
+say drift_first.err
+assert drift_first.ok else "pour_atomic: the drifting seal must still pour once -- read the line above"
+let drift_keep = run ["sh" "-c" "cp ${drift_vessel} ${home}/f/first.keep"]
+assert drift_keep.ok else "pour_atomic: the drift reference copy must be taken -- ${drift_keep.err_brief}"
+let drift_second = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal-drift AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${home}/bin/amphora pour ${season} ${drift_vessel}"]
+say drift_second.err
+assert drift_second.ok else "pour_atomic: the drifting seal must welcome its own re-pour"
+let drift_differs = run ["sh" "-c" "cmp -s ${home}/f/first.keep ${drift_vessel}; test $? -ne 0"]
+assert drift_differs.ok else "pour_atomic: the drifting seal MUST make two pours differ -- if it keeps them equal, legs 2 and 3 are proving nothing -- ${drift_differs.err_brief}"
+say "leg_determinism_removed=two_pours_differ"
+
 let sweep = run ["sh" "-c" "rm -rf ${home}"]
 say sweep.err
 assert sweep.ok else "pour_atomic: the pen must be swept"
 
-say "legs=8 honest=landed repour=whole seal_refusal=intact stamp_refusal=intact scratch=swept fork=intact elder=loses repaired=keeps"
-say "GREEN: amphora_pour_atomic -- a refused pour leaves the standing vessel untouched."
+say "legs=10 honest=landed repour=identical fresh_path=identical seal_refusal=intact stamp_refusal=intact scratch=swept fork=intact elder=loses repaired=keeps drifting_seal=differs"
+say "GREEN: amphora_pour_atomic -- a refused pour leaves the standing vessel untouched, and an accepted one lands the same bytes twice."
