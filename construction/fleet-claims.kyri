@@ -76,3 +76,9 @@ stamp 20260915.224411
 epoch 1789526651
 paths tools/fixtures/c/claim_preserve_scan.sh tools/fixtures/c/claim_preserve_control.sh tools/cl/claim_preserve_control_witness.rish
 what Split the claim_preserve modality reading into an obligation class and a register class, so a refusal names which one moved -- measured: this tree's own register sweep f258e5f58 drifts may 5-to-4 and all 10-to-12 on skate/README.md, and the guard cannot tell that from a weakened obligation. Gate unchanged; add the control this instrument has never had.
+claim bakery-pen-release
+seat bakery
+stamp 20260915.224455
+epoch 1789526695
+paths tools/fixtures/p/pen_release_scan.sh tools/p/pen_release_witness.rish tools/fixtures/p/pen_release_control.sh
+what Ask the third question about a pen: shared_pen asks whether it is contended, pen_entry whether it is entered, and nothing asks whether it is RELEASED -- REDS %745's amphora_mark_wreck leaked 1,312 pens and 32G into /tmp over nine days and filled the pier. Count every tracked runner that makes a pen and never removes it; the per-guard repair stays with its owning lane.
