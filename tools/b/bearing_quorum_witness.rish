@@ -1,4 +1,4 @@
-# tools/m/bearing_quorum_witness.rish -- a bearing scheme is a RENDEZVOUS, and row 8 called it a
+# tools/b/bearing_quorum_witness.rish -- a bearing scheme is a RENDEZVOUS, and row 8 called it a
 # broadcast.
 #
 # WHY THIS RUNG. Row 8 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the
@@ -41,7 +41,7 @@
 # approaches 0.5 FROM ABOVE and the all-grid fit reads 0.5604 while the tail fit reads 0.5237. The
 # tail is what the gate reads, and both are printed so the bias is visible rather than tuned away.
 #
-# WHAT IS PROVEN, on metal, by tools/fixtures/m/bearing_quorum_control.sh -- 37 behaviors in a
+# WHAT IS PROVEN, on metal, by tools/fixtures/b/bearing_quorum_control.sh -- 37 behaviors in a
 # throwaway pen, with five mutations each proven landed by cmp before its reading is believed:
 #
 #   THE CYCLE WALKED ONE WAY loses coverage, so the wrap reading is reading the wrap.
@@ -67,13 +67,13 @@
 # Paper: active-designing/20260915-211500_the-bearing-that-meets-rather-than-floods.md
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/m/bearing_quorum_witness.rish
+#   rishi/bin/rishi run tools/b/bearing_quorum_witness.rish
 
 say "bearing-quorum: Language EN -- a cost claim and a delivery claim are two claims."
 say "bearing-quorum: Style Gauge, Meter -- every figure names the grid it was read at."
 say "bearing-quorum: Lens TAME -- bound the grids, walk the topology, prove each verdict both ways."
 
-let control = run ["sh" "tools/fixtures/m/bearing_quorum_control.sh"]
+let control = run ["sh" "tools/fixtures/b/bearing_quorum_control.sh"]
 say control.out
 assert control.ok else "bearing-quorum: the control must complete -- its own lines are printed above"
 
@@ -90,7 +90,7 @@ assert control.out contains "mutation 4 applied" else "bearing-quorum: the secon
 assert control.out contains "mutation 5 applied" else "bearing-quorum: the lossless-path plant must land before its reading"
 
 # The live reading, which opens no file and so answers the same on every ship.
-let live = run ["sh" "tools/fixtures/m/bearing_quorum_scan.sh"]
+let live = run ["sh" "tools/fixtures/b/bearing_quorum_scan.sh"]
 say live.out
 assert live.ok else "bearing-quorum: the live reading must run"
 assert live.out contains "instrument=bearing_quorum" else "bearing-quorum: the reading names its own instrument"

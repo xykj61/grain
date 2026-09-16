@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/m/bearing_quorum_scan.sh -- what does a POLAR BEARING scheme actually buy on a
+# tools/fixtures/b/bearing_quorum_scan.sh -- what does a POLAR BEARING scheme actually buy on a
 # torus? Row 8 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the last
 # measurable row of the twelve nobody had opened, and it makes two claims in one sentence:
 # "Consensus routing travels on polar bearings. A node announces along a meridian and confirms
@@ -44,8 +44,8 @@
 # which a hop count is a poor proxy for once a real link has a queue.
 #
 # USAGE
-#   sh tools/fixtures/m/bearing_quorum_scan.sh              # the reading
-#   sh tools/fixtures/m/bearing_quorum_scan.sh --grids "4 8"  # narrow the grid list
+#   sh tools/fixtures/b/bearing_quorum_scan.sh              # the reading
+#   sh tools/fixtures/b/bearing_quorum_scan.sh --grids "4 8"  # narrow the grid list
 #
 # This reading opens no file and reads no population: the topology is built in arithmetic, so
 # the script needs no tree root and runs from anywhere, including a copy in a throwaway pen.
