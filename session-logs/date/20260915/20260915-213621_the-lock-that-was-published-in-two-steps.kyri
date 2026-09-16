@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260915.213621
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json proves a configured default, never a running session's use
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The lock that was published in two steps
+prompt the baton -- bakery, Rishi fusion-build spine, core infrastructure Lindy-first and crux-first
+think The queue named a spread: carry the shell-side per-module build lock to the 702 call sites still invoking the compiler directly. Before sweeping I asked what my own last lap never asked -- why the compiler's own tree-wide lock was not already enough.
+think It reads enough. `rye/src/main.rye` has taken one lock across the whole bridge since %281, and `rye_build_lock_reach` reads cross_scope_collisions=0. So the shell lock should have bought nothing, and my last lap measured it taking eight failures in 180 runs down to one. Two readings that cannot both be right is where the work was.
+think A false step worth recording: `strings rye/bin/rye | grep -c rye-build.lock` read 0 and I nearly booked a stale binary. `strings` is absent on this host and the failure was swallowed by a pipe. `grep -ac` on the binary reads 3. A missing tool and an absent string print the same zero.
+obs THE MECHANISM. The lock was published in TWO steps -- an atomic createDir, then a separate writeFile of the holder's pid -- so between them it stood with nothing inside. The waiter's own rule reads an unreadable pid twice, one 50ms poll apart, as a corpse and clears it. Neither half is wrong alone; together a waiter clears a LIVE holder's lock and bridges beside it.
+obs THE CLAIM THE PAGE KEPT REPEATING, which is the aether row's own instruction. The elder comment priced the window at "one wrong clear only when a maker hangs inside a two-line window". The code beside it says one 50ms poll, and the pier stood at load average 16.8 while I read it. A second reading needs no timing luck at all: the pid write's refusal was swallowed, so a failed write left the lock anonymous forever.
+obs AND THE SILENCE WHERE A WITNESS SHOULD STAND. Three instruments guard this lock's SCOPE and its SPREAD. None read its PROTOCOL. Reach and tenure are two questions, and a lock with perfect reach that a live holder can lose guards nothing.
+obs MY FIRST REPAIR WAS WRONG AND THE CONTROL IS WHAT FOUND IT. Reading the pid back after writing it cannot see the theft: a robbed holder writes its own pid OVER the thief's and reads back exactly what it just wrote. I had it written, commented, and compiling before tracing the sequence for the pen.
+obs THE REPAIR THAT HOLDS. build_lock_claim assembles the lock complete -- pid already inside -- in a staging directory and renames it into place. rename onto a directory already holding a pid refuses with DirNotEmpty, so the move is both the claim and the test of it, and the anonymous state no longer exists. The waiter is deliberately untouched, because clearing a genuine corpse is still its job.
+obs A RACE WITH NO CENSUS NEEDS A WINDOW THAT OPENS ON DEMAND. RYE_BUILD_LOCK_STALL_MS holds a claim still between staging and rename, bounded at ten seconds and clamped rather than obeyed. A race proven only by running many builds and counting failures is a race nobody can show twice.
+obs THE PROOF IS BOTH-SIDED ON METAL. The pen builds two compilers from tracked sources: the elder, from the commit before the repair, walks into a planted anonymous lock and clears it; the repaired one is never once observed anonymous through a two-second claim, and the pen proves it SAW the window open rather than watching nothing.
+obs THE LEG WAS THEN PROVEN LOAD-BEARING BY MUTATION. A compiler that publishes the lock before its pid -- the elder's shape rebuilt under the new structure -- reads anonymous_looks=2 where the repair reads 0. My first mutation attempt put the stall on the wrong side of the window and read 0 for both, which is how a vacuous leg looks from outside.
+obs WHAT I OWE THE FLEET AND DID NOT BUILD. rye/bin/rye is gitignored, so this repair reaches a ship only when that ship rebuilds. Nothing in this tree reads whether an installed rye matches its source; rye_compiled_reach asks a different question. Eight ships run eight binaries of unknown vintage against one source. Named on the card as a proposal rather than taken.
+obs THE CLASS I NAMED THEN FIRED ON ME, IN A SECOND BINARY. Rebasing onto the peer row that landed out_brief in rishi/src/main.rye left this ship's equally gitignored rishi/bin/rishi without the field, so reds_fold_witness.rish reads NoSuchField and is RED for a reason unrelated to the tree -- and GREEN in this lap's own cold pass, before the rebase. The rebuild refused FileBusy, the roster holding the binary open, so the repair wants an install order too.
+obs MY COLD PASS IS NOT A TRUSTWORTHY BEFORE-READING AND I WILL NOT PRESENT IT AS ONE. I launched it at the open, edited about twenty minutes in, and rebased twice under it. Its reds cannot be cleanly attributed, which is why every guard my change can reach was run individually instead.
+obs ONE HONEST DEPARTURE FROM THE CARD. I launched the cold roster at the open and began editing about twenty minutes in, so that pass is not a clean before-reading and its tree digest will say so. The pass is slow because the whole fleet is on one eight-core pier.
+loom lock_pen legs=28 fails=0 compilers_built=2
+loom lock_window stall_ms=2000 repaired_anonymous_looks=0 mutant_anonymous_looks=2 poll_ms=100
+loom pier load_avg=16.8 at_reading=20260915.212000
+loom qa witness=B+ composite=89 control=B+ composite=87
+rota lap 4970, row 0 -- Aether, the row that hears. Read foundations/20260826-021731_aether-the-row-that-hears.md. Its instruction is to listen for the claim a page keeps repeating and for the silence where a claim used to be; both fired on one function -- the lock's comment repeating a two-line window over a 50ms poll, and three guards over the lock's scope with none over its protocol.
+file rye/src/main.rye build_lock_claim publishes the lock complete by rename; build_lock_stall opens its one window on demand, bounded and off by default
+file tools/fixtures/r/rye_build_lock_holder_control.sh 28 legs, two compilers from tracked sources, the elder's fault shown before the repair lifts it
+file tools/r/rye_build_lock_holder_witness.rish the five readings asserted by name so none goes silent behind a green tally
+file construction/REDS.md the row at %743 after two collisions, with the wrong first repair recorded beside the right one
+file construction/archive/REDS-a-reading-of-nothing-rows-519-532.md the fold the pin owed, two rows that each stopped reading their subject
+file construction/standing-equipment.kyri rye_build_lock_holder at tier cadence, beside the sibling that reads the same lock's scope
+file construction/ITINERARY.md the account, and the compiler-staleness gap named as a proposal rather than taken
+scope one race found by reading a comment against its code, one ledger fold the pin owed, one protocol repaired, one pen proving it from both sides, one gap named and left
+status GREEN on rye_build_lock_holder, tame_style_check and width-check on metal; the cold roster was still running at write time and three of its reds are named in the account, one of them mine
+recommend check in (Keaton) -- the compiler-staleness reading wants your word on whether it joins the roster, and the 702 unlocked call sites want a ruling on whether the shell-side lock retires now that the compiler's own holds

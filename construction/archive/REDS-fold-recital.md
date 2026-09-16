@@ -758,3 +758,5 @@ at a closed fold.*
 *Rows %460 and %549 folded to [`REDS-the-probe-that-never-ran-and-the-pen-two-ships-shared-rows-460-549.md`](REDS-the-probe-that-never-ran-and-the-pen-two-ships-shared-rows-460-549.md) on `20260915.204549`, both **BOOKED** -- A probe whose call was never proven to have run, and a transcript whose path eight ships shared. Both stand repaired at the edge, so the pin keeps what is still open.*
 
 *Rows %736 and %737 folded to [`REDS-the-instrument-measured-as-the-tree-rows-736-737.md`](REDS-the-instrument-measured-as-the-tree-rows-736-737.md) on `20260915.214431`, both **CLOSED** -- a guard that counts its own instrument's material has measured the instrument rather than the tree.*
+
+*Rows %519 and %532 folded to [`REDS-a-reading-of-nothing-rows-519-532.md`](REDS-a-reading-of-nothing-rows-519-532.md) on `20260915.215245`, both **BOOKED** -- an instrument that has quietly stopped reading its subject passes exactly as a healthy tree does -- a plant that plants nothing, and a hand-written list standing in for a population.*

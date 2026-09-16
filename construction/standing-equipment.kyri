@@ -5543,6 +5543,54 @@ path tools/r/rye_build_lock_reach_witness.rish
 tier lap
 seated 20260911.041926
 
+# rye_build_lock_holder -- a live holder keeps the build lock it took (found `20260915.211500` on the
+# aether rota row, whose instruction is to listen for the claim a page keeps repeating). The sibling
+# above asks whether the lock's SCOPE reaches the shadows it covers, and reads zero. This one asks
+# whether the holder keeps it, and the elder answer was no: a lock with perfect reach that can be
+# taken from a live holder guards nothing. Reach and tenure are two questions.
+#
+# THE FAULT, AND WHY BOTH HALVES WERE REASONABLE ALONE. `rye/src/main.rye` created the lock with an
+# atomic `createDir` and wrote the holder's pid in a SECOND call, so between the two it stood with
+# nothing inside. The waiter's own rule read an unreadable pid twice, one 50ms poll apart, as a
+# corpse and cleared it -- correct by its own lights, since a lock naming nobody is what a killed
+# build leaves behind. Together they let a waiter clear a LIVE holder's lock and bridge beside it,
+# and the loser reports `unable to load '<name>.zig'` about correct code.
+#
+# THE CLAIM THE PAGE KEPT REPEATING was the elder comment's own: "one wrong clear only when a maker
+# hangs inside a two-line window". The code beside it says one 50ms poll, and this pier runs eight
+# parallel builds at load average 16.8, measured the lap this was found -- where a stall of that size
+# between two syscalls is ordinary. A second reading needs no timing luck at all: the pid write's
+# refusal was swallowed, so a write that simply failed left the lock anonymous forever.
+#
+# THE REPAIR IS THAT THE STATE NO LONGER EXISTS. `build_lock_claim` assembles the lock complete --
+# pid already inside -- in a staging directory and `rename`s it into place; `rename` onto a directory
+# already holding a pid refuses with `DirNotEmpty`, so the move is both the claim and the test of it.
+# The WAITER is untouched, because clearing a genuine corpse is still its job, and under this
+# protocol an anonymous lock can only ever be one. Reading the pid back after writing it was the
+# first repair tried and it does not work -- a robbed holder writes its own pid over the thief's and
+# reads back exactly what it just wrote. Writing the control is what found that.
+#
+# WHAT IT READS. There is no census to take, because a race has no population. The pen opens the one
+# window on demand -- `RYE_BUILD_LOCK_STALL_MS` holds a claim still between staging and rename -- and
+# looks through it: 28 legs, the elder compiler built from the commit before the repair walking into
+# a planted anonymous lock, and the repaired one never once observed anonymous through a two-second
+# claim. The pen also proves it SAW the window open, since a reading of nothing is indistinguishable
+# from a healthy one (%463). A mutation that publishes the lock before its pid -- the elder's shape
+# rebuilt under the new structure -- is observed anonymous twice where the repair reads zero.
+#
+# WHAT IT DOES NOT REACH, named rather than implied. `rye/bin/rye` is gitignored, so the repair lands
+# on a ship only when that ship rebuilds its compiler, and nothing in this tree reads whether an
+# installed binary matches its source. That gap is proposed on the card rather than built here.
+#
+# WHY `tier cadence`. The pen builds the compiler twice and runs a dozen small builds through them,
+# which is minutes rather than seconds on a loaded pier. The fault is written once into a protocol
+# and then lived with, so a daily reading is the right clock for it.
+
+guard rye_build_lock_holder
+path tools/r/rye_build_lock_holder_witness.rish
+tier cadence
+seated 20260915.211500
+
 # error_member_reach -- can this tree produce every refusal it declares? (found `20260911.060527`
 # on the air rota row, whose instruction is to close a hand on a boundary and pull). TAME asks that
 # a bound fail with a NAMED error, and a named error is a promise to the caller: this function can
