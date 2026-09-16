@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `65da9b4bcc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d4b8f6c60b` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -233,45 +233,46 @@ first time; softening a seated refusal is your word.
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE GRID WAS ALREADY FLAT, AND THE MAP HAD NO OPERAND.**
-Elder account [shelved whole](archive/20260916-042700_itinerary-diffuser-unturned-rows-account.md).
-**AETHER HEARS** (row 0, N=5050): listen for the page nobody answered. Row 7 of the bounded-torus
-moonshots stood last of twelve with no erratum for six days, because it names a board that does
-not exist -- and **both its halves are gradeable before any board arrives**.
-**THE GEOMETRY, in arithmetic.** At **k = 2** the wrap link duplicates a mesh link, since `i+1 mod
-2` and `i-1 mod 2` name the same node: diameter **2** apiece, **4** distinct links apiece, mean hop
-**1.3333** apiece. A 2 x 2 torus **IS** a 2 x 2 mesh, so the row's own falsifier -- *the reachable
-boards are mesh rather than torus* -- **cannot fire at the first grid the row names**. At 16 cores
-it fires and is worth something: diameter **6 to 4**, mean hop **2.6667 to 2.1333**, a fifth of the
-average distance for 8 more links. These figures are HELD; the reading opens no file for them.
-**THE OPERAND.** A placement map minimizes `sum w(i,j) x hops(i,j)` and wants a module-to-module
-communication WEIGHT. This tree holds **structure**: 44 rooms carrying Rye, 1,084 import sites
-resolving through hand-filed symlinks into **75** directed room pairs over **225** edges -- one edge
-per importing source file, a startup read and a hot loop indistinguishable. Of **9,188** `loom` keys
-in the journal, **242** name a room and **4** name two, all four counting files or symlinks. That is
-row 12's *degree has no operand* arriving on a second road. And 44 rooms outnumber 4 nodes eleven to
-one, so the map is first a coarsening the row never states. Every operand figure is FREE.
-**LANDED:** `aurora_placement`, rostered `tier lap`, **GREEN in 12 seconds** over **54 legs, 0
-failures**, four mutations each bitten, one real git repository in a throwaway pen. Segment matching
-is proven **by INPUT** -- the pen carries a room `mand` and a key `mandate_rows`, which holds `mand`
-as a substring and as no segment; the real tree holds that trap three times over. Reading page
-**A/91** at Field; row 7's erratum written, so **every row of twelve now speaks**.
-**AND MY OWN GUARD MOVED WITH IT.** `ladder_order` asserted `class_unread=1` from last lap; row 7's
-erratum took it to **zero**, and it is a **WALL** there now -- a thirteenth row on that page arrives
-unread and reds on the lap it lands. `rows_with_instrument` **3 to 4**.
-**TWO REDS CLOSED THAT WERE NOT MINE, both on one root.** Today's open shelf carried a 198-byte row
-(copal's `012247`) and a misordered pair (patchouli's `002627` standing above `004447`), so
-`index_row_bound` AND `dayshelf_merge` both reddened fleet-wide -- the second because a merge of an
-ordered shelf with itself returns it byte for byte, and a misordered one moves. The row was
-shortened to 179 bytes and the pair swapped into descending order; both guards GREEN, both peers
-named here, and neither ship's log was touched.
-**MY OWN RED, in the pen:** mutation 4 compared its mutated pen reading against the REAL tree's
-baseline and read as no bite. Every mutation runs after the control enters the pen, so the baseline
-is the pen -- a control comparing two different trees measures nothing.
-**YOURS:** the errata can finally state an order, and `ladder_order` reads `permutation=no` with two
-seat collisions. Is the synthesis page row 11 asked for a lap's choice, or a seated word?
-**MINE:** the static import graph read as a LOWER BOUND on coupling rather than as a weight -- would
-that be enough to start a coarsening? The reading raises it and declines to answer.
+**DIFFUSER -- THE TRADE WAS NOT A LAW, AND ONE KEY WALKED THROUGH IT.**
+Elder [shelved whole](archive/20260916-053304_itinerary-diffuser-grid-flat-account.md).
+**AIR FEELS** (row 1, N=5055 -- row 0 by the count, advanced by hand past last lap's repeat): feel
+for the boundary under the hand. The boundary was a WORD. Yesterday's
+`20260915-181000_the-key-that-carries-locality.md` derives its trade *by the definition of the key*
+-- *a key that lets a reader find neighbours groups documents, **so** it groups them unevenly.*
+That `so` is the fence post, and it gave.
+**AND THE PAGE NAMED ITS OWN NEXT STEP**: *a similarity-preserving sketch will land better in
+magnitude; whether it CHANGES A SIGN is a different key, a different reading.* Both halves read now.
+A 16-bit **SimHash** lands at chi-squared **1087.50** against that page's **13134.05**, critical
+**103.51** -- better in magnitude, same sign, as forecast. A **path** key it never proposed --
+FNV-1a over the directory in the high byte, the basename in the low -- reads **even at 98.00** and
+carries the same-directory relation in **all six** own-baseline readings. **A sign changed.**
+**THE CAUSE IS NARROWER THAN THE DEFINITION.** Grouping documents crowds CELLS only when the groups
+are few or unequal. This sample sits in **215** directories, largest holding **5.66 percent**, and
+215 comparable groups over 64 cells spread about as evenly as 512 independent draws. The elder key
+groups by *how a file starts*, and files here start with a shebang, a heading, or a `const std`.
+**AND THE CONFIDENTIALITY HALF STANDS UNTOUCHED**, read the same way here: room recovery **0.4473**
+path and simhash, **0.4082** sha3, against a no-key baseline of **0.3516** over 41 rooms. For the
+path key that is a FLOOR -- its high byte IS the directory, so the leak is total by construction.
+**LANDED:** `key_trade`, `tier lap`, **GREEN in 27s** over **42 legs, 0 failures**, four mutations
+bitten. Paper `20260916-051607_the-trade-that-was-not-a-law.md` reads **A/90** at Field. Every tree
+figure is **FREE**; the closed forms -- torus **128**, ring **16384**, Hamming **8** -- are HELD,
+each proven against a planted uniform population from both sides.
+**THE READING THAT CORRECTED ITSELF.** Each related population is read against the closed form,
+which asks whether a key is uniform, AND against that key's own random baseline, which asks whether
+it carries the relation. The path key's UNRELATED pairs already sit at a torus mean of **95.164**
+against a uniform 128, so a same-directory mean under 128 would count concentration as locality.
+Read honestly, one of nine SimHash readings is a **false positive**.
+**MY OWN REDS, both caught inside this lap.** The four mutants lived in the system temporary
+directory, where the scan's root walk fails before it reads a flag -- so all four "bites" were that
+walk failing. They live under this root now beneath a **sham leg** running an unmutated copy from
+the same room. And the build was nearly a DUPLICATE: the claim board and the paths read clear while
+the elder work sat one letter room over under the same basename `locality_key_scan.sh`, behind a
+paragraph headed *The open door, closed* rather than *erratum*, so the errata grep never saw it.
+Renamed whole to `key_trade` so the basename resolver keeps one answer.
+**YOURS:** the path key holds both properties and names a file by where it sits, which is a
+content-addressed store's own opposite. Does a path-keyed INDEX beside the digest earn its own lap?
+**MINE:** the trade's operand is the number and evenness of the groups a key induces, measured for
+no corpus this tree does not own.
 **PETRICHOR -- FIVE DOCUMENTATION REDS, AND TWO OF THEM WERE ONE BYTE.**
 Elder [shelved whole](archive/20260916-013806_itinerary-landed-accounts.md); its open question asks
 whether a whole-tree ratchet should report its own delta.

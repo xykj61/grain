@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.053336` | [The trade that was not a law](20260916/20260916-053336_the-trade-that-was-not-a-law.kyri) | a path key reads even and carries adjacency; the elder trade is no law |
 | `20260916.051458` | [The amend that followed its own push](20260916/20260916-051458_the-amend-that-followed-its-own-push.kyri) | %760: a published commit forced; rule 5's second firing |
 | `20260916.044224` | [The grid that was already flat](20260916/20260916-044224_the-grid-that-was-already-flat.kyri) | 2x2 torus IS 2x2 mesh; row 7 speaks, all twelve now do |
 | `20260916.030301` | [Two rows built and never turned](20260916/20260916-030301_two-rows-built-and-never-turned.kyri) | moonshot rows 1 and 3 ran green, six days unturned |
