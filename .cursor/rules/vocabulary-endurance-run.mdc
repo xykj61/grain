@@ -14,7 +14,7 @@ Both run owed proofs. A content-keyed build may spare an identical recompilation
 
 ## Why the elder word was worth leaving
 
-**A pass is something a thing DOES or FAILS; an endurance run is something a tree UNDERGOES.** The roster is not asking whether one guard answers green -- it is asking whether a whole tree still stands after 371 guards in a row. The elder word borrowed the vocabulary of a single check and applied it to the exercise that contains hundreds of them, so *the pass failed* could mean one guard reddened or the tree fell over.
+**A pass is something a thing DOES or FAILS; an endurance run is something a tree UNDERGOES.** The roster asks whether a whole tree still stands after 371 guards in a row, rather than whether one guard answers green. The elder word borrowed the vocabulary of a single check and applied it to the exercise that contains hundreds of them, so *the pass failed* could mean one guard reddened or the tree fell over.
 
 ## What this does not retire
 
@@ -25,9 +25,9 @@ Both run owed proofs. A content-keyed build may spare an identical recompilation
 
 ## Why it needed a rule, which is the whole lesson
 
-**The molt was seated in the Lexicon and nowhere else, and it stalled there.** Measured `20260915` across all eight ships: each tree read **178 or 179** occurrences of the elder words and **60** of the living one, agreeing to within a single file -- so the molt never "failed to reach a tree" at all. Eight checkouts of one repository cannot disagree about tracked bytes; they disagreed with the *intention*, uniformly.
+**The molt was seated in the Lexicon and nowhere else, and it stalled there.** Measured `20260915` across all eight ships: each tree read **178 or 179** occurrences of the elder words and **60** of the living one, agreeing to within a single file -- so the molt never "failed to reach a tree" at all. Eight checkouts of one repository agree about tracked bytes by construction; what they disagreed with was the *intention*, uniformly.
 
-What the elder words actually stood on was **5 living files** against those 717 of testimony. A Lexicon row is a definition a reader looks up; a rule room is what a lap reads before it writes. Every other word this tree has molted carries a rule page -- [`nib`](vocabulary-nib.md), [`red over bug`](vocabulary-red-over-bug.md), [`first resident`](vocabulary-first-resident.md), [`aroma`](vocabulary-aroma.md), [`dependent`](vocabulary-dependent.md), [`survey`](vocabulary-survey.md), [`flaky`](vocabulary-flaky.md) -- and this one carried none.
+What the elder words actually stood on was **5 living files** against those 717 of testimony. A Lexicon row is a definition a reader looks up; a rule room is what a lap reads before it writes. Every other word this tree has molted carries a rule page -- [`nib`](vocabulary-nib.md), [`red over bug`](vocabulary-red-over-bug.md), [`first resident`](vocabulary-first-resident.md), [`aroma`](vocabulary-aroma.md), [`dependent`](vocabulary-dependent.md), [`survey`](vocabulary-survey.md), [`flaky`](vocabulary-flaky.md) -- and this page is the first one this word has had.
 
 **The measurement to run rather than trust**, since both figures move as testimony grows:
 

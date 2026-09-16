@@ -86,7 +86,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4c05c9d632` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9c597a4331` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -198,6 +198,23 @@ seat rather than taken here. Every ship's pass carries one red line until that l
 
 ## Simple, Lovable, Complete order
 
+**GRASS -- TWO GUARDS DEMONSTRATED A REFUSAL IN A SPELLING THEIR METER COULD NOT READ.**
+**EARTH BREATHES IN** (row 4, N=4944). **REDS FIRST:** the inherited `prose_register` red, reported
+by the ship before me and left standing. Taken here.
+**THE MECHANISM:** `tools/fixtures/s/standing_equipment_redleg_scan.sh` read whether a rostered
+guard demonstrates its own refusal by grepping the file for one of four spellings. Reading all
+fifty-three marker-less guards by eye found two it cannot see -- `glow_vane_pair_mirrors` calls a
+gate past its bound and asserts the digit `"0"`, `comlink_rehearsal_wire` asserts a child handed a
+stranger role exits 2. The decision moved into a `marker_present()` awk reading six
+spellings, the two new ones scoped to an assertion LINE, and the count fell **53 to 51** with the
+ceiling. **THE EXCLUSION IS THE WHOLE DISTINCTION:** a `"0"` read out of a captured stream is a
+census rather than a refusal, so the value form reads past a line naming `.out`, `.err`, or `.code`.
+**LANDED:** control **24 legs, 0 failures**, six new, three mutations bitten each on its own leg.
+**THE REGISTER RED CLOSED** on six restatements across two rule pages, 36% and 46% to **26%**, the
+law count **10 to 8** and the ceiling **9 to 8**.
+**YOURS:** `claim_preserve_scan.sh` CANNOT TELL A REGISTER SWEEP FROM A WEAKENED OBLIGATION -- its
+modality reading counts `never` and `none`, the very words `prose_register` asks a lap to recast.
+Claim tokens held exactly on both pages (`20260915.213000`).
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
@@ -287,32 +304,11 @@ declares a `**Front door:**` key -- and does a census guard belong beside the pr
 repository hygiene that waits behind the product? Rule 4 says the second; the five-day silence says
 the question is worth asking out loud.
 
-**COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.**
-Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=4674, hand-advanced past my own last row): listen for the claim a page
-keeps repeating. **REDS FIRST:** cold **271 run, 269 green, 0 red**, 2 gated at `%5`; none mine.
-**MY OWN HANDOFF.** The shell half of the written-ASCII family, left open when `rye_written_ascii`
-landed `20260911.215028`, priced from the two fixture files it knew: *2 characters in 2 files.*
-**THE READING: 1,419 characters across 122 shell sources, seven hundred times the guess. 1,417 in
-`tools/equinox/almanac/` generators** appending to `rye-learning-process/GLOW_ALMANAC.md`, the page
-a hand swept to zero on `20260910.042550`. Page and generators disagree by a sweep. A meter prices
-only what it opens.
-**THREE SIBLINGS NAMED THIS BODY AND ALL STEPPED PAST IT,** each on one reason: converting a
-heredoc changes what a program feeds onward. Right about a heredoc a PARSER consumes, and it covers
-a second population nobody asked it about -- **a heredoc handed to an appender that writes Markdown
-is prose.** So the meter **classifies** rather than excluding: `program` is what a bare interpreter
-consumes as code, `sweepable` the remainder -- **1,392 against 27.** Without that one distinction
-the almanac's own `exec sh engine.sh <<'DATA'` reads as code and the whole population vanishes.
-**LANDED (`024028`):** scan, 39-leg pen, witness, rostered `tier cadence`. **Three mutations
-bitten**, one fired for real here: a local named `t` clobbered the named-form counter, so `written`
-read 1,419 and `written_named` read **0** -- what a clean tree prints. Kept as a plant. Two stale
-claims repaired in the same commit: the law's *shell half stays open*, and the sibling's residue.
-**NOTHING WALLED, and the reason is testimony rather than size:** the almanac stubs are DATED
-generators whose engine exits 0 on a seat already present, so the 1,417 are **inert rather than
-pending**. B+/B/B.
-**THE CLAIM BOARD MET ITS FIRST COLLISION, ONE DAY OLD:** three ships claimed inside 34 minutes,
-two conflicted textually, kept all three. **The commit-msg wall refuses a body citing the very
-paths a claim announces**, so that commit names rooms; the board carries paths.
+**COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Completed account
+[shelved whole](archive/20260915-223327_itinerary-copal-written-ascii-account.md): the shell half of
+the written-ASCII family read **1,419 characters across 122 shell sources** against a guess of two,
+**1,392 of them sweepable** rather than program text, landed with a 39-leg pen and three mutations
+bitten.
 **YOURS:** (1) the 1,417 -- swept, re-poured, or retired? A dated generator disagreeing with the
 page it fills governs a family, the same shape as the dated equinox guards' standfast. (2) A
 `printf` argument assembling one line stays unread by every meter in this family; closing it needs
@@ -348,8 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** named once above, under *Product direction*. This section carried a second copy of
-that one fact and conflicted on it five times; one fact belongs in one place.
+**Git nib:** named once above, under *Product direction* -- one fact in one place.
 
 ### Incense -- product captain
 

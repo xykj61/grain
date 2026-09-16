@@ -93,6 +93,55 @@ echo "$out" | grep -q 'over_ceiling: choir ' && ok "a raised ceiling names the g
 out=$(run_scan 1 || true)
 echo "$out" | grep -q 'over_ceiling:' && bad "a held ceiling stays quiet" || ok "a held ceiling stays quiet"
 
+# --- the asserted refusal VALUE, proven from both sides ---
+# The over-bound argument is the plant and the digit is the wall answering, so a guard writing this
+# demonstrates its own refusal. Planted, then lifted by changing only the case the line asserts.
+cat > "$pen/tools/p/value_witness.rish" <<'EOF'
+assert (side "gate-pen-caps-pair-bound-u32" "9" "8") == "0" else "pen: over-bound must speak 0 -- the wall refuses"
+EOF
+write_roster toothed value
+out=$(run_scan 0 || true)
+echo "$out" | grep -q 'guards_no_refusal_marker=0' && ok "an asserted refusal value counts as a demonstration" || bad "an asserted refusal value counts as a demonstration"
+cat > "$pen/tools/p/value_witness.rish" <<'EOF'
+assert (side "gate-pen-caps-pair-bound-u32" "3" "8") == "1" else "pen: within must speak 1"
+EOF
+out=$(run_scan 0 || true)
+echo "$out" | grep -q 'guards_no_refusal_marker=1' && ok "lifting the refusal value returns the guard to the count" || bad "lifting the refusal value returns the guard to the count"
+
+# --- the asserted refusal EXIT, proven from both sides ---
+cat > "$pen/tools/p/exit_witness.rish" <<'EOF'
+let stranger = run ["sh" "tools/p/pen_role.sh" "stranger"]
+assert stranger.code == 2 else "pen: a role outside the seats was admitted"
+EOF
+write_roster toothed exit
+out=$(run_scan 0 || true)
+echo "$out" | grep -q 'guards_no_refusal_marker=0' && ok "an asserted non-zero exit counts as a demonstration" || bad "an asserted non-zero exit counts as a demonstration"
+cat > "$pen/tools/p/exit_witness.rish" <<'EOF'
+let stranger = run ["sh" "tools/p/pen_role.sh" "stranger"]
+assert stranger.code == 0 else "pen: the role was refused"
+EOF
+out=$(run_scan 0 || true)
+echo "$out" | grep -q 'guards_no_refusal_marker=1' && ok "an asserted zero exit is no refusal" || bad "an asserted zero exit is no refusal"
+
+# --- the census exclusion, proven from both sides ---
+# A `"0"` read out of a captured stream is a count of the live tree, planting nothing. This is the
+# tools/g/gen_home_witness.rish shape, and the exclusion is what keeps a census out of the marker
+# set. Removing the stream from the same line flips the reading, so the exclusion is load-bearing
+# rather than decorative.
+cat > "$pen/tools/p/census_witness.rish" <<'EOF'
+let flat = run ["sh" "tools/p/pen_census.sh"]
+assert (trim flat.out) == "0" else "pen: expected zero flat desks"
+EOF
+write_roster toothed census
+out=$(run_scan 0 || true)
+echo "$out" | grep -q 'guards_no_refusal_marker=1' && ok "a zero read out of a captured stream is a census, never a refusal" || bad "a zero read out of a captured stream is a census, never a refusal"
+cat > "$pen/tools/p/census_witness.rish" <<'EOF'
+let flat = run ["sh" "tools/p/pen_census.sh"]
+assert (trim flat) == "0" else "pen: the gate must speak zero"
+EOF
+out=$(run_scan 0 || true)
+echo "$out" | grep -q 'guards_no_refusal_marker=0' && ok "the captured-stream exclusion is load-bearing" || bad "the captured-stream exclusion is load-bearing"
+
 # --- an absent path is counted rather than crashed over ---
 write_roster toothed ghost
 out=$(run_scan 0 || true)
