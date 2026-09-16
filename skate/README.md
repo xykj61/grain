@@ -6,8 +6,8 @@
 **Home:** [Grain](../README.md)
 
 This package gives the existing Brushstroke-to-Surf-and-Skate frame contract its first native
-Swift body. Surf and Skate are peer synonyms for one surface. Either name may be spoken without
-changing its meaning. The `skate/` path and `SkateCore` module remain stable names for the package.
+Swift body. Surf and Skate are peer synonyms for one surface. Either name carries the same
+meaning. The `skate/` path and `SkateCore` module remain stable names for the package.
 Brushstroke already lowers a `.brush` value into one through eight declared lines and paints those
 lines into a forty-column by eight-row proof grid. The core carries that exact small shape in fixed
 inline storage, with eight palette seats and slot zero kept as the existing foreground sentinel.
@@ -21,22 +21,23 @@ The same bounded package now carries the first neutral event admission seam. `Ev
 inline seats and two monotonic counters. Modulo chooses a physical seat only; FIFO order and counts
 remain linear. A full ring returns `EventRingError.full` with every admitted event still present,
 and a counter at the unsigned ceiling returns `counterExhausted` before arithmetic or mutation.
-No AppKit callback shape or product gesture enters this type. A later shell may translate its
-platform events into a separately seated domain value and offer that value to this queue. The ring
-bounds its seats and counters; it does not prove the nested storage of an arbitrary generic event.
-Strings, collections, references, and other payloads remain outside this admission claim until the
-domain event type gives them an independent fixed bound.
+This type stays neutral: AppKit callback shapes and product gestures belong to the later
+shell. That shell may translate its platform events into a separately seated domain value and offer
+that value to this queue. The ring's proof covers its seats and counters; the nested storage of an
+arbitrary generic event stands outside it. Strings, collections, references, and other payloads
+remain outside this admission claim until the domain event type gives them an independent fixed
+bound.
 
-The first media receipt now joins three already-computed public values without pulling their
-implementations into Swift. `ImageSkatePlane` admits the exact forty-by-eight full-block plane that
+The first media receipt now joins three already-computed public values while their
+implementations stay in Rye. `ImageSkatePlane` admits the exact forty-by-eight full-block plane that
 `brushstroke/image_skate.rye` produces from the image module. `LotusMeterReading` admits Lotus's
 sample count, peak, and root-mean-square reading under Lotus's own bounds. `Sha3DigestClaim` admits
 exactly thirty-two public bytes, the width of `crypto/sha3.rye`'s SHA3-256 result. `MediaReceipt`
 holds those values beside one native frame. Surf and Skate are compile-time aliases over this
 receipt too.
 
-The first Image history receipt carries already-rendered edit lines without moving Image's grammar
-or replay algorithms into Swift. `ImageEditRecordClaim` admits one through forty-nine caller bytes,
+The first Image history receipt carries already-rendered edit lines while Image's grammar and
+replay algorithms stay in Rye. `ImageEditRecordClaim` admits one through forty-nine caller bytes,
 the full line width proved by `image/photo_edits.rye`. `ImageEditHistory` keeps sixty-four such
 claims in order, with three thousand one hundred thirty-six payload bytes owned inline. A full
 history returns `ImageEditHistoryError.historyFull` before changing any admitted record. Surf and
@@ -59,27 +60,28 @@ beta leg is held in the maintainer's own study room, which this projection withh
 This local slice uses its strongest Swift form. `FrameGrid` owns the one implementation.
 `SurfFrameGrid` and `SkateFrameGrid` are public compile-time aliases of that neutral type. The two
 spoken names therefore share one state shape, initializer, method set, capacity law, and refusal
-contract. They add no wrapper, conversion, subclass, duplicated storage, or second source that
-could drift.
+contract. Wrapper, conversion, subclass, duplicated storage, and a second source all stay
+outside the instance, which is what holds the two spellings identical.
 
-This core has no serialized frame format yet, so the aliases add no serialized spelling. A future
+A serialized frame format awaits its own seating, so the aliases carry one spelling today. A future
 format belongs to the one underlying `FrameGrid` contract. A repository-wide alias registry or
 cross-language name schema remains a separate canon decision; this package records only the local
 MIND-owned instance.
 
 The first Linengrow Receipt Card has its own fixed **72-column by 18-row** plane, matching the
-accepted product contract without stretching the elder forty-by-eight media frame. Its initializer
-admits the deciding Linengrow fields, refuses empty, non-ASCII, over-wide, or over-limit input before
-publishing a value, and renders twelve deterministic ASCII lines. The accessibility reader walks
-those same rendered bytes in row order, so visual and semantic text cannot drift into two copies.
+accepted product contract while the elder forty-by-eight media frame keeps its own shape. Its
+initializer admits the deciding Linengrow fields, refuses empty, non-ASCII, over-wide, or
+over-limit input before publishing a value, and renders twelve deterministic ASCII lines. The
+accessibility reader walks those same rendered bytes in row order, so visual and semantic text
+read from one set of bytes.
 
 The Consent Rail carries the receipt's purpose, recipient, expiration, and consent status through
-one bounded presentation value. Still is complete. Settle reaches the same folded or expanded frame
-within 1,000 milliseconds, and reduced motion reaches it immediately. Respond is a 400-millisecond
-local pulse that changes no product state. Accessibility reads the rendered row bytes in the same
-order, so motion creates no second semantic description. Reduced motion, renderer loss, and a
-hidden document return the complete Still frame immediately; the 1,000-millisecond renderer boot
-deadline is a ceiling rather than a delay.
+one bounded presentation value. Still is complete. Settle reaches the same folded or expanded
+frame within 1,000 milliseconds, and reduced motion reaches it immediately. Respond is a
+400-millisecond local pulse, and product state stands through it. Accessibility reads the rendered
+row bytes in the same order, so motion and accessibility share one description. Reduced motion,
+renderer loss, and a hidden document return the complete Still frame immediately; the
+1,000-millisecond renderer boot deadline is a ceiling rather than a delay.
 
 ## The owned bounds
 
@@ -101,13 +103,13 @@ deadline is a ceiling rather than a delay.
   one-through-forty-cell row-local rect.
 - A Consent Rail owns two 360-byte inline frames, one folded and one expanded. Each frame holds at
   most five rows of seventy-two ASCII cells. Settle completes within 1,000 milliseconds; Respond
-  lives for 400 milliseconds and changes neither frame. Renderer loss falls back before a
+  lives for 400 milliseconds, and both frames stand through it. Renderer loss falls back before a
   1,000-millisecond boot deadline.
 - An admitted image plane owns exactly three hundred twenty full-block cells and three hundred
   twenty palette indexes. Each index is one through seven, matching HUNK2's fixed anchor palette.
-- A Lotus meter reading owns a count from zero through two to the twenty-sixth samples, a peak no
-  greater than thirty-two thousand seven hundred sixty-eight, and a root-mean-square no greater
-  than its peak. An empty reading carries zero levels.
+- A Lotus meter reading owns a count from zero through two to the twenty-sixth samples, a peak at or
+  under thirty-two thousand seven hundred sixty-eight, and a root-mean-square at or under its
+  peak. An empty reading carries zero levels.
 - A SHA3 digest claim owns exactly thirty-two bytes. The type proves that width only. It neither
   hashes content nor claims those bytes came from Grain's crypto implementation.
 - A missing or 129-byte nib, a line ceiling of zero or nine, a line past the declared ceiling, a
@@ -178,19 +180,19 @@ unchanged in each case. A compile-time assignment proves that Surf and Skate nam
 event-ring identity.
 
 The accessibility controls regenerate one exact frame root and eight forty-byte line nodes. The
-root carries all 128 at-nib bytes, every line keeps its rendered bytes and grid row, and compile-time
-assignments pass the finished snapshot through both peer names. Repeating one regeneration produces
-the same node values and physical seats. Empty labels, a 129-byte frame label, a forty-first line
-byte, rows and column starts on both sides of their bounds, empty and over-wide cell counts, and a
-span crossing column forty all refuse by name. A ten-node source returns `accessibilityTooLarge`
-with the prior count, all nine physical seats, and every node's 128 inline label bytes unchanged.
-Regenerating a shorter frame also proves that every retired physical seat is cleared before the new
-whole snapshot appears.
+root carries all 128 at-nib bytes, every line keeps its rendered bytes and grid row, and
+compile-time assignments pass the finished snapshot through both peer names. Repeating one
+regeneration produces the same node values and physical seats. Empty labels, a 129-byte frame
+label, a forty-first line byte, rows and column starts on both sides of their bounds, empty and
+over-wide cell counts, and a span crossing column forty all refuse by name. A ten-node source
+returns `accessibilityTooLarge` with the prior count, all nine physical seats, and every node's
+128 inline label bytes unchanged. Regenerating a shorter frame also proves that every retired
+physical seat is cleared before the new whole snapshot appears.
 
 This slice establishes the core contract alone. Visual form, animation, domain, identity, release,
-and model settings remain later seats at their existing custody gates. Swift does not decode QOI,
-meter PCM, recompute SHA3, verify a digest, parse an edit line, or replay an edit in this slice;
-those operations remain in their proven Rye modules. A future cross-language boundary must prove
+and model settings remain later seats at their existing custody gates. QOI decode, PCM metering,
+SHA3 recomputation, digest verification, edit-line parsing, and edit replay all remain in their
+proven Rye modules through this slice. A future cross-language boundary must prove
 that the carried digest matches the bytes before it may remove the word `Claim`, and Image remains
 the authority for every edit record this history carries. The fixed floor is ready for the later
 AppKit shell.

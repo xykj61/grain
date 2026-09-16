@@ -86,7 +86,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9c597a4331` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7e46c3f3eb` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -258,51 +258,48 @@ Which stands?
 population carrying no usable distance. Fold them into one recorded finding, or keep three errata?
 And does the page's title move from torus to what the survivors support?
 
-**PETRICHOR -- A FRONT DOOR'S CENSUS STOOD TWO SHORT FOR FIVE DAYS.**
-Elder [shelved whole](archive/20260915-222900_itinerary-landed-accounts.md); its open question asks
-whether a meter should run what a door tells a reader to run.
-**AIR FEELS** (row 1, N=4996): feel for the boundary under the hand. **REDS FIRST:** the cold pass
-opened at 22:08 and read three red by guard 39 -- `prose_register`, `fold_shelf_link_repoint` and
-`itinerary_account_shelf`. **Two are closed in this send and the third was transient**: rerun by
-hand, `itinerary_account_shelf` reads GREEN across 43 behaviors, which is `%747`'s shape again on a
-pier eight ships share.
-**THE DOOR.** Reach named `press/README.md` -- **32 living citers and four `MAP.md` mentions**, the
-highest-reached of the fifteen unrostered doors over ceiling. The register was the errand and the
-census was the finding: the door read *four pieces stand* while **six** stood. The vortex pair
-landed `20260910.054448`, carries a `**Room:**` line reading mixed, cites this door in its own Kin
-block -- and reached no table for five days. The `date/20260907/` shelf holding the room's one
-published HTML page went unnamed as well.
-**WHAT NOTHING READS.** `front_door_claim` proves the REVERSE direction, that a page declaring a
-front door is named back by it. `foundations_reach` asks whether one room's index reaches a page.
-The forward direction -- whether a door's own list reaches every living piece beside it -- stands
-unread.
-**AND THE OBVIOUS METER WOULD MISREAD.** Counting living sibling pages a README declines to link,
-across all 120 front doors, names `counsel/replies/README.md` at 162 of 163 and
-`active-designing/README.md` at 157 of 194 -- both correct, since a room of two hundred pieces is
-found by its resolver rather than by a list. The honest population is the door that **declares** an
-exhaustive list, the way a page opts into `front_door_claim` by carrying a key. Both figures are
-**FREE**; run the count.
-**LANDED:** the table carries six rows, the shelf is named, and the census fault is written on the
-page where the next reader of that door will meet it. Register **27 to 7 percent**, 6 negatives to
-3, every remaining one load-bearing -- the Twilight law's own *never gloom*, the custody rule's own
-*Nothing leaves without a hand*, and the benediction. Rostered on `DOOR`: `door_documents` 21 to 22,
-`front_doors_unrostered_over` **15 to 14**, `door_over_ceiling` still 0. Card **A/91** at
-`truth_mode=judged`. Red booked (`20260915.222900`), BOOKED. The REDS pin took the row at
-**65,535 bytes against its 65,536 bound** -- one byte of slack, so the next row there folds first.
-**MY OWN RESIDUE, CLOSED.** Rostering `ember/README.md` last lap left it the one door declaring a
-style and naming no setting; its `**Style:**` line reads *Twilight, held at the **Door** setting*
-now and `door_setting_undeclared` reads **0**.
-**TWO REDS OUT OF LANE, TAKEN BECAUSE REDS OUTRANK TIDINESS.** `prose_register` was breached by
-exactly one law page: the ratchet read **10 against a ceiling of 9**, and two rule pages seated
-today had pushed it there. Three sentences in `.claude/rules/vocabulary-endurance-run.md` took the
-affirmative form with every claim, number and link held -- **46 to 26 percent** -- and the reading
-meets its ceiling at 9. `fold_shelf_link_repoint` read **3 depth-lost links** in three
-`construction/archive/` account shelves written by two peers this evening; the tree's own repointer
-computes one correction each and I ran `--apply`. Both witnesses GREEN on metal.
-**YOURS:** should a front door be able to **declare** that it lists its whole room, the way a page
-declares a `**Front door:**` key -- and does a census guard belong beside the prose meters, or is it
-repository hygiene that waits behind the product? Rule 4 says the second; the five-day silence says
-the question is worth asking out loud.
+**PETRICHOR -- A DOOR WHOSE BODY IS A PROOF CENSUS, HELD TO ITS OWN DECLARATION.**
+Elder [shelved whole](archive/20260915-223304_itinerary-landed-accounts.md); its open question asks
+whether a door may declare that it lists its whole room.
+**FIRE SEES** (row 2, N=5002): look hard at what most laps route around. **REDS FIRST:** the cold
+pass found a stale roster lock held by the previous lap, its verdict already fixed at `tree_moved`;
+`fleet_call.sh --signal TERM` released it by working directory rather than by name, and the pass
+reopened clean.
+**THE DOOR.** Reach named `skate/README.md` -- **30 negatives of 109 sentences, 27 percent against a
+20 percent declaration**, the largest repairable body among the fourteen unrostered doors over
+ceiling. **563 living citers.**
+**WHAT LOOKING HARD FOUND.** Eighteen of the thirty negatives stand in `## The owned bounds` and
+`## Prove the seam` -- a refusal contract and a control census, which is Meter content inside a
+Door-declared page. The tempting repair was to redeclare the page Field, where 27 percent passes
+untouched. The scan's own header had already ruled on that shape: when `docs/` joined the roster,
+*the room paid its way in rather than buying a raise*, and `WITNESS_PATTERNS.md` went 52 to 29 by
+restating the incidental negatives while keeping every one whose subject is refusal.
+**SO THE PAGE PAID.** Fourteen incidental sentences took the affirmative form and **no sentence was
+deleted** -- 109 before, 109 after. `without pulling their implementations into Swift` became `while
+their implementations stay in Rye`; `a peak no greater than 32,768` became `at or under`, which is
+the `peak <= lotusSamplePeak` guard at `skate/Sources/SkateCore/FrameGrid.swift:79` spelled in the
+tree's own ceiling words; `Swift does not decode QOI, meter PCM, recompute SHA3...` became those six
+operations named where they live. **27 to 14 percent.**
+**WHAT STAYED, AND WHY.** All sixteen survivors are the page's subject: `refuses empty, non-ASCII,
+over-wide` is an initializer's contract, `neither hashes content nor claims those bytes came from
+Grain's crypto` is the whole reason the type wears the word `Claim`, and eleven more are controls
+reporting what they plant and refuse. A ceiling met by deleting those would be a worse page at a
+better number.
+**TRUTH, JUDGED RATHER THAN COUNTED.** The card reads `truth_mode=counted` when the judged half goes
+unread, so I read it: every named error case (`EventRingError.counterExhausted`,
+`ImageEditHistoryError.historyFull`, `AccessibilitySnapshotError.accessibilityTooLarge`), every
+`public typealias` peer pair, and the Lotus bound all stand in the Swift sources; all six backticked
+module paths resolve.
+**LANDED:** rostered on `DOOR` in the same commit, so the reading is a wall rather than a ratchet --
+proven from both sides by reverting the page, watching the scan refuse `register_drift` at exit 1,
+and restoring it to green. `door_documents` **22 to 23**, `front_doors_unrostered_over` **14 to 13**,
+`door_over_ceiling` still **0**, `door_setting_undeclared` **0** -- the page already declared the
+Door setting, so rostering it cost one path. Card **B+/85** at `truth_mode=judged`. No red booked: a
+low grade is never a red, and nothing here was wrong.
+**YOURS:** a page whose closing two sections are a bounds table and a control census is Meter prose
+under a Door declaration. Should a page be able to declare **one setting per section**, so a front
+door's introduction is held at 20 while its proof census is read as the refusal-led writing it is --
+or does one page keep one setting, and a body that drifts Meter-ward mean the page wants splitting?
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Completed account
 [shelved whole](archive/20260915-223327_itinerary-copal-written-ascii-account.md): the shell half of
