@@ -226,13 +226,61 @@ pub fn diff(
         }
     }
 
-    // Collect inserts: new lines not in the LCS, in new-text order.
-    var inserts: std.ArrayListUnmanaged([]const u8) = .empty;
-    for (new_text, 0..) |text, idx| {
-        if (!kept_new[idx]) {
-            try inserts.append(allocator, text);
+    // Collect inserts: new lines not in the LCS, in new-text order, and beside
+    // each the line it REPLACES (REDS %680).
+    //
+    // THE PAIRING IS BY GAP, which is how a diff tool decides a hunk is a
+    // replacement rather than a delete standing next to an insert. Both walks
+    // count the kept lines behind them; two unkept lines with the same count
+    // behind them fall in the same gap between anchors, and inside one gap the
+    // nth departure is replaced by the nth arrival. A gap holding more
+    // departures than arrivals leaves those deletes unpaired, and one holding
+    // more arrivals leaves those inserts fresh -- both are ordinary and neither
+    // is a replacement.
+    //
+    // Pairing decides WHICH line a replacement stands in for. Where it then
+    // goes is `Weave.apply`'s answer, and it answers with the `ord` this names.
+    var gap_of_delete: std.ArrayListUnmanaged(u32) = .empty;
+    var seen_kept: u32 = 0;
+    for (old_lines, 0..) |_, idx| {
+        if (kept_old[idx]) {
+            seen_kept += 1;
+        } else {
+            try gap_of_delete.append(allocator, seen_kept);
         }
     }
+
+    var inserts: std.ArrayListUnmanaged([]const u8) = .empty;
+    var replaces: std.ArrayListUnmanaged(?LineId) = .empty;
+    var taken: u32 = 0;
+    seen_kept = 0;
+    for (new_text, 0..) |text, idx| {
+        if (kept_new[idx]) {
+            seen_kept += 1;
+            // A gap closes at an anchor, so the count of departures already
+            // spoken for resets to whatever this gap has consumed.
+            taken = 0;
+            continue;
+        }
+        try inserts.append(allocator, text);
+        // The nth arrival in this gap answers to the nth departure in the same
+        // gap, when there is one.
+        var found: ?LineId = null;
+        var seen_in_gap: u32 = 0;
+        for (gap_of_delete.items, 0..) |gap, d| {
+            if (gap != seen_kept) continue;
+            if (seen_in_gap == taken) {
+                found = deletes.items[d];
+                break;
+            }
+            seen_in_gap += 1;
+        }
+        taken += 1;
+        try replaces.append(allocator, found);
+    }
+    // invariant: one answer per insert, so a reader walking the two together
+    // can never run off the end of one while the other still has entries.
+    assert(replaces.items.len == inserts.items.len);
 
     // Postcondition: applying the diff is a net transformation -- not necessarily
     // fewer lines, yet never a negative-length insert or delete.
@@ -240,6 +288,7 @@ pub fn diff(
         .site    = site,
         .inserts = try inserts.toOwnedSlice(allocator),
         .deletes = try deletes.toOwnedSlice(allocator),
+        .replaces = try replaces.toOwnedSlice(allocator),
     };
     // invariant: a diff inserts no more than the new document holds and deletes no more than
     // the old one did, so neither side can be asked to apply a change to a line that never

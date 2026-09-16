@@ -77,6 +77,8 @@ const LineId = weave.LineId;
 const V1Row = weave.V1Row;
 const V2Row = weave.V2Row;
 const V2Record = weave.V2Record;
+const V3Row = weave.V3Row;
+const V3Record = weave.V3Record;
 
 // =========================================================================
 // Section Diff -- pure diff computation, imported rather than declared
@@ -214,9 +216,9 @@ const Store = store_mod.Store;
 /// Postcondition: the blob holds one row per weave line, under a header naming
 ///   the record and a line naming both counters.
 fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
-    const record = try w.to_v2(allocator);
+    const record = try w.to_v3(allocator);
     var out = std.ArrayListUnmanaged(u8).empty;
-    try out.appendSlice(allocator, "mantra-weave-v2\n");
+    try out.appendSlice(allocator, "mantra-weave-v3\n");
     var counter_buf: [64]u8 = undefined;
     const counters = try std.fmt.bufPrint(&counter_buf, "{d}\t{d}\n", .{ record.next_pos, record.next_run });
     try out.appendSlice(allocator, counters);
@@ -227,7 +229,7 @@ fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
         assert(std.mem.indexOfScalar(u8, row.text, '\t') == null);
         assert(std.mem.indexOfScalar(u8, row.text, '\n') == null);
         var field_buf: [64]u8 = undefined;
-        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t{d}\t{d}\t", .{ row.gen, row.pos, row.site, row.run });
+        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t{d}\t{d}\t{d}\t", .{ row.gen, row.pos, row.site, row.run, row.ord });
         try out.appendSlice(allocator, prefix);
         try out.appendSlice(allocator, row.text);
         try out.append(allocator, '\n');
@@ -250,6 +252,7 @@ fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
 fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
     var it = std.mem.splitScalar(u8, blob, '\n');
     const header = it.next() orelse return error.InvalidFormat;
+    if (std.mem.eql(u8, header, "mantra-weave-v3")) return read_v3_record(allocator, &it);
     if (std.mem.eql(u8, header, "mantra-weave-v2")) return read_v2_record(allocator, &it);
     if (std.mem.eql(u8, header, "mantra-weave-v1")) return read_v1_rows(allocator, &it);
     return error.InvalidFormat;
@@ -303,6 +306,60 @@ fn read_v2_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .
     // bytes read off disk panics where `from_v2` would have refused by name
     assert(rows.items.len <= weave.max_weave_lines);
     return weave.Weave.from_v2(allocator, V2Record{
+        .rows = rows.items,
+        .next_pos = next_pos,
+        .next_run = next_run,
+    });
+}
+
+/// Read the rows of a `mantra-weave-v3` record, the header already taken.
+///
+/// V3 is v2 with the order key beside each row (REDS %680). Both elder readers
+/// stand, because a store written before this record holds v2 and v1 blobs and
+/// must keep opening; only what this CLI WRITES moved forward.
+fn read_v3_record(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .scalar)) !Weave {
+    const counter_line = it.next() orelse return error.InvalidFormat;
+    var counter_fields = std.mem.splitScalar(u8, counter_line, '\t');
+    const next_pos_str = counter_fields.next() orelse return error.InvalidFormat;
+    const next_run_str = counter_fields.next() orelse return error.InvalidFormat;
+    const next_pos = try tally_parse_int.parse_int(u32, next_pos_str, .{});
+    const next_run = try tally_parse_int.parse_int(u32, next_run_str, .{});
+
+    var rows = std.ArrayListUnmanaged(V3Row).empty;
+    while (it.next()) |row| {
+        if (row.len == 0) continue;
+        // invariant: the row that would pass the ceiling is refused before it is parsed,
+        // so a record off disk allocates at most `max_weave_lines` rows and their text --
+        // the same move `read_commit_v2` makes against `max_commit_files` sixty lines
+        // below. The store's ceiling is in BYTES and this one is in LINES, and the
+        // conversion is what was missing: a blob standing under `max_blob_bytes` carries
+        // roughly fourteen times `max_weave_lines` rows at nine bytes a row.
+        if (rows.items.len >= weave.max_weave_lines) return weave.WeaveError.TooManyLines;
+        var fields = std.mem.splitScalar(u8, row, '\t');
+        const gen_str  = fields.next() orelse return error.InvalidFormat;
+        const pos_str  = fields.next() orelse return error.InvalidFormat;
+        const site_str = fields.next() orelse return error.InvalidFormat;
+        const run_str  = fields.next() orelse return error.InvalidFormat;
+        // The order key is the field v3 adds, and it is REQUIRED: a record
+        // announcing itself as v3 while carrying four numbers is truncated, and
+        // reading it as v2 would put every replacement at the end of its
+        // document in silence.
+        const ord_str  = fields.next() orelse return error.InvalidFormat;
+        const text_str = fields.rest();
+        const gen  = try tally_parse_int.parse_int(u32, gen_str, .{});
+        const pos  = try tally_parse_int.parse_int(u32, pos_str, .{});
+        const site = try tally_parse_int.parse_int(u32, site_str, .{});
+        const run  = try tally_parse_int.parse_int(u32, run_str, .{});
+        const ord  = try tally_parse_int.parse_int(u32, ord_str, .{});
+        const text = try allocator.dupe(u8, text_str);
+        try rows.append(allocator, V3Row{ .text = text, .gen = gen, .pos = pos, .site = site, .run = run, .ord = ord });
+    }
+    // invariant: the loop above refused the row that would have passed the ceiling, so
+    // this holds by construction rather than by hope -- it stood here alone until
+    // `20260910`, after the whole record had already been allocated, and an assert on
+    // bytes read off disk panics where `from_v3` would have refused by name
+    assert(rows.items.len <= weave.max_weave_lines);
+    return weave.Weave.from_v3(allocator, V3Record{
         .rows = rows.items,
         .next_pos = next_pos,
         .next_run = next_run,

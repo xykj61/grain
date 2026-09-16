@@ -117,7 +117,7 @@ newest=""
 for b in "$old"/.mantra/blobs/*; do
   [ -f "$b" ] || continue
   case "$(head -1 "$b")" in
-    mantra-weave-v2) newest="$b" ;;
+    mantra-weave-v3) newest="$b" ;;
   esac
 done
 if [ -z "$newest" ]; then
@@ -152,7 +152,7 @@ cp "$fresh/f.txt" "$bad/f.txt"
 for b in "$bad"/.mantra/blobs/*; do
   [ -f "$b" ] || continue
   case "$(head -1 "$b")" in
-    mantra-weave-v2) sed_inplace '1s/.*/mantra-weave-v9/' "$b" ;;
+    mantra-weave-v3) sed_inplace '1s/.*/mantra-weave-v9/' "$b" ;;
   esac
 done
 if ( cd "$bad" && "$bin" status f.txt >/dev/null 2>&1 ); then

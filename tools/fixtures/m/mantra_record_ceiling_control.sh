@@ -23,7 +23,11 @@
 #   clean          -- the unmutated copy reads verdict=ok with every reading in
 #                     place, which is what lets the others read as the break
 #                     speaking rather than the pen.
-#   no_edge_v2     -- the v2 reader's edge refusal is deleted, so the record is
+#   no_edge_v2     -- the reader's edge refusal is deleted, so the record is
+#                     (RE-AIMED `20260916` at `read_v3_record`: the CLI writes
+#                     the v3 record now, so the v3 reader is the one a fresh
+#                     store passes through, and deleting v2's changes nothing
+#                     about a blob v2 never sees.)
 #                     allocated whole and the trailing assert fires.
 #                     `no_panic` reads no and `refusal_named` reads no, while
 #                     `overlong_refused` still reads yes -- the record IS refused,
@@ -100,12 +104,12 @@ if [ "$(reading "$clean" verdict)" = "ok" ] \
 fi
 echo "clean_ok=$clean_ok"
 
-ne=$(run_pen no_edge_v2 '/^fn read_v2_record/,/^}/ s|^ *if (rows.items.len >= weave.max_weave_lines) return weave.WeaveError.TooManyLines;$||')
+ne=$(run_pen no_edge_v2 '/^fn read_v3_record/,/^}/ s|^ *if (rows.items.len >= weave.max_weave_lines) return weave.WeaveError.TooManyLines;$||')
 echo "no_edge_v2_no_panic=$(reading "$ne" no_panic)"
 echo "no_edge_v2_refusal_named=$(reading "$ne" refusal_named)"
 echo "no_edge_v2_overlong_refused=$(reading "$ne" overlong_refused)"
 
-eg=$(run_pen eager '/^fn read_v2_record/,/^}/ s|if (rows.items.len >= weave.max_weave_lines)|if (rows.items.len + 1 >= weave.max_weave_lines)|')
+eg=$(run_pen eager '/^fn read_v3_record/,/^}/ s|if (rows.items.len >= weave.max_weave_lines)|if (rows.items.len + 1 >= weave.max_weave_lines)|')
 echo "eager_at_ceiling_reads=$(reading "$eg" at_ceiling_reads)"
 echo "eager_overlong_refused=$(reading "$eg" overlong_refused)"
 echo "eager_no_panic=$(reading "$eg" no_panic)"
