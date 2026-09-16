@@ -765,3 +765,5 @@ at a closed fold.*
 *Row %743 folded to [`REDS-the-lock-taken-between-two-calls-rows-743.md`](REDS-the-lock-taken-between-two-calls-rows-743.md) on `20260915.220549`, **CLOSED** -- a lock is only a lock when its creation and its claim are one step.*
 
 *Rows %568, %569, %626, %642 and %646 folded to [`REDS-the-clock-nobody-turned-rows-568-646.md`](REDS-the-clock-nobody-turned-rows-568-646.md) on `20260915.222638`, **BOOKED** and **CLOSED** -- Five instruments whose reach was the fault rather than their reading: a clock nothing turned, a stop that reached a whole pier, a gate on a number no lap could lower, a publish that re-proved everything to ship one file, and a hard assert that made its own witness unrostable. Each closed by finding the runner behind the sentence.*
+
+*Row %700 folded to [`REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md`](REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md) on `20260915.221441`, **CLOSED** -- a guard that cannot tell you whether anything is wrong is worse than one that says something is.*

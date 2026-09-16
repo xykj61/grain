@@ -1629,6 +1629,21 @@ path tools/w/witness_own_build_witness.rish
 tier lap
 seated 20260828.213503
 
+# built_tool_freshness -- the freshness half of the question the row above answers for PRESENCE.
+# witness_own_build passes rye/bin/rye and rishi/bin/rishi free on a reason that is exactly right
+# about what it checks: if either is absent nothing runs at all, so their presence is a bootstrap
+# fact. Both rooms are gitignored, so a pull carries no rebuild, and a present binary arbitrarily
+# far behind its own source runs every guard on the ship and its errors are attributed to whatever
+# it was running (REDS %746). Measured when this row was seated: rishi stood 877,180 seconds --
+# ten days -- behind rishi/src/main.rye, and a healthy peer witness died with NoSuchField on a
+# field the source declares. `lap` because the fault is re-earned by every pull, and because the
+# reading is one git ls-files and one find -newer per tool: 0.5s scan, 2s with its 36-leg pen.
+# The reading lives in plain shell so a rishi too stale to parse this witness cannot silence it.
+guard built_tool_freshness
+path tools/b/built_tool_freshness_witness.rish
+tier lap
+seated 20260915.221313
+
 # Comlink's three pure proofs, seated 20260828.231614. comlink/topology.rye, turn_route.rye and
 # handshake_turn.rye each carry a selftest this tree already trusted, and each was reached by no
 # roster row, no choir and no runner -- they ran when a hand typed their name and at no other time,

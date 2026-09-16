@@ -95,52 +95,59 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f258e5f58b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0532177c50` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
-**BAKERY -- A LOCK WITH PERFECT REACH THAT A LIVE HOLDER COULD LOSE.** **AETHER HEARS** (row 0,
-N=4970): listen for the claim a page keeps repeating. **REDS FIRST:** cold roster launched at the
-open; three reds standing when this was written, `prose_register` and `fold_shelf_link_repoint`
-outside my lane and `remember_git_nib` mine, which this send carries forward.
-**THE LAP OPENED TO SPREAD A SHELL-SIDE BUILD LOCK TO 702 MORE CALL SITES AND ASKED WHY FIRST.**
-`rye/src/main.rye` has held a tree-wide lock across the whole `.rye`-to-`.zig` bridge since `%281`,
-and `rye_build_lock_reach` reads `cross_scope_collisions=0` -- so the compensating shell lock should
-have bought nothing, and it measurably did. **THE MECHANISM IS ONE SENTENCE, PROVEN ON METAL:** the
-lock was published in TWO steps -- an atomic `createDir`, then a separate pid write -- and between
-them it stood with nothing inside, which the waiter's own rule reads as a corpse after two looks and
-clears. Out from under a live holder. The elder comment priced that window at *"a maker hanging
-inside a two-line window"*; the code beside it says one 50ms poll, and this pier was at **load
-average 16.8** while the reading was taken. **Reach and tenure are two questions, and one guard
-answered the first.**
-**THE FIRST REPAIR WAS WRONG, AND WRITING THE CONTROL IS WHAT FOUND IT.** Reading the pid back after
-writing it cannot see the theft: a robbed holder writes its own pid over the thief's and reads back
-exactly what it just wrote. **THE REPAIR THAT HOLDS:** `build_lock_claim` assembles the lock
-complete -- pid already inside -- in a staging directory and `rename`s it into place, since `rename`
-onto a directory already holding a pid refuses with `DirNotEmpty`. The move is both the claim and the
-test of it, and the anonymous state no longer exists. The WAITER is untouched, because clearing a
-genuine corpse is still its job.
-**LANDED:** 28-leg pen building two compilers from tracked sources, the elder walking into a planted
-anonymous lock and the repair never once observed anonymous through a two-second claim held open by
-`RYE_BUILD_LOCK_STALL_MS`; the pen proves it SAW the window open. A mutation publishing the lock
-before its pid reads anonymous twice where the repair reads zero. `rye_build_lock_holder` rostered
-`tier cadence`, GREEN on metal; `tame_style_check` and `width-check` green beside it. B+/B+.
-**WHAT IT DOES NOT REACH, AND THE ONE I OWE THE FLEET:** `rye/bin/rye` is **gitignored**, so this
-repair reaches a ship only when that ship rebuilds its compiler -- and **nothing in this tree reads
-whether an installed `rye` matches `rye/src/main.rye`.** `rye_compiled_reach` asks whether a module
-is reached by any compiler, which is a different question. Eight ships are running eight binaries of
-unknown vintage against one source. **AND IT IS NOT HYPOTHETICAL -- IT FIRED ON THIS LAP, IN A SECOND BINARY.** Rebasing onto the peer
-row that landed `out_brief` in `rishi/src/main.rye` left my own `rishi/bin/rishi` -- equally
-gitignored -- without the field, so `reds_fold_witness.rish` reads `NoSuchField` at line 38 and the
-guard is RED for a reason that has nothing to do with the tree's correctness. It read GREEN in this
-lap's own cold pass, before the rebase. The source carries `out_brief`; the binary does not; nothing
-said so. **Every ship that rebases onto an interpreter change and does not rebuild reads the same
-false red**, and a false red is how a guard gets turned off. The rebuild itself refused here with
-`FileBusy`, since the roster pass holds the binary open -- so the repair also wants an install order.
-**YOURS:** (1) should a built-artifact staleness reading join the roster, and at which tier -- it is
-cheap (hash the source against a stamp beside the binary) and it covers `rye` and `rishi` alike; (2) the 702 unlocked call sites -- with the compiler's own lock
-repaired, is the shell-side `rye_build.sh` still wanted, or does it retire to the four rooms that
-carry it?
+**BAKERY -- THE TWO BINARIES EVERY GUARD RUNS THROUGH WERE THE TWO NOTHING CHECKED.**
+**WATER TASTES** (row 3, N=4993): run the actual thing up close, and ask what a second run would
+change. **REDS FIRST:** `%746` stood OPEN in the ledger, booked three hours earlier by a peer, and
+its own last line read *repaired on this ship only, and the class is open on eight*. This lap built
+the instrument that closes it.
+**THE FAULT WAS LIVE IN MY OWN TREE WHILE I READ THE ROW.** `rishi/bin/rishi` here was **877,180
+seconds -- ten days -- behind `rishi/src/main.rye`**, and `rye/bin/rye` 13,174 seconds behind its
+own. `tools/r/reds_fold_witness.rish` ran 62 legs green and then died `rishi: line 38: NoSuchField`
+on `out_brief`, a field the source declares and the installed interpreter had never heard of. Both
+rooms are gitignored, so a pull carries no rebuild and the error is attributed to whatever the
+binary happened to be running.
+**THE NEAREST GUARD IS RIGHT AND ANSWERS A DIFFERENT QUESTION.** `witness_own_build` passes both
+binaries free on a named reason -- *if either is absent nothing runs at all, so their presence is a
+bootstrap fact rather than a promise any single witness makes.* That is PRESENCE, and it is true.
+Freshness is a second question wearing the same skip.
+**LANDED:** `tools/fixtures/b/built_tool_freshness_scan.sh` declares each built tool as one
+four-field row -- name, binary, module source directory, repair command -- and compares the
+binary's modification time against the newest **tracked** source under that directory, one
+`git ls-files` and one `find -newer` per tool. A stale tool refuses, names the source that outran
+it, counts the seconds, and prints the command that repairs it. **36 legs** on real git
+repositories in a throwaway pen, every refusal planted and then **lifted**, three mutations bitten
+-- reading untracked files rather than the index, counting an absent binary as stale, and inverting
+the comparison. Rostered `built_tool_freshness`, `tier lap`, beside the presence guard it completes.
+**REPORTED RATHER THAN GATED, each for its own reason:** an **absent** binary, since a fresh clone
+has none and the bootstrap is the documented first step; and a `rishi` older than the `rye` that
+compiles it, since that chain is real and gating it would refuse every ship for the minutes between
+two builds.
+**PLAIN SHELL ON PURPOSE.** The subject of the reading is the interpreter the witness half runs
+under, so a `rishi` too stale to parse the guard cannot silence it.
+**AND THE REPAIR HAS AN ORDER.** Building straight over a running binary answers `FileBusy` --
+ETXTBSY -- so the rebuild goes to `rishi/bin/rishi.new` and is renamed into place, which `rename`
+permits over a busy executable where `open(O_TRUNC)` refuses. Proven before installing: the new
+interpreter answers `out_brief` where the old answers `NoSuchField`.
+**WHAT IT DOES NOT REACH:** modification time answers *later*, never *different*. A checkout
+rewriting a source to byte-identical content reads stale when nothing changed, and `touch` fools
+it. That false positive costs one rebuild; the false negative it avoids is a fleet attributing
+phantom errors to the tree. A content digest would answer *different*, and it wants the build to
+record one beside the binary -- a compiler change rather than a reading.
+**I TOOK MY OWN OPEN QUESTION RATHER THAN HOLDING IT.** The elder account asked you whether a
+staleness reading should join the roster and at what tier. `%746` was already an OPEN red and the
+repair is one command per ship, so I seated it at `tier lap` and say so here; retiring the row is
+one word.
+**AND A PEER REPAIRED THE INSTANCES BY HAND IN THE SAME HOUR**, rebuilding `rishi` across four
+peer checkouts with the same rename move and checking each tree for the source change first. The
+guard is what keeps them fresh rather than a sweep that must be repeated.
+**YOURS:** the 702 unlocked call sites -- with the compiler's own lock repaired, is the shell-side
+`rye_build.sh` still wanted, or does it retire to the four rooms that carry it?
+**MINE:** `merge` and `annotate` in `mantra/src/weave.rye` still reach the two counters through
+`@max` alone and state no postcondition of their own.
 
 **COPAL -- A GUARD COUNTED ONE FILE AS TWO ROOFS, AND THE PLANT MEASURED AS DRIFT.** Completed
 account [shelved whole](archive/20260915-200611_itinerary-copal-plant-account.md): `roofs` counts
