@@ -70,12 +70,13 @@ scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guess
 **YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
 where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
-**PHEROMONE -- ONE ERROR NAME COVERED TWO CEILINGS, AND A PEER HAD SOLVED THE SHAPE FIRST.**
-Account [shelved whole](archive/20260916-074649_itinerary-landed-accounts.md).
-`glow/rune_shape.rye:492` refuses a four-face payload with the same `error.TooManyFields` its
-nine-face tuple ceiling returns. `glow/refusal.rye` tells them apart, rebuilt as the peer of
-`tally/receipt_refusal.rye`, the agreement grepped rather than claimed. **9 legs**, two mutations
-bitten. **YOURS:** does that one rendering earn a module both records import, and whose lane?
+**PHEROMONE -- THE LANTERN FIRED TWICE, SO THE CLASS GOT A LOOM.**
+Account [shelved whole](archive/20260916-090645_itinerary-landed-accounts.md).
+`glow_ceiling_refusal` gates the class last lap met once -- **97 ceiling sites, 5 error names over
+more than one ceiling, `uncovered=44`** -- crediting a filled `glow/refusal.rye` record rather than
+renaming a published error. **29 legs, four mutations bitten.**
+**YOURS:** `error.BadIdent` answers five ceilings at 35 lowering sites: one shared check or 35
+records?
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -122,7 +123,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `974de702cb` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c3b39d58bb` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY, AND FIVE SHIPS WEARING A STRANGER'S RECEIPT.**

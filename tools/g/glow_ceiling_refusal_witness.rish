@@ -1,0 +1,72 @@
+# glow_ceiling_refusal_witness.rish -- Glow's ceiling refusals each carry their own record.
+#
+# THE LAW IT HOLDS. construction/ITINERARY.md asks pheromone to make Glow's refusal output stable:
+# field, value, ceiling, unit and reason wherever a ceiling applies. An error NAME reports which
+# KIND of refusal happened and nothing else, so two ceilings answering with one word leave a caller
+# unable to tell them apart -- a 70KB source from an invalid byte, a tenth field from a fourth
+# payload face.
+#
+# WHY A GUARD RATHER THAN A SECOND REPAIR. glow/rune_shape.rye answered its field ceiling and its
+# payload-face ceiling with the one word error.TooManyFields, and glow/refusal.rye landed on
+# 20260916 to tell those two apart. The next lap found the same defect in glow/tokens.rye, the lexer
+# every Glow parse passes through, where error.BadToken answers FOUR ceilings. A lantern that fires
+# twice becomes a loom (.claude/rules/reds-first.md), so the class is measured here rather than
+# repaired one file at a time and rediscovered.
+#
+# WHAT IT READS. tools/fixtures/g/glow_ceiling_refusal_scan.sh counts ceiling sites in tracked
+# glow/ sources, groups the returned error names by how many distinct max_ constants they refuse,
+# and reports the sites under a shared name that fill no refusal record. That last number is the
+# gate, under a ceiling that only falls. The error name itself stays published and unrenamed --
+# accrete-never-break -- so a record filled beside the return is what covers a site.
+#
+# THE LEG TALLY IS DERIVED, NEVER RECITED. The control emits control_failed, and every named leg
+# below is asserted by name. A recited total reds on the lap somebody adds a leg, which teaches a
+# lane to stop adding them; control_failed=0 plus the named readings catches a leg that BREAKS
+# without punishing one that arrives.
+#
+#   rishi/bin/rishi run tools/g/glow_ceiling_refusal_witness.rish
+
+let scan = run ["sh" "tools/fixtures/g/glow_ceiling_refusal_scan.sh"]
+assert scan.ok else "the ceiling-refusal scan refused to run"
+assert scan.out contains "instrument=ok" else "the scan could not read a glow source and said so"
+assert scan.out contains "under_ceiling=yes" else "a Glow ceiling refusal shares its error name and carries no glow/refusal.rye record -- run the scan with --list to name it"
+assert scan.out contains "GLOW_CEILING_REFUSAL" else "the scan printed no summary line"
+
+# The record module the gate asks for must exist and must still spell the five parts, or the
+# coverage this guard credits would be credit for nothing.
+let record = run ["sh" "-c" "grep -c 'field={s} value={d} ceiling={d} unit={s} reason={s}' glow/refusal.rye"]
+assert record.ok else "glow/refusal.rye does not spell the five-part refusal line"
+assert record.out contains "1" else "glow/refusal.rye spells the five-part line other than once"
+
+let control = run ["sh" "tools/fixtures/g/glow_ceiling_refusal_control.sh"]
+assert control.ok else "the ceiling-refusal control pen refused to run"
+assert control.out contains "control_verdict=ok" else "the control pen did not reach its last line"
+assert control.out contains "control_failed=0" else "a control leg failed -- the meter no longer answers as its own header claims"
+
+# The four structural readings, each named rather than left to a total.
+assert control.out contains "string_literal_not_ceiling=no" else "a comparison inside a string literal read as a ceiling"
+assert control.out contains "assert_read_past=no" else "an assert line read as a refusal site"
+assert control.out contains "far_return_paired=yes" else "a return five lines below its if went unpaired"
+assert control.out contains "recorded_site_covered=no" else "a site filling a refusal record was still counted uncovered"
+assert control.out contains "repeated_not_shared=no" else "one constant refused at three sites read as a shared name"
+assert control.out contains "witness_room_excluded=no" else "a _witness.rye source entered the reading"
+assert control.out contains "symlink_read_once=no" else "a symlink and its target were read as two sources"
+assert control.out contains "next_statement_return_not_borrowed=yes" else "a return belonging to the next statement was borrowed by the comparison above it"
+assert control.out contains "unpaired_reported=yes" else "the undercount went unreported"
+
+# The instrument itself, and the ceiling from both sides.
+assert control.out contains "broken_instrument_named=yes" else "a refused awk read as a clean zero"
+assert control.out contains "broken_instrument_refuses=no" else "a broken instrument still answered under_ceiling=yes"
+assert control.out contains "absent_counted=yes" else "an index-only path went uncounted"
+assert control.out contains "over_ceiling_refuses=yes" else "one site over the ceiling did not refuse"
+assert control.out contains "removed_returns_green=yes" else "removing the plant did not return the reading to green"
+assert control.out contains "empty_room_named=yes" else "a room holding no Glow source read as a clean tree"
+assert control.out contains "empty_room_refuses=no" else "an empty listing still answered under_ceiling=yes"
+
+# Four mutations, each asserted to bite. A leg that passes under a broken meter proves nothing.
+assert control.out contains "m1_string_strip_bites=bitten" else "the string strip is not load-bearing"
+assert control.out contains "m2_assert_skip_bites=bitten" else "the assert skip is not load-bearing"
+assert control.out contains "m3_lookahead_bites=bitten" else "the brace-depth lookahead is not load-bearing"
+assert control.out contains "m4_record_credit_bites=bitten" else "crediting coverage by the filled record is not load-bearing"
+
+say "GREEN: Glow ceiling refusals -- every shared error name's uncovered sites under a falling ceiling; the pen's legs and its four mutations all reading as their headers claim."

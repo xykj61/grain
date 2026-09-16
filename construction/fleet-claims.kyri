@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim pheromone-ceiling-name-collision
-seat pheromone
-stamp 20260916.080028
-epoch 1789560028
-paths tools/fixtures/g/glow_ceiling_refusal_scan.sh tools/fixtures/g/glow_ceiling_refusal_control.sh tools/g/glow_ceiling_refusal_witness.rish glow/tokens.rye glow/refusal.rye
-what Last lap closed one instance of a defect class: glow/rune_shape.rye answered two different ceilings with the one name error.TooManyFields. Measured across glow today, five error names cover nineteen distinct ceilings, and error.BadToken alone covers four -- a name too long, a cord literal too long, a hex literal with too many digits, and a source too long -- inside glow/tokens.rye, the lexer every Glow parse passes through. That file spells BadToken at nineteen sites, four of them ceilings and fifteen shape faults, so a caller cannot tell a 70KB source from an invalid byte. A lantern that fires twice becomes a loom: build a scan that reads every ceiling-comparison site in tracked glow sources, groups the returned error names by how many distinct max_ constants they cover, and gates that population under a ceiling that only falls -- then fill the four tokens.rye ceiling sites with glow/refusal.rye records so the first reading falls by proof rather than by assertion.
 claim patchouli-weave-placards-and-head
 seat patchouli
 stamp 20260916.080557
