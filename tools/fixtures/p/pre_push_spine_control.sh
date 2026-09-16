@@ -22,8 +22,13 @@ root="$(cd "$here/../../.." && pwd)"
 HOOK="$root/tools/hooks/pre-push"
 SCAN="$root/tools/fixtures/r/reds_spine_derive_scan.sh"
 FILES="$root/tools/fixtures/r/reds_spine_files.sh"
+# The hook carries a SECOND rule -- the conflict-marker reading placed beside this one on
+# `20260915` -- and it refuses a publishing push whose marker scan is absent, on the same clause
+# this rule keeps: an instrument that cannot answer is not an answer of fine. So the pen arms the
+# hook WHOLE. A pen that armed half of it would prove the spine against a wall no ship runs.
+MARKER="$root/tools/fixtures/c/conflict_marker_scan.sh"
 
-for f in "$HOOK" "$SCAN" "$FILES"; do
+for f in "$HOOK" "$SCAN" "$FILES" "$MARKER"; do
   [ -f "$f" ] || { echo "FAIL: $f is missing -- nothing to prove"; exit 1; }
 done
 
@@ -46,8 +51,9 @@ mkdir -p "$pen/up.git"
 git init --quiet --bare -b main "$pen/up.git"
 
 work="$pen/work"
-mkdir -p "$work/construction/archive" "$work/tools/fixtures/r" "$work/tools/hooks"
+mkdir -p "$work/construction/archive" "$work/tools/fixtures/r" "$work/tools/fixtures/c" "$work/tools/hooks"
 cp "$SCAN" "$FILES" "$work/tools/fixtures/r/"
+cp "$MARKER" "$work/tools/fixtures/c/"
 cp "$HOOK" "$work/tools/hooks/pre-push"
 chmod +x "$work/tools/hooks/pre-push"
 
