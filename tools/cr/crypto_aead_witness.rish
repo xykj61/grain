@@ -30,7 +30,7 @@ say "crypto-aead: Lens TAME — the AEAD calls no std.crypto; it composes our ow
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/aead"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/aead.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/aead.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-aead: build failed — ${build.err}"
 
 let outfile = "crypto/bin/aead.out"

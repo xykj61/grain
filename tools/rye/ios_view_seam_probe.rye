@@ -27,7 +27,7 @@
 //! at the seam (exit 134), where the ordinary run passes the same gate.
 //!
 //! Build and spawn (the four-flag recipe from the iOS-door reading, plus frameworks):
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/ios_view_seam_probe.rye \
+//!   env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/ios_view_seam_probe.rye \
 //!     -femit-bin=tools/.build/ios_view_seam -target aarch64-ios-simulator \
 //!     --sysroot "$(xcrun --sdk iphonesimulator --show-sdk-path)" -L/usr/lib -fstrip \
 //!     -lobjc -framework UIKit -framework CoreGraphics -framework QuartzCore

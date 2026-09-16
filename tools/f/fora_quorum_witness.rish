@@ -22,7 +22,7 @@ say "fora-quorum: Lens TAME — majority_of asserts 2·threshold > n at construc
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/quorum"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/quorum.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/quorum.rye -femit-bin=${bin}"]
 assert build.ok else "fora-quorum: build failed — ${build.err}"
 
 let outfile = "constel/bin/quorum.out"

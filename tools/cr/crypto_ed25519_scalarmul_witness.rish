@@ -31,7 +31,7 @@ say "crypto-ed25519-scalarmul: Lens TAME — the primitive calls no std.crypto; 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/ed25519_scalarmul"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/ed25519_scalarmul.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/ed25519_scalarmul.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-ed25519-scalarmul: build failed — ${build.err}"
 
 let outfile = "crypto/bin/ed25519_scalarmul.out"

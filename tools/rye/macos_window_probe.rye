@@ -29,7 +29,7 @@
 //! and must die before the send (exit 134), where the ordinary run passes the same gate.
 //!
 //! Build and run:
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_window_probe.rye \
+//!   env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/macos_window_probe.rye \
 //!     -femit-bin=tools/.build/macos_window_probe -lobjc -framework Cocoa -framework CoreGraphics
 //!   tools/.build/macos_window_probe
 

@@ -9,7 +9,7 @@ let welcome_bin = "glow/bin/cell_quad_welcome"
 let unwelcome_rye = "glow/.cache/cell_quad_unwelcome.rye"
 let unwelcome_bin = "glow/bin/cell_quad_unwelcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_quad_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_quad_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_quad_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

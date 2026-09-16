@@ -29,7 +29,7 @@ say "crypto-mlkem-encode: Lens TAME — bounded loops (256 coefficients, at most
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/mlkem_encode"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_encode.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/mlkem_encode.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-mlkem-encode: build failed — ${build.err}"
 
 let outfile = "crypto/bin/mlkem_encode.out"

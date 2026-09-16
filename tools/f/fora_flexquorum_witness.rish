@@ -21,7 +21,7 @@ say "fora-flexquorum: Lens TAME — safe_split computes qe+qr>n in u64 (no wrap)
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/flexquorum"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/flexquorum.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/flexquorum.rye -femit-bin=${bin}"]
 assert build.ok else "fora-flexquorum: build failed — ${build.err}"
 
 let outfile = "constel/bin/flexquorum.out"

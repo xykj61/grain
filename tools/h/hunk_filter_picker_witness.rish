@@ -20,7 +20,7 @@ say "hunk-filter-picker: Lens TAME — a pure composition over four proven seams
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/filter_picker"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/filter_picker.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/filter_picker.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-filter-picker: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

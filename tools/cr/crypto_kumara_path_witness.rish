@@ -30,7 +30,7 @@ say "crypto-kumara-path: Lens TAME — every width named (a 32-bit index list bo
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/kumara_path"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_path.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/kumara_path.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-kumara-path: build failed — ${build.err}"
 
 let outfile = "crypto/bin/kumara_path.out"

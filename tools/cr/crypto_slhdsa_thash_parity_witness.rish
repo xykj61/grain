@@ -46,7 +46,7 @@ let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-slhdsa-thash-parity: PQClean thash harness exited non-zero -- see ${cout}"
 
 # 2. Build and run ours, keeping only the five digest lines its selftest prints.
-let rbuild = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build crypto/slhdsa_thash.rye -femit-bin=${rbin}"]
+let rbuild = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/slhdsa_thash.rye -femit-bin=${rbin}"]
 assert rbuild.ok else "crypto-slhdsa-thash-parity: Rye build failed -- ${rbuild.err}"
 
 let rrun = run ["sh" "-c" "${rbin} 2>&1 | grep -E '^[0-9a-f]{64}$' > ${rout}"]

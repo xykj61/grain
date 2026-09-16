@@ -13,7 +13,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/seva_session_core_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_session_core_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/seva_session_core_witness.rye -femit-bin=${bin}"]
 
 assert build.ok else "Seva session core witness build failed"
 

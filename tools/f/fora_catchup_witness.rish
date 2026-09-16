@@ -24,7 +24,7 @@ say "fora-catchup: Lens TAME — every catch-up ends with follower.equivalent(le
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/catchup"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/catchup.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/catchup.rye -femit-bin=${bin}"]
 assert build.ok else "fora-catchup: build failed — ${build.err}"
 
 let outfile = "constel/bin/catchup.out"

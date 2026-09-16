@@ -23,7 +23,7 @@ say "fora-term: Lens TAME — the term table is monotonic (observe never lowers 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/term"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/term.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/term.rye -femit-bin=${bin}"]
 assert build.ok else "fora-term: build failed — ${build.err}"
 
 let outfile = "constel/bin/term.out"

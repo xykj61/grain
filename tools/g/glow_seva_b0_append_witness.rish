@@ -5,7 +5,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/glow_seva_b0_append_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_seva_b0_append_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/glow_seva_b0_append_witness.rye -femit-bin=${bin}"]
 assert build.ok else "glow_seva_b0_append_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

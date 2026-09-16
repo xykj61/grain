@@ -21,7 +21,7 @@ say "fora-switchboard: Lens TAME — a bounded array of fixed-buffer mailboxes, 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/switchboard"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/switchboard.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/switchboard.rye -femit-bin=${bin}"]
 assert build.ok else "fora-switchboard: build failed — ${build.err}"
 
 let outfile = "constel/bin/switchboard.out"

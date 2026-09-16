@@ -19,7 +19,7 @@ let prep = run ["sh" "-c" "mkdir -p comlink/.build"]
 assert prep.ok else "wire lab mkdir failed"
 
 # Build lane binary (-lc for nanosleep). Avoid $N in sh -c (rish expands digits).
-let build = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build comlink/discovery/round_trip_wire.rye -lc -femit-bin=comlink/.build/discovery_round_trip_wire"]
+let build = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh comlink/discovery/round_trip_wire.rye -lc -femit-bin=comlink/.build/discovery_round_trip_wire"]
 assert build.ok else "wire lane build failed"
 
 let mk = run ["sh" "-c" "mktemp -d /tmp/grain-discovery-wire.XXXXXX"]

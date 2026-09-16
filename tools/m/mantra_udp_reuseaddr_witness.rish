@@ -73,7 +73,7 @@ say "pen=28 behaviors, two mutations bitten on 20260911"
 # is run against a foreign holder of 38491. The port pair is taken through the lock first: this leg
 # binds a real machine-wide port, and running it bare would red a peer's lap -- the exact fault it
 # exists to name.
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/snapshot_export_delivery.rye -lc -femit-bin=${bin}"]
 say build.out
 say build.err
 assert build.ok else "mantra_udp_reuseaddr: snapshot delivery build failed -- read the two lines above"

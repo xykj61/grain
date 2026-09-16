@@ -30,7 +30,7 @@ say "crypto-kumara-sealed: Lens TAME — the composition authors no new cryptogr
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/kumara_sealed"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_sealed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/kumara_sealed.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-kumara-sealed: build failed — ${build.err}"
 
 let outfile = "crypto/bin/kumara_sealed.out"

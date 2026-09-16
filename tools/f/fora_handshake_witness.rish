@@ -21,7 +21,7 @@ say "fora-handshake: Lens TAME — a pure protocol over name.rye's public API, r
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/handshake"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/handshake.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/handshake.rye -femit-bin=${bin}"]
 assert build.ok else "fora-handshake: build failed — ${build.err}"
 
 let outfile = "constel/bin/handshake.out"

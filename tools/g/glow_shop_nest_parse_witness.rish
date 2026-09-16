@@ -15,7 +15,7 @@ assert tame_pin.ok else "TAME missing STOA118 named-shape barket"
 let has_parse = run ["sh" "-c" "test -f glow/rune_shop_nest.rye; echo $?"]
 assert trim has_parse.out == "0" else "glow/rune_shop_nest.rye must exist (STOA112)"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_shop_nest_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/rune_shop_nest_witness.rye -femit-bin=${bin}"]
 assert build.ok else "rune_shop_nest_witness build failed: ${build.err}${build.out}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

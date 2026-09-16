@@ -25,7 +25,7 @@ say "fora-repair: Lens TAME — the TermedLog is bounded (LogFull) and term-mono
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/repair"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/repair.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/repair.rye -femit-bin=${bin}"]
 assert build.ok else "fora-repair: build failed — ${build.err}"
 
 let outfile = "constel/bin/repair.out"

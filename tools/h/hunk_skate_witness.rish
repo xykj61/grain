@@ -23,7 +23,7 @@ say "hunk-skate: Lens TAME — u32 in-memory counts, both grid axes bounded at c
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/image-skate"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/image_skate.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/image_skate.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-skate: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

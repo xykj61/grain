@@ -27,7 +27,7 @@ say "fora-reconfig: Lens TAME — the decision is bounded (majority in each conf
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/reconfig"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/reconfig.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/reconfig.rye -femit-bin=${bin}"]
 assert build.ok else "fora-reconfig: build failed — ${build.err}"
 
 let outfile = "constel/bin/reconfig.out"

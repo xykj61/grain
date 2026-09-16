@@ -1525,7 +1525,7 @@ assert tube0_5.ok else "TUBE0.5 permission-emission witness failed"
 say "GREEN: TUBE0.5 permission-emission witness passed."
 
 say "witness suite: TUBE0.5 -- NativeActivity envelope emission..."
-let tube0_5_env = run ["sh" "tools/p/parity_time_one.sh" "tube0_5_env" "--" "sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness && linengrow/bin/tube_android_manifest_witness 2>&1"]
+let tube0_5_env = run ["sh" "tools/p/parity_time_one.sh" "tube0_5_env" "--" "sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness && linengrow/bin/tube_android_manifest_witness 2>&1"]
 assert tube0_5_env.ok else "TUBE0.5 NativeActivity envelope witness failed"
 assert tube0_5_env.out contains "GREEN" else "TUBE0.5 NativeActivity envelope witness not GREEN"
 say "GREEN: TUBE0.5 NativeActivity envelope witness passed."

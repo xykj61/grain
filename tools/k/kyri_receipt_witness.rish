@@ -38,7 +38,7 @@ say "kyri-receipt: Lens TAME -- every field names a bound, every refusal has a n
 
 let zig = "vendor/zig-toolchain/zig"
 
-let build = run ["sh" "-c" "mkdir -p kyri/bin && env RYE_ZIG=${zig} rye/bin/rye build kyri/receipt.rye -femit-bin=kyri/bin/receipt"]
+let build = run ["sh" "-c" "mkdir -p kyri/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh kyri/receipt.rye -femit-bin=kyri/bin/receipt"]
 assert build.ok else "kyri-receipt: the module must build"
 
 let out = run ["sh" "-c" "kyri/bin/receipt 2>&1"]

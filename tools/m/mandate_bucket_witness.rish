@@ -14,7 +14,7 @@
 # witness named its build in the header comment above and then invoked the path, which died on a
 # missing file rather than on a Mandate fact. The repair its Comlink sibling already carried.
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p mandate/bin && env RYE_ZIG=${zig} rye/bin/rye build mandate/bucket.rye -femit-bin=mandate/bin/bucket"]
+let build = run ["sh" "-c" "mkdir -p mandate/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mandate/bucket.rye -femit-bin=mandate/bin/bucket"]
 assert build.ok else "mandate bucket: build failed -- ${build.err}"
 
 let st = run ["mandate/bin/bucket" "selftest"]

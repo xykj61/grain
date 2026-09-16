@@ -6,7 +6,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "comlink/bin/hosted-wire"
 
-let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/hosted_wire.rye -lc -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh comlink/hosted_wire.rye -lc -femit-bin=${bin}"]
 
 assert build.ok else "comlink hosted wire build failed"
 

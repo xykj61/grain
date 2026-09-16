@@ -33,7 +33,7 @@ let seat = run ["sh" "-c" "grep -q 'pub fn merge' mantra/src/weave.rye"]
 assert seat.ok else "mantra-merge: merge left weave.rye"
 
 say "mantra-merge: building the witness against the real module..."
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_merge_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_merge_witness.rye -femit-bin=${bin}"]
 assert build.ok else "mantra-merge: weave merge witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

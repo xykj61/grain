@@ -21,7 +21,7 @@ say "fora-learner: Lens TAME — voter_count and voter_majority draw the strict 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/learner"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/learner.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/learner.rye -femit-bin=${bin}"]
 assert build.ok else "fora-learner: build failed — ${build.err}"
 
 let outfile = "constel/bin/learner.out"

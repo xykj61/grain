@@ -35,7 +35,7 @@ say "crypto-eip1559-tx: Lens TAME — every buffer bound (max_tx_bytes), every f
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/eip1559_tx"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/eip1559_tx.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/eip1559_tx.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-eip1559-tx: build failed — ${build.err}"
 
 let outfile = "crypto/bin/eip1559_tx.out"

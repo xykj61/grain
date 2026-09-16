@@ -9,7 +9,7 @@ let welcome_bin = "glow/bin/switch_kind_welcome"
 let unwelcome_rye = "glow/.cache/switch_kind_unwelcome.rye"
 let unwelcome_bin = "glow/bin/switch_kind_unwelcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_switch_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_switch_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_switch_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

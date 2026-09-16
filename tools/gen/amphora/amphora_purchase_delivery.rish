@@ -7,7 +7,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "amphora/bin/purchase-delivery"
 
 say "amphora-delivery: build purchase-delivery..."
-let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/purchase_delivery.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/purchase_delivery.rye -femit-bin=${bin}"]
 assert build.ok else "amphora purchase_delivery build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

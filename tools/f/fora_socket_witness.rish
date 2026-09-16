@@ -34,7 +34,7 @@ say "fora-socket: Lens TAME -- every wait is bounded (receive_wait_ms 250, silen
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/socket"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/socket.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/socket.rye -femit-bin=${bin}"]
 assert build.ok else "fora-socket: build failed -- ${build.err}${build.out}"
 
 # --- Leg A: the crossing ------------------------------------------------------------------------

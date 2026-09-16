@@ -22,7 +22,7 @@ say "glow-shop-core: Lens TAME -- the declines are proven as hard as the claims.
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_shop_core_witness"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_shop_core_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/rune_shop_core_witness.rye -femit-bin=${bin}"]
 assert build.ok else "rune_shop_core_witness build failed: ${build.err}${build.out}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

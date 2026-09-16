@@ -24,7 +24,7 @@ say "fora-decree: Lens TAME — accept refuses any value other than the one prop
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/decree"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/decree.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/decree.rye -femit-bin=${bin}"]
 assert build.ok else "fora-decree: build failed — ${build.err}"
 
 let outfile = "constel/bin/decree.out"

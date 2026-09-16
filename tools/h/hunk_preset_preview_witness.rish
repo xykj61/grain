@@ -24,7 +24,7 @@ say "hunk-preset-preview: Lens TAME — pure composition over two proven seams, 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/preset_preview"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/preset_preview.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/preset_preview.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-preset-preview: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -19,7 +19,7 @@ say "gism-red73: Lens TAME — bounded resins, content-addressed, every tamper r
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mantra/bin/spool"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/spool.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/spool.rye -femit-bin=${bin}"]
 assert build.ok else "gism-red73: spool build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -54,7 +54,7 @@ assert selftest.out contains "refused ContentTooLarge (the honest ceiling)" else
 # Beading is re-run untouched -- the store capacity rose additively; the primitive the
 # spool stands on stays its own GREEN binary.
 let beading_bin = "mantra/bin/beading"
-let beading_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/beading.rye -femit-bin=${beading_bin}"]
+let beading_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/beading.rye -femit-bin=${beading_bin}"]
 assert beading_build.ok else "gism-red73: beading rebuild failed"
 let beading_selftest = run ["sh" "-c" "${beading_bin} selftest 2>&1"]
 assert beading_selftest.ok else "gism-red73: beading selftest regressed"

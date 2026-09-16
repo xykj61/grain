@@ -28,7 +28,7 @@ say "crypto-elligator: Lens TAME — the primitive calls no std.crypto; it is au
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/elligator"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/elligator.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/elligator.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-elligator: build failed — ${build.err}"
 
 let outfile = "crypto/bin/elligator.out"

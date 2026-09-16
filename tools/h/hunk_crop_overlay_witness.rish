@@ -20,7 +20,7 @@ say "hunk-crop-overlay: Lens TAME — a pure read over HUNK2 down_map and HUNK60
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/crop_overlay"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/crop_overlay.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/crop_overlay.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-crop-overlay: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

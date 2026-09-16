@@ -60,7 +60,7 @@ say "GREEN: signed-Kumara red-avoid — crypto_ed25519_check ≥2 · crypto_edds
 say "signed-Kumara fetch: assert 3 — fixture freshness (regenerate + byte-diff)…"
 let have_committed = run ["test" "-f" committed]
 assert have_committed.ok else "missing committed ${committed} — run generator first"
-let build_gen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build tools/rye/proven_seat_signed_kumara_gen.rye -femit-bin=${gen_bin}"]
+let build_gen = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/proven_seat_signed_kumara_gen.rye -femit-bin=${gen_bin}"]
 assert build_gen.ok else "fixture generator build failed"
 let run_gen = run ["sh" "-c" "${gen_bin} --out ${regen} 2>&1"]
 assert run_gen.ok else "fixture generator run failed"

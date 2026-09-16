@@ -24,7 +24,7 @@ say "fora-snapshot: Lens TAME — the tail is bounded (TailFull at max_tail) and
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/snapshot"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/snapshot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/snapshot.rye -femit-bin=${bin}"]
 assert build.ok else "fora-snapshot: build failed — ${build.err}"
 
 let outfile = "constel/bin/snapshot.out"

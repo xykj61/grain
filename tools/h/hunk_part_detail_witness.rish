@@ -23,7 +23,7 @@ say "hunk-part-detail: Lens TAME — pure painting over HUNK80 PartRef, HUNK73 f
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/part_detail"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_detail.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_detail.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-detail: build failed — ${build.err}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("keeper's") that breaks a shell single-quote round-trip.
@@ -38,13 +38,13 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-detail' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-detail: selftest did not print the GREEN part-detail line"
 
 # HUNK80 stays GREEN -- the tap this rung paints the detail for.
-let t = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_tap.rye -femit-bin=brushstroke/bin/part_tap && brushstroke/bin/part_tap selftest > brushstroke/bin/part_tap.out 2>&1"]
+let t = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_tap.rye -femit-bin=brushstroke/bin/part_tap && brushstroke/bin/part_tap selftest > brushstroke/bin/part_tap.out 2>&1"]
 assert t.ok else "hunk-part-detail: HUNK80 part_tap re-run failed — see brushstroke/bin/part_tap.out"
 let t_green = run ["sh" "-c" "grep -q 'GREEN part-tap' brushstroke/bin/part_tap.out && echo yes"]
 assert (trim t_green.out) == "yes" else "hunk-part-detail: HUNK80 part_tap did not stay GREEN"
 
 # HUNK73/74 stay GREEN -- the fact-line and price helpers this rung reuses.
-let r = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_row.rye -femit-bin=brushstroke/bin/part_row && brushstroke/bin/part_row selftest > brushstroke/bin/part_row.out 2>&1"]
+let r = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_row.rye -femit-bin=brushstroke/bin/part_row && brushstroke/bin/part_row selftest > brushstroke/bin/part_row.out 2>&1"]
 assert r.ok else "hunk-part-detail: HUNK73/74 part_row re-run failed — see brushstroke/bin/part_row.out"
 let r_green = run ["sh" "-c" "grep -q 'GREEN part-row' brushstroke/bin/part_row.out && echo yes"]
 assert (trim r_green.out) == "yes" else "hunk-part-detail: HUNK73/74 part_row did not stay GREEN"

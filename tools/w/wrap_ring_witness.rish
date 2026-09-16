@@ -24,7 +24,7 @@ say "wrap-ring: Lens TAME -- the circumference is named at construction, and the
 let zig = "vendor/zig-toolchain/zig"
 
 say "wrap-ring: building from source, so the binary matches the file this witness reads..."
-let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/wrap_ring.rye -femit-bin=tools/bin/wrap-ring"]
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/wrap_ring.rye -femit-bin=tools/bin/wrap-ring"]
 assert build.ok else "wrap-ring: the build refused -- read the compiler's own words"
 
 # THE CLAIM LINES ARRIVE ON STDERR, measured rather than assumed. `std.debug.print` -- the spelling

@@ -8,7 +8,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "lantern/bin/lantern"
 
 say "build: lantern for RW-5 contract"
-let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} rye/bin/rye build lantern/lantern.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lantern/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lantern/lantern.rye -femit-bin=${bin}"]
 assert build.ok else "Lantern RW-5 contract build failed"
 
 let witness = run ["sh" "-c" "${bin} rw5contracttest 2>&1"]

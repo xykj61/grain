@@ -32,7 +32,7 @@ say "crypto-elligator-key-pair: Lens TAME — the composition calls no std.crypt
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/elligator_key_pair"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/elligator_key_pair.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/elligator_key_pair.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-elligator-key-pair: build failed — ${build.err}"
 
 let outfile = "crypto/bin/elligator_key_pair.out"

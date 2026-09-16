@@ -13,7 +13,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/neth_root_install_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/neth_root_install_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/neth_root_install_witness.rye -femit-bin=${bin}"]
 
 assert build.ok else "Neth root install witness build failed"
 

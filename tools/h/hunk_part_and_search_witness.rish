@@ -24,7 +24,7 @@ say "hunk-part-and-search: Lens TAME — pure composition over HUNK78 parse_and/
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/part_and_search"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_and_search.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_and_search.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-and-search: build failed — ${build.err}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
@@ -45,7 +45,7 @@ let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out &&
 assert (trim a_green.out) == "yes" else "hunk-part-and-search: HUNK78 part_and did not stay GREEN"
 
 # HUNK77 stays GREEN -- the single-clause search this rung generalizes.
-let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_search.rye -femit-bin=brushstroke/bin/part_search && brushstroke/bin/part_search selftest > brushstroke/bin/part_search.out 2>&1"]
+let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_search.rye -femit-bin=brushstroke/bin/part_search && brushstroke/bin/part_search selftest > brushstroke/bin/part_search.out 2>&1"]
 assert s.ok else "hunk-part-and-search: HUNK77 part_search re-run failed — see brushstroke/bin/part_search.out"
 let s_green = run ["sh" "-c" "grep -q 'GREEN part-search' brushstroke/bin/part_search.out && echo yes"]
 assert (trim s_green.out) == "yes" else "hunk-part-and-search: HUNK77 part_search did not stay GREEN"

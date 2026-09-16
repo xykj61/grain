@@ -53,7 +53,7 @@ assert head.out contains "head_stale=0" else "mantra-annotate: the module head n
 assert head.out contains "verdict=ok" else "mantra-annotate: the head scan must reach its own verdict"
 
 say "mantra-annotate: building the witness against the real module..."
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_annotate_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_annotate_witness.rye -femit-bin=${bin}"]
 assert build.ok else "mantra-annotate: weave annotate witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

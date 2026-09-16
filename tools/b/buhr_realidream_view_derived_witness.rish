@@ -38,7 +38,7 @@ assert selftest.out contains "editor and view share one graph" else "buhr-j5r8: 
 assert selftest.out contains "refuses read lanes, program lanes, and headers" else "buhr-j5r8: the derived_label_span proof is missing"
 
 # The token sheet grew a flow (Weld) token; its own selftest stays green -- additive.
-let tokens = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens && tools/.build/brushstroke_tokens selftest 2>&1"]
+let tokens = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/tokens.rye -femit-bin=tools/.build/brushstroke_tokens && tools/.build/brushstroke_tokens selftest 2>&1"]
 assert tokens.ok else "buhr-j5r8: the token sheet regressed after growing the flow token"
 assert tokens.out contains "GREEN: brushstroke tokens" else "buhr-j5r8: the token sheet lost its green"
 

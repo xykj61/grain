@@ -33,7 +33,7 @@
 //! same gate under its own name.
 //!
 //! Build and run:
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_view_class_probe.rye \
+//!   env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/macos_view_class_probe.rye \
 //!     -femit-bin=tools/.build/macos_view_class_probe -lobjc -framework Cocoa -framework CoreGraphics
 //!   tools/.build/macos_view_class_probe
 //!   PROBE_PROVE_RED=1 tools/.build/macos_view_class_probe   # the free-name gate, refusing side

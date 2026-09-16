@@ -28,7 +28,7 @@ say "crypto-kumara-attestation: Lens TAME — the composition authors no new cry
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/kumara_attestation"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_attestation.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/kumara_attestation.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-kumara-attestation: build failed — ${build.err}"
 
 let outfile = "crypto/bin/kumara_attestation.out"

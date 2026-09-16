@@ -10,7 +10,7 @@
 #   rishi/bin/rishi run tools/p/pleac_strings_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings"]
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pleac/strings.rye -femit-bin=tools/.build/pleac_strings"]
 assert build.ok else "pleac strings build failed"
 
 let st = run ["tools/.build/pleac_strings" "selftest"]

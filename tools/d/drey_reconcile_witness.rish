@@ -20,7 +20,7 @@ say "drey-reconcile: Lens TAME — reconcile composes the two proven loops over 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/reconcile"
 
-let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/reconcile.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mikrophone/reconcile.rye -femit-bin=${bin}"]
 assert build.ok else "drey-reconcile: build failed — ${build.err}"
 
 let outfile = "mikrophone/bin/reconcile.out"

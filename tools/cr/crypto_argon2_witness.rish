@@ -27,7 +27,7 @@ say "crypto-argon2: Lens TAME — the primitive calls no std.crypto; it composes
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/argon2"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/argon2.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/argon2.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-argon2: build failed — ${build.err}"
 
 let outfile = "crypto/bin/argon2.out"

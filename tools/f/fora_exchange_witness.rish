@@ -22,7 +22,7 @@ say "fora-exchange: Lens TAME — a bounded exchange over in-memory frame buffer
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/exchange"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/exchange.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/exchange.rye -femit-bin=${bin}"]
 assert build.ok else "fora-exchange: build failed — ${build.err}"
 
 let outfile = "constel/bin/exchange.out"

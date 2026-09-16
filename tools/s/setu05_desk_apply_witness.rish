@@ -3,14 +3,14 @@
 #   rishi/bin/rishi run tools/s/setu05_desk_apply_witness.rish
 #
 # After a SETU0 host pull (cache already filled):
-#   rye/bin/rye build linengrow/setu05_desk_apply_check.rye \
+#   sh tools/fixtures/r/rye_build.sh linengrow/setu05_desk_apply_check.rye \
 #     -femit-bin=linengrow/bin/setu05_desk_apply_check
 #   linengrow/bin/setu05_desk_apply_check
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "linengrow/bin/setu05_desk_apply_witness"
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu05_desk_apply_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu05_desk_apply_witness.rye -femit-bin=${bin}"]
 assert build.ok else "SETU0.5 desk apply witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

@@ -23,7 +23,7 @@ say "fora-apply: Lens TAME — the Machine's session table is bounded to max_cli
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/apply"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/apply.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/apply.rye -femit-bin=${bin}"]
 assert build.ok else "fora-apply: build failed — ${build.err}"
 
 let outfile = "constel/bin/apply.out"

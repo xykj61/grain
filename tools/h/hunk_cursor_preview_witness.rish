@@ -23,7 +23,7 @@ say "hunk-cursor-preview: Lens TAME — a value copy walks so the caller's curso
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/cursor_preview"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/cursor_preview.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/cursor_preview.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-cursor-preview: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

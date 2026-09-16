@@ -21,7 +21,7 @@ say "hunk-photo-library: Lens TAME — building the library FETCHES each image, 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/photo_library"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/photo_library.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/photo_library.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-photo-library: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

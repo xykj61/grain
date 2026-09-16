@@ -15,7 +15,7 @@ say "receipt-refusal: Language EN -- one refusal record carries field, value, ce
 say "receipt-refusal: Style Gauge, Meter -- every refusal is rendered whole and read whole."
 say "receipt-refusal: Lens TAME -- the record and the elder named error derive from one reading, so they cannot disagree."
 
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build mantra/src/receipt_refusal_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/receipt_refusal_witness.rye -femit-bin=${bin}"]
 say build.err
 assert build.ok else "receipt-refusal: the Rye witness did not build"
 

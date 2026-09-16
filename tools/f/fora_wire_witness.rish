@@ -22,7 +22,7 @@ say "fora-wire: Lens TAME — deframing is two independent gates, the Sha256 pro
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/wire"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/wire.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/wire.rye -femit-bin=${bin}"]
 assert build.ok else "fora-wire: build failed — ${build.err}"
 
 let outfile = "constel/bin/wire.out"

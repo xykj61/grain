@@ -20,7 +20,7 @@ let wire_bin = "amphora/bin/vessel-fetch-wire"
 let delivery_bin = "amphora/bin/vessel-fetch-delivery"
 
 say "amphora-chunk: ensure vessel fetch wire..."
-let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin} 2>&1; c=$?; if [ $c -eq 0 ]; then echo BUILD_OK; elif [ $c -eq 124 ]; then echo BUILD_OK_TIMED_OUT; else echo BUILD_BROKEN; fi"]
+let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && timeout 45 env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin} 2>&1; c=$?; if [ $c -eq 0 ]; then echo BUILD_OK; elif [ $c -eq 124 ]; then echo BUILD_OK_TIMED_OUT; else echo BUILD_BROKEN; fi"]
 assert build_wire.out contains "BUILD_OK" else "amphora vessel_fetch_wire no longer compiles -- ${build_wire.out}"
 if build_wire.out contains "BUILD_OK_TIMED_OUT" then say "amphora-chunk: wire rebuild hit the 45s bound -- preferring the warm binary"
 let wire_ready = run ["sh" "-c" "test -x ${wire_bin}"]
@@ -32,7 +32,7 @@ assert wire.out contains "GREEN" else "amphora vessel_fetch_wire not GREEN"
 assert wire.out contains "chunk" else "amphora vessel_fetch_wire missing chunk claim"
 
 say "amphora-chunk: ensure vessel fetch delivery..."
-let build_delivery = run ["sh" "-c" "timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin} 2>&1; c=$?; if [ $c -eq 0 ]; then echo BUILD_OK; elif [ $c -eq 124 ]; then echo BUILD_OK_TIMED_OUT; else echo BUILD_BROKEN; fi"]
+let build_delivery = run ["sh" "-c" "timeout 45 env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin} 2>&1; c=$?; if [ $c -eq 0 ]; then echo BUILD_OK; elif [ $c -eq 124 ]; then echo BUILD_OK_TIMED_OUT; else echo BUILD_BROKEN; fi"]
 assert build_delivery.out contains "BUILD_OK" else "amphora vessel_fetch_delivery no longer compiles -- ${build_delivery.out}"
 if build_delivery.out contains "BUILD_OK_TIMED_OUT" then say "amphora-chunk: delivery rebuild hit the 45s bound -- preferring the warm binary"
 let delivery_ready = run ["sh" "-c" "test -x ${delivery_bin}"]

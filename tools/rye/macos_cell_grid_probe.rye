@@ -25,7 +25,7 @@
 //! its own loop; it does not type on a stranger's keyboard.
 //!
 //! Build and run:
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_cell_grid_probe.rye \
+//!   env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/macos_cell_grid_probe.rye \
 //!     -femit-bin=tools/.build/macos_cell_grid_probe -lobjc -framework Cocoa -framework CoreGraphics
 //!   tools/.build/macos_cell_grid_probe
 //!   PROBE_PROVE_RED=1 tools/.build/macos_cell_grid_probe   # the seam gate, from the refusing side

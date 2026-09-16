@@ -8,9 +8,9 @@ let vessel_bin = "amphora/bin/vessel-core"
 let seal_bin = "amphora/bin/vessel-seal"
 
 say "amphora-seal: build vessel-core + vessel-seal..."
-let build_v = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
+let build_v = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_core.rye -femit-bin=${vessel_bin}"]
 assert build_v.ok else "amphora vessel_core build failed for seal lap"
-let build_s = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=${seal_bin}"]
+let build_s = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_seal.rye -femit-bin=${seal_bin}"]
 assert build_s.ok else "amphora vessel_seal build failed"
 
 let selftest = run ["sh" "-c" "${seal_bin} selftest 2>&1"]

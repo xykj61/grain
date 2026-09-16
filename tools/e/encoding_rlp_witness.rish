@@ -28,7 +28,7 @@ say "encoding-rlp: Lens TAME — the primitive calls no std RLP; it is authored 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/rlp"
 
-let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} rye/bin/rye build encoding/rlp.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/rlp.rye -femit-bin=${bin}"]
 assert build.ok else "encoding-rlp: build failed — ${build.err}"
 
 let outfile = "encoding/bin/rlp.out"

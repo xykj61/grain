@@ -5,7 +5,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_shop_gate_witness"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_shop_gate_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_shop_gate_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_shop_gate_witness build failed: ${build.err}${build.out}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

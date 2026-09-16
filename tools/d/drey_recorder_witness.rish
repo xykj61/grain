@@ -20,7 +20,7 @@ say "drey-recorder: Lens TAME — four states, a small set of transitions, no he
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/recorder"
 
-let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/recorder.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mikrophone/recorder.rye -femit-bin=${bin}"]
 assert build.ok else "drey-recorder: build failed — ${build.err}"
 
 let outfile = "mikrophone/bin/recorder.out"

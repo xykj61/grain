@@ -24,7 +24,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "comlink/bin/rehearsal-wire"
 
-let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/rehearsal_wire.rye -lc -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh comlink/rehearsal_wire.rye -lc -femit-bin=${bin}"]
 assert build.ok else "rehearsal wire: the module failed to build"
 
 # Leg A -- the fleet: three processes bind, cross, and each reads the same pen on its own.

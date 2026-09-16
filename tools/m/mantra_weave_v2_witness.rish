@@ -71,7 +71,7 @@ assert head.out contains "head_missing=0" else "mantra-v2: an operation of Weave
 assert head.out contains "head_stale=0" else "mantra-v2: the module head names an operation the module no longer publishes"
 
 say "mantra-v2: building the witness against the real module..."
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_v2_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_v2_witness.rye -femit-bin=${bin}"]
 assert build.ok else "mantra-v2: weave v2 witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

@@ -22,7 +22,7 @@ say "fora-name: Lens TAME — a pure string predicate on the bench, bounded and 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/name"
 
-let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/name.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/name.rye -femit-bin=${bin}"]
 assert build.ok else "fora-name: build failed — ${build.err}"
 
 let outfile = "constel/bin/name.out"

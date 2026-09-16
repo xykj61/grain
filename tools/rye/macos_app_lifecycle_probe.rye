@@ -30,7 +30,7 @@
 //! declares a signature the framework does not have and dies at exit 134.
 //!
 //! Build and run:
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_app_lifecycle_probe.rye \
+//!   env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh tools/rye/macos_app_lifecycle_probe.rye \
 //!     -femit-bin=tools/.build/macos_app_lifecycle_probe -lobjc -framework Cocoa -framework CoreGraphics
 //!   tools/.build/macos_app_lifecycle_probe && cat /tmp/grain_app_lifecycle_receipt.txt
 

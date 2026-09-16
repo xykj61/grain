@@ -51,7 +51,7 @@ assert selftest.out contains "refused StoreFull with 2 of 4 catalog seats free" 
 
 # The spool is re-run untouched -- the naming layer composes its public API only.
 let spool_bin = "mantra/bin/spool"
-let spool_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/spool.rye -femit-bin=${spool_bin}"]
+let spool_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/spool.rye -femit-bin=${spool_bin}"]
 assert spool_build.ok else "gism-red73-name: spool rebuild failed"
 let spool_selftest = run ["sh" "-c" "${spool_bin} selftest 2>&1"]
 assert spool_selftest.ok else "gism-red73-name: spool selftest regressed"

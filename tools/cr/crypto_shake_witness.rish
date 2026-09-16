@@ -29,7 +29,7 @@ say "crypto-shake: Lens TAME — no new cryptography: the permutation, absorb, a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/shake"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/shake.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/shake.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-shake: build failed — ${build.err}"
 
 let outfile = "crypto/bin/shake.out"

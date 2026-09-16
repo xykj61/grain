@@ -33,7 +33,7 @@ say "crypto-mldsa-ring: Lens TAME — bounded loops (the transform is exactly ei
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/mldsa_ring"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mldsa_ring.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/mldsa_ring.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-mldsa-ring: build failed — ${build.err}"
 
 let outfile = "crypto/bin/mldsa_ring.out"

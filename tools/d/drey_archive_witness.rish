@@ -19,7 +19,7 @@ say "drey-archive: Lens TAME — deposit deframes verify-before-trust FIRST and 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/archive"
 
-let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/archive.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mikrophone/archive.rye -femit-bin=${bin}"]
 assert build.ok else "drey-archive: build failed — ${build.err}"
 
 let outfile = "mikrophone/bin/archive.out"

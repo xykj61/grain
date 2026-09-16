@@ -35,7 +35,7 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 root=$PWD
 
 # 1 -- the shipped source resolves through /proc here.
-RYE_ZIG="$ZIG" rye/bin/rye build rye/src/main.rye -femit-bin="$pen/shipped" >/dev/null 2>&1
+RYE_ZIG="$ZIG" sh tools/fixtures/r/rye_build.sh rye/src/main.rye -femit-bin="$pen/shipped" >/dev/null 2>&1
 [ -s "$pen/shipped" ] && echo "proc_reading_builds=yes" || echo "proc_reading_builds=no"
 
 # 2 -- blind the probe, build that, and run it where only argv[0] can answer.

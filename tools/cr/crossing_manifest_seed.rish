@@ -8,7 +8,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "amphora/bin/manifest-entry"
 
 say "crossing-manifest: Amphora manifest entry on metal..."
-let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/manifest_entry.rye -femit-bin=${bin}"]
 assert build.ok else "amphora manifest_entry build failed"
 
 let result = run ["sh" "-c" "${bin} selftest 2>&1"]

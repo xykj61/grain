@@ -29,7 +29,7 @@ say "crypto-bip32: Lens TAME — every width named (i_bytes 64, key_data_bytes 3
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/bip32"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bip32.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/bip32.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-bip32: build failed — ${build.err}"
 
 let outfile = "crypto/bin/bip32.out"

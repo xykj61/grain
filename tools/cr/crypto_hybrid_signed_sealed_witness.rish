@@ -28,7 +28,7 @@ say "crypto-hybrid-signed-sealed: Lens TAME — contract asserts (the header cur
 let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/hybrid_signed_sealed"
 
-let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/hybrid_signed_sealed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/hybrid_signed_sealed.rye -femit-bin=${bin}"]
 assert build.ok else "crypto-hybrid-signed-sealed: build failed — ${build.err}"
 
 let outfile = "crypto/bin/hybrid_signed_sealed.out"

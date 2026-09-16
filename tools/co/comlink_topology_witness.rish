@@ -16,7 +16,7 @@
 # clone without that build it died with a bare CommandFailed naming no cause -- a refusal a
 # reader cannot act on is the fault this tree calls a guard that guards nothing.
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/topology.rye -femit-bin=comlink/bin/topology"]
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh comlink/topology.rye -femit-bin=comlink/bin/topology"]
 # The captured stream is written out bare rather than interpolated into the refusal. An
 # interpolated `.err` composes through Rishi's fixed StrBuf, so a compiler that says a great deal
 # would break the very message explaining the break -- the deferred hazard

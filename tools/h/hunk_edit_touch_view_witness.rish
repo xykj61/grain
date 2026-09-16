@@ -23,7 +23,7 @@ say "hunk-edit-touch-view: Lens TAME — one owned EditCursor plus a grid; gestu
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/edit_touch_view"
 
-let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/edit_touch_view.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/edit_touch_view.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-edit-touch-view: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

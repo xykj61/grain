@@ -29,7 +29,7 @@ let zig = "vendor/zig-toolchain/zig"
 let delivery_bin = "amphora/bin/vessel-fetch-delivery"
 
 say "amphora-asker-reply: build vessel fetch delivery..."
-let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
 assert build.ok else "amphora vessel_fetch_delivery build failed"
 
 say "amphora-asker-reply: the kernel chooses the asker's port..."

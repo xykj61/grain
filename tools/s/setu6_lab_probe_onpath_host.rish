@@ -18,7 +18,7 @@ say "setu6-host: ip link match — ${found.out}"
 let name = run ["sh" find_iface]
 let iface = trim name.out
 
-let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu6_device_lab_check.rye -femit-bin=${check}"]
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu6_device_lab_check.rye -femit-bin=${check}"]
 assert build.ok else "SETU6 lab check build failed"
 
 # Armed path first -- avoid stand-in asserts referencing unbound `card` when iface is set

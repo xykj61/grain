@@ -6,7 +6,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/lower_compose_lib_witness"
 let welcome_bin = "glow/bin/use_lib_session_root_nest_cue_jam_welcome"
 
-let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_compose_lib_witness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_compose_lib_witness.rye -femit-bin=${bin}"]
 assert build.ok else "lower_compose_lib_witness build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
