@@ -19,7 +19,7 @@ say "buhr8: Lens TAME — content-addressed storage is the intelligence's integr
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/artifact-query"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/artifact_query.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/artifact_query.rye -femit-bin=${bin}"]
 assert build.ok else "buhr8: artifact_query build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -38,7 +38,7 @@ assert selftest.out contains "zero budget refused" else "buhr8: zero-budget refu
 # Journey 7's named artifact store -- the corpus this voice reads -- stays its own green
 # binary; rung one of Journey 8 composes over its public fetch, additively.
 let store_bin = "pond/bin/tablecloth"
-let store_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${store_bin}"]
+let store_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth.rye -femit-bin=${store_bin}"]
 assert store_build.ok else "buhr8: tablecloth (J7r1) re-build failed"
 let store_selftest = run ["sh" "-c" "${store_bin} selftest 2>&1"]
 assert store_selftest.ok else "buhr8: tablecloth (J7r1) selftest exited non-zero"

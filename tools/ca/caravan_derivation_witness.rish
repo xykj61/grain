@@ -53,7 +53,7 @@ let checked_out = run ["sh" "-c" "test -f ${header} && echo yes || echo no"]
 assert (trim checked_out.out) == "yes" else "caravan-derivation: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
 
 # 1. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/derivation.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/derivation.rye -femit-bin=${bin}"]
 assert build.ok else "caravan-derivation: the module did not build"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]

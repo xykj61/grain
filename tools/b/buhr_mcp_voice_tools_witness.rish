@@ -19,7 +19,7 @@ say "buhr9r2: Lens TAME — the tool name is a typed assertion; a prompt off the
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-voice-tools"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_voice_tools.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_voice_tools.rye -femit-bin=${bin}"]
 assert build.ok else "buhr9r2: mcp_voice_tools build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -35,14 +35,14 @@ assert selftest.out contains "disallowed model on a voice tool -> named MCP erro
 # Rung one (the single ask tool) and Journey 3's tools/list envelope -- the two halves this
 # rung composes -- stay their own green binaries; this rung calls only their public API.
 let r1_bin = "pond/bin/mcp-voice"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_voice.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_voice.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr9r2: mcp_voice (J9r1) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr9r2: mcp_voice (J9r1) selftest exited non-zero"
 assert r1_selftest.out contains "GREEN" else "buhr9r2: mcp_voice (J9r1) did not speak GREEN"
 
 let list_bin = "pond/bin/mcp-list"
-let list_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_list.rye -femit-bin=${list_bin}"]
+let list_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_list.rye -femit-bin=${list_bin}"]
 assert list_build.ok else "buhr9r2: mcp_list (J3r4) re-build failed"
 let list_selftest = run ["sh" "-c" "${list_bin} selftest 2>&1"]
 assert list_selftest.ok else "buhr9r2: mcp_list (J3r4) selftest exited non-zero"

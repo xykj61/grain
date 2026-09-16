@@ -18,7 +18,7 @@ say "buhr-j3r5: Lens TAME — bounded, composed over public APIs only, unknown t
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-host"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_host.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_host.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j3r5: mcp_host build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

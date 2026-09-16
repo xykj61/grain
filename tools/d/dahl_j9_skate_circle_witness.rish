@@ -20,7 +20,7 @@ say "dahl-j9r1: Lens TAME — presence is never default; a non-member, a self-li
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/skate-circle"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_circle.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j9r1: skate_circle build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

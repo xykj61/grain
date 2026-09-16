@@ -50,7 +50,7 @@ let bsd = run ["sh" "-c" "cat ${generic} ${mode} ${arch} | grep -c SPDX-License-
 assert (trim bsd.out) == "3" else "caravan-objects: one of seL4's three object-type headers no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
 
 # 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/objects.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/objects.rye -femit-bin=${bin}"]
 assert build.ok else "caravan-objects: the module did not build"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]

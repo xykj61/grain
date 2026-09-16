@@ -24,7 +24,7 @@ say "hunk-photos-edges: Lens TAME — each directional gradient sums in i32 (lar
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/photos"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/photos.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-photos-edges: build failed — ${build.err}"
 
 let log = "image/bin/photos-selftest.out"

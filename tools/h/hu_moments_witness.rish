@@ -26,7 +26,7 @@ say "hu_moments: Lens TAME -- the raw moments run in i64 (the largest, m30, unde
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/hu_moments"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/hu_moments.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/hu_moments.rye -femit-bin=${bin}"]
 assert build.ok else "hu_moments: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

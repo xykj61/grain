@@ -26,7 +26,7 @@ say "mycelium-till: Lens TAME — the verdict composes cord + fold public API; e
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/till"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/till.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-till: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -39,11 +39,11 @@ assert selftest.out contains "refuse the whole resolution" else "mycelium-till: 
 
 # The Cord whose agreed order the Till reads, and the Mycelium fold whose per-fact law it applies, both
 # stand at the door -- their own selftests prove the machinery the verdict rests on.
-let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert cord.ok else "mycelium-till: the Cord the Till reads is not GREEN"
 assert cord.out contains "GREEN" else "mycelium-till: the Cord did not speak its GREEN"
 
-let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert fold.ok else "mycelium-till: the Mycelium fold the Till applies is not GREEN"
 assert fold.out contains "GREEN" else "mycelium-till: the Mycelium fold did not speak its GREEN"
 

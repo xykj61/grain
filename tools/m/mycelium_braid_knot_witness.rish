@@ -30,7 +30,7 @@ say "mycelium-braid-knot: Lens TAME — seal/continue compose braid + cord_knot 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/braid_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/braid_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/braid_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-braid-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -44,11 +44,11 @@ assert selftest.out contains "each refuse whole" else "mycelium-braid-knot: refu
 
 # The Braid whose verdict this continues, and the Knot it reads across, both stand at the door --
 # their own selftests prove the linked-chain law and the checkpoint machinery the verdict rests on.
-let braid = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/braid.rye -femit-bin=mycelium/bin/braid && mycelium/bin/braid 2>&1"]
+let braid = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/braid.rye -femit-bin=mycelium/bin/braid && mycelium/bin/braid 2>&1"]
 assert braid.ok else "mycelium-braid-knot: the Braid whose verdict continues is not GREEN"
 assert braid.out contains "GREEN" else "mycelium-braid-knot: the Braid did not speak its GREEN"
 
-let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert knot.ok else "mycelium-braid-knot: the Knot the Braid reads across is not GREEN"
 assert knot.out contains "GREEN" else "mycelium-braid-knot: the Knot did not speak its GREEN"
 

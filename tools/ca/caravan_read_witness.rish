@@ -10,7 +10,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/read_read"
 
-let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=${bin}"]
 
 assert build.ok else "caravan read build failed"
 

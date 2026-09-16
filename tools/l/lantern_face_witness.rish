@@ -16,7 +16,7 @@ say "lantern-face: Lens TAME -- refusals before mutation; the uncertainty law pr
 let zig = "vendor/zig-toolchain/zig"
 
 say "lantern-face: building and running the face's own legs..."
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/lantern_face.rye -femit-bin=pond/bin/lantern-face"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/lantern_face.rye -femit-bin=pond/bin/lantern-face"]
 assert build.ok else "lantern-face: the face failed to build -- read the compiler's own words"
 let face = run ["sh" "-c" "pond/bin/lantern-face 2>&1"]
 assert face.ok else "lantern-face: the face's legs went red -- read its own GREEN lines"
@@ -28,7 +28,7 @@ assert face.out contains "no stop reason earns settled" else "lantern-face: the 
 assert face.out contains "GREEN: lantern-face" else "lantern-face: the closing GREEN is missing"
 
 say "lantern-face: the .brush-themed variant -- the cascade recolors one settledness..."
-let tbuild = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/lantern_face_theme.rye -femit-bin=pond/bin/lantern-face-theme"]
+let tbuild = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/lantern_face_theme.rye -femit-bin=pond/bin/lantern-face-theme"]
 assert tbuild.ok else "lantern-face: the themed variant failed to build"
 let theme = run ["sh" "-c" "pond/bin/lantern-face-theme 2>&1"]
 assert theme.ok else "lantern-face: the themed legs went red -- read its own GREEN lines"

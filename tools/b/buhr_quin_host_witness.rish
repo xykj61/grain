@@ -17,7 +17,7 @@ say "buhr4: Lens TAME — one request dispatched by prompt; contract faults surf
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/quin-host"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/quin_host.rye -femit-bin=${bin}"]
 assert build.ok else "buhr4: quin_host build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

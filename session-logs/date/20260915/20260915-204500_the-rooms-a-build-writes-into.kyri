@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260915.204500
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense seat, interactive captain
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The rooms a build writes into
+prompt Keaton -- lock the rest: image, pond, mycelium, caravan
+think Checked one thing the lotus batch never forced: whether imports stay inside a room. They do not. A cross-room import bridges to a shadow BESIDE THE IMPORTED FILE, so a build writes into rooms its own directory never names.
+obs THE LOCK I SHIPPED AN HOUR AGO WAS INCOMPLETE, and pond is where it would have shown. pond/apps carries 149 cross-room imports and 219 of pond's 220 build sites target it, so a lock on the source's own directory would serialize two pond builds correctly and leave a pond build racing a mantra build exactly as exposed as before.
+obs The five rooms I had measured read ZERO cross-room imports each, which is why lotus went six to zero and why the gap stayed invisible. Measuring the room I was about to sweep is what found it.
+obs THE WALK IS BOUNDED AND SORTED. A breadth-first pass over directory-qualified imports, depth and width bounded, refusing rather than truncating in silence -- and every caller takes its rooms in ONE sorted order, which is what keeps two builds from deadlocking on each other.
+obs PROVEN ON A REAL CROSS-ROOM CASE rather than a pen invention: pond/apps/commerce_trade.rye imports dimeroll, and holding dimeroll alone now refuses that build while its own room stands free. Five control legs, taking the control to fifteen.
+obs THE RESULT IS HONEST RATHER THAN CLEAN: eight failures in 180 runs before, ONE after. The survivor read green alone twice, and eight caravan witnesses under the lock ran clean in 24s, so the likeliest reason is my own harness timeout under serialization rather than a collision. I am reporting one rather than zero.
+obs A SCRATCH REDIRECT FAILED MID-RUN and I could not explain it. Reading the eight captured outputs directly showed all green, so the count stood -- yet a failure record that cannot be written means a count that cannot be trusted, and checking the outputs rather than the counter is what settled it.
+loom lock before_failures=8 after_failures=1 runs_each=180 parallelism=8 after_seconds=215
+loom migration files=573 image=254 pond=220 mycelium=192 caravan=191 control_legs=15 faults=0
+loom crossroom pond_apps=149 lotus=0 image=0 mycelium=0 caravan=0
+rota none -- a sweep on Keaton's word, no rota this lap
+file tools/fixtures/r/rye_build.sh the walk that locks every room a build writes into
+file tools/fixtures/r/rye_build_control.sh five legs proving the imported room is covered
+scope four rooms migrated to the lock, the lock widened to cover imported rooms, proven on a real cross-room build
+status GREEN on the control at fifteen legs and on spot-checked witnesses in each room; one unexplained failure reported rather than rounded away
+recommend check in (Keaton) -- linengrow and the smaller rooms still build unlocked, and the survivor wants one captured failure like its predecessor did

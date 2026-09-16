@@ -18,7 +18,7 @@ say "tact4: Lens TAME — each book conserves and the pair conserves across cash
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/commerce-trade"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/commerce_trade.rye -femit-bin=${bin}"]
 assert build.ok else "tact4: commerce_trade build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

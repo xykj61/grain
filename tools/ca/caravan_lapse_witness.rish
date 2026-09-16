@@ -71,12 +71,12 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/lapse"
 
-let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/lapse.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/lapse.rye -femit-bin=${bin}"]
 
 assert build.ok else "caravan lapse build failed -- ${build.err}"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/lapse_read"]
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/lapse_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 # The board declaration the rungs below opened, unchanged.

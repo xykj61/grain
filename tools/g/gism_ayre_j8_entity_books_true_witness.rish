@@ -20,14 +20,14 @@ let zig = "vendor/zig-toolchain/zig"
 
 # Rung one stays GREEN beneath the real-corpus layer -- additive.
 let bin1 = "pond/bin/entity-books"
-let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin1}"]
+let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/entity_books.rye -femit-bin=${bin1}"]
 assert build1.ok else "gism-ayre-j8r4: rung-one entity_books build failed"
 let self1 = run ["sh" "-c" "${bin1} selftest 2>&1"]
 assert self1.ok else "gism-ayre-j8r4: rung-one selftest exited non-zero"
 assert self1.out contains "GREEN" else "gism-ayre-j8r4: rung-one did not speak GREEN"
 
 let bin = "pond/bin/entity-books-true"
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/entity_books_true.rye -femit-bin=${bin}"]
 assert build.ok else "gism-ayre-j8r4: entity_books_true build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -26,7 +26,7 @@ say "hitmiss: Lens TAME -- u8 threshold decides foreground once; the source and 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/hitmiss"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/hitmiss.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/hitmiss.rye -femit-bin=${bin}"]
 assert build.ok else "hitmiss: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -24,7 +24,7 @@ say "scooter-nav: Lens TAME -- the byte run bounded, typing keys a no-op, the po
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/scooter-nav"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_nav.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/scooter_nav.rye -femit-bin=${bin}"]
 assert build.ok else "scooter-nav: scooter_nav build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

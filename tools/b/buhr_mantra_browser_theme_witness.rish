@@ -19,7 +19,7 @@ say "buhr-j2r4: Lens TAME — the theme read through the real authoring loop, in
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mantra-browser-theme"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser_theme.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mantra_browser_theme.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j2r4: mantra_browser_theme build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

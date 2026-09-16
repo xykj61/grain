@@ -25,7 +25,7 @@ say "convex_diameter: Lens TAME -- the hull is swept under convex_diameter_max_p
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/convex_diameter"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/convex_diameter.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/convex_diameter.rye -femit-bin=${bin}"]
 assert build.ok else "convex_diameter: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -17,7 +17,7 @@ say "gism-j6r3: Lens TAME — the chain is grounded in the settled ledger; every
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/provenance-chain"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/provenance_chain.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/provenance_chain.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j6r3: provenance_chain build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -32,7 +32,7 @@ assert selftest.out contains "wrong presented holder refused (BadTransfer)" else
 # The owner-signed catalog the chain composes over (BUHR-J7r4) must still be GREEN --
 # provenance_chain reuses its digest/verify primitives, retiring nothing.
 let keyed_bin = "pond/bin/tablecloth-keyed"
-let keyed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=${keyed_bin} && ${keyed_bin} selftest 2>&1"]
+let keyed = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth_keyed.rye -femit-bin=${keyed_bin} && ${keyed_bin} selftest 2>&1"]
 assert keyed.ok else "gism-j6r3: tablecloth_keyed regressed"
 assert keyed.out contains "GREEN" else "gism-j6r3: tablecloth_keyed did not speak GREEN"
 

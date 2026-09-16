@@ -25,7 +25,7 @@ say "mycelium-cord-batch: Lens TAME — a batched block seals its facts under on
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_batch"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_batch.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-batch: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -37,12 +37,12 @@ assert selftest.out contains "an over-full batch, an empty batch, and a tampered
 
 # The elder single-fact Cord the batch grows beside stays a green binary -- accrete-never-break, proven
 # by re-running its own selftest at this door.
-let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert elder.ok else "mycelium-cord-batch: the elder single-fact Cord is not GREEN"
 assert elder.out contains "GREEN" else "mycelium-cord-batch: the elder Cord did not speak its GREEN"
 
 # The Mycelium supply fold both histories fold facts through stands at its door.
-let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert myc.ok else "mycelium-cord-batch: the Mycelium fold both histories fold through is not GREEN"
 assert myc.out contains "GREEN" else "mycelium-cord-batch: the Mycelium fold did not speak its GREEN"
 

@@ -20,7 +20,7 @@ say "gism-j5r4: Lens TAME — Scribble, the voice, and awk converge on one measu
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/corpus-true"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/corpus_true.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j5r4: corpus_true build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -42,7 +42,7 @@ assert app_truth.out == awk_truth.out else "gism-j5r4: the voice's reading disag
 
 # The demo reading over pinned_doc stays GREEN -- corpus_true is additive.
 let demo_bin = "pond/bin/reading-query"
-let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
+let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j5r4: reading_query (demo) rebuild failed"
 let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
 assert demo_selftest.ok else "gism-j5r4: reading_query (demo) selftest regressed"

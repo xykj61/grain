@@ -29,7 +29,7 @@ say "space-paint: Lens TAME -- the box bound-checked ONCE up front in u64 so a f
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/space_paint"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/space_paint.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/space_paint.rye -femit-bin=${bin}"]
 assert build.ok else "space-paint: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

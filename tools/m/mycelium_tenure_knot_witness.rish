@@ -27,7 +27,7 @@ say "mycelium-tenure-knot: Lens TAME — the verdict composes tenure + cord_knot
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/tenure-knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/tenure_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/tenure_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-tenure-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -40,11 +40,11 @@ assert selftest.out contains "holder never drifts" else "mycelium-tenure-knot: c
 
 # The Tenure whose verdict this rung carries across a checkpoint, and the Knot that ties off the
 # committed prefix, both stand at the door -- their own selftests prove the machinery r3 rests on.
-let tenure = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/tenure.rye -femit-bin=mycelium/bin/tenure && mycelium/bin/tenure 2>&1"]
+let tenure = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/tenure.rye -femit-bin=mycelium/bin/tenure && mycelium/bin/tenure 2>&1"]
 assert tenure.ok else "mycelium-tenure-knot: the Tenure r1 the checkpoint carries is not GREEN"
 assert tenure.out contains "GREEN" else "mycelium-tenure-knot: the Tenure r1 did not speak its GREEN"
 
-let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord-knot && mycelium/bin/cord-knot 2>&1"]
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord-knot && mycelium/bin/cord-knot 2>&1"]
 assert knot.ok else "mycelium-tenure-knot: the Knot the verdict reads across is not GREEN"
 assert knot.out contains "GREEN" else "mycelium-tenure-knot: the Knot did not speak its GREEN"
 

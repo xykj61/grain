@@ -18,7 +18,7 @@ assert mk.ok else "poll pen: the pen could not be opened"
 let pen = trim mk.out
 let sentinel = "${pen}/poll-stop"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} rye/bin/rye build caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
+let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
 assert build.ok else "subscribe poll service build failed"
 
 let run = run ["sh" "-c" "rm -f ${sentinel} && CARAVAN_WITNESS_MODE=1 ${service} ${delivery} ${sentinel} 2 2>&1"]

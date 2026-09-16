@@ -31,7 +31,7 @@ say "mycelium-chorus-true: Lens TAME — the app rebuilds the real Dag under cor
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/chorus_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-chorus-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -53,7 +53,7 @@ assert app.out == awk.out else "mycelium-chorus-true: app and awk disagree — t
 
 # The Chorus r1 whose quorum this rung reads over a real record stands at the door -- its own selftest
 # proves the machinery the reading rests on.
-let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-chorus-true: the Chorus r1 this rung reads over a real record is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-chorus-true: the Chorus r1 did not speak its GREEN"
 

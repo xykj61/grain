@@ -22,7 +22,7 @@ say "mycelium-cord-knot-true: Lens TAME — supply and stars cross-check against
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_knot_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-knot-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -41,7 +41,7 @@ assert awk.out contains "700 1" else "mycelium-cord-knot-true: awk pair not 700 
 assert app.out == awk.out else "mycelium-cord-knot-true: app and awk disagree — the reading drifted from the bytes"
 
 # The fixture is genuinely what the Knot emits -- regenerate and diff, proving no hand-mock.
-let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot_fixture_gen.rye -femit-bin=mycelium/bin/cord_knot_fixture_gen"]
+let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot_fixture_gen.rye -femit-bin=mycelium/bin/cord_knot_fixture_gen"]
 assert gen.ok else "mycelium-cord-knot-true: fixture generator build failed"
 let regen = run ["sh" "-c" "mycelium/bin/cord_knot_fixture_gen 2> /tmp/cord_knot_regen.bron; diff tools/fixtures/c/cord_knot.bron /tmp/cord_knot_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-cord-knot-true: fixture regeneration failed"

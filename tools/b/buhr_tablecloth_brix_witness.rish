@@ -18,7 +18,7 @@ say "buhr7: Lens TAME — evaluation is the join of declaration and store; an un
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/tablecloth-brix"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_brix.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth_brix.rye -femit-bin=${bin}"]
 assert build.ok else "buhr7: tablecloth_brix build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -31,14 +31,14 @@ assert selftest.out contains "an unsatisfiable requirement, a bad header, an emp
 # Rungs one and two -- the naming layer the declaration evaluates over and the reader that
 # verifies its output -- stay their own green binaries; rung three composes them additively.
 let r1_bin = "pond/bin/tablecloth"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr7: tablecloth (r1) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr7: tablecloth (r1) selftest exited non-zero"
 assert r1_selftest.out contains "GREEN" else "buhr7: tablecloth (r1) did not speak GREEN"
 
 let r2_bin = "pond/bin/tablecloth-index"
-let r2_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_index.rye -femit-bin=${r2_bin}"]
+let r2_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth_index.rye -femit-bin=${r2_bin}"]
 assert r2_build.ok else "buhr7: tablecloth_index (r2) re-build failed"
 let r2_selftest = run ["sh" "-c" "${r2_bin} selftest 2>&1"]
 assert r2_selftest.ok else "buhr7: tablecloth_index (r2) selftest exited non-zero"

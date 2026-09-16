@@ -41,7 +41,7 @@ say "scooter-paint: Lens TAME -- pond composes image, faithful byte-for-byte to 
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/scooter-paint"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_paint.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/scooter_paint.rye -femit-bin=${bin}"]
 assert build.ok else "scooter-paint: scooter_paint build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

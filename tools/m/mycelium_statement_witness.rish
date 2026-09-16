@@ -32,7 +32,7 @@ say "mycelium-statement: Lens TAME — the projection composes cord + fold + lap
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/statement"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-statement: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -51,11 +51,11 @@ assert selftest.out contains "made-> 55154f42065ea5a1 100 open" else "mycelium-s
 
 # The Lapse whose resolved ledger the Statement projects, and the Cord + fold whose signed-fact model it
 # reads through, all stand at the door -- their own selftests prove the machinery the projection rests on.
-let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
 assert lapse.ok else "mycelium-statement: the Lapse whose ledger the Statement reads is not GREEN"
 assert lapse.out contains "GREEN" else "mycelium-statement: the Lapse did not speak its GREEN"
 
-let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert fold.ok else "mycelium-statement: the Mycelium fold the Statement reads through is not GREEN"
 assert fold.out contains "GREEN" else "mycelium-statement: the Mycelium fold did not speak its GREEN"
 

@@ -23,7 +23,7 @@ say "selection_shrink: Lens TAME -- the boundary scan runs the object count squa
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/selection_shrink"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/selection_shrink.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/selection_shrink.rye -femit-bin=${bin}"]
 assert build.ok else "selection_shrink: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

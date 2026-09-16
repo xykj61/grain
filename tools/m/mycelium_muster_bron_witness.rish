@@ -26,7 +26,7 @@ say "mycelium-muster-bron: Lens TAME — render/parse compose muster + chorus pu
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/muster_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-muster-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -40,11 +40,11 @@ assert selftest.out contains "a repeated validator each refuse" else "mycelium-m
 assert selftest.out contains "judges a quorum the same offline" else "mycelium-muster-bron: closing claim missing"
 
 # The Muster r1 the record carries, and the Chorus it judges, stand at the door.
-let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
+let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
 assert muster.ok else "mycelium-muster-bron: the Muster r1 the record carries is not GREEN"
 assert muster.out contains "GREEN" else "mycelium-muster-bron: the Muster did not speak its GREEN"
 
-let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-muster-bron: the Chorus the roll judges is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-muster-bron: the Chorus did not speak its GREEN"
 

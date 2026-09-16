@@ -16,7 +16,7 @@ say "buhr6: Lens TAME — an edit is an append; the reported head advances, the 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/graph-query-edit"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/graph_query_edit.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/graph_query_edit.rye -femit-bin=${bin}"]
 assert build.ok else "buhr6: graph_query_edit build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -29,7 +29,7 @@ assert selftest.out contains "edited graph reads r3, pristine reads r2 — the q
 
 # Rung one stays its own green binary -- the query the edit rung composes over.
 let r1_bin = "pond/bin/graph-query"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/graph_query.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/graph_query.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr6: graph_query (rung one) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr6: graph_query (rung one) selftest regressed"

@@ -22,7 +22,7 @@ say "shape_signature: Lens TAME -- the signature reads one bounded ring, one hul
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/shape_signature"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/shape_signature.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/shape_signature.rye -femit-bin=${bin}"]
 assert build.ok else "shape_signature: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

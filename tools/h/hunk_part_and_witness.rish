@@ -23,7 +23,7 @@ say "hunk-part-and: Lens TAME — pure composition over HUNK75 matches and HUNK7
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_and"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_and.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-and: build failed — ${build.err}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
@@ -38,13 +38,13 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-and' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-and: selftest did not print the GREEN part-and line"
 
 # HUNK75 stays GREEN -- the matches the conjunction asks of every clause are the ones part_filter proved.
-let filt = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_filter.rye -femit-bin=image/bin/part_filter && image/bin/part_filter selftest > image/bin/part_filter.out 2>&1"]
+let filt = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_filter.rye -femit-bin=image/bin/part_filter && image/bin/part_filter selftest > image/bin/part_filter.out 2>&1"]
 assert filt.ok else "hunk-part-and: HUNK75 part_filter re-run failed — see image/bin/part_filter.out"
 let filt_green = run ["sh" "-c" "grep -q 'GREEN part-filter' image/bin/part_filter.out && echo yes"]
 assert (trim filt_green.out) == "yes" else "hunk-part-and: HUNK75 part_filter did not stay GREEN"
 
 # HUNK76 stays GREEN -- each clause is parsed by the parser part_query proved.
-let q = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_query.rye -femit-bin=image/bin/part_query && image/bin/part_query selftest > image/bin/part_query.out 2>&1"]
+let q = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_query.rye -femit-bin=image/bin/part_query && image/bin/part_query selftest > image/bin/part_query.out 2>&1"]
 assert q.ok else "hunk-part-and: HUNK76 part_query re-run failed — see image/bin/part_query.out"
 let q_green = run ["sh" "-c" "grep -q 'GREEN part-query' image/bin/part_query.out && echo yes"]
 assert (trim q_green.out) == "yes" else "hunk-part-and: HUNK76 part_query did not stay GREEN"

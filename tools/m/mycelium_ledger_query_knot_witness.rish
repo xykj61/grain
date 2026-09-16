@@ -29,7 +29,7 @@ say "mycelium-ledger-query-knot: Lens TAME — a corrupt Knot, a forged suffix, 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/ledger-query-knot"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ledger_query_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ledger_query_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-ledger-query-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

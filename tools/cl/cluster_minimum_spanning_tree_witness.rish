@@ -22,7 +22,7 @@ say "cluster_minimum_spanning_tree: Lens TAME -- the tree holds at most the clus
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/cluster_minimum_spanning_tree"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_minimum_spanning_tree.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/cluster_minimum_spanning_tree.rye -femit-bin=${bin}"]
 assert build.ok else "cluster_minimum_spanning_tree: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

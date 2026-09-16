@@ -23,7 +23,7 @@ say "cluster_mst_leaves: Lens TAME -- the cluster count can never exceed the obj
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/cluster_mst_leaves"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_mst_leaves.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/cluster_mst_leaves.rye -femit-bin=${bin}"]
 assert build.ok else "cluster_mst_leaves: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -21,7 +21,7 @@ say "object_relation: Lens TAME -- the nearest scan gathers object b's pixels in
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/object_relation"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/object_relation.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/object_relation.rye -femit-bin=${bin}"]
 assert build.ok else "object_relation: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

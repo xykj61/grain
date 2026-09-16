@@ -25,7 +25,7 @@ say "color-contrast: Lens TAME -- u32 ratios on the x100 scale bounded 100..2100
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/color_contrast"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_contrast.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/color_contrast.rye -femit-bin=${bin}"]
 assert build.ok else "color-contrast: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

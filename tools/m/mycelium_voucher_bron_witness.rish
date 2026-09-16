@@ -28,7 +28,7 @@ say "mycelium-voucher-bron: Lens TAME — the record composes voucher public API
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/voucher_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-voucher-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -43,7 +43,7 @@ assert selftest.out contains "still verifies offline" else "mycelium-voucher-bro
 
 # The Voucher r1 the record carries, and the Statement it signs, stand at the door -- their own selftests
 # prove the attestation the travelling record rests on.
-let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
 assert voucher.ok else "mycelium-voucher-bron: the Voucher r1 the record carries is not GREEN"
 assert voucher.out contains "GREEN" else "mycelium-voucher-bron: the Voucher r1 did not speak its GREEN"
 

@@ -28,7 +28,7 @@ say "constel-consensus: Lens TAME — gossip_merge is a bounded fixpoint; conver
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/constel-consensus"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_consensus.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/constel_consensus.rye -femit-bin=${bin}"]
 assert build.ok else "constel-consensus: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

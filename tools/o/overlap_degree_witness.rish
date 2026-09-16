@@ -21,7 +21,7 @@ say "overlap_degree: Lens TAME -- the scene graph caps its object count, so a de
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/overlap_degree"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/overlap_degree.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/overlap_degree.rye -femit-bin=${bin}"]
 assert build.ok else "overlap_degree: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

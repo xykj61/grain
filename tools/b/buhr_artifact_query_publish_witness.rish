@@ -18,7 +18,7 @@ say "buhr8r2: Lens TAME — a publish is an append; a refused name becomes a tru
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/artifact-query-publish"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/artifact_query_publish.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/artifact_query_publish.rye -femit-bin=${bin}"]
 assert build.ok else "buhr8r2: artifact_query_publish build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -33,7 +33,7 @@ assert selftest.out contains "the reading is read-only" else "buhr8r2: read-only
 # Rung one -- the voice that reads a named artifact -- stays its own green binary; rung two
 # composes over its public answer_over, additively.
 let r1_bin = "pond/bin/artifact-query"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/artifact_query.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/artifact_query.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr8r2: artifact_query (J8r1) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr8r2: artifact_query (J8r1) selftest exited non-zero"

@@ -18,7 +18,7 @@ say "buhr-j3r3: Lens TAME — bounded, value-model-honest, unknown fields and ty
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-manifest"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_manifest.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_manifest.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j3r3: mcp_manifest build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

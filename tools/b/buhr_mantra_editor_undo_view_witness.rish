@@ -20,7 +20,7 @@ say "buhr-j4r5: Lens TAME — proven at the cell level; the edge moves right to 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mantra-editor-undo-view"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_editor_undo_view.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mantra_editor_undo_view.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j4r5: mantra_editor_undo_view build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

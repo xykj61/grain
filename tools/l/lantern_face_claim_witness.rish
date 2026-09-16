@@ -15,7 +15,7 @@ say "face-claim: Lens TAME -- pins over prose; the law proven in both languages.
 let zig = "vendor/zig-toolchain/zig"
 
 say "face-claim: building and running the claim's own legs..."
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/lantern_face_claim.rye -femit-bin=pond/bin/lantern-face-claim"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/lantern_face_claim.rye -femit-bin=pond/bin/lantern-face-claim"]
 assert build.ok else "face-claim: the claim module failed to build"
 let claim = run ["sh" "-c" "pond/bin/lantern-face-claim 2>&1"]
 assert claim.ok else "face-claim: the claim legs went red -- a DISCOVER line means the pins drifted"

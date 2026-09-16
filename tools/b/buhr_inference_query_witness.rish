@@ -15,7 +15,7 @@ say "buhr1: Lens TAME — real math, bounded request, bounded response; unknown 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/inference-query"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/inference_query.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/inference_query.rye -femit-bin=${bin}"]
 assert build.ok else "buhr1: inference_query build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -24,7 +24,7 @@ say "dahl-j12r1: Lens TAME — two proofs pass exactly the bequeathed set; the r
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/data-dignity"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/data_dignity.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j12r1: data_dignity build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

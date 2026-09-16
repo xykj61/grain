@@ -16,7 +16,7 @@ say "tact2: Lens TAME — a tampered Deed, a point disagreement, and a wrong sig
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/publish-receipt-bound"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt_bound.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt_bound.rye -femit-bin=${bin}"]
 assert build.ok else "tact2: publish_receipt_bound build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -29,7 +29,7 @@ assert selftest.out contains "a signature the Deed's keeper never made refused B
 assert selftest.out contains "a receipt binds only to a current member at its own point" else "tact2: crux claim missing"
 
 # The offline receipt (r1) this rung binds stays its own green binary.
-let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
 assert r1.ok else "tact2: publish_receipt r1 re-run failed"
 assert r1.out contains "GREEN" else "tact2: r1 selftest did not speak GREEN"
 

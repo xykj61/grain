@@ -7,7 +7,7 @@ let zig = "vendor/zig-toolchain/zig"
 let customs_bin = "pond/bin/customs"
 
 say "pond-customs: build..."
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/customs.rye -femit-bin=${customs_bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/customs.rye -femit-bin=${customs_bin}"]
 assert build.ok else "pond customs build failed"
 
 let selftest = run ["sh" "-c" "${customs_bin} selftest 2>&1"]

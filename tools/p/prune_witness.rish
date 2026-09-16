@@ -26,7 +26,7 @@ say "prune: Lens TAME -- the binary meaning of a pixel is read from hitmiss (one
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/prune"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/prune.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/prune.rye -femit-bin=${bin}"]
 assert build.ok else "prune: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

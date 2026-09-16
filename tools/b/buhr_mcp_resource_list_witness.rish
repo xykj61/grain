@@ -18,7 +18,7 @@ say "buhr10r2: Lens TAME — the list is an honest index; every advertised URI t
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-resource-list"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_resource_list.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_resource_list.rye -femit-bin=${bin}"]
 assert build.ok else "buhr10r2: mcp_resource_list build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -33,14 +33,14 @@ assert selftest.out contains "a wrong list format header refused" else "buhr10r2
 # Rung one (resources/read) and Tablecloth (J7r1, grown one additive accessor artifact_name)
 # stay their own green binaries; this rung calls only their public API.
 let r1_bin = "pond/bin/mcp-resource"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_resource.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_resource.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr10r2: mcp_resource (J10r1) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr10r2: mcp_resource (J10r1) selftest exited non-zero"
 assert r1_selftest.out contains "GREEN" else "buhr10r2: mcp_resource (J10r1) did not speak GREEN"
 
 let tcl_bin = "pond/bin/tablecloth"
-let tcl_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${tcl_bin}"]
+let tcl_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth.rye -femit-bin=${tcl_bin}"]
 assert tcl_build.ok else "buhr10r2: tablecloth (J7r1) re-build failed"
 let tcl_selftest = run ["sh" "-c" "${tcl_bin} selftest 2>&1"]
 assert tcl_selftest.ok else "buhr10r2: tablecloth (J7r1) selftest exited non-zero"

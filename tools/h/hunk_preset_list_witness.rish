@@ -23,7 +23,7 @@ say "hunk-preset-list: Lens TAME — pure composition over preset_store's verifi
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/preset_list"
 
-let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_list.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/preset_list.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-preset-list: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

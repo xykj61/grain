@@ -23,7 +23,7 @@ say "hunk-session-list: Lens TAME — the listing is bounded to the catalog's ow
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/session_list"
 
-let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/session_list.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/session_list.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-session-list: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -17,7 +17,7 @@ say "tact1: Lens TAME — an invented app and a held mark each stop the arc; the
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/ship-pilot-ready"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_ready.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot_ready.rye -femit-bin=${bin}"]
 assert build.ok else "tact1: ship_pilot_ready build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -29,15 +29,15 @@ assert selftest.out contains "a held customs mark stopped the arc at customs; th
 assert selftest.out contains "the first-run reaches READY only with every step proven, and reports where it holds" else "tact1: crux claim missing"
 
 # The three rungs this report composes over stay their own green binaries.
-let spine = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot.rye -femit-bin=pond/bin/ship-pilot && pond/bin/ship-pilot selftest 2>&1"]
+let spine = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot.rye -femit-bin=pond/bin/ship-pilot && pond/bin/ship-pilot selftest 2>&1"]
 assert spine.ok else "tact1: ship_pilot spine re-run failed"
 assert spine.out contains "GREEN" else "tact1: spine selftest did not speak GREEN"
 
-let ident = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_identity.rye -femit-bin=pond/bin/ship-pilot-identity && pond/bin/ship-pilot-identity selftest 2>&1"]
+let ident = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot_identity.rye -femit-bin=pond/bin/ship-pilot-identity && pond/bin/ship-pilot-identity selftest 2>&1"]
 assert ident.ok else "tact1: ship_pilot_identity re-run failed"
 assert ident.out contains "GREEN" else "tact1: identity selftest did not speak GREEN"
 
-let cust = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_customs.rye -femit-bin=pond/bin/ship-pilot-customs && pond/bin/ship-pilot-customs selftest 2>&1"]
+let cust = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot_customs.rye -femit-bin=pond/bin/ship-pilot-customs && pond/bin/ship-pilot-customs selftest 2>&1"]
 assert cust.ok else "tact1: ship_pilot_customs re-run failed"
 assert cust.out contains "GREEN" else "tact1: customs selftest did not speak GREEN"
 

@@ -28,7 +28,7 @@ say "font5x7-superscript: Lens TAME -- u32 in-memory counts, u8 coverage bytes; 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/font5x7_superscript"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_superscript.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/font5x7_superscript.rye -femit-bin=${bin}"]
 assert build.ok else "font5x7-superscript: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

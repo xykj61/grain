@@ -32,7 +32,7 @@ say "mycelium-warrant: Lens TAME — the succession law composes muster + muster
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/warrant"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/warrant.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/warrant.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-warrant: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -56,7 +56,7 @@ assert selftest.out contains "warrant epoch=1 endorsements=0" else "mycelium-war
 
 # The Muster the succession rests on stands at the door -- its own selftest proves the roll and the
 # Byzantine threshold the Warrant reads.
-let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
+let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
 assert muster.ok else "mycelium-warrant: the Muster the succession rests on is not GREEN"
 assert muster.out contains "GREEN" else "mycelium-warrant: the Muster did not speak its GREEN"
 

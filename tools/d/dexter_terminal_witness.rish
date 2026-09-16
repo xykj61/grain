@@ -22,7 +22,7 @@ say "dexter-terminal: Lens TAME -- exactly 24x80, the two regions disjoint, the 
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/dexter-terminal"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/dexter_terminal.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/dexter_terminal.rye -femit-bin=${bin}"]
 assert build.ok else "dexter-terminal: dexter_terminal build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

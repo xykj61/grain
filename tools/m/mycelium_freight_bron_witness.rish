@@ -23,7 +23,7 @@ say "mycelium-freight-bron: Lens TAME — a purpose-built bounded reader refuses
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/freight_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-freight-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -37,12 +37,12 @@ assert selftest.out contains "The freight carries the position" else "mycelium-f
 
 # The Freight crux r3 travels stands on r1's own migration -- its receive path is exactly what the manifest's
 # advertised head is checked against here.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight.rye -femit-bin=mycelium/bin/freight && mycelium/bin/freight 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight.rye -femit-bin=mycelium/bin/freight && mycelium/bin/freight 2>&1"]
 assert r1.ok else "mycelium-freight-bron: the Freight r1 crux this round rides is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-freight-bron: the Freight r1 crux did not speak its GREEN"
 
 # The Freight r2 conservation stands too -- r3 travels the very position r2 sums across a whole fleet.
-let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_conservation.rye -femit-bin=mycelium/bin/freight_conservation && mycelium/bin/freight_conservation 2>&1"]
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight_conservation.rye -femit-bin=mycelium/bin/freight_conservation && mycelium/bin/freight_conservation 2>&1"]
 assert r2.ok else "mycelium-freight-bron: the Freight r2 conservation is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-freight-bron: the Freight r2 conservation did not speak its GREEN"
 

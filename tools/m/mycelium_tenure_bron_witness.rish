@@ -25,7 +25,7 @@ say "mycelium-tenure-bron: Lens TAME — a purpose-built bounded reader, never a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/tenure_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/tenure_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/tenure_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-tenure-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -36,7 +36,7 @@ assert selftest.out contains "answers the identical holder for every name" else 
 assert selftest.out contains "each refuse" else "mycelium-tenure-bron: refusal claim missing"
 
 # The Tenure whose verdict travels stands at the door -- its own selftest proves the verdict this record carries.
-let tenure = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/tenure.rye -femit-bin=mycelium/bin/tenure && mycelium/bin/tenure 2>&1"]
+let tenure = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/tenure.rye -femit-bin=mycelium/bin/tenure && mycelium/bin/tenure 2>&1"]
 assert tenure.ok else "mycelium-tenure-bron: the Tenure whose verdict travels is not GREEN"
 assert tenure.out contains "GREEN" else "mycelium-tenure-bron: the Tenure did not speak its GREEN"
 

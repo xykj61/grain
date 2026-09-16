@@ -33,7 +33,7 @@ say "mycelium-chorus-knot: Lens TAME — check_position_across re-runs the quoru
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/chorus-knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-chorus-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -50,11 +50,11 @@ assert selftest.out contains "chorus head=" else "mycelium-chorus-knot: rendered
 assert selftest.out contains "balance=100 reserved=0 received=100 voices=3" else "mycelium-chorus-knot: rendered lapsed quorum missing"
 
 # The Chorus the checkpoint reads across, and the Lapse-Knot whose base keeps the clock, stand at the door.
-let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-chorus-knot: the Chorus read across the cut is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-chorus-knot: the Chorus did not speak its GREEN"
 
-let lapseknot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse-knot && mycelium/bin/lapse-knot 2>&1"]
+let lapseknot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse-knot && mycelium/bin/lapse-knot 2>&1"]
 assert lapseknot.ok else "mycelium-chorus-knot: the Lapse-Knot whose base keeps the clock is not GREEN"
 assert lapseknot.out contains "GREEN" else "mycelium-chorus-knot: the Lapse-Knot did not speak its GREEN"
 

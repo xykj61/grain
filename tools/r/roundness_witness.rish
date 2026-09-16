@@ -23,7 +23,7 @@ say "roundness: Lens TAME -- only boundary pixels contribute corners (bounded 4*
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/roundness"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/roundness.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/roundness.rye -femit-bin=${bin}"]
 assert build.ok else "roundness: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

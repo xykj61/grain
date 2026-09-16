@@ -45,7 +45,7 @@ let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' brushstroke/bin
 assert (trim s_green.out) == "yes" else "hunk-part-facets-header: HUNK86 part_facets_search did not stay GREEN"
 
 # HUNK85 stays GREEN -- the faceted query the header counts and the shelf filters by.
-let f = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_facets.rye -femit-bin=image/bin/part_facets && image/bin/part_facets selftest > image/bin/part_facets.out 2>&1"]
+let f = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_facets.rye -femit-bin=image/bin/part_facets && image/bin/part_facets selftest > image/bin/part_facets.out 2>&1"]
 assert f.ok else "hunk-part-facets-header: HUNK85 part_facets re-run failed — see image/bin/part_facets.out"
 let f_green = run ["sh" "-c" "grep -q 'GREEN part-facets' image/bin/part_facets.out && echo yes"]
 assert (trim f_green.out) == "yes" else "hunk-part-facets-header: HUNK85 part_facets did not stay GREEN"

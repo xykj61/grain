@@ -23,7 +23,7 @@ say "hunk-artifact: Lens TAME — u32 in-memory counts, wire is bytes; every buf
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/image_artifact"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/image_artifact.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/image_artifact.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-artifact: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

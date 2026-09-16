@@ -28,7 +28,7 @@ say "mycelium-statement-knot: Lens TAME — the reading composes statement + lap
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/statement_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-statement-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -41,11 +41,11 @@ assert selftest.out contains "one account's line reads continuous across a Knot"
 
 # The Statement r1 whose line this rung reads across a cut, and the Lapse-Knot whose checkpoint it continues,
 # both stand at the door -- their own selftests prove the machinery the reading rests on.
-let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
 assert statement.ok else "mycelium-statement-knot: the Statement r1 this rung reads across a cut is not GREEN"
 assert statement.out contains "GREEN" else "mycelium-statement-knot: the Statement r1 did not speak its GREEN"
 
-let lapse_knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse_knot && mycelium/bin/lapse_knot 2>&1"]
+let lapse_knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse_knot && mycelium/bin/lapse_knot 2>&1"]
 assert lapse_knot.ok else "mycelium-statement-knot: the Lapse-Knot whose checkpoint the Statement continues is not GREEN"
 assert lapse_knot.out contains "GREEN" else "mycelium-statement-knot: the Lapse-Knot did not speak its GREEN"
 

@@ -26,7 +26,7 @@ say "mycelium-cord: Lens TAME — the commit is a pure fold of the graph; every 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -38,7 +38,7 @@ assert selftest.out contains "a tampered block signature, a dangling parent, and
 
 # The Mycelium supply fold the Cord orders facts for stands at its door -- its own selftest proves the
 # pure-fold law (issued minus taxed, non-negative, overdraw refuses whole) the committed order feeds.
-let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert myc.ok else "mycelium-cord: the Mycelium fold the Cord orders facts for is not GREEN"
 assert myc.out contains "GREEN" else "mycelium-cord: the Mycelium fold did not speak its GREEN"
 

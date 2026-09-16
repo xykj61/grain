@@ -22,7 +22,7 @@ say "gism-j6r4: Lens TAME — signed length and digest cross-check against wc -c
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/provenance-true"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/provenance_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/provenance_true.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j6r4: provenance_true build failed"
 
 # The crux cross-check, measured before it is compared: the signed facts must equal an

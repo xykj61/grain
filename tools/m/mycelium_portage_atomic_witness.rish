@@ -30,7 +30,7 @@ say "mycelium-portage-atomic: Lens TAME — the two-phase source law composes po
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/portage_atomic"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage_atomic.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/portage_atomic.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-portage-atomic: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -43,12 +43,12 @@ assert selftest.out contains "decided once identically across arrival order" els
 assert selftest.out contains "reserved in transit, never lost" else "mycelium-portage-atomic: the in-transit claim missing"
 
 # The Portage r1 crux this rung widens stands at the door -- the one-shot crossing and its conservation.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage.rye -femit-bin=mycelium/bin/portage && mycelium/bin/portage 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/portage.rye -femit-bin=mycelium/bin/portage && mycelium/bin/portage 2>&1"]
 assert r1.ok else "mycelium-portage-atomic: the Portage r1 crux is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-portage-atomic: the Portage r1 did not speak its GREEN"
 
 # The Pledge -- the two-phase transfer WITHIN one ledger whose atomicity this rung widens to two shards.
-let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
 assert pledge.ok else "mycelium-portage-atomic: the Pledge two-phase transfer is not GREEN"
 assert pledge.out contains "GREEN" else "mycelium-portage-atomic: the Pledge did not speak its GREEN"
 

@@ -23,20 +23,20 @@ let zig = "vendor/zig-toolchain/zig"
 
 # Rungs one and three stay GREEN beneath the true layer -- additive.
 let binr1 = "pond/bin/skate-group"
-let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${binr1}"]
+let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_group.rye -femit-bin=${binr1}"]
 assert buildr1.ok else "dahl-j10r4: skate_group (r1) build failed"
 let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
 assert selfr1.ok else "dahl-j10r4: skate_group (r1) selftest exited non-zero"
 
 let binr3 = "pond/bin/skate-group-bron"
-let buildr3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_bron.rye -femit-bin=${binr3}"]
+let buildr3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_group_bron.rye -femit-bin=${binr3}"]
 assert buildr3.ok else "dahl-j10r4: skate_group_bron (r3) build failed"
 let selfr3 = run ["sh" "-c" "${binr3} selftest 2>&1"]
 assert selfr3.ok else "dahl-j10r4: skate_group_bron (r3) selftest exited non-zero"
 assert selfr3.out contains "GREEN" else "dahl-j10r4: r3 did not speak GREEN"
 
 let bin = "pond/bin/skate-group-true"
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_group_true.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j10r4: skate_group_true build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

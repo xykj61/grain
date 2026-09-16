@@ -26,7 +26,7 @@ say "mycelium-puddle-convergence: Lens TAME — the heal composes r1 public API 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/puddle_convergence"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle_convergence.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/puddle_convergence.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-puddle-convergence: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -38,7 +38,7 @@ assert selftest.out contains "the symmetric join is minimal too" else "mycelium-
 assert selftest.out contains "Convergence stands" else "mycelium-puddle-convergence: closing claim missing"
 
 # The r1 berth the healing rests on stands at the door -- its own selftest proves the derived placement.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle.rye -femit-bin=mycelium/bin/puddle && mycelium/bin/puddle 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/puddle.rye -femit-bin=mycelium/bin/puddle && mycelium/bin/puddle 2>&1"]
 assert r1.ok else "mycelium-puddle-convergence: the r1 berth the healing rests on is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-puddle-convergence: the r1 berth did not speak its GREEN"
 

@@ -24,7 +24,7 @@ say "hunk-sprite: Lens TAME — u32 window coordinates bound-checked in u64 at a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/sprite"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/sprite.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-sprite: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -42,7 +42,7 @@ assert selftest.out contains "each renders exactly its window" else "hunk-sprite
 assert selftest.out contains "disjoint windows carry different pixels" else "hunk-sprite: the selftest did not prove disjoint windows carry different pixels"
 
 # HUNK3 stays GREEN -- the sprite index reuses photos.crop; the crop verb underneath must still hold.
-let photos = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=image/bin/photos && image/bin/photos selftest 2>&1"]
+let photos = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/photos.rye -femit-bin=image/bin/photos && image/bin/photos selftest 2>&1"]
 assert photos.ok else "hunk-sprite: HUNK3 photos re-run failed — ${photos.out}"
 assert photos.out contains "GREEN image-photos" else "hunk-sprite: HUNK3 photos selftest did not stay GREEN"
 

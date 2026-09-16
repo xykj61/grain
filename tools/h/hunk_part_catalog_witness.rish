@@ -22,7 +22,7 @@ say "hunk-part-catalog: Lens TAME — price is a u64 FACT, never a movable balan
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_catalog"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_catalog.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_catalog.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-catalog: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -40,7 +40,7 @@ assert selftest.out contains "price in cents survive" else "hunk-part-catalog: t
 assert selftest.out contains "no network, no key, no funds" else "hunk-part-catalog: the selftest did not affirm the custody floor (no funds)"
 
 # HUNK4 stays GREEN -- the part catalog builds on the sprite index; the index underneath must still hold.
-let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
+let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-part-catalog: HUNK4 sprite re-run failed — ${sprite.out}"
 assert sprite.out contains "GREEN image-sprite" else "hunk-part-catalog: HUNK4 sprite selftest did not stay GREEN"
 

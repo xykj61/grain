@@ -32,7 +32,7 @@ say "mycelium-pledge-knot: Lens TAME — the verdict never drifts across the cut
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/pledge_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/pledge_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-pledge-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -45,11 +45,11 @@ assert selftest.out contains "each refuse whole" else "mycelium-pledge-knot: ref
 
 # The Pledge whose verdict this reads across a checkpoint, and the Knot whose seal it continues onto, both stand
 # at the door -- their own selftests prove the machinery the crossing rests on.
-let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
 assert pledge.ok else "mycelium-pledge-knot: the Pledge whose verdict reads across is not GREEN"
 assert pledge.out contains "GREEN" else "mycelium-pledge-knot: the Pledge did not speak its GREEN"
 
-let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert knot.ok else "mycelium-pledge-knot: the Knot the verdict continues onto is not GREEN"
 assert knot.out contains "GREEN" else "mycelium-pledge-knot: the Knot did not speak its GREEN"
 

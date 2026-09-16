@@ -22,7 +22,7 @@ say "scooter-r1: Lens TAME -- only the host admits, a stranger is refused, and e
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/scooter-channel"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_channel.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/scooter_channel.rye -femit-bin=${bin}"]
 assert build.ok else "scooter-r1: scooter_channel build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -21,7 +21,7 @@ say "line_order: Lens TAME -- the projection walk runs components times under la
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/line_order"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_order.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/line_order.rye -femit-bin=${bin}"]
 assert build.ok else "line_order: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

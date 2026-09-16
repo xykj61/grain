@@ -44,7 +44,7 @@ let s_green = run ["sh" "-c" "grep -q 'GREEN part-and-search' brushstroke/bin/pa
 assert (trim s_green.out) == "yes" else "hunk-part-search-header: HUNK79 part_and_search did not stay GREEN"
 
 # HUNK78 stays GREEN -- the conjunction the header counts and the shelf filters by.
-let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
+let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
 assert a.ok else "hunk-part-search-header: HUNK78 part_and re-run failed — see image/bin/part_and.out"
 let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out && echo yes"]
 assert (trim a_green.out) == "yes" else "hunk-part-search-header: HUNK78 part_and did not stay GREEN"

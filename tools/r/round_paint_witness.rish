@@ -26,7 +26,7 @@ say "round_paint: Lens TAME -- the whole box bound-checked ONCE up front (in u64
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/round_paint"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/round_paint.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/round_paint.rye -femit-bin=${bin}"]
 assert build.ok else "round_paint: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

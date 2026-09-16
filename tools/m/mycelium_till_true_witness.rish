@@ -26,7 +26,7 @@ say "mycelium-till-true: Lens TAME — the loser cross-checks against an indepen
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/till_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/till_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-till-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -50,7 +50,7 @@ assert regen.out contains "REPRODUCIBLE" else "mycelium-till-true: fixture regen
 
 # The Till whose verdict this rung reads from real bytes, and the cord_bron reader that rebuilds the real
 # Dag, both stand at the door -- their own selftests prove the machinery r4 rests on.
-let till = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till.rye -femit-bin=mycelium/bin/till && mycelium/bin/till 2>&1"]
+let till = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/till.rye -femit-bin=mycelium/bin/till && mycelium/bin/till 2>&1"]
 assert till.ok else "mycelium-till-true: the Till r1 the reading resolves is not GREEN"
 assert till.out contains "GREEN" else "mycelium-till-true: the Till r1 did not speak its GREEN"
 

@@ -28,7 +28,7 @@ say "mycelium-muster-true: Lens TAME — the app rebuilds the real Dag under cor
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/muster_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-muster-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -49,7 +49,7 @@ assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0
 assert app.out == awk.out else "mycelium-muster-true: app and awk disagree — the agreed position drifted from the bytes"
 
 # The Muster r1 whose roll this rung applies to a real record stands at the door.
-let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
+let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
 assert muster.ok else "mycelium-muster-true: the Muster r1 this rung applies to a real record is not GREEN"
 assert muster.out contains "GREEN" else "mycelium-muster-true: the Muster r1 did not speak its GREEN"
 

@@ -24,7 +24,7 @@ say "mycelium-warrant-knot: Lens TAME — the walk composes warrant + muster pub
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/warrant_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/warrant_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/warrant_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-warrant-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -44,7 +44,7 @@ assert selftest.out contains "a spliced older handoff StaleEpoch" else "mycelium
 assert selftest.out contains "muster validators=4 byzantine_threshold=3" else "mycelium-warrant-knot: rendered head roll (n=4 t=3) missing"
 
 # The Warrant each link is stands at the door -- its r1 selftest proves the succession law each step rests on.
-let warrant = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/warrant.rye -femit-bin=mycelium/bin/warrant && mycelium/bin/warrant 2>&1"]
+let warrant = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/warrant.rye -femit-bin=mycelium/bin/warrant && mycelium/bin/warrant 2>&1"]
 assert warrant.ok else "mycelium-warrant-knot: the Warrant each link is is not GREEN"
 assert warrant.out contains "GREEN" else "mycelium-warrant-knot: the Warrant did not speak its GREEN"
 

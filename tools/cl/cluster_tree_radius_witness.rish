@@ -22,7 +22,7 @@ say "cluster_tree_radius: Lens TAME -- the cluster count can never exceed the ob
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/cluster_tree_radius"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_tree_radius.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/cluster_tree_radius.rye -femit-bin=${bin}"]
 assert build.ok else "cluster_tree_radius: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

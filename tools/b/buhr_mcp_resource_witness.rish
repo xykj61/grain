@@ -19,7 +19,7 @@ say "buhr10r1: Lens TAME — content-address integrity travels onto the resource
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-resource"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_resource.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_resource.rye -femit-bin=${bin}"]
 assert build.ok else "buhr10r1: mcp_resource build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -37,7 +37,7 @@ assert selftest.out contains "body whose length belies its len field refused" el
 # Tablecloth (J7r1) -- the store this rung reads through -- stays its own green binary; this rung
 # calls only its public API (fetch_artifact, address_hex, store_artifact).
 let tcl_bin = "pond/bin/tablecloth"
-let tcl_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${tcl_bin}"]
+let tcl_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth.rye -femit-bin=${tcl_bin}"]
 assert tcl_build.ok else "buhr10r1: tablecloth (J7r1) re-build failed"
 let tcl_selftest = run ["sh" "-c" "${tcl_bin} selftest 2>&1"]
 assert tcl_selftest.ok else "buhr10r1: tablecloth (J7r1) selftest exited non-zero"

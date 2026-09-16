@@ -17,7 +17,7 @@ say "tact2: Lens TAME — forgery, wrong key, and tamper each refuse; two honest
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/publish-receipt"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt.rye -femit-bin=${bin}"]
 assert build.ok else "tact2: publish_receipt build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -31,7 +31,7 @@ assert selftest.out contains "an overlong name refused NameTooLong rather than t
 assert selftest.out contains "an owner-signed publication verifies offline, forgery and tamper refused" else "tact2: crux claim missing"
 
 # The owner-signed store this receipt shares its signed word with stays its own green binary.
-let keyed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=pond/bin/tablecloth-keyed && pond/bin/tablecloth-keyed selftest 2>&1"]
+let keyed = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth_keyed.rye -femit-bin=pond/bin/tablecloth-keyed && pond/bin/tablecloth-keyed selftest 2>&1"]
 assert keyed.ok else "tact2: tablecloth_keyed re-run failed"
 assert keyed.out contains "GREEN" else "tact2: tablecloth_keyed selftest did not speak GREEN"
 

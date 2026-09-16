@@ -25,7 +25,7 @@ say "glyph-atlas: Lens TAME -- u32 in-memory counts, u8 coverage bytes, wire is 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/glyph"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/glyph.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/glyph.rye -femit-bin=${bin}"]
 assert build.ok else "glyph-atlas: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

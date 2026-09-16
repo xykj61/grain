@@ -27,7 +27,7 @@ say "mycelium-constel-true: Lens TAME — the reading is cross-checked against a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/constel_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/constel_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-constel-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -49,7 +49,7 @@ assert app.out == awk.out else "mycelium-constel-true: app and awk disagree — 
 
 # The fixture is reproducible -- the generator re-emits byte-identical bytes, so the on-disk roster is what the
 # Constel renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed fixture).
-let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_fixture_gen.rye -femit-bin=mycelium/bin/constel_fixture_gen"]
+let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/constel_fixture_gen.rye -femit-bin=mycelium/bin/constel_fixture_gen"]
 assert genbuild.ok else "mycelium-constel-true: fixture generator build failed"
 let regen = run ["sh" "-c" "mycelium/bin/constel_fixture_gen 2> /tmp/constel_roster_regen.bron; diff tools/fixtures/c/constel_roster.bron /tmp/constel_roster_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-constel-true: the regenerated fixture drifted from the committed one"
@@ -57,7 +57,7 @@ assert regen.out contains "REPRODUCIBLE" else "mycelium-constel-true: the regene
 
 # The Constel r3 travel rung stands at the door -- a true reading of a real roster means nothing unless the
 # record round-trips and boots the identical constellation.
-let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_bron.rye -femit-bin=mycelium/bin/constel_bron && mycelium/bin/constel_bron 2>&1"]
+let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/constel_bron.rye -femit-bin=mycelium/bin/constel_bron && mycelium/bin/constel_bron 2>&1"]
 assert r3.ok else "mycelium-constel-true: the Constel r3 travel rung is not GREEN"
 assert r3.out contains "GREEN" else "mycelium-constel-true: the Constel r3 did not speak its GREEN"
 

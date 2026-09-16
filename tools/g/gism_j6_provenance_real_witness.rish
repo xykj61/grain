@@ -20,7 +20,7 @@ say "gism-j6r1: Lens TAME — real bytes, owner-signed and content-addressed; th
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/provenance-real"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/provenance_real.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/provenance_real.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j6r1: provenance_real build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -39,7 +39,7 @@ assert selftest.out contains "red %73 — real doc ${sec.out} B > 512 B resin re
 # The demo keyed catalog over doc_planet/doc_star must still be GREEN -- provenance_real
 # composes its public API only, retiring nothing.
 let demo_bin = "pond/bin/tablecloth-keyed"
-let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=${demo_bin}"]
+let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth_keyed.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j6r1: tablecloth_keyed (demo) rebuild failed"
 let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
 assert demo_selftest.ok else "gism-j6r1: tablecloth_keyed (demo) selftest regressed"

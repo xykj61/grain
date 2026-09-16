@@ -29,7 +29,7 @@ say "mycelium-ledger-query: Lens TAME — every answer a lawful fold reading; a 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/ledger-query"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ledger_query.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ledger_query.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-ledger-query: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -49,7 +49,7 @@ assert selftest.out contains "zero budget refused by Lantern contract" else "myc
 # The fold the voice reads over stays its own green binary -- the supply the voice reports is the supply
 # the fold law computes, proven separately. Two tools, one law.
 let fold_bin = "mycelium/bin/fold"
-let fold_build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=${fold_bin}"]
+let fold_build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=${fold_bin}"]
 assert fold_build.ok else "mycelium-ledger-query: fold re-build failed"
 let fold_selftest = run ["sh" "-c" "${fold_bin} 2>&1"]
 assert fold_selftest.ok else "mycelium-ledger-query: fold selftest regressed"

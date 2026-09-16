@@ -24,7 +24,7 @@ say "frames-video: Lens TAME -- u32 in-memory counts, u16 frame_count on the wir
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/frames"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/frames.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/frames.rye -femit-bin=${bin}"]
 assert build.ok else "frames-video: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

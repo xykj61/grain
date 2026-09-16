@@ -22,21 +22,21 @@ let zig = "vendor/zig-toolchain/zig"
 
 # Rungs one and two re-run GREEN -- the travel layer is additive over them.
 let r1_bin = "pond/bin/skate-group"
-let r1_build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_group.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "dahl-j10r3: rung-one skate_group build failed"
 let r1_run = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_run.ok else "dahl-j10r3: rung-one selftest exited non-zero"
 assert r1_run.out contains "GREEN" else "dahl-j10r3: rung-one selftest did not speak GREEN"
 
 let r2_bin = "pond/bin/skate-group-signed"
-let r2_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_signed.rye -femit-bin=${r2_bin}"]
+let r2_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_group_signed.rye -femit-bin=${r2_bin}"]
 assert r2_build.ok else "dahl-j10r3: rung-two skate_group_signed build failed"
 let r2_run = run ["sh" "-c" "${r2_bin} selftest 2>&1"]
 assert r2_run.ok else "dahl-j10r3: rung-two selftest exited non-zero"
 assert r2_run.out contains "GREEN" else "dahl-j10r3: rung-two selftest did not speak GREEN"
 
 let bin = "pond/bin/skate-group-bron"
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_group_bron.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j10r3: skate_group_bron build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

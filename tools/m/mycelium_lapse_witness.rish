@@ -31,7 +31,7 @@ say "mycelium-lapse: Lens TAME — the verdict composes cord + fold + kumara pub
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/lapse"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-lapse: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -47,11 +47,11 @@ assert selftest.out contains "refuse whole" else "mycelium-lapse: refusal claim 
 # The Cord whose agreed order the Lapse reads (the deadline is a position in that order), and the Mycelium
 # fold whose signed-fact model and additive verify_fact it reuses, both stand at the door -- their own
 # selftests prove the machinery the verdict rests on.
-let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+let cord = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert cord.ok else "mycelium-lapse: the Cord the Lapse reads is not GREEN"
 assert cord.out contains "GREEN" else "mycelium-lapse: the Cord did not speak its GREEN"
 
-let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let fold = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert fold.ok else "mycelium-lapse: the Mycelium fold the Lapse reuses is not GREEN"
 assert fold.out contains "GREEN" else "mycelium-lapse: the Mycelium fold did not speak its GREEN"
 

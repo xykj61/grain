@@ -27,7 +27,7 @@ say "mycelium-testament-bron: Lens TAME — a purpose-built bounded reader (max_
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/testament_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-testament-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -41,7 +41,7 @@ assert selftest.out contains "tampered ship name" else "mycelium-testament-bron:
 
 # The r1 crux stands at the door -- a travel rung means nothing unless the in-memory certificate still
 # verifies offline against the constellation its names define.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament.rye -femit-bin=mycelium/bin/testament && mycelium/bin/testament 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament.rye -femit-bin=mycelium/bin/testament && mycelium/bin/testament 2>&1"]
 assert r1.ok else "mycelium-testament-bron: the Testament r1 crux is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-testament-bron: the Testament r1 did not speak its GREEN"
 

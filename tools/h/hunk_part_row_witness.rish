@@ -50,7 +50,7 @@ assert (trim paging.out) == "yes" else "hunk-part-row: the selftest did not prov
 
 # HUNK71 stays GREEN -- the facts the row reads (facts_at, entry, render_part) are the ones part_catalog proved.
 # Read the GREEN line from a file -- it carries apostrophes ("product's") that break a shell single-quote round-trip.
-let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest > image/bin/part_catalog.out 2>&1"]
+let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest > image/bin/part_catalog.out 2>&1"]
 assert cat.ok else "hunk-part-row: HUNK71 part_catalog re-run failed — see image/bin/part_catalog.out"
 let cat_green = run ["sh" "-c" "grep -q 'GREEN part-catalog' image/bin/part_catalog.out && echo yes"]
 assert (trim cat_green.out) == "yes" else "hunk-part-row: HUNK71 part_catalog did not stay GREEN"

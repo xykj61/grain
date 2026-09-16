@@ -24,7 +24,7 @@ say "hunk-qoi: Lens TAME — u32 in-memory dims/indices, u8 channel bytes, wire 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/qoi"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/qoi.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/qoi.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-qoi: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

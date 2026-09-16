@@ -22,7 +22,7 @@ say "selection_bounds: Lens TAME -- a valid selection names at most one label pe
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/selection_bounds"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/selection_bounds.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/selection_bounds.rye -femit-bin=${bin}"]
 assert build.ok else "selection_bounds: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

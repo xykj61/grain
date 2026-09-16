@@ -28,7 +28,7 @@ say "mycelium-warrant-true: Lens TAME — the app emits exactly the canonical ro
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/warrant_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/warrant_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/warrant_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-warrant-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -59,7 +59,7 @@ assert count.out contains "3" else "mycelium-warrant-true: the certificate did n
 assert selftest.out contains "warrant-true: endorsements=3" else "mycelium-warrant-true: the app did not report three endorsements"
 
 # The Warrant each certificate is stands at the door -- its r1 selftest proves the succession law.
-let warrant = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/warrant.rye -femit-bin=mycelium/bin/warrant && mycelium/bin/warrant 2>&1"]
+let warrant = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/warrant.rye -femit-bin=mycelium/bin/warrant && mycelium/bin/warrant 2>&1"]
 assert warrant.ok else "mycelium-warrant-true: the Warrant r1 is not GREEN"
 assert warrant.out contains "GREEN" else "mycelium-warrant-true: the Warrant r1 did not speak its GREEN"
 

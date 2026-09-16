@@ -21,14 +21,14 @@ let zig = "vendor/zig-toolchain/zig"
 
 # Rungs one and two stay GREEN beneath the travel layer -- additive.
 let bin2 = "pond/bin/fairtrade-cert-signed"
-let build2 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert_signed.rye -femit-bin=${bin2}"]
+let build2 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/fairtrade_cert_signed.rye -femit-bin=${bin2}"]
 assert build2.ok else "ayre-j7r3: rung-two fairtrade_cert_signed build failed"
 let self2 = run ["sh" "-c" "${bin2} selftest 2>&1"]
 assert self2.ok else "ayre-j7r3: rung-two selftest exited non-zero"
 assert self2.out contains "GREEN" else "ayre-j7r3: rung-two did not speak GREEN"
 
 let bin = "pond/bin/fairtrade-cert-bron"
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/fairtrade_cert_bron.rye -femit-bin=${bin}"]
 assert build.ok else "ayre-j7r3: fairtrade_cert_bron build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

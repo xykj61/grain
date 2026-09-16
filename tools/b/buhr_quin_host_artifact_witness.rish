@@ -19,7 +19,7 @@ say "buhr8r3: Lens TAME — try the four voices first, fall through on UnknownOp
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/quin-host-artifact"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host_artifact.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/quin_host_artifact.rye -femit-bin=${bin}"]
 assert build.ok else "buhr8r3: quin_host_artifact build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -38,7 +38,7 @@ assert selftest.out contains "five voices under one bounded entry" else "buhr8r3
 # The four-voice host -- the surface voice gathered in Journey 6 -- stays its own green
 # binary; this rung composes over its public dispatch, additively.
 let host_bin = "pond/bin/quin-host-graph"
-let host_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host_graph.rye -femit-bin=${host_bin}"]
+let host_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/quin_host_graph.rye -femit-bin=${host_bin}"]
 assert host_build.ok else "buhr8r3: quin_host_graph (J6r3) re-build failed"
 let host_selftest = run ["sh" "-c" "${host_bin} selftest 2>&1"]
 assert host_selftest.ok else "buhr8r3: quin_host_graph (J6r3) selftest exited non-zero"

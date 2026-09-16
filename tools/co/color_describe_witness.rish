@@ -23,7 +23,7 @@ say "color-describe: Lens TAME -- the phrase is bounded by construction (thirtee
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/color_describe"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_describe.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/color_describe.rye -femit-bin=${bin}"]
 assert build.ok else "color-describe: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

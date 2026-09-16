@@ -26,7 +26,7 @@ say "constel-partition: Lens TAME — convergence is a pure commit of the merged
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/constel-consensus-partition"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_consensus_partition.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/constel_consensus_partition.rye -femit-bin=${bin}"]
 assert build.ok else "constel-partition: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

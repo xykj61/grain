@@ -17,7 +17,7 @@ say "gism-j5r2: Lens TAME — real bytes, one bounded reader; Ember's sum cross-
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/corpus-real-ember"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_real_ember.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/corpus_real_ember.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j5r2: corpus_real_ember build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -40,7 +40,7 @@ assert expected.out == reported.out else "gism-j5r2: Ember sum_lines disagrees w
 
 # The demo reading over pinned_catalog must still be GREEN -- the answer_over refactor is additive.
 let demo_bin = "pond/bin/corpus-query"
-let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_query.rye -femit-bin=${demo_bin}"]
+let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/corpus_query.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j5r2: corpus_query (demo) rebuild failed after refactor"
 let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
 assert demo_selftest.ok else "gism-j5r2: corpus_query (demo) selftest regressed"

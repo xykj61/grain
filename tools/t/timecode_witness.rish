@@ -23,7 +23,7 @@ say "timecode: Lens TAME -- u32 in-memory counts, u8 pixel bytes; the seconds an
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/timecode"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/timecode.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/timecode.rye -femit-bin=${bin}"]
 assert build.ok else "timecode: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

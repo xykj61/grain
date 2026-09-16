@@ -27,7 +27,7 @@ say "mycelium-constel-depart: Lens TAME — the fault-tolerance law composes con
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/constel_depart"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_depart.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/constel_depart.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-constel-depart: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -40,7 +40,7 @@ assert selftest.out contains "re-derives its own lower threshold" else "mycelium
 
 # The r1 crux stands at the door -- a departure rung means nothing unless the whole roster still reaches
 # quorum reproducibly when every ship is up.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
 assert r1.ok else "mycelium-constel-depart: the Constel r1 crux is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-constel-depart: the Constel r1 did not speak its GREEN"
 

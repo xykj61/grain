@@ -29,7 +29,7 @@ say "mycelium-portage: Lens TAME — the two-world law composes cord + fold + vo
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/portage"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/portage.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-portage: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -43,13 +43,13 @@ assert selftest.out contains "NeverPaid" else "mycelium-portage: the burn-beyond
 
 # The Voucher whose order-head Portage fingerprints each world with stands at the door -- a crossing proves
 # which two worlds it joined by the same whole-order digest the Voucher computes.
-let vouch = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+let vouch = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
 assert vouch.ok else "mycelium-portage: the Voucher order-head Portage fingerprints with is not GREEN"
 assert vouch.out contains "GREEN" else "mycelium-portage: the Voucher did not speak its GREEN"
 
 # The Pledge -- the two-phase transfer WITHIN one ledger whose cross-world sibling this is -- stands too; a
 # portage is the Pledge's atomicity widened from two phases to two shards.
-let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
 assert pledge.ok else "mycelium-portage: the Pledge two-phase transfer is not GREEN"
 assert pledge.out contains "GREEN" else "mycelium-portage: the Pledge did not speak its GREEN"
 

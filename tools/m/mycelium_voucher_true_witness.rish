@@ -27,7 +27,7 @@ say "mycelium-voucher-true: Lens TAME — the reading composes cord_bron + cord 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/voucher_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-voucher-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -48,7 +48,7 @@ assert app.out == awk.out else "mycelium-voucher-true: app and awk disagree — 
 
 # The Voucher r1 whose attestation this rung reads over a real record stands at the door -- its own selftest
 # proves the machinery the reading rests on.
-let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
 assert voucher.ok else "mycelium-voucher-true: the Voucher r1 this rung reads over a real record is not GREEN"
 assert voucher.out contains "GREEN" else "mycelium-voucher-true: the Voucher r1 did not speak its GREEN"
 

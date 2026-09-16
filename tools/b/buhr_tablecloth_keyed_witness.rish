@@ -19,7 +19,7 @@ say "buhr7: Lens TAME — no new storage, no new signing; the owner presents a v
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/tablecloth-keyed"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth_keyed.rye -femit-bin=${bin}"]
 assert build.ok else "buhr7: tablecloth_keyed build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -38,7 +38,7 @@ assert selftest.out contains "a taken name refuses, no byte stored" else "buhr7:
 # Rung one -- the named artifact store the keyed layer wraps -- stays its own green binary;
 # rung four adds only the signing gate and an additive pub index_of, additively.
 let r1_bin = "pond/bin/tablecloth"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/tablecloth.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr7: tablecloth (r1) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr7: tablecloth (r1) selftest exited non-zero"

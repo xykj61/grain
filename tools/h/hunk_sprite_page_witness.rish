@@ -41,7 +41,7 @@ assert selftest.out contains "pages differ" else "hunk-sprite-page: the selftest
 assert selftest.out contains "equals a direct down-map cell for cell" else "hunk-sprite-page: the selftest did not prove the page equals a direct down-map"
 
 # HUNK4 stays GREEN -- the page reuses sprite.render; the index underneath must still hold.
-let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
+let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
 assert sprite.ok else "hunk-sprite-page: HUNK4 sprite re-run failed — ${sprite.out}"
 assert sprite.out contains "GREEN image-sprite" else "hunk-sprite-page: HUNK4 sprite selftest did not stay GREEN"
 

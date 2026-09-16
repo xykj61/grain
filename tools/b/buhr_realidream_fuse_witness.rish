@@ -23,7 +23,7 @@ say "buhr-j5r4: Lens TAME — proven by recall; a=4 b=2 fused from two reads, th
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/realidream-fuse"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_fuse.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/realidream_fuse.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j5r4: realidream_fuse build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

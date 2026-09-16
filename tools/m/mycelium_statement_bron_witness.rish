@@ -30,7 +30,7 @@ say "mycelium-statement-bron: Lens TAME — the reader is purpose-built and boun
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/statement_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-statement-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -44,11 +44,11 @@ assert selftest.out contains "a statement travels as readable text and still rec
 
 # The Statement r1 whose line this rung travels, and the Lapse whose ledger it reads through, both stand at
 # the door -- their own selftests prove the machinery the record rests on.
-let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
 assert statement.ok else "mycelium-statement-bron: the Statement r1 whose line this rung travels is not GREEN"
 assert statement.out contains "GREEN" else "mycelium-statement-bron: the Statement r1 did not speak its GREEN"
 
-let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
 assert lapse.ok else "mycelium-statement-bron: the Lapse whose ledger the Statement reads is not GREEN"
 assert lapse.out contains "GREEN" else "mycelium-statement-bron: the Lapse did not speak its GREEN"
 

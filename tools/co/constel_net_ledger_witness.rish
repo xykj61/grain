@@ -22,7 +22,7 @@ say "constel-net-ledger: Lens TAME — sovereignty is structural and asserted; a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/constel-net-ledger"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/constel_net_ledger.rye -femit-bin=${bin}"]
 assert build.ok else "constel-net-ledger: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -43,7 +43,7 @@ assert harness.out contains "constel-net: GREEN" else "constel-net-ledger: the d
 
 # The Mycelium supply fold this ledger folds through stands too -- its own selftest proves the pure-fold
 # law (issued minus taxed, non-negative, overdraw refuses whole) the ledger inherits.
-let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert myc.ok else "constel-net-ledger: the Mycelium fold the ledger folds through is not GREEN"
 
 say "constel-net-ledger: GREEN — the fake net's money folds the real Mycelium supply law and moves only by the identity that holds its genesis; the harness and the fold both stand at its door."

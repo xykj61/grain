@@ -24,7 +24,7 @@ say "dahl-j11r4: Lens TAME — size, ballots, and decided proposals cross-check 
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/council-sky-true"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_true.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j11r4: council_sky_true build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -44,10 +44,10 @@ assert awk.out contains "3 3 1" else "dahl-j11r4: awk triple not 3 3 1"
 assert app.out == awk.out else "dahl-j11r4: app and awk disagree — the reading drifted from the bytes"
 
 # r1 and r3 stay their own GREEN binaries -- additive.
-let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
 assert r1.ok else "dahl-j11r4: r1 did not stay GREEN"
 assert r1.out contains "GREEN" else "dahl-j11r4: r1 GREEN missing"
-let r3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_bron.rye -femit-bin=pond/bin/council-sky-bron && pond/bin/council-sky-bron selftest 2>&1"]
+let r3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_bron.rye -femit-bin=pond/bin/council-sky-bron && pond/bin/council-sky-bron selftest 2>&1"]
 assert r3.ok else "dahl-j11r4: r3 did not stay GREEN"
 assert r3.out contains "GREEN" else "dahl-j11r4: r3 GREEN missing"
 

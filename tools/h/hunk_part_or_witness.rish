@@ -22,7 +22,7 @@ say "hunk-part-or: Lens TAME — pure composition over HUNK75 matches and HUNK76
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_or"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_or.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_or.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-or: build failed — ${build.err}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("AND's") that breaks a shell single-quote round-trip.
@@ -37,7 +37,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-or' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-or: selftest did not print the GREEN part-or line"
 
 # HUNK78 stays GREEN -- the conjunction this rung duals and is cross-checked against (OR superset of AND).
-let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
+let a = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
 assert a.ok else "hunk-part-or: HUNK78 part_and re-run failed — see image/bin/part_and.out"
 let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out && echo yes"]
 assert (trim a_green.out) == "yes" else "hunk-part-or: HUNK78 part_and did not stay GREEN"

@@ -23,7 +23,7 @@ say "hunk-scroll-input: Lens TAME — a pure routing over HUNK40's gestures, pos
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/preset_scroll_input"
 
-let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_scroll_input.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/preset_scroll_input.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-scroll-input: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
