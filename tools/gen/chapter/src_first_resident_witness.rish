@@ -4,11 +4,12 @@
 #
 # Routine name: first resident. The elder easter-egg alias shim retired `20260828.235039`
 # with the ban (vocabulary-first-resident); dated citers of the old name are testimony and stand.
-# Rooms: src/lib bartises - src/sur structure pedestal
+# Rooms: src/gate bartises - src/shape structure pedestal, read from the paths below.
+# The elder src/lib and src/sur names folded into these two on `20260827`.
 
-say "first-resident: Language EN — Glow desks that live in src/."
-say "first-resident: Style Radiant — prove the desks; refuse shred."
-say "first-resident: Lens TAME — Surface Chapter p45."
+say "first-resident: Language EN -- Glow desks that live in src/."
+say "first-resident: Style Radiant -- prove the desks; refuse shred."
+say "first-resident: Lens TAME -- Surface Chapter p45."
 
 let zig = "vendor/zig-toolchain/zig"
 
@@ -230,7 +231,7 @@ let acount = trim aplacard.out
 assert acount == "6" else "first-resident: app placard missing six lines"
 let apool = run ["sh" "-c" "grep -q 'Pool' src/shape/shape-pool-agent-slot.glow && grep -q 'Gall-role' src/shape/shape-pool-agent-slot.glow && grep -q 'TUBE' src/shape/shape-pool-agent-slot.glow && grep -q 'pond/apps' src/shape/shape-pool-agent-slot.glow && echo POOL_OK"]
 assert apool.ok else "first-resident: app Pool/TUBE notes scan failed"
-assert apool.out contains "POOL_OK" else "first-resident: app Pool · Gall · TUBE · pond/apps not named"
+assert apool.out contains "POOL_OK" else "first-resident: app Pool, Gall, TUBE, pond/apps not named"
 let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" adesk]
 assert agate.ok else "first-resident: app shape lower/build/run failed"
 assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
@@ -274,8 +275,8 @@ let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" rdesk]
 assert rgate.ok else "first-resident: sec mand shape lower/build/run failed"
 assert rgate.out contains "EXIT:0" else "first-resident: sec mand shape did not exit 0"
 
-say "GREEN: first-resident — lib · sur×11 · til×2 · app×2 · sec×2 · Surface p45"
-say "GREEN: first-resident — Glow userland desks live at home first."
+say "GREEN: first-resident -- 19 desks read: 2 in src/gate, 17 in src/shape -- Surface p45"
+say "GREEN: first-resident -- Glow userland desks live at home first."
 
 
 

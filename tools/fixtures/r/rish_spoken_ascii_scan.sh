@@ -122,7 +122,20 @@ mode="${1:-count}"
 #                             never reached it. `acme_dx` reddened the hot endurance run and named it. A
 #                             reference lives in code as readily as in prose. The reading fell
 #                             10,456 -> 10,453; this falls with it, keeping the same 80 of slack.
-CEILING=10533
+#   10515  `20260915.230422`  seventeen characters in one witness, swept ON TOUCH by the lap that
+#                             repaired the `src/` floor plan: `tools/gen/chapter/src_first_resident_witness.rish`
+#                             carried three em dashes in its opening `say` lines, three middots in
+#                             an `assert ... else` message, and a GREEN line reading
+#                             `lib - sur x11 - til x2 - app x2 - sec x2` -- one em dash, five
+#                             middots and four multiplication signs naming five rooms the tree
+#                             renamed on `20260827`. The claim line now reads what the witness
+#                             actually opens, `19 desks read: 2 in src/gate, 17 in src/shape`,
+#                             counted off its own path literals and re-run GREEN afterwards.
+#                             Checked first for a coupled saying -- a grep for `first-resident`
+#                             across the tree reaches no runner that matches that line. The reading
+#                             fell 10,453 -> 10,435; this falls with it, keeping the same 80 of
+#                             slack and taking none of the fall.
+CEILING=10515
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).
