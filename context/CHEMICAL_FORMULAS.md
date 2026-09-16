@@ -140,6 +140,22 @@ of them, scoring 100 on Truth the morning it was corrected. **A formula stays tr
 checks it against the module.** So each line names the module that owns it, and the bound beside
 `batch` names the constant and the file you open to read it.
 
+**A third guard reads it from `20260916.052706`**, and it reads the one part of a formula a program can
+answer for: the call-form token. `tools/fixtures/c/chemical_formula_scan.sh`, under
+[`../tools/c/chemical_formula_witness.rish`](../tools/c/chemical_formula_witness.rish), takes every
+`name(` standing on an arrow line inside an untagged fenced block, across every tracked page, and
+asks whether a tracked `.rye` source declares `fn name(`. An import alias is read past on purpose,
+since `const thing = @import(...)` proves a module exists where a formula claims an operation does.
+A block under an **Erratum** heading is read past too, because a page that molts a formula quotes
+the elder whole, and that quotation is testimony rather than a live claim.
+
+**The reading on the seating lap: 7 living tokens over 5 pages, 4 declared, 3 undeclared** -- and all
+three are the noun `infusion`, here, in the mirror, and in
+[`../foundations/20260823-222019_what-brix-infuse-is.md`](../foundations/20260823-222019_what-brix-infuse-is.md),
+where the module declares `fn infuse` in `brix/infuse.rye`. Whether those three lines take `infuse`
+is a seated word rather than a guard's choice, so the three are named aloud and the ceiling sits at
+exactly three. `weave` would have taken it to four on the lap it landed.
+
 ---
 
 *May the arrows point the right way, and may what is conserved stay conserved.*
