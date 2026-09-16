@@ -88,12 +88,18 @@ printf 'const expected_demo_root_hex = "abcdef";\n' >"$pen/linengrow/seva_b0_fol
 
 # The page under test. Its BEFORE body carries one obligation word and one
 # negation word, so each class can be moved on its own.
+# The page under test. Its BEFORE body carries one obligation word and one negation word, so
+# each modality class can be moved on its own, plus one CLAIM LINE carrying a number and a
+# tracked path, so a claim token can be dropped, added, and swapped one direction at a time.
+# The claim line names no modal term, so moving it leaves both modality counts alone.
 cat >"$pen/doc/page.md" <<'PAGE'
 # The pen page
 
 A lap must stage exactly its own set.
 A reviewer may read the staged set before the commit.
 This page never reaches the public seed.
+The reading lives at tools/fixtures/c/claim_preserve_scan.sh in this pen.
+The pen page counts 7 terms.
 PAGE
 
 cd "$pen"
@@ -118,6 +124,10 @@ export CLAIM_PRESERVE_FILES='doc/page.md'
 # ---- leg 1: an untouched page is clean, and says so in both classes -------
 run_scan "$pen/out1"; rc=$scan_rc
 leg untouched_clean ok "$rc" "obligation_drift=0 register_drift=0" "$pen/out1"
+# The same run reads the claim direction. This leg is also the regression guard for an empty
+# count: the first draft of the split counted with `grep -c ""`, which exits 1 on an empty
+# file, and under `set -e` an unchanged page therefore ended the scan with no output at all.
+leg untouched_claims_named ok "$rc" "claim tokens identical: doc/page.md claim_lost=0 claim_added=0" "$pen/out1"
 
 # ---- leg 2: a weakened obligation is refused and named obligation ---------
 sed_inplace 's/A lap must stage/A lap may stage/' doc/page.md
@@ -174,6 +184,31 @@ run_scan "$pen/out9"; rc=$scan_rc
 leg pin_moved_refused red "$rc" "FAIL pinned digest moved" "$pen/out9"
 git checkout -q -- tools/w/waymark_derive.rish
 
+# ---- leg 10: a dropped claim token is refused and named a LOSS -----------
+# The fault this guard is named for: a register pass that carries a fact away with it. The
+# number sits in its own sentence because the PATH pattern swallows a trailing period, so a
+# plant editing the path's own sentence would move two tokens rather than one.
+sed_inplace '/counts 7 terms/d' doc/page.md
+run_scan "$pen/out10"; rc=$scan_rc
+leg claim_lost_refused red "$rc" "claim_lost=1 claim_added=0" "$pen/out10"
+leg claim_lost_listed red "$rc" "NUM:7" "$pen/out10"
+git checkout -q -- doc/page.md
+
+# ---- leg 11: an added claim token is refused and named an ADDITION --------
+# The shape measured on this tree's own sweep at 6e001803b: settlement/README.md gained a
+# Style line's path and two proper nouns and lost nothing, and the elder reading called that
+# `claim tokens drifted` with no direction on the line at all.
+printf 'A second reading lives at tools/fixtures/c/claim_preserve_control.sh.\n' >>doc/page.md
+run_scan "$pen/out11"; rc=$scan_rc
+leg claim_added_refused red "$rc" "claim_lost=0 claim_added=1" "$pen/out11"
+git checkout -q -- doc/page.md
+
+# ---- leg 12: a swapped token moves both directions at once ---------------
+sed_inplace 's/counts 7 terms/counts 9 terms/' doc/page.md
+run_scan "$pen/out12"; rc=$scan_rc
+leg claim_swapped_both red "$rc" "claim_lost=1 claim_added=1" "$pen/out12"
+git checkout -q -- doc/page.md
+
 # ---- MUTATION A: drop the derived negation vocabulary --------------------
 # The scan reads prose_register_scan.sh's own `neg` line. Break that line and the
 # scan must refuse rather than silently calling every term an obligation.
@@ -220,6 +255,29 @@ else
 fi
 git checkout -q -- doc/page.md
 cp "$pen/scan.keep2" tools/fixtures/c/claim_preserve_scan.sh
+
+# ---- MUTATION D: swap the two claim directions ---------------------------
+# Leg 10 and leg 11 both refuse either way, so a refusal alone cannot tell the two
+# directions apart. Flip which `comm` feeds which counter and leg 10's LOSS must come back
+# named an addition. Without this, the split could be labelling at random and every leg
+# above would still read green.
+cp tools/fixtures/c/claim_preserve_scan.sh "$pen/scan.keep3"
+awk '{
+  if ($0 == "  comm -23 \"$TMP/before\" \"$TMP/after\" >\"$TMP/lost\"") print "  comm -13 \"$TMP/before\" \"$TMP/after\" >\"$TMP/lost\"";
+  else if ($0 == "  comm -13 \"$TMP/before\" \"$TMP/after\" >\"$TMP/added\"") print "  comm -23 \"$TMP/before\" \"$TMP/after\" >\"$TMP/added\"";
+  else print
+}' "$pen/scan.keep3" >tools/fixtures/c/claim_preserve_scan.sh
+sed_inplace '/counts 7 terms/d' doc/page.md
+run_scan "$pen/outD"; rc=$scan_rc
+legs=$((legs + 1))
+if grep -qF "claim_lost=0 claim_added=1" "$pen/outD"; then
+  echo "leg mutation_direction_bites ok"
+else
+  echo "leg mutation_direction_bites FAILED -- swapping the comm directions changed no reading"
+  failures=$((failures + 1))
+fi
+git checkout -q -- doc/page.md
+cp "$pen/scan.keep3" tools/fixtures/c/claim_preserve_scan.sh
 
 echo "legs=${legs} failures=${failures}"
 if [ "$failures" -gt 0 ]; then

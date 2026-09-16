@@ -124,15 +124,39 @@ while IFS= read -r path; do
   normalize_body <"$path" >"$TMP/after_body"
   $EXTRACT "$TMP/before_body" "$ROOTS" | sort -u >"$TMP/before"
   $EXTRACT "$TMP/after_body" "$ROOTS" | sort -u >"$TMP/after"
-  if ! cmp -s "$TMP/before" "$TMP/after"; then
-    echo "FAIL claim tokens drifted: ${path}"
-    echo "--- only in BEFORE (${BASE}) ---"
-    comm -23 "$TMP/before" "$TMP/after" | head -40
-    echo "--- only in AFTER (worktree) ---"
-    comm -13 "$TMP/before" "$TMP/after" | head -40
+  # THE TWO DIRECTIONS ARE ONE READING UNTIL THEY ARE COUNTED APART, and until 20260916
+  # they were. A claim token standing in BEFORE and absent from AFTER is a claim the pass
+  # DROPPED -- the loss this guard is named for, and the fault a reader pays for, since the
+  # fact they depended on has left the page with nothing saying so. A token standing only in
+  # AFTER is a claim the pass ADDED, which under a register pass is still a content change
+  # worth seeing and is never a loss.
+  #
+  # MEASURED ON THIS TREE'S OWN SWEEP. Commit 6e001803b recast `settlement/README.md` under
+  # the register law and this guard refused it with `claim_lost=0 claim_added=3` -- a Style
+  # line's path and two proper nouns, `PATH:../context/GAUGE_STYLE.md`, `PROPER:Door` and
+  # `PROPER:Gauge`. The elder reading printed `claim tokens drifted` and two headed lists,
+  # so a reviewer had to read the lists to learn which direction had moved.
+  #
+  # WHAT CHANGES HERE IS THE DIAGNOSIS, never the refusal -- the same clause the modality
+  # split above kept. Any drift in either direction still exits 1. Whether an addition-only
+  # drift should pass is a door for Keaton rather than a loosening a lap may take.
+  comm -23 "$TMP/before" "$TMP/after" >"$TMP/lost"
+  comm -13 "$TMP/before" "$TMP/after" >"$TMP/added"
+  # `awk END{print NR}` rather than `grep -c ""`: grep answers an empty file by EXITING 1,
+  # which `set -e` reads as the instrument failing rather than as the count being zero, and
+  # a clean page is exactly the case that produced it. Silencing grep with `|| true` would
+  # swallow a real failure, which `tools/fixtures/i/instrument_refusal_scan.sh` gates.
+  lost_n=$(awk 'END {print NR}' "$TMP/lost")
+  added_n=$(awk 'END {print NR}' "$TMP/added")
+  if [ "$lost_n" -gt 0 ] || [ "$added_n" -gt 0 ]; then
+    echo "FAIL claim tokens drifted: ${path} claim_lost=${lost_n} claim_added=${added_n}"
+    echo "--- only in BEFORE (${BASE}) -- claims the pass dropped ---"
+    head -40 "$TMP/lost"
+    echo "--- only in AFTER (worktree) -- claims the pass added ---"
+    head -40 "$TMP/added"
     reds=$((reds + 1))
   else
-    echo "OK   claim tokens identical: ${path}"
+    echo "OK   claim tokens identical: ${path} claim_lost=0 claim_added=0"
   fi
   # Modality -- per-file obligation counts must hold (recommend->require is red).
   # The counter now speaks Rishi (Python -> Rishi molt 20260809): compare its
