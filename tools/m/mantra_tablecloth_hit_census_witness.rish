@@ -46,7 +46,14 @@ assert census.out contains "worst bounded_to_one=2" else "hit-census: exactly tw
 assert census.out contains "over_wire=29" else "hit-census: every other shape reaches past what the wire can carry"
 assert census.out contains "shape history_single=16 directory_single=16" else "hit-census: two catalogs of one size read complementary profiles"
 assert census.out contains "shape both_single=8 neither_single=7" else "hit-census: seven shapes return the whole catalog whichever way the store is shaped"
-assert census.out contains "wire encode verdict=refused" else "hit-census: the wire refuses an answer built inside its own declared ceiling"
+# THIS ASSERT FLIPPED WHEN THE RED CLOSED (REDS %678, 20260915). It held the DEFECT's own
+# signature: a response built inside the declared ceiling that the encoder then refused, because
+# the ceiling was a literal 8 while the enforced bound was 340 bytes. The ceiling is derived from
+# the payload now, so the reading that proves health is the opposite one -- a catalog filled to the
+# ceiling builds to the ceiling and the whole response encodes. Asserting the elder string here
+# would keep demanding the defect be present.
+assert census.out contains "wire encode_bytes=" else "hit-census: a response built to the declared ceiling must encode"
+assert census.out contains "verdict=fits" else "hit-census: the derived ceiling must admit only what the encoder keeps"
 
 let control = run ["sh" "tools/fixtures/m/mantra_tablecloth_hit_census_control.sh"]
 say control.out
