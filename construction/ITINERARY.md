@@ -121,7 +121,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `547ac80c0e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5fbfed0f8f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
@@ -191,39 +191,41 @@ names operands no guard can check, and whether an operand deserves the same ques
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A LAW PAGE NARRATED A CEILING IT DECLARES NOWHERE, AND THE LAST FALL WENT UNSAID FIVE DAYS.**
-Elder account [shelved whole](archive/20260916-034934_itinerary-grass-claim-preserve-control-account.md).
-**EARTH BREATHES IN** (row 4, N=5049): take in the concrete fact at the door ahead of any argument
-about it. The row reads three -- the stamp off the filename, the room token off the status line, the
-mark off a value's face.
-**THE STAMP AND THE MARK READ HONEST.** Of **769 living dated pages** outside the closed stacks,
-**665 declare a `**Stamp:**`** and **12 disagree with their own filename**, eleven saying why on
-their faces. `one_clock_witness` holds six duties over filenames, host zone and live clock, and
-reads a page's own declaration in none -- a ratchet rather than a red. The mark: two engine roots,
-`mark_verdict` known on those alone, a stranger refused whole, the pair held as a SET.
-**THE ROOM TOKEN READ WRONG, AND THE PAGE WAS THE LAW.** `context/TWO_ROOMS.md` is the doorway's own
-canon and the Earth-Fixed rota seat, and it closes its amendment arc on *the ceiling falls 59 to 39
-... the remainder is 33 `active-designing/` and 6 `external-research/`*. `42826c45d` took
-`living_ceiling` **39 to 0** on `20260911.160504`; the scan reads `living_silent=0 living_ceiling=0`
-over **1,328 pages, 619 folded shelves, 138 stampless, `fails=3` at `ceiling=3`**
-(`20260916.033406`). Every earlier fall narrates itself -- 106 to 90, 90 to 67, 67 to 59, 59 to 39
--- and the last stood in the scan alone.
-**THE SHAPE HAS A GUARD SEATED FOR IT.** `declared_ceiling_scan.sh` gates *a declaration a tool
-cannot read* at zero over `**Ceiling:**` and `**Bound:**` headers, and a ceiling narrated in a
-sentence stays outside it -- how `docs/CRYPTO.md` drifted. **The grade said A while the drift sat in
-the half it left unread:** `truth=100` at `truth_mode=counted`, 16 of 16 paths resolving, about a
-sentence citing none -- that reading's third recorded firing.
-**LANDED:** four amendment paragraphs, each figure naming what holds it still -- two zeros
-**walled**, three counts **free** with the command beside them. Register **32 to 30 percent** of 105
-sentences; **A/91** at Field, `truth_mode=judged`.
-**COLD 305 read, 284 green, 19 red; HOT (scoped) 285 green, 10 red, `tree_moved=no`. Six closed here
-and one was mine** -- `rishi` stood 17,547 seconds behind its source, which also turned
-`rishi_make_pen`. The rest: `fold_shelf_link_repoint` in **diffuser's** fresh shelf, the day shelf's
-union-merge order, a 197-byte row of **copal's**, and the nib. The ten standing sit in peer lanes,
-each red's evidence grepped for my paths.
-**YOURS:** should a law page's narrated ceiling carry a machine-readable declaration beside it? Yes
-puts a `**Ceiling:**`-shaped header on every page whose prose spells a ratchet -- a style law rather
-than a lap's choice. **MINE:** whether the QA card refuses without `--truth`, as Service does.
+**GRASS -- A GUARD NAMED FOR A LOSS REFUSED AN ADDITION IN THE SAME WORDS.**
+Elder account [shelved whole](archive/20260916-073526_itinerary-grass-declared-ceiling-account.md);
+its open question about a machine-readable ceiling header still stands for you.
+**WATER TASTES** (row 3, N=5068): read up close and run the actual thing.
+**REDS FIRST.** `vocabulary_collection` read red on every ship over one word in this card -- a peer's
+account line reaching for the Latin word this tree retired for a body of documents. One word,
+`collection`, and the scan reads `enforce_hits=0`.
+**THE READING, HANDED TO THIS LANE BY PETRICHOR.** `claim_preserve` is the guard that makes a broad
+register pass honest: it extracts claim tokens before and after and refuses any drift. Its modality
+half split obligation from register one lap earlier. Its CLAIM half still diffed the two sets with
+one `cmp -s` and printed `FAIL claim tokens drifted` above two headed lists -- so a token the pass
+DROPPED and one it ADDED read alike at the verdict, and only the drop is the fault the guard is
+named for. Run against `6e001803b`, the settlement-door sweep, it answers **zero in BEFORE and three
+in AFTER** -- a Style line's path and two proper nouns.
+**LANDED:** `claim_lost` and `claim_added` on the verdict line and on the OK line alike, each list
+headed by what it means. **The refusal is untouched** -- any drift in either class and either
+direction still exits 1, the same clause the modality split kept.
+**MY OWN RED, CAUGHT BY RUNNING RATHER THAN READING** (`20260916.073526`): the first draft counted
+with `grep -c ""`, which exits 1 on an empty file, so under `set -e` an unchanged page printed
+nothing at all and exited 1 -- silence that reads like a clean pass. `awk 'END {print NR}'` answers
+zero by exiting zero, and leg 1 is its regression guard.
+**PROVEN:** `claim_preserve_control` **21 legs, 0 failures**, up from 15 -- each direction planted
+and lifted, and a fourth mutation swapping the two `comm` calls, since both directions refuse either
+way and a refusal alone cannot tell them apart.
+**COLD 306 read, 294 green, 12 red, 2 gated, `tree_moved=no`, cadence slice `glow_desk_run`; HOT
+(scoped) 300 run, 287 green, 11 red, 2 gated, `tree_moved=no`.** One red was mine and is closed
+above; the eleven standing sit in peer lanes, each grepped for my paths. **Two more were mine inside
+the send and both are closed:** the card account SPELLED the retired word while describing its own
+repair, so `vocabulary_collection` refused a citation it cannot tell from a use; and the ledger
+headline recites three numbers the spine measures, which my row moved.
+**YOURS:** should an addition-only drift pass? It is never a loss, and a register pass that adds a
+claim has still made a content change. **MINE:** the row was booked `%761`
+against a local read and the anointed spine had bound that view to a peer inside the same hour, so
+it rebased to **`%769`** -- the derived spine's own repair, and the reason rule 4 says cite by stamp
+until a row is shared. Its stamp `20260916.073526` never moved.
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks

@@ -23,6 +23,22 @@
 # answers obligation_drift=1 register_drift=1: `may` 5 -> 4 and `all` 10 -> 12. The `all` rise is
 # the restatement idiom alone -- "A, B and C all stay outside".
 #
+# WHAT THE 20260916 LAP ADDED. The claim-token reading diffed BEFORE against AFTER with one
+# `cmp` and printed `claim tokens drifted` with two headed lists beneath it, so the line said
+# only that something moved. Two directions live in there, and one of them is the fault the
+# guard is named for.
+#
+#   LOST -- a token in BEFORE and absent from AFTER. The pass carried a fact away with it,
+#   and a reader who depended on that fact meets a page that no longer says so.
+#
+#   ADDED -- a token only in AFTER. Under a register pass this is still a content change
+#   worth seeing, and it is never a loss.
+#
+# MEASURED ON THIS TREE'S OWN SWEEP. Commit 6e001803b recast `settlement/README.md` under the
+# register law; run the scan with CLAIM_PRESERVE_BASE=6e001803b^ and it answers
+# `claim_lost=0 claim_added=3` -- a Style line's path and two proper nouns. The refusal stands
+# exactly where it stood; what moved is that the line now names which way.
+#
 # WHAT IS PROVEN, on metal, in a throwaway pen holding a real git repository:
 #   an untouched page reads obligation_drift=0 register_drift=0 and exits 0;
 #   `must` weakened to `may` refuses, named obligation, with register_drift=0;
@@ -30,15 +46,24 @@
 #   an appended restatement raising `all` alone is named register;
 #   both classes moving at once are counted apart;
 #   a vacuous call, an absent file, a file the BASE lacks, and a moved pinned digest each refuse;
-#   three mutations bite -- an unreadable negation vocabulary refuses, an emptied restatement
-#   list misclassifies the restatement, and flipping the derived branch misclassifies `never`.
+#   an unchanged page reads claim_lost=0 claim_added=0 -- which is also the regression leg for
+#     an empty count, since the split's first draft counted with `grep -c ""`, whose exit 1 on
+#     an empty file ended the whole scan under `set -e` with no output at all;
+#   a dropped token refuses, named a LOSS, and is listed beneath the BEFORE heading;
+#   an added token refuses, named an ADDITION, with claim_lost=0;
+#   a swapped token counts one in each direction;
+#   four mutations bite -- an unreadable negation vocabulary refuses, an emptied restatement
+#   list misclassifies the restatement, flipping the derived branch misclassifies `never`, and
+#   swapping the two `comm` directions calls a loss an addition -- the last because leg 10 and
+#   leg 11 both refuse either way, so a refusal alone cannot tell the directions apart.
 #
 # The control is `tools/fixtures/c/claim_preserve_control.sh`; the reading under test is
 # `tools/fixtures/c/claim_preserve_scan.sh`; the derived vocabulary comes from
 # `tools/fixtures/p/prose_register_scan.sh`.
 #
 # WHAT IS NOT PROVEN. That the refusal should ever soften. The gate stands exactly where it
-# stood: any drift exits 1. Whether a register-only drift may pass is a door for Keaton, open on
+# stood: any drift exits 1 -- in either class and in either direction. Whether a register-only
+# drift, or an addition-only drift, may pass is a door for Keaton, open on
 # `construction/ITINERARY.md` rather than taken here.
 #
 # Run from the repository root:
@@ -60,7 +85,7 @@ assert (length verdict) == 1 else "claim_preserve_control: no control_verdict=ok
 let failures = find ctl.out "failures=0"
 assert (length failures) == 1 else "claim_preserve_control: failures not zero -- ${ctl.out_brief}"
 
-let legs = find ctl.out "legs=15"
-assert (length legs) == 1 else "claim_preserve_control: leg count moved from 15 -- raise it here when a leg lands: ${ctl.out_brief}"
+let legs = find ctl.out "legs=21"
+assert (length legs) == 1 else "claim_preserve_control: leg count moved from 21 -- raise it here when a leg lands: ${ctl.out_brief}"
 
-say "GREEN: claim_preserve_control -- 15 legs, 0 failures; obligation and register classes told apart."
+say "GREEN: claim_preserve_control -- 21 legs, 0 failures; obligation and register classes told apart, and a lost claim told from an added one."
