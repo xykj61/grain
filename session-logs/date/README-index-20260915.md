@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260915.235705` | [The settlement door pays its way in](20260915/20260915-235705_the-settlement-door-pays-its-way-in.kyri) | recovered: 33 to 17 percent, two byte figures on metal |
 | `20260915.234836` | [The floor plan the disk left behind](20260915/20260915-234836_the-floor-plan-the-disk-left-behind.kyri) | src taught as five rooms, standing at three |
+| `20260915.233701` | [The figure that was a grep](20260915/20260915-233701_the-figure-that-was-a-grep.kyri) | one sweep written two ways, and the grep saw one |
 | `20260915.232457` | [The build that waited in a stash](20260915/20260915-232457_the-build-that-waited-in-a-stash.kyri) | parked build re-proven 15/0; landed 20260916 |
 | `20260915.230831` | [The pen nobody asked about](20260915/20260915-230831_the-pen-nobody-asked-about.kyri) | third pen question: 16 never removed, 336 swept only on success |
 | `20260915.225740` | [The guard that refused its own law](20260915/20260915-225740_the-guard-that-refused-its-own-law.kyri) | claim_preserve modality split; landed 20260916 |

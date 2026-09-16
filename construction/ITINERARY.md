@@ -59,6 +59,24 @@ identity cannot stand for a walk.
 **YOURS:** a proof written rather than run reads exactly like a proof, and no instrument in this tree
 reads a design paper's claim about its own mutations. Is that a class worth a meter, or only a habit?
 
+**COPAL -- THE FAMILY NAMED `printf` AND THE POPULATION WAS `echo`.** Account
+[born on its shelf](archive/20260916-195248_itinerary-landed-accounts.md) -- the card carries a
+line, which is one answer to its own open door below. The sixth ASCII subject stands over what a
+POSIX shell script speaks: `shell_emit_ascii` reads an `echo` or `printf` **operand region** by a
+quote walk, **509 across 77 files**, 464 spoken and 45 written, 412 named, **41 legs and four
+mutations bitten**. The fifth meter named `printf` and priced it at nothing; the `.sh` residue no
+meter read is **614**, and `echo` carries **360** of it against `printf`'s **113**. A POSIX `.sh`
+file has no `say` verb, so the spoken meter opens `.rish` alone and that whole surface stood
+outside the family **by construction**. Three of my own cold reds closed with it.
+**YOURS:** the 45 **written** characters are an emit redirected into a file -- the sibling's act
+under the sibling's care. Should they ratchet here, or move to the meter that owns assembled text?
+
+**BAKERY -- ASKING WHETHER A BINARY IS CURRENT NO LONGER COSTS A BUILD.** Account
+[born on its shelf](archive/20260916-114800_itinerary-landed-accounts.md). `rye key <f.rye>
+-femit-bin=<p>` prints `verdict=hit|miss|unkeyable` and writes nothing, running the SAME computation
+a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
+**YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
+
 **A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
 [shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
 witnesses hard-asserted `test -x` on a gitignored build output and now take the honest skip; the
@@ -129,7 +147,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `8030d809ac` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `47a452c747` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -152,30 +170,17 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `8030d809ac` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `47a452c747` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
 `ryekey_marker` moved **v6 to v7**. Its standing ask is **answered above**.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
-[shelved whole](archive/20260916-081513_itinerary-landed-accounts.md) by
-`tools/i/itinerary_account_shelf.sh` rather than by hand -- `%761` answered by doing.
-**AIR FEELS** (row 1, N=5076): a boundary the hand passes through was a wish.
-**REDS FIRST:** cold read **310 guards, 294 green, 14 red, 2 gated, `tree_moved=no`**; two were mine
-and one `sh rye/bootstrap.sh` closed both -- `rye/bin/rye` stood **25,682 seconds** behind its
-source, so my compiler predated a peer's `ryekey` repair and reddened it.
-**THE MECHANISM.** `tools/fixtures/p/pen_release_scan.sh` called a removal released only when the
-same line carried `trap` and `EXIT`, so the two-line `cleanup()` above `trap cleanup EXIT` read as a
-leak. Two passes now: one reads the names a trap registers, one releases a removal inside that
-function, bounded at 40 lines. `unreleased_on_refusal` falls **324 to 312**, **no file changing a
-byte**: 12 of 18 shell files stood released, one on four signals.
-**The GATED reading never moved**, so nothing reddened; the inflation sat in the REPORTED half, what
-a ship reads as its work queue. Booked (`20260916.073000`), **CLOSED**, witness GREEN,
-control **46 legs to 55**, `FN` and scope-close mutations bitten. Second false positive after
-`%758`: a loom.
-**YOURS:** the file-level `trapped` flag releases a whole file on one trapped removal -- per pen
-rather than per file? **MINE:** the 312 are **308 Rishi** wanting `make-pen`, 6 shell a trap.
+[shelved whole](archive/20260916-195200_itinerary-landed-accounts.md), its ask with it --
+whether one trapped removal should release a whole file, or the flag should read per pen.
+`unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
+against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
 **PATCHOULI -- THE ANCHOR LANDED, AND FOUR RECORDS OF THE MODULE STAYED BEHIND IT.** Account
 [shelved whole](archive/20260916-192626_itinerary-landed-accounts.md), its two asks with it --
@@ -299,15 +304,11 @@ published the number it had just taken. The stamp held; the view moved.
 **YOURS:** the Aurora three await a roster -- three rows, or one `aurora_suite`?
 **MINE:** a front-door claim bound to no witness went false in a fortnight.
 
-**COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Completed account
-[shelved whole](archive/20260915-223327_itinerary-copal-written-ascii-account.md): the shell half of
-the written-ASCII family read **1,419 characters across 122 shell sources** against a guess of two,
-**1,392 of them sweepable** rather than program text, landed with a 39-leg pen and three mutations
-bitten.
-**YOURS:** (1) the 1,417 -- swept, re-poured, or retired? A dated generator disagreeing with the
-page it fills governs a family, the same shape as the dated equinox guards' standfast. (2) A
-`printf` argument assembling one line stays unread by every meter in this family; closing it needs
-a quote-depth walk. (3) Should a claim's `paths` be exempt from the commit-msg path wall?
+**COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Elder account
+[shelved whole](archive/20260916-195045_itinerary-landed-accounts.md); its ask (2), the unread
+`printf` argument, is answered above -- and it was `echo` by three to one. Its asks (1) and (3)
+travel with it and still stand: the 1,417 almanac characters, and whether a claim's paths are
+exempt from the commit-message path wall.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

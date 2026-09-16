@@ -30,10 +30,11 @@
 #   * a `#` COMMENT outside a heredoc -- `tools/fixtures/s/shell_comment_ascii_scan.sh`'s room.
 #     Charging one character to two ceilings makes each reading depend on the other.
 #   * a `say` line outside a heredoc -- `tools/fixtures/r/rish_spoken_ascii_scan.sh`'s room.
-#   * every literal outside a heredoc. A `printf` argument assembling one line is genuinely this
-#     meter's subject and is NOT read, because finding it needs to know whether a quote sits inside
-#     another quote, which is parsing rather than scanning. This meter UNDERCOUNTS on purpose, the
-#     same way all four siblings do, and says so rather than implying coverage.
+#   * every literal outside a heredoc. This meter UNDERCOUNTS on purpose, the same way all four
+#     siblings do, and says so rather than implying coverage. An `echo` or `printf` operand is a
+#     sibling's room from `20260916.183114`: `tools/fixtures/s/shell_emit_ascii_scan.sh` walks
+#     quote state to find it, which is the parsing this meter declined, and measured the population
+#     that reason had left unpriced -- 509 characters, `echo` outweighing `printf` three to one.
 #
 # THE SECOND READING, and why it REPORTS rather than gates. `program` is the subset of `written`
 # whose opener hands the heredoc to an interpreter AS CODE -- `python3 <<PY`, `sh <<EOF`, `awk -f -`
