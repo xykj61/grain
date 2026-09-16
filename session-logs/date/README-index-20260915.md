@@ -7,7 +7,9 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260915.234836` | [The floor plan the disk left behind](20260915/20260915-234836_the-floor-plan-the-disk-left-behind.kyri) | src taught as five rooms, standing at three |
+| `20260915.232457` | [The build that waited in a stash](20260915/20260915-232457_the-build-that-waited-in-a-stash.kyri) | parked build re-proven 15/0; landed 20260916 |
 | `20260915.230831` | [The pen nobody asked about](20260915/20260915-230831_the-pen-nobody-asked-about.kyri) | third pen question: 16 never removed, 336 swept only on success |
+| `20260915.225740` | [The guard that refused its own law](20260915/20260915-225740_the-guard-that-refused-its-own-law.kyri) | claim_preserve modality split; landed 20260916 |
 | `20260915.225702` | [The heads above the table](20260915/20260915-225702_the-heads-above-the-table.kyri) | Four bindings read one lexer table; lex_one has two above it; one red booked. |
 | `20260915.224809` | [Four closed and three sharpened](20260915/20260915-224809_four-closed-and-three-sharpened.kyri) | the gated reds worked through |
 | `20260915.224708` | [The room a name never said](20260915/20260915-224708_the-room-a-name-never-said.kyri) | 3 tool files to the room their names say; red %749 |

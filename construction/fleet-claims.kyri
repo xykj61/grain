@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim grass-claim-preserve-modality-classes
-seat grass
-stamp 20260915.224411
-epoch 1789526651
-paths tools/fixtures/c/claim_preserve_scan.sh tools/fixtures/c/claim_preserve_control.sh tools/cl/claim_preserve_control_witness.rish
-what Split the claim_preserve modality reading into an obligation class and a register class, so a refusal names which one moved -- measured: this tree's own register sweep f258e5f58 drifts may 5-to-4 and all 10-to-12 on skate/README.md, and the guard cannot tell that from a weakened obligation. Gate unchanged; add the control this instrument has never had.
 claim pheromone-lexer-head-outside-pairs
 seat pheromone
 stamp 20260915.225111

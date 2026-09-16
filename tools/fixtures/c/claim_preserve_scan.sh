@@ -44,12 +44,56 @@ BASE=${CLAIM_PRESERVE_BASE:-HEAD}
 ROOTS=$(git ls-files | awk -F/ 'NF>1 {print $1}' | sort -u \
   | awk '{print length"\t"$0}' | sort -rn | cut -f2- | sed 's/\./\\./g' | paste -sd'|' -)
 [ -n "$ROOTS" ] || { echo "FAIL room roster derived empty -- git ls-files answered nothing"; exit 1; }
+# THE MODALITY READING CARRIES TWO POPULATIONS, and until 20260915 it named neither.
+# Its eighteen terms are diffed as one bag, so a lap reading a refusal learns that
+# something moved and never which kind of thing. Two kinds live in there:
+#
+#   OBLIGATION -- must, shall, should, may, require, recommend, propose, seat,
+#   hold, parked. A pass that turns "may" into "must" has changed what the tree
+#   owes, which is the drift this guard was seated for.
+#
+#   REGISTER -- never, none, always, every, all. These are the words the register
+#   law asks a lap to RECAST. Lead with what is; prefer a restated positive over a
+#   heavy negation. So a lawful register sweep moves them by doing as it is told.
+#
+# MEASURED ON THIS TREE'S OWN SWEEP. Commit f258e5f58 restated fourteen negatives
+# in skate/README.md under that law and moved `may` 5 -> 4 and `all` 10 -> 12, the
+# second purely from the restatement idiom "A, B and C all stay outside". The
+# reading counts that exactly as it counts a weakened obligation.
+#
+# WHAT CHANGES HERE IS THE DIAGNOSIS, never the refusal: any drift still exits 1.
+# Each drifted term now prints its class, and the two counts print beside the
+# failure, so a sweep can show `obligation_drift=0` and a reviewer can read what
+# the guard actually caught. Whether a register-only drift should ever pass is a
+# door for Keaton rather than a loosening a lap may take for itself.
+#
+# THE REGISTER CLASS IS DERIVED, never spelled twice. Its negation half is read out
+# of tools/fixtures/p/prose_register_scan.sh's own `neg` vocabulary, so the word a
+# register sweep is asked to recast and the word this guard calls register are one
+# list; a term added there is classified here on the next run. Its restatement half
+# -- always, every, all -- is named below, since those are what a recast reaches FOR
+# rather than what it reaches away from, and no meter counts them today.
+NEG_RE=$(sed -n 's/^[[:space:]]*neg = "\(.*\)"$/\1/p' tools/fixtures/p/prose_register_scan.sh | head -1)
+[ -n "$NEG_RE" ] || { echo "FAIL negation vocabulary unreadable in tools/fixtures/p/prose_register_scan.sh"; exit 1; }
+RESTATE_WORDS=" always every all "
+
+classify_term() {
+  case "$RESTATE_WORDS" in
+    *" $1 "*) echo register; return 0 ;;
+  esac
+  if printf ' %s ' "$1" | grep -qE "$NEG_RE"; then
+    echo register
+  else
+    echo obligation
+  fi
+}
+
 EXTRACT="rishi/bin/rishi run tools/fixtures/c/claim_preserve_extract.rish"
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/claim-preserve.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT
 
 if [ -z "${CLAIM_PRESERVE_FILES:-}" ]; then
-  echo "FAIL CLAIM_PRESERVE_FILES empty — name every file the pass touches"
+  echo "FAIL CLAIM_PRESERVE_FILES empty -- name every file the pass touches"
   exit 1
 fi
 
@@ -71,7 +115,7 @@ while IFS= read -r path; do
     continue
   fi
   if ! git cat-file -e "${BASE}:${path}" 2>/dev/null; then
-    echo "FAIL ${path}: not in ${BASE} — claim_preserve compares an existing file"
+    echo "FAIL ${path}: not in ${BASE} -- claim_preserve compares an existing file"
     reds=$((reds + 1))
     continue
   fi
@@ -96,15 +140,51 @@ while IFS= read -r path; do
   git show "${BASE}:${path}" >"$TMP/before_mod_raw"
   rishi/bin/rishi run tools/fixtures/c/claim_preserve_modality.rish count "$TMP/before_mod_raw" >"$TMP/mod_before" 2>/dev/null
   rishi/bin/rishi run tools/fixtures/c/claim_preserve_modality.rish count "$path" >"$TMP/mod_after" 2>/dev/null
-  if ! cmp -s "$TMP/mod_before" "$TMP/mod_after"; then
-    echo "FAIL modality drift: ${path}"
-    diff "$TMP/mod_before" "$TMP/mod_after" | grep '^[<>]' | head
+  # The counter emits `term=count` in one fixed order, so the two readings pair by
+  # line. The pairing asserts the term names agree, and that assert CANNOT FIRE
+  # today -- both readings come from one counter in one run, so their order is the
+  # same order by construction. It is kept as a bound on a future restructure: the
+  # moment a BEFORE reading is cached, adopted, or produced by a peer copy, an
+  # unasserted pairing would compare `may` against `never` and report a drift
+  # nobody made. Named here rather than left to look like a proven refusal.
+  paste "$TMP/mod_before" "$TMP/mod_after" >"$TMP/mod_pair"
+  : >"$TMP/mod_drift"
+  ob_drift=0
+  reg_drift=0
+  order_red=0
+  while IFS="$(printf '\t')" read -r bpair apair; do
+    [ -n "$bpair" ] || continue
+    bterm=${bpair%%=*}
+    aterm=${apair%%=*}
+    if [ "$bterm" != "$aterm" ]; then
+      echo "FAIL modality term order disagreed: ${bterm} vs ${aterm}"
+      order_red=1
+      break
+    fi
+    bcount=${bpair#*=}
+    acount=${apair#*=}
+    [ "$bcount" = "$acount" ] && continue
+    cls=$(classify_term "$bterm")
+    echo "  ${cls} ${bterm}: ${bcount} -> ${acount}" >>"$TMP/mod_drift"
+    if [ "$cls" = obligation ]; then
+      ob_drift=$((ob_drift + 1))
+    else
+      reg_drift=$((reg_drift + 1))
+    fi
+  done <"$TMP/mod_pair"
+  if [ "$order_red" -eq 1 ]; then
     reds=$((reds + 1))
+  elif [ "$ob_drift" -gt 0 ] || [ "$reg_drift" -gt 0 ]; then
+    echo "FAIL modality drift: ${path} obligation_drift=${ob_drift} register_drift=${reg_drift}"
+    cat "$TMP/mod_drift"
+    reds=$((reds + 1))
+  else
+    echo "OK   modality held: ${path} obligation_drift=0 register_drift=0"
   fi
   # Wrong beliefs stay visible -- silent five->four rewrites are red.
   if grep -Fq 'five remotes' "$TMP/before_raw"; then
     if ! grep -Fq 'five remotes' "$path"; then
-      echo "FAIL ${path}: removed historical 'five remotes' — use an erratum line instead"
+      echo "FAIL ${path}: removed historical 'five remotes' -- use an erratum line instead"
       reds=$((reds + 1))
     fi
   fi
@@ -144,5 +224,5 @@ if [ "$reds" -gt 0 ]; then
   echo "FAIL claim_preserve count=${reds}"
   exit 1
 fi
-echo "OK   claim_preserve clean — tokens and modality identical; pins held"
+echo "OK   claim_preserve clean -- tokens and modality identical; pins held"
 exit 0
