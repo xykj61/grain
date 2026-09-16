@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.084328` | [The box held two whole laps](20260916/20260916-084328_the-box-held-two-whole-laps.kyri) | two parked laps adopted; %767 and %768 booked |
 | `20260916.084019` | [The depth a resolver needs](20260916/20260916-084019_the-depth-a-resolver-needs.kyri) | %762 closed: the bound is the kernel's own 40, and a bare `cd` refuses under sh |
 | `20260916.082619` | [A sample sizes a class](20260916/20260916-082619_a-sample-sizes-a-class.kyri) | %646 counted: three shapes, one sampled |
 | `20260916.074806` | [One error name, two ceilings](20260916/20260916-074806_one-error-name-two-ceilings.kyri) | two Glow ceilings told apart behind one name |

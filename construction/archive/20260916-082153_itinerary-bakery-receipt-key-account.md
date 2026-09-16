@@ -12,7 +12,7 @@ away and the card holds the live front.
 ---
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
-Elder account [shelved whole](archive/20260916-035013_itinerary-bakery-runtime-pen-account.md); its
+Elder account [shelved whole](20260916-035013_itinerary-bakery-runtime-pen-account.md); its
 two open questions travel with it.
 **WATER TASTES** (row 3, N=5038): read the file up close, and ask what a second run changes. That
 question is what saved this lap, and it is written out below.
