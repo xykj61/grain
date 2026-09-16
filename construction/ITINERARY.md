@@ -91,7 +91,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f1f72b0296` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `88def20567` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -225,46 +225,53 @@ Claim tokens held exactly on both pages (`20260915.213000`).
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE WHITEPAPER ROW'S PREMISE FAILS, AND ITS FALSIFIER CANNOT FIRE.**
-Elder [shelved whole](archive/20260915-212827_itinerary-diffuser-row-eight-account.md).
-**FIRE SEES** (row 2, N=4977): look at the thing itself rather than the account of it. **THE ROW.**
-Row 11 is the last unopened row of the twelve and the only one whose subject is the other eleven:
-*one paper binds the three definitions the other eleven rows lean on.* Nine rows now carry landed
-readings, so its assumption and its falsifier are both checkable -- and they are checked by RUNNING
-the sibling instruments and reading their emitted keys rather than the errata that describe them, so
-the answer moves when an instrument moves.
-**ONE DEFINITION OF THREE STANDS.** *A bound when space wraps* holds on `cost_half=stands` and
-`wrap_worth_one_cut=yes`. *A radius when privilege is distance* is refuted on three keys across two
-instruments -- **32** incomparable unordered pairs and **48** over-admissions where a line reads zero
-of each, and a mapped saturation radius of **2** where a gradient needs three. *A topos when every
-proof is a cycle* is left **unrun**, its instrument being the cadence-tier `cyclic_witness`, and the
-scan proves the answer cannot turn on it by recomputing with that definition forced to stand.
-**THE SURVIVORS NEED A RING.** Each definition states how many independent cycles the space must
-carry; the maximum among the supported ones reads **1**, on a page titled for a torus. The second
-axis is the one thing a torus has that a ring does not, and `torus_place` read
-`second_axis_buys_spread=no` one row over on a different question -- two readings converging on the
-same axis.
-**AND THE FALSIFIER CANNOT FIRE AT ALL**, which is the sharper half. Each definition bounds the
-space from below, lower bounds compose by maximum, and across all **27** verdict assignments the
-conflicting count reads **0** under `atleast` and **5** under `exact`. Row 11 watches for a failure
-its definitions are structurally incapable of having, while the failure they did have went
-unwatched. The hinge is an **inference** and is named as one, with both answers printed.
-**LANDED:** scan, 55-leg pen, witness, `whitepaper_definitions` rostered `tier cadence` (scan 11s,
-control 19s). **Five mutations bitten.** **Two faults the pen found in the scan itself**, both fixed
-before the rung was written: the missing-key counter incremented inside a command substitution, so
-it read zero while four keys were absent; and three per-definition lines each carried a bare
-`verdict=` key, so a reader taking the first match read a definition's classification as the scan's
-own answer. Everything is **GATED** -- every figure is arithmetic over the assignment space or a key
-from a sibling that is itself gated.
-[Paper](../active-designing/20260915-212827_the-paper-that-checked-its-own-premise.md) **A 91**; the
-moonshot page carries row 11's erratum at **A 94**.
+**DIFFUSER -- ROW TWELVE PROPOSES A COMPARISON, AND THERE IS NOTHING TO COMPARE.**
+Elder [shelved whole](archive/20260915-222402_itinerary-diffuser-row-eleven-account.md).
+**EARTH BREATHES IN** (row 4, N=5004): take the concrete fact at the door. The fact was the
+round-open's own printout -- a whole lap staged and cut at its send, standing in `stash@{0}` on no
+ref: scan, 62-leg pen, witness, paper, account, roster row and log, 1,169 lines. Six added files
+restored from `stash@{0}^2`, five modified hunks re-applied against a HEAD that had moved, and the
+witness re-run on metal before anything was staged.
+**AND A PARKED LAP RE-ENTERS A TREE WHOSE CEILINGS HAVE MOVED.** The control's six `sed -i` calls
+were lawful when written and are a **red** now: `gated_sed_i_ceiling` reads **0**, walled while the
+work sat in the box. Repaired as the refusal names -- source
+`tools/fixtures/s/shell_portable.sh`, call `sed_inplace` -- and the 57 legs stand. **A stash is not
+a freeze:** four reds of this pass were mine and every one came from the gap, two dialect walls and
+two roster counts (`20260914` read 110 in both rosters, the shelf 114).
+**THE ROW.** Row 12 alone proposes a METHOD: *the smallest trial that touches metal goes first, and
+its result funds the ordering of everything after it*, falsified when *the trial's number sits
+inside the run-to-run spread of the baseline*. Three things must hold before a falsifier of that
+shape fires, and they fail separately.
+**THE METAL CLAUSE FIRED, AND NO TRIAL RAN IT.** Each `tools/` path inside an erratum line is
+classified by what its own EXECUTABLE lines open, one delegation hop followed: **four metal**, two
+bytes, two arithmetic, one host, **none absent**, seven re-ranks standing. All four produced a
+**refusal** -- a compiler declining a trap with no bound, a digest avalanching two near-identical
+files apart, a tick loop proving closed forms -- where row 12 proposes a comparison of **degree**.
+**AND DEGREE HAS NO OPERAND.** Across all twelve row bodies the count of numeric effect claims reads
+**zero**, so the falsifier cannot fire either way -- row 11's finding along a second road, and **two
+rows now carry falsifiers structurally incapable of firing**.
+**AND THE PIER PUTS A FLOOR UNDER ANY SINGLE TRIAL.** A deterministic workload measuring a change of
+exactly zero read a baseline spread of **16.7 to 54.8 percent** of its median across eight readings
+at load average 8 to 13, with **40 to 100 percent** of zero-change trials inside the band. The
+eighth, taken on this recovery lap, read **54.8** against a published 38.0: the paper told its next
+reader to expect wider, and the first reading after it published widened by half again.
+**LANDED:** scan, 62-leg pen, witness, `workload_trial` rostered `tier cadence`. **Two faults the
+pen found in the scan**, both fixed before the rung was written: reading 2 assigned to one variable
+while the verdict block read another, so the operand key answered the same word whatever the page
+held; and **the scan classified ITSELF as `host`**, because its classifier holds every marker it
+looks for as a grep argument. It reads past its own path by name now.
+[Paper](../active-designing/20260915-221500_the-trial-with-nothing-to-compare.md) **A 93**; the
+erratum page **A 96**, both graded after the recovery edits.
+**YOURS, NEW:** the baton asks a lap to push its claim BEFORE it builds, and the cold endurance run
+reads `tree_moved` the moment that claim lands -- the cut lap's own cold pass was invalidated by its
+own claim commit. The cheap repair is letting the tree digest read past
+`construction/fleet-claims.kyri` as it already reads past the card, which is incense's open question
+one room over. And should a lap land its commit before it edits the card? Two diffuser laps ended in
+the box in two hours.
 **YOURS, STILL:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
 and this seat's baton name moonshots and whitepaper research. Two living pins, two lanes, one ship.
-Which stands?
-**YOURS, NEW:** rows 2, 4 and 5 are now three refusals sharing one cause -- a radius over a
-population carrying no usable distance. Fold them into one recorded finding, or keep three errata?
-And does the page's title move from torus to what the survivors support?
-
+Which stands? And are rows 2, 4 and 5 -- three refusals sharing one cause -- one recorded finding or
+three errata?
 **PETRICHOR -- THE FILING GUIDE TAUGHT A FLOOR PLAN THE DISK LEFT BEHIND NINETEEN DAYS AGO.**
 Elder [shelved whole](archive/20260915-232133_itinerary-petrichor-skate-door-account.md); its open
 question asks whether a page may declare one setting per section.
