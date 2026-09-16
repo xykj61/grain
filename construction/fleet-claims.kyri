@@ -64,12 +64,6 @@ stamp 20260916.183114
 epoch 1789597874
 paths tools/fixtures/s/shell_emit_ascii_scan.sh tools/s/shell_emit_ascii_witness.rish tools/fixtures/s/shell_emit_ascii_control.sh
 what The written-ASCII family named a printf argument as its one unread population and priced it from nothing. Measured over 3,682 tracked shell sources: the residue outside heredocs and comments is 11,030 characters, and 10,416 of those stand in .rish where the spoken meter already holds them. The .sh half is 614 characters that NO meter in this tree reads -- echo 360, printf 113, the rest in other positions -- so the family's own guess named the smaller half of its gap by three to one. A POSIX .sh file has no say verb, so the spoken meter never opens one, and the whole .sh emit surface stands unread. Seat a meter over what a shell script emits through echo and printf, splitting spoken from written by the line's own redirect, with the bounded quote-depth walk the family named as the reason it could not.
-claim diffuser-awk-lcg-exactness
-seat diffuser
-stamp 20260916.185954
-epoch 1789599594
-paths tools/fixtures/a/awk_lcg_exact_scan.sh tools/a/awk_lcg_exact_witness.rish tools/fixtures/a/awk_lcg_exact_control.sh tools/fixtures/t/torus_fold_control.sh
-what An awk LCG whose multiplier times its modulus passes 2^53 is a rounded shadow of the generator its own comment names, and awk carries every number as a double. Measured on metal: torus_fold_control.sh:60 spells seed*1103515245 % 2147483648, whose product reaches 2.4e18; the rounded map reaches 13,720 distinct states -- a tail of 3,254 and a period of 10,466 -- against the exact generator's 2^31, and its consumed byte differs from the exact stream in 4,079 of 4,096 draws, diverging at draw 2. Five tracked LCG sites stand across four files and the tree already wrote its own safe spelling twice, in aurora_placement_scan.sh and topology_growth_scan.sh, each naming this exact arithmetic -- so two later pens reached past a reason already written down, which is a lantern on its third firing. Repair the torus site to MINSTD, and seat a scan reading every tracked awk LCG that computes multiplier times modulus-minus-one and holds the unsafe count under a ceiling that only falls, reporting the two key_trade sites and the one discarded workload site rather than repairing another lane's statistical bands.
 claim incense-declared-effort-gate
 seat incense
 stamp 20260916.191646
