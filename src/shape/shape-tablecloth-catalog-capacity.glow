@@ -1,6 +1,7 @@
 ::  name       tablecloth catalog capacity
 ::  shape      artifacts -- int (@u32), bound 32
 ::  invariant  one cloth names at most thirty-two artifacts, so a whole catalog is held in memory
+::  law        brushstroke/tablecloth.rye max_artifacts exact
 ::  example    32
 ::  readers    Tablecloth - Mantra beading - Glow Tend - shape museum
 ::  nib        tablecloth-v1 at 20260812.142132

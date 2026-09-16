@@ -1,6 +1,7 @@
 ::  name       tally max gardens
 ::  shape      gardens - int (@u32)
 ::  invariant  Gardens holds at most eight named regions (max_gardens)
+::  law        tally/gardens.rye max_gardens exact
 ::  example    8
 ::  readers    Tally - Glow Tend - Caravan - Amphora - Ashvini nest-only
 ::  nib        equinox-e191-tally-tend-v0

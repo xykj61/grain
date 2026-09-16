@@ -1,6 +1,7 @@
 ::  name       tally max name len
 ::  shape      name-len - int (@u32)
 ::  invariant  every garden name fits in thirty-two bytes (max_name_len)
+::  law        tally/gardens.rye max_name_len exact
 ::  example    32
 ::  readers    Tally - Glow Tend - Caravan - Mantra - Amphora - Ashvini nest-only
 ::  nib        equinox-e192-tally-tend-v0

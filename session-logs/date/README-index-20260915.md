@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260915.223455` | [The door that paid its way in](20260915/20260915-223455_the-door-that-paid-its-way-in.kyri) | skate door 27 to 14 percent, rostered; 109 sentences held |
+| `20260915.223309` | [The fence that had a second side](20260915/20260915-223309_the-fence-that-had-a-second-side.kyri) | 45 declaring desks read for the first time; 8 linked |
 | `20260915.222118` | [The door that counted four and held six](20260915/20260915-222118_the-door-that-counted-four-and-held-six.kyri) | press door named 4 and held 6; register 27 to 7 |
 | `20260915.222014` | [the binary that outlived its source](20260915/20260915-222014_the-binary-that-outlived-its-source.kyri) | freshness for rye and rishi: 36 legs, %746 BOOKED |
 | `20260915.221438` | [Six of eight carry the fields](20260915/20260915-221438_six-of-eight-carry-the-fields.kyri) | four peer interpreters rebuilt |

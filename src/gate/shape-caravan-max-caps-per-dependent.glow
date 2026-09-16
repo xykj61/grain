@@ -1,6 +1,7 @@
 ::  name       caravan max caps per dependent
 ::  shape      caps - int (@u32)
 ::  invariant  each dependent holds at most eight capabilities (max_caps_per_dependent)
+::  law        caravan/capabilities.rye max_caps_per_dependent exact
 ::  example    8
 ::  readers    Caravan - Glow Tend - Tally - Amphora - Ashvini nest-only
 ::  nib        equinox-e195-caravan-tend-v0
