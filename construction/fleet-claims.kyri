@@ -64,12 +64,6 @@ stamp 20260915.233209
 epoch 1789529529
 paths rishi/src/main.rye tools/r/rishi_make_pen_witness.rish tools/fixtures/r/rishi_make_pen_control.sh
 what Rishi already owns a CleanupRegistry that releases on normal return, refusal, exit, HUP, INT and TERM -- the card's standing claim that Rishi has no trap at all is false, and the registry's one kind is empty_dir registered only by acquire-lock. Add a make-pen expression builtin: the runtime creates the directory itself under TMPDIR and registers it for bounded recursive release, so it can only ever remove a directory it made in this process and never a caller-supplied path. Turns the 336 unreleased_on_refusal and the 16 never_removed Rishi pens from a language gap into a one-line cure.
-claim diffuser-ladder-order
-seat diffuser
-stamp 20260916.001453
-epoch 1789532093
-paths tools/fixtures/l/ladder_order_scan.sh tools/l/ladder_order_witness.rish tools/fixtures/l/ladder_order_control.sh active-designing
-what All twelve moonshot rows now carry errata and ten of them recommend a re-rank or a re-aim, while the ranking table on the page still reads as first written -- correctly, since dated testimony keeps every word. So no page states the order the twelve measurements actually support. Derive that order from the errata's own recommendation sentences rather than transcribing it, gate that every recommendation parses and that the derived order is a permutation of the twelve, and write the synthesis page row 11's erratum asked for.
 claim pheromone-wire-hit-seam
 seat pheromone
 stamp 20260916.003208
@@ -88,15 +82,15 @@ stamp 20260916.024535
 epoch 1789541135
 paths mantra/src/weave.rye mantra/recall_tablecloth_hit_census.rye tools/fixtures/r/rune_assert_sweep_scan.sh tools/r/rune_assert_sweep.rish tools/fixtures/r/rune_assert_control.sh
 what REDS %752: the whole-tree unnamed-assert ratchet reads 6492 against 6487 and names no arrival. Bisected on metal across 32 commits -- BOTH arrivals are mantra, my own lane: 0d6e6829a took it 6487 to 6488 (hit_census) and c4260fcd5 6488 to 6492 (src/weave). All five asserts already carry a TRUE written reason the adjacency rule cannot join: four sit under a 20-line postcondition block that never spells the token, and two are separated from their own invariant comment by exactly one line of code. Repair the five, lower the ceiling to what the repair finds, and answer the instrument door -- give the scan a per-file map so the next breach names its arrival instead of costing a bisect.
-claim diffuser-aurora-placement-operand
-seat diffuser
-stamp 20260916.031042
-epoch 1789542642
-paths tools/fixtures/a/aurora_placement_scan.sh tools/a/aurora_placement_witness.rish tools/fixtures/a/aurora_placement_control.sh active-designing/20260916-0
-what Row 7 of the bounded-torus moonshots -- Aurora as a small torus of cores -- is the last of twelve carrying no erratum. Its falsifier (reachable boards are mesh rather than torus) is gradeable in arithmetic with no board: at the 4-core grid the row names, a 2x2 torus IS the 2x2 mesh, since i+1 mod 2 and i-1 mod 2 are the same node, so the wrap is a duplicate link and the falsifier cannot fire; at 16 cores it buys a real diameter cut. And the placement map the row proposes needs a module-to-module communication weight this tree may hold nowhere -- row 12's missing operand arriving on a second road. Measure both halves.
 claim grass-two-rooms-ceiling-narration
 seat grass
 stamp 20260916.034104
 epoch 1789544464
 paths context/TWO_ROOMS.md
 what The doorway living ratchet closed at zero on 20260911.160504 (42826c45d), and context/TWO_ROOMS.md still narrates the ceiling falling 59 to 39 with a remainder of 33 active-designing and 6 external-research pages. The scan reads living_silent=0 living_ceiling=0 over 1,328 pages today. The page is the Earth-Fixed rota seat and the doorway's own canon, so a rota lap reads a five-day-stale number as a bare fact once per orbit. Amend with the closing paragraph naming the 39 -- 30 ALES fill captures, 6 lineage silos, 3 more -- the wall's structural reason, and what holds each figure still; grade the page at Field.
+claim diffuser-aurora-placement-operand
+seat diffuser
+stamp 20260916.031042
+epoch 1789542642
+paths tools/fixtures/a/aurora_placement_scan.sh tools/fixtures/a/aurora_placement_control.sh tools/a/aurora_placement_witness.rish
+what Row 7 of the bounded-torus moonshots measured in two halves: (1) at the 4-core grid the row names, the 2x2 torus IS the 2x2 mesh -- same diameter, same distinct link count, same mean distance -- so the row's own falsifier cannot fire there, while at 16 cores the wrap buys a real diameter cut; (2) the placement map the row proposes needs a module-to-module communication WEIGHT, and this tree holds structure rather than traffic: 43 rooms, 75 directed room pairs resolved through import symlinks, and of 9,188 loom keys in the journal exactly 4 name two rooms, all four counting files.
