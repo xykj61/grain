@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.030301` | [Two rows built and never turned](20260916/20260916-030301_two-rows-built-and-never-turned.kyri) | moonshot rows 1 and 3 ran green, six days unturned |
 | `20260916.023834` | [Three doors, three probes](20260916/20260916-023834_three-doors-three-probes.kyri) | the v3 record named as the one blocker |
 | `20260916.022355` | [the pen the runtime owns](20260916/20260916-022355_the-pen-the-runtime-owns.kyri) | make-pen: the runtime creates and recursively releases its own pen |
 | `20260916.011339` | [The order the errata could not state](20260916/20260916-011339_the-order-the-errata-could-not-state.kyri) | four named seats, two collisions, no order |

@@ -7,6 +7,8 @@
 **Style:** Gauge at the Field setting
 **Voice:** Kyri
 
+**Erratum:** `20260916.025923` -- every figure below stands as measured, and one CLASS NAME in them has since been split. This paper reads `class_unread=3`, taking the name from the errata alone; two of those three rows -- 1 and 3, ranked FIRST and SECOND -- carried first witnesses seated `20260910`, `wrap_ring` and `cyclic_witness`, rostered and never once run on this pier. The scan now reads the builder's own `First witness for moonshot N of` sentence across tracked sources and splits the class: `unread` means nothing landed, `unwritten` means something did and the page stayed silent. Both witnesses ran GREEN on metal, both errata are written, and the reading is `class_unread=1`, `class_unwritten=0`, `rows_with_instrument=3`. The control stands at **80** legs where this paper says 54. The partition, the two collisions, and `permutation=no` are unchanged. Every other word here is kept as written.
+
 ## What was asked, and what was found
 
 [The Bounded Torus](20260910-060204_the-bounded-torus-moonshots.md) ranked twelve moonshot rows on

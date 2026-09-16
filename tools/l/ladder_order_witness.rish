@@ -21,9 +21,21 @@
 # measured, and inventing one is exactly what this rung exists to refuse. That is why the reading
 # is a collision count rather than a sorted list.
 #
+# THE CLASS `unread` WAS TWO STATES WEARING ONE NAME, and the instrument reading tells them apart
+# (`20260916.025923`). The classes above are read off the ERRATA, so a row whose first witness was
+# built and whose page stayed silent read exactly like a row nobody had touched. Rows 1 and 3 --
+# ranked FIRST and SECOND -- both read `unread` while carrying rostered witnesses seated
+# `20260910`, `wrap_ring` and `cyclic_witness`, neither of which had ever run on this pier: zero
+# `ran` receipts apiece in six days, both `tier cadence`. A lane taking `unread` as its next door
+# would have rebuilt what already stood built. The reading now takes the builder's own sentence --
+# `First witness for moonshot N of` followed by this page's name, across tracked sources -- and
+# splits the class: `unread` means nothing landed, `unwritten` means something did and the page has
+# yet to say so. Both witnesses were run on metal and both are GREEN, in 2.78 and 1.25 seconds; the
+# two errata are written; `unwritten` reads zero and is walled there.
+#
 # WHAT CAN BE STATED IS A PARTITION. Each of the twelve falls into exactly one disposition class
-# read from its latest erratum -- 3 unread, 3 reported, 1 re-aimed, 2 seated, 2 demoted, 1
-# superseded -- and those six counts sum to the roster, which is gated rather than assumed. A
+# read from its latest erratum and its landed instrument -- 1 unread, 0 unwritten, 5 reported, 1
+# re-aimed, 2 seated, 2 demoted, 1 superseded -- and those seven counts sum to the roster, which is gated rather than assumed. A
 # partition is the weaker statement, and it is the one the measurements actually support.
 #
 # WHAT IS GATED, and why each. The roster count is gated against the ranking table, because a
@@ -34,8 +46,8 @@
 # reported rather than walled: it is a reading of a dated page, and an erratum landing tomorrow
 # may raise or lower it honestly.
 #
-# WHAT IS PROVEN, on metal, by tools/fixtures/l/ladder_order_control.sh -- 54 behaviors on planted
-# pages in a throwaway pen, every refusal shown from both sides:
+# WHAT IS PROVEN, on metal, by tools/fixtures/l/ladder_order_control.sh -- 80 behaviors on planted
+# pages and a real git repository in a throwaway pen, every refusal shown from both sides:
 #
 #   A PERMUTATION IS REACHABLE, proven by planting a page whose four errata name four distinct
 #     seats and watching it read permutation=yes. A refusal proven only in the refusing direction
@@ -77,8 +89,8 @@ let control = run ["sh" "tools/fixtures/l/ladder_order_control.sh"]
 say control.out
 assert control.ok else "ladder-order: the control must complete -- its own lines are printed above"
 
-assert control.out contains "control_expected=54" else "ladder-order: the control counts its own legs, so a shrunken pen cannot read as a full one"
-assert control.out contains "control_legs=54" else "ladder-order: a leg added or lost is a leg nobody heard"
+assert control.out contains "control_expected=80" else "ladder-order: the control counts its own legs, so a shrunken pen cannot read as a full one"
+assert control.out contains "control_legs=80" else "ladder-order: a leg added or lost is a leg nobody heard"
 assert control.out contains "control_failed=0" else "ladder-order: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "ladder-order: the control must balance before it is believed"
 
@@ -106,6 +118,12 @@ assert control.out contains "reading the disposition before the position loses a
 assert control.out contains "an unbounded 'last' match demotes on a passing word" else "ladder-order: the bare-word mutation must bite"
 assert control.out contains "a hard-coded roster cannot see a thirteenth row" else "ladder-order: the hard-coded roster mutation must bite"
 assert control.out contains "losing the latest-stamp tiebreak lets a retired erratum speak" else "ladder-order: the tiebreak mutation must bite"
+assert control.out contains "landed work makes the row unwritten" else "ladder-order: a landed instrument must split the unread class"
+assert control.out contains "a moonshot of another page binds nothing" else "ladder-order: a binding must name this page to count"
+assert control.out contains "an untracked binding is not read" else "ladder-order: an untracked file makes no promise"
+assert control.out contains "and refuses rather than reading no instrument" else "ladder-order: a tree with no tracked population must refuse"
+assert control.out contains "losing the instrument lookup calls landed work unread" else "ladder-order: the class-split mutation must bite"
+
 assert control.out contains "every mutation applied and bit" else "ladder-order: a mutation that no longer applies proves nothing"
 
 let scan = run ["sh" "tools/fixtures/l/ladder_order_scan.sh"]
@@ -127,5 +145,23 @@ assert scan.out contains "verdict=partition_only" else "ladder-order: what stand
 assert scan.out contains "classes_partition=yes" else "ladder-order: every row must fall into exactly one class"
 assert scan.out contains "class_total=12" else "ladder-order: the classes must sum to the roster"
 
-say "ladder-order: GREEN -- nine rows speak, six recommend, four name a seat, two seats collide."
-say "ladder-order: the order the errata support is a partition of twelve into six dispositions."
+# The instrument reading. A binding naming a row the page lacks is the reader measuring its own
+# blind spot, the same fault an unparsed clause is, so it is walled at zero. The turned and unturned
+# counts are REPORTED rather than walled: whether a rostered guard has had its cadence turn is the
+# runner's business and no page can repair it, and a wall that reds on work this lane cannot do is
+# a wall somebody turns off.
+assert scan.out contains "tree_readable=yes" else "ladder-order: the instrument reading needs a tracked population"
+assert scan.out contains "instrument_rows_unknown=0" else "ladder-order: an instrument naming a row the page lacks is a blind spot, never a reading"
+assert scan.out contains "instruments_unrostered=0" else "ladder-order: an instrument outside the roster is a guard nothing can turn"
+
+# The finding this reading was built for, and the repair that closed it.
+# WALLED at zero, and the wall reds on exactly one thing: a row of this page whose first witness
+# landed and whose erratum was never written. Rows 1 and 3 stood that way for six days and the
+# elder reading could not tell them from row 7, which nobody has touched. Only this lane writes
+# this page, so the wall refuses none of anybody else's ordinary work.
+assert scan.out contains "class_unwritten=0" else "ladder-order: a row whose instrument landed must say so on its own page"
+assert scan.out contains "class_unread=1" else "ladder-order: one row alone is genuinely untouched"
+assert scan.out contains "rows_with_instrument=3" else "ladder-order: three rows carry a landed first witness"
+
+say "ladder-order: GREEN -- eleven rows speak, six recommend, four name a seat, two seats collide."
+say "ladder-order: three rows carry a landed first witness, and one row of twelve stands untouched."

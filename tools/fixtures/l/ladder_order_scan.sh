@@ -16,7 +16,24 @@
 #   READING 2 -- THE STANDING RANK. The ranking table gives each row the position it was first
 #   assigned. This is the order a reader of the page takes away today.
 #
-#   READING 3 -- THE RECOMMENDATIONS. Each `**Row N erratum:**` clause is read for a
+#   READING 3 -- THE LANDED INSTRUMENT. A row whose first witness was BUILT says so in the
+#   tree rather than on the page: `tools/rye/wrap_ring.rye` opens `First witness for moonshot 1
+#   of` and names this page on its next line. That binding is the builder's own words, written
+#   by the lap that built it, so this reading takes it rather than inventing a table. For each
+#   binding the reader asks three further things -- is one of those files a `path` in the
+#   standing roster, what `tier` does its row declare, and how many `ran <guard>` receipts does
+#   this pier hold. A row with a rostered guard and zero receipts has landed work that nothing
+#   has turned.
+#
+#   WHY THAT READING WAS OWED. The elder class `unread` was read off the errata alone, so a row
+#   whose work landed without an erratum being written back read identically to a row nobody had
+#   touched. Measured `20260916.025310`: rows 1 and 3 -- ranked FIRST and SECOND -- both read
+#   `unread` while carrying rostered witnesses seated `20260910`, neither of which had ever run
+#   on this pier. A lane reading `unread` as its next door would have rebuilt what stood built.
+#   The class splits now: `unread` means nothing landed, `unwritten` means something did and the
+#   page stayed silent.
+#
+#   READING 4 -- THE RECOMMENDATIONS. Each `**Row N erratum:**` clause is read for a
 #   recommendation sentence and classified by what it asks for:
 #     rank   -- it names a target position in words ("a rank of fourth", "last of the twelve")
 #     aim    -- it asks the row be re-aimed and names no position
@@ -42,6 +59,11 @@
 set -u
 
 PAGE="${LADDER_PAGE:-active-designing/20260910-060204_the-bounded-torus-moonshots.md}"
+# The instrument reading needs three more populations, each overridable so the control can
+# plant one and know the right answer by construction.
+TREE="${LADDER_TREE:-.}"
+ROSTER="${LADDER_ROSTER:-construction/standing-equipment.kyri}"
+RECEIPTS="${LADDER_RECEIPTS:-construction/standing-equipment-runs.kyri}"
 MODE="${1:-}"
 
 # A pen of this scan's own making, released on every exit path. The elder draft wrote its four
@@ -78,7 +100,87 @@ awk -F'|' '/^\| *[0-9]+ *\| *[0-9]+\. / {
 standing=$(grep -c '^standing ' "$WORK"/ladder_standing.txt 2>/dev/null || true)
 echo "standing_ranked=$standing"
 
-# READING 3 -- the errata and their recommendations.
+# READING 3 -- the landed instruments. The binding is the builder's own sentence, `First witness
+# for moonshot N of` followed by this page's name, so no table of ours decides which file serves
+# which row. `git grep` is the population because a living TRACKED source is what makes a promise;
+# an untracked build output makes none.
+PAGE_BASE=$(basename "$PAGE")
+if git -C "$TREE" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "tree_readable=yes"
+else
+  echo "tree_readable=no"
+  echo "detail: $TREE is no git work tree -- the instrument reading has no population to read"
+  echo "verdict=untracked"
+  exit 0
+fi
+
+git -C "$TREE" grep -lE '[Ff]irst witness for moonshot [0-9]+ of' > "$WORK"/candidates.txt 2>/dev/null || : > "$WORK"/candidates.txt
+
+: > "$WORK"/ladder_bindings.txt
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  [ -f "$TREE/$f" ] || continue
+  # The row number and the page name may sit on one line or on the next, since a comment wraps.
+  # Read a three-line window: the sentence naming the row, and the two lines after it.
+  awk -v file="$f" -v base="$PAGE_BASE" '
+    /[Ff]irst witness for moonshot [0-9]+ of/ {
+      match($0, /moonshot [0-9]+/); hold = substr($0, RSTART + 9, RLENGTH - 9) + 0
+      held = NR
+    }
+    held && NR <= held + 2 && index($0, base) > 0 && !done {
+      printf "binding %d %s\n", hold, file; done = 1
+    }
+  ' "$TREE/$f" >> "$WORK"/ladder_bindings.txt
+done < "$WORK"/candidates.txt
+
+bindings=$(grep -c '^binding ' "$WORK"/ladder_bindings.txt 2>/dev/null || true)
+echo "instrument_bindings=$bindings"
+
+# Which binding file is a rostered guard, what tier does its row declare, and how many receipts
+# does this pier hold for it. A guard's own record is its output rather than its evidence, so the
+# receipts are read from the runner's card rather than from the guard.
+: > "$WORK"/ladder_instruments.txt
+sort -u "$WORK"/ladder_bindings.txt | awk '{print $2}' | sort -u > "$WORK"/binding_rows.txt 2>/dev/null || true
+for r in $(awk '{print $2}' "$WORK"/ladder_bindings.txt | sort -un); do
+  files=$(awk -v r="$r" '$2 == r' "$WORK"/ladder_bindings.txt | wc -l | tr -d ' ')
+  gname="-"; gtier="-"; receipts=0
+  for f in $(awk -v r="$r" '$2 == r {print $3}' "$WORK"/ladder_bindings.txt); do
+    g=$(awk -v p="$f" '
+      /^guard / { name = $2 }
+      /^path /  { if ($2 == p) { print name; exit } }
+    ' "$ROSTER" 2>/dev/null)
+    if [ -n "$g" ]; then
+      gname=$g
+      gtier=$(awk -v n="$g" '
+        /^guard / { cur = $2 }
+        /^tier /  { if (cur == n) { print $2; exit } }
+      ' "$ROSTER" 2>/dev/null)
+      [ -n "$gtier" ] || gtier="-"
+      receipts=$(grep -cE "^ran $g " "$RECEIPTS" 2>/dev/null || true)
+      break
+    fi
+  done
+  if [ "$gname" = "-" ]; then state=unrostered
+  elif [ "$receipts" -eq 0 ]; then state=unturned
+  else state=turned
+  fi
+  echo "instrument row=$r files=$files guard=$gname tier=$gtier receipts=$receipts state=$state" \
+    >> "$WORK"/ladder_instruments.txt
+done
+cat "$WORK"/ladder_instruments.txt
+
+rows_with_instrument=$(wc -l < "$WORK"/ladder_instruments.txt | tr -d ' ')
+echo "rows_with_instrument=$rows_with_instrument"
+for st in turned unturned unrostered; do
+  n=$(grep -c "state=$st\$" "$WORK"/ladder_instruments.txt 2>/dev/null || true)
+  echo "instruments_$st=$n"
+done
+# A binding naming a row this page lacks is the reader measuring its own blind spot, the same way
+# an unparsed clause is. Gated at zero rather than reported.
+unknown=$(awk -v rows="$rows" '$2 + 0 < 1 || $2 + 0 > rows' "$WORK"/ladder_bindings.txt | wc -l | tr -d ' ')
+echo "instrument_rows_unknown=$unknown"
+
+# READING 4 -- the errata and their recommendations.
 awk '
 function ordinal(w) {
   if (w ~ /first/)    return 1;  if (w ~ /second/)  return 2;
@@ -172,17 +274,18 @@ grep '^target ' "$WORK"/ladder_targets.txt
 grep '^collision ' "$WORK"/ladder_targets.txt || true
 grep -E '^(positions_|collisions=|seats_empty=)' "$WORK"/ladder_targets.txt
 
-# READING 4 -- THE CLASSES. A permutation is one way to state an order and a PARTITION is
+# READING 5 -- THE CLASSES. A permutation is one way to state an order and a PARTITION is
 # another, weaker and available: each row falls into exactly one disposition class, read from
 # its latest erratum. This reading exists because the two collisions above are not accidents of
 # wording -- both come from an erratum speaking in a CLASS ("last") where the table speaks in a
 # POSITION, and a class cannot be transcribed into a table without inventing a tiebreak nobody
 # measured. The classes are disjoint by construction and their sum is gated against the roster.
 awk -v rows="$rows" '
+  FILENAME ~ /instruments/ { sub(/^row=/, "", $2); inst[$2 + 0] = 1; next }
   { kind[$2 + 0] = $4; target[$2 + 0] = $5 + 0 }
   END {
     for (r = 1; r <= rows; r++) {
-      if (!(r in kind))                       c = "unread"
+      if (!(r in kind))                       c = (r in inst ? "unwritten" : "unread")
       else if (kind[r] == "breach")           c = "superseded"
       else if (kind[r] == "rank" && target[r] == -1) c = "demoted"
       else if (kind[r] == "rank")             c = "seated"
@@ -192,11 +295,11 @@ awk -v rows="$rows" '
       n[c]++
     }
     total = 0
-    split("unread reported reaimed seated demoted superseded", order, " ")
-    for (i = 1; i <= 6; i++) { k = order[i]; printf "class_%s=%d\n", k, n[k] + 0; total += n[k] + 0 }
+    split("unread unwritten reported reaimed seated demoted superseded", order, " ")
+    for (i = 1; i <= 7; i++) { k = order[i]; printf "class_%s=%d\n", k, n[k] + 0; total += n[k] + 0 }
     printf "class_total=%d\n", total
   }
-' "$WORK"/ladder_latest.txt > "$WORK"/ladder_classes.txt
+' "$WORK"/ladder_instruments.txt "$WORK"/ladder_latest.txt > "$WORK"/ladder_classes.txt
 
 grep '^class ' "$WORK"/ladder_classes.txt
 grep '^class_' "$WORK"/ladder_classes.txt
