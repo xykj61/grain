@@ -28,7 +28,7 @@ let zig = "vendor/zig-toolchain/zig"
 
 say "retired-count: building from source, so the binary matches the file this witness reads..."
 let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/retired_count.rye -femit-bin=tools/bin/retired-count"]
-assert build.ok else "retired-count: the build refused --\n${build.out}\n${build.err}"
+assert build.ok else "retired-count: the build refused --\n${build.out_brief}\n${build.err_brief}"
 
 # The claim lines arrive on stderr, as every hosted Rye program in this tree prints through
 # `std.debug.print`; the redirect is what puts them where the asserts below can read them.
@@ -41,7 +41,7 @@ assert out.ok else "retired-count: the selftest refused -- read its lines above"
 # invariant: exactly one branch is named. This is the gate a host cannot fail by being itself: a
 # machine with no counter says so, and a program saying neither has stopped reading the host at all.
 let branch = run ["sh" "-c" "tools/bin/retired-count selftest 2>&1 | grep -c '^counter='"]
-assert branch.out contains "1" else "retired-count: the run named neither branch, or both --\n${branch.out}\n${branch.err}"
+assert branch.out contains "1" else "retired-count: the run named neither branch, or both --\n${branch.out_brief}\n${branch.err_brief}"
 
 # invariant: the program reaches its own green line whichever branch it took.
 assert out.out contains "GREEN: retired-count" else "retired-count: the selftest reached no green line"
@@ -53,7 +53,7 @@ assert out.out contains "GREEN: retired-count" else "retired-count: the selftest
 say "retired-count: the control -- each gate mutated in a throwaway pen and required to bite..."
 let ctl = run ["sh" "tools/fixtures/r/retired_count_control.sh"]
 say ctl.out
-assert ctl.ok else "retired-count: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "retired-count: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
 # invariant: the control ran every case it planted and none failed. Reading the verdict alone would
 # pass a control that reached its last line having proven nothing.
 assert ctl.out contains "fail=0" else "retired-count: a control case failed -- read its own lines above"

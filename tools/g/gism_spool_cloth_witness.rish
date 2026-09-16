@@ -36,7 +36,7 @@ let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
 assert sec.ok else "gism-red73-name: could not measure SECURITY.md"
 let two = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' \n'"]
 assert two.ok else "gism-red73-name: could not measure context/TWO_ROOMS.md"
-assert selftest.out contains "fetch by name returned ${sec.out}/${sec.out}/${two.out} real bytes, each byte-for-byte" else "gism-red73-name: byte-for-byte fetch missing"
+assert selftest.out contains "fetch by name returned ${sec.out_brief}/${sec.out_brief}/${two.out_brief} real bytes, each byte-for-byte" else "gism-red73-name: byte-for-byte fetch missing"
 assert selftest.out contains "format spool-cloth-v1 manifest round-tripped 3 artifacts" else "gism-red73-name: manifest round-trip missing"
 assert selftest.out contains "tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN" else "gism-red73-name: refusals missing"
 assert selftest.out contains "a name carrying a manifest separator refused whole GREEN" else "gism-red73-name: separator-name refusal missing -- a name is one manifest field"

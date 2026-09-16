@@ -14,7 +14,7 @@ let gate = run ["sh" "tools/g/glow_rune_alphabet_worker.sh"]
 # for rostering it: the fault had stood in the file and no pass could hear it.
 say gate.out
 
-assert gate.ok else "glow rune alphabet G1 gate failed: ${gate.err}${gate.out}"
+assert gate.ok else "glow rune alphabet G1 gate failed: ${gate.err_brief}${gate.out_brief}"
 assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
 
 # The worker publishes rune_heads=N, lexer_heads=N and unnamed_heads=N; they are echoed above so a
@@ -54,7 +54,7 @@ assert gate.out contains "book_named=" else "worker must publish book_named= bes
 # hands rather than by the lexer, and no plant reached them until now.
 say "glow rune alphabet: the control -- nine plants in a pen checkout, four in the lexer table and five in the documents it binds, each refused and each lifted..."
 let ctl = run ["sh" "tools/fixtures/g/glow_rune_alphabet_control.sh"]
-assert ctl.ok else "glow rune alphabet: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=32 fail=0" else "glow rune alphabet: the control did not prove thirty-two behaviors --\n${ctl.out}"
+assert ctl.ok else "glow rune alphabet: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=32 fail=0" else "glow rune alphabet: the control did not prove thirty-two behaviors --\n${ctl.out_brief}"
 
 say "GREEN: Glow rune alphabet G1+G2 -- lexer heads, pronounced heads and unnamed heads all published above; TAME family index and tokens.rye bound; STOA90-91, bartis STOA100, barket STOA111; the gate proven able to red on nine planted faults, four in the lexer table and five in the documents it binds -- the last two the rune reference itself, a taught head struck from it and the page gone."

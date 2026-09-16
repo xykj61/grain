@@ -26,10 +26,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/click_relation"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/click_relation.rye -femit-bin=${bin}"]
-assert build.ok else "click_relation: build failed -- ${build.err}"
+assert build.ok else "click_relation: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "click_relation: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "click_relation: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "click_relation: ${out}"

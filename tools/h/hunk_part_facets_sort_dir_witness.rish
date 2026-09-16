@@ -24,7 +24,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/part_facets_sort_dir"
 
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/part_facets_sort_dir.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-part-facets-sort-dir: build failed — ${build.err}"
+assert build.ok else "hunk-part-facets-sort-dir: build failed — ${build.err_brief}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "brushstroke/bin/part_facets_sort_dir.out"

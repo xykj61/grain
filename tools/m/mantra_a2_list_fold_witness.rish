@@ -17,27 +17,27 @@ let triple = "src/gate/gate-mantra-fold-triple-fields.glow"
 
 say "a2-list: three fields fold to their sum..."
 let three = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "3" "5" "7"]
-assert three.ok else "a2-list: triple fold failed to run -- ${three.out} ${three.err}"
+assert three.ok else "a2-list: triple fold failed to run -- ${three.out_brief} ${three.err_brief}"
 assert three.out contains "EXIT:0" else "a2-list: triple fold did not exit 0"
 assert (lines three.out) contains "15" else "a2-list: 3 5 7 did not fold to 15"
 
 say "a2-list: an all-zero triple folds to zero..."
 let zero = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "0" "0" "0"]
-assert zero.ok else "a2-list: zero triple failed to run -- ${zero.out} ${zero.err}"
+assert zero.ok else "a2-list: zero triple failed to run -- ${zero.out_brief} ${zero.err_brief}"
 assert (lines zero.out) contains "0" else "a2-list: the empty-valued triple did not fold to 0"
 
 say "a2-list: the pair path still answers through the elder emitter..."
 let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-fold-pair-sum.glow" "3" "5"]
-assert pair.ok else "a2-list: pair fold regression failed -- ${pair.out} ${pair.err}"
+assert pair.ok else "a2-list: pair fold regression failed -- ${pair.out_brief} ${pair.err_brief}"
 assert (lines pair.out) contains "8" else "a2-list: pair 3 5 no longer folds to 8"
 
 say "a2-list: the shape still bounds the fold -- a bare @u32 sample refuses sum..."
 let bare = run ["sh" "-c" "grep -q 'sample=triple-shape' src/gate/gate-mantra-fold-triple-fields.glow"]
-assert bare.ok else "a2-list: the desk stopped naming its shape -- ${bare.out} ${bare.err}"
+assert bare.ok else "a2-list: the desk stopped naming its shape -- ${bare.out_brief} ${bare.err_brief}"
 
 say "a2-list: the range folds still stand..."
 let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-tally-fold-sumto-u32.glow" "3"]
-assert sumto.ok else "a2-list: sumto regression failed -- ${sumto.out} ${sumto.err}"
+assert sumto.ok else "a2-list: sumto regression failed -- ${sumto.out_brief} ${sumto.err_brief}"
 assert (lines sumto.out) contains "6" else "a2-list: sumto 3 no longer folds to 6"
 
 say "GREEN: a2 list fold -- pair..nona under one rune; the pair path delegated; ranges intact."

@@ -36,8 +36,8 @@ assert sha.ok else "gism-j6r4: sha256sum over the real file failed"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "gism-j6r4: provenance_true selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-j6r4: selftest did not speak GREEN"
-assert selftest.out contains "signed_len ${wc.out}" else "gism-j6r4: signed length disagrees with wc -c over the real file"
-assert selftest.out contains "signed_sha256 ${sha.out}" else "gism-j6r4: signed digest disagrees with sha256sum over the real file"
+assert selftest.out contains "signed_len ${wc.out_brief}" else "gism-j6r4: signed length disagrees with wc -c over the real file"
+assert selftest.out contains "signed_sha256 ${sha.out_brief}" else "gism-j6r4: signed digest disagrees with sha256sum over the real file"
 assert selftest.out contains "true to the real bytes (a neighbor refuses)" else "gism-j6r4: tight-binding line missing"
 
 say "GREEN: GISM-J6r4 — the signed length and digest are true to the real file (wc -c + sha256sum agree); GISM Journey 6 (Provenance) stands complete end to end."

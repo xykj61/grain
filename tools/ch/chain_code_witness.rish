@@ -26,10 +26,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/chain_code"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/chain_code.rye -femit-bin=${bin}"]
-assert build.ok else "chain_code: build failed -- ${build.err}"
+assert build.ok else "chain_code: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "chain_code: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "chain_code: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "chain_code: ${out}"

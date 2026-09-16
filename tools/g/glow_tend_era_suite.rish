@@ -75,39 +75,39 @@ say "era 5/12 GREEN — the shell's ceilings decide, and the elders still match.
 
 say "era 6/12: the build floor itself — two witnesses at once, and neither ruins the other..."
 let conc = run ["rishi/bin/rishi" "run" "tools/g/glow_build_concurrency_witness.rish"]
-assert conc.ok else "era: build concurrency RED — ${conc.err}"
+assert conc.ok else "era: build concurrency RED — ${conc.err_brief}"
 say "era 6/12 GREEN — the lock and the atomic install hold under six lanes (REDS %88)."
 
 say "era 7/12: the commit-message wall -- all three refusals refuse, and every welcome still welcomes..."
 let guard = run ["rishi/bin/rishi" "run" "tools/co/commit_message_guard_witness.rish"]
-assert guard.ok else "era: commit-message guard RED -- ${guard.err}"
+assert guard.ok else "era: commit-message guard RED -- ${guard.err_brief}"
 say "era 7/12 GREEN -- 20 planted cases answered right across three rules, and the wall is armed on this clone."
 
 say "era 8/12: the build bridge itself -- a cyclic import graph terminates, and a chain past the bound refuses by name..."
 let bridge = run ["rishi/bin/rishi" "run" "tools/r/rye_bridge_cycle_witness.rish"]
-assert bridge.ok else "era: the Rye build bridge RED -- ${bridge.err}"
+assert bridge.ok else "era: the Rye build bridge RED -- ${bridge.err_brief}"
 say "era 8/12 GREEN -- two files importing each other bridge and run, the root answers to one name, and a chain past max_bridge_depth is refused rather than crashed (REDS %125)."
 
 say "era 9/12: the reds ledger itself -- the spine accretes with no gaps, the headline recites what the spine measures, and every row carries its three fields..."
 let reds = run ["rishi/bin/rishi" "run" "tools/gen/chapter/reds_ledger_monotone_witness.rish"]
-assert reds.ok else "era: the reds ledger spine or its headline RED -- ${reds.err}"
+assert reds.ok else "era: the reds ledger spine or its headline RED -- ${reds.err_brief}"
 # The rung once named the whole ledger and proved only its numbering, so a
 # closure note that named no proof stood RED for four signed commits while this
 # roster read GREEN (REDS %129). Both halves run here now: one guard counts the
 # spine, the other reads every row for what went wrong, what caught it, and what
 # it taught.
 let rows = run ["rishi/bin/rishi" "run" "tools/gen/chapter/reds_ledger_witness.rish"]
-assert rows.ok else "era: a reds row is incomplete or the pin is past bound -- ${rows.err}"
+assert rows.ok else "era: a reds row is incomplete or the pin is past bound -- ${rows.err_brief}"
 say "era 9/12 GREEN -- 1..N with no gaps across every fold archive and the living pin, the headline agreeing with the count read off disk, and every row complete (REDS %126, %127, %129)."
 
 say "era 10/12: the delegating stub itself -- measured off disk, and the live card held to the measurement..."
 let stub = run ["rishi/bin/rishi" "run" "tools/l/ladder_stub_length_witness.rish"]
-assert stub.ok else "era: the stub length or the card's claim about it RED -- ${stub.err}"
+assert stub.ok else "era: the stub length or the card's claim about it RED -- ${stub.err_brief}"
 say "era 10/12 GREEN -- every pure delegating stub on disk measures three lines, the count named by the scan's own output rather than recited here, the card agrees, a harness delegating to itself is refused by name, and all three refusals fire on metal (REDS %128, %132)."
 
 say "era 11/12: the fold's doc block bound to the declaration its own citation names..."
 let docs = run ["rishi/bin/rishi" "run" "tools/l/ladder_doc_attachment_witness.rish"]
-assert docs.ok else "era: a doc block in the Caravan harness documents a family other than the declaration beneath it -- ${docs.err}"
+assert docs.ok else "era: a doc block in the Caravan harness documents a family other than the declaration beneath it -- ${docs.err_brief}"
 say "era 11/12 GREEN -- every fold's doc block sits above the pub fn its own family citation names, the count read off the scan rather than recited here, a misattached block and a scan proving nothing are both refused on metal, and a correct block is welcomed as hard as a wrong one is refused (REDS %134)."
 
 # The three guards that ran from nowhere (REDS %138, %139). On 20260822 a lap found the
@@ -122,11 +122,11 @@ say "era 11/12 GREEN -- every fold's doc block sits above the pub fn its own fam
 # leave dated testimony alone while it repairs living code.
 say "era 12/12: the guards that ran from no standing suite -- the doorway, the dated-path census, and the repointer..."
 let doorway = run ["rishi/bin/rishi" "run" "tools/t/two_rooms_doorway.rish"]
-assert doorway.ok else "era: a forward-facing page names no room at its door -- ${doorway.err}"
+assert doorway.ok else "era: a forward-facing page names no room at its door -- ${doorway.err_brief}"
 let dated = run ["rishi/bin/rishi" "run" "tools/d/dated_path_witness.rish"]
-assert dated.ok else "era: the dated-path resolver or its lost-reference census went RED -- ${dated.err}"
+assert dated.ok else "era: the dated-path resolver or its lost-reference census went RED -- ${dated.err_brief}"
 let repoint = run ["rishi/bin/rishi" "run" "tools/d/dated_path_repoint_witness.rish"]
-assert repoint.ok else "era: the dated-path repointer moved dated testimony or missed living code -- ${repoint.err}"
+assert repoint.ok else "era: the dated-path repointer moved dated testimony or missed living code -- ${repoint.err_brief}"
 say "era 12/12 GREEN -- every forward page names its room, the resolver holds its six verdicts and its lost-reference ceiling with no slack, and the repointer repairs living code while leaving dated testimony byte-identical (REDS %138, %139)."
 
 say "GREEN: era pure lap -- a1 - Rishi walls - R1 socketless legs - the build floor - the build bridge - the commit wall - the reds ledger whole - the delegating stub - the doc block bound where it belongs - the three guards that ran from nowhere, provable on any host."

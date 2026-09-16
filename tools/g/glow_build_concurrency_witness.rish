@@ -27,7 +27,7 @@ say "glow-build-concurrency: Style Radiant -- the guard is measured against a co
 say "glow-build-concurrency: Lens TAME -- safety before speed: one bounded lock, one atomic rename. RED names which half gave way. Purely local -- no key, no network, no funds, no device."
 
 let scan = run ["sh" "tools/fixtures/g/glow_build_concurrency_scan.sh"]
-assert scan.ok else "glow-build-concurrency: the concurrency scan failed to run -- ${scan.err}"
+assert scan.ok else "glow-build-concurrency: the concurrency scan failed to run -- ${scan.err_brief}"
 say scan.out
 
 # The guards are still in the worker. Checked first, so a passing run can never mean

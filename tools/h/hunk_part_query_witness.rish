@@ -22,7 +22,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_query"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_query.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-part-query: build failed — ${build.err}"
+assert build.ok else "hunk-part-query: build failed — ${build.err_brief}"
 
 let outfile = "image/bin/part_query.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

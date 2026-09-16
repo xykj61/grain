@@ -55,7 +55,7 @@ say "rye-witness-walker: proving the census on real repositories in a throwaway 
 let control = run ["sh" "tools/fixtures/r/rye_witness_walker_control.sh"]
 say control.out
 assert control.ok else "rye-witness-walker: the control must complete -- a census nobody has watched fail is a census nobody has tested"
-assert control.out contains "control_verdict=ok" else "rye-witness-walker: the control must reach its own verdict -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "rye-witness-walker: the control must reach its own verdict -- ${control.out_brief}"
 
 # The census's whole subject, shown from both sides in one pen. A scan that had stopped reading the
 # walker at all would pass the second of these and fail the first.

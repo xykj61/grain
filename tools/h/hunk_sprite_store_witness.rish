@@ -25,10 +25,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/sprite_store"
 
 let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/sprite_store.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-sprite-store: build failed — ${build.err}"
+assert build.ok else "hunk-sprite-store: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-sprite-store: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-sprite-store: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-sprite-store: ${out}"
@@ -41,7 +41,7 @@ assert out contains "refuses DigestMismatch" else "hunk-sprite-store: the selfte
 
 # HUNK1 stays GREEN -- the store reuses image_artifact; the verified fetch underneath must still hold.
 let artifact = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/image_artifact.rye -femit-bin=pond/apps/bin/image_artifact && pond/apps/bin/image_artifact selftest 2>&1"]
-assert artifact.ok else "hunk-sprite-store: HUNK1 image_artifact re-run failed — ${artifact.out}"
+assert artifact.ok else "hunk-sprite-store: HUNK1 image_artifact re-run failed — ${artifact.out_brief}"
 assert artifact.out contains "GREEN image-artifact" else "hunk-sprite-store: HUNK1 image_artifact selftest did not stay GREEN"
 
 say "hunk-sprite-store: GREEN — the marketplace sheet is content-addressed and a tampered sheet refuses before any product renders; HUNK1 verified fetch underneath stays GREEN. HUNK6 lands."

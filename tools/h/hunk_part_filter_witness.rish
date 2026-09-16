@@ -25,7 +25,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_filter"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_filter.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-part-filter: build failed — ${build.err}"
+assert build.ok else "hunk-part-filter: build failed — ${build.err_brief}"
 
 # Write the selftest output to a file and grep the file -- the GREEN line carries an apostrophe-free run, yet the
 # file round-trip matches the sibling HUNK witnesses' discipline.

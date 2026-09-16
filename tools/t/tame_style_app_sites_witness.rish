@@ -16,8 +16,8 @@
 #   rishi/bin/rishi run tools/t/tame_style_app_sites_witness.rish
 
 let control = run ["sh" "tools/fixtures/t/tame_style_app_sites_control.sh"]
-assert control.ok else "tame_style_app_sites: control failed -- ${control.out}${control.err}"
-assert control.out contains "fail=0" else "tame_style_app_sites: control reported a failure -- ${control.out}"
+assert control.ok else "tame_style_app_sites: control failed -- ${control.out_brief}${control.err_brief}"
+assert control.out contains "fail=0" else "tame_style_app_sites: control reported a failure -- ${control.out_brief}"
 
 let pass_lines = where (lines control.out) as ln: ln contains "pass="
 assert (length pass_lines) == 1 else "tame_style_app_sites: control summary line missing or duplicated"

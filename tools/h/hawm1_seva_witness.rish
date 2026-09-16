@@ -71,7 +71,7 @@ say "hawm1: pushed and made executable on-emulator"
 
 say "hawm1: running Glow's own verified code inside the real Android userland…"
 let device_run = run ["sh" "-c" "${adb} -s ${serial.out} shell /data/local/tmp/seva_b0_witness 2>&1"]
-assert device_run.ok else "on-device run failed — see ${device_run.err}"
+assert device_run.ok else "on-device run failed — see ${device_run.err_brief}"
 assert device_run.out contains "GREEN" else "on-device run not GREEN"
 say "${device_run.out}"
 

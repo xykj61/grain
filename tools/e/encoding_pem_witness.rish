@@ -30,7 +30,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/pem"
 
 let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/pem.rye -femit-bin=${bin}"]
-assert build.ok else "encoding-pem: build failed — ${build.err}"
+assert build.ok else "encoding-pem: build failed — ${build.err_brief}"
 
 let outfile = "encoding/bin/pem.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

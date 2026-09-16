@@ -33,10 +33,10 @@ let bin = "caravan/bin/drain_replay_queue"
 
 # The binary this witness runs is built here, to its own name (REDS %92, %133).
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/queue.rye -femit-bin=${bin}"]
-assert build.ok else "caravan-drain-replay: the queue build must stand -- ${build.err}"
+assert build.ok else "caravan-drain-replay: the queue build must stand -- ${build.err_brief}"
 
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/a $d/b && printf '%s' $d"]
-assert pen_mk.ok else "caravan-drain-replay: could not build the pen -- ${pen_mk.err}"
+assert pen_mk.ok else "caravan-drain-replay: could not build the pen -- ${pen_mk.err_brief}"
 let pen = trim pen_mk.out
 
 # Run one, from cleared ground, and the snapshot of what it left.
@@ -59,24 +59,24 @@ assert snap_two.ok else "caravan-drain-replay: run two left no region state to s
 
 # The claim: every byte of state identical across the two runs.
 let same = run ["sh" "tools/fixtures/c/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
-assert same.ok else "caravan-drain-replay: the two runs left different state -- ${same.out}"
-assert same.out contains "verdict=identical" else "caravan-drain-replay: the comparator must say identical -- ${same.out}"
-assert same.out contains "regions_compared=4" else "caravan-drain-replay: the two-client system leaves four region stores, and the comparison must see all four -- ${same.out}"
+assert same.ok else "caravan-drain-replay: the two runs left different state -- ${same.out_brief}"
+assert same.out contains "verdict=identical" else "caravan-drain-replay: the comparator must say identical -- ${same.out_brief}"
+assert same.out contains "regions_compared=4" else "caravan-drain-replay: the two-client system leaves four region stores, and the comparison must see all four -- ${same.out_brief}"
 
 # The refusal, proven from the failing side: one flipped byte in one store is caught by name.
 let tamper = run ["sh" "-c" "f=$(ls ${pen}/b | head -1) && printf 'X' | dd of=${pen}/b/$f bs=1 count=1 conv=notrunc 2>/dev/null && printf '%s' $f"]
 assert tamper.ok else "caravan-drain-replay: could not tamper the snapshot"
 let bitten = run ["sh" "tools/fixtures/c/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
 assert bitten.ok == false else "caravan-drain-replay: a flipped byte must refuse -- it read identical instead"
-assert bitten.out contains "verdict=differs" else "caravan-drain-replay: the refusal names its verdict -- ${bitten.out}"
-assert bitten.out contains "differs between the two runs" else "caravan-drain-replay: the refusal names the differing store -- ${bitten.out}"
+assert bitten.out contains "verdict=differs" else "caravan-drain-replay: the refusal names its verdict -- ${bitten.out_brief}"
+assert bitten.out contains "differs between the two runs" else "caravan-drain-replay: the refusal names the differing store -- ${bitten.out_brief}"
 
 # A missing state file is a difference before any byte is read.
 let drop = run ["sh" "-c" "f=$(ls ${pen}/b | head -1) && rm ${pen}/b/$f"]
 assert drop.ok else "caravan-drain-replay: could not drop a snapshot file"
 let unequal_sets = run ["sh" "tools/fixtures/c/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
 assert unequal_sets.ok == false else "caravan-drain-replay: a missing state file must refuse"
-assert unequal_sets.out contains "different state-file sets" else "caravan-drain-replay: the set refusal says why -- ${unequal_sets.out}"
+assert unequal_sets.out contains "different state-file sets" else "caravan-drain-replay: the set refusal says why -- ${unequal_sets.out_brief}"
 
 let pen_rm = run ["sh" "-c" "rm -rf ${pen} && rm -rf caravan/.regions caravan/.channels"]
 assert pen_rm.ok else "caravan-drain-replay: could not sweep the pen and the ground"

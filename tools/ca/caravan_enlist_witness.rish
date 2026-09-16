@@ -70,7 +70,7 @@ assert build.ok else "caravan enlist build failed"
 # one reader to one name, so two running at once contended for a single file and the
 # loser reddened a green tree. This one lands in caravan/bin/enlist_read.
 let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/enlist_read"]
-assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err_brief}"
 
 
 # Nothing new is declared: a run grows by taking a phase, and the document

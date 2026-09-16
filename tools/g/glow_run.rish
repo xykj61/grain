@@ -36,7 +36,7 @@ if args.len == 9 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_
 if args.len == 10 then let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" glow_path args[1] args[2] args[3] args[4] args[5] args[6] args[7] args[8] args[9]]
 assert (args.len != 11) else "usage: at most nine sample words after the .glow path"
 
-assert gate.ok else "glow_run gate failed: ${gate.err}${gate.out}"
+assert gate.ok else "glow_run gate failed: ${gate.err_brief}${gate.out_brief}"
 assert gate.out contains "EXIT:0" else "generator did not exit 0"
 
 say "GREEN: glow_run — ${glow_path} lowered, built, exit 0."

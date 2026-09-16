@@ -65,21 +65,21 @@ say "mantra-weave-model: Lens TAME -- one derived set, no list of copies kept be
 # above then proved digest for digest rather than by argument.
 say "mantra-weave-model: reading every tracked copy against the module..."
 let scan = run ["env" "DISAGREE_CEILING=1" "sh" "tools/fixtures/m/mantra_weave_model_scan.sh"]
-assert scan.ok else "mantra-weave-model: a copy of the weave model disagrees with the module beyond the ceiling, or cannot be read -- ${scan.out}"
-assert scan.out contains "verdict=ok" else "mantra-weave-model: the scan must reach its own verdict -- ${scan.out}"
-assert scan.out contains "disagreement_ceiling_held=yes" else "mantra-weave-model: a copy declares different fields than the module, past the one this rung knows about -- ${scan.out}"
-assert scan.out contains "unreadable=0" else "mantra-weave-model: a copy of the model cannot be read, so nothing is checking it -- ${scan.out}"
+assert scan.ok else "mantra-weave-model: a copy of the weave model disagrees with the module beyond the ceiling, or cannot be read -- ${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "mantra-weave-model: the scan must reach its own verdict -- ${scan.out_brief}"
+assert scan.out contains "disagreement_ceiling_held=yes" else "mantra-weave-model: a copy declares different fields than the module, past the one this rung knows about -- ${scan.out_brief}"
+assert scan.out contains "unreadable=0" else "mantra-weave-model: a copy of the model cannot be read, so nothing is checking it -- ${scan.out_brief}"
 
 # The module must actually be found. A scan that cannot read its own reference would otherwise
 # report a cheerful zero over an empty set -- REDS %489's fault, one room over.
-assert scan.out contains "module=mantra/src/weave.rye" else "mantra-weave-model: the module the copies are compared against is missing -- ${scan.out}"
+assert scan.out contains "module=mantra/src/weave.rye" else "mantra-weave-model: the module the copies are compared against is missing -- ${scan.out_brief}"
 
 say "mantra-weave-model: breaking the agreement in a throwaway pen, thirteen ways..."
 let control = run ["sh" "tools/fixtures/m/mantra_weave_model_control.sh"]
-assert control.ok else "mantra-weave-model: the control must complete -- a guard nobody has watched fail is a guard nobody has tested -- ${control.out}"
-assert control.out contains "control_verdict=ok" else "mantra-weave-model: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "failures=0" else "mantra-weave-model: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "behaviors=39" else "mantra-weave-model: the control ran a different number of behaviors than this rung names -- ${control.out}"
+assert control.ok else "mantra-weave-model: the control must complete -- a guard nobody has watched fail is a guard nobody has tested -- ${control.out_brief}"
+assert control.out contains "control_verdict=ok" else "mantra-weave-model: a planted case behaved wrongly -- ${control.out_brief}"
+assert control.out contains "failures=0" else "mantra-weave-model: a planted case behaved wrongly -- ${control.out_brief}"
+assert control.out contains "behaviors=39" else "mantra-weave-model: the control ran a different number of behaviors than this rung names -- ${control.out_brief}"
 
 # The pen proven innocent first, so every refusal below reads as the break speaking rather than
 # the pen. A scan patched to answer ok whatever it reads fails this control eight ways.

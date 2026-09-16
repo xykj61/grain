@@ -24,7 +24,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_and"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_and.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-part-and: build failed — ${build.err}"
+assert build.ok else "hunk-part-and: build failed — ${build.err_brief}"
 
 # Read the GREEN line from a file -- it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
 let outfile = "image/bin/part_and.out"

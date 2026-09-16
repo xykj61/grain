@@ -21,6 +21,12 @@
 # hand counts of this same class read 304 and then 51 because they stopped at the dollar sign;
 # following `let` to its value reads the tree as it is.
 #
+# IT READS LINES RATHER THAN CODE, so a file that merely SPELLS a build command is counted like a
+# file that runs one. That is not a false positive by this reading -- the literal path is there --
+# and it is worth knowing before writing a refusal message: a witness telling an operator how to
+# rebuild something raised this count by one on `20260915` until its message named the command in
+# words instead. Describe the build, or accept the site.
+#
 # WHAT IT CANNOT SAY. Whether a given site has ever actually collided, and at what rate. The window
 # is the time between link and exit, so a fast build-and-run is a smaller target than a slow one --
 # and every site is reachable, because this pier runs a detached roster pass beside laps that run

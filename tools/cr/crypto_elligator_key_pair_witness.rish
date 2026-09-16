@@ -33,7 +33,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/elligator_key_pair"
 
 let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/elligator_key_pair.rye -femit-bin=${bin}"]
-assert build.ok else "crypto-elligator-key-pair: build failed — ${build.err}"
+assert build.ok else "crypto-elligator-key-pair: build failed — ${build.err_brief}"
 
 let outfile = "crypto/bin/elligator_key_pair.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

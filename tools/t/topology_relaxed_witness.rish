@@ -40,9 +40,9 @@ say "topology-relaxed: Lens TAME -- the rule read as well as run; bound the cap,
 say "topology-relaxed: the scan builds both families, walks them, and routes every vertex..."
 let scan = run ["sh" "tools/fixtures/t/topology_relaxed_scan.sh"]
 # invariant: the scan stands green before any reading of it is trusted.
-assert scan.ok else "topology-relaxed: the scan refused --\n${scan.out}"
-assert scan.out contains "verdict=ok" else "topology-relaxed: the scan did not reach its own green --\n${scan.out}"
-assert scan.out contains "refusals=0" else "topology-relaxed: the scan named a refusal --\n${scan.out}"
+assert scan.ok else "topology-relaxed: the scan refused --\n${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "topology-relaxed: the scan did not reach its own green --\n${scan.out_brief}"
+assert scan.out contains "refusals=0" else "topology-relaxed: the scan named a refusal --\n${scan.out_brief}"
 assert scan.out contains "legs=all" else "topology-relaxed: a reduced run must never be read as a full one"
 assert scan.out contains "sizes=default" else "topology-relaxed: a reduced size list must never be read as the full thirteen"
 
@@ -77,7 +77,7 @@ assert scan.out contains "nkstar n=8 k=5 points=6720 degree=7 diameter=8 rule=ch
 assert scan.out contains "nkstar n=10 k=4 points=5040 degree=9 diameter=7 rule=chain rule_diameter=7 stretch=0 optimal=5040/5040" else "topology-relaxed: S(10,4) at 5,040 points moved"
 # invariant: the whole finding in one line -- and the three absences printed as counted zeros,
 # since a witness can bind a line that says zero and cannot bind a line that is missing.
-assert scan.out contains "summary star_readings=39 arrangement_readings=4 unrouted_total=0 transit_checked=13 transit_disagreements=0 suboptimal_sizes naive=11 door=2 chain=0 hole=0" else "topology-relaxed: the summary of thirteen sizes by three rules moved --\n${scan.out}"
+assert scan.out contains "summary star_readings=39 arrangement_readings=4 unrouted_total=0 transit_checked=13 transit_disagreements=0 suboptimal_sizes naive=11 door=2 chain=0 hole=0" else "topology-relaxed: the summary of thirteen sizes by three rules moved --\n${scan.out_brief}"
 
 say "topology-relaxed: the density the relaxation buys where the factorial offers nothing..."
 # invariant: the star family offers no size in the window, and the relaxed family offers eight.
@@ -108,7 +108,7 @@ say "GREEN: topology-relaxed -- both doors open, and the (n,k)-star keeps the fr
 say "topology-relaxed: the control plants each fault and lifts it again..."
 let control = run ["sh" "tools/fixtures/t/topology_relaxed_control.sh"]
 # invariant: every refusal this witness rests on is shown from the failing side too.
-assert control.ok else "topology-relaxed: the control refused --\n${control.out}"
-assert control.out contains "behaviors=44 passed=44 failed=0" else "topology-relaxed: the control did not prove all 44 behaviors --\n${control.out}"
+assert control.ok else "topology-relaxed: the control refused --\n${control.out_brief}"
+assert control.out contains "behaviors=44 passed=44 failed=0" else "topology-relaxed: the control did not prove all 44 behaviors --\n${control.out_brief}"
 assert control.out contains "pen copy reads exactly what the tree reads" else "topology-relaxed: the pen was not proven innocent"
 say "GREEN: topology-relaxed -- 44 behaviors, every refusal bitten and every plant proven to land and every reading asserted."

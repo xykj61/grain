@@ -73,8 +73,8 @@ say "convergence-tree-prove: Lens TAME -- safety first: the pen is a throwaway c
 
 say "convergence-tree-prove: the control -- forty-two behaviors, including an operator whose whole output git ignores..."
 let ctl = run ["sh" "tools/fixtures/c/convergence_tree_prove_control.sh"]
-assert ctl.ok else "convergence-tree-prove: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=42 fail=0" else "convergence-tree-prove: the control did not prove forty-two behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "convergence-tree-prove: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=42 fail=0" else "convergence-tree-prove: the control did not prove forty-two behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 # invariant: the control exercises a mode-only divergence, both refusal shapes, and the perturb
 # pair -- each of which a passing-direction-only proof would miss. A refusal proven only in the
@@ -86,8 +86,8 @@ assert ctl.out contains "coverage: mode divergence, the perturb pair, a no-op pe
 # reach. On a tree whose headline has been perturbed it has real work, and it converges.
 say "convergence-tree-prove: the headline writer that runs on every commit, on a tree with work waiting..."
 let hw = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed 's/^..Rows: [0-9][0-9]*/**Rows: 1/' construction/REDS.md > .perturbed && cat .perturbed > construction/REDS.md && rm -f .perturbed" "tools/fixtures/r/reds_ledger_headline_write.sh" "write"]
-assert hw.ok else "convergence-tree-prove: the headline writer did not converge --\n${hw.out}\n${hw.err}"
-assert hw.out contains "verdict=converges" else "convergence-tree-prove: the headline writer read something other than converges --\n${hw.out}"
+assert hw.ok else "convergence-tree-prove: the headline writer did not converge --\n${hw.out_brief}\n${hw.err_brief}"
+assert hw.out contains "verdict=converges" else "convergence-tree-prove: the headline writer read something other than converges --\n${hw.out_brief}"
 
 # THE TWO PAGES EVERY COMMIT REGENERATES THAT NO PROVER COULD REACH. `tools/hooks/pre-commit`
 # rewrites three pages on every commit this tree makes, and the leg above proves ONE of them. The
@@ -97,21 +97,21 @@ assert hw.out contains "verdict=converges" else "convergence-tree-prove: the hea
 # these are the subjects it was owed.
 say "convergence-tree-prove: the front door's metrics block, a Rishi operator, on a perturbed tree..."
 let rm2 = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed 's/^| Reading | Now |/| Reading | Then |/' README.md > .perturbed && cat .perturbed > README.md && rm -f .perturbed" "tools/r/readme_metrics.rish" "write"]
-assert rm2.ok else "convergence-tree-prove: the metrics writer did not converge --\n${rm2.out}\n${rm2.err}"
-assert rm2.out contains "verdict=converges" else "convergence-tree-prove: the metrics writer read something other than converges --\n${rm2.out}"
+assert rm2.ok else "convergence-tree-prove: the metrics writer did not converge --\n${rm2.out_brief}\n${rm2.err_brief}"
+assert rm2.out contains "verdict=converges" else "convergence-tree-prove: the metrics writer read something other than converges --\n${rm2.out_brief}"
 
 say "convergence-tree-prove: the crushed library index, the second Rishi operator..."
 let gl = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed 's/^# The Libraries/# The Library/' docs-geode/libraries/README.md > .perturbed && cat .perturbed > docs-geode/libraries/README.md && rm -f .perturbed" "tools/g/geode_libraries.rish" "write"]
-assert gl.ok else "convergence-tree-prove: the library index writer did not converge --\n${gl.out}\n${gl.err}"
-assert gl.out contains "verdict=converges" else "convergence-tree-prove: the library index writer read something other than converges --\n${gl.out}"
+assert gl.ok else "convergence-tree-prove: the library index writer did not converge --\n${gl.out_brief}\n${gl.err_brief}"
+assert gl.out contains "verdict=converges" else "convergence-tree-prove: the library index writer read something other than converges --\n${gl.out_brief}"
 
 # invariant: the prover answers for a two-path writer neither prover's usage names, and the tree
 # it leaves after one run is the tree it leaves after two. `tools/hooks/pre-commit` runs this
 # splice on every commit.
 say "convergence-tree-prove: the README metrics splice, which takes two paths and no flag..."
 let sp = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "sed -n '/^<!-- metrics:begin/,/^<!-- metrics:end -->/p' README.md > .metrics-block && sed '/^<!-- metrics:begin/{n;d;}' README.md > .p && cat .p > README.md && rm -f .p" "tools/fixtures/r/readme_metrics_splice.sh" "README.md" ".metrics-block"]
-assert sp.ok else "convergence-tree-prove: the metrics splice did not converge --\n${sp.out}\n${sp.err}"
-assert sp.out contains "verdict=converges" else "convergence-tree-prove: the metrics splice read something other than converges --\n${sp.out}"
+assert sp.ok else "convergence-tree-prove: the metrics splice did not converge --\n${sp.out_brief}\n${sp.err_brief}"
+assert sp.out contains "verdict=converges" else "convergence-tree-prove: the metrics splice read something other than converges --\n${sp.out_brief}"
 
 # THE FIRST SUBJECT THE COMMITTED TREE ALREADY HAS WORK FOR, and it is the one that makes the
 # perturb leg above legible by contrast. Every subject before this one runs in `tools/hooks/pre-commit`,
@@ -138,8 +138,8 @@ assert sp.out contains "verdict=converges" else "convergence-tree-prove: the met
 # reading as a path that was run -- is that guard's lane rather than this one's.
 say "convergence-tree-prove: the Rishi spoken-ASCII sweep, on a file whose held lines it must re-derive..."
 let rs = run ["sh" "tools/c/convergence_tree_prove.sh" "tools/fixtures/r/rish_spoken_ascii_convert.sh" "--apply" "tools/m/mycelium_chorus_knot_witness.rish"]
-assert rs.ok else "convergence-tree-prove: the Rishi spoken sweep did not converge --\n${rs.out}\n${rs.err}"
-assert rs.out contains "verdict=converges" else "convergence-tree-prove: the Rishi spoken sweep read something other than converges --\n${rs.out}"
+assert rs.ok else "convergence-tree-prove: the Rishi spoken sweep did not converge --\n${rs.out_brief}\n${rs.err_brief}"
+assert rs.out contains "verdict=converges" else "convergence-tree-prove: the Rishi spoken sweep read something other than converges --\n${rs.out_brief}"
 
 
 # THE SIXTH SUBJECT IS THE FIRST REAL TOOL TO EARN `write_once`, and that verdict is the reading the
@@ -162,6 +162,6 @@ assert rs.out contains "verdict=converges" else "convergence-tree-prove: the Ris
 # single-quoted body need no escape at all, so there is nothing for a second parser to double.
 say "convergence-tree-prove: the REDS fold, a one-way move that must refuse its own output..."
 let rf = run ["sh" "tools/c/convergence_tree_prove.sh" "--perturb" "echo '' >> construction/REDS.md && echo '**REDS %999001 (20260101.000001) -- a pen row planted so the fold has work.** *What went wrong:* nothing; this row lives only inside a throwaway checkout. *What caught it:* the convergence witness. *What it taught:* a fold asked twice moves nothing the second time. **BOOKED.**' >> construction/REDS.md && echo '# REDS -- the pen fold, rows 999001' > construction/archive/REDS-pen-convergence-rows-999001.md && echo 'A shelf the convergence witness writes inside a throwaway pen.' >> construction/archive/REDS-pen-convergence-rows-999001.md" "tools/fixtures/r/reds_fold.sh" "construction/archive/REDS-pen-convergence-rows-999001.md" "999001" "--why" "a fold asked twice moves nothing the second time"]
-assert rf.ok else "convergence-tree-prove: the REDS fold did not converge --\n${rf.out}\n${rf.err}"
-assert rf.out contains "verdict=write_once" else "convergence-tree-prove: the REDS fold read something other than write_once --\n${rf.out}"
+assert rf.ok else "convergence-tree-prove: the REDS fold did not converge --\n${rf.out_brief}\n${rf.err_brief}"
+assert rf.out contains "verdict=write_once" else "convergence-tree-prove: the REDS fold read something other than write_once --\n${rf.out_brief}"
 say "GREEN: convergence-tree-prove -- six subjects run twice on a pen checkout, in shell and in Rishi alike, one of them taking two paths rather than a flag and one a one-way move that converges by refusing its own output, with mode divergence caught, both refusals named, an unperturbed tree refused as proof, a write git ignores refused rather than read as inert, all three pages the pre-commit hook regenerates proven to converge, and a whole-tree sweep proven on the committed tree itself, holding its coupled sayings back on both runs."

@@ -27,7 +27,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "encoding/bin/base58check"
 
 let build = run ["sh" "-c" "mkdir -p encoding/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh encoding/base58check.rye -femit-bin=${bin}"]
-assert build.ok else "encoding-base58check: build failed — ${build.err}"
+assert build.ok else "encoding-base58check: build failed — ${build.err_brief}"
 
 let outfile = "encoding/bin/base58check.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

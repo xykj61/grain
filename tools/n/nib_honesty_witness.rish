@@ -44,7 +44,7 @@ say "nib-honesty: Style Radiant -- two voices, two laws. The nib is the landed e
 say "nib-honesty: Lens TAME -- measurement beats memory; reachability is computed against the object store and the remotes, the Git nib is read BY NAME rather than by first match, and a planted floating-nib control proves the refusal on metal."
 
 let green = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh"]
-assert green.ok else "nib-honesty: the living sweep must exit 0 -- ${green.out}"
+assert green.ok else "nib-honesty: the living sweep must exit 0 -- ${green.out_brief}"
 assert green.out contains "card=construction/ITINERARY.md" else "nib-honesty: want the tracked living card, not the untracked hardlink"
 assert green.out contains "gone=0" else "nib-honesty: an advertised hash resolves nowhere -- a floating claim, refused by name. Three readings, not two: on a fresh clone a local-only checkpoint; on the pier that wrote the card a broken walk-back; and on any tree a WITHDRAWN commit, whose hash resolves only where it was written and whose tag name is what travels. Read the scan advice line"
 assert green.out contains "git_nib=" else "nib-honesty: want the Git nib read by name from its own field"

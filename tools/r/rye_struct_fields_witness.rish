@@ -30,7 +30,7 @@ say "rye-struct-fields: Lens TAME -- three named refusals, each proven from both
 
 say "rye-struct-fields: the reader answers the four structures the limbs stand over..."
 let line = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Line"]
-assert line.ok else "rye-struct-fields: the reader refused on Line -- ${line.out}"
+assert line.ok else "rye-struct-fields: the reader refused on Line -- ${line.out_brief}"
 let line_fields = trim line.out
 # Line took `site` on 20260906.212206: a position counter runs inside one weave, so `pos`
 # alone names a line there and nowhere else, and the pair is what lets two branches merge.
@@ -41,7 +41,7 @@ let line_fields = trim line.out
 assert line_fields == "text gen pos site run" else "rye-struct-fields: Line no longer reads text gen pos site run -- ${line_fields}"
 
 let weave = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Weave"]
-assert weave.ok else "rye-struct-fields: the reader refused on Weave -- ${weave.out}"
+assert weave.ok else "rye-struct-fields: the reader refused on Weave -- ${weave.out_brief}"
 let weave_fields = trim weave.out
 # Weave took `next_run` in the same round Line took `run`, and this pin read `lines next_pos`
 # for a lap while it did -- not because the pin was stale, yet because the reader stopped at
@@ -50,23 +50,23 @@ let weave_fields = trim weave.out
 assert weave_fields == "lines next_pos next_run" else "rye-struct-fields: Weave no longer reads lines next_pos next_run -- ${weave_fields}"
 
 let diff = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Diff"]
-assert diff.ok else "rye-struct-fields: the reader refused on Diff -- ${diff.out}"
+assert diff.ok else "rye-struct-fields: the reader refused on Diff -- ${diff.out_brief}"
 let diff_fields = trim diff.out
 # Diff took `site` first on the same lap -- the hand that authored the edit, stamped on every
 # insert. It sits on the edit rather than on the weave, so a merge has no site to reconcile.
 assert diff_fields == "site inserts deletes" else "rye-struct-fields: Diff no longer reads site inserts deletes -- ${diff_fields}"
 
 let store = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/store.rye" "Store"]
-assert store.ok else "rye-struct-fields: the reader refused on Store -- ${store.out}"
+assert store.ok else "rye-struct-fields: the reader refused on Store -- ${store.out_brief}"
 let store_fields = trim store.out
 assert store_fields == "root mantra_dir blobs_dir" else "rye-struct-fields: Store no longer reads root mantra_dir blobs_dir -- ${store_fields}"
 
 say "rye-struct-fields: breaking the reader in a throwaway pen, twenty-five ways..."
 let control = run ["sh" "tools/fixtures/r/rye_struct_fields_control.sh"]
-assert control.ok else "rye-struct-fields: the control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${control.out}"
-assert control.out contains "verdict=ok" else "rye-struct-fields: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "failed=0" else "rye-struct-fields: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "behaviors=25" else "rye-struct-fields: the control ran a different number of behaviors than this rung names -- ${control.out}"
+assert control.ok else "rye-struct-fields: the control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${control.out_brief}"
+assert control.out contains "verdict=ok" else "rye-struct-fields: a planted case behaved wrongly -- ${control.out_brief}"
+assert control.out contains "failed=0" else "rye-struct-fields: a planted case behaved wrongly -- ${control.out_brief}"
+assert control.out contains "behaviors=25" else "rye-struct-fields: the control ran a different number of behaviors than this rung names -- ${control.out_brief}"
 
 # The pen proven innocent first, so every refusal below reads as the break speaking.
 assert control.out contains "ok    clean/count -- 3" else "rye-struct-fields: the clean pen must read its own three fields"

@@ -19,6 +19,6 @@ assert barket.out contains "amount-shape" else "barket lower missing living amou
 
 # Living witnesses do not teach sample=-mold as the primary path (study pins excepted).
 let living_mold = run ["sh" "-c" "rg -n 'sample=.*-mold' glow/lower_shop_gate_witness.rye glow/lower_shop_nest_witness.rye 2>/dev/null | head -5"]
-assert living_mold.out == "" else "living lower witnesses still sample=-mold: ${living_mold.out}"
+assert living_mold.out == "" else "living lower witnesses still sample=-mold: ${living_mold.out_brief}"
 
 say "GREEN: STOA257 — shape-only living surface; study -mold alias held; HAWM 1A held."

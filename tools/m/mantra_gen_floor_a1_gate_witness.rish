@@ -9,19 +9,19 @@ let zig = "vendor/zig-toolchain/zig"
 let desk = "src/gate/gate-mantra-gen-floor-u32.glow"
 
 let alive = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "1"]
-assert alive.ok else "a1-mantra: alive side failed -- ${alive.out} ${alive.err}"
+assert alive.ok else "a1-mantra: alive side failed -- ${alive.out_brief} ${alive.err_brief}"
 assert alive.out contains "EXIT:0" else "a1-mantra: alive did not exit 0"
 assert (lines alive.out) contains "1" else "a1-mantra: alive did not speak 1"
 
 let reserved = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0"]
-assert reserved.ok else "a1-mantra: reserved side failed -- ${reserved.out} ${reserved.err}"
+assert reserved.ok else "a1-mantra: reserved side failed -- ${reserved.out_brief} ${reserved.err_brief}"
 assert reserved.out contains "EXIT:0" else "a1-mantra: reserved did not exit 0"
 assert (lines reserved.out) contains "0" else "a1-mantra: reserved did not speak 0"
 
 let elder = run ["sh" "-c" "grep -q 'gen >= 1' mantra/src/weave.rye"]
-assert elder.ok else "a1-mantra: the invariant left weave.rye -- ${elder.out} ${elder.err}"
+assert elder.ok else "a1-mantra: the invariant left weave.rye -- ${elder.out_brief} ${elder.err_brief}"
 
 let walls = run ["sh" "-c" "test -f src/gate/gate-tally-garden-bound-u32.glow -a -f src/gate/gate-caravan-dependents-bound-u32.glow -a -f src/gate/gate-aurora-wire-bound-u32.glow"]
-assert walls.ok else "a1-mantra: a family wall is missing -- ${walls.out} ${walls.err}"
+assert walls.ok else "a1-mantra: a family wall is missing -- ${walls.out_brief} ${walls.err_brief}"
 
 say "GREEN: a1 mantra gen floor -- decides on both sides; four families now speak."

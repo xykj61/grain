@@ -17,7 +17,7 @@
 # first" lines above are documentation, and a comment builds nothing (REDS %334).
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p basin/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh basin/basin.rye -femit-bin=basin/bin/basin"]
-assert build.ok else "basin: build failed -- ${build.err}"
+assert build.ok else "basin: build failed -- ${build.err_brief}"
 
 # The module's own selftest -- empty, fill, saturate, wrap, overflow.
 let st = run ["basin/bin/basin" "selftest"]

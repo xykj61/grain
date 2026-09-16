@@ -32,7 +32,7 @@ say "seal-gate: Lens TAME -- safety first: the candidate roster is bounded, all 
 
 let scan = run ["sh" "tools/fixtures/p/pond_seal_gate_scan.sh"]
 say scan.out
-assert scan.ok else "seal-gate: the scan must complete -- ${scan.out}"
+assert scan.ok else "seal-gate: the scan must complete -- ${scan.out_brief}"
 assert scan.out contains "ungated_pond=0" else "seal-gate: a launcher admitting pond must reach the master seal with --require"
 assert scan.out contains "unrefused_seal=0" else "seal-gate: a seal call whose exit code nothing reads is a wall with no needle"
 assert scan.out contains "unnamed_callers=0" else "seal-gate: the seal's own header must name every launcher that calls it"
@@ -41,7 +41,7 @@ assert scan.out contains "verdict=green" else "seal-gate: the gate roster must r
 
 let control = run ["sh" "tools/fixtures/p/pond_seal_gate_control.sh"]
 say control.out
-assert control.ok else "seal-gate: the control must complete -- ${control.out}"
+assert control.ok else "seal-gate: the control must complete -- ${control.out_brief}"
 assert control.out contains "control_fail=0" else "seal-gate: every planted behavior must hold"
 assert control.out contains "control_verdict=ok" else "seal-gate: the control must report ok"
 assert control.out contains "ungated_freed" else "seal-gate: each refusal must be proven from both sides, plant and removal"

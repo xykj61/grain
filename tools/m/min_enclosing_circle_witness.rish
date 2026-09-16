@@ -26,10 +26,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/min_enclosing_circle"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/min_enclosing_circle.rye -femit-bin=${bin}"]
-assert build.ok else "min_enclosing_circle: build failed -- ${build.err}"
+assert build.ok else "min_enclosing_circle: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "min_enclosing_circle: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "min_enclosing_circle: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "min_enclosing_circle: ${out}"

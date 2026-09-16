@@ -34,7 +34,7 @@ assert selftest.out contains "content-mismatched signature refused (BadSignature
 # SECURITY.md was edited, and no roster runs this guard to say so.
 let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
 assert sec.ok else "gism-j6r1: could not measure SECURITY.md"
-assert selftest.out contains "red %73 — real doc ${sec.out} B > 512 B resin refuses ContentTooLarge" else "gism-j6r1: Yield red %73 proof missing"
+assert selftest.out contains "red %73 — real doc ${sec.out_brief} B > 512 B resin refuses ContentTooLarge" else "gism-j6r1: Yield red %73 proof missing"
 
 # The demo keyed catalog over doc_planet/doc_star must still be GREEN -- provenance_real
 # composes its public API only, retiring nothing.

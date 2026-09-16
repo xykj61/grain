@@ -15,7 +15,7 @@
 #   rishi/bin/rishi run tools/s/stranger_lap_bound_negative_witness.rish
 
 let walk = run ["env" "STRANGER_LAP_MODE=warm" "sh" "tools/s/stranger_lap_worker.sh"]
-assert walk.ok else "stranger lap warm walk failed: ${walk.err}${walk.out}"
+assert walk.ok else "stranger lap warm walk failed: ${walk.err_brief}${walk.out_brief}"
 assert walk.out contains "STRANGER_MODE=warm" else "stranger lap must print mode=warm"
 assert walk.out contains "STRANGER_CONFIG=local-path depth=1 toolchain=prewarmed" else "stranger lap missing warm config line"
 assert walk.out contains "STRANGER_BOUND_OK=1" else "stranger lap bound comparator did not OK"

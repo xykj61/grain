@@ -21,32 +21,32 @@ say "topology-floor: Lens TAME -- every refusal planted, then lifted."
 say "topology-floor: the census reports a floor for every connected leg..."
 let census = run ["sh" "tools/fixtures/t/topology_graph_census.sh"]
 # invariant: the census stands green before any reading of it is trusted.
-assert census.ok else "topology-floor: the census refused --\n${census.out}"
+assert census.ok else "topology-floor: the census refused --\n${census.out_brief}"
 # invariant: four legs are connected and each names its own floor beside its own diameter.
-assert census.out contains "point_compass_floor degree_max=26 moore_floor=3 walk_diameter=5 over_floor=1.67" else "topology-floor: the compass ladder's floor moved --\n${census.out}"
-assert census.out contains "torus_compass_floor degree_max=6 moore_floor=4 walk_diameter=14 over_floor=3.50" else "topology-floor: the compass torus's floor moved --\n${census.out}"
+assert census.out contains "point_compass_floor degree_max=26 moore_floor=3 walk_diameter=5 over_floor=1.67" else "topology-floor: the compass ladder's floor moved --\n${census.out_brief}"
+assert census.out contains "torus_compass_floor degree_max=6 moore_floor=4 walk_diameter=14 over_floor=3.50" else "topology-floor: the compass torus's floor moved --\n${census.out_brief}"
 
 say "topology-floor: and a split graph is refused rather than given a ratio..."
 # invariant: both sponsor legs are disconnected, so neither is handed a floor it cannot earn.
-assert census.out contains "sponsor_compass_floor not_connected" else "topology-floor: a split graph was given a diameter floor --\n${census.out}"
-assert census.out contains "sponsor_council_floor not_connected" else "topology-floor: a split graph was given a diameter floor --\n${census.out}"
+assert census.out contains "sponsor_compass_floor not_connected" else "topology-floor: a split graph was given a diameter floor --\n${census.out_brief}"
+assert census.out contains "sponsor_council_floor not_connected" else "topology-floor: a split graph was given a diameter floor --\n${census.out_brief}"
 
 say "topology-floor: the arithmetic holds against four graphs that attain the bound..."
 # invariant: an attainer sits exactly ON the bound, so it catches the off-by-one a bracketing
 # case cannot see. All four report, or the formula has moved.
-assert census.out contains "moore_attainer complete_K10 floor=1 ok" else "topology-floor: the complete-graph attainer moved --\n${census.out}"
-assert census.out contains "moore_attainer petersen floor=2 ok" else "topology-floor: the Petersen attainer moved --\n${census.out}"
-assert census.out contains "moore_attainer hoffman_singleton floor=2 ok" else "topology-floor: the Hoffman-Singleton attainer moved --\n${census.out}"
-assert census.out contains "moore_attainer cycle_C15 floor=7 ok" else "topology-floor: the degree-two branch moved --\n${census.out}"
+assert census.out contains "moore_attainer complete_K10 floor=1 ok" else "topology-floor: the complete-graph attainer moved --\n${census.out_brief}"
+assert census.out contains "moore_attainer petersen floor=2 ok" else "topology-floor: the Petersen attainer moved --\n${census.out_brief}"
+assert census.out contains "moore_attainer hoffman_singleton floor=2 ok" else "topology-floor: the Hoffman-Singleton attainer moved --\n${census.out_brief}"
+assert census.out contains "moore_attainer cycle_C15 floor=7 ok" else "topology-floor: the degree-two branch moved --\n${census.out_brief}"
 
 say "topology-floor: and the reading can be broken, five ways, each lifted after..."
 let control = run ["sh" "tools/fixtures/t/topology_floor_control.sh"]
 # invariant: a refusal proven only in the passing direction cannot be told from a bypass.
-assert control.ok else "topology-floor: the control refused --\n${control.out}"
-assert control.out contains "verdict=ok" else "topology-floor: the control did not reach its own green --\n${control.out}"
+assert control.ok else "topology-floor: the control refused --\n${control.out_brief}"
+assert control.out contains "verdict=ok" else "topology-floor: the control did not reach its own green --\n${control.out_brief}"
 # invariant: the pen is innocent, so every plant below reads as the break speaking.
-assert control.out contains "clean_verdict ok ok" else "topology-floor: the unbroken pen did not pass --\n${control.out}"
+assert control.out contains "clean_verdict ok ok" else "topology-floor: the unbroken pen did not pass --\n${control.out_brief}"
 # invariant: the legs earn their keep -- broken with the legs gone, the census reads green.
-assert control.out contains "legless_verdict ok ok" else "topology-floor: the attainer legs are not what catches the break --\n${control.out}"
+assert control.out contains "legless_verdict ok ok" else "topology-floor: the attainer legs are not what catches the break --\n${control.out_brief}"
 
 say "topology-floor: GREEN -- the floor reads, the split graph is refused, and five plants bite."

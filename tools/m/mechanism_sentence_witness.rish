@@ -35,7 +35,7 @@ say "mechanism-sentence: Style Radiant -- the metaphor keeps its place and earns
 say "mechanism-sentence: Lens TAME -- measurement beats memory; a feeling about the prose becomes a number per commit, the ratchet only tightens, and a body written purely in image is refused on metal."
 
 let green = run ["sh" "tools/fixtures/m/mechanism_sentence_scan.sh"]
-assert green.ok else "mechanism-sentence: the living scan must exit 0 -- ${green.out}"
+assert green.ok else "mechanism-sentence: the living scan must exit 0 -- ${green.out_brief}"
 assert green.out contains "window=40" else "mechanism-sentence: want the trailing window measured at forty commits"
 assert green.out contains "ceiling=21" else "mechanism-sentence: want the ceiling named, so a reader sees what the ratchet is holding"
 assert green.out contains "vocabulary=17" else "mechanism-sentence: the mechanism vocabulary changed size -- say why in the same commit"
@@ -46,11 +46,11 @@ assert (red.ok == false) else "mechanism-sentence: prove-red must refuse, not me
 assert red.out contains "RED_metaphor_only_caught" else "mechanism-sentence: prove-red want the metaphor-only control caught"
 
 let agree = run ["sh" "tools/fixtures/m/mechanism_words_agree.sh"]
-assert agree.ok else "mechanism-sentence: the wall and the meter disagree on the vocabulary -- ${agree.out}"
+assert agree.ok else "mechanism-sentence: the wall and the meter disagree on the vocabulary -- ${agree.out_brief}"
 assert agree.out contains "vocabulary_agrees=1" else "mechanism-sentence: want the hook and the scan reading one word list"
 
 let wall = run ["sh" "tools/fixtures/m/mechanism_wall_scan.sh"]
-assert wall.ok else "mechanism-sentence: the wall scan failed to run -- ${wall.out}"
+assert wall.ok else "mechanism-sentence: the wall scan failed to run -- ${wall.out_brief}"
 assert wall.out contains "WALL_REFUSES_METAPHOR 1" else "mechanism-sentence: the hook let a body written purely in image through"
 assert wall.out contains "WALL_WELCOMES_MECHANISM 1" else "mechanism-sentence: the hook refused a body that names its function and its file"
 assert wall.out contains "WALL_SPARES_SHORT 1" else "mechanism-sentence: the hook nagged an honestly-short body, which teaches nothing"

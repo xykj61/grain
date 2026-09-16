@@ -24,15 +24,15 @@ say "grain-strand-count: Lens TAME -- bounded corpus, both refusals proven, the 
 
 say "grain-strand-count: the control -- twenty behaviors on a planted page in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/g/grain_strand_count_control.sh"]
-assert ctl.ok else "grain-strand-count: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=20 fail=0" else "grain-strand-count: the control did not prove twenty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "grain-strand-count: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=20 fail=0" else "grain-strand-count: the control did not prove twenty behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 say "grain-strand-count: the living tree's own count, derived from the canonical page..."
 let scan = run ["sh" "tools/fixtures/g/grain_strand_count_scan.sh"]
 # invariant: a refusal reports BOTH streams. The scan writes its reason to stderr, and a witness
 # reporting `out` alone would write an empty reason into the run card a reader opens to learn why a
 # guard stopped -- the half REDS %537's repair left behind one room over.
-assert scan.ok else "grain-strand-count: the scan refused --\n${scan.out}\n${scan.err}"
+assert scan.ok else "grain-strand-count: the scan refused --\n${scan.out_brief}\n${scan.err_brief}"
 # invariant: every reading is reported, empty or full. A census printing only its fault leaves a
 # reader unable to tell a healthy tree from one the scan could not see.
 assert scan.out contains "strands_elder=" else "grain-strand-count: the elder count went unreported"

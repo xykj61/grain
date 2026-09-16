@@ -74,8 +74,8 @@ say "room-enumeration: Lens TAME -- safety first; the population is opt-in, so t
 
 let green = run ["sh" "tools/fixtures/r/room_enumeration_scan.sh"]
 say green.out
-assert green.ok else "room-enumeration: the living measure must exit 0 -- ${green.err}${green.out}"
-assert green.out contains "verdict=ok" else "room-enumeration: want verdict ok -- ${green.out}"
+assert green.ok else "room-enumeration: the living measure must exit 0 -- ${green.err_brief}${green.out_brief}"
+assert green.out contains "verdict=ok" else "room-enumeration: want verdict ok -- ${green.out_brief}"
 # The two memberships are printed apart on purpose: a page can leave one by an edit made somewhere
 # else, and a single total would swallow that where two numbers make it legible in the census.
 assert green.out contains "pages_neighbors=" else "room-enumeration: the neighbors membership must be printed"
@@ -83,22 +83,22 @@ assert green.out contains "pages_members=" else "room-enumeration: the members m
 
 # THE WALLS, at zero. A room the list misses is a reader told the shelf is smaller than it is; a
 # name with no room is a reader sent to a door that is not there.
-assert green.out contains "missing=0" else "room-enumeration: every room beside the page is named, or the list retires -- ${green.out}"
-assert green.out contains "phantom=0" else "room-enumeration: every name in the list has a room -- ${green.out}"
-assert green.out contains "no_target=0" else "room-enumeration: a declared key carries a link to its parent room -- ${green.out}"
-assert green.out contains "absent=0" else "room-enumeration: a linked parent room is a directory in this tree -- ${green.out}"
-assert green.out contains "unreadable=0" else "room-enumeration: a room name this reading cannot compare is named rather than split -- ${green.out}"
+assert green.out contains "missing=0" else "room-enumeration: every room beside the page is named, or the list retires -- ${green.out_brief}"
+assert green.out contains "phantom=0" else "room-enumeration: every name in the list has a room -- ${green.out_brief}"
+assert green.out contains "no_target=0" else "room-enumeration: a declared key carries a link to its parent room -- ${green.out_brief}"
+assert green.out contains "absent=0" else "room-enumeration: a linked parent room is a directory in this tree -- ${green.out_brief}"
+assert green.out contains "unreadable=0" else "room-enumeration: a room name this reading cannot compare is named rather than split -- ${green.out_brief}"
 
 # THE READING IS NOT VACUOUS ON THIS TREE. A population that came back empty would print four zeros
 # and read exactly like a tree whose every list is true -- the confident wrong zero of REDS %240.
 # The scan refuses that by name, and this leg holds the living population above it.
-assert (green.out contains "pages_declaring=0") == false else "room-enumeration: a tree declaring no enumeration is a reading that broke -- ${green.out}"
+assert (green.out contains "pages_declaring=0") == false else "room-enumeration: a tree declaring no enumeration is a reading that broke -- ${green.out_brief}"
 
 # THE READING ITSELF, proven on planted repositories rather than trusted. Each leg is named here as
 # well as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
 let control = run ["sh" "tools/fixtures/r/room_enumeration_control.sh"]
 say control.out
-assert control.ok else "room-enumeration: the control must exit 0 -- ${control.err}${control.out}"
+assert control.ok else "room-enumeration: the control must exit 0 -- ${control.err_brief}${control.out_brief}"
 assert control.out contains "control_verdict=ok" else "room-enumeration: want the control green"
 assert control.out contains "fail=0" else "room-enumeration: the control must carry no red leg"
 assert control.out contains "leg healthy_verdict ok" else "room-enumeration: the true-list leg is missing"

@@ -38,7 +38,7 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # roster from eight checkouts and share one /tmp, so a constant home is one directory on
 # all eight and a peer's pour lands inside this reading.
 let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pour_atomic.XXXXXX"]
-assert pen.ok else "pour_atomic: pen must open -- ${pen.err}"
+assert pen.ok else "pour_atomic: pen must open -- ${pen.err_brief}"
 let home = trim pen.out
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries
@@ -57,7 +57,7 @@ assert build_seal.ok else "pour_atomic: vessel-seal build failed -- read the lin
 # Each plant pours into its OWN directory, because a vessel's resins live beside it and
 # two vessels in one home would share one resins dock.
 let mk = run ["sh" "-c" "mkdir -p ${home}/a ${home}/b ${home}/c ${home}/d"]
-assert mk.ok else "pour_atomic: the plant homes must open -- ${mk.err}"
+assert mk.ok else "pour_atomic: the plant homes must open -- ${mk.err_brief}"
 
 # --- leg 1: an honest pour lands a vessel both walls accept ---
 let good = "${home}/a/v.bron"
@@ -71,7 +71,7 @@ let open_good = run ["${home}/bin/vessel-seal" "open-check" good]
 say open_good.err
 assert open_good.ok else "pour_atomic: the honest vessel's seal must open"
 let keep = run ["sh" "-c" "cp ${good} ${home}/a/good.keep"]
-assert keep.ok else "pour_atomic: the reference copy must be taken -- ${keep.err}"
+assert keep.ok else "pour_atomic: the reference copy must be taken -- ${keep.err_brief}"
 say "leg_honest=landed"
 
 # --- leg 2: an honest RE-pour still welcomes, and what it lands still stands ---
@@ -92,7 +92,7 @@ let seal_gone = run ["sh" "-c" "env AMPHORA_VESSEL_SEAL=/nonexistent/seal ${home
 say seal_gone.err
 assert seal_gone.err contains "seal tool absent" else "pour_atomic: an absent seal tool refuses by name"
 let survives_seal = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
-assert survives_seal.ok else "pour_atomic: the standing vessel survives a seal refusal byte for byte -- this is the whole rule -- ${survives_seal.err}"
+assert survives_seal.ok else "pour_atomic: the standing vessel survives a seal refusal byte for byte -- this is the whole rule -- ${survives_seal.err_brief}"
 say "leg_seal_refusal=vessel_intact"
 
 # --- leg 4: and with the stamp tool absent, which refuses PAST the seal ---
@@ -103,25 +103,25 @@ let core_gone = run ["sh" "-c" "env AMPHORA_VESSEL_CORE=/nonexistent/core ${home
 say core_gone.err
 assert core_gone.err contains "stamp tool absent" else "pour_atomic: an absent stamp tool refuses by name"
 let survives_core = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
-assert survives_core.ok else "pour_atomic: the standing vessel survives a stamp refusal byte for byte -- ${survives_core.err}"
+assert survives_core.ok else "pour_atomic: the standing vessel survives a stamp refusal byte for byte -- ${survives_core.err_brief}"
 say "leg_stamp_refusal=vessel_intact"
 
 # --- leg 5: each refusal sweeps its own scratch ---
 # A scratch left behind is a clear-cargo copy of the season lying beside the vessel, which
 # is the same exposure the refusal was supposed to prevent, one filename over.
 let no_scratch = run ["sh" "-c" "test ! -e ${good}.pouring"]
-assert no_scratch.ok else "pour_atomic: a refused pour leaves no .pouring scratch behind -- ${no_scratch.err}"
+assert no_scratch.ok else "pour_atomic: a refused pour leaves no .pouring scratch behind -- ${no_scratch.err_brief}"
 say "leg_scratch=swept"
 
 # --- leg 6: the fork law is untouched ---
 let forkseason = "${home}/b/season"
 let plant_fork = run ["sh" "-c" "mkdir -p ${forkseason} && printf 'a different season\n' > ${forkseason}/a.txt"]
-assert plant_fork.ok else "pour_atomic: the fork plant must prepare -- ${plant_fork.err}"
+assert plant_fork.ok else "pour_atomic: the fork plant must prepare -- ${plant_fork.err_brief}"
 let fork = run ["sh" "-c" "${home}/bin/amphora pour ${forkseason} ${good}; true"]
 say fork.err
 assert fork.err contains "identity fork" else "pour_atomic: a different season over a standing vessel still refuses by name"
 let survives_fork = run ["sh" "-c" "cmp -s ${home}/a/good.keep ${good}"]
-assert survives_fork.ok else "pour_atomic: and the standing vessel survives the fork refusal -- ${survives_fork.err}"
+assert survives_fork.ok else "pour_atomic: and the standing vessel survives the fork refusal -- ${survives_fork.err_brief}"
 say "leg_fork=refused_and_intact"
 
 # --- the wall removed: a pen copy that writes the TARGET first is the ELDER pour ---
@@ -139,11 +139,11 @@ let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && f=${elder}/s
 say strip.err
 assert strip.ok else "pour_atomic: the elder strip must run"
 let bit_scratch = run ["sh" "-c" "grep -q 'const scratch = filled.vessel;' ${elder}/src/main.rye"]
-assert bit_scratch.ok else "pour_atomic: the strip's first edit must bite -- the scratch becomes the target -- ${bit_scratch.err}"
+assert bit_scratch.ok else "pour_atomic: the strip's first edit must bite -- the scratch becomes the target -- ${bit_scratch.err_brief}"
 let bit_rename = run ["sh" "-c" "grep -q 'cwd.rename(scratch' ${elder}/src/main.rye; test $? -ne 0"]
-assert bit_rename.ok else "pour_atomic: the strip must remove the landing rename -- ${bit_rename.err}"
+assert bit_rename.ok else "pour_atomic: the strip must remove the landing rename -- ${bit_rename.err_brief}"
 let bit_sweep = run ["sh" "-c" "grep -q 'deleteFile(io, scratch)' ${elder}/src/main.rye; test $? -ne 0"]
-assert bit_sweep.ok else "pour_atomic: the strip must remove the scratch sweep -- ${bit_sweep.err}"
+assert bit_sweep.ok else "pour_atomic: the strip must remove the scratch sweep -- ${bit_sweep.err_brief}"
 let build_elder = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder}/src/main.rye -femit-bin=${elder}/bin/amphora"]
 say build_elder.err
 assert build_elder.ok else "pour_atomic: the elder binary must build -- read the line above"
@@ -153,14 +153,14 @@ let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMP
 say elder_pour.err
 assert elder_pour.ok else "pour_atomic: the elder binary must pour an honest vessel first"
 let elder_keep = run ["sh" "-c" "cp ${elder_vessel} ${home}/c/good.keep"]
-assert elder_keep.ok else "pour_atomic: the elder reference copy must be taken -- ${elder_keep.err}"
+assert elder_keep.ok else "pour_atomic: the elder reference copy must be taken -- ${elder_keep.err_brief}"
 let elder_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=/nonexistent/seal ${elder}/bin/amphora pour ${season} ${elder_vessel}; true"]
 say elder_refused.err
 assert elder_refused.err contains "seal tool absent" else "pour_atomic: the elder binary refuses by the same name"
 let elder_lost = run ["sh" "-c" "cmp -s ${home}/c/good.keep ${elder_vessel}; test $? -ne 0"]
-assert elder_lost.ok else "pour_atomic: the elder pour MUST lose the standing vessel -- if it keeps it, this witness is proving nothing -- ${elder_lost.err}"
+assert elder_lost.ok else "pour_atomic: the elder pour MUST lose the standing vessel -- if it keeps it, this witness is proving nothing -- ${elder_lost.err_brief}"
 let elder_unsealed = run ["sh" "-c" "grep -q 'seal_cargo ' ${elder_vessel}; test $? -ne 0"]
-assert elder_unsealed.ok else "pour_atomic: and what the elder pour left carries no seal at all -- ${elder_unsealed.err}"
+assert elder_unsealed.ok else "pour_atomic: and what the elder pour left carries no seal at all -- ${elder_unsealed.err_brief}"
 say "leg_wall_removed=elder_loses_the_vessel"
 
 # --- the wall returned: the repaired binary over the same plant keeps every byte ---
@@ -169,12 +169,12 @@ let kept_pour = run ["${home}/bin/amphora" "pour" season kept_vessel]
 say kept_pour.err
 assert kept_pour.ok else "pour_atomic: the repaired binary pours its own plant"
 let kept_keep = run ["sh" "-c" "cp ${kept_vessel} ${home}/d/good.keep"]
-assert kept_keep.ok else "pour_atomic: the repaired reference copy must be taken -- ${kept_keep.err}"
+assert kept_keep.ok else "pour_atomic: the repaired reference copy must be taken -- ${kept_keep.err_brief}"
 let kept_refused = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=/nonexistent/seal ${home}/bin/amphora pour ${season} ${kept_vessel}; true"]
 say kept_refused.err
 assert kept_refused.err contains "seal tool absent" else "pour_atomic: the repaired binary refuses by the same name"
 let kept_intact = run ["sh" "-c" "cmp -s ${home}/d/good.keep ${kept_vessel}"]
-assert kept_intact.ok else "pour_atomic: and the repaired binary keeps the vessel over the very plant the elder lost -- ${kept_intact.err}"
+assert kept_intact.ok else "pour_atomic: and the repaired binary keeps the vessel over the very plant the elder lost -- ${kept_intact.err_brief}"
 say "leg_wall_returned=vessel_kept"
 
 let sweep = run ["sh" "-c" "rm -rf ${home}"]

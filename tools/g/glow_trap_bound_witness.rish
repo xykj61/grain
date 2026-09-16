@@ -20,7 +20,7 @@ let ctl = run ["sh" "tools/fixtures/g/glow_trap_bound_control.sh"]
 # the refusal. That fault stood in a sibling guard until 20260911 and shim_reason caught it.
 say ctl.out
 
-assert ctl.ok else "glow trap bound control failed: ${ctl.err}${ctl.out}"
+assert ctl.ok else "glow trap bound control failed: ${ctl.err_brief}${ctl.out_brief}"
 
 # The verdict alone is not enough. A control whose legs fell to an early exit reaches its close
 # with a smaller count and an honest ok, so the leg tally is asserted beside it -- the same

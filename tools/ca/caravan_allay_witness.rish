@@ -45,11 +45,11 @@ let bin = "caravan/bin/allay"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/allay.rye -femit-bin=${bin}"]
 
-assert build.ok else "caravan allay build failed -- ${build.err}"
+assert build.ok else "caravan allay build failed -- ${build.err_brief}"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
 let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/allay_read"]
-assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err_brief}"
 
 # The board declaration the rungs below opened, unchanged.
 let published = run ["sh" "-c" "caravan/bin/allay_read caravan/systems/serial_three_clients_board.bron 2>&1"]

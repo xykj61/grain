@@ -23,10 +23,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_catalog"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_catalog.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-part-catalog: build failed — ${build.err}"
+assert build.ok else "hunk-part-catalog: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-part-catalog: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-part-catalog: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-part-catalog: ${out}"
@@ -41,7 +41,7 @@ assert selftest.out contains "no network, no key, no funds" else "hunk-part-cata
 
 # HUNK4 stays GREEN -- the part catalog builds on the sprite index; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
-assert sprite.ok else "hunk-part-catalog: HUNK4 sprite re-run failed — ${sprite.out}"
+assert sprite.ok else "hunk-part-catalog: HUNK4 sprite re-run failed — ${sprite.out_brief}"
 assert sprite.out contains "GREEN image-sprite" else "hunk-part-catalog: HUNK4 sprite selftest did not stay GREEN"
 
 say "hunk-part-catalog: GREEN — the parts marketplace carries a window AND its honest facts, travels as text, and rebuilds byte-for-byte on metal; HUNK4 index underneath stays GREEN. HUNK71 lands, the marketplace grows its facts."

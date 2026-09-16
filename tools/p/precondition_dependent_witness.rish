@@ -50,8 +50,8 @@ let ctl = run ["sh" "tools/fixtures/p/precondition_dependent_control.sh"]
 say ctl.out
 # invariant: a refusal reports both streams, since the pen writes each failed leg to stderr and a
 # reader opening the reds file would otherwise find an empty line where the reason belongs.
-assert ctl.ok else "precondition-dependent: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=40 fail=0" else "precondition-dependent: the control did not prove forty behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "precondition-dependent: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=40 fail=0" else "precondition-dependent: the control did not prove forty behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 say "precondition-dependent: and this tree's own reading, probed rather than read..."
 let scan = run ["sh" "tools/fixtures/p/precondition_dependent_scan.sh" "probe"]
@@ -60,14 +60,14 @@ let scan = run ["sh" "tools/fixtures/p/precondition_dependent_scan.sh" "probe"]
 # (`rish_report_bound`, `say_compose_bound`): `say "${scan.out}"` opens a bounded StrBuf and would
 # end the run on a GREEN reading once this census outgrew it.
 say scan.out
-assert scan.ok else "precondition-dependent: the scan refused --\n${scan.out}\n${scan.err}"
+assert scan.ok else "precondition-dependent: the scan refused --\n${scan.out_brief}\n${scan.err_brief}"
 # invariant: the gate is held at zero -- a rostered guard whose refusal depends on a built artifact
 # or a screen, naming no capability, would red every machine in the fleet that lacks either.
-assert scan.out contains "rostered_undeclared=0" else "precondition-dependent: a rostered guard wants a precondition and names no capability --\n${scan.out}"
+assert scan.out contains "rostered_undeclared=0" else "precondition-dependent: a rostered guard wants a precondition and names no capability --\n${scan.out_brief}"
 # invariant: the ratchet holds -- the count of dependents that refuse when actually run stays under
 # a ceiling that only falls, so a runner written with a fresh hard assert reds on the lap it lands.
-assert scan.out contains "probe_under_ceiling=yes" else "precondition-dependent: more dependents refuse over an absent precondition than the ceiling allows --\n${scan.out}"
-assert scan.out contains "verdict=ok" else "precondition-dependent: the census refused --\n${scan.out}\n${scan.err}"
+assert scan.out contains "probe_under_ceiling=yes" else "precondition-dependent: more dependents refuse over an absent precondition than the ceiling allows --\n${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "precondition-dependent: the census refused --\n${scan.out_brief}\n${scan.err_brief}"
 # invariant: every population is reported, empty or full. A reading printing only the fault would
 # leave a reader unable to tell a healthy tree from a scan that could see nothing.
 assert scan.out contains "dependents=" else "precondition-dependent: the population went unreported"

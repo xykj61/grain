@@ -49,9 +49,9 @@ assert cmp_wrong.ok == false else "wrong-order fixture must fail cmp — gate in
 let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/digraph_twin_check"
 let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/digraph_twin_check.rye -femit-bin=${bin}"]
-assert build.ok else "digraph_twin_check build failed: ${build.err}${build.out}"
+assert build.ok else "digraph_twin_check build failed: ${build.err_brief}${build.out_brief}"
 let check = run ["sh" "-c" "${bin} 2>&1"]
-assert check.ok else "digraph_twin_check failed: ${check.err}${check.out}"
+assert check.ok else "digraph_twin_check failed: ${check.err_brief}${check.out_brief}"
 assert check.out contains "OK digraph_twin_check 30" else "digraph_twin_check missing OK 30"
 
 # Alphabet gate still GREEN, at 30 now that the composition runes ?& and ?| are seated (20260830.191147).

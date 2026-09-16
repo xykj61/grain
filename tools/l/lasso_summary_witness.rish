@@ -26,10 +26,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/lasso_summary"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/lasso_summary.rye -femit-bin=${bin}"]
-assert build.ok else "lasso_summary: build failed -- ${build.err}"
+assert build.ok else "lasso_summary: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "lasso_summary: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "lasso_summary: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "lasso_summary: ${out}"

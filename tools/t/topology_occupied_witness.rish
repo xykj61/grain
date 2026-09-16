@@ -49,9 +49,9 @@ say "topology-occupied: Lens TAME -- the rule read as well as run; bound the cap
 say "topology-occupied: the scan punches holes in both shapes and routes every live pair..."
 let scan = run ["sh" "tools/fixtures/t/topology_occupied_scan.sh"]
 # invariant: the scan stands green before any reading of it is trusted.
-assert scan.ok else "topology-occupied: the scan refused --\n${scan.out}"
-assert scan.out contains "verdict=ok" else "topology-occupied: the scan did not reach its own green --\n${scan.out}"
-assert scan.out contains "refusals=0" else "topology-occupied: the scan named a refusal --\n${scan.out}"
+assert scan.ok else "topology-occupied: the scan refused --\n${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "topology-occupied: the scan did not reach its own green --\n${scan.out_brief}"
+assert scan.out contains "refusals=0" else "topology-occupied: the scan named a refusal --\n${scan.out_brief}"
 assert scan.out contains "legs=all" else "topology-occupied: a reduced run must never be read as a full one"
 assert scan.out contains "sizes=default" else "topology-occupied: a reduced size list must never be read as the full set"
 assert scan.out contains "fill=default" else "topology-occupied: a reduced occupancy list must never be read as the full set"
@@ -116,14 +116,14 @@ assert scan.out contains "compare shape=torus points=840 dims=7x8x15 degree=6 fi
 say "topology-occupied: the whole finding in one line, absences printed as counted zeros..."
 # invariant: a witness can bind a line that says zero and cannot bind a line that is missing, so
 # the readings whose meaning is "this never happened" are counted rather than left to silence.
-assert scan.out contains "summary configs=16 anchors=2 partitioned=2 trace_undelivered=0 local_undelivered=2005 blind_undelivered=3358 torus_trace_undelivered=0 unreachable_pairs=4440 max_visited=22" else "topology-occupied: the summary across fourteen configurations moved --\n${scan.out}"
+assert scan.out contains "summary configs=16 anchors=2 partitioned=2 trace_undelivered=0 local_undelivered=2005 blind_undelivered=3358 torus_trace_undelivered=0 unreachable_pairs=4440 max_visited=22" else "topology-occupied: the summary across fourteen configurations moved --\n${scan.out_brief}"
 say "GREEN: topology-occupied -- free routing survives a real membership when the packet carries its own trail, and the holes are chosen rather than scattered."
 
 say "topology-occupied: the control plants each fault and lifts it again..."
 let control = run ["sh" "tools/fixtures/t/topology_occupied_control.sh"]
 # invariant: every refusal this witness rests on is shown from the failing side too.
-assert control.ok else "topology-occupied: the control refused --\n${control.out}"
-assert control.out contains "failed=0" else "topology-occupied: the control did not prove every behavior --\n${control.out}"
+assert control.ok else "topology-occupied: the control refused --\n${control.out_brief}"
+assert control.out contains "failed=0" else "topology-occupied: the control did not prove every behavior --\n${control.out_brief}"
 assert control.out contains "pen copy reads exactly what the tree reads" else "topology-occupied: the pen was not proven innocent"
 assert control.out contains "a plant matching nothing refuses by name" else "topology-occupied: a plant that lands nowhere is not proven to refuse"
 say "GREEN: topology-occupied -- every refusal bitten, every plant proven to land, and every reading asserted."

@@ -24,11 +24,11 @@ let zig = "vendor/zig-toolchain/zig"
 # opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
 # bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
 let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
-assert pen.ok else "could not make a build pen: ${pen.err}"
+assert pen.ok else "could not make a build pen: ${pen.err_brief}"
 let bin = "${pen.out}/tone_carry"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/tone_carry.rye -femit-bin=${bin}"]
-assert build.ok else "ales-tone-carry: build failed — ${build.err}"
+assert build.ok else "ales-tone-carry: build failed — ${build.err_brief}"
 
 let outfile = "lotus/bin/tone_carry.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
@@ -48,4 +48,4 @@ say "ales-tone-carry: GREEN — a carried-state low-pass spans a re-berthed regi
 
 # The pen is swept here rather than left for the next run to meet.
 let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
-assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err_brief}"

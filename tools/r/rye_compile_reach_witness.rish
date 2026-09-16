@@ -47,8 +47,8 @@ say "rye-compile-reach: Lens TAME -- three named bounds, and a refusal by name a
 
 say "rye-compile-reach: reading the corpus, the runners, and the import graph..."
 let census = run ["sh" "tools/fixtures/r/rye_compile_reach_scan.sh"]
-assert census.ok else "rye-compile-reach: the census refused -- ${census.out}"
-assert census.out contains "verdict=ok" else "rye-compile-reach: a tracked Rye file carries a claim no build ever checks -- ${census.out}"
+assert census.ok else "rye-compile-reach: the census refused -- ${census.out_brief}"
+assert census.out contains "verdict=ok" else "rye-compile-reach: a tracked Rye file carries a claim no build ever checks -- ${census.out_brief}"
 
 assert census.out contains "corpus=" else "rye-compile-reach: the corpus count is missing"
 assert census.out contains "distinct=" else "rye-compile-reach: the distinct-file count is missing"
@@ -61,8 +61,8 @@ assert census.out contains "harness_unresolved_compiling=" else "rye-compile-rea
 say "rye-compile-reach: proving the census on real repositories in a throwaway pen..."
 let control = run ["sh" "tools/fixtures/r/rye_compile_reach_control.sh"]
 assert control.ok else "rye-compile-reach: the control must complete -- a census nobody has watched fail is a census nobody has tested"
-assert control.out contains "control_verdict=ok" else "rye-compile-reach: the control must reach its own verdict -- ${control.out}"
-assert control.out contains "fail=0" else "rye-compile-reach: a planted case behaved wrongly -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "rye-compile-reach: the control must reach its own verdict -- ${control.out_brief}"
+assert control.out contains "fail=0" else "rye-compile-reach: a planted case behaved wrongly -- ${control.out_brief}"
 
 # The two cases the whole census rests on, named here so a reader of this rung knows they ran.
 assert control.out contains "a link to a built module is innocent" else "rye-compile-reach: the symlink-innocence case is missing -- sixteen false accusations rode on it"

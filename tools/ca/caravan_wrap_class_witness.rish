@@ -29,14 +29,14 @@ say "caravan-wrap-class: Lens TAME -- bound in the shape, said why at the site; 
 
 # Claim one: the live room, whole and seen.
 let live = run ["sh" "tools/fixtures/c/caravan_wrap_class_scan.sh"]
-assert live.ok else "caravan-wrap-class: the room must read whole -- ${live.out}"
+assert live.ok else "caravan-wrap-class: the room must read whole -- ${live.out_brief}"
 # invariant: the meter sees the seated sites -- a scan reading zero sites reads nothing at all
-assert live.out contains "unclassified=0" else "caravan-wrap-class: every wrap site carries its classification -- ${live.out}"
-assert live.out contains "classified=2" else "caravan-wrap-class: the two seated sites must be seen (queue slot_offset, reply lengths) -- a meter that finds nothing proves nothing: ${live.out}"
+assert live.out contains "unclassified=0" else "caravan-wrap-class: every wrap site carries its classification -- ${live.out_brief}"
+assert live.out contains "classified=2" else "caravan-wrap-class: the two seated sites must be seen (queue slot_offset, reply lengths) -- a meter that finds nothing proves nothing: ${live.out_brief}"
 
 # The pen: a throwaway room this witness builds, reads, and removes.
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/caravan && printf '%s' $d"]
-assert pen_mk.ok else "caravan-wrap-class: could not build the pen -- ${pen_mk.err}"
+assert pen_mk.ok else "caravan-wrap-class: could not build the pen -- ${pen_mk.err_brief}"
 let pen = trim pen_mk.out
 
 # Claim two: an unclassified wrap refuses by name.
@@ -45,8 +45,8 @@ assert plant_bad.ok else "caravan-wrap-class: could not plant the unclassified w
 let red = run ["sh" "tools/fixtures/c/caravan_wrap_class_scan.sh" "${pen}"]
 # invariant: the refusal is proven from the failing side, on metal, in this run
 assert red.ok == false else "caravan-wrap-class: a planted unclassified wrap must refuse -- it passed instead"
-assert red.out contains "unclassified=1" else "caravan-wrap-class: the refusal counts the planted site -- ${red.out}"
-assert red.out contains "unclassified.rye" else "caravan-wrap-class: the refusal names the file that owes its comment -- ${red.out}"
+assert red.out contains "unclassified=1" else "caravan-wrap-class: the refusal counts the planted site -- ${red.out_brief}"
+assert red.out contains "unclassified.rye" else "caravan-wrap-class: the refusal names the file that owes its comment -- ${red.out_brief}"
 
 # Claim three: the honest shapes stay free.
 let clear_bad = run ["sh" "-c" "rm ${pen}/caravan/unclassified.rye"]
@@ -56,9 +56,9 @@ assert plant_good.ok else "caravan-wrap-class: could not plant the classified wr
 let plant_pred = run ["sh" "-c" "printf '%s\n' 'fn aligned(x: u64, page: u64) bool {' '    return x % page == 0;' '}' > ${pen}/caravan/predicate.rye"]
 assert plant_pred.ok else "caravan-wrap-class: could not plant the predicate"
 let free = run ["sh" "tools/fixtures/c/caravan_wrap_class_scan.sh" "${pen}"]
-assert free.ok else "caravan-wrap-class: a classified wrap and a predicate must both stay free -- ${free.out}"
-assert free.out contains "classified=1" else "caravan-wrap-class: the classified plant is read as classified -- ${free.out}"
-assert free.out contains "predicates_free=1" else "caravan-wrap-class: the predicate plant stays free -- ${free.out}"
+assert free.ok else "caravan-wrap-class: a classified wrap and a predicate must both stay free -- ${free.out_brief}"
+assert free.out contains "classified=1" else "caravan-wrap-class: the classified plant is read as classified -- ${free.out_brief}"
+assert free.out contains "predicates_free=1" else "caravan-wrap-class: the predicate plant stays free -- ${free.out_brief}"
 
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
 assert pen_rm.ok else "caravan-wrap-class: could not remove the pen"

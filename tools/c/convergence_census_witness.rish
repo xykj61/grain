@@ -93,7 +93,7 @@ say "convergence-census: Lens TAME -- safety first: an unproven writer is named,
 
 say "convergence-census: reading the tree..."
 let scan = run ["sh" "tools/c/convergence_census.sh"]
-assert scan.ok else "convergence-census: the census refused --\n${scan.out}"
+assert scan.ok else "convergence-census: the census refused --\n${scan.out_brief}"
 assert scan.out contains "candidates=" else "convergence-census: the candidate population went unreported"
 assert scan.out contains "candidates_proven=" else "convergence-census: the proven count went unreported"
 assert scan.out contains "candidates_unproven=" else "convergence-census: the unproven count went unreported"
@@ -104,8 +104,8 @@ assert scan.out contains "tools_read=" else "convergence-census: the corpus size
 
 say "convergence-census: and the predicate is proven from both sides on planted repositories..."
 let control = run ["sh" "tools/fixtures/c/convergence_census_control.sh"]
-assert control.ok else "convergence-census: the control refused --\n${control.out}"
-assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
+assert control.ok else "convergence-census: the control refused --\n${control.out_brief}"
+assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out_brief}"
 assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
 assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
 # The leg count is PINNED so a leg that silently goes unrun is caught. It moved 52 -> 53 on
@@ -115,7 +115,7 @@ assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "conve
 # only the first match, the census held all 11 counts and all 22 list rows and this control held
 # `legs_fail=0`. Raising the pin is the second half of adding the leg, and the pin is what refused
 # the lap that added only the first.
-assert control.out contains "legs_pass=53" else "convergence-census: a leg went unrun --\n${control.out}"
+assert control.out contains "legs_pass=53" else "convergence-census: a leg went unrun --\n${control.out_brief}"
 
 # invariant: a tool may not certify itself. The plant's only idempotence sentence is a comment in
 # its own header, which is what two tracked tools carried when this column read them proven.

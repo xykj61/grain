@@ -305,6 +305,37 @@ check_field "unguarded, the same three read the same three kinds" eager 1 "$out"
 check_field "unguarded deferred is unchanged by the widening" deferred 1 "$out"
 check_field "unguarded safe is unchanged by the widening" safe 1 "$out"
 
+# THE BOUNDED CLASS (REDS %740). A brief is bounded at 512 bytes by construction, so it composes
+# safely where a whole capture does not. It must be COUNTED rather than skipped: an unclassified
+# site falls out of shaped, which is the denominator, so converting a deferred site would shrink
+# numerator and denominator together and move the share for a reason nobody intended.
+newpen
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'assert r.ok else "brief -- ${r.err_brief}"'
+} > b1.rish
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'say "eager brief -- ${r.out_brief}"'
+} > b2.rish
+commit_pen
+out=$(run_scan 999 999)
+check_field "a brief in an assert reads bounded" bounded 2 "$out"
+check_field "a brief is not counted deferred" deferred 0 "$out"
+check_field "a brief is not counted eager" eager 0 "$out"
+check_field "a brief is not counted safe" safe 0 "$out"
+check_field "a brief stays inside the denominator" shaped 2 "$out"
+
+# AND THE WHOLE CAPTURE BESIDE IT STILL READS DEFERRED, so the widening cannot be mistaken for a
+# blanket amnesty on composing captures.
+newpen
+{ echo 'let r = run ["sh" "-c" "echo hi"]'
+  echo 'assert r.ok else "whole -- ${r.err}"'
+  echo 'assert r.ok else "brief -- ${r.err_brief}"'
+} > b3.rish
+commit_pen
+out=$(run_scan 999 999)
+check_field "the whole capture still reads deferred beside a brief" deferred 1 "$out"
+check_field "the brief beside it still reads bounded" bounded 1 "$out"
+
 echo
 echo "cases_ok=$pass cases_red=$fail"
 if [ "$fail" -ne 0 ]; then echo "control_verdict=red"; exit 1; fi

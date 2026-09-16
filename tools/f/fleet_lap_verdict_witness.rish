@@ -14,8 +14,8 @@ say "fleet-lap-verdict: Lens TAME -- every welcome asserted as hard as every ref
 
 say "fleet-lap-verdict: the control -- twelve behaviors on planted transcripts in a pen..."
 let ctl = run ["sh" "tools/fixtures/f/fleet_lap_verdict_control.sh"]
-assert ctl.ok else "fleet-lap-verdict: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=12 fail=0" else "fleet-lap-verdict: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "fleet-lap-verdict: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=12 fail=0" else "fleet-lap-verdict: the control did not prove twelve behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 # THE TRANSCRIPTS ARE NAMED PER RUN, never constants. Eight ships share this pier and run this
 # witness from eight trees, so `${pen}/limit.txt` is one file eight hands write, read and then

@@ -24,10 +24,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/preset_scroll_drag"
 
 let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/preset_scroll_drag.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-scroll-drag: build failed — ${build.err}"
+assert build.ok else "hunk-scroll-drag: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-scroll-drag: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-scroll-drag: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-scroll-drag: ${out}"

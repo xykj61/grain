@@ -66,7 +66,7 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 # witness is reached by tools/ca/caravan_suite_witness.rish and that choir stood off the standing
 # roster until 20260825.092953.
 let living = run ["sh" "tools/fixtures/c/caravan_ladder_carry_scan.sh"]
-assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
+assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out_brief}"
 assert living.out contains "CARRY_OK carried=58496 ceiling=58496" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 114" else "caravan-ladder-carry: want all 114 ladder modules read, the rungs and the harness and the lifted bodies alike"
 assert living.out contains "CARRY_BODIES 18236 distinct=8025 copies=10211 carried_lines=58496" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
@@ -88,15 +88,15 @@ say "caravan-ladder-carry: the fold queue -- 576 ordinary copied families remain
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
 let copy = run ["sh" "tools/fixtures/c/caravan_ladder_copy_scan.sh"]
-assert copy.ok else "caravan-ladder-carry: the check meter must still stand -- ${copy.out}"
+assert copy.ok else "caravan-ladder-carry: the check meter must still stand -- ${copy.out_brief}"
 assert copy.out contains "copied_lines=47" else "caravan-ladder-carry: want the byte-identical check meter standing where the last fold left it"
 
 let print_meter = run ["sh" "tools/fixtures/c/caravan_ladder_print_scan.sh"]
-assert print_meter.ok else "caravan-ladder-carry: the printing meter must still stand -- ${print_meter.out}"
+assert print_meter.ok else "caravan-ladder-carry: the printing meter must still stand -- ${print_meter.out_brief}"
 assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=2686" else "caravan-ladder-carry: want the printing meter standing where the last fold left it"
 
 let spine = run ["sh" "tools/fixtures/c/caravan_ladder_spine_scan.sh"]
-assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
+assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out_brief}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
 say "caravan-ladder-carry: three windows and the room -- the three named meters stand exactly where the asserts above hold them, and the whole ladder carries what the scan just printed"
 
@@ -106,7 +106,7 @@ say "caravan-ladder-carry: three windows and the room -- the three named meters 
 # counter rather than a second opinion from it. The added body opens on `climb_`, a prefix no meter on this ladder
 # names, so the corpus also proves the window is genuinely open.
 let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=5 sh tools/fixtures/c/caravan_ladder_carry_scan.sh"]
-assert corpus.ok else "caravan-ladder-carry: the corpus scan must exit 0 -- ${corpus.out}"
+assert corpus.ok else "caravan-ladder-carry: the corpus scan must exit 0 -- ${corpus.out_brief}"
 assert corpus.out contains "CARRY_MODULES 2" else "caravan-ladder-carry: want the corpus read as two rungs"
 assert corpus.out contains "CARRY_BODIES 3 distinct=2 copies=1 carried_lines=3" else "caravan-ladder-carry: want three bodies, two distinct, one a whole copy of three lines"
 assert corpus.out contains "CARRY_TOP weigh_the_corpus: 2 rungs x 3 lines = 3 carried" else "caravan-ladder-carry: want the corpus family named the way the living queue is named"
@@ -116,7 +116,7 @@ assert corpus.out contains "CARRY_TOP weigh_the_corpus: 2 rungs x 3 lines = 3 ca
 # while the actionable queue leaves that family out. The total and the selector therefore answer
 # separate questions without either hiding the bytes that remain on disk.
 let queue = run ["sh" "-c" "d=$(mktemp -d); printf 'fn real_body(a: u32) u32 {\n    return a + 1;\n}\nfn folded_body(rung: type) void {\n    return ladder_checks.folded_body(rung);\n}\n' > $d/left.rye; cp $d/left.rye $d/right.rye; CARAVAN_LADDER_DIR=$d CARAVAN_CARRY_CEILING=6 CARAVAN_CARRY_TOP=5 sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
-assert queue.ok else "caravan-ladder-carry: the queue control must pass -- ${queue.out}"
+assert queue.ok else "caravan-ladder-carry: the queue control must pass -- ${queue.out_brief}"
 assert queue.out contains "CARRY_BODIES 4 distinct=2 copies=2 carried_lines=6" else "caravan-ladder-carry: delegates must remain in the whole carry"
 assert queue.out contains "CARRY_QUEUE 1 actionable_families" else "caravan-ladder-carry: want exactly the ordinary family actionable"
 assert queue.out contains "CARRY_TOP real_body: 2 rungs x 3 lines = 3 carried" else "caravan-ladder-carry: an ordinary copied body must stay in the queue"
@@ -140,7 +140,7 @@ assert hollow.out contains "reason=no_bodies" else "caravan-ladder-carry: want t
 # rungs writing one three-line body, one publishing it and one keeping it, and the meter must count a single copy. Run
 # on a generated pair rather than on the corpus, so the corpus stays countable by eye.
 let visibility = run ["sh" "-c" "d=$(mktemp -d); printf 'pub fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > $d/left.rye; printf 'fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > $d/right.rye; CARAVAN_LADDER_DIR=$d CARAVAN_CARRY_CEILING=3 sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
-assert visibility.ok else "caravan-ladder-carry: two rungs writing one body under two visibilities must count -- ${visibility.out}"
+assert visibility.ok else "caravan-ladder-carry: two rungs writing one body under two visibilities must count -- ${visibility.out_brief}"
 assert visibility.out contains "CARRY_BODIES 2 distinct=1 copies=1 carried_lines=3" else "caravan-ladder-carry: want one rule read as one family across two visibilities"
 
 # RED path three -- the ceiling has teeth. The corpus carries three lines; held at two, it refuses, which proves the

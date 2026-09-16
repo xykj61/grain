@@ -21,12 +21,12 @@ say "loom-trend: Lens TAME -- an unwritten key refuses rather than printing a fl
 
 say "loom-trend: the control -- thirteen behaviors on planted logs in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/l/loom_trend_control.sh"]
-assert ctl.ok else "loom-trend: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=13 fail=0" else "loom-trend: the control did not prove thirteen behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "loom-trend: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=13 fail=0" else "loom-trend: the control did not prove thirteen behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 say "loom-trend: and this tree's own journal answers when asked..."
 let keys = run ["sh" "tools/l/loom_trend.sh" "--keys"]
-assert keys.ok else "loom-trend: the key census refused --\n${keys.out}"
+assert keys.ok else "loom-trend: the key census refused --\n${keys.out_brief}"
 # invariant: the journal holds measurements under keys, so the map of keys is never empty. An empty
 # map would mean the reader had lost the corpus rather than that the tree had stopped measuring.
 assert keys.out contains "witness" else "loom-trend: the key map named no key -- the corpus was not read"

@@ -36,19 +36,19 @@ let scan = run ["sh" "tools/fixtures/v/vendored_license_scan.sh"]
 assert scan.ok else "sel4-userlevel-license: the SPDX census could not run -- are vendor/sel4 and vendor/microkit checked out? (git submodule update --init --recursive)"
 
 # 1. Nothing untagged: an unknown licence is worse than a wrong one.
-assert (scan.out contains "libsel4_files=185") else "sel4-userlevel-license: libsel4's file count moved -- re-read the census before trusting any tag claim below it: ${scan.out}"
-assert (scan.out contains "libsel4_tagged=185") else "sel4-userlevel-license: some file in libsel4 carries NO SPDX tag, which is an unknown licence: ${scan.out}"
+assert (scan.out contains "libsel4_files=185") else "sel4-userlevel-license: libsel4's file count moved -- re-read the census before trusting any tag claim below it: ${scan.out_brief}"
+assert (scan.out contains "libsel4_tagged=185") else "sel4-userlevel-license: some file in libsel4 carries NO SPDX tag, which is an unknown licence: ${scan.out_brief}"
 
 # 2. The claim Caravan's right to link rests on.
-assert (scan.out contains "libsel4_bsd2=185") else "sel4-userlevel-license: not every libsel4 file is BSD-2-Clause: ${scan.out}"
-assert (scan.out contains "libsel4_gpl=0") else "sel4-userlevel-license: a GPL-tagged file has appeared inside libsel4 -- this is seL4 issue #245's fault returning, and Caravan must not link it until it is resolved: ${scan.out}"
+assert (scan.out contains "libsel4_bsd2=185") else "sel4-userlevel-license: not every libsel4 file is BSD-2-Clause: ${scan.out_brief}"
+assert (scan.out contains "libsel4_gpl=0") else "sel4-userlevel-license: a GPL-tagged file has appeared inside libsel4 -- this is seL4 issue #245's fault returning, and Caravan must not link it until it is resolved: ${scan.out_brief}"
 
 # 3. The boundary proven from the copyleft side too.
-assert (scan.out contains "kernel_gpl=618") else "sel4-userlevel-license: the kernel's GPL tag count moved -- the split may have shifted, so re-read it before relying on the userlevel verdict: ${scan.out}"
+assert (scan.out contains "kernel_gpl=618") else "sel4-userlevel-license: the kernel's GPL tag count moved -- the split may have shifted, so re-read it before relying on the userlevel verdict: ${scan.out_brief}"
 
 # 4. Microkit's GPL files bounded by PATH, never by count.
-assert (scan.out contains "microkit_gpl_outside_dts=0") else "sel4-userlevel-license: a GPL-tagged file exists in Microkit OUTSIDE its board device-tree overlay directory -- that is linkable surface and must be read before anything depends on it: ${scan.out}"
-assert (scan.out contains "microkit_bsd2=303") else "sel4-userlevel-license: Microkit's BSD-2-Clause tag count moved -- re-read the census: ${scan.out}"
+assert (scan.out contains "microkit_gpl_outside_dts=0") else "sel4-userlevel-license: a GPL-tagged file exists in Microkit OUTSIDE its board device-tree overlay directory -- that is linkable surface and must be read before anything depends on it: ${scan.out_brief}"
+assert (scan.out contains "microkit_bsd2=303") else "sel4-userlevel-license: Microkit's BSD-2-Clause tag count moved -- re-read the census: ${scan.out_brief}"
 
 say "sel4-userlevel-license: census -- ${scan.out}"
 

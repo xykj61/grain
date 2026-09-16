@@ -39,7 +39,7 @@ say "rye-module-door: Lens TAME -- safety first: the gated reading is a property
 
 let control = run ["sh" "tools/fixtures/r/rye_module_door_control.sh"]
 say control.out
-assert control.ok else "rye-module-door: the control must complete -- ${control.err}"
+assert control.ok else "rye-module-door: the control must complete -- ${control.err_brief}"
 assert control.out contains "control_verdict=ok" else "rye-module-door: the control must reach its own verdict"
 assert control.out contains "control_failed=0" else "rye-module-door: every leg must pass, not merely the ones this file happens to name"
 assert control.out contains "control_legs=45" else "rye-module-door: the control must run all 45 of its legs -- fail=0 is what an empty pen prints too, so the count is asserted beside the verdict"

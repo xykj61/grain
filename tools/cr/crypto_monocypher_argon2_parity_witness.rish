@@ -37,7 +37,7 @@ let rout = "crypto/bin/rye_argon2.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_argon2_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
-assert cbuild.ok else "crypto-monocypher-argon2-parity: Monocypher C harness build failed — ${cbuild.err}"
+assert cbuild.ok else "crypto-monocypher-argon2-parity: Monocypher C harness build failed — ${cbuild.err_brief}"
 
 # 2. Run the Monocypher C harness -- three Argon2 hex lines: Argon2d, Argon2i, Argon2id.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]

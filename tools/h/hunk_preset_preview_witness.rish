@@ -25,10 +25,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/preset_preview"
 
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/preset_preview.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-preset-preview: build failed — ${build.err}"
+assert build.ok else "hunk-preset-preview: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-preset-preview: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-preset-preview: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-preset-preview: ${out}"

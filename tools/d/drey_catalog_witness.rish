@@ -22,7 +22,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/catalog"
 
 let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mikrophone/catalog.rye -femit-bin=${bin}"]
-assert build.ok else "drey-catalog: build failed — ${build.err}"
+assert build.ok else "drey-catalog: build failed — ${build.err_brief}"
 
 let outfile = "mikrophone/bin/catalog.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

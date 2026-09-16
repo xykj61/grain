@@ -16,7 +16,7 @@
 # tools/co/comlink_topology_witness.rish already carries this repair.
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh comlink/handshake_turn.rye -femit-bin=comlink/bin/handshake-turn"]
-assert build.ok else "comlink handshake-turn: build failed -- ${build.err}"
+assert build.ok else "comlink handshake-turn: build failed -- ${build.err_brief}"
 
 let st = run ["comlink/bin/handshake-turn" "selftest"]
 assert st.ok else "comlink handshake-turn selftest must exit 0"

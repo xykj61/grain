@@ -32,7 +32,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/sealed_session"
 
 let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/sealed_session.rye -femit-bin=${bin}"]
-assert build.ok else "crypto-sealed-session: build failed — ${build.err}"
+assert build.ok else "crypto-sealed-session: build failed — ${build.err_brief}"
 
 let outfile = "crypto/bin/sealed_session.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

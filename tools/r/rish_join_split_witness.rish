@@ -20,16 +20,16 @@ say "rish-join-split: Style Radiant -- the tests already sang; this witness is t
 say "rish-join-split: Lens TAME -- the refusal is watched dying, never believed from its comment."
 
 let join_test = run ["rishi/bin/rishi" "run" "rishi/tests/join.rish"]
-assert join_test.ok else "rish-join-split: join.rish must run GREEN -- ${join_test.err}"
+assert join_test.ok else "rish-join-split: join.rish must run GREEN -- ${join_test.err_brief}"
 assert join_test.out contains "join held" else "rish-join-split: join's own claim line is missing"
 
 let split_test = run ["rishi/bin/rishi" "run" "rishi/tests/split.rish"]
-assert split_test.ok else "rish-join-split: split.rish must run GREEN -- ${split_test.err}"
+assert split_test.ok else "rish-join-split: split.rish must run GREEN -- ${split_test.err_brief}"
 assert split_test.out contains "split round-trip held" else "rish-join-split: the list-direction inverse claim is missing"
 
 # RED leg -- the planted empty separator dies at the builtin's own edge, the error named.
 let refuse = run ["rishi/bin/rishi" "run" "rishi/tests/fixtures/split_empty_sep.rish"]
 assert (refuse.ok == false) else "rish-join-split: an empty separator must refuse"
-assert refuse.err contains "SplitEmptySeparator" else "rish-join-split: the refusal must carry its name -- ${refuse.err}"
+assert refuse.err contains "SplitEmptySeparator" else "rish-join-split: the refusal must carry its name -- ${refuse.err_brief}"
 
 say "GREEN: rish-join-split -- both tests sang, the exact list inverse held, and the empty separator died at the edge with its name spoken."

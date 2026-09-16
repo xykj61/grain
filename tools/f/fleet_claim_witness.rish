@@ -17,7 +17,7 @@ say "fleet-claim: Lens TAME -- safety first: a reader that answers from local by
 # nothing when it refuses -- so an asserting witness would hand the reader its own sentence and
 # discard the reason. `ls` names exactly which of the three is missing, and the assert forwards it.
 let present = run ["ls" "construction/fleet-claims.kyri" "tools/fixtures/f/fleet_claim_scan.sh" "tools/f/fleet_claim.sh"]
-assert present.ok else "fleet-claim: the board, the reader or the writer is missing -- ${present.err}"
+assert present.ok else "fleet-claim: the board, the reader or the writer is missing -- ${present.err_brief}"
 
 let control = run ["sh" "tools/fixtures/f/fleet_claim_control.sh"]
 say control.out

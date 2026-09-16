@@ -30,7 +30,7 @@ assert has_scan.ok else "reds-spine-derive: tools/fixtures/r/reds_spine_derive_s
 
 # 1. The control first -- a gate whose refusal has never been watched is a gate nobody has proven.
 let control = run ["sh" "tools/fixtures/r/reds_spine_derive_control.sh"]
-assert control.ok else "reds-spine-derive: the control is RED -- ${control.out}${control.err}"
+assert control.ok else "reds-spine-derive: the control is RED -- ${control.out_brief}${control.err_brief}"
 assert control.out contains "control_verdict=ok" else "reds-spine-derive: the control did not reach control_verdict=ok"
 
 # 2. Then this tree, against the anointed remote.

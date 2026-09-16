@@ -47,12 +47,12 @@
 # caught it.
 let all_fail = run ["sh" "-c" "GLOW_DESK_RUN_ONE=false sh tools/fixtures/g/glow_desk_run_scan.sh"]
 assert (all_fail.ok == false) else "glow_desk_run: a runner that refuses every desk must break the ceiling"
-assert all_fail.out contains "verdict=over_failed_ceiling" else "glow_desk_run: want the ceiling refusal named -- ${all_fail.out}"
-assert all_fail.out contains "failed=347" else "glow_desk_run: every selected desk must reach the runner -- ${all_fail.out}"
+assert all_fail.out contains "verdict=over_failed_ceiling" else "glow_desk_run: want the ceiling refusal named -- ${all_fail.out_brief}"
+assert all_fail.out contains "failed=347" else "glow_desk_run: every selected desk must reach the runner -- ${all_fail.out_brief}"
 
 let all_pass = run ["sh" "-c" "GLOW_DESK_RUN_ONE=true sh tools/fixtures/g/glow_desk_run_scan.sh"]
-assert all_pass.ok else "glow_desk_run: a runner that passes every desk must read ok: ${all_pass.out}"
-assert all_pass.out contains "failed=0" else "glow_desk_run: want zero failures from a passing runner -- ${all_pass.out}"
+assert all_pass.ok else "glow_desk_run: a runner that passes every desk must read ok: ${all_pass.out_brief}"
+assert all_pass.out contains "failed=0" else "glow_desk_run: want zero failures from a passing runner -- ${all_pass.out_brief}"
 
 # invariant: the reading is proven on real desk rooms rather than trusted. The control builds
 # miniature desk rooms in a throwaway pen and plants each refusal, then lifts it -- 95 behaviors,
@@ -62,12 +62,12 @@ assert all_pass.out contains "failed=0" else "glow_desk_run: want zero failures 
 # proves WHICH desks are selected and how they are counted, and the live leg below proves that they
 # lower, build and run on metal.
 let control = run ["sh" "tools/fixtures/g/glow_desk_run_control.sh"]
-assert control.ok else "glow_desk_run control failed: ${control.out}"
-assert control.out contains "fail=0" else "glow_desk_run control reported failures: ${control.out}"
+assert control.ok else "glow_desk_run control failed: ${control.out_brief}"
+assert control.out contains "fail=0" else "glow_desk_run control reported failures: ${control.out_brief}"
 
 # THE LIVE PASS, last because it is the expensive one.
 let scan = run ["sh" "tools/fixtures/g/glow_desk_run_scan.sh"]
-assert scan.ok else "glow_desk_run scan failed: ${scan.err}${scan.out}"
+assert scan.ok else "glow_desk_run scan failed: ${scan.err_brief}${scan.out_brief}"
 
 # invariant: the corpus is present -- a scan reading zero desks has lost its subject, and every
 # reading below would then be trivially satisfied by an empty room.
@@ -77,7 +77,7 @@ assert scan.out contains "desks=" else "glow_desk_run scan printed no desk count
 # different places -- one off the file list, one inside the loop -- so their agreement is a reading
 # rather than a restatement.
 assert scan.out contains "selected=347" else "glow_desk_run: the runnable selection stands at 347 -- a desk landed, left, or changed its declaration"
-assert scan.out contains "ran=347" else "glow_desk_run: the loop must run every desk the selection names -- ${scan.out}"
+assert scan.out contains "ran=347" else "glow_desk_run: the loop must run every desk the selection names -- ${scan.out_brief}"
 
 # invariant: the failure count only falls. It stands at 3 rather than 0 because three files under
 # glow/gen/ are data fixtures rather than desks and carry no marker in either name or head --
@@ -103,12 +103,12 @@ assert scan.out contains "ran=347" else "glow_desk_run: the loop must run every 
 # derived from glow_run's exit status on every pass, and a fourth fixture landing tomorrow moves
 # the reading that names its own fault.
 assert scan.out contains "failed_ceiling=3" else "glow_desk_run: the ceiling stands where it was measured -- a ceiling only falls"
-assert scan.out contains "failed_declined=2" else "glow_desk_run: two of the three fixtures are DECLINED by glow_run (exit 2) -- ${scan.out}"
-assert scan.out contains "failed_lower=1" else "glow_desk_run: one of the three is taken as a desk and breaks in the lowerer (exit 1) -- ${scan.out}"
-assert scan.out contains "failed_build=0" else "glow_desk_run: no selected desk fails to build -- ${scan.out}"
-assert scan.out contains "failed_run=0" else "glow_desk_run: no built desk exits nonzero -- ${scan.out}"
-assert scan.out contains "failed_unreadable=0" else "glow_desk_run: no selected desk is unreadable -- glow_run exit 3, seated 20260911.230925 -- ${scan.out}"
-assert scan.out contains "failed_unclassified=0" else "glow_desk_run: every failure is named by its stage -- ${scan.out}"
-assert scan.out contains "verdict=ok" else "glow_desk_run: the scan refused -- ${scan.out}"
+assert scan.out contains "failed_declined=2" else "glow_desk_run: two of the three fixtures are DECLINED by glow_run (exit 2) -- ${scan.out_brief}"
+assert scan.out contains "failed_lower=1" else "glow_desk_run: one of the three is taken as a desk and breaks in the lowerer (exit 1) -- ${scan.out_brief}"
+assert scan.out contains "failed_build=0" else "glow_desk_run: no selected desk fails to build -- ${scan.out_brief}"
+assert scan.out contains "failed_run=0" else "glow_desk_run: no built desk exits nonzero -- ${scan.out_brief}"
+assert scan.out contains "failed_unreadable=0" else "glow_desk_run: no selected desk is unreadable -- glow_run exit 3, seated 20260911.230925 -- ${scan.out_brief}"
+assert scan.out contains "failed_unclassified=0" else "glow_desk_run: every failure is named by its stage -- ${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "glow_desk_run: the scan refused -- ${scan.out_brief}"
 
 say "GREEN: glow_desk_run -- 347 runnable desks derived from the room and run, 301 bare and 46 on the sample each declares for itself, 3 unmarked data fixtures at their ceiling split by stage (2 declined, 1 broken in the lowerer), both runner-swap legs proven, 109 control behaviors green."

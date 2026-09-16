@@ -49,7 +49,7 @@ say "caravan-suite: Lens TAME -- every tools/caravan_*_witness.rish on disk is a
 # The 900-second ceiling is longer than one measured choir and keeps a live
 # holder bounded rather than turning serialization into an endless wait.
 let suite_lock = run ["sh" "-c" "set -eu; lock=caravan/.suite-runtime/lock.d; mkdir -p caravan/.suite-runtime; waited=0; while ! mkdir $lock 2>/dev/null; do if [ -s $lock/pid ]; then owner=$(cat $lock/pid 2>/dev/null || printf ''); case $owner in ''|*[!0-9]*) : ;; *) kill -0 $owner 2>/dev/null || { rm -rf $lock; continue; } ;; esac; fi; [ $waited -ge 900 ] && { echo CARAVAN_SUITE_LOCK_TIMEOUT; exit 1; }; sleep 1; waited=$((waited + 1)); done; printf '%s\n' $PPID > $lock/pid; printf 'CARAVAN_SUITE_LOCK_ACQUIRED waited_seconds=%s\n' $waited" ]
-assert suite_lock.ok else "caravan-suite: the bounded runtime-room lock refused -- ${suite_lock.out} ${suite_lock.err}"
+assert suite_lock.ok else "caravan-suite: the bounded runtime-room lock refused -- ${suite_lock.out_brief} ${suite_lock.err_brief}"
 assert suite_lock.out contains "CARAVAN_SUITE_LOCK_ACQUIRED" else "caravan-suite: the runtime-room lock returned without naming admission"
 
 # The choir sings from a cold tree, always (REDS %92). Thirty-six rungs ran a shared
@@ -59,7 +59,7 @@ assert suite_lock.out contains "CARAVAN_SUITE_LOCK_ACQUIRED" else "caravan-suite
 # the built binaries before every run makes cold-start self-sufficiency a fact this
 # witness checks rather than a property nobody was measuring.
 let mk = run ["sh" "-c" "rm -rf caravan/bin && mkdir -p caravan/bin"]
-assert mk.ok else "caravan-suite: could not make a cold caravan/bin -- ${mk.err}"
+assert mk.ok else "caravan-suite: could not make a cold caravan/bin -- ${mk.err_brief}"
 
 # The roster lists this choir reads are private to one run (REDS %88). Two suites in flight at once --
 # a hand beside a sweep -- once shared one pair of files in the tree and read each other's half-written
@@ -73,11 +73,11 @@ let witnesses = [ "tools/ca/caravan_abandon_witness.rish" "tools/ca/caravan_abat
 # one question answered in one place (REDS %101). Singing 98 witnesses costs minutes; asking whether the
 # roster is whole costs two greps -- and it is the asking that catches a witness born unheard.
 let roster = run ["sh" "tools/fixtures/c/caravan_roster_bijection_scan.sh"]
-assert roster.ok else "caravan-suite: the roster bijection must hold before the choir sings -- ${roster.out}"
-assert roster.out contains "ROSTER_OK" else "caravan-suite: want the roster whole in both directions -- ${roster.out}"
+assert roster.ok else "caravan-suite: the roster bijection must hold before the choir sings -- ${roster.out_brief}"
+assert roster.out contains "ROSTER_OK" else "caravan-suite: want the roster whole in both directions -- ${roster.out_brief}"
 
 let disk_c = run ["sh" "-c" "find tools -maxdepth 2 -name 'caravan_*_witness.rish' -type f | grep -v caravan_suite_witness | wc -l | tr -d ' \n'"]
-assert disk_c.ok else "caravan-suite: could not count the witnesses on disk -- ${disk_c.err}"
+assert disk_c.ok else "caravan-suite: could not count the witnesses on disk -- ${disk_c.err_brief}"
 let n_disk = trim disk_c.out
 
 say "caravan-suite: roster whole -- ${n_disk} per-rung witnesses on disk, each registered here and each registering a real file. Singing them now."

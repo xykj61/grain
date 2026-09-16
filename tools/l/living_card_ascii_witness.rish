@@ -31,7 +31,7 @@ say "living-card-ascii: Style Radiant -- ASCII-first by tier; the actively-writt
 say "living-card-ascii: Lens TAME -- measurement beats memory; the guard greps for bytes above 0x7F and a planted mojibake control proves the RED path on metal."
 
 let green = run ["sh" "tools/fixtures/l/living_card_ascii_scan.sh"]
-assert green.ok else "living-card-ascii: living scan must exit 0 -- ${green.out}"
+assert green.ok else "living-card-ascii: living scan must exit 0 -- ${green.out_brief}"
 assert green.out contains "enforce=honored" else "living-card-ascii: want enforce honored"
 assert green.out contains "enforce_ok=construction/ITINERARY.md" else "living-card-ascii: want operator card enforced clean"
 assert green.out contains "enforce_ok=construction/REDS.md" else "living-card-ascii: want REDS ledger enforced clean"

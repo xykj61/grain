@@ -30,7 +30,7 @@ let before = run ["md5sum" lexicon]
 assert before.ok else "could not checksum context/LEXICON.md"
 
 let apply = run ["sh" "-c" "PHRASE_FILE=${phrase_file} awk -f ${awk_prog} ${lexicon} > ${lexicon}.tmp && mv ${lexicon}.tmp ${lexicon}"]
-assert apply.ok else "lexicon_barket_phrase_append awk failed: ${apply.err}${apply.out}"
+assert apply.ok else "lexicon_barket_phrase_append awk failed: ${apply.err_brief}${apply.out_brief}"
 
 let after = run ["md5sum" lexicon]
 assert after.ok else "could not checksum context/LEXICON.md after append"

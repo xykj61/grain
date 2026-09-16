@@ -25,7 +25,7 @@ say "reds-ledger-headline: Lens TAME -- bound everything: the writer touches the
 
 let control = run ["sh" "tools/fixtures/r/reds_ledger_headline_control.sh"]
 say control.out
-assert control.ok else "reds-ledger-headline: the planted control must pass -- ${control.out}"
+assert control.ok else "reds-ledger-headline: the planted control must pass -- ${control.out_brief}"
 assert control.out contains "repaired=yes" else "reds-ledger-headline: a drifted headline must be repaired to the measured spine"
 assert control.out contains "spans_shelves=yes" else "reds-ledger-headline: the spine spans the fold shelves and the living pin together"
 assert control.out contains "idempotent=yes" else "reds-ledger-headline: a correct headline must be left byte-identical"

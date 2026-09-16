@@ -25,10 +25,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/font5x7_ascii"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/font5x7_ascii.rye -femit-bin=${bin}"]
-assert build.ok else "font5x7-ascii: build failed -- ${build.err}"
+assert build.ok else "font5x7-ascii: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "font5x7-ascii: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "font5x7-ascii: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "font5x7-ascii: ${out}"

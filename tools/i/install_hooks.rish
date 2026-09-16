@@ -85,20 +85,20 @@ let merge_present = run ["sh" "-c" "test -f ${merge_driver}"]
 assert merge_present.ok else "install-hooks: ${merge_driver} is missing -- nothing to arm"
 
 let merge_named = run ["git" "config" "merge.dayshelf.name" "day-shelf index -- union the rows, reseat them in stamp order"]
-assert merge_named.ok else "install-hooks: could not name the dayshelf merge driver -- ${merge_named.err}"
+assert merge_named.ok else "install-hooks: could not name the dayshelf merge driver -- ${merge_named.err_brief}"
 
 let merge_armed = run ["git" "config" "merge.dayshelf.driver" "sh tools/d/dayshelf_merge.sh %O %A %B %P"]
-assert merge_armed.ok else "install-hooks: could not set merge.dayshelf.driver -- ${merge_armed.err}"
+assert merge_armed.ok else "install-hooks: could not set merge.dayshelf.driver -- ${merge_armed.err_brief}"
 
 let merge_readback = run ["git" "config" "--get" "merge.dayshelf.driver"]
-assert merge_readback.ok else "install-hooks: merge.dayshelf.driver did not read back -- ${merge_readback.err}"
-assert merge_readback.out contains "dayshelf_merge.sh" else "install-hooks: merge.dayshelf.driver reads ${merge_readback.out} rather than the tree's own driver"
+assert merge_readback.ok else "install-hooks: merge.dayshelf.driver did not read back -- ${merge_readback.err_brief}"
+assert merge_readback.out contains "dayshelf_merge.sh" else "install-hooks: merge.dayshelf.driver reads ${merge_readback.out_brief} rather than the tree's own driver"
 
 let armed = run ["git" "config" "core.hooksPath" "tools/hooks"]
-assert armed.ok else "install-hooks: could not set core.hooksPath -- ${armed.err}"
+assert armed.ok else "install-hooks: could not set core.hooksPath -- ${armed.err_brief}"
 
 let readback = run ["git" "config" "--get" "core.hooksPath"]
-assert readback.ok else "install-hooks: core.hooksPath did not read back -- ${readback.err}"
-assert (trim readback.out) == "tools/hooks" else "install-hooks: core.hooksPath reads ${readback.out} rather than tools/hooks"
+assert readback.ok else "install-hooks: core.hooksPath did not read back -- ${readback.err_brief}"
+assert (trim readback.out) == "tools/hooks" else "install-hooks: core.hooksPath reads ${readback.out_brief} rather than tools/hooks"
 
 say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall, the front-door pre-commit, its post-commit sibling, the pre-push spine wall, and the dayshelf merge driver are armed on this clone."
