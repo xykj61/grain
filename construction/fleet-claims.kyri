@@ -70,3 +70,9 @@ stamp 20260915.221930
 epoch 1789525170
 paths tools/fixtures/g/glow_gate_law_agree_scan.sh tools/fixtures/g/glow_gate_law_agree_control.sh tools/g/glow_gate_law_agree_witness.rish src/shape src/gate
 what Widen the Glow gate-law agreement grammar to the PEDESTAL population -- 45 src/shape and src/gate shape-*.glow desks memorize a Rye module number in their example line with no wall at all, so the scan that holds 25 walls never opens the larger half. Add a pedestal reading, an example_disagree gate at zero, and link the ones whose home is a plain-integer const.
+claim grass-claim-preserve-modality-classes
+seat grass
+stamp 20260915.224411
+epoch 1789526651
+paths tools/fixtures/c/claim_preserve_scan.sh tools/fixtures/c/claim_preserve_control.sh tools/cl/claim_preserve_control_witness.rish
+what Split the claim_preserve modality reading into an obligation class and a register class, so a refusal names which one moved -- measured: this tree's own register sweep f258e5f58 drifts may 5-to-4 and all 10-to-12 on skate/README.md, and the guard cannot tell that from a weakened obligation. Gate unchanged; add the control this instrument has never had.
