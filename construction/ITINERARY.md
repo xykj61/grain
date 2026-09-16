@@ -50,7 +50,7 @@ none of those.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
-4. (`20260915.192527`) -- the Glow gate law ratchet stands at its **floor of 14**, read desk by desk: four more linked this lap (`linked` 7 to 11, ceiling 18 to 14), and none of the fourteen remaining can carry a `law` line as the grammar stands (booked `20260915.192527`, cited by stamp until the anointed spine binds its number). Lowering it further wants the grammar to learn a struct field count, an enum variant count, or a const whose value is an expression -- a design lap rather than a sweep. `sh tools/fixtures/g/glow_gate_law_agree_scan.sh` reads it.
+4. (`20260915.205116`) -- the Glow gate law ratchet stands at its **floor of 9**, down from 14: the `law` grammar learned two of the three homes its own header named, and five more desks linked (`linked` 11 to 16, ceiling 14 to 9). A law's middle field may now name `<Type>.fields` or `<Type>.variants`, and a dot selects which reader answers, since a Zig identifier can never carry one. Of the nine remaining, **five are permanent floor** -- generated language examples and planted fixtures, mirroring no module law -- and four want the two shapes still unbuilt: a const whose value is an expression (aurora's two Ed25519 lengths), and a module roster count (aurora's six living stages). `sh tools/fixtures/g/glow_gate_law_agree_scan.sh` reads it.
 
 **Stop line:** when only the seven gated rows remain, print `GATES-ONLY` and `touch
 .loop-gates-only`. The watcher re-arms a stopped loop, so the sentinel is what makes a stop stick.
@@ -86,7 +86,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `659c9f39f1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `96bfb3104f` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 

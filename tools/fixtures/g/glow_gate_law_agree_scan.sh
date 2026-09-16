@@ -29,9 +29,21 @@
 #
 #   ::  law        tally/gardens.rye max_name_len below
 #
-# Three fields: the file that declares it, the constant's name, and the RELATION the wall keeps to it.
-# Everything else -- the constant's value, the head's restatement, the body literal -- is derived.
-# One declaration, three derived readings, rather than three statements nobody compares.
+# Three fields: the file that declares it, the DECLARATION's name, and the RELATION the wall keeps
+# to it. Everything else -- the declared value, the head's restatement, the body literal -- is
+# derived. One declaration, three derived readings, rather than three statements nobody compares.
+#
+# THE MIDDLE FIELD NAMES ONE OF THREE HOMES, and a DOT selects which. A Zig identifier can never
+# carry a dot, so the discriminator can never be mistaken for a constant's own name:
+#
+#   max_name_len      a plain-integer const             -- read here, by const_value
+#   Line.fields       a struct's declared field count    -- tools/fixtures/r/rye_struct_fields_scan.sh
+#   Meaning.variants  an enum's declared variant count   -- tools/fixtures/r/rye_enum_variants_scan.sh
+#
+# The suffix rides on the name rather than arriving as a fourth field, because a fourth field
+# would make every standing `law` line carry a `const` token it does not need -- a rewrite of
+# correct declarations in exchange for nothing. Both readers refuse rather than guess, so an
+# unreadable law lands in `law_unresolved` exactly as an expression-valued const does.
 #
 # THE THREE RELATIONS, each present in the corpus today rather than invented for symmetry.
 #
@@ -70,46 +82,49 @@
 # nothing has to be repaired for them to hold, and they make the fault unwritable from here: a desk
 # linked tomorrow agrees with its Rye constant or reds on the lap it arrives.
 #
-# AND THE RATCHET IS AT ITS FLOOR, WHICH IS NOT ZERO. The seating lap called the remainder a
-# backlog and priced it at "twenty-seven" while its own reading said eighteen -- a number written
-# from memory beside a meter that was already answering. Read one desk at a time on 20260915.191259,
-# after four more were linked, the remaining FOURTEEN sort into three kinds and NOT ONE of them can
-# carry a `law` line as the grammar above stands:
+# THE RATCHET'S FLOOR FELL FOURTEEN TO NINE ON 20260915.205116, when the grammar learned the two
+# homes above. The elder floor was read desk by desk at 20260915.191259 and sorted the fourteen
+# into three kinds, of which two are now reachable and one is permanent. What remains:
 #
 #   five are not gate desks at all. glow/gen/i/{if-cue,if-gth,if-lent}.glow are generated language
 #   examples whose `?:` compares a sample against 32, and tools/fixtures/g/gate-count-malformed.glow
 #   and glow_core_unclosed_refuses.glow are planted fixtures another control reads. Each mirrors no
-#   module law, so each is permanent floor. They stand in the population because the wall is read
+#   module law, so each is PERMANENT FLOOR. They stand in the population because the wall is read
 #   off the BODY rather than off the path, which is the same choice that finds
 #   gate-comlink-addr-width-u32; narrowing the reach to src/gate/ would buy a lower floor by
 #   blinding the scan to a gate desk written anywhere else.
 #
-#   four are already held, against a law that is a struct's field count rather than a constant.
-#   src/gate/gate-mantra-{line,weave,diff}-fields-eq-u32.glow and gate-mantra-store-dirs-eq-u32.glow
-#   are each compared against their Rye struct by tools/fixtures/m/mantra_gate_constant_scan.sh over
-#   tools/fixtures/r/rye_struct_fields_scan.sh, under tools/m/mantra_a1_equality_witness.rish. So
-#   `unlinked` counts desks this scan does not hold, never desks nothing holds -- a distinction the
-#   word itself invites a reader to miss.
+#   four name a law this grammar still cannot reach. gate-comlink-addr-width-u32 mirrors a seated
+#   shape and no Rye module declares an ipv6 address length at all. The two aurora length desks
+#   mirror tally/kumara.rye's `seed_length` and `signature_length`, which are Ed25519 EXPRESSIONS
+#   that const_value returns empty for on purpose -- reading them wants Rye evaluation rather than
+#   scanning, and the module's own `assert(seed_length == 32)` is a second statement of the law
+#   rather than the declaration, so pointing a `law` line at it would compare two copies and call
+#   it agreement. And gate-aurora-living-stages-eq-u32 mirrors the SIX FILES of aurora/src/ that
+#   are stages -- a module roster rather than a declaration, which is a fourth kind of home.
 #
-#   five name a law with no plain-integer constant to point at. gate-comlink-addr-width-u32 mirrors
-#   a seated shape and no Rye module declares an ipv6 address length at all; the two aurora length
-#   desks mirror tally/kumara.rye's `seed_length` and `signature_length`, which are Ed25519
-#   EXPRESSIONS that const_value returns empty for on purpose; gate-aurora-living-stages-eq-u32 and
-#   gate-caravan-exit-meanings-eq-u32 mirror enum variant counts.
+#   the five that left. src/gate/gate-mantra-{line,weave,diff}-fields-eq-u32.glow and
+#   gate-mantra-store-dirs-eq-u32.glow now carry `<Type>.fields` law lines, and
+#   gate-caravan-exit-meanings-eq-u32.glow carries `Meaning.variants`. The four mantra desks were
+#   ALREADY held, by tools/fixtures/m/mantra_gate_constant_scan.sh under
+#   tools/m/mantra_a1_equality_witness.rish -- so `unlinked` counted desks THIS scan did not hold,
+#   never desks nothing held, a distinction the word itself invites a reader to miss. Two guards
+#   over one claim is the honest cost of the grammar reaching them: the elder pair also asserts
+#   the field ORDER, which a count cannot see, so neither subsumes the other.
 #
-# So the ratchet falls again only when the law grammar learns a second kind of home -- a struct's
-# field count, an enum's variant count, or a const whose value is an expression. That is a lap with
-# a design behind it rather than a sweep, and naming the three shapes here is what a future lap
-# builds against.
+# So the ratchet falls again only for the two shapes named above -- a const whose value is an
+# expression, and a module roster count. Both want a design behind them rather than a sweep.
 #
 # WHY head_unstated IS REPORTED RATHER THAN GATED. An invariant line may state its law in words --
 # "stays within sixteen bytes" -- which is honest English and carries no digits to compare. Refusing
 # it would buy a rewrite of prose in exchange for nothing the body check does not already hold.
 #
-# WHAT IT DOES NOT REACH. Whether the Rye constant is the RIGHT law for that desk to mirror -- the
-# `law` line is a declaration and this scan proves the three copies agree with it, never that the
-# declaration names the correct home. And a law that is a field count rather than a constant stays
-# unlinked by construction; see the ratchet above.
+# WHAT IT DOES NOT REACH. Whether the Rye declaration is the RIGHT law for that desk to mirror --
+# the `law` line is itself a declaration, and this scan proves the three copies agree with it,
+# never that it names the correct home. Nor the ORDER of a struct's fields or an enum's variants:
+# a count is what a `?: (eq face N)` wall can compare against, and a reorder is invisible to it.
+# The two sibling readers print the order, and tools/m/mantra_a1_equality_witness.rish is where
+# it is asserted.
 #
 #   sh tools/fixtures/g/glow_gate_law_agree_scan.sh
 #   sh tools/fixtures/g/glow_gate_law_agree_scan.sh --explain <desk.glow>
@@ -146,8 +161,10 @@ MAX_DESKS=4096
 # The ratchet ceiling. It only falls: a lane that links one of its own desks lowers this in the
 # same commit. Seated at 18 on 20260915.183946: 25 wall-memorizing desks minus the 7 linked on that
 # lap. Lowered to 14 on 20260915.191259, when the two Skate walls and the two Lantern face walls
-# took law lines and all three relations were proven to bite from the Rye side on metal.
-UNLINKED_CEILING=${GLOW_GATE_UNLINKED_CEILING:-14}
+# took law lines and all three relations were proven to bite from the Rye side on metal. Lowered
+# to 9 on 20260915.205116, when the grammar learned the struct-field and enum-variant homes and
+# five more desks took law lines.
+UNLINKED_CEILING=${GLOW_GATE_UNLINKED_CEILING:-9}
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/glow_gate_law.XXXXXX") || exit 2
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -215,6 +232,47 @@ const_value() {
   ' "$_cv_file"
 }
 
+# THE SECOND AND THIRD HOMES. A law's middle field names what the Rye module declares, and a DOT
+# in that name selects which kind of declaration to read. A Zig identifier can never carry a dot,
+# so the discriminator can never be mistaken for a constant's own name:
+#
+#   max_name_len      a plain-integer const          -- const_value above
+#   Line.fields       a struct's declared field count -- rye_struct_fields_scan.sh
+#   Meaning.variants  an enum's declared variant count -- rye_enum_variants_scan.sh
+#
+# The suffix rides on the name rather than arriving as a fourth field, because a fourth field
+# would make every one of the standing `law` lines carry a `const` token it does not need, which
+# is a rewrite of correct declarations in exchange for nothing. Both readers already refuse
+# rather than guess -- an absent file or an absent declaration exits non-zero and prints no count
+# -- so an unreadable law resolves to empty here and lands in `law_unresolved` exactly as an
+# expression-valued const does.
+law_value_of() {
+  _lv_file=$1
+  _lv_name=$2
+  case "$_lv_name" in
+    *.fields)
+      _lv_type=${_lv_name%.fields}
+      sh "$ROOT/tools/fixtures/r/rye_struct_fields_scan.sh" --count "$_lv_file" "$_lv_type" 2>/dev/null || true
+      ;;
+    *.variants)
+      _lv_type=${_lv_name%.variants}
+      sh "$ROOT/tools/fixtures/r/rye_enum_variants_scan.sh" --count "$_lv_file" "$_lv_type" 2>/dev/null || true
+      ;;
+    *)
+      const_value "$_lv_file" "$_lv_name"
+      ;;
+  esac
+}
+
+# What a law's middle field is called, for a message a reader can act on.
+law_kind_of() {
+  case "$1" in
+    *.fields)   echo "struct field count" ;;
+    *.variants) echo "enum variant count" ;;
+    *)          echo "plain-integer const" ;;
+  esac
+}
+
 walls=0
 linked=0
 unlinked=0
@@ -270,10 +328,16 @@ while IFS= read -r f; do
       ;;
   esac
 
-  law_value=$(const_value "$law_file" "$law_const")
+  law_value=$(law_value_of "$law_file" "$law_const")
+  # A ZERO reads as no answer rather than as the number nought. Both count readers print `0`
+  # beside a non-zero exit when they cannot find what was asked for, so a law naming an absent
+  # struct would otherwise resolve to zero and be reported as a `body_disagree` -- a wrong
+  # diagnosis where `law_unresolved` is the true one. Nothing is lost: the population passes over
+  # a literal zero already, so no desk in it can have a lawful law of zero.
+  case "$law_value" in ''|0|*[!0-9]*) law_value="" ;; esac
   if [ -z "$law_value" ]; then
     law_unresolved=$((law_unresolved + 1))
-    echo "law_unresolved $f -- $law_file declares no plain-integer const $law_const"
+    echo "law_unresolved $f -- $law_file declares no $(law_kind_of "$law_const") $law_const"
     continue
   fi
 

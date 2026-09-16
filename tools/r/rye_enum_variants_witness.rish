@@ -1,0 +1,92 @@
+# tools/r/rye_enum_variants_witness.rish -- the variant reader, and the gate desk it lets be checked.
+#
+# WHY THIS RUNG EXISTS. `src/gate/gate-caravan-exit-meanings-eq-u32.glow` memorizes the number
+# three and says in its own head that three is what `caravan/restart.rye` declares as `Meaning`.
+# Nothing compared the two, because the law grammar in
+# tools/fixtures/g/glow_gate_law_agree_scan.sh could point a `law` line only at a plain-integer
+# `const`. That scan's header named an enum's variant count as one of the three homes the grammar
+# would have to learn before its ratchet could fall again, and this reader is that home. Move
+# `Meaning` to four variants and the desk goes on answering 0 for its own subject; every sibling
+# gate witness stays green through that, because a wall at 3 still decides on both sides of
+# itself.
+#
+# WHAT THIS PROVES. tools/fixtures/r/rye_enum_variants_scan.sh reads a named enum's declared
+# variants out of a named Rye file, in declaration order, and says by name when it cannot. The
+# control breaks it twenty-six ways in a throwaway pen, exercising all three spellings this tree
+# writes -- one-line bare, one-line tagged `enum(u8)` with `= <n>` values, and the many-line form
+# with comments between variants.
+#
+# WHAT IT DOES NOT REACH. Whether an enum SHOULD carry the variants it carries, and whether a
+# desk's number is the right number to mirror. This proves the claim and the code can be
+# compared, and stops there; the gate law scan is where the comparison is made. A variant
+# carrying a payload is a tagged union rather than a plain enum, and this tree authors none
+# inside a `= enum` declaration.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_enum_variants_witness.rish
+
+say "rye-enum-variants: Language EN -- how many variants does that enum actually declare?"
+say "rye-enum-variants: Style Gauge, Meter -- a count and an order, or a refusal by name."
+say "rye-enum-variants: Lens TAME -- three named refusals, each proven from both sides."
+
+say "rye-enum-variants: the reader answers the enums the gate desks stand over..."
+let meaning = run ["sh" "tools/fixtures/r/rye_enum_variants_scan.sh" "--variants" "caravan/restart.rye" "Meaning"]
+assert meaning.ok else "rye-enum-variants: the reader refused on Meaning -- ${meaning.out}"
+let meaning_variants = trim meaning.out
+# The three words a finished dependent can say, read from the enum rather than from the count.
+# gate-caravan-exit-meanings-eq-u32.glow carries the matching `law` line, so its wall and this
+# declaration are compared on every lap of the gate law scan.
+assert meaning_variants == "answered stopped fallen" else "rye-enum-variants: Meaning no longer reads answered stopped fallen -- ${meaning_variants}"
+
+# The many-line spelling with a doc comment above each variant, which is what the tree's own
+# aurora deciding module writes. A reader stopping at the first comment answers zero here.
+let path = run ["sh" "tools/fixtures/r/rye_enum_variants_scan.sh" "--variants" "aurora/src/deciding.rye" "Path"]
+assert path.ok else "rye-enum-variants: the reader refused on Path -- ${path.out}"
+let path_variants = trim path.out
+assert path_variants == "full minimal" else "rye-enum-variants: Path no longer reads full minimal -- ${path_variants}"
+
+# The tagged spelling, where the backing type is not a variant and a tag value is not a name.
+let kind = run ["sh" "tools/fixtures/r/rye_enum_variants_scan.sh" "--variants" "brushstroke/skate_input_event.rye" "InputKind"]
+assert kind.ok else "rye-enum-variants: the reader refused on InputKind -- ${kind.out}"
+let kind_variants = trim kind.out
+assert kind_variants == "key_down key_up mouse_down mouse_up touch_down touch_up touch_moved touch_cancelled" else "rye-enum-variants: InputKind no longer reads its eight variants -- ${kind_variants}"
+
+say "rye-enum-variants: breaking the reader in a throwaway pen, twenty-six ways..."
+let control = run ["sh" "tools/fixtures/r/rye_enum_variants_control.sh"]
+assert control.ok else "rye-enum-variants: the control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${control.out}"
+assert control.out contains "verdict=ok" else "rye-enum-variants: a planted case behaved wrongly -- ${control.out}"
+assert control.out contains "failed=0" else "rye-enum-variants: a planted case behaved wrongly -- ${control.out}"
+assert control.out contains "behaviors=26" else "rye-enum-variants: the control ran a different number of behaviors than this rung names -- ${control.out}"
+
+# The pen proven innocent first, so every refusal below reads as the break speaking.
+assert control.out contains "ok    clean/count -- 3" else "rye-enum-variants: the clean pen must read its own three variants"
+assert control.out contains "ok    clean/variants -- answered stopped fallen" else "rye-enum-variants: the clean pen must read its variants in order"
+
+# Growth and reorder, the two changes a memorized count cannot see.
+assert control.out contains "ok    fourth/count -- 4" else "rye-enum-variants: a fourth variant must be counted"
+assert control.out contains "ok    reordered/variants -- fallen answered stopped" else "rye-enum-variants: a reorder must be read in the order it stands"
+
+# The three spellings, each exercised, since a reader handling one under-counts the other two.
+assert control.out contains "ok    bare/count -- 2" else "rye-enum-variants: the bare const spelling must read like the pub one"
+assert control.out contains "ok    manyline/count -- 3" else "rye-enum-variants: the many-line spelling must be counted"
+assert control.out contains "ok    tagged/variants -- key_down key_up mouse_down" else "rye-enum-variants: a tag value must never be read as part of a variant's name"
+
+# The comment clause, planted both ways. One clause serves `///` and `//`, so a phase exercising
+# only the doc spelling would leave half of it unproven.
+assert control.out contains "ok    documented/count -- 3" else "rye-enum-variants: a doc comment must be read past, never taken as the end of the block"
+assert control.out contains "ok    noted/count -- 3" else "rye-enum-variants: a plain comment must be read past too -- the reader holds one clause for both"
+
+# A method body is never a variant list, and a near-miss name never answers for the one asked.
+assert control.out contains "ok    methods/count -- 2" else "rye-enum-variants: a method body must never be counted as variants"
+assert control.out contains "ok    prefix/count -- 2" else "rye-enum-variants: a prefix name must not answer for the one asked about"
+
+# The four refusals, each by name, each exiting non-zero so a caller never reads zero as an answer.
+assert control.out contains "ok    notenum/verdict -- no_enum" else "rye-enum-variants: a struct must refuse rather than have its fields counted"
+assert control.out contains "ok    no_variants/verdict -- no_variants" else "rye-enum-variants: a declaration naming nothing must refuse by name"
+assert control.out contains "ok    no_variants/exit -- 1" else "rye-enum-variants: a refusal must exit non-zero"
+assert control.out contains "ok    no_enum/verdict -- no_enum" else "rye-enum-variants: an absent enum must refuse by name"
+assert control.out contains "ok    no_file/verdict -- no_file" else "rye-enum-variants: an absent file must refuse by name"
+assert control.out contains "ok    no_file/exit -- 1" else "rye-enum-variants: an absent file must exit non-zero"
+assert control.out contains "ok    no_name/exit -- 2" else "rye-enum-variants: a caller's own error must be tellable from a refusal about the file"
+
+say "GREEN: the variant reader counts and orders across three spellings, and refuses by name."

@@ -1,6 +1,7 @@
 ::  name       mantra line fields equality gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 exactly when count is line fields=5; answers 0 otherwise
+::  law        mantra/src/weave.rye Line.fields exact
 ::  example    5 -> 1 - 4 -> 0 - 6 -> 0
 ::  readers    Mantra - Glow Tend a1 unfinished - Ashvini
 ::  nib        equinox-e256-equality-fifth-v0 - STOA337

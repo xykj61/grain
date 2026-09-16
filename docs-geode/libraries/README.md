@@ -27,9 +27,9 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
 | [`amphora/`](../../amphora/README.md) | 7 | 34 |
-| [`aurora/`](../../aurora/README.md) | 7 | 7 |
+| [`aurora/`](../../aurora/README.md) | 7 | 8 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
-| [`caravan/`](../../caravan/README.md) | 111 | 132 |
+| [`caravan/`](../../caravan/README.md) | 111 | 133 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 1 |
 | [`comlink/`](../../comlink/README.md) | 74 | 16 |
 | [`constel/`](../../constel/README.md) | 32 | 41 |
