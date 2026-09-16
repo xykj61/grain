@@ -769,3 +769,4 @@ at a closed fold.*
 *Row %700 folded to [`REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md`](REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md) on `20260915.221441`, **CLOSED** -- a guard that cannot tell you whether anything is wrong is worse than one that says something is.*
 
 *Row %751 folded to [`REDS-a-postcondition-over-the-outputs-rows-751.md`](REDS-a-postcondition-over-the-outputs-rows-751.md) on `20260915.233000`, **CLOSED** -- a postcondition written over the outputs can be strictly weaker than one written over the inputs, and nothing in the shape says which you have.*
+*Rows %731 and %732 folded to [`REDS-the-gate-that-cannot-reach-a-commit-git-makes-rows-731-732.md`](REDS-the-gate-that-cannot-reach-a-commit-git-makes-rows-731-732.md) on `20260915.231943`, both **BOOKED** -- a gate placed at the commit cannot reach a commit git makes on its own behalf.*

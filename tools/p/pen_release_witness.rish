@@ -1,0 +1,48 @@
+# pen_release_witness.rish -- a runner that makes a throwaway pen and never removes it.
+#
+#   rishi/bin/rishi run tools/p/pen_release_witness.rish
+#
+# THE THIRD QUESTION ABOUT ONE PEN. `shared_pen` reads whether a pen is CONTENDED -- one constant
+# name, eight checkouts. `pen_entry` reads whether a pen is ENTERED -- REDS %729, a case body that
+# ran at the repository root. Neither reads whether it is RELEASED, and REDS %745 is what that
+# costs: `tools/am/amphora_mark_wreck_witness.rish` makes a 24MB pen with `mktemp -d` and never
+# removes it, so nine days of a rostered witness put 1,312 pens and 32G into the shared /tmp, the
+# pier read 990M free, and the first instrument to notice was a `pwd` builtin answering
+# `write error: No space left on device`.
+#
+# AND THE TWO STANDING GUARDS READ ONE LANGUAGE. `pen_entry`'s population is `git ls-files '*.sh'`
+# plus a POSIX shell shebang, and a Rishi source in this tree carries neither -- so the runner that
+# actually filled the pier stood outside the pen family's whole population. This reading opens
+# both, 461 shell runners and 338 Rishi sources carrying a pen between them.
+#
+# A RATCHET RATHER THAN A WALL, deliberately. Sixteen runners make a pen and remove it nowhere,
+# fourteen of them Rishi witnesses in the amphora and caravan families; each repair belongs to its
+# owning lane, and a wall seated here would red every ship for faults no lap of theirs may touch.
+# The ceiling only falls.
+#
+# `unreleased_on_refusal` -- 336 runners whose removal stands on the straight-line success path, so
+# a refusal above it leaves the pen behind -- is REPORTED and gated by nothing. In shell the cure
+# is the `trap 'rm -rf "$pen"' EXIT` every control in tools/fixtures/ already carries; Rishi has no
+# trap and a failing assert ends the run where it stands, so that cure is a language question for
+# its own lap rather than one line.
+let scan = run ["sh" "tools/fixtures/p/pen_release_scan.sh"]
+assert scan.ok else "pen release scan did not run: ${scan.err_brief}"
+assert scan.out contains "never_removed=16" else "the never-removed population moved: ${scan.out_brief}"
+assert scan.out contains "ceiling_ok=yes" else "pen release over its ceiling: ${scan.out_brief}"
+assert scan.out contains "verdict=released" else "pen release verdict missing: ${scan.out_brief}"
+
+# THE CONTROL IS ASSERTED BESIDE THE READING, because a ratchet proven only in the passing
+# direction cannot be told from a reading that counts nothing. Forty-six behaviors on real git
+# repositories in a throwaway pen, every refusal planted and then lifted, the ceiling shown from
+# both sides, and three mutations -- the continuation join, the transitive pen variable, and the
+# trap reading -- each required to bite and then required to walk free unmutated.
+#
+# THE LEG TALLY IS ASSERTED BESIDE THE VERDICT, so a leg written tomorrow is heard the day it
+# lands: `control_verdict=ok` says only that the control reached its last line.
+let control = run ["sh" "tools/fixtures/p/pen_release_control.sh"]
+assert control.ok else "pen release control did not reach control_verdict=ok: ${control.out_brief}"
+assert control.out contains "control_verdict=ok" else "pen release control verdict missing: ${control.out_brief}"
+assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
+assert control.out contains "pass=46" else "the control's leg tally moved: ${control.out_brief}"
+
+say "GREEN: every pen this tree makes is counted for its release -- 16 never removed, under a ceiling that only falls."
