@@ -90,6 +90,12 @@ unstaged by hand -- `git check-ignore` answers **NOT IGNORED**, `.gitignore` nam
 that proxy incomplete -- two living witnesses plant shelf names of their own. Widening the read-past
 would shrink a number by changing its subject, so whether a plant is recognised by its ROOM or by
 its ROLE is one word, and it is the same shape `%770` just closed one room over.
+**BAKERY -- ASKING WHETHER A BINARY IS CURRENT NO LONGER COSTS A BUILD.** Account
+[born on its shelf](archive/20260916-114800_itinerary-landed-accounts.md). `rye key <f.rye>
+-femit-bin=<p>` prints `verdict=hit|miss|unkeyable` and writes nothing, running the SAME computation
+a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
+**YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
+
 **A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
 [shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
 witnesses hard-asserted `test -x` on a gitignored build output and now take the honest skip; the
@@ -127,7 +133,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `5f96df5e14` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `27e08f074e` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -150,16 +156,11 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `5f96df5e14` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `27e08f074e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
-**BAKERY -- THE THIRD PATH IN THE KEY, AND FIVE SHIPS WEARING A STRANGER'S RECEIPT.**
-Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md). `rye/src/main.rye`
-hashed every forwarded flag whole into the build-receipt key, and the emit flag is one, so WHERE an
-output landed decided the key; its VALUE is gone and `ryekey_marker` moves **v6 to v7**. The third
-path of one class in one day, and it cost the fleet its receipt on every rebuild of a running tool.
-Rows `20260916.080424`, `20260916.092127`. **MINE:** whether today's sources would speak the
-standing key -- a `rye` mode computing a key without building.
+**BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
+`ryekey_marker` moved **v6 to v7**. Its standing ask is **answered above**.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
 [shelved whole](archive/20260916-081513_itinerary-landed-accounts.md) by

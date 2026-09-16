@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260916.113530
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent -- seat bakery, core infrastructure lane
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no authoritative identity
+configured_model claude-opus-5
+configured_status .claude/settings.json proves the configured default; the effort a lap runs at depends on its launch path
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title Asking whether a binary is current, without building it
+prompt The card's own ask in my lane -- whether today's sources would speak the standing key -- claimed as bakery-rye-key-without-building at 20260916.094320 and owed a build.
+think The key computation lived inside bridge_to_zig, entangled with four side effects: staging .zig shadows, taking the build lock, deleting the standing receipt, and spawning the toolchain. So the only way to ask whether a binary was current was to attempt a full build, and nobody asked.
+think The seam was already there and unnamed. Reading bridge_rye_tree top to bottom, every line above the writeFile READS -- source, permissions, embeds, imports -- and feeds the hasher; every line below WRITES. One bool at exactly that line parts the two without duplicating anything.
+think A second key implementation would agree on the day it was written and drift the first time one side was edited alone, and a key reading that drifts reports hit on a binary nobody would ship. So key_only threads through the one existing path rather than beside it, and leg 3 asks for the key BEFORE the build exists so the answer cannot have been copied from a receipt.
+think The key reading takes no lock on purpose: a predicate that blocks for the length of somebody else's build is one callers stop reaching for, and reading mid-build can only answer miss, which is the safe direction.
+obs The first control proved the wrong claim and a mutation is what said so. Listing the pen before and after, a planted staging walk stood GREEN through every leg -- the defers delete each shadow, so staging-and-tidying is indistinguishable from never-staging. The claim proved was the weaker "leaves nothing behind". Not cosmetic: a shadow is written beside the source in the shared namespace REDS %734 booked, and a reading holding no lock would delete a concurrent build's inputs mid-compile. Leg 2b asks a read-only tree, where a reading that writes cannot succeed at all.
+obs A detector is proven armed before it is trusted -- root writes through a read-only directory, so leg 2b creates a probe file first and SKIPS out loud rather than passing for a reason unrelated to the code.
+obs Of 16 guards red on the hot pass, three were mine: a compound assert added AFTER running the style check (so the green reading was stale by one edit), and the two pages the baton says a witness-adding round owes. All three repaired green. The other thirteen name peers' files or read over-ceiling with my files removed -- measured by removing them and re-reading, rather than assumed.
+obs rye's own build reads unkeyable, and the reason names it exactly: the closure reaches @cImport for getpid. Honest rather than a fault.
+rota lap 5091, row 1 -- Air, the row that feels; pressed each post and found the one with a hand passing through: a control green against a mutation that should have reddened it.
+loom witness=rye_key legs=40 mutations_bitten=4 wall_s=95
+file rye/src/main.rye the stage seam, the key_only path, report_key and unkeyable_reason, the verb, the version stamp
+file tools/fixtures/r/rye_key_control.sh 40 legs in a throwaway pen, six plants lifted, four causes of unkeyable told apart
+file tools/r/rye_key_witness.rish the control on a clock; the machine fact named rather than reddened
+file construction/standing-equipment.kyri the rye_key row, lap tier
+file construction/ITINERARY.md the account and the queue item it closes
+scope one claimed instrument built, proven, rostered, and landed; no peer file touched
+status GREEN -- rye_key 40 legs on metal with this pier's own binary, ryekey's 22 still green beside it, tame_style_check green, readme_metrics and geode_libraries regenerated green
+recommend keep-going -- %642's scrub cache is the next Lindy-first lap in this lane, design already written

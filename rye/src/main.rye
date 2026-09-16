@@ -81,8 +81,10 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// `fmt.parseInt`, given postconditions, a precondition, and a `maybe` (9996).
 /// Accretions in *capability* grow the tool itself: the `build` command, and
 /// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
-/// The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260914.031449";
+/// The `key` command arrived at 20260916.095816 -- the receipt key asked for
+/// without building, so a caller can find out whether a binary is current at
+/// the cost of a read. The backend stays honestly 0.16.0 throughout.
+const rye_version = "20260916.095816";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -191,14 +193,26 @@ pub fn main(init: std.process.Init) !u8 {
         print_version();
         return 0;
     } else if (std.mem.eql(u8, command, "run")) {
-        return bridge_to_zig(init, args, "run", "run");
+        return bridge_to_zig(init, args, "run", "run", false);
     } else if (std.mem.eql(u8, command, "build")) {
-        return bridge_to_zig(init, args, "build-exe", "build");
+        return bridge_to_zig(init, args, "build-exe", "build", false);
     } else if (std.mem.eql(u8, command, "build-lib")) {
         // Shared/static libraries for seams that export C ABI symbols --
         // Glow's Android NativeActivity entry (libglowapp.so) is the first
         // consumer. Flags pass through the same way `build` does.
-        return bridge_to_zig(init, args, "build-lib", "build-lib");
+        return bridge_to_zig(init, args, "build-lib", "build-lib", false);
+    } else if (std.mem.eql(u8, command, "key")) {
+        // ASK WITHOUT BUILDING. The receipt key is computed by exactly the path
+        // a `build` takes -- same marker, same verb, same toolchain and library
+        // bytes, same closure walk, same flags, same self-bytes -- with staging,
+        // the lock, the stamp delete, and the spawn all left behind. One
+        // computation serves both verbs, so the answer this prints cannot drift
+        // from the key a build writes.
+        //
+        // It keys `build`, because `build` is the verb that earns a receipt:
+        // `run` is excluded by name below, and `build-lib` would need its own
+        // toolchain verb in the key. Widen it when a caller wants that.
+        return bridge_to_zig(init, args, "build-exe", "key", true);
     } else if (std.mem.eql(u8, command, "help") or std.mem.eql(u8, command, "--help")) {
         print_usage();
         return 0;
@@ -218,6 +232,10 @@ fn print_usage() void {
         \\  rye run <file.rye>          compile and run a single .rye source file
         \\  rye build <file.rye>        compile a .rye file to a binary (flags pass through)
         \\  rye build-lib <file.rye>    compile a .rye file to a library (flags pass through)
+        \\  rye key <file.rye> -femit-bin=<path>
+        \\                              ask whether that binary is current, building nothing.
+        \\                              Prints verdict=hit|miss|unkeyable with both keys;
+        \\                              exits 0 on hit, 1 on anything meaning build.
         \\
     , .{ rye_version, zig_backend_version });
 }
@@ -390,6 +408,7 @@ fn bridge_to_zig(
     args: []const [:0]const u8,
     zig_subcommand: []const u8,
     label: []const u8,
+    key_only: bool,
 ) !u8 {
     const garden = init.arena.allocator();
     const io = init.io;
@@ -511,8 +530,17 @@ fn bridge_to_zig(
     // write to the last delete, hit path included, since the bridge stages
     // shadows before any receipt is consulted. Declared ahead of the shadow
     // defers below, so LIFO order releases the lock after their cleanup.
-    if (!(try build_lock_acquire(init, io, dir, garden, label))) return 1;
-    defer build_lock_release(io, dir);
+    //
+    // A KEY READING TAKES NO LOCK, on purpose. It writes no shadow and deletes
+    // no stamp, so it has nothing to protect; and a predicate that blocks for
+    // the length of somebody else's build is a predicate callers stop reaching
+    // for. Reading mid-build can only answer `miss`, which is the safe
+    // direction: a caller told to build when it need not builds once more than
+    // it had to, where the reverse serves elder bytes.
+    if (!key_only) {
+        if (!(try build_lock_acquire(init, io, dir, garden, label))) return 1;
+    }
+    defer if (!key_only) build_lock_release(io, dir);
 
     // Bridge the root `.rye` file and every local `.rye` module dependency to
     // ephemeral `.zig` files the toolchain can read, then clear them all away.
@@ -528,7 +556,7 @@ fn bridge_to_zig(
         for (staged_rye.items) |p| garden.free(p);
     }
     var keyable = true;
-    const bridge_path = try bridge_rye_tree(io, dir, rye_path, true, &staged_rye, &bridge_zigs, garden, label, 0, &hasher, &keyable);
+    const bridge_path = try bridge_rye_tree(io, dir, rye_path, true, &staged_rye, &bridge_zigs, garden, label, 0, &hasher, &keyable, !key_only);
 
     // A receipt is consulted only where every one of its conditions holds
     // plainly: a build verb (running is the point of `run`), a named output,
@@ -558,6 +586,10 @@ fn bridge_to_zig(
         }
     }
 
+    // What the key reading reports beside its verdict: the key these sources
+    // speak, and the key standing on disk. A caller comparing two builds wants
+    // both, and a caller that merely asks "is it current" reads the verdict.
+    var standing_key: []const u8 = "";
     var key_hex: [Sha256.digest_length * 2]u8 = undefined;
     if (receipt_path) |rp| {
         var digest: [Sha256.digest_length]u8 = undefined;
@@ -574,6 +606,7 @@ fn bridge_to_zig(
             var lines = std.mem.splitScalar(u8, trimmed, '\n');
             const key_line = lines.next() orelse "";
             const out_line = lines.next() orelse "";
+            standing_key = key_line;
             if (key_line.len == key_hex.len and std.mem.eql(u8, key_line, key_hex[0..]) and out_line.len == key_hex.len) {
                 // The output's own bytes answer for themselves on every hit: a
                 // truncated, torn, or hand-replaced binary misses and rebuilds.
@@ -582,12 +615,31 @@ fn bridge_to_zig(
                     Sha256.hash(emitted, &out_digest, .{});
                     const out_hex = std.fmt.bytesToHex(out_digest, .lower);
                     if (std.mem.eql(u8, out_line, out_hex[0..])) {
+                        if (key_only) {
+                            report_key(key_hex[0..], standing_key, "hit", "the standing receipt speaks this key and the binary beside it answers for its own bytes");
+                            return 0;
+                        }
                         return 0;
                     }
                 } else |_| {}
             }
         }
     }
+    // A KEY READING STOPS HERE. Everything below writes or spawns: the standing
+    // stamp falls, the toolchain runs, a fresh receipt lands. Reaching this line
+    // with the question already answered means the answer was `miss` -- or
+    // `unkeyable`, where no receipt could be formed at all and the distinction
+    // matters to a caller, since one says rebuild and the other says this build
+    // will never be spared.
+    if (key_only) {
+        if (receipt_path == null) {
+            report_key("", "", "unkeyable", unkeyable_reason(extra, zig_content_readable, library_content_readable, keyable));
+            return 1;
+        }
+        report_key(key_hex[0..], standing_key, "miss", "no standing receipt speaks this key, or the binary beside it has changed");
+        return 1;
+    }
+
     const argv = try garden.alloc([]const u8, 5 + extra.len);
     argv[0] = zig;
     argv[1] = zig_subcommand;
@@ -694,6 +746,54 @@ fn hash_library_into(
         if (!hash_file_into(io, dir, full_path, hasher)) return false;
     }
     return paths.items.len != 0;
+}
+
+/// Print one key reading, in the shape a shell reads and a person understands:
+/// a verdict word first, then the two keys, then a plain reason. Empty keys
+/// print as `-` rather than as nothing, so a field never goes missing from the
+/// line and a reader can tell "no key" from a truncated write.
+///
+/// The line goes where every other word this program says goes. A caller
+/// branching on the answer reads the exit status -- 0 for `hit`, 1 for anything
+/// that means build -- and a caller wanting the keys themselves reads the line.
+fn report_key(computed: []const u8, standing: []const u8, verdict: []const u8, reason: []const u8) void {
+    // invariant: a verdict is always one of the three words this reading speaks.
+    assert(verdict.len > 0);
+    // invariant: a reading always carries the plain reason behind its verdict.
+    assert(reason.len > 0);
+    std.debug.print("verdict={s}\nkey={s}\nstanding={s}\nreason={s}\n", .{
+        verdict,
+        if (computed.len == 0) "-" else computed,
+        if (standing.len == 0) "-" else standing,
+        reason,
+    });
+}
+
+/// Name which condition refused the receipt, rather than reporting one word for
+/// five different causes. A caller meeting `unkeyable` has to change something
+/// about the build to earn a receipt at all, and this sentence is what says
+/// which thing.
+fn unkeyable_reason(
+    extra: []const [:0]const u8,
+    zig_readable: bool,
+    library_readable: bool,
+    keyable: bool,
+) []const u8 {
+    // invariant: a refusal is always explained against the flags that caused it.
+    assert(extra.len == 0 or extra[0].len > 0);
+    if (find_emit_path(extra) == null) return "no -femit-bin= names an output, so there is no file a receipt could sit beside";
+    if (!zig_readable) return "the toolchain's own bytes could not be read, so the key cannot name what would compile";
+    if (!library_readable) return "the standard library's bytes could not be read, so the key cannot name what would compile";
+    if (!keyable) return "a closure source reaches bytes this walk cannot enumerate -- an unreadable embed, unreadable permissions, or @cImport";
+    if (!flags_are_keyable(extra)) return "a flag names a path or a library this walk cannot follow, so the key cannot cover the build";
+    // invariant: the four readings above are the only conditions that refuse a
+    // receipt once an output is named, so reaching here means the refusal came
+    // from this binary's own path, which is the one cause with no flag to fix.
+    // Split rather than compounded, so a refusal names which reading held.
+    assert(zig_readable);
+    assert(library_readable);
+    assert(keyable);
+    return "this binary's own path could not be resolved, so its bytes cannot join the key";
 }
 
 fn find_emit_path(extra: []const [:0]const u8) ?[]const u8 {
@@ -907,6 +1007,7 @@ fn bridge_rye_tree(
     depth: u32,
     hasher: *Sha256,
     keyable: *bool,
+    stage: bool,
 ) ![]const u8 {
     // invariant: the descent stays inside the bound named above, so a cyclic or
     // pathological import graph meets a named error rather than the stack's end.
@@ -1025,11 +1126,20 @@ fn bridge_rye_tree(
     }
 
     for (import_paths.items) |dep_rye| {
-        _ = try bridge_rye_tree(io, dir, dep_rye, false, staged_rye, bridge_zigs, garden, label, depth + 1, hasher, keyable);
+        _ = try bridge_rye_tree(io, dir, dep_rye, false, staged_rye, bridge_zigs, garden, label, depth + 1, hasher, keyable, stage);
     }
 
-    const bridged_source = try rewrite_rye_imports(source, garden);
     const zig_path = try bridge_zig_path(rye_path, is_root, garden);
+
+    // ASKING IS NOT BUILDING. Every line above this one READS -- sources,
+    // permissions, embeds, imports -- and feeds the hasher; every line below
+    // WRITES. So one flag at exactly this seam parts the two, and `rye key`
+    // walks the identical closure in the identical order while touching
+    // nothing. The key is a pure function of what was read, and the caller
+    // that only wants to ask pays a read.
+    if (!stage) return zig_path;
+
+    const bridged_source = try rewrite_rye_imports(source, garden);
     dir.writeFile(io, .{ .sub_path = zig_path, .data = bridged_source }) catch |err| {
         std.debug.print("rye {s}: could not stage '{s}': {s}\n", .{ label, zig_path, @errorName(err) });
         return err;
@@ -1037,8 +1147,8 @@ fn bridge_rye_tree(
 
     try bridge_zigs.append(garden, try garden.dupe(u8, zig_path));
 
-    // invariant: every file this walk reaches leaves a staged .zig behind for the
-    // toolchain to read and for the caller's defer to clear away.
+    // invariant: a staging walk leaves a staged .zig behind for the toolchain to
+    // read and for the caller's defer to clear away.
     assert(bridge_zigs.items.len > 0);
 
     return zig_path;

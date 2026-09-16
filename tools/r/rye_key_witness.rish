@@ -1,0 +1,57 @@
+# tools/r/rye_key_witness.rish -- asking whether a binary is current, proven on a clock.
+#   rishi/bin/rishi run tools/r/rye_key_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/r/rye_key_control.sh, which proves `rye key` from both sides
+# in a throwaway pen. Forty legs stand there.
+#
+# WHAT THE VERB IS FOR. Every ship in this fleet owes its `rishi` binary a rebuild, and a stale one
+# answers `NoSuchField` on a field a peer landed hours ago -- the error reading as the tree's fault
+# rather than the binary's (REDS %746). Until this verb, the only way to ask whether a binary was
+# current was to attempt a full build: `rye/src/main.rye` computed the receipt key inside
+# `bridge_to_zig`, entangled with staging `.zig` shadows, taking the build lock, deleting the
+# standing receipt, and spawning the toolchain. Asking cost a build, so nobody asked.
+#
+# THE ONE STRUCTURAL CLAIM, and leg 3 is where it lives: the key `rye key` prints must be the key a
+# build writes, because it is the SAME COMPUTATION rather than a second one that agrees today. A
+# second implementation drifts the first time one side is edited alone, and a key reading that
+# drifts is worse than none -- it reports `hit` on a binary nobody would ship. So the verb runs the
+# identical path `build` runs and stops at the seam where reading becomes writing, and leg 3 asks
+# for the key BEFORE the build exists so the answer cannot have been copied from a receipt.
+#
+# WHAT A MUTATION TAUGHT THIS CONTROL, and it is the reason to run mutations at all. The first
+# draft proved "asking writes nothing" by listing the pen before and after. Planted with a key
+# reading that stages shadows after all, every leg stood GREEN: staging is followed by a defer that
+# deletes each shadow, so a walk that stages and tidies up leaves the listing byte for byte as it
+# found it. The claim the listing actually proved was `leaves nothing behind`, which is a weaker and
+# different thing -- and the gap is not cosmetic, since a shadow is written BESIDE THE SOURCE in the
+# shared namespace REDS %734 booked, and a reading holding no lock would delete a concurrent build's
+# inputs mid-compile. Leg 2b answers the real claim by asking a READ-ONLY tree, where a reading that
+# writes cannot succeed at all. Leg 17 plants a held build lock the same way. Four mutations are
+# proven to bite: a staging walk, a key keyed to another verb, a verdict spelled as a constant, and
+# a reading that waits on the lock.
+#
+# A DETECTOR IS PROVEN ARMED BEFORE IT IS TRUSTED. Root writes through a read-only directory, so leg
+# 2b creates a probe file first and SKIPS out loud when the probe succeeds, rather than passing for
+# a reason that has nothing to do with the code.
+#
+# THE MACHINE FACT IS NOT A RED. `rye/bin/rye` is untracked and gitignored, so a fresh clone has
+# none and a working pier has whichever it last built -- one built before this verb landed answers
+# `unknown command`. The control asks at the door, by BEHAVIOR rather than by version string, and
+# skips at exit 0 naming the rebuild that fixes it. A version compare answers what a binary CLAIMS;
+# running the verb answers what it DOES, and those part whenever a binary is rebuilt from an elder
+# source under a newer stamp.
+#
+# WHERE THE STRICTNESS LIVES. In the control, which exits 1 on any failed leg. This witness proves
+# the control ANSWERED -- exit 0 and a named verdict -- rather than restating forty assertions a
+# second time in a second language.
+say "rye_key: Language EN -- a build receipt asked for without building, proven on a clock that runs it."
+say "rye_key: Style Gauge Meter -- forty legs counted, the stale binary named rather than reddened."
+say "rye_key: Lens TAME -- safety first; one computation serves both verbs, so the answer cannot drift from the build's own."
+
+let control = run ["sh" "tools/fixtures/r/rye_key_control.sh"]
+say control.out
+assert control.ok else "rye_key: the control must exit 0 -- either forty legs green or an honest machine-fact skip (${control.err_brief})"
+assert control.out contains "rye_key_verdict=" else "rye_key: a control that named no verdict has answered nothing"
+
+if (control.out contains "rye_key_verdict=machine_fact") then say "MACHINE FACT: rye_key -- this pier's rye binary has no key verb; run sh rye/bootstrap.sh to prove it here."
+if (control.out contains "rye_key_verdict=green") then say "GREEN: rye_key -- forty legs proven in a throwaway pen; the key asked before a build equals the key that build writes, asking stages no shadow even against a read-only tree and takes no build lock, six plants turned hit to miss and were lifted again, and unkeyable stands apart from miss in four causes each naming its own"

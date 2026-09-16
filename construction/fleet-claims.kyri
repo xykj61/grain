@@ -58,12 +58,6 @@ stamp 20260916.093812
 epoch 1789565892
 paths tools/fixtures/s/shim_reason_scan.sh tools/fixtures/s/shim_reason_control.sh construction/REDS.md
 what REDS %768 booked unsaid_rostered at 1239 against 922 and concluded the growth was the tree's own, proven by running the elder scan on today's tree. Run the other way -- today's scan against the tree at 95d1e5ae7 -- it answers 922 exactly, so the instrument and ceiling were both honest. The 317 arrived because 106d182b4 converted 2,773 assert messages across 979 files from ${r.out} to ${r.out_brief}, and the unsaid parser's interpolation regex ends at (out|err)} so it reads the bounded field as no report at all. Crediting _brief, today's tree reads 903 rostered and 6144 unrostered -- both UNDER their ceilings. Teach the regex the bounded spelling, lower both ceilings to the new readings, and prove both ways in the control.
-claim bakery-rye-key-without-building
-seat bakery
-stamp 20260916.094320
-epoch 1789566200
-paths rye/src/main.rye tools/r/rye_key_witness.rish tools/fixtures/r/rye_key_control.sh
-what The card's open ask in my own lane: whether today's sources would speak the standing key -- a rye mode computing a key without building. rye/src/main.rye computes the build-receipt key inside bridge_to_zig, entangled with staging .zig shadows, taking the build lock, deleting the standing receipt, and spawning the toolchain, so the only way to ask whether a binary is current is to attempt a full build. %746 says every ship owes its rishi binary a rebuild and a stale one answers NoSuchField on a field a peer landed hours ago. Add a stage bool to bridge_rye_tree so the closure walk hashes without writing, add a key_only path through bridge_to_zig so ONE key computation serves both verbs rather than two that can drift, and seat rye key <file.rye> -femit-bin=<path> printing verdict=hit|miss|unkeyable with the computed key and the standing one, writing nothing and spawning nothing. Pen proves both sides, including that the key rye key prints equals the key a build writes.
 claim pheromone-tokens-ceiling-records
 seat pheromone
 stamp 20260916.102127
