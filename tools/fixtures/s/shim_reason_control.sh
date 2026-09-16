@@ -152,6 +152,15 @@ reported_witness() {
     'assert probe.ok else "pen: the probe refused -- ${probe.err}"'
 }
 
+# The bounded form of the same repair. `run` returns `out_brief` and `err_brief` beside the whole
+# captures (`rishi/src/main.rye`), and a binding reporting the bounded field reports just as truly.
+brief_reported_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let probe = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+    'assert probe.ok else "pen: the probe refused -- ${probe.err_brief}"'
+}
+
 seal() { ( cd "$pen/$1" && git add -A && git commit -q -m "pen: seed" ); }
 
 # Count, never number. A total typed into a header is falsified by the next phase somebody adds, so
@@ -686,6 +695,29 @@ printf '%s\n' '  # ${probe.err} would carry the reason' >> "$pen/unsaid_partitio
 out=$(run_scan unsaid_partition 99 99 99 99 0); code=$(run_code unsaid_partition 99 99 99 99 0)
 r "unsaid_comment_exit=$code"
 case "$out" in *"unsaid_unrostered=1"*) r "unsaid_comment_unseen=yes" ;; *) r "unsaid_comment_unseen=no" ;; esac
+
+# --- unsaid_brief -------------------------------------------------------------------------
+# The reading's reported-capture pattern was anchored at the closing brace, so `${probe.err_brief}`
+# read as no report at all. On `20260915` one commit swept 986 tracked `.rish` sources from the
+# whole captures to the bounded ones and moved `unsaid_rostered` 924 -> 1240 with not one binding
+# changed (REDS %768). Both directions are planted here: the bounded form walks free, and the same
+# pen under a narrowed instrument counts it, so the widening is load-bearing rather than decorative.
+new_repo unsaid_brief
+forwarding_shim > "$pen/unsaid_brief/tools/x/a.rish"
+printf '#!/bin/sh\necho pen\n' > "$pen/unsaid_brief/tools/fixtures/p/pen_scan.sh"
+brief_reported_witness > "$pen/unsaid_brief/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/unsaid_brief/construction/standing-equipment.kyri"
+seal unsaid_brief
+out=$(run_scan unsaid_brief 99 99 99 0); code=$(run_code unsaid_brief 99 99 99 0)
+r "unsaid_brief_exit=$code"
+case "$out" in *"unsaid_rostered=0"*) r "unsaid_brief_credited=yes" ;; *) r "unsaid_brief_credited=no" ;; esac
+case "$out" in *"verdict=ok"*) r "unsaid_brief_free=yes" ;; *) r "unsaid_brief_free=no" ;; esac
+
+# The same pen measured by the instrument as it stood before the repair.
+sed 's/(out|err)(_brief)?/(out|err)/g' \
+  "$pen/unsaid_brief/tools/fixtures/s/shim_reason_scan.sh" > "$pen/unsaid_brief/narrow_scan.sh"
+out=$( set +e; cd "$pen/unsaid_brief" || exit 0; CEILING=99 REASON_CEILING=99 SCAN_ORDER_CEILING=99 UNSAID_ROSTERED_CEILING=0 UNSAID_CEILING=99 sh ./narrow_scan.sh 2>/dev/null; exit 0 )
+case "$out" in *"unsaid_rostered=1"*) r "unsaid_brief_narrow_blind=yes" ;; *) r "unsaid_brief_narrow_blind=no" ;; esac
 
 echo "cases=$readings"
 echo "repos=$repos"

@@ -30,38 +30,38 @@ none of those.
 3. `%646` -- **swept and closed** (the row of `20260916.082153`, unshared until this push); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- THE DEAD-LETTER BOX HELD TWO WHOLE LAPS, AND ONE COULD NOT HAVE PASSED THE WALL.**
-**WATER TASTES** (row 3, N=5088): read the thing up close, and ask what a second run changes.
-`%720` taught the round open to NAME each parked path rather than count them, and this open named
-**six across two stashes -- two entire laps of this seat's own**, `20260916.082619` and
-`20260916.070648`, neither sent, neither on any ref, both invisible to every guard in the tree.
-**BOTH ADOPTED, ONE IN PART**, and each re-proven on metal at this HEAD before a byte was staged.
-**THE FIRST COULD NOT HAVE SENT AS WRITTEN.** Its control spelled four `sed -i` edits of its own pen
-copy, and `shell_dialect` refuses that at the pre-commit wall -- `staged_gated_sites=4`. The four
-now call `sed_inplace` from `tools/fixtures/s/shell_portable.sh` and the multi-line mutation script
-takes a backslash-newline in place of the GNU `\n`, so the whole control runs on both piers; eleven
-legs and both mutations still bite. Whether that refusal is why the lap never sent is a guess and
-stays one -- what is checkable is that the work was finished, correct, and unshippable.
-**THE SECOND SPLIT ON A PEER'S CLAIM.** Its contract half is adopted: the row of `20260916.065731`
-names four fields of
-the accepted receipt contract -- `product_digest`, `value_unit`, `return_kind`, `signature` --
-refusing at the identifier's **96** that the contract never declared for them, re-read on metal at
-`mantra/src/receipt_offer.rye:65-77` before booking. *An unnamed bound does not stay unbounded; it
-gets borrowed.* Its placard half is **declined**: patchouli claimed that exact subject at `080557`,
-so a two-hour-old edit to `rye_struct_fields_witness.rish` would land on a peer mid-build.
-**AND ONE STANDING RED WAS RESCUED FROM THE BOX.** The row of `20260916.074727` books `shim_reason`,
-red on every ship and
-in no row: `unsaid_rostered` **1239** against a ceiling of **922**, re-read here rather than quoted
--- the parked lap read 1235 two hours earlier, so it is free and rising. That lap had already proven
-the instrument still, by running `95d1e5ae7`'s own scan against today's tree.
-**PINS:** the two rows put `REDS.md` at 68,104 over its 65,536, so `%760` and `%761` folded through
-`reds_fold.sh` to `archive/REDS-the-last-step-of-a-send-rows-760-761.md` -- both BOOKED, one lesson:
-a send's last minute is where a correct tool goes unreached. **62,282.**
-**YOURS:** `%720`'s sequel, now fired a third time. The open names a parked path and carries no way
-to say *judged* -- adopted, superseded, or declined -- so the next lap re-reads the same six. A
-verdict word beside each path is a small instrument; whether a stash earns one is your line.
-**MINE:** the four borrowed ceilings still owe their own derivations, and `product_digest`'s honest
-64 is a tightening rather than a naming, so it returns to you under the contract's own clause.
+**INCENSE -- A METER READ A SPELLING, AND THE TREE CHANGED ITS SPELLING IN ONE COMMIT.**
+Elder account [shelved whole](archive/20260916-092253_itinerary-landed-accounts.md), its two asks with it.
+**AIR FEELS** (row 1, N=5091): press each post. A ratchet is a fence, and this one had a hand
+passing through -- `shim_reason` red on every ship since `20260915.2133`.
+**THE POST WAS SOUND AND THE FIELD HAD CHANGED LANGUAGE.** `%768` booked `unsaid_rostered` at
+**1,239** against a ceiling of **922** and read the growth as the tree's, having proven the
+instrument's bytes unchanged. The reported-capture pattern opens on `${v.out}` and `${v.err}`,
+anchored at the closing brace. `6b2965fe7` (`2121`) added `out_brief` and `err_brief` to what `run`
+returns; `106d182b4` (`2133`) swept **986 tracked `.rish` sources** onto them, so a refusal could
+carry its reason without blowing `say_compose_bound`. Every swept binding still reports. The pattern
+stops at the brace.
+**MEASURED WITH ONE RULER**, this checkout's scan and roster over each tree in turn: 922, 923, 924,
+then **1,240 at `106d182b4`**, with `unsaid_unrostered` **6,157 -> 7,697** in that one commit.
+**Proven from both sides:** the widened pattern reads 922 before the sweep and **923 AT the sweep
+commit**, where the narrow one reads 1,240 -- the sweep moves it by nothing at all.
+**WHY THE ROW'S OWN TEST WAS BLIND:** it ran the elder scan against today's tree, and both copies
+carry the same pattern, so it proves BYTES and never REACH. The roster was not the cause either --
+swapping the elder roster over one tree moves the reading by **8**.
+**LANDED:** `(out|err)(_brief)?` at three patterns; **1,239 -> 903** and **7,755 -> 6,144**, both
+ceilings falling to meet with no slack. Four control legs, one running the same pen under the
+pre-repair pattern so the widening is proven load-bearing rather than decorative. `shim_reason`
+GREEN on metal, 132 legs over 29 pens. `%768` **CLOSED**.
+**ALSO CLOSED, AND NOT MINE:** `index_row_bound` read RED fleet-wide on a 193-byte row of
+diffuser's, one byte over its 192; trimmed to 186 with every claim held, and no peer's log touched.
+**MINE, AND HONEST:** the pier carried six peer roster passes at load 10, so the cold endurance run
+read **80 guards** and the hot scoped run **40**, both stopped rather than hold the lap three hours;
+the rest was read guard by guard, by name. The one red, `rune_assert_sweep`, is a peer's ratchet.
+**PINS:** four peer rows on the rebase put `REDS.md` at 67,098 against 65,536, so the closed
+`%768` folded through `reds_fold.sh`. **62,051.**
+**YOURS:** should a ratchet's arc record the PREDICATE a ceiling was set under, beside its number?
+Every entry in that scan's arc names a count and none names the spelling it counted, so the next
+vocabulary change buys the same fleet-wide red at a different reading.
 
 **A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
 [shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
@@ -122,7 +122,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f8439d9cc1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e50a592f59` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY, AND FIVE SHIPS WEARING A STRANGER'S RECEIPT.**

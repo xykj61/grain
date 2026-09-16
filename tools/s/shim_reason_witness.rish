@@ -225,6 +225,14 @@ assert control.out contains "late_say_still_counted=yes" else "shim-reason: a bi
 assert control.out contains "late_say_not_double_counted=yes" else "shim-reason: the third and fourth shapes must partition -- one fault paying twice makes one repair look like two"
 assert control.out contains "unsaid_comment_exit=1" else "shim-reason: a comment mentioning the capture cannot report it to a reader"
 assert control.out contains "unsaid_comment_unseen=yes" else "shim-reason: commented interpolation must leave the binding counted as unsaid"
+
+# The bounded capture, and the instrument that could not read it (REDS %768). One commit swept 986
+# tracked sources from `${v.err}` to `${v.err_brief}` and moved this reading by 316 with not one
+# binding changed, because the pattern was anchored at the closing brace.
+assert control.out contains "unsaid_brief_exit=0" else "shim-reason: a binding reporting the bounded capture must free the pen at a ceiling of zero"
+assert control.out contains "unsaid_brief_credited=yes" else "shim-reason: ${probe.err_brief} reports the run, so the binding must not be counted unsaid"
+assert control.out contains "unsaid_brief_free=yes" else "shim-reason: the bounded-capture pen must read verdict=ok"
+assert control.out contains "unsaid_brief_narrow_blind=yes" else "shim-reason: the same pen under the pre-repair pattern must count the binding, or the widening is decorative rather than load-bearing"
 assert scan.out contains "unsaid_rostered_ceiling=" else "shim-reason: the fourth shape's rostered ceiling must be named in the census, or a reading nobody can see is a reading nobody can lower"
 assert scan.out contains "unsaid_ceiling=" else "shim-reason: the fourth shape's residue ceiling must be named in the census"
 
