@@ -50,7 +50,23 @@ assert head.ok else "mantra-annotate: the module head and the module disagree --
 assert head.out contains "container_seen=1" else "mantra-annotate: the Weave container was not found, so the operation count is a reading of nothing"
 assert head.out contains "head_missing=0" else "mantra-annotate: an operation of Weave stands unnamed in the module head"
 assert head.out contains "head_stale=0" else "mantra-annotate: the module head names an operation the module no longer publishes"
+# The head's OTHER enumeration, read from 20260916: `Diff` is the one value a caller builds by
+# hand, and `replaces` then `after` landed on it while the head went on calling the insert
+# anchor a seam rather than a lap. A field arriving is exactly when a head goes stale.
+assert head.out contains "diff_container_seen=1" else "mantra-annotate: the Diff container was not found, so the field count is a reading of nothing"
+assert head.out contains "diff_missing=0" else "mantra-annotate: a field of Diff stands unnamed in the module head"
+assert head.out contains "diff_stale=0" else "mantra-annotate: the module head names a field Diff no longer declares"
 assert head.out contains "verdict=ok" else "mantra-annotate: the head scan must reach its own verdict"
+
+say "mantra-annotate: breaking the head reader in a throwaway pen, seventeen ways..."
+# The head scan shipped with no control from %506 until now: four witnesses asserted its
+# verdict, so every leg proved it PASSES and none proved it BITES. Each refusal below is
+# planted and then LIFTED, so a bite is always shown beside the same file answering ok.
+let head_control = run ["sh" "tools/fixtures/m/mantra_weave_head_control.sh"]
+assert head_control.ok else "mantra-annotate: the head control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${head_control.out_brief}"
+assert head_control.out contains "verdict=ok" else "mantra-annotate: a planted head case behaved wrongly -- ${head_control.out_brief}"
+assert head_control.out contains "failed=0" else "mantra-annotate: a planted head case behaved wrongly -- ${head_control.out_brief}"
+assert head_control.out contains "behaviors=17" else "mantra-annotate: the head control ran a different number of behaviors than this rung names -- ${head_control.out_brief}"
 
 say "mantra-annotate: building the witness against the real module..."
 let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_annotate_witness.rye -femit-bin=${bin}"]

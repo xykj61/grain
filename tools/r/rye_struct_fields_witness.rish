@@ -37,8 +37,11 @@ let line_fields = trim line.out
 # It took `run` on 20260907.173200, when document order moved out of `LineId` into `Place`:
 # every line of one `apply` carries one run, so a hand's whole paragraph sorts as a block
 # and the site tie is broken once for the run rather than at each line inside it.
+# It took `ord` on 20260916, the order key held apart from the identity `pos` and `site`
+# spell, so a line can be PLACED without being RENAMED -- which is what lets an insert sit
+# between two others. A line written before the v3 record carries `ord == pos`.
 # The ORDER is held as hard as the count, since a reorder is a silent wire change.
-assert line_fields == "text gen pos site run" else "rye-struct-fields: Line no longer reads text gen pos site run -- ${line_fields}"
+assert line_fields == "text gen pos site run ord" else "rye-struct-fields: Line no longer reads text gen pos site run ord -- ${line_fields}"
 
 let weave = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Weave"]
 assert weave.ok else "rye-struct-fields: the reader refused on Weave -- ${weave.out_brief}"
@@ -54,7 +57,13 @@ assert diff.ok else "rye-struct-fields: the reader refused on Diff -- ${diff.out
 let diff_fields = trim diff.out
 # Diff took `site` first on the same lap -- the hand that authored the edit, stamped on every
 # insert. It sits on the edit rather than on the weave, so a merge has no site to reconcile.
-assert diff_fields == "site inserts deletes" else "rye-struct-fields: Diff no longer reads site inserts deletes -- ${diff_fields}"
+# It took `replaces` and then `after` by 20260916, both optional with `= &.{}` defaults so a
+# caller building a Diff by hand still compiles. `replaces` pairs each insert with the line it
+# stands in for, which is what lets a replacement inherit a place; `after` names the kept line
+# each insert FOLLOWS, which is the diff anchor this rung's own head recorded as waiting on a
+# lock with no bolt in it (REDS %500). Both landed and this placard stayed behind for a day,
+# hidden underneath `Line`'s own drift -- one assert refusing before the other could be read.
+assert diff_fields == "site inserts deletes replaces after" else "rye-struct-fields: Diff no longer reads site inserts deletes replaces after -- ${diff_fields}"
 
 let store = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/store.rye" "Store"]
 assert store.ok else "rye-struct-fields: the reader refused on Store -- ${store.out_brief}"
