@@ -29,6 +29,29 @@
 #     manifest roof was declared equal to the cargo roof while needing three
 #     bytes more per line. Both refused honestly and both refused LATE, at a
 #     wall nothing had declared.
+# (5) Same-name WORD roofs (`20260915.174535`): a const whose value is a quoted
+#     word -- `amphora-v1`, `plain-bytes` -- is read by the same law reading (1)
+#     states and by none of its regexes, because a word const spells no width.
+#     These are the WIRE WORDS: the grammar name a pour writes and a parse
+#     refuses on, and the cargo mark a listing is read by. `vessel_format` is
+#     spelled in `vessel_core.rye` (the reader's wall) and again in `src/main.rye`
+#     (the writer), and Zig forbids `src/` importing its parent, so the second
+#     spelling is structural rather than careless. Drift there writes a vessel
+#     this room's own verifier refuses -- the version refusal proven on
+#     `20260913` standing on a word held still by nothing.
+#
+# A ROOF IS A FILE, NOT A PATH (`20260915.174535`). `amphora/src/manifest_entry.rye`
+# is a SYMLINK to `amphora/manifest_entry.rye`, and a recursive grep follows it,
+# so one file answered as two roofs. Measured before the repair: of six families
+# reading (1) discovered, THREE -- max_listed_names, max_mark_len, max_name_len --
+# were that one file compared with itself, reporting `declarations=2 signatures=1
+# status=agree` about an agreement no divergence could ever break; and
+# digest_hex_len reported five declarations across four real roofs. That is REDS
+# `20260911.055500` exactly, one reading over, where a member declared twice
+# passed for a group compared across names. Every family now prints `roofs`, the
+# count of DISTINCT FILES by inode, and a family standing on one file reads
+# `one_file` rather than `agree` -- honest, lawful, and never again mistaken for
+# a proof.
 #
 # Hardcodes no declaration count. Discovers under AMPHORA_BOUNDS_ROOT
 # (default: amphora).
@@ -75,6 +98,7 @@ fi
 ROOT=${AMPHORA_BOUNDS_ROOT:-amphora}
 SEATED_NAMES="max_vessel_len max_cargo digest_hex_len"
 FAIL=0
+ONE_FILE=0
 
 if ! test -d "$ROOT"; then
   echo "verdict=misread"
@@ -123,6 +147,18 @@ echo "same_name_seated=$(printf '%s' "$SEATED_NAMES" | wc -w | tr -d ' ')"
 echo "same_name_discovered=$(printf '%s' "$DISCOVERED" | wc -w | tr -d ' ')"
 echo "same_name_read=$(printf '%s' "$NAMES" | wc -w | tr -d ' ')"
 echo "same_name_unseated=${UNSEATED:-none}"
+
+# Distinct FILES among the paths in a `path:line:text` listing, by inode, so a
+# symlinked module counts once. `ls -Li` follows the link and prints the target's
+# serial number; two paths to one file share it, and the room is one filesystem.
+roof_count() {
+  cut -d: -f1 <"$1" \
+    | sort -u \
+    | while IFS= read -r f; do ls -Li "$f" 2>/dev/null | awk '{ print $1 }'; done \
+    | sort -u \
+    | grep -c . \
+    || true
+}
 
 # Collect matching const lines for one identifier into TMP (path:line:text).
 collect_name() {
@@ -261,6 +297,9 @@ for name in $NAMES; do
     continue
   fi
 
+  ROOFS=$(roof_count "$TMP")
+  echo "bound_${name}_roofs=${ROOFS}"
+
   SIGS=$(sed -E "s/^[^:]+:[0-9]+:(pub )?const ${name}: (u[0-9]+) = ([0-9]+);/\\2=\\3/" "$TMP" | sort -u)
   SIG_COUNT=$(printf '%s\n' "$SIGS" | sed '/^$/d' | wc -l | tr -d ' ')
   echo "bound_${name}_signatures=${SIG_COUNT}"
@@ -269,11 +308,18 @@ for name in $NAMES; do
   if [ "$SIG_COUNT" -ne 1 ]; then
     echo "bound_${name}_status=diverge"
     FAIL=1
+  elif [ "$ROOFS" -lt 2 ]; then
+    # One file reached by two paths agrees with itself. Say so rather than
+    # spending the word `agree` on a comparison that never happened.
+    echo "bound_${name}_status=one_file"
+    ONE_FILE=$((ONE_FILE + 1))
   else
     echo "bound_${name}_status=agree"
   fi
   rm -f "$TMP"
 done
+
+echo "same_name_one_file=${ONE_FILE}"
 
 # Alias value groups -- same number under different names (width free).
 # Format: group_label:name1,name2,name3
@@ -527,6 +573,78 @@ else
   fi
 fi
 rm -f "$COVER_HITS"
+
+# Reading (5) -- same-name WORD roofs. A const whose value is a quoted word
+# carries no spelled width, so every regex above steps over it, while the law
+# reading (1) states -- one name across two roofs either agrees or is doing two
+# jobs -- covers it exactly. These are the wire words: the grammar name a pour
+# writes and a parse refuses on, and the mark a listing is read by.
+#
+# Wholly DERIVED, with no seated list, for the reason reading (1)'s roster was
+# derived: a word family born tomorrow would otherwise read GREEN here forever.
+# And `roofs` is read BEFORE agreement, so a symlinked module never passes for
+# two spellings.
+word_names() {
+  grep -R -n -E --include='*.rye' \
+    '^(pub )?const [a-z_][a-z0-9_]*(: \[\]const u8)? = "[^"]*";' "$ROOT" 2>/dev/null \
+    | grep -Ev '^[^:]+:[0-9]+:[[:space:]]*//' \
+    | sed -E 's|^([^:]+):[0-9]+:(pub )?const ([a-z_][a-z0-9_]*).*|\3 \1|' \
+    | sort -u \
+    | awk '{ print $1 }' \
+    | uniq -c \
+    | awk '$1 > 1 { print $2 }' \
+    || true
+}
+
+collect_word() {
+  grep -R -n -E --include='*.rye' \
+    "^(pub )?const $1(: \[\]const u8)? = \"[^\"]*\";" "$ROOT" 2>/dev/null \
+    | grep -Ev '^[^:]+:[0-9]+:[[:space:]]*//' \
+    >"$2" || true
+}
+
+WORD_NAMES=$(word_names | sort -u | paste -sd' ' -)
+WORD_READ=0
+WORD_AGREE=0
+WORD_ONE_FILE=0
+WORD_FAIL=0
+
+for name in $WORD_NAMES; do
+  WTMP=$(mktemp)
+  collect_word "$name" "$WTMP"
+  WORD_READ=$((WORD_READ + 1))
+
+  WCOUNT=$(wc -l <"$WTMP" | tr -d ' ')
+  WROOFS=$(roof_count "$WTMP")
+  echo "word_${name}_declarations=${WCOUNT}"
+  echo "word_${name}_roofs=${WROOFS}"
+
+  WVALS=$(sed -E "s/^[^:]+:[0-9]+:(pub )?const ${name}(: \[\]const u8)? = \"([^\"]*)\";/\\3/" "$WTMP" | sort -u)
+  WVAL_COUNT=$(printf '%s\n' "$WVALS" | sed '/^$/d' | wc -l | tr -d ' ')
+  echo "word_${name}_values=$(printf '%s\n' "$WVALS" | sed '/^$/d' | paste -sd, -)"
+
+  if [ "$WVAL_COUNT" -ne 1 ]; then
+    echo "word_${name}_status=diverge"
+    WORD_FAIL=1
+  elif [ "$WROOFS" -lt 2 ]; then
+    echo "word_${name}_status=one_file"
+    WORD_ONE_FILE=$((WORD_ONE_FILE + 1))
+  else
+    echo "word_${name}_status=agree"
+    WORD_AGREE=$((WORD_AGREE + 1))
+  fi
+  rm -f "$WTMP"
+done
+
+echo "words_read=${WORD_READ}"
+echo "words_agree=${WORD_AGREE}"
+echo "words_one_file=${WORD_ONE_FILE}"
+if [ "$WORD_FAIL" -ne 0 ]; then
+  echo "words_status=diverge"
+  FAIL=1
+else
+  echo "words_status=agree"
+fi
 
 if [ "$FAIL" -ne 0 ]; then
   echo "verdict=misread"

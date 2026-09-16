@@ -52,6 +52,7 @@ say "copy-lag: Lens TAME -- safety first: sameness held by the filesystem is sam
 let scan = run ["sh" "tools/fixtures/c/copy_lag_scan.sh"]
 say scan.out
 assert scan.ok else "copy-lag: a copy has fallen behind the file its siblings link -- read the scan's own detail lines"
+assert scan.out contains "fixtures_read_past=" else "copy-lag: the reading must say how many planted paths it read past"
 assert scan.out contains "split_canon=0" else "copy-lag: a basename whose symlinks name two files has no one canon"
 assert scan.out contains "verdict=ok" else "copy-lag: the scan must balance before it is believed"
 say "field GREEN -- every copy is either its own module or a named, priced lag under the ceiling"
@@ -90,7 +91,12 @@ assert control.out contains "empty_refuses=yes" else "copy-lag: a tree with no R
 assert control.out contains "no_checkout_says_so=yes" else "copy-lag: a root that is not a checkout must say so rather than read clean"
 assert control.out contains "no_checkout_named=yes" else "copy-lag: the refusal must name which instrument could not run"
 assert control.out contains "no_checkout_refuses=yes" else "copy-lag: an instrument that could not run must exit non-zero"
+assert control.out contains "fixture_plant_unread=yes" else "copy-lag: a plant under tools/fixtures is built to differ and must not be read as drift"
+assert control.out contains "fixture_plant_counted=yes" else "copy-lag: a read-past path must be counted, since an exclusion nobody can see is a door"
+assert control.out contains "fixture_plant_free=yes" else "copy-lag: a plant read past must leave the verdict alone"
+assert control.out contains "outside_fixtures_counted=yes" else "copy-lag: the same bytes in an ordinary room are still a lag, so the filter reads a path rather than a shape"
+assert control.out contains "outside_fixtures_zero=yes" else "copy-lag: a tree with no fixture plants must read the exclusion at zero"
 assert control.out contains "control_verdict=ok" else "copy-lag: the control must agree with itself"
-say "RED and GREEN paths proven -- 31 behaviors on real repositories, the ceiling shown from both sides"
+say "RED and GREEN paths proven -- 36 behaviors on real repositories, the ceiling and the plant exclusion shown from both sides"
 
 say "GREEN: copy-lag -- no copy has quietly outlived the file its siblings link."

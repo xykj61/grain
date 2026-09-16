@@ -1,0 +1,5 @@
+//! Plant -- a wire word spelled in two roofs, diverging (positive control).
+//! Every regex of readings (1) through (4) steps over this shape, because a
+//! word const spells no width; the writer would pour a grammar its own reader
+//! refuses by name.
+pub const vessel_format = "amphora-v1";
