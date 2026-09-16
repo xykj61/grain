@@ -6,6 +6,10 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260916.065731` -- purely additive. Four ceiling rows joined the bounds table and two
+paragraphs name them as borrowed; no elder row, number, or sentence was removed, and nothing this
+tree admits or refuses moved. The reasoning is booked in `construction/REDS.md` at that stamp.
+
 **Falsifier:** If one replay cannot produce both product readings below from the same admitted facts, or either product must import the other's projection type, this contract is wrong.
 
 ## The promise
@@ -77,9 +81,32 @@ Tally declares these ceilings before Mantra appends anything:
 | purpose | 80 | ASCII bytes |
 | value basis | 120 | ASCII bytes |
 | value amount | 9,000,000,000 | smallest declared units |
+| product digest | 96 | ASCII bytes -- borrowed |
+| value unit | 96 | ASCII bytes -- borrowed |
+| return kind | 96 | ASCII bytes -- borrowed |
+| signature | 96 | ASCII bytes -- borrowed |
 | receipt facts in this replay | 1 | fact |
 | receipt-card width | 72 | cells |
 | receipt-card height | 18 | rows |
+
+**Four of those rows are borrowed rather than derived, and they say so** (`20260916.065731`). The
+contract declared eight ceilings while `ReceiptOfferFact` publishes fifteen fields, so admission
+reached for the nearest declared number: `mantra/src/receipt_offer.rye` refuses `product_digest`,
+`value_unit`, `return_kind`, and `signature` at the 96 this table declares for *each identifier*,
+and `product_digest` travels inside an array named `identifiers`. The four rows above write the
+number already enforced, so every admission and every refusal stands exactly where it stood. What
+they buy is a reader meeting `ceiling=96` on a refusal line and finding that number in the contract rather than
+inferring it from a neighbour's row.
+
+**Each of the four still owes its own derivation**, and the honest shapes differ. `product_digest`
+is a SHA-256 hex digest of exactly **64** bytes, so its bound is an exact length rather than a
+ceiling, and moving it to 64 would refuse the 65-to-96 range that passes today -- a tightening, and
+the one change here that alters what the product admits. `value_unit` carries a unit name plus the
+mandatory `-simulated` suffix and measures **18** in the fixture; `return_kind` measures **14**;
+`signature` measures **20** as a fixture signature and will measure something else entirely when a
+real detached signature arrives, which is why guessing it small now would cost more than the
+borrow does. Choosing those four numbers changes what the product admits, so it returns to Keaton
+under this page's own closing clause.
 
 Admission refuses before durable state changes when a required field is empty, text is non-ASCII, a ceiling is exceeded, the schema is unknown, the signature fails, `expires_at` is not later than `issued_at`, or `value_unit` omits `-simulated`. A refusal names `field`, `value`, `ceiling`, `unit`, and `reason` where a ceiling applies; other refusals name the field and reason.
 

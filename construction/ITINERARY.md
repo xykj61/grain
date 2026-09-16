@@ -28,34 +28,48 @@ none of those.
 0. `%745` -- the `tools/am/` success-path leak is closed (`20260916.012247`); the refusal half waits on bakery's `make-pen`.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
-3. `%646` -- **swept and closed** (`%766`, `20260916.082153`); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
+3. `%646` -- **swept and closed** (the row of `20260916.082153`, unshared until this push); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES.**
-`%646` booked the precondition sweep off a 5-in-40 sample. Counted, the class came out as **three
-shapes** and the sample could see one. The submodule half was already swept -- 40 of 43
-`gratitude/tigerbeetle` dependents skip honestly, and the three that do not are a `say` line, a
-correct presence report, and a witness retired from the living suite by name on `20260711`. The
-live half: **nine witnesses** under `tools/gen/chapter/` bind
-`brushstroke/bin/brushstroke-wayland-seed`, run `test -x` on it, and assert that call's exit -- a
-gitignored build output, none of the nine rostered, `%646`'s shape exactly. All nine sweep to the
-worked example's idiom (`say SKIP`, `say GREEN`, `exit 0`) and all nine exit 0 on this clone.
-**THE THIRD SHAPE ONLY RUNNING COULD FIND.** Five reached their skip and **four still refused** --
-three on an unset `WAYLAND_DISPLAY`, which every ship in this fleet lacks, and a fourth that was no
-precondition at all: `one_graph_dag_paper_witness.rish` greps `construction/SHRED_PREP.md` for two
-shed elders whose rows **folded** to `archive/SHRED_PREP-second-mitra-shed-record.md`, so the grep
-had read an absent record since the fold and nobody heard it, unrostered. Repointed.
-**A SKIP THAT ALWAYS FIRES PROVES NOTHING**, so the control plants the artifact, sets the display,
-and asserts the swept witness walks PAST the skip and refuses on its own first real claim.
-**11 legs on real repositories in a throwaway pen, two mutations bitten** -- one of them the
-root-deny trap: `.gitignore` denies the root with `/*`, so `git check-ignore` answers YES to every
-bare word, and a scan trusting it alone reads a variable name as a build output. `hard` read **25**
-before that guard and **7** after.
-**THE METER:** `tools/fixtures/p/precondition_skip_scan.sh` reads 21 sites, 14 skip, 7 hard, and
-reports **18 unresolved** rather than guessing at them. `precondition_skip` is rostered at `tier lap`.
-**YOURS:** the nine are rostable now and none is rostered. A GNOME Wayland ship would hear them
-where this pier skips; whether that earns nine roster rows is a fleet-wide cost only you should
-name.
+**INCENSE -- THE DEAD-LETTER BOX HELD TWO WHOLE LAPS, AND ONE COULD NOT HAVE PASSED THE WALL.**
+**WATER TASTES** (row 3, N=5088): read the thing up close, and ask what a second run changes.
+`%720` taught the round open to NAME each parked path rather than count them, and this open named
+**six across two stashes -- two entire laps of this seat's own**, `20260916.082619` and
+`20260916.070648`, neither sent, neither on any ref, both invisible to every guard in the tree.
+**BOTH ADOPTED, ONE IN PART**, and each re-proven on metal at this HEAD before a byte was staged.
+**THE FIRST COULD NOT HAVE SENT AS WRITTEN.** Its control spelled four `sed -i` edits of its own pen
+copy, and `shell_dialect` refuses that at the pre-commit wall -- `staged_gated_sites=4`. The four
+now call `sed_inplace` from `tools/fixtures/s/shell_portable.sh` and the multi-line mutation script
+takes a backslash-newline in place of the GNU `\n`, so the whole control runs on both piers; eleven
+legs and both mutations still bite. Whether that refusal is why the lap never sent is a guess and
+stays one -- what is checkable is that the work was finished, correct, and unshippable.
+**THE SECOND SPLIT ON A PEER'S CLAIM.** Its contract half is adopted: the row of `20260916.065731`
+names four fields of
+the accepted receipt contract -- `product_digest`, `value_unit`, `return_kind`, `signature` --
+refusing at the identifier's **96** that the contract never declared for them, re-read on metal at
+`mantra/src/receipt_offer.rye:65-77` before booking. *An unnamed bound does not stay unbounded; it
+gets borrowed.* Its placard half is **declined**: patchouli claimed that exact subject at `080557`,
+so a two-hour-old edit to `rye_struct_fields_witness.rish` would land on a peer mid-build.
+**AND ONE STANDING RED WAS RESCUED FROM THE BOX.** The row of `20260916.074727` books `shim_reason`,
+red on every ship and
+in no row: `unsaid_rostered` **1239** against a ceiling of **922**, re-read here rather than quoted
+-- the parked lap read 1235 two hours earlier, so it is free and rising. That lap had already proven
+the instrument still, by running `95d1e5ae7`'s own scan against today's tree.
+**PINS:** the two rows put `REDS.md` at 68,104 over its 65,536, so `%760` and `%761` folded through
+`reds_fold.sh` to `archive/REDS-the-last-step-of-a-send-rows-760-761.md` -- both BOOKED, one lesson:
+a send's last minute is where a correct tool goes unreached. **62,282.**
+**YOURS:** `%720`'s sequel, now fired a third time. The open names a parked path and carries no way
+to say *judged* -- adopted, superseded, or declined -- so the next lap re-reads the same six. A
+verdict word beside each path is a small instrument; whether a stash earns one is your line.
+**MINE:** the four borrowed ceilings still owe their own derivations, and `product_digest`'s honest
+64 is a tightening rather than a naming, so it returns to you under the contract's own clause.
+
+**A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
+[shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
+witnesses hard-asserted `test -x` on a gitignored build output and now take the honest skip; the
+scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guessing.
+**YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
+where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
 **PHEROMONE -- ONE ERROR NAME COVERED TWO CEILINGS, AND A PEER HAD SOLVED THE SHAPE FIRST.**
 Account [shelved whole](archive/20260916-074649_itinerary-landed-accounts.md).
@@ -107,7 +121,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2d8189c9cc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `547ac80c0e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
