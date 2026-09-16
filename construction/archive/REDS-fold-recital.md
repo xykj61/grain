@@ -782,3 +782,5 @@ at a closed fold.*
 *Rows %748 and %749 folded to [`REDS-two-moves-the-index-had-to-witness-rows-748-749.md`](REDS-two-moves-the-index-had-to-witness-rows-748-749.md) on `20260916.053504` -- both rows closed by asking the index what a hand had asked the filesystem.*
 
 *Rows %753 and %754 folded to [`REDS-a-reading-that-counts-its-own-prose-rows-753-754.md`](REDS-a-reading-that-counts-its-own-prose-rows-753-754.md) on `20260916.053524`, both **BOOKED** -- both are a proxy that stopped standing for its subject -- one read a file where its subject was a line, the other read an mtime where its subject was content.*
+
+*Rows %757-%759 folded to [`REDS-a-reading-that-answered-about-something-else-rows-757-759.md`](REDS-a-reading-that-answered-about-something-else-rows-757-759.md) on `20260916.062545`, **BOOKED** and **CLOSED** -- three instruments each answered a question beside the one asked -- an echoed capture, a removal inside a pen, and a hash read one step early.*

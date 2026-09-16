@@ -164,6 +164,8 @@ assert control.out contains "repoint_dry_names=yes" else "fold-shelf-link: the r
 assert control.out contains "repoint_dry_counts=yes" else "fold-shelf-link: a dry run must carry the count it would apply"
 assert control.out contains "repoint_dry_writes_nothing=yes" else "fold-shelf-link: a dry run must leave every byte where it found it"
 assert control.out contains "repoint_applied=yes" else "fold-shelf-link: the repointer must apply the correction the scan approved"
+assert control.out contains "repoint_apply_flag=yes" else "fold-shelf-link: the repointer must accept --apply, which is the flag its sibling's refusal message tells a reader to pass"
+assert control.out contains "repoint_bad_flag_refused=yes" else "fold-shelf-link: a genuine typo must still refuse by name rather than being swallowed by the new synonym"
 assert control.out contains "repoint_repairs_link=yes" else "fold-shelf-link: the depth-lost link must actually be repaired, not merely reported"
 assert control.out contains "repoint_spares_code_span=yes" else "fold-shelf-link: the SAME target quoted in backticks must survive byte for byte -- a row quoting a broken link is testimony about it"
 assert control.out contains "repoint_spares_stale=yes" else "fold-shelf-link: a stale reference resolving under neither correction must be left exactly alone, since moving it would be guessing"
@@ -171,5 +173,12 @@ assert control.out contains "repoint_leaves_green=yes" else "fold-shelf-link: th
 assert control.out contains "repoint_stale_still_counted=yes" else "fold-shelf-link: the stale class must still be reported after a repoint, or the repair looks like a repair of everything"
 assert control.out contains "repoint_idempotent=yes" else "fold-shelf-link: a second pass must find nothing to do -- a repointer that rewrites its own repair walks a file deeper every run"
 
-say "RED and GREEN paths proven -- 78 readings over 23 planted states, 22 of them real repositories in a throwaway pen and one deliberately not a repository at all, every refusal lifted in its own pen"
+# COUNTED OFF THE CONTROL, never recited. This line carried the literal 78 while the control
+# emitted 76, and nothing read the two against each other -- so two legs added on `20260916` made
+# the stale number accidentally true. A total inside a name stays at whatever it was the day
+# somebody typed it, which is the tree's own count-never-number law one room over.
+let affirmed = where (lines control.out) as l: l contains "=yes"
+let refused = where (lines control.out) as l: l contains "=no"
+let readings = (length affirmed) + (length refused)
+say "RED and GREEN paths proven -- ${readings} readings over 23 planted states, 22 of them real repositories in a throwaway pen and one deliberately not a repository at all, every refusal lifted in its own pen"
 say "GREEN: fold-shelf-link -- every shelf link reads from where the shelf stands."

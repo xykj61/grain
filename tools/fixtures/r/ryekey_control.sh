@@ -9,6 +9,16 @@
 # alone, and the flip must rebuild. The hit, the RYE_BUILD_FRESH bypass, the
 # no-emit and run exemptions, and two-build determinism are proven beside them.
 #
+# THE HIT SIDE EARNS THE SAME READING from `ryekey-v6` on. A key that misses on
+# everything is as useless as one that hits on everything. So a same-content
+# input reached by ANOTHER PATH must hit. One pinned toolchain and one standard
+# library each get two spellings here, and each leaves the key and the binary
+# alone. The row is stamped `20260916.023136`; `rye/src/main.rye` carries the
+# reason beside the key itself.
+#
+# Legs are counted by section. The labels below repeat 9 and 10 from an elder
+# lap, and they stay as written.
+#
 # Detectors, chosen for what they cannot confuse:
 #   built    = the stamp's bytes changed (a rebuild writes the new key), or for
 #              same-key legs, the binary's fractional mtime moved
@@ -146,15 +156,33 @@ k6=$(stamp)
 # --- leg 7: a forwarded flag misses ----------------------------------------------------------
 env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OReleaseSmall \
     || fail "flag-flip build failed"
-k7=$(stamp)
+k7=$(stamp); t7=$(btime)
 [ "$k7" != "$k6" ] || fail "a forwarded flag did not change the key"
 
-# --- leg 8: the toolchain PATH misses (same bytes, different name) ---------------------------
+# --- leg 8: the same toolchain reached by another path stays a HIT ---------------------------
+# The key holds the compiler's BYTES and never the path that reached it, so one pinned toolchain
+# wears as many spellings as its callers like and buys one build between them. Before `ryekey-v6`
+# this leg asserted the opposite, and four spellings of one compiler spoke four keys (%754).
 ln -s "$ZIG" "$PEN/zigalt"
 env RYE_ZIG="$PEN/zigalt" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" -OReleaseSmall \
     || fail "zig-path build failed"
 k8=$(stamp)
-[ "$k8" != "$k7" ] || fail "the toolchain path did not change the key"
+[ "$k8" = "$k7" ] || fail "another spelling of one toolchain changed the key"
+[ "$(btime)" = "$t7" ] || fail "another spelling of one toolchain rebuilt the binary"
+
+# --- leg 8b: the same library reached by another path stays a HIT ----------------------------
+# A pen directory whose entries point at the real library's resolved targets: identical content,
+# a different directory name. The key reads the sorted tree's bytes, so the build skips.
+mkdir "$PEN/libspell"
+for entry in "$REPO/rye/lib"/*; do
+    name=$(basename "$entry")
+    tgt=$(resolve_path "$entry") || fail "could not resolve rye/lib/$name"
+    ln -s "$tgt" "$PEN/libspell/$name"
+done
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/libspell" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    -OReleaseSmall || fail "library-spelling build failed"
+[ "$(stamp)" = "$k7" ] || fail "another spelling of one library changed the key"
+[ "$(btime)" = "$t7" ] || fail "another spelling of one library rebuilt the binary"
 
 # --- leg 9: same path and size, different toolchain bytes miss -------------------------------
 printf '#!/bin/sh\n# compiler-key-a\nexec "%s" "$@"\n' "$ZIG" > "$PEN/zigbytes"
@@ -273,6 +301,6 @@ env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extr
     || fail "positional-arg build failed"
 [ ! -f "$KEY" ] || fail "a positional argument still earned a receipt"
 
-echo "legs=19 all proven -- ten flips missed, including same-size compiler and library bytes and root and dependency source modes; the hit held, the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
+echo "legs=20 all proven -- ten flips missed, including same-size compiler and library bytes and root and dependency source modes; four hits held, among them one toolchain and one library reached by another path; the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"

@@ -111,8 +111,13 @@ const build_lock_max_wait_ms: u64 = 600_000;
 const build_lock_poll_ms: u64 = 50;
 
 /// The receipt key's domain separator, versioned so a future key shape can
-/// never collide with this one's stamps.
-const ryekey_marker = "ryekey-v5\x00";
+/// never collide with this one's stamps. Moved to v6 on `20260916` when the
+/// toolchain and library PATHS left the key below. The bump buys legibility
+/// rather than safety -- a changed input set already speaks a different digest
+/// and misses, which is the safe direction -- so what it actually names is the
+/// one rebuild every standing receipt takes on the lap this lands: 96 of them
+/// on this ship, each hitting again afterward.
+const ryekey_marker = "ryekey-v6\x00";
 
 /// A receipt stamp is two 64-hex lines -- the input key, then the emitted
 /// binary's own hash -- and this bound refuses to read a stamp-shaped file
@@ -428,23 +433,43 @@ fn bridge_to_zig(
     const extra: []const [:0]const u8 = if (args.len > 3) args[3..] else &.{};
 
     // The receipt's key opens here, fed in one fixed order so the same inputs
-    // always speak the same digest: marker, verb, toolchain, library, flags,
-    // then every closure source inside the bridge walk, then this binary's own
-    // bytes. The hasher always runs -- its cost is nanoseconds beside a read --
+    // always speak the same digest: marker, verb, the toolchain's bytes, the
+    // library's bytes, flags, then every closure source inside the bridge
+    // walk, then this binary's own bytes. The hasher always runs -- its cost is nanoseconds beside a read --
     // and whether the KEY is consulted is decided separately below.
     var hasher = Sha256.init(.{});
     hasher.update(ryekey_marker);
     hasher.update(zig_subcommand);
     hasher.update("\x00");
-    hasher.update(zig);
-    hasher.update("\x00");
-    // Hash the compiler itself. The fetch pin proves the installed archive at
-    // arrival, while this reading proves the executable used by THIS build.
-    // Path and size alone let a same-size replacement reuse an elder output.
+    // THE COMPILER JOINS BY ITS BYTES ALONE, never by the path that reached
+    // it. The fetch pin proves the installed archive on arrival; this reading
+    // proves the executable used by THIS build, since path and size alone let
+    // a same-size replacement serve an elder output. The path itself names how
+    // the compiler was found rather than what it compiled, so it stays out.
+    // Measured `20260916.030500` in a throwaway pen: one pinned toolchain
+    // reached four ways -- absolute, symlinked, relative, and the default
+    // resolution -- spoke four different keys and bought four full rebuilds,
+    // while the emitted binaries were byte identical at -OReleaseSmall.
     // A read refusal turns receipts off below rather than guessing.
     const zig_content_readable = hash_file_into(io, dir, zig, &hasher);
-    hasher.update(rye_lib);
-    hasher.update("\x00");
+    // The standard library joins the same way for the same reason: the sorted
+    // tree's bytes decide the build, and the directory holding them does not.
+    // Proven beside the toolchain in that pen -- an equivalent spelling of one
+    // library's content emitted identical bytes.
+    //
+    // WHAT STAYS, AND WHY IT IS NOT THE SAME THING. A closure source's path
+    // remains in the key, and each library entry keeps its own relative path
+    // and length: those are FRAMING, which is what stops two files blurring
+    // into one stream. What leaves is the ROOT each tree hangs from, which
+    // frames nothing and only names where a reader stood.
+    //
+    // THE COMPARISON WAS TAKEN WHERE THE OUTPUT IS STABLE. At -ODebug this
+    // toolchain is not reproducible at all: two builds of one unchanged source
+    // differed in 45,027 of 10,239,778 bytes, entirely in anonymous struct
+    // serial numbers (`__struct_15431` against `__struct_15413`). So a Debug
+    // receipt was already serving one of many equally valid outputs before
+    // this change, and dropping a path that reaches none of them takes
+    // nothing further away.
     const library_content_readable = hash_library_into(io, dir, rye_lib, garden, &hasher);
     for (extra) |flag| {
         hasher.update(flag);

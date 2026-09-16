@@ -37,6 +37,6 @@ let dry = run ["sh" "tools/f/fold_shelf_link_repoint.sh"]
 assert dry.ok else "fold-shelf-repoint: the dry run refused --\n${dry.out_brief}"
 # invariant: a dry run NEVER writes, so the standing guard must still read clean after it.
 let after = run ["sh" "tools/fixtures/f/fold_shelf_link_scan.sh"]
-assert after.out contains "verdict=ok" else "fold-shelf-repoint: the tree carries depth-lost links -- run the repointer with --apply"
+assert after.out contains "verdict=ok" else "fold-shelf-repoint: the tree carries depth-lost links -- run the repointer with --apply, or with no argument at all"
 
 say "GREEN: fold-shelf-repoint -- the scan computes the repair, the tool applies exactly that, and a dead link is left for a reader."
