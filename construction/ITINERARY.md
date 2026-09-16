@@ -91,57 +91,54 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `930ada2f12` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c4260fcd56` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
-**BAKERY -- THE TWO BINARIES EVERY GUARD RUNS THROUGH WERE THE TWO NOTHING CHECKED.**
-**WATER TASTES** (row 3, N=4993): run the actual thing up close, and ask what a second run would
-change. **REDS FIRST:** `%746` stood OPEN in the ledger, booked three hours earlier by a peer, and
-its own last line read *repaired on this ship only, and the class is open on eight*. This lap built
-the instrument that closes it.
-**THE FAULT WAS LIVE IN MY OWN TREE WHILE I READ THE ROW.** `rishi/bin/rishi` here was **877,180
-seconds -- ten days -- behind `rishi/src/main.rye`**, and `rye/bin/rye` 13,174 seconds behind its
-own. `tools/r/reds_fold_witness.rish` ran 62 legs green and then died `rishi: line 38: NoSuchField`
-on `out_brief`, a field the source declares and the installed interpreter had never heard of. Both
-rooms are gitignored, so a pull carries no rebuild and the error is attributed to whatever the
-binary happened to be running.
-**THE NEAREST GUARD IS RIGHT AND ANSWERS A DIFFERENT QUESTION.** `witness_own_build` passes both
-binaries free on a named reason -- *if either is absent nothing runs at all, so their presence is a
-bootstrap fact rather than a promise any single witness makes.* That is PRESENCE, and it is true.
-Freshness is a second question wearing the same skip.
-**LANDED:** `tools/fixtures/b/built_tool_freshness_scan.sh` declares each built tool as one
-four-field row -- name, binary, module source directory, repair command -- and compares the
-binary's modification time against the newest **tracked** source under that directory, one
-`git ls-files` and one `find -newer` per tool. A stale tool refuses, names the source that outran
-it, counts the seconds, and prints the command that repairs it. **36 legs** on real git
-repositories in a throwaway pen, every refusal planted and then **lifted**, three mutations bitten
--- reading untracked files rather than the index, counting an absent binary as stale, and inverting
-the comparison. Rostered `built_tool_freshness`, `tier lap`, beside the presence guard it completes.
-**REPORTED RATHER THAN GATED, each for its own reason:** an **absent** binary, since a fresh clone
-has none and the bootstrap is the documented first step; and a `rishi` older than the `rye` that
-compiles it, since that chain is real and gating it would refuse every ship for the minutes between
-two builds.
-**PLAIN SHELL ON PURPOSE.** The subject of the reading is the interpreter the witness half runs
-under, so a `rishi` too stale to parse the guard cannot silence it.
-**AND THE REPAIR HAS AN ORDER.** Building straight over a running binary answers `FileBusy` --
-ETXTBSY -- so the rebuild goes to `rishi/bin/rishi.new` and is renamed into place, which `rename`
-permits over a busy executable where `open(O_TRUNC)` refuses. Proven before installing: the new
-interpreter answers `out_brief` where the old answers `NoSuchField`.
-**WHAT IT DOES NOT REACH:** modification time answers *later*, never *different*. A checkout
-rewriting a source to byte-identical content reads stale when nothing changed, and `touch` fools
-it. That false positive costs one rebuild; the false negative it avoids is a fleet attributing
-phantom errors to the tree. A content digest would answer *different*, and it wants the build to
-record one beside the binary -- a compiler change rather than a reading.
-**I TOOK MY OWN OPEN QUESTION RATHER THAN HOLDING IT.** The elder account asked you whether a
-staleness reading should join the roster and at what tier. `%746` was already an OPEN red and the
-repair is one command per ship, so I seated it at `tier lap` and say so here; retiring the row is
-one word.
-**AND A PEER REPAIRED THE INSTANCES BY HAND IN THE SAME HOUR**, rebuilding `rishi` across four
-peer checkouts with the same rename move and checking each tree for the source change first. The
-guard is what keeps them fresh rather than a sweep that must be repeated.
-**YOURS:** the 702 unlocked call sites -- with the compiler's own lock repaired, is the shell-side
-`rye_build.sh` still wanted, or does it retire to the four rooms that carry it?
+**BAKERY -- TWO GUARDS ASKED ABOUT A PEN AND NEITHER ASKED WHETHER IT WAS SWEPT.**
+Elder account [shelved whole](archive/20260915-180554_itinerary-landed-accounts.md) at the next fold;
+its open question -- whether the shell-side `rye_build.sh` retires now the compiler owns the lock --
+still stands for you.
+**EARTH BREATHES IN** (row 4, N=5009): take in the concrete fact at the door first. The fact was
+`df` -- **83G free, 51 percent, 5,528 entries in `/tmp`**. **REDS FIRST:** `%745` is OPEN and its own
+last line named the remainder -- *counting the other leakers is its own lap.* This lap counted them.
+**THE THIRD QUESTION ABOUT ONE PEN.** `shared_pen` reads whether a pen is CONTENDED, `pen_entry`
+whether it is ENTERED (`%729`); nothing read whether it is **RELEASED**, and one pen is one object
+with three failure modes. **AND BOTH READ ONE LANGUAGE**, which is why the leaker was never merely
+passing -- it was outside the population. `pen_entry` reads `git ls-files '*.sh'` plus a POSIX
+shebang; `tools/am/amphora_mark_wreck_witness.rish` is Rishi and carries neither.
+**LANDED:** `tools/fixtures/p/pen_release_scan.sh` collects each file's pen variables from
+`mktemp -d` and from strings deriving one, then reads whether any line removes them and whether that
+removal sits in a `trap ... EXIT` or on the straight-line success path. **461 shell runners and 338
+Rishi sources**, 794 carrying a pen. **`never_removed=16`** -- six amphora, five caravan, two tally,
+one mantra, two `slc1_` fixtures -- a **RATCHET** rather than a wall, since fourteen repairs belong
+to lanes this lap may not touch. **`unreleased_on_refusal=336`** is reported and gated by nothing:
+in shell the cure is one EXIT trap, and Rishi has **no trap at all**.
+**THE READING AND THE PIER AGREE.** `--standing` counts **629** directories under `/tmp` matching a
+pen name this tree writes; the six amphora leakers hold **133**, `grain_poll` 52, and **289** belong
+to `tools/fixtures/t/tlb_reach_census.sh`, whose `${TMPDIR:-/tmp}/..$$` pen is `shared_pen`'s
+subject -- outside the gated class by construction, and the pier's largest single pile.
+**THREE FAULTS FIRST RESIDENCY FOUND IN THE READING ITSELF**, each planted as a leg before the
+number was trusted: a pen made and swept inside ONE `sh -c` string read as never_removed, since the
+first draft took only the line's first assignment; a release spelled `rmdir` in a trap was invisible
+while the predicate demanded `rm -r`; and a `git grep -l` prefilter that cut the reading 48s to 22s
+also cut the standing half's source, making it **structurally unable** to find the second pen
+spelling its own header promised -- 627 to 309 for no change on the pier.
+**46 legs** in a throwaway pen, every refusal planted and lifted, the ceiling shown from both sides,
+three mutations bitten. The control builds each case with `mkdir -p` and never a recursive removal
+of a derived path: a control for a leak guard should not open by teaching the shape it refuses.
+**I DELETED NOTHING and read no free space in the gated half** -- `%745` names that as Keaton's word.
+**TWO REDS STOOD ON EVERY SHIP'S COLD PASS AND NEITHER WAS MINE.** `rune_assert_sweep` reads
+`unnamed_assert=6488` against a ceiling of 6487 -- one over, a ratchet that only falls, and it
+stands. And `tool_letter_room` read `misfiled=3` against zero: `bearing_quorum`'s scan, control and
+witness landed in room `m` where their own name says `b`. **A peer moved them at `084fb7a87` and
+booked `%749` three minutes before I finished writing the same row**, so my `%750` was withdrawn
+whole and the reading is GREEN. That is the claim board's own lesson one floor down: I had read the
+ledger, found no row, and written one -- and the absence was hours stale in a file that changes
+every lap. **A ledger has no claim board**, and fetching before booking is what stands in for one.
+**YOURS:** the sixteen. Each repair is one line in shell and a design question in Rishi, and they
+sit in four lanes. Should `never_removed` fall to a WALL once those lanes clear, or does a language
+with no trap keep an honest floor?
 **MINE:** `merge` and `annotate` in `mantra/src/weave.rye` still reach the two counters through
 `@max` alone and state no postcondition of their own.
 
