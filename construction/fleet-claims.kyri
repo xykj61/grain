@@ -58,12 +58,6 @@ stamp 20260916.050045
 epoch 1789549245
 paths tools/fixtures/t/locality_key_scan.sh tools/t/locality_key_witness.rish tools/fixtures/t/locality_key_control.sh active-designing/20260916-050000_the-key-that-carries-locality.md
 what Row 5's second erratum left exactly one door open: every reading in both torus-fold papers rests on a key that avalanches, and a key carrying locality ON PURPOSE is a claim nobody here has proposed. Build a scan that reads the tree's own tracked files under two keys -- SHA3-512 (the tree's own digest, avalanching) and a locality key derived from path structure -- and measures the SAME two properties against each: adjacency (do same-room pairs land near?) and evenness (chi-squared over the fold). The trade is the finding: avalanche buys evenness and destroys adjacency. Whether a locality key can buy adjacency without losing evenness is the falsifier, and it is answerable on this pier today with no board and no new hardware.
-claim diffuser-rank-outcome
-seat diffuser
-stamp 20260916.054324
-epoch 1789551804
-paths tools/fixtures/r/rank_outcome_scan.sh tools/fixtures/r/rank_outcome_control.sh tools/r/rank_outcome_witness.rish
-what All twelve rows of active-designing/20260910-060204_the-bounded-torus-moonshots.md now carry errata, so the page's own ranking -- declared as ranked by what a lane can START on this pier, never by what would survive -- can be graded for the first time. Exploratory read: the ten rows whose erratum WAS their first witness were read in almost exact rank order, one inversion, while the two rows ranked FIRST and SECOND were read tenth and eleventh because both witnesses landed within 40 minutes of the page and then sat unread for six days at zero receipts. Build the reading: rank against read order, rank against survival class, and the pre-existence confound named, each figure with what holds it still.
 claim bakery-emit-path-out-of-key
 seat bakery
 stamp 20260916.075247
