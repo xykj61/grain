@@ -778,3 +778,7 @@ at a closed fold.*
 *Row %752 folded to [`REDS-the-ratchet-that-named-its-arrival-rows-752.md`](REDS-the-ratchet-that-named-its-arrival-rows-752.md) on `20260916.051033`, **CLOSED** -- A whole-tree population ratchet refuses by a number and attributes to nobody, since its red lists the heaviest files by standing count and an arrival carrying one is never among them. Two lanes met this one from opposite ends inside an hour, neither able to see the other's commit; the reading that ends the guesswork walks the window rather than the population.*
 
 *Row %750 folded to [`REDS-a-control-landed-proven-and-unrun-rows-750.md`](REDS-a-control-landed-proven-and-unrun-rows-750.md) on `20260916.051438`, **CLOSED** -- A control can land complete and be heard by nobody: no witness named it and no roster row reached it, so it passed review, read like coverage, and reported nothing on the day the wrapper it proves changed.*
+
+*Rows %748 and %749 folded to [`REDS-two-moves-the-index-had-to-witness-rows-748-749.md`](REDS-two-moves-the-index-had-to-witness-rows-748-749.md) on `20260916.053504` -- both rows closed by asking the index what a hand had asked the filesystem.*
+
+*Rows %753 and %754 folded to [`REDS-a-reading-that-counts-its-own-prose-rows-753-754.md`](REDS-a-reading-that-counts-its-own-prose-rows-753-754.md) on `20260916.053524`, both **BOOKED** -- both are a proxy that stopped standing for its subject -- one read a file where its subject was a line, the other read an mtime where its subject was content.*

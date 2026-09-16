@@ -312,6 +312,89 @@ echo "$tight" | grep -q '^law: .claude/rules/warm.md ' \
   && say law_ceiling_lifts yes || say law_ceiling_lifts no
 rm -rf "$law"
 
+# THE TEACHING TIER, PROVEN FROM BOTH SIDES -- and it was proven from NEITHER until 20260916.
+# The door tier refuses by roster and the law tier has carried `law_ceiling_refuses` and
+# `law_ceiling_lifts` since it was seated. The teaching tier, which reads 81 documents and gates
+# under a ceiling that only falls, had no leg at all: nothing in this control ever watched it
+# refuse, and nothing watched the same bytes one ceiling number apart walk free. So the lap that
+# lowered that ceiling 4 -> 1 could not tell its new number from a tier that refuses nothing --
+# which is the same reading `ascii_document` booked one room over, a refusal proven in the passing
+# direction alone being indistinguishable from a bypass.
+teach="$pen/teach"
+mkdir -p "$teach/docs"
+# The neutralized DOOR roster names README.md, and a rostered page that is ABSENT counts as over --
+# so the pen plants a warm front door. Without it every teaching leg reads register_drift for a
+# reason that has nothing to do with the teaching tier, which is how the `lifts` leg first failed.
+cat > "$teach/README.md" <<'EOF'
+# The pen front door
+
+**Style:** Gauge, Door setting
+
+This page leads with what is, and it names the work it holds in plain words.
+Every room here keeps its own catalog, and the catalog names each file it holds.
+A reader arriving today finds the same order a reader finds in a decade.
+The witnesses run on metal, and each one prints the reading it took.
+The bounds are named at construction, and the edge checks them once.
+Each claim carries the measurement that earned it, in the same sentence.
+The style is Gauge, and the door setting holds at twenty percent.
+A lane joins this roster by sweeping its page and adding its path.
+EOF
+cat > "$teach/docs/warm.md" <<'EOF'
+# A warm compressor
+
+Every allocation names its maximum at construction, and the edge checks it once.
+A witness prints the reading it took, so a claim arrives with its own evidence.
+The stamp orders a mark and the name means it, which is all a mark needs.
+Prefer the affirmative restatement, and let each sentence land before the next.
+A lane repairs the page it touches, and the ceiling falls in the same commit.
+Dated testimony keeps every word it wrote, and the living page sweeps on touch.
+One clock stamps every mark, and a later stamp is a later version.
+A reader arrives here after the front door, and leaves holding the shape.
+EOF
+cat > "$teach/docs/cold.md" <<'EOF'
+# A cold compressor
+
+Nothing here is trusted, and no claim may be believed without a witness.
+A guard that cannot red guards nothing, and this one never refused at all.
+The elder shape failed, and the repair was lost before it ever landed.
+No page may lie about what it cannot prove, and none of them resolves.
+The bound is missing, so an allocation here is unbounded and wrong.
+A stale claim is worse than a missing one, and nothing catches it.
+The reader is never told which part broke, so the whole page is useless.
+Every figure is stale, and no lane has read this room in months.
+EOF
+cat > "$teach/docs/short.md" <<'EOF'
+# A short compressor
+
+Nothing here is measured, and no guard reads it at all.
+EOF
+( cd "$teach" && git init -q . && git add -A ) >/dev/null 2>&1
+sed 's|^DOOR=".*"|DOOR="README.md"|' "$scan" > "$teach/base.sh"
+sed 's|^ceiling=.*|ceiling=0|' "$teach/base.sh" > "$teach/scan_tight.sh"
+sed 's|^ceiling=.*|ceiling=1|' "$teach/base.sh" > "$teach/scan_loose.sh"
+t_tight=$(cd "$teach" && PROSE_CARD_READER="$card_abs" sh scan_tight.sh 2>/dev/null)
+t_loose=$(cd "$teach" && PROSE_CARD_READER="$card_abs" sh scan_loose.sh 2>/dev/null)
+
+# The plant plants something: the cold page IS named, by path and by share.
+echo "$t_tight" | grep -q '^teaching: docs/cold.md ' \
+  && say teaching_names_the_page yes || say teaching_names_the_page no
+# The warm page in the same room stays off the listing, so the reading discriminates inside the
+# tier rather than counting every teaching page it finds.
+echo "$t_tight" | grep -q '^teaching: docs/warm.md ' \
+  && say teaching_spares_the_warm_page no || say teaching_spares_the_warm_page yes
+# Three teaching pages in the room; the short one sits under the eight-sentence floor and is
+# unread rather than counted, exactly as the law tier's floor behaves.
+echo "$t_tight" | grep -q '^teaching_documents=3$' \
+  && say teaching_floor_holds yes || say teaching_floor_holds no
+# One over the ceiling refuses.
+{ echo "$t_tight" | grep -q '^teaching_over_field_target=1$' && echo "$t_tight" | grep -q '^verdict=register_drift$'; } \
+  && say teaching_ceiling_refuses yes || say teaching_ceiling_refuses no
+# The same bytes one ceiling number apart walk free, so the refusal is told from a scan that
+# refuses everything.
+{ echo "$t_loose" | grep -q '^teaching_over_field_target=1$' && echo "$t_loose" | grep -q '^verdict=ok$'; } \
+  && say teaching_ceiling_lifts yes || say teaching_ceiling_lifts no
+rm -rf "$teach"
+
 # --explain: the repair-grade reading, proven to agree with the count it explains.
 #
 # WHY THESE LEGS. A listing that names sentences the gate did not count, or misses ones it did,
