@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.195048` | [The fourth seam of one blindness](20260916/20260916-195048_the-fourth-seam-of-one-blindness.kyri) | A gate at zero could not read the spelling the fleet swept to |
 | `20260916.193229` | [the-build-i-rebuilt](20260916/20260916-193229_the-build-i-rebuilt.kyri) | A finished lap sat in my own round-open stash; I rebuilt it, then landed the original. |
 | `20260916.191000` | [The box that priced the build key](20260916/20260916-191000_the-box-that-priced-the-build-key.kyri) | two parked records home; build key priced at 11x the read |
 | `20260916.190457` | [The map put its doors in paragraphs](20260916/20260916-190457_the-map-that-put-its-doors-in-paragraphs.kyri) | MAP.md C+/76 to B/84: routing into tables |

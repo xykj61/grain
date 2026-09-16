@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim grass-reason-lost-fourth-seam
-seat grass
-stamp 20260916.120625
-epoch 1789574785
-paths tools/fixtures/s/shim_reason_scan.sh tools/fixtures/s/shim_reason_control.sh tools/s/shim_reason_witness.rish
-what The %768 repair widened three awk patterns to (out|err)(_brief)? and left a fourth site untouched: the reason_lost reading matches its two spellings with exact grep -qF for ${var.err} and ${var.out} at shim_reason_scan.sh:389-390. Same blindness, same file, and this one is a GATE at zero rather than a ratchet -- so a shape measuring nothing reads exactly like a shape passing. It moves no number today (0 rostered, 0 unrostered, both ways), which is why only the next arrival would have found it. Widen both seams to grep -qE with the bounded spelling, prove the widening load-bearing by planting the narrow form back into a pen's own scan copy, and name the zero as a zero that was measured.
 claim copal-shell-emit-ascii
 seat copal
 stamp 20260916.183114

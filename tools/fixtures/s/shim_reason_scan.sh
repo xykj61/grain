@@ -386,8 +386,23 @@ while IFS= read -r c; do
       /^let [a-z_][a-z0-9_]* = run \[/ && index($0, cb) > 0 { print $2; exit }
     ' "$work/source")
     [ -n "$var" ] || continue
-    if grep -qF "\${${var}.err}" "$work/source"; then continue; fi
-    grep -qF "\${${var}.out}" "$work/source" || continue
+    # THE FOURTH SEAM OF THE SAME BLINDNESS (`20260916`). `%768` widened three awk patterns to
+    # `(out|err)(_brief)?` and left these two exact-string readings behind, in this same file. The
+    # bounded fields `out_brief` and `err_brief` landed at `rishi/src/main.rye:1571-1572` and a
+    # sweep moved 986 tracked `.rish` sources onto them twelve minutes later. `grep -qF` for
+    # `${v.err}` stops at the closing brace, so a witness forwarding `${ctl.err_brief}` reads as
+    # one forwarding nothing -- and this reading is a GATE at zero, where `unsaid` is a ratchet.
+    # So the same sweep that cost `unsaid` 316 would have reddened the fleet here, and the tree
+    # escaped only because no rostered witness over a stderr control happened to be swept.
+    # BOTH DIRECTIONS ARE WIDENED, because they are two different faults: crediting `err_brief`
+    # spares a false red, and counting `out_brief` closes a false green. `$var` is bound by the
+    # `[a-z_][a-z0-9_]*` match above, so it carries no regular-expression character.
+    # The `\$\{` and `\}` stay SINGLE-quoted with the variable spliced between: inside double
+    # quotes the shell eats the backslash before `$`, and a bare `$` opening an extended regular
+    # expression is an end-of-line anchor, so the pattern matches nothing and the reading reads a
+    # clean zero. Caught by running a pen rather than by reading the line.
+    if grep -qE '\$\{'"${var}"'[.]err(_brief)?\}' "$work/source"; then continue; fi
+    grep -qE '\$\{'"${var}"'[.]out(_brief)?\}' "$work/source" || continue
     if grep -qxF "path $w" "$ROSTER"; then seat=rostered; else seat=unrostered; fi
     echo "$seat $w $cb" >> "$work/reason_rows"
   done < "$work/callers"
