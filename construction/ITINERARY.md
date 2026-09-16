@@ -59,7 +59,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `46b68f40a6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6b2965fe70` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -74,42 +74,38 @@ room declares it deliberately, or stay the honest name it is now?
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE WALL WAS PERFECT AND THE REBASE WALKS AROUND IT.** **EARTH BREATHES IN** (row 4,
-N=4943, hand-advanced past row 3, read by this seat earlier today): take in the concrete fact at the
-door. **REDS FIRST:** `%731` was booked at the last close and its repair claimed rather than taken.
-Built here. **THE MECHANISM IS ONE SENTENCE, PROVEN ON METAL:** `git rebase --continue` COMMITS
-WITHOUT RUNNING `pre-commit`, on git 2.54.0 -- a hook printing on every entry fired three times for
-three `git commit` calls and **not once** for the rebase that followed, and that rebase committed
-`<<<<<<< HEAD` into the tree. So `pre-commit` rule nine is correct, armed on every ship, reads the
-same scan, and never saw the bytes that shipped the card broken for two commits.
-**A PLACEMENT RATHER THAN AN INSTRUMENT**, the sentence the spine rule one room over already wrote
-for `%681`: `tools/hooks/pre-push` carries a second rule beside the first, asking
-`conflict_marker_scan.sh list` after the tree settles and before an object leaves. It **refuses** a
-marker in the push's own paths and **reports** one outside them, on the clause `published_doubles`
-already earns -- a gate that reds on what this lap cannot repair is a gate somebody turns off.
-**THE PEN FOUND A FAULT IN THE HOOK WHILE IT WAS BEING WRITTEN.** The split between my markers and a
-peer's used `NR==FNR` against a keep-list that is EMPTY in exactly the peer case, and an empty first
-file leaves `NR==FNR` true for every line of the second -- so the negated form swallowed the whole
-hit list and the hook welcomed a peer's marker in silence, at exit 0, with its own control watching.
-Both splits are guarded; the leg that caught it is kept. **THE SPINE CONTROL RED THE MOMENT THE
-SECOND RULE LANDED**, and that was the honest answer: its pen armed the hook and carried no marker
-scan, so every push in it refused. A pen that arms half a hook proves its rule against a wall no
-ship runs. **LANDED:** 14-leg pen with real pushes and one real rebase, two mutations bitten,
-`pre_push_marker` rostered `tier lap`; `pre_push_spine` re-run green beside it. A+/A/B.
-**WHAT IT DOES NOT REACH:** a push made with `--no-verify`, already forbidden and reachable by no
-guard in the tree.
-**HOT ROSTER: 292 run, 286 green, 4 red, 2 gated, `tree_moved=no`.** Mine are green by name. Of the
-four reds, `shim_reason` and `fixture_depth` sit inside patchouli's and petrichor's live claims,
-`standing_equipment` is their aggregate, and `prose_register` reads `law_over_field_target=10`
-against a ceiling of 9 -- pushed over by `.claude/rules/vocabulary-flaky.md` at 36 percent, seated
-by another ship at `20260915.183900` with its ceiling left where it stood. Reported, not taken.
-**THE LEDGER PIN STANDS AT ITS 65,536 BOUND**, exactly, after this row. It arrived from upstream 32
-bytes under it with six peer rows landed today, so `%731`'s own BOOKED clause was condensed to fit
-rather than grown. **The next lap to touch `construction/REDS.md` owes a fold**, and the tool is
-`sh tools/fixtures/r/reds_fold.sh` -- a shelf head is prose a person writes, so it is its own lap.
+**DIFFUSER -- ROW 8 PRICED A QUORUM AND DESCRIBED A BROADCAST.**
+Elder [shelved whole](archive/20260915-211724_itinerary-diffuser-rebase-wall-account.md).
+**WATER TASTES** (row 3, N=4973): taste whether the flow is sweet or off. **THE ROW.** Row 8 of the
+bounded-torus page was the last measurable one of the twelve nobody had opened, and its one sentence
+carries two claims: *a node announces along a meridian and confirms along a parallel, so message
+count grows with the perimeter rather than the area.* **THE COST HALF STANDS:** an announce plus a
+query is `2g-2` messages against a dissemination floor of `N-1`, the ratio falls **0.400 to 0.061**
+across g=4..32, and the exponent over the two largest grids reads **0.5237**. **THE DELIVERY HALF
+DOES NOT:** one announce reaches **g of N**, a share of **0.031** at g=32, while the intersection of
+an announce row with a query column reads exactly **ONE** for all **1,360** cases. The scheme is a
+**rendezvous**, and it costs the square root of N *because* its guarantee is intersection rather than
+coverage -- so the true half was vouching for the false one.
+**AND THE WRAP IS WORTH EXACTLY ONE CUT**, the one finding belonging to the torus rather than the
+grid beside it, and the lane's first positive after four refusals: a cycle loses coverage in **zero**
+cut positions and answers nobody silently; a path of the same length loses **1,300** and answers
+**372,368** queriers silently, each unable to tell *no value* from *the value did not arrive*; two
+cuts split the cycle in all **650** cases. Row 8's own falsifier fires on the path and is
+extinguished by the wrap.
+**LANDED:** scan, 37-leg pen, witness, `bearing_quorum` rostered `tier lap` (scan 1s, control 4s).
+**Five mutations bitten**; the one that matters most makes the querier read its own row, since two
+perpendicular lines meeting once is exactly the fact a scan can assert without ever checking it.
+Everything is **GATED** because the scan opens no file -- no figure can move under this tree.
+[Paper](../active-designing/20260915-211724_the-bearing-that-meets-rather-than-floods.md) **A 91**;
+the moonshot page carries row 8's erratum at **A 92**.
+**HOT ROSTER: 376 rostered, 0 path-missing, 0 half-written; 3 red, none mine** -- `fixture_depth`,
+`prose_register` and `shim_reason` sit in peer lanes and are reported rather than taken.
 **YOURS, STILL:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
-and this seat's own baton name moonshots and whitepaper research. Two living pins, two lanes, one
-ship. Which stands?
+and this seat's baton name moonshots and whitepaper research. Two living pins, two lanes, one ship.
+Which stands?
+**YOURS, NEW:** row 8 wants a **re-aim rather than a re-rank** -- keep the row and its three-node
+fixture, drop the word *consensus*, and let it state the guarantee it carries. Recommended rank
+fourth, up from ninth.
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.**
 Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).
