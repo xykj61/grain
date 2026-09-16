@@ -6153,7 +6153,7 @@ seated 20260915.191655
 # bearing_quorum -- the last measurable row of the bounded-torus page, and it splits in two. Row 8
 # of active-designing/20260910-060204_the-bounded-torus-moonshots.md says a node announcing along a
 # meridian and confirming along a parallel makes "consensus routing" cost the perimeter rather than
-# the area. `tools/fixtures/m/bearing_quorum_scan.sh` builds a g x g torus in arithmetic at four
+# the area. `tools/fixtures/b/bearing_quorum_scan.sh` builds a g x g torus in arithmetic at four
 # grids and reads all three halves. THE COST HALF STANDS: an announce plus a query is 2g-2 messages
 # against a dissemination floor of N-1, the ratio falls 0.400 to 0.061 across g=4..32, and the
 # exponent over the two largest grids reads 0.5237. THE DELIVERY HALF DOES NOT: one announce reaches
@@ -6170,7 +6170,7 @@ seated 20260915.191655
 # mutations bitten -- the one that matters most makes the querier read its own row, since two
 # perpendicular lines meeting once is exactly the fact a scan can assert without checking.
 guard bearing_quorum
-path tools/m/bearing_quorum_witness.rish
+path tools/b/bearing_quorum_witness.rish
 tier lap
 seated 20260915.211724
 

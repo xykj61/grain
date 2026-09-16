@@ -1,6 +1,6 @@
 #!/bin/sh
-# tools/fixtures/m/bearing_quorum_control.sh -- proves the behaviors of
-# tools/fixtures/m/bearing_quorum_scan.sh in a throwaway pen, every reading shown from both sides.
+# tools/fixtures/b/bearing_quorum_control.sh -- proves the behaviors of
+# tools/fixtures/b/bearing_quorum_scan.sh in a throwaway pen, every reading shown from both sides.
 #
 # WHY MUTATIONS RATHER THAN PLANTED DATA. This scan reads no population: its subject is a topology
 # it builds in arithmetic, so there is nothing to plant. What CAN be planted is the reading itself.
@@ -8,7 +8,7 @@
 # refusal is shown from both sides and a bypass cannot pass for a pass. A mutation that no longer
 # applies reads exactly like one that passed, so each asserts it was applied before it is run.
 #
-#   sh tools/fixtures/m/bearing_quorum_control.sh
+#   sh tools/fixtures/b/bearing_quorum_control.sh
 
 set -eu
 
@@ -19,7 +19,7 @@ while [ ! -d "$ROOT/tools/fixtures" ]; do
   [ "$_steps" -gt 8 ] && { echo "$0: no tree root" >&2; exit 2; }
   ROOT=$(dirname "$ROOT")
 done
-SCAN="$ROOT/tools/fixtures/m/bearing_quorum_scan.sh"
+SCAN="$ROOT/tools/fixtures/b/bearing_quorum_scan.sh"
 
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT INT TERM

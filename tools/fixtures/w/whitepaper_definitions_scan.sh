@@ -20,7 +20,7 @@
 #   emitted by sibling scans, chosen so that the definition HOLDING is what makes the predicate
 #   true. A definition is `supported`, `refuted`, or `unrun`.
 #
-#     D1, a bound when space wraps. tools/fixtures/m/bearing_quorum_scan.sh must read
+#     D1, a bound when space wraps. tools/fixtures/b/bearing_quorum_scan.sh must read
 #     cost_half=stands (cost grows with the perimeter rather than the area) and
 #     wrap_worth_one_cut=yes (the wrap supplies something a line does not).
 #
@@ -127,7 +127,7 @@ need() {
   fi
 }
 
-OUT_BEARING=$(run_scan tools/fixtures/m/bearing_quorum_scan.sh)
+OUT_BEARING=$(run_scan tools/fixtures/b/bearing_quorum_scan.sh)
 OUT_LATTICE=$(run_scan tools/fixtures/c/capability_lattice_scan.sh)
 OUT_AETHER=$(run_scan tools/fixtures/a/aether_falloff_scan.sh)
 OUT_PLACE=$(run_scan tools/fixtures/t/torus_place_scan.sh)

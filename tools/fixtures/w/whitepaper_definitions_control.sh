@@ -41,13 +41,13 @@ leg() {
 pen() {
   _d="$PEN/$1"
   rm -rf "$_d"
-  mkdir -p "$_d/tools/fixtures/m" "$_d/tools/fixtures/c" "$_d/tools/fixtures/a" "$_d/tools/fixtures/t"
+  mkdir -p "$_d/tools/fixtures/b" "$_d/tools/fixtures/c" "$_d/tools/fixtures/a" "$_d/tools/fixtures/t"
   {
     printf '#!/bin/sh\n'
     [ -n "$2" ] && printf 'echo "cost_half=%s"\n' "$2"
     [ -n "$3" ] && printf 'echo "wrap_worth_one_cut=%s"\n' "$3"
     printf 'echo "verdict=stub"\n'
-  } > "$_d/tools/fixtures/m/bearing_quorum_scan.sh"
+  } > "$_d/tools/fixtures/b/bearing_quorum_scan.sh"
   {
     printf '#!/bin/sh\n'
     [ -n "$4" ] && printf 'echo "seated_incomparable_unordered=%s"\n' "$4"

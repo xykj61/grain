@@ -95,7 +95,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ba8747d2dc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `69838dfa76` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -284,12 +284,10 @@ reopened clean.
 **THE DOOR.** Reach named `skate/README.md` -- **30 negatives of 109 sentences, 27 percent against a
 20 percent declaration**, the largest repairable body among the fourteen unrostered doors over
 ceiling. **563 living citers.**
-**WHAT LOOKING HARD FOUND.** Eighteen of the thirty negatives stand in `## The owned bounds` and
-`## Prove the seam` -- a refusal contract and a control census, which is Meter content inside a
-Door-declared page. The tempting repair was to redeclare the page Field, where 27 percent passes
-untouched. The scan's own header had already ruled on that shape: when `docs/` joined the roster,
-*the room paid its way in rather than buying a raise*, and `WITNESS_PATTERNS.md` went 52 to 29 by
-restating the incidental negatives while keeping every one whose subject is refusal.
+**WHAT LOOKING HARD FOUND.** Eighteen of the thirty stand in `## The owned bounds` and `## Prove the
+seam` -- a refusal contract and a control census, which is Meter content inside a Door-declared
+page. Redeclaring the page Field would pass 27 percent untouched. The scan's own header had ruled on
+that shape: when `docs/` joined, *the room paid its way in rather than buying a raise*.
 **SO THE PAGE PAID.** Fourteen incidental sentences took the affirmative form and **no sentence was
 deleted** -- 109 before, 109 after. `without pulling their implementations into Swift` became `while
 their implementations stay in Rye`; `a peak no greater than 32,768` became `at or under`, which is
@@ -302,16 +300,19 @@ Grain's crypto` is the whole reason the type wears the word `Claim`, and eleven 
 reporting what they plant and refuse. A ceiling met by deleting those would be a worse page at a
 better number.
 **TRUTH, JUDGED RATHER THAN COUNTED.** The card reads `truth_mode=counted` when the judged half goes
-unread, so I read it: every named error case (`EventRingError.counterExhausted`,
-`ImageEditHistoryError.historyFull`, `AccessibilitySnapshotError.accessibilityTooLarge`), every
-`public typealias` peer pair, and the Lotus bound all stand in the Swift sources; all six backticked
-module paths resolve.
+unread, so I read it: every named error case, every `public typealias` peer pair, and the Lotus
+bound stand in the Swift sources, and all six backticked module paths resolve.
 **LANDED:** rostered on `DOOR` in the same commit, so the reading is a wall rather than a ratchet --
 proven from both sides by reverting the page, watching the scan refuse `register_drift` at exit 1,
 and restoring it to green. `door_documents` **22 to 23**, `front_doors_unrostered_over` **14 to 13**,
 `door_over_ceiling` still **0**, `door_setting_undeclared` **0** -- the page already declared the
 Door setting, so rostering it cost one path. Card **B+/85** at `truth_mode=judged`. No red booked: a
 low grade is never a red, and nothing here was wrong.
+**ONE RED OUT OF LANE.** `tool_letter_room` reddened at cold guard 57: three `bearing_quorum` files
+in the `m` room while the letter rule computes `b`. Moved, modes carried. **The move then reddened
+the guard the sweep had touched** -- `whitepaper_definitions` at **35 of 55 legs**, its control
+naming the room ALONE on a `mkdir -p` line, where a sweep keyed on `<room>/<file>` is blind by
+construction. Two closed-day roster counts reconciled beside it. `%749`, BOOKED, seven GREEN.
 **YOURS:** a page whose closing two sections are a bounds table and a control census is Meter prose
 under a Door declaration. Should a page be able to declare **one setting per section**, so a front
 door's introduction is held at 20 while its proof census is read as the refusal-led writing it is --
