@@ -2294,6 +2294,10 @@ seated 20260908.230500
 # to be recycled after ONE lap, when a page is overwritten only when the ring reaches it again; and
 # the witness first read stdout, where `std.debug.print` writes to stderr, so a healthy program read
 # as a red. `tier cadence`: it compiles a Rye binary, which is choir money rather than lap money.
+# THE PRICE WAS READ ON `20260916.025923` AND IT IS SMALL: **2.78 seconds** including the compile
+# from source, **1.70** on a second run. It had **0** `ran` receipts in the six days since seating,
+# because nothing turned the cadence rota until `20260915`. Whether that price still buys a cadence
+# seat is a roster question this reading leaves open rather than answers.
 guard wrap_ring
 path tools/w/wrap_ring_witness.rish
 tier cadence
@@ -2313,6 +2317,9 @@ seated 20260910.062400
 # Measured on the seating lap: nine rostered witnesses sampled, eight cycled and one ran PAST THE BOUND
 # THIS LAP CHOSE -- `glow_desk_run_witness`, later measured at 455 seconds and exit 0. It builds Glow
 # desks with a real toolchain and passes; the reading was a fact about a 280-second bound.
+# READ ON `20260916.025923`: **1.25 seconds**, nine control behaviors green, and **0** `ran`
+# receipts in the six days since seating. Row 11's own erratum had named it unrun from the other
+# side, while the moonshot page still read its row as untouched.
 guard cyclic_witness
 path tools/c/cyclic_witness_witness.rish
 tier cadence

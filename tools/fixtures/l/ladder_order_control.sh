@@ -32,12 +32,12 @@ SCAN="$ROOT/tools/fixtures/l/ladder_order_scan.sh"
 . "$ROOT/tools/fixtures/s/shell_portable.sh"
 
 PEN=$(mktemp -d)
-trap 'rm -rf "$PEN"' EXIT INT TERM
+trap 'rm -rf "$PEN" "${NOREPO:-}"' EXIT INT TERM
 
 pass=0
 fail=0
 legs=0
-LEGS_EXPECTED=54
+LEGS_EXPECTED=80
 
 ok() { legs=$((legs + 1)); pass=$((pass + 1)); echo "ok   $legs $1"; }
 no() { legs=$((legs + 1)); fail=$((fail + 1)); echo "FAIL $legs $1"; }
@@ -46,6 +46,15 @@ field() { awk -v k="$1" -F= '$1 == k { print $2 }' "$2" | tail -1; }
 
 mkdir -p "$PEN/pages" "$PEN/.lap"
 cd "$PEN"
+
+# The pen is a REAL git repository, because the instrument reading's population is `git grep` over
+# tracked files: a living tracked source is what makes a promise, and an untracked build output
+# makes none. Every leg below therefore reads a tracked population rather than a directory listing.
+git init -q . >/dev/null 2>&1
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+NOREPO=$(mktemp -d)
 
 # plant_page DEST N_ROWS -- a page of N rows, ranked 1..N in order, with no errata at all.
 plant_page() {
@@ -208,6 +217,92 @@ run pages/lastword.md
 check "a word containing 'last' demotes nothing"  "$(field class_demoted out.txt)"   "0"
 check "and the row reads as the re-aim it is"     "$(field class_reaimed out.txt)"   "1"
 
+echo "--- reading 3: the landed instrument, and the class it splits ---"
+
+# plant_binding FILE ROW PAGENAME -- the builder's own sentence, as the three real instruments
+# carry it: the row on one line, the page on the next.
+plant_binding() {
+  { printf '# First witness for moonshot %s of\n' "$2"
+    printf '# `active-designing/%s`\n' "$3"
+    printf 'echo planted\n'
+  } > "$1"
+  git add "$1" >/dev/null 2>&1
+}
+
+# plant_roster FILE GUARD PATH TIER -- one roster row in the shape standing-equipment.kyri writes.
+plant_roster() {
+  { printf 'guard %s\n' "$2"; printf 'path %s\n' "$3"; printf 'tier %s\n' "$4"; } > "$1"
+}
+
+mkdir -p tools
+plant_page pages/inst.md 4
+: > roster.kyri
+: > receipts.kyri
+
+runi() { LADDER_PAGE="$1" LADDER_TREE=. LADDER_ROSTER=roster.kyri LADDER_RECEIPTS=receipts.kyri \
+  sh "$SCAN" > out.txt 2>&1; }
+
+runi pages/inst.md
+check "a tree with no binding reads none"         "$(field instrument_bindings out.txt)" "0"
+check "and no row carries an instrument"          "$(field rows_with_instrument out.txt)" "0"
+check "so every row without an erratum is unread" "$(field class_unread out.txt)"    "4"
+check "and none reads unwritten"                  "$(field class_unwritten out.txt)" "0"
+
+plant_binding tools/one_witness.rish 1 inst.md
+plant_roster roster.kyri one tools/one_witness.rish cadence
+runi pages/inst.md
+check "a binding naming the page is read"         "$(field instrument_bindings out.txt)" "1"
+check "and seats one row"                         "$(field rows_with_instrument out.txt)" "1"
+check "a rostered guard with no receipt is unturned" "$(field instruments_unturned out.txt)" "1"
+check "landed work makes the row unwritten"       "$(field class_unwritten out.txt)" "1"
+check "and it leaves the unread count"            "$(field class_unread out.txt)"    "3"
+check "the classes still partition the roster"    "$(field classes_partition out.txt)" "yes"
+
+printf 'ran one 20260101.000001 green cadence 2 5\n' > receipts.kyri
+runi pages/inst.md
+check "one receipt turns the instrument"          "$(field instruments_turned out.txt)" "1"
+check "and none stands unturned"                  "$(field instruments_unturned out.txt)" "0"
+check "a turned row is unwritten all the same"    "$(field class_unwritten out.txt)" "1"
+
+: > receipts.kyri
+: > roster.kyri
+runi pages/inst.md
+check "a binding on no roster row is unrostered"  "$(field instruments_unrostered out.txt)" "1"
+
+# THE DISCRIMINATION THE READING TURNS ON: a file naming a moonshot of ANOTHER page binds nothing
+# here. Without it, every ladder page in the tree would claim every instrument.
+plant_binding tools/one_witness.rish 1 a-different-ladder.md
+plant_roster roster.kyri one tools/one_witness.rish cadence
+runi pages/inst.md
+check "a moonshot of another page binds nothing"  "$(field instrument_bindings out.txt)" "0"
+check "and the row falls back to unread"          "$(field class_unread out.txt)"    "4"
+
+# An UNTRACKED file makes no promise, so it is no binding.
+plant_binding tools/two_witness.rish 2 inst.md
+git rm -q --cached tools/two_witness.rish >/dev/null 2>&1
+runi pages/inst.md
+check "an untracked binding is not read"          "$(field instrument_bindings out.txt)" "0"
+git add tools/two_witness.rish >/dev/null 2>&1
+runi pages/inst.md
+check "tracking the same file reads it"           "$(field instrument_bindings out.txt)" "1"
+
+# A binding naming a row this page lacks is the reader measuring its own blind spot.
+plant_binding tools/far_witness.rish 13 inst.md
+runi pages/inst.md
+check "a binding past the roster is named unknown" "$(field instrument_rows_unknown out.txt)" "1"
+
+rm -f tools/far_witness.rish tools/two_witness.rish tools/one_witness.rish
+git add -A >/dev/null 2>&1
+runi pages/inst.md
+check "lifting every binding returns the reading" "$(field instrument_bindings out.txt)" "0"
+check "and every row is unread once more"         "$(field class_unread out.txt)"    "4"
+
+# A tree that is no git work tree has no population, and refuses rather than reading zero.
+LADDER_PAGE=pages/inst.md LADDER_TREE="$NOREPO" LADDER_ROSTER=roster.kyri \
+  LADDER_RECEIPTS=receipts.kyri sh "$SCAN" > out.txt 2>&1
+check "a tree outside git says so"                "$(field tree_readable out.txt)"   "no"
+check "and refuses rather than reading no instrument" "$(field verdict out.txt)"     "untracked"
+
 echo "--- the mutations: each asserted to bite ---"
 
 mutate() {
@@ -247,6 +342,48 @@ mutate "a hard-coded roster cannot see a thirteenth row" \
 mutate "losing the latest-stamp tiebreak lets a retired erratum speak" \
   's|sort -k2,2n -k3,3 "$WORK"/ladder_errata.txt|sort -k2,2nr -k3,3r "$WORK"/ladder_errata.txt|' \
   class_superseded 1 "$PEN/pages/two.md"
+
+# mutate_inst -- the same shape, carrying the instrument reading's three populations.
+mutate_inst() {
+  _why="$1"; _edit="$2"; _key="$3"; _want="$4"; _page="$5"
+  cp "$SCAN" mutant.sh
+  sed "$_edit" mutant.sh > mutant.new && mv mutant.new mutant.sh
+  if cmp -s "$SCAN" mutant.sh; then
+    no "$_why -- the mutation no longer applies, so it proves nothing"
+    return
+  fi
+  LADDER_PAGE="$_page" LADDER_TREE=. LADDER_ROSTER=roster.kyri LADDER_RECEIPTS=receipts.kyri \
+    sh mutant.sh > mut.txt 2>&1 || true
+  _read=$(field "$_key" mut.txt)
+  if [ "$_read" = "$_want" ]; then
+    no "$_why -- the mutant reads [$_read] exactly as the scan does"
+  else
+    ok "$_why (mutant read [$_read], scan reads [$_want])"
+  fi
+}
+
+# Drop the page-name requirement and a moonshot of ANY page binds to this one.
+plant_binding tools/one_witness.rish 1 a-different-ladder.md
+plant_roster roster.kyri one tools/one_witness.rish cadence
+mutate_inst "without the page name, another ladder's instrument binds here" \
+  's|index($0, base) > 0 \&\& !done|!done|' \
+  instrument_bindings 0 "$PEN/pages/inst.md"
+
+# Read the working directory rather than the tracked list and an untracked file makes a promise.
+plant_binding tools/loose_witness.rish 2 inst.md
+git rm -q --cached tools/loose_witness.rish >/dev/null 2>&1
+mutate_inst "reading the directory rather than the tracked list counts an untracked file" \
+  's|git -C "$TREE" grep -lE|grep -rlE|' \
+  instrument_bindings 0 "$PEN/pages/inst.md"
+rm -f tools/loose_witness.rish
+
+# Lose the instrument lookup in the class split and landed work reads as untouched again -- the
+# exact fault this reading was built to repair.
+plant_binding tools/one_witness.rish 1 inst.md
+mutate_inst "losing the instrument lookup calls landed work unread" \
+  's|c = (r in inst ? "unwritten" : "unread")|c = "unread"|' \
+  class_unwritten 1 "$PEN/pages/inst.md"
+rm -f tools/one_witness.rish; git add -A >/dev/null 2>&1
 
 echo "--- the scan releases the pen it makes (REDS %745, read on this instrument) ---"
 
