@@ -58,12 +58,6 @@ stamp 20260916.102127
 epoch 1789568487
 paths glow/tokens.rye glow/refusal.rye tools/g/glow_refusal_witness.rish tools/fixtures/g/glow_refusal_control.sh
 what glow/tokens.rye answers four different ceilings with the one word error.BadToken -- a name past max_name_len, a cord literal interior past max_cord_lit_bytes, a hex literal past max_hex_lit_digits, and a source past max_src_len. glow_ceiling_refusal reads all four as uncovered and its named next fall is 44 to 40. Thread a refusal.Slot through the private lexers and seat tokenize_reporting beside tokenize, keeping the published signature, so each of the four fills a glow/refusal.rye record naming field, value, ceiling, unit and reason. The four name a token KIND rather than a face, because the offending text is exactly what does not fit. Four Reason members and two Unit members join the closed sets; the error name stays, since a published error set is a contract.
-claim diffuser-awk-lcg-exact
-seat diffuser
-stamp 20260916.112900
-epoch 1789572540
-paths tools/fixtures/a/awk_lcg_exact_scan.sh tools/fixtures/a/awk_lcg_exact_control.sh tools/a/awk_lcg_exact_witness.rish tools/fixtures/t/torus_fold_control.sh
-what An awk LCG whose multiplier times its modulus passes 2^53 is a rounded shadow of the generator its own comment names. Measured on metal: torus_fold_control.sh:60 spells seed*1103515245 % 2147483648, whose max product is 2.4e18, and the double-rounded map has period 10,466 after a tail of 3,253 -- 13,719 unique states against the exact generator's 2^31. Its consumed byte differs from the exact stream in 4,079 of 4,096 draws. The pen draws 2,048 and so stands inside the tail today. Repair the site to the tree's own safe spelling, and seat a scan that reads every tracked awk LCG, computes multiplier times modulus-minus-one, and gates any site past 2^53 at zero.
 claim patchouli-place-order-head
 seat patchouli
 stamp 20260916.114431
@@ -88,3 +82,9 @@ stamp 20260916.184437
 epoch 1789598677
 paths tools/fixtures/s/section_citation_scan.sh tools/s/section_citation_witness.rish tools/fixtures/s/section_citation_control.sh
 what A living page that cites a SECTION of another page by name makes a promise no instrument reads. Links are gated two ways -- the target must open (tracked_link) and the anchor text must name the path it opens (link_text_promise) -- and both read PATHS. A section name is prose beside the path, so the card's molt of 20260912 left the compass rose sending a reader to *Now -- the live front*, *The Compass Chapter* and *Next -- the ranked remainder*, none of which stands on construction/ITINERARY.md today, with every link green. Crude census over living tracked Markdown reads 19 sites of the arrow-or-section form alone, at least four already stale. Seat a scan that reads a path token followed by an emphasised name -- after an arrow, after the word section, or directly after a link close -- and asks the cited file for a heading of that name, gating living surfaces and reading past dated testimony.
+claim diffuser-awk-lcg-exactness
+seat diffuser
+stamp 20260916.185954
+epoch 1789599594
+paths tools/fixtures/a/awk_lcg_exact_scan.sh tools/a/awk_lcg_exact_witness.rish tools/fixtures/a/awk_lcg_exact_control.sh tools/fixtures/t/torus_fold_control.sh
+what An awk LCG whose multiplier times its modulus passes 2^53 is a rounded shadow of the generator its own comment names, and awk carries every number as a double. Measured on metal: torus_fold_control.sh:60 spells seed*1103515245 % 2147483648, whose product reaches 2.4e18; the rounded map reaches 13,720 distinct states -- a tail of 3,254 and a period of 10,466 -- against the exact generator's 2^31, and its consumed byte differs from the exact stream in 4,079 of 4,096 draws, diverging at draw 2. Five tracked LCG sites stand across four files and the tree already wrote its own safe spelling twice, in aurora_placement_scan.sh and topology_growth_scan.sh, each naming this exact arithmetic -- so two later pens reached past a reason already written down, which is a lantern on its third firing. Repair the torus site to MINSTD, and seat a scan reading every tracked awk LCG that computes multiplier times modulus-minus-one and holds the unsafe count under a ceiling that only falls, reporting the two key_trade sites and the one discarded workload site rather than repairing another lane's statistical bands.
