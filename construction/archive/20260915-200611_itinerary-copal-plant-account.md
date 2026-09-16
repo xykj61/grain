@@ -15,7 +15,7 @@ belongs on a shelf; the card carries one pointer line.
 
 **COPAL -- A GUARD COUNTED ONE FILE AS TWO ROOFS AND CALLED THEIR AGREEMENT PROVEN.**
 **FIRE SEES** (row 2, N=4917): look straight at the bright point where the work is joining.
-Elder Copal account [shelved whole](archive/20260915-175358_itinerary-landed-accounts.md).
+Elder Copal account [shelved whole](20260915-175358_itinerary-landed-accounts.md).
 `amphora_bounds_agree` states its law over every same-name const and reads
 `const <name>: u<N> = <digits>;` alone. Two consequences, both measured on the living room.
 A recursive grep follows a symlink, and `amphora/src/manifest_entry.rye` links to

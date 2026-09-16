@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.222118` | [The door that counted four and held six](20260915/20260915-222118_the-door-that-counted-four-and-held-six.kyri) | press door named 4 and held 6; register 27 to 7 |
 | `20260915.221438` | [Six of eight carry the fields](20260915/20260915-221438_six-of-eight-carry-the-fields.kyri) | four peer interpreters rebuilt |
 | `20260915.221048` | [A law learns a second home](20260915/20260915-221048_a-law-learns-a-second-home.kyri) | gate law grammar learns two homes; floor 14 to 9 |
 | `20260915.220053` | [The pier that filled while nobody read it](20260915/20260915-220053_the-pier-that-filled-while-nobody-read-it.kyri) | 990M free; 32G leaked by one witness |

@@ -1,7 +1,8 @@
 # Press -- the room that speaks outward
 
-**Stamp:** `20260827.193000` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge at the Door setting, with the **press register** seated below
-**Status:** Living front door -- four pieces stand, two of them gated on a human hand before release
+**Stamp:** `20260915.221800` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge at the Door setting, with the **press register** seated below
+**Status:** Living front door -- six pieces stand, two of them gated on a human hand before release;
+one dated page rests on the shelf below
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -23,8 +24,8 @@ is a pendulum -- a line that **aims** and names the essence, then a line that **
 the image open. A press piece written this way trusts the reader to lean in rather than reaching out
 to grab them, which is the difference between an announcement and an advertisement.
 
-The register suits this room for a plain reason. Everything here speaks to someone who has not met
-this work before, about something that took a long time and was made carefully. Brightness would
+The register suits this room for a plain reason. Everything here speaks to someone meeting this work
+for the first time, about something that took a long time and was made carefully. Brightness would
 oversell it. Dusk lets the thing be its own size.
 
 ## Where the register stops, and why
@@ -48,12 +49,45 @@ ordinary and technical pieces end plainly.
 | [`20260823-212410_mox-and-the-answer-that-holds.md`](20260823-212410_mox-and-the-answer-that-holds.md) | MOX, the first named instantiation of Mycelium | Living |
 | [`20260727-141213_the-livermore-name-announcement.md`](20260727-141213_the-livermore-name-announcement.md) | The Livermore name | **DRAFT** -- gated on a Nevada court's order and a family's reading |
 | [`20260301-000000_aspiring-oregon-radiance-statewide-press-release.md`](20260301-000000_aspiring-oregon-radiance-statewide-press-release.md) | Aspiring Oregon Radiance, statewide | PROPOSED -- release timing at Keaton's word |
+| [`20260910-054448_anywhere-the-vortex-finds-us.md`](20260910-054448_anywhere-the-vortex-finds-us.md) | The Navier-Stokes blowup result, told at the Door | Living |
+| [`20260910-054448_the-compression-the-vortex-wraps.md`](20260910-054448_the-compression-the-vortex-wraps.md) | The same material at Field depth -- its companion | Living |
+
+**The vortex pair arrived `20260910` and stood outside this table for five days.** Both carry a
+`**Room:**` line reading **mixed**, the honest answer for a page holding a published result beside a
+vision of what it means; the Door telling and its Field companion share one stamp on purpose.
+
+**One dated page rests on the shelf.**
+[`date/20260907/20260907-175821_the-radiator-and-the-wire-public.html`](date/20260907/20260907-175821_the-radiator-and-the-wire-public.html)
+is a published HTML page: *The Radiator and the Wire: a chip question for orbit, before a mass
+driver*. It draws the fourth-power radiator law as an ASCII field in the Linengrow cloth. It is the
+room's one piece that ships as a page rather than as prose, and the shelf is where a dated piece
+belongs.
+
+## What this door promises, and how far the promise reaches
+
+**A front door that lists its room makes a census claim, and a census keeps exactly as long as the
+room holds still.** This door read *four pieces stand* while six stood, for five days, and every
+standing guard read it as whole. [`front_door_claim`](../tools/fixtures/f/front_door_claim_scan.sh)
+proves the reverse direction -- a page naming a front door is named back by it --
+and [`foundations_reach`](../tools/fixtures/f/foundations_reach_scan.sh) asks whether one room's
+index reaches a page. The forward direction -- whether a door's own list reaches every living piece beside it -- stands
+unread.
+
+**One measurement names the pages an obvious meter would reach for, and why each is already right.**
+Count the living sibling pages a README declines to link, across the 120 front doors this tree
+carries. The reading names `counsel/replies/README.md` at 162 of 163, and
+`active-designing/README.md` at 157 of 194. Both are correct: a room of two hundred pieces is found
+by its resolver, rather than by a list.
+
+**So the honest population is the door that DECLARES it lists everything** -- the way a page opts
+into `front_door_claim` by carrying a key. Read `20260915.221800`, and **free**: run the count
+rather than trusting the line. The question stands on the operator card for whoever takes it.
 
 ## The one rule this room never bends
 
 **Nothing leaves without a hand.** A custody gate stands between every page here and the world, and
-no agent crosses it. A press release is the one artifact whose whole purpose is to be believed by
-people who cannot check it, so the person it speaks for is the person who sends it.
+every agent stops at it. A press release is the one artifact whose whole purpose is to be believed by
+people who take it on trust, so the person it speaks for is the person who sends it.
 
 ---
 
