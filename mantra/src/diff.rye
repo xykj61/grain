@@ -250,8 +250,18 @@ pub fn diff(
         }
     }
 
+    // THE ANCHOR EACH GAP SITS BEHIND, read off the old side: the last kept line
+    // before the gap opens. An insert with no replacement takes its place and
+    // sorts just past it, which is what puts a middle insert in the middle.
+    var anchor_of_gap: std.ArrayListUnmanaged(?LineId) = .empty;
+    try anchor_of_gap.append(allocator, null); // gap 0 opens the document
+    for (old_lines, 0..) |line, idx| {
+        if (kept_old[idx]) try anchor_of_gap.append(allocator, line.id());
+    }
+
     var inserts: std.ArrayListUnmanaged([]const u8) = .empty;
     var replaces: std.ArrayListUnmanaged(?LineId) = .empty;
+    var after: std.ArrayListUnmanaged(?LineId) = .empty;
     var taken: u32 = 0;
     seen_kept = 0;
     for (new_text, 0..) |text, idx| {
@@ -277,10 +287,16 @@ pub fn diff(
         }
         taken += 1;
         try replaces.append(allocator, found);
+        // invariant: every gap has an anchor recorded for it, the document head
+        // included, so this read can never run past the list it walks.
+        assert(seen_kept < anchor_of_gap.items.len);
+        try after.append(allocator, anchor_of_gap.items[seen_kept]);
     }
     // invariant: one answer per insert, so a reader walking the two together
     // can never run off the end of one while the other still has entries.
     assert(replaces.items.len == inserts.items.len);
+    // invariant: and one anchor per insert, for the same reason.
+    assert(after.items.len == inserts.items.len);
 
     // Postcondition: applying the diff is a net transformation -- not necessarily
     // fewer lines, yet never a negative-length insert or delete.
@@ -289,6 +305,7 @@ pub fn diff(
         .inserts = try inserts.toOwnedSlice(allocator),
         .deletes = try deletes.toOwnedSlice(allocator),
         .replaces = try replaces.toOwnedSlice(allocator),
+        .after = try after.toOwnedSlice(allocator),
     };
     // invariant: a diff inserts no more than the new document holds and deletes no more than
     // the old one did, so neither side can be asked to apply a change to a line that never

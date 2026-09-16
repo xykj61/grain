@@ -58,8 +58,8 @@
 //!   weave.to_v1(alloc)       -- this weave written back as an elder record
 //!   Weave.from_v2(alloc, rec) -- a wide v2 record, read back as its weave
 //!   weave.to_v2(alloc)       -- this weave written as a wide v2 record
-//!   Weave.from_v3(alloc, rec) -- a v3 record, order key and all, read back
-//!   weave.to_v3(alloc)       -- this weave written as a v3 record
+//!   Weave.from_order_record(alloc, rec) -- a stamped record, order key and all, read back
+//!   weave.to_order_record(alloc)       -- this weave written as a stamped record
 //!   weave.annotate(alloc, w) -- what each side did, one Note per position
 //!
 //! Part of Mantra -- TAME-first from line one.
@@ -398,7 +398,7 @@ pub const V2Row = struct {
 /// spent a name twice. Two numbers cost one line of the record and buy
 /// independence from an accident. `from_v2` reads the bound the weave actually
 /// declares and refuses a counter standing at or below a line the record holds.
-/// One row of a `mantra-weave-v3` record: the five fields v2 wrote, and the
+/// One row of a `mantra-weave-20260916.101910` record: the five fields v2 wrote, and the
 /// order key beside them (REDS %680, on Keaton's word `20260916`).
 ///
 /// V3 EXISTS BECAUSE A REPLACEMENT CANNOT ROUND-TRIP THROUGH V2. A v2 row has
@@ -407,7 +407,7 @@ pub const V2Row = struct {
 /// where it goes. Writing a replacement into v2 and reading it back would put
 /// it at the end of the document, which is the fault the order key was added to
 /// end. The record grows one field rather than the weave losing the repair.
-pub const V3Row = struct {
+pub const OrderRow = struct {
     text: []const u8,
     gen: u32,
     pos: u32,
@@ -416,22 +416,22 @@ pub const V3Row = struct {
     ord: u32,
 
     /// What names this row for all time -- the same pair `Line.id` reads.
-    pub fn id(self: V3Row) LineId {
+    pub fn id(self: OrderRow) LineId {
         return .{ .pos = self.pos, .site = self.site };
     }
 
     /// Where this row sits, order key and all, so a record written in document
     /// order is read back in document order.
-    pub fn place(self: V3Row) Place {
+    pub fn place(self: OrderRow) Place {
         return .{ .run = self.run, .site = self.site, .pos = self.pos, .ord = self.ord };
     }
 };
 
-/// A whole `mantra-weave-v3` record: the rows, and the two counters the weave
+/// A whole `mantra-weave-20260916.101910` record: the rows, and the two counters the weave
 /// they came from was standing at. The counters are unchanged from v2; only the
 /// row grew.
-pub const V3Record = struct {
-    rows: []const V3Row,
+pub const OrderRecord = struct {
+    rows: []const OrderRow,
     next_pos: u32,
     next_run: u32,
 };
@@ -498,6 +498,15 @@ pub const Diff = struct {
     /// named cannot inherit a place. An empty slice means every insert is fresh,
     /// which is what a caller building a Diff by hand gets.
     replaces: []const ?LineId = &.{},
+    /// For each insert, the kept line it FOLLOWS, or null when it opens the
+    /// document (REDS %689). Parallel to `inserts`, one entry each.
+    ///
+    /// A replacement inherits the place of the line it replaces; an ordinary
+    /// insert has no such line, so it takes the place of the line it comes
+    /// after and sorts just past it on the position tiebreak. Without an anchor
+    /// every insert drew a fresh order key from a counter that only rises, which
+    /// is why a middle insert landed at the end of the document.
+    after: []const ?LineId = &.{},
 };
 
 /// What the two sides did at one position, in a single word.
@@ -929,18 +938,18 @@ pub const Weave = struct {
     ///   carrying a generation of at least one and standing under both counters
     ///   the record carries -- which is exactly what `from_v2` demands, so what
     ///   this writes lifts.
-    /// Write this weave as a `mantra-weave-v3` record -- every field a line
+    /// Write this weave as a `mantra-weave-20260916.101910` record -- every field a line
     /// carries, including the order key v2 has no room for.
     ///
     /// The same asserts v2 makes, for the same reasons, and one difference that
     /// is the whole point: the place a row reports reads its own order key, so
     /// a replacement writes and lifts at the position it inherited.
-    pub fn to_v3(self: *const Weave, allocator: std.mem.Allocator) !V3Record {
+    pub fn to_order_record(self: *const Weave, allocator: std.mem.Allocator) !OrderRecord {
         // invariant: the weave stands inside the ceiling a record may hold, so a
         // record this writes can always be read back.
         assert(self.lines.items.len <= max_weave_lines);
         const line_count: u32 = @intCast(self.lines.items.len);
-        var rows: std.ArrayListUnmanaged(V3Row) = .empty;
+        var rows: std.ArrayListUnmanaged(OrderRow) = .empty;
         errdefer rows.deinit(allocator);
         try rows.ensureTotalCapacity(allocator, line_count);
         for (self.lines.items) |line| {
@@ -966,18 +975,18 @@ pub const Weave = struct {
             assert(row.run < self.next_run);
             if (i + 1 < result.len) {
                 // invariant: the rows rise strictly in place order, which is what
-                // `from_v3` demands of a record -- so what this writes lifts.
+                // `from_order_record` demands of a record -- so what this writes lifts.
                 assert(row.place().less_than(result[i + 1].place()));
             }
         }
         return .{ .rows = result, .next_pos = self.next_pos, .next_run = self.next_run };
     }
 
-    /// Read a `mantra-weave-v3` record back into a weave, refusing by name on
+    /// Read a `mantra-weave-20260916.101910` record back into a weave, refusing by name on
     /// every shape v2 refuses plus nothing new: the order key is a field rather
     /// than a constraint, and the place order the rows must rise in already
     /// reads it.
-    pub fn from_v3(allocator: std.mem.Allocator, record: V3Record) !Weave {
+    pub fn from_order_record(allocator: std.mem.Allocator, record: OrderRecord) !Weave {
         if (record.rows.len > max_weave_lines) return WeaveError.TooManyLines;
         if (record.next_pos > max_weave_lines) return WeaveError.CounterPastCeiling;
         if (record.next_run > max_weave_lines) return WeaveError.CounterPastCeiling;
@@ -1013,7 +1022,7 @@ pub const Weave = struct {
                 .run = row.run,
             });
         }
-        // invariant: one line per row, for the same reason `to_v3` asserts it.
+        // invariant: one line per row, for the same reason `to_order_record` asserts it.
         assert(restored.lines.items.len == record.rows.len);
         return restored;
     }
@@ -1392,6 +1401,28 @@ pub const Weave = struct {
             // departure, and only the diff can see the gaps.
             var ord_for = self.next_pos;
             var run_for = run;
+            // AN ORDINARY INSERT TAKES THE PLACE OF THE LINE IT COMES AFTER
+            // (REDS %689). It carries a fresh position, which is higher than the
+            // anchor's, so the position tiebreak sorts it JUST PAST the anchor
+            // and before whatever follows -- a line placed between two others
+            // without a denser number than a `u32` can hold. Two inserts after
+            // one anchor keep the order they were written in, for the same
+            // reason. An insert opening the document has no anchor and keeps the
+            // counter's own answer, which is the one case still landing at the
+            // end; a document that grows at its head wants its own lap.
+            if (insert_at < diff.after.len) {
+                if (diff.after[insert_at]) |anchor| {
+                    for (self.lines.items) |held| {
+                        if (held.id().eq(anchor)) {
+                            ord_for = held.ord;
+                            run_for = held.run;
+                            break;
+                        }
+                    }
+                }
+            }
+            // A REPLACEMENT names a line outright and overrides the anchor, on
+            // Keaton's word: it inherits the place of the line it REPLACES.
             if (insert_at < diff.replaces.len) {
                 if (diff.replaces[insert_at]) |replaced| {
                     for (self.lines.items) |held| {

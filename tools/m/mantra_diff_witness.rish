@@ -72,7 +72,7 @@ assert selftest.out contains "a tail delete deletes one line and inserts none" e
 assert selftest.out contains "the same inputs give the same diff twice" else "mantra-diff: the purity claim is missing"
 assert selftest.out contains "moves one line, not five" else "mantra-diff: the LCS claim is missing"
 assert selftest.out contains "an append round-trips exactly" else "mantra-diff: the exact round-trip claim is missing"
-assert selftest.out contains "a middle insert lands at the end" else "mantra-diff: the reorder claim is missing -- the seam this witness pins"
+assert selftest.out contains "a middle insert lands in the middle" else "mantra-diff: the reorder claim is missing -- the seam this witness pins"
 assert selftest.out contains "split_lines drops the trailing token" else "mantra-diff: the split_lines claim is missing"
 assert selftest.out contains "the bounds refuse by name at one cell past the ceiling" else "mantra-diff: the bound claim is missing -- the module allocated a quadratic table with no ceiling until 20260907"
 assert selftest.out contains "the per-side ceiling is the weave's own" else "mantra-diff: the derivation claim is missing -- a ceiling spelled twice drifts"
