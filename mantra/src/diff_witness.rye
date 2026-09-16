@@ -204,23 +204,30 @@ fn prove_append_round_trip(garden: std.mem.Allocator) !void {
     print("diff: an append round-trips exactly -- the weave reads back the new text\n", .{});
 }
 
-/// Claim 6: the round trip REORDERS for a middle insert, and the reorder is
-/// asserted by name. `Diff.inserts` is text without an anchor, so `Weave.apply`
-/// appends; the module's own head promised otherwise until this measured it.
-fn prove_middle_insert_lands_at_the_end(garden: std.mem.Allocator) !void {
+/// Claim 6: the round trip KEEPS THE ORDER for a middle insert, because the
+/// diff now carries the line each insert comes after and `Weave.apply` places
+/// it there (REDS %689, closed `20260916`).
+///
+/// THIS CLAIM FLIPPED, and its elder text said why it would: *asserting the
+/// true shape is what turns a later widening of Diff into a visible change*.
+/// `Diff` widened, and this is the change, visible.
+fn prove_middle_insert_lands_in_the_middle(garden: std.mem.Allocator) !void {
     const old = [_][]const u8{ "a", "c" };
     const new = [_][]const u8{ "a", "b", "c" };
     const trip = try round_trip(garden, &old, &new);
     // invariant: the diff itself is right -- one line was genuinely added
     assert(trip.inserts == 1);
     assert(trip.deletes == 0);
-    // invariant: and the weave reads back a c b rather than a b c, because an
-    // insert carries what was added and never where. Asserting the true shape
-    // is what turns a later widening of Diff into a visible change.
-    const expected = [_][]const u8{ "a", "c", "b" };
-    assert(same_document(trip.after, &expected));
-    assert(!same_document(trip.after, &new));
-    print("diff: a middle insert lands at the end -- a c + b reads back a c b\n", .{});
+    // invariant: and the weave reads back what was written. The inserted line
+    // takes the place of the line it comes after and carries a fresh position,
+    // so the position tiebreak sorts it just past that anchor and before what
+    // follows -- a line placed between two others without a denser number.
+    assert(same_document(trip.after, &new));
+    const elder = [_][]const u8{ "a", "c", "b" };
+    // invariant: and it is NOT the elder shape, asserted by name so a
+    // regression reads as a failure rather than as a quieter success.
+    assert(!same_document(trip.after, &elder));
+    print("diff: a middle insert lands in the middle -- a c + b reads back a b c\n", .{});
 }
 
 /// Claim 7: split_lines drops the token a trailing newline leaves, keeps an
@@ -351,14 +358,14 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_pure(garden);
     try prove_lcs_keeps_the_common(garden);
     try prove_append_round_trip(garden);
-    try prove_middle_insert_lands_at_the_end(garden);
+    try prove_middle_insert_lands_in_the_middle(garden);
     try prove_split_lines(garden);
     try prove_the_bounds_refuse(garden);
     try prove_the_ceilings_are_derived(garden);
     try prove_diff_reads_the_edge(garden);
 
     print("diff: version {s}\n", .{witness_version});
-    print("GREEN: the diff compiles, keeps the common subsequence, round-trips an append, and appends a middle insert.\n", .{});
+    print("GREEN: the diff compiles, keeps the common subsequence, round-trips an append, and places a middle insert.\n", .{});
     return 0;
 }
 

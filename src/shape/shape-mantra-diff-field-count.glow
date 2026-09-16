@@ -1,7 +1,7 @@
 ::  name       mantra diff field count
 ::  shape      fields - int (@u32)
-::  invariant  a Diff carries exactly four fields (site - inserts - deletes - replaces)
-::  example    4
+::  invariant  a Diff carries exactly five fields (site - inserts - deletes - replaces - after)
+::  example    5
 ::  readers    Mantra - Glow Tend - Sur museum - Ashvini nest-only
 ::  nib        equinox-e205-mantra-tend-v0
 ::
