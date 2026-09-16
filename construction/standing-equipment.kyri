@@ -6097,3 +6097,37 @@ guard rishi_brief
 path tools/r/rishi_brief_witness.rish
 tier lap
 seated 20260915.212007
+
+# whitepaper_definitions -- row 11 of the bounded-torus page is the only one of the twelve whose
+# subject is the other eleven: "one paper binds the three definitions the other eleven rows lean
+# on." Nine rows now carry landed readings, so its assumption and its falsifier are both checkable,
+# and this rung checks them by RUNNING the sibling instruments and reading their emitted keys rather
+# than by reading the errata that describe them -- so the answer moves when an instrument moves.
+#
+# ONE DEFINITION OF THREE STANDS. The bound-when-space-wraps definition holds on bearing_quorum's
+# cost_half and wrap_worth_one_cut. The radius-when-privilege-is-distance definition is refuted on
+# three keys across two instruments -- capability_lattice reads 32 incomparable unordered pairs and
+# 48 over-admissions where a line reads zero of each, and aether_falloff reads a mapped saturation
+# radius of 2 where a gradient needs three. The topos definition is left UNRUN, since its instrument
+# is the cadence-tier cyclic_witness, and the scan proves the answer cannot turn on it by
+# recomputing with that definition forced to stand.
+#
+# THE SURVIVORS NEED A RING. Each definition states how many independent cycles the space must
+# carry; the maximum among the supported ones reads 1 against a page titled for a torus.
+#
+# AND THE FALSIFIER CANNOT FIRE. Each definition bounds the space from below, and lower bounds
+# compose by maximum, so the scan enumerates all 27 verdict assignments and counts the conflicting
+# ones under both readings of that hinge: 0 under `atleast` and 5 under `exact`. The hinge is an
+# inference rather than an observation and both answers are printed, so a reader who disagrees has
+# one number to move.
+#
+# EVERYTHING IS GATED: every figure is arithmetic over the assignment space or a key from a sibling
+# instrument that is itself gated, and the thresholds are the values a definition HOLDING would
+# produce rather than counts of this tree's population that ordinary work moves.
+#
+# `tier cadence` rather than lap: the scan runs four sibling scans and takes 11s, of which
+# torus_place is 8s, and the control runs the scan about twenty times for 19s more.
+guard whitepaper_definitions
+path tools/w/whitepaper_definitions_witness.rish
+tier cadence
+seated 20260915.212827
