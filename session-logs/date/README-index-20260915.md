@@ -64,6 +64,7 @@
 | `20260915.182844` | [The path a reader copies](20260915/20260915-182844_the-path-a-reader-copies.kyri) | a link's visible path is a promise no guard read |
 | `20260915.182506` | [The pivot does not move](20260915/20260915-182506_the-pivot-does-not-move.kyri) | hinge and separator weighed against flap |
 | `20260915.182429` | [The key that carries locality](20260915/20260915-182429_the-key-that-carries-locality.kyri) | locality buys neighbours and sells evenness and the room |
+| `20260915.182427` | [The key that cost more than the compile](20260915/20260915-182427_the-key-that-cost-more-than-the-compile.kyri) | recovered: receipt hit 1,492 ms -> 267 ms |
 | `20260915.181805` | [The refusal that names its field](20260915/20260915-181805_the-refusal-that-names-its-field.kyri) | one refusal names field, value, ceiling, unit, reason |
 | `20260915.181038` | [The pen that was never entered](20260915/20260915-181038_the-pen-that-was-never-entered.kyri) | unentered pen moved this tree's identity |
 | `20260915.181035` | [The section that wanted a shelf](20260915/20260915-181035_the-section-that-wanted-a-shelf.kyri) | card folded 41,230 to 19,964 bytes |

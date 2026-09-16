@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.191000` | [The box that priced the build key](20260916/20260916-191000_the-box-that-priced-the-build-key.kyri) | two parked records home; build key priced at 11x the read |
 | `20260916.190156` | [The promise beside the path](20260916/20260916-190156_the-promise-beside-the-path.kyri) | a section named beside a path, gated at last |
 | `20260916.185029` | [The half that was pinned](20260916/20260916-185029_the-half-that-was-pinned.kyri) | A checkable page's quoted output lost two fields the day after it was written. |
 | `20260916.184140` | [The grade that resolved the link](20260916/20260916-184140_the-grade-that-resolved-the-link.kyri) | %776: a newcomer door false since its birth commit |
