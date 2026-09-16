@@ -1,6 +1,7 @@
 ::  name       caravan max dependents
 ::  shape      dependents - int (@u32)
 ::  invariant  the capability table holds at most four dependent slots (max_dependents)
+::  law        caravan/capabilities.rye max_dependents exact
 ::  example    4
 ::  readers    Caravan - Glow Tend - Tally - Amphora - Ashvini nest-only
 ::  nib        equinox-e194-caravan-tend-v0

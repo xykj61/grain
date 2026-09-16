@@ -1,6 +1,7 @@
 ::  name       caravan max name len
 ::  shape      name-len - int (@u32)
 ::  invariant  every capability and dependent label fits in forty-eight bytes (max_name_len)
+::  law        caravan/capabilities.rye max_name_len exact
 ::  example    48
 ::  readers    Caravan - Glow Tend - Tally - Sur museum - Ashvini nest-only
 ::  nib        equinox-e196-caravan-tend-v0

@@ -1,6 +1,7 @@
 ::  name       aurora wire capacity
 ::  shape      capacity - int (@u32)
 ::  invariant  the posted wire buffer holds at most 512 bytes (wire_capacity)
+::  law        aurora/src/posted.rye wire_capacity exact
 ::  example    512
 ::  readers    Aurora - Glow Tend - Caravan - Sur museum - Ashvini nest-only
 ::  nib        equinox-e197-aurora-tend-v0

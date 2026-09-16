@@ -12,8 +12,14 @@
 # identifier can never carry one. The second and third homes landed `20260915.205116`, taking the
 # ratchet's floor from fourteen to nine.
 #
-# Scan: tools/fixtures/g/glow_gate_law_agree_scan.sh -- control: the sibling _control.sh, 51 legs
-# on planted desk rooms in a throwaway pen, five mutations proven to bite.
+# THE SECOND POPULATION landed `20260915.222000`. A desk may DECIDE -- a `?:` wall comparing a face
+# against a literal -- or DECLARE: no `?:` at all, a `+$` shape for a body, and its module's number
+# stated once in the `example` head line. The declaring kind is the LARGER half, 45 desks against
+# 25, and no reader opened it until this rung. Its own gate is `example_disagree` and its own
+# ratchet is `pedestals_unlinked`, so neither word has to answer for both kinds.
+#
+# Scan: tools/fixtures/g/glow_gate_law_agree_scan.sh -- control: the sibling _control.sh, 79 legs
+# on planted desk rooms in a throwaway pen, seven mutations proven to bite.
 
 say "glow_gate_law_agree: Language EN -- each linked Glow gate wall against the Rye const it names."
 
@@ -29,6 +35,7 @@ assert scan.out contains "law_malformed=0" else "glow_gate_law_agree: a law line
 assert scan.out contains "law_unresolved=0" else "glow_gate_law_agree: a linked desk names a const no module declares as a plain integer"
 assert scan.out contains "head_disagree=0" else "glow_gate_law_agree: a desk head restates its law at a number the Rye const no longer holds"
 assert scan.out contains "body_disagree=0" else "glow_gate_law_agree: a desk wall literal disagrees with its declared relation to the Rye const"
+assert scan.out contains "example_disagree=0" else "glow_gate_law_agree: a pedestal desk's example line states a number the Rye declaration it names no longer holds"
 
 # The population must not read empty. A scan whose file list came back blank prints four honest
 # zeros and verdict=ok, which is exactly what a healthy tree prints -- so the counts are read back
@@ -39,6 +46,15 @@ assert (trim walls.out) == "yes" else "glow_gate_law_agree: the scan found no wa
 let linked = run ["sh" "-c" "sh tools/fixtures/g/glow_gate_law_agree_scan.sh | grep -q '^linked=0' && echo no || echo yes"]
 assert (trim linked.out) == "yes" else "glow_gate_law_agree: no desk is linked to a Rye const, so the four gates above hold nothing"
 
+# The second population is read back the same way and for the same reason. A pedestal reading that
+# silently stopped finding desks prints `pedestals=0` beside `verdict=ok`, which is what an empty
+# room prints -- so both the population and its linked half are asserted non-empty.
+let peds = run ["sh" "-c" "sh tools/fixtures/g/glow_gate_law_agree_scan.sh | grep -q '^pedestals=0' && echo no || echo yes"]
+assert (trim peds.out) == "yes" else "glow_gate_law_agree: the scan found no declaring pedestal desk at all, which reads like a broken reader rather than a clean tree"
+
+let peds_linked = run ["sh" "-c" "sh tools/fixtures/g/glow_gate_law_agree_scan.sh | grep -q '^pedestals_linked=0' && echo no || echo yes"]
+assert (trim peds_linked.out) == "yes" else "glow_gate_law_agree: no pedestal is linked to a Rye declaration, so example_disagree holds nothing"
+
 let control = run ["sh" "tools/fixtures/g/glow_gate_law_agree_control.sh"]
 assert control.ok else "glow_gate_law_agree: the pen control failed -- ${control.out_brief}"
 assert control.out contains "control_failed=0" else "glow_gate_law_agree: a control leg failed -- ${control.out_brief}"
@@ -47,7 +63,7 @@ assert control.out contains "control_verdict=ok" else "glow_gate_law_agree: the 
 # The leg TALLY, asserted beside the verdict. `control_verdict=ok` says only that the control
 # reached its last line, so a leg written tomorrow could read wrongly under a green witness --
 # the `control_unheard` shape one room over. Raise this number in the same commit that adds a leg.
-assert control.out contains "legs=51" else "glow_gate_law_agree: the control ran a different number of legs than this rung names -- a leg this witness cannot hear is a leg nobody is watching -- ${control.out}"
+assert control.out contains "legs=79" else "glow_gate_law_agree: the control ran a different number of legs than this rung names -- a leg this witness cannot hear is a leg nobody is watching -- ${control.out}"
 
 # The two homes beyond a plain const, named so a reader of this witness knows the dot suffix is
 # held rather than merely written. Each is planted agreeing and then broken by growing the Rye
@@ -58,4 +74,13 @@ assert control.out contains "leg ok      enum variants linked" else "glow_gate_l
 assert control.out contains "leg ok      enum grew, body reds" else "glow_gate_law_agree: an enum growing a variant under a still desk must red"
 assert control.out contains "leg ok      wrong kind unresolved" else "glow_gate_law_agree: a kind suffix pointed at the wrong kind must refuse rather than reach for the other reader"
 
-say "GREEN: glow_gate_law_agree -- every linked gate wall agrees with the Rye const it names."
+# The declaring population, named so a reader knows the larger half is held rather than merely
+# counted. The first is the whole fault: a pedestal states 32, the Rye const moves to 48, and
+# nothing but this reading says so. The last two are the disjointness -- a desk carrying a wall is
+# a wall desk whatever its example line says, and a desk memorizing nothing is neither.
+assert control.out contains "leg ok      const moved: example reds" else "glow_gate_law_agree: a Rye const moving under a still pedestal must red"
+assert control.out contains "leg ok      pedestal field-count home" else "glow_gate_law_agree: the field-count reader must serve a pedestal law exactly as it serves a wall's"
+assert control.out contains "leg ok      wall with example: not ped" else "glow_gate_law_agree: a wall desk carrying an example line must never be counted a second time as a pedestal"
+assert control.out contains "leg ok      face-vs-face: no pedestal" else "glow_gate_law_agree: a desk memorizing nothing must be passed over rather than priced by an example it never decides on"
+
+say "GREEN: glow_gate_law_agree -- every linked gate wall and every linked pedestal agrees with the Rye declaration it names."

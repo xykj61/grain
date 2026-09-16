@@ -1,6 +1,7 @@
 ::  name       mantra line field count
 ::  shape      fields - int (@u32)
 ::  invariant  a weave Line carries exactly five fields (text - gen - pos - site - run)
+::  law        mantra/src/weave.rye Line.fields exact
 ::  example    5
 ::  readers    Mantra - Glow Tend - Sur museum - Ashvini nest-only
 ::  nib        equinox-e203-mantra-tend-v0

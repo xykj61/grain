@@ -81,8 +81,32 @@ desk() {
   } > "$_d_path"
 }
 
-run_scan() {
-  ( cd "$pen" && GLOW_GATE_UNLINKED_CEILING="${1:-0}" sh "$SCAN" 2>&1 )
+run_scan() { # run_scan [<wall ceiling>] [<pedestal ceiling>]
+  ( cd "$pen" \
+    && GLOW_GATE_UNLINKED_CEILING="${1:-0}" \
+       GLOW_GATE_PEDESTAL_CEILING="${2:-0}" \
+       sh "$SCAN" 2>&1 )
+}
+
+# pedestal <path> <example> [<law line body>]
+#
+# A pedestal desk declares rather than decides: no `?:` line anywhere, a `+$` shape for a body, and
+# its module's number stated once in the `example` head line. That is the shape of all 45 desks in
+# src/shape/ and the six shape-*.glow desks in src/gate/.
+pedestal() {
+  _p_path=$pen/$1
+  mkdir -p "$(dirname "$_p_path")"
+  {
+    echo "::  name       planted pedestal"
+    echo "::  shape      count - int (@u32)"
+    echo "::  invariant  names the module's own count in words, carrying no digits"
+    [ -n "${3-}" ] && echo "::  law        $3"
+    echo "::  example    $2"
+    echo "::  readers    planted"
+    echo "+$  planted-shape"
+    echo "  \$:  count=@u32"
+    echo "  =="
+  } > "$_p_path"
 }
 
 # ---- 1. an empty room reads zero everywhere, and passes ----------------------
@@ -327,6 +351,124 @@ desk src/wrongkind.glow eq 3 "mod/law.rye Meaning.fields exact" 3
 out=$(run_scan 0)
 leg "wrong kind unresolved"      law_unresolved "$(read_key "$out" verdict)"
 rm -f "$pen/src/wrongkind.glow" "$pen/src/variants.glow"
+
+# ---- 10. the pedestal population: a desk that declares rather than decides ---
+# Forty-five desks memorize a module number with no wall at all -- nearly twice the 25 that wall
+# one -- and for a year no reader opened them. They are a population of their own, so that neither
+# `walls` nor `linked` has to lie about what it counts.
+printf 'pub const wall: u32 = 32;\n' > "$pen/mod/law.rye"
+
+pedestal src/ped.glow 32
+out=$(run_scan 0 1)
+leg "pedestal counted"           1  "$(read_key "$out" pedestals)"
+leg "pedestal is no wall"        0  "$(read_key "$out" walls)"
+leg "pedestal unlinked"          1  "$(read_key "$out" pedestals_unlinked)"
+leg "pedestal ratchet holds"     ok "$(read_key "$out" verdict)"
+out=$(run_scan 0 0); code=$?
+leg "pedestal over ceiling"      pedestals_unlinked_over "$(read_key "$out" verdict)"
+leg "pedestal over exits 1"      1  "$code"
+
+# Linked and agreeing.
+pedestal src/ped.glow 32 "mod/law.rye wall exact"
+out=$(run_scan 0 0)
+leg "pedestal linked"            1  "$(read_key "$out" pedestals_linked)"
+leg "pedestal linked leaves walls" 0 "$(read_key "$out" linked)"
+leg "pedestal agrees"            0  "$(read_key "$out" example_disagree)"
+leg "pedestal agrees verdict"    ok "$(read_key "$out" verdict)"
+
+# The Rye constant moves and the pedestal does not -- the fault this whole population was blind to.
+printf 'pub const wall: u32 = 48;\n' > "$pen/mod/law.rye"
+out=$(run_scan 0 0); code=$?
+leg "const moved: example reds"  1  "$(read_key "$out" example_disagree)"
+leg "const moved: not body"      0  "$(read_key "$out" body_disagree)"
+leg "const moved: verdict"       example_disagree "$(read_key "$out" verdict)"
+leg "const moved: exits 1"       1  "$code"
+printf 'pub const wall: u32 = 32;\n' > "$pen/mod/law.rye"
+out=$(run_scan 0 0)
+leg "lifted: pedestal ok"        ok "$(read_key "$out" verdict)"
+
+# A pedestal states its law in words, so the head carries no digits and is reported, never refused.
+leg "pedestal head unstated"     1  "$(read_key "$out" head_unstated)"
+
+# One grammar serves both kinds: `below` on a pedestal wants one under the constant, exactly as it
+# wants one under it on a wall. Nothing forces the relation to be `exact` merely because every
+# pedestal standing today keeps it.
+pedestal src/ped.glow 31 "mod/law.rye wall below"
+out=$(run_scan 0 0)
+leg "pedestal below agrees"      ok "$(read_key "$out" verdict)"
+pedestal src/ped.glow 32 "mod/law.rye wall below"
+out=$(run_scan 0 0)
+leg "pedestal below refuses"     example_disagree "$(read_key "$out" verdict)"
+
+# The two sibling readers serve the pedestal path through the same law_value_of call, so a field
+# count is a pedestal's home exactly as it is a wall's.
+cat > "$pen/mod/law.rye" <<'RYE'
+pub const Shape = struct {
+    text: []const u8,
+    gen: u32,
+    pos: u32,
+};
+RYE
+pedestal src/ped.glow 3 "mod/law.rye Shape.fields exact"
+out=$(run_scan 0 0)
+leg "pedestal field-count home"  ok "$(read_key "$out" verdict)"
+pedestal src/ped.glow 4 "mod/law.rye Shape.fields exact"
+out=$(run_scan 0 0)
+leg "pedestal field-count reds"  example_disagree "$(read_key "$out" verdict)"
+
+# An unreadable law refuses on the pedestal path too rather than passing for want of a comparison.
+pedestal src/ped.glow 32 "mod/absent.rye wall exact"
+out=$(run_scan 0 0)
+leg "pedestal absent file"       law_unresolved "$(read_key "$out" verdict)"
+rm -f "$pen/src/ped.glow"
+
+# ---- 11. the two populations are disjoint by construction -------------------
+# A desk carrying a `?:` is a wall desk whatever its example line says. Without that, a wall desk's
+# `32 -> 1 - 31 -> 0` example would be read as a second memorized number and the same file would be
+# priced twice, once on a literal it decides and once on a literal it merely illustrates.
+printf 'pub const wall: u32 = 32;\n' > "$pen/mod/law.rye"
+{
+  echo "::  name       planted gate with an example"
+  echo "::  invariant  answers 1 while it stays within wall=32; answers 0 past it"
+  echo "::  law        mod/law.rye wall below"
+  echo "::  example    12 -> 1 - 40 -> 0"
+  echo "|=  sample=@u32"
+  echo "?:  (gth sample 31)  0  1"
+} > "$pen/src/both.glow"
+out=$(run_scan 0 0)
+leg "wall with example: wall"    1  "$(read_key "$out" walls)"
+leg "wall with example: not ped" 0  "$(read_key "$out" pedestals)"
+leg "wall with example: ok"      ok "$(read_key "$out" verdict)"
+rm -f "$pen/src/both.glow"
+
+# A face-vs-face desk memorizes nothing and is passed over ENTIRELY rather than falling through to
+# the pedestal reading, where its example integer would be compared against a law it never keeps.
+{
+  echo "::  name       planted pair gate"
+  echo "::  invariant  answers 1 while the sample stays under the cap it is handed"
+  echo "::  example    8"
+  echo "|=  [sample=@u32 cap=@u32]"
+  echo "?:  (gth sample cap)  0  1"
+} > "$pen/src/pairex.glow"
+out=$(run_scan 0 0)
+leg "face-vs-face: no wall"      0 "$(read_key "$out" walls)"
+leg "face-vs-face: no pedestal"  0 "$(read_key "$out" pedestals)"
+rm -f "$pen/src/pairex.glow"
+
+# An example line carrying no usable integer is no pedestal: a zero is the structural question the
+# wall population already passes over, and prose carries no number to compare.
+pedestal src/zeroex.glow 0
+out=$(run_scan 0 0)
+leg "zero example: no pedestal"  0 "$(read_key "$out" pedestals)"
+rm -f "$pen/src/zeroex.glow"
+{
+  echo "::  name       planted prose pedestal"
+  echo "::  example    one garden, named"
+  echo "+$  planted-shape"
+} > "$pen/src/prose.glow"
+out=$(run_scan 0 0)
+leg "prose example: no pedestal" 0 "$(read_key "$out" pedestals)"
+rm -f "$pen/src/prose.glow"
 
 echo "legs=$legs"
 echo "control_failed=$failed"

@@ -68,14 +68,45 @@
 # and matches neither pattern; reading the body finds it. A literal ZERO is passed over: `gth face 0`
 # is the structural question "is this non-empty", which mirrors no module constant.
 #
-#   walls           gate desks memorizing a non-zero literal -- the whole population
-#   linked          those carrying a `law` head line
-#   unlinked        the remainder                                       -- RATCHET
-#   law_unresolved  a linked desk whose named file or const is absent   -- GATED AT ZERO
-#   law_malformed   a `law` line that is not <file> <const> <relation>  -- GATED AT ZERO
-#   head_disagree   the head `invariant` number against the const       -- GATED AT ZERO
-#   body_disagree   the body literal against what the relation implies  -- GATED AT ZERO
-#   head_unstated   a linked desk whose invariant line states no number -- reported, never gated
+#   walls              desks memorizing a non-zero literal in a wall  -- the deciding population
+#   linked             those carrying a `law` head line
+#   unlinked           the remainder                                       -- RATCHET
+#   pedestals          desks memorizing a number in an `example` line       -- the declaring population
+#   pedestals_linked   those carrying a `law` head line
+#   pedestals_unlinked the remainder                                        -- RATCHET
+#   law_unresolved     a linked desk whose named file or const is absent    -- GATED AT ZERO
+#   law_malformed      a `law` line that is not <file> <const> <relation>   -- GATED AT ZERO
+#   head_disagree      the head `invariant` number against the const        -- GATED AT ZERO
+#   body_disagree      a wall literal against what the relation implies     -- GATED AT ZERO
+#   example_disagree   a pedestal's example against what the relation implies -- GATED AT ZERO
+#   head_unstated      a linked desk whose invariant line states no number  -- reported, never gated
+#
+# THE SECOND POPULATION, AND WHY IT WAS THE LARGER HALF NOBODY OPENED. Everything above this line
+# describes a desk that DECIDES: it carries a `?:` wall and answers 1 or 0 at the door. A second
+# kind DECLARES instead -- no `?:` anywhere, a `+$` shape for a body, and its module's number
+# stated once in the `example` head line:
+#
+#   ::  invariant  every capability and dependent label fits in forty-eight bytes (max_name_len)
+#   ::  example    48
+#   +$  caravan-max-name-len-shape
+#
+# That is the same fault in a second grammar -- a Rye number copied into Glow, with the comparison
+# left to memory -- and on 20260915 it stood at 45 desks against 25 walls, in src/shape/ and in the
+# six shape-*.glow desks of src/gate/. Every reading above opened the walls alone, so the larger
+# half of this corpus waited its whole life for a reader. RUN the scan rather than trusting either
+# figure; both are free and rise as lanes write desks.
+#
+# A pedestal states the declaration ITSELF rather than a wall one under it, so `exact` is what
+# every pedestal standing today keeps. All three relations stay lawful on the pedestal path anyway:
+# one grammar serving both kinds is cheaper to hold in a reader's head than two, and a declaring
+# desk stays free to name a wall value the day one wants to.
+#
+# THE TWO POPULATIONS ARE DISJOINT BY CONSTRUCTION rather than by care. A desk carrying a `?:` is
+# a wall desk whatever its example line says, so a wall's `12 -> 1 - 40 -> 0` illustration stays an
+# illustration, and a desk memorizing nothing -- the pair-bound family, which takes its cap as a
+# runtime argument -- is passed over whole rather than falling through to be priced by an example it
+# merely prints. Both are proven in the pen, and a mutation opening that fall-through reads a
+# pedestal where the tree holds one wall.
 #
 # WHY unlinked IS A RATCHET AND THE OTHER FOUR ARE GATES. A wall that reds on a backlog no single
 # lap can clear is a wall somebody turns off. The four gates read zero the moment this lands, so
@@ -112,8 +143,17 @@
 #   over one claim is the honest cost of the grammar reaching them: the elder pair also asserts
 #   the field ORDER, which a count cannot see, so neither subsumes the other.
 #
-# So the ratchet falls again only for the two shapes named above -- a const whose value is an
+# So the WALL ratchet falls again only for the two shapes named above -- a const whose value is an
 # expression, and a module roster count. Both want a design behind them rather than a sweep.
+#
+# THE PEDESTAL RATCHET opened at 37, which is 45 minus the eight linked on the lap that found the
+# population: the four `src/gate/shape-*` desks naming tally and caravan constants, caravan's
+# max_name_len and Tablecloth's max_artifacts in `src/shape/`, aurora's private wire_capacity, and
+# mantra's `Line.fields` -- the last one proving the dot-suffix readers serve a declaring desk
+# exactly as they serve a deciding one. Of the 37 left, a large share name a field or variant count
+# the grammar already reaches and want only a lane's reading of which type is the home; the two
+# aurora Ed25519 lengths and the aurora stage roster wait on the same two unbuilt shapes their wall
+# siblings do, one room over.
 #
 # WHY head_unstated IS REPORTED RATHER THAN GATED. An invariant line may state its law in words --
 # "stays within sixteen bytes" -- which is honest English and carries no digits to compare. Refusing
@@ -165,6 +205,11 @@ MAX_DESKS=4096
 # to 9 on 20260915.205116, when the grammar learned the struct-field and enum-variant homes and
 # five more desks took law lines.
 UNLINKED_CEILING=${GLOW_GATE_UNLINKED_CEILING:-9}
+
+# The pedestal ratchet, seated at 37 on 20260915.222000: 45 pedestal desks minus the 8 linked on
+# the lap that opened this population. It only falls, on the same rule the wall ratchet keeps -- a
+# lane that gives one of its own pedestals a law line lowers this in the same commit.
+PEDESTAL_CEILING=${GLOW_GATE_PEDESTAL_CEILING:-37}
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/glow_gate_law.XXXXXX") || exit 2
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -276,6 +321,10 @@ law_kind_of() {
 walls=0
 linked=0
 unlinked=0
+pedestals=0
+pedestals_linked=0
+pedestals_unlinked=0
+example_disagree=0
 law_unresolved=0
 law_malformed=0
 head_disagree=0
@@ -286,28 +335,67 @@ while IFS= read -r f; do
   [ -n "$f" ] || continue
   [ -f "$f" ] || continue
 
-  # The wall: the first `?:` line comparing a face against a literal. Read the operator and both
-  # operands out of the one paren group, so a desk comparing two faces (the pair-bound family, which
-  # takes its cap as a runtime argument and memorizes nothing) is passed over by the same reading
-  # that finds the memorizers.
+  # THE TWO KINDS OF MEMORIZER, read off the body rather than off the path or the filename.
+  #
+  # A WALL decides: its first `?:` line compares a face against a literal, and the operator and both
+  # operands are read out of the one paren group, so a desk comparing two faces (the pair-bound
+  # family, which takes its cap as a runtime argument and memorizes nothing) is passed over by the
+  # same reading that finds the memorizers.
+  #
+  # A PEDESTAL declares: it carries NO `?:` line at all -- its body is a `+$` shape -- and states
+  # its module's number in the `example` head line instead. That is the same fault in a second
+  # grammar, and for a year it was the LARGER half: 45 pedestals against 25 walls on 20260915.
+  #
+  # The two populations are disjoint BY CONSTRUCTION rather than by care. A desk carrying a `?:`
+  # is a wall desk whatever its example line says, so a file can never be counted in both, and a
+  # deciding desk whose wall compares two faces is passed over rather than falling through to the
+  # pedestal reading and being priced by an example it does not decide on.
+  kind=
+  op=
+  memo=
   body=$(grep -E '^\?:' "$f" | head -1)
-  [ -n "$body" ] || continue
-  parts=$(printf '%s\n' "$body" | sed -n 's/.*(\([a-z][a-z]*\)[ ][ ]*\([^ )][^ )]*\)[ ][ ]*\([^ )][^ )]*\)).*/\1 \2 \3/p')
-  [ -n "$parts" ] || continue
-  op=$(printf '%s' "$parts" | awk '{print $1}')
-  rhs=$(printf '%s' "$parts" | awk '{print $3}')
-  case "$rhs" in ''|*[!0-9]*) continue ;; esac
-  [ "$rhs" != 0 ] || continue
+  if [ -n "$body" ]; then
+    parts=$(printf '%s\n' "$body" | sed -n 's/.*(\([a-z][a-z]*\)[ ][ ]*\([^ )][^ )]*\)[ ][ ]*\([^ )][^ )]*\)).*/\1 \2 \3/p')
+    [ -n "$parts" ] || continue
+    op=$(printf '%s' "$parts" | awk '{print $1}')
+    rhs=$(printf '%s' "$parts" | awk '{print $3}')
+    case "$rhs" in ''|*[!0-9]*) continue ;; esac
+    [ "$rhs" != 0 ] || continue
+    kind=wall
+    memo=$rhs
+  else
+    # The example line carries ONE bare integer for a pedestal. A line listing several -- the wall
+    # desks' `32 -> 1 - 31 -> 0` -- is not a pedestal's shape and is passed over by the same numeric
+    # test, so nothing has to name the wall desks a second time to keep them out.
+    ex=$(grep -E '^::[ ]+example[ ]' "$f" | head -1 | sed -n 's/^::[ ]*example[ ]*//p' | tr -d ' \t')
+    case "$ex" in ''|*[!0-9]*) continue ;; esac
+    [ "$ex" != 0 ] || continue
+    kind=pedestal
+    memo=$ex
+  fi
 
-  walls=$((walls + 1))
+  if [ "$kind" = wall ]; then
+    walls=$((walls + 1))
+  else
+    pedestals=$((pedestals + 1))
+  fi
 
   law_line=$(grep -E '^::[ ]+law[ ]' "$f" | head -1)
   if [ -z "$law_line" ]; then
-    unlinked=$((unlinked + 1))
-    [ -n "$EXPLAIN" ] && echo "unlinked $f -- wall $op $rhs, no law line"
+    if [ "$kind" = wall ]; then
+      unlinked=$((unlinked + 1))
+      [ -n "$EXPLAIN" ] && echo "unlinked $f -- wall $op $memo, no law line"
+    else
+      pedestals_unlinked=$((pedestals_unlinked + 1))
+      [ -n "$EXPLAIN" ] && echo "pedestal_unlinked $f -- example $memo, no law line"
+    fi
     continue
   fi
-  linked=$((linked + 1))
+  if [ "$kind" = wall ]; then
+    linked=$((linked + 1))
+  else
+    pedestals_linked=$((pedestals_linked + 1))
+  fi
 
   law_file=$(printf '%s\n' "$law_line" | awk '{print $3}')
   law_const=$(printf '%s\n' "$law_line" | awk '{print $4}')
@@ -347,9 +435,20 @@ while IFS= read -r f; do
     exact)  want=$law_value;         want_op=eq  ;;
   esac
 
-  if [ "$op" != "$want_op" ] || [ "$rhs" != "$want" ]; then
-    body_disagree=$((body_disagree + 1))
-    echo "body_disagree $f -- wall is ($op face $rhs); $law_file $law_const=$law_value $law_rel wants ($want_op face $want)"
+  if [ "$kind" = wall ]; then
+    if [ "$op" != "$want_op" ] || [ "$memo" != "$want" ]; then
+      body_disagree=$((body_disagree + 1))
+      echo "body_disagree $f -- wall is ($op face $memo); $law_file $law_const=$law_value $law_rel wants ($want_op face $want)"
+    fi
+  else
+    # A pedestal states a number and decides nothing, so the operator half of the relation has
+    # nothing to compare against and only the value is read. `exact` is what every pedestal in the
+    # corpus keeps -- it names the declaration itself -- and `below` and `atmost` stay lawful here
+    # so that one grammar serves both kinds rather than two.
+    if [ "$memo" != "$want" ]; then
+      example_disagree=$((example_disagree + 1))
+      echo "example_disagree $f -- example is $memo; $law_file $law_const=$law_value $law_rel wants $want"
+    fi
   fi
 
   # The head's own restatement. The invariant line carries the law as <word>=<digits>; a line that
@@ -362,7 +461,13 @@ while IFS= read -r f; do
     echo "head_disagree $f -- invariant says $head_value; $law_file $law_const=$law_value"
   fi
 
-  [ -n "$EXPLAIN" ] && echo "linked $f -- $law_file $law_const=$law_value $law_rel; wall ($op face $rhs); head ${head_value:-unstated}"
+  if [ -n "$EXPLAIN" ]; then
+    if [ "$kind" = wall ]; then
+      echo "linked $f -- $law_file $law_const=$law_value $law_rel; wall ($op face $memo); head ${head_value:-unstated}"
+    else
+      echo "pedestal_linked $f -- $law_file $law_const=$law_value $law_rel; example $memo; head ${head_value:-unstated}"
+    fi
+  fi
 done < "$work/files.txt"
 
 verdict=ok
@@ -370,16 +475,23 @@ verdict=ok
 [ "$law_unresolved" -eq 0 ] || verdict=law_unresolved
 [ "$head_disagree" -eq 0 ] || verdict=head_disagree
 [ "$body_disagree" -eq 0 ] || verdict=body_disagree
+[ "$example_disagree" -eq 0 ] || verdict=example_disagree
 [ "$unlinked" -le "$UNLINKED_CEILING" ] || verdict=unlinked_over
+[ "$pedestals_unlinked" -le "$PEDESTAL_CEILING" ] || verdict=pedestals_unlinked_over
 
 echo "walls=$walls"
 echo "linked=$linked"
 echo "unlinked=$unlinked"
 echo "unlinked_ceiling=$UNLINKED_CEILING"
+echo "pedestals=$pedestals"
+echo "pedestals_linked=$pedestals_linked"
+echo "pedestals_unlinked=$pedestals_unlinked"
+echo "pedestal_ceiling=$PEDESTAL_CEILING"
 echo "law_malformed=$law_malformed"
 echo "law_unresolved=$law_unresolved"
 echo "head_disagree=$head_disagree"
 echo "body_disagree=$body_disagree"
+echo "example_disagree=$example_disagree"
 echo "head_unstated=$head_unstated"
 echo "verdict=$verdict"
 
