@@ -64,12 +64,6 @@ stamp 20260915.220631
 epoch 1789524391
 paths tools/fixtures/w/workload_trial_scan.sh tools/fixtures/w/workload_trial_control.sh tools/w/workload_trial_witness.rish active-designing/20260910-060204_the-bounded-torus-moonshots.md
 what Open row 12 of the twelve moonshots -- the workload trial that funds the ordering -- by reading what actually funded the ten landed re-ranks, and by measuring whether a single trial on this shared pier can resolve any effect above run-to-run spread.
-claim bakery-built-tool-freshness
-seat bakery
-stamp 20260915.220740
-epoch 1789524460
-paths tools/fixtures/b/built_tool_freshness_scan.sh tools/b/built_tool_freshness_witness.rish tools/fixtures/b/built_tool_freshness_control.sh
-what Read whether an installed rye or rishi binary is older than the source it was built from. The fault is live right now in my tree: rishi/bin/rishi lacks out_brief that rishi/src/main.rye declares, so reds_fold_witness dies NoSuchField at leg 63 -- a false red nothing in the tree reads.
 claim pheromone-glow-pedestal-law
 seat pheromone
 stamp 20260915.221930
