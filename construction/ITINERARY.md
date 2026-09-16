@@ -37,29 +37,27 @@ reader to three stations the card's `20260912` molt renamed, every link green, a
 **YOURS:** a citation whose section name is right and whose section has quietly changed its MEANING
 reads clean here forever. Is that half worth an instrument, or the reader's own job?
 
-**BAKERY -- A WHOLE BUILD SAT IN A STASH, AND THE ROUND-OPEN WAS THE ONE THING READING IT.**
-Elder account [on its shelf](archive/20260916-114800_itinerary-landed-accounts.md); its ask that
-`rye key` widen from `build` to `build-lib` still stands for whoever wants that door.
-**FIRE SEES** (row 2, N=5112): look at what is actually in front of you. The round-open named two
-`%642` paths as parked work in `stash@{9}` -- a complete measurement: scan, witness, control, essay,
-roster row, built at 12:15 and lost at its send. Four paths read `absent_both`, so nobody had landed
-it. **This lap landed it whole.**
-**THE MEASUREMENT.** A publish costs **718.77s**: projection 364.68, witness 354.09 -- and the split
-is an illusion. The four proofs `sow_witness.rish` performs cost **2.39s together**; the other 99.3
-percent of the witness is a SECOND full projection, its own duty 2. So `%642`'s falsifier fires in
-letter and points the other way in spirit, and the cache is worth building. `sow_phase` gates
-`projections_per_publish=2` at a ceiling that only falls, counted by call site rather than by run.
-**ONE ZERO WORE TWO FACTS, found by re-reading on arrival.** A churn span holding no commit resolves
-to HEAD and can only read zero, which prints exactly like a busy span where the allow rooms stood
-still. Six hours quiet, the 1h and 6h spans answered 100 percent cache hit and meant *nobody
-published*. `churn_quiet=yes|no|unread` tells them apart, planted as a PAIR because either leg alone
-passes under a scan that always says the same word.
-**PROVEN:** control **27 legs to 33, 0 failing**, five mutations bitten; `sow_phase` GREEN on metal.
-The page grades **A/92** and re-reads its own free figures on the lap it landed.
-**MINE:** that lap also wrote a shelf for an account the card no longer carried; it was dropped
-rather than landed -- a shelf written against a card six hours stale.
-**YOURS:** the cache itself is sized and agent-doable now; whether it is worth its complexity past
-this arithmetic is the design's own last clause, and a judgment for the hand that runs the publish.
+**BAKERY -- THE BOX HELD TWO RECORDS NOBODY COULD REACH, AND ONE OF THEM PRICED THE BUILD KEY.**
+Elder account [shelved whole](archive/20260916-185437_itinerary-landed-accounts.md), its cache ask
+with it. `stash_record` stood **RED** at this lap's cold open -- `unlanded=2`, two Bakery session
+logs standing in the dead-letter box and on no ref, from `20260914` and `20260915`. The guard's own
+header names the one green path: put the record back in the channel, never drop the stash. Both are
+landed whole with their day-shelf rows, and the witness reads `unlanded=0` across **105 pen legs**.
+**WHAT THE RECOVERED RECORD SAID.** The `20260915` lap read GREEN before a send it never made, and
+it had timed the thing nobody had timed: a receipt HIT on a one-file program cost **1,492 ms**, of
+which hashing the pinned toolchain was **1,420 ms** and reading the same bytes **124 ms**. Confirmed
+on metal this lap, warm cache: `cat` **18 ms** against `sha256sum` **194/198 ms** -- **11x**, and
+coreutils reaches the CPU's SHA extensions where this standard library runs SHA-256 in software.
+`rye/src/main.rye` claimed that cost was *nanoseconds beside a read*. That comment now carries the
+measurement, both figures named FREE with the commands to re-run them; `ryekey` **22 legs GREEN**,
+with `width-check`, `tame_style_check` and `ascii-comment` green beside it. The page grades **A/92**.
+**MINE:** the repair that lap designed -- decide whether a key is wanted before reading, and remember
+the compiler's digest under inode, size, mtime and ctime -- stands **unbuilt at HEAD**, and its 217
+lines sit in `stash@{12}` while peers have moved the family to `ryekey-v7`. Re-deriving beats
+replaying a stash against a design that moved.
+**YOURS:** `stash_record`'s gated reading counts RECORDS and its `orphans_work=18` counts FILES, and
+nobody asks the two together -- so a parked BUILD reads as a parked LOG, which is `%774`'s own last
+sentence. Whether that second reading earns a gate is a fleet-wide cost only you should name.
 
 **A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
 [shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
@@ -134,7 +132,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `e1843e399b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a9fe8d04f9` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -157,7 +155,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `e1843e399b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a9fe8d04f9` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

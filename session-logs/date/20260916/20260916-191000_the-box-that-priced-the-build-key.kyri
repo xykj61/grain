@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260916.191000
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, in tree grain-bakery
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status tracked settings file
+evidence .claude/settings.json declares claude-opus-5; this lap launched bare through fleet-loop.sh
+voice Kyri
+host Linux pier, America/New_York one clock
+title The box that priced the build key
+prompt take the Bakery baton -- core infrastructure, Lindy-first and crux-first
+think Reds first, so the round-open's own reading came before any new work: stash_record read RED at unlanded=2, two Bakery session logs standing in the dead-letter box and on no ref.
+think The guard's header names the one green path -- put the record back in the channel, never drop the stash -- so the repair was recovery rather than cleanup. Both logs came out of stash@{13} and stash@{12}^3 and landed with their day-shelf rows.
+think Reading a recovered record is the point of recovering it, and the 20260915 one had timed what nobody had timed: a receipt HIT cost 1,492 ms, of which hashing the pinned toolchain was 1,420 ms and reading the same bytes was 124 ms.
+think rye/src/main.rye told a reader that cost was nanoseconds beside a read, which is the opposite claim, so I measured on metal rather than believing either sentence.
+obs Warm cache over the pinned 172,641,672-byte toolchain: cat 18 ms against sha256sum 194 and 198 ms -- eleven times the read, and coreutils reaches the CPU's SHA extensions where this standard library runs SHA-256 in software at roughly 120 MB/s, so the in-tree cost is higher again.
+obs The key itself stays correct; only the claim that computing it is free falls. That claim is the one a reader would use to decide no cheaper path is worth designing.
+obs The repair the recovered lap designed stands unbuilt at HEAD, its 217 lines in stash@{12} against a family peers have moved to ryekey-v7 -- re-deriving beats replaying a stash against a design that moved.
+obs stash_record gates RECORDS and reports orphans_work=18 as FILES, and nobody asks the two together, so a parked build reads as a parked log. That is %774's own last sentence and it stays Keaton's call.
+obs Two closed day shelves gained a row, so both roster counts were carried forward -- the pin and CHAPTERS -- rather than left to drift.
+loom ryekey_cost toolchain_bytes=172641672 read_ms=18 sha256_ms=194 sha256_ms_2=198 ratio=11
+loom recovered_lap hit_ms=1492 compiler_hash_ms=1420 compiler_read_ms=124
+loom guards stash_record_legs=105 ryekey_legs=22 index_row_bound_behaviors=39
+rota lap 5117, row 3 -- Water, the row that tastes; row 2 was already read today so I advanced by hand. The cardinal seat's own line, infusion(world') -> world', is the test this lap applied twice: the recovery must stay green on a second reading, and a comment is a declaration about a world nobody had run it against.
+file session-logs/date/20260914/20260914-212520_the-parked-jail-probe-met-the-split-guard.kyri recovered whole from stash@{13}; a lap that died mid-send, status PROVING
+file session-logs/date/20260915/20260915-182427_the-key-that-cost-more-than-the-compile.kyri recovered whole from stash@{12}^3; GREEN before a send it never made, and the record that priced the key
+file rye/src/main.rye the key-walk comment carries the measurement, both figures named FREE with the commands beside them
+file construction/REDS.md the row of `20260916.185437` books the false cost claim, caught by a recovered record rather than by any guard
+file construction/ITINERARY.md the Bakery account, the elder one shelved whole to make room
+file construction/CHECKPOINTS.md the walk-back nib before that fold
+file session-logs/CHAPTERS.md both day counts carried forward beside the pin's
+recommend keep-going -- orphans_work=18 still stands, and stash@{0} holds a whole sow_fresh family from today; the next Bakery lap can read the box as builds rather than as records
+scope close the standing stash_record red by recovering both parked records, then read what one of them said and prove or refuse it on metal
+status GREEN before send -- stash_record 105 legs unlanded=0, ryekey 22 legs, index_row_bound 39 behaviors, width-check, tame_style_check, ascii-comment, ascii-document, tracked-link, link-text-promise, reds-spine-derive, reds-citation, reds-monotone, unshared-citation, index-fold, dated-path and session-roster-agree all GREEN on metal; main.rye grades A/92

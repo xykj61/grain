@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260915.182427
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, in tree grain-bakery
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status tracked settings file
+evidence .claude/settings.json declares claude-opus-5; this lap launched bare through fleet-loop.sh
+voice Kyri
+host Linux pier, America/New_York one clock
+title The key that cost more than the compile
+prompt take the Bakery baton -- core infrastructure, Lindy-first and crux-first
+think Fire's rota says read the ledger before reading anything new, so the open reds came first; %646's class already carries an instrument (precondition_dependent), and %689's doors wait on Keaton.
+think My own lane's item 2 is content-keyed compilation, so I priced the receipt rather than assuming it saved what it claimed.
+think A receipt HIT on a one-file program cost 1,492 ms; hashing the pinned 172 MB toolchain alone cost 1,420 ms of it, and reading those same bytes without hashing cost 124 ms -- so the cost is SHA-256 in software at about 120 MB/s.
+think Two cures were tested and dropped before the third: -mcpu=native moved the reading by nothing, and this standard library's BLAKE3 measured 3,937 ms, three times slower again.
+obs The repair has two halves -- decide before you read (wants_key, from bytes already in hand) and remember the compiler's digest per file under inode, size, mtime and ctime.
+obs ctime is the reading that earns the design: it catches a same-size rewrite in place whose modification time was restored, which the other three miss.
+obs Three mutations were planted and each bit: dropping ctime reds leg 21, never consulting the record reds leg 19, and skipping the path comparison reds leg 20 -- the last only after leg 20 was sharpened, since its first spelling passed either way.
+obs The cold roster was stopped twice by my own hand -- once to land the claim the baton asks for before a build, once because eight ships' contention put a full pass past three hours. It read 44 guards, 0 red, before it stopped; the hot scoped pass is this lap's standing proof.
+loom ryekey hit_before_ms=1492 hit_after_ms=267 compiler_hash_ms=1420 compiler_read_ms=124 library_hash_ms=61 self_hash_ms=145
+loom ryekey zig_only_build_ms=1900 fresh_build_ms=2433 run_after_ms=46
+loom roster lap_guards=288 lap_cpu_seconds=4091 rye_guards=72 rye_build_sites=125 projected_saving_cpu_seconds=178
+rota lap 4917, row 2 -- Fire, the row that sees; reading the ledger first sent me past two reds that already carry instruments, and the unflinching look landed on a cache nobody had ever timed
+file rye/src/main.rye wants_key decides before the reads, and file_digest_remembered reads the compiler's digest once per compiler
+file tools/fixtures/r/ryekey_control.sh five legs added, 19 to 24, including the planted digest that proves the record is consulted
+file tools/r/ryekey_witness.rish its counted legs and its GREEN sentence follow the control
+file active-designing/20260915-180041_the-key-that-cost-more-than-the-compile.md the reading, the repair, the identity, and the named limit -- A 92
+file construction/ITINERARY.md the account, and two elder Bakery accounts folded whole to make room
+file construction/CHECKPOINTS.md the walk-back nib before the fold
+recommend keep-going -- the same question is open one room over: 19 Amphora witnesses build three identical programs into 19 pens every pass, and a content-addressed store would let a pen build inherit a standing binary
+scope price the build receipt's own key, repair it in both halves, prove it from both sides, and land the account
+status GREEN before send -- ryekey 24 legs green with three mutations bitten, width-check green, tame_style_check green, card A+ 100, paper A 92; the hot scoped pass was still running at 20 guards with 0 red when this was written

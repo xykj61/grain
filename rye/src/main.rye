@@ -458,8 +458,32 @@ fn bridge_to_zig(
     // The receipt's key opens here, fed in one fixed order so the same inputs
     // always speak the same digest: marker, verb, the toolchain's bytes, the
     // library's bytes, flags, then every closure source inside the bridge
-    // walk, then this binary's own bytes. The hasher always runs -- its cost is nanoseconds beside a read --
-    // and whether the KEY is consulted is decided separately below.
+    // walk, then this binary's own bytes. The hasher always runs, and whether
+    // the KEY is consulted is decided separately below.
+    //
+    // THE HASH IS THE EXPENSIVE HALF, rather than a rounding error beside the
+    // read. This comment claimed the hasher's cost was nanoseconds beside a
+    // read until `20260916.185437`, and that reading is inverted by an order of
+    // magnitude. Measured on this pier over the pinned 172,641,672-byte
+    // toolchain with a warm page cache: `cat` 18 ms against `sha256sum` 194 and
+    // 198 ms -- eleven times the read, and coreutils reaches the CPU's SHA
+    // extensions where this standard library's SHA-256 runs in software at
+    // roughly 120 MB/s, so the cost inside rye is higher again. The recovered
+    // lap at
+    // `session-logs/date/20260915/20260915-182427_the-key-that-cost-more-than-the-compile.kyri`
+    // read the same ratio from inside this program: a receipt HIT on a one-file
+    // program cost 1,492 ms, of which hashing this toolchain was 1,420 ms and
+    // reading the same bytes was 124 ms. Both figures are FREE -- nothing holds
+    // them still, so run the two commands rather than trusting these numbers.
+    //
+    // WHAT THE MEASUREMENT REFUSES, AND WHAT IT LEAVES WHOLE. The key stays
+    // correct: content is what decides a build, and every reason below for
+    // taking the compiler's bytes rather than its path is untouched. What falls
+    // is the claim that computing a key is free -- the claim a reader would use
+    // to decide no cheaper path is worth designing. The repair that lap names,
+    // deciding whether a key is wanted before reading and remembering the
+    // compiler's digest under inode, size, mtime and ctime, stands unbuilt at
+    // HEAD and is booked on the card rather than assumed here.
     var hasher = Sha256.init(.{});
     hasher.update(ryekey_marker);
     hasher.update(zig_subcommand);

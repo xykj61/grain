@@ -1,5 +1,12 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260916.185437` -- walk-back nib `c8a895b0ff`.** Recovering two Bakery session logs
+from the dead-letter box and writing this lap's account needed room on `construction/ITINERARY.md`.
+The completed Bakery `%642` publish-cache account folds whole through `itinerary_account_shelf.sh`
+to `construction/archive/20260916-185437_itinerary-landed-accounts.md`; the shelf keeps its 718.77s
+measurement, the `churn_quiet` pair, and its one ask about whether the cache is worth its
+complexity. The card keeps one pointer. No open gate and no other ship's account moves.
+
 **Checkpoint `20260914.081515` -- walk-back nib `d0c6094bbf`.** Recovering Patchouli's compiler-reach
 account put `construction/ITINERARY.md` at 41,472 bytes against its 40,960-byte ceiling. Bakery's
 completed second-pull account moves whole through `itinerary_account_shelf.sh`; the live card keeps
