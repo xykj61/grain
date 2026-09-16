@@ -157,7 +157,23 @@ if [ "$rooms_file" = "$default_rooms" ]; then
   # before, and the CLI held every one that was left. The file's own reading is the reason to lower
   # rather than a tree-wide sweep: a ceiling left where a repair found it credits the next lap with
   # work this one did.
-  unnamed_ceiling=6487
+  # 6,489 -> 6,488 -> 6,482 on `20260915.230000`. The reading arrived one OVER its 6,487 ceiling and
+  # refused every ship's cold endurance run; four commits inside the day had each added asserts to
+  # a `.rye` module and no one of them is the culprit a hand could name. Repaired in the lane that
+  # met it: `glow/digraph_twin_check.rye` named all six of its unnamed asserts, which is every one
+  # it held. That file binds `tools/fixtures/g/glow_digraph_table.txt` against `match_rune2`, so the
+  # reasons are about the lexer rather than restatements of the line beneath them -- and its
+  # `assert(count == 30)` is the one reading that refuses a fixture table that got smaller, since
+  # every other assert in the file runs inside the loop.
+  #
+  # AND THE CEILING FELL BY ONE RATHER THAN BY SIX, which is this population's own lesson written
+  # down. The repair above removed six, and between the reading that measured 6,488 and the landing
+  # an hour later the tree read **6,492** with that repair stashed -- a peer had added four. So the
+  # ceiling lands at **6,486**: the reading this commit actually leaves. Chasing the other four
+  # would mean naming asserts inside another lane's modules without running their witnesses, which
+  # `%752` already refused in the other direction. A whole-tree ratchet is repaired by whoever
+  # touches a file, and priced by whoever lands next; those are rarely the same lap.
+  unnamed_ceiling=6486
 else
   zero_ceiling=0
   gap_ceiling=0

@@ -21,7 +21,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     while (it.next()) |raw| {
         const line = std.mem.trim(u8, raw, " \t\r");
         if (line.len == 0) continue;
-        assert(line.len == 2); // invariant: fixture digraphs are two bytes
+        // invariant: the two bytes below are copied into a fixed buffer without a length
+        // check, so a fixture row of any other width would read past the line
+        assert(line.len == 2);
         var buf: [4]u8 = undefined;
         buf[0] = line[0];
         buf[1] = line[1];
@@ -29,13 +31,25 @@ fn run_selftest(init: std.process.Init) !u8 {
         const src = buf[0..3];
         var out: [8]tokens.Token = undefined;
         const n = try tokens.tokenize(src, &out);
+        // invariant: the three readings below all index out[0], and a source of three bytes
+        // that produced no token at all would hand them an undefined slot
         assert(n >= 1);
+        // invariant: this is the whole claim of the check -- a digraph the fixture table lists
+        // is one match_rune2 accepts, and any other kind means the lexer took a different branch
         assert(out[0].kind == .rune2);
+        // invariant: match_rune2 returns the constant 2, so a span of any other width means the
+        // head was matched by a branch of lex_one that this fixture does not describe
         assert(out[0].len == 2);
         const got = tokens.slice_of(src, out[0]);
+        // invariant: the kind and the width above agree with the wrong glyph just as readily as
+        // with the right one, and this is what ties the token back to the row that made it
         assert(std.mem.eql(u8, got, line));
         count += 1;
     }
+    // invariant: every assert above runs inside the loop, so an empty or truncated fixture would
+    // pass all of them in silence; this is the one reading that refuses a table that got smaller.
+    // The count is the pairs table's own size and is stated in three places -- here, the fixture
+    // file, and match_rune2 itself -- which tools/g/glow_rune_alphabet_worker.sh holds together.
     assert(count == 30);
     print("OK digraph_twin_check {d}\n", .{count});
     return 0;

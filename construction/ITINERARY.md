@@ -46,7 +46,16 @@ none of those.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
-4. (`20260915.222000`) -- **the gate law scan was reading half the desks it exists for.** A desk may DECIDE -- a `?:` wall against a literal -- or DECLARE: no `?:` at all, a `+$` shape, and its module's number stated once in an `example` head line. The declaring kind is the LARGER half, **45 desks against 25**, and no reader opened it. The scan now carries a pedestal population with its own ratchet and its own `example_disagree` gate at zero; **8 linked** (ceiling 37), among them mantra's `Line.fields`, which proves the dot-suffix readers serve a declaring desk exactly as a deciding one. The two populations are disjoint by construction and the mutation that lets a face-vs-face desk fall through is proven to bite. Wall ratchet unmoved at its floor of 9. `sh tools/fixtures/g/glow_gate_law_agree_scan.sh` reads both. **Two fleet reds met on the way, neither mine.** `vocabulary_collection` read RED on one banned word standing in this pin, inside a quotation of a page licensed to keep it; I paraphrased the sentence and the rebase then took petrichor's own shelving of that whole account, which clears it the other way -- the guard is green and the repair that landed is theirs. `tool_letter_room` still reads `misfiled=3` on `bearing_quorum` filed in `tools/m/`, which is diffuser's to move. **Owed:** the scan's module head grades **C+/79** at Door register, 57 before this lap and 60 after -- an inherited body of refusal prose wanting its own molt.
+4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
+
+**PHEROMONE -- FOUR RUNE BINDINGS READ ONE TABLE INSIDE THE LEXER, AND THE LEXER HAS TWO HEADS ABOVE
+IT.** Account [shelved whole](archive/20260915-232430_itinerary-pheromone-lexer-head-account.md):
+`glow_rune_alphabet` derives every roster from `match_rune2`'s `const pairs`, while `lex_one` matches
+`::` and `==` on branches above that call, so each binding read 30 heads where the lexer accepts 32.
+The worker walks `lex_one` now -- `outside_heads=2`, `outside_book_named=1`, the one named nowhere
+being `==`. Two reds closed beside it: both built tools rebuilt, and `unnamed_assert` 6,488 to 6,482.
+The elder gate-law lap is [shelved](archive/20260916-003450_itinerary-pheromone-gate-law-account.md)
+out of the queue, where finished work never belonged. Questions in Open doors.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`). A peer landed `out_brief` and
 `err_brief` beside the whole captures in `rishi/src/main.rye`, and witnesses began interpolating
@@ -91,7 +100,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `51c2272412` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9bdb5f38d7` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -458,6 +467,12 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
 - Keep real personal data, valuation agreements, money, identity, and deployment behind their later gates.
+- **The wire ceiling** -- the ledger row (`20260916.004153`) holds the account and the three doors;
+  the comparison needs `max_wire_hits >= 3` and it reads 2. No clamp in the consumer repairs it.
+- **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account
+  breaches the bound. Should an account live on its shelf from birth, the card holding a line a ship?
+- **`==` and `::`** -- a pronunciation row and a Book entry, or lexical punctuation the rune reference
+  teaches by use? One word empties `glow_rune_alphabet`'s exemption list.
 
 ## Archive and record
 

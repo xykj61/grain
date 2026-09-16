@@ -37,4 +37,13 @@ say "drey-session: ${shown.out_brief}"
 let green = run ["sh" "-c" "grep -q 'GREEN drey-session' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "drey-session: selftest did not print the GREEN drey-session line"
 
+# THE PARENT READS THIS LINE, so this witness prints it deliberately rather than by accident. Until
+# `57b6b904f` the say above interpolated `shown.out` whole, and `tools/d/drey_witness.rish` asserted
+# `session.out contains "GREEN drey-session"` -- satisfied by the echo passing the selftest's own
+# words through. The brief form keeps a bounded tail, the selftest's GREEN line sits above that
+# tail, and the parent went red on a child that had proven exactly what it was asked to prove. A
+# coupling that survives only while a capture is untruncated is a coupling nobody declared, so the
+# token is published here on the strength of the grep that just passed.
+say "drey-session: selftest printed GREEN drey-session"
+
 say "drey-session: GREEN — the Mikrophone session forgets on purpose; a committed payload is the one thing that survives the power. DREY0 lands, and the firmware journey opens on a session already known correct."

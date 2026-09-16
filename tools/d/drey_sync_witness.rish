@@ -33,4 +33,12 @@ say "drey-sync: ${shown.out_brief}"
 let green = run ["sh" "-c" "grep -q 'GREEN drey-sync' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "drey-sync: selftest did not print the GREEN drey-sync line"
 
+# THE PARENT READS THIS LINE, so it is printed deliberately rather than by accident. Until
+# `57b6b904f` the say above interpolated `shown.out` whole, and `tools/d/drey_witness.rish` asserted
+# `sync.out contains "GREEN drey-sync"` -- satisfied by the echo passing the selftest's own words
+# through. The brief form keeps a bounded tail and the selftest's GREEN line sits above it, so the
+# parent went red on a rung that had proven exactly what it was asked to prove. A coupling that
+# survives only while a capture is untruncated is a coupling nobody declared.
+say "drey-sync: selftest printed GREEN drey-sync"
+
 say "drey-sync: GREEN — the Mikrophone desk pulls the whole of what a far hand holds in one bounded operation. DREY12 makes the git pull a reusable primitive; pulling over a real transport waits for the Comlink-served gate."

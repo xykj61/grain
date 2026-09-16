@@ -4,7 +4,7 @@
 the ladder-order lap replaced it. Shelved whole so the card stays under its bound; every word kept.
 
 **DIFFUSER -- ROW TWELVE PROPOSES A COMPARISON, AND THERE IS NOTHING TO COMPARE.**
-Elder [shelved whole](archive/20260915-222402_itinerary-diffuser-row-eleven-account.md).
+Elder [shelved whole](20260915-222402_itinerary-diffuser-row-eleven-account.md).
 **EARTH BREATHES IN** (row 4, N=5004): take the concrete fact at the door. The fact was the
 round-open's own printout -- a whole lap staged and cut at its send, standing in `stash@{0}` on no
 ref: scan, 62-leg pen, witness, paper, account, roster row and log, 1,169 lines. Six added files
@@ -38,7 +38,7 @@ pen found in the scan**, both fixed before the rung was written: reading 2 assig
 while the verdict block read another, so the operand key answered the same word whatever the page
 held; and **the scan classified ITSELF as `host`**, because its classifier holds every marker it
 looks for as a grep argument. It reads past its own path by name now.
-[Paper](../active-designing/20260915-221500_the-trial-with-nothing-to-compare.md) **A 93**; the
+[Paper](../../active-designing/20260915-221500_the-trial-with-nothing-to-compare.md) **A 93**; the
 erratum page **A 96**, both graded after the recovery edits.
 **YOURS, NEW:** the baton asks a lap to push its claim BEFORE it builds, and the cold endurance run
 reads `tree_moved` the moment that claim lands -- the cut lap's own cold pass was invalidated by its
