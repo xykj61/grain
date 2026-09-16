@@ -31,14 +31,12 @@ none of those.
 3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**PHEROMONE -- FOUR RUNE BINDINGS READ ONE TABLE INSIDE THE LEXER, AND THE LEXER HAS TWO HEADS ABOVE
-IT.** Account [shelved whole](archive/20260915-232430_itinerary-pheromone-lexer-head-account.md):
-`glow_rune_alphabet` derives every roster from `match_rune2`'s `const pairs`, while `lex_one` matches
-`::` and `==` on branches above that call, so each binding read 30 heads where the lexer accepts 32.
-The worker walks `lex_one` now -- `outside_heads=2`, `outside_book_named=1`, the one named nowhere
-being `==`. Two reds closed beside it: both built tools rebuilt, and `unnamed_assert` 6,488 to 6,482.
-The elder gate-law lap is [shelved](archive/20260916-003450_itinerary-pheromone-gate-law-account.md)
-out of the queue, where finished work never belonged. Questions in Open doors.
+**PHEROMONE -- GLOW CANNOT WRITE TWO OF THE PRODUCT'S FOUR PUBLIC TYPES.** Account
+[born on its shelf](archive/20260916-033518_itinerary-pheromone-shape-capacity-account.md) -- the
+card stood at its bound, so *Open doors* is answered by doing. `glow/rune_shape.rye` holds
+`max_fields = 9`; the contract names **15** and **11**, every field on an aura Glow admits. The nine
+is `20260720`'s seated freeze and I widened nothing: `glow_shape_capacity` measures the gap, **44
+legs, 0 failures**, gating the instrument and never the gap.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`). A peer landed `out_brief` and
 `err_brief` beside the whole captures in `rishi/src/main.rye`, and witnesses began interpolating
@@ -83,8 +81,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `38724823ca` -- this commit's parent, resolvable everywhere (%401).
-
+**Git nib:** `3fa436874a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- RISHI HAD A TRAP ALL ALONG, AND WHAT IT LACKED WAS A PEN.**
@@ -486,6 +483,8 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   breaches the bound. Should an account live on its shelf from birth, the card holding a line a ship?
 - **`==` and `::`** -- a pronunciation row and a Book entry, or lexical punctuation the rune reference
   teaches by use? One word empties `glow_rune_alphabet`'s exemption list.
+- **The Glow field capacity** -- `20260720` froze `$:` at nine faces, reserving a widening for your
+  word; the contract's widest type names fifteen (`glow_shape_capacity`). Nine, sixteen, or nesting?
 
 ## Archive and record
 

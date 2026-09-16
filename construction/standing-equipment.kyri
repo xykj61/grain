@@ -6510,4 +6510,25 @@ seated 20260916.042700
 guard key_trade
 path tools/t/key_trade_witness.rish
 tier lap
-seated 20260916.051607
+seated 20260916.051607# glow_shape_capacity -- CAN GLOW WRITE THE PRODUCT'S OWN TYPES? Glow's multi-field `$:` shape
+# holds at most `max_fields` faces, and that constant reads NINE in glow/rune_shape.rye. The
+# receipt contract Keaton accepted on `20260913` declares four public types, and TWO of them stand
+# above nine: `ReceiptOfferFact` at fifteen fields and `LinengrowReceipt` at eleven. So this seat's
+# own ladder rung -- express the receipt facts in the smallest Glow form already owned -- cannot be
+# walked, and one constant is why.
+#
+# THE NINE IS A SEATED FREEZE rather than an oversight: the `20260720` capacity ruling stopped the
+# ladder at nona on the reason that another face name taught no new nest law, which was true when
+# nothing asked for a tenth. Its own escape clause reserves a widening for Keaton's word, so this
+# reading MEASURES the gap and widens nothing.
+#
+# WHAT IS GATED: that the instrument answered -- both halves read from their own files, a capacity
+# found, and the contract's block parsed to its four types. A reader that silently parses zero
+# types prints a flawless `types_over_capacity=0` about a page it never opened. The GAP itself is
+# reported and gated nowhere, since closing it is a ruling no lap may take.
+#
+# `tier lap`: two file reads and a pen of planted files released on every exit path.
+guard glow_shape_capacity
+path tools/g/glow_shape_capacity_witness.rish
+tier lap
+seated 20260916.033517
