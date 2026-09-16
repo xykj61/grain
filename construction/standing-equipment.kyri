@@ -6163,6 +6163,34 @@ seated 20260912.020039
 # verdict would red this tree at the rate its own instrument publishes.
 #
 # Paper: `active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md`
+# awk_lcg_exact -- a pen's generator makes TWO promises and this tree had a word for one. awk
+# carries every number as an IEEE-754 double, exact to 2^53, so a linear congruential generator's
+# largest intermediate -- multiplier times modulus-minus-one -- decides whether the stream that
+# comes out is the stream the line spells. `torus_fold_control.sh` spelled a product of 2.37e18,
+# 263x past the range: measured on metal 20260916, gawk 5.4.1, the rounded map has a tail of 3,253
+# draws and a cycle of 10,466 -- 13,719 states against the exact 2^31 -- and the consumed byte
+# differed from the exact stream in 4,079 of 4,096 draws. That pen drew 2,048 and stood inside the
+# tail, which is why nothing had ever reddened.
+#
+# DETERMINISM WAS NEVER THE FAULT, and the guard says so rather than scolding. IEEE-754 specifies
+# multiply, add and fmod exactly, so the rounded stream is reproducible on every awk carrying
+# doubles -- the comment beside that line was true. Reproducibility is two runs agreeing and passes
+# forever; VARIETY wants a count of states rather than a comparison of runs, and only the second
+# reading catches this.
+#
+# THREE CLASSES, ONE GATED. A FED-BACK site, where the variable assigned is the variable
+# multiplied, is bounded by its own modulus, so the largest intermediate follows from the line
+# alone and no judgment enters -- held at ZERO past 2^53/(modulus-1), a WALL rather than a ratchet
+# since the class was two sites wide and both were repaired on the seating lap. An INDEX HASH is
+# bounded by the range of its input, which a scanner cannot know: 17 stand in the tree, reported
+# and gated by nothing, and the number is printed so a reader can tell an empty blind spot from a
+# large one. The tightest EXACT site, key_trade_control.sh, stands at 1.260x of headroom -- named
+# in the scan's header so a zero cannot read as slack.
+guard awk_lcg_exact
+path tools/a/awk_lcg_exact_witness.rish
+tier lap   # 6s; 57 behaviors in a pen, three mutations bitten, the control proven outside its own population
+seated 20260916.184200
+
 guard torus_fold
 path tools/t/torus_fold_witness.rish
 tier lap   # 5s; 28 behaviors in a pen, both verdicts reachable, three mutations bitten

@@ -1,0 +1,71 @@
+# awk_lcg_exact_witness.rish -- an awk generator whose arithmetic leaves the range a double holds
+# exactly is a rounded shadow of the generator its own line spells.
+#
+#   rishi/bin/rishi run tools/a/awk_lcg_exact_witness.rish
+#
+# awk carries every number as an IEEE-754 double, exact to 2^53. A linear congruential generator
+# is one multiply, one add, one modulus, so its largest intermediate is multiplier times
+# modulus-minus-one. Past 2^53 that product rounds and the low bits fall away.
+#
+# THE FOUNDING CASE, measured on metal 20260916. tools/fixtures/t/torus_fold_control.sh spelled
+# seed = (seed * 1103515245 + 12345) % 2147483648, whose largest intermediate is 2.37e18 -- 263
+# times past the exact range. The rounded map has a tail of 3,253 draws and then a cycle of
+# 10,466, so 13,719 states in all, against the exact generator period of 2^31. The byte that pen
+# consumes differed from the exact stream in 4,079 of 4,096 draws. The pen draws 2,048 and stood
+# inside the tail, which is why nothing had ever reddened; a leg drawing past 13,719 would have
+# planted a population that repeats.
+#
+# DETERMINISM WAS NEVER THE FAULT. IEEE-754 multiply, add and fmod are each exactly specified, so
+# the rounded stream is reproducible on any awk carrying doubles -- the comment beside that line,
+# the pen must plant the same population on every host, was true. What failed is the quieter
+# promise that the population is as varied as the arithmetic says. A generator can be perfectly
+# deterministic and still degenerate, and only the second reading catches it.
+#
+# A WALL RATHER THAN A RATCHET. The class was two sites wide at seating and both were repaired on
+# the same lap -- the torus pen and the spin loop in tools/fixtures/w/workload_trial_scan.sh,
+# whose value is discarded and whose floor was measured across the change and found inside this
+# pier's own spread. Nothing stands to grandfather, so a zero costs no lane a red it cannot close.
+#
+# WHAT THIS DOES NOT REACH. A multiply-then-mod whose multiplied variable is an INDEX rather than
+# the state -- h = (i * 2654435761) % 4294967296 -- is bounded by the range of its input, which a
+# scanner cannot know. Those are counted as unread and gated by nothing, and their number is
+# printed so a reader can tell an empty blind spot from a large one. It read 17 at seating.
+let scan = run ["sh" "tools/fixtures/a/awk_lcg_exact_scan.sh"]
+assert scan.ok else "awk lcg exact scan did not run: ${scan.err_brief}"
+assert scan.out contains "overflowing=0" else "an awk generator leaves the exact range: ${scan.out_brief}"
+assert scan.out contains "ceiling_ok=yes" else "awk lcg exact over its ceiling: ${scan.out_brief}"
+assert scan.out contains "verdict=exact" else "awk lcg exact verdict missing: ${scan.out_brief}"
+assert scan.out contains "exact_range=9007199254740992" else "the exact range moved: ${scan.out_brief}"
+
+# THE BLIND SPOT IS ASSERTED, NOT ONLY PRINTED. A reading whose unread class silently emptied
+# would look exactly like a tree that had repaired it, and the two want different answers.
+assert scan.out contains "unread=17" else "the unread population moved: ${scan.out_brief}"
+
+# THE CONTROL IS ASSERTED BESIDE THE READING, because a wall proven only in the passing direction
+# cannot be told from a reading that counts nothing. Fifty-seven behaviors on real git
+# repositories in a throwaway pen, every refusal planted and then lifted, and three mutations --
+# the fed-back test, the comment read-past, and the borderline band -- each required to bite.
+#
+# AND THE CONTROL IS INSIDE THE POPULATION IT MEASURES, which cost this wall its first red. The
+# scan reads every tracked .sh and .rish source, and the control is one, so the five overflowing
+# generators it plants to prove the refusal were LIVE SITES the moment the control was staged: the
+# reading went overflowing=0 exact=7 unread=17 to overflowing=5 exact=8 unread=18 and the wall
+# reddened on arithmetic that exists only to be refused inside a pen. The scan's header had already
+# solved this one class over -- it reads past a comment line, because a header teaching the rule
+# would otherwise count itself -- and nobody asked the same question about the control.
+#
+# THE REPAIR MOVED THE PLANT rather than the meter, which is REDS %775's ruling one instrument over.
+# The numerals live in shell variables and the plant heredocs are unquoted, so the pen receives the
+# literal arithmetic while the tracked bytes carry no `variable * digits % digits` shape at all.
+# Four legs assert the property rather than trusting it, and three of the four were proven to bite
+# by planting a literal back into the live control and watching the wall red.
+#
+# THE LEG TALLY IS ASSERTED BESIDE THE VERDICT, so a leg written tomorrow is heard the day it
+# lands: control_verdict=ok says only that the control reached its last line.
+let control = run ["sh" "tools/fixtures/a/awk_lcg_exact_control.sh"]
+assert control.ok else "awk lcg exact control did not reach control_verdict=ok: ${control.out_brief}"
+assert control.out contains "control_verdict=ok" else "awk lcg exact control verdict missing: ${control.out_brief}"
+assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
+assert control.out contains "legs=57" else "the control's leg tally moved: ${control.out_brief}"
+
+say "GREEN: awk-lcg-exact -- every fed-back awk generator in the tree stays inside the range a double holds exactly, 57 behaviors proven with three mutations bitten, and 17 index hashes named as the blind spot rather than guessed at."
