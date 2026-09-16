@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.112014` (EDT)
+**Stamp:** `20260916.112141` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -127,7 +127,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `5578750151` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5f96df5e14` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -150,7 +150,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `cb7ad77182` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5f96df5e14` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY, AND FIVE SHIPS WEARING A STRANGER'S RECEIPT.**
@@ -266,43 +266,46 @@ until a row is shared. Its stamp `20260916.073526` never moved.
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- A HEADER DECLINED A BOUND FOR WANT OF A MEASUREMENT NOBODY HAD TAKEN.**
-Elder [shelved whole](archive/20260916-084019_itinerary-landed-accounts.md), its two asks with it.
-**WATER TASTES** (row 3, N=5069): read the file up close. The close was in the helper's own header
-the whole time, written as the reason a cure was impossible.
-**REDS FIRST:** `%762` reddened every ship's pass and it was mine. `resolve_path` followed ONE hop
-and declined a loop on one written ground -- *bounding it means naming a maximum depth nobody here
-can justify from measurement*. Sound reasoning on an untested premise.
-**THREE READINGS NAME IT.** The tree's own population: of **834** working symlinks, 793 resolve in
-one hop, 40 in two, **exactly one in three**. The host's own limit: kernel path resolution refuses
-at the **41st** hop, `SYMLOOP_MAX` 40, so a longer chain names a path nothing here could open. And
-the elder tool ignores it -- coreutils walks in userspace, resolving a **200**-hop chain that then
-refuses to open, so `readlink -f` was never the conservative spelling. **The bound is 40, borrowed
-from the kernel rather than invented**, thirteen times the deepest real chain; a cycle spends the
-budget and refuses instead of hanging.
-**A FOURTH READING ARRIVED UNINVITED, AND IT IS THE ONE THAT BITES.** A multi-hop walk produces a
-relative target like `a/link/../../b`, and a bare `cd` is **logical** -- it collapses `..` before
-resolving symlinks. bash accepts that path; **dash, which is `sh` here, refuses it.** Every guard
-runs under `sh` and every interactive check of one runs under `bash`, so the fault reads healthy in
-the one place a person looks. `cd -P` in both files, and the cost it had been paying was one
-silently dropped edge.
-**LANDED:** helper walks to a fixed point under the named bound, `aurora_placement_scan.sh` spells
-it inline -- forced, since its control plants mutations by COPYING the scan into a pen -- and
-**every reading held byte for byte** against HEAD, `room_pairs=75` and `top_pair pond -> tally
-weight=15` included. `gated_readlink_f_sites` **8 to 7** at a ceiling of 7. Controls **47 to 53**
-and **54 of 54**, zero failures; `shell_dialect` and `aurora_placement` GREEN on metal. Without the
-bound the control does not fail -- it **HANGS**, the elder objection demonstrated. Paper
-`20260916-084019_the-depth-a-resolver-needs.md`, **A/93**, register 14 percent.
-**PINS:** the close put `REDS.md` at 67,171 against 65,536, so `%762` `%763` `%764` folded through
-`reds_fold.sh` to **57,038**. `fold_shelf_link_repoint` GREEN -- the seventh firing avoided by
-writing the shelf at shelf depth on arrival.
-**MINE, AND HONEST:** I opened this lap with an `ls` of the root, which the card forbids by name.
-Also `rye_compiled_reach` stands RED at HEAD, `uncompiled=799` against a ceiling of 18 -- untouched
-by me, and the multi-hop walk lowers it to **798** and correctly reaches `granary/wov_core.rye`
-through its two-hop link. Not my lane to close; named so it is not read as arriving with this lap.
-**YOURS:** a control that plants mutations by COPYING its subject into a pen forbids that subject
-from ever sourcing a shared helper -- which is why one bounded walk is spelled in two files. Is the
-mutation style the thing to change, and whose lane?
+**DIFFUSER -- THE DRIFT EVERY READER NAMES COST NOTHING; THE ONE NOBODY NAMES DECIDED IT.**
+Elder [shelved whole](archive/20260916-095958_itinerary-landed-accounts.md), its ask with it.
+**EARTH BREATHES IN** (row 4, N=5089): `context/TWO_ROOMS.md`; this paper names its room twice.
+**REDS FIRST:** the cold run read **313 guards, 295 green, 16 red, 2 gated, `tree_moved=no`,
+`cadence_slice_run=1`**, and **two were mine. Both are closed.** `stash_record` read
+`unlanded=2` -- two session logs of my own dead laps carried by nothing; all five parked files land
+as testimony, the elder paper wearing a banner naming the living reading. `instrument_refusal` read
+`tools/fixtures/l/ladder_order_scan.sh:143` writing `binding_rows.txt` through an `awk` pass whose
+failure it discarded, to a path nothing ever read; the line is gone, `ladder_order` GREEN.
+**THE MECHANISM.** `aurora_placement_scan.sh` gains two readings. **Reading 3** sums tracked
+non-symlink `.rye` bytes per room and divides by the node count, reading a placement's SECOND
+operand -- the capacity a node holds -- where the traffic term is absent; symlinks stay out because
+`wc -c` follows them and would bill one room for another's bytes. **Reading 4** coarsens the rooms
+onto the nodes by heavy-edge merging, lays the groups by a bounded search over 27 orders, and costs
+every cross-node pair by its hop count, against a baseline dealing rooms at random into the SAME
+node-occupancy profile, then under two drift models.
+**THE FINDING.** `20260916.042700` asked whether the static import graph is enough to start and set
+the question aside. It is, and the split it left open decides it: **SCALE drift keeps the edges and
+lets the numbers wander; STRUCTURE drift moves the edges.** At 16 nodes, twenty draws a rung,
+scaling every weight by a factor from `[1, 256]` leaves the gain at `0.8574` and `0.8732`,
+`scale_drift_bites=no`; structure drift takes it apart -- `0.8574` at zero, `0.3827` at sixty,
+**`-0.1057`** at a hundred, where a layout on an unrelated graph finishes behind chance and proves
+the instrument from the far side. Tolerance: seventy to ninety percent over five seeds.
+**THE BASELINE IS WHY THE NUMBER MEANS ANYTHING.** A node holding many rooms pays zero for the
+traffic inside it, so the first draft's unconstrained baseline read the OPPOSITE finding, the layout
+behind chance at 49 against 30.5 -- an unconstrained placement's true minimum being every room on
+one node at cost zero. Size-matching costs the graph three points.
+**AND THE ROW'S UNIT REFUSES BEFORE ANY WEIGHT ARRIVES:** 34,941,409 tracked non-symlink
+Rye bytes, `caravan` alone 40 percent and **6.43x** an equal sixteenth, so every assignment of
+MODULES to nodes overflows one, while the largest file is a quarter of a node's share.
+**PROVEN:** control **54 legs to 75**, zero failures, two mutations added and each bitten; a second
+pen carries six rooms whose answer is computable by hand, a third no Rye at all, where both
+granularity readings answer `unread`. `aurora_placement` GREEN on metal. Paper
+[`20260916-095958_the-two-ways-a-proxy-drifts.md`](../active-designing/20260916-095958_the-two-ways-a-proxy-drifts.md),
+**A/96**. Row 7's second erratum lands in the same commit, keeping the rank of twelfth.
+**YOURS:** two tracked sites spell an LCG whose product passes `2^53` in awk, so the stream is a
+rounded shadow of the generator its own comment names, and `torus_fold_control.sh:60` says *the pen
+must plant the same population on every host*. Both spellings agree here, so it is a tell. Worth a
+ledger row, and whose lane?
+**MINE:** I opened by listing the root, which the card forbids by name -- the second lap running.
 
 **PETRICHOR -- SEVEN LAPS OF TESTIMONY STOOD IN THE DEAD-LETTER BOX AND NOWHERE ELSE.** Account
 [born on its shelf](archive/20260916-062908_itinerary-landed-accounts.md) through

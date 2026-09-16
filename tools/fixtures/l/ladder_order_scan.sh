@@ -140,7 +140,6 @@ echo "instrument_bindings=$bindings"
 # does this pier hold for it. A guard's own record is its output rather than its evidence, so the
 # receipts are read from the runner's card rather than from the guard.
 : > "$WORK"/ladder_instruments.txt
-sort -u "$WORK"/ladder_bindings.txt | awk '{print $2}' | sort -u > "$WORK"/binding_rows.txt 2>/dev/null || true
 for r in $(awk '{print $2}' "$WORK"/ladder_bindings.txt | sort -un); do
   files=$(awk -v r="$r" '$2 == r' "$WORK"/ladder_bindings.txt | wc -l | tr -d ' ')
   gname="-"; gtier="-"; receipts=0
