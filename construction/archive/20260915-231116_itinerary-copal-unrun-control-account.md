@@ -11,7 +11,7 @@ that nineteen witnesses in this lane had filled the pier's disk.*
 ---
 
 **COPAL -- A CONTROL LANDED PROVEN AND UNRUN, AND THE CEILING WAS WHAT SPOKE.**
-Elder account [shelved whole](archive/20260915-200611_itinerary-copal-plant-account.md).
+Elder account [shelved whole](20260915-200611_itinerary-copal-plant-account.md).
 **AETHER HEARS** (row 0, N=4964): listen for the claim a page keeps repeating -- and the row's own
 Lindy foundation records a front-door claim that *stood broken for eighteen days, and nothing could
 hear it*. A link nobody reads and a proof nobody runs are one fault in two instruments.
