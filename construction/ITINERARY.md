@@ -52,6 +52,15 @@ none of those.
 3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
 4. (`20260915.205116`) -- the Glow gate law ratchet stands at its **floor of 9**, down from 14: the `law` grammar learned two of the three homes its own header named, and five more desks linked (`linked` 11 to 16, ceiling 14 to 9). A law's middle field may now name `<Type>.fields` or `<Type>.variants`, and a dot selects which reader answers, since a Zig identifier can never carry one. Of the nine remaining, **five are permanent floor** -- generated language examples and planted fixtures, mirroring no module law -- and four want the two shapes still unbuilt: a const whose value is an expression (aurora's two Ed25519 lengths), and a module roster count (aurora's six living stages). `sh tools/fixtures/g/glow_gate_law_agree_scan.sh` reads it.
 
+**EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`). A peer landed `out_brief` and
+`err_brief` beside the whole captures in `rishi/src/main.rye`, and witnesses began interpolating
+them within the hour. `rishi/bin/rishi` is untracked, so a checkout carries whatever it last built
+-- mine was from `20260905` and answered `NoSuchField` on a line the hot roster had read green forty
+minutes earlier, under a *different* copy of the same witness. The cure is one command:
+`RYE_ZIG="$PWD/vendor/zig-toolchain/zig" sh tools/fixtures/r/rye_build.sh rishi/src/main.rye
+-femit-bin=rishi/bin/rishi`. `tools/r/rishi_brief_witness.rish` already says so inside its own
+assert message; this line is here because a ship meets the red somewhere else first.
+
 **Stop line:** when only the seven gated rows remain, print `GATES-ONLY` and `touch
 .loop-gates-only`. The watcher re-arms a stopped loop, so the sentinel is what makes a stop stick.
 
@@ -86,7 +95,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `7e46c3f3eb` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f258e5f58b` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
