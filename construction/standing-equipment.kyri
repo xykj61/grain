@@ -6317,7 +6317,6 @@ guard whitepaper_definitions
 path tools/w/whitepaper_definitions_witness.rish
 tier cadence
 seated 20260915.212827
-
 # workload_trial -- row 12 of the bounded-torus page proposes a METHOD rather than an idea: "the
 # smallest trial that touches metal goes first, and its result funds the ordering of everything
 # after it," falsified when "the trial's number sits inside the run-to-run spread of the baseline."
@@ -6386,3 +6385,32 @@ guard ladder_order
 path tools/l/ladder_order_witness.rish
 tier lap
 seated 20260916.003332
+
+# claim_preserve_control -- `claim_preserve` has stood since 20260724 as the safety that makes a
+# broad register pass honest: it extracts claim tokens before and after, counts eighteen modal
+# terms, and refuses any drift. A hand invokes it with CLAIM_PRESERVE_FILES, so it sits on no
+# roster, and until 20260915 it had no control -- every claim it made about itself was a claim
+# about code nobody exercised. The control builds its own pen and needs no environment, so the
+# reading a roster CAN carry is this one.
+#
+# WHAT THE READING IS. The modality diff carries two populations and named neither. OBLIGATION
+# terms -- must, shall, should, may, require, recommend, propose, seat, hold, parked -- are what
+# the tree owes, and moving one is the drift this guard was seated for. REGISTER terms -- never,
+# none, always, every, all -- are the words the register law asks a lap to RECAST, so a lawful
+# sweep moves them by doing as it is told. The scan sorts each drifted term and prints
+# obligation_drift and register_drift beside the failure. The REFUSAL is unchanged: any drift
+# still exits 1. Whether a register-only drift may ever pass is a door for Keaton.
+#
+# MEASURED ON THIS TREE'S OWN HISTORY, and re-read on metal 20260916.003300: commit f258e5f58
+# restated fourteen negatives in skate/README.md under that law and moved `may` 5 -> 4 and
+# `all` 10 -> 12, the second purely from the restatement idiom "A, B and C all stay outside".
+#
+# THE REGISTER CLASS IS DERIVED from tools/fixtures/p/prose_register_scan.sh's own `neg`
+# vocabulary, so the word a sweep is asked to recast and the word this guard calls register are
+# one list; a term added there is classified here on the next run.
+#
+# 15 legs, 3 mutations bitten, 3s. tier lap.
+guard claim_preserve_control
+path tools/cl/claim_preserve_control_witness.rish
+tier lap
+seated 20260916.004500

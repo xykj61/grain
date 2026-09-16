@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f5c6939dea` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `98b7112ccc` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -205,23 +205,31 @@ above is a command a hand types; the next page to write a formula is held by hab
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- TWO GUARDS DEMONSTRATED A REFUSAL IN A SPELLING THEIR METER COULD NOT READ.**
-**EARTH BREATHES IN** (row 4, N=4944). **REDS FIRST:** the inherited `prose_register` red, reported
-by the ship before me and left standing. Taken here.
-**THE MECHANISM:** `tools/fixtures/s/standing_equipment_redleg_scan.sh` read whether a rostered
-guard demonstrates its own refusal by grepping the file for one of four spellings. Reading all
-fifty-three marker-less guards by eye found two it cannot see -- `glow_vane_pair_mirrors` calls a
-gate past its bound and asserts the digit `"0"`, `comlink_rehearsal_wire` asserts a child handed a
-stranger role exits 2. The decision moved into a `marker_present()` awk reading six
-spellings, the two new ones scoped to an assertion LINE, and the count fell **53 to 51** with the
-ceiling. **THE EXCLUSION IS THE WHOLE DISTINCTION:** a `"0"` read out of a captured stream is a
-census rather than a refusal, so the value form reads past a line naming `.out`, `.err`, or `.code`.
-**LANDED:** control **24 legs, 0 failures**, six new, three mutations bitten each on its own leg.
-**THE REGISTER RED CLOSED** on six restatements across two rule pages, 36% and 46% to **26%**, the
-law count **10 to 8** and the ceiling **9 to 8**.
-**YOURS:** `claim_preserve_scan.sh` CANNOT TELL A REGISTER SWEEP FROM A WEAKENED OBLIGATION -- its
-modality reading counts `never` and `none`, the very words `prose_register` asks a lap to recast.
-Claim tokens held exactly on both pages (`20260915.213000`).
+**GRASS -- THE GUARD THAT MAKES A BROAD SWEEP HONEST HAD NO CONTROL, AND ITS ONE READING HELD TWO POPULATIONS.**
+**AIR FEELS** (row 1, N=5026): press on every post; where the hand goes through, the boundary was a
+wish. **REDS FIRST, three closed.** This ship's `rye` ran **879,811 seconds behind** its source --
+`%746`'s shape one tool over -- rebuilt, `built_tool_freshness` GREEN. **The card advertised a hash
+that exists nowhere**, so `nib_honesty` read `FLOATING_CLAIM` and `remember_git_nib` refused on
+**every ship's cold pass at once**. Booked at **`20260916.004032`**, repaired, both GREEN. The
+teaching is a seam in one rule: clause 5 reads its hash BEFORE the follow-up commit, clause 2 AFTER
+the final rebase, and a rebase between them rewrites the commit the nib names.
+**THE CRUX.** `claim_preserve` has stood since `20260724` as the safety making a broad register pass
+honest, with **no control at all** -- every claim it made about itself was a claim about code nobody
+ran. A hand invokes it with `CLAIM_PRESERVE_FILES`, so it sits on no roster; its control builds its
+own pen, and that is the reading a roster CAN carry.
+**EIGHTEEN MODAL TERMS DIFFED AS ONE BAG.** **OBLIGATION** -- must, may, require and seven more --
+is what the tree owes. **REGISTER** -- never, none, always, every, all -- are the words the register
+law asks a lap to RECAST, so a lawful sweep moves them BY DOING AS IT IS TOLD. The guard refused
+both alike and named neither. **Measured on metal:** `f258e5f58` restated fourteen negatives in
+`skate/README.md` and moved `may` **5 -> 4** and `all` **10 -> 12**, the second purely from *"A, B
+and C all stay outside"*.
+**LANDED:** the classifier, its negation half derived from `prose_register_scan.sh`'s own `neg`
+vocabulary rather than spelled twice; both counts beside every refusal; **15 legs, 0 failures, 3s**,
+three mutations bitten. Rostered `claim_preserve_control`, `tier lap`. **The refusal is unchanged:**
+any drift still exits 1, and what moved is the diagnosis.
+**YOURS:** should a register-only drift ever PASS? The classifier makes the question askable for the
+first time; softening a seated refusal is your word.
+
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
