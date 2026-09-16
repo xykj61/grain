@@ -797,3 +797,5 @@ at a closed fold.*
 *Row %766 folded to [`REDS-a-sample-sizes-a-class-rows-766.md`](REDS-a-sample-sizes-a-class-rows-766.md) on `20260916.112149`, **CLOSED** -- a class booked off a five-of-forty sample came out as three shapes when it was counted.*
 
 *Row %772 folded to [`REDS-a-ratchet-that-counted-prose-rows-772.md`](REDS-a-ratchet-that-counted-prose-rows-772.md) on `20260916.113655`, **CLOSED** -- a ratchet counting prose will eventually be raised by a sentence, and a total that cannot name its phantoms cannot be acted on.*
+
+*Rows %746 and %771 folded to [`REDS-the-binary-and-the-receipt-beside-it-rows-746-771.md`](REDS-the-binary-and-the-receipt-beside-it-rows-746-771.md) on `20260916.183602`, both **BOOKED** -- a binary's presence was checked and its freshness was not, and the receipt beside a binary spoke for the binary it replaced.*

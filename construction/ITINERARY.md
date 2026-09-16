@@ -30,48 +30,9 @@ none of those.
 3. `%646` -- **swept and closed** (the row of `20260916.082153`, unshared until this push); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- A CONTROL PLANTED WHAT MUST NOT EXIST, AND THE GATE READ IT AS A CLAIM.**
-Elder account [shelved whole](archive/20260916-113557_itinerary-landed-accounts.md), its two asks with it.
-**AIR FEELS** (row 1, N=5106): press each post; where the hand passes through, the boundary was a
-wish. Four posts held -- every witness a law page names stands on disk and is rostered (39 of 39),
-every claimed Cursor twin exists, the pin roster reads its own bound, and `rule_twin` already names
-the two Cursor-only laws by name. The fifth gave way.
-**REDS FIRST, AND THE RED WAS MINE.** The cold endurance run opened on `unshared_citation red`,
-`unshared_citations=7 files_affected=1`, and the one file was last lap's own
-`tools/fixtures/r/reds_shelf_resolve_control.sh`. Last lap could not take the roster lock and read
-thirteen guards by name; this was not one of them.
-**THE MECHANISM.** A control proving the resolver's `missing` verdict has to NAME a row the ledger
-lacks, so the pen planted three numbers above `shared_max`. `unshared_citation_scan.sh` gates living
-surfaces against exactly that and reads past three rooms -- the ledger, its fold archives, dated
-testimony -- **all three of them testimony, and a plant is a ROLE.** So a meter reading for truth
-heard a sentence that must stay false exactly as it hears one asserting it.
-**TWO REPAIRS STOOD AND THE SMALLER ONE NEEDS NO LAW.** Widening the read-past decides whether a
-plant is recognised by its ROOM or by its ROLE, which is the open word the elder account handed you
-one instrument over. Moving the plant settles only itself: the digits carry whatever value a pen
-gives them, so they take a **five-digit run**, which the scan already skips on the same argument by
-which a six-digit run in two image modules is a colour. A plant outside the shape also survives a
-renumbering sweep. The control states both reasons on its face so a later hand keeps the length.
-**AND THE LAW PAGE REPRODUCED THE FAULT INSIDE THE HOUR.** The clause added to
-[`derived-spine`](../.claude/rules/derived-spine.md) spelled the three elder numbers while explaining
-why they had to move, and the gate read three fresh unshared citations off a rule room. They are
-named in the control and left unspelled on the law page now. `%769`'s shape one instrument over --
-**a page teaching a refusal is a page that must obey it**, and a gate is the only reader that
-notices.
-**PROVEN:** control 32 legs 0 failing, `reds_shelf_resolve` GREEN, `unshared_citation` GREEN at zero,
-plus `tracked_link`, `fold_shelf_link`, `fold_shelf_link_repoint`, `reds_fold`, `reds_citation`,
-`reds_spine_derive`, `reds_ledger_headline`, `reds_ledger_monotone`, `ascii_document` and
-`prose_register` on metal. The law page grades **A/92**, up from A/90, and its register falls 35 to
-31 percent, so the addition pulls the page toward its own target rather than away.
-**PINS:** the row booked at stamp `20260916.113557`, cited by stamp until this push binds its view
-([`derived-spine`](../.claude/rules/derived-spine.md) rule 4); the ledger reads `rebindings=0
-double_booked=0` after the rebase. The pin went over 65,536, so the
-CLOSED `%772` folded to its own shelf. **64,371.**
-**MINE, AND OWNED:** I opened by listing the root, which the card forbids by name -- the third lap
-of this ship running. And I edited the tree while the cold endurance run was still sailing, so its
-`tree_moved` reading is spent and the guards this round touches were read one at a time instead.
-**YOURS:** a plant whose number sits BELOW `shared_max` reads as an ordinary citation and always
-will. Three genres of exemption now stand on testimony and one on shape -- should the gate learn to
-recognise a plant at all, or is moving the plant the whole answer?
+**INCENSE -- A CONTROL PLANTED WHAT MUST NOT EXIST, AND THE GATE READ IT AS A CLAIM.** Account
+[shelved whole](archive/20260916-184140_itinerary-landed-accounts.md), its one ask with it -- whether
+a gate should learn to recognise a pen plant at all, or whether moving the plant is the whole answer.
 
 **BAKERY -- A WHOLE BUILD SAT IN A STASH, AND THE ROUND-OPEN WAS THE ONE THING READING IT.**
 Elder account [on its shelf](archive/20260916-114800_itinerary-landed-accounts.md); its ask that
@@ -104,6 +65,37 @@ scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guess
 **YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
 where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
+**PETRICHOR -- THE SHELF GRADED ITSELF B+ ON A READING THAT RESOLVES THE LINK AND NEVER THE
+SENTENCE.** **FIRE SEES** (row 2, N=5112): what must stop, what must be cut -- so this lap graded
+its own shelf rather than writing another page onto it. **30 living `docs-geode/` pages, none below
+86**, and every composite carrying `truth_mode=counted`: the path-resolution half standing in for a
+judged half nobody read. The QA law already records that blind reading shipping a false `A+/98`
+**twice, both times on this shelf**, so the grades were disbelieved and the judged half done by
+hand. **THE FIRST PRESSING FOUND NOTHING**, and that is the row's own discipline -- the first-hour
+tutorial's quoted fetch output appears nowhere in `tools/f/fetch-toolchain.sh` and appears entirely
+in the scan that file `exec`s. The lap that squints cuts twice. **THE SECOND FOUND IT.**
+`docs-geode/study/README.md`, the shelf's *how to read this tree*, told a newcomer `gratitude/`
+holds *more than two hundred pages*. Measured three ways: **124** tracked Markdown pages, 124 on
+disk, 134 tracked files. **False from its birth commit** `af7adb74d`, `2026-08-21`, when the room
+held **110** -- standing 26 days. **THE CLASS, SWEPT AND BOUNDED:** third firing on this shelf of a
+typed number beside the thing it counts, and the shelf's own front page tells the other two. A
+sweep for the shape found **exactly one living instance**, so the repair is the class rather than a
+sample. The count leaves, the reading stands beside it, and the page keeps its own error in three
+lines -- the habit printed directly above it is *read the witness rather than the claim*. Grades
+**B+/88** from B+/86, reach 80 to 90. **THE PIN COULD NOT TAKE THE BOOKING:** `rows_that_fit=0`,
+1,165 bytes against a median row of 2,975, with `pin_foldable_rows=7` and `pin_deadlocked=0` -- so
+the fold was the ledger's own next step for whichever lap booked next, and this was it. `%746` and
+`%771` fold to one shelf as one subject at two depths: a binary's presence checked and its freshness
+not, then the receipt beside a binary speaking for the one it replaced. Headroom **1,165 to 4,465**.
+**PROVEN:** `reds_ledger_monotone`, `reds_fold`, `reds_citation`, `reds_shelf_resolve`,
+`reds_spine_derive`, `unshared_citation`, `fold_shelf_link`, `tracked_link`, `ascii_document`,
+`prose_register`, `link_text_promise`, `crushed_index`, `index_row_bound` and `qa_report_card`
+GREEN on metal. The census republished 775 to 776 only because the monotone guard refused the drift
+-- booking a row and republishing its total are two acts, and one of them is guarded.
+**YOURS:** the judged half of Truth goes unread on the other 29 pages of this shelf, and the counted
+half will go on returning 100 for each. The card refuses on an unscored **Service** and banks an
+unread **Truth**; whether those two should refuse alike is named in the QA law as your word.
+
 **PHEROMONE -- THE LANTERN FIRED TWICE, SO THE CLASS GOT A LOOM.**
 Account [shelved whole](archive/20260916-090645_itinerary-landed-accounts.md).
 `glow_ceiling_refusal` gates the class last lap met once -- **97 ceiling sites, 5 error names over
@@ -134,7 +126,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `c8c03f7ed3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b9a2a18662` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -157,7 +149,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `c8c03f7ed3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b9a2a18662` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

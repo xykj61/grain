@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.184140` | [The grade that resolved the link](20260916/20260916-184140_the-grade-that-resolved-the-link.kyri) | %776: a newcomer door false since its birth commit |
 | `20260916.183614` | [The hand the watcher asked for](20260916/20260916-183614_the-hand-the-watcher-asked-for.kyri) | five seats armed; watcher reset |
 | `20260916.183440` | [a build that sat in a stash](20260916/20260916-183440_the-build-that-sat-in-a-stash.kyri) | recovered %642's parked measurement, added churn_quiet, landed it whole |
 | `20260916.121935` | [measuring before caching](20260916/20260916-121935_measuring-before-caching.kyri) | the 12:15 lap's own record, landed on a later lap after its send was lost |

@@ -10,7 +10,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 *Not a tour of the code. A short account of how the reading is meant to go, and which room answers which kind of question.*
 
 **Language:** EN - **Style:** Bhakta at the Door setting (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the field)
-**Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed study guide
+**Written:** `20260821.190149` - **Last refreshed:** `20260916.183325` (the gratitude room's typed count leaves; it read *more than two hundred* from its birth commit, when the room held 110) - **Status:** Living - **Kind:** crushed study guide
 
 ---
 
@@ -48,7 +48,15 @@ learn.
 
 ## The teachers, kept in their own room
 
-[`gratitude/`](../../gratitude/README.md) holds what this tree learned from elsewhere -- more than two hundred pages of study, each naming its teacher plainly. It is a **reading library, never a dependency**: concepts enter through the clean room, code never does. If you want to know where an idea came from, it is named there rather than absorbed silently.
+[`gratitude/`](../../gratitude/README.md) holds what this tree learned from elsewhere -- a study for each teacher, naming them plainly. It is a **reading library, never a dependency**: concepts enter through the clean room, code never does. If you want to know where an idea came from, it is named there rather than absorbed silently.
+
+The room keeps growing, so count it rather than trusting a sentence:
+
+```sh
+git ls-files 'gratitude/*.md' | wc -l
+```
+
+This line used to say *more than two hundred pages*, and it said so from the commit that wrote it, when the room held 110. Practice what the habit above asks: a page can be wrong the day it ships, and the reading beside it is what tells you.
 
 ## The compass, when you are lost
 
