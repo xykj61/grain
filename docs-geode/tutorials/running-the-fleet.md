@@ -3,7 +3,8 @@
 **Language:** EN - **Style:** Gauge, Field setting (see [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Written:** `20260907.160051`
-**Updated:** `20260909.054046` -- the hand's stop file and the signal helper's reporting default
+**Updated:** `20260916.185029` -- the signal helper's field set, re-run rather than recalled
+**Prior update:** `20260909.054046` -- the hand's stop file and the signal helper's reporting default
 **Status:** Living - **Room:** checkable -- every command below was run against this tree before it
 was written down, and the two that launch a ship were run in their own dry-run form
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
@@ -191,13 +192,32 @@ sh tools/f/fleet_call.sh --pattern standing_equipment
 
 which answers, on this tree today:
 
+<!-- volatile: the counts are one second's process table; the field names are held by the source -->
 ```
-candidates=20 would_send=1 refused_foreign=14 refused_self=4 refused_unknown=1 over_bound=0 root=/home/keeper/grain-petrichor verdict=ok
+candidates=8 would_send=0 refused_foreign=6 refused_self=1 refused_unknown=1 refused_prose=9 over_bound=0 reading=exact root=/home/keeper/grain-petrichor verdict=ok
 ```
 
-**Read the field names rather than the counts.** Those numbers are one second's reading of what
-happened to be running, so yours will differ every time; what stays true is the shape, and that a
-process in a sibling tree is refused by name rather than signaled in silence.
+**The counts are one second's reading and the field names are the shape.** Yours will differ every
+run; what stays true is that a process in a sibling tree is refused by name rather than signaled in
+silence.
+
+**`refused_prose` is the refusal worth knowing**, and it exists because this page's own baton names
+this helper. The baton is prepended to every seat prompt and reaches each agent as one argument, so
+a plain substring test matched all eight peer agents while exactly one process was the tool. The
+helper asks for shape instead: a command word carries no whitespace, a prompt is prose, and every
+piece of a prompt holding the pattern carries spaces. A match landing only inside prose is counted
+here and reached with `--pid` when you mean it.
+
+**`reading=exact` names how the host answered.** Argument boundaries come from `/proc`, which a Mac
+lacks; there the flattened command line is all there is and the field reads `flattened`, which is an
+honest *this host cannot tell prose from a command word* rather than a silent second rule.
+
+**This block was stale for six days, and the sentence above it pointed at the stale half.** The
+elder quote carried six fields and told a reader to trust the field names over the counts;
+`refused_prose` and `reading` landed the day after this page was last updated, so the durable half
+was the half that moved. The elder counts were worse than volatile -- `candidates=20` was measured
+by the very over-reading `refused_prose` was seated to repair. Kept here rather than swept, because
+a tutorial promising *every command below was run* earns its own receipt when the promise lapses.
 
 **A bare call reports and sends no signal.** Add `--signal TERM` to act on the selected processes.
 `--dry-run` forces a preview even when a signal is named, in either flag order. That separation
