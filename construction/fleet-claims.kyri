@@ -70,3 +70,9 @@ stamp 20260916.080557
 epoch 1789560357
 paths tools/r/rye_struct_fields_witness.rish mantra/src/weave.rye
 what rye_struct_fields reads RED fleet-wide on a Mantra structure: Line declares text gen pos site run ord and its placard says text gen pos site run. Diff is stale behind it -- declares site inserts deletes replaces after against a placard of site inserts deletes. Both are the anchor and order-key work landing and the records staying behind, which is also true of weave.rye's own head: it still promises every insert lands at the END and calls the anchor a seam rather than a lap, while apply reads diff.after at line 1413. Move the two placards forward with dated reasons, repair the head and annotate's header to the residue that is actually true, book the row.
+claim grass-unsaid-reads-one-spelling
+seat grass
+stamp 20260916.093812
+epoch 1789565892
+paths tools/fixtures/s/shim_reason_scan.sh tools/fixtures/s/shim_reason_control.sh construction/REDS.md
+what REDS %768 booked unsaid_rostered at 1239 against 922 and concluded the growth was the tree's own, proven by running the elder scan on today's tree. Run the other way -- today's scan against the tree at 95d1e5ae7 -- it answers 922 exactly, so the instrument and ceiling were both honest. The 317 arrived because 106d182b4 converted 2,773 assert messages across 979 files from ${r.out} to ${r.out_brief}, and the unsaid parser's interpolation regex ends at (out|err)} so it reads the bounded field as no report at all. Crediting _brief, today's tree reads 903 rostered and 6144 unrostered -- both UNDER their ceilings. Teach the regex the bounded spelling, lower both ceilings to the new readings, and prove both ways in the control.
