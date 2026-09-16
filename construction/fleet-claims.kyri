@@ -58,12 +58,30 @@ stamp 20260915.224411
 epoch 1789526651
 paths tools/fixtures/c/claim_preserve_scan.sh tools/fixtures/c/claim_preserve_control.sh tools/cl/claim_preserve_control_witness.rish
 what Split the claim_preserve modality reading into an obligation class and a register class, so a refusal names which one moved -- measured: this tree's own register sweep f258e5f58 drifts may 5-to-4 and all 10-to-12 on skate/README.md, and the guard cannot tell that from a weakened obligation. Gate unchanged; add the control this instrument has never had.
-claim copal-amphora-pen-release
-seat copal
-stamp 20260915.231912
-epoch 1789528752
-paths tools/am/
-what The nineteen tools/am/ witnesses that make a mktemp -d pen: ten never remove it at all and nine remove it only on the success path, which is REDS %745's 32G leak. Give each a sweep, and answer the shape question -- Rishi has no trap EXIT, so a failing assert leaves the pen behind. Bakery holds the fleet-wide meter; this is the owning lane's per-guard repair.
+claim pheromone-lexer-head-outside-pairs
+seat pheromone
+stamp 20260915.225111
+epoch 1789527071
+paths tools/g/glow_rune_alphabet_worker.sh tools/fixtures/g/glow_rune_alphabet_control.sh active-designing/docs/glow/runes.md
+what The four rune bindings all derive their head roster from glow/tokens.rye match_rune2's pairs table, and the lexer recognizes two rune-shaped two-byte heads ABOVE that branch -- == (double_equals, the tall-form terminator, consumed by rune_shape.rye at two sites and standing in 105 tracked .glow sources) and :: (the comment head). == is named in none of the three documents the guard binds while its partner -- is named in all three. Derive the outside heads from the lexer too and publish them as their own reading.
+claim bakery-rishi-make-pen
+seat bakery
+stamp 20260915.233209
+epoch 1789529529
+paths rishi/src/main.rye tools/r/rishi_make_pen_witness.rish tools/fixtures/r/rishi_make_pen_control.sh
+what Rishi already owns a CleanupRegistry that releases on normal return, refusal, exit, HUP, INT and TERM -- the card's standing claim that Rishi has no trap at all is false, and the registry's one kind is empty_dir registered only by acquire-lock. Add a make-pen expression builtin: the runtime creates the directory itself under TMPDIR and registers it for bounded recursive release, so it can only ever remove a directory it made in this process and never a caller-supplied path. Turns the 336 unreleased_on_refusal and the 16 never_removed Rishi pens from a language gap into a one-line cure.
+claim diffuser-ladder-order
+seat diffuser
+stamp 20260916.001453
+epoch 1789532093
+paths tools/fixtures/l/ladder_order_scan.sh tools/l/ladder_order_witness.rish tools/fixtures/l/ladder_order_control.sh active-designing
+what All twelve moonshot rows now carry errata and ten of them recommend a re-rank or a re-aim, while the ranking table on the page still reads as first written -- correctly, since dated testimony keeps every word. So no page states the order the twelve measurements actually support. Derive that order from the errata's own recommendation sentences rather than transcribing it, gate that every recommendation parses and that the derived order is a permutation of the twelve, and write the synthesis page row 11's erratum asked for.
+claim pheromone-wire-hit-seam
+seat pheromone
+stamp 20260916.003208
+epoch 1789533128
+paths comlink/query_wire_retention_cost.rye
+what REDS-first: query_wire_retention has read red on every ship since 0d6e6829a landed two hours ago. That commit made mantra/recall_tablecloth_query_wire.rye max_wire_hits derived rather than the literal 8, and it now computes to 2; comlink/query_wire_retention_cost.rye still spells measured_hit_count as the literal 4, so kept_store[0..measured_hit_count] refuses to compile -- end index 4 out of bounds for array of length 2. The harness already carries the right comptime assert and the wire moved under it.
 claim bakery-ryekey-toolchain-spelling
 seat bakery
 stamp 20260916.023136

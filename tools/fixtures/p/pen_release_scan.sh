@@ -84,7 +84,9 @@
 
 set -u
 
-CEILING="${PEN_RELEASE_CEILING:-14}"
+# 16 at seating `20260915.230045`; 14 when the runtime took two, 9 from `20260916.012247` when the
+# eight `tools/am/` witnesses REDS %745 names each took a root sweep. A ceiling only falls.
+CEILING="${PEN_RELEASE_CEILING:-9}"
 list=no
 standing=no
 for a in "$@"; do

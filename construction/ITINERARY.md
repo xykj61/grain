@@ -11,27 +11,10 @@
 
 Keaton's `20260913` word accepts the first receipt contract and chooses the full eight-ship formation. The watcher may keep every live seat sailing; product and custody walls below remain unchanged.
 
-## THE PIER FILLED, AND CLEARED WHILE THIS WAS BEING WRITTEN (`20260915.220053`, REDS %745)
+## THE PIER THAT FILLED (`20260915.220053`, REDS %745)
 
-**176G, 990M free, 100 percent.** `/tmp` holds **94G across 41,063 entries**, and **32G of it is
-1,312 pens** leaked by one rostered witness: `tools/am/amphora_mark_wreck_witness.rish:36` makes a
-24MB pen with `mktemp -d /tmp/amphora_mark_wreck.XXXXXX` and never removes it. Oldest `20260907`,
-newest the minute it was measured -- **still leaking, once per run, on every ship**.
-
-**Nothing was reading the pier's free space.** The first instrument to notice was a `pwd` inside a
-send answering `write error: No space left on device`.
-
-**THE HAND WAS COPAL, AND THE RECLAIM IS NOW ON THE ROW** (`20260915.231116`). The 82G went back
-107 seconds before the re-read -- **84G free, `/tmp` 11G, pens 1,312 to 13** -- and it reached wider
-than one witness: **nineteen `tools/am/` witnesses call `mktemp -d` and none calls `rm`**, eight
-families near 1,335 pens apiece. The floor was three hours rather than a blanket wipe, since a
-peer's witness may be in flight, which is why 13 stood afterward rather than zero.
-
-**The crisis is over and the leak is not.** Line 36 is unchanged, and so are the other eighteen. At
-roughly 150 runs a day across eight ships this refills in about a week. **The nineteen-file repair
-is copal's next lap** -- the `trap 'rm -rf "$pen"' EXIT` every `tools/fixtures/` control carries,
-which Rishi has no form for, so the shape is the question. **What is yours:** whether the fleet
-should read its own free space at all.
+Account [shelved whole](archive/20260916-012247_itinerary-pier-filled-account.md): 94G leaked, 82G
+reclaimed, eight witnesses repaired. **Yours:** whether the fleet reads its own free space at all.
 
 ## NOW -- incense sails autonomous from `20260915.180000`
 
@@ -42,7 +25,7 @@ none of those.
 
 **The agent-doable queue, Lindy first:**
 
-0. `%745` -- **REDS FIRST, copal's next lap:** the nineteen leaking `tools/am/` pens above.
+0. `%745` -- the `tools/am/` success-path leak is closed (`20260916.012247`); the refusal half waits on bakery's `make-pen`.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
@@ -100,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `24cd441509` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f5c6939dea` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -151,12 +134,28 @@ side becomes a ratchet falling to zero while the shell side stays reported?
 **MINE:** `%754`'s real repair -- a guard that asks the builder for its receipt rather than the
 filesystem, so freshness reads the same key the build wrote.
 
-**COPAL -- A CONTROL LANDED PROVEN AND UNRUN, AND THE CEILING WAS WHAT SPOKE.** Completed account
-[shelved whole](archive/20260915-231116_itinerary-copal-unrun-control-account.md): nothing ran
-`rye_build`'s control, `control_unheard` refused at 19 of 18, and the witness now asserts all
-sixteen legs (the row booked at `20260915.202715`). The send then died on `No space left on device` -- nineteen `tools/am/`
-witnesses leak a `mktemp -d` pen on the SUCCESS path; **/tmp 94G to 11G** reclaimed and recorded on
-a peer's `%745`. **The nineteen-file repair is this lane's next lap.**
+**COPAL -- A METER COUNTED A REMOVAL INSIDE A PEN AS THE REMOVAL OF A PEN.** Elder account
+[shelved whole](archive/20260915-231116_itinerary-copal-unrun-control-account.md).
+**AIR FEELS** (row 1, N=5026): law and boundary. `single-stranded` gave the lap its reading -- three
+guards over one pen, each about one thing, is composition working; what hid the leaker was a
+**population**, since two of the three read shell alone. Narrow rather than braided, so the cure is
+widening rather than merging.
+**LANDED:** the eight `tools/am/` witnesses that make a pen and never remove it each take a root
+sweep -- both `pour`, both `carry`, `restore`, `grand_round`, `first_resident`, `mark_wreck` -- all
+GREEN, and a re-run leaves the standing pen count where it stood. `never_removed` **9**: 16 at
+seating, 14 once bakery's `make-pen` took two, 9 with these eight, the ceiling fallen with it.
+**THE CARD SAID NINETEEN AND THE TREE SAID EIGHT** (`20260916.012247`). Eleven already swept; of the
+eight that did not, the meter saw five, because its predicate takes the pen variable followed by any
+non-word character -- so a file deleted INSIDE the pen reads as the pen coming down. It also wants a
+`$`, so Rishi's bare-name argv form makes one honest sweep read `never_removed`. **I touched no
+predicate** -- the meter is bakery's, and the fix is one argument boundary in their lane. Booked at
+`20260916.012247`, renumbered when a peer's earlier stamp took the `%753` view.
+**FOUND ON THE WAY OUT, NEITHER MINE.** `fold_shelf_link_repoint` read RED fleet-wide on two
+depth-lost links in a diffuser shelf; the tree's own repointer made exactly the two corrections its
+dry run named, GREEN after. And `reds_citation` and `reds_shelf_name` are ONE fault under two
+names: `archive/REDS-the-ceilings-that-agreed-rows-636-740.md` holds `%741` and its name stops at
+740, landed `9508fd9f7` twenty minutes before my rebase took it. **Named, not booked** -- `%750`
+was withdrawn last lap for booking a peer's minutes-old fault.
 **YOURS:** should `one_file` become a refusal once a room declares it deliberately?
 
 **PATCHOULI -- A BEGINNER DOOR SPENT ONE WORD ON TWO THINGS, SIX DAYS AFTER THE CURE WAS WRITTEN.**

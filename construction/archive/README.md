@@ -6,13 +6,14 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 Honest lineage for the workbench. Sorted **newest first** by stamp.
 
-**What this table covers, said plainly.** The room holds **996 tracked shelves** and this table
-carries **13 rows**, so it is a reader's way in rather than the room's census. Count the room for
+**What this table covers, said plainly.** The room holds **1007 tracked shelves** and this table
+carries **16 rows**, so it is a reader's way in rather than the room's census. Count the room for
 yourself with `git ls-files 'construction/archive/*.md' | grep -vc 'README.md$'`; the shelf count is
 **free** and rises with every fold, while the row count moves only when a hand adds a row.
 
 | Stamp | Record | Meaning |
 |-------|--------|---------|
+| `20260916-012247` | [ITINERARY shelf -- the pier that filled](20260916-012247_itinerary-pier-filled-account.md) | Finished account folded off the living card at its byte bound |
 | `20260916-003450` | [ITINERARY shelf -- pheromone's gate-law pedestal account](20260916-003450_itinerary-pheromone-gate-law-account.md) | Finished account folded out of the card's queue, where work still to do belongs |
 | `20260915-232133` | [ITINERARY shelf -- petrichor's skate-door account](20260915-232133_itinerary-petrichor-skate-door-account.md) | Finished account lifted off the living card when the next Petrichor lap replaced it |
 | `20260915-231116` | [ITINERARY shelf -- copal's unrun-control account](20260915-231116_itinerary-copal-unrun-control-account.md) | Finished account folded off the living card at its byte bound |

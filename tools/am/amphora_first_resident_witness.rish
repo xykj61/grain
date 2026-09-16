@@ -58,4 +58,10 @@ let count = run ["sh" "-c" "ls tools/fixtures/amphora_first_resident_counsel | w
 say "first_resident=poured stamp=ok seal=ok restore=byte-equal files --"
 say count.out
 assert count.ok else "first_resident: fixture count measured -- read the reading above"
+
+# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
+# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "first_resident: pen must sweep"
+
 say "GREEN: amphora_first_resident -- a real counsel season crosses and returns whole."

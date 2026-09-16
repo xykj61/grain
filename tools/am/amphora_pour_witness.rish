@@ -55,4 +55,10 @@ let again = run ["${home}/bin/amphora" "pour" season vessel]
 assert again.ok else "amphora_pour: same-identity re-pour must welcome"
 
 say "round=poured manifest=readable stamp=verified seal=opens repour=welcome"
+
+# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
+# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "amphora_pour: pen must sweep"
+
 say "GREEN: amphora_pour — grown round path · listing · two walls · re-pour."
