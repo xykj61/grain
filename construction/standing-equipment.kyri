@@ -6334,3 +6334,33 @@ guard workload_trial
 path tools/w/workload_trial_witness.rish
 tier cadence
 seated 20260915.221500
+
+# ladder_order -- the twelve rows of the bounded-torus page were ranked once, on the day they were
+# written, by what a lane could start on this pier that month. Ten errata have landed since, each
+# reporting a measurement on metal, and several recommend a re-rank or a re-aim in their own words.
+# The ranking table still reads as first written, correctly, since dated testimony keeps every word
+# -- so the order the twelve measurements support stands scattered across ten separate errata.
+#
+# THIS RUNG ASKED WHETHER THAT ORDER EXISTS BEFORE WRITING IT DOWN, and it does not. Nine rows
+# speak (row 5 carries two clauses and the later one wins), six recommend anything at all, and only
+# FOUR name a seat -- two of them the same seat, since rows 2 and 4 were both sent last for the
+# same stated cause. Four named positions of twelve, two collisions, `permutation=no`.
+#
+# THE MECHANISM: an erratum speaks in a CLASS and the table speaks in a POSITION. Two rows may both
+# be demoted; only one may be twelfth. Transcribing a class into a table demands a tiebreak that
+# would be invented rather than measured, which is what this reading exists to refuse.
+#
+# WHAT STANDS IS A PARTITION -- 3 unread, 3 reported, 1 re-aimed, 2 seated, 2 demoted, 1 superseded
+# -- whose six counts are gated against the roster, since disjointness is the one property making
+# the weaker statement true.
+#
+# WHAT IS GATED: the roster against the ranking table, parse failures at zero, and the class total
+# against the roster. The COLLISION count is reported rather than walled -- it is a reading of a
+# dated page, and an erratum landing tomorrow may move it honestly.
+#
+# `tier lap`: the scan opens one page and the control plants pages in a pen it releases on both
+# exits, which the control proves rather than trusting the trap (REDS %745 read on this instrument).
+guard ladder_order
+path tools/l/ladder_order_witness.rish
+tier lap
+seated 20260916.003332
