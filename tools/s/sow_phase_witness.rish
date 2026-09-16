@@ -1,0 +1,56 @@
+# tools/s/sow_phase_witness.rish -- where a seed publish spends its minutes, read rather than recalled.
+#   rishi/bin/rishi run tools/s/sow_phase_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/s/sow_phase_control.sh, which proves the scan from both
+# sides in a throwaway pen holding a miniature field: a manifest with allow rows, a publisher, two
+# drivers, and the projector they call. Thirty-three legs stand there, every refusal planted and
+# then lifted, and five mutations are proven to bite -- dropping the comment filter on call sites,
+# walking one hop instead of two, diffing churn without the allow pathspec, and keeping the vendor
+# room in the candidate set.
+#
+# WHY THE INSTRUMENT EXISTS. REDS %642 books a content-keyed scrub cache, and the design that
+# books it names what to measure BEFORE building one: how much of a publish is the per-file scrub,
+# how much is the witness, and how many files actually change between publishes. A cache built
+# ahead of that reading is a cache nobody sized.
+#
+# THE GATED READING IS STRUCTURAL, and it is the finding the measurement turned up.
+# `publish-seed.sh` projects the whole seed once through `tools/s/sow.rish`, and
+# `tools/s/sow_witness.rish` projects it AGAIN as its own duty 2 -- so a publish pays for two full
+# projections and the second one is discarded. The witness has a sound reason: it reads `seed/`, an
+# absent `seed/` reads clean, and its header says moving duty 3 ahead of duty 2 would turn it green
+# over nothing at all. The reason was never in dispute; the COST was never a number. It is one now,
+# held at a ceiling that only falls, so a third projection reds on the lap it arrives.
+#
+# COUNTED BY CALL SITE RATHER THAN BY RUN, because counting runs means running them and one run is
+# six minutes on this pier. A call site is a live line naming the projector, reachable from the
+# publisher in at most two hops. The scan's own header calls that a proxy and names both edges: a
+# site inside a conditional still counts, and a projection reached at a third hop is invisible.
+# Leg 16 plants exactly that third hop and asserts the scan does not see it, so the limit is
+# measured rather than merely admitted.
+#
+# ONE ZERO WEARS TWO FACTS, and the reading says which. A churn span holding no commit at all
+# resolves to HEAD and can only read zero changed; a busy span reads zero when the allow rooms
+# genuinely stood still. `churn_quiet` tells them apart, planted as a PAIR in the pen, because
+# either leg alone would pass under a scan that always answered the same word.
+#
+# THE SECONDS ARE NOT GATED AND NEVER WILL BE. `--time` runs a real projection and a real witness,
+# twelve minutes together, and the numbers it prints are FREE -- nothing holds them still, and they
+# rise as the tree grows. Read `20260916.120000` on this pier: projection 364.68s, witness 354.09s,
+# of which the four proofs the witness actually performs cost 2.39s together. A number that free
+# belongs in a page a reader can re-derive, never in a gate that would red on ordinary growth.
+say "sow_phase: Language EN -- a publish measured before a cache is written for it."
+say "sow_phase: Style Gauge Meter -- one gated structural count, the seconds reported and free."
+say "sow_phase: Lens TAME -- safety first; the scan reads scripts and git history and projects nothing, so custody gate %1 is nowhere near it."
+
+let control = run ["sh" "tools/fixtures/s/sow_phase_control.sh"]
+say control.out
+assert control.ok else "sow_phase: the control must exit 0 -- every leg green in the pen (${control.err_brief})"
+assert control.out contains "control_verdict=ok" else "sow_phase: a control that named no verdict has answered nothing"
+assert control.out contains "legs=33" else "sow_phase: the pen's leg tally moved -- a leg written today must be heard today, never counted as a pass"
+
+let scan = run ["sh" "tools/fixtures/s/sow_phase_scan.sh"]
+say scan.out
+assert scan.ok else "sow_phase: the scan must run on this tree (${scan.err_brief})"
+assert scan.out contains "verdict=ok" else "sow_phase: a publish projects the whole seed more times than the ceiling allows -- read projection_sites above"
+
+say "GREEN: sow_phase -- thirty-three legs proven in a throwaway pen, and this tree's publish closure projects the seed twice, at its declared ceiling"

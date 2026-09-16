@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260916.121935
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent -- seat bakery, core infrastructure lane
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no authoritative identity
+configured_model claude-opus-5
+configured_status .claude/settings.json proves the configured default; the effort a lap runs at depends on its launch path
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title Measuring a seed publish before writing the cache it was booked for
+prompt The card's queue item 1, Lindy-first -- REDS %642, the content-keyed scrub cache, whose own design names what to measure before anyone builds one. Claimed as bakery-scrub-phase-measurement at 20260916.114621 and pushed before the build.
+think The design has an explicit falsifier and an explicit order: measure the phase split first, and if the witness dominates, write a page with the numbers rather than a cache. Eight days had passed with nothing measured, so the honest lap was the reading rather than the build.
+think Timing the two phases gave 364.68s and 354.09s, which reads fifty-fifty. Timing the witness's four duties one at a time gave 2.39s together, so 99.3 percent of the witness is a second full projection run as its own duty 2. The split was an illusion and the finding was structural rather than temporal.
+think The obvious repair -- delete the duplicate projection -- is the worse one. The witness projects because it reads seed/, an absent seed/ reads clean, and its own header says moving duty 3 ahead of duty 2 would turn it green over nothing. A cache leaves that duty standing and makes it free, because between a publish's two projections nothing changes at all.
+think A guard that measures by RUNNING costs twelve minutes and nobody would put it on the lap clock. So the gated reading is structural: count the projection call sites reachable from the publisher in two hops, hold them at a ceiling of two that only falls, and leave the seconds ungated behind --time because they are free and rise with the tree.
+obs The scrub the cache is named for costs 15.92s of the projection's 365. The expensive half is classification -- two greps every file pays, name-bearing or plain -- which means a content cache must skip the whole per-file path rather than the sed alone.
+obs The cache key needs no hashing pass: blob hashes for all 9,046 candidates read in 1.24s from git ls-files -s, and proving the tree clean costs 0.11. A dirty tree is the one careful point, where the index hash and the disk bytes part company.
+obs The pen's first draft read churn=unread on every span, because a repository whose whole history is seconds old has no commit before any span a reader would pass. Dating the base commit to a fixed past stamp fixed it, and a fixed date rather than a computed one so the pen plants the same history on every host.
+obs Four mutations bite. The comment filter on call sites is the sharpest: without it a header sentence naming the projector counts as a call, and the pen's planted comment took the reading from 2 to 4.
+obs The roster records the sow guard at 230s on 20260904 and it reads 354.09 twelve days later, half again as much. Free figures drift in the direction nobody is watching, and the roster note now carries both readings.
+rota lap 5110, row 0 -- Aether, the row that hears; listened for the silence where a claim used to be, and found the design's own measure-first clause standing unmeasured for eight days.
+loom witness=sow_phase legs=27 mutations_bitten=4 wall_s=3
+loom publish=seed projection_s=364.68 witness_s=354.09 proofs_s=2.39 candidates=9046 scrubbed=1412
+loom projection=phases armor_grep_s=56.69 ident_grep_s=103.10 sed_scrub_s=15.92 ssh_grep_s=55.79 enumerate_s=1.43
+loom churn=allow_paths h1=16 h12=170 d1=1813 d7=2512 index_key_s=1.24
+file tools/fixtures/s/sow_phase_scan.sh the structural count, the churn reading, and the opt-in timing mode
+file tools/fixtures/s/sow_phase_control.sh 27 legs in a throwaway miniature field, every refusal planted and lifted
+file tools/s/sow_phase_witness.rish the control on a clock, and the one gated structural reading on this tree
+file construction/standing-equipment.kyri the sow_phase row at tier lap, and the sow guard's moved cost
+file active-designing/20260916-121517_where-a-seed-publish-spends-its-minutes.md the measurement, the answered falsifier, and the ordering it recommends
+file expanding-prompts/20260908-155715_the-scrub-that-remembers.md pointed at its own measurement, two of its figures corrected
+file construction/ITINERARY.md the account, born on its shelf, and the card line that carries it
+scope one claimed measurement built, proven, rostered, recorded, and landed; no peer file touched; no cache written
+status GREEN -- sow_phase 27 legs on metal, four mutations proven to bite, the page A/92 and the design page A/96, readme_metrics and geode_libraries regenerated, hot endurance run launched before the send
+recommend keep-going -- the cache itself is the next lap in this lane: the reading is taken, the key is cheap, and the arithmetic is written down
