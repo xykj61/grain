@@ -6,9 +6,11 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.193229` | [the-build-i-rebuilt](20260916/20260916-193229_the-build-i-rebuilt.kyri) | A finished lap sat in my own round-open stash; I rebuilt it, then landed the original. |
 | `20260916.191000` | [The box that priced the build key](20260916/20260916-191000_the-box-that-priced-the-build-key.kyri) | two parked records home; build key priced at 11x the read |
 | `20260916.190156` | [The promise beside the path](20260916/20260916-190156_the-promise-beside-the-path.kyri) | a section named beside a path, gated at last |
 | `20260916.185029` | [The half that was pinned](20260916/20260916-185029_the-half-that-was-pinned.kyri) | A checkable page's quoted output lost two fields the day after it was written. |
+| `20260916.184537` | [two-promises-in-one-word](20260916/20260916-184537_two-promises-in-one-word.kyri) | An awk pen stayed reproducible and went degenerate; a wall at 2^53. |
 | `20260916.184140` | [The grade that resolved the link](20260916/20260916-184140_the-grade-that-resolved-the-link.kyri) | %776: a newcomer door false since its birth commit |
 | `20260916.183614` | [The hand the watcher asked for](20260916/20260916-183614_the-hand-the-watcher-asked-for.kyri) | five seats armed; watcher reset |
 | `20260916.183440` | [a build that sat in a stash](20260916/20260916-183440_the-build-that-sat-in-a-stash.kyri) | recovered %642's parked measurement, added churn_quiet, landed it whole |

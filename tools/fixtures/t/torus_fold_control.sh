@@ -57,7 +57,15 @@ plant() {
     }
     # A deterministic linear congruential generator rather than awk rand(), whose seeding differs
     # between implementations -- the pen must plant the same population on every host.
-    function rnd(   ) { seed = (seed * 1103515245 + 12345) % 2147483648; return int(seed / 65536) % 256 }
+    # MINSTD RATHER THAN THE GLIBC MULTIPLIER, and the reason is arithmetic rather than taste.
+    # awk carries numbers as doubles, exact to 2^53; this line spelled seed * 1103515245 against
+    # a modulus of 2^31, whose largest intermediate is 2.37e18 and rounds. Measured 20260916:
+    # that rounded map has a tail of 3,253 draws and a cycle of 10,466 -- 13,719 states against
+    # the exact generator period of 2^31 -- and the consumed byte differed from the exact stream
+    # in 4,079 of 4,096 draws. The pen draws 2,048 and so stood inside the tail. 48271 * 2147483646
+    # is 1.04e14, inside the exact range, and matches the spelling aurora_placement_scan.sh and
+    # topology_growth_scan.sh already use. Gated by tools/a/awk_lcg_exact_witness.rish.
+    function rnd(   ) { seed = (seed * 48271) % 2147483647; if (seed < 1) seed = 1; return int(seed / 65536) % 256 }
     BEGIN {
       seed = 20260912
       if (kind == "even") {

@@ -271,8 +271,15 @@ if [ "$DO_TIMING" = no ]; then
   exit 0
 fi
 
+# THE SPIN LOOP'S ARITHMETIC IS EXACT, and that matters less here than anywhere else in the tree,
+# which is exactly why it is written down. This loop's value is discarded -- it exists to cost
+# time -- so the rounded multiplier it carried until `20260916` cost nothing. It moved to MINSTD
+# so `tools/a/awk_lcg_exact_witness.rish` reads one rule with no exemption beside it, and the
+# floor was measured across the change: medians 62 against 60 milliseconds on one reading and 51
+# against 55 on the next, the two orderings disagreeing, so the difference sits inside this pier's
+# own spread rather than beside it.
 work() {
-  awk -v n="$WORK_ITERS" 'BEGIN{x=1;for(i=0;i<n;i++)x=(x*1103515245+12345)%2147483648;exit(x==0)}' >/dev/null 2>&1 || true
+  awk -v n="$WORK_ITERS" 'BEGIN{x=1;for(i=0;i<n;i++)x=(x*48271+12345)%2147483647;exit(x==0)}' >/dev/null 2>&1 || true
 }
 
 take() {
