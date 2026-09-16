@@ -2,7 +2,7 @@
 
 **Seated:** `20260915.183900` on Keaton's word - **Status:** Living - **Kin:** [`comlink-tendency`](comlink-tendency.md) - [`vocabulary-red-over-bug`](vocabulary-red-over-bug.md) - [`vocabulary-first-resident`](vocabulary-first-resident.md)
 
-**A guard that answers differently on bytes nobody changed is FLAKY.** The elder word for it in this
+**A guard that answers differently on unchanged bytes is FLAKY.** The elder word for it in this
 tree was *flap*, and it retires from living prose.
 
 | Prefer | Rather than |
@@ -23,7 +23,8 @@ ever run a suite. So `comlink-tendency`'s own test decides it: the clearest, mos
 wins, at whatever length, and sometimes that word is the one the world already uses. Keaton named
 this on `20260915`.
 
-**The noun changes, because this tree has no tests.** It has guards, witnesses, scans, and controls.
+**The noun changes, because this tree keeps guards rather than tests.** It has guards, witnesses,
+scans, and controls.
 So the industry ADJECTIVE rides our own NOUN: *a flaky guard*, never *a flaky test*.
 
 ## The one cost, named rather than hidden
@@ -71,7 +72,8 @@ and `verdict=flaky` where it wrote `flap=`, and the control reads that key back 
 and reader moved together or the guard would have broken silently. Both witnesses GREEN on metal
 after the move, and the three files kept mode `100755` through the rename.
 
-**Not a deep debride.** A history rewrite costs every clone a re-clone, and the target here is a word
+**A working-tree sweep, rather than a deep debride.** A history rewrite costs every clone a
+re-clone, and the target here is a word
 rather than a secret or a name. One sweep pushed reaches all eight ships at their next round-open
 pull.
 

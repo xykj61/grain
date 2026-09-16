@@ -16,6 +16,7 @@
 | `20260915.213621` | [The lock that was published in two steps](20260915/20260915-213621_the-lock-that-was-published-in-two-steps.kyri) | a live holder could lose its build lock |
 | `20260915.213344` | [The meter taught before the sweep](20260915/20260915-213344_the-meter-taught-before-the-sweep.kyri) | deferred 2,576 to 0; ceiling walled |
 | `20260915.212156` | [The slice that says where it cut](20260915/20260915-212156_the-slice-that-says-where-it-cut.kyri) | bounded capture fields seated |
+| `20260915.212126` | [The refusal the meter could not read](20260915/20260915-212126_the-refusal-the-meter-could-not-read.kyri) | redleg 53 to 51; register red closed |
 | `20260915.211724` | [The bearing that meets rather than floods](20260915/20260915-211724_the-bearing-that-meets-rather-than-floods.kyri) | row 8 is a rendezvous, not a broadcast |
 | `20260915.211217` | [The reason lost at four thousand](20260915/20260915-211217_the-reason-lost-at-four-thousand.kyri) | the cliff bisected; my repair withdrawn |
 | `20260915.205911` | [The counts that carried constants](20260915/20260915-205911_the-counts-that-carried-constants.kyri) | every resolvable build site locked |

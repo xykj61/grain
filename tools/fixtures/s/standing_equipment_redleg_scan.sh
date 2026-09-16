@@ -20,15 +20,42 @@
 #
 # WHAT IS REPORTED UNDER A CEILING THAT ONLY FALLS. `guards_no_refusal_marker` -- a rostered
 # witness that asserts and leaves the demonstration of a refusal to something else. The marker this
-# reading looks for is one of four this tree already writes: a `prove-red` call, a `_control.sh`
-# invocation, a planted case, or an `== false` assertion. A witness carrying any of them
-# demonstrates a refusal in its own body; a witness carrying none is counted here.
+# reading looks for is one of SIX spellings this tree already writes. Four are read anywhere in the
+# file: a `prove-red` call, a `_control.sh` invocation, a planted case, or an `== false` assertion.
+# Two more are read on an assertion line, and were added `20260915` after a hand read all
+# fifty-three by eye and found two guards demonstrating a refusal in a spelling the four could not
+# see:
+#
+#   THE ASSERTED REFUSAL VALUE -- an instrument called in this file is asserted to speak its
+#   refusal digit, as `assert (side "gate-tally-garden-pair-bound-u32" "9" "8") == "0"` does in
+#   tools/g/glow_vane_pair_mirrors_witness.rish. The over-bound argument IS the plant, and the
+#   digit is the wall answering.
+#
+#   THE ASSERTED REFUSAL EXIT -- a child invoked here is asserted to exit non-zero, as
+#   `assert stranger.code == 2` does in tools/co/comlink_rehearsal_wire_witness.rish. The stranger
+#   role is the plant, and the exit code is the refusal.
+#
+# THE REFUSAL VALUE FORM READS PAST A CAPTURED STREAM, and that exclusion is the whole difference
+# between a refusal and a census. tools/g/gen_home_witness.rish asserts `(trim flat.out) == "0"`,
+# which reads a count of the live tree and plants nothing; the digit there is an answer about the
+# tree rather than an instrument refusing. So a line naming `.out`, `.err`, or `.code` beside its
+# `"0"` stays out of the value form -- the exit form reads `.code` on its own terms.
+#
+# A witness carrying any of the six demonstrates a refusal in its own body; a witness carrying none
+# is counted here.
 #
 # Measured 20260909 over all 285 rostered guards: 285 read, every path present, every file
 # asserting, and 53 carrying no marker. ALL FIFTY-THREE DELEGATE -- each asserts on the result of a
 # real `run [...]`, so each reds when the child witness, scan, or suite beneath it reds. That is
 # what a choir is, and gating this number would refuse every choir the tree owns, which is the gate
 # somebody turns off.
+#
+# Re-read 20260915 over 375 rostered guards -- ninety more than the header above prices, which is
+# what a free denominator does in four months. Still every path present and every file asserting;
+# the marker-less count read 53 under the four elder spellings and reads 51 under the six, since
+# the two named above were delegating in the meter's eyes and demonstrating in their own. The
+# ceiling falls to 51 with them. RUN THIS SCAN rather than trusting either figure: the count is
+# held by the ceiling, and the denominator beside it is held by nothing at all.
 #
 # What the number is good for is the DIRECTION it moves. A guard whose refusal is demonstrated in
 # its own body stays out of this count, so the reading rises exactly when a guard arrives with
@@ -55,13 +82,32 @@ MODE=${1:-count}
 ROSTER=${REDLEG_ROSTER:-construction/standing-equipment.kyri}
 MAX_GUARDS=512
 MAX_REPORT=200
-# The ceiling only falls. Read 20260909 over the live roster; lower it when a repair lands.
-CEILING=${REDLEG_CEILING:-53}
+# The ceiling only falls. Read 20260915 over the live roster, after the marker set widened from
+# four spellings to six; lower it when a repair lands.
+CEILING=${REDLEG_CEILING:-51}
 
 [ -f "$ROSTER" ] || { echo "refused: no roster at $ROSTER -- nothing to read" >&2; exit 2; }
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/redleg.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
+
+# THE SIX MARKER SPELLINGS, read in one pass. Four are file-wide; two are read on an assertion
+# line, because their meaning depends on what the line asserts ON. A file-wide grep for `== "0"`
+# would count a census of the tree as a demonstrated refusal, which is the one distinction this
+# reading exists to keep.
+marker_present() {
+  awk '
+    /prove-red|prove_red|_control\.sh|plant|== false/ { found = 1 }
+    /(^|[^_[:alnum:]])assert / {
+      # the asserted refusal value: an instrument called here speaks its refusal digit. A captured
+      # stream on the same line means a census rather than a refusal, so it is read past.
+      if ($0 ~ /==[[:space:]]*"0"/ && $0 !~ /\.(out|err|code)/) { found = 1 }
+      # the asserted refusal exit: a child invoked here is asserted to exit non-zero.
+      if ($0 ~ /\.code[[:space:]]*==[[:space:]]*[1-9]/) { found = 1 }
+    }
+    END { exit (found ? 0 : 1) }
+  ' "$1"
+}
 
 # A `guard` line opens a record and the `path` line beneath it names the file. Reading the pair
 # rather than every `path` line keeps a stray field in another record out of the count.
@@ -86,7 +132,7 @@ while IFS="$(printf '\t')" read -r name path; do
     printf 'no-assert\t%s\t%s\n' "$name" "$path" >> "$work/report.txt"
     continue
   fi
-  if ! grep -qE 'prove-red|prove_red|_control\.sh|plant|== false' "$path"; then
+  if ! marker_present "$path"; then
     no_marker=$((no_marker + 1))
     printf 'no-marker\t%s\t%s\n' "$name" "$path" >> "$work/report.txt"
   fi

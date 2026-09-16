@@ -429,7 +429,15 @@ done < "$work/teaching.txt"
 # `.claude/rules/exec-bit.md` 31% of 32. Each gave up one counted word -- a `without` for a `while`,
 # a `never` for a plain clause, a `loses` for a `drops` -- and all three read 28%. That is what
 # `--explain` bought: the cheapest page in the room is now a reading rather than a guess.
-law_ceiling=9
+#
+# IT FELL 9 -> 8 ON `20260915`, and the lap that lowered it first had to un-raise it. Two vocabulary
+# rules were seated that day -- `.claude/rules/vocabulary-flaky.md` at 36% of 30 sentences and
+# `.claude/rules/vocabulary-endurance-run.md` at 46% of 15 -- and together they carried the reading
+# to 10 against a ceiling of 9, which is the red a ship surfaced and reported rather than took. Six
+# restatements closed it: three on each page, every one a form this tree already writes, and every
+# claim, figure, path and proper noun held. Both read 26% now. A page seated hours earlier is the
+# cheapest page in the room by construction, since its sentences are still warm.
+law_ceiling=8
 law_documents=0
 law_readable=0
 law_over=0
