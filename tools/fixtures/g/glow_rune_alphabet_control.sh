@@ -33,7 +33,7 @@
 # EVERY PLANT IS LIFTED AND READ BACK. A refusal shown only in the failing direction cannot be told
 # from a tool that refuses everything, so each case ends by restoring the file and requiring `OK`.
 #
-# Prints `pass=N fail=N`. Bounded: one pen, four plants, at most nine worker runs.
+# Prints `pass=N fail=N`. Bounded: one pen, eleven plants, at most twenty-six worker runs.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -94,6 +94,8 @@ check "clean pen says OK" yes "$(has "$base" "OK")"
 check "clean pen publishes rune_heads" yes "$(has "$base" "rune_heads=")"
 check "clean pen publishes lexer_heads" yes "$(has "$base" "lexer_heads=")"
 check "clean pen publishes unnamed_glyphs" yes "$(has "$base" "unnamed_glyphs=")"
+check "clean pen publishes outside_heads" yes "$(has "$base" "outside_heads=")"
+check "clean pen publishes outside_unnamed_glyphs" yes "$(has "$base" "outside_unnamed_glyphs=")"
 
 # Each case: plant, require a refusal naming its own fault, lift, require the pass back.
 case_run() {
@@ -173,6 +175,48 @@ mv "$pen/$book.aside" "$pen/$book"
 back=$(run_worker) && back_ok=yes || back_ok=no
 check "book_absent lifted reads OK" yes "$back_ok"
 
-echo "coverage: a clean pen, the published fields, four plants in the lexer table -- count, an unnamed head that keeps the count, a pronunciation row whose head has gone, and the barket head -- and five in the documents the worker binds: the table's own witness name, its sealed count, the family index, a taught rune struck from the reference, and the reference itself gone. Each refused and each lifted back to OK"
+# THE FIFTH READING, PLANTED FROM BOTH SIDES (`20260915.225111`). Every plant above lands inside
+# the `const pairs` constant of `match_rune2`, and the `lex_one` function matches two rune-shaped
+# heads on branches above that call -- `::` and `==` -- which no reading derived from that table
+# can reach. The worker walks `lex_one` itself now, and these two cases are what prove the walk is
+# doing work rather than agreeing by luck.
+
+# A THIRD HEAD ARRIVES IN `lex_one`. This is the case the whole reading exists for: the count of
+# thirty holds, every pronunciation row holds, every taught entry holds, and a head the language
+# now accepts is named nowhere. The plant adds a branch beside the `==` one, in the shape the file
+# already writes.
+lift
+plant 's|    if (starts_with(src, i, "==")) {|    if (starts_with(src, i, "!!")) {\n        try push(out, used, .double_equals, i, 2);\n        return i + 2;\n    }\n    if (starts_with(src, i, "==")) {|'
+out=$(run_worker) && refused=no || refused=yes
+check "outside_third refuses" yes "$refused"
+check "outside_third names its fault" yes "$(has "$out" "matched in lex_one above the pairs table")"
+lift
+back=$(run_worker) && back_ok=yes || back_ok=no
+check "outside_third lifted reads OK" yes "$back_ok"
+
+# THE SPAN BOUND, PROVEN BY A LITERAL OUTSIDE `lex_one`. `starts_with` is a general predicate, and
+# `skip_comment_line` already calls it in an assert; a reading taking the whole file would count
+# any such literal as an accepted head. The plant puts one there that `lex_one` never dispatches
+# on. The worker must walk past it -- and the same pen, with the function span widened to the whole
+# file, must refuse, or the bound in the worker is decoration.
+lift
+plant 's|    assert(starts_with(src, i, "::"));|    assert(starts_with(src, i, "::"));\n    assert(!starts_with(src, i, "!!"));|'
+out=$(run_worker) && passed=yes || passed=no
+check "outside_span walks past a literal outside lex_one" yes "$passed"
+
+mutant="$pen/tools/g/glow_rune_alphabet_worker.sh"
+cat "$mutant" > "$mutant.pristine"
+sed 's|awk .\/\^fn lex_one\/,\/\^}\/. "\$TOKENS"|cat "$TOKENS"|' "$mutant" > "$mutant.tmp" && cat "$mutant.tmp" > "$mutant" && rm -f "$mutant.tmp"
+grep -q 'cat "$TOKENS" | grep -oE .starts_with' "$mutant" \
+  && check "outside_span mutation applied" yes yes \
+  || check "outside_span mutation applied" yes no
+out=$(run_worker) && refused=no || refused=yes
+check "outside_span mutation bites" yes "$refused"
+cat "$mutant.pristine" > "$mutant"
+lift
+back=$(run_worker) && back_ok=yes || back_ok=no
+check "outside_span lifted reads OK" yes "$back_ok"
+
+echo "coverage: a clean pen, the published fields, four plants in the lexer table -- count, an unnamed head that keeps the count, a pronunciation row whose head has gone, and the barket head -- and five in the documents the worker binds: the table's own witness name, its sealed count, the family index, a taught rune struck from the reference, and the reference itself gone -- and two on the lexer branches ABOVE that table: a third head arriving in lex_one, and a starts_with literal outside lex_one that this reading must walk past and a whole-file reading must not. Each refused and each lifted back to OK"
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

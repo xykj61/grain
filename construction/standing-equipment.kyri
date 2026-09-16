@@ -5205,9 +5205,24 @@ seated 20260909.152110
 # `active-designing/docs/glow/runes.md` now, publishing `book_named` and `book_unnamed_glyphs`, and
 # refuses an untaught head that stands on no exemption. `?&` and `?|` keep the exemption they
 # already hold one binding over, for the same cause: an entry leads with its spoken name.
+#
+# A FIFTH BINDING, AND THE FIRST THAT READS THE WHOLE LEXER (`20260915.225111`). The four bindings
+# above each derive their head roster from the `const pairs` constant declared inside the
+# `match_rune2` function, and `lex_one` reaches two rune-shaped two-byte heads on branches BEFORE
+# that call -- `::`, routed to `skip_comment_line`, and `==`, pushed as the `.double_equals` token
+# kind. Thirty heads read where the lexer accepts thirty-two, and the two outside were unreachable
+# by construction: no plant inside the pairs table can touch them, and no reading derived from it
+# can count them. `==` is what the hole cost -- consumed by `glow/rune_shape.rye` at two call sites
+# as the tall-form terminator, standing in 105 tracked `.glow` sources, and named in NONE of the
+# three documents the guard binds, while `--` closes the same kind of form one line below it in the
+# same lexer and is named in all three. The worker walks `lex_one` itself now and publishes
+# `outside_heads`, `outside_roll_named`, `outside_book_named` and `outside_unnamed_glyphs`: the
+# reading is 2, 0, 1 and `==`. Both are exempt BY NAME on the cause the two exemptions above stand
+# on -- whether a terminator and a comment head are runes wanting a pronunciation row is Keaton's
+# word -- and a third reds wherever it arrives.
 guard glow_rune_alphabet
 path tools/g/glow_rune_alphabet_witness.rish
-tier lap   # 0.6s; 30 lexer heads derived from match_rune2 against 28 pronunciation rows and 28 taught entries, two exempt by name in both
+tier lap   # 0.6s; 32 lexer heads -- 30 derived from match_rune2 against 28 pronunciation rows and 28 taught entries, plus 2 matched in lex_one above that table; four exempt by name
 seated 20260909.155028
 
 # mantra_tablecloth_hit_census -- how large an answer can be, enumerated rather than sampled. Two

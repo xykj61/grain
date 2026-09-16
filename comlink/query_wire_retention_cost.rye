@@ -59,9 +59,40 @@ const max_samples: u32 = 64;
 /// small enough that one full run stays under a second on this host.
 const reads_per_sample: u32 = 20_000;
 
-/// The answer measured: four hits, the shape a small recall query returns. Fixed here so two runs
-/// on one host compare, and so the published byte figures name one concrete answer.
+/// The answer measured, and the reason this harness currently refuses to build.
+///
+/// THE SUBJECT IS THE UNUSED TAIL. This harness compares a fixed-size cached answer against a
+/// variable-size retained one, and the whole saving is the hits the answer does not carry. So the
+/// measured count must sit STRICTLY BELOW `qw.max_wire_hits` -- at the ceiling there is no tail,
+/// and the variable form is simply larger by its own 16-byte slice header. It must also be at
+/// least two, or `r % measured_hit_count` folds to a constant index and the compiler hoists the
+/// three measurement loops away: measured at one hit, each read retired 6 instructions against
+/// the 20,000 its control requires.
+///
+/// Both together need `qw.max_wire_hits >= 3`. It reads **2**.
+///
+/// WHY IT READS TWO, AND WHY THAT IS THE CORRECT NUMBER. The constant was the literal 8 with
+/// `max_wire_payload` at 340 and nothing tying them, until `0d6e6829a` derived it --
+/// `(max_wire_payload - response_head_bytes) / max_hit_bytes` -- and added the assert that binds
+/// the pair. An eight-hit answer at today's field sizes needs 954 bytes, so the elder 8 was never
+/// a shape a 340-byte message could carry, and every figure this harness has published names a
+/// four-hit answer the wire could not hold.
+///
+/// SO THE REPAIR IS THE PRODUCER'S RATHER THAN THIS CONSUMER'S, and it is a protocol decision
+/// this file must not make for itself: grow `max_wire_payload`, shrink `max_peer`/`max_bolt`/
+/// `max_path`, or retire the retention comparison. Clamping the count here would publish a green
+/// figure about a question the wire can no longer ask.
 const measured_hit_count: u32 = 4;
+
+comptime {
+    if (qw.max_wire_hits < measured_hit_count + 1) @compileError(
+        "query_wire_retention_cost: mantra/recall_tablecloth_query_wire.rye derives max_wire_hits " ++
+            "below this harness's own floor. The retention comparison measures the unused tail of a " ++
+            "bounded answer, so it needs a count strictly below the wire ceiling and at least two, " ++
+            "hence a ceiling of at least three. Grow max_wire_payload, shrink max_peer/max_bolt/" ++
+            "max_path, or retire this measurement -- and see construction/REDS.md for the row.",
+    );
+}
 
 comptime {
     // invariant: the sample arrays hold every sample the run takes.
@@ -70,6 +101,12 @@ comptime {
     assert(sample_count % 2 == 1);
     // invariant: the measured answer fits the wire format's own hit ceiling.
     assert(measured_hit_count <= qw.max_wire_hits);
+    // invariant: it sits strictly below that ceiling, so an unused tail exists for the variable
+    // form to leave behind -- the comparison this harness publishes has no meaning without one.
+    assert(measured_hit_count < qw.max_wire_hits);
+    // invariant: a wire carrying one hit has no room below its own ceiling, so the subtraction
+    // above would wrap; the producer asserts max_wire_hits >= 1 and this harness needs two.
+    assert(qw.max_wire_hits >= 2);
 }
 
 const CostError = error{

@@ -13,8 +13,10 @@ yourself with `git ls-files 'construction/archive/*.md' | grep -vc 'README.md$'`
 
 | Stamp | Record | Meaning |
 |-------|--------|---------|
+| `20260916-003450` | [ITINERARY shelf -- pheromone's gate-law pedestal account](20260916-003450_itinerary-pheromone-gate-law-account.md) | Finished account folded out of the card's queue, where work still to do belongs |
 | `20260915-232133` | [ITINERARY shelf -- petrichor's skate-door account](20260915-232133_itinerary-petrichor-skate-door-account.md) | Finished account lifted off the living card when the next Petrichor lap replaced it |
 | `20260915-231116` | [ITINERARY shelf -- copal's unrun-control account](20260915-231116_itinerary-copal-unrun-control-account.md) | Finished account folded off the living card at its byte bound |
+| `20260915-232430` | [ITINERARY shelf -- pheromone's lexer-head account](20260915-232430_itinerary-pheromone-lexer-head-account.md) | Finished account folded off the living card at its byte bound |
 | `20260915-223327` | [ITINERARY shelf -- copal's written-ASCII account](20260915-223327_itinerary-copal-written-ascii-account.md) | Finished account folded off the living card at its byte bound |
 | `20260915-222402` | [Diffuser row-eleven account](20260915-222402_itinerary-diffuser-row-eleven-account.md) | Completed account moved off the living card when row 12 landed beside it |
 | `20260628-044300` | [Std re-fork plan](20260628-044300_std-refork-plan.md) | Executed -- pristine std symlink; parity selftest guard |
