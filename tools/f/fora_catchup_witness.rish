@@ -32,7 +32,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "fora-catchup: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "fora-catchup: ${shown.out}"
+say "fora-catchup: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN fora-catchup' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "fora-catchup: selftest did not print the GREEN fora-catchup line"

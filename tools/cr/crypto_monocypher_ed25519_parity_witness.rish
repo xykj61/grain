@@ -60,6 +60,6 @@ let got_sig = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_sig.out) == rfc_sig else "crypto-monocypher-ed25519-parity: signature over 0x72 is not the RFC 8032 §7.1 TEST 2 published value"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-ed25519-parity: the RFC 8032 §7.1 TEST 2 vector, plus a longer message, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-ed25519-parity: the RFC 8032 §7.1 TEST 2 vector, plus a longer message, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-ed25519-parity: our authored crypto/ed25519_sign.rye and the vendored Monocypher's own C (optional RFC 8032 SHA-512 module), each compiled fresh, produce byte-for-byte identical Ed25519 — the public key derived from the seed, the signature over RFC 8032 §7.1 TEST 2's message, and the signature over a longer message all match, and the public key and RFC signature match the RFC's published values. The third real Monocypher-SOURCE parity rung, closing the horizon the sign witness named and hardening the signing primitive the Lotus signed carry rests on — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; signing with the maintainer's own identity key stays its own gated round, and constant-time signing stays the named timing horizon."

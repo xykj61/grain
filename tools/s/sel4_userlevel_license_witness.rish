@@ -50,6 +50,6 @@ assert (scan.out contains "kernel_gpl=618") else "sel4-userlevel-license: the ke
 assert (scan.out contains "microkit_gpl_outside_dts=0") else "sel4-userlevel-license: a GPL-tagged file exists in Microkit OUTSIDE its board device-tree overlay directory -- that is linkable surface and must be read before anything depends on it: ${scan.out_brief}"
 assert (scan.out contains "microkit_bsd2=303") else "sel4-userlevel-license: Microkit's BSD-2-Clause tag count moved -- re-read the census: ${scan.out_brief}"
 
-say "sel4-userlevel-license: census -- ${scan.out}"
+say "sel4-userlevel-license: census -- ${scan.out_brief}"
 
 say "GREEN sel4-userlevel-license: the vendored userlevel is clean and the boundary is proven from both sides. All 185 files in libsel4 carry an SPDX tag and all 185 read BSD-2-Clause, with zero GPL -- so seL4 issue #245's mixed headers are genuinely resolved, checked file by file rather than taken on intent. The kernel side counts 618 GPL tags, so the split seL4 describes is real rather than described. Microkit is 303 BSD-2-Clause with exactly two GPL files, both board device-tree overlays under custom_dts and neither linkable code, and the guard bounds them BY PATH so a new one anywhere else reds on the lap it arrives. Both trees are gitlink submodules, so no vendored source enters our git history. This audits SPDX tags rather than licence text, and counsel stays the authority where distribution or money is at stake."

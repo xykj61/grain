@@ -62,6 +62,6 @@ let got_tag = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_tag.out) == kat_tag else "crypto-monocypher-xaead-parity: tag is not the published known-answer value"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-xaead-parity: the published XChaCha20-Poly1305 seal, agreed by both implementations (ciphertext then tag):\n${shown.out}"
+say "crypto-monocypher-xaead-parity: the published XChaCha20-Poly1305 seal, agreed by both implementations (ciphertext then tag):\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-xaead-parity: our authored crypto/xchacha20.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical XChaCha20-Poly1305 over one published known-answer — the ciphertext and the 16-byte tag both match, and both match the published values. The sixth real Monocypher-SOURCE parity rung, proving Monocypher's FLAGSHIP crypto_aead_lock: the extended-nonce path — HChaCha20 subkey derivation included — now meets the actual audit target byte-for-byte, closing the gap the IETF-nonce AEAD rung left. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no signature, no network, no funds, no device; constant-time timing-safety stays the named horizon."

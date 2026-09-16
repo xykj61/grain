@@ -33,7 +33,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-facets-search: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "hunk-part-facets-search: ${shown.out}"
+say "hunk-part-facets-search: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-facets-search: selftest did not print the GREEN part-facets-search line"

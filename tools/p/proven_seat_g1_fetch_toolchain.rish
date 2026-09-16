@@ -57,7 +57,7 @@ let bin_dir = trim bin_dir_run.out
 say "proven-seat G1 fetch: compiler ${cxx}"
 
 let ver = run [cxx "--version"]
-if ver.ok then say "proven-seat G1 fetch: ${ver.out}"
+if ver.ok then say "proven-seat G1 fetch: ${ver.out_brief}"
 if ver.ok == false then say "proven-seat G1 fetch: --version non-zero (recorded anyway)"
 
 say "proven-seat G1 fetch: writing ${meta}…"

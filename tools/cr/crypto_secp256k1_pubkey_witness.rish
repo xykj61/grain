@@ -36,7 +36,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-secp256k1-pubkey: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-secp256k1-pubkey: ${shown.out}"
+say "crypto-secp256k1-pubkey: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-secp256k1-pubkey' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-secp256k1-pubkey: selftest did not print the GREEN crypto-secp256k1-pubkey line"

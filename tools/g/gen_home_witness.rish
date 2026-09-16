@@ -29,10 +29,10 @@ assert (trim strays.out) == "0" else "a desk stands in a room its own first lett
 
 let total = run ["sh" "-c" "find ${home} -name '*.glow' | wc -l | tr -d ' '"]
 assert total.ok else "total desk count failed"
-say "gen-home witness -- desks under ${home} (letter rooms + hoon-study): ${total.out}"
+say "gen-home witness -- desks under ${home} (letter rooms + hoon-study): ${total.out_brief}"
 
 let refs = run ["sh" "-c" "grep -rl '${home}/' tools/ 2>/dev/null | wc -l | tr -d ' '"]
 assert refs.ok else "reference scan failed"
-say "tool files speaking ${home}/: ${refs.out}"
+say "tool files speaking ${home}/: ${refs.out_brief}"
 
 say "GREEN: gen-home -- zero flat desks, every desk in its own letter room or hoon-study, one address spoken."

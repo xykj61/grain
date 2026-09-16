@@ -31,7 +31,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "fora-term: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "fora-term: ${shown.out}"
+say "fora-term: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN fora-term' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "fora-term: selftest did not print the GREEN fora-term line"

@@ -41,7 +41,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-x25519-dirty: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-x25519-dirty: ${shown.out}"
+say "crypto-x25519-dirty: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN x25519-dirty' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-x25519-dirty: selftest did not print the GREEN x25519-dirty line"

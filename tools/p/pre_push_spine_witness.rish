@@ -60,7 +60,7 @@ assert control.out contains "cases_red=0" else "pre-push-spine: no case may read
 # 5 -- the field: the arming. A hook this tree ships and no clone reaches is a claim rather than a
 # wall, and the arming is the half that actually failed the fleet.
 let armed = run ["git" "config" "--get" "core.hooksPath"]
-say "pre-push-spine: core.hooksPath ${armed.out}"
+say "pre-push-spine: core.hooksPath ${armed.out_brief}"
 assert armed.ok else "pre-push-spine: core.hooksPath is unset -- run rishi/bin/rishi run tools/i/install_hooks.rish"
 assert (trim armed.out) == "tools/hooks" else "pre-push-spine: core.hooksPath must name tools/hooks, not ${armed.out_brief}"
 

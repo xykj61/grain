@@ -25,7 +25,7 @@ let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} ${rye} b
 assert build.ok else "session_logs_archive build failed"
 
 let today = run ["sh" "-c" "date +%Y%m%d"]
-say "fold: keeping day ${today.out} flat; moving earlier days beneath date/."
+say "fold: keeping day ${today.out_brief} flat; moving earlier days beneath date/."
 
 let cmd = run ["sh" "-c" "${bin} fold 2>&1"]
 assert cmd.ok else "session logs archive fold failed"

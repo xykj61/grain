@@ -61,6 +61,6 @@ assert read.ok else "app-bundle: the probe left no receipt; the bundle run never
 assert read.out contains "mode=bundle" else "app-bundle: the receipt must say it was born in a bundle"
 assert read.out contains "window=" else "app-bundle: the receipt must carry a window number"
 assert read.out contains "main_menu_items=1" else "app-bundle: the receipt must carry the seated menu"
-say "app-bundle: receipt from the Finder-born run -- ${read.out}"
+say "app-bundle: receipt from the Finder-born run -- ${read.out_brief}"
 
 say "GREEN: app-bundle -- Grain.app opened the Finder's own way, refused without its plist, and the shell answered from inside."

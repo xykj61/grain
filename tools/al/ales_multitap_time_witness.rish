@@ -38,7 +38,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-multitap-time: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-multitap-time: ${shown.out}"
+say "ales-multitap-time: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-multitap-time' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-multitap-time: selftest did not print the GREEN ales-multitap-time line"

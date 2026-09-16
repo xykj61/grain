@@ -44,8 +44,8 @@ say "tube05: Glow session-root import seated"
 
 say "tube05: packing the Glow NativeActivity APK (Seva fold inside libglowapp.so)…"
 let pack = run ["bash" "-c" "./tools/t/tube05_apk_pack_worker.sh"]
-say "${pack.out}"
-if (pack.ok == false) then say "tube05: pack stderr — ${pack.err}"
+say "${pack.out_brief}"
+if (pack.ok == false) then say "tube05: pack stderr — ${pack.err_brief}"
 assert pack.ok else "APK pack worker failed — real reason printed just above"
 assert pack.out contains "GREEN" else "APK pack worker missing GREEN"
 assert pack.out contains "fold=seva-b0" else "APK pack missing seva-b0 fold marker"

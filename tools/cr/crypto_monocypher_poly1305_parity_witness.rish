@@ -53,6 +53,6 @@ let got_anchor = run ["sh" "-c" "sed -n '8p' ${cout}"]
 assert (trim got_anchor.out) == rfc_tag else "crypto-monocypher-poly1305-parity: the RFC 8439 §2.5.2 canonical tag is not the published a8061dc1305136c6c22b8baf0c0127a9"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-poly1305-parity: the eight tags, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-poly1305-parity: the eight tags, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-poly1305-parity: our authored crypto/poly1305.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Poly1305 authenticators over the block-edge sizes {0, 1, 15, 16, 17, 34, 256} and the RFC 8439 §2.5.2 canonical message (anchored to the published tag a8061dc1305136c6c22b8baf0c0127a9). The EIGHTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/poly1305.rye itself named and proving the standalone MAC every Vault/Comlink/Lotus sealed carry rests on — no recited constant, the block-edge oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

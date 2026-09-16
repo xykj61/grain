@@ -22,7 +22,7 @@ say "proven-seat G0: image sha256 matches pinned ${expected}"
 let qemu = run ["sh" "-c" "command -v qemu-system-x86_64 >/dev/null"]
 assert qemu.ok else "qemu-system-x86_64 not on PATH — install qemu-system-x86"
 let qver = run ["qemu-system-x86_64" "--version"]
-say "proven-seat G0: ${qver.out}"
+say "proven-seat G0: ${qver.out_brief}"
 
 say "proven-seat G0: preparing writable work image…"
 let prep = run ["sh" "-c" "mkdir -p ${cache} && cp -f ${img} ${work}"]

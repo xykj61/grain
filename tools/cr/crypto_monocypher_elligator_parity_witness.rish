@@ -58,6 +58,6 @@ let n_hex = run ["sh" "-c" "grep -cE '^[0-9a-f]{64}$' ${cout} || true"]
 assert (trim n_hex.out) != "0" else "crypto-monocypher-elligator-parity: no representable answer in the run — the success path was never exercised"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-elligator-parity: the thirty-two answers, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-elligator-parity: the thirty-two answers, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-elligator-parity: our authored crypto/elligator.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Elligator 2 answers (crypto_elligator_map / crypto_elligator_rev) over sixteen direct representative→u-coordinate cases and sixteen inverse point+tweak→representative-or-fail cases, the failures failing together and the representatives matching to the byte. The SEVENTEENTH real Monocypher-SOURCE parity rung, and the first for a primitive Zig's std.crypto does not ship — so the second real implementation agreeing is the external anchor beside the round-trip identity and Monocypher's own vectors. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon, the inverse map's one representability test deliberately variable-time by design."

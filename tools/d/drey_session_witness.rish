@@ -32,7 +32,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "drey-session: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "drey-session: ${shown.out}"
+say "drey-session: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN drey-session' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "drey-session: selftest did not print the GREEN drey-session line"

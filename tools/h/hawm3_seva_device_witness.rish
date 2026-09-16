@@ -36,18 +36,18 @@ say "hawm3: real device attached"
 
 say "hawm3: cross-building the Seva B0 witness natively (this host's own architecture) as the reference…"
 let build_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/seva_session_core_witness.rye -femit-bin=linengrow/bin/seva_session_core_witness_native"]
-if (build_native.ok == false) then say "hawm3: native build stderr — ${build_native.err}"
+if (build_native.ok == false) then say "hawm3: native build stderr — ${build_native.err_brief}"
 assert build_native.ok else "native Seva B0 build failed — real reason printed just above"
 let run_native = run ["sh" "-c" "linengrow/bin/seva_session_core_witness_native 2>&1"]
 assert run_native.ok else "native Seva B0 run failed"
 assert run_native.out contains "GREEN" else "native Seva B0 run not GREEN"
 let native_root_line = run ["sh" "-c" "echo '${run_native.out}' | grep 'session root'"]
 assert native_root_line.ok else "could not read native session root from run output"
-say "hawm3: native reference — ${native_root_line.out}"
+say "hawm3: native reference — ${native_root_line.out_brief}"
 
 say "hawm3: cross-building the same witness for aarch64-linux-android (bionic libc, the Tensor G4's own architecture)…"
 let build_android = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/seva_session_core_witness.rye -target aarch64-linux-android -femit-bin=linengrow/bin/seva_session_core_witness_android_aarch64"]
-if (build_android.ok == false) then say "hawm3: android-target build stderr — ${build_android.err}"
+if (build_android.ok == false) then say "hawm3: android-target build stderr — ${build_android.err_brief}"
 assert build_android.ok else "aarch64-android-target Seva B0 build failed — real reason printed just above"
 let shape = run ["sh" "-c" "file linengrow/bin/seva_session_core_witness_android_aarch64"]
 assert shape.out contains "ARM aarch64" else "cross-built binary is not aarch64"
@@ -64,11 +64,11 @@ say "hawm3: running Glow's own verified code inside the real GrapheneOS userland
 let device_run = run ["sh" "-c" "${adb} shell /data/local/tmp/seva_b0_witness 2>&1"]
 assert device_run.ok else "on-device run failed — see ${device_run.err_brief}"
 assert device_run.out contains "GREEN" else "on-device run not GREEN"
-say "${device_run.out}"
+say "${device_run.out_brief}"
 
 let device_root_line = run ["sh" "-c" "echo '${device_run.out}' | grep 'session root'"]
 assert device_root_line.ok else "could not read on-device session root from run output"
-say "hawm3: on-device — ${device_root_line.out}"
+say "hawm3: on-device — ${device_root_line.out_brief}"
 
 assert device_root_line.out == native_root_line.out else "RED: on-device session root diverges from the native reference — Glow's fold disagrees on real GrapheneOS hardware"
 say "hawm3: session roots agree bit for bit — native and on-device (real GrapheneOS, real Tensor G4) are the same fold"

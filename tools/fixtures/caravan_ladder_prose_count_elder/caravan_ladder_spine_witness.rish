@@ -53,7 +53,7 @@ assert living.out contains "SPINE_MODULES 104 holding=1" else "caravan-ladder-sp
 assert living.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-spine: want one 19-line spine standing, every line of it distinct and none carried"
 assert living.out contains "SPINE_RATCHET over_bound=0 bound=70 longest=ladder_checks:19" else "caravan-ladder-spine: want no spine past the seventy-line bound, the four the fold answered included"
 
-say "caravan-ladder-spine: living ladder -- ${living.out}"
+say "caravan-ladder-spine: living ladder -- ${living.out_brief}"
 
 # The second reading, computed beside the first and asserted on its own. The count above asks how many different lines
 # the whole ladder holds; the neighbor walk asks of each spine how many of its lines already stand in the spine

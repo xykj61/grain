@@ -95,6 +95,6 @@ assert (trim verdict_abc.out) == "accept refuse" else "crypto-slhdsa-oracle: the
 
 let shown = run ["sh" "-c" "cat ${out_a}"]
 say "crypto-slhdsa-oracle: the vendored oracle's own report -- lengths, public key, secret-key digest, and one signature digest and verdict per message:"
-say "${shown.out}"
+say "${shown.out_brief}"
 
 say "GREEN crypto-slhdsa-oracle: PQClean's SLH-DSA-SHAKE-256s (SPHINCS+-shake-256s-simple, NIST level 5, CC0-1.0) is vendored unmodified at vendor/pqclean and proven on metal -- its own NIST known-answer generator, compiled fresh from that source, reproduces the SHA-256 digest PQClean publishes in its META.yml exactly, and the deterministic harness runs byte-identical twice with every genuine signature accepted and every one-bit-flipped signature refused. All four lengths are read from META.yml, never recited. The doubled oracle the pivot found missing now stands, so the hash-based leg can be authored in Rye beside the lattice legs rather than instead of them -- and BOTH are kept, on Keaton's word. This rung proves the ORACLE only; parity of our own authored SLH-DSA against it is the next rung, not a claim made here. Purely local -- no real key, no network, no funds, no device."

@@ -60,6 +60,6 @@ let got_abc = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_abc.out) == fips_abc else "crypto-monocypher-sha512-parity: line 2 is not the FIPS 180-4 published SHA-512 of \"abc\""
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-sha512-parity: the five lines, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-sha512-parity: the five lines, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-sha512-parity: our authored crypto/sha512.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical SHA-512 output over the empty message and \"abc\" (both anchored to their FIPS 180-4 published known-answers) and over the padding-edge sizes {111, 112, 300} (length-fits-block · forces-second-block · multi-block). The TENTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/sha512.rye itself named and proving the standalone hash Ed25519 signs with — the hash every HMAC-SHA512, HKDF-SHA512, and BIP32 seed derivation rests on — the hash-cipher counterpart to the standalone ChaCha20 and Poly1305 rungs. Monocypher's SHA-512 is its optional module, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

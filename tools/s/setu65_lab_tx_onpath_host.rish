@@ -24,7 +24,7 @@ if (iface != "") then let peer = trim gw.out
 say "setu65-host: attempting TX from lab.bron (iface ${iface} peer ${peer})…"
 if (peer != "") then let tx = run ["sh" "-c" "${check} ${peer} 2>&1"]
 if (peer == "") then let tx = run ["sh" "-c" "${check} 2>&1"]
-say "${tx.out}"
+say "${tx.out_brief}"
 assert tx.ok else "SETU6.5 lab TX check failed"
 assert tx.out contains "GREEN" else "SETU6.5 check not GREEN"
 # Live-sent eyes: require the sent line when a peer was available

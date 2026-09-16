@@ -39,8 +39,8 @@ say "hawm0 on-path host: live pulse in another terminal:"
 say "  tail -f tools/.cache/hawm0/hawm0-boot-meta.txt"
 let boot = run ["bash" "-c" "./tools/h/hawm0_boot_worker.sh"]
 say "hawm0 on-path host: boot finished — ok=${boot.ok}"
-say "${boot.out}"
-if (boot.ok == false) then say "hawm0 on-path host: worker stderr — ${boot.err}"
+say "${boot.out_brief}"
+if (boot.ok == false) then say "hawm0 on-path host: worker stderr — ${boot.err_brief}"
 assert boot.ok else "HAWM0 boot failed — real reason printed just above (worker stderr); full detail also in tools/.cache/hawm0/hawm0-boot-meta.txt and hawm0-emulator.log"
 assert boot.out contains "GREEN" else "HAWM0 boot missing GREEN"
 

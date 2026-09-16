@@ -36,7 +36,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-signed-carry: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-signed-carry: ${shown.out}"
+say "crypto-signed-carry: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-signed-carry' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-signed-carry: selftest did not print the GREEN crypto-signed-carry line"

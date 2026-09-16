@@ -40,7 +40,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-tremolo: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-tremolo: ${shown.out}"
+say "ales-tremolo: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-tremolo' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-tremolo: selftest did not print the GREEN ales-tremolo line"

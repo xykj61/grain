@@ -68,6 +68,6 @@ let l12 = run ["sh" "-c" "sed -n '12p' ${cout}"]
 assert (trim l12.out) == "-1" else "crypto-monocypher-verify-parity: width-64 differing case (line 12) is not Monocypher's -1 — see ${cout}"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-verify-parity: the fifteen verdicts, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-verify-parity: the fifteen verdicts, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-verify-parity: our authored crypto/verify.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical constant-time-equality verdicts (crypto_verify16/32/64) over equal, one-bit-differing, and all-differing inputs at all three Monocypher widths, matching Monocypher's published 0-for-equal / -1-for-differing contract. The FIFTEENTH real Monocypher-SOURCE parity rung, proving the constant-time compare the two HMAC modules named as an open horizon — the supplier every MAC, tag, and signature-equality check reaches for. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon, this rung proving the verdict's correctness rather than a timing claim."

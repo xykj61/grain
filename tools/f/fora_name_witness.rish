@@ -30,7 +30,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "fora-name: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "fora-name: ${shown.out}"
+say "fora-name: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN fora-name' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "fora-name: selftest did not print the GREEN fora-name line"

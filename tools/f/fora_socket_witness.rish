@@ -44,7 +44,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "fora-socket: selftest exited non-zero -- see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "fora-socket: ${shown.out}"
+say "fora-socket: ${shown.out_brief}"
 
 # Each spoken fact is read on its own. A single GREEN grep would let five of the six legs fall
 # silent without the witness noticing -- the answer-blind shape REDS %311 named.

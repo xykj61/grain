@@ -62,6 +62,6 @@ let got_ba = run ["sh" "-c" "sed -n '4p' ${cout}"]
 assert (trim got_ba.out) == rfc_shared else "crypto-monocypher-x25519-parity: shared secret from Bob's side is not the RFC 7748 §6.1 published value"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-x25519-parity: the RFC 7748 §6.1 exchange, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-x25519-parity: the RFC 7748 §6.1 exchange, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-x25519-parity: our authored crypto/x25519.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical X25519 over RFC 7748 §6.1's Alice/Bob exchange — Alice's public key, Bob's public key, and the shared secret reached from each side all match, and all three match the RFC's published values. The second real Monocypher-SOURCE parity rung, hardening the key agreement the Kumara sealed door rests on — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

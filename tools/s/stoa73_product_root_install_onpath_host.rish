@@ -32,8 +32,8 @@ say "stoa73-install: APK present"
 
 say "stoa73-install: adb install -r…"
 let install = run ["sh" "-c" "${adb} install -r ${apk} 2>&1"]
-say "${install.out}"
-if (install.ok == false) then say "stoa73-install: install stderr — ${install.err}"
+say "${install.out_brief}"
+if (install.ok == false) then say "stoa73-install: install stderr — ${install.err_brief}"
 assert install.ok else "adb install failed"
 assert install.out contains "Success" else "adb install did not report Success"
 say "stoa73-install: installed"
@@ -42,21 +42,21 @@ say "stoa73-install: launching NativeActivity…"
 let stop = run ["sh" "-c" "${adb} shell am force-stop ${pkg}"]
 assert stop.ok else "force-stop failed"
 let start = run ["sh" "-c" "${adb} shell am start -n ${pkg}/android.app.NativeActivity 2>&1"]
-say "${start.out}"
+say "${start.out_brief}"
 assert start.ok else "am start failed"
 let wait = run ["sh" "-c" "sleep 2"]
 assert wait.ok else "sleep failed"
 
 say "stoa73-install: reading files/glow_product_root.txt via run-as…"
 let product = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/glow_product_root.txt 2>&1"]
-say "stoa73-install: glow_product_root.txt — ${product.out}"
-if (product.ok == false) then say "stoa73-install: product stderr — ${product.err}"
+say "stoa73-install: glow_product_root.txt — ${product.out_brief}"
+if (product.ok == false) then say "stoa73-install: product stderr — ${product.err_brief}"
 assert product.ok else "could not read glow_product_root.txt"
 assert product.out contains "${expected_product}" else "RED: glow_product_root.txt does not contain 5"
 
 say "stoa73-install: re-checking files/seva_root.txt (Seva B0 still present)…"
 let seva = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/seva_root.txt 2>&1"]
-say "stoa73-install: seva_root.txt — ${seva.out}"
+say "stoa73-install: seva_root.txt — ${seva.out_brief}"
 assert seva.ok else "could not read seva_root.txt"
 assert seva.out contains "${expected_seva}" else "RED: seva_root.txt lost the HAWM1 demo root"
 

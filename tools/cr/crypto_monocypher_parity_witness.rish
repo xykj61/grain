@@ -54,6 +54,6 @@ let got_abc = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_abc.out) == rfc_abc else "crypto-monocypher-parity: Monocypher 'abc' digest is not the RFC 7693 published known-answer"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-parity: the four BLAKE2b-512 digests, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-parity: the four BLAKE2b-512 digests, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-parity: our authored crypto/blake2b.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical BLAKE2b-512 over the empty message, \"abc\", a 128-byte block, and a 200-byte multi-block input, with the empty and \"abc\" digests matching RFC 7693's published Appendix A known-answers. The first real Monocypher-SOURCE parity, the audit target proven on metal — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."

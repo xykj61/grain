@@ -47,8 +47,8 @@ let tamp_run = run ["env" "RYE_ZIG=${zig}" "RYE_LIB=${shadow}" rye "run" prog_sr
 let base_view = "${base_run.code}|${base_run.out}${base_run.err}"
 let tamp_view = "${tamp_run.code}|${tamp_run.out}${tamp_run.err}"
 
-say "baseline : ${base_run.out}"
-say "tampered : ${tamp_run.out}"
+say "baseline : ${base_run.out_brief}"
+say "tampered : ${tamp_run.out_brief}"
 say "---"
 
 assert base_view != tamp_view else "tampered std produced identical output — witnesses may be blind to std changes"

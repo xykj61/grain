@@ -24,6 +24,6 @@ let stand = run ["sh" "-c" "${check} 2>&1"]
 assert stand.ok else "SETU6 stand-in check failed"
 assert stand.out contains "stand-in" else "SETU6 check missing stand-in"
 assert stand.out contains "GREEN" else "SETU6 check not GREEN"
-say "${stand.out}"
+say "${stand.out_brief}"
 
 say "GREEN: SETU6 device-wire lab witness passed (device-free)."

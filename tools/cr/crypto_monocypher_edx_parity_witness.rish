@@ -57,6 +57,6 @@ let got_rev = run ["sh" "-c" "sed -n '3p' ${cout}"]
 assert (trim got_rev.out) == ed_base else "crypto-monocypher-edx-parity: x25519_to_eddsa(u = 9) is not the RFC 7748 §4.1 published sign-0 Edwards base 5866…66"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-edx-parity: the three conversions, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-edx-parity: the three conversions, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-edx-parity: our authored crypto/ed25519_to_x25519.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Edwards↔Montgomery conversions over the RFC 7748 §4.1 base-point relationship (both directions anchored) and RFC 8032 §7.1 Test 1's real public key. The SEVENTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/ed25519_to_x25519.rye itself named and hardening the one-key identity story crypto/kumara_sealed.rye rests on — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

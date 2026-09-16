@@ -236,7 +236,7 @@ bounded=$(grep -c . "$WORK/bounded" || true)
 # rose -- a lane doing exactly the right thing pushed a peer's reading toward its ceiling, and
 # 165 more such repairs would have reddened it. A guarded repair now lands in `safe`, where the
 # denominator holds still and only the numerator moves.
-EAGER_PER_MILLE_CEILING=${SAY_COMPOSE_EAGER_CEILING:-145}
+EAGER_PER_MILLE_CEILING=${SAY_COMPOSE_EAGER_CEILING:-0}
 DEFERRED_PER_MILLE_CEILING=${SAY_COMPOSE_DEFERRED_CEILING:-0}
 
 # The denominator is every site carrying any of the three shapes, so it moves with the tree exactly

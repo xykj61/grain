@@ -38,7 +38,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-crossfade: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-crossfade: ${shown.out}"
+say "ales-crossfade: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-crossfade' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-crossfade: selftest did not print the GREEN ales-crossfade line"

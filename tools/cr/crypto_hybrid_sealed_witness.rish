@@ -36,7 +36,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-hybrid-sealed: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-hybrid-sealed: ${shown.out}"
+say "crypto-hybrid-sealed: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-hybrid-sealed' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-hybrid-sealed: selftest did not print the GREEN crypto-hybrid-sealed line"

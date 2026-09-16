@@ -40,7 +40,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-compress-env-hold: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-compress-env-hold: ${shown.out}"
+say "ales-compress-env-hold: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-compress-env-hold' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-compress-env-hold: selftest did not print the GREEN ales-compress-env-hold line"

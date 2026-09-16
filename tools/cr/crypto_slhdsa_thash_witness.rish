@@ -40,7 +40,7 @@ let selftest = run ["sh" "-c" "${bin} > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-slhdsa-thash: selftest exited non-zero -- see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-slhdsa-thash: ${shown.out}"
+say "crypto-slhdsa-thash: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-slhdsa-thash' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-slhdsa-thash: selftest did not print the GREEN crypto-slhdsa-thash line"

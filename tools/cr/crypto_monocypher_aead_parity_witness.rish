@@ -58,6 +58,6 @@ let got_tag = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_tag.out) == rfc_tag else "crypto-monocypher-aead-parity: tag is not the RFC 8439 §2.8.2 published value"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-aead-parity: the RFC 8439 §2.8.2 seal, agreed by both implementations (ciphertext then tag):\n${shown.out}"
+say "crypto-monocypher-aead-parity: the RFC 8439 §2.8.2 seal, agreed by both implementations (ciphertext then tag):\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-aead-parity: our authored crypto/aead.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical ChaCha20-Poly1305 AEAD over RFC 8439 §2.8.2's inputs — the ciphertext and the 16-byte tag both match, and both match the RFC's published values. The fourth real Monocypher-SOURCE parity rung, closing the ChaCha/Poly line the decision wave named: all four primitive families — hashing, key agreement, signing, and authenticated encryption — now meet the actual audit target byte-for-byte. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no signature, no network, no funds, no device; constant-time timing-safety stays the named horizon."

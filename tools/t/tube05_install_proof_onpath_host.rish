@@ -34,8 +34,8 @@ say "tube05-install: APK present"
 
 say "tube05-install: adb install -r…"
 let install = run ["sh" "-c" "${adb} install -r ${apk} 2>&1"]
-say "${install.out}"
-if (install.ok == false) then say "tube05-install: install stderr — ${install.err}"
+say "${install.out_brief}"
+if (install.ok == false) then say "tube05-install: install stderr — ${install.err_brief}"
 assert install.ok else "adb install failed — real reason printed just above"
 assert install.out contains "Success" else "adb install did not report Success"
 say "tube05-install: installed"
@@ -44,7 +44,7 @@ say "tube05-install: launching NativeActivity…"
 let stop = run ["sh" "-c" "${adb} shell am force-stop ${pkg}"]
 assert stop.ok else "force-stop failed"
 let start = run ["sh" "-c" "${adb} shell am start -n ${pkg}/android.app.NativeActivity 2>&1"]
-say "${start.out}"
+say "${start.out_brief}"
 assert start.ok else "am start failed"
 say "tube05-install: waiting briefly for onCreate to write seva_root.txt…"
 let wait = run ["sh" "-c" "sleep 2"]
@@ -52,16 +52,16 @@ assert wait.ok else "sleep failed"
 
 say "tube05-install: reading files/seva_root.txt via run-as (debuggable APK)…"
 let cat = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/seva_root.txt 2>&1"]
-say "tube05-install: seva_root.txt — ${cat.out}"
-if (cat.ok == false) then say "tube05-install: cat stderr — ${cat.err}"
+say "tube05-install: seva_root.txt — ${cat.out_brief}"
+if (cat.ok == false) then say "tube05-install: cat stderr — ${cat.err_brief}"
 assert cat.ok else "could not read seva_root.txt — onCreate may have failed to write, or run-as was refused"
 assert cat.out contains "${expected}" else "RED: seva_root.txt does not contain the HAWM1 demo root"
 
 # STOA270: live typed-append root beside HAWM1 (seeded from held demo glow).
 say "tube05-install: reading files/seva_live_root.txt via run-as…"
 let live = run ["sh" "-c" "${adb} shell run-as ${pkg} cat files/seva_live_root.txt 2>&1"]
-say "tube05-install: seva_live_root.txt — ${live.out}"
-if (live.ok == false) then say "tube05-install: live stderr — ${live.err}"
+say "tube05-install: seva_live_root.txt — ${live.out_brief}"
+if (live.ok == false) then say "tube05-install: live stderr — ${live.err_brief}"
 assert live.ok else "could not read seva_live_root.txt — STOA270 live seed may have failed"
 # Live one-event root must be 64 hex and differ from the three-event HAWM1 pin.
 let live_shape = run ["sh" "-c" "printf '%s' '${live.out}' | tr -d '\\r\\n' | grep -E '^[0-9a-f]{64}$'"]

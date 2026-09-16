@@ -59,6 +59,6 @@ let got_cipher = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_cipher.out) == rfc_cipher else "crypto-monocypher-chacha20-parity: line 2 is not the RFC 8439 §2.4.2 published ciphertext"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-chacha20-parity: the six lines, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-chacha20-parity: the six lines, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-chacha20-parity: our authored crypto/chacha20.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical ChaCha20 (IETF) output over the RFC 8439 §2.3.2 keystream block, the §2.4.2 ciphertext (both anchored to their published known-answers), and keystream over the block-edge sizes {0, 5, 64, 200} at raised counters. The NINTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/chacha20.rye itself named and proving the standalone stream cipher every AEAD, Vault seal, and Comlink session rests on — the stream-cipher counterpart to the standalone Poly1305 rung. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

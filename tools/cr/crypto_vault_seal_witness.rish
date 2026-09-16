@@ -39,7 +39,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-vault-seal: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-vault-seal: ${shown.out}"
+say "crypto-vault-seal: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-vault-seal' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-vault-seal: selftest did not print the GREEN crypto-vault-seal line"

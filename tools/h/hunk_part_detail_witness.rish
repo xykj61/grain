@@ -32,7 +32,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-detail: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "hunk-part-detail: ${shown.out}"
+say "hunk-part-detail: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN part-detail' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-detail: selftest did not print the GREEN part-detail line"

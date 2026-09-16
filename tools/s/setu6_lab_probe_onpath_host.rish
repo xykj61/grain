@@ -13,7 +13,7 @@ let find_iface = "tools/fixtures/s/setu6_find_gadget_iface.sh"
 
 say "setu6-host: probing for USB gadget / NCM iface…"
 let found = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -E 'usb0|: ncm|enx[0-9a-f]+' | head -3 || true"]
-say "setu6-host: ip link match — ${found.out}"
+say "setu6-host: ip link match — ${found.out_brief}"
 
 let name = run ["sh" find_iface]
 let iface = trim name.out
@@ -25,7 +25,7 @@ assert build.ok else "SETU6 lab check build failed"
 # (Rishi still typechecks then-branches of false `if` arms).
 if (iface != "") then say "setu6-host: gadget-shaped iface ${iface} — writing armed lab card…"
 if (iface != "") then let armed = run ["sh" "-c" "${check} ${iface} 2>&1"]
-if (iface != "") then say "${armed.out}"
+if (iface != "") then say "${armed.out_brief}"
 if (iface != "") then assert armed.ok else "SETU6 armed lab check failed"
 if (iface != "") then assert armed.out contains "armed" else "SETU6 expected armed"
 if (iface != "") then say "GREEN: SETU6 — lab harness armed on ${iface} (run SETU6.5 onpath for TX)."
@@ -33,7 +33,7 @@ if (iface != "") then exit 0
 
 say "setu6-host: no usb0/ncm/enx — writing stand-in lab card…"
 let card = run ["sh" "-c" "${check} 2>&1"]
-say "${card.out}"
+say "${card.out_brief}"
 assert card.ok else "SETU6 stand-in lab check failed"
 assert card.out contains "stand-in" else "SETU6 expected stand-in"
 say "GREEN: SETU6 — lab harness stand-in (gadget not in NCM mode; payload ready)."

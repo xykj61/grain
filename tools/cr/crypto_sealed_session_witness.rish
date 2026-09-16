@@ -39,7 +39,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-sealed-session: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-sealed-session: ${shown.out}"
+say "crypto-sealed-session: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-sealed-session' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-sealed-session: selftest did not print the GREEN crypto-sealed-session line"

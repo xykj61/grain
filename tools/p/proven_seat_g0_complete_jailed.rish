@@ -38,6 +38,6 @@ assert ser.ok else "serial missing GRUB loading — see ${serial}"
 let glass_ok = run ["sh" "-c" "test -s ${glass}"]
 assert glass_ok.ok else "missing or empty ${glass}"
 let glass_sz = run ["sh" "-c" "wc -c < ${glass} | tr -d ' \\n'"]
-say "proven-seat G0-complete (lane_kvm): glass ${glass_sz.out} bytes"
+say "proven-seat G0-complete (lane_kvm): glass ${glass_sz.out_brief} bytes"
 
 say "GREEN: proven-seat G0-complete under lane_kvm — pinned image; KVM; -display none; -nic none; GRUB serial; QMP PNG. Legacy D-Bus host escape is retired."
