@@ -6452,3 +6452,45 @@ guard aurora_placement
 path tools/a/aurora_placement_witness.rish
 tier lap
 seated 20260916.042700
+
+# key_trade -- the elder locality-key reading names its own next step in its own last section:
+# "whether a similarity-preserving sketch lands better on the same trade. It will land better in
+# magnitude. Whether it changes a sign is a different key, a different reading." This rung is that
+# reading, and it finds a sign changed -- by a third key the elder page never proposed.
+#
+# THREE KEYS OVER ONE POPULATION, each a 16-bit value whose high byte is x and whose low byte is
+# y, so no key gets a fold of its own. sha3 takes bytes 0 and 1 of SHA3-512 over the file, the
+# name a Tablecloth here would carry. path takes FNV-1a over the directory in the high byte and
+# FNV-1a over the basename in the low, so two files of one room share x exactly. simhash votes 16
+# accumulators up or down by each word token's FNV-1a and reads their signs.
+#
+# THREE METRICS, because a key read only in the torus's metric reports a fact about the FOLD as a
+# fact about the KEY. Toroidal Manhattan on (x, y), closed form 128. Circular distance on the whole
+# 16-bit key, closed form 16384. Hamming distance, closed form 8. All three derivations are proven
+# against a planted uniform population in both directions.
+#
+# AND EVERY RELATED POPULATION IS READ TWICE -- against the closed form, which asks whether the key
+# is uniform, and against the OWN random baseline of that key, which asks whether it carries the
+# relation. Only the second is what locality means. The path key's random pairs read a torus mean
+# near 95 where a uniform key reads 128, so a same-directory mean under 128 would count that key's
+# global concentration as locality. The control proves the two readings disagree on a planted
+# population that is concentrated and unrelated, and the adjacency verdict follows the second.
+#
+# THE ROOM-RECOVERY READING is carried over from the elder page unchanged, so the two may be set
+# side by side: the share of files an observer holding keys alone places in the right top-level
+# room by guessing the plurality of each cell, against a no-key baseline.
+#
+# READ 20260916.051607 over 512 tracked files in 215 directories and 41 top-level rooms: chi-squared
+# 65.25 sha3, 98.00 path, 1087.50 simhash, against a p=0.001 critical 103.51 at 63 degrees of
+# freedom. sha3 carries adjacency in none of six own-baseline readings; path in all six; simhash in
+# four. Room recovery 0.4082, 0.4473, 0.4473 against a no-key baseline of 0.3516. Every tree figure
+# is FREE. The live VERDICT is reported rather than gated -- eighteen tests at p=0.001 refuse about
+# one run in fifty-five on keys behaving correctly, and the path key's evenness sits at 95 percent
+# of its critical value.
+#
+# 42 legs, 4 mutations bitten under a sham leg proving a bite is a bite rather than a root walk
+# failing, planted key populations and one real directory tree in a throwaway pen, 30s. tier lap.
+guard key_trade
+path tools/t/key_trade_witness.rish
+tier lap
+seated 20260916.051607

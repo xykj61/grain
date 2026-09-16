@@ -8,6 +8,20 @@
 **Voice:** Kyri
 **Reads:** [`the bounded torus moonshots`](20260910-060204_the-bounded-torus-moonshots.md) row 5, and the two readings that closed it -- [`the fold that had nothing to hold`](20260912-042053_the-fold-that-had-nothing-to-hold.md) and [`the axis that carried nothing`](20260915-175000_the-axis-that-carried-nothing.md).
 
+**Next step taken, `20260916.051607`.** The *What this does not touch* section below names one:
+*whether a similarity-preserving sketch lands better on the same trade -- it will land better in
+magnitude; whether it changes a sign is a different key, a different reading.* Both halves are now
+read. A 16-bit SimHash over word tokens lands better in magnitude and keeps the sign -- chi-squared
+**1087.50** against this page's **13134.05**, on a p=0.001 critical of **103.51**. And a **path**
+key, derived from a file's directory and basename rather than from its bytes, **changes the sign**:
+it reads even at **98.00** and carries the same-directory relation in all six of its own-baseline
+readings. The chain's first *so* is what gives -- grouping documents crowds cells only when the
+groups are few or unequal, and 215 comparable directories spread over 64 cells do not. **The
+confidentiality half stands untouched**, read the same way here: room recovery **0.4473** for the
+path key and **0.4082** for the digest against a no-key baseline of **0.3516**. The reading stands
+at [`20260916-051607_the-trade-that-was-not-a-law.md`](20260916-051607_the-trade-that-was-not-a-law.md),
+under `tools/t/key_trade_witness.rish`. Every other word on this page is kept as written.
+
 ## The door these two readings left open
 
 Two readings in this lane closed row 5 of the torus moonshots, and both closed it on the same
