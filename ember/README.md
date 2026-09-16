@@ -1,7 +1,7 @@
 # Ember -- the warmth that is kept
 
 **Stamp:** `20260827.192500` - **Language:** EN - **Voice:** Kyri - **Style:** **Twilight**, the nocturne register (see [`../context/TWILIGHT_STYLE.md`](../context/TWILIGHT_STYLE.md))
-**Status:** Living module -- the corpus catalog, its query, and the Skate view are green on metal; training and LoRA are horizon, named and unbuilt
+**Status:** Living module -- the corpus catalog and its query are green on metal here; the Skate view draws through Wayland, so it asks a host with a display and answers `verdict=gated_no_display` on a headless pier; training and LoRA are horizon, named and unbuilt
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -21,7 +21,7 @@ fits on a disk and waits. What serves it is not light. What serves it is heat, k
 
 ## The three senses, and the one that moved out
 
-**Ember** carries three meanings, and as of `20260827.195316` **not one of them contains another**:
+**Ember** carries three meanings, and as of `20260827.195316` **each one stands clear of the others**:
 
 - **The vane** -- the whole warm layer where a model is forged, counted, read, and carried. Four
   faculties under it: **Lattice**, **Scribble**, **Lantern**, **Kiln**.
@@ -30,20 +30,20 @@ fits on a disk and waits. What serves it is not light. What serves it is heat, k
   palette of material words beside Oat, Stone, Hearth and Flax
   ([the first-cloth pass](../active-designing/20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md)).
 
-*It read four for part of `20260827`, and before that three, and the three were wrong twice over.*
+*It read four for part of `20260827`, and before that three, and that three missed twice over.*
 The first count missed the Linengrow surface entirely. The second count found it and still carried a
-real problem: the craft **faculty** was also called Ember, so the vane gathered a member of its own
+real fault: the craft **faculty** was also called Ember, so the vane gathered a member of its own
 name. **Quin** had carried three senses at once and been ruled acceptable -- *three hats, one name,
 accepted* -- yet Quin's three sat in unrelated rooms, and these two nested. That was this tree's
-first part-whole name, and no precedent reached it.
+first part-whole name, and it arrived ahead of any precedent.
 
 **The repair was already sitting there.** **Kiln** took the bake seat on `20260827.025117`, a day
 before the vane was named, and had been standing free since. On Keaton's word the craft faculty took
 it: the voice is [**Kiln**](../foundations/20260827-195316_the-kiln-voice.md) now, and Ember keeps
 the vane alone. The two names stay true to each other -- Ember is the heat that is **kept**, and a
-kiln is the chamber where that heat is **applied** and a thing is either proven or is not.
+kiln is the chamber where that heat is **applied**, and what comes out of it stands proven.
 
-Nothing was swept to get there. The elder page stands at
+Every elder word stayed. The elder page stands at
 [`the Ember voice`](../foundations/20260823-212606_the-ember-voice.md) with every word it wrote, and
 **Q-vane** remains a readable peer of the vane's name wherever it was written.
 
@@ -83,7 +83,7 @@ directory on disk; when it earns one, it will stand beside `lattice/` and `lante
 
 And on `20260827` the name reached upward instead of sideways: **Ember became the vane**, closing
 `%300` in the REDS ledger, where a name seated on the card had
-gone eleven days carried by nothing. **Q-vane** stays readable everywhere it was written -- every
+stood eleven days on its own. **Q-vane** stays readable everywhere it was written -- every
 dated log keeps its words, and the elder name is a peer rather than a mistake.
 
 ## Layout
@@ -99,6 +99,13 @@ dated log keeps its words, and the elder name is a peer rather than a mistake.
 rishi/bin/rishi run tools/e/ember_corpus_lap1.rish
 rishi/bin/rishi run tools/i/inference_ember_corpus_view.rish
 ```
+
+**The first command runs anywhere.** It reads the tree, folds the catalog, and answers GREEN on a
+headless pier as readily as on a desk. **The second one draws**, through Skate onto Wayland, so it
+asks a host with a display: a headless pier answers `verdict=gated_no_display`, exits `3`, and halts
+the view on its first assertion -- two honest readings of one machine. Read a gate as a gate here
+rather than as a fault in the catalog -- measured
+`20260915.214056` on this eight-core pier, where the catalog lap is green and the view is gated.
 
 ---
 
