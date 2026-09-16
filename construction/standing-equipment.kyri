@@ -6637,3 +6637,30 @@ guard rank_outcome
 path tools/r/rank_outcome_witness.rish
 tier lap
 seated 20260916.070656
+
+# precondition_skip -- A WITNESS THAT CANNOT RUN HERE SHOULD SAY SO AND EXIT 0. REDS %646 booked
+# this sweep from a SAMPLE -- five reds in forty unreached witnesses, two of them preconditions --
+# so the crux was never the sweeping; it was building the count the sample stood in for. Counted,
+# the submodule half was already honest: 40 of 43 gratitude/tigerbeetle dependents skip, and the
+# three that do not are a say line, a presence report satisfied either way, and a witness retired
+# from the living suite by name on 20260711. The live half wore a different shape one directory
+# over: nine tools/gen/chapter witnesses hard-assert test -x on brushstroke/bin/brushstroke-wayland-
+# seed, which git check-ignore names a build output, so a fresh clone lacks it by construction --
+# and none of the nine was rostered, which is %646's shape exactly.
+#
+# The scan reads the class by STRUCTURE: a let binding resolved in one pass, the resolved literal
+# asked of git check-ignore, and an unresolved name REFUSED rather than guessed. Its first honest
+# reading was 25 hard sites and most were false -- this tree's .gitignore denies the root with /*,
+# so check-ignore answers yes to every bare word it has never heard of, and an unresolved variable
+# name read as a build output. Requiring a resolved literal carrying a slash took it to 7; leg 7
+# removes that guard and bites. 18 sites stay UNRESOLVED and are printed rather than guessed, since
+# resolution is one pass over one file -- the same honesty the four ASCII siblings write into their
+# own headers. The ceiling is the measured 7 across 5 files, none of them in this sweep's claim.
+#
+# A skip that always fires proves nothing, so leg 11 plants an executable where the artifact
+# belongs, exports WAYLAND_DISPLAY, and asserts a swept witness walks PAST the skip and refuses on
+# its own first real claim. 11 legs, 2 mutations bitten, real repositories in a throwaway pen.
+guard precondition_skip
+path tools/p/precondition_skip_witness.rish
+tier lap
+seated 20260916.083000

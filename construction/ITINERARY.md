@@ -28,8 +28,34 @@ none of those.
 0. `%745` -- the `tools/am/` success-path leak is closed (`20260916.012247`); the refusal half waits on bakery's `make-pen`.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
-3. `%646` -- sweep the precondition class; assert the failure as a negative on `verdict=thin`.
+3. `%646` -- **swept and closed** (`%766`, `20260916.082153`); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
+
+**INCENSE -- A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES.**
+`%646` booked the precondition sweep off a 5-in-40 sample. Counted, the class came out as **three
+shapes** and the sample could see one. The submodule half was already swept -- 40 of 43
+`gratitude/tigerbeetle` dependents skip honestly, and the three that do not are a `say` line, a
+correct presence report, and a witness retired from the living suite by name on `20260711`. The
+live half: **nine witnesses** under `tools/gen/chapter/` bind
+`brushstroke/bin/brushstroke-wayland-seed`, run `test -x` on it, and assert that call's exit -- a
+gitignored build output, none of the nine rostered, `%646`'s shape exactly. All nine sweep to the
+worked example's idiom (`say SKIP`, `say GREEN`, `exit 0`) and all nine exit 0 on this clone.
+**THE THIRD SHAPE ONLY RUNNING COULD FIND.** Five reached their skip and **four still refused** --
+three on an unset `WAYLAND_DISPLAY`, which every ship in this fleet lacks, and a fourth that was no
+precondition at all: `one_graph_dag_paper_witness.rish` greps `construction/SHRED_PREP.md` for two
+shed elders whose rows **folded** to `archive/SHRED_PREP-second-mitra-shed-record.md`, so the grep
+had read an absent record since the fold and nobody heard it, unrostered. Repointed.
+**A SKIP THAT ALWAYS FIRES PROVES NOTHING**, so the control plants the artifact, sets the display,
+and asserts the swept witness walks PAST the skip and refuses on its own first real claim.
+**11 legs on real repositories in a throwaway pen, two mutations bitten** -- one of them the
+root-deny trap: `.gitignore` denies the root with `/*`, so `git check-ignore` answers YES to every
+bare word, and a scan trusting it alone reads a variable name as a build output. `hard` read **25**
+before that guard and **7** after.
+**THE METER:** `tools/fixtures/p/precondition_skip_scan.sh` reads 21 sites, 14 skip, 7 hard, and
+reports **18 unresolved** rather than guessing at them. `precondition_skip` is rostered at `tier lap`.
+**YOURS:** the nine are rostable now and none is rostered. A GNOME Wayland ship would hear them
+where this pier skips; whether that earns nine roster rows is a fleet-wide cost only you should
+name.
 
 **PHEROMONE -- ONE ERROR NAME COVERED TWO CEILINGS, AND A PEER HAD SOLVED THE SHAPE FIRST.**
 Account [shelved whole](archive/20260916-074649_itinerary-landed-accounts.md).
@@ -85,57 +111,12 @@ The product cards carry the complete ladders:
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
-Elder account [shelved whole](archive/20260916-035013_itinerary-bakery-runtime-pen-account.md); its
-two open questions travel with it.
-**WATER TASTES** (row 3, N=5038): read the file up close, and ask what a second run changes. That
-question is what saved this lap, and it is written out below.
-**REDS FIRST:** the cold endurance run read **304 guards, 290 green, 12 red, 2 gated,
-`tree_moved=no`**, and not one of the twelve is mine. The hot pass read the same twelve. One of
-them closed while this lap ran: `rune_assert_sweep` stood **6,492 against 6,487** when I measured
-it and reads **6,480 at a ceiling of 6,480** after a peer named both arrivals and folded `%752`.
-`rye/src/main.rye` names all 16 of its asserts, so this lap could never have lowered it from the
-file it was in.
-**THE MECHANISM.** `rye/src/main.rye` fed the build receipt's key `hasher.update(zig)` and
-`hasher.update(rye_lib)` -- the toolchain's path STRING and the standard library's -- beside the
-content hashes of both. A path names how an input was found rather than what it compiled. Both path
-updates are gone, both content hashes stay, and `ryekey_marker` moves **v5 to v6**.
-**MEASURED BEFORE AND AFTER, IN A THROWAWAY PEN.** One pinned compiler reached four ways -- absolute,
-symlinked, relative, and the default `<exe_dir>/../../vendor/zig-toolchain/zig` resolution -- spoke
-**four keys** (`22d31612`, `cd1673e8`, `08b4401c`, `b0da7b36`) and bought four full rebuilds of a
-source nothing had touched. After: **one key, `cfde6703`, four times.** The tree spells that one pin
-**29 distinct ways** across tracked sources, `vendor/zig-toolchain/zig` 905 times and
-`$PWD/vendor/zig-toolchain/zig` 25, and leaves it unset wherever `rye_build.sh` runs.
-**THE CONTROL TURNED AROUND, AND ITS BOTH-SIDES RULE NOW RUNS IN BOTH DIRECTIONS.** Leg 8 asserted
-that the toolchain path CHANGES the key; it asserts the key and the binary stand still, and a new
-leg 8b says the same of the library. **19 legs to 20**, GREEN on metal. Each new leg was bitten by
-its own mutant compiler -- one built with only the toolchain path restored, one with only the
-library path -- because a hit leg proven in no direction cannot be told from a leg that always
-passes.
-**AND THE FIRST READING WAS WRONG IN THE SAFE-LOOKING DIRECTION.** Comparing the two spellings at
-`-ODebug` answered DIFFER for both, which reads exactly like *the path decides the output*. Running
-one unchanged spelling TWICE answered DIFFER too: **at `-ODebug` this toolchain is not reproducible
-at all**, two builds of one source parting in **45,027 of 10,239,778 bytes**, all of it anonymous
-struct serial numbers. At `-OReleaseSmall` both spellings emit **byte-identical** binaries. A
-comparison taken in the noisy mode measures the compiler's scheduler.
-**THE DOC WAS RIGHT AND THE CODE WAS NOT.** The module header has always promised a key over five
-contents and no path. The code carried two inputs it never announced, and the control then asserted
-the undocumented behavior as law.
-**PRICED:** the marker bump costs one rebuild per standing receipt, **96 on this ship**, each
-hitting again afterward. Row booked `20260916.023136`, **CLOSED**.
-**AND THE REPAIR'S OWN GUARD WAS WRONG ABOUT ITSELF, TWICE** (`20260916.050900`). Shelving the
-elder account left one link at the card's depth, `fold_shelf_link` read `fold_depth_lost=1`, and the
-refusal's own instruction -- *run the repointer with `--apply`* -- answered `unknown argument` at
-exit 2. Beside it, that family's witness recited **78 readings** while its control emitted **76**.
-Both halves were self-description, and nothing held either. `--apply` is a synonym for the default
-now, a typo still refuses on its own leg, and the count is derived and proven live: 79 with a
-planted reading, 78 without. The card's Petrichor account still spells the flag the elder way; that
-line is a peer's to sweep.
-
-**YOURS:** should a whole-tree population ratchet report its own **delta** -- which file gained one
-since the ceiling was set? `%752` asked it from the prose side; this lap met it from the Rye side and
-the reading still names 501 files and not the arrival.
-**MINE:** `%754`'s repair, unchanged and still owed -- a freshness guard that asks the builder for
-its receipt rather than the filesystem.
+Account [shelved whole](archive/20260916-082153_itinerary-bakery-receipt-key-account.md); its rows
+`%763` and `%764` closed, folded with a peer's `%762` to
+[`archive/REDS-a-guards-own-words-and-the-path-that-reached-it-rows-762-764.md`](archive/REDS-a-guards-own-words-and-the-path-that-reached-it-rows-762-764.md)
+on `20260916.082153`. The mechanism in one line: `rye/src/main.rye` dropped both path `hasher.update`
+calls from the build-receipt key, keeping both content hashes, and `ryekey_marker` moved v5 to v6 --
+so one pin reached four ways speaks one key rather than four.
 
 **COPAL -- THE WHOLE ROOM TOOK THE RUNTIME'S PEN, AND THE COUNT THAT FELL WAS NEVER A LEAK.**
 Account [shelved whole](archive/20260916-061806_itinerary-copal-pen-conversion-account.md).

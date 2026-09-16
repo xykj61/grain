@@ -22,7 +22,7 @@ let dream = run ["test" "-f" "foundations/20260825-233310_realidream.md"]
 assert dream.ok else "one-graph: living realidream foundation missing"
 let dream_fossil = run ["test" "!" "-f" "foundations/20260629-063512_realidream.md"]
 assert dream_fossil.ok else "one-graph: the shed June realidream elder must be gone"
-let shed = run ["sh" "-c" "grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md && grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md && echo SHED_OK"]
+let shed = run ["sh" "-c" "grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/archive/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260629-063512_realidream.md' construction/archive/SHRED_PREP-second-mitra-shed-record.md && echo SHED_OK"]
 assert shed.ok else "one-graph: shed record scan failed"
 assert shed.out contains "SHED_OK" else "one-graph: the prep pin must name both shed elders"
 
