@@ -27,9 +27,10 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The pen carries a kernel-picked name, because eight ships run this roster and the first
 # gesture below is `rm -rf`: two peers sharing one literal home would each red on a fact about
 # the pen rather than about Amphora (the class REDS %512 named).
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pbw.XXXXXX"]
-assert pen.ok else "pbw: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_pbw"
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none of
 # these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
@@ -135,9 +136,5 @@ assert returned.err contains "cargo unproven" else "pbw: the repaired restore re
 let returned_out = run ["sh" "-c" "test ! -e ${home}/f/again.bron.season"]
 assert returned_out.ok else "pbw: the wall returned, nothing may land"
 say "wall_returned=refused_before_write"
-
-# The pen belongs to this run alone, so this run takes it down.
-let sweep = run ["rm" "-rf" home]
-assert sweep.ok else "pbw: pen must sweep"
 
 say "GREEN: amphora_prove_before_write -- every resin is proven while the out-home does not exist."

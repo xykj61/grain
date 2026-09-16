@@ -9,13 +9,14 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
 # Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
 # constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
-# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
-# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# a fact about the pen wearing the costume of a fact about Amphora. The runtime composes the
+# suffix, so no two runs can agree by accident, and the directory it hands back is already empty
 # -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
 # Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_restore.XXXXXX"]
-assert pen.ok else "amphora_restore: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_restore"
 let vessel = "${home}/v.bron"
 let out_home = "${home}/v.bron.season"
 let hello = "${home}/v.bron.season/hello.txt"
@@ -66,10 +67,5 @@ assert fork.ok == false else "amphora_restore: planted fork must refuse"
 assert fork.err contains "identity fork" else "amphora_restore: want identity fork"
 
 say "round=restored files=4 same-parent=ok reres=welcome fork=refused"
-
-# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
-# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "amphora_restore: pen must sweep"
 
 say "GREEN: amphora_restore — catalog · out-home guard · files proven · same parent · complete."

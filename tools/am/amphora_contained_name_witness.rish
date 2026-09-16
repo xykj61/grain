@@ -14,9 +14,10 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
 # Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
 # constant is ONE directory on all eight.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_contained.XXXXXX"]
-assert pen.ok else "contained: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_contained"
 let vessel = "${home}/v.bron"
 
 # The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
@@ -139,9 +140,6 @@ let no_write = run ["sh" "-c" "test ! -e ${home}/escaped.txt"]
 assert no_write.ok else "contained: the refusal must arrive BEFORE the write"
 let no_count = run ["sh" "-c" "printf '%s' \"${cargo_door.err}\" | grep -c 'files proven' || true"]
 assert no_count.out contains "0" else "contained: no catalog forms, so restore_prove_write is never reached"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "contained: pen must sweep"
 
 say "rule=both-directions doors=seal+stamp+listing+cargo wall_removed=escaped wall_returned=refused_before_write"
 say "GREEN: amphora_contained_name -- a cargo name lands inside its home, or it does not land."

@@ -11,14 +11,15 @@ let season = "tools/fixtures/cellar_ring1_tree"
 let tamp_sh = "tools/fixtures/a/amphora_tamper_seal_cargo.sh"
 
 # THE PEN CARRIES A UNIQUE NAME, because eight ships run this roster and two of them running this
-# witness at once would share one home: the first line below is `rm -rf`, so a peer mid-plant loses
-# its vessel and reds on a fact about the pen rather than about Amphora. It reddened the cold open
-# of `20260906.222342` exactly that way -- green alone, red in company (REDS %512's class, in the
-# spelling that sweep never read: a Rishi `let` string rather than a shell `TMPDIR=`).
-# `mktemp -d` names it, so the kernel picks the suffix and no two runs can agree by accident.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_rneg.XXXXXX"]
-assert pen.ok else "rneg: pen must open"
-let home = trim pen.out
+# witness at once would share one home: this witness plants and re-pours a vessel in place, so a
+# peer mid-plant loses its vessel and reds on a fact about the pen rather than about Amphora. It
+# reddened the cold open of `20260906.222342` exactly that way -- green alone, red in company
+# (REDS %512's class, in the spelling that sweep never read: a Rishi `let` string rather than a
+# shell `TMPDIR=`).
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_rneg"
 let vessel = "${home}/v.bron"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
@@ -90,10 +91,5 @@ assert heal3.ok else "rneg: re-pour heal must pass"
 let ok = run ["${home}/bin/amphora" "restore" vessel]
 assert ok.ok else "rneg: healed restore must pass"
 assert ok.err contains "restore complete" else "rneg: healed restore completes"
-
-# The pen belongs to this run alone, so this run takes it down. A shared literal could never be
-# swept at the end without racing a peer; a unique one always can.
-let sweep = run ["rm" "-rf" home]
-assert sweep.ok else "rneg: pen must sweep"
 
 say "GREEN: amphora_restore_negative -- tamper, truncate, forged digest, each refused at its wall."

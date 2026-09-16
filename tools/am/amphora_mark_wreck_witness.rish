@@ -29,13 +29,16 @@
 
 let season = "tools/fixtures/cellar_ring1_tree"
 
-# The pen is named by `mktemp -d`, so the kernel picks the suffix and no two runs can agree by
-# accident. Eight ships share this pier's `/tmp`, so a constant pen path is a name every ship
-# chose at write time -- and this witness WIPES its pen, which turns a collision into a peer's
-# run deleted mid-flight. `shared_pen` counts both hazards and caught this one at its ceiling.
-let pen_made = run ["sh" "-c" "mktemp -d /tmp/amphora_mark_wreck.XXXXXX"]
-assert pen_made.ok else "mark_wreck: the pen must be made"
-let pen = trim pen_made.out
+# The runtime composes the pen name, so no two runs can agree by accident. Eight ships share this
+# pier's `/tmp`, so a constant pen path is a name every ship chose at write time, and this witness
+# REMOVES its pen -- which under a constant name turns a collision into a peer's run deleted
+# mid-flight. `shared_pen` counts both hazards and caught this one at its ceiling. The removal is
+# the runtime's now, and it can only ever take down a directory it made in this process.
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745). This witness pours 24MB a run, which is what made it %745's own
+# named case.
+let pen = make-pen "amphora_mark_wreck"
 let vessel = "${pen}/vessel.bron"
 let planted = "${pen}/planted.bron"
 
@@ -174,10 +177,5 @@ let bounded = run ["sh" "-c" "grep -q 'sp1 > me.max_mark_len' amphora/src/main.r
 assert bounded.ok else "mark_wreck: main hands an unbounded mark field to mark_verdict's assert"
 
 say "amphora_mark_wreck: main's cargo reader borrows the roster; a divergent written root stops the build"
-
-# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
-# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
-let sweep = run ["sh" "-c" "rm -rf ${pen}"]
-assert sweep.ok else "mark_wreck: pen must sweep"
 
 say "GREEN: Amphora keeps the wreck rule for marks -- two roots welcome, a stranger refuses whole."

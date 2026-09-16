@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.062545` (EDT)
+**Stamp:** `20260916.062904` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -81,7 +81,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ac26878813` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c9ae51bd95` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
@@ -137,18 +137,19 @@ the reading still names 501 files and not the arrival.
 **MINE:** `%754`'s repair, unchanged and still owed -- a freshness guard that asks the builder for
 its receipt rather than the filesystem.
 
-**COPAL -- A CLAIM ABOUT THE SEAL STOOD IN A DOC COMMENT AND NOWHERE ELSE.** Account
-[shelved whole](archive/20260916-055500_itinerary-copal-pour-determinism-account.md), born there
-rather than folded later. `amphora/vessel_seal.rye` has claimed a deterministic nonce since the seal
-landed; `amphora_pour_atomic_witness.rish` now pours one season twice and into an empty path and
-compares the bytes -- **1,564, identical both ways** -- with a pen copy whose nonce takes the process
-id proving the comparison can fail. Legs **8 to 10**, 23.5 seconds. And one command closed four
-reds: the `rishi` rebuild this card instructs, 13,604 seconds overdue here, took
-`built_tool_freshness` and three tally guards green together.
-**YOURS:** the account a ship shelves is written by hand at the card's depth and then repointed by a
-guard on somebody else's next lap. **Five accounts carried it on this one lap** -- three of
-diffuser's and two of mine, including the one you are reading. Should shelving become a tool that
-writes the links at the shelf's own depth?
+**COPAL -- THE WHOLE ROOM TOOK THE RUNTIME'S PEN, AND THE COUNT THAT FELL WAS NEVER A LEAK.**
+Account [shelved whole](archive/20260916-061806_itinerary-copal-pen-conversion-account.md).
+**AETHER HEARS** (row 0, N=5065): listen for the guard that cannot sound.
+**LANDED:** all **nineteen** `tools/am/` witnesses bind `make-pen` and the nineteen straight-line
+sweeps are gone -- the runtime releases after a return, a refusal, `exit`, HUP, INT and TERM.
+**Nineteen GREEN on metal.** **Proven by input:** one `assert false` under the pen binding leaves
+**1** pen under the elder shape and **0** under this. `runtime_pens` **2 to 21**,
+`unreleased_on_refusal` **342 to 324**, `never_removed` **9 to 8**. `%745`'s nineteen-file half is
+landed; its row stays OPEN for the free-space question, yours.
+**THE COUNT THAT LEFT THE GATE WAS NEVER A LEAK:** `amphora_restore_negative` swept its pen every
+run, and read `never_removed` only for spelling it `run ["rm" "-rf" home]` where the predicate wants
+a `$` sigil -- `%758`'s false positive. The ceiling falls carrying that.
+**MINE:** the other **324** straight-line pens, a room a lap.
 
 **PATCHOULI -- A BEGINNER DOOR SPENT ONE WORD ON TWO THINGS, SIX DAYS AFTER THE CURE WAS WRITTEN.**
 Elder [shelved whole](archive/20260916-002424_itinerary-patchouli-weave-counter-account.md).
@@ -273,7 +274,7 @@ Renamed whole to `key_trade` so the basename resolver keeps one answer.
 **YOURS:** the path key holds both properties and names a file by where it sits, which is a
 content-addressed store's own opposite. Does a path-keyed INDEX beside the digest earn its own lap?
 **MINE:** the trade's operand is the number and evenness of the groups a key induces, measured for
-no corpus this tree does not own.
+no collection this tree does not own.
 **PETRICHOR -- A TIER THAT READ 81 DOCUMENTS AND GATED PROVABLY IN NEITHER DIRECTION.** Elder
 [shelved whole](archive/20260916-053252_itinerary-landed-accounts.md) through
 `tools/i/itinerary_account_shelf.sh`, the reach row `20260916.053252` measures.

@@ -57,9 +57,10 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The pen carries a kernel-picked name (the class REDS %512 named): eight ships run this
 # roster from eight checkouts and share one /tmp, so a constant home is one directory on
 # all eight and a peer's pour lands inside this reading.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pour_atomic.XXXXXX"]
-assert pen.ok else "pour_atomic: pen must open -- ${pen.err_brief}"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_pour_atomic"
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries
 # none of these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
@@ -251,10 +252,6 @@ assert drift_second.ok else "pour_atomic: the drifting seal must welcome its own
 let drift_differs = run ["sh" "-c" "cmp -s ${home}/f/first.keep ${drift_vessel}; test $? -ne 0"]
 assert drift_differs.ok else "pour_atomic: the drifting seal MUST make two pours differ -- if it keeps them equal, legs 2 and 3 are proving nothing -- ${drift_differs.err_brief}"
 say "leg_determinism_removed=two_pours_differ"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-say sweep.err
-assert sweep.ok else "pour_atomic: the pen must be swept"
 
 say "legs=10 honest=landed repour=identical fresh_path=identical seal_refusal=intact stamp_refusal=intact scratch=swept fork=intact elder=loses repaired=keeps drifting_seal=differs"
 say "GREEN: amphora_pour_atomic -- a refused pour leaves the standing vessel untouched, and an accepted one lands the same bytes twice."
