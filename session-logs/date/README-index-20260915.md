@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.195922` | [The source that vanished mid-compile](20260915/20260915-195922_the-source-that-vanished-mid-compile.kyri) | the flaky cause captured and confirmed |
 | `20260915.195227` | [The room that counted itself short](20260915/20260915-195227_the-room-that-counted-itself-short.kyri) | a door swept 50 to 3 percent, three figures re-measured |
 | `20260915.194903` | [The pen that closed one of two](20260915/20260915-194903_the-pen-that-closed-one-of-two.kyri) | lotus migrated; ceiling 1813 to 1574 |
 | `20260915.193000` | [Forty names the tree no longer shares](20260915/20260915-193000_forty-names-the-tree-no-longer-shares.kyri) | ceiling 1853 to 1813 |
