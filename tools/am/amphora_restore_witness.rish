@@ -66,4 +66,10 @@ assert fork.ok == false else "amphora_restore: planted fork must refuse"
 assert fork.err contains "identity fork" else "amphora_restore: want identity fork"
 
 say "round=restored files=4 same-parent=ok reres=welcome fork=refused"
+
+# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
+# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "amphora_restore: pen must sweep"
+
 say "GREEN: amphora_restore — catalog · out-home guard · files proven · same parent · complete."

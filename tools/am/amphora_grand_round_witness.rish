@@ -90,4 +90,10 @@ let again = run ["${home}/bin/amphora" "restore" far]
 assert again.ok else "grand_round: same-parent re-restore must welcome"
 
 say "round=poured carried restored equal=true same-parent=ok files=4"
+
+# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
+# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "grand_round: pen must sweep"
+
 say "GREEN: amphora_grand_round — pour · carry · restore-from-far · same parent · home."

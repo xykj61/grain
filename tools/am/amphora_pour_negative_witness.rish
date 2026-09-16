@@ -66,4 +66,9 @@ assert (missing.ok == false) else "amphora_pour_neg: missing season must refuse"
 assert missing.err contains "season absent" else "amphora_pour_neg: absence must name its fault"
 say "plant_missing=refused"
 
+# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
+# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "amphora_pour_neg: pen must sweep"
+
 say "GREEN: amphora_pour_negative — forge · fork · absence, each refused at its wall."

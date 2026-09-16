@@ -67,4 +67,10 @@ assert (refused.ok == false) else "amphora_carry: forked dock must refuse"
 assert refused.err contains "identity fork" else "amphora_carry: fork names its fault"
 
 say "round=crossed equal=true farwalls=green repour=welcome fork=refused"
+
+# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
+# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "amphora_carry: pen must sweep"
+
 say "GREEN: amphora_carry — the round trip closes equal, and the far side keeps the law."
