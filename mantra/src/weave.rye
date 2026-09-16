@@ -1298,11 +1298,11 @@ pub const Weave = struct {
         assert(self.lines.items.len <= max_weave_lines);
         var out: std.ArrayListUnmanaged(Line) = .empty;
         for (self.lines.items, 0..) |line, i| {
-            // invariant: the backing list is in place order already, which is what
-            // lets this read return document order without sorting. Held over the
-            // whole list rather than over the filtered result, because a filter can
-            // hide a disorder that a later delete would then reveal.
             if (i + 1 < self.lines.items.len) {
+                // invariant: the backing list is in place order already, which is
+                // what lets this read return document order without sorting. Held
+                // over the whole list rather than over the filtered result, because
+                // a filter can hide a disorder that a later delete would reveal.
                 assert(line.place().less_than(self.lines.items[i + 1].place()));
             }
             if (line.gen % 2 == 1) { // odd = present
@@ -1510,6 +1510,10 @@ pub const Weave = struct {
             .next_run = @max(self.next_run, other.next_run),
         };
 
+        // invariant: the merged weave's two counters each stand at or above
+        // BOTH sides', so the next edit made on the result takes a position
+        // and a run number neither side has already spent.
+        //
         // Postcondition on the COUNTERS THEMSELVES, said apart from the walk
         // below because the walk cannot see it. The walk holds every held LINE
         // under the merged counters, and that reading is exactly as tight as

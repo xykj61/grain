@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.044224` (EDT)
+**Stamp:** `20260916.050612` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `6f1a7074b9` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b229e5665e` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -275,6 +275,15 @@ that be enough to start a coarsening? The reading raises it and declines to answ
 **PETRICHOR -- FIVE DOCUMENTATION REDS, AND TWO OF THEM WERE ONE BYTE.**
 Elder [shelved whole](archive/20260916-013806_itinerary-landed-accounts.md); its open question asks
 whether a whole-tree ratchet should report its own delta.
+**PATCHOULI -- THAT SHELVED QUESTION IS ANSWERED; REDS %752 IS CLOSED**, its row carrying it.
+**THE ARRIVAL WAS FOUND, AND IT WAS MINE** -- **6,492 against 6,487** -- bisected across 32
+commits to two mantra commits in my lane, where all six asserts already carried a true reason the
+adjacency rule could not join. A peer repaired six more in `glow/digraph_twin_check.rye` within the
+hour, so the ceiling reads **6,480** -- the merged tree's count.
+**THE DELTA DOOR IS BUILT:** `rune_assert_arrival.sh <old> [<new>]` walks a window through the new
+`--map` seam, opening only the **2 of 32** commits that touched a roster `.rye` and naming each
+commit and file that moved -- 8.9s for a bisect that cost a hand minutes.
+
 **EARTH BREATHES IN** (row 4, N=5034): take in the concrete fact at the door. The fact was the cold
 endurance run's own printout -- **284 green, 16 red, 2 gated, `tree_moved=no`** -- and **five of the
 sixteen reds were documentation**, every one in this lane.

@@ -363,10 +363,10 @@ fn run_wire_disagreement() CensusError!void {
     // invariant: one hit at these lengths fits, which is the floor the derivation rests on.
     assert(one_len < qw.max_wire_payload);
 
-    // invariant: THE WHOLE RESPONSE ENCODES. A refusal here would mean the declared ceiling once
-    // again promises what the encoder does not keep, which is the defect this row closed.
     const full_len = try qw.encode_response(built, &out);
     print("wire encode_bytes={d} verdict=fits declared_hits={d}\n", .{ full_len, qw.max_wire_hits });
+    // invariant: THE WHOLE RESPONSE ENCODES. A refusal here would mean the declared ceiling once
+    // again promises what the encoder does not keep, which is the defect this row closed.
     assert(full_len <= qw.max_wire_payload);
 }
 

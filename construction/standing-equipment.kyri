@@ -561,6 +561,16 @@ path tools/r/rune_assert_sweep.rish
 tier lap   # 7.1s (3.0s scan, 4.1s control); 1,127 derived authored files, plus the twelve elder cores by name
 seated 20260908.111848
 
+guard rune_assert_arrival
+path tools/r/rune_assert_arrival_witness.rish
+tier lap   # 20.5s (11s control over real git repositories, 9s replaying the %752 window on real history)
+seated 20260916.025734
+# LAP RATHER THAN CADENCE, and the budget question is worth stating. This guard proves a tool that
+# is reached for only when a sibling ratchet breaches, which argues for the slower clock. It sits on
+# the lap clock anyway, because the moment it is consulted is the moment it must work: a finder
+# proven once every 58 laps can be broken on exactly the lap somebody needs it, and the breach it
+# answers is already costing that lap a red. Its 20.5s stands beside `opening_lines` at 19.6s.
+
 guard opening_lines
 path tools/o/opening_lines_witness.rish
 tier lap   # 19.6s (1.3s scan, 18s control); the opening triad over 1,073 derived hosted files

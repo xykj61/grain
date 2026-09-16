@@ -43,6 +43,20 @@
 # hundred files. Output convention: context/specs/20260729-215600_scan-seam-convention.md.
 set -eu
 
+# `--map` PRINTS THE PER-FILE READING AND GATES NOTHING, added `20260916.025734` for REDS %752.
+# The three counts below are populations over eight hundred files, so a ratchet one over its
+# ceiling names a number and no arrival: the red lists the heaviest twenty by standing count, and
+# a file that arrived carrying one assert is never among them. Naming the arrival means comparing
+# this reading against an earlier tree, and until this flag the only way to do that was to
+# reimplement `pair_read` by hand -- which is a second copy of the predicate the gate reads, free
+# to drift from it in exactly the case it is consulted. One flag, the guard's own awk, so the
+# comparison is made of the same bytes the refusal was.
+map_only=no
+if [ "${1:-}" = "--map" ]; then
+  map_only=yes
+  shift
+fi
+
 default_rooms="tools/fixtures/t/tame_style_rooms.txt"
 rooms_file="${1:-$default_rooms}"
 if [ ! -f "$rooms_file" ]; then
@@ -146,6 +160,17 @@ else
   proving_unnamed=$((proving_assert - proving_named))
 fi
 
+if [ "$map_only" = yes ]; then
+  # One line per module source carrying at least one unnamed assert, path then count, sorted by
+  # path so two runs diff cleanly. Files reading zero are left out: a tree holds eight hundred of
+  # them and a diff wants the moving part.
+  awk '$2 > $3 { printf "%s %d\n", $1, $2 - $3 }' "$work/pairs" | sort
+  echo "map_files=$(awk '$2 > $3' "$work/pairs" | grep -c '' || true)"
+  echo "map_unnamed=$unnamed_assert"
+  echo "verdict=map"
+  exit 0
+fi
+
 if [ "$rooms_file" = "$default_rooms" ]; then
   zero_ceiling=100
   gap_ceiling=101
@@ -173,7 +198,28 @@ if [ "$rooms_file" = "$default_rooms" ]; then
   # would mean naming asserts inside another lane's modules without running their witnesses, which
   # `%752` already refused in the other direction. A whole-tree ratchet is repaired by whoever
   # touches a file, and priced by whoever lands next; those are rarely the same lap.
-  unnamed_ceiling=6486
+  #
+  # BOTH HALVES OF THAT LESSON LANDED IN ONE HOUR, FROM OPPOSITE ENDS, WHICH IS THE PROOF.
+  # The account above repaired the file its own lane had touched and priced the remainder it could
+  # not name -- *no one of them is the culprit a hand could name*. The account below NAMED them, by
+  # walking the window rather than the population. Two lanes met one ratchet, neither could see the
+  # other's arrival, and the reading that ends the guesswork is
+  # `tools/fixtures/r/rune_assert_arrival.sh`. The ceiling beneath is the count both repairs leave.
+  # 6,487 -> 6,486 on `20260916.025734`, closing REDS %752. The ratchet stood at 6,492 against this
+  # ceiling and named no arrival; `rune_assert_arrival.sh` found both on real history -- one assert
+  # into `mantra/recall_tablecloth_hit_census.rye` and four into `mantra/src/weave.rye`, five in
+  # all. Repairing them took the count to 6,486 rather than back to 6,487, because a SIXTH stood in
+  # `weave.rye` from before the window and was repaired in the same pass. All six already carried a
+  # TRUE written reason the adjacency rule could not join: four sat under a twenty-line postcondition
+  # block that never spelled the token, and two were separated from their own `// invariant:` by
+  # exactly one line of code -- an `if` guard, and a `const` with its `print`. So the repair moved
+  # comments rather than inventing reasons, which is the only kind of ratchet repair worth crediting.
+  #
+  # 6,486 -> 6,480 on the rebase that brought the two accounts together: both repairs stand in one
+  # tree now, six asserts each, and the ceiling is the reading that tree actually leaves rather than
+  # either lane's own number. A ceiling set from one lane's measurement credits the next lap with
+  # the other lane's work.
+  unnamed_ceiling=6480
 else
   zero_ceiling=0
   gap_ceiling=0
