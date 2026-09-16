@@ -763,3 +763,5 @@ at a closed fold.*
 *Row %739 folded to [`REDS-the-class-walled-and-its-last-five-sites-rows-739.md`](REDS-the-class-walled-and-its-last-five-sites-rows-739.md) on `20260915.215554`, **CLOSED** -- a class is walled on the lap its last sites are repaired, rather than on the lap it was measured.*
 
 *Row %743 folded to [`REDS-the-lock-taken-between-two-calls-rows-743.md`](REDS-the-lock-taken-between-two-calls-rows-743.md) on `20260915.220549`, **CLOSED** -- a lock is only a lock when its creation and its claim are one step.*
+
+*Rows %568, %569, %626, %642 and %646 folded to [`REDS-the-clock-nobody-turned-rows-568-646.md`](REDS-the-clock-nobody-turned-rows-568-646.md) on `20260915.222638`, **BOOKED** and **CLOSED** -- Five instruments whose reach was the fault rather than their reading: a clock nothing turned, a stop that reached a whole pier, a gate on a number no lap could lower, a publish that re-proved everything to ship one file, and a hard assert that made its own witness unrostable. Each closed by finding the runner behind the sentence.*
