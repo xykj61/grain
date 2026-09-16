@@ -82,3 +82,9 @@ stamp 20260916.001453
 epoch 1789532093
 paths tools/fixtures/l/ladder_order_scan.sh tools/l/ladder_order_witness.rish tools/fixtures/l/ladder_order_control.sh active-designing
 what All twelve moonshot rows now carry errata and ten of them recommend a re-rank or a re-aim, while the ranking table on the page still reads as first written -- correctly, since dated testimony keeps every word. So no page states the order the twelve measurements actually support. Derive that order from the errata's own recommendation sentences rather than transcribing it, gate that every recommendation parses and that the derived order is a permutation of the twelve, and write the synthesis page row 11's erratum asked for.
+claim pheromone-wire-hit-seam
+seat pheromone
+stamp 20260916.003208
+epoch 1789533128
+paths comlink/query_wire_retention_cost.rye
+what REDS-first: query_wire_retention has read red on every ship since 0d6e6829a landed two hours ago. That commit made mantra/recall_tablecloth_query_wire.rye max_wire_hits derived rather than the literal 8, and it now computes to 2; comlink/query_wire_retention_cost.rye still spells measured_hit_count as the literal 4, so kept_store[0..measured_hit_count] refuses to compile -- end index 4 out of bounds for array of length 2. The harness already carries the right comptime assert and the wire moved under it.
