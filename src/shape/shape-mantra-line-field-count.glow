@@ -1,8 +1,8 @@
 ::  name       mantra line field count
 ::  shape      fields - int (@u32)
-::  invariant  a weave Line carries exactly five fields (text - gen - pos - site - run)
+::  invariant  a weave Line carries exactly six fields (text - gen - pos - site - run - ord)
 ::  law        mantra/src/weave.rye Line.fields exact
-::  example    5
+::  example    6
 ::  readers    Mantra - Glow Tend - Sur museum - Ashvini nest-only
 ::  nib        equinox-e203-mantra-tend-v0
 ::
@@ -17,6 +17,10 @@
 ::  that made this placard COUNT rather than grep for presence -- a fourth
 ::  field used to pass it -- so this refusal on the lap the fourth field
 ::  arrived is that row's own instrument working.
+::
+::  Moved five to six on 20260916.024500, when Line grew `ord` -- the order key
+::  asked apart from the identity, so a replacement inherits where a line sat
+::  without inheriting who it was (REDS %680, on Keaton's word).
 ::
 ::  Moved four to five on 20260907.173200, when document order left `LineId`
 ::  for `Place`. A line now carries the run that placed it, so every line of

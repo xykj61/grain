@@ -359,10 +359,10 @@ fn prove_blocks_stay_whole(
 /// exactly the state its refusal must still be proven against.
 fn prove_forged_identity_refused(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "one", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
     }, 1);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "other", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
     }, 1);
     // invariant: the two lines answer to one name and carry different text,
     // which is the corruption the refusal exists for
@@ -491,7 +491,7 @@ fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
         // One run for the whole plant: `wide_weave` stands in for a single
         // enormous edit, which is what `apply` would have produced from one
         // diff carrying `count` inserts.
-        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here, .run = 0 });
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .ord = pos, .site = site_here, .run = 0 });
     }
     // invariant: the plant holds exactly what was asked for, so the sum the
     // bound reads is the sum this function promised
@@ -539,12 +539,12 @@ fn seeded(garden: std.mem.Allocator, lines: []const weave.Line, next_pos: u32) !
 /// claim 6 names, read from the other side.
 fn prove_interleaved_order(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
-        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here, .run = 0 },
+        .{ .text = "one", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
+        .{ .text = "three", .gen = 1, .pos = 2, .ord = 2, .site = site_here, .run = 0 },
     }, 3);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
-        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here, .run = 0 },
+        .{ .text = "one", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
+        .{ .text = "two", .gen = 1, .pos = 1, .ord = 1, .site = site_here, .run = 0 },
     }, 3);
 
     const forward = try left.merge(garden, &right);
@@ -565,11 +565,11 @@ fn prove_interleaved_order(garden: std.mem.Allocator) !void {
 /// apart from identity order, so an edit must find its target by the right name.
 fn prove_merged_weave_still_edits(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "last written", .gen = 1, .pos = 0, .site = site_here, .run = 2 },
-        .{ .text = "first written", .gen = 1, .pos = 2, .site = site_here, .run = 0 },
+        .{ .text = "last written", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 2 },
+        .{ .text = "first written", .gen = 1, .pos = 2, .ord = 2, .site = site_here, .run = 0 },
     }, 3);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "between", .gen = 1, .pos = 1, .site = site_here, .run = 1 },
+        .{ .text = "between", .gen = 1, .pos = 1, .ord = 1, .site = site_here, .run = 1 },
     }, 3);
 
     var joined = try left.merge(garden, &right);

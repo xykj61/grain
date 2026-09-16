@@ -44,17 +44,17 @@ pub fn main(init: std.process.Init) !u8 {
     print("eq-line: Language EN -- the fifth exact deciding gate (STOA337).\n", .{});
     print("eq-line: Lens TAME -- exact match; both sides; gth neighbor still stands.\n", .{});
 
-    print("eq-line: exact 5 answers 1...\n", .{});
-    const exact_out = try run_gate(a, io, desk, "5");
+    print("eq-line: exact 6 answers 1...\n", .{});
+    const exact_out = try run_gate(a, io, desk, "6");
     assert(contains(exact_out, "EXIT:0"));
     assert(contains(exact_out, "1"));
 
-    print("eq-line: just under (4) answers 0...\n", .{});
-    const under_out = try run_gate(a, io, desk, "4");
+    print("eq-line: just under (5) answers 0...\n", .{});
+    const under_out = try run_gate(a, io, desk, "5");
     assert(contains(under_out, "0"));
 
-    print("eq-line: just over (6) answers 0...\n", .{});
-    const over_out = try run_gate(a, io, desk, "6");
+    print("eq-line: just over (7) answers 0...\n", .{});
+    const over_out = try run_gate(a, io, desk, "7");
     assert(contains(over_out, "0"));
 
     print("eq-line: the desk names eq, not gth...\n", .{});
@@ -66,6 +66,6 @@ pub fn main(init: std.process.Init) !u8 {
     const gth_out = try run_gate(a, io, neighbor, "1");
     assert(contains(gth_out, "1"));
 
-    print("GREEN: equality fifth -- line fields=5 decide exactly; gth still stands.\n", .{});
+    print("GREEN: equality fifth -- line fields=6 decide exactly; gth still stands.\n", .{});
     return 0;
 }

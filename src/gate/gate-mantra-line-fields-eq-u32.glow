@@ -1,13 +1,13 @@
 ::  name       mantra line fields equality gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
-::  invariant  answers 1 exactly when count is line fields=5; answers 0 otherwise
+::  invariant  answers 1 exactly when count is line fields=6; answers 0 otherwise
 ::  law        mantra/src/weave.rye Line.fields exact
-::  example    5 -> 1 - 4 -> 0 - 6 -> 0
+::  example    6 -> 1 - 5 -> 0 - 7 -> 0
 ::  readers    Mantra - Glow Tend a1 unfinished - Ashvini
 ::  nib        equinox-e256-equality-fifth-v0 - STOA337
 ::
 ::  Ashvini equality - fifth pedestal gth cannot speak. The sur shape names
-::  a weave Line's five fields (text - gen - pos - site - run); this gate
+::  a weave Line's six fields (text - gen - pos - site - run - ord); this gate
 ::  decides *exactly*, not by a ceiling.
 ::
 ::  Moved three to four on 20260907.094747, the lap that bound this constant
@@ -19,5 +19,10 @@
 ::  order left LineId for Place. The binding held this time: the constant scan
 ::  refused on the lap the field arrived, which is what the elder note was
 ::  written to buy.
+::
+::  Moved five to six on 20260916.024500, when Line grew `ord` -- the order key
+::  asked apart from the identity, so a replacement can inherit where a line sat
+::  without inheriting who it was (REDS %680, on Keaton's word). The binding
+::  held a second time, and on the same lap the field arrived.
 |=  sample=@u32
-?:  (eq sample 5)  1  0
+?:  (eq sample 6)  1  0

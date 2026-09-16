@@ -151,7 +151,7 @@ fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
         // One run for the whole plant: `wide_weave` stands in for a single
         // enormous edit, which is what `apply` would have produced from one
         // diff carrying `count` inserts.
-        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here, .run = 0 });
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .ord = pos, .site = site_here, .run = 0 });
     }
     // invariant: the plant holds exactly what was asked for, so the sum the
     // bound reads is the sum this function promised
@@ -325,10 +325,10 @@ fn prove_colliding_inserts_read(
 /// weave does not already hold.
 fn prove_forged_identity_refused(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "one", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
     }, 1);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "other", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
     }, 1);
     // invariant: the two lines answer to one name and carry different text,
     // which is the corruption the refusal exists for
@@ -369,12 +369,12 @@ fn prove_bound_refused(garden: std.mem.Allocator) !void {
 /// deleted would pass all seven of them.
 fn prove_interleaved_order(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
-        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here, .run = 0 },
+        .{ .text = "one", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
+        .{ .text = "three", .gen = 1, .pos = 2, .ord = 2, .site = site_here, .run = 0 },
     }, 3);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
-        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here, .run = 0 },
+        .{ .text = "one", .gen = 1, .pos = 0, .ord = 0, .site = site_here, .run = 0 },
+        .{ .text = "two", .gen = 1, .pos = 1, .ord = 1, .site = site_here, .run = 0 },
     }, 3);
 
     const notes = try left.annotate(garden, &right);

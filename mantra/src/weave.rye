@@ -262,6 +262,19 @@ pub const Place = struct {
     run: u32,
     site: u32,
     pos: u32,
+    /// WHERE THE LINE GOES, asked apart from WHO IT IS (REDS %680, on Keaton's
+    /// word `20260916`: a replacement inherits the place of the line it
+    /// replaces). `pos` and `site` together are the identity, so a replacement
+    /// inheriting them would answer to the name of the line it replaced -- a
+    /// collision this weave forbids, and one probed three ways before this
+    /// field was added. `ord` is the order key alone: a replacement takes the
+    /// `ord` of the line it replaces and keeps its own fresh `pos`, so it sorts
+    /// where that line sat while naming itself.
+    ///
+    /// Every line written before this field carried `ord == pos`, which is what
+    /// `from_v2` lifts it to, so the order below reads every elder weave exactly
+    /// as it read before.
+    ord: u32,
 
     /// Document order, written once, because every sort and every ordering
     /// assert in this module reads it -- and an order spelled at each call site
@@ -269,7 +282,26 @@ pub const Place = struct {
     /// merge would mean two sides computing two documents from one history.
     pub fn less_than(self: Place, other: Place) bool {
         if (self.run != other.run) return self.run < other.run;
+        // THE SITE STILL COMES SECOND, and a first draft of this change put the
+        // order key here instead. The merge witness refused it within the hour,
+        // for the reason this file already carried: two branches taken from one
+        // base draw the SAME positions from the shared counter, so they carry
+        // the same `ord` too -- and ordering by `ord` before `site` alternates
+        // their paragraphs line for line, which is the interleaving the run was
+        // introduced to end. A probe over one-site-per-run data had said the
+        // swap was free; that data never held two sites in one run, which is
+        // exactly and only what a merge makes.
         if (self.site != other.site) return self.site < other.site;
+        // The order key decides inside a block, where the position used to. On
+        // every line written before this field they are the same number, so this
+        // reads every elder weave exactly as it read before -- and a REPLACEMENT
+        // is the one line where they differ, carrying the `ord` of the line it
+        // replaces with a position of its own.
+        if (self.ord != other.ord) return self.ord < other.ord;
+        // The identity breaks the last tie, and a replacement is exactly when
+        // that tie happens: it shares the `ord` of the line it replaces and is
+        // told apart by the fresh position it drew. A total order needs an
+        // answer here, and the name is the only thing left that differs.
         return self.pos < other.pos;
     }
 };
@@ -336,7 +368,9 @@ pub const V2Row = struct {
     /// Where this row sits in the document -- the same triple `Line.place`
     /// reads, so the order a record is written in is the order it is read in.
     pub fn place(self: V2Row) Place {
-        return .{ .run = self.run, .site = self.site, .pos = self.pos };
+        // A v2 row predates the order key, and every line it holds was placed by
+        // the monotone counter, so its order IS its position.
+        return .{ .run = self.run, .site = self.site, .pos = self.pos, .ord = self.pos };
     }
 };
 
@@ -379,6 +413,10 @@ pub const Line = struct {
     pos: u32,
     site: u32,
     run: u32,
+    /// The order key, apart from the identity `pos` and `site` spell. See
+    /// `Place.ord`. A line this weave wrote before the v3 record carries
+    /// `ord == pos`.
+    ord: u32,
 
     /// What names this line in every weave that will ever hold it.
     ///
@@ -393,7 +431,7 @@ pub const Line = struct {
 
     /// Where this line sits in the document.
     pub fn place(self: Line) Place {
-        return .{ .run = self.run, .site = self.site, .pos = self.pos };
+        return .{ .run = self.run, .site = self.site, .pos = self.pos, .ord = self.ord };
     }
 };
 
@@ -455,6 +493,11 @@ pub const Note = struct {
     pos: u32,
     site: u32,
     run: u32,
+    /// The order key of the line this note is about, carried so the note sorts
+    /// the way the merge sorts. See `Place.ord`. A note that ordered by position
+    /// where the merge orders by `ord` would be a story about a different
+    /// document, which is the fault this whole field exists to prevent.
+    ord: u32,
     left_gen: u32,
     right_gen: u32,
 
@@ -467,7 +510,7 @@ pub const Note = struct {
     /// A reading that sorted differently from the merge it describes would be a
     /// story about a different document.
     pub fn place(self: Note) Place {
-        return .{ .run = self.run, .site = self.site, .pos = self.pos };
+        return .{ .run = self.run, .site = self.site, .pos = self.pos, .ord = self.ord };
     }
 
     /// The generation a merge of the two sides lands on at this position --
@@ -672,6 +715,9 @@ pub const Weave = struct {
                 .text = row.text,
                 .gen = row.gen,
                 .pos = row.pos,
+                // A v1 record predates the order key, and its lines were placed
+                // by the monotone counter, so the order IS the position.
+                .ord = row.pos,
                 .site = v1_site,
                 .run = v1_run,
             });
@@ -927,7 +973,7 @@ pub const Weave = struct {
         const row_count: u32 = @intCast(record.rows.len);
 
         var seen_any = false;
-        var previous: Place = .{ .run = 0, .site = 0, .pos = 0 };
+        var previous: Place = .{ .run = 0, .site = 0, .pos = 0, .ord = 0 };
         for (record.rows) |row| {
             if (row.gen == 0) return WeaveError.V2GenerationBelowOne;
             if (row.pos >= record.next_pos) return WeaveError.V2CounterBelowLine;
@@ -968,6 +1014,8 @@ pub const Weave = struct {
                 .text = row.text,
                 .gen = row.gen,
                 .pos = row.pos,
+                // A v2 row predates the order key; its order is its position.
+                .ord = row.pos,
                 .site = row.site,
                 .run = row.run,
             });
@@ -1197,6 +1245,10 @@ pub const Weave = struct {
                 .text = text,
                 .gen   = 1,
                 .pos   = self.next_pos,
+                // A fresh insert orders where it is placed, so its order key is
+                // its position. A REPLACEMENT takes the order key of the line it
+                // replaces instead -- see the pairing below.
+                .ord   = self.next_pos,
                 .site  = diff.site,
                 .run   = run,
             };
@@ -1613,6 +1665,7 @@ pub const Weave = struct {
                 .pos = line.pos,
                 .site = line.site,
                 .run = line.run,
+                .ord = line.ord,
                 .left_gen = line.gen,
                 .right_gen = right_gen,
             });
@@ -1645,6 +1698,7 @@ pub const Weave = struct {
                     .pos = line.pos,
                     .site = line.site,
                     .run = line.run,
+                    .ord = line.ord,
                     .left_gen = 0,
                     .right_gen = line.gen,
                 });
