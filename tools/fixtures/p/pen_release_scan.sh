@@ -52,8 +52,33 @@
 #
 # WHAT COUNTS AS A REMOVAL. A line naming `rm` with `-r` in its flags whose argument names one of
 # that file's pen variables -- `rm -rf "$pen"`, `rm -rf ${pen}`, and Rishi's
-# `run ["sh" "-c" "rm -rf ${pen}"]` alike. A removal inside a `trap ... EXIT` is RELEASED; a
+# `run ["sh" "-c" "rm -rf ${pen}"]` alike. A removal a `trap ... EXIT` reaches is RELEASED; a
 # removal anywhere else is straight-line.
+#
+# A TRAP REACHES A REMOVAL TWO WAYS, AND THIS READING SAW ONE OF THEM UNTIL `20260916.073000`.
+# The inline form carries both halves on one line -- `trap 'rm -rf "$pen"' EXIT` -- and the
+# predicate required exactly that, so the two-line form went uncounted:
+#
+#   cleanup() { rm -rf "$PEN"; }
+#   trap cleanup EXIT INT TERM HUP
+#
+# That file releases on four signals, which is the strongest shape in the tree, and it read as a
+# leak. Measured `20260916.073000`: 12 of the 18 shell files in `unreleased_on_refusal` were this
+# exact shape, and the count fell **324 to 312** when the reading widened, with no file changing a
+# byte. The GATED `never_removed` reading never moved, because the function body sets `removed`
+# either way -- so the fault was confined to the reported class, which is the half a ship reads as
+# its work queue. Of 323 controls under `tools/fixtures/`, **287 spell the trap inline and 9 spell
+# it as a function**; those nine were the miscounted ones, which is how a minority spelling took a
+# whole class with it.
+#
+# HOW THE FUNCTION FORM IS READ. A first pass collects the bare names a `trap ... EXIT` registers,
+# because the registration follows the definition in every one of the twelve, so a single pass
+# cannot know at the removal line that its function will later be trapped. A second pass marks a
+# removal released when it sits inside that function -- from `name() {` to the first lone `}`,
+# bounded by `max_fn_lines` (40) so a brace this reading misses can never swallow the rest of the
+# file. A body carrying its own `}` is one line, which is how nine of the twelve are written.
+# A FUNCTION THE TRAP NEVER NAMES IS NO RELEASE: the registration is the whole predicate, and a
+# leg plants an untrapped `sweep()` to prove it.
 #
 # A PEN VARIABLE is one assigned from `mktemp -d`, or derived from a string naming an existing pen
 # variable -- the same collection `pen_entry` makes, and for the same reason: `d="$pen/t"` is the
@@ -71,7 +96,7 @@
 # It is REPORTED and gates nothing, and it reads NO free space: whether the fleet should read its
 # own free space is named in %745 as Keaton's word, and this stays on our own litter.
 #
-# THE THREE MUTATION SWITCHES. `JOIN`, `DERIVE` and `TRAP` each turn one predicate off, so
+# THE FOUR MUTATION SWITCHES. `JOIN`, `DERIVE`, `TRAP` and `FN` each turn one predicate off, so
 # tools/fixtures/p/pen_release_control.sh can flip a single literal and require the reading to
 # change. A predicate nobody can break is a predicate nobody has tested.
 #
@@ -153,7 +178,20 @@ carries_pen() {
 
 read_one() {
   awk -v want="$list" '
-    BEGIN { JOIN=1; DERIVE=1; TRAP=1; heredoc=""; made=0; removed=0; trapped=0 }
+    BEGIN { JOIN=1; DERIVE=1; TRAP=1; FN=1; max_fn_lines=40
+            heredoc=""; made=0; removed=0; trapped=0; fn_open=""; fn_left=0 }
+    # PASS 1 -- the bare function names a `trap` registers. The registration follows the
+    # definition in every one of the controls this tree writes, so a single pass cannot know at
+    # the removal line that this function will later be trapped.
+    FNR == NR {
+      if (FN && $0 ~ /^[[:space:]]*trap[[:space:]]+[A-Za-z_][A-Za-z_0-9]*[[:space:]]/ && $0 ~ /EXIT/) {
+        n = $0
+        sub(/^[[:space:]]*trap[[:space:]]+/, "", n)
+        sub(/[[:space:]].*$/, "", n)
+        trapfn[n] = 1
+      }
+      next
+    }
     {
       line = $0
       if (JOIN) {
@@ -172,6 +210,26 @@ read_one() {
       }
       # A comment line is prose, never a command -- in both languages.
       if (line ~ /^[[:space:]]*#/) next
+
+      # Is this line inside the body of a trap-registered function? The body opens at `name() {`
+      # and closes at the first lone `}`, bounded by max_fn_lines so a brace this reading misses
+      # can never swallow the rest of the file -- the bound errs toward calling a later removal
+      # straight-line, which is the safe direction for a leak census.
+      in_trap_fn = 0
+      if (FN) {
+        if (fn_open == "") {
+          for (n in trapfn)
+            if (line ~ ("^[[:space:]]*" n "[[:space:]]*\\([[:space:]]*\\)")) {
+              fn_open = n; fn_left = max_fn_lines; in_trap_fn = 1
+              if (line ~ /}/) fn_open = ""
+              break
+            }
+        } else {
+          in_trap_fn = 1
+          fn_left = fn_left - 1
+          if (line ~ /^[[:space:]]*}[[:space:]]*$/ || fn_left <= 0) fn_open = ""
+        }
+      }
       if (match(line, /<<-?[[:space:]]*['"'"'"]?[A-Za-z_][A-Za-z_0-9]*['"'"'"]?/)) {
         tag = substr(line, RSTART, RLENGTH)
         gsub(/^<<-?[[:space:]]*|['"'"'"]/, "", tag)
@@ -205,7 +263,7 @@ read_one() {
         for (p in pen)
           if (line ~ ("[$]" p "([^A-Za-z_0-9]|$)") || line ~ ("[$][{]" p "[^A-Za-z_0-9]")) {
             removed = 1
-            if (TRAP && line ~ /(^|[^A-Za-z_0-9])trap[[:space:]]/ && line ~ /EXIT/) trapped = 1
+            if (TRAP && (in_trap_fn || (line ~ /(^|[^A-Za-z_0-9])trap[[:space:]]/ && line ~ /EXIT/))) trapped = 1
             if (want == "yes" && !trapped) print "straight\t" FILENAME "\t" FNR "\t" substr(line, 1, 90)
           }
       }
@@ -216,7 +274,7 @@ read_one() {
       else if (!trapped) print "COUNT\t1\t0\t1"
       else print "COUNT\t1\t0\t0"
     }
-  ' "$1"
+  ' "$1" "$1"
 }
 
 for f in $shell_files; do

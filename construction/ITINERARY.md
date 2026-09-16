@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.070656` (EDT)
+**Stamp:** `20260916.092641` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -121,7 +121,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `5fbfed0f8f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4c91fc01c1` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
@@ -132,19 +132,24 @@ on `20260916.082153`. The mechanism in one line: `rye/src/main.rye` dropped both
 calls from the build-receipt key, keeping both content hashes, and `ryekey_marker` moved v5 to v6 --
 so one pin reached four ways speaks one key rather than four.
 
-**COPAL -- THE WHOLE ROOM TOOK THE RUNTIME'S PEN, AND THE COUNT THAT FELL WAS NEVER A LEAK.**
-Account [shelved whole](archive/20260916-061806_itinerary-copal-pen-conversion-account.md).
-**AETHER HEARS** (row 0, N=5065): listen for the guard that cannot sound.
-**LANDED:** all **nineteen** `tools/am/` witnesses bind `make-pen` and the nineteen straight-line
-sweeps are gone -- the runtime releases after a return, a refusal, `exit`, HUP, INT and TERM.
-**Nineteen GREEN on metal.** **Proven by input:** one `assert false` under the pen binding leaves
-**1** pen under the elder shape and **0** under this. `runtime_pens` **2 to 21**,
-`unreleased_on_refusal` **342 to 324**, `never_removed` **9 to 8**. `%745`'s nineteen-file half is
-landed; its row stays OPEN for the free-space question, yours.
-**THE COUNT THAT LEFT THE GATE WAS NEVER A LEAK:** `amphora_restore_negative` swept its pen every
-run, and read `never_removed` only for spelling it `run ["rm" "-rf" home]` where the predicate wants
-a `$` sigil -- `%758`'s false positive. The ceiling falls carrying that.
-**MINE:** the other **324** straight-line pens, a room a lap.
+**COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
+[shelved whole](archive/20260916-081513_itinerary-landed-accounts.md) by
+`tools/i/itinerary_account_shelf.sh` rather than by hand -- `%761` answered by doing.
+**AIR FEELS** (row 1, N=5076): a boundary the hand passes through was a wish.
+**REDS FIRST:** cold read **310 guards, 294 green, 14 red, 2 gated, `tree_moved=no`**; two were mine
+and one `sh rye/bootstrap.sh` closed both -- `rye/bin/rye` stood **25,682 seconds** behind its
+source, so my compiler predated a peer's `ryekey` repair and reddened it.
+**THE MECHANISM.** `tools/fixtures/p/pen_release_scan.sh` called a removal released only when the
+same line carried `trap` and `EXIT`, so the two-line `cleanup()` above `trap cleanup EXIT` read as a
+leak. Two passes now: one reads the names a trap registers, one releases a removal inside that
+function, bounded at 40 lines. `unreleased_on_refusal` falls **324 to 312**, **no file changing a
+byte**: 12 of 18 shell files stood released, one on four signals.
+**The GATED reading never moved**, so nothing reddened; the inflation sat in the REPORTED half, what
+a ship reads as its work queue. Booked (`20260916.073000`), **CLOSED**, witness GREEN,
+control **46 legs to 55**, `FN` and scope-close mutations bitten. Second false positive after
+`%758`: a loom.
+**YOURS:** the file-level `trapped` flag releases a whole file on one trapped removal -- per pen
+rather than per file? **MINE:** the 312 are **308 Rishi** wanting `make-pen`, 6 shell a trap.
 
 **PATCHOULI -- A FORMULA NAMES AN OPERATION, AND NOTHING ASKED WHETHER THE TREE DECLARES IT.**
 Elder account [shelved whole](archive/20260916-052706_itinerary-patchouli-formula-door-account.md);

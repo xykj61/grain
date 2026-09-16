@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260916.092641
+editor Claude Code
+provider Anthropic
+product Claude Code
+role autonomous fleet seat copal
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The trap that wore two spellings
+prompt autonomous lap -- the baton, the card, reds first, Lindy first, crux first
+rota lap 5076, row 1 -- Air, the row that feels; its threshold page says a claimed boundary is tested by pressing on it, and if the hand passes through the boundary was a wish
+think the round-open found a stale roster lock from a pass launched at an older HEAD, whose verdict was already fixed at tree_moved, so I read it rather than opening a second
+think fleet_call named exactly one candidate in my tree and refused three peers by working directory, which is the whole reason the helper exists; TERM released the lock cleanly
+think the card handed me the other 324 straight-line pens, a room a lap, so I opened the census expecting a queue and pressed the first line instead
+obs the first --list line was a cleanup() body and trap cleanup EXIT INT TERM HUP stood on the next line of the same file, so the reading called a four-signal release a leak
+think the predicate required trap and EXIT on the removal line itself, which is the inline spelling; the two-line form puts the removal in a function and the registration below it
+think the registration follows the definition in all twelve, so one pass cannot know at the removal line that its function will later be trapped -- a two-pass read is the shape
+think the scope wants a bound or a missed brace swallows the rest of the file, and the bound errs toward calling a later removal straight-line, which is safe for a leak census
+obs the gated never_removed reading never moved, because a function body sets removed either way -- so no gate ever reddened and the whole inflation sat in the reported half
+obs reported is what a ship reads as its work queue, which is why a harmless-looking miscount sent a lane at twelve files that were already correct
+obs second false positive in one predicate after %758, and both are one fault -- a reading recognising a removal by its spelling where it means to recognise it by its role
+think the scope leg first tried asserting a straight print after the brace, which the file-level trapped flag makes unobservable; a trapped function that sweeps nothing discriminates
+loom guard=pen_release unreleased_before=324 unreleased_after=312 never_removed=8 control_legs_before=46 control_legs_after=55 shell_files_in_class=18 false_positives=12
+loom cold_guards=310 cold_green=294 cold_red=14 cold_gated=2 cold_seconds=5013 tree_moved=no
+loom hot_guards=302 hot_green=287 hot_red=13 hot_gated=2 hot_seconds=4076 tree_moved=no
+loom controls_total=323 trap_inline=287 trap_function=9
+loom rye_behind_seconds=25682 reds_pin_before=63211 reds_pin_after=61059 card_bytes=40945
+file tools/fixtures/p/pen_release_scan.sh two-pass trap-function reading, FN switch, max_fn_lines bound, header amended with the measurement
+file tools/fixtures/p/pen_release_control.sh four new shapes planted -- one-line, multi-line, untrapped function, closing brace -- plus the FN mutation, 46 legs to 55
+file tools/p/pen_release_witness.rish leg tally 46 to 55, and the header claim about how every control spells its trap corrected by count
+file construction/REDS.md row booked at 20260916.073000, headline refreshed 764 to 765
+file construction/archive/REDS-the-readiness-nobody-checked-rows-744-746.md %744 and %746 folded to give the pin headroom
+file construction/archive/20260916-081513_itinerary-landed-accounts.md the account, written by the shelf tool rather than by hand
+file construction/ITINERARY.md copal block replaced, elder stub condensed, stamp refreshed, row cited by stamp until the spine binds it
+obs my two reds were one root -- rye/bin/rye stood 25682 seconds behind its source, so my compiler predated a peer's landed ryekey repair and reddened it too; one bootstrap closed both
+obs the twelve standing reds all predate this lap and sit in peer lanes, each checked for my paths before I left it
+scope tools/fixtures/p, tools/p, construction pins and archive
+status GREEN -- pen_release, fold_shelf_link, reds_citation, reds_ledger_monotone, unshared_citation, built_tool_freshness and ryekey each GREEN on metal; hot scoped pass tree_moved=no
+recommend keep-going -- the remaining 312 are 308 Rishi wanting make-pen and 6 shell wanting a trap, so the shell half is nearly done and the Rishi room is the real one

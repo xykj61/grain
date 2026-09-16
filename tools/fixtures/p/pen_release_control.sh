@@ -284,6 +284,72 @@ ck "unmutated, the derived pen walks free"       "never_removed=0"            "$
 ck "the trap mutation bites"                     "unreleased_on_refusal=1"    "$(run trap_sh 0 "$(mutate 'TRAP=1' 'TRAP=0')")"
 ck "unmutated, the trap is no straight line"     "unreleased_on_refusal=0"    "$(run trap_sh)"
 
+# ---- the function form of the trap, proven from both sides -------------------------------------
+# A trap reaches a removal two ways and this control only ever planted one of them, so the
+# two-line form -- `cleanup() { rm -rf "$pen"; }` above `trap cleanup EXIT` -- was proven in no
+# direction and read as a leak on 12 of the 18 shell files in the class. The four legs below plant
+# the shape, its multi-line body, the untrapped function that must NOT pass, and the brace that
+# closes the scope.
+
+build trap_fn
+cat > "$pen/trap_fn/case.sh" <<'EOF'
+#!/bin/sh
+pen=$(mktemp -d)
+cleanup() { rm -rf "$pen"; }
+trap cleanup EXIT INT TERM HUP
+printf 'x\n' > "$pen/a.txt"
+EOF
+out=$(run trap_fn)
+ck "a one-line trapped function is released"     "never_removed=0"            "$out"
+ck "a one-line trapped function is no straight line" "unreleased_on_refusal=0" "$out"
+ck "the trapped function shape walks free"       "verdict=released"           "$out"
+ck "the trapped function shape exits 0"          "^0$"                        "$(code trap_fn)"
+
+build trap_fn_multi
+cat > "$pen/trap_fn_multi/case.sh" <<'EOF'
+#!/bin/sh
+pen=$(mktemp -d)
+cleanup() {
+  printf 'sweeping\n' >&2
+  rm -rf "$pen"
+}
+trap cleanup EXIT
+printf 'x\n' > "$pen/a.txt"
+EOF
+ck "a multi-line trapped function is released"   "unreleased_on_refusal=0"    "$(run trap_fn_multi)"
+
+# A function no trap names is NOT a release -- the registration is the whole predicate. Without
+# this leg, FN would call every function-wrapped removal released and the reading would go blind
+# in the unsafe direction.
+build fn_untrapped
+cat > "$pen/fn_untrapped/case.sh" <<'EOF'
+#!/bin/sh
+pen=$(mktemp -d)
+sweep() { rm -rf "$pen"; }
+sweep
+EOF
+ck "an untrapped function stays straight-line"   "unreleased_on_refusal=1"    "$(run fn_untrapped)"
+
+# The scope closes at the lone brace. The trapped function here sweeps NOTHING, so the removal
+# below its brace is the only one in the file: reading the scope correctly leaves that removal
+# outside the function and straight-line, while a scope that ran on would call it released. The
+# case discriminates because `trapped` is a file-level flag -- a cleanup that removed the pen
+# would set it either way and the leg would pass without proving anything.
+build fn_scope_closes
+cat > "$pen/fn_scope_closes/case.sh" <<'EOF'
+#!/bin/sh
+pen=$(mktemp -d)
+cleanup() {
+  printf 'nothing swept\n' >&2
+}
+trap cleanup EXIT
+rm -rf "$pen"
+EOF
+ck "the function scope closes at its brace"      "unreleased_on_refusal=1"    "$(run fn_scope_closes)"
+
+ck "the function mutation bites"                 "unreleased_on_refusal=1"    "$(run trap_fn 0 "$(mutate 'FN=1' 'FN=0')")"
+ck "unmutated, the trapped function is no straight line" "unreleased_on_refusal=0" "$(run trap_fn)"
+
 echo "pass=$pass"
 echo "fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

@@ -22,8 +22,19 @@
 #
 # `unreleased_on_refusal` -- the runners whose removal stands on the straight-line success path, so
 # a refusal above it leaves the pen behind -- is REPORTED and gated by nothing. In shell the cure
-# is the `trap 'rm -rf "$pen"' EXIT` every control in tools/fixtures/ already carries. It read 341
-# at seating and 324 from `20260916.061500`; run the scan rather than trusting either figure.
+# is a `trap` reaching the removal. It read 341 at seating, 324 from `20260916.061500`, and 312
+# from `20260916.073000`; run the scan rather than trusting any of the three.
+#
+# THAT LAST FALL MOVED NO FILE. This header said the cure is *the `trap 'rm -rf "$pen"' EXIT`
+# every control in tools/fixtures/ already carries*, and the scan required exactly that one-line
+# spelling, so the two-line form -- a `cleanup()` function above a `trap cleanup EXIT` -- read as
+# a leak. Measured: of 323 controls under `tools/fixtures/`, 287 spell the trap inline and 9 spell
+# it as a function, so the sentence was true of the majority and the predicate was built on it.
+# Those nine were the miscounted ones. In the class itself, 12 of the 18 shell files were this
+# shape -- `tools/fixtures/a/aurora_placement_control.sh` releases on EXIT, INT, TERM and HUP and
+# was counted a leak. The GATED `never_removed` reading never moved, because the function body
+# sets `removed` either way: the fault was confined to the reported half, which is the half a ship
+# reads as its work queue. A count of 324 sent a lane converting files already correct.
 #
 # THE RISHI HALF OF THAT SENTENCE IS CLOSED, and the elder claim beside it was false. This header
 # read *Rishi has no trap*; the runtime has carried a CleanupRegistry since `acquire-lock`, and
@@ -63,7 +74,7 @@ let control = run ["sh" "tools/fixtures/p/pen_release_control.sh"]
 assert control.ok else "pen release control did not reach control_verdict=ok: ${control.out_brief}"
 assert control.out contains "control_verdict=ok" else "pen release control verdict missing: ${control.out_brief}"
 assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
-assert control.out contains "pass=46" else "the control's leg tally moved: ${control.out_brief}"
+assert control.out contains "pass=55" else "the control's leg tally moved: ${control.out_brief}"
 
 assert scan.out contains "runtime_pens=21" else "the runtime-owned pen population moved: ${scan.out_brief}"
 
