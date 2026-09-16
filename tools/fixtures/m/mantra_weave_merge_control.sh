@@ -11,7 +11,7 @@
 # weave.rye and its witness sit side by side here. Everything reads from the filesystem
 # alone, which makes a plain directory the honest pen.
 #
-# TEN PHASES -- two innocent, eight breaks.
+# THIRTEEN PHASES -- two innocent, eleven breaks.
 #   clean          -- the unmutated copy reaches GREEN, exit 0. This leg is what lets every
 #                     other phase read as the break speaking rather than the pen.
 #   join           -- `@max(held.gen, line.gen)` becomes `line.gen`, so the last weave read
@@ -31,6 +31,11 @@
 #                     strictly ordered and the merge postcondition fires.
 #   run_ignored    -- the run leaves Place.less_than and the position takes its seat, which is
 #                     the elder order exactly; claim 10's paragraphs come back shuffled.
+#   pos_derived    -- next_pos is derived from the result's lines instead of carried from
+#                     the two sides. Caught by nothing before 20260915, because every weave
+#                     the elder claims build stands at exactly one above its highest line
+#                     and the derivation equals the max there. Claim 11 restores a slack
+#                     one through `from_v2`, which is the weave `V2Record` admits on purpose.
 #   bound_shrunk   -- max_weave_lines drops from 1<<20 to 16, and that is the only change.
 #                     Staying GREEN here is what makes the two phases below attributable to
 #                     what they break rather than to the shrink.
@@ -50,6 +55,11 @@
 # bound_refused still refuses at nine against nine, in milliseconds.
 #
 # EXPECTED: clean_exit=0, bound_shrunk_exit=0, and every other phase non-zero.
+#
+# WHY THE SHRINK STILL SITS AT 16 after claim 11 landed. `from_v2` refuses a declared
+# counter past max_weave_lines, so the shrink now bounds a DECLARED number as well as a
+# union. Claim 11 declares 5 and 4 against a union of six, both under 16, so the phase
+# stays innocent and the ceiling stays where claim 10 put it.
 #
 # EIGHT BREAKS. `identity` narrows LineId.eq back to the position alone, which is the state
 # that refused two branches before the site landed (20260906.210016); `tiebreak` drops the
@@ -165,6 +175,18 @@ run_ignored_exit="$(run_pen run_ignored 's/        if (self.run != other.run) re
 # position, so place order and `pos < next_pos` both still hold, and the merge
 # postcondition's run assert is the only reading that can fire.
 run_counter_exit="$(run_pen run_counter 's/            .next_run = @max(self.next_run, other.next_run),/            .next_run = @min(self.next_run, other.next_run),/')"
+# The POSITION counter is DERIVED from the result's lines rather than carried
+# from the two sides -- the exact fault `V2Record`'s own head warns about, since
+# a record that derived its counters would bind every reading to a tightness the
+# weave never promised. A min was tried first and is the wrong plant: every weave
+# the elder ten claims build stands at exactly one above its highest line, so a
+# fallen counter is caught by the walk there and the phase would read as the
+# max's general law rather than as this gap. The derivation EQUALS the max on all
+# ten and parts from it only where a side stands several above its own highest
+# line. Measured 20260915 in a pen: with claim 11 removed this plant exits 0,
+# every elder claim passing; with claim 11 present it exits 134. That is the
+# phase isolating, shown from both sides.
+pos_derived_exit="$(run_pen pos_derived 's|            .next_pos = @max(self.next_pos, other.next_pos),|            .next_pos = derive_blk: { var m: u32 = 0; for (out.items) \|l\| { if (l.pos + 1 > m) m = l.pos + 1; } break :derive_blk m; },|')"
 # A delete after merge must work in document order. This plant asserts the
 # parked draft's false precondition: each target is findable by binary search
 # over the backing list in identity order. The new case puts those orders apart.
@@ -190,6 +212,8 @@ echo "phase=run_ignored"
 echo "run_ignored_exit=$run_ignored_exit"
 echo "phase=run_counter"
 echo "run_counter_exit=$run_counter_exit"
+echo "phase=pos_derived"
+echo "pos_derived_exit=$pos_derived_exit"
 echo "phase=delete_lookup"
 echo "delete_lookup_exit=$delete_lookup_exit"
 echo "phase=bound_shrunk"
@@ -203,7 +227,7 @@ verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
 # other reading below is a number and this one is a word.
 for reading in "$clean_exit" "$join_exit" "$order_exit" "$text_exit" "$identity_exit" \
-               "$tiebreak_exit" "$run_ignored_exit" "$run_counter_exit" "$delete_lookup_exit" "$shrunk_exit" "$removed_exit" \
+               "$tiebreak_exit" "$run_ignored_exit" "$run_counter_exit" "$pos_derived_exit" "$delete_lookup_exit" "$shrunk_exit" "$removed_exit" \
                "$misnamed_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
@@ -211,7 +235,7 @@ if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
   for broken in "$join_exit" "$order_exit" "$text_exit" "$identity_exit" "$tiebreak_exit" \
-                "$run_ignored_exit" "$run_counter_exit" "$delete_lookup_exit" "$removed_exit" "$misnamed_exit"; do
+                "$run_ignored_exit" "$run_counter_exit" "$pos_derived_exit" "$delete_lookup_exit" "$removed_exit" "$misnamed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi

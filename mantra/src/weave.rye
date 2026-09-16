@@ -473,7 +473,24 @@ pub const Note = struct {
     /// The generation a merge of the two sides lands on at this position --
     /// the same `@max` the merge itself takes, read from the same two counts.
     pub fn gen(self: Note) u32 {
-        return @max(self.left_gen, self.right_gen);
+        // invariant: a note names a position at least one side has seen, which
+        // is the same precondition `reading` states -- said here too because
+        // this is the other reader of the same two counts, and a note neither
+        // side has seen would answer zero rather than refusing
+        assert(self.left_gen != 0 or self.right_gen != 0);
+        const merged = @max(self.left_gen, self.right_gen);
+        // invariant: the answer is a real generation, so a caller may compare
+        // it against a weave's counts without first asking whether it is the
+        // reserved zero
+        assert(merged >= 1);
+        // A third and fourth assert -- that `merged` stands at or above each
+        // count -- were written here and taken out the same lap. `@max` is on
+        // the line above, so both are tautologies the compiler folds, and an
+        // assert that cannot fail teaches a reader that the ones beside it
+        // might not either. The two kept are derived rather than restated: the
+        // precondition is about the CALLER, and `merged >= 1` follows from it
+        // rather than from the max.
+        return merged;
     }
 
     /// Whether the left side holds this line present. Parity is the tombstone,
@@ -1426,8 +1443,13 @@ pub const Weave = struct {
     ///   refused by name. With the site in the identity this is corruption
     ///   rather than ordinary branching: one site issued one name twice.
     /// Postcondition: places strictly increase, every line keeps a real
-    ///   generation, and next_pos and next_run stand above every position and
-    ///   run in the result.
+    ///   generation, next_pos and next_run stand above every position and
+    ///   run in the result, and both counters stand at or above BOTH SIDES'
+    ///   -- the last of those said separately from `20260915`, because the
+    ///   walk over the result cannot see it when a side stands several above
+    ///   its own highest line. `V2Record` admits exactly that weave on
+    ///   purpose; the four counter asserts below are where the max is held to
+    ///   rather than inferred from what the lines happen to carry.
     ///
     /// THAT POSTCONDITION NAMED FOUR THINGS AND ASSERTED THREE until
     /// `20260908`. The run was the one that passed, and it is the field
@@ -1487,6 +1509,36 @@ pub const Weave = struct {
             // that has already happened.
             .next_run = @max(self.next_run, other.next_run),
         };
+
+        // Postcondition on the COUNTERS THEMSELVES, said apart from the walk
+        // below because the walk cannot see it. The walk holds every held LINE
+        // under the merged counters, and that reading is exactly as tight as
+        // the tightest side: a weave standing one above its highest line proves
+        // its own counter by carrying it. A weave standing SEVERAL above does
+        // not, and `V2Record` admits one on purpose -- its own head says the
+        // record declines to inherit the tightness, and `from_v2` refuses only
+        // a counter at or below a row it holds. So a restored weave may declare
+        // `next_pos` at 5 while holding position 2, and a counter DERIVED from
+        // the result's lines would hand the next `apply` a position that record
+        // already declared spent, with every line still standing under the
+        // fallen counter and nothing in the walk able to say so. The merge
+        // control's `pos_derived` phase plants exactly that, and it passes every
+        // other claim in the witness.
+        //
+        // NAME WHAT THESE FOUR ARE NOT: an isolated catch. Claim 11 reads the
+        // merged counters directly, so the pen reds with these lines deleted --
+        // measured `20260915`, exit 134 either way. What they buy is the reading
+        // for EVERY caller rather than for the witness's one input, which is the
+        // difference between a module holding its own postcondition and a
+        // witness holding it on the module's behalf. The lift's run assert one
+        // constructor over is named the same way and for the same reason.
+        //
+        // Four asserts rather than two compound ones, because a compound
+        // `assert(a and b)` names the pair and not the side that failed.
+        assert(merged.next_pos >= self.next_pos);
+        assert(merged.next_pos >= other.next_pos);
+        assert(merged.next_run >= self.next_run);
+        assert(merged.next_run >= other.next_run);
 
         for (merged.lines.items, 0..) |line, i| {
             // invariant: a line carries a real generation, since zero is

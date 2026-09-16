@@ -399,6 +399,85 @@ fn prove_bound_refused(garden: std.mem.Allocator) !void {
     print("mantra-merge: a union past max_weave_lines refused TooManyLines at the edge -- GREEN unwelcome path\n", .{});
 }
 
+/// Claim 11: a side standing SEVERAL above its own highest line carries its
+/// counters through the merge, and the walk over the result cannot see it.
+///
+/// WHY NO OTHER CLAIM REACHES THIS. Every weave the other ten build stands at
+/// exactly one above its highest position and one above its highest run --
+/// `apply` advances a counter only when it places a line, `planted` and
+/// `wide_weave` fill contiguously, and `seeded` DERIVES its run counter from
+/// the lines it was handed rather than taking one. So a merge that took the
+/// MINIMUM of two such sides is caught by the walk: the side holding the higher
+/// counter also holds the line just below it, and that line then stands at or
+/// above the fallen counter.
+///
+/// `V2Record` declines that tightness ON PURPOSE -- its own head says so -- and
+/// `from_v2` refuses only a counter at or below a row it holds. So a restored
+/// weave may declare `next_pos` 5 and `next_run` 4 while holding three rows at
+/// positions 0..2 and run 0, which is what this claim builds. Merge it with a
+/// fresh three-line weave standing tight at 3 and 1, and a minimum would answer
+/// 3 and 1: every line on both sides still stands under both numbers, every
+/// place still rises, and the walk passes while the next `apply` hands out a
+/// position the record already declared spent.
+///
+/// THE SLACK IS TWO RATHER THAN NINETY-SEVEN, and the number is the control's
+/// rather than the claim's: `bound_shrunk` drops `max_weave_lines` to 16 and
+/// must stay GREEN, and `from_v2` refuses a counter past the ceiling -- so a
+/// declared 100 reds the innocent phase and reads as the shrink speaking. A gap
+/// of two proves the same thing as a gap of ninety-seven, since the walk reads
+/// `line.pos < next_pos` and one step of slack is already outside its reach.
+///
+/// The claim reads the counters directly rather than the lines, because reading
+/// the lines is the reading that cannot tell.
+fn prove_slack_counters_carried(garden: std.mem.Allocator) !void {
+    const rows = [_]weave.V2Row{
+        .{ .text = "alpha", .gen = 1, .pos = 0, .site = site_x, .run = 0 },
+        .{ .text = "beta", .gen = 1, .pos = 1, .site = site_x, .run = 0 },
+        .{ .text = "gamma", .gen = 1, .pos = 2, .site = site_x, .run = 0 },
+    };
+    const slack_pos: u32 = 5;
+    const slack_run: u32 = 4;
+    const restored = try weave.Weave.from_v2(garden, .{
+        .rows = &rows,
+        .next_pos = slack_pos,
+        .next_run = slack_run,
+    });
+
+    // invariant: the restored side really is slack, so the claim below is about
+    // a counter standing above its lines rather than about an ordinary weave
+    assert(restored.next_pos == slack_pos);
+    assert(restored.next_run == slack_run);
+    for (restored.lines.items) |line| {
+        // invariant: every row sits far below the declared counter, which is the
+        // whole gap the walk over a merged result cannot read
+        assert(line.pos + 1 < restored.next_pos);
+        assert(line.run + 1 < restored.next_run);
+    }
+
+    const fresh = try planted(garden, &[_][]const u8{ "delta", "epsilon", "zeta" });
+    // invariant: the fresh side is the tight one, so the merged counters below
+    // can only come from the slack side rather than from both agreeing
+    assert(fresh.next_pos < slack_pos);
+    assert(fresh.next_run < slack_run);
+
+    const merged = try restored.merge(garden, &fresh);
+    // invariant: the merged position counter carries the higher of the two
+    // DECLARED numbers, so the next edit takes a position neither side has
+    // spent -- read off the counter rather than off the lines
+    assert(merged.next_pos == slack_pos);
+    // invariant: and the run counter the same way, which is the field
+    // `Place.less_than` reads first
+    assert(merged.next_run == slack_run);
+
+    const mirror = try fresh.merge(garden, &restored);
+    // invariant: the max is order-independent, so the mirrored merge lands on
+    // the same two numbers rather than on whichever side was named first
+    assert(mirror.next_pos == slack_pos);
+    assert(mirror.next_run == slack_run);
+
+    print("mantra-merge: a slack counter carries through a merge both ways -- GREEN counters, not lines\n", .{});
+}
+
 /// A weave of `count` lines carrying one shared text, positions 0..count.
 fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
     // invariant: a plant stays inside the module's own bound, since a weave
@@ -552,6 +631,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_interleaved_order(garden);
     try prove_forged_identity_refused(garden);
     try prove_merged_weave_still_edits(garden);
+    try prove_slack_counters_carried(garden);
 
     print("mantra-merge: version {s}\n", .{witness_version});
     print("GREEN: merging two weaves is a join -- commutative, associative, idempotent, and refusing by name.\n", .{});
