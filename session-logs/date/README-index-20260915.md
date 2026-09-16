@@ -10,8 +10,10 @@
 | `20260915.230831` | [The pen nobody asked about](20260915/20260915-230831_the-pen-nobody-asked-about.kyri) | third pen question: 16 never removed, 336 swept only on success |
 | `20260915.224809` | [Four closed and three sharpened](20260915/20260915-224809_four-closed-and-three-sharpened.kyri) | the gated reds worked through |
 | `20260915.224708` | [The room a name never said](20260915/20260915-224708_the-room-a-name-never-said.kyri) | 3 tool files to the room their names say; red %749 |
+| `20260915.224130` | [The lap recovered from the dead-letter box](20260915/20260915-224130_the-lap-recovered-from-the-box.kyri) | a cut lap restored whole; the floor widens to 54.8 |
 | `20260915.223455` | [The door that paid its way in](20260915/20260915-223455_the-door-that-paid-its-way-in.kyri) | skate door 27 to 14 percent, rostered; 109 sentences held |
 | `20260915.223309` | [The fence that had a second side](20260915/20260915-223309_the-fence-that-had-a-second-side.kyri) | 45 declaring desks read for the first time; 8 linked |
+| `20260915.222402` | [The trial with nothing to compare](20260915/20260915-222402_the-trial-with-nothing-to-compare.kyri) | row 12's falsifier has no operand; four of nine funded metal |
 | `20260915.222118` | [The door that counted four and held six](20260915/20260915-222118_the-door-that-counted-four-and-held-six.kyri) | press door named 4 and held 6; register 27 to 7 |
 | `20260915.222014` | [the binary that outlived its source](20260915/20260915-222014_the-binary-that-outlived-its-source.kyri) | freshness for rye and rishi: 36 legs, %746 BOOKED |
 | `20260915.221438` | [Six of eight carry the fields](20260915/20260915-221438_six-of-eight-carry-the-fields.kyri) | four peer interpreters rebuilt |

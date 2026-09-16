@@ -6273,3 +6273,42 @@ guard whitepaper_definitions
 path tools/w/whitepaper_definitions_witness.rish
 tier cadence
 seated 20260915.212827
+
+# workload_trial -- row 12 of the bounded-torus page proposes a METHOD rather than an idea: "the
+# smallest trial that touches metal goes first, and its result funds the ordering of everything
+# after it," falsified when "the trial's number sits inside the run-to-run spread of the baseline."
+# Ten rows now carry landed errata, so the method can be held against what the ordering actually
+# did. A falsifier of that shape needs three things, and they fail separately.
+#
+# THE METAL CLAUSE FIRED, AND NO TRIAL RAN IT. Every tools path named inside an erratum line is
+# classified by what its own EXECUTABLE lines open, one delegation hop followed, since every
+# witness in this family hands its work to a control and reads arithmetic when read alone. Read
+# 20260915 over ten errata naming nine instruments: four metal, two bytes, two arithmetic, one
+# host, none absent, seven re-ranks or re-aims standing. Every one of the four metal readings
+# produced a REFUSAL -- a compiler declining a trap with no bound, a digest avalanching two
+# near-identical files apart, a tick loop proving three closed forms -- where row 12 proposes a
+# comparison of DEGREE.
+#
+# AND DEGREE HAS NO OPERAND. Across all twelve row bodies the count of numeric effect claims reads
+# ZERO; three rows say "saving" and none says how much. So the falsifier cannot fire in either
+# direction, which is row 11's finding arriving along a second road.
+#
+# AND THE PIER PUTS A FLOOR UNDER ANY SINGLE TRIAL. A deterministic CPU-bound workload measuring a
+# change of exactly zero read a baseline spread of 16.7 to 54.8 percent of its median across eight
+# readings at load average 8 to 13, with 40 to 100 percent of zero-change trials landing inside the
+# band. Any improvement under roughly a fifth is invisible to one trial here.
+#
+# THE SCAN READS PAST ITS OWN PATH, because its classifier holds every marker it looks for as a
+# grep argument -- it classified itself `host` on the lap its own erratum landed.
+#
+# WHAT IS GATED IS SHORT ON PURPOSE. The page's shape is held by tracked bytes and is walled: twelve
+# rows, zero effect sizes, every named instrument present. The funding distribution is reported and
+# never gated, since it rightly moves as rows land. Every timing figure is FREE -- eight ships share
+# this pier -- so only the arithmetic's self-consistency is asserted.
+#
+# `tier cadence` rather than lap: the live reading takes about 14s of deliberate wall time and the
+# control runs the scan around twenty times beside it.
+guard workload_trial
+path tools/w/workload_trial_witness.rish
+tier cadence
+seated 20260915.221500

@@ -1,0 +1,119 @@
+# tools/w/workload_trial_witness.rish -- row 12 proposes a comparison, and there is nothing to
+# compare.
+#
+# WHY THIS RUNG. Row 12 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the
+# last row of the twelve whose subject is the other eleven. It proposes a METHOD: "the smallest
+# trial that touches metal goes first, and its result funds the ordering of everything after it",
+# falsified when "the trial's number sits inside the run-to-run spread of the baseline". Ten rows
+# now carry landed errata, so the method can be checked against what the ordering actually did.
+#
+# A falsifier comparing a number against a spread needs three things, and they fail separately, so
+# each is its own reading.
+#
+# READING 1 -- THE ORDERING WAS FUNDED, AND PARTLY BY METAL. Every `tools/` path named inside an
+# erratum line is classified by what its own EXECUTABLE lines open, one delegation hop followed,
+# since every witness here delegates its work to a control and a witness read alone reads
+# arithmetic. Read 20260915 over ten errata naming nine instruments: four metal, two bytes, two
+# arithmetic, one host, and none absent. Seven re-ranks or re-aims stand, this row's own included.
+# THE SCAN READS PAST ITSELF BY NAME, because its classifier holds every marker it looks for as a
+# grep argument -- it read `host` on the lap its own erratum landed, which is the fault named
+# rather than hidden. So row 12's
+# "touches metal" clause DID fire -- and not one of those four was a trial. A compiler refused a
+# trap with no bound; a digest avalanched two near-identical files to opposite corners; a tick loop
+# proved three closed forms. The ordering moved on REFUSALS, which are yes-or-no, where row 12
+# proposes a comparison of DEGREE.
+#
+# READING 2 -- AND DEGREE HAS NO OPERAND. A trial's number is compared against a number somebody
+# proposed. Across all twelve row bodies, the count of numeric effect claims -- a percentage, a
+# multiplier, a factor -- reads ZERO. Three rows say "saving" and none says how much. So row 12's
+# falsifier cannot fire in either direction: there is no proposed number for a measured one to sit
+# inside or outside of. That is the same shape row 11's erratum found one row over, arriving by a
+# different road, and it is why the verdict is falsifier_without_operand rather than a failure.
+#
+# READING 3 -- AND THE PIER PUTS A FLOOR UNDER ANY SINGLE TRIAL. A fixed deterministic CPU-bound
+# workload is run as a baseline and then again as "trials", every trial measuring a change of
+# exactly zero. Seven readings on 20260915 between load average 8 and 13: the baseline spread ran
+# 16.7 to 54.8 percent of its median, and the share of zero-change trials landing INSIDE the band
+# ran 40 to 100 percent -- so between none and six trials in ten reported a result where nothing
+# had changed. Any improvement smaller than roughly a fifth is invisible to one trial here. EVERY
+# ONE OF THOSE FIGURES IS FREE: eight ships share this pier and the numbers move with what the
+# other seven are doing, so the witness gates the arithmetic's self-consistency and leaves every
+# number to whoever runs it.
+#
+# WHAT IS GATED, and why the list is short. The page's own shape -- twelve rows, no effect size,
+# every named instrument present -- is HELD by tracked bytes, so it is walled. The verdict follows
+# from those. The timing is FREE and nothing about it is gated beyond the arithmetic agreeing with
+# itself. The funding distribution is reported and never gated, because it rightly moves as rows
+# land.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/w/workload_trial_control.sh -- 62 behaviors in a
+# throwaway pen with real planted pages and instruments, every refusal shown from both sides:
+#
+#   THE FOUR CLASSIFICATIONS, each planted and read back, and none of them by accident.
+#   A COMMENT IS NOT A READING -- an instrument whose header names /sys and a compiler, and whose
+#     body opens nothing, reads arithmetic. This family cites itself in prose constantly, so this
+#     is the false positive it is actually prone to.
+#   ONE DELEGATION HOP, from both sides: a witness inherits its control's metal, and an instrument
+#     that merely NAMES a .rye source reads bytes -- reading a file's text is not running it.
+#   A NAMED INSTRUMENT THAT IS ABSENT counts, says so, and lands in no classification.
+#   AN INSTRUMENT CANNOT CLASSIFY ITSELF -- a planted copy at the scan's own path is read past by
+#     name, its erratum still counted, and it lands in no classification.
+#   THE OPERAND FROM BOTH SIDES: a percentage and a multiplier each read one, a numberless page
+#     reads zero, and a page with no row bodies at all reads unreadable rather than zero.
+#   THE THREE VERDICTS, each reached by its own planted page.
+#   And two mutations, each proven applied by cmp before its reading is believed: dropping the
+#     delegation hop loses the witness's metal, and dropping comment-stripping misclassifies the
+#     instrument that only talks about opening a file.
+#
+# ONE FAULT THE PEN FOUND IN THE SCAN, fixed before this rung was written: reading 2 assigned its
+# count to `effect_hits` and the verdict block read `rows_with_effect_size`, so `operand_present`
+# answered "no" whatever the page said -- the right answer for this page, reached by a broken
+# road, which is the kind of agreement only a planted opposite can break.
+#
+# WHAT IT LEAVES TO OTHERS. Whether any of the twelve ideas is true; each row's own erratum owns
+# that. Whether a repeated or longer trial would resolve what a single one cannot -- it plainly
+# would, and that is a different method from the one row 12 wrote down. Energy, which
+# energy_instrument_scan.sh already answered joule_source=none for on this pier.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260915-221500_the-trial-with-nothing-to-compare.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/w/workload_trial_witness.rish
+
+say "workload-trial: Language EN -- a method is a claim, and a claim is checkable."
+say "workload-trial: Style Gauge, Meter -- every held figure walled, every free figure named free."
+say "workload-trial: Lens TAME -- bound the runs, classify from executable lines, prove both ways."
+
+let control = run ["sh" "tools/fixtures/w/workload_trial_control.sh"]
+say control.out
+assert control.ok else "workload-trial: the control must complete -- its own lines are printed above${control.err_brief}${control.out_brief}"
+
+assert control.out contains "control_expected=62" else "workload-trial: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_legs=62" else "workload-trial: a leg added or lost is a leg nobody heard"
+assert control.out contains "control_failed=0" else "workload-trial: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "workload-trial: the control must balance before it is believed"
+
+let live = run ["sh" "tools/fixtures/w/workload_trial_scan.sh"]
+say live.out
+assert live.ok else "workload-trial: the live reading must run${live.err_brief}${live.out_brief}"
+assert live.out contains "instrument=workload_trial" else "workload-trial: the reading names its own instrument"
+
+# The page's own shape -- held by tracked bytes, so walled.
+assert live.out contains "rows_read=12" else "workload-trial: the page carries twelve rows, and a reading over some other count is a reading of some other page"
+assert live.out contains "instruments_all_present=yes" else "workload-trial: every tools path an erratum names must stand in this tree"
+assert live.out contains "funded_absent=0" else "workload-trial: an instrument named and absent is an erratum citing nothing"
+
+# Reading 2 -- the operand, walled at zero. A row that gains a number reds this on purpose.
+assert live.out contains "rows_with_effect_size=0" else "workload-trial: no row names an effect size; a row that gains one is reason to re-read row 12"
+assert live.out contains "operand_present=no" else "workload-trial: row 12's falsifier compares against a number nobody proposed"
+
+# Reading 1 -- the metal clause of row 12 did fire, and the reading says so plainly.
+assert live.out contains "ordering_funded_by_metal=yes" else "workload-trial: four of nine instruments touch metal, so the clause fired even though no trial ran"
+
+# Reading 3 -- every number free, the arithmetic held.
+assert live.out contains "timing_self_consistent=yes" else "workload-trial: a maximum under its minimum, or an inside count past the trials taken, is a broken instrument"
+
+assert live.out contains "verdict=falsifier_without_operand" else "workload-trial: the method cannot be run as written, and the reason is the missing operand"
+
+say "GREEN: workload-trial -- 62 behaviors, two mutations bitten, a moved instrument resolved from its own basename, ten errata read, four of nine instruments touching metal and not one of them a trial, zero effect sizes across twelve rows, and a single-trial floor this pier reads between 16.7 and 54.8 percent."
