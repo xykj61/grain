@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.235705` | [The settlement door pays its way in](20260915/20260915-235705_the-settlement-door-pays-its-way-in.kyri) | recovered: 33 to 17 percent, two byte figures on metal |
 | `20260915.234836` | [The floor plan the disk left behind](20260915/20260915-234836_the-floor-plan-the-disk-left-behind.kyri) | src taught as five rooms, standing at three |
 | `20260915.232457` | [The build that waited in a stash](20260915/20260915-232457_the-build-that-waited-in-a-stash.kyri) | parked build re-proven 15/0; landed 20260916 |
 | `20260915.230831` | [The pen nobody asked about](20260915/20260915-230831_the-pen-nobody-asked-about.kyri) | third pen question: 16 never removed, 336 swept only on success |
@@ -45,9 +46,11 @@
 | `20260915.195227` | [The room that counted itself short](20260915/20260915-195227_the-room-that-counted-itself-short.kyri) | a door swept 50 to 3 percent, three figures re-measured |
 | `20260915.195133` | [The box that held three records](20260915/20260915-195133_the-box-that-held-three-records.kyri) | three orphans revived; four reds closed |
 | `20260915.194903` | [The pen that closed one of two](20260915/20260915-194903_the-pen-that-closed-one-of-two.kyri) | lotus migrated; ceiling 1813 to 1574 |
+| `20260915.192952` | [The lap that read its own dead letter](20260915/20260915-192952_the-lap-that-read-its-own-dead-letter.kyri) | recovered: counsel door swept, two logs brought home |
 | `20260915.192622` | [The ratchet that counted held desks](20260915/20260915-192622_the-ratchet-that-counted-held-desks.kyri) | floor named desk by desk, 18 to 14 |
 | `20260915.192312` | [Forty names the tree no longer shares](20260915/20260915-192312_forty-names-the-tree-no-longer-shares.kyri) | ceiling 1853 to 1813 |
 | `20260915.192229` | [The pen a runner never entered](20260915/20260915-192229_the-pen-a-runner-never-entered.kyri) | 5 unguarded pen entries walled at zero |
+| `20260915.192045` | [The closed room leads with what stands](20260915/20260915-192045_the-closed-room-leads-with-what-stands.kyri) | recovered: one front door swept and rostered |
 | `20260915.190129` | [The count that stopped at the dollar sign](20260915/20260915-190129_the-count-that-stopped-at-the-dollar-sign.kyri) | 1,853 sites ratcheted, not 51 |
 | `20260915.185943` | [The rebase that walks the wall](20260915/20260915-185943_the-rebase-that-walks-around-the-wall.kyri) | The marker wall moves to the push. |
 | `20260915.185511` | [Three paths nobody knew were busy](20260915/20260915-185511_three-paths-nobody-knew-were-busy.kyri) | four cold reds closed; Mantra builds in pens |
