@@ -33,12 +33,24 @@ leg() {
 
 # A pen of real shelves, written to be read exactly as the tree's own are: a row headline is
 # `**REDS %N (stamp) -- title.**` at the head of a line.
+#
+# A PLANT THAT MUST NOT EXIST WEARS A FIVE-DIGIT RUN, seated `20260916.114500`. Several legs below
+# need a row number the pen holds and the real ledger does not -- `%90000` in the stub pin,
+# `%77700` for the missing verdict, `%20000` for the digit-run boundary. Written three or four
+# digits long they read as ordinary citations to `tools/fixtures/u/unshared_citation_scan.sh`,
+# which gates living surfaces against citing a `%N` the anointed spine has not bound, and reads
+# past the ledger, its archives, and dated testimony -- three rooms, all of them testimony, and a
+# pen plant is none of the three. Seven such citations reddened that guard the lap this control
+# landed. The digits carry no meaning here, so they take a run the row-number reading skips: that
+# scan counts a whole run of exactly three or four digits, on the same argument by which `%200000`
+# in two image modules is a colour. A plant outside the shape also survives a renumbering sweep,
+# which is the second reason to keep it there. Do not shorten them.
 mkdir -p "$pen/archive"
 row() { printf '**REDS %%%s (`2026%s`) -- planted row.** *What went wrong:* planted.\n' "$1" "$2"; }
 
 { echo "# shelf one"; row 100 0101.010101; row 101 0101.010102; } > "$pen/archive/REDS-first-rows-100-101.md"
 { echo "# shelf two"; row 200 0102.010101; } > "$pen/archive/REDS-second-rows-200.md"
-{ echo "# the pin"; row 900 0103.010101; } > "$pen/pin.md"
+{ echo "# the pin"; row 90000 0103.010101; } > "$pen/pin.md"
 
 run() { REDS_SHELF_GLOB="$pen/archive/REDS-*.md" REDS_PIN="$pen/pin.md" sh "$RESOLVER" "$@" 2>/dev/null || true; }
 verdict() { run "$1" | sed -n 's/^verdict=//p'; }
@@ -62,15 +74,15 @@ leg recovered_exits_zero             0                 "$(code REDS-an-elder-tit
 leg recovered_names_the_holder       "$pen/archive/REDS-first-rows-100-101.md" \
     "$(run REDS-an-elder-title-rows-100.md | sed -n 's/^holder=//p')"
 
-leg living_pin_row                   living-pin        "$(verdict %900)"
-leg living_pin_exits_zero            0                 "$(code %900)"
+leg living_pin_row                   living-pin        "$(verdict %90000)"
+leg living_pin_exits_zero            0                 "$(code %90000)"
 
 # A range whose two ends now sit in different shelves.
 leg split_across_two_shelves         split             "$(verdict REDS-wide-rows-100-200.md)"
 leg split_exits_zero                 0                 "$(code REDS-wide-rows-100-200.md)"
 
-leg missing_unknown_row              missing           "$(verdict %777)"
-leg missing_exits_one                1                 "$(code %777)"
+leg missing_unknown_row              missing           "$(verdict %77700)"
+leg missing_exits_one                1                 "$(code %77700)"
 
 # -- ambiguity: a published double, planted then lifted ----------------------------------------
 leg ambiguous_absent_before_plant    recovered-by-rows "$(verdict REDS-elder-rows-200.md)"
@@ -86,7 +98,7 @@ leg ambiguous_clears_when_lifted     recovered-by-rows "$(verdict REDS-elder-row
 # The same lesson stamp-and-name.md records for dated references, where a stamp inside a longer
 # filename read as a reference. The digits are taken as a whole run or not at all.
 leg boundary_short_row_is_missing    missing           "$(verdict %20)"
-leg boundary_long_row_is_missing     missing           "$(verdict %2000)"
+leg boundary_long_row_is_missing     missing           "$(verdict %20000)"
 
 # -- misuse exits differently from a refusal ---------------------------------------------------
 set +e; REDS_SHELF_GLOB="$pen/archive/REDS-*.md" sh "$RESOLVER" >/dev/null 2>&1; m=$?; set -e
@@ -133,9 +145,9 @@ leg census_unreadable_resolver_two   2                 "$m"
 # Without `^`, a shelf QUOTING another row's headline mid-sentence claims to hold it, and every
 # quoted cross-reference in these 489 shelves becomes a false holder. The plant writes exactly
 # that shape and the anchored reader must refuse it.
-printf 'A sentence that quotes **REDS %%900 (`x`) -- elsewhere.** mid-line.\n' \
+printf 'A sentence that quotes **REDS %%90000 (`x`) -- elsewhere.** mid-line.\n' \
   >> "$pen/archive/REDS-second-rows-200.md"
-leg anchor_refuses_a_quoted_headline living-pin        "$(verdict %900)"
+leg anchor_refuses_a_quoted_headline living-pin        "$(verdict %90000)"
 
 echo "legs=$legs"
 echo "failed=$failed"

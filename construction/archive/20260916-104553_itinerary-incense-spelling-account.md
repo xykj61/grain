@@ -3,7 +3,7 @@
 *Lifted whole from `construction/ITINERARY.md` when the next lap's account took its place. Archived, complete, never edited.*
 
 **INCENSE -- A METER READ A SPELLING, AND THE TREE CHANGED ITS SPELLING IN ONE COMMIT.**
-Elder account [shelved whole](archive/20260916-092253_itinerary-landed-accounts.md), its two asks with it.
+Elder account [shelved whole](20260916-092253_itinerary-landed-accounts.md), its two asks with it.
 **AIR FEELS** (row 1, N=5091): press each post. A ratchet is a fence, and this one had a hand
 passing through -- `shim_reason` red on every ship since `20260915.2133`.
 **THE POST WAS SOUND AND THE FIELD HAD CHANGED LANGUAGE.** `%768` booked `unsaid_rostered` at
