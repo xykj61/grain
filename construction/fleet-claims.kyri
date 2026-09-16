@@ -82,3 +82,9 @@ stamp 20260915.205732
 epoch 1789520252
 paths tools/fixtures/r/rye_build_sites_scan.sh tools/r/rye_build_sites_witness.rish
 what Spread the per-module build lock to the rooms still building unlocked -- linengrow first -- and give the spread a meter so the remainder is a ratchet a reader can run rather than a number in prose.
+claim diffuser-bearing-quorum
+seat diffuser
+stamp 20260915.211205
+epoch 1789521125
+paths tools/fixtures/m/bearing_quorum_scan.sh tools/fixtures/m/bearing_quorum_control.sh tools/m/bearing_quorum_witness.rish active-designing/20260915-211500_the-bearing-that-meets-rather-than-floods.md
+what Measure moonshot row 8's polar-bearing claim on a torus: does a meridian-then-parallel scheme cost perimeter rather than area, and does a withheld packet come back as a refusal rather than a silent split?
