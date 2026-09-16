@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/t/key_trade_scan.sh -- is the locality-for-evenness trade a law of keys, or a
+# tools/fixtures/k/key_trade_scan.sh -- is the locality-for-evenness trade a law of keys, or a
 # property of the keys measured so far? The named next step of
 # active-designing/20260915-181000_the-key-that-carries-locality.md.
 #
@@ -72,10 +72,10 @@
 # GNU extensions. A POSIX awk is refused by name rather than read wrongly.
 #
 # USAGE
-#   sh tools/fixtures/t/key_trade_scan.sh                 # the reading
-#   sh tools/fixtures/t/key_trade_scan.sh --paths F       # read the path list from F
-#   sh tools/fixtures/t/key_trade_scan.sh --names N       # lower the sample bound
-#   sh tools/fixtures/t/key_trade_scan.sh --keys K --onebit-keys O --dir-keys D
+#   sh tools/fixtures/k/key_trade_scan.sh                 # the reading
+#   sh tools/fixtures/k/key_trade_scan.sh --paths F       # read the path list from F
+#   sh tools/fixtures/k/key_trade_scan.sh --names N       # lower the sample bound
+#   sh tools/fixtures/k/key_trade_scan.sh --keys K --onebit-keys O --dir-keys D
 #                                                            # read KEYS directly, no hashing
 #
 # THE KEYS DOOR IS THE CONTROL PATH, for the reason the sibling's digest door exists: the pen

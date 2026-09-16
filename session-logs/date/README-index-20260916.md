@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260916.074806` | [One error name, two ceilings](20260916/20260916-074806_one-error-name-two-ceilings.kyri) | two Glow ceilings told apart behind one name |
+| `20260916.070832` | [Built in an hour, read in six days](20260916/20260916-070832_built-in-an-hour-read-in-six-days.kyri) | the ranking graded; the falsifier the weaker half |
 | `20260916.064715` | [Reading one rule is not reading the rules](20260916/20260916-064715_reading-one-rule-is-not-reading-the-rules.kyri) | %689 landed; a wrong ruling booked |
 | `20260916.061806` | [The pen the runtime takes back](20260916/20260916-061806_the-pen-the-runtime-takes-back.kyri) | nineteen amphora pens to the runtime; the count that fell was false |
 | `20260916.060149` | [The tier that gated in neither direction](20260916/20260916-060149_the-tier-that-gated-in-neither-direction.kyri) | ceiling 4 to 1, proven both ways; two laps adopted |

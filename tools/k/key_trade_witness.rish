@@ -1,4 +1,4 @@
-# tools/t/key_trade_witness.rish -- a key built to carry locality, read against the digest that
+# tools/k/key_trade_witness.rish -- a key built to carry locality, read against the digest that
 # avalanches, on one population and with one set of readings.
 #
 # WHY THIS RUNG. active-designing/20260915-181000_the-key-that-carries-locality.md priced the
@@ -42,7 +42,7 @@
 # rate is a gate somebody turns off. The path key's evenness reading in particular sits near its
 # critical value and is FREE -- it moves with the shape of this tree's directories.
 #
-# WHAT IS PROVEN, on metal, by tools/fixtures/t/key_trade_control.sh -- 42 behaviors on planted
+# WHAT IS PROVEN, on metal, by tools/fixtures/k/key_trade_control.sh -- 42 behaviors on planted
 # key populations and on a real directory tree in a throwaway pen:
 #
 #   THE ROOM-RECOVERY READING is carried over from the elder page unchanged, so the two papers may
@@ -71,13 +71,13 @@
 # Paper: active-designing/20260916-051607_the-trade-that-was-not-a-law.md
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/t/key_trade_witness.rish
+#   rishi/bin/rishi run tools/k/key_trade_witness.rish
 
 say "key-trade: Language EN -- a key is read in its own metric before it is read in the fold's."
 say "key-trade: Style Gauge, Meter -- every figure names its population, its metric, and its baseline."
 say "key-trade: Lens TAME -- bound the sample, derive the closed form, prove each verdict reachable."
 
-let control = run ["sh" "tools/fixtures/t/key_trade_control.sh"]
+let control = run ["sh" "tools/fixtures/k/key_trade_control.sh"]
 say control.out
 assert control.ok else "key-trade: the control must complete -- its own lines are printed above"
 
@@ -124,7 +124,7 @@ assert control.out contains "legs=42 failures=0" else "key-trade: the control co
 assert control.out contains "control_verdict=ok" else "key-trade: the control must balance before it is believed"
 
 # The live reading, on this tree's own bytes. Its SHAPE is gated; its verdict is reported.
-let live = run ["sh" "tools/fixtures/t/key_trade_scan.sh"]
+let live = run ["sh" "tools/fixtures/k/key_trade_scan.sh"]
 say live.out
 assert live.ok else "key-trade: the live reading must run on this tree, whatever it answers"
 assert live.out contains "instrument=key_trade" else "key-trade: the reading names its own instrument"
