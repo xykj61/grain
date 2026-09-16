@@ -1,6 +1,7 @@
 ::  name       skate kind ceiling gate
 ::  shape      kind - int (@u32) -> lawful - int (@u32)
-::  invariant  answers 1 while the input kind stays within the eight seated doors; answers 0 past the wall
+::  invariant  answers 1 while the input kind stays within max-kind=8 seated doors; answers 0 past the wall
+::  law        brushstroke/skate_input_event.rye max_kind atmost
 ::  example    3 -> 1 - 9 -> 0
 ::  readers    Skate - the native surface - Glow
 ::  nib        loca-skate-binding-v0 - the first Skate law spoken in Glow (20260829)

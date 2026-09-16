@@ -13,9 +13,11 @@
 # those witnesses stays green, because a wall at 31 still decides on both sides of itself. The Glow
 # door would answer for a law the Rye module no longer holds, and nothing in this tree would say so.
 #
-# THE AGREEMENT IS REAL TODAY AND STORED WHERE A CHECK CANNOT STAND. Measured 20260915.183946, the
-# seven desks linked below each match their Rye constant exactly. That is REDS %532's lesson one room
-# over: three enumerations of one fact agreed perfectly, and the agreement lived in a person's memory.
+# THE AGREEMENT IS REAL TODAY AND STORED WHERE A CHECK CANNOT STAND. Measured 20260915.183946 over
+# seven desks and re-read 20260915.191259 over ELEVEN, each matches its Rye constant exactly. That is
+# REDS %532's lesson one room over: three enumerations of one fact agreed perfectly, and the
+# agreement lived in a person's memory. RUN the scan rather than trusting either figure -- the count
+# is free and rises whenever a lane links one of its own.
 #
 # WHAT DECLARES THE LINK, and why the desk has to declare it rather than the scan guessing.
 # `max_name_len` is declared in THIRTY-ONE tracked Rye modules at four different values -- 200 in
@@ -34,11 +36,15 @@
 # THE THREE RELATIONS, each present in the corpus today rather than invented for symmetry.
 #
 #   below    `?: (gth face N)` with N = const - 1. A capacity: the const counts slots, so the last
-#            lawful value is one under it. Seven desks, among them name_len=32 walled at 31.
-#   atmost   `?: (gth face N)` with N = const. A width: the const is itself lawful. What
-#            gate-comlink-addr-width-u32 keeps against an address length of sixteen.
+#            lawful value is one under it. Eight linked desks, among them name_len=32 walled at 31
+#            and Skate's event ring, whose 128 seats wall at 127.
+#   atmost   `?: (gth face N)` with N = const. A width: the const is itself lawful. Three linked
+#            desks -- Skate's max_kind=8 and the two Lantern faces at max_face_text=38.
 #   exact    `?: (eq face N)` with N = const. A count that must be met, never merely reached --
-#            the five `-eq-u32` desks, among them mantra store dirs = 3.
+#            the shape the `-eq-u32` desks keep, among them mantra store dirs = 3. NO desk in this
+#            tree declares it yet, since every eq desk's law is a field or variant count rather than
+#            a constant; it is proven from both sides in the control's pen, and it is here so the
+#            grammar answers the eq family on the lap one of them finds a constant to name.
 #
 # Two `gth` conventions live in this corpus and only the desk knows which it keeps, which is why the
 # relation is declared rather than read off the operator. A scan deriving `below` from `gth` alone
@@ -59,13 +65,42 @@
 #   body_disagree   the body literal against what the relation implies  -- GATED AT ZERO
 #   head_unstated   a linked desk whose invariant line states no number -- reported, never gated
 #
-# WHY unlinked IS A RATCHET AND THE OTHER FOUR ARE GATES. The twenty-seven unlinked desks are not a
-# fault made today; several mirror a law that is a struct's field count or an enum's variant count
-# rather than a named constant, and giving those a linkable declaration is each owning lane's own
-# lap. A wall that reds on a backlog no single lap can clear is a wall somebody turns off. The four
-# gates read zero the moment this lands, so nothing has to be repaired for them to hold, and they
-# make the fault unwritable from here: a desk linked tomorrow agrees with its Rye constant or reds
-# on the lap it arrives.
+# WHY unlinked IS A RATCHET AND THE OTHER FOUR ARE GATES. A wall that reds on a backlog no single
+# lap can clear is a wall somebody turns off. The four gates read zero the moment this lands, so
+# nothing has to be repaired for them to hold, and they make the fault unwritable from here: a desk
+# linked tomorrow agrees with its Rye constant or reds on the lap it arrives.
+#
+# AND THE RATCHET IS AT ITS FLOOR, WHICH IS NOT ZERO. The seating lap called the remainder a
+# backlog and priced it at "twenty-seven" while its own reading said eighteen -- a number written
+# from memory beside a meter that was already answering. Read one desk at a time on 20260915.191259,
+# after four more were linked, the remaining FOURTEEN sort into three kinds and NOT ONE of them can
+# carry a `law` line as the grammar above stands:
+#
+#   five are not gate desks at all. glow/gen/i/{if-cue,if-gth,if-lent}.glow are generated language
+#   examples whose `?:` compares a sample against 32, and tools/fixtures/g/gate-count-malformed.glow
+#   and glow_core_unclosed_refuses.glow are planted fixtures another control reads. Each mirrors no
+#   module law, so each is permanent floor. They stand in the population because the wall is read
+#   off the BODY rather than off the path, which is the same choice that finds
+#   gate-comlink-addr-width-u32; narrowing the reach to src/gate/ would buy a lower floor by
+#   blinding the scan to a gate desk written anywhere else.
+#
+#   four are already held, against a law that is a struct's field count rather than a constant.
+#   src/gate/gate-mantra-{line,weave,diff}-fields-eq-u32.glow and gate-mantra-store-dirs-eq-u32.glow
+#   are each compared against their Rye struct by tools/fixtures/m/mantra_gate_constant_scan.sh over
+#   tools/fixtures/r/rye_struct_fields_scan.sh, under tools/m/mantra_a1_equality_witness.rish. So
+#   `unlinked` counts desks this scan does not hold, never desks nothing holds -- a distinction the
+#   word itself invites a reader to miss.
+#
+#   five name a law with no plain-integer constant to point at. gate-comlink-addr-width-u32 mirrors
+#   a seated shape and no Rye module declares an ipv6 address length at all; the two aurora length
+#   desks mirror tally/kumara.rye's `seed_length` and `signature_length`, which are Ed25519
+#   EXPRESSIONS that const_value returns empty for on purpose; gate-aurora-living-stages-eq-u32 and
+#   gate-caravan-exit-meanings-eq-u32 mirror enum variant counts.
+#
+# So the ratchet falls again only when the law grammar learns a second kind of home -- a struct's
+# field count, an enum's variant count, or a const whose value is an expression. That is a lap with
+# a design behind it rather than a sweep, and naming the three shapes here is what a future lap
+# builds against.
 #
 # WHY head_unstated IS REPORTED RATHER THAN GATED. An invariant line may state its law in words --
 # "stays within sixteen bytes" -- which is honest English and carries no digits to compare. Refusing
@@ -109,8 +144,10 @@ fi
 MAX_DESKS=4096
 
 # The ratchet ceiling. It only falls: a lane that links one of its own desks lowers this in the
-# same commit. Seated at 18 on 20260915.183946: 25 wall-memorizing desks minus the 7 linked on that lap.
-UNLINKED_CEILING=${GLOW_GATE_UNLINKED_CEILING:-18}
+# same commit. Seated at 18 on 20260915.183946: 25 wall-memorizing desks minus the 7 linked on that
+# lap. Lowered to 14 on 20260915.191259, when the two Skate walls and the two Lantern face walls
+# took law lines and all three relations were proven to bite from the Rye side on metal.
+UNLINKED_CEILING=${GLOW_GATE_UNLINKED_CEILING:-14}
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/glow_gate_law.XXXXXX") || exit 2
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -124,7 +161,20 @@ else
   if git rev-parse --git-dir >/dev/null 2>&1; then
     git ls-files '*.glow' > "$work/files.txt"
   else
-    find . -name '*.glow' -type f | sed 's|^\./||' | sort > "$work/files.txt"
+    # A walk reads every path standing on the disk, including the rooms git disowns -- `.lap/`
+    # scratch, a parked worktree, `session-output/` -- so it can count a desk no clone will ever
+    # hold (REDS %722's class). Ask git which of them it disowns rather than spelling a list; where
+    # no repository stands the call answers nothing and the walk stands whole, which is the only
+    # state this branch runs in.
+    find . -name '*.glow' -type f | sed 's|^\./||' | sort > "$work/walk.txt"
+    git check-ignore --stdin < "$work/walk.txt" > "$work/disowned.txt" 2>/dev/null || true
+    # Read the disowned set in BEGIN rather than as a first FILENAME: an empty first file leaves
+    # NR==FNR true on the SECOND file's first record, which swallows the whole walk and reads as a
+    # tree holding no desks at all. That is the shape the pen caught, 23 legs at once.
+    awk -v disowned="$work/disowned.txt" '
+      BEGIN { while ((getline line < disowned) > 0) drop[line] = 1 }
+      !($0 in drop)
+    ' "$work/walk.txt" > "$work/files.txt"
   fi
 fi
 

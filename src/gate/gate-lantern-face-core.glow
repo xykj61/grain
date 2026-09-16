@@ -1,6 +1,7 @@
 ::  name       lantern face core
 ::  shape      arm faces - ints (@u32) -> answer - int (@u32)
 ::  invariant  three arms answer exactly as their three standing single desks
+::  law        pond/apps/lantern_face.rye max_face_text atmost
 ::  example    1 38 -> 1 - 1 39 -> 0 - 2 2 5 -> 0 - 2 2 0 -> 1 - 3 2 5 -> 2 - 3 0 5 -> 1
 ::  readers    Lantern - the asking voice - Glow
 ::  nib        the language's first core -- three laws, one source, one module (20260830)
