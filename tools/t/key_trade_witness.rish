@@ -1,0 +1,144 @@
+# tools/t/key_trade_witness.rish -- a key built to carry locality, read against the digest that
+# avalanches, on one population and with one set of readings.
+#
+# WHY THIS RUNG. active-designing/20260915-181000_the-key-that-carries-locality.md priced the
+# crudest locality-bearing key there is -- a file's leading two bytes -- against the SHA3-512
+# digest, and found locality, evenness and confidentiality moving as one quantity read three ways.
+# That page names its own next step in its own last section: "whether a similarity-preserving
+# sketch lands better on the same trade. It will land better in magnitude. Whether it CHANGES A
+# SIGN is a different key, a different reading." This rung takes that step twice -- it builds the
+# sketch the page named, and a third key the page never proposed. The sketch lands as forecast,
+# better in magnitude and the same sign. The third key changes a sign.
+#
+# THE THREE KEYS, each a 16-bit value whose high byte is x and whose low byte is y, so no key gets
+# a fold of its own:
+#
+#   sha3    -- bytes 0 and 1 of SHA3-512 over the file's bytes. The name a Tablecloth on this pier
+#              would actually carry. Built to avalanche.
+#   path    -- FNV-1a over the DIRECTORY in the high byte, FNV-1a over the BASENAME in the low.
+#              Two files of one room share their x coordinate exactly, by construction.
+#   simhash -- a 16-bit SimHash over the file's word tokens: each token's FNV-1a votes each of 16
+#              accumulators up or down, and the signs are the key. Two documents sharing most of
+#              their tokens agree on most signs.
+#
+# THREE METRICS, because a key read only in the torus's metric reports a fact about the FOLD as
+# though it were a fact about the KEY: toroidal Manhattan on (x, y) with closed form 128, circular
+# distance on the whole 16-bit key with closed form 16384, and Hamming distance with closed form 8.
+# All three derivations are proven against a planted uniform population by the control.
+#
+# AND EACH RELATED POPULATION IS READ TWICE -- against the closed form, which asks whether the key
+# is uniform, and against the KEY'S OWN random baseline, which asks whether the key carries the
+# relation. Only the second is what locality means, and the difference is not academic: the path
+# key's random pairs read a torus mean near 95 where a uniform key reads 128, so a same-directory
+# mean under 128 would count that key's global concentration as though it were locality. The
+# adjacency verdict takes the own-baseline reading, and the control proves the two disagree on a
+# planted population that is concentrated and unrelated.
+#
+# WHAT IS GATED HERE, and what is only reported. The control is gated whole, and so is the live
+# reading's SHAPE -- that every key answered, that no population went unread, and that the verdict
+# is one of the three the scan can print. The live VERDICT is reported rather than gated, for the
+# reason its sibling gives one room over: a p=0.001 test taken eighteen times refuses about one run
+# in fifty-five on keys that are behaving correctly, and a gate that reds at its own stated error
+# rate is a gate somebody turns off. The path key's evenness reading in particular sits near its
+# critical value and is FREE -- it moves with the shape of this tree's directories.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/t/key_trade_control.sh -- 42 behaviors on planted
+# key populations and on a real directory tree in a throwaway pen:
+#
+#   THE ROOM-RECOVERY READING is carried over from the elder page unchanged, so the two papers may
+#     be set side by side on the one property the sign change leaves untouched.
+#   ALL THREE VERDICTS ARE REACHABLE from planted populations -- both_available, trade_holds, and
+#     no_locality -- so the live verdict is a reading rather than a constant.
+#   THE THREE CLOSED FORMS are checked against a planted uniform population in both directions:
+#     the measured mean lands in its named band, AND the scan calls it indistinguishable.
+#   THE CONTRAST READING is shown catching a false positive: a concentrated, unrelated population
+#     reads NEARER against the closed form and flat against its own baseline, and the adjacency
+#     verdict follows the second.
+#   THE HASHING PATH is run on a real pen tree, since a control that only ever plants keys never
+#     runs the three key functions it exists to check.
+#   FOUR MUTATIONS, each bitten: the adjacency verdict read off the closed form, the torus wrap
+#     dropped, the evenness grid fixed coarse, and the FNV multiply taken whole rather than split.
+#   AND A SHAM LEG beneath them, because the mutants live under this tree's own root. A first draft
+#     copied them to the system temporary directory, where the scan's root walk fails before it
+#     reads a flag -- so all four "bites" were that walk failing. An unmutated copy in the same
+#     room must still answer, or a bite there says nothing.
+#
+# WHAT IT LEAVES TO OTHERS. Whether Tablecloth SHOULD change its key, which is a custody-weight
+# decision about a content-addressed store. Whether a key that leaks similarity leaks content,
+# which is a security reading and wants its own lap. And the real store, which this never opens.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260916-051607_the-trade-that-was-not-a-law.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/key_trade_witness.rish
+
+say "key-trade: Language EN -- a key is read in its own metric before it is read in the fold's."
+say "key-trade: Style Gauge, Meter -- every figure names its population, its metric, and its baseline."
+say "key-trade: Lens TAME -- bound the sample, derive the closed form, prove each verdict reachable."
+
+let control = run ["sh" "tools/fixtures/t/key_trade_control.sh"]
+say control.out
+assert control.ok else "key-trade: the control must complete -- its own lines are printed above"
+
+# All three verdicts reachable, so the live verdict is a reading rather than a constant.
+assert control.out contains "leg mixed_verdict expected=verdict=both_available got=verdict=both_available ok" else "key-trade: an even and adjacent key must reach both_available"
+assert control.out contains "leg lumpy_verdict expected=verdict=trade_holds got=verdict=trade_holds ok" else "key-trade: an adjacent but uneven key must reach trade_holds"
+assert control.out contains "leg flat_verdict expected=verdict=no_locality got=verdict=no_locality ok" else "key-trade: a population carrying no relation must reach no_locality"
+assert control.out contains "leg conc_verdict expected=verdict=no_locality got=verdict=no_locality ok" else "key-trade: a concentrated unrelated population carries no locality"
+
+# The three columns of the mixed population, each read on its own.
+assert control.out contains "leg col1_adjacent expected=no got=no ok" else "key-trade: an avalanching column must carry no adjacency"
+assert control.out contains "leg col2_adjacent expected=yes got=yes ok" else "key-trade: a uniform related column must read adjacent"
+assert control.out contains "leg col3_adjacent expected=yes got=yes ok" else "key-trade: a clustered related column must read adjacent"
+assert control.out contains "leg col3_uneven expected=no got=no ok" else "key-trade: a clustered column must read uneven"
+
+# The three closed forms, each proven from both directions.
+assert control.out contains "leg closed_form_torus band=" else "key-trade: the torus closed form of 128 must be measured on a uniform population"
+assert control.out contains "leg closed_form_ring band=" else "key-trade: the ring closed form of 16384 must be measured"
+assert control.out contains "leg closed_form_hamming band=" else "key-trade: the Hamming closed form of 8 must be measured"
+assert control.out contains "leg closed_form_torus_verdict expected=indistinguishable got=indistinguishable ok" else "key-trade: a uniform population must read indistinguishable from its closed form"
+assert control.out contains "leg closed_form_ring_verdict expected=indistinguishable got=indistinguishable ok" else "key-trade: the ring derivation must be confirmed by the reading that uses it"
+assert control.out contains "leg closed_form_hamming_verdict expected=indistinguishable got=indistinguishable ok" else "key-trade: the Hamming derivation must be confirmed by the reading that uses it"
+
+# The contrast reading, shown catching the false positive it exists for.
+assert control.out contains "leg conc_closed_form_says_nearer expected=distinguishable got=distinguishable ok" else "key-trade: the closed-form reading must call a concentrated population nearer"
+assert control.out contains "leg conc_contrast_says_no expected=indistinguishable got=indistinguishable ok" else "key-trade: the own-baseline reading must refuse what the closed form admitted"
+assert control.out contains "leg conc_not_adjacent expected=no got=no ok" else "key-trade: the adjacency verdict must follow the own-baseline reading"
+
+# The hashing path, on a real pen tree rather than through the keys door.
+assert control.out contains "leg tree_read expected=24 got=24 ok" else "key-trade: the real hashing path must read the pen tree"
+assert control.out contains "leg tree_path_adjacent expected=yes got=yes ok" else "key-trade: the path key must carry the room relation on real files"
+assert control.out contains "leg tree_sha3_onebit_hamming expected=indistinguishable got=indistinguishable ok" else "key-trade: the digest must avalanche over a one-byte edit"
+assert control.out contains "leg tree_simhash_onebit_real expected=distinguishable got=distinguishable ok" else "key-trade: the SimHash must hold a one-byte edit near"
+
+# The mutations, and the sham that makes a bite mean something.
+assert control.out contains "leg mutant_room_carries_the_scan expected=verdict=both_available got=verdict=both_available ok" else "key-trade: an unmutated copy in the mutant room must still answer, or no bite can be believed"
+assert control.out contains "leg mutation_closed_form_adjacency expected=bite got=bite ok" else "key-trade: reading adjacency off the closed form must change a verdict"
+assert control.out contains "leg mutation_torus_wrap_dropped expected=bite got=bite ok" else "key-trade: the torus wrap must be load-bearing"
+assert control.out contains "leg subcell_uneven_at_eight expected=no got=no ok" else "key-trade: the adaptive grid must see a cluster a coarse grid cannot"
+assert control.out contains "leg mutation_fixed_coarse_grid expected=bite got=bite ok" else "key-trade: the adaptive grid must be load-bearing"
+assert control.out contains "leg mutation_fnv_overflow expected=bite got=bite" else "key-trade: the split FNV multiply must be load-bearing"
+
+assert control.out contains "legs=42 failures=0" else "key-trade: the control counts its own legs, so a shrunken pen cannot read as a full one"
+assert control.out contains "control_verdict=ok" else "key-trade: the control must balance before it is believed"
+
+# The live reading, on this tree's own bytes. Its SHAPE is gated; its verdict is reported.
+let live = run ["sh" "tools/fixtures/t/key_trade_scan.sh"]
+say live.out
+assert live.ok else "key-trade: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=key_trade" else "key-trade: the reading names its own instrument"
+assert live.out contains "population=git_ls_files" else "key-trade: the live population is the tree's own tracked bytes"
+assert live.out contains "expected torus=128 ring=16384 hamming=8" else "key-trade: the three closed forms are published beside the means they judge"
+assert live.out contains "rooms distinct_directories=" else "key-trade: the shape of the path key is the shape of the directory population, so it is named"
+assert live.out contains "key sha3 " else "key-trade: the digest key must answer"
+assert live.out contains "key path " else "key-trade: the path key must answer"
+assert live.out contains "key simhash " else "key-trade: the SimHash key must answer"
+assert live.out contains "contrast sha3 samedir torus " else "key-trade: every related population is read against its own baseline"
+assert live.out contains "contrast path onebit hamming " else "key-trade: every key is read in every metric on every population"
+assert live.out contains "contrast simhash onebit hamming " else "key-trade: the SimHash must be read in its own metric"
+assert live.out contains "keys_read=3 " else "key-trade: all three keys must reach the tally"
+assert live.out contains "unread_populations=0" else "key-trade: a population that went unread makes the verdict speak for less than it appears to"
+assert live.out contains "critical=103.51" else "key-trade: the critical value is published beside the statistic it judges"
+
+say "GREEN: key-trade -- 42 behaviors, all three verdicts reachable from planted populations, three closed forms matched by measurement, four mutations bitten under a sham that proves a bite is a bite, and the elder trade shown to rest on how many groups a key induces rather than on the definition of a locality key."
