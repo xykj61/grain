@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260914.213430` | [Four parked records came home](20260914/20260914-213430_four-parked-records-came-home.kyri) | restored four records; kept stronger product state |
+| `20260914.212434` | [The grant left a trail and the refusal did not](20260914/20260914-212434_the-grant-left-a-trail-and-the-refusal-did-not.kyri) | Mand ring 1 logs grants alone |
 | `20260914.190841` | [Three parked records came home](20260914/20260914-190841_three-parked-records-came-home.kyri) | restored three records; kept the stronger living rail |
 | `20260914.183304` | [Two parked records crossed the boundary](20260914/20260914-183304_two-parked-records-crossed-the-boundary.kyri) | restored two records; kept stronger product state |
 | `20260914.175216` | [The expiration replay named its clock](20260914/20260914-175216_the-expiration-replay-named-its-clock.kyri) | explicit replay time revived; owners named |
