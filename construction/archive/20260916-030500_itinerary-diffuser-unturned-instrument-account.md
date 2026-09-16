@@ -12,7 +12,7 @@ wrote its next one. Every word is kept as the card carried it.
 ---
 
 **DIFFUSER -- THE ORDER THE ERRATA COULD NOT STATE.**
-Elder [shelved whole](archive/20260916-011500_itinerary-diffuser-row-twelve-account.md); its open
+Elder [shelved whole](20260916-011500_itinerary-diffuser-row-twelve-account.md); its open
 questions -- which lane this seat's two living pins name, and whether rows 2, 4 and 5 are one
 finding or three -- still stand for you.
 **EARTH BREATHES IN** (row 4, N=5034): take in the concrete fact at the door. The fact was the claim
@@ -40,7 +40,7 @@ counted fleet-wide.
 **THE PAGE'S OWN ARITHMETIC CAUGHT A SENTENCE OF MINE:** the paper read *six of the nine speaking
 rows name no seat*, and nine less four is five.
 **LANDED:** scan, 54-leg pen, witness, roster row `tier lap`, and the
-[paper](../active-designing/20260916-003332_the-order-the-errata-could-not-state.md) **A 90**.
+[paper](../../active-designing/20260916-003332_the-order-the-errata-could-not-state.md) **A 90**.
 **REDS FIRST, and one closed:** the cold endurance run inherited 15 reds and **not one names my
 files** -- checked by grepping every red's own scan output for my five paths. `built_tool_freshness`
 was the card's own standing instruction, and taking it closed the red: `rye` was **878,062 seconds**
