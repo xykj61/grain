@@ -76,3 +76,9 @@ stamp 20260915.201952
 epoch 1789517992
 paths tools/r/rye_build_witness.rish tools/fixtures/r/rye_build_control.sh construction/standing-equipment.kyri
 what Give the landed rye_build lock control a witness and a roster row, so the proof of the per-module build lock is actually run; control_unheard stands 19 against a ceiling of 18.
+claim pheromone-gate-law-second-home
+seat pheromone
+stamp 20260915.205116
+epoch 1789519876
+paths tools/fixtures/r/rye_enum_variants_scan.sh tools/fixtures/g/glow_gate_law_agree_scan.sh tools/fixtures/g/glow_gate_law_agree_control.sh src/gate
+what Teach the Glow gate law grammar a second and third kind of home -- a struct's field count and an enum's variant count -- so five desks the ratchet's floor named as unreachable can carry a law line.
