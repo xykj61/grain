@@ -88,3 +88,9 @@ stamp 20260916.023136
 epoch 1789540296
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
 what The build receipt keys on the toolchain PATH STRING beside its content, so one pinned compiler wears four live spellings and four different keys -- measured on this tree: RYE_ZIG absolute gives bdd5d31e, the compiler's own default resolution gives c626631a, same 172MB binary, same sources, same flags. The tree spells the pin 980 times relative, 34 absolute, 13 through a root variable, and leaves it unset everywhere rye_build.sh runs. Drop the path and the library path from the key, keep both content hashes, bump the marker to v6, and turn control leg 8 around with its reason written.
+claim patchouli-assert-arrival-delta
+seat patchouli
+stamp 20260916.024535
+epoch 1789541135
+paths mantra/src/weave.rye mantra/recall_tablecloth_hit_census.rye tools/fixtures/r/rune_assert_sweep_scan.sh tools/r/rune_assert_sweep.rish tools/fixtures/r/rune_assert_control.sh
+what REDS %752: the whole-tree unnamed-assert ratchet reads 6492 against 6487 and names no arrival. Bisected on metal across 32 commits -- BOTH arrivals are mantra, my own lane: 0d6e6829a took it 6487 to 6488 (hit_census) and c4260fcd5 6488 to 6492 (src/weave). All five asserts already carry a TRUE written reason the adjacency rule cannot join: four sit under a 20-line postcondition block that never spells the token, and two are separated from their own invariant comment by exactly one line of code. Repair the five, lower the ceiling to what the repair finds, and answer the instrument door -- give the scan a per-file map so the next breach names its arrival instead of costing a bisect.
