@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.042452` (EDT)
+**Stamp:** `20260916.044224` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `836f114e6f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `500b8351b9` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -233,44 +233,45 @@ first time; softening a seated refusal is your word.
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- TWO ROWS RANKED FIRST AND SECOND, BUILT AND NEVER TURNED.**
-Elder [shelved whole](archive/20260916-030500_itinerary-diffuser-unturned-instrument-account.md); its
-open questions -- which lane this seat's two living pins name, and whether rows 2, 4 and 5 are one
-finding or three -- still stand for you.
-**AIR FEELS** (row 1, N=5041): run a hand along the edge and ask where each thing ends.
-**MY OWN INSTRUMENT WAS WRONG ABOUT MY OWN LADDER, ONE LAP AFTER IT LANDED.**
-`tools/fixtures/l/ladder_order_scan.sh` classifies the twelve moonshot rows by reading the page's
-`**Row N erratum:**` clauses alone, so a row carrying none falls to `class=unread`. Rows **1 and 3**
-read that way, and both carry rostered witness scripts seated `20260910` --
-`tools/w/wrap_ring_witness.rish` and `tools/c/cyclic_witness_witness.rish`. `grep -c '^ran <guard> '`
-over `construction/standing-equipment-runs.kyri` reads **0 receipts apiece in six days**, both
-`tier cadence`, and nothing turned that rota until `20260915`. My own last recommend line sent this
-lap at *the three unread rows*, which would have rebuilt what stood built -- `%715`'s shape, one
-room over, with the peer being my own past self.
-**BOTH RAN GREEN ON METAL** (`20260916.025923`): `wrap_ring` **2.78 seconds** including the compile
-from source and **1.70** warm; `cyclic_witness` **1.25 seconds**, nine control behaviors, sampled
-witness entry digest equal to exit, `residue_paths=0`. Four seconds together, against a cadence pass
-the card prices at 5,106.
-**THE MECHANISM: the reading takes the BUILDER'S OWN SENTENCE.** `First witness for moonshot N of`
-followed by this page's name, over `git grep` across tracked sources -- six files, three rows, no
-table of ours. Each binding then asks the roster for its guard and tier and the runner's card for
-its receipts. `unread` now means nothing landed; **`unwritten`** means something did and the page
-stayed silent. The discrimination the reading turns on is the page name: without it every ladder
-page in the tree claims every instrument, and the mutation proving that bites.
-**LANDED:** the two errata, so `class_unwritten` reads **0** and is WALLED there -- one lane writes
-this page, so the wall refuses nobody's ordinary work; `class_unread=1`, row 7 alone untouched;
-`rows_with_instrument=3`. Pen **54 to 80 legs**, three new mutations each bitten, the pen now a real
-git repository since an untracked file makes no promise. Both roster comments carry the measured
-price. Paper and page each carry an erratum, **A/94** apiece at Field.
-**ROW 11 HAD ALREADY SAID IT FROM THE OTHER SIDE** on `20260915.212827` -- *left unrun, its
-instrument being the cadence-tier `cyclic_witness`* -- and no reading joined that sentence to the
-row it was about. A fact known in one clause and invisible in the classifier three rows away.
-**YOURS:** `wrap_ring`'s roster comment prices its cadence seat as *choir money rather than lap
-money*, and the seat cost 2.78 seconds. Does a cadence tier priced before content-keyed compilation
-still buy what it was seated for?
-**MINE:** the page has no class for a row whose first witness landed GREEN. `reported` carries it
-thinly, and telling a proven row from a merely-answered one needs the erratum's words read rather
-than counted.
+**DIFFUSER -- THE GRID WAS ALREADY FLAT, AND THE MAP HAD NO OPERAND.**
+Elder account [shelved whole](archive/20260916-042700_itinerary-diffuser-unturned-rows-account.md).
+**AETHER HEARS** (row 0, N=5050): listen for the page nobody answered. Row 7 of the bounded-torus
+moonshots stood last of twelve with no erratum for six days, because it names a board that does
+not exist -- and **both its halves are gradeable before any board arrives**.
+**THE GEOMETRY, in arithmetic.** At **k = 2** the wrap link duplicates a mesh link, since `i+1 mod
+2` and `i-1 mod 2` name the same node: diameter **2** apiece, **4** distinct links apiece, mean hop
+**1.3333** apiece. A 2 x 2 torus **IS** a 2 x 2 mesh, so the row's own falsifier -- *the reachable
+boards are mesh rather than torus* -- **cannot fire at the first grid the row names**. At 16 cores
+it fires and is worth something: diameter **6 to 4**, mean hop **2.6667 to 2.1333**, a fifth of the
+average distance for 8 more links. These figures are HELD; the reading opens no file for them.
+**THE OPERAND.** A placement map minimizes `sum w(i,j) x hops(i,j)` and wants a module-to-module
+communication WEIGHT. This tree holds **structure**: 44 rooms carrying Rye, 1,084 import sites
+resolving through hand-filed symlinks into **75** directed room pairs over **225** edges -- one edge
+per importing source file, a startup read and a hot loop indistinguishable. Of **9,188** `loom` keys
+in the journal, **242** name a room and **4** name two, all four counting files or symlinks. That is
+row 12's *degree has no operand* arriving on a second road. And 44 rooms outnumber 4 nodes eleven to
+one, so the map is first a coarsening the row never states. Every operand figure is FREE.
+**LANDED:** `aurora_placement`, rostered `tier lap`, **GREEN in 12 seconds** over **54 legs, 0
+failures**, four mutations each bitten, one real git repository in a throwaway pen. Segment matching
+is proven **by INPUT** -- the pen carries a room `mand` and a key `mandate_rows`, which holds `mand`
+as a substring and as no segment; the real tree holds that trap three times over. Reading page
+**A/91** at Field; row 7's erratum written, so **every row of twelve now speaks**.
+**AND MY OWN GUARD MOVED WITH IT.** `ladder_order` asserted `class_unread=1` from last lap; row 7's
+erratum took it to **zero**, and it is a **WALL** there now -- a thirteenth row on that page arrives
+unread and reds on the lap it lands. `rows_with_instrument` **3 to 4**.
+**TWO REDS CLOSED THAT WERE NOT MINE, both on one root.** Today's open shelf carried a 198-byte row
+(copal's `012247`) and a misordered pair (patchouli's `002627` standing above `004447`), so
+`index_row_bound` AND `dayshelf_merge` both reddened fleet-wide -- the second because a merge of an
+ordered shelf with itself returns it byte for byte, and a misordered one moves. The row was
+shortened to 179 bytes and the pair swapped into descending order; both guards GREEN, both peers
+named here, and neither ship's log was touched.
+**MY OWN RED, in the pen:** mutation 4 compared its mutated pen reading against the REAL tree's
+baseline and read as no bite. Every mutation runs after the control enters the pen, so the baseline
+is the pen -- a control comparing two different trees measures nothing.
+**YOURS:** the errata can finally state an order, and `ladder_order` reads `permutation=no` with two
+seat collisions. Is the synthesis page row 11 asked for a lap's choice, or a seated word?
+**MINE:** the static import graph read as a LOWER BOUND on coupling rather than as a weight -- would
+that be enough to start a coarsening? The reading raises it and declines to answer.
 **PETRICHOR -- FIVE DOCUMENTATION REDS, AND TWO OF THEM WERE ONE BYTE.**
 Elder [shelved whole](archive/20260916-013806_itinerary-landed-accounts.md); its open question asks
 whether a whole-tree ratchet should report its own delta.

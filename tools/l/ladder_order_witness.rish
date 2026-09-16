@@ -160,8 +160,14 @@ assert scan.out contains "instruments_unrostered=0" else "ladder-order: an instr
 # elder reading could not tell them from row 7, which nobody has touched. Only this lane writes
 # this page, so the wall refuses none of anybody else's ordinary work.
 assert scan.out contains "class_unwritten=0" else "ladder-order: a row whose instrument landed must say so on its own page"
-assert scan.out contains "class_unread=1" else "ladder-order: one row alone is genuinely untouched"
-assert scan.out contains "rows_with_instrument=3" else "ladder-order: three rows carry a landed first witness"
+# `class_unread` reached ZERO on `20260916.042700`, when row 7 -- the last of the twelve carrying
+# no erratum -- took its reading and its erratum in one lap. So the ladder now speaks in all
+# twelve places, and this line is a WALL rather than a ratchet: a thirteenth row added to the page
+# arrives unread, and reds here on the lap it lands. Raise it only beside a row's own erratum.
+assert scan.out contains "class_unread=0" else "ladder-order: every row of twelve now carries an erratum"
+# Four rows carry a landed first witness: 1 wrap_ring, 3 cyclic_witness, 6 retired_count, and 7
+# aurora_placement, the first of the four rostered at `tier lap` rather than `tier cadence`.
+assert scan.out contains "rows_with_instrument=4" else "ladder-order: four rows carry a landed first witness"
 
 say "ladder-order: GREEN -- eleven rows speak, six recommend, four name a seat, two seats collide."
-say "ladder-order: three rows carry a landed first witness, and one row of twelve stands untouched."
+say "ladder-order: four rows carry a landed first witness, and every row of twelve now speaks."

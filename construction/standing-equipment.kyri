@@ -6414,3 +6414,31 @@ guard claim_preserve_control
 path tools/cl/claim_preserve_control_witness.rish
 tier lap
 seated 20260916.004500
+
+# aurora_placement -- first witness for the small-torus-of-cores moonshot, row 7 of
+# active-designing/20260910-060204_the-bounded-torus-moonshots.md, and the last of the twelve
+# rows that carried no erratum. The row proposes Aurora on a 4-core or 16-core network-on-chip
+# "whose topology Grain knows to be a torus", with a placement map as its first witness and this
+# falsifier: the reachable boards are mesh rather than torus.
+#
+# THE GEOMETRY HALF IS ARITHMETIC AND OPENS NO FILE. At the 4-core grid the row names FIRST, a
+# 2 x 2 torus IS a 2 x 2 mesh: i+1 mod 2 and i-1 mod 2 name the same node, so every wrap link
+# duplicates a link the mesh already has. Equal diameter 2, equal distinct link count 4, equal
+# mean pair distance 1.3333 -- one graph under two names, so a mesh board takes nothing away and
+# the row's own falsifier cannot fire where the row starts. At 16 cores it fires with something
+# behind it: diameter 6 to 4, mean 2.6667 to 2.1333, a fifth of the average hop for 8 more links.
+#
+# THE OPERAND HALF READS THE TREE. A placement map minimizes sum w(i,j) x hops(i,j) and wants a
+# module-to-module communication WEIGHT. Measured 20260916.042700: 44 rooms carry Rye, 1,084
+# import sites resolve through the hand-filed symlinks into 75 directed room pairs over 225
+# edges -- and that graph is STRUCTURE, one edge per importing source file, a startup read and a
+# hot loop indistinguishable. Of 9,188 loom keys in the tracked journal, 242 name a room and 4
+# name two, all four counting files or symlinks. 44 rooms also do not sit on 4 nodes one apiece,
+# so the map needs a coarsening the row never states. Every operand figure is FREE; the geometry
+# is HELD.
+#
+# 54 legs, 4 mutations bitten, one real git repository in a throwaway pen, 12s. tier lap.
+guard aurora_placement
+path tools/a/aurora_placement_witness.rish
+tier lap
+seated 20260916.042700
