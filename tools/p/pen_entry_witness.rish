@@ -1,0 +1,35 @@
+# pen_entry_witness.rish -- a script that makes a throwaway pen and never enters it.
+#
+#   rishi/bin/rishi run tools/p/pen_entry_witness.rish
+#
+# HOLDS THE WALL FROM REDS %729. A control built each case with an unchecked `cd` into a directory
+# `mktemp -d` had failed to make, so the case bodies ran with the working directory still at the
+# repository root: the tracked front door was truncated by a `printf` redirect, and three
+# `git config` calls rewrote this checkout's identity. Twelve commits on main carry that pen
+# identity, unsigned.
+#
+# ONE GUARD ASKED WHETHER A PEN WAS SHARED AND NONE ASKED WHETHER IT WAS ENTERED. Contention and
+# containment are two questions. `shared_pen` reads a constant pen name across eight checkouts;
+# this reads whether the script ever arrives in the pen it made.
+#
+# A WALL RATHER THAN A RATCHET. The five sites standing when this was seated were repaired in the
+# same commit, so the population is zero and the next unguarded pen entry reds on the lap it
+# arrives. `unchecked_mktemp` is REPORTED by the scan and gated by nothing -- an empty pen variable
+# is a different fault with a different cure.
+let scan = run ["sh" "tools/fixtures/p/pen_entry_scan.sh"]
+assert scan.ok else "pen entry scan did not run: ${scan.err}"
+assert scan.out contains "unguarded=0" else "a pen entry stands unguarded: ${scan.out}"
+assert scan.out contains "ceiling_ok=yes" else "pen entry over its ceiling: ${scan.out}"
+assert scan.out contains "verdict=guarded" else "pen entry verdict missing: ${scan.out}"
+
+# THE CONTROL IS ASSERTED BESIDE THE READING, because a wall proven only in the passing direction
+# cannot be told from a reading that counts nothing. Forty-five behaviors on real git
+# repositories in a throwaway pen, every refusal planted and then lifted, and four mutations --
+# the continuation join, the `&&` guard test, the transitive pen variable, and the comment-and-
+# heredoc skip -- each required to bite and then required to walk free unmutated.
+let control = run ["sh" "tools/fixtures/p/pen_entry_control.sh"]
+assert control.ok else "pen entry control did not reach control_verdict=ok: ${control.out}"
+assert control.out contains "control_verdict=ok" else "pen entry control verdict missing: ${control.out}"
+assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out}"
+
+say "GREEN: every pen a shell runner makes, it enters or refuses -- and the reading proven able to refuse."

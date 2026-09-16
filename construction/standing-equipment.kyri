@@ -6046,3 +6046,19 @@ guard shared_build_path
 path tools/s/shared_build_path_witness.rish
 tier lap
 seated 20260915.185705
+
+# THE PEN A RUNNER NEVER ENTERED (REDS %729). A control built each case with an unchecked `cd` into
+# a directory `mktemp -d` had failed to make, so the case bodies ran with the working directory
+# still at the repository root: a `printf` redirect truncated the tracked front door, and three
+# `git config` calls rewrote this checkout's identity. Twelve commits on main carry that pen
+# identity, unsigned. `shared_pen` asks whether a pen is SHARED across eight checkouts; nothing
+# asked whether it was ENTERED, and contention and containment are two questions. A WALL at zero --
+# the five sites standing at seating were repaired in the same commit -- with `unchecked_mktemp`
+# reported beside it and gated by nothing, since an empty pen variable is a different cure. A `#`
+# line and a heredoc body are read past, the first learned by first residency when the scan counted
+# its own header. 30s: 449 runners, 1,140 pen sites, and a 45-leg control building eighteen real
+# repositories in a pen.
+guard pen_entry
+path tools/p/pen_entry_witness.rish
+tier lap
+seated 20260915.191655

@@ -351,7 +351,7 @@ body() { # $1 the name as this copy spells it
 
 g init -q -b main "$pen/rename"
 mkdir -p "$pen/rename/tools/fixtures/t"
-( cd "$pen/rename"
+( cd "$pen/rename" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   body shape_stretch > tools/fixtures/t/shape_stretch_scan.sh
   g add -A && g commit -qm "the landed reading" )
 ren() { ( cd "$pen/rename" && sh "$1" 2>&1 ); }
@@ -384,7 +384,7 @@ ck "named as near rather than silent"        "orphans_renamed_near=1" "$outnh"
 sed -e 's/^rename_floor=90$/rename_floor=0/' "$src" > "$pen/no_floor.sh"
 g init -q -b main "$pen/unrelated"
 mkdir -p "$pen/unrelated/tools/fixtures/t"
-( cd "$pen/unrelated"
+( cd "$pen/unrelated" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   printf 'one\ntwo\nthree\nfour\nfive\nsix\nseven\necho alpha\necho beta\nten\n' > tools/fixtures/t/other_stretch_scan.sh
   g add -A && g commit -qm "an unrelated landing" )
 mkdir -p "$pen/unrelated/tools/fixtures/t"
@@ -400,7 +400,7 @@ ck "with the floor at zero it claims"     "orphans_renamed=1" "$outuf"
 # the same rule the `moved` class already keeps for an ambiguous basename.
 g init -q -b main "$pen/twins"
 mkdir -p "$pen/twins/tools/fixtures/t"
-( cd "$pen/twins"
+( cd "$pen/twins" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   body shape_stretch > tools/fixtures/t/shape_stretch_scan.sh
   body shape_relaxed > tools/fixtures/t/shape_relaxed_scan.sh
   g add -A && g commit -qm "two landed readings" )
@@ -417,7 +417,7 @@ ck "both siblings were read"           "rename_reads=2"         "$outt"
 # of the ten lines land, which is 70 percent -- above the near floor, below the claim floor.
 g init -q -b main "$pen/near"
 mkdir -p "$pen/near/tools/fixtures/t"
-( cd "$pen/near"
+( cd "$pen/near" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   { printf '# tools/fixtures/t/shape_stretch_scan.sh -- the reading\n'
     printf 'say "shape-stretch: one"\nsay "shape-stretch: two"\n'
     printf 'echo alpha\necho beta\necho gamma\necho delta\n'
@@ -437,7 +437,7 @@ ck "and it is still counted as work"   "orphans_work=1"         "$outn"
 # thing under test is the name and the room.
 g init -q -b main "$pen/shape"
 mkdir -p "$pen/shape/tools/fixtures/t" "$pen/shape/tools/other"
-( cd "$pen/shape"
+( cd "$pen/shape" || { echo "refused: pen absent -- $0 did not enter its pen; fixtures would land in the live tree" >&2; exit 1; }
   body shape_stretch_second > tools/fixtures/t/shape_stretch_second_scan.sh
   body wander_stretch       > tools/other/wander_stretch_scan.sh
   g add -A && g commit -qm "a longer name and a far room" )
