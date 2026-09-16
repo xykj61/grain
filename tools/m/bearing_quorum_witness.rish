@@ -1,0 +1,119 @@
+# tools/m/bearing_quorum_witness.rish -- a bearing scheme is a RENDEZVOUS, and row 8 called it a
+# broadcast.
+#
+# WHY THIS RUNG. Row 8 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the
+# last measurable row of the twelve nobody had opened, and it carries two claims in one sentence:
+# "Consensus routing travels on polar bearings. A node announces along a meridian and confirms
+# along a parallel, so message count grows with the perimeter rather than the area." The cost half
+# and the delivery half come apart under measurement, and a sentence carrying both lets the true
+# half vouch for the false one.
+#
+# THE COST HALF STANDS. On a g x g torus of N nodes, an announce along the row plus a query along
+# the column is 2g - 2 messages, counted by walking the two lines. The floor for DISSEMINATION is
+# N - 1, because every node but the source must receive at least once whatever the topology. Read
+# 20260915 at four grids: the ratio falls 0.400, 0.222, 0.118, 0.061, and the exponent of cost
+# against node count over the two largest grids is 0.5237. The closed form 2g - 2 holds at every
+# grid. That is perimeter against area, exactly as row 8 says.
+#
+# THE DELIVERY HALF DOES NOT. After one announce, the nodes holding the value number g of N -- a
+# share of 0.250 at g=4 and 0.031 at g=32, falling as 1/g. So "consensus routing", which a reader
+# takes as everyone learning, describes a scheme under which a vanishing share learns. What the
+# scheme guarantees instead is read directly: the intersection of an announcer's row with a
+# querier's column, built as two cell sets and intersected through a marker array, reads exactly
+# ONE for all 1,360 distinct cases across the four grids. Two operations are guaranteed to MEET.
+# That is a quorum system, and its cost is the square root of N because its guarantee is
+# intersection rather than coverage. Row 8 priced a rendezvous and described a broadcast.
+#
+# AND THE WRAP IS WORTH EXACTLY ONE CUT, which is the positive finding and the one thing here that
+# belongs to the torus rather than to the grid. Row 8's own falsifier is a withheld packet leaving
+# two nodes agreeing on different states with both reporting success. One link on the announce
+# line is cut at every position in turn, and two lines of the same length g are compared: a CYCLE,
+# which is what a torus row is, and a PATH, which is what a grid row is. The cycle loses coverage
+# in ZERO of its cut positions and answers nothing silently. The path loses coverage in 1,300 and
+# answers 372,368 queriers silently -- a querier finds nothing at the intersection cell and cannot
+# tell "no value" from "the value did not arrive". Two cuts split the cycle in all 650 cases, so
+# the bound is one and is named rather than assumed. The falsifier fires on the path and is
+# extinguished by the wrap.
+#
+# WHAT IS GATED, and what is only reported. Everything here is arithmetic over a topology the scan
+# builds, so no figure can move under this tree and all three verdicts are gated. The finite-size
+# exponent is the one number needing care: the closed form is 2g - 2 against g*g, so the exponent
+# approaches 0.5 FROM ABOVE and the all-grid fit reads 0.5604 while the tail fit reads 0.5237. The
+# tail is what the gate reads, and both are printed so the bias is visible rather than tuned away.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/m/bearing_quorum_control.sh -- 37 behaviors in a
+# throwaway pen, with five mutations each proven landed by cmp before its reading is believed:
+#
+#   THE CYCLE WALKED ONE WAY loses coverage, so the wrap reading is reading the wrap.
+#   THE QUERIER READING ITS OWN ROW meets in many cells, so the intersection is measured rather
+#     than true by construction -- the mutation that matters most, since two perpendicular lines
+#     meeting once is exactly the kind of fact a scan can assert without checking.
+#   AN AREA-SIZED ANNOUNCE fails the cost half and misses the closed form.
+#   A SECOND CUT NEVER WALKED counts zero splits and fails the wrap, so the exact bound is read.
+#   A PATH THAT NEVER LOSES fails the wrap, because the cycle's zero proves nothing without the
+#     contrast beside it.
+#
+#   And the arguments from both sides: two grids read, one grid gives no exponent, a grid under
+#   the floor or over the ceiling refuses, two equal grids give no tail, an unknown flag refuses,
+#   and a grid that is not a count refuses.
+#
+# WHAT IT LEAVES TO OTHERS. Any real network -- this reading opens none and simulates a topology
+# in arithmetic. Node failure, which is a different fault from link withholding. Whether a
+# sequence number or a second intersecting quorum would let a querier DETECT the gap on a path;
+# the repair is named in the paper and measured nowhere. Latency, which a hop count is a poor
+# proxy for once a link has a queue.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260915-211500_the-bearing-that-meets-rather-than-floods.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/bearing_quorum_witness.rish
+
+say "bearing-quorum: Language EN -- a cost claim and a delivery claim are two claims."
+say "bearing-quorum: Style Gauge, Meter -- every figure names the grid it was read at."
+say "bearing-quorum: Lens TAME -- bound the grids, walk the topology, prove each verdict both ways."
+
+let control = run ["sh" "tools/fixtures/m/bearing_quorum_control.sh"]
+say control.out
+assert control.ok else "bearing-quorum: the control must complete -- its own lines are printed above"
+
+assert control.out contains "control_legs_expected=37" else "bearing-quorum: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_legs=37" else "bearing-quorum: a leg added or lost is a leg nobody heard"
+assert control.out contains "control_failed=0" else "bearing-quorum: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "bearing-quorum: the control must balance before it is believed"
+
+# Each mutation proven landed before its reading, so a plant that changed no byte cannot pass.
+assert control.out contains "mutation 1 applied" else "bearing-quorum: the one-way cycle plant must land before its reading"
+assert control.out contains "mutation 2 applied" else "bearing-quorum: the parallel-line plant must land before its reading"
+assert control.out contains "mutation 3 applied" else "bearing-quorum: the area-announce plant must land before its reading"
+assert control.out contains "mutation 4 applied" else "bearing-quorum: the second-cut plant must land before its reading"
+assert control.out contains "mutation 5 applied" else "bearing-quorum: the lossless-path plant must land before its reading"
+
+# The live reading, which opens no file and so answers the same on every ship.
+let live = run ["sh" "tools/fixtures/m/bearing_quorum_scan.sh"]
+say live.out
+assert live.ok else "bearing-quorum: the live reading must run"
+assert live.out contains "instrument=bearing_quorum" else "bearing-quorum: the reading names its own instrument"
+
+# The cost half -- row 8's true clause, held to its closed form rather than to a fitted curve.
+assert live.out contains "bearing_msgs=62 dissemination_floor=1023" else "bearing-quorum: an announce and a query cost 2g-2 against a dissemination floor of N-1"
+assert live.out contains "closed_form_misses=0" else "bearing-quorum: the counted cost must equal 2g-2 at every grid"
+assert live.out contains "cost_ratio_rises=0" else "bearing-quorum: the cost share of the dissemination floor must fall as the grid grows"
+assert live.out contains "cost_half=stands" else "bearing-quorum: perimeter against area is the half of row 8 that survives"
+
+# The delivery half -- the rendezvous guarantee, and the coverage it is NOT.
+assert live.out contains "cross_cases=1360 cross_min=1 cross_max=1" else "bearing-quorum: an announce row and a query column must meet in exactly one cell, every case"
+assert live.out contains "meet_guarantee=yes" else "bearing-quorum: the rendezvous guarantee is the property the scheme actually carries"
+assert live.out contains "announce_coverage=32 coverage_share=0.031250" else "bearing-quorum: one announce reaches g of N nodes, which is the share row 8 called consensus"
+
+# The wrap -- the one finding that belongs to the torus rather than to the grid.
+assert live.out contains "cycle_cut1_coverage_losses=0" else "bearing-quorum: a cycle must lose no coverage to any single cut"
+assert live.out contains "cycle_cut1_silent_answers=0" else "bearing-quorum: a cycle under one cut must answer nobody silently"
+assert live.out contains "path_cut1_coverage_losses=1300" else "bearing-quorum: a path must lose coverage, or the cycle's zero proves nothing"
+assert live.out contains "path_cut1_silent_answers=372368" else "bearing-quorum: row 8's own falsifier fires on a path"
+assert live.out contains "cycle_cut2_cases=650 cycle_cut2_splits=650" else "bearing-quorum: two cuts split a cycle, so the bound the wrap buys is exactly one"
+assert live.out contains "wrap_worth_one_cut=yes" else "bearing-quorum: the wrap survives one cut and no more"
+
+assert live.out contains "verdict=rendezvous" else "bearing-quorum: the scheme is a rendezvous, which is what the three halves together say"
+
+say "GREEN: bearing-quorum -- 37 behaviors, five mutations bitten, row 8's cost half standing at exponent 0.5237, its delivery half reading a coverage share of 0.031 at g=32, and the wrap worth exactly one withheld link."
