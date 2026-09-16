@@ -29,7 +29,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/expand_env"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/expand_env.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/expand_env.rye -femit-bin=${bin}"]
 assert build.ok else "ales-expand-env: build failed — ${build.err}"
 
 let outfile = "lotus/bin/expand_env.out"
@@ -43,11 +43,11 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-expand-env' ${outfile} && echo y
 assert (trim green.out) == "yes" else "ales-expand-env: selftest did not print the GREEN ales-expand-env line"
 
 # The attack/release expander drives the plain ALES60 expander over time -- re-prove it still stands green beneath the new rung.
-let expand = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/expand.rye -femit-bin=lotus/bin/expand && lotus/bin/expand selftest 2>&1 | grep -q 'GREEN ales-expand' && echo yes"]
+let expand = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/expand.rye -femit-bin=lotus/bin/expand && lotus/bin/expand selftest 2>&1 | grep -q 'GREEN ales-expand' && echo yes"]
 assert (trim expand.out) == "yes" else "ales-expand-env: the ALES60 expander witness regressed under the attack/release expander"
 
 # The time base is ALES52's proven follower -- re-prove it too, so the rung rests on both parents.
-let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
 assert (trim env.out) == "yes" else "ales-expand-env: the ALES52 envelope follower witness regressed under the attack/release expander"
 
 say "ales-expand-env: GREEN — an attack/release downward expander drives ALES60's deepened floor from ALES52's proven envelope; unit attack/release reduces to the plain ALES60 expander byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor deepens with the sign held and the magnitude never expanding, a slower release eases the widening longer (the knob monotone), and the state carries so a span in two pieces equals the whole once; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES60 expander and ALES52 follower stay GREEN beneath it. The dynamics family now shares one time base across all four members — the next rung can give the expander its hold too (ALES56's held follower), or open the lookahead delay for a true brickwall (a Keaton's-word horizon)."

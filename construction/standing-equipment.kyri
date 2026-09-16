@@ -216,8 +216,8 @@ seated 20260823.034321
 # capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
 # projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
 # from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
-# cold pass after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
-# every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
+# cold endurance run after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
+# every ship pays a FULL cold endurance run every lap: 778s measured here. The scan's own refusal is right
 # (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
 # card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
 guard sow_allow_reach
@@ -302,10 +302,10 @@ seated 20260915.183000
 # capability seated 20260907.003211. REPAIRED `20260907.114500`: the guard counted TODAY's logs and
 # nothing else, so between 00:00 and the day's first COMMITTED log there was nothing to count and
 # its scan refused -- right about the corpus (REDS %170) and wrong about the subject, which made an
-# ordinary daily state read as a fault. Measured at 00:12 on `20260907`, the first cold pass of a
+# ordinary daily state read as a fault. Measured at 00:12 on `20260907`, the first cold endurance run of a
 # day answered `guards_red=2` on one root: this guard, and `standing_equipment` reading its own
 # roster's red. A red guard withholds the roster receipt, so `--scoped` refuses and every ship pays
-# a FULL cold pass -- daily, fleet-wide, and healing itself an hour later, which is worse than a
+# a FULL cold endurance run -- daily, fleet-wide, and healing itself an hour later, which is worse than a
 # standing red because it looks like somebody's fault and then vanishes. The scan now falls back to
 # the newest shelf that HOLDS a corpus, at most seven shelves back, and prints `day_source=` so an
 # open-day reading and a fallback reading are told apart; a day a caller NAMES still refuses.
@@ -433,8 +433,8 @@ seated 20260907.004329
 # capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
 # projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
 # from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
-# cold pass after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
-# every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
+# cold endurance run after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
+# every ship pays a FULL cold endurance run every lap: 778s measured here. The scan's own refusal is right
 # (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
 # card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
 
@@ -1639,7 +1639,7 @@ seated 20260828.213503
 # comlink_topology READS 12s FROM 20260906.093000, and the row stays `lap` on purpose. It
 # grew the point-metric proof REDS %454 asked for -- every ordered pair of both seated skies
 # walked for a strictly-closer next hop -- plus its own control, which builds six pen copies
-# of the module and runs each. Measured here: 12.5s against a cold pass of 875s, so 1.4%.
+# of the module and runs each. Measured here: 12.5s against a cold endurance run of 875s, so 1.4%.
 # The elder 2s above is kept as what the row cost when it was seated, since a number a row
 # carries should say which lap measured it.
 #
@@ -1860,7 +1860,7 @@ tier cadence
 seated 20260829.210056
 
 # lantern_face -- the asking voice's face, landed by a peer `20260830.000539` with no roster row
-# beside it. `witness_reach` caught the gap on the very next hot pass: a witness nothing enumerates
+# beside it. `witness_reach` caught the gap on the very next hot endurance run: a witness nothing enumerates
 # is a witness family with no clock, and that reading stood at 221 wholly-unreached families
 # against a ceiling of 220. The guard's own refusal names the repair -- give it a roster row rather
 # than raise the ceiling -- so this is the row rather than a raised number.
@@ -1904,7 +1904,7 @@ seated 20260830.072125
 # The reading takes every tracked witness and choir outside the fixture pens, closes the set this
 # roster can reach -- rostered, or named on a non-comment line of something already reached -- and
 # holds the remainder under a ceiling that only falls. REDS %357 measured what the gap costs: three
-# witnesses of one family red at HEAD for days, none of them rostered, while a 96-guard cold pass
+# witnesses of one family red at HEAD for days, none of them rostered, while a 96-guard cold endurance run
 # read 95 green. Measured here `20260830.095947`: 1,756 guards, 603 heard, 1,153 unheard, 41 of
 # those choirs that sing families of their own; re-measured `20260830.154940` after the five
 # rule-named rows below landed: 614 heard, 1,144 unheard, 40 choirs. The git hooks were checked as
@@ -2067,11 +2067,11 @@ seated 20260830.204814
 # commit wall's one named seed exemption moved out from under both the publisher and the wall's own
 # fixture, and nothing was listening. It stays off this roster until that spelling is Keaton's word
 # (custody gate %1); these five stood GREEN on metal before their rows were written, because
-# rostering a red guard reds every cold pass in the fleet.
+# rostering a red guard reds every cold endurance run in the fleet.
 #
 # WHAT THEY COST, measured here 20260830 on this pier, each run alone: waymark_derive 1s,
 # commit_message_guard 2s, waymark_registry 3s, sel4_userlevel_license 0s, crypto_vendored_parity
-# 12s -- 18s together against a cold pass of 2,425s, which is why every one of them is `lap` rather
+# 12s -- 18s together against a cold endurance run of 2,425s, which is why every one of them is `lap` rather
 # than `cadence`. The cheapest of them was already the most overdue: `gratitude-licenses.md` calls
 # the seL4 sweep "a standing check, not a one-time read," and it had never been run by a standing
 # pass at all.
@@ -2081,7 +2081,7 @@ seated 20260830.204814
 # bought, and the count is not the value: what a rostered guard is worth is what breaks while it is
 # silent. The larger choirs live in Glow, STOA, SUNN and the equinox family, where REDS %360
 # measured a 46% red rate in lanes this seat does not hold, and rostering another lane's red guard
-# would red every body's cold pass.
+# would red every body's cold endurance run.
 
 # instrument_refusal -- a guard that cannot run its instrument refuses, and names it. Three scans in
 # two days reached for a helper they did not write, could not run it, and reported a clean tree --
@@ -2915,7 +2915,7 @@ seated 20260905.161500
 # ships because four of its legs launch the jail and `bwrap` will not nest, so a ship inside the
 # enclosure answered `Failed to make / slave: Operation not permitted` at a leg that could never
 # have run there. A red guard withholds the roster receipt, `--scoped` refuses without a full green
-# receipt, and every ship therefore paid a full cold pass every lap for an environment fact. The
+# receipt, and every ship therefore paid a full cold endurance run every lap for an environment fact. The
 # legs that read plans, paths and seeded files run everywhere and stay here; the legs that launch
 # the jail moved to the row below, behind a capability the runner PROBES by attempting a trivial
 # bwrap. Not the `host` field %422 declined -- a declaration can be wrong about a bench, and an
@@ -3073,7 +3073,7 @@ seated 20260831.014630
 # `cadence` because the metal legs lower both desks through Glow and build them with the Zig
 # toolchain, the same clock its Tablecloth sibling and the six Glow witnesses beside it keep.
 # Re-measured on this pier 20260831.073652, GREEN before this row moved: 24s whole -- 17s of it the
-# forty-seven-case control, the rest two Zig builds -- against a cold pass of 2,317s. The pure scan
+# forty-seven-case control, the rest two Zig builds -- against a cold endurance run of 2,317s. The pure scan
 # still runs in under a second, so a hand asking it by name pays almost nothing.
 
 guard pond_spool_cloth_glow_tend
@@ -3762,12 +3762,12 @@ seated 20260906.055500
 # exists, refuses a run card naming a guard never seated, and refuses any recorded RED. No row ran
 # it, so on 20260906 it went red and STAYED red -- the scan held `known_capabilities="ipv6"` by hand
 # while a peer taught the runner a second probe, `jail_nesting`, and a whole-roster refusal sat
-# unread through a cold pass that reported `run_verdict=ok`. The note under `comlink_nesting`
+# unread through a cold endurance run that reported `run_verdict=ok`. The note under `comlink_nesting`
 # already wrote the lesson: a rule that names a check and a roster that never runs it are one
 # sentence disagreeing with itself. That sentence was at this roster's own front door. The scan
 # derives the capability list off the runner now, so the drift cannot recur, and this row is what
 # makes the next one audible. `tier lap`: 16s, most of it the control's pens over real repositories.
-# GREEN on metal before the row was written, since rostering a red guard reds every cold pass in the
+# GREEN on metal before the row was written, since rostering a red guard reds every cold endurance run in the
 # fleet.
 
 guard standing_equipment
@@ -4085,7 +4085,7 @@ seated 20260906.120905
 # guard including its 40-case pen runs in 5 against a full lap pass of 729.
 #
 # A SECOND SHAPE OF THE SAME LOSS, seated `20260906.233111` -- and found by a red rather than by a
-# search. `fleet_watch` reddened a cold pass, filed seven lines that could not name a behavior, then
+# search. `fleet_watch` reddened a cold endurance run, filed seven lines that could not name a behavior, then
 # passed 16 of 16 on six consecutive re-runs: the one reading that could have diagnosed the flake
 # was the reading its witness threw away. `tools/fixtures/f/fleet_watch_control.sh:24` prints
 # `FAIL <behavior> -- wanted X, got Y` to STDERR so a passing run stays quiet, and
@@ -4130,7 +4130,7 @@ seated 20260906.120905
 # late. Under them sits the plain case: `let r = run [...]` followed by `assert r.ok else "the
 # build failed"`, mentioning neither `.out` nor `.err`, so a refusal hands the reader the witness's
 # own sentence and discards the compiler's. REDS %700 is this shape: a rostered guard answering red
-# on one cold pass and green on a re-run over one unchanged tree, with an evidence page naming
+# on one cold endurance run and green on a re-run over one unchanged tree, with an evidence page naming
 # which LEG refused and nothing about why. All five of its bindings wore it.
 #
 # THE REPAIR IS QUIET, which is what tells it from the third shape. Rishi interpolates a capture
@@ -4550,7 +4550,7 @@ tier lap
 seated 20260908.115028
 
 # shared_pen -- a scratch path named by a constant is a path eight ships share.
-# FOUR witnesses have reddened a cold pass across three laps while each was GREEN run alone --
+# FOUR witnesses have reddened a cold endurance run across three laps while each was GREEN run alone --
 # signal_trap, tlb_reach, amphora_restore_negative, and tlb_reach a SECOND time -- because a peer's
 # `rm -rf /tmp/<a chosen name>` reached their fixture mid-run. Each sweep that repaired one counted
 # the class by the spellings it could read: the first read a shell `TMPDIR=` assignment and missed a
@@ -5622,7 +5622,7 @@ seated 20260912.002402
 
 # port_band -- the room's port numbers, counted off the sources rather than typed in a sentence.
 #
-# WHY IT IS ROSTERED. REDS %700 cost a fortnight: a rostered witness read red on one cold pass and
+# WHY IT IS ROSTERED. REDS %700 cost a fortnight: a rostered witness read red on one cold endurance run and
 # green on a re-run over an unchanged tree, and the cause was two lawful runs on eight checkouts
 # reaching for one compiled-in UDP port. A port is a name on the MACHINE rather than in a checkout,
 # and this pier stands eight checkouts deep whose passes overlap almost entirely.

@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/chorus"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/chorus.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/chorus.rye -femit-bin=${bin}"]
 assert build.ok else "ales-chorus: build failed — ${build.err}"
 
 let outfile = "lotus/bin/chorus.out"
@@ -46,7 +46,7 @@ assert (trim green.out) == "yes" else "ales-chorus: selftest did not print the G
 
 # This rung's zero-depth case equals ALES70's glide at its centre byte-for-byte over its public API -- re-prove the gliding delay still
 # stands green beside it.
-let glide = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/glide.rye -femit-bin=lotus/bin/glide && lotus/bin/glide selftest 2>&1 | grep -q 'GREEN ales-glide' && echo yes"]
+let glide = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/glide.rye -femit-bin=lotus/bin/glide && lotus/bin/glide selftest 2>&1 | grep -q 'GREEN ales-glide' && echo yes"]
 assert (trim glide.out) == "yes" else "ales-chorus: the ALES70 gliding delay regressed under the chorus"
 
 say "ales-chorus: GREEN — the chorus reads a triangle-LFO modulated delay round a centre, the first periodic modulated delay: the scaled delay is centre + triangle(depth, period, k), a symmetric wave with EXACT quarter anchors, read by ALES70's fractional interpolation off a frozen dry snapshot, mixed dry and saturated once. level = 0 is the dry identity; a zero-depth chorus is EXACTLY ALES70's glide at its centre byte-for-byte (the periodic driver reduces to the one-way one at rest); the triangle honors its four quarter anchors and repeats one period later; a hand-computed modulated read matches exactly; a loud wet+dry sum saturates rather than wraps; a period not a positive multiple of four refuses BadPeriod, a swing below one whole sample BadDepth, a swing top past max_clip BadDelay, a wet above unity or a zero denominator BadLevel, an out-of-range span BadRange, each leaving the clip untouched; the ALES70 gliding delay stays GREEN beside it. The vibrato (this delay heard wet-only) and the flanger (a shorter modulated delay with feedback) are thin later rungs that only change the mix and add the feedback path."

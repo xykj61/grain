@@ -34,7 +34,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/reverb_early_late"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_early_late.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_early_late.rye -femit-bin=${bin}"]
 assert build.ok else "ales-reverb-early-late: build failed — ${build.err}"
 
 let outfile = "lotus/bin/reverb_early_late.out"
@@ -48,11 +48,11 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-early-late' ${outfile} &&
 assert (trim green.out) == "yes" else "ales-reverb-early-late: selftest did not print the GREEN ales-reverb-early-late line"
 
 # This rung runs ALES69's multitap_ms over its public API for the early reflections -- re-prove the timed multi-tap still stands green beside it.
-let mt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/multitap_time.rye -femit-bin=lotus/bin/multitap_time && lotus/bin/multitap_time selftest 2>&1 | grep -q 'GREEN ales-multitap-time' && echo yes"]
+let mt = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/multitap_time.rye -femit-bin=lotus/bin/multitap_time && lotus/bin/multitap_time selftest 2>&1 | grep -q 'GREEN ales-multitap-time' && echo yes"]
 assert (trim mt.out) == "yes" else "ales-reverb-early-late: the ALES69 timed multi-tap regressed under its early/late balance"
 
 # And ALES190's reverb_preset over its public API for the late wash -- re-prove the named-room preset still stands green beside it.
-let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-reverb-early-late: the ALES190 named-room preset regressed under its early/late balance"
 
 say "ales-reverb-early-late: GREEN — the early/late balance: the first reflections against the diffuse wash, the reverb's fresh axis after the tone axis closed. Compute the early reflections with ALES69's multi-tap over the room's fixed early bank (on a copy of the dry), the late wash with ALES190's reverb_preset in place, then blend out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), a linear crossfade at the named fraction num/den, saturated once so a loud blend pins never wraps — no new audio arithmetic. Proven: at balance = 0 exactly the multi-tap over the room's early bank byte for byte (fully early); at balance = den exactly reverb_preset byte for byte (fully late); a half balance neither edge, each sample the honest weighted average; the rooms differ (room, hall, and plate early edges three real patterns); silence stays silence; a bad fraction refuses BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched (the early multi-tap on a copy, the late preset prechecked, so atomic); the ALES69 multi-tap and the ALES190 preset stay GREEN beside it. The stereo early/late balance (the same crossfade over both channels, image held) is the thin twin next."

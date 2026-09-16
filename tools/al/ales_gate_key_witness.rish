@@ -32,7 +32,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/gate_key"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_key.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate_key.rye -femit-bin=${bin}"]
 assert build.ok else "ales-gate-key: build failed — ${build.err}"
 
 let outfile = "lotus/bin/gate_key.out"
@@ -46,10 +46,10 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-gate-key' ${outfile} && echo yes
 assert (trim green.out) == "yes" else "ales-gate-key: selftest did not print the GREEN ales-gate-key line"
 
 # This rung keys ALES57 with an ALES56-held detector over their public APIs -- re-prove both still stand green under it.
-let geh = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env_hold.rye -femit-bin=lotus/bin/gate_env_hold && lotus/bin/gate_env_hold selftest 2>&1 | grep -q 'GREEN ales-gate-env-hold' && echo yes"]
+let geh = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate_env_hold.rye -femit-bin=lotus/bin/gate_env_hold && lotus/bin/gate_env_hold selftest 2>&1 | grep -q 'GREEN ales-gate-env-hold' && echo yes"]
 assert (trim geh.out) == "yes" else "ales-gate-key: the ALES57 attack/hold/release gate regressed under the keyed gate"
 
-let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+let h = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim h.out) == "yes" else "ales-gate-key: the ALES56 held follower regressed under the keyed gate"
 
 say "ales-gate-key: GREEN — the keyed gate drives ALES51's silenced floor from ALES56's HELD follower advanced on a KEY clip rather than on the target, the door opening when the key is loud and closing when it falls quiet; a self-key is the ordinary ALES57 gate byte-for-byte, a loud key opens the gate, a silent key closes it (the e == 0 branch, den/num applied directly with no divide by zero), unit ratio is the identity everywhere, a gated target keeps its sign, the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, a short key BadKey, each leaving the target untouched; the ALES57 gate and ALES56 held follower selftests stay GREEN. All three tools ALES63 named — de-esser, ducker, keyed gate — now stand as compositions of proven parts; a carried/spanning de-esser and external key routing stay taken only on Keaton's word."

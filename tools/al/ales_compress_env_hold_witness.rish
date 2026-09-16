@@ -32,7 +32,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/compress_env_hold"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/compress_env_hold.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/compress_env_hold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-compress-env-hold: build failed — ${build.err}"
 
 let outfile = "lotus/bin/compress_env_hold.out"
@@ -47,13 +47,13 @@ assert (trim green.out) == "yes" else "ales-compress-env-hold: selftest did not 
 
 # This rung composes three parents over their public APIs -- re-prove ALES56's held follower, ALES50's compressor, and ALES53's un-held
 # compressor still stand green under it.
-let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+let h = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim h.out) == "yes" else "ales-compress-env-hold: the ALES56 held follower regressed under the attack/hold/release compressor"
 
-let c = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
+let c = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
 assert (trim c.out) == "yes" else "ales-compress-env-hold: the ALES50 compressor regressed under the attack/hold/release compressor"
 
-let ce = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress_env.rye -femit-bin=lotus/bin/compress_env && lotus/bin/compress_env selftest 2>&1 | grep -q 'GREEN ales-compress-env' && echo yes"]
+let ce = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/compress_env.rye -femit-bin=lotus/bin/compress_env && lotus/bin/compress_env selftest 2>&1 | grep -q 'GREEN ales-compress-env' && echo yes"]
 assert (trim ce.out) == "yes" else "ales-compress-env-hold: the ALES53 attack/release compressor regressed under the attack/hold/release compressor"
 
 say "ales-compress-env-hold: GREEN — an attack/HOLD/release compressor drives ALES50's softened ceiling from ALES56's HELD envelope, each sample advancing the held follower one step and, when the held envelope crosses the threshold, dividing its excess by the ratio and applying that gain to the raw sample; a hold of zero is the plain ALES53 compressor byte-for-byte, unit ratio is the identity everywhere, a loud signal's magnitude reduces with the sign held, a nonzero hold keeps the gain reduction engaged across a brief duck (the knob monotone, no pumping), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each leaving the clip untouched; the ALES56 held follower, ALES50 compressor, and ALES53 compressor selftests stay GREEN. The compressor now holds too — the limiter (ALES55) takes the same swap next, a short rung reading the same proven env_step_hold; the lookahead delay for a true brickwall stays Keaton's hand."

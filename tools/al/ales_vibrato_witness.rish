@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/vibrato"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/vibrato.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/vibrato.rye -femit-bin=${bin}"]
 assert build.ok else "ales-vibrato: build failed — ${build.err}"
 
 let outfile = "lotus/bin/vibrato.out"
@@ -45,7 +45,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-vibrato' ${outfile} && echo yes"
 assert (trim green.out) == "yes" else "ales-vibrato: selftest did not print the GREEN ales-vibrato line"
 
 # The vibrato's whole identity is that the chorus is the dry plus the vibrato -- re-prove the ALES71 chorus still stands green beside it.
-let chorus = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/chorus.rye -femit-bin=lotus/bin/chorus && lotus/bin/chorus selftest 2>&1 | grep -q 'GREEN ales-chorus' && echo yes"]
+let chorus = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/chorus.rye -femit-bin=lotus/bin/chorus && lotus/bin/chorus selftest 2>&1 | grep -q 'GREEN ales-chorus' && echo yes"]
 assert (trim chorus.out) == "yes" else "ales-vibrato: the ALES71 chorus regressed under the vibrato"
 
 say "ales-vibrato: GREEN — the vibrato reads the triangle-LFO modulated delay wet-only: it reuses ALES71's triangle_delay_at driver and ALES70's fractional interpolation off a frozen dry snapshot, and writes the delayed voice ALONE. The CHORUS IS THE DRY PLUS THE VIBRATO, proven sample-by-sample (C[i] == saturate(dry[i] + V[i])); a hand-computed wet-only read matches exactly; a zero-depth vibrato is a fixed fractional delay heard alone (a pure echo voice, no dry); the vibrato voice never exceeds the dry rail (a convex combination of two in-range samples is in range, the write's saturate a proven no-op); a period not a positive multiple of four refuses BadPeriod, a swing below one whole sample BadDepth, a swing top past max_clip BadDelay, an out-of-range span BadRange, each leaving the clip untouched, and there is no BadLevel — the vibrato carries no mix level; the ALES71 chorus stays GREEN beside it. The flanger (a shorter modulated delay with a feedback path) is the family's next rung — the one that adds a genuinely new element rather than only changing the mix."

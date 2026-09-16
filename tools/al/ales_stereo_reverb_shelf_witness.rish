@@ -37,7 +37,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/stereo_reverb_shelf"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_shelf.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_reverb_shelf.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-reverb-shelf: build failed — ${build.err}"
 
 let outfile = "lotus/bin/stereo_reverb_shelf.out"
@@ -51,15 +51,15 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-shelf' ${outfile} 
 assert (trim green.out) == "yes" else "ales-stereo-reverb-shelf: selftest did not print the GREEN ales-stereo-reverb-shelf line"
 
 # This rung runs ALES191's stereo_reverb_preset over its public API for the wet -- re-prove the named-room stereo preset still stands green beside it.
-let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
 assert (trim preset.out) == "yes" else "ales-stereo-reverb-shelf: the ALES191 named-room stereo preset regressed under its shelf"
 
 # And re-prove ALES41's two-band tone shelf still stands green -- the shelving it applies to each ear.
-let shelf = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/shelf.rye -femit-bin=lotus/bin/shelf && lotus/bin/shelf selftest 2>&1 | grep -q 'GREEN ales-shelf' && echo yes"]
+let shelf = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/shelf.rye -femit-bin=lotus/bin/shelf && lotus/bin/shelf selftest 2>&1 | grep -q 'GREEN ales-shelf' && echo yes"]
 assert (trim shelf.out) == "yes" else "ales-stereo-reverb-shelf: the ALES41 two-band shelf regressed under its stereo reverb shelf"
 
 # And re-prove ALES204's mono reverb shelf still stands green -- the mono rung this mirrors per ear.
-let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_shelf.rye -femit-bin=lotus/bin/reverb_shelf && lotus/bin/reverb_shelf selftest 2>&1 | grep -q 'GREEN ales-reverb-shelf' && echo yes"]
+let mono = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/reverb_shelf.rye -femit-bin=lotus/bin/reverb_shelf && lotus/bin/reverb_shelf selftest 2>&1 | grep -q 'GREEN ales-reverb-shelf' && echo yes"]
 assert (trim mono.out) == "yes" else "ales-stereo-reverb-shelf: the ALES204 mono reverb shelf regressed beside its stereo twin"
 
 say "ales-stereo-reverb-shelf: GREEN — the stereo shelf: a two-band tone shelf on the reverberant tail carried across a stereo master. Reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, then tone-shelf each channel's wet with ALES41's proven two-band shelf at the same setting, no cross-channel read — bass == unity AND treble == unity the identity, a bass boost lifting the low wash, a treble cut darkening the tail — no new audio arithmetic. Proven on both channels: at bass == unity AND treble == unity exactly stereo_reverb_preset byte for byte; for a real shelf each channel equals stereo_reverb_preset then shelf.shelf on that channel byte for byte and differs from its wet; each treble-cut channel's roughness is strictly less than its wet's (darkens) and each bass-boost channel's energy is strictly greater than its wet's (lifts); the image is held (centred identical, stereo distinct); the channels leave balanced and silence stays silence; an illegal coefficient refuses BadCoeff, a zero band denominator BadGain with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset, the ALES41 shelf, and the ALES204 mono shelf stay GREEN beside it. The tone axis now stands whole for mono and stereo in both its plain-darkness and full-shelf forms; a fresh reverb axis (width, freeze, or early/late balance) is next."

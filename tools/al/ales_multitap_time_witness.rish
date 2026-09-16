@@ -30,7 +30,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/multitap_time"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/multitap_time.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/multitap_time.rye -femit-bin=${bin}"]
 assert build.ok else "ales-multitap-time: build failed — ${build.err}"
 
 let outfile = "lotus/bin/multitap_time.out"
@@ -44,7 +44,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-multitap-time' ${outfile} && ech
 assert (trim green.out) == "yes" else "ales-multitap-time: selftest did not print the GREEN ales-multitap-time line"
 
 # This rung delegates to ALES68's multitap over its public API -- re-prove the index-named multi-tap still stands green beside it.
-let taps = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/taps.rye -femit-bin=lotus/bin/taps && lotus/bin/taps selftest 2>&1 | grep -q 'GREEN ales-taps' && echo yes"]
+let taps = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/taps.rye -femit-bin=lotus/bin/taps && lotus/bin/taps selftest 2>&1 | grep -q 'GREEN ales-taps' && echo yes"]
 assert (trim taps.out) == "yes" else "ales-multitap-time: the ALES68 multi-tap delay regressed under its real-time twin"
 
 say "ales-multitap-time: GREEN — the multi-tap delay in real time: taps named in milliseconds, a thin twin over ALES68 exactly as echo_ms is over the feedback echo. The clock adds only the units, never the audio: multitap_ms converts start_ms, count_ms, and each tap's delay_ms through ALES5's samples_for and delegates to ALES68's multitap unchanged, so the millisecond-named multi-tap lands byte-for-byte the same samples as the index-named multi-tap (the exact two independent copies 8000 dry / 4000 at 2 / 2000 at 4); at 48 kHz 1 ms converts to 48 samples and the copy sits exactly there; the two timed taps stay independent (the 4 ms copy 1/4 of the ORIGINAL dry); a sub-sample tap refuses BadDelay, a delay past the clip DurationTooLong, zero taps BadTapCount, a tap above unity BadLevel, an out-of-range span BadRange, each leaving the clip untouched; the ALES68 multi-tap stays GREEN beside it. The modulated delay (chorus, flanger — the moving tap wants fractional-delay interpolation) is the next genuinely new primitive, nameable in milliseconds from here."

@@ -29,7 +29,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/expand_env_hold"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/expand_env_hold.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/expand_env_hold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-expand-env-hold: build failed — ${build.err}"
 
 let outfile = "lotus/bin/expand_env_hold.out"
@@ -43,11 +43,11 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-expand-env-hold' ${outfile} && e
 assert (trim green.out) == "yes" else "ales-expand-env-hold: selftest did not print the GREEN ales-expand-env-hold line"
 
 # The held expander reduces to the un-held ALES61 expander at a hold of zero -- re-prove ALES61 still stands green beneath the new rung.
-let unheld = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/expand_env.rye -femit-bin=lotus/bin/expand_env && lotus/bin/expand_env selftest 2>&1 | grep -q 'GREEN ales-expand-env' && echo yes"]
+let unheld = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/expand_env.rye -femit-bin=lotus/bin/expand_env && lotus/bin/expand_env selftest 2>&1 | grep -q 'GREEN ales-expand-env' && echo yes"]
 assert (trim unheld.out) == "yes" else "ales-expand-env-hold: the ALES61 attack/release expander witness regressed under the held expander"
 
 # The held time base is ALES56's proven follower -- re-prove it too, so the rung rests on both parents.
-let held = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+let held = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim held.out) == "yes" else "ales-expand-env-hold: the ALES56 held follower witness regressed under the held expander"
 
 say "ales-expand-env-hold: GREEN — an attack/hold/release downward expander drives ALES60's deepened floor from ALES56's HELD envelope; a hold of zero reduces to the plain ALES61 expander byte-for-byte, unit ratio is the identity everywhere, a quiet signal's floor deepens with the sign held and the magnitude never expanding, a nonzero hold keeps the expander idle across a brief dip (the knob monotone), and the state carries — env and hold_left both — so a span in two pieces equals the whole once; a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each leaving the clip untouched; the ALES61 expander and ALES56 held follower stay GREEN beneath it. The HELD dynamics quartet is now whole — gate, compressor, limiter, expander all reading ALES56's one proven held follower, the exact mirror of the un-held quartet. The next Lindy-first crux is a new dynamics gesture (a de-esser over the band filter, a sidechain) or the lookahead delay for a true brickwall — a Keaton's-word horizon."

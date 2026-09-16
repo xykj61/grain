@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/limit_env_hold"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/limit_env_hold.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/limit_env_hold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-limit-env-hold: build failed — ${build.err}"
 
 let outfile = "lotus/bin/limit_env_hold.out"
@@ -46,13 +46,13 @@ assert (trim green.out) == "yes" else "ales-limit-env-hold: selftest did not pri
 
 # This rung composes three parents over their public APIs -- re-prove ALES56's held follower, ALES49's limiter, and ALES55's un-held
 # limiter still stand green under it.
-let h = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
+let h = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/hold_env.rye -femit-bin=lotus/bin/hold_env && lotus/bin/hold_env selftest 2>&1 | grep -q 'GREEN ales-hold-env' && echo yes"]
 assert (trim h.out) == "yes" else "ales-limit-env-hold: the ALES56 held follower regressed under the attack/hold/release limiter"
 
-let l = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
+let l = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/limit.rye -femit-bin=lotus/bin/limit && lotus/bin/limit selftest 2>&1 | grep -q 'GREEN ales-limit' && echo yes"]
 assert (trim l.out) == "yes" else "ales-limit-env-hold: the ALES49 limiter regressed under the attack/hold/release limiter"
 
-let le = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/limit_env.rye -femit-bin=lotus/bin/limit_env && lotus/bin/limit_env selftest 2>&1 | grep -q 'GREEN ales-limit-env' && echo yes"]
+let le = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/limit_env.rye -femit-bin=lotus/bin/limit_env && lotus/bin/limit_env selftest 2>&1 | grep -q 'GREEN ales-limit-env' && echo yes"]
 assert (trim le.out) == "yes" else "ales-limit-env-hold: the ALES55 attack/release limiter regressed under the attack/hold/release limiter"
 
 say "ales-limit-env-hold: GREEN — an attack/HOLD/release limiter drives ALES49's hard ceiling from ALES56's HELD envelope, each sample advancing the held follower one step and, when the held envelope rises above the ceiling, applying the gain ceil/envelope to the raw sample; a hold of zero is the plain ALES55 limiter byte-for-byte, below the ceiling is the identity, a loud signal's magnitude reduces with the sign held, a nonzero hold keeps the gain reduction engaged across a brief duck (the knob monotone, no pumping), the state carries so a span in two pieces equals the whole once; a bad ceiling refuses BadCeiling, an illegal coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each leaving the clip untouched; the ALES56 held follower, ALES49 limiter, and ALES55 limiter selftests stay GREEN. With the gate, compressor, and limiter all holding, the HELD dynamics trio is whole — the mirror of the un-held trio over one proven held follower; the lookahead delay for a true brickwall stays Keaton's hand."

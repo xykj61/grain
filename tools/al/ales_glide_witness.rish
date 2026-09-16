@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/glide"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/glide.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/glide.rye -femit-bin=${bin}"]
 assert build.ok else "ales-glide: build failed — ${build.err}"
 
 let outfile = "lotus/bin/glide.out"
@@ -46,7 +46,7 @@ assert (trim green.out) == "yes" else "ales-glide: selftest did not print the GR
 
 # This rung generalizes ALES68's fixed integer tap to a moving fractional one and proves equality at integer positions over its public API --
 # re-prove the multi-tap still stands green beside it.
-let taps = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/taps.rye -femit-bin=lotus/bin/taps && lotus/bin/taps selftest 2>&1 | grep -q 'GREEN ales-taps' && echo yes"]
+let taps = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/taps.rye -femit-bin=lotus/bin/taps && lotus/bin/taps selftest 2>&1 | grep -q 'GREEN ales-taps' && echo yes"]
 assert (trim taps.out) == "yes" else "ales-glide: the ALES68 multi-tap delay regressed under the gliding delay"
 
 say "ales-glide: GREEN — the gliding delay reads a fractional delay by linear interpolation, the genuinely new arithmetic the whole modulated-delay family needs: delayed = (near·(scale-frac) + far·frac)/scale off a frozen dry snapshot, mixed dry and saturated once. level = 0 is the dry identity; a whole-sample glide is an EXACT integer tap (equal to ALES68's one-tap multi-tap byte-for-byte — interpolation exact at integer positions); the half-sample is the EXACT average of two neighbours (a 2.5-sample delay, computed by hand); the glide honors its ramp endpoints and moves monotonically, a falling glide too; a loud wet+dry sum saturates rather than wraps; a sub-sample or too-wide delay refuses BadDelay, a wet above unity or a zero denominator BadLevel, an out-of-range span BadRange, each leaving the clip untouched; the ALES68 multi-tap stays GREEN beside it. The periodic modulated delay (chorus, flanger, vibrato) — a triangle or sine LFO driving the delay round a centre — is a thin later rung that only chooses how the scaled delay moves."

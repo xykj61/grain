@@ -28,7 +28,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/bell"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/bell.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/bell.rye -femit-bin=${bin}"]
 assert build.ok else "ales-bell: build failed — ${build.err}"
 
 let outfile = "lotus/bin/bell.out"
@@ -42,7 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-bell' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-bell: selftest did not print the GREEN ales-bell line"
 
 # The bell at zero gain IS the notch -- prove ALES47's band-reject still stands by its own green, so the identity is honest.
-let notch = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/notch.rye -femit-bin=lotus/bin/notch && lotus/bin/notch selftest 2>&1 | grep -q 'GREEN ales-notch' && echo yes"]
+let notch = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/notch.rye -femit-bin=lotus/bin/notch && lotus/bin/notch selftest 2>&1 | grep -q 'GREEN ales-notch' && echo yes"]
 assert (trim notch.out) == "yes" else "ales-bell: the ALES47 band-reject witness regressed under the bell"
 
 say "ales-bell: GREEN — a parametric bell turns the middle band and holds the edges by scaling the exact residual M = x − L − H, summed and clamped once; unity gain is the identity byte-for-byte, zero gain IS the band-reject (proven against notch.notch), a constant settles to itself at both a boost and a full cut (the mid is zero at direct current), and a heavy boost saturates to the rail rather than wrapping; an illegal cutoff refuses BadCoeff, a zero gain denominator BadGain, an out-of-range span BadRange, each leaving the clip untouched; the ALES47 band-reject selftest stays GREEN. With the low-pass, high-pass, shelf, stack, band-pass, band-reject, and now the parametric bell, the fixed-EQ family is whole — the next Lotus rung can sweep the bell's centre, give it a real hertz and a Q, or automate its gain under an envelope."

@@ -132,7 +132,7 @@ slack every sweep before it kept and taking none of the 20. **The ceiling is spe
 files, which the sweep learned by lowering one of them.** `tools/fixtures/a/ascii_document_resident_probe.sh` is the scan transcribed with every per-file
 process removed, so it carries its own `CEILING=` line, and a lowering that reaches one reader
 and not the other makes the two answer differently about one tree. `tools/a/ascii_resident_agree_witness.rish` is the guard that hears it, and it did -- eight legs
-of its pen parted on the hot pass of this very sweep. Lower both, or the cheap reader stops
+of its pen parted on the hot endurance run of this very sweep. Lower both, or the cheap reader stops
 measuring the same question.
 
 **A front door outside every roster carried 36 more** (`20260910.054344`). `bat/README.md` sat in

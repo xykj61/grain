@@ -28,7 +28,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/gate"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/gate.rye -femit-bin=${bin}"]
 assert build.ok else "ales-gate: build failed — ${build.err}"
 
 let outfile = "lotus/bin/gate.out"
@@ -42,7 +42,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN ales-gate' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-gate: selftest did not print the GREEN ales-gate line"
 
 # The gate inverts the threshold the compressor leaned on -- re-prove ALES50's compressor still stands green, so the two rest together.
-let compress = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
+let compress = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
 assert (trim compress.out) == "yes" else "ales-gate: the ALES50 compressor witness regressed under the gate"
 
 say "ales-gate: GREEN — a noise gate inverts the compressor's threshold by dividing the below-threshold magnitude by the ratio; above the threshold is the identity, unit ratio is the identity everywhere, a quiet signal's floor pushes down with the sign held and the magnitude never expanding, a higher ratio gates at least as hard, and a ratio far past the magnitude drives the quiet exactly to silence (the hard gate); a zero threshold refuses BadThreshold, a sub-unity or zero-denominator ratio BadRatio, an out-of-range span BadRange, each leaving the clip untouched; the ALES50 compressor selftest stays GREEN. The dynamics family now holds the brickwall, the softened ratio, and the inverted floor — the next rung can give any of the three an attack and release over a real time base, or a soft knee that rounds the threshold's corner."

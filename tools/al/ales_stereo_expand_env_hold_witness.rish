@@ -31,7 +31,7 @@ let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
 assert pen.ok else "could not make a build pen: ${pen.err}"
 let bin = "${pen.out}/stereo_expand_env_hold"
 
-let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_expand_env_hold.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/stereo_expand_env_hold.rye -femit-bin=${bin}"]
 assert build.ok else "ales-stereo-expand-env-hold: build failed — ${build.err}"
 
 let outfile = "lotus/bin/stereo_expand_env_hold.out"
