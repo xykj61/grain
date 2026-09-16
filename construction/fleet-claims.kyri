@@ -88,3 +88,9 @@ stamp 20260916.024535
 epoch 1789541135
 paths mantra/src/weave.rye mantra/recall_tablecloth_hit_census.rye tools/fixtures/r/rune_assert_sweep_scan.sh tools/r/rune_assert_sweep.rish tools/fixtures/r/rune_assert_control.sh
 what REDS %752: the whole-tree unnamed-assert ratchet reads 6492 against 6487 and names no arrival. Bisected on metal across 32 commits -- BOTH arrivals are mantra, my own lane: 0d6e6829a took it 6487 to 6488 (hit_census) and c4260fcd5 6488 to 6492 (src/weave). All five asserts already carry a TRUE written reason the adjacency rule cannot join: four sit under a 20-line postcondition block that never spells the token, and two are separated from their own invariant comment by exactly one line of code. Repair the five, lower the ceiling to what the repair finds, and answer the instrument door -- give the scan a per-file map so the next breach names its arrival instead of costing a bisect.
+claim diffuser-moonshot-rows-unturned
+seat diffuser
+stamp 20260916.025310
+epoch 1789541590
+paths tools/fixtures/l/ladder_order_scan.sh tools/fixtures/l/ladder_order_control.sh tools/l/ladder_order_witness.rish active-designing/20260910-060204_the-bounded-torus-moonshots.md
+what My own ladder_order scan calls rows 1, 3 and 7 unread, and rows 1 and 3 carry landed rostered witnesses seated 20260910 -- wrap_ring and cyclic_witness -- which have NEVER RUN on this pier: grep -c on construction/standing-equipment-runs.kyri reads 0 receipts apiece in six days, both tier cadence. The scan reads the PAGE's errata clauses alone, so a row whose work landed without an erratum being written back reads identically to a row nobody touched. Run both on metal, give the scan a landed-instrument reading, split unread from unturned, and write the two errata.
