@@ -789,3 +789,5 @@ at a closed fold.*
 *Rows %760 and %761 folded to [`REDS-the-last-step-of-a-send-rows-760-761.md`](REDS-the-last-step-of-a-send-rows-760-761.md) on `20260916.084104`, both **BOOKED** -- the last step of a send is where a correct tool goes unreached -- one amended a published commit, the other wrote a shelf link past the repointer that fixes it.*
 
 *Row %680 folded to [`REDS-a-status-that-reported-an-untouched-file-rows-680.md`](REDS-a-status-that-reported-an-untouched-file-rows-680.md) on `20260916.093538`, **CLOSED** -- the oldest CLOSED row on the pin, folded to make room -- a status reporting a change on an untouched file is the shape a reader learns to read past.*
+
+*Row %768 folded to [`REDS-the-meter-that-read-a-spelling-rows-768.md`](REDS-the-meter-that-read-a-spelling-rows-768.md) on `20260916.092827`, **CLOSED** -- a meter reads a spelling, and a tree may change its spelling in one commit.*

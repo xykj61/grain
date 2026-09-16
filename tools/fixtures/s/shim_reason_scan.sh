@@ -156,8 +156,39 @@ SCAN_ORDER_CEILING="${SCAN_ORDER_CEILING:-154}"
 # 922 `20260913` -- the roster grew to 940 while its ceiling stayed at 925. Two existing Tally
 # witnesses now carry the captured output into all 18 first assertions that previously named only
 # a generic failure. The reading falls 940 -> 922, and the ceiling meets it without slack.
-UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-922}"
-UNSAID_CEILING="${UNSAID_CEILING:-6157}"
+#
+# 903 `20260916` -- THE READING ROSE BY 316 IN ONE COMMIT AND NOT ONE BINDING HAD CHANGED.
+# The reported-capture pattern below opens on `${v.out}` and `${v.err}`, anchored at the closing
+# brace. `6b2965fe7` (`20260915.2121`) added `out_brief` and `err_brief` to the record `run`
+# returns, at `rishi/src/main.rye:1571-1572` -- a bounded tail of stdout and a bounded head of
+# stderr, added so a refusal could carry its reason without blowing `say_compose_bound` (%740).
+# Twelve minutes later `106d182b4` (`20260915.2133`) swept 986 tracked `.rish` sources from the
+# whole captures to the bounded ones. Every swept binding still reports; the pattern stops at the
+# brace and could not read the longer field name. `unsaid_rostered` moved 924 -> 1240 and
+# `unsaid_unrostered` 6,157 -> 7,697, in that one commit, and stood breached on every ship.
+#
+# MEASURED WITH ONE RULER -- this checkout's scan and roster over each tree in turn, so only the
+# tree varies: 922 at `9c45d3c62` (1857), 922 at `46afb975b`, 922 at `6334bcb45`, 923 at
+# `80369f61a` (2059), 924 at `6b2965fe7` (2121), **1240 at `106d182b4`** (2133), 1247 at
+# `57b6b904f`, 1252 at `339be29a3`. PROVEN FROM BOTH SIDES: the widened pattern reads 922/6,157
+# before the sweep and 923/6,157 AT the sweep commit, where the narrow one reads 1240/7,697 --
+# so the sweep moves the widened reading by nothing at all.
+#
+# WHY THE ROW'S OWN TEST COULD NOT SEE IT. `%768` asked whether the instrument had moved and
+# answered by running `95d1e5ae7`'s scan against today's tree, which replies character for
+# character. Both copies carry the same blind pattern, so that test proves the BYTES unchanged and
+# says nothing about the REACH. A ratchet's number is a finding only once the predicate is proven
+# to still reach the thing it names.
+#
+# THE REPAIR is `(out|err)(_brief)?` at three patterns -- the two `${...}` readings here and the
+# anchored `^say v.out$` in the late-say pass above. The `say` prefix rule needed nothing: it was
+# never anchored. Crediting a bounded capture is right on the reading's own terms, since the
+# subject is a binding reported NOWHERE; what a bounded capture cannot promise is that it carries
+# as much as a whole one, and that is the bound's whole purpose. The late-say widening moves no
+# number today and is made for the same reason. 1,239 -> 903 and 7,755 -> 6,144; both ceilings
+# fall to meet their readings without slack, as every entry above does.
+UNSAID_ROSTERED_CEILING="${UNSAID_ROSTERED_CEILING:-903}"
+UNSAID_CEILING="${UNSAID_CEILING:-6144}"
 
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"
 
@@ -422,7 +453,7 @@ function flush(  v) {
 FILENAME != cur { if (cur != "") flush(); cur = FILENAME }
 /^let [a-z_][a-z0-9_]* = run \[/ { bind[$2] = FNR; next }
 /^assert [a-z_][a-z0-9_]*[. ]/ { v = $2; sub(/[.].*/, "", v); if ((v in bind) && !(v in firstassert)) firstassert[v] = FNR; next }
-/^say [a-z_][a-z0-9_]*\.(out|err)$/ { v = $2; sub(/[.].*/, "", v); if ((v in bind) && !(v in firstsay)) firstsay[v] = FNR; next }
+/^say [a-z_][a-z0-9_]*\.(out|err)(_brief)?$/ { v = $2; sub(/[.].*/, "", v); if ((v in bind) && !(v in firstsay)) firstsay[v] = FNR; next }
 END { flush() }
 AWK
 : > "$work/order_rows"
@@ -502,9 +533,9 @@ FILENAME != cur { if (cur != "") flush(); cur = FILENAME }
 /^[[:space:]]*#/ { next }
 /^let [a-z_][a-z0-9_]* = run \[/ { bind[$2] = FNR; next }
 /^[[:space:]]*say[[:space:]]+[a-z_][a-z0-9_]*\.(out|err)/ { v = $2; sub(/[.].*/, "", v); reported[v] = FNR }
-/\$\{[a-z_][a-z0-9_]*\.(out|err)\}/ {
+/\$\{[a-z_][a-z0-9_]*\.(out|err)(_brief)?\}/ {
   rest = $0
-  while (match(rest, /\$\{[a-z_][a-z0-9_]*\.(out|err)\}/)) {
+  while (match(rest, /\$\{[a-z_][a-z0-9_]*\.(out|err)(_brief)?\}/)) {
     tok = substr(rest, RSTART + 2, RLENGTH - 3)
     sub(/[.].*/, "", tok)
     reported[tok] = FNR
