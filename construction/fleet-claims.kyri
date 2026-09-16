@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim grass-unsaid-reads-one-spelling
-seat grass
-stamp 20260916.093812
-epoch 1789565892
-paths tools/fixtures/s/shim_reason_scan.sh tools/fixtures/s/shim_reason_control.sh construction/REDS.md
-what REDS %768 booked unsaid_rostered at 1239 against 922 and concluded the growth was the tree's own, proven by running the elder scan on today's tree. Run the other way -- today's scan against the tree at 95d1e5ae7 -- it answers 922 exactly, so the instrument and ceiling were both honest. The 317 arrived because 106d182b4 converted 2,773 assert messages across 979 files from ${r.out} to ${r.out_brief}, and the unsaid parser's interpolation regex ends at (out|err)} so it reads the bounded field as no report at all. Crediting _brief, today's tree reads 903 rostered and 6144 unrostered -- both UNDER their ceilings. Teach the regex the bounded spelling, lower both ceilings to the new readings, and prove both ways in the control.
 claim pheromone-tokens-ceiling-records
 seat pheromone
 stamp 20260916.102127
@@ -82,3 +76,9 @@ stamp 20260916.114621
 epoch 1789573581
 paths tools/fixtures/s/sow_phase_scan.sh tools/fixtures/s/sow_phase_control.sh tools/s/sow_phase_witness.rish expanding-prompts/20260908-155715_the-scrub-that-remembers.md
 what REDS %642 asks for a content-keyed scrub cache, and its own design says what to measure BEFORE building: how much of a publish is the per-file scrub against the whole-projection witness, and how many files actually change between publishes. Its falsifier is explicit -- if the witness dominates, the cache buys little and the honest outcome is a page with the numbers. So this lap measures rather than builds: time the projection and the witness apart, split the projection's fixed cost from its per-file cost, and read the churn from the field's own history over the allowed paths. A cache built ahead of that reading is a cache nobody sized.
+claim grass-reason-lost-fourth-seam
+seat grass
+stamp 20260916.120625
+epoch 1789574785
+paths tools/fixtures/s/shim_reason_scan.sh tools/fixtures/s/shim_reason_control.sh tools/s/shim_reason_witness.rish
+what The %768 repair widened three awk patterns to (out|err)(_brief)? and left a fourth site untouched: the reason_lost reading matches its two spellings with exact grep -qF for ${var.err} and ${var.out} at shim_reason_scan.sh:389-390. Same blindness, same file, and this one is a GATE at zero rather than a ratchet -- so a shape measuring nothing reads exactly like a shape passing. It moves no number today (0 rostered, 0 unrostered, both ways), which is why only the next arrival would have found it. Widen both seams to grep -qE with the bounded spelling, prove the widening load-bearing by planting the narrow form back into a pen's own scan copy, and name the zero as a zero that was measured.
