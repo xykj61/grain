@@ -1,0 +1,82 @@
+# rishi_make_pen_witness.rish -- the runtime owns the pen, so a refusal cannot leak one.
+#
+#   rishi/bin/rishi run tools/r/rishi_make_pen_witness.rish
+#
+# Control: tools/fixtures/r/rishi_make_pen_control.sh
+# Census:  tools/fixtures/p/pen_release_scan.sh
+# Source:  rishi/src/main.rye -- do_make_pen, CleanupRegistry, is_runtime_pen_path
+# Row:     REDS %745
+#
+# WHY. A `.rish` script carries no `trap`. A failing `assert` ends the run where it stands. A
+# `mktemp -d` pen made three lines above is then left on a pier eight ships share. Nineteen
+# rostered witnesses spell that shape, and they put 32G into one `/tmp`.
+#
+# `make-pen` moves the release into the runtime. The runtime already owns the exit, the refusal
+# and the signal. It owned no pen kind, which is the whole of what was missing.
+#
+# THE BOUNDARY IS THE SAFETY ARGUMENT. A recursive removal is worth being frightened of. So a
+# caller never supplies a path. It supplies a LABEL of letters, digits, `_` and `-`. The runtime
+# derives the root, the prefix, the clock seed and the attempt number. A label that cannot spell
+# `/`, `.` or a null byte cannot leave one path component. The release re-reads the runtime's own
+# `rishi-pen-` prefix off the basename before it removes anything.
+#
+# Style: Gauge at Meter, where a refusal is properly the subject.
+let control = run ["sh" "tools/fixtures/r/rishi_make_pen_control.sh"]
+assert control.ok else "the make-pen control did not reach verdict=ok: ${control.err_brief}"
+assert control.out contains "verdict=ok" else "make-pen control refused. If this ship's rishi predates the builtin, rebuild it by building rishi/src/main.rye with rye and emitting the binary to rishi/bin/rishi, then re-run. Control said: ${control.out_brief}"
+assert control.out contains "faults=0" else "a planted behavior went unread"
+
+# THE LEG TALLY IS ASSERTED, because `verdict=ok` says only that the control reached its last line.
+# Copal booked exactly that gap at `20260915.202715`: a control landed proven and unrun, and the
+# ceiling was the only thing that spoke. A leg written tomorrow is heard the day it lands.
+assert control.out contains "legs=29" else "the control's leg count moved -- read it, then move this number with it"
+
+# THE FOUR RELEASE PATHS. Each is a way a lap actually ends, and the pen goes down every one.
+assert control.out contains "leg clean_released=ok" else "a pen survived a clean return"
+assert control.out contains "leg refusal_released=ok" else "a pen survived a failing assert -- the whole reason this builtin exists"
+assert control.out contains "leg exit_released=ok" else "a pen survived the runtime's own exit"
+assert control.out contains "leg signal_released=ok" else "a pen survived TERM -- the path an unattended loop actually meets"
+
+# THE REFUSAL KEEPS ITS OWN EXIT CODE, and a clean run keeps its own too. A release that changed
+# either would be a sweep that lies about what happened above it.
+assert control.out contains "leg refusal_exit=ok" else "the release moved a refusal's exit code"
+assert control.out contains "leg clean_exit_untouched=ok" else "the release moved a clean run's exit code"
+assert control.out contains "leg exit_code_kept=ok" else "the release moved an explicit exit's code"
+
+# THE LABEL WALL, FROM BOTH SIDES. A wall proven only in the refusing direction cannot be told
+# from a builtin that refuses everything.
+assert control.out contains "leg label_dotdot_refused=ok" else "a label spelling .. was accepted"
+assert control.out contains "leg label_slash_refused=ok" else "a label spelling / was accepted"
+assert control.out contains "leg label_dot_refused=ok" else "a label spelling . was accepted"
+assert control.out contains "leg label_empty_refused=ok" else "an empty label was accepted"
+assert control.out contains "leg label_space_refused=ok" else "a label carrying a space was accepted"
+assert control.out contains "leg label_65_refused=ok" else "a label one byte past its wall was accepted"
+assert control.out contains "leg label_64_accepted=ok" else "a label AT its wall was refused -- the wall is one byte low"
+
+# THE REGISTRY CEILING, FROM BOTH SIDES. Four pens stand; the fifth meets max_cleanup_paths by
+# name rather than by silence.
+assert control.out contains "leg cap_four_accepted=ok" else "the registry refused a lawful fourth pen"
+assert control.out contains "leg cap_fifth_refused=ok" else "the registry took a fifth pen past its named ceiling"
+
+# THE DERIVED PATH. Absolute, prefixed, and carrying the caller's label so a reader on the pier can
+# tell whose pen a standing directory is.
+assert control.out contains "leg clean_absolute=ok" else "a pen landed on a relative path"
+assert control.out contains "leg clean_wears_prefix=ok" else "a pen landed without the runtime's own prefix -- the release would refuse it"
+assert control.out contains "leg clean_carries_label=ok" else "a pen landed without its label, so the pier cannot say whose it is"
+assert control.out contains "leg two_pens_distinct=ok" else "two pens in one run agreed on a name"
+assert control.out contains "leg two_pens_released=ok" else "one of two pens in one run survived"
+
+# TMPDIR IS HONORED rather than overridden: the cure here is release, not relocation.
+assert control.out contains "leg tmpdir_honored=ok" else "TMPDIR was ignored"
+assert control.out contains "leg tmpdir_released=ok" else "a pen under TMPDIR survived"
+assert control.out contains "leg tmpdir_root_survives=ok" else "the release reached ABOVE the pen and took its root"
+
+# THE KIND CHECK, FROM BOTH SIDES. A pen replaced by a file refuses OUT LOUD and turns the run's
+# exit nonzero, rather than removing whatever now stands at that path.
+assert control.out contains "leg kind_change_refused=ok" else "a path that stopped being a directory was swept anyway"
+assert control.out contains "leg kind_change_exit=ok" else "a refused release left the exit code clean"
+
+# AND THE CONTROL LEAVES NOTHING BEHIND, which is the reading this whole family exists for.
+assert control.out contains "leg no_litter=ok" else "the control that proves release left a pen on the pier"
+
+say "GREEN: a runtime-owned pen is released after a return, a refusal, an exit, and a signal, and a caller can never name the path it removes."

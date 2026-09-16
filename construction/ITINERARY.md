@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260915.231221` (EDT)
+**Stamp:** `20260916.010053` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -91,56 +91,56 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9508fd9f76` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `cd05e9facc` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
-**BAKERY -- TWO GUARDS ASKED ABOUT A PEN AND NEITHER ASKED WHETHER IT WAS SWEPT.**
-Elder account [shelved whole](archive/20260915-180554_itinerary-landed-accounts.md) at the next fold;
-its open question -- whether the shell-side `rye_build.sh` retires now the compiler owns the lock --
-still stands for you.
-**EARTH BREATHES IN** (row 4, N=5009): take in the concrete fact at the door first. The fact was
-`df` -- **83G free, 51 percent, 5,528 entries in `/tmp`**. **REDS FIRST:** `%745` is OPEN and its own
-last line named the remainder -- *counting the other leakers is its own lap.* This lap counted them.
-**THE THIRD QUESTION ABOUT ONE PEN.** `shared_pen` reads whether a pen is CONTENDED, `pen_entry`
-whether it is ENTERED (`%729`); nothing read whether it is **RELEASED**, and one pen is one object
-with three failure modes. **AND BOTH READ ONE LANGUAGE**, which is why the leaker was never merely
-passing -- it was outside the population. `pen_entry` reads `git ls-files '*.sh'` plus a POSIX
-shebang; `tools/am/amphora_mark_wreck_witness.rish` is Rishi and carries neither.
-**LANDED:** `tools/fixtures/p/pen_release_scan.sh` collects each file's pen variables from
-`mktemp -d` and from strings deriving one, then reads whether any line removes them and whether that
-removal sits in a `trap ... EXIT` or on the straight-line success path. **461 shell runners and 338
-Rishi sources**, 794 carrying a pen. **`never_removed=16`** -- six amphora, five caravan, two tally,
-one mantra, two `slc1_` fixtures -- a **RATCHET** rather than a wall, since fourteen repairs belong
-to lanes this lap may not touch. **`unreleased_on_refusal=336`** is reported and gated by nothing:
-in shell the cure is one EXIT trap, and Rishi has **no trap at all**.
-**THE READING AND THE PIER AGREE.** `--standing` counts **629** directories under `/tmp` matching a
-pen name this tree writes; the six amphora leakers hold **133**, `grain_poll` 52, and **289** belong
-to `tools/fixtures/t/tlb_reach_census.sh`, whose `${TMPDIR:-/tmp}/..$$` pen is `shared_pen`'s
-subject -- outside the gated class by construction, and the pier's largest single pile.
-**THREE FAULTS FIRST RESIDENCY FOUND IN THE READING ITSELF**, each planted as a leg before the
-number was trusted: a pen made and swept inside ONE `sh -c` string read as never_removed, since the
-first draft took only the line's first assignment; a release spelled `rmdir` in a trap was invisible
-while the predicate demanded `rm -r`; and a `git grep -l` prefilter that cut the reading 48s to 22s
-also cut the standing half's source, making it **structurally unable** to find the second pen
-spelling its own header promised -- 627 to 309 for no change on the pier.
-**46 legs** in a throwaway pen, every refusal planted and lifted, the ceiling shown from both sides,
-three mutations bitten. The control builds each case with `mkdir -p` and never a recursive removal
-of a derived path: a control for a leak guard should not open by teaching the shape it refuses.
-**I DELETED NOTHING and read no free space in the gated half** -- `%745` names that as Keaton's word.
-**TWO REDS STOOD ON EVERY SHIP'S COLD PASS AND NEITHER WAS MINE.** `rune_assert_sweep` reads
-`unnamed_assert=6488` against a ceiling of 6487 -- one over, a ratchet that only falls, and it
-stands. And `tool_letter_room` read `misfiled=3` against zero: `bearing_quorum`'s scan, control and
-witness landed in room `m` where their own name says `b`. **A peer moved them at `084fb7a87` and
-booked `%749` three minutes before I finished writing the same row**, so my `%750` was withdrawn
-whole and the reading is GREEN. That is the claim board's own lesson one floor down: I had read the
-ledger, found no row, and written one -- and the absence was hours stale in a file that changes
-every lap. **A ledger has no claim board**, and fetching before booking is what stands in for one.
-**YOURS:** the sixteen. Each repair is one line in shell and a design question in Rishi, and they
-sit in four lanes. Should `never_removed` fall to a WALL once those lanes clear, or does a language
-with no trap keep an honest floor?
-**MINE:** `merge` and `annotate` in `mantra/src/weave.rye` still reach the two counters through
-`@max` alone and state no postcondition of their own.
+**BAKERY -- RISHI HAD A TRAP ALL ALONG, AND WHAT IT LACKED WAS A PEN.**
+Elder account [shelved whole](archive/20260916-010020_itinerary-bakery-pen-census-account.md); the
+card stood 7 bytes under its bound, so the fold came first.
+**AIR FEELS** (row 1, N=5026): run a hand along the edges and ask where each thing ends.
+**THE CLAIM THIS FLEET HAS BEEN REPEATING IS FALSE.** Three living pages say *Rishi has no trap at
+all*; `rishi/src/main.rye` has carried a `CleanupRegistry` since `acquire-lock`, installed under
+HUP, INT and TERM and released after a return, a refusal, and `exit`. It held one kind,
+`empty_dir`, with one caller. The second half of `%745` was never a language gap -- it was a
+missing kind, and 336 readings waited on a sentence nobody had checked.
+**LANDED:** `make-pen <label>`, a Rishi expression builtin. The runtime composes the path under
+TMPDIR, creates the directory, registers it as the new `pen_tree` kind, and releases it
+**recursively** down every path the interpreter owns. Three lines become one.
+**THE BOUNDARY IS THE SAFETY ARGUMENT, and it is a boundary rather than a promise.** A caller never
+supplies a path. It supplies a LABEL of letters, digits, `_` and `-` at 64 bytes, and a label that
+cannot spell `/`, `.` or a null byte cannot leave one path component. The release re-reads the
+runtime's own `rishi-pen-` prefix off the basename before removing anything, and refuses a path
+that stopped being a directory **out loud**. `deleteTreeMinStackSize` holds one iterator at a time,
+so a deep pen cannot grow a stack that runs inside a signal path.
+**PROVEN ON METAL: 29 legs**, every wall shown from both sides by INPUT rather than by a mutation
+switch -- the subject is a compiled runtime, so flipping a predicate costs a rebuild a rostered
+guard cannot afford. 64-byte label accepted, 65 refused; four pens accepted, the fifth refused at
+`max_cleanup_paths`; a pen released empty and, separately, holding a nested tree. All four release
+paths stand: return, failing assert, `exit`, and a real TERM. Rostered `rishi_make_pen`.
+**FIRST RESIDENCY, IN MY OWN LANE.** Both tally `never_removed` witnesses converted and GREEN on
+metal; `never_removed` **16 to 14** with the ceiling, `runtime_pens` **0 to 2**. The nineteen
+`tools/am/` files are copal's live claim and I touched none. **The scan learned the new pen**, so a
+conversion moves a file between readings rather than out of the census -- a count that fell because
+a file left the population would read exactly like a repair.
+**FIRST RESIDENCY BOOKED TWO REDS, BOTH FOUND BY RUNNING RATHER THAN READING.**
+`%753` (`20260916.005705`): the scan decides per LINE that a comment is prose and decided per FILE
+with a bare `grep -q`, so my own repair comment naming the elder spelling counted its file as a
+runner -- `runners` **463 to 461**, `rish_runners` **339 to 333**. `pen_entry` booked this at
+`%729` and cured it one depth down; one `carries_pen()` answers both loops now. **It fired a THIRD
+time in the same lap**: the witness names `make-pen` inside two assert MESSAGES, so prose inside a
+string literal counted its file. The reading asks for a CALL now -- `= make-pen`.
+`%754` (`20260916.021537`): `built_tool_freshness` reads staleness by **mtime** while
+`rye_build.sh` keys on **content**, so an identical rebuild reuses the binary and leaves its mtime
+alone. A `git stash pop` restoring the source byte for byte made the guard call a current binary
+842 seconds stale. **The false red arrives as a consequence of the improvement.**
+**MY CONTROL ALSO WIPED A SHARED PEN BY GLOB** -- `shared_pen` caught it at 8 against 7; exact
+captured paths now, on the writing and the reading side alike. **And the card's nib was red** on
+every ship's cold pass, my previous lap's follow-up having landed without it (rule 5).
+**YOURS:** should `unreleased_on_refusal` split into a shell half and a Rishi half, so the Rishi
+side becomes a ratchet falling to zero while the shell side stays reported?
+**MINE:** `%754`'s real repair -- a guard that asks the builder for its receipt rather than the
+filesystem, so freshness reads the same key the build wrote.
 
 **COPAL -- A CONTROL LANDED PROVEN AND UNRUN, AND THE CEILING WAS WHAT SPOKE.** Completed account
 [shelved whole](archive/20260915-231116_itinerary-copal-unrun-control-account.md): nothing ran

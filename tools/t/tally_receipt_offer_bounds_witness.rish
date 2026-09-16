@@ -6,10 +6,10 @@
 # does not call it.
 
 let zig = "vendor/zig-toolchain/zig"
-let mk = run ["sh" "-c" "mktemp -d"]
-say mk.err
-assert mk.ok else "receipt-offer: the build pen could not be opened"
-let pen = trim mk.out
+# The pen comes from the runtime rather than from `mktemp -d`, so it is released after a return,
+# a refusal, an `exit`, HUP, INT, or TERM. A failing assert below ends this run where it stands,
+# and the elder three-line shape left its build pen on a pier eight ships share (REDS %745).
+let pen = make-pen "tally_receipt_offer_bounds"
 let bin = "${pen}/receipt_offer_witness"
 
 say "receipt-offer: Language EN -- one accepted synthetic offer enters a bounded log and replays deterministically."

@@ -6197,13 +6197,35 @@ seated 20260915.191655
 # family's whole population. This opens both: 461 shell runners and 338 Rishi sources carrying a
 # pen. `never_removed` is a RATCHET at 16 rather than a wall, since fourteen of the sixteen are
 # amphora and caravan witnesses whose repair belongs to their own lanes. `unreleased_on_refusal`
-# (336) is reported and gated by nothing: in shell the cure is one EXIT trap, and Rishi has no trap
-# at all, so that half is a language question for its own lap. 22s: one `git grep -l` narrows both
-# populations before a file is opened, and a 46-leg control builds real repositories in a pen.
+# (336) is reported and gated by nothing: in shell the cure is one EXIT trap. The RISHI half of
+# that sentence is closed -- `make-pen` below seats a runtime-owned pen, and `runtime_pens` counts
+# the sources that have taken it, in NEITHER class, so a conversion moves a file between readings
+# rather than out of the census. 22s: one `git grep -l` narrows both populations before a file is
+# opened, and a 46-leg control builds real repositories in a pen.
 guard pen_release
 path tools/p/pen_release_witness.rish
 tier lap
 seated 20260915.230045
+
+# rishi_make_pen -- the language question that half of %745 was waiting on, answered. `make-pen
+# <label>` is a Rishi expression builtin: the runtime composes the path under TMPDIR, creates the
+# directory, registers it in the CleanupRegistry that `acquire-lock` already used, and releases it
+# RECURSIVELY after a normal return, a failing assert, an `exit`, HUP, INT, or TERM. The elder
+# claim on three living pages -- *Rishi has no trap at all* -- was false when it was written: the
+# registry has stood since the lock, and what it lacked was a pen kind.
+# THE BOUNDARY IS THE SAFETY ARGUMENT. A recursive removal is the operation worth being frightened
+# of, so a caller never supplies a path: it supplies a LABEL of letters, digits, `_` and `-`,
+# bounded at 64 bytes, and a label that cannot spell `/`, `.` or a null byte cannot leave one path
+# component. The release re-reads the runtime's own `rishi-pen-` prefix off the basename before it
+# removes anything, and refuses a path that stopped being a directory out loud.
+# 29 legs on metal, every wall shown from both sides by INPUT rather than by a mutation switch --
+# the subject is a compiled runtime, so flipping a predicate costs a rebuild a rostered guard
+# cannot afford. 64-byte label accepted, 65 refused; four pens accepted, the fifth refused at
+# max_cleanup_paths; a pen released empty and, separately, holding a nested tree.
+guard rishi_make_pen
+path tools/r/rishi_make_pen_witness.rish
+tier lap
+seated 20260916.005245
 
 # bearing_quorum -- the last measurable row of the bounded-torus page, and it splits in two. Row 8
 # of active-designing/20260910-060204_the-bounded-torus-moonshots.md says a node announcing along a

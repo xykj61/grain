@@ -126,6 +126,24 @@ const max_process_input_bytes: u32 = 65536;
 const max_process_output_bytes: u32 = 4259840;
 const process_io_window_bytes: u32 = 4096;
 const max_safe_process_path_bytes: u32 = 512;
+// A pen label is the caller's whole say in where a pen lands; the runtime derives
+// every other part of the path. Sixty-four bytes holds the longest witness name
+// this tree writes and leaves the composed path far inside max_pen_path_bytes.
+const max_pen_label_bytes: u32 = 64;
+// The temporary root a pen is made under. Bounded here rather than at the seam so
+// a hostile or merely long TMPDIR cannot compose a path past the wall below.
+const max_pen_root_bytes: u32 = 256;
+// The composed pen path. Same wall as a process path, for the same reason: a path
+// this runtime writes should fit wherever a path this runtime runs would fit.
+const max_pen_path_bytes: u32 = max_safe_process_path_bytes;
+// A pen name carries this process's pid, so a collision means an earlier run with
+// the same pid left one behind. Sixty-four tries is far past any real collision
+// and is a named ceiling rather than a loop that waits for luck.
+const max_pen_attempts: u32 = 64;
+// The basename prefix every runtime-made pen wears. Release refuses a path whose
+// basename lacks it, so a recursive removal can only ever reach a directory this
+// runtime named -- the one invariant that makes a recursive delete safe at all.
+const pen_name_prefix = "rishi-pen-";
 const supports_signal_cleanup = builtin.os.tag != .windows and std.posix.Sigaction != void;
 
 var pending_signal: std.atomic.Value(u8) = .init(0);
@@ -162,8 +180,21 @@ const SignalGuards = struct {
 
 const CleanupPath = struct {
     path: []const u8,
-    kind: enum { empty_dir },
+    kind: enum { empty_dir, pen_tree },
 };
+
+/// Whether a path's basename wears the prefix this runtime writes on every pen it
+/// makes. A recursive release asks this before it removes anything, so the answer
+/// is the whole boundary: a path that fails it was never made here.
+fn is_runtime_pen_path(path: []const u8) bool {
+    // invariant: the question is asked of a real path rather than of nothing.
+    assert(path.len > 0);
+    const cut = std.mem.lastIndexOfScalar(u8, path, '/');
+    const base = if (cut) |at| path[at + 1 ..] else path;
+    // invariant: a basename is never longer than the path that carries it.
+    assert(base.len <= path.len);
+    return std.mem.startsWith(u8, base, pen_name_prefix);
+}
 
 const CleanupRegistry = struct {
     items: [max_cleanup_paths]CleanupPath = undefined,
@@ -197,6 +228,30 @@ const CleanupRegistry = struct {
                         continue;
                     }
                     cwd.deleteDir(io, item.path) catch |err| {
+                        print("rishi: cleanup failed for '{s}': {s}\n", .{ item.path, @errorName(err) });
+                        held = false;
+                    };
+                },
+                .pen_tree => {
+                    if (stat.kind != .directory) {
+                        print("rishi: cleanup refused for '{s}': path changed kind\n", .{item.path});
+                        held = false;
+                        continue;
+                    }
+                    // invariant: a recursive release only ever reaches a directory this
+                    // runtime made and named, so the prefix is re-read here rather than
+                    // trusted from the registry -- the one check standing between a pen
+                    // sweep and somebody's home directory.
+                    if (!is_runtime_pen_path(item.path)) {
+                        print("rishi: cleanup refused for '{s}': not a runtime-made pen\n", .{item.path});
+                        held = false;
+                        continue;
+                    }
+                    // deleteTreeMinStackSize keeps one iterator alive at a time, so a deep
+                    // pen cannot grow this walk's stack without bound. The release runs at
+                    // exit and inside a signal path, where a slower walk costs nothing and
+                    // an unbounded stack would cost everything.
+                    cwd.deleteTreeMinStackSize(io, item.path) catch |err| {
                         print("rishi: cleanup failed for '{s}': {s}\n", .{ item.path, @errorName(err) });
                         held = false;
                     };
@@ -977,6 +1032,10 @@ const EvalError = error{
     LockPathUnsafe,
     LockAlreadyHeld,
     LockCreateFailed,
+    PenLabelNeedsString,
+    PenLabelUnsafe,
+    PenCreateFailed,
+    PenRootUnavailable,
     TooManyCleanupPaths,
     SignalCleanupUnsupported,
     CommandFailed,
@@ -1090,6 +1149,11 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
     }
     if (std.mem.startsWith(u8, trimmed, "env ")) {
         return do_env(allocator, io, env, trimmed[4..]);
+    }
+    // `make-pen <label>` makes one runtime-owned temporary directory and returns its
+    // path; the runtime releases it recursively at exit, on refusal, and on a signal.
+    if (std.mem.startsWith(u8, trimmed, "make-pen ")) {
+        return do_make_pen(allocator, io, env, trimmed[9..]);
     }
     // File I/O expressions -- each evaluates a path and returns a value.
     if (std.mem.startsWith(u8, trimmed, "read-file ")) {
@@ -1930,6 +1994,98 @@ fn do_acquire_lock(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []c
         cwd.deleteDir(io, owned) catch {};
         return err;
     };
+}
+
+/// The temporary root a pen is made under: `TMPDIR` when the host names an
+/// absolute one, and `/tmp` otherwise -- the same root `mktemp -d` would choose,
+/// since the cure here is release rather than relocation.
+fn pen_root(env: *Env) []const u8 {
+    if (env.host_environ) |environ| {
+        if (environ.get("TMPDIR")) |val| {
+            if (val.len > 0 and val[0] == '/' and val.len <= max_pen_root_bytes) {
+                // A trailing slash would double in the composed path, so it is trimmed
+                // here rather than tolerated there.
+                var end: u32 = @intCast(val.len);
+                while (end > 1 and val[@intCast(end - 1)] == '/') end -= 1;
+                const trimmed = val[0..@intCast(end)];
+                // invariant: the root handed back is absolute, so a pen can never land
+                // inside the repository by accident.
+                assert(trimmed[0] == '/');
+                // invariant: the root stays inside its own named wall.
+                assert(trimmed.len <= max_pen_root_bytes);
+                return trimmed;
+            }
+        }
+    }
+    return "/tmp";
+}
+
+/// `make-pen <label-expr>` creates one temporary directory this runtime owns and
+/// hands back its path as a string. The caller supplies a LABEL only -- letters,
+/// digits, `_` and `-` -- and the runtime derives the root, the prefix, the pid
+/// and the attempt number, so a pen path can never be a path the caller chose.
+/// The runtime removes the pen and everything inside it after normal return,
+/// refusal, `exit`, HUP, INT, or TERM.
+///
+/// Why it exists (REDS %745). A `.rish` script has no `trap`, so a failing
+/// `assert` ends the run where it stands and a `mktemp -d` pen made three lines
+/// above is left on the pier. Nineteen rostered witnesses spelled exactly that
+/// shape and put 32G into one shared `/tmp`. This builtin moves the release from
+/// a line each script must remember into the runtime that already owns the exit.
+fn do_make_pen(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
+    if (comptime !supports_signal_cleanup) return error.SignalCleanupUnsupported;
+    const label_value = try eval_expr(allocator, io, env, arg);
+    const label = switch (label_value) {
+        .string => |s| s,
+        else => return error.PenLabelNeedsString,
+    };
+    if (label.len == 0) return error.PenLabelUnsafe;
+    if (label.len > max_pen_label_bytes) return error.PenLabelUnsafe;
+    for (label) |ch| {
+        const lawful = (ch >= 'a' and ch <= 'z') or (ch >= 'A' and ch <= 'Z') or
+            (ch >= '0' and ch <= '9') or ch == '_' or ch == '-';
+        // A label that cannot spell `/`, `.` or a null byte cannot leave one path
+        // component, which is what makes the derived path safe to remove.
+        if (!lawful) return error.PenLabelUnsafe;
+    }
+    // invariant: the label is non-empty and inside its named wall before any path
+    // is composed from it.
+    assert(label.len > 0);
+    // invariant: the label stays inside the wall the constant names.
+    assert(label.len <= max_pen_label_bytes);
+
+    const cleanups = env.cleanups orelse return error.PenCreateFailed;
+    const root = pen_root(env);
+    if (root.len == 0) return error.PenRootUnavailable;
+    if (root[0] != '/') return error.PenRootUnavailable;
+
+    // A nanosecond timestamp rather than the pid: `getpid` reaches libc on this
+    // toolchain and Rishi links none, and the name needs only to VARY -- the claim
+    // itself is `createDir`, which is atomic and refuses a name already taken.
+    const stamp = std.Io.Timestamp.now(io, .real);
+    const seed: u64 = @bitCast(@as(i64, @truncate(stamp.nanoseconds)));
+    const cwd = std.Io.Dir.cwd();
+    var attempt: u32 = 0;
+    while (attempt < max_pen_attempts) : (attempt += 1) {
+        const path = std.fmt.allocPrint(allocator, "{s}/{s}{s}-{d}-{d}", .{
+            root, pen_name_prefix, label, seed, attempt,
+        }) catch return error.OutOfMemory;
+        if (path.len > max_pen_path_bytes) return error.PenRootUnavailable;
+        cwd.createDir(io, path, .fromMode(0o700)) catch |err| switch (err) {
+            // An existing name means an earlier run with this pid; take the next.
+            error.PathAlreadyExists => continue,
+            else => return error.PenCreateFailed,
+        };
+        // invariant: the path just created wears the runtime's own pen prefix, so
+        // the release below can reach it and nothing else can reach the release.
+        assert(is_runtime_pen_path(path));
+        cleanups.add(.{ .path = path, .kind = .pen_tree }) catch |err| {
+            cwd.deleteDir(io, path) catch {};
+            return err;
+        };
+        return .{ .string = try allocator.dupe(u8, path) };
+    }
+    return error.PenCreateFailed;
 }
 
 /// `env <name-expr>` reads one process environment variable by name. When the
@@ -3038,6 +3194,9 @@ fn eval_operand(allocator: std.mem.Allocator, io: std.Io, env: *Env, raw: []cons
     }
     if (std.mem.startsWith(u8, s, "env ")) {
         return do_env(allocator, io, env, s[4..]);
+    }
+    if (std.mem.startsWith(u8, s, "make-pen ")) {
+        return do_make_pen(allocator, io, env, s[9..]);
     }
     // `list[n]` -- index a list; out-of-range is a friendly error, not a crash.
     if (find_list_open_bracket(s)) |br| {

@@ -29,10 +29,23 @@
 #
 #   unreleased_on_refusal -- the removal exists and stands on the straight-line success path, so a
 #     refusal above it leaves the pen behind. In shell the cure is `trap 'rm -rf "$pen"' EXIT`,
-#     which every control in tools/fixtures/ already carries. In Rishi there is no trap, and a
-#     failing `assert` ends the run where it stands, so the cure is a design question for the
-#     owning lane rather than one line. REPORTED, never gated: this population is large, its cure
-#     differs by language, and a gate that reds on ordinary work is a gate somebody turns off.
+#     which every control in tools/fixtures/ already carries. REPORTED, never gated: this
+#     population is large, its cure differs by language, and a gate that reds on ordinary work is
+#     a gate somebody turns off.
+#
+#   runtime_pens -- a Rishi source whose pen comes from `make-pen`, the builtin seated
+#     `20260916.010000` under REDS %745. This one is counted apart and enters NEITHER class above,
+#     because the runtime releases it after a return, a refusal, an `exit`, HUP, INT and TERM, and
+#     `tools/r/rishi_make_pen_witness.rish` proves all four paths on metal. THE ELDER HEADER SAID
+#     RISHI HAS NO TRAP AT ALL, and that was already false when it was written: the runtime has
+#     carried a CleanupRegistry since `acquire-lock`, and what it lacked was a pen kind. So the
+#     second class is a shell question now, and a Rishi source in it is a source awaiting one
+#     line.
+#
+#   THE TWO POPULATIONS ARE DISJOINT BY CONSTRUCTION. A file is read for `mktemp -d` pens and,
+#     separately, for `make-pen` pens; converting a file moves it from one reading to the other
+#     rather than out of the census. A count that fell because a file left the population would
+#     read exactly like a repair, which is the shape this scan exists to refuse.
 #
 # WHAT COUNTS AS A REMOVAL. A line naming `rm` with `-r` in its flags whose argument names one of
 # that file's pen variables -- `rm -rf "$pen"`, `rm -rf ${pen}`, and Rishi's
@@ -65,12 +78,13 @@
 # written here so nobody reads a number as a proof. And a pen made without `mktemp -d` at all is
 # `shared_pen`'s subject rather than this one's.
 #
-# READINGS: `runners=N rish_runners=N pen_files=N never_removed=N unreleased_on_refusal=N`, then
-# `ceiling_ok=yes|no` and a `verdict=` line. Exit 1 when `never_removed` stands above its ceiling.
+# READINGS: `runners=N rish_runners=N pen_files=N runtime_pens=N never_removed=N
+# unreleased_on_refusal=N`, then `ceiling_ok=yes|no` and a `verdict=` line. Exit 1 when
+# `never_removed` stands above its ceiling.
 
 set -u
 
-CEILING="${PEN_RELEASE_CEILING:-16}"
+CEILING="${PEN_RELEASE_CEILING:-14}"
 list=no
 standing=no
 for a in "$@"; do
@@ -109,8 +123,19 @@ rish_files=$(narrow "$rish_files")
 runners=0
 rish_runners=0
 pen_files=0
+runtime=0
 never=0
 straight=0
+
+# ONE RULE FOR PROSE, AT BOTH DEPTHS. The per-line reading below passes over a comment, so the
+# coarse per-file test does too -- otherwise a source whose only `mktemp -d` stands in a sentence
+# explaining why it no longer makes one is counted as a runner carrying no pen. That is exactly the
+# fault `pen_entry` booked by first residency, one level up from where it booked it: the two
+# converted tally witnesses named the elder spelling in their own repair comment and inflated
+# `rish_runners` by two while `pen_files` correctly fell.
+carries_pen() {
+  awk '/^[[:space:]]*#/ { next } /mktemp[[:space:]]*-d/ { found = 1 } END { exit !found }' "$1"
+}
 
 read_one() {
   awk -v want="$list" '
@@ -182,7 +207,7 @@ read_one() {
 
 for f in $shell_files; do
   [ -f "$f" ] || continue
-  grep -q 'mktemp[[:space:]]*-d' "$f" 2>/dev/null || continue
+  carries_pen "$f" || continue
   runners=$((runners + 1))
   out=$(read_one "$f")
   [ "$list" = yes ] && printf '%s\n' "$out" | awk -F'\t' '$1 != "COUNT" { print $1, $2, $3, $4 }'
@@ -195,7 +220,7 @@ done
 
 for f in $rish_files; do
   [ -f "$f" ] || continue
-  grep -q 'mktemp[[:space:]]*-d' "$f" 2>/dev/null || continue
+  carries_pen "$f" || continue
   rish_runners=$((rish_runners + 1))
   out=$(read_one "$f")
   [ "$list" = yes ] && printf '%s\n' "$out" | awk -F'\t' '$1 != "COUNT" { print $1, $2, $3, $4 }'
@@ -206,9 +231,26 @@ for f in $rish_files; do
   if [ "$list" = yes ] && [ "$2" -gt 0 ]; then echo "never_removed $f"; fi
 done
 
+# THE RUNTIME-OWNED PEN, read on its own -- and read as a CALL rather than as the word. A comment
+# is skipped exactly as above, and that was not enough: `tools/r/rishi_make_pen_witness.rish` names
+# `make-pen` inside two `assert ... else` MESSAGES, so prose inside a string literal counted its
+# file as a carrier. That is `%753` one depth further down, found by first residency the same way.
+# A call is always bound -- `let pen = make-pen "label"` -- since the builtin returns a value, so
+# the equals sign ahead of it is what tells a call from a mention. WHAT THIS DOES NOT REACH: a
+# string literal that happens to spell `= make-pen ` inside it, which no source here writes and
+# which would OVERCOUNT in the safe direction.
+for f in $all_rish_files; do
+  [ -f "$f" ] || continue
+  hit=$(awk '/^[[:space:]]*#/ { next } /=[[:space:]]*make-pen[[:space:]]/ { found = 1 } END { print found + 0 }' "$f")
+  [ "$hit" = 1 ] || continue
+  runtime=$((runtime + 1))
+  [ "$list" = yes ] && echo "runtime_pen $f"
+done
+
 echo "runners=$runners"
 echo "rish_runners=$rish_runners"
 echo "pen_files=$pen_files"
+echo "runtime_pens=$runtime"
 echo "never_removed=$never"
 echo "unreleased_on_refusal=$straight"
 
@@ -225,7 +267,12 @@ if [ "$standing" = yes ]; then
                [ -f "$f" ] || continue
                grep -h -o 'mktemp[[:space:]]*-d[[:space:]]*["]*[^"$ ]*' "$f" 2>/dev/null
                grep -h -o '[$]{TMPDIR:-/tmp}/[A-Za-z_][A-Za-z_0-9.-]*' "$f" 2>/dev/null
-             done } | sed -E 's|.*/||; s/\.?X+$//; s/\.$//' | grep -E '^[A-Za-z_][A-Za-z_0-9.-]+$' | sort -u )
+             done
+             # Every runtime-owned pen wears one basename prefix, so the pier half asks after it
+             # by name. A release proven on metal still leaves the question of what STANDS, and a
+             # standing `rishi-pen-` directory is a run that died past every path the runtime owns.
+             echo "rishi-pen-"
+           } | sed -E 's|.*/||; s/\.?X+$//; s/\.$//' | grep -E '^[A-Za-z_][A-Za-z_0-9.-]+$' | sort -u )
   total=0
   for n in $names; do
     c=$(find "$root" -maxdepth 1 -name "$n*" 2>/dev/null | wc -l)

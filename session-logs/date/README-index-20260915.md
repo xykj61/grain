@@ -1,7 +1,7 @@
 # session-logs day index -- 20260915
 
 **Language:** EN
-**Status:** Chapter index -- OPEN while the day runs
+**Status:** Chapter index -- CLOSED
 **Chapter:** `20260915`
 
 | Stamp | Log | What it carried |

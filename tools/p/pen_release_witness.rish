@@ -22,12 +22,22 @@
 #
 # `unreleased_on_refusal` -- 336 runners whose removal stands on the straight-line success path, so
 # a refusal above it leaves the pen behind -- is REPORTED and gated by nothing. In shell the cure
-# is the `trap 'rm -rf "$pen"' EXIT` every control in tools/fixtures/ already carries; Rishi has no
-# trap and a failing assert ends the run where it stands, so that cure is a language question for
-# its own lap rather than one line.
+# is the `trap 'rm -rf "$pen"' EXIT` every control in tools/fixtures/ already carries.
+#
+# THE RISHI HALF OF THAT SENTENCE IS CLOSED, and the elder claim beside it was false. This header
+# read *Rishi has no trap*; the runtime has carried a CleanupRegistry since `acquire-lock`, and
+# what it lacked was a pen kind. `make-pen` seats one (`tools/r/rishi_make_pen_witness.rish`): the
+# runtime composes the path, creates the directory, and releases it recursively after a return, a
+# refusal, an `exit`, HUP, INT, or TERM. A Rishi source in the second class is now a source
+# awaiting one line rather than one awaiting a language.
+#
+# `runtime_pens` counts the sources that have taken it, and it enters NEITHER class -- the two
+# populations are disjoint by construction, so a conversion moves a file between readings rather
+# than out of the census. A count that fell because a file left the population would read exactly
+# like a repair.
 let scan = run ["sh" "tools/fixtures/p/pen_release_scan.sh"]
 assert scan.ok else "pen release scan did not run: ${scan.err_brief}"
-assert scan.out contains "never_removed=16" else "the never-removed population moved: ${scan.out_brief}"
+assert scan.out contains "never_removed=14" else "the never-removed population moved: ${scan.out_brief}"
 assert scan.out contains "ceiling_ok=yes" else "pen release over its ceiling: ${scan.out_brief}"
 assert scan.out contains "verdict=released" else "pen release verdict missing: ${scan.out_brief}"
 
@@ -45,4 +55,6 @@ assert control.out contains "control_verdict=ok" else "pen release control verdi
 assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
 assert control.out contains "pass=46" else "the control's leg tally moved: ${control.out_brief}"
 
-say "GREEN: every pen this tree makes is counted for its release -- 16 never removed, under a ceiling that only falls."
+assert scan.out contains "runtime_pens=2" else "the runtime-owned pen population moved: ${scan.out_brief}"
+
+say "GREEN: every pen this tree makes is counted for its release -- 14 never removed under a ceiling that only falls, and 2 handed to the runtime."
