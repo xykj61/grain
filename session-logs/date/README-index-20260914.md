@@ -11,6 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.135554` | [The refusal speaks before it stops](20260914/20260914-135554_the-refusal-speaks-before-it-stops.kyri) | a parked record returned |
+| `20260914.165532` | [The parent and the parked record returned](20260914/20260914-165532_the-parent-and-the-parked-record-returned.kyri) | a parked record returned |
+| `20260914.184901` | [Two parked records returned](20260914/20260914-184901_two-parked-records-returned.kyri) | two parked records returned |
+| `20260914.215630` | [Three parked records returned](20260914/20260914-215630_three-parked-records-returned.kyri) | three parked records returned |
 | `20260914.213430` | [Four parked records came home](20260914/20260914-213430_four-parked-records-came-home.kyri) | restored four records; kept stronger product state |
 | `20260914.212434` | [The grant left a trail and the refusal did not](20260914/20260914-212434_the-grant-left-a-trail-and-the-refusal-did-not.kyri) | Mand ring 1 logs grants alone |
 | `20260914.190841` | [Three parked records came home](20260914/20260914-190841_three-parked-records-came-home.kyri) | restored three records; kept the stronger living rail |
