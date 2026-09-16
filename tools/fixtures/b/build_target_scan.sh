@@ -50,6 +50,23 @@
 # DIRECTORY IT MADE FOR ITSELF. The named escape is `d=$(mktemp -d)` and `-femit-bin=$d/<name>`,
 # which 12 sites already spell. Lower a ceiling when a lap moves a site; never raise one.
 #
+# A PLACEHOLDER IN PROSE IS NOT A BUILD TARGET (`20260916.080424`). A guard's own comment often
+# spells the shape of the command it drives -- `rye build -femit-bin=<path>` -- and the extraction
+# below reads a source line by line without asking whether it is code. Two such mentions stood in
+# the population, one of them the whole of that lap's ceiling breach: a doc comment naming
+# `<path>` read as a forty-eighth fixed emit site against a ceiling of forty-seven. A target
+# carrying `<` or `>` is a placeholder, never a path any filesystem will hold, so it is counted as
+# `prose` and reaches neither the fixed count nor the shared one. It is REPORTED rather than
+# dropped, because a reading that silently discards a line cannot be told from one that never saw
+# it.
+#
+# THE REPAIR FREED EXACTLY THE ROOM A PEER'S REAL ARRIVAL NEEDED, and the ceiling therefore does
+# not fall. Read on the rebased tree: 49 under the elder rule, **47** real sites and 3 placeholders
+# under this one, against a ceiling that stood at 47 while two of its number were phantoms. So the
+# number is unchanged and its MEANING is not -- 47 now bounds 47 builds into fixed tree paths,
+# where before it bounded 45 and two sentences. A swap of that shape is invisible in the total
+# alone, which is why `emit_prose` prints beside it.
+#
 # WHAT THE COUNTS CANNOT SEE. `emit_unresolved` is a site whose target is a variable this scan
 # cannot follow to either a literal or a `mktemp`. It is REPORTED rather than gated, and while it
 # stands above zero `emit_fixed` is a FLOOR rather than a total -- a reading that says so is worth
@@ -145,6 +162,11 @@ while IFS="$(printf '\t')" read -r name src target; do
   # step read ten amphora sites as fixed tree paths that reach a real pen. Bounded at four hops,
   # and a target still wearing a `$` when the hops run out is unresolved rather than guessed at.
   kind=fixed
+  # A placeholder wears a bracket; no path does. Decided before the variable walk, since a
+  # placeholder holds no variable to follow and would otherwise land in `fixed` by default.
+  case "$target" in
+    *'<'*|*'>'*) printf '%s\t%s\t%s\t%s\n' prose "$name" "$src" "$target" >> "$pen/resolved"; continue ;;
+  esac
   path="$target"
   hop=0
   while [ "$hop" -lt 4 ]; do
@@ -184,6 +206,7 @@ emit_sites=$(wc -l < "$pen/resolved" | tr -d ' ')
 emit_pen=$(awk -F'\t' '$1=="pen"' "$pen/resolved" | wc -l | tr -d ' ')
 emit_fixed=$(awk -F'\t' '$1=="fixed"' "$pen/resolved" | wc -l | tr -d ' ')
 emit_unresolved=$(awk -F'\t' '$1=="unresolved"' "$pen/resolved" | wc -l | tr -d ' ')
+emit_prose=$(awk -F'\t' '$1=="prose"' "$pen/resolved" | wc -l | tr -d ' ')
 guards_emitting=$(awk -F'\t' '{print $2}' "$pen/resolved" | sort -u | wc -l | tr -d ' ')
 
 awk -F'\t' '$1=="fixed"{print $4}' "$pen/resolved" | sort -u > "$pen/fixed_paths"
@@ -235,6 +258,7 @@ echo "emit_sites=$emit_sites"
 echo "emit_pen=$emit_pen"
 echo "emit_fixed=$emit_fixed"
 echo "emit_unresolved=$emit_unresolved"
+echo "emit_prose=$emit_prose"
 echo "fixed_paths=$fixed_paths"
 echo "shared_paths=$shared_paths"
 echo "max_writers=$max_writers"

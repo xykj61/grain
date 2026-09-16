@@ -294,6 +294,37 @@ build || fail "tamper-recovery build failed"
 sz=$(wc -c < "$BIN" | tr -d ' ')
 [ "$sz" -gt 1000 ] || fail "the rebuild left a torn binary ($sz bytes)"
 
+# --- leg 18: the OUTPUT'S PATH leaves the key, so a rename keeps its receipt -----------------
+# A running binary refuses to be written over, so every ship rebuilds `rishi` by emitting to
+# `rishi/bin/rishi.new` and renaming. Where the output lands names how a caller filed the result
+# rather than what compiled, so the path joins the key as the bare fact `-femit-bin=` from
+# `ryekey-v7` on. Move the binary and its receipt together and the next build HITS.
+#
+# Before v7 this same move missed: measured `20260916.064500` in a pen, one source emitted to two
+# paths spoke two keys and produced byte-identical binaries, and five of the pier's eight ships
+# carried a receipt speaking for a binary no longer there.
+rm -f "$KEY" "$BIN" "$PEN/moved" "$PEN/moved.ryekey"
+build || fail "rename baseline build failed"
+k18=$(stamp | head -1); t18=$(btime)
+mv "$BIN" "$PEN/moved"
+mv "$KEY" "$PEN/moved.ryekey"
+env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$PEN/moved" \
+    || fail "renamed-output build failed"
+[ "$(head -1 "$PEN/moved.ryekey")" = "$k18" ] || fail "the output's path changed the key"
+[ "$(file_mtime "$PEN/moved")" = "$t18" ] || fail "a renamed output with its receipt rebuilt"
+
+# --- leg 19: a SIBLING emit flag's value still misses ----------------------------------------
+# The exemption reaches `-femit-bin=` alone, because that is the one artifact a receipt verifies
+# on every hit. `-femit-asm=` names a file no hash checks, so two spellings must miss rather than
+# serve a hit that quietly emits nothing.
+rm -f "$KEY" "$BIN"
+env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "-femit-asm=$PEN/one.s" \
+    -OReleaseSmall || fail "asm-one build failed"
+k19a=$(stamp | head -1)
+env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "-femit-asm=$PEN/two.s" \
+    -OReleaseSmall || fail "asm-two build failed"
+[ "$(stamp | head -1)" != "$k19a" ] || fail "a sibling emit flag's value did not change the key"
+
 # --- leg 17: a positional argument earns no receipt ------------------------------------------
 printf 'int nothing_here;\n' > "$PEN/extra.c"
 rm -f "$KEY"
@@ -301,6 +332,6 @@ env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extr
     || fail "positional-arg build failed"
 [ ! -f "$KEY" ] || fail "a positional argument still earned a receipt"
 
-echo "legs=20 all proven -- ten flips missed, including same-size compiler and library bytes and root and dependency source modes; four hits held, among them one toolchain and one library reached by another path; the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
+echo "legs=22 all proven -- eleven flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"

@@ -40,7 +40,9 @@
 //!
 //! BUILD RECEIPTS. A `build` or `build-lib` that names its output with
 //! `-femit-bin=<path>` earns a receipt: one SHA-256 over the whole import
-//! closure's bytes, the forwarded flags, the toolchain's bytes, the sorted
+//! closure's bytes, the forwarded flags -- `-femit-bin=` joining as the bare
+//! fact that an output was named, since where it lands shapes no byte of it --
+//! the toolchain's bytes, the sorted
 //! standard-library tree, and this binary's own bytes, written beside the
 //! output as `<path>.ryekey`. When every one of those inputs is byte-identical
 //! on the next build, the toolchain is not spawned and the standing binary
@@ -112,12 +114,14 @@ const build_lock_poll_ms: u64 = 50;
 
 /// The receipt key's domain separator, versioned so a future key shape can
 /// never collide with this one's stamps. Moved to v6 on `20260916` when the
-/// toolchain and library PATHS left the key below. The bump buys legibility
+/// toolchain and library PATHS left the key below, and to v7 the same day when
+/// the OUTPUT'S path followed them -- the third of one class, each naming
+/// where something sat rather than what it compiled. The bump buys legibility
 /// rather than safety -- a changed input set already speaks a different digest
 /// and misses, which is the safe direction -- so what it actually names is the
 /// one rebuild every standing receipt takes on the lap this lands: 96 of them
-/// on this ship, each hitting again afterward.
-const ryekey_marker = "ryekey-v6\x00";
+/// on this ship at v6, and 94 standing when v7 landed, each hitting again afterward.
+const ryekey_marker = "ryekey-v7\x00";
 
 /// A receipt stamp is two 64-hex lines -- the input key, then the emitted
 /// binary's own hash -- and this bound refuses to read a stamp-shaped file
@@ -471,8 +475,35 @@ fn bridge_to_zig(
     // this change, and dropping a path that reaches none of them takes
     // nothing further away.
     const library_content_readable = hash_library_into(io, dir, rye_lib, garden, &hasher);
+    // THE OUTPUT'S PATH JOINS AS A FACT RATHER THAN A SPELLING. `-femit-bin=`
+    // says an output was named; where it lands says how a caller filed the
+    // result, never what compiled. Every other flag joins whole, value and
+    // all, because a flag is otherwise an instruction to the compiler.
+    // Measured `20260916.064500` in a throwaway pen: one source emitted to two
+    // paths spoke two keys and produced byte-identical binaries.
+    //
+    // WHAT THIS BUYS. A running binary refuses to be written over, so every
+    // ship rebuilds `rishi` by emitting to `rishi/bin/rishi.new` and renaming.
+    // Under the elder key that move spoke a key no later build could ever
+    // match, and it left the elder receipt beside the new binary speaking for
+    // the old one -- five of the pier's eight checkouts stood that way on the
+    // lap this landed. Move the binary and its receipt together now and the
+    // next build hits.
+    //
+    // WHAT STILL HOLDS THE SERVED BYTES HONEST. Each output keeps its own
+    // receipt at `<path>.ryekey`, and every hit re-hashes the file standing
+    // there against the stamp's second line, so a key two paths share can
+    // never serve one path's bytes for the other.
+    //
+    // ONLY `-femit-bin`. A sibling emit flag names an artifact no receipt
+    // verifies -- a hit emits nothing at all -- so `-femit-asm=` and its kin
+    // keep their values in the key and two spellings miss.
     for (extra) |flag| {
-        hasher.update(flag);
+        if (std.mem.startsWith(u8, flag, "-femit-bin=")) {
+            hasher.update("-femit-bin=");
+        } else {
+            hasher.update(flag);
+        }
         hasher.update("\x00");
     }
 

@@ -169,6 +169,49 @@ out=$( cd "$bare" && sh "$scan" 2>/dev/null )
 leg no_repo_refused           "$(saw "$out" 'verdict=no_repository')"
 leg no_repo_not_green         "$([ "$(saw "$out" 'verdict=ok')" = no ] && echo yes || echo no)"
 
+# 11. THE MARK, BESIDE THE CLOCK. `rye build -femit-bin=<path>` writes `<path>.ryekey`, whose
+#     second line is the emitted binary's own SHA-256. So one hash says whether the receipt beside
+#     a tool speaks for the tool standing there. Five of the pier's eight ships carried one that
+#     did not, measured `20260916.064500` -- a rename-over-a-busy-executable leaves the receipt at
+#     the elder name. REPORTED rather than gated, so the plant below must leave `verdict=ok`.
+pen_digest() {
+  if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1
+  elif command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1" | cut -d' ' -f1
+  else echo no-sha-tool
+  fi
+}
+zeros=0000000000000000000000000000000000000000000000000000000000000000
+
+d=$(build receipts)
+age "$d/rye/src/main.rye" 600;   age "$d/rye/bin/rye" 300
+age "$d/rishi/src/main.rye" 600; age "$d/rishi/bin/rishi" 200
+printf '%s\n%s\n' "$zeros" "$(pen_digest "$d/rishi/bin/rishi")" > "$d/rishi/bin/rishi.ryekey"
+out=$(run_in "$d")
+leg receipt_speaks_named      "$(saw "$out" 'tool=rishi .*receipt=speaks')"
+leg receipt_speaks_counted    "$(saw "$out" 'receipts_speaking=1')"
+leg receipt_absent_named      "$(saw "$out" 'tool=rye .*receipt=absent')"
+leg receipt_absent_counted    "$(saw "$out" 'receipts_absent=1')"
+
+# The orphan planted: the binary moves on and the receipt keeps its elder word.
+printf 'a different binary\n' > "$d/rishi/bin/rishi"
+age "$d/rishi/bin/rishi" 200
+out=$(run_in "$d")
+leg orphan_named              "$(saw "$out" 'tool=rishi .*receipt=orphan')"
+leg orphan_counted            "$(saw "$out" 'receipts_orphaned=1')"
+leg orphan_repair_printed     "$(saw "$out" 'repair: .*rishi.ryekey speaks for another binary')"
+leg orphan_never_gates        "$(saw "$out" 'verdict=ok')"
+
+# The same plant lifted -- the receipt re-stamped over the binary standing there.
+printf '%s\n%s\n' "$zeros" "$(pen_digest "$d/rishi/bin/rishi")" > "$d/rishi/bin/rishi.ryekey"
+out=$(run_in "$d")
+leg orphan_lifts              "$(saw "$out" 'receipts_orphaned=0')"
+
+# A stamp-shaped file that has grown into something else reads `malformed` rather than matching.
+printf '%s\nnot-a-hash\n' "$zeros" > "$d/rishi/bin/rishi.ryekey"
+out=$(run_in "$d")
+leg malformed_named           "$(saw "$out" 'tool=rishi .*receipt=malformed')"
+leg malformed_not_orphan      "$(saw "$out" 'receipts_orphaned=0')"
+
 echo "control_legs=$legs"
 echo "control_failed=$failed"
 if [ "$failed" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

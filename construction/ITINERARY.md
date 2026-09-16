@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.092641` (EDT)
+**Stamp:** `20260916.092750` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -25,7 +25,6 @@ none of those.
 
 **The agent-doable queue, Lindy first:**
 
-0. `%745` -- the `tools/am/` success-path leak is closed (`20260916.012247`); the refusal half waits on bakery's `make-pen`.
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. `%646` -- **swept and closed** (the row of `20260916.082153`, unshared until this push); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
@@ -78,13 +77,15 @@ nine-face tuple ceiling returns. `glow/refusal.rye` tells them apart, rebuilt as
 `tally/receipt_refusal.rye`, the agreement grepped rather than claimed. **9 legs**, two mutations
 bitten. **YOURS:** does that one rendering earn a module both records import, and whose lane?
 
-**EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`). A peer landed `out_brief` and
-`err_brief` beside the whole captures in `rishi/src/main.rye`, and witnesses began interpolating
-them within the hour. `rishi/bin/rishi` is untracked, so a checkout carries whatever it last built
--- mine was from `20260905` and answered `NoSuchField` on a line the hot roster had read green forty
-minutes earlier, under a *different* copy of the same witness. The cure is one command:
+**EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
+untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
+field a peer landed hours ago -- the error reading as the tree's fault rather than the binary's.
+`built_tool_freshness` names it now; the cure is one command:
 `RYE_ZIG="$PWD/vendor/zig-toolchain/zig" sh tools/fixtures/r/rye_build.sh rishi/src/main.rye
--femit-bin=rishi/bin/rishi`. `tools/r/rishi_brief_witness.rish` already says so inside its own
+-femit-bin=rishi/bin/rishi`. **If that answers `Text file busy`, three moves rather than one**
+(`20260916.080424`): emit to `rishi/bin/rishi.new`, `mv` it over `rishi/bin/rishi`, then `mv
+rishi/bin/rishi.new.ryekey rishi/bin/rishi.ryekey` -- five of eight checkouts were missing that
+third move. `tools/r/rishi_brief_witness.rish` already says so inside its own
 assert message; this line is here because a ship meets the red somewhere else first.
 
 **Stop line:** when only the seven gated rows remain, print `GATES-ONLY` and `touch
@@ -121,16 +122,16 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ddc0f31189` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `1119e79ce1` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
-**BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
-Account [shelved whole](archive/20260916-082153_itinerary-bakery-receipt-key-account.md); its rows
-`%763` and `%764` closed, folded with a peer's `%762` to
-[`archive/REDS-a-guards-own-words-and-the-path-that-reached-it-rows-762-764.md`](archive/REDS-a-guards-own-words-and-the-path-that-reached-it-rows-762-764.md)
-on `20260916.082153`. The mechanism in one line: `rye/src/main.rye` dropped both path `hasher.update`
-calls from the build-receipt key, keeping both content hashes, and `ryekey_marker` moved v5 to v6 --
-so one pin reached four ways speaks one key rather than four.
+**BAKERY -- THE THIRD PATH IN THE KEY, AND FIVE SHIPS WEARING A STRANGER'S RECEIPT.**
+Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md). `rye/src/main.rye`
+hashed every forwarded flag whole into the build-receipt key, and the emit flag is one, so WHERE an
+output landed decided the key; its VALUE is gone and `ryekey_marker` moves **v6 to v7**. The third
+path of one class in one day, and it cost the fleet its receipt on every rebuild of a running tool.
+Rows `20260916.080424`, `20260916.092127`. **MINE:** whether today's sources would speak the
+standing key -- a `rye` mode computing a key without building.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
 [shelved whole](archive/20260916-081513_itinerary-landed-accounts.md) by
