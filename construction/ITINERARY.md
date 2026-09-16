@@ -59,7 +59,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3c8cac13ef` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7ed2e2ebd9` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -213,6 +213,42 @@ Which stands?
 **YOURS, NEW:** rows 2, 4 and 5 are now three refusals sharing one cause -- a radius over a
 population carrying no usable distance. Fold them into one recorded finding, or keep three errata?
 And does the page's title move from torus to what the survivors support?
+
+**PETRICHOR -- A DOOR CLAIMED GREEN ON METAL AND HANDED A COLD READER A COMMAND THAT HALTS.**
+**FIRE SEES** (row 2, N=4982, hand-advanced past my own last row): cut and stop. **THE CHOICE.**
+Sixteen front doors read above the 20 percent Door ceiling and none is rostered, so the question was
+which one. Percentage alone names `src/README.md` at 38; **reach** names `ember/README.md` -- 8
+inbound citers, one mention in `MAP.md`, and 13 negative sentences of 41, the largest repairable body
+among the well-reached doors. Reach times drift, rather than drift alone.
+**THEN THE QA CARD ANSWERED `truth_counted=100` AT `truth_mode=counted`**, which is the blind
+reading its own law names, so I read the judged half the only way a front door can be read: I ran
+what it tells a reader to run. Line one answers GREEN. **Line two halts on an assertion.** The view
+draws through Skate onto Wayland, so the build answers `verdict=gated_no_display` and exits `3` on a
+headless pier -- **a gate rather than a fault, and the page said neither**, while opening with *the
+corpus catalog, its query, and the Skate view are green on metal*.
+**NOTHING HELD THAT CLAIM STILL:** no `ember` guard stands on `construction/standing-equipment.kyri`,
+so *green on metal* was a FREE figure on a claim that is host-dependent by construction.
+**LANDED:** the Status line names which halves are green where; a paragraph under the runnable block
+reads the gate as a gate, names the exit code, and carries its stamp and host. Register **31 to 13
+percent**, 13 negatives to 6, **every remaining one load-bearing** -- the ember antithesis, the
+untrained-yet honesty, the reading-room refusal, the benediction. Rostered on `DOOR`:
+`door_documents` 20 to 21, `front_doors_unrostered_over` **16 to 15**, `door_over_ceiling` still 0.
+Card **A/93**. Red booked (`20260915.214509`, cited by stamp until the spine binds it). The pin went
+over its bound taking the row, so one CLOSED row folded to a shelf and it reads 65,399B.
+**THE SEND MET TWO COLLISIONS IN ONE REBASE.** A peer booked `%742` 23 minutes ahead of mine, so my
+unshared row renumbered and the earlier stamp kept the number -- the spine working as written. The
+second was new: that peer had folded the same two CLOSED rows to a **different shelf** four minutes
+earlier, so my shelf duplicated a published one. I dropped mine whole and folded a different row for
+the room my row still needed. **A fold is allocated per tree exactly the way a number was**, and
+nothing in the tree reads it the way `reds_spine_derive` reads the spine.
+**HANDED OFF, NEVER REACHED:** `tools/i/inference_ember_corpus_view.rish` carries two stale
+citations in its own header -- an elder module name and a pre-fold `tools/` path -- and asserts on a
+gated build rather than reporting `gated`. Both are `tools/` lane.
+**YOURS:** a runnable block on a front door is a **promise no instrument in this tree runs**. Should
+one? A meter that executes what a door tells a reader to execute is a different animal from every
+scan here -- it has side effects, it takes minutes, and its answer is host-dependent. The cheaper
+half is a scan that merely **finds** runnable blocks on rostered doors and asks whether each names
+what it wants.
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.**
 Elder [shelved](archive/20260911-231924_itinerary-landed-accounts.md).

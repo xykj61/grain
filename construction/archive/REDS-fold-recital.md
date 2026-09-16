@@ -760,3 +760,4 @@ at a closed fold.*
 *Rows %736 and %737 folded to [`REDS-the-instrument-measured-as-the-tree-rows-736-737.md`](REDS-the-instrument-measured-as-the-tree-rows-736-737.md) on `20260915.214431`, both **CLOSED** -- a guard that counts its own instrument's material has measured the instrument rather than the tree.*
 
 *Rows %519 and %532 folded to [`REDS-a-reading-of-nothing-rows-519-532.md`](REDS-a-reading-of-nothing-rows-519-532.md) on `20260915.215245`, both **BOOKED** -- an instrument that has quietly stopped reading its subject passes exactly as a healthy tree does -- a plant that plants nothing, and a hand-written list standing in for a population.*
+*Row %739 folded to [`REDS-the-class-walled-and-its-last-five-sites-rows-739.md`](REDS-the-class-walled-and-its-last-five-sites-rows-739.md) on `20260915.215554`, **CLOSED** -- a class is walled on the lap its last sites are repaired, rather than on the lap it was measured.*
