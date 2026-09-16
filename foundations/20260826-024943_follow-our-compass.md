@@ -18,6 +18,7 @@ Radiant pass `20260727.213740` -- Voice/Radiant named on the day-one rose (`docs
 AHOY1 weave `20260811.214423` -- kin block added; the return read now orders by **Lindy-first, crux-first**; claims unchanged
 Strand-count erratum `20260907.062544` -- four sentences carried the elder total of ten; the grain has held thirteen since the fusion of `20260802`, and a pointer now names the strands rather than counting them
 Map station added `20260909.204315` -- the walk now opens at [`MAP.md`](../MAP.md); the six elder stations keep their order and their words, and the two sentences citing them by number now name them instead
+Station-name erratum `20260916.190000` -- stations 6 and 7 sent a reader to *Now -- the live front*, *The Compass Chapter* and *Next -- the ranked remainder*, three headings the card's molt of `20260912` renamed; each now names a section `construction/ITINERARY.md` carries, and [`../tools/s/section_citation_witness.rish`](../tools/s/section_citation_witness.rish) holds the promise from here forward
 
 ---
 
@@ -41,8 +42,8 @@ When refreshing before a lap or a roadmap edit, walk this rose **oldest convicti
 3. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): the strands + crossing test.
 4. **Two rooms** -- [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
 5. **Active-designing ladder** -- [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
-6. **Now** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Now -- the live front*: what is open, what waits on a word.
-7. **Order** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *The Compass Chapter* and *Next -- the ranked remainder*: why and season, Lindy-first and crux-first.
+6. **Now** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Now -- the eight sailing ship itineraries* and *Open doors for Keaton*: what is open, what waits on a word.
+7. **Order** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Simple, Lovable, Complete order* and *Fleet dependency order*: why and season, Lindy-first and crux-first.
 
 **The Now and Order stations are one card, and the fusion is why.** `construction/TASKS.md` and
 `construction/ROADMAP.md` carried the now and the order until `20260823.103804`, when three cards
