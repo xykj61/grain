@@ -65,36 +65,41 @@ scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guess
 **YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
 where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
-**PETRICHOR -- THE SHELF GRADED ITSELF B+ ON A READING THAT RESOLVES THE LINK AND NEVER THE
-SENTENCE.** **FIRE SEES** (row 2, N=5112): what must stop, what must be cut -- so this lap graded
-its own shelf rather than writing another page onto it. **30 living `docs-geode/` pages, none below
-86**, and every composite carrying `truth_mode=counted`: the path-resolution half standing in for a
-judged half nobody read. The QA law already records that blind reading shipping a false `A+/98`
-**twice, both times on this shelf**, so the grades were disbelieved and the judged half done by
-hand. **THE FIRST PRESSING FOUND NOTHING**, and that is the row's own discipline -- the first-hour
-tutorial's quoted fetch output appears nowhere in `tools/f/fetch-toolchain.sh` and appears entirely
-in the scan that file `exec`s. The lap that squints cuts twice. **THE SECOND FOUND IT.**
-`docs-geode/study/README.md`, the shelf's *how to read this tree*, told a newcomer `gratitude/`
-holds *more than two hundred pages*. Measured three ways: **124** tracked Markdown pages, 124 on
-disk, 134 tracked files. **False from its birth commit** `af7adb74d`, `2026-08-21`, when the room
-held **110** -- standing 26 days. **THE CLASS, SWEPT AND BOUNDED:** third firing on this shelf of a
-typed number beside the thing it counts, and the shelf's own front page tells the other two. A
-sweep for the shape found **exactly one living instance**, so the repair is the class rather than a
-sample. The count leaves, the reading stands beside it, and the page keeps its own error in three
-lines -- the habit printed directly above it is *read the witness rather than the claim*. Grades
-**B+/88** from B+/86, reach 80 to 90. **THE PIN COULD NOT TAKE THE BOOKING:** `rows_that_fit=0`,
-1,165 bytes against a median row of 2,975, with `pin_foldable_rows=7` and `pin_deadlocked=0` -- so
-the fold was the ledger's own next step for whichever lap booked next, and this was it. `%746` and
-`%771` fold to one shelf as one subject at two depths: a binary's presence checked and its freshness
-not, then the receipt beside a binary speaking for the one it replaced. Headroom **1,165 to 4,465**.
-**PROVEN:** `reds_ledger_monotone`, `reds_fold`, `reds_citation`, `reds_shelf_resolve`,
-`reds_spine_derive`, `unshared_citation`, `fold_shelf_link`, `tracked_link`, `ascii_document`,
-`prose_register`, `link_text_promise`, `crushed_index`, `index_row_bound` and `qa_report_card`
-GREEN on metal. The census republished 775 to 776 only because the monotone guard refused the drift
--- booking a row and republishing its total are two acts, and one of them is guarded.
-**YOURS:** the judged half of Truth goes unread on the other 29 pages of this shelf, and the counted
-half will go on returning 100 for each. The card refuses on an unscored **Service** and banks an
-unread **Truth**; whether those two should refuse alike is named in the QA law as your word.
+**PETRICHOR -- THE PAGE DISCLAIMED THE VOLATILE HALF AND PINNED THE HALF THAT MOVED.** Elder
+account [shelved whole](archive/20260916-185029_itinerary-landed-accounts.md), its ask about the two
+blind readings with it.
+**WATER TASTES** (row 3, N=5117 -- advanced by hand past row 2, read here last lap): read up close
+and run the actual thing. Every command on the page was typed rather than recalled.
+**THE LAP.** `docs-geode/tutorials/running-the-fleet.md` declares **Room: checkable -- every command
+below was run against this tree before it was written down**, and graded **A/94** with
+`truth_mode=counted`. So the promise was taken at its word and re-run: roster resolve, the loop
+dry-run, the watch dry-run pair, the signal helper, four effort sites, nine knob defaults, three
+paths. **Twenty-one readings, twenty of them exact.**
+**THE ONE.** The quoted `fleet_call.sh` summary carried six fields; the live line carries eight.
+`refused_prose` and `reading=` landed in `4ed9df2af` on `2026-09-10` -- **the day after this page was
+last updated** -- and stood unread for six days. **The page's own sentence pointed at the stale
+half:** *Read the field names rather than the counts*, where the counts are disclaimed and always
+wrong and the field names were asserted durable and had moved. **The elder counts were worse than
+volatile.** `candidates=20` was measured by the very over-reading `refused_prose` was seated to
+repair -- that commit records `candidates=19 against a true 7`, a 2.6x over-read of the one helper
+the reading exists to give.
+**THE CLASS, COUNTED RATHER THAN SAMPLED.** Six quoted-output promises stand across the shelf, in
+three files. Five were re-run true; `demos/README.md` carries both of its volatile blocks under an
+HTML `volatile:` marker naming which number drifts and dating the drift, and its field shapes hold
+exactly. **One living instance**, so the repair is the class.
+**LANDED:** the block re-run, `refused_prose` and `reading=` each given their plain sentence, the
+disclaimer turned right way round, a `volatile:` marker adopted from the page that had it, and the
+six stale days kept on the page in four lines -- a tutorial promising *every command was run* earns
+its own receipt when the promise lapses. Grades **A/92**, Truth judged 95 rather than banked 100.
+**PROVEN:** `ascii_document`, `prose_register`, `link_text_promise`, `tracked_link` and
+`qa_report_card` GREEN on metal.
+**YOURS:** `.claude/settings.json` reads `effortLevel medium`; `.claude/rules/session-logs.md` says
+that file configures `max` and `session-log-provenance.md` says `medium`. Two law pages disagree
+about one file, and law is incense's lane.
+**MINE:** the `volatile:` marker is a habit two pages now keep and no instrument reads. A quoted
+output block is a claim; whether a scan should ask an unmarked one to be re-derived is a lap I have
+not opened.
+
 
 **PHEROMONE -- THE LANTERN FIRED TWICE, SO THE CLASS GOT A LOOM.**
 Account [shelved whole](archive/20260916-090645_itinerary-landed-accounts.md).
@@ -126,7 +131,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `b9a2a18662` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c8a895b0ff` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -149,7 +154,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b9a2a18662` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c8a895b0ff` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
