@@ -1,0 +1,201 @@
+//! glow/refusal_witness.rye -- proves the Glow refusal record and its one rendering.
+//!
+//!   rye build glow/refusal_witness.rye -femit-bin=glow/bin/refusal_witness
+//!   glow/bin/refusal_witness
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusal = @import("refusal.rye");
+const rune_shape = @import("rune_shape.rye");
+
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(refusal).@"struct".decls) |decl| {
+        _ = &@field(refusal, decl.name);
+    }
+}
+
+const witness_version = "20260916.074000";
+
+/// A `$:` tuple carrying ten faces -- one past the nine `rune_shape.max_fields` admits.
+const ten_face_src =
+    \\+$  over-mold
+    \\  $:  one=@u32
+    \\      two=@u32
+    \\      three=@u32
+    \\      four=@u32
+    \\      five=@u32
+    \\      six=@u32
+    \\      seven=@u32
+    \\      eight=@u32
+    \\      nine=@u32
+    \\      ten=@u32
+    \\  ==
+;
+
+/// The same tuple one face shorter -- nine, which the ceiling admits.
+const nine_face_src =
+    \\+$  nine-mold
+    \\  $:  one=@u32
+    \\      two=@u32
+    \\      three=@u32
+    \\      four=@u32
+    \\      five=@u32
+    \\      six=@u32
+    \\      seven=@u32
+    \\      eight=@u32
+    \\      nine=@u32
+    \\  ==
+;
+
+/// A `$%` arm carrying four payload faces -- one past the three `max_payload_faces` admits.
+/// This refuses with the SAME error name as the tuple ceiling above.
+const four_payload_src =
+    \\+$  wide-mold
+    \\  $%  [%mint from=@u32 to=@u32 amount=@u32 memo=@t]
+    \\      [%send ~]
+    \\  ==
+;
+
+pub fn main() !void {
+    print("refusal_witness {s}\n", .{witness_version});
+
+    var buf: [refusal.max_refusal_line_bytes]u8 = undefined;
+
+    // 1 -- the five-part form renders in the contract's own order.
+    const over = refusal.Refusal{
+        .field = "amount",
+        .reason = .too_many_fields,
+        .measure = .{ .value = 10, .ceiling = 9, .unit = .field },
+    };
+    assert(std.mem.eql(
+        u8,
+        try over.render(buf[0..]),
+        "field=amount value=10 ceiling=9 unit=field reason=too-many-fields",
+    ));
+    print("refusal: five-part rendering -- GREEN\n", .{});
+
+    // 2 -- with no measure, the line names field and reason alone.
+    const plain = refusal.Refusal{ .field = "mint", .reason = .too_many_payload_faces };
+    assert(plain.measure == null);
+    assert(std.mem.eql(u8, try plain.render(buf[0..]), "field=mint reason=too-many-payload-faces"));
+    print("refusal: two-part rendering -- GREEN\n", .{});
+
+    // 3 -- every reason and every unit carries a distinct, printable, space-free word.
+    const reasons = [_]refusal.Reason{ .too_many_fields, .too_many_payload_faces };
+    var r: u32 = 0;
+    while (r < reasons.len) : (r += 1) {
+        const word = reasons[@as(usize, @intCast(r))].name();
+        assert(word.len >= 1);
+        assert_printable(word);
+        var q: u32 = 0;
+        while (q < r) : (q += 1) {
+            assert(!std.mem.eql(u8, word, reasons[@as(usize, @intCast(q))].name()));
+        }
+    }
+    const units = [_]refusal.Unit{ .field, .payload_face };
+    assert(!std.mem.eql(u8, units[0].name(), units[1].name()));
+    assert_printable(units[0].name());
+    assert_printable(units[1].name());
+    print("refusal: reason and unit words distinct and printable -- GREEN\n", .{});
+
+    // 4 -- a field name one byte past its ceiling refuses; the ceiling itself is admitted.
+    const at_ceiling = [_]u8{'f'} ** refusal.max_field_name_bytes;
+    const past_ceiling = [_]u8{'f'} ** (refusal.max_field_name_bytes + 1);
+    const fits = refusal.Refusal{ .field = at_ceiling[0..], .reason = .too_many_fields };
+    _ = try fits.render(buf[0..]);
+    const past = refusal.Refusal{ .field = past_ceiling[0..], .reason = .too_many_fields };
+    if (past.render(buf[0..])) |_| {
+        return error.LongFieldAccepted;
+    } else |err| {
+        assert(err == refusal.RenderError.FieldNameTooLong);
+    }
+    print("refusal: name ceiling admitted, one past refused -- GREEN\n", .{});
+
+    // 5 -- a buffer shorter than the line refuses by name rather than truncating.
+    var short: [8]u8 = undefined;
+    if (over.render(short[0..])) |_| {
+        return error.ShortBufferAccepted;
+    } else |err| {
+        assert(err == refusal.RenderError.LineTooLong);
+    }
+    print("refusal: short buffer refused by name -- GREEN\n", .{});
+
+    // 6 -- the tuple ceiling names the tenth face and counts in fields.
+    var tuple_slot: refusal.Slot = null;
+    if (rune_shape.parse_source_reporting(ten_face_src, &tuple_slot)) |_| {
+        return error.TenFacesAccepted;
+    } else |err| {
+        assert(err == rune_shape.ParseError.TooManyFields);
+    }
+    const tuple_hit = tuple_slot orelse return error.TupleSlotEmpty;
+    assert(tuple_hit.reason == .too_many_fields);
+    assert(std.mem.eql(u8, tuple_hit.field, "ten"));
+    const tuple_m = tuple_hit.measure orelse return error.TupleMeasureAbsent;
+    assert(tuple_m.value == 10);
+    assert(tuple_m.ceiling == rune_shape.max_fields);
+    assert(tuple_m.unit == .field);
+    assert(std.mem.eql(
+        u8,
+        try tuple_hit.render(buf[0..]),
+        "field=ten value=10 ceiling=9 unit=field reason=too-many-fields",
+    ));
+    print("refusal: tuple ceiling names the face that would not fit -- GREEN\n", .{});
+
+    // 7 -- the payload ceiling shares that error name and the record tells them apart.
+    var payload_slot: refusal.Slot = null;
+    if (rune_shape.parse_source_reporting(four_payload_src, &payload_slot)) |_| {
+        return error.FourPayloadFacesAccepted;
+    } else |err| {
+        assert(err == rune_shape.ParseError.TooManyFields);
+    }
+    const payload_hit = payload_slot orelse return error.PayloadSlotEmpty;
+    assert(payload_hit.reason == .too_many_payload_faces);
+    assert(std.mem.eql(u8, payload_hit.field, "mint"));
+    const payload_m = payload_hit.measure orelse return error.PayloadMeasureAbsent;
+    assert(payload_m.value == 4);
+    assert(payload_m.ceiling == rune_shape.max_payload_faces);
+    assert(payload_m.unit == .payload_face);
+    assert(std.mem.eql(
+        u8,
+        try payload_hit.render(buf[0..]),
+        "field=mint value=4 ceiling=3 unit=payload-face reason=too-many-payload-faces",
+    ));
+    print("refusal: one error name, two ceilings, told apart -- GREEN\n", .{});
+
+    // 8 -- a refusal no record names leaves the slot null, so the slot is the question.
+    var other: refusal.Slot = null;
+    if (rune_shape.parse_source_reporting("not a mold at all\n", &other)) |_| {
+        return error.JunkAccepted;
+    } else |_| {}
+    assert(other == null);
+    print("refusal: an unnamed refusal leaves the slot empty -- GREEN\n", .{});
+
+    // 9 -- the published entry keeps its bytes: same refusal, same acceptance.
+    if (rune_shape.parse_source(ten_face_src)) |_| {
+        return error.TenFacesAccepted;
+    } else |err| {
+        assert(err == rune_shape.ParseError.TooManyFields);
+    }
+    const nine = try rune_shape.parse_source(nine_face_src);
+    assert(nine.field_count == 9);
+    print("refusal: parse_source unchanged, nine admitted -- GREEN\n", .{});
+
+    print("refusal_witness: 9 legs, 0 failures -- GREEN\n", .{});
+}
+
+/// Every rendered word stays printable ASCII with no space, so the line splits on spaces.
+fn assert_printable(word: []const u8) void {
+    // invariant: a word is at least one byte, so an empty name can never render as a
+    // missing key rather than a refusal
+    assert(word.len >= 1);
+    assert(word.len <= refusal.max_refusal_line_bytes);
+    var c: u32 = 0;
+    while (c < word.len) : (c += 1) {
+        const byte = word[@as(usize, @intCast(c))];
+        assert(byte >= 0x21);
+        assert(byte <= 0x7e);
+    }
+}
