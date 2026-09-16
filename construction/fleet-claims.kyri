@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim patchouli-weave-placards-and-head
-seat patchouli
-stamp 20260916.080557
-epoch 1789560357
-paths tools/r/rye_struct_fields_witness.rish mantra/src/weave.rye
-what rye_struct_fields reads RED fleet-wide on a Mantra structure: Line declares text gen pos site run ord and its placard says text gen pos site run. Diff is stale behind it -- declares site inserts deletes replaces after against a placard of site inserts deletes. Both are the anchor and order-key work landing and the records staying behind, which is also true of weave.rye's own head: it still promises every insert lands at the END and calls the anchor a seam rather than a lap, while apply reads diff.after at line 1413. Move the two placards forward with dated reasons, repair the head and annotate's header to the residue that is actually true, book the row.
 claim grass-unsaid-reads-one-spelling
 seat grass
 stamp 20260916.093812

@@ -32,18 +32,23 @@
 //! a merge joins on; place is what it sorts by; and holding them apart is what
 //! let the order be repaired with every line's name left exactly as it was.
 //!
+//! AN INSERT KNOWS WHERE IT GOES, since REDS %689. Every insert carries the
+//! kept line it FOLLOWS -- `Diff.after`, one entry per insert, computed by
+//! mantra/src/diff.rye and read by `apply`. The insert takes that anchor's
+//! order key and run, and its own fresh position is higher, so the position
+//! tiebreak inside Place.less_than sorts it just past the anchor and ahead of
+//! whatever came next. A line lands between two others without a denser number
+//! than a `u32` holds, and a paragraph edited mid-file arrives as an edit
+//! rather than as a deletion and an append.
+//!
 //! WHAT THIS LEAVES FOR THE NEXT LAP, so the head promises exactly what the
-//! code does. Every insert lands at the END of the document, since apply reads
-//! its positions off a counter that only rises -- so a paragraph edited in the
-//! middle of a file arrives as a deletion and an append. Placing a line between
-//! two others wants an anchor per insert, a line naming the line it follows,
-//! which widens Diff and is a seam rather than a lap. One further shape is
-//! worth expecting, and it is the honest answer rather than a fault: where one
-//! side made TWO edits and the other made one, the other's block lands between
-//! them, because run numbers order edits and both sides' first edits share one.
-//! Each side's own sequence survives exactly; an anchor is what would let a
-//! merge know which of two concurrent paragraphs its author meant to come
-//! first.
+//! code does. An insert that OPENS the document has no line to follow, so its
+//! anchor is null and it keeps the counter's own answer -- the one case still
+//! landing at the end. A document that grows at its head wants its own lap.
+//! One further shape is worth expecting, and it is the honest answer rather
+//! than a fault: where one side made TWO edits and the other made one, the
+//! other's block lands between them, because run numbers order edits and both
+//! sides' first edits share one. Each side's own sequence survives exactly.
 //!
 //! The operations, listed rather than counted. This list is read against the
 //! module's own `pub fn` declarations by
@@ -61,6 +66,17 @@
 //!   Weave.from_order_record(alloc, rec) -- a stamped record, order key and all, read back
 //!   weave.to_order_record(alloc)       -- this weave written as a stamped record
 //!   weave.annotate(alloc, w) -- what each side did, one Note per position
+//!
+//! The fields of `Diff`, the one value a caller builds by hand. This list is
+//! read against the struct's own declarations by the same scan, in both
+//! directions, because the head went on calling the insert anchor undone for
+//! hours after `after` landed -- a field arriving is exactly when the head
+//! goes stale, and nothing here was reading it:
+//!   Diff.site     -- whose edit this is, stamped on every insert
+//!   Diff.inserts  -- text of the new lines, in order
+//!   Diff.deletes  -- identities of the lines to remove
+//!   Diff.replaces -- per insert, the line it stands in for, or null
+//!   Diff.after    -- per insert, the kept line it follows, or null
 //!
 //! Part of Mantra -- TAME-first from line one.
 
@@ -1937,12 +1953,16 @@ pub const Weave = struct {
     /// witness holds the two to each other line for line.
     ///
     /// What this cannot yet tell, said here so the head promises no more than
-    /// the code does: `apply` hands every insert a position from the end of
-    /// the counter, so a line cannot land *between* two existing ones. The
-    /// reading therefore names what each side did to each line, and not yet
-    /// where a new line sits relative to the other side's delete. That second
-    /// story wants an anchor per insert, which widens `Diff` -- a seam rather
-    /// than a lap, and the same seam the module head names.
+    /// the code does: the reading names what each side did to each line, and
+    /// not where a new line sits relative to the other side's delete. The
+    /// anchor that would answer the second story LANDED on `20260916`
+    /// (REDS %689) -- `Diff.after` names the kept line each insert follows,
+    /// and `apply` sorts it just past that anchor -- so a note now stands over
+    /// a position whose place is meaningful. Reading the two sides' PLACES
+    /// against each other is the lap this header still defers; the elder text
+    /// called the anchor a seam rather than a lap, and kept saying so for the
+    /// hours after it landed. That is this header's second such stay: the
+    /// paragraph below records the first.
     ///
     /// Cost is one sort of each side plus one binary search per line of the
     /// union -- the same shape `merge` takes, and for the same reason: both
