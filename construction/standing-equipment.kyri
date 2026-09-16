@@ -6508,9 +6508,11 @@ seated 20260916.042700
 # 42 legs, 4 mutations bitten under a sham leg proving a bite is a bite rather than a root walk
 # failing, planted key populations and one real directory tree in a throwaway pen, 30s. tier lap.
 guard key_trade
-path tools/t/key_trade_witness.rish
+path tools/k/key_trade_witness.rish
 tier lap
-seated 20260916.051607# glow_shape_capacity -- CAN GLOW WRITE THE PRODUCT'S OWN TYPES? Glow's multi-field `$:` shape
+seated 20260916.051607
+
+# glow_shape_capacity -- CAN GLOW WRITE THE PRODUCT'S OWN TYPES? Glow's multi-field `$:` shape
 # holds at most `max_fields` faces, and that constant reads NINE in glow/rune_shape.rye. The
 # receipt contract Keaton accepted on `20260913` declares four public types, and TWO of them stand
 # above nine: `ReceiptOfferFact` at fifteen fields and `LinengrowReceipt` at eleven. So this seat's
@@ -6578,3 +6580,60 @@ guard glow_refusal
 path tools/g/glow_refusal_witness.rish
 tier lap
 seated 20260916.062546
+
+# rank_outcome -- DID THE RANKING PREDICT ANYTHING? active-designing/20260910-060204_the-bounded-
+# torus-moonshots.md carries twelve speculative rows and ranks all twelve at its close. That
+# ranking states its own operand in one line -- "Ranked by what a lane can start on this pier, with
+# no new hardware, this month" -- so it forecasts STARTABILITY and never truth, and it was written
+# before a single row had been read. Every one of the twelve now carries a dated erratum, which is
+# the first moment the forecast is gradeable. Grading it against a claim it declined to make is the
+# commonest way to be unfair to a forecast, so the three readings are kept apart.
+#
+# READING 1 -- RANK AGAINST READ ORDER, the thing it claimed. Each erratum carries a one-clock
+# stamp, so the read order stands in the page's own bytes, recorded by a habit nobody adopted for
+# this purpose. Over all twelve rows Spearman rho reads 0.3007 and Kendall tau 0.4242. Over the TEN
+# rows the ranking actually governed, rho reads 0.9879 and tau 0.9556 -- ONE discordant pair in
+# forty-five. The rank in read order is 3,4,5,6,7,8,9,11,10,1,2,12: ranks three through nine read in
+# exact rank order, one adjacent inversion, then the two rows ranked FIRST and SECOND at read
+# positions TEN and ELEVEN.
+#
+# WHY THE TWO NUMBERS PART, in the errata's own words: row 1's witness landed 22 minutes after the
+# page and row 3's 37 minutes after, and both errata are stamped six days later, each reporting 0
+# receipts because a cadence guard waited on a rota nothing was turning. A row cheap enough to build
+# inside the hour is a row whose READING nobody schedules -- and the ranking could not see that,
+# because building and reading are one column in it. Proven in closed form rather than told as a
+# story: plant ten perfectly ranked rows, move one prebuilt row from rank one to last in the read
+# order, and rho falls 1.0000 to 0.4545 while lifting that row restores 1.0000 over 36 pairs.
+#
+# READING 2 -- RANK AGAINST SURVIVAL, which it never claimed. Three rows stand, at ranks 1, 2 and 4;
+# one is blocked on this pier at rank 3; eight are altered, at ranks 5 through 12. That reads as
+# foresight until the confound is COUNTED rather than argued: claim_stands_preexisting=3, so every
+# surviving row either had a witness standing before its erratum or is described by its own erratum
+# as already standing -- row 10's required-bound rune since 20260716, two months before the page
+# named it. Survival here measures PRE-EXISTENCE, and the reading declines to call it prediction.
+# Survival is read by a CONJUNCTION rather than a keyword, and that came from a fault found while
+# building: "GREEN on metal" names a row's own witness in one erratum and the GRADING instrument in
+# another, so row 7 counted as standing on the green word alone while its own erratum re-aimed it.
+#
+# READING 3 -- WHICH HALF OF A ROW FAILED, and this is the finding worth carrying off the page. A
+# Gauge Field row carries a claim and a falsifier. TEN of twelve errata find the FALSIFIER
+# structurally faulty -- 6 incapable of firing at all, 3 already settled so firing discriminates
+# nothing, 1 aimed at the wrong subject, 2 unmentioned -- a faulted share of 0.8333. And the page
+# counts this class itself, inside row 12's erratum, and counts TWO. The class was six. Nobody was
+# careless: an erratum can only count the rows already read beside it, so a class distributed one
+# row at a time across six days is invisible to every writer of it and plain to the first reader of
+# the whole set. The classification is a KEYWORD PROXY over prose and says so on its own face;
+# `--explain` quotes the sentence behind each verdict, and all ten were checked by hand.
+#
+# Every page figure is FREE and free in ONE DIRECTION ONLY -- an erratum is never rewritten, so each
+# count can rise as errata land and none can fall. A refusal here means a thirteenth erratum arrived
+# and the reading is owed a re-read, rather than that an instrument broke. The ordering arithmetic
+# is HELD: identity reads rho 1 and tau 1, a full reversal reads -1 and -1, one adjacent swap in ten
+# reads 0.9879 with 44 concordant against 1 discordant, each proven from both sides.
+#
+# 62 legs, 4 mutations bitten under a sham leg proving a bite is a bite rather than a pen failing,
+# planted Markdown pages in a throwaway pen, 2s. tier lap.
+guard rank_outcome
+path tools/r/rank_outcome_witness.rish
+tier lap
+seated 20260916.070656

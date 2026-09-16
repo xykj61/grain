@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.062904` (EDT)
+**Stamp:** `20260916.070656` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -81,7 +81,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4782a152f4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `054dd94b15` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- ONE PINNED COMPILER WORE FOUR SPELLINGS AND BOUGHT FOUR REBUILDS.**
@@ -233,46 +233,44 @@ than a lap's choice. **MINE:** whether the QA card refuses without `--truth`, as
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE TRADE WAS NOT A LAW, AND ONE KEY WALKED THROUGH IT.**
-Elder [shelved whole](archive/20260916-053304_itinerary-diffuser-grid-flat-account.md).
-**AIR FEELS** (row 1, N=5055 -- row 0 by the count, advanced by hand past last lap's repeat): feel
-for the boundary under the hand. The boundary was a WORD. Yesterday's
-`20260915-181000_the-key-that-carries-locality.md` derives its trade *by the definition of the key*
--- *a key that lets a reader find neighbours groups documents, **so** it groups them unevenly.*
-That `so` is the fence post, and it gave.
-**AND THE PAGE NAMED ITS OWN NEXT STEP**: *a similarity-preserving sketch will land better in
-magnitude; whether it CHANGES A SIGN is a different key, a different reading.* Both halves read now.
-A 16-bit **SimHash** lands at chi-squared **1087.50** against that page's **13134.05**, critical
-**103.51** -- better in magnitude, same sign, as forecast. A **path** key it never proposed --
-FNV-1a over the directory in the high byte, the basename in the low -- reads **even at 98.00** and
-carries the same-directory relation in **all six** own-baseline readings. **A sign changed.**
-**THE CAUSE IS NARROWER THAN THE DEFINITION.** Grouping documents crowds CELLS only when the groups
-are few or unequal. This sample sits in **215** directories, largest holding **5.66 percent**, and
-215 comparable groups over 64 cells spread about as evenly as 512 independent draws. The elder key
-groups by *how a file starts*, and files here start with a shebang, a heading, or a `const std`.
-**AND THE CONFIDENTIALITY HALF STANDS UNTOUCHED**, read the same way here: room recovery **0.4473**
-path and simhash, **0.4082** sha3, against a no-key baseline of **0.3516** over 41 rooms. For the
-path key that is a FLOOR -- its high byte IS the directory, so the leak is total by construction.
-**LANDED:** `key_trade`, `tier lap`, **GREEN in 27s** over **42 legs, 0 failures**, four mutations
-bitten. Paper `20260916-051607_the-trade-that-was-not-a-law.md` reads **A/90** at Field. Every tree
-figure is **FREE**; the closed forms -- torus **128**, ring **16384**, Hamming **8** -- are HELD,
-each proven against a planted uniform population from both sides.
-**THE READING THAT CORRECTED ITSELF.** Each related population is read against the closed form,
-which asks whether a key is uniform, AND against that key's own random baseline, which asks whether
-it carries the relation. The path key's UNRELATED pairs already sit at a torus mean of **95.164**
-against a uniform 128, so a same-directory mean under 128 would count concentration as locality.
-Read honestly, one of nine SimHash readings is a **false positive**.
-**MY OWN REDS, both caught inside this lap.** The four mutants lived in the system temporary
-directory, where the scan's root walk fails before it reads a flag -- so all four "bites" were that
-walk failing. They live under this root now beneath a **sham leg** running an unmutated copy from
-the same room. And the build was nearly a DUPLICATE: the claim board and the paths read clear while
-the elder work sat one letter room over under the same basename `locality_key_scan.sh`, behind a
-paragraph headed *The open door, closed* rather than *erratum*, so the errata grep never saw it.
-Renamed whole to `key_trade` so the basename resolver keeps one answer.
-**YOURS:** the path key holds both properties and names a file by where it sits, which is a
-content-addressed store's own opposite. Does a path-keyed INDEX beside the digest earn its own lap?
-**MINE:** the trade's operand is the number and evenness of the groups a key induces, measured for
-no collection this tree does not own.
+**DIFFUSER -- THE PAGE RANKED TWELVE ROWS, AND TODAY IT COULD BE GRADED.**
+Elder [shelved whole](archive/20260916-070656_itinerary-diffuser-key-trade-account.md).
+**EARTH BREATHES IN** (row 4, N=5064): the concrete fact at the door was the read order, which nobody
+had looked at. The Earth-Cardinal seat `foundations/20260905-154954_the-clock-and-the-mark.md` holds
+the shape -- *a forecast written into a name is invisible once written, because it reads like a fact* --
+and tables nine ladders announcing 256 rungs that reached a handful. A RANKING is that forecast in a
+cited place, and the one kind leaving a checkable record, since each erratum carries a stamp.
+**ALL TWELVE ROWS NOW CARRY ERRATA** -- row 7 closed the set yesterday -- so the page's ranking is
+gradeable for the first time. It names its own operand: *ranked by what a lane can START on this
+pier*, never by truth, and grading a forecast against a claim it declined is the commonest unfairness
+to one. Three readings, kept apart.
+**IT DID THE JOB IT CLAIMED.** Over the TEN rows it governed, Spearman **0.9879**, Kendall **0.9556**,
+**one** discordant pair in 45; ranks three through nine read in exact rank order.
+**AND IT INVERTED ON ITS OWN TOP TWO.** The read order is `3,4,5,6,7,8,9,11,10,1,2,12`: ranks one and
+two sit at read positions **ten and eleven**, dropping whole-page rho to **0.3007**. Their errata say
+why -- both witnesses landed **22 and 37 minutes** after the page, and both errata came six days later
+reporting **0** receipts. **A row cheap enough to build inside the hour is a row whose READING nobody
+schedules**, and the ranking could not see it because building and reading are one column in it.
+**SURVIVAL LOOKS LIKE FORESIGHT UNTIL THE CONFOUND IS COUNTED.** Three rows stand, at ranks **1, 2,
+4**; one blocked at 3; eight altered at 5-12. And `claim_stands_preexisting=3` -- every survivor
+pre-existed, row 10's rune since `20260716`, so survival measures PRE-EXISTENCE rather than prediction.
+**THE FALSIFIER WAS THE HALF THAT FAILED.** **Ten of twelve** errata find it structurally faulty,
+**6** incapable of firing at all, a share of **0.8333**. **And the page counts this class itself,
+inside row 12, and counts TWO.** An erratum counts only the rows read beside it, so a class spread one
+row at a time over six days is invisible to every writer and plain to the first reader of the set.
+**LANDED:** `rank_outcome`, `tier lap`, **GREEN in 2s** over **62 legs, 0 failures**, four mutations
+bitten under a sham leg. Paper `20260916-055111_built-in-an-hour-read-in-six-days.md`. Page figures are
+**FREE in one direction only** -- an erratum is never rewritten -- and the ordering arithmetic is **HELD**.
+**THE COLD PASS READ THREE REDS AND ALL THREE WERE MINE, FROM LAST LAP.** `tool_letter_room`
+`misfiled=3`: renaming `locality_key` to `key_trade` moved the name and left three files in room `t`
+-- moved to `tools/k/` and `tools/fixtures/k/`, roster and card repointed, dated citers left to the
+resolver. `vocabulary_collection` `enforce_hits=1`: my own closing line here spent the Latin noun the
+law retires, closed by SHELVING rather than editing, since a shelf keeps the word by law
+(`record=kept_by_law`). `fold_shelf_link_repoint` fired a **SIXTH** time; this lap's shelf is written
+at shelf depth on arrival instead of repaired after.
+**YOURS:** should Gauge ask a SPECULATIVE claim a fifth field -- *the measurement that would make the
+falsifier fire*? One line catches six rows of twelve at writing time.
+**MINE:** the falsifier reading is a keyword proxy over one page by one author, graded by that author.
 **PETRICHOR -- A TIER THAT READ 81 DOCUMENTS AND GATED PROVABLY IN NEITHER DIRECTION.** Elder
 [shelved whole](archive/20260916-053252_itinerary-landed-accounts.md) through
 `tools/i/itinerary_account_shelf.sh`, the reach row `20260916.053252` measures.

@@ -1,0 +1,136 @@
+# tools/r/rank_outcome_witness.rish -- did the ranking predict anything?
+#
+#   rishi/bin/rishi run tools/r/rank_outcome_witness.rish
+#
+# `active-designing/20260910-060204_the-bounded-torus-moonshots.md` carries twelve speculative
+# rows and ranks all twelve at its close. The ranking states its own operand in one line --
+# "Ranked by what a lane can start on this pier, with no new hardware, this month" -- so it
+# forecasts STARTABILITY and never truth, and it was written before a single row had been read.
+#
+# Every one of the twelve now carries a dated erratum. That is the first moment the forecast can
+# be graded, and this witness grades it three ways.
+#
+# READING 1 -- RANK AGAINST READ ORDER, the thing the ranking actually claimed. Each erratum
+# carries a one-clock stamp, so the order of reading stands in the page's own bytes. Over all
+# twelve rows the agreement is middling. Over the TEN rows whose erratum was their own first
+# witness it is near perfect, one discordant pair in forty-five. The two rows the page ranked
+# FIRST and SECOND are what part the two numbers: both of their witnesses landed within forty
+# minutes of the page, and both errata were written six days later. A row cheap enough to build
+# in the same hour is a row whose READING nobody schedules, and the ranking could not see that
+# because building and reading are one column in it.
+#
+# READING 2 -- RANK AGAINST SURVIVAL, which the ranking never claimed. Three rows stand, and
+# their ranks are 1, 2 and 4. That looks like foresight until the confound is counted: all three
+# either had a witness before the erratum or are described by their own erratum as already
+# standing. Survival here measures PRE-EXISTENCE, so the reading refuses to call it prediction.
+#
+# READING 3 -- WHICH HALF OF A ROW FAILED, and this is the finding worth carrying out of the
+# page. A Gauge Field row carries a claim and a falsifier. The falsifier is the half that failed:
+# ten of twelve errata find something structurally wrong with it, six of them finding it incapable
+# of firing at all. The page counts this class itself, inside row 12's own erratum, and counts
+# TWO -- because each erratum could only see the rows already read when it was written. The class
+# was three times the page's own estimate of it.
+#
+# WHAT THIS WITNESS DOES NOT REACH. Whether the rows were good ideas, and whether a better
+# ranking was available on the day. It grades one forecast against its own recorded outcome, and
+# names which half of a speculative row this tree writes least well.
+#
+# The page figures are FREE -- the page is living and may gain an erratum, and an erratum is never
+# rewritten, so every count here can rise and none can fall. A refusal below therefore means a new
+# erratum landed and this reading is owed a re-read, rather than that an instrument broke. The
+# ordering arithmetic is HELD against planted permutations, whose closed forms the control proves
+# from both sides.
+
+say "rank-outcome: Style Gauge, Meter -- one forecast, graded against its own recorded outcome."
+say "rank-outcome: Lens TAME -- a falsifier that cannot fire is a sentence rather than a test."
+
+# --- The reading -------------------------------------------------------------
+say "rank-outcome: grading the ranking..."
+let scan = run ["sh" "tools/fixtures/r/rank_outcome_scan.sh"]
+say scan.out
+assert scan.ok else "rank-outcome: the scan refused -- read its own keys"
+assert scan.out contains "verdict=graded" else "rank-outcome: the page reached no grade"
+
+# invariant: the reading names the page it grades, so a key pasted out of context still says
+# which sentence it is about.
+assert scan.out contains "the-bounded-torus-moonshots.md" else "rank-outcome: the reading named no page"
+assert scan.out contains "page_present=yes" else "rank-outcome: the page was not opened"
+
+# invariant: the grade rests on a page every row of which has been read, since a partly read page
+# would let the statistic describe whichever rows happened to be done.
+assert scan.out contains "ranked_rows=12" else "rank-outcome: the ranking stopped naming twelve rows"
+assert scan.out contains "rows_without_erratum=0" else "rank-outcome: a ranked row carries no erratum -- the grade is not yet whole"
+assert scan.out contains "page_fully_read=yes" else "rank-outcome: the page is no longer fully read"
+
+# invariant: the two statistics part, and the parting is the finding. Over all twelve rows the
+# order agreement is middling; over the ten the ranking actually governed it is near perfect.
+assert scan.out contains "read_ordered=12" else "rank-outcome: the read order lost a row"
+assert scan.out contains "rank_in_read_order=3,4,5,6,7,8,9,11,10,1,2,12" else "rank-outcome: the read order moved -- a new erratum landed; re-read this reading"
+assert scan.out contains "all_spearman_rho=0.3007" else "rank-outcome: the whole-page order agreement moved"
+assert scan.out contains "own_spearman_rho=0.9879" else "rank-outcome: the governed-subset agreement moved"
+assert scan.out contains "own_discordant=1" else "rank-outcome: the governed subset gained or lost an inversion"
+assert scan.out contains "own_pairs=45" else "rank-outcome: the governed subset changed size"
+
+# invariant: the two rows that part the statistics are named rather than described, and they are
+# the page's own top two, read next to last.
+assert scan.out contains "prebuilt_rows=2" else "rank-outcome: the prebuilt count moved"
+assert scan.out contains "prebuilt_ranks=1,2" else "rank-outcome: the prebuilt rows are no longer the top two"
+assert scan.out contains "prebuilt_read_positions=10,11" else "rank-outcome: the prebuilt rows moved in the read order"
+
+# invariant: survival is read by a conjunction rather than by a green word alone, and every row
+# that stands is one that pre-existed -- so the reading refuses to call the agreement foresight.
+assert scan.out contains "claim_stands=3" else "rank-outcome: the standing count moved"
+assert scan.out contains "claim_stands_ranks=1,2,4" else "rank-outcome: the standing rows left the top four"
+assert scan.out contains "claim_stands_preexisting=3" else "rank-outcome: a row now stands that did not pre-exist -- that is news, and this reading is owed a re-read"
+assert scan.out contains "claim_blocked=1" else "rank-outcome: the blocked count moved"
+
+# invariant: the falsifier is the half that failed, and the page's own count of the worst class is
+# smaller than the class, because an erratum can only count the rows already read beside it.
+assert scan.out contains "falsifier_read=12" else "rank-outcome: the falsifier reading lost a row"
+assert scan.out contains "falsifier_faulted=10" else "rank-outcome: the faulted falsifier count moved"
+assert scan.out contains "falsifier_incapable=6" else "rank-outcome: the incapable falsifier count moved"
+assert scan.out contains "falsifier_silent=2" else "rank-outcome: the silent falsifier count moved"
+assert scan.out contains "page_selfcount_claim=2" else "rank-outcome: the page stopped counting this class itself"
+
+# invariant: the errata that speak to rank moved three rows of five, so the ranking's own error is
+# stated by the page rather than inferred here.
+assert scan.out contains "rank_named_by_erratum=5" else "rank-outcome: the count of errata naming a rank moved"
+assert scan.out contains "rank_moved=3" else "rank-outcome: the count of rows the errata re-rank moved"
+assert scan.out contains "rank_displacement_max=6" else "rank-outcome: the largest ranking error moved"
+assert scan.out contains "final_breach=1" else "rank-outcome: the breached row count moved"
+
+# invariant: the figures are declared free, so a reader knows to run the scan rather than trust
+# these numbers a week from now.
+assert scan.out contains "figures=FREE" else "rank-outcome: the reading stopped declaring what holds its figures"
+
+# --- The control -------------------------------------------------------------
+say "rank-outcome: proving the reading from both sides..."
+let ctl = run ["sh" "tools/fixtures/r/rank_outcome_control.sh"]
+say ctl.out
+assert ctl.ok else "rank-outcome: the control refused to run"
+assert ctl.out contains "control_verdict=ok" else "rank-outcome: a control leg failed -- read its own leg lines"
+
+# invariant: the control's own leg tally is asserted beside its verdict, so a leg written tomorrow
+# is heard by this gate on the lap it lands rather than passing unread.
+assert ctl.out contains "legs_failed=0" else "rank-outcome: the control reported a failed leg"
+assert ctl.out contains "legs=62" else "rank-outcome: the control leg count moved -- read its legs and update this bound"
+
+# invariant: the ordering arithmetic matches its closed forms on planted permutations, in both
+# directions, so the statistic is proven rather than trusted.
+assert ctl.out contains "leg=identity_rho pass" else "rank-outcome: the identity permutation left rho 1"
+assert ctl.out contains "leg=reverse_rho pass" else "rank-outcome: the reversed permutation left rho -1"
+assert ctl.out contains "leg=swap_rho pass" else "rank-outcome: one adjacent swap left its closed form"
+assert ctl.out contains "leg=pre_own_rho_perfect pass" else "rank-outcome: lifting a prebuilt row did not restore the order"
+
+# invariant: an unmutated copy of the scan, run from the same pen, agrees with the real one -- so
+# a pen that breaks every copy is visible rather than counted as four bitten mutations.
+assert ctl.out contains "leg=sham_unmutated_agrees pass" else "rank-outcome: the sham copy disagreed -- the pen itself is suspect"
+
+# invariant: each of the four mutations is bitten, so no reading above is a constant in disguise.
+assert ctl.out contains "leg=mutation_relative_rank pass" else "rank-outcome: the subset rank conversion is not load-bearing"
+assert ctl.out contains "leg=mutation_stands_conjunction pass" else "rank-outcome: the survival conjunction is not load-bearing"
+assert ctl.out contains "leg=mutation_second_erratum pass" else "rank-outcome: the second-erratum branch is not load-bearing"
+assert ctl.out contains "leg=mutation_sort_direction pass" else "rank-outcome: the read-order sort is not load-bearing"
+
+say "rank-outcome: GREEN -- the ranking predicted the order it claimed, inverted on its own top"
+say "rank-outcome: two, and the falsifier was the half that failed in ten of twelve rows."

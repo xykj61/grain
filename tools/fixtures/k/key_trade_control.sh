@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/t/key_trade_control.sh -- proves tools/fixtures/t/key_trade_scan.sh from
+# tools/fixtures/k/key_trade_control.sh -- proves tools/fixtures/k/key_trade_scan.sh from
 # both sides on planted populations and on a real directory tree in a throwaway pen.
 #
 # WHY A PEN CANNOT SUPPLY THE POPULATIONS BY HASHING. The scan's subject is whether a key can be
@@ -16,7 +16,7 @@
 # a refusal proven only in the passing direction cannot be told from a bypass.
 #
 # USAGE
-#   sh tools/fixtures/t/key_trade_control.sh
+#   sh tools/fixtures/k/key_trade_control.sh
 
 set -eu
 LC_ALL=C
@@ -38,7 +38,7 @@ done
 # portable helper is sourced rather than the flag typed.
 . "$ROOT/tools/fixtures/s/shell_portable.sh"
 
-SCAN="$ROOT/tools/fixtures/t/key_trade_scan.sh"
+SCAN="$ROOT/tools/fixtures/k/key_trade_scan.sh"
 [ -f "$SCAN" ] || { echo "control: no scan at $SCAN" >&2; exit 2; }
 
 PEN=$(mktemp -d)
