@@ -37,15 +37,15 @@ say "mantra-shared-bound: Lens TAME -- bound everything, and say why the bound i
 
 say "mantra-shared-bound: and the living room, read on metal..."
 let scan = run ["sh" "tools/fixtures/s/shared_bound_scan.sh" "--room" "mantra"]
-assert scan.ok else "mantra-shared-bound: the scan would not run -- read its own lines\n${scan.out}\n${scan.err}"
+assert scan.ok else "mantra-shared-bound: the scan would not run -- read its own lines\n${scan.out_brief}\n${scan.err_brief}"
 
 # invariant: the reading is the room this witness names. A witness asserting a verdict without
 # asserting WHICH room answered would pass on the scan's default, which is another room entirely.
-assert (lines scan.out) contains "room_read=mantra" else "mantra-shared-bound: the scan answered for another room\n${scan.out}"
+assert (lines scan.out) contains "room_read=mantra" else "mantra-shared-bound: the scan answered for another room\n${scan.out_brief}"
 
 # invariant: the gate is the scan's own verdict rather than a number copied here. An expected value
 # pinned in a second place is a stale pin waiting for a tree that moved (REDS %341's class).
-assert (lines scan.out) contains "verdict=ok" else "mantra-shared-bound: two modules of the store publish one bound at two values -- run with --names, then make them agree or rename one\n${scan.out}"
+assert (lines scan.out) contains "verdict=ok" else "mantra-shared-bound: two modules of the store publish one bound at two values -- run with --names, then make them agree or rename one\n${scan.out_brief}"
 
 say "mantra-shared-bound: and the census reads a real population, so a green means something..."
 # invariant: a scan whose pattern stopped matching would report zero shared names and zero
@@ -57,7 +57,7 @@ say "mantra-shared-bound: and the census reads a real population, so a green mea
 # The day `max_resin_bytes` and `max_wire_payload` both find owners, this guard has nothing left to
 # compare and says so rather than passing in silence.
 let named = run ["sh" "tools/fixtures/s/shared_bound_scan.sh" "--room" "mantra" "--names"]
-assert named.ok else "mantra-shared-bound: the named reading would not run\n${named.out}\n${named.err}"
-assert named.out contains "name agreed " else "mantra-shared-bound: no Mantra bound is published by two modules any more -- every shared name has found an owner, and this wall has nothing left to compare\n${named.out}"
+assert named.ok else "mantra-shared-bound: the named reading would not run\n${named.out_brief}\n${named.err_brief}"
+assert named.out contains "name agreed " else "mantra-shared-bound: no Mantra bound is published by two modules any more -- every shared name has found an owner, and this wall has nothing left to compare\n${named.out_brief}"
 
 say "GREEN: mantra-shared-bound -- every bound two Mantra modules publish carries one value."

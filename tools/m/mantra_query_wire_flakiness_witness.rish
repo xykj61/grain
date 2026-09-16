@@ -34,16 +34,16 @@
 # would red on a quiet day for no fault of the tree.
 
 let control = run ["sh" "tools/fixtures/m/mantra_query_wire_flakiness_control.sh"]
-assert control.ok else "the flakiness-counter control did not reach verdict=ok: ${control.err}"
-assert control.out contains "verdict=ok" else "flakiness-counter control verdict missing: ${control.out}"
-assert control.out contains "control_failed=0" else "a control leg refused, so the counter's own readings are unproven: ${control.out}"
+assert control.ok else "the flakiness-counter control did not reach verdict=ok: ${control.err_brief}"
+assert control.out contains "verdict=ok" else "flakiness-counter control verdict missing: ${control.out_brief}"
+assert control.out contains "control_failed=0" else "a control leg refused, so the counter's own readings are unproven: ${control.out_brief}"
 
 # The three readings the counter exists to tell apart, each asserted by name rather than left to
 # the composite above. A control that reached its last line proves only that it reached its last
 # line (the `20260910.043000` lesson, one room over): a leg written tomorrow must be heard the day
 # it lands, so the legs that carry this witness's whole claim are named here too.
-assert control.out contains "alternating_flaky=ok" else "the counter did not report a planted 50% flakiness as flaky=yes: ${control.out}"
-assert control.out contains "always_red_flaky=ok" else "the counter called a wholly broken guard flaky: ${control.out}"
-assert control.out contains "reason_carried=ok" else "the guard's own refusal sentence did not reach red_reason: ${control.out}"
+assert control.out contains "alternating_flaky=ok" else "the counter did not report a planted 50% flakiness as flaky=yes: ${control.out_brief}"
+assert control.out contains "always_red_flaky=ok" else "the counter called a wholly broken guard flaky: ${control.out_brief}"
+assert control.out contains "reason_carried=ok" else "the guard's own refusal sentence did not reach red_reason: ${control.out_brief}"
 
 say "GREEN: the flakiness counter reports planted flakiness, a plain break, and each refusal's own words."

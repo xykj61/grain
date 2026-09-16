@@ -62,9 +62,9 @@ say "topology-partial: Lens TAME -- the rule read as well as run; bound the samp
 say "topology-partial: the scan builds the ladder, arranges the holes five ways, and empties 42 classes..."
 let scan = run ["sh" "tools/fixtures/t/topology_partial_scan.sh"]
 # invariant: the scan stands green before any reading of it is trusted.
-assert scan.ok else "topology-partial: the scan refused --\n${scan.out}"
-assert scan.out contains "verdict=ok" else "topology-partial: the scan did not reach its own green --\n${scan.out}"
-assert scan.out contains "refusals=0" else "topology-partial: the scan named a refusal --\n${scan.out}"
+assert scan.ok else "topology-partial: the scan refused --\n${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "topology-partial: the scan did not reach its own green --\n${scan.out_brief}"
+assert scan.out contains "refusals=0" else "topology-partial: the scan named a refusal --\n${scan.out_brief}"
 assert scan.out contains "legs=all" else "topology-partial: a reduced run must never be read as a full one"
 assert scan.out contains "sizes=default" else "topology-partial: a reduced size list must never be read as the full set"
 assert scan.out contains "holes=default" else "topology-partial: a reduced hole list must never be read as the full set"
@@ -128,14 +128,14 @@ assert scan.out contains "unreachable_pairs=5640" else "topology-partial: the pa
 say "topology-partial: the whole finding in one line, absences printed as counted zeros..."
 # invariant: a witness can bind a line that says zero and cannot bind a line that is missing, so
 # the readings whose meaning is "this never happened" are counted rather than left to silence.
-assert scan.out contains "summary configs=117 anchors=2 radix_rows=7 partitioned=20 nested_blind_lost=1275 block_blind_lost=2582 spread_blind_lost=3694 trace_undelivered=0 unreachable_pairs=5640 max_visited=27" else "topology-partial: the summary across 117 configurations moved --\n${scan.out}"
+assert scan.out contains "summary configs=117 anchors=2 radix_rows=7 partitioned=20 nested_blind_lost=1275 block_blind_lost=2582 spread_blind_lost=3694 trace_undelivered=0 unreachable_pairs=5640 max_visited=27" else "topology-partial: the summary across 117 configurations moved --\n${scan.out_brief}"
 say "GREEN: topology-partial -- the leftover addresses are nearly free when they are arranged, and which whole class you empty is worth a hundred and sixty-fourfold."
 
 say "topology-partial: the control plants each fault and lifts it again..."
 let control = run ["sh" "tools/fixtures/t/topology_partial_control.sh"]
 # invariant: every refusal this witness rests on is shown from the failing side too.
-assert control.ok else "topology-partial: the control refused --\n${control.out}"
-assert control.out contains "failed=0" else "topology-partial: the control did not prove every behavior --\n${control.out}"
+assert control.ok else "topology-partial: the control refused --\n${control.out_brief}"
+assert control.out contains "failed=0" else "topology-partial: the control did not prove every behavior --\n${control.out_brief}"
 assert control.out contains "pen copy reads exactly what the tree reads" else "topology-partial: the pen was not proven innocent"
 assert control.out contains "a plant matching nothing refuses by name" else "topology-partial: a plant that lands nowhere is not proven to refuse"
 assert control.out contains "every arrangement is scored against the same target list" else "topology-partial: the fixed target list is not proven"

@@ -50,7 +50,7 @@ say "scope-trace: Lens TAME -- probe the instrument, bound the trace, and print 
 
 let control = run ["sh" "tools/fixtures/s/scope_trace_control.sh"]
 say control.out
-assert control.ok else "scope-trace: the control must complete -- read its own lines\n${control.out}\n${control.err}"
+assert control.ok else "scope-trace: the control must complete -- read its own lines\n${control.out_brief}\n${control.err_brief}"
 
 # THE INSTRUMENT IS A ROSTER CAPABILITY, not an `if` here. `capability trace_instrument` in
 # construction/standing-equipment.kyri has the runner skip this guard BY NAME on a bench with no

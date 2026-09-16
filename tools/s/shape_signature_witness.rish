@@ -23,10 +23,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/shape_signature"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/shape_signature.rye -femit-bin=${bin}"]
-assert build.ok else "shape_signature: build failed -- ${build.err}"
+assert build.ok else "shape_signature: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "shape_signature: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "shape_signature: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "shape_signature: ${out}"

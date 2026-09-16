@@ -33,7 +33,7 @@ let rout = "crypto/bin/rye_hchacha20.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_hchacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
-assert cbuild.ok else "crypto-monocypher-hchacha20-parity: Monocypher C harness build failed — ${cbuild.err}"
+assert cbuild.ok else "crypto-monocypher-hchacha20-parity: Monocypher C harness build failed — ${cbuild.err_brief}"
 
 # 2. Run the Monocypher C harness -- six subkey hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]

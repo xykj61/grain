@@ -48,7 +48,7 @@ assert (trim licensed.out) == "CC0 1.0 Universal" else "crypto-slhdsa-oracle: th
 # 1. Build PQClean's OWN NIST known-answer generator from the unmodified vendored source.
 let katbin = "crypto/bin/pqclean_slhdsa_nistkat"
 let katbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -DPQCLEAN_NAMESPACE=PQCLEAN_SPHINCSSHAKE256SSIMPLE_CLEAN -I ${scheme}/clean -I vendor/pqclean/common vendor/pqclean/test/crypto_sign/nistkat.c vendor/pqclean/test/common/nistkatrng.c ${scheme}/clean/*.c vendor/pqclean/common/fips202.c vendor/pqclean/common/aes.c vendor/pqclean/common/sha2.c -o ${katbin}"]
-assert katbuild.ok else "crypto-slhdsa-oracle: PQClean NIST-KAT build failed -- ${katbuild.err}"
+assert katbuild.ok else "crypto-slhdsa-oracle: PQClean NIST-KAT build failed -- ${katbuild.err_brief}"
 
 # 2. Run it, and digest everything it prints.
 let katout = "crypto/bin/pqclean_slhdsa_nistkat.out"
@@ -66,7 +66,7 @@ assert (trim katsum.out) == (trim published.out) else "crypto-slhdsa-oracle: the
 # 4. Build our deterministic harness against the same unmodified source.
 let bin = "crypto/bin/pqclean_slhdsa"
 let build = run ["sh" "-c" "${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/p/pqclean_slhdsa_harness.c ${scheme}/clean/*.c vendor/pqclean/common/fips202.c -o ${bin}"]
-assert build.ok else "crypto-slhdsa-oracle: SLH-DSA harness build failed -- ${build.err}"
+assert build.ok else "crypto-slhdsa-oracle: SLH-DSA harness build failed -- ${build.err_brief}"
 
 # 5. Run it TWICE. PQClean signs hedged, so determinism is a property of the pinned optrand and is proven by doing, never assumed.
 let out_a = "crypto/bin/pqclean_slhdsa.a.out"

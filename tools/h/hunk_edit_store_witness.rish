@@ -25,10 +25,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/edit_store"
 
 let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/edit_store.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-edit-store: build failed — ${build.err}"
+assert build.ok else "hunk-edit-store: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-edit-store: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-edit-store: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-edit-store: ${out}"

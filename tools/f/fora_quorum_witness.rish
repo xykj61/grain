@@ -23,7 +23,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/quorum"
 
 let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/quorum.rye -femit-bin=${bin}"]
-assert build.ok else "fora-quorum: build failed — ${build.err}"
+assert build.ok else "fora-quorum: build failed — ${build.err_brief}"
 
 let outfile = "constel/bin/quorum.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

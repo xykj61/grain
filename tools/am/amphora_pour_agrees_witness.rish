@@ -43,11 +43,11 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # beside it -- so the tree root is captured here, BEFORE any cd, and every binary is named
 # from it absolutely.
 let rootq = run ["sh" "-c" "pwd"]
-assert rootq.ok else "pour_agrees: the tree root must resolve -- ${rootq.err}"
+assert rootq.ok else "pour_agrees: the tree root must resolve -- ${rootq.err_brief}"
 let root = trim rootq.out
 
 let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pour_agrees.XXXXXX"]
-assert pen.ok else "pour_agrees: pen must open -- ${pen.err}"
+assert pen.ok else "pour_agrees: pen must open -- ${pen.err_brief}"
 let home = trim pen.out
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
@@ -64,7 +64,7 @@ say build_seal.err
 assert build_seal.ok else "pour_agrees: vessel-seal build failed -- read the line above"
 
 let mk = run ["sh" "-c" "mkdir -p ${home}/sh ${home}/rye ${home}/elder"]
-assert mk.ok else "pour_agrees: the plant homes must open -- ${mk.err}"
+assert mk.ok else "pour_agrees: the plant homes must open -- ${mk.err_brief}"
 
 # --- leg 1: the two pours agree on parent, exactly, over one season ---
 let pour_sh = run ["sh" "-c" "sh tools/fixtures/a/amphora_pour.sh ${season} ${home}/sh 20260710.143500"]
@@ -75,10 +75,10 @@ say pour_rye.err
 assert pour_rye.ok else "pour_agrees: the Rye pour must pass -- read the line above"
 
 let read_sh = run ["sh" "-c" "awk '/^parent / {print $2; exit}' ${home}/sh/vessel.bron"]
-assert read_sh.ok else "pour_agrees: the shell vessel must carry a parent line -- ${read_sh.err}"
+assert read_sh.ok else "pour_agrees: the shell vessel must carry a parent line -- ${read_sh.err_brief}"
 let parent_sh = trim read_sh.out
 let read_rye = run ["sh" "-c" "awk '/^parent / {print $2; exit}' ${home}/rye/v.bron"]
-assert read_rye.ok else "pour_agrees: the Rye vessel must carry a parent line -- ${read_rye.err}"
+assert read_rye.ok else "pour_agrees: the Rye vessel must carry a parent line -- ${read_rye.err_brief}"
 let parent_rye = trim read_rye.out
 assert parent_sh == parent_rye else "pour_agrees: two pours of one season must write ONE parent -- shell ${parent_sh} against rye ${parent_rye}"
 say "leg_agree=one_parent ${parent_sh}"
@@ -89,7 +89,7 @@ let open_sh = run ["${home}/bin/vessel-seal" "open" "${home}/sh/vessel.bron" "${
 say open_sh.err
 assert open_sh.ok else "pour_agrees: the shell vessel's seal must open"
 let digest_sh = run ["sh" "-c" "sh tools/fixtures/s/sha3_256.sh ${home}/sh/plain"]
-assert digest_sh.ok else "pour_agrees: the listing digest must be taken -- ${digest_sh.err}"
+assert digest_sh.ok else "pour_agrees: the listing digest must be taken -- ${digest_sh.err_brief}"
 let carried = trim digest_sh.out
 assert carried == parent_sh else "pour_agrees: the parent must be the digest of the listing the vessel CARRIES -- declared ${parent_sh}, carried ${carried}"
 say "leg_preimage=travels"
@@ -115,9 +115,9 @@ say "leg_restore_rye=whole"
 # disagreement stayed invisible: nobody had ever put the two vessels side by side.
 let head_sh = run ["sh" "-c" "head -1 ${home}/sh/vessel.bron"]
 let head_rye = run ["sh" "-c" "head -1 ${home}/rye/v.bron"]
-assert trim head_sh.out == trim head_rye.out else "pour_agrees: the two pours must write ONE header -- shell '${head_sh.out}' against rye '${head_rye.out}'"
+assert trim head_sh.out == trim head_rye.out else "pour_agrees: the two pours must write ONE header -- shell '${head_sh.out_brief}' against rye '${head_rye.out_brief}'"
 let head_ascii = run ["sh" "-c" "LC_ALL=C grep -q '[^ -~]' ${home}/rye/v.bron; test $? -ne 0"]
-assert head_ascii.ok else "pour_agrees: a poured vessel carries plain ASCII -- ${head_ascii.err}"
+assert head_ascii.ok else "pour_agrees: a poured vessel carries plain ASCII -- ${head_ascii.err_brief}"
 say "leg_header=one_line_ascii"
 
 # --- leg 6: the ELDER shell rule planted -- the two parents DISAGREE ---
@@ -130,7 +130,7 @@ let elder_bundle = run ["sh" "-c" "cp -r ${home}/sh/resins ${home}/elder/resins 
 say elder_bundle.err
 assert elder_bundle.ok else "pour_agrees: the elder bundle must copy"
 let elder_digest = run ["sh" "-c" "sh tools/fixtures/s/sha3_256.sh ${home}/elder/manifest.bron"]
-assert elder_digest.ok else "pour_agrees: the elder parent must be computed -- ${elder_digest.err}"
+assert elder_digest.ok else "pour_agrees: the elder parent must be computed -- ${elder_digest.err_brief}"
 let elder_parent = trim elder_digest.out
 assert elder_parent != parent_sh else "pour_agrees: the elder rule MUST name a different digest -- if it does not, this plant proves nothing"
 let elder_head = run ["sh" "-c" "printf '# amphora vessel -- season poured for crossing\nformat amphora-v1\nstamp 20260710.143500\nshoulder amber-ring1-season\nparent ${elder_parent}\n' > ${home}/elder/vessel.bron"]
@@ -158,7 +158,7 @@ let elder_restore = run ["sh" "-c" "cd ${home}/elder && ${home}/bin/amphora rest
 say elder_restore.err
 assert elder_restore.err contains "cargo unproven" else "pour_agrees: the repaired reader must refuse the elder vessel by name"
 let elder_left = run ["sh" "-c" "find ${home}/elder/vessel.bron.season -type f 2>/dev/null | wc -l"]
-assert elder_left.ok else "pour_agrees: the out-home must be readable -- ${elder_left.err}"
+assert elder_left.ok else "pour_agrees: the out-home must be readable -- ${elder_left.err_brief}"
 let elder_count = trim elder_left.out
 assert elder_count == "0" else "pour_agrees: and refuse with NOTHING written -- the out-home holds ${elder_count} files"
 say "leg_wall=refused_before_write"
@@ -175,17 +175,17 @@ let strip = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && f=${pen_src}
 say strip.err
 assert strip.ok else "pour_agrees: the no-wall strip must run"
 let bit_strip = run ["sh" "-c" "grep -q 'restore listing parent ok' ${pen_src}/src/main.rye; test $? -ne 0"]
-assert bit_strip.ok else "pour_agrees: the strip must BITE -- the pre-write parent proof must be gone -- ${bit_strip.err}"
+assert bit_strip.ok else "pour_agrees: the strip must BITE -- the pre-write parent proof must be gone -- ${bit_strip.err_brief}"
 let build_nowall = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_src}/src/main.rye -femit-bin=${pen_src}/bin/amphora"]
 say build_nowall.err
 assert build_nowall.ok else "pour_agrees: the no-wall binary must build -- read the line above"
 let reset = run ["sh" "-c" "rm -rf ${home}/elder/vessel.bron.season"]
-assert reset.ok else "pour_agrees: the elder out-home must be cleared before the second reading -- ${reset.err}"
+assert reset.ok else "pour_agrees: the elder out-home must be cleared before the second reading -- ${reset.err_brief}"
 let nowall_restore = run ["sh" "-c" "cd ${home}/elder && AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${pen_src}/bin/amphora restore vessel.bron; true"]
 say nowall_restore.err
 assert nowall_restore.err contains "cargo unproven" else "pour_agrees: the no-wall binary refuses by the same name"
 let nowall_left = run ["sh" "-c" "find ${home}/elder/vessel.bron.season -type f 2>/dev/null | wc -l"]
-assert nowall_left.ok else "pour_agrees: the no-wall out-home must be readable -- ${nowall_left.err}"
+assert nowall_left.ok else "pour_agrees: the no-wall out-home must be readable -- ${nowall_left.err_brief}"
 let nowall_count = trim nowall_left.out
 assert nowall_count != "0" else "pour_agrees: the no-wall binary MUST write files before refusing -- it wrote ${nowall_count}, so this witness would be proving nothing"
 say "leg_wall_removed=refusal_trails_the_write"

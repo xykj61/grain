@@ -28,10 +28,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/separable"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/separable.rye -femit-bin=${bin}"]
-assert build.ok else "separable: build failed -- ${build.err}"
+assert build.ok else "separable: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "separable: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "separable: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "separable: ${out}"

@@ -46,7 +46,7 @@ assert build.ok else "caravan rederive build failed"
 # one reader to one name, so two running at once contended for a single file and the
 # loser reddened a green tree. This one lands in caravan/bin/rederive_read.
 let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/rederive_read"]
-assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err_brief}"
 
 
 # The declaration every attempt re-reads stands whole before anything runs

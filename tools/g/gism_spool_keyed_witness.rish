@@ -37,7 +37,7 @@ let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
 assert sec.ok else "gism-red73-owned: could not measure SECURITY.md"
 let two = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' \n'"]
 assert two.ok else "gism-red73-owned: could not measure context/TWO_ROOMS.md"
-assert selftest.out contains "SECURITY.md (${sec.out} B) and TWO_ROOMS.md (${two.out} B) wound across resins, owner-signed, fetched byte-for-byte, resolving to planet and star" else "gism-red73-owned: owner-signed large fetch missing"
+assert selftest.out contains "SECURITY.md (${sec.out_brief} B) and TWO_ROOMS.md (${two.out_brief} B) wound across resins, owner-signed, fetched byte-for-byte, resolving to planet and star" else "gism-red73-owned: owner-signed large fetch missing"
 assert selftest.out contains "every refusal holds — a non-owner (no resin wound), a forged signature, a content-mismatched signature, and a tampered bead" else "gism-red73-owned: refusals missing"
 
 # The elder cross-check block stood here, asserting each file was its spelled size on disk.

@@ -29,10 +29,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/radial_paint"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/radial_paint.rye -femit-bin=${bin}"]
-assert build.ok else "radial-paint: build failed -- ${build.err}"
+assert build.ok else "radial-paint: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "radial-paint: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "radial-paint: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "radial-paint: ${out}"

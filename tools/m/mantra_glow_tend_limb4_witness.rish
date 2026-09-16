@@ -33,11 +33,11 @@ let declared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-mantra-sto
 assert declared.ok else "mantra-tend-4: the placard's example line is unreadable"
 let want_count = trim declared.out
 let counted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" "mantra/src/store.rye" "Store"]
-assert counted.ok else "mantra-tend-4: the field reader refused on Store -- ${counted.out}"
+assert counted.ok else "mantra-tend-4: the field reader refused on Store -- ${counted.out_brief}"
 let got_count = trim counted.out
 assert got_count == want_count else "mantra-tend-4: Store declares ${got_count} fields where the placard says ${want_count}"
 let named = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/store.rye" "Store"]
-assert named.ok else "mantra-tend-4: the field reader refused on Store -- ${named.out}"
+assert named.ok else "mantra-tend-4: the field reader refused on Store -- ${named.out_brief}"
 let got_fields = trim named.out
 assert got_fields == "root mantra_dir blobs_dir" else "mantra-tend-4: Store fields missing or reordered in the rye -- ${got_fields}"
 

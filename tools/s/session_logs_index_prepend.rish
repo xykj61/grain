@@ -29,7 +29,7 @@ let before = run ["md5sum" index]
 assert before.ok else "could not checksum session-logs/README.md"
 
 let apply = run ["sh" "-c" "awk -f ${awk_prog} ${rows_file} ${index} > ${index}.tmp && mv ${index}.tmp ${index}"]
-assert apply.ok else "session_logs_index_prepend awk failed: ${apply.err}${apply.out}"
+assert apply.ok else "session_logs_index_prepend awk failed: ${apply.err_brief}${apply.out_brief}"
 
 let after = run ["md5sum" index]
 assert after.ok else "could not checksum session-logs/README.md after prepend"

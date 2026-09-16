@@ -62,7 +62,7 @@ assert control.out contains "cases_red=0" else "pre-push-spine: no case may read
 let armed = run ["git" "config" "--get" "core.hooksPath"]
 say "pre-push-spine: core.hooksPath ${armed.out}"
 assert armed.ok else "pre-push-spine: core.hooksPath is unset -- run rishi/bin/rishi run tools/i/install_hooks.rish"
-assert (trim armed.out) == "tools/hooks" else "pre-push-spine: core.hooksPath must name tools/hooks, not ${armed.out}"
+assert (trim armed.out) == "tools/hooks" else "pre-push-spine: core.hooksPath must name tools/hooks, not ${armed.out_brief}"
 
 # 6 -- and the file itself: present, and executable in the INDEX rather than only in this working
 # tree, since a blob carries no mode and a fresh clone inherits what the tree object says

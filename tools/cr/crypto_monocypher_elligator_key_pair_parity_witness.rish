@@ -38,7 +38,7 @@ let rout = "crypto/bin/rye_elligator_key_pair.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_elligator_key_pair_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
-assert cbuild.ok else "crypto-monocypher-elligator-key-pair-parity: Monocypher C harness build failed — ${cbuild.err}"
+assert cbuild.ok else "crypto-monocypher-elligator-key-pair-parity: Monocypher C harness build failed — ${cbuild.err_brief}"
 
 # 2. Run the Monocypher C harness -- thirty-two lines (secret_key, hidden) for each of sixteen seeds.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
@@ -54,7 +54,7 @@ assert (trim diff.out) == "same" else "crypto-monocypher-elligator-key-pair-pari
 
 # 5. Shape guard: thirty-two 64-hex lines, no all-zero (silent-failure) key or representative.
 let n_hex = run ["sh" "-c" "grep -cE '^[0-9a-f]{64}$' ${rout} || true"]
-assert (trim n_hex.out) == "32" else "crypto-monocypher-elligator-key-pair-parity: expected thirty-two 64-hex lines, got ${n_hex.out}"
+assert (trim n_hex.out) == "32" else "crypto-monocypher-elligator-key-pair-parity: expected thirty-two 64-hex lines, got ${n_hex.out_brief}"
 let n_zero = run ["sh" "-c" "grep -c '^0\\{64\\}$' ${rout} || true"]
 assert (trim n_zero.out) == "0" else "crypto-monocypher-elligator-key-pair-parity: an all-zero key or representative appeared — a silent composition failure"
 

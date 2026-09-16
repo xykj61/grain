@@ -16,7 +16,7 @@
 # missing file rather than on a Mandate fact. The repair its Comlink sibling already carried.
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p mandate/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mandate/keyed.rye -femit-bin=mandate/bin/keyed"]
-assert build.ok else "mandate keyed: build failed -- ${build.err}"
+assert build.ok else "mandate keyed: build failed -- ${build.err_brief}"
 
 let st = run ["mandate/bin/keyed" "selftest"]
 assert st.ok else "mandate keyed selftest must exit 0"

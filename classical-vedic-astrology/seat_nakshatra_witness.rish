@@ -16,7 +16,7 @@
 # cannot act on is the fault this tree calls a guard that guards nothing (REDS %334).
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p classical-vedic-astrology/bin && env RYE_ZIG=${zig} rye/bin/rye build classical-vedic-astrology/seat_nakshatra.rye -femit-bin=classical-vedic-astrology/bin/seat_nakshatra"]
-assert build.ok else "seat_nakshatra: build failed -- ${build.err}"
+assert build.ok else "seat_nakshatra: build failed -- ${build.err_brief}"
 
 # The tool's own selftest -- first/last mansions, past-universe none, the example seat.
 let st = run ["classical-vedic-astrology/bin/seat_nakshatra" "selftest"]

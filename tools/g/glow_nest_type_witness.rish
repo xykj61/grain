@@ -15,10 +15,10 @@ let tame_pin = run ["sh" "-c" "grep -F 'STOA130' ${tame}"]
 assert tame_pin.ok else "TAME missing STOA130 stated nesting gold vocabulary"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/nest_type_witness.rye -femit-bin=${bin}"]
-assert build.ok else "nest_type_witness build failed: ${build.err}${build.out}"
+assert build.ok else "nest_type_witness build failed: ${build.err_brief}${build.out_brief}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
-assert selftest.ok else "nest_type_witness exited non-zero: ${selftest.err}${selftest.out}"
+assert selftest.ok else "nest_type_witness exited non-zero: ${selftest.err_brief}${selftest.out_brief}"
 assert selftest.out contains "GREEN" else "nest_type_witness not GREEN"
 assert selftest.out contains "cord bound 1024" else "nest_type_witness missing STOA209 cord bound 1024"
 assert selftest.out contains "SampleDoesNotNest" else "nest_type_witness missing SampleDoesNotNest"

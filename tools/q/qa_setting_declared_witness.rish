@@ -45,12 +45,12 @@ say "qa-setting-declared: the control -- 38 behaviors on planted pages in a thro
 let ctl = run ["sh" "tools/fixtures/q/qa_setting_declared_control.sh"]
 # invariant: a refusal reports BOTH streams -- `run` returns `out` and `err` apart, and a control
 # writing its reason to stderr would otherwise leave an empty reason in the roster's red file.
-assert ctl.ok else "qa-setting-declared: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=38 fail=0" else "qa-setting-declared: the control did not prove 38 behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "qa-setting-declared: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=38 fail=0" else "qa-setting-declared: the control did not prove 38 behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 say "qa-setting-declared: and the living tree answers every bucket..."
 let scan = run ["sh" "tools/fixtures/q/qa_setting_declared_scan.sh"]
-assert scan.ok else "qa-setting-declared: the scan refused --\n${scan.out}\n${scan.err}"
+assert scan.ok else "qa-setting-declared: the scan refused --\n${scan.out_brief}\n${scan.err_brief}"
 # invariant: the census reports every bucket, empty or full. A reading printing only the fault would
 # leave a reader unable to tell a healthy tree from a tree the scan could not see.
 assert scan.out contains "pages=" else "qa-setting-declared: the population went unreported"
@@ -60,7 +60,7 @@ assert scan.out contains "no_style_line=" else "qa-setting-declared: the no-styl
 # invariant: the census says out loud that it counts rather than gates, so no later reader mistakes
 # a standing number for a wall somebody quietly lowered.
 assert scan.out contains "reading=counted" else "qa-setting-declared: the census did not name itself a report"
-assert scan.out contains "verdict=ok" else "qa-setting-declared: the census reached no verdict --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "qa-setting-declared: the census reached no verdict --\n${scan.out_brief}"
 
 say "qa-setting-declared: the population it reads is the one the ASCII wall reads..."
 let shared = run ["sh" "-c" "grep -c 'yonder/\\*' tools/fixtures/a/ascii_document_scan.sh || true"]

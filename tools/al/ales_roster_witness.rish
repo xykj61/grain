@@ -40,8 +40,8 @@ say "ales-roster: Lens TAME -- the bijection is read from the scan rather than r
 
 # The living reading. This is the one that matters on an ordinary lap.
 let roster = run ["sh" "tools/fixtures/a/ales_roster_bijection_scan.sh"]
-assert roster.ok else "ales-roster: the Lotus roster must hear every witness on disk -- ${roster.out}"
-assert roster.out contains "ROSTER_OK" else "ales-roster: want the roster whole in both directions -- ${roster.out}"
+assert roster.ok else "ales-roster: the Lotus roster must hear every witness on disk -- ${roster.out_brief}"
+assert roster.out contains "ROSTER_OK" else "ales-roster: want the roster whole in both directions -- ${roster.out_brief}"
 say "ales-roster: the roster -- ${trim roster.out}"
 
 # RED path one -- a witness on disk that no roster line names. This is the exact shape REDS %81, %101, and
@@ -76,9 +76,9 @@ assert noroster.out contains "reason=no_roster" else "ales-roster: want the miss
 # reads less: the pen holds one witness, the roster registers exactly that one in code, and its header names
 # a second that was never written.
 let comment = run ["sh" "-c" "d=$(mktemp -d); : > $d/ales_gate_witness.rish; r=$d/roster.rish; echo '# Kin: ales_never_written_witness.rish -- named in prose, never registered' > $r; echo 'let witnesses = [ tools/al/ales_gate_witness.rish ]' >> $r; ALES_TOOLS_DIR=$d ALES_ROSTER_FILE=$r sh tools/fixtures/a/ales_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
-assert comment.ok else "ales-roster: a witness named only in a comment must not register -- ${comment.out}"
-assert comment.out contains "ROSTER_OK" else "ales-roster: want the comment-only name read past, leaving the roster whole -- ${comment.out}"
-assert comment.out contains "registered=1" else "ales-roster: want exactly the code registration counted -- ${comment.out}"
+assert comment.ok else "ales-roster: a witness named only in a comment must not register -- ${comment.out_brief}"
+assert comment.out contains "ROSTER_OK" else "ales-roster: want the comment-only name read past, leaving the roster whole -- ${comment.out_brief}"
+assert comment.out contains "registered=1" else "ales-roster: want exactly the code registration counted -- ${comment.out_brief}"
 
 # The sing lock, proven both ways on a throwaway lock directory. The choir clears `lotus/bin` and
 # rebuilds it in place, so two sings at once delete each other's binaries and the second reports a
@@ -86,7 +86,7 @@ assert comment.out contains "registered=1" else "ales-roster: want exactly the c
 # this cheap half rather than in the expensive one, since a lock is cheap to exercise and the sing
 # is not.
 let lockctl = run ["sh" "tools/fixtures/a/ales_sing_lock_control.sh"]
-assert lockctl.ok else "ales-roster: the sing-lock control must run -- ${lockctl.out}"
+assert lockctl.ok else "ales-roster: the sing-lock control must run -- ${lockctl.out_brief}"
 assert lockctl.out contains "free_lock_taken=yes" else "ales-roster: a free lock must be taken"
 assert lockctl.out contains "take_writes_pid=yes" else "ales-roster: a taken lock must record its holder"
 assert lockctl.out contains "live_holder_refused=yes" else "ales-roster: a lock held by a live process must refuse"

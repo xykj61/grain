@@ -13,7 +13,13 @@
 # program's last words are its reason. Both sit BESIDE the whole capture rather than replacing it.
 let control = run ["sh" "tools/fixtures/r/rishi_brief_control.sh"]
 assert control.ok else "the brief-capture control did not reach verdict=ok: ${control.err_brief}"
-assert control.out contains "verdict=ok" else "brief-capture control verdict missing"
+# A STALE INTERPRETER LANDS HERE, and the refusal says what to do about it. `rishi/bin/` is
+# gitignored, so each ship builds its own interpreter and a pull brings these sources without the
+# binary. On a ship whose rishi predates the bounded fields, `${x.err_brief}` composes to the
+# LITERAL placeholder -- the same benign fallback an absent field always gives -- so nothing
+# crashes and every swept refusal quietly stops carrying its reason. The control catches that,
+# and this message names the cure rather than leaving a reader to find it.
+assert control.out contains "verdict=ok" else "brief-capture control refused. If this ship's rishi predates the bounded capture fields, rebuild it by building rishi/src/main.rye with rye and emitting the binary to rishi/bin/rishi, then re-run. Control said: ${control.out_brief}"
 assert control.out contains "faults=0" else "a planted behavior went unread"
 
 # THE CLIFF IS ASSERTED HERE TOO, because it is the whole reason these fields exist and a tree that

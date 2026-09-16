@@ -24,10 +24,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/image_artifact"
 
 let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/image_artifact.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-artifact: build failed — ${build.err}"
+assert build.ok else "hunk-artifact: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-artifact: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-artifact: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-artifact: ${out}"

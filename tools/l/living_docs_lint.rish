@@ -52,6 +52,6 @@ say scan.out
 # cannot bite says nothing at all. The control plants nine shapes in a throwaway repository and
 # proves both directions: the violation caught, every lawful shape free.
 let control = run ["sh" "tools/fixtures/r/retired_word_control.sh"]
-assert control.ok else "living-docs lint: the duty-1 control must pass -- ${control.out}"
-assert control.out contains "control_verdict=ok" else "living-docs lint: want the retired-word reading proven able to bite -- ${control.out}"
+assert control.ok else "living-docs lint: the duty-1 control must pass -- ${control.out_brief}"
+assert control.out contains "control_verdict=ok" else "living-docs lint: want the retired-word reading proven able to bite -- ${control.out_brief}"
 say "GREEN: living-docs lint — advisories printed; witness never fails."

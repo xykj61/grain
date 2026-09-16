@@ -45,23 +45,23 @@ say "one-title: Lens TAME -- docs and implementation stay synced; assert it rath
 let control = run ["sh" "tools/fixtures/o/one_title_control.sh"]
 say control.out
 say control.err
-assert control.ok else "one-title: a control case read the wrong way: ${control.out} ${control.err}"
-assert control.out contains "control_fail=0" else "one-title: the pen must balance before the field is believed: ${control.out}"
-assert control.out contains "control_legs=48" else "one-title: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out}"
+assert control.ok else "one-title: a control case read the wrong way: ${control.out_brief} ${control.err_brief}"
+assert control.out contains "control_fail=0" else "one-title: the pen must balance before the field is believed: ${control.out_brief}"
+assert control.out contains "control_legs=48" else "one-title: a leg left the pen unheard -- `control_fail=0` reads alike over a leg that failed and one deleted: ${control.out_brief}"
 
 # 2 -- the field, under a ceiling that only falls.
 let field = run ["sh" "tools/fixtures/o/one_title_scan.sh"]
 say field.out
 say field.err
-assert field.ok else "one-title: the field reading refused: ${field.out} ${field.err}"
-assert field.out contains "outside_ceiling=1" else "one-title: the ceiling moved -- it may fall on a repair and never rise: ${field.out}"
-assert field.out contains "verdict=ok" else "one-title: a living page carrying no title or two has entered the tree -- run the scan with --list to name it: ${field.out}"
+assert field.ok else "one-title: the field reading refused: ${field.out_brief} ${field.err_brief}"
+assert field.out contains "outside_ceiling=1" else "one-title: the ceiling moved -- it may fall on a repair and never rise: ${field.out_brief}"
+assert field.out contains "verdict=ok" else "one-title: a living page carrying no title or two has entered the tree -- run the scan with --list to name it: ${field.out_brief}"
 
 # 3 -- the reach, asserted rather than assumed. A walk that found nothing reports a perfect zero
 # (REDS %463), so the population is named here rather than trusted.
-assert (field.out contains "pages=0") == false else "one-title: the walk found no living page at all, so its reading means nothing: ${field.out}"
-assert (field.out contains "titled=0") == false else "one-title: the walk found no titled page at all, so the reader has lost the form it counts: ${field.out}"
-assert field.out contains "no_title=" else "one-title: the two halves of `outside` are printed apart, since a total naming no member leaves a stray unlocatable: ${field.out}"
-assert field.out contains "many_titles=" else "one-title: the two halves of `outside` are printed apart, since a total naming no member leaves a stray unlocatable: ${field.out}"
+assert (field.out contains "pages=0") == false else "one-title: the walk found no living page at all, so its reading means nothing: ${field.out_brief}"
+assert (field.out contains "titled=0") == false else "one-title: the walk found no titled page at all, so the reader has lost the form it counts: ${field.out_brief}"
+assert field.out contains "no_title=" else "one-title: the two halves of `outside` are printed apart, since a total naming no member leaves a stray unlocatable: ${field.out_brief}"
+assert field.out contains "many_titles=" else "one-title: the two halves of `outside` are printed apart, since a total naming no member leaves a stray unlocatable: ${field.out_brief}"
 
 say "GREEN: one-title -- every living page beyond the standing one says what it is, exactly once."

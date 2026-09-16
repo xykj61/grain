@@ -46,7 +46,7 @@ say "rye-toolchain-resolve: Lens TAME -- safety first: an explicit setting still
 
 let control = run ["sh" "tools/fixtures/r/rye_toolchain_resolve_control.sh"]
 say control.out
-assert control.ok else "rye-toolchain-resolve: the resolver did not survive its own pen -- ${control.err}"
+assert control.ok else "rye-toolchain-resolve: the resolver did not survive its own pen -- ${control.err_brief}"
 
 assert control.out contains "resolve_verdict=" else "rye-toolchain-resolve: the control must name a verdict before it is believed"
 

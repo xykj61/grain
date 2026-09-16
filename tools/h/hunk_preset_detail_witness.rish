@@ -25,10 +25,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/preset_detail"
 
 let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/preset_detail.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-preset-detail: build failed — ${build.err}"
+assert build.ok else "hunk-preset-detail: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-preset-detail: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-preset-detail: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-preset-detail: ${out}"

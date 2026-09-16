@@ -21,7 +21,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/admit"
 
 let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/admit.rye -femit-bin=${bin}"]
-assert build.ok else "fora-admit: build failed — ${build.err}"
+assert build.ok else "fora-admit: build failed — ${build.err_brief}"
 
 let outfile = "constel/bin/admit.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

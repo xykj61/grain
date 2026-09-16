@@ -22,7 +22,7 @@ let reg = run ["test" "-f" "construction/waymark-registry.bron"]
 assert reg.ok else "construction/waymark-registry.bron not found -- run from the repo root"
 
 let verify = run ["sh" "tools/fixtures/w/waymark_registry_verify.sh"]
-assert verify.ok else "registry verification failed: ${verify.out}"
+assert verify.ok else "registry verification failed: ${verify.out_brief}"
 assert (verify.out contains "SEAL_OK") else "seal mismatch -- the registry body was edited without resealing"
 assert (verify.out contains "DERIVE_OK") else "a corpus row did not re-derive from its input"
 assert (verify.out contains "REGISTRY_GREEN") else "registry verification did not reach GREEN"

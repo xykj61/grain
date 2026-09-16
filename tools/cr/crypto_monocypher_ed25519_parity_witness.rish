@@ -35,7 +35,7 @@ let rout = "crypto/bin/rye_ed25519.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored core AND the optional RFC 8032 (SHA-512) Ed25519 module with zig cc.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/m/monocypher_ed25519_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
-assert cbuild.ok else "crypto-monocypher-ed25519-parity: Monocypher C harness build failed — ${cbuild.err}"
+assert cbuild.ok else "crypto-monocypher-ed25519-parity: Monocypher C harness build failed — ${cbuild.err_brief}"
 
 # 2. Run the Monocypher C harness -- three Ed25519 hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]

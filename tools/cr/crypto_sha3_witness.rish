@@ -27,7 +27,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/sha3"
 
 let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/sha3.rye -femit-bin=${bin}"]
-assert build.ok else "crypto-sha3: build failed — ${build.err}"
+assert build.ok else "crypto-sha3: build failed — ${build.err_brief}"
 
 let outfile = "crypto/bin/sha3.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

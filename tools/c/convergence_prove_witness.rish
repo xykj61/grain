@@ -29,8 +29,8 @@ say "convergence-prove: Lens TAME -- safety first: the subject is a copy, never 
 
 say "convergence-prove: the control -- thirty-two behaviors, including a tool built to diverge, two second-run refusals, a tool written in Rishi, and a tool that writes beside its subject..."
 let ctl = run ["sh" "tools/fixtures/c/convergence_prove_control.sh"]
-assert ctl.ok else "convergence-prove: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=32 fail=0" else "convergence-prove: the control did not prove thirty-two behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "convergence-prove: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=32 fail=0" else "convergence-prove: the control did not prove thirty-two behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 # invariant: the control exercises the prover against a TRACKED writer on a real sample, not only
 # against tools it invented, and asserts the reading is `converges` rather than `inert` -- a green

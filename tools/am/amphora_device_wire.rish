@@ -12,5 +12,5 @@ if r.err != "" then say r.err
 # with it, which `shim_reason` holds for every shim this roster seats. Both `say` lines stand ABOVE
 # it on purpose: an assert ends the run, so a reason said below one reaches a reader only when the
 # run passes, which is the shape `20260911.055635` repaired one room over.
-assert r.ok else "amphora_device_wire: the virtio vessel-fetch lab refused -- ${r.out} ${r.err}"
+assert r.ok else "amphora_device_wire: the virtio vessel-fetch lab refused -- ${r.out_brief} ${r.err_brief}"
 exit r.code

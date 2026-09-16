@@ -35,7 +35,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/socket"
 
 let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/socket.rye -femit-bin=${bin}"]
-assert build.ok else "fora-socket: build failed -- ${build.err}${build.out}"
+assert build.ok else "fora-socket: build failed -- ${build.err_brief}${build.out_brief}"
 
 # --- Leg A: the crossing ------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ assert (trim green.out) == "1" else "fora-socket: the selftest did not print its
 
 let racefile = "constel/bin/socket.race"
 let race = run ["sh" "-c" "${bin} hold > ${racefile}.hold 2>&1 & HP=$!; sleep 1; ${bin} selftest > ${racefile} 2>&1; echo RACE_EXIT:$?; wait $HP"]
-assert race.ok else "fora-socket: the bind-refusal race could not be run -- ${race.err}"
+assert race.ok else "fora-socket: the bind-refusal race could not be run -- ${race.err_brief}"
 
 assert race.out contains "RACE_EXIT:1" else "fora-socket: a second board bound a held sky -- the descriptors are not real kernel resources, or the hold did not take"
 

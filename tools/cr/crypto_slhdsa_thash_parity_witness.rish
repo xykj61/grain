@@ -40,14 +40,14 @@ let rout = "crypto/bin/slhdsa_thash.parity.out"
 
 # 1. Build the PQClean harness against the unmodified vendored source.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/p/pqclean_slhdsa_thash_harness.c ${scheme}/clean/address.c ${scheme}/clean/context_shake.c ${scheme}/clean/hash_shake.c ${scheme}/clean/thash_shake_simple.c ${scheme}/clean/utils.c vendor/pqclean/common/fips202.c -o ${cbin}"]
-assert cbuild.ok else "crypto-slhdsa-thash-parity: PQClean thash harness build failed -- ${cbuild.err}"
+assert cbuild.ok else "crypto-slhdsa-thash-parity: PQClean thash harness build failed -- ${cbuild.err_brief}"
 
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
 assert crun.ok else "crypto-slhdsa-thash-parity: PQClean thash harness exited non-zero -- see ${cout}"
 
 # 2. Build and run ours, keeping only the five digest lines its selftest prints.
 let rbuild = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/slhdsa_thash.rye -femit-bin=${rbin}"]
-assert rbuild.ok else "crypto-slhdsa-thash-parity: Rye build failed -- ${rbuild.err}"
+assert rbuild.ok else "crypto-slhdsa-thash-parity: Rye build failed -- ${rbuild.err_brief}"
 
 let rrun = run ["sh" "-c" "${rbin} 2>&1 | grep -E '^[0-9a-f]{64}$' > ${rout}"]
 assert rrun.ok else "crypto-slhdsa-thash-parity: the Rye selftest printed no digest lines -- see ${rout}"

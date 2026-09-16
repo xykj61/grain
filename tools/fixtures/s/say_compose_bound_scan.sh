@@ -138,6 +138,7 @@ fi
 : > "$WORK/eager"
 : > "$WORK/deferred"
 : > "$WORK/safe"
+: > "$WORK/bounded"
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   awk -v path="$f" '
@@ -158,6 +159,13 @@ while IFS= read -r f; do
         cond = substr(action, 1, RSTART + RLENGTH - 1)
         action = substr(action, RSTART + RLENGTH)
       }
+      # A BOUNDED CAPTURE IS ITS OWN CLASS (REDS %740). `${x.out_brief}` and `${x.err_brief}` are
+      # bounded by construction at 512 bytes, so they compose safely wherever a whole capture would
+      # not -- and they must be COUNTED, never merely skipped. An unclassified site falls out of
+      # `shaped`, which is the denominator, so converting a deferred site would shrink the numerator
+      # and the denominator together and move the share for a reason nobody intended. That is the
+      # same fault already recorded in this file for 155 safe sites.
+      if ($0 ~ /\$\{[A-Za-z_][A-Za-z_0-9]*\.(out|err)_brief\}/) { print "bounded\t" path ":" FNR "\t" $0; next }
       if (cond ~ /\$\{[A-Za-z_][A-Za-z_0-9]*\.(out|err)\}/) { print "eager\t" path ":" FNR "\t" $0; next }
       captured = (action ~ /\$\{[A-Za-z_][A-Za-z_0-9]*\.(out|err)\}/)
       if (captured && action ~ /^[[:space:]]*say[[:space:]]+"/) { print "eager\t" path ":" FNR "\t" $0; next }
@@ -171,10 +179,12 @@ done < "$WORK/files"
 awk -F'\t' '$1 == "eager"    { print $2 "\t" $3 }' "$WORK/all" > "$WORK/eager"
 awk -F'\t' '$1 == "deferred" { print $2 "\t" $3 }' "$WORK/all" > "$WORK/deferred"
 awk -F'\t' '$1 == "safe"     { print $2 "\t" $3 }' "$WORK/all" > "$WORK/safe"
+awk -F'\t' '$1 == "bounded"  { print $2 "\t" $3 }' "$WORK/all" > "$WORK/bounded"
 
 eager=$(grep -c . "$WORK/eager" || true)
 deferred=$(grep -c . "$WORK/deferred" || true)
 safe=$(grep -c . "$WORK/safe" || true)
+bounded=$(grep -c . "$WORK/bounded" || true)
 
 # THE CEILINGS ARE SHARES, NOT COUNTS, AND THAT WAS LEARNED THE HARD WAY INSIDE ONE ROUND.
 # The first draft held raw ceilings at exactly what stood when it was written -- 502 and 1,741 --
@@ -227,11 +237,11 @@ safe=$(grep -c . "$WORK/safe" || true)
 # 165 more such repairs would have reddened it. A guarded repair now lands in `safe`, where the
 # denominator holds still and only the numerator moves.
 EAGER_PER_MILLE_CEILING=${SAY_COMPOSE_EAGER_CEILING:-145}
-DEFERRED_PER_MILLE_CEILING=${SAY_COMPOSE_DEFERRED_CEILING:-489}
+DEFERRED_PER_MILLE_CEILING=${SAY_COMPOSE_DEFERRED_CEILING:-0}
 
 # The denominator is every site carrying any of the three shapes, so it moves with the tree exactly
 # as the numerators do. A tree with none of them answers zero rather than dividing by nothing.
-shaped=$((eager + deferred + safe))
+shaped=$((eager + deferred + safe + bounded))
 if [ "$shaped" -eq 0 ]; then
   eager_per_mille=0
   deferred_per_mille=0
@@ -273,6 +283,7 @@ echo "deferred=$deferred"
 echo "deferred_per_mille=$deferred_per_mille"
 echo "deferred_per_mille_ceiling=$DEFERRED_PER_MILLE_CEILING"
 echo "safe=$safe"
+echo "bounded=$bounded"
 echo "shaped=$shaped"
 
 if [ "$eager_per_mille" -gt "$EAGER_PER_MILLE_CEILING" ]; then

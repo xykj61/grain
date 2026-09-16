@@ -38,7 +38,7 @@ assert sha.ok else "gism-j6r2: sha256sum over the real file failed"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "gism-j6r2: provenance_receipt selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-j6r2: selftest did not speak GREEN"
-assert selftest.out contains "real receipt — ${wc.out} bytes, sha256 ${sha.out}, verified offline" else "gism-j6r2: real offline receipt disagrees with wc -c and sha256sum over the real file"
+assert selftest.out contains "real receipt — ${wc.out_brief} bytes, sha256 ${sha.out_brief}, verified offline" else "gism-j6r2: real offline receipt disagrees with wc -c and sha256sum over the real file"
 assert selftest.out contains "travelled through Bron (272 bytes) and returned whole, still verifying" else "gism-j6r2: Bron round-trip missing"
 assert selftest.out contains "tampered real content refused" else "gism-j6r2: tampered-content refusal missing"
 assert selftest.out contains "wrong keeper key refused" else "gism-j6r2: wrong-keeper refusal missing"

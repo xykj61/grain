@@ -29,7 +29,7 @@ say "build-target: Lens TAME -- safety first: a build into a shared path is a wr
 # invariant: the scan, its control, its probe and the roster all stand before any of them is judged.
 # `ls` rather than `test`, so the refusal names which one is missing rather than restating the ask.
 let present = run ["ls" "tools/fixtures/b/build_target_scan.sh" "tools/fixtures/b/build_target_control.sh" "tools/fixtures/b/build_target_race_probe.sh" "construction/standing-equipment.kyri"]
-assert present.ok else "build-target: the scan, its control, its probe or the roster is missing -- ${present.err}"
+assert present.ok else "build-target: the scan, its control, its probe or the roster is missing -- ${present.err_brief}"
 
 let control = run ["sh" "tools/fixtures/b/build_target_control.sh"]
 say control.out

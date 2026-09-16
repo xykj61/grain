@@ -27,7 +27,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/eth_address"
 
 let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/eth_address.rye -femit-bin=${bin}"]
-assert build.ok else "crypto-eth-address: build failed — ${build.err}"
+assert build.ok else "crypto-eth-address: build failed — ${build.err_brief}"
 
 let outfile = "crypto/bin/eth_address.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

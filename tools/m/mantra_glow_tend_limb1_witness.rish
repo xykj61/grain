@@ -35,11 +35,11 @@ let declared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-mantra-lin
 assert declared.ok else "mantra-tend-1: the placard's example line is unreadable"
 let want_count = trim declared.out
 let counted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" "mantra/src/weave.rye" "Line"]
-assert counted.ok else "mantra-tend-1: the field reader refused on Line -- ${counted.out}"
+assert counted.ok else "mantra-tend-1: the field reader refused on Line -- ${counted.out_brief}"
 let got_count = trim counted.out
 assert got_count == want_count else "mantra-tend-1: Line declares ${got_count} fields where the placard says ${want_count}"
 let named = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Line"]
-assert named.ok else "mantra-tend-1: the field reader refused on Line -- ${named.out}"
+assert named.ok else "mantra-tend-1: the field reader refused on Line -- ${named.out_brief}"
 let got_fields = trim named.out
 assert got_fields == "text gen pos site run" else "mantra-tend-1: Line fields missing or reordered in the rye -- ${got_fields}"
 

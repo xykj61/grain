@@ -33,7 +33,7 @@ let field = trim field_run.out
 # The clone: local objects, then the anointed remotes replace the local origin, so the
 # newborn's history and its lanes both read exactly like every sibling's.
 let cl = run ["git" "clone" field dest]
-assert cl.ok else "birth-a-clone: the clone refused -- ${cl.err}"
+assert cl.ok else "birth-a-clone: the clone refused -- ${cl.err_brief}"
 let rr = run ["git" "-C" dest "remote" "remove" "origin"]
 assert rr.ok else "birth-a-clone: could not remove the local origin"
 let ax = run ["git" "-C" dest "remote" "add" "xy" "git@github.com:xykj61/grain.git"]
@@ -54,7 +54,7 @@ assert ag.ok else "birth-a-clone: could not seat remote debrided"
 let sc = run ["cp" (field + "/.git/ssh_config_jail") (dest + "/.git/ssh_config_jail")]
 assert sc.ok else "birth-a-clone: the ssh config copy refused"
 let sk = run ["cp" "-a" (field + "/.ssh") (dest + "/.ssh")]
-assert sk.ok else "birth-a-clone: the jail-local ssh keys did not copy -- ${sk.err}"
+assert sk.ok else "birth-a-clone: the jail-local ssh keys did not copy -- ${sk.err_brief}"
 let skm = run ["chmod" "700" (dest + "/.ssh")]
 assert skm.ok else "birth-a-clone: could not close the newborn's .ssh to its owner"
 # Every path inside the copied config moves from the field to the newborn. `|` delimits the
@@ -73,7 +73,7 @@ let scfg = run ["git" "-C" dest "config" "core.sshCommand" ("ssh -F " + dest + "
 assert scfg.ok else "birth-a-clone: could not seat core.sshCommand"
 
 let fx = run ["git" "-C" dest "fetch" "xy"]
-assert fx.ok else "birth-a-clone: the first fetch from xy refused -- ${fx.err}"
+assert fx.ok else "birth-a-clone: the first fetch from xy refused -- ${fx.err_brief}"
 let up = run ["git" "-C" dest "branch" "--set-upstream-to=xy/main" "main"]
 assert up.ok else "birth-a-clone: could not point main at xy/main"
 
@@ -120,7 +120,7 @@ assert sg3.ok else "birth-a-clone: could not seat user.email"
 # resolves GNUPGHOME from its own `$0`, so it is correct in whatever tree it lands in, and the
 # newborn's `gpg.program` names the newborn's own copy rather than the field's.
 let kr = run ["cp" "-a" (field + "/.gnupg-rye") (dest + "/.gnupg-rye")]
-assert kr.ok else "birth-a-clone: the jail-local keyring did not copy -- ${kr.err}"
+assert kr.ok else "birth-a-clone: the jail-local keyring did not copy -- ${kr.err_brief}"
 let krm = run ["chmod" "700" (dest + "/.gnupg-rye")]
 assert krm.ok else "birth-a-clone: could not close the newborn's keyring to its owner"
 
@@ -144,7 +144,7 @@ assert sg5.ok else "birth-a-clone: could not seat commit.gpgsign"
 
 # The four named submodules, over plain https with the host's global config held aside.
 let sm = run ["env" "GIT_CONFIG_GLOBAL=/dev/null" "git" "-C" dest "submodule" "update" "--init" "vendor/microkit" "vendor/monocypher" "vendor/pqclean" "vendor/sel4"]
-assert sm.ok else "birth-a-clone: the named submodules refused -- ${sm.err}"
+assert sm.ok else "birth-a-clone: the named submodules refused -- ${sm.err_brief}"
 
 # The toolchain is host-provisioned and untracked; the newborn takes the field's copy.
 # Refuse a missing or dangling source before the copy: a renamed checkout's leftover
@@ -162,17 +162,17 @@ assert (run ["test" "-x" zig_dest]).ok else "birth-a-clone: the copied toolchain
 # shell may still export the elder checkout path (grain-harvest after the petrichor
 # mv, 20260904). The rishi build already pinned; the bootstrap did not.
 let ry = run ["sh" "-c" ("cd " + dest + " && env RYE_ZIG=" + zig_dest + " sh rye/bootstrap.sh")]
-assert ry.ok else "birth-a-clone: the rye bootstrap refused -- ${ry.err}"
+assert ry.ok else "birth-a-clone: the rye bootstrap refused -- ${ry.err_brief}"
 # The emit directory is untracked and must exist before the build asks for it -- %337's own
 # lesson, met again at birth.
 let rb = run ["mkdir" "-p" (dest + "/rishi/bin")]
 assert rb.ok else "birth-a-clone: could not make rishi/bin"
 let ri = run ["sh" "-c" ("cd " + dest + " && env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh rishi/src/main.rye -femit-bin=rishi/bin/rishi")]
-assert ri.ok else "birth-a-clone: the rishi build refused -- ${ri.err}"
+assert ri.ok else "birth-a-clone: the rishi build refused -- ${ri.err_brief}"
 
 # The proof: a real witness runs GREEN inside the newborn, on the newborn's own binaries.
 let wt = run ["sh" "-c" ("cd " + dest + " && rishi/bin/rishi run tools/w/wire_lab_fn_drift_witness.rish")]
-assert wt.ok else "birth-a-clone: the newborn's witness refused -- ${wt.out}"
+assert wt.ok else "birth-a-clone: the newborn's witness refused -- ${wt.out_brief}"
 assert wt.out contains "GREEN: wire-lab-fn" else "birth-a-clone: the newborn's witness must speak GREEN"
 
 say "GREEN: birth-a-clone -- ${dest} stands whole: remotes xy and debrided, tracked hooks, four submodules, its own rye and rishi, one witness GREEN inside it. A codex login and the launch paste remain a hand's."

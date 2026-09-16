@@ -39,8 +39,8 @@ say "itinerary-account-shelf: Lens TAME -- every refusal proven from both sides.
 
 say "itinerary-account-shelf: the control -- the writer on a real fold in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/i/itinerary_account_shelf_control.sh"]
-assert ctl.ok else "itinerary-account-shelf: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=43 fail=0" else "itinerary-account-shelf: the control did not prove forty-three behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "itinerary-account-shelf: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=43 fail=0" else "itinerary-account-shelf: the control did not prove forty-three behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 say "itinerary-account-shelf: the filter it delegates to must still stand..."
 # invariant: the rewrite is computed in the filter and never duplicated here, so its absence is a
@@ -52,14 +52,14 @@ say "itinerary-account-shelf: and the shelves standing in this tree read clean..
 # invariant: the writer exists to keep this reading at zero, so the guard states the property it
 # serves rather than only proving its own machinery.
 let depth = run ["sh" "-c" "grep -ohE '\\]\\(\\.\\./[a-z-]+/' construction/archive/*itinerary-landed-accounts.md 2>/dev/null | grep -cv '](../archive/' | sed 's/^/pin_depth_links=/'"]
-assert depth.ok else "itinerary-account-shelf: the shelf reading refused --\n${depth.err}"
-assert depth.out contains "pin_depth_links=0" else "itinerary-account-shelf: an account shelf carries a pin-depth link --\n${depth.out}"
+assert depth.ok else "itinerary-account-shelf: the shelf reading refused --\n${depth.err_brief}"
+assert depth.out contains "pin_depth_links=0" else "itinerary-account-shelf: an account shelf carries a pin-depth link --\n${depth.out_brief}"
 
 say "itinerary-account-shelf: and the questions already shelved, counted so the number is readable..."
 # invariant: reported and never gated -- the count rises whenever a ship asks something, which is
 # ordinary work, and only Keaton's word lowers it.
 let asks = run ["sh" "-c" "grep -hoE '[*][*]YOURS' construction/archive/*itinerary-landed-accounts.md 2>/dev/null | wc -l | tr -d ' ' | sed 's/^/asks_shelved_standing=/'"]
-assert asks.ok else "itinerary-account-shelf: the ask reading refused --\n${asks.err}"
+assert asks.ok else "itinerary-account-shelf: the ask reading refused --\n${asks.err_brief}"
 say "itinerary-account-shelf: ${asks.out}"
 
 say "itinerary-account-shelf: GREEN -- 43 behaviors, the filter in place, the shelves clean, the second run asked of the bytes, and every ask the writer shelves now said out loud."

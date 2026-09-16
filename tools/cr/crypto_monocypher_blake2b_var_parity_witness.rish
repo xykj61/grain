@@ -36,7 +36,7 @@ let rout = "crypto/bin/rye_blake2b_var.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_blake2b_var_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
-assert cbuild.ok else "crypto-monocypher-blake2b-var-parity: Monocypher C harness build failed — ${cbuild.err}"
+assert cbuild.ok else "crypto-monocypher-blake2b-var-parity: Monocypher C harness build failed — ${cbuild.err_brief}"
 
 # 2. Run the Monocypher C harness -- six variable-length digest hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]

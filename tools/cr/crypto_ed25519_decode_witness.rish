@@ -32,7 +32,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/ed25519_decode"
 
 let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/ed25519_decode.rye -femit-bin=${bin}"]
-assert build.ok else "crypto-ed25519-decode: build failed — ${build.err}"
+assert build.ok else "crypto-ed25519-decode: build failed — ${build.err_brief}"
 
 let outfile = "crypto/bin/ed25519_decode.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

@@ -13,7 +13,7 @@ let zig_ver = run [zig "version"]
 assert zig_ver.ok else "tally-kumara: pinned toolchain missing"
 
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && printf '%s' $d"]
-assert pen_mk.ok else "tally-kumara: could not build the pen -- ${pen_mk.err}"
+assert pen_mk.ok else "tally-kumara: could not build the pen -- ${pen_mk.err_brief}"
 let pen = trim pen_mk.out
 
 let copy_module = run ["cp" "tally/kumara.rye" "${pen}/kumara.rye"]
@@ -23,28 +23,28 @@ let write_probe = run ["cp" "tools/fixtures/t/tally_kumara_probe.rye" "${pen}/pr
 assert write_probe.ok else "tally-kumara: could not write the direct caller"
 
 let live_build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/probe.rye" "-femit-bin=${pen}/probe"]
-assert live_build.ok else "tally-kumara: the live seam must compile -- ${live_build.err}"
+assert live_build.ok else "tally-kumara: the live seam must compile -- ${live_build.err_brief}"
 let live = run ["${pen}/probe"]
-assert live.ok else "tally-kumara: the live seam must pass -- ${live.err}"
+assert live.ok else "tally-kumara: the live seam must pass -- ${live.err_brief}"
 assert live.err contains "kumara-direct-ok" else "tally-kumara: the direct caller did not report its answer"
 
 # Refusal one: accepting a failed typed verification lets the changed message through.
 let weaken_typed = run ["sh" "-c" "sed 's/sig.verify(message, pubkey) catch return error.VerifyFailed;/sig.verify(message, pubkey) catch return;/' tally/kumara.rye > ${pen}/kumara.rye && grep -q 'catch return;' ${pen}/kumara.rye"]
 assert weaken_typed.ok else "tally-kumara: typed-refusal plant changed nothing"
 let typed_build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/probe.rye" "-femit-bin=${pen}/typed-hurt"]
-assert typed_build.ok else "tally-kumara: weakened typed seam must still compile -- ${typed_build.err}"
+assert typed_build.ok else "tally-kumara: weakened typed seam must still compile -- ${typed_build.err_brief}"
 let typed_red = run ["${pen}/typed-hurt"]
 assert typed_red.ok == false else "tally-kumara: changed message crossed after the typed refusal was removed"
-assert typed_red.err contains "TamperAccepted" else "tally-kumara: typed refusal must fail for the changed message -- ${typed_red.err}"
+assert typed_red.err contains "TamperAccepted" else "tally-kumara: typed refusal must fail for the changed message -- ${typed_red.err_brief}"
 
 # Refusal two: accepting a short encoding lets a 63-byte signature through.
 let weaken_raw = run ["sh" "-c" "sed 's/if (sig_bytes.len < signature_length) return error.VerifyFailed;/if (sig_bytes.len < signature_length) return;/' tally/kumara.rye > ${pen}/kumara.rye && grep -q 'sig_bytes.len < signature_length) return;' ${pen}/kumara.rye"]
 assert weaken_raw.ok else "tally-kumara: short-signature plant changed nothing"
 let raw_build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/probe.rye" "-femit-bin=${pen}/raw-hurt"]
-assert raw_build.ok else "tally-kumara: weakened raw seam must still compile -- ${raw_build.err}"
+assert raw_build.ok else "tally-kumara: weakened raw seam must still compile -- ${raw_build.err_brief}"
 let raw_red = run ["${pen}/raw-hurt"]
 assert raw_red.ok == false else "tally-kumara: a short signature crossed after its refusal was removed"
-assert raw_red.err contains "ShortAccepted" else "tally-kumara: raw refusal must fail for the short signature -- ${raw_red.err}"
+assert raw_red.err contains "ShortAccepted" else "tally-kumara: raw refusal must fail for the short signature -- ${raw_red.err_brief}"
 
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
 assert pen_rm.ok else "tally-kumara: could not remove the pen"

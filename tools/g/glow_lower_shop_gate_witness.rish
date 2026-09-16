@@ -11,7 +11,7 @@ let welcome_rye = "glow/.cache/gate_sample_welcome.rye"
 let welcome_bin = "glow/bin/gate_sample_welcome"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/lower_shop_gate_witness.rye -femit-bin=${bin}"]
-assert build.ok else "lower_shop_gate_witness build failed: ${build.err}${build.out}"
+assert build.ok else "lower_shop_gate_witness build failed: ${build.err_brief}${build.out_brief}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
 assert selftest.ok else "lower_shop_gate_witness exited non-zero"
@@ -438,7 +438,7 @@ assert kind_argv.ok else "STOA300 missing emit_kind_argv"
 let kind_argv_rye = "glow/.cache/gate_kind_argv.rye"
 let kind_argv_bin = "glow/bin/gate_kind_argv"
 let build_kind_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${kind_argv_rye} -femit-bin=${kind_argv_bin}"]
-assert build_kind_argv.ok else "bartis kind argv .rye build failed: ${build_kind_argv.err}${build_kind_argv.out}"
+assert build_kind_argv.ok else "bartis kind argv .rye build failed: ${build_kind_argv.err_brief}${build_kind_argv.out_brief}"
 let run_kind_argv = run ["sh" "-c" "${kind_argv_bin} mint; echo EXIT:$?"]
 assert run_kind_argv.ok else "bartis kind argv binary failed to launch"
 assert run_kind_argv.out contains "EXIT:0" else "bartis kind argv binary did not exit 0 with tag mint"
@@ -450,7 +450,7 @@ assert xact_argv.ok else "STOA303 missing emit_xact_argv"
 let xact_argv_rye = "glow/.cache/gate_xact_argv.rye"
 let xact_argv_bin = "glow/bin/gate_xact_argv"
 let build_xact_argv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${xact_argv_rye} -femit-bin=${xact_argv_bin}"]
-assert build_xact_argv.ok else "bartis xact argv .rye build failed: ${build_xact_argv.err}${build_xact_argv.out}"
+assert build_xact_argv.ok else "bartis xact argv .rye build failed: ${build_xact_argv.err_brief}${build_xact_argv.out_brief}"
 let run_xact_argv = run ["sh" "-c" "${xact_argv_bin} mint 5; echo EXIT:$?"]
 assert run_xact_argv.ok else "bartis xact argv binary failed to launch"
 assert run_xact_argv.out contains "EXIT:0" else "bartis xact argv binary did not exit 0 with mint 5"

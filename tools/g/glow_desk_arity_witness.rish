@@ -19,7 +19,7 @@
 #   rishi/bin/rishi run tools/g/glow_desk_arity_witness.rish
 
 let scan = run ["sh" "tools/fixtures/g/glow_desk_arity_scan.sh"]
-assert scan.ok else "glow_desk_arity scan failed: ${scan.err}${scan.out}"
+assert scan.ok else "glow_desk_arity scan failed: ${scan.err_brief}${scan.out_brief}"
 
 # invariant: the corpus is present. A scan reading zero desks has lost its subject, and every
 # reading below would then be satisfied by an empty room.
@@ -71,9 +71,9 @@ assert scan.out contains "verdict=agree" else "glow_desk_arity: the three statem
 # Reading the first gate calls four real desks split when nothing is wrong, and that mutation
 # reds three legs here.
 let control = run ["sh" "tools/fixtures/g/glow_desk_arity_control.sh"]
-assert control.ok else "glow_desk_arity control failed: ${control.out}"
-assert control.out contains "control_failed=0" else "glow_desk_arity control reported failures: ${control.out}"
-assert control.out contains "control_verdict=ok" else "glow_desk_arity control did not reach its verdict: ${control.out}"
+assert control.ok else "glow_desk_arity control failed: ${control.out_brief}"
+assert control.out contains "control_failed=0" else "glow_desk_arity control reported failures: ${control.out_brief}"
+assert control.out contains "control_verdict=ok" else "glow_desk_arity control did not reach its verdict: ${control.out_brief}"
 
 # invariant: the pen declares how many legs it meant to run, and met it. A green pen and an empty
 # one both print control_failed=0, so a leg deleted with the rest left standing passes in silence

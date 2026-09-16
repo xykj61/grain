@@ -19,13 +19,13 @@ say "crypto-count-guard: Style Radiant — one measure, two ways: files on disk 
 say "crypto-count-guard: Lens TAME — every crypto/<name>.rye is asserted registered in the suite, and every per-file witness the suite registers (excluding the suite itself and this guard) is asserted to carry its .rye — a bijection, not a bare tally — then the two counts are asserted equal. RED names exactly which name broke the bijection. Purely local — no key, no network, no funds, no device."
 
 let mk = run ["sh" "-c" "mkdir -p crypto/bin"]
-assert mk.ok else "crypto-count-guard: could not make crypto/bin — ${mk.err}"
+assert mk.ok else "crypto-count-guard: could not make crypto/bin — ${mk.err_brief}"
 
 # The crypto/<name>.rye source names, one per line, sorted. Real files only (-type f): a cross-directory composition like
 # crypto/bitcoin_address.rye imports encoding/ modules through flat-named symlink shims that live in crypto/ (rye resolves nested
 # imports relative to the importing path), and those shims are not primitives the suite proves -- counting them would break the bijection.
 let list_all = run ["sh" "-c" "find crypto -maxdepth 1 -name '*.rye' -type f | sed 's:.*/::; s:.rye$::' | sort > crypto/bin/.cc_all.txt"]
-assert list_all.ok else "crypto-count-guard: could not list crypto/*.rye — ${list_all.err}"
+assert list_all.ok else "crypto-count-guard: could not list crypto/*.rye — ${list_all.err_brief}"
 
 # THE SECOND CLASS, and the fault that taught it (REDS %191). The bijection above assumes every regular crypto/*.rye is a primitive the
 # suite can build and read a `GREEN crypto-<name>` line from. crypto/sha3_digest.rye is a command-line program that prints a hex digest,
@@ -41,7 +41,7 @@ let have_decl = run ["sh" "-c" "test -f ${tools_decl} && echo yes || echo no"]
 assert (trim have_decl.out) == "yes" else "crypto-count-guard: the tool declaration is missing at ${tools_decl}; without it this guard cannot tell a tool from an unproven primitive"
 
 let list_tools = run ["sh" "-c" "grep -vE '^[[:space:]]*(#|$)' ${tools_decl} | awk '{print $1}' | sort -u > crypto/bin/.cc_tools.txt"]
-assert list_tools.ok else "crypto-count-guard: could not read the tool declaration — ${list_tools.err}"
+assert list_tools.ok else "crypto-count-guard: could not read the tool declaration — ${list_tools.err_brief}"
 
 # The three assertions, run by tools/fixtures/c/crypto_tool_declaration_scan.sh so the loop lives where a shell variable is a shell
 # variable. Each is gated at zero: a declared module with no file on disk, a redirect to a witness that is not a file, and -- the one
@@ -62,34 +62,34 @@ assert decl.out contains "verdict=ok" else "crypto-count-guard: the tool declara
 # one, three faults at once, and an absent declaration -- and five honest readings left free.
 let decl_control = run ["sh" "tools/fixtures/c/crypto_tool_declaration_control.sh"]
 assert decl_control.ok else "crypto-count-guard: the tool-declaration control must complete -- see stderr"
-assert decl_control.out contains "cases_fail=0" else "crypto-count-guard: a planted declaration case did not behave -- ${decl_control.out}"
+assert decl_control.out contains "cases_fail=0" else "crypto-count-guard: a planted declaration case did not behave -- ${decl_control.out_brief}"
 assert decl_control.out contains "control_verdict=ok" else "crypto-count-guard: the declaration control must agree with itself before its exemptions are believed"
 
 # The primitives are what remains once the declared tools step aside, and that is the set the bijection reads.
 let list_files = run ["sh" "-c" "grep -Fxv -f crypto/bin/.cc_tools.txt crypto/bin/.cc_all.txt > crypto/bin/.cc_files.txt || true"]
-assert list_files.ok else "crypto-count-guard: could not separate primitives from tools — ${list_files.err}"
+assert list_files.ok else "crypto-count-guard: could not separate primitives from tools — ${list_files.err_brief}"
 
 # The per-file witnesses the suite registers, one name per line, sorted, excluding the suite and this guard.
 let list_reg = run ["sh" "-c" "grep -oE 'crypto_[a-z0-9_]+_witness' tools/cr/crypto_suite_witness.rish | grep -vE 'suite|count_guard' | sed 's:^crypto_::; s:_witness$::' | sort -u > crypto/bin/.cc_reg.txt"]
-assert list_reg.ok else "crypto-count-guard: could not read the suite registrations — ${list_reg.err}"
+assert list_reg.ok else "crypto-count-guard: could not read the suite registrations — ${list_reg.err_brief}"
 
 # Bijection A: every crypto/<name>.rye is registered in the suite (grep -Fxv returns the unmatched names; || true keeps ok on empty).
 let unreg = run ["sh" "-c" "grep -Fxv -f crypto/bin/.cc_reg.txt crypto/bin/.cc_files.txt || true"]
-assert unreg.ok else "crypto-count-guard: bijection scan A failed — ${unreg.err}"
-assert (trim unreg.out) == "" else "crypto-count-guard: crypto/<name>.rye not registered in the suite — ${unreg.out}"
+assert unreg.ok else "crypto-count-guard: bijection scan A failed — ${unreg.err_brief}"
+assert (trim unreg.out) == "" else "crypto-count-guard: crypto/<name>.rye not registered in the suite — ${unreg.out_brief}"
 
 # Bijection B: every suite registration has its crypto/<name>.rye on disk.
 let orphan = run ["sh" "-c" "grep -Fxv -f crypto/bin/.cc_files.txt crypto/bin/.cc_reg.txt || true"]
-assert orphan.ok else "crypto-count-guard: bijection scan B failed — ${orphan.err}"
-assert (trim orphan.out) == "" else "crypto-count-guard: suite registers a witness with no crypto/<name>.rye — ${orphan.out}"
+assert orphan.ok else "crypto-count-guard: bijection scan B failed — ${orphan.err_brief}"
+assert (trim orphan.out) == "" else "crypto-count-guard: suite registers a witness with no crypto/<name>.rye — ${orphan.out_brief}"
 
 # The two counts must be one number.
 let files_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_files.txt | tr -d ' \n'"]
-assert files_c.ok else "crypto-count-guard: could not count files — ${files_c.err}"
+assert files_c.ok else "crypto-count-guard: could not count files — ${files_c.err_brief}"
 let n_files = trim files_c.out
 
 let reg_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_reg.txt | tr -d ' \n'"]
-assert reg_c.ok else "crypto-count-guard: could not count registrations — ${reg_c.err}"
+assert reg_c.ok else "crypto-count-guard: could not count registrations — ${reg_c.err_brief}"
 let n_reg = trim reg_c.out
 
 # The three numbers the front doors quote, computed here so no page has to guess again. `n_all` counts regular files only, which is why it
@@ -97,11 +97,11 @@ let n_reg = trim reg_c.out
 # finds in this directory rather than a primitive this suite proves. crypto/MODULES.md carries all 87 and is held to the directory by
 # tools/cr/crypto_module_roster_witness.rish; this guard holds the 82 the suite is responsible for.
 let all_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_all.txt | tr -d ' \n'"]
-assert all_c.ok else "crypto-count-guard: could not count regular files — ${all_c.err}"
+assert all_c.ok else "crypto-count-guard: could not count regular files — ${all_c.err_brief}"
 let n_all = trim all_c.out
 
 let tool_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_tools.txt | tr -d ' \n'"]
-assert tool_c.ok else "crypto-count-guard: could not count declared tools — ${tool_c.err}"
+assert tool_c.ok else "crypto-count-guard: could not count declared tools — ${tool_c.err_brief}"
 let n_tools = trim tool_c.out
 
 assert n_files == n_reg else "crypto-count-guard: crypto/*.rye files (${n_files}) != per-file witnesses the suite registers (${n_reg})"
@@ -112,7 +112,7 @@ assert n_files == n_reg else "crypto-count-guard: crypto/*.rye files (${n_files}
 # otherwise. That is REDS %77 and %80's family a third time, so the loom widens: no count may be recited in the suite at all. The number
 # lives here, computed, and every doc and claim line points at it rather than repeating it.
 let recite = run ["sh" "-c" "grep -nEi '(one|two|three|four|five|six|seven|eight|nine|ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|[0-9]+)[a-z-]* (season g )?(crypto )?files' tools/cr/crypto_suite_witness.rish || true"]
-assert recite.ok else "crypto-count-guard: could not scan the suite for a recited count -- ${recite.err}"
-assert (trim recite.out) == "" else "crypto-count-guard: the suite RECITES a file count in its own prose, which is exactly what drifted three times -- remove the number and point at this guard instead. Offending lines: ${recite.out}"
+assert recite.ok else "crypto-count-guard: could not scan the suite for a recited count -- ${recite.err_brief}"
+assert (trim recite.out) == "" else "crypto-count-guard: the suite RECITES a file count in its own prose, which is exactly what drifted three times -- remove the number and point at this guard instead. Offending lines: ${recite.out_brief}"
 
 say "GREEN crypto-count-guard — ${n_all} regular crypto/*.rye files: ${n_files} primitives, each registered in the suite and registering a real file, and ${n_tools} declared tool(s) whose proving witness exists and stands on the standing roster. The suite recites no count of its own so none can drift (REDS %105), and a declared tool is a redirect rather than an excuse (REDS %191)."

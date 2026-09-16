@@ -16,7 +16,7 @@
 # to run that witness directly.
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p scribe/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh scribe/reader.rye -femit-bin=scribe/bin/reader"]
-assert build.ok else "bat fleet: scribe reader build failed -- ${build.err}"
+assert build.ok else "bat fleet: scribe reader build failed -- ${build.err_brief}"
 
 # 1. The reader validates every shape and refuses a short Galleon (its selftest).
 let st = run ["scribe/bin/reader" "selftest"]

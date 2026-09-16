@@ -29,12 +29,12 @@ say "fold-shelf-repoint: Lens TAME -- safety first; every refusal proven from bo
 
 say "fold-shelf-repoint: the control -- twenty-five behaviors on a real fold in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/f/fold_shelf_link_repoint_control.sh"]
-assert ctl.ok else "fold-shelf-repoint: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=25 fail=0" else "fold-shelf-repoint: the control did not prove twenty-five behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.ok else "fold-shelf-repoint: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=25 fail=0" else "fold-shelf-repoint: the control did not prove twenty-five behaviors --\n${ctl.out_brief}\n${ctl.err_brief}"
 
 say "fold-shelf-repoint: and this tree reads clean, so the tool has nothing to do here..."
 let dry = run ["sh" "tools/f/fold_shelf_link_repoint.sh"]
-assert dry.ok else "fold-shelf-repoint: the dry run refused --\n${dry.out}"
+assert dry.ok else "fold-shelf-repoint: the dry run refused --\n${dry.out_brief}"
 # invariant: a dry run NEVER writes, so the standing guard must still read clean after it.
 let after = run ["sh" "tools/fixtures/f/fold_shelf_link_scan.sh"]
 assert after.out contains "verdict=ok" else "fold-shelf-repoint: the tree carries depth-lost links -- run the repointer with --apply"

@@ -23,10 +23,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "glow/bin/rune_shop_core_witness"
 
 let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/rune_shop_core_witness.rye -femit-bin=${bin}"]
-assert build.ok else "rune_shop_core_witness build failed: ${build.err}${build.out}"
+assert build.ok else "rune_shop_core_witness build failed: ${build.err_brief}${build.out_brief}"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
-assert selftest.ok else "rune_shop_core_witness exited non-zero: ${selftest.out}"
+assert selftest.ok else "rune_shop_core_witness exited non-zero: ${selftest.out_brief}"
 # Every leg line below ends in `-- GREEN`, so a bare `contains "GREEN"` matched the FIRST leg and
 # read a run abandoned at leg two as a finished one -- the summary line could be deleted whole and
 # this guard still passed. The summary's own words are what only a complete run prints, and the
@@ -57,8 +57,8 @@ say "GREEN: the `|%` road is picked by whether EVERY arm carries a body -- 17 le
 # above are what the pen proves; this leg is what proves them able to sound.
 say "glow-shop-core: the control -- five plants in a pen checkout, three the selftest catches and two only these legs can."
 let ctl = run ["sh" "tools/fixtures/g/glow_rune_shop_core_control.sh"]
-assert ctl.ok else "glow-shop-core: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=18 fail=0" else "glow-shop-core: the control did not prove eighteen behaviors --\n${ctl.out}"
+assert ctl.ok else "glow-shop-core: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=18 fail=0" else "glow-shop-core: the control did not prove eighteen behaviors --\n${ctl.out_brief}"
 
 # The seventeen-leg claim above is printed BEFORE this leg runs, so a run abandoned during the
 # control's twenty-two seconds leaves a transcript ending on the announcement -- the same shape the

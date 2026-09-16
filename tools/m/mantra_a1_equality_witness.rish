@@ -77,23 +77,23 @@ assert exact.out contains "0" else "mantra-eq: an equality desk reaches for gth,
 # so the comparison is written once and both read it.
 say "mantra-eq: each desk's decided constant, read against the struct it names in the rye..."
 let line_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-line-fields-eq-u32.glow" "mantra/src/weave.rye" "Line"]
-assert line_const.ok else "mantra-eq: the constant scan refused on Line -- ${line_const.out}"
-assert line_const.out contains "verdict=ok" else "mantra-eq: the line gate and Line disagree -- ${line_const.out}"
+assert line_const.ok else "mantra-eq: the constant scan refused on Line -- ${line_const.out_brief}"
+assert line_const.out contains "verdict=ok" else "mantra-eq: the line gate and Line disagree -- ${line_const.out_brief}"
 
 let weave_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-weave-fields-eq-u32.glow" "mantra/src/weave.rye" "Weave"]
-assert weave_const.ok else "mantra-eq: the constant scan refused on Weave -- ${weave_const.out}"
-assert weave_const.out contains "verdict=ok" else "mantra-eq: the weave gate and Weave disagree -- ${weave_const.out}"
+assert weave_const.ok else "mantra-eq: the constant scan refused on Weave -- ${weave_const.out_brief}"
+assert weave_const.out contains "verdict=ok" else "mantra-eq: the weave gate and Weave disagree -- ${weave_const.out_brief}"
 
 let diff_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-diff-fields-eq-u32.glow" "mantra/src/weave.rye" "Diff"]
-assert diff_const.ok else "mantra-eq: the constant scan refused on Diff -- ${diff_const.out}"
-assert diff_const.out contains "verdict=ok" else "mantra-eq: the diff gate and Diff disagree -- ${diff_const.out}"
+assert diff_const.ok else "mantra-eq: the constant scan refused on Diff -- ${diff_const.out_brief}"
+assert diff_const.out contains "verdict=ok" else "mantra-eq: the diff gate and Diff disagree -- ${diff_const.out_brief}"
 
 # Store's three fields are all directory handles -- the root, `.mantra/`, and `.mantra/blobs/`
 # -- so the struct reader answers this desk's question exactly. A non-directory field added
 # later reds this leg, which is the honest outcome: the desk would then want its own reader.
 let store_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-store-dirs-eq-u32.glow" "mantra/src/store.rye" "Store"]
-assert store_const.ok else "mantra-eq: the constant scan refused on Store -- ${store_const.out}"
-assert store_const.out contains "verdict=ok" else "mantra-eq: the store gate and Store disagree -- ${store_const.out}"
+assert store_const.ok else "mantra-eq: the constant scan refused on Store -- ${store_const.out_brief}"
+assert store_const.out contains "verdict=ok" else "mantra-eq: the store gate and Store disagree -- ${store_const.out_brief}"
 
 say "mantra-eq: building and running the fifth gate -- a Line carries exactly five fields..."
 let line_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/mantra_a1_line_fields_eq_witness.rye -femit-bin=mantra/bin/a1-line-fields"]

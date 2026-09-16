@@ -14,7 +14,7 @@ let zig_ver = run [zig "version"]
 assert zig_ver.ok else "tally-pedersen: pinned toolchain missing"
 
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/tally && printf '%s' $d"]
-assert pen_mk.ok else "tally-pedersen: could not build the pen -- ${pen_mk.err}"
+assert pen_mk.ok else "tally-pedersen: could not build the pen -- ${pen_mk.err_brief}"
 let pen = trim pen_mk.out
 
 let copy_modules = run ["cp" "tally/bud.rye" "tally/pedersen.rye" "${pen}/tally/"]
@@ -25,10 +25,10 @@ assert write_probe.ok else "tally-pedersen: could not write the seam probe"
 
 # Passing side: the elder name reaches Bud's pinned known answer.
 let build_green = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/tally/probe.rye" "-femit-bin=${pen}/probe"]
-assert build_green.ok else "tally-pedersen: the complete forwarding seam must compile -- ${build_green.err}"
+assert build_green.ok else "tally-pedersen: the complete forwarding seam must compile -- ${build_green.err_brief}"
 let green = run ["${pen}/probe"]
 assert green.ok else "tally-pedersen: the caller through the shim must run"
-assert green.err contains "01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-pedersen: the shim moved off Bud's pinned answer -- ${green.err}"
+assert green.err contains "01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-pedersen: the shim moved off Bud's pinned answer -- ${green.err_brief}"
 say "tally-pedersen: complete shim reached Bud's pinned answer"
 
 # Refusal side: one absent forward makes the same caller fail at the seam.
@@ -37,7 +37,7 @@ assert plant.ok else "tally-pedersen: missing-forward plant could not run"
 assert plant.out contains "plant=landed" else "tally-pedersen: missing-forward plant changed nothing"
 let red = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/tally/probe.rye" "-femit-bin=${pen}/hurt"]
 assert red.ok == false else "tally-pedersen: a caller crossed a shim with its commit forward absent"
-assert red.err contains "no member named 'commit'" else "tally-pedersen: the refusal must name the absent forward -- ${red.err}"
+assert red.err contains "no member named 'commit'" else "tally-pedersen: the refusal must name the absent forward -- ${red.err_brief}"
 say "tally-pedersen: missing commit forward refused at compile time"
 
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]

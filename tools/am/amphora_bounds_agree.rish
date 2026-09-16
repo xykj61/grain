@@ -54,24 +54,24 @@ let word_diverge = "tools/fixtures/amphora_bounds_plants/word_diverge"
 let roof_symlink = "tools/fixtures/amphora_bounds_plants/roof_symlink"
 
 let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
-assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL -- ${pos.out} ${pos.err}"
+assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL -- ${pos.out_brief} ${pos.err_brief}"
 assert pos.out contains "verdict=misread" else "amphora_bounds_agree: disagree missing misread"
 assert pos.out contains "bound_max_cargo_status=diverge" else "amphora_bounds_agree: disagree must name diverge"
 say "plant_positive=honored"
 
 let neg = run ["env" "AMPHORA_BOUNDS_ROOT=${agree}" "sh" scan]
-assert neg.ok else "amphora_bounds_agree: agree plant must PASS -- ${neg.out} ${neg.err}"
+assert neg.ok else "amphora_bounds_agree: agree plant must PASS -- ${neg.out_brief} ${neg.err_brief}"
 assert neg.out contains "verdict=ok" else "amphora_bounds_agree: agree missing ok"
 assert neg.out contains "bound_max_cargo_status=agree" else "amphora_bounds_agree: agree must name agree"
 say "plant_negative=honored"
 
 let apos = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_disagree}" "sh" scan]
-assert (apos.ok == false) else "amphora_bounds_agree: alias disagree must FAIL -- ${apos.out} ${apos.err}"
+assert (apos.ok == false) else "amphora_bounds_agree: alias disagree must FAIL -- ${apos.out_brief} ${apos.err_brief}"
 assert apos.out contains "alias_cargo_ceiling_status=diverge" else "alias disagree must name diverge"
 say "plant_alias_positive=honored"
 
 let aneg = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_agree}" "sh" scan]
-assert aneg.ok else "amphora_bounds_agree: alias agree must PASS -- ${aneg.out} ${aneg.err}"
+assert aneg.ok else "amphora_bounds_agree: alias agree must PASS -- ${aneg.out_brief} ${aneg.err_brief}"
 assert aneg.out contains "alias_cargo_ceiling_status=agree" else "alias agree must name agree"
 assert aneg.out contains "alias_cargo_ceiling_membership=whole" else "an agreeing group names its membership whole"
 say "plant_alias_negative=honored"
@@ -85,7 +85,7 @@ say "plant_alias_negative=honored"
 # are two questions: `present` counts distinct names, `missing` names the rest, and
 # a group with one name present compares nothing across names.
 let ainc = run ["env" "AMPHORA_BOUNDS_ROOT=${alias_incomplete}" "sh" scan]
-assert (ainc.ok == false) else "amphora_bounds_agree: an incomplete alias group must FAIL -- ${ainc.out} ${ainc.err}"
+assert (ainc.ok == false) else "amphora_bounds_agree: an incomplete alias group must FAIL -- ${ainc.out_brief} ${ainc.err_brief}"
 assert ainc.out contains "alias_cargo_ceiling_membership=incomplete" else "an incomplete group must name its membership"
 assert ainc.out contains "alias_cargo_ceiling_missing=max_seal_plain,max_cargo_bytes" else "the absent members must be named rather than counted"
 assert ainc.out contains "alias_cargo_ceiling_present=1" else "one distinct name present must read as one"
@@ -93,25 +93,25 @@ assert (ainc.out contains "alias_cargo_ceiling_status=agree" == false) else "one
 say "plant_alias_incomplete=honored"
 
 let cpos = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_disagree}" "sh" scan]
-assert (cpos.ok == false) else "amphora_bounds_agree: couples disagree must FAIL -- ${cpos.out} ${cpos.err}"
+assert (cpos.ok == false) else "amphora_bounds_agree: couples disagree must FAIL -- ${cpos.out_brief} ${cpos.err_brief}"
 assert cpos.out contains "couples_status=diverge" else "couples disagree must name diverge"
 say "plant_couples_positive=honored"
 
 let cneg = run ["env" "AMPHORA_BOUNDS_ROOT=${couples_agree}" "sh" scan]
-assert cneg.ok else "amphora_bounds_agree: couples agree must PASS -- ${cneg.out} ${cneg.err}"
+assert cneg.ok else "amphora_bounds_agree: couples agree must PASS -- ${cneg.out_brief} ${cneg.err_brief}"
 assert cneg.out contains "couples_status=agree" else "couples agree must name agree"
 say "plant_couples_negative=honored"
 
 # The short plant carries Amphora's own `20260906` numbers -- 200 covering 512
 # -- so the refusal this leg proves is the one the living tree actually had.
 let vpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_short}" "sh" scan]
-assert (vpos.ok == false) else "amphora_bounds_agree: covers short must FAIL -- ${vpos.out} ${vpos.err}"
+assert (vpos.ok == false) else "amphora_bounds_agree: covers short must FAIL -- ${vpos.out_brief} ${vpos.err_brief}"
 assert vpos.out contains "covers_status=short" else "covers short must name short"
 assert vpos.out contains "_slack=-312" else "covers short must print the signed gap"
 say "plant_covers_positive=honored"
 
 let vneg = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_hold}" "sh" scan]
-assert vneg.ok else "amphora_bounds_agree: covers holding must PASS -- ${vneg.out} ${vneg.err}"
+assert vneg.ok else "amphora_bounds_agree: covers holding must PASS -- ${vneg.out_brief} ${vneg.err_brief}"
 assert vneg.out contains "covers_status=hold" else "covers holding must name hold"
 say "plant_covers_negative=honored"
 
@@ -120,14 +120,14 @@ say "plant_covers_negative=honored"
 # marker to the unrelated 8192 below -- so the leg proves the false green, not
 # merely the refusal.
 let dpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_on_derived}" "sh" scan]
-assert (dpos.ok == false) else "amphora_bounds_agree: a marker on a derived bound must FAIL -- ${dpos.out} ${dpos.err}"
+assert (dpos.ok == false) else "amphora_bounds_agree: a marker on a derived bound must FAIL -- ${dpos.out_brief} ${dpos.err_brief}"
 assert dpos.out contains "cover_max_roof_to_b_max_partner_status=marker_on_derived" else "the marker must bind to max_roof and name it derived"
 assert (dpos.out contains "unrelated_large" == false) else "the marker must never reach the stranger below it"
 say "plant_marker_on_derived=honored"
 
 # A partner that exists and carries an expression is present, not absent.
 let ppos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_partner_derived}" "sh" scan]
-assert (ppos.ok == false) else "amphora_bounds_agree: a derived partner must FAIL -- ${ppos.out} ${ppos.err}"
+assert (ppos.ok == false) else "amphora_bounds_agree: a derived partner must FAIL -- ${ppos.out_brief} ${ppos.err_brief}"
 assert ppos.out contains "cover_max_roof_to_b_max_line_len_status=partner_derived" else "a spelled derived partner must read partner_derived"
 assert (ppos.out contains "partner_absent" == false) else "a present const must never be called absent"
 say "plant_partner_derived=honored"
@@ -141,13 +141,13 @@ say "plant_partner_derived=honored"
 # identifier the room actually declares in two or more files, so the family
 # below is read on the lap it lands rather than on the lap somebody remembers.
 let upos = run ["env" "AMPHORA_BOUNDS_ROOT=${unseated_diverge}" "sh" scan]
-assert (upos.ok == false) else "amphora_bounds_agree: an unseated diverging family must FAIL -- ${upos.err}"
+assert (upos.ok == false) else "amphora_bounds_agree: an unseated diverging family must FAIL -- ${upos.err_brief}"
 assert upos.out contains "bound_max_frame_len_status=diverge" else "the unseated family must be read and named diverge"
 assert upos.out contains "same_name_unseated=max_frame_len" else "the unseated family must be named out loud"
 say "plant_unseated_positive=honored"
 
 let uneg = run ["env" "AMPHORA_BOUNDS_ROOT=${unseated_agree}" "sh" scan]
-assert uneg.ok else "amphora_bounds_agree: an unseated agreeing family must PASS -- ${uneg.err}"
+assert uneg.ok else "amphora_bounds_agree: an unseated agreeing family must PASS -- ${uneg.err_brief}"
 assert uneg.out contains "bound_max_frame_len_status=agree" else "the unseated agreeing family must read agree"
 assert uneg.out contains "same_name_unseated=max_frame_len" else "an agreeing unseated family is still named"
 say "plant_unseated_negative=honored"
@@ -160,14 +160,14 @@ say "plant_unseated_negative=honored"
 # name the parser refuses on, and Zig forbids `src/` importing its parent, so
 # the second spelling cannot be removed -- only watched.
 let wpos = run ["env" "AMPHORA_BOUNDS_ROOT=${word_diverge}" "sh" scan]
-assert (wpos.ok == false) else "amphora_bounds_agree: a diverging wire word must FAIL -- ${wpos.out} ${wpos.err}"
+assert (wpos.ok == false) else "amphora_bounds_agree: a diverging wire word must FAIL -- ${wpos.out_brief} ${wpos.err_brief}"
 assert wpos.out contains "word_vessel_format_status=diverge" else "the diverging word family must be named diverge"
 assert wpos.out contains "word_vessel_format_values=amphora-v1,amphora-v2" else "both spellings must be printed, so a reader sees which drifted"
 assert wpos.out contains "words_status=diverge" else "a diverging word family must reach the family verdict"
 say "plant_word_positive=honored"
 
 let wneg = run ["env" "AMPHORA_BOUNDS_ROOT=${word_agree}" "sh" scan]
-assert wneg.ok else "amphora_bounds_agree: an agreeing wire word must PASS -- ${wneg.out} ${wneg.err}"
+assert wneg.ok else "amphora_bounds_agree: an agreeing wire word must PASS -- ${wneg.out_brief} ${wneg.err_brief}"
 assert wneg.out contains "word_vessel_format_status=agree" else "the agreeing word family must read agree"
 assert wneg.out contains "word_vessel_format_roofs=2" else "an agreeing word family stands on two distinct files"
 say "plant_word_negative=honored"
@@ -179,7 +179,7 @@ say "plant_word_negative=honored"
 # a comparison of one file with itself can never fail, whatever drifts. The
 # state is lawful, so the leg proves the NAME rather than a refusal.
 let rsym = run ["env" "AMPHORA_BOUNDS_ROOT=${roof_symlink}" "sh" scan]
-assert rsym.ok else "amphora_bounds_agree: a symlinked roof is lawful and must PASS -- ${rsym.out} ${rsym.err}"
+assert rsym.ok else "amphora_bounds_agree: a symlinked roof is lawful and must PASS -- ${rsym.out_brief} ${rsym.err_brief}"
 assert rsym.out contains "bound_max_frame_len_roofs=1" else "two paths to one file must count as one roof"
 assert rsym.out contains "bound_max_frame_len_status=one_file" else "one file compared with itself must never read agree"
 assert (rsym.out contains "bound_max_frame_len_status=agree" == false) else "the elder false agreement must not return"

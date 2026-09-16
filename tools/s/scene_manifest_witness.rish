@@ -22,10 +22,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/scene_manifest"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/scene_manifest.rye -femit-bin=${bin}"]
-assert build.ok else "scene_manifest: build failed -- ${build.err}"
+assert build.ok else "scene_manifest: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "scene_manifest: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "scene_manifest: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "scene_manifest: ${out}"

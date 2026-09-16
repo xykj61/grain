@@ -15,7 +15,7 @@
 # because each header tells a reader to run that witness directly.
 let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p scribe/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh scribe/reader.rye -femit-bin=scribe/bin/reader"]
-assert build.ok else "scribe reader: build failed -- ${build.err}"
+assert build.ok else "scribe reader: build failed -- ${build.err_brief}"
 
 let st = run ["scribe/bin/reader" "selftest"]
 assert st.ok else "scribe reader selftest must exit 0"

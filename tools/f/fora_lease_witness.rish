@@ -22,7 +22,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/lease"
 
 let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh constel/lease.rye -femit-bin=${bin}"]
-assert build.ok else "fora-lease: build failed — ${build.err}"
+assert build.ok else "fora-lease: build failed — ${build.err_brief}"
 
 let outfile = "constel/bin/lease.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

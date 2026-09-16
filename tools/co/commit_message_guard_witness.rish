@@ -35,7 +35,7 @@ say "commit-guard: Lens TAME -- the shipped hook is fed planted messages, never 
 
 let scan = run ["sh" "tools/fixtures/c/commit_message_guard_scan.sh"]
 say scan.out
-assert scan.ok else "commit-guard: the guard scan failed to run -- ${scan.err}"
+assert scan.ok else "commit-guard: the guard scan failed to run -- ${scan.err_brief}"
 
 assert scan.out contains "GUARD_HOOK_PRESENT 1" else "commit-guard: tools/hooks/commit-msg is missing or not executable -- git would skip it in silence"
 

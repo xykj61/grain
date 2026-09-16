@@ -26,8 +26,8 @@ say "rish-report-bound: Lens TAME -- bound everything, and prove the bound from 
 
 say "rish-report-bound: the control -- fifteen behaviors, three of them against the real interpreter..."
 let ctl = run ["sh" "tools/fixtures/r/rish_report_bound_control.sh"]
-assert ctl.ok else "rish-report-bound: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=15 fail=0" else "rish-report-bound: the control did not prove fifteen behaviors --\n${ctl.out}"
+assert ctl.ok else "rish-report-bound: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+assert ctl.out contains "pass=15 fail=0" else "rish-report-bound: the control did not prove fifteen behaviors --\n${ctl.out_brief}"
 
 say "rish-report-bound: and the living tree, read on metal..."
 let scan = run ["sh" "tools/fixtures/r/rish_report_bound_scan.sh"]

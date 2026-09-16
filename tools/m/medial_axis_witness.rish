@@ -24,10 +24,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/medial_axis"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/medial_axis.rye -femit-bin=${bin}"]
-assert build.ok else "medial_axis: build failed -- ${build.err}"
+assert build.ok else "medial_axis: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "medial_axis: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "medial_axis: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "medial_axis: ${out}"

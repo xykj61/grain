@@ -34,9 +34,9 @@ say "topology-stretch: Lens TAME -- the rule read as well as run; bound the cap,
 say "topology-stretch: the scan builds the shapes, walks them, and routes every difference..."
 let scan = run ["sh" "tools/fixtures/t/topology_stretch_scan.sh"]
 # invariant: the scan stands green before any reading of it is trusted.
-assert scan.ok else "topology-stretch: the scan refused --\n${scan.out}"
-assert scan.out contains "verdict=ok" else "topology-stretch: the scan did not reach its own green --\n${scan.out}"
-assert scan.out contains "refusals=0" else "topology-stretch: the scan named a refusal --\n${scan.out}"
+assert scan.ok else "topology-stretch: the scan refused --\n${scan.out_brief}"
+assert scan.out contains "verdict=ok" else "topology-stretch: the scan did not reach its own green --\n${scan.out_brief}"
+assert scan.out contains "refusals=0" else "topology-stretch: the scan named a refusal --\n${scan.out_brief}"
 assert scan.out contains "legs=all" else "topology-stretch: a reduced run must never be read as a full one"
 
 say "topology-stretch: table-free is read off the rule, never inferred from its answer..."
@@ -82,8 +82,8 @@ say "GREEN: topology-stretch -- seven shapes walked and routed, and two of them 
 say "topology-stretch: the control plants each fault and lifts it again..."
 let control = run ["sh" "tools/fixtures/t/topology_stretch_control.sh"]
 # invariant: every refusal this witness rests on is shown from the failing side too.
-assert control.ok else "topology-stretch: the control refused --\n${control.out}"
-assert control.out contains "behaviors=26 passed=26 failed=0" else "topology-stretch: the control did not prove all 26 behaviors --\n${control.out}"
+assert control.ok else "topology-stretch: the control refused --\n${control.out_brief}"
+assert control.out contains "behaviors=26 passed=26 failed=0" else "topology-stretch: the control did not prove all 26 behaviors --\n${control.out_brief}"
 assert control.out contains "pen copy reads exactly what the tree reads" else "topology-stretch: the pen was not proven innocent"
 assert control.out contains "verdict=ok" else "topology-stretch: the control did not reach a verdict"
 say "GREEN: topology-stretch -- 26 behaviors, every refusal bitten and every reading asserted."

@@ -29,7 +29,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "crypto/bin/secp256k1_scalar"
 
 let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh crypto/secp256k1_scalar.rye -femit-bin=${bin}"]
-assert build.ok else "crypto-secp256k1_scalar: build failed — ${build.err}"
+assert build.ok else "crypto-secp256k1_scalar: build failed — ${build.err_brief}"
 
 let outfile = "crypto/bin/secp256k1_scalar.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]

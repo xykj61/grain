@@ -33,7 +33,7 @@ let rout = "crypto/bin/rye_poly1305.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
 let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_poly1305_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
-assert cbuild.ok else "crypto-monocypher-poly1305-parity: Monocypher C harness build failed — ${cbuild.err}"
+assert cbuild.ok else "crypto-monocypher-poly1305-parity: Monocypher C harness build failed — ${cbuild.err_brief}"
 
 # 2. Run the Monocypher C harness -- eight authenticator hex lines.
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]

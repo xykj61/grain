@@ -62,7 +62,7 @@ assert build.ok else "caravan decline build failed"
 # one reader to one name, so two running at once contended for a single file and the
 # loser reddened a green tree. This one lands in caravan/bin/decline_read.
 let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/decline_read"]
-assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err_brief}"
 
 
 # The shape under test is the ring already proven, unchanged. The question

@@ -23,10 +23,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/part_store"
 
 let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/part_store.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-part-store: build failed — ${build.err}"
+assert build.ok else "hunk-part-store: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-part-store: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-part-store: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-part-store: ${out}"
@@ -41,7 +41,7 @@ assert selftest.out contains "no network, no key, no funds" else "hunk-part-stor
 
 # HUNK71 stays GREEN -- part_store banks the catalog HUNK71 renders; the catalog underneath must still hold.
 let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest 2>&1"]
-assert cat.ok else "hunk-part-store: HUNK71 part_catalog re-run failed — ${cat.out}"
+assert cat.ok else "hunk-part-store: HUNK71 part_catalog re-run failed — ${cat.out_brief}"
 assert cat.out contains "GREEN part-catalog" else "hunk-part-store: HUNK71 part_catalog selftest did not stay GREEN"
 
 say "hunk-part-store: GREEN — the parts catalog is content-addressed; a whole marketplace opens from cold, verified before read, and rebuilds byte-for-byte on metal; HUNK71 catalog underneath stays GREEN. HUNK72 lands, the marketplace-facts arc closes."

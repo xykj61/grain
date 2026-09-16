@@ -46,14 +46,14 @@ say "dayshelf-merge: Lens TAME -- safety first: every shape the driver cannot re
 
 let attrs = run ["sh" "-c" "grep 'README-index' .gitattributes | grep -c 'merge=dayshelf'"]
 assert attrs.ok else "dayshelf-merge: .gitattributes must name merge=dayshelf for the day shelves"
-assert (trim attrs.out) == "1" else "dayshelf-merge: .gitattributes names the dayshelf driver ${attrs.out} times rather than once"
+assert (trim attrs.out) == "1" else "dayshelf-merge: .gitattributes names the dayshelf driver ${attrs.out_brief} times rather than once"
 
 let union_gone = run ["sh" "-c" "grep 'README-index' .gitattributes | grep -c 'merge=union' || true"]
 assert (trim union_gone.out) == "0" else "dayshelf-merge: the union driver still claims the day shelves -- it is what misorders them"
 
 let armed = run ["sh" "-c" "git config --get merge.dayshelf.driver"]
 assert armed.ok else "dayshelf-merge: this clone has not armed the driver -- run: rishi/bin/rishi run tools/i/install_hooks.rish"
-assert armed.out contains "dayshelf_merge.sh" else "dayshelf-merge: merge.dayshelf.driver names ${armed.out} rather than the tree's own driver"
+assert armed.out contains "dayshelf_merge.sh" else "dayshelf-merge: merge.dayshelf.driver names ${armed.out_brief} rather than the tree's own driver"
 
 let named = run ["sh" "-c" "git config --get merge.dayshelf.name"]
 assert named.ok else "dayshelf-merge: merge.dayshelf.name must be set beside the driver -- run install_hooks"

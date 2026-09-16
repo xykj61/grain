@@ -27,10 +27,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/compose_tiled"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/compose_tiled.rye -femit-bin=${bin}"]
-assert build.ok else "compose-tiled: build failed -- ${build.err}"
+assert build.ok else "compose-tiled: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "compose-tiled: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "compose-tiled: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "compose-tiled: ${out}"

@@ -38,12 +38,12 @@ say "front-door-claim: Lens TAME -- safety first; the population is opt-in, so t
 
 let green = run ["sh" "tools/fixtures/f/front_door_claim_scan.sh"]
 say green.out
-assert green.ok else "front-door-claim: the living measure must exit 0 -- ${green.err}${green.out}"
-assert green.out contains "verdict=ok" else "front-door-claim: want verdict ok -- ${green.out}"
+assert green.ok else "front-door-claim: the living measure must exit 0 -- ${green.err_brief}${green.out_brief}"
+assert green.out contains "verdict=ok" else "front-door-claim: want verdict ok -- ${green.out_brief}"
 
 # THE WALL, at zero. A declared front door that does not name its claimant has published a promise
 # only one side keeps, and a reader who follows it arrives at a page that never heard of theirs.
-assert green.out contains "claims_unkept=0" else "front-door-claim: a declared front door names its claimant, or the claim retires -- ${green.out}"
+assert green.out contains "claims_unkept=0" else "front-door-claim: a declared front door names its claimant, or the claim retires -- ${green.out_brief}"
 
 # THE READING IS NOT VACUOUS ON THIS TREE. A population that came back empty would print zero unkept
 # and read exactly like a tree whose every declared claim is kept (REDS %240's confident wrong zero).
@@ -54,14 +54,14 @@ assert (green.out contains "claims=0") == false else "front-door-claim: a tree d
 # THE GATE DOES THE WORK, proven on the living tree rather than asserted: a room holding no declared
 # key refuses rather than passing, so the green above is the claim's doing.
 let vacuum = run ["sh" "tools/fixtures/f/front_door_claim_scan.sh" "rishi"]
-assert (vacuum.ok == false) else "front-door-claim: a room declaring no front door must refuse -- ${vacuum.out}"
-assert vacuum.out contains "verdict=no_claims" else "front-door-claim: want the vacuum named -- ${vacuum.out}"
+assert (vacuum.ok == false) else "front-door-claim: a room declaring no front door must refuse -- ${vacuum.out_brief}"
+assert vacuum.out contains "verdict=no_claims" else "front-door-claim: want the vacuum named -- ${vacuum.out_brief}"
 
 # THE READING ITSELF, proven on planted repositories rather than trusted. Each leg is named here as
 # well as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
 let control = run ["sh" "tools/fixtures/f/front_door_claim_control.sh"]
 say control.out
-assert control.ok else "front-door-claim: the control must exit 0 -- ${control.err}${control.out}"
+assert control.ok else "front-door-claim: the control must exit 0 -- ${control.err_brief}${control.out_brief}"
 assert control.out contains "verdict=control_green" else "front-door-claim: want the control green"
 assert control.out contains "fail=0" else "front-door-claim: the control must carry no red leg"
 assert control.out contains "ok   a front door that names the claiming page reads ok" else "front-door-claim: the kept leg is missing"

@@ -26,10 +26,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/sprite_page"
 
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh brushstroke/sprite_page.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-sprite-page: build failed — ${build.err}"
+assert build.ok else "hunk-sprite-page: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-sprite-page: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-sprite-page: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-sprite-page: ${out}"
@@ -42,7 +42,7 @@ assert selftest.out contains "equals a direct down-map cell for cell" else "hunk
 
 # HUNK4 stays GREEN -- the page reuses sprite.render; the index underneath must still hold.
 let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
-assert sprite.ok else "hunk-sprite-page: HUNK4 sprite re-run failed — ${sprite.out}"
+assert sprite.ok else "hunk-sprite-page: HUNK4 sprite re-run failed — ${sprite.out_brief}"
 assert sprite.out contains "GREEN image-sprite" else "hunk-sprite-page: HUNK4 sprite selftest did not stay GREEN"
 
 say "hunk-sprite-page: GREEN — a marketplace product page is rendered and seen on metal; HUNK4 index underneath stays GREEN. HUNK5 lands."

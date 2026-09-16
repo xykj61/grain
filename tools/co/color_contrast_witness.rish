@@ -26,10 +26,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/color_contrast"
 
 let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/color_contrast.rye -femit-bin=${bin}"]
-assert build.ok else "color-contrast: build failed -- ${build.err}"
+assert build.ok else "color-contrast: build failed -- ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "color-contrast: selftest exited non-zero -- ${selftest.out}"
+assert selftest.ok else "color-contrast: selftest exited non-zero -- ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "color-contrast: ${out}"

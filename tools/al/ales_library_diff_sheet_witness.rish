@@ -24,11 +24,11 @@ let zig = "vendor/zig-toolchain/zig"
 # opens it, and the linker refuses with ETXTBSY -- so the guard answers differently on
 # bytes nobody changed. `printf %s` trims the newline a bare capture would keep.
 let pen = run ["sh" "-c" "printf %s $(mktemp -d)"]
-assert pen.ok else "could not make a build pen: ${pen.err}"
+assert pen.ok else "could not make a build pen: ${pen.err_brief}"
 let bin = "${pen.out}/library_diff_sheet"
 
 let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh lotus/library_diff_sheet.rye -femit-bin=${bin}"]
-assert build.ok else "ales-library-diff-sheet: build failed — ${build.err}"
+assert build.ok else "ales-library-diff-sheet: build failed — ${build.err_brief}"
 
 let outfile = "lotus/bin/library_diff_sheet.out"
 let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
@@ -44,4 +44,4 @@ say "ales-library-diff-sheet: GREEN — a keeper reads what moved between two ve
 
 # The pen is swept here rather than left for the next run to meet.
 let pen_swept = run ["sh" "-c" "rm -rf ${pen.out}"]
-assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err}"
+assert pen_swept.ok else "the build pen outlived its witness: ${pen_swept.err_brief}"

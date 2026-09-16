@@ -24,10 +24,10 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/preset_touch_view"
 
 let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/preset_touch_view.rye -femit-bin=${bin}"]
-assert build.ok else "hunk-touch-view: build failed — ${build.err}"
+assert build.ok else "hunk-touch-view: build failed — ${build.err_brief}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
-assert selftest.ok else "hunk-touch-view: selftest exited non-zero — ${selftest.out}"
+assert selftest.ok else "hunk-touch-view: selftest exited non-zero — ${selftest.out_brief}"
 
 let out = trim selftest.out
 say "hunk-touch-view: ${out}"

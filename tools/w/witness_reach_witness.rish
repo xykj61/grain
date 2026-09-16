@@ -50,8 +50,8 @@ say "witness-reach: Lens TAME -- safety first: a MENTION is refused and only a C
 # show it every shape it must judge, so the shapes are planted in throwaway git repositories.
 let control = run ["sh" "tools/fixtures/w/witness_reach_control.sh"]
 say control.out
-assert control.ok else "witness-reach: the control must complete -- ${control.err}"
-assert control.out contains "control_verdict=ok" else "witness-reach: the control must reach its own verdict -- ${control.out}"
+assert control.ok else "witness-reach: the control must complete -- ${control.err_brief}"
+assert control.out contains "control_verdict=ok" else "witness-reach: the control must reach its own verdict -- ${control.out_brief}"
 
 # A call is heard, in every shape this tree writes one.
 assert control.out contains "ok   heard: called_direct" else "witness-reach: run [rishi run <path>] is a call"
@@ -133,10 +133,10 @@ assert control.out contains "ok   outside_convention: removing the plants return
 # Now the living tree.
 let living = run ["sh" "tools/fixtures/w/witness_reach_scan.sh"]
 say living.out
-assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
+assert living.ok else "witness-reach: the living scan must complete -- ${living.err_brief}"
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
-assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out}"
-assert living.out contains "under_family_ceiling=yes" else "witness-reach: a whole witness family lost its last clock -- give it a roster row rather than raising the family ceiling -- ${living.out}"
+assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out_brief}"
+assert living.out contains "under_family_ceiling=yes" else "witness-reach: a whole witness family lost its last clock -- give it a roster row rather than raising the family ceiling -- ${living.out_brief}"
 
 # Both outside readings are REPORTED rather than gated, and the scan's header argues why at length:
 # the established repair is Caravan's rename, and a renamed file joins `total` unclocked, so each
@@ -148,7 +148,7 @@ assert living.out contains "outside_dark=" else "witness-reach: the dark reading
 
 # The standing reading is read from the roster, so it can never be zero while the roster has rows.
 let standing = run ["sh" "-c" "sh tools/fixtures/w/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
-assert standing.ok else "witness-reach: could not count the standing set -- ${standing.err}"
+assert standing.ok else "witness-reach: could not count the standing set -- ${standing.err_brief}"
 assert (trim standing.out) != "0" else "witness-reach: the roster has rows, so the standing set must not be empty"
 
 say "witness-reach: GREEN -- the call/mention line is proven on planted repositories from both sides, the family census carries its denominator, and the living tree reads under both ceilings."

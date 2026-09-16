@@ -29,12 +29,12 @@ let zig = "vendor/zig-toolchain/zig"
 # when either fails -- `.ok` keeps meaning what this file's head promises, and `.out` still carries
 # the reason. `mantra/bin/` is a gitignored build directory no other guard reads.
 let wire = run ["sh" "-c" "d=$(mktemp -d) || exit 9; b=$d/wire; if env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_tablecloth_query_wire.rye -femit-bin=$b 2>$d/err; then $b selftest 2>&1; s=$?; else echo BUILD_FAILED; cat $d/err; s=3; fi; rm -rf $d; exit $s"]
-assert wire.ok else "tablecloth query wire build or selftest failed: ${wire.out}"
-assert wire.out contains "GREEN" else "tablecloth query wire selftest not GREEN: ${wire.out}"
+assert wire.ok else "tablecloth query wire build or selftest failed: ${wire.out_brief}"
+assert wire.out contains "GREEN" else "tablecloth query wire selftest not GREEN: ${wire.out_brief}"
 
 let delivery = run ["sh" "-c" "d=$(mktemp -d) || exit 9; b=$d/delivery; if env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_tablecloth_query_delivery.rye -lc -femit-bin=$b 2>$d/err; then $b selftest 2>&1; s=$?; else echo BUILD_FAILED; cat $d/err; s=3; fi; rm -rf $d; exit $s"]
-assert delivery.ok else "tablecloth query delivery build or selftest failed: ${delivery.out}"
-assert delivery.out contains "GREEN" else "tablecloth query delivery selftest not GREEN: ${delivery.out}"
+assert delivery.ok else "tablecloth query delivery build or selftest failed: ${delivery.out_brief}"
+assert delivery.out contains "GREEN" else "tablecloth query delivery selftest not GREEN: ${delivery.out_brief}"
 
 # THE REFUSALS, PROVEN FROM THE FAILING SIDE. The delivery selftest now carries the answer-slot
 # budget: a request reserves the slot its reply will live in, so a caller keeping an answer is
@@ -42,7 +42,7 @@ assert delivery.out contains "GREEN" else "tablecloth query delivery selftest no
 # ceiling nobody enforces, so the control breaks the module six ways in a pen and watches five of
 # them refuse -- with one unmutated leg, so a refusal stays tellable from a bypass.
 let pool_control = run ["sh" "tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh"]
-assert pool_control.ok else "answer-slot budget control did not reach verdict=ok: ${pool_control.err}"
+assert pool_control.ok else "answer-slot budget control did not reach verdict=ok: ${pool_control.err_brief}"
 assert pool_control.out contains "verdict=ok" else "answer-slot budget control verdict missing"
 assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused, so no break below reads honestly"
 
@@ -54,8 +54,8 @@ assert pool_control.out contains "clean_exit=0" else "the unmutated pen refused,
 # the elder binary 39 of 80 red, the repaired binary 0 of 80 -- and both 0 of 120 run serially,
 # which is why a fortnight of green passes never named it (REDS %700).
 let port_control = run ["sh" "tools/fixtures/m/mantra_delivery_port_control.sh"]
-assert port_control.ok else "delivery concurrency control did not reach verdict=ok: ${port_control.out}"
-assert port_control.out contains "clean_red=0" else "the delivery selftest refused beside itself: ${port_control.out}"
+assert port_control.ok else "delivery concurrency control did not reach verdict=ok: ${port_control.out_brief}"
+assert port_control.out contains "clean_red=0" else "the delivery selftest refused beside itself: ${port_control.out_brief}"
 assert port_control.out contains "verdict=ok" else "delivery concurrency control verdict missing"
 
 say "GREEN: Tablecloth query wire witness passed (encode + hosted Comlink filter + answer-slot budget + concurrent delivery)."

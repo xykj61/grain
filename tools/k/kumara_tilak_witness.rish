@@ -12,7 +12,7 @@
 let build_dir = run ["mkdir" "-p" "kumara/bin"]
 assert build_dir.ok else "kumara tilak witness must create its build directory"
 let build = run ["env" "RYE_ZIG=vendor/zig-toolchain/zig" "rye/bin/rye" "build" "kumara/tilak.rye" "-femit-bin=kumara/bin/tilak"]
-assert build.ok else "kumara tilak witness must build the binary it runs -- ${build.err}"
+assert build.ok else "kumara tilak witness must build the binary it runs -- ${build.err_brief}"
 
 # The module's own selftest -- every tilak verifies, every tamper refuses.
 # Diagnostics print to stderr; the Bron facts of `emit` go to stdout.
@@ -27,7 +27,7 @@ assert (st.err contains "refusal_cases=5") else "the five signed-tilak refusal c
 # Plant a verifier that trusts either half of the mutual bind alone. The control
 # must make both weakened directions red before this witness may call the pair whole.
 let bind_control = run ["sh" "tools/fixtures/k/kumara_tilak_bind_control.sh"]
-assert bind_control.ok else "one-directional bind controls must red on both sides -- ${bind_control.out}${bind_control.err}"
+assert bind_control.ok else "one-directional bind controls must red on both sides -- ${bind_control.out_brief}${bind_control.err_brief}"
 assert (bind_control.out contains "plants=2 reds=2") else "both one-directional bind plants must be observed"
 
 # The emitted instance holds all seven records: point, bind, turn, three caps, sponsor.

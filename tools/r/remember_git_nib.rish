@@ -65,6 +65,6 @@ say wrote.out
 # program never reports success over a card the guard would still refuse.
 let back = run ["sh" "-c" "awk '/Git nib:/{ if (match($0, /[0-9a-f]{7,40}/)) { print substr($0, RSTART, RLENGTH); exit } }' construction/ITINERARY.md"]
 assert back.ok else "remember-git-nib: the card could not be read back after the write"
-assert (trim back.out) == nib else "remember-git-nib: the card reads back as ${back.out} rather than ${nib} -- the guard would still refuse"
+assert (trim back.out) == nib else "remember-git-nib: the card reads back as ${back.out_brief} rather than ${nib} -- the guard would still refuse"
 
 say "remember-git-nib: the card names ${nib} -- HEAD's parent, resolvable in every clone."

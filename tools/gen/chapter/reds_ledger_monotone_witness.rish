@@ -72,14 +72,14 @@ assert gap.out contains "expected row 2, found 3" else "reds-monotone: want the 
 # RED path two -- the prose shape is really read. Were this scan still blind to it, a
 # ledger written entirely in prose would answer no_rows rather than counting three.
 let prose = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %2 -- c.** d'; echo '**REDS %3 -- e.** f'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert prose.ok else "reds-monotone: a ledger written in the prose shape must be counted -- ${prose.out}"
+assert prose.ok else "reds-monotone: a ledger written in the prose shape must be counted -- ${prose.out_brief}"
 assert prose.out contains "rows=3" else "reds-monotone: want all three prose rows seen"
 
 # RED path three -- a closure note keeps the number of the row it speaks about, and that
 # is a whole ledger rather than a duplicate. A gate that reds on valid input teaches the
 # bench to route around it (REDS %100), so this welcome is proven beside the refusals.
 let note = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %1 CLOSED -- a.** Released.'; echo '**REDS %2 -- c.** d'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert note.ok else "reds-monotone: a row and its own closure note must read as one row -- ${note.out}"
+assert note.ok else "reds-monotone: a row and its own closure note must read as one row -- ${note.out_brief}"
 assert note.out contains "mentions=3" else "reds-monotone: want all three mentions counted"
 assert note.out contains "rows=2" else "reds-monotone: want the closure note read as the row it speaks about"
 assert note.out contains "duplicate_headlines=0" else "reds-monotone: a row and its own closure note share one number, so they are one row rather than a double-book"
@@ -91,7 +91,7 @@ assert note.out contains "duplicate_headlines=0" else "reds-monotone: a row and 
 # arrived again from upstream. The ceiling holds that line and only ever falls; the pairs
 # themselves live on dated shelves, so resolving them is Keaton's word under `debride`.
 let atceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert atceil.ok else "reds-monotone: three duplicate headlines is the line as it stands and must pass -- ${atceil.out}"
+assert atceil.ok else "reds-monotone: three duplicate headlines is the line as it stands and must pass -- ${atceil.out_brief}"
 assert atceil.out contains "duplicate_headlines=3" else "reds-monotone: want all three duplicate headlines counted"
 
 # RED path seven -- one past the ceiling. A gate proven only in the passing direction cannot be
@@ -105,7 +105,7 @@ assert overceil.out contains "one headline under %7 %8" else "reds-monotone: a r
 # The welcome beside it -- distinct headlines read zero, so the reading is measuring rather than
 # matching anything that rhymes.
 let distinct = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- b.** x'; echo '**REDS %3 -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert distinct.ok else "reds-monotone: a ledger of distinct headlines must pass -- ${distinct.out}"
+assert distinct.ok else "reds-monotone: a ledger of distinct headlines must pass -- ${distinct.out_brief}"
 assert distinct.out contains "duplicate_headlines=0" else "reds-monotone: want distinct headlines read as zero"
 
 # THE NUMBER NAMES ONE ROW, AND THE ROW STANDS IN ONE PLACE (REDS %536). The spine above proves
@@ -125,7 +125,7 @@ assert distinct.out contains "duplicate_headlines=0" else "reds-monotone: want d
 # perfectly whole (REDS %100). What tells them apart is written on the line: an OPENING puts the
 # stamp immediately after the number, and a note puts a word in between.
 let note_stamp = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %1 CLOSED (`20260902.000001`) -- b.** repaired.'; echo '**REDS %2 (`20260901.000002`) -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert note_stamp.ok else "reds-monotone: a closure note carrying its own later stamp is not a second row -- ${note_stamp.out}"
+assert note_stamp.ok else "reds-monotone: a closure note carrying its own later stamp is not a second row -- ${note_stamp.out_brief}"
 assert note_stamp.out contains "numbers_double_bound=0" else "reds-monotone: want the closure note read as its own row rather than a double-booking"
 assert note_stamp.out contains "bindings=2" else "reds-monotone: want exactly the two openings read, with the closure note left out"
 
@@ -145,14 +145,14 @@ assert stripped.out contains "numbers_double_bound=1" else "reds-monotone: want 
 # The second welcome -- a prose mention that happens to open a line carries no stamp at all, so it
 # is no opening. One stands on disk today, in the %153-154 shelf, naming %155.
 let mention = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %1**, which found the same breach standing in the machinery.'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert mention.ok else "reds-monotone: a prose mention opening a line is not a row -- ${mention.out}"
+assert mention.ok else "reds-monotone: a prose mention opening a line is not a row -- ${mention.out_brief}"
 assert mention.out contains "numbers_double_bound=0" else "reds-monotone: want the prose mention left out of the bindings"
 assert mention.out contains "bindings=2" else "reds-monotone: want the prose mention uncounted"
 
 # The third welcome -- the elder rows carry a date-only stamp, so both widths are openings. Read
 # by the narrow width alone, %87 would drop out of the reading in silence.
 let elder = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901`) -- a.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert elder.ok else "reds-monotone: an elder date-only stamp is still a row opening -- ${elder.out}"
+assert elder.ok else "reds-monotone: an elder date-only stamp is still a row opening -- ${elder.out_brief}"
 assert elder.out contains "bindings=2" else "reds-monotone: want the date-only opening read beside the one-clock opening"
 
 # One number over two incidents. This reading COUNTS AND NAMES and no longer gates
@@ -161,14 +161,14 @@ assert elder.out contains "bindings=2" else "reds-monotone: want the date-only o
 # `reds_spine_derive`, which reads the remote and can tell them apart; the leg below proves the
 # gate is genuinely there rather than merely cited.
 let bound_at = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; echo '**REDS %2 (`20260901.000003`) -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert bound_at.ok else "reds-monotone: a double-bound number is reported here rather than gated -- ${bound_at.out}"
+assert bound_at.ok else "reds-monotone: a double-bound number is reported here rather than gated -- ${bound_at.out_brief}"
 assert bound_at.out contains "numbers_double_bound=1" else "reds-monotone: want the double-bound number counted"
 
 # A SECOND one passes too, and this leg is what proves the ceiling is gone rather than merely
 # raised. Under the elder ceiling of 1 this exact tree refused; a reading that only ever showed the
 # passing case at one instance could not be told from a ceiling quietly bumped to two.
 let bound_over = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %1 (`20260901.000009`) -- z.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; echo '**REDS %2 (`20260901.000003`) -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert bound_over.ok else "reds-monotone: a second double-bound number must pass too, or the ceiling was raised rather than lifted -- ${bound_over.out}"
+assert bound_over.ok else "reds-monotone: a second double-bound number must pass too, or the ceiling was raised rather than lifted -- ${bound_over.out_brief}"
 assert bound_over.out contains "verdict=ok" else "reds-monotone: want the doubled number reported under an ok verdict"
 assert bound_over.out contains "numbers_double_bound=2" else "reds-monotone: want the second double-binding counted"
 assert bound_over.out contains "%1 is bound to 20260901.000001 20260901.000009" else "reds-monotone: a report must name the number and both stamps, or nobody can read which rows collided"
@@ -179,8 +179,8 @@ assert bound_over.out contains "numbers_double_bound_gated_by=reds_spine_derive"
 # stamps, neither of them on any anointed spine, must refuse there -- and the same plant walks free
 # here, which is the whole point of moving the gate rather than dropping it.
 let teeth = run ["sh" "-c" "d=$(mktemp -d); cd $d; git init -q -b main .; { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %1 (`20260901.000009`) -- z.** x'; } > construction-REDS.md; mkdir -p construction; cp construction-REDS.md construction/REDS.md; sh $OLDPWD/tools/fixtures/r/reds_spine_derive_scan.sh 2>&1; s=$?; cd $OLDPWD; rm -rf $d; exit 0"]
-assert teeth.out contains "double_booked=1" else "reds-monotone: the guard this reading points at does not count a locally-made double-booking, so the class is gated nowhere -- ${teeth.out}"
-assert teeth.out contains "verdict=double_booked" else "reds-monotone: the guard this reading points at does not REFUSE a locally-made double-booking -- ${teeth.out}"
+assert teeth.out contains "double_booked=1" else "reds-monotone: the guard this reading points at does not count a locally-made double-booking, so the class is gated nowhere -- ${teeth.out_brief}"
+assert teeth.out contains "verdict=double_booked" else "reds-monotone: the guard this reading points at does not REFUSE a locally-made double-booking -- ${teeth.out_brief}"
 
 # One incident written into two files, at the ceiling. This is the other half and it fails
 # differently -- and whether it fails at all is a reading. %512 stands on two shelves under one
@@ -188,7 +188,7 @@ assert teeth.out contains "verdict=double_booked" else "reds-monotone: the guard
 # carrying what the row taught and one how it ended. So the count names a pair to open rather than
 # a repair to make, which is why this ceiling holds where it stands.
 let shelf_at = run ["sh" "-c" "d=$(mktemp -d); echo '**REDS %1 (`20260901.000001`) -- a.** x' > $d/A.md; { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; } > $d/B.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/A.md $d/B.md; s=$?; rm -rf $d; exit $s"]
-assert shelf_at.ok else "reds-monotone: one row on two shelves is the line as it stands and must pass -- ${shelf_at.out}"
+assert shelf_at.ok else "reds-monotone: one row on two shelves is the line as it stands and must pass -- ${shelf_at.out_brief}"
 assert shelf_at.out contains "rows_double_shelved=1" else "reds-monotone: want the double-shelved row counted"
 assert shelf_at.out contains "numbers_double_bound=0" else "reds-monotone: a row copied to a second shelf carries one stamp, so it is not double-bound"
 
@@ -202,7 +202,7 @@ assert shelf_over.out contains "/A.md" else "reds-monotone: a refusal must name 
 # The two readings are named apart because they are repaired apart, and this proves they do not
 # fire together. A tree holding one of each reads one in each column rather than two in either.
 let apart = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; echo '**REDS %2 (`20260901.000003`) -- c.** x'; } > $d/A.md; echo '**REDS %1 (`20260901.000001`) -- a.** x' > $d/B.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/A.md $d/B.md; s=$?; rm -rf $d; exit $s"]
-assert apart.ok else "reds-monotone: one of each fault is the line as it stands -- ${apart.out}"
+assert apart.ok else "reds-monotone: one of each fault is the line as it stands -- ${apart.out_brief}"
 assert apart.out contains "numbers_double_bound=1" else "reds-monotone: want the double-binding counted alone"
 assert apart.out contains "rows_double_shelved=1" else "reds-monotone: want the double-shelving counted alone"
 
@@ -274,7 +274,7 @@ assert census_dup.out contains "duplicate_census_lines=3" else "reds-monotone: w
 # proven from both sides. A refusal shown only in the failing direction cannot be told
 # from a scan that refuses everything.
 let census_one = run ["sh" "-c" "d=$(mktemp -d); echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21** Every number from 1 to 41 is used.' > $d/L.md; sh tools/fixtures/r/reds_ledger_headline_scan.sh $d/L.md 41; s=$?; rm -rf $d; exit $s"]
-assert census_one.ok else "reds-monotone: a census stated once must pass -- ${census_one.out}"
+assert census_one.ok else "reds-monotone: a census stated once must pass -- ${census_one.out_brief}"
 assert census_one.out contains "duplicate_census_lines=0" else "reds-monotone: want the single census read as zero duplicates"
 assert census_one.out contains "verdict=ok" else "reds-monotone: want the single census welcomed by name"
 

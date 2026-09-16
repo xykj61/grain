@@ -39,11 +39,11 @@ let far = "${home}/dock/vessel.bron"
 # spelling counted as a binding asserted on and never reported (`20260911.003300`).
 let zig = "vendor/zig-toolchain/zig"
 let build_amphora = run ["sh" "-c" "mkdir -p ${home}/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/src/main.rye -femit-bin=${home}/bin/amphora"]
-assert build_amphora.ok else "amphora_carry_neg: amphora build failed --\n${build_amphora.err}"
+assert build_amphora.ok else "amphora_carry_neg: amphora build failed --\n${build_amphora.err_brief}"
 let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_core.rye -femit-bin=${home}/bin/vessel-core"]
-assert build_core.ok else "amphora_carry_neg: vessel-core build failed --\n${build_core.err}"
+assert build_core.ok else "amphora_carry_neg: vessel-core build failed --\n${build_core.err_brief}"
 let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh amphora/vessel_seal.rye -femit-bin=${home}/bin/vessel-seal"]
-assert build_seal.ok else "amphora_carry_neg: vessel-seal build failed --\n${build_seal.err}"
+assert build_seal.ok else "amphora_carry_neg: vessel-seal build failed --\n${build_seal.err_brief}"
 
 let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "carry_neg: pour must pass"
