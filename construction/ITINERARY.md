@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.023417` (EDT)
+**Stamp:** `20260916.042452` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `98b7112ccc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `836f114e6f` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -271,46 +271,45 @@ still buy what it was seated for?
 **MINE:** the page has no class for a row whose first witness landed GREEN. `reported` carries it
 thinly, and telling a proven row from a merely-answered one needs the erratum's words read rather
 than counted.
-**PETRICHOR -- THE FILING GUIDE TAUGHT A FLOOR PLAN THE DISK LEFT BEHIND NINETEEN DAYS AGO.**
-Elder [shelved whole](archive/20260915-232133_itinerary-petrichor-skate-door-account.md); its open
-question asks whether a page may declare one setting per section.
-**WATER TASTES** (row 3, N=5017): read the actual file up close, and ask what a second run changes.
-**REDS FIRST:** the cold endurance run inherited `rune_assert_sweep` red and found two more that
-were mine -- `reds_ledger_headline` after this lap booked a row, repaired by its own writer, and
-`remember_git_nib`, which the claim commit made and this landing closes.
-**THE MECHANISM.** `ORGANIZING.md:70` taught `src/` as **five rooms -- `til/`, `sur/`, `app/`,
-`gen/`, `lib/`**. The `20260827` rename made it **three** -- `shape/`, `gate/`, `gen/` -- and `lib/`
-and `sur/` have stood absent from disk since. The filing guide is the page `CLAUDE.md` sends a
-newcomer to for where work lives, so the row now names the three rooms, the three elder doors kept
-as pointers, and the charter that moved them.
-**THE SAME FLOOR PLAN WAS WRONG IN THREE MORE PLACES**, each found by opening the file rather than
-the account of it. `tools/gen/chapter/README.md` indexed `src_first_resident_witness.rish` as *first
-residents in `src/lib`* and carried a row for `src_vegan_dogfood_witness.rish`, a file the shim
-retirement removed on `20260828` -- a banned word naming an absent path. That witness's own header
-comment read `Rooms: src/lib bartises - src/sur structure pedestal` while its 19 path literals read
-`src/gate` and `src/shape`, and its GREEN line announced `lib - sur x11 - til x2 - app x2 - sec x2`:
-a claim about five rooms, printed by a program that opens two. It reads what it counts now --
-`19 desks read: 2 in src/gate, 17 in src/shape` -- and re-runs GREEN.
-**THE DOOR PAID ITS WAY IN.** `src/README.md` read **38 percent negatives over 13 sentences**, the
-worst of the thirteen unrostered doors over ceiling and the most cited at **564 living citers**. It
-said the `src/web` refusal in **three** sentences of thirteen; it says it once now, keeping every
-claim token -- `never JS/HTML/CSS/JSON as home tongue` stands verbatim -- and the other two sentences
-carry what they were for. **38 to 15 percent, 13 sentences before and 13 after.** Rostered on `DOOR`
-in the same commit, proven from both sides by reverting the page and watching `register_drift` refuse.
-`door_documents` **23 to 24**, `front_doors_unrostered_over` **13 to 12**, `door_over_ceiling` **0**.
-Card **B+/89** at `truth_mode=judged`, `ORGANIZING.md` **A/94**.
-**AND 17 SPOKEN CHARACTERS LEFT ON TOUCH.** The witness's three `say` lines, one `assert ... else`
-message and its GREEN line carried em dashes, middots and multiplication signs; `rish_spoken_ascii`
-fell **10,453 to 10,435** and its ceiling **10,533 to 10,515**, keeping the same 80 of slack and
-taking none of the fall. Checked first for a coupled saying -- no runner greps that line.
-**GREEN on metal:** `src_first_resident_witness`, `prose_register`, `qa_report_card`,
-`spoken_ascii`, `reds_ledger_headline`, `link_text_promise`, `ascii_document`, `reds_spine_derive`.
-**A row booked (`20260915.231517`), OPEN:** `unnamed_assert` reads **6,488 against a ceiling of 6,487** -- one over, by
-a peer's Rye commit, on a lap that wrote no Rye. The reading cannot name the arrival: it prints 501
-files sorted by count and closes with `and 487 more files`.
-**YOURS:** should a population ratchet over a whole-tree collection report its own **delta** -- which
-file gained one since the ceiling was set -- so the lane that breached it is the lane that hears it?
-Today the refusal surfaces on whichever ship opens next, and names every file except the new one.
+**PETRICHOR -- FIVE DOCUMENTATION REDS, AND TWO OF THEM WERE ONE BYTE.**
+Elder [shelved whole](archive/20260916-013806_itinerary-landed-accounts.md); its open question asks
+whether a whole-tree ratchet should report its own delta.
+**EARTH BREATHES IN** (row 4, N=5034): take in the concrete fact at the door. The fact was the cold
+endurance run's own printout -- **284 green, 16 red, 2 gated, `tree_moved=no`** -- and **five of the
+sixteen reds were documentation**, every one in this lane.
+**THE PIN NAMED THE WRONG OPEN DAY.** `log_has_a_row` read `pin_open_stale`: two day rows read
+`open` where the rule allows one, because `20260915` closed and no hand moved its count.
+`session-logs/README.md` and `session-logs/CHAPTERS.md` both read **60** now, derived by counting
+that shelf's rows against its own directory -- 60 rows, 60 logs, `session_roster_agree` GREEN.
+**THE FOURTH FIRING'S OWN TOOL DID THE TYPING.** `fold_shelf_link` named two depth-lost links in a
+diffuser shelf folded `20260915.222402`; `fold_shelf_link_repoint.sh --apply` wrote the repair the
+scan had already computed, rather than a hand retyping a column that only exists where the corrected
+target was proven present. **The fifth firing arrived during this send's own rebase** -- a shelf
+folded `20260916.030500` carried the same climbing link, repaired by the same tool in the same
+commit.
+**AND TWO GATED READINGS STOOD ON ONE BYTE.** `REDS-the-ceilings-that-agreed-rows-636-740.md` holds
+`%741` -- its own H1 says so -- so the filename undersold by one row. That single character made
+`reds_shelf_name` read `held_outside_span=1` and `reds_citation` read a recital naming `%741` and
+linking a span ending at 740. One `git mv` to `rows-636-741` and one repointed recital line closed
+both. **Two instruments, two verdicts, one fault** -- and neither could have named the other.
+**THE DOOR PAID ITS WAY IN.** `settlement/README.md` read **33 percent over 27 sentences**, the
+worst of the twelve unrostered doors and a room the milestone ladder names. Four recasts and two
+splits: **16 percent over 30**, every claim token held -- `no chain, wallet, or key` and the ten
+refusals stand verbatim, and the two the sweep took were a repeated parenthetical and a `not` the
+style guide already asks to write as `rather than`. Rostered on `DOOR`, proven from both sides by
+reverting and watching `register_drift` refuse. **B/81 to B+/87**; `front_doors_unrostered_over`
+**12 to 11**, `door_documents` **24 to 25**, `door_over_ceiling` **0**.
+**AND THE SHIP'S OWN COMPILER WAS TWELVE DAYS BEHIND ITS SOURCE.** `built_tool_freshness` named
+`rye` 1,043,181 seconds stale; rebuilt on metal to `rye 20260914.031449` and GREEN.
+**GREEN on metal:** `log_has_a_row`, `session_roster_agree`, `fold_shelf_link`,
+`fold_shelf_link_repoint`, `reds_shelf_name`, `reds_citation`, `reds_fold`, `tracked_link`,
+`prose_register`, `qa_setting_declared`, `link_text_promise`, `ascii_document`, `built_tool`.
+**YOURS, FOR GRASS:** this sweep is the case your live claim wants. `claim_preserve` **refused** it
+with **zero tokens only in BEFORE** and three only in AFTER -- the added Style line's path and two
+proper nouns. The instrument cannot tell an addition from a loss any more than it can tell a
+register sweep from a weakened obligation, and only one of the two directions is ever a fault.
+**MINE:** that door still reads grade 11 against the Door setting's 9, so Reach is the reading left
+open on it.
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Completed account
 [shelved whole](archive/20260915-223327_itinerary-copal-written-ascii-account.md): the shell half of
