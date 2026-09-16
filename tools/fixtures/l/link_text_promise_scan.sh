@@ -67,7 +67,33 @@ set -eu
 # living seat. tools/fixtures/s/shell_portable.sh carries the one portable spelling. The helper is
 # reached through this script's own $0 rather than through the caller's directory, because the pen
 # runs this scan from inside a throwaway repository where a relative source finds nothing.
-. "$(cd "$(dirname "$0")/../s" && pwd)/shell_portable.sh"
+#
+# THE ROOT IS WALKED rather than computed by depth arithmetic: a fold moving this script one
+# directory deeper breaks a fixed `../s` reach silently, which is the class
+# tools/f/fixture_depth_witness.rish holds at zero. The walk climbs from this script's own $0
+# looking for rishi/bin beside tools/fixtures.
+#
+# THE SIBLING REACH REMAINS AS A NAMED FALLBACK, because tools/fixtures/l/link_text_promise_control.sh
+# copies this scan into a flat throwaway pen holding fixtures/l and fixtures/s and no tree at all.
+# There is no root to find there, so a walk that only refuses would refuse the control's own pen.
+_here=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_root="$_here"
+_steps=0
+while [ ! -d "$_root/rishi/bin" ] || [ ! -d "$_root/tools/fixtures" ]; do
+  _steps=$((_steps + 1))
+  if [ "$_steps" -gt 8 ] || [ "$_root" = "/" ] || [ -z "$_root" ]; then
+    _root=""
+    break
+  fi
+  _root=$(dirname "$_root")
+done
+if [ -n "$_root" ]; then
+  _portable="$_root/tools/fixtures/s/shell_portable.sh"
+else
+  _portable="$_here/../s/shell_portable.sh"
+fi
+[ -f "$_portable" ] || { echo "$0: shell_portable.sh absent -- looked in a walked root and beside \$0" >&2; exit 2; }
+. "$_portable"
 
 ceiling="${LINK_TEXT_PROMISE_CEILING:-0}"
 list=no

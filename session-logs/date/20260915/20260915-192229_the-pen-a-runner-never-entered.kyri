@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260915.192229
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, the witness harness
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+title The pen a runner never entered
+prompt autonomous fleet lap -- bakery seat, Lindy-first crux-first
+think Round opened on cd60ba1f82, anointed order already held, twelve files standing in the dead-letter box and none of them mine.
+think Rota row 4 read whole -- Earth, Mercury, the concrete. The row's own instruction is what chose the lap: take in the fact at the door before arguing with it.
+think REDS %729's third field is such a fact, and it is one sentence long -- shared_pen asks whether a pen is SHARED; nothing asked whether it was ever ENTERED. The row books the class as unrepaired and no lap had taken it.
+think path_absence_scan answered absent_both=3 for a pen-entry scan, control and witness, so the instrument was genuinely missing rather than merely unfound at a stale HEAD.
+think Claimed bakery-pen-entry and pushed the claim before building, since an unpushed claim is one no peer can read.
+think The reading collects each file's pen variables -- assigned from mktemp -d, or from a string naming one already collected -- then counts every cd into one carrying no ||, no && chain, and no set -e in force.
+think A line-at-a-time reading called nine lawful sites unguarded: this tree writes `( cd "$d" \` with the && on the next line, so the join comes first.
+obs 449 runners, 1,140 pen sites, 5 unguarded -- all five in one file, each a `( cd "$pen/<name>"` opening a subshell whose body writes a scan file and runs git add -A and git commit. In the live tree that is %729 exactly.
+obs The set -e reading is a proxy and the scan's header says so: POSIX suspends it in a condition and on the left of a &&, so the meter undercounts and nobody may read its zero as a proof.
+obs unchecked_mktemp=73 is reported and gated by nothing. An empty pen variable is a different fault with a different cure, and a population that size wants its own lap.
+obs First residency moved the reading twice inside an hour: the scan counted a teaching line in its OWN header, and counted the heredoc bodies its control writes. A comment is prose and a heredoc body is text a script writes, so both are read past -- an undercount named in the header rather than hidden.
+obs A hot roster pass surfaced two reds that were not mine. reds_ledger_monotone wanted the headline moved to 733, one line. fixture_depth found a peer's scan reaching its portable helper by sibling arithmetic; the root is walked now, with the sibling kept as a NAMED fallback, because that scan's own control copies it into a flat pen holding no tree at all.
+obs The control head graded C+ at first reading -- register 45, reach 70 -- so one bounded frame rewrote it plainly. It reads A at 94 now, and the case-name strings that carry the remaining negatives are Meter's own subject.
+loom pen_entry runners=449 pen_sites=1140 unguarded_before=5 unguarded_after=0 unchecked_mktemp=73 seconds=30
+loom control legs=45 faults=0 mutations_proven=4
+loom stash_record_control pass=105 fail=0
+loom link_text_promise_control legs=44 failed=0
+rota lap 4949, row 4 -- Earth, the row that breathes in; the threshold's own instruction ("the concrete fact outranks the plausible story") pointed at %729's unread third field, which had stood one lap without a taker
+file tools/fixtures/p/pen_entry_scan.sh the reading, with three named mutation switches
+file tools/fixtures/p/pen_entry_control.sh thirty-seven behaviors on sixteen real repositories in a throwaway pen
+file tools/p/pen_entry_witness.rish the wall at zero, asserting the control beside the reading
+file tools/fixtures/s/stash_record_control.sh five subshell pen entries given a named refusal
+file construction/standing-equipment.kyri pen_entry rostered at tier lap, 27s
+file construction/REDS.md the row recording what closed and what stays at custody gate 5, and the headline moved to 733
+file tools/fixtures/l/link_text_promise_scan.sh the root walked rather than reached by sibling arithmetic, with a named fallback for its own pen
+file construction/ITINERARY.md the Git nib carried to this commit's parent
+scope one class walled, five sites repaired, one scan, one control, one witness, rostered
+status GREEN -- pen_entry 45 legs 0 faults, fixture_depth GREEN, link_text_promise 44 legs 0 faults, reds_ledger_monotone GREEN, stash_record_control 105 legs 0 faults, exec_bit shared_pen conflict_marker shell_comment_ascii all ok; stash_record stays red at REDS %636, Keaton's word
+recommend check in (Keaton) -- %729's twelve unsigned commits are pushed, so their repair is a history rewrite at custody gate 5; unchecked_mktemp=73 is a booked lap nobody owns yet
