@@ -124,11 +124,47 @@ awk '{
 import_sites=$(wc -l < "$work/imports.txt" | tr -d ' ')
 echo "import_sites=$import_sites"
 
-# resolve each site: a symlink is followed to the room it lands in, a plain file keeps its own
+# resolve each site: a symlink is followed to the room it lands in, a plain file keeps its own.
+#
+# THE WALK IS BOUNDED AND SPELLED HERE (seated 20260916, REDS %762). This read `readlink -f` until
+# that stamp, whose resolve flag is GNU-only, so the `shell_dialect` gate counted an eighth site and
+# reds on every ship. The canonical spelling is `resolve_path` in tools/fixtures/s/shell_portable.sh
+# and this file may not reach it: `aurora_placement_control.sh` plants its four mutations by COPYING
+# this scan into a pen and running the copy, so neither the git root nor a walk up from $0 lands
+# anywhere a helper stands. A control that mutates by copying forbids its subject from sourcing.
+#
+# ONE HOP IS THE WRONG ANSWER HERE, which is why the bound matters rather than the portability
+# alone. This tree files 41 chains longer than one hop and one of three, and this scan resolves an
+# import symlink to THE ROOM IT LANDS IN -- so a link pointing at another link names the wrong room.
+# Measured: a single hop moves room_pairs 75 to 74 and a top pair's weight 15 to 10, silently, with
+# every leg of the control still green.
+#
+# MAX_LINK_HOPS is the helper's number and its reason travels with it: 40 is the depth this host's
+# kernel itself enforces, so a chain past it names a path nothing here could open, and the tree's
+# own deepest chain is 3. A cycle spends the budget and refuses instead of hanging.
+MAX_LINK_HOPS=40           # symlink hops walked per site; the kernel's own SYMLOOP_MAX
+
 while IFS="$(printf '\t')" read -r room path; do
   [ -n "$room" ] || continue
   if [ -L "$path" ]; then
-    target=$(readlink -f "$path" 2>/dev/null) || target=""
+    cur=$path
+    hops=0
+    while [ -L "$cur" ] && [ "$hops" -lt "$MAX_LINK_HOPS" ]; do
+      hops=$((hops + 1))
+      hop=$(readlink "$cur" 2>/dev/null) || break
+      case "$hop" in
+        /*) cur=$hop ;;
+        *)  cur=$(dirname "$cur")/$hop ;;
+      esac
+    done
+    if [ -L "$cur" ]; then
+      target=""            # budget spent: a cycle or a chain past the kernel's own limit
+    else
+      # `cd -P`: a logical `cd` collapses `..` before resolving symlinks, and dash refuses
+      # exactly the relative target a multi-hop walk produces where bash accepts it.
+      dir=$(CDPATH= cd -P "$(dirname "$cur")" 2>/dev/null && pwd -P) || dir=""
+      if [ -n "$dir" ]; then target="$dir/$(basename "$cur")"; else target=""; fi
+    fi
     case "$target" in
       "$ROOT"/*) target=${target#"$ROOT"/} ;;
       *) target="" ;;
