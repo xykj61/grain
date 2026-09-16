@@ -25,8 +25,13 @@ obs The row took the pin over its bound, so a CLOSED row folded to a shelf in th
 obs THE SEND MET TWO COLLISIONS AT ONCE. A peer had booked %742 at 213138, 23 minutes ahead of my 214509, so my unshared row renumbered and the earlier stamp kept the number -- the derived spine working exactly as written. The second was new to me: the same peer had folded the same two CLOSED rows to a DIFFERENT shelf 4 minutes earlier, so my shelf was a duplicate of a published one. I dropped mine whole, kept theirs, and folded %739 instead to make the room my row still needed.
 obs Handed off rather than reached: the view witness carries an elder module name and a pre-fold tools/ path in its own header, and asserts on a gated build rather than reporting gated. Both are tools/ lane.
 rota lap 4982, row 2 -- Fire, the row that sees; cut and stop. Reading it as seeing rather than as a checklist is what turned a register sweep into a Truth finding: I looked at what the page hands a reader instead of at its sentences.
+obs THEN THE HOT ENDURANCE RUN DIED AT GUARD 27 OF 376 on No space left on device, reporting four red on the way down -- and two of those four had run GREEN in this same tree minutes earlier and ran GREEN again three minutes later.
+obs THE EVIDENCE PATHS IT NAMED FOR THOSE TWO DO NOT EXIST. The runner announced construction/standing-equipment-reds/exec_bit.txt and living_card_ascii.txt, the write was refused, and the red stood citing nothing. A guard that CANNOT RUN reports the same word as a guard that FOUND something.
+obs That is my own lap's finding one level up -- the page called a gated build a green view, the runner calls an unwritable pen a red tree. Booked 20260915.220137, OPEN, and handed to the tools lane: the pier is shared by eight ships and a disk a peer filled is not this seat's to clear.
+obs df read 176G 166G 1.1G 100 percent at the death and 176G 84G 84G 50 percent three minutes later, so roughly 83G was released by a peer and the evidence of the cause was gone before a hand could read it. Both readings are FREE.
 loom register path=ember/README.md before_percent=31 after_percent=13 negatives_before=13 negatives_after=6 sentences=45
 loom roster door_documents_before=20 door_documents_after=21 unrostered_over_before=16 unrostered_over_after=15 door_over_ceiling=0
+loom roster hot_guards_reached=27 hot_guards_rostered=376 hot_red=4 false_red=2 disk_avail_at_death=1.1G disk_avail_3min_later=84G
 loom qa path=ember/README.md composite=93 letter=A register=69_to_87 truth=95_judged service=90
 loom ledger pin_bytes_upstream=65441 pin_bytes_after=65399 pin_bound=65536 rows_folded=1 rows=743 row_renumbered_from=742
 file ember/README.md swept 31 to 13 percent, the Status line and a new paragraph naming the gate, its exit code, its stamp and its host
@@ -34,6 +39,6 @@ file tools/fixtures/p/prose_register_scan.sh ember/README.md added to the enforc
 file construction/REDS.md booked 20260915.214509 -- a front door claimed green and handed a reader a command that halts; the spine bound it after the rebase, so it is cited by stamp here
 file construction/archive/REDS-the-class-walled-and-its-last-five-sites-rows-739.md one CLOSED row shelved so the pin returned under its bound after the rebase
 file construction/ITINERARY.md the petrichor account, with the open question about runnable blocks on front doors
-scope one front door swept, rostered and re-graded; one Truth finding booked; the pin folded back under its bound
+scope one front door swept, rostered and re-graded; two Truth findings booked -- the door's halting command, and a full disk reading as four broken guards; the pin folded back under its bound twice
 status GREEN -- prose_register reads door_over_ceiling=0 and its standing register_drift is the law lane's, unchanged by this lap; ascii_document, tracked_link, link_text_promise, reds_citation, unshared_citation, reds_ledger_monotone, reds_pin_capacity and exec_bit all green on metal
 recommend check in (Keaton) -- a runnable block on a front door is a promise no instrument runs; the cheap half is a scan that finds them and asks whether each names what it wants
