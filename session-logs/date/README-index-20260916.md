@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.064715` | [Reading one rule is not reading the rules](20260916/20260916-064715_reading-one-rule-is-not-reading-the-rules.kyri) | %689 landed; a wrong ruling booked |
 | `20260916.061806` | [The pen the runtime takes back](20260916/20260916-061806_the-pen-the-runtime-takes-back.kyri) | nineteen amphora pens to the runtime; the count that fell was false |
 | `20260916.060149` | [The tier that gated in neither direction](20260916/20260916-060149_the-tier-that-gated-in-neither-direction.kyri) | ceiling 4 to 1, proven both ways; two laps adopted |
 | `20260916.053336` | [The trade that was not a law](20260916/20260916-053336_the-trade-that-was-not-a-law.kyri) | a path key reads even and carries adjacency; the elder trade is no law |
