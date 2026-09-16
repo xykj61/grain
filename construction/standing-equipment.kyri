@@ -644,6 +644,18 @@ path tools/s/sow_witness.rish
 tier cadence
 seated 20260823.134057
 
+# sow_phase -- where a publish spends its minutes, read without spending them. The `sow` note above
+# records 230s on `20260904`; the same witness read **354.09s** on `20260916`, half again as much,
+# and 99.3 percent of that is a SECOND full projection run as duty 2 rather than any proof it
+# performs -- the four scans cost 2.39s together. This guard counts that structurally, by call site
+# rather than by run, so asking costs two seconds instead of twelve minutes. One ceiling that only
+# falls: a publish projects the whole seed twice today, and a third site reds on the lap it lands.
+# The seconds themselves stay FREE and ungated, behind `--time`, since they rise with the tree.
+guard sow_phase
+path tools/s/sow_phase_witness.rish
+tier lap   # about 3s -- the scan reads scripts and git history and projects nothing
+seated 20260916.121517
+
 guard tool_path
 path tools/t/tool_path_witness.rish
 seated 20260823.131241

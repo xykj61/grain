@@ -2,6 +2,12 @@
 
 **Language:** EN - **Style:** [Gauge](../context/GAUGE_STYLE.md) with [Radiant](../context/RADIANT_STYLE.md) - **Voice:** Kyri
 **Stamp:** `20260908.155715` - **Status:** Proposed, booked as the scrub red (`20260908.155715`) - **Room:** checkable
+**Measured `20260916.121517`, and the falsifier answered:** the reading this page asks for before
+any build stands at [`active-designing/20260916-121517_where-a-seed-publish-spends-its-minutes.md`](../active-designing/20260916-121517_where-a-seed-publish-spends-its-minutes.md),
+re-runnable as `sh tools/fixtures/s/sow_phase_scan.sh --time`. A publish costs 718.77 seconds, of
+which 363 of the projection's 365 are per-file work and the four proofs the witness performs cost
+2.39 together -- so the cache is worth building. Two figures below moved: the 8,187 files read
+**9,046** candidates, and the witness turns out to run a **second full projection** of its own.
 **Lane:** bakery (core infrastructure and the fleet's own friction), with the seed's own custody gate intact
 
 ## What happened, and why it is worth a lap
