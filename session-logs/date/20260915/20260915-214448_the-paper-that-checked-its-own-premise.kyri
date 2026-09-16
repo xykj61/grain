@@ -24,8 +24,12 @@ think The pen found two faults in the scan rather than in itself. The missing-ke
 think Three mutations first read as harmless because the pen they ran in already refuted the definition for a different reason. Gave each its own pen where the key under test is the only thing deciding, and all five bite.
 obs The premise fails on one definition of three, and the shape that survives is a ring on a page titled for a torus. The second axis is the one thing a torus has that a ring does not, and torus_place had already read second_axis_buys_spread=no one row over on a different question -- two readings converging on one absence.
 obs The sharper half is that row 11's falsifier cannot fire in any of the 27 assignments. A falsifier that cannot fire is not a falsifier, and it was watching for a conflict these definitions are structurally incapable of having while the failure they did have went unwatched.
+think The send's own nib witness then answered NoSuchField on its GREEN path, and the honest read took three steps: the field exists in rishi/src/main.rye, it landed three hours earlier at 6b2965fe7, and this seat's rishi/bin/rishi was built 2026-09-05. The guard was right and the interpreter was ten days stale. One step from booking a red against a peer's witness for a fault in this ship's own toolchain.
+obs That is REDS %746 -- booked %743 first, then %744, then %746: two peers bound each of the first two inside the same window, and an unshared row renumbers by the derived-spine law while its stamp holds. The renumber was free every time; the send around it was not. and its shape is the one this lane keeps finding: witness_own_build_scan.sh passes both binaries free on a named reason about PRESENCE, which is true, while FRESHNESS wears the same skip and nothing asks it.
+obs Booking it put the ledger 1,766 bytes over its bound, so this lap wrote a shelf head and folded %731 and %732. Then the send hit a rebase conflict, and the cause was a peer folding %519 and %532 in the same window: two concurrent folds of one ledger. Aborted rather than continued, per the baton's own clause, and the peer's fold had already brought the pin to 60,071 bytes -- so my fold was no longer needed and was dropped rather than landed for tidiness. The shelf head I wrote is discarded; the rows stay on the pin where a later lap can fold them with a clear reason.
 obs This is the lane's first reading of ITSELF, and the cheapest possible moment to take it: before the paper rather than in it.
 loom guard=whitepaper_definitions scan_seconds=11 control_seconds=19 control_legs=55 mutations=5
+loom rebuild=rishi binary_age_days=10 build_seconds=2 source_commit=6b2965fe7
 loom reading=whitepaper_definitions definitions=3 supported=1 refuted=1 unrun=1 assignments=27 conflict_atleast=0 conflict_exact=5
 file tools/fixtures/w/whitepaper_definitions_scan.sh the reading -- three definitions judged on sibling keys, plus the 27-assignment sweep
 file tools/fixtures/w/whitepaper_definitions_control.sh 55 behaviors in stub pens, five mutations each proven landed by cmp
@@ -36,6 +40,7 @@ file construction/standing-equipment.kyri whitepaper_definitions rostered tier c
 file construction/ITINERARY.md the Diffuser account, elder shelved whole, Git nib carried forward
 file construction/archive/20260915-212827_itinerary-diffuser-row-eight-account.md the elder account, moved rather than rewritten
 file construction/fleet-claims.kyri the claim opened before the build and closed after it
+file construction/REDS.md %746 booked -- a stale interpreter is nobody's subject; headline re-derived
 scope one moonshot row measured, one instrument landed, one paper, one erratum, one roster row
 status GREEN -- whitepaper_definitions witness green on metal, 55 control legs, five mutations bitten; ascii_document, link_text_promise, exec_bit, shell_written_ascii, index_fold, index_row_bound and dated_path all green beside it
 recommend keep-going -- the twelve are walked, and what row 11's reading opens is a disposition question for Keaton: fold rows 2, 4 and 5 into one recorded finding sharing one cause, or keep three errata.
