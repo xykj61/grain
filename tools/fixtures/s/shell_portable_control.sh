@@ -62,6 +62,41 @@ parity "a directory resolves"                             "$pen/a/b"
 resolve_path "$pen/nowhere/at/all/x" >/dev/null 2>&1 && bad "an absent directory refuses" || ok "an absent directory refuses"
 resolve_path "" >/dev/null 2>&1 && bad "an empty path refuses" || ok "an empty path refuses"
 
+# --- THE BOUNDED MULTI-HOP WALK (seated 20260916, REDS %762) ------------------------------------
+# `resolve_path` followed ONE hop until this stamp, and one hop names the wrong answer for any
+# chain longer than that -- which this tree files 41 times, one of them three deep. The bound is
+# 40, the depth the host kernel itself enforces, so these legs prove it from BOTH sides: a chain
+# the machine could open resolves, and the first chain it could not refuses. A bound proven in one
+# direction cannot be told from no bound at all.
+chain="$pen/chain"
+mkdir -p "$chain"
+echo deep > "$chain/base"
+( cd "$chain" && _prev=base && _i=1 && while [ $_i -le 45 ]; do ln -s "$_prev" "l$_i"; _prev="l$_i"; _i=$((_i + 1)); done )
+
+[ "$(resolve_path "$chain/l3")" = "$chain/base" ] \
+  && ok "a three-hop chain walks to its fixed point" \
+  || bad "a three-hop chain walks to its fixed point"
+
+# The deepest chain this tree actually files is 3; 40 is where the kernel stops. Both are legs.
+[ "$(resolve_path "$chain/l40")" = "$chain/base" ] \
+  && ok "a chain at the kernel's own limit still resolves" \
+  || bad "a chain at the kernel's own limit still resolves"
+
+resolve_path "$chain/l41" >/dev/null 2>&1 \
+  && bad "a chain past the kernel's limit refuses" \
+  || ok "a chain past the kernel's limit refuses"
+
+# A cycle is the reason the elder header declined a loop at all. It costs a bounded walk now.
+ln -s cyc_b "$chain/cyc_a"
+ln -s cyc_a "$chain/cyc_b"
+resolve_path "$chain/cyc_a" >/dev/null 2>&1 \
+  && bad "a symlink cycle refuses rather than hanging" \
+  || ok "a symlink cycle refuses rather than hanging"
+
+# And the multi-hop walk agrees with the elder tool wherever this bench carries one.
+parity "a three-hop chain agrees with the elder tool"   "$chain/l3"
+parity "a forty-hop chain agrees with the elder tool"   "$chain/l40"
+
 # --- sed_inplace -------------------------------------------------------------------------------
 printf 'alpha\nbeta\n' > "$pen/edit.txt"
 chmod 755 "$pen/edit.txt"

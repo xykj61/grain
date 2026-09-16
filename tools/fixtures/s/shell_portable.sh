@@ -140,27 +140,54 @@ file_mtime() {
 # resolve the symlinks, which every POSIX shell does. The last component is appended by hand rather
 # than walked, because the callers here resolve a FILE whose directory is the part that may be a
 # link -- `/etc/localtime` on a host that symlinks its zoneinfo, a `rye/lib` entry, a binary on
-# PATH. A last component that is itself a symlink to elsewhere is followed one hop, which covers
-# every caller in this tree and stops short of a general link walker nobody has needed.
+# PATH.
 #
-# WHY NOT A LOOP TO A FIXED POINT. A full resolver has to bound its own recursion or hang on a
-# symlink cycle, and bounding it means naming a maximum depth nobody here can justify from
-# measurement. One hop is what the callers need, so one hop is what this promises, and the promise
-# is the whole of it.
+# THE LAST COMPONENT IS FOLLOWED TO A FIXED POINT, BOUNDED. This header declined a loop until
+# `20260916`, on the ground that bounding one means naming a maximum depth nobody here could
+# justify from measurement. That was a measurement nobody had taken. Three were taken on this pier
+# `20260916`, and between them they name the number:
+#
+#   THE TREE'S OWN POPULATION. Of 834 working symlinks (`find . -type l`, `.git` pruned), 793
+#   resolve in one hop, 40 in two, and exactly one in three -- `pond/apps/granary/parse_int.rye`.
+#   The deepest chain this tree has ever filed is 3. FREE: run the find and the walk to re-read it.
+#
+#   THE HOST'S OWN LIMIT. Kernel path resolution refuses at the 41st hop on this bench, which is
+#   POSIX SYMLOOP_MAX at 40. A chain longer than that cannot be opened, read, or executed here at
+#   all, so resolving it names a path no caller could then use. PINNED to the kernel's constant.
+#
+#   AND `readlink -f` DOES NOT HONOR IT. coreutils walks the chain in userspace: a 200-hop chain
+#   resolves under `readlink -f` on this bench and then refuses to open. So the elder spelling was
+#   never the conservative one -- it answers about paths the machine will not serve.
+#
+# MAX_HOPS is therefore 40: the depth the host itself enforces, and thirteen times the deepest
+# chain the tree holds. A chain past it REFUSES rather than answering, which is also what makes a
+# symlink cycle cost a bounded walk instead of a hang -- the whole of the elder objection.
+resolve_path_max_hops=40
+
 resolve_path() {
   _sp_target=$1
   [ -n "$_sp_target" ] || return 1
-  # A symlink is followed one hop, so a link into another directory resolves against that directory.
-  if [ -L "$_sp_target" ]; then
+  # invariant: the walk terminates, because every iteration spends one of a named, finite budget.
+  _sp_hops=0
+  while [ -L "$_sp_target" ]; do
+    [ "$_sp_hops" -lt "$resolve_path_max_hops" ] || return 1
+    _sp_hops=$((_sp_hops + 1))
     _sp_hop=$(readlink "$_sp_target" 2>/dev/null) || return 1
     case "$_sp_hop" in
       /*) _sp_target=$_sp_hop ;;
       *)  _sp_target=$(dirname "$_sp_target")/$_sp_hop ;;
     esac
-  fi
+  done
   _sp_dir=$(dirname "$_sp_target")
   _sp_base=$(basename "$_sp_target")
-  _sp_dir=$(CDPATH= cd "$_sp_dir" 2>/dev/null && pwd -P) || return 1
+  # `cd -P` RATHER THAN A BARE `cd`, and the two are not the same command. A logical `cd`
+  # collapses `..` textually BEFORE resolving symlinks, so `a/link/../../b` names a directory the
+  # link never stood in -- and the shells disagree about it. Measured on this pier `20260916`:
+  # `cd "pond/apps/rishi/../../tally"` resolves under bash and REFUSES under dash, which is `sh`
+  # here, so a multi-hop walk producing a relative target read empty in every guard and whole in
+  # every interactive check of it. `-P` resolves each component physically, which is what
+  # `readlink -f` does and what a caller asking for a real path means.
+  _sp_dir=$(CDPATH= cd -P "$_sp_dir" 2>/dev/null && pwd -P) || return 1
   case "$_sp_dir" in
     /) printf '%s\n' "/$_sp_base" ;;
     *) printf '%s\n' "$_sp_dir/$_sp_base" ;;

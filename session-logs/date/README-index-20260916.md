@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.084019` | [The depth a resolver needs](20260916/20260916-084019_the-depth-a-resolver-needs.kyri) | %762 closed: the bound is the kernel's own 40, and a bare `cd` refuses under sh |
 | `20260916.074806` | [One error name, two ceilings](20260916/20260916-074806_one-error-name-two-ceilings.kyri) | two Glow ceilings told apart behind one name |
 | `20260916.070832` | [Built in an hour, read in six days](20260916/20260916-070832_built-in-an-hour-read-in-six-days.kyri) | the ranking graded; the falsifier the weaker half |
 | `20260916.064715` | [Reading one rule is not reading the rules](20260916/20260916-064715_reading-one-rule-is-not-reading-the-rules.kyri) | %689 landed; a wrong ruling booked |
