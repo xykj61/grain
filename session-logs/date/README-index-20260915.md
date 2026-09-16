@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.211217` | [The reason lost at four thousand](20260915/20260915-211217_the-reason-lost-at-four-thousand.kyri) | the cliff bisected; my repair withdrawn |
 | `20260915.205911` | [The counts that carried constants](20260915/20260915-205911_the-counts-that-carried-constants.kyri) | every resolvable build site locked |
 | `20260915.204403` | [The stamps I rounded](20260915/20260915-204403_the-stamps-i-rounded.kyri) | nine guessed stamps corrected |
 | `20260915.204128` | [The rooms a build writes into](20260915/20260915-204128_the-rooms-a-build-writes-into.kyri) | four rooms locked; the walk widened |
