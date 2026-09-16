@@ -16,12 +16,15 @@
 | `20260916.073847` | [The loss told from the addition](20260916/20260916-073847_the-loss-told-from-the-addition.kyri) | claim_preserve names claim_lost from claim_added; 21 legs |
 | `20260916.070832` | [Built in an hour, read in six days](20260916/20260916-070832_built-in-an-hour-read-in-six-days.kyri) | the ranking graded; the falsifier the weaker half |
 | `20260916.064715` | [Reading one rule is not reading the rules](20260916/20260916-064715_reading-one-rule-is-not-reading-the-rules.kyri) | %689 landed; a wrong ruling booked |
+| `20260916.063504` | [Seven laps in the dead-letter box](20260916/20260916-063504_seven-laps-in-the-dead-letter-box.kyri) | unlanded 7 to 0; one count braiding two failures |
 | `20260916.061806` | [The pen the runtime takes back](20260916/20260916-061806_the-pen-the-runtime-takes-back.kyri) | nineteen amphora pens to the runtime; the count that fell was false |
 | `20260916.060149` | [The tier that gated in neither direction](20260916/20260916-060149_the-tier-that-gated-in-neither-direction.kyri) | ceiling 4 to 1, proven both ways; two laps adopted |
 | `20260916.053336` | [The trade that was not a law](20260916/20260916-053336_the-trade-that-was-not-a-law.kyri) | a path key reads even and carries adjacency; the elder trade is no law |
 | `20260916.052811` | [The formula that named an operation](20260916/20260916-052811_the-formula-that-named-an-operation.kyri) | 7 formula tokens read, 3 undeclared |
 | `20260916.051458` | [The amend that followed its own push](20260916/20260916-051458_the-amend-that-followed-its-own-push.kyri) | %760: a published commit forced; rule 5's second firing |
+| `20260916.050330` | [The door that read twice](20260916/20260916-050330_the-door-that-read-twice.kyri) | recovered: one Door page raised, two shelf links repointed |
 | `20260916.044224` | [The grid that was already flat](20260916/20260916-044224_the-grid-that-was-already-flat.kyri) | 2x2 torus IS 2x2 mesh; row 7 speaks, all twelve now do |
+| `20260916.044036` | [The door that taught a retired habit](20260916/20260916-044036_the-door-that-taught-the-retired-habit.kyri) | recovered: stale teaching repaired, door rostered |
 | `20260916.035415` | [The path that was never in the key](20260916/20260916-035415_the-path-that-was-never-in-the-key.kyri) | One compiler, four spellings, four keys -- and one after. |
 | `20260916.035128` | [The ceiling a law page narrated](20260916/20260916-035128_the-ceiling-the-law-page-narrated.kyri) | doorway living_ceiling 39 to 0, said five days late |
 | `20260916.034657` | [The ceiling frozen before the product](20260916/20260916-034657_the-ceiling-frozen-before-the-product.kyri) | Glow `$:` holds 9; the contract's widest names 15 |

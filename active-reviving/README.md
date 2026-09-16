@@ -1,9 +1,10 @@
 # Active Reviving -- Re-Growing the Elders into Glow
 
 **Language:** EN
-**Version:** `20260717.172832` (Eastern -- Dexter / Dill / glass input revival indexed)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Voice:** Quin
+**Version:** `20260916.062900` (Eastern -- register swept to Door, the Sala row carried forward to Seva)
+**Elder version:** `20260717.172832` (Dexter / Dill / glass input revival indexed)
+**Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
+**Voice:** Kyri (elder Quin, through `20260717`)
 **Status:** Living -- the home for revivals in motion, sibling to `active-designing/`
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -13,9 +14,9 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ## What Reviving Is
 
-Reviving is how Grain grows: rather than renaming what exists, it **re-grows an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real -- an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin -- and rewrites its proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name and its green witnesses, and keeps running. The revival supersedes it once it is proven, and never before.
+Reviving is how Grain grows: rather than renaming what exists, it **re-grows an existing working thing into the Glow direction as a new artifact beside the elder.** A revival takes something real -- an Urbit vane resting in `old/`, a Rye OS module already running, a retired seam like the WOV-TigerBeetle pin. It rewrites that elder's proven essence in Glow, under TAME, born with its Glow-direction name. The elder keeps its name, its green witnesses, and its place in the running tree. The revival supersedes it once it is proven, and only then.
 
-This resolves the rename tension at its root. We were weighing whether to rename our modules to Urbit's vane names (huge reference churn, un-reviewable diffs) or keep our own (less legible to Urbit). Reviving dissolves the choice: **we never rename.** A revived module is a new thing, so it is simply *born* with whichever name fits the Glow direction -- while the elder it grew from stays exactly as it was until the revival earns the right to replace it.
+This resolves the rename tension at its root. One path renamed our modules to Urbit's vane names, at the cost of huge reference churn and un-reviewable diffs. The other kept our own names, a step further from Urbit's vocabulary. Reviving dissolves the choice: **every name is given at birth.** A revived module is a new thing, so it is simply *born* with whichever name fits the Glow direction. The elder it grew from stays exactly as it was until the revival earns the right to replace it.
 
 ## Reviving vs. Designing -- the Sibling Distinction
 
@@ -24,7 +25,7 @@ This resolves the rename tension at its root. We were weighing whether to rename
 - **`active-designing/`** plans something **new** -- a module, a lap, a surface that did not exist. Forward-looking; no required ancestor.
 - **`active-reviving/`** re-grows something that **already exists** -- it always names its elder (the `old/` vane, the running module, the retired seam) and carries that elder's working essence forward into Glow. Backward-rooted, forward-growing.
 
-A brief with no ancestor to revive from belongs in `active-designing/`. A brief that rewrites a real, working thing into Glow belongs here.
+A brief that rewrites a real, working thing into Glow belongs here. A brief starting from a blank page belongs in `active-designing/`.
 
 ## The Discipline of a Revival
 
@@ -32,13 +33,13 @@ Every revival keeps five rules, each drawn from a law this project already lives
 
 1. **Name the elder.** A revival states exactly what it re-grows -- a path in `old/`, a module, a retired seam. A source left unnamed means the work is designing rather than reviving.
 2. **Grow beside; never break** (accrete-never-break). The elder keeps its name, its home, and its green witnesses, and keeps running throughout. The revival grows here as design, then lands as a new artifact in its own home when ready.
-3. **Born with its Glow name.** Because a revival is a new artifact, it carries its Glow-direction name from birth. This is the whole point: naming-at-birth replaces renaming, so no reference ever churns.
+3. **Born with its Glow name.** Because a revival is a new artifact, it carries its Glow-direction name from birth. This is the whole point: naming-at-birth replaces renaming, so every reference stands where it was written.
 4. **Supersede only when proven** (the Pond-supersedes-ai-jail pattern). The revival replaces the elder after passing the elder's own witnesses, with an explicit supersede word. Until then, both coexist honestly.
 5. **May shelter in Maze.** A revival still earning its shape may live in the Maze nursery until it graduates to a canonical name and home.
 
 ## The Clock a Revival Keeps
 
-A revival is born with its Glow name **and** its own warm-aura date-atom stamp (`YYYYMMDD.HHMMSS` in headers, `YYYYMMDD-HHMMSS_sprig` in filenames), exactly as every dated artifact does -- see [`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md). Reviving and archiving speak the same clock: the elder keeps its name and stamp, the revival is stamped fresh at its own birth, and later is always larger. Nothing about reviving invents a different dated shape.
+A revival is born with its Glow name **and** its own warm-aura date-atom stamp, exactly as every dated artifact is. The shape is `YYYYMMDD.HHMMSS` in headers and `YYYYMMDD-HHMMSS_sprig` in filenames -- see [`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md). Reviving and archiving speak the same clock: the elder keeps its name and stamp, the revival is stamped fresh at its own birth, and later is always larger. Reviving keeps the one dated shape this tree writes everywhere else.
 
 ## Revivals in Motion (the index)
 
@@ -50,13 +51,13 @@ These are already underway, now recognized as revivals rather than one-off desig
 | **The doc pipeline** | Scribble, Brix, and Mantra toward their Clay/Ford roles in Glow | [`../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) | design; round-trip witness proposed |
 | **Glow itself** | Rye + **Hoon** | study [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md); **owned decision** [`20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](20260715-213500_glow-revives-hoon-runes-targets-riscv.md) | decision seated `20260715.213500` -- Glow carries Hoon's **runes** and referential transparency, changes the **target**: primary Glow->Zig->**RISC-V** (M0-proven arch-portable), Nock a **second backend** for Urbit interop only; determinism moves from the VM to the discipline |
 | **Rhyz** | **Kumara** (the Ed25519 identity seam -- `tally/kumara.rye` + 72 code files + green witnesses) | [`../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md`](../external-research/20260714-044428_rhyz-r-vane-identity-reviving-kumara.md) | name confirmed (R-vane, rhizome); Azimuth-tier shape adopted; elder keeps its home + witnesses; living docs migrate on-touch, code migration deferred to proven-supersede |
-| **Sala** | **Realidream** (the unified viewer -- its ~18 code/doc references + the roadmap Visual-Track lane) | [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md) | name **confirmed** `20260715.175500` (Sanskrit *sala*, "hall/abode"; Landscape parallel, runs under Pool); elder keeps its name, references, and lane; code migration deferred to proven-supersede |
+| **Seva** (born **Sala**) | **Realidream** (the unified viewer -- its ~18 code/doc references + the roadmap Visual-Track lane) | [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md) | born **Sala** `20260715.175500` (Sanskrit *sala*, "hall/abode"; Landscape parallel, runs under Pool); renamed **Seva** `20260724.200912` and the migration finished `20260724.202412`, with Sala kept as history in [`../context/LEXICON.md`](../context/LEXICON.md). The `sala:` package ids inside digest-pinned HAWM1 fixtures keep their spelling, since renaming them would disable a proof |
 | **Pond** (precedent, already landed) | ai-jail | (the supersede pattern this whole concept generalizes) | superseded on word |
 | **Dexter-on-glass** | Dexter line editor (`pond/apps/window_input.rye`) + NativeActivity glass; **Dill stays an honest gap** (not nested, not renamed) | study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); **owned decision** [`20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md) | D0+D1 **GREEN** `20260717.173133`; D2 Pixel look open; Dill-parallel stays a separate future revival |
 
 ## Why This Is the Right Shape
 
-- It is Gall's Law made into a folder: a complex Grain grows from the simpler elders that already worked, one revival at a time, each proven before it supersedes.
+- It is Gall's Law made into a folder. A complex Grain grows from the simpler elders that already worked, one revival at a time, each proven before it supersedes.
 - It keeps every review small and human-checkable -- the elder never churns, the revival is a fresh, self-contained artifact.
 - It keeps every pitch legible -- a revival can be pitched as "our Glow-native Clay," born with that name, without ever having renamed Mantra.
 - It is honest -- the elder stays visible and running until the revival truly earns its place.

@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260914.214649` | [The dead letter became reachable again](20260914/20260914-214649_the_dead_letter_became_reachable_again.kyri) | recovered: one parked record identified and indexed |
+| `20260914.193627` | [The tutorial waited at the proven seam](20260914/20260914-193627_the_tutorial_waited_at_the_proven_seam.kyri) | recovered: the first-hour path held at its proven edge |
 | `20260914.135554` | [The refusal speaks before it stops](20260914/20260914-135554_the-refusal-speaks-before-it-stops.kyri) | a parked record returned |
 | `20260914.165532` | [The parent and the parked record returned](20260914/20260914-165532_the-parent-and-the-parked-record-returned.kyri) | a parked record returned |
 | `20260914.184901` | [Two parked records returned](20260914/20260914-184901_two-parked-records-returned.kyri) | two parked records returned |
