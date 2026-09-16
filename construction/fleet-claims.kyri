@@ -94,3 +94,9 @@ stamp 20260916.031042
 epoch 1789542642
 paths tools/fixtures/a/aurora_placement_scan.sh tools/a/aurora_placement_witness.rish tools/fixtures/a/aurora_placement_control.sh active-designing/20260916-0
 what Row 7 of the bounded-torus moonshots -- Aurora as a small torus of cores -- is the last of twelve carrying no erratum. Its falsifier (reachable boards are mesh rather than torus) is gradeable in arithmetic with no board: at the 4-core grid the row names, a 2x2 torus IS the 2x2 mesh, since i+1 mod 2 and i-1 mod 2 are the same node, so the wrap is a duplicate link and the falsifier cannot fire; at 16 cores it buys a real diameter cut. And the placement map the row proposes needs a module-to-module communication weight this tree may hold nowhere -- row 12's missing operand arriving on a second road. Measure both halves.
+claim grass-two-rooms-ceiling-narration
+seat grass
+stamp 20260916.034104
+epoch 1789544464
+paths context/TWO_ROOMS.md
+what The doorway living ratchet closed at zero on 20260911.160504 (42826c45d), and context/TWO_ROOMS.md still narrates the ceiling falling 59 to 39 with a remainder of 33 active-designing and 6 external-research pages. The scan reads living_silent=0 living_ceiling=0 over 1,328 pages today. The page is the Earth-Fixed rota seat and the doorway's own canon, so a rota lap reads a five-day-stale number as a bare fact once per orbit. Amend with the closing paragraph naming the 39 -- 30 ALES fill captures, 6 lineage silos, 3 more -- the wall's structural reason, and what holds each figure still; grade the page at Field.
