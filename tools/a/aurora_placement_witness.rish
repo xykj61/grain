@@ -1,0 +1,103 @@
+# tools/a/aurora_placement_witness.rish -- can row 7 be placed?
+#
+#   rishi/bin/rishi run tools/a/aurora_placement_witness.rish
+#
+# First witness for moonshot 7 of
+# `active-designing/20260910-060204_the-bounded-torus-moonshots.md`: Aurora as a small torus of
+# cores, whose first witness the row names as a placement map -- which module sits on which node,
+# and the hop count for every pair.
+#
+# THE ROW'S OWN FALSIFIER: "the reachable boards are mesh rather than torus, which would leave the
+# wrap-around hops the map depends on unavailable." Both halves of the row are gradeable with no
+# board at all, and this witness reads them separately.
+#
+# THE GEOMETRY. At the 4-core grid the row names FIRST, a 2 x 2 torus IS a 2 x 2 mesh: `i + 1 mod 2`
+# and `i - 1 mod 2` name the same node, so each wrap link duplicates a mesh link the board already
+# has. Equal diameter, equal distinct link count, equal mean pair distance -- one graph under two
+# names. A mesh board therefore takes nothing away, and the row's falsifier cannot fire where the
+# row starts. At 16 cores it fires with something real behind it: diameter 6 to 4, mean distance
+# 2.6667 to 2.1333, a fifth of the average hop bought by 8 extra links.
+#
+# THE OPERAND. A placement map minimizes `sum over pairs of w(i,j) x hops(i,j)`, so it wants a
+# module-to-module communication WEIGHT. This tree holds STRUCTURE instead: cross-room dependency
+# resolved through the import symlinks it files by hand, one edge per importing source file, a
+# startup read and a hot loop indistinguishable. The measurement sits in the scan's own keys.
+#
+# WHAT THIS WITNESS DOES NOT REACH. Whether a 16-core torus board becomes reachable, and whether a
+# weight gathered later would place these rooms well. It proves the row's first grid cannot
+# falsify, and that the operand its first witness needs is not in the tree today.
+
+say "aurora-placement: Style Gauge, Meter -- two halves of one row, graded apart."
+say "aurora-placement: Lens TAME -- a falsifier that cannot fire is a sentence rather than a test."
+
+# --- The reading -------------------------------------------------------------
+say "aurora-placement: reading the geometry and the operand..."
+let scan = run ["sh" "tools/fixtures/a/aurora_placement_scan.sh"]
+say scan.out
+assert scan.ok else "aurora-placement: the scan refused -- read its own keys"
+assert scan.out contains "verdict=read" else "aurora-placement: the scan reached no verdict"
+
+# invariant: the reading names the row and the page it grades, so a key pasted out of context
+# still says which sentence it is about.
+assert scan.out contains "row=7" else "aurora-placement: the reading named no row"
+assert scan.out contains "the-bounded-torus-moonshots.md" else "aurora-placement: the reading named no page"
+
+# invariant: at the 4-core grid the two topologies are one graph, so the row's falsifier has
+# nothing to take away there.
+assert scan.out contains "four_core_same_graph=yes" else "aurora-placement: the 2x2 torus and mesh parted"
+assert scan.out contains "four_core_falsifier_can_fire=no" else "aurora-placement: the 4-core falsifier was read as live"
+
+# invariant: at 16 cores the wrap buys a real cut, so the row is worth keeping rather than dropping.
+assert scan.out contains "sixteen_core_falsifier_can_fire=yes" else "aurora-placement: the 16-core falsifier was read as silent"
+assert scan.out contains "sixteen_core_diameter_cut=2" else "aurora-placement: the 16-core diameter cut moved"
+assert scan.out contains "sixteen_core_mean_cut_share=0.2000" else "aurora-placement: the 16-core mean cut moved"
+
+# invariant: the mesh diameter at 16 cores is the closed form 2(k-1) and the torus 2*floor(k/2),
+# stated here so a reader checks the arithmetic rather than the program.
+assert scan.out contains "torus_diameter=4 mesh_diameter=6" else "aurora-placement: the 16-core diameters left their closed forms"
+
+# invariant: the operand reading opened the tree at all -- a room census of zero would make every
+# later key read clean while measuring nothing.
+assert scan.out contains "rooms=" else "aurora-placement: no room census was taken"
+assert scan.out contains "room_pairs=" else "aurora-placement: no room graph was read"
+assert scan.out contains "loom_keys=" else "aurora-placement: the journal was not read for a weight"
+
+# invariant: 44 rooms do not sit on 4 nodes one apiece, so the map the row proposes needs a
+# coarsening its sentence never states.
+assert scan.out contains "coarsening_needed k=2 nodes=4" else "aurora-placement: the 4-node coarsening went unread"
+assert scan.out contains "coarsening_needed k=4 nodes=16" else "aurora-placement: the 16-node coarsening went unread"
+
+# --- The bounds --------------------------------------------------------------
+# invariant: every collection this scan builds names its maximum, so a tree that grows past one is
+# refused at the edge rather than read short in silence.
+assert scan.out contains "max_grids=" else "aurora-placement: the grid bound is unnamed"
+assert scan.out contains "max_rooms=" else "aurora-placement: the room bound is unnamed"
+assert scan.out contains "max_imports=" else "aurora-placement: the import bound is unnamed"
+assert scan.out contains "max_keys=" else "aurora-placement: the key bound is unnamed"
+assert scan.out contains "rooms_over_bound=no" else "aurora-placement: the room census stands over its bound"
+assert scan.out contains "grids_over_bound=0" else "aurora-placement: a grid was dropped at the bound"
+
+# --- The control: 54 behaviors, four mutations, one pen ----------------------
+say "aurora-placement: the control -- a real repository in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/a/aurora_placement_control.sh"]
+say ctl.out
+assert ctl.ok else "aurora-placement: the control refused -- read its own leg lines"
+assert ctl.out contains "control_verdict=ok" else "aurora-placement: the control reached no ok verdict"
+assert ctl.out contains "failures=0" else "aurora-placement: a planted behavior differed from what was stated"
+
+# invariant: the control tallies its own legs and this witness asserts the count, so a leg written
+# tomorrow is heard the day it lands rather than passing unread under a green verdict.
+assert ctl.out contains "legs=54" else "aurora-placement: the control's leg count moved -- read it, then raise this line"
+
+# invariant: each of the four mutations was planted AND bit. A refusal proven only in the passing
+# direction cannot be told from a bypass.
+assert ctl.out contains "leg m1_bites ok" else "aurora-placement: removing the wrap-duplicate collapse went unfelt"
+assert ctl.out contains "leg m2_bites ok" else "aurora-placement: replacing cyclic distance with plain distance went unfelt"
+assert ctl.out contains "leg m3_bites ok" else "aurora-placement: leaving import symlinks unfollowed went unfelt"
+assert ctl.out contains "leg m4_bites ok" else "aurora-placement: dropping the self-edge guard went unfelt"
+
+# invariant: segment matching is proven by INPUT rather than by a mutation -- the pen carries a
+# room `mand` and a key `mandate_rows`, which holds `mand` as a substring and as no segment.
+assert ctl.out contains "leg pen_substring_room_refused ok" else "aurora-placement: a substring room name was counted as a named room"
+
+say "GREEN: aurora-placement -- the 4-core falsifier cannot fire, the 16-core one can, and the weight the map wants is not in this tree."
