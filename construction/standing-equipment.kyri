@@ -4294,6 +4294,40 @@ path tools/r/reds_citation_witness.rish
 tier lap
 seated 20260906.143706
 # reds_shelf_name -- a fold shelf's own name is a promise about what it holds (REDS row of
+
+# reds_shelf_resolve -- a refold renames a shelf, and the past's citations of the departed name
+# must still be answerable (REDS row of `20260916.103855`). A fold shelf is named
+# `REDS-<title>-rows-<N>.md`, and a later refold RENAMES it -- absorbing the row into a wider range
+# or retitling the same rows. Living citers repoint in that pass; dated testimony keeps every word
+# it wrote. Measured at seating: 564 distinct shelf basenames cited, 88 on no path, and 80 of those
+# 88 cited ONLY by testimony accrete-never-break forbids rewriting. The resolver recovers 82.
+#
+# THE GATED READING IS `unrecoverable`, NEVER `absent`, and that is the whole shape of the guard: a
+# refold RAISES `absent` every time it runs, so gating it would red on the tree's own tending and
+# become a gate somebody turns off. `unrecoverable` a refold leaves exactly where it stood, because
+# a refold moves a row between shelves and never off its number. Proven the lap it was seated --
+# folding `%770` took `shelves` 489 to 490 and left all three of `absent`, `recovered` and
+# `unrecoverable` unmoved.
+#
+# THE SIX IT CANNOT ANSWER ARE NAMED RATHER THAN LUMPED. Four are `ambiguous`, every one a
+# PUBLISHED DOUBLE (`%512`, `%530`, `%675`) that `.claude/rules/derived-spine.md` states no lap may
+# repair, so refusing there is the law working. Two are `missing`, both pen plants written by a
+# living witness rather than a fixture -- the census reads past `tools/fixtures/` as a proxy for
+# *planted*, and this measurement is what showed that proxy incomplete. They are counted rather
+# than excluded, because widening an exclusion to make a number smaller is how a census stops
+# measuring its subject.
+#
+# `tier cadence`, chosen by measurement rather than by habit. The witness runs 75s (read
+# `20260916` under a concurrent roster pass): one map built across 490 shelves, then 82 lookups,
+# then a 32-leg pen that reads the census three more times. Eight ships paying that every lap is a
+# real spend, and the fault it watches for CANNOT arrive between laps -- the gated reading is
+# invariant under the only ordinary work that touches this population. `--cadence-slice` turns the
+# clock now (`%701`), so a cadence seat is a slower clock rather than silence.
+
+guard reds_shelf_resolve
+path tools/r/reds_shelf_resolve_witness.rish
+tier cadence
+seated 20260916.103855
 # `20260907.151832`). A folded row spells its number FOUR times: in the shelf's filename, in its H1
 # title, in a `**Rows:**` header, and in the row headline. `reds_spine_derive` is the only
 # instrument in this tree that reads a row's number at all, and it reads the headline alone -- so a

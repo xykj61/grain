@@ -1,0 +1,62 @@
+# tools/r/reds_shelf_resolve_witness.rish -- a REDS fold shelf may be renamed, and every elder
+# citation of the departed name must still be answerable.
+#
+#   rishi/bin/rishi run tools/r/reds_shelf_resolve_witness.rish
+#
+# WHAT THIS GUARDS. A fold shelf is named REDS-<title>-rows-<N>.md, and a later refold RENAMES it
+# -- absorbing the row into a wider range, or retitling the same rows. That is a BREACH in this
+# tree's own vocabulary (foundations/20260818-081438_the-three-depths-of-removal.md): the present
+# forgets the name, the past remembers it. Living citers repoint in the same pass; dated testimony
+# keeps every word it wrote, and accrete-never-break forbids rewriting it. So the elder citations
+# resolve nowhere, permanently, by law rather than by neglect.
+#
+# WHY NO STANDING RESOLVER REACHED THEM, checked rather than assumed. tools/d/dated_path_resolve
+# computes a day directory from a one-clock stamp, and a REDS shelf basename carries no stamp.
+# tools/f/fold_shelf_link_scan reads link DEPTH from inside a shelf rather than a renamed target.
+# Both are green over this population and neither can answer the question.
+#
+# THE KEY is the derived spine's own (.claude/rules/derived-spine.md): the shelf's TITLE is a view
+# and its ROW NUMBERS are the identity, since rule 3 freezes a published number forever. So the
+# resolver reads the row headlines standing on disk today and answers from them.
+#
+# WHY `tier lap`. One pass over 489 shelves builds the map, and the census reuses that one map for
+# every lookup -- about seventeen seconds, measured `20260916`. The fault it watches for is written
+# by ordinary work: every refold renames a shelf, so any lap that folds can leave a citation with
+# no holder.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked markdown and a pen.
+
+say "reds-shelf-resolve: Language EN -- a citation of a renamed shelf still finds the rows it named."
+say "reds-shelf-resolve: Style Gauge, Meter -- the recovered and the unrecoverable are counted apart, and only the second is gated."
+say "reds-shelf-resolve: Lens TAME -- safety first: every verdict is proven in a pen from both sides before the field is read."
+
+# 1 -- the pen. Real shelves in a throwaway directory, every verdict planted and then lifted.
+let control = run ["sh" "tools/fixtures/r/reds_shelf_resolve_control.sh"]
+say control.out
+say control.err
+assert control.ok else "reds-shelf-resolve: a control case read the wrong way -- ${control.out_brief}"
+assert control.out contains "control_verdict=ok" else "reds-shelf-resolve: the pen must balance before the field is believed"
+
+# The pen's own leg tally, asserted beside its verdict. `control_verdict=ok` says only that the
+# control reached its last line, so a leg written tomorrow would be silent without this.
+assert control.out contains "failed=0" else "reds-shelf-resolve: the pen reported a failing leg"
+assert control.out contains "legs=32" else "reds-shelf-resolve: the pen's leg count moved -- read the control and update this number with it"
+
+# 2 -- the field. The gated reading is `unrecoverable`, never `absent`: a refold RAISES absent
+# every time it runs, and a gate that reds on the tree's own tending is a gate somebody turns off.
+let field = run ["sh" "tools/fixtures/r/reds_shelf_resolve_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "reds-shelf-resolve: unrecoverable citations stand above the ceiling -- ${field.out_brief}"
+assert field.out contains "verdict=ok" else "reds-shelf-resolve: the census refused -- ${field.out_brief}"
+
+# 3 -- the founding recovery, asserted by doing rather than by counting. This citation names a
+# shelf that a refold absorbed into REDS-a-bound-stated-in-the-wrong-unit-rows-701-704.md, and it
+# resolved nowhere before this guard was written.
+let founding = run ["sh" "tools/r/reds_shelf_resolve.sh" "REDS-a-cadence-needs-a-mechanism-rows-701.md"]
+say founding.out
+assert founding.ok else "reds-shelf-resolve: the founding citation failed to resolve -- ${founding.out_brief}"
+assert founding.out contains "verdict=recovered-by-rows" else "reds-shelf-resolve: the founding citation stopped recovering"
+assert founding.out contains "rows-701-704.md" else "reds-shelf-resolve: the founding citation resolved to an unexpected shelf"
+
+say "reds-shelf-resolve: GREEN -- the pen balances and every cited shelf that can be answered is."

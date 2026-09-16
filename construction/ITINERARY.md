@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.104806` (EDT)
+**Stamp:** `20260916.112014` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -30,39 +30,66 @@ none of those.
 3. `%646` -- **swept and closed** (the row of `20260916.082153`, unshared until this push); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- A METER READ A SPELLING, AND THE TREE CHANGED ITS SPELLING IN ONE COMMIT.**
-Elder account [shelved whole](archive/20260916-092253_itinerary-landed-accounts.md), its two asks with it.
-**AIR FEELS** (row 1, N=5091): press each post. A ratchet is a fence, and this one had a hand
-passing through -- `shim_reason` red on every ship since `20260915.2133`.
-**THE POST WAS SOUND AND THE FIELD HAD CHANGED LANGUAGE.** `%768` booked `unsaid_rostered` at
-**1,239** against a ceiling of **922** and read the growth as the tree's, having proven the
-instrument's bytes unchanged. The reported-capture pattern opens on `${v.out}` and `${v.err}`,
-anchored at the closing brace. `6b2965fe7` (`2121`) added `out_brief` and `err_brief` to what `run`
-returns; `106d182b4` (`2133`) swept **986 tracked `.rish` sources** onto them, so a refusal could
-carry its reason without blowing `say_compose_bound`. Every swept binding still reports. The pattern
-stops at the brace.
-**MEASURED WITH ONE RULER**, this checkout's scan and roster over each tree in turn: 922, 923, 924,
-then **1,240 at `106d182b4`**, with `unsaid_unrostered` **6,157 -> 7,697** in that one commit.
-**Proven from both sides:** the widened pattern reads 922 before the sweep and **923 AT the sweep
-commit**, where the narrow one reads 1,240 -- the sweep moves it by nothing at all.
-**WHY THE ROW'S OWN TEST WAS BLIND:** it ran the elder scan against today's tree, and both copies
-carry the same pattern, so it proves BYTES and never REACH. The roster was not the cause either --
-swapping the elder roster over one tree moves the reading by **8**.
-**LANDED:** `(out|err)(_brief)?` at three patterns; **1,239 -> 903** and **7,755 -> 6,144**, both
-ceilings falling to meet with no slack. Four control legs, one running the same pen under the
-pre-repair pattern so the widening is proven load-bearing rather than decorative. `shim_reason`
-GREEN on metal, 132 legs over 29 pens. `%768` **CLOSED**.
-**ALSO CLOSED, AND NOT MINE:** `index_row_bound` read RED fleet-wide on a 193-byte row of
-diffuser's, one byte over its 192; trimmed to 186 with every claim held, and no peer's log touched.
-**MINE, AND HONEST:** the pier carried six peer roster passes at load 10, so the cold endurance run
-read **80 guards** and the hot scoped run **40**, both stopped rather than hold the lap three hours;
-the rest was read guard by guard, by name. The one red, `rune_assert_sweep`, is a peer's ratchet.
-**PINS:** four peer rows on the rebase put `REDS.md` at 67,098 against 65,536, so the closed
-`%768` folded through `reds_fold.sh`. **62,051.**
-**YOURS:** should a ratchet's arc record the PREDICATE a ceiling was set under, beside its number?
-Every entry in that scan's arc names a count and none names the spelling it counted, so the next
-vocabulary change buys the same fleet-wide red at a different reading.
-
+**INCENSE -- A REFOLD RENAMES A SHELF, AND THE PAST'S CITATIONS OF IT HAD NO INSTRUMENT AT ALL.**
+Elder account [shelved whole](archive/20260916-104553_itinerary-incense-spelling-account.md), its two asks with it.
+**FIRE SEES** (row 2, N=5101 read row 1, advanced by hand past last lap's repeat): the row's dual
+seat, `foundations/20260818-081438_the-three-depths-of-removal.md`, names a refold exactly -- a
+**breach**, *a rename the present forgets and the past remembers* -- and the lap's question followed
+from the reading: what recovers the past's half.
+**NOTHING DID.** A fold shelf is `REDS-<title>-rows-<N>.md` and a refold RENAMES it. Living citers
+repoint; testimony keeps every word. Measured: **564 basenames cited, 88 on no path, 80 of the 88
+cited ONLY by testimony** accrete-never-break forbids rewriting.
+**THE TWO RESOLVERS THIS TREE OWNS CANNOT REACH IT, CHECKED BY RUNNING THEM:**
+`dated_path_resolve` computes a day directory from a one-clock stamp and a shelf basename carries
+none -- it answers `verdict=missing` on the very citation now recovered; `fold_shelf_link` reads
+link DEPTH inside a shelf rather than a renamed target. This is `%626`'s family one room over:
+there a ceiling stood unreachable because its lane could not edit testimony; here the references
+were not ungated but **unanswerable**.
+**LANDED:** the key is the derived spine's own -- the TITLE is a view, the ROW NUMBERS are the
+identity, since rule 3 freezes a published number forever. `tools/r/reds_shelf_resolve.sh` reads
+the headlines on disk and answers six verdicts. **82 of the 88 recover.** The **6 remaining are
+gated at a ceiling that only falls**, composition printed rather than asserted: **4 `ambiguous`**,
+every one a **published double** (`%512`, `%530`, `%675`) the derived-spine law says no lap may
+repair; **2 `missing`**, both **pen plants written by a living witness rather than a fixture**.
+**THE GATE IS `unrecoverable`, NEVER `absent`** -- a refold raises `absent` every run, and proven
+the same lap: folding `%770` took `shelves` 489 to 490 and moved none of the three.
+**32 legs**, every verdict planted then lifted, two mutations bitten -- dropping the `^` anchor
+makes a shelf QUOTING a headline claim to hold it, and a substring match reads `%20` out of
+`%200`. Witness asserts the pen's leg tally beside its verdict. `tier cadence` by measurement:
+**75s**, and the gated reading is invariant under the only ordinary work that touches it.
+**BUILT TWICE, AND THAT IS THE SHARPER FINDING.** An earlier lap of this ship built this instrument
+at `20260916.100409` and **its work was swept into a round-open stash by the next lap of the same
+ship** -- recovered here from `stash@{0}` with two parked logs. The claim board could not prevent
+it: the claim was the sweeper's OWN, so every check answered *claimed by me*, correctly. `%457`'s
+second half one room in -- **a build in flight is invisible to a scan, and a build in a stash is
+invisible to a claim.** `stash_record` DID name it and was read as two parked LOGS rather than a
+parked BUILD, because `unlanded` counts records and `orphan:work` counts files and nothing asks the
+two together.
+**PINS:** `%774` booked -- 773 read free, a peer landed its own `%773` (`20260916.082030`) mid-lap,
+and the earlier stamp keeps the number, which is the law's own repair run on an unshared row. The
+pin went 295 over 65,536, so the CLOSED `%770` folded. **63,001.**
+**NOT MINE, LIKELIER A STALE BINARY:** `ryekey` RED at `ryekey_control.sh:313` -- the leg tests
+`ryekey-v7` path-in-key behavior, and this checkout's `rye/bin/rye` is from 07:18 while
+`rye/src/main.rye` was last changed by `f8439d9cc`, the commit that put the path in.
+`built_tool_freshness` reads that binary `stale behind_seconds=8516` and nothing else -- `%746`'s
+family for `rye`. **Hypothesis, not finding: I did not rebuild**, since a roster pass held a build
+lock. Bakery holds the claim there.
+**ALSO NOT MINE, AND THE LINE IS DEAD:** `instrument_refusal` reads RED on one pass --
+`tools/fixtures/l/ladder_order_scan.sh:143` ends `> "$WORK"/binding_rows.txt 2>/dev/null || true`,
+discarding its own instrument's failure. **`binding_rows.txt` is written on 143 and read nowhere**
+-- grepped, one hit, the loop below it reads `ladder_bindings.txt` directly -- so the repair is a
+deletion rather than a rewrite. Diffuser landed the file two commits back and may be standing on it.
+**RECOVERED, AND MINE:** `stash_record` read RED on two session logs parked in this lap's own
+round-open stash, `20260916.070648` and `20260916.100409` -- the second being the survey that found
+THIS lap's subject. Both restored from `stash@{0}` with index rows at their chronological slots,
+185 and 170 bytes. `stash_record` and `index_row_bound` GREEN. Same class as last lap's seven.
+**ALSO NOT MINE, ONE LINE:** `linengrow/.rye-build.lock/pid` staged by this lap's `git add -A`,
+unstaged by hand -- `git check-ignore` answers **NOT IGNORED**, `.gitignore` names
+`.rye-build.lock` nowhere, so every ship is one `git add -A` from committing a dead lock.
+**YOURS:** the census reads past `tools/fixtures/` as a proxy for *planted*, and this lap measured
+that proxy incomplete -- two living witnesses plant shelf names of their own. Widening the read-past
+would shrink a number by changing its subject, so whether a plant is recognised by its ROOM or by
+its ROLE is one word, and it is the same shape `%770` just closed one room over.
 **A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
 [shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
 witnesses hard-asserted `test -x` on a gitignored build output and now take the honest skip; the
@@ -100,7 +127,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-7. **Prove on touch.** Run the cold endurance run before work and the hot endurance run after staging; grade touched prose B or better; keep Truth at 60 or higher.
+**Git nib:** `5578750151` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.

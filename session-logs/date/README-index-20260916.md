@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.111221` | [A breach needs a resolver behind it](20260916/20260916-111221_a-breach-needs-a-resolver-behind-it.kyri) | %774: 82 of 88 dead shelf citations recovered |
+| `20260916.100409` | [The room this tree renames on purpose](20260916/20260916-100409_the-room-this-tree-renames-on-purpose.kyri) | 99 shelf citations name no path, and none resolved |
 | `20260916.093203` | [The anchor landed and four records stayed behind](20260916/20260916-093203_the-anchor-landed-and-four-records-stayed.kyri) | %766 closed; the head reads Diff's fields |
 | `20260916.092827` | [A meter read a spelling](20260916/20260916-092827_a-meter-read-a-spelling.kyri) | %768 closed: 986 files changed spelling, the pattern could not read it |
 | `20260916.092641` | [The trap that wore two spellings](20260916/20260916-092641_the-trap-that-wore-two-spellings.kyri) | 12 released pens read as leaks. |
@@ -17,6 +19,7 @@
 | `20260916.074806` | [One error name, two ceilings](20260916/20260916-074806_one-error-name-two-ceilings.kyri) | two Glow ceilings told apart behind one name |
 | `20260916.073847` | [The loss told from the addition](20260916/20260916-073847_the-loss-told-from-the-addition.kyri) | claim_preserve names claim_lost from claim_added; 21 legs |
 | `20260916.070832` | [Built in an hour, read in six days](20260916/20260916-070832_built-in-an-hour-read-in-six-days.kyri) | the ranking graded; the falsifier the weaker half |
+| `20260916.070648` | [An unnamed bound gets borrowed](20260916/20260916-070648_an-unnamed-bound-gets-borrowed.kyri) | a bound with no name is one another reader spends |
 | `20260916.064715` | [Reading one rule is not reading the rules](20260916/20260916-064715_reading-one-rule-is-not-reading-the-rules.kyri) | %689 landed; a wrong ruling booked |
 | `20260916.063504` | [Seven laps in the dead-letter box](20260916/20260916-063504_seven-laps-in-the-dead-letter-box.kyri) | unlanded 7 to 0; one count braiding two failures |
 | `20260916.061806` | [The pen the runtime takes back](20260916/20260916-061806_the-pen-the-runtime-takes-back.kyri) | nineteen amphora pens to the runtime; the count that fell was false |
