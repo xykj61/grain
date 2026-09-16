@@ -4166,6 +4166,22 @@ guard rye_struct_fields
 path tools/r/rye_struct_fields_witness.rish
 tier lap
 seated 20260906.140000
+# rye_enum_variants -- the sibling reader, for the declaration a struct reader cannot see. The
+# Glow gate law grammar in tools/fixtures/g/glow_gate_law_agree_scan.sh could point a `law` line
+# only at a plain-integer const, so a desk memorizing a count of ENUM VARIANTS stood unlinked and
+# that scan's own header named the shape as one of three the grammar would have to learn. This
+# rung proves the reader that home needed: a count and an order out of the Rye source across all
+# three spellings this tree writes -- one-line bare, one-line tagged `enum(u8)` with `= <n>`
+# values, and the many-line form with comments between variants -- and four refusals by name,
+# each exiting non-zero so a caller never reads a zero as an answer. The comment clause is
+# planted BOTH ways: one clause serves `///` and `//`, and the first draft carried two that
+# overlapped, which is how the redundancy was found -- removing one changed no reading at all.
+# 26 behaviors; `tier lap` at 1s, beside the consumer it feeds.
+
+guard rye_enum_variants
+path tools/r/rye_enum_variants_witness.rish
+tier lap
+seated 20260915.205116
 # The diameter floor, seated 20260906.143000. `comlink/topology.rye` publishes hop counts, and
 # `topology_graph_census.sh` now reports the smallest diameter any graph of that many points and
 # that maximum degree could hold -- the Moore bound solved for the DIAMETER rather than for the

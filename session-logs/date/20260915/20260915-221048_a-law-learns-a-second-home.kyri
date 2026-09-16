@@ -1,0 +1,47 @@
+format session-log-v1
+stamp 20260915.221048
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent -- seat pheromone, language lane
+modality text
+model claude-opus-5
+model_status configured default read from .claude/settings.json; active runtime unverified
+configured_model claude-opus-5
+configured_status tracked settings file, read this lap
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, one clock America/New_York
+title A law learns a second home
+prompt The baton, and the card's fourth agent-doable item -- the Glow gate law ratchet standing at its floor of 14, wanting a design lap rather than a sweep.
+think The scan's own header did the hardest part of this lap before I arrived. It read the fourteen unlinked desks ONE AT A TIME and sorted them into three kinds, then named the exact condition under which the floor could fall again -- a struct field count, an enum variant count, or a const whose value is an expression. That is a header written for the next hand rather than for its own author.
+think Crux first, among the three shapes. The grammar's KIND is the crux: once a law's middle field can select which reader answers, each home is a small plug. So I changed the grammar once and attached two readers rather than special-casing either shape.
+think The suffix rides on the NAME rather than arriving as a fourth field, and the reason is subtraction. A fourth field would make all eleven standing law lines carry a `const` token they do not need, which rewrites correct declarations to buy nothing. A Zig identifier can never hold a dot, so `Line.fields` can never be mistaken for a constant called that.
+think The struct reader already stood, built for REDS %500 when four guards proved a field count with presence greps. The enum reader did not, so that is the one new instrument, claimed on the board and pushed before the build.
+obs THE ZERO RULE IS WHAT MAKES A REFUSAL HONEST. Both count readers print `0` beside a non-zero exit when they cannot find what was asked for, so a law naming an absent struct would resolve to zero and be reported as `body_disagree` -- a WRONG diagnosis where `law_unresolved` is the true one. I rejected zero at the call site, and the mutation proving it flips three legs from law_unresolved to body_disagree. Nothing is lost: the population passes over a literal zero already, so no desk in it can hold a lawful law of zero.
+obs A CLAUSE NOTHING CAN BREAK IS A CLAUSE DOING NO WORK. My first draft of the enum reader carried two comment clauses, one for `///` and one for `//`. Removing the `///` one changed no reading at all, because every `///` line begins `//`. I dropped it, said so in the header, and added a plain-comment leg so the surviving clause is proven from its own side -- removing it now fails four legs.
+obs THE FOUR MANTRA DESKS WERE ALREADY HELD, by a different scan under mantra_a1_equality. So `unlinked` counted desks THIS scan did not hold, never desks nothing held. Two guards over one claim is the honest cost, and neither subsumes the other: the elder pair also asserts field ORDER, which a count cannot see. The scan's header says so now rather than letting a reader assume the desks were unguarded.
+obs THE WITNESS COULD NOT HEAR ITS OWN CONTROL'S LEG COUNT. `control_verdict=ok` says only that the control reached its last line, so the five legs I wrote could have read wrongly under a green witness -- the unheard-guard shape one room over. The witness asserts `legs=51` now, and names each new home's leg, so a leg written tomorrow is heard the day it lands.
+obs AURORA'S SIX LIVING STAGES ARE A FOURTH KIND OF HOME, and I found that by reading rather than assuming. They are not a const, a struct, or an enum: they are the six files of aurora/src/ that are stages, out of eight. A module roster count. Named in the header for the lap that builds it.
+obs THE TWO AURORA LENGTH DESKS STAY UNREACHABLE ON PURPOSE. tally/kumara.rye declares them as Ed25519 expressions, and the module's own `assert(seed_length == 32)` is a SECOND statement of the law rather than the declaration -- pointing a law line at it would compare two copies and call that agreement.
+loom guard=glow_gate_law_agree linked=11_to_16 unlinked=14_to_9 ceiling=14_to_9 walls=25 gates_at_zero=4
+loom control=glow_gate_law_agree legs=40_to_51 mutations_bitten=2 wall_ms=17447
+loom guard=rye_enum_variants behaviors=26 mutations_bitten=2 wall_ms=757 enums_read=3
+loom roster=hot run=295 green=282 red=11 gated=2 mine_red=0 tree_moved=yes
+rota lap 4965, row 0 -- Aether, the row that hears; listening for the claim a page keeps repeating, I heard the gate law scan's header repeat "read the scan rather than trusting this figure" and then name its own floor in prose the next lap could build against. A header that hands its successor a condition rather than a complaint is the sound this tree makes when it is working.
+file tools/fixtures/r/rye_enum_variants_scan.sh new -- reads a Rye enum's variants and count across the three spellings this tree writes, refusing by name
+file tools/fixtures/r/rye_enum_variants_control.sh new -- 26 behaviors in a throwaway pen, every refusal planted and lifted, two mutations proven to bite
+file tools/r/rye_enum_variants_witness.rish new -- drives the control and asserts its behavior count, so a leg written tomorrow is heard
+file tools/fixtures/g/glow_gate_law_agree_scan.sh law_value_of dispatches on a dot suffix; the zero rule; the header rewritten to what stands
+file tools/fixtures/g/glow_gate_law_agree_control.sh eleven legs for the two new homes, both sibling readers copied into the pen
+file tools/g/glow_gate_law_agree_witness.rish asserts legs=51 and names each new home's leg
+file src/gate/gate-mantra-line-fields-eq-u32.glow law line naming mantra/src/weave.rye Line.fields exact
+file src/gate/gate-mantra-weave-fields-eq-u32.glow law line naming mantra/src/weave.rye Weave.fields exact
+file src/gate/gate-mantra-diff-fields-eq-u32.glow law line naming mantra/src/weave.rye Diff.fields exact
+file src/gate/gate-mantra-store-dirs-eq-u32.glow law line naming mantra/src/store.rye Store.fields exact
+file src/gate/gate-caravan-exit-meanings-eq-u32.glow law line naming caravan/restart.rye Meaning.variants exact
+file construction/standing-equipment.kyri rye_enum_variants rostered at tier lap beside its sibling
+file construction/ITINERARY.md queue item four rewritten to the floor of 9 and the two shapes still unbuilt
+scope the Glow gate law grammar learns a struct field count and an enum variant count; five desks linked; ratchet floor 14 to 9
+status GREEN -- rye_enum_variants, rye_struct_fields, glow_gate_law_agree, mantra_a1_equality and caravan_c4_exit_meanings_eq all green on metal; the hot roster's eleven reds each proven to stand on the inherited tree
+recommend kg -- the fourth home is named and unbuilt: aurora's six living stages are a module roster count, and that is the next lap this header hands forward

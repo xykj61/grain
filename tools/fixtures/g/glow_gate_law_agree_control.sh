@@ -51,6 +51,14 @@ mkdir -p "$pen/tools/fixtures/g" "$pen/src" "$pen/mod"
 cp "$SCAN_SRC" "$pen/tools/fixtures/g/glow_gate_law_agree_scan.sh"
 SCAN="tools/fixtures/g/glow_gate_law_agree_scan.sh"
 
+# The two sibling readers ride in for the same reason. A `law` line naming `<Type>.fields` or
+# `<Type>.variants` sends the scan to rye_struct_fields_scan.sh or rye_enum_variants_scan.sh
+# through its OWN root, which inside the pen is the pen -- so a pen missing them would read every
+# such law as unresolved and the legs below would pass for the wrong reason.
+mkdir -p "$pen/tools/fixtures/r"
+cp "$ROOT/tools/fixtures/r/rye_struct_fields_scan.sh"  "$pen/tools/fixtures/r/"
+cp "$ROOT/tools/fixtures/r/rye_enum_variants_scan.sh"  "$pen/tools/fixtures/r/"
+
 read_key() { # read_key <output> <key>
   printf '%s\n' "$1" | sed -n "s/^$2=//p" | head -1
 }
@@ -222,6 +230,103 @@ desk src/spell.glow gth 31 "mod/law.rye wall below" 32
 out=$(run_scan 0)
 leg "prefix name not matched"    ok "$(read_key "$out" verdict)"
 rm -f "$pen/src/spell.glow"
+
+# ---- 8. the second home: a struct's field count -----------------------------
+# `<Type>.fields` sends the law to rye_struct_fields_scan.sh. A dot can never appear in a Zig
+# identifier, so the suffix can never be mistaken for a constant's own name -- proven below by
+# a const named `Shape` standing beside the struct and never answering for `Shape.fields`.
+cat > "$pen/mod/law.rye" <<'RYE'
+pub const Shape = struct {
+    text: []const u8,
+    gen: u32,
+    pos: u32,
+};
+RYE
+desk src/fields.glow eq 3 "mod/law.rye Shape.fields exact" 3
+out=$(run_scan 0)
+leg "struct fields linked"       ok "$(read_key "$out" verdict)"
+leg "struct fields counted"      1  "$(read_key "$out" linked)"
+
+# The struct grows a field and the desk does not -- the whole reason the home exists. Every
+# sibling gate witness stays green through this, because a wall at 3 still decides on both sides.
+cat > "$pen/mod/law.rye" <<'RYE'
+pub const Shape = struct {
+    text: []const u8,
+    gen: u32,
+    pos: u32,
+    site: u32,
+};
+RYE
+out=$(run_scan 0)
+leg "struct grew, body reds"     body_disagree "$(read_key "$out" verdict)"
+
+# A `///` doc comment between fields is read past rather than ending the block, so a documented
+# struct counts the same as a bare one. Without this the reader answers 1 and the desk reds.
+cat > "$pen/mod/law.rye" <<'RYE'
+pub const Shape = struct {
+    text: []const u8,
+    /// Why this one exists, as TAME asks of a surprising field.
+    gen: u32,
+    pos: u32,
+};
+RYE
+out=$(run_scan 0)
+leg "doc comment read past"      ok "$(read_key "$out" verdict)"
+
+# An absent struct resolves to nothing rather than to zero, and lands in law_unresolved.
+printf 'pub const Other = struct {
+    a: u32,
+};
+' > "$pen/mod/law.rye"
+out=$(run_scan 0)
+leg "absent struct unresolved"   law_unresolved "$(read_key "$out" verdict)"
+rm -f "$pen/src/fields.glow"
+
+# ---- 9. the third home: an enum's variant count ------------------------------
+printf 'pub const Meaning = enum { answered, stopped, fallen };
+' > "$pen/mod/law.rye"
+desk src/variants.glow eq 3 "mod/law.rye Meaning.variants exact" 3
+out=$(run_scan 0)
+leg "enum variants linked"       ok "$(read_key "$out" verdict)"
+
+# The enum grows a variant and the desk does not.
+printf 'pub const Meaning = enum { answered, stopped, fallen, deferred };
+' > "$pen/mod/law.rye"
+out=$(run_scan 0)
+leg "enum grew, body reds"       body_disagree "$(read_key "$out" verdict)"
+
+# The many-line spelling counts the same as the one-line one.
+cat > "$pen/mod/law.rye" <<'RYE'
+pub const Meaning = enum {
+    /// The dependent answered.
+    answered,
+    stopped,
+    fallen,
+};
+RYE
+out=$(run_scan 0)
+leg "many-line enum counted"     ok "$(read_key "$out" verdict)"
+
+# A tagged enum's backing type is not a variant, and a `= <n>` tag value is not a name.
+printf 'pub const Meaning = enum(u8) { answered = 1, stopped = 2, fallen = 4 };
+' > "$pen/mod/law.rye"
+out=$(run_scan 0)
+leg "tagged enum counted"        ok "$(read_key "$out" verdict)"
+
+# An absent enum resolves to nothing rather than to zero.
+printf 'pub const Other = enum { a, b, c };
+' > "$pen/mod/law.rye"
+out=$(run_scan 0)
+leg "absent enum unresolved"     law_unresolved "$(read_key "$out" verdict)"
+
+# A kind suffix pointed at the wrong kind refuses rather than reaching for the other reader:
+# the enum is really an enum, so `.fields` finds no struct and the law stays unresolved.
+printf 'pub const Meaning = enum { answered, stopped, fallen };
+' > "$pen/mod/law.rye"
+desk src/wrongkind.glow eq 3 "mod/law.rye Meaning.fields exact" 3
+out=$(run_scan 0)
+leg "wrong kind unresolved"      law_unresolved "$(read_key "$out" verdict)"
+rm -f "$pen/src/wrongkind.glow" "$pen/src/variants.glow"
 
 echo "legs=$legs"
 echo "control_failed=$failed"

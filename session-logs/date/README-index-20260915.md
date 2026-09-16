@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.221048` | [A law learns a second home](20260915/20260915-221048_a-law-learns-a-second-home.kyri) | gate law grammar learns two homes; floor 14 to 9 |
 | `20260915.220053` | [The pier that filled while nobody read it](20260915/20260915-220053_the-pier-that-filled-while-nobody-read-it.kyri) | 990M free; 32G leaked by one witness |
 | `20260915.215328` | [The door that handed a halting command](20260915/20260915-215328_the-door-that-handed-a-halting-command.kyri) | ember swept 31 to 13 percent; its runnable block halts |
 | `20260915.214602` | [The report that greps a file](20260915/20260915-214602_the-report-that-greps-a-file.kyri) | eager 524 to 0; both classes walled |

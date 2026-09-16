@@ -1,6 +1,7 @@
 ::  name       mantra store dirs equality gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 exactly when count is store dirs=3; answers 0 otherwise
+::  law        mantra/src/store.rye Store.fields exact
 ::  example    3 -> 1 - 2 -> 0 - 4 -> 0
 ::  readers    Mantra - Glow Tend a1 unfinished - Ashvini
 ::  nib        equinox-e259-equality-eighth-v0 - STOA337
