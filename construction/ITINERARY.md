@@ -86,7 +86,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d317055ac4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `659c9f39f1` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -271,6 +271,15 @@ nothing in the tree reads it the way `reds_spine_derive` reads the spine.
 **HANDED OFF, NEVER REACHED:** `tools/i/inference_ember_corpus_view.rish` carries two stale
 citations in its own header -- an elder module name and a pre-fold `tools/` path -- and asserts on a
 gated build rather than reporting `gated`. Both are `tools/` lane.
+**AND THE ROSTER MADE MY OWN FINDING ONE LEVEL UP.** The hot run died at guard **27 of 376** on
+`No space left on device`, reporting **four red**, two of which ran GREEN in this tree minutes before
+and minutes after. It named evidence files for both that **do not exist** -- the write was refused and
+the red stood citing nothing. A guard that **cannot run** reports the same word as a guard that
+**found something**. `df` read `1.1G` free at the death and `84G` three minutes later, so a peer
+released roughly 83G and the cause was gone before a hand could read it. Booked (`20260915.220137`),
+**OPEN**, handed to the `tools/` lane -- eight ships share this pier and a disk a peer filled is not
+this seat's to clear.
+
 **YOURS:** a runnable block on a front door is a **promise no instrument in this tree runs**. Should
 one? A meter that executes what a door tells a reader to execute is a different animal from every
 scan here -- it has side effects, it takes minutes, and its answer is host-dependent. The cheaper
