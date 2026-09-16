@@ -770,3 +770,5 @@ at a closed fold.*
 
 *Row %751 folded to [`REDS-a-postcondition-over-the-outputs-rows-751.md`](REDS-a-postcondition-over-the-outputs-rows-751.md) on `20260915.233000`, **CLOSED** -- a postcondition written over the outputs can be strictly weaker than one written over the inputs, and nothing in the shape says which you have.*
 *Rows %731 and %732 folded to [`REDS-the-gate-that-cannot-reach-a-commit-git-makes-rows-731-732.md`](REDS-the-gate-that-cannot-reach-a-commit-git-makes-rows-731-732.md) on `20260915.231943`, both **BOOKED** -- a gate placed at the commit cannot reach a commit git makes on its own behalf.*
+
+*Rows %636, %678, %702, %740 and %741 folded to [`REDS-the-ceilings-that-agreed-rows-636-740.md`](REDS-the-ceilings-that-agreed-rows-636-740.md) on `20260916.001000`, **BOOKED** and **CLOSED** -- Five rows where two readings had to be made one: two gates over a parked lap, a ceiling in hits against a bound in bytes, a revert that looked like an edit, a reason dropped at a buffer bound, and a helper reached by the wrong depth.*
