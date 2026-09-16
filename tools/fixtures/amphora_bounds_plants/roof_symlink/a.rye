@@ -1,0 +1,6 @@
+//! Plant -- one file reached by two paths (positive control for `roofs`).
+//! `amphora/src/manifest_entry.rye` is exactly this shape, and the elder
+//! reading called three such families `agree` about a comparison that never
+//! happened.
+pub const max_frame_len: u32 = 4096;
+pub const mark_plain_bytes = "plain-bytes";

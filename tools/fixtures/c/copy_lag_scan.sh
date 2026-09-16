@@ -85,10 +85,22 @@ git ls-files -s -- '*.rye' > "$pen/staged" 2>/dev/null || {
   echo "detail: git ls-files refused -- this is not a checkout"
   echo "verdict=no_checkout"
   exit 2; }
-awk '{print $1, $4}' "$pen/staged" > "$pen/modes" || {
+awk '{print $1, $4}' "$pen/staged" > "$pen/modes_all" || {
   echo "detail: awk refused while reading the index listing"
   echo "verdict=instrument_failed"
   exit 2; }
+
+# A PLANT IS BUILT TO DIFFER, so measuring one as drift measures the plant (20260915.184500).
+# Every `.rye` under `tools/fixtures/` is a control's own planted material: `word_agree/b.rye`
+# agrees with its `a.rye` on purpose and `word_diverge/b.rye` disagrees with its own on purpose,
+# because a refusal proven only in the passing direction cannot be told from a bypass. Those two
+# names are also `a.rye` and `b.rye` in a dozen pens, so every plant room shares a basename with
+# every other, and one symlinked plant nominates a canon for all of them -- which is how two pen
+# files came to read `behind` a third pen's file they have no relation to at all. The same
+# exclusion `ascii_document_scan.sh` makes, for the same stated reason, and it is COUNTED rather
+# than silent: an exclusion nobody can see is a door.
+grep -v '^[0-7]* tools/fixtures/' "$pen/modes_all" > "$pen/modes" || :
+fixtures_read_past=$(( $(wc -l < "$pen/modes_all") - $(wc -l < "$pen/modes") ))
 if [ ! -s "$pen/modes" ]; then
   echo "paths=0"
   echo "basenames_both_ways=0"
@@ -202,6 +214,7 @@ while IFS= read -r base; do
 done < "$pen/bothways"
 
 echo "paths=$paths"
+echo "fixtures_read_past=$fixtures_read_past"
 echo "basenames_both_ways=$basenames"
 echo "copies=$copies"
 echo "identical=$identical"

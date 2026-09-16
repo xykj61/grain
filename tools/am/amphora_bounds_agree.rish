@@ -49,6 +49,9 @@ let covers_on_derived = "tools/fixtures/amphora_bounds_plants/covers_marker_on_d
 let covers_partner_derived = "tools/fixtures/amphora_bounds_plants/covers_partner_derived"
 let unseated_agree = "tools/fixtures/amphora_bounds_plants/unseated_agree"
 let unseated_diverge = "tools/fixtures/amphora_bounds_plants/unseated_diverge"
+let word_agree = "tools/fixtures/amphora_bounds_plants/word_agree"
+let word_diverge = "tools/fixtures/amphora_bounds_plants/word_diverge"
+let roof_symlink = "tools/fixtures/amphora_bounds_plants/roof_symlink"
 
 let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
 assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL -- ${pos.out} ${pos.err}"
@@ -149,6 +152,41 @@ assert uneg.out contains "bound_max_frame_len_status=agree" else "the unseated a
 assert uneg.out contains "same_name_unseated=max_frame_len" else "an agreeing unseated family is still named"
 say "plant_unseated_negative=honored"
 
+# A WIRE WORD spelled in two roofs. Readings (1) through (4) each match a
+# spelled `u<N>` width, and a word const carries none, so `vessel_format`,
+# `mark_plain_bytes`, and `shoulder_ring1_wire` stood outside every one of them
+# while the law reading (1) states covers all three. `amphora/src/main.rye`
+# spells the grammar name the writer pours, `amphora/vessel_core.rye` spells the
+# name the parser refuses on, and Zig forbids `src/` importing its parent, so
+# the second spelling cannot be removed -- only watched.
+let wpos = run ["env" "AMPHORA_BOUNDS_ROOT=${word_diverge}" "sh" scan]
+assert (wpos.ok == false) else "amphora_bounds_agree: a diverging wire word must FAIL -- ${wpos.out} ${wpos.err}"
+assert wpos.out contains "word_vessel_format_status=diverge" else "the diverging word family must be named diverge"
+assert wpos.out contains "word_vessel_format_values=amphora-v1,amphora-v2" else "both spellings must be printed, so a reader sees which drifted"
+assert wpos.out contains "words_status=diverge" else "a diverging word family must reach the family verdict"
+say "plant_word_positive=honored"
+
+let wneg = run ["env" "AMPHORA_BOUNDS_ROOT=${word_agree}" "sh" scan]
+assert wneg.ok else "amphora_bounds_agree: an agreeing wire word must PASS -- ${wneg.out} ${wneg.err}"
+assert wneg.out contains "word_vessel_format_status=agree" else "the agreeing word family must read agree"
+assert wneg.out contains "word_vessel_format_roofs=2" else "an agreeing word family stands on two distinct files"
+say "plant_word_negative=honored"
+
+# A ROOF IS A FILE. `b.rye` here is a symlink to `a.rye`, which a recursive grep
+# follows, so the elder reading saw two roofs and called their agreement proven.
+# Three of the living room's six same-name families are exactly this shape --
+# `amphora/src/manifest_entry.rye` links to `amphora/manifest_entry.rye` -- and
+# a comparison of one file with itself can never fail, whatever drifts. The
+# state is lawful, so the leg proves the NAME rather than a refusal.
+let rsym = run ["env" "AMPHORA_BOUNDS_ROOT=${roof_symlink}" "sh" scan]
+assert rsym.ok else "amphora_bounds_agree: a symlinked roof is lawful and must PASS -- ${rsym.out} ${rsym.err}"
+assert rsym.out contains "bound_max_frame_len_roofs=1" else "two paths to one file must count as one roof"
+assert rsym.out contains "bound_max_frame_len_status=one_file" else "one file compared with itself must never read agree"
+assert (rsym.out contains "bound_max_frame_len_status=agree" == false) else "the elder false agreement must not return"
+assert rsym.out contains "word_mark_plain_bytes_status=one_file" else "the word reading must count roofs before agreement too"
+assert rsym.out contains "same_name_one_file=1" else "the count of one-file families must be printed"
+say "plant_roof_symlink=honored"
+
 let living = run ["sh" scan]
 say living.out
 assert living.ok else "amphora_bounds_agree: living amphora must agree"
@@ -159,6 +197,18 @@ assert living.out contains "same_name_unseated=max_listed_names max_mark_len max
 assert living.out contains "bound_max_vessel_len_status=agree" else "living max_vessel_len"
 assert living.out contains "bound_max_cargo_status=agree" else "living max_cargo"
 assert living.out contains "bound_digest_hex_len_status=agree" else "living digest_hex_len"
+assert living.out contains "bound_digest_hex_len_roofs=4" else "digest_hex_len's five declarations stand on four files"
+assert living.out contains "bound_max_listed_names_status=one_file" else "the symlinked manifest family must read one_file"
+assert living.out contains "bound_max_mark_len_status=one_file" else "the symlinked manifest family must read one_file"
+assert living.out contains "bound_max_name_len_status=one_file" else "the symlinked manifest family must read one_file"
+assert living.out contains "same_name_one_file=3" else "three of six same-name families stand on one file"
+assert living.out contains "word_vessel_format_values=amphora-v1" else "the living grammar word"
+assert living.out contains "word_vessel_format_status=agree" else "writer and parser must spell one grammar name"
+assert living.out contains "word_shoulder_ring1_wire_status=agree" else "the seal's associated-data word must agree across roofs"
+assert living.out contains "word_mark_plain_bytes_status=agree" else "the cargo mark must agree across roofs"
+assert living.out contains "words_read=5" else "living word families read"
+assert living.out contains "words_agree=3" else "three living word families stand on two roofs or more"
+assert living.out contains "words_status=agree" else "living wire words must agree"
 assert living.out contains "alias_cargo_ceiling_status=agree" else "living cargo_ceiling alias"
 assert living.out contains "alias_cargo_ceiling_membership=whole" else "living cargo_ceiling names all three members"
 assert living.out contains "alias_datagram_membership=whole" else "living datagram names both members"
@@ -166,4 +216,4 @@ assert living.out contains "alias_datagram_status=agree" else "living datagram a
 assert living.out contains "couples_status=agree" else "living couples must agree"
 assert living.out contains "covers_status=hold" else "living covers must hold"
 assert living.out contains "cover_max_manifest_name_len_to_main_max_season_name_len_status=covers" else "living season door must fit the listing"
-say "GREEN: amphora_bounds_agree -- derived same-name roster - alias membership and agreement - couples - covers - derived binding - thirteen planted pairs - no rename."
+say "GREEN: amphora_bounds_agree -- derived same-name roster - wire words - roofs by file - alias membership and agreement - couples - covers - derived binding - sixteen planted pens - no rename."

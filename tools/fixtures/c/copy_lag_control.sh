@@ -174,4 +174,27 @@ has "$out" 'verdict=no_checkout'  && echo "no_checkout_says_so=yes" || echo "no_
 has "$out" 'git ls-files refused' && echo "no_checkout_named=yes"   || echo "no_checkout_named=no"
 [ "$(scan_status "$d")" -ne 0 ]   && echo "no_checkout_refuses=yes" || echo "no_checkout_refuses=no"
 
+# 13. A PLANT IS BUILT TO DIFFER, so it is read past -- and the exclusion is COUNTED, never silent.
+#     Two legs, because a filter proven only where it bites cannot be told from a filter that eats
+#     the whole corpus: the same lagging file is planted once under `tools/fixtures/` and once in
+#     an ordinary room, and the reading must part on the path alone.
+d=$(build fixture_plant)
+mkdir -p "$d/tools/fixtures/pen"
+printf 'pub const Widget = struct {};\npub fn take() void {}\n' > "$d/tools/fixtures/pen/thing.rye"
+seal "$d"
+out=$(read_scan "$d")
+has "$out" 'behind=0'              && echo "fixture_plant_unread=yes"  || echo "fixture_plant_unread=no"
+has "$out" 'fixtures_read_past=1'  && echo "fixture_plant_counted=yes" || echo "fixture_plant_counted=no"
+has "$out" 'verdict=ok'            && echo "fixture_plant_free=yes"    || echo "fixture_plant_free=no"
+
+# 14. The same bytes in an ordinary room are still counted, so the filter reads a PATH rather than
+#     a shape, and nothing outside `tools/fixtures/` left the corpus with it.
+d=$(build fixture_sibling_room)
+mkdir -p "$d/pen"
+printf 'pub const Widget = struct {};\npub fn take() void {}\n' > "$d/pen/thing.rye"
+seal "$d"
+out=$(read_scan "$d")
+has "$out" 'behind=1'             && echo "outside_fixtures_counted=yes" || echo "outside_fixtures_counted=no"
+has "$out" 'fixtures_read_past=0' && echo "outside_fixtures_zero=yes"    || echo "outside_fixtures_zero=no"
+
 echo "control_verdict=ok"

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.200611` | [a plant is built to differ](20260915/20260915-200611_a-plant-is-built-to-differ.kyri) | a control's own plants were measured as a room's drift; read past and counted |
 | `20260915.195922` | [The source that vanished mid-compile](20260915/20260915-195922_the-source-that-vanished-mid-compile.kyri) | the flaky cause captured and confirmed |
 | `20260915.195227` | [The room that counted itself short](20260915/20260915-195227_the-room-that-counted-itself-short.kyri) | a door swept 50 to 3 percent, three figures re-measured |
 | `20260915.194903` | [The pen that closed one of two](20260915/20260915-194903_the-pen-that-closed-one-of-two.kyri) | lotus migrated; ceiling 1813 to 1574 |
@@ -26,4 +27,5 @@
 | `20260915.181038` | [The pen that was never entered](20260915/20260915-181038_the-pen-that-was-never-entered.kyri) | unentered pen moved this tree's identity |
 | `20260915.180500` | [The flap that wore two causes](20260915/20260915-180500_the-flap-that-wore-two-causes.kyri) | one red closed, eight booked, seven gated |
 | `20260915.175931` | [The axis that carried nothing](20260915/20260915-175931_the-axis-that-carried-nothing.kyri) | the torus second axis loses to a ring; five parked records landed |
+| `20260915.175358` | [a roof was a path](20260915/20260915-175358_a-roof-was-a-path.kyri) | three of six const families were one file read twice; wire words stood outside every reading |
 | `20260915.174500` | [The window that was not there](20260915/20260915-174500_the-window-that-was-not-there.kyri) | bound raised; fleet restarted |
