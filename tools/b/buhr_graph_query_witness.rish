@@ -18,7 +18,7 @@ say "buhr6: Lens TAME — every answer a real graph reading; contract faults sur
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/graph-query"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/graph_query.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/graph_query.rye -femit-bin=${bin}"]
 assert build.ok else "buhr6: graph_query build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -36,7 +36,7 @@ assert selftest.out contains "zero budget refused by Lantern contract" else "buh
 # The reading journey the query reads over stays its own green binary -- the graph the
 # voice counts is the graph the browser renders, proven separately.
 let browser_bin = "pond/bin/mantra-browser"
-let browser_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser.rye -femit-bin=${browser_bin}"]
+let browser_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mantra_browser.rye -femit-bin=${browser_bin}"]
 assert browser_build.ok else "buhr6: mantra_browser re-build failed"
 let browser_selftest = run ["sh" "-c" "${browser_bin} selftest 2>&1"]
 assert browser_selftest.ok else "buhr6: mantra_browser selftest regressed"

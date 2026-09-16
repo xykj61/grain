@@ -23,7 +23,7 @@ say "buhr-j5r3: Lens TAME — proven by recall; deriving read-len from a read, r
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/realidream-derive"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_derive.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/realidream_derive.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j5r3: realidream_derive build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

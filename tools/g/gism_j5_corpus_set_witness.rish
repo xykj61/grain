@@ -20,7 +20,7 @@ say "gism-j5r3: Lens TAME — real bytes, every Scribble bound proven against th
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/corpus-set"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/corpus_set.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/corpus_set.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j5r3: corpus_set build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -51,7 +51,7 @@ assert app_largest.out == wc_largest.out else "gism-j5r3: app's largest-by-bytes
 
 # The demo reading over pinned_doc must still be GREEN -- corpus_set is additive.
 let demo_bin = "pond/bin/reading-query"
-let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
+let demo_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/reading_query.rye -femit-bin=${demo_bin}"]
 assert demo_build.ok else "gism-j5r3: reading_query (demo) rebuild failed"
 let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
 assert demo_selftest.ok else "gism-j5r3: reading_query (demo) selftest regressed"

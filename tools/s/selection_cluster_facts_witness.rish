@@ -21,7 +21,7 @@ say "selection_cluster_facts: Lens TAME -- the cluster-presence tally is sized t
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/selection_cluster_facts"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/selection_cluster_facts.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/selection_cluster_facts.rye -femit-bin=${bin}"]
 assert build.ok else "selection_cluster_facts: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

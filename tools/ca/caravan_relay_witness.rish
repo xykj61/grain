@@ -40,7 +40,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/relay"
 
-let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/relay.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/relay.rye -femit-bin=${bin}"]
 
 assert build.ok else "caravan relay build failed"
 
@@ -50,7 +50,7 @@ assert build.ok else "caravan relay build failed"
 # runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
 # one reader to one name, so two running at once contended for a single file and the
 # loser reddened a green tree. This one lands in caravan/bin/relay_read.
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/relay_read"]
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/relay_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 

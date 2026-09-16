@@ -22,7 +22,7 @@ say "moments: Lens TAME -- the squared-deviation sums run in u64 and the signed 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/moments"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/moments.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/moments.rye -femit-bin=${bin}"]
 assert build.ok else "moments: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

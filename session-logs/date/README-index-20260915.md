@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.204500` | [The rooms a build writes into](20260915/20260915-204500_the-rooms-a-build-writes-into.kyri) | four rooms locked; the walk widened |
 | `20260915.202000` | [The lock and the word that had no rule](20260915/20260915-202000_the-lock-and-the-word-that-had-no-rule.kyri) | 6 failures to 0; molt seated |
 | `20260915.200611` | [a plant is built to differ](20260915/20260915-200611_a-plant-is-built-to-differ.kyri) | a control's own plants were measured as a room's drift; read past and counted |
 | `20260915.195922` | [The source that vanished mid-compile](20260915/20260915-195922_the-source-that-vanished-mid-compile.kyri) | the flaky cause captured and confirmed |

@@ -29,7 +29,7 @@ say "mycelium-lapse-knot: Lens TAME — the continuation composes lapse + cord_k
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/lapse_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-lapse-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -42,11 +42,11 @@ assert selftest.out contains "refuse whole" else "mycelium-lapse-knot: refusal c
 
 # The Lapse whose deadline the checkpoint carries, and the Knot that seals the prefix, both stand at the
 # door -- their own selftests prove the machinery the crossing rests on.
-let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
 assert lapse.ok else "mycelium-lapse-knot: the Lapse the checkpoint carries is not GREEN"
 assert lapse.out contains "GREEN" else "mycelium-lapse-knot: the Lapse did not speak its GREEN"
 
-let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert knot.ok else "mycelium-lapse-knot: the Knot that seals the prefix is not GREEN"
 assert knot.out contains "GREEN" else "mycelium-lapse-knot: the Knot did not speak its GREEN"
 

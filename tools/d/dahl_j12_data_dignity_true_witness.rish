@@ -24,7 +24,7 @@ say "dahl-j12r4: Lens TAME — bequeathed, rested, and heir-held cross-check aga
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/data-dignity-true"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/data_dignity_true.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j12r4: data_dignity_true build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -44,10 +44,10 @@ assert awk.out contains "2 1 2" else "dahl-j12r4: awk triple not 2 1 2"
 assert app.out == awk.out else "dahl-j12r4: app and awk disagree — the reading drifted from the bytes"
 
 # r1, r2, and r3 stay their own GREEN binaries -- additive.
-let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity.rye -femit-bin=pond/bin/data-dignity && pond/bin/data-dignity selftest 2>&1"]
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/data_dignity.rye -femit-bin=pond/bin/data-dignity && pond/bin/data-dignity selftest 2>&1"]
 assert r1.ok else "dahl-j12r4: r1 did not stay GREEN"
 assert r1.out contains "GREEN" else "dahl-j12r4: r1 GREEN missing"
-let r3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity_bron.rye -femit-bin=pond/bin/data-dignity-bron && pond/bin/data-dignity-bron selftest 2>&1"]
+let r3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/data_dignity_bron.rye -femit-bin=pond/bin/data-dignity-bron && pond/bin/data-dignity-bron selftest 2>&1"]
 assert r3.ok else "dahl-j12r4: r3 did not stay GREEN"
 assert r3.out contains "GREEN" else "dahl-j12r4: r3 GREEN missing"
 

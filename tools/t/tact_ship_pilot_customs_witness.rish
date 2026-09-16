@@ -15,7 +15,7 @@ say "tact1: Lens TAME — a hold surfaces (a wait), a refuse rejects; both leave
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/ship-pilot-customs"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_customs.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot_customs.rye -femit-bin=${bin}"]
 assert build.ok else "tact1: ship_pilot_customs build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -28,7 +28,7 @@ assert selftest.out contains "the customs step advances only on a placed mark, h
 
 # The identity step (r2) and the spine (r1) this rung composes over stay their own green binaries.
 let id_bin = "pond/bin/ship-pilot-identity"
-let id_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_identity.rye -femit-bin=${id_bin}"]
+let id_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot_identity.rye -femit-bin=${id_bin}"]
 assert id_build.ok else "tact1: ship_pilot_identity re-build failed"
 let id_selftest = run ["sh" "-c" "${id_bin} selftest 2>&1"]
 assert id_selftest.ok else "tact1: ship_pilot_identity selftest exited non-zero"

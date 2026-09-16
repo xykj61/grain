@@ -30,7 +30,7 @@ say "mycelium-chorus-bron: Lens TAME — the record is a purpose-built bounded r
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/chorus-bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-chorus-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -44,7 +44,7 @@ assert selftest.out contains "voices=3 · fixed point" else "mycelium-chorus-bro
 
 # The Chorus each record carries stands at the door -- its own r1 selftest proves the quorum law the wire
 # re-runs on every recovered record.
-let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-chorus-bron: the Chorus the record carries is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-chorus-bron: the Chorus did not speak its GREEN"
 

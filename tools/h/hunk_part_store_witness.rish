@@ -22,7 +22,7 @@ say "hunk-part-store: Lens TAME — the fetch proves every bead and the whole ad
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/part_store"
 
-let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/part_store.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/part_store.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-store: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -40,7 +40,7 @@ assert selftest.out contains "before a window or price is read" else "hunk-part-
 assert selftest.out contains "no network, no key, no funds" else "hunk-part-store: the selftest did not affirm the custody floor (no funds)"
 
 # HUNK71 stays GREEN -- part_store banks the catalog HUNK71 renders; the catalog underneath must still hold.
-let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest 2>&1"]
+let cat = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_catalog.rye -femit-bin=image/bin/part_catalog && image/bin/part_catalog selftest 2>&1"]
 assert cat.ok else "hunk-part-store: HUNK71 part_catalog re-run failed — ${cat.out}"
 assert cat.out contains "GREEN part-catalog" else "hunk-part-store: HUNK71 part_catalog selftest did not stay GREEN"
 

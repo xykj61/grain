@@ -28,7 +28,7 @@ let selfc = run ["sh" "-c" "${binc} selftest 2>&1"]
 assert selfc.ok else "gism-ayre-j8r1: dimeroll selftest exited non-zero"
 
 let bin = "pond/bin/entity-books"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/entity_books.rye -femit-bin=${bin}"]
 assert build.ok else "gism-ayre-j8r1: entity_books build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

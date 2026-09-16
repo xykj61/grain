@@ -24,7 +24,7 @@ say "lasso_select: Lens TAME -- a lasso carries three to max_poly_vertices verti
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/lasso_select"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/lasso_select.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/lasso_select.rye -femit-bin=${bin}"]
 assert build.ok else "lasso_select: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

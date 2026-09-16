@@ -19,7 +19,7 @@ say "buhr9r1: Lens TAME — every voice refusal crosses back as a named MCP erro
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-voice"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_voice.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_voice.rye -femit-bin=${bin}"]
 assert build.ok else "buhr9r1: mcp_voice build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -37,14 +37,14 @@ assert selftest.out contains "missing prompt arg -> named MCP error 'bad_args'" 
 # The MCP shape (J3r1) and the gathered voice host (J8r3) -- the two halves this rung joins --
 # stay their own green binaries; this rung composes over their public API only.
 let shape_bin = "pond/bin/mcp-bron"
-let shape_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_bron.rye -femit-bin=${shape_bin}"]
+let shape_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_bron.rye -femit-bin=${shape_bin}"]
 assert shape_build.ok else "buhr9r1: mcp_bron (J3r1) re-build failed"
 let shape_selftest = run ["sh" "-c" "${shape_bin} selftest 2>&1"]
 assert shape_selftest.ok else "buhr9r1: mcp_bron (J3r1) selftest exited non-zero"
 assert shape_selftest.out contains "GREEN" else "buhr9r1: mcp_bron (J3r1) did not speak GREEN"
 
 let host_bin = "pond/bin/quin-host-artifact"
-let host_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host_artifact.rye -femit-bin=${host_bin}"]
+let host_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/quin_host_artifact.rye -femit-bin=${host_bin}"]
 assert host_build.ok else "buhr9r1: quin_host_artifact (J8r3) re-build failed"
 let host_selftest = run ["sh" "-c" "${host_bin} selftest 2>&1"]
 assert host_selftest.ok else "buhr9r1: quin_host_artifact (J8r3) selftest exited non-zero"

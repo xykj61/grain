@@ -21,7 +21,7 @@ say "hunk-part-query: Lens TAME — pure parsing over public APIs; a price token
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/part_query"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_query.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_query.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-part-query: build failed — ${build.err}"
 
 let outfile = "image/bin/part_query.out"
@@ -36,7 +36,7 @@ assert (trim green.out) == "yes" else "hunk-part-query: selftest did not print t
 
 # HUNK75 stays GREEN -- the filter the parser drives (filter_catalog, Query, max_query_text) is the one part_filter
 # proved. A search box is only trustworthy because the filter under it is.
-let filt = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_filter.rye -femit-bin=image/bin/part_filter && image/bin/part_filter selftest > image/bin/part_filter.out 2>&1"]
+let filt = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_filter.rye -femit-bin=image/bin/part_filter && image/bin/part_filter selftest > image/bin/part_filter.out 2>&1"]
 assert filt.ok else "hunk-part-query: HUNK75 part_filter re-run failed — see image/bin/part_filter.out"
 let filt_green = run ["sh" "-c" "grep -q 'GREEN part-filter' image/bin/part_filter.out && echo yes"]
 assert (trim filt_green.out) == "yes" else "hunk-part-query: HUNK75 part_filter did not stay GREEN"

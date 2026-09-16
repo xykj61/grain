@@ -26,7 +26,7 @@ say "mycelium-cord-knot: Lens TAME — a Knot seals the folded supply under a di
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -38,12 +38,12 @@ assert selftest.out contains "a corrupted Knot, an overdraw past the cut, and a 
 
 # The elder Cord the Knot checkpoints stays a green binary -- accrete-never-break, proven by re-running its
 # own selftest at this door.
-let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
 assert elder.ok else "mycelium-cord-knot: the elder single-fact Cord is not GREEN"
 assert elder.out contains "GREEN" else "mycelium-cord-knot: the elder Cord did not speak its GREEN"
 
 # The Mycelium supply fold the Knot seals stands at its door.
-let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
 assert myc.ok else "mycelium-cord-knot: the Mycelium fold the Knot seals is not GREEN"
 assert myc.out contains "GREEN" else "mycelium-cord-knot: the Mycelium fold did not speak its GREEN"
 

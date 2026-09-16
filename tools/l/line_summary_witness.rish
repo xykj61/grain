@@ -24,7 +24,7 @@ say "line_summary: Lens TAME -- the classification walk runs components times un
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/line_summary"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_summary.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/line_summary.rye -femit-bin=${bin}"]
 assert build.ok else "line_summary: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

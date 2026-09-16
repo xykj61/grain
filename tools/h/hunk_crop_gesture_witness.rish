@@ -20,7 +20,7 @@ say "hunk-crop-gesture: Lens TAME — a pure composition over HUNK3 crop and HUN
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/crop_gesture"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/crop_gesture.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/crop_gesture.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-crop-gesture: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

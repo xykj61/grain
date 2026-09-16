@@ -24,7 +24,7 @@ say "mycelium-cord-knot-bench: Lens TAME — the win is asserted only where exac
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_knot_bench"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot_bench.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot_bench.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-knot-bench: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -36,11 +36,11 @@ assert selftest.out contains "loom bench=cord_knot total_facts=320 dag_ceiling=2
 assert selftest.out contains "would_overflow=yes" else "mycelium-cord-knot-bench: overflow observation missing"
 
 # The r1 Knot and r2 travel both stay green binaries -- accrete-never-break, proven at this door.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert r1.ok else "mycelium-cord-knot-bench: the r1 Knot is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-cord-knot-bench: the r1 Knot did not speak its GREEN"
 
-let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot_bron.rye -femit-bin=mycelium/bin/cord_knot_bron && mycelium/bin/cord_knot_bron 2>&1"]
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot_bron.rye -femit-bin=mycelium/bin/cord_knot_bron && mycelium/bin/cord_knot_bron 2>&1"]
 assert r2.ok else "mycelium-cord-knot-bench: the r2 travel is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-cord-knot-bench: the r2 travel did not speak its GREEN"
 

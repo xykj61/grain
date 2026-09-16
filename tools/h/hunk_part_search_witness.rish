@@ -37,7 +37,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-search' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-search: selftest did not print the GREEN part-search line"
 
 # HUNK76 stays GREEN -- the parser the search view drives is the one part_query proved.
-let q = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_query.rye -femit-bin=image/bin/part_query && image/bin/part_query selftest > image/bin/part_query.out 2>&1"]
+let q = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_query.rye -femit-bin=image/bin/part_query && image/bin/part_query selftest > image/bin/part_query.out 2>&1"]
 assert q.ok else "hunk-part-search: HUNK76 part_query re-run failed — see image/bin/part_query.out"
 let q_green = run ["sh" "-c" "grep -q 'GREEN part-query' image/bin/part_query.out && echo yes"]
 assert (trim q_green.out) == "yes" else "hunk-part-search: HUNK76 part_query did not stay GREEN"

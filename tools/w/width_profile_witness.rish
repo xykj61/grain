@@ -25,7 +25,7 @@ say "width_profile: Lens TAME -- the profile holds one sample per hull edge unde
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/width_profile"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/width_profile.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/width_profile.rye -femit-bin=${bin}"]
 assert build.ok else "width_profile: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

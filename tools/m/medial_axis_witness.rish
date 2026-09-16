@@ -23,7 +23,7 @@ say "medial_axis: Lens TAME -- the ridge buffer is bounded by the field's pixel 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/medial_axis"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/medial_axis.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/medial_axis.rye -femit-bin=${bin}"]
 assert build.ok else "medial_axis: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -29,7 +29,7 @@ say "mycelium-muster-knot: Lens TAME — pass_muster_across composes muster.pass
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/muster_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-muster-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -46,11 +46,11 @@ assert selftest.out contains "a roll's verdict on a quorum survives a checkpoint
 assert selftest.out contains "muster validators=4 byzantine_threshold=3" else "mycelium-muster-knot: rendered roll (n=4 t=3) missing"
 
 # The Muster r1 and the Lapse-Knot the continuity rests on stand at the door.
-let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
+let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
 assert muster.ok else "mycelium-muster-knot: the Muster r1 the roll is is not GREEN"
 assert muster.out contains "GREEN" else "mycelium-muster-knot: the Muster did not speak its GREEN"
 
-let lapse_knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse_knot && mycelium/bin/lapse_knot 2>&1"]
+let lapse_knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/lapse_knot.rye -femit-bin=mycelium/bin/lapse_knot && mycelium/bin/lapse_knot 2>&1"]
 assert lapse_knot.ok else "mycelium-muster-knot: the Lapse-Knot the continuity rests on is not GREEN"
 assert lapse_knot.out contains "GREEN" else "mycelium-muster-knot: the Lapse-Knot did not speak its GREEN"
 

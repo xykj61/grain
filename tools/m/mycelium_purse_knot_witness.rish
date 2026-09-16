@@ -28,7 +28,7 @@ say "mycelium-purse-knot: Lens TAME — the verdict never drifts across the cut;
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/purse_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/purse_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-purse-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -39,11 +39,11 @@ assert selftest.out contains "reads the same across the cut" else "mycelium-purs
 assert selftest.out contains "each refuse whole" else "mycelium-purse-knot: integrity-refusal claim missing"
 
 # The Purse whose verdict continues, and the Knot that seals the past, both stand at the door.
-let purse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse.rye -femit-bin=mycelium/bin/purse && mycelium/bin/purse 2>&1"]
+let purse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/purse.rye -femit-bin=mycelium/bin/purse && mycelium/bin/purse 2>&1"]
 assert purse.ok else "mycelium-purse-knot: the Purse whose verdict continues is not GREEN"
 assert purse.out contains "GREEN" else "mycelium-purse-knot: the Purse did not speak its GREEN"
 
-let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert knot.ok else "mycelium-purse-knot: the Knot that seals the past is not GREEN"
 assert knot.out contains "GREEN" else "mycelium-purse-knot: the Knot did not speak its GREEN"
 

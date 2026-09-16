@@ -26,7 +26,7 @@ say "mycelium-cord-bft: Lens TAME — equivocation refused before the Dag mutate
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_byzantine"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_byzantine.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_byzantine.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-bft: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -40,7 +40,7 @@ assert selftest.out contains "honest commit order and fold state are byte-identi
 
 # Additive: r1's deterministic-commit crux still stands under the Byzantine round -- the spine r2 wired onto.
 let r1bin = "mycelium/bin/cord"
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=${r1bin} && ${r1bin} 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord.rye -femit-bin=${r1bin} && ${r1bin} 2>&1"]
 assert r1.ok else "mycelium-cord-bft: r1 deterministic-commit witness is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-cord-bft: r1 did not speak its GREEN"
 assert r1.out contains "three arrival permutations commit to one identical order" else "mycelium-cord-bft: r1 arrival-order-independence missing"

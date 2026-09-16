@@ -26,7 +26,7 @@ say "mycelium-cord-batch-bron: Lens TAME — a bounded flat-Bron reader; every s
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_batch_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_batch_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-batch-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -37,12 +37,12 @@ assert selftest.out contains "re-rendering the parsed record reproduces the exac
 assert selftest.out contains "a wrong header, an unknown field, a fact before any block, and an empty batch each refuse" else "mycelium-cord-batch-bron: refusal claim missing"
 
 # r1 (the batch folds identical to single-fact) stays a green binary at this door -- accrete-never-break.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch.rye -femit-bin=mycelium/bin/cord_batch && mycelium/bin/cord_batch 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_batch.rye -femit-bin=mycelium/bin/cord_batch && mycelium/bin/cord_batch 2>&1"]
 assert r1.ok else "mycelium-cord-batch-bron: fact-batching r1 is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-cord-batch-bron: fact-batching r1 did not speak its GREEN"
 
 # The elder single-fact cord-bron this rung grows beside stays a green binary too.
-let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_bron.rye -femit-bin=mycelium/bin/cord_bron && mycelium/bin/cord_bron 2>&1"]
+let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_bron.rye -femit-bin=mycelium/bin/cord_bron && mycelium/bin/cord_bron 2>&1"]
 assert elder.ok else "mycelium-cord-batch-bron: the elder single-fact cord-bron is not GREEN"
 assert elder.out contains "GREEN" else "mycelium-cord-batch-bron: the elder cord-bron did not speak its GREEN"
 

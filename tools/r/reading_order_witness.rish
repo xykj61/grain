@@ -22,7 +22,7 @@ say "reading_order: Lens TAME -- the object count rode in under scene_graph_max_
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/reading_order"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/reading_order.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/reading_order.rye -femit-bin=${bin}"]
 assert build.ok else "reading_order: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

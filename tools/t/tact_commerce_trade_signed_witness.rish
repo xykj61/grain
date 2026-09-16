@@ -17,7 +17,7 @@ say "tact4: Lens TAME — both signatures must verify; forgery, wrong key, and a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/commerce-trade-signed"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade_signed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/commerce_trade_signed.rye -femit-bin=${bin}"]
 assert build.ok else "tact4: commerce_trade_signed build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -31,7 +31,7 @@ assert selftest.out contains "a price changed after signing refused NotAgreed" e
 assert selftest.out contains "a trade books only when both parties signed the identical facts" else "tact4: crux claim missing"
 
 # Rung one -- the fair-value booking this rung gates behind agreement -- stays its own green binary.
-let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade.rye -femit-bin=pond/bin/commerce-trade && pond/bin/commerce-trade selftest 2>&1"]
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/commerce_trade.rye -femit-bin=pond/bin/commerce-trade && pond/bin/commerce-trade selftest 2>&1"]
 assert r1.ok else "tact4: rung-one commerce_trade re-run failed"
 assert r1.out contains "GREEN" else "tact4: rung-one selftest did not speak GREEN"
 

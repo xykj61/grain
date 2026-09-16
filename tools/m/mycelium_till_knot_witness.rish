@@ -28,7 +28,7 @@ say "mycelium-till-knot: Lens TAME — the verdict never drifts across the cut; 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/till_knot"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till_knot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/till_knot.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-till-knot: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -39,11 +39,11 @@ assert selftest.out contains "reads the same across the cut" else "mycelium-till
 assert selftest.out contains "each refuse whole" else "mycelium-till-knot: integrity-refusal claim missing"
 
 # The Till whose verdict continues, and the Knot that seals the past, both stand at the door.
-let till = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till.rye -femit-bin=mycelium/bin/till && mycelium/bin/till 2>&1"]
+let till = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/till.rye -femit-bin=mycelium/bin/till && mycelium/bin/till 2>&1"]
 assert till.ok else "mycelium-till-knot: the Till whose verdict continues is not GREEN"
 assert till.out contains "GREEN" else "mycelium-till-knot: the Till did not speak its GREEN"
 
-let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
 assert knot.ok else "mycelium-till-knot: the Knot that seals the past is not GREEN"
 assert knot.out contains "GREEN" else "mycelium-till-knot: the Knot did not speak its GREEN"
 

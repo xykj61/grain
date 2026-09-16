@@ -28,7 +28,7 @@ say "mycelium-puddle: Lens TAME — the berth law composes kumara + tally_copy p
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/puddle"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/puddle.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-puddle: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

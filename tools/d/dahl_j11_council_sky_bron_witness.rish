@@ -21,7 +21,7 @@ say "dahl-j11r3: Lens TAME — a flipped ballot, an even body on rebuild, an unk
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/council-sky-bron"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_bron.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j11r3: council_sky_bron build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -33,10 +33,10 @@ assert selftest.out contains "refused EvenCouncil on rebuild" else "dahl-j11r3: 
 assert selftest.out contains "refused MissingCouncil" else "dahl-j11r3: missing-council refusal missing"
 
 # r1 and r2 stay their own GREEN binaries -- additive.
-let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
 assert r1.ok else "dahl-j11r3: r1 did not stay GREEN"
 assert r1.out contains "GREEN" else "dahl-j11r3: r1 GREEN missing"
-let r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_signed.rye -femit-bin=pond/bin/council-sky-signed && pond/bin/council-sky-signed selftest 2>&1"]
+let r2 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_signed.rye -femit-bin=pond/bin/council-sky-signed && pond/bin/council-sky-signed selftest 2>&1"]
 assert r2.ok else "dahl-j11r3: r2 did not stay GREEN"
 assert r2.out contains "GREEN" else "dahl-j11r3: r2 GREEN missing"
 

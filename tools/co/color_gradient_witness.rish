@@ -24,7 +24,7 @@ say "color-gradient: Lens TAME -- u32 stop counts bounded by gradient_max_stops;
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/color_gradient"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_gradient.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/color_gradient.rye -femit-bin=${bin}"]
 assert build.ok else "color-gradient: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

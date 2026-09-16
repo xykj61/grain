@@ -28,7 +28,7 @@ say "mycelium-purse-bron: Lens TAME — render and a purpose-built bounded reade
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/purse_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/purse_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-purse-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -41,7 +41,7 @@ assert selftest.out contains "fixed point" else "mycelium-purse-bron: fixed-poin
 
 # The Purse whose resolved verdict this record carries stands at the door -- its own r1 selftest proves the
 # verdict the travelling bytes render.
-let purse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse.rye -femit-bin=mycelium/bin/purse && mycelium/bin/purse 2>&1"]
+let purse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/purse.rye -femit-bin=mycelium/bin/purse && mycelium/bin/purse 2>&1"]
 assert purse.ok else "mycelium-purse-bron: the Purse whose verdict travels is not GREEN"
 assert purse.out contains "GREEN" else "mycelium-purse-bron: the Purse did not speak its GREEN"
 

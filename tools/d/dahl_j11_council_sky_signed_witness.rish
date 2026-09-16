@@ -22,7 +22,7 @@ say "dahl-j11r2: Lens TAME — a flipped choice, a forged ballot, an unenrolled 
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/council-sky-signed"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_signed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_signed.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j11r2: council_sky_signed build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -35,7 +35,7 @@ assert selftest.out contains "refused UnknownKeeper" else "dahl-j11r2: unknown-k
 
 # r1 stays its own GREEN binary -- additive.
 let r1bin = "pond/bin/council-sky"
-let r1build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=${r1bin}"]
+let r1build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky.rye -femit-bin=${r1bin}"]
 assert r1build.ok else "dahl-j11r2: r1 rebuild failed"
 let r1 = run ["sh" "-c" "${r1bin} selftest 2>&1"]
 assert r1.ok else "dahl-j11r2: r1 selftest exited non-zero"

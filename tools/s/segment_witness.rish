@@ -25,7 +25,7 @@ say "segment: Lens TAME -- the distance field is built once and the markers seed
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/segment"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/segment.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/segment.rye -femit-bin=${bin}"]
 assert build.ok else "segment: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

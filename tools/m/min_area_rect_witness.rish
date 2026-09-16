@@ -27,7 +27,7 @@ say "min_area_rect: Lens TAME -- the box is read over a hull under convex_hull_m
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/min_area_rect"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/min_area_rect.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/min_area_rect.rye -femit-bin=${bin}"]
 assert build.ok else "min_area_rect: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -19,7 +19,7 @@ say "glyph-compose: Lens TAME -- u32 in-memory counts, u8 coverage bytes; cell_a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/glyph_compose"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/glyph_compose.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/glyph_compose.rye -femit-bin=${bin}"]
 assert build.ok else "glyph-compose: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -25,7 +25,7 @@ say "hunk-session-store: Lens TAME — the session text is bounded to a resin or
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/session_store"
 
-let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/session_store.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/session_store.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-session-store: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -17,7 +17,7 @@ say "tact4: Lens TAME — round-trip preserved, both_agree survives; unknown/mis
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/commerce-trade-bron"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/commerce_trade_bron.rye -femit-bin=${bin}"]
 assert build.ok else "tact4: commerce_trade_bron build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -30,7 +30,7 @@ assert selftest.out contains "a wrong header and short hex each refused" else "t
 assert selftest.out contains "a signed trade travels as Bron and returns whole" else "tact4: crux claim missing"
 
 # Rung two -- the both-parties-signed agreement this record carries -- stays its own green binary.
-let r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/commerce_trade_signed.rye -femit-bin=pond/bin/commerce-trade-signed && pond/bin/commerce-trade-signed selftest 2>&1"]
+let r2 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/commerce_trade_signed.rye -femit-bin=pond/bin/commerce-trade-signed && pond/bin/commerce-trade-signed selftest 2>&1"]
 assert r2.ok else "tact4: rung-two commerce_trade_signed re-run failed"
 assert r2.out contains "GREEN" else "tact4: rung-two selftest did not speak GREEN"
 

@@ -30,7 +30,7 @@ say "mycelium-testament: Lens TAME — verification touches no Dag (verify_vouch
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/testament"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-testament: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -47,13 +47,13 @@ assert selftest.out contains "tampered name refuses NotMember" else "mycelium-te
 
 # The Constel whose named roster a Testament binds to stands at the door -- a testament is the carried
 # belief of exactly the reproducible, named constellation the Constel journey seated.
-let constel = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
+let constel = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
 assert constel.ok else "mycelium-testament: the Constel roster a Testament binds to is not GREEN"
 assert constel.out contains "GREEN" else "mycelium-testament: the Constel did not speak its GREEN"
 
 # The Chorus whose quorum a Testament seals stands too -- the certificate carries exactly the distinct-voice
 # attestation the Chorus proves, now bound to a named roster.
-let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-testament: the Chorus quorum a Testament seals is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-testament: the Chorus did not speak its GREEN"
 

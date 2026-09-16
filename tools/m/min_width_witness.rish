@@ -23,7 +23,7 @@ say "min_width: Lens TAME -- the hull is swept under convex_hull_max_points; two
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/min_width"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/min_width.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/min_width.rye -femit-bin=${bin}"]
 assert build.ok else "min_width: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

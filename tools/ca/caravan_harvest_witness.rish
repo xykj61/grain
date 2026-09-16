@@ -54,7 +54,7 @@ let bin = "caravan/bin/harvest"
 # builds, so the pier that made the change could not see the missing flag; on Linux the
 # build refuses outright with `dependency on libc must be explicitly specified`. The three
 # subscribe-poll witnesses already pass `-lc` for the same reason -- this line joins them.
-let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/harvest.rye -lc -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/harvest.rye -lc -femit-bin=${bin}"]
 
 assert build.ok else "caravan harvest build failed"
 
@@ -64,7 +64,7 @@ assert build.ok else "caravan harvest build failed"
 # runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
 # one reader to one name, so two running at once contended for a single file and the
 # loser reddened a green tree. This one lands in caravan/bin/harvest_read.
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/harvest_read"]
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/read.rye -femit-bin=caravan/bin/harvest_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 

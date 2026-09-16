@@ -20,7 +20,7 @@ say "gism-red73-name: Lens TAME — a name over ordered resins, content-addresse
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/spool-cloth"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_cloth.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/spool_cloth.rye -femit-bin=${bin}"]
 assert build.ok else "gism-red73-name: spool_cloth build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

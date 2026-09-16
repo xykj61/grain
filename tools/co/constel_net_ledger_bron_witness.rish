@@ -20,7 +20,7 @@ say "constel-net-ledger-bron: Lens TAME — a bounded flat-Bron reader; unsafe n
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/constel-net-ledger-bron"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/constel_net_ledger_bron.rye -femit-bin=${bin}"]
 assert build.ok else "constel-net-ledger-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -30,7 +30,7 @@ say "mycelium-chorus: Lens TAME — the quorum law composes voucher + cord + lap
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/chorus"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-chorus: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -49,11 +49,11 @@ assert selftest.out contains "balance=0 reserved=100 received=100 voices=3" else
 
 # The Voucher each member is, and the Statement it signs, stand at the door -- their own selftests prove
 # the single-node machinery the quorum rests on.
-let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
 assert voucher.ok else "mycelium-chorus: the Voucher each member is is not GREEN"
 assert voucher.out contains "GREEN" else "mycelium-chorus: the Voucher did not speak its GREEN"
 
-let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
 assert statement.ok else "mycelium-chorus: the Statement the quorum vouches is not GREEN"
 assert statement.out contains "GREEN" else "mycelium-chorus: the Statement did not speak its GREEN"
 

@@ -17,7 +17,7 @@ say "tact1: Lens TAME — bounded state machine; out-of-order and unmet-precondi
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/ship-pilot"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/ship_pilot.rye -femit-bin=${bin}"]
 assert build.ok else "tact1: ship_pilot build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

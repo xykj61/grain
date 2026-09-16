@@ -31,7 +31,7 @@ say "mycelium-statement-true: Lens TAME — the reading composes cord_bron + cor
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/statement_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-statement-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -56,7 +56,7 @@ assert regen.out contains "REPRODUCIBLE" else "mycelium-statement-true: fixture 
 
 # The Statement whose projection this rung reads from real bytes stands at the door -- its own selftest proves
 # the reconciliation crux the r4 reading rests on.
-let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
 assert statement.ok else "mycelium-statement-true: the Statement r1 the reading projects is not GREEN"
 assert statement.out contains "GREEN" else "mycelium-statement-true: the Statement r1 did not speak its GREEN"
 

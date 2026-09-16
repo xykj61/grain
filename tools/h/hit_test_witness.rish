@@ -20,7 +20,7 @@ say "hit_test: Lens TAME -- the candidate scan runs components times under label
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/hit_test"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/hit_test.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/hit_test.rye -femit-bin=${bin}"]
 assert build.ok else "hit_test: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -27,7 +27,7 @@ say "mycelium-freight-true: Lens TAME — the reading is cross-checked against a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/freight_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-freight-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -50,7 +50,7 @@ assert app.out == awk.out else "mycelium-freight-true: app and awk disagree — 
 # The fixture is genuinely reproducible -- the generator re-emits byte-identical bytes, so the on-disk record
 # is what the Freight renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the
 # committed fixture in a read-only witness).
-let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_fixture_gen.rye -femit-bin=mycelium/bin/freight_fixture_gen"]
+let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight_fixture_gen.rye -femit-bin=mycelium/bin/freight_fixture_gen"]
 assert genbuild.ok else "mycelium-freight-true: fixture generator build failed"
 let regen = run ["sh" "-c" "mycelium/bin/freight_fixture_gen 2> /tmp/freight_manifest_regen.bron; diff tools/fixtures/f/freight_manifest.bron /tmp/freight_manifest_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-freight-true: the fixture generator did not reproduce the committed bytes"

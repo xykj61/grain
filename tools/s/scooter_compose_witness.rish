@@ -24,7 +24,7 @@ say "scooter-r4: Lens TAME -- a bounded editable line and a fixed 24x80 frame; e
 let zig = "vendor/zig-toolchain/zig"
 
 let bin = "pond/bin/scooter-compose"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_compose.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/scooter_compose.rye -femit-bin=${bin}"]
 assert build.ok else "scooter-r4: scooter_compose build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

@@ -19,7 +19,7 @@ say "buhr11r2: Lens TAME — the list is an honest index; every advertised promp
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mcp-prompt-list"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_prompt_list.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_prompt_list.rye -femit-bin=${bin}"]
 assert build.ok else "buhr11r2: mcp_prompt_list build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -34,7 +34,7 @@ assert selftest.out contains "a wrong list format header refused" else "buhr11r2
 
 # Rung one (prompts/get) stays its own green binary; this rung calls only its public API.
 let r1_bin = "pond/bin/mcp-prompt"
-let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_prompt.rye -femit-bin=${r1_bin}"]
+let r1_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mcp_prompt.rye -femit-bin=${r1_bin}"]
 assert r1_build.ok else "buhr11r2: mcp_prompt (J11r1) re-build failed"
 let r1_selftest = run ["sh" "-c" "${r1_bin} selftest 2>&1"]
 assert r1_selftest.ok else "buhr11r2: mcp_prompt (J11r1) selftest exited non-zero"

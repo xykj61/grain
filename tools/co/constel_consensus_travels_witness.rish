@@ -28,7 +28,7 @@ say "constel-travels: Lens TAME — the record replaces the gossip channel; rebu
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/constel-consensus-travels"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_consensus_travels.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/constel_consensus_travels.rye -femit-bin=${bin}"]
 assert build.ok else "constel-travels: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]

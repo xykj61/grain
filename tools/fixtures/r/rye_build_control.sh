@@ -24,7 +24,7 @@ note() {
 }
 
 pen=$(mktemp -d)
-trap 'rm -rf "$pen" lotus/.rye-build.lock image/.rye-build.lock' EXIT
+trap 'rm -rf "$pen" lotus/.rye-build.lock image/.rye-build.lock dimeroll/.rye-build.lock pond/apps/.rye-build.lock' EXIT
 
 # ---- a non-.rye first argument refuses rather than building something unexpected
 sh "$wrap" lotus/pan.zig >/dev/null 2>&1 && c=0 || c=$?
@@ -70,6 +70,29 @@ printf '%s\n' 999999 > lotus/.rye-build.lock/pid
 RYE_BUILD_LOCK_WAIT=5 env RYE_ZIG=vendor/zig-toolchain/zig sh "$wrap" lotus/pan.rye -femit-bin="$pen/p4" >/dev/null 2>&1 && c=0 || c=$?
 note dead_owner_reaped 0 "$c"
 rm -rf lotus/.rye-build.lock
+
+# ---- THE IMPORTED ROOM IS COVERED, which is the whole point of the walk. A source that imports
+# across a room writes a shadow beside the IMPORTED file, so holding that other room must stop the
+# build even though the source's own room is free.
+cross=pond/apps/commerce_trade.rye
+if [ -f "$cross" ]; then
+  mkdir -p dimeroll/.rye-build.lock
+  sh -c 'sleep 25' & xholder=$!
+  printf '%s\n' "$xholder" > dimeroll/.rye-build.lock/pid
+  RYE_BUILD_LOCK_WAIT=2 env RYE_ZIG=vendor/zig-toolchain/zig sh "$wrap" "$cross" -femit-bin="$pen/x1" >/dev/null 2>&1 && c=0 || c=$?
+  note imported_room_covered 3 "$c"
+  note source_room_free none "$( [ -d pond/apps/.rye-build.lock ] && echo held || echo none )"
+  kill "$xholder" 2>/dev/null || :
+  wait "$xholder" 2>/dev/null || :
+  rm -rf dimeroll/.rye-build.lock
+  env RYE_ZIG=vendor/zig-toolchain/zig sh "$wrap" "$cross" -femit-bin="$pen/x2" >/dev/null 2>&1 && c=0 || c=$?
+  note cross_refusal_lifts 0 "$c"
+  note cross_locks_released none "$( [ -d dimeroll/.rye-build.lock ] || [ -d pond/apps/.rye-build.lock ] && echo held || echo none )"
+fi
+
+# ---- the room bound refuses rather than truncating in silence
+RYE_BUILD_MAX_ROOMS=0 env RYE_ZIG=vendor/zig-toolchain/zig sh "$wrap" lotus/pan.rye -femit-bin="$pen/p5" >/dev/null 2>&1 && c=0 || c=$?
+note room_bound_refuses 4 "$c"
 
 echo "legs=$legs"
 echo "faults=$faults"

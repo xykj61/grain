@@ -24,7 +24,7 @@ say "hunk-sprite-store: Lens TAME — pure composition over HUNK1's verified fet
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/apps/bin/sprite_store"
 
-let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/sprite_store.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/sprite_store.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-sprite-store: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -40,7 +40,7 @@ assert out contains "opens over the verified sheet" else "hunk-sprite-store: the
 assert out contains "refuses DigestMismatch" else "hunk-sprite-store: the selftest did not prove a tampered sheet refuses before a product renders"
 
 # HUNK1 stays GREEN -- the store reuses image_artifact; the verified fetch underneath must still hold.
-let artifact = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/image_artifact.rye -femit-bin=pond/apps/bin/image_artifact && pond/apps/bin/image_artifact selftest 2>&1"]
+let artifact = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/image_artifact.rye -femit-bin=pond/apps/bin/image_artifact && pond/apps/bin/image_artifact selftest 2>&1"]
 assert artifact.ok else "hunk-sprite-store: HUNK1 image_artifact re-run failed — ${artifact.out}"
 assert artifact.out contains "GREEN image-artifact" else "hunk-sprite-store: HUNK1 image_artifact selftest did not stay GREEN"
 

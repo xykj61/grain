@@ -83,7 +83,7 @@ let bsd = run ["sh" "-c" "grep -c 'SPDX-License-Identifier: BSD-2-Clause' ${sour
 assert (trim bsd.out) == "1" else "caravan-address-space: the Microkit memory-region source no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
 
 # 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
-let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/address_space.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/address_space.rye -femit-bin=${bin}"]
 assert build.ok else "caravan-address-space: the module did not build"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]

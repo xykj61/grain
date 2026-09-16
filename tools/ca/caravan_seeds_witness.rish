@@ -6,7 +6,7 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin_dir = "caravan/bin"
 
-let build = run ["sh" "-c" "mkdir -p ${bin_dir} && env RYE_ZIG=${zig} rye/bin/rye build caravan/seed.rye -femit-bin=${bin_dir}/seed && env RYE_ZIG=${zig} rye/bin/rye build caravan/bounded.rye -femit-bin=${bin_dir}/bounded && env RYE_ZIG=${zig} rye/bin/rye build caravan/twin.rye -femit-bin=${bin_dir}/twin && env RYE_ZIG=${zig} rye/bin/rye build caravan/chain.rye -femit-bin=${bin_dir}/chain && env RYE_ZIG=${zig} rye/bin/rye build caravan/service.rye -femit-bin=${bin_dir}/service"]
+let build = run ["sh" "-c" "mkdir -p ${bin_dir} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=${bin_dir}/seed && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/bounded.rye -femit-bin=${bin_dir}/bounded && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/twin.rye -femit-bin=${bin_dir}/twin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/chain.rye -femit-bin=${bin_dir}/chain && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/service.rye -femit-bin=${bin_dir}/service"]
 
 assert build.ok else "caravan seeds build failed"
 

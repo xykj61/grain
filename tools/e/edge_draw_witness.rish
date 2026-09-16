@@ -30,7 +30,7 @@ say "edge_draw: Lens TAME -- the line walk is bounded by the canvas (each step a
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/edge_draw"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/edge_draw.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/edge_draw.rye -femit-bin=${bin}"]
 assert build.ok else "edge_draw: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

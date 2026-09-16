@@ -18,7 +18,7 @@ say "buhr-j4r3: Lens TAME — proven at the graph level; a fork grows the graph 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mantra-editor-fork"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_editor_fork.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mantra_editor_fork.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j4r3: mantra_editor_fork build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

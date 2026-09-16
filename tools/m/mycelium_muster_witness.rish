@@ -30,7 +30,7 @@ say "mycelium-muster: Lens TAME — the membership-and-quorum law composes choru
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/muster"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/muster.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-muster: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -53,11 +53,11 @@ assert selftest.out contains "muster validators=4 byzantine_threshold=3" else "m
 
 # The Chorus each quorum is, and the Voucher each voice is, stand at the door -- their own selftests prove
 # the quorum machinery the Muster rests on.
-let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
 assert chorus.ok else "mycelium-muster: the Chorus each quorum is is not GREEN"
 assert chorus.out contains "GREEN" else "mycelium-muster: the Chorus did not speak its GREEN"
 
-let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
 assert voucher.ok else "mycelium-muster: the Voucher each voice is is not GREEN"
 assert voucher.out contains "GREEN" else "mycelium-muster: the Voucher did not speak its GREEN"
 

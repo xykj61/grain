@@ -28,7 +28,7 @@ say "mycelium-portage-bron: Lens TAME — a purpose-built bounded reader compose
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/portage_bron"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/portage_bron.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-portage-bron: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -41,12 +41,12 @@ assert selftest.out contains "tampered out-head" else "mycelium-portage-bron: th
 assert selftest.out contains "missing field each refuse" else "mycelium-portage-bron: the reader-refusal claim missing"
 
 # The Portage r1 crux this rung carries as a record stands at the door -- the one-shot crossing and conservation.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage.rye -femit-bin=mycelium/bin/portage && mycelium/bin/portage 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/portage.rye -femit-bin=mycelium/bin/portage && mycelium/bin/portage 2>&1"]
 assert r1.ok else "mycelium-portage-bron: the Portage r1 crux is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-portage-bron: the Portage r1 did not speak its GREEN"
 
 # The Portage r2 atomic law this rung's record advertises stands too -- a crossing lands on both or neither.
-let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage_atomic.rye -femit-bin=mycelium/bin/portage_atomic && mycelium/bin/portage_atomic 2>&1"]
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/portage_atomic.rye -femit-bin=mycelium/bin/portage_atomic && mycelium/bin/portage_atomic 2>&1"]
 assert r2.ok else "mycelium-portage-bron: the Portage r2 atomic law is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-portage-bron: the Portage r2 did not speak its GREEN"
 

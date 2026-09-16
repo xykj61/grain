@@ -23,7 +23,7 @@ say "buhr-j5r9: Lens TAME — proven on metal; the authored honey reaches the ca
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/realidream-view-derived-theme"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_view_derived_theme.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/realidream_view_derived_theme.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j5r9: realidream_view_derived_theme build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

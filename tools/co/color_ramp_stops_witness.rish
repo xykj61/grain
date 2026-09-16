@@ -23,7 +23,7 @@ say "color-ramp-stops: Lens TAME -- u32 control and stop counts bounded by ramp_
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/color_ramp_stops"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_ramp_stops.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/color_ramp_stops.rye -femit-bin=${bin}"]
 assert build.ok else "color-ramp-stops: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

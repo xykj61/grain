@@ -21,7 +21,7 @@ say "cluster_diameter_path: Lens TAME -- the tree holds at most the cluster ceil
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/cluster_diameter_path"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_diameter_path.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/cluster_diameter_path.rye -femit-bin=${bin}"]
 assert build.ok else "cluster_diameter_path: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

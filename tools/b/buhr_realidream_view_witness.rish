@@ -24,7 +24,7 @@ say "buhr-j5r5: Lens TAME — proven on metal; 10 styled rows, exactly 2 read la
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/realidream-view"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/realidream_view.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/realidream_view.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j5r5: realidream_view build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

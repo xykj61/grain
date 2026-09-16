@@ -32,7 +32,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/drain_replay_queue"
 
 # The binary this witness runs is built here, to its own name (REDS %92, %133).
-let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/queue.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/queue.rye -femit-bin=${bin}"]
 assert build.ok else "caravan-drain-replay: the queue build must stand -- ${build.err}"
 
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/a $d/b && printf '%s' $d"]

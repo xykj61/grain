@@ -21,7 +21,7 @@ say "gism-red73-receipt: Lens TAME — the receipt vouches for bytes reassembled
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/spool-receipt"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_receipt.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/spool_receipt.rye -femit-bin=${bin}"]
 assert build.ok else "gism-red73-receipt: spool_receipt build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -53,21 +53,21 @@ assert selftest.out contains "${sum.out}" else "gism-red73-receipt: receipt dige
 # The owner-signed store and the receipt machinery are re-run untouched -- spool_receipt
 # composes their public API only.
 let keyed_bin = "pond/bin/spool-keyed"
-let keyed_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/spool_keyed.rye -femit-bin=${keyed_bin}"]
+let keyed_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/spool_keyed.rye -femit-bin=${keyed_bin}"]
 assert keyed_build.ok else "gism-red73-receipt: spool_keyed rebuild failed"
 let keyed_selftest = run ["sh" "-c" "${keyed_bin} selftest 2>&1"]
 assert keyed_selftest.ok else "gism-red73-receipt: spool_keyed selftest regressed"
 assert keyed_selftest.out contains "GREEN" else "gism-red73-receipt: spool_keyed did not speak GREEN"
 
 let rcpt_bin = "pond/bin/publish-receipt"
-let rcpt_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=${rcpt_bin}"]
+let rcpt_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt.rye -femit-bin=${rcpt_bin}"]
 assert rcpt_build.ok else "gism-red73-receipt: publish_receipt rebuild failed"
 let rcpt_selftest = run ["sh" "-c" "${rcpt_bin} selftest 2>&1"]
 assert rcpt_selftest.ok else "gism-red73-receipt: publish_receipt selftest regressed"
 assert rcpt_selftest.out contains "GREEN" else "gism-red73-receipt: publish_receipt did not speak GREEN"
 
 let bron_bin = "pond/bin/publish-receipt-bron"
-let bron_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt_bron.rye -femit-bin=${bron_bin}"]
+let bron_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt_bron.rye -femit-bin=${bron_bin}"]
 assert bron_build.ok else "gism-red73-receipt: publish_receipt_bron rebuild failed"
 let bron_selftest = run ["sh" "-c" "${bron_bin} selftest 2>&1"]
 assert bron_selftest.ok else "gism-red73-receipt: publish_receipt_bron selftest regressed"

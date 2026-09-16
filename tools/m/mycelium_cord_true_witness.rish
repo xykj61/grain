@@ -27,7 +27,7 @@ say "mycelium-cord-true: Lens TAME — blocks, supply, and stars cross-check aga
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/cord_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-cord-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -49,7 +49,7 @@ assert app.out == awk.out else "mycelium-cord-true: app and awk disagree — the
 # The fixture is genuinely reproducible -- the generator re-emits byte-identical bytes, so the on-disk
 # record is what the Cord renders, never a hand-mock. Emit to a scratch path and diff (never overwrite
 # the committed fixture in a read-only witness).
-let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_fixture_gen.rye -femit-bin=mycelium/bin/cord_fixture_gen"]
+let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_fixture_gen.rye -femit-bin=mycelium/bin/cord_fixture_gen"]
 assert gen.ok else "mycelium-cord-true: fixture generator build failed"
 let regen = run ["sh" "-c" "mycelium/bin/cord_fixture_gen 2> /tmp/cord_dag_regen.bron; diff tools/fixtures/c/cord_dag.bron /tmp/cord_dag_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-cord-true: the fixture generator did not reproduce the committed bytes"

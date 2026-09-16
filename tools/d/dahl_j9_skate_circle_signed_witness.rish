@@ -21,14 +21,14 @@ let zig = "vendor/zig-toolchain/zig"
 
 # Rung one stays GREEN beneath the signed layer -- additive.
 let binr1 = "pond/bin/skate-circle"
-let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${binr1}"]
+let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_circle.rye -femit-bin=${binr1}"]
 assert buildr1.ok else "dahl-j9r2: skate_circle (r1) build failed"
 let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
 assert selfr1.ok else "dahl-j9r2: skate_circle (r1) selftest exited non-zero"
 assert selfr1.out contains "GREEN" else "dahl-j9r2: r1 did not speak GREEN"
 
 let bin = "pond/bin/skate-circle-signed"
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle_signed.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_circle_signed.rye -femit-bin=${bin}"]
 assert build.ok else "dahl-j9r2: skate_circle_signed build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

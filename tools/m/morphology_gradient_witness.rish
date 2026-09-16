@@ -28,7 +28,7 @@ say "morphology_gradient: Lens TAME -- u32 in-memory counts, the radius bounded 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/morphology_gradient"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/morphology_gradient.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/morphology_gradient.rye -femit-bin=${bin}"]
 assert build.ok else "morphology_gradient: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

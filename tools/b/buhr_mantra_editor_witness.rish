@@ -18,7 +18,7 @@ say "buhr-j4r1: Lens TAME — the commit reads the head through the browser's ac
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/mantra-editor"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_editor.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/mantra_editor.rye -femit-bin=${bin}"]
 assert build.ok else "buhr-j4r1: mantra_editor build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

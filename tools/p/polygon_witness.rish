@@ -24,7 +24,7 @@ say "polygon: Lens TAME -- the kept-vertex set and the Douglas-Peucker work stac
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/polygon"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/polygon.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/polygon.rye -femit-bin=${bin}"]
 assert build.ok else "polygon: build failed -- ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

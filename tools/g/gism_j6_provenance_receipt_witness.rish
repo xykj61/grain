@@ -24,7 +24,7 @@ say "gism-j6r2: Lens TAME — the signed digest cross-checks against sha256sum; 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/provenance-receipt"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/provenance_receipt.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/provenance_receipt.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j6r2: provenance_receipt build failed"
 
 # The crux cross-check, measured before it is compared: the receipt's own signed length and
@@ -46,10 +46,10 @@ assert selftest.out contains "unknown record field refused (UnknownField)" else 
 
 # The TACT-J2 demo receipt binaries must still be GREEN -- provenance_receipt composes their
 # public API only, retiring nothing.
-let d1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
+let d1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
 assert d1.ok else "gism-j6r2: publish_receipt (demo) regressed"
 assert d1.out contains "GREEN" else "gism-j6r2: publish_receipt (demo) did not speak GREEN"
-let d2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt_bron.rye -femit-bin=pond/bin/publish-receipt-bron && pond/bin/publish-receipt-bron selftest 2>&1"]
+let d2 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt_bron.rye -femit-bin=pond/bin/publish-receipt-bron && pond/bin/publish-receipt-bron selftest 2>&1"]
 assert d2.ok else "gism-j6r2: publish_receipt_bron (demo) regressed"
 assert d2.out contains "GREEN" else "gism-j6r2: publish_receipt_bron (demo) did not speak GREEN"
 

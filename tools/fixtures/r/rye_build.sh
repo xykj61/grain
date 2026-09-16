@@ -35,16 +35,59 @@ case "$src" in
 esac
 [ -f "$src" ] || { echo "rye_build: no such source: $src" >&2; exit 2; }
 
-module=$(dirname "$src")
-lock="$module/.rye-build.lock"
-wait_max=${RYE_BUILD_LOCK_WAIT:-900}
+# THE LOCK COVERS EVERY ROOM THIS BUILD WRITES INTO, never only the source's own. A cross-room
+# import bridges to a shadow BESIDE THE IMPORTED FILE, so building `pond/apps/thing.rye` writes
+# `mantra/beading.zig` as surely as it writes its own room -- and `pond/apps` carries 149 such
+# imports. A lock on the root directory alone would serialize two pond builds correctly and leave
+# a pond build racing a mantra build exactly as exposed as before.
+#
+# The walk is a bounded breadth-first pass over `@import("<room>/<file>.rye")`, because an imported
+# room may import further: `pond/apps` reaches `brushstroke`, which reaches rooms of its own.
+# DEPTH AND WIDTH ARE BOUNDED and the bound refuses rather than truncating in silence.
+max_rooms=${RYE_BUILD_MAX_ROOMS:-24}
+max_depth=${RYE_BUILD_MAX_DEPTH:-8}
 
-lock_acquire "$lock" "$wait_max" || {
-  echo "rye_build: refused -- waited ${wait_max}s for $lock and it stayed held" >&2
-  exit 3
+rooms=$(dirname "$src")
+frontier=$src
+depth=0
+while [ -n "$frontier" ] && [ "$depth" -lt "$max_depth" ]; do
+  next=""
+  for f in $frontier; do
+    [ -f "$f" ] || continue
+    for imp in $(grep -ohE '@import\("[a-z_]+/[^"]*\.rye"\)' "$f" 2>/dev/null \
+                 | sed -E 's|@import\("||; s|"\)||'); do
+      [ -f "$imp" ] || continue
+      d=$(dirname "$imp")
+      case " $rooms " in *" $d "*) : ;; *) rooms="$rooms $d"; next="$next $imp" ;; esac
+    done
+  done
+  frontier=$next
+  depth=$((depth + 1))
+done
+
+# ONE ORDER FOR EVERY CALLER, which is what keeps two builds from deadlocking on each other. Two
+# processes taking the same rooms in sorted order can never each hold what the other wants next.
+rooms=$(printf '%s\n' $rooms | sort -u)
+count=$(printf '%s\n' $rooms | grep -c .)
+[ "$count" -le "$max_rooms" ] || {
+  echo "rye_build: refused -- $src reaches $count rooms, past the bound of $max_rooms" >&2
+  exit 4
 }
-# The lock is released on every exit, including an interrupt, so a build killed mid-compile never
-# leaves the room shut. `trap` fires before the shell ends whatever ended it.
-trap 'lock_release "$lock"' EXIT INT TERM
+
+wait_max=${RYE_BUILD_LOCK_WAIT:-900}
+held=""
+# Every lock taken is released on any exit, including an interrupt, so a build killed mid-compile
+# never leaves a room shut. A room that cannot be taken releases the ones already held first.
+release_all() { for l in $held; do lock_release "$l"; done; }
+trap 'release_all' EXIT INT TERM
+
+for d in $rooms; do
+  lock="$d/.rye-build.lock"
+  lock_acquire "$lock" "$wait_max" || {
+    echo "rye_build: refused -- waited ${wait_max}s for $lock and it stayed held" >&2
+    exit 3
+  }
+  held="$held $lock"
+done
 
 "$root/rye/bin/rye" build "$@"

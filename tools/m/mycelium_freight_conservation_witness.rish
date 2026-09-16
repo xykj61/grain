@@ -23,7 +23,7 @@ say "mycelium-freight-conservation: Lens TAME — the conservation law composes 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/freight_conservation"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_conservation.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight_conservation.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-freight-conservation: build failed"
 
 let selftest = run ["sh" "-c" "${bin} 2>&1"]
@@ -37,13 +37,13 @@ assert selftest.out contains "Conservation stands" else "mycelium-freight-conser
 
 # The Freight crux r2 conserves stands on r1's own migration -- its selftest proves a single moved world reads
 # the byte-identical position, the per-world guarantee this round sums across the whole fleet.
-let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight.rye -femit-bin=mycelium/bin/freight && mycelium/bin/freight 2>&1"]
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/freight.rye -femit-bin=mycelium/bin/freight && mycelium/bin/freight 2>&1"]
 assert r1.ok else "mycelium-freight-conservation: the Freight r1 crux this round sums over is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-freight-conservation: the Freight r1 crux did not speak its GREEN"
 
 # The Puddle convergence Freight rides -- the minimal-disruption heal that moves only the departed host's
 # worlds -- stands too; conservation is proven over exactly that healing.
-let conv = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle_convergence.rye -femit-bin=mycelium/bin/puddle_convergence && mycelium/bin/puddle_convergence 2>&1"]
+let conv = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/puddle_convergence.rye -femit-bin=mycelium/bin/puddle_convergence && mycelium/bin/puddle_convergence 2>&1"]
 assert conv.ok else "mycelium-freight-conservation: the Puddle convergence Freight rides is not GREEN"
 assert conv.out contains "GREEN" else "mycelium-freight-conservation: the Puddle convergence did not speak its GREEN"
 

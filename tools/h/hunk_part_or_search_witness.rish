@@ -39,7 +39,7 @@ let green = run ["sh" "-c" "grep -q 'GREEN part-or-search' ${outfile} && echo ye
 assert (trim green.out) == "yes" else "hunk-part-or-search: selftest did not print the GREEN part-or-search line"
 
 # HUNK83 stays GREEN -- the disjunction the search view draws is the one part_or proved.
-let o = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_or.rye -femit-bin=image/bin/part_or && image/bin/part_or selftest > image/bin/part_or.out 2>&1"]
+let o = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/part_or.rye -femit-bin=image/bin/part_or && image/bin/part_or selftest > image/bin/part_or.out 2>&1"]
 assert o.ok else "hunk-part-or-search: HUNK83 part_or re-run failed — see image/bin/part_or.out"
 let o_green = run ["sh" "-c" "grep -q 'GREEN part-or' image/bin/part_or.out && echo yes"]
 assert (trim o_green.out) == "yes" else "hunk-part-or-search: HUNK83 part_or did not stay GREEN"

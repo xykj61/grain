@@ -29,7 +29,7 @@ say "mycelium-testament-true: Lens TAME â€” the reading is cross-checked against
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/testament_true"
 
-let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament_true.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_true.rye -femit-bin=${bin}"]
 assert build.ok else "mycelium-testament-true: build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
@@ -51,7 +51,7 @@ assert app.out == awk.out else "mycelium-testament-true: app and awk disagree â€
 
 # The fixture is reproducible -- the generator re-emits byte-identical bytes, so the on-disk certificate is what
 # the Testament seals, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed one).
-let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament_fixture_gen.rye -femit-bin=mycelium/bin/testament_fixture_gen"]
+let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_fixture_gen.rye -femit-bin=mycelium/bin/testament_fixture_gen"]
 assert genbuild.ok else "mycelium-testament-true: fixture generator build failed"
 let regen = run ["sh" "-c" "mycelium/bin/testament_fixture_gen 2> /tmp/testament_cert_regen.bron; diff tools/fixtures/t/testament_cert.bron /tmp/testament_cert_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-testament-true: the regenerated fixture drifted from the committed one"
@@ -59,7 +59,7 @@ assert regen.out contains "REPRODUCIBLE" else "mycelium-testament-true: the rege
 
 # The Testament r3 travel rung stands at the door -- a true reading of a real certificate means nothing unless
 # the record round-trips and proves itself offline against its own roster.
-let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament_bron.rye -femit-bin=mycelium/bin/testament_bron && mycelium/bin/testament_bron 2>&1"]
+let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_bron.rye -femit-bin=mycelium/bin/testament_bron && mycelium/bin/testament_bron 2>&1"]
 assert r3.ok else "mycelium-testament-true: the Testament r3 travel rung is not GREEN"
 assert r3.out contains "GREEN" else "mycelium-testament-true: the Testament r3 did not speak its GREEN"
 

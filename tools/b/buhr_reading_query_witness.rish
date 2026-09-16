@@ -16,7 +16,7 @@ say "buhr2: Lens TAME — real markdown reading, bounded request, bounded respon
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/reading-query"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/reading_query.rye -femit-bin=${bin}"]
 assert build.ok else "buhr2: reading_query build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

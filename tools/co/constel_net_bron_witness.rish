@@ -21,7 +21,7 @@ say "constel-net-bron: Lens TAME — the reader is bounded and purpose-built; an
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/constel-net-bron"
 
-let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_bron.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/constel_net_bron.rye -femit-bin=${bin}"]
 assert build.ok else "constel-net-bron: constel_net_bron build failed"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]

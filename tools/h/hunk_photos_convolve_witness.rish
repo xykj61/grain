@@ -24,7 +24,7 @@ say "hunk-photos-convolve: Lens TAME — every weight and the divisor are bounde
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/photos"
 
-let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh image/photos.rye -femit-bin=${bin}"]
 assert build.ok else "hunk-photos-convolve: build failed — ${build.err}"
 
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
