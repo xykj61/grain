@@ -47,8 +47,13 @@ assert selftest.out contains "merged, both lines kept" else "mantra-merge: the c
 assert selftest.out contains "one site, one identity, two texts refused PositionTextDisagrees" else "mantra-merge: the forged-identity refusal is missing -- it is what the site distinguishes an ordinary branch FROM"
 assert selftest.out contains "a merged weave still deletes by name" else "mantra-merge: the merge-then-delete claim is missing"
 assert selftest.out contains "refused TooManyLines" else "mantra-merge: the bound refusal is missing"
+# Claim 11 reads the merged COUNTERS rather than the merged lines. A side standing several
+# above its own highest line is a weave `V2Record` admits on purpose, and it is the only
+# state in which a counter derived from the result parts from the counter carried from the
+# two sides -- so this is the one claim the `pos_derived` plant below can speak to.
+assert selftest.out contains "a slack counter carries through a merge both ways" else "mantra-merge: the slack-counter claim is missing -- without it a derived next_pos passes every other claim"
 
-say "mantra-merge: breaking the law ten ways in a pen, so the witness is proven able to red..."
+say "mantra-merge: breaking the law eleven ways in a pen, so the witness is proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_weave_merge_control.sh"]
 assert control.ok else "mantra-merge: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-merge: the control must reach its own verdict"
@@ -61,6 +66,12 @@ assert control.out contains "phase=tiebreak" else "mantra-merge: the control mus
 # deleted -- a control that stops planting a law reads exactly like a law that holds.
 assert control.out contains "phase=run_counter" else "mantra-merge: the control must plant @min for the run counter's max -- the run is the field Place.less_than reads first"
 
+# The position counter was maxed and held by nothing until `20260915`. The plant derives it
+# from the result's lines instead, which equals the max on every tight weave and parts from it
+# only on the slack one claim 11 restores -- so naming the phase here is what keeps the pair
+# of them together.
+assert control.out contains "phase=pos_derived" else "mantra-merge: the control must plant a next_pos derived from the result's lines -- the tightness V2Record declines to inherit"
+
 assert control.out contains "phase=delete_lookup" else "mantra-merge: the control must test lookup after document ordering"
 
-say "GREEN: merging two weaves is a join -- one answer in all six orders, two branches kept whole, paragraphs unshuffled, both refusals by name, ten breaks caught."
+say "GREEN: merging two weaves is a join -- one answer in all six orders, two branches kept whole, paragraphs unshuffled, both refusals by name, a slack counter carried, eleven breaks caught."

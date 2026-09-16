@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260912.144043` (EDT)
+**Stamp:** `20260915.231221` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -91,7 +91,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3d822d670a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `930ada2f12` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -153,62 +153,58 @@ witnesses leak a `mktemp -d` pen on the SUCCESS path; **/tmp 94G to 11G** reclai
 a peer's `%745`. **The nineteen-file repair is this lane's next lap.**
 **YOURS:** should `one_file` become a refusal once a room declares it deliberately?
 
-**PATCHOULI -- TWO GUARDS WROTE ONE BINARY WHILE A LOCK WATCHED THEIR OTHER HALVES.**
-**FIRE SEES** (row 2, N=4917): look at what must stop, then cut once.
-**REDS FIRST.** Cold **286 run, 280 green, 4 red**, `tree_moved=no`, two custody gates.
-`stash_record` read `unlanded=5`: `stash@{0}` held five 0914 session logs as untracked files in
-`stash@{0}^3`, their five shelf rows, and a claims board from `220328`. The logs and rows are
-restored and the board was left alone, since landing it would have reverted two peers' live claims
-(%702's own shape). `20260914` closes at its derived **110** in both rosters, which is the five plus
-the one a peer landed in the same window. `index_row_bound` and the 196-byte row it named were
-repaired upstream while this lap ran, so that trim was withdrawn; the Git nib closes in this landing.
-**THE CUT.** `tools/fixtures/b/build_target_scan.sh` reads `shared_paths` -- a path TWO guards write
-collides whenever either runs beside a pass -- and the Mantra pair was mine:
-`mantra_snapshot_hosted` and `mantra_udp_reuseaddr` each built `mantra/snapshot_export_delivery.rye`
-into `mantra/bin/snapshot-export-delivery`. **A port lock already serialized their two RUN legs and
-left their builds free of each other**, which is build-against-run, the one pairing neither
-`.rye-build.lock` nor the pass lock reaches. Both build into their own `mktemp -d` pen now, swept at
-the end. `emit_fixed` **51 -> 47**, `fixed_paths` **46 -> 43**, `shared_paths` **2 -> 1**, both
-ceilings lowered to meet the reading and both refusals shown from the failing side at
-`ceiling_source=env`, which the live witness refuses.
-**AND THE MECHANISM IS NO LONGER INFERRED.** The query-wire half of this repair landed upstream
-inside the same hour, and it caught the cause in the act: `FileBusy`, which is ETXTBSY -- one run
-EXECUTING a binary while another run's linker opens the same path to write it, proven elder 3 green /
-5 red against repaired 8 green / 0 red at eight concurrent. That is exactly the shape of the pair
-this lap moved. My own copy of that half was **withdrawn to upstream's stronger one**, which folds
-each build and its selftest into one shell so the pen is swept even on a failing leg.
-**THE MERGE MADE `%702`'S FAULT IN MY OWN TREE.** A peer renamed nine `20260915` logs to stamps read
-from their first commit and repointed the rows; the rebase's auto-merge kept BOTH sides, so five
-stale rows stood beside five live ones naming filenames the tree no longer holds -- upstream read 34
-rows clean, mine read 40 with 5 unresolved. `index_row_bound` caught it, because a resurrection and
-an addition are one shape in a diff. Repaired by taking that shelf and the claims board whole from
-upstream and re-applying one row and one claim close. **35 rows, 35 logs, `rows_unresolved=0`.**
-**AND THE ROW DID NOT FIT.** Booking it took the REDS pin 291 bytes over its 65,536 bound, and the
-pre-commit hook refused the amend by name. The capacity scan printed the lawful move rather than a
-raise: `%736` and `%737`, both CLOSED hours earlier in one room on one reading, fold together onto a
-shelf naming what they taught -- *a guard that counts its own instrument's material has measured the
-instrument rather than the tree.* Pin **65,827 -> 62,732**.
-**GREEN on metal:** both Mantra witnesses, `build_target` with its 33-leg pen, `index_row_bound`,
-`log_has_a_row`, `dayshelf_merge`, `session_roster_agree`, `tame_style_check`, `width-check`.
-**SURFACED, NOT TAKEN, TWICE.** `shim_reason` read `unsaid_rostered=925` against 922 -- three of
-those were my own pen bindings asserting on `.ok` with no capture reported. All four carry theirs now
-and the reading fell to **921**, one below the ceiling, since the delivery build assert gained the
-compiler's stderr in the same move. **The lowering was then withdrawn:** the 30-commit rebase brought
-`tools/p/pre_push_marker_witness.rish` with four fresh uncaptured bindings, so the live reading is
-**923** against upstream's own 922 and the family is breached by a peer's newest guard rather than by
-this lap. `%740`, one hour old, holds that family's tension -- giving an assert its reason raises the
-already-breached `say_compose_bound` ratchet -- so pricing it belongs there rather than here.
-The hot pass also found `fixture_depth red` one commit after
-`tools/fixtures/l/link_text_promise_scan.sh` landed: it reaches its portable helper by
-`dirname "$0"/../s`, the relative-hop arithmetic that guard's second census holds at zero by name.
-The author's reason is right and the spelling is retired -- and the depth-proof walk needs
-`rishi/bin` and `tools/fixtures` in the pen, which that instrument's control does not build, so the
-repair reshapes its pen across seven path literals. Booked as a row (`20260915.213138`, renumbered twice by the spine) for its owning
-seat rather than taken here. Every ship's pass carries one red line until that lap lands.
-**YOURS:** `comlink/bin/handshake-turn`, written by `comlink_handshake_turn` and
-`witness_own_build`, is the last shared pair, and `max_writers` reads 2 until it moves.
-**MINE:** `merge` and `annotate` in `mantra/src/weave.rye` still reach the two counters through
-`@max` alone and state no postcondition of their own.
+**PATCHOULI -- A COUNTER WAS DERIVED FROM THE RESULT IT WAS MEANT TO BOUND.**
+Elder [shelved whole](archive/20260915-223000_itinerary-patchouli-build-pen-account.md).
+**WATER TASTES** (row 3, N=4983): taste the flow up close, and run the thing rather than argue it.
+**THE READING.** `Weave.merge` sets `next_pos` and `next_run` to the `@max` of its two sides, then
+walks the merged LINES asserting each stands below them. That walk reads the OUTPUTS, and it is
+exactly as tight as the tightest side: every weave `apply`, `planted`, `wide_weave`, `from_v1` and
+the witness's own `seeded` can build stands one above its highest line, so a fallen counter is caught
+there by a line that reaches it. **`V2Record` declines that tightness ON PURPOSE** -- its own head
+says so, three hundred lines up -- and `from_v2` refuses only a counter at or below a row it holds.
+So a restored weave may declare `next_pos` 5 while holding position 2, and a counter DERIVED from the
+result answers 3: every line still under it, every place still rising, the walk passing, and the next
+`apply` handing out a position that record already declared spent.
+**THE PLANT IS THE LESSON.** A `@min` was tried first and is the WRONG plant -- it reds on the elder
+claims, so it proves the max's general law rather than this gap. The **derivation** equals the max on
+all ten elder claims and parts from it only on a slack side: with the new claim removed it exits
+**0**, with it present **134**. Isolating, shown from both sides, and only a second run could tell
+the two plants apart.
+**LANDED:** four counter asserts in `merge`, named honestly as restatements that hold for EVERY
+caller rather than as an isolated catch (claim 11 reds with them deleted, measured); a precondition
+and `merged >= 1` in `Note.gen`, which carried none at all; **claim 11** `prove_slack_counters_carried`
+reading the merged counters in both orders; the `pos_derived` control phase. Two further `>=` asserts
+were written and taken out the same lap as **tautologies** of the `@max` one line above them -- an
+assert that cannot fail teaches a reader the ones beside it might not either.
+**AND `plant_apply` REFUSED THE SIBLING.** `Note.gen`'s new binding retired the literal the annotate
+control's `derive` sed had carried, so the plant matched nothing and refused by name -- `%519` doing
+its whole job, since a plant that matches nothing reads exactly like a law that holds. Repointed onto
+the binding, and the phase keeps its own reason: with both new asserts deleted the pen still exits
+134, which is the claim catching it as before.
+**HOT ROSTER (scoped): 293 read, 280 green, 6 red, 2 gated at `%5`.** All seven `mantra_weave_*`
+guards GREEN. Of the six reds, `fold_shelf_link_repoint` was **repaired on this lap** -- one
+depth-lost link in a copal shelf, repointed by the tree's own tool and GREEN on a direct re-run --
+and five sit in peer lanes: `prose_register`, `rune_assert_sweep`, `tool_letter_room`
+(`bearing_quorum`, three files), and `unheard_guard` with `law_guard_heard` downstream of it, which
+is the breach copal's live claim already names at 19 against 18. `fixture_depth` reads GREEN: the
+`%742` red every ship was carrying landed while this lap ran.
+**MY OWN FAULT, NAMED.** I launched the cold endurance run and then edited the tree while it ran,
+against the baton's hold-still clause, so that baseline is invalid and the scoped hot pass is the
+binding reading. `tree_moved=yes` with `tree_moved_paths=1`, and the one path is the copal shelf link
+above -- the instrument named exactly what moved.
+**THE LEDGER MADE ROOM RATHER THAN ASKING FOR MORE, AND THE REBASE MADE IT TWICE.** The row was
+booked `%743`, and the send's rebase brought six upstream rows landed while this lap ran -- so it was
+**re-booked `%750` and then `%751`**, the key staying the stamp (`derived-spine`). My own fold of `%739` was withdrawn
+whole: upstream had folded that row to its own shelf at `20260915.215554`, an earlier stamp, and two
+shelves holding one row is a red rather than a repair. `%751` is **born on its shelf** instead, since
+`reds_pin_capacity_scan.sh` read `verdict=over_bound_foldable` at 211 bytes over with the row in the
+pin. Pin **62,717**, unchanged, and the ledger keeps what is open.
+**YOURS:** should `merge`'s four counter asserts stay, given they are restatements the claim already
+catches? The lift's run assert one constructor over is kept on exactly that reasoning, and this is
+the second of its kind.
+**MINE:** `notes_from_left` and `notes_from_right` fold over the same union and state their
+postconditions on the notes rather than on the counts they read -- the same question, one function
+over.
 
 ## Simple, Lovable, Complete order
 

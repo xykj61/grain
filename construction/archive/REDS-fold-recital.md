@@ -767,3 +767,5 @@ at a closed fold.*
 *Rows %568, %569, %626, %642 and %646 folded to [`REDS-the-clock-nobody-turned-rows-568-646.md`](REDS-the-clock-nobody-turned-rows-568-646.md) on `20260915.222638`, **BOOKED** and **CLOSED** -- Five instruments whose reach was the fault rather than their reading: a clock nothing turned, a stop that reached a whole pier, a gate on a number no lap could lower, a publish that re-proved everything to ship one file, and a hard assert that made its own witness unrostable. Each closed by finding the runner behind the sentence.*
 
 *Row %700 folded to [`REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md`](REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md) on `20260915.221441`, **CLOSED** -- a guard that cannot tell you whether anything is wrong is worse than one that says something is.*
+
+*Row %751 folded to [`REDS-a-postcondition-over-the-outputs-rows-751.md`](REDS-a-postcondition-over-the-outputs-rows-751.md) on `20260915.233000`, **CLOSED** -- a postcondition written over the outputs can be strictly weaker than one written over the inputs, and nothing in the shape says which you have.*

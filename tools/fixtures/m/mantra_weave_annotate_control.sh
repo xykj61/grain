@@ -16,7 +16,7 @@
 # legs that must exit 0 (clean, bound_shrunk, head_clean); the other ten are breaks that must not.
 #   clean          -- the unmutated copy reaches GREEN, exit 0. This leg is what lets every
 #                     other phase read as the break speaking rather than the pen.
-#   derive         -- `Note.gen` returns `left_gen` instead of the max of the two counts, so
+#   derive         -- `Note.gen` binds `left_gen` instead of the max of the two counts, so
 #                     the story stops agreeing with the merge it describes. Claim 4 is written
 #                     for exactly this: a position the left has never seen derives 0 where the
 #                     merge lands on 1.
@@ -150,7 +150,21 @@ run_head_pen() {
 shrink='s/pub const max_weave_lines: u32 = 1 << 20;/pub const max_weave_lines: u32 = 8;/'
 
 clean_exit="$(run_pen clean '')"
-derive_exit="$(run_pen derive 's/return @max(self.left_gen, self.right_gen);/return self.left_gen;/')"
+# The plant was repointed `20260915`, and how it went stale is the sentence worth keeping.
+# It aimed at `return @max(self.left_gen, self.right_gen);`, one line that was both the max
+# and the return. `Note.gen` gained its own precondition and postcondition that day, so the
+# max moved into a named `merged` and the return became a bare name -- and the literal this
+# sed carried stopped existing. `plant_apply` refused by name rather than handing the phase
+# an unmutated file, which is REDS %519 doing its whole job: a plant that matches nothing is
+# indistinguishable from a law that holds. The plant now names the binding, and the asserts
+# below it read `merged`, so the break still reaches the same two counts.
+#
+# THE PHASE KEEPS ITS OWN REASON. `Note.gen` gained a precondition and a `merged >= 1`
+# postcondition on the same lap, so this plant now reds at the module as well as at the
+# claim. Measured `20260915` with both of those asserts deleted: the pen still exits 134,
+# which is the claim below catching it exactly as it did before. Two readings of one break,
+# and the phase is attributable to neither alone.
+derive_exit="$(run_pen derive 's/        const merged = @max(self.left_gen, self.right_gen);/        const merged = self.left_gen;/')"
 unseen_exit="$(run_pen unseen 's/                    .left_gen = 0,/                    .left_gen = 1,/')"
 side_exit="$(run_pen side 's/if (self.left_gen > self.right_gen) return .left_moved;/if (self.left_gen > self.right_gen) return .right_moved;/')"
 text_exit="$(run_pen text 's/if (!std.mem.eql(u8, held.text, line.text)) {/if (false) {/g')"
