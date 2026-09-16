@@ -1,0 +1,23 @@
+# REDS -- the record of a module has more than one surface
+
+**Language:** EN
+**Status:** Shelf -- immutable once written; the living pin at `construction/REDS.md` holds what is still open
+**Style:** Gauge, Meter
+**Voice:** Kyri
+**Room:** Checkable -- every row here closed on a witness that ran on metal
+
+One row, folded `20260916.194500` to keep the living pin under the byte bound its own header
+declares. `%773` is the row that found four separate records of one Mantra module standing behind a
+field that had already landed -- two field placards a guard read, and two prose passages nothing
+read at all. What it taught is the reason it earns a shelf rather than a deletion: **a module's
+record has more than one surface, and this tree had loomed exactly one of them.** The field surface
+reddened within the hour; the prose surface was guarded for its operations list alone and stayed
+stale through two separate stays, which that module's own header had already written down about
+itself once.
+
+Folded by `tools/fixtures/r/reds_fold.sh`, which re-anchored each moved row's relative links one
+directory deeper through `tools/fixtures/r/reds_fold_reanchor.sh`. Accrete-never-break: nothing here
+is edited.
+
+
+**REDS %773 (`20260916.082030`) -- the insert anchor landed, and four separate records of the module stayed behind it.** *What went wrong:* `Diff.after` and `Line.ord` landed on `20260916` (REDS `%689`), so `apply` places an insert just past the kept line it follows. Four records of that module went on describing the elder shape. Two were **placards** in `tools/r/rye_struct_fields_witness.rish`: `Line` declares `text gen pos site run ord` against a placard of five names, and `Diff` declares `site inserts deletes replaces after` against a placard of three. Two were **prose** in `mantra/src/weave.rye` itself: the module head's *WHAT THIS LEAVES FOR THE NEXT LAP* said *Every insert lands at the END of the document* and called the anchor *a seam rather than a lap*, and `annotate`'s header said *a line cannot land between two existing ones* -- both false in the file whose own head declares *so the head promises exactly what the code does*. *What caught it:* the cold endurance run, `rye_struct_fields red`, on a guard built for exactly this and named in its own header: *the identity gap, which wants a fourth field on `Line`, and the diff anchor, which wants one on `Diff`* were *waiting on a lock with no bolt in it* (`%500`). The bolt went in, both movements landed, and the placards never moved. The `Diff` placard was **hidden behind the `Line` one** -- one assert refusing before the next could be read -- so a single red stood for two. The prose was found by the aether rota's own instruction: listen for *the silence where a claim used to be and a witness now stands*. *What it taught:* **the record of a module has more than one surface, and this tree had loomed one of them.** The field surface was guarded and reddened within the hour; the prose surface was guarded for the operations list alone and stayed stale. `annotate`'s header records this as its **second** such stay -- it kept an elder cost claim for a day on `20260908.031547`, wrote that down inside itself, and then did it again with the anchor. A lantern that fires twice becomes a loom. *What this lap did:* moved both placards forward with dated reasons; replaced the two false passages with what is actually true, including the residue -- an insert that OPENS the document has a null anchor and still lands at the end; and extended `tools/fixtures/m/mantra_weave_head_scan.sh` with `diff_missing` and `diff_stale`, so the head enumerates `Diff`'s fields and is read against the struct in both directions. A field arriving is exactly when a head goes stale, and now it reds on that lap. *And the scan got the control it never had:* it has stood since `%506` with four witnesses asserting its verdict, so every leg proved it **passes** and none proved it **bites**. `tools/fixtures/m/mantra_weave_head_control.sh` plants each refusal in a pen copy and **lifts** it, 17 behaviors, two mutations asserted to bite -- one dropping the parenthesis guard that separates a field line from an operation line, one leaving the `Diff` walk unclosed so later structs bleed in. *What this does not reach:* prose drift in general. The new reading catches a field's **arrival**, which is the moment this head went stale; it cannot read a sentence about behavior and ask whether the behavior is still that. **CLOSED** on `rye_struct_fields` GREEN at 25 control behaviors, `mantra_weave_annotate` GREEN with the head control at 17, and the seven other weave and diff witnesses green on metal.

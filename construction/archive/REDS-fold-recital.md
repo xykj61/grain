@@ -801,3 +801,7 @@ at a closed fold.*
 *Rows %746 and %771 folded to [`REDS-the-binary-and-the-receipt-beside-it-rows-746-771.md`](REDS-the-binary-and-the-receipt-beside-it-rows-746-771.md) on `20260916.183602`, both **BOOKED** -- a binary's presence was checked and its freshness was not, and the receipt beside a binary spoke for the binary it replaced.*
 
 *Row %744 folded to [`REDS-a-front-door-that-halts-rows-744.md`](REDS-a-front-door-that-halts-rows-744.md) on `20260916.190500`, **BOOKED** -- a front door's runnable block is a promise about the reader's machine, not about ours.*
+
+*Row %773 folded to [`REDS-the-record-of-a-module-has-more-than-one-surface-rows-773.md`](REDS-the-record-of-a-module-has-more-than-one-surface-rows-773.md) on `20260916.193944`, **CLOSED** -- a module's record has more than one surface, and only the field surface was guarded.*
+
+*Row %775 folded to [`REDS-a-plant-is-a-sentence-that-must-not-be-true-rows-775.md`](REDS-a-plant-is-a-sentence-that-must-not-be-true-rows-775.md) on `20260916.194006`, **CLOSED** -- a pen plant and the fault it catches wear one shape, so a meter reading for truth hears both alike.*
