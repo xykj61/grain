@@ -1,16 +1,16 @@
 # MAP -- You Are Here
 
 **Language:** EN
-**Style:** Gauge (see `context/GAUGE_STYLE.md`)
+**Style:** Gauge at Door (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
-**Last updated:** `20260905.070821` (the fused pins read true again; the standing rules named in Room 2 -- seven rooms unchanged)
+**Last updated:** `20260916.190457` (the five routing sections move from prose paragraphs into tables, so a door is a row rather than a phrase mid-sentence; every link and every claim kept, and the setting named on the line above)
 
 *The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at [`template-manifest.bron`](template-manifest.bron).*
 
 ---
 
-Welcome, traveler. Something over a hundred doors face you at this root -- `ls -A | wc -l` is the honest count, and it grows -- and every one is friendly once you know which is which. This page groups them into **seven rooms**, so you can hold the whole house in mind at once and walk straight to the door you came for. Nothing here is required reading; everything here is findable in one glance.
+Welcome, traveler. Something over a hundred doors face you at this root -- `ls -A | wc -l` is the honest count, and it grows -- and every one is friendly once you know which is which. This page groups them into **seven rooms**, so you can hold the whole house in mind at once and walk straight to the door you came for. Every page here is optional, and everything here is findable in one glance.
 
 ## If You Only Open Three Doors
 
@@ -47,7 +47,18 @@ replaces the root `ls`.
 
 ### 2 - The Law
 
-Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe -- safety first, performance second, joy third. [`SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md) is how we scope a thing worth loving. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`KYRI.md`](context/KYRI.md) is who is writing to you (the standing voice, molted from Riyo `20260810`); the living coauthor is **Keaton Dunsford**. [`QUIN.md`](context/QUIN.md) keeps the fifth OS variant and the inference Q-vane. Beside them, [`.claude/rules/`](.claude/rules/) holds the same disciplines in the form a working hand applies them -- one file per rule, each naming the law it carries and why.
+Everything in [`context/`](context/README.md) is a promise we keep on purpose, and beside it [`.claude/rules/`](.claude/rules/) holds the same disciplines in the form a working hand applies them -- one file per rule, each naming the law it carries and why.
+
+| Page | What it is |
+|---|---|
+| [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) | How we speak |
+| [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) | How the code stays safe -- safety first, performance second, joy third |
+| [`SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md) | How we scope a thing worth loving |
+| [`TWO_ROOMS.md`](context/TWO_ROOMS.md) | Why every page tells you whether it is proven or proposed |
+| [`BREACH.md`](context/BREACH.md) | How the tree is allowed to move all at once |
+| [`LEXICON.md`](context/LEXICON.md) | Every word we ever seated, with receipts |
+| [`KYRI.md`](context/KYRI.md) | Who is writing to you -- the standing voice, molted from Riyo `20260810`; the living coauthor is **Keaton Dunsford** |
+| [`QUIN.md`](context/QUIN.md) | The fifth OS variant and the inference Q-vane |
 
 ### 3 - The Why
 
@@ -55,15 +66,50 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ### 4 - The Language & the Machines
 
-[`glow/`](glow/README.md) is **Glow** -- Hoon's runes over bounded, asserted semantics, lowering to ordinary Rye. Beside it now, [`glow/nock/`](glow/nock/README.md) is the interop backend nested where it belongs: Nock is Glow's second backend for Urbit-world verification, never its execution floor. [`src/`](src/README.md) is the **Glow userland** -- rooms for code written *in* Glow -- with [`docs-geode/edu/yonder/`](docs-geode/edu/yonder/README.md) the learning floor beside it. The **module ring** is the machinery, each home with its own witnesses: [`rishi/`](rishi/) the shell - [`mantra/`](mantra/) versions - [`comlink/`](comlink/) wires - [`tally/`](tally/) bounds - [`caravan/`](caravan/) supervision - [`aurora/`](aurora/) the boot - [`pond/`](pond/) the enclosure - [`mand/`](mand/) authority - [`brushstroke/`](brushstroke/) drawing - [`granary/`](granary/) - [`mandi/`](mandi/) - [`amphora/`](amphora/) - [`mycelium/`](mycelium/) - [`lantern/`](lantern/) - [`lattice/`](lattice/) - [`scribble/`](scribble/) - [`ember/`](ember/) the forge - [`cellar/`](cellar/) - [`dimeroll/`](dimeroll/) - [`linengrow/`](linengrow/) the giving edge. You never need all of them at once; each README says what its room proves.
+[`glow/`](glow/README.md) is **Glow** -- Hoon's runes over bounded, asserted semantics, lowering to ordinary Rye. Beside it now, [`glow/nock/`](glow/nock/README.md) is the interop backend nested where it belongs: Nock is Glow's second backend for Urbit-world verification, never its execution floor. [`src/`](src/README.md) is the **Glow userland** -- rooms for code written *in* Glow -- with [`docs-geode/edu/yonder/`](docs-geode/edu/yonder/README.md) the learning floor beside it.
+
+The **module ring** is the machinery, each home with its own witnesses. Take them one at a time; each README says what its room proves.
+
+| Room | What it holds |
+|---|---|
+| [`rishi/`](rishi/) | the shell |
+| [`mantra/`](mantra/) | versions |
+| [`comlink/`](comlink/) | wires |
+| [`tally/`](tally/) | bounds |
+| [`caravan/`](caravan/) | supervision |
+| [`aurora/`](aurora/) | the boot |
+| [`pond/`](pond/) | the enclosure |
+| [`mand/`](mand/) | authority |
+| [`brushstroke/`](brushstroke/) | drawing |
+| [`ember/`](ember/) | the forge |
+| [`linengrow/`](linengrow/) | the giving edge |
+| [`granary/`](granary/) - [`mandi/`](mandi/) - [`amphora/`](amphora/) - [`mycelium/`](mycelium/) - [`lantern/`](lantern/) - [`lattice/`](lattice/) - [`scribble/`](scribble/) - [`cellar/`](cellar/) - [`dimeroll/`](dimeroll/) | Named here without a gloss; open the room's own README for what it proves |
 
 ### 5 - The Teaching
 
-[`docs/`](docs/README.md) holds the compressors -- short pages that only say what witnesses have shown on real metal; [`TUBE.md`](docs/TUBE.md) is the app ladder to a signed APK on a physical Pixel, and [`COMPASS.md`](docs/COMPASS.md) is the one-page orientation. [`manual/`](manual/grain-os/README.md) is the four teaching rooms, [`docs-geode/edu/yonder/`](docs-geode/edu/yonder/README.md) the beginner's floor, [`docs-geode/`](docs-geode/) and [`nixos-guide/`](nixos-guide/) the deeper guides. When a page here says GREEN, a machine said it first.
+When a page here says GREEN, a machine said it first.
+
+| Floor | What it teaches |
+|---|---|
+| [`docs/`](docs/README.md) | The compressors -- short pages that only say what witnesses have shown on real metal |
+| [`TUBE.md`](docs/TUBE.md) | The app ladder to a signed APK on a physical Pixel |
+| [`COMPASS.md`](docs/COMPASS.md) | The one-page orientation |
+| [`manual/`](manual/grain-os/README.md) | The four teaching rooms |
+| [`docs-geode/edu/yonder/`](docs-geode/edu/yonder/README.md) | The beginner's floor |
+| [`docs-geode/`](docs-geode/) - [`nixos-guide/`](nixos-guide/) | The deeper guides |
 
 ### 6 - The Workrooms (Mind the Sawdust)
 
-[`active-designing/`](active-designing/README.md) is the hot bench -- briefs being shaped now, the horizon in its `yonder/`; [`active-reviving/`](active-reviving/README.md) is its sibling, re-growing elders into Glow beside them. [`waymarks/`](waymarks/) is the claim shelf and [`expanding-prompts/`](expanding-prompts/) the runnable plans. [`construction/`](construction/ITINERARY.md) holds the living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it. [`counsel/`](counsel/README.md) is the advice ledger; [`session-logs/`](session-logs/README.md) and [`bron-resins/`](bron-resins/) are the diary and its compressions. [`tools/`](tools/) is where the witnesses live -- the little judges that make every GREEN in this tree mean something.
+| Room | What is shaped there |
+|---|---|
+| [`active-designing/`](active-designing/README.md) | The hot bench -- briefs being shaped now, the horizon in its `yonder/` |
+| [`active-reviving/`](active-reviving/README.md) | Its sibling, re-growing elders into Glow beside them |
+| [`waymarks/`](waymarks/) | The claim shelf |
+| [`expanding-prompts/`](expanding-prompts/) | The runnable plans |
+| [`construction/`](construction/ITINERARY.md) | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
+| [`counsel/`](counsel/README.md) | The advice ledger |
+| [`session-logs/`](session-logs/README.md) - [`bron-resins/`](bron-resins/) | The diary and its compressions |
+| [`tools/`](tools/) | Where the witnesses live -- the little judges that make every GREEN in this tree mean something |
 
 ### 7 - The Reading Room
 

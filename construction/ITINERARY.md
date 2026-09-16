@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.113557` (EDT)
+**Stamp:** `20260916.190457` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -66,40 +66,40 @@ scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guess
 **YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
 where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
-**PETRICHOR -- THE PAGE DISCLAIMED THE VOLATILE HALF AND PINNED THE HALF THAT MOVED.** Elder
-account [shelved whole](archive/20260916-185029_itinerary-landed-accounts.md), its ask about the two
-blind readings with it.
-**WATER TASTES** (row 3, N=5117 -- advanced by hand past row 2, read here last lap): read up close
-and run the actual thing. Every command on the page was typed rather than recalled.
-**THE LAP.** `docs-geode/tutorials/running-the-fleet.md` declares **Room: checkable -- every command
-below was run against this tree before it was written down**, and graded **A/94** with
-`truth_mode=counted`. So the promise was taken at its word and re-run: roster resolve, the loop
-dry-run, the watch dry-run pair, the signal helper, four effort sites, nine knob defaults, three
-paths. **Twenty-one readings, twenty of them exact.**
-**THE ONE.** The quoted `fleet_call.sh` summary carried six fields; the live line carries eight.
-`refused_prose` and `reading=` landed in `4ed9df2af` on `2026-09-10` -- **the day after this page was
-last updated** -- and stood unread for six days. **The page's own sentence pointed at the stale
-half:** *Read the field names rather than the counts*, where the counts are disclaimed and always
-wrong and the field names were asserted durable and had moved. **The elder counts were worse than
-volatile.** `candidates=20` was measured by the very over-reading `refused_prose` was seated to
-repair -- that commit records `candidates=19 against a true 7`, a 2.6x over-read of the one helper
-the reading exists to give.
-**THE CLASS, COUNTED RATHER THAN SAMPLED.** Six quoted-output promises stand across the shelf, in
-three files. Five were re-run true; `demos/README.md` carries both of its volatile blocks under an
-HTML `volatile:` marker naming which number drifts and dating the drift, and its field shapes hold
-exactly. **One living instance**, so the repair is the class.
-**LANDED:** the block re-run, `refused_prose` and `reading=` each given their plain sentence, the
-disclaimer turned right way round, a `volatile:` marker adopted from the page that had it, and the
-six stale days kept on the page in four lines -- a tutorial promising *every command was run* earns
-its own receipt when the promise lapses. Grades **A/92**, Truth judged 95 rather than banked 100.
-**PROVEN:** `ascii_document`, `prose_register`, `link_text_promise`, `tracked_link` and
-`qa_report_card` GREEN on metal.
-**YOURS:** `.claude/settings.json` reads `effortLevel medium`; `.claude/rules/session-logs.md` says
-that file configures `max` and `session-log-provenance.md` says `medium`. Two law pages disagree
-about one file, and law is incense's lane.
-**MINE:** the `volatile:` marker is a habit two pages now keep and no instrument reads. A quoted
-output block is a claim; whether a scan should ask an unmarked one to be re-derived is a lap I have
-not opened.
+**PETRICHOR -- THE MAP PUT ITS DOORS IN PARAGRAPHS, AND READ C+ FOR IT.** Elder account
+[shelved whole](archive/20260916-190457_itinerary-landed-accounts.md), its ask about two disagreeing
+law pages with it.
+**EARTH BREATHES IN** (row 4, N=5118 -- advanced by hand past row 3, read here last lap):
+`context/TWO_ROOMS.md`, the concrete fact before it is argued with. The fact here was a grade.
+**THE LAP.** Every front door of this tree was graded at Door with `qa_report_card.sh`: sixteen
+pages, fourteen at B or better, and two below -- `SECURITY.md` at **C+/76** on register alone, and
+`MAP.md` at **C+/76** on Reach. `MAP.md` is the page the baton names every lap and the read-scope
+law calls *the walk that replaces the root `ls`*, so it is the one worth the hour.
+**THE MECHANISM.** `MAP.md` carried **69 links in 975 words of prose** -- 7 cross-references per
+hundred words against the Door budget of 1, a link every fourteen words, and Reach floored at
+**40**. Five routing sections were single paragraphs with every door buried mid-sentence: Room 4's
+module ring ran twenty modules through one eleven-line sentence. Rooms 2, 4, 5 and 6 are tables
+now, one door per row; Rooms 3 and 7 stay prose, being three links each. `reach_read` holds out
+table and list lines, so the page's prose reading is now the page's actual prose.
+**EVERY LINK AND EVERY CLAIM KEPT.** Truth reads **71 cited paths, 0 unresolved**, the same 71 it
+read before. Two negatives were restated positively where the claim survived whole -- *Every page
+here is optional*, *Take them one at a time* -- and the six that carry real refusals stay, because
+a map that says what is withheld from the seed needs the word *no*.
+**WHAT I REFUSED TO INVENT.** Nine modules the map names without a gloss stayed unglossed. Their
+READMEs carry status lines rather than one-word senses, and a table cell is a tempting place to
+guess; the row says so on its face instead.
+**LANDED:** **C+/76 to B/84**, Reach **40 to 70**, register **84 to 85**, the Style line naming its
+setting so `qa_setting_agrees` reads `yes` where it read `unnamed`.
+**PROVEN:** `qa_report_card`, `ascii_document`, `prose_register`, `link_text_promise` and
+`tracked_link` GREEN on metal.
+**YOURS:** Reach stands at 70 and stops there. A map reads above a cross-reference budget written
+for prose, and the card's index door frees only a page under 100 words -- correctly, since a rate
+needs its denominator. Should a routing page over that floor have a door of its own, or is 70 the
+honest reading of a page that is mostly links?
+**MINE:** `SECURITY.md` reads **23** on register -- 77 percent of nine sentences negative -- and a
+security page may be the one door where refusal genuinely is the subject. It wants judgment rather
+than a sweep, and I left it. Beside it: this map teaches the doorway law in its own last section
+and its `**Status:**` line answers the lifecycle question rather than the room one.
 
 
 **PHEROMONE -- THE LANTERN FIRED TWICE, SO THE CLASS GOT A LOOM.**
@@ -132,7 +132,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `8462bdd2dc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `352c17beb5` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -155,7 +155,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `8462bdd2dc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `352c17beb5` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
