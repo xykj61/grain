@@ -1,0 +1,30 @@
+# tools/p/precondition_skip_witness.rish -- a witness may not refuse on an optional precondition.
+#
+#   rishi/bin/rishi run tools/p/precondition_skip_witness.rish
+#
+# REDS %646: a hard assert on something a CORRECT clone may lack makes the witness unrostable,
+# and an unrostered witness runs nowhere -- so the assert buys a red nobody will ever hear.
+# The cure is an honest skip: say SKIP, say GREEN, exit 0, and leave every other claim refusing
+# exactly as hard as before. This holds the hard count under a ceiling that only falls, and the
+# control proves the reading from both sides on real repositories in a throwaway pen.
+
+say "precondition-skip: Language EN -- an absent optional dependency is a fact about the host."
+say "precondition-skip: Style Gauge at Meter -- refusal is the subject."
+say "precondition-skip: Lens TAME -- safety first; a guard nobody hears is worse than none."
+
+let control = run ["sh" "tools/fixtures/p/precondition_skip_control.sh"]
+say control.out
+assert control.ok else "precondition-skip: the control failed -- read its legs above"
+assert control.out contains "control_verdict=ok" else "precondition-skip: want control_verdict=ok"
+assert control.out contains "control legs=11 failed=0" else "precondition-skip: every control leg must be heard, or a leg written tomorrow passes unread"
+assert control.out contains "leg met_precondition_still_refuses=ok" else "precondition-skip: the skip must be honest in BOTH directions -- with the artifact present the witness still refuses"
+assert control.out contains "leg bare_name_not_hard=ok" else "precondition-skip: a bare variable name must read UNRESOLVED, never as a gitignored artifact"
+assert control.out contains "leg over_ceiling_refuses=ok" else "precondition-skip: the ceiling must refuse from both sides"
+
+let scan = run ["sh" "tools/fixtures/p/precondition_skip_scan.sh"]
+say scan.out
+assert scan.ok else "precondition-skip: hard precondition refusals stand above the ceiling -- sweep one and lower it"
+assert scan.out contains "verdict=ok" else "precondition-skip: want verdict=ok"
+assert scan.out contains "precondition ceiling=" else "precondition-skip: the scan must name its ceiling"
+
+say "GREEN: precondition-skip -- the class is read, the ceiling holds, the skip is honest both ways"
