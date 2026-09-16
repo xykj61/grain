@@ -76,3 +76,9 @@ stamp 20260916.114431
 epoch 1789573471
 paths mantra/src/weave.rye tools/fixtures/m/mantra_weave_head_scan.sh tools/fixtures/m/mantra_weave_head_control.sh
 what The weave head says a Place is run, then site, then position, and Place.less_than reads run, site, ord, pos -- four keys since ord landed at %680. The %773 repair read the Diff list and two behavior passages and missed this one, because the guard reads LISTS and this claim is a SENTENCE. Write Place's fields as a head enumeration and gate it against the struct both ways, as Diff now is, so the ordering claim becomes readable by an instrument.
+claim bakery-scrub-phase-measurement
+seat bakery
+stamp 20260916.114621
+epoch 1789573581
+paths tools/fixtures/s/sow_phase_scan.sh tools/fixtures/s/sow_phase_control.sh tools/s/sow_phase_witness.rish expanding-prompts/20260908-155715_the-scrub-that-remembers.md
+what REDS %642 asks for a content-keyed scrub cache, and its own design says what to measure BEFORE building: how much of a publish is the per-file scrub against the whole-projection witness, and how many files actually change between publishes. Its falsifier is explicit -- if the witness dominates, the cache buys little and the honest outcome is a page with the numbers. So this lap measures rather than builds: time the projection and the witness apart, split the projection's fixed cost from its per-file cost, and read the churn from the field's own history over the allowed paths. A cache built ahead of that reading is a cache nobody sized.
