@@ -58,12 +58,6 @@ stamp 20260916.102127
 epoch 1789568487
 paths glow/tokens.rye glow/refusal.rye tools/g/glow_refusal_witness.rish tools/fixtures/g/glow_refusal_control.sh
 what glow/tokens.rye answers four different ceilings with the one word error.BadToken -- a name past max_name_len, a cord literal interior past max_cord_lit_bytes, a hex literal past max_hex_lit_digits, and a source past max_src_len. glow_ceiling_refusal reads all four as uncovered and its named next fall is 44 to 40. Thread a refusal.Slot through the private lexers and seat tokenize_reporting beside tokenize, keeping the published signature, so each of the four fills a glow/refusal.rye record naming field, value, ceiling, unit and reason. The four name a token KIND rather than a face, because the offending text is exactly what does not fit. Four Reason members and two Unit members join the closed sets; the error name stays, since a published error set is a contract.
-claim patchouli-place-order-head
-seat patchouli
-stamp 20260916.114431
-epoch 1789573471
-paths mantra/src/weave.rye tools/fixtures/m/mantra_weave_head_scan.sh tools/fixtures/m/mantra_weave_head_control.sh
-what The weave head says a Place is run, then site, then position, and Place.less_than reads run, site, ord, pos -- four keys since ord landed at %680. The %773 repair read the Diff list and two behavior passages and missed this one, because the guard reads LISTS and this claim is a SENTENCE. Write Place's fields as a head enumeration and gate it against the struct both ways, as Diff now is, so the ordering claim becomes readable by an instrument.
 claim grass-reason-lost-fourth-seam
 seat grass
 stamp 20260916.120625
@@ -88,3 +82,9 @@ stamp 20260916.191646
 epoch 1789600606
 paths tools/fixtures/d/declared_model_scan.sh tools/fixtures/d/declared_model.sh tools/fixtures/d/declared_model_control.sh .claude/rules/session-logs.md recursion-prompts/seed/autonomous-loop.seed.md
 what The declared_model guard reads .claude/settings.json for BOTH model and effort, prints declared_effort=, and gates only the model -- so the effort half is a reading nobody acts on. Three living sites quote that file's effort and all three say max where it reads medium: .claude/rules/session-logs.md, the seed's section 0, and declared_model.sh's own USAGE comment. Effort is legitimately NOT one value across the tree -- fleet_lap.sh execs max, fleet-loop.sh medium -- so the repair is a named declaring roster for the effort field, presence-of-the-true-value like the model half, never a single-value gate that would lie about the launch-path split.
+claim patchouli-claim-nine-recovery
+seat patchouli
+stamp 20260916.193849
+epoch 1789601929
+paths mantra/src/weave.rye mantra/src/weave_apply_witness.rye tools/fixtures/m/mantra_weave_apply_control.sh active-designing/20260916-105110_no-anchor-names-the-head.md
+what Two dead laps of this ship left their work in the round-open stash box and nowhere else: a design paper reading three doors for the head-insert residue, a ninth claim in weave_apply_witness.rye pressing where an insert lands when no line comes before it, and two session logs stash_record reads as unlanded. Recover all of it, and make the head prose TRUE before it lands -- the recovered passage says mantra_weave_apply_control.sh plants two mutations for claim 9 (the anchor lookup forced false, the run comparison reversed) and the control carries nine phases, neither of them either one. Add both plants, plus a third phase that removes claim 9 from the witness copy under the reversed-run plant and expects exit 0, so the paper's sentence about claim 9 being the only reading that presses them is proven rather than asserted.
