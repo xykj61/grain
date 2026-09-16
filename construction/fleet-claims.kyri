@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim diffuser-workload-trial
-seat diffuser
-stamp 20260915.220631
-epoch 1789524391
-paths tools/fixtures/w/workload_trial_scan.sh tools/fixtures/w/workload_trial_control.sh tools/w/workload_trial_witness.rish active-designing/20260910-060204_the-bounded-torus-moonshots.md
-what Open row 12 of the twelve moonshots -- the workload trial that funds the ordering -- by reading what actually funded the ten landed re-ranks, and by measuring whether a single trial on this shared pier can resolve any effect above run-to-run spread.
 claim grass-claim-preserve-modality-classes
 seat grass
 stamp 20260915.224411
@@ -82,3 +76,9 @@ stamp 20260915.233209
 epoch 1789529529
 paths rishi/src/main.rye tools/r/rishi_make_pen_witness.rish tools/fixtures/r/rishi_make_pen_control.sh
 what Rishi already owns a CleanupRegistry that releases on normal return, refusal, exit, HUP, INT and TERM -- the card's standing claim that Rishi has no trap at all is false, and the registry's one kind is empty_dir registered only by acquire-lock. Add a make-pen expression builtin: the runtime creates the directory itself under TMPDIR and registers it for bounded recursive release, so it can only ever remove a directory it made in this process and never a caller-supplied path. Turns the 336 unreleased_on_refusal and the 16 never_removed Rishi pens from a language gap into a one-line cure.
+claim diffuser-ladder-order
+seat diffuser
+stamp 20260916.001453
+epoch 1789532093
+paths tools/fixtures/l/ladder_order_scan.sh tools/l/ladder_order_witness.rish tools/fixtures/l/ladder_order_control.sh active-designing
+what All twelve moonshot rows now carry errata and ten of them recommend a re-rank or a re-aim, while the ranking table on the page still reads as first written -- correctly, since dated testimony keeps every word. So no page states the order the twelve measurements actually support. Derive that order from the errata's own recommendation sentences rather than transcribing it, gate that every recommendation parses and that the derived order is a permutation of the twelve, and write the synthesis page row 11's erratum asked for.
