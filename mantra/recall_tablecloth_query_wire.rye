@@ -21,13 +21,25 @@ const flag_revision: u8 = 1 << 2;
 const flag_tilak: u8 = 1 << 3;
 const flag_path: u8 = 1 << 4;
 
-// ceilings: literal -- max_wire_hits stands in front of max_wire_payload rather than deriving
-// from it. One hit at maximum name lengths encodes to (1+16)+(1+32)+4+(1+64) = 119 bytes, so
-// floor((340-2)/119) = 2 always fit and 3 can overflow. A caller reading 8 is told a number the
-// encoder does not keep. Booked 20260909.213236; the repair is to derive this from
-// max_wire_payload, which needs max_peer and max_bolt named first.
-pub const max_wire_hits: u32 = 8;
+// THE HIT CEILING IS DERIVED, NEVER DECLARED (REDS %678, closed 20260915). It stood at a literal
+// 8 while the encoder enforced a budget in BYTES, so `build_response` returned 3 hits inside the
+// declared ceiling and `encode_response` refused them on the next call with error.Overflow. A
+// count that bounds a variable-length thing bounds nothing; the repair is to name the parts and
+// let arithmetic answer.
+pub const max_peer: u32 = 16;
+pub const max_bolt: u32 = 32;
+pub const max_path: u32 = 64;
+
+/// One hit at maximum name lengths: a length byte before each of the three names, plus the
+/// four-byte revision between them.
+pub const max_hit_bytes: u32 = (1 + max_peer) + (1 + max_bolt) + 4 + (1 + max_path);
+
+/// Two bytes of response head stand before the first hit, so the room a hit may claim is what
+/// remains after them.
+const response_head_bytes: u32 = 2;
+
 pub const max_wire_payload: u32 = 340;
+pub const max_wire_hits: u32 = (max_wire_payload - response_head_bytes) / max_hit_bytes;
 comptime {
     // invariant: a payload this module builds fits the room the sealed datagram leaves after its
     // header, so this ceiling can never outrun the wire that carries it. The number above is a
@@ -35,6 +47,12 @@ comptime {
     // `max_message` is derived as `wire_capacity - off_cipher` and a wider Kumara signature moves
     // `off_cipher` -- and every offset behind it -- without touching a line in this file.
     assert(max_wire_payload <= wf.max_message);
+    // invariant: every hit the declared ceiling admits fits the payload with the head before it,
+    // so a response built to this count can always be encoded. This is the tie `%678` was missing.
+    assert(response_head_bytes + max_wire_hits * max_hit_bytes <= max_wire_payload);
+    // invariant: the ceiling admits at least one hit, since a response that can carry none is a
+    // wire nobody can answer over.
+    assert(max_wire_hits >= 1);
 }
 
 
@@ -99,11 +117,11 @@ pub fn encode_request(req: QueryWireRequest, out: []u8) WireError!u32 {
     off += 1;
 
     if (req.peer) |peer| {
-        if (peer.len > 16) return error.Overflow;
+        if (peer.len > max_peer) return error.Overflow;
         try write_len_bytes(out, &off, peer);
     }
     if (req.bolt) |bolt| {
-        if (bolt.len > 32) return error.Overflow;
+        if (bolt.len > max_bolt) return error.Overflow;
         try write_len_bytes(out, &off, bolt);
     }
     if (req.revision) |revision| {

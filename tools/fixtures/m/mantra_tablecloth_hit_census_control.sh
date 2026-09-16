@@ -120,14 +120,24 @@ check "a version history is told apart by revision" "$history" 16
 check "a directory is told apart by path" "$directory" 16
 check "eight shapes name a key both shapes hold unique" "$both" 8
 check "seven shapes return the whole catalog whichever way it is shaped" "$neither" 7
-check "the build stays inside the declared ceiling" "$built" 3
+# REDS %678 CLOSED 20260915: the ceiling is derived from the payload now, so a catalog filled to
+# it builds to it. This read 3 against a ceiling declared as 8 while the encoder kept only 2.
+check "the build fills the derived ceiling exactly" "$built" 2
 check "one hit at declared name lengths costs its bytes" "$one_hit" 121
-check "the wire refuses the answer it just built" \
-  "$(grep -c 'wire encode verdict=refused' "$pen/honest.out")" 1
+# The reading that proves health is the opposite of the one that proved the defect: what the build
+# admits, the encoder keeps. Asserting the elder string would demand the defect stay present.
+check "the wire encodes the answer it just built" \
+  "$(grep -c 'verdict=fits' "$pen/honest.out")" 1
 
 refuses "the key is the only structural bound" "$pen/plant_key.rye" "worst bounded_to_one="
 refuses "saturation must actually saturate" "$pen/plant_saturate.rye" "worst mask=04"
-refuses "the wire finding rides on the declared name ceilings" "$pen/plant_names.rye" "shape history_single="
+# RE-AIMED 20260915. This plant shrinks the census's own worst-case name lengths. It used to bite
+# because the wire finding rode on those constants; the wire's ceiling derives from the WIRE
+# module's `max_peer` and `max_bolt` now, so the census asserts its worst case EQUALS those, and
+# the plant bites on that instead. A census measuring a comfortable case and calling it the hard
+# one is the fault this keeps closed. The marker is a line printed before the wire section, since
+# the invariant fires there.
+refuses "the census worst case must be the format's own ceilings" "$pen/plant_names.rye" "shape history_single="
 refuses "a query drawn from a leaf finds that leaf" "$pen/plant_drawn.rye" "hit-census: max_bindings="
 refuses "the shape space is thirty-one, whole" "$pen/plant_space.rye" ""
 

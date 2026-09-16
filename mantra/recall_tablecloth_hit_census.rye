@@ -22,11 +22,13 @@
 //!      their hit profiles are complements: revision discriminates in the first, path in the
 //!      second. So the mean hit count is a property of the STORE'S shape, and no amount of caller
 //!      instrumentation would have found it.
-//!   3. THE COUNT THAT IS NOT A COUNT. `max_wire_hits` is declared as a hit ceiling while the wire's
-//!      real bound is `max_wire_payload` bytes. At maximum name lengths one hit encodes to 119
-//!      bytes, so `build_response` builds three hits inside the declared ceiling and
-//!      `encode_response` refuses them on the next call. This program demonstrates that pair rather
-//!      than describing it.
+//!   3. THE COUNT THAT WAS NOT A COUNT, AND NOW IS (REDS %678, closed 20260915). `max_wire_hits`
+//!      was declared as a hit ceiling while the wire's real bound was `max_wire_payload` bytes. At
+//!      maximum name lengths one hit encodes to 119 bytes, so `build_response` built three hits
+//!      inside a ceiling declared as 8 and `encode_response` refused them on the next call. The
+//!      ceiling is derived from the payload now -- the parts are named and arithmetic answers --
+//!      so this program proves the AGREEMENT instead: a catalog filled to the ceiling builds to the
+//!      ceiling, and the whole response encodes.
 //!
 //! WHAT IT DOES NOT READ. Which query shapes a caller actually sends -- that is a habit rather than
 //! a bound, and this tree's own callers are few enough to read by eye. Nor any energy figure: no
@@ -325,10 +327,22 @@ fn run_wire_disagreement() CensusError!void {
     assert(peer.len == worst_peer_len);
     // invariant: the bolt name likewise, so one hit costs what the format allows it to cost.
     assert(bolt.len == worst_bolt_len);
+    // invariant: THE WORST CASE IS THE FORMAT'S OWN (REDS %678, 20260915). A census claiming to
+    // measure the worst case must use the ceilings the wire actually declares, or it measures a
+    // comfortable case and calls it the hard one. Nothing checked this while the wire's ceilings
+    // were literals repeated here; they are named constants now, so the claim can be asserted.
+    assert(worst_peer_len == qw.max_peer);
+    // invariant: the bolt ceiling likewise, for the same reason.
+    assert(worst_bolt_len == qw.max_bolt);
 
+    // THE DISAGREEMENT THIS FUNCTION WAS BUILT TO SHOW IS CLOSED (REDS %678, 20260915). It used to
+    // append three leaves, watch `build_response` hand back three inside a ceiling declared as 8,
+    // and watch `encode_response` refuse them on the next call. The ceiling is derived from the
+    // payload now, so the two agree by arithmetic and the demonstration becomes a PROOF of that
+    // agreement: fill the catalog to the ceiling, and every hit the build admits must encode.
     var cat: ns.BoltCatalog = .empty();
     var i: u32 = 0;
-    while (i < 3) : (i += 1) {
+    while (i < qw.max_wire_hits) : (i += 1) {
         for (&path_buf) |*b| b.* = 'a' + @as(u8, @intCast(i));
         try cat.append_leaf(peer, bolt, 1, &path_buf, "body", "plain-text");
     }
@@ -338,22 +352,22 @@ fn run_wire_disagreement() CensusError!void {
     print("wire built_hits={d} declared_ceiling={d}\n", .{ built.hit_count, qw.max_wire_hits });
     // invariant: the build stayed inside the ceiling it declares, so the caller kept the contract.
     assert(built.hit_count <= qw.max_wire_hits);
-    // invariant: three hits is what a lawful catalog of this shape returns.
-    assert(built.hit_count == 3);
+    // invariant: a catalog filled to the ceiling returns the ceiling, so the case below is the
+    // worst one the format admits rather than a comfortable one.
+    assert(built.hit_count == qw.max_wire_hits);
 
     var single = built;
     single.hit_count = 1;
     const one_len = try qw.encode_response(single, &out);
     print("wire one_hit_bytes={d} payload={d}\n", .{ one_len, qw.max_wire_payload });
-    // invariant: one hit at these lengths fits, so the refusal below is about the second and third.
+    // invariant: one hit at these lengths fits, which is the floor the derivation rests on.
     assert(one_len < qw.max_wire_payload);
 
-    if (qw.encode_response(built, &out)) |len| {
-        print("wire encode_bytes={d} verdict=fits\n", .{len});
-        return error.ShapeUnreachable;
-    } else |_| {
-        print("wire encode verdict=refused declared_hits_left={d}\n", .{qw.max_wire_hits - built.hit_count});
-    }
+    // invariant: THE WHOLE RESPONSE ENCODES. A refusal here would mean the declared ceiling once
+    // again promises what the encoder does not keep, which is the defect this row closed.
+    const full_len = try qw.encode_response(built, &out);
+    print("wire encode_bytes={d} verdict=fits declared_hits={d}\n", .{ full_len, qw.max_wire_hits });
+    assert(full_len <= qw.max_wire_payload);
 }
 
 fn run_selftest(_: std.Io) !u8 {
@@ -365,7 +379,7 @@ fn run_selftest(_: std.Io) !u8 {
     try run_wire_disagreement();
     print("hit-census: the answer's size is the catalog's agreement class -- GREEN\n", .{});
     print("hit-census: two shapes of one size read complementary profiles -- GREEN\n", .{});
-    print("hit-census: the declared hit ceiling is not the wire's bound -- GREEN\n", .{});
+    print("hit-census: the declared hit ceiling IS the wire's bound, by arithmetic -- GREEN\n", .{});
     print("hit-census: version {s}\n", .{hit_census_version});
     print("GREEN: Tablecloth hit census -- thirty-one shapes walked whole, worst case proven.\n", .{});
     return 0;
