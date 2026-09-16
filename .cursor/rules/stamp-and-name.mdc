@@ -258,29 +258,24 @@ re-derived. Three reasons, each checkable:
   two shapes that are promises rather than mentions -- an anchor text that IS the number, and a
   shelf word whose sentence just named a row -- and holds both at zero.
 
-**A RECORD VERSION IS A CENSUS NUMBER, and the exemption is written here rather than left to be
-re-derived a second time** (amended `20260916.061649`, on Keaton's question: *does the v2 / v3 naming itself
-not follow this rule?*). It is a fair question -- `mantra-weave-v3` is an ascending count-up ID, which
-is the CION chapter's stated target -- and the law's own test answers it. *Could this number turn out
-to be wrong?* No: `mantra-weave-v2` names a format that was written, and v2 blobs stand on disk. It
-counts formats that happened rather than forecasting formats to come.
+**A RECORD VERSION IS CHRONOLOGICAL, and it is not this law's call to make** (amended
+`20260916.064510`, REDS %765). Asked whether `mantra-weave-v3` follows this rule, a lap reasoned from
+the census exemption above and wrote the opposite ruling into this page. The subject already had a
+seated spec: [`../../context/specs/rye-versioning-style.md`](../../context/specs/rye-versioning-style.md)
+-- *versions here are chronological*, `YYYYMMDD.HHMMSS`, refusing semantic versioning by name and
+citing Hickey's *Spec-ulation*, a talk this tree keeps in its gratitude. **A counted record version is
+a count-up ID and it molts to a stamp.**
 
-Two of the three REDS reasons carry over, and the third carries **harder**:
+**The lesson is about reading rather than about versions.** A law can be read correctly and still be
+the wrong law. The census exemption is real and it governs a number this tree assigns ITSELF for work
+already done; a record version is a compatibility contract, and another page owns it. Before ruling a
+number lawful here, ask whether a spec already rules on that KIND of number.
 
-- **A gapless spine proves the record is whole.** v1, v2, v3 with no gap; a gap would name a format
-  no reader carries, which is a store nobody can open.
-- **The citations are unrewritable, and here they are BYTES rather than prose.** The version is the
-  first line of every stored blob, and a blob is named by the digest of its own bytes -- so renaming
-  `mantra-weave-v2` changes the identity of every v2 object ever written. That is *a published number
-  never moves*, in its strongest possible form: the number is load-bearing for content addressing.
-- The first REDS reason -- *the row already carries the stamp and the name* -- does **not** carry over,
-  and it fails toward keeping the number: a record header carries no stamp, so the version is the only
-  mark it has.
-
-**A format version is a compatibility fact rather than a plan label.** What this law retires is a
-number that announces how long a planned ladder will be; a record version announces what a reader must
-understand to open bytes already on a disk. Measured `20260916.061649`: **78 occurrences across 19 tracked
-sources**, plus the first line of every blob in every store.
+**Elder headers keep their names forever.** A store holding `mantra-weave-v1` opens unchanged, because
+the version sits in content-addressed bytes and renaming it would change the identity of every object
+ever written. Only what a tree WRITES moves forward -- accrete-never-break, doing its ordinary work.
+Measured `20260916`: **111 counted version strings across 42 record families** stand in authored Rye,
+of which one is moved.
 
 **The test, for the next sequence somebody wants to number:** *could this number turn out to be wrong?*
 Planned work, yes -- stamp and name it. Work already done, no, and a gap in it would mean a record has
