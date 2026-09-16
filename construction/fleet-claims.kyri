@@ -76,12 +76,6 @@ stamp 20260916.023136
 epoch 1789540296
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
 what The build receipt keys on the toolchain PATH STRING beside its content, so one pinned compiler wears four live spellings and four different keys -- measured on this tree: RYE_ZIG absolute gives bdd5d31e, the compiler's own default resolution gives c626631a, same 172MB binary, same sources, same flags. The tree spells the pin 980 times relative, 34 absolute, 13 through a root variable, and leaves it unset everywhere rye_build.sh runs. Drop the path and the library path from the key, keep both content hashes, bump the marker to v6, and turn control leg 8 around with its reason written.
-claim grass-two-rooms-ceiling-narration
-seat grass
-stamp 20260916.034104
-epoch 1789544464
-paths context/TWO_ROOMS.md
-what The doorway living ratchet closed at zero on 20260911.160504 (42826c45d), and context/TWO_ROOMS.md still narrates the ceiling falling 59 to 39 with a remainder of 33 active-designing and 6 external-research pages. The scan reads living_silent=0 living_ceiling=0 over 1,328 pages today. The page is the Earth-Fixed rota seat and the doorway's own canon, so a rota lap reads a five-day-stale number as a bare fact once per orbit. Amend with the closing paragraph naming the 39 -- 30 ALES fill captures, 6 lineage silos, 3 more -- the wall's structural reason, and what holds each figure still; grade the page at Field.
 claim petrichor-recursion-door-tmp-teaching
 seat petrichor
 stamp 20260916.043356
