@@ -77,7 +77,34 @@ assert scan.out contains "max_keys=" else "aurora-placement: the key bound is un
 assert scan.out contains "rooms_over_bound=no" else "aurora-placement: the room census stands over its bound"
 assert scan.out contains "grids_over_bound=0" else "aurora-placement: a grid was dropped at the bound"
 
-# --- The control: 54 behaviors, four mutations, one pen ----------------------
+# --- The capacity term, and the unit it refuses ------------------------------
+# invariant: a node holds a bounded amount of code, so a map from rooms to nodes is feasible only
+# if no room is larger than a node -- a term this tree DOES hold, where the traffic term is absent.
+assert scan.out contains "room_bytes_total=" else "aurora-placement: no capacity term was read"
+assert scan.out contains "largest_room_share=" else "aurora-placement: the largest room's share went unread"
+assert scan.out contains "room_bytes_over_bound=no" else "aurora-placement: the byte census stands over its bound"
+
+# invariant: one room is forty percent of this tree's Rye, so no assignment of MODULES to nodes
+# exists at either grid the row names, and the unit of the row's first witness is what must change.
+assert scan.out contains "capacity k=4 nodes=16" else "aurora-placement: the 16-node capacity went unread"
+assert scan.out contains "room_granularity=infeasible file_granularity=feasible" else "aurora-placement: the granularity verdict moved -- read the scan, then read the paper"
+
+# --- What the proxy buys, and how wrong it may be ----------------------------
+# invariant: the placement is compared against a SIZE-MATCHED baseline. A node holding many rooms
+# pays nothing for the traffic inside it, so a layout free to pile rooms up beats a spread baseline
+# under any weights at all -- a reading of occupancy wearing a reading of coupling.
+assert scan.out contains "reading4=read" else "aurora-placement: the placement reading reached no verdict"
+assert scan.out contains "matched_gain_share=" else "aurora-placement: the size-matched baseline went unread"
+assert scan.out contains "busiest_node_rooms=" else "aurora-placement: the occupancy profile went unread"
+
+# invariant: the two ways a proxy can be wrong answer oppositely, and that is the finding. Scaling
+# every weight by up to 256 costs the layout nothing; moving its edges costs it everything.
+assert scan.out contains "scale_drift_bites=no" else "aurora-placement: mis-scaling the weights began to cost the layout -- the finding has moved"
+assert scan.out contains "structure_drift_bites=yes" else "aurora-placement: moving the edges stopped costing the layout -- the instrument is measuring occupancy again"
+assert scan.out contains "proxy_survives_structure_drift_upto_pct=" else "aurora-placement: the tolerance went unread"
+assert scan.out contains "proxy_keep_share=" else "aurora-placement: the keep threshold is unnamed"
+
+# --- The control: 75 behaviors, six mutations, three pens -------------------
 say "aurora-placement: the control -- a real repository in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/a/aurora_placement_control.sh"]
 say ctl.out
@@ -87,7 +114,7 @@ assert ctl.out contains "failures=0" else "aurora-placement: a planted behavior 
 
 # invariant: the control tallies its own legs and this witness asserts the count, so a leg written
 # tomorrow is heard the day it lands rather than passing unread under a green verdict.
-assert ctl.out contains "legs=54" else "aurora-placement: the control's leg count moved -- read it, then raise this line"
+assert ctl.out contains "legs=75" else "aurora-placement: the control's leg count moved -- read it, then raise this line"
 
 # invariant: each of the four mutations was planted AND bit. A refusal proven only in the passing
 # direction cannot be told from a bypass.
@@ -96,8 +123,24 @@ assert ctl.out contains "leg m2_bites ok" else "aurora-placement: replacing cycl
 assert ctl.out contains "leg m3_bites ok" else "aurora-placement: leaving import symlinks unfollowed went unfelt"
 assert ctl.out contains "leg m4_bites ok" else "aurora-placement: dropping the self-edge guard went unfelt"
 
+# invariant: a placement needs more rooms than nodes, so the second pen carries six rooms and five
+# weighted pairs whose right answer is computable by hand -- two merges, three rooms on the busiest
+# node, and a cost of exactly 3 on a 2 x 2 torus.
+assert ctl.out contains "leg pen2_torus_cost_by_hand ok" else "aurora-placement: the hand-computed placement cost moved"
+assert ctl.out contains "leg pen2_merges_at_four ok" else "aurora-placement: heavy-edge merging stopped merging what it should"
+assert ctl.out contains "leg pen2_busiest_node ok" else "aurora-placement: the occupancy the pen expects moved"
+assert ctl.out contains "leg pen2_structure_drift_bites ok" else "aurora-placement: structure drift stopped biting in the pen"
+assert ctl.out contains "leg pen2_scale_drift_silent ok" else "aurora-placement: scale drift began biting in the pen"
+assert ctl.out contains "leg m5_bites ok" else "aurora-placement: counting symlinks as code went unfelt"
+assert ctl.out contains "leg m6_bites ok" else "aurora-placement: an unmatched baseline went unfelt"
+
+# invariant: a third pen carries no Rye at all. An empty population fits every node trivially, so
+# both granularity readings answer `unread` there and the placement refuses rather than passing.
+assert ctl.out contains "leg pen3_capacity_unread ok" else "aurora-placement: an empty population read as a real fit"
+assert ctl.out contains "leg pen3_reading4_refuses ok" else "aurora-placement: a graph with no edges was placed anyway"
+
 # invariant: segment matching is proven by INPUT rather than by a mutation -- the pen carries a
 # room `mand` and a key `mandate_rows`, which holds `mand` as a substring and as no segment.
 assert ctl.out contains "leg pen_substring_room_refused ok" else "aurora-placement: a substring room name was counted as a named room"
 
-say "GREEN: aurora-placement -- the 4-core falsifier cannot fire, the 16-core one can, and the weight the map wants is not in this tree."
+say "GREEN: aurora-placement -- the 4-core falsifier stays silent, the 16-core one fires, the capacity term refuses the row's own unit, and the static graph tolerates two thirds of its edges wandering."

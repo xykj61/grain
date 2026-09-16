@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260916.111221` | [A breach needs a resolver behind it](20260916/20260916-111221_a-breach-needs-a-resolver-behind-it.kyri) | %774: 82 of 88 dead shelf citations recovered |
 | `20260916.100409` | [The room this tree renames on purpose](20260916/20260916-100409_the-room-this-tree-renames-on-purpose.kyri) | 99 shelf citations name no path, and none resolved |
+| `20260916.095958` | [the two ways a proxy drifts](20260916/20260916-095958_the-two-ways-a-proxy-drifts.kyri) | Scale drift costs a placement nothing; structure drift decides it. |
 | `20260916.093203` | [The anchor landed and four records stayed behind](20260916/20260916-093203_the-anchor-landed-and-four-records-stayed.kyri) | %766 closed; the head reads Diff's fields |
 | `20260916.092827` | [A meter read a spelling](20260916/20260916-092827_a-meter-read-a-spelling.kyri) | %768 closed: 986 files changed spelling, the pattern could not read it |
 | `20260916.092641` | [The trap that wore two spellings](20260916/20260916-092641_the-trap-that-wore-two-spellings.kyri) | 12 released pens read as leaks. |
@@ -30,9 +31,11 @@
 | `20260916.050330` | [The door that read twice](20260916/20260916-050330_the-door-that-read-twice.kyri) | recovered: one Door page raised, two shelf links repointed |
 | `20260916.044224` | [The grid that was already flat](20260916/20260916-044224_the-grid-that-was-already-flat.kyri) | 2x2 torus IS 2x2 mesh; row 7 speaks, all twelve now do |
 | `20260916.044036` | [The door that taught a retired habit](20260916/20260916-044036_the-door-that-taught-the-retired-habit.kyri) | recovered: stale teaching repaired, door rostered |
+| `20260916.041217` | [the lap that ended at its commit](20260916/20260916-041217_the-lap-that-ended-at-its-commit.kyri) | Carried out of the dead-letter box as testimony. |
 | `20260916.035415` | [The path that was never in the key](20260916/20260916-035415_the-path-that-was-never-in-the-key.kyri) | One compiler, four spellings, four keys -- and one after. |
 | `20260916.035128` | [The ceiling a law page narrated](20260916/20260916-035128_the-ceiling-the-law-page-narrated.kyri) | doorway living_ceiling 39 to 0, said five days late |
 | `20260916.034657` | [The ceiling frozen before the product](20260916/20260916-034657_the-ceiling-frozen-before-the-product.kyri) | Glow `$:` holds 9; the contract's widest names 15 |
+| `20260916.033207` | [row 7 closes the page](20260916/20260916-033207_the-axis-that-finally-paid.kyri) | Carried out of the dead-letter box as testimony. |
 | `20260916.033041` | [The pour you can run twice](20260916/20260916-033041_the-pour-you-can-run-twice.kyri) | a re-pour lands the same 1,564 bytes; legs 8 to 10 |
 | `20260916.030301` | [Two rows built and never turned](20260916/20260916-030301_two-rows-built-and-never-turned.kyri) | moonshot rows 1 and 3 ran green, six days unturned |
 | `20260916.025734` | [The ratchet that named its arrival](20260916/20260916-025734_the-ratchet-that-named-its-arrival.kyri) | %752 closed; both arrivals were mantra |

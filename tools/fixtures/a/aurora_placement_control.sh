@@ -155,6 +155,117 @@ base_pairs=$(key "$PENOUT" room_pairs)   # every mutation runs in the pen, so th
 mut_pairs=$(key "$M4OUT" room_pairs)
 if [ "$mut_pairs" -gt "$base_pairs" ] 2>/dev/null; then leg m4_bites yes yes; else leg m4_bites yes no; fi
 
+# ---- the second pen: a graph with more rooms than nodes ----------------------------------------
+# The pen above proves the operand readings against counts known in advance, and it deliberately
+# holds two rooms in its graph. A PLACEMENT needs more rooms than nodes, or the coarsening under
+# test never runs, so reading 4 gets a pen of its own: six rooms and five weighted pairs, laid so
+# that the right answer is computable by hand.
+#
+#   alpha -b- beta weight 3, beta -c- gamma 2, alpha -g- gamma 1, delta -e- epsilon 2,
+#   epsilon -z- zeta 1.
+#
+# Heavy-edge merging at four nodes joins alpha+beta first (3), then gamma into them (2 + 1 = 3),
+# leaving four groups after TWO merges with three rooms on the busiest node. The two edges left
+# crossing a node boundary are delta-epsilon at 2 and epsilon-zeta at 1, and a 2 x 2 torus seats
+# epsilon next to both, so the cost is exactly 3.
+#
+# A weight is a count of DISTINCT import names, since the scan reads each (room, path) site once --
+# so three files importing one name make one edge, and the pen files three names.
+mkdir -p "$PEN/tree2"
+cd "$PEN/tree2" || exit 1
+for r in alpha beta gamma delta epsilon zeta; do
+  mkdir -p "$r"
+  printf 'const std = @import("std");\n' > "$r/own.rye"
+done
+git init -q . 2>/dev/null
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+pen_edge() {   # importer target count prefix
+  imp=$1; tgt=$2; cnt=$3; pre=$4; i=1
+  while [ "$i" -le "$cnt" ]; do
+    printf 'const std = @import("std");\nconst x = @import("%s%s.rye");\n' "$pre" "$i" > "$imp/src$pre$i.rye"
+    ln -s "../$tgt/own.rye" "$imp/$pre$i.rye"
+    i=$((i + 1))
+  done
+}
+pen_edge alpha beta 3 b
+pen_edge beta gamma 2 c
+pen_edge alpha gamma 1 g
+pen_edge delta epsilon 2 e
+pen_edge epsilon zeta 1 z
+git add -A >/dev/null 2>&1
+git commit -q -m "pen: six rooms, five weighted pairs" >/dev/null 2>&1
+
+P2=$(sh "$SCAN" 2>&1)
+placekey() { printf '%s\n' "$1" | grep -m1 "^place k=$2 .*$3=" | tr ' ' '\n' | grep -m1 "^$3=" | cut -d= -f2-; }
+capkey() { printf '%s\n' "$1" | grep -m1 "^capacity k=$2 " | tr ' ' '\n' | grep -m1 "^$3=" | cut -d= -f2-; }
+
+leg pen2_reading4 read "$(key "$P2" reading4)"
+leg pen2_graph_rooms 6 "$(printf '%s\n' "$P2" | grep -m1 '^graph_rooms=' | tr ' ' '\n' | grep -m1 '^graph_rooms=' | cut -d= -f2)"
+leg pen2_graph_pairs 5 "$(printf '%s\n' "$P2" | grep -m1 '^graph_rooms=' | tr ' ' '\n' | grep -m1 '^graph_pairs=' | cut -d= -f2)"
+leg pen2_graph_weight 9 "$(printf '%s\n' "$P2" | grep -m1 '^graph_rooms=' | tr ' ' '\n' | grep -m1 '^graph_weight=' | cut -d= -f2)"
+leg pen2_groups_at_four 4 "$(placekey "$P2" 2 groups)"
+leg pen2_merges_at_four 2 "$(placekey "$P2" 2 merges)"
+leg pen2_busiest_node 3 "$(placekey "$P2" 2 busiest_node_rooms)"
+leg pen2_torus_cost_by_hand 3 "$(placekey "$P2" 2 torus_cost)"
+leg pen2_no_merge_at_sixteen 0 "$(placekey "$P2" 4 merges)"
+leg pen2_groups_at_sixteen 6 "$(placekey "$P2" 4 groups)"
+
+# the capacity term, on a pen whose largest room is known
+leg pen2_largest_room alpha "$(key "$P2" largest_room)"
+leg pen2_room_granularity infeasible "$(capkey "$P2" 4 room_granularity)"
+
+# the finding, as two verdicts: scaling the weights costs the layout nothing, moving the edges
+# costs it everything
+leg pen2_scale_drift_silent no "$(key "$P2" scale_drift_bites)"
+leg pen2_structure_drift_bites yes "$(key "$P2" structure_drift_bites)"
+
+# ---- mutation 5: the size reading counts symlinks -----------------------------------------------
+# A cross-room `.rye` symlink is an import EDGE, and `wc -c` follows it -- so counting one bills
+# the importing room for the imported room's bytes, and the capacity reading measures the graph
+# twice instead of the code once.
+M5="$PEN/m5.sh"
+sed 's/\$1 != "120000"/1/' "$SCAN" > "$M5"
+if cmp -s "$SCAN" "$M5"; then leg m5_planted yes no; else leg m5_planted yes yes; fi
+M5OUT=$(sh "$M5" 2>&1)
+if [ "$(key "$M5OUT" room_bytes_total)" = "$(key "$P2" room_bytes_total)" ]; then
+  leg m5_bites yes no
+else
+  leg m5_bites yes yes
+fi
+
+# ---- mutation 6: the baseline stops matching the occupancy profile -------------------------------
+# A node holding many rooms pays nothing for the traffic inside it, so a layout free to pile rooms
+# up beats a spread baseline under ANY weights. Dealing the baseline into the computed layout's own
+# occupancy profile is what leaves the graph as the only thing being compared.
+M6="$PEN/m6.sh"
+sed 's/MSMP\[s, SHF\[idx\]\] = v/MSMP[s, SHF[idx]] = rnd(n)/' "$SCAN" > "$M6"
+if cmp -s "$SCAN" "$M6"; then leg m6_planted yes no; else leg m6_planted yes yes; fi
+M6OUT=$(sh "$M6" 2>&1)
+if [ "$(placekey "$M6OUT" 2 matched_gain_share)" = "$(placekey "$P2" 2 matched_gain_share)" ]; then
+  leg m6_bites yes no
+else
+  leg m6_bites yes yes
+fi
+
+# ---- the empty population, refused rather than called feasible ---------------------------------
+# A tree carrying no Rye fits every node trivially, and a verdict unable to tell that from a real
+# fit teaches nothing -- so both granularity readings answer `unread`, and the placement refuses.
+mkdir -p "$PEN/tree3"
+cd "$PEN/tree3" || exit 1
+git init -q . 2>/dev/null
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+printf 'a tree with no Rye in it\n' > README.md
+git add -A >/dev/null 2>&1
+git commit -q -m "pen: no Rye at all" >/dev/null 2>&1
+P3=$(sh "$SCAN" 2>&1)
+leg pen3_capacity_unread unread "$(capkey "$P3" 4 room_granularity)"
+leg pen3_file_granularity_unread unread "$(capkey "$P3" 4 file_granularity)"
+leg pen3_reading4_refuses unreadable "$(key "$P3" reading4)"
+
 cd "$ROOT" || exit 1
 echo "legs=$legs"
 echo "failures=$fails"
