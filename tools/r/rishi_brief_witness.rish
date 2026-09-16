@@ -1,0 +1,27 @@
+# rishi_brief_witness.rish -- the bounded capture fields, and the cliff they exist for.
+#
+#   rishi/bin/rishi run tools/r/rishi_brief_witness.rish
+#
+# REDS %740. Composing a WHOLE capture into an `assert ... else` message drops it in SILENCE past
+# 4,096 bytes -- the composed string emits the literal `${x.out}` rather than the value, a
+# truncation, or a named refusal. Bisected on metal: 4,096 interpolates, 4,100 does not. The reason
+# is lost exactly when there is most of it, and the failure reads like an assert that never carried
+# a reason at all.
+#
+# `out_brief` and `err_brief` are the same captures bounded to 512 bytes and marked where they cut.
+# The head is kept for `err`, since a compiler names its error first; the tail for `out`, since a
+# program's last words are its reason. Both sit BESIDE the whole capture rather than replacing it.
+let control = run ["sh" "tools/fixtures/r/rishi_brief_control.sh"]
+assert control.ok else "the brief-capture control did not reach verdict=ok: ${control.err_brief}"
+assert control.out contains "verdict=ok" else "brief-capture control verdict missing"
+assert control.out contains "faults=0" else "a planted behavior went unread"
+
+# THE CLIFF IS ASSERTED HERE TOO, because it is the whole reason these fields exist and a tree that
+# forgot it would quietly go back to composing whole captures.
+assert control.out contains "leg whole_still_literal=ok" else "the 4,096-byte cliff is unproven"
+assert control.out contains "leg short_err_unmarked=ok" else "a short capture was marked as cut"
+assert control.out contains "leg head_keeps_first=ok" else "the err head lost its first bytes"
+assert control.out contains "leg tail_keeps_last=ok" else "the out tail lost its last bytes"
+assert control.out contains "leg whole_capture_kept=ok" else "the whole capture stopped being available"
+
+say "GREEN: bounded captures say their reason, mark their cut, and leave the whole capture beside them."

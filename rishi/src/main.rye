@@ -1454,17 +1454,58 @@ fn argv_from_list(allocator: std.mem.Allocator, items: []const Value) EvalError!
     return argv;
 }
 
+/// A capture bounded for a refusal message, so the reason survives being said (REDS %740).
+///
+/// Composing a whole capture into an `assert ... else` message drops it in SILENCE past 4,096
+/// bytes: the composed string emits the literal `${x.out}` rather than the value, a truncation, or
+/// a named refusal. Bisected on metal -- 4,096 interpolates, 4,100 does not. So the reason is lost
+/// exactly when there is most of it, and a diagnostic-rich failure reads like an assert that never
+/// carried a reason at all.
+///
+/// 512 bytes, because the composed message must fit the 4,096-byte bound WITH the prose around it
+/// and with room for a second capture in the same sentence. Eight briefs still fit.
+const max_brief_bytes: u32 = 512;
+
+/// The HEAD of a capture, for `err`: a compiler names its error first and its notes after, so the
+/// first bytes carry the reason and the rest elaborates.
+fn brief_head(allocator: std.mem.Allocator, text: []const u8) EvalError![]const u8 {
+    // invariant: a capture already inside the bound is handed back whole, never copied or marked.
+    assert(max_brief_bytes > 0);
+    if (text.len <= max_brief_bytes) return text;
+    // invariant: the elision is SAID, so a reader can tell a short reason from a cut one.
+    const kept = text[0..max_brief_bytes];
+    assert(kept.len == max_brief_bytes);
+    return std.fmt.allocPrint(allocator, "{s} ... [{d} more bytes]", .{ kept, text.len - max_brief_bytes });
+}
+
+/// The TAIL of a capture, for `out`: a program's last words are its reason, and a selftest that
+/// printed pages of green before it failed keeps that failure at the end.
+fn brief_tail(allocator: std.mem.Allocator, text: []const u8) EvalError![]const u8 {
+    // invariant: a capture already inside the bound is handed back whole, never copied or marked.
+    assert(max_brief_bytes > 0);
+    if (text.len <= max_brief_bytes) return text;
+    const dropped = text.len - max_brief_bytes;
+    const kept = text[dropped..];
+    // invariant: the kept slice is exactly the bound, so the composed message stays predictable.
+    assert(kept.len == max_brief_bytes);
+    return std.fmt.allocPrint(allocator, "[{d} earlier bytes] ... {s}", .{ dropped, kept });
+}
+
 fn run_result_record(allocator: std.mem.Allocator, result: std.process.RunResult) EvalError!Value {
     const code: i64 = switch (result.term) {
         .exited => |c| @as(i64, c),
         else => -1,
     };
-    const fields = try allocator.alloc(Field, 4);
-    assert(fields.len == 4);
+    const fields = try allocator.alloc(Field, 6);
+    assert(fields.len == 6);
     fields[0] = .{ .name = "out", .value = .{ .string = result.stdout } };
     fields[1] = .{ .name = "err", .value = .{ .string = result.stderr } };
     fields[2] = .{ .name = "code", .value = .{ .int = code } };
     fields[3] = .{ .name = "ok", .value = .{ .boolean = code == 0 } };
+    // The bounded pair sits BESIDE the whole capture rather than replacing it, so a script that
+    // wants every byte still has it and only the SAYING is bounded.
+    fields[4] = .{ .name = "out_brief", .value = .{ .string = try brief_tail(allocator, result.stdout) } };
+    fields[5] = .{ .name = "err_brief", .value = .{ .string = try brief_head(allocator, result.stderr) } };
     return .{ .record = fields };
 }
 
