@@ -4,11 +4,14 @@
 #
 #   sh tools/fixtures/p/pen_release_scan.sh [--list] [--standing]
 #
-# WHY. REDS %745: tools/am/amphora_mark_wreck_witness.rish makes a 24MB pen with
-# `mktemp -d /tmp/amphora_mark_wreck.XXXXXX` and never removes it. Nine days of a rostered witness
+# WHY. REDS %745: tools/am/amphora_mark_wreck_witness.rish MADE a 24MB pen with
+# `mktemp -d /tmp/amphora_mark_wreck.XXXXXX` and never removed it. Nine days of a rostered witness
 # put 1,312 pens and 32G into /tmp, the pier read 990M free, and the first instrument to notice was
-# a `pwd` builtin answering `write error: No space left on device`. Each run costs 24MB, which is
+# a `pwd` builtin answering `write error: No space left on device`. Each run cost 24MB, which is
 # nothing; the leaker never feels it, and the cost lands on whichever ship needs space next.
+# That file, and the eighteen beside it, took `make-pen` on `20260916.061806`, so the founding case
+# is history and this header keeps it in the past tense on purpose -- the reading below is what
+# stands, and the class it reads is alive in eight other rooms.
 #
 # THE THIRD QUESTION ABOUT ONE PEN. `shared_pen` asks whether a pen is CONTENDED -- one constant
 # name, eight checkouts. `pen_entry` asks whether a pen is ENTERED -- REDS %729, a case body that
@@ -86,7 +89,16 @@ set -u
 
 # 16 at seating `20260915.230045`; 14 when the runtime took two, 9 from `20260916.012247` when the
 # eight `tools/am/` witnesses REDS %745 names each took a root sweep. A ceiling only falls.
-CEILING="${PEN_RELEASE_CEILING:-9}"
+#
+# 8 from `20260916.061500`, AND THE ONE THAT LEFT WAS NEVER A LEAK. The nineteen `tools/am/`
+# witnesses took `make-pen`, and `amphora_restore_negative_witness.rish` went with them -- the file
+# %758 names as this predicate's false positive, which swept its pen in Rishi's argv spelling
+# `run ["rm" "-rf" home]` where the reading requires a `$` sigil. Proven by changing nothing but the
+# notation: spelled `${home}`, the identical removal read `straight` and this count fell to 8 on
+# its own. So the conversion took a false positive off a GATED reading rather than closing a leak,
+# and the eight remaining are the honest ones. The predicate is still blind, still %758's, and
+# eleven other tracked Rishi sources still write the form it cannot see.
+CEILING="${PEN_RELEASE_CEILING:-8}"
 list=no
 standing=no
 for a in "$@"; do

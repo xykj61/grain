@@ -46,9 +46,10 @@ let rootq = run ["sh" "-c" "pwd"]
 assert rootq.ok else "pour_agrees: the tree root must resolve -- ${rootq.err_brief}"
 let root = trim rootq.out
 
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pour_agrees.XXXXXX"]
-assert pen.ok else "pour_agrees: pen must open -- ${pen.err_brief}"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_pour_agrees"
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
 # of these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
@@ -189,10 +190,6 @@ assert nowall_left.ok else "pour_agrees: the no-wall out-home must be readable -
 let nowall_count = trim nowall_left.out
 assert nowall_count != "0" else "pour_agrees: the no-wall binary MUST write files before refusing -- it wrote ${nowall_count}, so this witness would be proving nothing"
 say "leg_wall_removed=refusal_trails_the_write"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-say sweep.err
-assert sweep.ok else "pour_agrees: the pen must be swept"
 
 say "legs=8 agree=one_parent preimage=travels restore_shell=whole restore_rye=whole header=ascii plant=differs wall=before_write removed=trails"
 say "GREEN: amphora_pour_agrees -- two pours, one format, one parent over the listing that travels."

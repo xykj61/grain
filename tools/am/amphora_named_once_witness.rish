@@ -24,9 +24,10 @@
 let season = "tools/fixtures/cellar_ring1_tree"
 
 # THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_named_once.XXXXXX"]
-assert pen.ok else "named-once: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_named_once"
 
 # The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
 # them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
@@ -128,9 +129,6 @@ let mkdock3 = run ["sh" "-c" "mkdir -p ${home}/dock3"]
 assert mkdock3.ok else "named-once: third dock must open"
 let after_carry = run ["${home}/bin/amphora" "carry" plant "${home}/dock3"]
 assert after_carry.ok else "named-once: the crossing welcome must return once the repeat is lifted"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "named-once: pen must sweep"
 
 say "amphora: a listing names each place once -- welcomed at three doors, refused at three, no out-home on refusal"
 say "GREEN: amphora_named_once"

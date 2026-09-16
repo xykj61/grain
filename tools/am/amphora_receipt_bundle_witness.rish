@@ -6,9 +6,10 @@
 # money, network service, or production signature enters this pen.
 
 let fixture = "tools/fixtures/r/receipt_offer_fact_v1.kyri"
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_receipt_bundle.XXXXXX"]
-assert pen.ok else "receipt-bundle: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_receipt_bundle"
 
 let prep = run ["sh" "-c" "mkdir -p ${home}/bin ${home}/season && cp ${fixture} ${home}/season/receipt-offer.kyri"]
 assert prep.ok else "receipt-bundle: synthetic season must open"
@@ -64,7 +65,4 @@ assert same.ok else "receipt-bundle: restored receipt bytes must equal the offer
 let schema = run ["grep" "-c" "^schema grain.receipt-offer.v1$" "${home}/receipt.bron.season/receipt-offer.kyri"]
 assert (trim schema.out) == "1" else "receipt-bundle: restored meaning must name the accepted schema once"
 say "leg_round_trip=byte_identical"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "receipt-bundle: pen must sweep"
 say "GREEN: amphora_receipt_bundle -- authenticated, versioned, decision mutation refused, byte-identical round trip"

@@ -59,9 +59,10 @@ let root = trim here.out
 # The pen carries a kernel-picked name (the class REDS %512 named): eight ships run this
 # roster from eight checkouts and share one /tmp, so a constant home is one directory on all
 # eight and a peer's carry lands inside this reading.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_carry_atomic.XXXXXX"]
-assert pen.ok else "carry_atomic: pen must open -- ${pen.err_brief}"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_carry_atomic"
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none
 # of these, and `carry` resolves vessel-seal and vessel-core as sibling subprocesses.
@@ -217,10 +218,6 @@ assert kept_refused.err contains "cargo unproven" else "carry_atomic: the repair
 let kept_empty = run ["sh" "-c" "test ! -e ${home}/d/k/dock/vessel.bron"]
 assert kept_empty.ok else "carry_atomic: and leaves the dock with no vessel over the very plant the elder filled -- ${kept_empty.err_brief}"
 say "leg_wall_returned=dock_holds_no_vessel"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-say sweep.err
-assert sweep.ok else "carry_atomic: the pen must be swept"
 
 say "legs=8 honest=crossed first_refusal=no_vessel first_scratch=swept recarry_refusal=intact recarry_scratch=swept recarry=equal elder=fills repaired=empty"
 say "GREEN: amphora_carry_atomic -- a refused carry leaves the dock exactly as it found it."

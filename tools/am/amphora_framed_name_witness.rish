@@ -14,9 +14,10 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
 # Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
 # constant is ONE directory on all eight.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_framed.XXXXXX"]
-assert pen.ok else "framed: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_framed"
 
 # The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
 # them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
@@ -114,9 +115,6 @@ let returned = run ["sh" "-c" "${home}/bin/amphora pour ${home}/season ${home}/o
 assert returned.err contains "season name is not one record" else "framed: the wall must return"
 let still_none = run ["sh" "-c" "test ! -e ${home}/out/again.bron"]
 assert still_none.ok else "framed: the returned wall must still write nothing"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "framed: pen must sweep"
 
 say "rule=both-directions door=pour wall_removed=listed_4_names_for_2_files wall_returned=refused_before_write"
 say "GREEN: amphora_framed_name -- a cargo name is one record, or it is no name at all."

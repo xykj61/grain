@@ -38,9 +38,10 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The pen carries a kernel-picked name, because eight ships run this roster and the last gesture
 # below is `rm -rf`: two peers sharing one literal home would each red on a fact about the pen
 # rather than about Amphora (the class REDS %512 named).
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_ferry_body.XXXXXX"]
-assert pen.ok else "ferry-body: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_ferry_body"
 
 # Built here rather than assumed: `amphora/bin/` is gitignored, so a fresh clone carries none of
 # these, and `pour` resolves vessel-seal and vessel-core as sibling subprocesses.
@@ -146,9 +147,6 @@ assert carry_after.ok else "ferry-body: the crossing welcome must return once th
 assert carry_after.err contains "ferry resins proven" else "ferry-body: the returned welcome proves its bodies too"
 assert carry_after.err contains "carry complete" else "ferry-body: the returned welcome names its close"
 say "leg_lifted=welcome_returned"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "ferry-body: pen must sweep"
 
 say "amphora: a body proves its address before it crosses -- honest crossed, forged refused with nothing on the far side, welcome returned"
 say "GREEN: amphora_ferried_body_proven"

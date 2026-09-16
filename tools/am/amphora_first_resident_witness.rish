@@ -11,13 +11,14 @@ let season = "tools/fixtures/amphora_first_resident_counsel"
 # THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
 # Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
 # constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
-# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
-# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# a fact about the pen wearing the costume of a fact about Amphora. The runtime composes the
+# suffix, so no two runs can agree by accident, and the directory it hands back is already empty
 # -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
 # Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_first_resident.XXXXXX"]
-assert pen.ok else "first_resident: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_first_resident"
 let vessel = "${home}/counsel.bron"
 let out = "${home}/counsel.bron.season"
 # The witness builds the binaries it runs (REDS %334: a build named in a comment builds
@@ -58,10 +59,5 @@ let count = run ["sh" "-c" "ls tools/fixtures/amphora_first_resident_counsel | w
 say "first_resident=poured stamp=ok seal=ok restore=byte-equal files --"
 say count.out
 assert count.ok else "first_resident: fixture count measured -- read the reading above"
-
-# The pen belongs to this run alone, so this run takes it down. Nine days without this line put
-# 1,312 pens and 32G of this room's leavings on a pier eight ships share (REDS %745).
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "first_resident: pen must sweep"
 
 say "GREEN: amphora_first_resident -- a real counsel season crosses and returns whole."

@@ -20,9 +20,10 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a constant
 # is ONE directory on all eight, and a peer mid-plant would turn this reading into a fact about the
 # pen wearing the costume of a fact about Amphora.
-let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_listing.XXXXXX"]
-assert pen.ok else "listing: pen must open"
-let home = trim pen.out
+# The pen comes from the runtime rather than from `mktemp -d`, so a refusal releases it too.
+# The elder sweep stood on the straight-line success path below every assert, where a refusal
+# never reached it (REDS %745).
+let home = make-pen "amphora_listing"
 let vessel = "${home}/v.bron"
 
 # The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
@@ -113,9 +114,6 @@ assert elder_stamp.ok else "listing: elder re-stamp must pass"
 let elder_check = run ["${home}/bin/vessel-seal" "manifest-check" "${home}/elder.bron"]
 assert elder_check.ok else "listing: an absent listing must welcome"
 assert elder_check.err contains "no listing to check" else "listing: elder answer names itself"
-
-let sweep = run ["sh" "-c" "rm -rf ${home}"]
-assert sweep.ok else "listing: pen must sweep"
 
 say "welcome=count=4 plants=3 lifted=3 elder=no-claim doors=check+restore"
 say "GREEN: amphora_manifest_agrees -- the listing checked against the cargo it names."
