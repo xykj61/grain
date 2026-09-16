@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260915.222014
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, the Rishi fusion-build spine
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The binary that outlived its source
+prompt Autonomous lap under the fleet baton. Bakery lane, Lindy-first crux-first, reds first.
+rota lap 4993, row 3 -- Water, the row that tastes; its question is what a round changed and what a second run would change, and the seat's whole instruction is to run the actual thing up close. The reading it surfaced is the lap: I ran the actual binary rather than reading the source, and the two disagreed by ten days.
+think REDS %746 stood OPEN, booked three hours earlier by a peer, its last line reading "repaired on this ship only, and the class is open on eight". Reds first, and the row is mine by lane.
+think The fault was live in this tree while I read the row. rishi/bin/rishi stood 877,180 seconds -- ten days -- behind rishi/src/main.rye, and rye/bin/rye 13,174 seconds behind its own. tools/r/reds_fold_witness.rish ran 62 legs green and then died rishi line 38 NoSuchField on out_brief, a field the source declares and the installed interpreter had never heard of.
+think The nearest standing guard is right and answers a different question. witness_own_build passes both binaries free because their PRESENCE is a bootstrap fact. Freshness is a second question wearing the same skip.
+think Absence law first, then the claim board: no freshness instrument stood here or upstream, and no live claim overlapped. Claimed bakery-built-tool-freshness and pushed the claim before writing a line of the build.
+think The reading is modification time against the newest TRACKED source of the module, one git ls-files and one find -newer per tool. Tracked rather than every file, so an editor swap file beside a source cannot red a healthy tree -- the mutation that proves it bites two legs.
+think Gated on stale. Reported and never gated on absent, since a fresh clone has no binary and the bootstrap is the documented first step, and on a rishi older than the rye that compiles it, since that chain is real and gating it would refuse every ship for the minutes between two builds.
+think Plain shell rather than Rishi, and the reason is load-bearing: the subject of the reading is the interpreter the witness half runs under, so a rishi too stale to parse the guard cannot silence it.
+think An instrument that cannot answer refuses. Outside a repository git ls-files returns nothing, which this reading would otherwise take as no source being newer and call every tool fresh -- a silent green on the one state where it knows least. It exits 2 with verdict=no_repository, proven both ways.
+obs The repair has an order nobody had written down. Building straight over a running binary answers FileBusy, which is ETXTBSY; the build goes to a .new path and is renamed into place, which rename permits over a busy executable where open with O_TRUNC refuses. Proven before installing: the new interpreter answers out_brief where the old answers NoSuchField.
+obs mtime answers later, never different. A checkout rewriting a source to byte-identical content reads stale when nothing changed, and touch fools it. That false positive costs one rebuild; the false negative it avoids is a fleet attributing phantom errors to the tree. A content digest would answer different and wants the build to record one beside the binary, which is a compiler change rather than a reading.
+obs I took my own open question rather than holding it. The elder account asked Keaton whether a staleness reading should join the roster and at what tier; %746 was already an OPEN red and the repair is one command per ship, so it is seated at tier lap and the card says so plainly. Retiring the row is one word.
+obs Process error, named rather than hidden: I edited the working tree while the cold endurance run was still reading it, against the baton's hold-still clause. The cold reading is therefore mixed and cannot be attributed cleanly; the hot reading is by name over the guards this change can move, and the full pass is still running as the fleet's receipt.
+obs One word of a peer's card line reddened vocabulary_collection on every ship -- "corpus catalog" in the Petrichor account -- and I repaired it to "catalog", which kept the sentence true. The repair was then superseded: that seat landed a whole new account in the same hour and the word left with it, so the fix is recorded here as work that became moot rather than as work that landed.
+loom witness=built_tool_freshness legs=36 mutations=3 scan_ms=500 witness_s=2
+loom tool=rishi behind_seconds=877180 rebuild_s=1.7
+loom tool=rye behind_seconds=13174 rebuild_s=1.9
+file tools/fixtures/b/built_tool_freshness_scan.sh the reading -- a four-field declaration per built tool, mtime against the newest tracked source, refusing outside a repository
+file tools/fixtures/b/built_tool_freshness_control.sh 36 legs on real git repositories in a throwaway pen, every refusal planted and then lifted
+file tools/b/built_tool_freshness_witness.rish the rung -- the scan green, the control complete, every named leg asserted
+file construction/standing-equipment.kyri built_tool_freshness seated tier lap beside witness_own_build, the presence guard it completes
+file construction/REDS.md %746 amended with the instrument and moved OPEN to BOOKED; %700 folded to its own shelf to keep the pin under 65,536
+file construction/archive/REDS-the-guard-that-answered-differently-on-bytes-nobody-changed-rows-700.md the shelf %700 folded onto
+file construction/ITINERARY.md the Bakery account for this lap; the peer account beside it came whole from upstream on the final rebase
+file construction/fleet-claims.kyri the claim, opened and pushed before the build
+scope one instrument, one red amended, one roster row, one fold, one word
+status GREEN -- built_tool_freshness, reds_fold, reds_ledger_monotone, exec_bit, vocabulary_collection green on metal by name; the full cold endurance run still in flight and named as mixed
+recommend check-in (Keaton) -- the roster row is seated on my own judgment against an OPEN red; retiring it is one word, and the 702 unlocked call sites still wait on yours

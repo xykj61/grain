@@ -1,0 +1,88 @@
+# tools/b/built_tool_freshness_witness.rish -- the two binaries every witness runs through are the
+# two nothing checked for staleness.
+#
+# WHY THIS RUNG (REDS %746). `rye/bin/` and `rishi/bin/` are gitignored, so a clone carries no
+# binary and a pull carries no rebuild. On 20260915 a seat rebased onto the commit that added the
+# field `out_brief` to `rishi/src/main.rye`, did not rebuild, and watched healthy peer witnesses
+# die with `rishi: line 38: NoSuchField`. The tree was correct; the interpreter was ten days behind
+# its own source, and the error was attributed to whatever it happened to be running. Measured on
+# this ship when the rung was written: `rishi` stood 877,180 seconds -- ten days -- behind
+# `rishi/src/main.rye`, and `rye` stood 13,174 seconds behind `rye/src/main.rye`.
+#
+# The nearest standing guard, `witness_own_build`, passes both binaries free on a named reason that
+# is exactly right about the thing it checks: their PRESENCE is a bootstrap fact. Freshness is a
+# second question wearing the same skip.
+#
+# WHAT IS PROVEN, on metal.
+#   Every declared tool whose binary stands on disk was modified no earlier than the newest TRACKED
+#   source in its module. A stale tool refuses, names the source that outran it, counts how far
+#   behind it stands, and prints the one command that repairs it.
+#   Thirty-six behaviors on real git repositories in a throwaway pen, every refusal planted and
+#   then LIFTED, since a refusal proven only in the failing direction cannot be told from a scan
+#   that refuses everything. Three mutations bitten: reading untracked files rather than
+#   `git ls-files` (2 legs), counting an absent binary as stale (5 legs), and inverting the
+#   modification-time comparison (23 legs).
+#
+# WHAT IS REPORTED RATHER THAN GATED. An ABSENT binary, since a fresh clone has none and the
+# bootstrap is the documented first step. And whether `rishi` is older than the `rye` that compiles
+# it -- a real chain, and gating it would refuse every ship for the minutes between two builds.
+#
+# WHAT IS NOT PROVEN. That the binary is CORRECT, or that it was built from the source it sits
+# beside. Modification time answers *later*, never *different*: a checkout rewriting a source to
+# byte-identical content reads stale when nothing changed, and `touch` fools it. That false
+# positive costs one rebuild; the false negative it avoids is a fleet attributing phantom errors
+# to the tree. A content digest would answer *different*, and it wants the build to record one
+# beside the binary, which is a compiler change rather than a reading.
+#
+# THE READING LIVES IN PLAIN SHELL for a load-bearing reason: its subject is the interpreter this
+# half runs under, and a `rishi` stale enough to matter may refuse to parse the guard that would
+# have named it. Run the scan directly when this rung cannot start.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/built_tool_freshness_witness.rish
+
+say "built-tool: Language EN -- a binary is a claim about a source, and nothing was checking it."
+say "built-tool: Style Gauge at Meter -- the refusal names the source, the distance, and the repair."
+say "built-tool: Lens TAME -- safety first: a guard reading through a stale tool reports the tool."
+
+let scan = run ["sh" "tools/fixtures/b/built_tool_freshness_scan.sh"]
+say scan.out
+assert scan.ok else "built-tool: a built tool is older than its own source -- ${scan.out_brief}"
+assert scan.out contains "tools_stale=0" else "built-tool: every present binary must be no older than its newest tracked source"
+assert scan.out contains "verdict=ok" else "built-tool: the scan must balance before it is believed"
+say "field GREEN -- every built tool on this ship stands no earlier than the source it was built from"
+
+let control = run ["sh" "tools/fixtures/b/built_tool_freshness_control.sh"]
+say control.out
+assert control.ok else "built-tool: the control must complete -- ${control.err_brief}"
+assert control.out contains "control_failed=0" else "built-tool: every planted leg must answer, or a leg written tomorrow goes unheard"
+assert control.out contains "control_verdict=ok" else "built-tool: the control must agree with itself"
+assert control.out contains "fresh_tree_free=yes" else "built-tool: a tree whose binaries outlive their sources must pass free"
+assert control.out contains "fresh_tree_reads_zero=yes" else "built-tool: a clean tree must read zero rather than merely pass"
+assert control.out contains "stale_refused=yes" else "built-tool: a source newer than its binary must refuse"
+assert control.out contains "stale_counted=yes" else "built-tool: the refusal must name a count, never only a verdict"
+assert control.out contains "stale_tool_named=yes" else "built-tool: the refusal must name which tool went stale"
+assert control.out contains "stale_source_named=yes" else "built-tool: the refusal must name the source that outran the binary"
+assert control.out contains "stale_distance_counted=yes" else "built-tool: the refusal must say how far behind the binary stands"
+assert control.out contains "stale_repair_printed=yes" else "built-tool: a refusal a reader cannot act on is a refusal somebody turns off"
+assert control.out contains "stale_peer_stays_fresh=yes" else "built-tool: one stale tool must leave its peer's reading alone"
+assert control.out contains "stale_exit_nonzero=yes" else "built-tool: the refusal must reach the exit code, not only the page"
+assert control.out contains "stale_lifted_free=yes" else "built-tool: rebuilding the binary must clear the refusal"
+assert control.out contains "stale_lifted_reads_zero=yes" else "built-tool: the lifted plant must return the count to zero"
+assert control.out contains "stale_rye_refused=yes" else "built-tool: the compiler half must be proven, not only the interpreter half"
+assert control.out contains "stale_rye_repair_printed=yes" else "built-tool: each tool names its own repair command"
+assert control.out contains "both_stale_counted=yes" else "built-tool: two stale tools must read two, so the count is a count"
+assert control.out contains "absent_free=yes" else "built-tool: a fresh clone carrying no binary must pass free"
+assert control.out contains "absent_counted=yes" else "built-tool: an absent binary must be reported rather than silently skipped"
+assert control.out contains "absent_named=yes" else "built-tool: an absent binary must name which tool is missing"
+assert control.out contains "untracked_scratch_free=yes" else "built-tool: untracked scratch beside a source must never red a healthy tree"
+assert control.out contains "tracked_scratch_seen=yes" else "built-tool: the exemption is about tracking, never about the reading being blind"
+assert control.out contains "chain_reported=yes" else "built-tool: a rishi older than its compiler must be reported"
+assert control.out contains "chain_not_gated=yes" else "built-tool: the compiler chain must report rather than refuse"
+assert control.out contains "chain_clears=yes" else "built-tool: rebuilding rishi after rye must clear the chain reading"
+assert control.out contains "bare_clone_free=yes" else "built-tool: a clone with no binaries at all is the expected first state"
+assert control.out contains "no_repo_refused=yes" else "built-tool: a reading run outside a repository must refuse rather than call every tool fresh"
+assert control.out contains "no_repo_not_green=yes" else "built-tool: the refusal outside a repository must never read ok"
+say "RED and GREEN paths proven -- every refusal planted and then lifted, 36 legs, 3 mutations bitten"
+
+say "GREEN: built-tool -- every binary this ship runs its guards through stands no earlier than its source."
