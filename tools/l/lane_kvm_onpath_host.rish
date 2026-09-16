@@ -25,14 +25,14 @@ let hash = run ["sh" "-c" "sha256sum ${img} | cut -d' ' -f1"]
 assert hash.ok else "sha256sum failed"
 assert hash.out contains expected else "sculpt-26-04.img sha256 mismatch (want ${expected})"
 
-say "lane_kvm on-path host: image pin ok (${hash.out})"
+say "lane_kvm on-path host: image pin ok (${hash.out_brief})"
 say "lane_kvm on-path host: G0-complete — two phases, ~2–3 min (A nographic GRUB · B display-none glass)."
 say "lane_kvm on-path host: live pulse in another terminal:"
 say "  tail -f tools/.cache/proven-seat/g0c-lane-meta.txt"
 say "lane_kvm on-path host: starting boot with LANE_KVM=true (env one-shot; conf stays off)…"
 let boot = run ["bash" "-c" "LANE_KVM=true stdbuf -oL -eL ./tools/r/run_with_lane_kvm.sh -- ./tools/p/proven_seat_g0c_lane_kvm.sh"]
 say "lane_kvm on-path host: boot finished — ok=${boot.ok}"
-say "${boot.out}"
+say "${boot.out_brief}"
 assert boot.ok else "G0-complete boot failed — see tools/.cache/proven-seat/g0c-lane-meta.txt"
 assert boot.out contains "GREEN" else "G0-complete missing GREEN"
 say "lane_kvm on-path host: G0-complete GREEN"
@@ -46,12 +46,12 @@ if (args contains "--parity") then say "lane_kvm on-path host: parity exit 0 —
 say "lane_kvm on-path host: restore refuse floor (conf still off)…"
 let refuse = run ["sh" "-c" "./tools/l/lane_kvm.sh refuse-probe"]
 assert refuse.ok else "refuse-probe failed after on-path — leave the sitting parked"
-say "lane_kvm on-path host: ${refuse.out}"
+say "lane_kvm on-path host: ${refuse.out_brief}"
 
 say "lane_kvm on-path host: run artifacts must stay gitignored…"
 let leak = run ["sh" "-c" "git status --porcelain | rg 'tools/\\.cache' || true"]
 assert leak.out == "" else "tools/.cache leaked into git status — check .gitignore"
 let porc = run ["sh" "-c" "git status --porcelain"]
-say "lane_kvm on-path host: porcelain (pre-existing dirt ok; cache must not appear):\n${porc.out}"
+say "lane_kvm on-path host: porcelain (pre-existing dirt ok; cache must not appear):\n${porc.out_brief}"
 
 say "GREEN: lane_kvm on-path host — permit green + refuse restored; human-in-loop sitting closed."

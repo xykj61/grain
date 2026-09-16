@@ -33,7 +33,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "encoding-base64: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "encoding-base64: ${shown.out}"
+say "encoding-base64: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN encoding-base64' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "encoding-base64: selftest did not print the GREEN encoding-base64 line"

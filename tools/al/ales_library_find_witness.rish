@@ -36,7 +36,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-library-find: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-library-find: ${shown.out}"
+say "ales-library-find: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-library-find' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-library-find: selftest did not print the GREEN ales-library-find line"

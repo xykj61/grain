@@ -59,6 +59,6 @@ let n_zero = run ["sh" "-c" "grep -c '^0\\{64\\}$' ${rout} || true"]
 assert (trim n_zero.out) == "0" else "crypto-monocypher-elligator-key-pair-parity: an all-zero key or representative appeared — a silent composition failure"
 
 let shown = run ["sh" "-c" "cat ${rout}"]
-say "crypto-monocypher-elligator-key-pair-parity: the sixteen hidden keypairs (secret_key, representative), agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-elligator-key-pair-parity: the sixteen hidden keypairs (secret_key, representative), agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-elligator-key-pair-parity: our authored crypto/elligator_key_pair.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical hidden keypairs — the same X25519 secret key and the same uniformly random representative — over sixteen seeds. The NINETEENTH real Monocypher-SOURCE parity rung, standing on the Elligator 2 and dirty X25519 rungs and closing the key-hiding family end to end: the exact loop that marries ChaCha20, dirty X25519, and Elligator rev into the keypair Comlink's obfuscated first packet carries. Monocypher stays vendored and unmodified, linked never copied; our Rye composes three of our own GREEN rungs, reusing the IETF ChaCha block where it coincides with Monocypher's DJB block at counter 0. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."

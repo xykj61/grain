@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260915.214602` | [The report that greps a file](20260915/20260915-214602_the-report-that-greps-a-file.kyri) | eager 524 to 0; both classes walled |
 | `20260915.213344` | [The meter taught before the sweep](20260915/20260915-213344_the-meter-taught-before-the-sweep.kyri) | deferred 2,576 to 0; ceiling walled |
 | `20260915.212156` | [The slice that says where it cut](20260915/20260915-212156_the-slice-that-says-where-it-cut.kyri) | bounded capture fields seated |
 | `20260915.211724` | [The bearing that meets rather than floods](20260915/20260915-211724_the-bearing-that-meets-rather-than-floods.kyri) | row 8 is a rendezvous, not a broadcast |

@@ -36,7 +36,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-kumara-subkey: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-kumara-subkey: ${shown.out}"
+say "crypto-kumara-subkey: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-kumara-subkey' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-kumara-subkey: selftest did not print the GREEN crypto-kumara-subkey line"

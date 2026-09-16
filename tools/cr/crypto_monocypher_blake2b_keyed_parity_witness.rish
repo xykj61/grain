@@ -52,6 +52,6 @@ let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
 assert (trim diff.out) == "same" else "crypto-monocypher-blake2b-keyed-parity: Monocypher and Rye keyed digests disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-blake2b-keyed-parity: the six keyed digests, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-blake2b-keyed-parity: the six keyed digests, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-blake2b-keyed-parity: our authored crypto/blake2b.rye's hash_keyed and the vendored Monocypher's own crypto_blake2b_keyed, each compiled fresh, produce byte-for-byte identical keyed BLAKE2b digests over six deterministic (output-length, key, message) triples at output lengths 64/64/32/16/48/64 under keys of length 64/8/32/64/10/1. The FOURTEENTH real Monocypher-SOURCE parity rung, proving BLAKE2b's keyed MAC mode — the authenticator Grain's per-record signing and key derivation reach for — in its own right, the MAC counterpart to the variable-length rung. crypto/blake2b.rye's selftest independently agrees against Zig's std.crypto keyed BLAKE2b-512, a third implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

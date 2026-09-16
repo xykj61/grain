@@ -57,7 +57,7 @@ assert living.out contains "CARRY_OK" else "caravan-ladder-carry: want the livin
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
 assert living.out contains "CARRY_BODIES 18055 distinct=7856 copies=10199 carried_lines=137185" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
-say "caravan-ladder-carry: living ladder -- ${living.out}"
+say "caravan-ladder-carry: living ladder -- ${living.out_brief}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.

@@ -37,7 +37,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-stereo-limit: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-stereo-limit: ${shown.out}"
+say "ales-stereo-limit: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-limit' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-stereo-limit: selftest did not print the GREEN ales-stereo-limit line"

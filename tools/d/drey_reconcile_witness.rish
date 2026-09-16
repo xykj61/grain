@@ -28,7 +28,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "drey-reconcile: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "drey-reconcile: ${shown.out}"
+say "drey-reconcile: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN drey-reconcile' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "drey-reconcile: selftest did not print the GREEN drey-reconcile line"

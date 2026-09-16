@@ -38,7 +38,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-paste-join: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-paste-join: ${shown.out}"
+say "ales-paste-join: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-paste-join' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-paste-join: selftest did not print the GREEN ales-paste-join line"

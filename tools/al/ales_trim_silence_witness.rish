@@ -38,7 +38,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-trim-silence: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-trim-silence: ${shown.out}"
+say "ales-trim-silence: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-trim-silence' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-trim-silence: selftest did not print the GREEN ales-trim-silence line"

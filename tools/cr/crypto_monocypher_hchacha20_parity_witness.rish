@@ -54,6 +54,6 @@ let got_subkey = run ["sh" "-c" "sed -n '1p' ${cout}"]
 assert (trim got_subkey.out) == draft_subkey else "crypto-monocypher-hchacha20-parity: line 1 is not the draft-irtf-cfrg-xchacha-03 §2.2.1 published HChaCha20 subkey"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-hchacha20-parity: the six subkeys, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-hchacha20-parity: the six subkeys, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-hchacha20-parity: our authored crypto/xchacha20.rye's hchacha20 and the vendored Monocypher's own C (crypto_chacha20_h), each compiled fresh, produce byte-for-byte identical HChaCha20 subkeys over the draft §2.2.1 published known-answer (anchored to 82413b42…d3ecdc) and five deterministic (key, input) pairs. The TWELFTH real Monocypher-SOURCE parity rung, proving the subkey-derivation core every random-nonce sealed message (Vault, Comlink, the Lotus signed carry) folds through in its own right — the nonce-extension counterpart to the standalone ChaCha20 and Poly1305 rungs that prove the AEAD's other halves. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

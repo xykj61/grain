@@ -37,7 +37,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-library-merge: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-library-merge: ${shown.out}"
+say "ales-library-merge: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-library-merge' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-library-merge: selftest did not print the GREEN ales-library-merge line"

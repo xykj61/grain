@@ -32,7 +32,7 @@ let glass_ok = run ["sh" "-c" "test -f tools/.cache/proven-seat/g0c-leitzentrale
 assert glass_ok.ok else "missing or empty tools/.cache/proven-seat/g0c-leitzentrale-witness.png — capture screendump while Leitzentrale Components graph is visible under -accel kvm -cpu host"
 let glass_sz = run ["sh" "-c" "wc -c < tools/.cache/proven-seat/g0c-leitzentrale-witness.png | tr -d ' \\n'"]
 assert glass_sz.ok else "glass size read failed"
-say "proven-seat G0-complete: glass artifact ${glass_sz.out} bytes"
+say "proven-seat G0-complete: glass artifact ${glass_sz.out_brief} bytes"
 
 say "proven-seat G0-complete: serial floor (SeaBIOS → GRUB)…"
 let ser = run ["sh" "-c" "test -f ${serial} && rg -q 'GRUB loading' ${serial}"]

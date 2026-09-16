@@ -17,13 +17,13 @@ say "hawm-chain: boot → harvest → kvm refuse wiring GREEN"
 
 say "hawm-chain: harvest half (meta or fixture)…"
 let half = run ["rishi/bin/rishi" "run" "tools/h/hawm_log_harvest_witness.rish"]
-say "${half.out}"
+say "${half.out_brief}"
 assert half.ok else "harvest inventary witness failed"
 assert half.out contains "GREEN" else "harvest inventary witness not GREEN"
 say "hawm-chain: harvest half GREEN"
 
 let kvm = run ["sh" "-c" "test -e /dev/kvm && echo KVM_PRESENT || echo KVM_ABSENT"]
-say "hawm-chain: ${kvm.out}"
+say "hawm-chain: ${kvm.out_brief}"
 assert kvm.out contains "KVM_" else "kvm probe missing marker"
 
 say "GREEN: STOA277 — boot→harvest chain authored; harvest half GREEN; full boot onpath when /dev/kvm present."

@@ -64,6 +64,6 @@ assert (trim diff.out) == "same" else "crypto-slhdsa-thash-parity: our Rye and P
 
 let shown = run ["sh" "-c" "cat ${cout}"]
 say "crypto-slhdsa-thash-parity: the five digests, agreed by both implementations -- PRF, T_1, T_2, T_22, T_67:"
-say "${shown.out}"
+say "${shown.out_brief}"
 
 say "GREEN crypto-slhdsa-thash-parity: our authored crypto/slhdsa_thash.rye and the vendored PQClean's own prf_addr and thash, each compiled fresh, produce byte-for-byte identical output over one fully-populated address at every width the scheme uses -- one block, two, the FORS width of 22, and the WOTS+ width of 67 -- with the secret-deriving PRF agreeing too. The address structure is proven correct field by field against a second implementation, which is exactly what rung DISC0 exists to establish before a signature is ever attempted. PQClean stays vendored and unmodified, linked never copied. Purely local -- no real key, no signature yet, no network, no funds, no device."

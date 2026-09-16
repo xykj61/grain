@@ -35,7 +35,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "fora-reconfig: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "fora-reconfig: ${shown.out}"
+say "fora-reconfig: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN fora-reconfig' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "fora-reconfig: selftest did not print the GREEN fora-reconfig line"

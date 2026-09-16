@@ -60,6 +60,6 @@ say "itinerary-account-shelf: and the questions already shelved, counted so the 
 # ordinary work, and only Keaton's word lowers it.
 let asks = run ["sh" "-c" "grep -hoE '[*][*]YOURS' construction/archive/*itinerary-landed-accounts.md 2>/dev/null | wc -l | tr -d ' ' | sed 's/^/asks_shelved_standing=/'"]
 assert asks.ok else "itinerary-account-shelf: the ask reading refused --\n${asks.err_brief}"
-say "itinerary-account-shelf: ${asks.out}"
+say "itinerary-account-shelf: ${asks.out_brief}"
 
 say "itinerary-account-shelf: GREEN -- 43 behaviors, the filter in place, the shelves clean, the second run asked of the bytes, and every ask the writer shelves now said out loud."

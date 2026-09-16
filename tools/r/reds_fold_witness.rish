@@ -35,7 +35,7 @@ assert control.out contains "fail=0" else "reds-fold: no behavior may miss"
 # pointing at the pin and is correct exactly as written. Counted here rather than recited, because a
 # count carried in a comment is a memory (REDS %108).
 let short = run ["sh" "-c" "grep -o '](\\.\\./[^)]*)' construction/archive/REDS-*rows-*.md 2>/dev/null | grep -v '](\\.\\./REDS\\.md)' | grep -c . || true"]
-say "shelf_links_one_level_short=${short.out}"
+say "shelf_links_one_level_short=${short.out_brief}"
 assert (trim short.out) == "0" else "reds-fold: a shelf carries a link one level short -- run the loom, or re-anchor by hand"
 
 # 3 -- the standing catch, which found this fault within the round both times it happened. It reads

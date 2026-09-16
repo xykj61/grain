@@ -72,7 +72,7 @@ assert living.out contains "LADDER_COPY_OK" else "caravan-ladder-copy: want the 
 assert living.out contains "LADDER_MODULES" else "caravan-ladder-copy: want the module count named"
 assert living.out contains "copied_lines=" else "caravan-ladder-copy: want the carried lines named"
 
-say "caravan-ladder-copy: living ladder -- ${living.out}"
+say "caravan-ladder-copy: living ladder -- ${living.out_brief}"
 
 # The fold itself, read off the ladder rather than claimed. A folded check is one line that runs the check in the rung
 # below, so the fold is countable: 913 of them stand -- the 523 the fold landed, plus the 39 each that the allay,

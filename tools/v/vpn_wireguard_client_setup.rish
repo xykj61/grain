@@ -20,7 +20,7 @@ if wg_check.ok == false then say ""
 if wg_check.ok == false then say "Then run this script again."
 if wg_check.ok == false then exit exit-temporary
 
-say "wg found: ${wg_check.out}"
+say "wg found: ${wg_check.out_brief}"
 
 let mkdir = run ["mkdir" "-p" ".wireguard"]
 assert mkdir.ok else "could not create .wireguard/"

@@ -38,7 +38,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "crypto-kumara-path: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "crypto-kumara-path: ${shown.out}"
+say "crypto-kumara-path: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN crypto-kumara-path' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "crypto-kumara-path: selftest did not print the GREEN crypto-kumara-path line"

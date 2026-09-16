@@ -1,7 +1,7 @@
 # run.rish -- running commands, and reading the result as a record.
 
 let greet = run ["echo" "rishi runs"]
-say "echo said: ${greet.out}"
+say "echo said: ${greet.out_brief}"
 assert greet.code == 0
 assert greet.ok
 

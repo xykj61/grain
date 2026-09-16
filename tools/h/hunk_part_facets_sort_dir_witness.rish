@@ -32,7 +32,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "hunk-part-facets-sort-dir: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "hunk-part-facets-sort-dir: ${shown.out}"
+say "hunk-part-facets-sort-dir: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN part-facets-sort-dir' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "hunk-part-facets-sort-dir: selftest did not print the GREEN part-facets-sort-dir line"

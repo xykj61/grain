@@ -60,6 +60,6 @@ let got_tc2 = run ["sh" "-c" "sed -n '2p' ${cout}"]
 assert (trim got_tc2.out) == rfc_tc2 else "crypto-monocypher-hmac-sha512-parity: line 2 is not RFC 4231 Test Case 2's published HMAC-SHA-512"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-hmac-sha512-parity: the five lines, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-hmac-sha512-parity: the five lines, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-hmac-sha512-parity: our authored crypto/hmac_sha512.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical HMAC-SHA-512 output over RFC 4231 Test Cases 1 and 2 (both anchored to their published known-answers) and over an exact-block-length key, a longer-than-block key (the hash-the-key path), and the empty message. The ELEVENTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/hmac_sha512.rye itself named and proving the keyed MAC HKDF-SHA512 and BIP32 key derivation are built on — the keyed-MAC counterpart to the standalone SHA-512 rung it rests on. Monocypher's HMAC-SHA-512 is its optional module, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety of the tag comparison stays the named horizon."

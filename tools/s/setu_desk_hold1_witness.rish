@@ -18,6 +18,6 @@ assert selftest.out contains "local hold on Desk Skate" else "HOLD1 missing loca
 
 let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.bron; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu_desk_hold1_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold1: no station cache — fixture-only GREEN'; fi"]
 assert live.ok else "HOLD1 live/optional check failed"
-say "${live.out}"
+say "${live.out_brief}"
 
 say "GREEN: HOLD1 Desk Skate hold witness passed (device-free)."

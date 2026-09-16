@@ -72,6 +72,6 @@ let n_zero = run ["sh" "-c" "grep -c '^0\\{64\\}$' ${rout} || true"]
 assert (trim n_zero.out) == "0" else "crypto-monocypher-x25519-dirty-parity: an all-zero dirty key appeared — a silent ladder failure"
 
 let shown = run ["sh" "-c" "cat ${rout}"]
-say "crypto-monocypher-x25519-dirty-parity: the sixteen dirty public keys, agreed by both implementations:\n${shown.out}"
+say "crypto-monocypher-x25519-dirty-parity: the sixteen dirty public keys, agreed by both implementations:\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-x25519-dirty-parity: our authored crypto/x25519_dirty.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical dirty X25519 public keys over sixteen secret keys, and Monocypher's own dirty_small and dirty_fast paths agree on every one — so the key we reproduce is the canonical dirty key that makes Elligator key-hiding uniform. The EIGHTEENTH real Monocypher-SOURCE parity rung, standing directly on the Elligator 2 rung the round before and completing the key-hiding family crypto_elligator_key_pair will compose. Monocypher stays vendored and unmodified, linked never copied; our Rye reuses the GREEN clean-ladder field arithmetic, unclamped over 256 bits against an order-8L base point. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."

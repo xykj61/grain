@@ -28,7 +28,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "drey-redact: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "drey-redact: ${shown.out}"
+say "drey-redact: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN drey-redact' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "drey-redact: selftest did not print the GREEN drey-redact line"

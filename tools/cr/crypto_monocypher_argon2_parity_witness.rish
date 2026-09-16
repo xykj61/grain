@@ -71,6 +71,6 @@ let got_2id = run ["sh" "-c" "sed -n '3p' ${cout}"]
 assert (trim got_2id.out) == (trim want_2id.out) else "crypto-monocypher-argon2-parity: Argon2id is not the RFC 9106 published value"
 
 let shown = run ["sh" "-c" "cat ${cout}"]
-say "crypto-monocypher-argon2-parity: the RFC 9106 primary derived keys, agreed by both implementations (Argon2d, Argon2i, Argon2id):\n${shown.out}"
+say "crypto-monocypher-argon2-parity: the RFC 9106 primary derived keys, agreed by both implementations (Argon2d, Argon2i, Argon2id):\n${shown.out_brief}"
 
 say "GREEN crypto-monocypher-argon2-parity: our authored crypto/argon2.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Argon2 derived keys over RFC 9106's primary p=4 vector — all three modes (Argon2d, Argon2i, Argon2id) match, and all three match the RFC's published known-answers. The fifth real Monocypher-SOURCE parity rung, carrying the discipline past the four the decision wave named to Argon2, the memory-hard password KDF Vault's seal rests on. Monocypher stays vendored and unmodified, linked never copied. Purely local, no real password, no identity key, no signature, no network, no funds, no device; constant-time timing-safety stays the named horizon, and deriving from a real password stays the custody gate."

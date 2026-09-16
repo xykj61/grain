@@ -42,7 +42,7 @@ let cross = "${abs_bin}/${prefix_tail}"
 say "proven-seat G1 builddir: CROSS_DEV_PREFIX=${cross}"
 let ver = run ["sh" "-c" "${cross}g++ --version"]
 assert ver.ok else "cross g++ --version failed at ${cross}g++"
-say "proven-seat G1 builddir: ${ver.out}"
+say "proven-seat G1 builddir: ${ver.out_brief}"
 
 say "proven-seat G1 builddir: resolving absolute GENODE_DIR and CONTRIB_DIR…"
 let abs_src = run ["realpath" src]

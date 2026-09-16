@@ -38,7 +38,7 @@ let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
 assert selftest.ok else "ales-hold-env: selftest exited non-zero — see ${outfile}"
 
 let shown = run ["sh" "-c" "cat ${outfile}"]
-say "ales-hold-env: ${shown.out}"
+say "ales-hold-env: ${shown.out_brief}"
 
 let green = run ["sh" "-c" "grep -q 'GREEN ales-hold-env' ${outfile} && echo yes"]
 assert (trim green.out) == "yes" else "ales-hold-env: selftest did not print the GREEN ales-hold-env line"
