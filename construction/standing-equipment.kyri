@@ -4263,6 +4263,22 @@ guard pre_push_spine
 path tools/p/pre_push_spine_witness.rish
 tier lap
 seated 20260910.015328
+
+# pre_push_marker -- the conflict-marker reading, at the moment of publication.
+# `conflict_marker` is correct and rostered at `tier lap`, and `tools/hooks/pre-commit` rule nine
+# asks the same scan of the staged set. Neither could see the fault: `git rebase --continue` COMMITS
+# WITHOUT RUNNING `pre-commit`, proven on metal `20260915` on git 2.54.0 and reproduced by case 12
+# of this guard's own pen. The roster runs cold at a lap's open and hot at its close, and both come
+# BEFORE the send's final rebase -- which on `20260915` wrote three marker lines into
+# `construction/ITINERARY.md`, the card every ship reads whole at every lap, and they stood on the
+# anointed remote for two commits (REDS %731). `tools/hooks/pre-push` is the placement, beside the
+# spine rule already there. It refuses a marker in the push's own paths and REPORTS one outside
+# them, since a gate that reds on what this lap cannot repair is a gate somebody turns off.
+# `tier lap` -- about ten seconds: real repositories, real pushes, and one real rebase.
+guard pre_push_marker
+path tools/p/pre_push_marker_witness.rish
+tier lap
+seated 20260915.190000
 # topology_attained -- what diameter a builder can actually STAND on, at 720 points.
 # Its sibling `topology_floor` binds the MOORE floor, a lower bound over all graphs that almost
 # nothing attains. This one binds what is REACHABLE: a second floor for abelian Cayley graphs

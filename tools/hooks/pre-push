@@ -1,7 +1,16 @@
 #!/bin/sh
-# pre-push -- refuse to publish a REDS number this tree binds to two stamps.
+# pre-push -- the two readings a push can never take back, asked at the moment it publishes.
 #
-# WHY THIS HOOK EXISTS. `.claude/rules/derived-spine.md` names a class it calls a PUBLISHED DOUBLE:
+# TWO RULES LIVE HERE, and they are siblings rather than one thing. RULE ONE refuses a REDS number
+# this tree binds to two stamps. RULE TWO refuses a conflict marker in a file the push carries.
+# Both are placements rather than new instruments: each asks a scan the roster already runs, at the
+# one moment nothing else does. They share a hook because git gives a repository exactly one
+# `pre-push`, and they share a reason -- the send's final rebase writes both faults, and every
+# standing guard runs before it.
+#
+# ---- RULE ONE -- a number bound twice never leaves for the remote --------------------------------
+#
+# WHY IT EXISTS. `.claude/rules/derived-spine.md` names a class it calls a PUBLISHED DOUBLE:
 # one `%N` bound on the anointed spine to two different stamps. Rule 3 says a published number never
 # moves, and it holds for each row separately, so once both are upstream no lap may repair either --
 # the resolution is Keaton's word, booked `20260907.014654`. The law says the pair stands "exactly
@@ -24,10 +33,34 @@
 # that shipped. The same shape stands under %669, where two ships folded one number to two shelves
 # three minutes apart.
 #
-# SO THIS IS A PLACEMENT RATHER THAN A NEW INSTRUMENT. The hook runs the scan the roster already
-# runs, at the one moment nothing else does: git's `pre-push` fires after the working tree is
-# settled and before a single object leaves for the remote. A push is the act that publishes, and a
-# published double is the one fault this tree cannot take back.
+# ---- RULE TWO -- a conflict marker in a pushed path never leaves either ---------------------------
+#
+# WHY IT EXISTS, and the mechanism is one sentence: `git rebase --continue` COMMITS WITHOUT RUNNING
+# `pre-commit`. `tools/hooks/pre-commit` rule nine already reads `conflict_marker_scan.sh staged` and
+# refuses a commit staging a marker, and it is correct and armed on every ship. A rebase walks
+# around it. Proven on metal `20260915` on git 2.54.0, in a throwaway pen: a pre-commit hook that
+# prints on every entry printed three times for three `git commit` calls and NOT ONCE for the
+# `git rebase --continue` that followed -- and that rebase committed `<<<<<<< HEAD` into the tree.
+#
+# SO THE WALL WAS PERFECT AND ITS PLACEMENT WAS NOT, which is REDS %731. On `20260915` the send's
+# final rebase wrote three marker lines into `construction/ITINERARY.md` -- the living operator card
+# every ship reads WHOLE at every lap -- and they stood on the anointed remote for two commits.
+# `conflict_marker` is rostered at `tier lap` and reads 18,069 files at zero; it ran clean at that
+# lap's cold open and again at its hot close, and the marker was made after both. The same sentence
+# is written one rule above for %681: the send's final rebase is the blind moment, and a placement
+# is the repair.
+#
+# THE READING IS NARROWED TO THE PUSH'S OWN PATHS, on the principle rule one already keeps for
+# `published_doubles`: a gate that reds on what this lap cannot repair is a gate somebody turns off.
+# A marker standing in a file this push never touches is a peer's to resolve, and it is REPORTED
+# here rather than refused.
+#
+# WHAT IT READS is the census -- the working tree AND the index as they stand at the pre-push
+# moment, which is the state the push was made from. So a marker sitting DIRTY in a pushed path
+# refuses too, and that is deliberate: those bytes are one `git add` from publication, and the
+# refusal costs one line where a published card costs every ship its next lap.
+#
+# ---- both rules -----------------------------------------------------------------------------------
 #
 # IT REACHES THE WHOLE FLEET WITH NO PER-SHIP ARMING. `tools/i/install_hooks.rish` points
 # `core.hooksPath` at this tracked directory, and all eight ships on this pier read it there,
@@ -35,40 +68,57 @@
 #
 # WHAT IT REFUSES:
 #
-#   the two gates   -- the scan exits 1. The push would bind one number to two stamps upstream.
+#   the two spine gates -- the scan exits 1. The push would bind one number to two stamps upstream.
 #                      The repair is this tree's own unshared row, renumbered to
 #                      `sh tools/fixtures/r/reds_spine_derive_scan.sh --next`.
-#   a broken read   -- the scan exits 2, or is missing. An instrument that cannot answer is not an
-#                      answer of "fine". A push is retried in seconds; a published double is
-#                      forever. REDS %681 booked the opposite habit -- a swallowed instrument pass
-#                      read as a pass -- and this refuses rather than repeating it.
+#   a marked path   -- a file the push carries holds `<<<<<<< `, `||||||| ` or `>>>>>>> `. The
+#                      repair is to resolve the file and commit it again.
+#   a broken read   -- either scan exits 2, or is missing. An instrument that cannot answer is not
+#                      an answer of "fine". A push is retried in seconds; a published double is
+#                      forever, and a published card steers eight unattended ships. REDS %681
+#                      booked the opposite habit -- a swallowed instrument pass read as a pass --
+#                      and this refuses rather than repeating it.
 #
 # WHAT IT NEVER REFUSES, each because refusing would be wrong rather than merely costly:
 #
 #   published_doubles -- the seven already upstream. No lap may repair one, and a gate that reds on
 #                        what nobody can touch is a gate somebody turns off. The scan already
 #                        exempts them from its own verdict; this hook adds no opinion.
-#   a delete-only push -- nothing is published, so nothing can double.
+#   a marker outside the push's paths -- reported by name, never gated. Same reason.
+#   a delete-only push -- nothing is published, so nothing can double and nothing can carry bytes.
 #   a push carrying no ledger change -- proven from the push's own range rather than assumed. Of the
 #                        last 100 commits on this branch, 40 touch a ledger surface (measured
-#                        `20260910.015328`), so the ordinary lap pays nothing at all.
+#                        `20260910.015328`), so the ordinary lap pays rule one nothing at all.
 #
-# COST WHEN IT DOES RUN: one scan, no network. It reads `xy/main` as the local ref already stands,
-# which is the state the send just rebased onto, so a peer landing after that rebase is caught by
-# git's own fast-forward refusal and the hook simply runs again on the retry.
+# COST WHEN IT RUNS: rule one is one scan and no network, reading `xy/main` as the local ref already
+# stands -- the state the send just rebased onto, so a peer landing after that rebase is caught by
+# git's own fast-forward refusal and the hook simply runs again on the retry. Rule two is one
+# `git grep` over the tracked tree, measured about 918ms at 17,266 paths by the scan's own header;
+# it runs on every push that publishes bytes, which is the price of the one moment nothing else
+# reads.
 #
 # NO BYPASS. `--no-verify` is already forbidden by `.claude/rules/git-signing.md`, and a wall with a
 # door beside it is a habit again.
 #
-# Proven by tools/fixtures/p/pre_push_spine_control.sh on real repositories in a throwaway pen,
-# refusals and welcomes both, and gated by tools/p/pre_push_spine_witness.rish.
+# Rule one is proven by tools/fixtures/p/pre_push_spine_control.sh and gated by
+# tools/p/pre_push_spine_witness.rish; rule two by tools/fixtures/p/pre_push_marker_control.sh and
+# tools/p/pre_push_marker_witness.rish. Real repositories in a throwaway pen, refusals and welcomes
+# both.
 set -eu
 
 # A push names a handful of refs. 256 is far above any send this tree makes and far below a number
 # that would mean something other than a push -- every collection names a maximum (TAME).
 MAX_REFS=256
 
+# The range paths handed to `grep -F -f` as a keep-list. Past this the list is no longer a bounded
+# read, so rule two answers over the whole census instead: slower, never wrong, and refusing in the
+# safe direction. A push carrying more changed paths than this is a tree-wide sweep, and those are
+# rare. Overridable so the control can force the wide path on a small pen and prove the two paths
+# answer identically -- a guard with two code paths owes a leg showing they agree.
+MAX_RANGE_PATHS=${PRE_PUSH_MAX_RANGE_PATHS:-4096}
+
 SCAN=tools/fixtures/r/reds_spine_derive_scan.sh
+MARKER_SCAN=tools/fixtures/c/conflict_marker_scan.sh
 
 # The ledger surfaces a `%N` binding can live on: the living pin, and the fold shelves the monotone
 # scan discovers by this same glob. A push touching neither cannot change what this tree binds.
@@ -77,10 +127,16 @@ SHELF_GLOB='construction/archive/REDS-*rows-*.md'
 
 zero=0000000000000000000000000000000000000000
 
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+: > "$work/range"
+
 # Read the ref updates git hands us on stdin. Reading them all matters: git writes the whole list,
 # and a hook that stops early leaves a pipe for git to notice.
 refs=0
 carries=no
+publishes=no
+range_unknown=no
 while read -r local_ref local_sha remote_ref remote_sha; do
   refs=$((refs + 1))
   if [ "$refs" -gt "$MAX_REFS" ]; then
@@ -89,19 +145,100 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
   # A delete publishes nothing.
   [ "$local_sha" != "$zero" ] || continue
+  publishes=yes
   if [ "$remote_sha" = "$zero" ]; then
     # A ref the remote has never seen. Its range is the whole branch, so read nothing and answer
-    # conservatively -- an unknown range is a range that may carry the ledger.
+    # conservatively -- an unknown range is a range that may carry the ledger, and a range whose
+    # paths rule two cannot name.
     carries=yes
+    range_unknown=yes
     continue
   fi
   if [ "$carries" = no ] \
      && [ -n "$(git diff --name-only "$remote_sha" "$local_sha" -- "$PIN" "$SHELF_GLOB" 2>/dev/null)" ]; then
     carries=yes
   fi
+  # Rule two's population: every path this ref's range changes. A deletion ships no bytes, yet
+  # naming it here costs only a keep-list entry that matches nothing, so the filter stays simple.
+  git diff --name-only "$remote_sha" "$local_sha" 2>/dev/null >> "$work/range" || range_unknown=yes
 done
 
 [ "$refs" -gt 0 ] || exit 0
+
+# ---- RULE TWO -- runs first, because a marker is broken bytes and every push carries bytes -------
+
+if [ "$publishes" = yes ]; then
+  if [ ! -f "$MARKER_SCAN" ]; then
+    echo "pre-push: REFUSED -- $MARKER_SCAN is missing, so nothing can be said about whether the" >&2
+    echo "  files this push carries hold a conflict marker. Restore it, or this wall is a claim." >&2
+    exit 1
+  fi
+
+  set +e
+  marker_out=$(sh "$MARKER_SCAN" list 2>&1)
+  marker_code=$?
+  set -e
+
+  if [ "$marker_code" -ne 0 ]; then
+    echo "pre-push: REFUSED -- the conflict-marker reading itself refused (exit $marker_code), so" >&2
+    echo "  nothing is known about the files this push carries." >&2
+    echo "$marker_out" | sed 's/^/  /' >&2
+    echo "  Read it whole with: sh $MARKER_SCAN" >&2
+    exit 1
+  fi
+
+  printf '%s\n' "$marker_out" | sed '/^$/d' > "$work/hits"
+  hit_count=$(grep -c . "$work/hits" || true)
+
+  if [ "$hit_count" -gt 0 ]; then
+    sort -u "$work/range" | sed '/^$/d' > "$work/range.u"
+    range_count=$(grep -c . "$work/range.u" || true)
+
+    if [ "$range_unknown" = yes ] || [ "$range_count" -gt "$MAX_RANGE_PATHS" ]; then
+      # No nameable range, so every marked file is treated as one this push may be publishing.
+      cp "$work/hits" "$work/mine"
+      : > "$work/theirs"
+    else
+      # `-x -F` on the path field alone: an exact whole-line match, so a path holding a glob or a
+      # regex character names itself rather than a pattern.
+      cut -d: -f1 "$work/hits" | sort -u > "$work/marked"
+      grep -xF -f "$work/range.u" "$work/marked" > "$work/marked.mine" 2>/dev/null || : > "$work/marked.mine"
+      # BOTH SPLITS ARE GUARDED ON AN EMPTY KEEP-LIST, and the reason is a real awk trap rather
+      # than caution: `NR==FNR` distinguishes two files by the first one having advanced NR, so an
+      # EMPTY first file leaves NR==FNR true for every line of the second. The negated form then
+      # swallows the whole hit list and reports nothing -- which is exactly how this hook first
+      # welcomed a peer's marker in silence while its own control watched.
+      if [ -s "$work/marked.mine" ]; then
+        awk -F: 'NR==FNR{keep[$0]=1; next} ($1 in keep)' "$work/marked.mine" "$work/hits" > "$work/mine"
+        awk -F: 'NR==FNR{keep[$0]=1; next} !($1 in keep)' "$work/marked.mine" "$work/hits" > "$work/theirs"
+      else
+        : > "$work/mine"
+        cp "$work/hits" "$work/theirs"
+      fi
+    fi
+
+    mine_count=$(cut -d: -f1 "$work/mine" 2>/dev/null | sort -u | grep -c . || true)
+    theirs_count=$(cut -d: -f1 "$work/theirs" 2>/dev/null | sort -u | grep -c . || true)
+
+    if [ "$theirs_count" -gt 0 ]; then
+      echo "pre-push: note -- $theirs_count file(s) outside this push's paths carry a conflict marker." >&2
+      echo "  Reported rather than refused: a gate that reds on what this lap cannot repair is a gate" >&2
+      echo "  somebody turns off. Read them with: sh $MARKER_SCAN list" >&2
+    fi
+
+    if [ "$mine_count" -gt 0 ]; then
+      echo "pre-push: REFUSED -- $mine_count file(s) this push carries hold an unresolved conflict" >&2
+      echo "  marker. git wrote those bytes during a merge or rebase and no hand came back for them." >&2
+      sed 's/^/    /' "$work/mine" >&2
+      echo "  A rebase commits without running pre-commit, so rule nine there never saw this." >&2
+      echo "  Resolve each file, commit it again, then push. Never --no-verify." >&2
+      exit 1
+    fi
+  fi
+fi
+
+# ---- RULE ONE -- the derived spine -----------------------------------------------------------------
+
 [ "$carries" = yes ] || exit 0
 
 if [ ! -f "$SCAN" ]; then

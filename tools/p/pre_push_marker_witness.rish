@@ -1,0 +1,97 @@
+# tools/p/pre_push_marker_witness.rish -- the conflict-marker reading, placed at the moment of
+# publication.
+#
+#   rishi/bin/rishi run tools/p/pre_push_marker_witness.rish
+#
+# WHAT THIS GUARDS. `conflict_marker_scan.sh` is correct and rostered at `tier lap`, reading every
+# tracked file for a labelled marker and holding the count at zero. `tools/hooks/pre-commit` rule
+# nine asks the same scan of the staged set and refuses the commit. Both are armed on every ship.
+#
+# WHAT NEITHER COULD SEE. `git rebase --continue` COMMITS WITHOUT RUNNING `pre-commit`. Proven on
+# metal `20260915` on git 2.54.0 in a throwaway pen, and proven again by case 12 of this guard's own
+# control: a pre-commit hook recording every entry fires three times for three `git commit` calls
+# and not once for the rebase that follows -- and that rebase commits `<<<<<<< HEAD` into the tree.
+# The roster's own pass runs cold at a lap's open and hot at its close, and both come BEFORE the
+# send's final rebase. So the wall was perfect and its placement was not, which is REDS %731: on
+# `20260915` the send's final rebase wrote three marker lines into `construction/ITINERARY.md`, the
+# living operator card every ship reads WHOLE at every lap, and they stood on the anointed remote
+# for two commits.
+#
+# SO THE HOOK IS A PLACEMENT rather than a new instrument -- the same scan, asked at the one moment
+# nothing else asks it. The sentence is already written one rule over for %681, and a second class
+# has now asked for the same seat.
+#
+# WHAT IT NEVER REFUSES: a marker outside the push's own paths. That is a peer's to resolve, and a
+# gate that reds on what this lap cannot repair is a gate somebody turns off -- the same clause
+# `published_doubles` already earns in the sibling rule.
+#
+# WHY `tier lap`. The pen builds real repositories, runs real pushes and one real rebase -- about
+# ten seconds, measured `20260915`. The fault it catches is written by ordinary work: eight ships
+# rewriting one literal in one card on every lap is a guaranteed rebase conflict rather than an
+# unlucky one.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked files and a pen.
+
+say "pre-push-marker: Language EN -- bytes git wrote and no hand came back for never leave for the remote."
+say "pre-push-marker: Style Gauge, Meter -- the refusal is the subject."
+say "pre-push-marker: Lens TAME -- safety first: the pen proves both directions, since the field reads clean."
+
+# 1 -- the pen. Every refusal is planted and then lifted, and each welcome is asserted as hard as
+# each refusal, because a hook that always exits 0 passes every clean case a control thinks to write.
+let control = run ["sh" "tools/fixtures/p/pre_push_marker_control.sh"]
+say control.out
+say control.err
+assert control.ok else "pre-push-marker: a control case read the wrong way -- read the pen's own lines"
+assert control.out contains "control_verdict=ok" else "pre-push-marker: the pen must balance before the field is believed"
+
+# 2 -- the founding case, end to end, asserted by name. Without this leg the guard proves a marker
+# check and leaves the REASON the check has to sit here entirely untested.
+assert control.out contains "PASS: a rebase commits a conflict marker without running pre-commit -- the bypass, on metal" else "pre-push-marker: the bypass must be reproduced, not asserted"
+assert control.out contains "PASS: the rebase's marker is refused at the push, on a ref the remote has never seen" else "pre-push-marker: the rebase's marker must be caught at the push"
+
+# 3 -- the gate, from both sides. A refusal proven only in the passing direction cannot be told from
+# a bypass, so the lift is asserted as hard as the bite.
+assert control.out contains "PASS: a marked path this push carries is refused, and the remote is untouched" else "pre-push-marker: a marked path must not reach the remote"
+assert control.out contains "PASS: the resolved file publishes -- the gate lifts" else "pre-push-marker: the gate must lift when the plant is lifted"
+
+# 4 -- and what it must NEVER refuse, which is the half that keeps a wall standing. A gate that reds
+# on a peer's marker is a gate somebody turns off.
+assert control.out contains "PASS: a marker outside the push's paths is reported by name and welcomed" else "pre-push-marker: a marker this lap cannot repair must be reported rather than gated"
+assert control.out contains "PASS: a delete-only push passes without asking the marker scan" else "pre-push-marker: a delete publishes no bytes"
+
+# 5 -- the instrument's own silence is a refusal rather than a pass. REDS %681 booked the opposite
+# habit in this tree, and %473 booked it again in a meter whose header named the fault.
+assert control.out contains "PASS: a missing marker scan refuses a publishing push, naming what is absent" else "pre-push-marker: an absent instrument must refuse"
+assert control.out contains "PASS: a marker scan that exits 2 refuses the push and says the reading refused" else "pre-push-marker: an instrument that refuses is not an instrument that agrees"
+
+# 6 -- the two code paths agree. The narrowed read and the wide read answer one tree, or the bound
+# is a door rather than a bound.
+assert control.out contains "PASS: the wide path refuses the same marked push -- the two readings agree" else "pre-push-marker: the bounded and wide readings must agree"
+
+# 7 -- the reach, asserted rather than assumed. A reading of nothing cannot be told from a healthy
+# one (REDS %463), so the case count is read back.
+assert control.out contains "cases_ok=14" else "pre-push-marker: the pen must run every case it declares"
+assert control.out contains "cases_red=0" else "pre-push-marker: no case may read red"
+
+# 8 -- the field: the arming. A hook this tree ships and no clone reaches is a claim rather than a
+# wall, and the arming is the half that actually failed the fleet.
+let armed = run ["git" "config" "--get" "core.hooksPath"]
+say "pre-push-marker: core.hooksPath --"
+say armed.out
+assert armed.ok else "pre-push-marker: core.hooksPath is unset -- run rishi/bin/rishi run tools/i/install_hooks.rish"
+assert (trim armed.out) == "tools/hooks" else "pre-push-marker: core.hooksPath must name tools/hooks"
+
+# 9 -- and the file itself: present, and executable in the INDEX rather than only in this working
+# tree, since a blob carries no mode and a fresh clone inherits what the tree object says
+# (`.claude/rules/exec-bit.md`).
+let mode = run ["git" "ls-files" "-s" "tools/hooks/pre-push"]
+say "pre-push-marker: the hook's mode in the index --"
+say mode.out
+assert mode.ok else "pre-push-marker: tools/hooks/pre-push is not tracked"
+assert mode.out contains "100755" else "pre-push-marker: the hook must be 100755 in the index, or a fresh clone cannot run it"
+
+# 10 -- the scan the hook names is the scan the roster runs. One spelling, two callers (REDS %382).
+let scan = run ["test" "-f" "tools/fixtures/c/conflict_marker_scan.sh"]
+assert scan.ok else "pre-push-marker: the hook names a scan this tree does not carry"
+
+say "GREEN: pre-push-marker -- a marker the send's rebase wrote is asked about at the one moment that publishes it."

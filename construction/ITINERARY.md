@@ -59,7 +59,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b8001cc613` -- this follow-up's parent, resolvable everywhere (%401).
+**Git nib:** `afd5f06be4` -- this follow-up's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) indexes every shelf before it.
 
@@ -74,26 +74,40 @@ room declares it deliberately, or stay the honest name it is now?
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE KEY THAT CARRIES LOCALITY SELLS TWO THINGS FOR IT.** **WATER TASTES** (row 3,
-N=4928): taste whether the flow is sweet or off. Both torus readings closed on the same unproposed
-idea -- a key built to carry locality on purpose -- and it stood open in two papers and no lap. It
-is priced now. The crudest locality key there is, a file's leading two bytes, **buys** what it
-promises: it survives a one-byte edit at offset 32 for every probe while the digest survives none,
-and two files from one room sit **0.395** cells apart against the digest's **16.509** and the
-**16.000** two uniform keys give. It **sells evenness** -- chi-squared **13149.11** against a
-p=0.001 critical **103.51**, where the digest reads **63.49** -- and it **sells the room**: an
-observer holding keys alone places **0.5333** of files correctly against a no-key baseline of
-**0.3471** over 42 rooms. **The finding:** these are one quantity read three ways, so the avalanche
-both torus readings ran into is what BUYS the other two. **Every figure here is FREE** -- run
-`sh tools/fixtures/l/locality_key_scan.sh` rather than reading them; the paper's own clause was
-written at 510 names on `20260915` and this one re-read the same population on landing.
-`locality_key` is GREEN on metal at 43 of 43 legs with four mutations bitten, seated at tier lap.
-No real store, wire, or index was opened, and the proposal that follows -- keep the avalanche key,
-put locality in a separately protected index -- waits on a design that wants neighbour lookup.
-**THE LAP THAT BUILT IT NEVER LANDED IT.** Its whole record -- paper, scan, control, witness, log --
-stood in the dead-letter box on no ref, the sixth firing of the loom the `175931` account named.
-Recovered and landed here, witness re-run on metal rather than trusted.
-**YOURS:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
+**DIFFUSER -- THE WALL WAS PERFECT AND THE REBASE WALKS AROUND IT.** **EARTH BREATHES IN** (row 4,
+N=4943, hand-advanced past row 3, read by this seat earlier today): take in the concrete fact at the
+door. **REDS FIRST:** `%731` was booked at the last close and its repair claimed rather than taken.
+Built here. **THE MECHANISM IS ONE SENTENCE, PROVEN ON METAL:** `git rebase --continue` COMMITS
+WITHOUT RUNNING `pre-commit`, on git 2.54.0 -- a hook printing on every entry fired three times for
+three `git commit` calls and **not once** for the rebase that followed, and that rebase committed
+`<<<<<<< HEAD` into the tree. So `pre-commit` rule nine is correct, armed on every ship, reads the
+same scan, and never saw the bytes that shipped the card broken for two commits.
+**A PLACEMENT RATHER THAN AN INSTRUMENT**, the sentence the spine rule one room over already wrote
+for `%681`: `tools/hooks/pre-push` carries a second rule beside the first, asking
+`conflict_marker_scan.sh list` after the tree settles and before an object leaves. It **refuses** a
+marker in the push's own paths and **reports** one outside them, on the clause `published_doubles`
+already earns -- a gate that reds on what this lap cannot repair is a gate somebody turns off.
+**THE PEN FOUND A FAULT IN THE HOOK WHILE IT WAS BEING WRITTEN.** The split between my markers and a
+peer's used `NR==FNR` against a keep-list that is EMPTY in exactly the peer case, and an empty first
+file leaves `NR==FNR` true for every line of the second -- so the negated form swallowed the whole
+hit list and the hook welcomed a peer's marker in silence, at exit 0, with its own control watching.
+Both splits are guarded; the leg that caught it is kept. **THE SPINE CONTROL RED THE MOMENT THE
+SECOND RULE LANDED**, and that was the honest answer: its pen armed the hook and carried no marker
+scan, so every push in it refused. A pen that arms half a hook proves its rule against a wall no
+ship runs. **LANDED:** 14-leg pen with real pushes and one real rebase, two mutations bitten,
+`pre_push_marker` rostered `tier lap`; `pre_push_spine` re-run green beside it. A+/A/B.
+**WHAT IT DOES NOT REACH:** a push made with `--no-verify`, already forbidden and reachable by no
+guard in the tree.
+**HOT ROSTER: 292 run, 286 green, 4 red, 2 gated, `tree_moved=no`.** Mine are green by name. Of the
+four reds, `shim_reason` and `fixture_depth` sit inside patchouli's and petrichor's live claims,
+`standing_equipment` is their aggregate, and `prose_register` reads `law_over_field_target=10`
+against a ceiling of 9 -- pushed over by `.claude/rules/vocabulary-flaky.md` at 36 percent, seated
+by another ship at `20260915.183900` with its ceiling left where it stood. Reported, not taken.
+**THE LEDGER PIN STANDS AT ITS 65,536 BOUND**, exactly, after this row. It arrived from upstream 32
+bytes under it with six peer rows landed today, so `%731`'s own BOOKED clause was condensed to fit
+rather than grown. **The next lap to touch `construction/REDS.md` owes a fold**, and the tool is
+`sh tools/fixtures/r/reds_fold.sh` -- a shelf head is prose a person writes, so it is its own lap.
+**YOURS, STILL:** the card's Diffuser section names Brushstroke and Skate; `construction/fleet-roster.kyri`
 and this seat's own baton name moonshots and whitepaper research. Two living pins, two lanes, one
 ship. Which stands?
 
