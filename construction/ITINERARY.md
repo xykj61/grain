@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.050612` (EDT)
+**Stamp:** `20260916.055720` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -83,7 +83,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `54bb3c0394` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `70b437c05f` -- this commit's parent, resolvable everywhere (%401).
 
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
@@ -194,30 +194,39 @@ above is a command a hand types; the next page to write a formula is held by hab
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- THE GUARD THAT MAKES A BROAD SWEEP HONEST HAD NO CONTROL, AND ITS ONE READING HELD TWO POPULATIONS.**
-**AIR FEELS** (row 1, N=5026): press on every post; where the hand goes through, the boundary was a
-wish. **REDS FIRST, three closed.** This ship's `rye` ran **879,811 seconds behind** its source --
-`%746`'s shape one tool over -- rebuilt, `built_tool_freshness` GREEN. **The card advertised a hash
-that exists nowhere**, so `nib_honesty` read `FLOATING_CLAIM` and `remember_git_nib` refused on
-**every ship's cold pass at once**. Booked at **`20260916.004032`**, repaired, both GREEN. The
-teaching is a seam in one rule: clause 5 reads its hash BEFORE the follow-up commit, clause 2 AFTER
-the final rebase, and a rebase between them rewrites the commit the nib names.
-**THE CRUX.** `claim_preserve` has stood since `20260724` as the safety making a broad register pass
-honest, with **no control at all** -- every claim it made about itself was a claim about code nobody
-ran. A hand invokes it with `CLAIM_PRESERVE_FILES`, so it sits on no roster; its control builds its
-own pen, and that is the reading a roster CAN carry.
-**EIGHTEEN MODAL TERMS DIFFED AS ONE BAG.** **OBLIGATION** -- must, may, require and seven more --
-is what the tree owes. **REGISTER** -- never, none, always, every, all -- are the words the register
-law asks a lap to RECAST, so a lawful sweep moves them BY DOING AS IT IS TOLD. The guard refused
-both alike and named neither. **Measured on metal:** `f258e5f58` restated fourteen negatives in
-`skate/README.md` and moved `may` **5 -> 4** and `all` **10 -> 12**, the second purely from *"A, B
-and C all stay outside"*.
-**LANDED:** the classifier, its negation half derived from `prose_register_scan.sh`'s own `neg`
-vocabulary rather than spelled twice; both counts beside every refusal; **15 legs, 0 failures, 3s**,
-three mutations bitten. Rostered `claim_preserve_control`, `tier lap`. **The refusal is unchanged:**
-any drift still exits 1, and what moved is the diagnosis.
-**YOURS:** should a register-only drift ever PASS? The classifier makes the question askable for the
-first time; softening a seated refusal is your word.
+**GRASS -- A LAW PAGE NARRATED A CEILING IT DECLARES NOWHERE, AND THE LAST FALL WENT UNSAID FIVE DAYS.**
+Elder account [shelved whole](archive/20260916-034934_itinerary-grass-claim-preserve-control-account.md).
+**EARTH BREATHES IN** (row 4, N=5049): take in the concrete fact at the door ahead of any argument
+about it. The row reads three -- the stamp off the filename, the room token off the status line, the
+mark off a value's face.
+**THE STAMP AND THE MARK READ HONEST.** Of **769 living dated pages** outside the closed stacks,
+**665 declare a `**Stamp:**`** and **12 disagree with their own filename**, eleven saying why on
+their faces. `one_clock_witness` holds six duties over filenames, host zone and live clock, and
+reads a page's own declaration in none -- a ratchet rather than a red. The mark: two engine roots,
+`mark_verdict` known on those alone, a stranger refused whole, the pair held as a SET.
+**THE ROOM TOKEN READ WRONG, AND THE PAGE WAS THE LAW.** `context/TWO_ROOMS.md` is the doorway's own
+canon and the Earth-Fixed rota seat, and it closes its amendment arc on *the ceiling falls 59 to 39
+... the remainder is 33 `active-designing/` and 6 `external-research/`*. `42826c45d` took
+`living_ceiling` **39 to 0** on `20260911.160504`; the scan reads `living_silent=0 living_ceiling=0`
+over **1,328 pages, 619 folded shelves, 138 stampless, `fails=3` at `ceiling=3`**
+(`20260916.033406`). Every earlier fall narrates itself -- 106 to 90, 90 to 67, 67 to 59, 59 to 39
+-- and the last stood in the scan alone.
+**THE SHAPE HAS A GUARD SEATED FOR IT.** `declared_ceiling_scan.sh` gates *a declaration a tool
+cannot read* at zero over `**Ceiling:**` and `**Bound:**` headers, and a ceiling narrated in a
+sentence stays outside it -- how `docs/CRYPTO.md` drifted. **The grade said A while the drift sat in
+the half it left unread:** `truth=100` at `truth_mode=counted`, 16 of 16 paths resolving, about a
+sentence citing none -- that reading's third recorded firing.
+**LANDED:** four amendment paragraphs, each figure naming what holds it still -- two zeros
+**walled**, three counts **free** with the command beside them. Register **32 to 30 percent** of 105
+sentences; **A/91** at Field, `truth_mode=judged`.
+**COLD 305 read, 284 green, 19 red; HOT (scoped) 285 green, 10 red, `tree_moved=no`. Six closed here
+and one was mine** -- `rishi` stood 17,547 seconds behind its source, which also turned
+`rishi_make_pen`. The rest: `fold_shelf_link_repoint` in **diffuser's** fresh shelf, the day shelf's
+union-merge order, a 197-byte row of **copal's**, and the nib. The ten standing sit in peer lanes,
+each red's evidence grepped for my paths.
+**YOURS:** should a law page's narrated ceiling carry a machine-readable declaration beside it? Yes
+puts a `**Ceiling:**`-shaped header on every page whose prose spells a ratchet -- a style law rather
+than a lap's choice. **MINE:** whether the QA card refuses without `--truth`, as Service does.
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
