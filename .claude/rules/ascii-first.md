@@ -311,6 +311,57 @@ local variable named `t` clobbered the named-form counter, so `written` read 1,4
 `written_named` read **0** -- which is precisely what a tree carrying only judgment-call notation
 prints. A counter shadowed by a local is invisible from its own output, so the plant is kept.
 
+**And a SIXTH surface stood beside all five, named by the fifth and measured by nobody**
+(`20260916.183114`). That paragraph above names its own remainder -- *a `printf` argument
+assembling one line* -- and prices it at nothing. Measured over the same 3,682 tracked shell
+sources, the non-ASCII standing outside heredoc bodies and outside `#` comments is **11,030
+characters**. **10,416 of those sit in `.rish`**, where the spoken meter already counts them as a
+`say` line or an `assert ... else` message. **The `.sh` half is 614 characters that no meter in
+this tree reads** -- and `echo` carries **360** of them against `printf`'s **113**, so the family
+named the smaller half of its own gap by three to one. **509 of the 614 stand in an emit's
+operand**; the remaining 105 sit in positions that emit nothing -- an `if` condition, a `case`
+label, a search pattern -- which are another question's or nobody's, and the meter declines them
+rather than counting what it cannot name. This is the same lane's lesson from
+`20260915.223327` arriving a second time: **a meter prices a gap from the files it can already
+see.**
+
+**The structural reason, and it is why no sharper reading of the five would have found it.** A
+POSIX `.sh` file has no `say` verb, because `say` is Rishi's. The spoken meter therefore opens
+`.rish` alone, so the whole `.sh` emit surface stands outside the family **by construction** rather
+than by oversight -- and the surface in question is the one every launcher, scan, and control in
+this fleet is written on. Every file the new meter names is `.sh`; not one `.rish` file appears,
+and that split is measured on each run rather than assumed.
+
+[`../../tools/s/shell_emit_ascii_witness.rish`](../../tools/s/shell_emit_ascii_witness.rish) over
+[`../../tools/fixtures/s/shell_emit_ascii_scan.sh`](../../tools/fixtures/s/shell_emit_ascii_scan.sh)
+reads the **operand region** of an `echo` or a `printf`: the text after the command word, up to an
+unquoted redirect or the end of that command. **The quote walk is the whole instrument** -- a `#`
+inside a string does not end the line, an escaped `\"` inside a double quote does not end the
+string, and a `>` inside a quoted argument is prose rather than a redirect. A command begins after
+an unquoted separator, so an emit after a pipe and an emit inside `$( )` are both read; a leading
+assignment, an `exec`, and the keywords `then`, `else`, `elif`, `do`, `time`, `!` and `{` are
+stepped past, **bounded at six steps**, because `then echo ...` runs echo and leaving that step out
+loses **21** of the characters counted. The reading stands at **509 across 77 files**, split
+**464 spoken** and **45 written** by the line's own redirect, **412** of them forms this rule's own
+table spells.
+
+**It ratchets rather than walls, and the reason is a population that must never be swept.**
+`tools/fixtures/p/prin_matrix.sh` draws a terminal frame out of box-drawing characters, which is
+this rule's **own named exception** -- non-ASCII where it is the point of the work. A converter
+reading the total rather than the named half would take that frame apart, so the two numbers are
+printed apart and only the named one is a lane's to act on.
+
+**What it still cannot see:** an operand split across a trailing backslash, read as two lines with
+its command word lost on the second, and a `$( )` nested inside a quoted argument, read as quoted
+text. It **undercounts on purpose** and says so, the way all five siblings do. **41 behaviors**
+stand proven on real git repositories in a throwaway pen under
+[`../../tools/fixtures/s/shell_emit_ascii_control.sh`](../../tools/fixtures/s/shell_emit_ascii_control.sh),
+every refusal planted and then lifted, **four mutations asserted to bite**, and the control's own
+leg tally asserted beside its verdict. Two of those mutations are the ones that make the walk
+load-bearing rather than decorative: **dropping the keyword step** loses every branch in the tree,
+and **dropping the quote walk** lets a `#` inside a string end the line -- precisely the reading
+the family named as impossible without parsing.
+
 ## Why the rule exists
 
 Plain ASCII survives every tool, terminal, diff, and re-encoding intact. Keaton asked that documents and commits prioritize it after the operator card corrupted itself in the dark. Canonical Cursor twin: `.cursor/rules/ascii-first.mdc`.

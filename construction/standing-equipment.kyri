@@ -976,6 +976,31 @@ path tools/s/shell_written_ascii_witness.rish
 seated 20260912.023000
 tier cadence   # non-ASCII in what a shell script assembles in a heredoc, a ratchet at 1,419
 
+# shell_emit_ascii -- the sixth ASCII subject, and the one the fifth NAMED and never priced. That
+# meter's own closing line says what it cannot see: "a `printf` argument assembling one line",
+# because finding it needs to know whether a quote sits inside another quote. Measured
+# 20260916.183114 over the same 3,682 tracked sources, the residue outside heredoc bodies and
+# outside `#` comments is 11,030 characters; 10,416 sit in `.rish` where the spoken meter already
+# counts them, and the `.sh` half is 614 that NOTHING reads -- `echo` 360 against `printf` 113, so
+# the family named the smaller half of its own gap by three to one. THE STRUCTURAL REASON no
+# sharper reading of the five would have found it: a POSIX `.sh` file has no `say` verb, since
+# `say` is Rishi's, so the spoken meter opens `.rish` alone and the whole `.sh` emit surface stands
+# outside the family BY CONSTRUCTION. Every file this meter names is `.sh`; the split is measured
+# each run. It reads an emit's OPERAND REGION by a quote walk -- a `#` inside a string does not end
+# the line, a `>` inside a quoted argument is prose rather than a redirect -- and a command begins
+# after an unquoted separator, so an emit after a pipe, inside `$( )`, or after `then` is read; the
+# keyword step alone carries 21 characters. 509 across 77 files, 464 spoken and 45 written by the
+# line's own redirect, 412 in forms the rule's table spells. IT RATCHETS RATHER THAN WALLS for a
+# population that must never be swept: tools/fixtures/p/prin_matrix.sh draws a terminal frame out of
+# box-drawing characters, which is the rule's own named exception, so only `emit_named` is a lane's
+# to act on. 41 legs, four mutations bitten, the keyword step and the quote walk each proven
+# load-bearing by planting their absence.
+# `tier cadence`: it reads 3,682 files where a lap touches a handful.
+guard shell_emit_ascii
+path tools/s/shell_emit_ascii_witness.rish
+seated 20260916.183114
+tier cadence   # non-ASCII in what a shell script speaks through echo or printf, a ratchet at 509
+
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000

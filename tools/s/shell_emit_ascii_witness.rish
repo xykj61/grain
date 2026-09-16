@@ -1,0 +1,104 @@
+# shell_emit_ascii_witness.rish -- what a POSIX shell script says through `echo` or `printf` is
+# prose too, and it is the one emit surface in this tree that no meter opened.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/shell_emit_ascii_witness.rish
+#
+# `.claude/rules/ascii-first.md` is held by five readings: documents, code comments, what a Rishi
+# program SAYS, what a Rye program says, and what a Rye or a shell program ASSEMBLES and hands
+# onward. The shell half of that last family closed on `20260912.023000` and named its own
+# remainder in its own closing line -- a `printf` argument assembling one line, unread because
+# finding it needs to know whether a quote sits inside another quote, which is parsing rather than
+# scanning.
+#
+# THE FAMILY NAMED `printf` AND THE POPULATION IS `echo`, measured rather than guessed. Over the
+# same tracked shell sources the residue outside heredoc bodies and outside `#` comments is 11,030
+# characters; 10,416 of those sit in `.rish`, where the spoken meter already counts them. The `.sh`
+# half is the part nothing reads, and `echo` carries three times what `printf` does. That is this
+# lane's own lesson from `20260915.223327` arriving a second time: a meter prices a gap from the
+# files it can already see.
+#
+# THE STRUCTURAL REASON no sharper reading of the existing meters would have found it: a POSIX
+# `.sh` file has no `say` verb, because `say` is Rishi's. The spoken meter therefore opens `.rish`
+# alone, and the whole `.sh` emit surface stands outside the family by construction rather than by
+# oversight. Every file this meter names is `.sh`; the split is measured on each run, never assumed.
+#
+# WHY IT RATCHETS RATHER THAN WALLS. One population inside the count must never be swept:
+# `tools/fixtures/p/prin_matrix.sh` draws a terminal frame out of box-drawing characters, which is
+# the ASCII-first rule's own named exception -- non-ASCII where it is the point of the work. So the
+# meter reports `emit_named` apart, the forms the rule's table spells outright, and a ceiling that
+# only falls is the honest instrument for a total holding work a lap may not touch.
+
+say "shell-emit-ascii: Language EN -- a line a shell script speaks to a person is prose before it is bytes, and plain ASCII survives every terminal, pipe, and re-encoding intact."
+say "shell-emit-ascii: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "shell-emit-ascii: Lens TAME -- safety first: the meter counts an emit verb's OPERAND and refuses to count a comment, a heredoc body, or a spoken line another meter already holds. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/s/shell_emit_ascii_control.sh"]
+say control.out
+assert control.ok else "shell-emit-ascii: the control must complete"
+assert control.out contains "control_verdict=ok" else "shell-emit-ascii: the control must reach its own verdict"
+
+# THE CONTROL'S OWN LEGS ARE TALLIED, and the tally is asserted beside the verdict. A verdict says
+# only that the control reached its last line, so a leg written tomorrow would pass unheard under
+# it -- the fault `ascii_document_control` booked one meter over on `20260910`.
+assert control.out contains "control_failed=0" else "shell-emit-ascii: every leg of the control must pass, not merely the ones this file happens to name"
+
+# THE SUBJECT: an emit verb's operand, in both spellings the tree writes.
+assert control.out contains "echo_counts=yes" else "shell-emit-ascii: a line an `echo` speaks is prose and must be counted"
+assert control.out contains "echo_lifts=yes" else "shell-emit-ascii: removing the plant must return the reading to zero, or the count is a latch"
+assert control.out contains "printf_counts=yes" else "shell-emit-ascii: the family named `printf` as its gap, so `printf` is read exactly as `echo` is"
+assert control.out contains "mixed_named=yes" else "shell-emit-ascii: a form the rule's table spells is reported apart from notation a reader must choose a word for -- or decline to, as a drawn terminal frame does"
+
+# SPOKEN AND WRITTEN, decided by the line's own redirect. A redirected emit becomes a file somebody
+# else reads, which is the sibling's act under the sibling's care; a bare emit reaches a person.
+assert control.out contains "redirect_is_written=yes" else "shell-emit-ascii: an emit redirected to a path is written rather than spoken"
+assert control.out contains "redirect_not_spoken=yes" else "shell-emit-ascii: a character billed to both readings would make each depend on the other"
+assert control.out contains "redirect_target_free=yes" else "shell-emit-ascii: a filename carrying a character is a fact about a path rather than prose"
+
+# THE SIBLING ROOMS, each left whole. Charging one character to two ceilings makes each reading
+# depend on the other, and neither is then readable alone.
+assert control.out contains "comment_not_counted=yes" else "shell-emit-ascii: a `#` comment belongs to the comment meter"
+assert control.out contains "trailing_comment_split=yes" else "shell-emit-ascii: an operand and a trailing note stand on one line in two rooms, and the walk must part them"
+assert control.out contains "heredoc_body_not_counted=yes" else "shell-emit-ascii: a heredoc body belongs to the written meter, whose opener rule is kept here character for character"
+assert control.out contains "say_not_counted=yes" else "shell-emit-ascii: a `say` line belongs to the spoken meter -- it is no emit verb, so it needs no exclusion and none is written"
+
+# THE QUOTE WALK, which is the whole reason this meter could not be written until now. Each of
+# these four is a shape the family named as parsing rather than scanning.
+assert control.out contains "hash_in_quote_counts=yes" else "shell-emit-ascii: a `#` inside a quoted argument does not begin a comment"
+assert control.out contains "gt_in_quote_is_spoken=yes" else "shell-emit-ascii: a `>` inside a quoted argument is prose rather than a redirect"
+assert control.out contains "gt_in_quote_not_written=yes" else "shell-emit-ascii: reading a quoted `>` as a redirect would move a spoken character into the written reading and lose the rest of the line"
+assert control.out contains "escaped_quote_counts=yes" else "shell-emit-ascii: an escaped quote inside a double quote does not end the string"
+assert control.out contains "single_holds_double=yes" else "shell-emit-ascii: a single quote holds a double quote whole, which is the shell's own rule"
+
+# WHERE A COMMAND ACTUALLY BEGINS. Each of these was found by running the walk over the tree and
+# reading what it missed; the keyword step alone carries 21 of the characters the meter reports.
+assert control.out contains "emit_after_pipe=yes" else "shell-emit-ascii: a command begins after an unquoted separator, so an emit after a pipe is read"
+assert control.out contains "emit_in_substitution=yes" else "shell-emit-ascii: an emit inside `$( )` speaks into a variable and is read the same way"
+assert control.out contains "emit_after_keyword=yes" else "shell-emit-ascii: `then echo ...` runs echo, and a walk stopping at the keyword loses every branch in the tree"
+assert control.out contains "assignment_prefix_counts=yes" else "shell-emit-ascii: an assignment standing before a command is a prefix rather than the command"
+assert control.out contains "assignment_not_counted=yes" else "shell-emit-ascii: an assignment emits nothing, however much prose it carries -- that text is another meter's question or nobody's"
+
+# THE CEILING, from both sides, and the instrument's own honesty about a read it could not take.
+assert control.out contains "ceiling_at_bound_passes=yes" else "shell-emit-ascii: a reading standing exactly at the ceiling must walk free"
+assert control.out contains "ceiling_one_past_refuses=yes" else "shell-emit-ascii: one character past the ceiling must refuse, or the ceiling is decoration"
+
+# THE FOUR MUTATIONS, each asserted to BITE. A control whose legs all pass against a broken
+# instrument is a control proving nothing.
+assert control.out contains "mutation_keyword_bites=yes" else "shell-emit-ascii: dropping the keyword step must red a leg -- every emit standing after `then` would go unread, and that is 21 characters of the living count"
+assert control.out contains "mutation_quote_bites=yes" else "shell-emit-ascii: dropping the quote walk must red a leg -- a `#` inside a string would end the line and take the rest of the operand with it, which is precisely the reading the family named as impossible without parsing"
+assert control.out contains "mutation_heredoc_bites=yes" else "shell-emit-ascii: dropping the heredoc opener must red a leg -- an assembled body would be billed to this ceiling as well as to the sibling's"
+assert control.out contains "mutation_named_bites=yes" else "shell-emit-ascii: a local that shadows the named-form counter must red a leg -- it fired for real one meter over, where the total read right and the named reading read zero, which is what a clean tree prints"
+
+let living = run ["sh" "tools/fixtures/s/shell_emit_ascii_scan.sh"]
+say living.out
+assert living.ok else "shell-emit-ascii: the living scan must complete"
+assert living.out contains "instrument=ok" else "shell-emit-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
+assert living.out contains "under_ceiling=yes" else "shell-emit-ascii: non-ASCII in emitted shell text rose above the ceiling -- convert on touch rather than raising it"
+
+# COUNTED OFF THE PEN, BOTH DIRECTIONS. A refusal is a behavior proven exactly as hard as a
+# welcome, so a tally reading only the affirmative half would understate the control by every
+# refusal it owns.
+let affirmed = where (lines control.out) as l: l contains "=yes"
+say "shell-emit-ascii: ${length affirmed} readings proven on real git repositories in a throwaway pen, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: shell-emit-ascii -- the sixth ASCII subject stands, and it is the surface every launcher in this fleet is written on. What it still cannot see is an operand split across a trailing backslash, and a `$( )` nested inside a quoted argument; it undercounts on purpose and says so, the way all five siblings do."
