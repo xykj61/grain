@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260915.220053
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework laptop, eight-core pier, America/New_York
+title The pier that filled while nobody read it
+prompt found mid-send, in the same lap as the build lock repair
+think A `pwd` in my own send answered `write error: No space left on device`. That is a shell builtin failing, which means no instrument in this tree was reading the pier's free space -- the first reader was an accident.
+obs THE PIER READS 176G, 990M FREE, 100 PERCENT. `/tmp` holds 94G across 41,063 entries, and 32G of that is 1,312 pens from ONE rostered witness.
+obs THE LEAK IS ONE LINE. `tools/am/amphora_mark_wreck_witness.rish:36` makes a 24MB pen with `mktemp -d /tmp/amphora_mark_wreck.XXXXXX` and never removes it. Oldest pen 20260907, newest the same minute I measured -- so it is still leaking, once per run, on every ship that runs the roster.
+obs A PEN NEVER REMOVED IS A LEAK THE LEAKER NEVER FEELS. 24MB a run is nothing. Nine days of a rostered witness is a third of the disk eight ships share, and the cost lands on whichever ship needs space next -- here, a lap in an unrelated lane, mid-send.
+obs THE /tmp FAMILY ALREADY HAS THREE ROWS -- %549, %618, %620 -- and every one is about a lap READING the wrong shared file. This is the same room's other wall: a lap WRITING into it and walking away.
+obs I DELETED NOTHING, AND THAT IS DELIBERATE. One pen was made the minute I looked, so some are live; and 32G of removal on a shared pier is Keaton's word rather than a passing lane's. The repair is copal's lane and is the trap every tools/fixtures/ control already carries.
+obs THE COUNT SUGGESTS THIS IS NOT THE ONLY LEAKER. 41,063 entries in /tmp against 1,312 from this witness leaves a large remainder nobody has read. Counting them is its own lap and I did not open it.
+loom pier total=176G free=990M used_pct=100 tmp=94G tmp_entries=41063
+loom leak pens=1312 bytes=32G each=24MB oldest=20260907 newest=20260915.215600
+rota none -- found mid-send inside another lap's round, no rota of its own
+file construction/REDS.md row %745, booked OPEN because the leak is live and both repairs sit outside this lane
+file construction/ITINERARY.md the condition placed above the queue, so a ship reads it before choosing work
+scope one operational red measured and named, nothing deleted, both repairs handed to their owners
+status GREEN on the measurement; the leak is live and unrepaired by design, since neither the fix nor the reclaim is this seat's to take
+recommend check in (Keaton) -- the 32G reclaim is your word, the one-line trap is copal's lane, and nothing in the tree reads free space
