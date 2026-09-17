@@ -48,12 +48,25 @@ set -u
 mode="${1:-count}"
 
 # The ceiling only falls. Lower it whenever a lap converts a copy into a stub.
+#   16  `20260917.130000`  the reading after the second cohort. The line below named the
+#                          next fall as the FOUR `lower_compose_core*` siblings; measured
+#                          rather than taken on its word, the cohort is SEVEN -- every file
+#                          declaring `out` as `*[rf.max_name_len]u8`, and all seven bodies
+#                          byte-identical at md5 `049cce282d2bf7d1b5543165776869c5`:
+#                          `lower_compose`, `lower_compose2`, `lower_compose_core`,
+#                          `lower_compose_core_add`, `lower_compose_core_payload`,
+#                          `lower_compose_jam_cue`, `lower_compose_lib`. All seven became
+#                          stubs with their own seven guards GREEN, 23 to 16.
+#                          The named next fall is `glow/lower_face.rye`, which shares the
+#                          same `rf.max_name_len` ceiling and differs from the seven by ONE
+#                          local name, `c` against `ch`. It waits for its own lap because it
+#                          carries 29 call sites against the seven's 22 together.
 #   23  `20260917.002500`  the reading after the first cohort. 29 copies stood at the open;
 #                          `lower_call`, `lower_calln`, `lower_cell`, `lower_list`,
 #                          `lower_triple` and `lower_quad` became stubs with their own six
 #                          guards GREEN, leaving 23. The named next fall is the four
 #                          `lower_compose_core*` siblings, which share one ceiling.
-CEILING=23
+CEILING=16
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }

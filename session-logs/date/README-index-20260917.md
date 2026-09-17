@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.133948` | [The rule written seven more times](20260917/20260917-133948_the-rule-written-seven-more-times.kyri) | Seven ident copies become stubs; 23 to 16. |
 | `20260917.132257` | [the record nobody proved](20260917/20260917-132257_the-record-nobody-proved.kyri) | The order record, read whole; the pen caught my own gap. |
 | `20260917.130042` | [The word a rebase carried in](20260917/20260917-130042_the-word-a-rebase-carried-in.kyri) | vocabulary_collection swept on the card: 1 hit to 0. |
 | `20260917.122239` | [The order agreed and the size did not](20260917/20260917-122239_the-order-agreed-and-the-size-did-not.kyri) | Row 3 held: agree=yes, and size parts 6.74x. |

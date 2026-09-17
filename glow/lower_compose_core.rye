@@ -41,10 +41,13 @@
 //! Outer face is the sample; the core carries no inner payload.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rf = @import("rune_face.rye");
 const rk = @import("rune_core.rye");
 const expr = @import("expr.rye");
 const lower_multi = @import("lower_multi.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rf.ParseError || rk.ParseError || lower_multi.LowerError || error{
     Overflow,
@@ -62,22 +65,21 @@ fn is_digit(ch: u8) bool {
     return ch >= '0' and ch <= '9';
 }
 
-fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const ch = face[i];
-        const mapped: u8 = if (ch == '-') '_' else ch;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rf.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes
+/// -- is the room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller -- a return width is authored API, where TAME asks a fixed width and leaves
+    // `usize` at the seam; the record is dropped here because a caller wanting it reaches
+    // `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rf.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
@@ -266,7 +268,7 @@ fn emit_methods(spec: *const ComposeCoreSpec, out: []u8) LowerError!usize {
     while (i < spec.count) : (i += 1) {
         const arm = arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
-        const an = try zig_safe_ident(arm, &za);
+        const an = try zig_safe_ident(arm, &za, "arm");
         const body: []const u8 = if (spec.is_open)
             try emit_open_body(&spec.bodies[i], &body_buf)
         else
@@ -288,7 +290,7 @@ fn emit_checks(spec: *const ComposeCoreSpec, welcome: bool, face_zig: []const u8
     while (i < spec.count) : (i += 1) {
         const arm = arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
-        const an = try zig_safe_ident(arm, &za);
+        const an = try zig_safe_ident(arm, &za, "arm");
         const base: u32 = if (spec.is_open)
             try open_body_expect(&spec.bodies[i], spec.value)
         else
@@ -310,7 +312,7 @@ fn emit_checks(spec: *const ComposeCoreSpec, welcome: bool, face_zig: []const u8
 
 fn emit_compose_core(spec: *const ComposeCoreSpec, welcome: bool, out: []u8) LowerError!u32 {
     var zf: [rf.max_name_len]u8 = undefined;
-    const fn_len = try zig_safe_ident(face_slice(spec), &zf);
+    const fn_len = try zig_safe_ident(face_slice(spec), &zf, "face");
     var methods: [1024]u8 = undefined;
     const mlen = try emit_methods(spec, &methods);
     var checks: [512]u8 = undefined;

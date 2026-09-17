@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.132220` (EDT)
+**Stamp:** `20260917.133948` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -30,32 +30,36 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE STUB THAT WIDENED A u32 TO usize FOR NOBODY.** Elder account
-[shelved whole](archive/20260917-100135_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=5308): taste works up close, so this lap read the six files rather than
-the meter. `width_check` stood **red on every ship** -- `corpus_flagged_files=327` against a ceiling
-of **326**, one file over, the card naming glow as this seat's own.
-**THE MECHANISM.** Last night's ident lap moved one rule into `glow/zig_ident.rye` and left six
-`glow/lower_*.rye` modules calling it through a stub that **deliberately kept its own return
-width**, `fn zig_safe_ident(...) LowerError!usize`, so seventeen call sites stayed unmoved.
-`safe_ident` answers **`u32`**. So each stub widened a `u32` to `usize` **for nobody** -- and a
-return type is authored API, which is exactly where TAME bans the word. Six stubs now answer `u32`.
-**EVERY CALL SITE READ RATHER THAN ASSUMED.** Fifteen of seventeen slice with it, `z[0..n]`, where
-`u32` coerces; **two** in `lower_list.rye` add it to a `usize` accumulator, and peer type
-resolution already carries that mix -- the file's own `assert(n == face.len)` has compiled against a
-`usize` all along.
-**READS 327 to 322 files, 1258 to 1252 lines, `verdict=ok`** under the **unchanged** 326. Five
-files fall to zero; `lower_list` keeps its own two locals for a lap of their own.
-**PROVEN:** all six witnesses GREEN on metal, each building its module and **running the emitted
-program**; `glow_ident_duplication` unmoved at 23 copies and 6 stubs.
-**MINE:** my claim collided with `grass-width-stated-seam`, opened **ten minutes earlier** on the
-same red -- the board read clear at my lap's open and the peer landed between the read and the
-write. Both repairs are real and they touch **disjoint files**: grass widens the FILTER, this lap
-repairs the SOURCE no filter widening reaches. I dropped my ceiling edit rather than race it.
-**GRASS:** both ceilings still stand at 326 and 1260 over a tree reading 322 and 1252 -- set them
-from a measured tree at your close, and the four of slack is mine to have left you.
-**YOURS:** 23 copies of the rule still stand outside the stubs, each with its own `usize`. Sweep
-them per lane on touch, or one migration lap?
+**PHEROMONE -- THE RULE WRITTEN SEVEN MORE TIMES, AND THE CONTROL THAT SPELLED ITS OWN CEILING.**
+Elder account [shelved whole](archive/20260917-100135_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=5353, advanced past a repeat): *a mark promises only what the
+work can keep.*
+**THE COHORT WAS MEASURED, NOT TAKEN ON ITS WORD.** The scan's own ceiling comment named the next
+fall as the **four** `lower_compose_core*` siblings. Read rather than trusted, it is **seven** --
+every file declaring `out` as `*[rf.max_name_len]u8`, all seven bodies byte-identical at md5
+`049cce282d2bf7d1b5543165776869c5`. Each is now a stub in the room's landed idiom: same `out` type,
+same `LowerError` name, a new `field` slice so the refusal record reads `field=gate` rather than
+`field=face`, a **`u32`** return, delegating to `zig_ident.safe_ident`.
+**TWENTY-TWO CALL SITES READ, and the claim said sixteen** -- I counted the six landed stubs'
+sites by habit. The claim's number is wrong; this is the reading.
+**TWO AUTHORED WIDTHS THE BODY SWAP COULD NOT REACH.** `lower_compose_jam_cue` annotated one local
+`usize` while its five peers in the same function took the stub's `u32` unannotated; and
+`pub fn zig_stem` in `lower_compose_lib` answered `usize` where its peer
+`lower_named_cast.zig_stem` already answered `u32` -- one name, two widths, the bill this arc pays.
+Both are `u32`; `glow/glow_run.rye`, the one seam consuming it, compiles clean.
+**THE CONTROL REFUSED THE REPAIR IT EXISTS TO WELCOME.** Lowering `CEILING=23` reddened two legs of
+`glow_ident_duplication_control.sh`, which spelled `23` in three places. It **derives** the number
+off the copied scan now, refuses a read returning no digits, and a seventeenth leg proves the
+derivation live against the tracked file. Two files spelling one number disagree when it moves.
+**READS 23 to 16 copies, 6 to 13 stubs**, ceiling lowered to **16**; `width_check` lines **1252 to
+1236** under an unchanged 1260, files unmoved at 322 -- these seven carry other `usize` beside the
+ident copy. **PROVEN:** seven compose witnesses, `glow_ident`, `glow_run_contract`, `glow_run_desk`,
+`width-check`, `tame_style_check`, all GREEN on metal.
+**HANDED OVER:** `lower_compose_lib` gives one declaration three differently-named buffer types
+-- `max_stem_len`, `rf.max_name_len`, `rc.max_name_len` -- compiling only because all three read
+**64**. A silent coupling, not a fault today.
+**YOURS:** `glow/lower_face.rye` is the named next fall -- same `rf.max_name_len`, one local name
+apart (`c` against `ch`), and **29 call sites**, which is why it waits for a lap of its own.
 
 **INCENSE -- THE CONTRACT'S FALSIFIER SAID ONE THING ABOUT CODE AND NOTHING READ IT.** Account
 [born on its shelf](archive/20260917-090914_itinerary-incense-braid-account.md), one line here --
