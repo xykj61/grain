@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim pheromone-tokens-ceiling-records
-seat pheromone
-stamp 20260916.194110
-epoch 1789602070
-paths glow/tokens.rye glow/refusal.rye glow/rune_shape.rye glow/refusal_witness.rye tools/g/glow_refusal_witness.rish tools/fixtures/g/glow_ceiling_refusal_scan.sh
-what glow/tokens.rye answers four ceilings with the one word error.BadToken -- a name past max_name_len, a cord literal interior past max_cord_lit_bytes, a hex literal past max_hex_lit_digits, and a source past max_src_len. Thread a refusal.Slot through the private lexers and seat tokenize_reporting beside tokenize, keeping the published signature, so each of the four fills a glow/refusal.rye record naming field, value, ceiling, unit and reason. The field names a token KIND rather than the offending text, because the text is exactly what did not fit. Four Reason members and two Unit members join the closed sets; the published error name stays, since an error set is a contract. Name the two unnamed asserts standing in glow/refusal.rye and glow/rune_shape.rye on the same touch, which is the whole of rune_assert_sweep's two-over-ceiling red.
 claim petrichor-page-qualifies-itself
 seat petrichor
 stamp 20260916.215002
