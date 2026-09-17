@@ -104,6 +104,6 @@ assert control.out contains "effort_driver_is_source=yes" else "declared-model: 
 assert control.out contains "effort_whole_roster_bitten=yes" else "declared-model: a driver that moves must carry its whole roster with it"
 assert control.out contains "control_failed=0" else "declared-model: every leg the control prints must pass, including one written after this line"
 assert control.out contains "control_verdict=ok" else "declared-model: the control must agree with itself"
-say "twenty-six behaviors proven on real git repositories, every refusal shown from both sides"
+say "thirty-seven behaviors proven on real git repositories, every refusal shown from both sides -- and the local override read apart from the tracked default, gated on neither"
 
 say "GREEN: declared-model -- one model and one configured effort, each named once and agreed everywhere it is described."

@@ -70,8 +70,22 @@ read_one="$root/tools/fixtures/d/declared_model.sh"
 model=$(DECLARED_MODEL_ROOT="$root" sh "$read_one" model) || { echo "verdict=model_unreadable"; exit 1; }
 effort=$(DECLARED_MODEL_ROOT="$root" sh "$read_one" effort) || { echo "verdict=effort_unreadable"; exit 1; }
 
+# The RESOLVED pair, reported and never gated (`20260917.184231`). `.claude/settings.local.json`
+# outranks the tracked file and `.gitignore` denies it, so a clone can run a model no tracked byte
+# names. Gating this would red seven ships for an override Keaton asked for, which is the gate
+# `.claude/rules/derived-spine.md` describes as one somebody turns off. So it is printed, loudly,
+# and the roster below keeps checking the TRACKED value those pages actually claim.
+resolved_model=$(DECLARED_MODEL_ROOT="$root" sh "$read_one" resolved_model) || { echo "verdict=resolved_model_unreadable"; exit 1; }
+resolved_effort=$(DECLARED_MODEL_ROOT="$root" sh "$read_one" resolved_effort) || { echo "verdict=resolved_effort_unreadable"; exit 1; }
+local_override=$(DECLARED_MODEL_ROOT="$root" sh "$read_one" override) || { echo "verdict=override_unreadable"; exit 1; }
+
 echo "declared_model=$model"
 echo "declared_effort=$effort"
+echo "resolved_model=$resolved_model"
+echo "resolved_effort=$resolved_effort"
+echo "local_override=$local_override"
+[ "$resolved_model" = "$model" ] || echo "override_detail: this clone runs $resolved_model where the tracked file declares $model"
+[ "$resolved_effort" = "$effort" ] || echo "override_detail: this clone runs effort $resolved_effort where the tracked file declares $effort"
 
 # The declaring roster: living pages that state which model THIS clone runs today.
 DECLARING="GLOW_PROFILE.template.kyri recursion-prompts/seed/autonomous-loop.seed.md .claude/rules/session-logs.md"

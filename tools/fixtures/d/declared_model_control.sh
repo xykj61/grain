@@ -185,6 +185,46 @@ out=$(runscan "$pen/effortmoved")
 echo "$out" | grep -q 'declared_effort=high' && leg effort_driver_is_source yes || leg effort_driver_is_source no
 echo "$out" | grep -q 'declaring_effort_over=6' && leg effort_whole_roster_bitten yes || leg effort_whole_roster_bitten no
 
+# 11 -- THE LOCAL OVERRIDE (`20260917.184231`). `.claude/settings.local.json` outranks the tracked
+# file and `.gitignore` denies it, so a clone can RUN a model no tracked byte names. These legs
+# prove the two readings apart, and prove the gate deliberately stays on the tracked one.
+
+# 11a -- no local file: the two readings agree and the override says so.
+build "$pen/nolocal" claude-opus-5
+out=$(runscan "$pen/nolocal")
+echo "$out" | grep -q 'resolved_model=claude-opus-5' && leg resolved_matches_tracked yes || leg resolved_matches_tracked no
+echo "$out" | grep -q 'local_override=no' && leg override_absent_reported yes || leg override_absent_reported no
+
+# 11b -- a local file naming another model: the readings part, and the OVERRIDE is what parts them.
+# This is the leg that fails if the resolved reading ever falls back to the tracked file.
+build "$pen/localmodel" claude-opus-5
+printf '{ "model": "claude-sonnet-5" }\n' > "$pen/localmodel/.claude/settings.local.json"
+out=$(runscan "$pen/localmodel")
+echo "$out" | grep -q 'declared_model=claude-opus-5'  && leg tracked_holds_under_override yes || leg tracked_holds_under_override no
+echo "$out" | grep -q 'resolved_model=claude-sonnet-5' && leg resolved_follows_override yes || leg resolved_follows_override no
+echo "$out" | grep -q 'local_override=yes' && leg override_present_reported yes || leg override_present_reported no
+echo "$out" | grep -q 'override_detail: this clone runs claude-sonnet-5' && leg override_detail_named yes || leg override_detail_named no
+
+# 11c -- AND IT NEVER GATES. Seven ships carry this state on Keaton's word; a gate here would red
+# every one of them for work no lap may undo. The whole repair rests on this leg staying green.
+echo "$out" | grep -q 'verdict=ok' && leg override_never_gates yes || leg override_never_gates no
+
+# 11d -- a local file present and silent on both keys is no override at all. Presence alone would
+# over-report, and a reader would chase a difference that is not there.
+build "$pen/localsilent" claude-opus-5
+printf '{ "hooks": {} }\n' > "$pen/localsilent/.claude/settings.local.json"
+out=$(runscan "$pen/localsilent")
+echo "$out" | grep -q 'local_override=no' && leg silent_local_is_no_override yes || leg silent_local_is_no_override no
+echo "$out" | grep -q 'resolved_model=claude-opus-5' && leg silent_local_falls_back yes || leg silent_local_falls_back no
+
+# 11e -- the fallback is PER KEY rather than per file, exactly as Claude Code resolves it. A local
+# file naming only the effort leaves the model reading the tracked file.
+build "$pen/localeffort" claude-opus-5
+printf '{ "effortLevel": "high" }\n' > "$pen/localeffort/.claude/settings.local.json"
+out=$(runscan "$pen/localeffort")
+echo "$out" | grep -q 'resolved_effort=high' && leg resolved_effort_follows yes || leg resolved_effort_follows no
+echo "$out" | grep -q 'resolved_model=claude-opus-5' && leg per_key_fallback yes || leg per_key_fallback no
+
 # THE CONTROL'S OWN LEG TALLY. Every reading above prints `<name>=yes` or `<name>=no`, and until
 # 20260916 a `no` stood beneath a green `control_verdict=ok` unless the witness happened to name
 # that key. A leg written tomorrow was therefore unheard until somebody remembered to assert it.
