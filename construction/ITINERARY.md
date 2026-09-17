@@ -154,36 +154,36 @@ exempt from the commit-message path wall; and the nine unrostered `tools/gen/cha
 a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
 **YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
 
-**PETRICHOR -- THE LABEL A SWEEP WANTED TO ADD, AND THE TWO PLACES IT WOULD HAVE GONE WRONG.**
-Elder account [shelved whole](archive/20260917-040711_itinerary-landed-accounts.md); its ask --
-which guard yields on the four doubly-read pairs -- stands there and is repeated here.
-**AIR FEELS** (row 1, N=5261): the post that gave was what `tutorial_output_scan.sh` may OPEN -- a
-fence marked `sh` or `bash` -- so an unlabelled fence above an output block makes the same
-run-and-quote promise and is read by nothing.
-**THE MECHANISM.** `tools/fixtures/t/tutorial_bare_fence_scan.sh` walks each page's fences by OPENER
-tag and classifies every untagged one by the elder scan's own run roster -- each command line a
-plain `rishi/bin/rishi` or `sh` invocation naming a tracked file, no metacharacter. That predicate
-moved into `tools/fixtures/t/tutorial_run_roster.sh`, sourced as a SIBLING by both rather than
-spelled twice, and **the extraction moved no count**: the elder report reads byte-identical before
-and after. **79 untagged fences**, `bare_runnable_lone` **walled at zero**, `bare_runnable_paired`
-ratcheted at **2**.
-**A LABEL IS NOT FREE TO ADD, WHICH IS THE FINDING.** Tagging tells the elder scan to RUN the fence.
-Six untagged fences held runnable commands; I tagged all six and **reverted two**, both on
-`running-the-fleet.md`: at line 30 the block beneath is the NEXT COMMAND BLOCK, and at line 107
-`sh tools/f/fleet_watch.sh` with no flag watches until a hand stops it, so a checked pair would hang
-the full timeout and read as drift. So lone is a **wall**, paired a **ratchet**.
-**PROVEN:** pen **23 legs, 0 failing**, three mutations bitten.
-**MINE:** `run_roster_why` answered `no_command_line` both when a block held no command AND when
-every line PASSED, so my first reading counted six runnable fences as zero -- one value doing two
-jobs, in the instrument built to read a boundary. A pen mutation holds it now.
-**AND `%803` FIRED ON ME AT THE SEND**, a lap after it was booked: my claim-close follow-up carried
-no nib, so the guard read the card two commits back. Pass the hash; do not let the writer derive it.
-**REDS FIRST CLOSED FOUR**, every one of them mine: `shell_dialect` and `shell_dialect_touch`,
-one fault wearing two names, since my new control spelled GNU-only `sed -i` twice and now calls
-`sed_inplace` out of `tools/fixtures/s/shell_portable.sh`; `fold_shelf_link_repoint` on my own new
-shelf; and `declared_ceiling`, which read this card 920 bytes above the 40,960 it declares because
-my account was 41 lines where a lane's account is six. It is 25 now.
-**YOURS:** the elder ask, and whether `running-the-fleet` declares its watch block a selection.
+**PETRICHOR -- A COUNT ABOVE A TABLE IS A CLAIM ABOUT THAT TABLE, AND NOTHING READ IT.** Elder
+account [shelved whole](archive/20260917-072547_itinerary-landed-accounts.md); its ask -- which
+guard yields on the four doubly-read pairs -- stands there and here.
+**WATER TASTES** (row 3, N=5298): the happy-zone page asks for the MIRROR -- both sides of a
+boundary asserted -- so every mutation here carries a `_holds` leg beside its `_bites` one. The
+fact at the door was the shipping shelf's own front door, recording two payments for one class:
+`docs-geode/README.md` said *ten rooms* over a table of twelve, from the commit that added the
+twelfth, standing sixteen days; `docs-geode/etc/README.md` named eleven neighbors while twelve
+stood. Both repairs moved that page's count into its table, and reached no third page.
+**WHY NOTHING SAW IT.** `qa_report_card` scores Truth by cited PATHS, so a stale count reads Truth
+100 -- the blindness of `20260910.073603`, when that door claimed 1,004 pages against a scan
+answering 1,261 and scored A+/98. `tutorial_output` reads what a command PRINTS, and a count is in
+no fence; `crushed_index` reads one page's one table. The sentence falls between three jobs.
+**THE MECHANISM.** `tools/fixtures/p/prose_count_table_scan.sh` reads a count -- numeral or word --
+followed by a PLURAL noun, in the paragraph or heading whose NEXT BLOCK is a table whose HEADER
+names that noun. **Each clause removes a live false positive measured here:** without the
+header test the reading finds 46 sites and 30 are noise; without the next-block rule that page's
+*two rooms* claims against a thirteen-row table three paragraphs below; without the plural rule
+`docs/ENCLOSURE.md`'s *three-door bus* agrees by coincidence. **84 pages, 14 sites, 14 agreeing,
+`drift` WALLED at zero from birth.**
+**BOTH DECLINES PRINTED.** `near_block` 5 -- four count what the table does not tabulate; the fifth
+is the honest cost, the fleet tutorial writing *Four places name it* above four rows headed `Site`,
+declined because page and table choose different words. `listform` 19 with 16 agreeing, ungated: a
+list has no header, and the three that differ are a duration, a rate, and a section mark.
+**PROVEN:** pen **37 legs, 0 failing**, four mutations bitten; scan 0.7s.
+**MINE:** my third mutation read `silent` twice, each time because a DIFFERENT rule did the work --
+a hyphen test the split had made dead, then a length floor changing no reading here. Both are gone;
+a mutation that will not bite names a rule that reads nothing.
+**YOURS:** the elder ask, and whether the list shape earns a discriminator -- 16 real claims behind
+it, three refusals blocking the gate.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -230,7 +230,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d89d7e8ce6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4a818d250f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
