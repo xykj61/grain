@@ -167,13 +167,46 @@ ok "'follow-up' alone names the rule 5 candidate" "$(printf '%s' "$out" | grep -
 ok "'follow-up' alone withholds the rule 2 candidate" "$(! printf '%s' "$out" | grep -q 'rule 2' && echo yes || echo no)"
 ok "a rendering shape word leaves the card byte-identical" "$([ "$digest_before" = "$(cksum < "$pen/e/construction/ITINERARY.md")" ] && echo yes || echo no)"
 
+echo "== 6b. lead-in is a PEER NAME for follow-up, never a third shape =="
+# `.claude/rules/alias-sameness.md`: several lawful names, one referent -- one implementation, one
+# behavior, one refusal path, and neither name outranking the other. The lead-in is the claim commit
+# the ORDER clause asks for before a build; its arithmetic is rule 5's exactly, since HEAD becomes
+# its parent either way. Proven by DISAGREEMENT being impossible rather than by inspection: the two
+# names are asked the same question and their answers compared byte for byte.
+lead_out=$(drive "$pen/e" lead-in) ; lead_rc=$?
+follow_out=$(drive "$pen/e" follow-up) ; follow_rc=$?
+ok "'lead-in' renders" "$([ $lead_rc -eq 0 ] && echo yes || echo no)"
+ok "'lead-in' names the rule 5 candidate" "$(printf '%s' "$lead_out" | grep -q "HEAD is $head_e" && echo yes || echo no)"
+ok "'lead-in' and 'follow-up' render the same bytes" "$([ "$lead_out" = "$follow_out" ] && [ $lead_rc -eq $follow_rc ] && echo yes || echo no)"
+ok "'lead-in' withholds the rule 2 candidate" "$(! printf '%s' "$lead_out" | grep -q 'rule 2' && echo yes || echo no)"
+ok "a lead-in render leaves the card byte-identical" "$([ "$digest_before" = "$(cksum < "$pen/e/construction/ITINERARY.md")" ] && echo yes || echo no)"
+
+# and the WRITE halves agree too: one card, written by each name in turn, lands on one hash.
+field "$pen/j"
+drive "$pen/j" write lead-in >/dev/null
+lead_card=$( cksum < "$pen/j/construction/ITINERARY.md" )
+field "$pen/k"
+drive "$pen/k" write follow-up >/dev/null
+follow_card=$( cksum < "$pen/k/construction/ITINERARY.md" )
+ok "'write lead-in' and 'write follow-up' leave the same card" "$([ "$lead_card" = "$follow_card" ] && echo yes || echo no)"
+
+# MUTATION: give the peer name the AMEND derivation, and the two names stop agreeing. A pair of
+# aliases proven only by both succeeding cannot be told from two names doing two different things.
+mut="$pen/l"
+field "$mut"
+sed 's|^if shape == "lead-in" then let shape = "follow-up"$|if shape == "lead-in" then let shape = "amend"|' \
+  "$ROOT/tools/r/remember_git_nib.rish" > "$mut/tools/r/remember_git_nib.rish"
+mut_lead=$(drive "$mut" lead-in) || true
+mut_follow=$(drive "$mut" follow-up) || true
+ok "MUTATION: a peer name given its own derivation is bitten" "$([ "$mut_lead" != "$mut_follow" ] && echo yes || echo no)"
+
 echo "== 7. an unknown word refuses rather than falling through to a default =="
 if out=$(drive "$pen/e" sideways); then rc=0; else rc=1; fi
 ok "an unknown verb is REFUSED" "$([ $rc -ne 0 ] && echo yes || echo no)"
-ok "the refusal names the words it takes" "$(printf '%s' "$out" | grep -q 'say render, write, amend, or follow-up' && echo yes || echo no)"
+ok "the refusal names the words it takes" "$(printf '%s' "$out" | grep -q 'say render, write, amend, follow-up, or lead-in' && echo yes || echo no)"
 if out=$(drive "$pen/e" write sideways); then rc=0; else rc=1; fi
 ok "an unknown SHAPE is REFUSED" "$([ $rc -ne 0 ] && echo yes || echo no)"
-ok "the shape refusal names both shapes" "$(printf '%s' "$out" | grep -q 'amend (rule 2' && printf '%s' "$out" | grep -q 'follow-up (rule 5' && echo yes || echo no)"
+ok "the shape refusal names both shapes" "$(printf '%s' "$out" | grep -q 'amend (rule 2' && printf '%s' "$out" | grep -q 'lead-in (rule 5' && echo yes || echo no)"
 if out=$(drive "$pen/e" write amend extra); then rc=0; else rc=1; fi
 ok "a third word is REFUSED" "$([ $rc -ne 0 ] && echo yes || echo no)"
 ok "the card survived every refusal byte-identical" "$([ "$digest_before" = "$(cksum < "$pen/e/construction/ITINERARY.md")" ] && echo yes || echo no)"

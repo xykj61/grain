@@ -19,6 +19,13 @@
 #   follow-up  rule 5. A commit lands ON TOP of the work commit -- a session log recording facts
 #              that did not exist until the send was over. HEAD is not about to move; it is about
 #              to become the new commit's PARENT, so the nib names `HEAD`.
+#   lead-in    rule 5 again, one end of the lap over: the claim commit the ORDER clause asks for
+#              BEFORE the build. Its arithmetic is identical -- HEAD becomes its parent -- so this
+#              is a PEER NAME for `follow-up` under `.claude/rules/alias-sameness.md` rather than a
+#              third shape: one implementation, one refusal path, two lawful words. A lap opening a
+#              claim was otherwise asked to call a lead-in a follow-up, which is a word the tool
+#              made it get wrong. `tools/f/fleet_claim.sh` now carries the card itself, so this
+#              name is for a hand committing a claim by other means.
 #
 # The two differ by exactly one commit, and running the amend shape where rule 5 asks writes the
 # grandparent: a hash that resolves, is an ancestor of HEAD, and is none of the three states
@@ -49,6 +56,7 @@
 #   rishi/bin/rishi run tools/r/remember_git_nib.rish follow-up          # the rule 5 nib alone
 #   rishi/bin/rishi run tools/r/remember_git_nib.rish write amend        # write the rule 2 nib
 #   rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up    # write the rule 5 nib
+#   rishi/bin/rishi run tools/r/remember_git_nib.rish write lead-in      # the same nib, its other name
 #
 # `write` with no shape REFUSES and touches nothing. Idempotent: a second write reports
 # `card_changed=no` and does not open the file. Proven by
@@ -59,7 +67,7 @@ let argc_ok = "no"
 if length args == 0 then let argc_ok = "yes"
 if length args == 1 then let argc_ok = "yes"
 if length args == 2 then let argc_ok = "yes"
-assert argc_ok == "yes" else "remember-git-nib: at most two words -- a verb (render|write) and a shape (amend|follow-up)"
+assert argc_ok == "yes" else "remember-git-nib: at most two words -- a verb (render|write) and a shape (amend|follow-up|lead-in)"
 
 let verb = "render"
 if length args != 0 then let verb = args[0]
@@ -68,22 +76,29 @@ if length args == 2 then let shape = args[1]
 
 if verb == "amend" then let shape = "amend"
 if verb == "follow-up" then let shape = "follow-up"
+if verb == "lead-in" then let shape = "lead-in"
 if verb == "amend" then let verb = "render"
 if verb == "follow-up" then let verb = "render"
+if verb == "lead-in" then let verb = "render"
+
+# invariant: the peer name resolves to one shape before anything reads it, so `lead-in` and
+# `follow-up` share one derivation, one refusal, and one printed line -- alias-sameness, where
+# several lawful names carry one referent and none outranks another.
+if shape == "lead-in" then let shape = "follow-up"
 
 # invariant: an unknown word refuses rather than falling through to a default, because the default
 # IS the fault this program was repaired for -- a shape chosen by the tool rather than by the hand.
 let verb_ok = "no"
 if verb == "render" then let verb_ok = "yes"
 if verb == "write" then let verb_ok = "yes"
-assert verb_ok == "yes" else "remember-git-nib: unknown word ${verb} -- say render, write, amend, or follow-up"
+assert verb_ok == "yes" else "remember-git-nib: unknown word ${verb} -- say render, write, amend, follow-up, or lead-in"
 
 let shape_named = "no"
 if shape == "amend" then let shape_named = "yes"
 if shape == "follow-up" then let shape_named = "yes"
 let shape_ok = shape_named
 if shape == "" then let shape_ok = "yes"
-assert shape_ok == "yes" else "remember-git-nib: unknown shape ${shape} -- say amend (rule 2, HEAD^) or follow-up (rule 5, HEAD)"
+assert shape_ok == "yes" else "remember-git-nib: unknown shape ${shape} -- say amend (rule 2, HEAD^), or follow-up / lead-in (rule 5, HEAD)"
 
 # invariant: a WRITE names its shape. This is the whole repair of REDS %803 -- nothing readable here
 # tells a lap about to amend from one about to commit afresh, so the program asks rather than picks.

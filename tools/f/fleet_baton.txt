@@ -54,8 +54,16 @@ SO SAY IT BEFORE YOU BUILD. When a lap opens a NEW INSTRUMENT -- a tool, a scan,
 module -- OR takes a BOOKED RED off the ledger, check, claim, push, then build:
   sh tools/fixtures/f/fleet_claim_scan.sh --check <path> ...
   sh tools/f/fleet_claim.sh --open <name> --paths "<path> ..." --what "<one plain sentence>"
-  then land construction/fleet-claims.kyri and PUSH, before the build -- an unpushed claim is one
-  no peer can read, and the reader says `board=local` out loud when it meets that state.
+  then land BOTH construction/fleet-claims.kyri and construction/ITINERARY.md, and PUSH, before the
+  build -- an unpushed claim is one no peer can read, and the reader says `board=local` out loud
+  when it meets that state.
+STAGE THE CARD BESIDE THE BOARD, because the claim commit is a commit like any other and the card
+must name its parent. The writer carries the nib for you now, on --open and on --close alike; what
+it cannot do is stage. While it wrote the board alone, 185 of this tree's 204 claim-opening commits
+left construction/ITINERARY.md naming HEAD~2, 184 of them commits whose ONLY file was the board --
+so remember_git_nib read stale for a mean of 12.7 minutes, which is precisely the window the ORDER
+clause above puts the cold endurance run in. The fleet's most expensive reading carried a red it
+manufactured itself, on every lap that claimed.
 READ THE SENTENCES, NOT ONLY THE VERDICT. Path overlap is the exact half and it would have MISSED
 the founding case: `port_registry` and `port_band` share no path at all. So every check prints the
 whole live board with each claim's `what` line, clear verdict or not, and ten seconds of reading

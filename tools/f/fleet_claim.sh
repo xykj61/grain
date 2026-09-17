@@ -15,7 +15,8 @@
 #
 #   sh tools/fixtures/f/fleet_claim_scan.sh --check tools/x/thing_scan.sh   # is anyone on this?
 #   sh tools/f/fleet_claim.sh --open thing --paths "tools/x/thing_scan.sh" --what "..."
-#   git add construction/fleet-claims.kyri && git commit && git push xy     # now a peer can read it
+#   git add construction/fleet-claims.kyri construction/ITINERARY.md          # BOTH: see the card clause
+#   git commit && git push xy                                                 # now a peer can read it
 #
 # A CLAIM UNPUSHED IS A CLAIM NOBODY CAN READ, which is the one way to hold this tool and gain
 # nothing. The reader says `board=local` when it meets that state, out loud.
@@ -33,6 +34,30 @@
 #
 # IT NEVER COMMITS AND NEVER PUSHES. A tool that ships on its own is a tool that surprises, and the
 # send is the hand's.
+#
+# IT CARRIES THE OPERATOR CARD, AND THAT IS A SECOND FILE RATHER THAN A SECOND HABIT. A claiming lap
+# makes two commits this writer causes -- the lead-in `--open` before the build and the `--close`
+# after it -- and while it wrote `construction/fleet-claims.kyri` alone, each of those commits
+# carried the board and left the card behind. The card's `Git nib` constant then names HEAD~2, and
+# `tools/r/remember_git_nib_witness.rish` reads `stale` for the whole build window. Measured over
+# this tree's 204 claim-opening commits: 185 stale under the guard's own state predicate, 184 of
+# them commits whose ONLY file is the board. That window is exactly where the ORDER clause puts the
+# cold endurance run, so the fleet's most expensive reading carried a manufactured red on every lap
+# that claimed.
+#
+# The arithmetic is rule 5's, unchanged: the nib is `git rev-parse --short=10 HEAD` read BEFORE the
+# commit is made, since that HEAD becomes its parent. So this is a widening of a seated shape rather
+# than a new one, and the bytes are moved by the seated writer,
+# `tools/fixtures/r/remember_git_nib_write.sh`, which refuses before it mutates.
+#
+# ONLY WHEN THE BOARD CHANGED. The idempotent no-op open exits above the write, one step ahead of
+# the carry, so `claim_unchanged` leaves BOTH files byte-identical -- the water row's law holds over
+# the pair rather than over the board alone. That is the leg that makes this repair provable, and it
+# is asserted from both sides in the control.
+#
+# IT DEGRADES RATHER THAN REFUSES. A pen with no card, a tree outside git, or an absent nib writer
+# each leave the board written and print `card_carried=no` with a reason. A readable claim outranks
+# a current card, so the board's write stands free of the card's.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
@@ -77,6 +102,37 @@ held_by=$(awk -v n="$name" '
 tmp="$BOARD.claim.$$"
 trap 'rm -f "$tmp"' EXIT
 
+CARD=${FLEET_CLAIM_CARD:-construction/ITINERARY.md}
+nib_writer=tools/fixtures/r/remember_git_nib_write.sh
+
+# Carry the card's Git nib to HEAD, so the commit this writer's edit is about to ride in leaves the
+# card naming its own parent. Called only after the board's bytes have actually moved.
+carry_the_card() {
+  if [ ! -f "$CARD" ]; then
+    echo "card_carried=no"
+    echo "detail: no operator card at $CARD -- the board is written and the card is not this writer's to invent"
+    return 0
+  fi
+  if [ ! -f "$nib_writer" ]; then
+    echo "card_carried=no"
+    echo "detail: the nib writer $nib_writer is missing -- carry the card by hand before you commit"
+    return 0
+  fi
+  head=$(git rev-parse --short=10 HEAD 2>/dev/null || true)
+  case "$head" in
+    "") echo "card_carried=no"; echo "detail: git names no HEAD here, so there is no parent to pin"; return 0 ;;
+  esac
+  if out=$(sh "$nib_writer" "$CARD" "$head" 2>&1); then
+    changed=$(printf '%s\n' "$out" | awk -F= '$1=="card_changed"{print $2}')
+    echo "card_carried=yes"
+    echo "card_nib=$head"
+    echo "card_changed=${changed:-unknown}"
+  else
+    echo "card_carried=no"
+    echo "detail: the nib writer refused -- $(printf '%s' "$out" | tr '\n' ' ')"
+  fi
+}
+
 if [ "$verb" = close ]; then
   [ -n "$held_by" ] || { echo "detail: no live claim named $name"; echo "verdict=no_such_claim"; exit 2; }
   [ "$held_by" = "$me" ] || { echo "detail: $name is $held_by's claim -- a seat closes its own"; echo "verdict=not_yours"; exit 2; }
@@ -87,6 +143,7 @@ if [ "$verb" = close ]; then
     { if (!drop) print }
   ' "$BOARD" > "$tmp"
   cat "$tmp" > "$BOARD"
+  carry_the_card
   echo "closed=$name"
   echo "detail: the record of what landed is the commit; of what was withdrawn, the session log. This board's history is git log."
   echo "verdict=closed"
@@ -141,8 +198,9 @@ if cmp -s "$tmp" "$BOARD"; then
   exit 0
 fi
 cat "$tmp" > "$BOARD"
+carry_the_card
 echo "claim=$name"
 echo "seat=$me"
 echo "stamp=$stamp"
-echo "detail: push it before you build -- an unpushed claim is one no peer can read"
+echo "detail: stage BOTH construction/fleet-claims.kyri and $CARD, then push before you build -- an unpushed claim is one no peer can read, and a card left unstaged reds remember_git_nib for the whole window"
 echo "verdict=claimed"

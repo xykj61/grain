@@ -16,7 +16,58 @@ move the pin *as well*; what stays refused is a commit whose whole content is th
 2. After that signed commit -- and after the final rebase, when the send takes one -- amend **at most once** so **Git nib** names `git rev-parse --short=10 HEAD~1`: **HEAD's parent**, a commit the round was built on and therefore one every clone already resolves. Writing pre-amend HEAD names the sibling state -- an object no other clone holds -- which stood as a fleet-wide double-red on five bodies out of six, every lap (REDS %401). **The tool's word for this move is `amend`:** `rishi/bin/rishi run tools/r/remember_git_nib.rish write amend`.  
 3. **Stop.** Further amends chasing a perfect fixed-point hash are out of scope -- the card may lag HEAD by one amend; `prin scope` is living HEAD.
 4. A pin-only follow-up stays off the remote.
-5. **A follow-up carries the nib forward too** (REDS %450, `20260906`). When a send lands a commit on top of the work commit -- a session log recording facts that did not exist until the send was over -- that commit stages `construction/ITINERARY.md` with **Git nib** rewritten to `git rev-parse --short=10 HEAD`, read **before** the follow-up is committed. That HEAD becomes the follow-up's parent, so the card lands in the same `parent` state rule 2 aims for. **Rule 2's amend is spared here**: the final rebase is already behind the send, so the parent is known before the commit is made rather than after it. **The tool's word for this move is `follow-up`:** `rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up`.
+5. **Any commit landing beside the work commit carries the nib forward too** (REDS %450, `20260906`; widened `20260917`). When a send lands a commit on top of the work commit -- a session log recording facts that did not exist until the send was over -- that commit stages `construction/ITINERARY.md` with **Git nib** rewritten to `git rev-parse --short=10 HEAD`, read **before** the follow-up is committed. That HEAD becomes the follow-up's parent, so the card lands in the same `parent` state rule 2 aims for. **Rule 2's amend is spared here**: the final rebase is already behind the send, so the parent is known before the commit is made rather than after it. **The tool's word for this move is `follow-up`:** `rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up`.
+
+## Rule 5 is one arithmetic, and it was written under one of its two names (`20260917`)
+
+**Rule 5 says *follow-up*, and what it describes is any commit a lap lands whose parent is the
+commit the card already names.** A lap makes two such commits, one at each end:
+
+| The commit | When | The nib |
+|---|---|---|
+| **lead-in** -- the claim the ORDER clause asks for | before the build | `HEAD` read before it is made |
+| **follow-up** -- the session log recording facts the send produced | after the work commit | `HEAD` read before it is made |
+
+One arithmetic, one shape, two positions. So `tools/r/remember_git_nib.rish` takes **`lead-in`** as a
+**peer name** for `follow-up` under [`alias-sameness`](alias-sameness.md) -- one implementation, one
+refusal path, neither name outranking the other -- rather than a third shape. A lap opening a claim
+was otherwise asked to call a lead-in a follow-up, which is a word the tool made it get wrong.
+
+**The lead-in half stood uncovered and it fired on nearly every claiming lap.** Measured
+`20260917.164713` over this tree's **204 claim-opening commits**, each put to the guard's own state
+predicate copied verbatim: **185 leave the card STALE**, and **184 of those are commits whose only
+file is `construction/fleet-claims.kyri`**. Over the last 55 openings the reading is **55 of 55**,
+each standing stale a mean of **12.7 minutes** and a maximum of **62** across a mean of 1.49 commits
+before a later commit repins. **That window is exactly where the baton's ORDER clause puts the cold
+endurance run**, so the fleet's most expensive reading -- 355 guards, held still, bought to say
+*these answers describe THIS tree* -- carried a manufactured red on every lap that claimed. All
+three figures are **free**; re-read them by walking `git log -- construction/fleet-claims.kyri`
+through the predicate in `tools/r/remember_git_nib_witness.rish` step 3.
+
+**The cure is in the tool rather than in this page**, because a habit that must be typed is a habit
+that will be typed differently. `tools/f/fleet_claim.sh` carries the card itself on `--open` and on
+`--close`, through the same `tools/fixtures/r/remember_git_nib_write.sh` this rule's own workaround
+names -- **and only when the board's bytes actually moved**, so the idempotent no-op open leaves
+BOTH files byte-identical and the water row's law holds over the pair rather than over the board
+alone. It **degrades rather than refuses**: an absent card, a tree that is no repository, or a
+missing nib writer each leave the board written and print `card_carried=no` with a reason, since a
+claim the fleet cannot read is a worse outcome than a card one commit behind. **Stage both files.**
+
+Proven by [`../../tools/fixtures/f/fleet_claim_control.sh`](../../tools/fixtures/f/fleet_claim_control.sh)
+on real git repositories in a throwaway pen, **62 legs, 0 failing**, sixteen of them this carry's --
+its centrepiece running the red rather than arguing it, by landing a board-only commit and reading
+`stale` from the guard's own predicate before reading `parent` from the carried one -- with two
+mutations bitten: a carry placed **above** the idempotence exit moves the card on a run promised to
+move nothing, and the amend's `HEAD^` in the carry's place leaves the very commit it was meant to
+make honest still stale, which is `%803` one position over.
+
+**What this does not reach.** A lap that commits a claim by some other means, where the peer shape
+word is what it reaches for. And the contested send, which no shape repairs and which `%803` keeps.
+
+**Two ships met this before it was built and neither closed it** -- copal wrote it as a session-log
+row (`20260917.061322`) and handed it to a peer whose live claim was about a different subject, and
+diffuser met it on its own cold run. It stood on no ledger for the day between. A finding handed on
+is a finding nobody holds.
 
 ## The writer names its shape, and refuses to guess (REDS %803, `20260917`)
 
