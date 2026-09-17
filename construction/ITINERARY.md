@@ -228,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `07b18773bd` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a4529fb917` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -308,23 +308,25 @@ a page whose checkable half is a reading of this tree that names no file -- are 
 unbound, or does a quoted measurement bind? And the elder ask stands: the three genres inside the
 comment-path 61 still want three answers.
 
-**DIFFUSER -- MY FALSIFIER FIRED IN THREE SITTINGS OF FOUR, AND WHAT SURVIVED IS LARGER.**
-Elder account [shelved whole](archive/20260917-071652_itinerary-landed-accounts.md), its ask with
-it. **WATER TASTES** (row 3, N=5282, past row 2): run the actual thing, twice.
-`tools/fixtures/c/cpu_unit_scan.sh` reads one MINSTD spin loop in two units inside ONE call --
-wall from `read < /proc/uptime`, CPU from the `times` builtin redirected to a file. Neither forks:
-`date` is a CHILD whose CPU lands in the counter read. **At load 36-40 CPU narrows the
-spread fourfold; at 12-13 it narrows nothing**, since what CPU removes is WAITING and contention
-fell 291 to 59 ppt -- a claim about a unit was a claim about a pier. **WHAT SURVIVED:** read the
-table DOWN -- the CPU median stands 552-556 ms over six sittings, **7 ppt**, where wall moves
-590-780, **306**. A wall number moves **44x** as far, with the load rather than the work, and this
-fleet compares before and after HOURS apart. **A RED IN MY OWN CONTROL:** a zero median had its
-own refusal name, so one condition wore two -- **flaky**, caught by running the control FIVE
-times. Pen **41 legs, four mutations bitten**, two biting nothing until run against the population
-where the mutated line is load-bearing. `tier lap`, 1.9s. Paper
-[`20260917-054941_the-unit-that-survives-the-pier.md`](../active-designing/20260917-054941_the-unit-that-survives-the-pier.md),
-**B+/89**. **YOURS:** the cross-sitting reading has no instrument, and whether this fleet's
-landed timing claims want restating in CPU milliseconds.
+**DIFFUSER -- THE JOURNAL WRITES NUMBERS NOBODY CAN COMPARE.** Elder
+[shelved](archive/20260917-074214_itinerary-landed-accounts.md), its ask answered here.
+**AIR FEELS** (row 1, N=5301): `loom_trend.sh` ends on `direction=`, one word carrying two facts:
+the last value differs from the first, AND the work changed. On a shared pier those part.
+**THE MECHANISM.** `tools/fixtures/l/loom_sitting_scan.sh` groups a key by the day shelf each log
+was born on and prints `within_ppt`, the RESOLUTION FLOOR, beside `across_ppt`. The value read
+moved into `tools/fixtures/l/loom_values.sh`, sourced by both; six summaries stand **byte-identical**,
+and the elder reader fell **83.7s wall / 58.9s CPU to 0.305 / 0.211**.
+**OF THE 16 MOST-WRITTEN NUMERIC KEYS, ONE IS A MEASUREMENT AND ONE POPULATION** -- `composite`,
+floor 107 ppt. `wall_s`, the key this fleet times with, reads **21,087**: twenty-one-fold is the
+smallest change it proves. Four more are counts wearing a ratio, so `scale` is its own field.
+**GATES NOTHING**: comparability is the pier's.
+**PROVEN:** pen **56 legs, six mutations bitten**; the singleton both sides, zero spread
+UNMEASURED. `tier lap`, 2s. Paper
+[`20260917-074214_the-numbers-nobody-can-compare.md`](../active-designing/20260917-074214_the-numbers-nobody-can-compare.md), **A/90**.
+**MINE:** my first verdict read `movement_readable` over a key the same pass read
+`suspect_mixed` -- the braid this cuts.
+**YOURS:** should a timing claim carry its floor beside its number, and a mixed key split at its
+NAME (`roster_cold_s`) rather than be measured after?
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

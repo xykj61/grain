@@ -1,0 +1,62 @@
+# loom_sitting_witness.rish -- the cross-sitting reading, proven where it can be proven.
+#
+#   rishi/bin/rishi run tools/l/loom_sitting_witness.rish
+#
+# tools/fixtures/l/loom_sitting_scan.sh groups a loom key's values by the day shelf each log was
+# born on, takes each sitting's own median and spread, and prints the within-sitting spread beside
+# the across-sitting one -- so a reader of `tools/l/loom_trend.sh`'s `direction=` line can see
+# whether this key could prove a movement at all.
+#
+# WHAT THIS GATES AND WHAT IT DECLINES. The scan's ARITHMETIC and its REFUSALS are gated: the
+# control plants corpora whose right answers were worked out by hand before the scan ran, so every
+# median, spread, parts-per-thousand figure and verdict is asserted against a number nobody read
+# off the tool. The scan's reading of THIS TREE'S OWN JOURNAL is declined -- what `wall_s` reads
+# tomorrow depends on eight ships' habits, and a ceiling over it would red on a day somebody
+# measured something new. Whether a key is comparable is a fact about the pier, never a fault of
+# any lane.
+#
+# THE TRAP IS ASSERTED FROM BOTH SIDES. A sitting holding one value has a spread of zero, and that
+# zero means UNMEASURED rather than noise-free. The control proves the singleton is excluded from
+# the floor, counted apart in the report, and that a key with no multi-value sitting refuses with
+# `within_ppt=na` rather than printing a confident number -- each with a mutation that bites.
+let control = run ["sh" "tools/fixtures/l/loom_sitting_control.sh"]
+assert control.ok else "loom sitting control did not run: ${control.err_brief}"
+assert control.out contains "control_verdict=ok" else "loom sitting control refused: ${control.out_brief}"
+assert control.out contains "control_failed=0" else "a loom sitting control leg failed: ${control.out_brief}"
+
+# THE LEG TALLY BESIDE THE VERDICT, for the reason its sibling gives: a control reaching its last
+# line says only that it reached it.
+assert control.out contains "control_legs=56" else "the loom sitting leg count moved: ${control.out_brief}"
+assert control.out contains "control_expected=56" else "the loom sitting expected leg count moved: ${control.out_brief}"
+
+# THE SIX MUTATIONS RUN EVERY PASS, and each is named here so a mutation quietly dropped from the
+# control is visible from the witness rather than only from its own tally.
+assert control.out contains "leg mutation_singleton_excluded ok" else "the singleton exclusion no longer bites: ${control.out_brief}"
+assert control.out contains "leg mutation_unmeasured_is_na ok" else "an unmeasured floor could print as a number: ${control.out_brief}"
+assert control.out contains "leg mutation_median_is_middle ok" else "the median no longer bites: ${control.out_brief}"
+assert control.out contains "leg mutation_sibling_family ok" else "the sibling's family filter no longer bites: ${control.out_brief}"
+assert control.out contains "leg mutation_singletons_counted ok" else "singletons are no longer counted apart: ${control.out_brief}"
+assert control.out contains "leg mutation_scale_named ok" else "a coarse integer count could read as a measurement: ${control.out_brief}"
+
+# THE SIBLING MOVE IS PROVEN RATHER THAN CLAIMED. The value read moved out of loom_trend.sh into
+# tools/fixtures/l/loom_values.sh this lap, and the control runs the elder pipeline beside the
+# sibling over one corpus and compares the bytes.
+assert control.out contains "leg sibling_bytes_identical ok" else "the extracted value read no longer agrees with the elder pipeline: ${control.out_brief}"
+
+# THE LIVE SEAM, driven the way a reader drives it. This asserts the scan ANSWERS on the tree's own
+# journal and names its fields -- never what any figure reads, which is the pier's to decide.
+let live = run ["sh" "tools/fixtures/l/loom_sitting_scan.sh" "composite"]
+assert live.ok else "the loom sitting scan did not run on this tree: ${live.err_brief}"
+assert live.out contains "key=composite" else "the live reading named no key: ${live.out_brief}"
+assert live.out contains "sittings_singleton=" else "the live reading counted no singletons: ${live.out_brief}"
+assert live.out contains "resolution_ppt=" else "the live reading named no resolution floor: ${live.out_brief}"
+assert live.out contains "scale_class=" else "the live reading named no scale: ${live.out_brief}"
+
+# A KEY NOBODY WROTE ANSWERS BY NAME rather than printing an empty reading that looks like a flat
+# line -- the refusal the elder reader already seats, held on the live tree too.
+let absent = run ["sh" "tools/fixtures/l/loom_sitting_scan.sh" "no_such_loom_key_here"]
+assert absent.ok else "the scan failed rather than refusing on an unwritten key: ${absent.err_brief}"
+assert absent.out contains "verdict=key_never_written" else "an unwritten key did not refuse by name: ${absent.out_brief}"
+assert absent.out contains "within_ppt=na" else "an unwritten key printed a floor it never measured: ${absent.out_brief}"
+
+say "GREEN loom_sitting -- 56 control legs, six mutations bitten, the live seam answering"

@@ -43,9 +43,19 @@ KEY=${1:-}
 MODE=${2:-list}
 [ -n "$KEY" ] || { echo "usage: loom_trend.sh <key> [--summary] | --keys" >&2; exit 2; }
 
+# THE VALUE READ IS SPELLED ONCE, IN A SIBLING (`20260917`). A second reader --
+# `tools/fixtures/l/loom_sitting_scan.sh` -- asks a different question of these same values, and two
+# readers spelling one read is two readings free to come to disagree. So the read lives in
+# `tools/fixtures/l/loom_values.sh`, sourced here rather than copied there, and the move was proven
+# by this file's own output standing byte-identical before and after it.
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$here/../fixtures/l/loom_values.sh"
+
 work=$(mktemp -d "${TMPDIR:-/tmp}/loom-trend.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 
+LOOM_MAX_LOGS=$MAX_LOGS
+export LOOM_MAX_LOGS
 git ls-files 'session-logs/date/*/*.kyri' 2>/dev/null | head -"$MAX_LOGS" > "$work/logs.txt"
 # A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170).
 [ -s "$work/logs.txt" ] || { echo "refused: no tracked session logs -- every reading below would be empty" >&2; exit 2; }
@@ -61,15 +71,8 @@ if [ "$KEY" = "--keys" ]; then
 fi
 
 # The log's own stamp orders the trend. A basename carries it, so no file need be opened to sort.
-: > "$work/values.txt"
-while IFS= read -r f; do
-  b=${f##*/}
-  stamp=$(printf '%s' "$b" | cut -c1-15)
-  grep '^loom ' "$f" 2>/dev/null \
-    | { [ -n "${LOOM_FAMILY:-}" ] && grep -F -- "$LOOM_FAMILY" || cat; } | tr ' ' '\n' \
-    | grep -E "^${KEY}=" | cut -d= -f2- \
-    | while IFS= read -r v; do printf '%s\t%s\t%s\n' "$stamp" "$v" "$f"; done
-done < "$work/logs.txt" | sort > "$work/values.txt"
+loom_values "$KEY" "$work/raw.txt" || exit 2
+sort "$work/raw.txt" > "$work/values.txt"
 
 n=$(grep -c . "$work/values.txt" || true)
 [ -n "$n" ] || n=0
