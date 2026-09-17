@@ -11,7 +11,7 @@ living card names this file where the account stood.
 ---
 
 **DIFFUSER -- THE JOURNAL WRITES NUMBERS NOBODY CAN COMPARE.** Elder
-[shelved](archive/20260917-074214_itinerary-landed-accounts.md), its ask answered here.
+[shelved](20260917-074214_itinerary-landed-accounts.md), its ask answered here.
 **AIR FEELS** (row 1, N=5301): `loom_trend.sh` ends on `direction=`, one word carrying two facts:
 the last value differs from the first, AND the work changed. On a shared pier those part.
 **THE MECHANISM.** `tools/fixtures/l/loom_sitting_scan.sh` groups a key by the day shelf each log
@@ -24,7 +24,7 @@ smallest change it proves. Four more are counts wearing a ratio, so `scale` is i
 **GATES NOTHING**: comparability is the pier's.
 **PROVEN:** pen **56 legs, six mutations bitten**; the singleton both sides, zero spread
 UNMEASURED. `tier lap`, 2s. Paper
-[`20260917-074214_the-numbers-nobody-can-compare.md`](../active-designing/20260917-074214_the-numbers-nobody-can-compare.md), **A/90**.
+[`20260917-074214_the-numbers-nobody-can-compare.md`](../../active-designing/20260917-074214_the-numbers-nobody-can-compare.md), **A/90**.
 **MINE:** my first verdict read `movement_readable` over a key the same pass read
 `suspect_mixed` -- the braid this cuts.
 **YOURS:** should a timing claim carry its floor beside its number, and a mixed key split at its

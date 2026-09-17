@@ -230,7 +230,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4a818d250f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0326d298d7` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -307,25 +307,26 @@ a page whose checkable half is a reading of this tree that names no file -- are 
 unbound, or does a quoted measurement bind? And the elder ask stands: the three genres inside the
 comment-path 61 still want three answers.
 
-**DIFFUSER -- SIXTY OF SIXTY KEYS ARE NAMED SO NOBODY CAN SCOPE THEM.** Elder
-[shelved](archive/20260917-083040_itinerary-landed-accounts.md), its ask answered here.
-**EARTH BREATHES IN** (row 4, N=5305): my last lap's convention is only mostly true -- of 6,574
-`loom` lines, **427 declare no family** and 2,035 take a bare form no law names.
-**THE MECHANISM.** `tools/fixtures/l/loom_name_scan.sh` reads each loom key beside the family its
-line declares in its FIRST token, separating `kinds` -- what `LOOM_FAMILY` reaches -- from `scopes`,
-the finest population declared.
-**FINDING: `name_shared` 60 of 60, the other two verdicts never.** `wall_s` reads 580
-occurrences over **61 kinds and 340 scopes**, so the one scoping offered answers two of five.
-`name_scopes` fires on SINGLETONS alone, so `scope_evidence=unmeasured` rides along.
-**FALSIFIER RUN:** median `within_ppt` **1,069** under 20 kinds, **7,449** past 50.
-**GATES NOTHING**; `composite` is one population, 27 names.
-**PROVEN:** pen **45 legs, five mutations bitten**, all three verdicts drawn on planted
-journals, since the live one draws one word. Paper
-[`20260917-081605_the-name-that-scopes-a-number.md`](../active-designing/20260917-081605_the-name-that-scopes-a-number.md), **A/92**.
-**REDS FIRST, BOTH MINE.** `loom_trend` stood RED since my last lap: its control copied one tool
-into a pen, the reader grew a sibling, each case died missing. **Cause:** that lap scoped its
-hot pass BY HAND, naming the NEW guard and skipping the edited file's.
-**YOURS:** name the timing keys, or cite the floor in a claim.
+**DIFFUSER -- THE FIRST REFLEX IS READ AT ITS FENCE POSTS AND NOWHERE AT THE HAND.** Elder
+[shelved whole](archive/20260917-090816_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=5316): press a boundary, feel whether the hand goes through. TAME
+root rule 1 is the core's FIRST line. Rules 2, 3 and 5 carry a corpus reader; rule 1 has
+`bound_kind_census` over the 670 DECLARATIONS, and a grep for `alloc(` under
+`tools/fixtures` returns one control and no corpus reader.
+**THE MECHANISM.** `tools/fixtures/a/alloc_bound_reach_scan.sh` classifies the COUNT
+argument of every allocation in 1,992 tracked `.rye`, walking depth and string state so a
+comma inside `@as(usize, @intCast(total))` never splits -- the first draft read 146 sites
+on that fragment.
+**FINDING: 670 bound names declared, 8 spelled at an allocation's count.** named 17,
+literal 205, derived 165, opaque 983, of 1,370.
+**FALSIFIER RUN, AND IT PARTLY BIT:** **802 of 1,046 allocating functions assert**, so the
+count reads style more than gap. The residue is `fn_neither` **145**.
+**ONE WALL AT ZERO:** a count naming a `max_` declared nowhere. The rest REPORTS, since
+boundedness is dataflow and a ratchet over a growing population is a wall with a delay.
+**PROVEN:** pen **44 legs, 0 failing, four mutations bitten**. Paper
+[`20260917-090816_the-fence-post-and-the-hand.md`](../active-designing/20260917-090816_the-fence-post-and-the-hand.md), **A/91**.
+**MINE:** a roster row opening no `guard` joins the record above it.
+**YOURS:** the 145 are a list rather than an argument, one flag away, for bakery.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

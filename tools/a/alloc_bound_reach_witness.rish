@@ -1,0 +1,91 @@
+# tools/a/alloc_bound_reach_witness.rish -- TAME root rule 1 is read at its declarations
+# and nowhere at its call sites, and this reads the call sites.
+#
+#   rishi/bin/rishi run tools/a/alloc_bound_reach_witness.rish
+#
+# WHY. The core states rule 1 first: every allocation, collection, loop and pipeline names
+# a max. Rules 2, 3 and 5 each have a corpus reader -- tools/r/rune_assert_sweep.rish over
+# the asserts, tools/w/width-check.rish over the widths, tools/t/tame-check.rish over the
+# tidy bans. Rule 1 has tools/fixtures/b/bound_kind_census.sh, which reads the 670 bound
+# DECLARATIONS and sorts them by dimension, and a grep for the literal string alloc( across
+# every file under tools/fixtures returns one control and no corpus reader. So the tree's
+# first reflex was measured where it is written down and never where a hand meets it.
+#
+# WHAT IS GATED, at zero: unresolved -- a count naming a max_ or min_ identifier that
+# resolves to no such declaration anywhere in tracked Rye. That is the one half decidable
+# by text, and it is the fence post rotted at the base: a site that looks bounded to every
+# reader and to every grep, naming a bound that is not there.
+#
+# WHAT IS REPORTED AND GATED NOWHERE: the four site classes and the four function classes.
+# Boundedness is a DATAFLOW property -- garden.alloc(u8, cap) is bounded exactly when cap
+# was bounded upstream -- so a wall over derived or opaque would book correct code as debt.
+# fn_neither is a reading of a GROWING population, and a ratchet over one of those is a
+# wall with a delay, which reds on a peer's ordinary new function.
+#
+# THE READING THAT DECIDES WHAT THE OTHER ONE MEANS. Sites naming a bound read 17 of 1,370,
+# which sounds like a tree that bounds nothing. The function pass falsifies the strong form:
+# 802 of 1,046 allocating functions assert. The residue that survives it is fn_neither -- an
+# allocating function naming no bound and asserting nothing at all.
+#
+# NOT tools/fixtures/b/bound_kind_census.sh, which asks what DIMENSION each declared bound
+# constrains. That reads the fence posts; this reads where a hand meets them. Two jobs,
+# two names.
+#
+# Scan: tools/fixtures/a/alloc_bound_reach_scan.sh. Pen: tools/fixtures/a/alloc_bound_reach_control.sh.
+
+let scan = run ["sh" "tools/fixtures/a/alloc_bound_reach_scan.sh"]
+say scan.out
+assert scan.ok else "alloc-bound-reach: an allocation names a bound that is declared nowhere -- read the scan's own unresolved line"
+assert scan.out contains "verdict=ok" else "alloc-bound-reach: the scan must reach its clean verdict"
+assert scan.out contains "unresolved=0" else "alloc-bound-reach: a count naming an undeclared bound looks bounded to every reader and must stay at zero"
+
+# A meter reading an empty corpus reports clean while proving nothing, so each population is
+# asserted non-empty rather than merely unrefused.
+assert (scan.out contains "alloc_sites=0" == false) else "alloc-bound-reach: a corpus with no allocation would report clean while reading nothing at all"
+assert (scan.out contains "bound_names_declared=0" == false) else "alloc-bound-reach: a tree declaring no bound would prove nothing about the reach"
+
+# The classifier is asserted to FIRE rather than only to stay quiet. A classifier that never
+# fires reads exactly like a corpus with nothing to classify.
+assert scan.out contains "named=" else "alloc-bound-reach: the class naming a bound at the site must be counted where a reader can see it"
+assert scan.out contains "opaque=" else "alloc-bound-reach: the remainder a hand must read must be counted rather than shrugged at"
+assert scan.out contains "fn_neither=" else "alloc-bound-reach: the residue surviving the function widening is the finding and must be printed"
+assert scan.out contains "spans_lines=" else "alloc-bound-reach: a blind spot nobody prints cannot be told from an empty one"
+assert scan.out contains "fn_unclosed=" else "alloc-bound-reach: the function walk's own blind spot must be printed beside its counts"
+
+let control = run ["sh" "tools/fixtures/a/alloc_bound_reach_control.sh"]
+say control.out
+assert control.ok else "alloc-bound-reach: the control must complete"
+assert control.out contains "control_verdict=ok" else "alloc-bound-reach: every leg of the pen must pass"
+
+# The pen's own tally, asserted beside the named legs. A control that reached its last line
+# proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
+assert control.out contains "control_failed=0" else "alloc-bound-reach: a failing leg must red this witness rather than ride a clean verdict"
+assert control.out contains "legs=44" else "alloc-bound-reach: the pen's leg count moved -- raise it here in the commit that adds the leg"
+
+assert control.out contains "leg named_counted ok" else "alloc-bound-reach: a count spelling a max_ name must read named"
+assert control.out contains "leg literal_counted ok" else "alloc-bound-reach: an integer literal must read literal rather than opaque"
+assert control.out contains "leg derived_counted ok" else "alloc-bound-reach: a count reading a .len must read derived"
+assert control.out contains "leg opaque_counted ok" else "alloc-bound-reach: a local must read opaque, which is the honest name for it"
+assert control.out contains "leg nested_is_one_site ok" else "alloc-bound-reach: a nested call must read as one site rather than two"
+assert control.out contains "leg nested_bound_is_named ok" else "alloc-bound-reach: a bound inside a nested call must still read named"
+assert control.out contains "leg m1_depth_walk_bites ok" else "alloc-bound-reach: splitting the count on every comma must change the answer"
+assert control.out contains "leg string_comma_not_a_split ok" else "alloc-bound-reach: a comma inside a string literal is prose rather than an argument separator"
+assert control.out contains "leg m2_string_walk_bites ok" else "alloc-bound-reach: dropping the string walk must change the answer"
+assert control.out contains "leg dupe_outside_sites ok" else "alloc-bound-reach: a dupe is derived by construction and belongs outside the population rule 1 asks about"
+assert control.out contains "leg m3_dupe_split_bites ok" else "alloc-bound-reach: folding a dupe into the sites must change the answer"
+assert control.out contains "leg unresolved_counted ok" else "alloc-bound-reach: a bound named at a site and declared nowhere must be counted"
+assert control.out contains "leg unresolved_refuses ok" else "alloc-bound-reach: the one wall must refuse from the failing side"
+assert control.out contains "leg unresolved_lifts ok" else "alloc-bound-reach: a refusal that survives its own repair is one nobody can act on"
+assert control.out contains "leg m4_premutation_refuses ok" else "alloc-bound-reach: the mutation must be preceded by the unmutated reading it displaces"
+assert control.out contains "leg m4_declaration_compare_bites ok" else "alloc-bound-reach: dropping the comparison against the declarations must change the answer"
+assert control.out contains "leg qualified_is_named ok" else "alloc-bound-reach: a bound imported from a sibling is spelled qualified and must resolve by its bare form"
+assert control.out contains "leg comment_line_declined ok" else "alloc-bound-reach: a commented-out allocation is not an allocation"
+assert control.out contains "leg spanning_call_counted ok" else "alloc-bound-reach: a call closing on a later line must be counted as the blind spot it is"
+assert control.out contains "leg untracked_source_declined ok" else "alloc-bound-reach: the reading is of the index, never the disk"
+assert control.out contains "leg fn_neither_counted ok" else "alloc-bound-reach: the residue class must be counted from a planted case rather than inferred"
+assert control.out contains "leg fn_non_allocating_declined ok" else "alloc-bound-reach: a function holding no allocation stands outside this population entirely"
+assert control.out contains "leg refuses_without_declarations ok" else "alloc-bound-reach: an instrument that cannot answer must refuse rather than read zero"
+assert control.out contains "leg refuses_without_sites ok" else "alloc-bound-reach: an empty walk must refuse rather than report a clean tree"
+assert control.out contains "leg refuses_outside_a_repo ok" else "alloc-bound-reach: a scan outside a repository must refuse by name"
+
+say "GREEN: alloc bound reach -- every allocation's count is classified; a bound named at a site and declared nowhere stays at zero."
