@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
 | `20260917.054906` | [A killed lap is not a lost lap](20260917/20260917-054906_a-killed-lap-is-not-a-lost-lap.kyri) | Parked lap recovered whole from the dead-letter box; five reds closed. |
 | `20260917.053050` | [The family the convention could not see](20260917/20260917-053050_the-family-the-convention-could-not-see.kyri) | Six fund guards seated; the gated reading saw none. |
 | `20260917.051641` | [The seat renamed, the guard left behind](20260917/20260917-051641_the-guard-left-behind.kyri) | 135 emit characters swept as one kind; a fifty-day red found. |

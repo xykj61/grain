@@ -1,0 +1,47 @@
+# checkable_binding_witness.rish -- a page claims the checkable room; what binds the claim?
+#
+# WHY. `context/TWO_ROOMS.md` seats one crossing: "A claim crosses from the vision room to the
+# checkable room by exactly one door -- it earns a witness." `tools/t/two_rooms_doorway.rish` reads
+# whether a page NAMES a room and stops there, by design, so a settled page declaring the checkable
+# room while naming no evidence at all reads exactly like a page bound by six witnesses. This is the
+# second half of that promise: the doorway asks whether the door is labelled, and this asks whether
+# the label is earned.
+#
+# WHAT IS GATED, as a ratchet under a ceiling that only falls: `settled_unbound` -- a page whose
+# door names the checkable room beside a settled lifecycle word, and whose body names no instrument,
+# no tracked module source, and no tracked construction pin. Read 8 on the seating lap over 1,351
+# roster pages, of which 435 declare checkable and 202 are settled. A wall at zero would red every
+# ship at once over pages nobody chose to touch this hour; the ceiling falls in the commit that
+# repairs one.
+#
+# WHAT IS REPORTED, never gated. `settled_delegated` and `settled_hop_dry`: a page saying its
+# binding is named on another page -- `foundations/20260905-154954_the-clock-and-the-mark.md`
+# writes exactly that, "both halves are law, each bound by a witness the pages below name" -- is
+# honest, and the hop is followed ONE step. A delegation that lands is correct as written, so only
+# a DRY hop is a promise broken, and that reads 7. One step and no further, deliberately: two needs
+# a cycle guard and measures something no reader does.
+#
+# `roster_absent` is reported for a reason the pen found in this scan rather than the other way
+# round: `git ls-files` answers from the index, and one returned path the disk lacks made `awk`
+# abort the whole run, so every page after it went unread and the reading printed a clean zero.
+# That is the narrowed-glob shape -- the failure that stays quiet. It is counted now.
+#
+# PROVEN: `tools/fixtures/c/checkable_binding_control.sh`, 40 behaviors on real git repositories in
+# a throwaway pen, every refusal planted and then lifted, three mutations asserted to bite, and the
+# control's own leg tally asserted beside its verdict.
+
+say "checkable_binding: a checkable door, and what stands behind it"
+
+let control = run ["sh" "tools/fixtures/c/checkable_binding_control.sh"]
+say control.out
+assert control.ok else "checkable_binding: the control must complete"
+assert control.out contains "control_verdict=ok" else "checkable_binding: a control leg failed"
+assert control.out contains "control_failed=0" else "checkable_binding: the control tallied a failing leg"
+
+let reading = run ["sh" "tools/fixtures/c/checkable_binding_scan.sh"]
+say reading.out
+assert reading.ok else "checkable_binding: the scan must run"
+assert reading.out contains "verdict=read" else "checkable_binding: the scan must read the tree before it is believed"
+assert reading.out contains "ceiling_ok=yes" else "checkable_binding: settled_unbound stands above its ceiling -- run sh tools/fixtures/c/checkable_binding_scan.sh list"
+
+say "checkable_binding GREEN"

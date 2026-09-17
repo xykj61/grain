@@ -7337,3 +7337,28 @@ guard gen_shyu_fund_prep
 path tools/gen/fund/gen_shyu_fund_prep.rish
 tier lap
 seated 20260917.052450
+
+guard checkable_binding
+path tools/c/checkable_binding_witness.rish
+tier lap
+seated 20260917.060042
+# THE DOORWAY ASKS WHETHER THE DOOR IS LABELLED; THIS ASKS WHETHER THE LABEL IS EARNED.
+#
+# `context/TWO_ROOMS.md` seats one crossing: "A claim crosses from the vision room to the checkable
+# room by exactly one door -- it earns a witness." `two_rooms_doorway` above reads whether a page
+# NAMES a room and stops there, by design, so a settled page declaring the checkable room while
+# naming no evidence at all reads exactly like a page bound by six witnesses. Nothing read the
+# second half.
+#
+# GATED as a ratchet with no slack: `settled_unbound` -- a door naming the checkable room beside a
+# settled lifecycle word, over a body naming no instrument, no tracked module source, and no tracked
+# construction pin. Read 8 on the seating lap over the doorway's own roster of 1,351 pages, 435 of
+# which declare checkable and 202 settled. The raw finding was 61 and three successive fairness
+# widenings dissolved it to 8, which is the strongest thing that can be said for what is left.
+#
+# REPORTED, never gated: `settled_delegated` 28 and `settled_hop_dry` 7. A page saying its binding
+# is named elsewhere -- `foundations/20260905-154954_the-clock-and-the-mark.md` writes exactly that
+# -- is honest, so only a DRY hop is a promise broken. The hop is followed one step, since two needs
+# a cycle guard and measures something no reader does.
+#
+# 19s on the seating lap, which is why `tier lap` rather than cadence.
