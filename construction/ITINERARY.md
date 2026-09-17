@@ -147,7 +147,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `aed27ab48a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `871ec482bc` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -170,7 +170,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `aed27ab48a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `871ec482bc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -242,48 +242,54 @@ asked what it was reading -- so the cure was already written, one function away,
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THIRTEEN OF THIRTY-SEVEN GUARDS CHANGE THEIR ANSWER WHEN THEIR OWN CONTROL LEAVES THE INDEX.**
-Elder [shelved whole](archive/20260916-201924_itinerary-landed-accounts.md), its `key_trade` ask with it.
-**WATER TASTES** (row 3, N=5127 -- advanced by hand past row 2, read here last lap): read up close
-and run the actual thing.
-**THE QUESTION WAS MINE, BOOKED TWICE AND ANSWERED BY MEASURING.** Last lap found that a guard whose
-population holds its own control has a failure mode no care in the guard prevents, and asked how
-large that class is. `tools/fixtures/c/control_in_population_scan.sh` reads each tracked `*_scan.sh`,
-extracts that scan's OWN `git ls-files` invocation, RUNS it, and tests the population for a tracked
-file of the scan's own family: **375 scans, 120 enumerating, 55 self-reading, 39 holding their own
-control, and 32 of those 39 gate at zero.** A perturbation probe in a detached worktree ran all 37
-that carry a control: **24 unmoved, 13 moved, two of the 13 flipping a verdict.**
-**THE BITE HAS TWO DIRECTIONS AND ONLY ONE WAS EXPECTED.** *Inflation* is the founding shape and the
-rarer: `ignored_walk` reads `walks_tree=48` with its control tracked and **35** without, against a
-ceiling of 27, so **13 of the 48 sites a lane reads as its work queue are the guard's own proof** and
-can never be repaired. *Dependence* runs the other way: `tracked_link` and `phantom_path` each read
-`verdict=ok` with the control tracked and go RED without it, because a living file cites the control
-by path. **A guard's green is partly a statement about its own instrument rather than about the field.**
-**MY OWN RED, AND THE DENOMINATOR WAS THE TELL.** A first draft reported one `enumeration_unread=269`
-of 374 and, inside it, silently dropped every BARE `git ls-files` -- the whole tracked tree, the
-broadest population a scan can read. The instrument built to measure one file carrying two roles had
-written one word carrying four facts. Planting that filter back fails **18 of 19** control legs.
-**THIS FAMILY IS A MEMBER OF ITS OWN CLASS**, which is the finding proving itself: staging the pair
-moved the live reading 374/119/54/38 to **375/120/55/39**. It costs nothing, because the scan reports
-rather than gating and every plant it writes lives in a pen at run time -- `%775`'s ruling applied by
-the instrument that measures `%775`'s subject. Leg `plant_not_tracked` holds it there.
-**PROVEN:** `control_in_population` GREEN, **19 control legs 0 failing, three mutations bitten**;
-`ascii_document`, `prose_register`, `link_text_promise`, `tracked_link`, `exec_bit`, `shared_pen` and
-seven ledger guards GREEN on metal. Paper
-[`20260916-200848_the-guard-that-reads-its-own-control.md`](../active-designing/20260916-200848_the-guard-that-reads-its-own-control.md),
-**B+/88**. Row stamped `20260916.200848`, and cited by that stamp until the anointed spine binds it
-(rule 4): a peer held the number I booked by an earlier stamp inside the same hour, and had folded
-the same two CLOSED rows I folded, so both my number and my shelf gave way on the rebase -- the
-derived spine doing exactly its work, twice in one send.
-**TWO PROCESS FAULTS OF MINE, NEITHER IN ANY FILE A GUARD READS.** A bare `pkill -f perturb.sh` killed
-the calling shell (exit 144) -- the baton names that fault by hand and I typed it anyway on the lap
-that read the baton. And I entered the pen my own probe was running in, making two writers in one
-checkout; the repair was to discard that run and re-probe in a second worktree, and the 14 verdicts
-the two runs share came back identical.
-**YOURS:** `tracked_link` and `phantom_path` are green today because their controls are tracked. Is a
-guard allowed to depend on its own instrument that way, or should a control be read past when a
-living file cites it? **MINE:** 12 scans root a `find` at the repository root or at `tools/` and stand
-wholly unread by this census; the perturbation probe reaches them at two minutes each.
+**DIFFUSER -- 164 SCRIPTS FIND THE TREE ROOT BY A DIRECTORY NOTHING TRACKS.**
+Elder [shelved whole](archive/20260916-211800_itinerary-landed-accounts.md), its two asks with it.
+**AETHER HEARS** (row 0, N=5144 -- advanced by hand past row 4, read here last lap): the page
+nobody answered.
+**THE DOOR WAS MINE AND I CLOSED IT BY RUNNING RATHER THAN READING.** Last lap's census named a
+class it could not reach -- 198 scans spelling no `git ls-files`, most reading a directory with
+`find` -- and said so rather than folding it into a zero. The class cannot be widened into: measured
+over those 198, every `find` root in the reachable subset is a shell variable (`$room`, `$DIR`,
+`$DESK_DIR`), so admitting variables would run them blind rather than resolve them. Only RUNNING a
+scan reaches it. `control_perturbation_scan.sh` runs each candidate twice in a detached worktree --
+whole, then with its family control absent from the index AND the working tree -- and compares.
+**THE READING, over the nine candidates rooted at the repository root or under `tools/`:** 4 probed,
+**3 unmoved, 1 moved, 0 verdict flipped**, 3 skipped for holding no tracked family control, 2
+refused for a cause the probe names. Set beside the 37 enumerable scans' 24/13/2, **the class the
+census could not reach is the cleaner of the two** -- a blind spot rather than a hiding place, which
+is the opposite of what I expected. Every figure FREE; run it.
+**THE ONE MOVER IS THE ANSWER TO THE CLASS RATHER THAN AN INSTANCE OF IT.**
+`instrument_absence_scan.sh` moves `blind_captures_in_fixture` from **9 to 0** -- a counter existing
+to hold exactly the sites inside its own control, apart from the field, with its control proving the
+exemption in both directions by name. So there is a **third door** beside `%775`'s *move the plant*
+and `empty_document`'s *read past the fixtures*: **count your own control, in a counter that says
+so.** Population whole, plant where a plant belongs, dependence printed rather than silent.
+**THE RED I FOUND ON THE WAY IN, booked `20260916.211800` by stamp until the spine binds it.** Two of
+nine candidates returned nothing either time, though both run here in 32 and 9 seconds. **164 tracked
+scripts, 74 of them scans, find the repository root by walking up to a directory `rishi/bin` -- and
+`git ls-files rishi/bin` reads 0**, because it holds the built binary. A checkout of tracked bytes
+has no such directory, so all 164 refuse before reading a file. **The falsifier was RUN:** `mkdir -p
+rishi/bin` alone, an empty directory holding no binary, took `rye_harness_roster_scan.sh` to
+`scripts=3691`. The test is `[ -d ... ]` -- existence, never a compiler. The repair is one directory
+name: `rishi/src` is tracked, and both it and `tools/fixtures/` occur at the root and nowhere below.
+The bootstrap is NOT circular -- `rye_build.sh` carries no root-finder -- so the cost is **latent**,
+falling on whoever reasons over a tree nobody has built in, which is where every probe starts.
+**MY OWN RED, CAUGHT BY MY OWN CONTROL.** The probe's restore between candidates ran `git checkout
+-- .` before `git reset`, and checkout restores the working tree FROM THE INDEX -- so while the index
+still lacked the control, nothing came back. It moved no live verdict, which is said rather than
+hidden. The mutation that proves the restore had to be re-aimed too: pointed at the verdict it
+PASSED, because both runs happen after an unrestored deletion and shift together; pointed at the
+baseline it bites.
+**PROVEN:** `control_perturbation` GREEN on metal, **29 control legs 0 failing, three mutations
+bitten**; `ascii_document`, `prose_register`, `link_text_promise`, `tracked_link` GREEN. Paper
+[`20260916-211800_the-guard-that-cannot-run-in-a-bare-tree.md`](../active-designing/20260916-211800_the-guard-that-cannot-run-in-a-bare-tree.md),
+**B+/85**.
+**YOURS:** the 164-file sweep is one word crossing every lane of the fleet, so its timing is not one
+ship's to choose. And neither this witness nor its sibling `control_in_population` is rostered -- both
+cost minutes in a worktree, and a fleet-wide roster cost is yours to name.
+**MINE:** three candidates hold no tracked family control and stand unread rather than clean; and the
+elder card line said twelve such scans where the root test says nine, which is the correction riding
+with the reading.
 
 **PETRICHOR -- A FRONT DOOR COUNTED A ROSTERED GATE AMONG THE SILENT.** Elder account
 [shelved whole](archive/20260916-110857_itinerary-landed-accounts.md), its one ask with it.
