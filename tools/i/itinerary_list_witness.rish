@@ -30,7 +30,15 @@ say ctl.err
 assert ctl.ok else "pin-list: the control refused -- its two streams stand above"
 # invariant: the control's own leg tally is asserted beside its verdict, so a leg written tomorrow
 # is heard the day it lands rather than passing unread under a verdict that means only reached-the-end.
-assert ctl.out contains "control_legs=28" else "pin-list: the control did not run twenty-eight legs -- its two streams stand above"
+assert ctl.out contains "control_legs=36" else "pin-list: the control did not run thirty-six legs -- its two streams stand above"
+
+# The generic wall above hears every leg by count; these five name the CommonMark rule one at a
+# time, because a leg no witness quotes may flip while the tally stays whole if another is added.
+assert ctl.out contains "wrapped_number_not_a_head = 0" else "pin-list: a wrapped sentence beginning with a number is paragraph text"
+assert ctl.out contains "interrupting_one_still_opens = 2" else "pin-list: a list interrupting a paragraph at 1 must still open"
+assert ctl.out contains "after_blank_still_refused = 1" else "pin-list: a list after a blank line still reads whatever it starts at"
+assert ctl.out contains "mutation_near_bites = 0" else "pin-list: the two-line window is what keeps the founding shape caught"
+assert ctl.out contains "mutation_interrupt_bites = 1" else "pin-list: the CommonMark rule is what frees the wrapped sentence"
 assert ctl.out contains "control_failed=0" else "pin-list: a control leg failed -- its two streams stand above"
 
 say "pin-list: and every rostered living pin's ordered lists read 1..N..."
@@ -45,4 +53,4 @@ assert scan.out contains "broken_runs=0" else "pin-list: a living pin's numbered
 # drop a reader can see rather than a silent narrowing of what this guard covers.
 assert scan.out contains "pins_read=7" else "pin-list: the living-pin roster no longer names seven readable pages -- a pin was added, retired, or is absent from this tree; the reading stands above"
 
-say "GREEN: pin-list -- every ordered list in every rostered living pin reads 1..N, with no gap, no repeat, and no foreign line standing between two items; twenty-eight control legs proven in a pen, both real firings replayed out of this repository's own history with each firing's parent welcomed beside it, and two mutations bitten -- the unwind that keeps two lists from reading as one, and the ascending check itself"
+say "GREEN: pin-list -- every ordered list in every rostered living pin reads 1..N, with no gap, no repeat, and no foreign line standing between two items; thirty-six control legs proven in a pen, both real firings replayed out of this repository's own history with each firing's parent welcomed beside it, a wrapped sentence opening on a number read as the paragraph text CommonMark renders it as, and four mutations bitten -- the unwind that keeps two lists from reading as one, the ascending check itself, the two-line window that keeps the founding shape caught, and the interrupt rule that frees the wrapped sentence"
