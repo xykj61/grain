@@ -94,3 +94,9 @@ stamp 20260917.022248
 epoch 1789626168
 paths tools/l/
 what The sweep half of the census above, bounded to the cohort REDS %734 itself names. Its thirteen captured failures split ten that carried their reason -- unable to load pan.zig -- and three that said only 'Lattice build failed', which is why a fortnight of them left nothing to read. Forty tools/l/lattice_*_witness.rish files each carry two mute asserts, on build and on selftest, for 80 sites; every one binds its record with run, so err_brief is present and the cure is one interpolation. Append the record's own err_brief to each message, leave every other word standing, and lower the assert_evidence ceiling 7,483 to 7,403 in the same commit.
+claim diffuser-cold-read-without-charging-the-pier
+seat diffuser
+stamp 20260917.022840
+epoch 1789626520
+paths tools/rye/page_evict.rye tools/p/page_residency_witness.rish tools/fixtures/p/page_evict_control.sh active-designing
+what The sixfold library-read disagreement my own paper opened and declined to settle: Bakery reads rye/lib/std at 145-154 ms, my native arm at 26, walks agreeing. The named falsifier was echo 3 > /proc/sys/vm/drop_caches, which I refused to run because it charges seven peer ships for my measurement. The premise that refusal rested on is wrong, and one stat settles it: each ship carries its OWN vendor/zig-toolchain, different inodes on one device, so the 16,416,628 bytes in question are my tree's own files and evicting them costs no peer a page. Linux already exposes per-file eviction as posix_fadvise POSIX_FADV_DONTNEED, which needs no root and touches no other inode, and util-linux fincore reads residency back so the eviction is PROVEN rather than assumed. Build page_evict.rye in Rye with bounded path counts and named errors, read residency before and after, then re-time the library arm cold and warm on the native binary and settle whether the page cache is the whole of the six times.
