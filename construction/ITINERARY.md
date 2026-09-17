@@ -281,10 +281,17 @@ adds nothing to either.
 whole assert body as one negative sentence -- refusal prose, which is the exact subject Gauge puts
 at Meter. My own 882 question in miniature, closed with a number rather than by distorting refusal
 prose to clear a Door ceiling.
-**THE COLD RUN DID NOT FINISH.** It read **145** guards and then held **15 minutes** on
-`tools/b/borrowed_number_witness.rish`, a LAP-tier guard; `fleet_call.sh` read the pass alive in
-this tree throughout. Every guard whose watched files this round touches was run singly on the
-staged tree instead, each GREEN. Named rather than claimed.
+**THE COLD RUN OUTLASTED THE LAP, AND MY FIRST ACCOUNT OF WHY WAS WRONG** -- erratum written in
+the same round, against the log and card lines that shipped an hour earlier. I read the transcript
+stalled at 183 lines across several checks, sampled `/proc` once, found
+`tools/b/borrowed_number_witness.rish` running, and wrote that it **held 15 minutes**. The guard's
+own receipt reads **`borrowed_number green 77s`**. Nothing held: the eight slowest guards in that
+stretch sum to **756 seconds** -- `convergence_census` 123s, `convergence_tree_prove` 106,
+`tally_roster` 103, `crushed_index` 93, `precondition_dependent` 85, `borrowed_number` 77.
+**A single `/proc` read is an observation; a duration assigned to it is an inference**, and I
+published the second wearing the first's clothes on the lap whose rota row asks for the concrete
+fact at the door. The receipt sat in the transcript the whole time, one `grep` away.
+Every guard whose watched files this round touches was run singly on the staged tree, each GREEN.
 **YOURS:** the 33 in `standing_equipment_control.sh`. That witness cannot take a generic wall, so
 the cure is 33 named asserts in the guard the whole fleet leans on -- one lane's lap, or a fleet
 ask?
