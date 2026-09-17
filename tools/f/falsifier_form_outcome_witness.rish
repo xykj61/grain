@@ -1,0 +1,106 @@
+# tools/f/falsifier_form_outcome_witness.rish -- does the falsifier's FORM predict its OUTCOME?
+#
+#   rishi/bin/rishi run tools/f/falsifier_form_outcome_witness.rish
+#
+# WHY. Two instruments in this lane read falsifiers and neither read the other.
+# tools/fixtures/f/falsifier_reach_scan.sh reads FORM -- runnable, quantified, narrative --
+# and its landed page closes on one handoff sentence: 27 runnable falsifiers is the number
+# to grow. tools/fixtures/r/rank_outcome_scan.sh reads OUTCOME -- what each erratum found
+# wrong with that row's falsifier. Nothing crossed them, so the handoff travelled on a
+# hypothesis nobody had measured: that growing the runnable count buys a falsifier likelier
+# to do its job.
+#
+# WHAT IS GATED, at zero: rows_no_falsifier -- a ranked row carrying no falsifier region at
+# all. A page that ranks its rows has committed to comparing them, and a row with none can
+# never be graded by any later erratum. That is decidable by text and costs one sentence.
+#
+# WHAT IS REPORTED AND GATED NOWHERE: the crossing itself. At this population the runnable
+# cell is EMPTY -- across both ranked pages not one speculative row states a falsifier naming
+# a path -- so the scan reads verdict=underdetermined and says why rather than reporting a
+# correlation it cannot support. A gate over a crossing whose informative cell is empty would
+# be the meter claiming a finding the data refuse.
+#
+# THE READING STATED AHEAD OF THE RUN, so the verdict is not chosen after seeing it. A
+# crossing answers only when every form class holds a graded row; a class holding none leaves
+# an empty cell, which is the same fault the rank scan calls `incapable` arriving in the
+# measurement rather than in the page. The verdict turns on the GRADED cell rather than on a
+# runnable row merely existing, and the pen proves both sides of exactly that distinction.
+#
+# NOT tools/f/falsifier_reach_witness.rish, which asks whether a falsifier was stated and in
+# what form, and NOT tools/r/rank_outcome_witness.rish, which asks whether a ranking predicted
+# anything. This asks whether the first one's answer tells you anything about the second's.
+#
+# Scan: tools/fixtures/f/falsifier_form_outcome_scan.sh.
+# Pen: tools/fixtures/f/falsifier_form_outcome_control.sh.
+
+let scan = run ["sh" "tools/fixtures/f/falsifier_form_outcome_scan.sh"]
+say scan.out
+assert scan.ok else "falsifier-form-outcome: the crossing must complete"
+assert (scan.out contains "verdict=row_without_falsifier" == false) else "falsifier-form-outcome: a ranked row carrying no falsifier can never be graded by any later erratum"
+assert scan.out contains "rows_no_falsifier=0" else "falsifier-form-outcome: every ranked row must state a falsifier"
+
+# A meter reading an empty population reports clean while proving nothing, so each population
+# is asserted non-empty rather than merely unrefused.
+assert (scan.out contains "pages_found=0" == false) else "falsifier-form-outcome: a tree with no ranked page would report clean while reading nothing"
+assert (scan.out contains "rows_read=0" == false) else "falsifier-form-outcome: a ranked page with no rows would prove nothing about their falsifiers"
+assert (scan.out contains "rows_graded=0" == false) else "falsifier-form-outcome: a crossing with no graded row has no outcome half at all"
+
+# Both borrowed halves must be PRESENT rather than merely unrefused, since a crossing that
+# silently drops one half reports the other half's numbers under this scan's name.
+assert (scan.out contains "verdict=no_reach_scan" == false) else "falsifier-form-outcome: the form half cannot be read without its own scan"
+assert (scan.out contains "verdict=no_rank_scan" == false) else "falsifier-form-outcome: the outcome half cannot be read without its own scan"
+
+# The three form classes are asserted to be PRINTED rather than to hold any particular value.
+# A class nobody prints cannot be told from a class holding nothing.
+assert scan.out contains "form_runnable=" else "falsifier-form-outcome: the class the handoff sentence names must be counted where a reader can see it"
+assert scan.out contains "form_quantified=" else "falsifier-form-outcome: the quantified class must be counted"
+assert scan.out contains "form_narrative=" else "falsifier-form-outcome: the narrative class must be counted"
+assert scan.out contains "form_cells_empty=" else "falsifier-form-outcome: the number of classes holding no graded row is what decides whether the crossing can speak"
+
+# Silence and absence are two facts wanting two repairs, and the scan tells them apart.
+assert scan.out contains "outcome_silent=" else "falsifier-form-outcome: an erratum that skipped the falsifier must be named rather than counted as unread"
+assert scan.out contains "rows_unread=" else "falsifier-form-outcome: a row nobody has read yet must be named rather than counted as silence"
+assert scan.out contains "rows_runnable_graded=" else "falsifier-form-outcome: the graded runnable cell is what the verdict turns on and must be printed"
+
+let control = run ["sh" "tools/fixtures/f/falsifier_form_outcome_control.sh"]
+say control.out
+assert control.ok else "falsifier-form-outcome: the control must complete"
+assert control.out contains "control_verdict=ok" else "falsifier-form-outcome: every leg of the pen must pass"
+
+# The pen's own tally, asserted beside the named legs. A control that reached its last line
+# proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
+assert control.out contains "control_failed=0" else "falsifier-form-outcome: a leg that failed must be heard even when the control completes"
+assert control.out contains "control_legs=36" else "falsifier-form-outcome: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
+
+assert control.out contains "leg=form_runnable_seen pass" else "falsifier-form-outcome: a falsifier naming a path must read runnable inside its own row"
+assert control.out contains "leg=form_quantified_seen pass" else "falsifier-form-outcome: a falsifier naming a quantity must read quantified inside its own row"
+assert control.out contains "leg=form_narrative_seen pass" else "falsifier-form-outcome: a falsifier with nothing to count must read narrative rather than vanish"
+
+# The verdict turns on the GRADED cell, proven from both sides in one pen pair.
+assert control.out contains "leg=runnable_row_present pass" else "falsifier-form-outcome: an unread runnable row must still widen the form reading"
+assert control.out contains "leg=runnable_cell_still_empty pass" else "falsifier-form-outcome: an unread runnable row must leave the crossing exactly as empty as it was"
+assert control.out contains "leg=underdetermined_while_unread pass" else "falsifier-form-outcome: a runnable row nobody has read cannot let the crossing speak"
+assert control.out contains "leg=crossed_once_runnable_graded pass" else "falsifier-form-outcome: a graded runnable row is what turns the verdict, and the pen must show it turning"
+
+# The wall, planted and then lifted, since a refusal proven only in the passing direction
+# cannot be told from a bypass.
+assert control.out contains "leg=wall_counts_row pass" else "falsifier-form-outcome: a ranked row with no falsifier must be counted"
+assert control.out contains "leg=wall_refuses pass" else "falsifier-form-outcome: a ranked row with no falsifier must refuse by name"
+assert control.out contains "leg=wall_lifts pass" else "falsifier-form-outcome: lifting the plant must return the same tree to a clear reading"
+
+assert control.out contains "leg=silent_counted pass" else "falsifier-form-outcome: an erratum silent on the falsifier must read silent"
+assert control.out contains "leg=unread_counted pass" else "falsifier-form-outcome: a row with no erratum must read unread"
+assert control.out contains "leg=discovers_one pass" else "falsifier-form-outcome: a ranked page must be found by its own text"
+assert control.out contains "leg=unranked_page_read_past pass" else "falsifier-form-outcome: a page that ranks nothing must stay outside the population"
+assert control.out contains "leg=shelved_page_read_past pass" else "falsifier-form-outcome: a shelved page is testimony rather than a claim this tree still makes"
+assert control.out contains "leg=absent_reach_refuses pass" else "falsifier-form-outcome: an absent form half must refuse rather than report the other half's numbers"
+assert control.out contains "leg=absent_rank_refuses pass" else "falsifier-form-outcome: an absent outcome half must refuse rather than report the other half's numbers"
+
+# Five mutations, each asserted to BITE. A rule nobody can break is a rule nobody is keeping.
+assert control.out contains "leg=mut_erratum_table pass" else "falsifier-form-outcome: dropping the erratum table must collapse silence into absence"
+assert control.out contains "leg=mut_section_end pass" else "falsifier-form-outcome: letting a row run past the next heading must hand it the page's own closing falsifier"
+assert control.out contains "leg=mut_range_test pass" else "falsifier-form-outcome: dropping the row-range test must let any region on the page answer for any row"
+assert control.out contains "leg=mut_empty_rate pass" else "falsifier-form-outcome: a rate over an empty denominator must never print as a number"
+assert control.out contains "leg=mut_wall pass" else "falsifier-form-outcome: dropping the wall must let a row with no falsifier ship"
+
+say "GREEN falsifier-form-outcome -- the form and the outcome are crossed, and the crossing says what it cannot yet answer"

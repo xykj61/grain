@@ -7,6 +7,22 @@
 **Status:** Landed -- **Room:** checkable. Every count below comes from `tools/fixtures/f/falsifier_reach_scan.sh`, gated by `tools/f/falsifier_reach_witness.rish`.
 **Kin:** [`context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`the fence post and the hand`](20260917-090816_the-fence-post-and-the-hand.md) - [`Two Rooms`](../context/TWO_ROOMS.md)
 
+**Erratum:** `20260917.132232` -- this page's closing handoff, *27 runnable falsifiers is the
+number to grow*, is a projection that named no falsifier of its own, and the crossing it needed
+has now been run. `tools/fixtures/f/falsifier_form_outcome_scan.sh` crosses this page's form
+classes against the fault verdicts `tools/fixtures/r/rank_outcome_scan.sh` grades, over both
+ranked pages and all **21** speculative rows. **The runnable count across those 21 rows is
+ZERO**, so the crossing carries an empty cell on exactly the class this handoff names and reads
+`verdict=underdetermined`. The reason is structural rather than careless: a proposal's falsifier
+is written before its instrument exists, so it has no path to name, and the runnable regions on
+the elder ranked page are all **errata**. Recommended **re-aim**: keep every count and every
+class above, and read the handoff as *an erratum owes a runnable falsifier*, which is a thing an
+erratum can do, rather than as a target a proposing page could ever hit. The reading stands at
+[`20260917-132232_the-form-that-could-not-predict.md`](20260917-132232_the-form-that-could-not-predict.md).
+**Every figure in this clause is FREE** -- a ranked page may gain a row or an erratum -- so run
+`sh tools/fixtures/f/falsifier_form_outcome_scan.sh` rather than reading them. Every other word
+on this page is kept as written.
+
 Gauge at its Field setting asks a page for four things before it makes a projection:
 a horizon, its assumptions, a **falsifier**, and a confidence in plain words. This
 seat's own charter sharpens the third one into a test: a speculative paper that says
