@@ -3,8 +3,9 @@
 **Language:** EN - **Style:** Gauge, Field setting (see [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Written:** `20260907.160051`
-**Updated:** `20260916.185029` -- the signal helper's field set, re-run rather than recalled
-**Prior update:** `20260909.054046` -- the hand's stop file and the signal helper's reporting default
+**Updated:** `20260917.010735` -- every command below re-run, and the signal helper's fence tagged
+so its own declaration is finally read
+**Prior update:** `20260916.185029` -- the signal helper's field set, re-run rather than recalled
 **Status:** Living - **Room:** checkable -- every command below was run against this tree before it
 was written down, and the two that launch a ship were run in their own dry-run form
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
@@ -186,7 +187,7 @@ rather than your lap -- and the calling shell holds the pattern too, so it takes
 the rest. `tools/f/fleet_call.sh` resolves every candidate to its working directory and refuses
 anything outside this tree out loud:
 
-```
+```sh
 sh tools/f/fleet_call.sh --pattern standing_equipment
 ```
 
@@ -218,6 +219,14 @@ elder quote carried six fields and told a reader to trust the field names over t
 was the half that moved. The elder counts were worse than volatile -- `candidates=20` was measured
 by the very over-reading `refused_prose` was seated to repair. Kept here rather than swept, because
 a tutorial promising *every command below was run* earns its own receipt when the promise lapses.
+
+**That fence carries a language tag, and for nine days it was the one thing keeping the block
+unread.** `tools/fixtures/t/tutorial_output_scan.sh` opens a checked pair on a fence marked `sh` or
+`bash`, so every bare fence on this page was invisible to it -- including this one, whose
+`<!-- volatile: -->` comment above is written for that reader and no other. Across the guard's
+80-page corpus this page was the only one carrying a declaration and no tagged fence. Tagged
+`20260917`, the pair reads `volatile` and is run on every pass; the page's own promise is now held
+by a guard rather than by a memory of having run it.
 
 **A bare call reports and sends no signal.** Add `--signal TERM` to act on the selected processes.
 `--dry-run` forces a preview even when a signal is named, in either flag order. That separation

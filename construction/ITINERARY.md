@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.003000` (EDT)
+**Stamp:** `20260917.022557` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -117,48 +117,36 @@ to build. And the nine rostable, unrostered `tools/gen/chapter/` witnesses.
 a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
 **YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
 
-**PETRICHOR -- A GUARD I SEATED YESTERDAY WAS READING A PAGE ANOTHER GUARD HAD READ FOR A WEEK.**
-Elder account [shelved whole](archive/20260916-220211_itinerary-landed-accounts.md), its two asks
-with it -- the roster's second page, and the Aurora three.
-**WATER TASTES** (row 3, N=5168): read the thing up close, and run it rather than reading about it.
-**REDS FIRST, AND THE RED WAS MINE** (`20260916.220211`, cited by stamp until the spine binds it). Last lap seated `demo_output_witness` over
-`docs-geode/demos/README.md`. `tools/fixtures/t/tutorial_output_scan.sh`, seated `20260909`, has
-read command-and-output pairs across a collection of git pathspecs -- `docs-geode/*.md manual/*.md
-SOURCE.md` -- since before that. Measured by running its own `list` verb: it reads **the same five
-fences**, at lines 32, 50, 70, 102 and 121, and CHECKS four of them, holding the fifth as outside
-its derived run roster. **Four of my five pairs are checked twice under two conventions**, and the
-fifth is my one piece of new coverage.
-**FOUND BY ANSWERING MY OWN ASK, AND THE BUILD WAS ALREADY GREEN.** Weighing
-`docs-geode/tutorials/the-first-hour.md` for the roster, I had built a `shown` marker, a `--pairs`
-reading, the annotated page and **28 control legs, five mutations bitten** -- then read the
-candidate page's own history and found the sibling naming that page's two mis-attributed blocks
-**by line, 67 and 99**, a week before I noticed either. The whole build was reverted.
-**THE ANSWER TO THE ASK IS NO, AND THE REASON GENERALIZES.** A named roster and a derived collection
-cannot see each other, and the derived one is stronger: the sibling picks what to run by a rule on
-the command line -- one plain invocation of `rishi` or `sh` naming a tracked script, no redirect,
-pipe, semicolon or glob -- so a page written tomorrow is covered the day it lands and no page can
-forget to declare itself. My `shown` marker would have put a THIRD convention on a page already
-carrying that sibling's `selected`, `volatile` and `lead-in`.
-**LANDED INSTEAD:** `double_read` in `tools/fixtures/d/demo_output_scan.sh` -- for each rostered
-page, whether another guard's collection already holds it, read out of the sibling's own `CORPUS`
-constant with **no command run**, reported on every pass and reachable alone through `--overlap`.
-It reads **1** and names the page. Reported, never gated: two guards on one page is a cost rather
-than a fault. A collection it cannot parse answers `unreadable` and an absent sibling answers
-`no_sibling`, rather than the comfortable zero either would report.
-**PROVEN ON METAL.** `demo_output` GREEN with `double_read=1` asserted; control **26 legs from 20,
-0 failing, four mutations bitten**, including the membership test whose removal returns that zero.
-`reds_ledger_monotone` GREEN. Scan **B+/88**, witness **B+/89**, control **B+/85**, ledger **B/80**,
-card **A/93**. Cold **320 run, 300 green, 18 red**, every red a peer's or a standing ratchet and
-`tree_moved=yes` -- my own fault, since I worked while it ran. Hot scoped **312, 289, 21**,
-`tree_moved=no`, and **three of those reds were mine, all caught by the pass and all repaired**:
-a ledger row cited on this card by number before the spine bound it, three uses of the retired word in reader
-prose, and `docs-geode/libraries/README.md` a row short because my own witness header began naming
-`manual/`. The three witnesses are GREEN after the repairs.
-**YOURS:** which guard yields. `demo_output` may drop the four duplicated pairs and keep its fifth,
-the sibling may widen its derived run roster to take that fifth, or both may stand and the cost be
-accepted. One ruling, and the reading is already on the card every pass.
-**MINE:** `double_read` counts PAGES. Whether two guards AGREE about one shared fence is a
-different rung, and nothing here asks it.
+**PETRICHOR -- A DECLARATION WRITTEN FOR ONE READER, AND THE READER NEVER CAME.** Elder account
+[shelved whole](archive/20260917-022557_itinerary-landed-accounts.md); its ask -- which guard yields
+on the four doubly-read pairs -- stands unanswered and is repeated here.
+**WATER TASTES** (row 3, N=5213): taste works only up close, so the lap ran the page rather than
+reading about it. `docs-geode/tutorials/running-the-fleet.md` promises on its own face that every
+command below was run against this tree. All five were re-run this lap and **every claim held** --
+the roster resolve, the two dry-run launches, the watch pair, the signal helper's field line.
+**THE AFTERTASTE.** `tutorial_output_scan.sh` opens a checked pair only on a fence marked `sh` or
+`bash`. That page carries **sixteen bare fences and none tagged**, so the guard whose whole job is
+holding a quoted block true read **nothing** there -- while the page carried a
+`<!-- volatile: -->` comment written for that guard and no other reader.
+**MEASURED ACROSS THE CORPUS:** of 80 pages, five carry a declaration marker beside tagged fences,
+and this page alone carried a declaration and **zero** tagged fences. One orphaned marker, standing
+since `20260907`.
+**ONE FENCE TAGGED, NOT SIXTEEN.** The multi-command fences quote one command's output while
+holding three, and the watch fence's first form runs until stopped; the `FLEET_DRY` fence would land
+`held`, and `held` sits at its ceiling of 3, so tagging it would red the guard for no coverage.
+**PROVEN:** pairs **17 to 18**, checked **10 to 11**, volatile **2 to 3**, `held=3` unmoved,
+`drift=0`, `verdict=every_quoted_block_still_prints`. Page **A/93** at Field.
+**AND REDS FIRST CAUGHT TWO ON THE WAY OUT, BOTH ONE DIGIT AND BOTH STANDING BEFORE THE LAP.**
+`session-logs/README.md` spelled `20260916` at **95** rounds where its shelf holds **96** -- a peer's
+log landing on a closed day after the pin was written -- and `session-logs/CHAPTERS.md`, the same
+room's second roster, spelled it wrong the same way. `log_has_a_row` and `session_roster_agree`
+are GREEN after the repair; `index_row_bound`, `index_fold`, `ascii_document`, `living_pin_fence`
+and `link_text_promise` re-run GREEN beside them.
+**MINE:** both pins spell a number their own shelf derives, which is *count, never number* one room
+over. Repaired as written rather than converted, since converting a roster's spelling is its own lap.
+**YOURS:** both asks. Which guard yields on the four doubly-read pairs; and whether the corpus wants
+a count of bare command fences standing above an output block -- invisible for this same reason,
+each one a run-and-quote nothing reads.
 
 **PHEROMONE -- THE METER NAMED THE NEXT FALL, AND THE FALL LANDED THERE.** Account
 [born on its shelf](archive/20260916-195515_itinerary-landed-accounts.md). A `*refusal.Slot`
@@ -212,7 +200,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `7a786c7533` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `419ea56618` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
