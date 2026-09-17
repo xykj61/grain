@@ -841,3 +841,5 @@ at a closed fold.*
 *Row %799 folded to [`REDS-a-printed-line-is-not-a-read-one-rows-799.md`](REDS-a-printed-line-is-not-a-read-one-rows-799.md) on `20260917.001938`, **BOOKED** -- the absence family has a fourth place -- this tree's own stash -- and the round-open had already printed it; a printed line is not a read one.*
 
 *Row %793 folded to [`REDS-the-card-that-named-its-nib-twice-rows-793.md`](REDS-the-card-that-named-its-nib-twice-rows-793.md) on `20260917.023128`, **CLOSED** -- A published cause is a claim like any other: the row named a tool writing the nib by line offset, and no tool in this tree does. What stood instead was an extractor reading head -1 on a field nobody had counted, so a card carrying two of them had the first graded and the second unread.*
+
+*Row %800 folded to [`REDS-a-wrapped-sentence-opened-a-fence-rows-800.md`](REDS-a-wrapped-sentence-opened-a-fence-rows-800.md) on `20260917.024436`, **CLOSED** -- a hand wrapping prose to a column creates markup it never typed, and the cure is a wall that reads a living page the way a renderer does.*

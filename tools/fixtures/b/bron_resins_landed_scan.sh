@@ -91,10 +91,16 @@ find "$ROOM" -maxdepth 1 -type f ! -name manifest.bron | LC_ALL=C sort > "$TMP/f
 # the lap clock. `--no-renames` is deliberate: a rename then lands as a delete of the old path and
 # an ADD of the new one, so a resin carried into a fold has an adding commit at its new name whose
 # blob is the blob it always had, and the reading answers `same` rather than losing the file.
-git log --format='%H' --diff-filter=A --name-only --no-renames -- "$ROOM" 2>/dev/null \
-  | awk '/^[0-9a-f]{40,64}$/ { c = $0; next } NF { print $0 "\t" c }' > "$TMP/adds" || true
-git log --format='%H' --name-only --no-renames -- "$ROOM" 2>/dev/null \
-  | awk '/^[0-9a-f]{40,64}$/ { next } NF { print $0 }' > "$TMP/touches" || true
+# Each walk is read into a file FIRST, so git's own exit status is the thing checked. Piped
+# straight into awk, the pipeline reports awk's status and a git that could not run reads as a
+# room with no history -- which is exactly the shape of a clean answer. An instrument that
+# cannot run refuses.
+git log --format='%H' --diff-filter=A --name-only --no-renames -- "$ROOM" > "$TMP/adds.raw" \
+  || { echo "bron-resins-landed: git log refused while reading the room's adding commits" >&2; exit 2; }
+awk '/^[0-9a-f]{40,64}$/ { c = $0; next } NF { print $0 "\t" c }' "$TMP/adds.raw" > "$TMP/adds"
+git log --format='%H' --name-only --no-renames -- "$ROOM" > "$TMP/touches.raw" \
+  || { echo "bron-resins-landed: git log refused while reading the room's touching commits" >&2; exit 2; }
+awk '/^[0-9a-f]{40,64}$/ { next } NF { print $0 }' "$TMP/touches.raw" > "$TMP/touches"
 
 # The EARLIEST adding commit per resin. `git log` prints newest first, so the last line naming a
 # path is the commit that first put those bytes in the tree -- which is the commit the room's law

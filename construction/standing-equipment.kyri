@@ -690,9 +690,15 @@ seated 20260908.184342
 # sow -- the projected seat is clean before it is ever public. MOVED TO `tier cadence`
 # `20260904` (REDS %412): at 230s it was the single most expensive guard on the roster, and unlike
 # the two repaired beside it that cost is INHERENT -- it projects the whole public seed and scrubs
-# every name from it, which is real work rather than a fork loop. What makes the slower clock
-# honest is what it guards: the publish is custody gate %1, a manual act at Keaton's hand, and
-# `publish-seed.sh` runs this witness in its own flow. So no lap can take the act this protects,
+# every name from it, which is real work rather than a fork loop. THAT LAST CLAUSE WAS WRONG, AND
+# `20260917.004532` MEASURED IT (REDS %642): most of the cost WAS a fork loop. The projector called
+# grep once per candidate for the armor blocks, once for the identity list, and once on each copy
+# for an ssh key. Batched, the identity pass over 9,096 candidates reads 0.74s and the armor pass
+# 0.24s, against the 103.10s and 56.69s `sow_phase` priced for the same corpus. The projection's
+# output is byte-identical -- 8,569 file digests, 239 symlink targets and 9,239 tree entries with
+# type and mode, all unchanged. The row stays on `tier cadence` on its OTHER reason, which holds:
+# what makes the slower clock honest is what it guards: the publish is custody gate %1, a manual
+# act at Keaton's hand, and `publish-seed.sh` runs this witness in its own flow. So no lap can take the act this protects,
 # and running it on every lap spent 15% of the pass proving a gate that already stops everyone.
 # A tier is a cadence rather than an exemption: it still runs, on the rotation `--cadence-slice`
 # turns, and the run card records the clock that heard it.
@@ -823,6 +829,12 @@ seated 20260824.104946
 guard sow_lock
 path tools/s/sow_lock_witness.rish
 seated 20260824.104946
+
+guard sow_project
+path tools/s/sow_project_witness.rish
+seated 20260917.004532
+tier lap   # 28 branches of the seed projection on a pen field, about five seconds; what the
+           # public seed contains is worth reading on every pass rather than on a slow clock
 
 guard rule_twin
 path tools/r/rule_twin_witness.rish
