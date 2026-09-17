@@ -4,7 +4,10 @@
 //! `{ left, right }` -- demos 5 and 3 -> expect 8. Unknown gates refuse.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rn = @import("rune_calln.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rn.ParseError || error{
     Overflow,
@@ -18,22 +21,19 @@ pub const calln_demo_a: u32 = 5;
 pub const calln_demo_b: u32 = 3;
 pub const calln_demo_expect: u32 = 8;
 
-fn zig_safe_ident(face: []const u8, out: *[rn.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rn.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const ch = face[i];
-        const mapped: u8 = if (ch == '-') '_' else ch;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rn.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes -- is the
+/// room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[rn.max_name_len]u8, field: []const u8) LowerError!usize {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the signature and the error name it always had, so every
+    // caller in the file is unmoved; the record is dropped here because a caller wanting it
+    // reaches `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rn.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn emit_calln_program(
@@ -96,9 +96,9 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     var zg: [rn.max_name_len]u8 = undefined;
     var zl: [rn.max_name_len]u8 = undefined;
     var zr: [rn.max_name_len]u8 = undefined;
-    const gn = try zig_safe_ident(gate, &zg);
-    const ln = try zig_safe_ident(left, &zl);
-    const rn_len = try zig_safe_ident(right, &zr);
+    const gn = try zig_safe_ident(gate, &zg, "gate");
+    const ln = try zig_safe_ident(left, &zl, "left");
+    const rn_len = try zig_safe_ident(right, &zr, "right");
     const expect: u32 = if (welcome) calln_demo_expect else calln_demo_expect +% 1;
     return emit_calln_program(gate, left, right, zg[0..gn], zl[0..ln], zr[0..rn_len], expect, out);
 }

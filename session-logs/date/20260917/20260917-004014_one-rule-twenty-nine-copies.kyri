@@ -1,0 +1,58 @@
+format session-log-v1
+stamp 20260917.004014
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent -- pheromone seat, language lane
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default read from .claude/settings.json 20260916; this pier execs tools/f/fleet-loop.sh at --effort medium
+evidence .claude/settings.json; tools/f/fleet-loop.sh
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title One ident rule, twenty-nine copies
+prompt The baton, and my own last recommend line naming the next fall the ceiling meter could take.
+rota lap 5201, row 1 -- Air, the row that feels. The reading it surfaced is that a number can feel green while being walkable-around: glow_ceiling_refusal fell 40 to 34 on this lap without one site becoming covered, because the six sites left the denominator rather than joining the numerator.
+think My last recommend named error.Overflow as the next fall. Measuring rather than trusting it, error.Overflow appears zero times in the uncovered list -- the scan's own string-stripping rule already removes every one as a false pair. The real remainder is error.BadIdent at 35 of 40 uncovered sites, across five ceilings, spread over the lowering room.
+think A recommend line written from memory is a forecast, and this one was wrong in the honest direction: it named a real shared name and the wrong one. Running the list took ten seconds and the correction cost nothing, which is the argument for reading the meter rather than the note about the meter.
+think Reading the 35 sites showed they are not 35 decisions. fn zig_safe_ident stands in 29 glow/lower_*.rye modules. Strip the max_ constant each names and five distinct bodies remain; 17 are byte-identical. The character test -- first byte a letter or underscore, every later byte a letter, digit or underscore, hyphen mapped to underscore -- is byte-for-byte the same in all 29.
+think So the refusal record was not the crux. A record cannot land once while its function is copied 29 times, and threading a slot through 29 copies would be doing the wrong work 29 times. The crux is the duplication, and fixing it makes the record a one-file change.
+think What varies between the copies is the bill for writing one rule 29 times, and every item is a disagreement rather than a variation: 23 return usize where TAME asks u32; five carry the invariant assert the other 24 omit; glow/lower_shop_nest.rye answers a LENGTH ceiling with error.MissingFace where 28 peers answer error.BadIdent; glow/lower_alias.rye maps the dot as well as the hyphen.
+think The dot is the one real design question and both readings are kept rather than reconciled, because both are right: a face refuses the dot, since a dot is not a Zig identifier byte; a wing lowers it, since records.cur is a path and the underscore is its honest lowering. Named as an enum rather than passed as a bool, so a call site says which it means.
+obs Three faults arrive as the one word error.BadIdent -- an empty face, a face past its ceiling, and a byte Zig will not take -- so each fills its own glow/refusal.rye record. The published error name is unmoved, which is the arc's standing rule: a published error set is a contract and the record is what tells its cases apart.
+obs Two Reason members were earned rather than assumed: ident_empty at 11 bytes and ident_char_not_allowed at 22, both under the 27 the widest reason still holds, so max_refusal_line_bytes is unmoved and the derivation comment records the re-read rather than a new number.
+obs The lap's real finding is about the meter rather than the code, and it came out of watching the fall. glow_ceiling_refusal reads a ceiling site as a comparison against a named max_ CONSTANT. The one rule takes its ceiling as a PARAMETER, so the six converted sites left the denominator: uncovered fell 40 to 34 while recorded held at 8. The record does exist and five witness legs prove it -- and that meter cannot see it, and cannot tell that state from a lap that parameterized a ceiling and wrote nothing at all.
+obs So the number is lowerable by a change that covers nothing. That is not a sharper-reading problem, it is a wants-a-sibling problem: glow_ident counts whether the rule is in one place, under its own falling ceiling, and the two meters together cannot both be satisfied by either evasion. Written into the sibling's ceiling arc where a reader of that number will meet it, rather than only here.
+obs Booked as a ratchet rather than a red, and the reason is the ledger's own words: a red is something wrong, a ratchet is something not yet uniform. Nothing here answers a question falsely; a site-counting meter lowering when a site leaves is inherent to site counting, and the cure shipped on the same lap as the finding. The pin also stood at 64,638 of 65,536 with a mean row at 2,355, so booking would have required a fold, and folding to record a ratchet is the wrong trade.
+obs The cohort was chosen to be provable rather than large. Six modules with six guards of their own, all GREEN after conversion, with every call site keeping its signature -- the stub keeps the local name, the local error and the local return width, so the 17 call sites across the six did not move. The remaining 23 stand under a ceiling that only falls.
+obs The control edited the tracked scan in place to prove its ceiling from both sides, which would have left CEILING=1 in the repository had a leg died mid-run. It copies the scan into the pen before the first leg now and never writes the tracked file. Caught by reading the control rather than by a guard, and worth saying plainly: a pen that reaches outside itself is a pen only while every leg passes.
+loom witness=refusal_witness legs=21 legs_before=16 failures=0 ident_legs=5
+loom scan=glow_ident_duplication copies=23 stubs=6 copies_before=29 published=yes ceiling=23
+loom scan=glow_ceiling_refusal uncovered=34 uncovered_before=40 recorded=8 sites=91 sites_before=97 ceiling=34
+loom control=glow_ident_duplication legs=16 failed=0 mutations_bitten=2
+loom qa=zig_ident composite=84 qa=ident_scan composite=82 qa=ident_witness composite=83
+file glow/zig_ident.rye the one rule -- ceiling and field from the caller, dot policy named, three refusals recorded
+file glow/refusal.rye two Reason members earned; the line derivation re-read and unmoved at 192
+file glow/refusal_witness.rye five ident legs joined, sixteen to twenty-one
+file glow/lower_call.rye the body becomes a stub; the field word travels from the call site
+file glow/lower_calln.rye same conversion, three call sites naming gate, left and right
+file glow/lower_cell.rye same conversion, two call sites
+file glow/lower_list.rye same conversion, two call sites
+file glow/lower_triple.rye same conversion, three call sites
+file glow/lower_quad.rye same conversion, four call sites
+file tools/fixtures/g/glow_ident_duplication_scan.sh the copy census, ceiling 23, the sibling's blind spot named in its header
+file tools/fixtures/g/glow_ident_duplication_control.sh sixteen legs on planted rooms, two mutations bitten, the scan copied into the pen
+file tools/g/glow_ident_witness.rish the gate, quoting each named leg so a leg that breaks is heard
+file tools/fixtures/g/glow_ceiling_refusal_scan.sh ceiling 40 to 34, and the blind spot the fall exposed
+file construction/standing-equipment.kyri glow_ident rostered at lap tier beside its sibling
+scope one bounded language change: the Zig-identifier rule published once, a six-module cohort converted with its own six guards GREEN, the remaining 23 copies metered under a falling ceiling, and the sibling meter's own blind spot named where its readers will meet it
+obs Four cold reds stood at this lap's open and all four closed. Two were mine: shell_dialect and its pre-commit twin read two sed -i sites against a ceiling of zero, both written into my own control to swap a ceiling, and the portable form reads to a new file and writes back through the original. One was mine at one remove -- fold_shelf_link_repoint named three depth-lost links, the first of them my own last lap's shelved account pointing at my own control file. The fourth was the day rolling over: session-logs/README.md and CHAPTERS.md both still carried 20260916 open while the 20260917 shelf already held a log, so the count was derived off the shelf's own rows rather than typed, 93 in both rosters, and session_roster_agree holds them to that one reading.
+obs The gated sed -i is the lap's cheapest lesson and the one most worth keeping: the pre-commit hook would have refused the commit, so the wall worked, and the cold endurance run is what let me meet it while the repair still cost one edit rather than a rejected send.
+obs The hot scoped endurance run named seventeen reds and exactly one was mine, which is the lap's sharpest finding about its own instruments. glow_refusal reddened on the sentence assert selftest.out contains "16 legs, 0 failures" -- a RECITED leg tally, reddening the moment five legs arrived. Its own sibling glow_ceiling_refusal_witness.rish carries a header paragraph stating the opposite discipline by name: a recited total reds on the lap somebody adds a leg, which teaches a lane to stop adding them. Two guards one room apart, one stating the rule and one breaking it.
+obs The repair takes the sibling's shape rather than bumping the number: each of the five new legs is asserted by name, and the tally line becomes 0 failures -- GREEN alone. So a leg that BREAKS is still heard and a leg that ARRIVES is not punished, which is the whole distinction the sibling draws. My own new witness was written to that rule already, which is why it reads GREEN beside a sibling that did not.
+obs The other sixteen were checked one at a time against my own paths rather than assumed inherited: instrument_refusal names two peer files landed at the commit this lap opened on; unheard_guard lists twenty controls and mine is not among them, since my witness runs it; error_member_reach names ten dead members in ten files, none of which I touched; ratchet_slack names one uncompared ceiling, awk_lcg_exact, while both of mine read compared=yes with zero slack; shim_reason, say_compose_bound, shared_build_path and pen_release return zero hits for my paths. built_tool_freshness reads the rye binary behind rye/src/main.rye, which a peer is holding open on the claim board.
+status GREEN -- glow_ident (16 pen legs, 2 mutations bitten), glow_refusal (21 legs, its recited tally derived), glow_ceiling_refusal, glow_desk_run (347 desks), glow_expr, and the six converted modules' own guards all GREEN on metal; tame_style_check, width_check, opening_lines, ascii_document, link_text_promise, log_has_a_row, session_roster_agree, index_row_bound, shell_dialect, shell_dialect_touch and fold_shelf_link_repoint GREEN after the four cold reds closed
+recommend keep-going -- the next fall the copy meter can name is the four lower_compose_core siblings, which share one ceiling and convert as one cohort

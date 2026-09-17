@@ -9,6 +9,7 @@ const print = std.debug.print;
 const refusal = @import("refusal.rye");
 const rune_shape = @import("rune_shape.rye");
 const tokens = @import("tokens.rye");
+const zig_ident = @import("zig_ident.rye");
 
 // invariant: every declaration of the module goes through semantic analysis, so a type
 // error in a body this witness never calls reds the build (REDS %463, %470).
@@ -16,9 +17,12 @@ comptime {
     for (@typeInfo(refusal).@"struct".decls) |decl| {
         _ = &@field(refusal, decl.name);
     }
+    for (@typeInfo(zig_ident).@"struct".decls) |decl| {
+        _ = &@field(zig_ident, decl.name);
+    }
 }
 
-const witness_version = "20260916.190000";
+const witness_version = "20260917.001500";
 
 /// A `$:` tuple carrying ten faces -- one past the nine `rune_shape.max_fields` admits.
 const ten_face_src =
@@ -308,7 +312,99 @@ pub fn main() !void {
     }
     print("refusal: tokenize unchanged, a name at the ceiling admitted -- GREEN\n", .{});
 
-    print("refusal_witness: 16 legs, 0 failures -- GREEN\n", .{});
+
+    // 17 -- the one ident rule lowers a hyphenated face, and the hyphen is the only byte
+    // that moves. Every one of the 29 copies agreed on exactly this.
+    var ident_slot: refusal.Slot = null;
+    var ident_buf: [64]u8 = undefined;
+    const lowered = try zig_ident.safe_ident("two-step", ident_buf[0..], 64, "gate", .refuse, &ident_slot);
+    assert(lowered == 8);
+    assert(std.mem.eql(u8, ident_buf[0..8], "two_step"));
+    assert(ident_slot == null);
+    print("refusal: one ident rule lowers the hyphen and leaves the slot empty -- GREEN\n", .{});
+
+    // 18 -- three faults, one error name, three records. This is the whole reason the rule
+    // moved into a module: `error.BadIdent` cannot tell a caller which of the three refused.
+    ident_slot = null;
+    if (zig_ident.safe_ident("", ident_buf[0..], 64, "gate", .refuse, &ident_slot)) |_| {
+        return error.EmptyFaceAccepted;
+    } else |err| {
+        assert(err == zig_ident.IdentError.BadIdent);
+    }
+    assert(ident_slot != null);
+    assert(ident_slot.?.reason == .ident_empty);
+    assert(ident_slot.?.measure == null);
+
+    ident_slot = null;
+    const over_ceiling: [65]u8 = @splat('a');
+    if (zig_ident.safe_ident(over_ceiling[0..], ident_buf[0..], 64, "gate", .refuse, &ident_slot)) |_| {
+        return error.LongFaceAccepted;
+    } else |err| {
+        assert(err == zig_ident.IdentError.BadIdent);
+    }
+    assert(ident_slot != null);
+    assert(ident_slot.?.reason == .name_too_long);
+    assert(ident_slot.?.measure.?.value == 65);
+    assert(ident_slot.?.measure.?.ceiling == 64);
+    assert(ident_slot.?.measure.?.unit == .byte);
+
+    ident_slot = null;
+    if (zig_ident.safe_ident("2step", ident_buf[0..], 64, "gate", .refuse, &ident_slot)) |_| {
+        return error.DigitStartAccepted;
+    } else |err| {
+        assert(err == zig_ident.IdentError.BadIdent);
+    }
+    assert(ident_slot != null);
+    assert(ident_slot.?.reason == .ident_char_not_allowed);
+    assert(ident_slot.?.measure == null);
+    print("refusal: three ident faults under one error name, three records -- GREEN\n", .{});
+
+    // 19 -- each of the three renders its own line, so a reader tells them apart on paper
+    // and not only in a switch.
+    var ident_line: [refusal.max_refusal_line_bytes]u8 = undefined;
+    const empty_line = try (refusal.Refusal{ .field = "gate", .reason = .ident_empty }).render(ident_line[0..]);
+    assert(std.mem.eql(u8, empty_line, "field=gate reason=ident-empty"));
+    const char_line = try (refusal.Refusal{ .field = "gate", .reason = .ident_char_not_allowed }).render(ident_line[0..]);
+    assert(std.mem.eql(u8, char_line, "field=gate reason=ident-char-not-allowed"));
+    const long_line = try (refusal.Refusal{
+        .field = "gate",
+        .reason = .name_too_long,
+        .measure = .{ .value = 65, .ceiling = 64, .unit = .byte },
+    }).render(ident_line[0..]);
+    assert(std.mem.eql(u8, long_line, "field=gate value=65 ceiling=64 unit=byte reason=name-too-long"));
+    print("refusal: each ident refusal renders its own line -- GREEN\n", .{});
+
+    // 20 -- the dot policy is the one real disagreement among the 29, and both readings are
+    // kept. A face refuses the dot; a wing lowers it, which is what `records.cur` needs.
+    ident_slot = null;
+    if (zig_ident.safe_ident("records.cur", ident_buf[0..], 64, "wing", .refuse, &ident_slot)) |_| {
+        return error.DotAcceptedAsFace;
+    } else |err| {
+        assert(err == zig_ident.IdentError.BadIdent);
+    }
+    assert(ident_slot.?.reason == .ident_char_not_allowed);
+    ident_slot = null;
+    const wing = try zig_ident.safe_ident("records.cur", ident_buf[0..], 64, "wing", .to_underscore, &ident_slot);
+    assert(wing == 11);
+    assert(std.mem.eql(u8, ident_buf[0..11], "records_cur"));
+    assert(ident_slot == null);
+    print("refusal: the dot refuses as a face and lowers as a wing -- GREEN\n", .{});
+
+    // 21 -- the field word travels from the caller, so one rule serves every budget in the
+    // room without the record going vague. The five ceilings differ; the rule does not.
+    ident_slot = null;
+    if (zig_ident.safe_ident("abcdefghij", ident_buf[0..], 9, "arm", .refuse, &ident_slot)) |_| {
+        return error.ArmCeilingAccepted;
+    } else |err| {
+        assert(err == zig_ident.IdentError.BadIdent);
+    }
+    assert(std.mem.eql(u8, ident_slot.?.field, "arm"));
+    assert(ident_slot.?.measure.?.ceiling == 9);
+    const arm_at_ceiling = try zig_ident.safe_ident("abcdefghi", ident_buf[0..], 9, "arm", .refuse, &ident_slot);
+    assert(arm_at_ceiling == 9);
+    print("refusal: the caller's field and ceiling travel into the record -- GREEN\n", .{});
+
+    print("refusal_witness: 21 legs, 0 failures -- GREEN\n", .{});
 }
 
 /// Every rendered word stays printable ASCII with no space, so the line splits on spaces.

@@ -4,7 +4,10 @@
 //! as `(jam ...)`). Not a full noun cell / jam bit layout.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rc = @import("rune_cell.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rc.ParseError || error{
     Overflow,
@@ -15,22 +18,19 @@ pub const LowerError = rc.ParseError || error{
 pub const cell_demo_left: u32 = 5;
 pub const cell_demo_right: u32 = 3;
 
-fn zig_safe_ident(face: []const u8, out: *[rc.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rc.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const c = face[i];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rc.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes -- is the
+/// room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[rc.max_name_len]u8, field: []const u8) LowerError!usize {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the signature and the error name it always had, so every
+    // caller in the file is unmoved; the record is dropped here because a caller wanting it
+    // reaches `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rc.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn emit_cell_program(
@@ -77,8 +77,8 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const right = rc.right_slice(&spec);
     var zl: [rc.max_name_len]u8 = undefined;
     var zr: [rc.max_name_len]u8 = undefined;
-    const ln = try zig_safe_ident(left, &zl);
-    const rn = try zig_safe_ident(right, &zr);
+    const ln = try zig_safe_ident(left, &zl, "left");
+    const rn = try zig_safe_ident(right, &zr, "right");
     const expect_p: u32 = if (welcome) cell_demo_left else cell_demo_left +% 1;
     const expect_q: u32 = cell_demo_right;
     return emit_cell_program(left, right, zl[0..ln], zr[0..rn], expect_p, expect_q, out);

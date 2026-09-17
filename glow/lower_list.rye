@@ -4,7 +4,10 @@
 //! pair/triple/quad: 5, 3, 1, 2).
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rl = @import("rune_list.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rl.ParseError || error{
     Overflow,
@@ -14,22 +17,19 @@ pub const LowerError = rl.ParseError || error{
 
 pub const list_demos: [rl.max_faces]u32 = .{ 5, 3, 1, 2 };
 
-fn zig_safe_ident(face: []const u8, out: *[rl.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rl.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const ch = face[i];
-        const mapped: u8 = if (ch == '-') '_' else ch;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rl.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes -- is the
+/// room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[rl.max_name_len]u8, field: []const u8) LowerError!usize {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the signature and the error name it always had, so every
+    // caller in the file is unmoved; the record is dropped here because a caller wanting it
+    // reaches `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rl.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn emit_list_program(spec: *const rl.ListSpec, welcome: bool, out: []u8) LowerError!u32 {
@@ -39,7 +39,7 @@ fn emit_list_program(spec: *const rl.ListSpec, welcome: bool, out: []u8) LowerEr
     while (i < spec.count) : (i += 1) {
         var zb: [rl.max_name_len]u8 = undefined;
         const face = rl.face_at(spec, i);
-        const zn = try zig_safe_ident(face, &zb);
+        const zn = try zig_safe_ident(face, &zb, "face");
         const line = std.fmt.bufPrint(binds[bat..], "    const {s}: u32 = {d};\n", .{ zb[0..zn], list_demos[i] }) catch return error.Overflow;
         bat += line.len;
     }
@@ -49,7 +49,7 @@ fn emit_list_program(spec: *const rl.ListSpec, welcome: bool, out: []u8) LowerEr
     i = 0;
     while (i < spec.count) : (i += 1) {
         var zb: [rl.max_name_len]u8 = undefined;
-        const zn = try zig_safe_ident(rl.face_at(spec, i), &zb);
+        const zn = try zig_safe_ident(rl.face_at(spec, i), &zb, "face");
         if (i > 0) {
             if (ait + 2 > arr_inner.len) return error.Overflow;
             arr_inner[ait] = ',';

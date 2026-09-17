@@ -16,5 +16,6 @@
 | `20260917.010537` | [The card that named its nib twice](20260917/20260917-010537_the-card-that-named-its-nib-twice.kyri) | %793 closed: head -1 read one of two fields, position decided |
 | `20260917.005555` | [The follow-up that left the nib behind](20260917/20260917-005555_the-follow-up-that-left-the-nib-behind.kyri) | a claim close owes the nib carry |
 | `20260917.005523` | [The meter that reads one number](20260917/20260917-005523_the-meter-that-reads-one-number.kyri) | qa: 2,914 program heads -- Door 43 values, Meter 1 |
+| `20260917.004014` | [One ident rule, twenty-nine copies](20260917/20260917-004014_one-rule-twenty-nine-copies.kyri) | glow: the Zig-identifier rule published once; 29 copies to 23 |
 | `20260917.002457` | [Erratum: the body that named the wrong parent](20260917/20260917-002457_the-body-that-named-the-wrong-parent.kyri) | %801 booked; 20260916 closed at 95 |
 | `20260917.000102` | [A resin's bytes are the bytes that landed](20260917/20260917-000102_the-bytes-that-landed.kyri) | bron-resins: 17 of 17 at their adding commit, moved walled at zero |
