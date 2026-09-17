@@ -88,6 +88,15 @@ into the second, swapping the `%tag` path's kind word for `"ident"` and asking t
 refuse. It does. The plant is named by its exact call site rather than by a line number, so a moved
 line reads as found and a REMOVED kind word refuses loudly. The reading is **51 at its ceiling**.
 
+**AND I PINNED THE NIB BEFORE THE FINAL REBASE, WHICH IS THE ONE ORDER THE RULE FORBIDS.**
+[`remember-git-nib`](../.claude/rules/remember-git-nib.md) rule 2 asks for the nib to name HEAD's
+parent read AFTER the send's last rebase, and my send chained rebase and push in one command, so the
+amend the rule allows had nowhere to happen: a peer's commit landed between my read and my push, the
+nib named a grandparent, and `remember_git_nib` reddened on a commit already on both remotes. Rule 5
+is the door left open -- a follow-up carrying real content carries the nib forward too -- and this
+paragraph is that content, since the fault belongs in the account of the lap that made it. **The
+order that works: commit, rebase, read HEAD's parent, amend once, push.**
+
 **MINE, AND OWNED:** the claim I published last lap expired at six hours while its work sat
 unbuilt, so the board carried a stale row naming live work. I closed and re-opened it for a fresh
 stamp before building, which is the board working -- and the first push of it hit a rebase conflict
