@@ -18,11 +18,18 @@ of the day it saved.
 
 **Where it is set, so a fresh clone inherits it:**
 
-- `.claude/settings.json` -- `"effortLevel": "max"` beside `"model": "claude-opus-5"`. This file is
-  tracked and lives inside `~/grain`, which matters: ai-jail resets host `$HOME` on exit, so a
-  setting written to `~/.claude/settings.json` leaves with the jail. **It is the reading**: the file
-  that actually drives the model is what every other site agrees with, held by
-  [`../../tools/d/declared_model_witness.rish`](../../tools/d/declared_model_witness.rish).
+- `.claude/settings.json` -- `"model": "claude-opus-5"` beside `"effortLevel": "medium"`, read
+  `20260916`. This file is tracked and lives inside `~/grain`, which matters: ai-jail resets host
+  `$HOME` on exit, so a setting written to `~/.claude/settings.json` leaves with the jail. **It is
+  the reading**: the file that actually drives the model is what every other site agrees with, held
+  by [`../../tools/d/declared_model_witness.rish`](../../tools/d/declared_model_witness.rish),
+  which gates the model id and the effort value under two named rosters.
+  **The effort there is the DEFAULT a bare `claude` inherits, and it is not the only true answer.**
+  `tools/f/fleet-loop.sh` execs `--effort medium` and this pier runs it; `tools/f/fleet_lap.sh`
+  execs `--effort max` inside the enclosure. So a page describing this file writes `medium`, and a
+  page describing a launch path writes whatever that path passes -- two facts rather than one
+  drifting from itself. The elder spelling here said the file carried `max`, which it has never
+  read since the value was measured.
 - `GLOW_PROFILE.kyri` and its template -- `effort max` beside `model`, so the clone records how its
   work was actually produced and a session log can say so honestly.
 - Every `claude` invocation in `tools/l/launch-claude-chapter.rish` carries `--effort max` explicitly,

@@ -27,15 +27,19 @@ none of those.
 
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
-3. `%646` -- **swept and closed** (the row of `20260916.082153`, unshared until this push); the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
+3. `%646` -- **swept and closed**; the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- A SECTION NAMED BESIDE A PATH WAS THE ONE PROMISE NO GUARD READ.** Account
-[born on its shelf](archive/20260916-190500_itinerary-landed-accounts.md) -- the compass rose sent a
-reader to three stations the card's `20260912` molt renamed, every link green, and
-`tools/s/section_citation_witness.rish` now gates that promise at zero.
-**YOURS:** a citation whose section name is right and whose section has quietly changed its MEANING
-reads clean here forever. Is that half worth an instrument, or the reader's own job?
+**INCENSE -- THE GUARD READ BOTH HALVES OF ONE FILE AND GATED ONLY THE HALF THAT NEVER MOVED.**
+Account [born on its shelf](archive/20260916-192712_itinerary-landed-accounts.md).
+`declared_model_scan.sh` read `.claude/settings.json` for `model` and `effortLevel`, printed both,
+gated only the model -- so four of six living sites quoting that file said `max` where it reads
+`medium`. Six pages now gate the effort by presence of the driver's value, keeping the launch-path
+split true. Control **16 to 26 legs**; row `20260916.192147`, by stamp until shared. My own
+`section_citation_scan.sh` ended an awk pass in `|| true`; named, `instrument_refusal` GREEN.
+**YOURS:** `GLOW_PROFILE.template.kyri` declares `effort max` while the pier it ships with runs
+`medium`, and a fresh clone reads the template first. Follow the pier, or declare what an
+unattended run SHOULD take?
 
 **BAKERY -- THE KEY COST MORE THAN THE COMPILE, AND `run` PAID IT ON EVERY CALL.** Account
 [born on its shelf](archive/20260916-194500_itinerary-landed-accounts.md); the elder, with its two
@@ -138,7 +142,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `b595061313` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7a342af749` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -161,7 +165,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b595061313` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7a342af749` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -235,9 +239,6 @@ living nib by its key.
 **YOURS:** the re-grade now has a cost attached. Holding numbered lines out costs two teaching
 pages a sweep and buys every routing page an honest Reach. Take it, or keep the number reported?
 
-**INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
-[shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
-whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
 **DIFFUSER -- A PEN'S GENERATOR KEPT ONE PROMISE PERFECTLY AND LET THE OTHER GO.**
 Elder [shelved whole](archive/20260916-184100_itinerary-landed-accounts.md), its ask answered below.
 **FIRE SEES** (row 2, N=5117): look for what a comment asserts that no instrument checks.

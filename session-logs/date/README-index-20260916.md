@@ -13,6 +13,7 @@
 | `20260916.195048` | [The fourth seam of one blindness](20260916/20260916-195048_the-fourth-seam-of-one-blindness.kyri) | A gate at zero could not read the spelling the fleet swept to |
 | `20260916.194837` | [The condition nobody exercised alone](20260916/20260916-194837_the-condition-nobody-exercised-alone.kyri) | Cheap conditions ahead of the read. |
 | `20260916.193229` | [the-build-i-rebuilt](20260916/20260916-193229_the-build-i-rebuilt.kyri) | A finished lap sat in my own round-open stash; I rebuilt it, then landed the original. |
+| `20260916.192753` | [The half that never moved](20260916/20260916-192753_the-half-that-never-moved.kyri) | a guard read model and effort, gated only the model |
 | `20260916.191000` | [The box that priced the build key](20260916/20260916-191000_the-box-that-priced-the-build-key.kyri) | two parked records home; build key priced at 11x the read |
 | `20260916.190457` | [The map put its doors in paragraphs](20260916/20260916-190457_the-map-that-put-its-doors-in-paragraphs.kyri) | MAP.md C+/76 to B/84: routing into tables |
 | `20260916.190156` | [The promise beside the path](20260916/20260916-190156_the-promise-beside-the-path.kyri) | a section named beside a path, gated at last |

@@ -21,7 +21,7 @@
 #
 # USAGE
 #   sh tools/fixtures/d/declared_model.sh model     -> claude-opus-5
-#   sh tools/fixtures/d/declared_model.sh effort    -> max
+#   sh tools/fixtures/d/declared_model.sh effort    -> medium
 #
 # Read by tools/fixtures/d/declared_model_scan.sh and its control. Run from anywhere: the settings
 # file is resolved from THIS script's own location rather than the caller's working directory, so a

@@ -135,7 +135,23 @@ cat > "$work/read.awk" <<'AWK'
 AWK
 : > "$work/hits.txt"
 # xargs -a and -d are GNU extensions; the roster is fed on stdin, which every xargs reads.
-xargs awk -f "$work/read.awk" < "$work/pages.txt" >> "$work/hits.txt" || true
+#
+# THE FAILURE IS NAMED RATHER THAN DISCARDED. This line ended in `|| true` from the lap it was
+# written, so an awk pass that refused -- an unreadable page, a program error, an xargs that could
+# not spawn -- left `hits.txt` empty and the scan answered `stale=0`, which is exactly what a clean
+# tree prints. An empty answer from a broken instrument reads like a healthy one, and that is the
+# whole subject of `tools/i/instrument_refusal_witness.rish`, which caught this one lap after the
+# scan landed. A roster with no pages is a real and clean answer and skips the pass; any other
+# refusal exits with its own verdict rather than a count.
+if [ -s "$work/pages.txt" ]; then
+  if ! xargs awk -f "$work/read.awk" < "$work/pages.txt" >> "$work/hits.txt" 2>"$work/read.err"; then
+    echo "instrument=failed"
+    echo "detail=citation_read_pass_refused"
+    sed -n '1,5p' "$work/read.err" | sed 's/^/detail_awk=/'
+    echo "verdict=misread"
+    exit 1
+  fi
+fi
 
 # Each hit is asked of the page it names: does that page carry a place by this name?
 cat > "$work/match.awk" <<'AWK'
