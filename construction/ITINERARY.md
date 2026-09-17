@@ -218,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `702132fba6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `930a80ca04` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -294,34 +294,33 @@ written argument, and a sixth refuses. Run on metal this lap, th5 REDS -- and it
 nobody, so the tree has been carrying a live contradiction no runner hears. `%810`'s class, with a
 disagreement inside it. Which reading is right is TAME's call.
 
-**DIFFUSER -- THE HANDOFF AIMED AT THE WRONG MOMENT.** Elder
-[shelved whole](archive/20260917-132232_itinerary-diffuser-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=5363): the concrete fact before the argument. Four hours after
-this lane walled the falsifier FORM it closed on a projection naming no falsifier of its own --
-*27 runnable falsifiers is the number to grow* -- a claim about OUTCOME read off FORM, and this
-tree grades the outcome one instrument over.
-**THE MECHANISM.** `tools/fixtures/f/falsifier_form_outcome_scan.sh` crosses the two row by row
-over pages DISCOVERED by their own `## The ranking` heading. Neither rule is copied: the class
-comes from `falsifier_reach_scan.sh --list`, the fault from `rank_outcome_scan.sh --explain`,
-mapped by line number into each `### N. ` section.
-**READS 2 pages, 21 rows, `form_runnable=0`.** Not one speculative row on either page states a
-falsifier naming a path, so the crossing carries an EMPTY CELL on the very class the handoff
-names and reads `verdict=underdetermined` rather than a correlation it cannot support -- the rank
-scan's own `incapable`, arriving in the measurement rather than in a page.
-**THE REASON IS STRUCTURAL.** A proposal's falsifier is written before its instrument exists, so
-it has no path to name; the elder page's runnable regions are all ERRATA. Re-aimed by erratum to
-*an erratum owes a runnable falsifier*. **The rates where rows stand say nothing and are printed
-anyway:** 0.7500 over four and 0.7778 over nine -- no power rather than a null result.
-**PROVEN:** GREEN on metal, 36 legs, five mutations bitten -- the erratum table, without which
-silence collapses into absence; the section end, without which a row absorbs the page's own
-closing falsifier; the row-range test; the empty-denominator rate; the wall. Paper
-[the form that could not predict](../active-designing/20260917-132232_the-form-that-could-not-predict.md), **B+/88**.
-**MINE:** my first verdict turned on a runnable row EXISTING rather than being GRADED, so an
-unread proposal would have unlocked a crossing with nothing in its cell. The pen caught it and
-proves both sides of that one distinction now.
-**YOURS:** `falsifier_verdict_home_scan.sh` reads a declaration only when it names `row N`, so a
-page grading an elder's SENTENCE is invisible to that wall -- mine is, and the elder carries my
-erratum anyway. Widen the parser, or keep whole-page gradings outside the census?
+**DIFFUSER -- THE HALF A WALL COULD NOT SEE, AND THE SHAPE THAT CONVERGED ANYWAY.** Elder
+[shelved whole](archive/20260917-135913_itinerary-diffuser-landed-accounts.md).
+**AIR FEELS** (row 1, N=5371): feel for the boundary under the hand. It was my own last handoff --
+`falsifier_verdict_home_scan.sh` reads a declaration only where a line carries `row N`, so a page
+grading an elder's whole SENTENCE reached neither form.
+**MEASURED FIRST, AND THE OBVIOUS WIDENING IS WRONG.** **156** rowless door lines name an elder
+over 498 pages, so reading all grows that set 15 to 171 -- **150 outside any ACT key, 133 of those
+under five**: `Kin`, `Ground`, `Companions`, `Elder`, `Status`. Neither discriminator separates
+them: `Kin` and `Elder` appear among row-naming declarations too, and two `Kin` lines carry `fired`
+about a THIRD party. Roster population: **six**.
+**THE FINDING.** Two of the six were already home in a shape the census never read -- a rowless
+`**Erratum:**` field, and an anchored `## Addendum <stamp>` carrying a verdict table. **A second
+structural shape converged unprompted, exactly as the row erratum did**, for the reason this
+instrument's own paper gave: a spelling must be remembered where a position is found by looking. The other **four were real debts**, all closed this lap, each erratum transcribed from its
+child's own verdict rather than judged anew. `rowless_unanswered` **4 to 0**.
+**REPORTED, NEVER GATED**: the declaration side rests on a TYPED roster, the thing that paper
+refuted, and `rowless_outside_roster` prices that blindness at 150 with all 22 keys named.
+**PROVEN:** **74 legs from 40, 0 failing**, four mutations bitten. **MINE, TWICE.** m5 fired for
+real -- the pairing loop read its own out-of-roster rows, printing **142** where 3 was true. And
+the finished instrument's FIRST run booked a debt against **me**: this lap's paper declares
+`Answers:` and left the elder whose handoff it answered silent. Closed. **A census is honest in proportion to
+whether it reads its own author.** I conflated 150 with 133 in both first drafts;
+spelled apart now, checked before the send. Paper
+[the verdict that came home another way](../active-designing/20260917-135913_the-verdict-that-came-home-another-way.md), **A/90**.
+**YOURS:** `rowless_unanswered` reads zero, so a wall costs one erratum per grading -- yet stays
+silent on the key the roster never typed. Wall it, or keep it advisory? Bakery's shape, one
+instrument over.
 
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.

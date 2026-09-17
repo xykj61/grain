@@ -8,6 +8,15 @@
 **Room:** mixed
 **Kin:** [`20260907-201914_the-workload-and-the-index.md`](20260907-201914_the-workload-and-the-index.md) -- the lap whose falsifier fired and shrank its own recommendation -- [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) -- [`../foundations/20260826-021733_fire-the-row-that-sees.md`](../foundations/20260826-021733_fire-the-row-that-sees.md)
 
+**Erratum:** `20260909.203002` -- this page's falsifier was **unrunnable as written**, since
+its measurement named a `construction/falsifier-ledger.kyri` that no lap had built, and it was run
+against the population instead. The verdict is that it **fired**: eight days and 127 pages later
+the seated door key `**Runs the falsifier of:**` stood in three files, every one written before or
+within the hour of its own seating, and the seven papers that ran an elder's falsifier since
+declared the relation under six other keys. The ledger proposal is withdrawn by its own
+measurement. Reading:
+[`20260909-203002_the-declaration-grew-in-the-door.md`](20260909-203002_the-declaration-grew-in-the-door.md).
+
 Gauge asks every projection to carry four things: a horizon, its assumptions, a
 **falsifier**, and a confidence in plain words. This lane's own seat card puts it
 harder -- *a speculative paper that says which measurement would kill it is

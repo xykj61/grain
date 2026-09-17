@@ -9,6 +9,17 @@
 
 Row 7 of the bounded-torus moonshots proposes Aurora on a 4-core or 16-core network-on-chip
 **whose topology Grain knows to be a torus**, so that placement and routing become computable
+
+**Erratum:** `20260916.095958` -- the question this page raised and declined at *Where this
+reading stops* -- whether the static import graph, read as a **lower bound** on coupling rather
+than as a weight, would be enough to start -- has been run and the answer is yes, with its limit
+named. The proxy tolerates **structural** drift up to roughly two thirds and still beats chance,
+while **scale** drift leaves the layout where it stood, so the two drifts are not one reading. The
+disposition that follows keeps this page's rank and changes its unit: row 7's first witness should
+name which **files** sit on which node rather than which modules, since at module granularity
+every assignment overflows a node at either grid. Reading:
+[`20260916-095958_the-two-ways-a-proxy-drifts.md`](20260916-095958_the-two-ways-a-proxy-drifts.md),
+instrument `tools/fixtures/a/aurora_placement_scan.sh`.
 ahead of time. Its first witness is a placement map -- which module sits on which node, and the
 hop count for every pair. Its falsifier reads: *the reachable boards are mesh rather than torus,
 which would leave the wrap-around hops the map depends on unavailable.* Its confidence is low,

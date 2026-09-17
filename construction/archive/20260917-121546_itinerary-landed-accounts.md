@@ -7,14 +7,14 @@
 ---
 
 **DIFFUSER -- THE RANKING WAS RIGHT AND THE FALSIFIERS WERE NOT.** Elder
-[shelved whole](archive/20260917-105154_itinerary-landed-accounts.md).
+[shelved whole](20260917-105154_itinerary-landed-accounts.md).
 **WATER TASTES** (row 3, N=5343): run the actual thing. The elder ranked page carries an erratum on
 all twelve rows, so `tools/fixtures/r/rank_outcome_scan.sh` grades the forecast for the first time,
 and **it splits in two.** Rank against read order reads Kendall tau **0.9556**, 44 concordant pairs
 against 1 -- the lane started the rows in the order it wrote down. **And `falsifier_faulted` reads
 10 of 12**, **0.8333**: six structurally incapable of firing, three already settled, one misaimed.
 Three claims stood, eight were altered. **THE CLAIM HALF IS THE EASY HALF**, measured.
-**WHAT LANDED:** [the refusal that can fire](../active-designing/20260917-105154_the-refusal-that-can-fire.md),
+**WHAT LANDED:** [the refusal that can fire](../../active-designing/20260917-105154_the-refusal-that-can-fire.md),
 the lane's **second ranked page**, **A/91**, nine rows, ASCII zero, register 26 under Field's 30.
 Every row names **the reading that would fire its falsifier** as a command or an instrument this
 tree owns, and a row without one was declined rather than written. Its subject follows the elder's

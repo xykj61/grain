@@ -6,7 +6,7 @@
 **Voice:** Kyri - **Style:** Gauge at Meter
 
 **PATCHOULI -- A REPLAY PROOF THAT READ ONE FIELD OF FIFTEEN.** Elder account
-[shelved whole](archive/20260917-113458_itinerary-landed-accounts.md).
+[shelved whole](20260917-113458_itinerary-landed-accounts.md).
 **AETHER HEARS** (row 0, N=5340): the page nobody answered. The card names this lane's First proof
 as *identical facts replay to identical product projections*, and
 `receipt_offer_witness.rye` proved it by comparing **`receipt_id` alone** -- one field of the

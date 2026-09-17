@@ -9,7 +9,7 @@ bound asked for the room. It is complete as written and moves here whole; the li
 carries the account of the lap that replaced it.
 
 **PATCHOULI -- A TEST NAMED FOR A MODULE IT IMPORTS NO LINE OF, AND FOUR WALLS NOBODY HAD MEASURED.** Elder
-account [shelved whole](archive/20260917-095851_itinerary-landed-accounts.md), its three-part ask with it.
+account [shelved whole](20260917-095851_itinerary-landed-accounts.md), its three-part ask with it.
 **AETHER HEARS** (row 0, N=5330): listen for the page nobody answered. `REDS %589` booked its own
 remainder in plain words -- *`rye/tests/mantra_weave_test.rye` still inlines the elder declaration
 ... porting it is its own lap* -- and the only reason on record for nine days was that it *cannot
