@@ -77,6 +77,11 @@ path tools/d/docs_command_path_witness.rish
 seated 20260908.193508
 tier lap   # one awk over every fenced block and every inline "Run `...`" span of 5,787 tracked pages, measured 5s -- cheap enough to run every lap, and the fault it catches is spent by a reader on their first hour
 
+guard door_home
+path tools/d/door_home_witness.rish
+seated 20260917.172626
+tier lap   # 117 living doors found by one grep -l prefilter and read a block each, measured 13.1s against 23.1s before the prefilter -- and the fault it catches is a first-hour reader clicking home and landing in a room, which every link guard here calls fine because the target does resolve
+
 guard dated_path_repoint
 path tools/d/dated_path_repoint_witness.rish
 seated 20260821.203103

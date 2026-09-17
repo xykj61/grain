@@ -1,0 +1,98 @@
+# tools/d/door_home_witness.rish -- a door that says where home is points at home.
+#
+#   rishi/bin/rishi run tools/d/door_home_witness.rish
+#
+# WHY. `**Where this sits:**` is this tree's one navigation sentence. 117 living pages write it by
+# hand, and it names up to three places: home, which is the root README; a first hour, which is the
+# docs-geode tutorial; and the whole path, which is SOURCE.md. Every one of the three is a RELATIVE
+# link whose `../` steps are typed per page by whoever made it.
+#
+# Measured `20260917.153832`, all 117 home clauses resolve to the root README. Nothing is presently
+# wrong, and nothing holds it that way.
+#
+# THE RISK IS EXACT. 49 of the 117 doors sit two or more directories deep. From `docs-geode/api/`,
+# a typed `../README.md` resolves to `docs-geode/README.md` -- tracked, real, and not home. The two
+# guards that already read links both call that fine, and for good reasons of their own:
+# `tracked_link_scan` reads whether a target RESOLVES, and the link-text promise guard reads the
+# anchor text against the target rather than the target against a canonical page. So a door copied
+# one level down keeps a sentence that opens somewhere and stops pointing home, in silence.
+#
+# WHAT IS GATED, at zero: `home_off`, a door whose home clause resolves anywhere but the root
+# README.
+#
+# WHAT IS REPORTED, never gated: the two optional clauses, present or absent, right or wrong. A
+# page may honestly carry fewer -- a door one directory from the root has less to say than one four
+# rooms deep -- so a gate on their presence would refuse honest work. Their targets are read all
+# the same, so a clause that IS written and points wrong is named out loud while refusing nothing.
+#
+# THE ANCHOR IS THE READING THIS GUARD RESTS ON. The words `home is` occur twice in a full door
+# sentence: once opening the key, and once closing the third clause -- `the whole path from nothing
+# to a signed, sandboxed home is`. A pattern searching for those words takes the LAST under every
+# POSIX greedy rule. Both readings were run against this tree with the anchor struck out: searching
+# one LINE reports `home_off=1`, and searching the BLOCK -- which is what this scan reads -- reports
+# `home_off=106` against 117 doors, every name wrong. The anchor is what keeps this guard from
+# reddening the whole tree on its first run, so the pen plants the second occurrence and proves the
+# door free, then strikes the anchor out of a copy of the scan and proves that same door refuse.
+#
+# THE KEY IS A BLOCK, not a line. A door's sentence wraps: 110 of the 117 name a first hour and
+# only 4 fit it on the key's own line. A line-oriented reading answers 4 where the truth is 110.
+
+say "door-home: Language EN -- a page that says where home is points at home."
+say "door-home: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "door-home: Lens TAME -- the population is discovered rather than listed, the clause is anchored rather than searched for, and the two readings this cannot gate are counted in the open."
+
+let scan = run ["sh" "tools/fixtures/d/door_home_scan.sh"]
+say scan.out
+assert scan.ok else "door-home: a door says where home is and points somewhere else -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "door-home: the reading must agree with itself"
+assert scan.out contains "home_off=0" else "door-home: a door pointing away from home is the whole subject of this guard"
+assert (scan.out contains "verdict=home_off" == false) else "door-home: the gate is home_off and it stands at zero"
+assert (scan.out contains "doors=0" == false) else "door-home: a reading over no doors would report clean while measuring nothing"
+assert (scan.out contains "home_on=0" == false) else "door-home: a population where no clause resolved would be a broken reading rather than a clean tree"
+assert (scan.out contains "verdict=no_home_page" == false) else "door-home: a tree with no root README cannot answer this question and must say so"
+assert (scan.out contains "verdict=no_tree" == false) else "door-home: the scan must read a real tree"
+assert (scan.out contains "verdict=door_bound" == false) else "door-home: the door bound refuses rather than truncating, and this tree stands under it"
+assert (scan.out contains "first_hour_on=0" == false) else "door-home: the first-hour reading over nothing would report clean while measuring nothing"
+assert (scan.out contains "source_on=0" == false) else "door-home: the whole-path reading over nothing would report clean while measuring nothing"
+
+let control = run ["sh" "tools/fixtures/d/door_home_control.sh"]
+say control.out
+assert control.ok else "door-home: the control must complete"
+assert control.out contains "control_failed=0" else "door-home: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "door-home: the control must agree with itself"
+
+assert control.out contains "clean_door_free=yes" else "door-home: an honest door must walk free"
+assert control.out contains "shadow_readme_off=yes" else "door-home: a ../README.md landing on a real non-home README is the founding case"
+assert control.out contains "shadow_readme_refuses=yes" else "door-home: the founding case must refuse, or this guard adds nothing to the two that already read links"
+assert control.out contains "shadow_target_is_real=yes" else "door-home: the founding case only means something if its target genuinely resolves"
+assert control.out contains "shadow_readme_named=yes" else "door-home: a refusal that names no page leaves the reader to search 117 of them"
+assert control.out contains "shadow_lifted_free=yes" else "door-home: a refusal proven only in the refusing direction cannot be told from a bypass"
+assert control.out contains "deep_door_free=yes" else "door-home: a deep door counting its steps right must walk free"
+assert control.out contains "missing_target_refuses=yes" else "door-home: a home link resolving to nothing is not home"
+
+assert control.out contains "anchor_plant_present=yes" else "door-home: a plant that planted nothing proves nothing"
+assert control.out contains "anchor_free=yes" else "door-home: a correct door carrying the second `home is` must walk free"
+assert control.out contains "mutation_anchor_bites=yes" else "door-home: strike the anchor and that same door must refuse, or the anchor is decoration"
+assert control.out contains "mutation_anchor_refuses=yes" else "door-home: the unanchored reading reds 106 of 117 living doors and names every one wrongly"
+assert control.out contains "block_finds_wrapped_first_hour=yes" else "door-home: a door's sentence wraps, and a line-oriented reading loses the clauses after the wrap"
+assert control.out contains "block_finds_wrapped_source=yes" else "door-home: the whole-path clause lands on a continuation line on almost every door"
+assert control.out contains "mutation_block_bites=yes" else "door-home: read one line rather than the block and 110 first-hour readings become 4"
+
+assert control.out contains "absent_home_free=yes" else "door-home: a door naming no home is counted rather than gated"
+assert control.out contains "absent_home_named=yes" else "door-home: a counted reading nobody can locate is a number rather than a finding"
+assert control.out contains "optional_never_gates=yes" else "door-home: a page may honestly carry fewer clauses, and a gate on their presence would refuse honest work"
+assert control.out contains "optional_first_hour_named=yes" else "door-home: a first-hour clause that is written and points wrong is named out loud"
+assert control.out contains "optional_source_named=yes" else "door-home: a whole-path clause that is written and points wrong is named out loud"
+
+assert control.out contains "testimony_read_past=yes" else "door-home: dated testimony keeps every word it wrote"
+assert control.out contains "testimony_lifted_refuses=yes" else "door-home: the same broken door living must refuse, or the exclusion leg proves an absence rather than an exclusion"
+assert control.out contains "no_key_no_door=yes" else "door-home: a page carrying no key owes this guard nothing"
+assert control.out contains "untracked_read_past=yes" else "door-home: the population is the tracked tree"
+assert control.out contains "no_root_refuses=yes" else "door-home: a tree with no root README must refuse rather than call every door off"
+assert control.out contains "bound_refuses=yes" else "door-home: the door bound must refuse rather than truncate"
+assert control.out contains "bound_at_the_bound_free=yes" else "door-home: a tree standing exactly at the bound walks free, or it is not a bound"
+assert control.out contains "list_names_page=yes" else "door-home: --list must name each page it found"
+assert control.out contains "bad_argument_refuses=yes" else "door-home: an unknown argument must refuse rather than be ignored"
+assert control.out contains "long_walk_reads_home=yes" else "door-home: resolution is by real path, so a longer walk reaching home is home"
+
+say "door-home: GREEN -- every living door's home clause resolves to the root README, and the two optional clauses are read and reported."
