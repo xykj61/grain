@@ -827,3 +827,5 @@ at a closed fold.*
 *Row %769 folded to [`REDS-the-guard-that-named-a-loss-rows-769.md`](REDS-the-guard-that-named-a-loss-rows-769.md) on `20260916.220400`, **BOOKED** -- a guard named for a loss refused an addition in the same words, and named neither direction.*
 
 *Row %778 folded to [`REDS-the-comment-that-priced-a-hash-rows-778.md`](REDS-the-comment-that-priced-a-hash-rows-778.md) on `20260916.220400`, **BOOKED** -- a comment priced the build receipt's own key at nanoseconds beside a read, and the hash costs eleven times that.*
+
+*Rows %789, %792 and %794 folded to [`REDS-the-rule-the-wall-did-not-reach-rows-789-794.md`](REDS-the-rule-the-wall-did-not-reach-rows-789-794.md) on `20260916.224937`, **BOOKED** and **CLOSED** -- three rules stated correctly and walled one step away from where the hand actually stood -- a nib guard reading by key rather than by neighbour, a signal scan reading tracked sources rather than a session prompt, and a report card branch reading a flag rather than a threshold.*

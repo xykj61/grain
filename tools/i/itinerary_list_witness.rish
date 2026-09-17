@@ -1,0 +1,48 @@
+# tools/i/itinerary_list_witness.rish -- a living pin's numbered list reads 1..N, or a rewrite ate
+# one of its items.
+#
+#   rishi/bin/rishi run tools/i/itinerary_list_witness.rish
+#
+# REDS %789 and the row of `20260916.220730` are one defect forty minutes apart, from two hands. Both replaced item 7 of the
+# INNER LOOP in construction/ITINERARY.md -- the directive telling every lap to run the endurance
+# runs -- with a duplicate Git nib line, and both left the list reading 6, nib, 8. The first firing
+# stood ten hours and roughly 120 commits on the one page an eight-ship fleet reads at every lap
+# open, and every standing guard was green through both: nib_honesty reads the nib BY ITS KEY and
+# finds it whichever line carries it; ascii_document, tracked_link and the pin bound read bytes
+# rather than meaning. A list's own numbering is read by nothing.
+#
+# %789 named this cure in its own third field and declined to build it, on the stated ground that
+# the lantern had fired once. The interval to the second firing was forty minutes. So the lesson is
+# about REACH rather than about counting lanterns: a finding that lives only in prose reaches the
+# hand that happens to read that prose, and this class recurs at whatever rate the fleet's hands
+# turn over.
+
+say "pin-list: Language EN -- a numbered list is a spine, and a spine says when a vertebra is gone."
+say "pin-list: Style Gauge, Meter -- one reading, held at zero, over the pages a lap reads whole."
+say "pin-list: Lens TAME -- every refusal planted in a pen and then lifted; both real firings replayed."
+
+say "pin-list: the control -- twenty-eight behaviors in a throwaway pen, two of them the firings themselves..."
+let ctl = run ["sh" "tools/fixtures/i/itinerary_list_control.sh"]
+# invariant: both streams are written out BARE, ahead of the asserts that judge them, so the report
+# cannot refuse however large the output grows.
+say ctl.out
+say ctl.err
+assert ctl.ok else "pin-list: the control refused -- its two streams stand above"
+# invariant: the control's own leg tally is asserted beside its verdict, so a leg written tomorrow
+# is heard the day it lands rather than passing unread under a verdict that means only reached-the-end.
+assert ctl.out contains "control_legs=28" else "pin-list: the control did not run twenty-eight legs -- its two streams stand above"
+assert ctl.out contains "control_failed=0" else "pin-list: a control leg failed -- its two streams stand above"
+
+say "pin-list: and every rostered living pin's ordered lists read 1..N..."
+let scan = run ["sh" "tools/fixtures/i/itinerary_list_scan.sh"]
+say scan.out
+assert scan.ok else "pin-list: the scan refused -- its reading stands above"
+# invariant: a run that skips, repeats, or never starts at one is a list an edit has damaged. This
+# is a WALL rather than a ratchet: the population was measured at zero on the repairing lap, so the
+# next damaged list reds on the lap it arrives.
+assert scan.out contains "broken_runs=0" else "pin-list: a living pin's numbered list has a gap, a repeat, or a missing head -- run `sh tools/fixtures/i/itinerary_list_scan.sh list`; the reading stands above"
+# invariant: the roster is read rather than the tree, so a pin that vanishes from the roster is a
+# drop a reader can see rather than a silent narrowing of what this guard covers.
+assert scan.out contains "pins_read=7" else "pin-list: the living-pin roster no longer names seven readable pages -- a pin was added, retired, or is absent from this tree; the reading stands above"
+
+say "GREEN: pin-list -- every ordered list in every rostered living pin reads 1..N, with no gap, no repeat, and no foreign line standing between two items; twenty-eight control legs proven in a pen, both real firings replayed out of this repository's own history with each firing's parent welcomed beside it, and two mutations bitten -- the unwind that keeps two lists from reading as one, and the ascending check itself"

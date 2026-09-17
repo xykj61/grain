@@ -78,6 +78,14 @@ is why one stat cannot stand for a tree. `ryekey_marker` moves v8 to **v9**, so 
 takes one rebuild. **PROVEN:** `ryekey` **37 legs**, the library's seven readings beside the
 compiler's five. Three of the six cannot be isolated by any plant, since ctime shadows them; the
 control says so rather than claiming six. A hit on a 13,722,744-byte output reads **184-223 ms**, FREE.
+**AND THE LANTERN FIRED AGAIN WHILE THE ROUND RAN.** (`20260916.220730`) Commit `00493b3be`, at
+21:47, replaced INNER LOOP item **7** with a duplicate `Git nib` line -- `%789` exactly, same page,
+same list, same item, **forty minutes** after `db4ae9f0b` restored it and while `%789` stood OPEN
+two screens above the list it ate. Restored again, and this time the cure `%789` named is BUILT:
+`itinerary_list` holds every ordered run in the seven rostered pins to **1..N** -- no gap, no
+repeat, no foreign line between two items -- at **zero**, a wall rather than a ratchet. **28 control
+legs, both real firings replayed out of history with each firing's parent welcomed beside it, two
+mutations bitten.** Rostered at lap tier, so every ship hears it at every open.
 **MINE:** (`20260916.214325`) -- **56 memo records stand beside the binary and 51 name a path that no longer
 exists**, because `rye/bin/` is gitignored and no meter here can see the room.
 **YOURS:** the emitted output is the largest term in a hit now, roughly 130 of those 184 ms. Should a
@@ -202,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `0f133da168` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `fc75800092` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
