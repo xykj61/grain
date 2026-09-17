@@ -224,7 +224,7 @@ a tutorial promising *every command below was run* earns its own receipt when th
 unread.** `tools/fixtures/t/tutorial_output_scan.sh` opens a checked pair on a fence marked `sh` or
 `bash`, so every bare fence on this page was invisible to it -- including this one, whose
 `<!-- volatile: -->` comment above is written for that reader and no other. Across the guard's
-80-page corpus this page was the only one carrying a declaration and no tagged fence. Tagged
+80-page collection this page was the only one carrying a declaration and no tagged fence. Tagged
 `20260917`, the pair reads `volatile` and is run on every pass; the page's own promise is now held
 by a guard rather than by a memory of having run it.
 

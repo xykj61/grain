@@ -161,7 +161,7 @@ are GREEN after the repair; `index_row_bound`, `index_fold`, `ascii_document`, `
 and `link_text_promise` re-run GREEN beside them.
 **MINE:** both pins spell a number their own shelf derives, which is *count, never number* one room
 over. Repaired as written rather than converted, since converting a roster's spelling is its own lap.
-**YOURS:** both asks. Which guard yields on the four doubly-read pairs; and whether the corpus wants
+**YOURS:** both asks. Which guard yields on the four doubly-read pairs; and whether the collection wants
 a count of bare command fences standing above an output block -- invisible for this same reason,
 each one a run-and-quote nothing reads.
 
@@ -210,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4a1594bc74` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `37cfa7b0ea` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -304,13 +304,13 @@ without running it: **a QD1 4 KiB latency far from 200-350 us kills the mechanis
 **THE MECHANISM.** `tools/rye/read_latency.rye` drops one 64 MiB file's pages per inode, sets
 `POSIX_FADV_RANDOM` so no window is fetched, and times **each** 4 KiB `pread` alone. Then it holds
 67,108,864 bytes STILL across 64/128/256/512/1024 files -- which is what tells a per-FILE cost from
-a per-BYTE one, since one corpus explains both.
+a per-BYTE one, since one set explains both.
 **THE FALSIFIER IS RUN.** Cold QD1 p50 **154,459 and 154,509 ns** across two 512-round runs,
 agreeing to 50 ns; warm **1,653 ns**, so the device's share is 153 us and the eviction reached it.
 Below the named band at the median, inside it at mean and p90: **not killed**.
 **AND THE CONSTANT WAS WRONG.** Fitting `total = files x A + bytes / B` gives **A = 304 us per
 file, B = 718 MB/s**, predicting the three rows it was not fitted on within **5 percent**. 304 us
-is **1.97x** one round trip -- a file costs about **two**, never one. It puts the elder corpus at
+is **1.97x** one round trip -- a file costs about **two**, never one. It puts the elder set at
 183 ms against 158 measured, **16 percent high**, and sits within **9 percent** of that page's
 independently-measured 279.
 **THE ALTERNATIVE, KILLED PER DESCRIPTOR RATHER THAN BY A HOST SETTING EIGHT SHIPS SHARE.**
