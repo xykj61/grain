@@ -101,10 +101,36 @@ done
 . "$_fd_root/tools/fixtures/s/shell_portable.sh"
 cd "$_fd_root" || exit 2
 
-# THE CEILING, and why it is this number. It is the reading taken the lap this scan was seated,
-# with no slack: a ceiling carrying room is a ceiling that welcomes the next copy. Lower it in the
-# same commit that sweeps a file.
-CEILING=189
+# THE GROWTH GATE AND THE LEGACY RATCHET, and why one number became two.
+#
+# This reading shipped as ONE falling ceiling over the whole bare population, seated at 189 with
+# no slack, on the reasoning that a ceiling carrying room welcomes the next copy. That reasoning
+# is right for a FIXED population and it inverts for a growing one. Within a day the reading stood
+# at 191 and refused on every checkout in the fleet, for two finder sites BORN in upstream commits
+# that no ship chose and no lane could sweep from where it stood. A ratchet that only falls, over
+# a population every lane adds to, is a wall with a delay.
+#
+# So the gate is on the GROWTH and the ratchet is on the REST. `root_finder_baseline.txt` pins the
+# paths carrying a bare finder the lap this split was seated. A bare finder in a file ABSENT from
+# that roster is new, gated at zero, and repairable on the lap it lands, since a file born today
+# was born in somebody's current lane. A bare finder in a roster file is legacy, held under a
+# ceiling that only falls -- and that population can never grow, so the no-slack reasoning is
+# right again for exactly the number it was always right for.
+#
+# THE ROSTER IS KEYED BY PATH AND THE LEGACY CEILING COUNTS SITES, which is the composition that
+# leaves no hole. A new FILE reds the growth gate. A new FINDER written into a file already on the
+# roster reads as legacy, and raises the site count past a ceiling that only falls, so it reds too.
+# Two roster files carry two sites apiece today, which is why 189 paths hold 191 sites.
+#
+# THE ONE FALSE RED THIS SHAPE CAN MAKE is a lawful rename: a roster file moved to a new path is
+# absent from the roster and reads as new. Its repair is one roster row, which is the same cost as
+# the elder ceiling edit and is VISIBLE where a ceiling bump was silent. The control proves the
+# false red rather than claiming it, so the cost is on the record.
+#
+# THE ROSTER IS LOAD-BEARING, SO ITS ABSENCE REFUSES. A growth gate whose roster can be deleted
+# into silence is a gate with a door beside it.
+BASELINE=tools/fixtures/r/root_finder_baseline.txt
+LEGACY_CEILING=191
 
 # BOUNDS. A tree this size holds a few thousand shell sources and a few hundred finders; both
 # limits sit an order above the live reading, so a wildly wrong enumeration meets a named refusal
@@ -249,7 +275,19 @@ while IFS= read -r set; do
   fi
 done < "$work/sets.txt"
 
+# The roster, read once into one newline-delimited string. Membership is a shell `case` over that
+# string, so a two-hundred-row table costs zero processes rather than one `grep` per finder.
+if [ ! -f "$BASELINE" ]; then
+  echo "$0: baseline roster $BASELINE is missing -- a growth gate whose roster can vanish is a gate with a door beside it" >&2
+  exit 2
+fi
+NL=$(printf '\nx'); NL=${NL%x}
+ROSTER_SET="$NL$(grep -v '^[[:space:]]*#' "$BASELINE" | grep -v '^[[:space:]]*$' | sort -u)$NL"
+baseline_paths=$(grep -cv '^[[:space:]]*#\|^[[:space:]]*$' "$BASELINE" || true)
+
 bare=0
+bare_new=0
+bare_legacy=0
 fragile=0
 ambiguous=0
 : > "$work/rows.txt"
@@ -262,7 +300,15 @@ while IFS="$(printf '\t')" read -r path sentinels; do
     case " $BUILD_SENTINELS " in *" $s "*) has_build=yes ;; esac
     case " $GITDIR_SENTINELS " in *" $s "*) has_gitdir=yes ;; esac
   done
-  [ "$has_build" = yes ] && { bare=$((bare + 1)); verdict=bare_unrunnable; }
+  growth=-
+  if [ "$has_build" = yes ]; then
+    bare=$((bare + 1))
+    verdict=bare_unrunnable
+    case "$ROSTER_SET" in
+      *"$NL$path$NL"*) growth=legacy; bare_legacy=$((bare_legacy + 1)) ;;
+      *)               growth=new;    bare_new=$((bare_new + 1)) ;;
+    esac
+  fi
   [ "$has_gitdir" = yes ] && { fragile=$((fragile + 1)); [ "$verdict" = runnable ] && verdict=worktree_fragile; }
 
   # Ambiguity: a non-root directory answering EVERY sentinel of this finder, looked up by set.
@@ -271,8 +317,8 @@ while IFS="$(printf '\t')" read -r path sentinels; do
     *"|$(echo "$sentinels" | tr ' ' ',')|"*) amb=yes; ambiguous=$((ambiguous + 1)) ;;
   esac
 
-  printf '%s sentinels=%s verdict=%s ambiguous=%s\n' \
-    "$path" "$(echo "$sentinels" | tr ' ' ',')" "$verdict" "$amb" >> "$work/rows.txt"
+  printf '%s sentinels=%s verdict=%s ambiguous=%s growth=%s\n' \
+    "$path" "$(echo "$sentinels" | tr ' ' ',')" "$verdict" "$amb" "$growth" >> "$work/rows.txt"
 done < "$work/finders.txt"
 
 if [ "$MODE" = list ]; then
@@ -350,10 +396,16 @@ echo "sentinels_distinct=$(wc -l < "$work/sentinels.txt" | tr -d ' ')"
 echo "sentinels_build_output=$(awk -F'\t' '$2 == "build_output"' "$work/classified.txt" | wc -l | tr -d ' ')"
 echo "sentinels_git_dir=$(awk -F'\t' '$2 == "git_dir"' "$work/classified.txt" | wc -l | tr -d ' ')"
 echo "finders_bare_unrunnable=$bare"
+echo "finders_bare_new=$bare_new"
+echo "finders_bare_legacy=$bare_legacy"
+echo "baseline_paths=$baseline_paths"
 echo "finders_worktree_fragile=$fragile"
 echo "finders_ambiguous=$ambiguous"
-echo "ceiling=$CEILING"
-if [ "$bare" -gt "$CEILING" ]; then
+echo "ceiling=$LEGACY_CEILING"
+# The growth gate is named FIRST, because it is the one a lap can repair on the lap it reads it.
+if [ "$bare_new" -gt 0 ]; then
+  echo "verdict=new_finder"
+elif [ "$bare_legacy" -gt "$LEGACY_CEILING" ]; then
   echo "verdict=over_ceiling"
 else
   echo "verdict=ok"

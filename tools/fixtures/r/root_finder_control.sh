@@ -71,6 +71,9 @@ build() {
   # copy is what keeps `sources_tracked` honest below, since it is a tracked `.sh` in the pen.
   cp "$_fd_root/tools/fixtures/s/shell_portable.sh" "$d/tools/fixtures/s/shell_portable.sh"
   printf '# pen\nA real document so no pen is merely empty.\n' > "$d/README.md"
+  # An EMPTY baseline roster, so a pen's planted finder reads as growth unless that pen's own leg
+  # rosters it. The file must exist: the scan refuses without one, which is proven on its own below.
+  printf '# pen baseline -- empty unless a leg writes into it\n' > "$d/tools/fixtures/r/root_finder_baseline.txt"
   printf 'const std = @import("std");\n' > "$d/rishi/src/main.rye"
   ( cd "$d" && git init -q . \
     && git config user.email pen@example.invalid \
@@ -103,6 +106,11 @@ plant_finder() {
   } > "$d/$rel"
 }
 
+# roster <pen> <path> ... -- put paths on that pen's baseline, so their finders read legacy.
+roster() {
+  d=$1; shift
+  for r in "$@"; do echo "$r" >> "$d/tools/fixtures/r/root_finder_baseline.txt"; done
+}
 commit_and_read() {
   ( cd "$1" && git add -A >/dev/null 2>&1 \
     && git commit -qm 'pen: one planted root-finder' >/dev/null 2>&1
@@ -190,14 +198,16 @@ out=$(commit_and_read "$d")
 leg unambiguous_clear "$(echo "$out" | read_key finders_ambiguous)" 0
 
 # -- 7. The ceiling bites one past, and is proven from both sides -------------------------------
-sed 's/^CEILING=189$/CEILING=1/' "$scan" > "$pen/scan_ceiling1.sh"
-grep -q '^CEILING=1$' "$pen/scan_ceiling1.sh" || { echo "control_verdict=sed_failed" >&2; exit 1; }
+sed 's/^LEGACY_CEILING=191$/LEGACY_CEILING=1/' "$scan" > "$pen/scan_ceiling1.sh"
+grep -q '^LEGACY_CEILING=1$' "$pen/scan_ceiling1.sh" || { echo "control_verdict=sed_failed" >&2; exit 1; }
 d=$(build ceiling_at "$pen/scan_ceiling1.sh")
 mkdir -p "$d/rishi/bin" && printf 'binary\n' > "$d/rishi/bin/rishi"
 printf 'rishi/bin/\n' > "$d/.gitignore"
 plant_finder "$d" tools/fixtures/r/planted_1.sh ROOT rishi/bin tools/fixtures
+roster "$d" tools/fixtures/r/planted_1.sh tools/fixtures/r/planted_2.sh
 out=$(commit_and_read "$d")
 leg ceiling_at_bound_ok "$(echo "$out" | read_key finders_bare_unrunnable)" 1
+leg ceiling_at_bound_legacy "$(echo "$out" | read_key finders_bare_legacy)" 1
 leg ceiling_at_bound_verdict "$(echo "$out" | read_key verdict)" ok
 plant_finder "$d" tools/fixtures/r/planted_2.sh ROOT rishi/bin tools/fixtures
 out=$(commit_and_read "$d")
@@ -206,6 +216,102 @@ leg ceiling_one_past_refuses "$(echo "$out" | read_key verdict)" over_ceiling
 rm -f "$d/tools/fixtures/r/planted_2.sh"
 out=$(commit_and_read "$d")
 leg ceiling_lifts_again "$(echo "$out" | read_key verdict)" ok
+
+# -- 7b. The growth gate: a bare finder in a file the roster does not carry ----------------------
+#
+# THE WHOLE POINT OF THE SPLIT. The elder reading refused this tree on a rise it could not
+# attribute; this one refuses the FILE and names it, at zero, with no slack -- and the same finder
+# rostered walks free, which is the legacy half saying yes.
+d=$(build growth)
+mkdir -p "$d/rishi/bin" && printf 'binary\n' > "$d/rishi/bin/rishi"
+printf 'rishi/bin/\n' > "$d/.gitignore"
+plant_finder "$d" tools/fixtures/r/planted_g.sh ROOT rishi/bin tools/fixtures
+out=$(commit_and_read "$d")
+leg growth_new_counted "$(echo "$out" | read_key finders_bare_new)" 1
+leg growth_not_legacy "$(echo "$out" | read_key finders_bare_legacy)" 0
+leg growth_refuses "$(echo "$out" | read_key verdict)" new_finder
+leg growth_row_named "$(commit_and_read "$d" --list | grep -c 'planted_g.sh .*growth=new')" 1
+leg growth_total_unmoved "$(echo "$out" | read_key finders_bare_unrunnable)" 1
+
+# The same bytes, rostered: the file is legacy and the tree walks free. A refusal proven only in
+# the refusing direction cannot be told from a gate that refuses everything.
+roster "$d" tools/fixtures/r/planted_g.sh
+out=$(commit_and_read "$d")
+leg rostered_is_legacy "$(echo "$out" | read_key finders_bare_legacy)" 1
+leg rostered_not_new "$(echo "$out" | read_key finders_bare_new)" 0
+leg rostered_walks_free "$(echo "$out" | read_key verdict)" ok
+leg rostered_row_named "$(commit_and_read "$d" --list | grep -c 'planted_g.sh .*growth=legacy')" 1
+leg baseline_paths_counted "$(echo "$out" | read_key baseline_paths)" 1
+
+# A SECOND FINDER WRITTEN INTO A ROSTER FILE is legacy by path and still reds, because the legacy
+# ceiling counts SITES. This is the hole the path-keyed roster would leave if the ceiling counted
+# files, and it is proven rather than reasoned about.
+sed 's/^LEGACY_CEILING=191$/LEGACY_CEILING=1/' "$scan" > "$pen/scan_legacy1.sh"
+grep -q '^LEGACY_CEILING=1$' "$pen/scan_legacy1.sh" || { echo "control_verdict=sed_failed_legacy" >&2; exit 1; }
+cp "$pen/scan_legacy1.sh" "$d/tools/fixtures/r/root_finder_scan.sh"
+out=$(commit_and_read "$d")
+leg second_site_base_ok "$(echo "$out" | read_key verdict)" ok
+# The second finder is BUILT by plant_finder and appended, never written as a heredoc body. A
+# heredoc is tracked bytes, and this scanner reads lines rather than shell structure -- so a
+# literal `while [ ! -d ... ]` here would enter the LIVE population and move the very number the
+# gate weighs. It did, on this leg's first run, and the new gate is what caught it (%785's hazard
+# one room over). Every line plant_finder writes sits inside an `echo` argument, so no line of
+# this file ever opens with the shape the extractor looks for.
+plant_finder "$d" tools/fixtures/r/planted_g2.sh ROOT2 rishi/bin tools/fixtures
+cat "$d/tools/fixtures/r/planted_g2.sh" >> "$d/tools/fixtures/r/planted_g.sh"
+rm -f "$d/tools/fixtures/r/planted_g2.sh"
+out=$(commit_and_read "$d")
+leg second_site_counted "$(echo "$out" | read_key finders_bare_legacy)" 2
+leg second_site_still_not_new "$(echo "$out" | read_key finders_bare_new)" 0
+leg second_site_refuses "$(echo "$out" | read_key verdict)" over_ceiling
+
+# -- 7c. The one false red this shape can make, measured rather than claimed --------------------
+#
+# A LAWFUL RENAME of a roster file leaves the roster behind and reads as growth. The repair is one
+# roster row. Naming the cost as a leg is what keeps it from being discovered by a peer at 3am.
+d=$(build rename)
+mkdir -p "$d/rishi/bin" && printf 'binary\n' > "$d/rishi/bin/rishi"
+printf 'rishi/bin/\n' > "$d/.gitignore"
+plant_finder "$d" tools/fixtures/r/planted_r.sh ROOT rishi/bin tools/fixtures
+roster "$d" tools/fixtures/r/planted_r.sh
+out=$(commit_and_read "$d")
+leg rename_before_is_legacy "$(echo "$out" | read_key verdict)" ok
+( cd "$d" && git mv tools/fixtures/r/planted_r.sh tools/fixtures/r/planted_r2.sh >/dev/null 2>&1 )
+out=$(commit_and_read "$d")
+leg rename_reads_as_new "$(echo "$out" | read_key finders_bare_new)" 1
+leg rename_refuses "$(echo "$out" | read_key verdict)" new_finder
+roster "$d" tools/fixtures/r/planted_r2.sh
+out=$(commit_and_read "$d")
+leg rename_one_roster_row_repairs "$(echo "$out" | read_key verdict)" ok
+
+# -- 7d. The roster is load-bearing: its absence refuses rather than passing everything ---------
+d=$(build no_roster)
+plant_finder "$d" tools/fixtures/r/planted_n.sh ROOT rishi/src tools/fixtures
+rm -f "$d/tools/fixtures/r/root_finder_baseline.txt"
+( cd "$d" && git add -A >/dev/null 2>&1 && git commit -qm pen >/dev/null 2>&1 )
+rc=0
+( cd "$d" && sh tools/fixtures/r/root_finder_scan.sh >/dev/null 2>&1 ) || rc=$?
+leg absent_roster_refuses "$rc" 2
+
+# -- 7e. Mutation: drop the roster membership test and the growth gate stops seeing ------------
+#
+# The lookup is what turns a bare finder into `new`. With the `case` inverted to match everything,
+# a pen whose roster is EMPTY must still read zero growth -- which is the gate gone silent.
+sed 's|\*"\$NL\$path\$NL"\*)|*)|' "$scan" > "$pen/scan_noroster.sh"
+grep -q '^      \*) growth=legacy' "$pen/scan_noroster.sh" \
+  || { echo "control_verdict=sed_failed_noroster" >&2; exit 1; }
+d=$(build mutation_noroster)
+mkdir -p "$d/rishi/bin" && printf 'binary\n' > "$d/rishi/bin/rishi"
+printf 'rishi/bin/\n' > "$d/.gitignore"
+plant_finder "$d" tools/fixtures/r/planted_mu.sh ROOT rishi/bin tools/fixtures
+# THE UNMUTATED READING IN THIS SAME PEN, first. A mutation is only evidence where the truth it
+# replaces differs from it; asserting 0 after the swap proves nothing unless 1 stood before it.
+out=$(commit_and_read "$d")
+leg mutation_control_reads_one "$(echo "$out" | read_key finders_bare_new)" 1
+cp "$pen/scan_noroster.sh" "$d/tools/fixtures/r/root_finder_scan.sh"
+out=$(commit_and_read "$d")
+leg mutation_dropping_roster_test_bites "$(echo "$out" | read_key finders_bare_new)" 0
+leg mutation_dropping_roster_test_moves_verdict "$(echo "$out" | read_key verdict)" ok
 
 # -- 8. Modes answer their own questions --------------------------------------------------------
 d=$(build modes)
