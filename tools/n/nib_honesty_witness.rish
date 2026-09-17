@@ -63,7 +63,28 @@ assert green.out contains "git_nib_state_law=tools/r/remember_git_nib_witness.ri
 assert green.out contains "local_only_checkpoints=" else "nib-honesty: want local-only walk-backs counted and named"
 assert green.out contains "keyed=" else "nib-honesty: want the POSITION reading counted -- a hash standing after its own key is gated whatever its shape"
 assert green.out contains "numeral_read=" else "nib-honesty: want the numerals read rather than refused -- ten decimal digits in bare prose is a number, and counting them is what proves REDS %782 stays closed"
+assert green.out contains "git_nib_lines=1" else "nib-honesty: the living card names its Git nib ONCE -- a second field means a positional write replaced the line it landed on, and the extractor would grade whichever of the two stood first. REDS %793 landed exactly that card twice in one day"
 assert green.out contains "verdict=ok" else "nib-honesty: want verdict ok"
+
+# The LIVE gate, driven against a planted card through the CARD seam the scan already
+# carries. Counting the field and REFUSING on two are different lines, and a witness
+# hearing only the count passes a scan whose refusal has been removed -- proven by
+# mutation on this bench: turning the live branch off left every other leg green. So the
+# refusal is exercised where it actually stands, rather than inferred from its sibling.
+let livedbl = run ["sh" "-c" "CARD=tools/fixtures/nib_honesty_control/double_nib_control.md sh tools/fixtures/n/nib_honesty_scan.sh"]
+assert (livedbl.ok == false) else "nib-honesty: the LIVE path must REFUSE a card naming its Git nib twice, not merely count the fields"
+assert livedbl.out contains "verdict=NIB_NAMED_TWICE" else "nib-honesty: want the live refusal named -- a card with two nib fields is a positional write that ate the line it landed on (REDS %793)"
+
+let dbl = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh" "prove-double"]
+assert (dbl.ok == false) else "nib-honesty: prove-double must refuse, not merely report"
+# The count is proven from BOTH sides on two planted cards, and the refusal is proven to
+# arrive through its OWN door. A control whose hashes floated would refuse under the elder
+# floating-claim law and say nothing about this one, so both controls are read for `gone`
+# first and a nonzero reading is named CONFOUNDED rather than counted as a pass.
+assert dbl.out contains "RED_nib_named_twice_caught=2" else "nib-honesty: prove-double want the planted two-field card refused by count -- it carries the two commits that actually did this to the living card an hour apart (REDS %793)"
+assert dbl.out contains "control_double_gone=0" else "nib-honesty: prove-double want the double control clean under the ELDER law, so its refusal is the COUNT rather than a floating hash arriving through the wrong door"
+assert dbl.out contains "control_single_gone=0" else "nib-honesty: prove-double want the single control clean under the elder law too, for the same reason"
+assert dbl.out contains "control_single_lines=1" else "nib-honesty: prove-double want the ONE-field card walking free -- it carries a second `Git nib:` mention in prose carrying no hash, which is the living card's own pointer sentence, and a count reading that as a field would refuse the card it guards"
 
 let red = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh" "prove-red"]
 assert (red.ok == false) else "nib-honesty: prove-red must refuse, not merely report"
@@ -77,4 +98,4 @@ assert red.out contains "RED_numeral_read_free=2" else "nib-honesty: prove-red w
 assert red.out contains "control_keyed=2" else "nib-honesty: prove-red want POSITION outranking shape -- the all-decimal hash standing after its key is one of these two"
 assert red.out contains "control_prose_hex=1" else "nib-honesty: prove-red want SHAPE gating where no key stands -- the bare-prose hash a single letter marks"
 
-say "GREEN: nib-honesty -- every hash the living card advertises resolves, the Git nib is read from its own field, a ten-character token is recognised by position then shape then resolution so a decimal in prose stays a number, checkpoint reach is named rather than graded against a law checkpoints cannot keep, and three planted floating nibs are refused on metal while two planted numerals walk free."
+say "GREEN: nib-honesty -- every hash the living card advertises resolves, the Git nib is read from its own field, a ten-character token is recognised by position then shape then resolution so a decimal in prose stays a number, checkpoint reach is named rather than graded against a law checkpoints cannot keep, the card names that nib exactly once so a positional write cannot leave two fields with the first one silently graded, and three planted floating nibs plus one planted two-field card are refused on metal while two planted numerals and a one-field card walk free."

@@ -29,40 +29,20 @@ cause is captured; its evidence half is free, and this lap took it.
 3. `%646` -- **swept and closed**; the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- A NOUN PHRASE ABOUT PROSE READ AS A CLAIM ABOUT A ROW.** Elder account
-[shelved whole](archive/20260916-231355_itinerary-landed-accounts.md), its `.cursor/` question with
-it. A second elder pointer folded there too; its ask is below.
-**FIRE SEES** (row 2, N=5187): cut and stop. Reds first, so the lap took the one booked red in its
-lane -- and the run proving the work found a second.
-**THE FAULT** (`%796`, CLOSED). `reds_status_consistency` decides a closure claim by proximity: a
-row number within 60 characters of a closing word on another row's line. `%792` quoted the closing
-line of `%730`, so the guard answered `ledger_contradicts_itself` on a ledger where all was true.
-**THE MECHANISM.** Two phrases are read past in the awk block that walks each row: `closing`
-touching `line`, `sentence`, `word` or `paragraph`, which names writing; and a window carrying the
-bold open marker, which is a row ASSERTING its peer is open. Every verb form keeps its teeth.
-**THE SPECIFIED REPAIR CLOSED HALF THE FAULT.** `%796` narrates the misreading, so it writes the
-verb beside the row it defends -- the shape this guard meets whenever it is booked. Measured first:
-**55 claims over 716 rows, exactly one** carrying the marker, the false one.
-**PROVEN:** pen **47 legs, 0 red**, each exclusion planted then lifted, **three mutations bitten**,
-every new leg quoted by name; `reds_monotone`, `reds_fold`, `ascii_document`, `link_text_promise`,
-`unshared_citation` GREEN beside it. Scan **B+/88**, control **A/90**, witness **B+/85**.
-**THE HONEST LIMIT:** a row claiming a closure while quoting its peer's bold open marker inside the
-same sixty characters walks free. That prose contradicts itself and stands nowhere in 716 rows.
-**AND THE HOT RUN FOUND A SECOND, IN A WALL LANDED AN HOUR EARLIER** (`%798`). `itinerary_list`
-opens an ordered run on any line beginning with a digit run and a period, so a peer measurement
-sentence wrapping onto `32. Warm floor 32 / 12 / 11.` read as a one-item run and refused the card --
-at lap tier, on every ship, on a page GitHub renders as its author meant. CommonMark opens a list
-inside a paragraph only at 1, precisely so that sentence stays a sentence.
-**THE EXCEPTION IS THE SHAPE THE GUARD IS FOR:** a run at the same indent ending within two lines
-means the number follows a broken list -- `%789` itself -- so the rule alone would have freed
-the founding shape, and the mutation proving it is in the pen. Runs fell 14 to 13, items 62 to 61.
-**PROVEN:** pen **36 legs, 0 failing**, four mutations bitten, both firings still replayed with each
-parent welcomed, five new legs named. Scan **B+/85** after one molt frame -- my first header took it
-B/81 to C+/79 -- control **A+/100**, witness **A/90**.
-**MINE:** the register reading counts this scan's CODE as four sentences, so `broken` and `absent`
-in identifiers price its prose -- left standing rather than bent to clear a ceiling.
-**YOURS:** two asks -- four near-parallel `.cursor` bodies missing a section, and whether the tree
-digest may read past `construction/fleet-claims.kyri` as it does its own card.
+**INCENSE -- A READER THAT TOOK PART AND REPORTED ALL.** Both accounts
+[shelved whole](archive/20260917-005520_itinerary-landed-accounts.md) -- this lap's from birth,
+which is this card's own standing question answered by doing. **WATER TASTES** (row 3, N=5196,
+advanced by hand past row 1): `%793` named its cause as a tool writing the nib by line offset, and
+no tool here does -- `remember_git_nib_write.sh` matches the KEY and refuses rather than mutating.
+What stood instead: the card says of itself that the nib is *named once above*, nothing held that
+sentence, and `nib_honesty_scan.sh` read the field with `head -1`, so a duplicated field left the
+FIRST line graded and the second unread. It counts before it reads now, refusing `NIB_NAMED_TWICE`;
+both firings replay out of history at 2 and refuse, both parents read 1 and walk. Five legs named,
+**three mutations bitten**, twelve guards GREEN. `%793` **CLOSED**.
+**MINE:** my first draft heard the COUNT and never the REFUSAL -- grass's finding from the same day,
+in my own witness. The cure drives the live path against a planted card through the `CARD` seam.
+**YOURS:** my fold of three CLOSED rows collided with a peer's fold of two of them inside one
+rebase; upstream's folds won and mine narrowed to one row. Should a fold claim its rows first?
 
 **BAKERY -- 189 OF THIS TREE'S SCRIPTS CANNOT FIND THEIR ROOT IN A CHECKOUT OF TRACKED BYTES.**
 Elder account [shelved whole](archive/20260917-014754_itinerary-landed-accounts.md); its ask --
@@ -224,7 +204,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d330fa0e60` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `01bed9802a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
