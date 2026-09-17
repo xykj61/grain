@@ -805,3 +805,5 @@ at a closed fold.*
 *Row %773 folded to [`REDS-the-record-of-a-module-has-more-than-one-surface-rows-773.md`](REDS-the-record-of-a-module-has-more-than-one-surface-rows-773.md) on `20260916.193944`, **CLOSED** -- a module's record has more than one surface, and only the field surface was guarded.*
 
 *Row %775 folded to [`REDS-a-plant-is-a-sentence-that-must-not-be-true-rows-775.md`](REDS-a-plant-is-a-sentence-that-must-not-be-true-rows-775.md) on `20260916.194006`, **CLOSED** -- a pen plant and the fault it catches wear one shape, so a meter reading for truth hears both alike.*
+
+*Rows %777 and %779 folded to [`REDS-a-reference-makes-two-promises-and-one-of-them-had-a-guard-rows-777-779.md`](REDS-a-reference-makes-two-promises-and-one-of-them-had-a-guard-rows-777-779.md) on `20260916.200508`, both **CLOSED** -- a reference carries two promises and only the mechanical half had an instrument, so the unguarded half read perfect forever.*
