@@ -5,9 +5,10 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Language:** EN
-**Last updated:** `20260717` (TWO_ROOMS Quin refresh - five OS variants named in the tree map)
+**Last updated:** `20260917.092522` -- the room list joins the checked population; `design-shapes/`, `fixtures/` and `keys/` stood unnamed here, `design-shapes/` for 49 days
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
+**Members:** the rooms under [`./`](./) -- `baton-museum`, `design-shapes`, `fixtures`, `keys`, `specs`, read against the rooms on disk by [`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
 
 ---
 
@@ -30,6 +31,9 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`SILO_TECHNIQUE.md`** -- the siloing technique: how an outside idea becomes an owned, understood concept in our own voice, with gratitude kept apart and honored. Portable, and meant to travel beside the voice guide and the identity note.
 - **`LEXICON.md`** -- module names and one-line meanings; Weave, Dexter, Kumara, Bookie, the open horizons, the **preservation pair** (Amber = cellar software, Amphora = vessel software), and **Kitchen twin** (plain companion to a hard canon). **Nib** vocabulary for landed edges (product - suite - git) -- retired *tip* in new prose only.
 - **`baton-museum/`** -- eleven halls of baton shapes (counsel close - agent cover - recursion prompt - tiered handoff - cursor relay - infusion - bench apply report - waymark - handback - chapter summary - queue packet). Seated `20260730.030553`.
+- **`design-shapes/`** -- the Brix descriptions of shapes this home seats -- `bounds_home.brix`, `fact_fold.brix`, `relay_resin.brix`, `tend_hygiene.brix` -- under a README of their own, one of them (`relay_resin`) carrying a plain page beside its descriptor. Landed `20260730` and named here from `20260917`.
+- **`fixtures/`** -- the planted inputs the guards over this home read: a broken link beside a valid one, a claim held before and after a modality pass. A plant is an input to a guard rather than a page speaking from a room, so the doorway census reads it past.
+- **`keys/`** -- the public halves this tree publishes, the GPG signing key and the Rye signing key, under one README naming what each proves. Secret halves live on the machine and never here.
 
 - **`specs/`** -- plain-English radiant specs. ... **`20260702-035018_graduation-rule.md`** -- when an aspect earns a module home (second consumer). **`20260701-221512_cellar-functional-spec.md`** -- Amber preservation module; first lap green (parity **144**); later laps wait. **`20260709-200443_wov-exit-honesty.md`** -- WOV safety spec (root facts + exit bundles). **`20260709-204026_wov-tb-client-seam.md`** -- TigerBeetle client seam; seam A host landed (parity **204**); seam B later. **`20260709-224325_slcl4-lap2-width.md`** -- SLC-L4 width after fixed-tier (W0 cleared; W1/W2 gated). **`20260709-224531_wov-dual-monarch.md`** -- dual monarch; D1 twin-lines landed (parity **205**); D2 later. **`20260709-225159_mala-kind-field.md`** -- MUR kind (was MALA; dated path); K0 cleared; K1 gated. **`20260709-225343_thin-view-dexter-exception.md`** -- thin view is not Dexter's second consumer. Plain stories: [`../external-research/20260709-200022_pedersen-and-sigma-plainly.md`](../external-research/20260709-200022_pedersen-and-sigma-plainly.md) - [`../external-research/20260709-230414_twin-keys-and-the-exit-bundle.md`](../external-research/20260709-230414_twin-keys-and-the-exit-bundle.md) - [`../external-research/20260709-231011_graduation-rule-plainly.md`](../external-research/20260709-231011_graduation-rule-plainly.md) - [`../external-research/20260709-235921_one-clock-plainly.md`](../external-research/20260709-235921_one-clock-plainly.md) - [`../external-research/20260709-235931_resins-cellar-vessel-plainly.md`](../external-research/20260709-235931_resins-cellar-vessel-plainly.md) - [`../external-research/20260710-000725_learning-chapter-plainly.md`](../external-research/20260710-000725_learning-chapter-plainly.md) - [`../external-research/20260710-001249_settlement-seat-plainly.md`](../external-research/20260710-001249_settlement-seat-plainly.md) - [`../external-research/20260710-002017_metalsmoke-plainly.md`](../external-research/20260710-002017_metalsmoke-plainly.md) - [`../external-research/20260710-002422_cellar-seasons-plainly.md`](../external-research/20260710-002422_cellar-seasons-plainly.md) - [`../external-research/20260710-002544_first-lap-goes-green-plainly.md`](../external-research/20260710-002544_first-lap-goes-green-plainly.md) - [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md).
 
@@ -71,6 +75,10 @@ grain/
     archive/        <- retired identities (Reya 2, Rio 3, Riyo)
     SILO_TECHNIQUE.md
     LEXICON.md
+    baton-museum/   <- the baton shapes
+    design-shapes/  <- Brix descriptors for the shapes seated here
+    fixtures/       <- planted inputs the guards over this home read
+    keys/           <- the public halves of the signing keys
     specs/
   foundations/    <- why beneath the work: briefs, essays, weave, civic visions
   docs/           <- compression shelf (operator guides; no load-bearing pins)

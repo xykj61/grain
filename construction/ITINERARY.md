@@ -154,36 +154,34 @@ exempt from the commit-message path wall; and the nine unrostered `tools/gen/cha
 a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
 **YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
 
-**PETRICHOR -- A COUNT ABOVE A TABLE IS A CLAIM ABOUT THAT TABLE, AND NOTHING READ IT.** Elder
-account [shelved whole](archive/20260917-072547_itinerary-landed-accounts.md); its ask -- which
-guard yields on the four doubly-read pairs -- stands there and here.
-**WATER TASTES** (row 3, N=5298): the happy-zone page asks for the MIRROR -- both sides of a
-boundary asserted -- so every mutation here carries a `_holds` leg beside its `_bites` one. The
-fact at the door was the shipping shelf's own front door, recording two payments for one class:
-`docs-geode/README.md` said *ten rooms* over a table of twelve, from the commit that added the
-twelfth, standing sixteen days; `docs-geode/etc/README.md` named eleven neighbors while twelve
-stood. Both repairs moved that page's count into its table, and reached no third page.
-**WHY NOTHING SAW IT.** `qa_report_card` scores Truth by cited PATHS, so a stale count reads Truth
-100 -- the blindness of `20260910.073603`, when that door claimed 1,004 pages against a scan
-answering 1,261 and scored A+/98. `tutorial_output` reads what a command PRINTS, and a count is in
-no fence; `crushed_index` reads one page's one table. The sentence falls between three jobs.
-**THE MECHANISM.** `tools/fixtures/p/prose_count_table_scan.sh` reads a count -- numeral or word --
-followed by a PLURAL noun, in the paragraph or heading whose NEXT BLOCK is a table whose HEADER
-names that noun. **Each clause removes a live false positive measured here:** without the
-header test the reading finds 46 sites and 30 are noise; without the next-block rule that page's
-*two rooms* claims against a thirteen-row table three paragraphs below; without the plural rule
-`docs/ENCLOSURE.md`'s *three-door bus* agrees by coincidence. **84 pages, 14 sites, 14 agreeing,
-`drift` WALLED at zero from birth.**
-**BOTH DECLINES PRINTED.** `near_block` 5 -- four count what the table does not tabulate; the fifth
-is the honest cost, the fleet tutorial writing *Four places name it* above four rows headed `Site`,
-declined because page and table choose different words. `listform` 19 with 16 agreeing, ungated: a
-list has no header, and the three that differ are a duration, a rate, and a section mark.
-**PROVEN:** pen **37 legs, 0 failing**, four mutations bitten; scan 0.7s.
-**MINE:** my third mutation read `silent` twice, each time because a DIFFERENT rule did the work --
-a hyphen test the split had made dead, then a length floor changing no reading here. Both are gone;
-a mutation that will not bite names a rule that reads nothing.
-**YOURS:** the elder ask, and whether the list shape earns a discriminator -- 16 real claims behind
-it, three refusals blocking the gate.
+**PETRICHOR -- A FRONT DOOR GRADED A WHILE ITS ROOM LIST WAS FORTY-NINE DAYS STALE.** Elder
+account [shelved whole](archive/20260917-093038_itinerary-landed-accounts.md), its discriminator ask
+with it.
+**AIR FEELS** (row 1, N=5321): walk the fence line and press each post. The post that gave was
+`context/README.md` -- the home a new session and a new collaborator are handed by name, 588 living
+citers, and its **What Lives Here** section named **zero of three** rooms: `design-shapes/`, which
+landed `20260730` in `d672141a3` and stood unnamed 49 days, plus `fixtures/` and `keys/`. The page
+graded **A/94** through all of it.
+**WHY A GRADE MISSED IT.** `qa_report_card` scores Truth by cited PATHS, so a list that names no
+absent path reads Truth 100 -- the same blindness `20260910.073603` and my own last lap both booked.
+An enumeration is a claim about a POPULATION, and a population is checkable only where a page
+DECLARES it.
+**THE MECHANISM.** The page carries a `**Members:** the rooms under [./](./) -- name, name` key,
+read by `tools/r/room_enumeration_witness.rish`, which resolves the link, walks the directories and
+compares. Three rows joined **What Lives Here** and five room lines joined the workspace tree, so
+the body and the key say one thing. `archive/` is named in neither, since the guard reads the closed
+shelves past and claiming one would read as a phantom.
+**PROVEN ON THIS PAGE rather than in its pen:** dropping `keys` from the key reds
+`missing 'keys', a room under ./ the list never names`, and lifting the plant returns it to zero.
+Witness GREEN, 56 legs. Register ok, ASCII zero, card **A/94** with 20 of 20 paths resolving.
+**MINE:** two sentences I wrote about those rooms were wrong before I checked them -- one README per
+key rather than one for both, a plain page beside every descriptor rather than one. A room's own
+`ls` is one command, and a description written from the room's name is a guess.
+**YOURS:** the population outside the fence, measured here -- **18** front doors hold two or more
+rooms and declare nothing; **3** of them (`src/`, `waymarks/`, `recursion-prompts/`) name every room
+in backticked prose already, so the key costs one line apiece and the other 15 enumerate partly, on
+purpose or not. Whether a door that enumerates MUST declare is the ruling; the guard holds whoever
+opts in.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -230,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `5f3bb94a97` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `30da4aba5a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
