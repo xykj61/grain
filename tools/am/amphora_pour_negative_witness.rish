@@ -67,4 +67,4 @@ assert (missing.ok == false) else "amphora_pour_neg: missing season must refuse"
 assert missing.err contains "season absent" else "amphora_pour_neg: absence must name its fault"
 say "plant_missing=refused"
 
-say "GREEN: amphora_pour_negative — forge · fork · absence, each refused at its wall."
+say "GREEN: amphora_pour_negative -- forge - fork - absence, each refused at its wall."

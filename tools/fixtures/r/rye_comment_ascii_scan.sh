@@ -31,7 +31,8 @@
 #
 # USAGE
 #   sh tools/fixtures/r/rye_comment_ascii_scan.sh          # count
-#   sh tools/fixtures/r/rye_comment_ascii_scan.sh --list   # name each file and its count, worst first
+#   sh tools/fixtures/r/rye_comment_ascii_scan.sh --list       # the forty worst, then list_shown, list_hidden, list_total
+#   sh tools/fixtures/r/rye_comment_ascii_scan.sh --list-all   # every file and its count, worst first -- no row dropped
 #
 # Run from the repository root.
 
@@ -263,10 +264,26 @@ for f in $list; do
   fi
 done
 
-if [ "$mode" = "--list" ]; then
-  printf '%s' "$report" | sort -rn | head -40
+if [ "$mode" = "--list" ] || [ "$mode" = "--list-all" ]; then
+  # A capped listing that does not name its cap reads as a complete one, so each block below
+  # prints what it dropped and `--list-all` prints every row. This file carries TWO listings in one
+  # mode -- own-line comments, then trailing ones -- so their counts wear different prefixes rather
+  # than one number standing for two populations. Held by `tools/fixtures/l/listing_census_scan.sh`.
+  list_total=$(printf '%s' "$report" | grep -c .)
+  list_cap=40
+  [ "$mode" = "--list-all" ] && list_cap=$list_total
+  [ "$list_total" -gt 0 ] && printf '%s' "$report" | sort -rn | head -n "$list_cap"
+  list_shown=$list_total
+  [ "$list_total" -gt "$list_cap" ] && list_shown=$list_cap
+  echo "list_shown=$list_shown list_hidden=$((list_total - list_shown)) list_total=$list_total"
   echo "-- trailing --"
-  printf '%s' "$trail_report" | sort -rn | head -40
+  trail_list_total=$(printf '%s' "$trail_report" | grep -c .)
+  trail_list_cap=40
+  [ "$mode" = "--list-all" ] && trail_list_cap=$trail_list_total
+  [ "$trail_list_total" -gt 0 ] && printf '%s' "$trail_report" | sort -rn | head -n "$trail_list_cap"
+  trail_list_shown=$trail_list_total
+  [ "$trail_list_total" -gt "$trail_list_cap" ] && trail_list_shown=$trail_list_cap
+  echo "trail_list_shown=$trail_list_shown trail_list_hidden=$((trail_list_total - trail_list_shown)) trail_list_total=$trail_list_total"
 fi
 
 if [ "$total" -le "$CEILING" ]; then under=yes; else under=no; fi

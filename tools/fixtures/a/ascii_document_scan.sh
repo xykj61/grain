@@ -59,8 +59,10 @@
 #
 # USAGE
 #   sh tools/fixtures/a/ascii_document_scan.sh                 # census -- key=value lines
-#   sh tools/fixtures/a/ascii_document_scan.sh --list          # ratchet files, worst first
-#   sh tools/fixtures/a/ascii_document_scan.sh --enforce-list  # enforced files still dirty
+#   sh tools/fixtures/a/ascii_document_scan.sh --list              # the forty worst ratchet files, then list_shown, list_hidden, list_total
+#   sh tools/fixtures/a/ascii_document_scan.sh --list-all          # every ratchet file, worst first -- no row dropped
+#   sh tools/fixtures/a/ascii_document_scan.sh --enforce-list      # the forty worst enforced files, then enforce_list_shown, enforce_list_hidden, enforce_list_total
+#   sh tools/fixtures/a/ascii_document_scan.sh --enforce-list-all  # every enforced file, worst first -- no row dropped
 #
 # Run from the repository root, or from any git work tree (the control runs it inside a pen).
 set -u
@@ -441,11 +443,29 @@ while IFS= read -r f; do
   fi
 done < "$LISTFILE"
 
-if [ "$mode" = "--list" ]; then
-  printf '%s' "$ratchet_report" | sort -rn | head -40
+if [ "$mode" = "--list" ] || [ "$mode" = "--list-all" ]; then
+  # A capped listing that does not name its cap reads as a complete one, so list_hidden is
+  # the count this run dropped and `--list-all` prints every row. Held across the family
+  # by `tools/fixtures/l/listing_census_scan.sh`.
+  list_total=$(printf '%s' "$ratchet_report" | grep -c .)
+  list_cap=40
+  [ "$mode" = "--list-all" ] && list_cap=$list_total
+  [ "$list_total" -gt 0 ] && printf '%s' "$ratchet_report" | sort -rn | head -n "$list_cap"
+  list_shown=$list_total
+  [ "$list_total" -gt "$list_cap" ] && list_shown=$list_cap
+  echo "list_shown=$list_shown list_hidden=$((list_total - list_shown)) list_total=$list_total"
 fi
-if [ "$mode" = "--enforce-list" ]; then
-  printf '%s' "$enforce_report" | sort -rn | head -40
+if [ "$mode" = "--enforce-list" ] || [ "$mode" = "--enforce-list-all" ]; then
+  # A capped listing that does not name its cap reads as a complete one, so enforce_list_hidden is
+  # the count this run dropped and `--enforce-list-all` prints every row. Held across the family
+  # by `tools/fixtures/l/listing_census_scan.sh`.
+  enforce_list_total=$(printf '%s' "$enforce_report" | grep -c .)
+  enforce_list_cap=40
+  [ "$mode" = "--enforce-list-all" ] && enforce_list_cap=$enforce_list_total
+  [ "$enforce_list_total" -gt 0 ] && printf '%s' "$enforce_report" | sort -rn | head -n "$enforce_list_cap"
+  enforce_list_shown=$enforce_list_total
+  [ "$enforce_list_total" -gt "$enforce_list_cap" ] && enforce_list_shown=$enforce_list_cap
+  echo "enforce_list_shown=$enforce_list_shown enforce_list_hidden=$((enforce_list_total - enforce_list_shown)) enforce_list_total=$enforce_list_total"
 fi
 
 if [ "$ratchet_total" -le "$CEILING" ]; then under=yes; else under=no; fi

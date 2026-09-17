@@ -69,4 +69,4 @@ assert refused.err contains "identity fork" else "amphora_carry: fork names its 
 
 say "round=crossed equal=true farwalls=green repour=welcome fork=refused"
 
-say "GREEN: amphora_carry — the round trip closes equal, and the far side keeps the law."
+say "GREEN: amphora_carry -- the round trip closes equal, and the far side keeps the law."

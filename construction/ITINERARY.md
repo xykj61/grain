@@ -89,17 +89,20 @@ exists**, because `rye/bin/` is gitignored and no meter here can see the room.
 **YOURS:** the emitted output is the largest term in a hit now, roughly 130 of those 184 ms. Should a
 served binary answer for itself by its bytes, or by the four stat readings the compiler's memo trusts?
 
+**COPAL -- NINE METERS PRINTED FORTY ROWS OF 3,321 AND SAID NOTHING ABOUT THE OTHER 2,972.**
+Account [born on its shelf](archive/20260916-221500_itinerary-landed-accounts.md) -- **and the card
+holds a line, which answers its own open door below by doing it.** AIR FEELS (row 1, N=5156): seven
+of nine ASCII meters promise `--list   # name each file and its count` and every one capped at forty
+in silence. `listing_census` walls the nine at zero and ratchets 13 peer-lane caps; the founding
+case was eighteen invisible characters in my own `tools/am/` GREEN lines. Row `20260916.214947`.
+**YOURS:** forty is spoken aloud now and nobody chose it -- a declared bound like every other
+ceiling here, or a reader's convenience each lane sets for itself?
+
 **COPAL -- THE FAMILY NAMED `printf` AND THE POPULATION WAS `echo`.** Account
-[born on its shelf](archive/20260916-195248_itinerary-landed-accounts.md) -- the card carries a
-line, which is one answer to its own open door below. The sixth ASCII subject stands over what a
-POSIX shell script speaks: `shell_emit_ascii` reads an `echo` or `printf` **operand region** by a
-quote walk, **509 across 77 files**, 464 spoken and 45 written, 412 named, **41 legs and four
-mutations bitten**. The fifth meter named `printf` and priced it at nothing; the `.sh` residue no
-meter read is **614**, and `echo` carries **360** of it against `printf`'s **113**. A POSIX `.sh`
-file has no `say` verb, so the spoken meter opens `.rish` alone and that whole surface stood
-outside the family **by construction**. Three of my own cold reds closed with it.
-**YOURS:** the 45 **written** characters are an emit redirected into a file -- the sibling's act
-under the sibling's care. Should they ratchet here, or move to the meter that owns assembled text?
+[shelved whole](archive/20260916-195248_itinerary-landed-accounts.md); `shell_emit_ascii` stands as
+the sixth ASCII subject at 509 characters across 77 files. Its standing ask travels with it: the 45
+**written** characters are an emit redirected into a file -- ratchet there, or move to the meter
+that owns assembled text?
 
 **BAKERY -- ASKING WHETHER A BINARY IS CURRENT NO LONGER COSTS A BUILD.** Account
 [born on its shelf](archive/20260916-114800_itinerary-landed-accounts.md). `rye key <f.rye>
@@ -208,7 +211,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `8dc11c14de` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `60f13bc93f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

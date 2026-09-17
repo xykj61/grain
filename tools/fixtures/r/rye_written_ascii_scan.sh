@@ -61,7 +61,8 @@
 #
 # USAGE
 #   sh tools/fixtures/r/rye_written_ascii_scan.sh          # count
-#   sh tools/fixtures/r/rye_written_ascii_scan.sh --list   # name each file and its count, worst first
+#   sh tools/fixtures/r/rye_written_ascii_scan.sh --list       # the forty worst, then list_shown, list_hidden, list_total
+#   sh tools/fixtures/r/rye_written_ascii_scan.sh --list-all   # every file and its count, worst first -- no row dropped
 #
 # Run from the repository root.
 
@@ -185,8 +186,17 @@ for f in $list; do
   fi
 done
 
-if [ "$mode" = "--list" ]; then
-  printf '%s' "$report" | sort -rn | head -40
+if [ "$mode" = "--list" ] || [ "$mode" = "--list-all" ]; then
+  # A capped listing that does not name its cap reads as a complete one, so list_hidden is
+  # the count this run dropped and `--list-all` prints every row. Held across the family
+  # by `tools/fixtures/l/listing_census_scan.sh`.
+  list_total=$(printf '%s' "$report" | grep -c .)
+  list_cap=40
+  [ "$mode" = "--list-all" ] && list_cap=$list_total
+  [ "$list_total" -gt 0 ] && printf '%s' "$report" | sort -rn | head -n "$list_cap"
+  list_shown=$list_total
+  [ "$list_total" -gt "$list_cap" ] && list_shown=$list_cap
+  echo "list_shown=$list_shown list_hidden=$((list_total - list_shown)) list_total=$list_total"
 fi
 
 # THE CEILINGS. `written` ratchets -- it only falls, and a lane sweeping a file lowers it in the

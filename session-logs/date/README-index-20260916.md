@@ -10,6 +10,7 @@
 | `20260916.224654` | [A control leg no witness names is a leg nothing hears](20260916/20260916-224654_the-leg-nothing-heard.kyri) | 283 pairs, 35 legs unheard, 33 in the roster control |
 | `20260916.222240` | [The mode a compiler ships under](20260916/20260916-222240_the-mode-a-compiler-ships-under.kyri) | rye/bin/rye is Debug: 168 SHA-NI hits both ways |
 | `20260916.222001` | [The excuse was checkable](20260916/20260916-222001_the-excuse-was-checkable.kyri) | law room register: the refusal excuse refuted, ceiling 8 to 6 |
+| `20260916.221129` | [The listing that names its own drop](20260916/20260916-221129_the-listing-that-names-its-drop.kyri) | forty rows of 3,321, and nothing said so |
 | `20260916.220753` | [The hash runs in Debug rather than in software](20260916/20260916-220753_the-hash-runs-in-debug.kyri) | SHA-NI compiles in; Debug mode costs the 5.4x |
 | `20260916.220554` | [A witness header is Meter](20260916/20260916-220554_the-law-names-a-witness-header-meter.kyri) | 882 of 2,017 witnesses read below B at the door |
 | `20260916.215359` | [A booked red is a claimable thing](20260916/20260916-215359_a-booked-red-is-a-claimable-thing.kyri) | the clause excused the one repair the fleet advertises |
