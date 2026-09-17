@@ -9,7 +9,7 @@ the account of the lap that followed it.
 ---
 
 **DIFFUSER -- THE UNIT A CAPACITY CONSTRAINT LEAVES, AND WHAT THE COARSENING WAS CARRYING.** Elder
-[shelved whole](archive/20260917-142006_itinerary-diffuser-rowless-account.md).
+[shelved whole](20260917-142006_itinerary-diffuser-rowless-account.md).
 **AETHER HEARS** (row 0, N=5375): listen for the page nobody answered. It was row 7's own second
 erratum, which closed on a named step -- *name which FILES sit on which node rather than which
 modules* -- and stood one day with nothing taking it.
@@ -29,7 +29,7 @@ the graph turns from free traffic into real hops**. It still gains **0.3651** ov
 dealt at random, 0 files unseated.
 **PROVEN:** 64 legs, **five mutations bitten**, three real git repositories in a throwaway pen,
 including a tree with no Rye at all that refuses rather than reading a perfect fit. Paper
-[the unit the capacity forced](../active-designing/20260917-142006_the-unit-the-capacity-forced.md),
+[the unit the capacity forced](../../active-designing/20260917-142006_the-unit-the-capacity-forced.md),
 **A/91**; row 7 carries its third erratum.
 **MINE:** the size reading started one `wc` per file, **24.4s to 7.8s** batched -- copal's `cp`
 lesson in my lane. And I nearly booked a nondeterminism red after misreading two runs that differed
