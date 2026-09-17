@@ -17,7 +17,7 @@
 # RUNNING the scan reaches this class, which is what this rung does.
 #
 # WHAT IS MEASURED, on metal. Each candidate is run twice in a detached worktree at HEAD: once
-# whole, once with its family control absent from the index AND from the working tree. The two
+# whole, once with its family INSTRUMENT absent from the index AND from the working tree. The two
 # outputs are compared. `unmoved` is byte-identical. `moved` differs in some reading with every
 # `verdict=` line still agreeing. `verdict_flipped` differs in a verdict, which is a guard whose
 # PASS is partly a statement about its own instrument rather than about the field.
@@ -26,12 +26,26 @@
 # scan enumerating with `find` reads the filesystem. One perturbation answers for both populations
 # or the reading is a statement about enumeration style rather than about the guard.
 #
-# THE READING, `20260916`, over the nine candidates the sibling calls unmeasured: 4 probed, 3
-# unmoved, 1 moved, 0 verdict flipped, 3 skipped for holding no tracked family control, and 2
-# refused for a cause this rung names. Set beside the sibling's 37 enumerable scans, which came
-# back 24 unmoved, 13 moved and 2 flipped, the class the census could not reach is the CLEANER of
-# the two -- so the blind spot was a blind spot rather than a hiding place. Every figure here is
-# FREE: run the scan.
+# A FAMILY INSTRUMENT IS RESOLVED BY ROLE RATHER THAN BY NAME, which is this rung's second lap.
+# The first reading skipped three of its nine candidates for holding no tracked `_control.sh`, and
+# that one word covered three different states. Two of the three carry a control by ROLE, under
+# another name and in another room: `tools_py_ban_scan.sh` plants
+# `context/fixtures/tools_py_ban_tree/tools/planted.py` and hands its selftest a scan-root
+# override, and `copy_sameness_scan.sh` plants `context/fixtures/copy_sameness_drift/
+# tally_copy_drifted.rye` under a basename its own `find` excludes. The third,
+# `living_docs_lint_scan.sh`, holds a roster and a keeps allowlist, which it READS as input rather
+# than planting to be found -- and that one is genuinely unmeasurable. The ROOM decides, because
+# `context/fixtures/` held 12 tracked files on `20260916` and every one is a planted fixture, while
+# `tools/fixtures/` holds the instruments that read them.
+#
+# THE READING, `20260916`, over the same nine candidates: 5 probed, 4 unmoved, 1 moved, 0 verdict
+# flipped, 1 plant probed, 1 skipped for holding no family instrument at all, and 3 refused for a
+# cause this rung names. The widening moved two of the three skips: one into a real reading
+# (`copy_sameness`, unmoved -- its plant stands outside its own population by basename) and one
+# into the named refusal, since `tools_py_ban_scan.sh` carries the root-finder below. Set beside
+# the sibling's 37 enumerable scans, which came back 24 unmoved, 13 moved and 2 flipped, the class
+# the census could not reach is the CLEANER of the two -- so the blind spot was a blind spot rather
+# than a hiding place. Every figure here is FREE: run the scan.
 #
 # THE ONE MOVER IS THE HEALTHY SHAPE, which is worth more than a refusal would have been.
 # `tools/fixtures/i/instrument_absence_scan.sh` moves `scans_read` by one and
@@ -61,8 +75,10 @@
 # discarded on `20260916` for exactly that fault, when a hand entered the pen mid-probe.
 #
 # WHAT IS NOT PROVEN. Whether a moved reading is a fault; that is judgment, and the classification
-# is what tells a reader there is a judgment to make. And the three candidates holding no tracked
-# family control are unread rather than clean -- there is nothing to take away.
+# is what tells a reader there is a judgment to make. A candidate holding no family instrument at
+# all stays unread rather than clean -- there is nothing to take away. And an `unmoved` reading on
+# a PLANT says the plant stands outside that guard's population; it says nothing about whether the
+# guard would have been right to read it.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/c/control_perturbation_witness.rish
@@ -83,7 +99,13 @@ assert control.out contains "leg unmoved_named ok" else "control-perturbation: t
 assert control.out contains "leg moved_named ok" else "control-perturbation: a guard counting its own control must be named"
 assert control.out contains "leg verdict_flip_named ok" else "control-perturbation: a flipped verdict is the sharpest reading and earns its own class"
 assert control.out contains "leg flip_is_not_counted_as_moved ok" else "control-perturbation: the two classes answer different questions and must move apart"
-assert control.out contains "leg lonely_skipped ok" else "control-perturbation: a scan with no tracked family control is unread, never clean"
+assert control.out contains "leg lonely_skipped ok" else "control-perturbation: a scan with no family instrument is unread, never clean"
+assert control.out contains "leg plant_resolved_by_room ok" else "control-perturbation: a control by role, planted in the tree's own fixture room, must resolve"
+assert control.out contains "leg plant_removal_moves_a_reader ok" else "control-perturbation: removing a plant must perturb a guard whose population reaches it"
+assert control.out contains "leg control_preferred_over_plant ok" else "control-perturbation: a family holding both kinds loses the nearer instrument, so the reading is one thing"
+assert control.out contains "leg plant_never_skipped ok" else "control-perturbation: a plant-bearing family must leave the unmeasurable class"
+assert control.out contains "leg count_plants_probed ok" else "control-perturbation: the plant half of the population is counted apart from the control half"
+assert control.out contains "leg mutation_plant_branch_bites ok" else "control-perturbation: dropping the plant branch must return the plant-bearing families to the skip"
 assert control.out contains "leg rootfinder_refusal_named ok" else "control-perturbation: a refusal whose cause is known must be named rather than reported blind"
 assert control.out contains "leg other_refusal_stays_plain ok" else "control-perturbation: a cause the probe cannot name must stay a plain refusal"
 assert control.out contains "leg restore_keeps_one_baseline ok" else "control-perturbation: every candidate must be measured against the same tree"
@@ -93,14 +115,15 @@ assert control.out contains "leg no_worktree_leaked ok" else "control-perturbati
 assert control.out contains "leg mutation_worktree_half_bites ok" else "control-perturbation: dropping the worktree half must blind the find population"
 assert control.out contains "leg mutation_index_half_bites ok" else "control-perturbation: dropping the index half must blind the git-ls-files population"
 assert control.out contains "leg mutation_restore_bites ok" else "control-perturbation: dropping the restore must show as two candidates disagreeing about one tree"
-say "control GREEN -- 29 legs on real git repositories in a throwaway pen, three mutations bitten"
+say "control GREEN -- 35 legs on real git repositories in a throwaway pen, four mutations bitten"
 
 let scan = run ["sh" "tools/fixtures/c/control_perturbation_scan.sh"]
 say scan.out
 assert scan.ok else "control-perturbation: the probe must complete before it is believed"
 assert scan.out contains "verdict=reported" else "control-perturbation: this reading reports and never gates"
-assert scan.out contains "perturbation=control_absent_from_index_and_worktree" else "control-perturbation: what was taken away must be said out loud"
-assert scan.out contains "skipped_no_control=" else "control-perturbation: a candidate with nothing to take away is counted apart, never proven clear"
+assert scan.out contains "perturbation=family_instrument_absent_from_index_and_worktree" else "control-perturbation: what was taken away must be said out loud"
+assert scan.out contains "skipped_no_instrument=" else "control-perturbation: a candidate with nothing to take away is counted apart, never proven clear"
+assert scan.out contains "plants_probed=" else "control-perturbation: a control by role is counted apart from a control by name"
 assert scan.out contains "refused=" else "control-perturbation: a candidate that would not run is counted rather than vanishing"
 assert scan.out contains "refused_root_finder_needs_built_tree=" else "control-perturbation: the named refusal must be told apart from the unnamed one"
 assert scan.out contains "verdict_flipped=" else "control-perturbation: the sharpest reading must be printed even when it reads zero"

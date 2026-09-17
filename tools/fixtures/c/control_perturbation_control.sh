@@ -96,6 +96,40 @@ find tools -name 'nothing' >/dev/null 2>&1 || true
 echo "verdict=ok"
 EOF
 
+  # planted: no `_control.sh`, and a plant under `context/fixtures/` carrying its stem. Its own
+  # `find` never walks that room, so the plant is outside its population BY CONSTRUCTION -- which
+  # is the living shape of `tools_py_ban_scan.sh` and `copy_sameness_scan.sh` both.
+  mkdir -p "$PEN/repo/context/fixtures/planted_tree"
+  cat > tools/fixtures/p/planted_scan.sh <<'EOF'
+#!/bin/sh
+n=$(find tools -name 'planted_marker.txt' | wc -l | tr -d ' ')
+echo "sites=$n"
+echo "verdict=ok"
+EOF
+  echo 'planted' > context/fixtures/planted_tree/planted_marker.txt
+
+  # counted: the same want, with a `find .` reaching the plant room, so removing the PLANT moves
+  # the reading. Without this the plant branch could resolve and never be shown to perturb.
+  mkdir -p "$PEN/repo/context/fixtures/counted_tree"
+  cat > tools/fixtures/p/counted_scan.sh <<'EOF'
+#!/bin/sh
+n=$(find . -name 'counted_marker.txt' | wc -l | tr -d ' ')
+echo "sites=$n"
+echo "verdict=ok"
+EOF
+  echo 'counted' > context/fixtures/counted_tree/counted_marker.txt
+
+  # both: a family holding a control AND a plant. The control is what leaves, since it is the
+  # nearer instrument and the reading must be one thing rather than a choice.
+  mkdir -p "$PEN/repo/context/fixtures/both_tree"
+  cat > tools/fixtures/p/both_scan.sh <<'EOF'
+#!/bin/sh
+find tools -name 'nothing' >/dev/null 2>&1 || true
+echo "verdict=ok"
+EOF
+  echo '# plant' > tools/fixtures/p/both_control.sh
+  echo 'both' > context/fixtures/both_tree/both_marker.txt
+
   # rootfinder: speaks the exact refusal 164 tracked scripts speak in a checkout nobody has built.
   cat > tools/fixtures/p/rootfinder_scan.sh <<'EOF'
 #!/bin/sh
@@ -145,19 +179,27 @@ leg moved_named "$(printf '%s\n' "$OUT" | grep -c '^moved tools/fixtures/p/moved
 leg second_candidate_also_moved "$(printf '%s\n' "$OUT" | grep -c '^moved tools/fixtures/p/second_scan.sh')" 1
 leg verdict_flip_named "$(printf '%s\n' "$OUT" | grep -c '^verdict_flipped tools/fixtures/p/flip_scan.sh')" 1
 leg flip_is_not_counted_as_moved "$(printf '%s\n' "$OUT" | grep -c '^moved tools/fixtures/p/flip_scan.sh')" 0
-leg lonely_skipped "$(printf '%s\n' "$OUT" | grep -c 'skip tools/fixtures/p/lonely_scan.sh reason=no_tracked_family_control')" 1
+leg lonely_skipped "$(printf '%s\n' "$OUT" | grep -c 'skip tools/fixtures/p/lonely_scan.sh reason=no_family_instrument')" 1
+
+# THE PLANT HALF. A family whose own proof plants a fixture rather than carrying a `_control.sh`
+# is perturbable, and the two shapes below are the two the living tree actually holds.
+leg plant_resolved_by_room "$(printf '%s\n' "$OUT" | grep -c '^unmoved tools/fixtures/p/planted_scan.sh instrument=context/fixtures/planted_tree/planted_marker.txt kind=plant')" 1
+leg plant_removal_moves_a_reader "$(printf '%s\n' "$OUT" | grep -c '^moved tools/fixtures/p/counted_scan.sh instrument=context/fixtures/counted_tree/counted_marker.txt kind=plant')" 1
+leg control_preferred_over_plant "$(printf '%s\n' "$OUT" | grep -c '^unmoved tools/fixtures/p/both_scan.sh instrument=tools/fixtures/p/both_control.sh kind=control')" 1
+leg plant_never_skipped "$(printf '%s\n' "$OUT" | grep -c 'skip tools/fixtures/p/planted_scan.sh')" 0
 leg rootfinder_refusal_named "$(printf '%s\n' "$OUT" | grep -c 'refuse tools/fixtures/p/rootfinder_scan.sh reason=root_finder_needs_built_tree')" 1
 leg other_refusal_stays_plain "$(printf '%s\n' "$OUT" | grep -c 'refuse tools/fixtures/p/silent_scan.sh reason=no_output_with_control_present')" 1
 
-leg count_probed "$(printf '%s\n' "$OUT" | grep '^probed=' | cut -d= -f2)" 4
-leg count_unmoved "$(printf '%s\n' "$OUT" | grep '^unmoved=' | cut -d= -f2)" 1
-leg count_moved "$(printf '%s\n' "$OUT" | grep '^moved=' | cut -d= -f2)" 2
+leg count_probed "$(printf '%s\n' "$OUT" | grep '^probed=' | cut -d= -f2)" 7
+leg count_unmoved "$(printf '%s\n' "$OUT" | grep '^unmoved=' | cut -d= -f2)" 3
+leg count_moved "$(printf '%s\n' "$OUT" | grep '^moved=' | cut -d= -f2)" 3
 leg count_flipped "$(printf '%s\n' "$OUT" | grep '^verdict_flipped=' | cut -d= -f2)" 1
-leg count_skipped "$(printf '%s\n' "$OUT" | grep '^skipped_no_control=' | cut -d= -f2)" 1
+leg count_skipped "$(printf '%s\n' "$OUT" | grep '^skipped_no_instrument=' | cut -d= -f2)" 1
+leg count_plants_probed "$(printf '%s\n' "$OUT" | grep '^plants_probed=' | cut -d= -f2)" 2
 leg count_refused "$(printf '%s\n' "$OUT" | grep '^refused=' | cut -d= -f2)" 2
 leg count_needs_built "$(printf '%s\n' "$OUT" | grep '^refused_root_finder_needs_built_tree=' | cut -d= -f2)" 1
 leg verdict_is_reported "$(printf '%s\n' "$OUT" | grep -c '^verdict=reported')" 1
-leg perturbation_named "$(printf '%s\n' "$OUT" | grep -c '^perturbation=control_absent_from_index_and_worktree')" 1
+leg perturbation_named "$(printf '%s\n' "$OUT" | grep -c '^perturbation=family_instrument_absent_from_index_and_worktree')" 1
 
 # The restore between candidates: two candidates counting the same thing must report the same
 # baseline, which is the promise that each was measured against a pristine tree.
@@ -202,6 +244,17 @@ M3=$(sh tools/fixtures/c/control_perturbation_scan.sh tools/fixtures/p/moved_sca
 M3A=$(printf '%s\n' "$M3" | grep '^moved tools/fixtures/p/moved_scan.sh' | sed 's/.*detail=//')
 M3B=$(printf '%s\n' "$M3" | grep '^moved tools/fixtures/p/second_scan.sh' | sed 's/.*detail=//')
 leg mutation_restore_bites "$([ "$M3A" = "$M3B" ] && echo same || echo differ)" differ
+
+# MUTATION 4 -- the plant branch removed. The two plant-bearing families then resolve nothing and
+# fall back to the skip, so the count of the genuinely unmeasurable rises from one to three and the
+# plant legs fail. This is the mutation that proves the widening is load-bearing rather than
+# decorative: without it, a `family_instrument` resolving only controls would pass every leg above
+# that predates this lap.
+build_pen
+cd "$PEN/repo"
+sed_inplace 's@echo "plant $p"@:@' tools/fixtures/c/control_perturbation_scan.sh
+M4=$(sh tools/fixtures/c/control_perturbation_scan.sh 2>/dev/null || true)
+leg mutation_plant_branch_bites "$(printf '%s\n' "$M4" | grep '^skipped_no_instrument=' | cut -d= -f2)" 3
 
 echo "legs=$legs"
 echo "control_failed=$failed"
