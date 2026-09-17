@@ -7022,3 +7022,18 @@ guard root_finder
 path tools/r/root_finder_witness.rish
 tier lap
 seated 20260917.013000
+
+# `assert_evidence` -- a Rishi assertion that refuses without printing the command own words is a
+# refusal nobody can read. REDS %734 captured thirteen failures under parallel load; ten carried
+# their reason -- `unable to load 'pan.zig'` -- and those ten identified the cause, while three
+# said only `Lattice build failed` and left nothing. Every `.ok` comes from a record the
+# interpreter builds at `rishi/src/main.rye:1563` with `err` and `err_brief` beside it, so the
+# evidence is always in hand and the cure is one interpolation. The scan counts the five answers
+# apart -- the cure, the wrong stream, a file on disk, a `say` line above, and silence -- and gates
+# the last as a ratchet. Lap tier: it reads tracked bytes alone in about three seconds, and new
+# assertions land at tens a day. The repair is one interpolation per site across every lane, so
+# the sweep timing belongs to the fleet. Lower the ceiling in the same commit that sweeps a file.
+guard assert_evidence
+path tools/a/assert_evidence_witness.rish
+tier lap
+seated 20260917.022530
