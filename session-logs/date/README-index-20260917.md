@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.130042` | [The word a rebase carried in](20260917/20260917-130042_the-word-a-rebase-carried-in.kyri) | vocabulary_collection swept on the card: 1 hit to 0. |
 | `20260917.122239` | [The order agreed and the size did not](20260917/20260917-122239_the-order-agreed-and-the-size-did-not.kyri) | Row 3 held: agree=yes, and size parts 6.74x. |
 | `20260917.113604` | [Replay reads the whole fact](20260917/20260917-113604_replay-reads-the-whole-fact.kyri) | mantra compares all 15 published fields; the one-field reading walks free. |
 | `20260917.105325` | [three doors that told the truth](20260917/20260917-105325_three-doors-that-told-the-truth.kyri) | src/ named three rooms over six. |
