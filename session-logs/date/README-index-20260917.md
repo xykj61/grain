@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.195720` | [Neither open door was a quick build](20260917/20260917-195720_neither-open-door-was-a-quick-build.kyri) | Checked %803 and %785, the two non-Keaton-gated OPEN rows; both are judgment calls, not builds. |
 | `20260917.195219` | [Third confirmation of the same gate](20260917/20260917-195219_third-confirmation-of-the-same-gate.kyri) | Confirming lap: five live mantra guards re-run fresh, all ok; %807 unchanged. |
 | `20260917.194522` | [Still the same gate, six minutes on](20260917/20260917-194522_still-the-same-gate.kyri) | Confirming lap: HEAD, claims board, and card all unchanged since the prior confirming log. |
 | `20260917.194236` | [A law room's own gate read RED](20260917/20260917-194236_law-room-register-drift.kyri) | REDS %819 -- register ceiling drift, cheapest page swept, six OPEN. |
