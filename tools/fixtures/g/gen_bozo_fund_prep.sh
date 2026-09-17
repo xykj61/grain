@@ -8,7 +8,7 @@ PAGE=docs-geode/edu/yonder/funds/bozo-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
-    echo "gen-bozo REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
+    echo "gen-bozo REFUSE: ${verb} is Keaton's hand alone -- never this generator" >&2
     exit 1
     ;;
 esac
@@ -42,11 +42,11 @@ printf '%s' "$name" | grep -Eq '^[A-Za-z]{4}$'
 
 echo "seat: fund=Bozo order=10 sign_index=9 (Capricorn) vane=%bozo dns_prep=bozo.fund"
 echo "was: Linn / %linn / linn.fund (rename-forward 20260730.150702)"
-echo "dedication: Helen Atthowe (honor · The Ecological Farm · kept)"
-echo "executive: DJINN (from Murr · POLE)"
+echo "dedication: Helen Atthowe (honor - The Ecological Farm - kept)"
+echo "executive: DJINN (from Murr - POLE)"
 echo "hats: sponsor held (blank)"
-echo "page: docs-geode/edu/yonder/funds/bozo-opening.md (prep grow · page one)"
-echo "witness:bozo-open GREEN — seat · Helen dedication · DJINN executive · vane · hard lines"
-echo "refuse: deploy · wallet · gas · claim-domain · shred · breach"
+echo "page: docs-geode/edu/yonder/funds/bozo-opening.md (prep grow - page one)"
+echo "witness:bozo-open GREEN -- seat - Helen dedication - DJINN executive - vane - hard lines"
+echo "refuse: deploy - wallet - gas - claim-domain - shred - breach"
 echo "bozo_fund=prep"
-echo "GREEN: gen-bozo — Capricorn earth seat 10 · Helen · DJINN · deploy RED"
+echo "GREEN: gen-bozo -- Capricorn earth seat 10 - Helen - DJINN - deploy RED"

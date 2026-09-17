@@ -8,7 +8,7 @@ PAGE=docs-geode/edu/yonder/funds/keeh-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
-    echo "gen-keeh REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
+    echo "gen-keeh REFUSE: ${verb} is Keaton's hand alone -- never this generator" >&2
     exit 1
     ;;
 esac
@@ -48,11 +48,11 @@ test "$len" -eq 4
 
 echo "seat: fund=Keeh order=11 sign_index=10 (Aquarius) vane=%keeh dns_prep=keeh.fund"
 echo "executive: Keaton Sealy Livermore (unchanged from Ketu seat)"
-echo "sponsor: Kia (South Korea) honor · design seat · not a paid buy"
-echo "recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · Craigslist/FB Marketplace"
-echo "season: Keeh Chapter quint · Kia sponsor seated 20260728.032134"
+echo "sponsor: Kia (South Korea) honor - design seat - not a paid buy"
+echo "recommend: used 4-cyl hatch/SUV - non-CVT auto - light grey/beige cloth - Craigslist/FB Marketplace"
+echo "season: Keeh Chapter quint - Kia sponsor seated 20260728.032134"
 echo "page: docs-geode/edu/yonder/funds/keeh-opening.md"
-echo "witness:keeh-open GREEN — seat · executive · Kia sponsor · used-mobility lean · hard lines · rename spine"
-echo "refuse: deploy · wallet · gas · shred · breach"
+echo "witness:keeh-open GREEN -- seat - executive - Kia sponsor - used-mobility lean - hard lines - rename spine"
+echo "refuse: deploy - wallet - gas - shred - breach"
 echo "keeh_fund=prep"
-echo "GREEN: gen-keeh — Aquarius seat 11 prep · Keeh rename · Kia sponsor · deploy RED"
+echo "GREEN: gen-keeh -- Aquarius seat 11 prep - Keeh rename - Kia sponsor - deploy RED"

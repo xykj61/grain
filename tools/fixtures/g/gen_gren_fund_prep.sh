@@ -10,7 +10,7 @@ MOVE=mycelium/constellation/sui/sources/constellation.move
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain)
-    echo "gen-gren REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
+    echo "gen-gren REFUSE: ${verb} is Keaton's hand alone -- never this generator" >&2
     exit 1
     ;;
 esac
@@ -74,15 +74,15 @@ grep -q 'multisig-live' "$PAGE"
 grep -q 'claim-domain' "$PAGE"
 
 echo "seat: fund=Gren order=2 sign_index=1 (Taurus) vane=%gren dns_prep=gren.fund"
-echo "gift: edu-series tutorial for creating one of the twelve — under the fund seat"
-echo "page: docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md (steps 1–6 taught · m8 close)"
-echo "witness:step1 GREEN — four-letter Gren + Civic Style"
-echo "witness:step2 GREEN — .fund anchor · claim Keaton's hand alone"
-echo "witness:step3 GREEN — Taurus · fund-order 2 · sign_index 1"
-echo "witness:step4 GREEN — phone book · mints nothing · registry-only"
-echo "witness:step5 GREEN — Comlink knock · beading · no seating byte"
-echo "witness:step6 GREEN — refuse-walk taught · deploy RED proven in post-fold"
-echo "arc: Gren m5–m8 CLOSED at refuse-walk"
-echo "path: prin → Comlink → constellation phone book (registry-only)"
-echo "flags: gren.fund claim = Keaton's hand · no deploy · no wallet · no gas"
-echo "GREEN: gen-gren — Gren prep complete; steps 1–6 witnessed; deploy RED by name."
+echo "gift: edu-series tutorial for creating one of the twelve -- under the fund seat"
+echo "page: docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md (steps 1-6 taught - m8 close)"
+echo "witness:step1 GREEN -- four-letter Gren + Civic Style"
+echo "witness:step2 GREEN -- .fund anchor - claim Keaton's hand alone"
+echo "witness:step3 GREEN -- Taurus - fund-order 2 - sign_index 1"
+echo "witness:step4 GREEN -- phone book - mints nothing - registry-only"
+echo "witness:step5 GREEN -- Comlink knock - beading - no seating byte"
+echo "witness:step6 GREEN -- refuse-walk taught - deploy RED proven in post-fold"
+echo "arc: Gren m5-m8 CLOSED at refuse-walk"
+echo "path: prin -> Comlink -> constellation phone book (registry-only)"
+echo "flags: gren.fund claim = Keaton's hand - no deploy - no wallet - no gas"
+echo "GREEN: gen-gren -- Gren prep complete; steps 1-6 witnessed; deploy RED by name."

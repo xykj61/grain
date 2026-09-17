@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.051641` | [The seat renamed, the guard left behind](20260917/20260917-051641_the-guard-left-behind.kyri) | 135 emit characters swept as one kind; a fifty-day red found. |
 | `20260917.050420` | [The step no tool runs](20260917/20260917-050420_the-step-no-tool-runs.kyri) | rule 5 fired on the hand that had just read it. |
 | `20260917.045407` | [the word and the two bytes](20260917/20260917-045407_the-word-and-the-two-bytes.kyri) | A vocabulary sweep read by sense so a full pin could hold it. |
 | `20260917.043714` | [a distance standing in for a block](20260917/20260917-043714_a-distance-standing-in-for-a-block.kyri) | a refusal read by block, not by three lines; glow adopts. |
