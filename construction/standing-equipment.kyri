@@ -7153,6 +7153,22 @@ path tools/r/root_finder_witness.rish
 tier lap
 seated 20260917.013000
 
+# `rish_dangling_else` -- in `if COND then assert X else MSG`, `do_if` takes the `else` first and
+# the assert is handed a bare condition, so the message the author wrote never arrives. That has
+# two effects and REDS %806 recorded one: a FALSE condition refuses `UnknownStatement`, which is
+# what a hot pass found on one pier, and a TRUE condition reports the BARE CONDITION as the
+# reason, silently, on every pier, in the branch the author did run. The gated class is an else
+# arm that is a bare string literal -- never a Rishi statement, so it can only have been the
+# assert's message. An arm that IS a statement is reported apart, since whether that was the
+# intent is a judgment. Ratchet rather than wall: `%806` names two repair doors, one of them a
+# grammar change, and neither is a lap's to take. Lower the ceiling in the commit that sweeps a
+# site, which the seating lap did once: `ryekey_witness.rish` was `%806`'s own live instance,
+# red on this pier an hour before, and the ceiling fell 7 to 6 with it.
+guard rish_dangling_else
+path tools/r/rish_dangling_else_witness.rish
+tier lap
+seated 20260917.035317
+
 # `assert_evidence` -- a Rishi assertion that refuses without printing the command own words is a
 # refusal nobody can read. REDS %734 captured thirteen failures under parallel load; ten carried
 # their reason -- `unable to load 'pan.zig'` -- and those ten identified the cause, while three

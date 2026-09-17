@@ -1,0 +1,115 @@
+# tools/r/rish_dangling_else_witness.rish -- in `if COND then assert X else MSG`, the `else`
+# belongs to the `if`, and the message the author wrote for the assert never arrives.
+#
+# WHY THIS RUNG. `do_if` in `rishi/src/main.rye` splits its then arm at the FIRST top-level
+# ` else ` that `find_word_op` reports, and `do_assert` looks for its own optional message in the
+# argument it is handed. Put both on one line and the `if` reaches the `else` first, so the assert
+# receives a bare condition. Thirty-eight `if ... then assert` sites stand in this tree; six of
+# them carry an `else` and every one of those six is broken in two ways at once.
+#
+# THE HALF THE LEDGER SAW. With the condition FALSE, the else arm is handed to `eval_statement`,
+# and a bare string literal is no statement, so the run refuses `UnknownStatement`. That is REDS
+# %806, found by a hot roster pass on a pier that happened to take the false branch -- and a guard
+# reading red there reads green on every pier taking the true one.
+#
+# THE HALF NOTHING HAD SEEN, which is the wider fault. With the condition TRUE and the assert
+# failing, the assert reports its BARE CONDITION as the reason and the author's sentence is
+# discarded in silence. That fires on every pier, in the branch the author did run, in the moment
+# a guard is trying to tell somebody what went wrong. Parentheses around the condition do not
+# help, since `find_word_op` tracks depth; a valid statement in the else arm does not help, since
+# the split happens before either arm is read; and a nested `if` does not help, since the outer
+# one reaches the `else` first. All four are RUN in the control against this tree's own binary
+# rather than argued here.
+#
+# THE TWO POPULATIONS, told apart by a fact. A top-level `else` after an assert always swallows
+# the message, and a hand may nonetheless have MEANT an ordinary conditional. So the reading
+# splits on what can be decided from the text: an else arm that is a BARE STRING LITERAL is never
+# a Rishi statement and can only ever have been written as the assert's message, which is the
+# gated class; an arm that IS a statement is reported apart, because whether that was the intent
+# is a judgment about one line's author. Today those read six and zero, and they part the moment
+# somebody writes `else say`.
+#
+# WHY IT RATCHETS RATHER THAN WALLS. `%806` names two repair doors and neither is a lap's to take.
+# Rewriting a site changes what a standing guard asserts, which belongs to the lane owning it;
+# teaching Rishi to bind `else` to the nearer `assert` is a grammar change wanting every standing
+# `then assert` site proven unmoved. A wall at zero would red whichever ships own these five files
+# for a ruling none of them has been given. The ceiling carries no slack and falls in the commit
+# that sweeps a site.
+#
+# THE REPAIR IDIOM, for whichever lane comes to sweep: a single `assert` with no `if` around it
+# keeps its message, so a condition that was guarding the assert becomes part of it --
+# `assert ?| [(skip-condition) (real-condition)] else "the reason"`. This witness uses exactly
+# that form below for its own machine-fact leg, so the file reading the fault does not carry it.
+#
+# WHAT IT DOES NOT REACH. A Rishi statement is one physical line, so nothing here spans lines and
+# the reading is exact in that direction. An `assert` reached through a user function is invisible
+# to any static reading. And it says nothing about whether a given assert's condition is worth
+# asserting.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rish_dangling_else_witness.rish
+
+say "dangling-else: Language EN -- a message written for an assert, taken by the if standing around it."
+say "dangling-else: Style Gauge at Field -- every figure carries what keeps it still."
+say "dangling-else: Lens TAME -- safety first: a guard that cannot say why it refused has refused in the dark."
+
+let scan = run ["sh" "tools/fixtures/r/rish_dangling_else_scan.sh"]
+say scan.out
+assert scan.ok else "dangling-else: the census must complete before it is believed"
+assert scan.out contains "verdict=ok" else "dangling-else: the bare-string population must stand at or under its ceiling"
+assert scan.out contains "ceiling=" else "dangling-else: a ratchet that spells no ceiling cannot be lowered"
+assert scan.out contains "dangling_else=" else "dangling-else: the gated class must be counted rather than described"
+assert scan.out contains "assert_else_shadowed=" else "dangling-else: the judged class must be counted apart from the gated one"
+assert scan.out contains "then_assert_sites=" else "dangling-else: the denominator must be printed beside the count"
+assert scan.out contains "sources_tracked=" else "dangling-else: the population read must be printed beside what it found"
+assert scan.out contains "files_affected=" else "dangling-else: a sweeping lane wants to know how many files it opens"
+say "census GREEN -- every tracked Rishi source read with the interpreter's own quote and depth walk"
+
+let control = run ["sh" "tools/fixtures/r/rish_dangling_else_control.sh"]
+say control.out
+assert control.ok else "dangling-else: the control must exit 0 -- either every leg green or an honest machine-fact skip"
+assert control.out contains "control_verdict=" else "dangling-else: a control naming no verdict has answered nothing"
+
+# THE LEG COUNT IS HEARD RATHER THAN TRUSTED, and it is asked WITHOUT an `if` around it. On a pier
+# whose `rishi` binary is unbuilt the control cannot run its own subject and says so; anywhere else
+# every leg must stand. `?|` takes the first true element, so both states are one assert and the
+# message survives to be read -- which is the whole finding, applied to the file that reports it.
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "legs=37")] else "dangling-else: the control answered green while counting a different number of legs than this witness hears"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "fails=0")] else "dangling-else: every leg must stand, and a leg written tomorrow must be heard today"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "control_verdict=green")] else "dangling-else: the control must agree with itself"
+
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_false_branch_refuses=yes")] else "dangling-else: the false branch must refuse UnknownStatement, run rather than cited"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_true_branch_swallows=yes")] else "dangling-else: the true branch must lose the author's message, which is the half no ledger row had seen"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_true_branch_bare_reason=yes")] else "dangling-else: the reason reported must be shown to be the bare condition, rather than merely not the message"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_plain_assert_keeps_message=yes")] else "dangling-else: the same assert without an if must keep its message, or the cause is unnamed"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_parens_still_swallow=yes")] else "dangling-else: parentheses around the condition must be shown not to help"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_say_arm_still_swallows=yes")] else "dangling-else: a valid statement in the else arm must be shown not to help"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_nested_outer_takes_else=yes")] else "dangling-else: a nested if must be shown to hand its else to the outer one"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "grammar_split_lines_keep_message=yes")] else "dangling-else: the repair the scan recommends must be proven to work"
+
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "dangling_counted=yes")] else "dangling-else: a bare string else arm is the whole gated subject"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "shadowed_counted=yes")] else "dangling-else: a statement else arm must land in the reported class"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "shadowed_not_gated=yes")] else "dangling-else: a judged class that reddens the gate is a judgment turned into a wall"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "clean_is_a_site=yes")] else "dangling-else: the clear direction is asserted as hard as the refusal"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "clean_not_dangling=yes")] else "dangling-else: a then-assert carrying no else must walk free"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "plain_assert_no_site=yes")] else "dangling-else: an assert with its own message and no if is the CORRECT shape and must be invisible"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "comment_read_past=yes")] else "dangling-else: a line teaching the fault must not be counted as one"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "nested_counted=yes")] else "dangling-else: the nested shape must be read, since three sites in this tree wear it"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "string_else_is_not_structure=yes")] else "dangling-else: an else inside a string literal is text, and the quote walk is what knows it"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "string_else_not_shadowed_either=yes")] else "dangling-else: a quoted else must land in NEITHER class, or the walk is only half proven"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "for_each_body_counted=yes")] else "dangling-else: an if standing as a for-each body carries the same fault"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "sh_file_not_read=yes")] else "dangling-else: the population is Rishi, and a shell file wearing the shape is another language"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "two_sites_one_file=yes")] else "dangling-else: files and sites are two numbers and must not be one"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "empty_pen_reads_the_pen=yes")] else "dangling-else: a scan resolving its root outside the pen would prove nothing it printed"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "ceiling_refuses_one_over=yes")] else "dangling-else: the ceiling must bite from the refusing side"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "ceiling_walks_at_zero=yes")] else "dangling-else: the ceiling must walk free from the passing side, or a refusal cannot be told from a bypass"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "self_invisible=yes")] else "dangling-else: the control's own absence from the population must be read rather than claimed"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "live_classes_within_sites=yes")] else "dangling-else: the two classes must sum within the sites they came from"
+
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "mutation_quotes_bites=yes")] else "dangling-else: blinding the quote walk must change an answer, or the walk is decoration"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "mutation_nest_bites=yes")] else "dangling-else: stopping the arm walk after one level must lose the nested shape"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "mutation_barestring_bites=yes")] else "dangling-else: accepting any arm as a bare string must collapse the reported class into the gated one"
+assert ?| [(control.out contains "control_verdict=machine_fact") (control.out contains "mutation_comment_bites=yes")] else "dangling-else: dropping the comment skip must count a teaching line as a fault"
+
+if (control.out contains "control_verdict=machine_fact") then say "MACHINE FACT: dangling-else -- rishi/bin/rishi is unbuilt on this pier, so the grammar this reading rests on could not be run. Run sh rishi/bootstrap.sh to prove it here."
+if (control.out contains "control_verdict=green") then say "GREEN: dangling-else -- thirty-seven legs proven in a throwaway pen; the grammar run against this tree's own binary from both branches, the message shown lost on the true branch and the reason shown to be the bare condition, parentheses and a statement arm and a nested if each shown not to help, the same assert without an if shown to keep its message and the split-line repair shown to work; and the reading planted from every side -- a bare string arm gated, a statement arm reported apart, a then-assert with no else walking free, a plain assert with its own message invisible, a comment read past, a nested site counted, a quoted else landing in neither class, a for-each body read, a shell file left to its own language, two sites in one file counted as two and one; the ceiling refused one over and walked at zero, the pen proven to be what was read, and the control's own absence from the population read out of the scan; with four mutations bitten -- the quote walk, the arm walk, the bare-string test, and the comment skip."
