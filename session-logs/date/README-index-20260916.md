@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.234757` | [A wrapped line that read as a list](20260916/20260916-234757_the-wrapped-line-that-read-as-a-list.kyri) | %798: the list guard owed CommonMark its own rule |
 | `20260916.231355` | [A noun phrase about prose read as a claim about a row](20260916/20260916-231355_closing-line-noun-phrase.kyri) | REDS %796 closed: 55 claims, one false, 47 pen legs |
 | `20260916.230119` | [Erratum: a single proc sample claimed a duration](20260916/20260916-230119_the-sample-that-claimed-a-duration.kyri) | borrowed_number ran 77s, not 15 minutes |
 | `20260916.224654` | [A control leg no witness names is a leg nothing hears](20260916/20260916-224654_the-leg-nothing-heard.kyri) | 283 pairs, 35 legs unheard, 33 in the roster control |

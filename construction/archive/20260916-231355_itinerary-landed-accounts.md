@@ -43,3 +43,11 @@ one, and its own `--apply` repaired both.
 **YOURS:** last lap's `.cursor/` question stands -- of 56 twinned rules, four near-parallel bodies
 are missing a section: `tame-guidance`, `kyri`, two vocabulary rules. Copy, scope, or gate?
 
+
+---
+
+*Appended `20260916.234900`: one further elder pointer folded from the same card in the same round.*
+
+**INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
+[shelved whole](20260912-050057_itinerary-landed-accounts.md); its open question asks
+whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.

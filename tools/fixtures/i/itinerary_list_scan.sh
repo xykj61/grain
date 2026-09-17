@@ -24,6 +24,13 @@
 # which passes, and 8..12, which starts at 8 and is refused. That is the catch, and it needs no
 # knowledge of what the foreign line said.
 #
+# WHY A WRAPPED LINE STARTING WITH A NUMBER IS NOT A LIST. CommonMark opens an ordered list inside
+# a paragraph only at 1. That rule exists so a sentence wrapping onto `32. Warm floor 32 / 12 / 11`
+# stays a sentence. So a run opens after ordinary text only at 1. Any other number there is
+# paragraph continuation, and it ends an open run like any foreign line. The elder reading refused
+# the living card on a peer's measurement prose within an hour of landing, on a page GitHub renders
+# as its author meant, and a guard that reds on ordinary writing is a guard somebody turns off.
+#
 # WHY A BLANK LINE DOES NOT END A RUN. Markdown's loose list keeps its numbering across a blank
 # line, and refusing one would red on ordinary writing. A guard that reds on ordinary work is a
 # guard somebody turns off.
@@ -95,6 +102,7 @@ while IFS= read -r pin; do
         }
         want++
       }
+      lastclose[stack_ind[d]] = NR       # where a run at this indent ended, for the rule below
       cnt[d] = 0
       stack_ind[d] = -1
     }
@@ -105,9 +113,19 @@ while IFS= read -r pin; do
     }
     {
       match($0, /^[ \t]*/); ind = RLENGTH
-      if ($0 ~ /^[[:space:]]*$/) next          # a loose list keeps its numbering across a blank line
+      if ($0 ~ /^[[:space:]]*$/) { prev = "blank"; next }   # a loose list keeps its numbering
       if ($0 ~ /^[ \t]*[0-9]+\.[ \t]/) {
         v = $0; sub(/^[ \t]*/, "", v); sub(/\..*$/, "", v)
+        # A list interrupts a paragraph only at 1 (CommonMark). Where the line before is ordinary
+        # text and this item would OPEN a run, any other number is a wrapped sentence rather than
+        # a head, so it ends an open run like any foreign line and is read no further. THE ONE EXCEPTION
+        # IS THE SHAPE THIS GUARD EXISTS FOR: a run at this indent that ended within the last two
+        # lines means the number stands directly after a broken list rather than inside a
+        # paragraph, which is %789 itself -- item 7 replaced by a foreign line, item 8 following.
+        opening = !(depth > 0 && ind == stack_ind[depth])
+        near = (ind in lastclose && NR - lastclose[ind] <= 2)
+        if (prev == "text" && opening && v + 0 != 1 && !near) { unwind(ind, 1); prev = "text"; next }
+        prev = "item"
         unwind(ind, 0)                         # shallower than an open run: that run has finished
         if (depth > 0 && ind == stack_ind[depth]) {
           cnt[depth]++
@@ -121,6 +139,7 @@ while IFS= read -r pin; do
         next
       }
       unwind(ind, 1)                           # a foreign line at or left of a run ends that run
+      prev = "text"
     }
     END { while (depth > 0) { close_depth(depth); depth-- }
           printf "COUNT\t%d\t%d\n", runs, items }

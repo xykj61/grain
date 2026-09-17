@@ -154,6 +154,47 @@ d9=$(pen_new)
 printf '# Pin\n\nRye 20260916.215019 is the version.\n1. one\n2. two\n' > "$d9/construction/PIN.md"
 leg version_string_not_an_item 2 "$(read_key "$d9" ordered_items)"
 
+# ---- 29-34. A WRAPPED SENTENCE THAT BEGINS WITH A NUMBER IS NOT A LIST HEAD --------------------
+# CommonMark lets an ordered list interrupt a paragraph only at 1, and this guard refused the
+# living card within an hour of landing on a peer measurement line reading "32. Warm floor 32 /
+# 12 / 11". The card renders correctly; the guard over-read. Both directions are planted, because
+# an exclusion proven only where it frees cannot be told from a hole.
+d10=$(pen_new)
+printf '# Pin\n\ncold Debug 172 ms, ReleaseSafe 57, ReleaseFast\n32. Warm floor 32 / 12 / 11.\n' > "$d10/construction/PIN.md"
+leg wrapped_number_not_a_head 0 "$(read_key "$d10" broken_runs)"
+leg wrapped_number_no_run 0 "$(read_key "$d10" ordered_runs)"
+
+# and a list that DOES interrupt a paragraph at 1 still opens, which is the rule the other way up
+printf '# Pin\n\nthe order is a ladder of working wholes.\n1. one\n2. two\n' > "$d10/construction/PIN.md"
+leg interrupting_one_still_opens 2 "$(read_key "$d10" ordered_items)"
+
+# and a list after a blank line reads whatever number it starts at, exactly as before
+printf '# Pin\n\nprose.\n\n3. three\n4. four\n' > "$d10/construction/PIN.md"
+leg after_blank_still_refused 1 "$(read_key "$d10" broken_runs)"
+
+# ---- 35-36. MUTATION: without the near-run exception the founding shape walks free -------------
+# The %789 shape is a foreign line standing where item 7 was, with item 8 on the next line. That
+# item follows text and does not read 1, so the CommonMark rule alone would free it -- the very
+# blindness this guard was built against. The exception is the two-line window.
+mut3="$PEN/mut-near.sh"
+sed 's/near = (ind in lastclose \&\& NR - lastclose\[ind\] <= 2)/near = 0/' "$SCAN" > "$mut3"
+d11=$(pen_new "$mut3")
+printf '# Pin\n\n1. one\n2. two\n**Git nib:** `abc`\n4. four\n' > "$d11/construction/PIN.md"
+leg mutation_near_bites 0 "$(read_key "$d11" broken_runs)"
+d12=$(pen_new)
+printf '# Pin\n\n1. one\n2. two\n**Git nib:** `abc`\n4. four\n' > "$d12/construction/PIN.md"
+leg mutation_near_control 1 "$(read_key "$d12" broken_runs)"
+
+# ---- 37-38. MUTATION: without the CommonMark rule the card line reds again ---------------------
+mut4="$PEN/mut-interrupt.sh"
+sed 's/if (prev == "text" \&\& opening \&\& v + 0 != 1 \&\& !near)/if (0)/' "$SCAN" > "$mut4"
+d13=$(pen_new "$mut4")
+printf '# Pin\n\ncold Debug 172 ms, ReleaseSafe 57, ReleaseFast\n32. Warm floor 32 / 12 / 11.\n' > "$d13/construction/PIN.md"
+leg mutation_interrupt_bites 1 "$(read_key "$d13" broken_runs)"
+d14=$(pen_new)
+printf '# Pin\n\ncold Debug 172 ms, ReleaseSafe 57, ReleaseFast\n32. Warm floor 32 / 12 / 11.\n' > "$d14/construction/PIN.md"
+leg mutation_interrupt_control 0 "$(read_key "$d14" broken_runs)"
+
 # ---- 28. a page with no ordered list at all reads zero runs and stays green ---------------------
 printf '# Pin\n\njust prose, no list anywhere.\n' > "$d9/construction/PIN.md"
 leg no_list_is_zero_runs 0 "$(read_key "$d9" ordered_runs)"
