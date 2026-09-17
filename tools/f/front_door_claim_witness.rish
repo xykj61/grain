@@ -1,9 +1,9 @@
 # tools/f/front_door_claim_witness.rish -- a page that says a front door names it is checked.
 #   rishi/bin/rishi run tools/f/front_door_claim_witness.rish
 #
-# WHAT IT STANDS OVER. tools/fixtures/f/front_door_claim_scan.sh, which reads the living pages of
-# foundations, context and docs for a declared **Front door:** key, resolves the pages that key
-# names, and walls at zero every declared front door that does not name the claiming page back.
+# WHAT IT STANDS OVER. tools/fixtures/f/front_door_claim_scan.sh, which reads every living tracked
+# page for a declared **Front door:** key, resolves the pages that key names, and walls at zero
+# every declared front door that does not name the claiming page back.
 #
 # WHY IT EXISTS. A page telling its reader where it is reached from is making a claim about ANOTHER
 # page's contents, and that is the one claim a page cannot keep by itself. The link out belongs to
@@ -18,13 +18,33 @@
 # Style and its Room. Opting in by writing the key is the whole population filter, so no reading
 # here guesses which prose sentence meant to be a promise.
 #
-# WHAT IT STANDS ON. Fifteen behaviours proven on real git repositories in a throwaway pen by
+# AND A SECOND FILTER STOOD BESIDE THAT SENTENCE. The scan's default room list read foundations,
+# context and docs. Six of the eight pages declaring the key went unread: caravan/HARNESS.md,
+# caravan/LADDER.md, constel/LADDER.md, constel/MODULES.md, crypto/CONSTANT_TIME.md and
+# lotus/LADDER.md. All six keep their promise today, which is luck rather than a wall. This guard's
+# founding case is a promise that stood broken eighteen days. The default is the whole living tree
+# from 20260917: 1,529 pages against 214, at 0.52s against 1.23s. One grep -l prefilter replaced
+# one grep per page.
+#
+# THE WIDENING FORCED A SECOND REPAIR, and neither is complete alone. This tree joins several keys
+# on one line with ` - `. A whole-line read lends the front-door key its neighbors' links. Four of
+# the eight declaring pages carry that idiom. Widened with the elder line read, the tree answers
+# claims=13 and claims_unkept=1. The one unkept is crypto/CONSTANT_TIME.md, publishing a front-door
+# promise against a clean-room LAW page it never made. The key's value is cut at the next **Word:**
+# now, and the colon is what keeps emphasis inside a value safe.
+#
+# WHAT IT STANDS ON. Behaviours proven on real git repositories in a throwaway pen by
 # tools/fixtures/f/front_door_claim_control.sh, welcomes asserted as hard as refusals: a kept claim
 # reads ok, a broken one refuses and names page, target and cause, adding the link lifts it, a claim
 # naming an untracked page refuses under its own cause and tracking it lifts that, a key with no
 # link refuses, a keyless page is never counted, a tree where nobody declares the key refuses rather
 # than printing a green zero, an empty room refuses, the scan refuses outside a repository, an
-# interior `..` resolves, two links on one key are two claims, and a dated shelf keeps its words.
+# interior `..` resolves, two links on one key are two claims, a dated shelf keeps its words, the
+# argumentless default reads a room no elder default named while still keeping that shelf out, a key
+# sharing its line claims its own links and never its neighbor's while its own half stays gated,
+# emphasis carrying no colon does not end the value, and two mutations bite -- striking the key
+# bound counts the neighbor's link again, and restoring the three-room default leaves an outside
+# page unread. The control counts its own legs, so a leg written tomorrow is heard.
 #
 # WHAT IT DOES NOT REACH. Whether the front door's sentence about the page says anything true, and
 # whether a page that ought to declare a front door has declined to. It proves the declared promise
@@ -49,6 +69,11 @@ assert green.out contains "claims_unkept=0" else "front-door-claim: a declared f
 # and read exactly like a tree whose every declared claim is kept (REDS %240's confident wrong zero).
 # The scan refuses that by name; these two legs close the same door from the reading's side.
 assert green.out contains "pages_read=" else "front-door-claim: the rooms must be counted"
+# THE DEFAULT IS THE WHOLE TREE, asserted structurally rather than against a free count. A room
+# list beside an opt-in key is a second population filter. The six pages it hid are why this leg
+# stands here.
+assert green.out contains "rooms=(whole tree)" else "front-door-claim: the argumentless reading must name no room -- ${green.out_brief}"
+assert green.out contains "helper=tree" else "front-door-claim: the shared portable helper must be the one that ran here -- ${green.out_brief}"
 assert (green.out contains "claims=0") == false else "front-door-claim: a tree declaring no front door is a reading that broke"
 
 # THE GATE DOES THE WORK, proven on the living tree rather than asserted: a room holding no declared
@@ -79,6 +104,15 @@ assert control.out contains "ok   outside a git repository the scan refuses rath
 assert control.out contains "ok   an interior .. is resolved textually, so ../../README.md finds the root" else "front-door-claim: the dotdot leg is missing"
 assert control.out contains "ok   two links on one key are two claims" else "front-door-claim: the two-target leg is missing"
 assert control.out contains "ok   a page on a date/ shelf keeps its words and is never read" else "front-door-claim: the testimony leg is missing"
-assert control.out contains "pass=15" else "front-door-claim: the control must carry all fifteen legs"
+assert control.out contains "ok   with no argument the reading is the whole living tree, not three rooms" else "front-door-claim: the default-population leg is missing"
+assert control.out contains "ok   and that widened default still keeps a dated shelf out" else "front-door-claim: the widened-shelf leg is missing"
+assert control.out contains "ok   a key sharing the line claims its own links and never its neighbor's" else "front-door-claim: the sibling-key leg is missing"
+assert control.out contains "ok   and the front-door value on that same line is still read and gated" else "front-door-claim: the sibling-gated leg is missing"
+assert control.out contains "ok   emphasis carrying no colon does not end the value" else "front-door-claim: the emphasis leg is missing"
+assert control.out contains "ok   striking the key bound counts the neighbor's link again" else "front-door-claim: the key-bound mutation is missing"
+assert control.out contains "ok   restoring the three-room default leaves the outside page unread" else "front-door-claim: the default-rooms mutation is missing"
+# The control counts the legs it ran rather than reciting a number a hand typed once. So a leg
+# written tomorrow is heard, and a leg quietly dropped is not.
+assert control.out contains "control_checks=22" else "front-door-claim: the control must run every leg it declares -- ${control.out_brief}"
 
-say "GREEN: front-door-claim -- every declared front door in the living rooms names the page that claims it, the vacuum refuses rather than reading green, and all fifteen behaviours stand proven on real repositories."
+say "GREEN: front-door-claim -- every declared front door in the living tree names the page that claims it, the key's value is read rather than its line, the vacuum refuses rather than reading green, and every behavior the control declares stands proven on real repositories."

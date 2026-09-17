@@ -30,6 +30,18 @@
 #   two_targets_counted      two links on one key are two claims
 #   testimony_shelf_read_past a page on a date/ shelf keeps its words and is never read
 #   basename_any_path        the back link is read by basename, so any relative form keeps the claim
+#   default_reads_any_room   with no argument the reading is the whole living tree, not three rooms
+#   default_still_shelf_past and that widened default still keeps a dated shelf out
+#   sibling_key_read_past    a key sharing the line claims its own links and never its neighbor's
+#   sibling_key_still_gated  and the front-door value on that same line is still read and gated
+#   emphasis_in_value_kept   emphasis carrying no colon does not end the value
+#   mutation_key_bound       striking the key bound counts the neighbor's link again
+#   mutation_default_rooms   restoring the three-room default leaves the outside page unread
+#
+# EACH MUTATION RUNS A REAL COPY of the scan with one line edited, inside a pen repository. `cmp`
+# proves the edit moved a byte first. A sed that matched nothing reads exactly like a mutation the
+# code survived. A copy outside the tree finds no `shell_portable.sh`, so `helper=local` is
+# asserted there. The fallback is exercised rather than assumed.
 #
 # Run from the repository root:
 #   sh tools/fixtures/f/front_door_claim_control.sh
@@ -176,6 +188,99 @@ case "$out" in *"claims=1"*) k=yes ;; *) k=no ;; esac
 case "$out" in *"verdict=ok"*) : ;; *) k=no ;; esac
 note "a page on a date/ shelf keeps its words and is never read" "$k"
 
+# --- the default population is the whole living tree -------------------------------------------
+# The key is the population filter. A room list beside it is a second one. This pen puts the
+# claiming page in a room no elder default named. The scan runs with no argument at all.
+r=$(newrepo wholetree)
+mkdir -p "$r/caravan" "$r/caravan/date/20260101"
+printf '# harness\n\n**Front door:** [`README.md`](README.md)\n' > "$r/caravan/HARNESS.md"
+printf '# door\n\nsee [it](HARNESS.md)\n' > "$r/caravan/README.md"
+printf '# old\n\n**Front door:** [`../../README.md`](../../README.md)\n' > "$r/caravan/date/20260101/20260101-000011_old.md"
+printf '# root\n' > "$r/README.md"
+track "$r"
+out=$(runscan "$r")
+case "$out" in *"verdict=ok"*) k=yes ;; *) k=no ;; esac
+case "$out" in *"claiming_pages=1"*) : ;; *) k=no ;; esac
+note "with no argument the reading is the whole living tree, not three rooms" "$k"
+case "$out" in *"claims=1"*) k=yes ;; *) k=no ;; esac
+note "and that widened default still keeps a dated shelf out" "$k"
+
+# --- a key that shares its line with another key -------------------------------------------------
+# This tree joins several keys on one line with ` - `. Read whole, the line lends the front-door
+# key its neighbor's link. That neighbor is a page with no reason to name this one back. So the
+# claim is one the page never made. The value is cut at the next `**Word:**`.
+r=$(newrepo sibling)
+mkdir -p "$r/why"
+printf '# page\n\n**Front door:** [`README.md`](README.md) - **Clean-room law:** [`../LAW.md`](../LAW.md)\n' > "$r/why/20260101-000012_a-page.md"
+printf '# door\n\nsee [it](20260101-000012_a-page.md)\n' > "$r/why/README.md"
+printf '# law\n\nnames nobody.\n' > "$r/LAW.md"
+track "$r"
+out=$(runscan "$r" why)
+case "$out" in *"claims=1"*) k=yes ;; *) k=no ;; esac
+case "$out" in *"verdict=ok"*) : ;; *) k=no ;; esac
+note "a key sharing the line claims its own links and never its neighbor's" "$k"
+
+# and the front-door half of that same line is still read, and still gated
+printf '# door\n\nnames nobody either.\n' > "$r/why/README.md"
+track "$r"
+out=$(runscan "$r" why)
+case "$out" in *"verdict=claim_unkept"*) k=yes ;; *) k=no ;; esac
+case "$out" in *"-> why/README.md no_backlink"*) : ;; *) k=no ;; esac
+note "and the front-door value on that same line is still read and gated" "$k"
+
+# --- emphasis inside a value carries no colon, so it does not end the value ---------------------
+r=$(newrepo emphasis)
+mkdir -p "$r/why"
+printf '# page\n\n**Front door:** [`README.md`](README.md) -- **start here** for what this is\n' > "$r/why/20260101-000013_a-page.md"
+printf '# door\n\nsee [it](20260101-000013_a-page.md)\n' > "$r/why/README.md"
+track "$r"
+out=$(runscan "$r" why)
+case "$out" in *"claims=1"*) k=yes ;; *) k=no ;; esac
+case "$out" in *"verdict=ok"*) : ;; *) k=no ;; esac
+note "emphasis carrying no colon does not end the value" "$k"
+
+# --- the mutations ------------------------------------------------------------------------------
+# Each copies the scan and edits one line. `cmp` proves the edit moved a byte before the reading
+# is believed. A copy outside the tree finds no helper, so `helper=local` is asserted.
+mutate() {
+  src=$1; dst=$2; shift 2
+  cp "$scan" "$dst"
+  sed "$@" "$dst" > "$dst.tmp" && mv "$dst.tmp" "$dst"
+  if cmp -s "$scan" "$dst"; then return 1; fi
+  return 0
+}
+
+# Striking the key bound returns the whole-line read. The neighbor's link is a claim again.
+r=$(newrepo mut_key)
+mkdir -p "$r/why"
+printf '# page\n\n**Front door:** [`README.md`](README.md) - **Clean-room law:** [`../LAW.md`](../LAW.md)\n' > "$r/why/20260101-000014_a-page.md"
+printf '# door\n\nsee [it](20260101-000014_a-page.md)\n' > "$r/why/README.md"
+printf '# law\n\nnames nobody.\n' > "$r/LAW.md"
+track "$r"
+k=no
+if mutate "$scan" "$pen/mut_key.sh" 's|s/\\\*\\\*\[^\*\]\[^\*\]\*:\\\*\\\*\.\*\$//||'; then
+  before=$(runscan "$r" why)
+  after=$( cd "$r" && sh "$pen/mut_key.sh" why 2>&1 || true )
+  case "$before" in *"claims=1"*) case "$after" in *"claims=2"*) k=yes ;; esac ;; esac
+  case "$after" in *"helper=local"*) : ;; *) k=no ;; esac
+fi
+note "striking the key bound counts the neighbor's link again" "$k"
+
+# Restoring the three-room default leaves a claiming page outside those rooms unread.
+r=$(newrepo mut_rooms)
+mkdir -p "$r/caravan"
+printf '# harness\n\n**Front door:** [`README.md`](README.md)\n' > "$r/caravan/HARNESS.md"
+printf '# door\n\nsee [it](HARNESS.md)\n' > "$r/caravan/README.md"
+track "$r"
+k=no
+if mutate "$scan" "$pen/mut_rooms.sh" 's|^  grep -E .\\\.md\$. "\$pen/tracked.txt"|  grep -E "^foundations/" "$pen/tracked.txt" \| grep -E "\\.md$"|'; then
+  before=$(runscan "$r")
+  after=$( cd "$r" && sh "$pen/mut_rooms.sh" 2>&1 || true )
+  case "$before" in *"verdict=ok"*) case "$after" in *"verdict=no_pages"*|*"verdict=no_claims"*) k=yes ;; esac ;; esac
+fi
+note "restoring the three-room default leaves the outside page unread" "$k"
+
+echo "control_checks=$((pass + fail))"
 echo "pass=$pass"
 echo "fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "verdict=control_green"; exit 0; fi

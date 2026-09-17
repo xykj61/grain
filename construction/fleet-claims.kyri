@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim grass-front-door-declared-population
-seat grass
-stamp 20260917.115909
-epoch 1789660749
-paths tools/fixtures/f/front_door_claim_scan.sh tools/f/front_door_claim_witness.rish tools/fixtures/f/front_door_claim_control.sh
-what The front-door-claim guard says in its own header that opting in by writing the key is the whole population filter, and a second silent filter stands one line below it: rooms defaults to foundations context docs. Measured before claiming rather than taken from the header: EIGHT living tracked pages declare a **Front door:** key, and the guard reads TWO of them. The six unheard claims are caravan/HARNESS.md, caravan/LADDER.md, constel/LADDER.md, constel/MODULES.md, crypto/CONSTANT_TIME.md and lotus/LADDER.md, each naming its own room README. All six are KEPT today, checked by hand this lap, so nothing is presently wrong and the point is that their being kept is luck rather than a wall -- which is exactly the guard's founding case, where the Lindy foundation's promise stood broken eighteen days and nothing in the tree could hear it. This lap defaults the population to every living tracked .md outside the date, archive and yonder shelves, keeps the optional room arguments so the witness's own vacuum leg over rishi still refuses, and prefilters the 1528 pages with ONE grep -l pass rather than one grep per page, so the reading widens sevenfold and the scan starts fewer processes than it does today. The 4096 page bound holds over 1528 with headroom and its header sentence, which prices the bound against the three rooms, is rewritten to the population it now reads. No ceiling, no ledger row, no roster row, no module source and no peer file moves: three files, and the pen gains a leg planting a claiming page in a fourth room and breaking its backlink, proven from both sides.
 claim patchouli-record-column-identity
 seat patchouli
 stamp 20260917.133616
