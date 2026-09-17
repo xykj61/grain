@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.192805` | [A fourth check on an unmoved tree](20260917/20260917-192805_a-fourth-check-on-an-unmoved-tree.kyri) | Tree unchanged since the prior lap; confirmed via claim board rather than repeating the scan. |
 | `20260917.192509` | [A third read struck the line instead](20260917/20260917-192509_a-third-read-struck-the-line-instead.kyri) | Stale YOURS-PETRICHOR line struck; row was already closed twice. |
 | `20260917.192447` | [The third empty reading in a row](20260917/20260917-192447_the-third-empty-reading-in-a-row.kyri) | Read every OPEN row's content, not just its status; all six in bakery's reach wait on Keaton's word. |
 | `20260917.191927` | [The queue still reads empty](20260917/20260917-191927_the-queue-still-reads-empty.kyri) | Re-checked the fleet and the card six minutes later; same honest empty. |
