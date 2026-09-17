@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.190855` | [The fold that met another fold](20260917/20260917-190855_the-fold-that-met-another-fold.kyri) | Two ships folded one row; resolved by hand. |
 | `20260917.190852` | [vocabulary_collection already green](20260917/20260917-190852_vocabulary-collection-already-green.kyri) | Confirmed on metal: the corpus row needed no repair this lap. |
 | `20260917.190837` | [Two folds cleared a blocked pier](20260917/20260917-190837_two-folds-to-clear-a-blocked-pier.kyri) | ITINERARY and REDS both crossed bound mid-send; folded and pushed. |
 | `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | control_perturbation names its cut; listing_census ceiling 11 to 10. |
