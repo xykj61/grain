@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim pheromone-one-ident-rule
-seat pheromone
-stamp 20260917.001152
-epoch 1789618312
-paths glow/zig_ident.rye tools/fixtures/g/glow_ident_duplication_scan.sh tools/g/glow_ident_witness.rish
-what The Glow lowering room writes one rule 29 times. fn zig_safe_ident stands in 29 glow/lower_*.rye files; stripping the max_ constant name leaves 5 distinct bodies and 17 are byte-identical. The character rule -- first byte alpha or underscore, rest alnum or underscore, hyphen mapped to underscore -- is byte-for-byte the same in all 29, and what varies is what a rule written 29 times comes to disagree about: 23 return usize where TAME asks u32, only 5 carry the invariant assert the other 24 omit, lower_shop_nest.rye answers a LENGTH ceiling with error.MissingFace where 28 peers answer error.BadIdent, and lower_alias.rye maps the dot as well. This is also why glow_ceiling_refusal reads 35 of its 40 uncovered sites under the one name error.BadIdent across five ceilings: the refusal record cannot land once while the function it belongs in is copied 29 times. Publish one zig_safe_ident in glow/zig_ident.rye taking the ceiling as a parameter and a refusal.Slot, returning u32 with its invariants asserted; convert a named first cohort to call it; meter the remaining copies as a ratchet that only falls.
 claim patchouli-terminator-as-history
 seat patchouli
 stamp 20260917.002055
