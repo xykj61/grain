@@ -311,6 +311,226 @@ case "$out" in
   *) no "13 free: an honest file never masks an unread ceiling beside it"; echo "$out" ;;
 esac
 
+# ---------------------------------------------------------------------------
+# THE BLOCK READING (REDS `20260917.040203`). Until 20260917 a refusal was read three lines forward from the
+# condition. That window failed both ways at once: it MISSED a refusal record filled between the
+# test and the return, and it ADMITTED a comment whose prose carried the word `and` above an
+# unrelated named-error return. Every leg below is one half of one of those two faults.
+
+# 14 free: a refusal record filled between the condition and the return still reads as refused --
+# the founding case, glow/tokens.rye in miniature.
+pen="$work/record"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const RoomError = error{BadToken};
+pub const max_name_len: u32 = 64;
+pub const Slot = struct { value: u32, ceiling: u32 };
+pub fn scan_name(n: u32, slot: *Slot) RoomError!u32 {
+    if (n > max_name_len) {
+        // invariant: the record names the measure rather than the offending text, because the
+        // text is exactly what did not fit, and a caller tells this refusal from its siblings
+        // without holding the oversized name to do it.
+        slot.* = .{
+            .value = n,
+            .ceiling = max_name_len,
+        };
+        return RoomError.BadToken;
+    }
+    return n;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"refused=1"*) ok "14 free: a refusal record between the test and the return still reads as refused" ;;
+  *) no "14 free: a refusal record between the test and the return still reads as refused"; echo "$out" ;;
+esac
+
+# 15 bitten: the same file with its return removed falls out of refused -- the plant lifted from
+# leg 14, so the block walk is proven to read the RETURN rather than merely the distance.
+pen="$work/record_toothless"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const max_name_len: u32 = 64;
+pub const Slot = struct { value: u32, ceiling: u32 };
+pub fn scan_name(n: u32, slot: *Slot) u32 {
+    if (n > max_name_len) {
+        // invariant: the record names the measure rather than the offending text.
+        slot.* = .{
+            .value = n,
+            .ceiling = max_name_len,
+        };
+    }
+    return n;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"refused=0"*) ok "15 bitten: the same block without a named-error return leaves refused" ;;
+  *) no "15 bitten: the same block without a named-error return leaves refused"; echo "$out" ;;
+esac
+
+# 16 bitten: a COMMENT naming the ceiling, carrying the word `and`, standing above an unrelated
+# named-error return is not a refusal -- crypto/vault_seal.rye's shape, which the window admitted.
+pen="$work/comment_prose"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const RoomError = error{PayloadTooLong};
+pub const max_plain_bytes: u32 = 64;
+pub const max_frame_bytes: u32 = 128;
+pub fn seal(plain: []const u8) RoomError!void {
+    // invariant: the plaintext fits the AEAD's bound and the whole frame fits max_frame_bytes.
+    if (plain.len > max_plain_bytes) return RoomError.PayloadTooLong;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"asserted-only: room/a.rye declares max_frame_bytes"*) ok "16 bitten: a ceiling named only in a comment is not refused by the return below it" ;;
+  *) no "16 bitten: a ceiling named only in a comment is not refused by the return below it"; echo "$out" ;;
+esac
+case "$out" in
+  *"refused=1"*) ok "16 bitten: the ceiling the condition actually names keeps its refusal" ;;
+  *) no "16 bitten: the ceiling the condition actually names keeps its refusal"; echo "$out" ;;
+esac
+
+# 17 free: the two-line braceless form keeps its place -- the condition on one line, the return on
+# the next, which this tree writes as often as the single line.
+pen="$work/braceless_two"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const RoomError = error{TooMany};
+pub const max_items: u32 = 8;
+pub fn take(n: u32) RoomError!void {
+    if (n > max_items)
+        return RoomError.TooMany;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"refused=1"*) ok "17 free: the two-line braceless refusal reads as refused" ;;
+  *) no "17 free: the two-line braceless refusal reads as refused"; echo "$out" ;;
+esac
+
+# 18 free: a condition spanning several lines closes where its parentheses close, rather than after
+# a line count somebody guessed.
+pen="$work/multiline_cond"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const RoomError = error{TooMany};
+pub const max_items: u32 = 8;
+pub fn take(n: u32, m: u32) RoomError!void {
+    if (n > max_items or
+        m > max_items or
+        n + m > max_items)
+    {
+        return RoomError.TooMany;
+    }
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"refused=1"*) ok "18 free: a multi-line condition closes at its parentheses" ;;
+  *) no "18 free: a multi-line condition closes at its parentheses"; echo "$out" ;;
+esac
+
+# 19 bitten: a named-error return standing AFTER the condition's block closes belongs to the
+# function rather than to the test, and never reads as that ceiling's refusal.
+pen="$work/after_block"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const RoomError = error{Elsewhere};
+pub const max_items: u32 = 8;
+pub fn take(n: u32, flag: bool) RoomError!u32 {
+    if (n > max_items) {
+        return n;
+    }
+    if (flag) return RoomError.Elsewhere;
+    return n;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"refused=0"*) ok "19 bitten: a return past the closing brace is not that ceiling's refusal" ;;
+  *) no "19 bitten: a return past the closing brace is not that ceiling's refusal"; echo "$out" ;;
+esac
+
+# 20 bitten: a ceiling named inside a STRING LITERAL is not refused by the error return that
+# literal is built with -- glow/lower_shop_gate.rye's shape, where the emitted Glow source spells
+# its own `if (` and the emitter's `catch return error.Overflow` sits on the same line.
+pen="$work/string_lit"
+make_pen "$pen"
+cat > "$pen/room/a.rye" <<'EOF'
+const std = @import("std");
+pub const RoomError = error{Overflow};
+pub const max_sumto_call: u32 = 65535;
+pub fn emit(buf: []u8, face: []const u8) RoomError![]u8 {
+    return std.fmt.bufPrint(buf, "if ({s} > {d}) 0 else 1", .{ face, max_sumto_call }) catch return RoomError.Overflow;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"asserted-only: room/a.rye declares max_sumto_call"*) ok "20 bitten: a ceiling named inside a string literal is not refused by that line" ;;
+  *) no "20 bitten: a ceiling named inside a string literal is not refused by that line"; echo "$out" ;;
+esac
+
+# ---------------------------------------------------------------------------
+# MUTATIONS. Each removes one half of the block reading from a copy of the scan and asserts the
+# leg above it goes the other way. A repair proven only by its new number cannot be told from a
+# number that was always there.
+
+# A mutation removes one line from a copy of the scan by its own text, rather than by a line
+# number a later edit would move. Each marker is asserted to stand in the scan first, since a
+# mutation that removes nothing runs the unmutated file and reads as a passing leg -- a dead plant.
+mutate() { grep -vF "$2" "$scan" > "$1"; }
+marker_stands() {
+  if [ "$(grep -cF "$1" "$scan")" -eq 1 ]; then ok "$2"; else no "$2"; fi
+}
+
+m_str='gsub(/"[^"]*"/, "", s)'
+m_com='sub(/\/\/.*$/, "", s)'
+m_blk='if (j > h && strip[j] ~ /return [A-Za-z]*[Ee]rror\./) { exit 0 }'
+
+marker_stands "$m_str" "M0: the string-blanking line stands once in the scan"
+marker_stands "$m_com" "M0: the comment-stripping line stands once in the scan"
+marker_stands "$m_blk" "M0: the block-walk return test stands once in the scan"
+
+# M1: without the string blanking, leg 20's literal reads as a refusal again.
+mutate "$work/m_strings.sh" "$m_str"
+out="$( cd "$work/string_lit" && sh "$work/m_strings.sh" room 2>&1 )"
+case "$out" in
+  *"refused=1"*) ok "M1 bitten: removing the string blanking admits a refusal spelled inside a literal" ;;
+  *) no "M1 bitten: removing the string blanking admits a refusal spelled inside a literal"; echo "$out" ;;
+esac
+
+# M2: without the comment stripping, leg 16's prose reads as a refusal again.
+mutate "$work/m_comments.sh" "$m_com"
+out="$( cd "$work/comment_prose" && sh "$work/m_comments.sh" room 2>&1 )"
+case "$out" in
+  *"refused=2"*) ok "M2 bitten: removing the comment stripping admits a refusal spelled in prose" ;;
+  *) no "M2 bitten: removing the comment stripping admits a refusal spelled in prose"; echo "$out" ;;
+esac
+
+# M3: without the block walk the reading falls back to the header line alone, so leg 14's record
+# between the test and the return stops reading as a refusal.
+mutate "$work/m_block.sh" "$m_blk"
+out="$( cd "$work/record" && sh "$work/m_block.sh" room 2>&1 )"
+case "$out" in
+  *"refused=0"*) ok "M3 bitten: removing the block walk loses the refusal it was built to find" ;;
+  *) no "M3 bitten: removing the block walk loses the refusal it was built to find"; echo "$out" ;;
+esac
+
 echo "control_fail=$fail"
 if [ "$fail" -eq 0 ]; then
   echo "control_verdict=ok"

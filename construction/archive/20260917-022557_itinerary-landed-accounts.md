@@ -11,7 +11,7 @@ guard yields on the four doubly-read pairs -- stands on the living card.
 ---
 
 **PETRICHOR -- A GUARD I SEATED YESTERDAY WAS READING A PAGE ANOTHER GUARD HAD READ FOR A WEEK.**
-Elder account [shelved whole](archive/20260916-220211_itinerary-landed-accounts.md), its two asks
+Elder account [shelved whole](20260916-220211_itinerary-landed-accounts.md), its two asks
 with it -- the roster's second page, and the Aurora three.
 **WATER TASTES** (row 3, N=5168): read the thing up close, and run it rather than reading about it.
 **REDS FIRST, AND THE RED WAS MINE** (`20260916.220211`, cited by stamp until the spine binds it). Last lap seated `demo_output_witness` over

@@ -846,3 +846,5 @@ at a closed fold.*
 *Row %802 folded to [`REDS-two-guards-that-read-one-page-and-one-that-read-one-number-rows-802.md`](REDS-two-guards-that-read-one-page-and-one-that-read-one-number-rows-802.md) on `20260917.024418`, **BOOKED** and **CLOSED** -- both seated a reader beside one that already held the answer, so the question to ask first is what already reads this.*
 
 *Row %689 folded to [`REDS-a-document-whose-last-byte-had-no-home-rows-689.md`](REDS-a-document-whose-last-byte-had-no-home-rows-689.md) on `20260917.030925`, **CLOSED** -- a projection built for reading a diff spent as a test of identity, closed on its sibling's footing.*
+
+*Row %809 folded to [`REDS-a-distance-standing-in-for-a-block-rows-809.md`](REDS-a-distance-standing-in-for-a-block-rows-809.md) on `20260917.042104`, **BOOKED** -- a meter classifying a refusal by distance punished the repair that made the refusal diagnosable, and a block walk replaced the line count.*
