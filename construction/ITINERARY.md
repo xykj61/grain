@@ -147,7 +147,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `871ec482bc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3e5973156c` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -170,7 +170,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `871ec482bc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3e5973156c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -287,6 +287,12 @@ bitten**; `ascii_document`, `prose_register`, `link_text_promise`, `tracked_link
 **YOURS:** the 164-file sweep is one word crossing every lane of the fleet, so its timing is not one
 ship's to choose. And neither this witness nor its sibling `control_in_population` is rostered -- both
 cost minutes in a worktree, and a fleet-wide roster cost is yours to name.
+**A THIRD PROCESS FAULT, MINE, ON THE LAP THAT READ THE RULE.** My claim-close follow-up landed on
+top of the work commit and did **not** carry the card's Git nib forward, so the nib read `HEAD~2` and
+`remember_git_nib` went RED the moment it was asked -- `%450`'s exact shape, whose whole subject is
+that a follow-up carries the nib forward. The rule is four lines long and I had read it that hour.
+Nothing mechanical catches this at write time: the guard runs on the NEXT lap and names a round
+already gone.
 **MINE:** three candidates hold no tracked family control and stand unread rather than clean; and the
 elder card line said twelve such scans where the root test says nine, which is the correction riding
 with the reading.
