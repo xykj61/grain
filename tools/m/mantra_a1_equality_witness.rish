@@ -29,10 +29,18 @@
 # rather than a reading.
 #
 # WHAT THIS DOES NOT REACH. The other half of the same README sentence: three Aurora witnesses
-# (tools/au/aurora_a1_*_eq_witness.rish) and one Caravan witness
-# (tools/ca/caravan_c4_exit_meanings_eq_witness.rish), all four also unrostered and uncalled.
-# They are other lanes' rooms -- Caravan is a parked seat's -- so they are named and sized
-# here rather than taken.
+# (tools/au/aurora_a1_*_eq_witness.rish), unrostered and uncalled. They are another lane's room,
+# so they are named and sized here rather than taken.
+#
+# CORRECTED 20260916.110857 (the ledger row of that stamp). This paragraph read "and one Caravan witness
+# (tools/ca/caravan_c4_exit_meanings_eq_witness.rish), all four also unrostered and uncalled"
+# from 20260906 until this stamp, and src/gate/README.md said the same. That Caravan witness has
+# stood inside the `let witnesses = [ ... ]` array of tools/ca/caravan_suite_witness.rish since
+# 20260823 (008725232), and caravan_suite is a rostered guard at tier cadence. The reading that
+# missed it grepped tools/ and construction/ for the four names at once: the one line that
+# answers is that roster array, 120 witness paths on a single line, where a fifth name arrives
+# inside a wall of its siblings. Ask a name at a time -- an absence is the reading a grep hands
+# back hardest, since its evidence is what a reader skimmed past.
 #
 # COST, MEASURED. The four run in 20s, 19s, 16s and 14s on this pier (20260906), 69s together,
 # plus about 5s of builds; the control adds six pen runs. That is why the roster row reads
