@@ -855,3 +855,5 @@ at a closed fold.*
 *Row %812 folded to [`REDS-a-rebase-is-not-a-hand-rows-812.md`](REDS-a-rebase-is-not-a-hand-rows-812.md) on `20260917.071217`, **BOOKED** -- a rebase resolving one row's text in favour of the side that booked a different number is ordinary git behaviour and silently lossy, so the ledger's first law now has a reading behind it rather than a habit alone.*
 
 *Row %813 folded to [`REDS-the-order-that-fixed-a-verdict-rows-813.md`](REDS-the-order-that-fixed-a-verdict-rows-813.md) on `20260917.114538`, **CLOSED** -- two seated directives ordered everything except each other, so a cold run's verdict was fixed at `tree_moved` before its first guard returned; the cure is one word of ordering and it closed `tree_moved=no` on metal.*
+
+*Row %814 folded to [`REDS-the-room-the-projection-makes-rows-814.md`](REDS-the-room-the-projection-makes-rows-814.md) on `20260917.140717`, **CLOSED** -- a walk upward asks the right question about a file and the wrong one about a room.*

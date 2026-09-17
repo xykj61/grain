@@ -9,6 +9,7 @@
 | `20260917.152855` | [the shelf's unread promise](20260917/20260917-152855_the-shelf-that-promised-at-its-door.kyri) | one page declared no ceiling, and the guard could not see it |
 | `20260917.151944` | [The word a lost answer wears](20260917/20260917-151944_the-word-for-a-guard-that-could-not-answer.kyri) | %747 booked: `unrun`, never a red. |
 | `20260917.144357` | [The unit the capacity forced](20260917/20260917-144357_the-unit-the-capacity-forced.kyri) | Fits at 16 nodes, overflows at 64; 0.63 of the graph loses its free ride. |
+| `20260917.141420` | [The room the projection makes](20260917/20260917-141420_the-room-the-projection-makes.kyri) | seed_link red closed: a room the seed makes read as one it lacks. |
 | `20260917.140121` | [The half a wall could not see](20260917/20260917-140121_the-half-a-wall-could-not-see.kyri) | Rowless gradings: 5 read, 3 debts closed. |
 | `20260917.133948` | [The rule written seven more times](20260917/20260917-133948_the-rule-written-seven-more-times.kyri) | Seven ident copies become stubs; 23 to 16. |
 | `20260917.132855` | [The form that could not predict](20260917/20260917-132855_the-form-that-could-not-predict.kyri) | 21 ranked rows, 0 runnable falsifiers; the cell is empty. |
