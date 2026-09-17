@@ -169,3 +169,18 @@ into a peer's lane. The buildable piece is small enough to state in one line: ad
 ReleaseSafe` where the bootstrap builds `rye/src/main.rye`, re-time a warm hit, and record both
 figures. The paper's job was to find out which flag to reach for, and to say what would prove
 it the wrong one.
+
+## Erratum -- `20260916.221930`, and it raises rather than lowers
+
+This paper's one **Moderate** sentence above -- that `rye/bin/rye` is itself a Debug build,
+inferred from the bootstrap's absent `-O` flag and never confirmed on the binary -- is
+**measured now and reads High**. The live binary and a fresh Debug build of the same source
+carry the same **168** SHA-NI opcode hits exactly, against 56 to 58 at every release mode, and
+their byte sizes agree to within 1.4 percent while no release mode comes within a factor of
+three. Falsifier 1 passed wider than it was written: the walk-and-hash portion falls **3.1x**
+under ReleaseSafe rather than the roughly 2x predicted, timed through `rye key` on the same 552
+files. Falsifier 2 did not fire -- the extension compiles in at every mode, and release folds
+168 hits to 56 rather than stripping them.
+
+No figure above moves. The reader who needs the settlement should read
+[`20260916-221930_the-mode-a-compiler-ships-under.md`](20260916-221930_the-mode-a-compiler-ships-under.md).

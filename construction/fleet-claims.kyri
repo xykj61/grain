@@ -70,12 +70,6 @@ stamp 20260916.215002
 epoch 1789609802
 paths tools/fixtures/d/demo_output_scan.sh tools/fixtures/d/demo_output_control.sh tools/d/demo_output_witness.rish docs-geode/tutorials/the-first-hour.md
 what The demos guard's roster holds one page and my own card asks whether a second joins on a hand's reading or by an entry rule a page can meet itself. Measured on docs-geode/tutorials/the-first-hour.md: 11 sh fences, 2 genuine answered pairs, and the pairing rule glues a command to the nearest following plain fence across arbitrary prose -- so vendor/zig-toolchain/zig version pairs with the already=yes block that answers fetch-toolchain five lines and a paragraph later. The demos page never exposed it because its answers sit close. Add a third marker, shown, above an sh block a page offers a reader without answering, which stops both the run and the pairing; add --pairs, which prints what a page would run and exits without running it, so a hand can read a candidate page before admitting it; then join the first hour with 9 shown blocks and 2 checked pairs.
-claim diffuser-rye-optimization-mode
-seat diffuser
-stamp 20260916.221552
-epoch 1789611352
-paths rye/bootstrap.sh active-designing/20260916-220753_the-hash-runs-in-debug-rather-than-in-software.md
-what My own paper prices rye's library-tree hash at Debug speed and rates the attribution Moderate, because I never rebuilt rye to confirm the bootstrap's absent -O flag reaches the shipped binary. Falsifier 1 and 2 are settled without touching rye/bin/rye: build the same src/main.rye bridge under Debug and under ReleaseSafe to scratch paths in .lap/, compare each against the live binary by size, by SHA-NI opcode count and by wall time over the same 552-file library tree, and see which mode the live binary's own bytes and timings sit beside. Then raise or lower the paper's confidence sentence on what the measurement says rather than on what the absent flag implies.
 claim bakery-memo-directory-ceiling
 seat bakery
 stamp 20260916.225642
