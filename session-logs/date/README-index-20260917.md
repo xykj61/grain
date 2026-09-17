@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.093137` | [The post that gave](20260917/20260917-093137_the-post-that-gave.kyri) | context/README.md named 0 of 3 rooms, 49 days. |
 | `20260917.091549` | [The fence post and the hand](20260917/20260917-091549_the-fence-post-and-the-hand.kyri) | 670 bounds declared, 8 spelled at an allocation. |
 | `20260917.084735` | [the name that scopes a number](20260917/20260917-084735_the-name-that-scopes-a-number.kyri) | 60 of 60 loom keys read name_shared |
 | `20260917.074706` | [the numbers nobody can compare](20260917/20260917-074706_the-numbers-nobody-can-compare.kyri) | one of 16 loom keys is comparable; wall_s floor 21,087 ppt |
