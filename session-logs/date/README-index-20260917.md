@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.190852` | [vocabulary_collection already green](20260917/20260917-190852_vocabulary-collection-already-green.kyri) | Confirmed on metal: the corpus row needed no repair this lap. |
 | `20260917.190837` | [Two folds cleared a blocked pier](20260917/20260917-190837_two-folds-to-clear-a-blocked-pier.kyri) | ITINERARY and REDS both crossed bound mid-send; folded and pushed. |
 | `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | control_perturbation names its cut; listing_census ceiling 11 to 10. |
 | `20260917.190537` | [Petrichor's queue checked, ledger tight](20260917/20260917-190537_petrichor-queue-checked-ledger-tight.kyri) | Own account landed, corpus red no longer reproduces, ledger three bytes from full. |
