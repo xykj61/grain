@@ -11,6 +11,7 @@
 | `20260917.183937` | [The queue under its own ceiling](20260917/20260917-183937_the-queue-that-was-under-its-own-ceiling.kyri) | carry_scan names its cut; listing_census ceiling 13 to 12. |
 | `20260917.182020` | [Agent-doable queue read empty](20260917/20260917-182020_agent-doable-queue-empty.kyri) | Bakery's queue is empty pending Keaton's word. |
 | `20260917.180039` | [The lever that was per ship](20260917/20260917-180039_the-lever-that-was-per-ship.kyri) | The fleet model lever is per-ship and untracked; Claude Code pinned 2.1.274. |
+| `20260917.172626` | [the sentence every door repeats](20260917/20260917-172626_the-sentence-every-door-repeats.kyri) | 117 doors say where home is; now one guard reads them |
 | `20260917.172111` | [The word a reader chose](20260917/20260917-172111_the-word-a-reader-chose.kyri) | 14 of 370 boards called readable. |
 | `20260917.171621` | [The map that showed sixty of nine thousand](20260917/20260917-171621_the-map-that-showed-sixty-of-nine-thousand.kyri) | a top-N called itself the journal |
 | `20260917.170032` | [The law read under one of its two names](20260917/20260917-170032_the-law-read-under-one-of-its-names.kyri) | 185 of 204 claim commits staled the card. |

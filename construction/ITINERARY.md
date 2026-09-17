@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.164918` (EDT)
+**Stamp:** `20260917.172626` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -132,34 +132,29 @@ today under your live claim -- while `aurora_placement_scan.sh:129` records movi
 **YOURS, THE FLEET'S:** **271** tracked tools carry a `head -N`; one is proven to contradict its own
 completeness claim, and that class is a judgment per tool rather than a grep.
 
-**PETRICHOR -- A SHELF PROMISED AT ITS DOOR WHAT NOTHING COULD READ.** Elder account
-[shelved whole](archive/20260917-152855_itinerary-petrichor-doors-account.md).
-**WATER TASTES** (row 3, N=5358): read up close. `docs/README.md`'s Law line says *a page declares
-its own length*, and the shelf holds **15** living `.md` pages against **14** declarations.
-`docs/JAMCUE.md` had declared nothing since `20260724`, invisible because `declared_ceiling`'s
-collection IS the declaring set -- `room_enumeration`'s founding fault one room over, where a page
-falls out of its room's list by doing nothing at all.
-**THE MECHANISM.** `tools/fixtures/d/declared_ceiling_scan.sh` gains a fifth reading: a `README.md`
-carrying the literal template `**Ceiling:** <=N lines`, the N unfilled, makes its directory a room
-claiming the habit, every living flat `.md` in it counts in `shelf_pages`, and one with no
-`**Ceiling:**` header counts in `shelf_undeclared`, **gated at zero** under
-`verdict=shelf_page_undeclared`, which names the page. **Derived rather than typed** -- one README
-writes that sentence today, and a room promising it tomorrow is held the day its door says so.
-JAMCUE declares `<=80` at 35; the Law line names what the guard reads, inside its own 40.
-**PROVEN:** pen **57 assertions to 70 across 29 behaviors**, every refusal planted and lifted -- a
-door promising nothing leaves a silent page free, the same page in a promising room refuses and is
-named, testimony and a page one room down stay outside, and a door promising the habit while
-declaring nothing **itself** refuses. **Two mutations bitten**, each failing two legs: striking the
-gate, and loosening the template match to any `Ceiling:` line. Witness GREEN; cards **A/96** both.
-**MINE:** I launched the cold run before claiming, holding still through 88 minutes rather than
-claiming mid-pass -- incense's live claim owns that ordering.
-**PEERS:** three reds arrived between my cold and hot out of the 14 commits I rebased onto --
-`fold_shelf_link` and its repoint over four card-relative links in three peer shelves, `--apply`
-repaired with both witnesses GREEN, and `remember_git_nib`, carried forward here.
-**YOURS:** the two asks stand -- the ruling for the **15** doors that enumerate partly, and whether
-`qa_report_card` should refuse a bare Truth the way it refuses a bare Service.
-should refuse a bare Truth the way it already refuses a bare Service: three pages scored
-`truth_mode=counted` here, and handing `--truth 95` to `src/` moved it A to B.
+**PETRICHOR -- THE SENTENCE 117 DOORS REPEAT, AND NOTHING READ ONE OF THEM.** Elder account
+[shelved whole](archive/20260917-172626_itinerary-petrichor-declared-ceiling-account.md).
+**AETHER HEARS** (row 0, N=5394, advanced past row 4, read three times today): the Lindy seat says
+a README is the most Lindy-exposed artifact a project owns -- and `**Where this sits:**`, this
+tree's one navigation sentence, stands on **117 living pages**, typed by hand, every step counted
+per page. Held by nobody.
+**THE MECHANISM.** `tools/fixtures/d/door_home_scan.sh` reads each door's key as a BLOCK -- its own
+line plus continuations to the first blank line or next `**Key:**` -- takes the home clause
+**anchored to the key's opening**, resolves it against the page's own directory by real path, and
+gates `home_off` at zero against the root README. The two optional clauses are **reported**, since
+a page nearer the root honestly carries fewer.
+**THE RISK IS EXACT.** 49 doors sit two or more rooms deep, where one parent step too few opens a
+real room README that is not home -- a target `tracked_link` calls fine because it RESOLVES, and
+the link-text guard calls fine because it reads the anchor against the target.
+**THE ANCHOR IS THE WHOLE INSTRUMENT, and the claim did not know it.** `home is` occurs TWICE in a
+door's sentence -- opening the key, and closing *the whole path from nothing to a signed, sandboxed
+home is*. Struck out, a LINE reading reports `home_off=1` and a BLOCK reading **106 of 117**.
+**READS 117 doors, `home_off=0`, `first_hour` 110 on / 7 absent, `source` 106 / 11** --
+the claim said 108 and 106 from a line reading. **13.1s from 23.1s** on one `grep -l` prefilter.
+**PROVEN:** pen **43 legs, `control_failed=0`, two mutations bitten** -- the anchor, and a one-line
+read turning 110 first-hour readings into 4. Cards **A/92 A/90 B/84**.
+**YOURS:** the 7 doors naming no first hour and the 11 naming no whole path stand reported and
+unruled -- whether a door owes both is the manifest question `%804` waits on.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -206,7 +201,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `5dd91b9753` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d239c81f90` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
