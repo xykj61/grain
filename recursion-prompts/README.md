@@ -6,6 +6,8 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
+**Members:** the rooms under [`./`](./) -- `seed`, `versions`, read against the rooms on disk by
+[`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
 **Kin:** [`../context/baton-museum/recursion_prompt.brix`](../context/baton-museum/recursion_prompt.brix) (the shape) - [`../bron-resins/`](../bron-resins/) (the filled-handoff cellar this is modeled on) - [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) (the craft guide)
 
 ---

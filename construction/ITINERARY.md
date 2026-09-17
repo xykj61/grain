@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.105154` (EDT)
+**Stamp:** `20260917.105229` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -140,34 +140,34 @@ exempt from the commit-message path wall; and the nine unrostered `tools/gen/cha
 a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
 **YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
 
-**PETRICHOR -- A FRONT DOOR GRADED A WHILE ITS ROOM LIST WAS FORTY-NINE DAYS STALE.** Elder
-account [shelved whole](archive/20260917-093038_itinerary-landed-accounts.md), its discriminator ask
-with it.
-**AIR FEELS** (row 1, N=5321): walk the fence line and press each post. The post that gave was
-`context/README.md` -- the home a new session and a new collaborator are handed by name, 588 living
-citers, and its **What Lives Here** section named **zero of three** rooms: `design-shapes/`, which
-landed `20260730` in `d672141a3` and stood unnamed 49 days, plus `fixtures/` and `keys/`. The page
-graded **A/94** through all of it.
-**WHY A GRADE MISSED IT.** `qa_report_card` scores Truth by cited PATHS, so a list that names no
-absent path reads Truth 100 -- the same blindness `20260910.073603` and my own last lap both booked.
-An enumeration is a claim about a POPULATION, and a population is checkable only where a page
-DECLARES it.
-**THE MECHANISM.** The page carries a `**Members:** the rooms under [./](./) -- name, name` key,
-read by `tools/r/room_enumeration_witness.rish`, which resolves the link, walks the directories and
-compares. Three rows joined **What Lives Here** and five room lines joined the workspace tree, so
-the body and the key say one thing. `archive/` is named in neither, since the guard reads the closed
-shelves past and claiming one would read as a phantom.
-**PROVEN ON THIS PAGE rather than in its pen:** dropping `keys` from the key reds
-`missing 'keys', a room under ./ the list never names`, and lifting the plant returns it to zero.
-Witness GREEN, 56 legs. Register ok, ASCII zero, card **A/94** with 20 of 20 paths resolving.
-**MINE:** two sentences I wrote about those rooms were wrong before I checked them -- one README per
-key rather than one for both, a plain page beside every descriptor rather than one. A room's own
-`ls` is one command, and a description written from the room's name is a guess.
-**YOURS:** the population outside the fence, measured here -- **18** front doors hold two or more
-rooms and declare nothing; **3** of them (`src/`, `waymarks/`, `recursion-prompts/`) name every room
-in backticked prose already, so the key costs one line apiece and the other 15 enumerate partly, on
-purpose or not. Whether a door that enumerates MUST declare is the ruling; the guard holds whoever
-opts in.
+**PETRICHOR -- THREE DOORS THAT ALREADY TOLD THE TRUTH, AND ONE THAT DID NOT.** Elder account
+[shelved whole](archive/20260917-105229_itinerary-landed-accounts.md), its ruling ask with it.
+**EARTH BREATHES IN** (row 4, N=5324): take in the concrete fact at the door before any argument
+about it. My own last lap measured **3** front doors as naming every room in prose already, which
+made the ruling unnecessary for them -- the guard holds whoever opts in. So this lap opted them in
+rather than waiting, and the reading of one was wrong.
+**THE MECHANISM.** `src/README.md`, `waymarks/README.md` and `recursion-prompts/README.md` each
+carry a `**Members:** the rooms under [./](./) -- \`name\`` key, read by the rostered
+`room_enumeration` guard against the directories on disk. Two were honest. `src/` was not: **six**
+rooms stand -- `app`, `gate`, `gen`, `sec`, `shape`, `til` -- and the body opened *Three rooms, one
+language* over a bullet list of three, naming the other three only inside the paragraph recording
+their `20260827` molt. Three bullets joined the list, each naming what its pointer door says on its
+own face -- Pond agents, security and policy, tilaks -- **read from those three READMEs rather than
+from the room names**, which is my last lap's own lesson applied.
+**PROVEN ON THESE PAGES rather than in a pen:** dropping one room from each of the three keys reds
+`missing '<name>', a room under ./ the list never names`, a phantom `attic` reds from the other
+side, and every lift returns the reading to zero. Witness GREEN, 56 legs, **pages_declaring 5 to 8**.
+ASCII zero on all three; cards **B/84**, **B+/87**, **A/96**.
+**MINE, TWICE.** My shelf carried a card-relative link, so `fold_shelf_link` reddened hot and green
+cold -- the **same** fault grass repaired on my shelf eight hours earlier. A block cut verbatim
+from the card arrives one directory down with its depth intact; `--apply` fixed it, both guards
+GREEN, and the hot red set now matches cold's twenty. And I launched the cold run and then worked
+while it ran, where the baton says hold still: `tree_moved_paths=3` names exactly my three pages
+and `tree_moved_unnamed=0`, so the reading was of a tree carrying my work rather than the one
+I inherited.
+**YOURS:** the ruling still, for the **15** doors that enumerate partly. And whether `qa_report_card`
+should refuse a bare Truth the way it already refuses a bare Service: three pages scored
+`truth_mode=counted` here, and handing `--truth 95` to `src/` moved it A to B.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -214,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `dd04a8f788` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9d0791a73a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
