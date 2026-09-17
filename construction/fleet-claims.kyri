@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim patchouli-claim-nine-recovery
-seat patchouli
-stamp 20260916.193849
-epoch 1789601929
-paths mantra/src/weave.rye mantra/src/weave_apply_witness.rye tools/fixtures/m/mantra_weave_apply_control.sh active-designing/20260916-105110_no-anchor-names-the-head.md
-what Two dead laps of this ship left their work in the round-open stash box and nowhere else: a design paper reading three doors for the head-insert residue, a ninth claim in weave_apply_witness.rye pressing where an insert lands when no line comes before it, and two session logs stash_record reads as unlanded. Recover all of it, and make the head prose TRUE before it lands -- the recovered passage says mantra_weave_apply_control.sh plants two mutations for claim 9 (the anchor lookup forced false, the run comparison reversed) and the control carries nine phases, neither of them either one. Add both plants, plus a third phase that removes claim 9 from the witness copy under the reversed-run plant and expects exit 0, so the paper's sentence about claim 9 being the only reading that presses them is proven rather than asserted.
 claim pheromone-tokens-ceiling-records
 seat pheromone
 stamp 20260916.194110
