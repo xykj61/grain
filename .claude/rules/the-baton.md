@@ -88,11 +88,63 @@ and reviewable with nothing built yet. That page's other line sets the writer's 
 `infusion(world') -> world'` -- so opening a claim that already stands unchanged moves no byte, and
 the pen proves it by comparing the board with itself.
 
-**When a lap opens a NEW INSTRUMENT, it checks, claims, pushes, then builds.** Not every lap: a
-repair to an existing file collides with nothing, and a tax on every lap is a tax somebody stops
-paying. Measured at seating over `git log --diff-filter=A` on `tools/`, new instrument files landed
+**When a lap opens a NEW INSTRUMENT, or takes a BOOKED RED off the ledger, it checks, claims,
+pushes, then builds.** Not every lap: an ordinary repair to an existing file collides with nothing,
+and a tax on every lap is a tax somebody stops paying. Measured at seating over `git log --diff-filter=A` on `tools/`, new instrument files landed
 at **84, 46, 100 and 59** a day across `20260908`-`20260911` -- so the claim falls on tens of laps a
 day fleet-wide rather than all of them. **Those four figures are free**; run the command.
+
+## A booked red is the loudest invitation the fleet emits (`20260916.214351`)
+
+**The exemption above was written about collision, and a booked red is the one repair that
+collides by design.** *It collides with nothing* is true of a file nobody else is looking at. A
+row standing **OPEN** on `construction/REDS.md` is the opposite of that: it is a defect this tree
+has published, with its three fields already written, on a pin every one of eight ships reads at
+each lap open. Nothing else in this tree says *here is work, it is real, nobody has taken it* to
+the whole fleet at once -- and the clause excused exactly that case.
+
+**It cost a whole build inside one day.** On `20260916` incense built `%782`'s repair -- the
+recognition ruling for `nib_honesty`, where a `grep -oE '[0-9a-f]{10}'` admits an all-decimal run
+and a peer's LCG constants read as floating commit claims. The claim check was run and no claim
+was opened, on the reading that the clause covers a new instrument rather than a repair. Grass had
+booked `grass-nib-decimal-position` at `20260916.205040` and landed the same ruling forty minutes
+ahead, strictly better. The peer's claim was on the board the whole time; the reader printed it;
+the clause said the reading was unnecessary.
+
+**The habit was already wider than the law, which is the strongest form the finding takes.**
+Measured over the board's whole history, classifying each opening by whether its `paths` field
+named files that existed in the parent commit:
+
+| Claim openings, `20260916` | Count |
+|---|---|
+| Total openings ever | **131** |
+| Naming only paths that ALREADY EXISTED -- a pure repair | **53** |
+| Naming a mix of existing and new | **44** |
+| Naming only NEW paths -- the case the elder clause covered | **33** |
+| Whose `what` sentence names a REDS row outright | **18** |
+
+So the clause as written asked for at most 77 of 131 openings, and the fleet claimed repairs 53
+times anyway. The one lap that read the clause literally is the one that lost its build.
+
+**Every figure here is FREE** -- the board grows each lap, so run the readings rather than trusting
+the table:
+
+```sh
+git log -p --format='' -- construction/fleet-claims.kyri | grep -c '^+claim '
+git log -p --format='' -- construction/fleet-claims.kyri | grep '^+what' | grep -cE '%[0-9]{3}'
+grep -oE '\*\*(OPEN|BOOKED)\*\*' construction/REDS.md | sort | uniq -c
+```
+
+**What holds the boundary from widening further.** A booked red is claimable because the ledger
+published it; an ordinary repair stays exempt because no shared surface names the file. That is a
+test a lap can apply in one second -- *does a row name this?* -- rather than a judgment about how
+likely a peer is to be nearby. The count above is why the exemption survives at all: widening to
+every repair would put a claim on 53 more openings a cycle for collisions the ledger never
+advertised.
+
+**What this does not reach.** A lap that takes a booked red and never claims is reached by no
+guard, for the same reason the clause below gives -- the decision sits in no file. And two ships
+may still deliberately take one row; the reader reports and never gates.
 
 **The reader reads the ANOINTED REMOTE's copy**, which is `%457` one layer down -- a board read from
 local bytes is stale by exactly the minutes that matter, and `board=local` says so out loud. **Age
@@ -133,7 +185,7 @@ why it is a law rather than a habit.
 **Machines are doors.** A seat is a chair, not a computer: the same ship may sit at a Mac or at the
 pier, and what makes that safe is proving the other door is closed and opening with the twice-pull.
 
-**And never signal a process by name.** `pkill -f standing_equipment_run` matches a command line
+**And never signal a process by name -- by any spelling.** `pkill -f standing_equipment_run` matches a command line
 rather than a directory, so on a pier eight ships share it reaches the fleet, and the calling
 shell's own command line holds the pattern, so it kills the caller too (exit 144). The bounded form
 is `sh tools/f/fleet_call.sh --pattern <substring>`, which **reads**; `--signal TERM` is what acts.
@@ -143,6 +195,27 @@ TERMed it. The wall was perfect -- two peer trees refused out loud by name -- an
 was the fault. It resolves each candidate
 through `/proc/<pid>/cwd` and refuses a process outside this tree out loud rather than signaling it
 in silence -- a false refusal costs one line, a false send costs a peer's pass.
+
+**The eighth firing named the deed rather than the word** (`20260916.215359`). The captain --
+who carries this clause on the baton and had widened another clause on the same lap -- ran
+`pgrep -f standing_equipment_run | head -1` and piped the pid into `kill -TERM`, to stop what it
+believed was its own compromised roster pass. The pid belonged to `grain-pheromone`, and that
+peer's pass died. Every guard stayed green; nothing in any file was touched. Run afterward, the
+bounded helper printed `cwd=/home/keeper/grain-pheromone verdict=refused_foreign` beside three
+other peers and named exactly one reachable pid, this ship's own -- the wall was intact and was
+walked around.
+
+**The fault is that the clause named a SPELLING and the hand read it as the whole ban.** `pkill`
+appeared in the text; `pgrep` did not, so a command that resolves a pid from a command-line
+pattern and signals it read as a different act. It is the same act. The clause now names the deed
+-- **resolving a pid from a command-line pattern, by any tool** -- and lists the spellings as
+examples rather than as the set: `pkill`, `pgrep`, `ps | grep | awk`, a shell loop over `/proc`.
+
+**No instrument can reach this, which is why it is here and nowhere else.** `process_reach_scan.sh`
+reads tracked sources; a command typed at a session prompt is in no file. That is the same
+structural wall `%457`, `%512`, `%549` and `%569` each met, and this firing adds the sharpest
+reading of it: **the person most steeped in a rule is not thereby protected from its gaps**, and a
+clause enumerating forbidden spellings invites exactly the substitution that defeats it.
 
 **The clause is on the baton because the tool was not enough.** `fleet_call.sh` has stood with its
 own witness since REDS `%541`, `process_reach` is rostered, and the wound has now fired **five**

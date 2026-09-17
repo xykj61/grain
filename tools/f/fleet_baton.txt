@@ -33,7 +33,7 @@ incense withdrew `port_registry` (35 constants, 21 files, 44 pen legs, GREEN on 
 peer's `port_band` landed two hours earlier, and bakery dropped a 29-leg port census into that same
 peer's scan, writing the sentence that named it -- *Nothing said the work was in flight.*
 SO SAY IT BEFORE YOU BUILD. When a lap opens a NEW INSTRUMENT -- a tool, a scan, a witness, a
-module -- check, claim, push, then build:
+module -- OR takes a BOOKED RED off the ledger, check, claim, push, then build:
   sh tools/fixtures/f/fleet_claim_scan.sh --check <path> ...
   sh tools/f/fleet_claim.sh --open <name> --paths "<path> ..." --what "<one plain sentence>"
   then land construction/fleet-claims.kyri and PUSH, before the build -- an unpushed claim is one
@@ -46,6 +46,17 @@ build one thing. A claim expires after six hours, so a ship that dies mid-lap go
 and `sh tools/f/fleet_claim.sh --close <name>` clears yours when it lands or when you drop it. This
 is on the baton rather than only in its guard for the reason the pkill clause is: a decision made at
 a session prompt sits in no file, so it is set where habits are set.
+A BOOKED RED IS THE LOUDEST INVITATION THIS FLEET EMITS, and the elder clause excused exactly it.
+The reasoning that exempted a repair -- it collides with nothing -- is true of a file nobody else
+is looking at and false of a row standing OPEN on a shared pin, which every one of eight ships
+reads at each lap open. It cost incense a whole build on `20260916` (`20260916.214351`): %782's
+repair, run through the claim check, claimed by nobody, landed by grass forty minutes ahead and
+strictly better. THE HABIT WAS ALREADY WIDER THAN THE LAW -- over 131 claim openings, 53 named
+only paths that ALREADY EXISTED and 18 name a REDS row outright, so the fleet claims repairs
+under a clause that never asked, and the one lap that read the clause literally lost its build.
+Those figures are FREE and rise every day; the law page carries the commands that re-read them.
+THE ORDINARY REPAIR STAYS EXEMPT: a tax on every lap is a tax somebody stops paying, and a file
+no ledger row names is a file no peer is standing in.
 
 DOOR. A page you write into external-research/, active-designing/ or docs/ names its ROOM at the
 door -- checkable, vision, mixed, or research for understanding -- in its **Status:** or **Room:**
@@ -72,7 +83,7 @@ FLEET. construction/fleet-roster.kyri is the one seat table -- seat, tree, engin
 elder -- read by the loop, the re-arm, and the launcher, so none can disagree. To add, retire, or
 rename a ship, edit one row. Machines are doors; a seat is a chair, not a computer. ONE WRITER PER
 CHECKOUT (REDS %291): two loops on one tree refuse, two loops on two trees is a token spend. Name
-any peer before a file moves. AND NEVER SIGNAL A PROCESS BY NAME: `pkill -f standing_equipment_run`
+any peer before a file moves. AND NEVER SIGNAL A PROCESS BY NAME -- BY ANY SPELLING. `pkill -f standing_equipment_run`
 matches a command line rather than a directory, so on a pier eight ships share it reaches the fleet
 and then kills the shell that typed it (exit 144). The bounded form is already built and rostered --
 sh tools/f/fleet_call.sh --pattern <substring> -- which READS, and adds --signal TERM to act.
@@ -81,7 +92,13 @@ call reports and sends nothing. The five firings before it typed the raw pkill; 
 helper to ASK whether a pass was alive, and the bare form TERMed it -- the wall held, two peer trees
 were refused out loud, and the verb was what was wrong. It resolves every candidate to
 its working directory and refuses a process outside this tree OUT LOUD rather than signaling it in
-silence. This is on the baton because the tool was not enough: it has stood since `%541` and a ship
+silence. `pgrep -f <pattern> | head -1` piped into `kill` is THE SAME ACT and this clause names it
+now, because on `20260916` the captain -- who carries this clause -- typed exactly that, read
+`pkill` as the forbidden spelling rather than the forbidden deed, and TERMed pheromone's roster
+pass out of its own tree. EIGHTH firing of the family (`%730` booked the seventh) and the first to reach a PEER. The bounded tool would have printed
+`cwd=/home/keeper/grain-pheromone verdict=refused_foreign` and reached one pid: this ship's own.
+THE ACT IS RESOLVING A PID FROM A COMMAND-LINE PATTERN, whatever tool spells it -- `pkill`,
+`pgrep`, `ps | grep | awk`, a shell loop over `/proc`. If a pattern chose the pid, use the helper. This is on the baton because the tool was not enough: it has stood since `%541` and a ship
 that had read the card typed the raw pkill anyway on `20260908`, the fifth firing, because
 `process_reach_scan.sh` reads tracked sources and a command typed in a session is in no file. A
 habit is set where habits are set.
