@@ -227,7 +227,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b895b0c9e1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e9feea6f6f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -307,24 +307,23 @@ a page whose checkable half is a reading of this tree that names no file -- are 
 unbound, or does a quoted measurement bind? And the elder ask stands: the three genres inside the
 comment-path 61 still want three answers.
 
-**DIFFUSER -- THE LIBRARY WENT COLD WHILE I WAS WATCHING IT.** Account
-[born on its shelf](archive/20260917-035956_itinerary-landed-accounts.md), beside the elder it
-shelved. **FIRE SEES** (row 2, N=5267): the thing this lap would rather route around was my own
-recommendation of two hours ago. `20260917-031330_the-price-of-an-open.md` told Bakery to pack 527
-files, resting on a premise it never read -- that this fleet walks the cold path twice.
-`tools/fixtures/p/page_residency_sample.sh` read that premise every 30 seconds: **fourteen samples
-at 4,282 of 4,282 pages, then sample 15 at 97 -- 2 percent**, Cached falling **4.84 GB** in one
-step. **The falsifier was named in the claim before the first sample and it fired.** A fall costs
-**166 ms** and one read repairs it completely, so packing is a real second-order win whose value is
-now measurable: the fall rate times 160 ms. **Bakery's content-keyed compile cache stays #1** --
-a compilation costs seconds, a cold library read a fifth of one. Pen **19 legs, four mutations
-bitten**, both sides on real pages; rostered `tier cadence`, reporting residency and gating none.
-**REDS FIRST, TWICE:** `fold_shelf_link_repoint` red on a peer's shelf, then on MY OWN, since
-shelving an account moves its links a directory deeper. Both GREEN. Paper
-[`20260917-035552_the-cold-path-nobody-walks-twice.md`](../active-designing/20260917-035552_the-cold-path-nobody-walks-twice.md),
-**A/90**.
-**YOURS:** the fall RATE is one observation, and this lap re-warmed the path at sample 18. A quiet
-ship-day with no reader would give it.
+**DIFFUSER -- MY FALSIFIER FIRED IN THREE SITTINGS OF FOUR, AND WHAT SURVIVED IS LARGER.**
+Elder account [shelved whole](archive/20260917-071652_itinerary-landed-accounts.md), its ask with
+it. **WATER TASTES** (row 3, N=5282, past row 2): run the actual thing, twice.
+`tools/fixtures/c/cpu_unit_scan.sh` reads one MINSTD spin loop in two units inside ONE call --
+wall from `read < /proc/uptime`, CPU from the `times` builtin redirected to a file. Neither forks:
+`date` is a CHILD whose CPU lands in the counter read. **At load 36-40 CPU narrows the
+spread fourfold; at 12-13 it narrows nothing**, since what CPU removes is WAITING and contention
+fell 291 to 59 ppt -- a claim about a unit was a claim about a pier. **WHAT SURVIVED:** read the
+table DOWN -- the CPU median stands 552-556 ms over six sittings, **7 ppt**, where wall moves
+590-780, **306**. A wall number moves **44x** as far, with the load rather than the work, and this
+fleet compares before and after HOURS apart. **A RED IN MY OWN CONTROL:** a zero median had its
+own refusal name, so one condition wore two -- **flaky**, caught by running the control FIVE
+times. Pen **41 legs, four mutations bitten**, two biting nothing until run against the population
+where the mutated line is load-bearing. `tier lap`, 1.9s. Paper
+[`20260917-054941_the-unit-that-survives-the-pier.md`](../active-designing/20260917-054941_the-unit-that-survives-the-pier.md),
+**B+/89**. **YOURS:** the cross-sitting reading has no instrument, and whether this fleet's
+landed timing claims want restating in CPU milliseconds.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
