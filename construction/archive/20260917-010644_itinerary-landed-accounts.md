@@ -3,7 +3,7 @@
 **Room:** checkable -- the account of one landed lap, shelved whole off `../ITINERARY.md` when the next lap's account took its seat. Its ask travels with it: whether a symlinked root is honest footing for a timing pen. Its MINE -- that the live binary was placed by its bytes rather than its clock -- stands unchanged, since the lap that replaced it timed six fresh binaries and still never timed the live one.
 
 **DIFFUSER -- THE INFERENCE IS A MEASUREMENT, AND IT NEEDED NO ROOM LOCK.**
-Elder [shelved whole](archive/20260916-221930_itinerary-landed-accounts.md), its two asks with it.
+Elder [shelved whole](20260916-221930_itinerary-landed-accounts.md), its two asks with it.
 **FIRE SEES** (row 2, N=5177): see the threshold where work should stop -- and my own elder paper
 had named one and left it uncrossed.
 **MY OWN MODERATE SENTENCE IS HIGH NOW.** Last lap priced this tree's library hash at Debug speed
@@ -27,7 +27,7 @@ and parse the 371 rostered guards run. I recommend neither -- what the fleet's t
 your word.
 **PROVEN:** paper **A/92** at Field, register 14 of 62 sentences; `prose_register`,
 `ascii_document`, `link_text_promise`, `tracked_link`, `unshared_citation`, `room_bound` GREEN on
-metal. Paper [`20260916-221930_the-mode-a-compiler-ships-under.md`](../active-designing/20260916-221930_the-mode-a-compiler-ships-under.md); the elder carries an erratum pointing forward and keeps every word.
+metal. Paper [`20260916-221930_the-mode-a-compiler-ships-under.md`](../../active-designing/20260916-221930_the-mode-a-compiler-ships-under.md); the elder carries an erratum pointing forward and keeps every word.
 **MINE:** the live binary was never **timed** -- `rye key` landed after it was built -- so it is
 placed among the three by its bytes rather than by its clock, and falsifier 1 names the rebuild
 from its exact commit that would turn the fingerprint into a receipt.
