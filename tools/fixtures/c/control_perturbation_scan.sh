@@ -85,9 +85,10 @@ case "$1" in
   --candidates) MODE=candidates; shift ;;
 esac
 
-# candidates: tracked `*_scan.sh` files that name no `git ls-files`, and whose own `find` is rooted
-# at the repository root or under `tools/` -- the subset the membership census reads as unmeasured.
-candidates() {
+# candidates_full: tracked `*_scan.sh` files that name no `git ls-files`, and whose own `find` is
+# rooted at the repository root or under `tools/` -- the subset the membership census reads as
+# unmeasured. Unbounded by MAX_CANDIDATES, so the caller can census what the cap below drops.
+candidates_full() {
   git ls-files | grep -E '_scan\.sh$' | head -n "$MAX_SCANS" | while IFS= read -r s; do
     [ -f "$s" ] || continue
     src=$(sed 's/#.*$//' "$s")
@@ -96,11 +97,24 @@ candidates() {
       | while IFS= read -r r; do
           case "$r" in .|./|tools|tools/*) echo "$s"; break ;; esac
         done
-  done | sort -u | head -n "$MAX_CANDIDATES"
+  done | sort -u
+}
+
+CANDIDATES_FULL=$(candidates_full)
+CANDIDATES_TOTAL=0
+[ -n "$CANDIDATES_FULL" ] && CANDIDATES_TOTAL=$(printf '%s\n' "$CANDIDATES_FULL" | grep -c .)
+CANDIDATES_SHOWN=$CANDIDATES_TOTAL
+[ "$CANDIDATES_TOTAL" -gt "$MAX_CANDIDATES" ] && CANDIDATES_SHOWN=$MAX_CANDIDATES
+CANDIDATES_HIDDEN=$((CANDIDATES_TOTAL - CANDIDATES_SHOWN))
+
+candidates() {
+  printf '%s\n' "$CANDIDATES_FULL" | head -n "$MAX_CANDIDATES"
 }
 
 if [ "$MODE" = candidates ]; then
   candidates
+  echo "candidates_shown=$CANDIDATES_SHOWN"
+  echo "candidates_hidden=$CANDIDATES_HIDDEN"
   exit 0
 fi
 
@@ -231,5 +245,9 @@ echo "skipped_no_instrument=$skipped_no_instrument"
 echo "plants_probed=$plants_probed"
 echo "refused=$refused"
 echo "refused_root_finder_needs_built_tree=$needs_built"
+if [ $# -eq 0 ]; then
+  echo "candidates_shown=$CANDIDATES_SHOWN"
+  echo "candidates_hidden=$CANDIDATES_HIDDEN"
+fi
 echo "perturbation=family_instrument_absent_from_index_and_worktree"
 echo "verdict=reported"

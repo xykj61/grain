@@ -44,11 +44,11 @@
 #
 # THE FAMILY IS A WALL; EVERYTHING ELSE IS A RATCHET. The nine ASCII scans were repaired on
 # the lap that seated this meter, so `family_uncensused` is held at zero and the next silent
-# cap added to one of them reds where it lands. `caravan_ladder_carry` and `width_check` were
-# repaired on later laps and dropped off this list. Eleven caps across seven files stand
-# outside the family -- `prose_register` 4, `sealed_digest` 2, and one each in
-# `tame_style_long_fn`, `standing_equipment`, `socket_dialect`, `ladder_reach_visibility` and
-# `control_perturbation` -- each its own lane's to repair. A lane repairs its own and lowers
+# cap added to one of them reds where it lands. `caravan_ladder_carry`, `width_check`, and
+# `control_perturbation` were repaired on later laps and dropped off this list. Ten caps
+# across six files stand outside the family -- `prose_register` 4, `sealed_digest` 2, and one
+# each in `tame_style_long_fn`, `standing_equipment`, `socket_dialect`, and
+# `ladder_reach_visibility` -- each its own lane's to repair. A lane repairs its own and lowers
 # the ceiling; a sweep from here would be this lane spending other lanes' judgment.
 #
 # USAGE
@@ -68,7 +68,11 @@ mode="${1:-count}"
 # Fell to TWELVE `20260917`: `caravan_ladder_carry_scan.sh`'s CARRY_TOP queue now names
 # top_shown and top_hidden beside the twelve families it prints, so a reader can tell "the
 # queue held exactly twelve" from "the queue held 576 and the rest were cut."
-CEILING=11
+# Fell to ELEVEN the same day: `width_check_scan.sh`'s corpus_top RED branch now names
+# corpus_top_shown and corpus_top_hidden the same way.
+# Fell to TEN the same day: `control_perturbation_scan.sh`'s candidates() cap now names
+# candidates_shown and candidates_hidden, both in --candidates mode and in a default run.
+CEILING=10
 
 # The wall. Named rather than discovered, because membership in the ASCII-first meter family is a
 # fact about the law those nine serve rather than about their spelling -- and a discovered roster
