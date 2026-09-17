@@ -1,0 +1,114 @@
+# tools/m/mantra_record_column_witness.rish -- which column is which, in the record on disk.
+#
+# WHAT THIS PROVES, and the fault it exists for. A record's columns carry meaning by POSITION
+# alone: the fourth number on a row is the run because the writer put it fourth and the reader
+# takes it fourth. Move both together -- which is what a hand reordering a record does -- and the
+# format's meaning changes while every round trip stays perfectly clean, because the store is
+# self-consistent. Every store written before that day is then misread forever, in silence.
+#
+# MEASURED rather than reasoned. Planting each of the ten pairwise column swaps in BOTH the writer
+# tuple of `serialize_weave` and the reader row of `read_order_record`, then running the standing
+# guard at tools/fixtures/m/mantra_cli_record_scan.sh against a dereferenced copy of mantra/src/:
+# its output is BYTE-IDENTICAL on all ten. Nothing in this tree could see a record change its own
+# meaning.
+#
+# WHY THE ELDER PEN COULD SEE NOTHING. Its sibling at tools/m/mantra_cli_record_witness.rish
+# proves the CLI writes the `mantra-weave-20260916.101910` record, that a row carries six fields,
+# and that an elder store still opens. It never asks WHICH field is which, and its own pen makes
+# that question unanswerable: a fresh store commits once, so its rows read `1 0 0 0 0 alpha` --
+# three of the five numeric columns carry a constant zero and the other two carry the same rising
+# sequence. Four of the ten ONE-SIDED swaps travel free through that pen as well -- pos-site,
+# pos-ord, site-run and site-ord -- on the writer side, and the same four on the reader side,
+# since one data shape blinds both halves.
+#
+# WHY THE CLI AND NOT A CALL. `serialize_weave` and `read_order_record` are private to
+# mantra/src/main.rye, and the claim is about the bytes that land in a store. A writer naming its
+# columns in one order and a reader in another would both pass a unit reading and together lose a
+# user's history, quietly, one commit at a time.
+#
+# THE CURE IS DATA. A second commit carrying a REPLACEMENT gives the columns profiles that
+# differ -- gen takes a value above one, pos runs all distinct, ord runs non-decreasing with a
+# repeat, and site and run stay zero. Three primitive readings per column, four distinct profiles
+# over five columns. An append-only second commit earns neither the second gen nor the repeated
+# order key, so the replacement is the whole of what makes this pen able to see.
+#
+# TWO HALVES, EACH ABOUT ONE THING, EACH PRICED BY ITS OWN MUTATION. The COLUMN PROFILES read the
+# record's bytes against what each column is known to be, and are the only reading in this tree
+# that sees a self-consistent swap of the CLI's record -- the module-level guard reads
+# mantra/src/weave.rye and never main.rye, and every other reading compares rendered text. The ROUND TRIP reads the document back out through the CLI's own reader,
+# and is what sees a swap planted on one side alone. The control strikes each half out of a copy
+# of the scan and aims a swap only that half catches, so neither is decorative.
+#
+# THE ONE PAIR THIS CANNOT SEPARATE, asserted rather than merely stated. Columns 3 and 4 share a
+# profile and no store this guard can write will part them: the CLI offers init, brix, add, log,
+# status, annotate and version, and not one makes a second site. The control plants the site-run
+# swap in all three families and this witness asserts each goes UNNOTICED -- a bound checked is a
+# bound that cannot rot. The module-level guard at
+# tools/m/mantra_weave_order_record_witness.rish is where that pair is separated, and it catches
+# exactly this swap as its own centrepiece.
+#
+# Siblings: the record the CLI writes at tools/m/mantra_cli_record_witness.rish, the record's own
+# roundtrip at tools/m/mantra_weave_order_record_witness.rish, the lift at
+# tools/m/mantra_weave_v1_lift_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_record_column_witness.rish
+
+say "mantra-record-column: Language EN -- which column is which, read off the bytes."
+say "mantra-record-column: Style Gauge, Meter -- every claim is a column read back off disk."
+say "mantra-record-column: Lens TAME -- a writer and a reader that drift apart lose a history in silence."
+
+say "mantra-record-column: writing a two-commit store and reading its record's columns..."
+let scan = run ["sh" "tools/fixtures/m/mantra_record_column_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-record-column: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-record-column: the CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "weave_blobs=2" else "mantra-record-column: two commits did not leave two weave blobs, so the record read below is not the one the replacement wrote"
+assert scan.out contains "header=mantra-weave-20260916.101910" else "mantra-record-column: the store does not hold the stamped record, so its columns are another record's columns"
+assert scan.out contains "record_rows=6" else "mantra-record-column: the record does not hold six rows -- four lines, one tombstone and one terminator is what this pen writes"
+
+# THE FIVE PROFILES, each asserted whole rather than field by field. A profile read in pieces is a
+# profile whose pieces can be satisfied by different columns; read whole it names one column.
+assert scan.out contains "col1 rows=6 distinct=no nondec=no zero=no max=2" else "mantra-record-column: column 1 is not the generation -- a replacement must leave one row tombstoned at gen 2 and the rest at gen 1"
+assert scan.out contains "col2 rows=6 distinct=yes nondec=no zero=no max=5" else "mantra-record-column: column 2 is not the position -- positions are permanent once given, so every row carries its own and a later hand's sit above an earlier hand's"
+assert scan.out contains "col3 rows=6 distinct=no nondec=yes zero=yes max=0" else "mantra-record-column: column 3 is not the site -- one hand's history stands at site zero on every row"
+assert scan.out contains "col4 rows=6 distinct=no nondec=yes zero=yes max=0" else "mantra-record-column: column 4 is not the run -- one hand's history stands at run zero on every row"
+assert scan.out contains "col5 rows=6 distinct=no nondec=yes zero=no max=3" else "mantra-record-column: column 5 is not the order key -- a replacement shares its document slot with the line it replaced, so the key repeats and never falls"
+assert scan.out contains "profile_classes=4" else "mantra-record-column: the five columns no longer fall into four profiles, so this pen tells a different number of them apart than the header claims"
+
+# THE ROUNDTRIP, which is the half that sees a swap planted in the READER -- that swap moves no
+# byte of the record, so every profile above stands exactly where it stood.
+assert scan.out contains "status_reads=yes" else "mantra-record-column: the store the CLI just wrote does not open"
+assert scan.out contains "status='f.txt' -- clean" else "mantra-record-column: an untouched file reports a change, so the record came back as a different document than it went out as"
+assert scan.out contains "annotate_reads=yes" else "mantra-record-column: the document does not render"
+assert scan.out contains "document_order=alpha,BETA,gamma,delta" else "mantra-record-column: the document came back out of order -- the order key is what sorts it, and a reader taking the position instead leaves the replaced line at the end"
+assert scan.out contains "blind_pair=site,run" else "mantra-record-column: the scan no longer states which pair it cannot separate"
+assert scan.out contains "verdict=ok" else "mantra-record-column: the scan reached its own red"
+
+say "mantra-record-column: swapping all ten column pairs three ways in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_record_column_control.sh"]
+say control.out
+assert control.ok else "mantra-record-column: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-record-column: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-record-column: the unmutated pen must read ok, or every other phase fails for a reason the pen invented"
+assert control.out contains "legs_expected=30" else "mantra-record-column: the control no longer declares thirty swap legs -- ten pairs in each of the writer, reader and consistent families"
+assert control.out contains "legs_ran=30" else "mantra-record-column: a swap leg was dropped, so the count this guard reports is a count of less than it names"
+assert control.out contains "swaps_caught=27" else "mantra-record-column: twenty-seven of the thirty swaps must move a reading -- nine in each family"
+
+# THE BLINDNESS, named by its own pair rather than counted, so a different pair going blind can
+# never satisfy this reading. Asserted as hard as every catch above: if the site-run swap ever
+# reddened the scan, the bound this guard states would be false and its reader would never know.
+assert control.out contains "writer_site_run=blind" else "mantra-record-column: the site-run writer swap was noticed, so the bound this guard states about the pair it cannot separate is no longer true"
+assert control.out contains "reader_site_run=blind" else "mantra-record-column: the site-run reader swap was noticed, so the bound this guard states about the pair it cannot separate is no longer true"
+assert control.out contains "both_site_run=blind" else "mantra-record-column: the site-run consistent swap was noticed, so the bound this guard states about the pair it cannot separate is no longer true"
+assert control.out contains "swaps_blind=3" else "mantra-record-column: a pair other than site-run went unnoticed, which is a gap this guard has not named"
+
+# THE GAP THIS GUARD EXISTS FOR, shown rather than recalled.
+assert control.out contains "sibling_blind=yes" else "mantra-record-column: the elder scan noticed the consistent gen-pos swap, so this guard closes nothing and its whole argument is stale"
+
+# EACH HALF OF THE INSTRUMENT PRICED. A guard whose halves are never removed is a guard whose
+# halves are never priced.
+assert control.out contains "no_profiles=biting" else "mantra-record-column: striking the column profiles out of the scan left the consistent gen-pos swap still caught, so the profiles are not the only reading that sees a record change its own meaning"
+assert control.out contains "no_roundtrip=biting" else "mantra-record-column: striking the roundtrip out of the scan left the writer-only site-ord swap still caught, so the roundtrip is not the only reading that sees the two sides drift apart"
+
+say "GREEN: five columns, four profiles, twenty-seven swaps caught across three families, and one pair honestly blind."

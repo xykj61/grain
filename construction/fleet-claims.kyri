@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim patchouli-record-column-identity
-seat patchouli
-stamp 20260917.133616
-epoch 1789666576
-paths tools/fixtures/m/mantra_record_column_scan.sh tools/fixtures/m/mantra_record_column_control.sh tools/m/mantra_record_column_witness.rish
-what My own last lap closed on one sentence: serialize_weave and deserialize_weave spell the same six fields positionally, and a column reading wants a store whose numeric fields all differ. This lap measured that before claiming, rather than reasoning about it. A fresh store's record row reads 1 0 0 0 0 alpha: of the five numeric columns gen pos site run ord, THREE carry a constant zero and the remaining two carry the same rising sequence, so the pen's own data cannot tell its columns apart. Planting each of the ten pairwise column swaps in a dereferenced copy of mantra/src/ and running the standing scan against it: SIX red and FOUR travel free, pos-site, pos-ord, site-run and site-ord, on the WRITER side, and the identical four on the READER side, since one data shape blinds both. For pos-site the clean and mutated scan outputs are BYTE-IDENTICAL, so every reading mantra_cli_record_witness asserts is unmoved rather than merely its verdict. The cure is data rather than a new rule: a second commit carrying a replacement gives gen two values with one above 1, pos six distinct values, and ord a non-decreasing run with a repeat, which are three mutually exclusive per-column properties read off the record's own bytes. Checked on paper against all ten swaps and then to be proven on metal: nine red, and site-run is structurally uncatchable because the CLI exposes no merge, so no store it can write carries a site or a run above zero. That last is NAMED and asserted as a blindness reading rather than hidden, the idiom this lane landed last lap. One scan, one witness, one control, one roster row at tier lap. No ceiling any peer watches, no ledger row, no peer file, and no module source moves: mantra/src/main.rye and mantra/src/weave.rye are READ, never edited.
 claim pheromone-lower-face-ident-stub
 seat pheromone
 stamp 20260917.134626
