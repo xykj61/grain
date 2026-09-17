@@ -1,0 +1,80 @@
+# tools/q/qa_genre_census_witness.rish -- the program population counted at both settings.
+#
+# WHY THIS EXISTS. `tools/fixtures/q/qa_report_card.sh` reads every program HEAD at Door. Gauge's
+# own setting table names three of those heads Meter -- "ledger rows, witness headers, scan
+# comments, commit bodies", uncapped on register, grade and cross-references. The card derives the
+# genre from the basename, prints `program_genre_meter=named` for a witness and a scan, prints
+# `meter_shadow` beside every composite, and scores none of it. A standing ask on
+# construction/ITINERARY.md, raised from a sample of forty, asked whether that gap is a red, a
+# ratchet, or a card that says so.
+#
+# WHAT THE COUNT ANSWERS. Over all 2,914 tracked files the genre table reaches, read 20260917:
+# Door carries 43 distinct composites across a 44-point span, 50 to 94, with 1,176 below B. The
+# Meter shadow carries ONE, 94, on every last file. At Meter both of the card's counted readings
+# are freed to 100, so the composite is fixed by Truth and Service alone -- and the counted half of
+# Truth reads 100 on all 2,914. So the ask answers itself: Door is not mis-grading these heads,
+# Door is the only reading that tells them apart. The card refused exactly this once already, one
+# family over, when a notation carrying a comment block was refused Meter and read at Field for the
+# same constant (REDS %402). The program family carries the identical shape at 153 times the
+# population, and nothing had counted it.
+#
+# WHAT IS GATED. The census's own integrity: every candidate answered, the rows balancing against
+# the candidate list, and `genre_unnamed` -- a file this tree names witness, scan or control that
+# the card's genre table does not reach -- under a ceiling that only falls, at 1 today.
+#
+# WHAT IS NOT GATED. The below-B counts. A grade is not a gate (.claude/rules/quality-assurance.md),
+# and a head grows as it teaches more, so a wall there would red a lane for writing a longer header.
+#
+# COST AND TIER. The census runs the real card once per file rather than copying its genre table,
+# since a roster spelled twice is a roster that can disagree with itself. That is 2,914 card runs,
+# 14m35s of wall on a pier carrying eight ships, which is why this sits at `tier cadence` and turns
+# under `--cadence-slice 1` rather than at every lap open.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/quality-assurance.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/q/qa_genre_census_witness.rish
+
+say "qa-genre-census: Language EN -- a sample sizes a class; only a count names its shapes."
+say "qa-genre-census: Style Gauge -- one number repeated 2,914 times is not a reading."
+say "qa-genre-census: Lens TAME -- the genre is asked of the card, never copied from it."
+
+let control = run ["sh" "tools/fixtures/q/qa_genre_census_control.sh"]
+say control.out
+assert control.ok else "qa-genre-census: the control must complete"
+assert control.out contains "control_failed=0" else "qa-genre-census: every control leg must pass, including the ones written after this line"
+assert control.out contains "control_verdict=ok" else "qa-genre-census: the control's own verdict must be ok"
+assert control.out contains "base_ok=yes" else "qa-genre-census: a clean pen must read ok"
+assert control.out contains "counts_three_genres=yes" else "qa-genre-census: one witness, one scan and one control must be counted as one each"
+assert control.out contains "answered_balances=yes" else "qa-genre-census: every candidate must be answered, or the count names a population it did not read"
+assert control.out contains "no_errors=yes" else "qa-genre-census: a clean pen must carry no card refusal"
+assert control.out contains "meter_is_one_value=yes" else "qa-genre-census: the Meter shadow must read as a single value, which is the whole finding"
+assert control.out contains "meter_none_below_b=yes" else "qa-genre-census: at Meter nothing can fall below B, since the constant is an A"
+assert control.out contains "meter_constant_named=yes" else "qa-genre-census: the constant must be printed rather than merely counted"
+assert control.out contains "long_head_scored_at_door=yes" else "qa-genre-census: a head long enough to be scored must open the Door span"
+assert control.out contains "long_head_free_at_meter=yes" else "qa-genre-census: that same head must leave the Meter reading a constant"
+assert control.out contains "door_span_opens=yes" else "qa-genre-census: Door must tell two different heads apart"
+assert control.out contains "mean_move_positive=yes" else "qa-genre-census: the move from Door to Meter is a rise, never a fall"
+assert control.out contains "list_prints_every_row=yes" else "qa-genre-census: the listing prints every row, uncapped, under the listing_census law"
+assert control.out contains "list_says_its_count=yes" else "qa-genre-census: the listing names its own row count out loud"
+assert control.out contains "one_unnamed_still_ok=yes" else "qa-genre-census: the standing unnamed candidate must walk free at the ceiling"
+assert control.out contains "one_unnamed_counted=yes" else "qa-genre-census: that candidate must be counted rather than dropped in silence"
+assert control.out contains "unnamed_rose_refuses=yes" else "qa-genre-census: a second unnamed candidate must refuse"
+assert control.out contains "unnamed_rose_counted=yes" else "qa-genre-census: the refusal must name how many it saw"
+assert control.out contains "unnamed_rose_lifts=yes" else "qa-genre-census: lift the plant and the census must read ok again"
+assert control.out contains "card_refusal_refuses=yes" else "qa-genre-census: a card that refuses a candidate must never read as a clean census"
+assert control.out contains "card_refusal_counted=yes" else "qa-genre-census: the refusal must be counted in errors"
+assert control.out contains "card_refusal_lifts=yes" else "qa-genre-census: restore the card and the census must read ok again"
+assert control.out contains "card_missing_refuses=yes" else "qa-genre-census: an absent card is named rather than read as an empty tree"
+assert control.out contains "mutation_prefilter_bites=yes" else "qa-genre-census: widen the prefilter and the candidate count must rise"
+assert control.out contains "mutation_genre_asked_of_card=yes" else "qa-genre-census: the genre must come from the card, so a control set named _control reads unnamed"
+assert control.out contains "mutation_dedupe_neutral_here=yes" else "qa-genre-census: the dedupe mutation is neutral on a pen that answers each path once -- named rather than claimed as a bite"
+say "control GREEN -- 27 legs, every refusal planted and then lifted"
+
+let scan = run ["sh" "tools/fixtures/q/qa_genre_census_scan.sh"]
+say scan.out
+assert scan.ok else "qa-genre-census: the census must balance, answer every candidate, and hold genre_unnamed under its ceiling"
+assert scan.out contains "verdict=ok" else "qa-genre-census: the census verdict must read ok before it is believed"
+assert scan.out contains "errors=0" else "qa-genre-census: a card refusal on any tracked candidate is a red, never a rounding"
+assert scan.out contains "meter_distinct=1" else "qa-genre-census: the day the Meter shadow stops being a constant is a day worth a lap"
+say "field GREEN -- every tracked program head read at both settings, and only one of the two tells them apart"

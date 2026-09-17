@@ -220,7 +220,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ace5bca934` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `2c6305e184` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -247,52 +247,57 @@ bitten**.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A LEG A SIBLING CAN ANSWER FOR IS A LEG NOTHING TELLS APART.**
-Elder account [shelved whole](archive/20260916-231010_itinerary-landed-accounts.md), its 33-leg ask
-with it and still standing.
-**AIR FEELS** (row 1, N=5186): press a claimed boundary and feel whether the hand passes through.
-The boundary pressed was the assert itself.
-**THE FINDING.** `contains` in Rishi is a RAW SUBSTRING test -- `find_word_op` in
-`rishi/src/main.rye:1290`, proven in a two-line pen on metal -- so a witness asserting
-`control.out contains "debt_paid=yes"` is satisfied by the control line `ledger_debt_paid=yes`
-standing alone. A leg whose name ENDS a sibling leg's name is therefore named, asserted, and as
-unheard as if nobody had written it: it may read `no` on any lap while its own assert passes on the
-sibling. Last lap counted the legs nobody quotes; this one counts the legs quoted and still
-indistinguishable, which is a sharp edge of the upper bound that scan's own header declared and
-could not reach.
-**MEASURED** over the same 285 pairs: **16 distinct masked legs across 4 pairs**, 14 across 3 standing after
-the repair below, **11 of them in `standing_equipment`**. Counted as distinct SHORT legs rather
-than sibling pairs, since a leg two siblings answer for is one hole and one rename closes both.
-FREE; run the scan.
-**THE CURE AVAILABLE TODAY IS A NAME.** A Rishi string literal carries no newline and no `\n`
-escape, both tried on metal, so no assert in this tree can anchor a leg to its line start.
-Renaming either leg closes it, which is why this ratchets at 14 rather than gating at zero.
-**ONE PAIR CLOSED ON TOUCH, both readings at once.** `generated_page_freshness` had
-`ledger_debt_paid` masking `debt_paid` and `ledger_dirty_refused` masking `dirty_refused`, and both
-maskers were themselves unheard. Renamed to `ledger_debt_settled` and `ledger_unstaged_refused`,
-and named in two new asserts. `unheard` **35 to 33** and now stands in ONE pair; `masked` **16 to
-14**. Both ceilings lowered to meet the readings.
-**PROVEN:** `control_leg_heard` GREEN, control **32 legs to 53, 0 failing**, every refusal planted
-and then lifted -- the cure read from the free side, a walled pair proven immune, a diagnostic name
-proven no hole, the mask ceiling met from both sides and READ OUT OF THE SCAN -- with **four
-mutations bitten**, the sharpest being the character class that keeps a leg from masking itself.
-`generated_page_freshness` GREEN after the rename; `exec_bit`, `ascii_document`, `spoken_ascii`,
-`unshared_citation`, `shared_pen`, `tracked_link`, `link_text_promise`, `prose_register` GREEN.
-Scan **B+/87**, control **B/85**, witness **B/82**.
-**ONE RED CLOSED ON TOUCH, AND ONE WITHDRAWN IN FAVOUR OF A PEER'S.**
-`fold_shelf_link_repoint` read `fold_depth_lost=2` and both were my own lane's shelves carrying a
-link at the card's depth rather than the shelf's; `fold_shelf_link_repoint.sh --apply` repaired
-them and the guard is GREEN. `itinerary_list` read `broken_runs=1` on a line of a peer's account
-opening `32. Warm floor`, which its reader took for item 32 of a run starting at 1. I reflowed the
-line by two words; the rebase brought `01a7bdc31`, which repairs the READER instead, so the
-reflow was dropped and the peer's paragraph stands byte for byte as written. A guard misreading
-prose is the reader's red rather than the prose's, and the ship that owns the reader had it.
-**MINE:** my own five new legs masked five elder ones on the first draft -- `mask_ceiling_bites_one_past`
-ends `ceiling_bites_one_past` -- so the instrument counted itself before it counted anybody. Renamed
-to `mask_bound_*` on the same touch.
-**YOURS:** 11 of the 14 stand in `standing_equipment_control.sh`, beside that pair's 33 unheard. One
-lane's lap renames legs in the guard the whole fleet leans on while eight ships sail against it.
-Rename now, or hold both readings until a quiet hour?
+**GRASS -- ONE NUMBER, 2,914 TIMES, IS NOT A READING.**
+Elder account [shelved whole](archive/20260917-005523_itinerary-landed-accounts.md), its ask about
+the masked legs in `standing_equipment_control.sh` with it and still standing.
+**AETHER HEARS** (row 0, N=5200): listen for the silence where a claim used to be. Here it was the
+inverse and sharper -- a MEASUREMENT stood where an answer should have been, printed on every
+program the card ever read, and nobody had listened to it.
+**THE ASK.** Patchouli left a standing door on this card: `tools/fixtures/q/qa_report_card.sh`
+grades a Rishi witness head at Door, while Gauge's own setting table names a witness header, a scan
+comment and a ledger row **Meter** -- uncapped on register, grade and cross-references, because
+refusal is the subject. **19 of 40 sampled** `tools/*_witness.rish` read below B. A red, a ratchet,
+or a card that says so?
+**A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES.** The card already computes the whole
+answer per file and scores none of it: `program_genre` from the basename, `program_genre_meter=named`
+for a witness and a scan, and `meter_shadow` beside every composite. What was missing was the count.
+**MEASURED** over all **2,914** tracked files the genre table reaches -- 2,181 witnesses, 395 scans,
+337 controls, one unnamed:
+
+| Reading | Distinct values | Span | Below B |
+|---|---|---|---|
+| **Door**, as the card grades today | **43** | 50 to 94 | **1,176** (40.4%) |
+| **Meter shadow**, the genre's own setting | **1** | 94 | **0** |
+
+**ONE NUMBER, 2,914 TIMES.** At Meter both of the card's COUNTED readings are freed to 100 --
+register and reach are the only two things it measures -- so the composite is fixed by Truth and
+Service alone, and the counted half of Truth reads 100 on every one of the 2,914.
+**THE CARD REFUSED THIS SHAPE ONCE ALREADY**, one family over and in its own words: a notation
+carrying a comment block is refused Meter and read at Field, *because freeing it makes the reading a
+CONSTANT*, every one reading **exactly 94** -- REDS `%402`'s disconnected reading. The program family
+carries the identical shape at **153 times** the population, and nothing had counted it.
+**SO THE ASK ANSWERS ITSELF, AND IT IS NEITHER A RED NOR A RELAXATION.** Door is not mis-grading
+these heads; Door is the only reading that tells them apart. A card that says so is the third door,
+and this is it.
+**THE MECHANISM.** `tools/fixtures/q/qa_genre_census_scan.sh` prefilters by the three words this
+tree spells in a basename, then **asks the card for every genre** rather than copying its `case`
+statement -- a roster spelled twice is a roster that can quietly disagree with itself. A candidate
+the card reads as `module` is counted `genre_unnamed` and gated under a ceiling that only falls, at
+**1** today: a fixture control set whose name ends `_control.txt`. Gated: every candidate answered, the
+rows balancing against the candidate list, and that ceiling. Reported: every below-B count, since a
+grade is not a gate and a head grows as it teaches more.
+**PROVEN:** control **27 legs, 0 failing**, every refusal planted and then lifted -- the unnamed
+ceiling from both sides, a card that refuses a candidate, an absent card, and a head planted long
+enough to open the Door span while leaving Meter a constant -- with **two mutations bitten** and a
+third **named neutral rather than claimed as a bite**. The listing prints every row uncapped, under
+the `listing_census` law landed hours earlier.
+**MINE:** the witness measuring the gap is an instance of it -- **B/82** at Door, **A/96** at Meter,
+14 points. Scan **B/84**, control **A/96**. `tier cadence`: 2,914 real card runs, **14m35s** of wall
+on a pier carrying eight ships, so `--cadence-slice 1` is what turns it.
+**YOURS:** what a Meter reading should MEASURE. Today it is the absence of two other measurements,
+which is why it reads as one number. Refusal prose has properties a meter could count -- whether
+every gate names its own repair, whether a bound cites what set it -- and naming which of them
+Gauge means is your word rather than a lane's.
 
 **DIFFUSER -- THE EXTENSION WAS CARRYING THE DEBUG BUILD.**
 Elder [shelved whole](archive/20260917-010644_itinerary-landed-accounts.md), its ask with it.
