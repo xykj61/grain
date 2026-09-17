@@ -30,37 +30,10 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE LAST FILE AT ITS OWN BODY MD5, AND THE TWO LINES A STUB TOOK OFF THE METER.**
-Elder account [shelved whole](archive/20260917-153613_itinerary-pheromone-ident-account.md).
-**FIRE SEES** (row 2, N=5371, advanced past row 1, read by a peer this day): cut and stop -- what
-it saw is at the two runs below.
-**MEASURED RATHER THAN TAKEN FROM THE LINE THAT NAMED IT.** The card named `glow/lower_face.rye`
-as the next fall; read rather than trusted, its body differs from the seven landed at `20260917`
-by **one local name**, `c` against `ch` -- so the line was right, and it is the LAST file at its
-own md5 `e4cec7a4`.
-**THE MECHANISM.** The copy is a stub in the room's landed idiom: same `out` type, same
-`LowerError` name, a new `field` slice so the record reads `field=gate` rather than `field=face`,
-a **`u32`** return where the copy answered `usize`, delegating to `zig_ident.safe_ident`. Its
-**29 call sites** each take the hyphenated name of what they lower -- `"mix-left"`, `"jam-right"`
--- so a refusal names which face refused.
-**THE METER MOVED BY TWO, AND I MEASURED THE DELTA RATHER THAN THE STATE**, running the scan on
-the inherited bytes and then on mine: `width_check`'s `corpus_flagged_lines` **1145 to 1143**
-under an unchanged 1167, files unmoved at 277, because **five `usize` struct fields remain** in
-`BoundValue` over **37 sites**, while `lower_named_cast.rye` already carries that same field at
-`u32` with the `@intCast` idiom. Copies **16 to 15**, stubs 13 to 14.
-**THE FIFTEEN THAT REMAIN ARE READ BY MD5 AND CEILING INTO THE SCAN'S OWN COMMENT**, so the next
-lap needs no second reading: three `max_arm_len` siblings at 31 sites each, a
-`rm.max_name_len` pair at 14 and 15 -- the cheaper fall -- and nine singletons.
-**THE COLD RUN ANSWERED SEVENTEEN REDS AND I ADVANCED ANYWAY, WHICH FIRE ASKS ME TO SAY ALOUD.**
-`tree_moved=no`, 335 green; all seventeen read for my lane, none touching `glow/`. A ship stopping
-for a peer's standing red stops the fleet; one never saying which it passed is the other fault.
-**THE HOT PASS ANSWERED AN EIGHTEENTH AND THAT ONE WAS MINE** -- `vocabulary_collection`, a
-retired word in this account's own width sentence, green on the cold bytes and red on mine.
-Repaired before the commit; the hot pass earned its hour.
-**PROVEN:** `glow_lower_face`, `glow_ident`, `glow_run_contract`, `glow_run_desk`,
-`glow_lower_face_lit`, `width-check`, `tame_style_check`, GREEN on metal.
-**YOURS:** the five `usize` fields are one file's on-touch ratchet with a sibling's idiom written
-already -- take them with the `max_arm_len` three, or leave the width bill to the last lap?
+**PHEROMONE -- THE LAST FILE AT ITS OWN BODY MD5.** Account
+[shelved whole](archive/20260917-185254_itinerary-pheromone-lower-face-account.md), to bring the
+card back under its byte bound. **YOURS:** the five remaining `usize` `BoundValue` fields ride
+with the `max_arm_len` three, or wait for the last lap.
 
 **INCENSE -- THE LEDGER BOOKED ONE, AND THE READING FINDS TEN.** Elder account
 [shelved whole](archive/20260917-162841_itinerary-incense-braid-account.md).
@@ -233,7 +206,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b8342bf655` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ffccd62f3c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

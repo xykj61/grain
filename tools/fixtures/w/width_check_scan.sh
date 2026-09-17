@@ -214,7 +214,13 @@ echo "corpus_seam_cleared_files=$corpus_seam_cleared_files"
 [ "$roster_flagged" -eq 0 ] || sed 's/^/roster_flag: /' "$work/roster_flagged.txt"
 [ "$exempt_declared" = "no" ] || [ "$exempt_read" -eq "$exempt_pinned" ] \
   || echo "exempt_moved: $exempt_path reads $exempt_read against a pin of $exempt_pinned"
-[ "$corpus_flagged_files" -le "$corpus_files_ceiling" ] || sort -rn "$work/corpus_flagged.txt" | head -10 | sed 's/^/corpus_top: /'
+if [ "$corpus_flagged_files" -gt "$corpus_files_ceiling" ]; then
+  sort -rn "$work/corpus_flagged.txt" | head -10 | sed 's/^/corpus_top: /'
+  corpus_top_shown=10
+  [ "$corpus_flagged_files" -lt 10 ] && corpus_top_shown="$corpus_flagged_files"
+  echo "corpus_top_shown=$corpus_top_shown"
+  echo "corpus_top_hidden=$((corpus_flagged_files - corpus_top_shown))"
+fi
 
 if [ "$roster_flagged" -eq 0 ] \
   && [ "$roster_missing" -eq 0 ] \

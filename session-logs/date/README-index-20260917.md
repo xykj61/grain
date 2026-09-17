@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.184747` | [A second silent cap in bakery's own lane](20260917/20260917-184747_a-second-silent-cap-in-bakerys-own-lane.kyri) | width_check names its cut; listing_census ceiling 12 to 11. |
 | `20260917.184101` | [The falsifier that changed units](20260917/20260917-184101_the-falsifier-that-changed-units.kyri) | %807: fires at 28 vs 12; one unit, 28 vs 32. |
 | `20260917.183937` | [The queue under its own ceiling](20260917/20260917-183937_the-queue-that-was-under-its-own-ceiling.kyri) | carry_scan names its cut; listing_census ceiling 13 to 12. |
 | `20260917.182020` | [Agent-doable queue read empty](20260917/20260917-182020_agent-doable-queue-empty.kyri) | Bakery's queue is empty pending Keaton's word. |
