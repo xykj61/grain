@@ -15,7 +15,7 @@ This is the whole path, start to finish, for someone brand new to coding who wan
 
 You do not need prior experience. Each step says what to do, and why it matters, so the shape of the thing makes sense as you build it. Wherever you see a placeholder like `youruser` or `you@example.com` or an `EXAMPLE...` fingerprint, put your own value in its place.
 
-**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). When you are ready to make the pier yours -- find/replace map, first 256-round season, four equinoxes -- walk [`manual/guides/first-season-personalize.md`](manual/guides/first-season-personalize.md) and copy [`tools/gen/chapter/personalize.template.brix`](tools/gen/chapter/personalize.template.brix) to gitignored `PERSONALIZE.brix`. Sync those gitignored identity files with Dropbox / Syncthing / iCloud / Nextcloud as a **personal overlay** (never put the whole git tree inside Dropbox) -- see that guide's section "Sync personal files without git" and the shipping index [`docs-geode/templates/README.md`](docs-geode/templates/README.md). This pier's standing writing voice is **Kyri** ([`context/KYRI.md`](context/KYRI.md), molted from Riyo `20260810`); **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)).
+**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). When you are ready to make the pier yours -- find/replace map, first 256-round season, four equinoxes -- walk [`manual/guides/first-season-personalize.md`](manual/guides/first-season-personalize.md) and copy [`tools/gen/chapter/personalize.template.brix`](tools/gen/chapter/personalize.template.brix) to gitignored `PERSONALIZE.brix`. Sync those gitignored identity files with Dropbox / Syncthing / iCloud / Nextcloud as a **personal overlay** (never put the whole git tree inside Dropbox) -- see that guide's section "Sync personal files without git" and the shipping index [`docs-geode/templates/README.md`](docs-geode/templates/README.md). This pier's standing writing voice is **Kyri** ([`context/KYRI.md`](context/KYRI.md), molted from Riyo `20260810`); **Quin** keeps the fifth OS variant and the inference Q-vane, recorded in the maintainer's field at `context/QUIN.md`.
 
 By the end you will have a repository that an AI agent can grow and **commit to, signed and verified, entirely from inside the sandbox** -- nothing to sign by hand, nothing leaking out.
 
@@ -122,7 +122,7 @@ git clone https://github.com/grain-os/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. The public seed is **`grain-os/grain`**. A second public door is `grain-ww/grain`. This pier's working field is a private clone; a newcomer starts at the seed. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both field remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. The public seed is **`grain-os/grain`**. A second public door is `grain-ww/grain`. This pier's working field is a private clone; a newcomer starts at the seed. The maintainer's field keeps the canonical remote count at `context/REMOTE_ROSTER.md`. Living Cursor sends **dual-push** both field remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
@@ -194,7 +194,7 @@ Make a **GitHub** account -- <https://github.com> -- free, and the living forge 
 
 Pick a handle you can keep -- for example, `youruser`. Verify your email; the Verified badge later depends on it.
 
-**This pier** uses GitHub `grain-os/grain` as the public clone you just fetched. The working field is a private remote. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
+**This pier** uses GitHub `grain-os/grain` as the public clone you just fetched. The working field is a private remote, and keeps its canonical remote count at `context/REMOTE_ROSTER.md`.
 
 **Codeberg** (<https://codeberg.org>) was the second home for a season. It is **retired from living push** under Terms (July 2026) that bar mostly-LLM projects and cryptocurrency-related projects. Keep an account if you like; do not plan Part Two around Codeberg until Grain names a new second forge.
 

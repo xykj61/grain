@@ -16,6 +16,16 @@
 # also ships. The front door is the set a first-time visitor actually opens, and it is named
 # below rather than discovered, so a new root document cannot join it by accident.
 #
+# THE ROSTER WIDENED 20260916, AND THE REASON IS A WALK RATHER THAN A FILENAME. The elder set
+# was the four root files GitHub itself recognises -- README, SECURITY, CODE_OF_CONDUCT,
+# CHANGELOG -- which is one honest answer to "what does a visitor open first" and a poor answer
+# to "what do they open second." README.md stood gated and clean while linking straight into
+# MAP.md, ORGANIZING.md, SOURCE.md and docs-geode/README.md, which between them carried 27 links
+# into rooms the seed leaves behind. So the promise held for one page and the hand passed
+# through at step two, on the exact walk that page is built to start. Those four are the doors
+# README names, they are all `scrub`-verdict pages the manifest deliberately ships, and they are
+# gated from this stamp -- still named rather than discovered.
+#
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The same reading across
 # every other living seed-shipped document. The repair is per-document and wants a hand -- a
 # withheld room is NAMED IN PROSE rather than linked, which is a rewrite rather than a repoint --
@@ -42,10 +52,22 @@ MANIFEST=${SEED_LINK_MANIFEST:-template-manifest.bron}
 
 # The front door: what a first-time visitor opens. Named, never discovered -- a guard whose
 # enforced set grows by itself is a guard that reds on work it never agreed to cover.
-FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md"
+# The four GitHub-convention root files, and the four doors README.md itself opens next.
+FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.md ORGANIZING.md docs-geode/README.md"
 
-# The ratchet's ceiling only ever falls. Measured 20260823 after the front door was cleared.
-ceiling=848   # no override exists: the control proves both sides by planting, never by a flag
+# The ratchet's ceiling only ever falls. Measured 20260823 after the front door was cleared at
+# 848; lowered to 820 on 20260916 when the four second-step doors were cleared and gated.
+ceiling=820   # no override exists: the control proves both sides by planting, never by a flag
+
+# The ratchet named five of its sites and counted the rest, so a lane could not find its own
+# share of a debt whose whole repair model is "falls on touch". --list prints every one.
+list_all=no
+for a in "$@"; do
+  case $a in
+    --list) list_all=yes ;;
+    *) echo "detail: unknown argument ($a)"; echo "verdict=bad_argument"; exit 2 ;;
+  esac
+done
 
 [ -f "$MANIFEST" ] || { echo "detail: absent ($MANIFEST)"; echo "verdict=missing_manifest"; exit 2; }
 
@@ -57,7 +79,7 @@ grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' | sort -u > "$work/deny"
 
 git ls-files '*.md' > "$work/md"
 
-awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" '
+awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" -v listall="$list_all" '
   function inseed(p,   c) {
     if (p == "" || p ~ /^\.\./ || p ~ /^\//) return 0
     for (d in deny) if (p == d || index(p, d "/") == 1) return 0
@@ -108,7 +130,7 @@ awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" '
         if (inseed(t)) continue
         if (testimony) continue
         if (isfront[f]) { gated++; print "gated: " f " -> " tok }
-        else { ratchet++; if (ratchet <= 5) print "ratchet: " f " -> " tok }
+        else { ratchet++; if (listall == "yes" || ratchet <= 5) print "ratchet: " f " -> " tok }
       }
     }
     close(f)
