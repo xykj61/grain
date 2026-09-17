@@ -8,13 +8,13 @@ Provider, product, model, and joint-session attribution follow [`session-log-pro
 
 **New logs are `.kyri`** -- the notation formerly named **Bron**, molted to Kyri on Keaton's word (`20260810`): the same immutable-value format (key-value, one field per line, `#` comments, no quotes, no braces), a warmer name from the favorites list. Spec: `active-designing/yonder/date/20260621/20260621-063912_bron-notation.md` (bannered as the Kyri notation; kept readable) and counsel `20260707-222500`. The **`.bron` logs already on disk are never renamed** -- the one-clock law and accrete-never-break protect every dated artifact, and tools read both extensions. **Count them rather than quoting a number**: this sentence carried `2,163` while `git ls-files 'session-logs/*' | grep -c '\.bron$'` read **2,783** on `20260827`, and a figure copied into prose drifts the first lap nobody edits both. The sharper reading from the same measurement: **688 of those `.bron` logs are stamped after the `20260810` molt this paragraph announces**, so the law above is followed by some hands and not others. That is a fact about the tree rather than about the rule, and it is written here so the next reader meets it instead of assuming the molt took. A full sweep of the remaining living Bron references to Kyri, and teaching the fold/align tools `.kyri`, follow as their own rounds.
 
-Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day). Do not create new `.md` session logs.
+Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day). Write every new session log as `.kyri`.
 
 ## Filename
 
 `session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_short-sprig.kyri` -- **a log is born on its day's shelf**, seated `20260827.171500` on Keaton's word: write it straight into `date/YYYYMMDD/` rather than flat in the room. Hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the notation molted from Bron `20260810`); the `.bron` logs already on disk are never renamed and tools read both.
 
-**No countdown prefix** (`99999_`, etc.) -- retired. One clock only.
+**Countdown prefixes** (`99999_`, etc.) are **retired**. One clock only.
 
 Full naming law: `context/specs/20260627-102012_one-clock-naming-law.md` (extension is `.bron` for this stream). Files sort ascending by stamp; the living index in `session-logs/README.md` reads newest first.
 
@@ -36,9 +36,9 @@ row reading *the days still flat in the room* went stale when a log became born-
 `20260909`; `tools/s/session_roster_agree_witness.rish` is what keeps them true, deriving each count
 off the shelf's own rows and holding both pages to that one reading.
 
-**A row points; it does not summarise.** The log is the record and the index is the way in, so an index row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. That number is the pin's own arithmetic: a row costs ~123 bytes before it says anything, the pin's prose takes ~2,100, and 192 leaves room for ~116 rows inside the 24,576 the page declares. Rows once ran to **2,223 bytes** apiece, which made the index a second copy of the logs (REDS %204, resolved on Keaton's word `20260824`). Gated by `rishi/bin/rishi run tools/in/index_row_bound_witness.rish`; shelved rows keep every byte they wrote. **This one pin carries its own byte bound** -- `living_pin_max_bytes[session-logs/README.md] = 57344`, which is `256 x 192` rows plus 8,192 for prose, so the index can hold a full room. Every other pin keeps 24,576 (REDS %205).
+**A row points, and the log carries the summary.** The log is the record and the index is the way in, so an index row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. That number is the pin's own arithmetic: a row costs ~123 bytes before it says anything, the pin's prose takes ~2,100, and 192 leaves room for ~116 rows inside the 24,576 the page declares. Rows once ran to **2,223 bytes** apiece, which made the index a second copy of the logs (REDS %204, resolved on Keaton's word `20260824`). Gated by `rishi/bin/rishi run tools/in/index_row_bound_witness.rish`; shelved rows keep every byte they wrote. **This one pin carries its own byte bound** -- `living_pin_max_bytes[session-logs/README.md] = 57344`, which is `256 x 192` rows plus 8,192 for prose, so the index can hold a full room. Every other pin keeps 24,576 (REDS %205).
 
-**Nothing folds afterward, because nothing arrives loose.** A log and its row are born on the same shelf, so the living pin holds the way in -- one row per day, newest first -- rather than a row per lap, and it can no longer grow with the room. The fold tool stays as the safety net for a log written flat by hand:
+**Nothing folds afterward, because nothing arrives loose.** A log and its row are born on the same shelf, so the living pin holds the way in -- one row per day, newest first -- rather than a row per lap, and it stays one row per day however the room grows. The fold tool stays as the safety net for a log written flat by hand:
 
 ```
 rye run tools/rye/session_logs_archive.rye index-preview   # count, change nothing
