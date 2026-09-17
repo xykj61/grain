@@ -332,6 +332,66 @@ env RYE_ZIG="$ZIG" "$RYE_BIN" build "$PEN/main.rye" "-femit-bin=$BIN" "$PEN/extr
     || fail "positional-arg build failed"
 [ ! -f "$KEY" ] || fail "a positional argument still earned a receipt"
 
-echo "legs=22 all proven -- eleven flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt, two fresh builds agreed, run and no-emit stayed exempt"
+# --- leg 20: RYE_BUILD_FRESH names ITSELF in the refusal --------------------------------------
+# A bypass is a choice the caller made, and until `20260916.191733` it was the one refusal with no
+# sentence of its own: the walk fell past all four readings and blamed this binary's own path -- a
+# path that had resolved perfectly well. Measured at HEAD before the repair, that exact command
+# answered `this binary's own path could not be resolved`, false in every part.
+#
+# Proven from both sides: the true cause must be named, and the false one must be gone.
+fresh_reason=$(env RYE_ZIG="$ZIG" RYE_BUILD_FRESH=1 "$RYE_BIN" key "$PEN/main.rye" \
+    "-femit-bin=$BIN" 2>&1 | grep '^reason=')
+case "$fresh_reason" in
+    *RYE_BUILD_FRESH*) : ;;
+    *) fail "a forced-fresh key did not name RYE_BUILD_FRESH: $fresh_reason" ;;
+esac
+case "$fresh_reason" in
+    *"own path could not be resolved"*)
+        fail "a forced-fresh key still blamed this binary's path: $fresh_reason" ;;
+    *) : ;;
+esac
+
+# --- leg 21: an unkeyable FLAG is still blamed on the flag, never on an unread file ------------
+# THE LEG THAT PRICES THE SKIP. From `20260916.191733` the toolchain and library are read only
+# where a key is wanted, so on a refusal neither has been opened. Both readability flags mean *no
+# unreadable input refused the key*, and a skipped read therefore leaves them TRUE: nothing was
+# read, so nothing refused. Had the skip left them FALSE instead, this refusal would blame the
+# toolchain's bytes -- a file this build never opened -- and the caller would chase a healthy
+# compiler. The mutation is exact and it bites: flipping either `else true` to `else false` in
+# `rye/src/main.rye` turns this leg's answer into the toolchain sentence, proven by hand on the
+# lap that wrote it.
+flag_reason=$(env RYE_ZIG="$ZIG" "$RYE_BIN" key "$PEN/main.rye" "-femit-bin=$BIN" -lcurl 2>&1 \
+    | grep '^reason=')
+case "$flag_reason" in
+    *"a flag names a path or a library"*) : ;;
+    *) fail "an unkeyable flag was not blamed on the flag: $flag_reason" ;;
+esac
+case "$flag_reason" in
+    *"could not be read"*)
+        fail "an unkeyable flag blamed a file this build never opened: $flag_reason" ;;
+    *) : ;;
+esac
+
+# --- leg 22: run NAMING AN OUTPUT is still exempt, and still runs -----------------------------
+# LEG 14 COULD NOT SEE THE RUN EXCLUSION. It invokes `run` with no emit flag, so the no-output
+# condition refuses the receipt first and the `run` clause beside it is never the reading under
+# test -- two conditions, one leg, and the leg exercising the other one. Proven by planting
+# `20260916.191733`: deleting the run exclusion outright left all 24 legs GREEN.
+#
+# WHAT THAT MISSES, shown on metal before this leg was written. With the exclusion gone,
+# `rye run <file> -femit-bin=<out>` earns a receipt on its first call and HITS on its second --
+# and a hit emits nothing and spawns nothing, so the second invocation printed NOTHING and exited
+# 0. A `run` that does not run, reporting success, is the worst shape this family can fail in:
+# every other miss rebuilds, where this one silently declines to work and says it is fine.
+rm -f "$PEN/ran.bin" "$PEN/ran.bin.ryekey"
+out22a=$(env RYE_ZIG="$ZIG" "$RYE_BIN" run "$PEN/main.rye" "-femit-bin=$PEN/ran.bin" 2>&1) \
+    || fail "run naming an output failed"
+[ "$out22a" = "42" ] || fail "run naming an output answered '$out22a' rather than 42"
+[ ! -f "$PEN/ran.bin.ryekey" ] || fail "run naming an output left a receipt"
+out22b=$(env RYE_ZIG="$ZIG" "$RYE_BIN" run "$PEN/main.rye" "-femit-bin=$PEN/ran.bin" 2>&1) \
+    || fail "a second run naming an output failed"
+[ "$out22b" = "42" ] || fail "a second run naming an output answered '$out22b' rather than 42 -- a run served by a receipt does not run at all"
+
+echo "legs=25 all proven -- eleven flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"

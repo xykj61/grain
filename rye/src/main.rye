@@ -484,6 +484,40 @@ fn bridge_to_zig(
     // deciding whether a key is wanted before reading and remembering the
     // compiler's digest under inode, size, mtime and ctime, stands unbuilt at
     // HEAD and is booked on the card rather than assumed here.
+    // WHETHER A KEY IS WANTED IS DECIDED BEFORE ITS EXPENSIVE HALF IS READ.
+    // Every condition below is one this function already required; what moves
+    // is only WHEN each is asked. Four of them are answerable from the label,
+    // the environment, and the flags -- no file opened -- while the other four
+    // (the toolchain's bytes, the library's bytes, the closure walk, and this
+    // binary's own path) can only be answered by reading. Asking the cheap four
+    // first costs nothing when they pass and skips the whole read when one of
+    // them has already settled the question.
+    //
+    // WHAT THIS SPARES, measured on this pier `20260916.191733` over the pinned
+    // 172,641,672-byte toolchain: a warm `cat` runs 18 ms against `sha256sum`
+    // 160 ms, and this standard library's SHA-256 runs in software where
+    // coreutils reaches the CPU's SHA extensions, so the cost inside rye is
+    // higher again. `rye run` could never earn a receipt -- it is excluded by
+    // name below and always has been -- and paid that read on every invocation.
+    // Both figures are FREE; run the two commands rather than trusting them.
+    //
+    // THE KEY ITSELF IS UNTOUCHED. The skip happens only where no receipt can
+    // be consulted or written, so no digest that reaches a stamp is ever taken
+    // over fewer bytes than before. A build whose key IS wanted hashes exactly
+    // what it hashed before, in exactly the order it hashed it.
+    const key_wanted = !std.mem.eql(u8, label, "run") and
+        init.environ_map.get("RYE_BUILD_FRESH") == null and
+        find_emit_path(extra) != null and
+        flags_are_keyable(extra);
+    if (std.mem.eql(u8, label, "run")) {
+        // invariant: a run never earns a receipt, so it never pays to key one.
+        assert(!key_wanted);
+    }
+    if (key_wanted) {
+        // invariant: a wanted key names the output its stamp will sit beside.
+        assert(find_emit_path(extra) != null);
+    }
+
     var hasher = Sha256.init(.{});
     hasher.update(ryekey_marker);
     hasher.update(zig_subcommand);
@@ -498,7 +532,13 @@ fn bridge_to_zig(
     // resolution -- spoke four different keys and bought four full rebuilds,
     // while the emitted binaries were byte identical at -OReleaseSmall.
     // A read refusal turns receipts off below rather than guessing.
-    const zig_content_readable = hash_file_into(io, dir, zig, &hasher);
+    //
+    // READ ONLY WHERE A KEY IS WANTED. Both readability flags mean *no
+    // unreadable input refused the key*, so a skipped read leaves them true:
+    // nothing was read, and nothing refused. The refusal message below then
+    // names the condition that actually settled it rather than blaming a file
+    // this build never opened.
+    const zig_content_readable = if (key_wanted) hash_file_into(io, dir, zig, &hasher) else true;
     // The standard library joins the same way for the same reason: the sorted
     // tree's bytes decide the build, and the directory holding them does not.
     // Proven beside the toolchain in that pen -- an equivalent spelling of one
@@ -517,7 +557,7 @@ fn bridge_to_zig(
     // receipt was already serving one of many equally valid outputs before
     // this change, and dropping a path that reaches none of them takes
     // nothing further away.
-    const library_content_readable = hash_library_into(io, dir, rye_lib, garden, &hasher);
+    const library_content_readable = if (key_wanted) hash_library_into(io, dir, rye_lib, garden, &hasher) else true;
     // THE OUTPUT'S PATH JOINS AS A FACT RATHER THAN A SPELLING. `-femit-bin=`
     // says an output was named; where it lands says how a caller filed the
     // result, never what compiled. Every other flag joins whole, value and
@@ -587,12 +627,14 @@ fn bridge_to_zig(
     // no RYE_BUILD_FRESH, a toolchain whose bytes were readable, and this
     // binary's own path resolvable so its bytes can join the key. Anything
     // less builds fresh, which is always the safe direction.
-    const wants_receipt = !std.mem.eql(u8, label, "run") and
-        init.environ_map.get("RYE_BUILD_FRESH") == null and
+    // The cheap four were asked above and stand in `key_wanted`; the four that
+    // needed a read join them here. Naming each condition once keeps the two
+    // askings from ever drifting apart -- `find_emit_path` was the one that
+    // used to be spelled twice, once here as an `if` and once in the refusal.
+    const wants_receipt = key_wanted and
         zig_content_readable and
         library_content_readable and
-        keyable and
-        flags_are_keyable(extra);
+        keyable;
     var receipt_path: ?[]const u8 = null;
     if (wants_receipt) {
         if (find_emit_path(extra)) |emit_path| {
@@ -657,7 +699,7 @@ fn bridge_to_zig(
     // will never be spared.
     if (key_only) {
         if (receipt_path == null) {
-            report_key("", "", "unkeyable", unkeyable_reason(extra, zig_content_readable, library_content_readable, keyable));
+            report_key("", "", "unkeyable", unkeyable_reason(extra, init.environ_map.get("RYE_BUILD_FRESH") != null, zig_content_readable, library_content_readable, keyable));
             return 1;
         }
         report_key(key_hex[0..], standing_key, "miss", "no standing receipt speaks this key, or the binary beside it has changed");
@@ -799,6 +841,7 @@ fn report_key(computed: []const u8, standing: []const u8, verdict: []const u8, r
 /// which thing.
 fn unkeyable_reason(
     extra: []const [:0]const u8,
+    fresh_forced: bool,
     zig_readable: bool,
     library_readable: bool,
     keyable: bool,
@@ -806,14 +849,24 @@ fn unkeyable_reason(
     // invariant: a refusal is always explained against the flags that caused it.
     assert(extra.len == 0 or extra[0].len > 0);
     if (find_emit_path(extra) == null) return "no -femit-bin= names an output, so there is no file a receipt could sit beside";
+    // RYE_BUILD_FRESH IS A CHOICE RATHER THAN A FAULT, and it had no sentence
+    // here until `20260916.191733`. Every other reason names something the
+    // build could not do; this one names something the caller asked for, and
+    // without it the walk fell past all four readings to the assert below and
+    // blamed this binary's own path -- a path that had resolved perfectly well.
+    // Measured at HEAD before the repair: `RYE_BUILD_FRESH=1 rye key <file>
+    // -femit-bin=<out>` answered `this binary's own path could not be
+    // resolved`, which was false in every part.
+    if (fresh_forced) return "RYE_BUILD_FRESH is set, so this build is asked to ignore any receipt and compile fresh";
     if (!zig_readable) return "the toolchain's own bytes could not be read, so the key cannot name what would compile";
     if (!library_readable) return "the standard library's bytes could not be read, so the key cannot name what would compile";
     if (!keyable) return "a closure source reaches bytes this walk cannot enumerate -- an unreadable embed, unreadable permissions, or @cImport";
     if (!flags_are_keyable(extra)) return "a flag names a path or a library this walk cannot follow, so the key cannot cover the build";
-    // invariant: the four readings above are the only conditions that refuse a
+    // invariant: the five readings above are the only conditions that refuse a
     // receipt once an output is named, so reaching here means the refusal came
     // from this binary's own path, which is the one cause with no flag to fix.
     // Split rather than compounded, so a refusal names which reading held.
+    assert(!fresh_forced);
     assert(zig_readable);
     assert(library_readable);
     assert(keyable);
