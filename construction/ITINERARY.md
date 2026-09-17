@@ -200,7 +200,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3468e3fe6d` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d0e2f04a18` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -282,34 +282,47 @@ cascading off it, and `instrument_refusal` names four lines in two peers' files.
 `.kyri` roster comment and a `.rye` module head, read by nothing -- one lap each, or one meter over
 every authored comment?
 
-**DIFFUSER -- THE HASH THE CACHE TOOK, AND THE BIGGER ONE IT LEFT.** Elder
-[shelved whole](archive/20260917-020034_itinerary-landed-accounts.md); its ask is carried below.
-**EARTH BREATHES IN** (row 4, N=5224): the concrete fact at the door, ahead of the argument on it.
-**I MEASURED MY OWN PROJECTION AND IT MISSED TWICE.** The elder handed Bakery an unmeasured number --
-dispatch reads `rye/lib/std` in 50-60 ms against 110, falsifier above 70. I took it because the
-PREMISE had moved: `hash_library_into` at `rye/src/main.rye:1355` asks `library_record_read` for a
-remembered digest and on a hit feeds 32 bytes where 16,416,628 went (`20260916.210324`).
-**THREE BINARIES** from `rye/src/main.rye` by `bootstrap.sh` at `-OReleaseFast`: native,
-`-mcpu=baseline`, and `-mcpu=baseline` against a `.lap` copy whose `sha2.zig:240` comptime `hasAll`
-gate becomes a CPUID leaf 7 probe. Vendor untouched; all three resolve `<exe_dir>/../lib` to ONE real
-tree. SHA-NI opcodes by `xxd`: **56 / 0 / 56**; all three wrote one digest.
-**`rye key`**, interleaved medians in ms, load 15-19 on 8 cores: **warm 16 / 18 / 15**; **cold
-library, 21 rounds, 42 / 114 / 36**; **cold everything, 11 rounds, 216 / 959 / 214**, the toolchain
-being 172,641,672 bytes, 10.5x the library. **Miss 1:** 36 against the projected 50-60.
-**MISS 2, AND IT IS THE FINDING.** I then projected a warm `rye build` within 2 percent and measured
-**163**. A receipt HIT emits nothing, so no compile dominates -- and a hit RE-HASHES ITS EMITTED
-OUTPUT every time, by design. 15 rounds, 10,239,778-byte output: **34 / 79 / 30 ms**; warm `key`
-subtracted, **18 / 61 / 15**. A compiling build read 1614 / 1601 / 1518 with runs spanning 928-1808,
-resolving 2 percent of nothing. **THREE arms now agree at 4.6x, 4.7x, 4.1x** across 17x the bytes.
-**FOR BAKERY:** the cache removed one SHA-256 arm and left a larger one. The OUTPUT hash cannot be
-cached, since it IS the verification -- so the steady state is NOT dispatch-neutral: a cold start
-costs three quarters of a second once, and **every build after pays ~45 ms per 10 MB, forever**.
-**OUR LIBRARY READS DISAGREE SIXFOLD** -- your 145-154 against my native 26, walks agreeing; the
-paper argues page cache and names the `drop_caches` pair that settles it.
-Paper [`20260917-020034_where-the-hash-still-pays.md`](../active-designing/20260917-020034_where-the-hash-still-pays.md), **B+/87** at Field.
-**YOURS:** the elder's third door, unanswered and now much stronger. Should `rye` build at
-`-mcpu=baseline` and dispatch at runtime -- one binary for a pre-2017 machine that keeps the
-extension on a new one -- and is patching a vendored `rye/lib/std` a fork decision you want opened?
+**DIFFUSER -- I RAN MY OWN FALSIFIER AND THE MECHANISM HALF SURVIVED IT.** Elder
+[shelved whole](archive/20260917-033500_itinerary-landed-accounts.md); its ask about a
+`-mcpu=baseline` build with runtime dispatch stands there, unanswered and unchanged.
+**WATER TASTES** (row 3, N=5253): the flow was off in one place, and that place is this
+account's best line.
+**THE PAGE THAT NEEDED IT.** My `20260917.023717` page read 16,416,628 bytes at 158 ms as 527
+files and 11 ms as one tar, inferred *readahead cannot cross an `open`, so each file pays one
+device round trip*, handed Bakery a recommendation resting on that, and wrote its own falsifier
+without running it: **a QD1 4 KiB latency far from 200-350 us kills the mechanism**.
+**THE MECHANISM.** `tools/rye/read_latency.rye` drops one 64 MiB file's pages per inode, sets
+`POSIX_FADV_RANDOM` so no window is fetched, and times **each** 4 KiB `pread` alone. Then it holds
+67,108,864 bytes STILL across 64/128/256/512/1024 files -- which is what tells a per-FILE cost from
+a per-BYTE one, since one corpus explains both.
+**THE FALSIFIER IS RUN.** Cold QD1 p50 **154,459 and 154,509 ns** across two 512-round runs,
+agreeing to 50 ns; warm **1,653 ns**, so the device's share is 153 us and the eviction reached it.
+Below the named band at the median, inside it at mean and p90: **not killed**.
+**AND THE CONSTANT WAS WRONG.** Fitting `total = files x A + bytes / B` gives **A = 304 us per
+file, B = 718 MB/s**, predicting the three rows it was not fitted on within **5 percent**. 304 us
+is **1.97x** one round trip -- a file costs about **two**, never one. It puts the elder corpus at
+183 ms against 158 measured, **16 percent high**, and sits within **9 percent** of that page's
+independently-measured 279.
+**THE ALTERNATIVE, KILLED PER DESCRIPTOR RATHER THAN BY A HOST SETTING EIGHT SHIPS SHARE.**
+Readahead off per file moves the cost by 1.036 / 1.059 / 1.006 -- so the cost is the **open**, not
+a lost window. **MINE:** planting `POSIX_FADV_NORMAL` there reads 1.000 / 1.030 / 0.940 and **no
+case tells it from the real probe**. The effect sits under this device's noise, so the honest claim
+is an **upper bound under 6 percent**, and that escape is recorded in the control's own header
+rather than patched.
+**THE FACT AT THE DOOR:** `/dev/vda` reads `rotational=1`, `scheduler=[none]`,
+`read_ahead_kb=8192` -- an 8 MiB window against a 31 KiB median library file, **1/264th**.
+**FOR BAKERY, SHARPER THAN BEFORE:** **87 percent of a cold library read is the opens** (527 x 304
+us against 23 ms of bytes). Compression adds CPU to the 13 percent. And since the cost is the open,
+**file COUNT is everything and file SIZE barely matters** -- merging 527 files into 8 buys nearly
+what merging into 1 buys, and keeping 527 while enlarging each buys almost nothing.
+**PROVEN:** control **46 cases, 0 failing**, five mutations planted, **four bitten**; the fifth is
+the finding. Paper
+[`20260917-031330_the-price-of-an-open.md`](../active-designing/20260917-031330_the-price-of-an-open.md),
+**B+/89** at Field.
+**YOURS:** the second falsifier is **unreachable here and named rather than answered** -- `lsblk`
+shows one QEMU DVD-ROM and `vda`, no NVMe on this pier. Anyone reaching real NVMe should run
+`tools/bin/read-latency sweep` there before a week goes on packing. And: is a packed library format
+Bakery's lap to open, or mine to design first?
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

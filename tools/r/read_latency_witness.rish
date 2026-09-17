@@ -1,0 +1,99 @@
+# tools/r/read_latency_witness.rish -- one read of one block, priced on metal.
+#
+#   rishi/bin/rishi run tools/r/read_latency_witness.rish
+#
+# WHAT IT GUARDS. `active-designing/20260917-023717_the-cold-read-is-a-file-count.md` measured the
+# same 16,416,628 bytes at 158 ms as 527 files and 11 ms as one tar, and inferred a mechanism from
+# the gap: readahead cannot cross an `open`, so each file pays its own device round trip. That page
+# named its own falsifier and declined to run it -- a queue-depth-1 4 KiB read latency far from 200
+# to 350 microseconds kills the mechanism. `tools/rye/read_latency.rye` is that reading, and this
+# witness is what keeps it a reading rather than a memory.
+#
+# THE THREE CLAIMS. First, that the probe's own arithmetic answers over known sequences, so a
+# median it reports about a disk is a median. Second, that every path outside this tree refuses,
+# which is the claim seven peer ships depend on. Third, and the subject: that a fixed per-file
+# cost and a per-byte cost can be told APART, by holding one byte total still and varying only how
+# many files carry it.
+#
+# WHY A GUARD AND NOT A FOOTNOTE. The reading is already load-bearing in a recommendation handed
+# to another ship -- that packing a library buys most of a cold start back while compressing it
+# buys close to nothing. A number behind a recommendation that nobody re-runs is a number somebody
+# will quote after it has stopped being true. This builds from source every run, so the binary it
+# proves is the file a reader opens.
+#
+# WHAT IT DOES NOT GUARD. Any particular latency. The device under this tree is virtio and reports
+# ROTA=1, and a reading gated to a value would red on the first pier with different storage. The
+# gated claims are RELATIONS between readings one run produced -- cold above warm, one open above
+# many, the per-file floor above a warm read -- each of which holds on any device where the
+# mechanism holds at all, and fails on one where it does not.
+
+say "read-latency: Style Gauge, Meter -- every figure below is a reading this run took."
+say "read-latency: Lens TAME -- the block, the pen size, the round count and the file count are named at construction."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "read-latency: building from source, so the binary matches the file this witness reads..."
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/read_latency.rye -femit-bin=tools/bin/read-latency"]
+assert build.ok else "read-latency: the build refused --\n${build.out_brief}\n${build.err_brief}"
+
+# The claim lines arrive on stderr, as every hosted Rye program in this tree prints through
+# `std.debug.print`; the redirect is what puts them where the asserts below can read them.
+let out = run ["sh" "-c" "tools/bin/read-latency selftest 2>&1"]
+# SAID BEFORE THE FIRST ASSERT ON IT: an assert stops the run, so a reader meeting a refusal
+# receives the program's own lines rather than this file's sentence.
+say out.out
+assert out.ok else "read-latency: the selftest refused --\n${out.out_brief}\n${out.err_brief}"
+
+# invariant: every leg the selftest declares actually ran, rather than the run reaching its last
+# line having proven fewer legs than it names.
+assert out.out contains "selftest_legs=7" else "read-latency: the selftest named a different leg count"
+assert out.out contains "selftest_failed=0" else "read-latency: a selftest leg failed -- read its own lines above"
+
+# invariant: the order statistics answered over a known sequence, so a median about a disk is one.
+assert out.out contains "leg=order_statistics ok" else "read-latency: the arithmetic leg did not report"
+
+# invariant: both refusal shapes are named -- a path plainly outside, and a sibling whose name
+# merely begins the way this root does, which a prefix test alone would welcome.
+assert out.out contains "leg=outside_refused ok" else "read-latency: the outside-path leg did not report"
+assert out.out contains "leg=sibling_refused ok" else "read-latency: the sibling leg did not report"
+
+# invariant: and the welcome, asserted as hard as the refusals -- a checker that refused everything
+# would satisfy both lines above and measure nothing at all.
+assert out.out contains "leg=inside_welcomed ok" else "read-latency: this tree's own path was not welcomed"
+
+# invariant: the eviction reached the cache, so the cold arm is a device reading rather than a
+# page-cache reading wearing a device's name.
+assert out.out contains "leg=cold_exceeds_warm ok" else "read-latency: a cold read did not cost more than a warm one"
+
+assert out.out contains "GREEN: read-latency" else "read-latency: the selftest reached no green line"
+
+say "read-latency: the measurement -- four arms over one pen this run made..."
+let meas = run ["sh" "-c" "tools/bin/read-latency measure 128 2>&1"]
+say meas.out
+assert meas.ok else "read-latency: the measurement refused --\n${meas.out_brief}\n${meas.err_brief}"
+# invariant: every arm the page cites by name printed a row this run.
+assert meas.out contains "arm=rand_cold" else "read-latency: the cold arm did not report"
+assert meas.out contains "arm=rand_warm" else "read-latency: the warm arm did not report"
+assert meas.out contains "arm=seq_cold" else "read-latency: the sequential arm did not report"
+assert meas.out contains "arm=open_read_close" else "read-latency: the per-file arm did not report"
+assert meas.out contains "measure_verdict=ok" else "read-latency: the measurement reached no verdict"
+
+say "read-latency: the sweep -- one byte total, five file counts, so two costs can be told apart..."
+let sw = run ["sh" "-c" "tools/bin/read-latency sweep 2>&1"]
+say sw.out
+assert sw.ok else "read-latency: the sweep refused --\n${sw.out_brief}\n${sw.err_brief}"
+# invariant: the sweep held its byte total still. A sweep whose rows differed in bytes could never
+# tell a per-file cost from a per-byte one, which is the whole reason it exists.
+assert sw.out contains "bytes_held=67108864" else "read-latency: the sweep moved its byte total"
+assert sw.out contains "sweep_verdict=ok" else "read-latency: the sweep reached no verdict"
+
+say "read-latency: the control -- every refusal planted, every welcome asserted, every relation read..."
+let ctl = run ["sh" "tools/fixtures/r/read_latency_control.sh"]
+say ctl.out
+assert ctl.ok else "read-latency: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
+# invariant: the control ran every case it planted and none failed. Reading the verdict alone would
+# pass a control that reached its last line having proven nothing.
+assert ctl.out contains "fail=0" else "read-latency: a control case failed -- read its own lines above"
+assert ctl.out contains "control_verdict=ok" else "read-latency: the control reached no verdict"
+
+say "GREEN: read-latency -- the block price reads true, the per-file floor stands, and every path outside this tree refuses."
