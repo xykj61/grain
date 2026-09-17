@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim pheromone-contract-ceiling-agreement
-seat pheromone
-stamp 20260917.024441
-epoch 1789627481
-paths tools/fixtures/r/receipt_contract_ceiling_scan.sh tools/r/receipt_contract_ceiling_witness.rish tools/fixtures/r/receipt_contract_ceiling_control.sh
-what REDS %767 named its own gap in its second field: 'Not a guard -- nothing in this tree asks whether every field a contract publishes carries a ceiling that contract declares.' Four fields of the accepted receipt contract refused at mantra/src/tally_receipt_offer_bounds.rye's max_identifier_bytes=96, a number the contract declared for each identifier and for none of them; a water-row reading caught it, and no instrument could. Build the reading that holds the contract's ceiling table and the code's per-field application to one answer: parse the | field | ceiling | unit | rows of active-designing/20260912-201126_the-receipt-you-can-read-contract.md, parse the max_* constants of the bounds module, extract from fact_refusal in mantra/src/receipt_offer.rye every field name and the constant it is refused at, and gate unnamed_ceiling and value_disagrees at zero. Report the structural cause %767's repair left standing: the contract declares a population row for each identifier and never enumerates its members, which is the hole product_digest fell through. Report a declared ceiling no code site enforces -- receipt_card_width and receipt_card_height stand at 72 and 18 and are read by nothing. No behavior change, no number moved; the four derivations stay Keaton's word under the contract's own closing clause.
 claim incense-nib-writer-two-shapes
 seat incense
 stamp 20260917.024844
