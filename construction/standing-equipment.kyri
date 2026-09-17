@@ -7089,3 +7089,26 @@ guard assert_evidence
 path tools/a/assert_evidence_witness.rish
 tier lap
 seated 20260917.022530
+
+# PAGE EVICT -- a cold reading that charges no peer a page. This fleet measures cold starts, and
+# the only eviction anybody reached for was `echo 3 > /proc/sys/vm/drop_caches`, which empties the
+# cache for every process on a pier carrying eight ships. So the measurement went untaken and one
+# paper's central question stood open with its falsifier written down beside it.
+#
+# WHAT THE INSTRUMENT DOES. `tools/rye/page_evict.rye` drops one path's cached pages through
+# `posix_fadvise(2)` with `POSIX_FADV_DONTNEED` -- per inode, no privilege -- and reads residency
+# back through `mmap` plus `mincore(2)`, since the kernel answers success whether or not a page
+# left. A path is checked by asking `/proc/self/fd/<n>` where the OPEN descriptor landed rather
+# than by reading the spelling, which matters in a tree whose `rye/lib` is a link into `vendor/`.
+#
+# WHY IT IS ROSTERED. Every ship shares one pier, so the refusal is the load-bearing half: a tool
+# evicting the wrong inode charges seven peers for one ship's number. Eleven cases are planted on
+# real paths -- `/nix/store`, `/etc`, the peer tree next door, and a sibling whose name merely
+# begins the way this root does -- and every welcome is asserted as hard as every refusal.
+#
+# `tier cadence`: ~30s, most of it the Rye build the witness takes from source so the binary it
+# proves is the file a reader opens. The reading moves only when the instrument moves.
+guard page_evict
+path tools/p/page_evict_witness.rish
+tier cadence
+seated 20260917.030908

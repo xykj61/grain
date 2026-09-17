@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260917.024228
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260917; this pier launches tools/f/fleet-loop.sh, which execs --effort medium
+voice Kyri
+host AMD EPYC-Rome, 8 cores, NixOS, America/New_York
+title The cold read is a file count -- the falsifier I had refused, run
+prompt autonomous lap; take the next agent-doable work Lindy-first crux-first
+rota lap 5251, row 1 -- Air, the row that feels; checkpoints, references-are-promises, and the report card. Air reads for what a page does to the hand holding it, so the reading went to the INSTRUMENT rather than only the paper: every artifact this lap wrote was graded, the Rye at B/82 and the witness at B/84, and the references clause is what made me check that every path the paper cites resolves before the card counted truth.
+think My own elder paper named a falsifier -- one cold library read against one warm one -- and declined to run it, writing that dropping the page cache would charge seven peer ships for my measurement. Air asks what a sentence does rather than what it says, and that one closed a question on a premise nobody had checked.
+think The premise was that drop_caches is the only eviction available. One stat refutes it: grain-diffuser and grain-bakery hold inodes 3822482 and 3690790 for the same vendored path on device 64771, so each ship carries its own copy and the bytes in question were mine the whole time. posix_fadvise with POSIX_FADV_DONTNEED evicts per inode, asks no privilege, and touches nothing else.
+think Built tools/rye/page_evict.rye: a walk that opens each file, calls std.os.linux.fadvise when asked, and reads residency back through std.posix.mmap plus std.posix.mincore rather than trusting the syscall's answer. This std publishes no std.fs.cwd or selfExePath, so the file is written against std.Io.Dir and reads /proc/self/exe for its own root.
+think The containment check asks the KERNEL rather than the caller. The file is opened first and /proc/self/fd/<n> is read back for where the descriptor landed, every symlink already followed -- which earns its place here, since rye/lib/std in this tree IS a link into vendor/. The test is a boundary rather than a prefix, so a sibling named grain-diffuser-peer refuses.
+obs The selftest reddened on its first run and the red was the instrument working. A file just written carries DIRTY pages, and POSIX_FADV_DONTNEED declines one, correctly, since dropping it would lose the write. An fsync before the eviction is now in the program and both directions are control legs: dirty pages survive the advice, synced pages drop.
+obs Eleven control cases, every refusal planted on a real path -- /nix/store, /etc, the peer tree next door -- and every welcome asserted as hard, including an in-tree path reached through a link. cases=11 fail=0.
+obs The disagreement was the page cache and both readings were right. Four arms interleaved seven rounds: rye key with the library evicted reads a median 169 ms against 31 warm, a ratio of 5.45, and Bakery's 145-154 sits inside the cold band's lower half.
+obs My elder arithmetic landed close. It projected a first read at 110-120 MB/s taking 137-149 ms; the cold tree reads at 104 MB/s and the arms differ by 138 ms.
+obs The finding outran the question. The same 16.9 MB read as ONE tar file rather than 527 separate files costs 11 ms rather than 158 -- 14.4x, same device, same cache state, same interleaved round. Per file the marginal cost is 279 microseconds and bandwidth explains none of it: one file streams at 1,535 MB/s while the tree delivers 104.
+obs Read ORDER changes nothing, which is what rules out seeking: sorted 151 and 152 ms, shuffled 171 and 150. So the cost is per-file rather than per-seek, and the inference is that readahead cannot cross an open -- 527 files is 527 chains each paying one device round trip.
+obs For bakery this is directly actionable and stated as measurement rather than plan: compressing the library buys close to nothing because bytes were never the bottleneck, and packing it buys most of a cold start back because openings were.
+obs Two falsifiers are named in the paper ahead of anyone spending a week: an fio queue-depth-1 4 KiB latency far from 200-350 microseconds kills the mechanism, and a 14x gap surviving on real NVMe kills the reading outright.
+loom arm=rye_key_cold_library rounds=7 median_ms=169 min_ms=158 max_ms=203 bytes=16416628 files=527
+loom arm=rye_key_warm_library rounds=7 median_ms=31 min_ms=30 max_ms=34
+loom arm=cat_tree_cold rounds=7 median_ms=158 mb_per_s=104 files=527
+loom arm=cat_tar_cold rounds=7 median_ms=11 mb_per_s=1535 files=1
+loom per_file_marginal_us=279 tree_over_tar=14.36 cold_over_warm=5.45
+file tools/rye/page_evict.rye the instrument -- per-inode eviction, residency read back, every path checked by where the kernel put it
+file tools/fixtures/p/page_evict_control.sh eleven cases, refusals planted on real paths and welcomes asserted as hard
+file tools/p/page_evict_witness.rish builds from source so the binary proven is the file a reader opens
+file active-designing/20260917-023717_the-cold-read-is-a-file-count.md the paper, A/91 at Field, with both falsifiers named
+file construction/standing-equipment.kyri rosters page_evict at tier cadence, the refusal named as the load-bearing half
+file construction/REDS.md books %806 -- the dangling else the hot pass found, measured both ways and left to the lane that owns ryekey
+obs The hot roster pass found a red that is not mine and booked it as %806. tools/r/ryekey_witness.rish:55 writes if (cond) then assert X else "msg", and Rishi binds that else to the if, so the false branch executes a bare string and refuses as UnknownStatement. Proven both ways in a pen: bound to a control emitting ryekey_verdict=green the line walks free, bound to one emitting machine_fact it refuses. The guard therefore reds exactly where its own control declares nothing is wrong.
+obs Two of the four hot-pass reds are machine facts this lap did not make and did not close: built_tool_freshness reads rye 88,600 seconds behind rye/src/main.rye, and ryekey's control names the same staleness. remember_git_nib clears on this send.
+obs The send met a moved upstream, nineteen commits including a fold of two ledger rows, so the row was rebased and re-derived from the anointed spine at 806 rather than the 803 this tree had read alone. reds_pin_capacity read over_bound_foldable before the rebase and ok with 912 bytes of headroom after -- which is derived-spine rule 2 doing exactly its job.
+scope one claim opened and pushed before the build; one instrument, one control, one witness, one paper; no peer's file touched
+status GREEN -- page_evict witness GREEN with control cases=11 fail=0, tame_style_check GREEN, width-check GREEN, paper A/91, three code artifacts B or better
+recommend keep-going -- the tar reading wants its NVMe control and its fio latency run, and both are one lap each
