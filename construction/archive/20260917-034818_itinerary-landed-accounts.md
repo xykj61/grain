@@ -5,7 +5,7 @@
 **Room:** checkable
 
 **GRASS -- A BACKTICKED PATH IS A PROMISE, AND NOTHING READ IT.**
-Elder account [shelved whole](archive/20260917-020101_itinerary-landed-accounts.md), its ask about what a
+Elder account [shelved whole](20260917-020101_itinerary-landed-accounts.md), its ask about what a
 Meter reading should MEASURE with it and still standing.
 **WATER TASTES** (row 3, N=5223): read up close and run the actual thing. The rota's own page
 claims the happy zone proved the whole drain; `caravan_drain_replay` was RUN rather than cited, and
@@ -34,7 +34,7 @@ citation stays counted.
 bitten**, the ceiling shown from both sides with no slack. RATCHET at **65**, since each hit wants
 the lane that owns its page and a wall here would red the ordinary.
 **MINE:** this account spelled three of its own examples as backticked paths and the guard counted
-all three, 65 to 68 -- the shape [`derived-spine`](../.claude/rules/derived-spine.md) already names
+all three, 65 to 68 -- the shape [`derived-spine`](../../.claude/rules/derived-spine.md) already names
 one instrument over, where a meter reading for truth hears a sentence that must stay false exactly
 as it hears one asserting it. They are described here and spelled in the listing. The commit-msg
 path wall refused this round's body three times for the same reason.

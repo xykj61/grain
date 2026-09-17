@@ -7170,6 +7170,34 @@ path tools/p/page_evict_witness.rish
 tier cadence
 seated 20260917.030908
 
+# PAGE RESIDENCY -- whether a path STAYS in the cache, which is the premise under a packing
+# recommendation this fleet nearly built. `active-designing/20260917-031330_the-price-of-an-open.md`
+# measured a cold library read at 304 us per open, found 87 percent of it is the opens, and advised
+# merging 527 files into fewer. That advice is worth its build only where the fleet walks the cold
+# path more than once, and nothing had read that.
+#
+# WHAT THE INSTRUMENT DOES. `tools/fixtures/p/page_residency_sample.sh` reads one path's residency
+# repeatedly through `page-evict census` and reports the MINIMUM beside the free and cached
+# kilobytes that explain it. A single census taken at a quiet moment reports the best case and
+# reads as the case; a page cache under eight ships with no swap is a moving quantity.
+#
+# WHY IT IS ROSTERED. The control shows BOTH sides on real pages rather than on a stub: a pen file
+# is warmed, sampled, dropped through `POSIX_FADV_DONTNEED`, and sampled again. One kernel property
+# is load-bearing and was learned by losing a leg -- a DIRTY page is not droppable, so the pen is
+# `sync`ed before any eviction is asked for, and the first run read 256 pages still resident after
+# a successful evict call.
+#
+# IT REPORTS THE TREE'S OWN RESIDENCY AND GATES NONE OF IT. A cache is the host's to manage, and a
+# guard that reds when a peer's build evicts a page is a guard somebody turns off. What it gates is
+# the control: 19 legs, four mutations bitten, every refusal planted and then lifted.
+#
+# `tier cadence`: ~30s, most of it the Rye build the witness takes from source, the same build its
+# `page_evict` sibling takes. The reading moves only when the instrument moves.
+guard page_residency
+path tools/p/page_residency_witness.rish
+tier cadence
+seated 20260917.040500
+
 # WHAT WENT WRONG WITHOUT IT. `active-designing/20260917-023717_the-cold-read-is-a-file-count.md`
 # inferred a mechanism from one corpus -- readahead cannot cross an `open`, so each file pays one
 # device round trip -- handed another ship a recommendation resting on it, and named its own

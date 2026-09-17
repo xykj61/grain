@@ -1,0 +1,72 @@
+# tools/p/page_residency_witness.rish -- a path that looks warm once, sampled until it can be trusted.
+#
+#   rishi/bin/rishi run tools/p/page_residency_witness.rish
+#
+# WHAT IT GUARDS. `tools/fixtures/p/page_residency_sample.sh` answers whether a path STAYS in the
+# page cache, which is the premise under a recommendation this ship made and then tested:
+# `active-designing/20260917-031330_the-price-of-an-open.md` measured a cold library read at 304 us
+# per open and advised packing 527 files into fewer. That advice is worth its build only where the
+# cold path is one the fleet actually walks.
+#
+# WHY A DISTRIBUTION RATHER THAN A READING. `tools/bin/page-evict census` answers residency at the
+# instant it is asked, and a page cache under eight ships with no swap is a moving quantity. One
+# census taken at a quiet moment reports the best case and calls it the case, so the sampler reads
+# the same path repeatedly and reports the minimum -- the worst moment a build could arrive at.
+#
+# WHAT THE CONTROL PROVES, and why it runs on real pages rather than a stub: a pen file is warmed,
+# sampled, dropped through `posix_fadvise(POSIX_FADV_DONTNEED)`, and sampled again, so both sides
+# of the verdict are shown by the cache itself. Four mutations are planted and each must bite.
+
+say "page-residency: Style Gauge, Meter -- every figure below is a reading this run took."
+say "page-residency: Lens TAME -- the sample count, the interval, and the zero-page denominator are bounded at the edge."
+
+let census = "tools/bin/page-evict"
+let zig = "vendor/zig-toolchain/zig"
+
+say "page-residency: building the census from source, so the binary matches the file this witness reads..."
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/page_evict.rye -femit-bin=${census}"]
+assert build.ok else "page-residency: the census build refused --\n${build.out_brief}\n${build.err_brief}"
+
+let control = run ["sh" "-c" "sh tools/fixtures/p/page_residency_control.sh 2>&1"]
+# SAID BEFORE THE FIRST ASSERT ON IT: an assert stops the run, so a reader meeting a refusal
+# receives the control's own lines rather than this file's sentence.
+say control.out
+assert control.ok else "page-residency: the control refused --\n${control.out_brief}\n${control.err_brief}"
+
+# invariant: the control reached its verdict, so every leg below was actually reached.
+assert control.out contains "control_verdict=ok" else "page-residency: the control named no ok verdict"
+
+# invariant: the control's own leg tally is asserted beside its verdict, because a control that
+# reaches its last line proves only that it reached its last line -- a leg written tomorrow must
+# be heard on the lap it lands.
+assert control.out contains "control_failed=0" else "page-residency: a control leg failed"
+assert control.out contains "legs=19" else "page-residency: the control's leg count moved -- read it and move this number with it"
+
+# invariant: both sides of the verdict are shown by real pages rather than by arithmetic alone.
+assert control.out contains "leg warm_file_stays ok" else "page-residency: the warm side went unproven"
+assert control.out contains "leg evicted_file_falls ok" else "page-residency: the falling side went unproven"
+
+# invariant: every refusal is planted and then lifted, so a bypass cannot be told from a wall.
+assert control.out contains "leg refuses_zero_pages ok" else "page-residency: an empty path did not refuse"
+assert control.out contains "leg refuses_missing_census ok" else "page-residency: an absent census did not refuse"
+assert control.out contains "leg refuses_samples_high ok" else "page-residency: the sample bound did not refuse"
+
+# invariant: the four planted mutations each bite, so the reading is load-bearing rather than
+# decorative. The stream mutation is the sharpest: the census reports through `std.debug.print`,
+# which writes to STDERR, so a reader taking stdout alone parses a blank and calls it a shape fault.
+assert control.out contains "leg mutation_percent ok" else "page-residency: the percent arithmetic is not load-bearing"
+assert control.out contains "leg mutation_threshold ok" else "page-residency: the threshold is not load-bearing"
+assert control.out contains "leg mutation_stream ok" else "page-residency: the stderr merge is not load-bearing"
+assert control.out contains "leg mutation_zero_guard ok" else "page-residency: the zero-page guard is not load-bearing"
+
+# The live reading, taken rather than recited. Two samples with no interval cost the lap nothing
+# and prove the sampler runs against this tree's own library rather than only against a pen.
+let live = run ["sh" "-c" "sh tools/fixtures/p/page_residency_sample.sh vendor/zig-toolchain/lib/std --samples 2 --interval 0 2>&1"]
+say live.out
+assert live.ok else "page-residency: the live sample refused --\n${live.out_brief}\n${live.err_brief}"
+# invariant: the live run reaches a verdict, whichever way it falls -- this witness reports the
+# tree's residency and never gates on it, because a cache is the host's to manage and a guard that
+# reds when a peer's build evicts a page is a guard somebody turns off.
+assert live.out contains "verdict=" else "page-residency: the live sample named no verdict"
+
+say "page-residency: GREEN -- 19 legs, four mutations bitten, both sides shown on real pages."
