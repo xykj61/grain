@@ -5679,10 +5679,14 @@ seated 20260910.050619
 # that only falls: `asserted_only`, where a repair lands, so a wall there would refuse the fix in
 # the same breath as the fault. The other four report. Rooms are arguments, seated at mantra and
 # tally -- the lane a hand walked constant by constant -- and another lane adopts by naming itself
-# here. `tier lap` at a measured 1.4s: 31 ceilings read, 13 control behaviors in a real git pen.
+# here. GLOW ADOPTED `20260917` at its own `asserted_only <= 3`, held beside mantra and tally's 1
+# rather than merged, so a repair in one room can never pay for a regression in another. THE
+# REFUSAL IS READ BY BLOCK, NEVER BY A LINE COUNT (`20260917.040203`): the elder three-line window missed a
+# refusal record filled between the test and the return -- `glow/tokens.rye`'s four -- and admitted
+# a refusal spelled in a comment or inside an emitted string literal. `tier lap`: two readings.
 guard ceiling_teeth
 path tools/c/ceiling_teeth_witness.rish
-tier lap   # 1.4s; 31 ceilings read, 17 assertions over 13 behaviors, every refusal planted and lifted
+tier lap   # 9.5s; 110 ceilings read over two rooms, 31 assertions over 23 behaviors, three mutations bitten
 seated 20260910.054031
 
 # glow_shared_bound -- one bound, one value, however many Glow modules publish it. `max_name_len`

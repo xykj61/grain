@@ -28,15 +28,31 @@
 # discriminators for its own class on 20260910 and every one leaked, so it stopped guessing and
 # asked the file to declare itself.
 #
-# THE ROOMS ARE ARGUMENTS, defaulting to mantra and tally -- the lane a hand has walked constant by
-# constant. Another lane adopts by naming itself in the roster row and reading what it inherits.
+# THE ROOMS ARE ARGUMENTS. Two readings stand: mantra and tally, walked constant by constant on the
+# seating lap, and glow, adopted 20260917. Each carries its own assert-only ratchet in the scan's
+# own `case`. Another lane adopts by naming itself there and reading what it inherits.
 #
 # WHAT IT DOES NOT REACH. Whether a refusal's threshold is the RIGHT number, which is the pair
 # scan's subject and, past it, arithmetic. Whether a cut truncates something a caller needed whole.
 # A ceiling declared const rather than pub const, since a private bound is the module's own
 # business. And every language beside Rye.
 #
-# Pen: tools/fixtures/c/ceiling_teeth_control.sh -- seventeen assertions across thirteen behaviors
+# THE REFUSAL IS READ BY BLOCK, NEVER BY A LINE COUNT (REDS `20260917.040203`). The scan read three
+# lines forward from the condition until this lap, and that window failed in both directions at
+# once. It MISSED this tree's own growing idiom -- a refusal record filled between the test and the
+# return -- so glow/tokens.rye refuses four ceilings with error.BadToken eleven lines below the test
+# and every one read asserted_only, the ratchet: the repair that made those refusals diagnosable
+# RAISED the meter. And it ADMITTED a refusal spelled in PROSE, since the condition test matches
+# `and ` and a comment is a line. Twelve missed and two admitted, tree-wide, one root. Strings are
+# blanked before comments, the condition's header closes at its parentheses, and the body is walked
+# by brace depth to its matching close.
+#
+# GLOW READS ITS OWN NUMBER. The language lane adopts here at asserted_only <= 3, seated beside
+# mantra and tally's 1 rather than merged with it, so a repair in one room can never pay for a
+# regression in another. Adoption was unreachable before the block reading, since four of glow's
+# five assert-only readings were the window missing a record.
+#
+# Pen: tools/fixtures/c/ceiling_teeth_control.sh -- thirty-one assertions across twenty-three behaviors
 # on real Rye sources in a real git repository, every refusal planted and then lifted, the ratchet
 # shown from both sides, and the repair proven to leave the population rather than stay in it.
 
@@ -54,6 +70,18 @@ assert (scan.out contains "verdict=empty_corpus" == false) else "ceiling-teeth: 
 assert (scan.out contains "verdict=unread_ceiling" == false) else "ceiling-teeth: the one gate stands at zero"
 assert (scan.out contains "verdict=asserted_spread" == false) else "ceiling-teeth: the assert-only population may shrink and may not spread"
 assert (scan.out contains "ceilings_declaring=0" == false) else "ceiling-teeth: a reading over no ceilings would report clean while measuring nothing"
+
+# GLOW READS ITS OWN NUMBER, rather than joining mantra and tally in one total. A merged ratchet
+# lets a repair in one room pay for a regression in another, which is the hatch two gated numbers
+# close; and the language lane could not adopt at all until 20260917, because four of glow's five
+# assert-only readings were the three-line window missing a refusal record (REDS `20260917.040203`).
+let glow = run ["sh" "tools/fixtures/c/ceiling_teeth_scan.sh" "glow"]
+say glow.out
+assert glow.ok else "ceiling-teeth: glow declares a ceiling nothing reads, or its assert-only population spread"
+assert glow.out contains "verdict=ok" else "ceiling-teeth: the glow census must agree with itself"
+assert glow.out contains "unread=0" else "ceiling-teeth: a glow ceiling nobody reads bounds nothing at all"
+assert glow.out contains "asserted_only_ceiling=3" else "ceiling-teeth: glow's ratchet ceiling moved -- a raise is a deliberate hand, and this one is meant only to fall"
+assert (glow.out contains "ceilings_declaring=0" == false) else "ceiling-teeth: a reading over no glow ceilings would report clean while measuring nothing"
 
 let control = run ["sh" "tools/fixtures/c/ceiling_teeth_control.sh"]
 say control.out
@@ -74,5 +102,15 @@ assert control.out contains "10 free: a private const is not a declared ceiling 
 assert control.out contains "11 free: a witness source is read past -- ok" else "ceiling-teeth: a witness bounds its own fixtures"
 assert control.out contains "12 bitten: a reading over no ceilings says so rather than passing -- ok" else "ceiling-teeth: a meter over nothing must say so"
 assert control.out contains "13 free: an honest file never masks an unread ceiling beside it -- ok" else "ceiling-teeth: one honest file must never hide a fault beside it"
+assert control.out contains "14 free: a refusal record between the test and the return still reads as refused -- ok" else "ceiling-teeth: the record-filling refusal is this tree's own idiom and must read as one"
+assert control.out contains "15 bitten: the same block without a named-error return leaves refused -- ok" else "ceiling-teeth: the block walk must read the return rather than the distance"
+assert control.out contains "16 bitten: a ceiling named only in a comment is not refused by the return below it -- ok" else "ceiling-teeth: prose is not a refusal"
+assert control.out contains "17 free: the two-line braceless refusal reads as refused -- ok" else "ceiling-teeth: the braceless form keeps its place"
+assert control.out contains "18 free: a multi-line condition closes at its parentheses -- ok" else "ceiling-teeth: a condition closes where its parentheses do, never after a guessed line count"
+assert control.out contains "19 bitten: a return past the closing brace is not that ceiling's refusal -- ok" else "ceiling-teeth: a return outside the block belongs to the function rather than the test"
+assert control.out contains "20 bitten: a ceiling named inside a string literal is not refused by that line -- ok" else "ceiling-teeth: an emitted source's own if is not this file's refusal"
+assert control.out contains "M1 bitten: removing the string blanking admits a refusal spelled inside a literal -- ok" else "ceiling-teeth: the string blanking must be load-bearing"
+assert control.out contains "M2 bitten: removing the comment stripping admits a refusal spelled in prose -- ok" else "ceiling-teeth: the comment stripping must be load-bearing"
+assert control.out contains "M3 bitten: removing the block walk loses the refusal it was built to find -- ok" else "ceiling-teeth: the block walk must be load-bearing"
 
-say "ceiling-teeth: GREEN -- every declared ceiling in mantra and tally is read where it can refuse, and the assert-only population holds."
+say "ceiling-teeth: GREEN -- every declared ceiling in mantra, tally and glow is read where it can refuse, and each room's assert-only population holds."

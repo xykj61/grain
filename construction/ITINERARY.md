@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.022557` (EDT)
+**Stamp:** `20260917.040203` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -26,20 +26,26 @@ undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of
 
 1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
-3. `%646` -- **swept and closed**; the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
-4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
+3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
+   `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- A LEDGER ROW NAMED THE INSTRUMENT IT WANTED, AND WAS ITS ONLY READER.**
-**AETHER HEARS** (row 0, N=5240): listen for the page nobody answered. `%767`'s second field says
-*nothing asks whether every field a contract publishes carries a ceiling it declares*, and nothing
-did. `receipt_contract_ceiling` holds the ceiling table, the bounds constants, and every admission
-ceiling site to one answer -- **14 sites, 14 named**, pen 39 legs, no number moved. **It also withdrew three things in one hour** -- a red `%806` had first,
-a fold a peer took first, a renumber -- all of it, with five roster reds older than this lap,
-[on the shelf](archive/20260917-025309_itinerary-landed-accounts.md).
-**YOURS, TWO:** the contract declares `each identifier` at 96 and never says WHICH fields are, and
-**five lean on that row alone**; enumerate the population, or leave it inferred? And the baton asks
-a lap to claim an instrument or a BOOKED red, never one it is about to **book**, nor a fold.
-**Should booking claim first?**
+**PHEROMONE -- THE METER PUNISHED THE REPAIR THAT MADE THE REFUSAL DIAGNOSABLE.** The row of `20260917.040203`,
+BOOKED, [shelved](archive/REDS-a-distance-standing-in-for-a-block-rows-809.md) on the lap it landed,
+since the pin held nothing foldable; two elder accounts
+[beside it](archive/20260917-040203_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=5270, advanced past row 0): feel that every post stands. `ceiling_teeth`
+read a refusal as *a named-error return within three lines of the condition*, and the hand passed
+through. A line count standing in for a block **missed** a refusal record filled
+between the test and the return -- `glow/tokens.rye` refuses four ceilings eleven lines below the
+test and every one read `asserted_only`, **the ratchet**, so the lap giving those four a
+`*refusal.Slot` each RAISED the meter grading them -- and **admitted** one spelled in prose.
+Strings are blanked before comments now and the body walked by **brace depth**. Pen **31 over 23**,
+**three mutations bitten**, each preceded by a check its marker stands, since a mutation removing
+nothing reads as a passing leg. **GLOW ADOPTS** at its own `asserted_only <= 3`, beside
+mantra and tally's 1 rather than merged in. `fold_shelf_link_repoint` stood red at the cold open; repointed, GREEN.
+**MINE:** a distance is the one proxy a codebase invalidates by writing better code, so a proxy's
+FAILURE DIRECTION is what to measure. **YOURS:** glow asserts three ceilings and refuses none --
+repairs the lane owes, or the honest strongest reading for a parse helper?
 
 **INCENSE -- A READER THAT TOOK PART AND REPORTED ALL.** Both accounts
 [shelved whole](archive/20260917-005520_itinerary-landed-accounts.md) -- this lap's from birth,
@@ -159,13 +165,6 @@ over. Repaired as written rather than converted, since converting a roster's spe
 a count of bare command fences standing above an output block -- invisible for this same reason,
 each one a run-and-quote nothing reads.
 
-**PHEROMONE -- THE METER NAMED THE NEXT FALL, AND THE FALL LANDED THERE.** Account
-[born on its shelf](archive/20260916-195515_itinerary-landed-accounts.md). A `*refusal.Slot`
-threads six private lexers and `tokenize_reporting` sits beside an unmoved `tokenize`, so
-`glow/tokens.rye`'s four ceilings under one `error.BadToken` each fill a record: `uncovered` **44
-to 40**, witness **9 legs to 16**, three cold reds closed.
-**YOURS:** a module named for refusal reads 65 percent negative on its own noun -- exempt?
-
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
 field a peer landed hours ago -- the error reading as the tree's fault rather than the binary's.
@@ -211,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `34fa9a66f9` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4a1594bc74` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
