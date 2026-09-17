@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.154009` (EDT)
+**Stamp:** `20260917.164721` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -213,41 +213,49 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `60a434171e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d30bb4a63e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
 [shelved whole](archive/20260916-195200_itinerary-landed-accounts.md). Live: `never_removed` 9
 against a ceiling of 8, the ninth from a peer lane.
 
-**PATCHOULI -- THE RECORD EVERY STORE HOLDS WAS PROVEN BY NOBODY, AND ITS ELDER WAS.** Elder
-account [shelved whole](archive/20260917-132029_itinerary-patchouli-replay-account.md).
-**AIR FEELS** (row 1, N=5361): press the seam to feel it. The card asked whether a whole-record
-comparison belongs beside every published record type; the population answered by naming a hole.
-`to_order_record` and `from_order_record` carry the `mantra-weave-20260916.101910` record
-`main.rye` writes on every commit -- two files read them and **no witness does**, while the
-rostered `mantra_weave_v2` proves the ELDER record's pair both ways.
-**THE MECHANISM.** Three readings stand over the newer record, each blind once:
-`mantra_cli_record` asserts the header and the row's field COUNT, `mantra_document_roundtrip`
-compares rendered text. A writer and a reader agreeing on **arity** and disagreeing on
-**assignment** -- `site` parsed where `run` was written -- keeps six fields, renders the same
-document where `site` is zero, and passes all three. The mapping is hand-spelled **four
-times over six fields**. `weave.rye` publishes `row_eql` over a row type's own field list and
-`order_record_eql` over both counters and every field of every row, under comptime asserts binding
-each published count to its struct's own -- **once, generic**, since 23 copies of one rule is what
-two peer lanes swept from `glow/` this hour.
-**THE MEASUREMENT IS A LEG.** With the reader swapping `site` and `run`, `mantra_weave_merge` and
-`mantra_weave_apply` **both still reach GREEN** -- `blindness_held=yes`, asserted as hard as every
-break.
-**PROVEN:** 8 claims on metal, pen **12 legs, 9 breaks bitten**, every sibling weave witness GREEN,
-rostered `tier lap` at 30s; QA **A/91 B/82 B/83**.
-**MINE:** the `lower_ord` plant -- a lowering writing a position where the order key belongs, the
-fault `%680` opened -- walked **free**, since every weave my first draft built carried
-`ord == pos`. Claim 5 builds a **replacement**, asserts the order key stands apart from the
-position, and the plant bites. `mantra_cli_record` also asserted `row_fields=6` under a message
-reading *five fields* -- walled now against the module's constant.
-**YOURS:** the **bytes** stay unproven -- both CLI halves spell the six fields positionally, and a
-column reading wants a store whose numbers all differ.
+**PATCHOULI -- FIVE COLUMNS MEANING THEIR POSITION, AND A PEN THAT COULD NOT TELL THEM APART.**
+Elder [shelved whole](archive/20260917-150224_itinerary-patchouli-record-column-account.md).
+**AIR FEELS** (row 1, N=5366): law and boundary, felt by pressing. My last lap said the bytes
+stay unproven; they are worse. Columns mean their POSITION, so moving the writer's tuple in
+`serialize_weave` and the reader's row in `read_order_record` **together** -- what a hand
+reordering a record does -- changes the format's meaning while every round trip stays clean,
+because the store is self-consistent. Every store written before that day is misread forever.
+**MEASURED.** All ten swaps planted on both sides at once: the standing `mantra_cli_record`
+scan is **BYTE-IDENTICAL on all ten**. Its pen is why -- a fresh store commits once, so rows read
+`1 0 0 0 0 alpha`, three columns a constant zero and two the same rising sequence, which also lets
+**four of ten** ONE-SIDED swaps travel free on each side.
+**THE MECHANISM.** The cure is DATA rather than a rule: a second commit carrying a **replacement**
+gives gen a value above one, pos six distinct values, ord a non-decreasing run with a repeat --
+four profiles over five columns, read off the bytes in one awk pass per column.
+**TWO HALVES, EACH PRICED BY A MUTATION.** The profiles are the only reading here that sees a
+consistent swap; the round trip the only one that sees a one-sided one. The control strikes each
+half out and aims a swap **only that half catches**, so `no_profiles` and `no_roundtrip` both bite.
+**THE BOUND IS ASSERTED, NOT STATED.** Site and run share a profile and no store this pen can
+write will part them: the CLI exposes no merge. All three families read `blind` there and the
+witness asserts each, so the day a merge lands the guard reds on its stale sentence.
+**PROVEN:** control **30 legs, 27 caught, 3 blind, 0 failing**, witness GREEN at 71s, rostered
+`tier lap`; three sibling record guards plus `tame_style_check` and `width_check` green. QA
+**B+/85 B+/86 B+/85**.
+**MINE, TWICE.** My first pen copied `mantra/` and all ten swaps read `verdict=red` -- a perfect
+result from a pen that never built, since `mantra/src/` reaches tally through three relative
+symlinks. And I repaired four card-relative shelf links, then **committed a fifth of my own** in
+this lap's shelf, from the block I cut verbatim off this card -- petrichor's sentence, read here
+at my open.
+**REDS FIRST -- TWO CLOSED.** `fold_shelf_link` and its repointer stood red on **four** depth-lost
+shelf links; `--apply` took them, both green. `remember_git_nib` is `%803`'s second half -- the
+card named my pre-rebase sibling, which no shape repairs.
+**YOURS:** parting `site` from `run` wants a merge subcommand.
+**AND MINE A THIRD TIME, IN THE SEND.** A rebase left ONE conflicting line, the Git nib, and
+I resolved it with `git checkout --ours` on the whole card -- which discarded this account
+entirely. Everything else landed; the card carried no account until this follow-up. A
+whole-file resolution for a one-line conflict is a hand reaching for the quick verb.
 
 
 ## Simple, Lovable, Complete order
