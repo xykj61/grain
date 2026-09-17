@@ -47,7 +47,7 @@ trap cleanup EXIT INT TERM
 # ---------------------------------------------------------------------------
 mk_pen() {
   rm -rf "$PEN"
-  mkdir -p "$PEN/tools/fixtures/s" "$PEN/room/sub" "$PEN/outside"
+  mkdir -p "$PEN/tools/fixtures/s" "$PEN/room/sub" "$PEN/room/shut/a/b" "$PEN/outside"
   cp "$ROOT/tools/fixtures/s/sow_reach_inputs.sh" "$PEN/tools/fixtures/s/"
   cp "$ROOT/tools/fixtures/s/sow_pubkey_stub.sh" "$PEN/tools/fixtures/s/"
 
@@ -58,6 +58,7 @@ mk_pen() {
   {
     echo 'allow room'
     echo 'sub_exclude room/excluded.md'
+    echo 'sub_exclude room/shut'
   } > "$PEN/pen-manifest.bron"
 
   printf 'a plain page with nobody in it\n'                    > "$PEN/room/plain.md"
@@ -72,6 +73,20 @@ mk_pen() {
   printf 'keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAANotAReal000 host" ];\n' \
                                                                > "$PEN/room/keys.nix"
   printf 'a nested plain page\n'                               > "$PEN/room/sub/deep.md"
+  # THREE LEVELS UNDER A DIRECTORY ENTRY. The elder tested `"$x"/*`, whose `*`
+  # crosses slashes, so depth never mattered; the awk walks the path's own
+  # ancestors instead, and a walk that stops at the first parent would ship this.
+  printf 'a page three rooms under a shut door\n'              > "$PEN/room/shut/a/b/deep.md"
+  # One file per basename glob the elder spelled, since the fold rewrote all ten
+  # into anchored regex and each rewrite is a place a transcription can slip.
+  printf 'lowercase in the middle of a name\n'                 > "$PEN/room/notes-siya-draft.md"
+  printf 'uppercase, and identity-bearing besides\n'           > "$PEN/room/Siya-Fund.md"
+  printf 'a roster whose name begins with the prefix\n'        > "$PEN/room/keys_roster.md"
+  printf 'pem bytes\n'                                         > "$PEN/room/deploy.pem"
+  printf 'armored ascii\n'                                     > "$PEN/room/trust.asc"
+  printf 'ring bytes\n'                                        > "$PEN/room/ring.gpg"
+  printf 'sec bytes\n'                                         > "$PEN/room/token.sec"
+  printf 'secret bytes\n'                                      > "$PEN/room/vault.secret"
   printf 'Keaton lives here and this room is not allowed\n'    > "$PEN/outside/hidden.md"
 
   # A stub `xargs` for the broken-instrument legs. It fails ONLY the calls that
@@ -150,6 +165,29 @@ leg key_named_file_withheld "$(say $r)"
 if [ ! -e "$S/room/excluded.md" ]; then r=0; else r=1; fi
 leg sub_excluded_file_absent "$(say $r)"
 
+# A directory entry reaches every depth beneath it. `room/shut` is the entry and
+# the file stands three directories down, so an exclusion test reading only the
+# path itself, or only its immediate parent, ships it.
+if [ ! -e "$S/room/shut/a/b/deep.md" ]; then r=0; else r=1; fi
+leg deep_path_under_excluded_dir_absent "$(say $r)"
+
+# Every basename glob the elder spelled, each proven by its own file. The two
+# `siya` spellings are case-SENSITIVE on purpose: the elder wrote two globs
+# rather than one case-insensitive match, so `SIYA` was never covered and this
+# fold may not quietly widen it.
+r=0
+for b in notes-siya-draft.md Siya-Fund.md keys_roster.md deploy.pem \
+         trust.asc ring.gpg token.sec vault.secret; do
+  [ -e "$S/room/$b" ] && r=1
+done
+leg every_key_shaped_basename_withheld "$(say $r)"
+
+# The basename refusal is read BEFORE the identity pass, so an identity-bearing
+# name withheld by shape never reaches the scrubbed log.
+if grep -qx 'room/Siya-Fund.md' "$S/.sow-scrubbed.log" 2>/dev/null
+then r=1; else r=0; fi
+leg shape_withheld_name_never_scrubbed "$(say $r)"
+
 if [ ! -e "$S/outside/hidden.md" ]; then r=0; else r=1; fi
 leg unallowed_room_never_reached "$(say $r)"
 
@@ -168,6 +206,13 @@ if grep -qx 'room/stubborn.md' "$S/.sow-withheld.log" 2>/dev/null &&
    grep -qx 'room/holder.key' "$S/.sow-withheld.log" 2>/dev/null
 then r=0; else r=1; fi
 leg withheld_log_names_all_four "$(say $r)"
+
+# The excluded log owns the deep path, and the withheld log does not: an
+# exclusion and a shape refusal are two verdicts with two rooms.
+if grep -qx 'room/shut/a/b/deep.md' "$S/.sow-excluded.log" 2>/dev/null &&
+   ! grep -qx 'room/shut/a/b/deep.md' "$S/.sow-withheld.log" 2>/dev/null
+then r=0; else r=1; fi
+leg excluded_log_owns_the_deep_path "$(say $r)"
 
 if grep -qx 'room/named.md' "$S/.sow-scrubbed.log" 2>/dev/null &&
    grep -qx 'room/run.sh' "$S/.sow-scrubbed.log" 2>/dev/null
@@ -189,8 +234,10 @@ leg withheld_log_reads_in_candidate_order "$(say $r)"
 # --- the receipt line ------------------------------------------------------
 # The copied count is a `find` over the projected tree, so it names the five
 # projected files and the excluded log beside them -- the elder's own arithmetic,
-# preserved rather than tidied.
-if grep -q 'SOW_OK copied=6 scrubbed=2 withheld=4' "$PEN/pen-run.txt" 2>/dev/null
+# preserved rather than tidied. The withheld count reads 12 rather than the elder
+# 4 because the pen now carries one file per basename glob: four refused by the
+# elder's own four fixtures, eight more by the shapes it spelled and never proved.
+if grep -q 'SOW_OK copied=6 scrubbed=2 withheld=12' "$PEN/pen-run.txt" 2>/dev/null
 then r=0; else r=1; fi
 leg receipt_counts_every_class "$(say $r)"
 
@@ -312,6 +359,30 @@ unset SOW_TIME
 if [ "$rc" -ne 0 ] && grep -q 'past 2 step marks' "$PEN/pen-err.txt" 2>/dev/null
 then r=0; else r=1; fi
 leg mutation_mark_ceiling_refuses "$(say $r)"
+
+# 6. Stop the exclusion test at the path itself, dropping the ancestor walk. A
+#    file-equal entry still refuses, so the elder's own leg stays green and only
+#    the deep path moves -- which is why depth earns a leg of its own.
+mk_pen
+mut="$PEN/mut_ancestors.sh"
+sed 's|^      if (!sub(/\\/\[^\\/\]\*\$/, "", p)) break$|      break|' "$SCRIPT" > "$mut"
+if ! grep -q '^      break$' "$mut"; then echo "control: mutation 6 changed nothing" >&2; exit 2; fi
+rc=0; run_projection "$mut" || rc=$?
+if [ -e "$S/room/shut/a/b/deep.md" ] && [ ! -e "$S/room/excluded.md" ]
+then r=0; else r=1; fi
+leg mutation_ancestor_walk_dropped_bites "$(say $r)"
+
+# 7. Drop one basename glob from the shape refusal. That one file must then ship
+#    while the other seven stay withheld, so the leg reads a transcription slip
+#    rather than a collapsed pass.
+mk_pen
+mut="$PEN/mut_glob.sh"
+sed 's|b ~ /\\.secret\$/|b == "\\000never"|' "$SCRIPT" > "$mut"
+if ! grep -q '000never' "$mut"; then echo "control: mutation 7 changed nothing" >&2; exit 2; fi
+rc=0; run_projection "$mut" || rc=$?
+if [ -e "$S/room/vault.secret" ] && [ ! -e "$S/room/token.sec" ]
+then r=0; else r=1; fi
+leg mutation_one_basename_glob_dropped_bites "$(say $r)"
 
 echo "control_legs=$LEGS"
 echo "control_failed=$FAILED"

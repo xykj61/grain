@@ -210,7 +210,7 @@ CAND_N=$(wc -l < "$W/cand.txt" | tr -d ' ')
 }
 
 mark pathrefuse
-# 2. The two path-only refusals, decided by the shell alone -- no basename process.
+# 2. The two path-only refusals, in ONE awk pass over the candidate list.
 #    File-granular exclusion is a deliberate personal withhold inside a shared dir
 #    (a foundations biography essay); the doctrine beside it still ships.
 #    The key-material guard refuses anything shaped like a key or a fingerprint
@@ -218,15 +218,53 @@ mark pathrefuse
 #    fingerprint file and lives inside a scrub dir; a name-scrub cannot catch a
 #    fingerprint, so this basename guard is what withholds it. PUBKEYS.template.md
 #    (placeholders) does NOT match the exact `PUBKEYS.md` glob and ships.
+#
+#    WHY THE SHELL LOOP LEFT (REDS %642). The elder read both refusals with the
+#    shell alone and spawned nothing, so it looked free -- and it was the third
+#    most expensive step in the projection, at 8.85 and 9.42 seconds across two
+#    timed runs. The cost was `is_subex`, which walks EVERY sub_exclude entry for
+#    every candidate: 146 entries against 9,114 candidates is about 1.3 million
+#    `case` evaluations, all of them in the shell's own interpreter. So a step
+#    that starts no process can still be dear, and the tell is a loop inside a
+#    loop rather than a process inside one.
+#
+#    THE EXCLUSION TEST IS THE SAME READING, WALKED THE OTHER WAY. `is_subex`
+#    asks, of each entry, whether the path EQUALS it or lives under it. A path
+#    lives under an entry exactly when one of its own slash-bounded ancestors IS
+#    that entry, so the awk walks the path up from itself -- ROOM/SUB/PAGE.md,
+#    then ROOM/SUB, then ROOM -- against a hash of the entries. The segments are
+#    placeholders rather than a real-looking path, since an illustration spelled
+#    like a citation IS one to every reader and every meter (stamp-and-name).
+#    Same answer, at the
+#    path's depth rather than at the roster's length, and the roster may grow
+#    without the step growing with it.
+#
+#    THE ENTRY SET IS READ EXACTLY AS THE ELDER READ IT. `printf '%s\n' $SUBEX`
+#    is unquoted on purpose: it word-splits the same way `for x in $SUBEX` did,
+#    so the one entry carrying a space still arrives as two fragments. That is
+#    REDS %804, which stands OPEN and wants Keaton's eye beside custody gate 1 --
+#    repairing it here would change what ships, and this lap moves no withhold.
 : > "$W/excluded.txt"; : > "$W/namewithheld.txt"; : > "$W/keep.txt"
-while IFS= read -r f; do
-  if is_subex "$f"; then printf '%s\n' "$f" >> "$W/excluded.txt"; continue; fi
-  case "${f##*/}" in
-    *siya*|*Siya*|PUBKEYS.md|keys_*|*.pem|*.key|*.asc|*.gpg|*.sec|*.secret)
-      printf '%s\n' "$f" >> "$W/namewithheld.txt"; continue;;
-  esac
-  printf '%s\n' "$f" >> "$W/keep.txt"
-done < "$W/cand.txt"
+# shellcheck disable=SC2086 -- unquoted on purpose; the word split IS the elder reading.
+printf '%s\n' $SUBEX > "$W/subex.txt"
+awk -v subex="$W/subex.txt" -v ex="$W/excluded.txt" \
+    -v nw="$W/namewithheld.txt" -v kp="$W/keep.txt" '
+  BEGIN { while ((getline l < subex) > 0) if (l != "") X[l] = 1 }
+  {
+    # The ancestor walk: the path itself, then each slash-bounded parent.
+    p = $0
+    while (1) {
+      if (p in X) { print > ex; next }
+      if (!sub(/\/[^\/]*$/, "", p)) break
+    }
+    # The greedy sub to the LAST slash is exactly what the shell ${f##*/} takes.
+    b = $0; sub(/^.*\//, "", b)
+    if (b ~ /siya/ || b ~ /Siya/ || b == "PUBKEYS.md" || b ~ /^keys_/ ||
+        b ~ /\.pem$/ || b ~ /\.key$/ || b ~ /\.asc$/ || b ~ /\.gpg$/ ||
+        b ~ /\.sec$/ || b ~ /\.secret$/) { print > nw; next }
+    print > kp
+  }
+' "$W/cand.txt"
 
 mark armor
 # 3. Armor blocks stay withheld -- a private or PGP blob is not a stub.

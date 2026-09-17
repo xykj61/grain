@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.062300` (EDT)
+**Stamp:** `20260917.071711` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -25,7 +25,7 @@ lap to seat the newest under the pin's bound.
 
 **The agent-doable queue, Lindy first:**
 
-1. `%642` -- **re-ordered `20260917.041331`**: fold the projection's path refusals into one `awk` pass first (8.9s a projection, no guarantee moved), then weigh the cache, which now reaches a quarter of a publish rather than the half it was booked for.
+1. `%642` -- the path-refusal fold **landed `20260917.064837`** at 8.9s to 0.11. What remains is the **copy**, 45s of a 74s projection, which a cache never reaches; an incremental `seed/` sync does, and owes a proof that a withdrawn file leaves. Design and word, or a lap?
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
@@ -102,43 +102,51 @@ this lap has of whether it works.
 none foldable, so this repair went in **unbooked** -- a fleet whose first law is reds first cannot
 book one this hour. That is the door, and it is Keaton's.
 
-**COPAL -- THE CACHE THE ROW BOOKS REACHES A QUARTER OF WHAT IT WAS BOOKED FOR.** Account
-[born on its shelf](archive/20260917-041331_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=5246): press a boundary and see whether the hand goes through. The boundary
-was `%642`'s own falsifier, and the reading it stood on had been spent the same night nobody re-read
-it -- my batching lap took the projection's three classification greps from 215.58 seconds to 1.47.
-**THE MECHANISM.** `tools/fixtures/s/sow_project.sh` reports its own step seconds when `SOW_TIME` is
-set: a `mark` function stamps the boundary between its eleven numbered steps into `$W/time.txt`,
-bounded at `SOW_MAX_MARKS=16`, and one `awk` pass prints `step_<name>_s=` per step and a total. Off
-by default, it costs one shell test per step and spawns nothing.
-**MEASURED**, two runs, 9,116 candidates: **copies 38.10 / 40.32 (53.7%)**, **`sed` scrub 20.32 /
-18.44 (28.7%)**, path-only refusals 8.85 / 9.42, the four batched reads 1.47 together, total 70.89 /
-71.84. Projection **364.68 to 75.91**, witness **354.09 to 99.90**, a publish **718.77 to 175.81** --
-**4.1 times, with no cache built at all**. FREE: run `SOW_TIME=1 sh tools/fixtures/s/sow_project.sh`.
-**THE RULING.** A cache reaches the scrub and the reads, 21.8 seconds of 70.89, a quarter of a
-publish. It never reaches the copy, because the projection clears `seed/` first and every kept file
-lands again whatever a cache remembers. Reaching that means syncing rather than rebuilding, which
-moves the guarantee `stale_projection_file_cleared` holds.
-**PROVEN:** control **35 legs from 28, 0 failing**, five mutations bitten -- the sharpest being the
-pen projecting one field twice, silent and timed, and comparing the trees with `diff -r`.
-**MINE:** I worked while the cold run went, so it closed `tree_moved=yes` -- the captain's own
-yesterday fault, on the card I had just read.
-**YOURS:** the path refusals are one `awk` pass from under a second, no guarantee moved -- one lap I
-left rather than widening this one. The copy is the larger door: an incremental `seed/` sync buys 38
-seconds a projection and owes a proof that a withdrawn file leaves. Design and word, or a lap?
+**COPAL -- A STEP THAT STARTS NO PROCESS AND COST NINE SECONDS.** Account
+[shelved whole](archive/20260917-064837_itinerary-landed-accounts.md), its ask answered here.
+**FIRE SEES** (row 2, N=5286): cut, and stop where the cut ends.
+**THE MECHANISM.** `tools/fixtures/s/sow_project.sh` decided its two path-only refusals in a shell
+`while read` loop calling `is_subex` per candidate, and that function walks EVERY `sub_exclude`
+entry -- 146 against 9,114 candidates, 1.3 million `case` evaluations in the shell itself. Both are one
+`awk` call now, walking the same reading the other way: a path lives under an entry exactly when one
+of its slash-bounded ancestors IS that entry, so the awk strips a trailing component at a time
+against a hash -- DEPTH rather than roster LENGTH.
+**MEASURED on metal**, real field: `step_pathrefuse_s` **8.85 and 9.42 to 0.11**, a factor of 80,
+in a projection of 74.33. FREE: `SOW_TIME=1 sh tools/fixtures/s/sow_project.sh`.
+**PROVEN on the whole tree rather than the step.** Both scripts ran the real field into two seed
+directories, compared with `diff -r --no-dereference`: **0 differences** over 8,607 copies, 1,428
+scrubs, 136 withholds. Pen **41 legs from 35, seven mutations bitten**; the two new
+ones drop the ancestor walk, shipping a file three rooms under a shut door while the file-equal
+entry still refuses, and drop one glob, which must ship that one file alone.
+**THE STOP.** `%804`'s word-split read is preserved exactly, `printf` unquoted on purpose:
+repairing it changes what ships, from a lap whose claim said no withhold moves.
+**REDS FIRST -- THREE FOUND, AND THE LEDGER HAD ROOM FOR NONE**, at 65,535 bytes against a bound
+of 65,536. One byte, three foldable rows; all three are written whole in my log. **One:**
+`width_check` reds the whole fleet at `corpus_flagged_files` **327 against 326** while
+`corpus_flagged_lines` reads 1258 under 1260 -- two ceilings part, and the habit watches the one
+that stayed green. The file over is `tools/rye/read_latency.rye`, four authored `usize`:
+three genuine std seams, and the fourth carries a `// seam:` comment the scan cannot see -- its
+filter reads a comment LINE, never a seam comment beside a declaration. Its lane rules it. **Two:** a claim commit lands before the work commit exists, so `remember_git_nib` reds through
+every claiming lap's build window. Grass met the CLOSE half at `%803`; this is the OPEN half, and
+`incense-nib-writer-two-shapes` holds it. **Three, mine:** this account's own illustration
+was spelled as a real-looking path, and `backtick_path`, six hours old, read it as a promise --
+living **65 to 66 against 65**. Placeholders now; both meters GREEN, and the cold and hot red sets
+differ by that one name.
+**MINE:** the baton's two orders collide -- the cold endurance run wants the tree still, the claim
+law wants a pushed commit first, and the digest reads staged, unstaged and untracked alike, so every
+claiming lap closes `tree_moved=yes` by obeying both as printed. Third firing; a lantern that
+fires twice is a loom. The cure is one word: **claim first, then launch the cold run.**
+**YOURS:** that ordering, on the baton. The copy is the larger door still, at 45 seconds.
 
 **COPAL -- FIVE ELDER ACCOUNTS, SHELVED WHOLE:** the minutes spent starting grep
-([here](archive/20260917-010818_itinerary-landed-accounts.md), its copy-loop ask carried into the
-account above), the resin bytes that landed
-([here](archive/20260916-234020_itinerary-landed-accounts.md), its ask below), the `echo` population
-([here](archive/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap from
-what it saw ([here](archive/20260916-195045_itinerary-landed-accounts.md)), `%646`'s sweep
+([here](archive/20260917-010818_itinerary-landed-accounts.md)), the resin bytes that landed
+([here](archive/20260916-234020_itinerary-landed-accounts.md)), the `echo` population
+([here](archive/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap
+([here](archive/20260916-195045_itinerary-landed-accounts.md)), `%646`'s sweep
 ([here](archive/20260916-084104_itinerary-landed-accounts.md)).
-**THEIR ASKS, STILL STANDING:** whether other rooms want the resin room's landed wall, one roster
-row per answer. The 45 **written** characters -- ratchet, or the meter that owns
-assembled text? The 1,417 almanac characters. Whether a claim's paths are exempt from the
-commit-message path wall, which bit again this lap on the claim commit naming the files it opened
-to build. And the nine rostable, unrostered `tools/gen/chapter/` witnesses.
+**THEIR ASKS, STILL STANDING:** the resin room's landed wall for other rooms; the 45 **written**
+characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
+exempt from the commit-message path wall; and the nine unrostered `tools/gen/chapter/` witnesses.
 
 **BAKERY -- ASKING WHETHER A BINARY IS CURRENT NO LONGER COSTS A BUILD.** Account
 [born on its shelf](archive/20260916-114800_itinerary-landed-accounts.md). `rye key <f.rye>
@@ -222,7 +230,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `20a5a70889` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `164421a8ea` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
