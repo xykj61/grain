@@ -10,7 +10,7 @@ widening replaced it. Kept whole, links re-anchored for this depth by the writer
 **Living card:** [`../ITINERARY.md`](../ITINERARY.md)
 
 **DIFFUSER -- 164 SCRIPTS FIND THE TREE ROOT BY A DIRECTORY NOTHING TRACKS.**
-Elder [shelved whole](archive/20260916-211800_itinerary-landed-accounts.md), its two asks with it.
+Elder [shelved whole](20260916-211800_itinerary-landed-accounts.md), its two asks with it.
 **AETHER HEARS** (row 0, N=5144 -- advanced by hand past row 4, read here last lap): the page
 nobody answered.
 **THE DOOR WAS MINE AND I CLOSED IT BY RUNNING RATHER THAN READING.** Last lap's census named a
