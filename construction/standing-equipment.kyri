@@ -6944,6 +6944,37 @@ path tools/a/aurora_placement_witness.rish
 tier lap
 seated 20260916.042700
 
+# aurora_file_placement -- the step aurora_placement's second erratum named and nobody took. That
+# reading found every assignment of MODULES to nodes overflows a node at either grid row 7 names,
+# and closed on one sentence: name which FILES sit on which node, since the coarsening is forced
+# rather than optional. This guard grades the unit that replaces it, in three readings.
+#
+# WHERE THE UNIT STOPS FITTING. Divide tracked non-symlink Rye bytes by the node count and compare
+# the largest single file against that equal share. Measured 20260917: 35,113,670 bytes over 1,761
+# files, largest caravan/farewell.rye at 568,249 -- 6.5 percent of a quarter, 25.9 percent of a
+# sixteenth, and 103.6 percent of a sixty-fourth. So the file unit fits at 4 and 16 nodes and
+# OVERFLOWS at 64, one grid above the largest the row names. The erratum's "one level down" has a
+# ceiling of its own, and 4 of 44 rooms already stand over a sixteenth.
+#
+# WHAT THE FINER GRAPH HOLDS. Imports resolved at FILE granularity through the hand-filed symlinks
+# give 7,549 unordered edges over 1,561 endpoint files, against the room graph's 67 pairs -- 112.7
+# edges per pair. And 6,389 of the 7,549, a share of 0.8463, sit INSIDE one room, so a room-level
+# graph cannot see them at all and a module placement would have had every one of them free.
+#
+# WHAT THE FORCED UNIT COSTS. The capacity-constrained greedy layout keeps 0.2184 of edges on one
+# node at 16 nodes where a room layout would keep 0.8463 -- 0.6279 of the graph turning from free
+# traffic into real hops. That is the price of a coarsening the constraint forbids, and it is the
+# finding. The layout still beats a COUNT-MATCHED random floor by 0.3651, which is the reading that
+# matters: a free-spreading floor loses to any layout at all, so the matched one is what says the
+# graph was consulted rather than the occupancy.
+#
+# Every figure here is FREE -- the tree grows -- so run the scan rather than reading them. 64 legs,
+# 5 mutations bitten, three real git repositories in a throwaway pen, 20s. tier lap.
+guard aurora_file_placement
+path tools/a/aurora_file_placement_witness.rish
+tier lap
+seated 20260917.142006
+
 # key_trade -- the elder locality-key reading names its own next step in its own last section:
 # "whether a similarity-preserving sketch lands better on the same trade. It will land better in
 # magnitude. Whether it changes a sign is a different key, a different reading." This rung is that

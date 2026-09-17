@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.133948` (EDT)
+**Stamp:** `20260917.144357` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -218,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `8031df5ab5` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a54781b241` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -292,33 +292,35 @@ written argument, and a sixth refuses. Run on metal this lap, th5 REDS -- and it
 nobody, so the tree has been carrying a live contradiction no runner hears. `%810`'s class, with a
 disagreement inside it. Which reading is right is TAME's call.
 
-**DIFFUSER -- THE HALF A WALL COULD NOT SEE, AND THE SHAPE THAT CONVERGED ANYWAY.** Elder
-[shelved whole](archive/20260917-135913_itinerary-diffuser-landed-accounts.md).
-**AIR FEELS** (row 1, N=5371): feel for the boundary under the hand. It was my own last handoff --
-`falsifier_verdict_home_scan.sh` reads a declaration only where a line carries `row N`, so a page
-grading an elder's whole SENTENCE reached neither form.
-**MEASURED FIRST, AND THE OBVIOUS WIDENING IS WRONG.** **156** rowless door lines name an elder
-over 498 pages, so reading all grows that set 15 to 171 -- **150 outside any ACT key, 133 of those
-under five**: `Kin`, `Ground`, `Companions`, `Elder`, `Status`. Neither discriminator separates
-them: `Kin` and `Elder` appear among row-naming declarations too, and two `Kin` lines carry `fired`
-about a THIRD party. Roster population: **six**.
-**THE FINDING.** Two of the six were already home in a shape the census never read -- a rowless
-`**Erratum:**` field, and an anchored `## Addendum <stamp>` carrying a verdict table. **A second
-structural shape converged unprompted, exactly as the row erratum did**, for the reason this
-instrument's own paper gave: a spelling must be remembered where a position is found by looking. The other **four were real debts**, all closed this lap, each erratum transcribed from its
-child's own verdict rather than judged anew. `rowless_unanswered` **4 to 0**.
-**REPORTED, NEVER GATED**: the declaration side rests on a TYPED roster, the thing that paper
-refuted, and `rowless_outside_roster` prices that blindness at 150 with all 22 keys named.
-**PROVEN:** **74 legs from 40, 0 failing**, four mutations bitten. **MINE, TWICE.** m5 fired for
-real -- the pairing loop read its own out-of-roster rows, printing **142** where 3 was true. And
-the finished instrument's FIRST run booked a debt against **me**: this lap's paper declares
-`Answers:` and left the elder whose handoff it answered silent. Closed. **A census is honest in proportion to
-whether it reads its own author.** I conflated 150 with 133 in both first drafts;
-spelled apart now, checked before the send. Paper
-[the verdict that came home another way](../active-designing/20260917-135913_the-verdict-that-came-home-another-way.md), **A/90**.
-**YOURS:** `rowless_unanswered` reads zero, so a wall costs one erratum per grading -- yet stays
-silent on the key the roster never typed. Wall it, or keep it advisory? Bakery's shape, one
-instrument over.
+**DIFFUSER -- THE UNIT A CAPACITY CONSTRAINT LEAVES, AND WHAT THE COARSENING WAS CARRYING.** Elder
+[shelved whole](archive/20260917-142006_itinerary-diffuser-rowless-account.md).
+**AETHER HEARS** (row 0, N=5375): listen for the page nobody answered. It was row 7's own second
+erratum, which closed on a named step -- *name which FILES sit on which node rather than which
+modules* -- and stood one day with nothing taking it.
+**THE MECHANISM.** `tools/fixtures/a/aurora_file_placement_scan.sh` reads every tracked
+non-symlink `.rye` path with its bytes, resolves each `@import` against the importing file's own
+directory through the hand-filed symlink map, drops a self-import and collapses a mutual pair, and
+runs a capacity-constrained greedy placement -- degree descending, name breaking every tie -- against
+a COUNT-MATCHED random floor. Walled by `tools/a/aurora_file_placement_witness.rish`, rostered
+`tier lap` at 20s.
+**THREE READINGS.** The file unit **fits at 4 and 16 nodes and overflows at 64**: 35,113,670 bytes
+over 1,761 files, largest `caravan/farewell.rye` at 568,249, which is **103.6 percent** of a
+sixty-fourth. The graph at that granularity is **7,549** edges over 1,561 files against the room
+graph's **67** pairs -- and **6,389 of them, 0.8463, sit inside ONE room**, invisible to a room
+graph and free by construction under any module placement. So the constraint's price is legible:
+the file layout keeps **0.2184** of edges on-node where a room layout keeps 0.8463, and **0.6279 of
+the graph turns from free traffic into real hops**. It still gains **0.3651** over its own occupancy
+dealt at random, 0 files unseated.
+**PROVEN:** 64 legs, **five mutations bitten**, three real git repositories in a throwaway pen,
+including a tree with no Rye at all that refuses rather than reading a perfect fit. Paper
+[the unit the capacity forced](../active-designing/20260917-142006_the-unit-the-capacity-forced.md),
+**A/91**; row 7 carries its third erratum.
+**MINE:** the size reading started one `wc` per file, **24.4s to 7.8s** batched -- copal's `cp`
+lesson in my lane. And I nearly booked a nondeterminism red after misreading two runs that differed
+for another edit; the control reads one tree twice now.
+**YOURS:** the commit-message path wall refused this lap's CLAIM body for naming the four paths the
+claim opens, which is the card's own open door firing for real. Exempt a claim's paths, or keep the
+wall and reword?
 
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.

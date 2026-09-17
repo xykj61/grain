@@ -1,0 +1,140 @@
+# tools/a/aurora_file_placement_witness.rish -- the unit the capacity forced.
+#
+#   rishi/bin/rishi run tools/a/aurora_file_placement_witness.rish
+#
+# Row 7 of `active-designing/20260910-060204_the-bounded-torus-moonshots.md` proposes a placement
+# map as its first witness. Its second erratum found that every assignment of MODULES to nodes
+# overflows a node at either grid the row names, and closed on one named step nobody had taken:
+#
+#   "name which FILES sit on which node rather than which modules, since the coarsening the first
+#    erratum called the harder half is forced rather than optional"
+#
+# This witness takes that step and grades three things.
+#
+# WHERE THE UNIT STOPS FITTING. The file unit is not free of the constraint that forced it. Divide
+# tracked Rye bytes by the node count and compare the largest single file: it fits at four nodes and
+# at sixteen, and overflows at sixty-four. So the erratum's "one level down" has its own ceiling,
+# one grid above the largest the row names.
+#
+# WHAT THE FINER GRAPH HOLDS. Resolving imports at file granularity through this tree's hand-filed
+# symlinks gives a graph far larger than the room graph beside it -- and the share that matters is
+# the one a room graph cannot see at all: an edge whose two files sit in ONE room. Those edges are
+# free by construction under any module placement, because both endpoints land on one node.
+#
+# WHAT THE FORCED UNIT COSTS. Capacity forbids the module placement, so that free traffic becomes
+# real hops. The scan prints both shares beside each other, and the gap between them is the price
+# of the coarsening the row cannot have.
+#
+# WHAT THIS WITNESS DOES NOT REACH. Whether a torus board arrives, and whether these files are the
+# unit a real Aurora would place. The import graph is STRUCTURE read as a lower bound on coupling,
+# with the tolerance its sibling measured; a run-time weight would differ, and this tree holds none.
+
+say "aurora-file-placement: Style Gauge, Meter -- the unit a capacity constraint leaves available."
+say "aurora-file-placement: Lens TAME -- a baseline free to spread loses to any layout at all."
+
+# --- The reading -------------------------------------------------------------
+say "aurora-file-placement: reading the unit, the graph and the placement..."
+let scan = run ["sh" "tools/fixtures/a/aurora_file_placement_scan.sh"]
+say scan.out
+assert scan.ok else "aurora-file-placement: the scan refused -- read its own keys"
+assert scan.out contains "verdict=read" else "aurora-file-placement: the scan reached no verdict"
+
+# invariant: the reading names the row it grades and the page whose named step it takes, so a key
+# pasted out of context still says which sentence it is about.
+assert scan.out contains "row=7" else "aurora-file-placement: the reading named no row"
+assert scan.out contains "the-bounded-torus-moonshots.md" else "aurora-file-placement: the reading named no page"
+assert scan.out contains "the-two-ways-a-proxy-drifts.md" else "aurora-file-placement: the reading named no answered step"
+
+# --- The bounds --------------------------------------------------------------
+# invariant: every collection this scan builds names its maximum, so a tree that grows past one is
+# refused at the edge rather than read short in silence.
+assert scan.out contains "max_files=" else "aurora-file-placement: the file bound is unnamed"
+assert scan.out contains "max_edges=" else "aurora-file-placement: the edge bound is unnamed"
+assert scan.out contains "max_grids=" else "aurora-file-placement: the grid bound is unnamed"
+assert scan.out contains "max_samples=" else "aurora-file-placement: the baseline bound is unnamed"
+assert scan.out contains "cap_slack_pct=" else "aurora-file-placement: the capacity slack is unnamed"
+
+# --- READING 1 -- where the unit stops fitting -------------------------------
+# invariant: the population was opened at all. A tree of no Rye sources would let every later key
+# read clean while measuring nothing, so the scan answers `empty` there rather than `read`.
+assert scan.out contains "rye_files=" else "aurora-file-placement: no file census was taken"
+assert scan.out contains "rye_bytes_total=" else "aurora-file-placement: no capacity term was read"
+
+# invariant: the module unit still overflows at sixteen nodes, which is the finding this witness
+# inherits and the whole reason a file unit is under test.
+assert scan.out contains "module_unit_overflows_sixteen=yes" else "aurora-file-placement: modules began to fit -- the forced coarsening is no longer forced"
+
+# invariant: the file unit fits where the module unit does not, so the erratum's named step is
+# available rather than merely proposed.
+assert scan.out contains "unit_fits_sixteen=yes" else "aurora-file-placement: the largest file outgrew a node's share at sixteen -- read the scan, then the paper"
+
+# invariant: and the file unit has its own ceiling one grid up. A reading that never refuses is a
+# reading that cannot tell a fit from a tree it failed to open.
+assert scan.out contains "unit_ceiling_nodes=16" else "aurora-file-placement: the file unit's ceiling moved -- read fit lines, then raise this"
+assert scan.out contains "first_overflowing_nodes=64" else "aurora-file-placement: the grid where the file unit overflows moved"
+assert scan.out contains "fit k=8 nodes=64" else "aurora-file-placement: the 64-node grid went ungraded"
+
+# --- READING 2 -- what the finer graph holds ---------------------------------
+# invariant: the file graph was resolved through symlinks and carries edges. Zig refuses an import
+# escaping the root file's directory, so a cross-room dependency arrives only as a symlinked name.
+assert scan.out contains "import_edges=" else "aurora-file-placement: no import graph was read"
+assert scan.out contains "cross_room_edges=" else "aurora-file-placement: symlinked cross-room imports went unresolved"
+assert scan.out contains "intra_room_edge_share=" else "aurora-file-placement: the room-invisible share went unread"
+assert scan.out contains "edges_per_room_pair=" else "aurora-file-placement: the finer graph was never compared with the room graph"
+
+# --- READING 3 -- the placement ----------------------------------------------
+assert scan.out contains "reading3=read" else "aurora-file-placement: the placement reading reached no verdict"
+
+# invariant: the capacity rule actually bound the packer -- a file it could not seat is counted
+# rather than quietly dropped on node zero and forgotten.
+assert scan.out contains "sixteen_infeasible_files=0" else "aurora-file-placement: a file could not be seated under the capacity rule"
+
+# invariant: the layout is compared against a COUNT-MATCHED baseline as well as a free one. A node
+# holding many files pays nothing for the traffic inside it, so a layout free to pile files up beats
+# a spread baseline under any weights at all -- occupancy wearing the clothes of coupling.
+assert scan.out contains "matched_gain_share=" else "aurora-file-placement: the count-matched baseline went unread"
+assert scan.out contains "sixteen_beats_matched_floor=yes" else "aurora-file-placement: the layout stopped beating its own occupancy dealt at random -- the graph is buying nothing"
+
+# invariant: the price of the forbidden coarsening is printed as two shares beside each other, so a
+# reader sees what a module placement would have had free and what the file placement keeps.
+assert scan.out contains "room_layout_same_node_share=" else "aurora-file-placement: the room layout's free traffic went unread"
+assert scan.out contains "file_layout_same_node_share=" else "aurora-file-placement: the file layout's kept traffic went unread"
+assert scan.out contains "free_traffic_lost=" else "aurora-file-placement: the price of the forced unit went unread"
+
+# --- The control: real repositories in a throwaway pen -----------------------
+say "aurora-file-placement: the control -- three real repositories in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/a/aurora_file_placement_control.sh"]
+say ctl.out
+assert ctl.ok else "aurora-file-placement: the control refused -- read its own leg lines"
+assert ctl.out contains "control_verdict=ok" else "aurora-file-placement: the control reached no ok verdict"
+
+# invariant: the control tallies its own legs and this witness asserts both the count and the
+# failure count, so a leg written tomorrow is heard the day it lands rather than passing unread
+# under a green verdict.
+assert ctl.out contains "control_failures=0" else "aurora-file-placement: a planted behavior differed from what was stated"
+assert ctl.out contains "control_checks=64" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
+
+# invariant: each of the five mutations was planted AND bit. A refusal proven only in the passing
+# direction cannot be told from a bypass.
+assert ctl.out contains "leg m1_bites ok" else "aurora-file-placement: leaving import symlinks unresolved went unfelt"
+assert ctl.out contains "leg m2_bites ok" else "aurora-file-placement: dropping the self-import guard went unfelt"
+assert ctl.out contains "leg m3_bites ok" else "aurora-file-placement: pricing a mutual import twice went unfelt"
+assert ctl.out contains "leg m4_bites ok" else "aurora-file-placement: the room comparison stopped separating intra from cross"
+assert ctl.out contains "leg m5_bites ok" else "aurora-file-placement: removing the capacity test let a node fill past its bound"
+
+# invariant: the refusing side of the capacity reading is proven on a pen holding one file too big
+# for any node's share, so `file_fits=yes` on this tree is a reading rather than a constant.
+assert ctl.out contains "leg p1_fit_k2_no ok" else "aurora-file-placement: an oversized file was read as fitting"
+assert ctl.out contains "leg p1_fits_sixteen_no ok" else "aurora-file-placement: the pen's oversized file fit a sixteenth"
+assert ctl.out contains "leg p1_ceiling_zero ok" else "aurora-file-placement: a tree with no fitting grid reported one"
+
+# invariant: every way an edge list goes wrong is planted in one pen and each is refused by name --
+# a self-import, an import naming no file, a mutual pair, and a cross-room import through a symlink.
+assert ctl.out contains "leg p1_edges ok" else "aurora-file-placement: the pen's edge count moved -- a broken edge was admitted or a real one dropped"
+assert ctl.out contains "leg p1_intra_share ok" else "aurora-file-placement: the pen's intra-room share moved"
+
+# invariant: a tree with no Rye at all refuses rather than reading zero, since an empty population
+# fits every node trivially and would score a perfect capacity reading.
+assert ctl.out contains "leg p3_empty_verdict ok" else "aurora-file-placement: an empty tree was read as a real population"
+
+say "GREEN: aurora-file-placement -- the file unit fits at sixteen nodes and overflows at sixty-four, its graph is mostly edges a room graph cannot see, and the layout beats its own occupancy dealt at random."

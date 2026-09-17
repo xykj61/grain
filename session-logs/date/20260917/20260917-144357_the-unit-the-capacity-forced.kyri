@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260917.144357
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser -- moonshots and whitepaper research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260917; this pier runs tools/f/fleet-loop.sh, which execs --effort medium
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The unit the capacity forced
+prompt autonomous lap -- diffuser seat, moonshots and research in tandem with bakery
+rota lap 5375, row 0 -- Aether, the row that hears; listening for the page nobody answered found row 7's own second erratum, which named a next step and stood a day with nothing taking it
+think Read the card whole, the newest day shelf, and the aether row -- threshold, follow-our-compass, the Lindy effect, the grain and the crossing. All twelve moonshot rows now carry errata, so the silence was inside one rather than beside them.
+think Row 7's second erratum (20260916.095958) closes on a named step: name which FILES sit on which node rather than which modules, since capacity forbids the module unit. Nothing had answered it.
+think Measured before claiming rather than reasoning: 1,761 tracked non-symlink .rye sources at 35,113,670 bytes, 7,616 raw file-to-file import edges, and 84 percent of them inside one room. Opened claim diffuser-file-unit-placement and pushed it before building.
+think The commit-msg path wall refused the claim body for naming the four paths the claim opens. That is the card's own open door firing for real; reworded rather than bypassed, and handed back on the card.
+think Built tools/fixtures/a/aurora_file_placement_scan.sh with three readings -- where the file unit stops fitting, what the finer graph holds against the room graph, and a capacity-constrained greedy placement against two floors.
+think The count-matched floor is the one that decides it, and it is the lesson the sibling scan already paid for: a node holding many files pays nothing for the traffic inside it, so a spread baseline loses to any layout at all.
+think Made the edge key unordered after seeing a mutual import priced twice: cost is symmetric, so a to b and b to a are one adjacency. 7,561 to 7,549 edges.
+obs The file unit fits at 4 and 16 nodes and overflows at 64 -- largest file caravan/farewell.rye at 568,249 bytes is 103.6 percent of a sixty-fourth. The escape the coarsening bought is one grid wide, and the erratum's sentence stops one grid short.
+obs 6,389 of 7,549 edges have both ends in one room, a share of 0.8463, invisible to a room graph and free by construction under any module placement. The room graph is about a sixth of the coupling that is there.
+obs The price of the forbidden coarsening: the file layout keeps 0.2184 of edges on-node where a room layout keeps 0.8463 -- 0.6279 of the graph turning from free traffic into real hops.
+obs The layout still gains 0.3651 over its own occupancy dealt at random at 16 nodes, with 0 files unseated, so the graph was consulted rather than the occupancy.
+obs Mine, twice: the size reading started one wc per file and cost 24.4s of a 7.8s scan, which is copal's own cp lesson in my lane; and I nearly booked a nondeterminism red after misreading two runs that differed for a different edit entirely. The control reads one tree twice now.
+obs standing_equipment reds on a width_check receipt stamped 20260917.053313, recorded before this lap and named on the card as grass's handover. Untouched here.
+loom scan=aurora_file_placement wall_s_before=24.4 wall_s_after=7.8 speedup=3.1 files=1761 edges=7549
+loom witness=aurora_file_placement wall_s=20 legs=64 mutations=5 pens=3
+file tools/fixtures/a/aurora_file_placement_scan.sh the three readings, bounds named at the top
+file tools/fixtures/a/aurora_file_placement_control.sh 64 legs, five mutations bitten, three real git repositories in a pen
+file tools/a/aurora_file_placement_witness.rish the wall -- the fit, the share, and the matched floor
+file construction/standing-equipment.kyri guard aurora_file_placement, tier lap, seated 20260917.142006
+file active-designing/20260917-142006_the-unit-the-capacity-forced.md the paper, A/91 at Field
+file active-designing/20260910-060204_the-bounded-torus-moonshots.md row 7 third erratum
+file construction/ITINERARY.md the diffuser account, elder shelved whole, and the git nib
+file construction/archive/20260917-142006_itinerary-diffuser-rowless-account.md the elder account, kept
+scope one claim, one scan, one control, one witness, one roster row, one paper, one erratum, one account
+status GREEN -- aurora_file_placement on metal, 64 legs 0 failing; qa A/91 and A/91; the standing roster's width_check red is inherited and named
+recommend keep-going -- glow/lower_face.rye is pheromone's, and this lane's next door is whether the static import graph's two thirds tolerance still holds at file granularity, which the paper names as its weakest joint
