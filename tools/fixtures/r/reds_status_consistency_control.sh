@@ -7,7 +7,7 @@
 # -- an over-eager reading that refused ordinary rows would make reds-first impossible, which is a
 # worse failure than the one the scan was written for.
 #
-# Thirty-four cases on planted markdown in a throwaway directory -- the count this file's own
+# Forty-four cases on planted markdown in a throwaway directory -- the count this file's own
 # `cases_ok=` line prints, rather than a number recited beside it, which is how the elder
 # twenty-nine outlived three additions. The pen is handed to the scan through
 # REDS_SPINE_GLOB, which tools/fixtures/r/reds_spine_files.sh honors, so the living ledger is never
@@ -225,6 +225,66 @@ fresh_pen
 row a.md 41 'The opening line was wrong, and OPENING a second door made it worse. **CLOSED** -- repaired.'
 run_pen
 check fold_blocked_whole_word 'fold_blocked_rows=0'
+
+# ---- REDS %796: a noun phrase about PROSE is not a claim about a row ---------------------------
+# The real pair replayed. %792 quoted the closing line of %730 to say the written habit stood
+# unread, and the proximity rule read the noun phrase as a closure claim against a row that is
+# genuinely open. The quoting row must walk free while every verb form keeps its teeth, so each
+# exclusion below is planted in both directions.
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'The clause stands. **OPEN** -- no instrument reaches it.'
+row a.md 42 'The eighth firing. **BOOKED** -- and the closing line of `%41` -- seven firings by six hands says the written habit does not reach the moment of typing -- was written a day before this one.'
+run_pen
+check closing_line_free 'contradicted_rows=0'
+check closing_line_row_still_read 'open_rows=1'
+[ "$CODE" -eq 0 ] && say closing_line_ungated ok || say closing_line_ungated RED
+
+# ---- the same row with the verb rather than the noun still bites --------------------------------
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'The clause stands. **OPEN** -- no instrument reaches it.'
+row a.md 42 'The eighth firing. **BOOKED** -- and the repair closed `%41` with it.'
+run_pen
+check closing_verb_still_bites 'contradicted_rows=1'
+
+# ---- a bare closing with no noun behind it keeps every tooth it had -----------------------------
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'The clause stands. **OPEN** -- no instrument reaches it.'
+row a.md 42 'The repair landed. **BOOKED** -- closing `%41` in the same round.'
+run_pen
+check bare_closing_still_bites 'contradicted_rows=1'
+
+# ---- the other three nouns read the same way ----------------------------------------------------
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'The clause stands. **OPEN** -- no instrument reaches it.'
+row a.md 42 'A quotation. **BOOKED** -- the closing sentence of `%41` and its closing word and its closing paragraph all say so.'
+run_pen
+check closing_nouns_free 'contradicted_rows=0'
+
+# ---- a row that writes the bold OPEN marker beside a peer is describing, never closing ----------
+# %796 booked the fault above and tripped the same guard on its own account of it, because a row
+# narrating a misread closure writes the verb beside the number it is defending.
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'The clause stands. **OPEN** -- no instrument reaches it.'
+row a.md 42 'The guard misread. **BOOKED** -- the scan reads this row as claiming to close `%41`, `%41` still reads **OPEN**, and nothing is inconsistent.'
+run_pen
+check describing_row_free 'contradicted_rows=0'
+# Two open rows rather than one, by the ledger own last-marker rule: the describing row quotes
+# the bold OPEN marker after its own BOOKED, so it reads open itself. That is the elder rule
+# working, and naming it here keeps the leg from asserting a number nobody can defend.
+check describing_row_reads_open 'open_rows=2'
+
+# ---- and the same sentence without the marker still bites, so the exclusion is the marker --------
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'The clause stands. **OPEN** -- no instrument reaches it.'
+row a.md 42 'The guard misread. **BOOKED** -- the scan reads this row as claiming to close `%41`, which still reads open in lowercase prose.'
+run_pen
+check describing_without_marker_bites 'contradicted_rows=1'
 
 # ---- an empty spine exits differently from a passing run --------------------------------------
 set +e

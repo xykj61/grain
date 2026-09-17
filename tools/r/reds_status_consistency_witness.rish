@@ -65,6 +65,19 @@ assert control.out contains "case=last_marker_wins ok" else "reds-status-consist
 assert control.out contains "case=fold_blocked_ungated ok" else "reds-status-consistency: fold_blocked is reported, never gated"
 assert control.out contains "case=fold_blocked_counted ok" else "reds-status-consistency: a closed row carrying the bare word OPEN must be counted"
 assert control.out contains "case=fold_blocked_whole_word ok" else "reds-status-consistency: prose about an opening is not that word"
+# REDS %796 -- a noun phrase about prose, and a row describing a closure rather than making one.
+# Named one at a time rather than left to the tally, because a leg no witness quotes may flip from
+# ok to RED while every other assert passes and the only visible effect is a count that stops
+# rising -- the control_leg_heard finding, which reached this pair through its own sibling.
+assert control.out contains "case=closing_line_free ok" else "reds-status-consistency: a quoted closing line is prose, never a closure claim"
+assert control.out contains "case=closing_line_row_still_read ok" else "reds-status-consistency: the quoting row must still be read for its own status"
+assert control.out contains "case=closing_line_ungated ok" else "reds-status-consistency: a quoted closing line must not red the gate"
+assert control.out contains "case=closing_verb_still_bites ok" else "reds-status-consistency: the verb closed must keep every tooth it had"
+assert control.out contains "case=bare_closing_still_bites ok" else "reds-status-consistency: closing with no noun behind it is still a claim"
+assert control.out contains "case=closing_nouns_free ok" else "reds-status-consistency: sentence, word and paragraph read as line does"
+assert control.out contains "case=describing_row_free ok" else "reds-status-consistency: a row quoting the bold OPEN marker is describing a status"
+assert control.out contains "case=describing_row_reads_open ok" else "reds-status-consistency: the describing row takes the last marker on its own line"
+assert control.out contains "case=describing_without_marker_bites ok" else "reds-status-consistency: without the bold marker the same sentence is still a claim"
 assert control.out contains "case=empty_spine_misuse ok" else "reds-status-consistency: an empty spine must exit distinctly"
 assert control.out contains "cases_red=0" else "reds-status-consistency: every planted case must agree"
 assert control.out contains "control=ok" else "reds-status-consistency: the control must agree with itself"

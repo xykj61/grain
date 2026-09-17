@@ -43,6 +43,15 @@
 # ALSO carries **OPEN** -- and a row marked open, named beside a closing word in another row, is
 # exactly the ambiguity this page must not carry, whichever way it resolves.
 #
+# TWO PHRASES ARE READ PAST, both seated by REDS %796, and both about a row that DESCRIBES a
+# closure rather than making one. First, `closing` touching `line`, `sentence`, `word` or
+# `paragraph` names a piece of writing -- a row quoting the last sentence of a peer writes that
+# phrase, and %792 did. Second, a window carrying the bold **OPEN** marker is a row asserting its
+# peer is open, which is the opposite of closing it; %796 booked the first fault and tripped the
+# guard again on its own account of it. Measured before both were seated: 55 claims stand across
+# 716 rows and exactly one carries the bold marker in its window. Every verb form keeps every
+# tooth it had, and a bare `closing` with no noun behind it is read exactly as before.
+#
 # WHAT IT READS, and what it does not. Prose rows only -- `**REDS %N` and `**REDS #N` -- because
 # only prose rows carry markers; the 83 elder table rows predate the habit and are counted by the
 # spine's own scans instead. A row number appearing on more than one line (a row plus a pointer to
@@ -124,9 +133,28 @@ function last_marker(s,   pos, rest, hit, len, found, word) {
     if (!match(rest, /clos(e|es|ed|ing|ure)/)) break
     hit = pos + RSTART - 1
     len = RLENGTH
+    pos = hit + len
+    # A NOUN PHRASE ABOUT PROSE IS NOT A CLAIM ABOUT A ROW (REDS %796). The words close, closes
+    # and closed are the verbs a row writes when it claims a closure; closing followed by line,
+    # sentence, word or paragraph names a piece of WRITING, and a ledger whose rows cite one
+    # another writes that phrase whenever a row quotes the last sentence of a peer. %792 did
+    # exactly that -- quoting the closing line of %730 to say the written habit stood unread --
+    # and the guard answered ledger_contradicts_itself on a ledger where every row was true. Only
+    # the four nouns are read past, and only where they touch the word, so a bare closing and
+    # every verb form keep every tooth they had.
+    if (substr($0, hit, len) == "closing" && match(substr($0, hit + len), /^[ `*_,-]*(line|sentence|word|paragraph)/)) continue
     s = hit - window; if (s < 1) s = 1
     ctx = substr($0, s, window * 2 + len)
-    pos = hit + len
+    # A ROW THAT WRITES THE BOLD OPEN MARKER BESIDE A PEER IS ASSERTING THAT PEER IS OPEN, which
+    # is the opposite of claiming to have closed it. The first exclusion above closed %792 and the
+    # row that BOOKED it, %796, tripped the same guard one sentence later -- it narrates the
+    # misreading, so it writes the verb close beside %730 and then writes that %730 still reads
+    # **OPEN**. A closing row writes its peer CLOSED; only a describing row writes it open.
+    # Measured across the whole spine before it was seated: 55 closure claims stand, and exactly
+    # one carries the bold OPEN marker in its window -- this false one. The honest limit is the
+    # mirror case, a row claiming a closure while quoting the peer as **OPEN** in the same sixty
+    # characters, which contradicts itself in prose and stands nowhere in 716 rows.
+    if (ctx ~ /\*\*OPEN/) continue
     cc = ctx
     # A CUSTODY GATE WEARS THE SAME SIGIL AS A LEDGER ROW. `.claude/rules/git-signing.md`
     # seats `%` for any number this tree assigns itself -- REDS rows, custody gates, errata,
