@@ -22,6 +22,15 @@ trap 'rm -rf "$pen"' EXIT
 # mid-run -- so the tracked file is read once, here, and never written.
 cp "$scan" "$pen/scan.sh"
 scan="$pen/scan.sh"
+
+# The ceiling is READ off the copied scan rather than spelled here. It falls whenever a lap
+# converts a copy into a stub, and a control carrying its own copy of the number reds on the
+# very lap that lowers it -- which is a guard refusing the repair it exists to welcome. Two
+# legs did exactly that on `20260917` when the second cohort took it 23 to 16.
+tree_ceiling="$(sed -n 's/^CEILING=\([0-9][0-9]*\)$/\1/p' "$scan")"
+case "$tree_ceiling" in
+    ''|*[!0-9]*) echo "control_verdict=no_ceiling_read"; exit 1 ;;
+esac
 legs=0
 failed=0
 
@@ -74,6 +83,7 @@ EOF
 
 # --- a room with the rule published and nothing else --------------------------------------
 a="$pen/a"; mkdir -p "$a/glow"; plant_rule "$a"
+leg "the ceiling is derived, not spelled"    "$tree_ceiling"                   "$(sed -n 's/^CEILING=\([0-9][0-9]*\)$/\1/p' "$(pwd)/tools/fixtures/g/glow_ident_duplication_scan.sh")"
 leg "an empty room reads zero copies"        "$(read_field "$a" copies)"       "0"
 leg "the published rule is seen"             "$(read_field "$a" published)"    "yes"
 leg "the rule's own doc comment is read past" "$(read_field "$a" copies)"      "0"
@@ -89,12 +99,12 @@ leg "the copies are named"                   "$( ( cd "$a" && sh "$scan" --list 
 # --- the ceiling refuses, then the plant is lifted -----------------------------------------
 # The in-place flag is GNU-only and gated at zero (`shell_dialect`), so the swap reads to a
 # new file and writes back through the original.
-sed 's/^CEILING=23$/CEILING=1/' "$scan" > "$pen/ceil.sh" && cat "$pen/ceil.sh" > "$scan"
+sed "s/^CEILING=$tree_ceiling\$/CEILING=1/" "$scan" > "$pen/ceil.sh" && cat "$pen/ceil.sh" > "$scan"
 leg "two copies over a ceiling of one refuse" "$(read_field "$a" under_ceiling)" "no"
 rm -f "$a/glow/lower_two.rye"
 leg "lifting one plant returns it to green"   "$(read_field "$a" under_ceiling)" "yes"
-sed 's/^CEILING=1$/CEILING=23/' "$scan" > "$pen/ceil.sh" && cat "$pen/ceil.sh" > "$scan"
-leg "the ceiling is restored"                 "$(read_field "$a" ceiling)"      "23"
+sed "s/^CEILING=1\$/CEILING=$tree_ceiling/" "$scan" > "$pen/ceil.sh" && cat "$pen/ceil.sh" > "$scan"
+leg "the ceiling is restored"                 "$(read_field "$a" ceiling)"      "$tree_ceiling"
 
 # --- a stub reverted to a copy is counted again --------------------------------------------
 plant_copy "$a" lower_three

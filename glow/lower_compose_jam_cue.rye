@@ -58,9 +58,12 @@
 //! face->call compose stay on their own lowers.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rf = @import("rune_face.rye");
 const expr = @import("expr.rye");
 const lower_multi = @import("lower_multi.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rf.ParseError || expr.ParseError || lower_multi.LowerError || error{
     Overflow,
@@ -74,22 +77,21 @@ pub const LowerError = rf.ParseError || expr.ParseError || lower_multi.LowerErro
 
 pub const jam_cue_expect: u32 = 3;
 
-fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const ch = face[i];
-        const mapped: u8 = if (ch == '-') '_' else ch;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rf.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes
+/// -- is the room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller -- a return width is authored API, where TAME asks a fixed width and leaves
+    // `usize` at the seam; the record is dropped here because a caller wanting it reaches
+    // `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rf.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn clause_text(face: []const u8, mold: []const u8, buf: *[rf.max_name_len * 2 + 1]u8) LowerError![]const u8 {
@@ -477,17 +479,17 @@ pub fn parse_jam_cue(src: []const u8) LowerError!JamCueSpec {
 
 fn emit_jam_cue(spec: *const JamCueSpec, welcome: bool, out: []u8) LowerError!u32 {
     var zp: [rf.max_name_len]u8 = undefined;
-    const pn = try zig_safe_ident(pack_face_slice(spec), &zp);
+    const pn = try zig_safe_ident(pack_face_slice(spec), &zp, "pack-face");
     var zr: [rf.max_name_len]u8 = undefined;
-    const rn = try zig_safe_ident(right_face_slice(spec), &zr);
+    const rn = try zig_safe_ident(right_face_slice(spec), &zr, "right-face");
     var zjl: [rf.max_name_len]u8 = undefined;
-    const jln = try zig_safe_ident(jam_left_slice(spec), &zjl);
+    const jln = try zig_safe_ident(jam_left_slice(spec), &zjl, "jam-left");
     var zjr: [rf.max_name_len]u8 = undefined;
-    const jrn = try zig_safe_ident(jam_right_slice(spec), &zjr);
+    const jrn = try zig_safe_ident(jam_right_slice(spec), &zjr, "jam-right");
     var zpa: [rf.max_name_len]u8 = undefined;
-    const pan = try zig_safe_ident(pack_atom_slice(spec), &zpa);
+    const pan = try zig_safe_ident(pack_atom_slice(spec), &zpa, "pack-atom");
     var zmr: [rf.max_name_len]u8 = undefined;
-    const mrn: usize = if (spec.mix_rr_len > 0) try zig_safe_ident(mix_rr_slice(spec), &zmr) else 0;
+    const mrn: u32 = if (spec.mix_rr_len > 0) try zig_safe_ident(mix_rr_slice(spec), &zmr, "mix-rr") else 0;
     const left_v: u32 = if (spec.has_binds) spec.left_value else expr.jam_demo_left;
     const right_v: u32 = if (spec.has_binds) spec.right_value else expr.jam_demo_right;
     const atom_v: u32 = if (spec.has_three_binds)
