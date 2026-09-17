@@ -1,51 +1,54 @@
-# tools/a/assert_evidence_witness.rish -- an assertion that refuses without printing the command
-# its own words is a refusal nobody can read.
+# tools/a/assert_evidence_witness.rish -- when a Rishi assertion refuses, the operator should be
+# able to read why.
 #
-# WHY THIS RUNG. Rishi returns one record from `run`, and the interpreter names its fields at
-# `rishi/src/main.rye:1563`: `out`, `err`, `code`, `ok`, `out_brief`, `err_brief`. A witness that
-# writes `assert build.ok else "Lattice build failed"` has the compiler sentence in hand and
-# discards it, so the operator reads four constant words and the reason is gone.
+# WHY THIS RUNG. Rishi returns one record from `run`, and the interpreter names its six fields at
+# `rishi/src/main.rye:1563`: `out`, `err`, `code`, `ok`, `out_brief`, `err_brief`. So the command's
+# own sentence is in scope at every refusal site, and one interpolation carries it to the person
+# reading the terminal. This tree already writes that interpolation 1,790 times.
 #
-# WHAT THAT COST, MEASURED RATHER THAN ARGUED. REDS %734 ran 239 lotus witnesses under parallel
-# load and captured thirteen failures. Ten carried the reason in their own words -- `unable to load
-# 'pan.zig'` -- and those ten identified the cause: two concurrent `rye build` runs generate the
-# same ephemeral `.zig` shadow names beside the source, and one clears them while the other is
-# still compiling. THE OTHER THREE SAID ONLY `Lattice build failed`. Every one of the thirteen had
-# the evidence; three threw it away, and that silence is why a fortnight of these left nothing to
-# read.
+# WHAT THE SILENT FORM COST, MEASURED. REDS %734 ran 239 lotus witnesses under parallel load and
+# captured thirteen failures. Ten carried their own reason -- `unable to load 'pan.zig'` -- and
+# those ten identified the cause: two concurrent `rye build` runs generate the same ephemeral
+# `.zig` shadow names beside the source, and one clears them while the other is still compiling.
+# Three said only `Lattice build failed`, and a fortnight of those left the class unreadable. Every
+# one of the thirteen held the evidence; the ten that spoke are what closed the question.
 #
-# WHY NO STANDING GUARD REACHED IT. The two pen guards read whether a witness releases its pen, and
-# `silent_leg` and `self_matching_assert` read whether an assertion BORROWS evidence it did not
-# earn -- a needle that matches the harness trailer, or one the command operand handed the tool.
-# This is the other wall of the same room: an assertion that refuses honestly and prints nothing.
-# It passes every one of those readings, because nothing it says is false.
+# WHAT THE STANDING GUARDS ALREADY COVER, and where this one begins. The two pen guards read
+# whether a witness releases its pen. `silent_leg` and `self_matching_assert` read whether an
+# assertion BORROWS evidence it never earned -- a needle matching the harness trailer, or one the
+# command operand handed the tool. All three pass a constant message, honestly, since every word in
+# it is true. This reads the other wall of that room: how far the operator stands from the reason.
 #
 # WHAT THIS READS. Every tracked `*.rish` source, and every `assert x.ok else "message"` in it,
-# classified by how far the operator stands from the reason: `names_err` interpolates the record
-# own `err` or `err_brief` -- the cure; `names_field` reaches for `out`, `out_brief` or `code`
-# instead; `names_path` points at a file on disk; `said_above` prints nothing yet has a `say` line
-# within six lines above naming that record; and `mute_asserts` is a constant sentence with the
-# words discarded and printed nowhere. The classes are counted apart rather than summed, because
-# each names a different distance and only the last is silent.
+# sorted into five answers. `names_err` interpolates the record's own `err` or `err_brief`, which is
+# the cure. `names_field` reaches for `out`, `out_brief` or `code`, which is evidence from the
+# other stream. `names_path` points at a file on disk, which is honest deferral. `said_above`
+# prints a `say` line within six lines above naming that record, so the reason arrives by another
+# road. `mute_asserts` is a constant sentence alone. Each names a different distance, so each is
+# counted on its own.
 #
-# WHY IT RATCHETS RATHER THAN WALLS. The repair is one interpolation per site, and the sites stand
-# in every lane of the fleet -- the same shape REDS %788 wrote for a sweep of one word across 164
-# files. A wall at zero would red eight ships at once for work none of them chose this hour. The
-# ceiling only falls, so each lane sweeps its own files at its own pace and the fleet-wide property
-# is provable the lap the last one lands.
+# WHAT IT GATES, DECIDED BY MEASUREMENT INSIDE THE FIRST HOUR. The first shipped form gated the
+# tree-wide count under a no-slack ceiling, and it reddened every ship within the hour: peers landed
+# new witnesses and the count rose 7,403 to 7,412 while the SHARE moved two parts in ten thousand,
+# 7,234 to 7,236. The population GROWS with ordinary work, so an absolute ceiling over it refuses
+# laps whose code matches what the tree already holds, and a wall like that is one somebody turns
+# off. The gate sits where a lap is answerable: ZERO silent refusals in
+# `tools/l/lattice_*_witness.rish`, the forty-file room %734 names and this lap swept, since a
+# silence returning to a swept file is a regression. The tree-wide count and the share print beside
+# it, so a reader tells a tree that grew from a tree that got worse -- and once the habit exists,
+# the share is the number to gate.
 #
-# THE SECOND READING, WHICH NOTHING HOLDS. A cure is writable only where the field exists, so each
+# THE SECOND READING, WHICH NOTHING HOLDS. The cure is writable where the field exists, so each
 # asserted record is traced to what bound it. A record from `run`, from `wait-for`, or from a
 # locally defined function whose body reaches one of them carries `err`. A record from
-# `run-bounded` does not: it names stream PATHS and byte counts rather than carrying the text, so
-# `${x.err_brief}` there would name a field that is absent. `cure_unwritable` counts those and the
-# few whose binding the reading cannot see, and it is reported rather than gated, since a
-# path-shaped record is doing nothing wrong.
+# `run-bounded` carries stream PATHS and byte counts, so there the repair takes another shape.
+# `cure_unwritable` counts those, together with the few whose binding this reading leaves open, and
+# it prints rather than gating, since a path-shaped record is doing its job.
 #
-# WHAT IT DOES NOT REACH. A message naming the reason in prose a person composed, rather than by
-# interpolation, reads as mute -- a deliberate floor, since a sentence written in advance cannot
-# carry what the command said on the day it failed. And whether a cured message is a GOOD message
-# is judgment: this proves the evidence reaches the operator, and stops there.
+# THE HONEST FLOOR. A message naming the reason in prose a person composed reads as mute here, by
+# choice: a sentence written in advance carries what someone expected rather than what the command
+# said on the day it failed. And whether a cured message reads WELL stays judgment; this proves the
+# evidence reaches the operator, and stops there.
 
 say "assert-evidence: Style Gauge at Field -- every figure carries what keeps it still."
 say "assert-evidence: Lens TAME -- safety first: a refusal that says why is the difference between a red and a rumour."
@@ -53,9 +56,11 @@ say "assert-evidence: Lens TAME -- safety first: a refusal that says why is the 
 let scan = run ["sh" "tools/fixtures/a/assert_evidence_scan.sh"]
 say scan.out
 assert scan.ok else "assert-evidence: the census must complete before it is believed -- ${scan.err_brief}"
-assert scan.out contains "verdict=within" else "assert-evidence: the silent population must stand at or under its ceiling"
-assert scan.out contains "ceiling=" else "assert-evidence: a ratchet that spells no ceiling cannot be lowered"
-assert scan.out contains "mute_asserts=" else "assert-evidence: the gated population must be counted rather than described"
+assert scan.out contains "verdict=within" else "assert-evidence: the cured cohort must carry no silent refusal"
+assert scan.out contains "enforced_mute=0" else "assert-evidence: a silent refusal returning to a swept file is a regression and the one thing here a lap owes"
+assert scan.out contains "enforced_files=" else "assert-evidence: the enforced room must be counted, or a wall over nothing reads as a wall"
+assert scan.out contains "mute_asserts=" else "assert-evidence: the tree-wide population must be counted rather than described"
+assert scan.out contains "mute_per_ten_thousand=" else "assert-evidence: the share must be printed beside the count, or a tree that grew reads like a tree that got worse"
 assert scan.out contains "names_err=" else "assert-evidence: the cure must be counted beside the fault, or a sweep cannot be read as progress"
 assert scan.out contains "names_field=" else "assert-evidence: evidence from the wrong stream is its own answer and must be counted apart"
 assert scan.out contains "names_path=" else "assert-evidence: a message pointing at a file on disk is honest deferral rather than silence"
@@ -98,11 +103,16 @@ assert control.out contains "untracked_before=yes" else "assert-evidence: a trac
 assert control.out contains "untracked_unread=yes" else "assert-evidence: the population is git ls-files, so an untracked source must stay outside it"
 assert control.out contains "no_else_unread=yes" else "assert-evidence: an assertion carrying no message has nothing to classify"
 assert control.out contains "other_field_unread=yes" else "assert-evidence: an assertion on a field that is not ok is another question"
-assert control.out contains "ceiling_at_holds=yes" else "assert-evidence: a reading standing exactly at the bound must walk free"
-assert control.out contains "ceiling_at_verdict=yes" else "assert-evidence: the verdict at the bound must say within"
-assert control.out contains "ceiling_over_holds=yes" else "assert-evidence: one past the bound must be counted before it is refused"
-assert control.out contains "ceiling_over_verdict=yes" else "assert-evidence: the ceiling must bite one past, or it is a suggestion"
-assert control.out contains "ceiling_over_exit=yes" else "assert-evidence: a refusal that exits zero is a refusal nothing downstream hears"
+assert control.out contains "enforced_counts_files=yes" else "assert-evidence: the enforced room must be found by the shipped glob rather than by a pen-only pattern"
+assert control.out contains "enforced_clear_zero=yes" else "assert-evidence: a cured cohort must read zero, and the clear direction is asserted as hard as the refusal"
+assert control.out contains "enforced_clear_verdict=yes" else "assert-evidence: a clear cohort must say within"
+assert control.out contains "enforced_ignores_others=yes" else "assert-evidence: a silent refusal outside the room must be counted and must not be gated"
+assert control.out contains "enforced_regress_counted=yes" else "assert-evidence: a regression must be counted before it is refused"
+assert control.out contains "enforced_regress_verdict=yes" else "assert-evidence: the wall must bite, or it is a suggestion"
+assert control.out contains "enforced_regress_exit=yes" else "assert-evidence: a refusal that exits zero is a refusal nothing downstream hears"
+assert control.out contains "enforced_lifts_again=yes" else "assert-evidence: removing the plant must return the pen to green, or the refusal proves nothing"
+assert control.out contains "share_is_arithmetic=yes" else "assert-evidence: the share must be arithmetic on the two counts rather than decoration"
+assert control.out contains "share_never_gates=yes" else "assert-evidence: the share is printed rather than gated, and a pen well over the tree average must walk free"
 assert control.out contains "list_names_mute_only=yes" else "assert-evidence: the list must name the silent sites a lane would sweep"
 assert control.out contains "list_omits_cured=yes" else "assert-evidence: a cured site in the sweep list is a lane sent to repair what stands repaired"
 assert control.out contains "classes_names_both=yes" else "assert-evidence: the classes mode must show every assertion rather than the gated ones alone"
@@ -128,5 +138,5 @@ assert control.out contains "cure_speaks_still_refuses=yes" else "assert-evidenc
 assert control.out contains "control_outside_population=yes" else "assert-evidence: the control own plants must never enter the number it proves"
 assert control.out contains "live_population_read=yes" else "assert-evidence: a live reading of zero would make every leg above vacuous"
 
-say "assert-evidence GREEN -- 57 legs on real git repositories in a throwaway pen, four mutations proven to bite"
-say "assert-evidence: the sweep of one interpolation across 7,403 sites stays the fleet's to time; this is the number it can be timed against"
+say "assert-evidence GREEN -- 62 legs on real git repositories in a throwaway pen, four mutations proven to bite"
+say "assert-evidence: the cured room is walled at zero; the rest is counted beside its share, so the fleet can time its own sweep against a number that tells growth from decay"

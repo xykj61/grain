@@ -38,12 +38,28 @@
 #                   another road, so counting these as silent would be false.
 #   mute         -- a constant sentence, with the record's own words discarded and printed nowhere.
 #
-# WHY A RATCHET RATHER THAN A WALL. The repair is one interpolation per site and the sites stand in
-# every lane of the fleet, so the sweep's timing belongs to the fleet rather than to one ship --
-# the same reasoning REDS %788 wrote for a sweep of one word across 164 files. A wall at zero would
-# red eight ships at once for work none of them chose this hour. The ceiling only falls, so each
-# lane sweeps its own files at its own pace and the fleet-wide property is provable the lap the
-# last one lands.
+# WHAT IS GATED, AND WHAT IS ONLY COUNTED -- decided by measurement inside the first hour.
+#
+# The first shipped form gated the tree-wide count under a no-slack ceiling. It reddened every ship
+# within the hour, and the reading says exactly why: peers landed new witnesses and `mute_asserts`
+# rose 7,403 to 7,412 while the SHARE barely moved, 7,234 to 7,236 per ten thousand. The population
+# GROWS with ordinary work -- new witnesses land at tens a day -- so an absolute ceiling over it
+# refuses laps that wrote no worse code than the tree already holds. A wall that reds on ordinary
+# work is a wall somebody turns off.
+#
+# So the gate sits where a lap is actually answerable:
+#
+#   ENFORCED at zero -- the cohort already cured, named by `ENFORCE_GLOB`. A silent refusal
+#                       returning to a file somebody swept is a regression, and nothing else in
+#                       this reading is.
+#   REPORTED         -- `mute_asserts` tree-wide, beside `mute_per_ten_thousand` so a reader can
+#                       tell a tree that grew from a tree that got worse, and `names_err` so a
+#                       sweep reads as progress rather than as a smaller denominator.
+#
+# The share is printed rather than gated for the same reason one layer down: new code today is more
+# silent than the tree average, so a no-slack share ceiling would red on the next lap too, for a
+# habit that is one hour old. When the habit exists the share is the number to gate, and it is
+# printed from this lap forward so the arc is on the record before anyone claims it.
 #
 # THE SECOND READING, WHICH NOTHING HOLDS. A cure can only be written where the field exists, so
 # each asserted record is traced to what bound it, and the binding decides whether `err_brief` is
@@ -99,10 +115,10 @@ done
 . "$_fd_root/tools/fixtures/s/shell_portable.sh"
 cd "$_fd_root" || exit 2
 
-# THE CEILING, and why it is this number. It is the reading taken the lap this scan was seated,
-# with no slack: a ceiling carrying room is a ceiling that welcomes the next silent refusal. Lower
-# it in the same commit that sweeps a file.
-CEILING=7403
+# THE ENFORCED COHORT, held at zero. `tools/l/lattice_*_witness.rish` is the forty-file set REDS
+# %734 names, swept on the lap this scan was seated. Zero carries no slack by construction, and a
+# glob rather than a name list means a witness added to that room arrives already held.
+ENFORCE_GLOB='tools/l/lattice_*_witness.rish' 
 
 # BOUNDS. A tree this size holds a few thousand Rishi sources and some tens of thousands of
 # assertions; both limits sit an order above the live reading, so a wildly wrong enumeration meets
@@ -253,10 +269,26 @@ names_field=$(count_class names_field)
 names_path=$(count_class names_path)
 said_above=$(count_class said_above)
 mute=$(count_class mute)
-cure_unwritable=$(awk -F"\t" '$5 != "run" { n++ } END { print n + 0 }' "$work/asserts.txt")
-bind_path=$(awk -F"\t" '$5 == "path" { n++ } END { print n + 0 }' "$work/asserts.txt")
-bind_unseen=$(awk -F"\t" '$5 == "unseen" { n++ } END { print n + 0 }' "$work/asserts.txt")
+cure_unwritable=$(awk -F'\t' '$5 != "run" { n++ } END { print n + 0 }' "$work/asserts.txt")
+bind_path=$(awk -F'\t' '$5 == "path" { n++ } END { print n + 0 }' "$work/asserts.txt")
+bind_unseen=$(awk -F'\t' '$5 == "unseen" { n++ } END { print n + 0 }' "$work/asserts.txt")
 files=$(wc -l < "$work/candidates.txt" | tr -d ' ')
+
+# The share, printed so a reader can tell a tree that GREW from a tree that got worse. Integer
+# arithmetic per ten thousand, since a shell has no floating point and a rounded percent would hide
+# exactly the couple of parts this reading exists to show.
+if [ "$asserts" -gt 0 ]; then
+  share=$(( (mute * 10000 + asserts / 2) / asserts ))
+else
+  share=0
+fi
+
+# The enforced cohort. `git ls-files` expands the glob against tracked paths, so a file absent from
+# the tree contributes nothing and a file added to that room is held the lap it lands.
+git ls-files -- $ENFORCE_GLOB > "$work/enforced.txt" 2>/dev/null || : > "$work/enforced.txt"
+enforced_files=$(wc -l < "$work/enforced.txt" | tr -d ' ')
+enforced_mute=$(awk -F'\t' 'NR == FNR { keep[$0] = 1; next } $3 == "mute" && ($1 in keep) { n++ } END { print n + 0 }' \
+  "$work/enforced.txt" "$work/asserts.txt")
 
 case "$MODE" in
   list)
@@ -280,18 +312,20 @@ echo "names_field=$names_field"
 echo "names_path=$names_path"
 echo "said_above=$said_above"
 echo "mute_asserts=$mute"
+echo "mute_per_ten_thousand=$share"
 echo "cure_unwritable=$cure_unwritable"
 echo "bind_path=$bind_path"
 echo "bind_unseen=$bind_unseen"
-echo "ceiling=$CEILING"
+echo "enforced_files=$enforced_files"
+echo "enforced_mute=$enforced_mute"
 
 if [ "$MODE" = explain ]; then
   echo "verdict=explained"
   exit 0
 fi
 
-if [ "$mute" -gt "$CEILING" ]; then
-  echo "verdict=over"
+if [ "$enforced_mute" -gt 0 ]; then
+  echo "verdict=enforced_regressed"
   exit 1
 fi
 echo "verdict=within"

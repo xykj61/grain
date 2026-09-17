@@ -7078,10 +7078,13 @@ seated 20260917.013000
 # said only `Lattice build failed` and left nothing. Every `.ok` comes from a record the
 # interpreter builds at `rishi/src/main.rye:1563` with `err` and `err_brief` beside it, so the
 # evidence is always in hand and the cure is one interpolation. The scan counts the five answers
-# apart -- the cure, the wrong stream, a file on disk, a `say` line above, and silence -- and gates
-# the last as a ratchet. Lap tier: it reads tracked bytes alone in about three seconds, and new
-# assertions land at tens a day. The repair is one interpolation per site across every lane, so
-# the sweep timing belongs to the fleet. Lower the ceiling in the same commit that sweeps a file.
+# apart -- the cure, the wrong stream, a file on disk, a `say` line above, and silence. It gates
+# ZERO silence in `tools/l/lattice_*_witness.rish`, the room %734 names and the seating lap swept,
+# and PRINTS the tree-wide count beside its share per ten thousand. That split was decided by
+# measurement inside the first hour: an absolute ceiling over the tree-wide count reddened every
+# ship as peers landed new witnesses, 7,403 to 7,412, while the share moved two parts, 7,234 to
+# 7,236. A population that grows with ordinary work wants a share rather than a total. Lap tier: it
+# reads tracked bytes alone in about three seconds.
 guard assert_evidence
 path tools/a/assert_evidence_witness.rish
 tier lap
