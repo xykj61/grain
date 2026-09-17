@@ -11,7 +11,7 @@
 # weave.rye and its witness sit side by side here. Everything reads from the filesystem alone,
 # which makes a plain directory the honest pen.
 #
-# NINE PHASES -- one innocent, eight breaks.
+# THIRTEEN PHASES -- one innocent, ten breaks, and two lifts that name a reader.
 #   clean            -- the unmutated copy reaches GREEN, exit 0. This leg is what lets every
 #                       other phase read as the break speaking rather than the pen.
 #   gone_removed     -- the `DeleteNamesGoneLine` refusal is deleted, which is the module as it
@@ -33,6 +33,21 @@
 #                       then refuses by the correct name over a weave it has already half
 #                       changed. Nothing but claim 7's before-and-after reading can see this, so
 #                       a control without this phase would pass a module whose named errors lie.
+#   anchor_ignored     -- CLAIM 9's first half. The anchor lookup is forced never to match, so an
+#                       insert carrying an anchor falls through to the counter's answer and lands
+#                       at the END instead of just past its anchor. Every refusal stands and every
+#                       error name is right; only where a WELCOMED line goes has moved, which is
+#                       why no refusal claim can see it.
+#   run_order_reversed   -- CLAIM 9's second half, and the only change in this module that can put a
+#                       fresh insert in FIRST place: the run comparison inside `Place.less_than`
+#                       is turned around, so the newest edit sorts to the top of the document.
+#   run_order_reversed_lifted, anchor_ignored_lifted
+#                    -- each break above, run a second time with claim 9 REMOVED from the witness
+#                       copy, where both must reach exit 0. These two name which LEG is reading:
+#                       the breaks prove the law breakable, and these prove claim 9 is the one
+#                       claim that catches either. Without them both plants could be caught by
+#                       some other claim entirely and nobody would know -- which is the same
+#                       question `lifted` asks about the pen, asked about the witness instead.
 #   lifted           -- the `mutation_early` program run with an empty plant returns the same pen
 #                       to exit 0, which is the pen proving its own innocence.
 #
@@ -41,7 +56,8 @@
 # it is a real member of the same error set, so the module still compiles and the only thing that
 # has changed is what a caller is told.
 #
-# EXPECTED: control_verdict=ok, clean_exit=0, lifted_exit=0, every other phase non-zero.
+# EXPECTED: control_verdict=ok; clean_exit, lifted_exit, run_order_reversed_lifted_exit and
+# anchor_ignored_lifted_exit all 0; every other phase non-zero.
 #
 # Driven by tools/m/mantra_weave_apply_witness.rish. Run from the repository root.
 
@@ -73,11 +89,19 @@ trap 'rm -rf "$work"' EXIT
 trap 'rm -rf "$work"; exit 130' INT
 trap 'rm -rf "$work"; exit 143' TERM
 
-# Build a pen from the real sources, apply an optional sed program to the module copy,
-# then build and run. Echoes the exit code and nothing else.
+# Build a pen from the real sources, apply an optional sed program to the module copy and an
+# optional second one to the WITNESS copy, then build and run. Echoes the exit code and nothing
+# else.
+#
+# THE WITNESS PROGRAM IS WHAT LETS A PHASE ASK WHICH LEG IS READING. Mutating the module answers
+# *does this break*; removing one claim from the witness beside it answers *and is this the claim
+# that sees it*. A control that only ever mutates the module can prove a law broken and can never
+# say which reading proves it, so a leg deleted tomorrow would leave the mutation caught by
+# something else and nobody the wiser.
 run_pen() {
   name="$1"
   program="$2"
+  witness_program="${3:-}"
   pen="$work/$name"
   mkdir -p "$pen"
   cp "$module" "$pen/weave.rye"
@@ -88,6 +112,14 @@ run_pen() {
     # law that holds. `plant_apply` refuses by name, imported rather than written
     # here so the next control inherits it.
     if ! plant_apply "$pen/weave.rye" "$program" "$name"; then
+      echo "plant_matched_nothing"
+      return
+    fi
+  fi
+  if [ -n "$witness_program" ]; then
+    # Same law on the witness copy: a plant that matched nothing would leave the leg
+    # in place and make this phase read as the leg failing to catch the mutation.
+    if ! plant_apply "$pen/weave_apply_witness.rye" "$witness_program" "${name}_witness"; then
       echo "plant_matched_nothing"
       return
     fi
@@ -125,6 +157,36 @@ twice_misnamed_exit="$(run_pen twice_misnamed \
 # module still compiles and `hits` is still read. Neither error name moves.
 early='s#if (line.gen % 2 == 0) return WeaveError.DeleteNamesGoneLine;#if (line.gen % 2 == 0) return WeaveError.DeleteNamesGoneLine; self.lines.items[at].gen += 1;#; s#for (marks\[0..hits\]) |at| {#for (marks[0..0]) |at| {#'
 mutation_early_exit="$(run_pen mutation_early "$early")"
+
+# CLAIM 9's TWO PLANTS. The ninth claim reads where an insert lands when no line comes before it:
+# a null anchor keeps the counter's answer and lands LAST, and anchoring on the first line lands
+# SECOND, so first place is unreachable from either spelling. Each half needs its own break.
+#
+# `anchor_ignored` forces the anchor lookup never to match, so an anchored insert falls through to
+# the counter's answer and lands last. The error names are untouched and every refusal still
+# stands; only where a welcomed line goes has moved. This is the half claim 1 cannot see, because
+# claim 1 inserts without anchors.
+anchor_ignored_exit="$(run_pen anchor_ignored \
+  's#if (held.id().eq(anchor)) {#if (false and held.id().eq(anchor)) {#')"
+
+# `run_order_reversed` turns the run comparison in `Place.less_than` around, which is the ONLY change
+# in this module that can put a fresh insert in FIRST place -- a fresh run stands above every held
+# run, so reading runs downward puts the newest edit at the top of the document. Claim 9's null
+# anchor reads "beta, gamma, alpha" and would read "alpha, beta, gamma".
+reversed='s#if (self.run != other.run) return self.run < other.run;#if (self.run != other.run) return self.run > other.run;#'
+run_order_reversed_exit="$(run_pen run_order_reversed "$reversed")"
+
+# AND THE PHASE THAT NAMES WHICH LEG IS READING. The same reversed-run module, with claim 9's call
+# removed from the witness copy, must reach exit 0 -- which is the measurement the design paper
+# `active-designing/20260916-105110_no-anchor-names-the-head.md` states: claim 9 is the only
+# reading in this file that presses the order law's first key. A `break_not_caught` reading here
+# would mean some other claim catches it too and the paper's sentence is wrong; a non-zero exit
+# for any other reason would mean the plant did something besides what it says.
+drop9='s#    try prove_head_insert_lands_last(garden);##'
+run_order_reversed_lifted_exit="$(run_pen run_order_reversed_lifted "$reversed" "$drop9")"
+anchor_ignored_lifted_exit="$(run_pen anchor_ignored_lifted \
+  's#if (held.id().eq(anchor)) {#if (false and held.id().eq(anchor)) {#' "$drop9")"
+
 lifted_exit="$(run_pen lifted '')"
 
 report=$(
@@ -144,6 +206,14 @@ report=$(
   echo "twice_misnamed_exit=$twice_misnamed_exit"
   echo "phase=mutation_early"
   echo "mutation_early_exit=$mutation_early_exit"
+  echo "phase=anchor_ignored"
+  echo "anchor_ignored_exit=$anchor_ignored_exit"
+  echo "phase=run_order_reversed"
+  echo "run_order_reversed_exit=$run_order_reversed_exit"
+  echo "phase=run_order_reversed_lifted"
+  echo "run_order_reversed_lifted_exit=$run_order_reversed_lifted_exit"
+  echo "phase=anchor_ignored_lifted"
+  echo "anchor_ignored_lifted_exit=$anchor_ignored_lifted_exit"
   echo "phase=lifted"
   echo "lifted_exit=$lifted_exit"
 )
@@ -153,7 +223,7 @@ echo "$report"
 # deleted with nothing else changed would leave this control cheerful and blind. The witness
 # asserts both numbers, so removing a phase reds the guard rather than quietly shrinking it.
 legs_ran=$(echo "$report" | grep -c '_exit=')
-legs_expected=9
+legs_expected=13
 echo "legs_ran=$legs_ran"
 echo "legs_expected=$legs_expected"
 
@@ -162,7 +232,9 @@ verdict=ok
 # below is a number and this one is a word.
 for reading in "$clean_exit" "$gone_removed_exit" "$gone_misnamed_exit" \
                "$noline_removed_exit" "$noline_misnamed_exit" "$twice_removed_exit" \
-               "$twice_misnamed_exit" "$mutation_early_exit" "$lifted_exit"; do
+               "$twice_misnamed_exit" "$mutation_early_exit" "$anchor_ignored_exit" \
+               "$run_order_reversed_exit" "$run_order_reversed_lifted_exit" \
+               "$anchor_ignored_lifted_exit" "$lifted_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
 if [ "$verdict" = ok ]; then
@@ -171,9 +243,13 @@ fi
 if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$lifted_exit" -eq 0 ] || verdict=lift_not_innocent
+  # The claim-9 lift is read as its own word rather than folded in with `lifted`, because the two
+  # prove different things: `lifted` says the PEN is innocent, and this says the LEG is the reader.
+  [ "$run_order_reversed_lifted_exit" -eq 0 ] || verdict=claim9_not_sole_reader
+  [ "$anchor_ignored_lifted_exit" -eq 0 ] || verdict=claim9_not_sole_reader
   for broken in "$gone_removed_exit" "$gone_misnamed_exit" "$noline_removed_exit" \
                 "$noline_misnamed_exit" "$twice_removed_exit" "$twice_misnamed_exit" \
-                "$mutation_early_exit"; do
+                "$mutation_early_exit" "$anchor_ignored_exit" "$run_order_reversed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi

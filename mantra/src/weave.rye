@@ -45,6 +45,29 @@
 //! code does. An insert that OPENS the document has no line to follow, so its
 //! anchor is null and it keeps the counter's own answer -- the one case still
 //! landing at the end. A document that grows at its head wants its own lap.
+//!
+//! AND FIRST PLACE IS UNREACHABLE FROM EITHER SPELLING, measured `20260916`
+//! rather than reasoned about. Anchoring on the FIRST line lands the insert
+//! SECOND: it inherits that line's run and order key and draws a HIGHER
+//! position, and the position is the last tiebreak, so it sorts just past the
+//! anchor. The first line of a fresh weave carries order key zero and the
+//! lowest position, so no anchor a caller can name puts a line ahead of it.
+//! The residue is therefore a property of the order law rather than a
+//! forgotten branch, which is why the repair wants a word rather than a patch:
+//! the doors are read in
+//! active-designing/20260916-105110_no-anchor-names-the-head.md.
+//!
+//! BOTH SENTENCES ARE NOW READ BY A GUARD. Claim 9 of
+//! mantra/src/weave_apply_witness.rye presses them on one plant, and
+//! tools/fixtures/m/mantra_weave_apply_control.sh plants the two mutations that
+//! prove it able to red -- the anchor lookup forced false, and the order law's
+//! run comparison reversed, which is the only mutation in this file that can
+//! put a fresh insert in first place. The control then runs each break a second
+//! time with claim 9 REMOVED from the witness copy, where both must reach exit
+//! zero, so the leg that catches them is named rather than assumed. A behavior sentence in a head is exactly
+//! what a field enumeration cannot check, and this is the answer: pin the
+//! behavior, residue included, so the day the law makes room the leg reds and
+//! the head moves with it.
 //! One further shape is worth expecting, and it is the honest answer rather
 //! than a fault: where one side made TWO edits and the other made one, the
 //! other's block lands between them, because run numbers order edits and both
@@ -1425,7 +1448,11 @@ pub const Weave = struct {
             // one anchor keep the order they were written in, for the same
             // reason. An insert opening the document has no anchor and keeps the
             // counter's own answer, which is the one case still landing at the
-            // end; a document that grows at its head wants its own lap.
+            // end; a document that grows at its head wants its own lap. First
+            // place is unreachable from an anchor too -- an insert anchored on
+            // the first line inherits its run and order key and draws a higher
+            // position, and the position is the last tiebreak, so it lands
+            // second. Claim 9 of weave_apply_witness.rye holds both readings.
             if (insert_at < diff.after.len) {
                 if (diff.after[insert_at]) |anchor| {
                     for (self.lines.items) |held| {

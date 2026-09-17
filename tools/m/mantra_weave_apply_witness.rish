@@ -71,8 +71,13 @@ assert selftest.out contains "a corrected diff still applies after three refusal
 assert selftest.out contains "refused whole -- the good target still present" else "mantra-apply: the refusal-before-mutation claim is missing, and it is the only one that can see a named error handed back over a half-applied diff"
 assert selftest.out contains "refused TooManyLines" else "mantra-apply: the insert half's count refusal is missing -- this witness argues that BOTH halves read one standard, so showing one is the same fault one level up"
 assert selftest.out contains "refused CounterPastCeiling" else "mantra-apply: the insert half's counter refusal is missing"
+# Claim 9 is the file's only reading of WHERE A WELCOMED LINE GOES. Every claim above reads a
+# refusal or a presence, and a line placed wrongly is neither -- so these two sentences are the
+# whole of what stands between the module head's behavior prose and nothing reading it.
+assert selftest.out contains "lands LAST, not first" else "mantra-apply: the null-anchor placement claim is missing -- the module head has said this in prose since the anchor landed, and this leg is what reads the sentence"
+assert selftest.out contains "no anchor names the head" else "mantra-apply: the first-line anchor claim is missing -- it is the half that turns the residue from a forgotten branch into a property of the order law"
 
-say "mantra-apply: breaking the contract eight ways in a pen, so the witness is proven able to red..."
+say "mantra-apply: breaking the contract ten ways in a pen, and lifting three of the breaks, so the witness is proven able to red and claim 9 is named as the reader..."
 let control = run ["sh" "tools/fixtures/m/mantra_weave_apply_control.sh"]
 say control.err
 assert control.ok else "mantra-apply: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
@@ -85,10 +90,19 @@ assert control.out contains "lifted_exit=0" else "mantra-apply: the lifted plant
 # that holds.
 assert control.out contains "phase=mutation_early" else "mantra-apply: the control must plant the mutation back inside the walk -- a named error handed back over a half-applied diff is worse than the abort it replaced"
 assert control.out contains "phase=gone_misnamed" else "mantra-apply: the control must plant a WRONG error name as well as a missing check -- a refusal proven only by its absence is proven in one direction"
+# The two placement plants, named here for the same reason `mutation_early` is: a control that
+# stops planting a law reads exactly like a law that holds.
+assert control.out contains "phase=anchor_ignored" else "mantra-apply: the control must blind the anchor lookup -- an anchored insert falling through to the counter's answer breaks no refusal and moves no name, so nothing but claim 9 can see it"
+assert control.out contains "phase=run_order_reversed" else "mantra-apply: the control must reverse the run comparison in Place.less_than -- it is the only change in the module that can put a fresh insert in first place"
+# And the two lifts, which answer a question the other phases cannot: WHICH leg is reading. Each
+# break above is run again with claim 9 removed from the witness copy and must reach exit 0, so
+# the claim that catches the placement faults is named rather than assumed.
+assert control.out contains "run_order_reversed_lifted_exit=0" else "mantra-apply: with claim 9 removed the reversed run must walk free -- if some other claim catches it, claim 9 is not the reading this witness says it is"
+assert control.out contains "anchor_ignored_lifted_exit=0" else "mantra-apply: with claim 9 removed the blinded anchor must walk free, for the same reason"
 # A pen prints fail=0 when it is empty too, so the leg count is asserted rather than trusted:
 # deleting a phase reds this guard instead of quietly shrinking it.
-assert control.out contains "legs_expected=9" else "mantra-apply: the control must declare its leg count"
-assert control.out contains "legs_ran=9" else "mantra-apply: the control ran a different number of legs than it declares"
+assert control.out contains "legs_expected=13" else "mantra-apply: the control must declare its leg count"
+assert control.out contains "legs_ran=13" else "mantra-apply: the control ran a different number of legs than it declares"
 
 # The closing line is the MODULE'S own, read back rather than transcribed. A wrapper that
 # spells a count keeps a second copy of a number the module already publishes, and the copy

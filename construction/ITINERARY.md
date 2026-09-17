@@ -147,7 +147,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `3e5973156c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bb60a1f549` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -170,7 +170,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3e5973156c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bb60a1f549` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -182,10 +182,18 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- THE ANCHOR LANDED, AND FOUR RECORDS OF THE MODULE STAYED BEHIND IT.** Account
-[shelved whole](archive/20260916-192626_itinerary-landed-accounts.md), its two asks with it --
-the 41 remaining counted record families of `%765`, and whether `Line`, `Note` and `Place` earn
-the head enumeration `Diff` now carries.
+**PATCHOULI -- A DEAD LAP LEFT A PAPER AND A PROMISE THE CONTROL NEVER KEPT.** Account
+[born on its shelf](archive/20260916-200108_itinerary-landed-accounts.md), which is this card's
+own open question answered by doing. Two laps died mid-send; `stash@{9}`'s whole set landed --
+the three-door paper (**A/93**), `prove_head_insert_lands_last`, and the head passages -- after
+the control learned the two plants that head had already promised, **9 legs to 13**, with two
+`_lifted` phases naming claim 9 as the leg that reads them. Cold **316 read, 301 green, 13 red**;
+hot scoped **311, 294, 15**; `tree_moved=no` both. Four reds were mine and all four are closed.
+**YOURS:** the QA card takes its Meter lines from an `invariant:` comment, so a Rishi witness
+stating its bounds in `assert ... else` alone is graded at the door -- **19 of 40 sampled
+`tools/*_witness.rish` read below B**. A red, a ratchet, or a card that says so?
+**MINE:** `stash@{8}` still holds a whole Place head-enumeration lap, so `stash_record` reads
+`unlanded=1` and the number is honest. The next lap takes that stash whole.
 
 ## Simple, Lovable, Complete order
 
