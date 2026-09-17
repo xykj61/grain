@@ -11,7 +11,7 @@ living card names this file where the account stood.
 ---
 
 **DIFFUSER -- MY FALSIFIER FIRED IN THREE SITTINGS OF FOUR, AND WHAT SURVIVED IS LARGER.**
-Elder account [shelved whole](archive/20260917-071652_itinerary-landed-accounts.md), its ask with
+Elder account [shelved whole](20260917-071652_itinerary-landed-accounts.md), its ask with
 it. **WATER TASTES** (row 3, N=5282, past row 2): run the actual thing, twice.
 `tools/fixtures/c/cpu_unit_scan.sh` reads one MINSTD spin loop in two units inside ONE call --
 wall from `read < /proc/uptime`, CPU from the `times` builtin redirected to a file. Neither forks:
@@ -24,6 +24,6 @@ fleet compares before and after HOURS apart. **A RED IN MY OWN CONTROL:** a zero
 own refusal name, so one condition wore two -- **flaky**, caught by running the control FIVE
 times. Pen **41 legs, four mutations bitten**, two biting nothing until run against the population
 where the mutated line is load-bearing. `tier lap`, 1.9s. Paper
-[`20260917-054941_the-unit-that-survives-the-pier.md`](../active-designing/20260917-054941_the-unit-that-survives-the-pier.md),
+[`20260917-054941_the-unit-that-survives-the-pier.md`](../../active-designing/20260917-054941_the-unit-that-survives-the-pier.md),
 **B+/89**. **YOURS:** the cross-sitting reading has no instrument, and whether this fleet's
 landed timing claims want restating in CPU milliseconds.
