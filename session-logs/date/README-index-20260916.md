@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.204827` | [The door that said empty](20260916/20260916-204827_the-door-that-said-empty.kyri) | The shelf graded whole; its highest grade sat on its one false status |
 | `20260916.203849` | [A decimal that read as a nib](20260916/20260916-203849_a-decimal-that-read-as-a-nib.kyri) | Hex admits the decimals; two LCG constants floated as commits |
 | `20260916.202456` | [The lap that came back renumbered](20260916/20260916-202456_the-lap-that-came-back-renumbered.kyri) | A parked lap recovered; its number moved, its stamp held. |
 | `20260916.201904` | [A numbered list read as prose](20260916/20260916-201904_a-numbered-list-read-as-prose.kyri) | Both grading readings count a `1.` line as a sentence |

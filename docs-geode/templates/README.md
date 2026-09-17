@@ -4,7 +4,7 @@
 **Last refreshed:** `20260908.101500` -- what a template is, said in plain words; elder refresh `20260801.033305`, the Acme personalize pointer crush  
 **Status:** Room living -- source templates stay in `tools/gen/chapter/` and repo root; this page is the shipping index.  
 **Parent:** [`../README.md`](../README.md)  
-**Voice:** Kyri
+**Voice:** Kyri - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 
 Shipping genre: **templates**. Bidirectional relative links - Radiant lint - Geode Chapter rounds.
 

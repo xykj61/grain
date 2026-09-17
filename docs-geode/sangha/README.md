@@ -7,6 +7,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Chartered:** `20260730.021218` (Voice v29 - slot 13 - radiant) -- expanding the `20260730.014817` seat
 **Home:** `docs-geode/sangha/` -- a shelf inside the prod crystal, no new root door
+**Status:** Living - **Room:** checkable -- three patterns stand here, each a proven composition rather than a proposal
 
 ---
 
