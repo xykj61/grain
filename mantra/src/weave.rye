@@ -17,10 +17,15 @@
 //! every hand.
 //!
 //! ORDER IS ITS OWN QUESTION, asked and answered apart from identity. Where a
-//! line sits is a Place -- run, then site, then position -- and Place.less_than
-//! is that order written once, which every sort and every ordering assert in
-//! this file reads. A run names one apply: every line of one edit carries one
-//! run number, read before the loop that stamps them. So the site tie between
+//! line sits is a Place -- run, then site, then order key, then position --
+//! and Place.less_than is that order written once, which every sort and every
+//! ordering assert in this file reads. Four keys rather than three: the order
+//! key landed between the site and the position when a replacement needed to
+//! sort where the line it replaced sat while keeping a name of its own, and
+//! this sentence went on saying three for the hours after (REDS %680).
+//!
+//! A run names one apply: every line of one edit carries one run number, read
+//! before the loop that stamps them. So the site tie between
 //! two concurrent edits is settled ONCE, for the whole run, and each hand's
 //! block arrives whole. Reading the identity pair as the order settled that tie
 //! at every line instead, so two sides that each appended three lines came back
@@ -100,6 +105,18 @@
 //!   Diff.deletes  -- identities of the lines to remove
 //!   Diff.replaces -- per insert, the line it stands in for, or null
 //!   Diff.after    -- per insert, the kept line it follows, or null
+//!
+//! The fields of `Place`, the order every sort in this module reads. This list
+//! is read against the struct's own declarations by the same scan, in both
+//! directions, and it is a LIST rather than the sentence above because that is
+//! what an instrument can read. The sentence named three keys, `ord` landed as
+//! a fourth, and the lap that repaired four other stale records of this module
+//! passed over it -- the scan read the head's enumerations and this claim was
+//! prose:
+//!   Place.run  -- which apply stamped this line; edits sort by this first
+//!   Place.site -- whose hand made that edit, settling the tie once per run
+//!   Place.ord  -- the order key a replacement inherits from the line it stands in for
+//!   Place.pos  -- the fresh position, breaking the last tie by name alone
 //!
 //! Part of Mantra -- TAME-first from line one.
 

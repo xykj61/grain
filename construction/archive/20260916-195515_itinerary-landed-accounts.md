@@ -82,7 +82,7 @@ by a mutation that reds the witness. The witness stands at **16 legs**.
 rostered with no refusal of its own.** Every one of its legs proved the record was BUILT and none
 showed the witness refusing, which is the same fault this tree refuses everywhere else -- a guard
 proven only in the passing direction cannot be told from a guard that has stopped reading.
-[`tools/fixtures/g/glow_refusal_mutation_control.sh`](../tools/fixtures/g/glow_refusal_mutation_control.sh)
+[`tools/fixtures/g/glow_refusal_mutation_control.sh`](../../tools/fixtures/g/glow_refusal_mutation_control.sh)
 is the repair: a pen copying `glow/` and `tally/` together, since `glow/tally_copy.rye` is a symlink
 into the second, swapping the `%tag` path's kind word for `"ident"` and asking the rebuilt witness to
 refuse. It does. The plant is named by its exact call site rather than by a line number, so a moved

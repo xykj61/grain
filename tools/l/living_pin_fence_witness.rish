@@ -1,0 +1,55 @@
+# tools/l/living_pin_fence_witness.rish -- a page's fences close, or the rest of it is code.
+#
+# Every guard standing over a living pin in this tree reads its BYTES -- characters, links, length,
+# one key. None reads the page as MARKDOWN. On 20260916 a wrapped sentence put a bare
+# triple-backtick fence opener at column 0 in prose inside construction/ITINERARY.md, opening a
+# code block that never closed, and 79 percent of the card rendered as one code block for every
+# markdown reader while the whole roster stayed green. This witness holds that reading.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/living_pin_fence_witness.rish
+say "living-pin-fence: Language EN -- an unclosed fence turns the rest of a page into code."
+say "living-pin-fence: Style Gauge Meter -- one derivation - one gated class - the refusal named."
+say "living-pin-fence: Lens TAME -- safety first: read the tracked tree, bound the class, say why."
+
+let pen = run ["sh" "tools/fixtures/l/living_pin_fence_control.sh"]
+say pen.out
+assert pen.ok else "living-pin-fence: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "living-pin-fence: the pen must reach its own ok"
+assert pen.out contains "failed=0" else "living-pin-fence: every planted leg must pass"
+assert pen.out contains "behaviors=41" else "living-pin-fence: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: open_backtick_bites" else "living-pin-fence: an unclosed backtick fence must refuse"
+assert pen.out contains "leg_ok: open_backtick_lifted" else "living-pin-fence: lifting the plant must return the reading"
+assert pen.out contains "leg_ok: open_tilde_bites" else "living-pin-fence: a tilde fence is a fence too"
+assert pen.out contains "leg_ok: tilde_never_closes_backtick" else "living-pin-fence: a closer must match its opener's character"
+assert pen.out contains "leg_ok: longer_closer_welcomed" else "living-pin-fence: a closer may be longer than its opener"
+assert pen.out contains "leg_ok: shorter_closer_refused" else "living-pin-fence: and may never be shorter"
+assert pen.out contains "leg_ok: closer_with_words_is_content" else "living-pin-fence: a closer carries nothing after it"
+assert pen.out contains "leg_ok: info_string_backtick_not_a_fence" else "living-pin-fence: prose quoting code spans must not read as a fence"
+assert pen.out contains "leg_ok: three_space_fence_read" else "living-pin-fence: three spaces of indent still opens a fence"
+assert pen.out contains "leg_ok: four_space_fence_unread" else "living-pin-fence: four spaces is an indented block, and the bound is named"
+assert pen.out contains "leg_ok: dated_not_gated" else "living-pin-fence: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: dated_reported" else "living-pin-fence: and is counted where a reader can see it"
+assert pen.out contains "leg_ok: stamped_basename_is_testimony" else "living-pin-fence: a stamped basename is testimony by its name alone"
+assert pen.out contains "leg_ok: fixtures_read_past" else "living-pin-fence: planted input must be free to hold a broken fence"
+assert pen.out contains "leg_ok: spaced_name_read" else "living-pin-fence: a page name holding a space stays in the reading"
+assert pen.out contains "leg_ok: untracked_unread" else "living-pin-fence: a fresh clone answers this, never one pier's disk"
+assert pen.out contains "leg_ok: staged_delete_survives" else "living-pin-fence: a staged deletion must not kill the reading"
+assert pen.out contains "leg_ok: staged_delete_counted" else "living-pin-fence: and must be counted where a reader can see it"
+assert pen.out contains "leg_ok: bad_flag_refused" else "living-pin-fence: an unknown flag refuses rather than answering"
+assert pen.out contains "leg_ok: real_firing_bites" else "living-pin-fence: the firing that earned the guard must be caught"
+assert pen.out contains "leg_ok: real_firing_names_the_line" else "living-pin-fence: a refusal a reader cannot locate is no refusal"
+assert pen.out contains "leg_ok: repaired_card_welcomed" else "living-pin-fence: the repaired card must walk free"
+assert pen.out contains "leg_ok: mutation_info_string_bites" else "living-pin-fence: the info-string rule must be load-bearing"
+assert pen.out contains "leg_ok: mutation_same_char_bites" else "living-pin-fence: the matching-character rule must be load-bearing"
+assert pen.out contains "leg_ok: mutation_newline_ifs_bites" else "living-pin-fence: the newline walk must be load-bearing"
+
+# And the tree itself, which is the whole reason the reading exists.
+let here = run ["sh" "tools/fixtures/l/living_pin_fence_scan.sh"]
+say here.out
+assert here.ok else "living-pin-fence: this tree must hold no living page with an unclosed fence"
+assert here.out contains "unbalanced_living=0" else "living-pin-fence: the living reading is a wall at zero"
+assert here.out contains "verdict=ok" else "living-pin-fence: the scan must reach its own ok"
+
+say "GREEN: living-pin-fence -- a page's fences close, read by CommonMark's own rule, gated at zero across living pages and reported across testimony, with the 20260916 firing replayed from history and three mutations proven to bite."

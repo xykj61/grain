@@ -322,6 +322,20 @@ path tools/l/link_text_promise_witness.rish
 tier lap
 seated 20260915.183000
 
+# living_pin_fence -- every guard over a living pin reads its BYTES; none reads it as MARKDOWN.
+# `ascii_document` counts characters, `tracked_link` and `link_text_promise` read links, the pin
+# bound counts length, `nib_honesty` reads one key -- and on `20260916` commit 99d4948e6 wrapped a
+# sentence in construction/ITINERARY.md so a bare triple-backtick fence opener landed at column 0 in
+# prose. CommonMark runs an unclosed fence to the end of the document, so 30,791 of that card's
+# 38,970 bytes rendered as one code block for every markdown reader, GitHub included, while the
+# whole roster stayed green -- each of them reading bytes that had not changed. Sibling of the
+# numbered-list reading seated the same hour: a list and a fence are both STRUCTURE. WALL at zero
+# across living pages, which a population already at zero earns; testimony reported, never gated.
+guard living_pin_fence
+path tools/l/living_pin_fence_witness.rish
+tier lap
+seated 20260916.231943
+
 # section_citation -- a section named beside a path is the third promise, and the two link guards
 # read the other two. `tracked_link` asks whether the target resolves in a fresh clone;
 # `link_text_promise` asks whether the anchor names the path it opens. Both read a PATH, so a name

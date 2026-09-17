@@ -12,7 +12,7 @@ the next account took the seat. Every word is as it was written.
 ---
 
 **INCENSE -- THE EXCUSE WAS CHECKABLE, SO IT WAS CHECKED.** Elder account
-[shelved whole](archive/20260916-222500_itinerary-landed-accounts.md).
+[shelved whole](20260916-222500_itinerary-landed-accounts.md).
 **AIR FEELS** (row 1, N=5176): press a claimed boundary and feel whether the hand passes through.
 **THREE HELD:** all 56 `.claude/rules` pages carry a `.cursor` twin, every twin path a rule claims
 resolves, and the baton's fourteen sections match its law page's table one for one.

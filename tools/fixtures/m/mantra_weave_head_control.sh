@@ -17,7 +17,19 @@
 # `Diff` or `Diff.after` as an operation of `Weave`. Both counts are asserted exactly, in the
 # unplanted file and again with a field line carrying a parenthesis in its prose.
 #
-# EXPECTED: behaviors=17, failed=0, verdict=ok. Run from the repository root.
+# THE PLACE LEGS carry one refusal the Diff legs never could. `Place` declares four fields
+# AND the `pub fn less_than` method at the same four-space indent, where `Diff` declares
+# fields alone. A field walk reading that indent without asking for the colon would count the
+# method and report five. `place_declared=4` is asserted exactly, on the unplanted file, for
+# that reason alone.
+#
+# AND ONE ORDERING REFUSAL, which fired for real while this was being written. The named-type
+# container rule consumes every `pub const <Name> = struct {` line it reads, so the Weave rule
+# sitting after it never fired and the scan answered `weave_container_absent` on a healthy
+# file. `container_seen=1` is asserted beside the ok verdict, since a verdict alone would go
+# on reading green the day someone reorders those two rules back.
+#
+# EXPECTED: behaviors=30, failed=0, verdict=ok. Run from the repository root.
 
 set -eu
 
@@ -53,27 +65,34 @@ check() {
 
 reset() { cp "$module" "$work"; }
 
-# 1-2 -- the unplanted file reads ok, and the two enumerations come out at their real sizes.
+# 1-5 -- the unplanted file reads ok, and the two enumerations come out at their real sizes.
 reset
 check unplanted_ok "verdict=ok"
 check partition_counts_exact "diff_declared=5"
+# The Weave container is still found with the named types reading beside it. A verdict alone
+# would stay green the day the two container rules trade places; this reads the count.
+check weave_container_still_found "container_seen=1"
+# Four fields of Place, not six: the two `pub fn` at the same indent are read past, because a
+# method name is followed by a parenthesis where a field name is followed by a colon.
+check place_declared_exact "place_declared=4"
+check place_listed_exact "place_listed=4"
 
-# 3-4 -- a field lands and the head stays behind. This is the direction that fired.
+# 6-8 -- a field lands and the head stays behind. This is the direction that fired.
 reset
 grep -v '^//!   Diff\.after' "$work" > "$work.tmp" && cat "$work.tmp" > "$work" && rm -f "$work.tmp"
 check diff_missing_bites "diff_missing=1"
-check diff_missing_verdict "verdict=diff_head_disagrees"
+check diff_missing_verdict "verdict=field_head_disagrees"
 reset
 check diff_missing_lifted "verdict=ok"
 
-# 5-6 -- the mirror: the head names a field the struct no longer declares.
+# 9-10 -- the mirror: the head names a field the struct no longer declares.
 reset
 sed_inplace 's|^//!   Diff\.site |//!   Diff.ghost |' "$work"
 check diff_stale_bites "diff_stale=1"
 reset
 check diff_stale_lifted "verdict=ok"
 
-# 7-8 -- the Diff container renamed. A census reading nothing must refuse by name rather
+# 11-12 -- the Diff container renamed. A census reading nothing must refuse by name rather
 # than answer zero of everything, which is the one verdict a healthy file also prints.
 reset
 sed_inplace 's|^pub const Diff = struct {|pub const Change = struct {|' "$work"
@@ -81,39 +100,74 @@ check diff_container_absent "verdict=diff_container_absent"
 reset
 check diff_container_lifted "verdict=ok"
 
-# 9 -- the head's whole field list gone, which a tidy-up could do in one stroke.
+# 13 -- the head's whole field list gone, which a tidy-up could do in one stroke.
 reset
 grep -v '^//!   Diff\.' "$work" > "$work.tmp" && cat "$work.tmp" > "$work" && rm -f "$work.tmp"
-check head_lists_no_fields "verdict=head_lists_no_fields"
+check head_lists_no_fields "verdict=diff_head_lists_no_fields"
 
-# 10-11 -- the elder two readings, unproven since %506. An operation lands unnamed.
+# 14-15 -- the elder two readings, unproven since %506. An operation lands unnamed.
 reset
 grep -v '^//!   weave\.merge(' "$work" > "$work.tmp" && cat "$work.tmp" > "$work" && rm -f "$work.tmp"
 check head_missing_bites "head_missing=1"
 reset
 check head_missing_lifted "verdict=ok"
 
-# 12 -- and the head naming an operation the module no longer publishes.
+# 16 -- and the head naming an operation the module no longer publishes.
 reset
 sed_inplace 's|^//!   weave\.merge(alloc, w)|//!   weave.mingle(alloc, w)|' "$work"
 check head_stale_bites "head_stale=1"
 
-# 13 -- the Weave container renamed, the elder refusal.
+# 17 -- the Weave container renamed, the elder refusal.
 reset
 sed_inplace 's|^pub const Weave = struct {|pub const Cloth = struct {|' "$work"
 check weave_container_absent "verdict=weave_container_absent"
 
-# 14 -- THE PARTITION, planted. A field line whose PROSE carries a parenthesis must still
+# 18 -- THE PARTITION, planted. A field line whose PROSE carries a parenthesis must still
 # read as a field and never as an operation, so the counts stand exactly where they stood.
 reset
 sed_inplace 's|^//!   Diff\.after    -- per insert, the kept line it follows, or null|//!   Diff.after -- per insert, the kept line it follows (or null)|' "$work"
 check partition_paren_in_prose "diff_missing=1"
 
-# 15 -- the mirror of the partition: the operation count is untouched by that same line, so
+# 19 -- the mirror of the partition: the operation count is untouched by that same line, so
 # the field line was never counted as an operation on its way to being missed as a field.
 check partition_ops_untouched "listed=11"
 
-# 16 -- an absent module refuses rather than reporting zeroes.
+# 20-22 -- Place: a field lands and the head stays behind. This is the direction that fired,
+# and it fired as a SENTENCE rather than a list, which is why the list exists at all.
+reset
+grep -v '^//!   Place\.ord' "$work" > "$work.tmp" && cat "$work.tmp" > "$work" && rm -f "$work.tmp"
+check place_missing_bites "place_missing=1"
+check place_missing_verdict "verdict=field_head_disagrees"
+reset
+check place_missing_lifted "verdict=ok"
+
+# 23-24 -- the mirror: the head names a field Place no longer declares.
+reset
+sed_inplace 's|^//!   Place\.run |//!   Place.ghost |' "$work"
+check place_stale_bites "place_stale=1"
+reset
+check place_stale_lifted "verdict=ok"
+
+# 25-26 -- the Place container renamed, refused by its own name rather than counted as zero.
+reset
+sed_inplace 's|^pub const Place = struct {|pub const Spot = struct {|' "$work"
+check place_container_absent "verdict=place_container_absent"
+reset
+check place_container_lifted "verdict=ok"
+
+# 27 -- the head's whole Place list gone in one stroke.
+reset
+grep -v '^//!   Place\.' "$work" > "$work.tmp" && cat "$work.tmp" > "$work" && rm -f "$work.tmp"
+check place_head_lists_no_fields "verdict=place_head_lists_no_fields"
+
+# 28-29 -- the two types are read APART. Breaking one leaves the other's counts exactly where
+# they stood, so a single shared bucket counting every named type together would fail here.
+reset
+grep -v '^//!   Place\.ord' "$work" > "$work.tmp" && cat "$work.tmp" > "$work" && rm -f "$work.tmp"
+check types_read_apart_diff "diff_missing=0"
+check types_read_apart_place "place_missing=1"
+
+# 30 -- an absent module refuses rather than reporting zeroes.
 work="$pen/gone.rye"
 check module_absent "verdict=module_absent"
 

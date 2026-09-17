@@ -9,6 +9,7 @@
 | `20260916.234757` | [A wrapped line that read as a list](20260916/20260916-234757_the-wrapped-line-that-read-as-a-list.kyri) | %798: the list guard owed CommonMark its own rule |
 | `20260916.232744` | [A leg a sibling answers for](20260916/20260916-232744_the-leg-a-sibling-answers-for.kyri) | contains is a substring: 14 masked legs, 3 pairs |
 | `20260916.231355` | [A noun phrase about prose read as a claim about a row](20260916/20260916-231355_closing-line-noun-phrase.kyri) | REDS %796 closed: 55 claims, one false, 47 pen legs |
+| `20260916.231011` | [The card that rendered as code](20260916/20260916-231011_the-card-that-rendered-as-code.kyri) | An unclosed fence ate 79 percent of the pin; a wall at zero |
 | `20260916.230119` | [Erratum: a single proc sample claimed a duration](20260916/20260916-230119_the-sample-that-claimed-a-duration.kyri) | borrowed_number ran 77s, not 15 minutes |
 | `20260916.224654` | [A control leg no witness names is a leg nothing hears](20260916/20260916-224654_the-leg-nothing-heard.kyri) | 283 pairs, 35 legs unheard, 33 in the roster control |
 | `20260916.222240` | [The mode a compiler ships under](20260916/20260916-222240_the-mode-a-compiler-ships-under.kyri) | rye/bin/rye is Debug: 168 SHA-NI hits both ways |
@@ -18,6 +19,7 @@
 | `20260916.220554` | [A witness header is Meter](20260916/20260916-220554_the-law-names-a-witness-header-meter.kyri) | 882 of 2,017 witnesses read below B at the door |
 | `20260916.215359` | [A booked red is a claimable thing](20260916/20260916-215359_a-booked-red-is-a-claimable-thing.kyri) | the clause excused the one repair the fleet advertises |
 | `20260916.215124` | [The walk stays and the read goes](20260916/20260916-215124_the-walk-stays-and-the-read-goes.kyri) | The library tree read once per library, not per build; a red booked|
+| `20260916.214832` | [The stash that held a whole lap](20260916/20260916-214832_the-stash-that-held-a-whole-lap.kyri) | A parked lap taken whole; the head's Place list seated |
 | `20260916.214125` | [A control by role, and the five doors](20260916/20260916-214125_a-control-by-role-and-the-five-doors.kyri) | the skip was one word over three states |
 | `20260916.213614` | [The shelf that ran none of them](20260916/20260916-213614_the-shelf-that-ran-none-of-them.kyri) | Five printed answers, bound to no instrument until now |
 | `20260916.213335` | [A pin rewrite ate a directive](20260916/20260916-213335_a-pin-rewrite-ate-a-directive.kyri) | INNER LOOP item 7 gone ten hours; the list read 6, nib, 8 |
