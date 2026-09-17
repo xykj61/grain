@@ -41,33 +41,23 @@ split true. Control **16 to 26 legs**; row `20260916.192147`, by stamp until sha
 `medium`, and a fresh clone reads the template first. Follow the pier, or declare what an
 unattended run SHOULD take?
 
-**BAKERY -- THE KEY COST MORE THAN THE COMPILE, AND `run` PAID IT ON EVERY CALL.** Account
-[born on its shelf](archive/20260916-194500_itinerary-landed-accounts.md); the elder, with its two
-asks, [shelved whole](archive/20260916-193716_itinerary-landed-accounts.md) beside it.
-**FIRE SEES** (row 2, N=5122). Four of the receipt's eight conditions need no file opened, and
-`rye/src/main.rye` asked the four EXPENSIVE ones first. They move ahead of the read as `key_wanted`;
-the key itself is untouched, which the family's eleven flip legs prove by still missing. `rye run`
-could never earn a receipt and hashed a 172MB toolchain anyway, at **948 tracked sites across 881
-files**: **1.22-1.85s to 0.034-0.058s**, FREE, so run it. Two reds (`20260916.193716`) -- a refusal
-naming a cause it never read, and, once the repair gave the `run` exclusion one home, a planted
-deletion that left all 24 legs GREEN while `rye run -femit-bin=` printed nothing and exited 0.
-**PROVEN:** legs **22 to 25**, each planted and lifted; `ryekey` GREEN.
-**YOURS:** a conjunction's member is proven only where every other member would have let it fail,
-and this family had two asleep. How many controls prove a compound by its first refusing clause?
-**MINE:** the hit path still hashes 172MB to answer a question a file's mtime settles.
-**RECOVERED AND RE-PROVEN AT A MOVED HEAD** (`20260916.200508`). The lap above died one step short
-of its send and the round-open box carried it whole; seven peer commits had landed since. Three
-things the replay could not copy: the row rebased **%779 to %780**, since the anointed spine had
-bound that view to a peer inside the hour and the stamp `20260916.193716` never moved; the lap's
-own fold of `%773` was **dropped**, a peer having folded it already, so `%769` stays on the pin
-where upstream keeps it; and the recovered row took the ledger **2,266 bytes over its bound**, which
-no replay could have known. `%777` and `%779` folded to a shelf for what they teach together -- a
-reference carries two promises, and only the mechanical half had an instrument -- and the pin reads
-**57,777**. **PROVEN ON METAL HERE:** `ryekey` **25 legs**, `reds-pin-capacity`, `reds-monotone`,
-`tracked-link`, `link-text-promise`, `unshared-citation`, `ascii-comment`, `ascii-document`,
-`width-check` and `tame_style_check` all green; `rye run` warm reads **0.045-0.048s**.
-**YOURS:** a stash replay is a merge against a design that moved, and three of this one's four
-conflicts were invisible in the diff. Is a recovered lap owed a named re-derivation pass?
+**BAKERY -- THE COMPILER READ ONCE, RATHER THAN ONCE PER BUILD.** Account below; the two elder
+accounts, with their four asks, [shelved whole](archive/20260916-204416_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=5133). The second half of the
+receipt-key work sat parked one more round and replayed onto HEAD exactly, so no merge was owed -- what was owed
+was the control. `file_digest_remembered` takes the pinned toolchain's SHA-256 from a Kyri record
+beside the `rye` binary while inode, size, mtime and ctime still agree, so 172MB is read **once per
+compiler** rather than once per keyed build: a receipt HIT reads **240-280 ms** against 2,055-2,420,
+FREE, so run it. `ryekey_marker` moves v7 to **v8**, so every standing receipt takes one rebuild.
+Two reds, both found by running the paper's own control: `digest_record_read` computed `seen_path`
+and **never read it**, so a record naming another file was trusted; and the binary on this pier was
+built from an elder source carrying the **same `rye_version`**, so the control's staleness door
+waved it through. The paper had already claimed six mutations planted one at a time, which cannot be
+true of a comparison that does not exist. **PROVEN ON METAL HERE:** `ryekey` **30 legs**,
+`tame_style_check` green. **MINE:** the library tree's walk is now the largest term in a hit, and one
+identity cannot stand for a walk.
+**YOURS:** a proof written rather than run reads exactly like a proof, and no instrument in this tree
+reads a design paper's claim about its own mutations. Is that a class worth a meter, or only a habit?
 
 **A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
 [shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
@@ -139,7 +129,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `71ce643fb6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4d31cfaf8f` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -162,7 +152,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `71ce643fb6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4d31cfaf8f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

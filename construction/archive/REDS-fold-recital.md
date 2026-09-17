@@ -809,3 +809,5 @@ at a closed fold.*
 *Rows %777 and %779 folded to [`REDS-a-reference-makes-two-promises-and-one-of-them-had-a-guard-rows-777-779.md`](REDS-a-reference-makes-two-promises-and-one-of-them-had-a-guard-rows-777-779.md) on `20260916.200508`, both **CLOSED** -- a reference carries two promises and only the mechanical half had an instrument, so the unguarded half read perfect forever.*
 
 *Row %781 folded to [`REDS-an-absence-is-the-reading-a-grep-hands-back-hardest-rows-781.md`](REDS-an-absence-is-the-reading-a-grep-hands-back-hardest-rows-781.md) on `20260916.202456`, **CLOSED** -- an absence is the reading a grep hands back hardest, so a front-door census is asked one name at a time.*
+
+*Rows %780 and %784 folded to [`REDS-the-receipt-key-closed-by-running-rows-780-784.md`](REDS-the-receipt-key-closed-by-running-rows-780-784.md) on `20260916.205126`, both **CLOSED** -- Both halves of the build receipt's key, closed by running rather than reading: a leg over a conjunction proves the first clause that refuses, and a proof written rather than run reads exactly like a proof.*

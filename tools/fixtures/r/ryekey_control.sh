@@ -392,6 +392,101 @@ out22b=$(env RYE_ZIG="$ZIG" "$RYE_BIN" run "$PEN/main.rye" "-femit-bin=$PEN/ran.
     || fail "a second run naming an output failed"
 [ "$out22b" = "42" ] || fail "a second run naming an output answered '$out22b' rather than 42 -- a run served by a receipt does not run at all"
 
-echo "legs=25 all proven -- eleven flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one"
+# --- leg 26: the compiler's digest is remembered beside the binary that read it --------------
+# The record is the whole mechanism: without one, every build re-reads 172 MB to
+# learn what no hand has changed. It must exist, and it must say which file it
+# speaks for, or a later build could answer for a compiler it never opened.
+rm -f "$PEN"/rye-key-cache.*.kyri "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "record-baseline build failed"
+# The KEY line is the claim in every leg below; the output line may honestly
+# differ between two rebuilds, exactly as leg 12 already states.
+k26=$(stamp | head -1)
+record=$(grep -l "^path $ZIG$" "$PEN"/rye-key-cache.*.kyri 2>/dev/null | head -1)
+[ -n "$record" ] || fail "the build left no remembered record naming the compiler"
+grep -q '^format rye-key-cache-v1$' "$record" || fail "the record carries no format line"
+grep -q '^sha256 [0-9a-f]\{64\}$' "$record" || fail "the record carries no 64-hex digest"
+grep -q '^inode [0-9]\{1,\}$' "$record" || fail "the record carries no inode"
+grep -q '^ctime [0-9]\{1,\}$' "$record" || fail "the record carries no status-change time"
+
+# --- leg 27: the record is CONSULTED -- a wrong digest under a true identity moves the key ----
+# A cache nobody reads passes every other leg in this file. So the record's own
+# digest is flipped while its five other readings stay true, and the key must
+# move: that can only happen if the key took its compiler digest from here.
+cp "$record" "$PEN/record.true"
+sed 's/^sha256 \(.\)/sha256 0/' "$PEN/record.true" > "$PEN/record.next"
+[ "$(wc -c < "$PEN/record.next" | tr -d ' ')" = "$(wc -c < "$PEN/record.true" | tr -d ' ')" ] \
+    || fail "the planted record changed size"
+cat "$PEN/record.next" > "$record"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "planted-record build failed"
+k27=$(stamp | head -1)
+[ "$k27" != "$k26" ] || fail "a planted compiler digest did not reach the key -- the record is never read"
+cat "$PEN/record.true" > "$record"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "restored-record build failed"
+[ "$(stamp | head -1)" = "$k26" ] || fail "restoring the record did not restore the key"
+
+# --- leg 28: EACH of the five identity readings is compared, one plant apiece ----------------
+# A LEG OVER A CONJUNCTION PROVES ONLY THE FIRST CLAUSE THAT REFUSES. Five
+# readings must all agree before a remembered digest is used -- path, inode,
+# size, mtime, ctime -- and one plant that trips several of them at once says
+# nothing about the rest. So each field is corrupted ALONE, and beside it the
+# digest, which is what makes the assertion sharp: a compared field refuses the
+# record, the bytes answer, and the key returns to its baseline. Delete any one
+# comparison from `digest_record_read` in `rye/src/main.rye` and that field's
+# plant is trusted, the wrong digest reaches the key, and this leg reds.
+for field in path inode size mtime ctime; do
+    case "$field" in
+        path) sed 's|^path .*|path /nowhere/at/all|; s/^sha256 \(.\)/sha256 0/' "$PEN/record.true" > "$record" ;;
+        *)    sed "s|^$field .*|$field 1|; s/^sha256 \(.\)/sha256 0/" "$PEN/record.true" > "$record" ;;
+    esac
+    grep -q "^sha256 0" "$record" || fail "the $field plant did not also move the digest"
+    rm -f "$KEY"
+    env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+        || fail "$field-plant build failed"
+    [ "$(stamp | head -1)" = "$k26" ] \
+        || fail "a record whose $field disagreed with the file was trusted"
+done
+cat "$PEN/record.true" > "$record"
+
+# --- leg 29: a same-size rewrite in place, with its mtime restored, still misses -------------
+# The identity's fourth reading earns its place on a real file rather than in a
+# doctored record. inode, size and mtime all stand still across this flip; only
+# the status-change time moves, and no ordinary call sets that backward. Without
+# ctime the key would serve a digest for bytes that had changed underneath it.
+printf '#!/bin/sh\n# ct-a\nexec "%s" "$@"\n' "$ZIG" > "$PEN/zigct"
+chmod +x "$PEN/zigct"
+rm -f "$KEY" "$PEN"/rye-key-cache.*.kyri
+env RYE_ZIG="$PEN/zigct" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "ctime-baseline build failed"
+k29a=$(stamp | head -1)
+cp -p "$PEN/zigct" "$PEN/zigct.ref"
+before_size=$(wc -c < "$PEN/zigct" | tr -d ' ')
+printf '#!/bin/sh\n# ct-b\nexec "%s" "$@"\n' "$ZIG" | dd of="$PEN/zigct" conv=notrunc 2>/dev/null
+touch -r "$PEN/zigct.ref" "$PEN/zigct"
+[ "$(wc -c < "$PEN/zigct" | tr -d ' ')" = "$before_size" ] || fail "the in-place plant changed size"
+[ "$(file_mtime "$PEN/zigct")" = "$(file_mtime "$PEN/zigct.ref")" ] \
+    || fail "the in-place plant left the modification time moved"
+rm -f "$KEY"
+env RYE_ZIG="$PEN/zigct" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "ctime-flip build failed"
+[ "$(stamp | head -1)" != "$k29a" ] || fail "a same-inode same-size same-mtime rewrite did not change the key"
+
+# --- leg 30: a build that can earn no receipt remembers nothing ------------------------------
+# The reorder this family rides on -- decide first, read second -- leaves one
+# mark a shell can read: a build with no receipt to consult opens no compiler,
+# so it writes no record either.
+rm -f "$PEN"/rye-key-cache.*.kyri "$KEY"
+( cd "$PEN" && env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" ) \
+    || fail "no-emit record build failed"
+[ -z "$(ls "$PEN"/rye-key-cache.*.kyri 2>/dev/null)" ] || fail "a no-emit build wrote a record"
+env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" run "$PEN/main.rye" >/dev/null 2>&1 \
+    || fail "run record leg failed"
+[ -z "$(ls "$PEN"/rye-key-cache.*.kyri 2>/dev/null)" ] || fail "a run wrote a record"
+
+echo "legs=30 all proven -- twelve flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one; the compiler's remembered digest was shown consulted by planting one, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record was written where no receipt could be earned"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"
