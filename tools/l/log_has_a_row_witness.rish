@@ -105,6 +105,7 @@ assert control.out contains "pin_open_stale_bitten=yes" else "log-has-a-row: a p
 assert control.out contains "pin_open_repaired=yes" else "log-has-a-row: naming today open must free the reading"
 assert control.out contains "gathering_read_free=yes" else "log-has-a-row: a through- gathering must be read for its links"
 assert control.out contains "gathering_links_counted=yes" else "log-has-a-row: a gathering's links must answer for the logs they name"
+assert control.out contains "malformed_not_called_absent=yes" else "log-has-a-row: a malformed row must not be reported as an absent one -- the control emitted this leg and no assert named it until 20260916"
 assert control.out contains "control_verdict=ok" else "log-has-a-row: the control must agree with itself"
 say "thirty-six behaviors proven on planted rooms, shelves and pins, both sides of every refusal"
 

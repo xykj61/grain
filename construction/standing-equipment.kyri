@@ -6858,3 +6858,32 @@ guard glow_ceiling_refusal
 path tools/g/glow_ceiling_refusal_witness.rish
 tier lap
 seated 20260916.090645
+
+# control_leg_heard -- a control emits a named leg and the witness beside it hears that leg only
+# by quoting its name in an assert. So a leg nobody quotes may flip from `yes` to `no` on any lap
+# while every named assert passes and every gate stays green; the count merely stops rising. The
+# class is booked twice -- `ascii_document_control.sh` spoke 82 readings to a gate that heard 46,
+# and `qa_report_card_witness.rish` carried the same hole until `20260916`. A lantern that fires
+# twice becomes a loom.
+#
+# READ `20260916` over 283 tracked control-witness pairs: `generic_wall=41`, `unheard=35` across
+# two pairs, and 48 controls carrying no sibling witness at all. Thirty-three of the 35 stand in
+# `standing_equipment_control.sh`, the control for the guard that runs every rostered guard.
+#
+# TWO WALL SPELLINGS ARE CREDITED, and reading for one alone was the fault first residency found:
+# the witness may derive the control's `=no` lines and assert that set empty, or the control may
+# tally its own parted legs and the witness assert the tally is zero. Reading for the first alone,
+# this scan answered `generic_wall=1` and called forty standing walls holes.
+#
+# THE WALL IS NOT A UNIVERSAL CURE, which is why this ratchets rather than gating at zero.
+# `standing_equipment_witness.rish` asserts several legs read `no` on a GREEN run -- a refusal that
+# must not fire -- so a wall demanding no `=no` line would red that pair every lap. The per-pair
+# cure is naming the leg, and it belongs to the lane that owns each control.
+#
+# `tier cadence`: the scan reads 283 controls and their witnesses at ~30s. An awk rewrite ran 20s
+# and answered 38 where the proven shape answers 35, so the shape was put back and the tier pays
+# the cost instead. `--cadence-slice 1` is what turns it.
+guard control_leg_heard
+path tools/c/control_leg_heard_witness.rish
+tier cadence
+seated 20260916.223000

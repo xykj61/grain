@@ -56,5 +56,6 @@ assert control.out contains "root_reached_from_dependency=yes" else "rye-bridge-
 assert control.out contains "CYCLE_RUN ok" else "rye-bridge-cycle: the built cycle must run, with the value crossing it unchanged"
 assert control.out contains "STAGED_LEFTOVERS count=0" else "rye-bridge-cycle: every staged .zig must be swept away after a bridge run"
 assert control.out contains "DEEP_REFUSAL named" else "rye-bridge-cycle: a chain past the bound must refuse BY NAME rather than exhaust the stack"
+assert control.out contains "two_files_importing_each_other=yes" else "rye-bridge-cycle: the mutual-import pen must actually build -- the control emitted this leg and no assert named it until 20260916"
 
 say "GREEN: rye-bridge-cycle -- the build bridge terminates on a cyclic import graph, names its bound when a chain runs past it, reaches its own root by one name, and leaves no staging behind."

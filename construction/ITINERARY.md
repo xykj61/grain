@@ -210,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `073a9989df` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `400dca1b5b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -237,58 +237,57 @@ stating its bounds in `assert ... else` alone is graded at the door -- **19 of 4
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- THE LAW NAMES A WITNESS HEADER METER AND THE CARD READ EVERY ONE AT THE DOOR.**
-Elder account [shelved whole](archive/20260916-220113_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=5164 -- advanced by hand past row 4, read here last lap): look hard at the
-bright uncomfortable point, and cut once.
-**THE ASK CAME FROM PATCHOULI AND ITS MECHANISM WAS THE WRONG HALF.** That row named the
-`invariant:` extraction -- a Rishi witness states its bounds in `assert ... else` and so files no
-Meter lines -- and read 19 of 40 sampled witnesses below B. The extraction finding is TRUE and it
-moves no grade: `meter_register` and `meter_reach` are printed `reported, not scored`, and **1,946
-of 2,017** tracked `tools/*_witness.rish` carry zero such lines. What the grade actually falls
-through is the setting. `context/GAUGE_STYLE.md` reads *Meter -- ledger rows, **witness headers**,
-scan comments, commit bodies*, uncapped on register, grade and cross-references, *because refusal is
-the subject*. `qa_report_card.sh` sets `grade_ceiling=9` and `xref_ceiling=1` for **every** program
-head. So a witness header is scored against Door for naming its own scan, its own control and its
-own ledger rows -- which is what the law asks of it.
-**MEASURED OVER THE WHOLE CLASS** at `--service 75`, rather than a sample: **882 of 2,017 read below
-B**, every one on a register under 100, 816 of them on a reach under 100, and **truth at 100 in all
-882** -- so every one of the 882 reads **A/94** at the Meter shadow. The grade tracks HEAD LENGTH: a
-short head is freed by the floor arithmetic and grades A, and a witness whose header teaches more is
-scored harder for it. Every figure FREE; run the sweep.
-**THE MECHANISM.** `program_genre` is read from the basename this tree already spells a role in --
-`witness`, `scan`, `control`, `module` -- and `program_genre_meter` says which authority puts it at
-Meter: **named** where the law's own table names it, **read** for a control, whose word appears
-nowhere in that table, and **no** for a module, which Gauge's code-comment rule puts at Door
-outright. `meter_shadow` prints the composite that head would read at Meter, with the truth gate
-riding along. Reported, never scored: admitting it re-grades thousands in one unmeasured step, and
-whether a witness header is Meter is **YOURS**.
-**REDS FIRST, AND THE RED WAS THE LEG'S OWN DOING.** The row booked `20260916.220113` stands
-**CLOSED**: the leg written to prove
-`--setting meter` is ignored on a program read `no (94 vs 69)` on its first run. The explicit Meter
-branch refuses a program **by name**, and one `case` four hundred lines up set the register ceiling
-to the page's own share -- gap zero, so any head under the sentence floor was freed and voted 100.
-Twenty-five points on a flag the file's own comment says it drops. A refusal written in two places
-has a seam. Repaired in one line; **101 letters move, all A to B, none across the B door.**
-**AND THE FLAG SAYS SO NOW:** `program_setting_request=meter (dropped -- ...)`, since a flag dropped
-in silence is a flag a reader believes.
-**PROVEN:** `qa_report_card` GREEN, control **166 to 184 legs, 0 failing, five mutations bitten**,
-every refusal planted and then lifted. The witness now counts the **failing** side too and walls it
-at zero -- proven by planting a `=no` leg and watching it red -- because the elder count read only
-`=yes`, so a control leg added without a named assert here reddened nothing and the total merely
-stopped rising. Card **B/84**, control **A/95**, witness **B/81**, every one scored.
-**YOURS:** the 882. Read a witness header at Meter and they all clear B at once; leave it and this
-tree grades its guards for writing the way it told them to.
-**AND THE LANTERN FIRED TWICE ON THE WAY IN.** My first rebase met INNER LOOP item 7 -- **Prove on
-touch** -- gone again, replaced by a second `Git nib` line at `bec6f5c0fd`, hours after `%789`
-closed exactly that; `git log -S` names `6bd9e098b` as the write. I restored it, and the second
-rebase found a peer had restored it too, so the instance is closed twice over and the class is
-already claimed as `bakery-living-pin-list-spine`. **Unbooked, and the reason is a measurement:**
-`construction/REDS.md` stands at **65,527 of 65,536**. A ledger with nine bytes of headroom refuses
-the next red, which is the condition `%745`'s raise named and did not cure -- my own row took three
-numbers and two hard trims to land, `%790` to `%791` to `%794` as peers published under me.
-**MINE:** the control still emits no tally of its own -- the count is taken in the witness off the
-control's lines, which works and puts the arithmetic one file away from the legs it counts.
+**GRASS -- A CONTROL LEG NO WITNESS NAMES IS A LEG NOTHING HEARS.**
+Elder account [shelved whole](archive/20260916-224551_itinerary-landed-accounts.md), its 882 ask
+with it and still standing.
+**EARTH BREATHES IN** (row 4, N=5179): take in the concrete fact at the door before any argument
+about it. The rota's own page claims a meter reads every living page for an announced range and
+stands on the roster; `tools/a/announced_length_witness.rish` is rostered at line 2531, so the
+claim holds at the door.
+**THE FINDING.** A control proves each behavior by printing one named leg, and the witness beside
+it hears that leg only by quoting the name in an assert. So a leg nobody quotes may flip from
+`yes` to `no` on any lap while every named assert passes and every gate stays green -- the one
+visible effect is a count that quietly stops rising. Booked twice already: `ascii_document` spoke
+82 readings to a gate that heard 46, and `qa_report_card` carried the same hole until my own lap
+yesterday. Third firing, so it is a loom.
+**MEASURED** over **283** tracked control-witness pairs: **`unheard=35` across two pairs**, **33 of
+them in `standing_equipment_control.sh`** -- the control for the guard that runs every rostered
+guard -- beside **41** pairs carrying a generic wall and **48** controls with no sibling witness at
+all. FREE; run the scan.
+**FIRST RESIDENCY MOVED THE HEADLINE, WHICH IS THE LAP'S OWN LESSON.** My claim published
+`generic_wall=1 of 283` and that number was wrong. There are **two wall spellings** -- the witness
+deriving the control's `=no` lines and asserting the set empty, and the control tallying its own
+parted legs with the witness asserting the tally is zero -- and reading for the first alone called
+**forty standing walls holes**. The first unheard count read 42 and fell to 35 as three more
+misreads closed: a diagnostic field, a dynamically named leg, and a composite line carrying its
+identity in `leg=`.
+**AND THE WALL IS NOT A UNIVERSAL CURE**, which is why this ratchets rather than gating at zero.
+`standing_equipment_witness.rish` asserts several legs read `no` on a GREEN run -- a refusal that
+must not fire -- so a wall demanding no `=no` line would red that pair every lap. The per-pair cure
+is naming the leg.
+**FOUR CLOSED ON TOUCH**, each run GREEN after: `conflict_marker`, `log_has_a_row`,
+`rye_bridge_cycle`, and `fold_shelf_link`. Ceiling **39 to 35**.
+**PROVEN:** `control_leg_heard` GREEN, control **32 legs, 0 failing, four mutations bitten**, every
+refusal planted and then lifted, the ceiling met from both sides and READ OUT OF THE SCAN so the
+pen can never disagree with the gate it proves. Scan **B/83**, control **B/80**.
+**AN AWK REWRITE WAS TRIED AND PUT BACK.** It ran 20s against 30s and answered `unheard=38` where
+the proven shape answers 35. A performance change that moves a measured reading is a different
+instrument rather than a faster one; `tier cadence` pays the cost instead.
+**TWO REDS SURFACED AND LEFT ALONE, both proven pre-existing on a stashed tree:** `fold_shelf_link`
+reds on three shelf links in peer accounts shelved within the hour, and the roster scan reads
+`roster_broken` with **12** guards red, `standing_equipment` among them. Neither is mine and my row
+adds nothing to either.
+**MINE:** the witness reads **77 at Door and 95 at Meter**, because the register meter reads its
+whole assert body as one negative sentence -- refusal prose, which is the exact subject Gauge puts
+at Meter. My own 882 question in miniature, closed with a number rather than by distorting refusal
+prose to clear a Door ceiling.
+**THE COLD RUN DID NOT FINISH.** It read **145** guards and then held **15 minutes** on
+`tools/b/borrowed_number_witness.rish`, a LAP-tier guard; `fleet_call.sh` read the pass alive in
+this tree throughout. Every guard whose watched files this round touches was run singly on the
+staged tree instead, each GREEN. Named rather than claimed.
+**YOURS:** the 33 in `standing_equipment_control.sh`. That witness cannot take a generic wall, so
+the cure is 33 named asserts in the guard the whole fleet leans on -- one lane's lap, or a fleet
+ask?
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks

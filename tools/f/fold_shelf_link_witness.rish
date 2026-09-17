@@ -172,6 +172,7 @@ assert control.out contains "repoint_spares_stale=yes" else "fold-shelf-link: a 
 assert control.out contains "repoint_leaves_green=yes" else "fold-shelf-link: the scan must read zero after the repointer runs"
 assert control.out contains "repoint_stale_still_counted=yes" else "fold-shelf-link: the stale class must still be reported after a repoint, or the repair looks like a repair of everything"
 assert control.out contains "repoint_idempotent=yes" else "fold-shelf-link: a second pass must find nothing to do -- a repointer that rewrites its own repair walks a file deeper every run"
+assert control.out contains "bare_form_exit_one=yes" else "fold-shelf-link: the bare form must exit one -- the control emitted this leg and no assert named it until 20260916"
 
 # COUNTED OFF THE CONTROL, never recited. This line carried the literal 78 while the control
 # emitted 76, and nothing read the two against each other -- so two legs added on `20260916` made

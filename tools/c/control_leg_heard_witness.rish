@@ -1,0 +1,86 @@
+# tools/c/control_leg_heard_witness.rish -- a leg a witness never names is a leg nothing hears.
+#
+#   rishi/bin/rishi run tools/c/control_leg_heard_witness.rish
+#
+# Scan: tools/fixtures/c/control_leg_heard_scan.sh
+# Control: tools/fixtures/c/control_leg_heard_control.sh
+#
+# WHAT THIS HOLDS. A control proves each behavior by printing one named leg, and the witness beside
+# it hears that leg by quoting the name in an assert. A leg nobody quotes is therefore a leg that
+# may flip from yes to no on any lap while every named assert still passes and every gate stays
+# green -- the visible effect is a count that quietly stops rising. The class is booked twice:
+# ascii_document spoke 82 readings to a gate that heard 46, and qa_report_card carried the same
+# hole until 20260916. A lantern that fires twice becomes a loom, so this is the loom.
+#
+# WHAT IT READS. The scan pairs each tracked control with the witness sharing its basename stem,
+# credits a witness carrying either spelling of the generic wall as hearing every leg, and counts
+# what remains. The population, the wall count, and the unpaired controls are all published beside
+# the gated number, so a zero over an empty tree reads apart from a zero over 283 pairs.
+#
+# THE READING IS A RATCHET under a ceiling that only falls, rather than a wall. The cure is per
+# pair and belongs to the lane that owns each control, and a gate reddening on work nobody here
+# can do is a gate somebody turns off.
+#
+# AND THE GENERIC WALL IS NOT A UNIVERSAL CURE. standing_equipment_witness.rish asserts several
+# legs read no on a green run -- a refusal that must not fire -- so a wall demanding no =no line
+# would red that pair every lap. The scan credits a wall where one stands and asks none where one
+# cannot.
+
+let scan = run ["sh" "tools/fixtures/c/control_leg_heard_scan.sh"]
+assert scan.ok else "control-leg-heard: the scan must run on this tree -- ${scan.out_brief}"
+
+assert scan.out contains "unheard_ok=yes" else "control-leg-heard: a control leg no witness names is a leg nothing hears -- run sh tools/fixtures/c/control_leg_heard_scan.sh --list and name it in the witness, or lower nothing and repair"
+assert scan.out contains "verdict=ok" else "control-leg-heard: the scan must reach its own verdict before it is believed"
+
+# The denominator is reported beside the gated number, because a zero over an empty population and
+# a zero over 283 pairs are two different facts wearing one appearance.
+let pairs = where (lines scan.out) as l: l contains "pairs="
+assert (length pairs) > 0 else "control-leg-heard: the scan must publish the population it read"
+
+# THE CONTROL, on planted pairs in a throwaway git pen -- every refusal shown from both sides,
+# since a refusal proven only in the passing direction cannot be told from a bypass.
+let control = run ["sh" "tools/fixtures/c/control_leg_heard_control.sh"]
+say control.out
+assert control.ok else "control-leg-heard: the control must complete -- ${control.out_brief}"
+
+assert control.out contains "heard_pair_counted=yes" else "control-leg-heard: a planted pair must be counted"
+assert control.out contains "heard_leg_reads_zero=yes" else "control-leg-heard: a leg the witness names must read heard"
+assert control.out contains "heard_verdict_ok=yes" else "control-leg-heard: a clean pen must reach verdict ok"
+assert control.out contains "unheard_counted=yes" else "control-leg-heard: lift the assert and the same leg must read unheard -- the reading shown from the failing side"
+assert control.out contains "unheard_pair_counted=yes" else "control-leg-heard: the pair carrying it must be counted too, since a lane repairs a pair rather than a leg"
+assert control.out contains "unheard_named=yes" else "control-leg-heard: an unheard leg must be named by --list, since a count nobody can locate is a count nobody repairs"
+assert control.out contains "ceiling_is_readable=yes" else "control-leg-heard: the pen reads the ceiling out of the scan, so losing that line must refuse rather than guess a boundary"
+assert control.out contains "ceiling_bites_one_past=yes" else "control-leg-heard: one leg past the ceiling must refuse"
+assert control.out contains "ceiling_verdict_names_it=yes" else "control-leg-heard: and the verdict must say which reading refused"
+assert control.out contains "ceiling_frees_at_the_bound=yes" else "control-leg-heard: a pen standing exactly at the ceiling must walk free -- the boundary met from both sides"
+assert control.out contains "ceiling_bound_is_the_plant=yes" else "control-leg-heard: and the count at the bound must be the plant itself, or the boundary leg is reading some other number"
+assert control.out contains "wall_derived_credited=yes" else "control-leg-heard: a witness deriving the control's =no lines and asserting the set empty hears every leg"
+assert control.out contains "wall_derived_hears_all=yes" else "control-leg-heard: and must therefore contribute no unheard leg"
+assert control.out contains "wall_tally_credited=yes" else "control-leg-heard: a control tallying its own parted legs, asserted at zero, is the same wall in a second spelling -- reading for the first alone called forty walls holes"
+assert control.out contains "wall_tally_hears_all=yes" else "control-leg-heard: and it must contribute no unheard leg either"
+assert control.out contains "diagnostic_not_a_leg=yes" else "control-leg-heard: a number a control prints for a reader is no verdict a witness owes an assert, and counting one sets the ceiling on noise"
+assert control.out contains "variable_valued_leg_counted=yes" else "control-leg-heard: most controls here emit name=$var, so reading literals alone would miss nearly every leg in the tree"
+assert control.out contains "dynamic_name_read_past=yes" else "control-leg-heard: echo \"$name=yes\" names a different leg on every call, so the literal word name is no leg at all"
+assert control.out contains "dynamic_only_read_past=yes" else "control-leg-heard: and a dynamic name the composite filter never names must be refused by the dollar guard alone"
+assert control.out contains "composite_field_not_a_leg=yes" else "control-leg-heard: leg=<name> agree=yes carries its identity in the leg field, so agree is a field rather than a leg"
+assert control.out contains "unpaired_counted=yes" else "control-leg-heard: a control with no sibling witness is a different fault and must be counted apart"
+assert control.out contains "unpaired_off_the_gate=yes" else "control-leg-heard: and must stay off the gated number, or this meter books work it cannot describe"
+assert control.out contains "unpaired_named=yes" else "control-leg-heard: an unpaired control must be named by --list"
+assert control.out contains "explain_names_the_leg=yes" else "control-leg-heard: the explain door must name the unheard leg on one pair"
+assert control.out contains "explain_verdict=yes" else "control-leg-heard: and reach its own verdict"
+assert control.out contains "explain_clean_verdict=yes" else "control-leg-heard: a clean pair must read heard through the same door"
+assert control.out contains "unknown_flag_refused=yes" else "control-leg-heard: an unknown flag must refuse rather than read zero"
+assert control.out contains "unreadable_root_refused=yes" else "control-leg-heard: a root this scan cannot read must refuse rather than call a tree clean"
+assert control.out contains "mutation_tally_wall_bites=yes" else "control-leg-heard: drop the tally spelling and the wall it credits must vanish"
+assert control.out contains "mutation_ceiling_bites=yes" else "control-leg-heard: lower the ceiling to zero and an unheard pen must refuse"
+assert control.out contains "mutation_composite_filter_bites=yes" else "control-leg-heard: drop the composite filter and a composite field must read as a leg"
+assert control.out contains "mutation_dollar_guard_bites=yes" else "control-leg-heard: drop the dollar guard and a dynamically named leg must read as a leg"
+
+# THE WALL THIS FAMILY EXISTS TO COUNT, kept over this pen too, so the instrument is not the hole
+# it measures. The control tallies its own parted legs; asserting that tally at zero hears a leg
+# added tomorrow on the day it lands, rather than on the day somebody remembers to name it.
+assert control.out contains "legs_fail=0" else "control-leg-heard: a leg of the pen parted -- run sh tools/fixtures/c/control_leg_heard_control.sh and read the =no lines"
+assert control.out contains "legs_pass=32" else "control-leg-heard: the pen's leg count moved -- raise it when a leg lands, and never lower it to make a deletion quiet"
+assert control.out contains "control_verdict=ok" else "control-leg-heard: the control must agree with itself before it is believed"
+
+say "GREEN: control-leg-heard -- a leg a witness never names is a leg nothing hears."
