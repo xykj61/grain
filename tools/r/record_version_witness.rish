@@ -1,0 +1,91 @@
+# tools/r/record_version_witness.rish -- a record header names its version chronologically.
+#
+#   rishi/bin/rishi run tools/r/record_version_witness.rish
+#
+# WHY. context/specs/rye-versioning-style.md settled this tree's versioning in June: versions here
+# are chronological, YYYYMMDD.HHMMSS, refusing semantic versioning by name and citing Hickey's
+# Spec-ulation -- names endure, software grows by accretion, and a counted number says nothing
+# about why. REDS %765 found that ruling walked past: mantra-weave-v3 was written, a law page
+# blessed it from the wrong rule, and Keaton caught it twice. The repair moved one family to
+# mantra-weave-20260916.101910 and audited the rest.
+#
+# THE AUDIT'S REMAINDER IS A MOLT WANTING KEATON'S WORD, since every counted header opens a store
+# this tree already wrote and elder headers keep their names forever. So the row stands OPEN on a
+# population nothing reads, and the population GROWS. Measured by this classifier itself, run in a
+# detached worktree at each commit rather than by a grep: 16 families on 20260801, 30 on 20260901,
+# 30 on 20260916, 32 on 20260917. The two that arrived in that last day are rye-key-library and
+# rye-key-cache, written by a peer lane the day AFTER %765 was found, repaired and audited. That is
+# the case for a ratchet, measured rather than argued.
+#
+# THE DISCRIMINATOR IS THE WHOLE INSTRUMENT. A record version is a string reaching stored bytes as
+# a format or header field -- declared as a *_format constant, written through append_kv with a
+# format key or appended as the header line itself, or compared against a parsed format or header.
+# A grep for -v<N> cannot tell one from a string that merely looks like one, and this tree holds
+# seven such sites: two witness plaintexts, two test file CONTENTS, two fixture signature values,
+# and one generator seed name. So REDS %765's own figure is a grep's figure, and this reading
+# answers it classified, naming every look-alike it declines.
+#
+# ONE RATCHET, under a ceiling that only falls: counted_families. A family is the compatibility
+# unit -- one name a store's bytes carry forever -- so a family is what a molt moves and what a new
+# arrival adds. It ratchets rather than walls because the standing 32 are stored bytes accrete
+# never breaks, and a wall would red eight ships for a molt Keaton has not called. What it catches
+# is the next counted family, on the lap it is written.
+#
+# CHRONOLOGICAL IS REPORTED BESIDE IT, so a molt reads as a movement rather than only as a lowered
+# ceiling -- the control proves both halves move together when a family is moved.
+#
+# A DOMAIN TAG IS REPORTED APART. mycelium's berth_domain and warrant_domain are versioned
+# constants hashed into a signature, so they are compatibility contracts in stored bytes like the
+# headers and are never record HEADERS. A lane weighing the molt should meet them as their own
+# question rather than folded into the count.
+#
+# WHAT IT DOES NOT REACH. Whether a chronological stamp is the RIGHT stamp. A header built at
+# runtime from pieces rather than written as one literal. Every language beside Rye -- Rishi and
+# Glow write records too, and neither is read here. And tools/fixtures/ is read past by name: a pen
+# plant must keep the shape it plants, and amphora_bounds_plants holds amphora-v1 and amphora-v2 on
+# purpose.
+#
+# Pen: tools/fixtures/r/record_version_control.sh -- twenty-one behaviors on real Rye sources in a
+# real git repository, every class shown from both sides, the ceiling proven at, under and over,
+# and four mutations bitten, each preceded by a check that the mutation edited anything at all.
+
+say "record-version: Language EN -- a version here is chronological, and this reads which headers still count."
+say "record-version: Style Gauge, Meter -- every number below is the scan's own output, read from the tree rather than recited here."
+say "record-version: Lens TAME -- bound everything; the corpus is discovered with git ls-files rather than listed."
+
+let scan = run ["sh" "tools/fixtures/r/record_version_scan.sh"]
+say scan.out
+assert scan.ok else "record-version: a new counted record family stands -- versions here are chronological, see context/specs/rye-versioning-style.md"
+assert scan.out contains "verdict=counted_families_under_ceiling" else "record-version: the census must agree with itself"
+assert scan.out contains "counted_families=32 ceiling=32" else "record-version: the ratchet moved -- it is meant only to fall, and a molt lowers it in the commit that moves a family"
+assert (scan.out contains "verdict=unreadable" == false) else "record-version: a reading that cannot see its corpus must refuse rather than report a comfortable zero"
+assert (scan.out contains "verdict=over_ceiling" == false) else "record-version: the counted population may shrink and may not grow"
+assert (scan.out contains "chronological_families=0" == false) else "record-version: the one moved family must stay visible, or a molt reads as a lowered ceiling alone"
+assert (scan.out contains "counted_sites=0" == false) else "record-version: a reading over no sites would report clean while measuring nothing"
+
+let control = run ["sh" "tools/fixtures/r/record_version_control.sh"]
+say control.out
+assert control.ok else "record-version: the control must complete"
+assert control.out contains "control_failed=0" else "record-version: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "record-version: the control must agree with itself"
+assert control.out contains "control_legs=21" else "record-version: a leg written and never heard proves nothing -- the tally is asserted beside the verdict"
+assert control.out contains "counted_families reads 3 -- the declared, written and compared families and no other -- ok" else "record-version: the three honest site classes must each count"
+assert control.out contains "chronological_sites reads 2 -- the write and the compare, so the newline fold holds -- ok" else "record-version: a header written with its own newline is the site that puts bytes in a store"
+assert control.out contains "domain_families reads 1 -- reported apart, never a record family -- ok" else "record-version: a domain tag is its own question"
+assert control.out contains "unclassified reads 2 -- the two look-alikes, and the comment is not among them -- ok" else "record-version: a string that reaches no store is no record version"
+assert control.out contains "the look-alike is named by its own literal and site -- ok" else "record-version: a decline nobody can see is a decline nobody can check"
+assert control.out contains "a version named in a comment reaches no reading at all -- ok" else "record-version: prose is not a header"
+assert control.out contains "the fixtures room is read past -- a plant keeps the shape it plants -- ok" else "record-version: a control doing its job must never red the guard"
+assert control.out contains "three families at a ceiling of three walk free -- the ratchet has no slack and no bite -- ok" else "record-version: a ratchet must be a ceiling rather than a wall"
+assert control.out contains "three families over a ceiling of two refuse by name -- ok" else "record-version: the ratchet must bite from above"
+assert control.out contains "the over-ceiling refusal exits non-zero -- ok" else "record-version: a refusal a caller cannot read is a refusal nobody heeds"
+assert control.out contains "a newly written counted header raises the family count -- ok" else "record-version: the next counted family is the thing this guard exists to catch"
+assert control.out contains "a molted family leaves the counted reading -- ok" else "record-version: the repair must be rewarded rather than merely permitted"
+assert control.out contains "and arrives in the chronological one -- a molt is visible as a movement -- ok" else "record-version: a molt that only lowers a ceiling hides where the family went"
+assert control.out contains "a tree holding no tracked Rye answers unreadable -- ok" else "record-version: a comfortable zero is the worst answer a meter can give"
+assert control.out contains "M1 removing the newline fold bites" else "record-version: the newline fold must be load-bearing"
+assert control.out contains "M2 removing the comment strip bites" else "record-version: the comment strip must be load-bearing"
+assert control.out contains "M3 counting unclassified as a record bites" else "record-version: the decline must be load-bearing"
+assert control.out contains "M4 removing the fixtures exclusion bites" else "record-version: the fixtures exclusion must be load-bearing"
+
+say "record-version: GREEN -- 32 record families still carry a counted header, one carries a chronological stamp, and the counted population may only fall."

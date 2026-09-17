@@ -7410,3 +7410,29 @@ guard loom_sitting
 path tools/l/loom_sitting_witness.rish
 tier lap
 seated 20260917.074214
+
+# record_version -- a record header names its version chronologically.
+# `context/specs/rye-versioning-style.md` settled this in June: versions here are chronological,
+# `YYYYMMDD.HHMMSS`, refusing semantic versioning by name and citing Hickey's *Spec-ulation* --
+# names endure, software grows by accretion. REDS `%765` found that ruling walked past, moved
+# `mantra-weave-v3` to `mantra-weave-20260916.101910`, and left the REST as a molt wanting
+# Keaton's word, since every counted header opens a store this tree already wrote. So the row
+# stands OPEN on a population nothing read, and the population GROWS: measured by this classifier
+# in a detached worktree at each commit, 16 families on `20260801`, 30 on `20260901`, 30 on
+# `20260916`, 32 on `20260917` -- and the two that arrived in that last day, `rye-key-library`
+# and `rye-key-cache`, were written the day AFTER the row was found, repaired and audited.
+# THE DISCRIMINATOR IS THE INSTRUMENT: a record version is a string reaching stored bytes as a
+# format or header field -- `declared` as a `*_format` constant, `written` through `append_kv`
+# with a format key or appended as the header line, or `compared` against a parsed `format` or
+# `header`. A grep for `-v<N>` cannot tell one from a look-alike, and seven stand here: two
+# witness plaintexts, two test file CONTENTS, two fixture signature values, one generator seed
+# name. Each is printed by name rather than silently dropped. ONE RATCHET that only falls,
+# `counted_families`, because the standing 32 are stored bytes accrete-never-break keeps forever
+# and a wall would red eight ships for a molt nobody has called; what it catches is the NEXT
+# counted family, on the lap it is written. `chronological_families` is reported beside it so a
+# molt reads as a movement rather than only as a lowered ceiling, and a `domain` tag -- mycelium's
+# two -- is reported apart as its own question. `tier lap`: ~6s.
+guard record_version
+path tools/r/record_version_witness.rish
+tier lap
+seated 20260917.045550

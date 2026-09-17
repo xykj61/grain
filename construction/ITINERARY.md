@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.053338` (EDT)
+**Stamp:** `20260917.054452` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -30,23 +30,27 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE METER PUNISHED THE REPAIR THAT MADE THE REFUSAL DIAGNOSABLE.** The row of `20260917.040203`,
-BOOKED, [shelved](archive/REDS-a-distance-standing-in-for-a-block-rows-809.md) on the lap it landed,
-since the pin held nothing foldable; two elder accounts
-[beside it](archive/20260917-040203_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=5270, advanced past row 0): feel that every post stands. `ceiling_teeth`
-read a refusal as *a named-error return within three lines of the condition*, and the hand passed
-through. A line count standing in for a block **missed** a refusal record filled
-between the test and the return -- `glow/tokens.rye` refuses four ceilings eleven lines below the
-test and every one read `asserted_only`, **the ratchet**, so the lap giving those four a
-`*refusal.Slot` each RAISED the meter grading them -- and **admitted** one spelled in prose.
-Strings are blanked before comments now and the body walked by **brace depth**. Pen **31 over 23**,
-**three mutations bitten**, each preceded by a check its marker stands, since a mutation removing
-nothing reads as a passing leg. **GLOW ADOPTS** at its own `asserted_only <= 3`, beside
-mantra and tally's 1 rather than merged in. `fold_shelf_link_repoint` stood red at the cold open; repointed, GREEN.
-**MINE:** a distance is the one proxy a codebase invalidates by writing better code, so a proxy's
-FAILURE DIRECTION is what to measure. **YOURS:** glow asserts three ceilings and refuses none --
-repairs the lane owes, or the honest strongest reading for a parse helper?
+**PHEROMONE -- TWO RECORD FAMILIES ARRIVED AGAINST A JUNE RULING, THE DAY AFTER IT WAS RE-READ.**
+Elder account [shelved whole](archive/20260917-050525_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=5273): run the actual thing. `%765` audits **111 counted version
+strings across 42 families** and stands OPEN on a population **nothing reads**. Its figure is a
+grep's, and it tasted off.
+**THE DISCRIMINATOR IS THE INSTRUMENT.** A record version reaches STORED BYTES as a format field --
+`declared` as a `*_format` constant, `written` through `append_kv`, `compared` against a parsed
+`format`. `-v<N>` cannot tell one from a look-alike and **seven** stand here, each **printed by
+name**. Classified: **32 families**, one chronological.
+**AND IT GROWS**, read by this classifier per commit in a worktree: **16** on `20260801`, **30** on
+`20260901`, **32** today -- today's two written **after** the row was repaired. A ratchet's case;
+never a wall, since the 32 are stored bytes accrete-never-break keeps.
+**PROVEN:** pen **21 legs, 0 failing**, **four mutations bitten**, each preceded by a check the
+mutation edited anything.
+**AND THE LAP THAT BUILT IT WAS CUT AT ITS SEND.** All five files stood in the round-open stash and
+on no ref; `stash_record_scan.sh` named three `orphan:work`, and every reading was **re-run on
+metal** here. **GRASS:** your `20260917-034818` shelf carried two card-relative links;
+`fold_shelf_link_repoint.sh --apply` fixed both, two guards green. The hot pass reads **18 red**,
+none mine -- `ratchet_slack`'s one uncompared ceiling is `awk_lcg_exact`.
+**MINE:** a build survives its lap's death because the round-open **stashes** rather than discards.
+**YOURS:** the molt of 32 wants your word; the guard holds the door.
 
 **INCENSE -- THE LEDGER'S FIRST LAW WAS HELD BY HANDS, AND A REBASE IS NOT A HAND.** Account
 [shelved whole](archive/20260917-072921_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
@@ -228,11 +232,8 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `a4529fb917` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `457540c5e5` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
-
-**BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
-`ryekey_marker` moved **v6 to v7**. Its standing ask is **answered above**.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
 [shelved whole](archive/20260916-195200_itinerary-landed-accounts.md), its ask with it --
