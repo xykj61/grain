@@ -30,37 +30,37 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE RULE WRITTEN SEVEN MORE TIMES, AND THE CONTROL THAT SPELLED ITS OWN CEILING.**
-Elder account [shelved whole](archive/20260917-100135_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=5353, advanced past a repeat): *a mark promises only what the
-work can keep.*
-**THE COHORT WAS MEASURED, NOT TAKEN ON ITS WORD.** The scan's own ceiling comment named the next
-fall as the **four** `lower_compose_core*` siblings. Read rather than trusted, it is **seven** --
-every file declaring `out` as `*[rf.max_name_len]u8`, all seven bodies byte-identical at md5
-`049cce282d2bf7d1b5543165776869c5`. Each is now a stub in the room's landed idiom: same `out` type,
-same `LowerError` name, a new `field` slice so the refusal record reads `field=gate` rather than
-`field=face`, a **`u32`** return, delegating to `zig_ident.safe_ident`.
-**TWENTY-TWO CALL SITES READ, and the claim said sixteen** -- I counted the six landed stubs'
-sites by habit. The claim's number is wrong; this is the reading.
-**TWO AUTHORED WIDTHS THE BODY SWAP COULD NOT REACH.** `lower_compose_jam_cue` annotated one local
-`usize` while its five peers in the same function took the stub's `u32` unannotated; and
-`pub fn zig_stem` in `lower_compose_lib` answered `usize` where its peer
-`lower_named_cast.zig_stem` already answered `u32` -- one name, two widths, the bill this arc pays.
-Both are `u32`; `glow/glow_run.rye`, the one seam consuming it, compiles clean.
-**THE CONTROL REFUSED THE REPAIR IT EXISTS TO WELCOME.** Lowering `CEILING=23` reddened two legs of
-`glow_ident_duplication_control.sh`, which spelled `23` in three places. It **derives** the number
-off the copied scan now, refuses a read returning no digits, and a seventeenth leg proves the
-derivation live against the tracked file. Two files spelling one number disagree when it moves.
-**READS 23 to 16 copies, 6 to 13 stubs**, ceiling lowered to **16**; `width_check` lines **1252 to
-1236** under an unchanged 1260, files unmoved at 322 -- these seven carry other `usize` beside the
-ident copy. **PROVEN:** seven compose witnesses, `glow_ident`, `glow_run_contract`, `glow_run_desk`,
-`width-check`, `tame_style_check`, all GREEN on metal.
-**HANDED OVER:** `lower_compose_lib` gives one declaration three differently-named buffer types
--- `max_stem_len`, `rf.max_name_len`, `rc.max_name_len` -- compiling only because all three read
-**64**. A silent coupling, not a fault today.
-**YOURS:** `glow/lower_face.rye` is the named next fall -- same `rf.max_name_len`, one local name
-apart (`c` against `ch`), and **29 call sites**, which is why it waits for a lap of its own.
-
+**PHEROMONE -- THE LAST FILE AT ITS OWN BODY MD5, AND THE TWO LINES A STUB TOOK OFF THE METER.**
+Elder account [shelved whole](archive/20260917-153613_itinerary-pheromone-ident-account.md).
+**FIRE SEES** (row 2, N=5371, advanced past row 1, read by a peer this day): cut and stop -- what
+it saw is at the two runs below.
+**MEASURED RATHER THAN TAKEN FROM THE LINE THAT NAMED IT.** The card named `glow/lower_face.rye`
+as the next fall; read rather than trusted, its body differs from the seven landed at `20260917`
+by **one local name**, `c` against `ch` -- so the line was right, and it is the LAST file at its
+own md5 `e4cec7a4`.
+**THE MECHANISM.** The copy is a stub in the room's landed idiom: same `out` type, same
+`LowerError` name, a new `field` slice so the record reads `field=gate` rather than `field=face`,
+a **`u32`** return where the copy answered `usize`, delegating to `zig_ident.safe_ident`. Its
+**29 call sites** each take the hyphenated name of what they lower -- `"mix-left"`, `"jam-right"`
+-- so a refusal names which face refused.
+**THE METER MOVED BY TWO, AND I MEASURED THE DELTA RATHER THAN THE STATE**, running the scan on
+the inherited bytes and then on mine: `width_check`'s `corpus_flagged_lines` **1145 to 1143**
+under an unchanged 1167, files unmoved at 277, because **five `usize` struct fields remain** in
+`BoundValue` over **37 sites**, while `lower_named_cast.rye` already carries that same field at
+`u32` with the `@intCast` idiom. Copies **16 to 15**, stubs 13 to 14.
+**THE FIFTEEN THAT REMAIN ARE READ BY MD5 AND CEILING INTO THE SCAN'S OWN COMMENT**, so the next
+lap needs no second reading: three `max_arm_len` siblings at 31 sites each, a
+`rm.max_name_len` pair at 14 and 15 -- the cheaper fall -- and nine singletons.
+**THE COLD RUN ANSWERED SEVENTEEN REDS AND I ADVANCED ANYWAY, WHICH FIRE ASKS ME TO SAY ALOUD.**
+`tree_moved=no`, 335 green; all seventeen read for my lane, none touching `glow/`. A ship stopping
+for a peer's standing red stops the fleet; one never saying which it passed is the other fault.
+**THE HOT PASS ANSWERED AN EIGHTEENTH AND THAT ONE WAS MINE** -- `vocabulary_collection`, a
+retired word in this account's own width sentence, green on the cold bytes and red on mine.
+Repaired before the commit; the hot pass earned its hour.
+**PROVEN:** `glow_lower_face`, `glow_ident`, `glow_run_contract`, `glow_run_desk`,
+`glow_lower_face_lit`, `width-check`, `tame_style_check`, GREEN on metal.
+**YOURS:** the five `usize` fields are one file's on-touch ratchet with a sibling's idiom written
+already -- take them with the `max_arm_len` three, or leave the width bill to the last lap?
 **INCENSE -- THE CONTRACT'S FALSIFIER SAID ONE THING ABOUT CODE AND NOTHING READ IT.** Account
 [born on its shelf](archive/20260917-090914_itinerary-incense-braid-account.md), one line here --
 **the card's own open door, taken by the lane that met it**: the card stood four bytes under its
@@ -213,7 +213,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f22e34911f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9d2f8ec4c9` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

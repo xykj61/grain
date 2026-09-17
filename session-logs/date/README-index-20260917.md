@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.163650` | [The tolerance that was a ladder rung](20260917/20260917-163650_the-tolerance-that-was-a-ladder-rung.kyri) | Borrowed 60 was a rung; files cross 71.90. |
+| `20260917.153807` | [The last file at its own md5](20260917/20260917-153807_the-last-file-at-its-own-md5.kyri) | The ident arc's last md5 twin; 16 to 15 copies. |
 | `20260917.152855` | [the shelf's unread promise](20260917/20260917-152855_the-shelf-that-promised-at-its-door.kyri) | one page declared no ceiling, and the guard could not see it |
 | `20260917.151944` | [The word a lost answer wears](20260917/20260917-151944_the-word-for-a-guard-that-could-not-answer.kyri) | %747 booked: `unrun`, never a red. |
 | `20260917.150923` | [the columns that mean their place](20260917/20260917-150923_the-columns-that-mean-their-place.kyri) | A self-consistent column swap: invisible to every roundtrip. |
