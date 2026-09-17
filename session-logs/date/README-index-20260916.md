@@ -18,6 +18,7 @@
 | `20260916.202456` | [The lap that came back renumbered](20260916/20260916-202456_the-lap-that-came-back-renumbered.kyri) | A parked lap recovered; its number moved, its stamp held. |
 | `20260916.201904` | [A numbered list read as prose](20260916/20260916-201904_a-numbered-list-read-as-prose.kyri) | Both grading readings count a `1.` line as a sentence |
 | `20260916.200950` | [The replay that was a merge](20260916/20260916-200950_the-replay-that-was-a-merge.kyri) | A dead lap recovered at a moved HEAD; row rebased, pin folded. |
+| `20260916.200108` | [The box that held a promise](20260916/20260916-200108_the-box-that-held-a-promise.kyri) | a dead lap recovered; the head's promise kept, 9 legs to 13 |
 | `20260916.195248` | [The family named printf and the population was echo](20260916/20260916-195248_the-family-named-printf-and-the-population-was-echo.kyri) | the .sh emit nothing read |
 | `20260916.195048` | [The fourth seam of one blindness](20260916/20260916-195048_the-fourth-seam-of-one-blindness.kyri) | A gate at zero could not read the spelling the fleet swept to |
 | `20260916.194837` | [The condition nobody exercised alone](20260916/20260916-194837_the-condition-nobody-exercised-alone.kyri) | Cheap conditions ahead of the read. |
@@ -34,6 +35,7 @@
 | `20260916.121935` | [measuring before caching](20260916/20260916-121935_measuring-before-caching.kyri) | the 12:15 lap's own record, landed on a later lap after its send was lost |
 | `20260916.114636` | [A plant is a sentence that must not be true](20260916/20260916-114636_a-plant-is-a-sentence-that-must-not-be-true.kyri) | pen plants read as claims of unbound rows |
 | `20260916.113530` | [Asking without building](20260916/20260916-113530_asking-without-building.kyri) | rye key: one computation, 40 legs, a mutation that caught a false green |
+| `20260916.111611` | [No anchor names the head](20260916/20260916-111611_no-anchor-names-the-head.kyri) | claim 9 pins where an insert lands when none comes before it |
 | `20260916.111259` | [a name inside a wall of siblings](20260916/20260916-111259_the-name-inside-a-wall-of-siblings.kyri) | Five gates rostered, three awaiting. |
 | `20260916.111221` | [A breach needs a resolver behind it](20260916/20260916-111221_a-breach-needs-a-resolver-behind-it.kyri) | %774: 82 of 88 dead shelf citations recovered |
 | `20260916.111144` | [The listing that argued with its own count](20260916/20260916-111144_the-listing-that-argued-with-its-own-count.kyri) | a per-file flag read at two moments |

@@ -42,6 +42,16 @@
 //!      leaves a weave that works rather than one that merely looks unchanged.
 //!   8. The insert half's own refusals still stand by name, pressed here
 //!      beside the delete half's so the two halves are read together.
+//!   9. WHERE AN INSERT LANDS WHEN NO LINE COMES BEFORE IT. `Diff.after` names
+//!      the kept line each insert follows, and an insert opening the document
+//!      has none, so its entry is null and the line lands at the END. The
+//!      module's head has said so in prose since the anchor landed, and nothing
+//!      was reading the sentence. This leg reads it, and reads the sharper half
+//!      beside it: anchoring on the FIRST line lands second, so no anchor a
+//!      caller could name reaches first place either. Both halves are pressed on
+//!      one plant, because they are one fact from two sides -- the order law has
+//!      no room below its first line. The residue is named rather than repaired,
+//!      and the day the law makes room this leg reds and the head moves with it.
 //!
 //! Part of Mantra -- TAME-first from line one.
 
@@ -280,6 +290,77 @@ fn prove_insert_refusals(garden: std.mem.Allocator) !void {
     print("mantra-apply: an insert on a counter at the ceiling refused CounterPastCeiling -- GREEN\n", .{});
 }
 
+/// Claim 9: where an insert lands when no line comes before it.
+///
+/// `Diff.after` names the kept line each insert follows, and an insert that
+/// OPENS the document has no such line, so its entry is null. The module's own
+/// head calls that "the one case still landing at the end" -- a sentence about
+/// behavior, which nothing was reading. This leg reads it, and it reads the
+/// sharper half beside it: the order law has no room BELOW its first line, so
+/// there is no anchor a caller could name that would place a line first.
+///
+/// Both halves are pressed on one plant, because they are one fact seen from
+/// two sides. `Place.less_than` reads run, then site, then the order key, then
+/// the position. A null anchor keeps the counter's own answer, and a fresh run
+/// stands above every held run, so the line sorts last. An anchor inherits the
+/// anchor's run and order key and draws a HIGHER position, so it sorts just
+/// past that anchor -- second, when the anchor is the first line. The first
+/// line of a fresh weave carries order key zero, and no position is below the
+/// one it drew, so first place is unreachable from either spelling.
+///
+/// This is a residue rather than a fault: every insert a diff computes against
+/// a document that has a line before it lands where it belongs, which claim 1
+/// and the merge witness both show. What waits is a document that grows at its
+/// head, and naming it here is what keeps the head's sentence honest -- the day
+/// the law makes room, this leg reds and the sentence moves with it.
+fn prove_head_insert_lands_last(garden: std.mem.Allocator) !void {
+    var w = try planted(garden, &[_][]const u8{ "beta", "gamma" });
+
+    // invariant: the plant's first line carries order key zero, which is the
+    // reason first place is unreachable -- said as a check rather than as prose,
+    // since a counter starting elsewhere would make this whole claim a different
+    // claim
+    const first = try w.current(garden);
+    assert(first.len == 2);
+    assert(first[0].ord == 0);
+
+    // The null anchor: one insert, no line to follow.
+    var tail = try planted(garden, &[_][]const u8{ "beta", "gamma" });
+    try tail.apply(garden, .{
+        .site = site_here,
+        .inserts = &[_][]const u8{"alpha"},
+        .deletes = &[_]weave.LineId{},
+        .after = &[_]?weave.LineId{null},
+    });
+    const landed = try tail.current(garden);
+    // invariant: the insert is present and nothing was dropped, so the reading
+    // below is about ORDER rather than about a line that never arrived
+    assert(landed.len == 3);
+    assert(std.mem.eql(u8, landed[0].text, "beta"));
+    assert(std.mem.eql(u8, landed[1].text, "gamma"));
+    assert(std.mem.eql(u8, landed[2].text, "alpha"));
+    print("mantra-apply: an insert with a null anchor lands LAST, not first -- the residue the anchor lap named -- GREEN\n", .{});
+
+    // The nearest anchor a caller could reach for: the first line itself.
+    var second = try planted(garden, &[_][]const u8{ "beta", "gamma" });
+    const held = try second.current(garden);
+    assert(held.len == 2);
+    try second.apply(garden, .{
+        .site = site_here,
+        .inserts = &[_][]const u8{"alpha"},
+        .deletes = &[_]weave.LineId{},
+        .after = &[_]?weave.LineId{held[0].id()},
+    });
+    const anchored = try second.current(garden);
+    // invariant: anchoring on the first line places the insert SECOND -- the
+    // anchor works, and working is exactly what puts first place out of reach
+    assert(anchored.len == 3);
+    assert(std.mem.eql(u8, anchored[0].text, "beta"));
+    assert(std.mem.eql(u8, anchored[1].text, "alpha"));
+    assert(std.mem.eql(u8, anchored[2].text, "gamma"));
+    print("mantra-apply: anchoring on the first line lands SECOND -- no anchor names the head -- GREEN\n", .{});
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     print("mantra-apply: Language EN -- what apply does with a diff, and what it refuses.\n", .{});
     print("mantra-apply: Style Gauge, Meter -- every claim is a run, and every refusal is named.\n", .{});
@@ -289,6 +370,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_delete_refusals(garden);
     try prove_block_refuses_whole(garden);
     try prove_insert_refusals(garden);
+    try prove_head_insert_lands_last(garden);
 
     print("mantra-apply: version {s}\n", .{witness_version});
     print("GREEN: apply reads one caller's diff to one standard -- both halves refuse by name, before a line moves.\n", .{});
