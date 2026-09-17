@@ -1,0 +1,84 @@
+# tools/b/build_lock_ignore_witness.rish -- a lock this tree takes is a lock `.gitignore` names.
+#
+# WHY THIS RUNG. `lock_acquire` in `tools/fixtures/s/shell_portable.sh` holds a lock as the
+# DIRECTORY -- `mkdir` is its atomic test-and-set -- and writes the holder's pid inside it. So a
+# lock is an untracked directory standing in the working tree for exactly as long as its holder
+# runs.
+#
+# `git stash push -u` sweeps untracked files and passes over ignored ones, and
+# `tools/f/fleet_round_open.sh` stashes that way at every lap open. A lock `.gitignore` does not
+# name is therefore a lock a round-open REMOVES while its holder is still running, after which the
+# next acquirer `mkdir`s it successfully and enters the room the lock exists to serialize. That is
+# correctness rather than hygiene: the build lock was born at REDS %734 because two builds in one
+# room write the same shadow `.zig` names.
+#
+# WHAT STOOD BEFORE THIS GUARD. The tree took four in-tree locks and named three -- `/lotus/.sing.lock/`
+# and `construction/standing-equipment-run.lock.d/` by name, `glow/.cache/.build.lock.d` incidentally
+# by its parent `/glow/.cache/` -- and the build lock, the one taken in whatever room a build
+# writes and therefore the one that appears most, was named by nothing. Reachable rather than
+# theoretical: on the lap this guard was seated, three build-lock pids stood in this ship's own
+# dead-letter box -- `amphora`, `amphora/src`, `mikrophone` -- swept there by a round-open.
+#
+# THE READING'S OWN FIRST RUN CAUGHT A DEFECT IN IT, and the shape is worth keeping. This tree's
+# `.gitignore` denies the root with `/*` and allows project paths back one at a time, so probing a
+# FICTIONAL room -- `a/`, `a/b/` -- is answered by that blanket deny and every lock reads ignored.
+# The probe rooms are derived from tracked `.rye` sources instead, one at each of three depths,
+# because a rule anchored to one room -- `/amphora/.rye-build.lock/` -- satisfies a depth-one probe
+# and leaves every deeper room swept.
+#
+# WHAT IS PROVEN, on metal.
+#   Every in-tree lock this tree takes is ignored at every depth it can take, held at zero.
+#   A lock outside the tree -- the two port locks under `${TMPDIR:-/tmp}` -- is counted `outside`
+#     and gates nothing, since git never sees it.
+#   A lock path the scan cannot resolve is counted `unresolved` and refuses, never assumed free.
+#   THE CONSEQUENCE, RUN RATHER THAN ARGUED: a real `git stash push -u` against a real held lock in
+#     a real git repository, asked whether the lock survived and whether a second acquirer got in.
+#     Unignored: swept, and the second acquirer entered. Named: stood, pid unchanged, second
+#     acquirer refused. That pair is the whole row, done rather than reasoned.
+#   Twenty-nine behaviors in a throwaway pen, every refusal planted and then lifted, three mutations
+#     bitten, each preceded by a check that its marker stands -- since a mutation removing nothing
+#     reads as a passing leg.
+#
+# WHAT IS NOT PROVEN. That a round-open has ever swept a lock at the exact second a build needed
+# it. This proves the shape that makes the loss possible, and that the shape is now closed.
+#
+#   rishi/bin/rishi run tools/b/build_lock_ignore_witness.rish
+
+say "build-lock-ignore: Language EN -- a lock the round-open can sweep is a lock that guards nothing."
+say "build-lock-ignore: Style Gauge, Meter -- refusal is the subject."
+say "build-lock-ignore: Lens TAME -- safety first: a released lock is worse than no lock, since a caller trusts it."
+
+let scan = run ["sh" "tools/fixtures/b/build_lock_ignore_scan.sh" "--list"]
+say scan.out
+assert scan.ok else "build-lock-ignore: an in-tree lock stands unnamed by .gitignore -- a round-open's `git stash push -u` will release it mid-hold; read the UNIGNORED lines"
+assert scan.out contains "verdict=named" else "build-lock-ignore: the scan must reach the named verdict before it is believed"
+assert scan.out contains "locks_unignored=0" else "build-lock-ignore: the unignored count must stand at zero"
+assert scan.out contains "locks_unresolved=0" else "build-lock-ignore: a lock path the scan cannot resolve is never assumed free"
+say "field GREEN -- every in-tree lock is named at every depth it can take"
+
+let control = run ["sh" "tools/fixtures/b/build_lock_ignore_control.sh"]
+say control.out
+assert control.ok else "build-lock-ignore: the control must complete"
+assert control.out contains "control_failed=0" else "build-lock-ignore: every leg must stand, or the reading above proves nothing"
+assert control.out contains "bare_unignored=yes" else "build-lock-ignore: an unnamed lock must be counted rather than passed over"
+assert control.out contains "bare_verdict=yes" else "build-lock-ignore: an unnamed lock must reach the swept verdict"
+assert control.out contains "bare_exits_nonzero=yes" else "build-lock-ignore: the refusal must be an exit code a roster can hear, never a printed line alone"
+assert control.out contains "named_unignored=yes" else "build-lock-ignore: a named lock must read zero -- a refusal proven only one way cannot be told from a bypass"
+assert control.out contains "named_verdict=yes" else "build-lock-ignore: a repaired tree must walk free"
+assert control.out contains "anchored_still_unignored=yes" else "build-lock-ignore: a rule anchored to one room leaves every deeper room swept and must still refuse"
+assert control.out contains "sweep_lock_survives_stash=yes" else "build-lock-ignore: the consequence must be run -- an unignored lock must be shown swept by a real `git stash push -u`"
+assert control.out contains "sweep_second_acquirer=yes" else "build-lock-ignore: after the sweep a second acquirer must be shown entering the room, which is the loss itself"
+assert control.out contains "hold_lock_survives_stash=yes" else "build-lock-ignore: a named lock must be shown standing through the same stash"
+assert control.out contains "hold_second_acquirer=yes" else "build-lock-ignore: a named lock must be shown holding the second acquirer out"
+assert control.out contains "pid_unchanged=yes" else "build-lock-ignore: the surviving lock must carry the original holder's pid, never a replacement"
+assert control.out contains "outside_counted=yes" else "build-lock-ignore: a lock outside the tree must be counted rather than dropped"
+assert control.out contains "outside_not_gated=yes" else "build-lock-ignore: a lock git never sees must gate nothing"
+assert control.out contains "opaque_counted=yes" else "build-lock-ignore: an unresolvable lock path must be counted"
+assert control.out contains "opaque_refuses=yes" else "build-lock-ignore: an unresolvable lock path must refuse rather than read free -- an instrument that cannot read a site says so"
+assert control.out contains "control_read_past=yes" else "build-lock-ignore: a control naming lock_acquire without taking one must be read past by name"
+assert control.out contains "mutation_depth_bites=yes" else "build-lock-ignore: probing one room rather than three must stop seeing an anchored rule"
+assert control.out contains "mutation_fictional_bites=yes" else "build-lock-ignore: probing a fictional room must be caught by the root deny and read every lock as ignored"
+assert control.out contains "mutation_unresolved_bites=yes" else "build-lock-ignore: dropping the unresolved refusal must let an unreadable site pass"
+say "field GREEN -- twenty-nine behaviors, three mutations bitten, the consequence run on metal"
+
+say "build-lock-ignore: GREEN -- every in-tree lock is named, and a round-open no longer releases one mid-hold."

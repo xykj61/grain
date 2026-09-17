@@ -387,6 +387,17 @@ construction/standing-equipment-reds/
 # The run lock (REDS %359) -- one pass at a time in one tree, held only while a pass runs.
 construction/standing-equipment-run.lock.d/
 
+# The build lock (born at REDS %734, named here 20260917) -- tools/fixtures/r/rye_build.sh takes
+# one per room, because two builds in one room write the same shadow .zig names. A PATTERN rather
+# than a path: it appears in whatever room a build writes. Named because `git stash push -u` sweeps
+# untracked files and passes over ignored ones, and tools/f/fleet_round_open.sh stashes that way at
+# every lap open -- so while this stood unnamed, a round-open RELEASED a live build's lock and the
+# next acquirer entered the room the lock exists to serialize. Proven on metal in
+# tools/fixtures/b/build_lock_ignore_control.sh; held at zero by
+# tools/fixtures/b/build_lock_ignore_scan.sh, which probes three real rooms because a rule anchored
+# to one room leaves every deeper room swept.
+.rye-build.lock/
+
 # Personal material, debrided from all history 20260823.072824 (REDS %162, third
 # resolution; checkpoint 20260823.072824). These live on disk for their author and stay
 # out of every repository -- the same posture as letters/, which the .gitignore

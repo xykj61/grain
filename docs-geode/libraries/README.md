@@ -26,26 +26,26 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
-| [`amphora/`](../../amphora/README.md) | 7 | 34 |
+| [`amphora/`](../../amphora/README.md) | 7 | 35 |
 | [`aurora/`](../../aurora/README.md) | 7 | 8 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 111 | 133 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 1 |
 | [`comlink/`](../../comlink/README.md) | 74 | 16 |
 | [`constel/`](../../constel/README.md) | 32 | 41 |
-| [`construction/`](../../construction/README.md) | 1 | 79 |
+| [`construction/`](../../construction/README.md) | 1 | 80 |
 | [`crypto/`](../../crypto/README.md) | 82 | 123 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 4 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 136 | 133 |
+| [`glow/`](../../glow/README.md) | 136 | 134 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 253 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
 | [`linengrow/`](../../linengrow/README.md) | 155 | 84 |
-| [`lotus/`](../../lotus/README.md) | 238 | 248 |
+| [`lotus/`](../../lotus/README.md) | 238 | 249 |
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |

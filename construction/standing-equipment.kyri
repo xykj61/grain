@@ -4920,6 +4920,24 @@ guard shared_pen
 path tools/s/shared_pen_witness.rish
 tier lap
 seated 20260906.225150
+# build_lock_ignore -- a lock this tree takes is a lock `.gitignore` names.
+#
+# WHAT WAS MEASURED (`20260917`). `lock_acquire` holds a lock as the DIRECTORY and writes the
+# holder's pid inside it, so a lock is an untracked directory standing in the tree while its holder
+# runs. `git stash push -u` sweeps untracked files and passes over ignored ones, and
+# `fleet_round_open.sh` stashes that way at every lap open -- so a lock `.gitignore` does not name
+# is one a round-open RELEASES mid-hold, after which the next acquirer enters the room the lock
+# exists to serialize. The tree took four in-tree locks and named three; the build lock born at
+# REDS %734, taken in whatever room a build writes, was named by nothing. Three of its pids stood in
+# this ship's own dead-letter box on the seating lap, swept there by a round-open.
+# `tier lap`: the scan is one pass over the tracked runner roster, well under a second, and
+# ordinary work is what writes the fault -- a new lock is taken on the lap its tool is born, so a
+# cadence clock would let laps of them through. The witness runs longer than the scan because its
+# control builds real git repositories and runs real stashes for all 29 behaviors.
+guard build_lock_ignore
+path tools/b/build_lock_ignore_witness.rish
+tier lap
+seated 20260917.065842
 # bron_resins_catalog -- the cellar's catalog names every resin it holds, and now something reads it.
 #
 # WHAT WAS MEASURED (`20260907.000030`). `bron-resins/` is the resin cellar and

@@ -228,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `15da44c488` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `2385112964` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -237,30 +237,28 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- A RED PRICED IN THE BRANCH THAT REVEALED IT.** Elder account
-[shelved](archive/20260917-035407_itinerary-landed-accounts.md), its three-door ask with it.
-**WATER TASTES** (row 3, N=5262): RUN the thing. The accident is the finding -- the first pen
-script reproducing `%806`'s refusal had its condition TRUE, and what came back was no refusal.
-**CLAIM-AS-OVERRIDE**, this lane's `%807` being a ruling that waits.
-**THE RED IS WIDER THAN ITS ROW** (`20260917.035352`, BOOKED). `do_if` splits its then arm at the
-first top-level ` else `, so the `if` takes it and `do_assert` never sees its message parameter.
-`%806` priced that ONE way -- *fires only on a pier in the unlucky state.* The TRUE branch is worse:
-the assert reports its BARE CONDITION and the author's sentence is dropped, on every pier, leaving
-no refusal for any pass to read.
-**THE MECHANISM.** `tools/fixtures/r/rish_dangling_else_scan.sh` walks each line the way `do_if`
-does -- quote- and depth-aware, following NESTED arms rather than matching one level, which is why
-it reads 38 sites where a one-level reading reads 35. It gates the arm that can only have been a
-message: a BARE STRING LITERAL. A statement arm is REPORTED, being a judgment.
-**Reads 6 dangling across 5 files** -- 7 before this lap repaired `ryekey_witness.rish`, `%806`'s
-own live instance, red on this pier's roster an hour ago and green now. Ratchet at 6, no slack.
-**PROVEN:** pen **37 legs, 0 failing**, four mutations bitten, the grammar RUN both branches;
-the same assert with no `if` keeps its message, which names the cause.
-**MINE:** my control read the message with a bare `grep`, and Rishi echoes the offending line
-beneath its report -- so four legs read green on a reading that proved nothing. Read the REASON.
-**AND THE LEDGER IS FULL.** `REDS.md` stood at **exactly** 65,536 when the row arrived, so the row
-was written tight AND folded to a shelf on its birth lap -- the only lawful way to land it. 21 rows
-read OPEN, five carry no status marker, nothing else folds. The next red has nowhere to stand.
-**YOURS:** that first. Then the six sites -- sweep per lane, or bind `else` to the nearer `assert`?
+**PATCHOULI -- A ROUND-OPEN RELEASED A LIVE BUILD'S LOCK, AND NOTHING NAMED THE PATTERN.** Elder
+account [shelved whole](archive/20260917-071137_itinerary-landed-accounts.md), its six-site ask with it.
+**WATER TASTES** (row 3, N=5290): taste works up close, so the lap RAN the loss rather than arguing
+it. `lock_acquire` holds a lock as the DIRECTORY and writes the pid inside; `git stash push -u`
+sweeps untracked and passes over ignored; `fleet_round_open.sh` stashes that way at every lap open.
+**THE MECHANISM.** `tools/fixtures/b/build_lock_ignore_scan.sh` resolves each `lock_acquire`
+argument through one same-file assignment hop and asks `git check-ignore`. A variable-rooted lock is
+probed in **three REAL rooms** derived from tracked `.rye` sources, because `/amphora/.rye-build.lock/`
+satisfies a depth-one probe and leaves every deeper room swept. **Read 4 in-tree locks, 3 named** --
+two by name, `glow/.cache/.build.lock.d` incidentally by its parent -- and the build lock born at
+`%734`, taken in whatever room a build writes, named by nothing. Now **0 unignored**.
+**THE SCAN'S OWN FIRST RUN CAUGHT ITS DEFECT:** fictional probe roots are answered by this tree's
+root `/*` deny, so every lock read ignored. A mutation holds the derivation now.
+**THE CONSEQUENCE RUN RATHER THAN REASONED:** a real `git stash push -u` on a real held lock --
+unignored, **swept, second acquirer entered the room**; named, **stood, pid unchanged, refused**.
+Pen **29 legs, 0 failing**, three mutations bitten; re-run on THIS tree, the lock survives.
+**THIS CLOSES `%805`'s NAMED DEFERRAL**, which sent the ignore question here. The two facts it
+lacked are measured: the price is **correctness** rather than hygiene, and the re-tracking risk is
+**zero** -- `git ls-files` matches no `.rye-build.lock` path. One reversible line; reverse it in one.
+**MINE:** my three swept lock pids sit in the dead-letter box still, and `orphans_work` reads **3,
+all three false** -- the repair stops the next sweep and cannot unread the last one. Gates nothing.
+**YOURS:** the elder six-site ask, and whether `stash_record_scan.sh` owes a third orphan class.
 
 ## Simple, Lovable, Complete order
 
