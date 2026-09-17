@@ -7521,3 +7521,42 @@ guard verdict_home
 path tools/f/falsifier_verdict_home_witness.rish
 tier lap   # 8s; 494 pages, 14 declarations and 12 errata read, 40 control legs, four mutations bitten.
 seated 20260917.101905
+
+# control_in_population -- a guard whose enumerated population holds its own control.
+# REDS %785 found a ceiling 27 percent composed of the guard's own proof: a control proves a
+# refusal by CONTAINING the thing refused, a scan proves a tree clean by READING a population, and
+# where the population holds the control those two correctnesses pull against each other while each
+# file does exactly its job. The witness landed `20260916` and stood on no roster row, so nothing
+# ran it -- `witness_reach` read it `unheard`, named by no runner at all, which is REDS %810's
+# silence one room over. `tier cadence`: 54s measured on this pier `20260917`, nine times the
+# lap-tier rows beside it, and the property it reads moves when a guard or a control is written
+# rather than hourly.
+guard control_in_population
+path tools/c/control_in_population_witness.rish
+tier cadence
+seated 20260917.095028
+
+# control_perturbation -- does a guard's ANSWER move when its own control goes away?
+# The sibling above counts MEMBERSHIP and says in its own header that membership is no proof the
+# scan READS the file. This one runs the candidate twice in a detached worktree, once whole and
+# once with its control absent from the index and the working tree, so the reading is behavioral
+# rather than structural. It is also the probe that found REDS %788 -- 2 of its 9 candidates
+# returned nothing either time, because 164 tracked scripts locate the tree root by `rishi/bin`,
+# a directory only a build creates. Landed `20260916`, unrostered and `unheard` until this stamp.
+# `tier cadence`: 166s measured on this pier `20260917` -- it builds worktrees, so it is the most
+# expensive row in this pair by three times.
+guard control_perturbation
+path tools/c/control_perturbation_witness.rish
+tier cadence
+seated 20260917.095028
+
+# link_touch -- the staged-page link reading, proven on real git repositories.
+# A link names a door the reader expects to open, and this witness plants each break beside its
+# repair and asserts both outcomes across 26 cases. It landed `20260909` and stood `unheard` for
+# eight days; it is rostered here by the same lap that rostered the two above, because the growth
+# reading named all three at once and running it costs 4.8s. Its lane is the link family rather
+# than this seat's, so the row is a pickup rather than a claim on that work.
+guard link_touch
+path tools/l/link_touch_witness.rish
+tier lap
+seated 20260917.095028

@@ -96,6 +96,9 @@
 #   sh tools/fixtures/w/witness_reach_scan.sh --list       # the unheard, one per line
 #   sh tools/fixtures/w/witness_reach_scan.sh --unclocked  # named by a runner nothing runs
 #   sh tools/fixtures/w/witness_reach_scan.sh --unreached  # the gated set: unclocked + unheard
+#   sh tools/fixtures/w/witness_reach_scan.sh --new        # of the gated set, the ones added
+#                                                        # inside the recent window -- the half a lap
+#                                                        # can repair with one roster row
 #   sh tools/fixtures/w/witness_reach_scan.sh --sung       # the sung, one per line
 #   sh tools/fixtures/w/witness_reach_scan.sh --standing   # the every-lap set, one per line
 #   sh tools/fixtures/w/witness_reach_scan.sh --cadence    # the every-fifth-lap set, one per line
@@ -274,7 +277,13 @@ done
 # The two held back are the cross-target pair, whose 0s green means `qemu absent` -- REDS `%460`,
 # Keaton's word. `wholly_unreached` fell 175 -> 173 in the same move; its own ceiling keeps the
 # slack it already carried.
-CEILING=${WITNESS_REACH_CEILING:-636}
+# 636 -> 635 on `20260917.095028`. Three witnesses stood `unheard` -- named by no runner at
+# all: `control_in_population` and `control_perturbation`, both landed `20260916` from the
+# %785 and %788 work, and `link_touch`, landed `20260909`. Each ran GREEN alone on this pier
+# and each took a roster row, so the number fell by the two the reading had been RED over plus
+# the one it named beside them. The guard had been RED on inherited bytes since `20260916` and
+# no pass heard it: this row is `tier cadence` and last ran here `20260911.085347`.
+CEILING=${WITNESS_REACH_CEILING:-635}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
@@ -486,6 +495,47 @@ unclocked=$(wc -l < "$pen/unclocked" | tr -d ' ')
 unheard=$(wc -l < "$pen/unheard" | tr -d ' ')
 unreached=$(wc -l < "$pen/unreached" | tr -d ' ')
 
+# THE GROWTH READING (`20260917`). The ceiling above says a number rose, and stops there; WHICH file
+# raised it is a second question, and the two are different amounts of work for whoever meets the
+# red. On `20260917` this guard read 638 against a ceiling of 636 on every ship in the fleet, and
+# naming the two files that moved it took a `git log --diff-filter=A` a hand had to think to write.
+# The reading gave a total and left the paths to that hand.
+#
+# So the scan asks git that question once on every run: which witnesses were ADDED inside a recent
+# window, and which of those stand unreached. `unreached_new` is the half a lap can repair on the
+# lap it reads it, since a file born this fortnight was born in somebody's current lane and its
+# repair is one roster row. The remainder is the long tail the ceiling already holds.
+#
+# WHY A WINDOW RATHER THAN A TRACKED BASELINE. A roster of today's unreached paths would be 638
+# lines wanting an edit every time the ceiling falls, and git already knows when each path arrived.
+# The window is a REPORTING aid rather than a gate, so its edge costs nothing: a witness added a day
+# outside it stays in `unreached` and stays under the ceiling.
+#
+# IT REPORTS, and the ceiling keeps the gate exactly where it stood; this reading tells the lap that
+# meets it where to look. Measured `20260917` on this pier: 2.7s for the history walk against 12s
+# for the scan around it.
+#
+# WHAT IT READS LOOSELY. A file RENAMED into the window reads as added, and a witness whose add
+# commit sits outside the window reads as legacy however new the lane considers it. Both stay inside
+# a reading that gates nothing, and `--new` prints the paths so a reader checks each one.
+#
+# THE WINDOW IS APPLIED HERE RATHER THAN BY `--since`, and the control is what taught this. Date
+# limiting PRUNES the walk: git stops following a branch at the first commit older than the cutoff,
+# which holds where dates rise with history and parts from the truth wherever they do. The pen plants
+# an add committed at a 2020 date, every plant behind it left the reading, and `unreached_new` FELL
+# where it should have risen -- three legs red on a scan that looked correct. So the walk is whole
+# and one awk carries the cutoff. Measured `20260917` on this pier: 2.7s whole against 0.4s pruned,
+# for a reading one rewritten date leaves intact.
+NEW_DAYS=${WITNESS_REACH_NEW_DAYS:-14}
+new_cutoff=$(( $(date +%s) - NEW_DAYS * 86400 ))
+git log --diff-filter=A --name-only --format='@%ct' -- '*_witness.rish' 2>/dev/null \
+  | awk -v cut="$new_cutoff" '
+      /^@/ { ts = substr($0, 2) + 0; next }
+      /_witness\.rish$/ { if (ts >= cut) print }
+    ' | sort -u > "$pen/recent"
+comm -12 "$pen/unreached" "$pen/recent" > "$pen/unreached_new"
+unreached_new=$(wc -l < "$pen/unreached_new" | tr -d ' ')
+
 # A family census, grouped by the first word of a basename. It reads the GATED set by default,
 # because a family count and a ceiling that disagree about which set they cover is how a lap comes
 # to believe a family is closer to done than it is.
@@ -565,6 +615,7 @@ case "$mode" in
   --list)      sed 's/^/unheard /'   "$pen/unheard" ;;
   --unclocked) sed 's/^/unclocked /' "$pen/unclocked" ;;
   --unreached) sed 's/^/unreached /' "$pen/unreached" ;;
+  --new)       sed 's/^/new /'       "$pen/unreached_new" ;;
   --sung)      sed 's/^/sung /'      "$pen/sung" ;;
   --standing)  sed 's/^/standing /'  "$pen/standing" ;;
   --cadence)   sed 's/^/cadence /'   "$pen/cadence" ;;
@@ -577,4 +628,4 @@ esac
 
 if [ "$unreached" -le "$CEILING" ]; then under=yes; else under=no; fi
 if [ "$wholly_unreached" -le "$FAMILY_CEILING" ]; then funder=yes; else funder=no; fi
-echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under families=$families_total wholly_unreached=$wholly_unreached family_ceiling=$FAMILY_CEILING under_family_ceiling=$funder outside_convention=$outside_convention outside_dark=$outside_dark"
+echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under families=$families_total wholly_unreached=$wholly_unreached family_ceiling=$FAMILY_CEILING under_family_ceiling=$funder outside_convention=$outside_convention outside_dark=$outside_dark unreached_new=$unreached_new new_days=$NEW_DAYS"

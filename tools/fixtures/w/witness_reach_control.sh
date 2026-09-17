@@ -457,5 +457,70 @@ if [ "$(out_field outside_convention)" -eq "$pre_out" ]; then
   note ok "outside_convention: removing the plants returns the reading"
 else note no "outside_convention: removing the plants returns the reading"; fi
 
+# 9. THE GROWTH READING (20260917). The ceiling says a number rose and never says which file raised
+#    it. `unreached_new` is the answer, and its whole content is the WINDOW, so the window is what
+#    this section proves: one witness added long ago and one added now, both unreached, both held by
+#    the ceiling, and only the second counted as growth. Proven from the far side too -- rostering
+#    the fresh plant must take it out of BOTH readings, and removing the plants must return them.
+new_field() { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" 2>/dev/null | tr ' ' '\n' | grep "^$1=" | cut -d= -f2; }
+new_list()  { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" --new 2>/dev/null | awk '{print $2}'; }
+unr_list()  { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" --unreached 2>/dev/null | awk '{print $2}'; }
+
+pre_new=$(new_field unreached_new)
+pre_unr=$(new_field unreached)
+
+#    The old plant is committed with an author and committer date far outside any window this
+#    reading will ever use. `--since` reads the COMMITTER date, so both are set or the plant lands
+#    inside the window wearing an old author stamp.
+echo 'say "ancient"' > tools/w/ancient_growth_witness.rish
+git add tools/w/ancient_growth_witness.rish >/dev/null 2>&1
+GIT_AUTHOR_DATE='2020-01-01T00:00:00 +0000' GIT_COMMITTER_DATE='2020-01-01T00:00:00 +0000' \
+  git commit -qm plant-ancient >/dev/null 2>&1
+
+echo 'say "fresh"' > tools/w/fresh_growth_witness.rish
+git add tools/w/fresh_growth_witness.rish >/dev/null 2>&1
+git commit -qm plant-fresh >/dev/null 2>&1
+
+if [ "$(new_field unreached)" -eq $((pre_unr + 2)) ]; then
+  note ok "growth: both plants are unreached, so the window is the only thing telling them apart"
+else note no "growth: both plants are unreached, so the window is the only thing telling them apart"; fi
+if [ "$(new_field unreached_new)" -eq $((pre_new + 1)) ]; then
+  note ok "growth: only the fresh plant raises unreached_new"
+else note no "growth: only the fresh plant raises unreached_new"; fi
+if echo "$(new_list)" | grep -qx tools/w/fresh_growth_witness.rish; then
+  note ok "growth: --new names the fresh plant"
+else note no "growth: --new names the fresh plant"; fi
+if ! echo "$(new_list)" | grep -qx tools/w/ancient_growth_witness.rish; then
+  note ok "growth: --new leaves the ancient plant out"
+else note no "growth: --new leaves the ancient plant out"; fi
+if echo "$(unr_list)" | grep -qx tools/w/ancient_growth_witness.rish; then
+  note ok "growth: the ancient plant stays in the gated set the ceiling holds"
+else note no "growth: the ancient plant stays in the gated set the ceiling holds"; fi
+
+#    The subset identity. A growth reading drawn from anywhere but the gated set would let a lap
+#    chase a file the ceiling never counted.
+new_list | sort > "$PEN/.growth_new"
+unr_list | sort > "$PEN/.growth_unr"
+if [ -z "$(comm -23 "$PEN/.growth_new" "$PEN/.growth_unr")" ]; then
+  note ok "growth: every new path is also an unreached path"
+else note no "growth: every new path is also an unreached path"; fi
+
+#    The far side, first half: a roster row takes the fresh plant off both readings at once, which
+#    is the repair the reading exists to point at.
+printf 'guard fresh_growth\npath tools/w/fresh_growth_witness.rish\ntier lap\n' >> construction/standing-equipment.kyri
+git add construction/standing-equipment.kyri >/dev/null 2>&1
+git commit -qm roster-fresh >/dev/null 2>&1
+if [ "$(new_field unreached_new)" -eq "$pre_new" ] && [ "$(new_field unreached)" -eq $((pre_unr + 1)) ]; then
+  note ok "growth: one roster row lowers unreached_new and unreached together"
+else note no "growth: one roster row lowers unreached_new and unreached together"; fi
+
+#    The far side, second half: removing the plants returns both readings, so the checks above were
+#    reading the plants rather than agreeing with the pen by accident.
+git rm -q -f tools/w/fresh_growth_witness.rish tools/w/ancient_growth_witness.rish >/dev/null 2>&1
+git commit -qm drop-growth >/dev/null 2>&1
+if [ "$(new_field unreached)" -eq "$pre_unr" ] && [ "$(new_field unreached_new)" -eq "$pre_new" ]; then
+  note ok "growth: removing both plants returns both readings"
+else note no "growth: removing both plants returns both readings"; fi
+
 echo "control_pass=$pass control_fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; else echo "control_verdict=red"; fi

@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260917.105154` | [The refusal that can fire](20260917/20260917-105154_the-refusal-that-can-fire.kyri) | Ranking held; falsifiers did not. Second ranked page. |
 | `20260917.101905` | [The verdict that came home](20260917/20260917-101905_the-verdict-that-came-home.kyri) | The seated door key fired: 0 of 16; errata 12 of 12. |
+| `20260917.100140` | [the guards nobody ran](20260917/20260917-100140_the-guards-nobody-ran.kyri) | three witnesses unrostered; the reach meter now names them |
 | `20260917.100019` | [The cannot that was never measured](20260917/20260917-100019_the-cannot-that-was-never-measured.kyri) | Four walls measured under %589's bare "cannot import". |
 | `20260917.094356` | [the falsifier that cannot fire](20260917/20260917-094356_the-falsifier-that-cannot-fire.kyri) | 580 stated falsifiers classified; 21 Field pages naming none walled. |
 | `20260917.093724` | [One fold, and a ceiling class](20260917/20260917-093724_one-fold-and-a-ceiling-class.kyri) | %810 folded: 745 bytes freed against a 2,636-byte row. |

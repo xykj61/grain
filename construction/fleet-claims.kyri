@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-roster-reach-census
-seat bakery
-stamp 20260917.083806
-epoch 1789648686
-paths construction/standing-equipment.kyri tools/fixtures/w/witness_reach_scan.sh tools/fixtures/w/witness_reach_control.sh tools/w/witness_reach_witness.rish
-what SCOPE CORRECTED at 20260917.094500, and the correction is the lap's own finding: I checked the absence of my chosen NAMES rather than of the SUBJECT, and this tree has traced witness reachability since 20260825 in tools/fixtures/w/witness_reach_scan.sh. No new census is built; the claim now covers the live red that census reports and the one reading it lacks. THE RED: tools/w/witness_reach_witness.rish asserts under_ceiling=yes and the scan answers unreached=638 against ceiling=636, so the guard is RED on inherited bytes. The two files that moved it are tools/c/control_in_population_witness.rish and tools/c/control_perturbation_witness.rish, both landed 20260916 from the %785 and %788 work, both reading unheard -- named by no runner at all, which is REDS %810's class exactly. Run on metal this lap, both GREEN, 54s and 166s. The repair is two roster rows at tier cadence, which takes unreached to 636 and the guard green. THE READING: the ceiling says a number rose and never says which file raised it, and naming those two took a git log --diff-filter=A a hand had to think to write. The scan now asks git once per run which witnesses were ADDED inside NEW_DAYS (14), intersects that with the gated set, prints unreached_new= in its verdict line and names each path under --new. It gates nothing -- the ceiling is the gate and stands exactly where it stood -- and costs 0.4s against the scan's 10.7s. The control proves the window from both sides on planted repositories: an ancient add committed at a 2020 date reads unreached and not new, a fresh add reads both, every new path is also an unreached path, one roster row lowers both readings together, and removing the plants returns both. Why this guard never caught it here: witness_reach is tier cadence and last ran on this pier 20260911.085347, so the red has stood six days on a clock that only began turning when --cadence-slice landed. Touches no peer module source and no other guard.
 claim copal-sow-copy-stream
 seat copal
 stamp 20260917.090045

@@ -130,12 +130,26 @@ assert control.out contains "ok   outside_convention: a self-declared file asser
 assert control.out contains "ok   outside_dark: both plants are dark, nothing names them" else "witness-reach: an outside-convention file no runner names must read dark"
 assert control.out contains "ok   outside_convention: removing the plants returns the reading" else "witness-reach: the outside reading must be proven from the far side too"
 
+# The growth reading (20260917). The ceiling says a number rose and never says which file raised
+# it, so `unreached_new` names the half a lap can repair with one roster row. Its whole content is
+# the WINDOW, and the window is what the pen proves: one plant added long ago and one added now,
+# both unreached, only the second counted. The first cut applied the window with `git log --since`,
+# which PRUNES the walk at the first old commit, and these legs caught it.
+assert control.out contains "ok   growth: both plants are unreached, so the window is the only thing telling them apart" else "witness-reach: both plants must be unreached, or the window is not what separates them"
+assert control.out contains "ok   growth: only the fresh plant raises unreached_new" else "witness-reach: an add outside the window must not be counted as growth"
+assert control.out contains "ok   growth: --new names the fresh plant" else "witness-reach: the reading must name the path, since naming it is the whole repair it points at"
+assert control.out contains "ok   growth: --new leaves the ancient plant out" else "witness-reach: an old add must stay out of the growth reading"
+assert control.out contains "ok   growth: the ancient plant stays in the gated set the ceiling holds" else "witness-reach: the window must change what is REPORTED and never what is gated"
+assert control.out contains "ok   growth: every new path is also an unreached path" else "witness-reach: a growth set drawn from outside the gated set would send a lap after a file the ceiling never counted"
+assert control.out contains "ok   growth: one roster row lowers unreached_new and unreached together" else "witness-reach: the repair the reading points at must move both readings"
+assert control.out contains "ok   growth: removing both plants returns both readings" else "witness-reach: the growth legs must be proven from the far side too"
+
 # Now the living tree.
 let living = run ["sh" "tools/fixtures/w/witness_reach_scan.sh"]
 say living.out
 assert living.ok else "witness-reach: the living scan must complete -- ${living.err_brief}"
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
-assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out_brief}"
+assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- run sh tools/fixtures/w/witness_reach_scan.sh --new to name the files that raised it, then put each on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out_brief}"
 assert living.out contains "under_family_ceiling=yes" else "witness-reach: a whole witness family lost its last clock -- give it a roster row rather than raising the family ceiling -- ${living.out_brief}"
 
 # Both outside readings are REPORTED rather than gated, and the scan's header argues why at length:
@@ -145,6 +159,7 @@ assert living.out contains "under_family_ceiling=yes" else "witness-reach: a who
 # tools/p/parity.rish is Keaton's word.
 assert living.out contains "outside_convention=" else "witness-reach: the outside-convention reading must print on every run"
 assert living.out contains "outside_dark=" else "witness-reach: the dark reading must print on every run"
+assert living.out contains "unreached_new=" else "witness-reach: the growth reading must print on every run, since a lap meeting the ceiling reads this line first"
 
 # The standing reading is read from the roster, so it can never be zero while the roster has rows.
 let standing = run ["sh" "-c" "sh tools/fixtures/w/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]

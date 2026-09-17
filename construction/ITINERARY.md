@@ -67,40 +67,29 @@ reached the board at all -- the deadlock refused its own commit.
 three doors a fourth is now measured -- **a row runs 2,636 bytes at the median where its three
 fields are a third of that.**
 
-**BAKERY -- A RATCHET OVER A GROWING POPULATION IS A WALL WITH A DELAY.** Elder account
-[shelved whole](archive/20260917-062300_itinerary-landed-accounts.md), its two-door ask with it.
-**EARTH BREATHES IN** (row 4, N=5289): take in the concrete fact at the door before any argument
-about it. The fact was the cold endurance run's own line -- `root_finder red 13s`, among **20 reds
-of 337 guards, 315 green** -- on bytes this ship inherited and never wrote. My own last lap had
-already named the cause on this card and left the cure to the next one.
-**THE MECHANISM.** `tools/fixtures/r/root_finder_scan.sh` held its whole bare population under one
-falling `CEILING=189`. That constant is now `LEGACY_CEILING=191` beside a new `BASELINE` naming
-`tools/fixtures/r/root_finder_baseline.txt`, a tracked roster of the **189 paths** carrying a bare
-finder at this stamp. The row loop asks one shell `case` against that roster, read once into a
-newline-delimited string, and splits the count in two: **`finders_bare_new`**, a bare finder in a
-file the roster leaves out, **GATED AT ZERO**; **`finders_bare_legacy`**, the roster's own,
-ratcheted. Each `--list` row carries `growth=new|legacy`, and the verdict names the growth first,
-since that is the half a lap can repair on the lap it reads it.
-**WHY NOT SIMPLY A HIGHER CEILING.** The split is strictly TIGHTER on what matters -- zero
-tolerance where the elder allowed 189 -- and honest about what no lane could reach from here.
-**189 PATHS HOLD 191 SITES**, so the roster is keyed by PATH while the ceiling counts SITES: a new
-FILE reds the gate, and a second finder written into a roster FILE reds the ceiling. Both proven.
-**THE ONE FALSE RED IS MEASURED RATHER THAN CLAIMED.** A lawful rename leaves the roster behind
-and reads as growth; its repair is one roster row -- the same cost as the elder ceiling edit, and
-visible where that was silent. Four legs run it. An absent roster **refuses**, since a gate whose
-roster can be deleted into silence is a gate with a door beside it.
-**PROVEN:** control **76 legs from 53, 0 failing**, **six mutations RUN every pass**, the new one
-preceded by its own unmutated reading in the same pen -- a mutation is evidence only where the
-truth it replaces differs from it.
-**MINE:** the gate bit on its first real run and caught MY OWN control. The second-site plant was a
-heredoc, and a heredoc is tracked bytes to a line-based scanner, so a literal `while [ ! -d ... ]`
-entered the live population and moved the number the gate weighs -- `%785`'s hazard, in the file
-whose own header warns of it. Rebuilt through `plant_finder`, whose every line sits inside an
-`echo`. **The instrument caught its author on its first breath**, which is the strongest reading
-this lap has of whether it works.
-**YOURS:** `construction/REDS.md` still reads **one byte under its 65,536**, with 23 rows OPEN and
-none foldable, so this repair went in **unbooked** -- a fleet whose first law is reds first cannot
-book one this hour. That is the door, and it is Keaton's.
+**BAKERY -- THREE GUARDS STOOD ON NO ROSTER, AND THE METER COUNTING THEM COULD NOT NAME THEM.**
+Elder account [shelved whole](archive/20260917-095028_itinerary-landed-accounts.md), its ledger ask
+with it. **AETHER HEARS** (row 0, N=5310): listen for the silence where a claim used to be. The
+silence was `witness_reach` answering `unreached=638 ceiling=636` -- RED on bytes I inherited --
+over `tools/c/control_in_population_witness.rish`, `tools/c/control_perturbation_witness.rish` and
+`tools/l/link_touch_witness.rish`, every one `unheard`, named by no runner at all. That is `%810`'s
+class, and this guard never heard it here because it is `tier cadence` and last ran on this pier
+`20260911.085347`. All three GREEN alone on metal -- 54s, 166s, 4.8s -- all three rostered, ceiling
+**636 to 635**, guard green.
+**THE MECHANISM.** `tools/fixtures/w/witness_reach_scan.sh` walks `git log --diff-filter=A` whole,
+carries the `NEW_DAYS` cutoff in one `awk`, intersects the adds with the gated set, prints
+`unreached_new=` in its verdict line and names each path under `--new`. The ceiling said a number
+rose and stopped; naming the files took a `git log` a hand had to think to write. Gates nothing:
+2.7s against the scan's 12s.
+**PROVEN:** control **60 legs from 52, 0 failing**, two mutations bitten -- and a third that fired
+for real, since the first cut used `--since`, which PRUNES the walk at the first old commit, so the
+pen's 2020-dated plant dropped every plant behind it and `unreached_new` FELL where it should have
+risen. Three legs caught a scan that read correctly on this tree.
+**MINE:** I checked the absence of my own NAMES rather than of the SUBJECT, and claimed a census
+this tree has run since `20260825`. Forty minutes and one grep later the claim was rewritten to the
+red that census reports. `%457`, one layer in: a path check answers about spellings.
+**YOURS:** `unreached_new` reports where it could gate. A wall at zero would red the lap a witness
+lands unrostered, priced at one roster row per lane -- take it, or keep the reading advisory?
 
 **COPAL -- A STEP THAT STARTS NO PROCESS AND COST NINE SECONDS.** Account
 [shelved whole](archive/20260917-064837_itinerary-landed-accounts.md), its ask answered here.
@@ -228,7 +217,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `acba774514` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `725d2c184c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
