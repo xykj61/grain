@@ -83,8 +83,15 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// with it Aurora's first freestanding RISC-V seed, arrived at 20260618.191412.
 /// The `key` command arrived at 20260916.095816 -- the receipt key asked for
 /// without building, so a caller can find out whether a binary is current at
-/// the cost of a read. The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260916.095816";
+/// the cost of a read. The remembered compiler digest arrived at
+/// 20260916.203519 -- `file_digest_remembered`, which reads the pinned
+/// toolchain's bytes once per compiler rather than once per keyed build. This
+/// stamp is also the staleness door `tools/fixtures/r/ryekey_control.sh` reads
+/// at its own opening: a binary built from an elder source with this string
+/// unmoved walks through that door and then behaves differently, which is
+/// exactly what happened on the lap the memo landed. A behavior change in this
+/// file moves this stamp. The backend stays honestly 0.16.0 throughout.
+const rye_version = "20260916.203519";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -118,12 +125,32 @@ const build_lock_poll_ms: u64 = 50;
 /// never collide with this one's stamps. Moved to v6 on `20260916` when the
 /// toolchain and library PATHS left the key below, and to v7 the same day when
 /// the OUTPUT'S path followed them -- the third of one class, each naming
-/// where something sat rather than what it compiled. The bump buys legibility
-/// rather than safety -- a changed input set already speaks a different digest
-/// and misses, which is the safe direction -- so what it actually names is the
-/// one rebuild every standing receipt takes on the lap this lands: 96 of them
-/// on this ship at v6, and 94 standing when v7 landed, each hitting again afterward.
-const ryekey_marker = "ryekey-v7\x00";
+/// where something sat rather than what it compiled. **v8 on `20260916`** is a
+/// different kind of move: the compiler now joins the key as the 32-byte
+/// SHA-256 of its bytes rather than as the bytes themselves, so the digest the
+/// key speaks changes shape even where not one input byte moved. The bump buys
+/// legibility rather than safety -- a changed input set already speaks a
+/// different digest and misses, which is the safe direction -- so what it
+/// actually names is the one rebuild every standing receipt takes on the lap
+/// this lands: 96 of them on this ship at v6, and 94 standing when v7 landed,
+/// each hitting again afterward.
+const ryekey_marker = "ryekey-v8\x00";
+
+/// One file's remembered digest sits beside the `rye` binary under this prefix
+/// and suffix, in Kyri notation. The directory is gitignored, so a record is a
+/// build artifact rather than tracked content.
+const ryekey_cache_prefix = "rye-key-cache.";
+const ryekey_cache_suffix = ".kyri";
+
+/// A record is seven short lines. This bound refuses to read a record-shaped
+/// file that has grown into something else, with generous room over the ~200
+/// bytes one measures.
+const ryekey_cache_max_bytes: u64 = 4096;
+
+/// A remembered digest is taken over a whole file, and the pinned toolchain
+/// measures 172,641,672 bytes today. This ceiling leaves deliberate growth room
+/// while a wildly wrong path meets a named limit rather than a long read.
+const ryekey_toolchain_max_bytes: u64 = 1024 * 1024 * 1024;
 
 /// A receipt stamp is two 64-hex lines -- the input key, then the emitted
 /// binary's own hash -- and this bound refuses to read a stamp-shaped file
@@ -538,7 +565,22 @@ fn bridge_to_zig(
     // nothing was read, and nothing refused. The refusal message below then
     // names the condition that actually settled it rather than blaming a file
     // this build never opened.
-    const zig_content_readable = if (key_wanted) hash_file_into(io, dir, zig, &hasher) else true;
+    //
+    // THE COMPILER JOINS AS A DIGEST, REMEMBERED. `file_digest_remembered`
+    // takes the compiler's SHA-256 from a record beside this binary while the
+    // filesystem still gives that file the same inode, size, mtime and ctime,
+    // and from its 172 MB otherwise. So the bytes still decide the key, read
+    // once per compiler rather than once per build. Feeding a 32-byte digest
+    // rather than a byte stream is what moved the marker to v8 above.
+    const self_exe_path: ?[]const u8 = if (key_wanted) (resolve_self_exe(init, garden) catch null) else null;
+    const zig_content_readable = if (key_wanted) zig_blk: {
+        const digest = file_digest_remembered(io, dir, zig, ryekey_toolchain_max_bytes, self_exe_path, garden) orelse
+            break :zig_blk false;
+        // invariant: a remembered digest is the full width the key expects.
+        assert(digest.len == Sha256.digest_length);
+        hasher.update(&digest);
+        break :zig_blk true;
+    } else true;
     // The standard library joins the same way for the same reason: the sorted
     // tree's bytes decide the build, and the directory holding them does not.
     // Proven beside the toolchain in that pen -- an equivalent spelling of one
@@ -638,17 +680,21 @@ fn bridge_to_zig(
     var receipt_path: ?[]const u8 = null;
     if (wants_receipt) {
         if (find_emit_path(extra)) |emit_path| {
-            if (resolve_self_exe(init, garden)) |self_path| {
-                const self_bytes = dir.readFileAlloc(io, self_path, garden, .limited64(rye_self_max_bytes)) catch null;
-                if (self_bytes) |bytes| {
+            // The binary's own bytes joined here as a digest already, so this
+            // reading changes no key -- what changes is that its 12 MB are read
+            // once per binary rather than once per build, through the same
+            // record the compiler uses. `self_exe_path` was resolved above,
+            // where the compiler's record needed the directory to sit in; a
+            // build that cannot name its own binary earns no receipt, exactly
+            // as it could not before.
+            if (self_exe_path) |self_path| {
+                if (file_digest_remembered(io, dir, self_path, rye_self_max_bytes, self_exe_path, garden)) |self_digest| {
                     // invariant: the binary that computed this key is inside the key.
-                    assert(bytes.len > 0);
-                    var self_digest: [Sha256.digest_length]u8 = undefined;
-                    Sha256.hash(bytes, &self_digest, .{});
+                    assert(self_digest.len == Sha256.digest_length);
                     hasher.update(&self_digest);
                     receipt_path = try std.fmt.allocPrint(garden, "{s}.ryekey", .{emit_path});
                 }
-            } else |_| {}
+            }
         }
     }
 
@@ -766,6 +812,189 @@ fn hash_file_into(io: std.Io, dir: std.Io.Dir, path: []const u8, hasher: *Sha256
         hasher.update(buffer[0..n]);
         if (n < buffer.len) return true;
     }
+}
+
+/// A file's SHA-256, taken from a record beside the `rye` binary when the
+/// filesystem still gives that file the same identity, and from its bytes
+/// otherwise. A record that cannot be read, written, or trusted costs one
+/// wasted `stat` and the read happens exactly as it did before.
+///
+/// WHY. Measured `20260915` on this pier: hashing the pinned toolchain's 172 MB
+/// costs about 1,420 ms, while READING those same bytes costs 124 ms -- the
+/// whole difference is SHA-256 running in software at roughly 120 MB/s. A
+/// receipt HIT cost 1,492 ms against the 1,900 ms the compiler spends building
+/// a one-file program, so the key spent nearly all the saving it bought, on
+/// every build, proving a file nobody had touched. The bytes still decide the
+/// key. They are read once per compiler now rather than once per build.
+///
+/// THE IDENTITY, and what each of its four readings refuses. `inode` moves when
+/// a file is replaced rather than rewritten, which is what `mv`, `cp` over a
+/// fresh name, and a fetched archive all do. `size` moves on any length change.
+/// `mtime` moves on any write. `ctime` moves on any write OR metadata change,
+/// and no ordinary call sets it backward -- so it catches the one case the
+/// other three miss: a same-size rewrite in place whose modification time was
+/// restored afterward. All four must agree, and the record names the path it
+/// speaks for, so a record can never answer for a file it never read.
+///
+/// THE HONEST LIMIT, named rather than hidden. A hand that can write inside the
+/// binary's own directory can write a record saying whatever it likes, and the
+/// key will believe it. That same hand can replace the `rye` binary itself, so
+/// the record adds no reach it did not already have.
+fn file_digest_remembered(
+    io: std.Io,
+    dir: std.Io.Dir,
+    path: []const u8,
+    max_bytes: u64,
+    self_exe_path: ?[]const u8,
+    garden: std.mem.Allocator,
+) ?[Sha256.digest_length]u8 {
+    const stat = dir.statFile(io, path, .{}) catch return null;
+    // invariant: a file past its caller's named ceiling is a wrong path rather than an input.
+    if (stat.size > max_bytes) return null;
+    const identity = Identity{
+        .inode = @intCast(stat.inode),
+        .size = stat.size,
+        .mtime_ns = stat.mtime.nanoseconds,
+        .ctime_ns = stat.ctime.nanoseconds,
+    };
+
+    const record_path = digest_record_path(path, self_exe_path, garden);
+    if (record_path) |rp| {
+        if (digest_record_read(io, dir, rp, path, identity, garden)) |remembered| return remembered;
+    }
+
+    var hasher = Sha256.init(.{});
+    if (!hash_file_into(io, dir, path, &hasher)) return null;
+    var digest: [Sha256.digest_length]u8 = undefined;
+    hasher.final(&digest);
+    // invariant: a digest earned by reading is the full width the key expects.
+    assert(digest.len == Sha256.digest_length);
+    if (record_path) |rp| digest_record_write(io, dir, rp, path, identity, digest, garden);
+    return digest;
+}
+
+/// The four filesystem readings that together say *this is the same file*.
+const Identity = struct {
+    inode: u64,
+    size: u64,
+    mtime_ns: i96,
+    ctime_ns: i96,
+};
+
+/// Where one file's record sits: beside the `rye` binary, under a name derived
+/// from the digest of the path it speaks for, so a path holding spaces or
+/// slashes still names one file and two files never share a record. A build
+/// that cannot resolve its own binary keeps no record and reads every time.
+fn digest_record_path(path: []const u8, self_exe_path: ?[]const u8, garden: std.mem.Allocator) ?[]const u8 {
+    const self_path = self_exe_path orelse return null;
+    const bin_dir = std.fs.path.dirname(self_path) orelse return null;
+    var path_digest: [Sha256.digest_length]u8 = undefined;
+    Sha256.hash(path, &path_digest, .{});
+    const path_hex = std.fmt.bytesToHex(path_digest, .lower);
+    return std.fmt.allocPrint(garden, "{s}/{s}{s}{s}", .{
+        bin_dir,
+        ryekey_cache_prefix,
+        path_hex[0..16],
+        ryekey_cache_suffix,
+    }) catch null;
+}
+
+/// Read a record and answer only when every field agrees with the file in hand.
+fn digest_record_read(
+    io: std.Io,
+    dir: std.Io.Dir,
+    record_path: []const u8,
+    path: []const u8,
+    identity: Identity,
+    garden: std.mem.Allocator,
+) ?[Sha256.digest_length]u8 {
+    const body = dir.readFileAlloc(io, record_path, garden, .limited64(ryekey_cache_max_bytes)) catch return null;
+    var seen_format = false;
+    var seen_path = false;
+    var seen_inode = false;
+    var seen_size = false;
+    var seen_mtime = false;
+    var seen_ctime = false;
+    var digest: [Sha256.digest_length]u8 = undefined;
+    var seen_digest = false;
+    var lines = std.mem.splitScalar(u8, body, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \r\t");
+        if (line.len == 0) continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse continue;
+        const field = line[0..space];
+        const value = line[space + 1 ..];
+        if (std.mem.eql(u8, field, "format")) {
+            seen_format = std.mem.eql(u8, value, "rye-key-cache-v1");
+        } else if (std.mem.eql(u8, field, "path")) {
+            seen_path = std.mem.eql(u8, value, path);
+        } else if (std.mem.eql(u8, field, "inode")) {
+            const n = std.fmt.parseInt(u64, value, 10) catch return null;
+            seen_inode = n == identity.inode;
+        } else if (std.mem.eql(u8, field, "size")) {
+            const n = std.fmt.parseInt(u64, value, 10) catch return null;
+            seen_size = n == identity.size;
+        } else if (std.mem.eql(u8, field, "mtime")) {
+            const n = std.fmt.parseInt(i96, value, 10) catch return null;
+            seen_mtime = n == identity.mtime_ns;
+        } else if (std.mem.eql(u8, field, "ctime")) {
+            const n = std.fmt.parseInt(i96, value, 10) catch return null;
+            seen_ctime = n == identity.ctime_ns;
+        } else if (std.mem.eql(u8, field, "sha256")) {
+            if (value.len != Sha256.digest_length * 2) return null;
+            // u32 in memory, per TAME's explicit widths: a digest is 32 bytes and
+            // the index never approaches a machine word.
+            var i: u32 = 0;
+            while (i < Sha256.digest_length) : (i += 1) {
+                const at: usize = @intCast(i * 2); // seam: a slice index is the machine word
+                digest[i] = std.fmt.parseInt(u8, value[at .. at + 2], 16) catch return null;
+            }
+            seen_digest = true;
+        }
+    }
+    if (!seen_format) return null;
+    // A RECORD NAMES THE FILE IT SPEAKS FOR, AND THAT NAME IS COMPARED. The
+    // record's filename is the digest of the path, so a record is already
+    // reached only under its own path's hash -- yet a hand-written record, or
+    // one left by a path that hashed the same, would otherwise answer for a
+    // file it never read. `seen_path` stood computed and unread until
+    // 20260916.203519, when leg 28's own plant found it.
+    if (!seen_path) return null;
+    if (!seen_inode) return null;
+    if (!seen_size) return null;
+    if (!seen_mtime) return null;
+    if (!seen_ctime) return null;
+    if (!seen_digest) return null;
+    return digest;
+}
+
+/// Write a record through a temporary name and one rename, so a reader never
+/// meets a half-written record. The temporary's name is derived from the
+/// record's own, and its content is a pure function of the path, the identity,
+/// and the digest -- so two builds remembering one compiler write the same
+/// bytes and cannot disagree.
+fn digest_record_write(
+    io: std.Io,
+    dir: std.Io.Dir,
+    record_path: []const u8,
+    path: []const u8,
+    identity: Identity,
+    digest: [Sha256.digest_length]u8,
+    garden: std.mem.Allocator,
+) void {
+    const digest_hex = std.fmt.bytesToHex(digest, .lower);
+    const body = std.fmt.allocPrint(
+        garden,
+        "format rye-key-cache-v1\npath {s}\ninode {d}\nsize {d}\nmtime {d}\nctime {d}\nsha256 {s}\n",
+        .{ path, identity.inode, identity.size, identity.mtime_ns, identity.ctime_ns, digest_hex[0..] },
+    ) catch return;
+    // invariant: a record that would not fit its own ceiling is never written.
+    if (body.len > ryekey_cache_max_bytes) return;
+    const temp_path = std.fmt.allocPrint(garden, "{s}.writing", .{record_path}) catch return;
+    dir.writeFile(io, .{ .sub_path = temp_path, .data = body }) catch return;
+    dir.rename(temp_path, dir, record_path, io) catch {
+        dir.deleteFile(io, temp_path) catch {};
+    };
 }
 
 fn path_less_than(_: void, a: []const u8, b: []const u8) bool {
