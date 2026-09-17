@@ -2,11 +2,12 @@
 # loom_trend_control.sh -- the loom reader proven on planted logs in a throwaway repository.
 #
 # The plants are the shapes the tree actually writes: a numeric key across days, a text key, a key
-# that collides across two families, and a key nobody ever wrote.
+# that collides across two families, a key nobody ever wrote, and a vocabulary larger than
+# the `--keys` cap.
 #
 #   sh tools/fixtures/l/loom_trend_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 13 cases, one pen holding a real git repository.
+# Prints `pass=N fail=N`. Bounded: 21 cases, one pen holding a real git repository.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -62,6 +63,44 @@ out=$(run guards)
 # THE LISTING CARRIES THE SOURCE LINE, so a reader sees the scope a value was measured in. A key is
 # comparable only within one scope, and this reader once merged a single fast leg with a whole run.
 check "a listing shows the loom line"    yes "$(has "$out" 'loom roster=a guards=10 seconds=100')"
+
+# THE MODE THIS CONTROL NEVER EXERCISED (`20260917`). Thirteen legs stood above and not one ran
+# `--keys` -- the mode `.claude/rules/session-logs.md` calls the map of what the journal actually
+# holds. It ended `| head -60` and said nothing about what it dropped, so a reader could not tell a
+# small journal from a truncated reading of a large one. A cap is lawful here; a silent one is not.
+# Both counts are asserted from both sides, because a listing proven only where nothing was dropped
+# cannot be told from one that drops in silence.
+
+# UNDER the cap first, on the pen as it already stands: roster, guards, seconds, probe.
+out=$(run --keys)
+check "a small journal names its vocabulary" yes "$(has "$out" 'keys_distinct=4')"
+check "and shows all of it"                  yes "$(has "$out" 'keys_shown=4')"
+check "listing exactly the rows it claims"   4   "$(printf '%s\n' "$out" | grep -cE '^ *[0-9]+ ')"
+
+# OVER the cap: 70 keys nobody would see past the sixtieth.
+mkdir -p session-logs/date/20260103
+i=1
+while [ "$i" -le 70 ]; do
+  printf 'stamp 20260103.0400%02d\nloom probe=c k%02d=%d\n' "$i" "$i" "$i" \
+    > "session-logs/date/20260103/20260103-0400$(printf %02d "$i")_k$i.kyri"
+  i=$((i+1))
+done
+git add -A >/dev/null; git commit -qm plant-many-keys
+
+out=$(run --keys)
+distinct=$(printf '%s\n' "$out" | sed -n 's/^keys_distinct=//p')
+shown=$(printf '%s\n' "$out" | sed -n 's/^keys_shown=//p')
+rows=$(printf '%s\n' "$out" | grep -cE '^ *[0-9]+ ')
+check "a capped listing still names the whole" yes "$([ "$distinct" -gt 60 ] && echo yes || echo no)"
+check "while saying how many it showed"        60  "$shown"
+check "and showing exactly that many"          60  "$rows"
+
+out=$(run --keys --all)
+distinct=$(printf '%s\n' "$out" | sed -n 's/^keys_distinct=//p')
+shown=$(printf '%s\n' "$out" | sed -n 's/^keys_shown=//p')
+rows=$(printf '%s\n' "$out" | grep -cE '^ *[0-9]+ ')
+check "--all lifts the cap to the whole"       "$distinct" "$shown"
+check "and prints every key it counted"        "$distinct" "$rows"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

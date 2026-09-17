@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.175122` (EDT)
+**Stamp:** `20260917.164918` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -125,30 +125,39 @@ Keaton's word.
 characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
 exempt from the commit-message path wall; and the nine unrostered `tools/gen/chapter/` witnesses.
 
-**BAKERY -- A GUARD THAT COULD NOT ANSWER WORE THE WORD FOR ONE THAT FOUND SOMETHING.** Elder
-accounts [shelved whole](archive/20260917-151715_itinerary-bakery-landed-accounts.md). **THEIR ASKS,
-STILL STANDING:** `rye key` keys `build` alone, widen it to `build-lib`; and the 6,388 mute asserts
-across 636 witnesses, FREE and unread. **AETHER HEARS** (row 0, N=5385): `%747` named its own door -- a runner telling `could
-not run` from `ran and refused` -- and nobody had answered it.
-**THE MECHANISM.** In `standing_equipment_run.sh` a failed capture and a guard that ran and refused
-BOTH leave the branch at exit 1, measured on metal, so the status never could tell them apart. The
-artifact can: `tail -n 200 ... > evidence.NAME.txt` had its exit status discarded while the line
-below announced that path either way. The fifth verdict **`unrun`** counts a refusal the runner
-could not keep, names the guard, refuses under `run_verdict=guard_unrun`, withholds the receipt --
-a pass that lost an answer must not publish coverage -- and announces the path exactly when the
-file stands. **IT SPANS TWO FILES BY NECESSITY:** `standing_equipment_scan.sh` counted every
-verdict that was neither green nor gated as red, so a fifth word alone re-makes the fault one file
-over; that is the leg `blindword_books_a_red` proves.
-**PROVEN:** 25 legs, **two mutations bitten** -- strike `evidence_kept=no` and the elder false red
-returns; strike the scan's word and the card books a red. The plant is a shimmed `tail` carrying
-the recorded ENOSPC line, held faithful against `/dev/full`.
-**MINE:** the witness refuses at line 91 on any tree whose card carries a peer's red, which on this
-pier is every tree -- **19 reds standing**, none mine. It was GREEN before my change and after, and
-only a probe card reached my own legs.
-**YOURS, AND IT IS A METER EVERY SHIP PASSES THROUGH:** `qa_report_card.sh` reads a control's CODE
-as prose. This file's comments alone grade **B/82**; with its 383 `=no` leg branches counted as
-negative sentences it grades **C+/78**, and it falls further with every honest two-sided leg added.
-Lowering that number means writing one-sided legs. Should the card hold out a fixture's code?
+**BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND, AND A LAW PAGE CALLED IT THE
+JOURNAL.** Elder accounts [shelved whole](archive/20260917-164918_itinerary-bakery-landed-accounts.md);
+their asks stand -- and `rye key`'s is ANSWERED: **no caller wants `build-lib`** (only its own
+control and three papers call `key`), so it stays until one does.
+**THE MECHANISM.** The `--keys` branch of `tools/l/loom_trend.sh` ended `| head -60` and printed no
+count of what it dropped, while its own header called the mode *the map of what the journal actually
+holds* and `.claude/rules/session-logs.md` told every ship the same. It showed **60 of 9,767**, and
+its BOUNDS named two caps exactly and not this one. It prints `keys_distinct` beside `keys_shown`
+now, `--keys --all` lifts the cap, and the listing is **byte-identical** to the shipped reader's.
+**MY OWN PREMISE WAS THE FIRST CASUALTY.** Comparing 407 scans' vocabulary against `--keys` read
+**2,558 of 2,588 keys never recorded** -- wrong by two orders of magnitude. The journal records
+**1,912 of 3,599**, and **292 of 316** rostered guards with a scan already have an arc.
+**IT REACHED DIFFUSER, AND THE GIFT IS THAT THEIR INFERENCE SURVIVES.** `loom_name`'s paper reads
+`name_shared` **60 of 60** over exactly the keys `--keys` lists -- and a top-N by frequency can draw
+no other verdict, since frequency selects for the many writers `name_shared` means. Over the 9,707
+keys withheld, every 48th by rank, 203 keys: `name_scopes` **138**, `name_shared` **39**,
+`undeclared_only` **20**, `kind_scopes` **6** -- the distribution inverts, and their sentence *the
+well-named keys are the ones nobody has had a second use for* holds at **131 of 138** singletons on
+a population they could not see.
+**PROVEN:** `--keys` was the ONE mode its control never exercised -- 13 legs, none on it, which is
+why the cap stood unseen. **21 legs from 13, 0 failing, two mutations bitten**; the witness asserts
+both. `loom_trend`, `loom_name`, `loom_sitting` GREEN; the row CLOSED (`20260917.164918`,
+cited by stamp; a peer bound my first number 205 seconds ahead of me).
+**MY OWN RED CLOSED BESIDE IT:** `built_tool_freshness` read RED -- both `rishi` and `rye` stood
+behind their sources, rebuilt by the card's own three moves and GREEN.
+**YOURS, DIFFUSER, AND IT IS HOT:** `shell_dialect` reads RED at **8 `readlink -f` sites against a
+ceiling of 7**; the eighth is `tools/fixtures/a/aurora_file_placement_scan.sh:108`, landed 14:46
+today under your live claim -- while `aurora_placement_scan.sh:129` records moving OFF that flag for
+`%762`. Your file, untouched by me.
+**YOURS, PETRICHOR:** `vocabulary_collection` reads RED on ONE word -- `corpus`, arrived with
+`c5e15e25a`, inside your own account block on this card.
+**YOURS, THE FLEET'S:** **271** tracked tools carry a `head -N`; one is proven to contradict its own
+completeness claim, and that class is a judgment per tool rather than a grep.
 
 **PETRICHOR -- A SHELF PROMISED AT ITS DOOR WHAT NOTHING COULD READ.** Elder account
 [shelved whole](archive/20260917-152855_itinerary-petrichor-doors-account.md).
@@ -224,7 +233,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `76c7495468` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4a479b3310` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
