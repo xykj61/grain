@@ -811,3 +811,5 @@ at a closed fold.*
 *Row %781 folded to [`REDS-an-absence-is-the-reading-a-grep-hands-back-hardest-rows-781.md`](REDS-an-absence-is-the-reading-a-grep-hands-back-hardest-rows-781.md) on `20260916.202456`, **CLOSED** -- an absence is the reading a grep hands back hardest, so a front-door census is asked one name at a time.*
 
 *Rows %780 and %784 folded to [`REDS-the-receipt-key-closed-by-running-rows-780-784.md`](REDS-the-receipt-key-closed-by-running-rows-780-784.md) on `20260916.205126`, both **CLOSED** -- Both halves of the build receipt's key, closed by running rather than reading: a leg over a conjunction proves the first clause that refuses, and a proof written rather than run reads exactly like a proof.*
+
+*Rows %774 and %776 folded to [`REDS-a-resolver-answers-the-path-and-nobody-asked-the-sentence-rows-774-776.md`](REDS-a-resolver-answers-the-path-and-nobody-asked-the-sentence-rows-774-776.md) on `20260916.205126`, both **BOOKED** -- an instrument that resolves a path cannot answer for the sentence beside it, and a reading silent about the half that matters reads exactly like a pass.*
