@@ -37,6 +37,34 @@
 #   somebody remembers, which is REDS %277's lesson applied to the roster that taught it. A file
 #   born tomorrow is measured tomorrow.
 #
+# THE STATED SEAM, welcomed by the RATCHET and refused by the GATE (20260917.100717).
+#   TAME asks two things of a seam at once: cast at the edge, and SAY WHY. The elder filter
+#   welcomed only the first. So a line reading `var i: usize = 0; // seam: slice index over a std
+#   source buffer` -- which does exactly what the say-why rule asks -- was counted as the very debt
+#   the sentence exists to explain, and the tree's own stated-seam discipline read as drift.
+#
+#   Measured 20260917.100717 over 1,983 sources: of the 1,258 flagged lines, 91 carry a trailing
+#   comment, and ALL 91 name a seam -- not one flagged line carries a bare trailing comment. So the
+#   welcome and the wider reading `a trailing comment of any kind` coincide exactly today, which is
+#   what makes the narrower one free to take: it costs nothing now and refuses `// loop counter`
+#   tomorrow. Welcoming drops 45 files to zero and both ceilings a long way, 327 to 282 files and
+#   1,258 to 1,167 lines -- strictly tighter on the population nobody explained.
+#
+#   A STATED SEAM IS A CLAIM WHERE `@intCast` IS A MECHANISM, and that difference decides where it
+#   is welcomed. A cast is checkable: the compiler carries it. A sentence is a person's word, so no
+#   sentence a hand writes may open the wall that REFUSES. The welcome is therefore confined to the
+#   DISCOVERED corpus ratchet, and the DECLARED roster gate above reads every file strictly -- the
+#   same file, two readings, on purpose. The two are independent today: the roster reads zero
+#   flagged under the strict filter, so no rostered module is standing on a sentence.
+#
+#   AND THE HATCH IS MEASURED RATHER THAN SILENT. `corpus_seam_stated_lines` prints how many lines
+#   the welcome forgave and `corpus_seam_cleared_files` how many files it cleared, on every run, so
+#   the escape hatch has a size a reader can watch rather than a silence.
+#
+#   WHAT IT CANNOT SEE. The scan is line-based, so a `//` inside a string literal followed by the
+#   word `seam` would read as a stated seam. None stands today; the reading undercounts on purpose
+#   rather than parsing, exactly as the comment meters one room over do.
+#
 # WHY aurora/ IS OUT. It is freestanding: `usize` is the machine word there -- addresses, CSRs,
 # hardware masks -- governed by the freestanding width policy in TAME_GUIDANCE rather than by this
 # hosted gate. The elder header said so, and it stays true.
@@ -62,9 +90,10 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # lines over 1,891 sources -- the honest opening reading of a population nobody had ever counted.
 # Lowered 20260828 to the sharper filter below, which drops comment prose, the inherited-C
 # `extern fn` seam, and identifiers merely containing the five letters: 329 files and 1,263 lines
-# over 1,899 sources, on a committed tree.
-corpus_files_ceiling=326
-corpus_lines_ceiling=1260
+# over 1,899 sources, on a committed tree. Lowered again 20260917.100717 when the corpus reading
+# began welcoming a STATED seam, below: 282 files and 1,167 lines over 1,983 sources.
+corpus_files_ceiling=282
+corpus_lines_ceiling=1167
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye
@@ -111,9 +140,12 @@ count_authored() {
       if ($0 ~ /@as\(usize/) next
       if ($0 ~ /^[[:space:]]*\/\//) next
       if ($0 ~ /extern fn/) next
-      if ($0 ~ /(^|[^A-Za-z0-9_])usize([^A-Za-z0-9_]|$)/) n++
+      if ($0 !~ /(^|[^A-Za-z0-9_])usize([^A-Za-z0-9_]|$)/) next
+      n++
+      i = index($0, "//")
+      if (i > 0 && substr($0, i + 2) ~ /seam/) s++
     }
-    END { print n+0 }
+    END { print (n+0) " " (s+0) }
   ' "$1" 2>/dev/null
 }
 
@@ -130,7 +162,8 @@ while read -r p; do
   [ -n "$p" ] || continue
   [ "$p" = "$exempt_path" ] && exempt_declared=yes
   if [ ! -f "$p" ]; then roster_missing=$((roster_missing + 1)); echo "missing: $p" >> "$work/roster_flagged.txt"; continue; fi
-  n=$(count_authored "$p")
+  # The GATE reads STRICTLY -- the whole authored count, stated seam and all. See the header.
+  r=$(count_authored "$p"); n=${r% *}
   [ "$n" = "0" ] && continue
   if [ "$p" = "$exempt_path" ]; then exempt_read=$n; continue; fi
   printf '%s\t%s\n' "$n" "$p" >> "$work/roster_flagged.txt"
@@ -146,11 +179,18 @@ corpus_files=$(wc -l < "$work/corpus.txt" | tr -d ' ')
 
 corpus_flagged_files=0
 corpus_flagged_lines=0
+corpus_seam_stated_lines=0
+corpus_seam_cleared_files=0
 : > "$work/corpus_flagged.txt"
 while read -r p; do
   [ -f "$p" ] || continue
-  n=$(count_authored "$p")
-  [ "$n" = "0" ] && continue
+  r=$(count_authored "$p"); strict=${r% *}; stated=${r#* }
+  [ "$strict" = "0" ] && continue
+  # The RATCHET welcomes a stated seam: the line explains itself, and this is the population
+  # nobody had explained. The gate above reads the same file strictly. See the header.
+  corpus_seam_stated_lines=$((corpus_seam_stated_lines + stated))
+  n=$((strict - stated))
+  if [ "$n" -eq 0 ]; then corpus_seam_cleared_files=$((corpus_seam_cleared_files + 1)); continue; fi
   corpus_flagged_files=$((corpus_flagged_files + 1))
   corpus_flagged_lines=$((corpus_flagged_lines + n))
   printf '%s\t%s\n' "$n" "$p" >> "$work/corpus_flagged.txt"
@@ -168,6 +208,8 @@ echo "corpus_flagged_files=$corpus_flagged_files"
 echo "corpus_files_ceiling=$corpus_files_ceiling"
 echo "corpus_flagged_lines=$corpus_flagged_lines"
 echo "corpus_lines_ceiling=$corpus_lines_ceiling"
+echo "corpus_seam_stated_lines=$corpus_seam_stated_lines"
+echo "corpus_seam_cleared_files=$corpus_seam_cleared_files"
 
 [ "$roster_flagged" -eq 0 ] || sed 's/^/roster_flag: /' "$work/roster_flagged.txt"
 [ "$exempt_declared" = "no" ] || [ "$exempt_read" -eq "$exempt_pinned" ] \

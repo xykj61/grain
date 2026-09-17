@@ -47,6 +47,14 @@ assert control.out contains "corpus_at_files_ceiling_passes=yes" else "width-che
 assert control.out contains "corpus_over_files_ceiling_refused=yes" else "width-check: one file past the ceiling must refuse, or the ceiling is decoration"
 assert control.out contains "corpus_over_lines_ceiling_refused=yes" else "width-check: one line past the ceiling must refuse"
 assert control.out contains "no_roster_refused=yes" else "width-check: a tree with no roster must refuse rather than read zero and call it clean"
+assert control.out contains "ratchet_stated_seam_welcomed=yes" else "width-check: a line that states its seam must pass the ratchet -- TAME asks for the sentence, and counting it as debt reads the discipline as drift"
+assert control.out contains "ratchet_hatch_measured=yes" else "width-check: the welcome must print its own size, or the escape hatch is a silence"
+assert control.out contains "ratchet_bare_comment_counted=yes" else "width-check: a trailing comment naming no seam stays counted -- the welcome reads the sentence, never the punctuation"
+assert control.out contains "ratchet_seam_in_code_counted=yes" else "width-check: the word in code is not a stated seam"
+assert control.out contains "gate_stated_seam_still_refused=yes" else "width-check: the declared roster must refuse a stated seam -- no sentence a hand writes opens the wall"
+assert control.out contains "mutation_seam_word_bites=yes" else "width-check: dropping the seam test must change the reading, or the welcome is decoration"
+assert control.out contains "mutation_gate_strictness_bites=yes" else "width-check: subtracting the welcome inside the gate must stop a refusal, or the two readings were never apart"
+assert control.out contains "control_failures=0" else "width-check: every leg the control runs must pass -- a named-leg list cannot hear a leg written tomorrow"
 
 let scan = run ["sh" "tools/fixtures/w/width_check_scan.sh"]
 say scan.out
@@ -55,4 +63,4 @@ assert scan.out contains "verdict=ok" else "width-check: the living scan must re
 assert scan.out contains "declared_roster_flagged=0" else "width-check: the declared roster is gated at zero"
 assert scan.out contains "exempt_declared=yes" else "width-check: the named exemption must still be a rostered module, or the pin guards nothing"
 
-say "GREEN: width-check -- the declared roster reads zero authored usize, the one named seam exemption stands at its pin, the discovered corpus holds under a ceiling that only falls, and nineteen behaviors are proven on planted repositories in both directions."
+say "GREEN: width-check -- the declared roster reads zero authored usize under the strict filter, the one named seam exemption stands at its pin, the discovered corpus holds under a ceiling that only falls while welcoming a stated seam, and every behavior the control ran is proven on planted repositories in both directions -- the count is control_checks above, read on this run rather than recited here."

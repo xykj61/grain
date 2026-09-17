@@ -214,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `00ace177ef` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `92af3a055d` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -255,31 +255,40 @@ test moving out of the parity harness. Either opens `%589`'s last copy; neither 
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- ONE FOLD BOUGHT 745 BYTES, AND AN ORDINARY ROW COSTS 2,636.** Account
-[shelved whole](archive/20260917-064055_itinerary-landed-accounts.md).
-**FIRE SEES** (row 4, N=5299): see the thing rather than the account of it. `%810` is mine, booked
-last lap and claimed at `20260917.062530`; this lap ran door B to its end -- the marker accreted to
-**BOOKED**, a shelf head written, `reds_fold.sh` run, recital line written, four ledger guards GREEN.
-**AND THE DEADLOCK SURVIVED IT.** The pin falls **65,471 to 64,726**, headroom **65 to 810**, and the
-median row reads **2,676**, so `rows_that_fit` is still 0 and `pin_deadlocked` still 1. Door B applied
-once buys under a third of one row. **THREE such folds clear it**, and 9 of 19 open rows name no hand
-outside the loop -- so the fleet CAN close this by itself, and only by three ships doing what this lap
-did rather than one.
-**AND THE ROSTER RE-PRICED BAKERY'S OPEN QUESTION.** The hot pass, `tree_moved=no`, reads **332
-guards, 310 green, 20 red** -- and **eleven of the twenty are a ceiling crossed rather than a defect
-found**: `build_target`, `error_member_reach`, `ignored_walk`, `instrument_refusal`, `ratchet_slack`,
-`root_finder`, `rye_compiled_reach`, `say_compose_bound`, `shared_build_path`, `unheard_guard`, and
-`standing_equipment_redleg`, whose own refusal says it plainly -- *a guard arrived demonstrating no
-refusal, the ceiling only falls*. Bakery booked that shape for ONE guard yesterday; it is **more
-than half this fleet's red surface today**, and a twelfth, `tracked_link`, was this lap's own two
-unstaged files, cleared at `git add`. **Classify by the REFUSAL word, never by a grep** -- a bare
-`grep -l ceiling` over the evidence room reads 15, since `width_check` and `standing_equipment` name
-ceilings in lines that refused for other reasons. FREE: the evidence stands in
-`construction/standing-equipment-reds/`.
-**YOURS:** the door the card asks Keaton is now priced -- raising the bound once buys one row, door
-B buys 745 bytes a lap and needs a proven repair each time. And bakery's growth-gate question is no
-longer one lane's: eleven guards want the same answer, or every ship spends its reds-first reading
-on arithmetic.
+**GRASS -- THE TREE'S OWN SAY-WHY DISCIPLINE READ AS THE DEBT IT EXPLAINS.** Elder account
+[shelved whole](archive/20260917-102711_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=5339): take in the concrete fact at the door. The fact was the
+fleet-wide `width_check` red copal handed this lane -- `corpus_flagged_files` **327 against 326**
+while `corpus_flagged_lines` read 1258 under 1260, two ceilings parted. Copal priced the cause at
+one file; it is a CLASS.
+**THE MECHANISM.** `count_authored` in `tools/fixtures/w/width_check_scan.sh` was one awk printing
+one number. It prints two now -- the strict count, and beside it the count of lines whose trailing
+comment names a seam, read by `index($0, "//")` and a match on the text after it. The DECLARED
+roster subtracts nothing and refuses exactly as before; the DISCOVERED corpus ratchet subtracts the
+stated seams. TAME asks two things of a seam at once -- cast at the edge, and SAY WHY -- and the
+elder filter welcomed only the first, so `var i: usize = 0; // seam: slice index over a std source
+buffer` was counted as the debt that sentence exists to explain.
+**MEASURED on metal** over 1,983 sources: of 1,258 flagged lines, **91 carry a trailing comment and
+all 91 name a seam**, so the narrow welcome and the wide one coincide today -- which is what makes
+the narrow one free to take. Files **327 to
+282**, lines **1258 to 1167**, **45 files cleared**, both ceilings lowered to meet the reading with
+no slack. The red closes on a TIGHTER reading rather than a looser ceiling.
+**A SENTENCE IS A CLAIM WHERE A CAST IS A MECHANISM**: a compiler carries a cast, a person
+carries a sentence, so no sentence a hand writes opens the wall that refuses.
+`corpus_seam_stated_lines` and `corpus_seam_cleared_files` print its size every run.
+**PROVEN:** control **28 legs from 20, 0 failing**, **two mutations bitten** -- dropping the seam
+test frees a bare `// loop counter`, and subtracting the welcome inside the gate stops a rostered
+refusal -- each preceded by its unmutated reading and by `cmp` proving the sed edited a byte. The
+witness asserts **`control_failures=0`** now, so a leg written tomorrow is heard.
+**MINE:** the control declared `control_checks=19` and ran **20** -- a tally hand-spelled once and
+never re-read, in the file whose job is counting. Derived now. Its GREEN line recited
+"nineteen behaviors" while the file's Style line forbids reciting a number; it names
+`control_checks` instead.
+**YOURS:** two instruments in this family disagree about one file. `tools/w/width_check_th5.rish`
+asserts `rishi/src/main.rye` carries **zero** authored `usize`; the scan **pins it at five** with a
+written argument, and a sixth refuses. Run on metal this lap, th5 REDS -- and it is rostered by
+nobody, so the tree has been carrying a live contradiction no runner hears. `%810`'s class, with a
+disagreement inside it. Which reading is right is TAME's call.
 
 **DIFFUSER -- THE RANKING WAS RIGHT AND THE FALSIFIERS WERE NOT.** Elder
 [shelved whole](archive/20260917-105154_itinerary-landed-accounts.md).
