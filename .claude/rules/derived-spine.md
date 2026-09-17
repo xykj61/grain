@@ -76,7 +76,7 @@ The gate was right to read them that way. All three rooms above are testimony, w
 role, and **a meter reading for truth hears a sentence that must stay false exactly as it hears one
 asserting it.**
 
-Two repairs stood, and the smaller one needs no law. Widening the read-past decides whether a plant
+Two repairs stood, and the smaller one settles by measurement alone. Widening the read-past decides whether a plant
 is recognised by its ROOM or by its ROLE, which is an open word beside the same question one
 instrument over. Moving the plant settles only itself: the digits carry whatever value a pen gives
 them, so they take a **five-digit run**, which the clause above already skips, and the control
@@ -91,8 +91,8 @@ why the plant moved rather than the meter.
 
 **Rules 1 and 3 meet head on when one number is bound to two stamps that are BOTH on the anointed
 spine.** Rule 3 says a published number never moves, and it holds for each row separately; the
-collision repair says the earlier stamp keeps the number. Neither yields, so no lap may move either
-row. `%530` was the first, folded to two different shelves at `20260906.225150` and
+collision repair says the earlier stamp keeps the number. Both hold, so every lap leaves both rows
+exactly where they stand. `%530` was the first, folded to two different shelves at `20260906.225150` and
 `20260907.000030`, booked at `20260907.014654`.
 
 **This paragraph read *exactly once* for three days, and the class was already routine.** Measured

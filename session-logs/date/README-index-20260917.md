@@ -8,22 +8,23 @@
 |---|---|---|
 | `20260917.195219` | [Third confirmation of the same gate](20260917/20260917-195219_third-confirmation-of-the-same-gate.kyri) | Confirming lap: five live mantra guards re-run fresh, all ok; %807 unchanged. |
 | `20260917.194522` | [Still the same gate, six minutes on](20260917/20260917-194522_still-the-same-gate.kyri) | Confirming lap: HEAD, claims board, and card all unchanged since the prior confirming log. |
+| `20260917.194236` | [A law room's own gate read RED](20260917/20260917-194236_law-room-register-drift.kyri) | REDS %819 -- register ceiling drift, cheapest page swept, six OPEN. |
 | `20260917.193909` | [The gate held where I left it](20260917/20260917-193909_the-gate-held-where-i-left-it.kyri) | Confirming lap: mantra/tally OPEN rows unchanged, all gated on Keaton's word. |
 | `20260917.193730` | [REDS %805's marker had not caught up](20260917/20260917-193730_reds-805-marker-caught-up.kyri) | A landed fix answered %805; the row still read OPEN. |
 | `20260917.193058` | [The head insert was already booked](20260917/20260917-193058_the-head-insert-was-already-booked.kyri) | blind_reason fix is gated on %807, not free. |
-| `20260917.192805` | [A fourth check on an unmoved tree](20260917/20260917-192805_a-fourth-check-on-an-unmoved-tree.kyri) | Tree unchanged since the prior lap; confirmed via claim board rather than repeating the scan. |
-| `20260917.192509` | [A third read struck the line instead](20260917/20260917-192509_a-third-read-struck-the-line-instead.kyri) | Stale YOURS-PETRICHOR line struck; row was already closed twice. |
-| `20260917.192447` | [The third empty reading in a row](20260917/20260917-192447_the-third-empty-reading-in-a-row.kyri) | Read every OPEN row's content, not just its status; all six in bakery's reach wait on Keaton's word. |
+| `20260917.192805` | [A fourth check on an unmoved tree](20260917/20260917-192805_a-fourth-check-on-an-unmoved-tree.kyri) | Tree unchanged; confirmed via claim board, no rescan. |
+| `20260917.192509` | [A third read struck the line instead](20260917/20260917-192509_a-third-read-struck-the-line-instead.kyri) | Stale YOURS line struck; row already closed twice. |
+| `20260917.192447` | [The third empty reading in a row](20260917/20260917-192447_the-third-empty-reading-in-a-row.kyri) | Read OPEN row content, not just status; six wait on Keaton's word. |
 | `20260917.191927` | [The queue still reads empty](20260917/20260917-191927_the-queue-still-reads-empty.kyri) | Re-checked the fleet and the card six minutes later; same honest empty. |
 | `20260917.191410` | [The red already repaired](20260917/20260917-191410_the-red-already-repaired.kyri) | %806 read GREEN on metal; left OPEN on purpose, Keaton's word owed. |
 | `20260917.190855` | [The fold that met another fold](20260917/20260917-190855_the-fold-that-met-another-fold.kyri) | Two ships folded one row; resolved by hand. |
-| `20260917.190852` | [vocabulary_collection already green](20260917/20260917-190852_vocabulary-collection-already-green.kyri) | Confirmed on metal: the corpus row needed no repair this lap. |
-| `20260917.190837` | [Two folds cleared a blocked pier](20260917/20260917-190837_two-folds-to-clear-a-blocked-pier.kyri) | ITINERARY and REDS both crossed bound mid-send; folded and pushed. |
-| `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | control_perturbation names its cut; listing_census ceiling 11 to 10. |
-| `20260917.190537` | [Petrichor's queue checked, ledger tight](20260917/20260917-190537_petrichor-queue-checked-ledger-tight.kyri) | Own account landed, corpus red no longer reproduces, ledger three bytes from full. |
+| `20260917.190852` | [vocabulary_collection already green](20260917/20260917-190852_vocabulary-collection-already-green.kyri) | Confirmed on metal: the corpus row needed no repair. |
+| `20260917.190837` | [Two folds cleared a blocked pier](20260917/20260917-190837_two-folds-to-clear-a-blocked-pier.kyri) | ITINERARY and REDS crossed bound mid-send; folded and pushed. |
+| `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | listing_census ceiling 11 to 10. |
+| `20260917.190537` | [Petrichor's queue checked, ledger tight](20260917/20260917-190537_petrichor-queue-checked-ledger-tight.kyri) | Account landed; corpus red no longer reproduces. |
 | `20260917.185512` | [The lever behind the deny list](20260917/20260917-185512_the-lever-behind-the-deny-list.kyri) | A guard read the tracked file while an ignored one outranked it. |
 | `20260917.185244` | [Lane empty queue](20260917/20260917-185244_lane-empty-queue.kyri) | mantra and tally read clean; no lap claimed. |
-| `20260917.184747` | [A second silent cap in bakery's own lane](20260917/20260917-184747_a-second-silent-cap-in-bakerys-own-lane.kyri) | width_check names its cut; listing_census ceiling 12 to 11. |
+| `20260917.184747` | [A second silent cap in bakery's own lane](20260917/20260917-184747_a-second-silent-cap-in-bakerys-own-lane.kyri) | listing_census ceiling 12 to 11. |
 | `20260917.184101` | [The falsifier that changed units](20260917/20260917-184101_the-falsifier-that-changed-units.kyri) | %807: fires at 28 vs 12; one unit, 28 vs 32. |
 | `20260917.183937` | [The queue under its own ceiling](20260917/20260917-183937_the-queue-that-was-under-its-own-ceiling.kyri) | carry_scan names its cut; listing_census ceiling 13 to 12. |
 | `20260917.182020` | [Agent-doable queue read empty](20260917/20260917-182020_agent-doable-queue-empty.kyri) | Bakery's queue is empty pending Keaton's word. |
