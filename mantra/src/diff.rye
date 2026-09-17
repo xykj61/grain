@@ -14,6 +14,25 @@
 //!   diff(alloc, site, old, new) !Diff
 //!   split_lines(alloc, text) ![]const []const u8
 //!
+//! THE TERMINATOR IS A LINE (REDS %689, closed `20260917`). `split_lines` kept
+//! every token but the last until that day, which made it non-injective: `x\ny`
+//! and `x\ny\n` split to one list, so a content-addressed store gave two
+//! documents one address and `mantra status` called the changed file clean in
+//! both directions. Keaton ruled door 2 on `20260916.000449` -- a weave records
+//! the terminator as HISTORY -- so the empty token a trailing newline produces
+//! is kept and appending a newline is an INSERT like any other edit. The price
+//! was named in the door before it was chosen: a terminated document weaves one
+//! line longer than a hand counts, and every weave already on disk drifts by one
+//! on its next add. Empty text still answers zero lines, since a file with no
+//! bytes has no terminator to record.
+//!
+//! THE REPAIR WAITED ON ITS SIBLING. This change was built, proven and withdrawn
+//! on `20260916`, because keeping the terminator turns every APPEND into a
+//! MIDDLE INSERT -- the new line lands before the terminator rather than at the
+//! end -- and a middle insert was `%680`'s own defect. `Diff.after` and the
+//! anchor read in `Weave.apply` closed that on `20260916.061223`, and this
+//! landed on that footing.
+//!
 //! THE TABLE IS QUADRATIC, and until `20260907` nothing named its ceiling. The
 //! LCS table is `(m + 1) * (n + 1)` cells of `u32`, allocated in one call from
 //! two lengths the caller chooses, and this module held no named max, no named
@@ -317,8 +336,23 @@ pub fn diff(
 
 /// Split `text` into lines on `\n`, returning a slice of string slices. The
 /// returned slice and all strings within it are allocated from `allocator`.
-/// A trailing newline produces no empty string at the end -- the common case
-/// for text files.
+/// A trailing newline produces a final empty line, which is how the terminator
+/// reaches the weave as a fact rather than as a byte nobody records.
+///
+/// THE TERMINATOR IS A LINE (REDS %689, Keaton's word `20260916.000449`, door
+/// 2 -- a weave records the terminator as HISTORY). This split dropped that
+/// empty token until `20260917`, and dropping it made the function
+/// non-injective: `x\ny` and `x\ny\n` split to one list, so a
+/// content-addressed store gave two documents one address and `mantra status`
+/// called the changed file clean in both directions. The token is kept now, so
+/// appending a newline is an INSERT and removing one is a DELETE, each a line
+/// of the history like any other edit.
+///
+/// EMPTY TEXT STILL ANSWERS ZERO, and the guard is at the head rather than in
+/// the loop: `splitScalar` over an empty string yields one empty token, and a
+/// file holding no bytes has no terminator to record. Kept, that token would
+/// make an empty file and a file holding a single newline the same document --
+/// the very collision this change exists to close.
 ///
 /// Refusal: `DiffError.TooManyLines` on the line that would carry the document
 /// past `max_diff_lines` -- `diff`'s own ceiling, since this slice is what a
@@ -326,20 +360,21 @@ pub fn diff(
 pub fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
     maybe(text.len == 0); // empty text is valid; yields zero lines
 
+    // The one case decided before the walk, for the reason the head gives: no
+    // bytes means no terminator, and the splitter's own empty token would
+    // otherwise stand in for one.
+    if (text.len == 0) return &.{};
+
     // THE CEILING IS READ IN THE LOOP RATHER THAN AT THE EDGE, and the reason is
-    // worth saying: a text's line count is not knowable from its byte length,
-    // and deriving it ahead of the split would mean spelling the
-    // drop-the-trailing-empty-token rule twice -- one rule in two places is one
-    // rule two places will come to disagree about. So the split refuses on the
-    // line that would pass the ceiling, before that line is appended. The
-    // ceiling itself is `diff`'s own, because this slice is what a caller hands
-    // to `diff`: refusing here refuses the document one call before a quadratic
-    // table has been asked for.
+    // worth saying: a text's line count is not knowable from its byte length
+    // without walking it, so deriving the count ahead of the split would mean
+    // walking twice to learn one number. The ceiling itself is `diff`'s own,
+    // because this slice is what a caller hands to `diff`: refusing here
+    // refuses the document one call before a quadratic table has been asked
+    // for.
     var lines: std.ArrayListUnmanaged([]const u8) = .empty;
     var it = std.mem.splitScalar(u8, text, '\n');
     while (it.next()) |line| {
-        // Skip the trailing empty token produced by a file that ends in \n.
-        if (line.len == 0 and it.rest().len == 0) break;
         // The refusal, taken before the append rather than after it, so the
         // list never holds a line past the ceiling even transiently.
         if (lines.items.len >= max_diff_lines) return DiffError.TooManyLines;

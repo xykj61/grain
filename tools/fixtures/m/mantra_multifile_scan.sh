@@ -28,7 +28,9 @@
 #   brix_files=<n>            how many files that route wove
 #   weave_blobs=<n>           weave-headed blobs the store holds after both adds
 #   commit_header=<line 0>    the header the newest commit blob carries
-#   elder_opens=yes|no        the frozen v1 store still reads back
+#   elder_opens=yes|no        the frozen v1 store still lifts and answers
+#   elder_only_terminator=yes|no  and the one change it reports is the
+#                             terminator: exactly one added line, carrying no text
 #   verdict=ok|red
 #
 # ONE OPTIONAL ARGUMENT: a path to a `main.rye` to build instead of the
@@ -118,13 +120,29 @@ old="$work/old"
 mkdir -p "$old/.mantra"
 cp -r "$elder/HEAD" "$elder/blobs" "$old/.mantra/"
 cp "$elder/doc.txt" "$old/doc.txt"
+#
+# TWO QUESTIONS, ASKED APART from `20260917`. This leg read `clean` and called it
+# `elder_opens`. That braided two questions: does the store lift, and does it
+# report no change. They parted the day `split_lines` began keeping the empty
+# token a trailing newline leaves (REDS %689, door 2 on Keaton's word). An elder
+# v1 store's bytes cannot say whether its document was terminated, since nothing
+# recorded it. So the first read after the repair reports one added line, and
+# that line carries no text: the terminator arriving as history. The store lifts
+# whole -- that is the first reading. The difference is only that line -- that is
+# the second.
 if ( cd "$old" && "$bin" status doc.txt >"$work/old.out" 2>&1 ); then
-  case "$(cat "$work/old.out")" in
-    *clean*) echo "elder_opens=yes" ;;
-    *)       echo "elder_opens=no"; note_red ;;
-  esac
+  echo "elder_opens=yes"
 else
   echo "elder_opens=no"
+  note_red
+fi
+elder_added="$(sed -n 's/^+ \{0,1\}//p' "$work/old.out" 2>/dev/null | wc -l | tr -d ' ')"
+elder_added_text="$(sed -n 's/^+ \{0,1\}//p' "$work/old.out" 2>/dev/null | tr -d '\n')"
+if [ "$elder_added" = 1 ] && [ -z "$elder_added_text" ] \
+   && grep -q -- '-- 1 added, 0 removed' "$work/old.out"; then
+  echo "elder_only_terminator=yes"
+else
+  echo "elder_only_terminator=no"
   note_red
 fi
 

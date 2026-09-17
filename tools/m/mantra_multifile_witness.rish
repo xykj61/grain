@@ -64,6 +64,12 @@ assert scan.out contains "brix_first_clean=yes" else "mantra-multifile: the .bri
 assert scan.out contains "brix_files=2" else "mantra-multifile: the .brix route did not weave both files, so the reading above passed on a run that never happened"
 assert scan.out contains "commit_header=mantra-commit-v2" else "mantra-multifile: the newest commit is not the per-file record, so a path has nowhere to be named"
 assert scan.out contains "elder_opens=yes" else "mantra-multifile: a store written before this change no longer opens, which is a lost history rather than a failed test"
+# The second half of that question, asked apart from `20260917`. The frozen v1
+# store reports one added line now and that line carries no text: the terminator
+# `split_lines` began keeping on the lap REDS %689 closed, arriving as history
+# exactly as door 2 ruled. The store lifts whole -- the leg above -- and the
+# difference is only that line, which is this one.
+assert scan.out contains "elder_only_terminator=yes" else "mantra-multifile: an elder store reports a change beyond its missing terminator, so the lift moved the document rather than learning one fact about it"
 assert scan.out contains "verdict=ok" else "mantra-multifile: the scan reached its own red"
 
 say "mantra-multifile: breaking the reader, the writer and the elder dispatch in a pen, so the guard is proven able to red..."
@@ -76,7 +82,7 @@ assert control.out contains "ignores_path_first_clean=no" else "mantra-multifile
 assert control.out contains "drops_prior_first_clean=no" else "mantra-multifile: a writer that drops the prior entries must lose the first file -- the pair tells reader from writer"
 assert control.out contains "no_elder_read_elder_opens=no" else "mantra-multifile: deleting the elder dispatch must close the elder store, or elder_opens is not reading the dispatch"
 assert control.out contains "no_elder_read_first_clean=yes" else "mantra-multifile: deleting the elder dispatch must leave a fresh two-file store clean -- the pair tells the accretion from the repair"
-assert control.out contains "no_elder_fall_elder_opens=no" else "mantra-multifile: deleting the empty-path fallback must close the elder store, or the two halves of elder support are being tested as one"
+assert control.out contains "no_elder_fall_only_terminator=no" else "mantra-multifile: deleting the empty-path fallback must stop an elder store reporting only its missing terminator, or the two halves of elder support are being tested as one. The reading moved from elder_opens on 20260917: that leg now asks only whether status answered at all, and a lost elder record still answers -- it answers with the whole document added."
 assert control.out contains "space_rows_first_clean=no" else "mantra-multifile: a file row written with a space must stop reading back -- this is what holds the tab decision in place"
 
 say "GREEN: a second tracked file keeps the first one's history -- nine readings, six control phases, five breaks caught."

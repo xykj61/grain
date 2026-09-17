@@ -55,7 +55,7 @@ let scan = run ["sh" "tools/fixtures/m/mantra_annotate_cli_scan.sh"]
 say scan.out
 assert scan.ok else "mantra-annotate-cli: the scan must complete"
 assert scan.out contains "built=yes" else "mantra-annotate-cli: the CLI did not compile, so every reading below is a reading of nothing"
-assert scan.out contains "clean_unchanged=3" else "mantra-annotate-cli: a file nobody edited must read three unchanged lines, since three is what was woven"
+assert scan.out contains "clean_unchanged=4" else "mantra-annotate-cli: a file nobody edited must read four unchanged lines -- the three a hand wrote and the TERMINATOR, which `split_lines` has kept as a line of the history since 20260917 (REDS %689, door 2). Three means the terminator went missing again; a fifth means something beside it arrived."
 assert scan.out contains "clean_shows_text=yes" else "mantra-annotate-cli: an unchanged line came back without its own text, so the reading names positions rather than showing a document"
 assert scan.out contains "edit_added=1" else "mantra-annotate-cli: the appended line was not counted as added"
 assert scan.out contains "edit_removed=0" else "mantra-annotate-cli: an append reported a removal, so the two sides are being read backwards"

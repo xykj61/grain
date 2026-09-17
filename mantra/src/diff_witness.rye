@@ -26,14 +26,17 @@
 //!      one line rather than replacing the document.
 //!   5. The round trip is exact for an append-shaped edit -- diff then apply
 //!      reads back the new text, line for line.
-//!   6. The round trip REORDERS for a middle insert, and this witness asserts
-//!      that by name rather than wishing otherwise. `Diff.inserts` carries text
-//!      and no anchor, so `Weave.apply` appends; old `a c` against new `a b c`
-//!      reads back `a c b`. The module's own head said the opposite until this
-//!      witness measured it. Pinning the true behavior is what makes a later
-//!      widening of `Diff` a visible change rather than a silent one.
-//!   7. split_lines drops the empty token a trailing newline leaves, keeps an
-//!      interior blank line, and answers zero lines for empty text.
+//!   6. The round trip KEEPS THE ORDER for a middle insert. `Diff.after` names
+//!      the kept line each insert follows and `Weave.apply` places it there, so
+//!      old `a c` against new `a b c` reads back `a b c`. THIS CLAIM FLIPPED on
+//!      `20260916` when `Diff` widened; its elder text asserted the reordering
+//!      by name and said why -- pinning the true behavior is what turns a later
+//!      widening into a visible change rather than a silent one, and it did.
+//!   7. split_lines KEEPS the empty token a trailing newline leaves, so the
+//!      terminator is a line of the history rather than a byte with no home in
+//!      the store (REDS %689, door 2 on Keaton's word `20260916.000449`). It
+//!      keeps an interior blank line, and answers zero lines for empty text,
+//!      since a file with no bytes has no terminator to record.
 //!   8. The ceilings refuse by name one cell past themselves and admit the
 //!      cell at them -- both readings, both directions. The module allocated a
 //!      quadratic LCS table with no named max, no named error, and no edge
@@ -230,30 +233,45 @@ fn prove_middle_insert_lands_in_the_middle(garden: std.mem.Allocator) !void {
     print("diff: a middle insert lands in the middle -- a c + b reads back a b c\n", .{});
 }
 
-/// Claim 7: split_lines drops the token a trailing newline leaves, keeps an
-/// interior blank line, and answers nothing for empty text.
+/// Claim 7: split_lines KEEPS the token a trailing newline leaves, so the
+/// terminator is a line of the history; it keeps an interior blank line, and it
+/// answers nothing for empty text.
 fn prove_split_lines(garden: std.mem.Allocator) !void {
     const trailing = try diff_mod.split_lines(garden, "one\ntwo\n");
-    // invariant: a file ending in a newline holds two lines rather than three,
-    // since the empty token after the last newline is not a line anyone wrote
-    assert(trailing.len == 2);
+    // invariant: a file ending in a newline holds THREE lines -- two a hand
+    // wrote and the terminator, which is a fact about the document rather than
+    // a byte the split may spend (REDS %689, door 2)
+    assert(trailing.len == 3);
     assert(std.mem.eql(u8, trailing[1], "two"));
+    assert(trailing[2].len == 0);
 
     const unterminated = try diff_mod.split_lines(garden, "one\ntwo");
-    // invariant: a file with no final newline holds the same two lines, so the
-    // trailing newline changes the bytes and never the document
+    // invariant: a file with no final newline holds two lines, so the two texts
+    // part -- which is the whole point: the split is injective now, and a
+    // content-addressed store can tell the two documents apart
     assert(unterminated.len == 2);
+    assert(unterminated.len != trailing.len);
 
     const interior = try diff_mod.split_lines(garden, "one\n\nthree\n");
-    // invariant: a blank line between two lines is a line -- only the trailing
-    // token is dropped, and dropping interior blanks would lose real content
-    assert(interior.len == 3);
+    // invariant: a blank line between two lines is a line, and the terminator
+    // stands after it -- three a hand wrote plus the terminator
+    assert(interior.len == 4);
     assert(interior[1].len == 0);
+    assert(std.mem.eql(u8, interior[2], "three"));
 
     const empty = try diff_mod.split_lines(garden, "");
-    // invariant: empty text holds no lines, so a new file diffs as pure insert
+    // invariant: empty text holds no lines -- a file with no bytes has no
+    // terminator to record, so the splitter's own empty token is refused here
+    // rather than standing in for one
     assert(empty.len == 0);
-    print("diff: split_lines drops the trailing token, keeps interior blanks, answers zero for empty\n", .{});
+
+    const bare_newline = try diff_mod.split_lines(garden, "\n");
+    // invariant: a file holding one newline is an empty line and a terminator,
+    // which parts it from the empty file above -- the collision closed at its
+    // smallest case
+    assert(bare_newline.len == 2);
+    assert(bare_newline.len != empty.len);
+    print("diff: split_lines keeps the terminator, keeps interior blanks, answers zero for empty\n", .{});
 }
 
 /// Claim 8: the ceiling is pressed by hand, at it and one past it, in both of

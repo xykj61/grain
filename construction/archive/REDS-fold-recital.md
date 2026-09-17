@@ -844,3 +844,5 @@ at a closed fold.*
 
 *Row %800 folded to [`REDS-a-wrapped-sentence-opened-a-fence-rows-800.md`](REDS-a-wrapped-sentence-opened-a-fence-rows-800.md) on `20260917.024436`, **CLOSED** -- a hand wrapping prose to a column creates markup it never typed, and the cure is a wall that reads a living page the way a renderer does.*
 *Row %802 folded to [`REDS-two-guards-that-read-one-page-and-one-that-read-one-number-rows-802.md`](REDS-two-guards-that-read-one-page-and-one-that-read-one-number-rows-802.md) on `20260917.024418`, **BOOKED** and **CLOSED** -- both seated a reader beside one that already held the answer, so the question to ask first is what already reads this.*
+
+*Row %689 folded to [`REDS-a-document-whose-last-byte-had-no-home-rows-689.md`](REDS-a-document-whose-last-byte-had-no-home-rows-689.md) on `20260917.030925`, **CLOSED** -- a projection built for reading a diff spent as a test of identity, closed on its sibling's footing.*

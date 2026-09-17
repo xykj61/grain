@@ -80,7 +80,15 @@ assert scan.out contains "fresh_header=mantra-weave-20260916.101910" else "mantr
 assert scan.out contains "counter_fields=2" else "mantra-cli-record: the counters line does not carry both counters, so from_v2 cannot check a row against either"
 assert scan.out contains "row_fields=6" else "mantra-cli-record: a record row does not carry five fields -- the site and the run are what a merge creates"
 assert scan.out contains "elder_opens=yes" else "mantra-cli-record: a store written before 20260909 no longer opens, which is a lost history rather than a failed test"
-assert scan.out contains "elder_status='doc.txt' -- clean" else "mantra-cli-record: the elder store's untouched file does not read clean, so the lift moved the document"
+# THE ELDER STORE'S ONE REPORTED CHANGE IS THE TERMINATOR, from `20260917`.
+# `split_lines` keeps the empty token a trailing newline produces now (REDS %689,
+# door 2 on Keaton's word), and this frozen v1 store's bytes cannot say whether
+# its document was terminated -- nothing recorded it. So the first read after the
+# repair reports one added line carrying no text, which is the terminator
+# arriving as history. Every other line still reads back, which is what
+# `elder_opens` above proves; this leg proves the difference is ONLY that line.
+assert scan.out contains "elder_status='doc.txt' -- 1 added, 0 removed" else "mantra-cli-record: the elder store's untouched file reports something other than the single terminator line, so the lift moved the document"
+assert scan.out contains "elder_only_terminator=yes" else "mantra-cli-record: the one line an elder store reports added must carry no text -- a line with text there is a line the lift invented or lost"
 assert scan.out contains "mixed_header=mantra-weave-20260916.101910" else "mantra-cli-record: a commit onto an elder store did not write the wide record"
 assert scan.out contains "mixed_opens=yes" else "mantra-cli-record: the chain does not read through both records, so a store cannot cross the change"
 assert scan.out contains "tampered_blob_refused=yes" else "mantra-cli-record: a blob edited under someone else's name travelled on"

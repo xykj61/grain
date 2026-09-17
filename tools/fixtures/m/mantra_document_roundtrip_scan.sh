@@ -2,34 +2,28 @@
 # tools/fixtures/m/mantra_document_roundtrip_scan.sh -- does the store return the
 # bytes it was handed?
 #
-# WHAT THIS READS. `mantra/src/diff.rye` `split_lines` drops the empty token a
-# text ending in `\n` produces, and a text that does NOT end in `\n` produces no
-# such token at all. So `x\ny` and `x\ny\n` split to the same two lines, and the
-# CLI stores only that split: `cmd_add` in `mantra/src/main.rye` writes a weave
-# and a commit, never the file's own bytes. One byte of the document has no home
-# in the store.
+# WHAT THIS READS. `split_lines` in `mantra/src/diff.rye` turns a text into
+# lines. `cmd_add` in `mantra/src/main.rye` stores that split and nothing beside
+# it -- a weave and a commit, never the file's own bytes. So what the split
+# cannot tell apart, the store cannot tell apart.
 #
-# WHAT THAT COSTS, measured on metal `20260910.043900`. Two pens, two files
-# differing by exactly the final newline, one `mantra add` each: both answer
-# `HEAD -> 441c3c6fa8b8` and both weaves carry the digest
-# `7695a361c00ecf2140b9fd60624cc0919c92437933c4f175b486d846daa8b3f1`. A
-# content-addressed store gave one address to two contents. Worse than a display
-# fault: `mantra status` calls the changed file **clean** and `mantra add`
-# answers `unchanged -- nothing to weave`, so the store cannot record the change
-# even when asked directly, in either direction.
+# THE DEFECT, AND THE REPAIR. Until `20260917` the split broke its loop at the
+# empty token a trailing `\n` leaves. So `x\ny` and `x\ny\n` split to one list of
+# two lines. Measured on metal `20260910.043900`: two pens, two files one byte
+# apart, one `mantra add` each. Both answered `HEAD -> 441c3c6fa8b8`. Both weaves
+# carried the digest `7695a361c00e...`. One address, two contents. `mantra status`
+# called the changed file **clean** in both directions, so the store declined the
+# change even when asked for it. REDS %689 booked that. Keaton ruled door 2 on
+# `20260916.000449`: a weave records the terminator as HISTORY. The repair landed
+# once its sibling %680 closed. The split keeps that token now. Appending a
+# newline is an INSERT; removing one is a DELETE.
 #
-# WHY THIS SCAN GATES SOME READINGS AND REPORTS OTHERS. The loss is a design
-# seam with three doors, and each costs something a lap may not spend alone:
-#   1. Keep the trailing empty token, and `split_lines` becomes injective with a
-#      `\n` join at no format cost -- every terminated file then carries one more
-#      line, so every existing weave drifts by one on its next add.
-#   2. Carry a terminator flag beside the lines -- a field on the v2 counter row
-#      or the commit's `file` row, which is a record-format change.
-#   3. Write the file's own bytes as a blob and name it in the commit -- the
-#      store is content-addressed already, and this too widens the `file` row.
-# So the readings a repair must not break are GATED, and the loss itself is
-# REPORTED by name under the row of `20260910.043900`. A gate that reds on what
-# no lap may repair is a gate somebody turns off.
+# WHY EVERY READING BUT ONE IS GATED NOW. Seven readings below name the loss.
+# Each was REPORTED while the repair wanted a ruling, since a gate that reds on
+# what no lap may repair is a gate somebody turns off. The ruling came and the
+# repair landed, so each is a wall. `raw_bytes_in_store` stays REPORTED. Door 3
+# -- write the file's own bytes as a blob and name it in the commit -- was never
+# taken, and it widens the `file` row when it is.
 #
 # BOTH DIRECTIONS. `lawful_change_seen` presses from the passing side: an
 # ordinary edit to a line's text IS woven and IS reported by status. A guard that
@@ -41,14 +35,14 @@
 #   lawful_status_seen=yes|no       GATED -- and status reports it
 #   terminated_roundtrip=yes|no     GATED -- a file ending in \n reads back clean
 #   bare_roundtrip=yes|no           GATED -- a file NOT ending in \n reads back clean
-#   weave_digest_shared=yes|no      reported -- both files earn one weave name
-#   commit_digest_shared=yes|no     reported -- and one commit name
-#   add_sees_newline_added=yes|no   reported -- add weaves when \n is appended
-#   status_sees_newline_added=yes|no   reported
-#   add_sees_newline_removed=yes|no    reported -- and when it is taken away
-#   status_sees_newline_removed=yes|no reported
-#   raw_bytes_in_store=yes|no       reported -- the file's own bytes are a blob
-#   terminator_invisible=yes|no     reported -- the seam, named in one word
+#   weave_digest_shared=yes|no      GATED -- the two files must NOT earn one weave name
+#   commit_digest_shared=yes|no     GATED -- nor one commit name
+#   add_sees_newline_added=yes|no   GATED -- add weaves when \n is appended
+#   status_sees_newline_added=yes|no   GATED
+#   add_sees_newline_removed=yes|no    GATED -- and when it is taken away
+#   status_sees_newline_removed=yes|no GATED
+#   terminator_invisible=yes|no     GATED -- the repaired seam, named in one word
+#   raw_bytes_in_store=yes|no       reported -- door 3, never taken
 #   verdict=ok|red
 #
 # ONE OPTIONAL ARGUMENT: a path to a `main.rye` to build instead of the tree's
@@ -132,11 +126,12 @@ else
   note_red
 fi
 
-# --- REPORTED: two documents, one address ---
+# --- GATED: two documents, two addresses (REDS %689, repaired `20260917`) ---
 tw="$(weave_name_in "$term")"
 bw="$(weave_name_in "$bare")"
 if [ -n "$tw" ] && [ "$tw" = "$bw" ]; then
   echo "weave_digest_shared=yes"
+  note_red
 else
   echo "weave_digest_shared=no"
 fi
@@ -144,16 +139,18 @@ th="$(cat "$term/.mantra/HEAD" 2>/dev/null || echo none)"
 bh="$(cat "$bare/.mantra/HEAD" 2>/dev/null || echo none)"
 if [ "$th" != none ] && [ "$th" = "$bh" ]; then
   echo "commit_digest_shared=yes"
+  note_red
 else
   echo "commit_digest_shared=no"
 fi
 
-# --- REPORTED: the change the store cannot record, from both sides ---
+# --- GATED: the change the store records, from both sides ---
 add="$work/add"
 pen_with "$add" 'x\ny' || note_red
 printf 'x\ny\n' > "$add/f.txt"
 if ( cd "$add" && "$bin" status f.txt 2>&1 | grep -q -- '-- clean' ); then
   echo "status_sees_newline_added=no"
+  note_red
 else
   echo "status_sees_newline_added=yes"
 fi
@@ -161,6 +158,7 @@ if ( cd "$add" && "$bin" add f.txt 2>&1 | grep -q '^mantra: wove' ); then
   echo "add_sees_newline_added=yes"
 else
   echo "add_sees_newline_added=no"
+  note_red
 fi
 
 rem="$work/rem"
@@ -168,6 +166,7 @@ pen_with "$rem" 'p\nq\n' || note_red
 printf 'p\nq' > "$rem/f.txt"
 if ( cd "$rem" && "$bin" status f.txt 2>&1 | grep -q -- '-- clean' ); then
   echo "status_sees_newline_removed=no"
+  note_red
 else
   echo "status_sees_newline_removed=yes"
 fi
@@ -175,6 +174,7 @@ if ( cd "$rem" && "$bin" add f.txt 2>&1 | grep -q '^mantra: wove' ); then
   echo "add_sees_newline_removed=yes"
 else
   echo "add_sees_newline_removed=no"
+  note_red
 fi
 
 # --- REPORTED: are the file's own bytes anywhere in the store? ---
@@ -187,6 +187,7 @@ echo "raw_bytes_in_store=$found"
 
 if [ "$tw" = "$bw" ]; then
   echo "terminator_invisible=yes"
+  note_red
 else
   echo "terminator_invisible=no"
 fi

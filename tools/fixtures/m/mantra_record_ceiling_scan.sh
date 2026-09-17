@@ -134,12 +134,19 @@ if build_at 8 narrow; then echo "built_narrow=yes"; else echo "built_narrow=no";
 wide="$work/wide.bin"
 narrow="$work/narrow.bin"
 
-# A store of exactly `n` lines, written by the wide binary, whose digests are
-# therefore Mantra's own.
+# A store of exactly `n` WEAVE LINES, written by the wide binary, whose digests
+# are therefore Mantra's own.
+#
+# THE FILE CARRIES `n - 1` PRINTED LINES, because the nth is the TERMINATOR. From
+# `20260917` `split_lines` keeps the empty token a trailing newline produces, so
+# the document a hand writes with `awk print` reaches the weave one line longer
+# than the hand counted (REDS %689, door 2 on Keaton's word). The arithmetic is
+# spelled here, once, rather than at each of the three call sites -- a rule
+# written three times is a rule three places will come to disagree about.
 write_store() {
   _pen="$1"; _n="$2"
   mkdir -p "$_pen"
-  ( cd "$_pen" && awk -v n="$_n" 'BEGIN{for(i=0;i<n;i++) print "line" i}' > f.txt \
+  ( cd "$_pen" && awk -v n="$((_n - 1))" 'BEGIN{for(i=0;i<n;i++) print "line" i}' > f.txt \
     && "$wide" init >/dev/null 2>&1 && "$wide" add f.txt >/dev/null 2>&1 )
 }
 
