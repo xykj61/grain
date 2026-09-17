@@ -1,0 +1,94 @@
+# tools/c/commit_parent_claim_witness.rish -- a commit body that names its own
+# parent by hash names the true first parent.
+#
+# REDS %801 booked one firing: a follow-up body said the card's Git nib is
+# rewritten to `71a556d85c` -- this commit's own parent, while the parent read
+# `397037a129`. The hash went into the body BEFORE the send's final rebase, the
+# rebase moved the commit, the card was repointed by the step that knows, and
+# the body was not. The row closed by handing the question up: whether a body's
+# own hash claims earn a wall is a fleet question rather than that lane's.
+#
+# THE READING SAYS THE CLASS IS NOT ONE FIRING. Over the trailing 4,000 commits,
+# 96 sentences bind a hash token to the word parent, 55 of them assert the
+# relation about THEMSELVES, 36 name the true parent, and TEN name something
+# else -- six a hash no object store on this pier holds, one a commit left on an
+# abandoned branch, three a live ancestor that is not the parent. One of the ten
+# landed twelve hours AFTER the ledger row was booked, and nothing heard it.
+#
+# THE GATE IS FORWARD-ONLY, and that is the whole shape of it. History is
+# testimony and is never rewritten, so a wall over the ten would red on bodies
+# no lap may repair -- which is a wall somebody turns off. The anchor below is
+# the HEAD this guard was seated on; every commit after it is held at zero, so
+# the wall reds on the lap the eleventh arrives and welcomes every correct body
+# ever written.
+#
+# WHAT NO HOOK CAN REACH, the structural twin of REDS %803 one rule over: at
+# commit-msg time `git rev-parse HEAD` is the prospective parent for a fresh
+# commit and the commit being REPLACED for an amend, and nothing the hook can
+# read tells those two apart. A hook-side wall would refuse every correct amend
+# or welcome every wrong fresh commit. This reads AFTER the fact, where the
+# parent is a fact rather than a forecast -- and it is the reason %801's cure
+# lives in a guard rather than in tools/hooks/commit-msg, which is read here and
+# never edited.
+#
+# Read-only: no network, no key, no funds, no commit rewritten.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/commit_parent_claim_witness.rish
+
+say "commit-parent-claim: Language EN -- a body sentence naming this commit's own parent by hash names the true first parent, read after the fact where the parent is a fact."
+say "commit-parent-claim: Style Gauge at Meter -- six genres counted apart, three of them claims and three of them ordinary English about a hash, each named rather than collapsed."
+say "commit-parent-claim: Reading sentence scope binds a hash token to the word parent; a SELF filter keeps the gate to sentences git can check; the remainder is reported as loose and never gated."
+say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is forward-only because testimony cannot be repaired, and resolvability is per-checkout, so a hash no tree here holds is reported and never used to grade a peer."
+
+# THE ANCHOR is spelled ONCE, here, and handed to the scan as a flag. Two files
+# spelling one constant disagree the day it moves, which is the lesson
+# glow_ident_duplication_control paid for on 20260917 with a ceiling standing in
+# three places. It is the HEAD this guard was seated on, 20260917.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "0cf919699b"]
+assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
+assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
+
+# THE WALL. Every claim genre after the anchor, held at zero together: a hash that
+# resolves nowhere, a hash on an abandoned branch, and a live ancestor named as the
+# parent are one fault wearing three faces, and a lap controls all three by writing
+# the true parent or leaving the hash to the card.
+assert read.out contains "claims_after_anchor=0" else "commit-parent-claim: a body landed after the anchor names its own parent by a hash that is not the parent -- the REDS %801 class. Run the reading with --list to see the sentence, and repair it the way the card is repaired: leave the parent hash out of the body and let construction/ITINERARY.md carry it, since the card is repointed by the step that knows"
+assert read.out contains "false_after_anchor=0" else "commit-parent-claim: a live ancestor is named as this commit's parent after the anchor"
+assert read.out contains "unresolved_after_anchor=0" else "commit-parent-claim: a hash no object store here holds is named as this commit's parent after the anchor -- a pre-rebase ghost, which a reader on any ship follows to nothing"
+assert read.out contains "sideways_after_anchor=0" else "commit-parent-claim: a commit left on an abandoned branch is named as this commit's parent after the anchor"
+
+# The reported half. None of these gate; a reading that vanishes is a reading nobody
+# notices going quiet, so each is asserted PRESENT rather than held at a number.
+assert read.out contains "segments=" else "commit-parent-claim: want the binder's own population counted"
+assert read.out contains "loose=" else "commit-parent-claim: want the sentences the guard declines to grade counted, so declining stays visible"
+assert read.out contains "self_true=" else "commit-parent-claim: want the correct claims counted -- a wall reading only faults cannot say whether the habit exists"
+assert read.out contains "self_quoted=" else "commit-parent-claim: want the erratum genre counted, since quoting a faulty hash is what a ledger row must do"
+assert read.out contains "self_origin=" else "commit-parent-claim: want the card's move idiom counted, where a hash is what a pin moves OFF"
+assert read.out contains "unresolved=" else "commit-parent-claim: want the ghosts counted over the whole window, reported and never gated"
+assert read.out contains "anchor=" else "commit-parent-claim: want the anchor named in the reading, so a reader can see how far forward the wall reaches"
+
+# THE PEN. 43 behaviors on real git repositories in a throwaway pen, every refusal
+# planted and then lifted, six mutations bitten -- and the control tallies its own
+# legs, because its first run stood at five silent reds under a green verdict.
+let pen = run ["sh" "tools/fixtures/c/commit_parent_claim_control.sh"]
+assert pen.ok else "commit-parent-claim: the pen must exit 0 -- ${pen.out_brief}"
+assert pen.out contains "control_verdict=ok" else "commit-parent-claim: want the pen's own verdict ok"
+assert pen.out contains "failures=0" else "commit-parent-claim: want zero failing legs in the pen"
+assert pen.out contains "false_bitten=yes" else "commit-parent-claim: want a live ancestor named as parent REFUSED in the pen"
+assert pen.out contains "false_lifted=yes" else "commit-parent-claim: want that refusal shown from both sides -- lifted, the reading returns to zero"
+assert pen.out contains "ghost_unresolved=yes" else "commit-parent-claim: want a hash resolving nowhere read as a ghost rather than as a false claim"
+assert pen.out contains "sideways_named=yes" else "commit-parent-claim: want an abandoned-branch hash named sideways rather than collapsed into false"
+assert pen.out contains "quoted_free=yes" else "commit-parent-claim: want an erratum quoting another commit's faulty hash walking free"
+assert pen.out contains "origin_free=yes" else "commit-parent-claim: want the card's from-A-to-B idiom walking free"
+assert pen.out contains "decimal_run_ignored=yes" else "commit-parent-claim: want an all-decimal run read as a number (REDS %782)"
+assert pen.out contains "ed25519_is_a_token=yes" else "commit-parent-claim: want the honest reading -- ed25519 IS a hex run, and the RELATION filter is what keeps it out of the gate rather than the character class"
+assert pen.out contains "ed25519_never_a_claim=yes" else "commit-parent-claim: want a hardened-derivation sentence never reaching the wall"
+assert pen.out contains "anchor_excludes_history=yes" else "commit-parent-claim: want the anchor counting forward only"
+assert pen.out contains "anchor_bites_after=yes" else "commit-parent-claim: want the anchor biting a claim that lands after it"
+assert pen.out contains "mutation_self_filter_bites=yes" else "commit-parent-claim: want the self filter proven load-bearing -- without it a peer's parent reads as a claim"
+assert pen.out contains "mutation_ancestor_bites=yes" else "commit-parent-claim: want the ancestor test proven load-bearing -- without it sideways collapses into false"
+assert pen.out contains "mutation_letter_clause_bites=yes" else "commit-parent-claim: want the token rule proven load-bearing against an all-decimal run"
+assert pen.out contains "mutation_anchor_window_bites=yes" else "commit-parent-claim: want the anchor's own commit list proven load-bearing"
+
+say "commit-parent-claim: GREEN -- every parent claim after the anchor names the true parent; the ten standing before it are testimony, counted and never rewritten."
