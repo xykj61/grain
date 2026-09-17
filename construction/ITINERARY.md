@@ -45,23 +45,24 @@ invitation two ships can get. **A booked red is a claimable thing**, and nothing
 **YOURS:** 104,501 of the 295,276 bytes `.claude/rules/` loads a lap are law `.cursor/` holds silent
 until a file matches; that room has no scoping, and two live rules go unread. Copy, or scope?
 
-**BAKERY -- THE COMPILER READ ONCE, RATHER THAN ONCE PER BUILD.** Account below; the two elder
-accounts, with their four asks, [shelved whole](archive/20260916-204416_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=5133). The second half of the
-receipt-key work sat parked one more round and replayed onto HEAD exactly, so no merge was owed -- what was owed
-was the control. `file_digest_remembered` takes the pinned toolchain's SHA-256 from a Kyri record
-beside the `rye` binary while inode, size, mtime and ctime still agree, so 172MB is read **once per
-compiler** rather than once per keyed build: a receipt HIT reads **240-280 ms** against 2,055-2,420,
-FREE, so run it. `ryekey_marker` moves v7 to **v8**, so every standing receipt takes one rebuild.
-Two reds, both found by running the paper's own control: `digest_record_read` computed `seen_path`
-and **never read it**, so a record naming another file was trusted; and the binary on this pier was
-built from an elder source carrying the **same `rye_version`**, so the control's staleness door
-waved it through. The paper had already claimed six mutations planted one at a time, which cannot be
-true of a comparison that does not exist. **PROVEN ON METAL HERE:** `ryekey` **30 legs**,
-`tame_style_check` green. **MINE:** the library tree's walk is now the largest term in a hit, and one
-identity cannot stand for a walk.
-**YOURS:** a proof written rather than run reads exactly like a proof, and no instrument in this tree
-reads a design paper's claim about its own mutations. Is that a class worth a meter, or only a habit?
+**BAKERY -- THE LIBRARY TREE READ ONCE, RATHER THAN ONCE PER BUILD.** Account
+[born on its shelf](archive/20260916-215019_itinerary-landed-accounts.md); the elder, with its ask
+about a paper's unrun proof, [shelved whole](archive/20260916-214325_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=5166): press a claimed boundary and feel whether the hand passes through.
+A second lap died mid-send and replayed onto HEAD exactly on its three code files, so only the shared
+pins were re-derived. `library_identity_update` composes the identity of `rye/lib/std` FROM the walk
+that has to happen anyway -- count, then each sorted path with its size, inode, mtime and ctime -- and
+a record beside the `rye` binary remembers the tree's content digest under it. **The walk stays and
+the read goes:** 552 files and 16,416,628 bytes hashed once per library rather than once per keyed
+build, 16-21 ms of walk against 145-154 of read. A directory's own mtime carries none of that, which
+is why one stat cannot stand for a tree. `ryekey_marker` moves v8 to **v9**, so every standing receipt
+takes one rebuild. **PROVEN:** `ryekey` **37 legs**, the library's seven readings beside the
+compiler's five. Three of the six cannot be isolated by any plant, since ctime shadows them; the
+control says so rather than claiming six. A hit on a 13,722,744-byte output reads **184-223 ms**, FREE.
+**MINE:** (`20260916.214325`) -- **56 memo records stand beside the binary and 51 name a path that no longer
+exists**, because `rye/bin/` is gitignored and no meter here can see the room.
+**YOURS:** the emitted output is the largest term in a hit now, roughly 130 of those 184 ms. Should a
+served binary answer for itself by its bytes, or by the four stat readings the compiler's memo trusts?
 
 **COPAL -- THE FAMILY NAMED `printf` AND THE POPULATION WAS `echo`.** Account
 [born on its shelf](archive/20260916-195248_itinerary-landed-accounts.md) -- the card carries a
@@ -159,7 +160,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `99d4948e6a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bec6f5c0fd` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -182,7 +183,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `99d4948e6a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bec6f5c0fd` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

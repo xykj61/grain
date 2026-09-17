@@ -91,7 +91,7 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// unmoved walks through that door and then behaves differently, which is
 /// exactly what happened on the lap the memo landed. A behavior change in this
 /// file moves this stamp. The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260916.203519";
+const rye_version = "20260916.210654";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -133,8 +133,12 @@ const build_lock_poll_ms: u64 = 50;
 /// different digest and misses, which is the safe direction -- so what it
 /// actually names is the one rebuild every standing receipt takes on the lap
 /// this lands: 96 of them on this ship at v6, and 94 standing when v7 landed,
-/// each hitting again afterward.
-const ryekey_marker = "ryekey-v8\x00";
+/// each hitting again afterward. **v9 on `20260916`** is the same kind of move
+/// one input over: the standard library tree now joins as the 32-byte SHA-256
+/// of its sorted content stream rather than as that stream, so the key changes
+/// shape where no library byte moved, and every standing receipt takes one
+/// rebuild before hitting again.
+const ryekey_marker = "ryekey-v9\x00";
 
 /// One file's remembered digest sits beside the `rye` binary under this prefix
 /// and suffix, in Kyri notation. The directory is gitignored, so a record is a
@@ -142,9 +146,23 @@ const ryekey_marker = "ryekey-v8\x00";
 const ryekey_cache_prefix = "rye-key-cache.";
 const ryekey_cache_suffix = ".kyri";
 
-/// A record is seven short lines. This bound refuses to read a record-shaped
-/// file that has grown into something else, with generous room over the ~200
-/// bytes one measures.
+/// The library tree's remembered digest sits beside the same binary under its
+/// own prefix. Two prefixes rather than one, because a record is reached by the
+/// digest of the path it speaks for and a tree's root could hash to the same
+/// sixteen characters a file's path does -- and a record read for the wrong
+/// subject would be refused on its `format` line and then overwritten, so the
+/// two would take turns evicting each other on every build. A prefix keeps
+/// them in separate names, where neither can reach the other at all.
+const ryekey_library_cache_prefix = "rye-key-library.";
+
+/// The library tree record's format word, which is also the domain separator at
+/// the head of the identity stream. One constant for both, so a future record
+/// shape cannot leave an elder identity readable under a new name.
+const ryekey_library_format = "rye-key-library-v1";
+
+/// A file's record is seven short lines and a library tree's is four. This
+/// bound refuses to read a record-shaped file that has grown into something
+/// else, with generous room over the ~200 bytes one measures.
 const ryekey_cache_max_bytes: u64 = 4096;
 
 /// A remembered digest is taken over a whole file, and the pinned toolchain
@@ -581,10 +599,18 @@ fn bridge_to_zig(
         hasher.update(&digest);
         break :zig_blk true;
     } else true;
-    // The standard library joins the same way for the same reason: the sorted
-    // tree's bytes decide the build, and the directory holding them does not.
-    // Proven beside the toolchain in that pen -- an equivalent spelling of one
-    // library's content emitted identical bytes.
+    // The standard library joins the same way for the same reason, and now by
+    // the same mechanism: the sorted tree's bytes decide the build, and the
+    // directory holding them does not. Proven beside the toolchain in that pen
+    // -- an equivalent spelling of one library's content emitted identical
+    // bytes.
+    //
+    // THE TREE JOINS AS A DIGEST, REMEMBERED, and its identity is composed FROM
+    // the walk rather than taken beside it, because one stat cannot stand for
+    // 552 files. Every file is still discovered and still stat-ed on every
+    // build; what is read once per tree rather than once per build is its 16 MB
+    // of content. Feeding a 32-byte digest where a byte stream went is what
+    // moved the marker to v9 above.
     //
     // WHAT STAYS, AND WHY IT IS NOT THE SAME THING. A closure source's path
     // remains in the key, and each library entry keeps its own relative path
@@ -599,7 +625,10 @@ fn bridge_to_zig(
     // receipt was already serving one of many equally valid outputs before
     // this change, and dropping a path that reaches none of them takes
     // nothing further away.
-    const library_content_readable = if (key_wanted) hash_library_into(io, dir, rye_lib, garden, &hasher) else true;
+    const library_content_readable = if (key_wanted)
+        hash_library_into(io, dir, rye_lib, self_exe_path, garden, &hasher)
+    else
+        true;
     // THE OUTPUT'S PATH JOINS AS A FACT RATHER THAN A SPELLING. `-femit-bin=`
     // says an output was named; where it lands says how a caller filed the
     // result, never what compiled. Every other flag joins whole, value and
@@ -858,7 +887,7 @@ fn file_digest_remembered(
         .ctime_ns = stat.ctime.nanoseconds,
     };
 
-    const record_path = digest_record_path(path, self_exe_path, garden);
+    const record_path = digest_record_path(ryekey_cache_prefix, path, self_exe_path, garden);
     if (record_path) |rp| {
         if (digest_record_read(io, dir, rp, path, identity, garden)) |remembered| return remembered;
     }
@@ -881,19 +910,31 @@ const Identity = struct {
     ctime_ns: i96,
 };
 
-/// Where one file's record sits: beside the `rye` binary, under a name derived
-/// from the digest of the path it speaks for, so a path holding spaces or
-/// slashes still names one file and two files never share a record. A build
-/// that cannot resolve its own binary keeps no record and reads every time.
-fn digest_record_path(path: []const u8, self_exe_path: ?[]const u8, garden: std.mem.Allocator) ?[]const u8 {
+/// Where one record sits: beside the `rye` binary, under a name derived from
+/// the digest of the subject it speaks for, so a path holding spaces or slashes
+/// still names one subject and two subjects never share a record. A build that
+/// cannot resolve its own binary keeps no record and reads every time.
+///
+/// The caller hands in the prefix, so one derivation serves the file records
+/// and the library tree's alike and the two can never land on one name.
+fn digest_record_path(
+    prefix: []const u8,
+    path: []const u8,
+    self_exe_path: ?[]const u8,
+    garden: std.mem.Allocator,
+) ?[]const u8 {
+    // invariant: a record's prefix is what keeps two subjects out of one name, so it is never empty.
+    assert(prefix.len != 0);
     const self_path = self_exe_path orelse return null;
     const bin_dir = std.fs.path.dirname(self_path) orelse return null;
+    // invariant: a record name is derived from a subject, so the subject is named.
+    assert(path.len != 0);
     var path_digest: [Sha256.digest_length]u8 = undefined;
     Sha256.hash(path, &path_digest, .{});
     const path_hex = std.fmt.bytesToHex(path_digest, .lower);
     return std.fmt.allocPrint(garden, "{s}/{s}{s}{s}", .{
         bin_dir,
-        ryekey_cache_prefix,
+        prefix,
         path_hex[0..16],
         ryekey_cache_suffix,
     }) catch null;
@@ -1001,10 +1042,158 @@ fn path_less_than(_: void, a: []const u8, b: []const u8) bool {
     return std.mem.order(u8, a, b) == .lt;
 }
 
+/// What one entry contributes to the library tree's identity: its relative path
+/// as NUL-terminated framing, then the four fixed-width readings that together
+/// say *this is the same file* -- the same four `Identity` documents above, and
+/// each refusing the same class of change. Framing matters here for the reason
+/// it matters in the content stream: without it two entries blur into one run
+/// of bytes and a rename between them goes unseen.
+fn library_identity_update(hasher: *Sha256, path: []const u8, identity: Identity) void {
+    // invariant: an entry with no path frames nothing, so it never reaches the stream.
+    assert(path.len != 0);
+    // invariant: a real file carries a real inode, so a zero here is a reading that failed.
+    assert(identity.inode != 0);
+    hasher.update(path);
+    hasher.update("\x00");
+    var eight: [8]u8 = undefined;
+    std.mem.writeInt(u64, &eight, identity.size, .little);
+    hasher.update(&eight);
+    std.mem.writeInt(u64, &eight, identity.inode, .little);
+    hasher.update(&eight);
+    // Both timestamps are `i96` where std speaks them and sixteen bytes on the
+    // wire, which is the next fixed width that holds one whole. The width is
+    // the stream's own, so it can never shift under a std that widens.
+    var sixteen: [16]u8 = undefined;
+    std.mem.writeInt(i128, &sixteen, @as(i128, identity.mtime_ns), .little);
+    hasher.update(&sixteen);
+    std.mem.writeInt(i128, &sixteen, @as(i128, identity.ctime_ns), .little);
+    hasher.update(&sixteen);
+}
+
+/// Read the library tree's record and answer only when its format, the root it
+/// speaks for, and the identity digest it was taken under all agree.
+///
+/// The record carries exactly what is compared and nothing beside it. A file
+/// count and a byte total would read as checks and be neither -- both are
+/// already inside the identity digest -- and a field computed and never read is
+/// the fault `20260916.203519` booked one function over.
+fn library_record_read(
+    io: std.Io,
+    dir: std.Io.Dir,
+    record_path: []const u8,
+    root: []const u8,
+    identity_hex: []const u8,
+    garden: std.mem.Allocator,
+) ?[Sha256.digest_length]u8 {
+    // invariant: an identity is compared at its full hex width or not at all.
+    assert(identity_hex.len == Sha256.digest_length * 2);
+    const body = dir.readFileAlloc(io, record_path, garden, .limited64(ryekey_cache_max_bytes)) catch return null;
+    var seen_format = false;
+    var seen_root = false;
+    var seen_identity = false;
+    var seen_digest = false;
+    var digest: [Sha256.digest_length]u8 = undefined;
+    var lines = std.mem.splitScalar(u8, body, '\n');
+    while (lines.next()) |raw| {
+        const line = std.mem.trim(u8, raw, " \r\t");
+        if (line.len == 0) continue;
+        const space = std.mem.indexOfScalar(u8, line, ' ') orelse continue;
+        const field = line[0..space];
+        const value = line[space + 1 ..];
+        if (std.mem.eql(u8, field, "format")) {
+            seen_format = std.mem.eql(u8, value, ryekey_library_format);
+        } else if (std.mem.eql(u8, field, "root")) {
+            seen_root = std.mem.eql(u8, value, root);
+        } else if (std.mem.eql(u8, field, "identity")) {
+            seen_identity = std.mem.eql(u8, value, identity_hex);
+        } else if (std.mem.eql(u8, field, "sha256")) {
+            if (value.len != Sha256.digest_length * 2) return null;
+            // u32 in memory, per TAME's explicit widths: a digest is 32 bytes and
+            // the index never approaches a machine word.
+            var i: u32 = 0;
+            while (i < Sha256.digest_length) : (i += 1) {
+                const at: usize = @intCast(i * 2); // seam: a slice index is the machine word
+                digest[i] = std.fmt.parseInt(u8, value[at .. at + 2], 16) catch return null;
+            }
+            seen_digest = true;
+        }
+    }
+    if (!seen_format) return null;
+    // A RECORD NAMES THE TREE IT SPEAKS FOR, AND THAT NAME IS COMPARED. The
+    // record's filename is the digest of the root, so it is already reached only
+    // under that root's hash -- yet a hand-written record, or one left by a root
+    // that hashed the same, would otherwise answer for a tree it never read.
+    if (!seen_root) return null;
+    if (!seen_identity) return null;
+    if (!seen_digest) return null;
+    return digest;
+}
+
+/// Write the library tree's record through a temporary name and one rename, so
+/// a reader never meets a half-written record. The content is a pure function
+/// of the root, the identity, and the digest, so two builds remembering one
+/// tree write the same bytes and cannot disagree.
+fn library_record_write(
+    io: std.Io,
+    dir: std.Io.Dir,
+    record_path: []const u8,
+    root: []const u8,
+    identity_hex: []const u8,
+    digest: [Sha256.digest_length]u8,
+    garden: std.mem.Allocator,
+) void {
+    // invariant: a record is written at the full hex width a reader compares.
+    assert(identity_hex.len == Sha256.digest_length * 2);
+    const digest_hex = std.fmt.bytesToHex(digest, .lower);
+    const body = std.fmt.allocPrint(
+        garden,
+        "format {s}\nroot {s}\nidentity {s}\nsha256 {s}\n",
+        .{ ryekey_library_format, root, identity_hex, digest_hex[0..] },
+    ) catch return;
+    // invariant: a record that would not fit its own ceiling is never written.
+    if (body.len > ryekey_cache_max_bytes) return;
+    const temp_path = std.fmt.allocPrint(garden, "{s}.writing", .{record_path}) catch return;
+    dir.writeFile(io, .{ .sub_path = temp_path, .data = body }) catch return;
+    dir.rename(temp_path, dir, record_path, io) catch {
+        dir.deleteFile(io, temp_path) catch {};
+    };
+}
+
+/// Feed the standard library tree into a build's key, read once per tree rather
+/// than once per build.
+///
+/// WHY. Measured on this pier `20260916.210324` with a binary built from the
+/// source beside this comment: a warm receipt reading cost 140-146 ms, of which
+/// about 112 ms was this one tree -- 552 files and 16,416,628 bytes read and
+/// hashed to prove nothing had moved. Hashing those bytes alone measures
+/// 145-154 ms and walking the tree while stat-ing every file measures 16-21 ms,
+/// both including process start. So the read was roughly four fifths of the
+/// whole cost of proving a skip was safe. Every figure is FREE -- nothing holds
+/// them still -- so run `rye key` and the two probes rather than trusting them.
+///
+/// ONE STAT CANNOT STAND FOR A TREE, so the identity is composed FROM the walk
+/// rather than taken beside it. The walk stays and the read goes: every file is
+/// still discovered and still stat-ed, and its four `Identity` readings join one
+/// identity digest in sorted order. A record beside the `rye` binary carries the
+/// content digest under that identity, and a build whose walk speaks the same
+/// identity feeds the remembered 32 bytes into the key.
+///
+/// WHAT EACH READING REFUSES. A file added or removed changes the sorted path
+/// stream. A rename does the same. A length change moves `size`; any write moves
+/// `mtime`; a replacement rather than a rewrite moves `inode`; and `ctime` moves
+/// on any write or metadata change and no ordinary call sets it backward, which
+/// catches the one case the other three miss -- a same-size rewrite in place
+/// whose modification time was restored afterward.
+///
+/// THE HONEST LIMIT is the single-file memo's, unchanged: a hand that can write
+/// inside the binary's own directory can write a record saying whatever it
+/// likes. That same hand can replace the `rye` binary itself, so the record adds
+/// no reach it did not already have.
 fn hash_library_into(
     io: std.Io,
     dir: std.Io.Dir,
     rye_lib: []const u8,
+    self_exe_path: ?[]const u8,
     garden: std.mem.Allocator,
     hasher: *Sha256,
 ) bool {
@@ -1025,22 +1214,73 @@ fn hash_library_into(
         if (paths.items.len >= @as(usize, ryekey_library_max_files)) return false;
         paths.append(garden, garden.dupe(u8, entry.path) catch return false) catch return false;
     }
+    if (paths.items.len == 0) return false;
     std.mem.sortUnstable([]const u8, paths.items, {}, path_less_than);
 
+    // THE STAT PASS, which every build pays and which is the cheap half. It
+    // composes the identity and carries each size forward, so the content pass
+    // below asks the filesystem for nothing a second time.
+    var sizes = std.ArrayListUnmanaged(u64).empty;
+    defer sizes.deinit(garden);
+    var identity = Sha256.init(.{});
+    identity.update(ryekey_library_format);
+    identity.update("\x00");
+    var count_bytes: [8]u8 = undefined;
+    std.mem.writeInt(u64, &count_bytes, @intCast(paths.items.len), .little);
+    identity.update(&count_bytes);
     var total_bytes: u64 = 0;
     for (paths.items) |path| {
         const full_path = std.fmt.allocPrint(garden, "{s}/{s}", .{ std_root, path }) catch return false;
         const stat = dir.statFile(io, full_path, .{}) catch return false;
         if (stat.size > ryekey_library_max_bytes - total_bytes) return false;
         total_bytes += stat.size;
-        hasher.update(path);
-        hasher.update("\x00");
-        var size_bytes: [8]u8 = undefined;
-        std.mem.writeInt(u64, &size_bytes, stat.size, .little);
-        hasher.update(&size_bytes);
-        if (!hash_file_into(io, dir, full_path, hasher)) return false;
+        sizes.append(garden, stat.size) catch return false;
+        library_identity_update(&identity, path, .{
+            .inode = @intCast(stat.inode),
+            .size = stat.size,
+            .mtime_ns = stat.mtime.nanoseconds,
+            .ctime_ns = stat.ctime.nanoseconds,
+        });
     }
-    return paths.items.len != 0;
+    // invariant: the stat pass answered for every path the walk found.
+    assert(sizes.items.len == paths.items.len);
+    var identity_digest: [Sha256.digest_length]u8 = undefined;
+    identity.final(&identity_digest);
+    const identity_hex = std.fmt.bytesToHex(identity_digest, .lower);
+
+    const record_path = digest_record_path(ryekey_library_cache_prefix, std_root, self_exe_path, garden);
+    if (record_path) |rp| {
+        if (library_record_read(io, dir, rp, std_root, identity_hex[0..], garden)) |remembered| {
+            // invariant: a remembered digest is the full width the key expects.
+            assert(remembered.len == Sha256.digest_length);
+            hasher.update(&remembered);
+            return true;
+        }
+    }
+
+    // THE CONTENT PASS, paid once per tree. The stream is exactly the one this
+    // function fed the key directly until `20260916.210324` -- each sorted
+    // relative path, NUL, its length little-endian, then its bytes -- so what
+    // changed is where the stream is hashed rather than what it holds.
+    var content = Sha256.init(.{});
+    for (paths.items, sizes.items) |path, size| {
+        const full_path = std.fmt.allocPrint(garden, "{s}/{s}", .{ std_root, path }) catch return false;
+        content.update(path);
+        content.update("\x00");
+        var size_bytes: [8]u8 = undefined;
+        std.mem.writeInt(u64, &size_bytes, size, .little);
+        content.update(&size_bytes);
+        if (!hash_file_into(io, dir, full_path, &content)) return false;
+    }
+    var content_digest: [Sha256.digest_length]u8 = undefined;
+    content.final(&content_digest);
+    // invariant: a digest earned by reading is the full width the key expects.
+    assert(content_digest.len == Sha256.digest_length);
+    if (record_path) |rp| {
+        library_record_write(io, dir, rp, std_root, identity_hex[0..], content_digest, garden);
+    }
+    hasher.update(&content_digest);
+    return true;
 }
 
 /// Print one key reading, in the shape a shell reads and a person understands:

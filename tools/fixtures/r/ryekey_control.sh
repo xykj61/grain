@@ -413,8 +413,16 @@ grep -q '^ctime [0-9]\{1,\}$' "$record" || fail "the record carries no status-ch
 # A cache nobody reads passes every other leg in this file. So the record's own
 # digest is flipped while its five other readings stay true, and the key must
 # move: that can only happen if the key took its compiler digest from here.
+# A PLANT MUST DIFFER FROM THE TRUTH, or the assertion beside it proves nothing.
+# Flipping the first character to `0` is a no-op on a digest that already begins
+# with `0`, which happens one run in sixteen -- and there this leg red on a
+# healthy tree while leg 28 below passed having tested nothing. Sixty-four zeros
+# can never be a SHA-256 of anything, and the plant is compared against the true
+# record before it is trusted to be a plant at all. Booked `20260916.213500`.
+ZERO_DIGEST=0000000000000000000000000000000000000000000000000000000000000000
 cp "$record" "$PEN/record.true"
-sed 's/^sha256 \(.\)/sha256 0/' "$PEN/record.true" > "$PEN/record.next"
+sed "s|^sha256 .*|sha256 $ZERO_DIGEST|" "$PEN/record.true" > "$PEN/record.next"
+cmp -s "$PEN/record.next" "$PEN/record.true" && fail "the planted compiler digest matched the true one"
 [ "$(wc -c < "$PEN/record.next" | tr -d ' ')" = "$(wc -c < "$PEN/record.true" | tr -d ' ')" ] \
     || fail "the planted record changed size"
 cat "$PEN/record.next" > "$record"
@@ -440,10 +448,10 @@ env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" 
 # plant is trusted, the wrong digest reaches the key, and this leg reds.
 for field in path inode size mtime ctime; do
     case "$field" in
-        path) sed 's|^path .*|path /nowhere/at/all|; s/^sha256 \(.\)/sha256 0/' "$PEN/record.true" > "$record" ;;
-        *)    sed "s|^$field .*|$field 1|; s/^sha256 \(.\)/sha256 0/" "$PEN/record.true" > "$record" ;;
+        path) sed "s|^path .*|path /nowhere/at/all|; s|^sha256 .*|sha256 $ZERO_DIGEST|" "$PEN/record.true" > "$record" ;;
+        *)    sed "s|^$field .*|$field 1|; s|^sha256 .*|sha256 $ZERO_DIGEST|" "$PEN/record.true" > "$record" ;;
     esac
-    grep -q "^sha256 0" "$record" || fail "the $field plant did not also move the digest"
+    grep -q "^sha256 $ZERO_DIGEST$" "$record" || fail "the $field plant did not also move the digest"
     rm -f "$KEY"
     env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
         || fail "$field-plant build failed"
@@ -487,6 +495,140 @@ env RYE_ZIG="$ZIG" RYE_LIB="$REPO/rye/lib" "$PEN/ryeflip" run "$PEN/main.rye" >/
     || fail "run record leg failed"
 [ -z "$(ls "$PEN"/rye-key-cache.*.kyri 2>/dev/null)" ] || fail "a run wrote a record"
 
-echo "legs=30 all proven -- twelve flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one; the compiler's remembered digest was shown consulted by planting one, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record was written where no receipt could be earned"
+# --- leg 31: the library tree's digest is remembered beside the binary that read it ----------
+# The tree is 552 files and 16,416,628 bytes on this pier, and reading them was
+# about four fifths of a warm receipt reading: a hit of 225-236 ms fell to
+# 111-132 when this record landed. So the record is the whole mechanism here
+# too, and it must say which ROOT it speaks for -- a record answering for a
+# tree it never walked is the fault the compiler's own record booked at
+# `20260916.203519`.
+rm -f "$PEN"/rye-key-library.*.kyri "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "library-record baseline build failed"
+k31=$(stamp | head -1)
+lib_record=$(grep -l "^root $PEN/lib2/std$" "$PEN"/rye-key-library.*.kyri 2>/dev/null | head -1)
+[ -n "$lib_record" ] || fail "the build left no remembered record naming the library root"
+grep -q '^format rye-key-library-v1$' "$lib_record" || fail "the library record carries no format line"
+grep -q '^identity [0-9a-f]\{64\}$' "$lib_record" || fail "the library record carries no 64-hex identity"
+grep -q '^sha256 [0-9a-f]\{64\}$' "$lib_record" || fail "the library record carries no 64-hex content digest"
+
+# THE SAME PLANT DISCIPLINE LEG 27 NOW CARRIES, reached through one constant:
+# a planted digest must be one no file can honestly speak, and it is compared
+# against the truth before it is trusted to be a plant.
+plant_lib_digest() { # plant_lib_digest <true-record>
+    sed "s|^sha256 .*|sha256 $ZERO_DIGEST|" "$1" > "$PEN/lib-record.planted"
+    cmp -s "$PEN/lib-record.planted" "$1" && fail "the planted library digest matched the true one"
+    cat "$PEN/lib-record.planted" > "$lib_record"
+}
+
+# --- leg 32: the library record is CONSULTED -- a wrong digest under a true identity moves it -
+# A cache nobody reads passes every other leg in this file. The content digest is
+# replaced while the identity stays true, and the key must move: that can only
+# happen if the key took the library's digest from here rather than from 16 MB.
+cp "$lib_record" "$PEN/lib-record.true"
+plant_lib_digest "$PEN/lib-record.true"
+[ "$(wc -c < "$PEN/lib-record.planted" | tr -d ' ')" = "$(wc -c < "$PEN/lib-record.true" | tr -d ' ')" ] \
+    || fail "the planted library record changed size"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "planted-library-record build failed"
+[ "$(stamp | head -1)" != "$k31" ] \
+    || fail "a planted library digest did not reach the key -- the record is never read"
+cat "$PEN/lib-record.true" > "$lib_record"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "restored-library-record build failed"
+[ "$(stamp | head -1)" = "$k31" ] || fail "restoring the library record did not restore the key"
+
+# --- leg 33: each COMPARED FIELD of the library record is refused by its own plant ------------
+# A LEG OVER A CONJUNCTION PROVES ONLY THE FIRST CLAUSE THAT REFUSES, which this
+# family learned at REDS %779. The record carries exactly three compared fields
+# beside its digest -- format, root, identity -- so each is corrupted ALONE with
+# the digest replaced beside it. A compared field refuses the record, the tree's
+# bytes answer, and the key returns to its baseline. Delete any one comparison
+# from `library_record_read` in `rye/src/main.rye` and that plant is trusted,
+# the wrong digest reaches the key, and this leg reds.
+for field in format root identity; do
+    case "$field" in
+        format)   sed "s|^format .*|format rye-key-library-v0|; s|^sha256 .*|sha256 $ZERO_DIGEST|" "$PEN/lib-record.true" > "$lib_record" ;;
+        root)     sed "s|^root .*|root /nowhere/at/all|; s|^sha256 .*|sha256 $ZERO_DIGEST|" "$PEN/lib-record.true" > "$lib_record" ;;
+        identity) sed "s|^identity .*|identity $ZERO_DIGEST|; s|^sha256 .*|sha256 $ZERO_DIGEST|" "$PEN/lib-record.true" > "$lib_record" ;;
+    esac
+    grep -q "^sha256 $ZERO_DIGEST$" "$lib_record" || fail "the library $field plant did not also move the digest"
+    rm -f "$KEY"
+    env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+        || fail "library $field-plant build failed"
+    [ "$(stamp | head -1)" = "$k31" ] \
+        || fail "a library record whose $field disagreed was trusted"
+done
+cat "$PEN/lib-record.true" > "$lib_record"
+
+# --- legs 34 and 35: the tree's MEMBERSHIP is inside the identity, both directions ------------
+# ONE STAT CANNOT STAND FOR A TREE, and these two legs are why. Adding a file
+# moves no existing file's size, inode, modification time or status-change time
+# -- the walk's own count and sorted path stream are the only readings that can
+# explain a refusal, so the plant is isolated to membership by construction.
+# Removing one proves the same door from the other side, since a record built
+# over the larger tree must not answer for the smaller.
+#
+# THE DETECTOR IS THE RECORD RATHER THAN THE KEY. A refused identity sends the
+# build back to the bytes and a rewritten record lands; a trusted one leaves the
+# plant exactly where it stood. So the surviving record is compared against the
+# planted bytes, which is exact where a grep for one character is not.
+printf 'pub const pen_extra: u32 = 7;\n' > "$PEN/std-copy/zz-pen-extra.zig"
+plant_lib_digest "$PEN/lib-record.true"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "added-library-file build failed"
+cmp -s "$lib_record" "$PEN/lib-record.planted" \
+    && fail "a file added to the library tree left the remembered digest trusted"
+cp "$lib_record" "$PEN/lib-record.wider"
+
+rm -f "$PEN/std-copy/zz-pen-extra.zig"
+plant_lib_digest "$PEN/lib-record.wider"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "removed-library-file build failed"
+cmp -s "$lib_record" "$PEN/lib-record.planted" \
+    && fail "a file removed from the library tree left the remembered digest trusted"
+
+# --- leg 36: the status-change time earns its place on a real file ----------------------------
+# `chmod` moves ctime and nothing else a reader can see: the path, the size, the
+# inode and the modification time all stand still across it. So this is the one
+# reading of the four that a filesystem lets a control isolate, and it is the
+# one that catches a same-size rewrite whose modification time was restored --
+# leg 29's own subject, one input over.
+#
+# THE THREE THAT CANNOT BE ISOLATED SAY SO. A size change moves mtime with it; a
+# rename and a replacement each move ctime; and no ordinary call sets ctime
+# backward, so ctime shadows them all. Their presence in the stream is proven by
+# deleting an update from `library_identity_update` in `rye/src/main.rye` and
+# watching a leg object, rather than by a plant this control can write.
+cp "$lib_record" "$PEN/lib-record.mode"
+plant_lib_digest "$PEN/lib-record.mode"
+before_mode_mtime=$(file_mtime "$PEN/std-copy/ascii.zig")
+before_mode_size=$(wc -c < "$PEN/std-copy/ascii.zig" | tr -d ' ')
+chmod g+w "$PEN/std-copy/ascii.zig"
+[ "$(file_mtime "$PEN/std-copy/ascii.zig")" = "$before_mode_mtime" ] \
+    || fail "the mode plant moved the modification time"
+[ "$(wc -c < "$PEN/std-copy/ascii.zig" | tr -d ' ')" = "$before_mode_size" ] \
+    || fail "the mode plant changed the size"
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "library mode-flip build failed"
+cmp -s "$lib_record" "$PEN/lib-record.planted" \
+    && fail "a library file whose status-change time moved left the remembered digest trusted"
+
+# --- leg 37: a build that can earn no receipt remembers no library either ---------------------
+# The same mark leg 30 reads, one input over: decide first, read second. A build
+# with no receipt to consult never walks the library, so it writes no record.
+rm -f "$PEN"/rye-key-library.*.kyri "$KEY"
+( cd "$PEN" && env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" ) \
+    || fail "no-emit library-record build failed"
+[ -z "$(ls "$PEN"/rye-key-library.*.kyri 2>/dev/null)" ] || fail "a no-emit build wrote a library record"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" run "$PEN/main.rye" >/dev/null 2>&1 \
+    || fail "run library-record leg failed"
+[ -z "$(ls "$PEN"/rye-key-library.*.kyri 2>/dev/null)" ] || fail "a run wrote a library record"
+echo "legs=37 all proven -- twelve flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one; the compiler's remembered digest was shown consulted by planting one, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record was written where no receipt could be earned; and the same seven readings taken of the LIBRARY TREE's record -- it exists and names its root, it was shown consulted by planting a digest into it, each of its three compared fields refused its own plant, a file added and a file removed each refused the remembered digest with no existing file's stat moved, a mode change that moved only the status-change time refused it too, and a build earning no receipt walked no library and wrote no record"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"
