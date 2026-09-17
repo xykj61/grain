@@ -831,3 +831,5 @@ at a closed fold.*
 *Rows %789, %792 and %794 folded to [`REDS-the-rule-the-wall-did-not-reach-rows-789-794.md`](REDS-the-rule-the-wall-did-not-reach-rows-789-794.md) on `20260916.224937`, **BOOKED** and **CLOSED** -- three rules stated correctly and walled one step away from where the hand actually stood -- a nib guard reading by key rather than by neighbour, a signal scan reading tracked sources rather than a session prompt, and a report card branch reading a flag rather than a threshold.*
 
 *Row %791 folded to [`REDS-the-clause-that-excused-the-invitation-rows-791.md`](REDS-the-clause-that-excused-the-invitation-rows-791.md) on `20260916.230106`, **BOOKED** -- a booked red is the loudest invitation this fleet emits, and the clause that asked for a claim excused exactly it.*
+
+*Row %796 folded to [`REDS-a-noun-phrase-about-prose-rows-796.md`](REDS-a-noun-phrase-about-prose-rows-796.md) on `20260916.234148`, **CLOSED** -- a guard that admits its heuristic in prose still needs the exclusion written into its pattern, and the row that books such a fault writes the same verb on its own line.*
