@@ -7362,3 +7362,19 @@ seated 20260917.060042
 # a cycle guard and measures something no reader does.
 #
 # 19s on the seating lap, which is why `tier lap` rather than cadence.
+# cpu_unit -- WHICH UNIT can this pier measure a saving in? Every timing claim this fleet ships is
+# stated in wall milliseconds on a pier eight ships share, and row 12's erratum on the twelve-
+# moonshot page measured what that costs: a deterministic workload measuring a change of exactly
+# zero read a wall spread of 16.7 to 54.8 percent of its median. The remedy named there was more
+# trials; this instrument tests the other axis, the unit. It reads one MINSTD spin loop in two
+# units inside ONE call -- wall from `read < /proc/uptime`, CPU from the `times` builtin -- so
+# neither clock forks a child whose own CPU would land in the counter being read.
+# THE GUARD GATES THE ARITHMETIC AND DECLINES THE HOST READING. Injected sample lists have one
+# right answer each, so medians, spreads, the observed step, the contention share and the verdict
+# are all asserted; the measured spread moves with whatever the other seven ships are doing, and a
+# gate over the weather is a gate somebody turns off. 1.9s, 41 control legs, four mutations bitten.
+# Reading: active-designing/20260917-054941_the-unit-that-survives-the-pier.md
+guard cpu_unit
+path tools/c/cpu_unit_witness.rish
+tier lap
+seated 20260917.054941

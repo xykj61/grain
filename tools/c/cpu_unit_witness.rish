@@ -1,0 +1,49 @@
+# cpu_unit_witness.rish -- the unit a saving is measured in, proven where it can be proven.
+#
+#   rishi/bin/rishi run tools/c/cpu_unit_witness.rish
+#
+# tools/fixtures/c/cpu_unit_scan.sh reads one deterministic workload in two units inside a single
+# call -- wall milliseconds from /proc/uptime and CPU milliseconds from the `times` builtin -- and
+# says whether the CPU spread is narrow enough to measure a saving the wall spread would bury.
+#
+# WHAT THIS WITNESS GATES AND WHAT IT DECLINES. The scan's ARITHMETIC is gated: injected sample
+# lists have exactly one right answer, so every median, spread, ratio, contention share, step and
+# verdict is asserted against a number derived by hand in the control's own comments. The scan's
+# HOST READING is declined -- wall spread on this pier moves with whatever the other seven ships
+# are doing, so a gate over it would red on a busy afternoon and pass at four in the morning for
+# reasons no lap chose. A guard that reds on the weather is a guard somebody turns off.
+#
+# THE FALSIFIER IS ASSERTED FROM BOTH SIDES, because a verdict proven only in the narrowing
+# direction cannot be told from one that always narrows.
+let control = run ["sh" "tools/fixtures/c/cpu_unit_control.sh"]
+assert control.ok else "cpu unit control did not run: ${control.err_brief}"
+assert control.out contains "control_verdict=ok" else "cpu unit control refused: ${control.out_brief}"
+assert control.out contains "control_failed=0" else "a cpu unit control leg failed: ${control.out_brief}"
+
+# THE LEG TALLY IS ASSERTED BESIDE THE VERDICT. A control reaching its last line says only that it
+# reached it, so a leg written tomorrow and never counted would ride under a green witness.
+assert control.out contains "control_legs=41" else "the cpu unit leg count moved: ${control.out_brief}"
+assert control.out contains "control_expected=41" else "the cpu unit expected leg count moved: ${control.out_brief}"
+
+# THE ARITHMETIC, driven through the same seam a caller uses rather than through the control.
+# Four wall samples and four CPU samples whose answers are worked out in the control's comments.
+let narrow = run ["sh" "tools/fixtures/c/cpu_unit_scan.sh" "--samples-wall" "900 950 1010 1200" "--samples-cpu" "540 545 551 560"]
+assert narrow.ok else "cpu unit scan did not run on injected samples: ${narrow.err_brief}"
+assert narrow.out contains "wall_spread_ppt=297" else "the wall spread moved: ${narrow.out_brief}"
+assert narrow.out contains "cpu_spread_ppt=36" else "the cpu spread moved: ${narrow.out_brief}"
+assert narrow.out contains "contention_ppt=454" else "the contention share moved: ${narrow.out_brief}"
+assert narrow.out contains "verdict=cpu_narrower" else "the narrowing verdict moved: ${narrow.out_brief}"
+
+# THE OTHER SIDE. Two thirds of the wall spread is not a factor of two, so the unit buys nothing
+# and the scan says so by name.
+let flat = run ["sh" "tools/fixtures/c/cpu_unit_scan.sh" "--samples-wall" "1000 1200 1400" "--samples-cpu" "1000 1120 1240"]
+assert flat.ok else "cpu unit scan did not run on the flat population: ${flat.err_brief}"
+assert flat.out contains "narrows=no" else "the falsifier stopped firing: ${flat.out_brief}"
+assert flat.out contains "verdict=unit_buys_nothing" else "the refusing verdict moved: ${flat.out_brief}"
+
+# A WORKLOAD THE CLOCK QUANTIZES IS A READING ABOUT THE CLOCK, and the scan refuses it by name
+# rather than reporting rounding against rounding.
+let short = run ["sh" "tools/fixtures/c/cpu_unit_scan.sh" "--samples-wall" "100 120 140" "--samples-cpu" "100 110 120"]
+assert short.out contains "reason=SHORT_WORKLOAD" else "the quantization refusal moved: ${short.out_brief}"
+
+say "GREEN cpu_unit -- 41 control legs, four mutations bitten, the falsifier asserted both ways"
