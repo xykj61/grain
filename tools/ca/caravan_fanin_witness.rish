@@ -37,7 +37,7 @@ let bin = "caravan/bin/fanin"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/fanin.rye -femit-bin=${bin}"]
 
-assert build.ok else "caravan fanin build failed"
+assert build.ok else "caravan fanin build failed -- ${build.err_brief}"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
 # Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole

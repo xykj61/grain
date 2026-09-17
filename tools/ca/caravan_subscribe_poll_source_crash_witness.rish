@@ -21,7 +21,7 @@ let log = "${pen}/src-crash.out"
 let probe_sh = "tools/fixtures/c/caravan_subscribe_poll_source_crash.sh"
 
 let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
-assert build.ok else "source crash witness build failed"
+assert build.ok else "source crash witness build failed -- ${build.err_brief}"
 
 let probe = run ["sh" probe_sh service delivery sentinel log]
 assert probe.ok else "source crash witness shell failed"

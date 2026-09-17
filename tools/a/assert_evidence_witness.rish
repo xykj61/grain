@@ -45,6 +45,17 @@
 # `cure_unwritable` counts those, together with the few whose binding this reading leaves open, and
 # it prints rather than gating, since a path-shaped record is doing its job.
 #
+# THE THIRD READING, WALLED IN ITS OWN ROOM. Not every silence costs the same. A mute refusal over
+# a `mkdir` sits above a command a reader re-runs in a second; a mute refusal over a RYE
+# COMPILATION discards a compiler diagnostic produced under a load that may never reproduce, which
+# is the silence %734 paid a fortnight for. So each assertion also carries whether its bound
+# command compiles Rye -- `rye_build.sh`, or the `rye` binary asked for `build`, `build-lib` or
+# `run` -- and `build_mute` is that class crossed with silence: 1,123 of 7,448 when it was named on
+# `20260917`, 1,059 of 7,384 once the seating lap swept Caravan, out of 2,070 compilations. The
+# second wall holds `tools/ca/`, Caravan, at zero of them, swept on the lap the reading was seated.
+# It is a second cohort over a second reading rather than a widening of the first, so a mute
+# refusal over a `git` in that room still walks free and is still counted.
+#
 # THE HONEST FLOOR. A message naming the reason in prose a person composed reads as mute here, by
 # choice: a sentence written in advance carries what someone expected rather than what the command
 # said on the day it failed. And whether a cured message reads WELL stays judgment; this proves the
@@ -65,6 +76,10 @@ assert scan.out contains "names_err=" else "assert-evidence: the cure must be co
 assert scan.out contains "names_field=" else "assert-evidence: evidence from the wrong stream is its own answer and must be counted apart"
 assert scan.out contains "names_path=" else "assert-evidence: a message pointing at a file on disk is honest deferral rather than silence"
 assert scan.out contains "said_above=" else "assert-evidence: a reason printed by a say line above the refusal must not be counted as silence"
+assert scan.out contains "build_mute=" else "assert-evidence: the silence over a compilation must be counted apart, since it is the one that cost a fortnight"
+assert scan.out contains "build_asserts=" else "assert-evidence: the compiling population must be printed beside its silent share"
+assert scan.out contains "build_cohort_files=" else "assert-evidence: the build room must be counted, or a wall over nothing reads as a wall"
+assert scan.out contains "build_cohort_mute=0" else "assert-evidence: a silent build refusal returning to the swept room is a regression"
 assert scan.out contains "cure_unwritable=" else "assert-evidence: a record with no err field cannot take the cure, and must be named rather than blamed"
 assert scan.out contains "asserts=" else "assert-evidence: the denominator must be printed beside the count"
 assert scan.out contains "sources=" else "assert-evidence: the population read must be printed, so a shrinking corpus cannot pass as a falling count"
@@ -111,6 +126,29 @@ assert control.out contains "enforced_regress_counted=yes" else "assert-evidence
 assert control.out contains "enforced_regress_verdict=yes" else "assert-evidence: the wall must bite, or it is a suggestion"
 assert control.out contains "enforced_regress_exit=yes" else "assert-evidence: a refusal that exits zero is a refusal nothing downstream hears"
 assert control.out contains "enforced_lifts_again=yes" else "assert-evidence: removing the plant must return the pen to green, or the refusal proves nothing"
+assert control.out contains "build_counts_four=yes" else "assert-evidence: every spelling that reaches a Rye compiler must be read as one"
+assert control.out contains "build_mute_under_mute=yes" else "assert-evidence: the compiling silences must be a subset of the silences rather than a second population"
+assert control.out contains "build_names_script=yes" else "assert-evidence: the build script this tree owns must be recognized"
+assert control.out contains "build_names_subcommand=yes" else "assert-evidence: the rye build subcommand must be recognized"
+assert control.out contains "build_names_buildlib=yes" else "assert-evidence: build-lib compiles as surely as build"
+assert control.out contains "build_names_rye_run=yes" else "assert-evidence: rye run compiles before it runs, and its refusal carries a diagnostic"
+assert control.out contains "build_omits_mkdir=yes" else "assert-evidence: a directory that could not be made is not a compilation"
+assert control.out contains "build_omits_rishi_run=yes" else "assert-evidence: a Rishi invocation must never be claimed as a Rye compilation"
+assert control.out contains "build_cured_counted=yes" else "assert-evidence: a cured build site stays in the compiling population, or a sweep reads as a shrinking denominator"
+assert control.out contains "build_cured_not_silent=yes" else "assert-evidence: a build refusal naming its reason must leave the silent reading alone"
+assert control.out contains "build_cured_is_the_cure=yes" else "assert-evidence: the clear direction is asserted as hard as the refusal"
+assert control.out contains "build_fn_trace=yes" else "assert-evidence: a function that builds passes that reading to its callers, or a witness building through one helper reads as compiling nothing"
+assert control.out contains "build_cohort_counts_files=yes" else "assert-evidence: the build room must be found by the shipped glob rather than by a pen-only pattern"
+assert control.out contains "build_cohort_clear_zero=yes" else "assert-evidence: the swept room must read zero"
+assert control.out contains "build_cohort_clear_verdict=yes" else "assert-evidence: a clear room must say within"
+assert control.out contains "build_cohort_ignores_others=yes" else "assert-evidence: a silent build refusal outside the room must be counted and must not be gated"
+assert control.out contains "build_cohort_admits_plain_mute=yes" else "assert-evidence: a mute refusal over a directory in the swept room must walk free, or the second wall is the first one wearing a new name"
+assert control.out contains "build_cohort_regress_counted=yes" else "assert-evidence: a regression must be counted before it is refused"
+assert control.out contains "build_cohort_regress_verdict=yes" else "assert-evidence: the build wall must bite, or it is a suggestion"
+assert control.out contains "build_cohort_regress_exit=yes" else "assert-evidence: a refusal that exits zero is a refusal nothing downstream hears"
+assert control.out contains "build_cohort_lifts_again=yes" else "assert-evidence: removing the plant must return the pen to green, or the refusal proves nothing"
+assert control.out contains "mutation_isbuild_bites=yes" else "assert-evidence: dropping the build-script arm must change a reading, or that arm holds nothing"
+assert control.out contains "mutation_buildgate_bites=yes" else "assert-evidence: disarming the build wall must let the regression through, or the wall was never load-bearing"
 assert control.out contains "share_is_arithmetic=yes" else "assert-evidence: the share must be arithmetic on the two counts rather than decoration"
 assert control.out contains "share_never_gates=yes" else "assert-evidence: the share is printed rather than gated, and a pen well over the tree average must walk free"
 assert control.out contains "list_names_mute_only=yes" else "assert-evidence: the list must name the silent sites a lane would sweep"
@@ -138,5 +176,5 @@ assert control.out contains "cure_speaks_still_refuses=yes" else "assert-evidenc
 assert control.out contains "control_outside_population=yes" else "assert-evidence: the control own plants must never enter the number it proves"
 assert control.out contains "live_population_read=yes" else "assert-evidence: a live reading of zero would make every leg above vacuous"
 
-say "assert-evidence GREEN -- 62 legs on real git repositories in a throwaway pen, four mutations proven to bite"
-say "assert-evidence: the cured room is walled at zero; the rest is counted beside its share, so the fleet can time its own sweep against a number that tells growth from decay"
+say "assert-evidence GREEN -- 85 legs on real git repositories in a throwaway pen, six mutations proven to bite"
+say "assert-evidence: two rooms are walled at zero -- the lattice room at silence, Caravan at silence over a compilation -- and the rest is counted beside its share, so the fleet can time its own sweep against a number that tells growth from decay"

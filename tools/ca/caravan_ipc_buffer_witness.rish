@@ -60,7 +60,7 @@ assert (trim checked_out.out) == "yes" else "caravan-ipc-buffer: vendor/sel4 is 
 
 # 1. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
 let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/ipc_buffer.rye -femit-bin=${bin}"]
-assert build.ok else "caravan-ipc-buffer: the module did not build"
+assert build.ok else "caravan-ipc-buffer: the module did not build -- ${build.err_brief}"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert test.ok else "caravan-ipc-buffer: the self-test exited non-zero"

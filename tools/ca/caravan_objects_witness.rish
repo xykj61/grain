@@ -51,7 +51,7 @@ assert (trim bsd.out) == "3" else "caravan-objects: one of seL4's three object-t
 
 # 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
 let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/objects.rye -femit-bin=${bin}"]
-assert build.ok else "caravan-objects: the module did not build"
+assert build.ok else "caravan-objects: the module did not build -- ${build.err_brief}"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert test.ok else "caravan-objects: the self-test exited non-zero"

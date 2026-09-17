@@ -19,7 +19,7 @@ let bin = "caravan/bin/carry"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/carry.rye -femit-bin=${bin}"]
 
-assert build.ok else "caravan carry build failed"
+assert build.ok else "caravan carry build failed -- ${build.err_brief}"
 
 # A fresh provisioning each run, so an arriving byte is this run's byte and
 # never a message left behind by the last one.

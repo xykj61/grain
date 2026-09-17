@@ -8,7 +8,7 @@ let bin = "caravan/bin/capabilities"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/capabilities.rye -femit-bin=${bin}"]
 
-assert build.ok else "caravan capabilities build failed"
+assert build.ok else "caravan capabilities build failed -- ${build.err_brief}"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert test.ok else "caravan capabilities selftest exited non-zero"
