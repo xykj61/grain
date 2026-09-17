@@ -35,6 +35,15 @@
 # WHAT IT WRITES. construction/standing-equipment-runs.kyri, one
 # `ran <name> <stamp> <verdict> <tier> <seconds> <cpu_ms>`
 # line per guard, the last field CPU-milliseconds and the one before it wall-seconds.
+#
+# THE VERDICT WORDS, AND WHY THERE ARE FIVE. `green` and `red` are the guard's own answer. `gated`
+# says the guard answered red and its roster row parks that red at a custody gate the living card
+# names (REDS %374). `absent` says the rostered path is gone. `unrun` says this runner could not
+# KEEP the guard's answer, so it claims neither a finding nor a clean run (REDS %747) -- the word
+# exists because a guard that could not be recorded and a guard that found something wore one word,
+# and a pass dying on a full disk published four reds under it, two of them guards that had run
+# green in that same tree minutes earlier, each citing an evidence file the refused write never
+# made.
 # Lines for guards this pass left alone are KEPT, so a default run preserves the
 # cadence tier's own history rather than erasing it. The card is untracked by design -- it measures
 # THIS pier's history, and a fresh clone that has run nothing should say so.
@@ -1367,6 +1376,11 @@ ran=0
 green=0
 red=0
 gated=0
+# THE THIRD VERDICT (REDS %747). A guard the runner could not RECORD is counted here rather
+# than under `red`, because a guard that cannot answer and a guard that found something are two
+# facts wanting two repairs, and the elder branch gave them one word.
+unrun=0
+unrun_names=""
 gate_names=""
 seconds=0
 cpu_ms=0
@@ -1458,9 +1472,39 @@ while read -r name path tier gate; do
       # `red` keeps its meaning of *this guard broke*, `gated` says *this guard is parked at a gate
       # the card names*, and only the first refuses. The evidence is kept either way, because a
       # parked reading a hand cannot read is a parked reading nobody can retire.
-      tail -n 200 "$pen/out.$$" > "$pen/evidence.$name.txt"
-      echo "  evidence $red_room/$name.txt"
-      if [ "$gate" != "-" ]; then
+      # A REFUSAL THE RUNNER COULD NOT RECORD IS NOT A REFUSAL THE RUNNER MAY REPORT (REDS %747).
+      # This write is the whole discriminator, and until `20260917` its exit status was discarded
+      # and the line below announced its path either way. On `20260915.215400` a hot pass died at
+      # guard 27 of 376 with `times: write error: No space left on device`, reported FOUR red on
+      # the way down, and named `exec_bit.txt` and `living_card_ascii.txt` beside two of them --
+      # neither file existed, and both guards had run GREEN in this same tree minutes earlier. So
+      # the pass published a red with a citation to nothing, and a reader meeting that transcript
+      # tomorrow sees four reds and a healthy disk.
+      #
+      # WHY THE STATUS AND NOT THE EXIT CODE OF THE GUARD. Measured on metal `20260917.145018`: a
+      # failed capture redirect and a guard that ran and refused BOTH leave this branch at exit 1,
+      # so the status of the guard cannot tell them apart and never could. The artifact can. When
+      # this write refuses, the runner holds no evidence, and what it does not hold it may not
+      # describe.
+      if tail -n 200 "$pen/out.$$" > "$pen/evidence.$name.txt" 2>/dev/null \
+        && [ -f "$pen/evidence.$name.txt" ]; then
+        echo "  evidence $red_room/$name.txt"
+        evidence_kept=yes
+      else
+        # Said out loud rather than left as a missing line, because a silence here reads exactly
+        # like a guard that earned no evidence room -- the two states the row above separates.
+        rm -f "$pen/evidence.$name.txt"
+        echo "  evidence could not be kept -- this guard's answer is lost, not read"
+        evidence_kept=no
+      fi
+      if [ "$evidence_kept" = no ]; then
+        # A GATE CANNOT PARK A READING NOBODY TOOK. An unrun guard is counted apart from `gated`
+        # for the reason absence is: a gate says a hand has read this red and parked it, and no
+        # hand read this one.
+        verdict=unrun
+        unrun=$((unrun + 1))
+        unrun_names="$unrun_names$name "
+      elif [ "$gate" != "-" ]; then
         verdict=gated
         gated=$((gated + 1))
         gate_names="$gate_names$name($gate) "
@@ -1666,6 +1710,10 @@ echo "guards_red=$red"
 # count: a gate that vanishes from a meter is a gate nobody witnessed being retired.
 echo "guards_gated=$gated"
 [ -n "$gate_names" ] && echo "gated_at=${gate_names% }"
+# Disclosed on every pass, empty or full, for the reason the gates are: a class that vanishes from
+# a meter when it is empty is a class nobody can tell from one nothing measures.
+echo "guards_unrun=$unrun"
+[ -n "$unrun_names" ] && echo "unrun_at=${unrun_names% }"
 echo "host=$this_host"
 echo "skipped_host=$skipped_host"
 echo "skipped_capability=$skipped_capability"
@@ -1687,6 +1735,20 @@ if [ "$red" -ne 0 ]; then
   [ "$run_scope" = full ] && echo "roster_receipt_write=withheld_guard_red"
   echo "run_verdict=guard_red"
   echo "refused: a rostered guard answered red -- read its own line" >&2
+  exit 1
+fi
+
+# AN UNRUN GUARD WITHHOLDS THE RECEIPT TOO, and this block is why the verdict earns a place beside
+# `red` rather than beside `gated` (REDS %747). The receipt below is written from a fully green
+# close and `--scoped` reads it for its basis, so a pass that lost one guard's answer and fell
+# through here would publish a receipt claiming coverage it never had -- the same lie the verdict
+# exists to end, one layer up. It sits UNDER the red block because a guard that broke is the louder
+# finding, and OVER `tree_moved` because a lost answer is a fault in this pass rather than a
+# question about which tree it describes.
+if [ "$unrun" -ne 0 ]; then
+  [ "$run_scope" = full ] && echo "roster_receipt_write=withheld_guard_unrun"
+  echo "run_verdict=guard_unrun"
+  echo "refused: a guard's answer could not be kept -- the runner cannot tell a finding from a machine fault, so it claims neither" >&2
   exit 1
 fi
 

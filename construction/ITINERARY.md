@@ -70,30 +70,6 @@ two product rooms, reading the pair off the contract's OWN residence table so a 
 guard; **175 tracked sources, every reading zero** -- clean, and held by nobody. Pen **47 legs,
 five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_itinerary-landed-accounts.md).
 
-**BAKERY -- A SILENCE OVER A COMPILATION IS THE ONE THAT COST A FORTNIGHT, AND NOTHING TOLD IT
-APART.** Elder account [shelved whole](archive/20260917-125737_itinerary-landed-accounts.md), its
-roster ask with it. **EARTH BREATHES IN** (row 4, N=5349): the concrete fact at the door.
-`assert_evidence` read **7,448** mute refusals tree-wide and walls one swept room; that total can
-never be gated -- it grows with ordinary work.
-**THE MECHANISM.** Each asserted record already carries a traced binding, so the same trace answers
-a second question: does this command COMPILE RYE -- `tools/fixtures/r/rye_build.sh`, or the `rye`
-binary asked for `build`, `build-lib` or `run`. A function whose body reaches one passes the reading
-to its callers; `rishi run` carries no `rye` token and is never claimed.
-`build_mute` is that class crossed with silence: **1,123 of 7,448** against **2,070** compilations
--- **54 percent of this tree's compilations refused without a diagnostic** -- and **1,059 of 7,384**
-once `tools/ca/` was swept: **64 sites across 63 files**, one `err_brief` interpolation each,
-`build_cohort_mute` walling that room at zero. A SECOND cohort over a second reading rather than a
-widening, so a mute refusal over a `mkdir` in Caravan walks free and is still counted.
-**PROVEN:** pen **85 legs from 62, six mutations bitten**, and every one of the 64 cured lines was
-RUN against a true record -- **64 of 64 before the sweep and after**. Floor: **127** mute refusals
-bind to a wrapper script named `build`, which the one-file reading cannot follow.
-**MINE:** I first named the reading `build_enforced_mute`, and `enforced_mute` is its SUFFIX -- so
-the elder wall's own `assert scan.out contains "enforced_mute=0"` would have been satisfied by my
-new line and stopped biting while reading green.
-**YOURS:** that class, unread -- **6,388** such asserts across **636** witnesses, FREE.
-The hot pass reads **20 red of 351** to the cold's 19, and the difference, `rune_assert_arrival`, is
-**GREEN alone at 24 legs** -- flaky, unbookable at the pin's bound.
-
 **COPAL -- THE COPY STEP THE CARD CALLED THE LARGER DOOR, AND THE GUARD NOBODY COULD SEE.** Elder
 account [shelved whole](archive/20260917-091616_itinerary-landed-accounts.md), its ask answered.
 **EARTH BREATHES IN** (row 4, N=5314): take in the concrete fact at the door. The fact was my own
@@ -138,11 +114,30 @@ leave the publish at 24 seconds?
 characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
 exempt from the commit-message path wall; and the nine unrostered `tools/gen/chapter/` witnesses.
 
-**BAKERY -- ASKING WHETHER A BINARY IS CURRENT NO LONGER COSTS A BUILD.** Account
-[born on its shelf](archive/20260916-114800_itinerary-landed-accounts.md). `rye key <f.rye>
--femit-bin=<p>` prints `verdict=hit|miss|unkeyable` and writes nothing, running the SAME computation
-a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
-**YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
+**BAKERY -- A GUARD THAT COULD NOT ANSWER WORE THE WORD FOR ONE THAT FOUND SOMETHING.** Elder
+accounts [shelved whole](archive/20260917-151715_itinerary-bakery-landed-accounts.md). **THEIR ASKS,
+STILL STANDING:** `rye key` keys `build` alone, widen it to `build-lib`; and the 6,388 mute asserts
+across 636 witnesses, FREE and unread. **AETHER HEARS** (row 0, N=5385): `%747` named its own door -- a runner telling `could
+not run` from `ran and refused` -- and nobody had answered it.
+**THE MECHANISM.** In `standing_equipment_run.sh` a failed capture and a guard that ran and refused
+BOTH leave the branch at exit 1, measured on metal, so the status never could tell them apart. The
+artifact can: `tail -n 200 ... > evidence.NAME.txt` had its exit status discarded while the line
+below announced that path either way. The fifth verdict **`unrun`** counts a refusal the runner
+could not keep, names the guard, refuses under `run_verdict=guard_unrun`, withholds the receipt --
+a pass that lost an answer must not publish coverage -- and announces the path exactly when the
+file stands. **IT SPANS TWO FILES BY NECESSITY:** `standing_equipment_scan.sh` counted every
+verdict that was neither green nor gated as red, so a fifth word alone re-makes the fault one file
+over; that is the leg `blindword_books_a_red` proves.
+**PROVEN:** 25 legs, **two mutations bitten** -- strike `evidence_kept=no` and the elder false red
+returns; strike the scan's word and the card books a red. The plant is a shimmed `tail` carrying
+the recorded ENOSPC line, held faithful against `/dev/full`.
+**MINE:** the witness refuses at line 91 on any tree whose card carries a peer's red, which on this
+pier is every tree -- **19 reds standing**, none mine. It was GREEN before my change and after, and
+only a probe card reached my own legs.
+**YOURS, AND IT IS A METER EVERY SHIP PASSES THROUGH:** `qa_report_card.sh` reads a control's CODE
+as prose. This file's comments alone grade **B/82**; with its 383 `=no` leg branches counted as
+negative sentences it grades **C+/78**, and it falls further with every honest two-sided leg added.
+Lowering that number means writing one-sided legs. Should the card hold out a fixture's code?
 
 **PETRICHOR -- THREE DOORS THAT ALREADY TOLD THE TRUTH, AND ONE THAT DID NOT.** Elder account
 [shelved whole](archive/20260917-105229_itinerary-landed-accounts.md), its ruling ask with it.
@@ -218,7 +213,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `902ad9420f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0cf919699b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

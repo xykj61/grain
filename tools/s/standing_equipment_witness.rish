@@ -641,6 +641,37 @@ assert control.out contains "flat_share=yes" else "standing-equipment: a flat ca
 assert control.out contains "untimed_median_absent=yes" else "standing-equipment: an untimed card must answer absent rather than zero -- a missing measurement reading as a fast guard is the fault one layer down"
 assert control.out contains "untimed_share_absent=yes" else "standing-equipment: an untimed card's share must answer absent rather than zero"
 
+# THE THIRD VERDICT (REDS %747). A guard that could not be RECORDED and a guard that found
+# something wore one word, and a hot pass that died on a full disk published four reds -- two of
+# them guards that had run GREEN in that same tree minutes earlier -- each citing an evidence file
+# the refused write never made. These legs hold both sides: the red keeps every tooth it had, and
+# the lost answer is counted, named, and refused apart from it.
+assert control.out contains "refuser_is_red=yes" else "standing-equipment: a guard that runs and refuses in a writable pen must still be a red"
+assert control.out contains "writable_pen_unrun_zero=yes" else "standing-equipment: an ordinary red must leave the third verdict at zero, or the new word has widened past its case"
+assert control.out contains "red_announces_evidence=yes" else "standing-equipment: a red whose evidence landed must still name the file a hand reads"
+assert control.out contains "red_refuses_pass=yes" else "standing-equipment: a red must still refuse the pass"
+assert control.out contains "red_card_row=yes" else "standing-equipment: a red must still be written to the card as red"
+assert control.out contains "lost_answer_is_unrun=yes" else "standing-equipment: a refusal whose evidence write refused must be counted unrun"
+assert control.out contains "lost_answer_not_red=yes" else "standing-equipment: a lost answer must not be counted a red -- reporting a machine fault as a finding is the whole of %747"
+assert control.out contains "unrun_names_the_guard=yes" else "standing-equipment: the pass must name which guard went unrecorded, since the repairable question is which"
+assert control.out contains "lost_answer_announces_path=no" else "standing-equipment: a path whose file was never written must not be announced -- that citation to nothing is what the dead pass published"
+assert control.out contains "lost_answer_says_so=yes" else "standing-equipment: a lost answer must say so out loud, or it reads like a guard that earned no evidence room"
+assert control.out contains "unrun_refuses_pass=yes" else "standing-equipment: a pass that lost an answer must refuse rather than close"
+assert control.out contains "unrun_withholds_receipt=yes" else "standing-equipment: a pass that lost an answer must withhold the receipt, or a scoped pass inherits coverage that was never taken"
+assert control.out contains "unrun_card_row=yes" else "standing-equipment: the card must record the third verdict by name"
+assert control.out contains "devfull_refuses_write=yes" else "standing-equipment: the shimmed plant must reproduce a real refused write, proven against the kernel rather than asserted"
+assert control.out contains "blindwrite_mutation_built=yes" else "standing-equipment: the mutation must differ from the runner, or it proves nothing"
+assert control.out contains "blindwrite_books_a_red=yes" else "standing-equipment: a runner reporting the write as kept must book the elder false red -- the repair turns on that token"
+assert control.out contains "scan_counts_unrun=yes" else "standing-equipment: the scan must count the third verdict"
+assert control.out contains "scan_unrun_not_red=yes" else "standing-equipment: the scan must not count a lost answer as a red -- this is why the repair could not land in one file"
+assert control.out contains "scan_names_unrun=yes" else "standing-equipment: the scan must name the unrecorded guard"
+assert control.out contains "scan_unrun_passes=yes" else "standing-equipment: a card carrying only a lost answer must not read the roster broken"
+assert control.out contains "scan_red_still_bites=yes" else "standing-equipment: an ordinary red on the card must still bite -- the clause widened nothing beyond its word"
+assert control.out contains "scan_red_not_unrun=yes" else "standing-equipment: a red row must not be counted under the third verdict"
+assert control.out contains "blindword_mutation_built=yes" else "standing-equipment: the scan mutation must differ from the scan, or it proves nothing"
+assert control.out contains "blindword_read_the_card=yes" else "standing-equipment: the mutated scan must reach the card, or its silence proves nothing about the struck word"
+assert control.out contains "blindword_books_a_red=yes" else "standing-equipment: a scan that has not been told the word must book the lost answer as a red -- the two-file half, shown rather than argued"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes
