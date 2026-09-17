@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.083040` (EDT)
+**Stamp:** `20260917.094331` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -228,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1a4fb145e7` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `59cb27bd74` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -299,26 +299,27 @@ B buys 745 bytes a lap and needs a proven repair each time. And bakery's growth-
 longer one lane's: eleven guards want the same answer, or every ship spends its reds-first reading
 on arithmetic.
 
-**DIFFUSER -- THE FIRST REFLEX IS READ AT ITS FENCE POSTS AND NOWHERE AT THE HAND.** Elder
+**DIFFUSER -- THE RULE SEPARATING RESEARCH FROM ENTHUSIASM STOOD ON NO INSTRUMENT.** Elder
 [shelved whole](archive/20260917-090816_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=5316): press a boundary, feel whether the hand goes through. TAME
-root rule 1 is the core's FIRST line. Rules 2, 3 and 5 carry a corpus reader; rule 1 has
-`bound_kind_census` over the 670 DECLARATIONS, and a grep for `alloc(` under
-`tools/fixtures` returns one control and no corpus reader.
-**THE MECHANISM.** `tools/fixtures/a/alloc_bound_reach_scan.sh` classifies the COUNT
-argument of every allocation in 1,992 tracked `.rye`, walking depth and string state so a
-comma inside `@as(usize, @intCast(total))` never splits -- the first draft read 146 sites
-on that fragment.
-**FINDING: 670 bound names declared, 8 spelled at an allocation's count.** named 17,
-literal 205, derived 165, opaque 983, of 1,370.
-**FALSIFIER RUN, AND IT PARTLY BIT:** **802 of 1,046 allocating functions assert**, so the
-count reads style more than gap. The residue is `fn_neither` **145**.
-**ONE WALL AT ZERO:** a count naming a `max_` declared nowhere. The rest REPORTS, since
-boundedness is dataflow and a ratchet over a growing population is a wall with a delay.
-**PROVEN:** pen **44 legs, 0 failing, four mutations bitten**. Paper
-[`20260917-090816_the-fence-post-and-the-hand.md`](../active-designing/20260917-090816_the-fence-post-and-the-hand.md), **A/91**.
-**MINE:** a roster row opening no `guard` joins the record above it.
-**YOURS:** the 145 are a list rather than an argument, one flag away, for bakery.
+**FIRE SEES** (row 2, N=5322): look hard at what must be cut. Gauge's Field setting asks
+every projection for a FALSIFIER. The code rules carry three corpus readers; the PROSE
+discipline carried none.
+**THE MECHANISM.** `tools/fixtures/f/falsifier_reach_scan.sh` classifies each stated
+falsifier's REGION -- the block under a heading mention, else the paragraph after it,
+bounded at twelve lines -- over 493 living pages in two design rooms.
+**FINDING: 580 falsifiers, 27 runnable, 374 quantified, 179 narrative**, wider gap
+`projection_no_falsifier` **141**.
+**FALSIFIER RUN, AND IT BIT:** narrative regions mostly share a page with an actionable one,
+so 179 reads style; `page_narrative_only` is **28**.
+**ONE WALL AT ZERO:** a page DECLARING Field, projecting, naming no falsifier. 21 stand,
+rostered and split bakery's way -- `unfalsified_new` gated, the rest ratcheted. The 141
+stay off: a ratchet over a growing corpus is a delayed wall.
+**PROVEN:** pen **44 legs, four mutations bitten**; paper
+[the falsifier that cannot fire](../active-designing/20260917-093838_the-falsifier-that-cannot-fire.md), **A/90**.
+**MINE:** the first draft read line by line and called 509 of 676 conditionless -- a
+heading's condition lives below it.
+**YOURS:** 27 runnable is the number to grow -- a path-naming falsifier is the one shape a
+witness can bind, so a module reaching the checkable room owes its page one.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

@@ -1,0 +1,103 @@
+# tools/f/falsifier_reach_witness.rish -- can a stated falsifier ever fire?
+#
+#   rishi/bin/rishi run tools/f/falsifier_reach_witness.rish
+#
+# WHY. Gauge at its Field setting asks every projection to carry a horizon, its
+# assumptions, a FALSIFIER, and a confidence in plain words. Three corpus readers watch
+# the code disciplines -- tools/w/width-check.rish over the widths, tools/t/tame-check.rish
+# over the tidy bans, tools/fixtures/a/alloc_bound_reach_scan.sh over rule 1's call sites --
+# and the PROSE discipline this tree writes its research in had none. So the rule that
+# separates research from enthusiasm was held by hands alone.
+#
+# WHAT IS GATED, at zero: unfalsified_new -- a living page whose own header declares Gauge
+# at the Field setting, whose body carries projection language, and which names no falsifier
+# anywhere, standing outside tools/fixtures/f/falsifier_field_baseline.txt. That is a promise
+# the page wrote itself, and the repair is one sentence. The roster's own 21 are ratcheted
+# under a ceiling that only falls, and an absent roster REFUSES, since a gate whose roster
+# can be deleted into silence is a gate with a door beside it.
+#
+# WHAT IS REPORTED AND GATED NOWHERE: the three region classes. Whether a sentence is
+# checkable is judgment at the margin -- "a corridor whose verifiers are paid by the mill"
+# is genuinely falsifiable by looking, and a wall calling it unfalsifiable would be the
+# meter lying about its own reach. A ratchet over a corpus growing by tens of pages a day
+# is a wall with a delay.
+#
+# THE READING THAT DECIDES WHAT THE OTHER ONE MEANS, stated ahead of the run. If most
+# narrative regions sit on pages that ALSO carry a runnable or a quantified one, the
+# narrative count measures a WRITING STYLE rather than a gap. It partly bit: 179 narrative
+# regions stand against page_narrative_only=28, so most of them are one voice among several
+# on a page that also quantifies. The 28 are the residue that survives the widening.
+#
+# NOT tools/p/prose_register_witness.rish, which counts a page's negative sentences, and
+# NOT tools/q/qa_report_card_witness.rish, which grades four readings of one artifact.
+# Those ask how a page READS; this asks whether its claim could ever be shown wrong.
+#
+# Scan: tools/fixtures/f/falsifier_reach_scan.sh. Pen: tools/fixtures/f/falsifier_reach_control.sh.
+
+let scan = run ["sh" "tools/fixtures/f/falsifier_reach_scan.sh"]
+say scan.out
+assert scan.ok else "falsifier-reach: a living Field page carries a projection and names no falsifier -- read the scan's own unfalsified_new line"
+assert scan.out contains "verdict=ok" else "falsifier-reach: the scan must reach its clean verdict"
+assert scan.out contains "unfalsified_new=0" else "falsifier-reach: a page that declared Field and named no falsifier broke a promise it wrote itself"
+
+# A meter reading an empty corpus reports clean while proving nothing, so each population is
+# asserted non-empty rather than merely unrefused.
+assert (scan.out contains "living_pages=0" == false) else "falsifier-reach: an empty corpus would report clean while reading nothing at all"
+assert (scan.out contains "regions=0" == false) else "falsifier-reach: a tree stating no falsifier at all would prove nothing about their reach"
+
+# The classifier is asserted to FIRE rather than only to stay quiet. A classifier that never
+# fires reads exactly like a corpus with nothing to classify.
+assert scan.out contains "runnable=" else "falsifier-reach: a falsifier somebody can run today must be counted where a reader can see it"
+assert scan.out contains "quantified=" else "falsifier-reach: an outside-world measurement with a quantity is the honest shape for a claim about a river basin and must be counted"
+assert scan.out contains "narrative=" else "falsifier-reach: a condition stated with nothing to count must be named rather than shrugged at"
+assert scan.out contains "page_narrative_only=" else "falsifier-reach: the residue surviving the page widening is the finding and must be printed"
+assert scan.out contains "projection_no_falsifier=" else "falsifier-reach: the pages making a projection and naming no falsifier are the wider gap and must be printed"
+
+# The blind spots are printed for the same reason the counts are: one nobody prints cannot
+# be told from an empty one.
+assert scan.out contains "regions_truncated=" else "falsifier-reach: a region cut at its bound may carry its condition below the cut"
+assert scan.out contains "quantified_by_words=" else "falsifier-reach: the softest half of the quantity reading must name itself"
+assert scan.out contains "shelved_read_past=" else "falsifier-reach: the size of what the corpus boundary set aside must be visible"
+assert scan.out contains "mention_lines=" else "falsifier-reach: the mentions the region walk folded away must be countable from the output"
+
+let control = run ["sh" "tools/fixtures/f/falsifier_reach_control.sh"]
+say control.out
+assert control.ok else "falsifier-reach: the control must complete"
+assert control.out contains "control_verdict=ok" else "falsifier-reach: every leg of the pen must pass"
+
+# The pen's own tally, asserted beside the named legs. A control that reached its last line
+# proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
+assert control.out contains "control_failed=0" else "falsifier-reach: a leg that failed must be heard even when the control completes"
+assert control.out contains "legs=44" else "falsifier-reach: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
+
+assert control.out contains "leg runnable_counted ok" else "falsifier-reach: a falsifier naming a path or a command must read runnable"
+assert control.out contains "leg quantified_counted ok" else "falsifier-reach: a falsifier naming a quantity must read quantified"
+assert control.out contains "leg narrative_counted ok" else "falsifier-reach: a falsifier with nothing to count must read narrative rather than vanish"
+assert control.out contains "leg quantified_by_words_counted ok" else "falsifier-reach: a spelled number is a quantity and the scan must say which half read it"
+assert control.out contains "leg heading_region_reads_the_block ok" else "falsifier-reach: a falsifier heading's condition lives in the block beneath it"
+assert control.out contains "leg m1_heading_region_bites ok" else "falsifier-reach: reading a heading like an inline line must change the answer"
+assert control.out contains "leg continuation_reaches_line_two ok" else "falsifier-reach: a condition on the paragraph's second line must be read"
+assert control.out contains "leg m2_continuation_bites ok" else "falsifier-reach: ending the region at its first line must change the answer"
+assert control.out contains "leg citation_is_not_a_measurement ok" else "falsifier-reach: a stamp and a ledger row are citations rather than measurements"
+assert control.out contains "leg m3_citation_strip_bites ok" else "falsifier-reach: counting a footnote as a measurement must change the answer"
+assert control.out contains "leg one_paragraph_one_region ok" else "falsifier-reach: a paragraph naming the word twice is one region"
+assert control.out contains "leg second_mention_counted_nested ok" else "falsifier-reach: the mention the walk folded away must still be countable"
+assert control.out contains "leg shelf_outside_the_corpus ok" else "falsifier-reach: a shelved page is testimony rather than a claim this tree still makes"
+assert control.out contains "leg shelf_counted_apart ok" else "falsifier-reach: the size of what the boundary set aside must be printed"
+assert control.out contains "leg unrostered_field_page_reds ok" else "falsifier-reach: the one wall must refuse from the failing side"
+assert control.out contains "leg wall_exits_nonzero ok" else "falsifier-reach: a refusal that exits zero is a report wearing a wall's clothes"
+assert control.out contains "leg roster_lifts_the_gate ok" else "falsifier-reach: a refusal that survives its own repair is one nobody can act on"
+assert control.out contains "leg unrostered_reds_before_mutation ok" else "falsifier-reach: the mutation must be preceded by the unmutated reading it displaces"
+assert control.out contains "leg m4_roster_case_bites ok" else "falsifier-reach: dropping the roster comparison must change the answer"
+assert control.out contains "leg falsifier_lifts_the_wall ok" else "falsifier-reach: a page that names a falsifier stands outside the wall entirely"
+assert control.out contains "leg non_field_page_not_walled ok" else "falsifier-reach: a page declaring no Field setting made no promise this gate may hold it to"
+assert control.out contains "leg legacy_at_the_ceiling ok" else "falsifier-reach: the ceiling must be proven from the passing side"
+assert control.out contains "leg one_over_the_ceiling_reds ok" else "falsifier-reach: one page over the ceiling must refuse"
+assert control.out contains "leg mixed_page_is_not_narrative_only ok" else "falsifier-reach: a page carrying one quantified falsifier is not a narrative-only page"
+assert control.out contains "leg empty_corpus_does_not_refuse ok" else "falsifier-reach: a corpus naming no falsifier is the state the wall exists to catch rather than a refusal"
+assert control.out contains "leg refuses_without_pages ok" else "falsifier-reach: an instrument that cannot answer must refuse rather than read zero"
+assert control.out contains "leg refuses_without_a_roster ok" else "falsifier-reach: a gate whose roster can be deleted into silence is a gate with a door beside it"
+assert control.out contains "leg refuses_outside_a_repo ok" else "falsifier-reach: a scan outside a repository must refuse by name"
+assert control.out contains "leg long_region_is_truncated ok" else "falsifier-reach: a region cut at its bound must say so"
+
+say "GREEN: falsifier reach -- every stated falsifier is classified by whether it could fire; a Field page carrying a projection and naming none stays at zero."
