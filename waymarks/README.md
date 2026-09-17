@@ -8,6 +8,8 @@
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Bound:** listings stay sentence-cheap; season shelves hold one-line-per-claim indexes
+**Members:** the rooms under [`./`](./) -- `stoa-100s`, `stoa-200s`, `stoa-300s`, read against
+the rooms on disk by [`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
 
 ---
