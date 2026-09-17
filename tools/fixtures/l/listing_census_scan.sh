@@ -44,13 +44,12 @@
 #
 # THE FAMILY IS A WALL; EVERYTHING ELSE IS A RATCHET. The nine ASCII scans were repaired on
 # the lap that seated this meter, so `family_uncensused` is held at zero and the next silent
-# cap added to one of them reds where it lands. Thirteen caps across nine files stand
+# cap added to one of them reds where it lands. `caravan_ladder_carry` and `width_check` were
+# repaired on later laps and dropped off this list. Eleven caps across seven files stand
 # outside the family -- `prose_register` 4, `sealed_digest` 2, and one each in
-# `width_check`, `tame_style_long_fn`, `standing_equipment`, `socket_dialect`,
-# `ladder_reach_visibility`, `control_perturbation` and `caravan_ladder_carry` -- each its
-# own lane's to repair. Two already prefix their rows `option_top:` and `corpus_top:`,
-# which is half the repair in a word. A lane repairs its own and lowers the ceiling; a
-# sweep from here would be this lane spending nine other lanes' judgment.
+# `tame_style_long_fn`, `standing_equipment`, `socket_dialect`, `ladder_reach_visibility` and
+# `control_perturbation` -- each its own lane's to repair. A lane repairs its own and lowers
+# the ceiling; a sweep from here would be this lane spending other lanes' judgment.
 #
 # USAGE
 #   sh tools/fixtures/l/listing_census_scan.sh             # census -- key=value lines
@@ -69,7 +68,7 @@ mode="${1:-count}"
 # Fell to TWELVE `20260917`: `caravan_ladder_carry_scan.sh`'s CARRY_TOP queue now names
 # top_shown and top_hidden beside the twelve families it prints, so a reader can tell "the
 # queue held exactly twelve" from "the queue held 576 and the rest were cut."
-CEILING=12
+CEILING=11
 
 # The wall. Named rather than discovered, because membership in the ASCII-first meter family is a
 # fact about the law those nine serve rather than about their spelling -- and a discovered roster

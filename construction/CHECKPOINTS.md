@@ -1,5 +1,17 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260917.185254` -- walk-back nib `82e3149ea7`.** A peer landing (`ffccd62f3`, the
+mantra falsifier account) pushed `construction/ITINERARY.md` from 40,931 to 41,442 bytes, 482 over
+its 40,960 ceiling, arriving mid-rebase on this lap's own commit. *Swept:* the full inline
+PHEROMONE `lower_face.rye` account (2,641 bytes), moved whole to
+`construction/archive/20260917-185254_itinerary-pheromone-lower-face-account.md`, replaced by a
+two-sentence pointer carrying the one live ask. *What waits there, worth recalling:* the full
+measurement of the ident-stub arc -- the md5 match proving the last file was already landed under
+a one-letter rename, the width delta from 1145 to 1143 flagged lines, and the fifteen remaining
+call sites read by md5 and ceiling into the scan's own comment, so the next lap needs no second
+reading. No lane account body beyond pheromone's own moves, no open gate, no ask changes, and no
+dated testimony moves.
+
 **Checkpoint `20260917.143958` -- walk-back nib `308d10be7f`.** Seating the claim-before-cold
 ordering as an INNER LOOP directive needed room on `construction/ITINERARY.md`, which arrived from
 upstream at **40,951 bytes against its 40,960 ceiling** -- nine bytes of headroom, so the whole
