@@ -220,7 +220,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `6058184659` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `945aaf91be` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -299,39 +299,39 @@ which is why it reads as one number. Refusal prose has properties a meter could 
 every gate names its own repair, whether a bound cites what set it -- and naming which of them
 Gauge means is your word rather than a lane's.
 
-**DIFFUSER -- THE EXTENSION WAS CARRYING THE DEBUG BUILD.**
-Elder [shelved whole](archive/20260917-010644_itinerary-landed-accounts.md), its ask with it.
-**AETHER HEARS** (row 0, N=5190): listen for the silence where a claim used to be and a witness
-now stands -- and my own elder had written a falsifier and left it standing a lap.
-**IT ASKED WHETHER MY FRAMING WAS DECORATION.** Falsifier 2: if Debug still costs 3x ReleaseSafe
-under `-mcpu=baseline`, where the extension is absent, the door is optimization alone. Six builds of
-`rye/src/main.rye` to scratch paths under `.lap/` answer it, `rye/bin/rye` left where it stands.
-**Debug costs 2.5x ReleaseSafe with the extension and 10.2x without**, at **fifteen runs per cell**
-through `rye key` over the same 552 files and 16,416,628 bytes. **The framing held.**
-**THE MECHANISM IS ONE LINE.** `rye/lib/std/crypto/sha2.zig:240` gates the inline-assembly SHA-NI
-block on `builtin.cpu.hasAll(.x86, &.{ .sha, .avx2 })`; at `baseline` that test is false, the block
-leaves the binary, and the generic Zig round function runs. Nothing else changes, which makes the
-pair a control rather than two programs. **`rye` passes no `-mcpu` at all**, so the extension
-arrives by default rather than by decision.
-**COLD MEDIANS, ms**, Debug / ReleaseSafe / ReleaseFast: native 173 / 70 / 47 against baseline
-**1,318** / 129 / 110. Isolated walk-and-hash **140 / 53 / 31** against **1,285 / 114 / 97**; floor
-throughput native ReleaseFast **530 MB/s** against baseline Debug **12.8**. The fresh native Debug
-build repeated the elder's own **168** hits and **12,682,680** bytes exactly.
-**THE READING I WAS NOT LOOKING FOR.** The extension has been **hiding** the Debug penalty. At
-native, Debug looks merely unoptimized at 173 ms; the same build at baseline costs 1,318. So a
-portable-target `rye` -- what a distributable binary needs, since `native` bakes in the build
-host's processor -- pays **7.6x** on a cold library read at the mode this tree ships. Mode and
-portability have been separate questions here; on this operation they multiply.
-**PROVEN:** paper **A/90** at Field, judged Truth closed, register 27 percent of 62 sentences
-against Field's 30; the elder regrades **A/91** with its erratum and no figure in it moved.
-Paper [`20260917-010644_the-extension-was-carrying-the-debug-build.md`](../active-designing/20260917-010644_the-extension-was-carrying-the-debug-build.md).
-**HONEST ABOUT THE PASS:** the cold endurance run answered `guard_red`, **298 green of 321**,
-across 95 minutes with `tree_moved=yes` while eight ships landed work; several reds are booked
-elsewhere. This lap adds prose and touches no code, so its guards were run by name.
-**MINE:** the live binary still has never been **timed**; six fresh ones were, and it is placed
-among them by its bytes.
-**YOURS:** the extension arrives by default and is priced now. Does `rye` name its target and mode
-explicitly -- a slower, portable, honest build -- or keep inheriting the build host's processor?
+**DIFFUSER -- ONE BINARY CAN CARRY BOTH PATHS.**
+Elder [shelved whole](archive/20260917-013952_itinerary-landed-accounts.md); its ask is answered
+below by a third door it did not name.
+**AIR FEELS** (row 1, N=5216): press a claimed boundary and feel whether the hand passes through.
+**THE BOUNDARY.** My own elder closed on an either-or -- a portable `rye` pays for portability, or a
+fast `rye` inherits the build host's processor. Beneath it sits a claim: a binary holds one code path
+per feature, chosen when it compiles.
+**THE HAND PASSES THROUGH, IN ONE EXPRESSION.** `rye/lib/std/crypto/sha2.zig:240` gates the SHA-NI
+block inside `Sha2x32.round` on a comptime call to `builtin.cpu.hasAll`. Three scratch copies under
+`.lap/dispatch/`, gitignored and never committed, replace that test with `true`, with `false`, and
+with a `pub var` in a `cpu_flags.zig` module set once at startup from a `cpuid` leaf 7 inline-asm
+probe reading EBX bits 29 and 5.
+**THE ASSEMBLER GATES INLINE ASSEMBLY ON NOTHING.** At `-mcpu=baseline` the mnemonics compile,
+`vpalignr` included, and fifty-six SHA-NI opcodes stand in each accelerated binary against zero in
+the generic one, read with `xxd`. Four builds print one digest over 256 MiB.
+**MEASURED** with 1 MiB hashed sixty-four times so the fill is noise, five binaries interleaved,
+eleven rounds, medians in ms: dispatch at baseline **73**, forced at baseline 84, forced at
+**native 71**, generic at baseline 402, and that same dispatch binary with detection skipped 378.
+**The accelerated path runs the same speed whichever target built it**, the generic path costs
+**5.5x**, and the per-block branch over 1,048,576 blocks reads below the noise floor. Carrying both
+paths costs **3,992 bytes**.
+**HONEST ABOUT THE PASS:** load average 38 throughout, so minima sit far below medians and the
+argument leans on interleaving and ratios rather than absolute throughput. An earlier design hashing
+256 MiB once was dropped rather than reported -- its page-fault fill moved 142 ms between targets,
+larger than the effect under test.
+**SCOPE:** `builtin.cpu.has` stands 37 times across 15 files of `rye/lib/std`, nine of them crypto,
+each one a place where `-mcpu` decides which code exists. FREE; run the grep.
+Paper [`20260917-013952_one-binary-both-paths.md`](../active-designing/20260917-013952_one-binary-both-paths.md), **A/93** at Field, register 16 percent of 73 sentences.
+**MINE:** the transfer to `rye key` is projected rather than measured -- 50 to 60 ms at baseline with
+dispatch against the elder's 110 -- and the falsifier is a reading above 70.
+**YOURS:** the third door. Should `rye` build at `-mcpu=baseline` and dispatch at runtime, one binary
+that runs on a pre-2017 machine and keeps the extension on a new one -- and is patching a vendored
+`rye/lib/std` a fork decision you want opened?
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

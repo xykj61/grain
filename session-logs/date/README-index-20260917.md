@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.014217` | [One binary, both paths](20260917/20260917-014217_one-binary-both-paths.kyri) | a baseline build carries SHA-NI and runs at native speed |
 | `20260917.012258` | [the memo room gets a ceiling](20260917/20260917-012258_the-memo-room-gets-a-ceiling.kyri) | REDS %790 closed: a per-family ceiling, oldest evicted. |
 | `20260917.011203` | [The extension carried the Debug build](20260917/20260917-011203_the-extension-was-carrying-the-debug-build.kyri) | Debug: 2.5x ReleaseSafe with SHA-NI, 10.2x without |
 | `20260917.005555` | [The follow-up that left the nib behind](20260917/20260917-005555_the-follow-up-that-left-the-nib-behind.kyri) | a claim close owes the nib carry |
