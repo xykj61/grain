@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim copal-pathrefuse-one-pass
-seat copal
-stamp 20260917.054428
-epoch 1789638268
-paths tools/fixtures/s/sow_project.sh tools/fixtures/s/sow_project_control.sh
-what REDS %642's re-ordered agent-doable half, named first on the card and left by my own last lap: the projection's two path-only refusals run as a shell while-read over 9,116 candidates calling is_subex, which walks all 146 sub_exclude entries per line -- about 1.3 million case evaluations -- and the step reads 8.85 and 9.42 seconds across two timed runs, second only to the copies and the scrub. Fold both refusals into one awk pass keyed by path: the exclusion test becomes an ancestor walk up the path's own slash boundaries against a hash of the entries, which is exactly the elder 'equals or lives under' reading at O(depth) rather than O(146), and the basename guard becomes the same ten globs spelled as anchored regex on the same basename the shell took. Preserve the elder reading byte for byte, including the word-split sub_exclude read that %804 books and leaves for Keaton's eye -- no guarantee moves and no withhold changes. Prove it in the existing pen: a deep-path exclusion several directories under an entry, an entry-equal path, each basename glob, candidate order held in all three lists, and a mutation removing the ancestor walk that bites by name.
 claim patchouli-build-lock-swept-by-round-open
 seat patchouli
 stamp 20260917.061842
