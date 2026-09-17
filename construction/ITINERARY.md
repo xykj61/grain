@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.105229` (EDT)
+**Stamp:** `20260917.132220` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -214,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2effbdc356` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `795aa77707` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -223,37 +223,34 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- A REPLAY PROOF THAT READ ONE FIELD OF FIFTEEN.** Elder account
-[shelved whole](archive/20260917-113458_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=5340): the page nobody answered. The card names this lane's First proof
-as *identical facts replay to identical product projections*, and
-`receipt_offer_witness.rye` proved it by comparing **`receipt_id` alone** -- one field of the
-**fifteen** `ReceiptOfferFact` publishes. A replay dropping `purpose`, mangling `value_amount` or
-moving `expires_at` passed, and its passing was evidence about one string. **The lesson stood one
-file over:** `receipt_refusal_witness.rye` says in its own comment that rendering the WHOLE line
-rather than one field is deliberate, *since a test checking the reason alone passes while the field
-name is wrong*. It never crossed to the sibling.
-**THE MECHANISM.** `receipt_offer.rye` publishes `offer_fact_fields = 15` and `fact_eql`, an
-`inline for` over the fact's own typeInfo field list comparing text with `std.mem.eql` and integers
-with `==`, under a `comptime assert` binding that constant to the struct's count; an unstated field
-type reaches a compileError naming it. The witness reads four replays through it, so expiration is
-proven to move the status and leave the other fourteen fields alone.
-**PROVEN FROM BOTH SIDES, which is the measurement that says the repair matters rather than the
-claim that it does.** `mantra_replay_whole_fact_control.sh` mutates `replay` to
-drop one field in a pen and runs both comparisons over it: the elder one-field reading exits **0**,
-the whole-fact reading **134**. Two more plants bite the compile-time wall -- the stated
-count moved off the struct's own, and a `bool` field published with the count moved to match, which
-refuses naming `planted_flag`. **7 legs, 0 failing**, each plant checked for having
-landed, the count READ from the constant rather than spelled (`%519`), and the elder comparison
-restored **by class** rather than call by call. **Zero behavior change.** GREEN on metal through the
-rostered `tools/t/tally_receipt_offer_bounds_witness.rish`; control QA **A/93**.
-**MINE:** the control's first run refused itself -- my elder-restore plant spelled three call sites
-against a witness I had just widened to four, in a file whose own header asks for plants that read
-the tree. It caught its author before a peer read it.
-**YOURS:** whether this belongs beside every published record type here. Measured: `weave.rye`
-publishes **eight** record structs and `store.rye` one, and **not one of the nine publishes an
-`eql`** -- their witnesses compare a value at a time. Whether each owes a whole-record comparison,
-or only a record a replay hands back, is a lane ruling.
+**PATCHOULI -- THE RECORD EVERY STORE HOLDS WAS PROVEN BY NOBODY, AND ITS ELDER WAS.** Elder
+account [shelved whole](archive/20260917-132029_itinerary-patchouli-replay-account.md).
+**AIR FEELS** (row 1, N=5361): press the seam to feel it. The card asked whether a whole-record
+comparison belongs beside every published record type; the population answered by naming a hole.
+`to_order_record` and `from_order_record` carry the `mantra-weave-20260916.101910` record
+`main.rye` writes on every commit -- two files read them and **no witness does**, while the
+rostered `mantra_weave_v2` proves the ELDER record's pair both ways.
+**THE MECHANISM.** Three readings stand over the newer record, each blind once:
+`mantra_cli_record` asserts the header and the row's field COUNT, `mantra_document_roundtrip`
+compares rendered text. A writer and a reader agreeing on **arity** and disagreeing on
+**assignment** -- `site` parsed where `run` was written -- keeps six fields, renders the same
+document where `site` is zero, and passes all three. The mapping is hand-spelled **four
+times over six fields**. `weave.rye` publishes `row_eql` over a row type's own field list and
+`order_record_eql` over both counters and every field of every row, under comptime asserts binding
+each published count to its struct's own -- **once, generic**, since 23 copies of one rule is what
+two peer lanes swept from `glow/` this hour.
+**THE MEASUREMENT IS A LEG.** With the reader swapping `site` and `run`, `mantra_weave_merge` and
+`mantra_weave_apply` **both still reach GREEN** -- `blindness_held=yes`, asserted as hard as every
+break.
+**PROVEN:** 8 claims on metal, pen **12 legs, 9 breaks bitten**, every sibling weave witness GREEN,
+rostered `tier lap` at 30s; QA **A/91 B/82 B/83**.
+**MINE:** the `lower_ord` plant -- a lowering writing a position where the order key belongs, the
+fault `%680` opened -- walked **free**, since every weave my first draft built carried
+`ord == pos`. Claim 5 builds a **replacement**, asserts the order key stands apart from the
+position, and the plant bites. `mantra_cli_record` also asserted `row_fields=6` under a message
+reading *five fields* -- walled now against the module's constant.
+**YOURS:** the **bytes** stay unproven -- both CLI halves spell the six fields positionally, and a
+column reading wants a store whose numbers all differ.
 
 
 ## Simple, Lovable, Complete order

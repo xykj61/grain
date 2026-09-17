@@ -492,6 +492,75 @@ pub const OrderRecord = struct {
     next_run: u32,
 };
 
+/// The count of fields one `mantra-weave-20260916.101910` row publishes, stated
+/// once so a comparison, a witness, and a reader are all checked against the
+/// same number rather than three hand-spelled copies of it.
+pub const order_row_fields = 6;
+
+/// The count of fields a whole `mantra-weave-20260916.101910` record publishes:
+/// the rows and the two counters.
+pub const order_record_fields = 3;
+
+/// Compare two record rows field for field, over the type's own published field
+/// list.
+///
+/// WHY THE WHOLE ROW RATHER THAN A FIELD. A round trip proves nothing about the
+/// fields it never reads, and this record's mapping is hand-spelled four times
+/// over six fields -- named-field initializers in `to_order_record` and
+/// `from_order_record`, and positional `bufPrint` and `splitScalar` in
+/// `main.rye`. A writer and a reader that agree on how many fields a row
+/// carries and disagree on which value goes in which keeps the arity, renders
+/// an identical document in a store where `site` is constant zero, and passes a
+/// header check, a field count, and a document comparison alike. The sibling
+/// lesson is one file over: `receipt_offer.rye` reads the whole fact for the
+/// same reason, and `receipt_refusal_witness.rye` says in its own comment that
+/// rendering the whole line rather than one field is deliberate.
+///
+/// WRITTEN ONCE, GENERIC OVER THE ROW TYPE, because a rule copied per record is
+/// a rule the records may come to disagree about -- the shape two peer lanes are
+/// sweeping out of `glow/` the hour this landed.
+///
+/// A field type this comparison does not state reaches a `compileError` naming
+/// it, so publishing a field without a stated comparison stops the build rather
+/// than passing unread.
+pub fn row_eql(comptime T: type, a: T, b: T) bool {
+    inline for (@typeInfo(T).@"struct".fields) |field| {
+        const lhs = @field(a, field.name);
+        const rhs = @field(b, field.name);
+        switch (@typeInfo(field.type)) {
+            .pointer => |p| {
+                if (p.child != u8) @compileError("record field '" ++ field.name ++ "' publishes no stated comparison");
+                if (!std.mem.eql(u8, lhs, rhs)) return false;
+            },
+            .int => if (lhs != rhs) return false,
+            else => @compileError("record field '" ++ field.name ++ "' publishes no stated comparison"),
+        }
+    }
+    return true;
+}
+
+/// Compare two whole `mantra-weave-20260916.101910` records: both counters, the
+/// row count, and every field of every row.
+///
+/// The counters are compared because they are written down rather than derived
+/// (see `OrderRecord`), so a round trip that lost one would hand back a weave
+/// standing at the wrong next position while every line read correctly.
+pub fn order_record_eql(a: OrderRecord, b: OrderRecord) bool {
+    // invariant: the published field set stays the size this comparison covers,
+    // so a field joining the record moves this number rather than passing unread.
+    comptime assert(@typeInfo(OrderRecord).@"struct".fields.len == order_record_fields);
+    // invariant: a row's published field set stays the size `row_eql` walks, and
+    // the count the witness reads is the struct's own.
+    comptime assert(@typeInfo(OrderRow).@"struct".fields.len == order_row_fields);
+    if (a.next_pos != b.next_pos) return false;
+    if (a.next_run != b.next_run) return false;
+    if (a.rows.len != b.rows.len) return false;
+    for (a.rows, b.rows) |left, right| {
+        if (!row_eql(OrderRow, left, right)) return false;
+    }
+    return true;
+}
+
 pub const V2Record = struct {
     rows: []const V2Row,
     next_pos: u32,

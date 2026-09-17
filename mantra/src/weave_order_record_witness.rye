@@ -1,0 +1,348 @@
+//! mantra/src/weave_order_record_witness.rye -- the record every store written
+//! since `20260916` holds, read whole rather than one field at a time.
+//!
+//! WHICH GAP THIS CLOSES. `Weave.to_order_record` and `Weave.from_order_record`
+//! are the lift and lower of the `mantra-weave-20260916.101910` record -- the
+//! order-key record REDS %680 added, and the one `mantra/src/main.rye` writes on
+//! every commit. Before this witness they were read by two files and proven by
+//! none: the rostered guard at tools/m/mantra_weave_v2_witness.rish proves the
+//! ELDER record's pair from both sides, and its successor stood unproven at the
+//! record level.
+//!
+//! THREE READINGS DID STAND OVER THE NEWER RECORD, AND EACH IS BLIND TO ONE
+//! THING. `mantra_cli_record` asserts the header and asserts the row carries six
+//! fields. `mantra_document_roundtrip` compares rendered document text. So a
+//! writer and a reader that agree on how many fields a row carries and disagree
+//! on WHICH VALUE GOES IN WHICH keeps the arity, renders an identical document,
+//! and passes all three. The mapping is hand-spelled four times over six fields:
+//! named-field initializers in `to_order_record` and `from_order_record`, and
+//! positional `bufPrint` and `splitScalar` in `main.rye`.
+//!
+//! THE LESSON CAME FROM ONE FILE OVER, LATE. `receipt_offer_witness.rye` proved
+//! replay by comparing `receipt_id` alone, one field of fifteen, until
+//! `20260917`; `receipt_refusal_witness.rye` had said in its own comment years of
+//! laps earlier that rendering the WHOLE line rather than one field is
+//! deliberate. A comparison narrower than the record is evidence about the field
+//! it reads and about nothing else.
+//!
+//! THE CLAIMS:
+//!   1. Every field of a row is READ -- each of the six moved one at a time, and
+//!      the count comes off the struct rather than out of this file.
+//!   2. A lifted weave's record round-trips whole: field for field, counters and
+//!      all.
+//!   3. An edited weave's does.
+//!   4. A MERGED weave's does -- the history where `site` and `run` finally
+//!      differ from each other and from `pos`, so a swapped pair is visible.
+//!   5. A weave carrying a REPLACEMENT does -- the one history whose order key
+//!      stands apart from its position, and the reason this record exists.
+//!   6. An empty weave's does.
+//!   7. The counters are compared: a record standing one higher refuses.
+//!   8. THE MEASUREMENT THAT SAYS THIS MATTERS. The document projection reads
+//!      fewer fields than the record carries. One record differing from another
+//!      in `site` alone lifts, renders text for text, and is refused by the
+//!      whole-record reading -- so the standing document proof could never have
+//!      caught it and this one does.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+
+const witness_version = "20260917.130215";
+
+/// The site a second hand merges in from, named so claim 4 builds a two-hand
+/// history by writing a field rather than by contriving one.
+const site_other: u32 = 1;
+
+/// The site claim 7 renames every row to. Any value but `v1_site` serves; what
+/// the claim needs is that the document cannot tell.
+const site_renamed: u32 = 7;
+
+/// The largest number of rows any record planted here holds. Named because every
+/// record below is meant to be read by a person.
+const max_planted_rows: u32 = 8;
+
+// Every declaration of the module under test, forced through semantic analysis at
+// comptime. Zig analyses lazily, so a `pub fn` carrying a flat type error in a
+// function no claim below calls would ride through the build untouched and this
+// witness would print GREEN over it (REDS %470).
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+}
+
+/// A small elder record the way the CLI once wrote one: three lines appended in
+/// order, the middle one since deleted.
+fn planted_record() [3]weave.V1Row {
+    return .{
+        .{ .text = "the first line", .gen = 1, .pos = 0 },
+        .{ .text = "the line since removed", .gen = 2, .pos = 1 },
+        .{ .text = "the third line", .gen = 1, .pos = 2 },
+    };
+}
+
+/// One hand's history: the elder record lifted and edited once.
+fn edited_weave(garden: std.mem.Allocator) !weave.Weave {
+    const rows = planted_record();
+    // invariant: a planted record stays small enough to read, since this witness
+    // argues a law by showing every row it writes
+    assert(rows.len <= max_planted_rows);
+    var mine = try weave.Weave.from_v1(garden, &rows);
+    const added = [_][]const u8{"a line the first hand added"};
+    try mine.apply(garden, .{
+        .site = weave.v1_site,
+        .inserts = &added,
+        .deletes = &[_]weave.LineId{},
+    });
+    return mine;
+}
+
+/// Two hands' history in one weave: the elder record lifted, edited by the hand
+/// that wrote it and by a second hand on its own branch, and the two merged.
+fn merged_weave(garden: std.mem.Allocator) !weave.Weave {
+    const rows = planted_record();
+    var mine = try weave.Weave.from_v1(garden, &rows);
+    const mine_added = [_][]const u8{"a line the first hand added"};
+    try mine.apply(garden, .{
+        .site = weave.v1_site,
+        .inserts = &mine_added,
+        .deletes = &[_]weave.LineId{},
+    });
+
+    var theirs = try weave.Weave.from_v1(garden, &rows);
+    const their_added = [_][]const u8{"a line the second hand added"};
+    try theirs.apply(garden, .{
+        .site = site_other,
+        .inserts = &their_added,
+        .deletes = &[_]weave.LineId{},
+    });
+
+    const joined = try mine.merge(garden, &theirs);
+    // invariant: the two branches share the lifted three and each added one, so
+    // the union is five -- asked here so claim 4 reads a merge rather than a
+    // weave that quietly stayed one-handed
+    assert(joined.lines.items.len == 5);
+    return joined;
+}
+
+/// Lower a weave to a record, lift it back, lower it again, and hand back both
+/// records so a caller compares them whole.
+///
+/// Postcondition: both records hold one row per line of the weave handed in.
+fn round_trip(garden: std.mem.Allocator, w: *const weave.Weave) !struct { out: weave.OrderRecord, back: weave.OrderRecord } {
+    const out = try w.to_order_record(garden);
+    // invariant: the record holds one row per line before it is lifted, so a
+    // length fault is named here rather than inside the comparison
+    assert(out.rows.len == w.lines.items.len);
+    var restored = try weave.Weave.from_order_record(garden, out);
+    const back = try restored.to_order_record(garden);
+    // invariant: the second lowering holds one row per lifted line
+    assert(back.rows.len == restored.lines.items.len);
+    return .{ .out = out, .back = back };
+}
+
+/// Claim 1 -- every field of a row is read, one at a time.
+fn prove_every_field_is_read() !void {
+    // invariant: the count this witness reads is the struct's own, so a field
+    // joining `OrderRow` moves the reading rather than passing unread
+    assert(@typeInfo(weave.OrderRow).@"struct".fields.len == weave.order_row_fields);
+
+    // Distinct values in every numeric field on purpose: with two fields equal, a
+    // comparison that swapped them would read as agreement.
+    const base = weave.OrderRow{
+        .text = "a line this claim moves one field of",
+        .gen = 1,
+        .pos = 2,
+        .site = 3,
+        .run = 4,
+        .ord = 5,
+    };
+    // invariant: a row equals itself, asked before any perturbation so a
+    // comparison that refuses everything is named here rather than read as
+    // coverage
+    assert(weave.row_eql(weave.OrderRow, base, base));
+
+    var moved: u32 = 0;
+    inline for (@typeInfo(weave.OrderRow).@"struct".fields) |field| {
+        var other = base;
+        switch (@typeInfo(field.type)) {
+            .pointer => @field(other, field.name) = "a different line",
+            .int => @field(other, field.name) = @field(base, field.name) + 1,
+            else => @compileError("row field '" ++ field.name ++ "' publishes no stated perturbation"),
+        }
+        // invariant: moving this one field is refused, which is what says the
+        // comparison reads it rather than walking past it
+        assert(!weave.row_eql(weave.OrderRow, base, other));
+        moved += 1;
+    }
+    // invariant: one field was moved for every field the struct publishes, so
+    // this claim's coverage is the record's own rather than a number typed here
+    assert(moved == weave.order_row_fields);
+    print("mantra-order-record: every field of a row is read -- {d} of {d} moved one at a time, each refused\n", .{ moved, weave.order_row_fields });
+}
+
+/// Claims 2, 3, 4 -- a lifted, an edited, and a merged weave each round-trip
+/// whole.
+fn prove_round_trips_whole(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+    const lifted_pair = try round_trip(garden, &lifted);
+    // invariant: the lifted record comes back field for field
+    assert(weave.order_record_eql(lifted_pair.out, lifted_pair.back));
+    print("mantra-order-record: a lifted weave round-trips whole -- {d} rows, field for field\n", .{lifted_pair.out.rows.len});
+
+    var edited = try edited_weave(garden);
+    const edited_pair = try round_trip(garden, &edited);
+    // invariant: an edited weave's record comes back field for field
+    assert(weave.order_record_eql(edited_pair.out, edited_pair.back));
+    print("mantra-order-record: an edited weave round-trips whole -- {d} rows, field for field\n", .{edited_pair.out.rows.len});
+
+    var joined = try merged_weave(garden);
+    const merged_pair = try round_trip(garden, &joined);
+    // invariant: a merged weave's record comes back field for field -- the
+    // history where `site` and `run` differ, so a swapped pair is visible
+    assert(weave.order_record_eql(merged_pair.out, merged_pair.back));
+    // invariant: the merged record holds both hands, which is what makes this
+    // claim stronger than the two above it
+    assert(merged_pair.out.rows.len == 5);
+    print("mantra-order-record: a merged weave round-trips whole -- {d} rows over two sites, field for field\n", .{merged_pair.out.rows.len});
+}
+
+/// One hand's history carrying a REPLACEMENT: the elder record lifted, then its
+/// second line stood in for by another.
+///
+/// This is the history the order key was added for (REDS %680). Every other
+/// weave this witness builds carries `ord == pos` on every line, because a line
+/// placed by the monotone counter takes its own position as its order key -- so a
+/// claim reading only those weaves cannot tell the order key from the position,
+/// and a lowering that wrote one for the other would pass. The control's
+/// `lower_ord` leg is what measured that, by walking free.
+fn replaced_weave(garden: std.mem.Allocator) !weave.Weave {
+    const rows = planted_record();
+    var mine = try weave.Weave.from_v1(garden, &rows);
+    const target = weave.LineId{ .pos = 2, .site = weave.v1_site };
+    const added = [_][]const u8{"the third line, restated"};
+    const stood_in_for = [_]?weave.LineId{target};
+    const removed = [_]weave.LineId{target};
+    try mine.apply(garden, .{
+        .site = weave.v1_site,
+        .inserts = &added,
+        .replaces = &stood_in_for,
+        .deletes = &removed,
+    });
+    return mine;
+}
+
+/// Claim 5 -- a weave carrying a replacement round-trips whole, order key and
+/// all.
+fn prove_a_replacement_round_trips(garden: std.mem.Allocator) !void {
+    var replaced = try replaced_weave(garden);
+    const pair = try round_trip(garden, &replaced);
+
+    var apart: u32 = 0;
+    for (pair.out.rows) |row| {
+        if (row.ord != row.pos) apart += 1;
+    }
+    // invariant: at least one row carries an order key apart from its position,
+    // which is what makes this claim a reading of the order key rather than of
+    // the position twice -- asked before the comparison so a weave that quietly
+    // stayed monotone is named here
+    assert(apart >= 1);
+    // invariant: the record comes back field for field, the order key included
+    assert(weave.order_record_eql(pair.out, pair.back));
+    print("mantra-order-record: a replacement round-trips whole -- {d} rows, {d} carrying an order key apart from its position\n", .{ pair.out.rows.len, apart });
+}
+
+/// Claim 6 -- an empty weave's record round-trips whole.
+fn prove_an_empty_weave_round_trips(garden: std.mem.Allocator) !void {
+    var nothing: weave.Weave = .{ .lines = .empty, .next_pos = 0, .next_run = 0 };
+    const pair = try round_trip(garden, &nothing);
+    // invariant: nothing in, nothing out, and the counters carried
+    assert(pair.out.rows.len == 0);
+    assert(weave.order_record_eql(pair.out, pair.back));
+    print("mantra-order-record: an empty weave writes an empty record and reads back equal\n", .{});
+}
+
+/// Claim 7 -- the counters are compared, not only the rows.
+fn prove_the_counters_are_compared(garden: std.mem.Allocator) !void {
+    var edited = try edited_weave(garden);
+    const record = try edited.to_order_record(garden);
+    const higher = weave.OrderRecord{
+        .rows = record.rows,
+        .next_pos = record.next_pos + 1,
+        .next_run = record.next_run,
+    };
+    const later_run = weave.OrderRecord{
+        .rows = record.rows,
+        .next_pos = record.next_pos,
+        .next_run = record.next_run + 1,
+    };
+    // invariant: each counter is read apart from the other, since a record
+    // carries them written down rather than derived -- a round trip losing one
+    // hands back a weave standing at the wrong next place while every line reads
+    assert(!weave.order_record_eql(record, higher));
+    assert(!weave.order_record_eql(record, later_run));
+    print("mantra-order-record: both counters are compared apart -- next_pos {d} and next_run {d} each refuse when moved\n", .{ record.next_pos, record.next_run });
+}
+
+/// Claim 8 -- the document projection reads fewer fields than the record
+/// carries, so the standing proof could not have caught this and this one does.
+fn prove_the_document_is_blind_to_a_renamed_site(garden: std.mem.Allocator) !void {
+    var edited = try edited_weave(garden);
+    const record = try edited.to_order_record(garden);
+    // invariant: this weave is one hand's, so renaming every row's site leaves
+    // place order untouched and the renamed record lifts -- which is the whole
+    // point of the claim, since a record that refused would prove something else
+    for (record.rows) |row| assert(row.site == weave.v1_site);
+
+    var renamed = try garden.alloc(weave.OrderRow, record.rows.len);
+    for (record.rows, 0..) |row, i| {
+        renamed[i] = row;
+        renamed[i].site = site_renamed;
+    }
+    const other = weave.OrderRecord{
+        .rows = renamed,
+        .next_pos = record.next_pos,
+        .next_run = record.next_run,
+    };
+
+    // invariant: the whole-record reading refuses the rename
+    assert(!weave.order_record_eql(record, other));
+
+    var here = try weave.Weave.from_order_record(garden, record);
+    var there = try weave.Weave.from_order_record(garden, other);
+    const before = try here.current(garden);
+    const after = try there.current(garden);
+    // invariant: the document is the same length
+    assert(after.len == before.len);
+    for (after, 0..) |line, i| {
+        // invariant: the document reads text for text across a record the whole
+        // reading refuses, which is the measurement this witness exists to take
+        assert(std.mem.eql(u8, line.text, before[i].text));
+    }
+    // invariant: the document a reader sees is three -- four lines placed, one
+    // deleted -- said here so this claim reads a real history
+    assert(after.len == 3);
+    print("mantra-order-record: the document is blind to a renamed site -- {d} present lines, text for text, and the whole-record reading refuses\n", .{after.len});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    try prove_every_field_is_read();
+    try prove_round_trips_whole(garden);
+    try prove_a_replacement_round_trips(garden);
+    try prove_an_empty_weave_round_trips(garden);
+    try prove_the_counters_are_compared(garden);
+    try prove_the_document_is_blind_to_a_renamed_site(garden);
+
+    print("mantra-order-record: version {s}\n", .{witness_version});
+    print("GREEN: the order record reads back whole -- every published field moved one at a time, and the document proven blind to one of them.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}

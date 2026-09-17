@@ -1,0 +1,111 @@
+# tools/m/mantra_weave_order_record_witness.rish -- the record every store holds, read whole.
+#
+# WHAT THIS PROVES, and which gap it closes. `Weave.to_order_record` and
+# `Weave.from_order_record` in mantra/src/weave.rye are the lift and lower of the
+# `mantra-weave-20260916.101910` record -- the order-key record REDS %680 added, and the one
+# mantra/src/main.rye writes on every commit. Before this guard they were read by two files and
+# proven by none: its sibling at tools/m/mantra_weave_v2_witness.rish proves the ELDER record's
+# pair from both sides, and its successor stood unproven at the record level.
+#
+# THREE READINGS DID STAND OVER THE NEWER RECORD, AND EACH IS BLIND TO ONE THING.
+# tools/m/mantra_cli_record_witness.rish asserts the header and asserts the row carries six
+# fields. tools/m/mantra_document_roundtrip_witness.rish compares rendered document text. So a
+# writer and a reader that agree on how many fields a row carries and disagree on WHICH VALUE
+# GOES IN WHICH keeps the arity, renders an identical document in a store where `site` is
+# constant zero, and passes all three. The mapping is hand-spelled four times over six fields:
+# named-field initializers in `to_order_record` and `from_order_record`, and positional
+# `bufPrint` and `splitScalar` in main.rye.
+#
+# WHAT THE COMPARISON IS, AND WHY IT IS GENERIC. `row_eql` walks the row type's OWN published
+# field list with an `inline for`, comparing text by `std.mem.eql` and integers by `==`, and a
+# field type it does not state reaches a `compileError` naming it. `order_record_eql` compares
+# both counters, the row count, and every field of every row, under a comptime assert binding
+# `order_row_fields` and `order_record_fields` to each struct's own field count -- so publishing
+# a field without a stated comparison stops the build. It is written ONCE rather than per record
+# type, because a rule copied per record is a rule the records may come to disagree about.
+#
+# THE MEASUREMENT THAT SAYS THIS WAS WORTH BUILDING, and it is a control leg rather than a
+# sentence. With `from_order_record` reading `site` where `run` was written, the two rostered
+# weave guards closest to this record -- tools/m/mantra_weave_merge_witness.rish and
+# tools/m/mantra_weave_apply_witness.rish -- both still reach GREEN, because neither reads the
+# record at all. The `merge_blind` and `apply_blind` legs assert that exit 0 as hard as every
+# break, since a blindness claim that went unasserted would be prose.
+#
+# WHAT THE CONTROL CAUGHT IN THIS WITNESS ITSELF. The first draft's `lower_ord` plant -- the
+# lowering writing a line's position where its order key belongs, the exact fault REDS %680 was
+# opened for -- walked FREE. Every weave the first draft built carried `ord == pos` on every
+# line, because a line placed by the monotone counter takes its own position as its order key,
+# so no claim could tell the order key from the position. Claim 5 builds a weave carrying a
+# REPLACEMENT, asserts at least one row's order key stands apart from its position, and the
+# plant bites. A guard's own coverage is a thing to measure rather than assume.
+#
+# WHAT IS NOT PROVEN HERE. The BYTES. `serialize_weave` and `deserialize_weave` are private to
+# main.rye and spell the same six-field mapping positionally, in `bufPrint` and `splitScalar`;
+# this guard proves the mapping the module publishes, and its sibling at
+# tools/m/mantra_cli_record_witness.rish reads the header and the field COUNT off disk. A
+# column-by-column reading of a stored blob is its own lap, and it wants a store whose numeric
+# fields are all distinct, so a swap is visible in the bytes.
+#
+# The Rye witness lives beside the module it proves, at
+# mantra/src/weave_order_record_witness.rye, because Zig refuses an import that escapes the root
+# file's directory.
+#
+# Module: mantra/src/weave.rye. Siblings: the elder record at
+# tools/m/mantra_weave_v2_witness.rish, the lift and write guards beside it, the merge and
+# annotate guards, and the CLI's own record reading at tools/m/mantra_cli_record_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_order_record_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_order_record_witness"
+
+say "mantra-order-record: Language EN -- the record every store written since 20260916 holds."
+say "mantra-order-record: Style Gauge, Meter -- every claim is a run, and the blindness is a leg."
+say "mantra-order-record: Lens TAME -- one comparison, published once, bound to the struct's own fields."
+
+say "mantra-order-record: the module still publishes the record, its pair, and the comparison..."
+let seat = run ["sh" "-c" "grep -q 'pub fn to_order_record' mantra/src/weave.rye && grep -q 'pub fn from_order_record' mantra/src/weave.rye && grep -q 'pub const OrderRow' mantra/src/weave.rye && grep -q 'pub const OrderRecord' mantra/src/weave.rye"]
+assert seat.ok else "mantra-order-record: to_order_record, from_order_record, OrderRow or OrderRecord left weave.rye"
+let cmp = run ["sh" "-c" "grep -q 'pub fn row_eql' mantra/src/weave.rye && grep -q 'pub fn order_record_eql' mantra/src/weave.rye && grep -q 'pub const order_row_fields' mantra/src/weave.rye && grep -q 'pub const order_record_fields' mantra/src/weave.rye"]
+assert cmp.ok else "mantra-order-record: the whole-record comparison or one of its published counts left weave.rye -- a round trip would then be evidence about whichever field a caller happened to read"
+
+say "mantra-order-record: the count comes off the struct rather than out of a file..."
+let wall = run ["sh" "-c" "grep -q 'comptime assert(@typeInfo(OrderRecord)' mantra/src/weave.rye && grep -q 'comptime assert(@typeInfo(OrderRow)' mantra/src/weave.rye"]
+assert wall.ok else "mantra-order-record: the comptime wall binding each published count to its struct's own field list is gone, so a field could be published without a stated comparison"
+
+say "mantra-order-record: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_order_record_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-order-record: the order record witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-order-record: the order record witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-order-record: the order record witness is not GREEN"
+assert selftest.out contains "every field of a row is read" else "mantra-order-record: the coverage claim is missing -- without it a comparison exists and nothing says it reads every field"
+assert selftest.out contains "6 of 6 moved one at a time" else "mantra-order-record: the coverage claim no longer reads the struct's own field count, so its number is a number typed in a file"
+assert selftest.out contains "a lifted weave round-trips whole" else "mantra-order-record: the lifted claim is missing"
+assert selftest.out contains "an edited weave round-trips whole" else "mantra-order-record: the edited claim is missing"
+assert selftest.out contains "a merged weave round-trips whole" else "mantra-order-record: the merged claim is missing -- the one history where site and run differ, so a swapped pair is visible"
+assert selftest.out contains "a replacement round-trips whole" else "mantra-order-record: the replacement claim is missing -- every other weave carries ord equal to pos, so without it a lowering writing the position for the order key walks free, which the control measured"
+assert selftest.out contains "carrying an order key apart from its position" else "mantra-order-record: the replacement claim no longer asserts that a row's order key stands apart from its position, so it reads the position twice"
+assert selftest.out contains "an empty record and reads back equal" else "mantra-order-record: the empty claim is missing"
+assert selftest.out contains "both counters are compared apart" else "mantra-order-record: the counter claim is missing -- the counters are written down rather than derived, so a lost one hands back a weave standing at the wrong next place"
+assert selftest.out contains "the document is blind to a renamed site" else "mantra-order-record: the measurement is missing -- without it this guard's value is asserted rather than shown"
+
+say "mantra-order-record: breaking the record and its comparison in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_order_record_control.sh"]
+assert control.ok else "mantra-order-record: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-order-record: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-order-record: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "centrepiece_caught=yes" else "mantra-order-record: the centrepiece break -- a reader parsing site where run was written -- must be caught"
+assert control.out contains "blindness_held=yes" else "mantra-order-record: both sibling witnesses must stay GREEN under the swapped reader, or the blindness this guard closes is not the blindness reported"
+assert control.out contains "count_wall_caught=yes" else "mantra-order-record: moving a published count off its struct's own field list must refuse at build time"
+assert control.out contains "legs_expected=12" else "mantra-order-record: the pen must declare how many legs it runs, and this witness must be edited with it -- `control_verdict=ok` is what an empty pen prints too"
+assert control.out contains "legs_ran=12" else "mantra-order-record: the pen ran a different number of legs than it declares"
+
+# The claim count is the module's own sentence rather than a copy of it, for the reason the
+# sibling wrapper gives: one number in two places drifts.
+let green = run ["sh" "-c" "${bin} 2>&1 | grep '^GREEN:'"]
+say green.out
+assert green.ok else "mantra-order-record: the module must print its own GREEN line"
+say "mantra-order-record: twelve pen legs ran -- nine breaks, one innocence, and two blindness readings."
