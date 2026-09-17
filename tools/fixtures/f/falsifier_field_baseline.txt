@@ -1,0 +1,35 @@
+# tools/fixtures/f/falsifier_field_baseline.txt -- the pages that declared Field and named no falsifier
+#
+# Read by tools/fixtures/f/falsifier_reach_scan.sh. Each path is a living tracked page
+# whose own header declares Gauge at its Field setting, whose body carries projection
+# language, and which names no falsifier anywhere. Gauge asks every projection for one,
+# so each row is a promise the page wrote itself and has yet to keep.
+#
+# A path the roster leaves out reds the gate at zero. A path it holds is ratcheted under
+# LEGACY_CEILING, which only falls. Repair is one falsifier sentence on the page and one
+# row struck here, in the same commit -- the same cost as a ceiling edit, and visible in
+# a diff where a ceiling edit names nobody.
+#
+# A lawful rename leaves the roster behind and reads as growth; its repair is one row.
+# Written 20260917.093211 by tools/fixtures/f/falsifier_reach_scan.sh --list.
+active-designing/20260823-201533_the-design-rooms-walking-index.md
+active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md
+active-designing/20260825-171911_gleaner-the-public-signal-fetcher.md
+active-designing/20260825-171917_gleaner-the-gauge-source-family.md
+active-designing/20260826-151528_the-three-stars-of-the-aether-row.md
+active-designing/20260826-174418_the-constellation-and-the-callings.md
+active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md
+active-designing/20260904-175200_the-seat-table-written-once.md
+active-designing/20260911-133037_the-last-silent-doors.md
+active-designing/20260911-172644_the-hundred-column-rule-was-mostly-prose.md
+active-designing/20260911-202925_the-scratch-is-an-instrument.md
+active-designing/20260912-000156_the-count-that-left-one-page.md
+active-designing/20260912-191503_the-oldest-premise-under-the-readable-receipt.md
+active-designing/20260913-234939_the-vessel-that-entered-before-its-milestone.md
+active-designing/20260914-020021_the-two-receipts-that-keep-their-own-meaning.md
+active-designing/20260914-174823_the-expiration-that-closes-use-and-keeps-history.md
+external-research/20260825-173153_dependency-tracked-proving-the-worlds-answers.md
+external-research/20260825-230422_the-isolation-reading-from-the-wells-own-record.md
+external-research/20260826-001743_the-toroidal-archive-read-against-the-tree.md
+external-research/20260826-014904_bret-victor-the-immediate-connection.md
+external-research/README.md

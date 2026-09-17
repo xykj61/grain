@@ -7499,3 +7499,14 @@ guard alloc_bound_reach
 path tools/a/alloc_bound_reach_witness.rish
 tier lap   # 21s; 1,370 sites and 1,046 allocating functions read, 44 control legs, four mutations bitten.
 seated 20260917.090000
+
+# falsifier_reach reads the PROSE discipline that separates research from enthusiasm. Gauge at
+# its Field setting asks every projection for a falsifier; three corpus readers watch the code
+# rules and none watched this one. 580 stated falsifiers across 493 living pages, classified by
+# whether they could ever fire -- runnable, quantified, narrative. One wall at zero: a page
+# declaring Field, carrying a projection, and naming no falsifier, outside the tracked roster
+# tools/fixtures/f/falsifier_field_baseline.txt. The roster's own 21 are ratcheted.
+guard falsifier_reach
+path tools/f/falsifier_reach_witness.rish
+tier lap   # 19s; 493 pages and 580 regions read, 44 control legs, four mutations bitten.
+seated 20260917.093812
