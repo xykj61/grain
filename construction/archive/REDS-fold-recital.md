@@ -833,3 +833,5 @@ at a closed fold.*
 *Row %791 folded to [`REDS-the-clause-that-excused-the-invitation-rows-791.md`](REDS-the-clause-that-excused-the-invitation-rows-791.md) on `20260916.230106`, **BOOKED** -- a booked red is the loudest invitation this fleet emits, and the clause that asked for a claim excused exactly it.*
 
 *Row %796 folded to [`REDS-a-noun-phrase-about-prose-rows-796.md`](REDS-a-noun-phrase-about-prose-rows-796.md) on `20260916.234148`, **CLOSED** -- a guard that admits its heuristic in prose still needs the exclusion written into its pattern, and the row that books such a fault writes the same verb on its own line.*
+
+*Row %797 folded to [`REDS-a-capped-listing-is-a-measurement-rows-797.md`](REDS-a-capped-listing-is-a-measurement-rows-797.md) on `20260917.000330`, **CLOSED** -- A cap on a listing is a measurement, and a measurement nobody reports is a claim -- an empty answer from a capped listing reads exactly like an empty answer from a clean room.*

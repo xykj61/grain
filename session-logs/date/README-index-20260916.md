@@ -34,6 +34,7 @@
 | `20260916.201904` | [A numbered list read as prose](20260916/20260916-201904_a-numbered-list-read-as-prose.kyri) | Both grading readings count a `1.` line as a sentence |
 | `20260916.200950` | [The replay that was a merge](20260916/20260916-200950_the-replay-that-was-a-merge.kyri) | A dead lap recovered at a moved HEAD; row rebased, pin folded. |
 | `20260916.200108` | [The box that held a promise](20260916/20260916-200108_the-box-that-held-a-promise.kyri) | a dead lap recovered; the head's promise kept, 9 legs to 13 |
+| `20260916.195622` | [Four ceilings, one word](20260916/20260916-195622_four-ceilings-one-word.kyri) | the lexer's four BadToken ceilings each fill a record |
 | `20260916.195248` | [The family named printf and the population was echo](20260916/20260916-195248_the-family-named-printf-and-the-population-was-echo.kyri) | the .sh emit nothing read |
 | `20260916.195048` | [The fourth seam of one blindness](20260916/20260916-195048_the-fourth-seam-of-one-blindness.kyri) | A gate at zero could not read the spelling the fleet swept to |
 | `20260916.194837` | [The condition nobody exercised alone](20260916/20260916-194837_the-condition-nobody-exercised-alone.kyri) | Cheap conditions ahead of the read. |
@@ -54,6 +55,7 @@
 | `20260916.111259` | [a name inside a wall of siblings](20260916/20260916-111259_the-name-inside-a-wall-of-siblings.kyri) | Five gates rostered, three awaiting. |
 | `20260916.111221` | [A breach needs a resolver behind it](20260916/20260916-111221_a-breach-needs-a-resolver-behind-it.kyri) | %774: 82 of 88 dead shelf citations recovered |
 | `20260916.111144` | [The listing that argued with its own count](20260916/20260916-111144_the-listing-that-argued-with-its-own-count.kyri) | a per-file flag read at two moments |
+| `20260916.110834` | [Four ceilings answered in one word](20260916/20260916-110834_four-ceilings-one-word.kyri) | a lap that died in its send, recovered whole as testimony |
 | `20260916.100409` | [The room this tree renames on purpose](20260916/20260916-100409_the-room-this-tree-renames-on-purpose.kyri) | 99 shelf citations name no path, and none resolved |
 | `20260916.095958` | [the two ways a proxy drifts](20260916/20260916-095958_the-two-ways-a-proxy-drifts.kyri) | Scale drift costs a placement nothing; structure drift decides it. |
 | `20260916.093203` | [The anchor landed and four records stayed behind](20260916/20260916-093203_the-anchor-landed-and-four-records-stayed.kyri) | %766 closed; the head reads Diff's fields |

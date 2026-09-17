@@ -33,6 +33,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const refusal = @import("refusal.rye");
 
 /// Desk token budget -- one fixed array; overflow is TooManyTokens.
 pub const max_tokens: u32 = 64;
@@ -185,7 +186,7 @@ fn skip_comment_line(src: []const u8, i: u32) u32 {
     return at;
 }
 
-fn scan_ident_span(src: []const u8, start: u32) TokenError!u32 {
+fn scan_ident_span(src: []const u8, start: u32, field: []const u8, slot: *refusal.Slot) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     // invariant: the scan reads src[start] before testing anything, so both the bound and the
     // starting kind are the caller's to have checked
@@ -194,7 +195,19 @@ fn scan_ident_span(src: []const u8, start: u32) TokenError!u32 {
     var at = start + 1;
     while (at < src_len and is_ident_char(src[@as(usize, @intCast(at))])) : (at += 1) {}
     const n = at - start;
-    if (n > max_name_len) return error.BadToken;
+    if (n > max_name_len) {
+        // invariant: the record names the token KIND rather than the offending text, because
+        // the text is exactly what did not fit -- so a caller tells this refusal from the three
+        // others sharing `error.BadToken` without holding a 65-byte name to do it. The kind word
+        // arrives from the caller because one scanner serves two kinds: the `%tag` path and the
+        // bare ident path share every byte of it and differ only in what they were reading.
+        slot.* = .{
+            .field = field,
+            .reason = .name_too_long,
+            .measure = .{ .value = n, .ceiling = max_name_len, .unit = .byte },
+        };
+        return error.BadToken;
+    }
     return n;
 }
 
@@ -221,17 +234,17 @@ fn lex_punct(c: u8) ?Kind {
     };
 }
 
-fn lex_percent_tag(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+fn lex_percent_tag(src: []const u8, i: u32, out: []Token, used: *u32, slot: *refusal.Slot) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     if (i + 1 >= src_len) return error.BadToken;
     if (!is_ident_start(src[@as(usize, @intCast(i + 1))])) return error.BadToken;
-    const n = try scan_ident_span(src, i + 1);
+    const n = try scan_ident_span(src, i + 1, "tag", slot);
     try push(out, used, .percent_tag, i, 1 + n);
     return i + 1 + n;
 }
 
 /// Single-quoted cord literal `'...'` -- span includes quotes; no escapes; no newlines.
-fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32, slot: *refusal.Slot) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     // invariant: the span this builds includes the opening quote and the scan starts one past
     // it, so entering elsewhere would wrap a token around a byte that is not a quote
@@ -246,7 +259,16 @@ fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u3
             if (total < 2) return error.BadToken;
             const interior = total - 2;
             if (interior == 0) return error.BadToken;
-            if (interior > max_cord_lit_bytes) return error.BadToken;
+            if (interior > max_cord_lit_bytes) {
+                // invariant: the value counts the interior rather than the whole span, so the
+                // number a reader sees is the one the ceiling is stated in
+                slot.* = .{
+                    .field = "cord-literal",
+                    .reason = .cord_literal_too_long,
+                    .measure = .{ .value = interior, .ceiling = max_cord_lit_bytes, .unit = .byte },
+                };
+                return error.BadToken;
+            }
             try push(out, used, .cord_lit, i, total);
             return at + 1;
         }
@@ -276,7 +298,7 @@ pub fn hex_lit_digits(src: []const u8, tok: Token) []const u8 {
 }
 
 /// `@ux` + even hex digits (1-32 bytes). Bare `@ux` stays aura (STOA183).
-fn lex_hex_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+fn lex_hex_lit(src: []const u8, i: u32, out: []Token, used: *u32, slot: *refusal.Slot) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     // invariant: the scan starts at i + 3 without re-reading the prefix, so the caller's
     // dispatch on @ux and one hex digit is what makes that offset safe
@@ -289,13 +311,22 @@ fn lex_hex_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32
     while (at < src_len and is_hex_digit(src[@as(usize, @intCast(at))])) : (at += 1) {}
     const digits = at - (i + 3);
     if (digits % 2 != 0) return error.BadToken;
-    if (digits > max_hex_lit_digits) return error.BadToken;
+    if (digits > max_hex_lit_digits) {
+        // invariant: the unit is a hex digit rather than a byte, since the ceiling counts
+        // digits and two of them make one byte -- a caller reading bytes would see double
+        slot.* = .{
+            .field = "hex-literal",
+            .reason = .hex_literal_too_many_digits,
+            .measure = .{ .value = digits, .ceiling = max_hex_lit_digits, .unit = .hex_digit },
+        };
+        return error.BadToken;
+    }
     if (at < src_len and is_ident_char(src[@as(usize, @intCast(at))])) return error.BadToken;
     try push(out, used, .hex_lit, i, at - i);
     return at;
 }
 
-fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32, slot: *refusal.Slot) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     if (i + 1 >= src_len) return error.BadToken;
     const a1 = src[@as(usize, @intCast(i + 1))];
@@ -313,7 +344,7 @@ fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     if (a2 == 'x') {
         const after = i + 3;
         if (after < src_len and is_hex_digit(src[@as(usize, @intCast(after))])) {
-            return lex_hex_lit(src, i, out, used);
+            return lex_hex_lit(src, i, out, used, slot);
         }
         if (after < src_len and is_ident_char(src[@as(usize, @intCast(after))])) return error.BadToken;
         try push(out, used, .aura, i, 3);
@@ -326,7 +357,7 @@ fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
 }
 
 /// Lex one token at `i` (caller already skipped space). Returns next index.
-fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
+fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32, slot: *refusal.Slot) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
     // invariant: this reads src[i] to choose a lexer, so the caller's loop is what keeps the
     // cursor short of the end
@@ -353,32 +384,56 @@ fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
         return i + 1;
     }
     // `%tag` cold atom (call runes `%-` / `%+` already matched above).
-    if (c == '%') return lex_percent_tag(src, i, out, used);
+    if (c == '%') return lex_percent_tag(src, i, out, used, slot);
     // `@u32` / `@u64` / `@t` / `@ux` auras (STOA180 cord - STOA183 hex).
-    if (c == '@') return lex_aura(src, i, out, used);
+    if (c == '@') return lex_aura(src, i, out, used, slot);
     // STOA216: `'cord'` source literal.
-    if (c == '\'') return lex_cord_lit(src, i, out, used);
+    if (c == '\'') return lex_cord_lit(src, i, out, used, slot);
     if (is_digit(c)) {
         const n = try scan_digits(src, i);
         try push(out, used, .decimal, i, n);
         return i + n;
     }
     if (is_ident_start(c)) {
-        const n = try scan_ident_span(src, i);
+        const n = try scan_ident_span(src, i, "ident", slot);
         try push(out, used, .ident, i, n);
         return i + n;
     }
     return error.BadToken;
 }
 
-/// Lex `src` into `out`. Returns the number of tokens written.
+/// Lex `src` into `out`. Returns the number of tokens written. Same published signature it
+/// always had: a caller wanting the five-part refusal record reaches for `tokenize_reporting`
+/// beside it.
 pub fn tokenize(src: []const u8, out: []Token) TokenError!u32 {
+    var scratch: refusal.Slot = null;
+    // invariant: the scratch record is written only on a ceiling refusal and dropped here, so
+    // this entry keeps the bytes it always had while the detail stays one function over
+    assert(scratch == null);
+    return tokenize_reporting(src, out, &scratch);
+}
+
+/// The same lexing, handing back the refusal record on a ceiling refusal. `slot` arrives null,
+/// is filled exactly when one of this module's four ceilings refused -- a name, a cord literal,
+/// a hex literal, or the source itself -- and stays null for every other `error.BadToken`, so
+/// the slot is the caller's question rather than a guess. The field names a constant token kind
+/// rather than a slice of `src`, because the offending text is exactly what did not fit.
+pub fn tokenize_reporting(src: []const u8, out: []Token, slot: *refusal.Slot) TokenError!u32 {
     // invariant: push writes into this buffer and the budget below is measured against
     // max_tokens, so a buffer outside that range would be bounded by the wrong number
     assert(out.len >= 1);
     assert(out.len <= max_tokens);
     if (src.len == 0) return error.EmptySource;
-    if (src.len > max_src_len) return error.BadToken;
+    if (src.len > max_src_len) {
+        // invariant: this fires before the cast below, so the value reported is read from the
+        // caller's own slice rather than from a number this function has already narrowed
+        slot.* = .{
+            .field = "source",
+            .reason = .source_too_long,
+            .measure = .{ .value = @as(u64, @intCast(src.len)), .ceiling = max_src_len, .unit = .byte },
+        };
+        return error.BadToken;
+    }
     // invariant: the two refusals above are what make this true, and the cast to u32 on the
     // next line is what needs it
     assert(src.len <= max_src_len);
@@ -389,7 +444,7 @@ pub fn tokenize(src: []const u8, out: []Token) TokenError!u32 {
     while (i < src_len) {
         i = skip_space(src, i);
         if (i >= src_len) break;
-        i = try lex_one(src, i, out, &used);
+        i = try lex_one(src, i, out, &used, slot);
         // invariant: each step advances the cursor and may push one token, so these two hold
         // the loop's own promises: it ends, and it stays inside the budget
         assert(i <= src_len);

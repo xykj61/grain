@@ -13,6 +13,7 @@
 //! product. One line, two vocabularies, each in its own lane.
 //!
 //!   field=ten value=10 ceiling=9 unit=field reason=too-many-fields
+//!   field=hex-literal value=66 ceiling=64 unit=hex-digit reason=hex-literal-too-many-digits
 //!   field=xfer-mold reason=not-a-mold
 
 const std = @import("std");
@@ -21,10 +22,11 @@ const print = std.debug.print;
 
 /// The longest rendered refusal line. Derived rather than guessed: the widest field name
 /// is a Glow ident at `tokens.max_name_len` 64 bytes, the widest reason
-/// `too-many-payload-faces` at 22, the widest unit `payload-face` at 12, two decimal
+/// `hex-literal-too-many-digits` at 27, the widest unit `payload-face` at 12, two decimal
 /// numbers reach 20 each, and the five keys with their separators take 36. That sums to
-/// 174, and 192 leaves a reason room to grow without a re-derivation. The same number the
-/// receipt record derives, from different parts.
+/// 179, and 192 leaves a reason room to grow without a re-derivation. Re-derived
+/// `20260916` when the lexer's four ceilings joined the set and the widest reason grew
+/// five bytes; the ceiling itself held, which is what a derivation with room in it buys.
 pub const max_refusal_line_bytes: u32 = 192;
 
 /// The longest field name a refusal may carry -- Glow's own ident ceiling, so a refusal can
@@ -39,11 +41,15 @@ pub const RenderError = error{ FieldNameTooLong, LineTooLong };
 pub const Unit = enum {
     field,
     payload_face,
+    byte,
+    hex_digit,
 
     pub fn name(self: Unit) []const u8 {
         return switch (self) {
             .field => "field",
             .payload_face => "payload-face",
+            .byte => "byte",
+            .hex_digit => "hex-digit",
         };
     }
 };
@@ -54,11 +60,19 @@ pub const Unit = enum {
 pub const Reason = enum {
     too_many_fields,
     too_many_payload_faces,
+    name_too_long,
+    cord_literal_too_long,
+    hex_literal_too_many_digits,
+    source_too_long,
 
     pub fn name(self: Reason) []const u8 {
         return switch (self) {
             .too_many_fields => "too-many-fields",
             .too_many_payload_faces => "too-many-payload-faces",
+            .name_too_long => "name-too-long",
+            .cord_literal_too_long => "cord-literal-too-long",
+            .hex_literal_too_many_digits => "hex-literal-too-many-digits",
+            .source_too_long => "source-too-long",
         };
     }
 };
@@ -85,6 +99,8 @@ pub const Refusal = struct {
         // invariant: the field name arrives inside its declared ceiling, so the line below
         // stays inside max_refusal_line_bytes and a caller sizing by that number is never short
         if (self.field.len > max_field_name_bytes) return RenderError.FieldNameTooLong;
+        // invariant: the caller's buffer holds at least one byte, so the refusal below is
+        // `bufPrint` running out of room rather than a zero-length slice rendering as success
         assert(buf.len >= 1);
         const line = if (self.measure) |m|
             std.fmt.bufPrint(buf, "field={s} value={d} ceiling={d} unit={s} reason={s}", .{

@@ -64,7 +64,14 @@ mode="${1:-count}"
 #                          shared names, four of them already recorded by `glow/rune_shape.rye`.
 #                          The named next fall is `glow/tokens.rye`'s four, which takes
 #                          `error.BadToken` out of the shared set and this reading to 40.
-CEILING=44
+#   40  `20260916.194500`  the lexer's four landed, `recorded` 4 -> 8 and `uncovered` 44 -> 40,
+#                          exactly the fall the line above named. `shared_names` holds at 5:
+#                          it counts a name standing over more than one ceiling, which
+#                          `error.BadToken` still does -- what moved is whether each of those
+#                          ceilings can be told from the others, which is the gated reading.
+#                          The next fall a lap could name is `error.Overflow`, whose sites sit
+#                          across the lowering room rather than in one module.
+CEILING=40
 
 list=$(git ls-files 'glow/*.rye' 2>/dev/null | grep -v '_witness\.rye$')
 
