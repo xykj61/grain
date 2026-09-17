@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.193730` | [REDS %805's marker had not caught up](20260917/20260917-193730_reds-805-marker-caught-up.kyri) | A landed fix answered %805; the row still read OPEN. |
 | `20260917.193058` | [The head insert was already booked](20260917/20260917-193058_the-head-insert-was-already-booked.kyri) | blind_reason fix is gated on %807, not free. |
 | `20260917.192805` | [A fourth check on an unmoved tree](20260917/20260917-192805_a-fourth-check-on-an-unmoved-tree.kyri) | Tree unchanged since the prior lap; confirmed via claim board rather than repeating the scan. |
 | `20260917.192509` | [A third read struck the line instead](20260917/20260917-192509_a-third-read-struck-the-line-instead.kyri) | Stale YOURS-PETRICHOR line struck; row was already closed twice. |
