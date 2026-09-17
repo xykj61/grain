@@ -60,9 +60,12 @@ time.
 
 ## The readings
 
-**Observation.** The seated key stands in **3 files**. Every one of the three
-carries a stamp at or before `20260909.213140`, which is the hour of its own
-seating. Adoptions in the eight days since: **zero**.
+**Observation.** The seated key stood in **3 files** when this reading was taken.
+Every one of the three carries a stamp at or before `20260909.213140`, which is
+the hour of its own seating. Adoptions in the eight days since: **zero**. This
+page is the fourth, and the guard reads `key_seated=4` from the moment it lands
+-- so the one use the key found in eight days is the page recording that it
+found none.
 
 **Observation.** **14 pages** declare in their own door that they graded a
 numbered row of an elder ranking, and each row of that ranking carries its own
@@ -139,7 +142,7 @@ the elder page it names, and asks whether that page carries a matching
 | `errata_total` -- erratum lines standing on living pages | reported | 12 |
 | `erratum_no_paper` -- an erratum whose stamp names no page | reported | 2 |
 | `elders_distinct` -- elder pages the declarations name | reported | 1 |
-| `key_seated` -- files carrying the withdrawn spelling | reported | 3 |
+| `key_seated` -- files carrying the withdrawn spelling | reported | 4, this page included |
 
 **The gate is a wall rather than a ratchet**, and the population says why:
 fourteen declarations stand and all fourteen are answered, so a wall refuses
