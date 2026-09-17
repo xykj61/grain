@@ -91,3 +91,5 @@ width_check|corpus_lines_ceiling|corpus_flagged_lines
 witness_own_build|CEILING|unbuilt_pairs
 witness_reach|CEILING|unreached
 witness_reach|FAMILY_CEILING|wholly_unreached
+tutorial_bare_fence|LONE_CEILING|bare_runnable_lone
+tutorial_bare_fence|PAIRED_CEILING|bare_runnable_paired

@@ -5611,6 +5611,30 @@ tier lap   # 72s (was 1.0s); 17 pairs read, 10 run, 55 control legs with every r
            # to catch, one room over.
 seated 20260909.235500
 
+# tutorial_bare_fence counts what `tutorial_output` cannot see. That guard opens a pair only on a
+# fence marked ```sh or ```bash; an UNLABELLED fence sits in the same room, above the same kind of
+# block, promising the same thing to the same reader, and stands in no pair -- neither checked nor
+# counted nor held, which reads from outside exactly like clean.
+# `docs-geode/tutorials/running-the-fleet.md` carried sixteen bare fences and none tagged while
+# declaring on its own face that every command below was run against this tree.
+# GATED at zero: `bare_runnable_lone` -- roster-passing commands with no block beneath, where
+# tagging creates no pair, runs nothing, and the repair is one word. Four stood at seating and all
+# four were taken. RATCHET at 2: `bare_runnable_paired`, where tagging CLAIMS the block is that
+# command's output and only a reader of the page knows -- both standing cases prove it, one whose
+# block beneath is the next command and one whose first line watches until a hand stops it.
+# The refusal classes name the ROSTER'S own word -- `off_roster`, `metacharacter`, `untracked` --
+# rather than the block's genre, which is a judgment the scan declines.
+# ONE RULE, TWO READERS: the roster predicate moved to
+# `tools/fixtures/t/tutorial_run_roster.sh`, sourced as a sibling by this scan and by
+# `tutorial_output_scan.sh`, which held it inline; the extraction moved no count and the elder
+# report was captured before and after byte-identical.
+# `tier lap` at a measured 7s: the scan runs no command at all -- it counts what the elder guard
+# cannot reach -- and the pen builds ten small git repositories.
+guard tutorial_bare_fence
+path tools/t/tutorial_bare_fence_witness.rish
+tier lap   # 7s; 79 untagged fences read, 23 control legs, three mutations bitten.
+seated 20260917.034323
+
 # self_matching_assert reads the command FORM and the output channel before gating an operand
 # match. A simple default-stdout run carrying one literal path is gated; options, stderr,
 # compounds, other utilities, and unresolved bindings stay REPORTED, since a label is not a

@@ -37,7 +37,7 @@ scribe/bin/reader selftest
 ### Scene 5 -- Run its witness (2:05-2:45)
 `[VISUAL]` Rishi runs the witness; a final GREEN line prints.
 `[ON-SCREEN]`
-```
+```sh
 rishi/bin/rishi run tools/s/scribe_dashboard_witness.rish
 ```
 `[VOICEOVER]` The selftest is the module checking itself; the **witness** is a separate script checking the module from outside -- a second opinion you can read and re-run any time. Rishi drives it. When it prints green, you've proven not just that the code runs, but that it does what it claims. That gap -- between *runs* and *proven* -- is the whole point of Grain.

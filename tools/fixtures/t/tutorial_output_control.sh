@@ -18,6 +18,9 @@ trap 'rm -rf "$pen"' EXIT
 
 ROOT=$(pwd)
 SCAN="$ROOT/tools/fixtures/t/tutorial_output_scan.sh"
+# The scan sources its run roster as a SIBLING, so a mutant copy written into the pen needs the
+# rule beside it. Copied once here rather than at each mutation site.
+cp "$ROOT/tools/fixtures/t/tutorial_run_roster.sh" "$pen/tutorial_run_roster.sh"
 
 fails=0
 cases=0

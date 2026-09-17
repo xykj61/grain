@@ -80,7 +80,7 @@ Law: supply = issued - taxed at every prefix. Overdraw and unknown kinds refuse 
 
 When you want the bench to re-run the whole walk and assert every GREEN line:
 
-```
+```sh
 rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish
 ```
 
