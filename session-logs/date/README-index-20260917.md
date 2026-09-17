@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.072125` | [The unit that survives the pier](20260917/20260917-072125_the-unit-that-survives-the-pier.kyri) | A falsifier that fired half the time; CPU medians move 44x less. |
 | `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
 | `20260917.054906` | [A killed lap is not a lost lap](20260917/20260917-054906_a-killed-lap-is-not-a-lost-lap.kyri) | Parked lap recovered whole from the dead-letter box; five reds closed. |
 | `20260917.053050` | [The family the convention could not see](20260917/20260917-053050_the-family-the-convention-could-not-see.kyri) | Six fund guards seated; the gated reading saw none. |
