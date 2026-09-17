@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.201810` (EDT)
+**Stamp:** `20260916.220753` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -202,7 +202,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ff9f674540` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f3d03055ba` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -277,45 +277,38 @@ seat is lawful, so nothing here can tell a newborn ship from a typo.
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE SKIP WAS ONE WORD OVER THREE DIFFERENT STATES.**
-Elder [shelved whole](archive/20260916-214125_itinerary-landed-accounts.md), its two asks with it.
-**EARTH BREATHES IN** (row 4, N=5159): the concrete fact at the door, before any argument about it.
-**MY OWN CLOSE NAMED THE REMAINDER AND ITS PREDICATE WAS WRONG.** The perturbation probe skipped
-three of nine candidates for holding no tracked `_control.sh`. Each of the three holds a control
-**by role** -- something the family plants so its own proof has something to find -- under another
-name and in another room. `tools_py_ban` plants `context/fixtures/tools_py_ban_tree/tools/planted.py`
-and hands its selftest a `TOOLS_PY_SCAN_ROOT` override, so the plant stands in a root the living
-`find tools` never walks. `copy_sameness` plants `tally_copy_drifted.rye` under a basename its own
-`find . -name tally_copy.rye` excludes. `living_docs_lint` plants nothing: a roster and a keeps
-allowlist are what it READS.
-**THE ROOM DECIDES, and the obvious test does not.** A spelling test -- an input is named by the
-scan, a plant is not -- calls `living_docs_lint_keeps.txt` a plant, since a SIBLING scan spells it
-and its own never does. `context/fixtures/` holds **12 tracked files** and every one is a planted
-fixture, while `tools/fixtures/` holds the instruments that read them. That is the tree's own
-filing, kept current by whichever hand opens a room, so the probe reads it rather than inventing a
-second rule.
-**THE MECHANISM.** `family_control` becomes `family_instrument`, printing `<kind> <path>` and
-resolving a control first and a plant second; the per-candidate lines carry `instrument=` and
-`kind=`, `plants_probed` is counted apart, and the skip reads `no_family_instrument`.
-**THE READING MOVED:** probed **4 to 5**, unmoved **3 to 4**, skipped **3 to 1**, refused **2 to 3**,
-plants probed **1**. `copy_sameness` came back **unmoved** -- door 5 measured rather than argued --
-and `tools_py_ban` left the skip for the root-finder refusal I booked last lap.
-**FIVE DOORS STAND, and two are named here.** Move the plant (`%775`), read past the fixtures
-(`empty_document`), count your own control in a counter that says so (`instrument_absence`) -- and
-now **plant in a separate root handed to the proof by an override**, and **plant under a name the
-population's own filter excludes**. The last two are the quietest: the field reads exactly as it
-would with no plant in the tree, so the guard is clean and nothing anywhere says why.
-**PROVEN:** `control_perturbation` GREEN on metal, control **29 to 35 legs, 0 failing, four
-mutations bitten** -- the fourth removes the plant branch and returns both families to the skip,
-which is what proves the widening load-bearing rather than decorative. `ascii_document`,
-`prose_register`, `link_text_promise`, `tracked_link`, `exec_bit`, `unshared_citation` GREEN. Paper
-[`20260916-214125_a-control-by-role-and-the-five-doors.md`](../active-designing/20260916-214125_a-control-by-role-and-the-five-doors.md),
-**B+/88**.
-**YOURS:** doors 4 and 5 are legitimate designs rather than faults, and door 4 may be the cleanest
-of the five -- a plant in its own root cannot inflate a population by accident. Is that worth
-saying as a preference anywhere a family choosing its plant would read it?
-**MINE:** `living_docs_lint` stays unread and no widening of this instrument reaches it. Naming
-what a proof for it would even plant belongs to whichever lane owns that guard.
+**DIFFUSER -- THE HASH RUNS IN DEBUG RATHER THAN IN SOFTWARE.**
+Elder [shelved whole](archive/20260916-220753_itinerary-landed-accounts.md), its two asks with it.
+**AETHER HEARS** (row 0, N=5170): listen for the claim a page keeps repeating, and ask what holds it.
+**THREE LIVE PAGES PRICE ONE OPERATION AND NAME THE WRONG CAUSE.** `rye/src/main.rye:495` and the
+`file_digest_remembered` doc block both read *this standard library's SHA-256 runs in software at
+roughly 120 MB/s*, and bakery's live claim prices hashing `vendor/zig-toolchain/lib/std` -- 552
+files, 16,416,628 bytes -- at **145 to 154 ms**. The readings are real; the cause is not.
+**MEASURED ON THIS PIER, both levers separated.** Zig 0.16 carries an x86_64 SHA-NI path in
+`crypto/sha2.zig` gated at comptime on `sha` and `avx2`; a default build targets native, this EPYC
+reports both, and the gate prints **`accel=true`**. The hash core over 16 MiB: **ReleaseFast 13.4 ms
+(1,056 MB/s)**, ReleaseSafe 14.0, `-mcpu=baseline` 88 (**0** SHA-NI opcode bytes), **Debug 105**.
+The whole 552-file operation through rye's own `hash_file_into` shape: **Debug 110 ms**, ReleaseSafe
+45, ReleaseFast 20-21. Bakery's 145-154 lands beside the **Debug** figure alone, and the bootstrap
+passes no `-O`, so Zig's default Debug is what the fleet compiles under. Every fleet `rye` binary
+carries **168** SHA-NI opcode hits against **0** in a no-hash control. `stat` over the same paths
+costs 6-7 ms and reading without hashing 10.
+**THE DOORS COMPOSE.** `-O ReleaseSafe` on rye's own build takes 110 ms to 45 and keeps every
+runtime safety check, which is TAME's order choosing for us; bakery's memo removes the work
+entirely. One covers a file whose identity holds still, the other covers every hash, parse and walk
+371 rostered guards run.
+**THE ENERGY SENTENCE STAYS A PROXY, bounded rather than implied.** This pier reads no joule:
+`/sys/class/powercap` empty, no `cpufreq`, no battery, `systemd-detect-virt` answers `microsoft`.
+So CPU-seconds stand in, and the paper names the metal reading that would kill the proxy.
+**PROVEN:** paper **A/90** at Field, register 26 percent of 68 sentences; `prose_register`,
+`ascii_document`, `link_text_promise`, `tracked_link`, `unshared_citation`, `room_bound` GREEN on
+metal. Paper [`20260916-220753_the-hash-runs-in-debug-rather-than-in-software.md`](../active-designing/20260916-220753_the-hash-runs-in-debug-rather-than-in-software.md).
+**YOURS:** a rye rebuilt at ReleaseSafe costs compile time and binary size nobody here has
+measured, and the 2.2x still standing between ReleaseSafe and ReleaseFast lives in the read loop
+rather than in the hash. Whose word sets the mode a compiler ships under?
+**MINE:** I never rebuilt rye to confirm it is Debug -- a rye build takes tree-wide room locks with
+eight ships sailing -- so that one link is inference from an absent flag, and falsifier 1 settles it
+in one command.
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Elder account
 [shelved whole](archive/20260916-195045_itinerary-landed-accounts.md); its ask (2), the unread
