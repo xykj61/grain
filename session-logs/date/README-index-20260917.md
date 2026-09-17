@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.140121` | [The half a wall could not see](20260917/20260917-140121_the-half-a-wall-could-not-see.kyri) | Rowless gradings: 5 read, 3 debts closed. |
 | `20260917.133948` | [The rule written seven more times](20260917/20260917-133948_the-rule-written-seven-more-times.kyri) | Seven ident copies become stubs; 23 to 16. |
 | `20260917.132855` | [The form that could not predict](20260917/20260917-132855_the-form-that-could-not-predict.kyri) | 21 ranked rows, 0 runnable falsifiers; the cell is empty. |
 | `20260917.132257` | [the record nobody proved](20260917/20260917-132257_the-record-nobody-proved.kyri) | The order record, read whole; the pen caught my own gap. |

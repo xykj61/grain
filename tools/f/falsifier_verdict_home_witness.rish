@@ -64,7 +64,7 @@ assert control.out contains "control_verdict=ok" else "verdict-home: every leg o
 # The pen's own tally, asserted beside the named legs. A control that reached its last line
 # proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
 assert control.out contains "control_failed=0" else "verdict-home: a leg that failed must be heard even when the control completes"
-assert control.out contains "legs=40" else "verdict-home: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
+assert control.out contains "legs=74" else "verdict-home: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
 
 assert control.out contains "leg answered_counted ok" else "verdict-home: a graded row whose elder carries the erratum must read answered"
 assert control.out contains "leg unanswered_planted ok" else "verdict-home: the wall must refuse from the failing side"
@@ -84,6 +84,33 @@ assert control.out contains "leg bound_refuses ok" else "verdict-home: a collect
 assert control.out contains "leg bound_restored ok" else "verdict-home: the bound refusal must lift when the bound does"
 assert control.out contains "leg m1_unmutated_reads_unanswered ok" else "verdict-home: the mutation must be preceded by the unmutated reading it displaces"
 assert control.out contains "leg m1_mutation_bites ok" else "verdict-home: an erratum for another row must never answer this one"
+# THE ROWLESS HALF -- reported readings, so each is asserted to be PRINTED and
+# none is asserted to move the verdict. The population is drawn by a typed
+# three-key roster, and a gate whose population is a roster reds the lap a lane
+# reaches for a key nobody typed.
+assert scan.out contains "rowless_gradings=" else "verdict-home: a page grading an elder's whole sentence must be counted rather than left invisible"
+assert scan.out contains "rowless_answered=" else "verdict-home: the two shapes a rowless verdict came home in must be readable"
+assert scan.out contains "rowless_unanswered=" else "verdict-home: a verdict reached and never carried home is the reading this half exists for"
+assert scan.out contains "rowless_outside_roster=" else "verdict-home: the roster must price its own blindness or it becomes the population"
+assert scan.out contains "rowless_outside_keys=" else "verdict-home: the keys the roster leaves behind must be named, since that list is its kill condition"
+assert scan.out contains "rowless_answer_shapes=" else "verdict-home: which shape answered must be legible, because a second shape converging is this half's finding"
+
+assert control.out contains "leg rowless_answered_by_erratum ok" else "verdict-home: an anchored rowless erratum field must answer"
+assert control.out contains "leg rowless_answered_by_addendum ok" else "verdict-home: an anchored addendum section must answer too -- the second shape is the finding"
+assert control.out contains "leg rowless_unanswered_planted ok" else "verdict-home: a rowless debt must be visible from the failing side"
+assert control.out contains "leg rowless_unanswered_never_gated ok" else "verdict-home: a reading drawn by a typed roster must never move the verdict"
+assert control.out contains "leg rowless_plant_lifted_returns ok" else "verdict-home: a reading that survives its own repair is one nobody can act on"
+assert control.out contains "leg rowless_wrong_stamp_never_answers ok" else "verdict-home: the pairing is the child's stamp, so another lap's verdict must not answer this one"
+assert control.out contains "leg rowless_pointer_key_never_graded ok" else "verdict-home: a Kin pointer grades nothing and must never open a debt"
+assert control.out contains "leg rowless_outside_roster_counted ok" else "verdict-home: what the roster leaves out must be counted in the same pass"
+assert control.out contains "leg rowless_all_three_keys_read ok" else "verdict-home: every key in the roster must be read, or a dropped one is silent"
+assert control.out contains "leg rowless_never_enters_the_row_half ok" else "verdict-home: the two halves must stay single-stranded -- one line is one half's subject"
+assert control.out contains "leg rowless_shelved_child_read_past ok" else "verdict-home: a rowless declaration on a closed stack is testimony that can never be repaired"
+assert control.out contains "leg m5_mutation_bites ok" else "verdict-home: dropping the rdecl filter put 150 pointer lines inside a number about gradings, and it must bite"
+assert control.out contains "leg m6_mutation_bites ok" else "verdict-home: an elder discussing an addendum must never read as carrying one"
+assert control.out contains "leg m7_mutation_bites ok" else "verdict-home: a roster matched by substring widens itself in silence"
+assert control.out contains "leg m8_mutation_bites ok" else "verdict-home: the rowless pass is read at the door, like its sibling"
+
 assert control.out contains "leg m2_unmutated_reads_door_only ok" else "verdict-home: a declaration is read at the door rather than anywhere on the page"
 assert control.out contains "leg m2_mutation_bites ok" else "verdict-home: lifting the door bound must change the answer"
 assert control.out contains "leg m3_unmutated_reads_past_shelf ok" else "verdict-home: a shelved declaration must stay outside the reading"

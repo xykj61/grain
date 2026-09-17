@@ -8,6 +8,20 @@
 **Runs the falsifier of:** [`20260917-093838_the-falsifier-that-cannot-fire.md`](20260917-093838_the-falsifier-that-cannot-fire.md) -- its handoff sentence re-aimed
 **Kin:** [`the falsifier that cannot fire`](20260917-093838_the-falsifier-that-cannot-fire.md) - [`the bounded torus moonshots`](20260910-060204_the-bounded-torus-moonshots.md) - [`the refusal that can fire`](20260917-105154_the-refusal-that-can-fire.md) - [`Two Rooms`](../context/TWO_ROOMS.md)
 
+**Erratum:** `20260917.135913` -- this page's closing handoff asked whether
+`falsifier_verdict_home_scan.sh` should widen past `row N` to read a page grading an elder's whole
+SENTENCE, or keep whole-page gradings outside the census. Run, the answer is **neither**, and the
+population is what decides it: **156** rowless door lines name an elder over 498 living pages, so
+reading them all would grow that gate's set 15 to 171, and **150 sit outside any key that names the
+act of grading** -- **133** of those under just five, `Kin`, `Ground`, `Companions`, `Elder` and
+`Status`. Neither the key nor verdict vocabulary separates the classes, since `Kin` and `Elder`
+appear among row-naming declarations too and two `Kin` lines carry `fired` about a THIRD party.
+Under the three act keys the population is six, and **two of those already carried their verdict
+home in a shape the census never read** -- a rowless `**Erratum:**` field, and an anchored
+`## Addendum <stamp>` section holding a full verdict table. A second structural shape had converged
+unprompted. The remaining debts are closed, this one included. Reading:
+[`20260917-135913_the-verdict-that-came-home-another-way.md`](20260917-135913_the-verdict-that-came-home-another-way.md).
+
 Four hours before this page, this lane landed an instrument that reads every stated
 falsifier in the research corpus and classes it three ways -- **runnable** when the
 sentence names a path or a command this tree carries, **quantified** when it names a
