@@ -5,14 +5,14 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Members:** the rooms under [`./`](./) -- `redacted`, where a page whose specifics are private is set down as a method anyone can use ([`../.claude/rules/redact-technique.md`](../.claude/rules/redact-technique.md))
 **Ceiling:** <=40 lines
-**Last updated:** `20260911.092737` -- the `redacted/` room named at the door for the first time, its key paid for by folding this reader-only pointer onto this line rather than raising the 40 - **Compresses:** [`20260712-221600`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - [`20260717-173848`](../active-designing/date/20260717/20260717-173848_compass-card-and-foundations-compress.md)
+**Last updated:** `20260917.135115` -- the Law line below now carries the room its own guard reads, so the shelf is held to every page rather than to the declaring ones - **Prior:** `20260911.092737`, the `redacted/` room named at the door for the first time - **Compresses:** [`20260712-221600`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) - [`20260717-173848`](../active-designing/date/20260717/20260717-173848_compass-card-and-foundations-compress.md)
 
 ---
 
 ## Law
 - **Raw beneath** -- dated notes, counsel, Kyri logs, and `foundations/` stay immutable.
 - **Compress above** -- each page here distills many sources into one operator guide.
-- **A page declares its own length** in a `**Ceiling:** <=N lines` header, and [`declared_ceiling_witness.rish`](../tools/d/declared_ceiling_witness.rish) measures every page against its own number each roster pass. That is why this table names roles rather than repeating the numbers: a second copy of a bound is a bound that can quietly disagree with itself.
+- **A page declares its own length** in a `**Ceiling:** <=N lines` header, and [`declared_ceiling_witness.rish`](../tools/d/declared_ceiling_witness.rish) measures every page against its own number each roster pass. That is why this table names roles rather than repeating the numbers: a second copy of a bound is a bound that can quietly disagree with itself. **Every page here declares one, and this sentence is what the guard reads to find the room** -- so the promise holds its whole population rather than only the pages that already kept it. `JAMCUE.md` stood outside it from `20260724` to `20260917`, silently, because a page declaring nothing is what a reading of the declarers skips.
 - **Pages compress; never replace.** No load-bearing pin lives here -- the record stands beside the code, and [`living_docs_lint.rish`](../tools/l/living_docs_lint.rish) keeps the links honest.
 
 ## Index

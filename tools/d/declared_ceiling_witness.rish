@@ -76,10 +76,25 @@
 # %192, %197, %199). The assert three lines below this file's own scan block is exactly such a pin,
 # and it is the check that the law has not moved without anyone noticing.
 #
+# THE FIFTH READING, seated `20260917.135115`. Every reading above takes the DECLARING pages as
+# its corpus, so opting in by writing the header is the whole population filter. `docs/README.md`
+# carries a Law line saying *a page declares its own length* and names this guard as what measures
+# it -- a promise about a POPULATION, made by a door, read by nothing. Measured `20260917`: the
+# compression shelf held 15 living `.md` pages and fourteen declarations, and `docs/JAMCUE.md` had
+# declared nothing since `20260724`. A page declaring nothing is exactly what this scan skips, so
+# the one page falsifying the shelf's own Law was the one page invisible to the guard the Law
+# names. It is `room_enumeration`'s founding fault one room over: a page falls out of its room's
+# list by doing nothing at all.
+#
+# The room opts in AT ITS OWN DOOR, so the population is derived rather than typed -- a README
+# writing the literal template `**Ceiling:** <=N lines`, N unfilled, claims the habit for its flat
+# pages, and `shelf_undeclared` is gated at zero for those rooms alone. Exactly one README in the
+# tree writes it today, and a room promising this tomorrow is held the day its door says so.
+#
 # WHAT IT DOES NOT REACH. Whether a declared number is the RIGHT number -- that is a judgement, and
 # this is a count. And any bound written in prose rather than in a form a parser reaches.
 #
-# Pen: tools/fixtures/d/declared_ceiling_control.sh -- twenty-seven behaviors across fifty
+# Pen: tools/fixtures/d/declared_ceiling_control.sh -- twenty-nine behaviors across seventy
 # assertions on real pages and real git repositories in a throwaway pen, both ceilings, both
 # bounds, and both halves of the meter-copy reading shown from both sides. Run from the
 # repository root.
@@ -102,6 +117,9 @@ assert scan.out contains "living_pin_max_bytes=24576" else "declared-ceiling: th
 assert scan.out contains "law_copies_deciding=0" else "declared-ceiling: a meter deciding with its own copy of the bound can disagree with the law while reporting green"
 assert (scan.out contains "verdict=law_number_copied" == false) else "declared-ceiling: the one reading is tools/fixtures/l/living_pin_max_bytes.sh, and every meter calls it"
 assert (scan.out contains "verdict=law_recitation_spread" == false) else "declared-ceiling: the number may be written down in fewer places than yesterday, never more"
+assert scan.out contains "shelf_undeclared=0" else "declared-ceiling: a room whose own README promises that its pages declare a ceiling must hold no page that declares none"
+assert (scan.out contains "verdict=shelf_page_undeclared" == false) else "declared-ceiling: a door may promise the habit for its room only while every page in it keeps the promise"
+assert (scan.out contains "shelf_rooms=0" == false) else "declared-ceiling: the shelf reading over no promising room would report clean while measuring nothing"
 
 let control = run ["sh" "tools/fixtures/d/declared_ceiling_control.sh"]
 say control.out
@@ -141,6 +159,11 @@ assert control.out contains "24 bitten: the refusal names the meter -- ok" else 
 assert control.out contains "25 bitten: a meter comparing against a literal copy refuses -- ok" else "declared-ceiling: a comparison is a decision, the same as an assignment"
 assert control.out contains "26 free: a witness pinning the value is a role, not a fault -- ok" else "declared-ceiling: a witness asserts and a control plants; only a scan decides"
 assert control.out contains "27 bitten: the recitation form spreading past its ceiling refuses -- ok" else "declared-ceiling: the recitation ceiling may fall and may not rise"
+assert control.out contains "29 free: a door that promises nothing leaves a silent page free -- ok" else "declared-ceiling: a room owes this guard nothing until its own door promises"
+assert control.out contains "29 bitten: a silent page in a promising room refuses -- ok" else "declared-ceiling: a promise on a door must reach every page the door speaks for"
+assert control.out contains "29 bitten: the refusal names the silent page -- ok" else "declared-ceiling: a refusal that names no page leaves the reader to search"
+assert control.out contains "29 free: dated testimony in a promising room is never counted -- ok" else "declared-ceiling: testimony keeps every word it wrote, in a promising room as anywhere else"
+assert control.out contains "29 bitten: a door promising the habit and declaring nothing itself refuses -- ok" else "declared-ceiling: a door speaks for its room and stands in it"
 
 say ""
-say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy in the pages or in the meters, the two readings this cannot gate are counted in the open, and every reading is proven from both sides across fifty-seven planted checks."
+say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy in the pages or in the meters, the two readings this cannot gate are counted in the open, a room promising the habit at its own door is held to every page in it, and every reading is proven from both sides across seventy planted checks."

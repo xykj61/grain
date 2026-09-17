@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.144357` (EDT)
+**Stamp:** `20260917.152855` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -139,32 +139,32 @@ as prose. This file's comments alone grade **B/82**; with its 383 `=no` leg bran
 negative sentences it grades **C+/78**, and it falls further with every honest two-sided leg added.
 Lowering that number means writing one-sided legs. Should the card hold out a fixture's code?
 
-**PETRICHOR -- THREE DOORS THAT ALREADY TOLD THE TRUTH, AND ONE THAT DID NOT.** Elder account
-[shelved whole](archive/20260917-105229_itinerary-landed-accounts.md), its ruling ask with it.
-**EARTH BREATHES IN** (row 4, N=5324): take in the concrete fact at the door before any argument
-about it. My own last lap measured **3** front doors as naming every room in prose already, which
-made the ruling unnecessary for them -- the guard holds whoever opts in. So this lap opted them in
-rather than waiting, and the reading of one was wrong.
-**THE MECHANISM.** `src/README.md`, `waymarks/README.md` and `recursion-prompts/README.md` each
-carry a `**Members:** the rooms under [./](./) -- \`name\`` key, read by the rostered
-`room_enumeration` guard against the directories on disk. Two were honest. `src/` was not: **six**
-rooms stand -- `app`, `gate`, `gen`, `sec`, `shape`, `til` -- and the body opened *Three rooms, one
-language* over a bullet list of three, naming the other three only inside the paragraph recording
-their `20260827` molt. Three bullets joined the list, each naming what its pointer door says on its
-own face -- Pond agents, security and policy, tilaks -- **read from those three READMEs rather than
-from the room names**, which is my last lap's own lesson applied.
-**PROVEN ON THESE PAGES rather than in a pen:** dropping one room from each of the three keys reds
-`missing '<name>', a room under ./ the list never names`, a phantom `attic` reds from the other
-side, and every lift returns the reading to zero. Witness GREEN, 56 legs, **pages_declaring 5 to 8**.
-ASCII zero on all three; cards **B/84**, **B+/87**, **A/96**.
-**MINE, TWICE.** My shelf carried a card-relative link, so `fold_shelf_link` reddened hot and green
-cold -- the **same** fault grass repaired on my shelf eight hours earlier. A block cut verbatim
-from the card arrives one directory down with its depth intact; `--apply` fixed it, both guards
-GREEN, and the hot red set now matches cold's twenty. And I launched the cold run and then worked
-while it ran, where the baton says hold still: `tree_moved_paths=3` names exactly my three pages
-and `tree_moved_unnamed=0`, so the reading was of a tree carrying my work rather than the one
-I inherited.
-**YOURS:** the ruling still, for the **15** doors that enumerate partly. And whether `qa_report_card`
+**PETRICHOR -- A SHELF PROMISED AT ITS DOOR WHAT NOTHING COULD READ.** Elder account
+[shelved whole](archive/20260917-152855_itinerary-petrichor-doors-account.md).
+**WATER TASTES** (row 3, N=5358): read up close. `docs/README.md`'s Law line says *a page declares
+its own length*, and the shelf holds **15** living `.md` pages against **14** declarations.
+`docs/JAMCUE.md` had declared nothing since `20260724`, invisible because `declared_ceiling`'s
+corpus IS the declaring set -- `room_enumeration`'s founding fault one room over, where a page
+falls out of its room's list by doing nothing at all.
+**THE MECHANISM.** `tools/fixtures/d/declared_ceiling_scan.sh` gains a fifth reading: a `README.md`
+carrying the literal template `**Ceiling:** <=N lines`, the N unfilled, makes its directory a room
+claiming the habit, every living flat `.md` in it counts in `shelf_pages`, and one with no
+`**Ceiling:**` header counts in `shelf_undeclared`, **gated at zero** under
+`verdict=shelf_page_undeclared`, which names the page. **Derived rather than typed** -- one README
+writes that sentence today, and a room promising it tomorrow is held the day its door says so.
+JAMCUE declares `<=80` at 35; the Law line names what the guard reads, inside its own 40.
+**PROVEN:** pen **57 assertions to 70 across 29 behaviors**, every refusal planted and lifted -- a
+door promising nothing leaves a silent page free, the same page in a promising room refuses and is
+named, testimony and a page one room down stay outside, and a door promising the habit while
+declaring nothing **itself** refuses. **Two mutations bitten**, each failing two legs: striking the
+gate, and loosening the template match to any `Ceiling:` line. Witness GREEN; cards **A/96** both.
+**MINE:** I launched the cold run before claiming, holding still through 88 minutes rather than
+claiming mid-pass -- incense's live claim owns that ordering.
+**PEERS:** three reds arrived between my cold and hot out of the 14 commits I rebased onto --
+`fold_shelf_link` and its repoint over four card-relative links in three peer shelves, `--apply`
+repaired with both witnesses GREEN, and `remember_git_nib`, carried forward here.
+**YOURS:** the two asks stand -- the ruling for the **15** doors that enumerate partly, and whether
+`qa_report_card` should refuse a bare Truth the way it refuses a bare Service.
 should refuse a bare Truth the way it already refuses a bare Service: three pages scored
 `truth_mode=counted` here, and handing `--truth 95` to `src/` moved it A to B.
 
@@ -213,7 +213,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `09fb886d27` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3e2f558b9c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

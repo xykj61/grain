@@ -338,6 +338,72 @@ if r >/dev/null 2>&1; then rn=no; else rn=yes; fi
 check "28 bitten: a law stating no number refuses rather than defaulting" "yes" "$rn"
 rm -rf "$rp"
 
+
+# ---- 29: a room's own door promises the habit, and the whole room is then held ----------
+# The population above is the declaring set, so a page can fall out of its room's list by doing
+# nothing. A room opts in by writing the literal template `**Ceiling:** <=N lines` in its own
+# README.md, with the N unfilled -- a sentence about the form rather than a declaration in it.
+door() {
+  {
+    echo "# A room front door"
+    echo "**Ceiling:** <=40 lines"
+    if [ "${2:-promises}" = promises ]; then
+      echo "- A page declares its own length in a \`**Ceiling:** <=N lines\` header."
+    else
+      echo "- This room says nothing about how long its pages stay."
+    fi
+  } > "$1"
+}
+
+fresh
+door "$D/README.md" quiet
+printf '# A quiet page\n\nThis page declares nothing.\n' > "$D/quiet.md"
+out=$(run_scan)
+check "29 free: a door that promises nothing leaves a silent page free" "ok" "$(verdict "$out")"
+check "29 free: no room opts in" "0" "$(field shelf_rooms "$out")"
+
+fresh
+door "$D/README.md" promises
+printf '# A quiet page\n\nThis page declares nothing.\n' > "$D/quiet.md"
+out=$(run_scan)
+check "29 bitten: a silent page in a promising room refuses" "shelf_page_undeclared" "$(verdict "$out")"
+named=$(printf '%s\n' "$out" | grep -c 'quiet.md declares no ceiling' || true)
+check "29 bitten: the refusal names the silent page" "1" "$named"
+check "29 bitten: the promising room is counted" "1" "$(field shelf_rooms "$out")"
+
+fresh
+door "$D/README.md" promises
+page "$D/speaks.md" 10 40
+out=$(run_scan)
+check "29 free: a promising room whose pages all declare passes" "ok" "$(verdict "$out")"
+check "29 free: the door counts as one of its own room's pages" "2" "$(field shelf_pages "$out")"
+check "29 free: nothing stands undeclared" "0" "$(field shelf_undeclared "$out")"
+
+fresh
+door "$D/README.md" promises
+printf '# Testimony\n\nThis dated page declares nothing.\n' > "$D/20260724-144740_elder.md"
+out=$(run_scan)
+check "29 free: dated testimony in a promising room is never counted" "ok" "$(verdict "$out")"
+check "29 free: testimony is outside the room's population" "1" "$(field shelf_pages "$out")"
+
+fresh
+door "$D/README.md" promises
+mkdir -p "$D/under"
+printf '# A page one room down\n\nThis page declares nothing.\n' > "$D/under/quiet.md"
+out=$(run_scan)
+check "29 free: a page one directory down is outside the flat population" "ok" "$(verdict "$out")"
+check "29 free: only the door stands in the room" "1" "$(field shelf_pages "$out")"
+
+# The door must declare its own ceiling like any other page in the room it speaks for. A door
+# promising the habit and keeping silent about itself is the fault one layer up.
+fresh
+{
+  echo "# A room front door"
+  echo "- A page declares its own length in a \`**Ceiling:** <=N lines\` header."
+} > "$D/README.md"
+page "$D/speaks.md" 10 40
+out=$(run_scan)
+check "29 bitten: a door promising the habit and declaring nothing itself refuses" "shelf_page_undeclared" "$(verdict "$out")"
 echo ""
 echo "control_pass=$PASS"
 echo "control_fail=$FAIL"

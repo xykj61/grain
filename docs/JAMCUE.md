@@ -4,6 +4,7 @@
 **Seated:** `20260724.144740`  
 **Reframed:** `20260724.193912` -- outward publish declined; parity framing retired  
 **Status:** Checkable in-tree - demo face only  
+**Ceiling:** <=80 lines -- the number the shelf's small ladder pages declare; this page stood at 34 lines and declared nothing from `20260724` until `20260917`  
 **Witness:** `rishi/bin/rishi run tools/g/glow_jamcue_vectors_witness.rish`  
 **Fixture:** [`../tools/fixtures/g/glow_jamcue_vectors.txt`](../tools/fixtures/g/glow_jamcue_vectors.txt)  
 **Canon:** `glow/expr.rye` -- `jam_demo_*` - `jam_expect` - `cue_expect`

@@ -175,6 +175,49 @@ fi
 # would be teaching one thing and doing another.
 LE_GLYPH=$(printf '\342\211\244')
 
+# THE FIFTH READING, seated `20260917.135115`: a room that promises the habit is held to its whole
+# POPULATION rather than to the pages that already kept it.
+#
+# Every reading above takes the declaring pages as its corpus, so opting in by writing the header
+# is the whole population filter. That is honest for a tree where a ceiling is a page's own choice,
+# and it leaves one sentence unread: `docs/README.md` carries a Law line saying *a page declares
+# its own length* and names this guard as what measures it. Measured `20260917`, the compression
+# shelf held 15 living `.md` pages and FOURTEEN declarations -- `docs/JAMCUE.md` had declared
+# nothing since `20260724`, and no reading here could see it, because a page declaring nothing is
+# exactly what this scan skips. It is the founding fault of `room_enumeration` one room over: a
+# page can fall out of its own room's list by doing nothing at all.
+#
+# THE ROOM OPTS IN AT ITS OWN DOOR, so the population is derived rather than typed. A room's
+# `README.md` carrying the literal template `**Ceiling:** <=N lines` -- the N unfilled, which is a
+# sentence ABOUT the form rather than a declaration in it -- is a room claiming the habit for its
+# pages. Measured tree-wide the same stamp: exactly one `README.md` writes it. A hand-written
+# roster is what REDS %187 was booked for, and a room that begins promising this tomorrow is held
+# the day its door says so.
+#
+# GATED AT ZERO, and the gate reaches only the rooms that promise. Another room's pages owe this
+# guard nothing, which is the sixth reading's own sentence one line up: silence is not a
+# declaration. What changes is that a room's OWN DOOR can no longer promise on behalf of a page
+# that stays silent.
+#
+# FLAT PAGES ONLY, and the decline is named rather than silent. `docs/redacted/` holds redactions,
+# a genre whose own law (`.claude/rules/redact-technique.md`) says nothing about length, so a wall
+# reaching it would red the lap somebody writes an undated one. The room's own flat pages are what
+# its front door lists and what its Law line means.
+SHELF_ROOMS=""
+for f in $FILES; do
+  case "${f##*/}" in README.md) ;; *) continue ;; esac
+  grep -qa 'Ceiling:\*\* <=N lines' "$f" 2>/dev/null || continue
+  d=${f%/*}
+  [ "$d" = "$f" ] && d="."
+  SHELF_ROOMS="$SHELF_ROOMS $d"
+done
+shelf_rooms=0
+for r in $SHELF_ROOMS; do shelf_rooms=$((shelf_rooms + 1)); done
+shelf_pages=0
+shelf_undeclared=0
+SHELF_UNDECLARED=""
+
+
 for f in $FILES; do
   [ -f "$f" ] || continue
 
@@ -228,6 +271,19 @@ for f in $FILES; do
   fi
 
   line=$(grep -a -m1 '^\*\*Ceiling:\*\*' "$f" 2>/dev/null || true)
+
+  # The shelf reading. A page sitting flat in a room whose door promises the habit is held to it.
+  fdir=${f%/*}
+  [ "$fdir" = "$f" ] && fdir="."
+  for r in $SHELF_ROOMS; do
+    [ "$r" = "$fdir" ] || continue
+    shelf_pages=$((shelf_pages + 1))
+    if [ -z "$line" ]; then
+      shelf_undeclared=$((shelf_undeclared + 1))
+      SHELF_UNDECLARED="$SHELF_UNDECLARED $f"
+    fi
+    break
+  done
 
   # A bound written into the H1 title in the shelf's grade notation, rather than the header form.
   if [ -z "$line" ]; then
@@ -356,6 +412,9 @@ echo "pages_holding=$holding"
 echo "pages_over=$over"
 echo "pages_unreadable=$unparseable"
 echo "pages_grade_only=$grade_only"
+echo "shelf_rooms=$shelf_rooms"
+echo "shelf_pages=$shelf_pages"
+echo "shelf_undeclared=$shelf_undeclared"
 echo "grade_only_ceiling=$grade_ceiling"
 echo "living_pin_max_bytes=$LIVING_PIN_MAX_BYTES"
 echo "bounds_declaring=$bounds_declaring"
@@ -381,6 +440,16 @@ if [ "$bounds_disagree" -gt 0 ]; then
     echo "detail: ${d%%:*} spells a bound the seated law does not (${d#*:})"
   done
   echo "verdict=bound_disagrees_with_law"
+  exit 1
+fi
+
+# A room whose own door promises the habit, holding a page that declares nothing. The gate reaches
+# only the rooms that promise, and it is what makes that promise true rather than hopeful.
+if [ "$shelf_undeclared" -gt 0 ]; then
+  for s in $SHELF_UNDECLARED; do
+    echo "detail: $s declares no ceiling, in a room whose own README promises that its pages do"
+  done
+  echo "verdict=shelf_page_undeclared"
   exit 1
 fi
 
