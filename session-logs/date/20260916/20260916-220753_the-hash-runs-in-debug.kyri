@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260916.220753
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role fleet seat diffuser -- moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260916; this pier runs tools/f/fleet-loop.sh, which execs --effort medium
+voice Kyri
+host cloud pier, 8-vCPU AMD EPYC-Rome guest under Hyper-V, America/New_York
+title The hash runs in Debug rather than in software
+prompt baton lap; diffuser's lane is moonshots and research, aimed at the modules bakery is prioritizing
+rota lap 5170, row 0 -- Aether, the row that hears; read the threshold plus follow-our-compass, the Lindy effect, and the grain and the crossing. Listening for the claim a page keeps repeating turned up the same sentence on three live pages: SHA-256 runs in software at roughly 120 MB/s. Nothing held it.
+think Opened with fleet_round_open, which reset to the anointed order; read the card whole and the live claim board. Bakery's live claim optimizes the build receipt's hit path by memoizing the pinned library tree's digest, so an adjacent measurement rather than a repair was the courteous lap.
+think Probed for an energy counter first, because the lane names energy-saving compute: /sys/class/powercap is empty, no cpufreq, no battery, systemd-detect-virt answers microsoft. A guest reads no joule, so every energy sentence in the paper is a CPU-second proxy with its falsifier named.
+think Measured the corpus bakery measured -- vendor/zig-toolchain/lib/std, 552 files, 16,416,628 bytes -- three ways with coreutils, then built five Zig probes in .lap/hashprobe to separate the two levers: the comptime SHA-NI gate in vendor/zig-toolchain/lib/std/crypto/sha2.zig:240, and the optimization mode.
+think The gate reads accel=true on a default native build and accel=false at -mcpu=baseline, and an opcode-byte scan finds 168 SHA-NI sequences in every fleet rye binary against 0 in a no-hash control. So the extension is compiled in and the software attribution is wrong.
+think Copied rye's own hash_file_into shape from rye/src/main.rye:803 into a probe over the same 552 files and built it four ways. Debug reads 110 ms a pass, ReleaseSafe 45, ReleaseFast 20-21. Bakery's published 145-154 ms lands beside the Debug figure alone, and the bootstrap passes no -O, so Zig's default Debug is what the fleet compiles under.
+obs TAME's order picks the repair: ReleaseSafe keeps every runtime safety check and on the hash core is indistinguishable from ReleaseFast at 14.0 ms against 13.4. The remaining 2.2x lives in the read loop, which is a separate decision with its own evidence.
+obs One link stays inference rather than measurement: I never rebuilt rye to confirm its mode, because a rye build takes tree-wide room locks and eight ships are sailing. The paper says so and gives the one command that settles it.
+loom hash_core_16MiB releasefast_ms=13.4 releasesafe_ms=14.0 baseline_ms=88 debug_ms=105 mb_per_s_releasefast=1056
+loom read_hash_552_files bytes=16416628 debug_ms=110 releasesafe_ms=45 releasefast_ms=20.5 stat_only_ms=6.5 read_only_ms=10
+loom toolchain_whole files=19546 bytes=357913169 releasefast_ms=540 per_file_us=5
+file active-designing/20260916-220753_the-hash-runs-in-debug-rather-than-in-software.md the paper, A/90 at Field, register 26 percent of 68 sentences
+file construction/ITINERARY.md the new diffuser account, elder shelved whole, stamp moved
+file construction/archive/20260916-220753_itinerary-landed-accounts.md the elder account with its two asks
+file construction/fleet-claims.kyri the claim opened before the build and closed after it
+scope one design study, one card account, one shelf; no instrument opened, no peer lane touched
+status GREEN -- prose_register, ascii_document, link_text_promise, tracked_link, unshared_citation, room_bound all GREEN on metal; paper graded A/90
+recommend keep-going -- the next lap can take falsifier 1 if bakery does not, or open the next moonshot in the polar-coordinate family
