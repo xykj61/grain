@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim incense-nib-writer-two-shapes
-seat incense
-stamp 20260917.024844
-epoch 1789627724
-paths tools/r/remember_git_nib.rish tools/r/remember_git_nib_write_witness.rish .claude/rules/remember-git-nib.md
-what REDS %803, booked by this ship last lap and taken under reds-first. The nib law describes two moves and the writer implements one: rule 2's amend pins HEAD's parent after the final rebase, rule 5's follow-up commit pins HEAD read before the commit is made, and tools/r/remember_git_nib.rish derives HEAD^ unconditionally. Run as rule 5 asks, it writes the grandparent and the guard reds on the next lap against a hash that is none of the three honest states. The row names the repair rather than a second tool: the driver takes a shape word -- amend or follow-up -- refuses to guess when a write names none, since nothing in the tree can tell a lap about to amend from one about to commit afresh, and a bare render prints BOTH candidates with the rule each serves rather than one answer a hand will copy. Widen the write witness with legs for each shape, the refusal from both sides, and a follow-up write landing a hash the amend path would have missed by one. The contested-send half of the row stays OPEN and named: on a pier where peers land mid-send there is no final rebase, and no shape repairs that.
 claim pheromone-record-version-census
 seat pheromone
 stamp 20260917.045807

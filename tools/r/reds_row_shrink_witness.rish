@@ -1,0 +1,79 @@
+# reds_row_shrink_witness.rish -- did a ledger row lose text it once held?
+#
+# WHAT THIS READS. `construction/REDS.md` has one first law: a row is never edited. On `20260917`
+# a peer's ordinary rebase rewrote `%803`'s widened row to the narrower text its own checkout held,
+# while booking an unrelated number, and every standing guard stayed green -- `reds_ledger_monotone`
+# reads the spine's ORDER, and a row losing a sentence keeps its gaps, numbers, stamps and file
+# count exactly. REDS %811 booked that and named the cure: a reading over the spine's own history,
+# asking whether any record is shorter than the longest it ever held.
+#
+# WHAT IT GATES, and the list is short on purpose: the INSTRUMENT, never the tree. The row's own
+# ruling is report, never gate, and the reason is that two ships lawfully edit this file every lap
+# -- an OPEN row accreted to BOOKED sheds its tail, a lap corrects its own wording a minute after
+# writing it. A wall here would red on honest work, and a wall that reds on honest work is a wall
+# somebody turns off. So the gate holds the control GREEN, holds every named reading present, and
+# holds the refusal path apart from the clean read; the tree's own numbers are SAID and judged by
+# a person.
+#
+# WHAT IT DOES NOT REACH. Whether a row that shrank deserved to. A lap may rewrite its own unshared
+# row honestly, and nothing in a word count tells that from a rebase eating a paragraph -- what the
+# reading buys is that both become VISIBLE on the lap they land rather than on the lap somebody
+# happens to re-read the row.
+#
+# Law: .claude/rules/derived-spine.md - the ledger's own header in construction/REDS.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/reds_row_shrink_witness.rish
+
+say "reds-row-shrink: Language EN -- a ledger row is written once and never edited, and that law is held by hands. A rebase is not a hand: it resolves one row's text in favour of the side that booked a different row, silently, across every open row at once."
+say "reds-row-shrink: Style Gauge, Meter -- five readings reported and none gated, because two ships lawfully edit this file each lap and a wall here would red on honest work. The gate holds the instrument instead."
+say "reds-row-shrink: Lens TAME -- one git process over the whole spine history, the record population bounded and the bound announced when it is passed. Purely local: the anointed ref is read from the object store already on disk. No network, no key, no funds, no device."
+
+# invariant: run from the repo root, where the ledger and its shelves live.
+let root = run ["test" "-f" "construction/REDS.md"]
+assert root.ok else "reds-row-shrink: run from the repo root (construction/REDS.md not found)"
+
+# invariant: the scan this witness reads must exist.
+let has_scan = run ["test" "-f" "tools/fixtures/r/reds_row_shrink_scan.sh"]
+assert has_scan.ok else "reds-row-shrink: tools/fixtures/r/reds_row_shrink_scan.sh is missing"
+
+# 1. The control first -- a reading whose refusal has never been watched is a reading nobody proved.
+let control = run ["sh" "tools/fixtures/r/reds_row_shrink_control.sh"]
+assert control.ok else "reds-row-shrink: the control is RED -- ${control.out_brief}${control.err_brief}"
+assert control.out contains "control_verdict=ok" else "reds-row-shrink: the control did not reach control_verdict=ok"
+# THE LEG TALLY IS ASSERTED BESIDE THE VERDICT. A control reaching its last line says only that it
+# reached its last line; a leg written tomorrow could read `no` under a GREEN witness, which is the
+# ascii-document family's own lesson one instrument over.
+assert control.out contains "cases_red=0" else "reds-row-shrink: the control reported a failing case -- read its output"
+
+# 2. Then this tree, against the anointed spine.
+let scan = run ["sh" "tools/fixtures/r/reds_row_shrink_scan.sh" "--list"]
+# THE READING IS SAID BEFORE IT IS JUDGED. Rishi composes an interpolated string in a StrBuf
+# bounded at 4,096 bytes, so a reading with more to report than that would refuse with
+# StringTooLong -- the explanation failing exactly when it is needed. A bare `say` writes the value
+# straight out and opens no StrBuf, so the reading is printed whole and the assert then carries a
+# short sentence that is always composable.
+say "reds-row-shrink: the reading on this tree --"
+say scan.out
+assert scan.ok else "reds-row-shrink: the scan refused -- read the reading printed above"
+assert scan.out contains "verdict=reported" else "reds-row-shrink: the scan did not reach verdict=reported"
+
+# 3. EVERY NAMED READING MUST BE PRESENT, which is the whole of what a reported meter can be held
+# to. A reading that quietly stops being printed is a reading that quietly stops being taken, and
+# the number it carried then reads as zero to every eye downstream.
+assert scan.out contains "shrink_events=" else "reds-row-shrink: the shrink-event count went unreported"
+assert scan.out contains "standing_short=" else "reds-row-shrink: the standing-short count went unreported"
+assert scan.out contains "standing_words=" else "reds-row-shrink: the standing word loss went unreported"
+assert scan.out contains "rebindings_seen=" else "reds-row-shrink: the rebinding count went unreported, so a renumbering and a loss are one message again"
+assert scan.out contains "revisions=" else "reds-row-shrink: the revision count went unreported, so a spine read as empty cannot be told from one read whole"
+
+# 4. THE READING MUST HAVE READ SOMETHING. A scan answering over no revisions reports a clean
+# ledger and a blind instrument in exactly the same words (%97's shape), and this tree's spine
+# carries hundreds of revisions, so a single-digit count is the instrument rather than the ledger.
+# The comparison runs in the shell and this witness asserts on its word, because Rishi has no
+# numeric assert and a number turned into a word is a number a reader can also see.
+let depth = run ["sh" "-c" "n=0; n=$(sh tools/fixtures/r/reds_row_shrink_scan.sh | sed -n 's/^revisions=//p'); if [ $n -gt 100 ] 2>/dev/null; then echo spine_read_whole=yes revisions=$n; else echo spine_read_whole=no revisions=$n; fi"]
+assert depth.ok else "reds-row-shrink: could not read the revision count back"
+assert depth.out contains "spine_read_whole=yes" else "reds-row-shrink: the scan read fewer than a hundred revisions of a spine that carries hundreds -- ${depth.out_brief}, which is the instrument reporting its own blindness rather than the ledger"
+
+say "GREEN: reds-row-shrink -- the ledger's whole spine history is read in one process, a record is keyed by the head it writes about itself rather than by its number, a character sweep and a fold and a renumbering each pass free, and thirty-four cases prove the losses it must see and the lawful edits it must not on real git repositories in a throwaway pen."

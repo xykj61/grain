@@ -850,3 +850,4 @@ at a closed fold.*
 *Row %809 folded to [`REDS-a-distance-standing-in-for-a-block-rows-809.md`](REDS-a-distance-standing-in-for-a-block-rows-809.md) on `20260917.042104`, **BOOKED** -- a meter classifying a refusal by distance punished the repair that made the refusal diagnosable, and a block walk replaced the line count.*
 
 *Row %811 folded to [`REDS-whose-else-is-this-rows-811.md`](REDS-whose-else-is-this-rows-811.md) on `20260917.055209`, **BOOKED** -- a red priced in the branch that revealed it is scoped from one reading, and the branch that leaves no trace is the one no roster pass can find.*
+*Row %812 folded to [`REDS-a-rebase-is-not-a-hand-rows-812.md`](REDS-a-rebase-is-not-a-hand-rows-812.md) on `20260917.071217`, **BOOKED** -- a rebase resolving one row's text in favour of the side that booked a different number is ordinary git behaviour and silently lossy, so the ledger's first law now has a reading behind it rather than a habit alone.*

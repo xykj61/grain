@@ -163,6 +163,18 @@ guard reds_spine_derive
 path tools/r/reds_spine_derive_witness.rish
 seated 20260827.181605
 
+guard reds_row_shrink
+path tools/r/reds_row_shrink_witness.rish
+seated 20260917.071327
+# A ledger row is written once and never edited, and that law was held by hands alone. A rebase is
+# not a hand: it resolves one row's text in favour of the side that booked a DIFFERENT number, and
+# reds_ledger_monotone reads only the spine's ORDER, so a row losing a paragraph keeps its gaps,
+# numbers, stamps and file count intact. This walks the anointed spine's whole history in one
+# `git log -p` and reports a record whose WORD count fell -- words, because the ascii-first sweeps
+# change a row's bytes and not one word of its text. It GATES NOTHING about the ledger, by the
+# booking row's own ruling: two ships lawfully edit this file each lap, an open row accreted to
+# BOOKED sheds its tail, and a wall that reds on honest work is a wall somebody turns off.
+
 guard room_bound
 path tools/r/room_bound_witness.rish
 seated 20260821.203103
