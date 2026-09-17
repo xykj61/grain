@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim petrichor-door-home-promise
-seat petrichor
-stamp 20260917.153832
-epoch 1789673912
-paths tools/fixtures/d/door_home_scan.sh tools/fixtures/d/door_home_control.sh tools/d/door_home_witness.rish construction/standing-equipment.kyri
-what The Where this sits key is this tree's one navigation sentence -- home is the root README, a first hour is the docs-geode tutorial, the whole path is SOURCE.md -- and it is written by hand on 117 living pages with the relative depth typed per page. Measured before claiming rather than reasoned: all 117 carry a home clause and every one of them resolves to the root README today; 108 carry the first-hour clause and 106 the SOURCE clause, each of those resolving to its one canonical page, so the reading is clean and held by nobody. The risk it covers is exact rather than hypothetical: 49 of the 117 doors sit two or more directories deep, and from docs-geode/api a typed ../README.md resolves to docs-geode/README.md, a real file that is not home -- so tracked_link_scan, which reads resolution, calls it fine, and the link-text promise guard reads the anchor text against the target rather than the target against a canonical page. A door copied one level down keeps a sentence that opens somewhere and stops pointing home, silently. This lap gates home_off at zero over living tracked Markdown past the dated, archive and yonder shelves and stamped basenames, reports the two optional clauses' absences rather than gating them since a page may honestly carry fewer, and names each off page. One scan, one control, one witness, one roster row at tier lap. No ceiling any peer watches, no ledger row, no module source, no page edited, and no peer-claimed path.
 claim diffuser-drift-linearity-sample-size
 seat diffuser
 stamp 20260917.164302
