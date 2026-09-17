@@ -61,15 +61,24 @@
   # refuses those generic Linux binaries; this overlay is the declared road.
   #
   # claude-code: nixos-26.05's pin lags upstream (the locked flake had 2.1.187).
-  # This overlay pins the latest release, 2.1.235 (2026-08-18), fetching the same
-  # native binary the nixpkgs derivation would, from the same downloads.claude.ai
-  # release path. overrideAttrs (version + src) is used rather than .override
-  # { manifest = ...; } because the LOCKED nixpkgs holds manifest as a let-binding,
-  # not an overridable argument -- overrideAttrs works on both the locked rev and
-  # future ones. The sha256 is the linux-x64 checksum from Anthropic's own
-  # per-version manifest, verified on metal against the downloaded binary
-  # (sha256sum == bfcf0ae2...d5d5, 20260819). The build self-checks twice: fetchurl
-  # fails loudly on any hash mismatch, and versionCheckHook runs `claude --version`.
+  # This overlay pins the latest release, 2.1.274, fetching the same native binary
+  # the nixpkgs derivation would, from the same downloads.claude.ai release path.
+  # overrideAttrs (version + src) is used rather than .override { manifest = ...; }
+  # because the LOCKED nixpkgs holds manifest as a let-binding, not an overridable
+  # argument -- overrideAttrs works on both the locked rev and future ones. The
+  # sha256 is the linux-x64 checksum from Anthropic's own per-version manifest,
+  # verified on metal against the downloaded binary (sha256sum == 15e2d051...fa07,
+  # 20260917.175948; the elder 2.1.235 read bfcf0ae2...d5d5, 20260819). The build
+  # self-checks twice: fetchurl fails loudly on any hash mismatch, and
+  # versionCheckHook runs `claude --version`.
+  #
+  # The VERSION STRING is proven by that hook rather than here, and the reason is
+  # this overlay's own subject: the downloaded binary is dynamically linked against
+  # a generic Linux loader, so stub-ld refuses it until autoPatchelf has run. A
+  # hand checking the download by running it reads `Could not start dynamically
+  # linked executable` and learns nothing about the version. The checksum is what a
+  # hand can verify before the build; the version is what the build verifies after.
+  #
   # To bump: read downloads.claude.ai/claude-code-releases/latest, then that
   # version's manifest.json for the linux-x64 checksum.
   nixpkgs.overlays = [
@@ -101,10 +110,10 @@
         };
       });
       claude-code = prev.claude-code.overrideAttrs (_old: {
-        version = "2.1.235";
+        version = "2.1.274";
         src = final.fetchurl {
-          url = "https://downloads.claude.ai/claude-code-releases/2.1.235/linux-x64/claude";
-          sha256 = "bfcf0ae2dbf94b2b6a106074aabf3938b9a10889c3b678e4cb5a00c03274d5d5";
+          url = "https://downloads.claude.ai/claude-code-releases/2.1.274/linux-x64/claude";
+          sha256 = "15e2d05148f801b5774032faad87e624ecd172e9903288bda448b892eb58fa07";
         };
       });
 

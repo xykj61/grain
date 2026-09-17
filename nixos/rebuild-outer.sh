@@ -47,8 +47,8 @@ command -v perl    && perl    --version | head -n 2 | tail -n 1
 command -v python3 && python3 --version
 
 # 4. Confirm the claude-code version overlay took effect. configuration.nix pins
-#    claude-code to 2.1.235 (2026-08-18) via an overlay, past nixos-26.05's
-#    lagging pin (the locked flake held 2.1.187). Expect 2.1.235 below; the build
+#    claude-code to 2.1.274 via an overlay, past nixos-26.05's
+#    lagging pin (the locked flake held 2.1.187). Expect 2.1.274 below; the build
 #    already self-verified the binary hash and ran `claude --version` internally.
 command -v claude && claude --version || echo "claude not on PATH"
 
